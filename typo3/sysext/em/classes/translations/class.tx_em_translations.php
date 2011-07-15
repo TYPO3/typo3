@@ -139,13 +139,15 @@ class tx_em_Translations {
 		if (count($selectedLanguages) == 1 && empty($selectedLanguages[0])) {
 			$selectedLanguages = array();
 		}
-		$theLanguages = t3lib_div::trimExplode('|', TYPO3_languages);
+		/** @var $locales t3lib_l10n_Locales */
+		$locales = t3lib_div::makeInstance('t3lib_l10n_Locales');
+		$theLanguages = $locales->getTerLocales();
 		foreach ($theLanguages as $val) {
 			if ($val != 'default') {
 				$localLabel = '  -  [' . htmlspecialchars($GLOBALS['LOCAL_LANG']['default']['lang_' . $val][0]['target']) . ']';
 				$selected = (is_array($selectedLanguages) && in_array($val, $selectedLanguages)) ? ' selected="selected"' : '';
 				$opt[$GLOBALS['LANG']->getLL('lang_' . $val, 1) . '--' . $val] = '
-			 <option value="' . $val . '"' . $selected . '>' . $LANG->getLL('lang_' . $val, 1) . $localLabel . '</option>';
+			 <option value="' . $val . '"' . $selected . '>' . $GLOBALS['LANG']->getLL('lang_' . $val, 1) . $localLabel . '</option>';
 			}
 		}
 		ksort($opt);

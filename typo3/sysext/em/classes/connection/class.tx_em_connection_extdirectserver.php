@@ -1144,7 +1144,9 @@ class tx_em_Connection_ExtDirectServer {
 		$this->globalSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['em']);
 		$selected = t3lib_div::trimExplode(',', $this->globalSettings['selectedLanguages'], TRUE);
 
-		$theLanguages = t3lib_div::trimExplode('|', TYPO3_languages);
+		/** @var $locales t3lib_l10n_Locales */
+		$locales = t3lib_div::makeInstance('t3lib_l10n_Locales');
+		$theLanguages = $locales->getTerLocales();
 			//drop default
 		array_shift($theLanguages);
 		$lang = $meta = array();
@@ -1181,6 +1183,17 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return string
 	 */
 	public function saveLanguageSelection($parameter) {
+			// Add possible dependencies for selected languages
+		/** @var $locales t3lib_l10n_Locales */
+		$locales = t3lib_div::makeInstance('t3lib_l10n_Locales');
+		$dependencies = array();
+		foreach ($parameter as $language) {
+			$dependencies = array_merge($dependencies, $locales->getTerLocaleDependencies($language));
+		}
+		if (count($dependencies) > 0) {
+			$parameter = array_unique(array_merge($parameter, $dependencies));
+		}
+
 		$this->globalSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['em']);
 		$selected = t3lib_div::trimExplode(',', $this->globalSettings['selectedLanguages'], TRUE);
 
@@ -1198,9 +1211,9 @@ class tx_em_Connection_ExtDirectServer {
 		$this->saveExtensionConfiguration($params);
 
 		return array(
-			'success' => TRUE,
+			'success' => count($diff) > 0,
 			'dir' => $dir,
-			'diff' => implode('', $diff)
+			'diff' => array_values($diff),
 		);
 	}
 

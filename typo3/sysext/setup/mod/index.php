@@ -758,8 +758,9 @@ class SC_mod_user_setup_index {
 		$languageOptions[$langDefault] = '<option value="">' . $langDefault . '</option>';
 
 			// traverse the number of languages
-		$theLanguages = t3lib_div::trimExplode('|', TYPO3_languages);
-		foreach ($theLanguages as $language) {
+		/** @var $locales t3lib_l10n_Locales */
+		$locales = t3lib_div::makeInstance('t3lib_l10n_Locales');
+		foreach ($locales->getTerLocales() as $language) {
 			if ($language != 'default') {
 				$languageValue = $GLOBALS['LOCAL_LANG']['default']['lang_' . $language][0]['source'];
 				$localLabel = '  -  ['.htmlspecialchars($languageValue) . ']';
