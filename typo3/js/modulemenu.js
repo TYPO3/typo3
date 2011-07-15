@@ -238,7 +238,22 @@ TYPO3.ModuleMenu.App = {
 				TYPO3.Backend.NavigationContainer.hide();
 				TYPO3.Backend.NavigationDummy.show();
 			}
-			this.openInContentFrame(record.originalLink, params);
+			if (Ext.getCmp('typo3-card-' + record.name)) {
+					//check wether the panel is an iframe or not - if it is try to set the uri
+				if (Ext.getCmp('typo3-card-' + record.name).getXType() == 'iframePanel') {
+						//handle click on already opened module and evt. force reload
+					if (Ext.getCmp('typo3-contentContainerWrapper').layout.activeItem.id == 'typo3-card-' + record.name) {
+						Ext.getCmp('typo3-card-'+record.name).setUrl(url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : ''));
+					} else {
+						url = record.originalLink;
+						Ext.getCmp('typo3-card-'+record.name).setUrlIfChanged(url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : ''));
+					}
+				}
+					//independed of the xtype activate the module
+				Ext.getCmp('typo3-contentContainerWrapper').layout.setActiveItem('typo3-card-' + record.name);
+			} else {
+				this.openInContentFrame(record.originalLink, params);
+			}
 			this.loadedModule = mod;
 			this.highlightModuleMenuItem(mod);
 
@@ -306,10 +321,20 @@ TYPO3.ModuleMenu.App = {
 
 	openInContentFrame: function(url, params) {
 		if (top.nextLoadModuleUrl) {
-			TYPO3.Backend.ContentContainer.setUrl(top.nextLoadModuleUrl);
+			urlToLoad = top.nextLoadModuleUrl;
 			top.nextLoadModuleUrl = '';
 		} else {
-			TYPO3.Backend.ContentContainer.setUrl(url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : ''));
+			urlToLoad = url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : '');
+		}
+			//decide where to load module, either in card or compatibility card
+		if (Ext.getCmp('typo3-contentContainerWrapper').get('typo3-card-' + this.loadedModule)) {
+			if (Ext.getCmp('typo3-contentContainerWrapper').get('typo3-card-' + this.loadedModule).getXType() == 'iframePanel') {
+				Ext.getCmp('typo3-contentContainerWrapper').get('typo3-card-' + this.loadedModule).setUrlIfChanged(urlToLoad);
+				Ext.getCmp('typo3-contentContainerWrapper').layout.setActiveItem('typo3-card-' + this.loadedModule);
+			} else {
+				TYPO3.Backend.ContentContainer.setUrl(urlToLoad);
+				Ext.getCmp('typo3-contentContainerWrapper').layout.setActiveItem(0);
+			}
 		}
 	},
 
