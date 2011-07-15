@@ -307,6 +307,7 @@ function refresh_nav() {
 // Deprecated since 4.1.
 // Another JS function, for highlighting rows in the page tree, kept alive for backwards
 // compatibility. Please use the function in the "Tree" object for future implementations.
+// Still used in Core file_list.inc::linkWrapDir()
 function hilight_row(frameSetModule, highLightID) {
 	Tree.highlightActiveItem(frameSetModule, highLightID);
 }

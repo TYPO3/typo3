@@ -95,7 +95,7 @@ class TSpagegen {
 			// Base url:
 		if ($GLOBALS['TSFE']->config['config']['baseURL'])	{
 			if ($GLOBALS['TSFE']->config['config']['baseURL']==='1')	{
-					// Deprecated property, going to be dropped in TYPO3 4.7.
+					// @deprecated: Deprecated property, going to be dropped in TYPO3 4.7.
 				$error = 'Unsupported TypoScript property was found in this template: "config.baseURL="1"
 
 This setting has been deprecated in TYPO 3.8.1 due to security concerns.

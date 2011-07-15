@@ -147,9 +147,9 @@ class t3lib_SpriteManager {
 
 	/**
 	 * Backwards compatibility methods, log usage to deprecation log.
-	 * Will be removed in 4.7
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 4.4: Will be removed in 4.7
 	 */
 	private function compatibilityCalls() {
 			// Fallback for $TYPE_ICONS "contains-module" icons

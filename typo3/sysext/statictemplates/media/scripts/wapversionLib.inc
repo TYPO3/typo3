@@ -367,7 +367,7 @@ class user_wapversion {
 	function cleanMenuArray($menu)	{
 		$newMenu=array();
 		foreach ($menu as $data) {
-			if ($data['doktype'] != t3lib_pageSelect::DOKTYPE_HIDE_IN_MENU && !$data['nav_hide']) {
+			if (!$data['nav_hide']) {
 				$newMenu[]=$data;
 			}
 		}

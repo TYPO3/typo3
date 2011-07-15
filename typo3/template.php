@@ -1486,9 +1486,6 @@ $str.=$this->docBodyTagBegin().
 	       $this->JScodeArray['clickmenu'] = '
 			       Clickmenu.clickURL = "'.$this->backPath.'alt_clickmenu.php";
 			       Clickmenu.ajax     = '.($this->isCMLayers() ? 'true' : 'false' ).';';
-
-		       // return array deprecated since 4.2
-	       return array('','','');
 	}
 
 	/**
@@ -1509,9 +1506,6 @@ $str.=$this->docBodyTagBegin().
 			DragDrop.backPath  = "'.t3lib_div::shortMD5(''.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']).'";
 			DragDrop.table     = "'.$table.'";
 		';
-
-		       // return array deprecated since 4.2
-	       return array('','','');
 	}
 
 	 /**

@@ -3302,7 +3302,7 @@ class t3lib_TCEmain {
 				// In case the record to be moved turns out to be an offline version,
 				// we have to find the live version and work on that one (this case
 				// happens for pages with "branch" versioning type)
-				// note: as "branch" versioning is deprecated since TYPO3 4.2, this
+				// @deprecated note: as "branch" versioning is deprecated since TYPO3 4.2, this
 				// functionality will be removed in TYPO3 4.7 (note by benni: a hook could replace this)
 			if ($lookForLiveVersion = t3lib_BEfunc::getLiveVersionOfRecord($table, $uid, 'uid')) {
 				$uid = $lookForLiveVersion['uid'];

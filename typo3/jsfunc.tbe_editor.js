@@ -341,13 +341,6 @@ var TBE_EDITOR = {
 			return true;
 		}
 	},
-	/**
-	 * This function is not used by core and will be removed in version 4.6
-	 * @deprecated
-	 */
-	setHiddenContent: function(RTEcontent,theField) {
-		document[TBE_EDITOR.formname][theField].value = RTEcontent;
-	},
 	fieldChanged_fName: function(fName,el) {
 		var idx=2+TBE_EDITOR.prependFormFieldNamesCnt;
 		var table = TBE_EDITOR.split(fName, "[", idx);
