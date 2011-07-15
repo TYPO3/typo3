@@ -345,7 +345,7 @@ class language {
 	 */
 	public function sL($input, $hsc = FALSE) {
 			// If cached label
-		if (!isset($this->LL_labels_cache[$this->lang][$input])) {
+		if (!isset($this->LL_labels_cache[$this->lang][$input]) && substr($input, 0, 4) === 'LLL:') {
 			$restStr = trim(substr($input, 4));
 			$extPrfx = '';
 
@@ -373,7 +373,13 @@ class language {
 		}
 			// For the cached output charset conversion has already happened!
 			// So perform HSC right here.
-		$output = $this->LL_labels_cache[$this->lang][$input];
+		if (isset($this->LL_labels_cache[$this->lang][$input])) {
+			$output = $this->LL_labels_cache[$this->lang][$input];
+		} else {
+				// Use a constant non-localizable label
+			$output = $input;
+		}
+
 		if ($hsc) {
 			$output = t3lib_div::deHSCentities(htmlspecialchars($output));
 		}
