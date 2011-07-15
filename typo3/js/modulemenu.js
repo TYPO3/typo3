@@ -238,7 +238,16 @@ TYPO3.ModuleMenu.App = {
 				TYPO3.Backend.NavigationContainer.hide();
 				TYPO3.Backend.NavigationDummy.show();
 			}
-			this.openInContentFrame(record.originalLink, params);
+			if(Ext.getCmp('typo3-card-'+record.name)) {
+				Ext.getCmp('typo3-contentContainerWrapper').layout.setActiveItem('typo3-card-'+record.name);
+				//check wether the panel is an iframe or not - if it is try to set the uri
+				if(Ext.getCmp('typo3-card-'+record.name).getXType() == 'iframePanel') {
+					url = record.originalLink;
+					Ext.getCmp('typo3-card-'+record.name).setUriIfChanged(url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : ''));
+				}
+			} else {
+				this.openInContentFrame(record.originalLink, params);
+			}
 			this.loadedModule = mod;
 			this.highlightModuleMenuItem(mod);
 
@@ -305,11 +314,22 @@ TYPO3.ModuleMenu.App = {
 	},
 
 	openInContentFrame: function(url, params) {
+		//this.loadedModule
 		if (top.nextLoadModuleUrl) {
-			TYPO3.Backend.ContentContainer.setUrl(top.nextLoadModuleUrl);
+			urlToLoad = top.nextLoadModuleUrl;
 			top.nextLoadModuleUrl = '';
 		} else {
-			TYPO3.Backend.ContentContainer.setUrl(url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : ''));
+			urlToLoad = url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : '');
+		}
+		
+		if(Ext.getCmp('typo3-contentContainerWrapper').get('typo3-card-' + this.loadedModule)) {
+			if(Ext.getCmp('typo3-contentContainerWrapper').get('typo3-card-' + this.loadedModule).getXType() == 'iframePanel') {
+				Ext.getCmp('typo3-contentContainerWrapper').get('typo3-card-' + this.loadedModule).setUriIfChanged(urlToLoad);
+				Ext.getCmp('typo3-contentContainerWrapper').layout.setActiveItem('typo3-card-' + this.loadedModule);
+			} else {
+				TYPO3.Backend.ContentContainer.setUrl(urlToLoad);
+				Ext.getCmp('typo3-contentContainerWrapper').layout.setActiveItem(0);
+			}
 		}
 	},
 
