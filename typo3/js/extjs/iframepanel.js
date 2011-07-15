@@ -39,7 +39,7 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 	src: Ext.isIE && Ext.isSecure ? Ext.SSL_SECURE_URL : 'about:blank',
 	maskMessage: ' ',
 	doMask: true,
-
+	border: false,
 		// component build
 	initComponent: function() {
 		this.bodyCfg = {
@@ -81,8 +81,36 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 	setUrl: function(source) {
 		this.setMask();
 		this.body.dom.src = source;
+		if (this.ownerCt) {
+			if (this.ownerCt.hasLayout) {
+				if (this.ownerCt.layout.setActiveItem) {
+					this.ownerCt.layout.setActiveItem(this.id);
+				}
+			}
+		}
 	},
+	setUrlIfChanged: function(source) {
+		currentSource = this.getUrl();
+		currentSource = currentSource.substr(currentSource.length-source.length);
 
+			// Some modules generate wrong url with unneeded string at the end
+		if (currentSource.substr(currentSource.length-1) == '?' ||
+			currentSource.substr(currentSource.length-1) == '&') {
+			currentSource = currentSource.substr(0,currentSource.length)
+		}
+		if (currentSource.substr(0,1) == '/') {
+			currentSource = currentSource.substr(1);
+		}
+		if (source.substr(source.length-1) == '?' ||
+			source.substr(source.length-1) == '&') {
+			source = source.substr(0,source.length-1)
+		}
+
+			// Check if new uri should be loaded
+		if (source != currentSource) {
+			this.setUrl(source);
+		}
+	},
 	resetUrl: function() {
 		this.setMask();
 		this.body.dom.src = this.src;
