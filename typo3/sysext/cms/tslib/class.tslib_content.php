@@ -1854,7 +1854,7 @@ class tslib_cObj {
 					}
 					// check if key is still containing something, since it might have been changed by next level stdWrap before
 					if ((isset($conf[$functionName]) || $conf[$functionProperties]) &&
-							!($functionType == 'boolean' && $conf[$functionName] === '0')) {
+							!($functionType == 'boolean' && !$conf[$functionName])) {
 						//add both keys - with and without the dot - to the set of executed functions
 						$isExecuted[$functionName] = TRUE;
 						$isExecuted[$functionProperties] = TRUE;
@@ -1864,6 +1864,10 @@ class tslib_cObj {
 							$content,
 							$singleConf
 						);
+					// for booleans we have to mark the function as executed in any case, even if it has been 0, '' or false to avoid a second call based on the functionProperties, which would always be true
+					} else if($functionType == 'boolean' && !$conf[$functionName]) {
+						$isExecuted[$functionName] = TRUE;
+						$isExecuted[$functionProperties] = TRUE;
 					}
 				}
 			}
