@@ -46,6 +46,7 @@
 final class t3lib_extMgm {
 	protected static $extensionKeyMap;
 
+	protected static $extensionVersionMap;
 
 	/**************************************
 	 *
@@ -213,11 +214,16 @@ final class t3lib_extMgm {
 			return '';
 		}
 
+		if ( isset(self::$extensionVersionMap[$key]) ) {
+			return self::$extensionVersionMap[$key];
+		}
+
 		$EM_CONF = array();
 		$_EXTKEY = $key;
 		include(self::extPath($key) . 'ext_emconf.php');
+		self::$extensionVersionMap[$key] = $EM_CONF[$key]['version'];
 
-		return $EM_CONF[$key]['version'];
+		return self::$extensionVersionMap[$key];
 	}
 
 
@@ -244,7 +250,7 @@ final class t3lib_extMgm {
 	public static function addTCAcolumns($table, $columnArray, $addTofeInterface = 0) {
 		t3lib_div::loadTCA($table);
 		if (is_array($columnArray) && is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'])) {
-				 // Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
+				// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
 			$GLOBALS['TCA'][$table]['columns'] = array_merge($GLOBALS['TCA'][$table]['columns'], $columnArray);
 			if ($addTofeInterface) {
 				$GLOBALS['TCA'][$table]['feInterface']['fe_admin_fieldList'] .= ',' . implode(',', array_keys($columnArray));
@@ -1205,8 +1211,8 @@ final class t3lib_extMgm {
 		$pluginContent = trim('
 plugin.' . $cN . $prefix . ' = USER' . ($cached ? '' : '_INT') . '
 plugin.' . $cN . $prefix . ' {
-  includeLibs = ' . $GLOBALS['TYPO3_LOADED_EXT'][$key]['siteRelPath'] . $classFile . '
-  userFunc = ' . $cN . $prefix . '->main
+includeLibs = ' . $GLOBALS['TYPO3_LOADED_EXT'][$key]['siteRelPath'] . $classFile . '
+userFunc = ' . $cN . $prefix . '->main
 }');
 		self::addTypoScript($key, 'setup', '
 # Setting ' . $key . ' plugin TypoScript
