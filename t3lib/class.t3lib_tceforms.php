@@ -2057,8 +2057,9 @@ class t3lib_TCEforms {
 
 		$PA['itemFormElID_file'] = $PA['itemFormElID'] . '_files';
 
-			// whether the list controls should be disabled
+			// whether the list and delete controls should be disabled
 		$noList = isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'list');
+		$noDelete = isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'delete');
 
 			// if maxitems==1 then automatically replace the current item (in list and file selector)
 		if ($maxitems === 1) {
@@ -2132,6 +2133,7 @@ class t3lib_TCEforms {
 					'readOnly' => $disabled,
 					'noBrowser' => $noList || (isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'browser')),
 					'noList' => $noList,
+					'noDelete' => $noDelete,
 				);
 				$item .= $this->dbFileIcons($PA['itemFormElName'], 'file', implode(',', $tempFT), $itemArray, '', $params, $PA['onFocus']);
 
@@ -3618,6 +3620,8 @@ class t3lib_TCEforms {
 								t3lib_iconWorks::getSpriteIcon('actions-document-paste-into', array('title' => htmlspecialchars(sprintf($this->getLL('l_clipInsert_' . ($mode == 'db' ? 'db' : 'file')), count($clipElements))))) .
 								'</a>';
 			}
+		}
+		if (!$params['readOnly'] && !$params['noDelete']) {
 			$rOnClick = $rOnClickInline . 'setFormValueManipulate(\'' . $fName . '\',\'Remove\'); return false';
 			$icons['L'][] = '<a href="#" onclick="' . htmlspecialchars($rOnClick) . '">' .
 							t3lib_iconWorks::getSpriteIcon('actions-selection-delete', array('title' => htmlspecialchars($this->getLL('l_remove_selected')))) .
