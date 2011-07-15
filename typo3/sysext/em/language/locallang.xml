@@ -173,6 +173,7 @@
 			<label index="translation_loaded_exts">To request an update or installation for already loaded extensions, see below.</label>
 			<label index="translation_save_selection">Save selection</label>
 			<label index="translation_selection_saved">Language selection was saved</label>
+			<label index="translation_selection_impossible">Language selection was not possible due language dependency!</label>
 			<label index="translation_check_status_button">Check status against repository</label>
 			<label index="translation_update_button">Update from repository</label>
 			<label index="translation_status">Translation status</label>

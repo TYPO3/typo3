@@ -260,8 +260,10 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 		TYPO3.EM.Languages.superclass.initComponent.apply(this, arguments);
 		this.langGrid = Ext.getCmp('em-languagegrid');
 		this.langGrid.getSelectionModel().on('selectionchange', function(){
-			this.langGrid.disable();
-			this.saveSelection();
+			if (this.languageLoaded) {
+				this.langGrid.disable();
+				this.saveSelection();
+			}
 		}, this);
 		Ext.getCmp('lang-checkbutton').handler = this.langActionHandler.createDelegate(this);
 		Ext.getCmp('lang-updatebutton').handler = this.langActionHandler.createDelegate(this);
@@ -351,9 +353,31 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 		if (this.languageLoaded === true) {
 			this.getSelectedLanguages();
 			TYPO3.EM.ExtDirect.saveLanguageSelection(this.selectedLanguages, function(response) {
-				record = this.langStore.getById(response.diff);
-				this.addRemoveExtLanguageGridColumn(record.data);
-			},this);
+				this.languageLoaded = false;
+				if (response.success) {
+					for (var i = 0; i < response.diff.length; i++) {
+						record = this.langStore.getById(response.diff[i]);
+						this.addRemoveExtLanguageGridColumn(record.data);
+						if (response.dir > 0) {
+								// Languages were added
+							this.langGrid.getSelectionModel().selectRow(this.langGrid.store.indexOf(record), true);
+						} else {
+								// Languages were removed
+							this.langGrid.getSelectionModel().deselectRow(this.langGrid.store.indexOf(record), true);
+						}
+					}
+				} else {
+					// Action not possible because of dependencies
+					// Select all languages saved again and output the message
+					for (var i = 0; i < response.languages.length; i++) {
+						record = this.langStore.getById(response.languages[i]);
+						this.langGrid.getSelectionModel().selectRow(this.langGrid.store.indexOf(record), true);
+					}
+					TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.l10n.localize('translation_settings'), TYPO3.l10n.localize('translation_selection_impossible'), 5);
+					this.langGrid.enable();
+				}
+				this.languageLoaded = true;
+			}, this);
 			if (this.selectedLanguages.length) {
 				Ext.getCmp('lang-checkbutton').enable();
 				Ext.getCmp('lang-updatebutton').enable();

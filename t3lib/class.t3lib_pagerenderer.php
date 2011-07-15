@@ -47,11 +47,13 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	protected $moveJsFromHeaderToFooter = FALSE;
 
-	/* @var t3lib_cs Instance of t3lib_cs */
+	/** @var t3lib_cs $csConvObj */
 	protected $csConvObj;
+	/** @var t3lib_l10n_Locales */
+	protected $locales;
 	protected $lang;
 
-	/* @var t3lib_Compressor Instance of t3lib_Compressor */
+	/** @var t3lib_Compressor $compressor */
 	protected $compressor;
 
 		// arrays containing associative array for the included files
@@ -156,6 +158,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 		$this->reset();
 		$this->csConvObj = t3lib_div::makeInstance('t3lib_cs');
+		$this->locales = t3lib_div::makeInstance('t3lib_l10n_Locales');
 
 		if (strlen($templateFile)) {
 			$this->templateFile = $templateFile;
@@ -1776,7 +1779,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 					'" type="text/javascript"></script>' . LF;
 
 				// add extJS localization
-			$localeMap = $this->csConvObj->isoArray; // load standard ISO mapping and modify for use with ExtJS
+			$localeMap = $this->locales->getIsoMapping(); // load standard ISO mapping and modify for use with ExtJS
 			$localeMap[''] = 'en';
 			$localeMap['default'] = 'en';
 			$localeMap['gr'] = 'el_GR'; // Greek
