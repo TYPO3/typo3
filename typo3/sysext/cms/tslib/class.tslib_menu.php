@@ -76,8 +76,7 @@ class tslib_menu {
 	var $menuNumber = 1;				// tells you which menu-number this is. This is important when getting data from the setup
 	var $entryLevel = 0;				// 0 = rootFolder
 	var $spacerIDList = '199';			// The doktype-number that defines a spacer
-		// @TODO: RFC #7370: doktype 2&5 are deprecated since TYPO3 4.2-beta1
-	var $doktypeExcludeList = '5,6';			// doktypes that define which should not be included in a menu
+	var $doktypeExcludeList = '6';			// doktypes that define which should not be included in a menu
 	var $alwaysActivePIDlist=array();
 	var $imgNamePrefix = 'img';
 	var $imgNameNotRandom=0;
@@ -174,12 +173,6 @@ class tslib_menu {
 				// 'not in menu' doktypes
 			if($this->conf['excludeDoktypes']) {
 				$this->doktypeExcludeList = $GLOBALS['TYPO3_DB']->cleanIntList($this->conf['excludeDoktypes']);
-			}
-			if($this->conf['includeNotInMenu']) {
-				$exclDoktypeArr = t3lib_div::trimExplode(',',$this->doktypeExcludeList,1);
-					// @TODO: RFC #7370: doktype 2&5 are deprecated since TYPO3 4.2-beta1
-				$exclDoktypeArr = t3lib_div::removeArrayEntryByValue($exclDoktypeArr,'5');
-				$this->doktypeExcludeList = implode(',',$exclDoktypeArr);
 			}
 				// EntryLevel
 			$this->entryLevel = tslib_cObj::getKey (

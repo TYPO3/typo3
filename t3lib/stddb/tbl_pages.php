@@ -835,33 +835,6 @@ $TCA['pages'] = array(
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.config;config,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 				'),
-		// not in menu
-		(string) t3lib_pageSelect::DOKTYPE_HIDE_IN_MENU => array(
-			'showitem' =>
-			'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.title;title,
-				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.visibility;hiddenonly,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.access;access,
-				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.abstract;abstract,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.metatags;metatags,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.editorial;editorial,
-				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.appearance,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.layout;layout,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.module;module,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.replace;replace,
-				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.behaviour,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.links;links,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.caching;caching,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.language;language,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.miscellaneous;miscellaneous,
-				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.resources,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.media;media,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.storage;storage,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.config;config,
-				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
-		'),
 		// mount page
 		(string) t3lib_pageSelect::DOKTYPE_MOUNTPOINT => array(
 			'showitem' =>

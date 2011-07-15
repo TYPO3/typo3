@@ -359,16 +359,17 @@ class user_wapversion {
 	}
 
 	/**
-	 * Cleaning up the menu array returned from sys_page->getMenu(). Removing page types with doktype "5" (not in menu)
+	 * Cleaning up the menu array returned from sys_page->getMenu().
+	 * Removing pages having "not in menu" set.
 	 *
 	 * @param	array		Menu item array
-	 * @return	array		New menu item array with doktype-5 elements removed.
+	 * @return	array		New menu item array with "not in menu" elements removed.
 	 */
 	function cleanMenuArray($menu)	{
 		reset($menu);
 		$newMenu=array();
 		while(list(,$data)=each($menu))	{
-			if ($data['doktype'] != t3lib_pageSelect::DOKTYPE_HIDE_IN_MENU && !$data['nav_hide']) {
+			if (!$data['nav_hide']) {
 				$newMenu[]=$data;
 			}
 		}

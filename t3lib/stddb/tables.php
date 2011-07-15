@@ -52,14 +52,11 @@
  * Here you can set the icon and especially you can define which tables are allowed on a certain pagetype (doktype)
  * NOTE: The 'default' entry in the $PAGES_TYPES-array is the 'base' for all types, and for every type the entries simply overrides the entries in the 'default' type!
  *
- * NOTE: usage of 'icon' is deprecated since TYPO3 4.4, use t3lib_SpriteManager::addTcaTypeIcon() instead
  */
 $PAGES_TYPES = array(
 	(string) t3lib_pageSelect::DOKTYPE_LINK => array(
 	),
 	(string) t3lib_pageSelect::DOKTYPE_SHORTCUT => array(
-	),
-	(string) t3lib_pageSelect::DOKTYPE_HIDE_IN_MENU => array(
 	),
 	(string) t3lib_pageSelect::DOKTYPE_BE_USER_SECTION => array(
 		'type' => 'web',
@@ -91,7 +88,7 @@ $PAGES_TYPES = array(
  * Each key is a value from the "module" field of page records and the value is an array with a key/value pair, eg. "icon" => "modules_shop.gif"
  *
  * @see t3lib_iconWorks::getIcon(), typo3/sysext/cms/ext_tables.php
- * @deprecated since TYPO3 4.4, use t3lib_SpriteManager::addTcaTypeIcon instead
+ * @deprecated since TYPO3 4.4, use t3lib_SpriteManager::addTcaTypeIcon instead, will be removed in TYPO3 4.7
  */
 $ICON_TYPES = array();
 

@@ -145,13 +145,6 @@
 		'onload' => array(),
 		'onunload' => array(),
 	);
-	/**
-	 * Adds JavaScript code
-	 *
-	 * @var string
-	 * @deprecated since TYPO3 3.5 - use additionalJavaScript instead.
-	 */
-	var $JSCode='';
 	var $JSImgCode='';					// Used to accumulate JavaScript loaded images (by menus)
 	var $divSection='';					// Used to accumulate DHTML-layers.
 	var $defaultBodyTag='<body>';		// Default bodytag, if nothing else is set. This can be overridden by applications like TemplaVoila.
@@ -194,12 +187,6 @@
 	var $uniqueString='';
 	var $indexedDocTitle='';			// This value will be used as the title for the page in the indexer (if indexing happens)
 	var $altPageTitle='';				// Alternative page title (normally the title of the page record). Can be set from applications you make.
-	/**
-	 * An array that holds parameter names (keys) of GET parameters which MAY be MD5/base64 encoded with simulate_static_documents method.
-	 * @var array
-	 * @deprecated since TYPO3 4.3, remove in TYPO3 4.5
-	 */
-	var $pEncAllowedParamNames=array();
 	var $baseUrl='';					// The base URL set for the page header.
 	var $anchorPrefix='';				// The proper anchor prefix needed when using speaking urls. (only set if baseUrl is set)
 
@@ -3082,10 +3069,10 @@
 	 */
 	function INTincScript()	{
 			// Deprecated stuff:
+			// @deprecated: annotation added TYPO3 4.6
 		$this->additionalHeaderData = is_array($this->config['INTincScript_ext']['additionalHeaderData']) ? $this->config['INTincScript_ext']['additionalHeaderData'] : array();
 		$this->additionalJavaScript = $this->config['INTincScript_ext']['additionalJavaScript'];
 		$this->additionalCSS = $this->config['INTincScript_ext']['additionalCSS'];
-		$this->JSCode = $this->additionalHeaderData['JSCode'];
 		$this->JSImgCode = $this->additionalHeaderData['JSImgCode'];
 		$this->divSection='';
 
@@ -3184,17 +3171,6 @@
 if (version == "n3") {
 '.trim($this->JSImgCode).'
 }
-// -->
-	/*]]>*/
-</script>';
-		}
-		if ($this->JSCode || count($this->additionalJavaScript))	{	// Add javascript
-			$this->additionalHeaderData['JSCode']='
-<script type="text/javascript">
-	/*<![CDATA[*/
-<!--
-'.implode(LF,$this->additionalJavaScript).'
-'.trim($this->JSCode).'
 // -->
 	/*]]>*/
 </script>';

@@ -62,7 +62,6 @@ class t3lib_TCEforms {
 	var $loadMD5_JS = 1;
 	var $prevBorderStyle = '[nothing here...]'; // Something unique...
 	var $allowUpload = 0; // If set direct upload fields will be shown
-	var $titleLen = 15; // @deprecated since TYPO3 4.1: $GLOBALS['BE_USER']->uc['titleLen'] but what is default??
 	var $defaultLanguageData = array(); // Array where records in the default language is stored. (processed by transferdata)
 	var $defaultLanguageData_diff = array(); // Array where records in the default language is stored (raw without any processing. used for making diff)
 	var $additionalPreviewLanguageData = array();
@@ -257,7 +256,6 @@ class t3lib_TCEforms {
 		$this->edit_showFieldHelp = $GLOBALS['BE_USER']->uc['edit_showFieldHelp'];
 
 		$this->edit_docModuleUpload = $GLOBALS['BE_USER']->uc['edit_docModuleUpload'];
-		$this->titleLen = $GLOBALS['BE_USER']->uc['titleLen']; // @deprecated since TYPO3 4.1
 
 		$this->inline->init($this);
 		$this->suggest->init($this);

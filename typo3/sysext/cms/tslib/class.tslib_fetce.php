@@ -58,7 +58,7 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
- * @deprecated since TYPO3 3.6
+ * @deprecated since TYPO3 3.6, will be removed in TYPO3 4.8
  */
 class tslib_feTCE	{
 
@@ -66,6 +66,10 @@ class tslib_feTCE	{
 	var $extScriptsConf=array();
 	var $newData=array();
 	var $extraList = 'pid';
+
+	public function __construct() {
+		t3lib_div::logDeprecatedFunction();
+	}
 
 	/**
 	 * Starting the processing of user input.

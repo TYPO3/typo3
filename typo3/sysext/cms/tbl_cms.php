@@ -760,22 +760,6 @@ $TCA['pages_language_overlay'] = array(
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.media;media,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 				'),
-		// not in menu
-		(string) t3lib_pageSelect::DOKTYPE_HIDE_IN_MENU => array(
-			'showitem' =>
-			'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.title;title,
-				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.visibility;hiddenonly,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.access;access,
-				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.abstract;abstract,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.metatags;metatags,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.editorial;editorial,
-				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.resources,
-					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.media;media,
-				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
-		'),
 		// mount page
 		(string) t3lib_pageSelect::DOKTYPE_MOUNTPOINT => array(
 			'showitem' =>

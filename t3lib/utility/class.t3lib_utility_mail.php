@@ -78,7 +78,7 @@ final class t3lib_utility_Mail {
 				$hookSubscriberContainsArrow = strpos($hookSubscriber, '->');
 
 				if ($hookSubscriberContainsArrow !== FALSE) {
-						// deprecated, remove in TYPO3 4.7
+						// @deprecated: remove in TYPO3 4.7
 					t3lib_div::deprecationLog(
 						'The usage of user function notation for the substituteMailDelivery hook is deprecated,
 						use the t3lib_mail_MailerAdapter interface instead.'
