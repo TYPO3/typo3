@@ -76,6 +76,21 @@ $BE_USER->modAccess($MCONF,1);
 	}
 
 	/**
+	 * Compatibility constructor.
+	 *
+	 * @param object Local backend user (not the GLOBALS[] backend user!!)
+	 * @param array Webmounts for the backend user
+	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
+	 */
+	public function localPageTree($BE_USER, $WEBMOUNTS = '') {
+		t3lib_div::logDeprecatedFunction();
+			// Note: we cannot call $this->__construct() here because it would call the derived class constructor and cause recursion
+			// This code uses official PHP behavior (http://www.php.net/manual/en/language.oop5.basic.php) when $this in the
+			// statically called non-static method inherits $this from the caller's scope.
+		localPageTree::__construct($BE_USER, $WEBMOUNTS);
+	}
+
+	/**
 	 * Return select permissions.
 	 *
 	 * @return	string		WHERE query part.
@@ -328,6 +343,21 @@ class printAllPageTree_perms extends printAllPageTree {
 		$this->BE_USER = $BE_USER;
 		$this->MOUNTS = $FILEMOUNTS;
 		$this->clause = '';	// Notice, this clause does NOT filter out un-readable pages. This is the POINT since this class is ONLY used for the main overview where ALL is shown! Otherwise "AND '.$this->BE_USER->getPagePermsClause(1).'" should be added.
+	}
+
+	/**
+	 * Compatibility constructor.
+	 *
+	 * @param object Local backend user (not the GLOBALS[] backend user!!)
+	 * @param array Filemounts for the backend user
+	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
+	 */
+	public function localFolderTree($BE_USER, $FILEMOUNTS = '') {
+		t3lib_div::logDeprecatedFunction();
+			// Note: we cannot call $this->__construct() here because it would call the derived class constructor and cause recursion
+			// This code uses official PHP behavior (http://www.php.net/manual/en/language.oop5.basic.php) when $this in the
+			// statically called non-static method inherits $this from the caller's scope.
+		localFolderTree::__construct($BE_USER, $FILEMOUNTS);
 	}
 
 	/**

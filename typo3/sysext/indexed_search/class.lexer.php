@@ -92,6 +92,19 @@ class tx_indexedsearch_lexer {
 	}
 
 	/**
+	 * Compatibility constructor.
+	 *
+	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
+	 */
+	public function tx_indexedsearch_lexer() {
+		t3lib_div::logDeprecatedFunction();
+			// Note: we cannot call $this->__construct() here because it would call the derived class constructor and cause recursion
+			// This code uses official PHP behavior (http://www.php.net/manual/en/language.oop5.basic.php) when $this in the
+			// statically called non-static method inherits $this from the caller's scope.
+		tx_indexedsearch_lexer::__construct();
+	}
+
+	/**
 	 * Splitting string into words.
 	 * Used for indexing, can also be used to find words in query.
 	 *

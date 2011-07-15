@@ -207,6 +207,18 @@ class template {
 		if ($GLOBALS['TBE_STYLES']['background'])	$this->backGroundImage = $GLOBALS['TBE_STYLES']['background'];
 	}
 
+	/**
+	 * Compatibility constructor.
+	 *
+	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
+	 */
+	public function template() {
+		t3lib_div::logDeprecatedFunction();
+			// Note: we cannot call $this->__construct() here because it would call the derived class constructor and cause recursion
+			// This code uses official PHP behavior (http://www.php.net/manual/en/language.oop5.basic.php) when $this in the
+			// statically called non-static method inherits $this from the caller's scope.
+		template::__construct();
+	}
 
 	/**
 	 * Gets instance of PageRenderer
