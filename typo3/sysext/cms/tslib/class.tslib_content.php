@@ -5061,9 +5061,6 @@ class tslib_cObj {
 			if ((string) $key != '') {
 				$type = strtolower(trim($parts[0]));
 				switch ($type) {
-					case 'gpvar' :
-						t3lib_div::deprecationLog('Using gpvar in TypoScript getText is deprecated since TYPO3 4.3 - Use gp instead of gpvar.');
-						// Fall Through
 					case 'gp' :
 							// Merge GET and POST and get $key out of the merged array
 						$retVal = $this->getGlobal($key, t3lib_div::array_merge_recursive_overrule(t3lib_div::_GET(), t3lib_div::_POST()));

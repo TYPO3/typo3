@@ -1875,11 +1875,6 @@ class t3lib_TCEforms_inline {
 		if (!isset($config['appearance']) || !is_array($config['appearance'])) {
 			$config['appearance'] = array();
 		}
-			// 'newRecordLinkPosition' is deprecated since TYPO3 4.2.0-beta1, this is for backward compatibility:
-		if (!isset($config['appearance']['levelLinksPosition']) && isset($config['appearance']['newRecordLinkPosition']) && $config['appearance']['newRecordLinkPosition']) {
-			t3lib_div::deprecationLog('TCA contains a deprecated definition using "newRecordLinkPosition"');
-			$config['appearance']['levelLinksPosition'] = $config['appearance']['newRecordLinkPosition'];
-		}
 			// Set the position/appearance of the "Create new record" link:
 		if (isset($config['foreign_selector']) && $config['foreign_selector'] && (!isset($config['appearance']['useCombination']) || !$config['appearance']['useCombination'])) {
 			$config['appearance']['levelLinksPosition'] = 'none';

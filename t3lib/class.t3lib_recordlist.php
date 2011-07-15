@@ -49,7 +49,6 @@ class t3lib_recordList {
 	var $leftMargin = 0; // OBSOLETE - NOT USED ANYMORE. leftMargin
 	var $showIcon = 1;
 	var $no_noWrap = 0;
-	var $oddColumnsTDParams = ''; // Deprecated since TYPO3 4.2, remove in 4.4. If set this is <td>-params for odd columns in addElement. Used with db_layout / pages section
 	var $oddColumnsCssClass = ''; // If set this is <td> CSS-classname for odd columns in addElement. Used with db_layout / pages section
 	var $backPath = '';
 	var $fieldArray = Array(); // Decides the columns shown. Filled with values that refers to the keys of the data-array. $this->fieldArray[0] is the title column.

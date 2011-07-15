@@ -50,7 +50,6 @@ class t3lib_stdGraphic {
 		// Internal configuration, set in init()
 	var $combineScript = 'combine'; // The ImageMagick filename used for combining two images. This name changed during the versions.
 	var $noFramePrepended = 0; // If set, there is no frame pointer prepended to the filenames.
-	var $GD2 = 1; // Set, if the GDlib used is version 2. @deprecated as of TYPO3 4.4, as this variables is now always set (GDlib2 always has this method, and PHP recommends to only use imagecreatetruecolor() over imagecreate())
 	var $imagecopyresized_fix = 0; // If set, imagecopyresized will not be called directly. For GD2 (some PHP installs?)
 	var $gifExtension = 'gif'; // This should be changed to 'png' if you want this class to read/make PNG-files instead!
 	var $gdlibExtensions = ''; // File formats supported by gdlib. This variable get's filled in "init" method

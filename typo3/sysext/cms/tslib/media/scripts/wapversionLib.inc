@@ -365,10 +365,11 @@ class user_wapversion {
 	 * @return	array		New menu item array with doktype-5 elements removed.
 	 */
 	function cleanMenuArray($menu)	{
+		t3lib_div::logDeprecatedFunction();
 		reset($menu);
 		$newMenu=array();
 		while(list(,$data)=each($menu))	{
-			if ($data['doktype'] != t3lib_pageSelect::DOKTYPE_HIDE_IN_MENU && !$data['nav_hide']) {
+			if (!$data['nav_hide']) {
 				$newMenu[]=$data;
 			}
 		}

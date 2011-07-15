@@ -1748,10 +1748,9 @@ class localRecordList extends recordList {
 	 * Adds selected columns of one table row as CSV line.
 	 *
 	 * @param	array		Record array, from which the values of fields found in $this->fieldArray will be listed in the CSV output.
-	 * @param	string		Table name @deprecated since 4.4
 	 * @return	void
 	 */
-	protected function addToCSV(array $row = array(), $table = '') {
+	protected function addToCSV(array $row = array()) {
 		$rowReducedByControlFields = self::removeControlFieldsFromFieldRow($row);
 		$rowReducedToSelectedColumns = array_intersect_key($rowReducedByControlFields, array_flip($this->fieldArray));
 		$this->setCsvRow($rowReducedToSelectedColumns);

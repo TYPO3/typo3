@@ -121,16 +121,6 @@ class t3lib_pageselectTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function getExtUrlForDokType2ReturnsFalse() {
-		$this->assertEquals(
-			FALSE,
-			$this->pageSelectObject->getExtURL(array('doktype' => t3lib_pageSelect::DOKTYPE_ADVANCED))
-		);
-	}
-
-	/**
-	 * @test
-	 */
 	public function getExtUrlForDokType3AndUrlType1AddsHttpSchemeToUrl() {
 		$this->assertEquals(
 			'http://www.example.com',

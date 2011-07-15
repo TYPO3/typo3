@@ -71,10 +71,8 @@ class t3lib_pageSelect {
 	 * Named constants for "magic numbers" of the field doktype
 	 */
 	const DOKTYPE_DEFAULT = 1;
-	const DOKTYPE_ADVANCED = 2; // @deprecated since TYPO3 4.2
 	const DOKTYPE_LINK = 3;
 	const DOKTYPE_SHORTCUT = 4;
-	const DOKTYPE_HIDE_IN_MENU = 5; // @deprecated since TYPO3 4.2
 	const DOKTYPE_BE_USER_SECTION = 6;
 	const DOKTYPE_MOUNTPOINT = 7;
 	const DOKTYPE_SPACER = 199;
