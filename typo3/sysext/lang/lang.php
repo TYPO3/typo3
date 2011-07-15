@@ -139,10 +139,11 @@ class language {
 
 			// Finding the requested language in this list based
 			// on the $lang key being inputted to this function.
-		$ls = explode('|', TYPO3_languages);
+		/** @var $locales t3lib_l10n_Locales */
+		$locales = t3lib_div::makeInstance('t3lib_l10n_Locales');
 
 			// Language is found. Configure it:
-		if (in_array($lang, $ls)) {
+		if (in_array($lang, $locales->getLocales())) {
 				// The current language key
 			$this->lang = $lang;
 			if ($this->charSetArray[$this->lang]) {

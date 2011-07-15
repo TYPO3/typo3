@@ -43,6 +43,7 @@ $t3libClasses = array(
 	't3lib_l10n_exception_filenotfound' => PATH_t3lib . 'l10n/exception/class.t3lib_l10n_exception_filenotfound.php',
 	't3lib_l10n_exception_invalidparser' => PATH_t3lib . 'l10n/exception/class.t3lib_l10n_exception_invalidparser.php',
 	't3lib_l10n_exception_invalidxmlfile' => PATH_t3lib . 'l10n/exception/class.t3lib_l10n_exception_invalidxmlfile.php',
+	't3lib_l10n_locales' => PATH_t3lib . 'l10n/class.t3lib_l10n_locales.php',
 	't3lib_l10n_parser' => PATH_t3lib . 'l10n/interfaces/interface.t3lib_l10n_parser.php',
 	't3lib_l10n_parser_abstractxml' => PATH_t3lib . 'l10n/parser/class.t3lib_l10n_parser_abstractxml.php',
 	't3lib_l10n_parser_llphp' => PATH_t3lib . 'l10n/parser/class.t3lib_l10n_parser_llphp.php',
