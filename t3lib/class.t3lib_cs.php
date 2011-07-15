@@ -67,6 +67,12 @@
  * @subpackage t3lib
  */
 class t3lib_cs {
+
+	/**
+	 * @var t3lib_l10n_Locales
+	 */
+	protected $locales;
+
 	var $noCharByteVal = 63; // ASCII Value for chars with no equivalent.
 
 		// This is the array where parsed conversion tables are stored (cached)
@@ -406,60 +412,76 @@ class t3lib_cs {
 		// TYPO3 specific: Array with the system charsets used for each system language in TYPO3:
 		// Empty values means "iso-8859-1"
 	var $charSetArray = array(
-		'dk' => '',
-		'de' => '',
-		'no' => '',
-		'it' => '',
-		'fr' => '',
-		'es' => '',
-		'nl' => '',
-		'cz' => 'windows-1250',
-		'pl' => 'iso-8859-2',
-		'si' => 'windows-1250',
-		'fi' => '',
-		'tr' => 'iso-8859-9',
-		'se' => '',
-		'pt' => '',
-		'ru' => 'windows-1251',
-		'ro' => 'iso-8859-2',
-		'ch' => 'gb2312',
-		'sk' => 'windows-1250',
-		'lt' => 'windows-1257',
-		'is' => 'utf-8',
-		'hr' => 'windows-1250',
-		'hu' => 'iso-8859-2',
-		'gl' => '',
-		'th' => 'iso-8859-11',
-		'gr' => 'iso-8859-7',
-		'hk' => 'big5',
-		'eu' => '',
+		'ar' => 'iso-8859-6',
+		'ba' => 'iso-8859-2',
 		'bg' => 'windows-1251',
 		'br' => '',
-		'et' => 'iso-8859-4',
-		'ar' => 'iso-8859-6',
-		'he' => 'utf-8',
-		'ua' => 'windows-1251',
-		'jp' => 'shift_jis',
-		'lv' => 'utf-8',
-		'vn' => 'utf-8',
 		'ca' => 'iso-8859-15',
-		'ba' => 'iso-8859-2',
-		'kr' => 'euc-kr',
+		'ch' => 'gb2312',
+		'cs' => 'windows-1250',
+		'cz' => 'windows-1250',
+		'da' => '',
+		'de' => '',
+		'dk' => '',
+		'el' => 'iso-8859-7',
 		'eo' => 'utf-8',
-		'my' => '',
-		'hi' => 'utf-8',
-		'fo' => 'utf-8',
+		'es' => '',
+		'et' => 'iso-8859-4',
+		'eu' => '',
 		'fa' => 'utf-8',
-		'sr' => 'utf-8',
-		'sq' => 'utf-8',
-		'ge' => 'utf-8',
+		'fi' => '',
+		'fo' => 'utf-8',
+		'fr' => '',
+		'fr_CA' => '',
 		'ga' => '',
+		'ge' => 'utf-8',
+		'gl' => '',
+		'gr' => 'iso-8859-7',
+		'he' => 'utf-8',
+		'hi' => 'utf-8',
+		'hk' => 'big5',
+		'hr' => 'windows-1250',
+		'hu' => 'iso-8859-2',
+		'is' => 'utf-8',
+		'it' => '',
+		'ja' => 'shift_jis',
+		'jp' => 'shift_jis',
+		'ka' => 'utf-8',
+		'kl' => 'utf-8',
 		'km' => 'utf-8',
+		'ko' => 'euc-kr',
+		'kr' => 'euc-kr',
+		'lt' => 'windows-1257',
+		'lv' => 'utf-8',
+		'ms' => '',
+		'my' => '',
+		'nl' => '',
+		'no' => '',
+		'pl' => 'iso-8859-2',
+		'pt' => '',
+		'pt_BR' => '',
 		'qc' => '',
+		'ro' => 'iso-8859-2',
+		'ru' => 'windows-1251',
+		'se' => '',
+		'si' => 'windows-1250',
+		'sk' => 'windows-1250',
+		'sl' => 'windows-1250',
+		'sq' => 'utf-8',
+		'sr' => 'utf-8',
+		'sv' => '',
+		'th' => 'iso-8859-11',
+		'tr' => 'iso-8859-9',
+		'ua' => 'windows-1251',
+		'uk' => 'windows-1251',
+		'vi' => 'utf-8',
+		'vn' => 'utf-8',
+		'zh' => 'big5',
 	);
 
 		// TYPO3 specific: Array with the iso names used for each system language in TYPO3:
-		// Missing keys means: same as Typo3
+		// Missing keys means: same as TYPO3
+		// @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - use t3lib_l10n_Locales::getIsoMapping()
 	var $isoArray = array(
 		'ba' => 'bs',
 		'br' => 'pt_BR',
@@ -479,6 +501,13 @@ class t3lib_cs {
 		'ge' => 'ka',
 		'ga' => 'gl',
 	);
+
+	/**
+	 * Default constructor.
+	 */
+	public function __construct() {
+		$this->locales = t3lib_div::makeInstance('t3lib_l10n_Locales');
+	}
 
 	/**
 	 * Normalize - changes input character set to lowercase letters.
@@ -1705,7 +1734,7 @@ class t3lib_cs {
 			// get all languages where TYPO3 code differs from ISO code
 			// or needs the country part
 			// the iso codes will here overwrite the default typo3 language in the key
-		foreach ($this->isoArray as $typo3Lang => $isoLang) {
+		foreach ($this->locales->getIsoMapping() as $typo3Lang => $isoLang) {
 			$isoLang = join('-', explode('_', $isoLang));
 			$allLanguageCodes[$typo3Lang] = $isoLang;
 		}

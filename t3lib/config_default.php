@@ -800,15 +800,8 @@ define('TYPO3_db_host', $typo_db_host);
 define('TYPO3_tables_script', $typo_db_tables_script);
 define('TYPO3_extTableDef_script', $typo_db_extTableDef_script);
 
-	// Defining backend system languages
-	// When adding new keys, remember to:
-	//		- Update pages.lang item array (t3lib/stddb/tbl_be.php)
-	//		- Add character encoding for lang. key in t3lib/class.t3lib_cs.php (default for new languages is "utf-8")
-	//		- Add mappings for language in t3lib/class.t3lib_cs.php (TYPO3/ISO, language/script, script/charset)
-	//		- Update 'setup' extension labels (sysext/setup/mod/locallang.xml)
-	//		- Using translation server? Create new user with username = "language key", member of "translator" group, set to "language key" language.
-	// Thats it! Use extension "llxmltranslate" to begin translation. Language pack is automatically created in "typo3conf/l10n/[language key]/"
-define('TYPO3_languages', 'default|dk|de|no|it|fr|es|nl|cz|pl|si|fi|tr|se|pt|ru|ro|ch|sk|lt|is|hr|hu|gl|th|gr|hk|eu|bg|br|et|ar|he|ua|lv|jp|vn|ca|ba|kr|eo|my|hi|fo|fa|sr|sq|ge|ga|km|qc');
+	// Initialize the locales handled by TYPO3
+t3lib_l10n_Locales::initialize();
 
 	// Unsetting the configured values. Use of these are deprecated.
 unset($typo_db);

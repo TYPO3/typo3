@@ -351,8 +351,16 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 		if (this.languageLoaded === true) {
 			this.getSelectedLanguages();
 			TYPO3.EM.ExtDirect.saveLanguageSelection(this.selectedLanguages, function(response) {
-				record = this.langStore.getById(response.diff);
-				this.addRemoveExtLanguageGridColumn(record.data);
+                if (response.success) {
+                    for (var i=0; i<response.diff.length; i++) {
+                        // TODO: select response.diff[i] language in the list of languages
+                        record = this.langStore.getById(response.diff[i]);
+                        this.addRemoveExtLanguageGridColumn(record.data);
+                    }
+                } else {
+                    // TODO: select again the language that was meant to be removed => dependency prevented removal
+                    this.langGrid.enable();
+                }
 			},this);
 			if (this.selectedLanguages.length) {
 				Ext.getCmp('lang-checkbutton').enable();
