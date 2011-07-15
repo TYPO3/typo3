@@ -81,8 +81,43 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 	setUrl: function(source) {
 		this.setMask();
 		this.body.dom.src = source;
+		if(this.ownerCt) {
+			if(this.ownerCt.hasLayout) {
+				if(this.ownerCt.layout.setActiveItem) {
+					this.ownerCt.layout.setActiveItem(this.id);
+				}
+			}
+		}
 	},
-
+	setUriIfChanged: function(source) {
+		console.log('----');
+		currentSource = this.getUrl();
+		console.log(currentSource);
+		currentSource = currentSource.substr(currentSource.length-source.length);
+		
+			//Some modules generate wrong url with unneeded string at the end
+		console.log(currentSource);
+		if(currentSource.substr(currentSource.length-1) == '?' ||
+			currentSource.substr(currentSource.length-1) == '&') {
+			currentSource = currentSource.substr(0,currentSource.length)
+		}
+		if(currentSource.substr(0,1) == '/') {
+			currentSource = currentSource.substr(1);
+		}
+		console.log(currentSource);
+		console.log(source);
+		if(source.substr(source.length-1) == '?' ||
+			source.substr(source.length-1) == '&') {
+			source = source.substr(0,source.length-1)
+		}
+		console.log(source);
+		
+		
+			//check if new uri should be loaded
+		if(source != currentSource) {
+			this.setUrl(source);
+		}
+	},
 	resetUrl: function() {
 		this.setMask();
 		this.body.dom.src = this.src;
