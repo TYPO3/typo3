@@ -25,12 +25,52 @@
  ***************************************************************/
 
 Ext.ns('TYPO3');
+Ext.ns('TYPO3.Viewport.Panels');
+
+/**
+ * The Cards Configuration for the BE Module Cards
+ *
+ *
+ * @author Kay Strobach    <typo3@kay-strobach.de>
+ */
+
+TYPO3.Viewport.Panels = [
+	{
+		id: 'typo3-contentContainer',
+		//anchor: '100% 100%',
+		border: false,
+		xtype: 'iframePanel',
+		name: 'content'
+	}
+	/**
+	 * new panels need to be appended here
+	 * card id needs to be prepended with typo3-card- the rest of the id is the
+	 * be module name
+	 *
+	 * example for the em:
+	 *
+	 * {
+	 *    html:'<iframe width="100%" height="100%" src="mod.php?M=tools_em" frameborder="0"></iframe>',
+	 *    id  :'typo3-card-tools_em'
+	 * },
+	 *
+	 *
+	 */
+	 ,{
+		html:'<iframe width="100%" height="100%" src="mod.php?M=tools_em" frameborder="0"></iframe>',
+		id  :'typo3-card-tools_em'
+	}
+];
 
 /**
  * The backend viewport configuration
  *
+ *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
+ * @author Kay Strobach    <typo3@kay-strobach.de>
  */
+
+
 TYPO3.Viewport.configuration = {
 	layout: 'border',
 	id: 'typo3-viewport',
@@ -49,15 +89,15 @@ TYPO3.Viewport.configuration = {
 			layout: 'fit',
 			region: 'west',
 			id: 'typo3-module-menu',
-			collapsible: false,
-			collapseMode: null,
+			collapsible: true,
+			collapseMode: 'mini',
 			floatable: true,
 			hideCollapseTool: true,
 			split: true,
 			useSplitTips: true,
 			splitTip: top.TYPO3.LLL.viewPort.tooltipModuleMenuSplit,
 			enableChildSplit: true,
-			border: false,
+			border: true,
 			autoScroll: true
 		},
 		{
@@ -105,16 +145,15 @@ TYPO3.Viewport.configuration = {
 							border: false,
 							hidden: true,
 							floatable: true,
-							xtime: 'iframePanel',
+							xtype: 'iframePanel',
 							width: 5
 						},
 						{
-							id: 'typo3-contentContainer',
+							id : 'typo3-contentContainerWrapper',
+							layout:'card',
 							region: 'center',
-							anchor: '100% 100%',
-							border: false,
-							xtype: 'iframePanel',
-							name: 'content'
+							activeItem:0,
+							items:TYPO3.Viewport.Panels
 						}
 					]
 				},

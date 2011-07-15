@@ -238,7 +238,13 @@ TYPO3.ModuleMenu.App = {
 				TYPO3.Backend.NavigationContainer.hide();
 				TYPO3.Backend.NavigationDummy.show();
 			}
-			this.openInContentFrame(record.originalLink, params);
+			if(Ext.getCmp('typo3-card-'+record.name)) {
+				Ext.getCmp('typo3-contentContainerWrapper').layout.setActiveItem('typo3-card-'+record.name);
+			} else {
+				console.log(record.name);
+				Ext.getCmp('typo3-contentContainerWrapper').layout.setActiveItem(0);
+				this.openInContentFrame(record.originalLink, params);
+			}
 			this.loadedModule = mod;
 			this.highlightModuleMenuItem(mod);
 
