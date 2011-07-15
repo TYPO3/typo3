@@ -46,7 +46,6 @@ class Tx_Fluid_Core_Widget_Bootstrap {
 	 * @return string $content The processed content
 	 */
 	public function run($content, $configuration) {
-		$this->initializeClassLoader();
 		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 		$this->initializeConfiguration($configuration);
 		$this->configureObjectManager();
@@ -60,21 +59,6 @@ class Tx_Fluid_Core_Widget_Bootstrap {
 		$extbaseBootstrap = $this->objectManager->get('Tx_Extbase_Core_Bootstrap');
 		$extbaseBootstrap->cObj = $this->cObj;
 		return $extbaseBootstrap->run($content, $configuration);
-	}
-
-	/**
-	 * Initializes the autoload mechanism of Extbase. This is supplement to the core autoloader.
-	 *
-	 * @return void
-	 * @see initialize()
-	 */
-	protected function initializeClassLoader() {
-		if (!class_exists('Tx_Extbase_Utility_ClassLoader', FALSE)) {
-			require(t3lib_extmgm::extPath('extbase') . 'Classes/Utility/ClassLoader.php');
-		}
-
-		$classLoader = new Tx_Extbase_Utility_ClassLoader();
-		spl_autoload_register(array($classLoader, 'loadClass'));
 	}
 
 	/**

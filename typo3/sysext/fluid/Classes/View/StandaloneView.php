@@ -67,7 +67,6 @@ class Tx_Fluid_View_StandaloneView extends Tx_Fluid_View_AbstractTemplateView {
 		if (!t3lib_extMgm::isLoaded('extbase')) {
 			return 'In the current version you still need to have Extbase installed in order to use the Fluid Standalone view!';
 		}
-		$this->initializeAutoloader();
 		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 
 		$configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
@@ -95,19 +94,6 @@ class Tx_Fluid_View_StandaloneView extends Tx_Fluid_View_AbstractTemplateView {
 
 		$this->templateCompiler = $this->objectManager->get('Tx_Fluid_Core_Compiler_TemplateCompiler'); // singleton
 		$this->templateCompiler->setTemplateCache($GLOBALS['typo3CacheManager']->getCache('fluid_template'));
-	}
-
-	/**
-	 * Initializes the Extbase autoloader if it wasn't registered before
-	 *
-	 * @return void
-	 * @see Extbase_Dispatcher::initializeClassLoader()
-	 */
-	protected function initializeAutoloader() {
-		if (!class_exists('Tx_Extbase_Utility_ClassLoader', FALSE)) {
-			$classLoader = t3lib_div::makeInstance('Tx_Extbase_Utility_ClassLoader');
-			spl_autoload_register(array($classLoader, 'loadClass'));
-		}
 	}
 
 	/**
