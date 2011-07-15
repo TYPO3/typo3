@@ -819,6 +819,14 @@ final class t3lib_extMgm {
 			// Adding path:
 		if ($path) {
 			$GLOBALS['TBE_MODULES']['_PATHS'][$main . ($sub ? '_' . $sub : '')] = $path;
+			$GLOBALS['TBE_MODULES']['_JSINIT'][$main . ($sub ? '_' . $sub : '')]  = '
+			    TYPO3.Viewport.ContentCards.addContentCard("' . $main . ($sub ? '_' . $sub : '') . '",
+			     {
+			      xtype: "iframePanel",
+			      src:"' . addslashes($path) . '"
+			     }
+			    );
+			';
 		}
 	}
 
