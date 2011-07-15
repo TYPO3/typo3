@@ -153,6 +153,13 @@ class TYPO3backend {
 		}
 
 		$this->executeHook('constructPostProcess');
+
+			//add js from modules to be js
+		if (is_array($GLOBALS['TBE_MODULES']['_JSINIT'])) {
+			foreach ($GLOBALS['TBE_MODULES']['_JSINIT'] as $value) {
+				$this->js .= $value;
+			}
+		}
 	}
 
 	/**
