@@ -173,16 +173,6 @@ class tslib_AdminPanel {
 		if ($this->extGetFeAdminValue('cache', 'noCache')) {
 			$GLOBALS['TSFE']->set_no_cache();
 		}
-
-			// Hook for post processing the frontend admin configuration. Added with TYPO3 4.2, so naming is now incorrect but preserves compatibility.
-			// @deprecated	since TYPO3 4.3
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extSaveFeAdminConfig-postProc'])) {
-			t3lib_div::deprecationLog('Frontend admin post processing hook extSaveFeAdminConfig-postProc is deprecated since TYPO3 4.3.');
-			$_params = array('input' => &$input, 'pObj' => &$this);
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extSaveFeAdminConfig-postProc'] as $_funcRef) {
-				t3lib_div::callUserFunction($_funcRef, $_params, $this);
-			}
-		}
 	}
 
 	/**
@@ -220,16 +210,6 @@ class tslib_AdminPanel {
 				// regular check:
 			if ($this->isAdminModuleOpen($sectionName)) {	// See if the menu is expanded!
 				return $retVal;
-			}
-
-				// Hook for post processing the frontend admin configuration. Added with TYPO3 4.2, so naming is now incorrect but preserves compatibility.
-				// @deprecated	since TYPO3 4.3
-			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction-postProc'])) {
-				t3lib_div::deprecationLog('Frontend admin post processing hook extEditAction-postProc is deprecated since TYPO3 4.3.');
-				$params = array('cmd' => &$cmd, 'tce' => &$this->tce, 'pObj' => &$this);
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction-postProc'] as $funcRef) {
-					t3lib_div::callUserFunction($funcRef, $params, $this);
-				}
 			}
 		}
 	}

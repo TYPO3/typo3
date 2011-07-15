@@ -59,8 +59,6 @@ $PAGES_TYPES = array(
 	),
 	(string) t3lib_pageSelect::DOKTYPE_SHORTCUT => array(
 	),
-	(string) t3lib_pageSelect::DOKTYPE_HIDE_IN_MENU => array(
-	),
 	(string) t3lib_pageSelect::DOKTYPE_BE_USER_SECTION => array(
 		'type' => 'web',
 		'allowedTables' => '*'
