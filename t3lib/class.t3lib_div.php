@@ -2407,9 +2407,10 @@ final class t3lib_div {
 	 * @param integer $includeHeader Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
 	 * @param array $requestHeaders HTTP headers to be used in the request
 	 * @param array $report Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
+	 * @param array $additionalCurlOptions Additional optional cURL options, see http://php.net/manual/en/function.curl-setopt.php
 	 * @return string The content from the resource given as input. FALSE if an error has occured.
 	 */
-	public static function getUrl($url, $includeHeader = 0, $requestHeaders = FALSE, &$report = NULL) {
+	public static function getUrl($url, $includeHeader = 0, $requestHeaders = FALSE, &$report = NULL, array $additionalCurlOptions = array()) {
 		$content = FALSE;
 
 		if (isset($report)) {
@@ -2422,61 +2423,8 @@ final class t3lib_div {
 			if (isset($report)) {
 				$report['lib'] = 'cURL';
 			}
-
-				// External URL without error checking.
-			$ch = curl_init();
-			if (!$ch) {
-				if (isset($report)) {
-					$report['error'] = -1;
-					$report['message'] = 'Couldn\'t initialize cURL.';
-				}
-				return FALSE;
-			}
-
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_HEADER, $includeHeader ? 1 : 0);
-			curl_setopt($ch, CURLOPT_NOBODY, $includeHeader == 2 ? 1 : 0);
-			curl_setopt($ch, CURLOPT_HTTPGET, $includeHeader == 2 ? 'HEAD' : 'GET');
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, max(0, intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout'])));
-
-			$followLocation = @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-
-			if (is_array($requestHeaders)) {
-				curl_setopt($ch, CURLOPT_HTTPHEADER, $requestHeaders);
-			}
-
-				// (Proxy support implemented by Arco <arco@appeltaart.mine.nu>)
-			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
-				curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
-
-				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']) {
-					curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']);
-				}
-				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']) {
-					curl_setopt($ch, CURLOPT_PROXYUSERPWD, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']);
-				}
-			}
-			$content = curl_exec($ch);
-			if (isset($report)) {
-				if ($content === FALSE) {
-					$report['error'] = curl_errno($ch);
-					$report['message'] = curl_error($ch);
-				} else {
-					$curlInfo = curl_getinfo($ch);
-						// We hit a redirection but we couldn't follow it
-					if (!$followLocation && $curlInfo['status'] >= 300 && $curlInfo['status'] < 400) {
-						$report['error'] = -1;
-						$report['message'] = 'Couldn\'t follow location redirect (PHP configuration option open_basedir is in effect).';
-					} elseif ($includeHeader) {
-							// Set only for $includeHeader to work exactly like PHP variant
-						$report['http_code'] = $curlInfo['http_code'];
-						$report['content_type'] = $curlInfo['content_type'];
-					}
-				}
-			}
-			curl_close($ch);
+				// Get the file via cURL
+			$content = self::getUrlWithCurl($url, $includeHeader, $requestHeaders, $report, $additionalCurlOptions);
 
 		} elseif ($includeHeader) {
 			if (isset($report)) {
@@ -2577,11 +2525,110 @@ final class t3lib_div {
 					$report['message'] = $phpError['message'];
 				} else {
 					$report['error'] = -1;
-					$report['message'] = 'Couldn\'t get URL.';
+					$report['message'] = 'Could not get URL.';
 				}
 			}
 		}
 
+		return $content;
+	}
+
+	/**
+	 * Fetches the content of an URL with cURL. Is called only internally from getUrl()
+	 *
+	 * @param string $url File/URL to read
+	 * @param integer $includeHeader Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
+	 * @param array $requestHeaders HTTP headers to be used in the request
+	 * @param array $report Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
+	 * @param array $additionalCurlOptions additional optional cURL options, see http://php.net/manual/en/function.curl-setopt.php
+	 * @return string
+	 */
+	protected function getUrlWithCurl($url, $includeHeader, $requestHeaders, &$report, array $additionalCurlOptions){
+		$curlHandle = FALSE;
+
+			// try to initialize cURL
+		if (function_exists('curl_init')) {
+			$curlHandle = curl_init();
+		}
+		if (!$curlHandle) {
+			throw new RuntimeException(
+				'Your TYPO3 installation is configured to use cURL. However, it is not available in your PHP configuration.',
+				1310824198
+			);
+		}
+
+			// cURL options coming from function arguments
+		$curlOptions = array(
+			CURLOPT_URL => $url,
+			CURLOPT_HEADER => (boolean) $includeHeader,
+			CURLOPT_NOBODY => (boolean) ($includeHeader == 2),
+			CURLOPT_HTTPGET => $includeHeader == 2 ? 'HEAD' : 'GET',
+			CURLOPT_RETURNTRANSFER => TRUE,
+			CURLOPT_FAILONERROR => TRUE,
+			CURLOPT_CONNECTTIMEOUT => max(0, intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout'])),
+		);
+		if (is_array($requestHeaders)) {
+			$curlOptions[CURLOPT_HTTPHEADER] = $requestHeaders;
+		}
+
+			// proxy server handling
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
+			$curlOptions[CURLOPT_PROXY] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'];
+
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']) {
+				$curlOptions[CURLOPT_HTTPPROXYTUNNEL] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel'];
+			}
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']) {
+				$curlOptions[CURLOPT_PROXYUSERPWD] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass'];
+			}
+		}
+
+			// Try to follow redirects
+		$followLocation = @curl_setopt($curlHandle, CURLOPT_FOLLOWLOCATION, TRUE);
+
+			// Override or add cURL options
+		if (count($additionalCurlOptions)) {
+				// as cURL options are NOT strings, but integer constants, we cannot use array_merge,
+				// as this would reorder the keys
+			foreach ($additionalCurlOptions as $key => $value) {
+				if (is_string($key)) {
+					throw new InvalidArgumentException(
+						'Invalid $additionalCurlOptions given. CURLOPT_* option names have to be provided as integer '.
+						'constant, not as string. See http://php.net/manual/en/function.curl-setopt.php',
+						1310823108
+					);
+				}
+				$curlOptions[$key] = $value;
+			}
+		}
+
+			// Pass all configuration options at once
+		if (curl_setopt_array($curlHandle, $curlOptions) === FALSE) {
+			throw new InvalidArgumentException(
+				'Could not set the following cURL options: ' . json_encode($curlOptions),
+				1310821554
+			);
+		}
+
+		$content = curl_exec($curlHandle);
+		if (isset($report)) {
+			if ($content === FALSE) {
+				$report['error'] = curl_errno($curlHandle);
+				$report['message'] = curl_error($curlHandle);
+			} else {
+				$curlInfo = curl_getinfo($curlHandle);
+					// We hit a redirection but we could not follow it
+				if (!$followLocation && $curlInfo['status'] >= 300 && $curlInfo['status'] < 400) {
+					$report['error'] = -1;
+					$report['message'] = 'Could not follow location redirect.';
+				} elseif ($includeHeader) {
+						// Set only for $includeHeader to work exactly like PHP variant
+					$report['http_code'] = $curlInfo['http_code'];
+					$report['content_type'] = $curlInfo['content_type'];
+				}
+			}
+		}
+		curl_close($curlHandle);
 		return $content;
 	}
 
