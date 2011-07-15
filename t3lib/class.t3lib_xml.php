@@ -64,6 +64,20 @@ class t3lib_xml {
 	}
 
 	/**
+	 * Compatibility constructor.
+	 *
+	 * @param string Top Level Name
+	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
+	 */
+	public function t3lib_xml($topLevelName) {
+		t3lib_div::logDeprecatedFunction();
+			// Note: we cannot call $this->__construct() here because it would call the derived class constructor and cause recursion
+			// This code uses official PHP behavior (http://www.php.net/manual/en/language.oop5.basic.php) when $this in the
+			// statically called non-static method inherits $this from the caller's scope.
+		t3lib_xml::__construct($topLevelName);
+	}
+
+	/**
 	 * When outputting a input record in XML only fields listed in $this->XML_recFields for the current table will be rendered.
 	 *
 	 * @param	string		Table name

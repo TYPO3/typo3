@@ -120,6 +120,19 @@ class t3lib_superadmin {
 	}
 
 	/**
+	 * Compatibility constructor.
+	 *
+	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
+	 */
+	public function t3lib_superadmin() {
+		t3lib_div::logDeprecatedFunction();
+			// Note: we cannot call $this->__construct() here because it would call the derived class constructor and cause recursion
+			// This code uses official PHP behavior (http://www.php.net/manual/en/language.oop5.basic.php) when $this in the
+			// statically called non-static method inherits $this from the caller's scope.
+		t3lib_superadmin::__construct();
+	}
+
+	/**
 	 * Initialize with configuration - from the 'superadmin.php' script. See misc/superadmin.php for example.
 	 *
 	 * @param	array		Numerical array with arrays having two keys, 'dir' and 'url' where 'dir' is the absolute path to a directory with TYPO3 installations inside.

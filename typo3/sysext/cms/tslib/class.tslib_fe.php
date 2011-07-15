@@ -318,6 +318,27 @@
 	}
 
 	/**
+	 * Compatibility constructor.
+	 *
+	 * @param array The global $TYPO3_CONF_VARS array. Will be set internally in ->TYPO3_CONF_VARS
+	 * @param mixed The value of t3lib_div::_GP('id')
+	 * @param integer The value of t3lib_div::_GP('type')
+	 * @param boolean The value of t3lib_div::_GP('no_cache'), evaluated to 1/0
+	 * @param string The value of t3lib_div::_GP('cHash')
+	 * @param string The value of t3lib_div::_GP('jumpurl')
+	 * @param string The value of t3lib_div::_GP('MP')
+	 * @param string The value of t3lib_div::_GP('RDCT')
+	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
+	 */
+	public function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache = '', $cHash = '', $jumpurl = '', $MP = '', $RDCT = '') {
+		t3lib_div::logDeprecatedFunction();
+			// Note: we cannot call $this->__construct() here because it would call the derived class constructor and cause recursion
+			// This code uses official PHP behavior (http://www.php.net/manual/en/language.oop5.basic.php) when $this in the
+			// statically called non-static method inherits $this from the caller's scope.
+		tslib_fe::__construct($TYPO3_CONF_VARS, $id, $type, $no_cache, $cHash, $jumpurl, $MP, $RDCT);
+	}
+
+	/**
 	 * Connect to SQL database. May exit after outputting an error message
 	 * or some JavaScript redirecting to the install tool.
 	 *

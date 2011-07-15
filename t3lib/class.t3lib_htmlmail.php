@@ -186,6 +186,18 @@ class t3lib_htmlmail {
 		$this->mailer = 'TYPO3';
 	}
 
+	/**
+	 * Compatibility constructor.
+	 *
+	 * @deprecated since TYPO3 4.5 and will be removed in TYPO3 4.7. Use __construct() instead.
+	 */
+	public function t3lib_htmlmail() {
+		t3lib_div::logDeprecatedFunction();
+			// Note: we cannot call $this->__construct() here because it would call the derived class constructor and cause recursion
+			// This code uses official PHP behavior (http://www.php.net/manual/en/language.oop5.basic.php) when $this in the
+			// statically called non-static method inherits $this from the caller's scope.
+		t3lib_htmlmail::__construct();
+	}
 
 	/**
 	 * start action that sets the message ID and the charset

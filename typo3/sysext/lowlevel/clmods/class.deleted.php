@@ -66,6 +66,19 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 	}
 
 	/**
+	 * Compatibility constructor.
+	 *
+	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
+	 */
+	public function tx_lowlevel_deleted() {
+		t3lib_div::logDeprecatedFunction();
+			// Note: we cannot call $this->__construct() here because it would call the derived class constructor and cause recursion
+			// This code uses official PHP behavior (http://www.php.net/manual/en/language.oop5.basic.php) when $this in the
+			// statically called non-static method inherits $this from the caller's scope.
+		tx_lowlevel_deleted::__construct();
+	}
+
+	/**
 	 * Find orphan records
 	 * VERY CPU and memory intensive since it will look up the whole page tree!
 	 *

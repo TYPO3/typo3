@@ -70,6 +70,19 @@ class t3lib_cli {
 	}
 
 	/**
+	 * Compatibility constructor.
+	 *
+	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
+	 */
+	public function t3lib_cli() {
+		t3lib_div::logDeprecatedFunction();
+			// Note: we cannot call $this->__construct() here because it would call the derived class constructor and cause recursion
+			// This code uses official PHP behavior (http://www.php.net/manual/en/language.oop5.basic.php) when $this in the
+			// statically called non-static method inherits $this from the caller's scope.
+		t3lib_cli::__construct();
+	}
+
+	/**
 	 * Finds the arg token (like "-s") in argv and returns the rest of argv from that point on.
 	 * This should only be used in special cases since this->cli_args should already be prepared with an index of values!
 	 *
