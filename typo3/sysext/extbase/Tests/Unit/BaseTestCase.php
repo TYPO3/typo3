@@ -35,21 +35,6 @@ abstract class Tx_Extbase_Tests_Unit_BaseTestCase extends tx_phpunit_testcase {
 	 */
 	protected $objectManager;
 
-    /**
-     * Constructs a test case with the given name.
-     *
-     * @param  string $name
-     * @param  array  $data
-     * @param  string $dataName
-	 */
-	public function __construct($name = NULL, array $data = array(), $dataName = '') {
-		parent::__construct($name, $data, $dataName);
-		if (!class_exists('Tx_Extbase_Utility_ClassLoader')) {
-			require(t3lib_extmgm::extPath('extbase') . 'Classes/Utility/ClassLoader.php');
-		}
-		spl_autoload_register(array('Tx_Extbase_Utility_ClassLoader', 'loadClass'));
-	}
-
 	/**
 	 * Injects an untainted clone of the object manager and all its referencing
 	 * objects for every test.

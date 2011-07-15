@@ -95,7 +95,6 @@ class Tx_Extbase_Core_Bootstrap {
 		if (!isset($configuration['pluginName']) || strlen($configuration['pluginName']) === 0) {
 			throw new RuntimeException('Invalid configuration: "pluginName" is not set', 1290623027);
 		}
-		$this->initializeClassLoader();
 		$this->initializeObjectManager();
 		$this->initializeConfiguration($configuration);
 		$this->configureObjectManager();
@@ -104,21 +103,6 @@ class Tx_Extbase_Core_Bootstrap {
 		$this->initializePersistence();
 		$this->initializeBackwardsCompatibility();
 		$this->isInitialized = TRUE;
-	}
-
-	/**
-	 * Initializes the autoload mechanism of Extbase. This is supplement to the core autoloader.
-	 *
-	 * @return void
-	 * @see initialize()
-	 */
-	protected function initializeClassLoader() {
-		if (!class_exists('Tx_Extbase_Utility_ClassLoader', FALSE)) {
-			require(t3lib_extmgm::extPath('extbase') . 'Classes/Utility/ClassLoader.php');
-		}
-
-		$classLoader = new Tx_Extbase_Utility_ClassLoader();
-		spl_autoload_register(array($classLoader, 'loadClass'));
 	}
 
 	/**

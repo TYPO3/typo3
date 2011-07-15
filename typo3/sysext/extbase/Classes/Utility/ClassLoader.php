@@ -41,8 +41,10 @@ class Tx_Extbase_Utility_ClassLoader {
 	 * @param string $className: Name of the class/interface to load
 	 * @uses t3lib_extMgm::extPath()
 	 * @return void
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0. TYPO3 core autoloader handles extbase files as well
 	 */
 	static public function loadClass($className) {
+		t3lib_div::logDeprecatedFunction();
 		$classNameParts = explode('_', $className, 3);
 		$extensionKey = t3lib_div::camelCaseToLowerCaseUnderscored($classNameParts[1]);
 		if (t3lib_extMgm::isLoaded($extensionKey)) {
