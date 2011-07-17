@@ -567,11 +567,13 @@ class tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	 * @return string the full domain including the protocol http:// or https://, but without the trailing '/'
 	 */
 	public function generateWorkspacePreviewLink($uid) {
-		$timeToLiveHours = intval($GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.previewLinkTTLHours'));
-		$timeToLiveHours = ($timeToLiveHours ? $timeToLiveHours : 24*2) * 3600;
+		$previewObject = t3lib_div::makeInstance('Tx_Version_Preview');
+		$timeToLiveHours = $previewObject->getPreviewLinkLifetime();
+		$previewKeyword = $previewObject->compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], ($timeToLiveHours*3600), $this->getCurrentWorkspace());
+
 		$linkParams = array(
-			'ADMCMD_prev'	=> t3lib_BEfunc::compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], $timeToLiveHours, $this->getCurrentWorkspace()),
-			'id'			=> $uid
+			'ADMCMD_prev' => $previewKeyword,
+			'id' => $uid
 		);
 		return t3lib_BEfunc::getViewDomain($uid) . '/index.php?' . t3lib_div::implodeArrayForUrl('', $linkParams);
 	}
