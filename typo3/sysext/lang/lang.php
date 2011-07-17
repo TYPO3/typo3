@@ -291,7 +291,7 @@ class language {
 	 */
 	public function getLL($index, $hsc = FALSE) {
 			// Get Local Language
-		if ($GLOBALS['LOCAL_LANG'][$this->lang][$index][0]['target'] !== '') {
+		if (isset($GLOBALS['LOCAL_LANG'][$this->lang][$index][0]['target'])) {
 			$output = $GLOBALS['LOCAL_LANG'][$this->lang][$index][0]['target'];
 		} else {
 			$output = $GLOBALS['LOCAL_LANG']['default'][$index][0]['target'];
