@@ -305,7 +305,10 @@ class tx_cms_layout extends recordList {
 	 * @return mixed Uid of the backend layout record or NULL if no layout should be used
 	 */
 	function getSelectedBackendLayoutUid($id) {
-		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('backend_layout', 'pages', 'uid=' . $id);
+			// uid, pid, t3ver_swapmode needed for workspaceOL()
+		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, pid, t3ver_swapmode, backend_layout', 'pages', 'uid=' . $id);
+		t3lib_BEfunc::workspaceOL('pages', $page);
+
 		$backendLayoutUid = intval($page['backend_layout']);
 		if ($backendLayoutUid == -1) {
 				// if it is set to "none" - don't use any
@@ -399,6 +402,7 @@ class tx_cms_layout extends recordList {
 
 					// Traverse any selected elements and render their display code:
 					$rowArr = $this->getResult($result);
+					t3lib_BEfunc::workspaceOL('tt_content', $rowArr);
 
 					foreach ($rowArr as $rKey => $row) {
 
