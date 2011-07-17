@@ -5641,7 +5641,8 @@ Ext.EventObject = function(){
 
         
         getTarget : function(selector, maxDepth, returnEl){
-            return selector ? Ext.fly(this.target).findParent(selector, maxDepth, returnEl) : (returnEl ? Ext.get(this.target) : this.target);
+            var target=(this.target||window.event.srcElement);
+            return selector ? Ext.fly(target).findParent(selector, maxDepth, returnEl) : (returnEl ? Ext.get(target) : target);
         },
 
         
