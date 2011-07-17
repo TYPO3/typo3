@@ -106,10 +106,13 @@ class tx_cms_BackendLayout {
 
 		for ($i = count($rootline); $i > 0; $i--) {
 			$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-				'uid, backend_layout, backend_layout_next_level',
+					// pid and t3ver_swapmode needed here for workspaceOL()
+				'uid, pid, t3ver_swapmode, backend_layout, backend_layout_next_level',
 				'pages',
 				'uid=' . intval($rootline[$i]['uid'])
 			);
+			t3lib_BEfunc::workspaceOL('pages', $page);
+
 			$selectedBackendLayout = intval($page['backend_layout']);
 			$selectedBackendLayoutNextLevel = intval($page['backend_layout_next_level']);
 			if ($selectedBackendLayout != 0 && $page['uid'] == $id) {
