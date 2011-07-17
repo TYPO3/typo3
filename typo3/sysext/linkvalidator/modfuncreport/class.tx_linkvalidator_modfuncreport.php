@@ -233,30 +233,30 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	protected function createTabs() {
 		$panelCheck = '';
 		if ($this->modTS['showCheckLinkTab'] == 1) {
-			$panelCheck = '{
-		       title: TYPO3.lang.CheckLink,
-		       html: ' . json_encode($this->flush()) . '
-			}';
+			$panelCheck = "{
+		       title: TYPO3.l10n.localize('CheckLink'),
+		       html: " . json_encode($this->flush()) . ",
+			}";
 		}
 
 		$this->render();
-		$js = 'var panel = new Ext.TabPanel( {
-			renderTo : "linkvalidator-modfuncreport",
-			id: "linkvalidator-main",
+		$js = "var panel = new Ext.TabPanel( {
+			renderTo: 'linkvalidator-modfuncreport',
+			id: 'linkvalidator-main',
 			plain: true,
 			activeTab: 0,
-			bodyStyle: "padding:10px;",
+			bodyStyle: 'padding:10px;',
 			items : [
 			{
 				autoHeight: true,
-				title: TYPO3.lang.Report,
-				html: ' . json_encode($this->flush(TRUE)) . '
+				title: TYPO3.l10n.localize('Report'),
+				html: " . json_encode($this->flush(TRUE)) . "
 			},
-			' . $panelCheck . '
+			" . $panelCheck . "
 			]
 
 		});
-		';
+		";
 		$this->pageRenderer->addExtOnReadyCode($js);
 	}
 
