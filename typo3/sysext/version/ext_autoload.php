@@ -9,5 +9,6 @@ return array(
 	'tx_version_gui' => $extensionPath . 'class.tx_version_gui.php',
 	'tx_version_tcemain' => $extensionPath . 'class.tx_version_tcemain.php',
 	'tx_version_tasks_autopublish' => $extensionPath . 'tasks/class.tx_version_tasks_autopublish.php',
+	'tx_version_preview' => $extensionPath . 'Classes/Preview.php',
 );
 ?>
