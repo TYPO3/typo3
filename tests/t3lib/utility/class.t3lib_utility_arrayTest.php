@@ -183,6 +183,225 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	public function filterByValueRecursiveDoesNotMatchDifferentInstancesOfSameClass() {
 		$this->assertEquals(array(), t3lib_utility_Array::filterByValueRecursive(new stdClass(), array(new stdClass())));
 	}
+
+	//////////////////////////////////
+	// Tests concerning inArray
+	//////////////////////////////////
+	/**
+	 * Data Provider for inArrayReturnsTrueForFoundNeedle
+	 *
+	 * return array
+	 */
+	public function inArrayReturnsTrueForFoundNeedleDataProvider() {
+		return array(
+			array(
+				array(0, 1, 2, 3),
+				'0'
+			),
+			array(
+				array(0, 1, 2, 3),
+				2
+			),
+			array(
+				array('0', 'one', '2', 'three'),
+				'0'
+			),
+			array(
+				array('0', 'one', '2', 'three'),
+				0
+			),
+			array(
+				array('0', 'one', '2', 'three'),
+				'three'
+			),
+			array(
+				array(0, 1, 2, 3),
+				array()
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider inArrayReturnsTrueForFoundNeedleDataProvider
+	 */
+	public function inArrayReturnsTrueForFoundNeedle($haystack, $needle) {
+		$this->assertTrue(t3lib_utility_Array::inArray($haystack, $needle));
+	}
+
+	/**
+	 * Data Provider for inArrayReturnsFalseWhenNeedleIsNotFound
+	 *
+	 * return array
+	 */
+	public function inArrayReturnsFalseWhenNeedleIsNotFoundProvider() {
+		return array(
+			array(
+				array(0, 1, 2, 3),
+				'one'
+			),
+			array(
+				array('0', 'one', '2', 'three'),
+				'ads'
+			),
+			array(
+				array('0', 'one', '2', 'three'),
+				NULL
+			),
+			array(
+				array('0', 'one', '2', 'three'),
+				13
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider inArrayReturnsFalseWhenNeedleIsNotFoundProvider
+	 */
+	public function inArrayReturnsFalseWhenNeedleIsNotFound($haystack, $needle) {
+		$this->assertFalse(t3lib_utility_Array::inArray($haystack, $needle));
+	}
+
+	//////////////////////////////////
+	// Tests concerning revExplode
+	//////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function revExplodeExplodesString() {
+		$testString = 'my:words:here';
+		$expectedArray = array('my:words', 'here');
+		$actualArray = t3lib_utility_Array::reverseExplode(':', $testString, 2);
+
+		$this->assertEquals($expectedArray, $actualArray);
+	}
+
+
+	//////////////////////////////////
+	// Tests concerning trimExplode
+	//////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function checkTrimExplodeTrimsSpacesAtElementStartAndEnd() {
+		$testString = ' a , b , c ,d ,,  e,f,';
+		$expectedArray = array('a', 'b', 'c', 'd', '', 'e', 'f', '');
+		$actualArray = t3lib_utility_Array::trimExplode(',', $testString);
+
+		$this->assertEquals($expectedArray, $actualArray);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkTrimExplodeRemovesNewLines() {
+		$testString = ' a , b , ' . LF . ' ,d ,,  e,f,';
+		$expectedArray = array('a', 'b', 'd', 'e', 'f');
+		$actualArray = t3lib_utility_Array::trimExplode(',', $testString, TRUE);
+
+		$this->assertEquals($expectedArray, $actualArray);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkTrimExplodeRemovesEmptyElements() {
+		$testString = 'a , b , c , ,d ,, ,e,f,';
+		$expectedArray = array('a', 'b', 'c', 'd', 'e', 'f');
+		$actualArray = t3lib_utility_Array::trimExplode(',', $testString, TRUE);
+
+		$this->assertEquals($expectedArray, $actualArray);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkTrimExplodeKeepsRemainingResultsWithEmptyItemsAfterReachingLimitWithPositiveParameter() {
+		$testString = ' a , b , c , , d,, ,e ';
+		$expectedArray = array('a', 'b', 'c,,d,,,e');
+			// Limiting returns the rest of the string as the last element
+		$actualArray = t3lib_utility_Array::trimExplode(',', $testString, FALSE, 3);
+
+		$this->assertEquals($expectedArray, $actualArray);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkTrimExplodeKeepsRemainingResultsWithoutEmptyItemsAfterReachingLimitWithPositiveParameter() {
+		$testString = ' a , b , c , , d,, ,e ';
+		$expectedArray = array('a', 'b', 'c,d,e');
+			// Limiting returns the rest of the string as the last element
+		$actualArray = t3lib_utility_Array::trimExplode(',', $testString, TRUE, 3);
+
+		$this->assertEquals($expectedArray, $actualArray);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkTrimExplodeKeepsRamainingResultsWithEmptyItemsAfterReachingLimitWithNegativeParameter() {
+		$testString = ' a , b , c , d, ,e, f , , ';
+		$expectedArray = array('a', 'b', 'c', 'd', '', 'e');
+			// limiting returns the rest of the string as the last element
+		$actualArray = t3lib_utility_Array::trimExplode(',', $testString, FALSE, -3);
+
+		$this->assertEquals($expectedArray, $actualArray);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkTrimExplodeKeepsRamainingResultsWithoutEmptyItemsAfterReachingLimitWithNegativeParameter() {
+		$testString = ' a , b , c , d, ,e, f , , ';
+		$expectedArray = array('a', 'b', 'c');
+			// Limiting returns the rest of the string as the last element
+		$actualArray = t3lib_utility_Array::trimExplode(',', $testString, TRUE, -3);
+
+		$this->assertEquals($expectedArray, $actualArray);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkTrimExplodeReturnsExactResultsWithoutReachingLimitWithPositiveParameter() {
+		$testString = ' a , b , , c , , , ';
+		$expectedArray = array('a', 'b', 'c');
+			// Limiting returns the rest of the string as the last element
+		$actualArray = t3lib_utility_Array::trimExplode(',', $testString, TRUE, 4);
+
+		$this->assertEquals($expectedArray, $actualArray);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkTrimExplodeKeepsZeroAsString() {
+		$testString = 'a , b , c , ,d ,, ,e,f, 0 ,';
+		$expectedArray = array('a', 'b', 'c', 'd', 'e', 'f', '0');
+		$actualArray = t3lib_utility_Array::trimExplode(',', $testString, TRUE);
+
+		$this->assertEquals($expectedArray, $actualArray);
+	}
+
+	//////////////////////////////////
+	// Tests concerning intExplode
+	//////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function intExplodeConvertsStringsToInteger() {
+		$testString = '1,foo,2';
+		$expectedArray = array(1, 0, 2);
+		$actualArray = t3lib_utility_Array::integerExplode(',', $testString);
+
+		$this->assertEquals($expectedArray, $actualArray);
+	}
+
 }
 
 ?>

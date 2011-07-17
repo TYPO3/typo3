@@ -575,7 +575,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	}
 
 	//////////////////////////////////
-	// Tests concerning calcPriority
+	// Tests concerning validEmail
 	//////////////////////////////////
 
 	/**
@@ -654,21 +654,6 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 
 	//////////////////////////////////
-	// Tests concerning intExplode
-	//////////////////////////////////
-
-	/**
-	 * @test
-	 */
-	public function intExplodeConvertsStringsToInteger() {
-		$testString = '1,foo,2';
-		$expectedArray = array(1, 0, 2);
-		$actualArray = t3lib_div::intExplode(',', $testString);
-
-		$this->assertEquals($expectedArray, $actualArray);
-	}
-
-	//////////////////////////////////
 	// Tests concerning intInRange
 	//////////////////////////////////
 	/**
@@ -742,6 +727,85 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	public function intFromVerConvertsVersionNumbersToIntegers($expected, $version) {
 		$this->assertEquals($expected, t3lib_div::int_from_ver($version));
+	}
+
+	//////////////////////////////////
+	// Tests concerning inArray
+	//////////////////////////////////
+	/**
+	 * Data Provider for inArrayReturnsTrueForFoundNeedle
+	 *
+	 * return array
+	 */
+	public function inArrayReturnsTrueForFoundNeedleDataProvider() {
+		return array(
+			array(
+				array(0, 1, 2, 3),
+				'0'
+			),
+			array(
+				array(0, 1, 2, 3),
+				2
+			),
+			array(
+				array('0', 'one', '2', 'three'),
+				'0'
+			),
+			array(
+				array('0', 'one', '2', 'three'),
+				0
+			),
+			array(
+				array('0', 'one', '2', 'three'),
+				'three'
+			),
+			array(
+				array(0, 1, 2, 3),
+				array()
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider inArrayReturnsTrueForFoundNeedleDataProvider
+	 */
+	public function inArrayReturnsTrueForFoundNeedle($haystack, $needle) {
+		$this->assertTrue(t3lib_div::inArray($haystack, $needle));
+	}
+
+	/**
+	 * Data Provider for inArrayReturnsFalseWhenNeedleIsNotFound
+	 *
+	 * return array
+	 */
+	public function inArrayReturnsFalseWhenNeedleIsNotFoundProvider() {
+		return array(
+			array(
+				array(0, 1, 2, 3),
+				'one'
+			),
+			array(
+				array('0', 'one', '2', 'three'),
+				'ads'
+			),
+			array(
+				array('0', 'one', '2', 'three'),
+				NULL
+			),
+			array(
+				array('0', 'one', '2', 'three'),
+				13
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider inArrayReturnsFalseWhenNeedleIsNotFoundProvider
+	 */
+	public function inArrayReturnsFalseWhenNeedleIsNotFound($haystack, $needle) {
+		$this->assertFalse(t3lib_div::inArray($haystack, $needle));
 	}
 
 	//////////////////////////////////

@@ -79,7 +79,7 @@ final class t3lib_utility_Array {
 				$resultArray[$key] = $value;
 			} elseif (is_array($value)) {
 					// self does not work in lambda functions, use t3lib_utility_Array for recursion
-				$subArrayMatches = t3lib_utility_Array::filterByValueRecursive($needle, $value, $array[$key]);
+				$subArrayMatches = t3lib_utility_Array::filterByValueRecursive($needle, $value);
 				if (count($subArrayMatches) > 0) {
 					$resultArray[$key] = $subArrayMatches;
 				}
@@ -91,6 +91,112 @@ final class t3lib_utility_Array {
 
 			// Pointers to result array are reset internally
 		return $resultArray;
+	}
+
+	/**
+	 * Check if an string item exists in an array.
+	 * Please note that the order of function parameters is reverse compared to the PHP function in_array()!!!
+	 *
+	 * Comparison to PHP in_array():
+	 * -> $array = array(0, 1, 2, 3);
+	 * -> variant_a := t3lib_div::inArray($array, $needle)
+	 * -> variant_b := in_array($needle, $array)
+	 * -> variant_c := in_array($needle, $array, TRUE)
+	 * +---------+-----------+-----------+-----------+
+	 * | $needle | variant_a | variant_b | variant_c |
+	 * +---------+-----------+-----------+-----------+
+	 * | '1a'    | FALSE     | TRUE      | FALSE     |
+	 * | ''      | FALSE     | TRUE      | FALSE     |
+	 * | '0'     | TRUE      | TRUE      | FALSE     |
+	 * | 0       | TRUE      | TRUE      | TRUE      |
+	 * +---------+-----------+-----------+-----------+
+	 *
+	 * @param array $haystack one-dimensional array of items
+	 * @param string $needle item to check for
+	 * @return boolean TRUE if $item is in the one-dimensional array $in_array
+	 */
+	public static function inArray(array $haystack, $needle) {
+		foreach ($haystack as $val) {
+			if (!is_array($val) && !strcmp($val, $needle)) {
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
+
+	/**
+	 * Explodes a $string delimited by $delim and passes each item in the array through intval().
+	 * Corresponds to t3lib_div::trimExplode(), but with conversion to integers for all values.
+	 *
+	 * @param string $delimiter Delimiter string to explode with
+	 * @param string $string The string to explode
+	 * @param boolean $onlyNonEmptyValues If set, all empty values (='') will NOT be set in output
+	 * @param integer $limit If positive, the result will contain a maximum of limit elements,
+	 *						 if negative, all components except the last -limit are returned,
+	 *						 if zero (default), the result is not limited at all
+	 * @return array Exploded values, all converted to integers
+	 */
+	public static function integerExplode($delimiter, $string, $onlyNonEmptyValues = FALSE, $limit = 0) {
+		$explodedValues = self::trimExplode($delimiter, $string, $onlyNonEmptyValues, $limit);
+		return array_map('intval', $explodedValues);
+	}
+
+	/**
+	 * Reverse explode which explodes the string counting from behind.
+	 * Thus t3lib_div::revExplode(':','my:words:here',2) will return array('my:words','here')
+	 *
+	 * @param string $delimiter Delimiter string to explode with
+	 * @param string $string The string to explode
+	 * @param integer $count Number of array entries
+	 * @return array Exploded values
+	 */
+	public static function reverseExplode($delimiter, $string, $count = 0) {
+		$explodedValues = explode($delimiter, strrev($string), $count);
+		$explodedValues = array_map('strrev', $explodedValues);
+		return array_reverse($explodedValues);
+	}
+
+	/**
+	 * Explodes a string and trims all values for whitespace in the ends.
+	 * If $onlyNonEmptyValues is set, then all blank ('') values are removed.
+	 *
+	 * @param string $delimiter Delimiter string to explode with
+	 * @param string $string The string to explode
+	 * @param boolean $removeEmptyValues If set, all empty values will be removed in output
+	 * @param integer $limit If positive, the result will contain a maximum of
+	 *						 $limit elements, if negative, all components except
+	 *						 the last -$limit are returned, if zero (default),
+	 *						 the result is not limited at all. Attention though
+	 *						 that the use of this parameter can slow down this
+	 *						 function.
+	 * @return array Exploded values
+	 */
+	public static function trimExplode($delimiter, $string, $removeEmptyValues = FALSE, $limit = 0) {
+		$explodedValues = explode($delimiter, $string);
+
+		$result = array_map('trim', $explodedValues);
+
+		if ($removeEmptyValues) {
+			$temp = array();
+			foreach ($result as $value) {
+				if ($value !== '') {
+					$temp[] = $value;
+				}
+			}
+			$result = $temp;
+		}
+
+		if ($limit != 0) {
+			if ($limit < 0) {
+				$result = array_slice($result, 0, $limit);
+			} elseif (count($result) > $limit) {
+				$lastElements = array_slice($result, $limit - 1);
+				$result = array_slice($result, 0, $limit - 1);
+				$result[] = implode($delimiter, $lastElements);
+			}
+		}
+
+		return $result;
 	}
 }
 

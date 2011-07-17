@@ -425,7 +425,7 @@ final class t3lib_div {
 	public static function cmpIPv4($baseIP, $list) {
 		$IPpartsReq = explode('.', $baseIP);
 		if (count($IPpartsReq) == 4) {
-			$values = self::trimExplode(',', $list, 1);
+			$values = t3lib_utility_Array::trimExplode(',', $list, 1);
 
 			foreach ($values as $test) {
 				list($test, $mask) = explode('/', $test);
@@ -469,7 +469,7 @@ final class t3lib_div {
 		$success = FALSE; // Policy default: Deny connection
 		$baseIP = self::normalizeIPv6($baseIP);
 
-		$values = self::trimExplode(',', $list, 1);
+		$values = t3lib_utility_Array::trimExplode(',', $list, 1);
 		foreach ($values as $test) {
 			$testList = explode('/', $test);
 			if (count($testList) == 2) {
@@ -635,7 +635,7 @@ final class t3lib_div {
 	public static function cmpFQDN($baseIP, $list) {
 		if (count(explode('.', $baseIP)) == 4) {
 			$resolvedHostName = explode('.', gethostbyaddr($baseIP));
-			$values = self::trimExplode(',', $list, 1);
+			$values = t3lib_utility_Array::trimExplode(',', $list, 1);
 
 			foreach ($values as $test) {
 				$hostNameParts = explode('.', $test);
@@ -855,7 +855,7 @@ final class t3lib_div {
 			);
 		}
 
-		return implode(',', array_unique(self::trimExplode(',', $in_list, 1)));
+		return implode(',', array_unique(t3lib_utility_Array::trimExplode(',', $in_list, 1)));
 	}
 
 	/**
@@ -903,7 +903,7 @@ final class t3lib_div {
 	 * @return string Processed input value. See function description.
 	 */
 	public static function dirname($path) {
-		$p = self::revExplode('/', $path, 2);
+		$p = t3lib_utility_Array::reverseExplode('/', $path, 2);
 		return count($p) == 2 ? $p[0] : '';
 	}
 
@@ -1359,21 +1359,18 @@ final class t3lib_div {
 	 * +---------+-----------+-----------+-----------+
 	 * | '1a'	| FALSE	 | TRUE	  | FALSE	 |
 	 * | ''	  | FALSE	 | TRUE	  | FALSE	 |
-	 * | '0'	 | TRUE	  | TRUE	  | FALSE	 |
-	 * | 0	   | TRUE	  | TRUE	  | TRUE	  |
+	 * | '0'	 | TRUE		 | TRUE	  | FALSE	 |
+	 * | 0	   | TRUE		 | TRUE	  | TRUE	 |
 	 * +---------+-----------+-----------+-----------+
 	 *
 	 * @param array $in_array one-dimensional array of items
 	 * @param string $item item to check for
 	 * @return boolean TRUE if $item is in the one-dimensional array $in_array
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Array::inArray() instead
 	 */
 	public static function inArray(array $in_array, $item) {
-		foreach ($in_array as $val) {
-			if (!is_array($val) && !strcmp($val, $item)) {
-				return TRUE;
-			}
-		}
-		return FALSE;
+		self::logDeprecatedFunction();
+		return t3lib_utility_Array::inArray($in_array, $item);
 	}
 
 	/**
@@ -1387,10 +1384,11 @@ final class t3lib_div {
 	 *						 if negative, all components except the last -limit are returned,
 	 *						 if zero (default), the result is not limited at all
 	 * @return array Exploded values, all converted to integers
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Array::integerExplode() instead
 	 */
 	public static function intExplode($delimiter, $string, $onlyNonEmptyValues = FALSE, $limit = 0) {
-		$explodedValues = self::trimExplode($delimiter, $string, $onlyNonEmptyValues, $limit);
-		return array_map('intval', $explodedValues);
+		self::logDeprecatedFunction();
+		return t3lib_utility_Array::integerExplode($delimiter, $string, $onlyNonEmptyValues, $limit);
 	}
 
 	/**
@@ -1401,11 +1399,11 @@ final class t3lib_div {
 	 * @param string $string The string to explode
 	 * @param integer $count Number of array entries
 	 * @return array Exploded values
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Array::reverseExplode() instead
 	 */
 	public static function revExplode($delimiter, $string, $count = 0) {
-		$explodedValues = explode($delimiter, strrev($string), $count);
-		$explodedValues = array_map('strrev', $explodedValues);
-		return array_reverse($explodedValues);
+		self::logDeprecatedFunction();
+		return t3lib_utility_Array::reverseExplode($delimiter, $string, $count);
 	}
 
 	/**
@@ -1422,33 +1420,11 @@ final class t3lib_div {
 	 *						 that the use of this parameter can slow down this
 	 *						 function.
 	 * @return array Exploded values
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Array::trimExplode() instead
 	 */
 	public static function trimExplode($delim, $string, $removeEmptyValues = FALSE, $limit = 0) {
-		$explodedValues = explode($delim, $string);
-
-		$result = array_map('trim', $explodedValues);
-
-		if ($removeEmptyValues) {
-			$temp = array();
-			foreach ($result as $value) {
-				if ($value !== '') {
-					$temp[] = $value;
-				}
-			}
-			$result = $temp;
-		}
-
-		if ($limit != 0) {
-			if ($limit < 0) {
-				$result = array_slice($result, 0, $limit);
-			} elseif (count($result) > $limit) {
-				$lastElements = array_slice($result, $limit - 1);
-				$result = array_slice($result, 0, $limit - 1);
-				$result[] = implode($delim, $lastElements);
-			}
-		}
-
-		return $result;
+		self::logDeprecatedFunction();
+		return t3lib_utility_Array::trimExplode($delim, $string, $removeEmptyValues, $limit);
 	}
 
 	/**
@@ -1496,7 +1472,7 @@ final class t3lib_div {
 		if ($array) {
 				// Convert strings to arrays:
 			if (is_string($keepItems)) {
-				$keepItems = self::trimExplode(',', $keepItems);
+				$keepItems = t3lib_utility_Array::trimExplode(',', $keepItems);
 			}
 				// create_function() returns a string:
 			if (!is_string($getValueFunc)) {
@@ -1576,7 +1552,7 @@ final class t3lib_div {
 	 * @return array Output array with selected variables.
 	 */
 	public static function compileSelectedGetVarsFromArray($varList, array $getArray, $GPvarAlt = TRUE) {
-		$keys = self::trimExplode(',', $varList, 1);
+		$keys = t3lib_utility_Array::trimExplode(',', $varList, 1);
 		$outArr = array();
 		foreach ($keys as $v) {
 			if (isset($getArray[$v])) {
@@ -3437,7 +3413,7 @@ final class t3lib_div {
 			case 'REMOTE_ADDR':
 				$retVal = $_SERVER['REMOTE_ADDR'];
 				if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
-					$ip = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+					$ip = t3lib_utility_Array::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
 						// choose which IP in list to use
 					if (count($ip)) {
 						switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue']) {
@@ -3461,7 +3437,7 @@ final class t3lib_div {
 			case 'HTTP_HOST':
 				$retVal = $_SERVER['HTTP_HOST'];
 				if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
-					$host = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
+					$host = t3lib_utility_Array::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
 						// choose which host in list to use
 					if (count($host)) {
 						switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue']) {
@@ -3567,7 +3543,7 @@ final class t3lib_div {
 			case '_ARRAY':
 				$out = array();
 					// Here, list ALL possible keys to this function for debug display.
-				$envTestVars = self::trimExplode(',', '
+				$envTestVars = t3lib_utility_Array::trimExplode(',', '
 					HTTP_HOST,
 					TYPO3_HOST_ONLY,
 					TYPO3_PORT,
@@ -3953,7 +3929,7 @@ final class t3lib_div {
 		if (is_array($uid_or_record)) {
 			$recCopy_temp = array();
 			if ($fields) {
-				$fieldArr = self::trimExplode(',', $fields, 1);
+				$fieldArr = t3lib_utility_Array::trimExplode(',', $fields, 1);
 				foreach ($fieldArr as $k => $v) {
 					$recCopy_temp[$k] = $uid_or_record[$v];
 				}
@@ -4350,7 +4326,7 @@ final class t3lib_div {
 
 				// Divide file reference into extension key, directory (if any) and base name:
 			list($file_extKey, $file_extPath) = explode('/', substr($fileRef, strlen($validatedPrefix)), 2);
-			$temp = self::revExplode('/', $file_extPath, 2);
+			$temp = t3lib_utility_Array::reverseExplode('/', $file_extPath, 2);
 			if (count($temp) == 1) {
 				array_unshift($temp, '');
 			} // Add empty first-entry if not there.
@@ -4488,7 +4464,7 @@ final class t3lib_div {
 
 			// Check file-reference prefix; if found, require_once() the file (should be library of code)
 		if (strpos($funcName, ':') !== FALSE) {
-			list($file, $funcRef) = self::revExplode(':', $funcName, 2);
+			list($file, $funcRef) = t3lib_utility_Array::reverseExplode(':', $funcName, 2);
 			$requireFile = self::getFileAbsFileName($file);
 			if ($requireFile) {
 				self::requireOnce($requireFile);
@@ -4596,7 +4572,7 @@ final class t3lib_div {
 
 				// Check file-reference prefix; if found, require_once() the file (should be library of code)
 			if (strpos($classRef, ':') !== FALSE) {
-				list($file, $class) = self::revExplode(':', $classRef, 2);
+				list($file, $class) = t3lib_utility_Array::reverseExplode(':', $classRef, 2);
 				$requireFile = self::getFileAbsFileName($file);
 				if ($requireFile) {
 					self::requireOnce($requireFile);
@@ -4843,7 +4819,7 @@ final class t3lib_div {
 		$error = FALSE;
 
 		if (!is_array($excludeServiceKeys)) {
-			$excludeServiceKeys = self::trimExplode(',', $excludeServiceKeys, 1);
+			$excludeServiceKeys = t3lib_utility_Array::trimExplode(',', $excludeServiceKeys, 1);
 		}
 		while ($info = t3lib_extMgm::findService($serviceType, $serviceSubType, $excludeServiceKeys)) {
 
@@ -4985,7 +4961,7 @@ final class t3lib_div {
 			// Headers must be separated by CRLF according to RFC 2822, not just LF.
 			// But many servers (Gmail, for example) behave incorectly and want only LF.
 			// So we stick to LF in all cases.
-		$headers = trim(implode(LF, self::trimExplode(LF, $headers, TRUE))); // Make sure no empty lines are there.
+		$headers = trim(implode(LF, t3lib_utility_Array::trimExplode(LF, $headers, TRUE))); // Make sure no empty lines are there.
 
 
 		return t3lib_utility_Mail::mail($email, $subject, $message, $headers);
@@ -5439,7 +5415,7 @@ final class t3lib_div {
 	public static function arrayToLogString(array $arr, $valueList = array(), $valueLength = 20) {
 		$str = '';
 		if (!is_array($valueList)) {
-			$valueList = self::trimExplode(',', $valueList, 1);
+			$valueList = t3lib_utility_Array::trimExplode(',', $valueList, 1);
 		}
 		$valListCnt = count($valueList);
 		foreach ($arr as $key => $value) {
@@ -5555,7 +5531,7 @@ final class t3lib_div {
 			$headersList = headers_list();
 			foreach ($headersList as $header) {
 					// split it up at the :
-				list($key, $value) = self::trimExplode(':', $header, TRUE);
+				list($key, $value) = t3lib_utility_Array::trimExplode(':', $header, TRUE);
 					// check if we have a Content-Encoding other than 'None'
 				if (strtolower($key) === 'content-encoding' && strtolower($value) !== 'none') {
 					header('Content-Encoding: None');
