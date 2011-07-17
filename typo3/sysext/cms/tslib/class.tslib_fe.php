@@ -1611,8 +1611,10 @@
 	 *
 	 * @return	array		Preview configuration array from sys_preview record.
 	 * @see t3lib_BEfunc::compilePreviewKeyword()
+	 * @deprecated since TYPO3 4.6, should be removed in TYPO3 4.8, this is now in Tx_Version
 	 */
-	function ADMCMD_preview(){
+	function ADMCMD_preview() {
+		t3lib_div::logDeprecatedFunction();
 		$inputCode = t3lib_div::_GP('ADMCMD_prev');
 
 			// If no inputcode and a cookie is set, load input code from cookie:
@@ -1688,6 +1690,7 @@
 	 * @param	array		Preview configuration, see ADMCMD_preview()
 	 * @return	void
 	 * @see ADMCMD_preview(), index_ts.php
+	 * @deprecated since TYPO3 4.6, should be removed in TYPO3 4.8, this is now in Tx_Version
 	 */
 	function ADMCMD_preview_postInit(array $previewConfig){
 			// Clear cookies:
