@@ -146,6 +146,7 @@ class tx_install extends t3lib_install {
 		'session',
 		'SPL',
 		'standard',
+		'openssl',
 		'xml',
 		'zlib'
 	);
@@ -203,6 +204,11 @@ class tx_install extends t3lib_install {
 						'</em><br /><br />You need to install and enable these modules first to be able to install TYPO3.',
 					1294587482
 				);
+			}
+				// Load saltedpasswords if possible
+			$saltedpasswordsLoaderFile = $this->backPath . 'sysext/saltedpasswords/classes/class.tx_saltedpasswords_autoloader.php';
+			if (@is_file($saltedpasswordsLoaderFile)) {
+				include($saltedpasswordsLoaderFile);
 			}
 		}
 		$this->redirect_url = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('redirect_url'));
