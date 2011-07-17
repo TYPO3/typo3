@@ -5098,30 +5098,13 @@ final class t3lib_div {
 	 * @see makeRedirectUrl()
 	 */
 	public static function substUrlsInPlainText($message, $urlmode = '76', $index_script_url = '') {
-			// Substitute URLs with shorter links:
-		foreach (array('http', 'https') as $protocol) {
-			$urlSplit = explode($protocol . '://', $message);
-			foreach ($urlSplit as $c => &$v) {
-				if ($c) {
-					$newParts = preg_split('/\s|[<>"{}|\\\^`()\']/', $v, 2);
-					$newURL = $protocol . '://' . $newParts[0];
-
-					switch ((string) $urlmode) {
-						case 'all':
-							$newURL = self::makeRedirectUrl($newURL, 0, $index_script_url);
-							break;
-						case '76':
-							$newURL = self::makeRedirectUrl($newURL, 76, $index_script_url);
-							break;
-					}
-					$v = $newURL . substr($v, strlen($newParts[0]));
-				}
-			}
-			unset($v);
-			$message = implode('', $urlSplit);
-		}
-
-		return $message;
+		$messageSubstituted = preg_replace(
+			'/(http|https):\/\/.+(?=[\]\.\?]*([\! \'"()<>]+|$))/eiU',
+			'self::makeRedirectUrl("\\0",' . intval($urlmode) . ',"' . $index_script_url . '")',
+			$message
+		);
+//		var_dump($messageSubstituted);die();
+		return $messageSubstituted;
 	}
 
 	/**

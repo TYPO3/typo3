@@ -3196,5 +3196,45 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			t3lib_div::hasValidClassPrefix('customPrefix_foo', array('customPrefix_'))
 		);
 	}
+
+	///////////////////////////////////////////////////
+	// Tests concerning substUrlsInPlainText
+	///////////////////////////////////////////////////
+
+	/**
+	 * @return array
+	 */
+	public function substUrlsInPlainTextDataProvider() {
+		$urlMatch = 'http://example.com/index.php\?RDCT=[0-9a-z]{20}';
+		return array(
+			array('http://only-url.com', '|^' . $urlMatch . '$|'),
+			array('https://only-secure-url.com', '|^' . $urlMatch . '$|'),
+			array('A http://url in the sentence.', '|^A ' . $urlMatch . ' in the sentence\.$|'),
+			array('URL in round brackets (http://www.example.com) in the sentence.', '|^URL in round brackets \(' . $urlMatch . '\) in the sentence.$|'),
+			array('URL in square brackets [http://www.example.com/a/b.php?c[d]=e] in the sentence.', '|^URL in square brackets \[' . $urlMatch .'\] in the sentence.$|'),
+			array('URL in square brackets at the end of the sentence [http://www.example.com/a/b.php?c[d]=e].', '|^URL in square brackets at the end of the sentence \[' . $urlMatch . '].$|'),
+			array('Square brackets in the http://www.url.com?tt_news[uid]=1', '|^Square brackets in the ' . $urlMatch . '$|'),
+			array('URL with http://dot.com.', '|^URL with ' . $urlMatch . '.$|'),
+			array('URL in <a href="http://www.example.com/">a tag</a>', '|^URL in <a href="' . $urlMatch . '">a tag</a\>$|'),
+			array('URL in HTML <b>http://www.example.com</b><br />', '|^URL in HTML <b>' . $urlMatch . '</b><br />$|'),
+			array('URL with http://username@example.com/', '|^URL with ' . $urlMatch . '$|'),
+			array('Secret in URL http://username:secret@example.com', '|^Secret in URL ' . $urlMatch . '$|'),
+			array('URL in quotation marks "http://example.com"', '|^URL in quotation marks "' . $urlMatch . '"$|'),
+			array('URL with umlauts http://müller.de', '|^URL with umlauts ' . $urlMatch . '$|'),
+			array("Multiline\ntext with a http://url.com", "|^Multiline\ntext with a " . $urlMatch . '$|s'),
+			array('http://www.shout.com!', '|^' . $urlMatch . '!$|'),
+			array('And with two URLs http://www.two.com/abc http://urls.com/abc?x=1&y=2', '|^And with two URLs ' . $urlMatch . ' ' . $urlMatch . '$|'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider substUrlsInPlainTextDataProvider
+	 * @param string $input Text to recognise URLs from
+	 * @param string $expected Text with correctly detected URLs
+	 */
+	public function substUrlsInPlainText($input, $expectedPreg) {
+		$this->assertTrue(preg_match($expectedPreg, t3lib_div::substUrlsInPlainText($input, 1, 'http://example.com/index.php')) == 1);
+	}
 }
 ?>
