@@ -194,6 +194,12 @@ class tx_install extends t3lib_install {
 			include($dbalLoaderFile);
 		}
 
+			// Load saltedpasswords if possible
+		$saltedpasswordsLoaderFile = $this->backPath . 'sysext/saltedpasswords/classes/class.tx_saltedpasswords_autoloader.php';
+		if (@is_file($saltedpasswordsLoaderFile)) {
+			include($saltedpasswordsLoaderFile);
+		}
+
 		if ($this->mode === '123') {
 				// Check for mandatory PHP modules
 			$missingPhpModules = $this->getMissingPhpModules();
