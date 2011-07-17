@@ -293,8 +293,8 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		}
 
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->setModuleTemplate(t3lib_extMgm::extPath('linkvalidator') . 'modfuncreport/mod_template.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		$this->doc->setModuleTemplate(t3lib_extMgm::extPath('linkvalidator') . 'modfuncreport/mod_template.html');
 
 		$this->relativePath = t3lib_extMgm::extRelPath('linkvalidator');
 		$this->pageRecord = t3lib_BEfunc::readPageAccess($this->pObj->id, $this->perms_clause);
