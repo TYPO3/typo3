@@ -109,7 +109,7 @@ CREATE TABLE fe_users (
   pid int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   username varchar(50) DEFAULT '' NOT NULL,
-  password varchar(40) DEFAULT '' NOT NULL,
+  password varchar(60) DEFAULT '' NOT NULL,
   usergroup tinytext,
   disable tinyint(4) unsigned DEFAULT '0' NOT NULL,
   starttime int(11) unsigned DEFAULT '0' NOT NULL,
