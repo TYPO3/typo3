@@ -1452,7 +1452,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				list($hour, $minutes) = t3lib_div::trimExplode(':', $time, TRUE);
 				list($day, $month, $year) = t3lib_div::trimExplode('-', $date, TRUE);
 					// Get a timestamp from all these parts
-				$timestamp = mktime($hour, $minutes, 0, $month, $day, $year);
+				$timestamp = @mktime($hour, $minutes, 0, $month, $day, $year);
 			}
 				// If the timestamp is still FALSE, throw an exception
 			if ($timestamp === FALSE) {
