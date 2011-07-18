@@ -970,7 +970,12 @@
 			$this->originalShortcutPage = $this->page;
 
 			$this->page = $this->getPageShortcut($this->page['shortcut'],$this->page['shortcut_mode'],$this->page['uid']);
-			$this->id = $this->page['uid'];
+			$redirectUrl = 'index.php?id=' . $this->page['uid'];
+			$redirectStatus = t3lib_utility_Http::HTTP_STATUS_301;
+			if ($this->page['shortcut_mode'] == t3lib_pageSelect::SHORTCUT_MODE_RANDOM_SUBPAGE) {
+				$redirectStatus = t3lib_utility_Http::HTTP_STATUS_302;
+			}
+			t3lib_utility_Http::redirect($redirectUrl, $redirectStatus);
 		}
 
 			// Gets the rootLine
