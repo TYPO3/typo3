@@ -2623,6 +2623,29 @@
 		}
 	}
 
+	function checkShortcutForRedirect() {
+		if (!empty($this->originalShortcutPage) && $this->originalShortcutPage['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT) {
+        		$linkVars = t3lib_div::trimExplode(',', (string) $this->config['config']['linkVars']);
+			if (!empty($linkVars)) {
+				$getParams = t3lib_div::_GET();
+				foreach($linkVars as $var) {
+					if (isset($getParams[$var])) {
+						$value = rawurlencode($getParams[$var]);
+						if (!empty($value)) {
+							$this->linkVars .= '&' . $var . '=' . $value;
+						}
+					}
+				}
+			}
+			$lcObj = t3lib_div::makeInstance('tslib_cObj');
+			$url = $lcObj->typoLink_URL(array('parameter' => $this->page['uid']));
+			$status = t3lib_utility_Http::HTTP_STATUS_301;
+			if ($this->originalShortcutPage['shortcut_mode'] == t3lib_pageSelect::SHORTCUT_MODE_RANDOM_SUBPAGE) {
+				$status = t3lib_utility_Http::HTTP_STATUS_307;
+			}
+			t3lib_utility_Http::redirect($url, $status);
+		}
+	}
 
 
 
