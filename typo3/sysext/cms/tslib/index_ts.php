@@ -394,6 +394,11 @@ switch($TSFE->checkDataSubmission())	{
 	break;
 }
 
+// *******************************
+// Check for shortcut page and redirect
+// *******************************
+$TSFE->checkShortcutForRedirect();
+
 
 // ********************************
 // Generate page

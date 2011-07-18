@@ -1418,10 +1418,20 @@ class tslib_menu {
 					$natVal = $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
 				break;
 				case 'CUR':
-					$natVal = $this->isCurrent($this->menuArr[$key]['uid'], $this->getMPvar($key));
+					if ($this->menuArr[$key]['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT) {
+						$shortcut = $GLOBALS['TSFE']->getPageShortcut($this->menuArr[$key]['shortcut'], $this->menuArr[$key]['shortcut_mode'], $this->menuArr[$key]['uid']);
+						$natVal = $this->isCurrent($shortcut['uid'], $this->getMPvar($key));
+					} else {
+						$natVal = $this->isCurrent($this->menuArr[$key]['uid'], $this->getMPvar($key));
+					}
 				break;
 				case 'CURIFSUB':
-					$natVal = $this->isCurrent($this->menuArr[$key]['uid'], $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
+					if ($this->menuArr[$key]['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT) {
+						$shortcut = $GLOBALS['TSFE']->getPageShortcut($this->menuArr[$key]['shortcut'], $this->menuArr[$key]['shortcut_mode'], $this->menuArr[$key]['uid']);
+						$natVal = $this->isCurrent($shortcut['uid'], $this->getMPvar($key)) && $this->isSubMenu($shortcut['uid']);
+					} else {
+						$natVal = $this->isCurrent($this->menuArr[$key]['uid'], $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
+					}
 				break;
 				case 'USR':
 					$natVal = $this->menuArr[$key]['fe_group'];
