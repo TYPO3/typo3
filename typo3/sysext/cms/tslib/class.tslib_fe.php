@@ -2647,6 +2647,44 @@
 		}
 	}
 
+	/**
+	 * Redirect to target page, if the current page is a Shortcut.
+	 *
+	 * If the current page is of type shortcut and accessed directly via its URL, this function redirects to the
+	 * Shortcut target using a Location header.
+	 *
+	 * @return void If page is not a Shortcut, redirects and exits otherwise
+	 */
+	public function checkPageForShortcutRedirect() {
+
+		if (!empty($this->originalShortcutPage) && $this->originalShortcutPage['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT) {
+			$linkVars = t3lib_div::trimExplode(',', (string) $this->config['config']['linkVars']);
+			if (!empty($linkVars)) {
+				$getData = t3lib_div::_GET();
+				foreach ($linkVars as $key) {
+					if (isset($getData[$key])) {
+						$value = rawurlencode($getData[$key]);
+						if (!empty($value)) {
+							$this->linkVars .= '&' . $key . '=' . $value;
+						}
+					}
+				}
+			}
+
+				// instantiate tslib_content to generate the correct target URL
+			$cObj = t3lib_div::makeInstance('tslib_cObj');
+			$redirectUrl = $cObj->typoLink_URL(array('parameter' => $this->page['uid']));
+
+				// HTTP Status code header - dependent on shortcut type
+			$redirectStatus = t3lib_utility_Http::HTTP_STATUS_301;
+			if ($this->originalShortcutPage['shortcut_mode'] == t3lib_pageSelect::SHORTCUT_MODE_RANDOM_SUBPAGE) {
+				$redirectStatus = t3lib_utility_Http::HTTP_STATUS_307;
+			}
+
+				// redirect and exit
+			t3lib_utility_Http::redirect($redirectUrl, $redirectStatus);
+		}
+	}
 
 
 
