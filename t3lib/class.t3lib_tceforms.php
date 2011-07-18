@@ -682,6 +682,13 @@ class t3lib_TCEforms {
 
 			// Get the TCA configuration for the current field:
 		$PA['fieldConf'] = $GLOBALS['TCA'][$table]['columns'][$field];
+
+			// Make query workspace/versioning-aware
+		if (!isset($PA['fieldConf']['config']['foreign_table_where'])) {
+			$PA['fieldConf']['config']['foreign_table_where'] = '';
+		}
+		$PA['fieldConf']['config']['foreign_table_where'] .= t3lib_BEfunc::versioningPlaceholderClause($PA['fieldConf']['config']['foreign_table']);
+
 		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type']; // Using "form_type" locally in this script
 
 		$skipThisField = $this->inline->skipField($table, $field, $row, $PA['fieldConf']['config']);
