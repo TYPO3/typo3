@@ -1941,18 +1941,7 @@
 	 * @see getFromCache(), getLockHash()
 	 */
 	function getHash()	{
-		$this->hash_base = serialize(
-			array(
-				'all' => $this->all,
-				'id' => intval($this->id),
-				'type' => intval($this->type),
-				'gr_list' => (string)$this->gr_list,
-				'MP' => (string)$this->MP,
-				'cHash' => $this->cHash_array,
-				'domainStartPage' => $this->domainStartPage,
-			)
-		);
-
+		$this->hash_base = $this->createHashBase(FALSE);
 		return md5($this->hash_base);
 	}
 
@@ -1965,18 +1954,49 @@
 	 * @see getFromCache(), getHash()
 	 */
 	function getLockHash()	{
-		$lockHash = serialize(
-			array(
-				'id' => intval($this->id),
-				'type' => intval($this->type),
-				'gr_list' => (string)$this->gr_list,
-				'MP' => (string)$this->MP,
-				'cHash' => $this->cHash_array,
-				'domainStartPage' => $this->domainStartPage,
-			)
+		$lockHash = $this->createHashBase(TRUE);
+		return md5($lockHash);
+	}
+
+
+	/**
+	 * Calculates the cache-hash (or the lock-hash)
+	 * This hash is unique to the template,
+	 * the variables ->id, ->type, ->gr_list (list of groups), 
+	 * ->MP (Mount Points) and cHash array
+	 * Used to get and later store the cached data.
+	 * 
+	 * @param boolean $createLockHashBase whether to create the lock hash, which doesn't contain the "this->all" (the template information)
+	 * @return string the serialized hash base
+	 */
+	protected function createHashBase($createLockHashBase = FALSE) {
+		$hashParameters = array(
+			'id'      => intval($this->id),
+			'type'    => intval($this->type),
+			'gr_list' => (string) $this->gr_list,
+			'MP'      => (string) $this->MP,
+			'cHash'   => $this->cHash_array,
+			'domainStartPage' => $this->domainStartPage
 		);
 
-		return md5($lockHash);
+			// include the template information if we shouldn't create a lock hash
+		if (!$createLockHashBase) {
+			$hashParameters['all'] = $this->all;
+		}
+
+			// Call hook to influence the hash calculation
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['createHashBase'])) {
+			$_params = array(
+				'pObj' => $this,
+				'hashParameters' => &$hashParameters,
+				'createLockHashBase' => $createLockHashBase
+			);
+			foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['createHashBase'] as $_funcRef) {
+				t3lib_div::callUserFunction($_funcRef, $_params, $this);
+			}
+		}
+
+		return serialize($hashParameters);
 	}
 
 	/**
