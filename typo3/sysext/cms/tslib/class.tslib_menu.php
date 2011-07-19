@@ -1171,6 +1171,31 @@ class tslib_menu {
 			$LD['target'] = '';
 		}
 
+			// Override url if using a shortcut
+		if ($this->menuArr[$key]['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT
+			&& !empty($this->menuArr[$key]['shortcut'])
+			&& $this->tmpl->setup['config.']['menuShortcutLinkToTargetPage']) {
+
+			$shortcut = NULL;
+			try {
+				$shortcut = $GLOBALS['TSFE']->getPageShortcut(
+					$this->menuArr[$key]['shortcut'],
+					$this->menuArr[$key]['shortcut_mode'],
+					$this->menuArr[$key]['uid']
+				);
+			} catch (Exception $ex) {
+				// shortcut configuration is wrong and Exception is thrown
+				// this will be catched with the next is_array() check
+			}
+
+			if (!is_array($shortcut)) {
+				return FALSE;
+			}
+
+				// Only setting url, not target
+			$LD['totalURL'] = $this->parent_cObj->typoLink_URL(array('parameter' => $shortcut['uid']));
+		}
+
 			// Manipulation in case of access restricted pages:
 		$this->changeLinksForAccessRestrictedPages($LD,$this->menuArr[$key],$mainTarget,$typeOverride);
 
