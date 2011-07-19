@@ -640,7 +640,7 @@ $TCA['pages_language_overlay'] = array(
 				'uploadfolder' => 'uploads/media',
 				'show_thumbs' => '1',
 				'size' => '3',
-				'maxitems' => '5',
+				'maxitems' => '100',
 				'minitems' => '0'
 			)
 		),
