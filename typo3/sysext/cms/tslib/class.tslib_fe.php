@@ -1962,7 +1962,7 @@
 
 			// Call hook to influence the hash
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['getHash'])) {
-			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['getHash'] as $_funcRef)       {
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['getHash'] as $_funcRef) {
 				$_params = array('pObj' => $this, 'hash_base' => $this->hash_base);
 				$this->hash_base = t3lib_div::callUserFunction($_funcRef, $_params, $this);
 			}
