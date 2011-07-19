@@ -2915,6 +2915,7 @@ class t3lib_TCEforms {
 		$PA['table'] = $table;
 		$PA['field'] = $field;
 		$PA['row'] = $row;
+		$PA['parameters'] = isset($PA['fieldConf']['config']['parameters']) ? $PA['fieldConf']['config']['parameters'] : array();
 
 		$PA['pObj'] =& $this;
 
