@@ -526,8 +526,8 @@ class SC_db_new {
 								$iconFile['system'] = t3lib_iconWorks::getSpriteIcon('apps-pagetree-root');
 							}
 
-							if($groupName == '' || $groupName != $_EXTKEY) {
-								$groupName = $_EXTKEY;
+							if ($groupName == '' || $groupName != $_EXTKEY) {
+								$groupName = empty($v['ctrl']['groupName']) ? $_EXTKEY : $v['ctrl']['groupName'];
 							}
 
 							$rowContent .= $newLink;
