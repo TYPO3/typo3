@@ -3,7 +3,7 @@
 #
 # Sets default Page TSConfig with minimal features for advanced users.
 #
-# @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+# @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
 # ***************************************************************************************
 
 RTE.default {
@@ -14,6 +14,6 @@ RTE.default {
 
 }
 
-	## front end RTE configuration for the general public (htmlArea RTE only)
+	## front end RTE configuration for the general public
 RTE.default.FE < RTE.default
 RTE.default.FE.FE >

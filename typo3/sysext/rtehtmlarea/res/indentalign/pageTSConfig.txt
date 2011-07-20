@@ -1,7 +1,7 @@
 # ***************************************************************************************
 # Compatibility configuration for indentation and alignment
 #
-# @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+# @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
 # ***************************************************************************************
 
 	## Default RTE configuration

@@ -42,7 +42,17 @@ class tx_rtehtmlarea_contextmenu extends tx_rtehtmlarea_api {
 	protected $convertToolbarForHtmlAreaArray = array ();
 
 	public function main($parentObject) {
-		return parent::main($parentObject) && !($this->htmlAreaRTE->client['browser'] == 'opera' || $this->thisConfig['disableContextMenu'] || $this->thisConfig['disableRightClick']);
+		$enabled = parent::main($parentObject) && !($this->htmlAreaRTE->client['browser'] == 'opera' || $this->thisConfig['contextMenu.']['disabled']);
+			// DEPRECATED properties will be removed in TYPO3 4.8
+		if (isset($this->thisConfig['disableRightClick'])) {
+			$enabled = $enabled && !$this->thisConfig['disableRightClick'];
+			$this->htmlAreaRTE->logDeprecatedProperty('disableRightClick', 'contextMenu.disabled', '4.8');
+		}
+		if (isset($this->thisConfig['disableContextMenu'])) {
+			$enabled = $enabled && !$this->thisConfig['disableContextMenu'];
+			$this->htmlAreaRTE->logDeprecatedProperty('disableContextMenu', 'contextMenu.disabled', '4.8');
+		}
+		return $enabled;
 	}
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension

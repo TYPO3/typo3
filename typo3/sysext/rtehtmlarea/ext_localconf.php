@@ -47,7 +47,7 @@ $_EXTCONF = unserialize($_EXTCONF);
 	// Add default RTE transformation configuration
 t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/proc/pageTSConfig.txt">');
 
-	// Add default Page TSonfig RTE configuration
+	// Add default Page TS Config RTE configuration
 if (strstr($_EXTCONF['defaultConfiguration'],'Minimal')) {
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] = 'Advanced';
 } elseif (strstr($_EXTCONF['defaultConfiguration'],'Demo')) {
@@ -57,7 +57,7 @@ if (strstr($_EXTCONF['defaultConfiguration'],'Minimal')) {
 }
 t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/' . strtolower($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration']) . '/pageTSConfig.txt">');
 
-	// Add default User TSonfig RTE configuration
+	// Add default User TS Config RTE configuration
 t3lib_extMgm::addUserTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/' . strtolower($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration']) . '/userTSConfig.txt">');
 
 	// Add Clear RTE Cache to Clear Cache menu
@@ -72,6 +72,9 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableCompressedScripts'] = (isset($_EXTC
 if (t3lib_extMgm::isLoaded('lorem_ipsum') && (TYPO3_MODE == 'BE')) {
     $TYPO3_CONF_VARS['EXTCONF']['lorem_ipsum']['RTE_insert'][] = 'tx_rtehtmlarea_base->loremIpsumInsert';
 }
+	// Set warning in the Update Wizard of the Install Tool for deprecated Page TS Config properties
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['checkForDeprecatedRtePageTSConfigProperties'] = 'EXT:'.$_EXTKEY.'/hooks/install/class.tx_rtehtmlarea_deprecatedrteproperties.php:&tx_rtehtmlarea_deprecatedRteProperties';
+
 	// Initialize plugin registration array
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins'] = array();
 	// Editor Mode configuration
@@ -135,7 +138,7 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['UserElements']['disableInFE'] 
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TextStyle'] = array();
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TextStyle']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/TextStyle/class.tx_rtehtmlarea_textstyle.php:&tx_rtehtmlarea_textstyle';
 
-	// Enable images and add default Page TSonfig RTE configuration for enabling images with the Minimal and Typical default configuration
+	// Enable images and add default Page TS Config RTE configuration for enabling images with the Minimal and Typical default configuration
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableImages'] = $_EXTCONF['enableImages'] ? $_EXTCONF['enableImages'] : 0;
 if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] == 'Demo') {
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableImages'] = 1;
@@ -160,7 +163,7 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Link']['objectReference']
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Link']['addIconsToSkin'] = 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Link']['disableInFE'] = 1;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Link']['additionalAttributes'] = 'rel';
-	// Add default Page TSonfig RTE configuration for enabling links accessibility icons
+	// Add default Page TS Config RTE configuration for enabling links accessibility icons
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableAccessibilityIcons'] = $_EXTCONF['enableAccessibilityIcons'] ? $_EXTCONF['enableAccessibilityIcons'] : 0;
 if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableAccessibilityIcons']) {
 	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/accessibilityicons/pageTSConfig.txt">');
