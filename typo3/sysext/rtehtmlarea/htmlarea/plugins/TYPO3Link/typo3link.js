@@ -352,10 +352,13 @@ HTMLArea.TYPO3Link = HTMLArea.Plugin.extend({
 				if (cur_class.trim()) {
 					node.className = cur_class.trim();
 				} else { 
-					if (!Ext.isIE) {
+					if (!Ext.isOpera) {
 						node.removeAttribute('class');
+						if (Ext.isIE) {
+							node.removeAttribute('className');
+						}
 					} else {
-						node.removeAttribute('className');
+						node.className = '';
 					}
 				}
 				if (cur_title.trim()) {
