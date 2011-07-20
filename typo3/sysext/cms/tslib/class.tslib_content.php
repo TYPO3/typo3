@@ -1318,15 +1318,17 @@ class tslib_cObj {
 						$target . $GLOBALS['TSFE']->ATagParams . '>';
 					$a2 = '</a>';
 					$GLOBALS['TSFE']->setJS('openPic');
+
+					if (isset($conf['stdWrap.'])) {
+						$string = $this->stdWrap($string, $conf['stdWrap.']);
+					}
 				} else {
 					$conf['linkParams.']['parameter'] = $url;
+					if (isset($conf['stdWrap.'])) {
+						$string = $this->stdWrap($string, $conf['stdWrap.']);
+					}
 					$string = $this->typoLink($string, $conf['linkParams.']);
 				}
-
-				if(isset($conf['stdWrap.'])) {
-					$string = $this->stdWrap($string, $conf['stdWrap.']);
-				}
-
 				$content = $a1 . $string . $a2;
 			}
 		}
