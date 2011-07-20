@@ -437,7 +437,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				$removedProperties = t3lib_div::trimExplode(',',$this->buttonConfig['properties.']['removeItems'],1);
 			}
 		}
-
+			// The following property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
 		if ($this->thisConfig['classesImage']) {
 			$classesImageArray = t3lib_div::trimExplode(',', $this->thisConfig['classesImage'], 1);
 			$classesImageJSOptions = '<option value=""></option>';
@@ -445,7 +445,13 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				$classesImageJSOptions .= '<option value="' .$class . '">' . $class . '</option>';
 			}
 		}
-
+		if ($this->buttonConfig['properties.']['class.']['allowedClasses']) {
+			$classesImageArray = t3lib_div::trimExplode(',', $this->buttonConfig['properties.']['class.']['allowedClasses'], 1);
+			$classesImageJSOptions = '<option value=""></option>';
+			foreach ($classesImageArray as $class) {
+				$classesImageJSOptions .= '<option value="' .$class . '">' . $class . '</option>';
+			}
+		}
 		$lockPlainWidth = 'false';
 		$lockPlainHeight = 'false';
 		if (is_array($this->thisConfig['proc.']) && $this->thisConfig['proc.']['plainImageMode']) {
@@ -493,7 +499,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				}
 			}
 			function printCurrentImageOptions() {
-				var classesImage = ' . ($this->thisConfig['classesImage']?'true':'false') . ';
+				var classesImage = ' . (($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage']) ? 'true' : 'false') . ';
 				if (classesImage) var styleSelector=\'<select id="iClass" name="iClass" style="width:140px;">' . $classesImageJSOptions  . '</select>\';
 				var floatSelector=\'<select id="iFloat" name="iFloat"><option value="">' . $LANG->getLL('notSet') . '</option><option value="none">' . $LANG->getLL('nonFloating') . '</option><option value="left">' . $LANG->getLL('left') . '</option><option value="right">' . $LANG->getLL('right') . '</option></select>\';
 				if (plugin.getButton("Language")) {
@@ -545,7 +551,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				return sz;
 			}
 			function setImageProperties() {
-				var classesImage = ' . ($this->thisConfig['classesImage']?'true':'false') . ';
+				var classesImage = ' . (($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage']) ? 'true' : 'false') . ';
 				if (selectedImageRef)	{
 					if (document.imageData.iWidth) {
 						if (document.imageData.iWidth.value && parseInt(document.imageData.iWidth.value)) {
@@ -648,7 +654,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				return false;
 			}
 			function insertImagePropertiesInForm()	{
-				var classesImage = ' . ($this->thisConfig['classesImage']?'true':'false') . ';
+				var classesImage = ' . (($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage']) ? 'true' : 'false') . ';
 				if (selectedImageRef)	{
 					var styleWidth, styleHeight, padding;
 					if (document.imageData.iWidth) {
@@ -1171,6 +1177,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['removeItems']) {
 			$allowedItems = array_diff($allowedItems, t3lib_div::trimExplode(',', $this->buttonConfig['options.']['removeItems'], 1));
 		} else {
+				// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
 			$allowedItems = array_diff($allowedItems, t3lib_div::trimExplode(',', $this->thisConfig['blindImageOptions'], 1));
 		}
 		return $allowedItems;

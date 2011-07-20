@@ -38,6 +38,7 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 		this.classesUrl = this.editorConfiguration.classesUrl;
 		this.pageTSconfiguration = this.editorConfiguration.buttons.blockstyle;
 		this.tags = (this.pageTSconfiguration && this.pageTSconfiguration.tags) ? this.pageTSconfiguration.tags : {};
+			// classesTag is DEPRECATED as of TYPO3 4.6 and will be removed#in TYPO3 4.8
 		if (typeof(this.editorConfiguration.classesTag) !== "undefined") {
 			if (this.editorConfiguration.classesTag.div) {
 				if (!this.tags.div) {
@@ -78,6 +79,7 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 		}
+			// Property this.editorConfiguration.showTagFreeClasses is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
 		this.showTagFreeClasses = (this.pageTSconfiguration ? this.pageTSconfiguration.showTagFreeClasses : false) || this.editorConfiguration.showTagFreeClasses;
 		this.prefixLabelWithClassName = this.pageTSconfiguration ? this.pageTSconfiguration.prefixLabelWithClassName : false;
 		this.postfixLabelWithClassName = this.pageTSconfiguration ? this.pageTSconfiguration.postfixLabelWithClassName : false;
@@ -303,7 +305,8 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 			}
 			Ext.iterate(allowedClasses, function (cssClass, value) {
 				var style = null;
-				if (!this.editor.config.disablePCexamples) {
+					// this.editor.config.disablePCexamples is deprecated as of TYPO3 4.6 and will be removed in TYPO 4.8
+				if (!this.pageTSconfiguration.disableStyleOnOptionLabel && !this.editor.config.disablePCexamples) {
 					if (HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) {
 						style = HTMLArea.classesValues[cssClass];
 					} else if (/-[0-9]+$/.test(cssClass) && HTMLArea.classesValues[RegExp.leftContext + '-'])  {
