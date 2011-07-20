@@ -114,6 +114,7 @@ $TCA['tt_content'] = array (
 $TCA['fe_users'] = array (
 	'ctrl' => array (
 		'label' => 'username',
+		'sortby' => 'username',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
