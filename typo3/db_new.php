@@ -551,7 +551,7 @@ class SC_db_new {
 							}
 
 							if($groupName == '' || $groupName != $_EXTKEY) {
-								$groupName = $_EXTKEY;
+								$groupName = (!isset($v['ctrl']['groupName'])) ? $_EXTKEY : $v['ctrl']['groupName'];
 							}
 
 							$rowContent .= $newLink;
