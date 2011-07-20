@@ -211,6 +211,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	public $classesAnchorClassTitle = array();
 	public $classesAnchorDefaultTarget = array();
 	public $classesAnchorJSOptions = array();
+	protected $defaultLinkTarget;
 
 	public $allowedItems;
 
@@ -372,13 +373,16 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 			// Processing the classes configuration
 		$classSelected = array();
-		if ($this->thisConfig['classesAnchor'] || $this->thisConfig['classesLinks']) {
+			// $this->thisConfig['classesAnchor'], $this->thisConfig['classesLinks'] and $this->thisConfig['classesAnchor.'] are deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+		if ($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesAnchor'] || $this->thisConfig['classesLinks']) {
 			$this->setClass = $this->curUrlArray['class'];
-			if ($this->thisConfig['classesAnchor']) {
-				$classesAnchorArray = t3lib_div::trimExplode(',',$this->thisConfig['classesAnchor'], 1);
-			} else {
-				$classesAnchorArray = t3lib_div::trimExplode(',',$this->thisConfig['classesLinks'], 1);
+			$classesAnchorArray = t3lib_div::trimExplode(',', $this->buttonConfig['properties.']['class.']['allowedClasses'], 1);
+			$classesAnchorArray = array_merge($classesAnchorArray, t3lib_div::trimExplode(',', $this->thisConfig['classesAnchor'], 1));
+			if (!count($classesAnchorArray) && $this->thisConfig['classesLinks']) {
+				$classesAnchorArray = t3lib_div::trimExplode(',', $this->thisConfig['classesLinks'], 1);
 			}
+			$classesAnchorConfigArray = array();
+			
 				// Collecting allowed classes and configured default values
 			$classesAnchor = array();
 			$classesAnchor['all'] = array();
@@ -389,7 +393,12 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 						$classesAnchor['all'][] = $conf['class'];
 						if (in_array($conf['type'], $this->anchorTypes)) {
 							$classesAnchor[$conf['type']][] = $conf['class'];
-							if (is_array($this->thisConfig['classesAnchor.']) && is_array($this->thisConfig['classesAnchor.']['default.']) && $this->thisConfig['classesAnchor.']['default.'][$conf['type']] == $conf['class']) {
+							if (($this->buttonConfig[$conf['type']. '.']['properties.']['class.']['default'] == $conf['class'])
+								|| (!isset($this->buttonConfig[$conf['type']. '.']['properties.']['class.']['default'])
+									&& $this->thisConfig['classesAnchor.']['default.'][$conf['type']] == $conf['class'])
+								|| (!isset($this->buttonConfig[$conf['type']. '.']['properties.']['class.']['default'])
+									&& !isset($this->thisConfig['classesAnchor.']['default.'][$conf['type']])
+									&& $this->buttonConfig['properties.']['class.']['default'] == $conf['class'])) {
 								$this->classesAnchorDefault[$conf['type']] = $conf['class'];
 								if ($conf['titleText']) {
 									$this->classesAnchorDefaultTitle[$conf['type']] = $this->getLLContent(trim($conf['titleText']));
@@ -429,14 +438,20 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			// Initializing the target value
 			// Unset the target if it is set to a value different than default and if no class is selected and the target field is not displayed
 			// In other words, do not forward the target if we changed tab and the target field is not displayed
-		$this->setTarget = (isset($this->curUrlArray['target'])
-				&& !(
-					($this->curUrlArray['target'] != $this->thisConfig['defaultLinkTarget'])
-					&& !$classSelected[$this->act]
-					&& is_array($this->buttonConfig['targetSelector.']) && $this->buttonConfig['targetSelector.']['disabled'] && is_array($this->buttonConfig['popupSelector.']) && $this->buttonConfig['popupSelector.']['disabled'])
-				) ? $this->curUrlArray['target'] : '';
-		if ($this->thisConfig['defaultLinkTarget'] && !isset($this->curUrlArray['target']))	{
-			$this->setTarget=$this->thisConfig['defaultLinkTarget'];
+			// Property $this->thisConfig['defaultLinkTarget'] is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+		$this->defaultLinkTarget = isset($this->buttonConfig['properties.']['target.']['default']) ? $this->buttonConfig['properties.']['target.']['default'] : (isset($this->thisConfig['defaultLinkTarget']) ? $this->thisConfig['defaultLinkTarget'] : '');
+		$this->setTarget = '';
+		if (isset($this->curUrlArray['target']) && !(
+				$this->curUrlArray['target'] != $this->defaultLinkTarget
+				&& !$classSelected[$this->act]
+				&& is_array($this->buttonConfig['targetSelector.']) && $this->buttonConfig['targetSelector.']['disabled'] 
+				&& is_array($this->buttonConfig['popupSelector.']) && $this->buttonConfig['popupSelector.']['disabled']
+				)
+			) {
+			$this->setTarget = $this->curUrlArray['target'];
+		}
+		if ($this->defaultLinkTarget && !isset($this->curUrlArray['target'])) {
+			$this->setTarget = $this->defaultLinkTarget;
 		}
 			// Initializing additional attributes
 		if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['additionalAttributes']) {
@@ -600,7 +615,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			// Starting content:
 		$content=$this->doc->startPage($LANG->getLL('Insert/Modify Link',1));
 
-			// Initializing the action value, possibly removing blinded values etc:
+			// Initializing the action value, possibly adding/removing values
 		$this->allowedItems = explode(',','page,file,url,mail,spec');
 
 			// Calling hook for extra options
@@ -611,6 +626,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['removeItems']) {
 			$this->allowedItems = array_diff($this->allowedItems,t3lib_div::trimExplode(',',$this->buttonConfig['options.']['removeItems'],1));
 		} else {
+				// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
 			$this->allowedItems = array_diff($this->allowedItems,t3lib_div::trimExplode(',',$this->thisConfig['blindLinkOptions'],1));
 		}
 		reset($this->allowedItems);
@@ -1051,7 +1067,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 										browse_links_setTarget(anchorClass[\'target\']);
 									} else if (document.ltargetform.ltarget && document.getElementById(\'ltargetrow\').style.display == \'none\') {
 											// Reset target to default if field is not displayed and class has no configured target
-										document.ltargetform.ltarget.value = \''. ($this->thisConfig['defaultLinkTarget']?$this->thisConfig['defaultLinkTarget']:'') .'\';
+										document.ltargetform.ltarget.value = \''. ($this->defaultLinkTarget ? $this->defaultLinkTarget : '') .'\';
 										browse_links_setTarget(document.ltargetform.ltarget.value);
 									}
 									break;

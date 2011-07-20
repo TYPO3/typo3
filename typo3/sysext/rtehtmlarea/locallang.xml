@@ -23,6 +23,7 @@
 			<label index="rteHeight">Height of the RTE in pixels</label>
 			<label index="rteResize">Make RTE resizable</label>
 			<label index="rteMaxHeight">Maximal height of resizable RTE in pixels</label>
+			<label index="deprecatedPropertyMessage">Page TSConfig property "%1$s" used on page id #%4$s is DEPRECATED and will be removed in TYPO3 %3$s. Use "%2$s" instead.</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">
