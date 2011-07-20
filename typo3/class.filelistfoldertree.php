@@ -65,6 +65,13 @@ class filelistFolderTree extends t3lib_folderTree {
 	var $ajaxStatus = FALSE; // Indicates, whether the ajax call was successful, i.e. the requested page has been found
 
 	/**
+	 * Init parent class
+	 */
+	public function __construct() {
+		parent::__construct();
+	}
+
+	/**
 	 * Compatibility constructor.
 	 *
 	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
