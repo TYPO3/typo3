@@ -104,7 +104,11 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlarea_api {
 			if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['formatblock.'])) {
 					// Removing elements
 				if ($this->thisConfig['buttons.']['formatblock.']['removeItems']) {
-					$hideItems =  t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList(t3lib_div::strtolower($this->thisConfig['buttons.']['formatblock.']['removeItems'])), 1);
+					if ($this->htmlAreaRTE->cleanList($this->thisConfig['buttons.']['formatblock.']['removeItems']) == '*') {
+						$hideItems = array_diff(array_keys($defaultBlockElements), array('none'));
+					} else {
+						$hideItems =  t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList(t3lib_div::strtolower($this->thisConfig['buttons.']['formatblock.']['removeItems'])), 1);
+					}
 				}
 					// Adding elements
 				if ($this->thisConfig['buttons.']['formatblock.']['addItems']) {
@@ -122,8 +126,10 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlarea_api {
 				$postfixLabelWithTag = ($this->thisConfig['buttons.']['formatblock.']['postfixLabelWithTag']) ? TRUE : $postfixLabelWithTag;
 			}
 				// Processing old style configuration for hiding paragraphs
-			if ($this->thisConfig['hidePStyleItems']) {
+				// DEPRECATED property will be removed in TYPO3 4.8
+			if (isset($this->thisConfig['hidePStyleItems'])) {
 				$hideItems = array_merge($hideItems, t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList(t3lib_div::strtolower($this->thisConfig['hidePStyleItems'])), 1));
+				$this->htmlAreaRTE->logDeprecatedProperty('hidePStyleItems', 'buttons.formatblock.removeItems', '4.8');
 			}
 				// Adding custom items
 			$blockElementsOrder = array_merge(t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($blockElementsOrder), 1), $addItems);
@@ -134,25 +140,23 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlarea_api {
 			}
 				// Localizing the options
 			$blockElementsOptions = array();
-			if ($this->htmlAreaRTE->cleanList($this->thisConfig['hidePStyleItems']) != '*') {
-				$labels = array();
-				if (is_array($this->thisConfig['buttons.'])
-						&& is_array($this->thisConfig['buttons.']['formatblock.'])
-						&& is_array($this->thisConfig['buttons.']['formatblock.']['items.'])) {
-					$labels = $this->thisConfig['buttons.']['formatblock.']['items.'];
+			$labels = array();
+			if (is_array($this->thisConfig['buttons.'])
+					&& is_array($this->thisConfig['buttons.']['formatblock.'])
+					&& is_array($this->thisConfig['buttons.']['formatblock.']['items.'])) {
+				$labels = $this->thisConfig['buttons.']['formatblock.']['items.'];
+			}
+			foreach ($blockElementsOrder as $item) {
+				if ($this->htmlAreaRTE->is_FE()) {
+					$blockElementsOptions[$item] = $TSFE->getLLL($this->defaultBlockElements[$item], $this->LOCAL_LANG);
+				} else {
+					$blockElementsOptions[$item] = $LANG->getLL($this->defaultBlockElements[$item]);
 				}
-				foreach ($blockElementsOrder as $item) {
-					if ($this->htmlAreaRTE->is_FE()) {
-						$blockElementsOptions[$item] = $TSFE->getLLL($this->defaultBlockElements[$item],$this->LOCAL_LANG);
-					} else {
-						$blockElementsOptions[$item] = $LANG->getLL($this->defaultBlockElements[$item]);
-					}
 					// Getting custom labels
-					if (is_array($labels[$item.'.']) && $labels[$item.'.']['label']) {
-						$blockElementsOptions[$item] = $this->htmlAreaRTE->getPageConfigLabel($labels[$item.'.']['label'], 0);
-					}
-					$blockElementsOptions[$item] = (($prefixLabelWithTag && $item != 'none')?($item . ' - '):'') . $blockElementsOptions[$item] . (($postfixLabelWithTag && $item != 'none')?(' - ' . $item):'');
+				if (is_array($labels[$item.'.']) && $labels[$item.'.']['label']) {
+					$blockElementsOptions[$item] = $this->htmlAreaRTE->getPageConfigLabel($labels[$item.'.']['label'], 0);
 				}
+				$blockElementsOptions[$item] = (($prefixLabelWithTag && $item != 'none')?($item . ' - '):'') . $blockElementsOptions[$item] . (($postfixLabelWithTag && $item != 'none')?(' - ' . $item):'');
 			}
 
 			$first = array_shift($blockElementsOptions);

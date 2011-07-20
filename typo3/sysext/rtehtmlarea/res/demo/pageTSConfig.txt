@@ -57,7 +57,7 @@ RTE.classes {
 	}
 }
 
-	## Anchor classes configuration for use by the anchor accesibility feature (htmlArea RTE only)
+	## Anchor classes configuration for use by the anchor accesibility feature
 RTE.classesAnchor {
 	externalLink {
 		class = external-link
@@ -106,7 +106,7 @@ RTE.classesAnchor {
 	## Default RTE configuration
 RTE.default {
 
-		## Markup options (htmlArea RTE only)
+		## Markup options
 	enableWordClean = 1
 	removeTrailingBR = 1
 	removeComments = 1
@@ -125,56 +125,14 @@ RTE.default {
 		## Toolbar options
 	showButtons = *
 
-		## More toolbar options (htmlArea RTE only)
+		## More toolbar options
 	keepButtonGroupTogether = 1
 
-		## Enable status bar (htmlArea RTE only)
+		## Enable status bar
 	showStatusBar =  1
 
-		## Add default example styles
-		## Left, center, right and justify alignment of text in block elements
-	inlineStyle.text-alignment (
-		p.align-left, h1.align-left, h2.align-left, h3.align-left, h4.align-left, h5.align-left, h6.align-left, div.align-left, address.align-left { text-align: left; }
-		p.align-center, h1.align-center, h2.align-center, h3.align-center, h4.align-center, h5.align-center, h6.align-center, div.align-center, address.align-center { text-align: center; }
-		p.align-right, h1.align-right, h2.align-right, h3.align-right, h4.align-right, h5.align-right, h6.align-right, div.align-right, address.align-right { text-align: right; }
-		p.align-justify, h1.align-justify, h2.align-justify, h3.align-justify, h4.align-justify, h5.align-justify, h6.align-justify, div.align-justify, address.align-justify { text-align: justify; }
-	)
-		## Two frame examples taken from the example CSS file of CSS Styled Content extension and applied to p and table block elements.
-	inlineStyle.frames (
-		p.csc-frame-frame1, table.csc-frame-frame1 { background-color: #EDEBF1; padding: 2px 4px 2px 4px; border: 1px solid #333333; }
-		p.csc-frame-frame2, table.csc-frame-frame2 { background-color: #F5FFAA; padding: 2px 4px 2px 4px; border: 1px solid #333333; }
-	)
-		## Bullet styles for unordered lists.
-	inlineStyle.ul (
-		ul.component-items { color: #186900; list-style-type: circle; }
-		ul.action-items { color: #8A0020; list-style-image: url(img/red_arrow_bullet.gif); }
-	)
-		## Numbering styles for ordered lists.
-	inlineStyle.ol (
-		ol.component-items-ordered { color: #10007B; list-style-type: lower-roman; }
-		ol.action-items-ordered { color: #8A0020; list-style-type: lower-greek; }
-	)
-		## Three inline text colors taken from the color scheme of CSS Styled Content extension.
-	inlineStyle.inline-text (
-		span.important { color: #8A0020; }
-		span.name-of-person { color: #10007B; }
-		span.detail { color: #186900; }
-	)
-		## Default selectors for the default configuration of the link accessibity feature.
-	inlineStyle.accessibility (
-		a.external-link {}
-		a.external-link-new-window {}
-		a.internal-link {}
-		a.internal-link-new-window {}
-		a.download {}
-		a.mail {}
-	)
-		## Default selector for indentation.
-	inlineStyle.indentation (
-		div.indent { margin-left: 2em; }
-	)
-
-		## Use stylesheet file rather than the above mainStyleOverride and inlineStyle properties to style the contents (htmlArea RTE only)
+		## Property ignoreMainStyleOverride is DEPRECATED as of TYPO3 4.6 and will be removed in TYPO3 4.8
+		## Use stylesheet file rather than mainStyleOverride and inlineStyle properties to style the contents
 		## When RTE.default.contentCSS is not specified, file EXT:rtehtmlarea/res/contentcsss/default.css is used.
 	ignoreMainStyleOverride = 1
 
@@ -192,50 +150,46 @@ RTE.default {
 		indent
 	)
 
-		## classesParagraph, classesTable, classesTD, classesLinks, classesCharacter
-		## Classic RTE: Specify the list of class selectors that should be presented in the RTE interface:
-		## htmlArea RTE: Restrict the list of class selectors presented by the RTE to the following:
-	classesParagraph (
+		## Restrict the list of class selectors presented by the RTE to the following for the specified tags:
+	buttons.blockstyle.tags.div.allowedClasses (
 		align-left, align-center, align-right,
 		csc-frame-frame1, csc-frame-frame2
 	)
-	classesTable = csc-frame-frame1, csc-frame-frame2
-	classesTD = align-left, align-center, align-right
-	classesLinks = external-link, external-link-new-window, internal-link, internal-link-new-window, download, mail
-	classesCharacter = important, name-of-person, detail
+	buttons.blockstyle.tags.table.allowedClasses = csc-frame-frame1, csc-frame-frame2
+	buttons.blockstyle.tags.td.allowedClasses = align-left, align-center, align-right
+	buttons.textstyle.tags.span.allowedClasses = important, name-of-person, detail
 
-		## Configuration of the anchor accessibility feature (htmlArea RTE only)
-		## These classes should also be in the list of allowedClasses.
-	classesAnchor = external-link, external-link-new-window, internal-link, internal-link-new-window, download, mail
-	classesAnchor.default {
-		page = internal-link
-		url = external-link-new-window
-		file = download
-		mail = mail
-	}
+		## Configuration of links
+		## These classes should also be in the list proc.allowedClasses
+	buttons.link.properties.class.allowedClasses = external-link, external-link-new-window, internal-link, internal-link-new-window, download, mail
+	buttons.link.page.properties.class.default = internal-link
+	buttons.link.url.properties.class.default = external-link-new-window
+	buttons.link.file.properties.class.default = download
+	buttons.link.mail.properties.class.default = mail
 
-		## Show all applicable class selectors available in the style sheet file (htmlArea RTE only)
-	showTagFreeClasses = 1
+		## Show all applicable class selectors available in the style sheet file
+	buttons.blockstyle.showTagFreeClasses = 1
+	buttons.textstyle.showTagFreeClasses = 1
 
-		## Configuration specific to the table button or TableOperations feature (htmlArea RTE only)
+		## Configuration specific to the table button or TableOperations feature
 		## Use the context menu instead of the toolbar for table operations, but keep toggleborders button in toolbar
 		## Show borders on table creation
 	hideTableOperationsInToolbar = 1
 	buttons.toggleborders.keepInToolbar = 1
 	buttons.toggleborders.setOnTableCreation = 1
 
-		## Configuration specific to the inserttag button or QuickTag feature (htmlArea RTE only)
+		## Configuration specific to the inserttag button or QuickTag feature
 		## Do not allow insertion of the following tags
 	buttons.inserttag.denyTags = font, u, strike, table
 
-		## Configuration specific to the bold and italic buttons (htmlArea RTE only)
+		## Configuration specific to the bold and italic buttons
 		## Add hotkeys associated with bold, italic, strikethrough and underline buttons
 	buttons.bold.hotKey = b
 	buttons.italic.hotKey = i
 	buttons.strikethrough.hotKey = s
 	buttons.underline.hotkey = u
 
-		## Configuration specific to the spellcheck button or SpellCheck feature (htmlArea RTE only)
+		## Configuration specific to the spellcheck button or SpellCheck feature
 		## Enable the use of personal dictionaries
 	buttons.spellcheck.enablePersonalDictionaries = 1
 }
@@ -243,7 +197,7 @@ RTE.default {
 	## Use same processing as on entry to database to clean content pasted into the editor
 RTE.default.enableWordClean.HTMLparser < RTE.default.proc.entryHTMLparser_db
 
-	## front end RTE configuration (htmlArea RTE only)
+	## front end RTE configuration
 RTE.default.FE < RTE.default
 RTE.default.FE.FE >
 RTE.default.FE.userElements >

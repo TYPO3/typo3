@@ -3,7 +3,7 @@
 #
 # ***************************************************************************************
 
-	## Anchor classes configuration for use by the anchor accessibility feature (htmlArea RTE only)
+	## Anchor classes configuration for use by the anchor accessibility feature
 	## Add inline icons to the links
 RTE.classesAnchor {
 	externalLink {

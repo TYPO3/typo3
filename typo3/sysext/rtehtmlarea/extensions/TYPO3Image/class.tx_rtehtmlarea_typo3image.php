@@ -44,12 +44,25 @@ class tx_rtehtmlarea_typo3image extends tx_rtehtmlarea_api {
 		);
 
 	public function main($parentObject) {
+		$enabled = parent::main($parentObject);
+			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+		if (isset($this->thisConfig['blindImageOptions'])) {
+			$this->htmlAreaRTE->logDeprecatedProperty('blindImageOptions', 'buttons.image.options.removeItems', '4.8');
+		}
+			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+		if (isset($this->thisConfig['classesImage'])) {
+			$this->htmlAreaRTE->logDeprecatedProperty('classesImage', 'buttons.image.properties.class.allowedClasses', '4.8');
+		}
+			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+		if (isset($this->thisConfig['disableTYPO3Browsers'])) {
+			$this->htmlAreaRTE->logDeprecatedProperty('disableTYPO3Browsers', 'buttons.image.TYPO3Browser.disabled', '4.8');
+		}
 			// Check if this should be enabled based on extension configuration and Page TSConfig
 			// The 'Minimal' and 'Typical' default configurations include Page TSConfig that removes images on the way to the database
-		return parent::main($parentObject)
-			&& !($this->thisConfig['proc.']['entryHTMLparser_db.']['tags.']['img.']['allowedAttribs'] == '0' && $this->thisConfig['proc.']['entryHTMLparser_db.']['tags.']['img.']['rmTagIfNoAttrib'] == '1')
+		$enabled = $enabled && !($this->thisConfig['proc.']['entryHTMLparser_db.']['tags.']['img.']['allowedAttribs'] == '0' && $this->thisConfig['proc.']['entryHTMLparser_db.']['tags.']['img.']['rmTagIfNoAttrib'] == '1')
 			&& !$this->thisConfig['disableTYPO3Browsers']
 			&& !$this->thisConfig['buttons.']['image.']['TYPO3Browser.']['disabled'];
+		return $enabled;
 	}
 
 	/**
