@@ -39,6 +39,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 		this.classesUrl = this.editorConfiguration.classesUrl;
 		this.pageTSconfiguration = this.editorConfiguration.buttons.textstyle;
 		this.tags = (this.pageTSconfiguration && this.pageTSconfiguration.tags) ? this.pageTSconfiguration.tags : {};
+			// classesTag is DEPRECATED as of TYPO3 4.6 and will be removed#in TYPO3 4.8
 		if (typeof(this.editorConfiguration.classesTag) !== "undefined") {
 			if (this.editorConfiguration.classesTag.span) {
 				if (!this.tags.span) {
@@ -63,6 +64,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 		}
+			// Property this.editorConfiguration.showTagFreeClasses is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
 		this.showTagFreeClasses = (this.pageTSconfiguration ? this.pageTSconfiguration.showTagFreeClasses : false) || this.editorConfiguration.showTagFreeClasses;
 		this.prefixLabelWithClassName = this.pageTSconfiguration ? this.pageTSconfiguration.prefixLabelWithClassName : false;
 		this.postfixLabelWithClassName = this.pageTSconfiguration ? this.pageTSconfiguration.postfixLabelWithClassName : false;
@@ -342,7 +344,8 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 				store.add(new store.recordType({
 					text: value,
 					value: cssClass,
-					style: (!this.editor.config.disablePCexamples && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) ? HTMLArea.classesValues[cssClass] : null
+						// this.editor.config.disablePCexamples is deprecated as of TYPO3 4.6 and will be removed in TYPO 4.8
+					style: (!(this.pageTSconfiguration && this.pageTSconfiguration.disableStyleOnOptionLabel) && !this.editor.config.disablePCexamples && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) ? HTMLArea.classesValues[cssClass] : null
 				}));
 			}, this);
 		}
