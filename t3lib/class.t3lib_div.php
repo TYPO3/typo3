@@ -4679,8 +4679,8 @@ final class t3lib_div {
 	 * @return object the created instance
 	 */
 	public static function makeInstance($className) {
-		if ($className === '') {
-			throw new InvalidArgumentException('$classname must not be empty.', 1288965219);
+		if (!is_string($className) || empty($className)) {
+			throw new InvalidArgumentException('$className must be a non empty string.', 1288965219);
 		}
 
 			// Determine final class name which must be instantiated, this takes XCLASS handling
