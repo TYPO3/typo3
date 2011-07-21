@@ -89,6 +89,14 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.+)\.(\d+)\.(php|js|css|png|jpg|gif|gzip)$ $1.$3 [L]
 
+# Basic security checks
+# Restrict access to deleted files in Recycler directories
+RewriteRule _recycler_/ - [F]
+# Restrict access to TypoScript files in default templates directories
+RewriteRule fileadmin/templates/.*(\.txt|\.ts)$ - [F]
+# Restrict access to Private extension directories
+RewriteRule typo3conf/ext/[^/]+/Resources/Private/ - [F]
+
 # Stop rewrite processing, if we are in the typo3/ directory.
 # For httpd.conf, use this line instead of the next one:
 # RewriteRule ^/TYPO3root/(typo3/|t3lib/|fileadmin/|typo3conf/|typo3temp/|uploads/|favicon\.ico) - [L]
