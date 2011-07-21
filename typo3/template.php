@@ -813,6 +813,7 @@ class template {
 		$this->pageRenderer->setHeadTag('<head>' . LF. '<!-- TYPO3 Script ID: '.htmlspecialchars($this->scriptID).' -->');
 		$this->pageRenderer->setCharSet($this->charset);
 		$this->pageRenderer->addMetaTag($this->generator());
+		$this->pageRenderer->addMetaTag('<meta name="robots" content="noindex,follow" />');
 		if ($this->useCompatibilityTag) {
 			$this->pageRenderer->addMetaTag($this->xUaCompatible());
 		}
