@@ -3969,7 +3969,7 @@ final class t3lib_div {
 		$authCode = substr(md5($authCode), 0, $codeLength);
 		return $authCode;
 	}
-<?
+
 	/**
 	 * Splits the input query-parameters into an array with certain parameters filtered out.
 	 * Used to create the cHash value
