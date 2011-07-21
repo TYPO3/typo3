@@ -40,6 +40,10 @@ strong {
     overflow: auto !important;
 }
 
+.t3-icon-em-extension-required {
+	cursor: default;
+}
+
 
 /* extension states */
 .state-alpha div {background-color:#d12438;color:#fff !important;font-weight:bold !important;}
