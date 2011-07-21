@@ -691,14 +691,14 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 * @dataProvider intInRangeForcesIntegerIntoDefaultBoundariesDataProvider
 	 */
 	public function intInRangeForcesIntegerIntoDefaultBoundaries($expected, $value) {
-		 $this->assertEquals($expected, t3lib_div::intInRange($value, 0));
+		$this->assertEquals($expected, t3lib_div::intInRange($value, 0));
 	}
 
 	/**
 	 * @test
 	 */
 	public function intInRangeSetsDefaultValueIfZeroValueIsGiven() {
-		 $this->assertEquals(42, t3lib_div::intInRange('', 0, 2000000000, 42));
+		$this->assertEquals(42, t3lib_div::intInRange('', 0, 2000000000, 42));
 	}
 
 	//////////////////////////////////
@@ -2810,6 +2810,24 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	public function makeInstanceWithEmptyClassNameThrowsException() {
 		t3lib_div::makeInstance('');
+	}
+
+	/**
+	* @test
+	*
+	* @expectedException InvalidArgumentException
+	*/
+	public function makeInstanceWithNullClassNameThrowsException() {
+		t3lib_div::makeInstance(NULL);
+	}
+
+	/**
+	* @test
+	*
+	* @expectedException InvalidArgumentException
+	*/
+	public function makeInstanceWithZeroStringClassNameThrowsException() {
+		t3lib_div::makeInstance(0);
 	}
 
 	/**
