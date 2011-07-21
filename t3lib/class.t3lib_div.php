@@ -4679,7 +4679,7 @@ final class t3lib_div {
 	 * @return object the created instance
 	 */
 	public static function makeInstance($className) {
-		if ($className === '') {
+		if (empty($className)) {
 			throw new InvalidArgumentException('$classname must not be empty.', 1288965219);
 		}
 
