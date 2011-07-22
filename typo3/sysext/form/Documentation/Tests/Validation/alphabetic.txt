@@ -1,0 +1,43 @@
+form.validation.alphabetic = FORM
+form.validation.alphabetic {
+	method = post
+	
+	rules {
+		1 = alphabetic
+		1 {
+			element = alphabetic1
+		}
+		2 = alphabetic
+		2 {
+			element = alphabetic2
+			allowWhiteSpace = 1
+		}
+	}
+	
+	# Alphabetic
+	10 = FIELDSET
+	10 {
+		legend = Alphabetic test
+		10 = TEXTLINE
+		10 {
+			label = no settings
+			value = 12345
+			name = alphabetic1
+		}
+		20 = TEXTLINE
+		20 {
+			label = allowWhiteSpace=1
+			value = 12345
+			name = alphabetic2
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

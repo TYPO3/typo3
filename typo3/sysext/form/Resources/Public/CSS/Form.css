@@ -1,0 +1,195 @@
+@CHARSET "UTF-8";
+
+form fieldset {
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+
+form legend {
+	margin-left: 1em;
+	color: #000000;
+	font-weight: bold;
+}
+
+form fieldset ol {
+	padding: 1em 1em 0 1em;
+	list-style: none;
+}
+
+form li {
+	overflow: hidden;
+	padding: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+form fieldset.submit {
+	border-style: none;
+}
+
+/**
+ * Normal label
+ * Left aligned, in front of input
+ */
+form li label {
+	float: left;
+	width: 13em;
+	margin-right: 1em;
+	vertical-align: baseline;
+}
+
+form li input + label,
+form li textarea + label,
+form li select + label {
+	float: none;
+	width: auto;
+	margin-right: 0;
+	margin-left: 1em;
+}
+
+form li textarea + label {
+	vertical-align: top;
+}
+
+label em,
+legend em {
+	display: block;
+	color: #060;
+	font-size: 85%;
+	font-style: normal;
+	text-transform: uppercase;
+}
+
+legend em {
+	position: absolute;
+}
+
+label strong,
+legend strong {
+	display: block;
+	color: #C00;
+	font-size: 85%;
+	font-weight: normal;
+	text-transform: uppercase;
+}
+
+legend strong {
+	position: absolute;
+	top: 1.4em;
+}
+
+/**
+ * Labels alignment right
+ */
+.labels-alignment-right label,
+.labels-alignment-right .fieldset-subgroup legend,
+.labels-alignment-right.fieldset-subgroup legend {
+	text-align: right;
+}
+
+/**
+ * Horizontal fieldset
+ */
+fieldset.fieldset-horizontal {
+	border-width: 0;
+}
+
+fieldset.fieldset-horizontal ol {
+	padding: 0;
+}
+
+fieldset.fieldset-horizontal li {
+	float: left;
+	padding: 0;
+	margin-right: 1em;
+}
+
+fieldset.fieldset-horizontal.label-below label {
+	display: block;
+	margin-left: 0;
+	margin-top: 0.2em;
+	font-size: 90%;
+	color: #999999;
+	text-align: left;
+}
+
+fieldset.fieldset-horizontal label em {
+	display: inline;
+}
+
+/**
+ * Subgroup fieldset
+ */
+fieldset.fieldset-subgroup {
+	margin-bottom: -2em;
+	border-style: none;
+}
+
+fieldset.fieldset-subgroup legend {
+	margin-left: 0;
+	padding: 0;
+	font-weight: normal;
+	width: 13em;
+}
+
+fieldset.fieldset-subgroup ol {
+	position: relative;
+	top: -1.4em;
+	margin: 0 0 0 14em;
+	padding: 0;
+}
+
+fieldset.fieldset-subgroup li {
+	padding: 0;
+}
+
+fieldset.fieldset-subgroup input + label {
+	float: none;
+	width: auto;
+	display: inline;
+	margin: 0 0 0 1em;
+}
+
+/**
+ * Labels as block
+ * Labels displayed above or below the input fields
+ */
+.labels-block label {
+	display: block;
+	float: none;
+	margin: 0 0 0.5em;
+	width: auto;
+}
+
+.labels-block input + label,
+.labels-block textarea + label {
+	margin: 0.5em 0 0;
+}
+
+.labels-block fieldset.fieldset-subgroup,
+fieldset.labels-block.fieldset-subgroup {
+	margin-bottom: 0;
+}
+
+.labels-block .fieldset-subgroup legend,
+.labels-block.fieldset-subgroup legend {
+	width: auto;
+}
+
+.labels-block .fieldset-subgroup legend em,
+.labels-block.fieldset-subgroup legend em {
+	position: relative;
+}
+
+.labels-block .fieldset-subgroup legend strong,
+.labels-block.fieldset-subgroup legend strong {
+	position: relative;
+	top: 0;
+}
+
+.labels-block .fieldset-subgroup ol,
+.labels-block.fieldset-subgroup ol {
+	top: 0;
+	margin: 0;
+	padding: 0.5em 0 0;
+}

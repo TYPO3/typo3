@@ -1,0 +1,226 @@
+form.attributes.checkbox = FORM
+form.attributes.checkbox {
+	method = post
+	
+	# Label test
+	10 = FIELDSET
+	10 {
+		legend = Label test
+		10 = CHECKBOX
+		10 {
+			label = label
+		}
+		20 = CHECKBOX
+		20 {
+			label.value = label.value
+		}
+		30 = CHECKBOX
+		30 {
+			label = TEXT
+			label {
+				value = TEXT cObj
+			}
+		}
+	}
+	
+	# Layout test
+	20 = FIELDSET
+	20 {
+		legend = Layout test
+		10 = CHECKBOX
+		10 {
+			label = label in front of input (default)
+		}
+		20 = CHECKBOX
+		20 {
+			layout (
+				<input />
+				<label />
+			)
+			label = label after input
+		}
+		30 = CHECKBOX
+		30 {
+			layout = <input />
+			value = No label
+		}
+	}
+	
+	# Accesskey
+	30 = FIELDSET
+	30 {
+		legend = Accesskey test
+		10 = CHECKBOX
+		10 {
+			label = This checkbox has an accesskey
+			accesskey = a
+		}
+	}
+	
+	# Alt
+	40 = FIELDSET
+	40 {
+		legend = Alt test
+		10 = CHECKBOX
+		10 {
+			label = This checkbox has an alt attribute
+			alt = This is the alt attribute content
+		}
+	}
+	
+	# Checked
+	50 = FIELDSET
+	50 {
+		legend = Checked test
+		10 = CHECKBOX
+		10 {
+			label = checked=1
+			checked = 1
+		}
+		20 = CHECKBOX
+		20 {
+			label = checked=0
+			checked = 0
+		}
+		30 = CHECKBOX
+		30 {
+			label = checked=checked
+			checked = checked
+		}
+	}
+	
+	# Class
+	60 = FIELDSET
+	60 {
+		legend = Class test
+		10 = CHECKBOX
+		10 {
+			label = This checkbox has a class attribute
+			class = classAtribute
+		}
+		20 = CHECKBOX
+		20 {
+			label = Multiple classes
+			class = class1 class2
+		}
+	}
+	
+	# Dir
+	70 = FIELDSET
+	70 {
+		legend = Dir test
+		10 = CHECKBOX
+		10 {
+			label = Dir ltr
+			dir = ltr
+		}
+		20 = CHECKBOX
+		20 {
+			label = Dir rtl
+			dir = rtl
+		}
+		30 = CHECKBOX
+		30 {
+			label = Wrong input in dir
+			dir = abc
+		}
+	}
+	
+	# Disabled
+	80 = FIELDSET
+	80 {
+		legend = Disabled test
+		10 = CHECKBOX
+		10 {
+			label = disabled=1
+			disabled = 1
+		}
+		20 = CHECKBOX
+		20 {
+			label = disabled=0
+			disabled = 0
+		}
+		30 = CHECKBOX
+		30 {
+			label = disabled=disabled
+			disabled = disabled
+		}
+	}
+	
+	# Id
+	90 = FIELDSET
+	90 {
+		legend = Id test
+		10 = CHECKBOX
+		10 {
+			label = This checkbox has an id attribute and the label a for attribute
+			id = checkboxId
+		}
+	}
+	
+	# Lang
+	100 = FIELDSET
+	100 {
+		legend = Lang test
+		10 = CHECKBOX
+		10 {
+			label = This checkbox has a lang attribute
+			lang = en-US
+		}
+	}
+	
+	# Name
+	110 = FIELDSET
+	110 {
+		legend = Name test
+		10 = CHECKBOX
+		10 {
+			label = This checkbox has a name attribute
+			name = checkboxName
+		}
+	}
+	
+	# Style
+	120 = FIELDSET
+	120 {
+		legend = style test
+		10 = CHECKBOX
+		10 {
+			label = This checkbox has a style attribute
+			style = width: 4em; height: 4em;
+		}
+	}
+	
+	# Tabindex
+	130 = FIELDSET
+	130 {
+		legend = Tabindex test
+		10 = CHECKBOX
+		10 {
+			label = This checkbox has a tabindex attribute
+			tabindex = 1
+		}
+	}
+	
+	# Title
+	140 = FIELDSET
+	140 {
+		legend = Title test
+		10 = CHECKBOX
+		10 {
+			label = This checkbox has a title attribute
+			title = This is the title text
+		}
+	}
+	
+	# Value
+	150 = FIELDSET
+	150 {
+		legend = Value test
+		10 = CHECKBOX
+		10 {
+			label = This checkbox has a value attribute
+			value = checkboxValue
+		}
+	}
+}

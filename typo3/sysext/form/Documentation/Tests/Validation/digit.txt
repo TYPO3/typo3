@@ -1,0 +1,32 @@
+form.validation.digit = FORM
+form.validation.digit {
+	method = post
+	
+	rules {
+		1 = digit
+		1 {
+			element = digit1
+		}
+	}
+	
+	# Digit
+	10 = FIELDSET
+	10 {
+		legend = Digit test
+		10 = TEXTLINE
+		10 {
+			label = Digit
+			value = abc!@#
+			name = digit1
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

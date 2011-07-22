@@ -1,0 +1,39 @@
+form.attributes.checkboxgroup = FORM
+form.attributes.checkboxgroup {
+	method = post
+	
+	rules {
+		1 = required
+		1 {
+			element = checkboxgroup
+		}
+	}
+
+	10 = CHECKBOXGROUP
+	10 {
+		legend = Checkbox Group test
+		name = checkboxgroup
+
+		10 = CHECKBOX
+		10 {
+			label = Option 1
+		}
+		20 = CHECKBOX
+		20 {
+			label = Option 2
+		}
+		30 = CHECKBOX
+		30 {
+			label = Option 3
+		}
+	}
+	
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}
