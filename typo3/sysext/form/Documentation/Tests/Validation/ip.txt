@@ -1,0 +1,32 @@
+form.validation.ip = FORM
+form.validation.ip {
+	method = post
+	
+	rules {
+		1 = ip
+		1 {
+			element = ip1
+		}
+	}
+	
+	# IP
+	10 = FIELDSET
+	10 {
+		legend = IP test
+		10 = TEXTLINE
+		10 {
+			label = Type an IP
+			value = abcde
+			name = ip1
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

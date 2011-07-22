@@ -1,0 +1,32 @@
+form.validation.uri = FORM
+form.validation.uri {
+	method = post
+	
+	rules {
+		1 = uri
+		1 {
+			element = uri1
+		}
+	}
+	
+	# URI
+	10 = FIELDSET
+	10 {
+		legend = URI test
+		10 = TEXTLINE
+		10 {
+			label = URI
+			value = abcde
+			name = uri1
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

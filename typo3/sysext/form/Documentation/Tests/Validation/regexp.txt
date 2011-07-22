@@ -1,0 +1,33 @@
+form.validation.regexp = FORM
+form.validation.regexp {
+	method = post
+	
+	rules {
+		1 = regexp
+		1 {
+			element = regexp1
+			expression = /\b(([01]?\d?\d|2[0-4]\d|25[0-5])\.){3}([01]?\d?\d|2[0-4]\d|25[0-5])\b/
+		}
+	}
+	
+	# Regexp
+	10 = FIELDSET
+	10 {
+		legend = Regexp test
+		10 = TEXTLINE
+		10 {
+			label = IP number
+			value = abcde
+			name = regexp1
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

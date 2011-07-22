@@ -1,0 +1,32 @@
+form.validation.date = FORM
+form.validation.date {
+	method = post
+	
+	rules {
+		1 = date
+		1 {
+			element = date1
+		}
+	}
+	
+	# Date
+	10 = FIELDSET
+	10 {
+		legend = Date test
+		10 = TEXTLINE
+		10 {
+			label = Date %e-%m-%Y
+			value = 34-13-01
+			name = date1
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

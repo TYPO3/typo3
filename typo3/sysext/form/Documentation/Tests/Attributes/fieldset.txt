@@ -1,0 +1,96 @@
+form.attributes.fieldset = FORM
+form.attributes.fieldset {
+	method = post
+	
+	# Legend
+	10 = FIELDSET
+	10 {
+		legend = Legend test
+		10 = FIELDSET
+		10 {
+			legend = legend
+		}
+		20 = FIELDSET
+		20 {
+			legend.value = legend.value
+		}
+		30 = FIELDSET
+		30 {
+			legend = TEXT
+			legend {
+				value = TEXT
+			}
+		}
+	}
+	
+	# Layout
+	20 = FIELDSET
+	20 {
+		legend = Layout test
+		10 = FIELDSET
+		10 {
+			legend = This should be at the bottom in the HTML source
+			layout (
+				<fieldset>
+				<containerWrap />
+				<legend />
+				</fieldset>
+			)
+			10 = BUTTON
+		}
+	}
+	
+	# Class
+	30 = FIELDSET
+	30 {
+		legend = Class test
+		10 = FIELDSET
+		10 {
+			legend = One class
+			class = fieldsetClass
+		}
+		20 = FIELDSET
+		20 {
+			legend = Multiple classes
+			class = fieldsetClass1 fieldsetClass2
+		}
+	}
+	
+	# Dir
+	40 = FIELDSET
+	40 {
+		legend = Dir test
+		10 = FIELDSET
+		10 {
+			legend = ltr
+			dir = ltr
+		}
+		20 = FIELDSET
+		20 {
+			legend = rtl
+			dir = rtl
+		}
+	}
+	
+	# Id
+	50 = FIELDSET
+	50 {
+		legend = Id test
+		id = fieldsetId
+	}
+	
+	# Lang
+	60 = FIELDSET
+	60 {
+		legend = Lang test
+		lang = en-US
+	}
+	
+	# Style
+	70 = FIELDSET
+	70 {
+		legend = Style test
+		style = background-color: red;
+	}
+}
+	

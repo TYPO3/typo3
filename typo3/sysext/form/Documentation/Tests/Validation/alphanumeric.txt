@@ -1,0 +1,43 @@
+form.validation.alphanumeric = FORM
+form.validation.alphanumeric {
+	method = post
+	
+	rules {
+		1 = alphanumeric
+		1 {
+			element = alphanumeric1
+		}
+		2 = alphanumeric
+		2 {
+			element = alphanumeric2
+			allowWhiteSpace = 1
+		}
+	}
+	
+	# Alpahnumeric
+	10 = FIELDSET
+	10 {
+		legend = Alphanumeric test
+		10 = TEXTLINE
+		10 {
+			label = no settings
+			value = !@#$%^
+			name = alphanumeric1
+		}
+		20 = TEXTLINE
+		20 {
+			label = allowWhiteSpace=1
+			value = !@#$%^
+			name = alphanumeric2
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

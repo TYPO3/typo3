@@ -1,0 +1,47 @@
+form.validation.between = FORM
+form.validation.between {
+	method = post
+	
+	rules {
+		1 = between
+		1 {
+			element = between1
+			minimum = 5
+			maximum = 10
+		}
+		2 = between
+		2 {
+			element = between2
+			minimum = 5
+			maximum = 10
+			inclusive = 1
+		}
+	}
+	
+	# Between
+	10 = FIELDSET
+	10 {
+		legend = Between test
+		10 = TEXTLINE
+		10 {
+			label = Between 5 and 10
+			value = abcdef
+			name = between1
+		}
+		20 = TEXTLINE
+		20 {
+			label = Between 5 and 10, inclusive
+			value = abcdef
+			name = between2
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}
