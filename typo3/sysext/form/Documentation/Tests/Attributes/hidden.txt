@@ -1,0 +1,76 @@
+form.attributes.hidden = FORM
+form.attributes.hidden {
+	method = post
+	
+	# Class
+	10 = FIELDSET
+	10 {
+		legend = Class test
+		10 = FIELDSET
+		10 {
+			legend = Single class
+			10 = HIDDEN
+			10 {
+				class = hiddenClass
+			}
+		}
+		20 = FIELDSET
+		20 {
+			legend = Multiple classes
+			10 = HIDDEN
+			10 {
+				class = hiddenClass1 hiddenClass2
+			}
+		}
+	}
+	
+	# Id
+	20 = FIELDSET
+	20 {
+		legend = Id test
+		10 = HIDDEN
+		10 {
+			id = hiddenId
+		}
+	}
+
+	# Lang
+	30 = FIELDSET
+	30 {
+		legend = Lang test
+		10 = HIDDEN
+		10 {
+			lang = en-US
+		}
+	}
+	
+	# Name
+	40 = FIELDSET
+	40 {
+		legend = Name test
+		10 = HIDDEN
+		10 {
+			name = hiddenName
+		}
+	}
+	
+	# Style
+	50 = FIELDSET
+	50 {
+		legend = Style test
+		10 = HIDDEN
+		10 {
+			style = background-color: red;
+		}
+	}
+	
+	# Value
+	60 = FIELDSET
+	60 {
+		legend = Value test
+		10 = HIDDEN
+		10 {
+			value = hiddenValue
+		}
+	}
+}

@@ -1,0 +1,39 @@
+form.attributes.radiogroup = FORM
+form.attributes.radiogroup {
+	method = post
+	
+	rules {
+		1 = required
+		1 {
+			element = radiogroup
+		}
+	}
+
+	10 = RADIOGROUP
+	10 {
+		legend = Radio Group test
+		name = radiogroup
+
+		10 = RADIO
+		10 {
+			label = Option 1
+		}
+		20 = RADIO
+		20 {
+			label = Option 2
+		}
+		30 = RADIO
+		30 {
+			label = Option 3
+		}
+	}
+	
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

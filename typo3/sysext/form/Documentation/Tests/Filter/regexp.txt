@@ -1,0 +1,48 @@
+form.filter.regexp = FORM
+form.filter.regexp {
+	method = post
+	
+	rules {
+		1 = required
+		1 {
+			element = textlineField
+		}
+	}
+	
+	# Regular expression
+	10 = FIELDSET
+	10 {
+		legend = Regular expression test
+		10 = TEXTLINE
+		10 {
+			label = using regexp /[^a-zA-Z]/u
+			value = John Doe 3 #$
+			filters {
+				1 = regexp
+				1 {
+					expression = /[^a-zA-Z]/u
+				}
+			}
+		}
+	}
+	
+	# A textline which must be empty to test the above
+	30 = FIELDSET
+	30 {
+		legend = Leave empty to get the form back after submitting
+		10 = TEXTLINE
+		10 {
+			name = textlineField
+			label = Leave me empty
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}
