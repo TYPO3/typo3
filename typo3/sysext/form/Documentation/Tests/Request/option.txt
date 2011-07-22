@@ -1,0 +1,127 @@
+form.request.option = FORM
+form.request.option {
+	method = post
+	
+	rules {
+		1 = required
+		1 {
+			element = textlineField
+		}
+	}
+	
+	# Selected test
+	10 = FIELDSET
+	10 {
+		legend = Selected test
+		10 = SELECT
+		10 {
+			1 = OPTION
+			1 {
+				data = Select me
+				value = option2
+			}
+			2 = OPTION
+			2 {
+				data = Deselect me
+				selected = selected
+				value = option1
+			}
+		}
+	}
+	
+	# Regular test
+	20 = FIELDSET
+	20 {
+		legend = Regular test
+		10 = SELECT
+		10 {
+			1 = OPTION
+			1 {
+				data = Option 1
+				value = option1
+			}
+			2 = OPTION
+			2 {
+				data = Option 2
+				value = option2
+			}
+			3 = OPTION
+			3 {
+				data = Option 3
+				value = option3
+			}
+		}
+	}
+	
+	# Multiple test
+	30 = FIELDSET
+	30 {
+		legend = Regular test
+		10 = SELECT
+		10 {
+			multiple = multiple
+			1 = OPTION
+			1 {
+				data = Option 1
+				value = option1
+			}
+			2 = OPTION
+			2 {
+				data = Option 2
+				value = option2
+			}
+			3 = OPTION
+			3 {
+				data = Option 3
+				value = option3
+			}
+		}
+	}
+	
+	# Multiple selected test
+	40 = FIELDSET
+	40 {
+		legend = Regular test
+		10 = SELECT
+		10 {
+			multiple = multiple
+			1 = OPTION
+			1 {
+				data = Uncheck me 1
+				value = option1
+				selected = selected
+			}
+			2 = OPTION
+			2 {
+				data = Check me
+				value = option2
+			}
+			3 = OPTION
+			3 {
+				data = Uncheck me 2
+				value = option3
+				selected = selected
+			}
+		}
+	}
+	
+	# A textline which must be empty to test the above
+	50 = FIELDSET
+	50 {
+		legend = Leave empty to get the form back after submitting
+		10 = TEXTLINE
+		10 {
+			name = textlineField
+			label = Leave me empty
+		}
+	}
+	
+	# Submit
+	60 = FIELDSET
+	60 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

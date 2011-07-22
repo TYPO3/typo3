@@ -1,0 +1,31 @@
+form.validation.required = FORM
+form.validation.required {
+	method = post
+	
+	rules {
+		1 = required
+		1 {
+			element = required1
+		}
+	}
+	
+	# Required
+	10 = FIELDSET
+	10 {
+		legend = Required test
+		10 = TEXTLINE
+		10 {
+			label = Leave empty to trigger error
+			name = required1
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}
