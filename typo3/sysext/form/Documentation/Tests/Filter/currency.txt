@@ -1,0 +1,68 @@
+form.filter.currency = FORM
+form.filter.currency {
+	method = post
+	
+	rules {
+		1 = required
+		1 {
+			element = textlineField
+		}
+	}
+	
+	# Currency
+	10 = FIELDSET
+	10 {
+		legend = Currency test
+		10 = TEXTLINE
+		10 {
+			label = no settings
+			value = John Doe 3 #$
+			filters {
+				1 = currency
+			}
+		}
+		20 = TEXTLINE
+		20 {
+			label = decimalPoint=,
+			value = John Doe 3 #$
+			filters {
+				1 = currency
+				1 {
+					decimalPoint = ,
+				}
+			}
+		}
+		30 = TEXTLINE
+		30 {
+			label = decimalPoint=, / thousandSeparator=space
+			value = John Doe 3 #$
+			filters {
+				1 = currency
+				1 {
+					decimalPoint = ,
+					thousandSeparator = space
+				}
+			}
+		}
+	}
+	
+	# A textline which must be empty to test the above
+	30 = FIELDSET
+	30 {
+		legend = Leave empty to get the form back after submitting
+		10 = TEXTLINE
+		10 {
+			name = textlineField
+			label = Leave me empty
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

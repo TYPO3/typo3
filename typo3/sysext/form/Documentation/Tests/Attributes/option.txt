@@ -1,0 +1,176 @@
+form.attributes.option = FORM
+form.attributes.option {
+	method = post
+	
+	# Data
+	10 = FIELDSET
+	10 {
+		legend = Data
+		10 = SELECT
+		10 {
+			1 = OPTION
+			1 {
+				data = optionData
+			}
+		}
+	}
+	
+	# Class
+	20 = FIELDSET
+	20 {
+		legend = Class
+		10 = SELECT
+		10 {
+			1 = OPTION
+			1 {
+				data = Single class
+				class = singleClass
+			}
+			2 = OPTION
+			2 {
+				data = Multiple classes
+				class = class1 class2
+			}
+		}
+	}
+	
+	# Disabled
+	30 = FIELDSET
+	30 {
+		legend = Disabled
+		10 = SELECT
+		10 {
+			1 = OPTION
+			1 {
+				data = disabled=1
+				disabled = 1
+			}
+			2 = OPTION
+			2 {
+				data = disabled=0
+				disabled = 0
+			}
+			3 = OPTION
+			3 {
+				data = disabled=disabled
+				disabled = disabled
+			}
+		}
+	}
+	
+	# Id
+	40 = FIELDSET
+	40 {
+		legend = Id
+		10 = SELECT
+		10 {
+			1 = OPTION
+			1 {
+				data = optionData
+				id = optionId
+			}
+		}
+	}
+	
+	# Label
+	50 = FIELDSET
+	50 {
+		legend = Label
+		10 = SELECT
+		10 {
+			1 = OPTION
+			1 {
+				data = This is a long data text
+				label = short
+			}
+		}
+	}
+	
+	# Lang
+	60 = FIELDSET
+	60 {
+		legend = Lang
+		10 = SELECT
+		10 {
+			1 = OPTION
+			1 {
+				data = optionData
+				lang = en-US
+			}
+		}
+	}
+	
+	# Selected
+	70 = FIELDSET
+	70 {
+		legend = Selected
+		10 = SELECT
+		10 {
+			1 = OPTION
+			1 {
+				data = selected=0
+				selected = 0
+			}
+			2 = OPTION
+			2 {
+				data = selected=1
+				selected = 1
+			}
+		}
+		20 = SELECT
+		20 {
+			1 = OPTION
+			1 {
+				data = selected=0
+				selected = 0
+			}
+			2 = OPTION
+			2 {
+				data = selected=selected
+				selected = selected
+			}
+		}
+	}
+	
+	# Style
+	80 = FIELDSET
+	80 {
+		legend = Style
+		10 = SELECT
+		10 {
+			1 = OPTION
+			1 {
+				data = optionData
+				style = height: 4em;
+			}
+		}
+	}
+	
+	# Title
+	90 = FIELDSET
+	90 {
+		legend = Title
+		10 = SELECT
+		10 {
+			1 = OPTION
+			1 {
+				data = optionData
+				title = This is the option title
+			}
+		}
+	}
+	
+	# Value
+	100 = FIELDSET
+	100 {
+		legend = Value
+		10 = SELECT
+		10 {
+			1 = OPTION
+			1 {
+				data = optionData
+				value = This is the option value
+			}
+		}
+	}
+}

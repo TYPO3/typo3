@@ -1,0 +1,33 @@
+form.validation.lessthan = FORM
+form.validation.lessthan {
+	method = post
+	
+	rules {
+		1 = lessthan
+		1 {
+			element = lessthan1
+			maximum = 10
+		}
+	}
+	
+	# Less than
+	10 = FIELDSET
+	10 {
+		legend = Less than test
+		10 = TEXTLINE
+		10 {
+			label = Less than
+			value = abcde
+			name = lessthan1
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

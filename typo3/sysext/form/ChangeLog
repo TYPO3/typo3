@@ -1,0 +1,180 @@
+2009-10-27  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Added inclusion of static TS in ext_tables.php
+	* Major refactoring: renaming folder and file names
+
+2009-02-04  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Added 'captcha' to captcha
+	* Added 'simple_captcha' to captcha
+	* Added 'wt_calculating_captcha' to captcha
+	* Added 'securimage' to captcha
+	* Added 'jm_recaptcha' to captcha
+
+2009-02-03  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Starting adding captcha object and validation
+	* Added sr_freecap to captcha
+
+2009-01-31  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Documentation
+	* Added possibility to have more than 1 checkbox with the same name. Now it's an array in tx_form_model_element_checkbox
+	* Changed setValue to checkFilterAndSetIncomingDataFromRequest in tx_form_model_element_option
+	* Changed the caching method in tx_form_controller_typoscript. Form will be a COA_INT from now on.
+
+2009-01-29  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Documentation
+
+2009-01-28  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Documentation
+
+2009-01-27  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Documentation
+
+2009-01-23  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Documentation
+
+2009-01-22  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Documentation
+
+2009-01-21  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Documentation
+
+2009-01-20  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Added class.tx_form_filter_removexss
+	* Added removexss filter to all form elements by default
+	* Added class.tx_form_filter_regexp
+	* Deleted class.tx_form_datahandler.php which was deprecated
+
+2009-01-16  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Adding filtered submitted data to form elements
+
+2009-01-15  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Starting inserting and filtering incoming data
+	* Finished filtering incoming data
+
+2009-01-14  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Writing the isValid methods for several validation rules
+
+2009-01-13  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Writing the isValid methods for several validation rules
+
+2009-01-09  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Cleanup in validation rules
+	* Added PHPdoc to validation rules
+
+2009-01-08  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Messages from validation rules
+
+2009-01-07  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Adding validation classes and methods
+	* Integrate validation into model
+
+2009-01-04  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Adding validation classes and methods
+	* Writing methods for making the messages
+
+2008-12-30  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Starting validation
+
+2008-12-29  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Added class="csc-form-xx" to element wraps
+	* Added javadoc to model_element
+	* Cleanup and adding javadoc documentation
+
+2008-12-28  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Mainly changes in views
+	
+2008-12-27  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Changing the views
+
+2008-12-24  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Big changes in views and models
+	
+2008-12-22  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* deleting old files in model
+	* Deleting model/elements folder
+	* Update of the model, big changes
+	* deleting form folder
+	* Changes to model
+
+2008-12-17  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Added filters alphabetic, alphanumeric, currency, digit, integer, lowercase, stripnewlines, titlecase, trim, uppercase
+	* Changing the models for configuration without Typoscript
+	
+2008-12-16  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Added class.tx_form_requesthandler
+	* Added class.tx_form_loader
+	* Start with filters
+
+2008-12-15  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Moved class.tx_form_attributes to model/attributes/
+	* Made layouthandler and localizationhandler singleton
+
+2008-12-14  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Finished select, optgroup and option
+	* Moved the attribute functionality to separate object
+	* Added locallang values to buttons when empty
+
+2008-12-13  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Adding select, optgroup and option
+
+2008-12-10  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Adding static layout class for changing layout of all elements
+	* Finishing layout handling
+	* Added localization handling
+
+2008-12-09  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* changed various methods _setAttribute... in class.tx_form_model_elements_abstract.php
+
+2008-12-08  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* changed various methods _setAttribute... in class.tx_form_model_elements_abstract.php
+
+2008-12-04  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* changed various methods _setAttribute... in class.tx_form_model_elements_abstract.php
+
+2008-12-03  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Some cleaning up, checking the javadoc comments and moving methods to abstract classes in view objects
+	* Adapting views, adding error and mandatory parts, cleaning up
+
+2008-12-02  Patrick Broens  <patrick@patrickbroens.nl>	
+	
+	* Making the element views
+	* Updated views, code cleaning
+	
+2008-12-01  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Start of FORM project. Basic groundwork of MVC
+	* Including error handling
