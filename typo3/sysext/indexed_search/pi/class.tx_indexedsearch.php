@@ -1329,8 +1329,16 @@ class tx_indexedsearch extends tslib_pibase {
 			// Adding search field value
 		if (isset($this->piVars['sword']) && $this->piVars['sword'] != '') {
 			$markerArray['###SWORD_VALUE###'] = htmlspecialchars($this->piVars['sword']);
+			$markerArray['###PLACEHOLDER###'] = '';
 		} else {
-			$markerArray['###SWORD_VALUE###'] = $this->pi_getLL('default_search_word_entry');
+				// Add a HTML5 placeholder attribute if the configured doctype allows it
+			if ($GLOBALS['TSFE']->config['config']['doctype'] == 'html5') {
+				$markerArray['###SWORD_VALUE###'] = '';
+				$markerArray['###PLACEHOLDER###'] = 'placeholder="' . $this->pi_getLL('default_search_word_entry') . '"';
+			} else {
+				$markerArray['###SWORD_VALUE###'] = $this->pi_getLL('default_search_word_entry');
+				$markerArray['###PLACEHOLDER###'] = '';
+			}
 		}
 
 
