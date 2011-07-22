@@ -133,6 +133,18 @@ class tx_felogin_pi1 extends tslib_pibase {
 			if (!$GLOBALS['TSFE']->fe_user->cookieId) {
 				$content .= $this->cObj->stdWrap($this->pi_getLL('cookie_warning', '', 1), $this->conf['cookieWarning_stdWrap.']);
 			} else {
+					// Add hook for extra processing before redirect
+				if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['beforeRedirect']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['beforeRedirect'])) {
+					$_params = array(
+						'loginType'   => $this->logintype,
+						'redirectUrl' => &$this->redirectUrl,
+					);
+					foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['beforeRedirect'] as $_funcRef) {
+						if ($_funcRef) {
+							t3lib_div::callUserFunction($_funcRef, $_params, $this);
+						}
+					}
+				}
 				t3lib_utility_Http::redirect($this->redirectUrl);
 			}
 		}
