@@ -1,0 +1,250 @@
+form.attributes.textline = FORM
+form.attributes.textline {
+	method = post
+	
+	# Label test
+	10 = FIELDSET
+	10 {
+		legend = Label test
+		10 = TEXTLINE
+		10 {
+			label = label
+		}
+		20 = TEXTLINE
+		20 {
+			label.value = label.value
+		}
+		30 = TEXTLINE
+		30 {
+			label = TEXT
+			label {
+				value = TEXT cObj
+			}
+		}
+	}
+	
+	# Layout test
+	20 = FIELDSET
+	20 {
+		legend = Layout test
+		10 = TEXTLINE
+		10 {
+			label = label in front of input (default)
+		}
+		20 = TEXTLINE
+		20 {
+			layout (
+				<input />
+				<label />
+			)
+			label = label after input
+		}
+		30 = TEXTLINE
+		30 {
+			value = No label
+		}
+	}
+
+	# Accesskey
+	30 = FIELDSET
+	30 {
+		legend = Accesskey test
+		10 = TEXTLINE
+		10 {
+			label = This textline has an accesskey
+			accesskey = a
+		}
+	}
+	
+	# Alt
+	40 = FIELDSET
+	40 {
+		legend = Alt test
+		10 = TEXTLINE
+		10 {
+			label = This submit button has an alt attribute
+			alt = This is the alt attribute content
+		}
+	}
+
+	# Class
+	50 = FIELDSET
+	50 {
+		legend = Class test
+		10 = TEXTLINE
+		10 {
+			label = This textline has a class attribute
+			class = classAtribute
+		}
+		20 = TEXTLINE
+		20 {
+			label = Multiple classes
+			class = class1 class2
+		}
+	}
+	
+	# Dir
+	60 = FIELDSET
+	60 {
+		legend = Dir test
+		10 = TEXTLINE
+		10 {
+			label = Dir ltr
+			dir = ltr
+		}
+		20 = TEXTLINE
+		20 {
+			label = Dir rtl
+			dir = rtl
+		}
+		30 = TEXTLINE
+		30 {
+			label = Wrong input in dir
+			dir = abc
+		}
+	}
+	
+	# Disabled
+	70 = FIELDSET
+	70 {
+		legend = Disabled test
+		10 = TEXTLINE
+		10 {
+			label = disabled=1
+			disabled = 1
+		}
+		20 = TEXTLINE
+		20 {
+			label = disabled=0
+			disabled = 0
+		}
+		30 = TEXTLINE
+		30 {
+			label = disabled=disabled
+			disabled = disabled
+		}
+	}
+	
+	# Id
+	80 = FIELDSET
+	80 {
+		legend = Id test
+		10 = TEXTLINE
+		10 {
+			label = This textline has an id attribute and the label a for attribute
+			id = textlineId
+		}
+	}
+	
+	# Lang
+	90 = FIELDSET
+	90 {
+		legend = Lang test
+		10 = TEXTLINE
+		10 {
+			label = This textline has a lang attribute
+			lang = en-US
+		}
+	}
+	
+	# Maxlength
+	100 = FIELDSET
+	100 {
+		legend = Maxlength test
+		10 = TEXTLINE
+		10 {
+			label = This textline has a maxlength attribute
+			maxlength = 10
+		}
+	}
+	
+	# Name
+	110 = FIELDSET
+	110 {
+		legend = Name test
+		10 = TEXTLINE
+		10 {
+			label = This textline has a name attribute
+			name = textlineName
+		}
+	}
+	
+	# Readonly
+	120 = FIELDSET
+	120 {
+		legend = Readonly test
+		10 = TEXTLINE
+		10 {
+			label = readonly=1
+			readonly = 1
+			data = This should be readonly
+		}
+		20 = TEXTLINE
+		20 {
+			label = readonly=0
+			readonly = 0
+			data = This should NOT be readonly
+		}
+		30 = TEXTLINE
+		30 {
+			label = readonly=readonly
+			readonly = readonly
+			data = This should be readonly
+		}
+	}
+	
+	# Size
+	130 = FIELDSET
+	130 {
+		legend = Size test
+		10 = TEXTLINE
+		10 {
+			label = This textline has a size attribute
+			size = 10
+		}
+	}
+	
+	# Style
+	140 = FIELDSET
+	140 {
+		legend = style test
+		10 = TEXTLINE
+		10 {
+			label = This textline has a style attribute
+			style = border: 1px solid #000000
+		}
+	}
+	
+	# Tabindex
+	150 = FIELDSET
+	150 {
+		legend = Tabindex test
+		10 = TEXTLINE
+		10 {
+			label = This textline has a tabindex attribute
+			tabindex = 1
+		}
+	}
+	
+	# Title
+	160 = FIELDSET
+	160 {
+		legend = Title test
+		10 = TEXTLINE
+		10 {
+			label = This textline has a title attribute
+			title = This is the title text
+		}
+	}
+	
+	# Value
+	170 = FIELDSET
+	170 {
+		legend = Value test
+		10 = TEXTLINE
+		10 {
+			label = This textline has a value attribute
+			value = The value attribute
+		}
+	}
+}

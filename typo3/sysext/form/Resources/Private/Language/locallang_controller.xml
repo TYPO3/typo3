@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for the controller, actually view</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tx_form_domain_model_element_button.value">Push this button</label>
+			<label index="tx_form_domain_model_element_submit.value">Submit form</label>
+			<label index="tx_form_domain_model_element_reset.value">Clear form</label>
+			<label index="tx_form_domain_model_element_captcha.captcha">Please enter here the word as displayed in the picture. This is to prevent spamming.</label>
+			<label index="tx_form_domain_model_element_captcha.simple_captcha"></label>
+			<label index="tx_form_domain_model_element_captcha.wt_calculating_captcha">Enter the result of the calculation on the image</label>
+			<label index="tx_form_domain_model_element_captcha.jm_recaptcha"></label>
+			<label index="tx_form_system_validate_alphabetic.message">Use alphabetic characters</label>
+			<label index="tx_form_system_validate_alphabetic.message2">whitespace allowed</label>
+			<label index="tx_form_system_validate_alphabetic.error">The value contains not only alphabetic characters</label>
+			<label index="tx_form_system_validate_alphanumeric.message">Use alphanumeric characters</label>
+			<label index="tx_form_system_validate_alphanumeric.message2">whitespace allowed</label>
+			<label index="tx_form_system_validate_alphanumeric.error">The value contains not only alphanumeric characters</label>
+			<label index="tx_form_system_validate_between.message">The value must be between %minimum and %maximum</label>
+			<label index="tx_form_system_validate_between.message2">inclusively</label>
+			<label index="tx_form_system_validate_between.error">The value is not between %minimum and %maximum</label>
+			<label index="tx_form_system_validate_between.error2">inclusively</label>
+			<label index="tx_form_system_validate_captcha.message">Required</label>
+			<label index="tx_form_system_validate_captcha.error">The input does not match</label>
+			<label index="tx_form_system_validate_date.message">(%format)</label>
+			<label index="tx_form_system_validate_date.strftime.A">dddd</label>
+			<label index="tx_form_system_validate_date.strftime.a">ddd</label>
+			<label index="tx_form_system_validate_date.strftime.d">dd</label>
+			<label index="tx_form_system_validate_date.strftime.e">d</label>
+			<label index="tx_form_system_validate_date.strftime.B">mmmm</label>
+			<label index="tx_form_system_validate_date.strftime.b">mmm</label>
+			<label index="tx_form_system_validate_date.strftime.m">mm</label>
+			<label index="tx_form_system_validate_date.strftime.Y">yyyy</label>
+			<label index="tx_form_system_validate_date.strftime.y">yy</label>
+			<label index="tx_form_system_validate_date.strftime.H">HH</label>
+			<label index="tx_form_system_validate_date.strftime.I">hh</label>
+			<label index="tx_form_system_validate_date.strftime.M">mm</label>
+			<label index="tx_form_system_validate_date.strftime.S">ss</label>
+			<label index="tx_form_system_validate_date.error">The value does not appear to be a valid date</label>
+			<label index="tx_form_system_validate_digit.message">Use digit characters</label>
+			<label index="tx_form_system_validate_digit.error">The value contains not only digit characters</label>
+			<label index="tx_form_system_validate_email.message">(john.doe@domain.com)</label>
+			<label index="tx_form_system_validate_email.error">This is not a valid email address</label>
+			<label index="tx_form_system_validate_equals.message">This field must be equal to '%field'</label>
+			<label index="tx_form_system_validate_equals.error">The value does not equal the value in field '%field'</label>
+			<label index="tx_form_system_validate_fileallowedtypes.message">(%allowedTypes)</label>
+			<label index="tx_form_system_validate_fileallowedtypes.error">The file type is not allowed</label>
+			<label index="tx_form_system_validate_filemaximumsize.message">The filesize must be smaller than %maximum</label>
+			<label index="tx_form_system_validate_filemaximumsize.error">The filesize is too big</label>
+			<label index="tx_form_system_validate_fileminimumsize.message">The filesize must be bigger than %minimum</label>
+			<label index="tx_form_system_validate_fileminimumsize.error">The filesize is too small</label>
+			<label index="tx_form_system_validate_float.message">Enter a float</label>
+			<label index="tx_form_system_validate_float.error">The value does not appear to be a float</label>
+			<label index="tx_form_system_validate_greaterthan.message">The value must be greater than %minimum</label>
+			<label index="tx_form_system_validate_greaterthan.error">The value does not appear to be greater than %minimum</label>
+			<label index="tx_form_system_validate_inarray.message">Only a few values are possible</label>
+			<label index="tx_form_system_validate_inarray.error">The value does not appear to be valid</label>
+			<label index="tx_form_system_validate_integer.message">Use a integer</label>
+			<label index="tx_form_system_validate_integer.error">The value does not appear to be an integer</label>
+			<label index="tx_form_system_validate_ip.message">(123.123.123.123)</label>
+			<label index="tx_form_system_validate_ip.error">The value does not appear to be a valid IP address</label>
+			<label index="tx_form_system_validate_length.message">The length of the value must have a minimum of %minimum characters</label>
+			<label index="tx_form_system_validate_length.message2">and a maximum of %maximum</label>
+			<label index="tx_form_system_validate_length.error">The value is less than %minimum characters long</label>
+			<label index="tx_form_system_validate_length.error2">or longer than %maximum</label>
+			<label index="tx_form_system_validate_lessthan.message">The value must be less than %maximum</label>
+			<label index="tx_form_system_validate_lessthan.error">The value does not appear to be less than %maximum</label>
+			<label index="tx_form_system_validate_regexp.message">Use the right pattern</label>
+			<label index="tx_form_system_validate_regexp.error">The value does not match against pattern</label>
+			<label index="tx_form_system_validate_required.message">Required</label>
+			<label index="tx_form_system_validate_required.error">This field is required</label>
+			<label index="tx_form_system_validate_uri.message">The value must be a URI</label>
+			<label index="tx_form_system_validate_uri.error">The value does not appear to be a URI</label>
+			<label index="tx_form_view_confirmation.message">Please check your input and confirm by using the appropriate button</label>
+			<label index="tx_form_view_confirmation.confirm">Confirm</label>
+			<label index="tx_form_view_confirmation.donotconfirm">Go back to the form</label>
+			<label index="tx_form_view_mail.success">The form has been sent successfully by mail</label>
+			<label index="tx_form_view_mail.error">There was an error when sending the form by mail</label>
+		</languageKey>
+	</data>
+</T3locallang>

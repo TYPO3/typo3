@@ -1,0 +1,33 @@
+form.validation.greaterthan = FORM
+form.validation.greaterthan {
+	method = post
+	
+	rules {
+		1 = greaterthan
+		1 {
+			element = greaterthan1
+			minimum = 5
+		}
+	}
+	
+	# Greater than
+	10 = FIELDSET
+	10 {
+		legend = Greater than test
+		10 = TEXTLINE
+		10 {
+			label = Greater than
+			value = abcde
+			name = greaterthan1
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

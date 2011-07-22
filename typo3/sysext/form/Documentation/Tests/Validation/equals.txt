@@ -1,0 +1,39 @@
+form.validation.equals = FORM
+form.validation.equals {
+	method = post
+	
+	rules {
+		1 = equals
+		1 {
+			element = equals1
+			field = equals2
+		}
+	}
+	
+	# Equals
+	10 = FIELDSET
+	10 {
+		legend = Equals test
+		10 = TEXTLINE
+		10 {
+			label = First field
+			value = abcde
+			name = equals1
+		}
+		20 = TEXTLINE
+		20 {
+			label = Second field
+			value = abcdef
+			name = equals2
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

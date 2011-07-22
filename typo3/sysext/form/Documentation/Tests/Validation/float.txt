@@ -1,0 +1,32 @@
+form.validation.float = FORM
+form.validation.float {
+	method = post
+	
+	rules {
+		1 = float
+		1 {
+			element = float1
+		}
+	}
+	
+	# Float
+	10 = FIELDSET
+	10 {
+		legend = Float test
+		10 = TEXTLINE
+		10 {
+			label = Float
+			value = abcde
+			name = float1
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

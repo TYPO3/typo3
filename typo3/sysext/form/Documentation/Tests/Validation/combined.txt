@@ -1,0 +1,36 @@
+form.validation.combined = FORM
+form.validation.combined {
+	method = post
+	
+	rules {
+		1 = required
+		1 {
+			element = email1
+		}
+		2 = email
+		2 {
+			element = email1
+		}
+	}
+	
+	# Email
+	10 = FIELDSET
+	10 {
+		legend = Email test
+		10 = TEXTLINE
+		10 {
+			label = Email address
+			value = abc!@#
+			name = email1
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

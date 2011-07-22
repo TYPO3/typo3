@@ -1,0 +1,306 @@
+@CHARSET "UTF-8";
+
+div#typo3-inner-docbody {
+	height: 100%;
+	padding: 0;
+}
+
+/* Override the default setting for wizard */
+form li {
+	overflow: visible;
+}
+
+div.overflow-hidden {
+	overflow: hidden;
+}
+
+#formwizard {
+	height: 100%;
+	background-color: #F8F8F8;
+}
+
+#formwizard.hover-move {
+	cursor: move;
+}
+
+#formwizard-left {
+	padding: 10px;
+}
+
+#formwizard-left .x-tab-panel-header {
+	background-color: transparent;
+}
+
+#formwizard-left .x-tab-strip-top .x-tab-left {
+	padding-right: 20px;
+}
+
+#formwizard-left li.validation-error .x-tab-left,
+#formwizard-left div.validation-error .x-accordion-hd {
+	background-image: url("../../../../../../../typo3/sysext/t3skin/extjs/images/form/exclamation.gif");
+	background-position: right 1px;
+	background-repeat: no-repeat;
+}
+
+#formwizard-left .x-tab-panel-body-content {
+	border: 1px solid #C0C0C0;
+	border-top-width: 0;
+	padding: 10px;
+	background-image: -moz-linear-gradient(center top , #FFFFFF 0pt, #ECECEC 100px);
+}
+
+#formwizard-left .x-accordion-hd,
+#formwizard-left .x-tab-panel-body {
+	background: transparent none;
+	border-width: 0;
+}
+
+#formwizard-left .x-accordion-hd {
+	padding-left: 0;
+}
+
+#formwizard-left .x-accordion-hd .x-tool-toggle {
+	margin: 0;
+	float: left;
+	background-image: url("../../../../../../../typo3/sysext/t3skin/images/arrows/module-menu-down.png");
+	background-position: 0 4px;
+}
+
+#formwizard-left .x-panel-collapsed .x-accordion-hd .x-tool-toggle {
+	background-image: url("../../../../../../../typo3/sysext/t3skin/images/arrows/module-menu-right.png");
+	background-position: 1px 3px;
+}
+
+#formwizard-left .x-panel-accordion {
+	border-bottom: 1px solid #C7C7C7;
+}
+
+#formwizard-left .x-form {
+	margin-left: 15px;
+	margin-top: 10px;
+}
+
+#formwizard-left .x-form .x-form-item {
+	font-size: 11px;
+}
+
+#formwizard-left .x-panel-accordion:last-child {
+	border-bottom: medium none;
+}
+
+#formwizard-left .x-accordion-hd .x-panel-header-text {
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 11px;
+}
+
+#formwizard-left .x-fieldset-noborder {
+	padding: 0;
+	border: 0 none transparent;
+}
+
+#formwizard-left .x-form fieldset legend {
+	font-size: 11px;
+	margin-left: -2px;
+}
+
+#formwizard-left .x-panel-tbar {
+	border-width: 0;
+	padding-bottom: 0;
+	padding-left: 15px;
+}
+
+#formwizard-left .x-accordion-hd .x-panel-body {
+	padding-left: 15px;
+}
+
+#formwizard-left .formwizard-left-dummy {
+	margin-top: 10px;
+	margin-left: 15px;
+}
+
+#formwizard-left #formwizard-left-elements-intro,
+#formwizard-left #formwizard-left-options-dummy {
+	margin: 0 0 10px;
+}
+
+#formwizard-left .x-panel-tbar .x-toolbar {
+	padding: 0;
+}
+
+#formwizard-left .x-table-layout {
+	margin-bottom: 10px;
+}
+
+#formwizard-left .formwizard-element {
+	background-color: transparent;
+	background-image: none;
+	border-color: transparent;
+	margin-left: 12px;
+}
+
+#formwizard-left .formwizard-element.x-btn-over {
+	background-color: #D5D5D5;
+	background-image: -moz-linear-gradient(center top , #F6F6F6 10%, #D5D5D5 90%);
+	border-color: #C0C0C0;
+}
+
+#formwizard-left .formwizard-element .x-btn-mc {
+	text-align: left;
+}
+
+.formwizard-left-elements-basic-button {
+	background-image: url("../../Images/ui-button.png");
+}
+
+.formwizard-left-elements-basic-captcha {
+	background-image: url("../../Images/ui-labels.png");
+}
+
+.formwizard-left-elements-basic-checkbox {
+	background-image: url("../../Images/ui-check-box.png");
+}
+
+.formwizard-left-elements-basic-fieldset {
+	background-image: url("../../Images/ui-group-box.png");
+}
+
+.formwizard-left-elements-basic-fileupload {
+	background-image: url("../../Images/drive-upload.png");
+}
+
+.formwizard-left-elements-basic-hidden {
+	background-image: url("../../Images/ui-text-field-hidden.png");
+}
+
+.formwizard-left-elements-basic-password {
+	background-image: url("../../Images/ui-text-field-password.png");
+}
+
+.formwizard-left-elements-basic-radio {
+	background-image: url("../../Images/ui-radio-button.png");
+}
+
+.formwizard-left-elements-basic-reset {
+	background-image: url("../../Images/broom.png");
+}
+
+.formwizard-left-elements-basic-select {
+	background-image: url("../../Images/ui-combo-box.png");
+}
+
+.formwizard-left-elements-basic-submit {
+	background-image: url("../../Images/ui-button-default.png");
+}
+
+.formwizard-left-elements-basic-textarea {
+	background-image: url("../../Images/ui-scroll-pane-text.png");
+}
+
+.formwizard-left-elements-basic-textline {
+	background-image: url("../../Images/ui-text-field.png");
+}
+
+.formwizard-left-elements-predefined-checkboxgroup {
+	background-image: url("../../Images/ui-check-boxes.png");
+}
+
+.formwizard-left-elements-predefined-email {
+	background-image: url("../../Images/mail.png");
+}
+
+.formwizard-left-elements-predefined-name {
+	background-image: url("../../Images/user-silhouette.png");
+}
+
+.formwizard-left-elements-predefined-radiogroup {
+	background-image: url("../../Images/ui-radio-buttons.png");
+}
+
+.formwizard-left-elements-content-header {
+	background-image: url("../../Images/edit-heading.png");
+}
+
+.x-form-field-wrap .x-form-submit-trigger {
+	background-image: url("../../Images/submit-trigger.gif");
+}
+
+.x-grid-panel .remove {
+	background-image: url("../../Images/remove.gif");
+	width: 15px;
+	height: 16px;
+}
+
+#formwizard-right {
+	padding: 38px 10px 10px 0;
+}
+
+#formwizard-right form {
+	background-color: #FFFFFF;
+	border: 1px solid #C0C0C0;
+	-moz-box-shadow: inset 0 0 3px #C0C0C0;
+	-webkit-box-shadow: inset 0 0 2px #C0C0C0;
+	box-shadow: inner 0 0 2px #C0C0C0;
+	padding: 10px;
+}
+
+li#element-placeholder {
+	border: 1px dashed #C5DBE6;
+	background-color: #F9FCFF;
+}
+
+li.formwizard-element {
+	border: 1px solid transparent;
+	position: relative;
+}
+
+li.formwizard-element div.buttongroup {
+	position: absolute;
+	right: 0;
+	top: -35px;
+	padding: 4px 4px 12px;
+	display: none;
+	z-index: 1;
+	background-image: url("../../Images/tooltip.png");
+}
+
+li.formwizard-element.hover > div.buttongroup,
+li.formwizard-element.active > div.buttongroup {
+	display: block;
+}
+
+li.formwizard-element div.buttongroup button {
+	border: 0 solid transparent;
+	background-color: transparent;
+	height: 16px;
+	width: 16px;
+}
+
+li.formwizard-element div.buttongroup span {
+	margin: 0 3px;
+}
+
+li.formwizard-element div.buttongroup span.x-btn-over {
+	background-color: transparent;
+	background-image: none;
+}
+
+li.formwizard-element.hover {
+	border: 1px solid #C5DBE6;
+	background-color: #F9FCFF;
+}
+
+li.formwizard-element.active {
+	background-color: #EAF7FF;
+	border: 1px solid #C5DBE6;
+}
+
+li.formwizard-element.form {
+	padding: 0;
+}
+
+li.formwizard-element.form.hover {
+	border: 1px solid transparent;
+	background-color: none;
+}
+

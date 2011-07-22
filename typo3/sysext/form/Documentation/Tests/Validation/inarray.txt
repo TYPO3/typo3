@@ -1,0 +1,38 @@
+form.validation.inarray = FORM
+form.validation.inarray {
+	method = post
+	
+	rules {
+		1 = inarray
+		1 {
+			element = inarray1
+			array {
+				1 = TYPO3
+				2 = FLOW3
+				3 = CMS
+				4 = OPEN SOURCE
+			}
+		}
+	}
+	
+	# In Array
+	10 = FIELDSET
+	10 {
+		legend = In array test
+		10 = TEXTLINE
+		10 {
+			label = Type TYPO3, FLOW3, CMS or OPEN SOURCE here
+			value = abcde
+			name = inarray1
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

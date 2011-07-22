@@ -1,0 +1,209 @@
+form.tempOption = OPTION
+form.tempOption {
+	data = optionData
+}
+
+form.attributes.select = FORM
+form.attributes.select {
+	method = post
+	
+	# Label test
+	10 = FIELDSET
+	10 {
+		legend = Label test
+		10 = SELECT
+		10 {
+			label = label
+			1 < form.tempOption
+		}
+		20 = SELECT
+		20 {
+			label.value = label.value
+			1 < form.tempOption
+		}
+		30 = SELECT
+		30 {
+			label = TEXT
+			label {
+				value = TEXT cObj
+			}
+			1 < form.tempOption
+		}
+	}
+	
+	# Layout test
+	20 = FIELDSET
+	20 {
+		legend = Layout test
+		10 = SELECT
+		10 {
+			label = label in front of input (default)
+			1 < form.tempOption
+		}
+		20 = SELECT
+		20 {
+			layout (
+				<select>
+					<elements />
+				</select>
+				<label />
+			)
+			label = label after input
+			1 < form.tempOption
+		}
+		30 = SELECT
+		30 {
+			1 < form.tempOption
+		}
+	}
+	
+	# Class
+	30 = FIELDSET
+	30 {
+		legend = Class test
+		10 = SELECT
+		10 {
+			label = This select has a class attribute
+			class = classAtribute
+			1 < form.tempOption
+		}
+		20 = SELECT
+		20 {
+			label = Multiple classes
+			class = class1 class2
+			1 < form.tempOption
+		}
+	}
+	
+	# Disabled
+	40 = FIELDSET
+	40 {
+		legend = Disabled test
+		10 = SELECT
+		10 {
+			label = disabled=1
+			disabled = 1
+			1 < form.tempOption
+		}
+		20 = SELECT
+		20 {
+			label = disabled=0
+			disabled = 0
+			1 < form.tempOption
+		}
+		30 = SELECT
+		30 {
+			label = disabled=disabled
+			disabled = disabled
+			1 < form.tempOption
+		}
+	}
+	
+	# Id
+	50 = FIELDSET
+	50 {
+		legend = Id test
+		10 = SELECT
+		10 {
+			label = This select has an id attribute and the label a for attribute
+			id = textlineId
+			1 < form.tempOption
+		}
+	}
+	
+	# Lang
+	60 = FIELDSET
+	60 {
+		legend = Lang test
+		10 = SELECT
+		10 {
+			label = This select has a lang attribute
+			lang = en-US
+			1 < form.tempOption
+		}
+	}
+	
+	# Multiple
+	70 = FIELDSET
+	70 {
+		legend = Multiple test
+		10 = SELECT
+		10 {
+			label = multiple=1
+			multiple = 1
+			1 < form.tempOption
+		}
+		20 = SELECT
+		20 {
+			label = multiple=0
+			multiple = 0
+			1 < form.tempOption
+		}
+		30 = SELECT
+		30 {
+			label = multiple=multiple
+			multiple = multiple
+			1 < form.tempOption
+		}
+	}
+	
+	# Name
+	110 = FIELDSET
+	110 {
+		legend = Name test
+		10 = SELECT
+		10 {
+			label = This select has a name attribute
+			name = selectName
+			1 < form.tempOption
+		}
+	}
+	
+	# Size
+	120 = FIELDSET
+	120 {
+		legend = Size test
+		10 = SELECT
+		10 {
+			label = This select has a size attribute
+			size = 10
+			1 < form.tempOption
+		}
+	}
+	
+	# Style
+	130 = FIELDSET
+	130 {
+		legend = style test
+		10 = SELECT
+		10 {
+			label = This select has a style attribute
+			style = border: 1px solid #000000
+			1 < form.tempOption
+		}
+	}
+	
+	# Tabindex
+	140 = FIELDSET
+	140 {
+		legend = Tabindex test
+		10 = SELECT
+		10 {
+			label = This select has a tabindex attribute
+			tabindex = 1
+			1 < form.tempOption
+		}
+	}
+	
+	# Title
+	150 = FIELDSET
+	150 {
+		legend = Title test
+		10 = SELECT
+		10 {
+			label = This select has a title attribute
+			title = This is the title text
+			1 < form.tempOption
+		}
+	}
+}

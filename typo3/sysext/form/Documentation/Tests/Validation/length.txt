@@ -1,0 +1,45 @@
+form.validation.length = FORM
+form.validation.length {
+	method = post
+	
+	rules {
+		1 = length
+		1 {
+			element = length1
+			minimum = 6
+		}
+		2 = length
+		2 {
+			element = length2
+			minimum = 2
+			maximum = 4
+		}
+	}
+	
+	# Length
+	10 = FIELDSET
+	10 {
+		legend = Length test
+		10 = TEXTLINE
+		10 {
+			label = Only minimum
+			value = abcde
+			name = length1
+		}
+		20 = TEXTLINE
+		20 {
+			label = Minimum and maximum
+			value = abcde
+			name = length2
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

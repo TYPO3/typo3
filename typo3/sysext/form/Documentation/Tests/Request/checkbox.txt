@@ -1,0 +1,70 @@
+form.request.checkbox = FORM
+form.request.checkbox {
+	method = post
+	
+	rules {
+		1 = required
+		1 {
+			element = textlineField
+		}
+	}
+	
+	# Checked test
+	10 = FIELDSET
+	10 {
+		legend = Checked test
+		10 = CHECKBOX
+		10 {
+			label = Uncheck me
+			checked = checked
+		}
+		20 = CHECKBOX
+		20 {
+			label = Check me
+		}
+	}
+	
+	# Multiple test
+	20 = FIELDSET
+	20 {
+		legend = Multiple test
+		10 = CHECKBOX
+		10 {
+			label = Check 1
+			name = checkmultiple
+			value = check1
+		}
+		20 = CHECKBOX
+		20 {
+			label = Check 2
+			name = checkmultiple
+			value = check2
+		}
+		30 = CHECKBOX
+		30 {
+			label = Check 3
+			name = checkmultiple
+			value = check3
+		}
+	}
+	
+	# A textline which must be empty to test the above
+	30 = FIELDSET
+	30 {
+		legend = Leave empty to get the form back after submitting
+		10 = TEXTLINE
+		10 {
+			name = textlineField
+			label = Leave me empty
+		}
+	}
+	
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

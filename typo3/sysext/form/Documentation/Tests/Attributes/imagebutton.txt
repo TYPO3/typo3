@@ -1,0 +1,238 @@
+form.tempSrc = GIFBUILDER
+form.tempSrc {
+	XY = 200,40
+	10 = BOX
+	10 {
+		dimensions = 0,0,200,40
+		color = #666666
+	}
+}
+
+form.attributes.imagebutton = FORM
+form.attributes.imagebutton {
+	method = post
+	
+	# Label test
+	10 = FIELDSET
+	10 {
+		legend = Label test
+		10 = IMAGEBUTTON
+		10 {
+			label = label
+			src.file < form.tempSrc
+		}
+		20 = IMAGEBUTTON
+		20 {
+			label.value = label.value
+			src.file < form.tempSrc
+		}
+		30 = IMAGEBUTTON
+		30 {
+			label = TEXT
+			label {
+				value = TEXT cObj
+			}
+			src.file < form.tempSrc
+		}
+	}
+	
+	# Layout test
+	20 = FIELDSET
+	20 {
+		legend = Layout test
+		10 = IMAGEBUTTON
+		10 {
+			label = label in front of input (default)
+			src.file < form.tempSrc
+		}
+		20 = IMAGEBUTTON
+		20 {
+			layout (
+				<input />
+				<label />
+			)
+			label = label after input
+			src.file < form.tempSrc
+		}
+		30 = IMAGEBUTTON
+		30 {
+			layout = <input />
+			value = No label
+			src.file < form.tempSrc
+		}
+	}
+	
+	# Accesskey
+	30 = FIELDSET
+	30 {
+		legend = Accesskey test
+		10 = IMAGEBUTTON
+		10 {
+			label = This button has an accesskey
+			accesskey = a
+			src.file < form.tempSrc
+		}
+	}
+	
+	# Alt
+	40 = FIELDSET
+	40 {
+		legend = Alt test
+		10 = IMAGEBUTTON
+		10 {
+			label = This button has an alt attribute
+			alt = This is the alt attribute content
+			src.file < form.tempSrc
+		}
+	}
+	
+	# Class
+	50 = FIELDSET
+	50 {
+		legend = Class test
+		10 = IMAGEBUTTON
+		10 {
+			label = This button has a class attribute
+			class = classAtribute
+			src.file < form.tempSrc
+		}
+		20 = IMAGEBUTTON
+		20 {
+			label = Multiple classes
+			class = class1 class2
+			src.file < form.tempSrc
+		}
+	}
+	
+	# Dir
+	60 = FIELDSET
+	60 {
+		legend = Dir test
+		10 = IMAGEBUTTON
+		10 {
+			label = Dir ltr
+			dir = ltr
+			src.file < form.tempSrc
+		}
+		20 = IMAGEBUTTON
+		20 {
+			label = Dir rtl
+			dir = rtl
+			src.file < form.tempSrc
+		}
+		30 = IMAGEBUTTON
+		30 {
+			label = Wrong input in dir
+			dir = abc
+			src.file < form.tempSrc
+		}
+	}
+	
+	# Disabled
+	70 = FIELDSET
+	70 {
+		legend = Disabled test
+		10 = IMAGEBUTTON
+		10 {
+			label = disabled=1
+			disabled = 1
+			src.file < form.tempSrc
+		}
+		20 = IMAGEBUTTON
+		20 {
+			label = disabled=0
+			disabled = 0
+			src.file < form.tempSrc
+		}
+		30 = IMAGEBUTTON
+		30 {
+			label = disabled=disabled
+			disabled = disabled
+			src.file < form.tempSrc
+		}
+	}
+	
+	# Id
+	80 = FIELDSET
+	80 {
+		legend = Id test
+		10 = IMAGEBUTTON
+		10 {
+			label = This button has an id attribute and the label a for attribute
+			id = buttonId
+			src.file < form.tempSrc
+		}
+	}
+	
+	# Lang
+	90 = FIELDSET
+	90 {
+		legend = Lang test
+		10 = IMAGEBUTTON
+		10 {
+			label = This button has a lang attribute
+			lang = en-US
+			src.file < form.tempSrc
+		}
+	}
+	
+	# Name
+	100 = FIELDSET
+	100 {
+		legend = Name test
+		10 = IMAGEBUTTON
+		10 {
+			label = This button has a name attribute
+			name = buttonName
+			src.file < form.tempSrc
+		}
+	}
+	
+	# Style
+	110 = FIELDSET
+	110 {
+		legend = style test
+		10 = IMAGEBUTTON
+		10 {
+			label = This button has a style attribute
+			style = border: 1px solid #000000
+			src.file < form.tempSrc
+		}
+	}
+	
+	# Tabindex
+	120 = FIELDSET
+	120 {
+		legend = Tabindex test
+		10 = IMAGEBUTTON
+		10 {
+			label = This button has a tabindex attribute
+			tabindex = 1
+			src.file < form.tempSrc
+		}
+	}
+	
+	# Title
+	130 = FIELDSET
+	130 {
+		legend = Title test
+		10 = IMAGEBUTTON
+		10 {
+			label = This button has a title attribute
+			title = This is the title text
+			src.file < form.tempSrc
+		}
+	}
+	
+	# Value
+	140 = FIELDSET
+	140 {
+		legend = Value test
+		10 = IMAGEBUTTON
+		10 {
+			label = This button has a value attribute
+			value = Don't you dare to push this button
+			src.file < form.tempSrc
+		}
+	}
+}
