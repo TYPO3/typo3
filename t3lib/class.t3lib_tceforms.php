@@ -3843,7 +3843,7 @@ class t3lib_TCEforms {
 						case 'popup':
 						case 'colorbox':
 						case 'slider':
-							if (!$wConf['notNewRecords'] || t3lib_div::testInt($row['uid'])) {
+							if (!$wConf['notNewRecords'] || t3lib_utility_Math::canBeInterpretedAsInteger($row['uid'])) {
 
 									// Setting &P array contents:
 								$params = array();
