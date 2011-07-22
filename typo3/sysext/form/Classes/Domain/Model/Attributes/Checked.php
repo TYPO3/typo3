@@ -1,0 +1,72 @@
+<?php
+declare(encoding = 'utf-8');
+
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2008 Patrick Broens (patrick@patrickbroens.nl)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
+/**
+ * Attribute 'checked'
+ *
+ * @author Patrick Broens <patrick@patrickbroens.nl>
+ * @package TYPO3
+ * @subpackage form
+ */
+class tx_form_domain_model_attributes_checked extends tx_form_domain_model_attributes_abstract implements tx_form_domain_model_attributes_interface {
+
+	/**
+	 * Constructor
+	 *
+	 * @param string $value Attribute value
+	 * @param integer $elementId The ID of the element
+	 * @return void
+	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 */
+	public function __construct($value, $elementId) {
+		parent::__construct($value, $elementId);
+	}
+
+	/**
+	 * Sets the attribute 'checked'
+	 * Used with the element 'input' only if type attribute has the value
+	 * 'radio, checkbox'
+	 * Case insensitive
+	 *
+	 * When the type attribute has the value "radio" or "checkbox",
+	 * this boolean attribute specifies that the button is on.
+	 * User agents must ignore this attribute for other control types.
+	 *
+	 * @return string Attribute value
+	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 */
+	public function getValue() {
+		if((integer) $this->value === 1
+			|| (boolean) $this->value === TRUE
+			|| strtolower((string) $this->value === 'checked'))
+		{
+			$attribute = 'checked';
+		}
+
+		return $attribute;
+	}
+}
+?>

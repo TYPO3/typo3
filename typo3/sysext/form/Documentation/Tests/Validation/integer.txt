@@ -1,0 +1,32 @@
+form.validation.integer = FORM
+form.validation.integer {
+	method = post
+	
+	rules {
+		1 = integer
+		1 {
+			element = integer1
+		}
+	}
+	
+	# Integer
+	10 = FIELDSET
+	10 {
+		legend = Integer test
+		10 = TEXTLINE
+		10 {
+			label = Type an integer
+			value = abcde
+			name = integer1
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

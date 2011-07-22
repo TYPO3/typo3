@@ -1,0 +1,56 @@
+form.filter.alphanumeric = FORM
+form.filter.alphanumeric {
+	method = post
+	
+	rules {
+		1 = required
+		1 {
+			element = textlineField
+		}
+	}
+	
+	# Alphanumeric
+	10 = FIELDSET
+	10 {
+		legend = Alphanumeric test
+		10 = TEXTLINE
+		10 {
+			label = no settings
+			value = John Doe 3 #$
+			filters {
+				1 = alphanumeric
+			}
+		}
+		20 = TEXTLINE
+		20 {
+			label = allowWhiteSpace=1
+			value = John Doe 3 #$
+			filters {
+				1 = alphanumeric
+				1 {
+					allowWhiteSpace = 1
+				}
+			}
+		}
+	}
+	
+	# A textline which must be empty to test the above
+	30 = FIELDSET
+	30 {
+		legend = Leave empty to get the form back after submitting
+		10 = TEXTLINE
+		10 {
+			name = textlineField
+			label = Leave me empty
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

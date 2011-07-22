@@ -1,0 +1,45 @@
+form.filter.titlecase = FORM
+form.filter.titlecase {
+	method = post
+	
+	rules {
+		1 = required
+		1 {
+			element = textlineField
+		}
+	}
+	
+	# Title case
+	10 = FIELDSET
+	10 {
+		legend = Title case test
+		10 = TEXTLINE
+		10 {
+			label = No settings
+			value = kasper skårhøj
+			filters {
+				1 = titlecase
+			}
+		}
+	}
+	
+	# A textline which must be empty to test the above
+	30 = FIELDSET
+	30 {
+		legend = Leave empty to get the form back after submitting
+		10 = TEXTLINE
+		10 {
+			name = textlineField
+			label = Leave me empty
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}

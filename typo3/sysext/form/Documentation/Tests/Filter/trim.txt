@@ -1,0 +1,60 @@
+form.filter.trim = FORM
+form.filter.trim {
+	method = post
+	
+	rules {
+		1 = required
+		1 {
+			element = textlineField
+		}
+	}
+	
+	# Trim
+	10 = FIELDSET
+	10 {
+		legend = Trim test
+		10 = TEXTAREA
+		10 {
+			label = No settings
+			data (
+				line 1
+				line 2
+				line 3
+			)
+			filters {
+				1 = trim
+			}
+		}
+		20 = TEXTLINE
+		20 {
+			label = characterList=a,b,f,g
+			value = abcdefg
+			filters {
+				1 = trim
+				1 {
+					characterList = a,b,f,g
+				}
+			}
+		}
+	}
+	
+	# A textline which must be empty to test the above
+	30 = FIELDSET
+	30 {
+		legend = Leave empty to get the form back after submitting
+		10 = TEXTLINE
+		10 {
+			name = textlineField
+			label = Leave me empty
+		}
+	}
+
+	# Submit
+	40 = FIELDSET
+	40 {
+		10 = SUBMIT
+		10 {
+			value = Submit
+		}
+	}
+}
