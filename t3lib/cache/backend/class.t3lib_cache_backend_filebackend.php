@@ -77,7 +77,6 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 *
 	 * @param t3lib_cache_frontend_Frontend $cache The cache frontend
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setCache(t3lib_cache_frontend_Frontend $cache) {
 		parent::setCache($cache);
@@ -119,7 +118,6 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * @return void
 	 * @throws t3lib_cache_Exception if the directory is not within allowed
 	 * 		open_basedir path.
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setCacheDirectory($cacheDirectory) {
 			// Skip handling if directory is a stream ressource
@@ -217,7 +215,6 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * Returns the directory where the cache files are stored
 	 *
 	 * @return string Full path of the cache directory
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function getCacheDirectory() {
@@ -234,7 +231,6 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * @return void
 	 * @throws t3lib_cache_Exception if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
 	 * @throws t3lib_cache_exception_InvalidData if the data to bes stored is not a string.
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
@@ -305,8 +301,6 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * @param string $entryIdentifier An identifier which describes the cache entry to load
 	 * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
 	 * @throws \InvalidArgumentException If identifier is invalid
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function get($entryIdentifier) {
@@ -330,7 +324,6 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 *
 	 * @param string $entryIdentifier
 	 * @return boolean TRUE if such an entry exists, FALSE if not
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function has($entryIdentifier) {
@@ -350,7 +343,6 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 *
 	 * @param string $entryIdentifier Specifies the cache entry to remove
 	 * @return boolean TRUE if (at least) an entry could be removed or FALSE if no entry was found
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function remove($entryIdentifier) {
@@ -383,7 +375,6 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 *
 	 * @param string $searchedTag The tag to search for
 	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function findIdentifiersByTag($searchedTag) {
@@ -417,8 +408,6 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * Removes all cache entries of this cache.
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 * @api
 	 */
 	public function flush() {
@@ -431,8 +420,6 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 *
 	 * @param string $tag The tag the entries must have
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 * @api
 	 */
 	public function flushByTag($tag) {
@@ -452,7 +439,6 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 *
 	 * @param string $cacheEntryPathAndFilename
 	 * @return boolean
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	protected function isCacheFileExpired($cacheEntryPathAndFilename) {
@@ -468,7 +454,6 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * Does garbage collection
 	 *
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function collectGarbage() {
@@ -495,7 +480,6 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 *
 	 * @param string $entryIdentifier The cache entry identifier
 	 * @return mixed The file names (including path) as an array if one or more entries could be found, otherwise FALSE
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @internal
 	 */
 	protected function findCacheFilesByIdentifier($entryIdentifier) {

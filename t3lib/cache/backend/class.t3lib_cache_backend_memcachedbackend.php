@@ -95,7 +95,6 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 * @param string $context FLOW3's application context
 	 * @param array $options Configuration options - depends on the actual backend
 	 * @throws t3lib_cache_Exception if memcache is not installed
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct($context, array $options = array()) {
 		if (!extension_loaded('memcache')) {
@@ -115,7 +114,6 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @param array $servers An array of servers to add.
 	 * @return void
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 * @api
 	 */
 	protected function setServers(array $servers) {
@@ -127,7 +125,6 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @param boolean $useCompression
 	 * @return void
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 * @api
 	 */
 	protected function setCompression($useCompression) {
@@ -143,8 +140,6 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @return void
 	 * @throws t3lib_cache_Exception
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Dmitry Dulepov <dmitry@typo3.org>
 	 */
 	public function initializeObject() {
 		if (!count($this->servers)) {
@@ -182,7 +177,6 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @param t3lib_cache_frontend_Frontend $cache The frontend for this backend
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setCache(t3lib_cache_frontend_Frontend $cache) {
 		parent::setCache($cache);
@@ -200,8 +194,6 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 * @throws t3lib_cache_Exception if no cache frontend has been set.
 	 * @throws \InvalidArgumentException if the identifier is not valid or the final memcached key is longer than 250 characters
 	 * @throws t3lib_cache_exception_InvalidData if $data is not a string
-	 * @author Christian Jul Jensen <julle@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
@@ -288,8 +280,6 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @param string $entryIdentifier An identifier which describes the cache entry to load
 	 * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
-	 * @author Christian Jul Jensen <julle@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function get($entryIdentifier) {
@@ -309,8 +299,6 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @param string $entryIdentifier An identifier specifying the cache entry
 	 * @return boolean TRUE if such an entry exists, FALSE if not
-	 * @author Christian Jul Jensen <julle@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function has($entryIdentifier) {
@@ -324,8 +312,6 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @param string $entryIdentifier Specifies the cache entry to remove
 	 * @return boolean TRUE if (at least) an entry could be removed or FALSE if no entry was found
-	 * @author Christian Jul Jensen <julle@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function remove($entryIdentifier) {
@@ -339,7 +325,6 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @param string $tag The tag to search for
 	 * @return array An array of entries with all matching entries. An empty array if no entries matched
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function findIdentifiersByTag($tag) {
@@ -355,7 +340,6 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 * Removes all cache entries of this cache.
 	 *
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function flush() {
@@ -371,7 +355,6 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @param string $tag The tag the entries must have
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function flushByTag($tag) {
@@ -386,8 +369,6 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @param string $entryIdentifier
 	 * @param array $tags
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Dmitry Dulepov <dmitry@typo3.org>
 	 */
 	protected function addIdentifierToTags($entryIdentifier, array $tags) {
 		foreach ($tags as $tag) {
@@ -417,8 +398,6 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @param string $entryIdentifier
 	 * @param array Array of tags
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Dmitry Dulepov <dmitry@typo3.org>
 	 */
 	protected function removeIdentifierFromAllTags($entryIdentifier) {
 			// Get tags for this identifier
@@ -453,7 +432,6 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @param string $identifier Identifier to find tags by
 	 * @return array
-	 * @author Dmitry Dulepov <dmitry@typo3.org>
 	 * @api
 	 */
 	protected function findTagsByIdentifier($identifier) {

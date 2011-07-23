@@ -61,7 +61,6 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	/**
 	 * @param t3lib_cache_Factory $cacheFactory
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function injectCacheFactory(t3lib_cache_Factory $cacheFactory) {
 		$this->cacheFactory = $cacheFactory;
@@ -82,7 +81,6 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 * @param array $cacheConfigurations The cache configurations to set
 	 * @return void
 	 * @throws \InvalidArgumentException If $cacheConfigurations is not an array
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setCacheConfigurations(array $cacheConfigurations) {
 		foreach ($cacheConfigurations as $identifier => $configuration) {
@@ -102,7 +100,6 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 * @param t3lib_cache_frontend_Frontend $cache The cache frontend to be registered
 	 * @return void
 	 * @throws t3lib_cache_exception_DuplicateIdentifier if a cache with the given identifier has already been registered.
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function registerCache(t3lib_cache_frontend_Frontend $cache) {
@@ -124,7 +121,6 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 * @param string $identifier Identifies which cache to return
 	 * @return t3lib_cache_frontend_Frontend The specified cache frontend
 	 * @throws t3lib_cache_exception_NoSuchCache
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function getCache($identifier) {
@@ -147,7 +143,6 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 *
 	 * @param string $identifier The identifier of the cache
 	 * @return boolean TRUE if a cache with the given identifier exists, otherwise FALSE
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function hasCache($identifier) {
@@ -158,7 +153,6 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 * Flushes all registered caches
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function flushCaches() {
@@ -174,7 +168,6 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 *
 	 * @param string $tag Tag to search for
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function flushCachesByTag($tag) {
@@ -196,7 +189,6 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 * @param string $fileMonitorIdentifier Identifier of the File Monitor (must be "FLOW3_ClassFiles")
 	 * @param array $changedFiles A list of full paths to changed files
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function flushClassFileCachesByChangedFiles($fileMonitorIdentifier, array $changedFiles) {
 		if ($fileMonitorIdentifier !== 'FLOW3_ClassFiles') {
@@ -226,7 +218,6 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 *
 	 * @param string $className The class name
 	 * @return string Class Tag
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public static function getClassTag($className = '') {
@@ -237,7 +228,6 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 * Instantiates all registered caches.
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function createAllCaches() {
 		foreach (array_keys($this->cacheConfigurations) as $identifier) {
@@ -252,7 +242,6 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 *
 	 * @param string $identifier
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function createCache($identifier) {
 		if (isset($this->cacheConfigurations[$identifier]['frontend'])) {

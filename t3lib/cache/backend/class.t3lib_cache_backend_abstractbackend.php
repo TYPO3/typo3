@@ -71,7 +71,6 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 	 * @param string $context FLOW3's application context
 	 * @param array $options Configuration options - depends on the actual backend
 	 * @throws \InvalidArgumentException
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function __construct($context, array $options = array()) {
@@ -96,7 +95,6 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 	 *
 	 * @param t3lib_cache_frontend_Frontend $cache The frontend for this backend
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function setCache(t3lib_cache_frontend_Frontend $cache) {
@@ -109,7 +107,6 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 	 *
 	 * @param integer $defaultLifetime Default lifetime of this cache backend in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function setDefaultLifetime($defaultLifetime) {
@@ -129,7 +126,6 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 	 *
 	 * @param integer $lifetime The lifetime in seconds
 	 * @return \DateTime The expiry time
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function calculateExpiryTime($lifetime = NULL) {
 		if ($lifetime === self::UNLIMITED_LIFETIME || ($lifetime === NULL && $this->defaultLifetime === self::UNLIMITED_LIFETIME)) {

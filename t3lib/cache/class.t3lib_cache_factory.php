@@ -58,7 +58,6 @@ class t3lib_cache_Factory implements t3lib_Singleton {
 	 *
 	 * @param string $context The current FLOW3 context
 	 * @param t3lib_cache_Manager $cacheManager The cache manager
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct($context, t3lib_cache_Manager $cacheManager) {
 		$this->context = $context;
@@ -77,7 +76,6 @@ class t3lib_cache_Factory implements t3lib_Singleton {
 	 * @return t3lib_cache_frontend_Frontend The created cache frontend
 	 * @throws t3lib_cache_exception_InvalidBackend if the cache backend is not valid
 	 * @throws t3lib_cache_exception_InvalidCache if the cache frontend is not valid
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function create($cacheIdentifier, $cacheObjectName, $backendObjectName, array $backendOptions = array()) {
