@@ -27,9 +27,10 @@
  *
  * @package TYPO3
  * @subpackage t3lib_cache
+ * @author Christian Kuhn <lolli@schwarzbu.ch>
+ * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
  * @scope prototype
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend {
 
@@ -63,7 +64,6 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $DSN The DSN to use for connecting to the DB
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function setDataSourceName($DSN) {
@@ -75,7 +75,6 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $username The username to use for connecting to the DB
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function setUsername($username) {
@@ -87,7 +86,6 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $password The password to use for connecting to the DB
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function setPassword($password) {
@@ -97,7 +95,6 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	/**
 	 * Initialize the cache backend.
 	 *
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @return void
 	 */
 	public function initializeObject() {
@@ -115,7 +112,6 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 * @throws t3lib_cache_Exception if no cache frontend has been set.
 	 * @throws \InvalidArgumentException if the identifier is not valid
 	 * @throws t3lib_cache_exception_InvalidData if $data is not a string
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
@@ -175,7 +171,6 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $entryIdentifier An identifier which describes the cache entry to load
 	 * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function get($entryIdentifier) {
@@ -193,7 +188,6 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $entryIdentifier An identifier specifying the cache entry
 	 * @return boolean TRUE if such an entry exists, FALSE if not
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function has($entryIdentifier) {
@@ -213,7 +207,6 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $entryIdentifier Specifies the cache entry to remove
 	 * @return boolean TRUE if (at least) an entry could be removed or FALSE if no entry was found
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function remove($entryIdentifier) {
@@ -238,7 +231,6 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 * Removes all cache entries of this cache.
 	 *
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function flush() {
@@ -254,7 +246,6 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $tag The tag the entries must have
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function flushByTag($tag) {
@@ -279,7 +270,6 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $tag The tag to search for
 	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function findIdentifiersByTag($tag) {
@@ -296,7 +286,6 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 * Does garbage collection
 	 *
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function collectGarbage() {
@@ -320,7 +309,6 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 * Returns an SQL statement that evaluates to TRUE if the entry is not expired.
 	 *
 	 * @return string
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	protected function getNotExpiredStatement() {
 		return ' AND ("lifetime" = 0 OR "created" + "lifetime" >= ' . $GLOBALS['EXEC_TIME'] . ')';
@@ -330,7 +318,6 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 * Connect to the database
 	 *
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	protected function connect() {
 		try {
@@ -358,7 +345,6 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @return void
 	 * @throws \RuntimeException if something goes wrong
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	protected function createCacheTables() {
 		try {

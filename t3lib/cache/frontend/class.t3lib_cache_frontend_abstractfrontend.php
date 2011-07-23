@@ -29,6 +29,8 @@
  *
  * @package TYPO3
  * @subpackage t3lib_cache
+ * @author Robert Lemke <robert@typo3.org>
+ * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
  * @scope prototype
  */
@@ -50,7 +52,6 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 *
 	 * @param string $identifier A identifier which describes this cache
 	 * @param t3lib_cache_backend_Backend $backend Backend to be used for this cache
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @throws \InvalidArgumentException if the identifier doesn't match PATTERN_ENTRYIDENTIFIER
 	 */
 	public function __construct($identifier, t3lib_cache_backend_Backend $backend) {
@@ -66,7 +67,6 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 * Returns this cache's identifier
 	 *
 	 * @return string The identifier for this cache
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function getIdentifier() {
@@ -77,7 +77,6 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 * Returns the backend used by this cache
 	 *
 	 * @return t3lib_cache_backend_Backend The backend used by this cache
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function getBackend() {
@@ -90,8 +89,6 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 * @param string $entryIdentifier An identifier specifying the cache entry
 	 * @return boolean TRUE if such an entry exists, FALSE if not
 	 * @throws \InvalidArgumentException If $entryIdentifier is invalid
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function has($entryIdentifier) {
@@ -109,8 +106,6 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 *
 	 * @param string $entryIdentifier An identifier specifying the cache entry
 	 * @return boolean TRUE if such an entry exists, FALSE if not
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function remove($entryIdentifier) {
@@ -127,7 +122,6 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 * Removes all cache entries of this cache.
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function flush() {
@@ -139,8 +133,6 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 *
 	 * @param string $tag The tag the entries must have
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function flushByTag($tag) {
@@ -159,7 +151,6 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 * one of the specified tags.
 	 * @param array $tags Array of tags to search for
 	 * @return void
-	 * @author Ingo Renner <ingo@typo3.org>
 	 * @deprecated since 4.6, will be removed in 4.8
 	 * @api
 	 */
@@ -174,7 +165,6 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 * Does garbage collection
 	 *
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function collectGarbage() {
@@ -190,7 +180,6 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 *
 	 * @param string $className The class name
 	 * @return string Class Tag
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 * @deprecated since TYPO3 4.6 - Use t3lib_cache_Manager::getClassTag() instead
 	 */
@@ -203,7 +192,6 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 *
 	 * @param string $identifier An identifier to be checked for validity
 	 * @return boolean
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 * @api
 	 */
 	public function isValidEntryIdentifier($identifier) {
@@ -215,7 +203,6 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 *
 	 * @param string $tag An identifier to be checked for validity
 	 * @return boolean
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function isValidTag($tag) {

@@ -46,6 +46,10 @@
  *
  * @package TYPO3
  * @subpackage t3lib_cache
+ * @author Robert Lemke <robert@typo3.org>
+ * @author Karsten Dambekalns <karsten@typo3.org>
+ * @author Christian Jul Jensen <julle@typo3.org>
+ * @author Dmitry Dulepov <dmitry@typo3.org>
  * @api
  * @scope prototype
  */
@@ -62,8 +66,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $context FLOW3's application context
 	 * @param array $options Configuration options - unused here
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function __construct($context, array $options = array()) {
 		if (!extension_loaded('apc')) {
@@ -81,7 +83,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param t3lib_cache_frontend_Frontend $cache
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setCache(t3lib_cache_frontend_Frontend $cache) {
 		parent::setCache($cache);
@@ -101,8 +102,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 * @throws t3lib_cache_Exception if no cache frontend has been set.
 	 * @throws \InvalidArgumentException if the identifier is not valid
 	 * @throws t3lib_cache_exception_InvalidData if $data is not a string
-	 * @author Christian Jul Jensen <julle@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
@@ -140,7 +139,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $entryIdentifier An identifier which describes the cache entry to load
 	 * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function get($entryIdentifier) {
@@ -155,7 +153,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $entryIdentifier An identifier specifying the cache entry
 	 * @return boolean TRUE if such an entry exists, FALSE if not
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function has($entryIdentifier) {
@@ -171,8 +168,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $entryIdentifier Specifies the cache entry to remove
 	 * @return boolean TRUE if (at least) an entry could be removed or FALSE if no entry was found
-	 * @author Christian Jul Jensen <julle@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function remove($entryIdentifier) {
@@ -186,7 +181,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $tag The tag to search for
 	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function findIdentifiersByTag($tag) {
@@ -205,8 +199,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $identifier Identifier to find tags by
 	 * @return array Array with tags
-	 * @author Dmitry Dulepov
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	protected function findTagsByIdentifier($identifier) {
 		$success = FALSE;
@@ -218,7 +210,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 * Removes all cache entries of this cache.
 	 *
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function flush() {
@@ -237,7 +228,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $tag The tag the entries must have
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function flushByTag($tag) {
@@ -252,8 +242,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $entryIdentifier
 	 * @param array $tags
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Dmitry Dulepov <dmitry.@typo3.org>
 	 */
 	protected function addIdentifierToTags($entryIdentifier, array $tags) {
 		foreach ($tags as $tag) {
@@ -278,8 +266,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $entryIdentifier
 	 * @param array $tags
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Dmitry Dulepov <dmitry@typo3.org>
 	 */
 	protected function removeIdentifierFromAllTags($entryIdentifier) {
 			// Get tags for this identifier

@@ -29,6 +29,7 @@
  *
  * @package TYPO3
  * @subpackage t3lib_cache
+ * @author Robert Lemke <robert@typo3.org>
  * @api
  * @scope prototype
  */
@@ -39,7 +40,6 @@ class t3lib_cache_frontend_PhpFrontend extends t3lib_cache_frontend_StringFronte
 	 *
 	 * @param string $identifier A identifier which describes this cache
 	 * @param t3lib_cache_backend_PhpCapableBackend $backend Backend to be used for this cache
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct($identifier, t3lib_cache_backend_PhpCapableBackend $backend) {
 		parent::__construct($identifier, $backend);
@@ -55,7 +55,6 @@ class t3lib_cache_frontend_PhpFrontend extends t3lib_cache_frontend_StringFronte
 	 * @return void
 	 * @throws \InvalidArgumentException If $entryIdentifier or $tags is invalid
 	 * @throws t3lib_cache_exception_InvalidData If $sourceCode is not a string
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function set($entryIdentifier, $sourceCode, array $tags = array(), $lifetime = NULL) {
@@ -88,7 +87,6 @@ class t3lib_cache_frontend_PhpFrontend extends t3lib_cache_frontend_StringFronte
 	 *
 	 * @param string $entryIdentifier An identifier which describes the cache entry to load
 	 * @return mixed Potential return value from the include operation
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function requireOnce($entryIdentifier) {
