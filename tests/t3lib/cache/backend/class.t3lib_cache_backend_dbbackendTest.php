@@ -62,6 +62,11 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	protected $testingTagsTable = 'cachingframework_Testing_tags';
 
 	/**
+	 * @var string Name of the testing cache-tag relation table
+	 */
+	protected $testingCacheMMTable = 'cachingframework_Testing_MM';
+
+	/**
 	 * Set up testcases
 	 */
 	public function setUp() {
@@ -74,6 +79,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @return void
 	 * @author Ingo Renner <ingo@typo3.org>
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
+	 * @author Michael Staatz <mstaatz@ymail.com>
 	 */
 	protected function setUpBackend(array $backendOptions = array()) {
 		$GLOBALS['TYPO3_DB']->sql_query('CREATE TABLE ' . $this->testingCacheTable . ' (
@@ -88,11 +94,17 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 		$GLOBALS['TYPO3_DB']->sql_query('CREATE TABLE ' . $this->testingTagsTable . ' (
 			id int(11) unsigned NOT NULL auto_increment,
-			identifier varchar(250) DEFAULT \'\' NOT NULL,
 			tag varchar(250) DEFAULT \'\' NOT NULL,
 			PRIMARY KEY (id),
-			KEY cache_id (identifier),
 			KEY cache_tag (tag)
+		) ENGINE=InnoDB;
+		');
+
+		$GLOBALS['TYPO3_DB']->sql_query('CREATE TABLE ' . $this->testingCacheMMTable . ' (
+			id_cache int(11) unsigned NOT NULL,
+			id_tags int(11) unsigned NOT NULL,
+			KEY cache_id (id_cache),
+			KEY cache_tag (id_tags)
 		) ENGINE=InnoDB;
 		');
 
@@ -132,6 +144,10 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$GLOBALS['TYPO3_DB']->sql_query(
 			'DROP TABLE IF EXISTS ' . $this->testingTagsTable . ';'
 		);
+
+		$GLOBALS['TYPO3_DB']->sql_query(
+			'DROP TABLE IF EXISTS ' . $this->testingCacheMMTable . ';'
+		);
 	}
 
 	/**
@@ -152,6 +168,16 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$this->setUpMockFrontendOfBackend($backend);
 
 		$this->assertEquals($this->testingTagsTable, $backend->getTagsTable());
+	}
+
+	/**
+	 * @test
+	 * @author Michael Staatz <mstaatz@ymail.com>
+	 */
+	public function setCacheCalculatesCacheMMTableName() {
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
+		$this->assertEquals($this->testingCacheMMTable, $backend->getCacheMMTable());
 	}
 
 	/**
@@ -227,6 +253,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @author Ingo Renner <ingo@typo3.org>
+	 * @author Michael Staatz <mstaatz@ymail.com>
 	 */
 	public function setReallySavesSpecifiedTags() {
 		$backend = $this->setUpBackend();
@@ -237,10 +264,27 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 		$backend->set($entryIdentifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
 
+		$cacheEntryId = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			'id',
+			$this->testingCacheTable,
+			'identifier = \'' . $entryIdentifier . '\''
+		);
+
+		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'id_tags',
+			$this->testingCacheMMTable,
+			'id_cache = ' . $cacheEntryId['id']
+		);
+
+		$tagIds = array();
+		foreach ($entriesFound as $entry) {
+			$tagIds[] = $entry['id_tags'];
+		}
+
 		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
 			$this->testingTagsTable,
-			'identifier = \'' . $entryIdentifier . '\''
+			'id IN(' . implode(', ', $tagIds) . ')'
 		);
 
 		$tags = array();
@@ -526,7 +570,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$this->setUpMockFrontendOfBackend($backend);
 
 		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_TRUNCATEquery', 'INSERTquery', 'sql_query', 'admin_query'));
-		$GLOBALS['TYPO3_DB']->expects($this->at(2))
+		$GLOBALS['TYPO3_DB']->expects($this->at(3))
 			->method('admin_query')
 			->with('DROP TABLE IF EXISTS cachingframework_Testing');
 
@@ -541,9 +585,24 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$this->setUpMockFrontendOfBackend($backend);
 
 		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_TRUNCATEquery', 'INSERTquery', 'sql_query', 'admin_query'));
-		$GLOBALS['TYPO3_DB']->expects($this->at(3))
+		$GLOBALS['TYPO3_DB']->expects($this->at(4))
 			->method('admin_query')
 			->with('DROP TABLE IF EXISTS cachingframework_Testing_tags');
+
+		$backend->flush();
+	}
+
+	/**
+	 * @test
+	 */
+	public function flushDropsCacheMMTable() {
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
+
+		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_TRUNCATEquery', 'INSERTquery', 'sql_query', 'admin_query'));
+		$GLOBALS['TYPO3_DB']->expects($this->at(5))
+			->method('admin_query')
+			->with('DROP TABLE IF EXISTS cachingframework_Testing_MM');
 
 		$backend->flush();
 	}
@@ -556,7 +615,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$this->setUpMockFrontendOfBackend($backend);
 
 		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_TRUNCATEquery', 'INSERTquery', 'sql_query', 'admin_query'));
-		$GLOBALS['TYPO3_DB']->expects($this->at(4))
+		$GLOBALS['TYPO3_DB']->expects($this->at(6))
 			->method('admin_query')
 			->will($this->returnCallback(array($this, flushCreatesDataTableCallback)));
 
@@ -582,7 +641,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$this->setUpMockFrontendOfBackend($backend);
 
 		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_TRUNCATEquery', 'INSERTquery', 'sql_query', 'admin_query'));
-		$GLOBALS['TYPO3_DB']->expects($this->at(5))
+		$GLOBALS['TYPO3_DB']->expects($this->at(7))
 			->method('admin_query')
 			->will($this->returnCallback(array($this, flushCreatesTagsTableCallback)));
 
@@ -597,6 +656,32 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 */
 	public function flushCreatesTagsTableCallback($sql) {
 		$startOfStatement = 'CREATE TABLE cachingframework_Testing_tags (';
+		$this->assertEquals($startOfStatement, substr($sql, 0, strlen($startOfStatement)));
+	}
+
+	/**
+	 * @test
+	 */
+	public function flushCreatesCacheMMTable() {
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
+
+		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_TRUNCATEquery', 'INSERTquery', 'sql_query', 'admin_query'));
+		$GLOBALS['TYPO3_DB']->expects($this->at(8))
+			->method('admin_query')
+			->will($this->returnCallback(array($this, flushCreatesCacheMMTableCallback)));
+
+		$backend->flush();
+	}
+
+	/**
+	 * Callback of flushCreatesTagsTable to check if tags table is created
+	 *
+	 * @param string $sql SQL of admin_query
+	 * @return void
+	 */
+	public function flushCreatesCacheMMTableCallback($sql) {
+		$startOfStatement = 'CREATE TABLE cachingframework_Testing_MM (';
 		$this->assertEquals($startOfStatement, substr($sql, 0, strlen($startOfStatement)));
 	}
 
