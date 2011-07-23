@@ -29,6 +29,7 @@
  *
  * @package TYPO3
  * @subpackage t3lib_cache
+ * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
  * @scope prototype
  */
@@ -44,7 +45,6 @@ class t3lib_cache_frontend_StringFrontend extends t3lib_cache_frontend_AbstractF
 	 * @return void
 	 * @throws \InvalidArgumentException if the identifier or tag is not valid
 	 * @throws t3lib_cache_exception_InvalidData if the variable to cache is not of type string
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function set($entryIdentifier, $string, array $tags = array(), $lifetime = NULL) {
@@ -80,7 +80,6 @@ class t3lib_cache_frontend_StringFrontend extends t3lib_cache_frontend_AbstractF
 	 * @param string $entryIdentifier Identifier of the cache entry to fetch
 	 * @return string The value
 	 * @throws \InvalidArgumentException if the cache identifier is not valid
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function get($entryIdentifier) {
@@ -100,7 +99,6 @@ class t3lib_cache_frontend_StringFrontend extends t3lib_cache_frontend_AbstractF
 	 * @param string $tag The tag to search for
 	 * @return array An array with the content of all matching entries. An empty array if no entries matched
 	 * @throws \InvalidArgumentException if the tag is not valid
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function getByTag($tag) {

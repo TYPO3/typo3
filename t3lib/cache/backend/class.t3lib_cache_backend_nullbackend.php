@@ -29,6 +29,8 @@
  *
  * @package TYPO3
  * @subpackage t3lib_cache
+ * @author Robert Lemke <robert@typo3.org>
+ * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
  * @scope prototype
  */
@@ -42,7 +44,6 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	 * @param array $tags ignored
 	 * @param integer $lifetime ignored
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
@@ -53,7 +54,6 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	 *
 	 * @param string $entryIdentifier ignored
 	 * @return boolean FALSE
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function get($entryIdentifier) {
@@ -65,7 +65,6 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	 *
 	 * @param string $entryIdentifier ignored
 	 * @return boolean FALSE
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function has($entryIdentifier) {
@@ -77,7 +76,6 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	 *
 	 * @param string $entryIdentifier ignored
 	 * @return boolean FALSE
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function remove($entryIdentifier) {
@@ -89,7 +87,6 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	 *
 	 * @param string $tag ignored
 	 * @return array An empty array
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function findIdentifiersByTag($tag) {
@@ -100,7 +97,6 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	 * Does nothing
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function flush() {
@@ -111,7 +107,6 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	 *
 	 * @param string $tag ignored
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function flushByTag($tag) {
@@ -121,7 +116,6 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	 * Does nothing
 	 *
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function collectGarbage() {

@@ -27,6 +27,8 @@
  *
  * @package TYPO3
  * @subpackage t3lib_cache
+ * @author Christian Kuhn <lolli@schwarzbu.ch>
+ * @author Ingo Renner <ingo@typo3.org>
  * @api
  * @scope prototype
  */
@@ -97,7 +99,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 *
 	 * @param t3lib_cache_frontend_Frontend $cache The frontend for this backend
 	 * @return void
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 * @api
 	 */
 	public function setCache(t3lib_cache_frontend_Frontend $cache) {
@@ -133,7 +134,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @return void
 	 * @throws t3lib_cache_Exception if no cache frontend has been set.
 	 * @throws t3lib_cache_exception_InvalidData if the data to be stored is not a string.
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
 		$this->throwExceptionIfFrontendDoesNotExist();
@@ -194,7 +194,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 *
 	 * @param string An identifier which describes the cache entry to load
 	 * @return mixed The cache entry's data as a string or FALSE if the cache entry could not be loaded
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function get($entryIdentifier) {
 		$this->throwExceptionIfFrontendDoesNotExist();
@@ -228,7 +227,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 *
 	 * @param string Specifies the identifier to check for existence
 	 * @return boolean TRUE if such an entry exists, FALSE if not
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function has($entryIdentifier) {
 		$this->throwExceptionIfFrontendDoesNotExist();
@@ -254,7 +252,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 *
 	 * @param string Specifies the cache entry to remove
 	 * @return boolean TRUE if (at least) an entry could be removed or FALSE if no entry was found
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function remove($entryIdentifier) {
 		$this->throwExceptionIfFrontendDoesNotExist();
@@ -283,7 +280,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 *
 	 * @param string The tag to search for
 	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function findIdentifiersByTag($tag) {
 		$this->throwExceptionIfFrontendDoesNotExist();
@@ -310,7 +306,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * Removes all cache entries of this cache.
 	 *
 	 * @return void
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flush() {
 		$this->throwExceptionIfFrontendDoesNotExist();
@@ -346,7 +341,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * Does garbage collection
 	 *
 	 * @return void
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function collectGarbage() {
 		$this->throwExceptionIfFrontendDoesNotExist();
@@ -389,7 +383,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * 		table name internally, this method does nothing anymore
 	 * @param string $cacheTable Table name
 	 * @return void
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setCacheTable($cacheTable) {
 		t3lib_div::logDeprecatedFunction();
@@ -399,7 +392,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * Returns the table where the cache entries are stored.
 	 *
 	 * @return	string	The cache table.
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function getCacheTable() {
 		$this->throwExceptionIfFrontendDoesNotExist();

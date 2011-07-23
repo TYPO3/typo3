@@ -29,6 +29,8 @@
  *
  * @package TYPO3
  * @subpackage t3lib_cache
+ * @author Robert Lemke <robert@typo3.org>
+ * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
  * @scope prototype
  */
@@ -46,7 +48,6 @@ class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_Abstrac
 	 * Initializes this cache frontend
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function initializeObject() {
 		$this->useIgBinary = extension_loaded('igbinary');
@@ -62,8 +63,6 @@ class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_Abstrac
 	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
 	 * @throws \InvalidArgumentException if the identifier or tag is not valid
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function set($entryIdentifier, $variable, array $tags = array(), $lifetime = NULL) {
@@ -96,7 +95,6 @@ class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_Abstrac
 	 * @param string $entryIdentifier Identifier of the cache entry to fetch
 	 * @return mixed The value
 	 * @throws \InvalidArgumentException if the identifier is not valid
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function get($entryIdentifier) {
@@ -121,7 +119,6 @@ class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_Abstrac
 	 * @param string $tag The tag to search for
 	 * @return array An array with the content of all matching entries. An empty array if no entries matched
 	 * @throws \InvalidArgumentException if the tag is not valid
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
 	public function getByTag($tag) {
