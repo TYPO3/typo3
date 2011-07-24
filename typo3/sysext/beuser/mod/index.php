@@ -1367,7 +1367,7 @@ class SC_mod_tools_be_user_index {
 					$uItem = '<tr><td width="130">' . t3lib_iconWorks::getSpriteIconForRecord('be_users',$uDat,array('title'=> $uDat['uid'] )) . $this->linkUser($uDat['username'],$uDat) . '&nbsp;&nbsp;</td><td nowrap="nowrap">' . $this->elementLinks('be_users',$uDat);
 					if ($curUid != $uDat['uid'] && !$uDat['disable'] && ($uDat['starttime'] == 0 ||
 						$uDat['starttime'] < $GLOBALS['EXEC_TIME']) && ($uDat['endtime'] == 0 ||
-						$uDat['endtime'] > $GLOBALS['EXEC_TIME']) && (substr($uDat['username'], 0, 5) !== '_cli_')) {
+						$uDat['endtime'] > $GLOBALS['EXEC_TIME'])) {
 						$uItem .= '<a href="' . t3lib_div::linkThisScript(array('SwitchUser'=>$uDat['uid'])) . '" target="_top" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('switchUserTo', TRUE) . ' ' . $uDat['username']) . ' ' . $GLOBALS['LANG']->getLL('changeToMode', TRUE) . '">' .
 								t3lib_iconWorks::getSpriteIcon('actions-system-backend-user-switch') .
 							'</a>'.
