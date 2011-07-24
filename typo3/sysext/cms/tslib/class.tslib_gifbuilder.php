@@ -362,15 +362,39 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			// Get trivial data
 		$XY = $this->XY;
 
+			// Reset internal properties
+		$this->saveAlphaLayer = FALSE;
+
 			// Gif-start
 		$this->im = imagecreatetruecolor($XY[0], $XY[1]);
 		$this->w = $XY[0];
 		$this->h = $XY[1];
 
-			// backColor is set
+			// Default behaviour
 		$BGcols = $this->convertColor($this->setup['backColor']);
 		$Bcolor = ImageColorAllocate($this->im, $BGcols[0],$BGcols[1],$BGcols[2]);
-		ImageFilledRectangle($this->im, 0, 0, $XY[0], $XY[1], $Bcolor);
+
+			// Transparent layer as background if set and requirements are met
+		if (!empty($this->setup['backColor'])
+			&& $this->setup['backColor'] === 'transparent'
+			&& $this->png_truecolor
+			&& !$this->setup['reduceColors']
+			&& (empty($this->setup['format']) || $this->setup['format'] == 'png')) {
+
+				// Set transparency properties
+			imagealphablending($this->im, FALSE);
+			imagesavealpha($this->im, TRUE);
+
+				// Fill with a transparent background
+			$transparentColor = imagecolorallocatealpha($this->im, 0, 0, 0, 127);
+			imagefill($this->im, 0, 0, $transparentColor);
+
+			// Set internal properties to keep the transparency over the rendering process
+			$this->saveAlphaLayer = TRUE;
+			$this->setup['format'] = 'png'; // Force PNG in case no format is set
+		} else {
+			ImageFilledRectangle($this->im, 0, 0, $XY[0], $XY[1], $Bcolor);
+		}
 
 			// Traverse the GIFBUILDER objects an render each one:
 		if (is_array($this->setup))	{
@@ -486,19 +510,26 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			}
 		}
 
-
-		if ($this->setup['transparentBackground'])	{
-				// Auto transparent background is set
-			$Bcolor = ImageColorClosest($this->im, $BGcols[0], $BGcols[1], $BGcols[2]);
-			imagecolortransparent($this->im, $Bcolor);
-		} elseif (is_array($this->setup['transparentColor_array']))	{
-				// Multiple transparent colors are set. This is done via the trick that all transparent colors get converted to one color and then this one gets set as transparent as png/gif can just have one transparent color.
-			$Tcolor = $this->unifyColors($this->im, $this->setup['transparentColor_array'], intval($this->setup['transparentColor.']['closest']));
-			if ($Tcolor>=0)	{
-				imagecolortransparent($this->im, $Tcolor);
+			// preserve alpha transparency
+		if (!$this->saveAlphaLayer) {
+			if ($this->setup['transparentBackground']) {
+					// Auto transparent background is set
+				$Bcolor = ImageColorClosest($this->im, $BGcols[0], $BGcols[1], $BGcols[2]);
+				imagecolortransparent($this->im, $Bcolor);
+			} elseif (is_array($this->setup['transparentColor_array'])) {
+					// Multiple transparent colors are set. This is done via the trick that all transparent colors get
+					// converted to one color and then this one gets set as transparent as png/gif can just have one
+					// transparent color.
+				$Tcolor = $this->unifyColors(
+					$this->im,
+					$this->setup['transparentColor_array'],
+					intval($this->setup['transparentColor.']['closest'])
+				);
+				if ($Tcolor >= 0) {
+					imagecolortransparent($this->im, $Tcolor);
+				}
 			}
 		}
-
 	}
 
 
