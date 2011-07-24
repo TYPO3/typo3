@@ -81,7 +81,8 @@ class t3lib_stdGraphic {
 		// Internal:
 	var $IM_commands = array(); // All ImageMagick commands executed is stored in this array for tracking. Used by the Install Tools Image section
 	var $workArea = array();
-
+	var $saveAlphaLayer = FALSE; // Set to true to preserve the alpha layer of read PNG images
+	
 		// Constants:
 	var $tempPath = 'typo3temp/'; // The temp-directory where to store the files. Normally relative to PATH_site but is allowed to be the absolute path AS LONG AS it is a subdir to PATH_site.
 	var $absPrefix = ''; // Prefix for relative paths. Used in "show_item.php" script. Is prefixed the output file name IN imageMagickConvert()
@@ -264,17 +265,32 @@ class t3lib_stdGraphic {
 					// prepare overlay image
 				$cpImg = $this->imageCreateFromFile($BBimage[3]);
 				$destImg = imagecreatetruecolor($w, $h);
-				$Bcolor = ImageColorAllocate($destImg, 0, 0, 0);
-				ImageFilledRectangle($destImg, 0, 0, $w, $h, $Bcolor);
+				if ($this->saveAlphaLayer) {
+					imagealphablending($destImg, FALSE);
+					imagesavealpha($destImg, TRUE);
+					$Bcolor = imagecolorallocatealpha($destImg, 0, 0, 0, 127);
+					imagefill($destImg, 0, 0, $Bcolor);
+				} else {
+					$Bcolor = ImageColorAllocate($destImg, 0, 0, 0);
+					ImageFilledRectangle($destImg, 0, 0, $w, $h, $Bcolor);
+				}
 				$this->copyGifOntoGif($destImg, $cpImg, $conf, $workArea);
 				$this->ImageWrite($destImg, $theImage);
 				imageDestroy($cpImg);
 				imageDestroy($destImg);
+				
 					// prepare mask image
 				$cpImg = $this->imageCreateFromFile($BBmask[3]);
 				$destImg = imagecreatetruecolor($w, $h);
-				$Bcolor = ImageColorAllocate($destImg, 0, 0, 0);
-				ImageFilledRectangle($destImg, 0, 0, $w, $h, $Bcolor);
+				if ($this->saveAlphaLayer) {
+					imagealphablending($destImg, FALSE);
+					imagesavealpha($destImg, TRUE);
+					$Bcolor = imagecolorallocatealpha($destImg, 0, 0, 0, 127);
+					imagefill($destImg, 0, 0, $Bcolor);
+				} else {
+					$Bcolor = ImageColorAllocate($destImg, 0, 0, 0);
+					ImageFilledRectangle($destImg, 0, 0, $w, $h, $Bcolor);
+				}
 				$this->copyGifOntoGif($destImg, $cpImg, $conf, $workArea);
 				$this->ImageWrite($destImg, $theMask);
 				imageDestroy($cpImg);
@@ -286,7 +302,9 @@ class t3lib_stdGraphic {
 
 				$backIm = $this->imageCreateFromFile($theDest); // The main image is loaded again...
 				if ($backIm) { // ... and if nothing went wrong we load it onto the old one.
-					ImageColorTransparent($backIm, -1);
+					if (!$this->saveAlphaLayer) {
+						ImageColorTransparent($backIm, -1);
+					}
 					$im = $backIm;
 				}
 					// unlink files from process
@@ -527,7 +545,9 @@ class t3lib_stdGraphic {
 
 				$backIm = $this->imageCreateFromFile($fileMenu); // The main image is loaded again...
 				if ($backIm) { // ... and if nothing went wrong we load it onto the old one.
-					ImageColorTransparent($backIm, -1);
+					if (!$this->saveAlphaLayer) {
+						ImageColorTransparent($backIm, -1);
+					}
 					$im = $backIm;
 				}
 
@@ -1395,7 +1415,9 @@ class t3lib_stdGraphic {
 
 				$backIm = $this->imageCreateFromFile($fileMenu); // The main image is loaded again...
 				if ($backIm) { // ... and if nothing went wrong we load it onto the old one.
-					ImageColorTransparent($backIm, -1);
+					if (!$this->saveAlphaLayer) {
+						ImageColorTransparent($backIm, -1);
+					}
 					$im = $backIm;
 				}
 			}
@@ -2783,7 +2805,12 @@ class t3lib_stdGraphic {
 			break;
 			case 'png':
 				if (function_exists('imagecreatefrompng')) {
-					return imageCreateFromPng($sourceImg);
+					$im = imageCreateFromPng($sourceImg);
+					if ($this->saveAlphaLayer) {
+						imagealphablending($im, FALSE);
+						imagesavealpha($im, TRUE);
+					}
+					return $im;
 				}
 			break;
 			case 'jpg':
