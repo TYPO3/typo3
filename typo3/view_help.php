@@ -457,10 +457,15 @@ class SC_view_help {
 	 * @param string $table CSH key / table name
 	 * @return string HTML output
 	 */
-	function render_Table($key, $table) {
+	function render_Table($key, $table = NULL) {
 		global $BE_USER,$TCA_DESCR,$TCA,$LANG;
 
 		$output = '';
+
+			// take default key if not explicitly specified
+		if ($table === NULL) {
+			$table = $key;
+		}
 
 			// Load table TCA
 		t3lib_div::loadTCA($key);
