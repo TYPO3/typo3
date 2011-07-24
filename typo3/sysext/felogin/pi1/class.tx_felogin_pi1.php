@@ -364,10 +364,15 @@ class tx_felogin_pi1 extends tslib_pibase {
 			return $this->pi_getLL('ll_change_password_nolinkprefix_message');
 		}
 
-		$link = ($isAbsRelPrefix ? '' : $this->conf['linkPrefix']) . $this->pi_getPageLink($GLOBALS['TSFE']->id, '', array(
-			$this->prefixId . '[user]' => $user['uid'],
-			$this->prefixId . '[forgothash]' => $randHash
-		));
+		$link = $this->pi_getPageLink(
+			$GLOBALS['TSFE']->id,
+			'',
+			array(
+				$this->prefixId . '[user]' => $user['uid'],
+				$this->prefixId . '[forgothash]' => $randHash,
+			)
+		);
+		$link = t3lib_div::locationHeaderUrl($link);
 
 		$msg = sprintf($this->pi_getLL('ll_forgot_validate_reset_password', '', 0), $user['username'], $link, $validEndString);
 
