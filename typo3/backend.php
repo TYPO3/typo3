@@ -132,6 +132,7 @@ class TYPO3backend {
 			'debugPanel'            => 'js/extjs/debugPanel.js',
 			'viewport'              => 'js/extjs/viewport.js',
 			'iframepanel'           => 'js/extjs/iframepanel.js',
+			'modulepanel'           => 'js/extjs/modulepanel.js',
 			'viewportConfiguration' => 'js/extjs/viewportConfiguration.js',
 			'util'					=> '../t3lib/js/extjs/util.js',
 		);

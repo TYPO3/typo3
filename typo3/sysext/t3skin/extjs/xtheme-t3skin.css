@@ -2380,3 +2380,12 @@ div.x-grid3-row:hover img.t3-icon-extensions-workspaces {
 	width: 17px
 }
 
+.t3skin-typo3-module-panel-toolbar .x-toolbar{
+	background-color: #585858;
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAYAAAAb4BS0AAAAGElEQVR42gENAPL/AEBAQExAQECzQEBA/xb3BD8CHBN0AAAAAElFTkSuQmCC");
+	background-position: right;
+	background-repeat: repeat-y;
+	border: none;
+	padding: 0;
+	margin: 0;
+}
