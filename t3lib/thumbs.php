@@ -139,6 +139,7 @@ class SC_t3lib_thumbs {
 			$file = PATH_site.substr($file,3);
 		}
 
+		$mtime = 0;
 			// Now the path is absolute.
 			// Checking for backpath and double slashes + the thumbnail can be made from files which are in the PATH_site OR the lockRootPath only!
 		if (t3lib_div::isAllowedAbsPath($file)) {
@@ -161,8 +162,10 @@ class SC_t3lib_thumbs {
 			$this->size = $size;
 			$this->mtime = $mtime;
 		} else {
+				// hide the path to the document root;
+			$publicFilename = substr($file, strlen(PATH_site));
 			throw new RuntimeException(
-				'TYPO3 Fatal Error: Image does not exist and/or MD5 checksum did not match.',
+				'TYPO3 Fatal Error: Image \'' . $publicFilename . '\' does not exist and/or MD5 checksum did not match.',
 				1270853950
 			);
 		}
