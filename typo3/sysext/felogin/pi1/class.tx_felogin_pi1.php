@@ -345,7 +345,6 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 		// send hashlink to user
 		$this->conf['linkPrefix'] = -1;
-		$isAbsRelPrefix = !empty($GLOBALS['TSFE']->absRefPrefix);
 		$isBaseURL  = !empty($GLOBALS['TSFE']->baseUrl);
 		$isFeloginBaseURL = !empty($this->conf['feloginBaseURL']);
 
@@ -359,15 +358,23 @@ class tx_felogin_pi1 extends tslib_pibase {
 			}
 		}
 
-		if ($this->conf['linkPrefix'] == -1 && !$isAbsRelPrefix) {
-				// no preix is set, return the error
-			return $this->pi_getLL('ll_change_password_nolinkprefix_message');
-		}
+		$link = $this->pi_getPageLink(
+			$GLOBALS['TSFE']->id,
+			'',
+			array(
+				 $this->prefixId . '[user]' => $user['uid'],
+				 $this->prefixId . '[forgothash]' => $randHash,
+			)
+		);
 
-		$link = ($isAbsRelPrefix ? '' : $this->conf['linkPrefix']) . $this->pi_getPageLink($GLOBALS['TSFE']->id, '', array(
-			$this->prefixId . '[user]' => $user['uid'],
-			$this->prefixId . '[forgothash]' => $randHash
-		));
+		if ($this->conf['linkPrefix'] == -1) {
+			$link = t3lib_div::locationHeaderUrl($link);
+		} else {
+			$parsedUrl = parse_url($link);
+			if (!isset($parsedUrl['scheme'])) {
+				$link = $this->conf['linkPrefix'] . $link;
+			}
+		}
 
 		$msg = sprintf($this->pi_getLL('ll_forgot_validate_reset_password', '', 0), $user['username'], $link, $validEndString);
 
