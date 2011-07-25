@@ -3784,7 +3784,7 @@ final class t3lib_div {
 	 * @return boolean
 	 */
 	public static function isAbsPath($path) {
-		return TYPO3_OS == 'WIN' ? substr($path, 1, 2) == ':/' : substr($path, 0, 1) == '/';
+		return TYPO3_OS == 'WIN' ? ((substr($path, 1, 2) === ':/') || (substr($path, 0, 1) === '/')) : substr($path, 0, 1) == '/';
 	}
 
 	/**
