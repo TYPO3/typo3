@@ -182,8 +182,13 @@ class SC_t3lib_thumbs {
 			$this->size = $size;
 			$this->mtime = $mtime;
 		} else {
+				// hide the path to the document root;
+			$publicFilename = substr($file, strlen(PATH_site));
 			throw new RuntimeException(
-				'TYPO3 Fatal Error: Image does not exist and/or MD5 checksum did not match.',
+				'TYPO3 Fatal Error: Image \'' . $publicFilename . '\' does not exist and/or MD5 checksum did not match. ' .
+					'If the target file exists and its file name contains special characters, the setting of ' .
+					'$TYPO3_CONF_VARS[SYS][systemLocale] might be wrong.'
+				,
 				1270853950
 			);
 		}
