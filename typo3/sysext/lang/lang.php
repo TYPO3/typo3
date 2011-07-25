@@ -450,10 +450,10 @@ class language {
 
 							// Append label
 						if ($specialInstruction) {
-							$GLOBALS['TCA_DESCR'][$table]['columns'][$fieldName][$type] .= LF . $lVal[0]['source'];
+							$GLOBALS['TCA_DESCR'][$table]['columns'][$fieldName][$type] .= LF . $lVal[0]['target'];
 						} else {
 								// Substitute label
-							$GLOBALS['TCA_DESCR'][$table]['columns'][$fieldName][$type] = $lVal[0]['source'];
+							$GLOBALS['TCA_DESCR'][$table]['columns'][$fieldName][$type] = $lVal[0]['target'];
 						}
 					}
 				}
