@@ -4337,7 +4337,13 @@ final class t3lib_div {
 	 * @return	boolean
 	 */
 	public static function isAbsPath($path) {
-		return TYPO3_OS == 'WIN' ? substr($path, 1, 2) == ':/' : substr($path, 0, 1) == '/';
+			// on Windows also a path starting with a drive letter is absolute: X:/
+		if (TYPO3_OS === 'WIN' && substr($path, 1, 2) === ':/') {
+			return TRUE;
+		}
+
+			// path starting with a / is always absolute, on every system
+		return (substr($path, 0, 1) === '/');
 	}
 
 	/**
