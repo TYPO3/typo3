@@ -925,6 +925,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		if (!link0) {
 			link0 = this.document.createElement('link');
 			link0.rel = 'stylesheet';
+			link0.type = 'text/css';
 				// Firefox 3.0.1 does not apply the base URL while Firefox 3.6.8 does so. Do not know in what version this was fixed.
 				// Therefore, for versions before 3.6.8, we prepend the url with the base, if the url is not absolute
 			link0.href = ((Ext.isGecko && navigator.productSub < 2010072200 && !/^http(s?):\/{2}/.test(this.config.editedContentStyle)) ? this.config.baseURL : '') + this.config.editedContentStyle;
@@ -936,6 +937,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			if (!link) {
 				link = this.document.createElement('link');
 				link.rel = 'stylesheet';
+				link.type = 'text/css';
 				link.href = ((Ext.isGecko && navigator.productSub < 2010072200 && !/^https?:\/{2}/.test(this.config.defaultPageStyle)) ? this.config.baseURL : '') + this.config.defaultPageStyle;
 				head.appendChild(link);
 			}
@@ -946,6 +948,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			if (!link) {
 				link = this.document.createElement('link');
 				link.rel = 'stylesheet';
+				link.type = 'text/css';
 				link.href = ((Ext.isGecko && navigator.productSub < 2010072200 && !/^https?:\/{2}/.test(this.config.pageStyle)) ? this.config.baseURL : '') + this.config.pageStyle;
 				head.appendChild(link);
 			}
@@ -2489,7 +2492,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 						id: this.editorId + '-iframe',
 						tag: 'iframe',
 						cls: 'editorIframe',
-						src: (Ext.isGecko || Ext.isChrome) ? 'javascript:void(0);' : HTMLArea.editorUrl + 'popups/blank.html'
+						src: (Ext.isGecko || Ext.isWebKit) ? 'javascript:void(0);' : HTMLArea.editorUrl + 'popups/blank.html'
 					},
 					isNested: this.isNested,
 					nestedParentElements: this.nestedParentElements,
