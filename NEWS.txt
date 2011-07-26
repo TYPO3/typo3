@@ -97,6 +97,11 @@ figured with:
 $TYPO3_CONF_VARS['FE']['cookieName'] and
 $TYPO3_CONF_VARS['BE']['cookieName'].
 
+* Moved t3d exports to fileadmin/_temp_ directory
+
+t3d packages exported by the import / extbase extension are now stored in
+fileadmin/_temp_ by default which is access restricted by default .htaccess
+rules.
 
 -------------------------------------------------------------------------------
 Backend
