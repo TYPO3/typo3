@@ -1547,7 +1547,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$filePathInfo = current($FILEMOUNTS);
 
 		if (is_array($filePathInfo))	{
-			$tempFolder = $filePathInfo['path'].'export/';
+			$tempFolder = $filePathInfo['path'].'_temp_/';
 			if (!@is_dir($tempFolder))	{
 				$tempFolder = $filePathInfo['path'];
 				if (!@is_dir($tempFolder))	{
