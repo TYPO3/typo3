@@ -6,6 +6,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="default_search_word_entry">Search for</label>
 			<label index="submit_button_label">Search</label>
 			<label index="opt_type_0">Distinct word</label>
 			<label index="opt_type_1">Part of word</label>
