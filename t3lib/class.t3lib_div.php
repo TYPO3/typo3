@@ -757,7 +757,7 @@ final class t3lib_div {
 	 *
 	 * @param string $verNumberStr Version number on format x.x.x
 	 * @return integer Integer version of version number (where each part can count to 999)
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::convertVersionNumberToInteger() instead
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_VersionNumber::convertVersionNumberToInteger() instead
 	 */
 	public static function int_from_ver($verNumberStr) {
 		self::logDeprecatedFunction();
