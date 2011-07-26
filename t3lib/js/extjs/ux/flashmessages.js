@@ -95,5 +95,4 @@ TYPO3.Flashmessage = function() {
 			box.slideIn('t').pause(duration).ghost('t', {remove: true});
 		}
 	};
-};
-TYPO3.Flashmessage();
+}();
