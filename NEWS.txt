@@ -103,6 +103,12 @@ t3d packages exported by the import / extbase extension are now stored in
 fileadmin/_temp_ by default which is access restricted by default .htaccess
 rules.
 
+* Added "IDNA Convert" libray for Internationalized Domain Names (IDN)
+
+The new library can be found in typo3/contrib/idna/ and is used to encode and
+decode internationalized domain names (containing special characters like
+umlauts) from and to punycode.
+
 -------------------------------------------------------------------------------
 Backend
 -------------------------------------------------------------------------------
