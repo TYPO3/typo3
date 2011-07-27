@@ -633,7 +633,7 @@ class SC_wizard_tsconfig {
 	protected function areFieldChangeFunctionsValid() {
 		return (
 			isset($this->P['fieldChangeFunc']) && is_array($this->P['fieldChangeFunc']) && isset($this->P['fieldChangeFuncHash'])
-			&& $this->P['fieldChangeFuncHash'] == t3lib_div::hmac(serialize($this->P['fieldChangeFunc']))
+			&& $this->P['fieldChangeFuncHash'] === t3lib_div::hmac(serialize($this->P['fieldChangeFunc']))
 		);
 	}
 }
