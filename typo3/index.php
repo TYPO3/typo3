@@ -222,7 +222,7 @@ class SC_index {
 		);
 
 			// show an error message if the login command was successful already, otherwise remove the subpart
-		if (!$this->commandLI) {
+		if (!$this->isLoginInProgress()) {
 			$content = t3lib_parsehtml::substituteSubpart($content, '###LOGIN_ERROR###', '');
 		} else {
 			$markers['ERROR_MESSAGE'] = $GLOBALS['LANG']->getLL('error.login', TRUE);
@@ -299,7 +299,7 @@ class SC_index {
 			'FORM'             => $content,
 			'NEWS'             => $this->makeLoginNews(),
 			'COPYRIGHT'        => $this->makeCopyrightNotice(),
-			'CSS_ERRORCLASS'   => ($this->commandLI ? ' class="error"' : ''),
+			'CSS_ERRORCLASS'   => ($this->isLoginInProgress() ? ' class="error"' : ''),
 			'CSS_OPENIDCLASS'  => 't3-login-openid-' . (t3lib_extMgm::isLoaded('openid') ? 'enabled' : 'disabled'),
 
 				// the labels will be replaced later on, thus the other parts above
@@ -339,8 +339,8 @@ class SC_index {
 	 */
 	function checkRedirect()	{
 			// Do redirect:
-			// If a user is logged in AND a) if either the login is just done (commandLI) or b) a loginRefresh is done or c) the interface-selector is NOT enabled (If it is on the other hand, it should not just load an interface, because people has to choose then...)
-		if ($GLOBALS['BE_USER']->user['uid'] && ($this->commandLI || $this->loginRefresh || !$this->interfaceSelector)) {
+			// If a user is logged in AND a) if either the login is just done (isLoginInProgress) or b) a loginRefresh is done or c) the interface-selector is NOT enabled (If it is on the other hand, it should not just load an interface, because people has to choose then...)
+		if ($GLOBALS['BE_USER']->user['uid'] && ($this->isLoginInProgress() || $this->loginRefresh || !$this->interfaceSelector))	{
 
 				// If no cookie has been set previously we tell people that this is a problem. This assumes that a cookie-setting script (like this one) has been hit at least once prior to this instance.
 			if (!$_COOKIE[t3lib_beUserAuth::getCookieName()]) {
@@ -393,7 +393,7 @@ class SC_index {
 					}
 				');
 			}
-		} elseif (!$GLOBALS['BE_USER']->user['uid'] && $this->commandLI) {
+		} elseif (!$GLOBALS['BE_USER']->user['uid'] && $this->isLoginInProgress()) {
 			sleep(5);	// Wrong password, wait for 5 seconds
 		}
 	}
@@ -410,7 +410,7 @@ class SC_index {
 		$this->interfaceSelector_jump = '';
 
 			// If interfaces are defined AND no input redirect URL in GET vars:
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] && ($this->commandLI || !$this->redirect_url))	{
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] && ($this->isLoginInProgress() || !$this->redirect_url))	{
 			$parts = t3lib_div::trimExplode(',',$GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']);
 			if (count($parts)>1)	{	// Only if more than one interface is defined will we show the selector:
 
@@ -796,6 +796,16 @@ class SC_index {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Checks if login credentials are currently submitted
+	 *
+	 * @return	boolean
+	 */
+	protected function isLoginInProgress() {
+		$username = t3lib_div::_GP('username');
+		return !(empty($username) && empty($this->commandLI));
 	}
 }
 
