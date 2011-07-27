@@ -97,6 +97,13 @@ figured with:
 $TYPO3_CONF_VARS['FE']['cookieName'] and
 $TYPO3_CONF_VARS['BE']['cookieName'].
 
+* Added "IDNA Convert" libray for Internationalized Domain Names (IDN)
+
+The new library can be found in typo3/contrib/idna/ and is used to encode and
+decode internationalized domain names (containing special characters like
+umlauts) from and to punycode.
+
+
 
 -------------------------------------------------------------------------------
 Backend
