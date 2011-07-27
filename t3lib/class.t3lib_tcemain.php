@@ -2042,6 +2042,15 @@ class t3lib_TCEmain {
 				case 'alphanum_x':
 					$value = preg_replace('/[^a-zA-Z0-9_-]/', '', $value);
 				break;
+				case 'domainname':
+					if (!preg_match('/^[a-z0-9\.\-]*$/i', $value)) {
+						t3lib_div::requireOnce(PATH_typo3 . 'contrib/idna/idna_convert.class.php');
+						$idnaConvert = new idna_convert();
+						$idnaConvert->set_parameter('idn_version', '2008');
+						$value = $idnaConvert->encode($value);
+						unset($idnaConvert);
+					}
+				break;
 				default:
 					if (t3lib_div::hasValidClassPrefix($func)) {
 						$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
