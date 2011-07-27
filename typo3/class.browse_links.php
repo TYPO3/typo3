@@ -872,16 +872,16 @@ class browse_links {
 		}
 
 			// Initializing the target value (RTE)
-		$this->setTarget = ($this->curUrlArray['target'] != '-') ? $this->curUrlArray['target'] : '';
+		$this->setTarget = ($this->curUrlArray['target'] != '-') ? rawurlencode($this->curUrlArray['target']) : '';
 		if ($this->thisConfig['defaultLinkTarget'] && !isset($this->curUrlArray['target']))	{
 			$this->setTarget=$this->thisConfig['defaultLinkTarget'];
 		}
 
 			// Initializing the class value (RTE)
-		$this->setClass = ($this->curUrlArray['class'] != '-') ? $this->curUrlArray['class'] : '';
+		$this->setClass = ($this->curUrlArray['class'] != '-') ? rawurlencode($this->curUrlArray['class']) : '';
 
 			// Initializing the title value (RTE)
-		$this->setTitle = ($this->curUrlArray['title'] != '-') ? $this->curUrlArray['title'] : '';
+		$this->setTitle = ($this->curUrlArray['title'] != '-') ? rawurlencode($this->curUrlArray['title']) : '';
 
 			// BEGIN accumulation of header JavaScript:
 		$JScode = '
@@ -892,7 +892,7 @@ class browse_links {
 			var add_title="'.($this->setTitle?'&curUrl[title]='.rawurlencode($this->setTitle):'').'";
 			var add_params="'.($this->bparams?'&bparams='.rawurlencode($this->bparams):'').'";
 
-			var cur_href="'.($this->curUrlArray['href']?$this->curUrlArray['href']:'').'";
+			var cur_href="' . ($this->curUrlArray['href'] ? rawurlencode($this->curUrlArray['href']) : '') . '";
 			var cur_target="'.($this->setTarget?$this->setTarget:'').'";
 			var cur_class = "'.($this->setClass ? $this->setClass : '-').'";
 			var cur_title="'.($this->setTitle?$this->setTitle:'').'";
