@@ -177,20 +177,19 @@ lib.stdheader {
 
 	10.1 = TEXT
 	10.1.current = 1
-	10.1.insertData = 1
-	10.1.fontTag = <h1{register:headerStyle}{register:headerClass}>|</h1>
+	10.1.dataWrap = <h1{register:headerStyle}{register:headerClass}>|</h1>
 
 	10.2 < .10.1
-	10.2.fontTag = <h2{register:headerStyle}{register:headerClass}>|</h2>
+	10.2.dataWrap = <h2{register:headerStyle}{register:headerClass}>|</h2>
 
 	10.3 < .10.1
-	10.3.fontTag = <h3{register:headerStyle}{register:headerClass}>|</h3>
+	10.3.dataWrap = <h3{register:headerStyle}{register:headerClass}>|</h3>
 
 	10.4 < .10.1
-	10.4.fontTag = <h4{register:headerStyle}{register:headerClass}>|</h4>
+	10.4.dataWrap = <h4{register:headerStyle}{register:headerClass}>|</h4>
 
 	10.5 < .10.1
-	10.5.fontTag = <h5{register:headerStyle}{register:headerClass}>|</h5>
+	10.5.dataWrap = <h5{register:headerStyle}{register:headerClass}>|</h5>
 
 	# Pops the used registers off the stack:
 	98 = RESTORE_REGISTER
