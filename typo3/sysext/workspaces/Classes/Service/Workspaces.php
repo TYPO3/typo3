@@ -439,7 +439,7 @@ class tx_Workspaces_Service_Workspaces {
 		if (is_array($recs)) {
 			foreach ($recs as $rec) {
 				$page = t3lib_beFunc::getRecord('pages', $rec[$checkField], 'uid,pid,perms_userid,perms_user,perms_groupid,perms_group,perms_everybody');
-				if ($GLOBALS['BE_USER']->doesUserHaveAccess($page, 1)) {
+				if ($GLOBALS['BE_USER']->doesUserHaveAccess($page, 1) && $this->isLanguageAccessibleForCurrentUser($table, $rec)) {
 					$permittedElements[] = $rec;
 				}
 			}
@@ -447,6 +447,22 @@ class tx_Workspaces_Service_Workspaces {
 		return $permittedElements;
 	}
 
+	/**
+	* Check current be users language access on given record.
+	*
+	* @param string $table Name of the table
+	* @param array $record Record row to be checked
+	* @return boolean
+	*/
+	protected function isLanguageAccessibleForCurrentUser($table, array $record) {
+		$languageUid = 0;
+
+		if (t3lib_BEfunc::isTableLocalizable($table)) {
+			$languageUid = $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
+		}
+
+		return $GLOBALS['BE_USER']->checkLanguageAccess($languageUid);
+	}
 
 	/**
 	 * Trivial check to see if the user already migrated his workspaces
