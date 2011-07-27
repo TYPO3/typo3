@@ -920,8 +920,6 @@ class t3lib_pageSelect {
 	 * store the parsed TypoScript template structures. You can call it directly
 	 * like t3lib_pageSelect::getHash()
 	 *
-	 * IDENTICAL to the function by same name found in t3lib_page
-	 *
 	 * @param	string		The hash-string which was used to store the data value
 	 * @return	string		The "content" field of the "cache_hash" cache entry.
 	 * @see tslib_TStemplate::start(), storeHash()
