@@ -75,7 +75,7 @@ final class RemoveXSS {
 		$ra_protocol = array('javascript', 'vbscript', 'expression');
 
 		//remove the potential &#xxx; stuff for testing
-		$val2 = preg_replace('/(&#[xX]?0{0,8}(9|10|13|a|b);)*\s*/i', '', $val);
+		$val2 = preg_replace('/(&#[xX]?0{0,8}(9|10|13|a|b);?)*\s*/i', '', $val);
 		$ra = array();
 
 		foreach ($ra1 as $ra1word) {
@@ -107,7 +107,7 @@ final class RemoveXSS {
 					$pattern = '';
 					for ($j = 0; $j < strlen($ra[$i][0]); $j++) {
 						if ($j > 0) {
-							$pattern .= '((&#[xX]0{0,8}([9ab]);)|(&#0{0,8}(9|10|13);)|\s)*';
+							$pattern .= '((&#[xX]0{0,8}([9ab]);?)|(&#0{0,8}(9|10|13);?)|\s)*';
 						}
 						$pattern .= $ra[$i][0][$j];
 					}
@@ -115,11 +115,11 @@ final class RemoveXSS {
 					switch ($ra[$i][1]) {
 						case 'ra_protocol':
 							//these take the form of e.g. 'javascript:'
-							$pattern .= '((&#[xX]0{0,8}([9ab]);)|(&#0{0,8}(9|10|13);)|\s)*(?=:)';
+							$pattern .= '((&#[xX]0{0,8}([9ab]);?)|(&#0{0,8}(9|10|13);?)|\s)*(?=:)';
 							break;
 						case 'ra_tag':
 							//these take the form of e.g. '<SCRIPT[^\da-z] ....';
-							$pattern = '(?<=<)' . $pattern . '((&#[xX]0{0,8}([9ab]);)|(&#0{0,8}(9|10|13);)|\s)*(?=[^\da-z])';
+							$pattern = '(?<=<)' . $pattern . '((&#[xX]0{0,8}([9ab]);?)|(&#0{0,8}(9|10|13);?)|\s)*(?=[^\da-z])';
 							break;
 						case 'ra_attribute':
 							//these take the form of e.g. 'onload='  Beware that a lot of characters are allowed
