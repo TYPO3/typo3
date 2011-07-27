@@ -511,6 +511,12 @@ class t3lib_pageSelect {
 	 * @see tslib_fe::findDomainRecord()
 	 */
 	function getDomainStartPage($domain, $path = '', $request_uri = '') {
+		if (substr($domain, 0, 4) === 'xn--') {
+			t3lib_div::requireOnce(PATH_typo3 . 'contrib/idna/idna_convert.class.php');
+			$IDN = new idna_convert();
+			$domain = $IDN->decode($domain);
+			unset($IDN);
+		}
 		$domain = explode(':', $domain);
 		$domain = strtolower(preg_replace('/\.$/', '', $domain[0]));
 			// Removing extra trailing slashes

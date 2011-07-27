@@ -43,6 +43,12 @@ General
 
 ...
 
+Added new library to convert IDN domain names
+-------------------------------------------------------------------------------
+
+The new library can be found in typo3/contrib/idna/ and is used to encode and
+decode "umlaut domains" from and to punycode.
+
 Removed functionality
 -------------------------------------------------------------------------------
 
