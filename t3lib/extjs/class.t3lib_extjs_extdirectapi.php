@@ -156,7 +156,7 @@ class t3lib_extjs_ExtDirectApi {
 	protected function generateAPI($filterNamespace) {
 		$javascriptNamespaces = array();
 		if (is_array($this->settings)) {
-			foreach ($this->settings as $javascriptName => $className) {
+			foreach ($this->settings as $javascriptName => $configuration) {
 				$splittedJavascriptName = explode('.', $javascriptName);
 				$javascriptObjectName = array_pop($splittedJavascriptName);
 				$javascriptNamespace = implode('.', $splittedJavascriptName);
@@ -173,6 +173,17 @@ class t3lib_extjs_ExtDirectApi {
 						'actions' => array(),
 						'namespace' => $javascriptNamespace
 					);
+				}
+
+				if (is_array($configuration)) {
+					$className = $configuration['callbackClass'];
+				} else {
+					t3lib_div::deprecationLog('ExtDirect (Namespace: ' . $javascriptName .
+						'): Registration code changed. Use the API method t3lib_extMgm::registerExtDirectComponent(). ' .
+						'More Information: http://wiki.typo3.org/ExtDirect ' .
+						'Will be removed in 4.7.'
+					);
+					$className = $configuration;
 				}
 
 				$serverObject = t3lib_div::getUserObj($className, FALSE);
