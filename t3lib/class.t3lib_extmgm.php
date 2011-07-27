@@ -704,6 +704,23 @@ final class t3lib_extMgm {
 	}
 
 	/**
+	 * Registers an Ext.Direct component with access restrictions.
+	 *
+	 * @param string $endpointName
+	 * @param string $callbackClass
+	 * @param string $moduleName optional: must be <mainmodule> or <mainmodule>_<submodule>
+	 * @param string $accessLevel optional: can be 'admin' or 'user,group'
+	 * @return void
+	 */
+	public static function registerExtDirectComponent($endpointName, $callbackClass, $moduleName = NULL, $accessLevel = NULL) {
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName] = array(
+			'callbackClass' => $callbackClass,
+			'moduleName' => $moduleName,
+			'accessLevel' => $accessLevel,
+		);
+	}
+
+	/**
 	 * Adds a module path to TBE_MODULES for used with the module dispatcher, mod.php
 	 * Used only for modules that are not placed in the main/sub menu hierarchy by the traditional mechanism of addModule()
 	 * Examples for this is context menu functionality (like import/export) which runs as an independent module through mod.php
