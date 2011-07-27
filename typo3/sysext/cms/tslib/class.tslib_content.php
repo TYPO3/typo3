@@ -5788,8 +5788,8 @@ class tslib_cObj {
 					$target = '';
 				}
 
-				$onClick = "vHWin=window.open('" . $GLOBALS['TSFE']->baseUrlWrap($finalTagParts['url']) .
-					"','FEopenLink','" . $JSwindowParams . "');vHWin.focus();return false;";
+				$onClick = "vHWin=window.open(" . t3lib_div::quoteJSvalue($GLOBALS['TSFE']->baseUrlWrap($finalTagParts['url'])) .
+					",'FEopenLink','" . $JSwindowParams . "');vHWin.focus();return false;";
 				$res = '<a href="' . htmlspecialchars($finalTagParts['url']) . '"' .
 					$target . ' onclick="' . htmlspecialchars($onClick) . '"' .
 					($title ? ' title="' . $title . '"' : '') .
@@ -6124,7 +6124,7 @@ class tslib_cObj {
 			$newQueryArray = t3lib_div::array_merge_recursive_overrule($newQueryArray, $overruleQueryArguments, TRUE);
 		}
 
-		return t3lib_div::implodeArrayForUrl('', $newQueryArray);
+		return t3lib_div::implodeArrayForUrl('', $newQueryArray, '', FALSE, TRUE);
 	}
 
 
