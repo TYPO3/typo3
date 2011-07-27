@@ -73,5 +73,96 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 
 		$this->assertEquals($resultFilePermissions, '0777');
 	}
+
+
+	///////////////////////////////
+	// tests concerning release
+	///////////////////////////////
+
+	/**
+	 * Dataprovider for releaseRemovesLockfileInTypo3TempLocks
+	 */
+	public function fileBasedLockMethods() {
+		return array(
+			'simple' => array('simple'),
+			'flock' => array('flock'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider fileBasedLockMethods
+	 */
+	public function releaseRemovesLockfileInTypo3TempLocks($lockMethod) {
+			// Use a very high id to be unique
+		$instance = new t3lib_lock(999999999, 'simple');
+			// Disable logging
+		$instance->setEnableLogging(FALSE);
+			// File pointer to current lock file
+		$lockFile = $instance->getResource();
+		$instance->acquire();
+
+		$instance->release();
+
+		$this->assertFalse(is_file($lockFile));
+	}
+
+	/**
+	 * Dataprovider for releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory
+	 */
+	public function invalidFileReferences() {
+		return array(
+			'simple not within PATH_site' => array('simple', '/tmp/TYPO3-Lock-Test'),
+			'flock not withing PATH_site' => array('flock', '/tmp/TYPO3-Lock-Test'),
+			'simple directory traversal' => array('simple', PATH_site . 'typo3temp/../typo3temp/locks/foo'),
+			'flock directory traversal' => array('flock', PATH_site . 'typo3temp/../typo3temp/locks/foo'),
+			'simple directory traversal 2' => array('simple', PATH_site . 'typo3temp/locks/../locks/foo'),
+			'flock directory traversal 2' => array('flock', PATH_site . 'typo3temp/locks/../locks/foo'),
+			'simple within uploads' => array('simple', PATH_site . 'uploads/TYPO3-Lock-Test'),
+			'flock within uploads' => array('flock', PATH_site . 'uploads/TYPO3-Lock-Test'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider invalidFileReferences
+	 */
+	public function releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory($lockMethod, $file) {
+		if (TYPO3_OS === 'WIN') {
+			$this->markTestSkipped('releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory() test not available on Windows.');
+		}
+			// Reflection needs php 5.3.2 or above
+		if (version_compare(phpversion(), '5.3.2', '<')) {
+			$this->markTestSkipped('releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory() test not available with php version smaller than 5.3.2');
+		}
+
+			// Create test file
+		touch($file);
+		if (!is_file($file)) {
+			$this->markTestSkipped('releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory() skipped: Test file could not be created');
+		}
+
+			// Create t3lib_lock instance, set lockfile to invalid path
+		$instance = new t3lib_lock(999999999, $lockMethod);
+		$instance->setEnableLogging(FALSE);
+		$t3libLockReflection = new ReflectionClass('t3lib_lock');
+		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('resource');
+		$t3libLockReflectionResourceProperty->setAccessible(TRUE);
+		$t3libLockReflectionResourceProperty->setValue($instance, $file);
+		$t3libLockReflectionAcquiredProperty = $t3libLockReflection->getProperty('isAcquired');
+		$t3libLockReflectionAcquiredProperty->setAccessible(TRUE);
+		$t3libLockReflectionAcquiredProperty->setValue($instance, TRUE);
+
+			// Call release method
+		$instance->release();
+
+			// Check if file is still there and clean up
+		$fileExists = is_file($file);
+		if (is_file($file)) {
+			unlink($file);
+		}
+
+		$this->assertTrue($fileExists);
+	}
 }
 ?>

@@ -171,7 +171,7 @@ class SC_tslib_showpic {
 			)
 		);
 
-		if ($md5_value!=$this->md5) {
+		if ($md5_value !== $this->md5) {
 			die('Parameter Error: Wrong parameters sent.');
 		}
 
