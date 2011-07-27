@@ -825,7 +825,7 @@ HTMLArea.prototype.generate = function () {
 
 		// create and append the IFRAME
 	var iframe = document.createElement("iframe");
-	if ((HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) || HTMLArea.is_chrome) {
+	if ((HTMLArea.is_gecko && !HTMLArea.is_opera) || HTMLArea.is_safari) {
 		iframe.setAttribute("src", "javascript:void(0);");
 	} else {
 		iframe.setAttribute("src", (HTMLArea.is_opera?_typo3_host_url:"") + _editor_url + "popups/blank.html");
@@ -1042,6 +1042,7 @@ HTMLArea.prototype.initIframe = function() {
 		if (!link0) {
  			link0 = doc.createElement("link");
 			link0.rel = "stylesheet";
+			link0.type = "text/css";
 			link0.href = this.config.editedContentStyle;
 			head.appendChild(link0);
 			HTMLArea._appendToLog("[HTMLArea::initIframe]: Skin CSS set to: " + this.config.editedContentStyle);
@@ -1051,6 +1052,7 @@ HTMLArea.prototype.initIframe = function() {
 			if (!link) {
  				link = doc.createElement("link");
 				link.rel = "stylesheet";
+				link.type = "text/css";
 				link.href = this.config.defaultPageStyle;
 				head.appendChild(link);
 			}
@@ -1061,6 +1063,7 @@ HTMLArea.prototype.initIframe = function() {
 			if (!link) {
  				link = doc.createElement("link");
 				link.rel = "stylesheet";
+				link.type = "text/css";
 				link.href = this.config.pageStyle;
 				head.appendChild(link);
 			}
