@@ -613,15 +613,6 @@ $TYPO3_CONF_VARS = array(
 				'default' => 't3lib/class.t3lib_frontendedit.php:t3lib_frontendedit'
 			)
 		),
-		'ExtDirect' => array(	// array of key value pairs (provider -> location:className) that holds the classes for the ExtDirect functionality
-			'TYPO3.CSH.ExtDirect' => 't3lib/extjs/dataprovider/class.extdirect_dataprovider_contexthelp.php:extDirect_DataProvider_ContextHelp',
-			'TYPO3.LiveSearchActions.ExtDirect' => 't3lib/extjs/dataprovider/class.extdirect_dataprovider_backendlivesearch.php:extDirect_DataProvider_BackendLiveSearch',
-			'TYPO3.BackendUserSettings.ExtDirect' => 't3lib/extjs/dataprovider/class.extdirect_dataprovider_beusersettings.php:extDirect_DataProvider_BackendUserSettings',
-			'TYPO3.ExtDirectStateProvider.ExtDirect' => 't3lib/extjs/dataprovider/class.extdirect_dataprovider_state.php:extDirect_DataProvider_State',
-			'TYPO3.Components.PageTree.DataProvider' => 't3lib/tree/pagetree/extdirect/class.t3lib_tree_pagetree_extdirect_tree.php:t3lib_tree_pagetree_extdirect_Tree',
-			'TYPO3.Components.PageTree.Commands' => 't3lib/tree/pagetree/extdirect/class.t3lib_tree_pagetree_extdirect_tree.php:t3lib_tree_pagetree_extdirect_Commands',
-			'TYPO3.Components.PageTree.ContextMenuDataProvider' => 't3lib/contextmenu/pagetree/extdirect/class.t3lib_contextmenu_pagetree_extdirect_contextmenu.php:t3lib_contextmenu_pagetree_extdirect_ContextMenu',
-		),
 	),
 	'EXTCONF' => array(		// Here you may add manually set configuration options for your extensions. Eg. $TYPO3_CONF_VARS['EXTCONF']['my_extension_key']['my_option'] = 'my_value';
 //		'--key--' => array()
@@ -632,6 +623,52 @@ $TYPO3_CONF_VARS = array(
 //		Eg.  ...['service_type']['service_key']['my_option'] = 'my_value';
 	)
 );
+
+if (TYPO3_MODE === 'BE') {
+	t3lib_extMgm::registerExtDirectComponent(
+		'TYPO3.Components.PageTree.DataProvider',
+		PATH_t3lib . 'tree/pagetree/extdirect/class.t3lib_tree_pagetree_extdirect_tree.php:t3lib_tree_pagetree_extdirect_Tree',
+		'web',
+		'user,group'
+	);
+
+	t3lib_extMgm::registerExtDirectComponent(
+		'TYPO3.Components.PageTree.Commands',
+		PATH_t3lib . 'tree/pagetree/extdirect/class.t3lib_tree_pagetree_extdirect_tree.php:t3lib_tree_pagetree_extdirect_Commands',
+		'web',
+		'user,group'
+	);
+
+	t3lib_extMgm::registerExtDirectComponent(
+		'TYPO3.Components.PageTree.ContextMenuDataProvider',
+		PATH_t3lib . 'contextmenu/pagetree/extdirect/class.t3lib_contextmenu_pagetree_extdirect_contextmenu.php:t3lib_contextmenu_pagetree_extdirect_ContextMenu',
+		'web',
+		'user,group'
+	);
+
+	t3lib_extMgm::registerExtDirectComponent(
+		'TYPO3.LiveSearchActions.ExtDirect',
+		PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_backendlivesearch.php:extDirect_DataProvider_BackendLiveSearch',
+		'web_list',
+		'user,group'
+	);
+
+	t3lib_extMgm::registerExtDirectComponent(
+		'TYPO3.BackendUserSettings.ExtDirect',
+		PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_beusersettings.php:extDirect_DataProvider_BackendUserSettings'
+	);
+
+	t3lib_extMgm::registerExtDirectComponent(
+		'TYPO3.CSH.ExtDirect',
+		PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_contexthelp.php:extDirect_DataProvider_ContextHelp'
+	);
+
+	t3lib_extMgm::registerExtDirectComponent(
+		'TYPO3.ExtDirectStateProvider.ExtDirect',
+		PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_state.php:extDirect_DataProvider_State'
+	);
+}
+
 $T3_VAR = array();	// Initialize.
 
 	// TYPO3 version

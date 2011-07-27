@@ -144,16 +144,38 @@ class t3lib_extjs_ExtDirectRouter {
 	protected function processRpc($singleRequest, $namespace) {
 		$endpointName = $namespace . '.' . $singleRequest->action;
 
-			// theoretically this can never happen, because of an javascript error on
-			// the client side due the missing namespace/endpoint
-		if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName])) {
-			throw new UnexpectedValueException('ExtDirect: Call to undefined endpoint: ' . $endpointName);
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName])) {
+			if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName]['callbackClass'])) {
+				throw new UnexpectedValueException('ExtDirect: Call to undefined endpoint: ' . $endpointName);
+			}
+
+			$callbackClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName]['callbackClass'];
+			$configuration = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName];
+
+			if (!is_null($configuration['moduleName']) && !is_null($configuration['accessLevel'])) {
+				$GLOBALS['BE_USER']->modAccess(
+					array(
+						'name' => $configuration['moduleName'],
+						'access' => $configuration['accessLevel'],
+					),
+					TRUE
+				);
+			}
+
+		} else {
+			if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName])) {
+				throw new UnexpectedValueException('ExtDirect: Call to undefined endpoint: ' . $endpointName);
+			}
+
+			$callbackClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName];
+			debug('ExtDirect (Namespace: ' . $endpointName .
+				'): Registration code changed. Use the API method t3lib_extMgm::registerExtDirectComponent(). ' .
+				'More Information: http://wiki.typo3.org/ExtDirect' .
+				'Will be removed in 4.7.'
+			);
 		}
 
-		$endpointObject = t3lib_div::getUserObj(
-			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName],
-			FALSE
-		);
+		$endpointObject = t3lib_div::getUserObj($callbackClass, FALSE);
 
 		return call_user_func_array(
 			array($endpointObject, $singleRequest->method),
