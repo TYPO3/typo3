@@ -433,7 +433,7 @@ $TCA['sys_domain'] = array(
 				'type' => 'input',
 				'size' => '35',
 				'max' => '80',
-				'eval' => 'required,unique,lower,trim',
+				'eval' => 'required,unique,lower,trim,domainname',
 				'softref' => 'substitute'
 			),
 		),
