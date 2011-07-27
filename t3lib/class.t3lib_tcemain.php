@@ -7616,7 +7616,7 @@ State was change by %s (username: %s)
 			$msg = $row['error'] . ': ' . sprintf($row['details'], $log_data[0], $log_data[1], $log_data[2], $log_data[3], $log_data[4]);
 			$flashMessage = t3lib_div::makeInstance(
 						't3lib_FlashMessage',
-						$msg,
+						htmlspecialchars($msg),
 						'',
 						t3lib_FlashMessage::ERROR,
 						TRUE
