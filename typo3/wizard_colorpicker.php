@@ -448,7 +448,7 @@ class SC_wizard_colorpicker {
 	protected function areFieldChangeFunctionsValid() {
 		return (
 			$this->fieldChangeFunc && $this->fieldChangeFuncHash
-			&& $this->fieldChangeFuncHash == t3lib_div::hmac($this->fieldChangeFunc)
+			&& $this->fieldChangeFuncHash === t3lib_div::hmac($this->fieldChangeFunc)
 		);
 	}
 }

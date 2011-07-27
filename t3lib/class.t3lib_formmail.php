@@ -330,7 +330,9 @@ class t3lib_formmail {
 	 */
 	public function __destruct() {
 		foreach ($this->temporaryFiles as $file) {
-			t3lib_div::unlink_tempfile($file);
+			if (t3lib_div::isAllowedAbsPath($file) && t3lib_div::isFirstPartOfStr($file, PATH_site . 'typo3temp/upload_temp_')) {
+				t3lib_div::unlink_tempfile($file);
+			}
 		}
 	}
 }
