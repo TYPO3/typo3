@@ -1090,10 +1090,13 @@ final class t3lib_div {
 
 	/**
 	 * Returns an integer from a three part version number, eg '4.12.3' -> 4012003
+	 * This method will be deprecated in TYPO3 4.6. You are encouraged to start using
+	 * t3lib_utility_VersionNumber::convertVersionNumberToInteger() instead
 	 * Usage: 2
 	 *
 	 * @param	string		Version number on format x.x.x
 	 * @return	integer		Integer version of version number (where each part can count to 999)
+	 * @see t3lib_utility_VersionNumber::convertVersionNumberToInteger()
 	 */
 	public static function int_from_ver($verNumberStr) {
 		$verParts = explode('.', $verNumberStr);

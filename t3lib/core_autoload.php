@@ -160,6 +160,7 @@ $t3libClasses = array(
 	't3lib_utility_mail' => PATH_t3lib . 'utility/class.t3lib_utility_mail.php',
 	't3lib_utility_phpoptions' => PATH_t3lib . 'utility/class.t3lib_utility_phpoptions.php',
 	't3lib_utility_debug' => PATH_t3lib . 'utility/class.t3lib_utility_debug.php',
+	't3lib_utility_versionnumber' => PATH_t3lib . 'utility/class.t3lib_utility_versionnumber.php',
 	't3lib_spritemanager' => PATH_t3lib . 'class.t3lib_spritemanager.php',
 	't3lib_spritemanager_spritegenerator' => PATH_t3lib . 'spritemanager/class.t3lib_spritemanager_spritegenerator.php',
 	't3lib_spritemanager_spriteicongenerator' => PATH_t3lib . 'interfaces/interface.t3lib_spritemanager_spriteicongenerator.php',
