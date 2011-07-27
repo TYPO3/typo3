@@ -26,10 +26,31 @@ if (TYPO3_MODE == 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 	);
 
 		// register ExtDirect
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']['TYPO3.Workspaces.ExtDirect'] = t3lib_extMgm::extPath($_EXTKEY) . 'Classes/ExtDirect/Server.php:tx_Workspaces_ExtDirect_Server';
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']['TYPO3.Workspaces.ExtDirectActions'] = t3lib_extMgm::extPath($_EXTKEY) . 'Classes/ExtDirect/ActionHandler.php:tx_Workspaces_ExtDirect_ActionHandler';
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']['TYPO3.Workspaces.ExtDirectMassActions'] = t3lib_extMgm::extPath($_EXTKEY) . 'Classes/ExtDirect/MassActionHandler.php:tx_Workspaces_ExtDirect_MassActionHandler';
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']['TYPO3.Ajax.ExtDirect.ToolbarMenu'] = t3lib_extMgm::extPath($_EXTKEY) . 'Classes/ExtDirect/ToolbarMenu.php:tx_Workspaces_ExtDirect_ToolbarMenu';
+	t3lib_extMgm::registerExtDirectComponent(
+		'TYPO3.Workspaces.ExtDirect',
+		t3lib_extMgm::extPath($_EXTKEY) . 'Classes/ExtDirect/Server.php:tx_Workspaces_ExtDirect_Server',
+		'web_WorkspacesWorkspaces',
+		'user,group'
+	);
+
+	t3lib_extMgm::registerExtDirectComponent(
+		'TYPO3.Workspaces.ExtDirectActions',
+		t3lib_extMgm::extPath($_EXTKEY) . 'Classes/ExtDirect/ActionHandler.php:tx_Workspaces_ExtDirect_ActionHandler',
+		'web_WorkspacesWorkspaces',
+		'user,group'
+	);
+
+	t3lib_extMgm::registerExtDirectComponent(
+		'TYPO3.Workspaces.ExtDirectMassActions',
+		t3lib_extMgm::extPath($_EXTKEY) . 'Classes/ExtDirect/MassActionHandler.php:tx_Workspaces_ExtDirect_MassActionHandler',
+		'web_WorkspacesWorkspaces',
+		'user,group'
+	);
+
+	t3lib_extMgm::registerExtDirectComponent(
+		'TYPO3.Ajax.ExtDirect.ToolbarMenu',
+		t3lib_extMgm::extPath($_EXTKEY) . 'Classes/ExtDirect/ToolbarMenu.php:tx_Workspaces_ExtDirect_ToolbarMenu'
+	);
 
 		// register the reports statusprovider
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['configuration'][] = 'Tx_Workspaces_Reports_StatusProvider';
