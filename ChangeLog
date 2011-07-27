@@ -1,3 +1,27 @@
+2011-07-27  277d945            [RELEASE] Release of TYPO3 4.3.12 (TYPO3 v4 Release Team)
+2011-07-27  b1ab0e2  #24577    [BUGFIX] Untrusted GP data is unserialized in wizard_colorpicker.php and view_help.php (Christian Kuhn)
+2011-07-27  875a385  #26876    [BUGFIX] Unprivileged backend user can read arbitrarily from database (Helmut Hummel)
+2011-07-27  31053be  #28189    [BUGFIX] XSS in TYPO3 core when using typolink.parameter JS-Popup Window (Marco Bresch)
+2011-07-27  9eb03df  #24535    [BUGFIX] XSS in tcemain flash message (Georg Ringer)
+2011-07-27  9912005  #24519    [BUGFIX] XSS in Recycler (Steffen Gebert)
+2011-07-27  bfef86b  #24497    [BUGFIX] XSS in browse_links (Georg Ringer)
+2011-07-27  750aea8  #20775    [BUGFIX] t3lib_div::removeXSS does not remove some XSS (Jigal van Hemert)
+2011-07-27  1375cc0  #21589    [BUGFIX] XSS in admin panel (Georg Ringer)
+2011-07-27  105bc43  #24457    [BUGFIX] The delay if wrong credentials are provided during backend login can be circumvented (Helmut Hummel)
+2011-07-27  d9411b5  #24456    [BUGFIX] Information disclosure during backend login (Helmut Hummel)
+2011-07-26  c92a3ba  #28218    [BUGFIX] Value 0 in integer fields is not shown in List module anymore (Benjamin Mack)
+2011-07-07  0b3babb  #27936    [BUGFIX] Date of 1970-01-01 is shown in unset date fields (Steffen Gebert)
+2011-06-23  eadf9d3  #22928    [BUGFIX] FE-Error "NO entry in the $TCA-array..." (Nicole Cordes)
+2011-06-14  043bc20  #27446    [TASK] Integrate external projects Fluid and Extbase as Git submodules (Oliver Hader)
+2011-05-10  6e69527  #26738    [TASK] Use external Core Project DBAL as Git submodule (Oliver Hader)
+2011-05-10  8383bc0  #26725    [TASK] Use external Core Project version as Git submodule (Oliver Hader)
+2011-05-10  6307176  #26725    [TASK] Use external Core Project version as Git submodule (Oliver Hader)
+2011-04-22  77cef3f            [TASK] Remove file SVNreadme.txt (Steffen Gebert)
+2011-04-16  b2014fd  #23134    [BUGFIX] Flexformfield "Forgot Password Message" in felogin does not work (Steffen Mueller)
+2011-04-11  c02c720            [FEATURE] add .gitignore for common file exclusions (Peter Niederlag(office))
+2011-02-23  ebe9886            Updating version number to  4.3.12-dev after release of 4.3.11 (ohader)
+
+
 2011-02-23  Oliver Hader  <oliver.hader@typo3.org>
 
 	* Release of TYPO3 4.3.11
