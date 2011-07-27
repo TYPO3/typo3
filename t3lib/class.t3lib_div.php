@@ -757,10 +757,13 @@ final class t3lib_div {
 	 *
 	 * @param string $verNumberStr Version number on format x.x.x
 	 * @return integer Integer version of version number (where each part can count to 999)
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_VersionNumber::convertVersionNumberToInteger() instead
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.9 - Use t3lib_utility_VersionNumber::convertVersionNumberToInteger() instead
 	 */
 	public static function int_from_ver($verNumberStr) {
-		self::logDeprecatedFunction();
+			// Deprecation log is activated only for TYPO3 4.7 and above
+		if (t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 4007000) {
+			self::logDeprecatedFunction();
+		}
 		return t3lib_utility_VersionNumber::convertVersionNumberToInteger($verNumberStr);
 	}
 
