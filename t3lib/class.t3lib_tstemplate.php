@@ -1507,7 +1507,7 @@ class t3lib_TStemplate	{
 			// linkVars
 		if ($GLOBALS['TSFE']->config['config']['uniqueLinkVars']) {
 			if ($addParams) {
-				$LD['linkVars'] = t3lib_div::implodeArrayForUrl('',t3lib_div::explodeUrl2Array($GLOBALS['TSFE']->linkVars.$addParams));
+				$LD['linkVars'] = t3lib_div::implodeArrayForUrl('', t3lib_div::explodeUrl2Array($GLOBALS['TSFE']->linkVars . $addParams), '', FALSE, TRUE);
 			} else {
 				$LD['linkVars'] = $GLOBALS['TSFE']->linkVars;
 			}
