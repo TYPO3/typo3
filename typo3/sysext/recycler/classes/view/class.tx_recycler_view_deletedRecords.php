@@ -62,14 +62,14 @@ class tx_recycler_view_deletedRecords {
 						'table'	=> $table,
 						'crdate' => date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),
 						'tstamp' => date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
-						'owner' => $backendUser['username'],
+						'owner' => htmlspecialchars($backendUser['username']),
 						'owner_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']],
 						'tableTitle' => tx_recycler_helper::getUtf8String(
 							$GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'])
 						),
-						'title'	=> tx_recycler_helper::getUtf8String(
+						'title' => htmlspecialchars(tx_recycler_helper::getUtf8String(
 							t3lib_BEfunc::getRecordTitle($table, $row)
-						),
+						)),
 						'path'	=> tx_recycler_helper::getRecordPath($row['pid']),
 					);
 				}
