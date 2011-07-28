@@ -21,73 +21,57 @@
  *                                                                        */
 
 /**
- * The EscapeViewHelper is used to escape variable content in various ways. By
- * default HTML is the target.
+ * Removes tags from the given string (applying PHPs strip_tags() function)
+ *
+ * @see http://www.php.net/manual/function.strip-tags.php
  *
  * = Examples =
  *
- * <code title="HTML">
- * <f:escape>{text}</f:escape>
+ * <code title="default notation">
+ * <f:format.stripTags>Some Text with <b>Tags</b> and an &Uuml;mlaut.</f:format.stripTags>
  * </code>
  * <output>
- * Text with & " ' < > * replaced by HTML entities (htmlspecialchars applied).
+ * Some Text with Tags and an &Uuml;mlaut. (strip_tags() applied. Note: encoded entities are not decoded)
  * </output>
  *
- * <code title="Entities">
- * <f:escape type="entities">{text}</f:escape>
+ * <code title="inline notation">
+ * {text -> f:format.stripTags()}
  * </code>
  * <output>
- * Text with all possible chars replaced by HTML entities (htmlentities applied).
- * </output>
- *
- * <code title="URL">
- * <f:escape type="url">{text}</f:escape>
- * </code>
- * <output>
- * Text encoded for URL use (rawurlencode applied).
+ * Text without tags (strip_tags() applied)
  * </output>
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0. Please use the <f:format.*> ViewHelpers instead.
+ * @api
  */
-class Tx_Fluid_ViewHelpers_EscapeViewHelper extends Tx_Fluid_ViewHelpers_Format_AbstractEncodingViewHelper {
+class Tx_Fluid_ViewHelpers_Format_StripTagsViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * Escapes special characters with their escaped counterparts as needed.
+	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
+	 * can decode the text's entities.
 	 *
-	 * @param string $value
-	 * @param string $type The type, one of html, entities, url
-	 * @param string $encoding
-	 * @return string the altered string.
-	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @var boolean
 	 */
-	public function render($value = NULL, $type = 'html', $encoding = NULL) {
-		t3lib_div::logDeprecatedFunction('<f:escape> is deprecated. Please use the <f:format.*> ViewHelpers instead.');
+	protected $escapingInterceptorEnabled = FALSE;
+
+	/**
+	 * Escapes special characters with their escaped counterparts as needed using PHPs strip_tags() function.
+	 *
+	 * @param string $value string to format
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @see http://www.php.net/manual/function.strip-tags.php
+	 * @api
+	 */
+	public function render($value = NULL) {
 		if ($value === NULL) {
 			$value = $this->renderChildren();
 		}
-
 		if (!is_string($value)) {
 			return $value;
 		}
-
-		if ($encoding === NULL) {
-			$encoding = $this->resolveDefaultEncoding();
-		}
-
-		switch ($type) {
-			case 'html':
-				return htmlspecialchars($value, ENT_COMPAT, $encoding);
-			break;
-			case 'entities':
-				return htmlentities($value, ENT_COMPAT, $encoding);
-			break;
-			case 'url':
-				return rawurlencode($value);
-			default:
-				return $value;
-			break;
-		}
+		return strip_tags($value);
 	}
+
 }
 ?>
