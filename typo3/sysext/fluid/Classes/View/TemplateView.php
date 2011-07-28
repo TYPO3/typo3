@@ -366,7 +366,9 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * The third element now has the @controller part again stripped off, and has the last subpackage part stripped off as well.
 	 * This continues until both @subpackage and @controller are empty.
 	 *
-	 * Example for $bubbleControllerAndSubpackage is TRUE, we have the Tx_Fluid_MySubPackage_Controller_MyController as Controller Object Name and the current format is "html"
+	 * Example for $bubbleControllerAndSubpackage is TRUE, we have the Tx_MyExtension_MySubPackage_Controller_MyController
+	 * as Controller Object Name and the current format is "html"
+	 *
 	 * If pattern is @templateRoot/@subpackage/@controller/@action.@format, then the resulting array is:
 	 *  - Resources/Private/Templates/MySubPackage/My/@action.html
 	 *  - Resources/Private/Templates/MySubPackage/@action.html
