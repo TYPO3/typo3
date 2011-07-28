@@ -379,8 +379,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	/**
 	 * Sets the table where the cache entries are stored.
 	 *
-	 * @deprecated since TYPO3 4.6: The backend calculates the
-	 * 		table name internally, this method does nothing anymore
+	 * @deprecated since TYPO3 4.6: The backend calculates the table name internally, this method does nothing anymore
 	 * @param string $cacheTable Table name
 	 * @return void
 	 */
@@ -402,8 +401,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	/**
 	 * Sets the table where cache tags are stored.
 	 *
-	 * @deprecated since TYPO3 4.6: The backend calculates the
-	 * 		table name internally, this method does nothing anymore
+	 * @deprecated since TYPO3 4.6: The backend calculates the table name internally, this method does nothing anymore
 	 * @param string $tagsTable: Tags table name
 	 * @return void
 	 */
