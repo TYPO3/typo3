@@ -363,5 +363,24 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 		$this->assertNull(Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($this->dummyObject, 'property2.property.not.existing'));
 	}
 
+	/**
+	 * @test
+	 */
+	public function getPropertyPathReturnsNullIfSubjectIsNoObject() {
+		$string = 'Hello world';
+
+		$this->assertNull(Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($string, 'property2'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPropertyPathReturnsNullIfSubjectOnPathIsNoObject() {
+		$object = new \stdClass();
+		$object->foo = 'Hello World';
+
+		$this->assertNull(Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($object, 'foo.bar'));
+	}
+
 }
 ?>

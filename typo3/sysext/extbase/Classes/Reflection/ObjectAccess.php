@@ -44,6 +44,7 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 * Get a property of a given object.
 	 * Tries to get the property the following ways:
 	 * - if the target is an array, and has this property, we call it.
+	 * - if super cow powers should be used, fetch value through reflection
 	 * - if public getter method exists, call it.
 	 * - if the target object is an instance of ArrayAccess, it gets the property
 	 *   on it if it exists.
@@ -53,46 +54,85 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 * @param mixed $subject Object or array to get the property from
 	 * @param string $propertyName name of the property to retrieve
 	 * @param boolean $forceDirectAccess directly access property using reflection(!)
-	 * @return object Value of the property.
+	 * @return mixed Value of the property
 	 * @throws InvalidArgumentException in case $subject was not an object or $propertyName was not a string
 	 * @throws RuntimeException if the property was not accessible
 	 */
 	static public function getProperty($subject, $propertyName, $forceDirectAccess = FALSE) {
-		if (!is_object($subject) && !is_array($subject)) throw new InvalidArgumentException('$subject must be an object or array, ' . gettype($subject). ' given.', 1237301367);
-		if (!is_string($propertyName)) throw new InvalidArgumentException('Given property name is not of type string.', 1231178303);
-
-		if (is_array($subject)) {
-			if (array_key_exists($propertyName, $subject)) {
-				return $subject[$propertyName];
-			}
-		} else {
-			if ($forceDirectAccess === TRUE) {
-				if (property_exists(get_class($subject), $propertyName)) {
-					$propertyReflection = new Tx_Extbase_Reflection_PropertyReflection(get_class($subject), $propertyName);
-					return $propertyReflection->getValue($subject);
-				} elseif (property_exists($subject, $propertyName)) {
-					return $subject->$propertyName;
-				} else {
-					throw new Tx_Extbase_Reflection_Exception_PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject does not exist.', 1302855001);
-				}
-			} elseif (is_callable(array($subject, 'get' . ucfirst($propertyName)))) {
-				return call_user_func(array($subject, 'get' . ucfirst($propertyName)));
-			} elseif (is_callable(array($subject, 'is' . ucfirst($propertyName)))) {
-				return call_user_func(array($subject, 'is' . ucfirst($propertyName)));
-			} elseif ($subject instanceof ArrayAccess && isset($subject[$propertyName])) {
-				return $subject[$propertyName];
-			} elseif (array_key_exists($propertyName, get_object_vars($subject))) {
-				return $subject->$propertyName;
-			}
+		if (!is_object($subject) && !is_array($subject)) {
+			throw new InvalidArgumentException('$subject must be an object or array, ' . gettype($subject). ' given.', 1237301367);
+		}
+		if (!is_string($propertyName) && (!is_array($subject) && !$subject instanceof ArrayAccess)) {
+			throw new InvalidArgumentException('Given property name is not of type string.', 1231178303);
 		}
 
+		$propertyExists = FALSE;
+		$propertyValue = self::getPropertyInternal($subject, $propertyName, $forceDirectAccess, $propertyExists);
+		if ($propertyExists === TRUE) {
+			return $propertyValue;
+		}
 		throw new Tx_Extbase_Reflection_Exception_PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject was not accessible.', 1263391473);
 	}
 
 	/**
+	 * Gets a property of a given object or array.
+	 * This is an internal method that does only limited type checking for performance reasons.
+	 * If you can't make sure that $subject is either of type array or object and $propertyName of type string you should use getProperty() instead.
+	 * @see getProperty()
+	 *
+	 * @param mixed $subject Object or array to get the property from
+	 * @param string $propertyName name of the property to retrieve
+	 * @param boolean $forceDirectAccess directly access property using reflection(!)
+	 * @param boolean $propertyExists (by reference) will be set to TRUE if the specified property exists and is gettable
+	 * @return mixed Value of the property
+	 * @internal
+	 */
+	static public function getPropertyInternal($subject, $propertyName, $forceDirectAccess, &$propertyExists) {
+		if ($subject === NULL) {
+			return;
+		}
+		$propertyExists = TRUE;
+		if (is_array($subject)) {
+			if (array_key_exists($propertyName, $subject)) {
+				return $subject[$propertyName];
+			}
+			$propertyExists = FALSE;
+			return;
+		}
+		if ($forceDirectAccess === TRUE) {
+			if (property_exists(get_class($subject), $propertyName)) {
+				$propertyReflection = new Tx_Extbase_Reflection_PropertyReflection(get_class($subject), $propertyName);
+				return $propertyReflection->getValue($subject);
+			} elseif (property_exists($subject, $propertyName)) {
+				return $subject->$propertyName;
+			} else {
+				throw new Tx_Extbase_Reflection_Exception_PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject does not exist.', 1302855001);
+			}
+		}
+		if ($subject instanceof ArrayAccess && isset($subject[$propertyName])) {
+			return $subject[$propertyName];
+		}
+		$getterMethodName = 'get' . ucfirst($propertyName);
+		if (is_callable(array($subject, $getterMethodName))) {
+			return $subject->$getterMethodName();
+		}
+		$getterMethodName = 'is' . ucfirst($propertyName);
+		if (is_callable(array($subject, $getterMethodName))) {
+			return $subject->$getterMethodName();
+		}
+		if (is_object($subject) && array_key_exists($propertyName, get_object_vars($subject))) {
+			return $subject->$propertyName;
+		}
+		$propertyExists = FALSE;
+	}
+
+	/**
 	 * Gets a property path from a given object or array.
+	 *
 	 * If propertyPath is "bla.blubb", then we first call getProperty($object, 'bla'),
 	 * and on the resulting object we call getProperty(..., 'blubb')
+	 *
+	 * For arrays the keys are checked likewise.
 	 *
 	 * @param mixed $subject Object or array to get the property path from
 	 * @param string $propertyPath
@@ -101,12 +141,12 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	static public function getPropertyPath($subject, $propertyPath) {
 		$propertyPathSegments = explode('.', $propertyPath);
 		foreach ($propertyPathSegments as $pathSegment) {
-			if (is_object($subject) && self::isPropertyGettable($subject, $pathSegment)) {
-				$subject = self::getProperty($subject, $pathSegment);
-			} elseif ((is_array($subject) || $subject instanceof ArrayAccess) && isset($subject[$pathSegment])) {
+			$propertyExists = FALSE;
+			$propertyValue = self::getPropertyInternal($subject, $pathSegment, FALSE, $propertyExists);
+			if ($propertyExists !== TRUE && (is_array($subject) || $subject instanceof ArrayAccess) && isset($subject[$pathSegment])) {
 				$subject = $subject[$pathSegment];
 			} else {
-				return NULL;
+				$subject = $propertyValue;
 			}
 		}
 		return $subject;
@@ -115,41 +155,43 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	/**
 	 * Set a property for a given object.
 	 * Tries to set the property the following ways:
+	 * - if target is an array, set value
+	 * - if super cow powers should be used, set value through reflection
 	 * - if public setter method exists, call it.
 	 * - if public property exists, set it directly.
 	 * - if the target object is an instance of ArrayAccess, it sets the property
 	 *   on it without checking if it existed.
 	 * - else, return FALSE
 	 *
-	 * @param object $object The target object
+	 * @param mixed $subject The target object or array
 	 * @param string $propertyName Name of the property to set
-	 * @param object $propertyValue Value of the property
+	 * @param mixed $propertyValue Value of the property
 	 * @param boolean $forceDirectAccess directly access property using reflection(!)
-	 * @return void
-	 * @throws Tx_Extbase_Reflection_Exception if property was could not be set
+	 * @return boolean TRUE if the property could be set, FALSE otherwise
+	 * @throws InvalidArgumentException in case $object was not an object or $propertyName was not a string
 	 */
-	static public function setProperty(&$object, $propertyName, $propertyValue, $forceDirectAccess = FALSE) {
-		if (is_array($object)) {
-			$object[$propertyName] = $propertyValue;
+	static public function setProperty(&$subject, $propertyName, $propertyValue, $forceDirectAccess = FALSE) {
+		if (is_array($subject)) {
+			$subject[$propertyName] = $propertyValue;
 			return TRUE;
 		}
-		if (!is_object($object)) throw new InvalidArgumentException('$object must be an object, ' . gettype($object). ' given.', 1237301368);
+		if (!is_object($subject)) throw new InvalidArgumentException('subject must be an object or array, ' . gettype($subject). ' given.', 1237301368);
 		if (!is_string($propertyName)) throw new InvalidArgumentException('Given property name is not of type string.', 1231178878);
 
 		if ($forceDirectAccess === TRUE) {
-			if (property_exists(get_class($object), $propertyName)) {
-				$propertyReflection = new Tx_Extbase_Reflection_PropertyReflection(get_class($object), $propertyName);
+			if (property_exists(get_class($subject), $propertyName)) {
+				$propertyReflection = new Tx_Extbase_Reflection_PropertyReflection(get_class($subject), $propertyName);
 				$propertyReflection->setAccessible(TRUE);
-				$propertyReflection->setValue($object, $propertyValue);
+				$propertyReflection->setValue($subject, $propertyValue);
 			} else {
-				$object->$propertyName = $propertyValue;
+				$subject->$propertyName = $propertyValue;
 			}
-		} elseif (is_callable(array($object, $setterMethodName = self::buildSetterMethodName($propertyName)))) {
-			call_user_func(array($object, $setterMethodName), $propertyValue);
-		} elseif ($object instanceof ArrayAccess) {
-			$object[$propertyName] = $propertyValue;
-		} elseif (array_key_exists($propertyName, get_object_vars($object))) {
-			$object->$propertyName = $propertyValue;
+		} elseif (is_callable(array($subject, $setterMethodName = self::buildSetterMethodName($propertyName)))) {
+			$subject->$setterMethodName($propertyValue);
+		} elseif ($subject instanceof ArrayAccess) {
+			$subject[$propertyName] = $propertyValue;
+		} elseif (array_key_exists($propertyName, get_object_vars($subject))) {
+			$subject->$propertyName = $propertyValue;
 		} else {
 			return FALSE;
 		}
@@ -185,8 +227,8 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	static public function getGettablePropertyNames($object) {
-		if (!is_object($object)) throw new InvalidArgumentException('$object must be an object, ' . gettype($object). ' given.', 1237301369);
-		if ($object instanceof stdClass) {
+		if (!is_object($object)) throw new \InvalidArgumentException('$object must be an object, ' . gettype($object). ' given.', 1237301369);
+		if ($object instanceof \stdClass) {
 			$declaredPropertyNames = array_keys(get_object_vars($object));
 		} else {
 			$declaredPropertyNames = array_keys(get_class_vars(get_class($object)));
@@ -195,10 +237,10 @@ class Tx_Extbase_Reflection_ObjectAccess {
 		foreach (get_class_methods($object) as $methodName) {
 			if (is_callable(array($object, $methodName))) {
 				if (substr($methodName, 0, 2) === 'is') {
-					$declaredPropertyNames[] = strtolower(substr($methodName, 2, 1)) . (substr($methodName, 3));
+					$declaredPropertyNames[] = lcfirst(substr($methodName, 2));
 				}
 				if (substr($methodName, 0, 3) === 'get') {
-					$declaredPropertyNames[] = strtolower(substr($methodName, 3, 1)) . (substr($methodName, 4));
+					$declaredPropertyNames[] = lcfirst(substr($methodName, 3));
 				}
 			}
 		}
@@ -229,7 +271,7 @@ class Tx_Extbase_Reflection_ObjectAccess {
 
 		foreach (get_class_methods($object) as $methodName) {
 			if (substr($methodName, 0, 3) === 'set' && is_callable(array($object, $methodName))) {
-				$declaredPropertyNames[] = strtolower(substr($methodName, 3, 1)) . (substr($methodName, 4));
+				$declaredPropertyNames[] = lcfirst(substr($methodName, 3));
 			}
 		}
 
@@ -250,25 +292,6 @@ class Tx_Extbase_Reflection_ObjectAccess {
 		t3lib_div::logDeprecatedFunction();
 		return self::getGettableProperties($object);
 	}
-
-	/**
-	 * Get all properties (names and their current values) of the current
-	 * $object that are accessible through this class.
-	 *
-	 * @param object $object Object to get all properties from.
-	 * @return array Associative array of all properties.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @todo What to do with ArrayAccess
-	 */
-	static public function getGettableProperties($object) {
-		if (!is_object($object)) throw new InvalidArgumentException('$object must be an object, ' . gettype($object). ' given.', 1237301370);
-		$properties = array();
-		foreach (self::getGettablePropertyNames($object) as $propertyName) {
-			$properties[$propertyName] = self::getProperty($object, $propertyName);
-		}
-		return $properties;
-	}
-
 
 	/**
 	 * Tells if the value of the specified property can be set by this Object Accessor.
@@ -297,15 +320,37 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 */
 	static public function isPropertyGettable($object, $propertyName) {
 		if (!is_object($object)) throw new InvalidArgumentException('$object must be an object, ' . gettype($object). ' given.', 1259828921);
-		if ($object instanceof stdClass && array_search($propertyName, array_keys(get_object_vars($object))) !== FALSE) {
+		if ($object instanceof ArrayAccess && isset($object[$propertyName]) === TRUE) {
 			return TRUE;
-		} elseif (array_search($propertyName, array_keys(get_class_vars(get_class($object)))) !== FALSE) {
+		} elseif ($object instanceof stdClass && array_search($propertyName, array_keys(get_object_vars($object))) !== FALSE) {
 			return TRUE;
 		} elseif ($object instanceof ArrayAccess && isset($object[$propertyName]) === TRUE) {
 			return TRUE;
 		}
 		if (is_callable(array($object, 'get' . ucfirst($propertyName)))) return TRUE;
-		return is_callable(array($object, 'is' . ucfirst($propertyName)));
+		if (is_callable(array($object, 'is' . ucfirst($propertyName)))) return TRUE;
+		return (array_search($propertyName, array_keys(get_class_vars(get_class($object)))) !== FALSE);
+	}
+
+	/**
+	 * Get all properties (names and their current values) of the current
+	 * $object that are accessible through this class.
+	 *
+	 * @param object $object Object to get all properties from.
+	 * @return array Associative array of all properties.
+	 * @todo What to do with ArrayAccess
+	 */
+	static public function getGettableProperties($object) {
+		if (!is_object($object)) throw new InvalidArgumentException('$object must be an object, ' . gettype($object). ' given.', 1237301370);
+		$properties = array();
+		foreach (self::getGettablePropertyNames($object) as $propertyName) {
+			$propertyExists = FALSE;
+			$propertyValue = self::getPropertyInternal($object, $propertyName, FALSE, $propertyExists);
+			if ($propertyExists === TRUE) {
+				$properties[$propertyName] = $propertyValue;
+			}
+		}
+		return $properties;
 	}
 
 	/**
@@ -315,8 +360,8 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 * @param string $property Name of the property
 	 * @return string Name of the setter method name
 	 */
-	static protected function buildSetterMethodName($property) {
-		return 'set' . ucfirst($property);
+	static public function buildSetterMethodName($propertyName) {
+		return 'set' . ucfirst($propertyName);
 	}
 }
 
