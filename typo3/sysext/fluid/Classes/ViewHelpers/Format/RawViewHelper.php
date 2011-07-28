@@ -1,5 +1,6 @@
 <?php
-/*
+
+/*                                                                        *
  * This script belongs to the FLOW3 package "Fluid".                      *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
@@ -20,25 +21,33 @@
  *                                                                        */
 
 /**
- * Renders the value (or - if omitted - the child nodes) without applying fluid interceptors
- * This is useful if you want to output raw HTML code that is not processed by htmlentities()
+ * Outputs an argument/value without any escaping. Is normally used to output
+ * an ObjectAccessor which should not be escaped, but output as-is.
+ *
+ * PAY SPECIAL ATTENTION TO SECURITY HERE (especially Cross Site Scripting),
+ * as the output is NOT SANITIZED!
  *
  * = Examples =
  *
- * <code title="Defaults">
- * <f:format.raw value="{someContent}" />
+ * <code title="Child nodes">
+ * <f:format.raw>{string}</f:format.raw>
  * </code>
  * <output>
- * <p>content</p>
- * (depending on the value of {someContent})
+ * (Content of {string} without any conversion/escaping)
+ * </output>
+ *
+ * <code title="Value attribute">
+ * <f:format.raw value="{string}" />
+ * </code>
+ * <output>
+ * (Content of {string} without any conversion/escaping)
  * </output>
  *
  * <code title="Inline notation">
- * {someContent -> f:format.raw()}
+ * {string -> f:format.raw()}
  * </code>
  * <output>
- * <p>content</p>
- * (depending on the value of {someContent})
+ * (Content of {string} without any conversion/escaping)
  * </output>
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -47,7 +56,9 @@
 class Tx_Fluid_ViewHelpers_Format_RawViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * Disable Fluid interceptors for this ViewHelper
+	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
+	 * can decode the text's entities.
+	 *
 	 * @var boolean
 	 */
 	protected $escapingInterceptorEnabled = FALSE;
@@ -63,6 +74,7 @@ class Tx_Fluid_ViewHelpers_Format_RawViewHelper extends Tx_Fluid_Core_ViewHelper
 			return $value;
 		}
 	}
-
 }
+
+
 ?>

@@ -145,8 +145,8 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 
 		$evaluatedArguments = array();
 		$renderMethodParameters = array();
- 		if (count($viewHelper->prepareArguments())) {
- 			foreach ($viewHelper->prepareArguments() as $argumentName => $argumentDefinition) {
+		if (count($viewHelper->prepareArguments())) {
+			foreach ($viewHelper->prepareArguments() as $argumentName => $argumentDefinition) {
 				if (isset($this->arguments[$argumentName])) {
 					$argumentValue = $this->arguments[$argumentName];
 					$evaluatedArguments[$argumentName] = $this->convertArgumentValue($argumentValue, $argumentDefinition->getType(), $renderingContext);

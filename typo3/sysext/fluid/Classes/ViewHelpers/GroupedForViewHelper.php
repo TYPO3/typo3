@@ -66,7 +66,7 @@
  *       <li>3: strawberry</li>
  *     </ul>
  *   </li>
-  *   <li>yellow fruits
+ *   <li>yellow fruits
  *     <ul>
  *       <li>2: banana</li>
  *     </ul>
