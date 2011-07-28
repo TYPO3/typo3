@@ -1397,8 +1397,22 @@ class SC_mod_tools_be_user_index {
 				$TDparams=' nowrap="nowrap" class="'.($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6').'" valign="top"';
 			}
 			$outTable='<table border="0" cellpadding="2" cellspacing="2">' . $outTable . '</table>';
-			$outTable .= '<br /><br />' . $GLOBALS['LANG']->getLL('cachedGrouplistsUpdated', TRUE);
-			$outTable.=$tooManyUsers?'<br /><br /><strong><span class="typo3-red">' . $tooManyUsers . '</span></strong>':'';
+			$flashMessageCachedGrouplistsUpdated = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				'',
+				$GLOBALS['LANG']->getLL('cachedGrouplistsUpdated', TRUE),
+				t3lib_FlashMessage::INFO
+			);
+			t3lib_FlashMessageQueue::addMessage($flashMessageCachedGrouplistsUpdated);
+			if ($tooManyUsers) {
+				$flashMessageTooManyUsers = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					'',
+					$tooManyUsers,
+					t3lib_FlashMessage::ERROR
+				);
+				t3lib_FlashMessageQueue::addMessage($flashMessageTooManyUsers);
+			}
 			$content.= $this->doc->spacer(10);
 			$content.= $this->doc->section($GLOBALS['LANG']->getLL('result', TRUE),$outTable,0,1);
 		}
