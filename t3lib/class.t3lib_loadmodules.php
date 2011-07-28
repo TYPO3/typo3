@@ -106,17 +106,9 @@ class t3lib_loadModules {
 					)
 
 					 */
-			//
+			// store needed underscored key content
 		$this->absPathArray = $modulesArray['_PATHS'];
-		unset($modulesArray['_PATHS']);
-			// unset the array for calling external backend module dispatchers in typo3/mod.php
-		unset($modulesArray['_dispatcher']);
-			// unset the array for calling backend modules based on external backend module dispatchers in typo3/mod.php
-		unset($modulesArray['_configuration']);
-
 		$this->navigationComponents = $modulesArray['_navigationComponents'];
-		unset($modulesArray['_navigationComponents']);
-
 		$theMods = $this->parseModulesArray($modulesArray);
 
 		/*
@@ -402,6 +394,10 @@ class t3lib_loadModules {
 		$theMods = array();
 		if (is_array($arr)) {
 			foreach ($arr as $mod => $subs) {
+					// Ignore underlined modules, these keys are special.
+				if (substr($mod, 0, 1) === '_') {
+					continue;
+				}
 				$mod = $this->cleanName($mod); // clean module name to alphanum
 				if ($mod) {
 					if ($subs) {
