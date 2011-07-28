@@ -39,14 +39,14 @@ TYPO3.Viewport.ContentCards = {
 	 * Add a card to either the config or if already rendered to the wrapper
 	 */
 	addContentCard: function(name,config) {
-		config.id='typo3-card-'+name;
+		config.id = 'typo3-card-' + name;
 		if (Ext.ready) {
 			Ext.getCmp('typo3-contentContainerWrapper').add(config);
 		} else {
 			this.cards.push(config);
 		}
 	},
-	cards:[
+	cards: [
 		{
 			id: 'typo3-contentContainer',
 			border: false,
