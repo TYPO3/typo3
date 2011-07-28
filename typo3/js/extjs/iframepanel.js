@@ -96,14 +96,14 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 			// Some modules generate wrong url with unneeded string at the end
 		if (currentSource.substr(currentSource.length-1) == '?' ||
 			currentSource.substr(currentSource.length-1) == '&') {
-			currentSource = currentSource.substr(0,currentSource.length)
+			currentSource = currentSource.substr(0, currentSource.length)
 		}
-		if (currentSource.substr(0,1) == '/') {
+		if (currentSource.substr(0, 1) == '/') {
 			currentSource = currentSource.substr(1);
 		}
 		if (source.substr(source.length-1) == '?' ||
 			source.substr(source.length-1) == '&') {
-			source = source.substr(0,source.length-1)
+			source = source.substr(0, source.length-1)
 		}
 
 			// Check if new uri should be loaded

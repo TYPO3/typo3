@@ -223,6 +223,7 @@ TYPO3.ModuleMenu.App = {
 	},
 
 	loadModuleComponents: function(record, params) {
+		var url;
 		var mod = record.name;
 		if (record.navigationComponentId) {
 				this.loadNavigationComponent(record.navigationComponentId);
@@ -320,6 +321,8 @@ TYPO3.ModuleMenu.App = {
 	},
 
 	openInContentFrame: function(url, params) {
+		var urlToLoad, relatedCard;
+
 		if (top.nextLoadModuleUrl) {
 			urlToLoad = top.nextLoadModuleUrl;
 			top.nextLoadModuleUrl = '';
