@@ -79,6 +79,11 @@
 class Tx_Fluid_ViewHelpers_Format_DateViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
+	 * @var boolean
+	 */
+	protected $escapingInterceptorEnabled = FALSE;
+
+	/**
 	 * Render the supplied DateTime object as a formatted date.
 	 *
 	 * @param mixed $date either a DateTime object or a string that is accepted by DateTime constructor

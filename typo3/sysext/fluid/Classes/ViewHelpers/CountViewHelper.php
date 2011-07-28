@@ -45,6 +45,11 @@
 class Tx_Fluid_ViewHelpers_CountViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
+	 * @var boolean
+	 */
+	protected $escapingInterceptorEnabled = FALSE;
+
+	/**
 	 * Counts the items of a given property.
 	 *
 	 * @param array $subject The array or ObjectStorage to iterated over
