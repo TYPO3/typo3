@@ -46,6 +46,17 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_P
 		$this->objectPath = $objectPath;
 	}
 
+
+	/**
+	 * Internally used for building up cached templates; do not use directly!
+	 *
+	 * @return string
+	 * @internal
+	 */
+	public function getObjectPath() {
+		return $this->objectPath;
+	}
+
 	/**
 	 * Evaluate this node and return the correct object.
 	 *
@@ -63,7 +74,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_P
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
-		return $this->getPropertyPath($renderingContext->getTemplateVariableContainer(), $this->objectPath, $renderingContext);
+		return self::getPropertyPath($renderingContext->getTemplateVariableContainer(), $this->objectPath, $renderingContext);
 	}
 
 	/**
@@ -79,15 +90,15 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_P
 	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return mixed Value of the property
 	 */
-	protected function getPropertyPath($subject, $propertyPath, Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+	static public function getPropertyPath($subject, $propertyPath, Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
 		$propertyPathSegments = explode('.', $propertyPath);
 		foreach ($propertyPathSegments as $pathSegment) {
-			if (is_object($subject) && Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($subject, $pathSegment)) {
-				$subject = Tx_Extbase_Reflection_ObjectAccess::getProperty($subject, $pathSegment);
-			} elseif ((is_array($subject) || $subject instanceof ArrayAccess) && isset($subject[$pathSegment])) {
+			$propertyExists = FALSE;
+			$propertyValue = Tx_Extbase_Reflection_ObjectAccess::getPropertyInternal($subject, $pathSegment, FALSE, $propertyExists);
+			if ($propertyExists !== TRUE && (is_array($subject) || $subject instanceof ArrayAccess) && isset($subject[$pathSegment])) {
 				$subject = $subject[$pathSegment];
 			} else {
-				return NULL;
+				$subject = $propertyValue;
 			}
 
 			if ($subject instanceof Tx_Fluid_Core_Parser_SyntaxTree_RenderingContextAwareInterface) {
@@ -96,7 +107,5 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_P
 		}
 		return $subject;
 	}
-
-
 }
 ?>

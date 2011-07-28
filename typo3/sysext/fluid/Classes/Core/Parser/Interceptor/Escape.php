@@ -58,7 +58,7 @@ class Tx_Fluid_Core_Parser_Interceptor_Escape implements Tx_Fluid_Core_Parser_In
 	}
 
 	/**
-	 * Adds a ViewHelper node using the Format\HtmlentitiesViewHelper to the given node.
+	 * Adds a ViewHelper node using the Format\HtmlspecialcharsViewHelper to the given node.
 	 * If "escapingInterceptorEnabled" in the ViewHelper is FALSE, will disable itself inside the ViewHelpers body.
 	 *
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node
@@ -83,7 +83,7 @@ class Tx_Fluid_Core_Parser_Interceptor_Escape implements Tx_Fluid_Core_Parser_In
 				}
 			}
 		} elseif ($this->interceptorEnabled && $node instanceof Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode) {
-			$escapeViewHelper = $this->objectManager->create('Tx_Fluid_ViewHelpers_Format_HtmlentitiesViewHelper');
+			$escapeViewHelper = $this->objectManager->get('Tx_Fluid_ViewHelpers_Format_HtmlspecialcharsViewHelper');
 			$node = $this->objectManager->create(
 				'Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode',
 				$escapeViewHelper,

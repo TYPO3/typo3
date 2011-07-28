@@ -41,14 +41,24 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	private $argumentDefinitions = array();
 
 	/**
+	 * Cache of argument definitions; the key is the ViewHelper class name, and the
+	 * value is the array of argument definitions.
+	 *
+	 * In our benchmarks, this cache leads to a 40% improvement when using a certain
+	 * ViewHelper class many times throughout the rendering process.
+	 * @var array
+	 */
+	static private $argumentDefinitionCache = array();
+
+	/**
 	 * Current view helper node
 	 * @var Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
 	 */
 	private $viewHelperNode;
 
 	/**
-	 * Arguments accessor.
-	 * @var Tx_Fluid_Core_ViewHelper_Arguments
+	 * Arguments array.
+	 * @var array
 	 * @api
 	 */
 	protected $arguments;
@@ -70,7 +80,13 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	/**
 	 * @var Tx_Fluid_Core_Rendering_RenderingContextInterface
 	 */
-	private $renderingContext;
+	protected $renderingContext;
+
+	/**
+	 * @var Closure
+	 * @internal
+	 */
+	protected $renderChildrenClosure = NULL;
 
 	/**
 	 * ViewHelper Variable Container
@@ -94,30 +110,12 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	protected $escapingInterceptorEnabled = TRUE;
 
 	/**
-	 * @param Tx_Fluid_Core_ViewHelper_Arguments $arguments
+	 * @param array $arguments
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function setArguments(Tx_Fluid_Core_ViewHelper_Arguments $arguments) {
+	public function setArguments(array $arguments) {
 		$this->arguments = $arguments;
-	}
-
-	/**
-	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer Variable Container to be used for rendering
-	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 */
-	public function setTemplateVariableContainer(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer) {
-		$this->templateVariableContainer = $templateVariableContainer;
-	}
-
-	/**
-	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext Controller context which is available inside the view
-	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
-		$this->controllerContext = $controllerContext;
 	}
 
 	/**
@@ -126,17 +124,12 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setRenderingContext(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
-	 $this->renderingContext = $renderingContext;
-	}
-
-
-	/**
-	 * @param Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer
-	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function setViewHelperVariableContainer(Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer) {
-		$this->viewHelperVariableContainer = $viewHelperVariableContainer;
+		$this->renderingContext = $renderingContext;
+		$this->templateVariableContainer = $renderingContext->getTemplateVariableContainer();
+		if ($renderingContext->getControllerContext() !== NULL) {
+			$this->controllerContext = $renderingContext->getControllerContext();
+		}
+		$this->viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
 	}
 
 	/**
@@ -171,7 +164,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * @param mixed $defaultValue Default value of argument
 	 * @return Tx_Fluid_Core_ViewHelper_AbstractViewHelper $this, to allow chaining.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @todo Object Factory usage!
 	 * @api
 	 */
 	protected function registerArgument($name, $type, $description, $required = FALSE, $defaultValue = NULL) {
@@ -194,7 +186,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * @param mixed $defaultValue Default value of argument
 	 * @return Tx_Fluid_Core_ViewHelper_AbstractViewHelper $this, to allow chaining.
 	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @todo Object Factory usage!
 	 * @api
 	 */
 	protected function overrideArgument($name, $type, $description, $required = FALSE, $defaultValue = NULL) {
@@ -219,26 +210,43 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	}
 
 	/**
+	 * Called when being inside a cached template.
+	 *
+	 * @param Closure $renderChildrenClosure
+	 * @return void
+	 * @internal
+	 */
+	public function setRenderChildrenClosure(Closure $renderChildrenClosure) {
+		$this->renderChildrenClosure = $renderChildrenClosure;
+	}
+
+	/**
 	 * Initialize the arguments of the ViewHelper, and call the render() method of the ViewHelper.
 	 *
-	 * @param array $renderMethodParameters the parameters of the render() method.
 	 * @return string the rendered ViewHelper.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function initializeArgumentsAndRender(array $renderMethodParameters) {
+	public function initializeArgumentsAndRender() {
 		$this->validateArguments();
 		$this->initialize();
-		return $this->callRenderMethod($renderMethodParameters);
+
+		return $this->callRenderMethod();
 	}
 
 	/**
 	 * Call the render() method and handle errors.
 	 *
-	 * @param array $renderMethodParameters the parameters of the render() method.
 	 * @return string the rendered ViewHelper
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function callRenderMethod(array $renderMethodParameters) {
+	protected function callRenderMethod() {
+		$renderMethodParameters = array();
+		foreach ($this->argumentDefinitions as $argumentName => $argumentDefinition) {
+			if ($argumentDefinition->isMethodParameter()) {
+				$renderMethodParameters[$argumentName] = $this->arguments[$argumentName];
+			}
+		}
+
 		try {
 			return call_user_func_array(array($this, 'render'), $renderMethodParameters);
 		} catch (Tx_Fluid_Core_ViewHelper_Exception $exception) {
@@ -268,8 +276,26 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
-	protected function renderChildren() {
+	public function renderChildren() {
+		if ($this->renderChildrenClosure !== NULL) {
+			$closure = $this->renderChildrenClosure;
+			return $closure();
+		}
 		return $this->viewHelperNode->evaluateChildNodes($this->renderingContext);
+	}
+
+	/**
+	 * Helper which is mostly needed when calling renderStatic() from within
+	 * render().
+	 *
+	 * No public API yet.
+	 *
+	 * @return Closure
+	 * @internal
+	 */
+	protected function buildRenderChildrenClosure() {
+		$self = $this;
+		return function() use ($self) { return $self->renderChildren(); };
 	}
 
 	/**
@@ -280,8 +306,14 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 */
 	public function prepareArguments() {
 		if (!$this->argumentsInitialized) {
-			$this->registerRenderMethodArguments();
-			$this->initializeArguments();
+			$thisClassName = get_class($this);
+			if (isset(self::$argumentDefinitionCache[$thisClassName])) {
+				$this->argumentDefinitions = self::$argumentDefinitionCache[$thisClassName];
+			} else {
+				$this->registerRenderMethodArguments();
+				$this->initializeArguments();
+				self::$argumentDefinitionCache[$thisClassName] = $this->argumentDefinitions;
+			}
 			$this->argumentsInitialized = TRUE;
 		}
 		return $this->argumentDefinitions;
@@ -349,7 +381,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 		if (!count($argumentDefinitions)) return;
 
 		foreach ($argumentDefinitions as $argumentName => $registeredArgument) {
-			if ($this->arguments->offsetExists($argumentName)) {
+			if ($this->hasArgument($argumentName)) {
 				$type = $registeredArgument->getType();
 				if ($this->arguments[$argumentName] === $registeredArgument->getDefaultValue()) continue;
 
@@ -399,17 +431,62 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * Get the rendering context interface.
-	 * THIS METHOD IS NO PUBLIC API AND ONLY CALLABLE INSIDE THE FRAMEWORK!
 	 *
 	 * @return Tx_Fluid_Core_Rendering_RenderingContextInterface
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0. use $this->renderingContext instead
 	 */
 	public function getRenderingContext() {
-		if ($this instanceof Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface) {
-			return $this->renderingContext;
-		} else {
-			throw new Tx_Fluid_Core_ViewHelper_Exception_RenderingContextNotAccessibleException('It is forbidden to call getRenderingContext() if you do not implement Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface. But beware, this interface is NO PUBLIC API! If you want to implement conditions, you should subclass Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper.', 127895038);
-		}
+		return $this->renderingContext;
+	}
+
+	/**
+	 * Tests if the given $argumentName is set, and not NULL.
+	 *
+	 * @param string $argumentName
+	 * @return boolean TRUE if $argumentName is found, FALSE otherwise
+	 * @api
+	 */
+	protected function hasArgument($argumentName) {
+		return isset($this->arguments[$argumentName]) && $this->arguments[$argumentName] !== NULL;
+	}
+
+	/**
+	 * Default implementation for CompilableInterface. By default,
+	 * inserts a renderStatic() call to itself.
+	 *
+	 * You only should override this method *when you absolutely know what you
+	 * are doing*, and really want to influence the generated PHP code during
+	 * template compilation directly.
+	 *
+	 * @param string $argumentsVariableName
+	 * @param string $renderChildrenClosureVariableName
+	 * @param string $initializationPhpCode
+	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode
+	 * @param Tx_Fluid_Core_Compiler_TemplateCompiler $templateCompiler
+	 * @return string
+	 * @internal
+	 * @see Tx_Fluid_Core_ViewHelper_Facets_CompilableInterface
+	 */
+	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode, Tx_Fluid_Core_Compiler_TemplateCompiler $templateCompiler) {
+		return sprintf('%s::renderStatic(%s, %s, $renderingContext)',
+				get_class($this), $argumentsVariableName, $renderChildrenClosureVariableName);
+	}
+
+	/**
+	 * Default implementation for CompilableInterface. See CompilableInterface
+	 * for a detailed description of this method.
+	 *
+	 * @param array $arguments
+	 * @param Closure $renderChildrenClosure
+	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @return mixed
+	 * @internal
+	 * @see Tx_Fluid_Core_ViewHelper_Facets_CompilableInterface
+	 */
+	static public function renderStatic(array $arguments, Closure $renderChildrenClosure, Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+		return NULL;
 	}
 }
 

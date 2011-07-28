@@ -41,7 +41,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
+abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface, Tx_Fluid_Core_ViewHelper_Facets_CompilableInterface {
 
 	/**
 	 * An array of Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
@@ -81,15 +81,21 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_F
 	 * @api
 	 */
 	protected function renderThenChild() {
-		if ($this->arguments->hasArgument('then')) {
+		if ($this->hasArgument('then')) {
 			return $this->arguments['then'];
+		}
+		if ($this->hasArgument('__thenClosure')) {
+			$thenClosure = $this->arguments['__thenClosure'];
+			return $thenClosure();
+		} elseif ($this->hasArgument('__elseClosure') || $this->hasArgument('else')) {
+			return '';
 		}
 
 		$elseViewHelperEncountered = FALSE;
 		foreach ($this->childNodes as $childNode) {
 			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
 				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ThenViewHelper') {
-				$data = $childNode->evaluate($this->getRenderingContext());
+				$data = $childNode->evaluate($this->renderingContext);
 				return $data;
 			}
 			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
@@ -116,17 +122,51 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_F
 	 * @api
 	 */
 	protected function renderElseChild() {
-		if ($this->arguments->hasArgument('else')) {
+		if ($this->hasArgument('else')) {
 			return $this->arguments['else'];
 		}
-
+		if ($this->hasArgument('__elseClosure')) {
+			$elseClosure = $this->arguments['__elseClosure'];
+			return $elseClosure();
+		}
 		foreach ($this->childNodes as $childNode) {
 			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
 				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ElseViewHelper') {
-				return $childNode->evaluate($this->getRenderingContext());
+				return $childNode->evaluate($this->renderingContext);
 			}
 		}
+
 		return '';
+	}
+
+	/**
+	 * The compiled ViewHelper adds two new ViewHelper arguments: __thenClosure and __elseClosure.
+	 * These contain closures which are be executed to render the then(), respectively else() case.
+	 *
+	 * @param string $argumentsVariableName
+	 * @param string $renderChildrenClosureVariableName
+	 * @param string $initializationPhpCode
+	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode
+	 * @param Tx_Fluid_Core_Compiler_TemplateCompiler $templateCompiler
+	 * @return string
+	 * @internal
+	 */
+	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode, Tx_Fluid_Core_Compiler_TemplateCompiler $templateCompiler) {
+		foreach ($syntaxTreeNode->getChildNodes() as $childNode) {
+			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
+				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ThenViewHelper') {
+
+				$childNodesAsClosure = $templateCompiler->wrapChildNodesInClosure($childNode);
+				$initializationPhpCode .= sprintf('%s[\'__thenClosure\'] = %s;', $argumentsVariableName, $childNodesAsClosure) . chr(10);
+			}
+			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
+				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ElseViewHelper') {
+
+				$childNodesAsClosure = $templateCompiler->wrapChildNodesInClosure($childNode);
+				$initializationPhpCode .= sprintf('%s[\'__elseClosure\'] = %s;', $argumentsVariableName, $childNodesAsClosure) . chr(10);
+			}
+		}
+		return Tx_Fluid_Core_Compiler_TemplateCompiler::SHOULD_GENERATE_VIEWHELPER_INVOCATION;
 	}
 }
 

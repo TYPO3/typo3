@@ -42,9 +42,8 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_AliasViewHelperTest extends Tx_Fluid_ViewH
 		$this->templateVariableContainer->expects($this->at(0))->method('add')->with('someAlias', 'someValue');
 		$this->templateVariableContainer->expects($this->at(1))->method('remove')->with('someAlias');
 
-		$viewHelper->setTemplateVariableContainer($this->templateVariableContainer);
+		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($mockViewHelperNode);
-		$viewHelper->setRenderingContext($this->renderingContext);
 		$viewHelper->render(array('someAlias' => 'someValue'));
 	}
 
@@ -63,9 +62,8 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_AliasViewHelperTest extends Tx_Fluid_ViewH
 		$this->templateVariableContainer->expects($this->at(2))->method('remove')->with('someAlias');
 		$this->templateVariableContainer->expects($this->at(3))->method('remove')->with('someOtherAlias');
 
-		$viewHelper->setTemplateVariableContainer($this->templateVariableContainer);
+		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($mockViewHelperNode);
-		$viewHelper->setRenderingContext($this->renderingContext);
 		$viewHelper->render(array('someAlias' => 'someValue', 'someOtherAlias' => 'someOtherValue'));
 	}
 
@@ -82,9 +80,8 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_AliasViewHelperTest extends Tx_Fluid_ViewH
 		$this->templateVariableContainer->expects($this->never())->method('add');
 		$this->templateVariableContainer->expects($this->never())->method('remove');
 
-		$viewHelper->setTemplateVariableContainer($this->templateVariableContainer);
+		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($mockViewHelperNode);
-		$viewHelper->setRenderingContext($this->renderingContext);
 
 		$this->assertEquals('foo', $viewHelper->render(array()));
 	}

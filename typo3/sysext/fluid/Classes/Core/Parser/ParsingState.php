@@ -49,6 +49,18 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	protected $variableContainer;
 
 	/**
+	 * The layout name of the current template or NULL if the template does not contain a layout definition
+	 *
+	 * @var Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
+	 */
+	protected $layoutNameNode;
+
+	/**
+	 * @var boolean
+	 */
+	protected $compilable = TRUE;
+
+	/**
 	 * Injects a variable container. ViewHelpers implementing the PostParse
 	 * Facet can store information inside this variableContainer.
 	 *
@@ -142,6 +154,71 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	 */
 	public function getVariableContainer() {
 		return $this->variableContainer;
+	}
+
+	/**
+	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $layoutNameNode name of the layout that is defined in this template via <f:layout name="..." />
+	 * @return void
+	 */
+	public function setLayoutNameNode(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $layoutNameNode) {
+		$this->layoutNameNode = $layoutNameNode;
+	}
+
+	/**
+	 * @return Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
+	 */
+	public function getLayoutNameNode() {
+		return $this->layoutNameNode;
+	}
+
+	/**
+	 * Returns TRUE if the current template has a template defined via <f:layout name="..." />
+	 * @see getLayoutName()
+	 *
+	 * @return boolean
+	 */
+	public function hasLayout() {
+		return $this->layoutNameNode !== NULL;
+	}
+
+	/**
+	 * Returns the name of the layout that is defined within the current template via <f:layout name="..." />
+	 * If no layout is defined, this returns NULL
+	 * This requires the current rendering context in order to be able to evaluate the layout name
+	 *
+	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @return string
+	 */
+	public function getLayoutName(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+		if (!$this->hasLayout()) {
+			return NULL;
+		}
+		$layoutName = $this->layoutNameNode->evaluate($renderingContext);
+		if (!empty($layoutName)) {
+			return $layoutName;
+		}
+		throw new Tx_Fluid_View_Exception('The layoutName could not be evaluated to a string', 1296805368);
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isCompilable() {
+		return $this->compilable;
+	}
+
+	/**
+	 * @param boolean $compilable
+	 */
+	public function setCompilable($compilable) {
+		$this->compilable = $compilable;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isCompiled() {
+		return FALSE;
 	}
 }
 ?>

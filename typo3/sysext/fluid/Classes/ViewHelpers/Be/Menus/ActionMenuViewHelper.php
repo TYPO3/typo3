@@ -87,7 +87,7 @@ class Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuViewHelper extends Tx_Fluid_Core_V
 		$options = '';
 		foreach ($this->childNodes as $childNode) {
 			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode) {
-				$options .= $childNode->evaluate($this->getRenderingContext());
+				$options .= $childNode->evaluate($this->renderingContext);
 			}
 		}
 		$this->tag->setContent($options);

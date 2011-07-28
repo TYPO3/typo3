@@ -20,29 +20,36 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
+
 /**
- * [Enter description here]
+ * Test for the Abstract Form view helper
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode extends Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode {
-	public $callProtocol = array();
+abstract class Tx_Fluid_Tests_Unit_ViewHelpers_Form_FormFieldViewHelperBaseTestcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
-	public function __construct(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer) {
-		$this->variableContainer = $variableContainer;
+	/**
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 */
+	protected $mockConfigurationManager;
+
+	/**
+	 * @return void
+	 */
+	public function setUp() {
+		parent::setUp();
+		$this->mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
 	}
 
-	public function evaluateChildNodes(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
-		$identifiers = $this->variableContainer->getAllIdentifiers();
-		$callElement = array();
-		foreach ($identifiers as $identifier) {
-			$callElement[$identifier] = $this->variableContainer->get($identifier);
-		}
-		$this->callProtocol[] = $callElement;
+	/**
+	 * @param Tx_Fluid_Core_ViewHelper_AbstractViewHelper $viewHelper
+	 * @return void
+	 */
+	protected function injectDependenciesIntoViewHelper(Tx_Fluid_Core_ViewHelper_AbstractViewHelper $viewHelper) {
+		$viewHelper->injectConfigurationManager($this->mockConfigurationManager);
+		parent::injectDependenciesIntoViewHelper($viewHelper);
 	}
-
-	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {}
 }
-
 
 ?>

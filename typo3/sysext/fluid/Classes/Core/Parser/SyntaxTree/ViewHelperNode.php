@@ -52,34 +52,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 */
 	protected $viewHelpersByContext = NULL;
 
-	/**
-	 * List of comparators which are supported in the boolean expression language.
-	 *
-	 * Make sure that if one string is contained in one another, the longer
-	 * string is listed BEFORE the shorter one.
-	 * Example: put ">=" before ">"
-	 * @var array
-	 */
-	static protected $comparators = array('==', '!=', '%', '>=', '>', '<=', '<');
 
-	/**
-	 * A regular expression which checks the text nodes of a boolean expression.
-	 * Used to define how the regular expression language should look like.
-	 * @var string
-	 */
-	static protected $booleanExpressionTextNodeCheckerRegularExpression = '/
-		^                 # Start with first input symbol
-		(?:               # start repeat
-			COMPARATORS   # We allow all comparators
-			|\s*          # Arbitary spaces
-			|-?           # Numbers, possibly with the "minus" symbol in front.
-				[0-9]+    # some digits
-				(?:       # and optionally a dot, followed by some more digits
-					\\.
-					[0-9]+
-				)?
-		)*
-		$/x';
 
 	/**
 	 * Constructor.
@@ -117,6 +90,16 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	}
 
 	/**
+	 * INTERNAL - only needed for compiling templates
+	 *
+	 * @return array
+	 * @internal
+	 */
+	public function getArguments() {
+		return $this->arguments;
+	}
+
+	/**
 	 * Call the view helper associated with this object.
 	 *
 	 * First, it evaluates the arguments of the view helper.
@@ -130,7 +113,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 * @return object evaluated node after the view helper has been called.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @todo check recreation of viewhelper when revisiting caching
 	 */
 	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
 		$objectManager = $renderingContext->getObjectManager();
@@ -144,28 +126,18 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 		}
 
 		$evaluatedArguments = array();
-		$renderMethodParameters = array();
 		if (count($viewHelper->prepareArguments())) {
-			foreach ($viewHelper->prepareArguments() as $argumentName => $argumentDefinition) {
+ 			foreach ($viewHelper->prepareArguments() as $argumentName => $argumentDefinition) {
 				if (isset($this->arguments[$argumentName])) {
 					$argumentValue = $this->arguments[$argumentName];
-					$evaluatedArguments[$argumentName] = $this->convertArgumentValue($argumentValue, $argumentDefinition->getType(), $renderingContext);
+					$evaluatedArguments[$argumentName] = $argumentValue->evaluate($renderingContext);
 				} else {
 					$evaluatedArguments[$argumentName] = $argumentDefinition->getDefaultValue();
-				}
-				if ($argumentDefinition->isMethodParameter()) {
-					$renderMethodParameters[$argumentName] = $evaluatedArguments[$argumentName];
 				}
 			}
 		}
 
-		$viewHelperArguments = $objectManager->create('Tx_Fluid_Core_ViewHelper_Arguments', $evaluatedArguments);
-		$viewHelper->setArguments($viewHelperArguments);
-		$viewHelper->setTemplateVariableContainer($renderingContext->getTemplateVariableContainer());
-		if ($renderingContext->getControllerContext() !== NULL) {
-			$viewHelper->setControllerContext($renderingContext->getControllerContext());
-		}
-		$viewHelper->setViewHelperVariableContainer($renderingContext->getViewHelperVariableContainer());
+		$viewHelper->setArguments($evaluatedArguments);
 		$viewHelper->setViewHelperNode($this);
 		$viewHelper->setRenderingContext($renderingContext);
 
@@ -173,231 +145,9 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 			$viewHelper->setChildNodes($this->childNodes);
 		}
 
-		$output = $viewHelper->initializeArgumentsAndRender($renderMethodParameters);
+		$output = $viewHelper->initializeArgumentsAndRender();
 
 		return $output;
-	}
-
-	/**
-	 * Convert argument strings to their equivalents. Needed to handle strings with a boolean meaning.
-	 *
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode Value to be converted
-	 * @param string $type Target type
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
-	 * @return mixed New value
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 */
-	protected function convertArgumentValue(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode, $type, Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
-		if ($type === 'boolean') {
-			return $this->evaluateBooleanExpression($syntaxTreeNode, $renderingContext);
-		}
-		return $syntaxTreeNode->evaluate($renderingContext);
-	}
-
-	/**
-	 * Convert boolean expression syntax tree to some meaningful value.
-	 * The expression is available as the SyntaxTree of the argument.
-	 *
-	 * We currently only support expressions of the form:
-	 * XX Comparator YY
-	 * Where XX and YY can be either:
-	 * - a number
-	 * - an Object accessor
-	 * - an array
-	 * - a ViewHelper
-	 *
-	 * and comparator must be one of the above.
-	 *
-	 * In case no comparator is found, the fallback of "convertToBoolean" is used.
-	 *
-	 *
-	 * Internal work:
-	 * First, we loop through the child syntaxtree nodes, to fill the left side of the comparator,
-	 * the right side of the comparator, and the comparator itself.
-	 * Then, we evaluate the obtained left and right side using the given comparator. This is done inside the evaluateComparator method.
-	 *
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode Value to be converted
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
-	 * @return boolean Evaluated value
-	 * @throws Tx_Fluid_Core_Parser_Exception
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	protected function evaluateBooleanExpression(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode, Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
-		$childNodes = $syntaxTreeNode->getChildNodes();
-		if (count($childNodes) > 3) {
-			throw new Tx_Fluid_Core_Parser_Exception('The expression "' . $syntaxTreeNode->evaluate($renderingContext) . '" has more than tree parts.', 1244201848);
-		} elseif (count($childNodes) === 0) {
-				// In this case, we do not have child nodes; i.e. the current SyntaxTreeNode
-				// is a text node with a literal comparison like "1 == 1"
-			$childNodes = array($syntaxTreeNode);
-		}
-
-		$leftSide = NULL;
-		$rightSide = NULL;
-		$comparator = NULL;
-		foreach ($childNodes as $childNode) {
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_TextNode && !preg_match(str_replace('COMPARATORS', implode('|', self::$comparators), self::$booleanExpressionTextNodeCheckerRegularExpression), $childNode->evaluate($renderingContext))) {
-				$comparator = NULL;
-					// skip loop and fall back to classical to boolean conversion.
-				break;
-			}
-
-			if ($comparator !== NULL) {
-					// comparator already set, we are evaluating the right side of the comparator
-				if ($rightSide === NULL) {
-					$rightSide = $childNode->evaluate($renderingContext);
-				} else {
-					$rightSide .= $childNode->evaluate($renderingContext);
-				}
-			} elseif ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_TextNode
-				&& ($comparator = $this->getComparatorFromString($childNode->evaluate($renderingContext)))) {
-					// comparator in current string segment
-				$explodedString = explode($comparator, $childNode->evaluate($renderingContext));
-				if (isset($explodedString[0]) && trim($explodedString[0]) !== '') {
-					$leftSide .= trim($explodedString[0]);
-				}
-				if (isset($explodedString[1]) && trim($explodedString[1]) !== '') {
-					$rightSide .= trim($explodedString[1]);
-				}
-			} else {
-					// comparator not found yet, on the left side of the comparator
-				if ($leftSide === NULL) {
-					$leftSide = $childNode->evaluate($renderingContext);
-				} else {
-					$leftSide .= $childNode->evaluate($renderingContext);
-				}
-			}
-		}
-
-		if ($comparator !== NULL) {
-			return $this->evaluateComparator($comparator, $leftSide, $rightSide);
-		} else {
-			return $this->convertToBoolean($syntaxTreeNode->evaluate($renderingContext));
-		}
-	}
-
-	/**
-	 * Do the actual comparison. Compares $leftSide and $rightSide with $comparator and emits a boolean value.
-	 *
-	 * Some special rules apply:
-	 * - The == and != operators are comparing the Object Identity using === and !==, when one of the two
-	 *   operands are objects.
-	 * - For arithmetic comparisons (%, >, >=, <, <=), some special rules apply:
-	 *   - arrays are only comparable with arrays, else the comparison yields FALSE
-	 *   - objects are only comparable with objects, else the comparison yields FALSE
-	 *   - the comparison is FALSE when two types are not comparable according to the table
-	 *     "Comparison with various types" on http://php.net/manual/en/language.operators.comparison.php
-	 *
-	 * @param string $comparator One of self::$comparators
-	 * @param mixed $leftSide Left side to compare
-	 * @param mixed $rightSide Right side to compare
-	 * @return boolean TRUE if comparison of left and right side using the comparator emit TRUE, false otherwise
-	 * @throws Tx_Fluid_Core_Parser_Exception
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	protected function evaluateComparator($comparator, $leftSide, $rightSide) {
-		switch ($comparator) {
-			case '==':
-				if (is_object($leftSide) || is_object($rightSide)) {
-					return ($leftSide === $rightSide);
-				} else {
-					return ($leftSide == $rightSide);
-				}
-				break;
-			case '!=':
-				if (is_object($leftSide) || is_object($rightSide)) {
-					return ($leftSide !== $rightSide);
-				} else {
-					return ($leftSide != $rightSide);
-				}
-				break;
-			case '%':
-				if (!$this->isComparable($leftSide, $rightSide)) return FALSE;
-				return (boolean)((int)$leftSide % (int)$rightSide);
-			case '>':
-				if (!$this->isComparable($leftSide, $rightSide)) return FALSE;
-				return ($leftSide > $rightSide);
-			case '>=':
-				if (!$this->isComparable($leftSide, $rightSide)) return FALSE;
-				return ($leftSide >= $rightSide);
-			case '<':
-				if (!$this->isComparable($leftSide, $rightSide)) return FALSE;
-				return ($leftSide < $rightSide);
-			case '<=':
-				if (!$this->isComparable($leftSide, $rightSide)) return FALSE;
-				return ($leftSide <= $rightSide);
-			default:
-				throw new Tx_Fluid_Core_Parser_Exception('Comparator "' . $comparator . '" is not implemented.', 1244234398);
-		}
-	}
-
-	/**
-	 * Checks whether two operands are comparable (based on their types). This implements
-	 * the "Comparison with various types" table from http://php.net/manual/en/language.operators.comparison.php,
-	 * only leaving out "array" with "anything" and "object" with anything; as we specify
-	 * that arrays and objects are incomparable with anything else than their type.
-	 *
-	 * @param mixed $operand1 the first operand
-	 * @param mixed $operand2 the second operand
-	 * @return boolean TRUE if the operands can be compared using arithmetic operators, FALSE otherwise.
-	 */
-	protected function isComparable($operand1, $operand2) {
-		if ((is_null($operand1) || is_string($operand1))
-			&& is_string($operand2)) return TRUE;
-		if (is_bool($operand1) || is_null($operand1)) return TRUE;
-		if (is_object($operand1)
-			&& is_object($operand2)) return TRUE;
-		if ((is_string($operand1) || is_resource($operand1) || is_numeric($operand1))
-			&& (is_string($operand2) || is_resource($operand2) || is_numeric($operand2))) return TRUE;
-		if (is_array($operand1) && is_array($operand2)) return TRUE;
-
-		return FALSE;
-	}
-
-	/**
-	 * Determine if there is a comparator inside $string, and if yes, returns it.
-	 *
-	 * @param string $string string to check for a comparator inside
-	 * @return string The comparator or NULL if none found.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 */
-	protected function getComparatorFromString($string) {
-		foreach (self::$comparators as $comparator) {
-			if (strpos($string, $comparator) !== FALSE) {
-				return $comparator;
-			}
-		}
-
-		return NULL;
-	}
-
-	/**
-	 * Convert argument strings to their equivalents. Needed to handle strings with a boolean meaning.
-	 *
-	 * @param mixed $value Value to be converted to boolean
-	 * @return boolean
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @todo this should be moved to another class
-	 */
-	protected function convertToBoolean($value) {
-		if (is_bool($value)) {
-			return $value;
-		}
-		if (is_numeric($value)) {
-			return $value > 0;
-		}
-		if (is_string($value)) {
-			return (!empty($value) && strtolower($value) !== 'false');
-		}
-		if (is_array($value) || (is_object($value) && $value instanceof Countable)) {
-			return count($value) > 0;
-		}
-		if (is_object($value)) {
-			return TRUE;
-		}
-		return FALSE;
 	}
 
 	/**

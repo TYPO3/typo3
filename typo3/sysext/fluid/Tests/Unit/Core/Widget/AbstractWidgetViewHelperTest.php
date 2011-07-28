@@ -112,8 +112,10 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function callViewHelper() {
-		$viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
-		$this->viewHelper->setViewHelperVariableContainer($viewHelperVariableContainer);
+		$mockViewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
+		$mockRenderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContextInterface');
+		$mockRenderingContext->expects($this->atLeastOnce())->method('getViewHelperVariableContainer')->will($this->returnValue($mockViewHelperVariableContainer));
+		$this->viewHelper->setRenderingContext($mockRenderingContext);
 
 		$this->viewHelper->expects($this->once())->method('getWidgetConfiguration')->will($this->returnValue('Some Widget Configuration'));
 		$this->widgetContext->expects($this->once())->method('setWidgetConfiguration')->with('Some Widget Configuration');
@@ -125,8 +127,8 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 
 		$this->viewHelper->expects($this->once())->method('validateArguments');
 		$this->viewHelper->expects($this->once())->method('initialize');
-		$this->viewHelper->expects($this->once())->method('callRenderMethod')->with(array('arg1' => 'val1'))->will($this->returnValue('renderedResult'));
-		$output = $this->viewHelper->initializeArgumentsAndRender(array('arg1' => 'val1'));
+		$this->viewHelper->expects($this->once())->method('callRenderMethod')->will($this->returnValue('renderedResult'));
+		$output = $this->viewHelper->initializeArgumentsAndRender();
 		$this->assertEquals('renderedResult', $output);
 	}
 
@@ -147,7 +149,7 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 		$this->objectManager->expects($this->once())->method('create')->with('Tx_Fluid_Core_Parser_SyntaxTree_RootNode')->will($this->returnValue($rootNode));
 
 		$renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContextInterface');
-		$this->viewHelper->expects($this->once())->method('getRenderingContext')->will($this->returnValue($renderingContext));
+		$this->viewHelper->_set('renderingContext', $renderingContext);
 
 		$this->widgetContext->expects($this->once())->method('setViewHelperChildNodes')->with($rootNode, $renderingContext);
 		$this->viewHelper->setChildNodes(array($node1, $node2, $node3));

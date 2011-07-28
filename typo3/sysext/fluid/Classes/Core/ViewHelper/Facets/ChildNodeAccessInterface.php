@@ -25,7 +25,7 @@
  * need access to the direct children in the Syntax Tree at rendering-time.
  * This might happen if you only want to selectively render a part of the syntax
  * tree depending on some conditions.
- * To render subnodes, you can fetch the RenderingContext via $this->getRenderingContext().
+ * To render subnodes, you can fetch the RenderingContext via $this->renderingContext.
  *
  * In most cases, you will not need this facet, and it is NO PUBLIC API!
  * Right now it is only used internally for conditions, so by subclassing Tx_Fluid_Core_ViewHelpers_AbstractConditionViewHelper, this should be all you need.

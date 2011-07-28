@@ -23,7 +23,7 @@
 require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 
 /**
- * Testcase for CycleViewHelper
+ * Testcase for RenderChildren ViewHelper
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
@@ -39,7 +39,8 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_RenderChildrenViewHelperTest extends Tx_Fl
 	 */
 	public function setUp() {
 		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
-		$this->viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_RenderChildrenViewHelper', array('renderChildren'));
+		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_RenderChildrenViewHelper', array('renderChildren'));
+		$this->viewHelper->_set('controllerContext', $this->controllerContext);
 	}
 
 	/**
@@ -49,7 +50,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_RenderChildrenViewHelperTest extends Tx_Fl
 	public function renderCallsEvaluateOnTheRootNodeAndRegistersTheArguments() {
 		$this->request = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest');
 		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
-		$this->viewHelper->setControllerContext($this->controllerContext);
+
 		$this->viewHelper->initializeArguments();
 
 		$templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
@@ -82,10 +83,9 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_RenderChildrenViewHelperTest extends Tx_Fl
 	public function renderThrowsExceptionIfTheRequestIsNotAWidgetRequest() {
 		$this->request = $this->getMock('Tx_Fluid_MVC_Request');
 		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
-		$this->viewHelper->setControllerContext($this->controllerContext);
 		$this->viewHelper->initializeArguments();
 
-		$output = $this->viewHelper->render();
+		$this->viewHelper->render();
 	}
 
 	/**
@@ -96,7 +96,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_RenderChildrenViewHelperTest extends Tx_Fl
 	public function renderThrowsExceptionIfTheChildNodeRenderingContextIsNotThere() {
 		$this->request = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest');
 		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
-		$this->viewHelper->setControllerContext($this->controllerContext);
 		$this->viewHelper->initializeArguments();
 
 		$widgetContext = $this->getMock('Tx_Fluid_Core_Widget_WidgetContext');
@@ -104,7 +103,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_RenderChildrenViewHelperTest extends Tx_Fl
 		$widgetContext->expects($this->any())->method('getViewHelperChildNodeRenderingContext')->will($this->returnValue(NULL));
 		$widgetContext->expects($this->any())->method('getViewHelperChildNodes')->will($this->returnValue(NULL));
 
-		$output = $this->viewHelper->render();
+		$this->viewHelper->render();
 	}
 }
 ?>

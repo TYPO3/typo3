@@ -57,7 +57,7 @@ class Tx_Fluid_Tests_Unit_View_AbstractTemplateViewTest extends Tx_Extbase_Tests
 		$this->renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContext', array('getViewHelperVariableContainer', 'getTemplateVariableContainer'));
 		$this->renderingContext->expects($this->any())->method('getViewHelperVariableContainer')->will($this->returnValue($this->viewHelperVariableContainer));
 		$this->renderingContext->expects($this->any())->method('getTemplateVariableContainer')->will($this->returnValue($this->templateVariableContainer));
-		$this->view = $this->getMock('Tx_Fluid_View_AbstractTemplateView', array('getTemplateSource', 'getLayoutSource', 'getPartialSource', 'canRender'));
+		$this->view = $this->getMock('Tx_Fluid_View_AbstractTemplateView', array('getTemplateSource', 'getLayoutSource', 'getPartialSource', 'canRender', 'getTemplateIdentifier', 'getLayoutIdentifier', 'getPartialIdentifier'));
 		$this->view->setRenderingContext($this->renderingContext);
 	}
 

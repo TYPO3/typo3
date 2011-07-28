@@ -63,6 +63,15 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode extends Tx_Fluid_Core_Parser_Syn
 		}
 		return $arrayToBuild;
 	}
+
+	/**
+	 * INTERNAL; DO NOT CALL DIRECTLY!
+	 *
+	 * @return array
+	 */
+	public function getInternalArray() {
+		return $this->internalArray;
+	}
 }
 
 ?>

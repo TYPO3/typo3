@@ -34,14 +34,10 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_RenderViewHelperTest extends Tx_Fluid_View
 	 */
 	protected $viewHelper;
 
-	/**
-	 * var Tx_Fluid_Core_ViewHelper_Arguments
-	 */
-	protected $mockArguments;
-
 	public function setUp() {
 		parent::setUp();
 		$this->templateVariableContainer = new Tx_Fluid_Core_ViewHelper_TemplateVariableContainer();
+		$this->renderingContext->injectTemplateVariableContainer($this->templateVariableContainer);
 		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_RenderViewHelper', array('dummy'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 	}

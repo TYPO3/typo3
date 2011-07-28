@@ -43,7 +43,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class Tx_Fluid_ViewHelpers_Format_HtmlspecialcharsViewHelper extends Tx_Fluid_ViewHelpers_Format_AbstractEncodingViewHelper {
+class Tx_Fluid_ViewHelpers_Format_HtmlspecialcharsViewHelper extends Tx_Fluid_ViewHelpers_Format_AbstractEncodingViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_CompilableInterface {
 
 	/**
 	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
@@ -80,5 +80,9 @@ class Tx_Fluid_ViewHelpers_Format_HtmlspecialcharsViewHelper extends Tx_Fluid_Vi
 		return htmlspecialchars($value, $flags, $encoding, $doubleEncode);
 	}
 
+	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode, Tx_Fluid_Core_Compiler_TemplateCompiler $templateCompiler) {
+		return sprintf('htmlspecialchars((%s[\'value\'] !== NULL ? %s[\'value\'] : %s()), (%s[\'keepQuotes\'] ? ENT_NOQUOTES : ENT_COMPAT), (%s[\'encoding\'] !== NULL ? %s[\'encoding\'] : Tx_Fluid_Core_Compiler_AbstractCompiledTemplate::resolveDefaultEncoding()), %s[\'doubleEncode\'])',
+				$argumentsVariableName, $argumentsVariableName, $renderChildrenClosureVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName);
+	}
 }
 ?>

@@ -114,11 +114,11 @@ class Tx_Fluid_ViewHelpers_Widget_LinkViewHelper extends Tx_Fluid_Core_ViewHelpe
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 
 		$argumentPrefix = $this->controllerContext->getRequest()->getArgumentPrefix();
-		$arguments = $this->arguments->hasArgument('arguments') ? $this->arguments['arguments'] : array();
-		if ($this->arguments->hasArgument('action')) {
+		$arguments = $this->hasArgument('arguments') ? $this->arguments['arguments'] : array();
+		if ($this->hasArgument('action')) {
 			$arguments['action'] = $this->arguments['action'];
 		}
-		if ($this->arguments->hasArgument('format') && $this->arguments['format'] !== '') {
+		if ($this->hasArgument('format') && $this->arguments['format'] !== '') {
 			$arguments['format'] = $this->arguments['format'];
 		}
 		return $uriBuilder

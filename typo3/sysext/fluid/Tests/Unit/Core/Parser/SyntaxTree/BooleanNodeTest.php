@@ -25,7 +25,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_BooleanNodeTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @var Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
@@ -42,7 +42,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function setUp() {
-		$this->viewHelperNode = $this->getAccessibleMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array('dummy'), array(), '', FALSE);
 		$this->renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContextInterface');
 	}
 
@@ -55,7 +54,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_RootNode');
 		$rootNode->expects($this->once())->method('getChildNodes')->will($this->returnValue(array(1,2,3,4)));
 
-		$this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext);
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
 	}
 
 	/**
@@ -68,7 +67,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('=='));
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('5'));
 
-		$this->assertTrue($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
 
 	/**
@@ -81,7 +81,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('=='));
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('3'));
 
-		$this->assertFalse($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertFalse($booleanNode->evaluate($this->renderingContext));
 	}
 
 	/**
@@ -94,7 +95,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('!='));
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('5'));
 
-		$this->assertFalse($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertFalse($booleanNode->evaluate($this->renderingContext));
 	}
 
 	/**
@@ -107,7 +109,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('!='));
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('3'));
 
-		$this->assertTrue($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
 
 	/**
@@ -120,7 +123,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('%'));
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('2'));
 
-		$this->assertTrue($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
 
 	/**
@@ -133,7 +137,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('%'));
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('2'));
 
-		$this->assertFalse($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertFalse($booleanNode->evaluate($this->renderingContext));
 	}
 
 	/**
@@ -146,7 +151,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('>'));
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('9'));
 
-		$this->assertTrue($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
 
 	/**
@@ -159,7 +165,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('>'));
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('10'));
 
-		$this->assertFalse($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertFalse($booleanNode->evaluate($this->renderingContext));
 	}
 
 	/**
@@ -172,7 +179,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('>='));
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('9'));
 
-		$this->assertTrue($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
 
 	/**
@@ -185,7 +193,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('>='));
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('10'));
 
-		$this->assertTrue($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
 
 	/**
@@ -198,7 +207,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('>='));
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('11'));
 
-		$this->assertFalse($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertFalse($booleanNode->evaluate($this->renderingContext));
 	}
 
 	/**
@@ -211,7 +221,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('<'));
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('10'));
 
-		$this->assertTrue($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
 
 	/**
@@ -224,7 +235,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('<'));
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('10'));
 
-		$this->assertFalse($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertFalse($booleanNode->evaluate($this->renderingContext));
 	}
 
 	/**
@@ -237,7 +249,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('<='));
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('10'));
 
-		$this->assertTrue($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
 
 	/**
@@ -250,7 +263,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('<='));
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('10'));
 
-		$this->assertTrue($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
 
 	/**
@@ -263,7 +277,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('<='));
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('10'));
 
-		$this->assertFalse($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertFalse($booleanNode->evaluate($this->renderingContext));
 	}
 
 	/**
@@ -274,7 +289,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('11 <= -2.1'));
 
-		$this->assertFalse($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertFalse($booleanNode->evaluate($this->renderingContext));
 	}
 
 
@@ -298,7 +314,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('=='));
 		$rootNode->addChildNode($object2Node);
 
-		$this->assertFalse($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertFalse($booleanNode->evaluate($this->renderingContext));
 	}
 
 	/**
@@ -321,8 +338,65 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest ex
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('!='));
 		$rootNode->addChildNode($object2Node);
 
-		$this->assertTrue($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+		$booleanNode = new Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode($rootNode);
+		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function convertToBooleanProperlyConvertsValuesOfTypeBoolean() {
+		$this->assertFalse(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean(FALSE));
+		$this->assertTrue(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean(TRUE));
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function convertToBooleanProperlyConvertsValuesOfTypeString() {
+		$this->assertFalse(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean(''));
+		$this->assertFalse(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean('false'));
+		$this->assertFalse(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean('FALSE'));
+
+		$this->assertTrue(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean('true'));
+		$this->assertTrue(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean('TRUE'));
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function convertToBooleanProperlyConvertsNumericValues() {
+		$this->assertFalse(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean(0));
+		$this->assertFalse(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean(-1));
+		$this->assertFalse(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean('-1'));
+		$this->assertFalse(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean(-.5));
+
+		$this->assertTrue(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean(1));
+		$this->assertTrue(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean(.5));
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function convertToBooleanProperlyConvertsValuesOfTypeArray() {
+		$this->assertFalse(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean(array()));
+
+		$this->assertTrue(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean(array('foo')));
+		$this->assertTrue(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean(array('foo' => 'bar')));
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function convertToBooleanProperlyConvertsObjects() {
+		$this->assertFalse(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean(NULL));
+
+		$this->assertTrue(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean(new stdClass()));
 	}
 }
-
 ?>

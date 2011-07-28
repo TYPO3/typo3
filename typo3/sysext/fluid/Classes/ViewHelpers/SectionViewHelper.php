@@ -63,7 +63,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class Tx_Fluid_ViewHelpers_SectionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface {
+class Tx_Fluid_ViewHelpers_SectionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface, Tx_Fluid_Core_ViewHelper_Facets_CompilableInterface {
 
 	/**
 	 * Initialize the arguments.
@@ -110,6 +110,20 @@ class Tx_Fluid_ViewHelpers_SectionViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 			return $this->renderChildren();
 		}
 		return '';
+	}
+
+	/**
+	 * The inner contents of a section should not be rendered.
+	 *
+	 * @param string $argumentsVariableName
+	 * @param string $renderChildrenClosureVariableName
+	 * @param string $initializationPhpCode
+	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode
+	 * @param Tx_Fluid_Core_Compiler_TemplateCompiler $templateCompiler
+	 * @return string
+	 */
+	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode, Tx_Fluid_Core_Compiler_TemplateCompiler $templateCompiler) {
+		return '\'\'';
 	}
 }
 

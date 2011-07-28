@@ -43,7 +43,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class Tx_Fluid_ViewHelpers_Format_HtmlentitiesViewHelper extends Tx_Fluid_ViewHelpers_Format_AbstractEncodingViewHelper {
+class Tx_Fluid_ViewHelpers_Format_HtmlentitiesViewHelper extends Tx_Fluid_ViewHelpers_Format_AbstractEncodingViewHelper implements t3lib_Singleton {
 
 	/**
 	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
@@ -79,6 +79,5 @@ class Tx_Fluid_ViewHelpers_Format_HtmlentitiesViewHelper extends Tx_Fluid_ViewHe
 		$flags = $keepQuotes ? ENT_NOQUOTES : ENT_COMPAT;
 		return htmlentities($value, $flags, $encoding, $doubleEncode);
 	}
-
 }
 ?>

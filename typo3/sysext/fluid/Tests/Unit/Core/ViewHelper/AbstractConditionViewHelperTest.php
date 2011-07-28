@@ -41,7 +41,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractConditionViewHelperTest extend
 
 	public function setUp() {
 		parent::setUp();
-		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper', array('getRenderingContext', 'renderChildren'));
+		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper', array('getRenderingContext', 'renderChildren', 'hasArgument'));
 		$this->viewHelper->expects($this->any())->method('getRenderingContext')->will($this->returnValue($this->renderingContext));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 	}
@@ -52,7 +52,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractConditionViewHelperTest extend
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function renderThenChildReturnsAllChildrenIfNoThenViewHelperChildExists() {
-		$this->viewHelper->expects($this->at(0))->method('renderChildren')->will($this->returnValue('foo'));
+		$this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue('foo'));
 
 		$actualResult = $this->viewHelper->_call('renderThenChild');
 		$this->assertEquals('foo', $actualResult);
@@ -101,8 +101,9 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractConditionViewHelperTest extend
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function renderThenChildReturnsValueOfThenArgumentIfConditionIsTrue() {
-		$this->arguments->expects($this->atLeastOnce())->method('hasArgument')->with('then')->will($this->returnValue(TRUE));
-		$this->arguments->expects($this->atLeastOnce())->method('offsetGet')->with('then')->will($this->returnValue('ThenArgument'));
+		$this->viewHelper->expects($this->atLeastOnce())->method('hasArgument')->with('then')->will($this->returnValue(TRUE));
+		$this->arguments['then'] = 'ThenArgument';
+		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 
 		$actualResult = $this->viewHelper->_call('renderThenChild');
 		$this->assertEquals('ThenArgument', $actualResult);
@@ -133,10 +134,11 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractConditionViewHelperTest extend
 		$mockThenViewHelperNode->expects($this->never())->method('evaluate');
 
 		$this->viewHelper->setChildNodes(array($mockThenViewHelperNode));
-		$this->viewHelper->setRenderingContext($mockRenderingContext);
 
-		$this->arguments->expects($this->atLeastOnce())->method('hasArgument')->with('then')->will($this->returnValue(TRUE));
-		$this->arguments->expects($this->atLeastOnce())->method('offsetGet')->with('then')->will($this->returnValue('ThenArgument'));
+		$this->viewHelper->expects($this->atLeastOnce())->method('hasArgument')->with('then')->will($this->returnValue(TRUE));
+		$this->arguments['then'] = 'ThenArgument';
+
+		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 
 		$actualResult = $this->viewHelper->_call('renderThenChild');
 		$this->assertEquals('ThenArgument', $actualResult);
@@ -147,8 +149,9 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractConditionViewHelperTest extend
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function renderReturnsValueOfElseArgumentIfConditionIsFalse() {
-		$this->arguments->expects($this->atLeastOnce())->method('hasArgument')->with('else')->will($this->returnValue(TRUE));
-		$this->arguments->expects($this->atLeastOnce())->method('offsetGet')->with('else')->will($this->returnValue('ElseArgument'));
+		$this->viewHelper->expects($this->atLeastOnce())->method('hasArgument')->with('else')->will($this->returnValue(TRUE));
+		$this->arguments['else'] = 'ElseArgument';
+		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 
 		$actualResult = $this->viewHelper->_call('renderElseChild');
 		$this->assertEquals('ElseArgument', $actualResult);
@@ -166,15 +169,13 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractConditionViewHelperTest extend
 		$mockElseViewHelperNode->expects($this->never())->method('evaluate');
 
 		$this->viewHelper->setChildNodes(array($mockElseViewHelperNode));
-		$this->viewHelper->setRenderingContext($mockRenderingContext);
 
-		$this->arguments->expects($this->atLeastOnce())->method('hasArgument')->with('else')->will($this->returnValue(TRUE));
-		$this->arguments->expects($this->atLeastOnce())->method('offsetGet')->with('else')->will($this->returnValue('ElseArgument'));
+		$this->viewHelper->expects($this->atLeastOnce())->method('hasArgument')->with('else')->will($this->returnValue(TRUE));
+		$this->arguments['else'] = 'ElseArgument';
+		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 
 		$actualResult = $this->viewHelper->_call('renderElseChild');
 		$this->assertEquals('ElseArgument', $actualResult);
 	}
-
 }
-
 ?>

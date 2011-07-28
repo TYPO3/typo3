@@ -28,21 +28,6 @@
 interface Tx_Fluid_Core_Rendering_RenderingContextInterface {
 
 	/**
-	 * Returns the object manager. Only the ViewHelperNode should do this.
-	 *
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
-	 */
-	public function getObjectManager();
-
-	/**
-	 * Injects the template variable container containing all variables available through ObjectAccessors
-	 * in the template
-	 *
-	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer The template variable container to set
-	 */
-	public function injectTemplateVariableContainer(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer);
-
-	/**
 	 * Get the template variable container
 	 *
 	 * @return Tx_Fluid_Core_ViewHelper_TemplateVariableContainer The Template Variable Container
@@ -50,26 +35,11 @@ interface Tx_Fluid_Core_Rendering_RenderingContextInterface {
 	public function getTemplateVariableContainer();
 
 	/**
-	 * Set the controller context which will be passed to the ViewHelper
-	 *
-	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext The controller context to set
-	 */
-	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext);
-
-	/**
 	 * Get the controller context which will be passed to the ViewHelper
 	 *
 	 * @return Tx_Extbase_MVC_Controller_ControllerContext The controller context to set
 	 */
 	public function getControllerContext();
-
-	/**
-	 * Set the ViewHelperVariableContainer
-	 *
-	 * @param Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer
-	 * @return void
-	 */
-	public function injectViewHelperVariableContainer(Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer);
 
 	/**
 	 * Get the ViewHelperVariableContainer

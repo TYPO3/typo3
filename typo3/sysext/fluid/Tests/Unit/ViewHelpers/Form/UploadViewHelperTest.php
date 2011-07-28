@@ -22,14 +22,14 @@
 
 require_once(dirname(__FILE__) . '/Fixtures/EmptySyntaxTreeNode.php');
 require_once(dirname(__FILE__) . '/Fixtures/Fixture_UserDomainClass.php');
-require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
+require_once(dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php');
 
 /**
  * Test for the "Upload" Form view helper
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Tests_Unit_ViewHelpers_Form_UploadViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+class Tx_Fluid_Tests_Unit_ViewHelpers_Form_UploadViewHelperTest extends Tx_Fluid_Tests_Unit_ViewHelpers_Form_FormFieldViewHelperBaseTestcase {
 
 	/**
 	 * var Tx_Fluid_ViewHelpers_Form_UploadViewHelper
@@ -39,6 +39,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_UploadViewHelperTest extends Tx_Fluid
 	public function setUp() {
 		parent::setUp();
 		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_Form_UploadViewHelper', array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
+		$this->arguments['name'] = '';
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
@@ -48,10 +49,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_UploadViewHelperTest extends Tx_Fluid
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function renderCorrectlySetsTagName() {
-		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName'), array(), '', FALSE);
-		$mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
-		$this->viewHelper->injectTagBuilder($mockTagBuilder);
-		$this->viewHelper->setArguments(new Tx_Fluid_Core_ViewHelper_Arguments(array()));
+		$this->tagBuilder->expects($this->once())->method('setTagName')->with('input');
 
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
@@ -70,9 +68,9 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_UploadViewHelperTest extends Tx_Fluid
 		$mockTagBuilder->expects($this->once())->method('render');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
 
-		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array(
+		$arguments = array(
 			'name' => 'someName',
-		));
+		);
 
 		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->setViewHelperNode(new Tx_Fluid_ViewHelpers_Fixtures_EmptySyntaxTreeNode());

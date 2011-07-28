@@ -100,7 +100,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 		} else {
 			$name = $this->arguments['name'];
 		}
-		if ($this->arguments->hasArgument('value') && is_object($this->arguments['value'])) {
+		if ($this->hasArgument('value') && is_object($this->arguments['value'])) {
 			if (NULL !== $this->persistenceManager->getIdentifierByObject($this->arguments['value'])
 				&& (!$this->persistenceManager->getBackend()->isNewObject($this->arguments['value']))) {
 				$name .= '[__identity]';
@@ -121,7 +121,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 */
 	protected function getValue() {
 		$value = NULL;
-		if ($this->arguments->hasArgument('value')) {
+		if ($this->hasArgument('value')) {
 			$value = $this->arguments['value'];
 		} elseif ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper') && $this->hasMappingErrorOccured()) {
 			$value = $this->getLastSubmittedFormData();
@@ -211,7 +211,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function isObjectAccessorMode() {
-		return $this->arguments->hasArgument('property')
+		return $this->hasArgument('property')
 			&& $this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
 	}
 
@@ -223,7 +223,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function setErrorClassAttribute() {
-		if ($this->arguments->hasArgument('class')) {
+		if ($this->hasArgument('class')) {
 			$cssClass = $this->arguments['class'] . ' ';
 		} else {
 			$cssClass = '';
@@ -232,7 +232,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
 			$mappingResultsForProperty = $this->getMappingResultsForProperty();
 			if ($mappingResultsForProperty->hasErrors()) {
-				if ($this->arguments->hasArgument('errorClass')) {
+				if ($this->hasArgument('errorClass')) {
 					$cssClass .= $this->arguments['errorClass'];
 				} else {
 					$cssClass .= 'error';
@@ -243,7 +243,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 				// @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
 			$errors = $this->getErrorsForProperty();
 			if (count($errors) > 0) {
-				if ($this->arguments->hasArgument('errorClass')) {
+				if ($this->hasArgument('errorClass')) {
 					$cssClass .= $this->arguments['errorClass'];
 				} else {
 					$cssClass .= 'error';

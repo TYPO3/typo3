@@ -109,7 +109,7 @@ class Tx_Fluid_ViewHelpers_FlashMessagesViewHelper extends Tx_Fluid_Core_ViewHel
 	 */
 	protected function renderUl(array $flashMessages) {
 		$this->tag->setTagName('ul');
-		if ($this->arguments->hasArgument('class')) {
+		if ($this->hasArgument('class')) {
 			$this->tag->addAttribute('class', $this->arguments['class']);
 		}
 		$tagContent = '';
@@ -128,7 +128,7 @@ class Tx_Fluid_ViewHelpers_FlashMessagesViewHelper extends Tx_Fluid_Core_ViewHel
 	 */
 	protected function renderDiv(array $flashMessages) {
 		$this->tag->setTagName('div');
-		if ($this->arguments->hasArgument('class')) {
+		if ($this->hasArgument('class')) {
 			$this->tag->addAttribute('class', $this->arguments['class']);
 		} else {
 			$this->tag->addAttribute('class', 'typo3-messages');

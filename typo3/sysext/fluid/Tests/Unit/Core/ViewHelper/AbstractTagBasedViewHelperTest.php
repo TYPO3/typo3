@@ -54,7 +54,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractTagBasedViewHelperTest extends
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
 
 		$this->viewHelper->_call('registerTagAttribute', 'foo', 'string', 'Description', FALSE);
-		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array('foo' => 'bar'));
+		$arguments = array('foo' => 'bar');
 		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->initialize();
 	}
@@ -70,7 +70,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractTagBasedViewHelperTest extends
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
 
 		$this->viewHelper->_call('registerTagAttribute', 'foo', 'string', 'Description', FALSE);
-		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array('additionalAttributes' => array('foo' => 'bar')));
+		$arguments = array('additionalAttributes' => array('foo' => 'bar'));
 		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->initialize();
 	}
@@ -91,17 +91,15 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractTagBasedViewHelperTest extends
 		$mockTagBuilder->expects($this->at(7))->method('addAttribute')->with('tabindex', 'tabindexAttribute');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
 
-		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(
-			array(
-				'class' => 'classAttribute',
-				'dir' => 'dirAttribute',
-				'id' => 'idAttribute',
-				'lang' => 'langAttribute',
-				'style' => 'styleAttribute',
-				'title' => 'titleAttribute',
-				'accesskey' => 'accesskeyAttribute',
-				'tabindex' => 'tabindexAttribute'
-			)
+		$arguments = array(
+			'class' => 'classAttribute',
+			'dir' => 'dirAttribute',
+			'id' => 'idAttribute',
+			'lang' => 'langAttribute',
+			'style' => 'styleAttribute',
+			'title' => 'titleAttribute',
+			'accesskey' => 'accesskeyAttribute',
+			'tabindex' => 'tabindexAttribute'
 		);
 		$this->viewHelper->_call('registerUniversalTagAttributes');
 		$this->viewHelper->setArguments($arguments);

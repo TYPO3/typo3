@@ -88,6 +88,11 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 	protected $mockContentObject;
 
 	/**
+	 * @var Tx_Fluid_Core_Compiler_TemplateCompiler
+	 */
+	protected $mockTemplateCompiler;
+
+	/**
 	 * Sets up this test case
 	 *
 	 * @return void
@@ -115,13 +120,16 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 		$this->mockViewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
 
-		$this->mockRenderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContextInterface');
+		$this->mockRenderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContext');
 		$this->mockRenderingContext->expects($this->any())->method('getControllerContext')->will($this->returnValue($this->mockControllerContext));
 		$this->mockRenderingContext->expects($this->any())->method('getViewHelperVariableContainer')->will($this->returnValue($this->mockViewHelperVariableContainer));
 
 		$this->view->injectTemplateParser($this->mockTemplateParser);
 		$this->view->injectObjectManager($this->mockObjectManager);
 		$this->view->setRenderingContext($this->mockRenderingContext);
+
+		$this->mockTemplateCompiler = $this->getMock('Tx_Fluid_Core_Compiler_TemplateCompiler');
+		$this->view->_set('templateCompiler', $this->mockTemplateCompiler);
 
 		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $this->mockObjectManager);
 		t3lib_div::addInstance('tslib_cObj', $this->mockContentObject);
@@ -154,6 +162,8 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 				return $this->mockControllerContext;
 			case 'Tx_Extbase_MVC_Controller_FlashMessages':
 				return $this->mockFlashMessages;
+			case 'Tx_Fluid_Core_Compiler_TemplateCompiler':
+				return $this->mockTemplateCompiler;
 		}
 	}
 

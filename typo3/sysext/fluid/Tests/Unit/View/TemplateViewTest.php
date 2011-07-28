@@ -120,9 +120,9 @@ class Tx_Fluid_Tests_Unit_View_TemplateViewTest extends Tx_Extbase_Tests_Unit_Ba
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function setupMockControllerContextForPathResolving($packageKey, $subPackageKey, $controllerName, $format) {
-     	$controllerObjectName = "F3\\$packageKey\\" . ($subPackageKey != $subPackageKey . '\\' ? : '') . 'Controller\\' . $controllerName . 'Controller';
+		$controllerObjectName = "TYPO3\\$packageKey\\" . ($subPackageKey != $subPackageKey . '\\' ? : '') . 'Controller\\' . $controllerName . 'Controller';
 
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request');
+		$mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request');
 		$mockRequest->expects($this->any())->method('getControllerPackageKey')->will($this->returnValue($packageKey));
 		$mockRequest->expects($this->any())->method('getControllerSubPackageKey')->will($this->returnValue($subPackageKey));
 		$mockRequest->expects($this->any())->method('getControllerName')->will($this->returnValue($controllerName));
@@ -225,7 +225,7 @@ class Tx_Fluid_Tests_Unit_View_TemplateViewTest extends Tx_Extbase_Tests_Unit_Ba
 		$templateView->_set('templatePathAndFilename', 'vfs://MyTemplates/MyCoolAction.html');
 
 		$this->assertSame('contentsOfMyCoolAction', $templateView->_call('getTemplateSource'));
-  	}
+	}
 }
 
 ?>

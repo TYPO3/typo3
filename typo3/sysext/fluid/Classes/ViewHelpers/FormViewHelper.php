@@ -189,7 +189,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 * @return void
 	 */
 	protected function setFormActionUri() {
-		if ($this->arguments->hasArgument('actionUri')) {
+		if ($this->hasArgument('actionUri')) {
 			$formActionUri = $this->arguments['actionUri'];
 		} else {
 			$uriBuilder = $this->controllerContext->getUriBuilder();
@@ -293,9 +293,9 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 */
 	protected function getFormObjectName() {
 		$formObjectName = NULL;
-		if ($this->arguments->hasArgument('objectName')) {
+		if ($this->hasArgument('objectName')) {
 			$formObjectName = $this->arguments['objectName'];
-		} elseif ($this->arguments->hasArgument('name')) {
+		} elseif ($this->hasArgument('name')) {
 			$formObjectName = $this->arguments['name'];
 		}
 		return $formObjectName;
@@ -306,7 +306,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 * @return void
 	 */
 	protected function addFormObjectToViewHelperVariableContainer() {
-		if ($this->arguments->hasArgument('object')) {
+		if ($this->hasArgument('object')) {
 			$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject', $this->arguments['object']);
 			$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'additionalIdentityProperties', array());
 		}
@@ -318,7 +318,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 * @return void
 	 */
 	protected function removeFormObjectFromViewHelperVariableContainer() {
-		if ($this->arguments->hasArgument('object')) {
+		if ($this->hasArgument('object')) {
 			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject');
 			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'additionalIdentityProperties');
 		}
@@ -340,7 +340,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 * @return string
 	 */
 	protected function getFieldNamePrefix() {
-		if ($this->arguments->hasArgument('fieldNamePrefix')) {
+		if ($this->hasArgument('fieldNamePrefix')) {
 			return $this->arguments['fieldNamePrefix'];
 		} else {
 			return $this->getDefaultFieldNamePrefix();
@@ -412,12 +412,12 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 */
 	protected function getDefaultFieldNamePrefix() {
 		$request = $this->controllerContext->getRequest();
-		if ($this->arguments->hasArgument('extensionName')) {
+		if ($this->hasArgument('extensionName')) {
 			$extensionName = $this->arguments['extensionName'];
 		} else {
 			$extensionName = $request->getControllerExtensionName();
 		}
-		if ($this->arguments->hasArgument('pluginName')) {
+		if ($this->hasArgument('pluginName')) {
 			$pluginName = $this->arguments['pluginName'];
 		} else {
 			$pluginName = $request->getPluginName();

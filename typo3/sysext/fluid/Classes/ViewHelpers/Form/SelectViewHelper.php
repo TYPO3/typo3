@@ -106,7 +106,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 */
 	public function render() {
 		$name = $this->getName();
-		if ($this->arguments->hasArgument('multiple')) {
+		if ($this->hasArgument('multiple')) {
 			$name .= '[]';
 		}
 
@@ -125,7 +125,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 			// register field name for token generation.
 			// in case it is a multi-select, we need to register the field name
 			// as often as there are elements in the box
-		if ($this->arguments->hasArgument('multiple') && $this->arguments['multiple'] !== '') {
+		if ($this->hasArgument('multiple') && $this->arguments['multiple'] !== '') {
 			$content .= $this->renderHiddenFieldForEmptyValue();
 			for ($i=0; $i<count($options); $i++) {
 				$this->registerFieldNameForFormTokenGeneration($name);
@@ -171,7 +171,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 		foreach ($optionsArgument as $key => $value) {
 			if (is_object($value)) {
 
-				if ($this->arguments->hasArgument('optionValueField')) {
+				if ($this->hasArgument('optionValueField')) {
 					$key = Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
 					if (is_object($key)) {
 						if (method_exists($key, '__toString')) {
@@ -188,7 +188,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 					throw new Tx_Fluid_Core_ViewHelper_Exception('No identifying value for object of class "' . get_class($value) . '" found.' , 1247826696);
 				}
 
-				if ($this->arguments->hasArgument('optionLabelField')) {
+				if ($this->hasArgument('optionLabelField')) {
 					$value = Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $this->arguments['optionLabelField']);
 					if (is_object($value)) {
 						if (method_exists($value, '__toString')) {
@@ -224,7 +224,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 		if ($value === $selectedValue || (string)$value === $selectedValue) {
 			return TRUE;
 		}
-		if ($this->arguments->hasArgument('multiple')) {
+		if ($this->hasArgument('multiple')) {
 			if (is_null($selectedValue) && $this->arguments['selectAllByDefault'] === TRUE) {
 				return TRUE;
 			} elseif (is_array($selectedValue) && in_array($value, $selectedValue)) {
@@ -242,7 +242,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 */
 	protected function getSelectedValue() {
 		$value = $this->getValue();
-		if (!$this->arguments->hasArgument('optionValueField')) {
+		if (!$this->hasArgument('optionValueField')) {
 			return $value;
 		}
 		if (!is_array($value) && !($value instanceof Iterator)) {

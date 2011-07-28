@@ -53,7 +53,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_TextNode extends Tx_Fluid_Core_Parser_Synt
 	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return string the text stored in this node/subtree.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @todo TextNode shouldn't have child nodes
 	 */
 	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
 		return $this->text . $this->evaluateChildNodes($renderingContext);

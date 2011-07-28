@@ -95,16 +95,15 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	/**
 	 * Initialize the arguments of the ViewHelper, and call the render() method of the ViewHelper.
 	 *
-	 * @param array $renderMethodParameters the parameters of the render() method.
 	 * @return string the rendered ViewHelper.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function initializeArgumentsAndRender(array $renderMethodParameters) {
+	public function initializeArgumentsAndRender() {
 		$this->validateArguments();
 		$this->initialize();
 		$this->initializeWidgetContext();
 
-		return $this->callRenderMethod($renderMethodParameters);
+		return $this->callRenderMethod();
 	}
 
 	/**
@@ -146,7 +145,7 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 		foreach ($childNodes as $childNode) {
 			$rootNode->addChildNode($childNode);
 		}
-		$this->widgetContext->setViewHelperChildNodes($rootNode, $this->getRenderingContext());
+		$this->widgetContext->setViewHelperChildNodes($rootNode, $this->renderingContext);
 	}
 
 	/**

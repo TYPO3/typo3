@@ -21,6 +21,7 @@
  *                                                                        */
 
 require_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
+require_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper2.php');
 
 /**
  * Testcase for AbstractViewHelper
@@ -112,7 +113,6 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'initializeArguments'), array(), '', FALSE);
 		$viewHelper->injectReflectionService($mockReflectionService);
 
-		$viewHelper->setArguments(new Tx_Fluid_Core_ViewHelper_Arguments(array()));
 		$viewHelper->expects($this->once())->method('initializeArguments');
 
 		$viewHelper->prepareArguments();
@@ -127,7 +127,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		Tx_Fluid_Fluid::$debugMode = TRUE;
 
 		$availableClassNames = array(
-			'Tx_Fluid_Core_Fixtures_TestViewHelper',
+			array('Tx_Fluid_Core_Fixtures_TestViewHelper'),
 		);
 		$reflectionService = new Tx_Extbase_Reflection_Service();
 		// $reflectionService->setStatusCache($this->getMock('Tx_Fluid_Cache_Frontend_StringFrontend', array(), array(), '', FALSE));
@@ -160,7 +160,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		Tx_Fluid_Fluid::$debugMode = FALSE;
 
 		$availableClassNames = array(
-			'Tx_Fluid_Core_Fixtures_TestViewHelper',
+			array('Tx_Fluid_Core_Fixtures_TestViewHelper2'),
 		);
 		$reflectionService = new Tx_Extbase_Reflection_Service();
 		// $reflectionService->setStatusCache($this->getMock('Tx_Fluid_Cache_Frontend_StringFrontend', array(), array(), '', FALSE));
@@ -170,7 +170,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$reflectionService->setDataCache($dataCacheMock);
 		// $reflectionService->buildReflectionData($availableClassNames);
 
-		$viewHelper = new Tx_Fluid_Core_Fixtures_TestViewHelper();
+		$viewHelper = new Tx_Fluid_Core_Fixtures_TestViewHelper2();
 		$viewHelper->injectReflectionService($reflectionService);
 
 		$expected = array(
@@ -192,7 +192,6 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'prepareArguments'), array(), '', FALSE);
 		$viewHelper->injectReflectionService($mockReflectionService);
 
-		$viewHelper->setArguments(new Tx_Fluid_Core_ViewHelper_Arguments(array()));
 		$viewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue(array()));
 
 		$viewHelper->validateArguments();
@@ -205,7 +204,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 	public function validateArgumentsAcceptsAllObjectsImplemtingArrayAccessAsAnArray() {
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'prepareArguments'), array(), '', FALSE);
 
-		$viewHelper->setArguments(new Tx_Fluid_Core_ViewHelper_Arguments(array('test' => new ArrayObject)));
+		$viewHelper->setArguments(array('test' => new ArrayObject));
 		$viewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue(array('test' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('test', 'array', FALSE, 'documentation'))));
 		$viewHelper->validateArguments();
 	}
@@ -220,7 +219,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'prepareArguments'), array(), '', FALSE);
 		$viewHelper->injectReflectionService($mockReflectionService);
 
-		$viewHelper->setArguments(new Tx_Fluid_Core_ViewHelper_Arguments(array('test' => 'Value of argument')));
+		$viewHelper->setArguments(array('test' => 'Value of argument'));
 
 		$viewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue(array(
 			'test' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition("test", "string", FALSE, "documentation")
@@ -240,38 +239,13 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'prepareArguments'), array(), '', FALSE);
 		$viewHelper->injectReflectionService($mockReflectionService);
 
-		$viewHelper->setArguments(new Tx_Fluid_Core_ViewHelper_Arguments(array('test' => "test")));
+		$viewHelper->setArguments(array('test' => 'test'));
 
 		$viewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue(array(
 			'test' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition("test", "stdClass", FALSE, "documentation")
 		)));
 
 		$viewHelper->validateArguments();
-	}
-
-
-	/**
-	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function setControllerContextSetsTheControllerContext() {
-		$controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
-		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'prepareArguments'), array(), '', FALSE);
-
-		$viewHelper->setControllerContext($controllerContext);
-		$this->assertSame($viewHelper->_get('controllerContext'), $controllerContext);
-	}
-
-	/**
-	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function setViewHelperVariableContainerSetsTheViewHelperVariableContainer() {
-		$viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
-		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'prepareArguments'), array(), '', FALSE);
-
-		$viewHelper->setViewHelperVariableContainer($viewHelperVariableContainer);
-		$this->assertSame($viewHelper->_get('viewHelperVariableContainer'), $viewHelperVariableContainer);
 	}
 
 	/**
@@ -282,11 +256,34 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('validateArguments', 'initialize', 'callRenderMethod'));
 		$viewHelper->expects($this->at(0))->method('validateArguments');
 		$viewHelper->expects($this->at(1))->method('initialize');
-		$viewHelper->expects($this->at(2))->method('callRenderMethod')->with(array('argument1' => 'value1'))->will($this->returnValue('Output'));
+		$viewHelper->expects($this->at(2))->method('callRenderMethod')->will($this->returnValue('Output'));
 
 		$expectedOutput = 'Output';
 		$actualOutput = $viewHelper->initializeArgumentsAndRender(array('argument1' => 'value1'));
 		$this->assertEquals($expectedOutput, $actualOutput);
+	}
+
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function setRenderingContextShouldSetInnerVariables() {
+		$templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
+		$viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
+		$controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
+
+		$renderingContext = new Tx_Fluid_Core_Rendering_RenderingContext();
+		$renderingContext->injectTemplateVariableContainer($templateVariableContainer);
+		$renderingContext->injectViewHelperVariableContainer($viewHelperVariableContainer);
+		$renderingContext->setControllerContext($controllerContext);
+
+		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'prepareArguments'), array(), '', FALSE);
+
+		$viewHelper->setRenderingContext($renderingContext);
+
+		$this->assertSame($viewHelper->_get('templateVariableContainer'), $templateVariableContainer);
+		$this->assertSame($viewHelper->_get('viewHelperVariableContainer'), $viewHelperVariableContainer);
+		$this->assertSame($viewHelper->_get('controllerContext'), $controllerContext);
 	}
 }
 ?>

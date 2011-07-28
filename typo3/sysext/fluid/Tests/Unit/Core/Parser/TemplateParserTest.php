@@ -43,26 +43,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserTest extends Tx_Extbase_Test
 	}
 
 	/**
-	 * Checks that parse() calls the expected methods internally in the
-	 * correct order:
-	 * initialize();
-	 * extractNamespaceDefinitions($templateString)
-	 * splitTemplateAtDynamicTags($templateString)
-	 * buildObjectTree($splitTemplate)
-	 * 
-	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function parseDelegatesTasksAsExpected() {
-		$templateParser = $this->getMock('Tx_Fluid_Core_Parser_TemplateParser', array('reset', 'extractNamespaceDefinitions', 'splitTemplateAtDynamicTags', 'buildObjectTree'));
-		$templateParser->expects($this->at(0))->method('reset');
-		$templateParser->expects($this->at(1))->method('extractNamespaceDefinitions')->with('templateString1')->will($this->returnValue('templateString2'));
-		$templateParser->expects($this->at(2))->method('splitTemplateAtDynamicTags')->with('templateString2')->will($this->returnValue('templateString3'));
-		$templateParser->expects($this->at(3))->method('buildObjectTree')->with('templateString3')->will($this->returnValue('templateString4'));
-		$this->assertEquals('templateString4', $templateParser->parse('templateString1'));
-	}
-
-	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
@@ -85,7 +65,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserTest extends Tx_Extbase_Test
 	 */
 	public function extractNamespaceDefinitionsThrowsExceptionIfNamespaceIsRedeclared() {
 		$templateParser = $this->getAccessibleMock('Tx_Fluid_Core_Parser_TemplateParser', array('dummy'));
-		$templateParser->_call('extractNamespaceDefinitions', '{namespace f3=Tx_Fluid_Blablubb} {namespace f3= Tx_Fluid_Blu}');
+		$templateParser->_call('extractNamespaceDefinitions', '{namespace typo3=Tx_Fluid_Blablubb} {namespace typo3= Tx_Fluid_Blu}');
 	}
 
 
@@ -152,9 +132,9 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserTest extends Tx_Extbase_Test
 	 */
 	public function splitTemplateAtDynamicTagsReturnsCorrectlySplitTemplate($templateName) {
 		$template = file_get_contents(dirname(__FILE__) . '/Fixtures/' . $templateName . '.html', FILE_TEXT);
-		$result = require(dirname(__FILE__) . '/Fixtures/' . $templateName . '-split.php');
+		$expectedResult = require(dirname(__FILE__) . '/Fixtures/' . $templateName . '-split.php');
 		$templateParser = $this->getAccessibleMock('Tx_Fluid_Core_Parser_TemplateParser', array('dummy'));
-		$this->assertSame($result, $templateParser->_call('splitTemplateAtDynamicTags', $template));
+		$this->assertSame($expectedResult, $templateParser->_call('splitTemplateAtDynamicTags', $template), 'Filed for ' . $templateName);
 	}
 
 	/**
@@ -184,7 +164,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserTest extends Tx_Extbase_Test
 	 * @expectedException Tx_Fluid_Core_Parser_Exception
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function buildObjectTreeThrowsRootNodeIfOpentagsRemain() {
+	public function buildObjectTreeThrowsExceptionIfOpenTagsRemain() {
 		$mockRootNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_RootNode');
 
 		$mockState = $this->getMock('Tx_Fluid_Core_Parser_ParsingState');
@@ -215,13 +195,13 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserTest extends Tx_Extbase_Test
 		$templateParser = $this->getAccessibleMock('Tx_Fluid_Core_Parser_TemplateParser', array('textHandler', 'openingViewHelperTagHandler', 'closingViewHelperTagHandler', 'textAndShorthandSyntaxHandler'));
 		$templateParser->injectObjectManager($mockObjectManager);
 		$templateParser->expects($this->at(0))->method('textAndShorthandSyntaxHandler')->with($mockState, 'The first part is simple');
-		$templateParser->expects($this->at(1))->method('textHandler')->with($mockState, '<f3:for each="{a: {a: 0, b: 2, c: 4}}" as="array"><f3:for each="{array}" as="value">{value} </f3:for>');
+		$templateParser->expects($this->at(1))->method('textHandler')->with($mockState, '<f:for each="{a: {a: 0, b: 2, c: 4}}" as="array"><f:for each="{array}" as="value">{value} </f:for>');
 		$templateParser->expects($this->at(2))->method('openingViewHelperTagHandler')->with($mockState, 'f', 'format.printf', ' arguments="{number : 362525200}"', FALSE);
 		$templateParser->expects($this->at(3))->method('textAndShorthandSyntaxHandler')->with($mockState, '%.3e');
 		$templateParser->expects($this->at(4))->method('closingViewHelperTagHandler')->with($mockState, 'f', 'format.printf');
 		$templateParser->expects($this->at(5))->method('textAndShorthandSyntaxHandler')->with($mockState, 'and here goes some {text} that could have {shorthand}');
 
-		$splitTemplate = $templateParser->_call('splitTemplateAtDynamicTags', 'The first part is simple<![CDATA[<f3:for each="{a: {a: 0, b: 2, c: 4}}" as="array"><f3:for each="{array}" as="value">{value} </f3:for>]]><f:format.printf arguments="{number : 362525200}">%.3e</f:format.printf>and here goes some {text} that could have {shorthand}');
+		$splitTemplate = $templateParser->_call('splitTemplateAtDynamicTags', 'The first part is simple<![CDATA[<f:for each="{a: {a: 0, b: 2, c: 4}}" as="array"><f:for each="{array}" as="value">{value} </f:for>]]><f:format.printf arguments="{number : 362525200}">%.3e</f:format.printf>and here goes some {text} that could have {shorthand}');
 
 		$templateParser->_call('buildObjectTree', $splitTemplate);
 	}
@@ -266,14 +246,14 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserTest extends Tx_Extbase_Test
 		$mockNodeOnStack->expects($this->once())->method('addChildNode')->with($mockViewHelperNode);
 
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$mockObjectManager->expects($this->at(0))->method('create')->with('Tx_Fluid_ViewHelpers_MyownViewHelper')->will($this->returnValue($mockViewHelper));
+		$mockObjectManager->expects($this->at(0))->method('get')->with('Tx_Fluid_ViewHelpers_MyownViewHelper')->will($this->returnValue($mockViewHelper));
 		$mockObjectManager->expects($this->at(1))->method('create')->with('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode')->will($this->returnValue($mockViewHelperNode));
 
 		$mockState = $this->getMock('Tx_Fluid_Core_Parser_ParsingState');
 		$mockState->expects($this->once())->method('getNodeFromStack')->will($this->returnValue($mockNodeOnStack));
 		$mockState->expects($this->once())->method('pushNodeToStack')->with($mockViewHelperNode);
 
-		$templateParser = $this->getAccessibleMock('Tx_Fluid_Core_Parser_TemplateParser', array('abortIfUnregisteredArgumentsExist', 'abortIfRequiredArgumentsAreMissing'));
+		$templateParser = $this->getAccessibleMock('Tx_Fluid_Core_Parser_TemplateParser', array('abortIfUnregisteredArgumentsExist', 'abortIfRequiredArgumentsAreMissing', 'rewriteBooleanNodesInArgumentsObjectTree'));
 		$templateParser->injectObjectManager($mockObjectManager);
 
 		$templateParser->_call('initializeViewHelperAndAddItToStack', $mockState, 'f', 'myown', array('arguments'));
@@ -294,13 +274,13 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserTest extends Tx_Extbase_Test
 		$mockNodeOnStack = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface');
 
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$mockObjectManager->expects($this->at(0))->method('create')->with('Tx_Fluid_ViewHelpers_MyownViewHelper')->will($this->returnValue($mockViewHelper));
+		$mockObjectManager->expects($this->at(0))->method('get')->with('Tx_Fluid_ViewHelpers_MyownViewHelper')->will($this->returnValue($mockViewHelper));
 		$mockObjectManager->expects($this->at(1))->method('create')->with('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode')->will($this->returnValue($mockViewHelperNode));
 
 		$mockState = $this->getMock('Tx_Fluid_Core_Parser_ParsingState');
 		$mockState->expects($this->once())->method('getNodeFromStack')->will($this->returnValue($mockNodeOnStack));
 
-		$templateParser = $this->getAccessibleMock('Tx_Fluid_Core_Parser_TemplateParser', array('abortIfUnregisteredArgumentsExist', 'abortIfRequiredArgumentsAreMissing'));
+		$templateParser = $this->getAccessibleMock('Tx_Fluid_Core_Parser_TemplateParser', array('abortIfUnregisteredArgumentsExist', 'abortIfRequiredArgumentsAreMissing', 'rewriteBooleanNodesInArgumentsObjectTree'));
 		$templateParser->injectObjectManager($mockObjectManager);
 		$templateParser->expects($this->once())->method('abortIfUnregisteredArgumentsExist')->with($expectedArguments, $argumentsObjectTree);
 		$templateParser->expects($this->once())->method('abortIfRequiredArgumentsAreMissing')->with($expectedArguments, $argumentsObjectTree);
@@ -320,14 +300,14 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserTest extends Tx_Extbase_Test
 		$mockNodeOnStack->expects($this->once())->method('addChildNode')->with($mockViewHelperNode);
 
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$mockObjectManager->expects($this->at(0))->method('create')->with('Tx_Fluid_ViewHelpers_MyownViewHelper')->will($this->returnValue($mockViewHelper));
+		$mockObjectManager->expects($this->at(0))->method('get')->with('Tx_Fluid_ViewHelpers_MyownViewHelper')->will($this->returnValue($mockViewHelper));
 		$mockObjectManager->expects($this->at(1))->method('create')->with('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode')->will($this->returnValue($mockViewHelperNode));
 
 		$mockState = $this->getMock('Tx_Fluid_Core_Parser_ParsingState');
 		$mockState->expects($this->once())->method('getNodeFromStack')->will($this->returnValue($mockNodeOnStack));
 		$mockState->expects($this->once())->method('getVariableContainer')->will($this->returnValue($this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer')));
 
-		$templateParser = $this->getAccessibleMock('Tx_Fluid_Core_Parser_TemplateParser', array('abortIfUnregisteredArgumentsExist', 'abortIfRequiredArgumentsAreMissing'));
+		$templateParser = $this->getAccessibleMock('Tx_Fluid_Core_Parser_TemplateParser', array('abortIfUnregisteredArgumentsExist', 'abortIfRequiredArgumentsAreMissing', 'rewriteBooleanNodesInArgumentsObjectTree'));
 		$templateParser->injectObjectManager($mockObjectManager);
 
 		$templateParser->_call('initializeViewHelperAndAddItToStack', $mockState, 'f', 'myown', array('arguments'));
@@ -419,7 +399,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserTest extends Tx_Extbase_Test
 	 * @expectedException Tx_Fluid_Core_Parser_Exception
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function closingViewHelperTagHandlerThrowsExceptionBecauseOfWrongTagNesting () {
+	public function closingViewHelperTagHandlerThrowsExceptionBecauseOfWrongTagNesting() {
 		$mockNodeOnStack = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array(), array(), '', FALSE);
 		$mockState = $this->getMock('Tx_Fluid_Core_Parser_ParsingState');
 		$mockState->expects($this->once())->method('popNodeFromStack')->will($this->returnValue($mockNodeOnStack));
@@ -639,7 +619,5 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserTest extends Tx_Extbase_Test
 
 		$templateParser->_call('textHandler', $mockState, 'string');
 	}
-
 }
-
 ?>
