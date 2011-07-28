@@ -1397,7 +1397,7 @@ class SC_mod_tools_be_user_index {
 				$TDparams=' nowrap="nowrap" class="'.($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6').'" valign="top"';
 			}
 			$outTable='<table border="0" cellpadding="2" cellspacing="2">' . $outTable . '</table>';
-					$flashMessageCachedGrouplistsUpdated = t3lib_div::makeInstance(
+			$flashMessageCachedGrouplistsUpdated = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
 				'',
 				$GLOBALS['LANG']->getLL('cachedGrouplistsUpdated', TRUE),
