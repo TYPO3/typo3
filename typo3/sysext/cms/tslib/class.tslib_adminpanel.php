@@ -312,6 +312,18 @@ class tslib_AdminPanel {
 			}
 		}
 
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'] as $classRef) {
+				$hookObject = t3lib_div::getUserObj($classRef);
+
+				if (!($hookObject instanceof tslib_adminPanelHook)) {
+					throw new UnexpectedValueException('$hookObject must implement interface tslib_adminPanelHook', 1311942539);
+				}
+
+				$moduleContent = $hookObject->extendAdminPanel($this);
+			}
+		}
+
 		$row = $this->extGetLL('adminPanelTitle') . ': <span class="typo3-adminPanel-beuser">' .
 			htmlspecialchars($GLOBALS['BE_USER']->user['username']) . '</span>';
 
@@ -696,10 +708,9 @@ $query . '<table class="typo3-adminPanel">' .
 	 *
 	 * @param	string		The suffix to the display_ label. Also selects the label from the LOCAL_LANG array.
 	 * @return	string		HTML table row.
-	 * @access private
 	 * @see extGetItem()
 	 */
-	protected function extGetHead($sectionSuffix) {
+	public function extGetHead($sectionSuffix) {
 		$settingName = 'display_' . $sectionSuffix;
 		$isVisible = $GLOBALS['BE_USER']->uc['TSFE_adminConfig'][$settingName];
 		$cssClassName = 'typo3-adminPanel-section-' . ($isVisible ? 'open' : 'closed');
@@ -716,10 +727,9 @@ $query . '<table class="typo3-adminPanel">' .
 	 * @param	string		The code for the display_ label/key
 	 * @param	string		Input string
 	 * @return	string		Linked input string
-	 * @access private
 	 * @see extGetHead()
 	 */
-	protected function linkSectionHeader($sectionSuffix, $sectionTitle, $className = '') {
+	public function linkSectionHeader($sectionSuffix, $sectionTitle, $className = '') {
 		return '<div class="typo3-adminPanel-label"><a href="javascript:void(0)" onclick="' .
 			htmlspecialchars('document.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[display_' . $sectionSuffix . ']\'].value=' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_' . $sectionSuffix] ? '0' : '1') . ';document.TSFE_ADMIN_PANEL_FORM.submit();return false;') .
 			'"' . ($className ? ' class="' . $className . '"' : '') . '>' . $sectionTitle . '</a></div>';
@@ -732,10 +742,9 @@ $query . '<table class="typo3-adminPanel">' .
 	 * @param	string		Key to label
 	 * @param	string		The HTML content for the forth table cell.
 	 * @return	string		HTML table row.
-	 * @access private
 	 * @see extGetHead()
 	 */
-	protected function extGetItem($title, $content = '', $checkboxContent = '') {
+	public function extGetItem($title, $content = '', $checkboxContent = '') {
 		$out = '<tr class="typo3-adminPanel-itemRow">' .
 			'<td class="typo3-adminPanel-section-content">' . $checkboxContent . ($title ? $this->extGetLL($title) : '&nbsp;') . $content . '</td></tr>';
 
@@ -816,7 +825,7 @@ $query . '<table class="typo3-adminPanel">' .
 	 * @param	string		Key for a label in the $LOCAL_LANG array of "sysext/lang/locallang_tsfe.php"
 	 * @return	string		The value for the $key
 	 */
-	protected function extGetLL($key) {
+	public function extGetLL($key) {
 		$labelStr = htmlspecialchars($GLOBALS['LANG']->getLL($key));	// Label string in the default backend output charset.
 
 			// Convert to utf-8, then to entities:
