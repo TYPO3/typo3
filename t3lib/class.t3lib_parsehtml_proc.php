@@ -863,8 +863,11 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				}
 			} else { // NON-block:
 				if (strcmp(trim($blockSplit[$k]), '')) {
+					$blockSplit[$k] = preg_replace('/<hr\/>/', '<hr />', $blockSplit[$k]);
+						// Remove linebreaks preceding hr tags
+					$blockSplit[$k] = preg_replace('/[' . preg_quote(LF . CR) . ']+<(hr)(\s[^>\/]*)?[[:space:]]*\/?>/', '<$1$2/>', $blockSplit[$k]);
 						// Remove linebreaks following hr tags
-					$blockSplit[$k] = preg_replace('/<(hr)(\s[^>\/]*)?[[:space:]]*\/?>[' . preg_quote(LF . CR) . ']+/', '<$1$2 />', $blockSplit[$k]);
+					$blockSplit[$k] = preg_replace('/<(hr)(\s[^>\/]*)?[[:space:]]*\/?>[' . preg_quote(LF . CR) . ']+/', '<$1$2/>', $blockSplit[$k]);
 						// Replace other linebreaks with space
 					$blockSplit[$k] = preg_replace('/[' . preg_quote(LF . CR) . ']+/', ' ', $blockSplit[$k]);
 					$blockSplit[$k] = $this->divideIntoLines($blockSplit[$k]) . $lastBR;
@@ -1205,7 +1208,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 			// Returns plainly the value if there was no div/p sections in it
 		if (count($divSplit) <= 1 || $count <= 0) {
 				// Wrap hr tags with LF's
-			$newValue = preg_replace('/<(hr)(\s[^>\/]*)?[[:space:]]*\/?>/i', LF . '<$1$2 />' . LF, $value);
+			$newValue = preg_replace('/<(hr)(\s[^>\/]*)?[[:space:]]*\/?>/i', LF . '<$1$2/>' . LF, $value);
 			$newValue = preg_replace('/' . preg_quote(LF . LF) . '/i', LF, $newValue);
 			$newValue = preg_replace('/(^' . preg_quote(LF) . ')|(' . preg_quote(LF) . '$)/i', '', $newValue);
 			return $newValue;
@@ -1298,7 +1301,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					// Remove positions which are outside div/p tags and without content
 				$divSplit[$k] = trim(strip_tags($divSplit[$k], '<' . implode('><', $allowTagsOutside) . '>'));
 					// Wrap hr tags with LF's
-				$divSplit[$k] = preg_replace('/<(hr)(\s[^>\/]*)?[[:space:]]*\/?>/i', LF . '<$1$2 />' . LF, $divSplit[$k]);
+				$divSplit[$k] = preg_replace('/<(hr)(\s[^>\/]*)?[[:space:]]*\/?>/i', LF . '<$1$2/>' . LF, $divSplit[$k]);
 				$divSplit[$k] = preg_replace('/' . preg_quote(LF . LF) . '/i', LF, $divSplit[$k]);
 				$divSplit[$k] = preg_replace('/(^' . preg_quote(LF) . ')|(' . preg_quote(LF) . '$)/i', '', $divSplit[$k]);
 				if (!strcmp($divSplit[$k], '')) {
