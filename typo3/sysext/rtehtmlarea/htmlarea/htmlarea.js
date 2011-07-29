@@ -4632,9 +4632,9 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	getHelpTip: function (fieldName, label, pluginName) {
 		if (Ext.isDefined(TYPO3.ContextHelp)) {
 			var pluginName = Ext.isDefined(pluginName) ? pluginName : this.name;
-			return '<span class="t3-help-link" href="#" data-table="xEXT_rtehtmlarea_' + pluginName + '" data-field="' + fieldName + '"><abbr class="t3-help-teaser">' + this.localize(label) + '</abbr></span>';
+			return '<span class="t3-help-link" href="#" data-table="xEXT_rtehtmlarea_' + pluginName + '" data-field="' + fieldName + '"><abbr class="t3-help-teaser">' + (this.localize(label) || label) + '</abbr></span>';
 		} else {
-			return this.localize(label);
+			return this.localize(label) || label;
 		}
 	},
 	/**
