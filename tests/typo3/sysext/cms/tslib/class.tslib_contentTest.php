@@ -852,5 +852,54 @@ class tslib_contentTest extends tx_phpunit_testcase {
 		$result = $this->cObj->numberFormat($float, $formatConf);
 		$this->assertEquals($expected, $result);
 	}
+
+	/**
+	 * Data provider for the replacement test
+	 *
+	 * @return array multi-dimensional array with the second level like this:
+	 *               0 => the input text
+	 *               1 => the conf array for the replacement stdWrap function
+	 *               2 => the expected result
+	 *
+	 * @see replacement
+	 */
+	public function replacementDataProvider() {
+		$data = array(
+			'multiple replacements, including regex' => array(
+				'There_is_a_cat,_a_dog_and_a_tiger_in_da_hood!_Yeah!',
+				array('replacement.' =>
+					array(
+						'10.' => array(
+							'search' => '_',
+							'replace.' => array('char' => '32'),
+						),
+						'20.' => array(
+							'search' => 'in da hood',
+							'replace' => 'around the block',
+						),
+						'30.' => array(
+							'search' => '#a (Cat|Dog|Tiger)#i',
+							'replace' => 'an animal',
+							'useRegExp' => '1',
+						),
+					),
+				),
+				'There is an animal, an animal and an animal around the block! Yeah!'
+			),
+		);
+		return $data;
+	}
+
+	/**
+	 * Check if stdWrap.replacement and all of its properties work properly
+	 *
+	 * @dataProvider replacementDataProvider
+	 *
+	 * @test
+	 */
+	public function replacement($input, $conf, $expected) {
+		$result = $this->cObj->stdWrap_replacement($input, $conf);
+		$this->assertEquals($expected, $result);
+	}
 }
 ?>
