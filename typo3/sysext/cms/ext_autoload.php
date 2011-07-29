@@ -34,6 +34,7 @@ return array(
 	'tslib_cobj_getimgresourcehook' => PATH_tslib . 'interfaces/interface.tslib_content_getimgresourcehook.php',
 	'tslib_content_postinithook' => PATH_tslib . 'interfaces/interface.tslib_content_postinithook.php',
 	'tslib_content_stdwraphook' => PATH_tslib . 'interfaces/interface.tslib_content_stdwraphook.php',
+	'tslib_adminpanelhook' => PATH_tslib . 'interfaces/interface.tslib_tslib_adminpanelhook.php',
 	'user_various' => PATH_tslib . 'media/scripts/example_callfunction.php',
 	'tslib_gmenu_foldout' => PATH_tslib . 'media/scripts/gmenu_foldout.php',
 	'tslib_gmenu_layers' => PATH_tslib . 'media/scripts/gmenu_layers.php',
