@@ -113,6 +113,7 @@ class tslib_cObj {
 		'HTMLparser' => 'boolean',
 		'HTMLparser.' => 'array',
 		'split.' => 'array',
+		'replacement.' => 'array',
 		'prioriCalc' => 'boolean',
 		'prioriCalc.' => 'array',
 		'char' => 'integer',
@@ -2277,6 +2278,19 @@ class tslib_cObj {
 	}
 
 	/**
+	 * replacement
+	 * Will execute replacements on the content (optionally with preg-regex)
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for replacement.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_replacement($content = '', $conf = array()) {
+		$content = $this->replacement($content, $conf['replacement.']);
+		return $content;
+	}
+
+	/**
 	 * prioriCalc
 	 * Will use the content as a mathematical term and calculate the result
 	 * Can be set to 1 to just get a calculated value or 'intval' to get the integer of the result
@@ -4146,6 +4160,72 @@ class tslib_cObj {
 				$content .= $value;
 			}
 		}
+		return $content;
+	}
+
+	/**
+	 * Processes ordered replacements on content data.
+	 *
+	 * @param string $content The content to be processed
+	 * @param array $configuration The TypoScript configuration for stdWrap.replacement
+	 * @return string The processed content data
+	 */
+	protected function replacement($content, array $configuration) {
+			// Sorts actions in configuration:
+		ksort($configuration);
+
+		foreach ($configuration as $index => $action) {
+				// Checks whether we have an valid action and a numeric key ending with a dot ("10."):
+			if (is_array($action)
+				&& substr($index, -1) === '.'
+				&& t3lib_utility_Math::canBeInterpretedAsInteger(substr($index, 0, -1))) {
+				$content = $this->replacementSingle($content, $action);
+			}
+		}
+
+		return $content;
+	}
+
+	/**
+	 * Processes a single search/replace on content data.
+	 *
+	 * @param	string		$content: The content to be processed
+	 * @param	array		$configuration: The TypoScript of the search/replace action to be processed
+	 * @return	string		The processed content data
+	 */
+	protected function replacementSingle($content, array $configuration) {
+		if ((isset($configuration['search']) || isset($configuration['search.']))
+			&& (isset($configuration['replace']) || isset($configuration['replace.']))) {
+
+				// Gets the strings
+			$search = isset($configuration['search.'])
+				? $this->stdWrap($configuration['search'], $configuration['search.']) : $configuration['search'];
+			$replace = isset($configuration['replace.'])
+				? $this->stdWrap($configuration['replace'], $configuration['replace.']) : $configuration['replace'];
+
+				// Determines whether regular expression shall be used:
+			if (isset($configuration['useRegExp']) || $configuration['useRegExp.']) {
+				$useRegularExpression = isset($configuration['useRegExp.'])
+					? $this->stdWrap($configuration['useRegExp'], $configuration['useRegExp.']) : $configuration['useRegExp'];
+			}
+
+				// Performs a replacement by preg_replace()
+			if (isset($useRegularExpression)) {
+					// Get separator-character which precedes the string and separates search-string from the modifiers
+				$separator = $search[0];
+				$startModifiers = strrpos($search, $separator);
+				if (($separator !== FALSE) && ($startModifiers > 0)) {
+					$modifiers = substr($search, $startModifiers + 1);
+						// remove "e" (eval-modifier), which would otherwise allow to run arbitrary PHP-code
+					$modifiers = str_replace('e', '', $modifiers);
+					$search = substr($search, 0, $startModifiers + 1) . $modifiers;
+				}
+				$content = preg_replace($search, $replace, $content);
+			} else {
+				$content = str_replace($search, $replace, $content);
+			}
+		}
+
 		return $content;
 	}
 
