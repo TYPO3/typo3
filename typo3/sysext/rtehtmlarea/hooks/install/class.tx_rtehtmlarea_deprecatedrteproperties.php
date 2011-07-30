@@ -40,7 +40,6 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 		'hideFontFaces' => 'buttons.fontstyle.removeItems',
 		'fontFace' => 'buttons.fontstyle.addItems',
 		'hideFontSizes' => 'buttons.fontsize.removeItems',
-		'fontSize' => 'buttons.fontsize.addItems',
 		'classesCharacter' => 'buttons.textstyle.tags.span.allowedClasses',
 		'classesParagraph' => 'buttons.blockstyle.tags.div.allowedClasses',
 		'classesTable' => 'buttons.blockstyle.tags.table.allowedClasses',
@@ -67,6 +66,7 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 		);
 		// Properties that may not be replaced automatically in Page TS Config
 	protected $useInsteadRteProperties = array(
+		'fontSize' => 'buttons.fontsize.addItems',
 		'RTE.default.classesAnchor' => 'RTE.default.buttons.link.properties.class.allowedClasses',
 		'RTE.default.classesAnchor.default.[link-type]' => 'RTE.default.buttons.link.[link-type].properties.class.default',
 		'mainStyleOverride' => 'contentCSS',
@@ -176,7 +176,7 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 		$deprecatedRteProperties = array_keys(array_merge($this->replacementRteProperties, $this->useInsteadRteProperties, $this->doubleReplacementRteProperties));
 		$where = '';
 		foreach ($deprecatedRteProperties as $deprecatedRteProperty) {
-			$where .= ($where ? ' OR ' : '') . 'TSConfig LIKE "%RTE.%' . $deprecatedRteProperty . '%"';
+			$where .= ($where ? ' OR ' : '') . '(TSConfig LIKE BINARY "%RTE.%' . $deprecatedRteProperty . '%" AND TSConfig NOT LIKE BINARY "%RTE.%' . $deprecatedRteProperty . 's%") ';
 		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, $where);
 
