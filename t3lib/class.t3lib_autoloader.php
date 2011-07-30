@@ -52,7 +52,7 @@ class t3lib_autoloader {
 	 *
 	 * @var string
 	 */
-	protected static $autoloadCacheIdentifier = '';
+	protected static $autoloadCacheIdentifier;
 
 	/**
 	 * The autoloader is static, thus we do not allow instances of this class.
@@ -66,7 +66,6 @@ class t3lib_autoloader {
 	 * @return boolean TRUE in case of success
 	 */
 	public static function registerAutoloader() {
-		self::$autoloadCacheIdentifier = TYPO3_MODE === 'FE' ? 't3lib_autoload_FE' : 't3lib_autoload_BE';
 		self::loadCoreAndExtensionRegistry();
 		return spl_autoload_register('t3lib_autoloader::autoload', TRUE, TRUE);
 	}
@@ -118,13 +117,13 @@ class t3lib_autoloader {
 		$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
 
 			// Create autoloader cache file if it does not exist yet
-		if (!$phpCodeCache->has(self::$autoloadCacheIdentifier)) {
+		if (!$phpCodeCache->has(self::getAutoloadCacheIdentifier())) {
 			$classRegistry = self::createCoreAndExtensionRegistry();
 			self::updateRegistryCacheEntry($classRegistry);
 		}
 
 			// Require calculated cache file
-		$mappingArray = $phpCodeCache->requireOnce(self::$autoloadCacheIdentifier);
+		$mappingArray = $phpCodeCache->requireOnce(self::getAutoloadCacheIdentifier());
 
 			// This can only happen if the autoloader was already registered
 			// in the same call once, the requireOnce of the cache file then
@@ -163,17 +162,36 @@ class t3lib_autoloader {
 	 * @return void
 	 */
 	protected static function createCoreAndExtensionRegistry() {
-		$classRegistry = require(PATH_t3lib . 'core_autoload.php');
+		$classRegistry = array();
+
+		foreach (self::getCoreAndExtensionRegistryFiles() as $registryFile => $_) {
+			$classRegistry = array_merge($classRegistry, require($registryFile));
+		}
+
+		return $classRegistry;
+	}
+
+	/**
+	 * Gets all available core and extension autoload files
+	 * and adds the MD5 values for each file.
+	 *
+	 * @return array
+	 */
+	protected function getCoreAndExtensionRegistryFiles() {
+		$registryFiles = array(
+			PATH_t3lib . 'core_autoload.php' => md5_file(PATH_t3lib . 'core_autoload.php'),
+		);
 			// At this point localconf.php was already initialized
 			// we have a current extList and extMgm is also known
 		$loadedExtensions = array_unique(t3lib_div::trimExplode(',', t3lib_extMgm::getEnabledExtensionList(), TRUE));
 		foreach ($loadedExtensions as $extensionKey) {
 			$extensionAutoloadFile = t3lib_extMgm::extPath($extensionKey, 'ext_autoload.php');
 			if (file_exists($extensionAutoloadFile)) {
-				$classRegistry = array_merge($classRegistry, require($extensionAutoloadFile));
+				$registryFiles[$extensionAutoloadFile] = md5_file($registryFiles);
 			}
 		}
-		return $classRegistry;
+
+		return $registryFiles;
 	}
 
 	/**
@@ -216,10 +234,26 @@ class t3lib_autoloader {
 		}
 		$cachedFileContent .= LF . ');';
 		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->set(
-			self::$autoloadCacheIdentifier,
+			self::getAutoloadCacheIdentifier(),
 			$cachedFileContent,
 			array('t3lib_autoloader')
 		);
+	}
+
+	/**
+	 * Gets the identifier used for caching the registry files.
+	 * The identifier distinguishes between frontend and backend
+	 * and adds a unique hash for the contents of all files.
+	 *
+	 * @return string
+	 */
+	protected static function getAutoloadCacheIdentifier() {
+		if (!isset(self::$autoloadCacheIdentifier)) {
+			self::$autoloadCacheIdentifier =
+				(TYPO3_MODE === 'FE' ? 't3lib_autoload_FE' : 't3lib_autoload_BE') . '-' .
+				md5(serialize(self::getCoreAndExtensionRegistryFiles()));
+		}
+		return self::$autoloadCacheIdentifier;
 	}
 }
 ?>
