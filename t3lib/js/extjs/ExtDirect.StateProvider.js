@@ -118,11 +118,11 @@ Ext.extend(TYPO3.state.ExtDirectProvider, Ext.state.Provider, {
 	initState: function(state) {
 		if (Ext.isArray(state)) {
 			Ext.each(state, function(item) {
-				this.state[item.name] = this.decodeValue(item[this.paramNames.value]);
+				this.state[item.name] = item[this.paramNames.value];
 			}, this);
 		} else if (Ext.isObject(state)) {
 			Ext.iterate(state, function(key, value){
-				this.state[key] = this.decodeValue(value);
+				this.state[key] = value;
 			}, this);
 		} else {
 			this.state = {};
@@ -172,14 +172,14 @@ Ext.extend(TYPO3.state.ExtDirectProvider, Ext.state.Provider, {
 		var lastValue = this.state[name];
 		for (i = 0; i < this.queue.length; i++) {
 			if (this.queue[i].name === name) {
-				lastValue = this.decodeValue(this.queue[i].value);
+				lastValue = this.queue[i].value;
 			}
 		}
 		var changed = undefined === lastValue || lastValue !== value;
 
 		if (changed) {
 			o[this.paramNames.name] = name;
-			o[this.paramNames.value] = this.encodeValue(value);
+			o[this.paramNames.value] = value;
 			for (i = 0; i < this.queue.length; i++) {
 				if (this.queue[i].name === o.name) {
 					this.queue[i] = o;
@@ -260,7 +260,7 @@ Ext.extend(TYPO3.state.ExtDirectProvider, Ext.state.Provider, {
 					return;
 				}
 				var name = item[this.paramNames.name];
-				var value = this.decodeValue(item[this.paramNames.value]);
+				var value = item[this.paramNames.value];
 
 				if (value === undefined  || value === null) {
 					TYPO3.state.ExtDirectProvider.superclass.clear.call(this, name);
@@ -281,7 +281,7 @@ Ext.extend(TYPO3.state.ExtDirectProvider, Ext.state.Provider, {
 							break;
 						}
 					}
-					if (found && this.encodeValue(response.params.queue[i].value) === this.encodeValue(this.queue[j].value)) {
+					if (found && response.params.queue[i].value === this.queue[j].value) {
 						this.queue.remove(this.queue[j]);
 					}
 				}
@@ -330,7 +330,7 @@ Ext.extend(TYPO3.state.ExtDirectProvider, Ext.state.Provider, {
 		} else {
 			data = o[this.paramNames.data];
 			Ext.iterate(data, function(key, value) {
-				this.state[key] = this.decodeValue(value);
+				this.state[key] = value;
 			}, this);
 			this.queue = [];
 			this.dirty = false;
