@@ -148,19 +148,24 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 	 * @return	boolean		TRUE if update succeeded, FALSE otherwise
 	 */
 	public function performUpdate(&$dbQueries, &$customMessages) {
+		$success = FALSE;
 		$pages = $this->getPagesWithDeprecatedRteProperties($dbQueries, $customMessages);
-		if (count($pages)) {
-			$updateablePages = $this->findUpdateablePagesWithDeprecatedRteProperties($pages);
-			if (count($updateablePages)) {
-				$this->updatePages($updateablePages, $dbQueries, $customMessages);
+		if (empty($customMessages)) {
+			if (count($pages)) {
+				$updateablePages = $this->findUpdateablePagesWithDeprecatedRteProperties($pages);
+				if (count($updateablePages)) {
+					$this->updatePages($updateablePages, $dbQueries, $customMessages);
+				} else {
+					$customMessages = '<p>Some deprecated Page TS Config properties were found. However, the wizard was unable to automatically replace any of the deprecated properties found. They will have to be replaced manually.</p>';
+					$success = TRUE;
+				}
 			} else {
-				$customMessages = '<p>The wizard was unable to automatically replace any of the deprecated Page TS Config properties used. They will have to be replaced manually.</p>';
+				$customMessages = '<p>No deprecated Page TS Config properties were found on page records.</p>' . LF .
+					'<p>Note that Page TS Config may be included from external files. These were not updated by this wizard. If required, the update will need to be done manually.</p>';
+				$success = TRUE;
 			}
-		} else {
-			$customMessages = '<p>No deprecated Page TS Config properties were found on page records.</p>' . LF .
-				'<p>Note that Page TS Config may be included from external files. These were not updated by this wizard. If required, the update will need to be done manually.</p>';
 		}
-		return empty($customMessages);
+		return empty($customMessages) || $success;
 	}
 
 	/**
