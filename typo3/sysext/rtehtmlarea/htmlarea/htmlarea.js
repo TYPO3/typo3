@@ -810,7 +810,8 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		this.htmlRenderer = new HTMLArea.DOM.Walker({
 			keepComments: !this.config.htmlRemoveComments,
 			removeTags: this.config.htmlRemoveTags,
-			removeTagsAndContents: this.config.htmlRemoveTagsAndContents
+			removeTagsAndContents: this.config.htmlRemoveTagsAndContents,
+			baseUrl: this.config.baseURL
 		});
 		if (!this.config.showStatusBar) {
 			this.addClass('noStatusBar');
@@ -1194,6 +1195,9 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		this.mon(Ext.get(this.document.documentElement), (Ext.isIE || Ext.isWebKit) ? 'keydown' : 'keypress', this.onAnyKey, this);
 		this.mon(Ext.get(this.document.documentElement), 'mouseup', this.onMouse, this);
 		this.mon(Ext.get(this.document.documentElement), 'click', this.onMouse, this);
+		if (Ext.isGecko) {
+			this.mon(Ext.get(this.document.documentElement), 'paste', this.onPaste, this);
+		}
 		this.mon(Ext.get(this.document.documentElement), 'drop', this.onDrop, this);
 		if (Ext.isWebKit) {
 			this.mon(Ext.get(this.document.body), 'dragend', this.onDrop, this);
@@ -1243,11 +1247,25 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		return true;
 	},
 	/*
-	 * Handlers for drag and drop operations
+	 * Handler for paste operations in Gecko
 	 */
-	onDrop: function (event) {
+	onPaste: function (event) {
+			// Make src and href urls absolute
+		if (Ext.isGecko) {
+			HTMLArea.DOM.makeUrlsAbsolute.defer(50, this, [this.getEditor().document.body, this.config.baseURL, this.htmlRenderer]);
+		}
+	},
+	/*
+	 * Handler for drag and drop operations
+	 */
+	onDrop: function (event, target) {
+			// Clean up span elements added by WebKit
 		if (Ext.isWebKit) {
 			this.getEditor().cleanAppleStyleSpans.defer(50, this.getEditor(), [this.getEditor().document.body]);
+		}
+			// Make src url absolute in Firefox
+		if (Ext.isGecko) {
+			HTMLArea.DOM.makeUrlsAbsolute.defer(50, this, [target, this.config.baseURL, this.htmlRenderer]);
 		}
 		this.getToolbar().updateLater.delay(100);
 	},
@@ -3079,6 +3097,75 @@ HTMLArea.DOM = function () {
 					}
 				}
 			}
+		},
+		/*
+		 * Make url's absolute in the DOM tree under the root node
+		 *
+		 * @param	object		root: the root node
+		 * @param	string		baseUrl: base url to use
+		 * @param	string		walker: a HLMLArea.DOM.Walker object
+		 * @return	void
+		 */
+		makeUrlsAbsolute: function (node, baseUrl, walker) {
+			walker.walk(node, true, 'HTMLArea.DOM.makeImageSourceAbsolute(node, args[0]) || HTMLArea.DOM.makeLinkHrefAbsolute(node, args[0])', 'Ext.emptyFn', [baseUrl]);
+		},
+		/*
+		 * Make the src attribute of an image node absolute
+		 *
+		 * @param	object		node: the image node
+		 * @param	string		baseUrl: base url to use
+		 * @return	void
+		 */
+		makeImageSourceAbsolute: function (node, baseUrl) {
+			if (/^img$/i.test(node.nodeName)) {
+				var src = node.getAttribute('src');
+				if (src) {
+					node.setAttribute('src', HTMLArea.DOM.addBaseUrl(src, baseUrl));
+				}
+				return true;
+			}
+			return false;
+		},
+		/*
+		 * Make the href attribute of an a node absolute
+		 *
+		 * @param	object		node: the image node
+		 * @param	string		baseUrl: base url to use
+		 * @return	void
+		 */
+		makeLinkHrefAbsolute: function (node, baseUrl) {
+			if (/^a$/i.test(node.nodeName)) {
+				var href = node.getAttribute('href');
+				if (href) {
+					node.setAttribute('href', HTMLArea.DOM.addBaseUrl(href, baseUrl));
+				}
+				return true;
+			}
+			return false;
+		},
+		/*
+		 * Add base url
+		 *
+		 * @param	string		url: value of a href or src attribute
+		 * @param	string		baseUrl: base url to add
+		 * @return	string		absolute url
+		 */
+		addBaseUrl: function (url, baseUrl) {
+			var absoluteUrl = url;
+			var base = baseUrl;
+			while (absoluteUrl.match(/^\.\.\/(.*)/)) {
+					// Remove leading ../ from url
+				absoluteUrl = RegExp.$1;
+				base.match(/(.*\:\/\/.*\/)[^\/]+\/$/);
+					// Remove lowest directory level from base
+				base = RegExp.$1;
+				absoluteUrl = base + absoluteUrl;
+			}
+				// If the url is still not absolute...
+			if (!/^.*\:\/\//.test(absoluteUrl)) {
+				absoluteUrl = baseUrl + absoluteUrl;
+			}
+			return absoluteUrl;
 		}
 	};
 }();
@@ -3093,7 +3180,8 @@ HTMLArea.DOM.Walker = function (config) {
 		removeTagsAndContents: /none/i,
 		keepTags: /.*/i,
 		removeAttributes: /none/i,
-		removeTrailingBR: true
+		removeTrailingBR: true,
+		baseUrl: ''
 	};
 	Ext.apply(this, config, configDefaults);
 };
@@ -3223,9 +3311,14 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 				} else if (attributeName === 'value' && /^li$/i.test(node.nodeName) && attributeValue == 0) {
 					continue;
 				}
-				// Ignore special values reported by Mozilla
-			} else if (Ext.isGecko && /(_moz|^$)/.test(attributeValue)) {
-				continue;
+			} else if (Ext.isGecko) {
+					// Ignore special values reported by Mozilla
+				if (/(_moz|^$)/.test(attributeValue)) {
+					continue;
+					// Pasted internal url's are made relative by Mozilla: https://bugzilla.mozilla.org/show_bug.cgi?id=613517
+				} else if (attributeName === 'href' || attributeName === 'src') {
+					attributeValue = HTMLArea.DOM.addBaseUrl(attributeValue, this.baseUrl);
+				}
 			}
 				// Ignore id attributes generated by ExtJS
 			if (attributeName === 'id' && /^ext-gen/.test(attributeValue)) {
