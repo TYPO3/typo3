@@ -225,6 +225,7 @@ TYPO3.ModuleMenu.App = {
 	loadModuleComponents: function(record, params) {
 		var url;
 		var mod = record.name;
+		var relatedCard;
 		if (record.navigationComponentId) {
 				this.loadNavigationComponent(record.navigationComponentId);
 				TYPO3.Backend.NavigationDummy.hide();
@@ -239,15 +240,15 @@ TYPO3.ModuleMenu.App = {
 				TYPO3.Backend.NavigationContainer.hide();
 				TYPO3.Backend.NavigationDummy.show();
 			}
-			if (Ext.getCmp('typo3-card-' + record.name)) {
+			relatedCard = Ext.getCmp('typo3-card-' + record.name);
+			if (relatedCard) {
 					// Check wether the panel is an iframe or not - if it is try to set the uri
-				if (Ext.getCmp('typo3-card-' + record.name).getXType() == 'iframePanel') {
+				if (relatedCard.getXType() == 'iframePanel') {
 						// Handle click on already opened module and evt. force reload
-					if (Ext.getCmp('typo3-contentContainerWrapper').layout.activeItem.id == 'typo3-card-' + record.name) {
-						Ext.getCmp('typo3-card-'+record.name).setUrl(url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : ''));
-					} else {
+					if ((Ext.getCmp('typo3-contentContainerWrapper').layout.activeItem.id == 'typo3-card-' + record.name)
+						|| (relatedCard.getUrl() == 'about:blank')) {
 						url = record.originalLink;
-						Ext.getCmp('typo3-card-'+record.name).setUrlIfChanged(url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : ''));
+						Ext.getCmp('typo3-card-'+record.name).setUrl(url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : ''));
 					}
 				}
 					// Independed of the xtype activate the module
