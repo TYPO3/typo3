@@ -130,7 +130,8 @@ class t3lib_autoloader {
 			// in the same call once, the requireOnce of the cache file then
 			// does not give the cached array back. In this case we just read
 			// all cache entries manually again.
-			// This should only happen in unit tests
+			// This can happen in unit tests and if the cache backend was
+			// switched to NullBackend for example to simplify development
 		if (!is_array($mappingArray)) {
 			$mappingArray = self::createCoreAndExtensionRegistry();
 		}

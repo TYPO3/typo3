@@ -34,7 +34,7 @@
  * @api
  * @scope prototype
  */
-class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBackend {
+class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBackend implements t3lib_cache_backend_PhpCapableBackend {
 
 	/**
 	 * Acts as if it would save data
@@ -119,6 +119,16 @@ class t3lib_cache_backend_NullBackend extends t3lib_cache_backend_AbstractBacken
 	 * @api
 	 */
 	public function collectGarbage() {
+	}
+
+	/**
+	 * Does nothing
+	 *
+	 * @param string $identifier An identifier which describes the cache entry to load
+	 * @return void
+	 * @api
+	 */
+	public function requireOnce($identifier) {
 	}
 }
 ?>

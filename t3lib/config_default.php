@@ -735,6 +735,7 @@ function initializeCachingFramework() {
 	require (PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_abstractbackend.php');
 	require (PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_phpcapablebackend.php');
 	require (PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_filebackend.php');
+	require (PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_nullbackend.php');
 	t3lib_cache::initializeCachingFramework();
 }
 
