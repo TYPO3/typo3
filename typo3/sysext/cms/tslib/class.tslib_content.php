@@ -3903,8 +3903,9 @@ class tslib_cObj {
 			$theSize = filesize($theFile);
 			$fI = t3lib_div::split_fileref($theFile);
 			if ($conf['icon']) {
-				$iconP = t3lib_extMgm::siteRelPath('cms') . 'tslib/media/fileicons/';
-				$icon = @is_file($iconP . $fI['fileext'] . '.gif') ? $iconP . $fI['fileext'] . '.gif' : $iconP . 'default.gif';
+				$iconP = $conf['icon.']['path'] ? $conf['icon.']['path'] : t3lib_extMgm::siteRelPath('cms') . 'tslib/media/fileicons/';
+				$iconExt = $conf['icon.']['ext'] ? '.' . $conf['icon.']['ext'] : '.gif';
+				$icon = @is_file($iconP . $fI['fileext'] . $iconExt) ? $iconP . $fI['fileext'] . $iconExt : $iconP . 'default' . $iconExt;
 					// Checking for images: If image, then return link to thumbnail.
 				$IEList = isset($conf['icon_image_ext_list.'])
 					? $this->stdWrap($conf['icon_image_ext_list'], $conf['icon_image_ext_list.'])
@@ -3932,8 +3933,10 @@ class tslib_cObj {
 							$this->getBorderAttr(' border="0"') . '' . $this->getAltParam($conf) . ' />';
 					}
 				} else {
+					$iconWidth = $conf['icon.']['widthAttribute'] ? $conf['icon.']['widthAttribute'] : 18;
+					$iconHeight = $conf['icon.']['heightAttribute'] ? $conf['icon.']['heightAttribute'] : 16;
 					$icon = '<img src="' . htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $icon) .
-						'" width="18" height="16"' . $this->getBorderAttr(' border="0"') .
+						'" width="' . $iconWidth . '" height="' . $iconHeight . '"' . $this->getBorderAttr(' border="0"') .
 						$this->getAltParam($conf) . ' />';
 				}
 				if ($conf['icon_link']) {
