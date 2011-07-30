@@ -37,7 +37,7 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '1.1',
+			version		: '1.2',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -57,6 +57,12 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 				action		: 'onButtonPress',
 				dialog		: buttonConf[2]
 			};
+			if (buttonId == 'PasteToggle' && this.buttonsConfiguration && this.buttonsConfiguration[buttonConf[0]] && this.buttonsConfiguration[buttonConf[0]].hidden) {
+				buttonConfiguration.hide = true;
+				buttonConfiguration.hideInContextMenu = true;
+				buttonConfiguration.hotKey = null;
+				this.buttonsConfiguration[buttonConf[0]].hotKey = null;
+			}
 			this.registerButton(buttonConfiguration);
 		}, this);
 		return true;
@@ -106,6 +112,10 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 			// May be set in TYPO3 User Settings
 		if (this.buttonsConfiguration && this.buttonsConfiguration['pastebehaviour'] && this.buttonsConfiguration['pastebehaviour']['current']) {
 			this.currentBehaviour = this.buttonsConfiguration['pastebehaviour']['current'];
+		}
+			// Set the toggle ON, if configured
+		if (this.buttonsConfiguration && this.buttonsConfiguration['pastetoggle'] && this.buttonsConfiguration['pastetoggle'].setActiveOnRteOpen) {
+			this.toggleButton('PasteToggle');
 		}
 			// Start monitoring paste events
 		this.editor.iframe.mon(Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement), 'paste', this.onPaste, this);
