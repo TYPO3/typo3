@@ -306,7 +306,7 @@ class t3lib_tree_pagetree_Node extends t3lib_tree_extdirect_Node {
 	public function toArray() {
 		$arrayRepresentation = parent::toArray();
 
-		$arrayRepresentation['id'] = 'mp-' . $this->getMountPoint() . '-' . $this->getId();
+		$arrayRepresentation['id'] = 'p' . dechex($this->getId()) . ($this->getMountPoint() ? '-' . dechex($this->getMountPoint()) : '');
 		$arrayRepresentation['realId'] = $this->getId();
 		$arrayRepresentation['nodeData']['id'] = $this->getId();
 
