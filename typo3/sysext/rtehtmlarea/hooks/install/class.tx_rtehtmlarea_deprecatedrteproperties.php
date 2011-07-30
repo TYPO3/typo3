@@ -176,7 +176,7 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 		$deprecatedRteProperties = array_keys(array_merge($this->replacementRteProperties, $this->useInsteadRteProperties, $this->doubleReplacementRteProperties));
 		$where = '';
 		foreach ($deprecatedRteProperties as $deprecatedRteProperty) {
-			$where .= ($where ? ' OR ' : '') . 'TSConfig LIKE "%RTE.%' . $deprecatedRteProperty . '%"';
+			$where .= ($where ? ' OR ' : '') . 'TSConfig LIKE BINARY "%RTE.%' . $deprecatedRteProperty . '%"';
 		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, $where);
 
