@@ -448,7 +448,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			}
 		}
 		// Select API:
-		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
+		$this->lastHandlerKey = $this->handler_getFromTableList($table);
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
 		switch ($hType) {
 			case 'native':
@@ -618,7 +618,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		}
 
 		// Select API
-		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
+		$this->lastHandlerKey = $this->handler_getFromTableList($table);
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
 		switch ($hType) {
 			case 'native':
@@ -708,7 +708,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		}
 
 		// Select API
-		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
+		$this->lastHandlerKey = $this->handler_getFromTableList($table);
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
 		switch ($hType) {
 			case 'native':
@@ -770,7 +770,13 @@ class ux_t3lib_DB extends t3lib_DB {
 		}
 
 		// Get handler key and select API:
-		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
+		if (count($remappedParameters) > 0) {
+			$mappedQueryParts = $this->compileSelectParameters($remappedParameters);
+			$fromTable = $mappedQueryParts[1];
+		} else {
+			$fromTable = $from_table;
+		}
+		$this->lastHandlerKey = $this->handler_getFromTableList($fromTable);
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
 		switch ($hType) {
 			case 'native':
@@ -867,7 +873,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		}
 
 		// Select API
-		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
+		$this->lastHandlerKey = $this->handler_getFromTableList($table);
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
 		switch ($hType) {
 			case 'native':
@@ -2737,7 +2743,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		}
 
 		// Find columns
-		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
+		$this->lastHandlerKey = $this->handler_getFromTableList($tableName);
 		switch ((string) $this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
 				$columns_res = mysql_query('SHOW columns FROM ' . $tableName, $this->handlerInstance[$this->lastHandlerKey]['link']);
@@ -2806,7 +2812,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		}
 
 		// Find columns
-		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
+		$this->lastHandlerKey = $this->handler_getFromTableList($tableName);
 		switch ((string) $this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
 				$keyRes = mysql_query('SHOW keys FROM ' . $tableName, $this->handlerInstance[$this->lastHandlerKey]['link']);
