@@ -1734,6 +1734,24 @@ class tslib_cObj {
 	}
 
 	/**
+	 * Replaces all markers and subparts in a template with the content provided in the structured array.
+	 *
+	 * @param $content
+	 * @param array $markersAndSubparts
+	 * @param string $wrap
+	 * @param bool $uppercase
+	 * @param bool $deleteUnused
+	 * @return string
+	 * @see t3lib_parsehtml::substituteMarkerAndSubpartArrayRecursive()
+	 */
+	public function substituteMarkerAndSubpartArrayRecursive($content, array $markersAndSubparts, $wrap = '', $uppercase = FALSE,
+															 $deleteUnused = FALSE) {
+		return t3lib_parsehtml::substituteMarkerAndSubpartArrayRecursive(
+			$content, $markersAndSubparts, $wrap, $uppercase, $deleteUnused
+		);
+	}
+
+	/**
 	 * Adds elements to the input $markContentArray based on the values from
 	 * the fields from $fieldList found in $row
 	 *

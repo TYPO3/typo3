@@ -267,6 +267,91 @@ class t3lib_parsehtml {
 		return $content;
 	}
 
+	/**
+	 * Replaces all markers and subparts in a template with the content provided in the structured array.
+	 *
+	 * The array is built like the template with its markers and subparts. Keys represent the marker name and the values the
+	 * content.
+	 * If the value is not an array the key will be treated as a single marker.
+	 * If the value is an array the key will be treated as a subpart marker.
+	 * Repeated subpart contents are of course elements in the array, so every subpart value must contain an array with its
+	 * markers.
+	 *
+	 * $markersAndSubparts = array (
+	 *   '###SINGLEMARKER1###' => 'value 1',
+	 *   '###SUBPARTMARKER1###' => array(
+	 *	 0 => array(
+	 *	   '###SINGLEMARKER2###' => 'value 2',
+	 *	 ),
+	 *	 1 => array(
+	 *	   '###SINGLEMARKER2###' => 'value 3',
+	 *	 )
+	 *   )
+	 * )
+	 * Subparts can be nested, so below the 'SINGLEMARKER2' it is possible to have another subpart marker with an array as the
+	 * value, which in its turn contains the elements of the sub-subparts.
+	 *
+	 * @static
+	 * @param string $content	The content stream, typically HTML template content.
+	 * @param array $markersAndSubparts	The array of single markers and subpart contents.
+	 * @param string $wrap	A wrap value - [part1] | [part2] - for the markers before substitution.
+	 * @param bool $uppercase	If set, all marker string substitution is done with upper-case markers.
+	 * @param bool $deleteUnused	If set, all unused single markers are deleted.
+	 * @return string	The processed output stream
+	 */
+	public static function substituteMarkerAndSubpartArrayRecursive($content, array $markersAndSubparts, $wrap = '',
+																	$uppercase = FALSE, $deleteUnused = FALSE) {
+		$wraps = t3lib_div::trimExplode('|', $wrap);
+		$singleItems = array();
+		$compoundItems = array();
+			// split markers and subparts into separate arrays
+		foreach ($markersAndSubparts as $markerName => $markerContent) {
+			if (is_array($markerContent)) {
+				$compoundItems[] = $markerName;
+			} else {
+				$singleItems[$markerName] = $markerContent;
+			}
+		}
+		$subTemplates = array();
+		$subpartSubstitutes = array();
+			// build a cache for the sub template
+		foreach ($compoundItems as $subpartMarker) {
+			if ($uppercase) {
+					// use strtr instead of strtoupper to avoid locale problems with Turkish
+				$subpartMarker = strtr($subpartMarker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+			}
+
+			if (count($wraps) > 0) {
+				$subpartMarker = $wraps[0] . $subpartMarker . $wraps[1];
+			}
+			$subTemplates[$subpartMarker] = self::getSubpart($content, $subpartMarker);
+		}
+			// replace the subpart contents recursively
+		foreach ($compoundItems as $subpartMarker) {
+			foreach ($markersAndSubparts[$subpartMarker] as $partialMarkersAndSubparts) {
+				$completeMarker = $subpartMarker;
+				if ($uppercase) {
+						// use strtr instead of strtoupper to avoid locale problems with Turkish
+					$completeMarker = strtr($completeMarker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+				}
+
+				if (count($wraps) > 0) {
+					$completeMarker = $wraps[0] . $completeMarker . $wraps[1];
+				}
+				$subpartSubstitutes[$completeMarker] .= self::substituteMarkerAndSubpartArrayRecursive(
+					$subTemplates[$completeMarker],
+					$partialMarkersAndSubparts,
+					$wrap,
+					$uppercase,
+					$deleteUnused
+				);
+			}
+		}
+			// substitute the single markers and subparts
+		$result = self::substituteSubpartArray($content, $subpartSubstitutes);
+		$result = self::substituteMarkerArray($result, $singleItems, $wrap, $uppercase, $deleteUnused);
+		return $result;
+	}
 
 	/************************************
 	 *
