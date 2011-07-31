@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for all messages which are passed around within the tceform-processing..</description>
+		<type>database</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tceform.recordChanged">Record has been changed</label>
+			<label index="tceform.recordChangedDetailed">%1 [%3] "%2" has been changed.</label>
+			<label index="tceform.recordChangedMsg">This form contains unsaved changes. Would you like to reload the form  and loose your changes? </label>
+			<label index="tceform.recordChangedMsg2">Or stay in this form and check out the differences?</label>
+			<label index="tceform.reloadform">Reload the form</label>
+			<label index="tceform.checkoutdifferences">Checkout the difference(s)</label>
+			<label index="tceform.popupNotificationTitle">Popup should open now</label>
+			<label index="tceform.popupNotificationMessage">The new window was blocked, please check your popup blocker to allow popups from TYPO3.</label>
+			<label index="tceform.popupNotificationLink">Or click here to open the window.</label>
+		</languageKey>
+	</data>
+</T3locallang>
