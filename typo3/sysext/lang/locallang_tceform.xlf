@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Tue, 30 Aug 2011 11:57:46 +0200" product-name="lang">
+		<header/>
+		<body>
+			<trans-unit id="tceform.recordChanged" approved="yes">
+				<source>Record has been changed</source>
+				<target>Record has been changed</target>
+			</trans-unit>
+			<trans-unit id="tceform.recordChangedDetailed" approved="yes">
+				<source>%1 [%3] &quot;%2&quot; has been changed.</source>
+				<target>%1 [%3] &quot;%2&quot; has been changed.</target>
+			</trans-unit>
+			<trans-unit id="tceform.recordChangedMsg" approved="yes">
+				<source>This form contains unsaved changes. Would you like to reload the form  and loose your changes? </source>
+				<target>This form contains unsaved changes. Would you like to reload the form  and loose your changes? </target>
+			</trans-unit>
+			<trans-unit id="tceform.recordChangedMsg2" approved="yes">
+				<source>Or stay in this form and check out the differences?</source>
+				<target>Or stay in this form and check out the differences?</target>
+			</trans-unit>
+			<trans-unit id="tceform.reloadform" approved="yes">
+				<source>Reload the form</source>
+				<target>Reload the form</target>
+			</trans-unit>
+			<trans-unit id="tceform.checkoutdifferences" approved="yes">
+				<source>Checkout the difference(s)</source>
+				<target>Checkout the difference(s)</target>
+			</trans-unit>
+			<trans-unit id="tceform.popupNotificationTitle" approved="yes">
+				<source>Popup should open now</source>
+				<target>Popup should open now</target>
+			</trans-unit>
+			<trans-unit id="tceform.popupNotificationMessage" approved="yes">
+				<source>The new window was blocked, please check your popup blocker to allow popups from TYPO3.</source>
+				<target>The new window was blocked, please check your popup blocker to allow popups from TYPO3.</target>
+			</trans-unit>
+			<trans-unit id="tceform.popupNotificationLink" approved="yes">
+				<source>Or click here to open the window.</source>
+				<target>Or click here to open the window.</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
