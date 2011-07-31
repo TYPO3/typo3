@@ -283,6 +283,18 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	}
 
 	/**
+	 * Resets a previously set maximum size of the result set. Returns $this to allow
+	 * for chaining (fluid interface)
+	 *
+	 * @return Tx_Extbase_Persistence_QueryInterface
+	 * @api
+	 */
+	public function unsetLimit() {
+		unset($this->limit);
+		return $this;
+	}
+
+	/**
 	 * Returns the maximum size of the result set to limit.
 	 *
 	 * @param integer
