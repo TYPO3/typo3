@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage error
  */
-class t3lib_error_http_PageNotFoundException extends t3lib_error_http_StatusException {
+class t3lib_error_http_PageNotFoundException extends t3lib_error_http_AbstractClientErrorException {
 
 	/**
 	 * @var array HTTP Status Header lines
