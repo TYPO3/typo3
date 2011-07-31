@@ -44,6 +44,8 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	var $allPhashListed = array();		// phash values accumulations for link to clear all
 	var $external_parsers = array();	// External content parsers - objects set here with file extensions as keys.
 	var $iconFileNameCache = array();	// File extensions - icon map/cache.
+	var $indexerConfig = array();	// Indexer configuration, coming from $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']
+	var $enableMetaphoneSearch = FALSE;
 
 	/**
 	 * Indexer object
@@ -88,6 +90,12 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 
 			// Return if no page id:
 		if ($this->pObj->id<=0)		return;
+
+			// Indexer configuration from Extension Manager interface:
+		$this->indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
+
+			// Workaround: If the extension configuration was not updated yet, the value is not existing
+		$this->enableMetaphoneSearch = isset($this->indexerConfig['enableMetaphoneSearch']) ? ($this->indexerConfig['enableMetaphoneSearch'] ? TRUE : FALSE) : TRUE;
 
 			// Initialize max-list items
 		$this->maxListPerPage = t3lib_div::_GP('listALL') ? 100000 : 100;
@@ -141,7 +149,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			$theOutput.=$this->pObj->doc->spacer(5);
 			$theOutput.=$this->pObj->doc->section('Details for a word:',$this->showDetailsForWord(t3lib_div::_GET('wid')),0,1);
 
-		} elseif (t3lib_div::_GET('metaphone'))	{
+		} elseif ($this->enableMetaphoneSearch && t3lib_div::_GET('metaphone'))	{
 				// Show title / function menu:
 			$theOutput.=$this->pObj->doc->spacer(5);
 			$theOutput.=$this->pObj->doc->section('Details for metaphone value:',$this->showDetailsForMetaphone(t3lib_div::_GET('metaphone')),0,1);
@@ -619,12 +627,14 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			$showStopWordCheckBox = $GLOBALS['BE_USER']->isAdmin();
 			$content.= $this->listWords($ftrows, 'All words found on page ('.count($ftrows).'):', $showStopWordCheckBox, $pageRec);
 
-				// Group metaphone hash:
-			$metaphone = array();
-			foreach($ftrows as $row)	{
-				$metaphone[$row['metaphone']][] = $row['baseword'];
+			if ($this->enableMetaphoneSearch) {
+					// Group metaphone hash:
+				$metaphone = array();
+				foreach ($ftrows as $row) {
+					$metaphone[$row['metaphone']][] = $row['baseword'];
+				}
+				$content .= $this->listMetaphoneStat($metaphone, 'Metaphone stats:');
 			}
-			$content.= $this->listMetaphoneStat($metaphone, 'Metaphone stats:');
 
 				// Finding top-20 on frequency for this phash:
 			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
