@@ -165,6 +165,7 @@ $t3libClasses = array(
 	't3lib_matchcondition_backend' => PATH_t3lib . 'matchcondition/class.t3lib_matchcondition_backend.php',
 	't3lib_matchcondition_frontend' => PATH_t3lib . 'matchcondition/class.t3lib_matchcondition_frontend.php',
 	't3lib_pdohelper' => PATH_t3lib . 'class.t3lib_pdohelper.php',
+	't3lib_tceforms_extdirect_Commands' => PATH_t3lib . 'tceforms/extdirect/class.t3lib_tceforms_extdirect_commands.php',
 	't3lib_tceforms_suggest' => PATH_t3lib . 'tceforms/class.t3lib_tceforms_suggest.php',
 	't3lib_tceforms_suggest_defaultreceiver' => PATH_t3lib . 'tceforms/class.t3lib_tceforms_suggest_defaultreceiver.php',
 	't3lib_utility_command' => PATH_t3lib . 'utility/class.t3lib_utility_command.php',
