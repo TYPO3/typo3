@@ -450,6 +450,10 @@ class SC_alt_doc {
 			: '')
 		);
 
+			//add js for polling and related translations
+		$this->doc->getPageRenderer()->addJsFile('js/tceforms.js');
+		$this->doc->getPageRenderer()->addInlineLanguageLabelFile('EXT:lang/locallang_tceform.xml', 'tceform','tceform');
+
 			// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 		$this->doc->bodyTagAdditions = 'onload="window.scrollTo(0,'.t3lib_utility_Math::forceIntegerInRange(t3lib_div::_GP('_scrollPosition'),0,10000).');"';

@@ -2182,8 +2182,12 @@ body.x-body-masked .x-window-plain .x-window-mc {
 	color: #fff;
 }
 
+.x-window-dlg .ext-mb-content p {
+	margin-bottom: 15px;
+}
+
 .x-window-dlg .ext-mb-textarea {
-	font:normal 12px verdana, arial,tahoma,helvetica,sans-serif;
+	font: normal 12px verdana, arial,tahoma,helvetica,sans-serif;
 }
 
 .x-window-dlg .x-msg-box-wait {
@@ -2191,20 +2195,21 @@ body.x-body-masked .x-window-plain .x-window-mc {
 }
 
 .x-window-dlg .ext-mb-info {
-	background-image:url(images/window/icon-info.gif);
+	background-image: url(images/window/icon-info.gif);
 }
 
 .x-window-dlg .ext-mb-warning {
-	background-image:url(images/window/icon-warning.gif);
+	background-image: url(images/window/icon-warning.gif);
 }
 
 .x-window-dlg .ext-mb-question {
-	background-image:url(images/window/icon-question.gif);
+	background-image: url(images/window/icon-question.gif);
 }
 
 .x-window-dlg .ext-mb-error {
-	background-image:url(images/window/icon-error.gif);
+	background-image: url(images/window/icon-error.gif);
 }
+
 
 /*ADDONS*/
 
