@@ -676,6 +676,13 @@ if (TYPO3_MODE === 'BE') {
 	);
 
 	t3lib_extMgm::registerExtDirectComponent(
+		'TYPO3.Components.TceForms.Commands',
+		PATH_t3lib . 'tceforms/extdirect/class.t3lib_tceforms_extdirect_commands.php:t3lib_tceforms_extdirect_Commands',
+		'web',
+		'user,group'
+	);
+
+	t3lib_extMgm::registerExtDirectComponent(
 		'TYPO3.Components.PageTree.ContextMenuDataProvider',
 		PATH_t3lib . 'contextmenu/pagetree/extdirect/class.t3lib_contextmenu_pagetree_extdirect_contextmenu.php:t3lib_contextmenu_pagetree_extdirect_ContextMenu',
 		'web',

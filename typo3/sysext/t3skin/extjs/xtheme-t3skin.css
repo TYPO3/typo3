@@ -2182,6 +2182,10 @@ body.x-body-masked .x-window-plain .x-window-mc {
 	color: #fff;
 }
 
+.x-window-dlg .ext-mb-content p {
+	margin-bottom:15px;
+}
+
 .x-window-dlg .ext-mb-textarea {
 	font:normal 12px verdana, arial,tahoma,helvetica,sans-serif;
 }
@@ -2205,6 +2209,7 @@ body.x-body-masked .x-window-plain .x-window-mc {
 .x-window-dlg .ext-mb-error {
 	background-image:url(images/window/icon-error.gif);
 }
+
 
 /*ADDONS*/
 
