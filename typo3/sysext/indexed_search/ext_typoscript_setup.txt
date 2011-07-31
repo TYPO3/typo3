@@ -51,7 +51,7 @@ plugin.tx_indexedsearch {
 		rootPidList =
 		page_links = 10
 		detect_sys_domain_records = 0
-		defaultFreeIndexUidList =
+		defaultFreeIndexUidList = -1
 		skipExtendToSubpagesChecking = 0
 		exactCount = 0
 		targetPid.data = TSFE:id
