@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage error
  */
-class t3lib_error_http_ServiceUnavailableException extends t3lib_error_http_StatusException {
+class t3lib_error_http_ServiceUnavailableException extends t3lib_error_http_AbstractServerErrorException {
 
 	/**
 	 * @var array HTTP Status Header lines
