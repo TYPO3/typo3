@@ -1,0 +1,71 @@
+{namespace is=Tx_IndexedSearch_ViewHelpers}
+
+<f:for each="{resultsets}" as="result">
+	<f:if condition="{result.categoryTitle}">
+		<h1 class="tx-indexedsearch-category">{result.categoryTitle}</h1>
+	</f:if>
+	
+	<!-- show the info what was searched for -->
+	<f:for each="{searchWords}" as="searchWord" key="key">
+		<f:if condition="{key} > 0">
+			<f:then>
+				<f:translate key="searchFor.{searchWord.oper}" />&nbsp;{searchWord.sword}
+			</f:then>
+			<f:else>
+				<f:translate key="searchFor" />&nbsp;{searchWord.sword}
+			</f:else>
+		</f:if>
+	</f:for>
+
+	<!-- show the info in which section was searched for -->
+	{result.searchedInSectionInfo}
+	<f:if condition="{result.count} > 0">
+		<f:then>
+			<div class="tx-indexedsearch-browsebox">
+				<!-- render the anchor-links to the sections inside the displayed result rows -->
+				<f:if condition="{result.affectedSections}">
+					<div class="tx-indexedsearch-sectionlinks">
+						<table cellpadding="0" cellspacing="0" border="0" summary="Result links">
+							<f:for each="{result.affectedSections}" as="sectionData" key="sectionId">
+								<tr>
+									<td width="100%">--&gt;&nbsp;
+										<a href="#anchor_{sectionId}">
+											<f:if condition="{sectionData.0}">
+												<f:then>{sectionData.0}</f:then>
+												<f:else><f:translate key="unnamedSection" /></f:else>
+											</f:if>
+											&nbsp;({sectionData.1}&nbsp;<f:translate key="{f:if(condition: '{sectionData.1} > 1', then: 'word_pages', else: 'word_pages')}" />)
+										</a>
+									</td>
+								</tr>
+							</f:for>
+						</table>
+					</div>
+				</f:if>
+				<p>
+					<is:pageBrowsingResults numberOfResults="{result.count}" currentPage="{searchData.pointer}" resultsPerPage="{searchData.results}" />
+					{result.sectionText}
+				</p>
+				<is:pageBrowsing maximumNumberOfResultPages="{settings.search.page_links}" numberOfResults="{result.count}" currentPage="{searchData.pointer}" resultsPerPage="{result.pageBrowser.resultsPerPage}" />
+			</div>
+			<f:for each="{result.rows}" as="row">
+				<f:if condition="{row.isSectionHeader}">
+					<f:then>
+					<div id="{row.anchorId}" class="tx-indexedsearch-sectionhead">
+						<h2 class="tx-indexedsearch-title">{row.sectionTitle} <span class="tx-indexedsearch-result-count">{row.numResultRows} <f:translate key="{f:if(condition: '{row.numResultRows} > 1', then: 'result.pages', else: 'result.page')}" /></span></h2>
+					</div>
+					</f:then>
+					<f:else>
+						<f:render partial="Searchresult" arguments="{row: row}" />
+					</f:else>
+				</f:if>
+			</f:for>
+			<div class="tx-indexedsearch-browsebox">
+				<is:pageBrowsing numberOfResults="{result.count}" maximumNumberOfResultPages="{settings.search.page_links}" currentPage="{searchData.pointer}" resultsPerPage="{searchData.results}" />
+			</div>
+		</f:then>
+		<f:else>
+			<f:translate key="result.noResult" />
+		</f:else>
+	</f:if>
+</f:for>

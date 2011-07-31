@@ -1,0 +1,92 @@
+config.index_enable = 0
+config.index_externals = 0
+config.index_metatags = 1
+
+ # Plugin configuration
+plugin.tx_indexedsearch {
+
+	settings {
+
+		# show the rules
+		displayRules = 1
+
+		# show a link to the advanced search
+		displayAdvancedSearchLink = 1
+
+		# show the number of results
+		displayResultNumber = 0
+
+		# show the parse times
+		displayParsetimes = 0
+		displayLevel1Sections = 1
+		displayLevel2Sections = 0
+		displayLevelxAllTypes = 0
+		clearSearchBox = 0
+		clearSearchBox.enableSubSearchCheckBox = 1
+		displayForbiddenRecords = 0
+		alwaysShowPageLinks = 1
+		mediaList =
+
+		#search.rootPidList
+		rootPidList =
+		page_links = 10
+		detectDomainRcords = 0
+		defaultFreeIndexUidList =
+		searchSkipExtendToSubpagesChecking = 0
+		exactCount = 0
+		forwardSearchWordsInResultLink = 0
+
+		# Blinding of option-selectors / values in these (advanced search)
+		blind {
+			searchType = 0
+			defaultOperand = 0
+			sections = 0
+			freeIndexUid = 1
+			mediaType = 0
+			sortOrder = 0
+			group = 0
+			languageUid = 0
+			desc = 0
+			results = 0
+			# defaultOperand.1 = 1
+			# extResume=1
+		}
+/*
+		flagRendering = CASE
+		flagRendering {
+			key.current = 1
+			2 = TEXT
+			2.value = German
+			default = TEXT
+			default.value = English
+		}
+
+		iconRendering = CASE
+		iconRendering {
+			key.current = 1
+			html = TEXT
+			html.value = HtmL
+			default = TEXT
+			default.value = TYPO3 pages
+		}
+*/
+		defaultOptions {
+			defaultOperand = 0
+			sections = 0
+			freeIndexUid = -1
+			mediaType = -1
+			sortOrder = rank_flag
+			languageUid = -1
+			sortDesc = 1
+		}
+
+	}
+
+
+	view {
+		templateRootPath = {$plugin.tx_indexedsearch.view.templateRootPath}
+		partialRootPath = {$plugin.tx_indexedsearch.view.partialRootPath}
+		layoutRootPath = {$plugin.tx_indexedsearch.view.layoutRootPath}
+	}
+
+}
