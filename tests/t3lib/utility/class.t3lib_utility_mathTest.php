@@ -101,6 +101,10 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 			'negative int as string' => array('-32425'),
 			'zero' => array(0),
 			'zero as string' => array('0'),
+			'string with whitespaces' => array(' 10 '),
+			'string with leading zeros' => array('00010'),
+			'string with whitespaces, negative sign and leading zeros' => array(' -00010 '),
+			'string with whitespaces, positive sign and leading zeros' => array(' +00010 '),
 		);
 	}
 
@@ -108,7 +112,7 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 	 * @test
 	 * @dataProvider functionCanBeInterpretedAsIntegerValidDataProvider
 	 */
-	public function testIntReturnsTrue($int) {
+	public function canBeInterpretedAsIntegerReturnsTrue($int) {
 		$this->assertTrue(t3lib_utility_Math::canBeInterpretedAsInteger($int));
 	}
 

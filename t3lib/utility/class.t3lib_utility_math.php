@@ -79,10 +79,27 @@ final class t3lib_utility_Math {
 	 * @return boolean Returns TRUE if string is an integer
 	 */
 	public static function canBeInterpretedAsInteger($var) {
-		if ($var === '') {
+		$varTrimmed = trim((string) $var);
+		if (($var === '') || ($varTrimmed === '')) {
 			return FALSE;
 		}
-		return (string) intval($var) === (string) $var;
+
+		$signMultiplier = 1;
+		if ($varTrimmed[0] == '-') {
+			$signMultiplier = -1;
+				// strip the sign
+			$varTrimmed = substr($varTrimmed, 1);
+		} elseif ($varTrimmed[0] == '+') {
+				// strip the sign
+			$varTrimmed = substr($varTrimmed, 1);
+		}
+		$varTrimmed = ltrim($varTrimmed, '0');
+		// special case for $var being zero
+		if ((intval($var) == 0) && ($varTrimmed === '')) {
+			return TRUE;
+		} else {
+			return (string) ($signMultiplier * intval($var)) === $varTrimmed;
+		}
 	}
 
 	/**
