@@ -26,13 +26,13 @@
 ***************************************************************/
 
 /**
- * Contains the update class for the replacement of deprecated RTE properties in Page TS Config. Used by the update wizard in the install tool.
+ * Contains the update class for the replacement of deprecated RTE properties in Page TSconfig. Used by the update wizard in the install tool.
  *
  * @author Stanislas Rolland <typo3@sjbr.ca>
  */
 class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
-	protected $title = 'Deprecated RTE properties in Page TS Config';
-		// Properties that may be replaced automatically in Page TS Config (except inludes from external files)
+	protected $title = 'Deprecated RTE properties in Page TSconfig';
+		// Properties that may be replaced automatically in Page TSconfig (except inludes from external files)
 	protected $replacementRteProperties = array(
 		'disableRightClick' => 'contextMenu.disable',
 		'disableContextMenu' => 'contextMenu.disable',
@@ -64,7 +64,7 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 			'buttons.textstyle.disableStyleOnOptionLabel',
 			),
 		);
-		// Properties that may not be replaced automatically in Page TS Config
+		// Properties that may not be replaced automatically in Page TSconfig
 	protected $useInsteadRteProperties = array(
 		'fontSize' => 'buttons.fontsize.addItems',
 		'RTE.default.classesAnchor' => 'RTE.default.buttons.link.properties.class.allowedClasses',
@@ -99,7 +99,7 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 			foreach ($this->doubleReplacementRteProperties as $deprecatedProperty => $replacementProperties) {
 				$deprecatedProperties .= '<tr><td>' . $deprecatedProperty . '</td><td>' . implode(' and ', $replacementProperties) . '</td></tr>' . LF;
 			}
-			$description = '<p>The following Page TS Config RTE properties are deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8.</p>' . LF .
+			$description = '<p>The following Page TSconfig RTE properties are deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8.</p>' . LF .
 				'<table><thead><tr><th>Deprecated property</th><th>Use instead</th></tr></thead>' . LF . '<tbody>' . $deprecatedProperties . '</tboby></table>' . LF .
 				'<p>You are currently using some of these properties on <strong>' . strval($pagesCount) . '&nbsp;pages</strong>  (including deleted and hidden pages).</p>' . LF;
 			if ($pagesCount) {
@@ -122,7 +122,7 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 					}
 					$description .= '<p>This wizard will perform automatic replacement of the following properties on <strong>' . strval(count($updateablePages)) . '&nbsp;pages</strong> (including deleted and hidden):</p>' . LF .
 						'<table><thead><tr><th>Deprecated property</th><th>Will be replaced by</th></tr></thead><tbody>' . $replacementProperties . '</tboby></table>' . LF .
-						'<p>The Page TS Config column of the remaining pages will need to be updated manually.</p>' . LF;
+						'<p>The Page TSconfig column of the remaining pages will need to be updated manually.</p>' . LF;
 				} else {
 					$replacementProperties = '';
 					foreach (array_keys(array_merge($this->useInsteadRteProperties, $this->doubleReplacementRteProperties)) as $deprecatedProperty) {
@@ -130,10 +130,11 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 					}
 					$description .= '<p>This wizard cannot update the following properties, some of which are present on those pages:</p>' . LF .
 						'<table><thead><tr><th>Deprecated property</th></tr></thead><tbody>' . $replacementProperties . '</tboby></table>' . LF .
-						'<p>Therefore, the Page TS Config column of those pages will need to be updated manually.</p>' . LF;
+						'<p>Therefore, the Page TSconfig column of those pages will need to be updated manually.</p>' . LF;
 				}
 			}
-			$description .= '<p>Note that Page TS Config may be included from external files. These will not be updated by this wizard. If required, the update will need to be done manually.</p>' . LF .
+			$description .= '<p>Only page records were searched for deprecated properties. However, such properties can also be used in BE group and BE user records (prepended with page.). These are not searched nor updated by this wizard.</p>' . LF .
+				'<p>Page TSconfig may also be included from external files. These are not updated by this wizard. If required, the update will need to be done manually.</p>' . LF .
 				'<p>Note also that deprecated properties have been replaced in default configurations provided by htmlArea RTE';
 			$result = TRUE;
 		}
@@ -156,14 +157,15 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 				if (count($updateablePages)) {
 					$this->updatePages($updateablePages, $dbQueries, $customMessages);
 				} else {
-					$customMessages = '<p>Some deprecated Page TS Config properties were found. However, the wizard was unable to automatically replace any of the deprecated properties found. They will have to be replaced manually.</p>';
+					$customMessages = '<p>Some deprecated Page TSconfig properties were found. However, the wizard was unable to automatically replace any of the deprecated properties found. They will have to be replaced manually.</p>' . LF;
 					$success = TRUE;
 				}
 			} else {
-				$customMessages = '<p>No deprecated Page TS Config properties were found on page records.</p>' . LF .
-					'<p>Note that Page TS Config may be included from external files. These were not updated by this wizard. If required, the update will need to be done manually.</p>';
+				$customMessages = '<p>No deprecated Page TSconfig properties were found on page records.</p>' . LF ;
 				$success = TRUE;
 			}
+			$customMessages .= '<p>Only page records were searched for deprecated properties. However, such properties can also be used in BE group and BE user records (prepended with page.). These are not searched nor updated by this wizard.</p>' . LF .
+				'<p>Page TSconfig may also be included from external files. These were not updated by this wizard. If required, the update will need to be done manually.</p>';
 		}
 		return empty($customMessages) || $success;
 	}
@@ -219,7 +221,7 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 	}
 
 	/**
-	 * updates the pages records with updateable Page TS Config properties
+	 * updates the pages records with updateable Page TSconfig properties
 	 *
 	 * @param	array		pages records to update, fetched by getTemplates() and filtered by
 	 * @param	array		pointer where to insert all DB queries made, so they can be shown to the user if wanted
