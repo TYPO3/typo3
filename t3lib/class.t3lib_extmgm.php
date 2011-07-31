@@ -774,10 +774,9 @@ final class t3lib_extMgm {
 	 * @param	string		$sub is the submodule key. If $sub is not set a blank $main module is created.
 	 * @param	string		$position can be used to set the position of the $sub module within the list of existing submodules for the main module. $position has this syntax: [cmd]:[submodule-key]. cmd can be "after", "before" or "top" (or blank which is default). If "after"/"before" then submodule will be inserted after/before the existing submodule with [submodule-key] if found. If not found, the bottom of list. If "top" the module is inserted in the top of the submodule list.
 	 * @param	string		$path is the absolute path to the module. If this value is defined the path is added as an entry in $TBE_MODULES['_PATHS'][  main_sub  ] = $path; and thereby tells the backend where the newly added modules is found in the system.
-	 * @param	boolean		$addJsAutomatically adds automatically the card for this module the TYPO3 BE - if you use ExtJS you may disable this option
 	 * @return	void
 	 */
-	public static function addModule($main, $sub = '', $position = '', $path = '', $addJsAutomatically = TRUE) {
+	public static function addModule($main, $sub = '', $position = '', $path = '') {
 		if (isset($GLOBALS['TBE_MODULES'][$main]) && $sub) {
 			// if there is already a main module by this name:
 
@@ -826,15 +825,76 @@ final class t3lib_extMgm {
 			// Adding path:
 		if ($path) {
 			$GLOBALS['TBE_MODULES']['_PATHS'][$main . ($sub ? '_' . $sub : '')] = $path;
-			if ($addJsAutomatically) {
-				$GLOBALS['TBE_MODULES']['_JSINIT'][$main . ($sub ? '_' . $sub : '')]  = '
-					TYPO3.Viewport.ContentCards.addContentCard("' . $main . ($sub ? '_' . $sub : '') . '",
-						{
-							xtype: "iframePanel"
-						}
-					);
-				';
-			}
+		}
+			//add module JS
+		self::setModuleJS($main, $sub, '{xtype: "iframePanel"}');
+	}
+
+	/**
+	 * Sets the JS of an ExtJS Module directly
+	 * Replaces default JS
+	 *
+	 * @param	string		$main is the main module key, $sub is the submodule key. So $main would be an index in the $TBE_MODULES array and $sub could be an element in the lists there.
+	 * @param	string		$sub is the submodule key. If $sub is not set a blank $main module is created.
+	 * @param	string		$jsCode is plain valid JavaScript, which is added directly, usefull for small modules only!
+	 * @return	void
+	 */
+	public static function setModuleJS($main, $sub = '', $jsCode) {
+		$GLOBALS['TBE_MODULES']['_JSINIT'][$main . ($sub ? '_' . $sub : '')]  = '
+			TYPO3.Viewport.ContentCards.addContentCard(
+				"' . $main . ($sub ? '_' . $sub : '') . '",
+				'.$jsCode.'
+			);
+		';
+	}
+
+	/**
+	 * remove the JS of an ExtJS Module directly
+	 *
+	 * @param	string		$main is the main module key, $sub is the submodule key. So $main would be an index in the $TBE_MODULES array and $sub could be an element in the lists there.
+	 * @param	string		$sub is the submodule key. If $sub is not set a blank $main module is created.
+	 * @return void
+	 */
+	public static function unsetModuleJS($main, $sub = '') {
+		$moduleName = $main . ($sub ? '_' . $sub : '');
+		if(array_key_exists($moduleName, $GLOBALS['TBE_MODULES']['_JSINIT'])) {
+			unset($GLOBALS['TBE_MODULES']['_JSINIT'][$moduleName]);
+		}
+	}
+
+	/**
+	 * add Module JS File
+	 * please refer to http://wiki.typo3.org/Extension_Development,_native_ExtJS_Modules
+	 *
+	 * @param	string		$main is the main module key, $sub is the submodule key. So $main would be an index in the $TBE_MODULES array and $sub could be an element in the lists there.
+	 * @param	string		$sub is the submodule key. If $sub is not set a blank $main module is created.
+	 * @param	string		$jsFile is the jsFile which is added with the pagerenderer
+	 * @return void
+	 */
+	public static function addModuleJsFile($main, $sub = '', $jsFile) {
+		if(is_a($GLOBALS['TBE_TEMPLATE'], 'template')) {
+				//add JS File
+			$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->addJsFile($jsFile);
+		} else {
+			throw new t3lib_exception('$GLOBALS["TBE_TEMPLATE"] not ready',1312140064);
+		}
+	}
+
+	/**
+	 * add Module CSS File
+	 * please refer to http://wiki.typo3.org/Extension_Development,_native_ExtJS_Modules
+	 *
+	 * @param	string		$main is the main module key, $sub is the submodule key. So $main would be an index in the $TBE_MODULES array and $sub could be an element in the lists there.
+	 * @param	string		$sub is the submodule key. If $sub is not set a blank $main module is created.
+	 * @param	string		$cssFile is the cssFile which is added with the pagerenderer
+	 * @return void
+	 */
+	public static function addModuleCssFile($main, $sub = '', $file) {
+		if(is_a($GLOBALS['TBE_TEMPLATE'], 'template')) {
+				//add JS File
+			$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->addcssFile($file);
+		} else {
+			throw new t3lib_exception('$GLOBALS["TBE_TEMPLATE"] not ready',1312140065);
 		}
 	}
 
