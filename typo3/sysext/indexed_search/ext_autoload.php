@@ -1,4 +1,7 @@
 <?php
+/*
+ * Register necessary class names with autoloader
+ */
 
 $extensionPath = t3lib_extMgm::extPath('indexed_search');
 return array(

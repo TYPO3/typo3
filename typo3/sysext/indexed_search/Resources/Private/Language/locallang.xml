@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Frontend labels for indexed search</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="localizedOperandAnd">AND</label>
+			<label index="localizedOperandOr">OR</label>
+			<label index="localizedOperandNot">NOT</label>
+
+			<label index="rules.headline">Rules</label>
+			<label index="rules.text"><![CDATA[Only words with 2 or more characters are accepted<br />
+Max 200 chars total<br />
+Space is used to split words, "" can be used to search for a whole string (not indexed search then)<br />
+AND, OR and NOT are prefix words, overruling the default operator<br />
++/|/- equals AND, OR and NOT as operators.<br />
+All search words are converted to lowercase.
+]]></label>
+
+			<label index="form.legend">Search form</label>
+			<label index="form.searchFor">Search for</label>
+			<label index="form.extResume">Extended resume</label>
+			<label index="form.atATime">at a time</label>
+			<label index="form.orderBy">Order by</label>
+			<label index="form.fromSection">From section</label>
+			<label index="form.freeIndexUid">Category</label>
+			<label index="form.searchIn">Search in</label>
+			<label index="form.match">Match</label>
+			<label index="form.style">Style</label>
+			<label index="form.submit">Search</label>
+			<label index="form.addToSearch">Add to current search words</label>
+
+			<label index="form.linkToRegularSearch">Regular search</label>
+			<label index="form.linkToAdvancedSearch">Advanced search</label>
+
+
+			<label index="types.0">Distinct word</label>
+			<label index="types.1">Part of word</label>
+			<label index="types.2">First part of word</label>
+			<label index="types.3">Last part of word</label>
+			<label index="types.10">Sounds like</label>
+			<label index="types.20">Sentence</label>
+
+			<label index="defaultOperands.0">All words (AND)</label>
+			<label index="defaultOperands.1">Any words (OR)</label>
+
+			<label index="languageUids.-1">All languages</label>
+			<label index="languageUids.0">Default</label>
+
+			<label index="sections.0">Whole site</label>
+			<label index="sections.-1">Only this page</label>
+			<label index="sections.-2">Top + level 1</label>
+			<label index="sections.-3">Level 2 and out</label>
+			<label index="sections.RL1">Level 1:</label>
+			<label index="sections.RL1All">All pages on level 1</label>
+			<label index="sections.RL2">- Level 2:</label>
+			<label index="sections.RL2All">- All pages on level 2</label>
+
+			<label index="mediaTypes.0">Internal pages</label>
+			<label index="mediaTypes.-1">All media</label>
+			<label index="mediaTypes.-2">All External</label>
+
+			<label index="indexingConfigurations.-1">All, mixed</label>
+			<label index="indexingConfigurations.-2">All, categorized</label>
+			<label index="indexingConfigurations._0">Pages</label>
+
+			<label index="indexingConfigurationHeader.-1">Mixed categories</label>
+			<label index="indexingConfigurationHeader.0">Website Pages</label>
+
+			<label index="sortOrders.rank_flag">Weight/Frequency</label>
+			<label index="sortOrders.rank_freq">Frequency</label>
+			<label index="sortOrders.rank_first">Close to top</label>
+			<label index="sortOrders.rank_count">Number of words</label>
+			<label index="sortOrders.mtime">Date Modified</label>
+			<label index="sortOrders.title">Document title</label>
+			<label index="sortOrders.crdate">Creation date</label>
+
+			<label index="sortOrders.descending">Highest first</label>
+			<label index="sortOrders.ascending">Lowest first</label>
+
+			<label index="groupBy.sections">Section hierarchy</label>
+			<label index="groupBy.flat">Flat list</label>
+
+			<label index="result.page">page</label>
+			<label index="result.pages">pages</label>
+			<label index="result.unnamedSection">Other</label>
+			<label index="result.otherMatching">Other matching pages in the same document:</label>
+			<label index="result.otherPageAsWell">INFO: There was another page indexed as well. Probably indexed with another or no usergroup.</label>
+			<label index="result.path">Path:</label>
+			<label index="result.modified">Modified:</label>
+			<label index="result.created">Created:</label>
+			<label index="result.size">Size:</label>
+			<label index="result.noResume">Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</label>
+			<label index="result.memberGroups">Require membership of group numbers %s</label>
+
+			<label index="result.ratingMatches">matches</label>
+			<label index="result.noResult">No results found.</label>
+			<label index="result.inSection">in the section</label>
+			<label index="result.inNsection">in %s section:</label>
+			<label index="result.inNsections">in %s sections:</label>
+
+			<label index="searchFor">Search for</label>
+			<label index="searchFor.or">or</label>
+			<label index="searchFor.and">and</label>
+			<label index="searchFor.andnot">but not</label>
+
+			<label index="displayResults.previous">&lt; Previous</label>
+			<label index="displayResults.page">Page</label>
+			<label index="displayResults.next">Next &gt;</label>
+			<label index="displayResults"><![CDATA[Displaying results <strong>%s to %s</strong> out of <strong>%s</strong>]]></label>
+		</languageKey>
+	</data>
+</T3locallang>
