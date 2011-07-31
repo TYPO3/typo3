@@ -87,7 +87,8 @@ $TYPO3_CONF_VARS = array(
 		'loginCopyrightWarrantyProvider' => '',	// String: If you provide warranty for TYPO3 to your customers insert you (company) name here. It will appear in the login-dialog as the warranty provider. (You must also set URL below).
 		'loginCopyrightWarrantyURL' => '',		// String: Add the URL where you explain the extend of the warranty you provide. This URL is displayed in the login dialog as the place where people can learn more about the conditions of your warranty. Must be set (more than 10 chars) in addition with the 'loginCopyrightWarrantyProvider' message.
 		'loginCopyrightShowVersion' => FALSE,	// Boolean: If set, the current TYPO3 version is shown.
-		'curlUse' => FALSE,						// Boolean: If set, try to use cURL to fetch external URLs
+		/** @deprecated Deprecated since 4.6 - will be removed in 4.8. */
+		'curlUse' => FALSE,						// Boolean: If set, try to use cURL to fetch external URLs. Deprecated since 4.6 - will be removed in 4.8. See below for http options.
 		/** @deprecated Deprecated since 4.6 - will be removed in 4.8. */
 		'curlProxyServer' => '',				// String: Proxyserver as http://proxy:port/. Deprecated since 4.6 - will be removed in 4.8. See below for http options.
 		/** @deprecated Deprecated since 4.6 - will be removed in 4.8. */
@@ -857,23 +858,29 @@ if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'])) {
 	$proxyParts = explode(':', $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'], 2);
 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_host'] = $proxyParts[0];
 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_port'] = $proxyParts[1];
-    /* TODO: uncomment after refactoring getUrl()
 	t3lib_div::deprecationLog(
 		'This TYPO3 installation is using the $TYPO3_CONF_VARS[\'SYS\'][\'curlProxyServer\'] property with the following value: ' .
 		$TYPO3_CONF_VARS['SYS']['curlProxyServer'] . LF . 'Please make sure to set $TYPO3_CONF_VARS[\'HTTP\'][\'proxy_host\']' .
 		' and $TYPO3_CONF_VARS[\'HTTP\'][\'proxy_port\'] instead.' . LF . 'Remove this line from your localconf.php.'
-	);*/
+	);
 }
 if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass'])) {
 	$userPassParts = explode(':', $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass'], 2);
 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_user'] = $userPassParts[0];
 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_password'] = $userPassParts[1];
-	/* TODO: uncomment after refactoring getUrl()
 	t3lib_div::deprecationLog(
 		'This TYPO3 installation is using the $TYPO3_CONF_VARS[\'SYS\'][\'curlProxyUserPass\'] property with the following value: ' .
 		$TYPO3_CONF_VARS['SYS']['curlProxyUserPass'] . LF . 'Please make sure to set $TYPO3_CONF_VARS[\'HTTP\'][\'proxy_user\']' .
 		' and $TYPO3_CONF_VARS[\'HTTP\'][\'proxy_password\'] instead.' . LF . 'Remove this line from your localconf.php.'
-	);*/
+	);
+}
+if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout'])) {
+	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['timeout'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout'];
+	t3lib_div::deprecationLog(
+		'This TYPO3 installation is using the $TYPO3_CONF_VARS[\'SYS\'][\'curlTimeout\'] property with the following value: ' .
+		$TYPO3_CONF_VARS['SYS']['curlProxyUserPass'] . LF . 'Please make sure to set $TYPO3_CONF_VARS[\'HTTP\'][\'timeout\']' .
+		' instead.' . LF . 'Remove this line from your localconf.php.'
+	);
 }
 
 	// ['HTTP']['proxy_auth_scheme'] can only be 'digest' or 'basic'

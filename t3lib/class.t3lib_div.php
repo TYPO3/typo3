@@ -2445,13 +2445,13 @@ final class t3lib_div {
 
 	/**
 	 * Reads the file or url $url and returns the content
-	 * If you are having trouble with proxys when reading URLs you can configure your way out of that with settings like $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] etc.
+	 * If you are having trouble with proxies when reading URLs you can configure your way out of that with settings like $GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_*'].
 	 *
 	 * @param string $url File/URL to read
 	 * @param integer $includeHeader Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
-	 * @param array $requestHeaders HTTP headers to be used in the request
+	 * @param array|boolean $requestHeaders HTTP headers to be used in the request
 	 * @param array $report Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
-	 * @return string The content from the resource given as input. FALSE if an error has occured.
+	 * @return string The content from the resource given as input. FALSE if an error has occurred.
 	 */
 	public static function getUrl($url, $includeHeader = 0, $requestHeaders = FALSE, &$report = NULL) {
 		$content = FALSE;
@@ -2461,159 +2461,67 @@ final class t3lib_div {
 			$report['message'] = '';
 		}
 
-			// use cURL for: http, https, ftp, ftps, sftp and scp
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] == '1' && preg_match('/^(?:http|ftp)s?|s(?:ftp|cp):/', $url)) {
+			// attempt to use cURL for: FTP, FTPs, sFTP and SCP
+		if ($GLOBALS['TYPO3_CONF_VARS']['HTTP']['adapter'] == 'curl' && preg_match('/^ftps?|s(?:ftp|cp):/', $url)) {
+			$content = self::getUrlCurl($url, $includeHeader, $requestHeaders, $report);
+
+			// Get a HTTP(S) resource
+		} elseif (preg_match('/^https?/i', $url)) {
+
 			if (isset($report)) {
-				$report['lib'] = 'cURL';
+				$report['lib'] = 't3lib_http_Request';
 			}
+			try {
+					/** @var t3lib_http_Request|HTTP_Request2 $request  */
+				$request = self::makeInstance('t3lib_http_Request', $url);
 
-				// External URL without error checking.
-			$ch = curl_init();
-			if (!$ch) {
-				if (isset($report)) {
-					$report['error'] = -1;
-					$report['message'] = 'Couldn\'t initialize cURL.';
-				}
-				return FALSE;
-			}
+				$request->setMethod(($includeHeader === 2) ? 'HEAD' : 'GET');
 
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_HEADER, $includeHeader ? 1 : 0);
-			curl_setopt($ch, CURLOPT_NOBODY, $includeHeader == 2 ? 1 : 0);
-			curl_setopt($ch, CURLOPT_HTTPGET, $includeHeader == 2 ? 'HEAD' : 'GET');
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, max(0, intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout'])));
-
-			$followLocation = @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-
-			if (is_array($requestHeaders)) {
-				curl_setopt($ch, CURLOPT_HTTPHEADER, $requestHeaders);
-			}
-
-				// (Proxy support implemented by Arco <arco@appeltaart.mine.nu>)
-			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
-				curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
-
-				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']) {
-					curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']);
-				}
-				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']) {
-					curl_setopt($ch, CURLOPT_PROXYUSERPWD, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']);
-				}
-			}
-			$content = curl_exec($ch);
-			if (isset($report)) {
-				if ($content === FALSE) {
-					$report['error'] = curl_errno($ch);
-					$report['message'] = curl_error($ch);
-				} else {
-					$curlInfo = curl_getinfo($ch);
-						// We hit a redirection but we couldn't follow it
-					if (!$followLocation && $curlInfo['status'] >= 300 && $curlInfo['status'] < 400) {
-						$report['error'] = -1;
-						$report['message'] = 'Couldn\'t follow location redirect (PHP configuration option open_basedir is in effect).';
-					} elseif ($includeHeader) {
-							// Set only for $includeHeader to work exactly like PHP variant
-						$report['http_code'] = $curlInfo['http_code'];
-						$report['content_type'] = $curlInfo['content_type'];
+				if (is_array($requestHeaders)) {
+					foreach ($requestHeaders as $value) {
+						$headerParts = self::trimExplode(':', $value, FALSE, 2);
+						$request->setHeader($headerParts[0], $headerParts[1]);
 					}
 				}
-			}
-			curl_close($ch);
 
-		} elseif ($includeHeader) {
-			if (isset($report)) {
-				$report['lib'] = 'socket';
+					/** @var HTTP_Request2_Response $response */
+				$response = $request->send();
+
+				if ($includeHeader === 1 || $includeHeader === 2) {
+					$content = implode(CRLF, $response->getHeader()) . CRLF;
+				}
+				if ($includeHeader !== 2) {
+					$content .= $response->getBody();
+				}
+
+				if (isset($report)) {
+					$report['http_code'] = $response->getStatus();
+					$report['content-type'] = $response->getHeader('Content-Type');
+					$report['message'] = $response->getReasonPhrase();
+				}
+
 			}
-			$parsedURL = parse_url($url);
-			if (!preg_match('/^https?/', $parsedURL['scheme'])) {
+			catch (Exception $e) {
+
+					// To stay backward compatible, we do not want to have exceptions at this point
 				if (isset($report)) {
 					$report['error'] = -1;
-					$report['message'] = 'Reading headers is not allowed for this protocol.';
+					$report['message'] = $e->getMessage();
 				}
-				return FALSE;
+				$content = FALSE;
 			}
-			$port = intval($parsedURL['port']);
-			if ($port < 1) {
-				if ($parsedURL['scheme'] == 'http') {
-					$port = ($port > 0 ? $port : 80);
-					$scheme = '';
-				} else {
-					$port = ($port > 0 ? $port : 443);
-					$scheme = 'ssl://';
-				}
-			}
-			$errno = 0;
-				// $errstr = '';
-			$fp = @fsockopen($scheme . $parsedURL['host'], $port, $errno, $errstr, 2.0);
-			if (!$fp || $errno > 0) {
-				if (isset($report)) {
-					$report['error'] = $errno ? $errno : -1;
-					$report['message'] = $errno ? ($errstr ? $errstr : 'Socket error.') : 'Socket initialization error.';
-				}
-				return FALSE;
-			}
-			$method = ($includeHeader == 2) ? 'HEAD' : 'GET';
-			$msg = $method . ' ' . (isset($parsedURL['path']) ? $parsedURL['path'] : '/') .
-					($parsedURL['query'] ? '?' . $parsedURL['query'] : '') .
-					' HTTP/1.0' . CRLF . 'Host: ' .
-					$parsedURL['host'] . "\r\nConnection: close\r\n";
-			if (is_array($requestHeaders)) {
-				$msg .= implode(CRLF, $requestHeaders) . CRLF;
-			}
-			$msg .= CRLF;
 
-			fputs($fp, $msg);
-			while (!feof($fp)) {
-				$line = fgets($fp, 2048);
-				if (isset($report)) {
-					if (preg_match('|^HTTP/\d\.\d +(\d+)|', $line, $status)) {
-						$report['http_code'] = $status[1];
-					}
-					elseif (preg_match('/^Content-Type: *(.*)/i', $line, $type)) {
-						$report['content_type'] = $type[1];
-					}
-				}
-				$content .= $line;
-				if (!strlen(trim($line))) {
-					break; // Stop at the first empty line (= end of header)
-				}
-			}
-			if ($includeHeader != 2) {
-				$content .= stream_get_contents($fp);
-			}
-			fclose($fp);
-
-		} elseif (is_array($requestHeaders)) {
-			if (isset($report)) {
-				$report['lib'] = 'file/context';
-			}
-			$parsedURL = parse_url($url);
-			if (!preg_match('/^https?/', $parsedURL['scheme'])) {
-				if (isset($report)) {
-					$report['error'] = -1;
-					$report['message'] = 'Sending request headers is not allowed for this protocol.';
-				}
-				return FALSE;
-			}
-			$ctx = stream_context_create(array(
-				'http' => array(
-					'header' => implode(CRLF, $requestHeaders)
-				)
-			)
-			);
-			$content = @file_get_contents($url, FALSE, $ctx);
-			if ($content === FALSE && isset($report)) {
-				$phpError = error_get_last();
-				$report['error'] = $phpError['type'];
-				$report['message'] = $phpError['message'];
-			}
+			// Read a file
 		} else {
+
 			if (isset($report)) {
 				$report['lib'] = 'file';
+				$report['error'] = 0;
+				$report['message'] = '';
 			}
-			$content = @file_get_contents($url);
+
+			$content = self::getFile($url);
+
 			if ($content === FALSE && isset($report)) {
 				if (function_exists('error_get_last')) {
 					$phpError = error_get_last();
@@ -2621,7 +2529,7 @@ final class t3lib_div {
 					$report['message'] = $phpError['message'];
 				} else {
 					$report['error'] = -1;
-					$report['message'] = 'Couldn\'t get URL.';
+					$report['message'] = 'Couldn\'t get file.';
 				}
 			}
 		}
@@ -2630,9 +2538,116 @@ final class t3lib_div {
 	}
 
 	/**
+	 * Reads the file $file and returns the content
+	 *
+	 * @param string $file The file to read
+	 * @return string The content from the resource given as input. FALSE if an error has occurred.
+	 */
+	public static function getFile($file) {
+		return @file_get_contents($file);
+	}
+
+	/**
+	 * Reads the url $url and returns the content
+	 * If you are having trouble with proxies when reading URLs you can configure your way out of that with settings like $GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_*'].
+	 *
+	 * @param string $url URL to read
+	 * @param integer $includeHeader Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
+	 * @param array|boolean $requestHeaders HTTP headers to be used in the request
+	 * @param array $report Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
+	 * @return string The content from the resource given as input. FALSE if an error has occurred.
+	 * @deprecated Deprecated since 4.6 - will be removed in 4.8. The functionality to fetch non HTTP(S) URLs will be dropped.
+	 */
+	public static function getUrlCurl($url, $includeHeader = 0, $requestHeaders = FALSE, &$report = NULL) {
+
+		self::logDeprecatedFunction('The functionality to fetch non HTTP(S) URLs with ' .
+			't3lib_div::getUrl() or t3lib_dib::getUrlCurl() will be dropped with TYPO3 4.8.');
+
+		$content = FALSE;
+
+		if (isset($report)) {
+			$report['lib'] = 'cURL';
+		}
+
+			// Check for cURL library
+		if(!extension_loaded('curl')) {
+			if (isset($report)) {
+				$report['error'] = -1;
+				$report['message'] = 'Extension cURL was not loaded.';
+			}
+			return FALSE;
+		}
+
+			// External URL without error checking.
+		$ch = curl_init();
+		if (!$ch) {
+			if (isset($report)) {
+				$report['error'] = -1;
+				$report['message'] = 'Couldn\'t initialize cURL.';
+			}
+			return FALSE;
+		}
+
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HEADER, $includeHeader ? 1 : 0);
+		curl_setopt($ch, CURLOPT_NOBODY, $includeHeader == 2 ? 1 : 0);
+		curl_setopt($ch, CURLOPT_HTTPGET, $includeHeader == 2 ? 'HEAD' : 'GET');
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, max(0, intval($GLOBALS['TYPO3_CONF_VARS']['HTTP']['timeout'])));
+
+		$followLocation = @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+
+		if (is_array($requestHeaders)) {
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $requestHeaders);
+		}
+
+		if ($GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_host']) {
+			curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_host'] .
+				!empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_port'])
+					? ':' . $GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_port']  : ''
+			);
+
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']) {
+				curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']);
+			}
+			if ($GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_user']) {
+				curl_setopt($ch, CURLOPT_PROXYUSERPWD, $GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_user'] .
+					!empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_password'])
+						? ':' . $GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_password'] : ''
+				);
+			}
+		}
+
+		$content = curl_exec($ch);
+
+		if (isset($report)) {
+			if ($content === FALSE) {
+				$report['error'] = curl_errno($ch);
+				$report['message'] = curl_error($ch);
+			} else {
+				$curlInfo = curl_getinfo($ch);
+					// We hit a redirection but we couldn't follow it
+				if (!$followLocation && $curlInfo['status'] >= 300 && $curlInfo['status'] < 400) {
+					$report['error'] = -1;
+					$report['message'] = 'Couldn\'t follow location redirect (PHP configuration option open_basedir is in effect).';
+				} elseif ($includeHeader) {
+						// Set only for $includeHeader to work exactly like PHP variant
+					$report['http_code'] = $curlInfo['http_code'];
+					$report['content_type'] = $curlInfo['content_type'];
+				}
+			}
+		}
+
+		curl_close($ch);
+
+		return $content;
+	}
+
+	/**
 	 * Writes $content to the file $file
 	 *
-	 * @param string $file Filepath to write to
+	 * @param string $file File to write to
 	 * @param string $content Content to write
 	 * @return boolean TRUE if the file was successfully opened and written to.
 	 */
