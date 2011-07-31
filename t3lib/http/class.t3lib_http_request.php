@@ -81,10 +81,15 @@ class t3lib_http_Request extends HTTP_Request2 {
 
 			'ssl_verify_peer' => 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_verify_peer'],
 			'ssl_verify_host' => 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_verify_host'],
-			'ssl_cafile' => 		$GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_cafile'],
-			'ssl_capath' => 		$GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_capath'],
-			'ssl_local_cert' => 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_local_cert'],
-			'ssl_passphrase' => 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_passphrase'],
+				// we need to fix broken behavior and set this to NULL if it is empty
+			'ssl_cafile' => 		empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_cafile'])
+									? NULL : $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_cafile'],
+			'ssl_capath' => 		empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_capath'])
+									? NULL : $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_capath'],
+			'ssl_local_cert' => 	empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_local_cert'])
+									? NULL : $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_local_cert'],
+			'ssl_passphrase' => 	empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_passphrase'])
+									? NULL : $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_passphrase'],
 			);
 
 		$configuration = array_merge($default, $config);
