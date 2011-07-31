@@ -590,25 +590,25 @@ $TYPO3_CONF_VARS = array(
 		'defaultMailFromName' => '',			// String: This default name is used when no other "from" name is set for a TYPO3-generated email.
 	),
 	'HTTP' => array(						// HTTP configuration to tune how TYPO3 behaves on HTTP request. Have a look at <a href="http://pear.php.net/manual/en/package.http.http-request2.config.php>HTTP_Request2 Manual</a> for some background information on those settings.
-		'adapter' => 'socket',					// String: Default adapter - either "socket" or "curl".
-		'connect_timeout' => 10, 				// Integer: Default timeout for connection. Exception will be thrown if connecting to remote host takes more than this number of seconds.
-		'timeout' => 0, 						// Integer: Default timeout for whole request. Exception will be thrown if sending the request takes more than this number of seconds. Should be greater than connection timeout (see above) or "0" to not set a limit. Defaults to "0".
-		'protocol_version' => '1.1',			// String: Default HTTP protocol version. Use either "1.0" or "1.1".
-		'follow_redirects' => FALSE, 			// Boolean: If set, redirects are followed by default. If number of tries are exceeded, an exception is thrown.
-		'max_redirects' => 5, 					// Integer: Maximum number of tries before an exception is thrown.
-		'strict_redirects' => FALSE,			// Boolean: Whether to keep request method on redirects via status 301 and 302 (TRUE, needed for compatibility with <a href="http://www.faqs.org/rfcs/rfc2616">RFC 2616</a>) or switch to GET (FALSE, needed for compatibility with most browsers). There are some <a href="http://pear.php.net/manual/en/package.http.http-request2.adapters.php#package.http.http-request2.adapters.curl">issues with cURL adapter</a>. Defaults to FALSE.
-		'proxy_host' => '', 						// String: Default proxy server as "http://proxy.example.org" (You must not set the port here. Set the port below.)
-		'proxy_port' => '', 						// Integer: Default proxy server port.
-		'proxy_user' => '', 						// String: Default user name.
-		'proxy_password' => '', 					// String: Default password.
-		'proxy_auth_scheme' => 'basic', 				// String: Default authentication method. Can either be "basic" or "digest". Defaults to "basic".
-		'ssl_verify_peer' => TRUE,				// Boolean: Whether to verify peer's SSL certificate. Note that this is on by default, to follow the behaviour of modern browsers and current cURL version. There are some <a href="http://pear.php.net/manual/en/package.http.http-request2.adapters.php#package.http.http-request2.adapters.socket">issues with Socket Adapter</a>.
-		'ssl_verify_host' => TRUE,				// Boolean: Whether to check that Common Name in SSL certificate matches host name. There are some <a href="http://pear.php.net/manual/en/package.http.http-request2.adapters.php#package.http.http-request2.adapters.socket">issues with Socket Adapter</a>.
-		'ssl_cafile' => '',						// String: Certificate Authority file to verify the peer with (use when ssl_verify_peer is TRUE).
-		'ssl_capath' => '',						// String: Directory holding multiple Certificate Authority files.
-		'ssl_local_cert' => '',					// String: Name of a file containing local certificate.
-		'ssl_passphrase' => '',					// String: Passphrase with which local certificate was encoded.
-		'userAgent' => '',						// String: Default user agent. If empty, this will be "TYPO3/4.x", while x is the current branch version. This overrides the constant <em>TYPO3_user_agent</em>.
+		'adapter' => 'socket',				// String: Default adapter - either "socket" or "curl".
+		'connect_timeout' => 10, 			// Integer: Default timeout for connection. Exception will be thrown if connecting to remote host takes more than this number of seconds.
+		'timeout' => 0, 					// Integer: Default timeout for whole request. Exception will be thrown if sending the request takes more than this number of seconds. Should be greater than connection timeout (see above) or "0" to not set a limit. Defaults to "0".
+		'protocol_version' => '1.1',		// String: Default HTTP protocol version. Use either "1.0" or "1.1".
+		'follow_redirects' => FALSE, 		// Boolean: If set, redirects are followed by default. If number of tries are exceeded, an exception is thrown.
+		'max_redirects' => 5, 				// Integer: Maximum number of tries before an exception is thrown.
+		'strict_redirects' => FALSE,		// Boolean: Whether to keep request method on redirects via status 301 and 302 (TRUE, needed for compatibility with <a href="http://www.faqs.org/rfcs/rfc2616">RFC 2616</a>) or switch to GET (FALSE, needed for compatibility with most browsers). There are some <a href="http://pear.php.net/manual/en/package.http.http-request2.adapters.php#package.http.http-request2.adapters.curl">issues with cURL adapter</a>. Defaults to FALSE.
+		'proxy_host' => '', 				// String: Default proxy server as "http://proxy.example.org" (You must not set the port here. Set the port below.)
+		'proxy_port' => '', 				// Integer: Default proxy server port.
+		'proxy_user' => '', 				// String: Default user name.
+		'proxy_password' => '', 			// String: Default password.
+		'proxy_auth_scheme' => 'basic', 	// String: Default authentication method. Can either be "basic" or "digest". Defaults to "basic".
+		'ssl_verify_peer' => FALSE,			// Boolean: Whether to verify peer's SSL certificate. Turned off by default, due to <a href="http://pear.php.net/manual/en/package.http.http-request2.adapters.php#package.http.http-request2.adapters.socket">issues with Socket adapter</a>. You are adviced to use the <em>curl</em> adapter and enable this option!
+		'ssl_verify_host' => TRUE,			// Boolean: Whether to check that Common Name in SSL certificate matches host name. There are some <a href="http://pear.php.net/manual/en/package.http.http-request2.adapters.php#package.http.http-request2.adapters.socket">issues with Socket Adapter</a>.
+		'ssl_cafile' => '',					// String: Certificate Authority file to verify the peer with (use when ssl_verify_peer is TRUE).
+		'ssl_capath' => '',					// String: Directory holding multiple Certificate Authority files.
+		'ssl_local_cert' => '',				// String: Name of a file containing local certificate.
+		'ssl_passphrase' => '',				// String: Passphrase with which local certificate was encoded.
+		'userAgent' => '',					// String: Default user agent. If empty, this will be "TYPO3/4.x", while x is the current branch version. This overrides the constant <em>TYPO3_user_agent</em>.
 	),
 	'MODS' => array(		// Backend Module Configuration (obsolete, make extension instead)
 	),
