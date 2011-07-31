@@ -6,6 +6,17 @@ t3lib_extMgm::addPlugin(Array('LLL:EXT:indexed_search/locallang.php:mod_indexed_
 t3lib_div::loadTCA('tt_content');
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY] = 'layout,select_key,pages';
 
+// Registers the Extbase plugin to be listed in the Backend.
+if (t3lib_extMgm::isLoaded('extbase')) {
+	$extensionName = t3lib_div::underscoredToUpperCamelCase($_EXTKEY);
+		Tx_Extbase_Utility_Extension::registerPlugin($_EXTKEY, 'Pi2',
+			// the title shown in the backend dropdown field
+		'Indexed Search (experimental)'
+	);
+	$pluginSignature = strtolower($extensionName) . '_pi2';
+	$TCA['tt_content']['types']['list']['subtypes_excludelist'][$pluginSignature] = 'layout,select_key,pages,recursive';
+}
+
 if (TYPO3_MODE=='BE')    {
 	t3lib_extMgm::addModule('tools','isearch','after:log',t3lib_extMgm::extPath($_EXTKEY).'mod/');
 
