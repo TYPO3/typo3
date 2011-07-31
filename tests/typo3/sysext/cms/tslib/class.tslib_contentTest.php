@@ -852,5 +852,45 @@ class tslib_contentTest extends tx_phpunit_testcase {
 		$result = $this->cObj->numberFormat($float, $formatConf);
 		$this->assertEquals($expected, $result);
 	}
+
+	/**
+	 * @return array
+	 */
+	public function stdWrap_numericKeysDataProvider() {
+		return array(
+			'test with wraps executed in order' => array(
+				'*',
+				array(
+					'wrap' => 'a|A',
+					'1.' => array(
+						'wrap' => 'b|B',
+					),
+					'10.' => array(
+						'wrap' => 'c|C',
+					),
+					'2.' => array(
+						'wrap' => 'd|D',
+					),
+				),
+				'cdba*ABDC'
+			),
+		);
+	}
+
+	/**
+	 * Test for the stdWrap function with numeric keys
+	 *
+	 * @param string $input
+	 * @param array $conf
+	 * @param string $expected
+	 * @return void
+	 *
+	 * @dataProvider stdWrap_numericKeysDataProvider
+	 * @test
+	 */
+	public function stdWrap_numericKeys($input, $conf, $expected) {
+		$result = $this->cObj->stdWrap($input, $conf);
+		$this->assertEquals($expected, $result);
+	}
 }
 ?>

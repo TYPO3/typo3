@@ -1872,9 +1872,27 @@ class tslib_cObj {
 				}
 			}
 
+			if (!$this->stopRendering[$this->stdWrapRecursionLevel]) {
+				$numericKeys = array();
+				foreach (array_keys($conf) as $confKey) {
+						// numeric keys with a next hierarchy-level, such as 10. / 20. / 30. ...
+					$numberPart = substr($confKey, 0, -1);
+					if ((substr($confKey, -1) === '.') && t3lib_utility_Math::canBeInterpretedAsInteger($numberPart)) {
+						$numericKeys[(int) $numberPart] = $confKey;
+					}
+				}
+				if (count($numericKeys) > 0) {
+					ksort($numericKeys);
+					foreach ($numericKeys as $numericKey) {
+						$this->stdWrapRecursionLevel++;
+						$content = $this->stdWrap($content, $conf[$numericKey]);
+						$this->stdWrapRecursionLevel--;
+					}
+				}
+			}
+
 			unset($this->stopRendering[$this->stdWrapRecursionLevel]);
 			$this->stdWrapRecursionLevel--;
-
 		}
 		return $content;
 	}
