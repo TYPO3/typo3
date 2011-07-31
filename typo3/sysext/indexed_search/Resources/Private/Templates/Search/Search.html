@@ -1,0 +1,27 @@
+<f:for each="{resultsets}" as="resultset">
+	<f:if condition="{resultset.categoryTitle}">
+		<h1 class="tx-indexedsearch-category">{resultset.categoryTitle}</h1>
+	</f:if>
+	{resultset.whatissearchedfor}
+	<f:if condition="{resultset.count} > 0">
+		<f:then>
+			{resultset.browserbox1}
+			<f:for each="{resultset.rows}" as="row">
+				<f:if condition="{row.isSectionHeader}">
+					<f:then>
+					<div id="{row.anchorId}" class="tx-indexedsearch-secHead secHead-tmpl-css">
+						<h2 class="tx-indexedsearch-title title">{row.sectionTitle} <span class="tx-indexedsearch-result-count result-count result-count-tmpl-css">{row.numResultRows} <f:translate key="{f:if(condition: '{row.numResultRows} > 1', then: 'result.pages', else: 'result.page')}" /></span></h2>
+					</div>
+					</f:then>
+					<f:else>
+						<f:render partial="Searchresult" arguments="{row: row}" />
+					</f:else>
+				</f:if>
+			</f:for>
+			{resultset.browserbox2}
+		</f:then>
+		<f:else>
+			<f:translate key="result.noResult" />
+		</f:else>
+	</f:if>
+</f:for>
