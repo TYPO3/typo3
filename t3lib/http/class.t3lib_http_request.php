@@ -69,9 +69,9 @@ class t3lib_http_Request extends HTTP_Request2 {
 			'timeout' => 			$GLOBALS['TYPO3_CONF_VARS']['HTTP']['timeout'],
 			'protocol_version' => 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['protocol_version'],
 
-			'follow_redirects' => 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['follow_redirects'],
+			'follow_redirects' => 	(bool) $GLOBALS['TYPO3_CONF_VARS']['HTTP']['follow_redirects'],
 			'max_redirects' => 		$GLOBALS['TYPO3_CONF_VARS']['HTTP']['max_redirects'],
-			'strict_redirects' => 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['strict_redirects'],
+			'strict_redirects' => 	(bool) $GLOBALS['TYPO3_CONF_VARS']['HTTP']['strict_redirects'],
 
 			'proxy_host' => 		$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_host'],
 			'proxy_port' => 		$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_port'],
@@ -79,12 +79,17 @@ class t3lib_http_Request extends HTTP_Request2 {
 			'proxy_password' => 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_password'],
 			'proxy_auth_scheme' => 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_auth_scheme'],
 
-			'ssl_verify_peer' => 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_verify_peer'],
-			'ssl_verify_host' => 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_verify_host'],
-			'ssl_cafile' => 		$GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_cafile'],
-			'ssl_capath' => 		$GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_capath'],
-			'ssl_local_cert' => 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_local_cert'],
-			'ssl_passphrase' => 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_passphrase'],
+			'ssl_verify_peer' => 	(bool) $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_verify_peer'],
+			'ssl_verify_host' => 	(bool) $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_verify_host'],
+				// we have to deal with Install Tool limitations and set this to NULL if it is empty
+			'ssl_cafile' => 		empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_cafile'])
+									? NULL : $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_cafile'],
+			'ssl_capath' => 		empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_capath'])
+									? NULL : $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_capath'],
+			'ssl_local_cert' => 	empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_local_cert'])
+									? NULL : $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_local_cert'],
+			'ssl_passphrase' => 	empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_passphrase'])
+									? NULL : $GLOBALS['TYPO3_CONF_VARS']['HTTP']['ssl_passphrase'],
 			);
 
 		$configuration = array_merge($default, $config);
