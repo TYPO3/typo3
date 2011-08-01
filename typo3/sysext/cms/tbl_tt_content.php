@@ -187,6 +187,8 @@ $TCA['tt_content'] = array(
 				'eval' => 'datetime',
 				'default' => '0',
 			),
+			'l10n_mode' => 'exclude',
+			'l10n_display' => 'defaultAsReadonly',
 		),
 		'endtime' => array(
 			'exclude' => 1,
@@ -201,6 +203,8 @@ $TCA['tt_content'] = array(
 					'upper' => mktime(0,0,0,12,31,2020),
 				),
 			),
+			'l10n_mode' => 'exclude',
+			'l10n_display' => 'defaultAsReadonly',
 		),
 		'fe_group' => array(
 			'exclude' => 1,
