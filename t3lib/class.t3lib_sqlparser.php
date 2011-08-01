@@ -1825,6 +1825,24 @@ class t3lib_sqlparser {
 		return $query;
 	}
 
+	/**
+	 * Checks if the submitted feature index contains a default value definition and the default value
+	 *
+	 * @param array $featureIndex A feature index as produced by parseFieldDef()
+	 * @return boolean
+	 * @see t3lib_sqlparser::parseFieldDef()
+	 */
+	public function checkEmptyDefaultValue($featureIndex) {
+		if (is_array($featureIndex['DEFAULT']['value'])) {
+			if (!is_numeric($featureIndex['DEFAULT']['value'][0]) && empty($featureIndex['DEFAULT']['value'][0])) {
+				return TRUE;
+			} else {
+				return FALSE;
+			}
+		}
+		return TRUE;
+	}
+
 
 	/**************************************
 	 *

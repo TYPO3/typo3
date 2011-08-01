@@ -190,6 +190,9 @@ class SC_tce_db {
 				// Clearing cache:
 			$this->tce->clear_cacheCmd($this->cacheCmd);
 
+				// Clearing table/field type cache
+			$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
+
 				// Update page tree?
 			if ($this->uPT && (isset($this->data['pages'])||isset($this->cmd['pages'])))	{
 				t3lib_BEfunc::setUpdateSignal('updatePageTree');
