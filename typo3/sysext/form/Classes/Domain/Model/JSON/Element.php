@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_json_element {
+class tx_Form_Domain_Model_JSON_Element {
 	/**
 	 * The ExtJS xtype of the element
 	 *
@@ -66,7 +64,6 @@ class tx_form_domain_model_json_element {
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 	}
@@ -76,7 +73,6 @@ class tx_form_domain_model_json_element {
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setParameters($parameters) {
 		foreach ($this->configuration as $key => $value) {
@@ -104,7 +100,6 @@ class tx_form_domain_model_json_element {
 	 * Check if child elements are allowed within this element
 	 *
 	 * @return boolean TRUE if allowed
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function childElementsAllowed() {
 		return $this->childElementsAllowed;
@@ -115,9 +110,8 @@ class tx_form_domain_model_json_element {
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setAttributes($parameters) {
+	protected function setAttributes($parameters) {
 		foreach ($this->allowedAttributes as $allowedAttribute) {
 			if (isset($parameters[$allowedAttribute])) {
 				$this->configuration['attributes'][$allowedAttribute] = $parameters[$allowedAttribute];
@@ -132,9 +126,8 @@ class tx_form_domain_model_json_element {
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setFilters($parameters) {
+	protected function setFilters($parameters) {
 		if (isset($parameters['filters.']) && is_array($parameters['filters.'])) {
 			$filters = $parameters['filters.'];
 
@@ -157,9 +150,8 @@ class tx_form_domain_model_json_element {
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setLabel($parameters) {
+	protected function setLabel($parameters) {
 		if (isset($parameters['label']) && !isset($parameters['label.'])) {
 			$this->configuration['label']['value'] = $parameters['label'];
 		} elseif (!isset($parameters['label']) && isset($parameters['label.'])) {
@@ -172,9 +164,8 @@ class tx_form_domain_model_json_element {
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setLayout($parameters) {
+	protected function setLayout($parameters) {
 		if (isset($parameters['layout'])) {
 			if ($this->configuration['layout'] === 'front') {
 				$this->configuration['layout'] = 'back';
@@ -189,9 +180,8 @@ class tx_form_domain_model_json_element {
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setValidation($parameters) {
+	protected function setValidation($parameters) {
 		if (isset($parameters['validation']) && is_array($parameters['validation'])) {
 			$this->configuration['validation'] = $parameters['validation'];
 		} else {

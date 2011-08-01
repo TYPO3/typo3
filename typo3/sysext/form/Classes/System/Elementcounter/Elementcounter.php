@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_elementcounter implements t3lib_Singleton {
+class tx_Form_System_Elementcounter implements t3lib_Singleton {
 
 	/**
 	 * Counter
@@ -44,7 +42,6 @@ class tx_form_system_elementcounter implements t3lib_Singleton {
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 	}
@@ -53,7 +50,6 @@ class tx_form_system_elementcounter implements t3lib_Singleton {
 	 * Raise the element counter by one
 	 *
 	 * @return integer
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getElementId() {
 		$elementId = $this->elementCounter;

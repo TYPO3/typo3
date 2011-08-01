@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -23,7 +21,7 @@ declare(encoding = 'utf-8');
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-require_once(t3lib_extMgm::extPath('form') . 'Classes/Exception/class.tx_form_exception_loader.php');
+require_once(t3lib_extMgm::extPath('form') . 'Classes/Exception/class.tx_Form_Exception_Loader.php');
 
 /**
  * Static methods for loading classes
@@ -32,7 +30,7 @@ require_once(t3lib_extMgm::extPath('form') . 'Classes/Exception/class.tx_form_ex
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_loader {
+class tx_Form_System_Loader {
 
 	/**
 	 * Loads a file from a classname
@@ -50,7 +48,7 @@ class tx_form_system_loader {
 		} else {
 			$directoryForClassName = strtolower($directory);
 		}
-		$className = 'tx_form_' . str_replace('/', '_', $directoryForClassName) . $class;
+		$className = 'tx_Form_' . str_replace('/', '_', $directoryForClassName) . $class;
 
 		if (class_exists($className, FALSE)) {
 			return $className;
@@ -60,7 +58,7 @@ class tx_form_system_loader {
 		include_once(t3lib_extMgm::extPath('form') . $file);
 
 		if (!class_exists($className, FALSE)) {
-			throw new tx_form_exception_loader ('File "' . $file . '" not found. Class "' . $className . '" does not exist.');
+			throw new tx_Form_Exception_Loader ('File "' . $file . '" not found. Class "' . $className . '" does not exist.');
 		}
 
 		return $className;

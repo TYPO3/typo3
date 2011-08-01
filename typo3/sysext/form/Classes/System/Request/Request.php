@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_request implements t3lib_Singleton {
+class tx_Form_System_Request implements t3lib_Singleton {
 
 	/**
 	 * Prefix for the name attributes
@@ -39,7 +37,7 @@ class tx_form_system_request implements t3lib_Singleton {
 	 *
 	 * @var string
 	 */
-	private $prefix = 'tx_form';
+	protected $prefix = 'tx_form';
 
 	/**
 	 * Method used for submitting data
@@ -47,7 +45,7 @@ class tx_form_system_request implements t3lib_Singleton {
 	 *
 	 * @var string
 	 */
-	private $method = 'post';
+	protected $method = 'post';
 
 	/**
 	 * Session data
@@ -56,7 +54,7 @@ class tx_form_system_request implements t3lib_Singleton {
 	 *
 	 * @var array
 	 */
-	private $sessionData = array();
+	protected $sessionData = array();
 
 	/**
 	 * Constructor
@@ -64,7 +62,6 @@ class tx_form_system_request implements t3lib_Singleton {
 	 * @param string $prefix Proposal for prefix
 	 * @param string $method The used method
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 	}
@@ -76,7 +73,6 @@ class tx_form_system_request implements t3lib_Singleton {
 	 *
 	 * @param string $prefix Value containing characters a-z, A-Z, 0-9, _ and -
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setPrefix($prefix = 'tx_form') {
 		if(empty($prefix)) {
@@ -91,7 +87,6 @@ class tx_form_system_request implements t3lib_Singleton {
 	 * Get the prefix
 	 *
 	 * @return string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getPrefix() {
 		return $this->prefix;
@@ -103,7 +98,6 @@ class tx_form_system_request implements t3lib_Singleton {
 	 *
 	 * @param string $method The method
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setMethod($method = 'get') {
 		$allowedMethods = array(
@@ -135,7 +129,6 @@ class tx_form_system_request implements t3lib_Singleton {
 	 * Returns the method of this request handler
 	 *
 	 * @return string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getMethod() {
 		return $this->method;
@@ -148,7 +141,6 @@ class tx_form_system_request implements t3lib_Singleton {
 	 *
 	 * @param string $key Parameter to look for
 	 * @return mixed
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function get($key) {
 		switch (TRUE) {
@@ -168,7 +160,6 @@ class tx_form_system_request implements t3lib_Singleton {
 	 *
 	 * @param string $key Parameter to look for
 	 * @return boolean
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function has($key) {
 		switch (TRUE) {
@@ -187,7 +178,6 @@ class tx_form_system_request implements t3lib_Singleton {
 	 * Check to see if there is a request
 	 *
 	 * @return boolean
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function hasRequest() {
 		switch (TRUE) {
@@ -210,7 +200,6 @@ class tx_form_system_request implements t3lib_Singleton {
 	 * @param string $key Parameter to search for
 	 * @param mixed $default Default value to use if key not found
 	 * @return mixed Returns NULL if key does not exist
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getQuery($key = NULL, $default = NULL) {
 		if($key === NULL) {
@@ -227,7 +216,6 @@ class tx_form_system_request implements t3lib_Singleton {
 	 * @param string $key Parameter to search for
 	 * @param mixed $default Default value to use if key not found
 	 * @return mixed Returns NULL if key does not exist
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getPost($key = NULL, $default = NULL) {
 		if($key === NULL) {
@@ -244,7 +232,6 @@ class tx_form_system_request implements t3lib_Singleton {
 	 * @param string $key Parameter to search for
 	 * @param mixed $default Default value to use if key not found
 	 * @return mixed Returns NULL if key does not exist
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getSession($key = NULL, $default = NULL) {
 		if($key === NULL) {
@@ -279,7 +266,6 @@ class tx_form_system_request implements t3lib_Singleton {
 	 * Store the form input in a session
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function storeSession() {
 		if ($GLOBALS['TSFE']->loginUser){
@@ -301,7 +287,6 @@ class tx_form_system_request implements t3lib_Singleton {
 	 * Destroy the session data for the form
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function destroySession() {
 		$this->removeFiles();
@@ -325,7 +310,6 @@ class tx_form_system_request implements t3lib_Singleton {
 	 * files
 	 *
 	 * @return void
-	 * @author Peter Beernink <p.beernink@drecomm.nl>
 	 */
 	public function storeFiles() {
 		$formData = $this->getByMethod();
@@ -369,9 +353,8 @@ class tx_form_system_request implements t3lib_Singleton {
 	 * Remove uploaded files from the typo3temp
 	 *
 	 * @return void
-	 * @author Peter Beernink <p.beernink@drecomm.nl>
 	 */
-	private function removeFiles() {
+	protected function removeFiles() {
 		$values = $this->getByMethod();
 
 		if (is_array($values)) {

@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-abstract class tx_form_domain_model_element_abstract {
+abstract class tx_Form_Domain_Model_Element_Abstract {
 
 	/**
 	 * Internal Id of the element
@@ -58,14 +56,14 @@ abstract class tx_form_domain_model_element_abstract {
 	/**
 	 * Attribute object
 	 *
-	 * @var tx_form_domain_model_attributes
+	 * @var tx_Form_domain_model_attributes
 	 */
 	protected $attributes;
 
 	/**
 	 * Additional object
 	 *
-	 * @var tx_form_domain_model_additional
+	 * @var tx_Form_domain_model_additional
 	 */
 	protected $additional;
 
@@ -121,13 +119,12 @@ abstract class tx_form_domain_model_element_abstract {
 	 * @param integer $elementId Internal Id of the element
 	 * @param array $arguments Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
-		$this->requestHandler = t3lib_div::makeInstance('tx_form_system_request');
-		$this->validateClass = t3lib_div::makeInstance('tx_form_system_validate');
-		$this->elementCounter = t3lib_div::makeInstance('tx_form_system_elementcounter');
+		$this->requestHandler = t3lib_div::makeInstance('tx_Form_System_Request');
+		$this->validateClass = t3lib_div::makeInstance('tx_Form_System_Validate');
+		$this->elementCounter = t3lib_div::makeInstance('tx_Form_System_Elementcounter');
 		$this->setElementId();
 		$this->createAttributes();
 		$this->createAdditional();
@@ -139,7 +136,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 *
 	 * @param integer $elementId Internal Id of the element
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setElementId() {
 		$this->elementId = $this->elementCounter->getElementId();
@@ -150,7 +146,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * of the outer tag of an element like <li>
 	 *
 	 * @return string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getElementId() {
 		return $this->elementId;
@@ -161,7 +156,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 *
 	 * @param string $name The name
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setName($name = '') {
 		if ($name != '') {
@@ -175,7 +169,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * Get the name of the element
 	 *
 	 * @return string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getName() {
 		return $this->name;
@@ -185,7 +178,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * Check to see if this element accepts the parent name instead of its own
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function acceptsParentName() {
 		return $this->acceptsParentName;
@@ -197,7 +189,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * @param string $attribute Name of the attribute
 	 * @param mixed $value Value of the attribute
 	 * @return object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setAttribute($attribute, $value) {
 		if(array_key_exists($attribute, $this->allowedAttributes)) {
@@ -211,7 +202,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * Get the allowed attributes for an element
 	 *
 	 * @return array The allowed attributes
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getAllowedAttributes() {
 		return $this->allowedAttributes;
@@ -221,7 +211,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * Get the mandatory attributes for an element
 	 *
 	 * @return array The mandatory attributes
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getMandatoryAttributes() {
 		return $this->mandatoryAttributes;
@@ -231,7 +220,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * Check if element has attributes which are allowed
 	 *
 	 * @return boolean TRUE if there is a list of allowed attributes
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function hasAllowedAttributes() {
 		if(isset($this->allowedAttributes)) {
@@ -244,7 +232,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * Check if element has additionals which are allowed
 	 *
 	 * @return boolean TRUE if there is a list of allowed additionals
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function hasAllowedAdditionals() {
 		if(isset($this->allowedAdditional)) {
@@ -257,7 +244,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * Get the allowed additionals for an element
 	 *
 	 * @return array The allowed additionals
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getAllowedAdditionals() {
 		return $this->allowedAdditional;
@@ -267,7 +253,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * Get the array with all attribute objects for the element
 	 *
 	 * @return array
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getAttributes() {
 		return $this->attributes->getAttributes();
@@ -278,7 +263,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 *
 	 * @param string $key The name of the attribute
 	 * @return boolean
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function hasAttribute($key) {
 		return $this->attributes->hasAttribute($key);
@@ -289,7 +273,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 *
 	 * @param string $key Name of the attribute
 	 * @return mixed
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getAttributeValue($key) {
 		return $this->attributes->getValue($key);
@@ -299,7 +282,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * Get the array with all additional objects for the element
 	 *
 	 * @return array
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getAdditional() {
 		return $this->additional->getAdditional();
@@ -310,7 +292,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 *
 	 * @param string $key Key of the additional
 	 * @return string The additional object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getAdditionalObjectByKey($key) {
 		return $this->additional->getAdditionalObjectByKey($key);
@@ -321,7 +302,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 *
 	 * @param string $key Name of the additional
 	 * @return mixed
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getAdditionalValue($key) {
 		return $this->additional->getValue($key);
@@ -330,11 +310,10 @@ abstract class tx_form_domain_model_element_abstract {
 	/**
 	 * Load the attributes object
 	 *
-	 * @return tx_form_domain_model_attributes
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 * @return tx_Form_domain_model_attributes
 	 */
 	protected function createAttributes() {
-		$className = 'tx_form_domain_model_attributes_attributes';
+		$className = 'tx_Form_Domain_Model_Attributes_attributes';
 
 		$this->attributes = t3lib_div::makeInstance($className, $this->elementId);
 	}
@@ -344,7 +323,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 *
 	 * @param string $layout The layout
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setLayout($layout = '') {
 		$this->layout = (string) $layout;
@@ -354,7 +332,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * Get the layout for an element
 	 *
 	 * @return string XML for layout
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getLayout() {
 		return $this->layout;
@@ -365,7 +342,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 *
 	 * @param string $value The value
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setValue($value = '') {
 		$this->value = (string) $value;
@@ -375,7 +351,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * Get the value for the element
 	 *
 	 * @return mixed
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getValue() {
 		return $this->value;
@@ -386,7 +361,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 *
 	 * @param string $data The content
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setData($data = '') {
 		$this->data = (string) $data;
@@ -396,7 +370,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * Set the additionals from validation rules
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setMessagesFromValidation() {
 		if($this->validateClass->hasMessage($this->getName())) {
@@ -414,7 +387,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * Set the additional error from validation rules
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setErrorsFromValidation() {
 		if($this->validateClass->hasErrors($this->getName())) {
@@ -434,7 +406,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * @param string $additional Name of the additional
 	 * @param mixed $value Value of the additional
 	 * @return object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setAdditional($additional, $type, $value) {
 		$this->additional->addAdditional($additional, $type, $value);
@@ -447,7 +418,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 *
 	 * @param string $key Name of the additional
 	 * @return boolean
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function additionalIsSet($key) {
 		return $this->additional->additionalIsSet($key);
@@ -457,10 +427,9 @@ abstract class tx_form_domain_model_element_abstract {
 	 * Load the additional object
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	protected function createAdditional() {
-		$className = 'tx_form_domain_model_additional_additional';
+		$className = 'tx_Form_Domain_Model_Additional_additional';
 
 		$this->additional = t3lib_div::makeInstance($className);
 	}
@@ -471,7 +440,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * @param string $key Name of the additional
 	 * @param string $layout XML for layout
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setAdditionalLayout($key, $layout) {
 		$this->additional->setLayout($key, $layout);
@@ -481,10 +449,9 @@ abstract class tx_form_domain_model_element_abstract {
 	 * Load the filter object
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	protected function createFilter() {
-		$this->filter = t3lib_div::makeInstance('tx_form_system_filter');
+		$this->filter = t3lib_div::makeInstance('tx_Form_System_Filter');
 	}
 
 	/**
@@ -494,7 +461,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * @param string $class Name of the filter
 	 * @param array $arguments Arguments for the filter
 	 * @return object Filter object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function makeFilter($class, $arguments = array()) {
 		$filter = $this->filter->makeFilter($class, $arguments);
@@ -508,7 +474,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 *
 	 * @param object $filter Filter object
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function addFilter($filter) {
 		$this->filter->addFilter($filter);
@@ -519,7 +484,6 @@ abstract class tx_form_domain_model_element_abstract {
 	 * and set submitted data right for elements
 	 *
 	 * @return object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function checkFilterAndSetIncomingDataFromRequest() {
 		return $this;

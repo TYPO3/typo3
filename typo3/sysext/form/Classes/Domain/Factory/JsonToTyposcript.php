@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -33,13 +31,13 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_factory_jsontotyposcript {
+class tx_Form_Domain_Factory_JsonToTyposcript {
 	/**
 	 * Internal counter for the elements
 	 *
 	 * @var integer
 	 */
-	private $elementId = 0;
+	protected $elementId = 0;
 
 	/**
 	 * Storage for the validation rules
@@ -47,20 +45,19 @@ class tx_form_domain_factory_jsontotyposcript {
 	 *
 	 * @var array
 	 */
-	private $validationRules = array();
+	protected $validationRules = array();
 
 	/**
 	 * Internal counter for the validation rules
 	 *
 	 * @var integer
 	 */
-	private $validationRulesCounter = 1;
+	protected $validationRulesCounter = 1;
 
 	/**
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 	}
@@ -73,7 +70,6 @@ class tx_form_domain_factory_jsontotyposcript {
 	 *
 	 * @param string $json Json containing all configuration for the form
 	 * @return string The typoscript for the form
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function convert($json) {
 		$elements = json_decode((string) $json, TRUE);
@@ -101,9 +97,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 * @param array $parent The parent element
 	 * @param boolean $childrenWithParentName Indicates if the children use the parent name
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function convertToTyposcriptArray($elements, &$parent, $childrenWithParentName = FALSE) {
+	protected function convertToTyposcriptArray($elements, &$parent, $childrenWithParentName = FALSE) {
 		if (is_array($elements)) {
 			$elementCounter = 10;
 			foreach($elements as $element) {
@@ -156,9 +151,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 * @param boolean $childrenWithParentName Indicates if the children use the parent name
 	 * @param integer $elementCounter The element counter
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function getContainer($element, &$parent, $elementCounter, $childrenWithParentName = FALSE) {
+	protected function getContainer($element, &$parent, $elementCounter, $childrenWithParentName = FALSE) {
 		if ($element['elementContainer'] && $element['elementContainer']['items']) {
 			$this->convertToTyposcriptArray(
 				$element['elementContainer']['items'],
@@ -179,9 +173,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 * @param array $parent The parent element
 	 * @param integer $elementCounter The element counter
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function getForm($element, &$parent, $elementCounter) {
+	protected function getForm($element, &$parent, $elementCounter) {
 			// TODO: Put at the top of the form
 		if (!empty($this->validationRules)) {
 			$parent[$elementCounter . '.']['rules'] = $this->validationRules;
@@ -199,9 +192,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 * @param integer $elementCounter The element counter
 	 * @param boolean $childrenWithParentName Indicates if the children use the parent name
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function getDefaultElementSetup($element, &$parent, $elementCounter, $childrenWithParentName = FALSE) {
+	protected function getDefaultElementSetup($element, &$parent, $elementCounter, $childrenWithParentName = FALSE) {
 		$parent[$elementCounter] = $this->getContentObjectType($element);
 		$parent[$elementCounter . '.'] = array();
 		if ($element['configuration']) {
@@ -214,9 +206,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 *
 	 * @param array $element The JSON array for this element
 	 * @return string The Content Object Type
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function getContentObjectType($element) {
+	protected function getContentObjectType($element) {
 		$shortXType = str_replace('typo3-form-wizard-elements-', '', $element['xtype']);
 		list($category, $type) = explode('-', $shortXType);
 
@@ -255,9 +246,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 * @param integer $elementCounter The element counter
 	 * @param boolean $childrenWithParentName Indicates if the children use the parent name
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setConfiguration($element, &$parent, $elementCounter, $childrenWithParentName = FALSE) {
+	protected function setConfiguration($element, &$parent, $elementCounter, $childrenWithParentName = FALSE) {
 		foreach ($element['configuration'] as $key => $value) {
 			switch ($key) {
 				case 'attributes':
@@ -306,9 +296,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 * @param integer $elementCounter The element counter
 	 * @param boolean $childrenWithParentName Indicates if the children use the parent name
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setAttributes($attributes, &$parent, $elementCounter, $childrenWithParentName = FALSE) {
+	protected function setAttributes($attributes, &$parent, $elementCounter, $childrenWithParentName = FALSE) {
 		foreach ($attributes as $key => $value) {
 			if ($key === 'name' && $value === '' && !$childrenWithParentName) {
 				$value = $this->elementId;
@@ -328,9 +317,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 * @param array $parent The parent element
 	 * @param integer $elementCounter The element counter
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setConfirmation($confirmation, &$parent, $elementCounter) {
+	protected function setConfirmation($confirmation, &$parent, $elementCounter) {
 		$parent[$elementCounter . '.']['confirmation'] = $confirmation;
 	}
 
@@ -341,9 +329,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 * @param array $parent The parent element
 	 * @param integer $elementCounter The element counter
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setFilters($filters, &$parent, $elementCounter) {
+	protected function setFilters($filters, &$parent, $elementCounter) {
 		if (is_array($filters) && !empty($filters)) {
 			$parent[$elementCounter . '.']['filters'] = array();
 			$filterCounter = 1;
@@ -362,9 +349,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 * @param array $parent The parent element
 	 * @param integer $elementCounter The element counter
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setLabel($label, &$parent, $elementCounter) {
+	protected function setLabel($label, &$parent, $elementCounter) {
 		if ($label['value'] != '') {
 			$parent[$elementCounter . '.']['label.']['value'] = $label['value'];
 		}
@@ -382,9 +368,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 * @param array $parent The parent element
 	 * @param integer $elementCounter The element counter
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setLayout($element, $value, &$parent, $elementCounter) {
+	protected function setLayout($element, $value, &$parent, $elementCounter) {
 		switch($element['xtype']) {
 			case 'typo3-form-wizard-elements-basic-button':
 			case 'typo3-form-wizard-elements-basic-fileupload':
@@ -424,9 +409,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 * @param array $parent The parent element
 	 * @param integer $elementCounter The element counter
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setLegend($legend, &$parent, $elementCounter) {
+	protected function setLegend($legend, &$parent, $elementCounter) {
 		if ($legend['value'] != '') {
 			$parent[$elementCounter . '.']['legend.']['value'] = $legend['value'];
 		}
@@ -444,9 +428,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 * @param array $parent The parent element
 	 * @param integer $elementCounter The element counter
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setOptions($element, $options, &$parent, $elementCounter) {
+	protected function setOptions($element, $options, &$parent, $elementCounter) {
 		if (is_array($options) && $element['xtype'] === 'typo3-form-wizard-elements-basic-select') {
 			$optionCounter = 10;
 			foreach ($options as $option) {
@@ -467,9 +450,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 * @param array $parent The parent element
 	 * @param integer $elementCounter The element counter
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setPostProcessor($postProcessors, &$parent, $elementCounter) {
+	protected function setPostProcessor($postProcessors, &$parent, $elementCounter) {
 		if (is_array($postProcessors) && !empty($postProcessors)) {
 			$parent[$elementCounter . '.']['postProcessor'] = array();
 			$postProcessorCounter = 1;
@@ -490,9 +472,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 * @param array $parent The parent element
 	 * @param integer $elementCounter The element counter
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setPrefix($prefix, &$parent, $elementCounter) {
+	protected function setPrefix($prefix, &$parent, $elementCounter) {
 		$parent[$elementCounter . '.']['prefix'] = $prefix;
 	}
 
@@ -505,9 +486,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 * @param array $element The JSON array for this element
 	 * @param array $validationRules The temporary storage array for the rules
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setValidationRules($element, $validationRules) {
+	protected function setValidationRules($element, $validationRules) {
 		if (is_array($validationRules)) {
 			foreach ($validationRules as $name => $ruleConfiguration) {
 				if (
@@ -539,9 +519,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 * @param array $parent The parent element
 	 * @param integer $elementCounter The element counter
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setVarious($element, $various, &$parent, $elementCounter) {
+	protected function setVarious($element, $various, &$parent, $elementCounter) {
 		foreach ($various as $key => $value) {
 			switch ($key) {
 				case 'headingSize':
@@ -571,9 +550,8 @@ class tx_form_domain_factory_jsontotyposcript {
 	 * @param string $addKey Key which has underlying configuration
 	 * @param integer $tabCount The amount of tabs for indentation
 	 * @return string The formatted TypoScript string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function typoscriptArrayToString($typoscriptArray, $addKey = '', $tabCount = -1) {
+	protected function typoscriptArrayToString($typoscriptArray, $addKey = '', $tabCount = -1) {
 		$typoscript = '';
 
 		if ($addKey != '') {

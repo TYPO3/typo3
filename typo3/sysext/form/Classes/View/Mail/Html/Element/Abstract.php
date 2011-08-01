@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-abstract class tx_form_view_mail_html_element_abstract {
+abstract class tx_Form_View_Mail_Html_Element_Abstract {
 
 	/**
 	 * The model for the current object
@@ -64,7 +62,6 @@ abstract class tx_form_view_mail_html_element_abstract {
 	 *
 	 * @param object $model Current elements model
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($model) {
 		$this->model = $model;
@@ -79,7 +76,6 @@ abstract class tx_form_view_mail_html_element_abstract {
 	 * @param DOMDocument $dom
 	 * @param DOMDocument $reference Current XML structure
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	protected function parseXML(DOMDocument &$dom, &$reference, &$emptyElement) {
 		$node = &$reference->firstChild;
@@ -182,7 +178,6 @@ abstract class tx_form_view_mail_html_element_abstract {
 	 * @param string $type Type of element for layout
 	 * @param boolean $returnFirstChild If TRUE, the first child will be returned instead of the DOMDocument
 	 * @return mixed DOMDocument/DOMNode XML part of the view object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function render($type = 'element', $returnFirstChild = TRUE) {
 		$useLayout = $this->getLayout((string) $type);
@@ -211,10 +206,9 @@ abstract class tx_form_view_mail_html_element_abstract {
 	 *
 	 * @param string $type Layout type
 	 * @return string HTML string of the layout to use for this element
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getLayout($type) {
-		$layoutHandler = t3lib_div::makeInstance('tx_form_system_layout');
+		$layoutHandler = t3lib_div::makeInstance('tx_Form_System_Layout');
 
 		switch($type) {
 			case 'element':
@@ -247,7 +241,6 @@ abstract class tx_form_view_mail_html_element_abstract {
 	 * @param $node Current Node
 	 * @param $value Value to import
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function replaceNodeWithFragment(DOMDocument &$dom, &$node, $value) {
 		$replaceNode = $dom->createDocumentFragment();
@@ -262,7 +255,6 @@ abstract class tx_form_view_mail_html_element_abstract {
 	 *
 	 * @param DOMElement $domElement DOM element of the specific HTML tag
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setAttributes(DOMElement &$domElement) {
 		$attributes = $this->model->getAttributes();
@@ -282,7 +274,6 @@ abstract class tx_form_view_mail_html_element_abstract {
 	 * @param DOMElement $domElement DOM element of the specific HTML tag
 	 * @param string $key Attribute key
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setAttribute(DOMElement &$domElement, $key) {
 		$value = htmlspecialchars($this->model->getAttributeValue((string) $key), ENT_QUOTES);
@@ -300,7 +291,6 @@ abstract class tx_form_view_mail_html_element_abstract {
 	 * @param string $key Key of the attribute which needs to be changed
 	 * @param string $other Key of the attribute to take the value from
 	 * @return unknown_type
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setAttributeWithValueofOtherAttribute(DOMElement &$domElement, $key, $other) {
 		$value = htmlspecialchars($this->model->getAttributeValue((string) $other), ENT_QUOTES);
@@ -315,11 +305,10 @@ abstract class tx_form_view_mail_html_element_abstract {
 	 *
 	 * @param string $class Type of additional
 	 * @return object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	protected function createAdditional($class) {
 		$class = strtolower((string) $class);
-		$className = 'tx_form_view_mail_html_additional_' . $class;
+		$className = 'tx_Form_View_Mail_Html_Additional_' . $class;
 
 		return t3lib_div::makeInstance($className, $this->model);
 	}
@@ -329,7 +318,6 @@ abstract class tx_form_view_mail_html_element_abstract {
 	 *
 	 * @param string $key Type of additional
 	 * @return DOMNode
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getAdditional($key) {
 		$additional = $this->createAdditional($key);
@@ -353,7 +341,6 @@ abstract class tx_form_view_mail_html_element_abstract {
 	 * like <li id="csc-form-"> ... </li>
 	 *
 	 * @return string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getElementWrapId() {
 		$elementId = (integer) $this->model->getElementId();
@@ -368,7 +355,6 @@ abstract class tx_form_view_mail_html_element_abstract {
 	 * like <li>element</li>
 	 *
 	 * @return boolean
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function noWrap() {
 		return $this->noWrap;

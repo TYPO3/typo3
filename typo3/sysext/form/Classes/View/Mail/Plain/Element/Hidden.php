@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,16 +29,15 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_plain_element_hidden extends tx_form_view_mail_plain_element {
+class tx_Form_View_Mail_Plain_Element_Hidden extends tx_Form_View_Mail_Plain_Element {
 
 	/**
 	 * Constructor
 	 *
-	 * @param tx_form_domain_model_element_hidden $model Model for this element
+	 * @param tx_Form_Domain_Model_Element_Hidden $model Model for this element
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	public function __construct(tx_form_domain_model_element_hidden $model, $spaces) {
+	public function __construct(tx_Form_Domain_Model_Element_Hidden $model, $spaces) {
 		parent::__construct($model, $spaces);
 	}
 
@@ -50,13 +47,13 @@ class tx_form_view_mail_plain_element_hidden extends tx_form_view_mail_plain_ele
 		return str_repeat(chr(32), $this->spaces) . $content;
 	}
 
-	private function getLabel() {
+	protected function getLabel() {
 		$label = $this->model->getName();
 
 		return $label;
 	}
 
-	private function getValue() {
+	protected function getValue() {
 		$value = $this->model->getAttributeValue('value');
 
 		return $value;

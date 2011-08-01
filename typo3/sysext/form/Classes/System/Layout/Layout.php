@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_layout implements t3lib_Singleton {
+class tx_Form_System_Layout implements t3lib_Singleton {
 
 	/**
 	 * Layout array from form configuration
@@ -45,7 +43,6 @@ class tx_form_system_layout implements t3lib_Singleton {
 	 *
 	 * @param $layout array Layout array from form configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($layout = array()) {
 		$this->setLayout($layout);
@@ -61,7 +58,6 @@ class tx_form_system_layout implements t3lib_Singleton {
 	 * @param $layoutDefault string The default layout of the object
 	 * @param $layoutOverride string Assigned layout to this object
 	 * @return string The new layout if changed
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getLayoutByObject($elementName, $layoutDefault, $layoutOverride = '') {
 		if(!empty($layoutOverride)) {
@@ -79,8 +75,7 @@ class tx_form_system_layout implements t3lib_Singleton {
 	 * Overrides the default layout configuration for one or more elements
 	 *
 	 * @param array $layout The layout array
-	 * @return tx_form_system_layout
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 * @return tx_Form_System_Layout
 	 */
 	public function setLayout($layout = array()) {
 		if(!empty($layout)) {
@@ -96,8 +91,7 @@ class tx_form_system_layout implements t3lib_Singleton {
 	 *
 	 * @param string $elementName Type of object
 	 * @param string $layout XML containing layout for element
-	 * @return tx_form_system_layout
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 * @return tx_Form_System_Layout
 	 */
 	public function setLayoutByElement($elementName, $layout) {
 		$this->layout[$elementName] = (string) $layout;

@@ -30,7 +30,7 @@
  * @author Oliver Hader <oliver.hader@typo3.org>
  * @license http://www.gnu.org/copyleft/gpl.html
  */
-class tx_form_Common implements t3lib_Singleton {
+class tx_Form_Common implements t3lib_Singleton {
 	/**
 	 * @var array
 	 */
@@ -39,10 +39,10 @@ class tx_form_Common implements t3lib_Singleton {
 	/**
 	 * Gets a singleton instance of this object.
 	 *
-	 * @return tx_form_Common
+	 * @return tx_Form_Common
 	 */
 	public static function getInstance() {
-		return t3lib_div::makeInstance('tx_form_Common');
+		return t3lib_div::makeInstance('tx_Form_Common');
 	}
 
 	/**
@@ -96,14 +96,14 @@ class tx_form_Common implements t3lib_Singleton {
 	/**
 	 * Initializes the available form objects.
 	 *
-	 * @return tx_form_Common
+	 * @return tx_Form_Common
 	 */
 	public function initializeFormObjects() {
 			// Assign new FORM objects
 		foreach($this->getFormObjects() as $formObject) {
 			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = array(
 				$formObject,
-				'EXT:form/Classes/Controller/Form.php:&tx_form_controller_form'
+				'EXT:form/Classes/Controller/Form.php:&tx_Form_Controller_Form'
 			);
 		}
 
@@ -113,7 +113,7 @@ class tx_form_Common implements t3lib_Singleton {
 	/**
 	 * Initializes the Page TSconfig properties.
 	 *
-	 * @return tx_form_Common
+	 * @return tx_Form_Common
 	 */
 	public function initializePageTsConfig() {
 		t3lib_extMgm::addPageTSConfig(

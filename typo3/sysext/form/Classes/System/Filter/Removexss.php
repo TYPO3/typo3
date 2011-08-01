@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,14 +29,13 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_filter_removexss implements tx_form_system_filter_interface {
+class tx_Form_System_Filter_Removexss implements tx_Form_System_Filter_Interface {
 
 	/**
 	 * Constructor
 	 *
 	 * @param array $arguments Filter configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments = array()) {
 	}
@@ -51,7 +48,6 @@ class tx_form_system_filter_removexss implements tx_form_system_filter_interface
 	 *
 	 * @param  string $value Unfiltered value
 	 * @return string The filtered value
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function filter($value) {
 		$value = stripslashes($value);
