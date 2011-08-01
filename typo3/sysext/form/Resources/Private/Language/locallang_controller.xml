@@ -9,10 +9,6 @@
 			<label index="tx_form_domain_model_element_button.value">Push this button</label>
 			<label index="tx_form_domain_model_element_submit.value">Submit form</label>
 			<label index="tx_form_domain_model_element_reset.value">Clear form</label>
-			<label index="tx_form_domain_model_element_captcha.captcha">Please enter here the word as displayed in the picture. This is to prevent spamming.</label>
-			<label index="tx_form_domain_model_element_captcha.simple_captcha"></label>
-			<label index="tx_form_domain_model_element_captcha.wt_calculating_captcha">Enter the result of the calculation on the image</label>
-			<label index="tx_form_domain_model_element_captcha.jm_recaptcha"></label>
 			<label index="tx_form_system_validate_alphabetic.message">Use alphabetic characters</label>
 			<label index="tx_form_system_validate_alphabetic.message2">whitespace allowed</label>
 			<label index="tx_form_system_validate_alphabetic.error">The value contains not only alphabetic characters</label>
@@ -23,8 +19,6 @@
 			<label index="tx_form_system_validate_between.message2">inclusively</label>
 			<label index="tx_form_system_validate_between.error">The value is not between %minimum and %maximum</label>
 			<label index="tx_form_system_validate_between.error2">inclusively</label>
-			<label index="tx_form_system_validate_captcha.message">Required</label>
-			<label index="tx_form_system_validate_captcha.error">The input does not match</label>
 			<label index="tx_form_system_validate_date.message">(%format)</label>
 			<label index="tx_form_system_validate_date.strftime.A">dddd</label>
 			<label index="tx_form_system_validate_date.strftime.a">ddd</label>

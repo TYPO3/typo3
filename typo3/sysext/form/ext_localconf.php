@@ -8,7 +8,6 @@ if (!defined('TYPO3_MODE')) {
 	// Declare new FORM objects
 $OBJECTS_form = array(
 	'BUTTON',
-	'CAPTCHA',
 	'CHECKBOX',
 	'CHECKBOXGROUP',
 	'FIELDSET',
@@ -56,7 +55,7 @@ prefix = tx_form
 						showAccordions = basic, predefined, content
 						accordions {
 							basic {
-								showButtons = captcha, checkbox, fieldset, fileupload, hidden, password, radio, reset, select, submit, textarea, textline
+								showButtons = checkbox, fieldset, fileupload, hidden, password, radio, reset, select, submit, textarea, textline
 							}
 							predefined {
 								showButtons = email, radiogroup, checkboxgroup, name
@@ -76,7 +75,7 @@ prefix = tx_form
 								showProperties = label
 							}
 							validation {
-								showRules = alphabetic, alphanumeric, between, captcha, date, digit, email, equals, fileallowedtypes, filemaximumsize, fileminimumsize, float, greaterthan, inarray, integer, ip, length, lessthan, regexp, required, uri
+								showRules = alphabetic, alphanumeric, between, date, digit, email, equals, fileallowedtypes, filemaximumsize, fileminimumsize, float, greaterthan, inarray, integer, ip, length, lessthan, regexp, required, uri
 								rules {
 									alphabetic {
 										showProperties = message, error, breakOnError, showMessage, allowWhiteSpace
@@ -86,9 +85,6 @@ prefix = tx_form
 									}
 									between {
 										showProperties = message, error, breakOnError, showMessage, minimum, maximum, inclusive
-									}
-									captcha {
-										showProperties = message, error, breakOnError, showMessage
 									}
 									date {
 										showProperties = message, error, breakOnError, showMessage, format
@@ -210,17 +206,6 @@ prefix = tx_form
 					accordions {
 						attributes {
 							showProperties = value
-						}
-					}
-				}
-				captcha {
-					showAccordions = label, attributes, validation
-					accordions {
-						attributes {
-							showProperties = name
-						}
-						validation {
-							showRules = captcha
 						}
 					}
 				}

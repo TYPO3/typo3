@@ -58,7 +58,6 @@ return array(
 	'tx_form_domain_model_form' => $domainPath . 'Model/Form.php',
 	'tx_form_domain_model_element_abstract' => $domainPath . 'Model/Element/Abstract.php',
 	'tx_form_domain_model_element_button' => $domainPath . 'Model/Element/Button.php',
-	'tx_form_domain_model_element_captcha' => $domainPath . 'Model/Element/Captcha.php',
 	'tx_form_domain_model_element_checkbox' => $domainPath . 'Model/Element/Checkbox.php',
 	'tx_form_domain_model_element_checkboxgroup' => $domainPath . 'Model/Element/Checkboxgroup.php',
 	'tx_form_domain_model_element_container' => $domainPath . 'Model/Element/Container.php',
@@ -79,7 +78,6 @@ return array(
 	'tx_form_domain_model_element_textline' => $domainPath . 'Model/Element/Textline.php',
 
 	'tx_form_domain_model_json_button' => $domainPath . 'Model/JSON/Button.php',
-	'tx_form_domain_model_json_captcha' => $domainPath . 'Model/JSON/Captcha.php',
 	'tx_form_domain_model_json_checkbox' => $domainPath . 'Model/JSON/Checkbox.php',
 	'tx_form_domain_model_json_checkboxgroup' => $domainPath . 'Model/JSON/Checkboxgroup.php',
 	'tx_form_domain_model_json_container' => $domainPath . 'Model/JSON/Container.php',
@@ -132,7 +130,6 @@ return array(
 	'tx_form_system_validate_alphabetic' => $systemPath . 'Validate/Alphabetic.php',
 	'tx_form_system_validate_alphanumeric' => $systemPath . 'Validate/Alphanumeric.php',
 	'tx_form_system_validate_between' => $systemPath . 'Validate/Between.php',
-	'tx_form_system_validate_captcha' => $systemPath . 'Validate/Captcha.php',
 	'tx_form_system_validate_date' => $systemPath . 'Validate/Date.php',
 	'tx_form_system_validate_digit' => $systemPath . 'Validate/Digit.php',
 	'tx_form_system_validate_email' => $systemPath . 'Validate/Email.php',
@@ -183,7 +180,6 @@ return array(
 
 	'tx_form_view_form_element_abstract' => $viewPath . 'Form/Element/Abstract.php',
 	'tx_form_view_form_element_button' => $viewPath . 'Form/Element/Button.php',
-	'tx_form_view_form_element_captcha' => $viewPath . 'Form/Element/Captcha.php',
 	'tx_form_view_form_element_checkbox' => $viewPath . 'Form/Element/Checkbox.php',
 	'tx_form_view_form_element_checkboxgroup' => $viewPath . 'Form/Element/Checkboxgroup.php',
 	'tx_form_view_form_element_container' => $viewPath . 'Form/Element/Container.php',

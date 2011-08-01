@@ -24,7 +24,6 @@
 			<label index="left_elements_intro_description">Drag or double-click elements to add</label>
 			<label index="left_elements_basic">Basic form elements</label>
 			<label index="basic_button">Button</label>
-			<label index="basic_captcha">Captcha</label>
 			<label index="basic_checkbox">Checkbox</label>
 			<label index="basic_fieldset">Fieldset</label>
 			<label index="basic_fileupload">Upload Field</label>
@@ -134,7 +133,6 @@
 			<label index="validation_alphabetic">Alphabetic</label>
 			<label index="validation_alphanumeric">Alphanumeric</label>
 			<label index="validation_between">Between</label>
-			<label index="validation_captcha">Captcha</label>
 			<label index="validation_date">Date</label>
 			<label index="validation_digit">Digit</label>
 			<label index="validation_email">Email address</label>

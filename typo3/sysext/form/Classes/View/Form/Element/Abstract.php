@@ -157,21 +157,6 @@ abstract class tx_form_view_form_element_abstract {
 							$node->parentNode->insertBefore($replaceNode, $node);
 							$deleteNode = TRUE;
 							break;
-						case 'captchaimage':
-							$replaceNode = $dom->createTextNode($this->getImage());
-							$node->parentNode->insertBefore($replaceNode, $node);
-							$deleteNode = TRUE;
-							break;
-						case 'captchareload':
-							$replaceNode = $dom->createTextNode($this->getReload());
-							$node->parentNode->insertBefore($replaceNode, $node);
-							$deleteNode = TRUE;
-							break;
-						case 'captchaaccessible':
-							$replaceNode = $dom->createTextNode($this->getAccessibility());
-							$node->parentNode->insertBefore($replaceNode, $node);
-							$deleteNode = TRUE;
-							break;
 					}
 					break;
 			}
