@@ -26,7 +26,7 @@
  ***************************************************************/
 
 /**
- * Verify TYPO3 DB table structure. ainly used in install tool
+ * Verify TYPO3 DB table structure. mainly used in install tool
  * compare wizard and extension manager.
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
