@@ -7344,6 +7344,23 @@ class tslib_cObj {
 	 */
 	function getQuery($table, $conf, $returnQueryArray = FALSE) {
 
+			// Resolve stdWrap in these properties first
+		$properties = array(
+			'pidInList', 'uidInList', 'languageField', 'selectFields', 'max', 'begin', 'groupBy', 'orderBy', 'join', 'leftjoin', 'rightjoin'
+		);
+		foreach ($properties as $property) {
+			$conf[$property] = isset($conf[$property . '.'])
+					? trim($this->stdWrap($conf[$property], $conf[$property . '.']))
+					: trim($conf[$property]);
+			if (!$conf[$property]) {
+				unset($conf[$property]);
+			}
+			if (isset($conf[$property . '.'])) {
+					// stdWrapping already done, so remove the sub-array
+				unset($conf[$property . '.']);
+			}
+		}
+
 			// Handle PDO-style named parameter markers first
 		$queryMarkers = $this->getQueryMarkers($table, $conf);
 
@@ -7360,14 +7377,12 @@ class tslib_cObj {
 		}
 
 			// Construct WHERE clause:
-		$conf['pidInList'] = isset($conf['pidInList.'])
-			? trim($this->stdWrap($conf['pidInList'], $conf['pidInList.']))
-			: trim($conf['pidInList']);
 
 			// Handle recursive function for the pidInList
 		if (isset($conf['recursive'])) {
 			$conf['recursive'] = intval($conf['recursive']);
 			if ($conf['recursive'] > 0) {
+				$pidList = '';
 				foreach (explode(',', $conf['pidInList']) as $value) {
 					if ($value === 'this') {
 						$value = $GLOBALS['TSFE']->id;
@@ -7422,11 +7437,11 @@ class tslib_cObj {
 				// Setting up tablejoins:
 			$joinPart = '';
 			if ($conf['join']) {
-				$joinPart = 'JOIN ' . trim($conf['join']);
+				$joinPart = 'JOIN ' . $conf['join'];
 			} elseif ($conf['leftjoin']) {
-				$joinPart = 'LEFT OUTER JOIN ' . trim($conf['leftjoin']);
+				$joinPart = 'LEFT OUTER JOIN ' . $conf['leftjoin'];
 			} elseif ($conf['rightjoin']) {
-				$joinPart = 'RIGHT OUTER JOIN ' . trim($conf['rightjoin']);
+				$joinPart = 'RIGHT OUTER JOIN ' . $conf['rightjoin'];
 			}
 
 				// Compile and return query:
