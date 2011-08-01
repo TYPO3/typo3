@@ -37,9 +37,10 @@ interface tslib_adminPanelHook {
 	/**
 	 * Extend the adminPanel
 	 *
-	 * @param tslib_AdminPanel The adminPanel object
-	 * @return string Returns additional code
+	 * @param string $moduleContent Content of the admin panel
+	 * @param tslib_AdminPanel $obj The adminPanel object
+	 * @return string Returns content of admin panel
 	 */
-	public function extendAdminPanel(tslib_AdminPanel $obj);
+	public function extendAdminPanel($moduleContent, tslib_AdminPanel $obj);
 }
 ?>
