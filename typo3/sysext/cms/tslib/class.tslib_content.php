@@ -7335,8 +7335,13 @@ class tslib_cObj {
 				'uidInList', 'selectFields', 'where', 'max', 'begin', 'groupBy', 'orderBy', 'join', 'leftjoin', 'rightjoin'
 			);
 			foreach ($properties as $property) {
+				$conf[$property] = isset($conf[$property.'.'])
+						? trim($this->stdWrap($conf[$property], $conf[$property.'.']))
+						: trim($conf[$property]);
 				if ($conf[$property]) {
 					$conf[$property] = str_replace('###' . $marker . '###', $markerValue, $conf[$property]);
+				} else {
+					unset($conf[$property]);
 				}
 			}
 		}
@@ -7348,7 +7353,9 @@ class tslib_cObj {
 
 			// Handle recursive function for the pidInList
 		if (isset($conf['recursive'])) {
-			$conf['recursive'] = intval($conf['recursive']);
+			$conf['recursive'] = isset($conf['recursive.'])
+				? intval($this->stdWrap($conf['recursive'], $conf['recursive.']))
+				: intval($conf['recursive']);
 			if ($conf['recursive'] > 0) {
 				foreach (explode(',', $conf['pidInList']) as $value) {
 					if ($value === 'this') {
@@ -7404,11 +7411,11 @@ class tslib_cObj {
 				// Setting up tablejoins:
 			$joinPart = '';
 			if ($conf['join']) {
-				$joinPart = 'JOIN ' . trim($conf['join']);
+				$joinPart = 'JOIN ' . $conf['join'];
 			} elseif ($conf['leftjoin']) {
-				$joinPart = 'LEFT OUTER JOIN ' . trim($conf['leftjoin']);
+				$joinPart = 'LEFT OUTER JOIN ' . $conf['leftjoin'];
 			} elseif ($conf['rightjoin']) {
-				$joinPart = 'RIGHT OUTER JOIN ' . trim($conf['rightjoin']);
+				$joinPart = 'RIGHT OUTER JOIN ' . $conf['rightjoin'];
 			}
 
 				// Compile and return query:
