@@ -7335,8 +7335,8 @@ class tslib_cObj {
 				'uidInList', 'selectFields', 'where', 'max', 'begin', 'groupBy', 'orderBy', 'join', 'leftjoin', 'rightjoin'
 			);
 			foreach ($properties as $property) {
-				$conf[$property] = isset($conf[$property.'.'])
-						? trim($this->stdWrap($conf[$property], $conf[$property.'.']))
+				$conf[$property] = isset($conf[$property . '.'])
+						? trim($this->stdWrap($conf[$property], $conf[$property . '.']))
 						: trim($conf[$property]);
 				if ($conf[$property]) {
 					$conf[$property] = str_replace('###' . $marker . '###', $markerValue, $conf[$property]);
