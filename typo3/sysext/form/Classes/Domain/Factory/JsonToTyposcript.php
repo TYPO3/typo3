@@ -111,7 +111,6 @@ class tx_form_domain_factory_jsontotyposcript {
 					$this->elementId++;
 					switch($element['xtype']) {
 						case 'typo3-form-wizard-elements-basic-button':
-						case 'typo3-form-wizard-elements-basic-captcha':
 						case 'typo3-form-wizard-elements-basic-checkbox':
 						case 'typo3-form-wizard-elements-basic-fileupload':
 						case 'typo3-form-wizard-elements-basic-hidden':
@@ -388,7 +387,6 @@ class tx_form_domain_factory_jsontotyposcript {
 	private function setLayout($element, $value, &$parent, $elementCounter) {
 		switch($element['xtype']) {
 			case 'typo3-form-wizard-elements-basic-button':
-			case 'typo3-form-wizard-elements-basic-captcha':
 			case 'typo3-form-wizard-elements-basic-fileupload':
 			case 'typo3-form-wizard-elements-basic-password':
 			case 'typo3-form-wizard-elements-basic-reset':

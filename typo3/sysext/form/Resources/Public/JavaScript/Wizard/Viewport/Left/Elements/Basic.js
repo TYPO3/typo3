@@ -50,16 +50,6 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Basic = Ext.extend(TYPO3.Form.Wizard.Vi
 						scope: this
 					});
 					break;
-				case 'captcha':
-					buttons.push({
-						text: TYPO3.lang.basic_captcha,
-						id: 'basic-captcha',
-						clickEvent: 'dblclick',
-						handler: this.onDoubleClick,
-						iconCls: 'formwizard-left-elements-basic-captcha',
-						scope: this
-					});
-					break;
 				case 'checkbox':
 					buttons.push({
 						text: TYPO3.lang.basic_checkbox,
