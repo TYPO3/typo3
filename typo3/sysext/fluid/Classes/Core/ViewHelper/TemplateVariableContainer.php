@@ -36,7 +36,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer implements ArrayAccess 
 	 * List of reserved words that can't be used as variable identifiers in Fluid templates
 	 * @var array
 	 */
-	static protected $reservedVariableNames = array('true', 'false', 'on', 'off', 'yes', 'no');
+	static protected $reservedVariableNames = array('true', 'false', 'on', 'off', 'yes', 'no', '_all');
 
 	/**
 	 * Variables stored in context
@@ -80,6 +80,9 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer implements ArrayAccess 
 	 * @api
 	 */
 	public function get($identifier) {
+		if ($identifier === '_all') {
+			return $this->variables;
+		}
 		if (!array_key_exists($identifier, $this->variables)) throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException('Tried to get a variable "' . $identifier . '" which is not stored in the context!', 1224479370);
 		return $this->variables[$identifier];
 	}
@@ -126,6 +129,10 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer implements ArrayAccess 
 	 * @api
 	 */
 	public function exists($identifier) {
+		if ($identifier === '_all') {
+			return TRUE;
+		}
+
 		return array_key_exists($identifier, $this->variables);
 	}
 

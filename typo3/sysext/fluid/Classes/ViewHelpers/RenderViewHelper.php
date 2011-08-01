@@ -67,6 +67,15 @@
  * (depending on the value of {menu})
  * </output>
  *
+ *
+ * <code title="Passing all variables to a partial">
+ * <f:render partial="somePartial" arguments="{_all}" />
+ * </code>
+ * <output>
+ * the content of the partial "somePartial".
+ * Using the reserved keyword "_all", all available variables will be passed along to the partial
+ * </output>
+ *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
