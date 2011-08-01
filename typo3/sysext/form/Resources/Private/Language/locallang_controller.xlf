@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 17:59:26 UTC" product-name="form">
+    <header/>
+    <body>
+      <trans-unit id="tx_form_domain_model_element_button.value">
+        <source>Push this button</source>
+        <target approved="yes">Push this button</target>
+      </trans-unit>
+      <trans-unit id="tx_form_domain_model_element_submit.value">
+        <source>Submit form</source>
+        <target approved="yes">Submit form</target>
+      </trans-unit>
+      <trans-unit id="tx_form_domain_model_element_reset.value">
+        <source>Clear form</source>
+        <target approved="yes">Clear form</target>
+      </trans-unit>
+      <trans-unit id="tx_form_domain_model_element_captcha.captcha">
+        <source>Please enter here the word as displayed in the picture. This is to prevent spamming.</source>
+        <target approved="yes">Please enter here the word as displayed in the picture. This is to prevent spamming.</target>
+      </trans-unit>
+      <trans-unit id="tx_form_domain_model_element_captcha.simple_captcha">
+        <source/>
+        <target approved="yes"/>
+      </trans-unit>
+      <trans-unit id="tx_form_domain_model_element_captcha.wt_calculating_captcha">
+        <source>Enter the result of the calculation on the image</source>
+        <target approved="yes">Enter the result of the calculation on the image</target>
+      </trans-unit>
+      <trans-unit id="tx_form_domain_model_element_captcha.jm_recaptcha">
+        <source/>
+        <target approved="yes"/>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_alphabetic.message">
+        <source>Use alphabetic characters</source>
+        <target approved="yes">Use alphabetic characters</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_alphabetic.message2">
+        <source>whitespace allowed</source>
+        <target approved="yes">whitespace allowed</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_alphabetic.error">
+        <source>The value contains not only alphabetic characters</source>
+        <target approved="yes">The value contains not only alphabetic characters</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_alphanumeric.message">
+        <source>Use alphanumeric characters</source>
+        <target approved="yes">Use alphanumeric characters</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_alphanumeric.message2">
+        <source>whitespace allowed</source>
+        <target approved="yes">whitespace allowed</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_alphanumeric.error">
+        <source>The value contains not only alphanumeric characters</source>
+        <target approved="yes">The value contains not only alphanumeric characters</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_between.message">
+        <source>The value must be between %minimum and %maximum</source>
+        <target approved="yes">The value must be between %minimum and %maximum</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_between.message2">
+        <source>inclusively</source>
+        <target approved="yes">inclusively</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_between.error">
+        <source>The value is not between %minimum and %maximum</source>
+        <target approved="yes">The value is not between %minimum and %maximum</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_between.error2">
+        <source>inclusively</source>
+        <target approved="yes">inclusively</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_captcha.message">
+        <source>Required</source>
+        <target approved="yes">Required</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_captcha.error">
+        <source>The input does not match</source>
+        <target approved="yes">The input does not match</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_date.message">
+        <source>(%format)</source>
+        <target approved="yes">(%format)</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_date.strftime.A">
+        <source>dddd</source>
+        <target approved="yes">dddd</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_date.strftime.a">
+        <source>ddd</source>
+        <target approved="yes">ddd</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_date.strftime.d">
+        <source>dd</source>
+        <target approved="yes">dd</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_date.strftime.e">
+        <source>d</source>
+        <target approved="yes">d</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_date.strftime.B">
+        <source>mmmm</source>
+        <target approved="yes">mmmm</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_date.strftime.b">
+        <source>mmm</source>
+        <target approved="yes">mmm</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_date.strftime.m">
+        <source>mm</source>
+        <target approved="yes">mm</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_date.strftime.Y">
+        <source>yyyy</source>
+        <target approved="yes">yyyy</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_date.strftime.y">
+        <source>yy</source>
+        <target approved="yes">yy</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_date.strftime.H">
+        <source>HH</source>
+        <target approved="yes">HH</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_date.strftime.I">
+        <source>hh</source>
+        <target approved="yes">hh</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_date.strftime.M">
+        <source>mm</source>
+        <target approved="yes">mm</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_date.strftime.S">
+        <source>ss</source>
+        <target approved="yes">ss</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_date.error">
+        <source>The value does not appear to be a valid date</source>
+        <target approved="yes">The value does not appear to be a valid date</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_digit.message">
+        <source>Use digit characters</source>
+        <target approved="yes">Use digit characters</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_digit.error">
+        <source>The value contains not only digit characters</source>
+        <target approved="yes">The value contains not only digit characters</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_email.message">
+        <source>(john.doe@domain.com)</source>
+        <target approved="yes">(john.doe@domain.com)</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_email.error">
+        <source>This is not a valid email address</source>
+        <target approved="yes">This is not a valid email address</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_equals.message">
+        <source>This field must be equal to '%field'</source>
+        <target approved="yes">This field must be equal to '%field'</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_equals.error">
+        <source>The value does not equal the value in field '%field'</source>
+        <target approved="yes">The value does not equal the value in field '%field'</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_fileallowedtypes.message">
+        <source>(%allowedTypes)</source>
+        <target approved="yes">(%allowedTypes)</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_fileallowedtypes.error">
+        <source>The file type is not allowed</source>
+        <target approved="yes">The file type is not allowed</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_filemaximumsize.message">
+        <source>The filesize must be smaller than %maximum</source>
+        <target approved="yes">The filesize must be smaller than %maximum</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_filemaximumsize.error">
+        <source>The filesize is too big</source>
+        <target approved="yes">The filesize is too big</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_fileminimumsize.message">
+        <source>The filesize must be bigger than %minimum</source>
+        <target approved="yes">The filesize must be bigger than %minimum</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_fileminimumsize.error">
+        <source>The filesize is too small</source>
+        <target approved="yes">The filesize is too small</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_float.message">
+        <source>Enter a float</source>
+        <target approved="yes">Enter a float</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_float.error">
+        <source>The value does not appear to be a float</source>
+        <target approved="yes">The value does not appear to be a float</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_greaterthan.message">
+        <source>The value must be greater than %minimum</source>
+        <target approved="yes">The value must be greater than %minimum</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_greaterthan.error">
+        <source>The value does not appear to be greater than %minimum</source>
+        <target approved="yes">The value does not appear to be greater than %minimum</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_inarray.message">
+        <source>Only a few values are possible</source>
+        <target approved="yes">Only a few values are possible</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_inarray.error">
+        <source>The value does not appear to be valid</source>
+        <target approved="yes">The value does not appear to be valid</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_integer.message">
+        <source>Use a integer</source>
+        <target approved="yes">Use a integer</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_integer.error">
+        <source>The value does not appear to be an integer</source>
+        <target approved="yes">The value does not appear to be an integer</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_ip.message">
+        <source>(123.123.123.123)</source>
+        <target approved="yes">(123.123.123.123)</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_ip.error">
+        <source>The value does not appear to be a valid IP address</source>
+        <target approved="yes">The value does not appear to be a valid IP address</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_length.message">
+        <source>The length of the value must have a minimum of %minimum characters</source>
+        <target approved="yes">The length of the value must have a minimum of %minimum characters</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_length.message2">
+        <source>and a maximum of %maximum</source>
+        <target approved="yes">and a maximum of %maximum</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_length.error">
+        <source>The value is less than %minimum characters long</source>
+        <target approved="yes">The value is less than %minimum characters long</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_length.error2">
+        <source>or longer than %maximum</source>
+        <target approved="yes">or longer than %maximum</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_lessthan.message">
+        <source>The value must be less than %maximum</source>
+        <target approved="yes">The value must be less than %maximum</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_lessthan.error">
+        <source>The value does not appear to be less than %maximum</source>
+        <target approved="yes">The value does not appear to be less than %maximum</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_regexp.message">
+        <source>Use the right pattern</source>
+        <target approved="yes">Use the right pattern</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_regexp.error">
+        <source>The value does not match against pattern</source>
+        <target approved="yes">The value does not match against pattern</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_required.message">
+        <source>Required</source>
+        <target approved="yes">Required</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_required.error">
+        <source>This field is required</source>
+        <target approved="yes">This field is required</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_uri.message">
+        <source>The value must be a URI</source>
+        <target approved="yes">The value must be a URI</target>
+      </trans-unit>
+      <trans-unit id="tx_form_system_validate_uri.error">
+        <source>The value does not appear to be a URI</source>
+        <target approved="yes">The value does not appear to be a URI</target>
+      </trans-unit>
+      <trans-unit id="tx_form_view_confirmation.message">
+        <source>Please check your input and confirm by using the appropriate button</source>
+        <target approved="yes">Please check your input and confirm by using the appropriate button</target>
+      </trans-unit>
+      <trans-unit id="tx_form_view_confirmation.confirm">
+        <source>Confirm</source>
+        <target approved="yes">Confirm</target>
+      </trans-unit>
+      <trans-unit id="tx_form_view_confirmation.donotconfirm">
+        <source>Go back to the form</source>
+        <target approved="yes">Go back to the form</target>
+      </trans-unit>
+      <trans-unit id="tx_form_view_mail.success">
+        <source>The form has been sent successfully by mail</source>
+        <target approved="yes">The form has been sent successfully by mail</target>
+      </trans-unit>
+      <trans-unit id="tx_form_view_mail.error">
+        <source>There was an error when sending the form by mail</source>
+        <target approved="yes">There was an error when sending the form by mail</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
