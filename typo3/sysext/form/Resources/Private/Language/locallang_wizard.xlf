@@ -1,0 +1,816 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:23 UTC" product-name="form">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Form Wizard</source>
+        <target approved="yes">Form Wizard</target>
+      </trans-unit>
+      <trans-unit id="yes">
+        <source>Yes</source>
+        <target approved="yes">Yes</target>
+      </trans-unit>
+      <trans-unit id="no">
+        <source>No</source>
+        <target approved="yes">No</target>
+      </trans-unit>
+      <trans-unit id="refresh">
+        <source>Refresh without saving</source>
+        <target approved="yes">Refresh without saving</target>
+      </trans-unit>
+      <trans-unit id="errorTitle">
+        <source>Wizard error</source>
+        <target approved="yes">Wizard error</target>
+      </trans-unit>
+      <trans-unit id="errorMessage">
+        <source>No reference to record</source>
+        <target approved="yes">No reference to record</target>
+      </trans-unit>
+      <trans-unit id="save">
+        <source>Save form</source>
+        <target approved="yes">Save form</target>
+      </trans-unit>
+      <trans-unit id="saveAndClose">
+        <source>Save and close form</source>
+        <target approved="yes">Save and close form</target>
+      </trans-unit>
+      <trans-unit id="history_undo">
+        <source>Undo</source>
+        <target approved="yes">Undo</target>
+      </trans-unit>
+      <trans-unit id="history_redo">
+        <source>Redo</source>
+        <target approved="yes">Redo</target>
+      </trans-unit>
+      <trans-unit id="action_save">
+        <source>Saving form</source>
+        <target approved="yes">Saving form</target>
+      </trans-unit>
+      <trans-unit id="action_save_error">
+        <source>Server-side failure with status code</source>
+        <target approved="yes">Server-side failure with status code</target>
+      </trans-unit>
+      <trans-unit id="button_remove">
+        <source>Remove</source>
+        <target approved="yes">Remove</target>
+      </trans-unit>
+      <trans-unit id="left_elements">
+        <source>Elements</source>
+        <target approved="yes">Elements</target>
+      </trans-unit>
+      <trans-unit id="left_elements_intro_title">
+        <source>Adding elements to the form</source>
+        <target approved="yes">Adding elements to the form</target>
+      </trans-unit>
+      <trans-unit id="left_elements_intro_description">
+        <source>Drag or double-click elements to add</source>
+        <target approved="yes">Drag or double-click elements to add</target>
+      </trans-unit>
+      <trans-unit id="left_elements_basic">
+        <source>Basic form elements</source>
+        <target approved="yes">Basic form elements</target>
+      </trans-unit>
+      <trans-unit id="basic_button">
+        <source>Button</source>
+        <target approved="yes">Button</target>
+      </trans-unit>
+      <trans-unit id="basic_checkbox">
+        <source>Checkbox</source>
+        <target approved="yes">Checkbox</target>
+      </trans-unit>
+      <trans-unit id="basic_fieldset">
+        <source>Fieldset</source>
+        <target approved="yes">Fieldset</target>
+      </trans-unit>
+      <trans-unit id="basic_fileupload">
+        <source>Upload Field</source>
+        <target approved="yes">Upload Field</target>
+      </trans-unit>
+      <trans-unit id="basic_hidden">
+        <source>Hidden Field</source>
+        <target approved="yes">Hidden Field</target>
+      </trans-unit>
+      <trans-unit id="basic_password">
+        <source>Password Field</source>
+        <target approved="yes">Password Field</target>
+      </trans-unit>
+      <trans-unit id="basic_radio">
+        <source>Radio Button</source>
+        <target approved="yes">Radio Button</target>
+      </trans-unit>
+      <trans-unit id="basic_reset">
+        <source>Reset Button</source>
+        <target approved="yes">Reset Button</target>
+      </trans-unit>
+      <trans-unit id="basic_select">
+        <source>Drop Down</source>
+        <target approved="yes">Drop Down</target>
+      </trans-unit>
+      <trans-unit id="basic_submit">
+        <source>Submit Button</source>
+        <target approved="yes">Submit Button</target>
+      </trans-unit>
+      <trans-unit id="basic_textarea">
+        <source>Text Area</source>
+        <target approved="yes">Text Area</target>
+      </trans-unit>
+      <trans-unit id="basic_textline">
+        <source>Text Field</source>
+        <target approved="yes">Text Field</target>
+      </trans-unit>
+      <trans-unit id="left_elements_content">
+        <source>Content elements</source>
+        <target approved="yes">Content elements</target>
+      </trans-unit>
+      <trans-unit id="content_header">
+        <source>Header</source>
+        <target approved="yes">Header</target>
+      </trans-unit>
+      <trans-unit id="left_elements_predefined">
+        <source>Predefined form elements</source>
+        <target approved="yes">Predefined form elements</target>
+      </trans-unit>
+      <trans-unit id="predefined_email">
+        <source>Email</source>
+        <target approved="yes">Email</target>
+      </trans-unit>
+      <trans-unit id="predefined_radiogroup">
+        <source>Radio Button Group</source>
+        <target approved="yes">Radio Button Group</target>
+      </trans-unit>
+      <trans-unit id="predefined_checkboxgroup">
+        <source>Checkbox Group</source>
+        <target approved="yes">Checkbox Group</target>
+      </trans-unit>
+      <trans-unit id="predefined_name">
+        <source>Full Name</source>
+        <target approved="yes">Full Name</target>
+      </trans-unit>
+      <trans-unit id="left_options">
+        <source>Options</source>
+        <target approved="yes">Options</target>
+      </trans-unit>
+      <trans-unit id="options_error">
+        <source>Error</source>
+        <target approved="yes">Error</target>
+      </trans-unit>
+      <trans-unit id="options_error_message">
+        <source>There is an error in the settings of the current element. Please check!</source>
+        <target approved="yes">There is an error in the settings of the current element. Please check!</target>
+      </trans-unit>
+      <trans-unit id="options_dummy_title">
+        <source>Please select an element on the right</source>
+        <target approved="yes">Please select an element on the right</target>
+      </trans-unit>
+      <trans-unit id="options_dummy_description">
+        <source>When an element has been selected, this area will show the options for the selected element</source>
+        <target approved="yes">When an element has been selected, this area will show the options for the selected element</target>
+      </trans-unit>
+      <trans-unit id="options_attributes">
+        <source>Attributes Properties</source>
+        <target approved="yes">Attributes Properties</target>
+      </trans-unit>
+      <trans-unit id="attributes_accept">
+        <source>Accept</source>
+        <target approved="yes">Accept</target>
+      </trans-unit>
+      <trans-unit id="attributes_acceptcharset">
+        <source>Acceptcharset</source>
+        <target approved="yes">Acceptcharset</target>
+      </trans-unit>
+      <trans-unit id="attributes_accesskey">
+        <source>Accesskey</source>
+        <target approved="yes">Accesskey</target>
+      </trans-unit>
+      <trans-unit id="attributes_action">
+        <source>Action</source>
+        <target approved="yes">Action</target>
+      </trans-unit>
+      <trans-unit id="attributes_alt">
+        <source>Alt</source>
+        <target approved="yes">Alt</target>
+      </trans-unit>
+      <trans-unit id="attributes_checked">
+        <source>Checked</source>
+        <target approved="yes">Checked</target>
+      </trans-unit>
+      <trans-unit id="attributes_class">
+        <source>Class</source>
+        <target approved="yes">Class</target>
+      </trans-unit>
+      <trans-unit id="attributes_cols">
+        <source>Cols</source>
+        <target approved="yes">Cols</target>
+      </trans-unit>
+      <trans-unit id="attributes_dir">
+        <source>Dir</source>
+        <target approved="yes">Dir</target>
+      </trans-unit>
+      <trans-unit id="attributes_dir_ltr">
+        <source>Left to right</source>
+        <target approved="yes">Left to right</target>
+      </trans-unit>
+      <trans-unit id="attributes_dir_rtl">
+        <source>Right to left</source>
+        <target approved="yes">Right to left</target>
+      </trans-unit>
+      <trans-unit id="attributes_disabled">
+        <source>Disabled</source>
+        <target approved="yes">Disabled</target>
+      </trans-unit>
+      <trans-unit id="attributes_enctype">
+        <source>Enctype</source>
+        <target approved="yes">Enctype</target>
+      </trans-unit>
+      <trans-unit id="attributes_enctype_1">
+        <source>Encoded</source>
+        <target approved="yes">Encoded</target>
+      </trans-unit>
+      <trans-unit id="attributes_enctype_2">
+        <source>No encoding - File upload</source>
+        <target approved="yes">No encoding - File upload</target>
+      </trans-unit>
+      <trans-unit id="attributes_enctype_3">
+        <source>No encoding - Spaces converted</source>
+        <target approved="yes">No encoding - Spaces converted</target>
+      </trans-unit>
+      <trans-unit id="attributes_id">
+        <source>Id</source>
+        <target approved="yes">Id</target>
+      </trans-unit>
+      <trans-unit id="attributes_label">
+        <source>Label</source>
+        <target approved="yes">Label</target>
+      </trans-unit>
+      <trans-unit id="attributes_lang">
+        <source>Lang</source>
+        <target approved="yes">Lang</target>
+      </trans-unit>
+      <trans-unit id="attributes_maxlength">
+        <source>Maxlength</source>
+        <target approved="yes">Maxlength</target>
+      </trans-unit>
+      <trans-unit id="attributes_method">
+        <source>Method</source>
+        <target approved="yes">Method</target>
+      </trans-unit>
+      <trans-unit id="attributes_method_get">
+        <source>Get</source>
+        <target approved="yes">Get</target>
+      </trans-unit>
+      <trans-unit id="attributes_method_post">
+        <source>Post</source>
+        <target approved="yes">Post</target>
+      </trans-unit>
+      <trans-unit id="attributes_multiple">
+        <source>Multiple</source>
+        <target approved="yes">Multiple</target>
+      </trans-unit>
+      <trans-unit id="attributes_name">
+        <source>Name</source>
+        <target approved="yes">Name</target>
+      </trans-unit>
+      <trans-unit id="attributes_readonly">
+        <source>Readonly</source>
+        <target approved="yes">Readonly</target>
+      </trans-unit>
+      <trans-unit id="attributes_rows">
+        <source>Rows</source>
+        <target approved="yes">Rows</target>
+      </trans-unit>
+      <trans-unit id="attributes_selected">
+        <source>Selected</source>
+        <target approved="yes">Selected</target>
+      </trans-unit>
+      <trans-unit id="attributes_size">
+        <source>Size</source>
+        <target approved="yes">Size</target>
+      </trans-unit>
+      <trans-unit id="attributes_src">
+        <source>Src</source>
+        <target approved="yes">Src</target>
+      </trans-unit>
+      <trans-unit id="attributes_style">
+        <source>Style</source>
+        <target approved="yes">Style</target>
+      </trans-unit>
+      <trans-unit id="attributes_tabindex">
+        <source>Tabindex</source>
+        <target approved="yes">Tabindex</target>
+      </trans-unit>
+      <trans-unit id="attributes_title">
+        <source>Title</source>
+        <target approved="yes">Title</target>
+      </trans-unit>
+      <trans-unit id="attributes_type">
+        <source>Type</source>
+        <target approved="yes">Type</target>
+      </trans-unit>
+      <trans-unit id="attributes_type_button">
+        <source>button</source>
+        <target approved="yes">button</target>
+      </trans-unit>
+      <trans-unit id="attributes_type_checkbox">
+        <source>checkbox</source>
+        <target approved="yes">checkbox</target>
+      </trans-unit>
+      <trans-unit id="attributes_type_file">
+        <source>file</source>
+        <target approved="yes">file</target>
+      </trans-unit>
+      <trans-unit id="attributes_type_hidden">
+        <source>hidden</source>
+        <target approved="yes">hidden</target>
+      </trans-unit>
+      <trans-unit id="attributes_type_image">
+        <source>image</source>
+        <target approved="yes">image</target>
+      </trans-unit>
+      <trans-unit id="attributes_type_password">
+        <source>password</source>
+        <target approved="yes">password</target>
+      </trans-unit>
+      <trans-unit id="attributes_type_radio">
+        <source>radio</source>
+        <target approved="yes">radio</target>
+      </trans-unit>
+      <trans-unit id="attributes_type_reset">
+        <source>reset</source>
+        <target approved="yes">reset</target>
+      </trans-unit>
+      <trans-unit id="attributes_type_submit">
+        <source>submit</source>
+        <target approved="yes">submit</target>
+      </trans-unit>
+      <trans-unit id="attributes_type_text">
+        <source>text</source>
+        <target approved="yes">text</target>
+      </trans-unit>
+      <trans-unit id="attributes_value">
+        <source>Value</source>
+        <target approved="yes">Value</target>
+      </trans-unit>
+      <trans-unit id="options_label">
+        <source>Label Properties</source>
+        <target approved="yes">Label Properties</target>
+      </trans-unit>
+      <trans-unit id="label_label">
+        <source>Label</source>
+        <target approved="yes">Label</target>
+      </trans-unit>
+      <trans-unit id="label_layout">
+        <source>Label position</source>
+        <target approved="yes">Label position</target>
+      </trans-unit>
+      <trans-unit id="label_layout_front">
+        <source>In front</source>
+        <target approved="yes">In front</target>
+      </trans-unit>
+      <trans-unit id="label_layout_back">
+        <source>After</source>
+        <target approved="yes">After</target>
+      </trans-unit>
+      <trans-unit id="options_legend">
+        <source>Legend Properties</source>
+        <target approved="yes">Legend Properties</target>
+      </trans-unit>
+      <trans-unit id="legend_legend">
+        <source>Legend</source>
+        <target approved="yes">Legend</target>
+      </trans-unit>
+      <trans-unit id="options_filters">
+        <source>Filters</source>
+        <target approved="yes">Filters</target>
+      </trans-unit>
+      <trans-unit id="filters_emptytext">
+        <source>Add a filter</source>
+        <target approved="yes">Add a filter</target>
+      </trans-unit>
+      <trans-unit id="filters_alert_title">
+        <source>Adding a filter</source>
+        <target approved="yes">Adding a filter</target>
+      </trans-unit>
+      <trans-unit id="filters_alert_description">
+        <source>The selected filter is already present</source>
+        <target approved="yes">The selected filter is already present</target>
+      </trans-unit>
+      <trans-unit id="filters_dummy_title">
+        <source>No filter selected</source>
+        <target approved="yes">No filter selected</target>
+      </trans-unit>
+      <trans-unit id="filters_dummy_description">
+        <source>To add a filter, select one from the dropdown</source>
+        <target approved="yes">To add a filter, select one from the dropdown</target>
+      </trans-unit>
+      <trans-unit id="filters_alphabetic">
+        <source>Alphabetic</source>
+        <target approved="yes">Alphabetic</target>
+      </trans-unit>
+      <trans-unit id="filters_alphanumeric">
+        <source>Alphanumeric</source>
+        <target approved="yes">Alphanumeric</target>
+      </trans-unit>
+      <trans-unit id="filters_currency">
+        <source>Currency</source>
+        <target approved="yes">Currency</target>
+      </trans-unit>
+      <trans-unit id="filters_digit">
+        <source>Digit</source>
+        <target approved="yes">Digit</target>
+      </trans-unit>
+      <trans-unit id="filters_integer">
+        <source>Integer</source>
+        <target approved="yes">Integer</target>
+      </trans-unit>
+      <trans-unit id="filters_lowercase">
+        <source>Lowercase</source>
+        <target approved="yes">Lowercase</target>
+      </trans-unit>
+      <trans-unit id="filters_regexp">
+        <source>Regular Expression</source>
+        <target approved="yes">Regular Expression</target>
+      </trans-unit>
+      <trans-unit id="filters_removexss">
+        <source>Remove XSS</source>
+        <target approved="yes">Remove XSS</target>
+      </trans-unit>
+      <trans-unit id="filters_stripnewlines">
+        <source>Strip New Lines</source>
+        <target approved="yes">Strip New Lines</target>
+      </trans-unit>
+      <trans-unit id="filters_titlecase">
+        <source>Titlecase</source>
+        <target approved="yes">Titlecase</target>
+      </trans-unit>
+      <trans-unit id="filters_trim">
+        <source>Trim</source>
+        <target approved="yes">Trim</target>
+      </trans-unit>
+      <trans-unit id="filters_uppercase">
+        <source>Uppercase</source>
+        <target approved="yes">Uppercase</target>
+      </trans-unit>
+      <trans-unit id="filters_properties_allowwhitespace">
+        <source>Allow whitespace</source>
+        <target approved="yes">Allow whitespace</target>
+      </trans-unit>
+      <trans-unit id="filters_properties_decimalpoint">
+        <source>Decimal point</source>
+        <target approved="yes">Decimal point</target>
+      </trans-unit>
+      <trans-unit id="filters_properties_thousandseparator">
+        <source>Thousand separator</source>
+        <target approved="yes">Thousand separator</target>
+      </trans-unit>
+      <trans-unit id="filters_properties_expression">
+        <source>Expression</source>
+        <target approved="yes">Expression</target>
+      </trans-unit>
+      <trans-unit id="filters_properties_characterlist">
+        <source>Character list</source>
+        <target approved="yes">Character list</target>
+      </trans-unit>
+      <trans-unit id="filters_properties_none">
+        <source>This filter has no configuration settings</source>
+        <target approved="yes">This filter has no configuration settings</target>
+      </trans-unit>
+      <trans-unit id="options_validation">
+        <source>Validation</source>
+        <target approved="yes">Validation</target>
+      </trans-unit>
+      <trans-unit id="validation_emptytext">
+        <source>Add a validation rule</source>
+        <target approved="yes">Add a validation rule</target>
+      </trans-unit>
+      <trans-unit id="validation_alert_title">
+        <source>Adding a validation rule</source>
+        <target approved="yes">Adding a validation rule</target>
+      </trans-unit>
+      <trans-unit id="validation_alert_description">
+        <source>The selected validation rule is already present</source>
+        <target approved="yes">The selected validation rule is already present</target>
+      </trans-unit>
+      <trans-unit id="validation_dummy_title">
+        <source>No validation rule selected</source>
+        <target approved="yes">No validation rule selected</target>
+      </trans-unit>
+      <trans-unit id="validation_dummy_description">
+        <source>To add a validation rule, select one from the dropdown</source>
+        <target approved="yes">To add a validation rule, select one from the dropdown</target>
+      </trans-unit>
+      <trans-unit id="validation_alphabetic">
+        <source>Alphabetic</source>
+        <target approved="yes">Alphabetic</target>
+      </trans-unit>
+      <trans-unit id="validation_alphanumeric">
+        <source>Alphanumeric</source>
+        <target approved="yes">Alphanumeric</target>
+      </trans-unit>
+      <trans-unit id="validation_between">
+        <source>Between</source>
+        <target approved="yes">Between</target>
+      </trans-unit>
+      <trans-unit id="validation_date">
+        <source>Date</source>
+        <target approved="yes">Date</target>
+      </trans-unit>
+      <trans-unit id="validation_digit">
+        <source>Digit</source>
+        <target approved="yes">Digit</target>
+      </trans-unit>
+      <trans-unit id="validation_email">
+        <source>Email address</source>
+        <target approved="yes">Email address</target>
+      </trans-unit>
+      <trans-unit id="validation_equals">
+        <source>Equals</source>
+        <target approved="yes">Equals</target>
+      </trans-unit>
+      <trans-unit id="validation_fileallowedtypes">
+        <source>Allowed mimetypes for file</source>
+        <target approved="yes">Allowed mimetypes for file</target>
+      </trans-unit>
+      <trans-unit id="validation_filemaximumsize">
+        <source>Maximum size for file (bytes)</source>
+        <target approved="yes">Maximum size for file (bytes)</target>
+      </trans-unit>
+      <trans-unit id="validation_fileminimumsize">
+        <source>Minimum size for file (bytes)</source>
+        <target approved="yes">Minimum size for file (bytes)</target>
+      </trans-unit>
+      <trans-unit id="validation_float">
+        <source>Float</source>
+        <target approved="yes">Float</target>
+      </trans-unit>
+      <trans-unit id="validation_greaterthan">
+        <source>Greater than</source>
+        <target approved="yes">Greater than</target>
+      </trans-unit>
+      <trans-unit id="validation_inarray">
+        <source>In array</source>
+        <target approved="yes">In array</target>
+      </trans-unit>
+      <trans-unit id="validation_integer">
+        <source>Integer</source>
+        <target approved="yes">Integer</target>
+      </trans-unit>
+      <trans-unit id="validation_ip">
+        <source>Ip address</source>
+        <target approved="yes">Ip address</target>
+      </trans-unit>
+      <trans-unit id="validation_length">
+        <source>Length</source>
+        <target approved="yes">Length</target>
+      </trans-unit>
+      <trans-unit id="validation_lessthan">
+        <source>Less than</source>
+        <target approved="yes">Less than</target>
+      </trans-unit>
+      <trans-unit id="validation_regexp">
+        <source>Regular Expression</source>
+        <target approved="yes">Regular Expression</target>
+      </trans-unit>
+      <trans-unit id="validation_required">
+        <source>Required</source>
+        <target approved="yes">Required</target>
+      </trans-unit>
+      <trans-unit id="validation_uri">
+        <source>Uniform Resource Identifier</source>
+        <target approved="yes">Uniform Resource Identifier</target>
+      </trans-unit>
+      <trans-unit id="validation_properties_message">
+        <source>Message</source>
+        <target approved="yes">Message</target>
+      </trans-unit>
+      <trans-unit id="validation_properties_error">
+        <source>Error</source>
+        <target approved="yes">Error</target>
+      </trans-unit>
+      <trans-unit id="validation_properties_breakonerror">
+        <source>Break on error</source>
+        <target approved="yes">Break on error</target>
+      </trans-unit>
+      <trans-unit id="validation_properties_showmessage">
+        <source>Show message in label</source>
+        <target approved="yes">Show message in label</target>
+      </trans-unit>
+      <trans-unit id="validation_properties_allowwhitespace">
+        <source>Allow whitespace</source>
+        <target approved="yes">Allow whitespace</target>
+      </trans-unit>
+      <trans-unit id="validation_properties_minimum">
+        <source>Minimum</source>
+        <target approved="yes">Minimum</target>
+      </trans-unit>
+      <trans-unit id="validation_properties_maximum">
+        <source>Maximum</source>
+        <target approved="yes">Maximum</target>
+      </trans-unit>
+      <trans-unit id="validation_properties_inclusive">
+        <source>Inclusive</source>
+        <target approved="yes">Inclusive</target>
+      </trans-unit>
+      <trans-unit id="validation_properties_format">
+        <source>Format</source>
+        <target approved="yes">Format</target>
+      </trans-unit>
+      <trans-unit id="validation_properties_field">
+        <source>Field</source>
+        <target approved="yes">Field</target>
+      </trans-unit>
+      <trans-unit id="validation_properties_array">
+        <source>Array (Comma separated)</source>
+        <target approved="yes">Array (Comma separated)</target>
+      </trans-unit>
+      <trans-unit id="validation_properties_expression">
+        <source>Expression</source>
+        <target approved="yes">Expression</target>
+      </trans-unit>
+      <trans-unit id="validation_properties_types">
+        <source>Mime types</source>
+        <target approved="yes">Mime types</target>
+      </trans-unit>
+      <trans-unit id="options_fieldoptions">
+        <source>Field options</source>
+        <target approved="yes">Field options</target>
+      </trans-unit>
+      <trans-unit id="fieldoptions_emptytext">
+        <source>No options to display</source>
+        <target approved="yes">No options to display</target>
+      </trans-unit>
+      <trans-unit id="fieldoptions_data">
+        <source>Data</source>
+        <target approved="yes">Data</target>
+      </trans-unit>
+      <trans-unit id="fieldoptions_selected">
+        <source>Selected</source>
+        <target approved="yes">Selected</target>
+      </trans-unit>
+      <trans-unit id="fieldoptions_button_add">
+        <source>Add option</source>
+        <target approved="yes">Add option</target>
+      </trans-unit>
+      <trans-unit id="fieldoptions_new">
+        <source>New option</source>
+        <target approved="yes">New option</target>
+      </trans-unit>
+      <trans-unit id="options_various">
+        <source>Various Properties</source>
+        <target approved="yes">Various Properties</target>
+      </trans-unit>
+      <trans-unit id="various_properties_name">
+        <source>Name</source>
+        <target approved="yes">Name</target>
+      </trans-unit>
+      <trans-unit id="various_properties_heading">
+        <source>Heading</source>
+        <target approved="yes">Heading</target>
+      </trans-unit>
+      <trans-unit id="various_properties_headingsize">
+        <source>Heading size</source>
+        <target approved="yes">Heading size</target>
+      </trans-unit>
+      <trans-unit id="various_properties_prefix">
+        <source>Show prefix</source>
+        <target approved="yes">Show prefix</target>
+      </trans-unit>
+      <trans-unit id="various_properties_suffix">
+        <source>Show suffix</source>
+        <target approved="yes">Show suffix</target>
+      </trans-unit>
+      <trans-unit id="various_properties_middlename">
+        <source>Show middle name</source>
+        <target approved="yes">Show middle name</target>
+      </trans-unit>
+      <trans-unit id="left_form">
+        <source>Form</source>
+        <target approved="yes">Form</target>
+      </trans-unit>
+      <trans-unit id="form_prefix">
+        <source>Prefix</source>
+        <target approved="yes">Prefix</target>
+      </trans-unit>
+      <trans-unit id="form_postprocessor">
+        <source>Post Processors</source>
+        <target approved="yes">Post Processors</target>
+      </trans-unit>
+      <trans-unit id="postprocessor_emptytext">
+        <source>Add a Post Processor</source>
+        <target approved="yes">Add a Post Processor</target>
+      </trans-unit>
+      <trans-unit id="postprocessor_alert_title">
+        <source>Adding a Post Processor</source>
+        <target approved="yes">Adding a Post Processor</target>
+      </trans-unit>
+      <trans-unit id="postprocessor_alert_description">
+        <source>The selected post processor is already present</source>
+        <target approved="yes">The selected post processor is already present</target>
+      </trans-unit>
+      <trans-unit id="postprocessor_mail">
+        <source>Send email</source>
+        <target approved="yes">Send email</target>
+      </trans-unit>
+      <trans-unit id="postprocessor_dummy_title">
+        <source>No post processor selected</source>
+        <target approved="yes">No post processor selected</target>
+      </trans-unit>
+      <trans-unit id="postprocessor_dummy_description">
+        <source>To add a post processor, select one from the dropdown</source>
+        <target approved="yes">To add a post processor, select one from the dropdown</target>
+      </trans-unit>
+      <trans-unit id="postprocessor_properties_recipientemail">
+        <source>Email address of the recipient</source>
+        <target approved="yes">Email address of the recipient</target>
+      </trans-unit>
+      <trans-unit id="postprocessor_properties_senderemail">
+        <source>Email address of the sender</source>
+        <target approved="yes">Email address of the sender</target>
+      </trans-unit>
+      <trans-unit id="postprocessor_mail">
+        <source>Send email</source>
+        <target approved="yes">Send email</target>
+      </trans-unit>
+      <trans-unit id="prefix_prefix">
+        <source>Prefix</source>
+        <target approved="yes">Prefix</target>
+      </trans-unit>
+      <trans-unit id="elements_dummy_title">
+        <source>You haven't added any elements yet!</source>
+        <target approved="yes">You haven't added any elements yet!</target>
+      </trans-unit>
+      <trans-unit id="elements_dummy_description">
+        <source>To get started, drag an element from the left panel onto this area</source>
+        <target approved="yes">To get started, drag an element from the left panel onto this area</target>
+      </trans-unit>
+      <trans-unit id="elements_button_delete">
+        <source>Delete this element</source>
+        <target approved="yes">Delete this element</target>
+      </trans-unit>
+      <trans-unit id="elements_button_edit">
+        <source>Edit this element</source>
+        <target approved="yes">Edit this element</target>
+      </trans-unit>
+      <trans-unit id="elements_confirm_delete_title">
+        <source>Delete element</source>
+        <target approved="yes">Delete element</target>
+      </trans-unit>
+      <trans-unit id="elements_confirm_delete_description">
+        <source>Are you sure you want to delete the selected element?</source>
+        <target approved="yes">Are you sure you want to delete the selected element?</target>
+      </trans-unit>
+      <trans-unit id="elements_label">
+        <source>Edit this label</source>
+        <target approved="yes">Edit this label</target>
+      </trans-unit>
+      <trans-unit id="elements_label_email">
+        <source>Email</source>
+        <target approved="yes">Email</target>
+      </trans-unit>
+      <trans-unit id="elements_label_prefix">
+        <source>Prefix</source>
+        <target approved="yes">Prefix</target>
+      </trans-unit>
+      <trans-unit id="elements_label_firstname">
+        <source>First name</source>
+        <target approved="yes">First name</target>
+      </trans-unit>
+      <trans-unit id="elements_label_middlename">
+        <source>Middle name</source>
+        <target approved="yes">Middle name</target>
+      </trans-unit>
+      <trans-unit id="elements_label_lastname">
+        <source>Last name</source>
+        <target approved="yes">Last name</target>
+      </trans-unit>
+      <trans-unit id="elements_label_suffix">
+        <source>Suffix</source>
+        <target approved="yes">Suffix</target>
+      </trans-unit>
+      <trans-unit id="elements_legend">
+        <source>Edit this legend</source>
+        <target approved="yes">Edit this legend</target>
+      </trans-unit>
+      <trans-unit id="elements_legend_name">
+        <source>Full name</source>
+        <target approved="yes">Full name</target>
+      </trans-unit>
+      <trans-unit id="elements_heading">
+        <source>Edit this heading</source>
+        <target approved="yes">Edit this heading</target>
+      </trans-unit>
+      <trans-unit id="elements_option_1">
+        <source>Option 1</source>
+        <target approved="yes">Option 1</target>
+      </trans-unit>
+      <trans-unit id="elements_option_2">
+        <source>Option 2</source>
+        <target approved="yes">Option 2</target>
+      </trans-unit>
+      <trans-unit id="elements_option_3">
+        <source>Option 3</source>
+        <target approved="yes">Option 3</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
