@@ -320,7 +320,7 @@ class tslib_AdminPanel {
 					throw new UnexpectedValueException('$hookObject must implement interface tslib_adminPanelHook', 1311942539);
 				}
 
-				$moduleContent = $hookObject->extendAdminPanel($this);
+				$moduleContent = $hookObject->extendAdminPanel($moduleContent, $this);
 			}
 		}
 
