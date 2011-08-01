@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -31,17 +29,16 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_postprocessor {
+class tx_Form_System_Postprocessor {
 
 	/**
 	 * Constructor
 	 *
-	 * @param $form tx_form_domain_model_form Form domain model
+	 * @param $form tx_Form_Domain_Model_Form Form domain model
 	 * @param $typoscript array Post processor TypoScript settings
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	public function __construct(tx_form_domain_model_form $form, array $typoScript) {
+	public function __construct(tx_Form_Domain_Model_Form $form, array $typoScript) {
 		$this->form = $form;
 		$this->typoScript = $typoScript;
 	}
@@ -53,7 +50,6 @@ class tx_form_system_postprocessor {
 	 * own settings
 	 *
 	 * @return string HTML messages from the called processors
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function process() {
 		$html = '';
@@ -61,7 +57,7 @@ class tx_form_system_postprocessor {
 		if (is_array($this->typoScript)) {
 			$keys = t3lib_TStemplate::sortedKeyList($this->typoScript);
 			foreach ($keys as $key)	{
-				$className = 'tx_form_system_postprocessor_' . strtolower($this->typoScript[$key]);
+				$className = 'tx_Form_System_Postprocessor_' . strtolower($this->typoScript[$key]);
 				if (intval($key) && !strstr($key, '.')) {
 					if(isset($this->typoScript[$key . '.'])) {
 						$processorArguments = $this->typoScript[$key . '.'];

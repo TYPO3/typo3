@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,13 +29,12 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-interface tx_form_domain_model_additional_interface {
+interface tx_Form_Domain_Model_Additional_Interface {
 
 	/**
 	 * Return the value of the object
 	 *
 	 * @return string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getValue();
 }

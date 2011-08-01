@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -32,7 +30,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_validate_fileminimumsize extends tx_form_system_validate_abstract implements tx_form_system_validate_interface {
+class tx_Form_System_Validate_Fileminimumsize extends tx_Form_System_Validate_Abstract implements tx_Form_System_Validate_Interface {
 
 	/**
 	 * Minimum value
@@ -46,7 +44,6 @@ class tx_form_system_validate_fileminimumsize extends tx_form_system_validate_ab
 	 *
 	 * @param array $arguments Typoscript configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments) {
 		$this->setMinimum($arguments['minimum']);
@@ -59,7 +56,7 @@ class tx_form_system_validate_fileminimumsize extends tx_form_system_validate_ab
 	 *
 	 * @return boolean
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/interfaces/tx_form_system_validate_interface#isValid()
+	 * @see typo3/sysext/form/interfaces/tx_Form_System_Validate_Interface#isValid()
 	 */
 	public function isValid() {
 		if($this->requestHandler->has($this->fieldName)) {
@@ -78,7 +75,6 @@ class tx_form_system_validate_fileminimumsize extends tx_form_system_validate_ab
 	 *
 	 * @param integer $minimum Minimum value
 	 * @return object Rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setMinimum($minimum) {
 		$this->minimum = (integer) $minimum;
@@ -92,7 +88,6 @@ class tx_form_system_validate_fileminimumsize extends tx_form_system_validate_ab
 	 *
 	 * @param string $message Message text with markers
 	 * @return string Message text with substituted markers
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	protected function substituteValues($message) {
 		$message = str_replace(

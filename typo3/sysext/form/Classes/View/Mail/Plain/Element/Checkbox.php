@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,16 +29,15 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_plain_element_checkbox extends tx_form_view_mail_plain_element {
+class tx_Form_View_Mail_Plain_Element_Checkbox extends tx_Form_View_Mail_Plain_Element {
 
 	/**
 	 * Constructor
 	 *
-	 * @param tx_form_domain_model_element_checkbox $model Model for this element
+	 * @param tx_Form_Domain_Model_Element_Checkbox $model Model for this element
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	public function __construct(tx_form_domain_model_element_checkbox $model, $spaces) {
+	public function __construct(tx_Form_Domain_Model_Element_Checkbox $model, $spaces) {
 		parent::__construct($model, $spaces);
 	}
 
@@ -52,7 +49,7 @@ class tx_form_view_mail_plain_element_checkbox extends tx_form_view_mail_plain_e
 		}
 	}
 
-	private function getValue() {
+	protected function getValue() {
 		$value = NULL;
 
 		if (

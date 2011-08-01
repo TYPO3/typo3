@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -34,7 +32,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_form extends tx_form_domain_model_element_container {
+class tx_Form_Domain_Model_Form extends tx_Form_Domain_Model_Element_Container {
 
 	/**
 	 * Allowed attributes for this object
@@ -72,7 +70,6 @@ class tx_form_domain_model_form extends tx_form_domain_model_element_container {
 	 * and adds all form element objects
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -84,7 +81,6 @@ class tx_form_domain_model_form extends tx_form_domain_model_element_container {
 	 * @param string $attribute Name of the attribute
 	 * @param mixed $value Value of the attribute
 	 * @return object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setAttribute($attribute, $value) {
 		if(array_key_exists($attribute, $this->allowedAttributes)) {
@@ -103,9 +99,8 @@ class tx_form_domain_model_form extends tx_form_domain_model_element_container {
 	 * when both have been filled.
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function equalizeNameAndIdAttribute() {
+	protected function equalizeNameAndIdAttribute() {
 		$nameAttribute = $this->attributes->getAttributeObjectByKey('name');
 		$idAttribute = $this->attributes->getAttributeObjectByKey('id');
 		if(is_object($nameAttribute) && is_object($idAttribute)) {

@@ -22,14 +22,14 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class tx_form_exception_loader extends Exception {
+class tx_Form_Exception_Loader extends Exception {
 
 	function __construct() {
 		parent::__construct('file not found', 1100);
 	}
 
 	function _toString() {
-		return "tx_form_exception_loader at line {$this->getLine()} on {$this->getFile()} Message: {$this->getMessage()}";
+		return "tx_Form_Exception_Loader at line {$this->getLine()} on {$this->getFile()} Message: {$this->getMessage()}";
 	}
 }
 ?>

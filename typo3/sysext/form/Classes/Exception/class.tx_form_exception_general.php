@@ -22,14 +22,14 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class tx_form_exception_general extends Exception {
+class tx_Form_Exception_general extends Exception {
 
 	function __construct() {
 		parent::__construct('general error', 1000);
 	}
 
 	function _toString() {
-		return "tx_form_exception_general at line {$this->getLine()} on {$this->getFile()} Message: {$this->getMessage()}";
+		return "tx_Form_Exception_general at line {$this->getLine()} on {$this->getFile()} Message: {$this->getMessage()}";
 	}
 }
 ?>

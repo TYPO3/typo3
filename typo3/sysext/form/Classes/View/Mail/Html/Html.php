@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_html extends tx_form_view_mail_html_element_container {
+class tx_Form_View_Mail_Html extends tx_Form_View_Mail_Html_Element_Container {
 
 	/**
 	 * Default layout of this object
@@ -61,7 +59,7 @@ class tx_form_view_mail_html extends tx_form_view_mail_html_element_container {
 	/**
 	 * The localization handler
 	 *
-	 * @var tx_form_system_localization
+	 * @var tx_Form_System_Localization
 	 */
 	protected $localizationHandler;
 
@@ -76,12 +74,11 @@ class tx_form_view_mail_html extends tx_form_view_mail_html_element_container {
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	public function __construct(tx_form_domain_model_form $model, array $typoscript) {
+	public function __construct(tx_Form_Domain_Model_Form $model, array $typoscript) {
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
 		$this->localizationHandler = t3lib_div::makeInstance(
-			'tx_form_system_localization'
+			'tx_Form_System_Localization'
 		);
 		$this->typoscript = $typoscript;
 		parent::__construct($model);
@@ -90,11 +87,10 @@ class tx_form_view_mail_html extends tx_form_view_mail_html_element_container {
 	/**
 	 * Set the data for the FORM tag
 	 *
-	 * @param tx_form_domain_model_form $formModel The model of the form
+	 * @param tx_Form_Domain_Model_Form $formModel The model of the form
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	public function setData(tx_form_domain_model_form $model) {
+	public function setData(tx_Form_Domain_Model_Form $model) {
 		$this->model = (object) $model;
 	}
 
@@ -104,7 +100,6 @@ class tx_form_view_mail_html extends tx_form_view_mail_html_element_container {
 	 * (when using formatOutput :-)
 	 *
 	 * @return string XHTML string containing the whole form
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function get() {
 		$node = $this->render('element', FALSE);

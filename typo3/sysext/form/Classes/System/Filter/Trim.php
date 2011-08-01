@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_filter_trim implements tx_form_system_filter_interface {
+class tx_Form_System_Filter_Trim implements tx_Form_System_Filter_Interface {
 
 	/**
 	 * Characters used by trim filter
@@ -45,7 +43,6 @@ class tx_form_system_filter_trim implements tx_form_system_filter_interface {
 	 *
 	 * @param array $arguments Filter configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments = array()) {
 		$this->setCharacterList($arguments['characterList']);
@@ -57,8 +54,7 @@ class tx_form_system_filter_trim implements tx_form_system_filter_interface {
 	 * in addition to the default trim characters
 	 *
 	 * @param  string $characterList
-	 * @return tx_form_filter_trim
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 * @return tx_Form_filter_trim
 	 */
 	public function setCharacterList($characterList) {
 		$this->characterList = $characterList;
@@ -71,7 +67,6 @@ class tx_form_system_filter_trim implements tx_form_system_filter_interface {
 	 *
 	 * @param  string $value
 	 * @return string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function filter($value) {
 		if ($this->characterList === NULL) {

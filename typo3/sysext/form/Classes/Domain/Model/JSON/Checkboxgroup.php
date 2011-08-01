@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_json_checkboxgroup extends tx_form_domain_model_json_fieldset {
+class tx_Form_Domain_Model_JSON_Checkboxgroup extends tx_Form_Domain_Model_JSON_Fieldset {
 	/**
 	 * The ExtJS xtype of the element
 	 *
@@ -73,7 +71,6 @@ class tx_form_domain_model_json_checkboxgroup extends tx_form_domain_model_json_
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -85,7 +82,7 @@ class tx_form_domain_model_json_checkboxgroup extends tx_form_domain_model_json_
 	 * @param array $parameters Configuration array
 	 * @return void
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see tx_form_domain_model_json_fieldset::setParameters()
+	 * @see tx_Form_Domain_Model_JSON_Fieldset::setParameters()
 	 */
 	public function setParameters($parameters) {
 		parent::setParameters($parameters);
@@ -98,9 +95,8 @@ class tx_form_domain_model_json_checkboxgroup extends tx_form_domain_model_json_
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setOptions($parameters) {
+	protected function setOptions($parameters) {
 		if (is_array($parameters)) {
 			$keys = t3lib_TStemplate::sortedKeyList($parameters);
 			foreach ($keys as $key)	{
@@ -128,9 +124,8 @@ class tx_form_domain_model_json_checkboxgroup extends tx_form_domain_model_json_
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setVarious($parameters) {
+	protected function setVarious($parameters) {
 		if (isset($parameters['name'])) {
 			$this->configuration['various']['name'] = $parameters['name'];
 		}

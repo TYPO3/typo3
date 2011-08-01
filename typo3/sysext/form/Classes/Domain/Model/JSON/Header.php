@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_json_header extends tx_form_domain_model_json_element {
+class tx_Form_Domain_Model_JSON_Header extends tx_Form_Domain_Model_JSON_Element {
 	/**
 	 * The ExtJS xtype of the element
 	 *
@@ -70,7 +68,6 @@ class tx_form_domain_model_json_header extends tx_form_domain_model_json_element
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -82,7 +79,7 @@ class tx_form_domain_model_json_header extends tx_form_domain_model_json_element
 	 * @param array $parameters Configuration array
 	 * @return void
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see tx_form_domain_model_json_element::setParameters()
+	 * @see tx_Form_Domain_Model_JSON_Element::setParameters()
 	 */
 	public function setParameters($parameters) {
 		parent::setParameters($parameters);
@@ -96,9 +93,8 @@ class tx_form_domain_model_json_header extends tx_form_domain_model_json_element
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setVarious($parameters) {
+	protected function setVarious($parameters) {
 		if (isset($parameters['wrap'])) {
 			preg_match('/<(h[1-5]{1}).*?>/', $parameters['wrap'], $matches);
 			if (!empty($matches)) {

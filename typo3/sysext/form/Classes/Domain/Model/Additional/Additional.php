@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -31,20 +29,19 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_additional_additional {
+class tx_Form_Domain_Model_Additional_additional {
 
 	/**
 	 * Array with the additional objects of the element
 	 *
 	 * @var array
 	 */
-	private $additional = array();
+	protected $additional = array();
 
 	/**
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 	}
@@ -55,12 +52,11 @@ class tx_form_domain_model_additional_additional {
 	 * @param string $class Name of the additional
 	 * @param mixed $value Typoscript configuration to construct value
 	 * @param string $type Typoscript content object
-	 * @return tx_form_domain_model_additional
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 * @return tx_Form_domain_model_additional
 	 */
 	public function addAdditional($class, $type, $value) {
 		$class = strtolower((string) $class);
-		$className = 'tx_form_domain_model_additional_' . $class;
+		$className = 'tx_Form_domain_model_additional_' . $class;
 
 		$this->additional[$class] = t3lib_div::makeInstance($className, $type, $value);
 
@@ -71,7 +67,6 @@ class tx_form_domain_model_additional_additional {
 	 * Get the additional array of the object
 	 *
 	 * @return array Additionals of the object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getAdditional() {
 		return $this->additional;
@@ -82,7 +77,6 @@ class tx_form_domain_model_additional_additional {
 	 *
 	 * @param string $key Key of the additional
 	 * @return string The additional object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getAdditionalObjectByKey($key) {
 		return $this->additional[$key];
@@ -94,7 +88,6 @@ class tx_form_domain_model_additional_additional {
 	 *
 	 * @param string $key Name of the additional
 	 * @return boolean
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function additionalIsSet($key) {
 		if (isset($this->additional[$key])) {
@@ -110,7 +103,6 @@ class tx_form_domain_model_additional_additional {
 	 * @param string $key Key for the additional
 	 * @param string $layout XML string
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setLayout($key, $layout) {
 		$this->additional[$key]->setLayout($layout);
@@ -121,7 +113,6 @@ class tx_form_domain_model_additional_additional {
 	 *
 	 * @param string $key Key of the additional
 	 * @return string The value of the additional
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getValue($key) {
 		return $this->additional[$key]->getValue();

@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_form_element_content extends tx_form_view_form_element_abstract {
+class tx_Form_View_Form_Element_Content extends tx_Form_View_Form_Element_Abstract {
 
 	/**
 	 * Default layout of this object
@@ -45,11 +43,10 @@ class tx_form_view_form_element_content extends tx_form_view_form_element_abstra
 	/**
 	 * Constructor
 	 *
-	 * @param tx_form_domain_model_element_content $model Model for this element
+	 * @param tx_Form_Domain_Model_Element_Content $model Model for this element
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	public function __construct(tx_form_domain_model_element_content $model) {
+	public function __construct(tx_Form_Domain_Model_Element_Content $model) {
 		parent::__construct($model);
 	}
 }

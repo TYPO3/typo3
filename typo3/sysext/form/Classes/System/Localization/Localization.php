@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_localization implements t3lib_Singleton {
+class tx_Form_System_Localization implements t3lib_Singleton {
 
 	/**
 	 * File reference to the local language file
@@ -45,7 +43,6 @@ class tx_form_system_localization implements t3lib_Singleton {
 	 *
 	 * @param $localLanguageFile string File reference to the local language file
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($localLanguageFile) {
 		$this->localLanguageFile = (string) $localLanguageFile;

@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_element_content extends tx_form_domain_model_element_abstract {
+class tx_Form_Domain_Model_Element_Content extends tx_Form_Domain_Model_Element_Abstract {
 
 	/**
 	 * Allowed attributes for this object
@@ -51,7 +49,6 @@ class tx_form_domain_model_element_content extends tx_form_domain_model_element_
 	 * Sets the configuration, calls parent constructor and fills the attributes
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -63,7 +60,6 @@ class tx_form_domain_model_element_content extends tx_form_domain_model_element_
 	 * @param string $cObj The name of the object
 	 * @param array $cObjDot The configuration of the object
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setData($cObj, $cObjDot) {
 		$this->cObj = $cObj;
@@ -76,7 +72,6 @@ class tx_form_domain_model_element_content extends tx_form_domain_model_element_
 	 * configuration into html string
 	 *
 	 * @return string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getData() {
 		$data = $this->localCobj->cObjGetSingle($this->cObj, $this->cObjDot);

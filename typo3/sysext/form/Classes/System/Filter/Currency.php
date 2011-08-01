@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_filter_currency implements tx_form_system_filter_interface {
+class tx_Form_System_Filter_Currency implements tx_Form_System_Filter_Interface {
 
 	/**
 	 * Separator between group of thousands
@@ -39,7 +37,7 @@ class tx_form_system_filter_currency implements tx_form_system_filter_interface 
 	 *
 	 * @var string
 	 */
-	private $decimalsPoint;
+	protected $decimalsPoint;
 
 	/**
 	 * Separator between group of thousands
@@ -47,14 +45,13 @@ class tx_form_system_filter_currency implements tx_form_system_filter_interface 
 	 *
 	 * @var string
 	 */
-	private $thousandSeparator;
+	protected $thousandSeparator;
 
 	/**
 	 * Constructor
 	 *
 	 * @param array $arguments Filter configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments = array()) {
 		$this->setDecimalsPoint($arguments['decimalPoint'])
@@ -65,8 +62,7 @@ class tx_form_system_filter_currency implements tx_form_system_filter_interface 
 	 * Set the decimal point character
 	 *
 	 * @param string $decimalsPoint Character used for decimal point
-	 * @return tx_form_filter_currency
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 * @return tx_Form_filter_currency
 	 */
 	public function setDecimalsPoint($decimalsPoint = '.') {
 		if(empty($decimalsPoint)) {
@@ -82,8 +78,7 @@ class tx_form_system_filter_currency implements tx_form_system_filter_interface 
 	 * Set the thousand separator character
 	 *
 	 * @param string $thousandSeparator Character used for thousand separator
-	 * @return tx_form_filter_currency
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 * @return tx_Form_filter_currency
 	 */
 	public function setThousandSeparator($thousandSeparator = ',') {
 		if(empty($thousandSeparator)) {
@@ -105,7 +100,6 @@ class tx_form_system_filter_currency implements tx_form_system_filter_interface 
 	 *
 	 * @param  string $value
 	 * @return string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function filter($value) {
 		$value = (float) ((string) $value);

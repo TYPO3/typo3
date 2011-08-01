@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -33,12 +31,11 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_factory_typoscripttojson {
+class tx_Form_Domain_Factory_TyposcriptToJson {
 	/**
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 	}
@@ -48,7 +45,6 @@ class tx_form_domain_factory_typoscripttojson {
 	 *
 	 * @param string $typoscript TypoScript string containing all configuration for the form
 	 * @return string The JSON for the form
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function convert($typoscript) {
 		$this->setValidationRules($typoscript);
@@ -64,11 +60,10 @@ class tx_form_domain_factory_typoscripttojson {
 	 * @param string $class Type of element
 	 * @param array $arguments Configuration array
 	 * @return object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function createElement($class, array $arguments = array()) {
 		$class = strtolower((string) $class);
-		$className = 'tx_form_domain_model_json_' . $class;
+		$className = 'tx_Form_domain_model_json_' . $class;
 
 		$this->addValidationRules($arguments);
 
@@ -88,9 +83,8 @@ class tx_form_domain_factory_typoscripttojson {
 	 *
 	 * @param array $arguments Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function getChildElementsByIntegerKey(&$parentElement, $typoscript) {
+	protected function getChildElementsByIntegerKey(&$parentElement, $typoscript) {
 		if (is_array($typoscript)) {
 			$keys = t3lib_TStemplate::sortedKeyList($typoscript);
 			foreach ($keys as $key)	{
@@ -117,10 +111,9 @@ class tx_form_domain_factory_typoscripttojson {
 	 * @param string $class A predefined class
 	 * @param array $arguments Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	private function setElementType(&$parentElement, $class, array $arguments) {
-		if (in_array($class, tx_form_Common::getInstance()->getFormObjects())) {
+		if (in_array($class, tx_Form_Common::getInstance()->getFormObjects())) {
 			if (strstr($arguments['class'], 'predefined-name')) {
 				$class = 'NAME';
 			}
@@ -138,7 +131,6 @@ class tx_form_domain_factory_typoscripttojson {
 	 * @param string $class Type of element
 	 * @param array $arguments Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function addElement(&$parentElement, $class, array $arguments) {
 		$element = $this->createElement($class, $arguments);
@@ -150,9 +142,8 @@ class tx_form_domain_factory_typoscripttojson {
 	 *
 	 * @param array $typoscript Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setValidationRules($typoscript) {
+	protected function setValidationRules($typoscript) {
 		if (isset($typoscript['rules.']) && is_array($typoscript['rules.'])) {
 			$this->validationRules = $typoscript['rules.'];
 		}
@@ -167,9 +158,8 @@ class tx_form_domain_factory_typoscripttojson {
 	 *
 	 * @param array $arguments The element arguments
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function addValidationRules(&$arguments) {
+	protected function addValidationRules(&$arguments) {
 		$validationRulesAvailable = FALSE;
 
 		if (!empty($this->validationRules) && isset($arguments['name'])) {
