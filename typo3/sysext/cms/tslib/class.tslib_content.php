@@ -7338,6 +7338,7 @@ class tslib_cObj {
 				$conf[$property] = isset($conf[$property . '.'])
 						? trim($this->stdWrap($conf[$property], $conf[$property . '.']))
 						: trim($conf[$property]);
+				// apply stdWrap functions to each of the properties
 				if ($conf[$property]) {
 					$conf[$property] = str_replace('###' . $marker . '###', $markerValue, $conf[$property]);
 				} else {
@@ -7503,7 +7504,11 @@ class tslib_cObj {
 			$query .= ' AND ' . $where;
 		}
 
-		if ($conf['languageField']) {
+		$languageField = isset($conf['languageField.'])
+			? trim($this->stdWrap($conf['languageField'], $conf['languageField.']))
+			: trim($conf['languageField']);
+
+		if ($languageField) {
 			if ($GLOBALS['TSFE']->sys_language_contentOL && $GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField']
 				&& $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
 					// Sys language content is set to zero/-1 - and it is expected that whatever routine processes the output will
@@ -7512,7 +7517,7 @@ class tslib_cObj {
 			} else {
 				$sys_language_content = intval($GLOBALS['TSFE']->sys_language_content);
 			}
-			$query .= ' AND ' . $conf['languageField'] . ' IN (' . $sys_language_content . ')';
+			$query .= ' AND ' . $languageField . ' IN (' . $sys_language_content . ')';
 		}
 
 		$andWhere = isset($conf['andWhere.'])
