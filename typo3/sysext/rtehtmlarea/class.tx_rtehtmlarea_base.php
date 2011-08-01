@@ -956,11 +956,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * Build the default content style sheet
 	 *
 	 * @return string		Style sheet
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
+	 * @deprecated since TYPO3 4.8, will be removed in TYPO3 4.10
 	 */
 	function buildStyleSheet() {
-			// This function is DEPRECATED as of TYPO3 4.6 and will be removed in TYPO3 4.8
-		t3lib_div::logDeprecatedFunction();
+			// This function will be DEPRECATED as of TYPO3 4.8 and will be removed in TYPO3 4.10
+		//t3lib_div::logDeprecatedFunction();
 			// These PageTSConfig properties are DEPRECATED as of TYPO3 4.6 and will be removed in TYPO3 4.8
 		$properties = array('mainStyle_font', 'mainStyle_size', 'mainStyle_color', 'mainStyle_bgcolor', 'mainStyleOverride');
 		foreach ($properties as $property) {
