@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_html_element_container extends tx_form_view_mail_html_element_abstract {
+class tx_form_View_Mail_Html_Element_Container extends tx_form_View_Mail_Html_Element_Abstract {
 
 	/**
 	 * Default layout of the container
@@ -49,7 +47,6 @@ class tx_form_view_mail_html_element_container extends tx_form_view_mail_html_el
 	 *
 	 * @param object $model Model for this element
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($model) {
 		parent::__construct($model);
@@ -61,7 +58,6 @@ class tx_form_view_mail_html_element_container extends tx_form_view_mail_html_el
 	 *
 	 * @param DOMDocument $dom DOMDocument
 	 * @return DOMDocumentFragment
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getChildElements(DOMDocument &$dom) {
 		$modelChildren = $this->model->getElements();
@@ -99,7 +95,7 @@ class tx_form_view_mail_html_element_container extends tx_form_view_mail_html_el
 		$modelChildClass = get_class($modelChild);
 		$class = preg_replace('/.*_([^_]*)$/', "$1", $modelChildClass, 1);
 
-		$className = 'tx_form_view_mail_html_element_' . $class;
+		$className = 'tx_form_View_Mail_Html_element_' . $class;
 
 		if (class_exists($className)) {
 			$childElement = t3lib_div::makeInstance($className, $modelChild);

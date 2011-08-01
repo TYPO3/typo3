@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_attributes_src extends tx_form_domain_model_attributes_abstract implements tx_form_domain_model_attributes_interface {
+class tx_form_Domain_Model_Attributes_Src extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
 
 	/**
 	 * Constructor
@@ -39,7 +37,6 @@ class tx_form_domain_model_attributes_src extends tx_form_domain_model_attribute
 	 * @param string $value Attribute value
 	 * @param integer $elementId The ID of the element
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($value, $elementId) {
 		parent::__construct($value, $elementId);
@@ -56,7 +53,6 @@ class tx_form_domain_model_attributes_src extends tx_form_domain_model_attribute
 	 *
 	 * @return string Attribute value
 	 * @see tslib_cObj::getImgResource()
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getValue() {
 		$attribute = $this->localCobj->IMG_RESOURCE($this->value);

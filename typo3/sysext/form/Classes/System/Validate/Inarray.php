@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_validate_inarray extends tx_form_system_validate_abstract {
+class tx_form_System_Validate_Inarray extends tx_form_System_Validate_Abstract {
 
 	/**
 	 * Haystack to search in
@@ -52,7 +50,6 @@ class tx_form_system_validate_inarray extends tx_form_system_validate_abstract {
 	 *
 	 * @param array $arguments Typoscript configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments) {
 		$this->setArray($arguments['array.'])
@@ -66,7 +63,7 @@ class tx_form_system_validate_inarray extends tx_form_system_validate_abstract {
 	 *
 	 * @return boolean
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/interfaces/tx_form_system_validate_interface#isValid()
+	 * @see typo3/sysext/form/interfaces/tx_form_System_Validate_Interface#isValid()
 	 */
 	public function isValid() {
 		if($this->requestHandler->has($this->fieldName)) {
@@ -84,7 +81,6 @@ class tx_form_system_validate_inarray extends tx_form_system_validate_abstract {
 	 *
 	 * @param array $array The haystack
 	 * @return object Rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setArray($array) {
 		$this->array = (array) $array;
@@ -97,7 +93,6 @@ class tx_form_system_validate_inarray extends tx_form_system_validate_abstract {
 	 *
 	 * @param boolean $strict True if strict
 	 * @return object Rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setStrict($strict) {
 		$this->strict = (boolean) $strict;

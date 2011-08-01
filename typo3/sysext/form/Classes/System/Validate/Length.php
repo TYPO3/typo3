@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_validate_length extends tx_form_system_validate_abstract {
+class tx_form_System_Validate_Length extends tx_form_System_Validate_Abstract {
 
 	/**
 	 * Minimum value
@@ -52,7 +50,6 @@ class tx_form_system_validate_length extends tx_form_system_validate_abstract {
 	 *
 	 * @param array $arguments Typoscript configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments) {
 		$this->setMinimum($arguments['minimum'])
@@ -66,7 +63,7 @@ class tx_form_system_validate_length extends tx_form_system_validate_abstract {
 	 *
 	 * @return boolean
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/interfaces/tx_form_system_validate_interface#isValid()
+	 * @see typo3/sysext/form/interfaces/tx_form_System_Validate_Interface#isValid()
 	 */
 	public function isValid() {
 		if($this->requestHandler->has($this->fieldName)) {
@@ -90,7 +87,6 @@ class tx_form_system_validate_length extends tx_form_system_validate_abstract {
 	 *
 	 * @param integer $minimum Minimum value
 	 * @return object Rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setMinimum($minimum) {
 		$this->minimum = (integer) $minimum;
@@ -103,7 +99,6 @@ class tx_form_system_validate_length extends tx_form_system_validate_abstract {
 	 *
 	 * @param integer $maximum Maximum value
 	 * @return object Rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setMaximum($maximum) {
 		if(empty($maximum)) {
@@ -121,7 +116,7 @@ class tx_form_system_validate_length extends tx_form_system_validate_abstract {
 	 *
 	 * @return string The local language message label
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/validate/tx_form_system_validate_abstract#_getLocalLanguageLabel()
+	 * @see typo3/sysext/form/validate/tx_form_System_Validate_Abstract#_getLocalLanguageLabel()
 	 */
 	protected function getLocalLanguageLabel($type) {
 		$label = get_class($this) . '.' . $type;
@@ -141,7 +136,6 @@ class tx_form_system_validate_length extends tx_form_system_validate_abstract {
 	 *
 	 * @param string $message Message text with markers
 	 * @return string Message text with substituted markers
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	protected function substituteValues($message) {
 		$message = str_replace('%minimum', $this->minimum, $message);

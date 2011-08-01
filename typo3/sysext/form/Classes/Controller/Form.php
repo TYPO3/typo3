@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -35,7 +33,7 @@ declare(encoding = 'utf-8');
  * @license http://www.gnu.org/copyleft/gpl.html
  * @version $Id$
  */
-class tx_form_controller_form {
+class tx_form_Controller_Form {
 
 	/**
 	 * The TypoScript array
@@ -45,22 +43,22 @@ class tx_form_controller_form {
 	protected $typoscript = array();
 
 	/**
-	 * @var tx_form_domain_factory_typoscript
+	 * @var tx_form_Domain_Factory_Typoscript
 	 */
 	protected $typoscriptFactory;
 
 	/**
-	 * @var tx_form_system_localization
+	 * @var tx_form_System_Localization
 	 */
 	protected $localizationHandler;
 
 	/**
-	 * @var tx_form_system_request
+	 * @var tx_form_System_Request
 	 */
 	protected $requestHandler;
 
 	/**
-	 * @var tx_form_system_validate
+	 * @var tx_form_System_Validate
 	 */
 	protected $validate;
 
@@ -69,16 +67,15 @@ class tx_form_controller_form {
 	 *
 	 * @param array $typoscript TS configuration for this cObject
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function initialize($typoscript) {
 		t3lib_div::makeInstance(
-			'tx_form_system_localization',
+			'tx_form_System_Localization',
 			'LLL:EXT:form/Resources/Private/Language/locallang_controller.xml'
 		);
 
-		$this->typoscriptFactory = t3lib_div::makeInstance('tx_form_domain_factory_typoscript');
-		$this->localizationHandler = t3lib_div::makeInstance('tx_form_system_localization');
+		$this->typoscriptFactory = t3lib_div::makeInstance('tx_form_Domain_Factory_Typoscript');
+		$this->localizationHandler = t3lib_div::makeInstance('tx_form_System_Localization');
 		$this->requestHandler = $this->typoscriptFactory->setRequestHandler($typoscript);
 		$this->validate = $this->typoscriptFactory->setRules($typoscript);
 
@@ -101,7 +98,6 @@ class tx_form_controller_form {
 	 * @param string $typoscriptKey A string label used for the internal debugging tracking.
 	 * @param tslib_cObj $contentObject reference
 	 * @return string HTML output
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function cObjGetSingleExt(
 		$typoscriptObjectName,
@@ -137,7 +133,6 @@ class tx_form_controller_form {
 	 * Build the models and views and renders the output from the views
 	 *
 	 * @return string HTML Output
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function execute() {
 		$content = '';
@@ -167,9 +162,8 @@ class tx_form_controller_form {
 	 * or when the user returns from the confirmation screen.
 	 *
 	 * @return boolean TRUE when form needs to be shown
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function showForm() {
+	protected function showForm() {
 		$show = FALSE;
 
 		$submittedByPrefix = $this->requestHandler->getByMethod();
@@ -188,7 +182,7 @@ class tx_form_controller_form {
 			(
 				!empty($submittedByPrefix) &&
 				$this->validate->isValid() &&
-				$this->requestHandler->getPost('confirmation') === $this->localizationHandler->getLocalLanguageLabel('tx_form_view_confirmation.donotconfirm')
+				$this->requestHandler->getPost('confirmation') === $this->localizationHandler->getLocalLanguageLabel('tx_form_View_Confirmation.donotconfirm')
 			)
 		) {
 			$show = TRUE;
@@ -201,15 +195,14 @@ class tx_form_controller_form {
 	 * Render the form
 	 *
 	 * @return string The form HTML
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function renderForm() {
+	protected function renderForm() {
 		$this->requestHandler->destroySession();
 
 		$form = $this->typoscriptFactory->buildModelFromTyposcript($this->typoscript);
 
-		/** @var $view tx_form_view_form */
-		$view = t3lib_div::makeInstance('tx_form_view_form', $form);
+		/** @var $view tx_form_View_Form */
+		$view = t3lib_div::makeInstance('tx_form_View_Form', $form);
 
 		return $view->get();
 	}
@@ -223,9 +216,8 @@ class tx_form_controller_form {
 	 * and the confirmation screen has not been submitted
 	 *
 	 * @return boolean TRUE when confirmation screen needs to be shown
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function showConfirmation() {
+	protected function showConfirmation() {
 		$show = FALSE;
 
 		if (
@@ -245,9 +237,8 @@ class tx_form_controller_form {
 	 * Stores the submitted data in a session
 	 *
 	 * @return string The confirmation screen HTML
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function renderConfirmation() {
+	protected function renderConfirmation() {
 		$form = $this->typoscriptFactory->buildModelFromTyposcript($this->typoscript);
 
 		$this->requestHandler->storeSession();
@@ -257,9 +248,9 @@ class tx_form_controller_form {
 			$confirmationTyposcript = $this->typoscript['confirmation.'];
 		}
 
-		/** @var $view tx_form_view_confirmation */
+		/** @var $view tx_form_View_Confirmation */
 		$view = t3lib_div::makeInstance(
-			'tx_form_view_confirmation',
+			'tx_form_View_Confirmation',
 			$form,
 			$confirmationTyposcript
 		);
@@ -273,9 +264,8 @@ class tx_form_controller_form {
 	 * Destroys the session because it is not needed anymore
 	 *
 	 * @return string The post processing HTML
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function doPostProcessing() {
+	protected function doPostProcessing() {
 		$form = $this->typoscriptFactory->buildModelFromTyposcript($this->typoscript);
 
 		$postProcessorTypoScript = array();
@@ -283,9 +273,9 @@ class tx_form_controller_form {
 			$postProcessorTypoScript = $this->typoscript['postProcessor.'];
 		}
 
-		/** @var $postProcessor tx_form_system_postprocessor */
+		/** @var $postProcessor tx_form_System_Postprocessor */
 		$postProcessor = t3lib_div::makeInstance(
-			'tx_form_system_postprocessor',
+			'tx_form_System_Postprocessor',
 			$form,
 			$postProcessorTypoScript
 		);

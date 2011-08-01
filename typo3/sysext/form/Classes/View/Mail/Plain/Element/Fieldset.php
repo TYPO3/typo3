@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,16 +29,15 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_plain_element_fieldset extends tx_form_view_mail_plain_element_container {
+class tx_form_View_Mail_Plain_Element_Fieldset extends tx_form_View_Mail_Plain_Element_Container {
 
 	/**
 	 * Constructor
 	 *
-	 * @param tx_form_domain_model_element_fieldset $model Model for this element
+	 * @param tx_form_Domain_Model_Element_Fieldset $model Model for this element
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	public function __construct(tx_form_domain_model_element_fieldset $model, $spaces) {
+	public function __construct(tx_form_Domain_Model_Element_Fieldset $model, $spaces) {
 		parent::__construct($model, $spaces);
 	}
 

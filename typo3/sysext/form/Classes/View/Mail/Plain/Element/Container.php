@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,13 +29,12 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_plain_element_container extends tx_form_view_mail_plain_element {
+class tx_form_View_Mail_Plain_Element_Container extends tx_form_View_Mail_Plain_Element {
 
 	/**
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($model, $spaces) {
 		parent::__construct($model, $spaces);
@@ -56,7 +53,7 @@ class tx_form_view_mail_plain_element_container extends tx_form_view_mail_plain_
 		$modelChildClass = get_class($modelChild);
 		$class = preg_replace('/.*_([^_]*)$/', "$1", $modelChildClass, 1);
 
-		$className = 'tx_form_view_mail_plain_element_' . $class;
+		$className = 'tx_form_View_Mail_Plain_Element_' . $class;
 
 		if (class_exists($className)) {
 			$childElement = t3lib_div::makeInstance($className, $modelChild, $spaces);

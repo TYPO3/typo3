@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_validate_equals extends tx_form_system_validate_abstract {
+class tx_form_System_Validate_Equals extends tx_form_System_Validate_Abstract {
 
 	/**
 	 * Field to compare with value
@@ -45,7 +43,6 @@ class tx_form_system_validate_equals extends tx_form_system_validate_abstract {
 	 *
 	 * @param array $arguments Typoscript configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments) {
 		$this->setField($arguments['field']);
@@ -58,7 +55,7 @@ class tx_form_system_validate_equals extends tx_form_system_validate_abstract {
 	 *
 	 * @return boolean
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/interfaces/tx_form_system_validate_interface#isValid()
+	 * @see typo3/sysext/form/interfaces/tx_form_System_Validate_Interface#isValid()
 	 */
 	public function isValid() {
 		if($this->requestHandler->has($this->fieldName)) {
@@ -81,7 +78,6 @@ class tx_form_system_validate_equals extends tx_form_system_validate_abstract {
 	 *
 	 * @param string $field Field to compare
 	 * @return Rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setField($field) {
 		$this->field = (string) $field;
@@ -95,7 +91,6 @@ class tx_form_system_validate_equals extends tx_form_system_validate_abstract {
 	 *
 	 * @param string $message Message text with markers
 	 * @return string Message text with substituted markers
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	protected function substituteValues($message) {
 		$message = str_replace('%field', $this->field, $message);

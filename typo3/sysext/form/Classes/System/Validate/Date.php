@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_validate_date extends tx_form_system_validate_abstract {
+class tx_form_System_Validate_Date extends tx_form_System_Validate_Abstract {
 
 	/**
 	 * strftime format for date
@@ -45,7 +43,6 @@ class tx_form_system_validate_date extends tx_form_system_validate_abstract {
 	 *
 	 * @param array $arguments Typoscript configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments) {
 		$this->setFormat($arguments['format']);
@@ -58,7 +55,7 @@ class tx_form_system_validate_date extends tx_form_system_validate_abstract {
 	 *
 	 * @return boolean
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/interfaces/tx_form_system_validate_interface#isValid()
+	 * @see typo3/sysext/form/interfaces/tx_form_System_Validate_Interface#isValid()
 	 */
 	public function isValid() {
 		if($this->requestHandler->has($this->fieldName)) {
@@ -80,7 +77,6 @@ class tx_form_system_validate_date extends tx_form_system_validate_abstract {
 	 *
 	 * @param string $format strftime format
 	 * @return Rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setFormat($format) {
 		if($format === NULL) {
@@ -98,7 +94,6 @@ class tx_form_system_validate_date extends tx_form_system_validate_abstract {
 	 *
 	 * @param string $message Message text with markers
 	 * @return string Message text with substituted markers
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	protected function substituteValues($message) {
 		$humanReadableDateFormat = $this->humanReadableDateFormat($this->format);
@@ -115,7 +110,6 @@ class tx_form_system_validate_date extends tx_form_system_validate_abstract {
 	 *
 	 * @param string $format strftime format
 	 * @return string Human readable format
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	protected function humanReadableDateFormat($format) {
 		$label = get_class($this) . '.strftime.';

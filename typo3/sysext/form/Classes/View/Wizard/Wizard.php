@@ -1,5 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
 /***************************************************************
 *  Copyright notice
 *
@@ -33,7 +32,7 @@ declare(encoding = 'utf-8');
  * @license http://www.gnu.org/copyleft/gpl.html
  * @version $Id$
  */
-class tx_form_view_wizard_wizard {
+class tx_form_View_Wizard_wizard {
 	/**
 	 * The document template object
 	 *
@@ -49,7 +48,7 @@ class tx_form_view_wizard_wizard {
 	 *
 	 * @var boolean TRUE if available, FALSE if not
 	 */
-	private $recordIsAvailable = FALSE;
+	protected $recordIsAvailable = FALSE;
 
 	/**
 	 * Constructs this view
@@ -136,7 +135,7 @@ class tx_form_view_wizard_wizard {
 	 *
 	 * @return void
 	 */
-	private function loadJavascript() {
+	protected function loadJavascript() {
 		$compress = TRUE;
 		$baseUrl = t3lib_div::resolveBackPath(
 			'../../../../../' .
@@ -262,7 +261,7 @@ class tx_form_view_wizard_wizard {
 	 *
 	 * @return void
 	 */
-	private function loadCss() {
+	protected function loadCss() {
 			// TODO Set to TRUE when finished
 		$compress = FALSE;
 		$baseUrl = t3lib_div::resolveBackPath(
@@ -296,7 +295,7 @@ class tx_form_view_wizard_wizard {
 	 *
 	 * @return void
 	 */
-	private function loadSettings() {
+	protected function loadSettings() {
 		$record = $this->repository->getRecord();
 		$pageId = $record->getPageId();
 		$modTSconfig = t3lib_BEfunc::getModTSconfig(
@@ -317,7 +316,7 @@ class tx_form_view_wizard_wizard {
 	 *
 	 * @param $file
 	 */
-	private function loadLocalization() {
+	protected function loadLocalization() {
 		$wizardLabels = $GLOBALS['LANG']->includeLLFile(
 			'EXT:form/Resources/Private/Language/locallang_wizard.xml',
 			FALSE,
@@ -342,7 +341,7 @@ class tx_form_view_wizard_wizard {
 	 *
 	 * @param array $array The array with the trailing dots
 	 */
-	private function removeTrailingDotsFromTyposcript(&$array) {
+	protected function removeTrailingDotsFromTyposcript(&$array) {
 		if (is_array($array)) {
 			foreach ($array as $key => $value) {
 				if (is_array($value)) {
@@ -363,7 +362,7 @@ class tx_form_view_wizard_wizard {
 	 *
 	 * @return array all available buttons as an assoc. array
 	 */
-	private function getButtons() {
+	protected function getButtons() {
 		$buttons = array(
 			'csh' => '',
 			'csh_buttons' => '',
@@ -420,7 +419,7 @@ class tx_form_view_wizard_wizard {
 	 *
 	 * @return string The body content
 	 */
-	private function getBodyContent() {
+	protected function getBodyContent() {
 		if ($this->recordIsAvailable) {
 			$bodyContent = '';
 		} else {
@@ -439,10 +438,10 @@ class tx_form_view_wizard_wizard {
 	/**
 	 * Set the content repository to use in this view
 	 *
-	 * @param tx_form_domain_repository_content $repository
+	 * @param tx_form_Domain_Repository_Content $repository
 	 * @return void
 	 */
-	public function setRepository(tx_form_domain_repository_content $repository) {
+	public function setRepository(tx_form_Domain_Repository_Content $repository) {
 		$this->repository = $repository;
 	}
 }

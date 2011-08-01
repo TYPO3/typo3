@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,13 +29,12 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_filter_stripnewlines implements tx_form_system_filter_interface {
+class tx_form_System_Filter_Stripnewlines implements tx_form_System_Filter_Interface {
 
 	/**
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 	}
@@ -47,7 +44,6 @@ class tx_form_system_filter_stripnewlines implements tx_form_system_filter_inter
 	 *
 	 * @param  string $value
 	 * @return string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function filter($value) {
 		return str_replace(array("\n", "\r"), ' ', (string) $value);

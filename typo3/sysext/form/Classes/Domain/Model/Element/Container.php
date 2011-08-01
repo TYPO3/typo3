@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_element_container extends tx_form_domain_model_element_abstract {
+class tx_form_Domain_Model_Element_Container extends tx_form_Domain_Model_Element_Abstract {
 
 	/**
 	 * Child elements of this object
@@ -44,7 +42,6 @@ class tx_form_domain_model_element_container extends tx_form_domain_model_elemen
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -55,7 +52,6 @@ class tx_form_domain_model_element_container extends tx_form_domain_model_elemen
 	 *
 	 * @param object $element The child object
 	 * @return object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function addElement($element) {
 		$this->elements[] = $element;
@@ -66,7 +62,6 @@ class tx_form_domain_model_element_container extends tx_form_domain_model_elemen
 	 * Get the child elements
 	 *
 	 * @return array Child objects
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getElements() {
 		return $this->elements;

@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,14 +29,13 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-interface tx_form_system_filter_interface {
+interface tx_form_System_Filter_Interface {
 
 	/**
 	 * Return filtered value
 	 *
 	 * @param  mixed $value
 	 * @return mixed
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function filter($value);
 }

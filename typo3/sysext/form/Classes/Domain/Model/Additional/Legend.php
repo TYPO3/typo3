@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_additional_legend extends tx_form_domain_model_additional_abstract implements tx_form_domain_model_additional_interface {
+class tx_form_Domain_Model_Additional_Legend extends tx_form_Domain_Model_Additional_Abstract implements tx_form_Domain_Model_Additional_Interface {
 
 	/**
 	 * Constructor
@@ -39,7 +37,6 @@ class tx_form_domain_model_additional_legend extends tx_form_domain_model_additi
 	 * @param string $type Type of the object
 	 * @param mixed $value Value of the object
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($type, $value) {
 		parent::__construct($type, $value);
@@ -49,7 +46,6 @@ class tx_form_domain_model_additional_legend extends tx_form_domain_model_additi
 	 * Return the value of the object
 	 *
 	 * @return string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getValue() {
 		$additional = $this->localCobj->cObjGetSingle($this->type, $this->value);

@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -31,9 +29,9 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_attributes_type extends tx_form_domain_model_attributes_abstract implements tx_form_domain_model_attributes_interface {
+class tx_form_Domain_Model_Attributes_Type extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
 
-	private $allowedValues = array(
+	protected $allowedValues = array(
 		'text',
 		'password',
 		'checkbox',
@@ -52,7 +50,6 @@ class tx_form_domain_model_attributes_type extends tx_form_domain_model_attribut
 	 * @param string $value Attribute value
 	 * @param integer $elementId The ID of the element
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($value, $elementId) {
 		parent::__construct($value, $elementId);
@@ -66,7 +63,6 @@ class tx_form_domain_model_attributes_type extends tx_form_domain_model_attribut
 	 * Defines the type of form input control to create.
 	 *
 	 * @return string Attribute value
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getValue() {
 		$attribute = strtolower((string) $this->value);

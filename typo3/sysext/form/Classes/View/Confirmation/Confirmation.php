@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_confirmation extends tx_form_view_confirmation_element_container {
+class tx_form_View_Confirmation extends tx_form_View_Confirmation_Element_Container {
 
 	/**
 	 * Default layout of this object
@@ -51,7 +49,7 @@ class tx_form_view_confirmation extends tx_form_view_confirmation_element_contai
 	/**
 	 * The localization handler
 	 *
-	 * @var tx_form_system_localization
+	 * @var tx_form_System_Localization
 	 */
 	protected $localizationHandler;
 
@@ -66,12 +64,11 @@ class tx_form_view_confirmation extends tx_form_view_confirmation_element_contai
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	public function __construct(tx_form_domain_model_form $model, array $typoscript) {
+	public function __construct(tx_form_Domain_Model_Form $model, array $typoscript) {
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
 		$this->localizationHandler = t3lib_div::makeInstance(
-			'tx_form_system_localization'
+			'tx_form_System_Localization'
 		);
 		$this->typoscript = $typoscript;
 		parent::__construct($model);
@@ -80,11 +77,10 @@ class tx_form_view_confirmation extends tx_form_view_confirmation_element_contai
 	/**
 	 * Set the data for the FORM tag
 	 *
-	 * @param tx_form_domain_model_form $formModel The model of the form
+	 * @param tx_form_Domain_Model_Form $formModel The model of the form
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	public function setData(tx_form_domain_model_form $model) {
+	public function setData(tx_form_Domain_Model_Form $model) {
 		$this->model = (object) $model;
 	}
 
@@ -94,7 +90,6 @@ class tx_form_view_confirmation extends tx_form_view_confirmation_element_contai
 	 * (when using formatOutput :-)
 	 *
 	 * @return string XHTML string containing the whole form
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function get() {
 		$message = $this->getMessage();
@@ -126,9 +121,8 @@ class tx_form_view_confirmation extends tx_form_view_confirmation_element_contai
 	 * confirmation.message.wrap = <p>|</p>
 	 *
 	 * @return string XHTML string containing the message
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function getMessage() {
+	protected function getMessage() {
 		if(isset($this->typoscript['message']) && isset($this->typoscript['message.'])) {
 			$value = $this->typoscript['message.'];
 			$type = $this->typoscript['message'];
@@ -137,15 +131,15 @@ class tx_form_view_confirmation extends tx_form_view_confirmation_element_contai
 			$type = 'TEXT';
 		} else {
 			$value['wrap'] = '<p>|</p>';
-			$value['value'] = $this->localizationHandler->getLocalLanguageLabel('tx_form_view_confirmation.message');
+			$value['value'] = $this->localizationHandler->getLocalLanguageLabel('tx_form_View_Confirmation.message');
 			$type = 'TEXT';
 		}
 
 		return $this->localCobj->cObjGetSingle($type, $value);
 	}
 
-	private function getConfirmationButtons() {
-		$requestHandler = t3lib_div::makeInstance('tx_form_system_request');
+	protected function getConfirmationButtons() {
+		$requestHandler = t3lib_div::makeInstance('tx_form_System_Request');
 		$prefix = $requestHandler->getPrefix();
 		$action = $this->localCobj->getTypoLink_URL($GLOBALS['TSFE']->id);
 
@@ -155,12 +149,12 @@ class tx_form_view_confirmation extends tx_form_view_confirmation_element_contai
 					<ol>
 						<li class="csc-form-confirmation-false">
 							<input type="submit" value="' .
-								$this->localizationHandler->getLocalLanguageLabel('tx_form_view_confirmation.donotconfirm') .
+								$this->localizationHandler->getLocalLanguageLabel('tx_form_View_Confirmation.donotconfirm') .
 								'" name="' . $prefix . '[confirmation]" />
 						</li>
 						<li class="csc-form-confirmation-false">
 							<input type="submit" value="' .
-								$this->localizationHandler->getLocalLanguageLabel('tx_form_view_confirmation.confirm') .
+								$this->localizationHandler->getLocalLanguageLabel('tx_form_View_Confirmation.confirm') .
 								'" name="' . $prefix . '[confirmation]" />
 						</li>
 					</ol>

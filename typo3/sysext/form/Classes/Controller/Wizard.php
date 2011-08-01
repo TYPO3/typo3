@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -38,22 +36,13 @@ require($BACK_PATH . 'template.php');
  * @license http://www.gnu.org/copyleft/gpl.html
  * @version $Id$
  */
-class tx_form_controller_wizard {
-	/**
-	 * Constructs this controller
-	 *
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 */
-	public function __construct() {
-	}
-
+class tx_form_Controller_Wizard {
 	/**
 	 * Dispatch on action
 	 *
 	 * Calls the requested action
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function dispatch() {
 		switch(t3lib_div::_GP('action')) {
@@ -74,14 +63,13 @@ class tx_form_controller_wizard {
 	 * The action which should be taken when the wizard is loaded
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function indexAction() {
-		/** @var $repository tx_form_domain_repository_content */
-		$repository = t3lib_div::makeInstance('tx_form_domain_repository_content');
+	protected function indexAction() {
+		/** @var $repository tx_form_Domain_Repository_Content */
+		$repository = t3lib_div::makeInstance('tx_form_Domain_Repository_Content');
 
-		/** @var $view tx_form_view_wizard_wizard */
-		$view = t3lib_div::makeInstance('tx_form_view_wizard_wizard');
+		/** @var $view tx_form_View_Wizard_wizard */
+		$view = t3lib_div::makeInstance('tx_form_View_Wizard_wizard');
 		$view->setRepository($repository);
 		$view->render();
 	}
@@ -92,14 +80,13 @@ class tx_form_controller_wizard {
 	 * The action which should be taken when the form in the wizard is saved
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function saveAction() {
-		/** @var $repository tx_form_domain_repository_content */
-		$repository = t3lib_div::makeInstance('tx_form_domain_repository_content');
+	protected function saveAction() {
+		/** @var $repository tx_form_Domain_Repository_Content */
+		$repository = t3lib_div::makeInstance('tx_form_Domain_Repository_Content');
 
-		/** @var $view tx_form_view_wizard_save */
-		$view = t3lib_div::makeInstance('tx_form_view_wizard_save');
+		/** @var $view tx_form_View_Wizard_Save */
+		$view = t3lib_div::makeInstance('tx_form_View_Wizard_Save');
 		$view->setRepository($repository);
 		$view->render();
 	}
@@ -110,20 +97,19 @@ class tx_form_controller_wizard {
 	 * The action which should be taken when the form in the wizard is loaded
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function loadAction() {
-		/** @var $repository tx_form_domain_repository_content */
-		$repository = t3lib_div::makeInstance('tx_form_domain_repository_content');
+	protected function loadAction() {
+		/** @var $repository tx_form_Domain_Repository_Content */
+		$repository = t3lib_div::makeInstance('tx_form_Domain_Repository_Content');
 
-		/** @var $view tx_form_view_wizard_load */
-		$view = t3lib_div::makeInstance('tx_form_view_wizard_load');
+		/** @var $view tx_form_View_Wizard_Load */
+		$view = t3lib_div::makeInstance('tx_form_View_Wizard_Load');
 		$view->setRepository($repository);
 		$view->render();
 	}
 }
 
-/** @var $wizard tx_form_controller_wizard */
-$wizard = t3lib_div::makeInstance('tx_form_controller_wizard');
+/** @var $wizard tx_form_Controller_Wizard */
+$wizard = t3lib_div::makeInstance('tx_form_Controller_Wizard');
 $wizard->dispatch();
 ?>

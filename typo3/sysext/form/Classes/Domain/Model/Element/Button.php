@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_element_button extends tx_form_domain_model_element_abstract {
+class tx_form_Domain_Model_Element_Button extends tx_form_Domain_Model_Element_Abstract {
 
 	/**
 	 * Allowed attributes for this object
@@ -69,7 +67,6 @@ class tx_form_domain_model_element_button extends tx_form_domain_model_element_a
 	 * Sets the configuration, calls parent constructor and fills the attributes
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -84,17 +81,16 @@ class tx_form_domain_model_element_button extends tx_form_domain_model_element_a
 	 * @param string $value Value to display on button
 	 * @return void
 	 * @see typo3/sysext/form/model/element/tx_form_domain_model_element#setValue()
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setValue($value = '') {
-		$localizationHandler = t3lib_div::makeInstance('tx_form_system_localization');
+		$localizationHandler = t3lib_div::makeInstance('tx_form_System_Localization');
 
 		$oldValue = $this->getAttributeValue('value');
 		if(empty($oldValue)) {
 			if(!empty($value)) {
 				$newValue = (string) $value;
 			} else {
-				$newValue = $localizationHandler->getLocalLanguageLabel('tx_form_domain_model_element_button.value');
+				$newValue = $localizationHandler->getLocalLanguageLabel('tx_form_Domain_Model_Element_Button.value');
 			}
 			$this->value = (string) $newValue;
 			$this->setAttribute('value', $newValue);

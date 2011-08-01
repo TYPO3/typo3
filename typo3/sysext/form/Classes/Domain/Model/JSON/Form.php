@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_json_form extends tx_form_domain_model_json_container {
+class tx_form_Domain_Model_JSON_Form extends tx_form_Domain_Model_JSON_Container {
 	/**
 	 * The ExtJS xtype of the element
 	 *
@@ -74,7 +72,6 @@ class tx_form_domain_model_json_form extends tx_form_domain_model_json_container
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -86,7 +83,7 @@ class tx_form_domain_model_json_form extends tx_form_domain_model_json_container
 	 * @param array $parameters Configuration array
 	 * @return void
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see tx_form_domain_model_json_container::setParameters()
+	 * @see tx_form_Domain_Model_JSON_Container::setParameters()
 	 */
 	public function setParameters($parameters) {
 		parent::setParameters($parameters);
@@ -100,9 +97,8 @@ class tx_form_domain_model_json_form extends tx_form_domain_model_json_container
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setConfirmation($parameters) {
+	protected function setConfirmation($parameters) {
 		if (isset($parameters['confirmation'])) {
 			$this->configuration['confirmation'] = $parameters['confirmation'];
 		}
@@ -113,9 +109,8 @@ class tx_form_domain_model_json_form extends tx_form_domain_model_json_container
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setPostProcessors($parameters) {
+	protected function setPostProcessors($parameters) {
 		if (isset($parameters['postProcessor.']) && is_array($parameters['postProcessor.'])) {
 			$postProcessors = $parameters['postProcessor.'];
 
@@ -143,9 +138,8 @@ class tx_form_domain_model_json_form extends tx_form_domain_model_json_container
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setPrefix($parameters) {
+	protected function setPrefix($parameters) {
 		if (isset($parameters['prefix'])) {
 			$this->configuration['prefix'] = $parameters['prefix'];
 		}

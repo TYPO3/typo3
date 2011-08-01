@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-abstract class tx_form_domain_model_attributes_abstract {
+abstract class tx_form_Domain_Model_Attributes_Abstract {
 
 	/**
 	 * The value of the attribute
@@ -59,7 +57,6 @@ abstract class tx_form_domain_model_attributes_abstract {
 	 *
 	 * @param string $value Attribute value
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($value, $elementId) {
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
@@ -72,7 +69,6 @@ abstract class tx_form_domain_model_attributes_abstract {
 	 *
 	 * @param $value string The value to set
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setValue($value) {
 		$this->value = (string) $value;

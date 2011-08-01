@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_confirmation_additional extends tx_form_view_confirmation_element_abstract {
+class tx_form_View_Confirmation_Additional extends tx_form_View_Confirmation_Element_Abstract {
 
 	/**
 	 * The model for the current object
@@ -45,7 +43,6 @@ class tx_form_view_confirmation_additional extends tx_form_view_confirmation_ele
 	 *
 	 * @param object $model The parent model
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($model) {
 		$this->model = $model;
@@ -55,7 +52,6 @@ class tx_form_view_confirmation_additional extends tx_form_view_confirmation_ele
 	 * Get the additional value
 	 *
 	 * @return string The value of the additional
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getAdditionalValue() {
 		$type = preg_replace('/.*_([^_]*)$/', "$1", get_class($this), 1);

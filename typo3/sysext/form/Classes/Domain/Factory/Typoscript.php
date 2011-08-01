@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -34,7 +32,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_factory_typoscript implements t3lib_Singleton {
+class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 
 	/**
 	 * Constructor
@@ -43,7 +41,6 @@ class tx_form_domain_factory_typoscript implements t3lib_Singleton {
 	 *
 	 * @param array $arguments Typoscript configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 	}
@@ -53,7 +50,6 @@ class tx_form_domain_factory_typoscript implements t3lib_Singleton {
 	 *
 	 * @param array $typoscript Typoscript containing all configuration
 	 * @return object The form object containing the child elements
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function buildModelFromTyposcript(array $typoscript) {
 		$this->setLayoutHandler($typoscript);
@@ -70,7 +66,6 @@ class tx_form_domain_factory_typoscript implements t3lib_Singleton {
 	 * @param array $arguments Configuration array
 	 * @throws Exception
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getChildElementsByIntegerKey(&$parentElement, $typoscript) {
 		if (is_array($typoscript)) {
@@ -100,7 +95,6 @@ class tx_form_domain_factory_typoscript implements t3lib_Singleton {
 	 * @param string $class Classname for the element
 	 * @param array $arguments Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setElementType(&$parentElement, $class, array $arguments) {
 		if (substr($class, 0, 1) == '<') {
@@ -135,7 +129,6 @@ class tx_form_domain_factory_typoscript implements t3lib_Singleton {
 	 * @param string $class Type of element
 	 * @param array $arguments Configuration array
 	 * @return object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function addElement(&$parentElement, $class, array $arguments = array()) {
 		$element = $this->createElement($class, $arguments);
@@ -149,7 +142,6 @@ class tx_form_domain_factory_typoscript implements t3lib_Singleton {
 	 * @param string $class Type of element
 	 * @param array $arguments Configuration array
 	 * @return object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function createElement($class, array $arguments = array()) {
 		$class = strtolower((string) $class);
@@ -189,7 +181,6 @@ class tx_form_domain_factory_typoscript implements t3lib_Singleton {
 	 * Set the attributes
 	 *
 	 * @param array $configuration Configuration
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setAttributes(&$element, $arguments) {
 		if($element->hasAllowedAttributes()) {
@@ -224,7 +215,6 @@ class tx_form_domain_factory_typoscript implements t3lib_Singleton {
 	 * Set the additionals from Element Typoscript configuration
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setAdditionals(&$element, $arguments) {
 		if(!empty($arguments)) {
@@ -265,7 +255,6 @@ class tx_form_domain_factory_typoscript implements t3lib_Singleton {
 	 *
 	 * @param array $arguments TypoScript
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	protected function setFilters(&$element, $arguments) {
 		if (is_array($arguments)) {
@@ -285,11 +274,10 @@ class tx_form_domain_factory_typoscript implements t3lib_Singleton {
 	 * Set the layout handler
 	 *
 	 * @param array $typoscript TypoScript
-	 * @return tx_form_system_layout The layout handler
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 * @return tx_form_System_Layout The layout handler
 	 */
 	public function setLayoutHandler($typoscript) {
-		$layoutHandler = t3lib_div::makeInstance('tx_form_system_layout'); // singleton
+		$layoutHandler = t3lib_div::makeInstance('tx_form_System_Layout'); // singleton
 		$layoutHandler->setLayout($typoscript['layout.']);
 
 		return $layoutHandler;
@@ -299,15 +287,14 @@ class tx_form_domain_factory_typoscript implements t3lib_Singleton {
 	 * Set the request handler
 	 *
 	 * @param array $typoscript TypoScript
-	 * @return tx_form_system_request The request handler
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 * @return tx_form_System_Request The request handler
 	 */
 	public function setRequestHandler($typoscript) {
 		$prefix = isset($typoscript['prefix']) ? $typoscript['prefix'] : '';
 		$method = isset($typoscript['method']) ? $typoscript['method'] : '';
 
-		/** @var $requestHandler tx_form_system_request */
-		$requestHandler = t3lib_div::makeInstance('tx_form_system_request'); // singleton
+		/** @var $requestHandler tx_form_System_Request */
+		$requestHandler = t3lib_div::makeInstance('tx_form_System_Request'); // singleton
 		$requestHandler->setPrefix($prefix);
 		$requestHandler->setMethod($method);
 		$requestHandler->storeFiles();
@@ -321,12 +308,11 @@ class tx_form_domain_factory_typoscript implements t3lib_Singleton {
 	 * Makes the validation object and adds rules to it
 	 *
 	 * @param array $typoscript TypoScript
-	 * @return tx_form_system_validate The validation object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 * @return tx_form_System_Validate The validation object
 	 */
 	public function setRules($typoscript) {
 		$rulesTyposcript = isset($typoscript['rules.']) ? $typoscript['rules.'] : NULL;
-		$rulesClass = t3lib_div::makeInstance('tx_form_system_validate', $rulesTyposcript); // singleton
+		$rulesClass = t3lib_div::makeInstance('tx_form_System_Validate', $rulesTyposcript); // singleton
 
 		if (is_array($rulesTyposcript)) {
 			$keys = t3lib_TStemplate::sortedKeyList($rulesTyposcript);

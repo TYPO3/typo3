@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,15 +29,14 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_plain extends tx_form_view_mail_plain_element_container {
+class tx_form_View_Mail_Plain extends tx_form_View_Mail_Plain_Element_Container {
 
 	/**
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	public function __construct(tx_form_domain_model_form $model, $spaces = 0) {
+	public function __construct(tx_form_Domain_Model_Form $model, $spaces = 0) {
 		parent::__construct($model, $spaces);
 	}
 
@@ -47,7 +44,6 @@ class tx_form_view_mail_plain extends tx_form_view_mail_plain_element_container 
 	 *
 	 *
 	 * @return string Plain content containing the submitted values
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function render() {
 		$content = $this->renderChildren($this->model->getElements());

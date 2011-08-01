@@ -1,5 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
 /***************************************************************
 *  Copyright notice
 *
@@ -33,13 +32,13 @@ declare(encoding = 'utf-8');
  * @license http://www.gnu.org/copyleft/gpl.html
  * @version $Id$
  */
-class tx_form_view_wizard_load {
+class tx_form_View_Wizard_Load {
 	/**
 	 * Is the referenced record available
 	 *
 	 * @var boolean TRUE if available, FALSE if not
 	 */
-	private $recordIsAvailable = FALSE;
+	protected $recordIsAvailable = FALSE;
 
 	/**
 	 * Constructs this view
@@ -68,7 +67,7 @@ class tx_form_view_wizard_load {
 	 * @param mixed $configuration JSON string, FALSE if not succeeded
 	 * @return void
 	 */
-	private function headerOutput($jsonObject) {
+	protected function headerOutput($jsonObject) {
 		if (!$jsonObject) {
 			header('HTTP/1.1 500 Internal Server Error');
 			$jsonArray = array('message' => 'Failed to save the form');
@@ -94,10 +93,10 @@ class tx_form_view_wizard_load {
 	/**
 	 * Set the content repository to use in this view
 	 *
-	 * @param tx_form_domain_repository_content $repository
+	 * @param tx_form_Domain_Repository_Content $repository
 	 * @return void
 	 */
-	public function setRepository(tx_form_domain_repository_content $repository) {
+	public function setRepository(tx_form_Domain_Repository_Content $repository) {
 		$this->repository = $repository;
 	}
 }

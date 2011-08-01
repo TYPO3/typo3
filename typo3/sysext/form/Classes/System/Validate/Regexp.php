@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_validate_regexp extends tx_form_system_validate_abstract {
+class tx_form_System_Validate_Regexp extends tx_form_System_Validate_Abstract {
 
 	/**
 	 * Regular expression for rule
@@ -45,7 +43,6 @@ class tx_form_system_validate_regexp extends tx_form_system_validate_abstract {
 	 *
 	 * @param array $arguments Typoscript configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments) {
 		$this->setRegularExpression($arguments['expression']);
@@ -58,7 +55,7 @@ class tx_form_system_validate_regexp extends tx_form_system_validate_abstract {
 	 *
 	 * @return boolean
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/interfaces/tx_form_system_validate_interface#isValid()
+	 * @see typo3/sysext/form/interfaces/tx_form_System_Validate_Interface#isValid()
 	 */
 	public function isValid() {
 		if($this->requestHandler->has($this->fieldName)) {
@@ -76,7 +73,6 @@ class tx_form_system_validate_regexp extends tx_form_system_validate_abstract {
 	 *
 	 * @param string $expression The regular expression
 	 * @return object Rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setRegularExpression($expression) {
 		$this->regularExpression = (string) $expression;

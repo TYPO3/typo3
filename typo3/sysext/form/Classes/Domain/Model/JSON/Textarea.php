@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_json_textarea extends tx_form_domain_model_json_element {
+class tx_form_Domain_Model_JSON_Textarea extends tx_form_Domain_Model_JSON_Element {
 	/**
 	 * The ExtJS xtype of the element
 	 *
@@ -82,7 +80,6 @@ class tx_form_domain_model_json_textarea extends tx_form_domain_model_json_eleme
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		parent::__construct();

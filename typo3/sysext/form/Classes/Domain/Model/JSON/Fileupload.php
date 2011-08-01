@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_json_fileupload extends tx_form_domain_model_json_element {
+class tx_form_Domain_Model_JSON_Fileupload extends tx_form_Domain_Model_JSON_Element {
 	/**
 	 * The ExtJS xtype of the element
 	 *

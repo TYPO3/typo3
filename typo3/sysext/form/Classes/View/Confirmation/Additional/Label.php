@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +29,7 @@ declare(encoding = 'utf-8');
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_confirmation_additional_label extends tx_form_view_confirmation_additional {
+class tx_form_View_Confirmation_Additional_Label extends tx_form_View_Confirmation_Additional {
 
 	/**
 	 * Default layout of this object
@@ -49,7 +47,6 @@ class tx_form_view_confirmation_additional_label extends tx_form_view_confirmati
 	 *
 	 * @param object $model The parent model
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($model) {
 		parent::__construct($model);
