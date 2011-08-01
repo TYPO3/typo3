@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -45,7 +43,6 @@ class tx_form_system_validate_equals extends tx_form_system_validate_abstract {
 	 *
 	 * @param array $arguments Typoscript configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments) {
 		$this->setField($arguments['field']);
@@ -81,7 +78,6 @@ class tx_form_system_validate_equals extends tx_form_system_validate_abstract {
 	 *
 	 * @param string $field Field to compare
 	 * @return Rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setField($field) {
 		$this->field = (string) $field;
@@ -95,7 +91,6 @@ class tx_form_system_validate_equals extends tx_form_system_validate_abstract {
 	 *
 	 * @param string $message Message text with markers
 	 * @return string Message text with substituted markers
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	protected function substituteValues($message) {
 		$message = str_replace('%field', $this->field, $message);

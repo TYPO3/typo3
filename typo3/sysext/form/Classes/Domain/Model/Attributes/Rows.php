@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -39,7 +37,6 @@ class tx_form_domain_model_attributes_rows extends tx_form_domain_model_attribut
 	 * @param string $value Attribute value
 	 * @param integer $elementId The ID of the element
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($value, $elementId) {
 		parent::__construct($value, $elementId);
@@ -57,7 +54,6 @@ class tx_form_domain_model_attributes_rows extends tx_form_domain_model_attribut
 	 * beyond the visible area.
 	 *
 	 * @return integer Attribute value
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getValue() {
 		$value = (integer) $this->value;

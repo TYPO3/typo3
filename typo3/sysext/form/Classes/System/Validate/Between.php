@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -60,7 +58,6 @@ class tx_form_system_validate_between extends tx_form_system_validate_abstract i
 	 *
 	 * @param array $arguments Typoscript configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments) {
 		$this->setMinimum($arguments['minimum'])
@@ -98,7 +95,6 @@ class tx_form_system_validate_between extends tx_form_system_validate_abstract i
 	 *
 	 * @param mixed $minimum Minimum value
 	 * @return object Rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setMinimum($minimum) {
 		$this->minimum = $minimum;
@@ -111,7 +107,6 @@ class tx_form_system_validate_between extends tx_form_system_validate_abstract i
 	 *
 	 * @param mixed $maximum Maximum value
 	 * @return object Rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setMaximum($maximum) {
 		$this->maximum = $maximum;
@@ -124,7 +119,6 @@ class tx_form_system_validate_between extends tx_form_system_validate_abstract i
 	 *
 	 * @param boolean $inclusive True is inclusive
 	 * @return object Rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setInclusive($inclusive) {
 		if($inclusive === NULL) {
@@ -162,7 +156,6 @@ class tx_form_system_validate_between extends tx_form_system_validate_abstract i
 	 *
 	 * @param string $message Message text with markers
 	 * @return string Message text with substituted markers
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	protected function substituteValues($message) {
 		$message = str_replace('%minimum', $this->minimum, $message);

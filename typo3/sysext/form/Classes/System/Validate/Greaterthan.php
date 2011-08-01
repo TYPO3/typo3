@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -45,7 +43,6 @@ class tx_form_system_validate_greaterthan extends tx_form_system_validate_abstra
 	 *
 	 * @param array $arguments Typoscript configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments) {
 		$this->setMinimum($arguments['minimum']);
@@ -75,7 +72,6 @@ class tx_form_system_validate_greaterthan extends tx_form_system_validate_abstra
 	 *
 	 * @param mixed $minimum Minimum value
 	 * @return object Rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setMinimum($minimum) {
 		$this->minimum = (integer) $minimum;
@@ -89,7 +85,6 @@ class tx_form_system_validate_greaterthan extends tx_form_system_validate_abstra
 	 *
 	 * @param string $message Message text with markers
 	 * @return string Message text with substituted markers
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	protected function substituteValues($message) {
 		$message = str_replace('%minimum', $this->minimum, $message);

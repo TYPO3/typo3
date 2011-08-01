@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -40,20 +38,11 @@ require($BACK_PATH . 'template.php');
  */
 class tx_form_controller_wizard {
 	/**
-	 * Constructs this controller
-	 *
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 */
-	public function __construct() {
-	}
-
-	/**
 	 * Dispatch on action
 	 *
 	 * Calls the requested action
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function dispatch() {
 		switch(t3lib_div::_GP('action')) {
@@ -74,9 +63,8 @@ class tx_form_controller_wizard {
 	 * The action which should be taken when the wizard is loaded
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function indexAction() {
+	protected function indexAction() {
 		/** @var $repository tx_form_domain_repository_content */
 		$repository = t3lib_div::makeInstance('tx_form_domain_repository_content');
 
@@ -92,9 +80,8 @@ class tx_form_controller_wizard {
 	 * The action which should be taken when the form in the wizard is saved
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function saveAction() {
+	protected function saveAction() {
 		/** @var $repository tx_form_domain_repository_content */
 		$repository = t3lib_div::makeInstance('tx_form_domain_repository_content');
 
@@ -110,9 +97,8 @@ class tx_form_controller_wizard {
 	 * The action which should be taken when the form in the wizard is loaded
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function loadAction() {
+	protected function loadAction() {
 		/** @var $repository tx_form_domain_repository_content */
 		$repository = t3lib_div::makeInstance('tx_form_domain_repository_content');
 

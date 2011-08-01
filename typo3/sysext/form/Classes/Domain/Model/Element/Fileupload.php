@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -66,7 +64,6 @@ class tx_form_domain_model_element_fileupload extends tx_form_domain_model_eleme
 
 	/**
 	 * @return string
-	 * @author Peter Beernink <p.beernink@drecomm.nl>
 	 */
 	public function getData() {
 		$uploadData = $this->requestHandler->get($this->name);
@@ -78,7 +75,6 @@ class tx_form_domain_model_element_fileupload extends tx_form_domain_model_eleme
 	 * Sets the configuration, calls parent constructor and fills the attributes
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		parent::__construct();

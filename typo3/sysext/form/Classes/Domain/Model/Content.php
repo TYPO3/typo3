@@ -39,27 +39,26 @@ class tx_form_domain_model_content {
 	 *
 	 * @var integer
 	 */
-	private $uid = 0;
+	protected $uid = 0;
 
 	/**
 	 * The page id
 	 *
 	 * @var integer
 	 */
-	private $pageId = 0;
+	protected $pageId = 0;
 
 	/**
 	 * The configuration Typoscript
 	 *
 	 * @var array
 	 */
-	private $typoscript = array();
+	protected $typoscript = array();
 
 	/**
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 	}
@@ -69,7 +68,6 @@ class tx_form_domain_model_content {
 	 *
 	 * @param integer $uid The uid
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setUid($uid) {
 		$this->uid = (integer) $uid;
@@ -79,7 +77,6 @@ class tx_form_domain_model_content {
 	 * Returns the uid
 	 *
 	 * @return integer The uid
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getUid() {
 		return $this->uid;
@@ -90,7 +87,6 @@ class tx_form_domain_model_content {
 	 *
 	 * @param integer $pageId The page id
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setPageId($pageId) {
 		$this->pageId = (integer) $pageId;
@@ -100,7 +96,6 @@ class tx_form_domain_model_content {
 	 * Returns the page id
 	 *
 	 * @return integer The page id
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getPageId() {
 		return $this->pageId;
@@ -111,7 +106,6 @@ class tx_form_domain_model_content {
 	 *
 	 * @param array $typoscript The Typoscript configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setTyposcript(array $typoscript) {
 		$this->typoscript = (array) $typoscript;
@@ -121,7 +115,6 @@ class tx_form_domain_model_content {
 	 * Returns the Typoscript configuration
 	 *
 	 * @return array The Typoscript configuration
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getTyposcript() {
 		return $this->typoscript;

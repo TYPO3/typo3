@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -53,7 +51,6 @@ class tx_form_view_mail_html_additional_legend extends tx_form_view_mail_html_ad
 	 *
 	 * @param object $model The parent model
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($model) {
 		parent::__construct($model);

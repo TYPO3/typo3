@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -38,7 +36,6 @@ class tx_form_view_mail_plain_element_textline extends tx_form_view_mail_plain_e
 	 *
 	 * @param tx_form_domain_model_element_textline $model Model for this element
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct(tx_form_domain_model_element_textline $model, $spaces) {
 		parent::__construct($model, $spaces);
@@ -50,7 +47,7 @@ class tx_form_view_mail_plain_element_textline extends tx_form_view_mail_plain_e
 		return str_repeat(chr(32), $this->spaces) . $content;
 	}
 
-	private function getLabel() {
+	protected function getLabel() {
 		$label = '';
 
 		if ($this->model->additionalIsSet('label')) {
@@ -62,7 +59,7 @@ class tx_form_view_mail_plain_element_textline extends tx_form_view_mail_plain_e
 		return $label;
 	}
 
-	private function getValue() {
+	protected function getValue() {
 		$value = $this->model->getAttributeValue('value');
 
 		return $value;

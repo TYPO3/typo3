@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -38,7 +36,6 @@ class tx_form_view_mail_plain_element_fileupload extends tx_form_view_mail_plain
 	 *
 	 * @param tx_form_domain_model_element_fileupload $model Model for this element
 	 * @return void
-	 * @author Rens Admiraal <r.admiraal@drecomm.nl>
 	 */
 	public function __construct(tx_form_domain_model_element_fileupload $model, $spaces) {
 		parent::__construct($model, $spaces);
@@ -50,7 +47,7 @@ class tx_form_view_mail_plain_element_fileupload extends tx_form_view_mail_plain
 		return str_repeat(chr(32), $this->spaces) . $content;
 	}
 
-	private function getLabel() {
+	protected function getLabel() {
 		if ($this->model->additionalIsSet('label')) {
 			$label = $this->model->getAdditionalValue('label');
 		} else {
@@ -60,7 +57,7 @@ class tx_form_view_mail_plain_element_fileupload extends tx_form_view_mail_plain
 		return $label;
 	}
 
-	private function getValue() {
+	protected function getValue() {
 		$value = $this->model->getAttributeValue('value');
 
 		return $value;

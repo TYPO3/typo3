@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -39,7 +37,6 @@ class tx_form_system_postprocessor {
 	 * @param $form tx_form_domain_model_form Form domain model
 	 * @param $typoscript array Post processor TypoScript settings
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct(tx_form_domain_model_form $form, array $typoScript) {
 		$this->form = $form;
@@ -53,7 +50,6 @@ class tx_form_system_postprocessor {
 	 * own settings
 	 *
 	 * @return string HTML messages from the called processors
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function process() {
 		$html = '';

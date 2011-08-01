@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -45,7 +43,6 @@ class tx_form_system_filter_alphanumeric implements tx_form_system_filter_interf
 	 *
 	 * @param array $arguments Filter configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments = array()) {
 		$this->setAllowWhiteSpace($arguments['allowWhiteSpace']);
@@ -56,7 +53,6 @@ class tx_form_system_filter_alphanumeric implements tx_form_system_filter_interf
 	 *
 	 * @param boolean $allowWhiteSpace True if allowed
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setAllowWhiteSpace($allowWhiteSpace = TRUE) {
 		$this->allowWhiteSpace = (boolean) $allowWhiteSpace;
@@ -69,7 +65,6 @@ class tx_form_system_filter_alphanumeric implements tx_form_system_filter_interf
 	 *
 	 * @param  string $value
 	 * @return string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function filter($value) {
 		$whiteSpace = $this->allowWhiteSpace ? '\s' : '';

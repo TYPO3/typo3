@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -47,7 +45,6 @@ class tx_form_view_form extends tx_form_view_form_element_container {
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct(tx_form_domain_model_form $model) {
 		parent::__construct($model);
@@ -58,7 +55,6 @@ class tx_form_view_form extends tx_form_view_form_element_container {
 	 *
 	 * @param tx_form_domain_model_form $formModel The model of the form
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setData(tx_form_domain_model_form $model) {
 		$this->model = (object) $model;
@@ -70,7 +66,6 @@ class tx_form_view_form extends tx_form_view_form_element_container {
 	 * (when using formatOutput :-)
 	 *
 	 * @return string XHTML string containing the whole form
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function get() {
 		$this->setCss();
@@ -84,9 +79,8 @@ class tx_form_view_form extends tx_form_view_form_element_container {
 	 * Add the form CSS file as additional header data
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setCss() {
+	protected function setCss() {
 		$GLOBALS['TSFE']->additionalHeaderData['tx_form_css'] =
 			'<link rel="stylesheet" type="text/css" href="' .
 			t3lib_extMgm::siteRelPath('form') .
