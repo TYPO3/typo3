@@ -74,6 +74,41 @@ class t3lib_DB {
 	var $default_charset = 'utf8';
 
 	/**
+	 * Parsed SQL from standard DB dump file
+	 *
+	 * @var array
+	 */
+	public $cache_autoIncFields = array();
+
+	/**
+	 * Field types for tables/fields
+	 *
+	 * @var array
+	 */
+	public $cache_fieldType = array();
+
+	/**
+	 * Primary keys
+	 *
+	 * @var array
+	 */
+	public $cache_primaryKeys = array();
+
+	/**
+	 * SQL parser
+	 *
+	 * @var tx_dbal_sqlengine
+	 */
+	protected $SQLparser;
+
+	/**
+	 * Installer SQL analyzer
+	 *
+	 * @var t3lib_install_Sql
+	 */
+	protected $installerSql;
+
+	/**
 	 * @var t3lib_DB_preProcessQueryHook[]
 	 */
 	protected $preProcessHookObjects = array();
@@ -83,6 +118,149 @@ class t3lib_DB {
 	 */
 	protected $postProcessHookObjects = array();
 
+
+	/**
+	 * Default constructor.
+	 */
+	public function __construct() {
+		$this->initInternalVariables();
+	}
+
+	/**
+	 * Setting internal variables.
+	 *
+	 * @return	void
+	 */
+	protected function initInternalVariables() {
+		$this->cacheFieldInfo();
+	}
+
+	/**
+	 * Clears the cached field information file.
+	 *
+	 * @return void
+	 */
+	public function clearCachedFieldInfo() {
+		$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
+		$phpCodeCache->flushByTag('t3lib_db');
+	}
+
+	/**
+	 * Caches the field information.
+	 *
+	 * @return void
+	 */
+	public function cacheFieldInfo() {
+		$cacheIdentifier = 't3lib_db_fieldInfo';
+		$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
+			// try to fetch cache
+			// cache is flushed when admin_query() is called
+		if ($phpCodeCache->has($cacheIdentifier)) {
+			$fieldInformation = $phpCodeCache->requireOnce($cacheIdentifier);
+			$this->cache_autoIncFields = $fieldInformation['incFields'];
+			$this->cache_fieldType = $fieldInformation['fieldTypes'];
+			$this->cache_primaryKeys = $fieldInformation['primaryKeys'];
+		} else {
+			$completeFieldInformation = $this->createCachedFieldInformation();
+
+			$phpCodeCache->set(
+				$cacheIdentifier,
+				$this->getCacheString($completeFieldInformation),
+				array('t3lib_db')
+			);
+		}
+	}
+
+	/**
+	 * Parse the database table structure and store it in an array
+	 *
+	 * @return array
+	 */
+	protected function createCachedFieldInformation() {
+			// Set SQL parser object for internal use:
+		$this->SQLparser = t3lib_div::makeInstance('t3lib_sqlparser');
+		$this->installerSql = t3lib_div::makeInstance('t3lib_install_Sql');
+
+			// handle stddb.sql, parse and analyze
+		$extensionSql = t3lib_div::getUrl(PATH_site . 't3lib/stddb/tables.sql');
+		$parsedExtensionSql = $this->installerSql->getFieldDefinitions_fileContent($extensionSql);
+		$this->analyzeFields($parsedExtensionSql);
+
+			// loop over all installed extensions
+		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extensionSettings) {
+			if (!is_array($extensionSettings) || !isset($extensionSettings['ext_tables.sql'])) {
+				continue;
+			}
+
+				// fetch db dump (if any) and parse it, then analyze
+			$extensionSql = t3lib_div::getUrl($extensionSettings['ext_tables.sql']);
+			$parsedExtensionSql = $this->installerSql->getFieldDefinitions_fileContent($extensionSql);
+			$this->analyzeFields($parsedExtensionSql);
+		}
+
+		$completeFieldInformation = array('incFields' => $this->cache_autoIncFields, 'fieldTypes' => $this->cache_fieldType, 'primaryKeys' => $this->cache_primaryKeys);
+		$completeFieldInformation = $this->mapCachedFieldInfo($completeFieldInformation);
+
+		return $completeFieldInformation;
+	}
+
+	/**
+	 * Creates a PHP code representation of the array that can be cached
+	 * in the PHP code cache.
+	 *
+	 * @param array $fieldInformation
+	 * @return string
+	 */
+	protected function getCacheString(array $fieldInformation) {
+		$cacheString = 'return ';
+		$cacheString .= var_export($fieldInformation, TRUE);
+		$cacheString .= ';';
+
+		return $cacheString;
+	}
+
+	/**
+	 * Analyzes fields and adds the extracted information to the field type, auto increment and
+	 * primary key info caches.
+	 *
+	 * @param array $parsedExtSQL The output produced by t3lib_install::getFieldDefinitions_fileContent()
+	 * @return void
+	 * @see t3lib_install::getFieldDefinitions_fileContent()
+	 */
+	protected function analyzeFields($parsedExtSQL) {
+		foreach ($parsedExtSQL as $table => $tdef) {
+			if (is_array($tdef['fields'])) {
+				foreach ($tdef['fields'] as $field => $fdef) {
+					$fdef = $this->SQLparser->parseFieldDef($fdef);
+					$this->cache_fieldType[$table][$field]['type'] = $fdef['fieldType'];
+					$this->cache_fieldType[$table][$field]['metaType'] = $this->MySQLMetaType($fdef['fieldType']);
+					$this->cache_fieldType[$table][$field]['notnull'] = (isset($fdef['featureIndex']['NOTNULL']) && !$this->SQLparser->checkEmptyDefaultValue($fdef['featureIndex'])) ? 1 : 0;
+					if (isset($fdef['featureIndex']['DEFAULT'])) {
+						$default = $fdef['featureIndex']['DEFAULT']['value'][0];
+						if (isset($fdef['featureIndex']['DEFAULT']['value'][1])) {
+							$default = $fdef['featureIndex']['DEFAULT']['value'][1] . $default . $fdef['featureIndex']['DEFAULT']['value'][1];
+						}
+						$this->cache_fieldType[$table][$field]['default'] = $default;
+					}
+					if (isset($fdef['featureIndex']['AUTO_INCREMENT'])) {
+						$this->cache_autoIncFields[$table] = $field;
+					}
+					if (isset($tdef['keys']['PRIMARY'])) {
+						$this->cache_primaryKeys[$table] = substr($tdef['keys']['PRIMARY'], 13, -1);
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * This function builds all definitions for mapped tables and fields
+	 * This method is overriden in DBAL.
+	 * @see cacheFieldInfo()
+	 */
+	protected function mapCachedFieldInfo($fieldInfo) {
+		return $fieldInfo;
+	}
 
 	/************************************
 	 *
@@ -762,9 +940,23 @@ class t3lib_DB {
 			$noQuote = FALSE;
 		}
 
-		foreach ($arr as $k => $v) {
-			if ($noQuote === FALSE || !in_array($k, $noQuote)) {
-				$arr[$k] = $this->fullQuoteStr($v, $table);
+		$fields = array();
+		if (isset($this->cache_fieldType[$table])) {
+			$fields = array_keys($this->cache_fieldType[$table]);
+		} else {
+			t3lib_div::deprecationLog(
+				't3lib_db::fullQuoteArray is called with invalid table name: "' .
+				$table .
+				'"! Support for invalid table names will be dropped in TYPO3 4.8'
+			);
+		}
+		foreach ($arr as $key => $value) {
+			if (!empty($fields) && in_array($key, $fields)) {
+				if ($noQuote === FALSE || !in_array($key, $noQuote)) {
+					$arr[$key] = $this->fullQuoteStr($value, $table);
+				}
+			} else {
+				unset($arr[$key]);
 			}
 		}
 		return $arr;
@@ -784,6 +976,52 @@ class t3lib_DB {
 	 */
 	function quoteStr($str, $table) {
 		return mysql_real_escape_string($str, $this->link);
+	}
+
+	/**
+	 * Return MetaType for native MySQL field type
+	 *
+	 * @param	string		native type as reported as in mysqldump files
+	 * @return	string		Meta type (currenly ADOdb syntax only, http://phplens.com/lens/adodb/docs-adodb.htm#metatype)
+	 */
+	public function MySQLMetaType($type) {
+		switch (strtoupper($type)) {
+			case 'STRING':
+			case 'CHAR':
+			case 'VARCHAR':
+			case 'TINYBLOB':
+			case 'TINYTEXT':
+			case 'ENUM':
+			case 'SET': return 'C';
+
+			case 'TEXT':
+			case 'LONGTEXT':
+			case 'MEDIUMTEXT': return 'XL';
+
+			case 'IMAGE':
+			case 'LONGBLOB':
+			case 'BLOB':
+			case 'MEDIUMBLOB': return 'B';
+
+			case 'YEAR':
+			case 'DATE': return 'D';
+
+			case 'TIME':
+			case 'DATETIME':
+			case 'TIMESTAMP': return 'T';
+
+			case 'FLOAT':
+			case 'DOUBLE': return 'F';
+
+			case 'INT':
+			case 'INTEGER':
+			case 'TINYINT':
+			case 'SMALLINT':
+			case 'MEDIUMINT':
+			case 'BIGINT': return 'I8'; // we always return I8 to be on the safe side. Under some circumstances the fields are to small otherwise...
+
+			default: return 'N';
+		}
 	}
 
 	/**
