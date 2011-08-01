@@ -1,17 +1,3 @@
-includeLibs.tx_form_controller = EXT:form/controller/class.tx_form_controller.php
-
-plugin.tx_form_controller = USER
-plugin.tx_form_controller {
-	userFunc = tx_form_controller->cacheCheck
-	renderObj = COA
-	renderObj {
-		10 = USER
-		10 {
-			userFunc = tx_form_controller->main
-		}
-	}
-}
-
 tt_content.mailform.20 >
 tt_content.mailform.20 = FORM
 tt_content.mailform.20 {

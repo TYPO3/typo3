@@ -116,7 +116,7 @@ class tx_form_domain_factory_typoscript implements t3lib_Singleton {
 			$contentObject['cObj.'] = $arguments;
 			$this->addElement($parentElement, 'content', $contentObject);
 			$GLOBALS['TT']->decStackPointer();
-		} elseif(in_array($class, $GLOBALS['OBJECTS_form'])) {
+		} elseif (in_array($class, tx_form_Common::getInstance()->getFormObjects())) {
 			try {
 				$this->addElement($parentElement, $class, $arguments);
 			} catch (Exception $exception) {

@@ -35,7 +35,7 @@ declare(encoding = 'utf-8');
  * @license http://www.gnu.org/copyleft/gpl.html
  * @version $Id$
  */
-class tx_form_controller {
+class tx_form_controller_form {
 
 	/**
 	 * The TypoScript array

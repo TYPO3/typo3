@@ -120,7 +120,7 @@ class tx_form_domain_factory_typoscripttojson {
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	private function setElementType(&$parentElement, $class, array $arguments) {
-		if(in_array($class, $GLOBALS['OBJECTS_form'])) {
+		if (in_array($class, tx_form_Common::getInstance()->getFormObjects())) {
 			if (strstr($arguments['class'], 'predefined-name')) {
 				$class = 'NAME';
 			}
