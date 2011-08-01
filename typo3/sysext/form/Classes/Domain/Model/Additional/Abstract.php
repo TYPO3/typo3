@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -67,7 +65,6 @@ abstract class tx_form_domain_model_additional_abstract {
 	 * @param string $type Type of the object
 	 * @param mixed $value Value of the object
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($type, $value) {
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
@@ -79,7 +76,6 @@ abstract class tx_form_domain_model_additional_abstract {
 	 * Get the layout string
 	 *
 	 * @return string XML string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getLayout() {
 		return $this->layout;
@@ -90,7 +86,6 @@ abstract class tx_form_domain_model_additional_abstract {
 	 *
 	 * @param string $layout XML string
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setLayout($layout) {
 		$this->layout = (string) $layout;

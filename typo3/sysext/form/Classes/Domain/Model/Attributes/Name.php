@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -45,7 +43,7 @@ class tx_form_domain_model_attributes_name extends tx_form_domain_model_attribut
 	 *
 	 * @var boolean
 	 */
-	private $returnValueWithoutPrefix = FALSE;
+	protected $returnValueWithoutPrefix = FALSE;
 
 	/**
 	 * Constructor
@@ -53,7 +51,6 @@ class tx_form_domain_model_attributes_name extends tx_form_domain_model_attribut
 	 * @param string $value Attribute value
 	 * @param integer $elementId The ID of the element
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($value, $elementId) {
 		parent::__construct($value, $elementId);
@@ -63,7 +60,6 @@ class tx_form_domain_model_attributes_name extends tx_form_domain_model_attribut
 	 * Return the name attribute without the prefix
 	 *
 	 * @return string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getValueWithoutPrefix() {
 		$value = (string) $this->value;
@@ -94,7 +90,6 @@ class tx_form_domain_model_attributes_name extends tx_form_domain_model_attribut
 	 * This does not apply for form objects, only the form tag
 	 *
 	 * @return string Attribute value
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getValue() {
 		$value = $this->getValueWithoutPrefix();
@@ -115,7 +110,6 @@ class tx_form_domain_model_attributes_name extends tx_form_domain_model_attribut
 	 *
 	 * @param string $addition The additional string
 	 * @return tx_form_domain_model_attributes_name
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setAddition($addition) {
 		$this->addition = (string) $addition;
@@ -129,7 +123,6 @@ class tx_form_domain_model_attributes_name extends tx_form_domain_model_attribut
 	 *
 	 * @param boolean $parameter
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setReturnValueWithoutPrefix($parameter) {
 		$this->returnValueWithoutPrefix = (boolean) $parameter;

@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -37,7 +35,6 @@ class tx_form_view_mail_plain_element_container extends tx_form_view_mail_plain_
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($model, $spaces) {
 		parent::__construct($model, $spaces);

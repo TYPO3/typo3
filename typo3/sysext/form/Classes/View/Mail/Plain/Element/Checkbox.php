@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -38,7 +36,6 @@ class tx_form_view_mail_plain_element_checkbox extends tx_form_view_mail_plain_e
 	 *
 	 * @param tx_form_domain_model_element_checkbox $model Model for this element
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct(tx_form_domain_model_element_checkbox $model, $spaces) {
 		parent::__construct($model, $spaces);
@@ -52,7 +49,7 @@ class tx_form_view_mail_plain_element_checkbox extends tx_form_view_mail_plain_e
 		}
 	}
 
-	private function getValue() {
+	protected function getValue() {
 		$value = NULL;
 
 		if (

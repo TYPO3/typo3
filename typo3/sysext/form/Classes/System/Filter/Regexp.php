@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -45,7 +43,6 @@ class tx_form_system_filter_regexp implements tx_form_system_filter_interface {
 	 *
 	 * @param array $arguments Filter configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments = array()) {
 		$this->setRegularExpression($arguments['expression']);
@@ -56,7 +53,6 @@ class tx_form_system_filter_regexp implements tx_form_system_filter_interface {
 	 *
 	 * @param string $expression The regular expression
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setRegularExpression($expression) {
 		$this->regularExpression = (string) $expression;
@@ -68,7 +64,6 @@ class tx_form_system_filter_regexp implements tx_form_system_filter_interface {
 	 *
 	 * @param  string $value
 	 * @return string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function filter($value) {
 		return preg_replace($this->regularExpression, '', (string) $value);

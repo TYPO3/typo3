@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -78,7 +76,6 @@ class tx_form_domain_model_element_checkbox extends tx_form_domain_model_element
 	 * Sets the configuration, calls parent constructor and fills the attributes
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -121,7 +118,6 @@ class tx_form_domain_model_element_checkbox extends tx_form_domain_model_element
 	 * @param string $attribute Name of the attribute
 	 * @param mixed $value Value of the attribute
 	 * @return object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setAttribute($attribute, $value) {
 		if(array_key_exists($attribute, $this->allowedAttributes)) {

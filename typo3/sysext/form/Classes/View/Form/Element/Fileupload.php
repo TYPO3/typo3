@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -48,7 +46,6 @@ class tx_form_view_form_element_fileupload extends tx_form_view_form_element_abs
 	 *
 	 * @param tx_form_domain_model_element_fileupload $model Model for this element
 	 * @return void
-	 * @author Rens Admiraal <r.admiraal@drecomm.nl>
 	 */
 	public function __construct(tx_form_domain_model_element_fileupload $model) {
 		parent::__construct($model);

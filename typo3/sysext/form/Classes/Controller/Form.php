@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -69,7 +67,6 @@ class tx_form_controller_form {
 	 *
 	 * @param array $typoscript TS configuration for this cObject
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function initialize($typoscript) {
 		t3lib_div::makeInstance(
@@ -101,7 +98,6 @@ class tx_form_controller_form {
 	 * @param string $typoscriptKey A string label used for the internal debugging tracking.
 	 * @param tslib_cObj $contentObject reference
 	 * @return string HTML output
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function cObjGetSingleExt(
 		$typoscriptObjectName,
@@ -137,7 +133,6 @@ class tx_form_controller_form {
 	 * Build the models and views and renders the output from the views
 	 *
 	 * @return string HTML Output
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function execute() {
 		$content = '';
@@ -167,9 +162,8 @@ class tx_form_controller_form {
 	 * or when the user returns from the confirmation screen.
 	 *
 	 * @return boolean TRUE when form needs to be shown
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function showForm() {
+	protected function showForm() {
 		$show = FALSE;
 
 		$submittedByPrefix = $this->requestHandler->getByMethod();
@@ -201,9 +195,8 @@ class tx_form_controller_form {
 	 * Render the form
 	 *
 	 * @return string The form HTML
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function renderForm() {
+	protected function renderForm() {
 		$this->requestHandler->destroySession();
 
 		$form = $this->typoscriptFactory->buildModelFromTyposcript($this->typoscript);
@@ -223,9 +216,8 @@ class tx_form_controller_form {
 	 * and the confirmation screen has not been submitted
 	 *
 	 * @return boolean TRUE when confirmation screen needs to be shown
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function showConfirmation() {
+	protected function showConfirmation() {
 		$show = FALSE;
 
 		if (
@@ -245,9 +237,8 @@ class tx_form_controller_form {
 	 * Stores the submitted data in a session
 	 *
 	 * @return string The confirmation screen HTML
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function renderConfirmation() {
+	protected function renderConfirmation() {
 		$form = $this->typoscriptFactory->buildModelFromTyposcript($this->typoscript);
 
 		$this->requestHandler->storeSession();
@@ -273,9 +264,8 @@ class tx_form_controller_form {
 	 * Destroys the session because it is not needed anymore
 	 *
 	 * @return string The post processing HTML
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function doPostProcessing() {
+	protected function doPostProcessing() {
 		$form = $this->typoscriptFactory->buildModelFromTyposcript($this->typoscript);
 
 		$postProcessorTypoScript = array();

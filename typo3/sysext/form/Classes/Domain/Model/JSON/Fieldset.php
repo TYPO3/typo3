@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -68,7 +66,6 @@ class tx_form_domain_model_json_fieldset extends tx_form_domain_model_json_conta
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -92,9 +89,8 @@ class tx_form_domain_model_json_fieldset extends tx_form_domain_model_json_conta
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setLegend($parameters) {
+	protected function setLegend($parameters) {
 		if (isset($parameters['legend']) && !isset($parameters['legend.'])) {
 			$this->configuration['legend']['value'] = $parameters['legend'];
 		} elseif (!isset($parameters['legend']) && isset($parameters['legend.'])) {

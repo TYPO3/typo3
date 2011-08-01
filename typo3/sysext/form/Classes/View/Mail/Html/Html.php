@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -76,7 +74,6 @@ class tx_form_view_mail_html extends tx_form_view_mail_html_element_container {
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct(tx_form_domain_model_form $model, array $typoscript) {
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
@@ -92,7 +89,6 @@ class tx_form_view_mail_html extends tx_form_view_mail_html_element_container {
 	 *
 	 * @param tx_form_domain_model_form $formModel The model of the form
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setData(tx_form_domain_model_form $model) {
 		$this->model = (object) $model;
@@ -104,7 +100,6 @@ class tx_form_view_mail_html extends tx_form_view_mail_html_element_container {
 	 * (when using formatOutput :-)
 	 *
 	 * @return string XHTML string containing the whole form
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function get() {
 		$node = $this->render('element', FALSE);

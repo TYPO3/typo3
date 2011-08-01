@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -45,7 +43,6 @@ class tx_form_system_validate_alphanumeric extends tx_form_system_validate_abstr
 	 *
 	 * @param array $arguments Typoscript configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments) {
 		$this->setAllowWhiteSpace($arguments['allowWhiteSpace']);
@@ -82,7 +79,6 @@ class tx_form_system_validate_alphanumeric extends tx_form_system_validate_abstr
 	 *
 	 * @param boolean $allowWhiteSpace TRUE if white space allowed
 	 * @return object Rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setAllowWhiteSpace($allowWhiteSpace) {
 		if($allowWhiteSpace === NULL) {

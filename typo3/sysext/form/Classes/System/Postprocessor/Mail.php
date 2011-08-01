@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -39,7 +37,6 @@ class tx_form_system_postprocessor_mail {
 	 * @param $form tx_form_domain_model_form Form domain model
 	 * @param $typoscript array Post processor TypoScript settings
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct(tx_form_domain_model_form $form, array $typoScript) {
 		$this->form = $form;
@@ -54,7 +51,6 @@ class tx_form_system_postprocessor_mail {
 	 * Configures the mail message
 	 *
 	 * @return string HTML message from this processor
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function process() {
 		$this->setReturnPath();
@@ -76,9 +72,8 @@ class tx_form_system_postprocessor_mail {
 	 * Set the return-path (the bounce address) of the mail message
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setReturnPath() {
+	protected function setReturnPath() {
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['forceReturnPath']) {
 			$returnPath = $GLOBALS['TYPO3_CONF_VARS']['SYS']['forceReturnPath'];
 			$this->mailMessage->setReturnPath($returnPath);
@@ -91,9 +86,8 @@ class tx_form_system_postprocessor_mail {
 	 * If not configured, it will use a default setting
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setSubject() {
+	protected function setSubject() {
 		if (isset($this->typoScript['subject'])) {
 			$subject = $this->typoScript['subject'];
 		} else {
@@ -109,9 +103,8 @@ class tx_form_system_postprocessor_mail {
 	 * Mostly the sender is a combination of the name and the email address
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setFrom() {
+	protected function setFrom() {
 		$fromEmail = '';
 		if ($this->typoScript['senderEmail']) {
 			$fromEmail = $this->typoScript['senderEmail'];
@@ -148,9 +141,8 @@ class tx_form_system_postprocessor_mail {
 	 * Checks the address if it is a valid email address
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setTo() {
+	protected function setTo() {
 		if (
 			$this->typoScript['recipientEmail'] &&
 			t3lib_div::validEmail($this->typoScript['recipientEmail'])
@@ -165,9 +157,8 @@ class tx_form_system_postprocessor_mail {
 	 * Checks the address if it is a valid email address
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setCc() {
+	protected function setCc() {
 		if (
 			$this->typoScript['ccEmail'] &&
 			t3lib_div::validEmail($this->typoScript['ccEmail'])
@@ -183,9 +174,8 @@ class tx_form_system_postprocessor_mail {
 	 * but too big, it will be set to 5, which means very low.
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setPriority() {
+	protected function setPriority() {
 		$priority = 3;
 		if ($this->typoScript['priority']) {
 			$priority = t3lib_div::intInRange($valueList['priority'], 1, 5);
@@ -199,9 +189,8 @@ class tx_form_system_postprocessor_mail {
 	 * Sanitizes the header string when necessary
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setOrganization() {
+	protected function setOrganization() {
 		if ($this->typoScript['organization']) {
 			$organization = $this->typoScript['organization'];
 			$organization = $this->sanitizeHeaderString($organization);
@@ -216,9 +205,8 @@ class tx_form_system_postprocessor_mail {
 	 * if different from renderCharset
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setCharacterSet() {
+	protected function setCharacterSet() {
 		$characterSet = NULL;
 		if ($GLOBALS['TSFE']->config['config']['formMailCharset']) {
 			$characterSet = $GLOBALS['TSFE']->csConvObj->parse_charset($GLOBALS['TSFE']->config['config']['formMailCharset']);
@@ -236,9 +224,8 @@ class tx_form_system_postprocessor_mail {
 	 * Add a MimePart of the type text/html to the message.
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setHtmlContent() {
+	protected function setHtmlContent() {
 		$view = t3lib_div::makeInstance(
 			'tx_form_view_mail_html',
 			$this->form,
@@ -254,9 +241,8 @@ class tx_form_system_postprocessor_mail {
 	 * Add a MimePart of the type text/plain to the message.
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setPlainContent() {
+	protected function setPlainContent() {
 		$view = t3lib_div::makeInstance(
 			'tx_form_view_mail_plain',
 			$this->form
@@ -271,9 +257,8 @@ class tx_form_system_postprocessor_mail {
 	 * Sending the mail requires the recipient and message to be set.
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function send() {
+	protected function send() {
 		if (
 			$this->mailMessage->getTo() &&
 			$this->mailMessage->getBody()
@@ -286,9 +271,8 @@ class tx_form_system_postprocessor_mail {
 	 * Render the message after trying to send the mail
 	 *
 	 * @return string HTML message from the mail view
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function render() {
+	protected function render() {
 		$view = t3lib_div::makeInstance(
 			'tx_form_view_mail',
 			$this->mailMessage,
@@ -303,7 +287,6 @@ class tx_form_system_postprocessor_mail {
 	 *
 	 * @param string String to check
 	 * @return string Valid or empty string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	protected function sanitizeHeaderString($string) {
 		$pattern = '/[\r\n\f\e]/';
@@ -318,9 +301,8 @@ class tx_form_system_postprocessor_mail {
 	 * Add attachments when uploaded
 	 *
 	 * @return void
-	 * @author Peter Beernink <p.beernink@drecomm.nl>
 	 */
-	private function addAttachments() {
+	protected function addAttachments() {
 		$formElements = $this->form->getElements();
 		$values = $this->requestHandler->getByMethod();
 

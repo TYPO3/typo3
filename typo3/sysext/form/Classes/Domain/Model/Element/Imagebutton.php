@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -70,7 +68,6 @@ class tx_form_domain_model_element_imagebutton extends tx_form_domain_model_elem
 	 * Sets the configuration, calls parent constructor and fills the attributes
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		parent::__construct();

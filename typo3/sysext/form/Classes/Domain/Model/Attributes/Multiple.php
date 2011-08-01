@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -39,7 +37,6 @@ class tx_form_domain_model_attributes_multiple extends tx_form_domain_model_attr
 	 * @param string $value Attribute value
 	 * @param integer $elementId The ID of the element
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($value, $elementId) {
 		parent::__construct($value, $elementId);
@@ -54,7 +51,6 @@ class tx_form_domain_model_attributes_multiple extends tx_form_domain_model_attr
 	 * If not set, the SELECT element only permits single selections.
 	 *
 	 * @return string Attribute value
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getValue() {
 		if((integer) $this->value === 1

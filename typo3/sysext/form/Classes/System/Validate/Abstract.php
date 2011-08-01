@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -93,7 +91,6 @@ abstract class tx_form_system_validate_abstract implements tx_form_system_valida
 	 *
 	 * @param array $arguments Typoscript configuration for the validation rule
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments) {
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
@@ -110,7 +107,6 @@ abstract class tx_form_system_validate_abstract implements tx_form_system_valida
 	 *
 	 * @param string $fieldName The field name
 	 * @return object The rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setFieldName($fieldName) {
 		$this->fieldName = (string) $fieldName;
@@ -122,7 +118,6 @@ abstract class tx_form_system_validate_abstract implements tx_form_system_valida
 	 * Returns the field name
 	 *
 	 * @return string The field name
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getFieldName() {
 		return $this->fieldName;
@@ -132,7 +127,6 @@ abstract class tx_form_system_validate_abstract implements tx_form_system_valida
 	 * Returns the message
 	 *
 	 * @return array Typoscript for cObj
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getMessage() {
 		return $this->message;
@@ -142,7 +136,6 @@ abstract class tx_form_system_validate_abstract implements tx_form_system_valida
 	 * Returns the error
 	 *
 	 * @return array Typoscript for cObj
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getError() {
 		return $this->error;
@@ -161,7 +154,6 @@ abstract class tx_form_system_validate_abstract implements tx_form_system_valida
 	 * @param mixed $message Message as string or TS
 	 * @param string $type Name of the cObj
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setMessage($message = '', $type = 'TEXT') {
 		if(empty($message)) {
@@ -195,7 +187,6 @@ abstract class tx_form_system_validate_abstract implements tx_form_system_valida
 	 * @param mixed $message Message as string or TS
 	 * @param string $type Name of the cObj
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setError($error = '', $type = 'TEXT') {
 		if(empty($error)) {
@@ -222,7 +213,6 @@ abstract class tx_form_system_validate_abstract implements tx_form_system_valida
 	 *
 	 * @param boolean $show TRUE is display
 	 * @return object The rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setShowMessage($show) {
 		if($show === NULL) {
@@ -238,7 +228,6 @@ abstract class tx_form_system_validate_abstract implements tx_form_system_valida
 	 * Returns TRUE when message needs to be displayed
 	 *
 	 * @return boolean
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function messageMustBeDisplayed() {
 		return $this->showMessage;
@@ -250,7 +239,6 @@ abstract class tx_form_system_validate_abstract implements tx_form_system_valida
 	 *
 	 * @param string $message Message text with markers
 	 * @return string Message text with substituted markers
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	protected function substituteValues($message) {
 		return $message;
@@ -261,7 +249,6 @@ abstract class tx_form_system_validate_abstract implements tx_form_system_valida
 	 * In some cases this method will be override by rule class
 	 *
 	 * @return string The local language message label
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	protected function getLocalLanguageLabel($type) {
 		$label = get_class($this) . '.' . $type;

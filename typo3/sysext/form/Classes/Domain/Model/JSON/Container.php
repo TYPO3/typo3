@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -46,7 +44,6 @@ class tx_form_domain_model_json_container extends tx_form_domain_model_json_elem
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -57,7 +54,6 @@ class tx_form_domain_model_json_container extends tx_form_domain_model_json_elem
 	 *
 	 * @param object $element The element to add
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function addElement($element) {
 		$this->elementContainer['items'][] = $element;

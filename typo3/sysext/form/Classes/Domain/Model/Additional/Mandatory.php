@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -39,7 +37,6 @@ class tx_form_domain_model_additional_mandatory extends tx_form_domain_model_add
 	 * @param string $type Type of the object
 	 * @param mixed $value Value of the object
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($type, $value) {
 		parent::__construct($type, $value);
@@ -49,7 +46,6 @@ class tx_form_domain_model_additional_mandatory extends tx_form_domain_model_add
 	 * Return the value of the object
 	 *
 	 * @return array
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getValue() {
 		$messages = array();

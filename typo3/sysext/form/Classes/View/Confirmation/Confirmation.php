@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -66,7 +64,6 @@ class tx_form_view_confirmation extends tx_form_view_confirmation_element_contai
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct(tx_form_domain_model_form $model, array $typoscript) {
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
@@ -82,7 +79,6 @@ class tx_form_view_confirmation extends tx_form_view_confirmation_element_contai
 	 *
 	 * @param tx_form_domain_model_form $formModel The model of the form
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setData(tx_form_domain_model_form $model) {
 		$this->model = (object) $model;
@@ -94,7 +90,6 @@ class tx_form_view_confirmation extends tx_form_view_confirmation_element_contai
 	 * (when using formatOutput :-)
 	 *
 	 * @return string XHTML string containing the whole form
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function get() {
 		$message = $this->getMessage();
@@ -126,9 +121,8 @@ class tx_form_view_confirmation extends tx_form_view_confirmation_element_contai
 	 * confirmation.message.wrap = <p>|</p>
 	 *
 	 * @return string XHTML string containing the message
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function getMessage() {
+	protected function getMessage() {
 		if(isset($this->typoscript['message']) && isset($this->typoscript['message.'])) {
 			$value = $this->typoscript['message.'];
 			$type = $this->typoscript['message'];
@@ -144,7 +138,7 @@ class tx_form_view_confirmation extends tx_form_view_confirmation_element_contai
 		return $this->localCobj->cObjGetSingle($type, $value);
 	}
 
-	private function getConfirmationButtons() {
+	protected function getConfirmationButtons() {
 		$requestHandler = t3lib_div::makeInstance('tx_form_system_request');
 		$prefix = $requestHandler->getPrefix();
 		$action = $this->localCobj->getTypoLink_URL($GLOBALS['TSFE']->id);

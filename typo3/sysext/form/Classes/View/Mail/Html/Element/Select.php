@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -52,7 +50,6 @@ class tx_form_view_mail_html_element_select extends tx_form_view_mail_html_eleme
 	 *
 	 * @param tx_form_domain_model_element_select $model Model for this element
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct(tx_form_domain_model_element_select $model) {
 		parent::__construct($model);

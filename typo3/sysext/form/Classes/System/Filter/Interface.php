@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -38,7 +36,6 @@ interface tx_form_system_filter_interface {
 	 *
 	 * @param  mixed $value
 	 * @return mixed
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function filter($value);
 }

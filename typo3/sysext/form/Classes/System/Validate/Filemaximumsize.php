@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -46,7 +44,6 @@ class tx_form_system_validate_filemaximumsize extends tx_form_system_validate_ab
 	 *
 	 * @param array $arguments Typoscript configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments) {
 		$this->setMaximum($arguments['maximum']);
@@ -78,7 +75,6 @@ class tx_form_system_validate_filemaximumsize extends tx_form_system_validate_ab
 	 *
 	 * @param integer $maximum Maximum value
 	 * @return object Rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setMaximum($maximum) {
 		$this->maximum = (integer) $maximum;
@@ -92,7 +88,6 @@ class tx_form_system_validate_filemaximumsize extends tx_form_system_validate_ab
 	 *
 	 * @param string $message Message text with markers
 	 * @return string Message text with substituted markers
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	protected function substituteValues($message) {
 		$message = str_replace(
