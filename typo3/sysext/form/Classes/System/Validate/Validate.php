@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -58,7 +56,6 @@ class tx_form_system_validate implements t3lib_Singleton {
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 	}
@@ -70,7 +67,6 @@ class tx_form_system_validate implements t3lib_Singleton {
 	 * @param string $class Name of the validation rule
 	 * @param array $arguments Configuration of the rule
 	 * @return object The rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function createRule($class, $arguments = array()) {
 		$class = strtolower((string) $class);
@@ -89,7 +85,6 @@ class tx_form_system_validate implements t3lib_Singleton {
 	 * @param string $fieldName Field name the rule belongs to
 	 * @param boolean $breakOnError Break the rule chain when TRUE
 	 * @return tx_form_validate
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function addRule($rule, $fieldName, $breakOnError = FALSE) {
 		$this->rules[] = array(
@@ -118,7 +113,6 @@ class tx_form_system_validate implements t3lib_Singleton {
 	 * the check for the remaining rules will stop and method returns FALSE
 	 *
 	 * @return boolean True if all rules validate
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function isValid() {
 		$this->errors = array();
@@ -149,7 +143,6 @@ class tx_form_system_validate implements t3lib_Singleton {
 	 * Returns all messages from all rules
 	 *
 	 * @return array
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getMessages() {
 		return $this->messages;
@@ -160,7 +153,6 @@ class tx_form_system_validate implements t3lib_Singleton {
 	 *
 	 * @param string $name Name of the form object
 	 * @return array
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getMessagesByName($name) {
 		return $this->messages[$name];
@@ -171,7 +163,6 @@ class tx_form_system_validate implements t3lib_Singleton {
 	 *
 	 * @param string $name Name of the form object
 	 * @return boolean
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function hasMessage($name) {
 		if(isset($this->messages[$name])) {
@@ -184,7 +175,6 @@ class tx_form_system_validate implements t3lib_Singleton {
 	 * Returns all error messages from all rules
 	 *
 	 * @return array
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getErrors() {
 		return $this->errors;
@@ -195,7 +185,6 @@ class tx_form_system_validate implements t3lib_Singleton {
 	 *
 	 * @param string $name Name of the form object
 	 * @return array
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getErrorsByName($name) {
 		return $this->errors[$name];
@@ -206,7 +195,6 @@ class tx_form_system_validate implements t3lib_Singleton {
 	 *
 	 * @param string $name Name of the form object
 	 * @return boolean
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function hasErrors($name) {
 		if(isset($this->errors[$name])) {

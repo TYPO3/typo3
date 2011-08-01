@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -45,7 +43,6 @@ class tx_form_system_filter_trim implements tx_form_system_filter_interface {
 	 *
 	 * @param array $arguments Filter configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments = array()) {
 		$this->setCharacterList($arguments['characterList']);
@@ -58,7 +55,6 @@ class tx_form_system_filter_trim implements tx_form_system_filter_interface {
 	 *
 	 * @param  string $characterList
 	 * @return tx_form_filter_trim
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setCharacterList($characterList) {
 		$this->characterList = $characterList;
@@ -71,7 +67,6 @@ class tx_form_system_filter_trim implements tx_form_system_filter_interface {
 	 *
 	 * @param  string $value
 	 * @return string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function filter($value) {
 		if ($this->characterList === NULL) {

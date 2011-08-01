@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -45,7 +43,6 @@ class tx_form_system_localization implements t3lib_Singleton {
 	 *
 	 * @param $localLanguageFile string File reference to the local language file
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($localLanguageFile) {
 		$this->localLanguageFile = (string) $localLanguageFile;

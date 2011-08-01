@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -45,7 +43,6 @@ class tx_form_view_form_additional extends tx_form_view_form_element_abstract {
 	 *
 	 * @param object $model The parent model
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($model) {
 		$this->model = $model;
@@ -55,7 +52,6 @@ class tx_form_view_form_additional extends tx_form_view_form_element_abstract {
 	 * Get the additional value
 	 *
 	 * @return string The value of the additional
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getAdditionalValue() {
 		$type = preg_replace('/.*_([^_]*)$/', "$1", get_class($this), 1);

@@ -1,5 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
 /***************************************************************
 *  Copyright notice
 *
@@ -39,7 +38,7 @@ class tx_form_view_wizard_save {
 	 *
 	 * @var boolean TRUE if available, FALSE if not
 	 */
-	private $recordIsAvailable = FALSE;
+	protected $recordIsAvailable = FALSE;
 
 	/**
 	 * Constructs this view
@@ -75,7 +74,7 @@ class tx_form_view_wizard_save {
 	 * @param string $json JSON string
 	 * @return void
 	 */
-	private function headerOutput($success) {
+	protected function headerOutput($success) {
 		if (!$success) {
 			header('HTTP/1.1 500 Internal Server Error');
 			$jsonArray = array('message' => 'Failed to save the form');

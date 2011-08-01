@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -65,7 +63,6 @@ class tx_form_view_mail {
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct(t3lib_mail_Message $mailMessage, array $typoScript) {
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
@@ -86,15 +83,15 @@ class tx_form_view_mail {
 		return $output;
 	}
 
-	private function success() {
+	protected function success() {
 		return $this->makeContentObject('success');
 	}
 
-	private function error() {
+	protected function error() {
 		return $this->makeContentObject('error');
 	}
 
-	private function makeContentObject($isSent) {
+	protected function makeContentObject($isSent) {
 		$message = NULL;
 		$type = NULL;
 
@@ -130,9 +127,8 @@ class tx_form_view_mail {
 	 * In some cases this method will be override by rule class
 	 *
 	 * @return string The local language message label
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function getLocalLanguageLabel($type) {
+	protected function getLocalLanguageLabel($type) {
 		$label = get_class($this) . '.' . $type;
 		$message = $this->localizationHandler->getLocalLanguageLabel($label);
 		return $message;

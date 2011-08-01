@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -48,7 +46,6 @@ class tx_form_system_filter implements tx_form_system_filter_interface {
 	 *
 	 * @param array $arguments Filter configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments = array()) {
 		$removeXssFilter = $this->makeFilter('removexss');
@@ -61,7 +58,6 @@ class tx_form_system_filter implements tx_form_system_filter_interface {
 	 * @param string $class Name of the filter
 	 * @param mixed $value Typoscript configuration
 	 * @return tx_form_filter
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function addFilter($filter) {
 		$this->filters[] = (object) $filter;
@@ -76,7 +72,6 @@ class tx_form_system_filter implements tx_form_system_filter_interface {
 	 * @param string $class Name of the filter
 	 * @param array $arguments Configuration of the filter
 	 * @return object The filter object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function makeFilter($class, $arguments = array()) {
 		$class = strtolower((string) $class);
@@ -92,7 +87,6 @@ class tx_form_system_filter implements tx_form_system_filter_interface {
 	 *
 	 * @param  mixed $value
 	 * @return mixed
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function filter($value) {
 		if(!empty($this->filters)) {

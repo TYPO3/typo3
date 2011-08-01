@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
  *  Copyright notice
  *
@@ -49,7 +47,6 @@ class tx_form_view_form_element_container extends tx_form_view_form_element_abst
 	 *
 	 * @param object $model Model for this element
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($model) {
 		parent::__construct($model);
@@ -61,7 +58,6 @@ class tx_form_view_form_element_container extends tx_form_view_form_element_abst
 	 *
 	 * @param DOMDocument $dom DOMDocument
 	 * @return DOMDocumentFragment
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getChildElements(DOMDocument &$dom) {
 		$modelChildren = $this->model->getElements();

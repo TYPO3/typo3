@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -42,7 +40,6 @@ class tx_form_domain_repository_content {
 	 * Using the GET or POST variable 'P'
 	 *
 	 * @return mixed|tx_form_domain_model_content if found, FALSE if not
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getRecord() {
 		$record = FALSE;
@@ -71,7 +68,6 @@ class tx_form_domain_repository_content {
 	 * Check if the referenced record exists
 	 *
 	 * @return TRUE if record exists, FALSE if not
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function hasRecord() {
 		$hasRecord = FALSE;
@@ -89,7 +85,6 @@ class tx_form_domain_repository_content {
 	 * Convert and save the incoming data of the FORM wizard
 	 *
 	 * @return TRUE if succeeded, FALSE if not
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function save() {
 		$json = t3lib_div::_GP('configuration');
@@ -124,7 +119,6 @@ class tx_form_domain_repository_content {
 	 * Read and convert the content record to JSON
 	 *
 	 * @return The JSON object if record exists, FALSE if not
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function getRecordAsJson() {
 		$json = FALSE;

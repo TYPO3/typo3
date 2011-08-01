@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -45,7 +43,6 @@ class tx_form_system_validate_regexp extends tx_form_system_validate_abstract {
 	 *
 	 * @param array $arguments Typoscript configuration
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct($arguments) {
 		$this->setRegularExpression($arguments['expression']);
@@ -76,7 +73,6 @@ class tx_form_system_validate_regexp extends tx_form_system_validate_abstract {
 	 *
 	 * @param string $expression The regular expression
 	 * @return object Rule object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function setRegularExpression($expression) {
 		$this->regularExpression = (string) $expression;

@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -70,7 +68,6 @@ class tx_form_domain_model_json_header extends tx_form_domain_model_json_element
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -96,9 +93,8 @@ class tx_form_domain_model_json_header extends tx_form_domain_model_json_element
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setVarious($parameters) {
+	protected function setVarious($parameters) {
 		if (isset($parameters['wrap'])) {
 			preg_match('/<(h[1-5]{1}).*?>/', $parameters['wrap'], $matches);
 			if (!empty($matches)) {

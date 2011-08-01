@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -79,7 +77,6 @@ class tx_form_domain_model_json_select extends tx_form_domain_model_json_element
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -103,9 +100,8 @@ class tx_form_domain_model_json_select extends tx_form_domain_model_json_element
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setOptions($parameters) {
+	protected function setOptions($parameters) {
 		if (is_array($parameters)) {
 			$keys = t3lib_TStemplate::sortedKeyList($parameters);
 			foreach ($keys as $key)	{

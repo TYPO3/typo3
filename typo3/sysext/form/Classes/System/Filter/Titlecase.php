@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -37,7 +35,6 @@ class tx_form_system_filter_titlecase implements tx_form_system_filter_interface
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 	}
@@ -47,7 +44,6 @@ class tx_form_system_filter_titlecase implements tx_form_system_filter_interface
 	 *
 	 * @param  string $value
 	 * @return string
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function filter($value) {
 		return ucwords(strtolower((string) $value));

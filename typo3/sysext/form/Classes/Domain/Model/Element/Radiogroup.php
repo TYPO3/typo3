@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -39,7 +37,6 @@ class tx_form_domain_model_element_radiogroup extends tx_form_domain_model_eleme
 	 * and adds all child objects
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -50,7 +47,6 @@ class tx_form_domain_model_element_radiogroup extends tx_form_domain_model_eleme
 	 *
 	 * @param object $element The child object
 	 * @return object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function addElement($element) {
 		if ($element->acceptsParentName()) {

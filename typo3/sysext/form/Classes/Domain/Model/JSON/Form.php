@@ -1,6 +1,4 @@
 <?php
-declare(encoding = 'utf-8');
-
 /***************************************************************
 *  Copyright notice
 *
@@ -74,7 +72,6 @@ class tx_form_domain_model_json_form extends tx_form_domain_model_json_container
 	 * Constructor
 	 *
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -100,9 +97,8 @@ class tx_form_domain_model_json_form extends tx_form_domain_model_json_container
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setConfirmation($parameters) {
+	protected function setConfirmation($parameters) {
 		if (isset($parameters['confirmation'])) {
 			$this->configuration['confirmation'] = $parameters['confirmation'];
 		}
@@ -113,9 +109,8 @@ class tx_form_domain_model_json_form extends tx_form_domain_model_json_container
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setPostProcessors($parameters) {
+	protected function setPostProcessors($parameters) {
 		if (isset($parameters['postProcessor.']) && is_array($parameters['postProcessor.'])) {
 			$postProcessors = $parameters['postProcessor.'];
 
@@ -143,9 +138,8 @@ class tx_form_domain_model_json_form extends tx_form_domain_model_json_container
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	private function setPrefix($parameters) {
+	protected function setPrefix($parameters) {
 		if (isset($parameters['prefix'])) {
 			$this->configuration['prefix'] = $parameters['prefix'];
 		}
