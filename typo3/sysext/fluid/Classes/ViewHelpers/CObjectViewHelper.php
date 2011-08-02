@@ -43,6 +43,14 @@
 class Tx_Fluid_ViewHelpers_CObjectViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
+	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
+	 * can decode the text's entities.
+	 *
+	 * @var boolean
+	 */
+	protected $escapingInterceptorEnabled = FALSE;
+
+	/**
 	 * @var tslib_cObj
 	 */
 	protected $contentObject;
