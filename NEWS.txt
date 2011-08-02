@@ -180,13 +180,14 @@ TypoScript / Frontend
 
 * Compression and concatenation of CSS and JavaScript files
 
-New builtin minifcation routines can now be used with config.minifyCSS and
-minifyJS to reduce the file size of all files configured in page.includeCSS
-and includeJS. Single files can be excluded from compression using the new
-option disableCompression. Additionally, files can be concatenated into a
-single file using config.concatenateCss and concatenateJs. Please note that
-there is only limited support for @charset, @import and @namespace statements
-in concatenated CSS files. Furthermore, if minifyCSS/JS is enabled,
+New builtin minification routines can now be used with config.compressCss and
+config.compressJs to reduce the file size of all files configured in
+page.includeCSS and page.includeJS. Single files can be excluded from
+compression using the new option disableCompression. Additionally, files can
+be concatenated into a single file using config.concatenateCss and
+config.concatenateJs. Please note that there is only limited support for
+@charset, @import and @namespace statements in concatenated CSS files.
+Furthermore, if compressCss/compressJs is enabled,
 $TYPO3_CONF_VARS[FE][compressionLevel] now also affects CSS and JS files in
 frontend and applies GZIP compression. This requires the same options as for
 [BE][compressionLevel] to be set in .htaccess.
