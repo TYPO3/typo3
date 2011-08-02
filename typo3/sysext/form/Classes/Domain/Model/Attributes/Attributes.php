@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_attributes_attributes {
+class tx_form_Domain_Model_Attributes_Attributes {
 
 	/**
 	 * The attributes of the element
@@ -61,8 +61,8 @@ class tx_form_domain_model_attributes_attributes {
 	public function __construct($elementId) {
 		$this->elementId = (integer) $elementId;
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
-		$this->localizationHandler = t3lib_div::makeInstance('tx_form_system_localization');
-		$this->requestHandler = t3lib_div::makeInstance('tx_form_system_request');
+		$this->localizationHandler = t3lib_div::makeInstance('tx_form_System_Localization');
+		$this->requestHandler = t3lib_div::makeInstance('tx_form_System_Request');
 	}
 
 	/**
@@ -70,11 +70,11 @@ class tx_form_domain_model_attributes_attributes {
 	 *
 	 * @param string $class Name of the attribute
 	 * @param mixed $value Typoscript configuration to construct value
-	 * @return tx_form_domain_model_attributes
+	 * @return tx_form_Domain_Model_Attributes
 	 */
 	public function addAttribute($class, $value) {
 		$class = strtolower((string) $class);
-		$className = 'tx_form_domain_model_attributes_' . $class;
+		$className = 'tx_form_Domain_Model_Attributes_' . ucfirst($class);
 
 		$this->attributes[$class] = t3lib_div::makeInstance($className, $value, $this->elementId);
 
@@ -85,7 +85,7 @@ class tx_form_domain_model_attributes_attributes {
 	 * Remove an attribute object from the attribute array
 	 *
 	 * @param string $class Name of the attribute
-	 * @return tx_form_domain_model_attributes
+	 * @return tx_form_Domain_Model_Attributes
 	 */
 	public function removeAttribute($class) {
 		unset($this->attributes[$class]);

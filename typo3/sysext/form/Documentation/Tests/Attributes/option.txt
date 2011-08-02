@@ -1,7 +1,7 @@
 form.attributes.option = FORM
 form.attributes.option {
 	method = post
-	
+
 	# Data
 	10 = FIELDSET
 	10 {
@@ -14,7 +14,7 @@ form.attributes.option {
 			}
 		}
 	}
-	
+
 	# Class
 	20 = FIELDSET
 	20 {
@@ -33,7 +33,7 @@ form.attributes.option {
 			}
 		}
 	}
-	
+
 	# Disabled
 	30 = FIELDSET
 	30 {
@@ -57,7 +57,7 @@ form.attributes.option {
 			}
 		}
 	}
-	
+
 	# Id
 	40 = FIELDSET
 	40 {
@@ -71,7 +71,7 @@ form.attributes.option {
 			}
 		}
 	}
-	
+
 	# Label
 	50 = FIELDSET
 	50 {
@@ -85,7 +85,7 @@ form.attributes.option {
 			}
 		}
 	}
-	
+
 	# Lang
 	60 = FIELDSET
 	60 {
@@ -99,7 +99,7 @@ form.attributes.option {
 			}
 		}
 	}
-	
+
 	# Selected
 	70 = FIELDSET
 	70 {
@@ -131,7 +131,7 @@ form.attributes.option {
 			}
 		}
 	}
-	
+
 	# Style
 	80 = FIELDSET
 	80 {
@@ -145,7 +145,7 @@ form.attributes.option {
 			}
 		}
 	}
-	
+
 	# Title
 	90 = FIELDSET
 	90 {
@@ -159,7 +159,7 @@ form.attributes.option {
 			}
 		}
 	}
-	
+
 	# Value
 	100 = FIELDSET
 	100 {

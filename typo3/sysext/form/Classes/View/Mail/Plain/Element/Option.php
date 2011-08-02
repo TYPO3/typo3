@@ -29,15 +29,15 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_plain_element_option extends tx_form_view_mail_plain_element {
+class tx_form_View_Mail_Plain_Element_Option extends tx_form_View_Mail_Plain_Element_Abstract {
 
 	/**
 	 * Constructor
 	 *
-	 * @param tx_form_domain_model_element_textarea $model Model for this element
+	 * @param tx_form_Domain_Model_Element_Textarea $model Model for this element
 	 * @return void
 	 */
-	public function __construct(tx_form_domain_model_element_option $model, $spaces) {
+	public function __construct(tx_form_Domain_Model_Element_Option $model, $spaces) {
 		parent::__construct($model, $spaces);
 	}
 

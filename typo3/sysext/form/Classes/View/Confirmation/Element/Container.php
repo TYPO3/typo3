@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_confirmation_element_container extends tx_form_view_confirmation_element_abstract {
+class tx_form_View_Confirmation_Element_Container extends tx_form_View_Confirmation_Element_Abstract {
 
 	/**
 	 * Default layout of the container
@@ -96,9 +96,9 @@ class tx_form_view_confirmation_element_container extends tx_form_view_confirmat
 		$childElement = NULL;
 
 		$modelChildClass = get_class($modelChild);
-		$class = preg_replace('/.*_([^_]*)$/', "$1", $modelChildClass, 1);
+		$class = preg_replace('/.*_([^_]*)$/', '${1}', $modelChildClass, 1);
 
-		$className = 'tx_form_view_confirmation_element_' . $class;
+		$className = 'tx_form_View_Confirmation_Element_' . ucfirst($class);
 
 		if (class_exists($className)) {
 			$childElement = t3lib_div::makeInstance($className, $modelChild);

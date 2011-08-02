@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_form_element_container extends tx_form_view_form_element_abstract {
+class tx_form_View_Form_Element_Container extends tx_form_View_Form_Element_Abstract {
 
 	/**
 	 * Default layout of the container
@@ -84,9 +84,9 @@ class tx_form_view_form_element_container extends tx_form_view_form_element_abst
 	 */
 	public function createChildElementFromModel($modelChild) {
 		$modelChildClass = get_class($modelChild);
-		$class = preg_replace('/.*_([^_]*)$/', "$1", $modelChildClass, 1);
+		$class = preg_replace('/.*_([^_]*)$/', '${1}', $modelChildClass, 1);
 
-		$className = 'tx_form_view_form_element_' . $class;
+		$className = 'tx_form_View_Form_Element_' . ucfirst($class);
 
 		$childElement = t3lib_div::makeInstance($className, $modelChild);
 

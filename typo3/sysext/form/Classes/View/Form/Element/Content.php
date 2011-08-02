@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_form_element_content extends tx_form_view_form_element_abstract {
+class tx_form_View_Form_Element_Content extends tx_form_View_Form_Element_Abstract {
 
 	/**
 	 * Default layout of this object
@@ -43,10 +43,10 @@ class tx_form_view_form_element_content extends tx_form_view_form_element_abstra
 	/**
 	 * Constructor
 	 *
-	 * @param tx_form_domain_model_element_content $model Model for this element
+	 * @param tx_form_Domain_Model_Element_Content $model Model for this element
 	 * @return void
 	 */
-	public function __construct(tx_form_domain_model_element_content $model) {
+	public function __construct(tx_form_Domain_Model_Element_Content $model) {
 		parent::__construct($model);
 	}
 }

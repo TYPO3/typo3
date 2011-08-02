@@ -103,7 +103,7 @@
 2008-12-28  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Mainly changes in views
-	
+
 2008-12-27  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Changing the views
@@ -111,7 +111,7 @@
 2008-12-24  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Big changes in views and models
-	
+
 2008-12-22  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* deleting old files in model
@@ -124,7 +124,7 @@
 
 	* Added filters alphabetic, alphanumeric, currency, digit, integer, lowercase, stripnewlines, titlecase, trim, uppercase
 	* Changing the models for configuration without Typoscript
-	
+
 2008-12-16  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Added class.tx_form_requesthandler
@@ -169,11 +169,11 @@
 	* Some cleaning up, checking the javadoc comments and moving methods to abstract classes in view objects
 	* Adapting views, adding error and mandatory parts, cleaning up
 
-2008-12-02  Patrick Broens  <patrick@patrickbroens.nl>	
-	
+2008-12-02  Patrick Broens  <patrick@patrickbroens.nl>
+
 	* Making the element views
 	* Updated views, code cleaning
-	
+
 2008-12-01  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Start of FORM project. Basic groundwork of MVC

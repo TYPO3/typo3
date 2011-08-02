@@ -1,14 +1,14 @@
 form.validation.email = FORM
 form.validation.email {
 	method = post
-	
+
 	rules {
 		1 = email
 		1 {
 			element = email1
 		}
 	}
-	
+
 	# Email
 	10 = FIELDSET
 	10 {

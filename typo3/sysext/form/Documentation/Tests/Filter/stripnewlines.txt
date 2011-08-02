@@ -1,14 +1,14 @@
 form.filter.stripnewlines = FORM
 form.filter.stripnewlines {
 	method = post
-	
+
 	rules {
 		1 = required
 		1 {
 			element = textlineField
 		}
 	}
-	
+
 	# Strip newlines
 	10 = FIELDSET
 	10 {
@@ -26,7 +26,7 @@ line 3
 			}
 		}
 	}
-	
+
 	# A textline which must be empty to test the above
 	30 = FIELDSET
 	30 {

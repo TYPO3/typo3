@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_element_optgroup extends tx_form_domain_model_element_container {
+class tx_form_Domain_Model_Element_Optgroup extends tx_form_Domain_Model_Element_Container {
 
 	/**
 	 * Allowed attributes for this object
@@ -77,7 +77,7 @@ class tx_form_domain_model_element_optgroup extends tx_form_domain_model_element
 	 * @param string $parentName Name of the parent
 	 * @return object The element object
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/model/element/tx_form_domain_model_element#setParent()
+	 * @see tx_form_Domain_Model_Element::setParent()
 	 */
 	public function setParentName($parentName) {
 		foreach($this->elements as $element) {

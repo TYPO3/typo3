@@ -1,14 +1,14 @@
 form.request.option = FORM
 form.request.option {
 	method = post
-	
+
 	rules {
 		1 = required
 		1 {
 			element = textlineField
 		}
 	}
-	
+
 	# Selected test
 	10 = FIELDSET
 	10 {
@@ -28,7 +28,7 @@ form.request.option {
 			}
 		}
 	}
-	
+
 	# Regular test
 	20 = FIELDSET
 	20 {
@@ -52,7 +52,7 @@ form.request.option {
 			}
 		}
 	}
-	
+
 	# Multiple test
 	30 = FIELDSET
 	30 {
@@ -77,7 +77,7 @@ form.request.option {
 			}
 		}
 	}
-	
+
 	# Multiple selected test
 	40 = FIELDSET
 	40 {
@@ -104,7 +104,7 @@ form.request.option {
 			}
 		}
 	}
-	
+
 	# A textline which must be empty to test the above
 	50 = FIELDSET
 	50 {
@@ -115,7 +115,7 @@ form.request.option {
 			label = Leave me empty
 		}
 	}
-	
+
 	# Submit
 	60 = FIELDSET
 	60 {

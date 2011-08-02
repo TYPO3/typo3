@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_request implements t3lib_Singleton {
+class tx_form_System_Request implements t3lib_Singleton {
 
 	/**
 	 * Prefix for the name attributes

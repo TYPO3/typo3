@@ -1,7 +1,7 @@
 form.attributes.checkboxgroup = FORM
 form.attributes.checkboxgroup {
 	method = post
-	
+
 	rules {
 		1 = required
 		1 {
@@ -27,7 +27,7 @@ form.attributes.checkboxgroup {
 			label = Option 3
 		}
 	}
-	
+
 	# Submit
 	40 = FIELDSET
 	40 {

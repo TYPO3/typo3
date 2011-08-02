@@ -1,7 +1,7 @@
 form.attributes.textline = FORM
 form.attributes.textline {
 	method = post
-	
+
 	# Label test
 	10 = FIELDSET
 	10 {
@@ -22,7 +22,7 @@ form.attributes.textline {
 			}
 		}
 	}
-	
+
 	# Layout test
 	20 = FIELDSET
 	20 {
@@ -55,7 +55,7 @@ form.attributes.textline {
 			accesskey = a
 		}
 	}
-	
+
 	# Alt
 	40 = FIELDSET
 	40 {
@@ -82,7 +82,7 @@ form.attributes.textline {
 			class = class1 class2
 		}
 	}
-	
+
 	# Dir
 	60 = FIELDSET
 	60 {
@@ -103,7 +103,7 @@ form.attributes.textline {
 			dir = abc
 		}
 	}
-	
+
 	# Disabled
 	70 = FIELDSET
 	70 {
@@ -124,7 +124,7 @@ form.attributes.textline {
 			disabled = disabled
 		}
 	}
-	
+
 	# Id
 	80 = FIELDSET
 	80 {
@@ -135,7 +135,7 @@ form.attributes.textline {
 			id = textlineId
 		}
 	}
-	
+
 	# Lang
 	90 = FIELDSET
 	90 {
@@ -146,7 +146,7 @@ form.attributes.textline {
 			lang = en-US
 		}
 	}
-	
+
 	# Maxlength
 	100 = FIELDSET
 	100 {
@@ -157,7 +157,7 @@ form.attributes.textline {
 			maxlength = 10
 		}
 	}
-	
+
 	# Name
 	110 = FIELDSET
 	110 {
@@ -168,7 +168,7 @@ form.attributes.textline {
 			name = textlineName
 		}
 	}
-	
+
 	# Readonly
 	120 = FIELDSET
 	120 {
@@ -192,7 +192,7 @@ form.attributes.textline {
 			data = This should be readonly
 		}
 	}
-	
+
 	# Size
 	130 = FIELDSET
 	130 {
@@ -203,7 +203,7 @@ form.attributes.textline {
 			size = 10
 		}
 	}
-	
+
 	# Style
 	140 = FIELDSET
 	140 {
@@ -214,7 +214,7 @@ form.attributes.textline {
 			style = border: 1px solid #000000
 		}
 	}
-	
+
 	# Tabindex
 	150 = FIELDSET
 	150 {
@@ -225,7 +225,7 @@ form.attributes.textline {
 			tabindex = 1
 		}
 	}
-	
+
 	# Title
 	160 = FIELDSET
 	160 {
@@ -236,7 +236,7 @@ form.attributes.textline {
 			title = This is the title text
 		}
 	}
-	
+
 	# Value
 	170 = FIELDSET
 	170 {

@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_html_element_checkboxgroup extends tx_form_view_mail_html_element_fieldset {
+class tx_form_View_Mail_Html_Element_Checkboxgroup extends tx_form_View_Mail_Html_Element_Fieldset {
 
 	/**
 	 * Default layout of this object
@@ -48,10 +48,10 @@ class tx_form_view_mail_html_element_checkboxgroup extends tx_form_view_mail_htm
 	/**
 	 * Constructor
 	 *
-	 * @param tx_form_domain_model_element_checkboxgroup $model Model for this element
+	 * @param tx_form_Domain_Model_Element_Checkboxgroup $model Model for this element
 	 * @return void
 	 */
-	public function __construct(tx_form_domain_model_element_checkboxgroup $model) {
+	public function __construct(tx_form_Domain_Model_Element_Checkboxgroup $model) {
 		parent::__construct($model);
 	}
 }

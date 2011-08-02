@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_element_radiogroup extends tx_form_domain_model_element_fieldset {
+class tx_form_Domain_Model_Element_Radiogroup extends tx_form_Domain_Model_Element_Fieldset {
 
 	/**
 	 * Constructor

@@ -1,7 +1,7 @@
 form.attributes.optgroup = FORM
 form.attributes.optgroup {
 	method = post
-	
+
 	# Basics
 	10 = FIELDSET
 	10 {
@@ -34,7 +34,7 @@ form.attributes.optgroup {
 			}
 		}
 	}
-	
+
 	# Class
 	20 = FIELDSET
 	20 {
@@ -61,7 +61,7 @@ form.attributes.optgroup {
 			}
 		}
 	}
-	
+
 	# Disabled
 	30 = FIELDSET
 	30 {
@@ -97,7 +97,7 @@ form.attributes.optgroup {
 			}
 		}
 	}
-	
+
 	# Id
 	40 = FIELDSET
 	40 {
@@ -115,7 +115,7 @@ form.attributes.optgroup {
 			}
 		}
 	}
-	
+
 	# Lang
 	50 = FIELDSET
 	50 {
@@ -133,7 +133,7 @@ form.attributes.optgroup {
 			}
 		}
 	}
-	
+
 	# Style
 	60 = FIELDSET
 	60 {
@@ -151,7 +151,7 @@ form.attributes.optgroup {
 			}
 		}
 	}
-	
+
 	# Title
 	70 = FIELDSET
 	70 {

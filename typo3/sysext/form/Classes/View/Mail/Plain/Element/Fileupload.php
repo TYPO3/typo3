@@ -29,15 +29,15 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_plain_element_fileupload extends tx_form_view_mail_plain_element_container {
+class tx_form_View_Mail_Plain_Element_Fileupload extends tx_form_View_Mail_Plain_Element_Container {
 
 	/**
 	 * Constructor
 	 *
-	 * @param tx_form_domain_model_element_fileupload $model Model for this element
+	 * @param tx_form_Domain_Model_Element_Fileupload $model Model for this element
 	 * @return void
 	 */
-	public function __construct(tx_form_domain_model_element_fileupload $model, $spaces) {
+	public function __construct(tx_form_Domain_Model_Element_Fileupload $model, $spaces) {
 		parent::__construct($model, $spaces);
 	}
 

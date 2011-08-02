@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_json_form extends tx_form_domain_model_json_container {
+class tx_form_Domain_Model_JSON_Form extends tx_form_Domain_Model_JSON_Container {
 	/**
 	 * The ExtJS xtype of the element
 	 *
@@ -83,7 +83,7 @@ class tx_form_domain_model_json_form extends tx_form_domain_model_json_container
 	 * @param array $parameters Configuration array
 	 * @return void
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see tx_form_domain_model_json_container::setParameters()
+	 * @see tx_form_Domain_Model_Json_Container::setParameters()
 	 */
 	public function setParameters($parameters) {
 		parent::setParameters($parameters);

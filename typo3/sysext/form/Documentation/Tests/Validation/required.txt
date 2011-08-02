@@ -1,14 +1,14 @@
 form.validation.required = FORM
 form.validation.required {
 	method = post
-	
+
 	rules {
 		1 = required
 		1 {
 			element = required1
 		}
 	}
-	
+
 	# Required
 	10 = FIELDSET
 	10 {

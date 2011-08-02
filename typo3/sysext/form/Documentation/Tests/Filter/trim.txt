@@ -1,14 +1,14 @@
 form.filter.trim = FORM
 form.filter.trim {
 	method = post
-	
+
 	rules {
 		1 = required
 		1 {
 			element = textlineField
 		}
 	}
-	
+
 	# Trim
 	10 = FIELDSET
 	10 {
@@ -37,7 +37,7 @@ form.filter.trim {
 			}
 		}
 	}
-	
+
 	# A textline which must be empty to test the above
 	30 = FIELDSET
 	30 {

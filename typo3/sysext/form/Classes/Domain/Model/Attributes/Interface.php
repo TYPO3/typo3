@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-interface tx_form_domain_model_attributes_interface {
+interface tx_form_Domain_Model_Attributes_Interface {
 
 	/**
 	 * Return attribute value, probably run through filter

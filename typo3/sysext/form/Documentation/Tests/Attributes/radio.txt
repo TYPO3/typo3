@@ -1,7 +1,7 @@
 form.attributes.radio = FORM
 form.attributes.radio {
 	method = post
-	
+
 	# Label test
 	10 = FIELDSET
 	10 {
@@ -22,7 +22,7 @@ form.attributes.radio {
 			}
 		}
 	}
-	
+
 	# Layout test
 	20 = FIELDSET
 	20 {
@@ -45,7 +45,7 @@ form.attributes.radio {
 			value = No label
 		}
 	}
-	
+
 	# Accesskey
 	30 = FIELDSET
 	30 {
@@ -56,7 +56,7 @@ form.attributes.radio {
 			accesskey = a
 		}
 	}
-	
+
 	# Alt
 	40 = FIELDSET
 	40 {
@@ -67,7 +67,7 @@ form.attributes.radio {
 			alt = This is the alt attribute content
 		}
 	}
-	
+
 	# Checked
 	45 = FIELDSET
 	45 {
@@ -88,7 +88,7 @@ form.attributes.radio {
 			checked = checked
 		}
 	}
-	
+
 	# Class
 	50 = FIELDSET
 	50 {
@@ -104,7 +104,7 @@ form.attributes.radio {
 			class = class1 class2
 		}
 	}
-	
+
 	# Dir
 	60 = FIELDSET
 	60 {
@@ -125,7 +125,7 @@ form.attributes.radio {
 			dir = abc
 		}
 	}
-	
+
 	# Disabled
 	70 = FIELDSET
 	70 {
@@ -146,7 +146,7 @@ form.attributes.radio {
 			disabled = disabled
 		}
 	}
-	
+
 	# Id
 	80 = FIELDSET
 	80 {
@@ -157,7 +157,7 @@ form.attributes.radio {
 			id = radioId
 		}
 	}
-	
+
 	# Lang
 	90 = FIELDSET
 	90 {
@@ -168,7 +168,7 @@ form.attributes.radio {
 			lang = en-US
 		}
 	}
-	
+
 	# Name
 	100 = FIELDSET
 	100 {
@@ -179,7 +179,7 @@ form.attributes.radio {
 			name = radioName
 		}
 	}
-	
+
 	# Style
 	110 = FIELDSET
 	110 {
@@ -190,7 +190,7 @@ form.attributes.radio {
 			style = border: 1px solid #000000
 		}
 	}
-	
+
 	# Tabindex
 	120 = FIELDSET
 	120 {
@@ -201,7 +201,7 @@ form.attributes.radio {
 			tabindex = 1
 		}
 	}
-	
+
 	# Title
 	130 = FIELDSET
 	130 {
@@ -212,7 +212,7 @@ form.attributes.radio {
 			title = This is the title text
 		}
 	}
-	
+
 	# Value
 	140 = FIELDSET
 	140 {

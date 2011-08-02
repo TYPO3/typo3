@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_filter_titlecase implements tx_form_system_filter_interface {
+class tx_form_System_Filter_Titlecase implements tx_form_System_Filter_Interface {
 
 	/**
 	 * Constructor

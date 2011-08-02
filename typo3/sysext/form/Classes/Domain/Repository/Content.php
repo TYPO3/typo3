@@ -24,7 +24,7 @@
 ***************************************************************/
 
 /**
- * Repository for tx_form_domain_model_content
+ * Repository for tx_form_Domain_Model_Content
  *
  * @category Repository
  * @package TYPO3
@@ -33,13 +33,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html
  * @version $Id$
  */
-class tx_form_domain_repository_content {
+class tx_form_Domain_Repository_Content {
 	/**
 	 * Get the referenced record from the database
 	 *
 	 * Using the GET or POST variable 'P'
 	 *
-	 * @return mixed|tx_form_domain_model_content if found, FALSE if not
+	 * @return mixed|tx_form_Domain_Model_Content if found, FALSE if not
 	 */
 	public function getRecord() {
 		$record = FALSE;
@@ -54,8 +54,8 @@ class tx_form_domain_repository_content {
 			$typoScriptParser = t3lib_div::makeInstance('t3lib_tsparser');
 			$typoScriptParser->parse($row['bodytext']);
 
-			/** @var $record tx_form_domain_model_content */
-			$record = t3lib_div::makeInstance('tx_form_domain_model_content');
+			/** @var $record tx_form_Domain_Model_Content */
+			$record = t3lib_div::makeInstance('tx_form_Domain_Model_Content');
 			$record->setUid($row['uid']);
 			$record->setPageId($row['pid']);
 			$record->setTyposcript($typoScriptParser->setup);
@@ -91,8 +91,8 @@ class tx_form_domain_repository_content {
 		$parameters = t3lib_div::_GP('P');
 		$success = FALSE;
 
-		/** @var $converter tx_form_domain_factory_jsontotyposcript */
-		$converter = t3lib_div::makeInstance('tx_form_domain_factory_jsontotyposcript');
+		/** @var $converter tx_form_Domain_Factory_JsonToTyposcript */
+		$converter = t3lib_div::makeInstance('tx_form_Domain_Factory_JsonToTyposcript');
 		$typoscript = $converter->convert($json);
 
 		if ($typoscript) {
@@ -128,8 +128,8 @@ class tx_form_domain_repository_content {
 		if ($record) {
 			$typoscript = $record->getTyposcript();
 
-			/** @var $converter tx_form_domain_factory_typoscripttojson */
-			$converter = t3lib_div::makeInstance('tx_form_domain_factory_typoscripttojson');
+			/** @var $converter tx_form_Domain_Factory_TyposcriptToJson */
+			$converter = t3lib_div::makeInstance('tx_form_Domain_Factory_TyposcriptToJson');
 			$json = $converter->convert($typoscript);
 		}
 

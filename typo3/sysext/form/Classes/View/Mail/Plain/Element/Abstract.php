@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_plain_element {
+abstract class tx_form_View_Mail_Plain_Element_Abstract {
 
 	/**
 	 * Constructor
@@ -39,6 +39,23 @@ class tx_form_view_mail_plain_element {
 	public function __construct($model, $spaces) {
 		$this->model = (object) $model;
 		$this->spaces = (integer) $spaces;
+	}
+
+	/**
+	 * Gets the last part of the current object's class name.
+	 * e.g. for 'tx_form_View_Confirmation_Additional' it will be 'Additional'
+	 *
+	 * @param boolean $lowercase Whether to convert to lowercase
+	 * @return string
+	 */
+	protected function getLastPartOfClassName($lowercase = FALSE) {
+		$lastPart = preg_replace('/.*_([^_]*)$/', '${1}', get_class($this), 1);
+
+		if ($lowercase) {
+			$lastPart = strtolower($lastPart);
+		}
+
+		return $lastPart;
 	}
 }
 ?>

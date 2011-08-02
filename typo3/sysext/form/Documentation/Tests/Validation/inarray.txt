@@ -1,7 +1,7 @@
 form.validation.inarray = FORM
 form.validation.inarray {
 	method = post
-	
+
 	rules {
 		1 = inarray
 		1 {
@@ -14,7 +14,7 @@ form.validation.inarray {
 			}
 		}
 	}
-	
+
 	# In Array
 	10 = FIELDSET
 	10 {

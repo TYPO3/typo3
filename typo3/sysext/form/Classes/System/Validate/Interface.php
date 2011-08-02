@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-interface tx_form_system_validate_interface {
+interface tx_form_System_Validate_Interface {
 
 	/**
 	 * Set the fieldName

@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_element_container extends tx_form_domain_model_element_abstract {
+class tx_form_Domain_Model_Element_Container extends tx_form_Domain_Model_Element_Abstract {
 
 	/**
 	 * Child elements of this object

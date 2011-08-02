@@ -1,7 +1,7 @@
 form.validation.alphabetic = FORM
 form.validation.alphabetic {
 	method = post
-	
+
 	rules {
 		1 = alphabetic
 		1 {
@@ -13,7 +13,7 @@ form.validation.alphabetic {
 			allowWhiteSpace = 1
 		}
 	}
-	
+
 	# Alphabetic
 	10 = FIELDSET
 	10 {

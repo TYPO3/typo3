@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-abstract class tx_form_view_form_element_abstract {
+abstract class tx_form_View_Form_Element_Abstract {
 
 	/**
 	 * The model for the current object
@@ -106,7 +106,7 @@ abstract class tx_form_view_form_element_abstract {
 							$this->setAttributes($node);
 							break;
 						case 'label':
-							if(!strstr(get_class($this), '_additional_')) {
+							if(!strstr(get_class($this), '_Additional_')) {
 								if($this->model->additionalIsSet($nodeName)) {
 									$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('label'));
 								}
@@ -120,7 +120,7 @@ abstract class tx_form_view_form_element_abstract {
 							}
 							break;
 						case 'legend':
-							if(!strstr(get_class($this), '_additional_')) {
+							if(!strstr(get_class($this), '_Additional_')) {
 								if($this->model->additionalIsSet($nodeName)) {
 									$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('legend'));
 								}
@@ -206,16 +206,16 @@ abstract class tx_form_view_form_element_abstract {
 	 * @return string HTML string of the layout to use for this element
 	 */
 	public function getLayout($type) {
-		$layoutHandler = t3lib_div::makeInstance('tx_form_system_layout');
+		/** @var $layoutHandler tx_form_System_Layout */
+		$layoutHandler = t3lib_div::makeInstance('tx_form_System_Layout');
 
 		switch($type) {
 			case 'element':
 				$layoutDefault = $this->layout;
-				$configurationKey = 'layout';
 				$objectClass = get_class($this);
-				$type = preg_replace('/.*_([^_]*)$/', "$1", $objectClass, 1);
+				$type = $this->getLastPartOfClassName(TRUE);
 
-				if(strstr($objectClass, '_additional_')) {
+				if(strstr($objectClass, '_Additional_')) {
 					$additionalModel = $this->model->getAdditionalObjectByKey($type);
 					$layoutOverride = $additionalModel->getLayout();
 				} else {
@@ -313,7 +313,7 @@ abstract class tx_form_view_form_element_abstract {
 	 */
 	protected function createAdditional($class) {
 		$class = strtolower((string) $class);
-		$className = 'tx_form_view_form_additional_' . $class;
+		$className = 'tx_form_View_Form_Additional_' . ucfirst($class);
 
 		return t3lib_div::makeInstance($className, $this->model);
 	}
@@ -362,6 +362,23 @@ abstract class tx_form_view_form_element_abstract {
 	 */
 	public function noWrap() {
 		return $this->noWrap;
+	}
+
+	/**
+	 * Gets the last part of the current object's class name.
+	 * e.g. for 'tx_form_View_Confirmation_Additional' it will be 'Additional'
+	 *
+	 * @param boolean $lowercase Whether to convert to lowercase
+	 * @return string
+	 */
+	protected function getLastPartOfClassName($lowercase = FALSE) {
+		$lastPart = preg_replace('/.*_([^_]*)$/', '${1}', get_class($this), 1);
+
+		if ($lowercase) {
+			$lastPart = strtolower($lastPart);
+		}
+
+		return $lastPart;
 	}
 }
 ?>

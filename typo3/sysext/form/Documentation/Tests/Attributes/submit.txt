@@ -1,7 +1,7 @@
 form.attributes.submit = FORM
 form.attributes.submit {
 	method = post
-	
+
 	# Label test
 	10 = FIELDSET
 	10 {
@@ -22,7 +22,7 @@ form.attributes.submit {
 			}
 		}
 	}
-	
+
 	# Layout test
 	20 = FIELDSET
 	20 {
@@ -45,7 +45,7 @@ form.attributes.submit {
 			value = No label
 		}
 	}
-	
+
 	# Accesskey
 	30 = FIELDSET
 	30 {
@@ -56,7 +56,7 @@ form.attributes.submit {
 			accesskey = a
 		}
 	}
-	
+
 	# Alt
 	40 = FIELDSET
 	40 {
@@ -67,7 +67,7 @@ form.attributes.submit {
 			alt = This is the alt attribute content
 		}
 	}
-	
+
 	# Class
 	50 = FIELDSET
 	50 {
@@ -83,7 +83,7 @@ form.attributes.submit {
 			class = class1 class2
 		}
 	}
-	
+
 	# Dir
 	60 = FIELDSET
 	60 {
@@ -104,7 +104,7 @@ form.attributes.submit {
 			dir = abc
 		}
 	}
-	
+
 	# Disabled
 	70 = FIELDSET
 	70 {
@@ -125,7 +125,7 @@ form.attributes.submit {
 			disabled = disabled
 		}
 	}
-	
+
 	# Id
 	80 = FIELDSET
 	80 {
@@ -136,7 +136,7 @@ form.attributes.submit {
 			id = submitId
 		}
 	}
-	
+
 	# Lang
 	90 = FIELDSET
 	90 {
@@ -147,7 +147,7 @@ form.attributes.submit {
 			lang = en-US
 		}
 	}
-	
+
 	# Name
 	100 = FIELDSET
 	100 {
@@ -158,7 +158,7 @@ form.attributes.submit {
 			name = submitName
 		}
 	}
-	
+
 	# Style
 	110 = FIELDSET
 	110 {
@@ -169,7 +169,7 @@ form.attributes.submit {
 			style = border: 1px solid #000000
 		}
 	}
-	
+
 	# Tabindex
 	120 = FIELDSET
 	120 {
@@ -180,7 +180,7 @@ form.attributes.submit {
 			tabindex = 1
 		}
 	}
-	
+
 	# Title
 	130 = FIELDSET
 	130 {
@@ -191,7 +191,7 @@ form.attributes.submit {
 			title = This is the title text
 		}
 	}
-	
+
 	# Value
 	140 = FIELDSET
 	140 {

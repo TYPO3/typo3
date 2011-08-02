@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_layout implements t3lib_Singleton {
+class tx_form_System_Layout implements t3lib_Singleton {
 
 	/**
 	 * Layout array from form configuration
@@ -75,7 +75,7 @@ class tx_form_system_layout implements t3lib_Singleton {
 	 * Overrides the default layout configuration for one or more elements
 	 *
 	 * @param array $layout The layout array
-	 * @return tx_form_system_layout
+	 * @return tx_form_System_Layout
 	 */
 	public function setLayout($layout = array()) {
 		if(!empty($layout)) {
@@ -91,7 +91,7 @@ class tx_form_system_layout implements t3lib_Singleton {
 	 *
 	 * @param string $elementName Type of object
 	 * @param string $layout XML containing layout for element
-	 * @return tx_form_system_layout
+	 * @return tx_form_System_Layout
 	 */
 	public function setLayoutByElement($elementName, $layout) {
 		$this->layout[$elementName] = (string) $layout;

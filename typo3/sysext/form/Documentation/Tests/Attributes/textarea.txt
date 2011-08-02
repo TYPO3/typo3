@@ -1,7 +1,7 @@
 form.attributes.textarea = FORM
 form.attributes.textarea {
 	method = post
-	
+
 	# Label test
 	10 = FIELDSET
 	10 {
@@ -22,7 +22,7 @@ form.attributes.textarea {
 			}
 		}
 	}
-	
+
 	# Layout test
 	20 = FIELDSET
 	20 {
@@ -44,7 +44,7 @@ form.attributes.textarea {
 			value = No label
 		}
 	}
-	
+
 	# Data test
 	30 = FIELDSET
 	30 {
@@ -82,7 +82,7 @@ form.attributes.textarea {
 			class = class1 class2
 		}
 	}
-	
+
 	# Cols
 	60 = FIELDSET
 	60 {
@@ -93,7 +93,7 @@ form.attributes.textarea {
 			cols = 100
 		}
 	}
-	
+
 	# Dir
 	70 = FIELDSET
 	70 {
@@ -114,7 +114,7 @@ form.attributes.textarea {
 			dir = abc
 		}
 	}
-	
+
 	# Disabled
 	80 = FIELDSET
 	80 {
@@ -135,7 +135,7 @@ form.attributes.textarea {
 			disabled = disabled
 		}
 	}
-	
+
 	# Id
 	90 = FIELDSET
 	90 {
@@ -146,7 +146,7 @@ form.attributes.textarea {
 			id = textareaId
 		}
 	}
-	
+
 	# Lang
 	100 = FIELDSET
 	100 {
@@ -157,7 +157,7 @@ form.attributes.textarea {
 			lang = en-US
 		}
 	}
-	
+
 	# Name
 	110 = FIELDSET
 	110 {
@@ -168,7 +168,7 @@ form.attributes.textarea {
 			name = textareaName
 		}
 	}
-	
+
 	# Readonly
 	120 = FIELDSET
 	120 {
@@ -192,7 +192,7 @@ form.attributes.textarea {
 			data = This should be readonly
 		}
 	}
-	
+
 	# Rows
 	130 = FIELDSET
 	130 {
@@ -203,7 +203,7 @@ form.attributes.textarea {
 			rows = 100
 		}
 	}
-	
+
 	# Style
 	140 = FIELDSET
 	140 {
@@ -214,7 +214,7 @@ form.attributes.textarea {
 			style = border: 1px solid #000000
 		}
 	}
-	
+
 	# Tabindex
 	150 = FIELDSET
 	150 {
@@ -225,7 +225,7 @@ form.attributes.textarea {
 			tabindex = 1
 		}
 	}
-	
+
 	# Title
 	160 = FIELDSET
 	160 {

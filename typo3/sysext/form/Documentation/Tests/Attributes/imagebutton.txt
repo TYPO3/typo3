@@ -11,7 +11,7 @@ form.tempSrc {
 form.attributes.imagebutton = FORM
 form.attributes.imagebutton {
 	method = post
-	
+
 	# Label test
 	10 = FIELDSET
 	10 {
@@ -35,7 +35,7 @@ form.attributes.imagebutton {
 			src.file < form.tempSrc
 		}
 	}
-	
+
 	# Layout test
 	20 = FIELDSET
 	20 {
@@ -61,7 +61,7 @@ form.attributes.imagebutton {
 			src.file < form.tempSrc
 		}
 	}
-	
+
 	# Accesskey
 	30 = FIELDSET
 	30 {
@@ -73,7 +73,7 @@ form.attributes.imagebutton {
 			src.file < form.tempSrc
 		}
 	}
-	
+
 	# Alt
 	40 = FIELDSET
 	40 {
@@ -85,7 +85,7 @@ form.attributes.imagebutton {
 			src.file < form.tempSrc
 		}
 	}
-	
+
 	# Class
 	50 = FIELDSET
 	50 {
@@ -103,7 +103,7 @@ form.attributes.imagebutton {
 			src.file < form.tempSrc
 		}
 	}
-	
+
 	# Dir
 	60 = FIELDSET
 	60 {
@@ -127,7 +127,7 @@ form.attributes.imagebutton {
 			src.file < form.tempSrc
 		}
 	}
-	
+
 	# Disabled
 	70 = FIELDSET
 	70 {
@@ -151,7 +151,7 @@ form.attributes.imagebutton {
 			src.file < form.tempSrc
 		}
 	}
-	
+
 	# Id
 	80 = FIELDSET
 	80 {
@@ -163,7 +163,7 @@ form.attributes.imagebutton {
 			src.file < form.tempSrc
 		}
 	}
-	
+
 	# Lang
 	90 = FIELDSET
 	90 {
@@ -175,7 +175,7 @@ form.attributes.imagebutton {
 			src.file < form.tempSrc
 		}
 	}
-	
+
 	# Name
 	100 = FIELDSET
 	100 {
@@ -187,7 +187,7 @@ form.attributes.imagebutton {
 			src.file < form.tempSrc
 		}
 	}
-	
+
 	# Style
 	110 = FIELDSET
 	110 {
@@ -199,7 +199,7 @@ form.attributes.imagebutton {
 			src.file < form.tempSrc
 		}
 	}
-	
+
 	# Tabindex
 	120 = FIELDSET
 	120 {
@@ -211,7 +211,7 @@ form.attributes.imagebutton {
 			src.file < form.tempSrc
 		}
 	}
-	
+
 	# Title
 	130 = FIELDSET
 	130 {
@@ -223,7 +223,7 @@ form.attributes.imagebutton {
 			src.file < form.tempSrc
 		}
 	}
-	
+
 	# Value
 	140 = FIELDSET
 	140 {

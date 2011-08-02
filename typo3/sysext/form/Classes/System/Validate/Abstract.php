@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-abstract class tx_form_system_validate_abstract implements tx_form_system_validate_interface {
+abstract class tx_form_System_Validate_Abstract implements tx_form_System_Validate_Interface {
 
 	/**
 	 * The name of the field for the rule
@@ -68,14 +68,14 @@ abstract class tx_form_system_validate_abstract implements tx_form_system_valida
 	/**
 	 * Localization handler object
 	 *
-	 * @var tx_form_localizationhandler
+	 * @var tx_form_Localizationhandler
 	 */
 	protected $localizationHandler;
 
 	/**
 	 * Request handler object
 	 *
-	 * @var tx_form_requesthandler
+	 * @var tx_form_Requesthandler
 	 */
 	protected $requestHandler;
 
@@ -94,8 +94,8 @@ abstract class tx_form_system_validate_abstract implements tx_form_system_valida
 	 */
 	public function __construct($arguments) {
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
-		$this->requestHandler = t3lib_div::makeInstance('tx_form_system_request');
-		$this->localizationHandler = t3lib_div::makeInstance('tx_form_system_localization');
+		$this->requestHandler = t3lib_div::makeInstance('tx_form_System_Request');
+		$this->localizationHandler = t3lib_div::makeInstance('tx_form_System_Localization');
 		$this->setFieldName($arguments['element']);
 		$this->setMessage($arguments['message.'], $arguments['message']);
 		$this->setShowMessage($arguments['showMessage']);

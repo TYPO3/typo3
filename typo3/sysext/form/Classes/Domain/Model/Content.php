@@ -32,7 +32,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html
  * @version $Id$
  */
-class tx_form_domain_model_content {
+class tx_form_Domain_Model_Content {
 
 	/**
 	 * The uid

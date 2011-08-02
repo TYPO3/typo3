@@ -1,7 +1,7 @@
 form.validation.combined = FORM
 form.validation.combined {
 	method = post
-	
+
 	rules {
 		1 = required
 		1 {
@@ -12,7 +12,7 @@ form.validation.combined {
 			element = email1
 		}
 	}
-	
+
 	# Email
 	10 = FIELDSET
 	10 {
