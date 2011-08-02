@@ -37,4 +37,5 @@ config.tx_extbase {
 			}
 		}
 	}
+	features.rewrittenPropertyMapper = 1
 }
