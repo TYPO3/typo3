@@ -1,5 +1,128 @@
-ChangeLog for Extbase
+﻿ChangeLog for Extbase
 =====================
+
+Changes for 1.4.0 beta1:
+========================
+included in TYPO3 4.6.0 beta1.
+
+This release features 76 changes, where most of them are bugfixes in all areas of Extbase.
+Thanks every community member for bug reports, submitting patches and reviewing! Extbase
+would not be possible without you!
+
+!!! New Property Mapper, updated MVC stack
+------------------------------------------
+
+The Property Mapper has been completely rewritten in FLOW3, and this has also been backported
+to Extbase. The new property mapper is very configurable and extensible.
+
+Furthermore, the MVC stack has been adjusted to be in sync with FLOW3 again. We will provide
+up-to-date documentation until the final release.
+
+These are breaking changes in some cases. In order to get the old behavior back, set the
+TypoScript setting:
+	config.tx_extbase.features.rewrittenPropertyMapper = 0
+
+!!! The above way of switching to compatibility mode might still change until the final release!
+
+!!! Updated Validation API
+--------------------------
+
+The Validation API has also changed, but this is only a breaking change if you do NOT subclass
+ *AbstractValidator*, but implement *ValidatorInterface* yourself. In this case, you need to
+adjust your custom validator to support the new API.
+
+Dependency Injection for Domain Objects
+---------------------------------------
+
+Dependency Injection is now also possible for reconstituted Domain Objects.
+
+Signal / Slot implementation
+----------------------------
+
+The "Signal / Slot" feature has been backported from FLOW3, implementing a future-proof
+alternative to hooks.
+
+
+Full Changes for 1.4.0 beta1:
+=============================
+[!!!][TASK] Enable rewritten property mapper by default
+[+FEATURE] Extbase (Persistence): Allow pid of object to be set from action-controller. Thanks to Michael Budnick and Balisky Christophe. Resolves: #7572
+[FEATURE] Speed up ObjectAccess
+[+FEATURE] Extbase (Persistence): Allow removing previously set limit with unsetLimit(). Resolves: #27445
+[-TASK] Remove autoloader. Thanks to Christian Kuhn. Resolves: #28249
+[+FEATURE] introduce signal in MVC/Dispatcher
+[TASK] Correct classnaming for Tx_Extbase_Tests_Unit_BaseTestCase
+[-BUGFIX] remove datecheck on timezone test
+[+FEATURE] remove usage of deprecated methods in unit-tests
+[BUGFIX] Adjust unit tests to changes
+[BUGFIX] create ClassSchema with ObjectManager::create()
+[BUGFIX] TypeHandling class not found. This is a hotfix for #28121. Resolves: #28121
+[TASK] Extbase (Utility): Add service for TypeHandling. Related: #13864
+[+BUGFIX] Extbase: CGL: Convert case of acronyms from UPPERCASE to CamelCase. Resolves: #12189
+[TASK] Extbase: Use strpos() instead of strstr() where possible
+[+BUGFIX] allow skipping of arguments in signal dispatch
+[TASK] Adjust PHP dependency in ext_emconf.php
+[FEATURE] Add check for loaded DBAL to requirements check
+[TASK] Recreate ext_autoload.php. Resolves: #27680
+[!!!][+FEATURE] (MVC): Modify MVC stack to use the new property mapper. Resolves: #27656
+[!!!][+FEATURE] (Validation): Adjusted and re-done Validation API. Resolves: #27653
+[+FEATURE] (Property): Add new property mapper. Related: #27059
+[+FEATURE] (Persistence): Synchronize PersistenceManagerInterface more with FLOW3. Resolves: #27657
+[+FEATURE] (Reflection): Object Access can now access private properties. Resolves: #27652
+[+FEATURE] (Utility): synchronize TypeHandling class with FLOW3. Resolves: #27651
+[!!!][FEATURE] Improve error and message handling. Resolves: #27650
+[TASK] (MVC, Property): Deprecation of the the old property mapper
+[+FEATURE] (Configuration): Feature flag implementation
+[+BUGFIX] (Persistence): return correct objectCountByQuery when query contains left join and no limit. Fixes: #13075
+[BUGFIX] Adapt cache configuration to 4.6. Resolves: #27546
+[+BUGFIX] (SignalSlot): Fix unit tests. Resolves: #27550
+[+BUGFIX] Make ObjectManager::isRegistered work
+[+FEATURE] backport SignalSlotDispatcher
+[+BUGFIX] Fix localization handling to support XLIFF. Resolves: #27411
+[+BUGFIX] Extbase (Validation): E-mail address with space at the end is invalid. Thanks to Marc Bastian Heinrichs. Resolves: #27305
+[+BUGFIX] Throw exception if a class to be reflected does not exist. Fixes: #8718
+[TASK][!!!] Fix localization handling to support XLIFF. Resolves: #27411
+[TASK] Extbase (Validation): Clean up tests for FloatValidatorTest and Integer ValidatorTest
+[+BUGFIX] Extbase (Persistence): Use correct language-uid for translations. Thanks to Benjamin Mack. Resolves: #26521
+[TASK] Extbase (Persistence): Remove duplicate registration in identity map. Thanks to Alexander Stehlik. Resolves: #26875
+[BUGFIX] Fix EmailAddressValidatorTest
+[+FEATURE] Extbase (MVC): Make response format configurable in TypoScript. Thanks to Christian Zenker. Resolves: #9216
+[BUGFIX] Docu, AbstractController: Clearer difference of forward/redirect. Resolves: #7900
+[BUGFIX] Fix case of setChildSortByFieldName in DataMapFactory. Resolves: #27334
+[+BUGFIX] (Property) Fixed only adding objects to ObjectStorage. Thanks to Thomas Maroschik. Fixes: #13288
+[+TASK] Extbase: Move static typoscript utility methods to a service. Related: #13864
+[+TASK] Extbase: Move most of the static extension utility methods to a service. Related: #13864
+[+BUGFIX] baseUri is added on external links. Thanks to Michael Feinbier for this fix! Resolves: #10258
+[+BUGFIX] (Testing): Fix wrong doc comment in BaseTestCase. Resolves #13695
+[+BUGFIX] Cloning a ValueObject should not set its uid to NULL. Resolves #26772
+[+BUGFIX] ObjectStorage->toArray(): fix array pointer problem. Resolves #9117
+[+BUGFIX] Persistence: Fixed building unionStatement from opposite. Thanks to Christian Zindel. Resolves #13782
+[+BUGFIX] Persistence: Update tstamp column on objects removal. Thanks to Michel Nederlof. Resolves #10634
+[+BUGFIX] correct warning in ObjectStorage & LazyObjectStorage
+[~CLEANUP] some smaller comment cleanups
+[+TASK] Extbase: Moved static cache utility class to a service. Relates to: #13864
+[+FEATURE] implement ObjectManager::isRegistered()
+[+TASK] improve exception message in Argument
+[TASK] Performance tuning in container by moving some information into the cached ClassInfo object.
+[~BUGFIX] avoid fe_user's type to be overridden
+[+BUGFIX] Avoiding cHash for nonCacheable actions prevent action from being called. Related: #13970
+[+BUGFIX] MVC: Make forwarding of objects work. Resolves #9867
+[~CLEANUP] correct function parameter types
+[+BUGFIX] Persistence: return ObjectCount return value as an integer. Thanks to Georg Ringer. Resolves #13151
+[+BUGFIX] Revert incorrect deletion of Query::count() & Query::withUid(). Relates: #13745
+[~CLEANUP] apply naming convention for flexForms
+[+TASK] Move FlexForm parsing to a dedicated Service. Thanks to Rens Admiraal. Resolves #13032
+[!!!][+BUGFIX] make backend-modules in web use new pagetree by default
+[~CLEANUP] smaller deprecated clean-ups
+[+FEATURE] Extbase: Enable Dependency Injection for Domain Models. Thanks to Pascal Jungblut. Resolves #11311
+[+BUGFIX] (Persistence) Make Typo3QuerySettings exchangeable. Resolves #13191
+[+BUGFIX] (Persistence) clone setDefaultQuerySettings for new queries. Resolves #12702
+[~BUGFIX] correct annotations of Tx_Extbase_Persistence_Mapper_DataMapper. Resolves #13185. Thanks to Simon Schaufelberger.
+[~TASK] (FlashMessages) finish the renaming of flashMessages
+[+BUGFIX] (Configuration): Adjusted ConfigurationManagerInterface Interface to implementation
+[~TASK] Extbase: Raising version from 1.3.0 to 1.4.0-devel
+[+TASK] Extbase (MVC): Removed duplicated code from RequestBuilder. Thanks to Peter Niederlag. Resolves #12569.
+
 
 Changes for 1.3.0:
 ==================
