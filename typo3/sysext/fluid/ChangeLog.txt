@@ -1,5 +1,100 @@
-ChangeLog for Fluid
+﻿ChangeLog for Fluid
 ===================
+
+
+Changes for 1.4.0 beta1:
+========================
+included in TYPO3 4.6 beta1.
+
+This change features numerous cleanups, and the following new features:
+
+Compilation of Fluid Templates to PHP files
+-------------------------------------------
+
+This adds a compile step to the parsing process of templates, layouts and
+partials.
+If no compiled cache file exists, Fluid will create it while parsing the
+respective Fluid template.
+The cache file is invalidated as soon as the template/layout/partial
+has been modified (or if caches are flushed).
+This speeds up the rendering process by factor 2-5, and reduces memory
+consumption drastically.
+
+!!! $this->arguments->hasArgument() removed
+-------------------------------------------
+
+AbstractViewHelper::$arguments are no longer an object but an array.
+
+If you used $this->arguments->hasArgument() in your custom ViewHelpers,
+you'll have to replace this with $this->hasArgument().
+
+THIS IS A BREAKING CHANGE.
+
+!!! Introduction of {_all} Variable
+-----------------------------------
+
+You can now use {_all} inside your template to access all variables available
+right now. This is especially helpful for debugging:
+
+    {_all -> f:debug()}
+
+or for passing all currently available variables to a partial:
+
+    <f:render partial="..." arguments="{_all}" />
+
+This is only a breaking change if you used a variable _all inside your own
+templates.
+
+Widgets: Allow overriding templateRootPath
+------------------------------------------
+It is now possible to override the widget template root path via the framework
+configuration, for example:
+    plugin.tx_extension.view {
+      widget.<WidgetViewHelperClassName>.templateRootPath=...
+    }
+
+Full Changes for 1.4.0 beta1:
+=============================
+
+[!!!][FEATURE] Compilation of Fluid templates to PHP files. Resolves: #28545
+[TASK] Minor cleanups
+[TASK] Tweak inline comment in TemplateView
+[!!!][+FEATURE] Add a reserved variable {_all} returning all template variables
+[BUGFIX] Deactivate EscapeInterceptor for certain ViewHelpers. Related: #27678
+[TASK] Split escape ViewHelper into dedicated format ViewHelpers. Related: #27628
+[BUGFIX] Whitespace fixes
+[FEATURE] IconViewHelper (BE) should support CSS-sprites. Resolves: #9957
+[TASK] Code Cleanup in TemplateView
+[+BUGFIX] Use of depreciated function debug in debugViewHelper. Fixes: #27970
+[BUGFIX] Fix Widget support. Resolves: #27783
+[TASK] Recreate ext_autoload.php. Related: #27680
+[+FEATURE] (ViewHelpers): Adjust Fluid to new Property Mapper. Related: #27656
+[+TASK] Fluid: Make use of newly introduced Extension Service. Related: #13864
+[+BUGFIX] Fix unit tests
+[TASK] Fluid: Use strpos() instead of strstr() where possible
+[TASK] Make TextboxViewHelper a subclass of TextFieldViewHelper
+[TASK] (ViewHelper): Code Cleanup to AbstractFormField ViewHelper
+[TASK] (Core): Code Cleanup in AbstractTagBasedViewHelper
+[+BUGFIX] (Core): Condition improvements. Resolves: #27557
+[TASK] Cleanup and small improvements to Interceptors
+[TASK] Comment and non-functional changes
+[+BUGFIX] Empty a tag ends with /> instead of </a>. Resolves: #27556
+[BUGFIX] Better error message for "unknown section" exception
+[+BUGFIX] Fluid (Core): Simplify debugging of exceptions thrown during render
+[+BUGFIX] Fluid: Fix CObjViewHelper. Fixes: #26138
+[+FEATURE] Widgets: Allow overriding templateRootPath. Thanks to Peter Bücker. Resolves: #10823
+[FEATURE] PaddingViewHelper: allow padding-type right/left/both. Resolves: #9283
+[BUGFIX] Fix documentation for BE-ViewHelpers. Resolves: #9942
+[~TASK] Update jQuery versions
+[+BUGFIX] CObjViewHelper: fixed using numeric values as data argument. Fixes: #12891
+[+BUGFIX] ActionMenuItemViewHelper: XHTML compliance in "selected" attribute value. Fixes: #8744
+[+BUGFIX] Fluid: CObjViewHelper fix deprecated call "getAccessibleProperties". Fixes: #26138
+[!!!][+TASK] Fluid v4 (Core): Make layout UpperCamelCase (with fallback)
+[~TASK] Fluid: Raising version from 1.3.0 to 1.4.0-devel
+[+FEATURE] Fluid (ViewHelpers): Add RawViewHelper
+[+FEATURE] Fluid v4 (Core): Set layoutName by variable
+
+
 
 Changes for 1.3.0:
 ==================
