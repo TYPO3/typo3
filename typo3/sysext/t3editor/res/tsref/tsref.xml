@@ -6465,7 +6465,7 @@ page.jsInline {
 Note:
 
 with config.removeDefaultJS = external, the inlineJS is moved to external file.
-with config.minifyJS = 1, the jsInline will be minified as well.
+with config.compressJs = 1, the jsInline will be minified as well.
 ]]></description>
 			<default><![CDATA[
 ]]></default>

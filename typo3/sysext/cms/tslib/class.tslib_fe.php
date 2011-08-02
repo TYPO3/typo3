@@ -2031,8 +2031,14 @@
 						if (!isset($this->config['config']['inlineStyle2TempFile'])) {
 							$this->config['config']['inlineStyle2TempFile'] = 1;
 						}
-						if (!isset($this->config['config']['minifyJS'])) {
-							$this->config['config']['minifyJS'] = 1;
+						if (isset($this->config['config']['minifyJS'])) {
+							$this->logDeprecatedTyposcript('config.minifyJS = 1', 'It will be removed in TYPO3 4.8. Use config.compressJs instead.');
+							if (!isset($this->config['config']['compressJs'])) {
+								$this->config['config']['compressJs'] = $this->config['config']['minifyJS'];
+							}
+						}
+						if (!isset($this->config['config']['compressJs'])) {
+							$this->config['config']['compressJs'] = 1;
 						}
 					}
 
