@@ -33,112 +33,15 @@
  * XHTML compliant
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @deprecated since 4.6
  */
 
 
 require ('init.php');
 require ('template.php');
-require_once ('class.alt_menu_functions.inc');
-$LANG->includeLLFile('EXT:lang/locallang_alt_intro.xml');
 
+t3lib_div::deprecationLog('alt_intro.php is deprecated since TYPO3 4.6, this file will be removed in TYPO3 4.8. The TYPO3 backend is using typo3/backend.php with less frames, which makes this file obsolete.');
 
-
-
-
-
-
-
-/**
- * Script Class for the introduction screen, alias "About > Modules" which shows the description of each available module for the user.
- *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
- */
-class SC_alt_intro {
-
-	/**
-	 * Object for backend modules.
-	 *
-	 * @var t3lib_loadModules
-	 */
-	var $loadModules;
-	var $content;
-
-	/**
-	 * Initialization of script class
-	 *
-	 * @return	void
-	 */
-	function init()	{
-			// Loads the available backend modules so we can create the description overview.
-		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
-		$this->loadModules->observeWorkspaces = TRUE;
-		$this->loadModules->load($GLOBALS['TBE_MODULES']);
-	}
-
-	/**
-	 * Main content - displaying the module descriptions
-	 *
-	 * @return	void
-	 */
-	function main()	{
-		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
-
-		$GLOBALS['TBE_TEMPLATE']->divClass = $GLOBALS['TBE_TEMPLATE']->bodyTagId;
-
-		$this->content = '
-			<div id="typo3-docheader">
-				<div id="typo3-docheader-row1">&nbsp;</div>
-			</div>
-			<div id="typo3-alt-intro-php-sub">
-			<h1>TYPO3 ' . TYPO3_version . '<br />' . $GLOBALS['LANG']->getLL('introtext') . '</h1>
-
-			<p>'.t3lib_BEfunc::TYPO3_copyRightNotice().'</p>';
-
-		$this->content .= '
-			'.t3lib_BEfunc::displayWarningMessages();
-
-		$this->content .= '
-			<h3>' . $GLOBALS['LANG']->getLL('introtext2') . '</h3>';
-
-
-			// Printing the description of the modules available
-		$this->content.=$alt_menuObj->topMenu($this->loadModules->modules,0,'',1);
-		$this->content.='<br />';
-
-			// end text: 'Features may vary depending on your website and permissions'
-		$this->content .= '<p class="c-features"><em>(' . $GLOBALS['LANG']->getLL('endText') . ')</em></p>';
-		$this->content .= '<br /></div>';
-
-			// Renders the module page
-		$this->content = $GLOBALS['TBE_TEMPLATE']->render(
-			'About modules',
-			$this->content
-		);
-	}
-
-	/**
-	 * Outputting the accumulated content to screen
-	 *
-	 * @return	void
-	 */
-	function printContent()	{
-		echo $this->content;
-	}
-}
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/alt_intro.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/alt_intro.php']);
-}
-
-
-
-// Make instance:
-$SOBE = t3lib_div::makeInstance('SC_alt_intro');
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+include(t3lib_extMgm::extPath('aboutmodules', 'mod/index.php'));
 
 ?>
