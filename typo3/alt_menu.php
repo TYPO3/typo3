@@ -40,7 +40,7 @@
 
 require ('init.php');
 require ('template.php');
-require_once ('class.alt_menu_functions.inc');
+require_once ('sysext/aboutmodules/mod/class.aboutmodules_functions.php');
 
 
 t3lib_div::deprecationLog('alt_menu.php is deprecated since TYPO3 4.5, this file will be removed in TYPO3 4.7. The TYPO3 backend is using typo3/backend.php with less frames, which makes this file obsolete.');
@@ -92,7 +92,8 @@ class SC_alt_menu {
 		$this->loadModules->load($GLOBALS['TBE_MODULES']);
 
 			// Instantiates the menu object which will generate some JavaScript for the goToModule() JS function in this frame.
-		$this->alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
+		/** @var $menuObj aboutmodules_Functions */
+		$this->alt_menuObj = t3lib_div::makeInstance('aboutmodules_Functions');
 
 		$GLOBALS['TBE_TEMPLATE']->JScodeArray[] = $this->alt_menuObj->generateMenuJScode($this->loadModules->modules);
 	}
@@ -110,7 +111,8 @@ class SC_alt_menu {
 		$backPath = $GLOBALS['BACK_PATH'];
 
 			// Printing the menu
-		$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
+		/** @var $menuObj aboutmodules_Functions */
+		$alt_menuObj = t3lib_div::makeInstance('aboutmodules_Functions');
 		$this->content.= $alt_menuObj->topMenu($this->loadModules->modules);
 
 			// clear cache commands for Admins and allowed users

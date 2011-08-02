@@ -43,7 +43,7 @@
 
 require ('init.php');
 require ('template.php');
-require_once ('class.alt_menu_functions.inc');
+require_once ('sysext/aboutmodules/mod/class.aboutmodules_functions.php');
 
 
 t3lib_div::deprecationLog('alt_topmenu_dummy.php is deprecated since TYPO3 4.5, this file will be removed in TYPO3 4.7. The TYPO3 backend is using typo3/backend.php with less frames, which makes this file obsolete.');
@@ -102,7 +102,8 @@ class SC_alt_topmenu_dummy {
 			$loadModules->load($GLOBALS['TBE_MODULES']);
 
 				// Creating menu object:
-			$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
+			/** @var $menuObj aboutmodules_Functions */
+			$alt_menuObj = t3lib_div::makeInstance('aboutmodules_Functions');
 
 				// Start page
 			$GLOBALS['TBE_TEMPLATE']->bodyTagId.= '-iconmenu';
