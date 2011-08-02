@@ -518,16 +518,42 @@ final class t3lib_div {
 	 *
 	 * @param string $hex IPv6 address in hex-presentation
 	 * @return string Binary representation (16 characters, 128 characters)
-	 * @see normalizeIPv6()
+	 * @see IPv6Bin2Hex()
 	 */
 	public static function IPv6Hex2Bin($hex) {
-		// normalized representation has 39 characters (0000:0000:0000:0000:0000:0000:0000:0000)
-		if (strlen($hex) < 39) {
+			// use PHP-function if PHP was compiled with IPv6-support
+		if(defined('AF_INET6')) {
+			$bin = inet_pton($hex);
+		} else {
 			$hex = self::normalizeIPv6($hex);
+			$hex = str_replace(':', '', $hex); // Replace colon to nothing
+			$bin = pack("H*" , $hex);
 		}
-		$hex = str_replace(':', '', $hex); // Replace colon to nothing
-		$bin = pack("H*" , $hex);
 		return $bin;
+	}
+
+	/**
+	 * Transform an IPv6 address from binary to hex-representation
+	 *
+	 * @param string $hex IPv6 address in hex-presentation
+	 * @return string Binary representation (16 characters, 128 characters)
+	 * @see IPv6Hex2Bin()
+	 */
+	public static function IPv6Bin2Hex($bin) {
+			// use PHP-function if PHP was compiled with IPv6-support
+		if(defined('AF_INET6')) {
+			$hex = inet_ntop($bin);
+		} else {
+			$hex = unpack("H*" , $bin);
+			$hex = chunk_split($hex[1], 4, ':');
+				// strip last colon (from chunk_split)
+			$hex = substr($hex, 0, -1);
+				// IPv6 is now in normalized form
+				// compress it for easier handling and to match result from inet_ntop()
+			$hex = self::compressIPv6($hex);
+		}
+		return $hex;
+
 	}
 
 	/**
@@ -535,10 +561,20 @@ final class t3lib_div {
 	 *
 	 * @param string $address Given IPv6 address
 	 * @return string Normalized address
+	 * @see compressIPv6()
 	 */
 	public static function normalizeIPv6($address) {
 		$normalizedAddress = '';
 		$stageOneAddress = '';
+
+			// according to RFC lowercase-representation is recommended
+		$address = strtolower($address);
+
+			// normalized representation has 39 characters (0000:0000:0000:0000:0000:0000:0000:0000)
+		if (strlen($address) == 39) {
+				// already in full expanded form
+			return $address;
+		}
 
 		$chunks = explode('::', $address); // Count 2 if if address has hidden zero blocks
 		if (count($chunks) == 2) {
@@ -587,6 +623,48 @@ final class t3lib_div {
 			}
 		}
 		return $normalizedAddress;
+	}
+
+
+	/**
+	 * Compress an IPv6 address to the shortest notation
+	 *
+	 * @param string $address Given IPv6 address
+	 * @return string Compressed address
+	 * @see normalizeIPv6()
+	 */
+	public static function compressIPv6($address) {
+			// use PHP-function if PHP was compiled with IPv6-support
+		if(defined('AF_INET6')) {
+			$bin = inet_pton($address);
+			$address = inet_ntop($bin);
+		} else {
+			$address = self::normalizeIPv6($address);
+
+				// append one colon for easier handling
+				// will be removed later
+			$address .= ':';
+
+				// according to IPv6-notation the longest match
+				// of a package of '0000:' may be replaced with ':'
+				// (resulting in something like '1234::abcd')
+			for ($counter = 8; $counter > 1; $counter--) {
+				$search = str_repeat('0000:', $counter);
+				if (($pos = strpos($address, $search)) !== FALSE) {
+					$address = substr($address, 0, $pos) . ':' . substr($address, $pos + ($counter*5));
+					break;
+				}
+			}
+
+				// up to 3 zeros in the first part may be removed
+			$address = preg_replace('/^0{1,3}/', '', $address);
+				// up to 3 zeros at the beginning of other parts may be removed
+			$address = preg_replace('/:0{1,3}/', ':', $address);
+
+				// strip last colon (from chunk_split)
+			$address = substr($address, 0, -1);
+		}
+		return $address;
 	}
 
 	/**

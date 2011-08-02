@@ -245,15 +245,15 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	///////////////////////////////
 
 	/**
-	 * Data provider for IPv6Hex2BinReturnsCorrectBinaryHosts
+	 * Data provider for IPv6Hex2BinCorrect
 	 *
 	 * @return array Data sets
 	 */
-	public static function IPv6Hex2BinDataProviderCorrectlyConverted() {
+	public static function IPv6Hex2BinDataProviderCorrect() {
 		return array(
 			'empty 1' => array('::', str_pad('', 16, "\x00")),
 			'empty 2, already normalized' => array('0000:0000:0000:0000:0000:0000:0000:0000', str_pad('', 16, "\x00")),
-			'empty 3, already normalized' => array('0102:0304:0000:0000:0000:0000:0506:0078', "\x01\x02\x03\x04" . str_pad('', 8, "\x00") . "\x05\x06\x00\x78"),
+			'already normalized' => array('0102:0304:0000:0000:0000:0000:0506:0078', "\x01\x02\x03\x04" . str_pad('', 8, "\x00") . "\x05\x06\x00\x78"),
 			'expansion in middle 1' => array('1::2', "\x00\x01" . str_pad('', 12, "\x00") . "\x00\x02"),
 			'expansion in middle 2' => array('beef::fefa', "\xbe\xef" . str_pad('', 12, "\x00") . "\xfe\xfa"),
 		);
@@ -261,26 +261,54 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @dataProvider IPv6Hex2BinDataProviderCorrectlyConverted
+	 * @dataProvider IPv6Hex2BinDataProviderCorrect
 	 */
-	public function IPv6Hex2BinReturnsCorrectBinaryHosts($inputIP, $binary) {
-		$this->assertTrue(t3lib_div::IPv6Hex2Bin($inputIP) === $binary);
+	public function IPv6Hex2BinCorrect($hex, $binary) {
+		$this->assertTrue(t3lib_div::IPv6Hex2Bin($hex) === $binary);
 	}
 
-	/////////////////////////////////
-	// Tests concerning normalizeIPv6
-	/////////////////////////////////
+	///////////////////////////////
+	// Tests concerning IPv6Bin2Hex
+	///////////////////////////////
+
+	/**
+	 * Data provider for IPv6Bin2HexCorrect
+	 *
+	 * @return array Data sets
+	 */
+	public static function IPv6Bin2HexDataProviderCorrect() {
+		return array(
+			'empty' => array(str_pad('', 16, "\x00"), '::'),
+			'non-empty front' => array("\x01" . str_pad('', 15, "\x00"), '100::'),
+			'non-empty back' => array(str_pad('', 15, "\x00") . "\x01", '::1'),
+			'normalized' => array("\x01\x02\x03\x04" . str_pad('', 8, "\x00") . "\x05\x06\x00\x78", '102:304::506:78'),
+			'expansion in middle 1' => array("\x00\x01" . str_pad('', 12, "\x00") . "\x00\x02", '1::2'),
+			'expansion in middle 2' => array("\xbe\xef" . str_pad('', 12, "\x00") . "\xfe\xfa", 'beef::fefa'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider IPv6Bin2HexDataProviderCorrect
+	 */
+	public function IPv6Bin2HexCorrect($binary, $hex) {
+		$this->assertEquals(t3lib_div::IPv6Bin2Hex($binary), $hex);
+	}
+
+	////////////////////////////////////////////////
+	// Tests concerning normalizeIPv6 / compressIPv6
+	////////////////////////////////////////////////
 
 	/**
 	 * Data provider for normalizeIPv6ReturnsCorrectlyNormalizedFormat
 	 *
 	 * @return array Data sets
 	 */
-	public static function normalizeIPv6DataProviderCorrectlyNormalized() {
+	public static function normalizeCompressIPv6DataProviderCorrect() {
 		return array(
 			'empty' => array('::', '0000:0000:0000:0000:0000:0000:0000:0000'),
 			'localhost' => array('::1', '0000:0000:0000:0000:0000:0000:0000:0001'),
-			'some address on right side' => array('::F0F', '0000:0000:0000:0000:0000:0000:0000:0F0F'),
+			'some address on right side' => array('::f0f', '0000:0000:0000:0000:0000:0000:0000:0f0f'),
 			'expansion in middle 1' => array('1::2', '0001:0000:0000:0000:0000:0000:0000:0002'),
 			'expansion in middle 2' => array('1:2::3', '0001:0002:0000:0000:0000:0000:0000:0003'),
 			'expansion in middle 3' => array('1::2:3', '0001:0000:0000:0000:0000:0000:0002:0003'),
@@ -290,10 +318,18 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @dataProvider normalizeIPv6DataProviderCorrectlyNormalized
+	 * @dataProvider normalizeCompressIPv6DataProviderCorrect
 	 */
-	public function normalizeIPv6ReturnsCorrectlyNormalizedFormat($inputIP, $normalized) {
-		$this->assertTrue(t3lib_div::normalizeIPv6($inputIP) === $normalized);
+	public function normalizeIPv6Correct($compressed, $normalized) {
+		$this->assertEquals(t3lib_div::normalizeIPv6($compressed), $normalized);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider normalizeCompressIPv6DataProviderCorrect
+	 */
+	public function compressIPv6Correct($compressed, $normalized) {
+		$this->assertEquals(t3lib_div::compressIPv6($normalized), $compressed);
 	}
 
 	///////////////////////////////
