@@ -183,9 +183,10 @@ class tx_em_Settings implements t3lib_Singleton {
 				$this->settings['selectedRepository'] = 1;
 			}
 		}
-			/** @var $repository tx_em_Repository */
-			$repository = t3lib_div::makeInstance('tx_em_Repository', $this->settings['selectedRepository']);
-			if ($repository->getMirrorListUrl()) {
+		/** @var $repository tx_em_Repository */
+		$repository = t3lib_div::makeInstance('tx_em_Repository', $this->settings['selectedRepository']);
+		if ($repository->getMirrorListUrl()) {
+			/** @var $objRepositoryUtility tx_em_Repository_Utility */
 			$objRepositoryUtility = t3lib_div::makeInstance('tx_em_Repository_Utility', $repository);
 			$mirrors = $objRepositoryUtility->getMirrors(TRUE)->getMirrors();
 			if(!is_array($mirrors)) {
