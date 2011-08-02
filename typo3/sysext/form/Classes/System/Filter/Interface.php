@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-interface tx_form_system_filter_interface {
+interface tx_form_System_Filter_Interface {
 
 	/**
 	 * Return filtered value

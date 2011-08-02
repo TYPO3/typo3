@@ -30,7 +30,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_validate_fileminimumsize extends tx_form_system_validate_abstract implements tx_form_system_validate_interface {
+class tx_form_System_Validate_Fileminimumsize extends tx_form_System_Validate_Abstract implements tx_form_System_Validate_Interface {
 
 	/**
 	 * Minimum value
@@ -56,7 +56,7 @@ class tx_form_system_validate_fileminimumsize extends tx_form_system_validate_ab
 	 *
 	 * @return boolean
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/interfaces/tx_form_system_validate_interface#isValid()
+	 * @see tx_form_System_Validate_Interface::isValid()
 	 */
 	public function isValid() {
 		if($this->requestHandler->has($this->fieldName)) {

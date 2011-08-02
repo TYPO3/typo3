@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_attributes_name extends tx_form_domain_model_attributes_abstract implements tx_form_domain_model_attributes_interface {
+class tx_form_Domain_Model_Attributes_Name extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
 
 	/**
 	 * Addition to the name value
@@ -95,7 +95,7 @@ class tx_form_domain_model_attributes_name extends tx_form_domain_model_attribut
 		$value = $this->getValueWithoutPrefix();
 
 		if($this->returnValueWithoutPrefix === FALSE) {
-			$requestHandler = t3lib_div::makeInstance('tx_form_system_request');
+			$requestHandler = t3lib_div::makeInstance('tx_form_System_Request');
 			$attribute = $requestHandler->getPrefix() . '[' . $value . ']' . $this->addition;
 		} else {
 			$attribute = $value;
@@ -109,7 +109,7 @@ class tx_form_domain_model_attributes_name extends tx_form_domain_model_attribut
 	 * This is necessarry in some cases like a multiple select box
 	 *
 	 * @param string $addition The additional string
-	 * @return tx_form_domain_model_attributes_name
+	 * @return tx_form_Domain_Model_Attributes_Name 
 	 */
 	public function setAddition($addition) {
 		$this->addition = (string) $addition;

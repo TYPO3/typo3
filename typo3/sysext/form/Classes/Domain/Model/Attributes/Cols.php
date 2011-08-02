@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_attributes_cols extends tx_form_domain_model_attributes_abstract implements tx_form_domain_model_attributes_interface {
+class tx_form_Domain_Model_Attributes_Cols extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
 
 	/**
 	 * Constructor

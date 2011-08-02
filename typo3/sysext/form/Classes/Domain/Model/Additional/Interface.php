@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-interface tx_form_domain_model_additional_interface {
+interface tx_form_Domain_Model_Additional_Interface {
 
 	/**
 	 * Return the value of the object

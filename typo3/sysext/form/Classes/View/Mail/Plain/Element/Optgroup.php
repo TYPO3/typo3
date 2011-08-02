@@ -29,15 +29,15 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_plain_element_optgroup extends tx_form_view_mail_plain_container {
+class tx_form_View_Mail_Plain_Element_Optgroup extends tx_form_View_Mail_Plain_Element_Container {
 
 	/**
 	 * Constructor
 	 *
-	 * @param tx_form_domain_model_element_optgroup $model Model for this element
+	 * @param tx_form_Domain_Model_Element_Optgroup $model Model for this element
 	 * @return void
 	 */
-	public function __construct(tx_form_domain_model_element_optgroup $model, $spaces) {
+	public function __construct(tx_form_Domain_Model_Element_Optgroup $model, $spaces) {
 		parent::__construct($model, $spaces);
 	}
 

@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_localization implements t3lib_Singleton {
+class tx_form_System_Localization implements t3lib_Singleton {
 
 	/**
 	 * File reference to the local language file

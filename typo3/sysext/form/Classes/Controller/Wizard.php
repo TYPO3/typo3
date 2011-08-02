@@ -36,7 +36,7 @@ require($BACK_PATH . 'template.php');
  * @license http://www.gnu.org/copyleft/gpl.html
  * @version $Id$
  */
-class tx_form_controller_wizard {
+class tx_form_Controller_Wizard {
 	/**
 	 * Dispatch on action
 	 *
@@ -65,11 +65,11 @@ class tx_form_controller_wizard {
 	 * @return void
 	 */
 	protected function indexAction() {
-		/** @var $repository tx_form_domain_repository_content */
-		$repository = t3lib_div::makeInstance('tx_form_domain_repository_content');
+		/** @var $repository tx_form_Domain_Repository_Content */
+		$repository = t3lib_div::makeInstance('tx_form_Domain_Repository_Content');
 
-		/** @var $view tx_form_view_wizard_wizard */
-		$view = t3lib_div::makeInstance('tx_form_view_wizard_wizard');
+		/** @var $view tx_form_View_Wizard_Wizard */
+		$view = t3lib_div::makeInstance('tx_form_View_Wizard_Wizard');
 		$view->setRepository($repository);
 		$view->render();
 	}
@@ -82,11 +82,11 @@ class tx_form_controller_wizard {
 	 * @return void
 	 */
 	protected function saveAction() {
-		/** @var $repository tx_form_domain_repository_content */
-		$repository = t3lib_div::makeInstance('tx_form_domain_repository_content');
+		/** @var $repository tx_form_Domain_Repository_Content */
+		$repository = t3lib_div::makeInstance('tx_form_Domain_Repository_Content');
 
-		/** @var $view tx_form_view_wizard_save */
-		$view = t3lib_div::makeInstance('tx_form_view_wizard_save');
+		/** @var $view tx_form_View_Wizard_Save */
+		$view = t3lib_div::makeInstance('tx_form_View_Wizard_Save');
 		$view->setRepository($repository);
 		$view->render();
 	}
@@ -99,17 +99,17 @@ class tx_form_controller_wizard {
 	 * @return void
 	 */
 	protected function loadAction() {
-		/** @var $repository tx_form_domain_repository_content */
-		$repository = t3lib_div::makeInstance('tx_form_domain_repository_content');
+		/** @var $repository tx_form_Domain_Repository_Content */
+		$repository = t3lib_div::makeInstance('tx_form_Domain_Repository_Content');
 
-		/** @var $view tx_form_view_wizard_load */
-		$view = t3lib_div::makeInstance('tx_form_view_wizard_load');
+		/** @var $view tx_form_View_Wizard_Load */
+		$view = t3lib_div::makeInstance('tx_form_View_Wizard_Load');
 		$view->setRepository($repository);
 		$view->render();
 	}
 }
 
-/** @var $wizard tx_form_controller_wizard */
-$wizard = t3lib_div::makeInstance('tx_form_controller_wizard');
+/** @var $wizard tx_form_Controller_Wizard */
+$wizard = t3lib_div::makeInstance('tx_form_Controller_Wizard');
 $wizard->dispatch();
 ?>

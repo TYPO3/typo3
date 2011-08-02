@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_filter_stripnewlines implements tx_form_system_filter_interface {
+class tx_form_System_Filter_Stripnewlines implements tx_form_System_Filter_Interface {
 
 	/**
 	 * Constructor

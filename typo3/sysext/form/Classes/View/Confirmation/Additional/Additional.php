@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_confirmation_additional extends tx_form_view_confirmation_element_abstract {
+class tx_form_View_Confirmation_Additional extends tx_form_View_Confirmation_Element_Abstract {
 
 	/**
 	 * The model for the current object

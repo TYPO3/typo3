@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_json_password extends tx_form_domain_model_json_element {
+class tx_form_Domain_Model_JSON_Password extends tx_form_Domain_Model_JSON_Element {
 	/**
 	 * The ExtJS xtype of the element
 	 *

@@ -32,7 +32,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_factory_typoscript implements t3lib_Singleton {
+class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 
 	/**
 	 * Constructor
@@ -147,9 +147,9 @@ class tx_form_domain_factory_typoscript implements t3lib_Singleton {
 		$class = strtolower((string) $class);
 
 		if($class === 'form') {
-			$className = 'tx_form_domain_model_' . $class;
+			$className = 'tx_form_Domain_Model_' . ucfirst($class);
 		} else {
-			$className = 'tx_form_domain_model_element_' . $class;
+			$className = 'tx_form_Domain_Model_Element_' . ucfirst($class);
 		}
 
 		$object = t3lib_div::makeInstance($className);
@@ -274,10 +274,10 @@ class tx_form_domain_factory_typoscript implements t3lib_Singleton {
 	 * Set the layout handler
 	 *
 	 * @param array $typoscript TypoScript
-	 * @return tx_form_system_layout The layout handler
+	 * @return tx_form_System_Layout The layout handler
 	 */
 	public function setLayoutHandler($typoscript) {
-		$layoutHandler = t3lib_div::makeInstance('tx_form_system_layout'); // singleton
+		$layoutHandler = t3lib_div::makeInstance('tx_form_System_Layout'); // singleton
 		$layoutHandler->setLayout($typoscript['layout.']);
 
 		return $layoutHandler;
@@ -287,14 +287,14 @@ class tx_form_domain_factory_typoscript implements t3lib_Singleton {
 	 * Set the request handler
 	 *
 	 * @param array $typoscript TypoScript
-	 * @return tx_form_system_request The request handler
+	 * @return tx_form_System_Request The request handler
 	 */
 	public function setRequestHandler($typoscript) {
 		$prefix = isset($typoscript['prefix']) ? $typoscript['prefix'] : '';
 		$method = isset($typoscript['method']) ? $typoscript['method'] : '';
 
-		/** @var $requestHandler tx_form_system_request */
-		$requestHandler = t3lib_div::makeInstance('tx_form_system_request'); // singleton
+		/** @var $requestHandler tx_form_System_Request */
+		$requestHandler = t3lib_div::makeInstance('tx_form_System_Request'); // singleton
 		$requestHandler->setPrefix($prefix);
 		$requestHandler->setMethod($method);
 		$requestHandler->storeFiles();
@@ -308,11 +308,11 @@ class tx_form_domain_factory_typoscript implements t3lib_Singleton {
 	 * Makes the validation object and adds rules to it
 	 *
 	 * @param array $typoscript TypoScript
-	 * @return tx_form_system_validate The validation object
+	 * @return tx_form_System_Validate The validation object
 	 */
 	public function setRules($typoscript) {
 		$rulesTyposcript = isset($typoscript['rules.']) ? $typoscript['rules.'] : NULL;
-		$rulesClass = t3lib_div::makeInstance('tx_form_system_validate', $rulesTyposcript); // singleton
+		$rulesClass = t3lib_div::makeInstance('tx_form_System_Validate', $rulesTyposcript); // singleton
 
 		if (is_array($rulesTyposcript)) {
 			$keys = t3lib_TStemplate::sortedKeyList($rulesTyposcript);

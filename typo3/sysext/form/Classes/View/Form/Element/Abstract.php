@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-abstract class tx_form_view_form_element_abstract {
+abstract class tx_form_View_Form_Element_Abstract {
 
 	/**
 	 * The model for the current object
@@ -206,7 +206,7 @@ abstract class tx_form_view_form_element_abstract {
 	 * @return string HTML string of the layout to use for this element
 	 */
 	public function getLayout($type) {
-		$layoutHandler = t3lib_div::makeInstance('tx_form_system_layout');
+		$layoutHandler = t3lib_div::makeInstance('tx_form_System_Layout');
 
 		switch($type) {
 			case 'element':
@@ -313,7 +313,7 @@ abstract class tx_form_view_form_element_abstract {
 	 */
 	protected function createAdditional($class) {
 		$class = strtolower((string) $class);
-		$className = 'tx_form_view_form_additional_' . $class;
+		$className = 'tx_form_View_Form_Additional_' . ucfirst($class);
 
 		return t3lib_div::makeInstance($className, $this->model);
 	}

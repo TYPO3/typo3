@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_plain_element {
+class tx_form_View_Mail_Plain_Element {
 
 	/**
 	 * Constructor

@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_form_element_option extends tx_form_view_form_element_abstract {
+class tx_form_View_Form_Element_Option extends tx_form_View_Form_Element_Abstract {
 
 	/**
 	 * Default layout of this object
@@ -51,10 +51,10 @@ class tx_form_view_form_element_option extends tx_form_view_form_element_abstrac
 	/**
 	 * Constructor
 	 *
-	 * @param tx_form_domain_model_element_option $model Model for this element
+	 * @param tx_form_Domain_Model_Element_Option $model Model for this element
 	 * @return void
 	 */
-	public function __construct(tx_form_domain_model_element_option $model) {
+	public function __construct(tx_form_Domain_Model_Element_Option $model) {
 		parent::__construct($model);
 	}
 }

@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_html_additional extends tx_form_view_mail_html_element_abstract {
+class tx_form_View_Mail_Html_Additional extends tx_form_View_Mail_Html_Element_Abstract {
 
 	/**
 	 * The model for the current object

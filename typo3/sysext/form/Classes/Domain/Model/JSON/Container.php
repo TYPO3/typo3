@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_json_container extends tx_form_domain_model_json_element {
+class tx_form_Domain_Model_JSON_Container extends tx_form_Domain_Model_JSON_Element {
 	/**
 	 * The items within this container
 	 *

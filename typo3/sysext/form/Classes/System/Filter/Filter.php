@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_filter implements tx_form_system_filter_interface {
+class tx_form_System_Filter implements tx_form_System_Filter_Interface {
 
 	/**
 	 * Array with filter objects to use
@@ -57,7 +57,7 @@ class tx_form_system_filter implements tx_form_system_filter_interface {
 	 *
 	 * @param string $class Name of the filter
 	 * @param mixed $value Typoscript configuration
-	 * @return tx_form_filter
+	 * @return tx_form_Filter
 	 */
 	public function addFilter($filter) {
 		$this->filters[] = (object) $filter;
@@ -75,7 +75,7 @@ class tx_form_system_filter implements tx_form_system_filter_interface {
 	 */
 	public function makeFilter($class, $arguments = array()) {
 		$class = strtolower((string) $class);
-		$className = 'tx_form_system_filter_' . $class;
+		$className = 'tx_form_System_Filter_' . ucfirst($class);
 
 		$filter = t3lib_div::makeInstance($className, $arguments);
 
@@ -108,7 +108,7 @@ class tx_form_system_filter implements tx_form_system_filter_interface {
 	 */
 	public static function get($class, $value, array $arguments = array()) {
 		$class = strtolower((string) $class);
-		$className = 'tx_form_system_filter_' . $class;
+		$className = 'tx_form_System_Filter_' . ucfirst($class);
 
 		$object = t3lib_div::makeInstance($className, $arguments);
 

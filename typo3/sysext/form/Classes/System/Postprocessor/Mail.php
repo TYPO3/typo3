@@ -29,20 +29,20 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_postprocessor_mail {
+class tx_form_System_Postprocessor_Mail {
 
 	/**
 	 * Constructor
 	 *
-	 * @param $form tx_form_domain_model_form Form domain model
+	 * @param $form tx_form_Domain_Model_Form Form domain model
 	 * @param $typoscript array Post processor TypoScript settings
 	 * @return void
 	 */
-	public function __construct(tx_form_domain_model_form $form, array $typoScript) {
+	public function __construct(tx_form_Domain_Model_Form $form, array $typoScript) {
 		$this->form = $form;
 		$this->typoScript = $typoScript;
 		$this->mailMessage = t3lib_div::makeInstance('t3lib_mail_Message');
-		$this->requestHandler = t3lib_div::makeInstance('tx_form_system_request');
+		$this->requestHandler = t3lib_div::makeInstance('tx_form_System_Request');
 	}
 
 	/**
@@ -227,7 +227,7 @@ class tx_form_system_postprocessor_mail {
 	 */
 	protected function setHtmlContent() {
 		$view = t3lib_div::makeInstance(
-			'tx_form_view_mail_html',
+			'tx_form_View_Mail_Html',
 			$this->form,
 			$this->typoScript
 		);
@@ -244,7 +244,7 @@ class tx_form_system_postprocessor_mail {
 	 */
 	protected function setPlainContent() {
 		$view = t3lib_div::makeInstance(
-			'tx_form_view_mail_plain',
+			'tx_form_View_Mail_Plain',
 			$this->form
 		);
 		$plainContent = $view->render();
@@ -274,7 +274,7 @@ class tx_form_system_postprocessor_mail {
 	 */
 	protected function render() {
 		$view = t3lib_div::makeInstance(
-			'tx_form_view_mail',
+			'tx_form_View_Mail',
 			$this->mailMessage,
 			$this->typoScript
 		);
@@ -307,7 +307,7 @@ class tx_form_system_postprocessor_mail {
 		$values = $this->requestHandler->getByMethod();
 
 		foreach ($formElements as $element) {
-			if (is_a($element, 'tx_form_domain_model_element_fileupload')) {
+			if (is_a($element, 'tx_form_Domain_Model_Element_Fileupload')) {
 				$elementName = $element->getName();
 				if (is_array($values[$elementName])) {
 					if (file_exists($values[$elementName]['tempFilename'])) {

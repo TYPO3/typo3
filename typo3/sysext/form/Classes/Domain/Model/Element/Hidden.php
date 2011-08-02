@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_element_hidden extends tx_form_domain_model_element_abstract {
+class tx_form_Domain_Model_Element_Hidden extends tx_form_Domain_Model_Element_Abstract {
 
 	/**
 	 * Allowed attributes for this object
@@ -72,7 +72,7 @@ class tx_form_domain_model_element_hidden extends tx_form_domain_model_element_a
 	 *
 	 * @return object
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/model/element/tx_form_domain_model_element#checkFilterAndSetIncomingDataFromRequest()
+	 * @see tx_form_Domain_Model_Element::checkFilterAndSetIncomingDataFromRequest()
 	 */
 	public function checkFilterAndSetIncomingDataFromRequest() {
 		if($this->requestHandler->has($this->getName())) {

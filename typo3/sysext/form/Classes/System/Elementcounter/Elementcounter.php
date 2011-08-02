@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_elementcounter implements t3lib_Singleton {
+class tx_form_System_Elementcounter implements t3lib_Singleton {
 
 	/**
 	 * Counter

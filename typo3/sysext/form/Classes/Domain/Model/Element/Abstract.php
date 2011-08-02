@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-abstract class tx_form_domain_model_element_abstract {
+abstract class tx_form_Domain_Model_Element_Abstract {
 
 	/**
 	 * Internal Id of the element
@@ -56,14 +56,14 @@ abstract class tx_form_domain_model_element_abstract {
 	/**
 	 * Attribute object
 	 *
-	 * @var tx_form_domain_model_attributes
+	 * @var tx_form_Domain_Model_Attributes
 	 */
 	protected $attributes;
 
 	/**
 	 * Additional object
 	 *
-	 * @var tx_form_domain_model_additional
+	 * @var tx_form_Domain_Model_Additional
 	 */
 	protected $additional;
 
@@ -122,9 +122,9 @@ abstract class tx_form_domain_model_element_abstract {
 	 */
 	public function __construct() {
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
-		$this->requestHandler = t3lib_div::makeInstance('tx_form_system_request');
-		$this->validateClass = t3lib_div::makeInstance('tx_form_system_validate');
-		$this->elementCounter = t3lib_div::makeInstance('tx_form_system_elementcounter');
+		$this->requestHandler = t3lib_div::makeInstance('tx_form_System_Request');
+		$this->validateClass = t3lib_div::makeInstance('tx_form_System_Validate');
+		$this->elementCounter = t3lib_div::makeInstance('tx_form_System_Elementcounter');
 		$this->setElementId();
 		$this->createAttributes();
 		$this->createAdditional();
@@ -310,10 +310,10 @@ abstract class tx_form_domain_model_element_abstract {
 	/**
 	 * Load the attributes object
 	 *
-	 * @return tx_form_domain_model_attributes
+	 * @return tx_form_Domain_Model_Attributes
 	 */
 	protected function createAttributes() {
-		$className = 'tx_form_domain_model_attributes_attributes';
+		$className = 'tx_form_Domain_Model_Attributes_Attributes';
 
 		$this->attributes = t3lib_div::makeInstance($className, $this->elementId);
 	}
@@ -429,7 +429,7 @@ abstract class tx_form_domain_model_element_abstract {
 	 * @return void
 	 */
 	protected function createAdditional() {
-		$className = 'tx_form_domain_model_additional_additional';
+		$className = 'tx_form_Domain_Model_Additional_Additional';
 
 		$this->additional = t3lib_div::makeInstance($className);
 	}
@@ -451,7 +451,7 @@ abstract class tx_form_domain_model_element_abstract {
 	 * @return void
 	 */
 	protected function createFilter() {
-		$this->filter = t3lib_div::makeInstance('tx_form_system_filter');
+		$this->filter = t3lib_div::makeInstance('tx_form_System_Filter');
 	}
 
 	/**

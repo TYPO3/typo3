@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_filter_currency implements tx_form_system_filter_interface {
+class tx_form_System_Filter_Currency implements tx_form_System_Filter_Interface {
 
 	/**
 	 * Separator between group of thousands
@@ -62,7 +62,7 @@ class tx_form_system_filter_currency implements tx_form_system_filter_interface 
 	 * Set the decimal point character
 	 *
 	 * @param string $decimalsPoint Character used for decimal point
-	 * @return tx_form_filter_currency
+	 * @return tx_form_Filter_Currency
 	 */
 	public function setDecimalsPoint($decimalsPoint = '.') {
 		if(empty($decimalsPoint)) {
@@ -78,7 +78,7 @@ class tx_form_system_filter_currency implements tx_form_system_filter_interface 
 	 * Set the thousand separator character
 	 *
 	 * @param string $thousandSeparator Character used for thousand separator
-	 * @return tx_form_filter_currency
+	 * @return tx_form_Filter_Currency
 	 */
 	public function setThousandSeparator($thousandSeparator = ',') {
 		if(empty($thousandSeparator)) {

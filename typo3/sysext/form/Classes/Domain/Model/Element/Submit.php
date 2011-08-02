@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_element_submit extends tx_form_domain_model_element_abstract {
+class tx_form_Domain_Model_Element_Submit extends tx_form_Domain_Model_Element_Abstract {
 
 	/**
 	 * Allowed attributes for this object
@@ -80,10 +80,10 @@ class tx_form_domain_model_element_submit extends tx_form_domain_model_element_a
 	 *
 	 * @param string $value Value to display on button
 	 * @return void
-	 * @see typo3/sysext/form/model/element/tx_form_domain_model_element#setValue()
+	 * @see tx_form_Domain_Model_Element::setValue()
 	 */
 	public function setValue($value = '') {
-		$localizationHandler = t3lib_div::makeInstance('tx_form_system_localization');
+		$localizationHandler = t3lib_div::makeInstance('tx_form_System_Localization');
 
 			// value not set from typoscript
 		$oldValue = $this->getAttributeValue('value');

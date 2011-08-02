@@ -33,7 +33,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html
  * @version $Id$
  */
-class tx_form_controller_form {
+class tx_form_Controller_Form {
 
 	/**
 	 * The TypoScript array
@@ -43,22 +43,22 @@ class tx_form_controller_form {
 	protected $typoscript = array();
 
 	/**
-	 * @var tx_form_domain_factory_typoscript
+	 * @var tx_form_Domain_Factory_Typoscript 
 	 */
 	protected $typoscriptFactory;
 
 	/**
-	 * @var tx_form_system_localization
+	 * @var tx_form_System_Localization 
 	 */
 	protected $localizationHandler;
 
 	/**
-	 * @var tx_form_system_request
+	 * @var tx_form_System_Request 
 	 */
 	protected $requestHandler;
 
 	/**
-	 * @var tx_form_system_validate
+	 * @var tx_form_System_Validate 
 	 */
 	protected $validate;
 
@@ -70,12 +70,12 @@ class tx_form_controller_form {
 	 */
 	public function initialize($typoscript) {
 		t3lib_div::makeInstance(
-			'tx_form_system_localization',
+			'tx_form_System_Localization',
 			'LLL:EXT:form/Resources/Private/Language/locallang_controller.xml'
 		);
 
-		$this->typoscriptFactory = t3lib_div::makeInstance('tx_form_domain_factory_typoscript');
-		$this->localizationHandler = t3lib_div::makeInstance('tx_form_system_localization');
+		$this->typoscriptFactory = t3lib_div::makeInstance('tx_form_Domain_Factory_Typoscript');
+		$this->localizationHandler = t3lib_div::makeInstance('tx_form_System_Localization');
 		$this->requestHandler = $this->typoscriptFactory->setRequestHandler($typoscript);
 		$this->validate = $this->typoscriptFactory->setRules($typoscript);
 
@@ -201,8 +201,8 @@ class tx_form_controller_form {
 
 		$form = $this->typoscriptFactory->buildModelFromTyposcript($this->typoscript);
 
-		/** @var $view tx_form_view_form */
-		$view = t3lib_div::makeInstance('tx_form_view_form', $form);
+		/** @var $view tx_form_View_Form */
+		$view = t3lib_div::makeInstance('tx_form_View_Form', $form);
 
 		return $view->get();
 	}
@@ -248,9 +248,9 @@ class tx_form_controller_form {
 			$confirmationTyposcript = $this->typoscript['confirmation.'];
 		}
 
-		/** @var $view tx_form_view_confirmation */
+		/** @var $view tx_form_View_Confirmation */
 		$view = t3lib_div::makeInstance(
-			'tx_form_view_confirmation',
+			'tx_form_View_Confirmation',
 			$form,
 			$confirmationTyposcript
 		);
@@ -273,9 +273,9 @@ class tx_form_controller_form {
 			$postProcessorTypoScript = $this->typoscript['postProcessor.'];
 		}
 
-		/** @var $postProcessor tx_form_system_postprocessor */
+		/** @var $postProcessor tx_form_System_Postprocessor */
 		$postProcessor = t3lib_div::makeInstance(
-			'tx_form_system_postprocessor',
+			'tx_form_System_Postprocessor',
 			$form,
 			$postProcessorTypoScript
 		);

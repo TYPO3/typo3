@@ -29,15 +29,15 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_plain_element_hidden extends tx_form_view_mail_plain_element {
+class tx_form_View_Mail_Plain_Element_Hidden extends tx_form_View_Mail_Plain_Element {
 
 	/**
 	 * Constructor
 	 *
-	 * @param tx_form_domain_model_element_hidden $model Model for this element
+	 * @param tx_form_Domain_Model_Element_Hidden $model Model for this element
 	 * @return void
 	 */
-	public function __construct(tx_form_domain_model_element_hidden $model, $spaces) {
+	public function __construct(tx_form_Domain_Model_Element_Hidden $model, $spaces) {
 		parent::__construct($model, $spaces);
 	}
 

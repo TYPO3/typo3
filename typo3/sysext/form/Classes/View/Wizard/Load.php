@@ -32,7 +32,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html
  * @version $Id$
  */
-class tx_form_view_wizard_load {
+class tx_form_View_Wizard_Load {
 	/**
 	 * Is the referenced record available
 	 *
@@ -93,10 +93,10 @@ class tx_form_view_wizard_load {
 	/**
 	 * Set the content repository to use in this view
 	 *
-	 * @param tx_form_domain_repository_content $repository
+	 * @param tx_form_Domain_Repository_Content $repository
 	 * @return void
 	 */
-	public function setRepository(tx_form_domain_repository_content $repository) {
+	public function setRepository(tx_form_Domain_Repository_Content $repository) {
 		$this->repository = $repository;
 	}
 }

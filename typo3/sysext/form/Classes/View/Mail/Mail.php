@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail {
+class tx_form_View_Mail {
 
 	/**
 	 * The mail message
@@ -48,7 +48,7 @@ class tx_form_view_mail {
 	/**
 	 * The localization handler
 	 *
-	 * @var tx_form_system_localization
+	 * @var tx_form_System_Localization 
 	 */
 	protected $localizationHandler;
 
@@ -67,7 +67,7 @@ class tx_form_view_mail {
 	public function __construct(t3lib_mail_Message $mailMessage, array $typoScript) {
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
 		$this->localizationHandler = t3lib_div::makeInstance(
-			'tx_form_system_localization'
+			'tx_form_System_Localization'
 		);
 		$this->mailMessage = $mailMessage;
 		$this->typoScript = $typoScript;

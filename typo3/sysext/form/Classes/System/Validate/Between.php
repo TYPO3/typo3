@@ -30,7 +30,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_validate_between extends tx_form_system_validate_abstract implements tx_form_system_validate_interface {
+class tx_form_System_Validate_Between extends tx_form_System_Validate_Abstract implements tx_form_System_Validate_Interface {
 
 	/**
 	 * Minimum value
@@ -72,7 +72,7 @@ class tx_form_system_validate_between extends tx_form_system_validate_abstract i
 	 *
 	 * @return boolean
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/interfaces/tx_form_system_validate_interface#isValid()
+	 * @see tx_form_System_Validate_Interface::isValid()
 	 */
 	public function isValid() {
 		if($this->requestHandler->has($this->fieldName)) {
@@ -136,7 +136,7 @@ class tx_form_system_validate_between extends tx_form_system_validate_abstract i
 	 *
 	 * @return string The local language message label
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/validate/tx_form_system_validate_abstract#_getLocalLanguageLabel()
+	 * @see tx_form_System_Validate_Abstract::_getLocalLanguageLabel()
 	 */
 	protected function getLocalLanguageLabel($type) {
 		$label = get_class($this) . '.' . $type;

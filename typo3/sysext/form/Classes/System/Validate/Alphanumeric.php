@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_validate_alphanumeric extends tx_form_system_validate_abstract {
+class tx_form_System_Validate_Alphanumeric extends tx_form_System_Validate_Abstract {
 
 	/**
 	 * Allow white space in the submitted value
@@ -55,13 +55,13 @@ class tx_form_system_validate_alphanumeric extends tx_form_system_validate_abstr
 	 *
 	 * @return boolean
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/interfaces/tx_form_system_validate_interface#isValid()
+	 * @see tx_form_System_Validate_Interface::isValid()
 	 */
 	public function isValid() {
 		if($this->requestHandler->has($this->fieldName)) {
 			$value = $this->requestHandler->getByMethod($this->fieldName);
 			if ($this->filter === NULL) {
-				$className = 'tx_form_system_filter_alphanumeric';
+				$className = 'tx_form_System_Filter_Alphanumeric';
 				$this->filter = t3lib_div::makeInstance($className);
 			}
 
@@ -96,7 +96,7 @@ class tx_form_system_validate_alphanumeric extends tx_form_system_validate_abstr
 	 *
 	 * @return string The local language message label
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/validate/tx_form_system_validate_abstract#_getLocalLanguageLabel()
+	 * @see tx_form_System_Validate_Abstract::_getLocalLanguageLabel()
 	 */
 	protected function getLocalLanguageLabel() {
 		$label = get_class($this) . '.message';

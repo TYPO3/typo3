@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_form_additional extends tx_form_view_form_element_abstract {
+class tx_form_View_Form_Additional extends tx_form_View_Form_Element_Abstract {
 
 	/**
 	 * The model for the current object

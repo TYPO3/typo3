@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_form_additional_legend extends tx_form_view_form_additional {
+class tx_form_View_Form_Additional_Legend extends tx_form_View_Form_Additional {
 
 	/**
 	 * Default layout of this object

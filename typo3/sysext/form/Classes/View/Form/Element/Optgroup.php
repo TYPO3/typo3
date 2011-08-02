@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_form_element_optgroup extends tx_form_view_form_element_container {
+class tx_form_View_Form_Element_Optgroup extends tx_form_View_Form_Element_Container {
 
 	/**
 	 * Default layout of this object
@@ -53,10 +53,10 @@ class tx_form_view_form_element_optgroup extends tx_form_view_form_element_conta
 	/**
 	 * Constructor
 	 *
-	 * @param tx_form_domain_model_element_optgroup $model Model for this element
+	 * @param tx_form_Domain_Model_Element_Optgroup $model Model for this element
 	 * @return void
 	 */
-	public function __construct(tx_form_domain_model_element_optgroup $model) {
+	public function __construct(tx_form_Domain_Model_Element_Optgroup $model) {
 		parent::__construct($model);
 	}
 }
