@@ -1,11 +1,11 @@
-﻿ChangeLog for Extbase
+ChangeLog for Extbase
 =====================
 
 Changes for 1.4.0 beta1:
 ========================
 included in TYPO3 4.6.0 beta1.
 
-This release features 76 changes, where most of them are bugfixes in all areas of Extbase.
+This release features 76 changes, most of them being bugfixes in all areas of Extbase.
 Thanks every community member for bug reports, submitting patches and reviewing! Extbase
 would not be possible without you!
 
