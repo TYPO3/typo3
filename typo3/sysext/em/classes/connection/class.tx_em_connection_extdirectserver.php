@@ -1230,7 +1230,9 @@ class tx_em_Connection_ExtDirectServer {
 	public function fetchTranslations($extkey, $type, $selection) {
 		$result = array();
 		if (is_array($selection) && count($selection)) {
+			/** @var $terConnection tx_em_Connection_Ter */
 			$terConnection = t3lib_div::makeInstance('tx_em_Connection_Ter', $this);
+			/** @var $xmlHandler tx_em_Tools_XmlHandler */
 			$this->xmlHandler = t3lib_div::makeInstance('tx_em_Tools_XmlHandler');
 			$this->xmlHandler->emObj = $this;
 			$mirrorURL = $this->getSettingsObject()->getMirrorURL();
