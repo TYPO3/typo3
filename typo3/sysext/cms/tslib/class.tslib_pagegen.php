@@ -910,7 +910,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		$inlineFooterJs = $GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['jsFooterInline.'], 'jsFooterInline.');
 
 			// Should minify?
-		if ($GLOBALS['TSFE']->config['config']['minifyJS']) {
+		if ($GLOBALS['TSFE']->config['config']['compressJs']) {
 			$pageRenderer->enableCompressJavascript();
 			$minifyErrorScript = $minifyErrorInline = '';
 			$scriptJsCode = t3lib_div::minifyJavaScript($scriptJsCode, $minifyErrorScript);
@@ -935,13 +935,13 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		if (! $GLOBALS['TSFE']->config['config']['removeDefaultJS']) {
 				// inlude default and inlineJS
 			if ($scriptJsCode) {
-				$pageRenderer->addJsInlineCode('_scriptCode', $scriptJsCode, $GLOBALS['TSFE']->config['config']['minifyJS']);
+				$pageRenderer->addJsInlineCode('_scriptCode', $scriptJsCode, $GLOBALS['TSFE']->config['config']['compressJs']);
 			}
 			if ($inlineJS) {
-				$pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS, $GLOBALS['TSFE']->config['config']['minifyJS']);
+				$pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS, $GLOBALS['TSFE']->config['config']['compressJs']);
 			}
 			if ($inlineFooterJs) {
-				$pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $GLOBALS['TSFE']->config['config']['minifyJS']);
+				$pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $GLOBALS['TSFE']->config['config']['compressJs']);
 			}
 		} elseif ($GLOBALS['TSFE']->config['config']['removeDefaultJS'] === 'external') {
 			/*
@@ -956,25 +956,25 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			$inlineJSint = '';
 			self::stripIntObjectPlaceholder($inlineJS, $inlineJSint);
 			if ($inlineJSint) {
-				$pageRenderer->addJsInlineCode('TS_inlineJSint', $inlineJSint, $GLOBALS['TSFE']->config['config']['minifyJS']);
+				$pageRenderer->addJsInlineCode('TS_inlineJSint', $inlineJSint, $GLOBALS['TSFE']->config['config']['compressJs']);
 			}
-			$pageRenderer->addJsFile(TSpagegen::inline2TempFile($scriptJsCode . $inlineJS, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['minifyJS']);
+			$pageRenderer->addJsFile(TSpagegen::inline2TempFile($scriptJsCode . $inlineJS, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['compressJs']);
 
 			if ($inlineFooterJs) {
 				$inlineFooterJSint = '';
 				self::stripIntObjectPlaceholder($inlineFooterJs, $inlineFooterJSint);
 				if ($inlineFooterJSint) {
-					$pageRenderer->addJsFooterInlineCode('TS_inlineFooterJSint', $inlineFooterJSint, $GLOBALS['TSFE']->config['config']['minifyJS']);
+					$pageRenderer->addJsFooterInlineCode('TS_inlineFooterJSint', $inlineFooterJSint, $GLOBALS['TSFE']->config['config']['compressJs']);
 				}
-				$pageRenderer->addJsFooterFile(TSpagegen::inline2TempFile($inlineFooterJs, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['minifyJS']);
+				$pageRenderer->addJsFooterFile(TSpagegen::inline2TempFile($inlineFooterJs, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['compressJs']);
 			}
 		} else {
 				// include only inlineJS
 			if ($inlineJS) {
-				$pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS, $GLOBALS['TSFE']->config['config']['minifyJS']);
+				$pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS, $GLOBALS['TSFE']->config['config']['compressJs']);
 			}
 			if ($inlineFooterJs) {
-				$pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $GLOBALS['TSFE']->config['config']['minifyJS']);
+				$pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $GLOBALS['TSFE']->config['config']['compressJs']);
 			}
 		}
 
@@ -992,10 +992,22 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		}
 
 			// compression and concatenate settings
+		if (isset($GLOBALS['TSFE']->config['config']['minifyCSS'])) {
+			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.minifyCSS = 1', 'It will be removed in TYPO3 4.8. Use config.compressCss instead.');
+			if (!isset($GLOBALS['TSFE']->config['config']['compressCss'])) {
+				$GLOBALS['TSFE']->config['config']['compressCss'] = $GLOBALS['TSFE']->config['config']['minifyCSS'];
+			}
+		}
 		if ($GLOBALS['TSFE']->config['config']['minifyCSS']) {
 			$pageRenderer->enableCompressCss();
 		}
-		if ($GLOBALS['TSFE']->config['config']['minifyJS']) {
+		if (isset($GLOBALS['TSFE']->config['config']['minifyJS'])) {
+			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.minifyJS = 1', 'It will be removed in TYPO3 4.8. Use config.compressJs instead.');
+			if (!isset($GLOBALS['TSFE']->config['config']['compressJs'])) {
+				$GLOBALS['TSFE']->config['config']['compressJs'] = $GLOBALS['TSFE']->config['config']['minifyJS'];
+			}
+		}
+		if ($GLOBALS['TSFE']->config['config']['compressJs']) {
 			$pageRenderer->enableCompressJavascript();
 		}
 		if ($GLOBALS['TSFE']->config['config']['concatenateCss']) {
