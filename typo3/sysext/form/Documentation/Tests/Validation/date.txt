@@ -1,14 +1,14 @@
 form.validation.date = FORM
 form.validation.date {
 	method = post
-	
+
 	rules {
 		1 = date
 		1 {
 			element = date1
 		}
 	}
-	
+
 	# Date
 	10 = FIELDSET
 	10 {

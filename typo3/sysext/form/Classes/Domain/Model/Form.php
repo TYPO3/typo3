@@ -32,7 +32,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_form extends tx_form_domain_model_element_container {
+class tx_form_Domain_Model_Form extends tx_form_Domain_Model_Element_Container {
 
 	/**
 	 * Allowed attributes for this object

@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_form_element_checkbox extends tx_form_view_form_element_abstract {
+class tx_form_View_Form_Element_Checkbox extends tx_form_View_Form_Element_Abstract {
 
 	/**
 	 * Default layout of this object
@@ -44,10 +44,10 @@ class tx_form_view_form_element_checkbox extends tx_form_view_form_element_abstr
 	/**
 	 * Constructor
 	 *
-	 * @param tx_form_domain_model_element_checkbox $model Model for this element
+	 * @param tx_form_Domain_Model_Element_Checkbox $model Model for this element
 	 * @return void
 	 */
-	public function __construct(tx_form_domain_model_element_checkbox $model) {
+	public function __construct(tx_form_Domain_Model_Element_Checkbox $model) {
 		parent::__construct($model);
 	}
 }

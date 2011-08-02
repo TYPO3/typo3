@@ -31,7 +31,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_factory_jsontotyposcript {
+class tx_form_Domain_Factory_JsonToTyposcript {
 	/**
 	 * Internal counter for the elements
 	 *

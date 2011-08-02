@@ -1,7 +1,7 @@
 form.attributes.checkbox = FORM
 form.attributes.checkbox {
 	method = post
-	
+
 	# Label test
 	10 = FIELDSET
 	10 {
@@ -22,7 +22,7 @@ form.attributes.checkbox {
 			}
 		}
 	}
-	
+
 	# Layout test
 	20 = FIELDSET
 	20 {
@@ -45,7 +45,7 @@ form.attributes.checkbox {
 			value = No label
 		}
 	}
-	
+
 	# Accesskey
 	30 = FIELDSET
 	30 {
@@ -56,7 +56,7 @@ form.attributes.checkbox {
 			accesskey = a
 		}
 	}
-	
+
 	# Alt
 	40 = FIELDSET
 	40 {
@@ -67,7 +67,7 @@ form.attributes.checkbox {
 			alt = This is the alt attribute content
 		}
 	}
-	
+
 	# Checked
 	50 = FIELDSET
 	50 {
@@ -88,7 +88,7 @@ form.attributes.checkbox {
 			checked = checked
 		}
 	}
-	
+
 	# Class
 	60 = FIELDSET
 	60 {
@@ -104,7 +104,7 @@ form.attributes.checkbox {
 			class = class1 class2
 		}
 	}
-	
+
 	# Dir
 	70 = FIELDSET
 	70 {
@@ -125,7 +125,7 @@ form.attributes.checkbox {
 			dir = abc
 		}
 	}
-	
+
 	# Disabled
 	80 = FIELDSET
 	80 {
@@ -146,7 +146,7 @@ form.attributes.checkbox {
 			disabled = disabled
 		}
 	}
-	
+
 	# Id
 	90 = FIELDSET
 	90 {
@@ -157,7 +157,7 @@ form.attributes.checkbox {
 			id = checkboxId
 		}
 	}
-	
+
 	# Lang
 	100 = FIELDSET
 	100 {
@@ -168,7 +168,7 @@ form.attributes.checkbox {
 			lang = en-US
 		}
 	}
-	
+
 	# Name
 	110 = FIELDSET
 	110 {
@@ -179,7 +179,7 @@ form.attributes.checkbox {
 			name = checkboxName
 		}
 	}
-	
+
 	# Style
 	120 = FIELDSET
 	120 {
@@ -190,7 +190,7 @@ form.attributes.checkbox {
 			style = width: 4em; height: 4em;
 		}
 	}
-	
+
 	# Tabindex
 	130 = FIELDSET
 	130 {
@@ -201,7 +201,7 @@ form.attributes.checkbox {
 			tabindex = 1
 		}
 	}
-	
+
 	# Title
 	140 = FIELDSET
 	140 {
@@ -212,7 +212,7 @@ form.attributes.checkbox {
 			title = This is the title text
 		}
 	}
-	
+
 	# Value
 	150 = FIELDSET
 	150 {

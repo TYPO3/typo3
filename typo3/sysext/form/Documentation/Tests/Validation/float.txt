@@ -1,14 +1,14 @@
 form.validation.float = FORM
 form.validation.float {
 	method = post
-	
+
 	rules {
 		1 = float
 		1 {
 			element = float1
 		}
 	}
-	
+
 	# Float
 	10 = FIELDSET
 	10 {

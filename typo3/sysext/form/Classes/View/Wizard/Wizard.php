@@ -32,7 +32,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html
  * @version $Id$
  */
-class tx_form_view_wizard_wizard {
+class tx_form_View_Wizard_Wizard {
 	/**
 	 * The document template object
 	 *
@@ -438,10 +438,10 @@ class tx_form_view_wizard_wizard {
 	/**
 	 * Set the content repository to use in this view
 	 *
-	 * @param tx_form_domain_repository_content $repository
+	 * @param tx_form_Domain_Repository_Content $repository
 	 * @return void
 	 */
-	public function setRepository(tx_form_domain_repository_content $repository) {
+	public function setRepository(tx_form_Domain_Repository_Content $repository) {
 		$this->repository = $repository;
 	}
 }

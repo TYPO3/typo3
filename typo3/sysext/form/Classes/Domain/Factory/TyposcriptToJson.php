@@ -31,7 +31,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_factory_typoscripttojson {
+class tx_form_Domain_Factory_TyposcriptToJson {
 	/**
 	 * Constructor
 	 *
@@ -63,7 +63,7 @@ class tx_form_domain_factory_typoscripttojson {
 	 */
 	public function createElement($class, array $arguments = array()) {
 		$class = strtolower((string) $class);
-		$className = 'tx_form_domain_model_json_' . $class;
+		$className = 'tx_form_Domain_Model_Json_' . ucfirst($class);
 
 		$this->addValidationRules($arguments);
 

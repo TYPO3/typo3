@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_confirmation_additional extends tx_form_view_confirmation_element_abstract {
+class tx_form_View_Confirmation_Additional extends tx_form_View_Confirmation_Element_Abstract {
 
 	/**
 	 * The model for the current object
@@ -54,8 +54,9 @@ class tx_form_view_confirmation_additional extends tx_form_view_confirmation_ele
 	 * @return string The value of the additional
 	 */
 	public function getAdditionalValue() {
-		$type = preg_replace('/.*_([^_]*)$/', "$1", get_class($this), 1);
-		return htmlspecialchars($this->model->getAdditionalValue($type));
+		return htmlspecialchars($this->model->getAdditionalValue(
+			$this->getLastPartOfClassName(TRUE)
+		));
 	}
 }
 ?>

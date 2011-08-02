@@ -1,7 +1,7 @@
 form.attributes.radiogroup = FORM
 form.attributes.radiogroup {
 	method = post
-	
+
 	rules {
 		1 = required
 		1 {
@@ -27,7 +27,7 @@ form.attributes.radiogroup {
 			label = Option 3
 		}
 	}
-	
+
 	# Submit
 	40 = FIELDSET
 	40 {

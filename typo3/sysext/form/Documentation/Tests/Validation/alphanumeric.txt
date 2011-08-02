@@ -1,7 +1,7 @@
 form.validation.alphanumeric = FORM
 form.validation.alphanumeric {
 	method = post
-	
+
 	rules {
 		1 = alphanumeric
 		1 {
@@ -13,7 +13,7 @@ form.validation.alphanumeric {
 			allowWhiteSpace = 1
 		}
 	}
-	
+
 	# Alpahnumeric
 	10 = FIELDSET
 	10 {

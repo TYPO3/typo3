@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_validate_digit extends tx_form_system_validate_abstract {
+class tx_form_System_Validate_Digit extends tx_form_System_Validate_Abstract {
 
 	/**
 	 * Constructor
@@ -46,13 +46,13 @@ class tx_form_system_validate_digit extends tx_form_system_validate_abstract {
 	 *
 	 * @return boolean
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/interfaces/tx_form_system_validate_interface#isValid()
+	 * @see tx_form_System_Validate_Interface::isValid()
 	 */
 	public function isValid() {
 		if($this->requestHandler->has($this->fieldName)) {
 			$value = $this->requestHandler->getByMethod($this->fieldName);
 			if ($this->filter === NULL) {
-				$className = 'tx_form_system_filter_digit';
+				$className = 'tx_form_System_Filter_Digit';
 				$this->filter = t3lib_div::makeInstance($className);
 			}
 

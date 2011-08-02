@@ -1,14 +1,14 @@
 form.validation.integer = FORM
 form.validation.integer {
 	method = post
-	
+
 	rules {
 		1 = integer
 		1 {
 			element = integer1
 		}
 	}
-	
+
 	# Integer
 	10 = FIELDSET
 	10 {

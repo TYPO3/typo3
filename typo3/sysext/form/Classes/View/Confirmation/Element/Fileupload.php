@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_confirmation_element_fileupload extends tx_form_view_confirmation_element_abstract {
+class tx_form_View_Confirmation_Element_Fileupload extends tx_form_View_Confirmation_Element_Abstract {
 
 	/**
 	 * Default layout of this object
@@ -44,10 +44,10 @@ class tx_form_view_confirmation_element_fileupload extends tx_form_view_confirma
 	/**
 	 * Constructor
 	 *
-	 * @param tx_form_domain_model_element_fileupload $model Model for this element
+	 * @param tx_form_Domain_Model_Element_Fileupload $model Model for this element
 	 * @return void
 	 */
-	public function __construct(tx_form_domain_model_element_fileupload $model) {
+	public function __construct(tx_form_Domain_Model_Element_Fileupload $model) {
 		parent::__construct($model);
 	}
 }

@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_validate_length extends tx_form_system_validate_abstract {
+class tx_form_System_Validate_Length extends tx_form_System_Validate_Abstract {
 
 	/**
 	 * Minimum value
@@ -63,7 +63,7 @@ class tx_form_system_validate_length extends tx_form_system_validate_abstract {
 	 *
 	 * @return boolean
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/interfaces/tx_form_system_validate_interface#isValid()
+	 * @see tx_form_System_Validate_Interface::isValid()
 	 */
 	public function isValid() {
 		if($this->requestHandler->has($this->fieldName)) {
@@ -116,7 +116,7 @@ class tx_form_system_validate_length extends tx_form_system_validate_abstract {
 	 *
 	 * @return string The local language message label
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/validate/tx_form_system_validate_abstract#_getLocalLanguageLabel()
+	 * @see tx_form_System_Validate_Abstract::_getLocalLanguageLabel()
 	 */
 	protected function getLocalLanguageLabel($type) {
 		$label = get_class($this) . '.' . $type;

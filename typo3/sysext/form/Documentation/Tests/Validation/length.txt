@@ -1,7 +1,7 @@
 form.validation.length = FORM
 form.validation.length {
 	method = post
-	
+
 	rules {
 		1 = length
 		1 {
@@ -15,7 +15,7 @@ form.validation.length {
 			maximum = 4
 		}
 	}
-	
+
 	# Length
 	10 = FIELDSET
 	10 {

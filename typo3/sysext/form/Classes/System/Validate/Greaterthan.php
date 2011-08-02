@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_validate_greaterthan extends tx_form_system_validate_abstract {
+class tx_form_System_Validate_Greaterthan extends tx_form_System_Validate_Abstract {
 
 	/**
 	 * Minimum value
@@ -55,7 +55,7 @@ class tx_form_system_validate_greaterthan extends tx_form_system_validate_abstra
 	 *
 	 * @return boolean
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/interfaces/tx_form_system_validate_interface#isValid()
+	 * @see tx_form_System_Validate_Interface::isValid()
 	 */
 	public function isValid() {
 		if($this->requestHandler->has($this->fieldName)) {

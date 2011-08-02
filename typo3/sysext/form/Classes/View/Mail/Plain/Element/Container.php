@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_plain_element_container extends tx_form_view_mail_plain_element {
+class tx_form_View_Mail_Plain_Element_Container extends tx_form_View_Mail_Plain_Element_Abstract {
 
 	/**
 	 * Constructor
@@ -51,9 +51,9 @@ class tx_form_view_mail_plain_element_container extends tx_form_view_mail_plain_
 	protected function renderChild($modelChild, $spaces) {
 		$content = '';
 		$modelChildClass = get_class($modelChild);
-		$class = preg_replace('/.*_([^_]*)$/', "$1", $modelChildClass, 1);
+		$class = preg_replace('/.*_([^_]*)$/', '${1}', $modelChildClass, 1);
 
-		$className = 'tx_form_view_mail_plain_element_' . $class;
+		$className = 'tx_form_View_Mail_Plain_Element_' . ucfirst($class);
 
 		if (class_exists($className)) {
 			$childElement = t3lib_div::makeInstance($className, $modelChild, $spaces);

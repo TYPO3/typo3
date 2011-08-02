@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_validate_alphabetic extends tx_form_system_validate_abstract {
+class tx_form_System_Validate_Alphabetic extends tx_form_System_Validate_Abstract {
 
 	/**
 	 * Allow white space in the submitted value
@@ -41,7 +41,7 @@ class tx_form_system_validate_alphabetic extends tx_form_system_validate_abstrac
 	/**
 	 * Alphabetic filter used for validation
 	 *
-	 * @var tx_form_filter_alphabetic
+	 * @var tx_form_Filter_Alphabetic
 	 */
 	protected $filter;
 
@@ -62,13 +62,13 @@ class tx_form_system_validate_alphabetic extends tx_form_system_validate_abstrac
 	 *
 	 * @return boolean
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/interfaces/tx_form_system_validate_interface#isValid()
+	 * @see tx_form_System_Validate_Interface::isValid()
 	 */
 	public function isValid() {
 		if($this->requestHandler->has($this->fieldName)) {
 			$value = $this->requestHandler->getByMethod($this->fieldName);
 			if ($this->filter === NULL) {
-				$className = 'tx_form_system_filter_alphabetic';
+				$className = 'tx_form_System_Filter_Alphabetic';
 				$this->filter = t3lib_div::makeInstance($className);
 			}
 
@@ -103,7 +103,7 @@ class tx_form_system_validate_alphabetic extends tx_form_system_validate_abstrac
 	 *
 	 * @return string The local language message label
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see typo3/sysext/form/validate/tx_form_system_validate_abstract#_getLocalLanguageLabel()
+	 * @see tx_form_System_Validate_Abstract::_getLocalLanguageLabel()
 	 */
 	protected function getLocalLanguageLabel() {
 		$label = get_class($this) . '.message';

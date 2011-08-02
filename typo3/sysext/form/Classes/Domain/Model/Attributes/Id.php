@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_attributes_id extends tx_form_domain_model_attributes_abstract implements tx_form_domain_model_attributes_interface {
+class tx_form_Domain_Model_Attributes_Id extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
 
 	/**
 	 * Constructor
@@ -55,7 +55,7 @@ class tx_form_domain_model_attributes_id extends tx_form_domain_model_attributes
 	public function getValue() {
 		$value = (string) $this->value;
 
-		if($this->elementClassName === 'tx_form_domain_model_form') {
+		if($this->elementClassName === 'tx_form_Domain_Model_Form') {
 			if(empty($value)) {
 				$value = 'form-' . $GLOBALS['TSFE']->id;
 			}

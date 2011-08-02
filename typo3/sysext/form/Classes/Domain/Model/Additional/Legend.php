@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_additional_legend extends tx_form_domain_model_additional_abstract implements tx_form_domain_model_additional_interface {
+class tx_form_Domain_Model_Additional_Legend extends tx_form_Domain_Model_Additional_Abstract implements tx_form_Domain_Model_Additional_Interface {
 
 	/**
 	 * Constructor

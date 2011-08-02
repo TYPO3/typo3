@@ -1,7 +1,7 @@
 form.attributes.hidden = FORM
 form.attributes.hidden {
 	method = post
-	
+
 	# Class
 	10 = FIELDSET
 	10 {
@@ -23,7 +23,7 @@ form.attributes.hidden {
 			}
 		}
 	}
-	
+
 	# Id
 	20 = FIELDSET
 	20 {
@@ -43,7 +43,7 @@ form.attributes.hidden {
 			lang = en-US
 		}
 	}
-	
+
 	# Name
 	40 = FIELDSET
 	40 {
@@ -53,7 +53,7 @@ form.attributes.hidden {
 			name = hiddenName
 		}
 	}
-	
+
 	# Style
 	50 = FIELDSET
 	50 {
@@ -63,7 +63,7 @@ form.attributes.hidden {
 			style = background-color: red;
 		}
 	}
-	
+
 	# Value
 	60 = FIELDSET
 	60 {

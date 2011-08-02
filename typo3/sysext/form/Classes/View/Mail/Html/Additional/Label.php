@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_html_additional_label extends tx_form_view_mail_html_additional {
+class tx_form_View_Mail_Html_Additional_Label extends tx_form_View_Mail_Html_Additional {
 
 	/**
 	 * Default layout of this object

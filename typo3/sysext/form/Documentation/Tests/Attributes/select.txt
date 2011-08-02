@@ -6,7 +6,7 @@ form.tempOption {
 form.attributes.select = FORM
 form.attributes.select {
 	method = post
-	
+
 	# Label test
 	10 = FIELDSET
 	10 {
@@ -30,7 +30,7 @@ form.attributes.select {
 			1 < form.tempOption
 		}
 	}
-	
+
 	# Layout test
 	20 = FIELDSET
 	20 {
@@ -56,7 +56,7 @@ form.attributes.select {
 			1 < form.tempOption
 		}
 	}
-	
+
 	# Class
 	30 = FIELDSET
 	30 {
@@ -74,7 +74,7 @@ form.attributes.select {
 			1 < form.tempOption
 		}
 	}
-	
+
 	# Disabled
 	40 = FIELDSET
 	40 {
@@ -98,7 +98,7 @@ form.attributes.select {
 			1 < form.tempOption
 		}
 	}
-	
+
 	# Id
 	50 = FIELDSET
 	50 {
@@ -110,7 +110,7 @@ form.attributes.select {
 			1 < form.tempOption
 		}
 	}
-	
+
 	# Lang
 	60 = FIELDSET
 	60 {
@@ -122,7 +122,7 @@ form.attributes.select {
 			1 < form.tempOption
 		}
 	}
-	
+
 	# Multiple
 	70 = FIELDSET
 	70 {
@@ -146,7 +146,7 @@ form.attributes.select {
 			1 < form.tempOption
 		}
 	}
-	
+
 	# Name
 	110 = FIELDSET
 	110 {
@@ -158,7 +158,7 @@ form.attributes.select {
 			1 < form.tempOption
 		}
 	}
-	
+
 	# Size
 	120 = FIELDSET
 	120 {
@@ -170,7 +170,7 @@ form.attributes.select {
 			1 < form.tempOption
 		}
 	}
-	
+
 	# Style
 	130 = FIELDSET
 	130 {
@@ -182,7 +182,7 @@ form.attributes.select {
 			1 < form.tempOption
 		}
 	}
-	
+
 	# Tabindex
 	140 = FIELDSET
 	140 {
@@ -194,7 +194,7 @@ form.attributes.select {
 			1 < form.tempOption
 		}
 	}
-	
+
 	# Title
 	150 = FIELDSET
 	150 {

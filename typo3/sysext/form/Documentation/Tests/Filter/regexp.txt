@@ -1,14 +1,14 @@
 form.filter.regexp = FORM
 form.filter.regexp {
 	method = post
-	
+
 	rules {
 		1 = required
 		1 {
 			element = textlineField
 		}
 	}
-	
+
 	# Regular expression
 	10 = FIELDSET
 	10 {
@@ -25,7 +25,7 @@ form.filter.regexp {
 			}
 		}
 	}
-	
+
 	# A textline which must be empty to test the above
 	30 = FIELDSET
 	30 {

@@ -1,7 +1,7 @@
 form.attributes.fieldset = FORM
 form.attributes.fieldset {
 	method = post
-	
+
 	# Legend
 	10 = FIELDSET
 	10 {
@@ -22,7 +22,7 @@ form.attributes.fieldset {
 			}
 		}
 	}
-	
+
 	# Layout
 	20 = FIELDSET
 	20 {
@@ -39,7 +39,7 @@ form.attributes.fieldset {
 			10 = BUTTON
 		}
 	}
-	
+
 	# Class
 	30 = FIELDSET
 	30 {
@@ -55,7 +55,7 @@ form.attributes.fieldset {
 			class = fieldsetClass1 fieldsetClass2
 		}
 	}
-	
+
 	# Dir
 	40 = FIELDSET
 	40 {
@@ -71,21 +71,21 @@ form.attributes.fieldset {
 			dir = rtl
 		}
 	}
-	
+
 	# Id
 	50 = FIELDSET
 	50 {
 		legend = Id test
 		id = fieldsetId
 	}
-	
+
 	# Lang
 	60 = FIELDSET
 	60 {
 		legend = Lang test
 		lang = en-US
 	}
-	
+
 	# Style
 	70 = FIELDSET
 	70 {
@@ -93,4 +93,3 @@ form.attributes.fieldset {
 		style = background-color: red;
 	}
 }
-	

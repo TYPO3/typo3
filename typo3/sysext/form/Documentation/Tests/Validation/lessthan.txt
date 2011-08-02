@@ -1,7 +1,7 @@
 form.validation.lessthan = FORM
 form.validation.lessthan {
 	method = post
-	
+
 	rules {
 		1 = lessthan
 		1 {
@@ -9,7 +9,7 @@ form.validation.lessthan {
 			maximum = 10
 		}
 	}
-	
+
 	# Less than
 	10 = FIELDSET
 	10 {

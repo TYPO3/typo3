@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_system_validate implements t3lib_Singleton {
+class tx_form_System_Validate implements t3lib_Singleton {
 
 	/**
 	 * Validation objects to use
@@ -70,7 +70,7 @@ class tx_form_system_validate implements t3lib_Singleton {
 	 */
 	public function createRule($class, $arguments = array()) {
 		$class = strtolower((string) $class);
-		$className = 'tx_form_system_validate_' . $class;
+		$className = 'tx_form_System_Validate_' . ucfirst($class);
 
 		$rule = t3lib_div::makeInstance($className, $arguments);
 
@@ -84,7 +84,7 @@ class tx_form_system_validate implements t3lib_Singleton {
 	 * @param object $rule Rule object
 	 * @param string $fieldName Field name the rule belongs to
 	 * @param boolean $breakOnError Break the rule chain when TRUE
-	 * @return tx_form_validate
+	 * @return tx_form_Validate
 	 */
 	public function addRule($rule, $fieldName, $breakOnError = FALSE) {
 		$this->rules[] = array(

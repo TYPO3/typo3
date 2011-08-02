@@ -103,7 +103,7 @@ class tx_form_Common implements t3lib_Singleton {
 		foreach($this->getFormObjects() as $formObject) {
 			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = array(
 				$formObject,
-				'EXT:form/Classes/Controller/Form.php:&tx_form_controller_form'
+				'EXT:form/Classes/Controller/Form.php:&tx_form_Controller_Form'
 			);
 		}
 

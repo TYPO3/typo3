@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_form extends tx_form_view_form_element_container {
+class tx_form_View_Form extends tx_form_View_Form_Element_Container {
 
 	/**
 	 * Default layout of this object
@@ -46,17 +46,17 @@ class tx_form_view_form extends tx_form_view_form_element_container {
 	 *
 	 * @return void
 	 */
-	public function __construct(tx_form_domain_model_form $model) {
+	public function __construct(tx_form_Domain_Model_Form $model) {
 		parent::__construct($model);
 	}
 
 	/**
 	 * Set the data for the FORM tag
 	 *
-	 * @param tx_form_domain_model_form $formModel The model of the form
+	 * @param tx_form_Domain_Model_Form $formModel The model of the form
 	 * @return void
 	 */
-	public function setData(tx_form_domain_model_form $model) {
+	public function setData(tx_form_Domain_Model_Form $model) {
 		$this->model = (object) $model;
 	}
 

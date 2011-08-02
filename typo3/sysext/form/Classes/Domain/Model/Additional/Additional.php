@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_domain_model_additional_additional {
+class tx_form_Domain_Model_Additional_Additional {
 
 	/**
 	 * Array with the additional objects of the element
@@ -52,11 +52,11 @@ class tx_form_domain_model_additional_additional {
 	 * @param string $class Name of the additional
 	 * @param mixed $value Typoscript configuration to construct value
 	 * @param string $type Typoscript content object
-	 * @return tx_form_domain_model_additional
+	 * @return tx_form_Domain_Model_Additional
 	 */
 	public function addAdditional($class, $type, $value) {
 		$class = strtolower((string) $class);
-		$className = 'tx_form_domain_model_additional_' . $class;
+		$className = 'tx_form_Domain_Model_Additional_' . ucfirst($class);
 
 		$this->additional[$class] = t3lib_div::makeInstance($className, $type, $value);
 

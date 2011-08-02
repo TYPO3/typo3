@@ -1,14 +1,14 @@
 form.filter.alphabetic = FORM
 form.filter.alphabetic {
 	method = post
-	
+
 	rules {
 		1 = required
 		1 {
 			element = textlineField
 		}
 	}
-	
+
 	# Alphabetic
 	10 = FIELDSET
 	10 {
@@ -33,7 +33,7 @@ form.filter.alphabetic {
 			}
 		}
 	}
-	
+
 	# A textline which must be empty to test the above
 	30 = FIELDSET
 	30 {

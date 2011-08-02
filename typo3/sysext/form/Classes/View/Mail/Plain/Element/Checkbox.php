@@ -29,15 +29,15 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_mail_plain_element_checkbox extends tx_form_view_mail_plain_element {
+class tx_form_View_Mail_Plain_Element_Checkbox extends tx_form_View_Mail_Plain_Element_Abstract {
 
 	/**
 	 * Constructor
 	 *
-	 * @param tx_form_domain_model_element_checkbox $model Model for this element
+	 * @param tx_form_Domain_Model_Element_Checkbox $model Model for this element
 	 * @return void
 	 */
-	public function __construct(tx_form_domain_model_element_checkbox $model, $spaces) {
+	public function __construct(tx_form_Domain_Model_Element_Checkbox $model, $spaces) {
 		parent::__construct($model, $spaces);
 	}
 

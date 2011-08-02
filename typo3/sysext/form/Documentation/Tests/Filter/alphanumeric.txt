@@ -1,14 +1,14 @@
 form.filter.alphanumeric = FORM
 form.filter.alphanumeric {
 	method = post
-	
+
 	rules {
 		1 = required
 		1 {
 			element = textlineField
 		}
 	}
-	
+
 	# Alphanumeric
 	10 = FIELDSET
 	10 {
@@ -33,7 +33,7 @@ form.filter.alphanumeric {
 			}
 		}
 	}
-	
+
 	# A textline which must be empty to test the above
 	30 = FIELDSET
 	30 {

@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_view_form_additional extends tx_form_view_form_element_abstract {
+class tx_form_View_Form_Additional extends tx_form_View_Form_Element_Abstract {
 
 	/**
 	 * The model for the current object
@@ -54,8 +54,12 @@ class tx_form_view_form_additional extends tx_form_view_form_element_abstract {
 	 * @return string The value of the additional
 	 */
 	public function getAdditionalValue() {
-		$type = preg_replace('/.*_([^_]*)$/', "$1", get_class($this), 1);
-		return htmlspecialchars($this->model->getAdditionalValue($type), ENT_QUOTES);
+		return htmlspecialchars(
+			$this->model->getAdditionalValue(
+				$this->getLastPartOfClassName(TRUE)
+			),
+			ENT_QUOTES
+		);
 	}
 }
 ?>

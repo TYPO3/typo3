@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-abstract class tx_form_domain_model_additional_abstract {
+abstract class tx_form_Domain_Model_Additional_Abstract {
 
 	/**
 	 * Additional value
