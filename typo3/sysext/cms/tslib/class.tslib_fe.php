@@ -3648,6 +3648,86 @@ if (version == "n3") {
 	}
 
 	/**
+	 * Get the (partially) anonymized IP address for the log file
+	 *
+	 *  @return string the IP to log
+	 */
+	public function getLogIPAddress(){
+		$rawIP = t3lib_div::getIndpEnv('REMOTE_ADDR');
+		if (strpos($rawIP, ':')) {
+			$result = $this->stripIPv6($rawIP);
+		} else {
+			$result = $this->stripIPv4($rawIP);
+		}
+		return $result;
+	}
+
+	/**
+	 * Strip parts from a IPv6 address
+	 *
+	 * configure: set config.stat_IP_anonymize_ipv6 to a prefix-length (0 to 128)
+	 *
+	 * @param string raw IPv6 address
+	 * @return string stripped address
+	 */
+	protected function stripIPv6($strIP) {
+		if(isset($this->config['config']['stat_IP_anonymize_ipv6']) ) {
+			$netPrefix = intval($this->config['config']['stat_IP_anonymize_ipv6']);
+			$bytesIP = t3lib_div::IPv6Hex2Bin($strIP);
+
+			$bitsToStrip = (128 - $netPrefix);
+
+			for($counter = 15; $counter >= 0; $counter--)
+			{
+				$bitsToStripPart = min($bitsToStrip, 8);
+					// TODO find a nicer solution for bindec and chr/ord below - but it works :-)
+				$mask = bindec(str_pad('', 8 - $bitsToStripPart, '1') . str_pad('', $bitsToStripPart, '0'));
+				$bytesIP[$counter] = chr(ord($bytesIP[$counter]) & $mask);
+				$bitsToStrip -= $bitsToStripPart;
+			}
+			$strIP = inet_ntop($bytesIP);
+		}
+		return $strIP;
+	}
+
+	/**
+	 * Strip parts from IPv4 addresses
+	 *
+	 * configure: set config.stat_IP_anonymize_ipv4 to a prefix-length (0 to 32)
+	 *
+	 * @param string IPv4 address
+	 * @return string  stripped IP address
+	 */
+	protected function stripIPv4($strIP) {
+		if(isset($this->config['config']['stat_IP_anonymize_ipv4']) ) {
+			$netPrefix = intval($this->config['config']['stat_IP_anonymize_ipv4']);
+			$bitsToStrip = (32 - $netPrefix);
+			$ip = ip2long($strIP);
+				// shift right
+			$ip = $ip >> $bitsToStrip;
+				// shift left; last bytes will be zero now
+			$ip = $ip << $bitsToStrip;
+			$strIP = long2ip($ip);
+		}
+		return $strIP;
+	}
+
+	/**
+	 * Get the (possibly) anonymized host name for the log file
+	 *
+	 * @return the host name to log
+	 */
+	public function getLogHostName(){
+		if(!empty($this->config['config']['stat_IP_anonymize_ipv4']) || !empty($this->config['config']['stat_IP_anonymize_ipv6'])) {
+				// ignore hostname if IP anonymized
+			$hostName = '';
+		} else {
+			$hostName = t3lib_div::getIndpEnv('REMOTE_HOST');
+		}
+		return $hostName;
+	}
+
+	/**
 	 * Saves hit statistics
 	 *
 	 * @return	void
@@ -3687,7 +3767,7 @@ if (version == "n3") {
 						'page_id' => intval($this->id),							// id
 						'page_type' => intval($this->type),						// type
 						'jumpurl' => $jumpurl_msg,								// jumpurl message
-						'feuser_id' => $this->fe_user->user['uid'],				// fe_user id, integer
+						'feuser_id' => (empty($this->config['config']['stat_noUserLog']))? $this->fe_user->user['uid']:-1,				// fe_user id, integer
 						'cookie' => $this->fe_user->id,							// cookie as set or retrieve. If people has cookies disabled this will vary all the time...
 						'sureCookie' => hexdec(substr($this->fe_user->cookieId,0,8)),	// This is the cookie value IF the cookie WAS actually set. However the first hit where the cookie is set will thus NOT be logged here. So this lets you select for a session of at least two clicks...
 						'rl0' => $this->config['rootLine'][0]['uid'],			// RootLevel 0 uid
@@ -3697,8 +3777,8 @@ if (version == "n3") {
 						'client_os' => $GLOBALS['CLIENT']['SYSTEM'],			// Client Operating system (win, mac, unix)
 						'parsetime' => intval($this->scriptParseTime),			// Parsetime for the page.
 						'flags' => $flags,										// Flags: Is be user logged in? Is page cached?
-						'IP' => t3lib_div::getIndpEnv('REMOTE_ADDR'),			// Remote IP address
-						'host' => t3lib_div::getIndpEnv('REMOTE_HOST'),			// Remote Host Address
+						'IP' => $this->getLogIPAddress(),						// Remote IP address
+						'host' => $this->getLogHostName(),						// Remote Host Address
 						'referer' => $refUrl,									// Referer URL
 						'browser' => t3lib_div::getIndpEnv('HTTP_USER_AGENT'),	// User Agent Info.
 						'tstamp' => $GLOBALS['EXEC_TIME']						// Time stamp
@@ -3723,11 +3803,11 @@ if (version == "n3") {
 					if (@is_file($this->config['stat_vars']['logFile'])) {
 							// Build a log line (format is derived from the NCSA extended/combined log format)
 							// Log part 1: Remote hostname / address
-						$LogLine = (t3lib_div::getIndpEnv('REMOTE_HOST') && empty($this->config['config']['stat_apache_noHost'])) ? t3lib_div::getIndpEnv('REMOTE_HOST') : t3lib_div::getIndpEnv('REMOTE_ADDR');
+						$LogLine = (!empty($this->getLogHostName) && empty($this->config['config']['stat_apache_noHost'])) ? $this->getLogHostName() : $this->getLogIPAddress();
 							// Log part 2: Fake the remote logname
 						$LogLine.= ' -';
 							// Log part 3: Remote username
-						$LogLine.= ' '.($this->loginUser ? $this->fe_user->user['username'] : '-');
+						$LogLine.= ' '.($this->loginUser && empty($this->config['config']['stat_noUserLog'])? $this->fe_user->user['username'] : '-');
 							// Log part 4: Time
 						$LogLine.= ' '.date('[d/M/Y:H:i:s +0000]',$GLOBALS['EXEC_TIME']);
 							// Log part 5: First line of request (the request filename)
