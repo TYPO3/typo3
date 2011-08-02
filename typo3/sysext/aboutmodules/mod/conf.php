@@ -1,11 +1,12 @@
 <?php
-define('TYPO3_MOD_PATH', 'sysext/aboutmodules/mod/');
-$BACK_PATH='';
 
-$MLANG['default']['tabs_images']['tab'] = 'aboutmodules.gif';
-$MLANG['default']['ll_ref']='LLL:EXT:aboutmodules/mod/locallang_mod.xml';
+	// DO NOT REMOVE OR CHANGE THESE 2 LINES:
+$MCONF['name'] = 'help_aboutmodules';
+$MCONF['script'] = '_DISPATCH';
 
 $MCONF['access'] = 'user,group';
-$MCONF['script'] = '../../../alt_intro.php';
-$MCONF['name'] = 'help_aboutmodules';
+
+$MLANG['default']['tabs_images']['tab'] = 'aboutmodules.gif';
+$MLANG['default']['ll_ref'] = 'LLL:EXT:aboutmodules/mod/locallang_mod.xml';
+
 ?>

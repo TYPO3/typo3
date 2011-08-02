@@ -30,8 +30,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-require_once (PATH_typo3.'class.alt_menu_functions.inc');
-
 $GLOBALS['LANG']->includeLLFile('EXT:beuser/mod/locallang.xml');
 
 $BE_USER->modAccess($MCONF,1);
@@ -1243,12 +1241,6 @@ class SC_mod_tools_be_user_index {
 
 			$lines=array();
 			foreach ($options as $kk => $vv) {
-				if ($kk=='modules')	{
-					$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
-					$loadModules->load($GLOBALS['TBE_MODULES'],$tempBE_USER);
-					$alt_menuObj = t3lib_div::makeInstance('alt_menu_functions');
-					$uInfo_dat[$kk] = $alt_menuObj->topMenu($loadModules->modules,1,$GLOBALS['BACK_PATH']);
-				}
 				$lines[]='<tr class="bgColor4">
 					<td nowrap="nowrap" valign="top">'.$vv.':&nbsp;&nbsp;</td>
 					<td>'.$uInfo_dat[$kk].'&nbsp;</td>
