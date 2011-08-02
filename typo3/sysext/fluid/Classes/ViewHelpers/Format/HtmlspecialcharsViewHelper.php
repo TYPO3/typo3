@@ -81,8 +81,11 @@ class Tx_Fluid_ViewHelpers_Format_HtmlspecialcharsViewHelper extends Tx_Fluid_Vi
 	}
 
 	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode, Tx_Fluid_Core_Compiler_TemplateCompiler $templateCompiler) {
-		return sprintf('htmlspecialchars((%s[\'value\'] !== NULL ? %s[\'value\'] : %s()), (%s[\'keepQuotes\'] ? ENT_NOQUOTES : ENT_COMPAT), (%s[\'encoding\'] !== NULL ? %s[\'encoding\'] : Tx_Fluid_Core_Compiler_AbstractCompiledTemplate::resolveDefaultEncoding()), %s[\'doubleEncode\'])',
-				$argumentsVariableName, $argumentsVariableName, $renderChildrenClosureVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName);
+		$valueVariableName = $templateCompiler->variableName('value');
+		$initializationPhpCode .= sprintf('%s = (%s[\'value\'] !== NULL ? %s[\'value\'] : %s());', $valueVariableName, $argumentsVariableName, $argumentsVariableName, $renderChildrenClosureVariableName) . chr(10);
+
+		return sprintf('(!is_string(%s) ? %s : htmlspecialchars(%s, (%s[\'keepQuotes\'] ? ENT_NOQUOTES : ENT_COMPAT), (%s[\'encoding\'] !== NULL ? %s[\'encoding\'] : Tx_Fluid_Core_Compiler_AbstractCompiledTemplate::resolveDefaultEncoding()), %s[\'doubleEncode\']))',
+				$valueVariableName, $valueVariableName, $valueVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName);
 	}
 }
 ?>
