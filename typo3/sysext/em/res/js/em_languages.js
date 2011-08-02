@@ -285,8 +285,12 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 								TYPO3.l10n.localize('translation_checking')
 							);
 							TYPO3.EM.ExtDirect.fetchTranslations(record.data.extkey, 1, [lang], function(response) {
-								record.set(lang, response[lang]);
-								record.commit();
+								if (response && Ext.isArray(response)) {
+									record.set(lang, response[lang]);
+									record.commit();
+								} else {
+									TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.l10n.localize('extDirect_timeoutHeader'), TYPO3.l10n.localize('extDirect_timeoutMessage'), 5);
+								}
 								this.waitBox.hide()
 							}, this);
 						}
@@ -402,7 +406,7 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 		if (!this.selectedLanguages.length) {
 			this.getSelectedLanguages();
 		}
-		// start process
+			// start process
 		this.interruptProcess = false;
 		Ext.getCmp('em-extlanguagegrid').fetchingProcess = true;
 		this.fetchLanguage();
@@ -416,7 +420,7 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 
 
 		if (response) {
-			// update fetched record
+				// update fetched record
 			var fetchedRecord = grid.store.getAt(row - 1);
 			for (i = 0; i < this.selectedLanguages.length; i++) {
 				fetchedRecord.set(this.selectedLanguages[i], response[this.selectedLanguages[i]]);
