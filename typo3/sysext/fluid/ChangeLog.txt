@@ -1,4 +1,4 @@
-﻿ChangeLog for Fluid
+ChangeLog for Fluid
 ===================
 
 
@@ -59,7 +59,7 @@ Full Changes for 1.4.0 beta1:
 [!!!][FEATURE] Compilation of Fluid templates to PHP files. Resolves: #28545
 [TASK] Minor cleanups
 [TASK] Tweak inline comment in TemplateView
-[!!!][+FEATURE] Add a reserved variable {_all} returning all template variables
+[!!!][+FEATURE] Add a reserved variable {_all} returning all template variables
 [BUGFIX] Deactivate EscapeInterceptor for certain ViewHelpers. Related: #27678
 [TASK] Split escape ViewHelper into dedicated format ViewHelpers. Related: #27628
 [BUGFIX] Whitespace fixes
