@@ -2191,19 +2191,19 @@ body.x-body-masked .x-window-plain .x-window-mc {
 }
 
 .x-window-dlg .ext-mb-info {
-	background-image:url(images/window/icon-info.gif);
+	background-image:url(images/window/icon-info-big.png);
 }
 
 .x-window-dlg .ext-mb-warning {
-	background-image:url(images/window/icon-warning.gif);
+	background-image:url(images/window/icon-warning-big.png);
 }
 
 .x-window-dlg .ext-mb-question {
-	background-image:url(images/window/icon-question.gif);
+	background-image:url(images/window/icon-question-big.png);
 }
 
 .x-window-dlg .ext-mb-error {
-	background-image:url(images/window/icon-error.gif);
+	background-image:url(images/window/icon-error-big.png);
 }
 
 /*ADDONS*/
