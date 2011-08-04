@@ -295,7 +295,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			if ($this->language=='default' || !$this->language)	{
 				$this->language='en';
 			}
-			$this->contentTypo3Language = $this->language;
+			$this->contentTypo3Language = ($this->language == 'en') ? 'default' : $this->language;
 			$this->contentISOLanguage = 'en';
 			$this->contentLanguageUid = ($row['sys_language_uid'] > 0) ? $row['sys_language_uid'] : 0;
 			if (t3lib_extMgm::isLoaded('static_info_tables')) {
@@ -311,7 +311,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					$res = $TYPO3_DB->exec_SELECTquery($selectFields, $tableAB, $whereClause);
 					while($languageRow = $TYPO3_DB->sql_fetch_assoc($res)) {
 						$this->contentISOLanguage = strtolower(trim($languageRow['lg_iso_2']).(trim($languageRow['lg_country_iso_2'])?'_'.trim($languageRow['lg_country_iso_2']):''));
-						$this->contentTypo3Language = strtolower(trim($languageRow['lg_typo3']));
+						$this->contentTypo3Language = trim($languageRow['lg_typo3']) ? strtolower(trim($languageRow['lg_typo3'])) : 'default';
 					}
 				} else {
 					$this->contentISOLanguage = trim($this->thisConfig['defaultContentLanguage']) ? trim($this->thisConfig['defaultContentLanguage']) : 'en';
@@ -320,7 +320,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					$whereClause = 'lg_iso_2 = ' . $TYPO3_DB->fullQuoteStr(strtoupper($this->contentISOLanguage), $tableAB);
 					$res = $TYPO3_DB->exec_SELECTquery($selectFields, $tableAB, $whereClause);
 					while($languageRow = $TYPO3_DB->sql_fetch_assoc($res)) {
-						$this->contentTypo3Language = strtolower(trim($languageRow['lg_typo3']));
+						$this->contentTypo3Language = trim($languageRow['lg_typo3']) ? strtolower(trim($languageRow['lg_typo3'])) : 'default';
 					}
 				}
 			}
