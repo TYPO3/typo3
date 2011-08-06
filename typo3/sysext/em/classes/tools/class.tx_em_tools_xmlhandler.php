@@ -102,6 +102,33 @@ class tx_em_Tools_XmlHandler {
 	protected $currentTag = '';
 
 	/**
+	 * @var array Structure of extension record
+	 */
+	protected $defaultExtensionRecord = array(
+		'extkey' => '',
+		'repository' => '1',
+		'version' => '',
+		'alldownloadcounter' => '0',
+		'downloadcounter' => '0',
+		'title' => '',
+		'description' => '',
+		'state' => '0',
+		'reviewstate' => '0',
+		'category' => '0',
+		'lastuploaddate' => '0',
+		'dependencies' => '',
+		'authorname' => '',
+		'authoremail' => '',
+		'ownerusername' => '',
+		't3xfilemd5' => '',
+		'uploadcomment' => '',
+		'authorcompany' => '',
+		'intversion' => '0',
+		'lastversion' => '0',
+		'lastreviewedversion' => '0',
+	);
+
+	/**
 	 * Reduces the entries in $this->extensionsXML to the latest version per extension and removes entries not matching the search parameter
 	 *
 	 * @param	string		$search		The list of extensions is reduced to entries matching this. If empty, the full list is returned.
@@ -514,7 +541,13 @@ class tx_em_Tools_XmlHandler {
 					$vArr['lastreviewedversion'] = 1;
 				}
 				$vArr['state'] = isset($this->revStateArr[$vArr['state']]) ? $this->revStateArr[$vArr['state']] : $usestate; // 999 = not set category
-				$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_extensions', $vArr);
+					// filter unusable fields
+				$newRecord = array_intersect_key($vArr, $this->defaultExtensionRecord);
+					// add default values for fields
+				$newRecord = t3lib_div::array_merge_recursive_overrule($this->defaultExtensionRecord, $newRecord, TRUE);
+				if (!(empty($newRecord['extkey']) || empty($newRecord['version']))) {
+					$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_extensions', $newRecord);
+				}
 			}
 		}
 	}
