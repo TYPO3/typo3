@@ -2950,9 +2950,9 @@ class ux_t3lib_DB extends t3lib_DB {
 					$compiledQuery = $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
 
 					if (in_array($this->lastParsedAndMappedQueryArray['type'], array('INSERT', 'DROPTABLE'))) {
-						return mysql_query($compiledQuery, $this->link);
+						return mysql_query($compiledQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
 					}
-					return mysql_query($compiledQuery[0], $this->link);
+					return mysql_query($compiledQuery[0], $this->handlerInstance[$this->lastHandlerKey]['link']);
 					break;
 				case 'adodb':
 					// Compiling query:
