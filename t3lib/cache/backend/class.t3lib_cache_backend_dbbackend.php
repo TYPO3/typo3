@@ -104,8 +104,9 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	public function setCache(t3lib_cache_frontend_Frontend $cache) {
 		parent::setCache($cache);
 
-		$this->cacheTable = 'cachingframework_' . $this->cacheIdentifier;
-		$this->tagsTable = 'cachingframework_' . $this->cacheIdentifier . '_tags';
+		$tablePrefix = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['tablePrefix'];
+		$this->cacheTable = $tablePrefix . $this->cacheIdentifier;
+		$this->tagsTable = $tablePrefix . $this->cacheIdentifier . '_tags';
 		$this->initializeCommonReferences();
 	}
 

@@ -54,18 +54,21 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	/**
 	 * @var string Name of the testing data table
 	 */
-	protected $testingCacheTable = 'cachingframework_Testing';
+	protected $testingCacheTable;
 
 	/**
 	 * @var string Name of the testing tags table
 	 */
-	protected $testingTagsTable = 'cachingframework_Testing_tags';
+	protected $testingTagsTable;
 
 	/**
 	 * Set up testcases
 	 */
 	public function setUp() {
 		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
+		$tablePrefix = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['tablePrefix'];
+		$this->testingCacheTable = $tablePrefix . 'Testing';
+		$this->testingTagsTable = $tablePrefix . 'Testing_tags';
 	}
 
 	/**
@@ -528,7 +531,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_TRUNCATEquery', 'INSERTquery', 'sql_query', 'admin_query'));
 		$GLOBALS['TYPO3_DB']->expects($this->at(2))
 			->method('admin_query')
-			->with('DROP TABLE IF EXISTS cachingframework_Testing');
+			->with('DROP TABLE IF EXISTS ' . $this->testingCacheTable);
 
 		$backend->flush();
 	}
@@ -543,7 +546,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_TRUNCATEquery', 'INSERTquery', 'sql_query', 'admin_query'));
 		$GLOBALS['TYPO3_DB']->expects($this->at(3))
 			->method('admin_query')
-			->with('DROP TABLE IF EXISTS cachingframework_Testing_tags');
+			->with('DROP TABLE IF EXISTS ' . $this->testingTagsTable);
 
 		$backend->flush();
 	}
@@ -570,7 +573,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @return void
 	 */
 	public function flushCreatesDataTableCallback($sql) {
-		$startOfStatement = 'CREATE TABLE cachingframework_Testing (';
+		$startOfStatement = 'CREATE TABLE ' . $this->testingCacheTable . ' (';
 		$this->assertEquals($startOfStatement, substr($sql, 0, strlen($startOfStatement)));
 	}
 
@@ -596,7 +599,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * @return void
 	 */
 	public function flushCreatesTagsTableCallback($sql) {
-		$startOfStatement = 'CREATE TABLE cachingframework_Testing_tags (';
+		$startOfStatement = 'CREATE TABLE ' . $this->testingTagsTable . ' (';
 		$this->assertEquals($startOfStatement, substr($sql, 0, strlen($startOfStatement)));
 	}
 

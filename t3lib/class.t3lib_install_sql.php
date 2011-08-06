@@ -43,9 +43,7 @@ class t3lib_install_Sql {
 	/**
 	 * @var array Tables starting with this name are ignored during compare
 	 */
-	protected $ignoreTablePrefixes = array(
-		'cachingframework_',
-	);
+	protected $ignoreTablePrefixes = array();
 
 	/**
 	 * @var float|int Multiplier of SQL field size (for char, varchar and text fields)
@@ -64,6 +62,7 @@ class t3lib_install_Sql {
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize'] >= 1 && $GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize'] <= 5) {
 			$this->multiplySize = (double) $GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize'];
 		}
+		$this->ignoreTablePrefixes[] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['tablePrefix'];
 	}
 
 	/**
