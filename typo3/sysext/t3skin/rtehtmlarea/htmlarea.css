@@ -243,6 +243,16 @@ body.ext-ie6 .htmlarea-window .x-panel-icon {
 }
 .htmlarea-window .x-fieldset {
 	margin: 3px;
+	padding-top: 5px;
+}
+/* IE legend positioning bug */
+.ext-ie .htmlarea-window .x-fieldset legend,
+.ext-ie .htmlarea-window .x-fieldset legend span {
+	display: block;
+	float: left;
+}
+.ext-ie .htmlarea-window .x-fieldset-bwrap {
+	clear: left;
 }
 .htmlarea-window .x-form-item-label {
 	font-size: 10px;
