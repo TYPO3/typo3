@@ -84,6 +84,13 @@ class ux_t3lib_DB extends t3lib_DB {
 	var $cache_primaryKeys = array(); // primary keys
 
 	/**
+	 * The cache identifier for the field information cache
+	 *
+	 * @var string
+	 */
+	protected $cacheIdentifier = 't3lib_db_fieldInfo';
+
+	/**
 	 * SQL parser
 	 *
 	 * @var t3lib_sqlparser
@@ -171,9 +178,8 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return void
 	 */
 	public function clearCachedFieldInfo() {
-		if (file_exists(PATH_typo3conf . 'temp_fieldInfo.php')) {
-			unlink(PATH_typo3conf . 'temp_fieldInfo.php');
-		}
+		$phpCodeCache = t3lib_div::makeInstance('t3lib_cache_Manager')->getCache('cache_phpcode');
+		$phpCodeCache->flushByTag('t3lib_db');
 	}
 
 	/**
@@ -182,30 +188,26 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return void
 	 */
 	public function cacheFieldInfo() {
-		// try to fetch cached file first
-		// file is removed when admin_query() is called
-		if (file_exists(PATH_typo3conf . 'temp_fieldInfo.php')) {
-			$fdata = unserialize(t3lib_div::getUrl(PATH_typo3conf . 'temp_fieldInfo.php'));
-			$this->cache_autoIncFields = $fdata['incFields'];
-			$this->cache_fieldType = $fdata['fieldTypes'];
-			$this->cache_primaryKeys = $fdata['primaryKeys'];
+		$phpCodeCache = t3lib_div::makeInstance('t3lib_cache_Manager')->getCache('cache_phpcode');
+			// try to fetch cache
+			// cache is flushed when admin_query() is called
+		if ($phpCodeCache->has($this->cacheIdentifier)) {
+			$fieldInformation = $phpCodeCache->requireOnce($this->cacheIdentifier);
+			$this->cache_autoIncFields = $fieldInformation['incFields'];
+			$this->cache_fieldType = $fieldInformation['fieldTypes'];
+			$this->cache_primaryKeys = $fieldInformation['primaryKeys'];
 		} else {
 			$this->analyzeCoreTables();
 			$this->analyzeCachingTables();
 			$this->analyzeExtensionTables();
 
-			$cachedFieldInfo = array('incFields' => $this->cache_autoIncFields, 'fieldTypes' => $this->cache_fieldType, 'primaryKeys' => $this->cache_primaryKeys);
-			$cachedFieldInfo = serialize($this->mapCachedFieldInfo($cachedFieldInfo));
+			$completeFieldInformation = $this->getCompleteFieldInformation();
 
-			// write serialized content to file
-			t3lib_div::writeFile(PATH_typo3conf . 'temp_fieldInfo.php', $cachedFieldInfo);
-
-			if (strcmp(t3lib_div::getUrl(PATH_typo3conf . 'temp_fieldInfo.php'), $cachedFieldInfo)) {
-				throw new RuntimeException(
-					'typo3conf/temp_fieldInfo.php was NOT updated properly (written content didn\'t match file content) - maybe write access problem?',
-					1310027297
-				);
-			}
+			$phpCodeCache->set(
+				$this->cacheIdentifier,
+				$this->getCacheableString($completeFieldInformation),
+				array('t3lib_db')
+            );
 		}
 	}
 
@@ -282,6 +284,31 @@ class ux_t3lib_DB extends t3lib_DB {
 	protected function parseAndAnalyzeSql($sql) {
 		$parsedSql = $this->installerSql->getFieldDefinitions_fileContent($sql);
 		$this->analyzeFields($parsedSql);
+	}
+
+	/**
+	 * Returns all field information gathered during
+	 * analyzing all tables and fields.
+	 *
+	 * @return array
+	 */
+	protected function getCompleteFieldInformation() {
+		return array('incFields' => $this->cache_autoIncFields, 'fieldTypes' => $this->cache_fieldType, 'primaryKeys' => $this->cache_primaryKeys);
+	}
+
+	/**
+	 * Creates a PHP code representation of the array that can be cached
+	 * in the PHP code cache.
+	 *
+	 * @param array $fieldInformation
+	 * @return string
+	 */
+	protected function getCacheableString(array $fieldInformation) {
+		$cacheString = 'return ';
+		$cacheString .= var_export($fieldInformation, TRUE);
+		$cacheString .= ';';
+
+		return $cacheString;
 	}
 
 	/**
@@ -2911,7 +2938,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				case 'CREATETABLE':
 				case 'ALTERTABLE':
 				case 'DROPTABLE':
-					if (file_exists(PATH_typo3conf . 'temp_fieldInfo.php')) unlink(PATH_typo3conf . 'temp_fieldInfo.php');
+					$this->clearCachedFieldInfo();
 					$this->map_genericQueryParsed($parsedQuery);
 					break;
 				case 'INSERT':
