@@ -182,9 +182,6 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return void
 	 */
 	public function cacheFieldInfo() {
-		$extSQL = '';
-		$parsedExtSQL = array();
-
 		// try to fetch cached file first
 		// file is removed when admin_query() is called
 		if (file_exists(PATH_typo3conf . 'temp_fieldInfo.php')) {
@@ -193,22 +190,9 @@ class ux_t3lib_DB extends t3lib_DB {
 			$this->cache_fieldType = $fdata['fieldTypes'];
 			$this->cache_primaryKeys = $fdata['primaryKeys'];
 		} else {
-			// handle stddb.sql, parse and analyze
-			$extSQL = t3lib_div::getUrl(PATH_site . 't3lib/stddb/tables.sql');
-			$parsedExtSQL = $this->installerSql->getFieldDefinitions_fileContent($extSQL);
-			$this->analyzeFields($parsedExtSQL);
-
-			// loop over all installed extensions
-			foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $ext => $v) {
-				if (!is_array($v) || !isset($v['ext_tables.sql'])) {
-					continue;
-				}
-
-				// fetch db dump (if any) and parse it, then analyze
-				$extSQL = t3lib_div::getUrl($v['ext_tables.sql']);
-				$parsedExtSQL = $this->installerSql->getFieldDefinitions_fileContent($extSQL);
-				$this->analyzeFields($parsedExtSQL);
-			}
+			$this->analyzeCoreTables();
+			$this->analyzeCachingTables();
+			$this->analyzeExtensionTables();
 
 			$cachedFieldInfo = array('incFields' => $this->cache_autoIncFields, 'fieldTypes' => $this->cache_fieldType, 'primaryKeys' => $this->cache_primaryKeys);
 			$cachedFieldInfo = serialize($this->mapCachedFieldInfo($cachedFieldInfo));
@@ -223,6 +207,81 @@ class ux_t3lib_DB extends t3lib_DB {
 				);
 			}
 		}
+	}
+
+	/**
+	 * Handle stddb.sql and caching tables
+	 * parse and analyze table definitions
+	 *
+	 * @return void
+	 */
+	protected function analyzeCoreTables() {
+		$coreSql = file_get_contents(PATH_t3lib . 'stddb/tables.sql');
+		$this->parseAndAnalyzeSql($coreSql);
+	}
+
+	/**
+	 * Loop through caching configurations
+	 * to find the usage of database backends and
+	 * parse and analyze table definitions
+	 *
+	 * @return void
+	 */
+	protected function analyzeCachingTables() {
+		$sqlTemplate = file_get_contents(PATH_t3lib . 'cache/backend/resources/dbbackend-layout-cache.sql');
+		$sqlTemplate .= LF;
+		$sqlTemplate .= file_get_contents(PATH_t3lib . 'cache/backend/resources/dbbackend-layout-tags.sql');
+
+		foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] as $cacheIdentifier => $cacheConfiguration) {
+			if ($this->hasDatabaseBackend($cacheConfiguration)) {
+				$cacheTable = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['tablePrefix'] . $cacheIdentifier;
+				$tagsTable = $cacheTable . '_tags';
+				$cachingTablesSql = str_replace('###CACHE_TABLE###', $cacheTable, $sqlTemplate);
+				$cachingTablesSql = str_replace('###TAGS_TABLE###', $tagsTable, $cachingTablesSql);
+				$this->parseAndAnalyzeSql($cachingTablesSql);
+			}
+		}
+	}
+
+	/**
+	 * Loop over all installed extensions
+	 * parse and analyze table definitions (if any)
+	 *
+	 * @return void
+	 */
+	protected function analyzeExtensionTables() {
+		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extensionConfiguration) {
+			if (!is_array($extensionConfiguration) || !isset($extensionConfiguration['ext_tables.sql'])) {
+				continue;
+			}
+			$extensionsSql = file_get_contents($extensionConfiguration['ext_tables.sql']);
+			$this->parseAndAnalyzeSql($extensionsSql);
+		}
+	}
+
+	/**
+	 * Checks if the given configuration has a
+	 * database backend. This is the case if
+	 * it is not configured because then
+	 *
+	 * @param array $cacheConfiguration
+	 * @return bool
+	 */
+	protected function hasDatabaseBackend(array $cacheConfiguration) {
+		return !isset($cacheConfiguration['backend']) ||
+			$cacheConfiguration['backend'] === 't3lib_cache_backend_DbBackend' ||
+			is_subclass_of($cacheConfiguration['backend'], 't3lib_cache_backend_DbBackend');
+	}
+
+	/**
+	 * Parse and analyze given SQL string
+	 *
+	 * @param $sql
+	 * @return void
+	 */
+	protected function parseAndAnalyzeSql($sql) {
+		$parsedSql = $this->installerSql->getFieldDefinitions_fileContent($sql);
+		$this->analyzeFields($parsedSql);
 	}
 
 	/**
