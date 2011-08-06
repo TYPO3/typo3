@@ -127,22 +127,9 @@ class ux_t3lib_DB extends t3lib_DB {
 		$this->Installer = t3lib_div::makeInstance('t3lib_install');
 		$this->installerSql = t3lib_div::makeInstance('t3lib_install_Sql');
 
-
-		if (TYPO3_UseCachingFramework) {
-			tx_dbal_querycache::initializeCachingFramework();
-
-			try {
-				$this->queryCache = $GLOBALS['typo3CacheManager']->getCache(
-					'dbal'
-				);
-			} catch (t3lib_cache_exception_NoSuchCache $e) {
-				tx_dbal_querycache::initDbalCache();
-
-				$this->queryCache = $GLOBALS['typo3CacheManager']->getCache(
-					'dbal'
-				);
-			}
-		}
+		$this->queryCache =
+				t3lib_div::makeInstance('t3lib_cache_Manager')
+				->getCache('dbal');
 
 		// Set internal variables with configuration:
 		$this->conf = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal'];

@@ -34,44 +34,6 @@
  * @subpackage dbal
  */
 class tx_dbal_querycache {
-
-	/**
-	 * Initializes the caching framework by loading the cache manager and factory
-	 * into the global context.
-	 *
-	 * @return	void
-	 */
-	public static function initializeCachingFramework() {
-		t3lib_cache::initializeCachingFramework();
-	}
-
-	/**
-	 * Initializes the DBAL cache.
-	 *
-	 * @return	void
-	 */
-	public static function initDbalCache() {
-		try {
-			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['dbal'])) {
-				$backend = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['dbal']['backend'];
-				$options = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['dbal']['options'];
-			} else {
-				// Transient storage, will be better than nothing
-				$backend = 't3lib_cache_backend_TransientMemoryBackend';
-				$options = array();
-			}
-
-			$GLOBALS['typo3CacheFactory']->create(
-				'dbal',
-				't3lib_cache_frontend_VariableFrontend',
-				$backend,
-				$options
-			);
-		} catch (t3lib_cache_exception_DuplicateIdentifier $e) {
-			// Do nothing, a DBAL cache already exists
-		}
-	}
-
 	/**
 	 * Returns a proper cache key.
 	 *
