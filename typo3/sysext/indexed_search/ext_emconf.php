@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => 'Indexed Search Engine for TYPO3 pages, PDF-files, Word-files, HTML and text files. Provides a backend module for statistics of the indexer and a frontend plugin. Documentation can be found in the extension "doc_indexed_search".',
 	'category' => 'plugin',
 	'shy' => 0,
-	'dependencies' => 'cms',
+	'dependencies' => 'cms,extbase',
 	'conflicts' => '',
 	'priority' => '',
 	'loadOrder' => '',
@@ -39,6 +39,7 @@ $EM_CONF[$_EXTKEY] = array(
 			'cms' => '',
 			'php' => '5.1.0-0.0.0',
 			'typo3' => '4.4.0-0.0.0',
+			'extbase' => '',
 		),
 		'conflicts' => array(
 		),

@@ -1,3 +1,6 @@
+- Search is always case insensitive. If you need a case sensitive search, use a binary collation for the index_fulltext and index_words tables.
+
+
 MAILS about:
 
 
@@ -316,4 +319,35 @@ Piotr
 *****************************************************************************************************************
 *****************************************************************************************************************
 
+OK there were some fancy calculations promoted by Graeme Merrall:
 
+"However, regarding relevance you probably want to look at something like
+Salton's formula which is a good easy way to measure relevance.
+Oracle Intermedia uses this and it's pretty simple:
+Score can be between 0 and 100, but the top-scoring document in the query
+will not necessarily have a score of 100 -- scoring is relative, not
+absolute. This means that scores are not comparable across indexes, or even
+across different queries on the same index. Score for each document is
+computed using the standard Salton formula:
+
+  3f(1+log(N/n))
+
+Where f is the frequency of the search term in the document, N is the total
+number of rows in the table, and n is the number of rows which contain the
+search term. This is converted into an integer in the range 0 - 100.
+
+There's a good doc on it at
+http://ls6-www.informatik.uni-dortmund.de/bib/fulltext/ir/Pfeifer:97/
+although it may be a little complex for what you require so just pick the
+relevant parts out.
+"
+
+However I chose not to go with this for several reasons.
+I do not claim that my ways of calculating importance here is the best.
+ANY (better) suggestion for ranking calculation is accepted! (as long as they are shipped with tested code in exchange for this.)
+
+
+
+
+*****************************************************************************************************************
+*****************************************************************************************************************
