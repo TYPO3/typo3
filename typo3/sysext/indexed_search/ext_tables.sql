@@ -38,6 +38,7 @@ CREATE TABLE index_phash (
 CREATE TABLE index_fulltext (
   phash int(11) DEFAULT '0' NOT NULL,
   fulltextdata mediumtext,
+  metaphonedata mediumtext NOT NULL,
   PRIMARY KEY (phash)
 ) ENGINE=InnoDB;
 
