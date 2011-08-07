@@ -379,6 +379,18 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$this->assertEquals($expected, $selectTable);
 	}
 
+	/**
+	 * @test
+	 * @see http://forge.typo3.org/issues/27858
+	 */
+	public function canParseSingleQuote() {
+		$parseString = 'SELECT * FROM pages WHERE title=\'1\\\'\' AND deleted=0';
+		$components = $this->fixture->_callRef('parseSELECT', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$this->assertTrue(empty($components['parseString']), 'parseString is not empty');
+	}
+
 	///////////////////////////////////////
 	// Tests concerning JOINs
 	///////////////////////////////////////

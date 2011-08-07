@@ -139,6 +139,18 @@ class dbMssqlTest extends BaseTestCase {
 		$this->assertEquals($expected, $query);
 	}
 
+	/**
+	 * @test
+	 * @see http://forge.typo3.org/issues/27858
+	 */
+	public function canParseSingleQuote() {
+		$parseString = 'SELECT * FROM pages WHERE title=\'1\'\'\' AND deleted=0';
+		$components = $GLOBALS['TYPO3_DB']->SQLparser->_callRef('parseSELECT', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$this->assertTrue(empty($components['parseString']), 'parseString is not empty');
+	}
+
 	///////////////////////////////////////
 	// Tests concerning remapping with
 	// external (non-TYPO3) databases
