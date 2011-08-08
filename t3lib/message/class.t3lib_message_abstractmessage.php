@@ -30,8 +30,8 @@
 /**
  * A class used for any kind of messages.
  *
- * @author	Ingo Renner <ingo@typo3.org>
- * @author	Benjamin Mack <benni@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
+ * @author Benjamin Mack <benni@typo3.org>
  * @package TYPO3
  * @subpackage t3lib/message
  */
@@ -67,7 +67,7 @@ abstract class t3lib_message_AbstractMessage {
 	/**
 	 * Gets the message's title.
 	 *
-	 * @return	string	The message's title.
+	 * @return string The message's title.
 	 */
 	public function getTitle() {
 		return $this->title;
@@ -76,8 +76,8 @@ abstract class t3lib_message_AbstractMessage {
 	/**
 	 * Sets the message's title
 	 *
-	 * @param	string	The message's title
-	 * @return	void
+	 * @param string $title The message's title
+	 * @return void
 	 */
 	public function setTitle($title) {
 		$this->title = (string) $title;
@@ -86,7 +86,7 @@ abstract class t3lib_message_AbstractMessage {
 	/**
 	 * Gets the message.
 	 *
-	 * @return	string	The message.
+	 * @return string The message.
 	 */
 	public function getMessage() {
 		return $this->message;
@@ -95,8 +95,8 @@ abstract class t3lib_message_AbstractMessage {
 	/**
 	 * Sets the message
 	 *
-	 * @param	string	The message
-	 * @return	void
+	 * @param string $message The message
+	 * @return void
 	 */
 	public function setMessage($message) {
 		$this->message = (string) $message;
@@ -105,9 +105,9 @@ abstract class t3lib_message_AbstractMessage {
 	/**
 	 * Gets the message' severity.
 	 *
-	 * @return	integer	The message' severity, either of t3lib_message_AbstractMessage::INFO,
-	 * t3lib_message_AbstractMessage::OK, t3lib_message_AbstractMessage::WARNING
-	 * or t3lib_message_AbstractMessage::ERROR
+	 * @return int The message' severity, either of t3lib_message_AbstractMessage::INFO,
+	 *     t3lib_message_AbstractMessage::OK, t3lib_message_AbstractMessage::WARNING
+	 *     or t3lib_message_AbstractMessage::ERROR
 	 */
 	public function getSeverity() {
 		return $this->severity;
@@ -116,10 +116,10 @@ abstract class t3lib_message_AbstractMessage {
 	/**
 	 * Sets the message' severity
 	 *
-	 * @param	string	The severity, must be either of t3lib_message_AbstractMessage::INFO,
-	 * t3lib_message_AbstractMessage::OK, t3lib_message_AbstractMessage::WARNING
-	 * or t3lib_message_AbstractMessage::ERROR. Default is t3lib_message_AbstractMessage::OK.
-	 * @return	void
+	 * @param int $severity The severity, must be either of t3lib_message_AbstractMessage::INFO,
+	 *     t3lib_message_AbstractMessage::OK, t3lib_message_AbstractMessage::WARNING
+	 *     or t3lib_message_AbstractMessage::ERROR. Default is t3lib_message_AbstractMessage::OK.
+	 * @return void
 	 */
 	public function setSeverity($severity = self::OK) {
 		$this->severity = t3lib_utility_Math::forceIntegerInRange(
@@ -135,7 +135,7 @@ abstract class t3lib_message_AbstractMessage {
 	 * Creates a string representation of the message. Useful for command
 	 * line use.
 	 *
-	 * @return	string	A string representation of the message.
+	 * @return string A string representation of the message.
 	 */
 	public function __toString() {
 		$severities = array(

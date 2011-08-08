@@ -36,34 +36,31 @@
 class t3lib_message_ErrorpageMessage extends t3lib_message_AbstractMessage {
 
 	/**
-	 * defines whether the message should be stored in the session
-	 * (to survive redirects) or only for one request (default)
+	 * Path to the HTML template file
 	 *
 	 * @var string
 	 */
 	protected $htmlTemplate;
 
 	/**
-	 * Constructor for a error message
+	 * Constructor for an Error message
 	 *
-	 * @param	string	The message.
-	 * @param	string	message title.
-	 * @param	integer	Optional severity, must be either of t3lib_message_ErrorpageMessage::INFO, t3lib_message_ErrorpageMessage::OK,
-	 *				  t3lib_message_ErrorpageMessage::WARNING or t3lib_message_ErrorpageMessage::ERROR. Default is t3lib_message_ErrorpageMessage::ERROR.
-	 * @return	void
+	 * @param string $message The error message
+	 * @param string $title Title of the message, can be empty
+	 * @param integer $severity Optional severity, must be either of t3lib_message_AbstractMessage::INFO, t3lib_message_AbstractMessage::OK,
+	 *     t3lib_message_AbstractMessage::WARNING or t3lib_message_AbstractMessage::ERROR. Default is t3lib_message_AbstractMessage::ERROR.
 	 */
-	public function __construct($message, $title, $severity = self::ERROR) {
+	public function __construct($message, $title, $severity = t3lib_message_AbstractMessage::ERROR) {
 		$this->htmlTemplate = TYPO3_mainDir . 'sysext/t3skin/templates/errorpage-message.html';
 		$this->setMessage($message);
 		$this->setTitle(strlen($title) > 0 ? $title : 'Error!');
 		$this->setSeverity($severity);
 	}
 
-
 	/**
 	 * Gets the filename of the HTML template.
 	 *
-	 * @return	string	The filename of the HTML template.
+	 * @return string The filename of the HTML template.
 	 */
 	public function getHtmlTemplate() {
 		return $this->htmlTemplate;
@@ -72,8 +69,8 @@ class t3lib_message_ErrorpageMessage extends t3lib_message_AbstractMessage {
 	/**
 	 * Sets the filename to the HTML template
 	 *
-	 * @param	string	The filename to the HTML template.
-	 * @return	void
+	 * @param string $htmlTemplate The filename of the HTML template.
+	 * @return void
 	 */
 	public function setHtmlTemplate($htmlTemplate) {
 		$this->htmlTemplate = (string) $htmlTemplate;
@@ -82,7 +79,7 @@ class t3lib_message_ErrorpageMessage extends t3lib_message_AbstractMessage {
 	/**
 	 * Renders the flash message.
 	 *
-	 * @return	string	The flash message as HTML.
+	 * @return string The flash message as HTML.
 	 */
 	public function render() {
 		$classes = array(
@@ -110,7 +107,7 @@ class t3lib_message_ErrorpageMessage extends t3lib_message_AbstractMessage {
 	/**
 	 * Renders the flash message and echoes it.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function output() {
 		$content = $this->render();
