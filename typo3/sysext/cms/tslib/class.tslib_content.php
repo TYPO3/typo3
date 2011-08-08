@@ -3083,6 +3083,22 @@ class tslib_cObj {
 	 * @return	string		The processed input value
 	 */
 	public function stdWrap_insertData($content = '', $conf = array()) {
+		// Temporary workaround (security fix!)
+		// Strip any "{...}" instructions except those which are specified by the whitelist (and thus considered as safe)
+		if (isset($conf['insertData.']['whitelist'])) {
+			$matches = array();
+			if (preg_match_all('/\{(.+?):.*?\}/', $content, $matches)) {
+				$matches = array_unique($matches[1]);
+				foreach ($matches as $key) {
+					if (t3lib_div::inList($conf['insertData.']['whitelist'], $key)) {
+						continue;
+					}
+					// Remove the instruction from the content
+					$content = preg_replace('/\{' . preg_quote($key, '/') . ':.*?\}/', '', $content);
+				}
+			}
+		}
+
 		$content = $this->insertData($content);
 		return $content;
 	}

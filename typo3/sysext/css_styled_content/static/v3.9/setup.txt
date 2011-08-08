@@ -176,6 +176,7 @@ lib.stdheader {
 	10.1 = TEXT
 	10.1.current = 1
 	10.1.insertData = 1
+	10.1.insertData.whitelist = register
 	10.1.fontTag = <h1{register:headerStyle}{register:headerClass}>|</h1>
 
 	10.2 < .10.1
