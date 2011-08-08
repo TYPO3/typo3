@@ -118,13 +118,15 @@ class tx_recycler_helper {
 						$output = ' [#VEP#]' . $output;		// Adding visual token - Versioning Entry Point - that tells that THIS position was where the versionized branch got connected to the main tree. I will have to find a better name or something...
 					}
 					$uid = $row['pid'];
-					$output = '/' . htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title']), $titleLimit) . $output;
+					$output = '/' . htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'], $titleLimit)) . $output;
 
 					if ($row['deleted']) {
 						$output = '<span class="deletedPath">' . $output . '</span>';
 					}
 
-					if ($fullTitleLimit) $fullOutput = '/' . htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title']), $fullTitleLimit) . $fullOutput;
+					if ($fullTitleLimit) {
+						$fullOutput = '/' . htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'], $fullTitleLimit)) . $fullOutput;
+					}
 				} else {
 					break;
 				}
