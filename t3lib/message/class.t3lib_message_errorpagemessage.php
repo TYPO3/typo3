@@ -33,14 +33,8 @@
  * @package TYPO3
  * @subpackage t3lib/message
  */
-class t3lib_message_ErrorpageMessage extends t3lib_message_AbstractMessage {
+class t3lib_message_ErrorpageMessage extends t3lib_message_AbstractStandaloneMessage {
 
-	/**
-	 * Path to the HTML template file
-	 *
-	 * @var string
-	 */
-	protected $htmlTemplate;
 
 	/**
 	 * Constructor for an Error message
@@ -50,70 +44,10 @@ class t3lib_message_ErrorpageMessage extends t3lib_message_AbstractMessage {
 	 * @param integer $severity Optional severity, must be either of t3lib_message_AbstractMessage::INFO, t3lib_message_AbstractMessage::OK,
 	 *     t3lib_message_AbstractMessage::WARNING or t3lib_message_AbstractMessage::ERROR. Default is t3lib_message_AbstractMessage::ERROR.
 	 */
-	public function __construct($message, $title, $severity = t3lib_message_AbstractMessage::ERROR) {
-		$this->htmlTemplate = TYPO3_mainDir . 'sysext/t3skin/templates/errorpage-message.html';
-		$this->setMessage($message);
-		$this->setTitle(strlen($title) > 0 ? $title : 'Error!');
-		$this->setSeverity($severity);
+	public function __construct($message = '', $title = '', $severity = t3lib_message_AbstractMessage::ERROR) {
+		$this->setHtmlTemplate(TYPO3_mainDir . 'sysext/t3skin/templates/errorpage-message.html');
+		parent::__construct($message, $title, $severity);
 	}
-
-	/**
-	 * Gets the filename of the HTML template.
-	 *
-	 * @return string The filename of the HTML template.
-	 */
-	public function getHtmlTemplate() {
-		return $this->htmlTemplate;
-	}
-
-	/**
-	 * Sets the filename to the HTML template
-	 *
-	 * @param string $htmlTemplate The filename of the HTML template.
-	 * @return void
-	 */
-	public function setHtmlTemplate($htmlTemplate) {
-		$this->htmlTemplate = (string) $htmlTemplate;
-	}
-
-	/**
-	 * Renders the flash message.
-	 *
-	 * @return string The flash message as HTML.
-	 */
-	public function render() {
-		$classes = array(
-			self::NOTICE  => 'notice',
-			self::INFO    => 'information',
-			self::OK      => 'ok',
-			self::WARNING => 'warning',
-			self::ERROR   => 'error',
-		);
-
-		$markers = array(
-			'###CSS_CLASS###'     => $classes[$this->severity],
-			'###TITLE###'         => $this->title,
-			'###MESSAGE###'       => $this->message,
-			'###BASEURL###'       => t3lib_div::getIndpEnv('TYPO3_SITE_URL'),
-			'###TYPO3_mainDir###' => TYPO3_mainDir,
-			'###TYPO3_copyright_year###' => TYPO3_copyright_year,
-		);
-
-		$content = t3lib_div::getUrl(PATH_site . $this->htmlTemplate);
-		$content = t3lib_parseHtml::substituteMarkerArray($content, $markers, '', FALSE, TRUE);
-		return $content;
-	}
-
-	/**
-	 * Renders the flash message and echoes it.
-	 *
-	 * @return void
-	 */
-	public function output() {
-		$content = $this->render();
-		echo $content;
-	}
-
 }
 
 
