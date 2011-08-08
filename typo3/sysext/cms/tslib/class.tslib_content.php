@@ -1992,6 +1992,17 @@ class tslib_cObj {
 			}
 		}
 		if (is_array($conf) && count($conf)) {
+				// Temporary workaround (to maintain compatibility for security fix! @see #26876)
+				// If the fontTag property is set and the dataWrap property is set to the default value
+				// write the fontTag property value to dataWrap
+			if (isset($conf['dataWrapOriginalValue']) &&
+				isset($conf['fontTag']) &&
+				($conf['dataWrapOriginalValue'] === $conf['dataWrap'])
+				) {
+				$conf['dataWrap'] = $conf['fontTag'];
+				unset($conf['fontTag']);
+			}
+
 			// check, which of the available stdWrap functions is needed for the current conf Array
 			// and keep only those but still in the same order
 			$sortedConf = array_intersect_key($this->stdWrapOrder, $conf);
