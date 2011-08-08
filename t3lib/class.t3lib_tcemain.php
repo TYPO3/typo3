@@ -1376,7 +1376,7 @@ class t3lib_TCEmain {
 		}
 
 			// Checking range of value:
-		if ($tcaFieldConf['range'] && $value != $tcaFieldConf['checkbox'] && $value != $tcaFieldConf['default']) {
+		if ($tcaFieldConf['range'] && $value !== '' && $value != $tcaFieldConf['checkbox'] && $value != $tcaFieldConf['default']) {
 			if (isset($tcaFieldConf['range']['upper']) && $value > $tcaFieldConf['range']['upper']) {
 				$value = $tcaFieldConf['range']['upper'];
 			}
