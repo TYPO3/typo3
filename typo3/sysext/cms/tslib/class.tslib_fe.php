@@ -3160,23 +3160,23 @@
 	 * @return	void
 	 * @see		INTincScript()
 	 */
-	protected function INTincScript_process($INTiS_config)	{
+	protected function INTincScript_process($INTiS_config) {
 		$GLOBALS['TT']->push('Split content');
-		$INTiS_splitC = explode('<!--INT_SCRIPT.',$this->content);			// Splits content with the key.
+		$INTiS_splitC = explode('<!--INT_SCRIPT.', $this->content);			// Splits content with the key.
 		$this->content = '';
-		$GLOBALS['TT']->setTSlogMessage('Parts: '.count($INTiS_splitC));
+		$GLOBALS['TT']->setTSlogMessage('Parts: ' . count($INTiS_splitC));
 		$GLOBALS['TT']->pull();
 
-		foreach($INTiS_splitC as $INTiS_c => $INTiS_cPart)	{
-			if (substr($INTiS_cPart,32,3)=='-->')	{	// If the split had a comment-end after 32 characters it's probably a split-string
-				$INTiS_key = 'INT_SCRIPT.'.substr($INTiS_cPart,0,32);
-				$GLOBALS['TT']->push('Include '.$INTiS_config[$INTiS_key]['file'],'');
-				$incContent='';
-				if (is_array($INTiS_config[$INTiS_key]))	{
+		foreach($INTiS_splitC as $INTiS_c => $INTiS_cPart) {
+			if (substr($INTiS_cPart, 32, 3) == '-->') { // If the split had a comment-end after 32 characters it's probably a split-string
+				$INTiS_key = 'INT_SCRIPT.' . substr($INTiS_cPart,0,32);
+				if (is_array($INTiS_config[$INTiS_key])) {
+					$GLOBALS['TT']->push('Include ' . $INTiS_config[$INTiS_key]['file'], '');
+					$incContent='';
 					$INTiS_cObj = unserialize($INTiS_config[$INTiS_key]['cObj']);
 					/* @var $INTiS_cObj tslib_cObj */
-					$INTiS_cObj->INT_include=1;
-					switch($INTiS_config[$INTiS_key]['type'])	{
+					$INTiS_cObj->INT_include = 1;
+					switch($INTiS_config[$INTiS_key]['type']) {
 						case 'SCRIPT':
 							$incContent = $INTiS_cObj->PHP_SCRIPT($INTiS_config[$INTiS_key]['conf']);
 						break;
@@ -3190,12 +3190,12 @@
 							$incContent = $INTiS_cObj->callUserFunction($INTiS_config[$INTiS_key]['postUserFunc'], $INTiS_config[$INTiS_key]['conf'], $INTiS_config[$INTiS_key]['content']);
 						break;
 					}
+					$this->content .= $this->convOutputCharset($incContent, 'INC-'.$INTiS_c);
+					$this->content .= substr($INTiS_cPart, 35);
+					$GLOBALS['TT']->pull($incContent);
 				}
-				$this->content.= $this->convOutputCharset($incContent,'INC-'.$INTiS_c);
-				$this->content.= substr($INTiS_cPart,35);
-				$GLOBALS['TT']->pull($incContent);
 			} else {
-				$this->content.= ($INTiS_c?'<!--INT_SCRIPT.':'').$INTiS_cPart;
+				$this->content .= ($INTiS_c?'<!--INT_SCRIPT.':'') . $INTiS_cPart;
 			}
 		}
 	}
