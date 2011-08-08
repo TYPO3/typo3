@@ -5579,7 +5579,7 @@ class t3lib_TCEforms {
 						// The "_list" element exists for multiple selection select types
 					if (formObj[fName + "_list"]) {
 						fObj = formObj[fName + "_list"];
-						isMultiple = fObj.getAttribute("multiple") == null && fObj.getAttribute("size") != "1";
+						isMultiple =  ( fObj.getAttribute("multiple") == null || fObj.getAttribute("multiple") == "multiple" ) && fObj.getAttribute("size") != "1";
 						isList = true;
 					} else {
 						fObj = formObj[fName];
