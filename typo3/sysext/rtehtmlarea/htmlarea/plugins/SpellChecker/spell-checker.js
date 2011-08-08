@@ -134,7 +134,7 @@ HTMLArea.SpellChecker = HTMLArea.Plugin.extend({
 			bodyCssClass: 'spell-check',
 			border: false,
 			width: dimensions.width,
-			height: 'auto',
+			height: Ext.isIE ? dimensions.height - 50 : 'auto',
 				// As of ExtJS 3.1, JS error with IE when the window is resizable
 			resizable: !Ext.isIE,
 			iconCls: this.getButton(buttonId).iconCls,
