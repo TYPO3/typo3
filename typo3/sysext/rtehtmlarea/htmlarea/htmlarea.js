@@ -4166,8 +4166,8 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 * Note: this.base will exclusively refer to the HTMLArea.Plugin class constructor
 	 */
 	base: function (editor, pluginName) {
-		HTMLArea.appendToLog(editor.editorId, 'HTMLArea.' + pluginName, 'base', 'Deprecated use of base function. Use Ext superclass reference instead.', 'warn');
-		HTMLArea.Plugin.prototype.constructor.call(this, editor, pluginName);
+		HTMLArea.appendToLog(this.editor.editorId, 'HTMLArea.' + this.name, 'base', 'Deprecated use of base function. Use Ext superclass reference instead.', 'warn');
+		HTMLArea.Plugin.prototype.constructor.call(this, this.editor, this.name);
 	},
 	/**
 	 * Registers the plugin "About" information
