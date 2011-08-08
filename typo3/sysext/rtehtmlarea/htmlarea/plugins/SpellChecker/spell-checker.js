@@ -447,7 +447,7 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 			});
 			return false;
 		} else {
-			return this.base();
+			return HTMLArea.SpellChecker.superclass.onCancel.call(this);
 		}
 	},
 	/*
