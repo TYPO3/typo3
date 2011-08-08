@@ -132,17 +132,24 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 	/** @private */
 	setMask: function() {
 		if (this.doMask) {
-			this.el.mask(this.maskMessage, 'x-mask-loading-message');
-			this.el.addClass('t3-mask-loading');
-				// add an onClick handler to remove the mask while clicking on the loading message
-				// useful if user cancels loading and wants to access the content again
-			this.el.child('.x-mask-loading-message').on(
-				'click',
+				//make sure, that the mask is rendered after the container and
+				//fits the full dimensions
+			new Ext.util.DelayedTask(
 				function() {
-					this.el.unmask();
+					this.el.mask(this.maskMessage, 'x-mask-loading-message');
+					this.el.addClass('t3-mask-loading');
+						// add an onClick handler to remove the mask while clicking on the loading message
+						// useful if user cancels loading and wants to access the content again
+					this.el.child('.x-mask-loading-message').on(
+						'click',
+						function() {
+							this.el.unmask();
+						},
+						this
+					);
 				},
 				this
-			);
+			).delay(200);
 		}
 	},
 
