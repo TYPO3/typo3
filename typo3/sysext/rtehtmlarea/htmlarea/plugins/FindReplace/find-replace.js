@@ -490,7 +490,7 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 		if (plugin) {
 			plugin.start();
 		}
-		this.base();
+		HTMLArea.FindReplace.superclass.onCancel.call(this);
 	},
 	/*
 	 * Clear the document before leaving on window close handle
@@ -501,6 +501,6 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 		if (plugin) {
 			plugin.start();
 		}
-		this.base();
+		HTMLArea.FindReplace.superclass.onClose.call(this);
 	}
 });
