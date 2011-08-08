@@ -1992,6 +1992,24 @@ class tslib_cObj {
 			}
 		}
 		if (is_array($conf) && count($conf)) {
+				// Temporary workaround (to maintain compatibility for security fix! @see #26876)
+				// If the fontTag property is set and the dataWrap property is set to the default value
+				// then this indicates that we have a custom setup.
+			if (isset($conf['fontTag']) && isset($conf['dataWrap']) && preg_match(
+					'|<h[0-9]\{register:headerStyle\}\{register:headerClass\}>\|</h[0-9]>|',
+					$conf['dataWrap']
+				)) {
+				// Write the fontTag property value to dataWrap like before the security fix was introduced.
+				$conf['dataWrap'] = $conf['fontTag'];
+				unset($conf['fontTag']);
+				unset($conf['insertData']);
+
+				// Since this is magic, log the action
+				$message = 'For security reasons, the properties "fontTag" and "insertData" have replaced in lib.stdheader.10 with a dataWrap (see http://forge.typo3.org/issues/28847)';
+				$GLOBALS['TT']->setTSlogMessage($message, 2);
+				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_WARNING);
+			}
+
 			// check, which of the available stdWrap functions is needed for the current conf Array
 			// and keep only those but still in the same order
 			$sortedConf = array_intersect_key($this->stdWrapOrder, $conf);
