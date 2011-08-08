@@ -44,7 +44,7 @@
  * @package TYPO3
  * @subpackage tslib
  */
- class tslib_fe {
+class tslib_fe {
 
 		// CURRENT PAGE:
 	var $id='';							// The page id (int)
@@ -1367,7 +1367,7 @@
 	 */
 	function checkPageUnavailableHandler()	{
 		if($this->TYPO3_CONF_VARS['FE']['pageUnavailable_handling'] &&
-		   !t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $this->TYPO3_CONF_VARS['SYS']['devIPmask'])) {
+		!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $this->TYPO3_CONF_VARS['SYS']['devIPmask'])) {
 			$checkPageUnavailableHandler = TRUE;
 		} else {
 			$checkPageUnavailableHandler = FALSE;
@@ -2003,7 +2003,7 @@
 						$this->pageUnavailableAndExit($message);
 					} else {
 						$explanation = 'This means that there is no TypoScript object of type PAGE with typeNum=' .
-						               $this->type . ' configured.';
+									$this->type . ' configured.';
 						t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
 						throw new t3lib_error_http_ServiceUnavailableException($message . ' ' . $explanation, 1294587217);
 					}
@@ -2553,7 +2553,7 @@
 			$referer = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 			if (isset($referer['host']) && !($referer['host'] == t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'))) {
 				unset($this->jumpurl);
- 			}
+			}
 		}
 	}
 
@@ -2743,7 +2743,7 @@
 
 			$temp_content = '<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>'.$title.'</title>
@@ -2843,7 +2843,7 @@
 		$this->pageCache->remove($this->newHash);
 	}
 
- 	/**
+	/**
 	 * Post processing page cache rows for both get and set.
 	 *
 	 * @param	array		Input "cache_pages" row, passed by reference!
@@ -3153,7 +3153,7 @@
 		}
 	}
 
- 	/**
+	/**
 	 * Processes the INTinclude-scripts and substitue in content.
 	 *
 	 * @param	array		$INTiS_config: $GLOBALS['TSFE']->config['INTincScript'] or part of it
@@ -3162,20 +3162,20 @@
 	 */
 	protected function INTincScript_process($INTiS_config)	{
 		$GLOBALS['TT']->push('Split content');
-		$INTiS_splitC = explode('<!--INT_SCRIPT.',$this->content);			// Splits content with the key.
+		$INTiS_splitC = explode('<!--INT_SCRIPT.', $this->content);			// Splits content with the key.
 		$this->content = '';
-		$GLOBALS['TT']->setTSlogMessage('Parts: '.count($INTiS_splitC));
+		$GLOBALS['TT']->setTSlogMessage('Parts: ' . count($INTiS_splitC));
 		$GLOBALS['TT']->pull();
 
 		foreach($INTiS_splitC as $INTiS_c => $INTiS_cPart)	{
-			if (substr($INTiS_cPart,32,3)=='-->')	{	// If the split had a comment-end after 32 characters it's probably a split-string
-				$INTiS_key = 'INT_SCRIPT.'.substr($INTiS_cPart,0,32);
-				$GLOBALS['TT']->push('Include '.$INTiS_config[$INTiS_key]['file'],'');
-				$incContent='';
+			if (substr($INTiS_cPart, 32, 3) == '-->')	{	// If the split had a comment-end after 32 characters it's probably a split-string
+				$INTiS_key = 'INT_SCRIPT.' . substr($INTiS_cPart,0,32);
 				if (is_array($INTiS_config[$INTiS_key]))	{
+					$GLOBALS['TT']->push('Include ' . $INTiS_config[$INTiS_key]['file'], '');
+					$incContent='';
 					$INTiS_cObj = unserialize($INTiS_config[$INTiS_key]['cObj']);
 					/* @var $INTiS_cObj tslib_cObj */
-					$INTiS_cObj->INT_include=1;
+					$INTiS_cObj->INT_include = 1;
 					switch($INTiS_config[$INTiS_key]['type'])	{
 						case 'SCRIPT':
 							$incContent = $INTiS_cObj->PHP_SCRIPT($INTiS_config[$INTiS_key]['conf']);
@@ -3190,12 +3190,12 @@
 							$incContent = $INTiS_cObj->callUserFunction($INTiS_config[$INTiS_key]['postUserFunc'], $INTiS_config[$INTiS_key]['conf'], $INTiS_config[$INTiS_key]['content']);
 						break;
 					}
+					$this->content .= $this->convOutputCharset($incContent, 'INC-'.$INTiS_c);
+					$this->content .= substr($INTiS_cPart, 35);
+					$GLOBALS['TT']->pull($incContent);
 				}
-				$this->content.= $this->convOutputCharset($incContent,'INC-'.$INTiS_c);
-				$this->content.= substr($INTiS_cPart,35);
-				$GLOBALS['TT']->pull($incContent);
 			} else {
-				$this->content.= ($INTiS_c?'<!--INT_SCRIPT.':'').$INTiS_cPart;
+				$this->content .= ($INTiS_c?'<!--INT_SCRIPT.':'') . $INTiS_cPart;
 			}
 		}
 	}
@@ -3542,15 +3542,15 @@ if (version == "n3") {
 	 * @access private
 	 */
 	function setParseTime()	{
-        // Compensates for the time consumed with Back end user initialization.
-        $microtime_start            = (isset($GLOBALS['TYPO3_MISC']['microtime_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_start'] : NULL;
-        $microtime_end              = (isset($GLOBALS['TYPO3_MISC']['microtime_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_end'] : NULL;
-        $microtime_BE_USER_start    = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] : NULL;
-        $microtime_BE_USER_end      = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] : NULL;
+		// Compensates for the time consumed with Back end user initialization.
+		$microtime_start            = (isset($GLOBALS['TYPO3_MISC']['microtime_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_start'] : NULL;
+		$microtime_end              = (isset($GLOBALS['TYPO3_MISC']['microtime_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_end'] : NULL;
+		$microtime_BE_USER_start    = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] : NULL;
+		$microtime_BE_USER_end      = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] : NULL;
 
-        $this->scriptParseTime = $GLOBALS['TT']->getMilliseconds($microtime_end) - $GLOBALS['TT']->getMilliseconds($microtime_start)
-                                - ($GLOBALS['TT']->getMilliseconds($microtime_BE_USER_end) - $GLOBALS['TT']->getMilliseconds($microtime_BE_USER_start));
-    }
+		$this->scriptParseTime = $GLOBALS['TT']->getMilliseconds($microtime_end) - $GLOBALS['TT']->getMilliseconds($microtime_start)
+								- ($GLOBALS['TT']->getMilliseconds($microtime_BE_USER_end) - $GLOBALS['TT']->getMilliseconds($microtime_BE_USER_start));
+	}
 
 	/**
 	 * Initialize file-based statistics handling: Check filename and permissions, and create the logfile if it does not exist yet.
