@@ -1074,7 +1074,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$extDirect = t3lib_div::makeInstance('t3lib_extjs_ExtDirectApi');
 		$api = $extDirect->getApiPhp($filterNamespaces);
 		if ($api) {
-			$this->addJsInlineCode('TYPO3ExtDirectAPI', $api);
+			$this->addJsInlineCode('TYPO3ExtDirectAPI', $api, FALSE);
 		}
 			// Note: we need to iterate thru the object, because the addProvider method
 			// does this only with multiple arguments

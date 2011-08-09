@@ -754,12 +754,14 @@ class template {
 					}
 				});
 			}
-		');
+			',
+			FALSE
+		);
 
 		$this->pageRenderer->addHeaderData($this->JScode);
 
 		foreach ($this->JScodeArray as $name => $code) {
-			$this->pageRenderer->addJsInlineCode($name, $code);
+			$this->pageRenderer->addJsInlineCode($name, $code, FALSE);
 		}
 
 		if (count($this->JScodeLibArray)) {
@@ -2178,7 +2180,7 @@ class frontendDoc extends template {
 		}
 		if (count($this->JScodeArray)) {
 			foreach ($this->JScodeArray as $name => $code) {
-				$this->pageRenderer->addJsInlineCode($name, $code);
+				$this->pageRenderer->addJsInlineCode($name, $code, FALSE);
 			}
 		}
 	}
