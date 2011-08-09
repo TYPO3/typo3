@@ -104,7 +104,8 @@ class TYPO3backend {
 
 		$this->pageRenderer->addJsInlineCode(
 			'consoleOverrideWithDebugPanel',
-			'//already done'
+			'//already done',
+			FALSE
 		);
 		$this->pageRenderer->addExtDirectCode();
 
@@ -231,7 +232,7 @@ class TYPO3backend {
 
 
 		$this->generateJavascript();
-		$this->pageRenderer->addJsInlineCode('BackendInlineJavascript', $this->js);
+		$this->pageRenderer->addJsInlineCode('BackendInlineJavascript', $this->js, FALSE);
 
 		$this->loadResourcesForRegisteredNavigationComponents();
 
