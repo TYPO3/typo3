@@ -223,6 +223,14 @@
 				<source>Failure with receiving network data.</source>
 				<target approved="yes">Failure with receiving network data.</target>
 			</trans-unit>
+			<trans-unit id="list.report.otherhttpcode">
+				<source>An error occurred (%s): "%s".</source>
+				<target approved="yes">An error occurred (%s): "%s".</target>
+			</trans-unit>
+			<trans-unit id="list.report.httpexception">
+				<source>Exception: %s</source>
+				<target approved="yes">Exception: %s</target>
+			</trans-unit>
 			<trans-unit id="list.msg.ok">
 				<source>Ok</source>
 				<target approved="yes">Ok</target>
