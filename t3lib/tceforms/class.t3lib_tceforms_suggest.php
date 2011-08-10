@@ -64,6 +64,15 @@ class t3lib_TCEforms_Suggest {
 		$containerCssClass = $this->cssClass . ' ' . $this->cssClass . '-position-right';
 		$suggestId = 'suggest-' . $table . '-' . $field . '-' . $row['uid'];
 
+		if ($field == 'pi_flexform') {
+			$fieldPattern = 'data[' . $table . '][' . $row['uid'] . '][pi_flexform][data][';
+			$flexformField = str_replace($fieldPattern, 'pi_flexform||', $fieldname);
+			$flexformField = substr($flexformField, 0, -1);
+			$flexformField = str_replace('][', '|', $flexformField);
+			$flexformField .= '||' . $config['fieldConf']['config']['allowed'];
+			$field = $flexformField;
+		}
+
 		$selector = '
 		<div class="' . $containerCssClass . '" id="' . $suggestId . '">
 			<input type="text" id="' . $fieldname . 'Suggest" value="' .
@@ -137,6 +146,10 @@ class t3lib_TCEforms_Suggest {
 			$foreign_table_where = $GLOBALS['TCA'][$table]['columns'][$field]['config']['foreign_table_where'];
 				// strip ORDER BY clause
 			$foreign_table_where = trim(preg_replace('/ORDER[[:space:]]+BY.*/i', '', $foreign_table_where));
+		} else if (substr($field, 0, 13) === 'pi_flexform||'){
+			$divideGet = explode('||', $field);
+			$field = 'pi_flexform][data][' . str_replace('|', '][', $divideGet[1]);
+			$queryTables = array($divideGet[2]);
 		}
 		$resultRows = array();
 
