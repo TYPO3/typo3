@@ -79,25 +79,35 @@ TCEForms.Suggest = Class.create({
 	},
 
 	/**
-	 * Adds an element to the list of items in a group selector.
+	 * Adds an element to the list of items in a group selector
+	 * or select item in the case where maxitems < 2.
 	 *
 	 * @param  object  item  The item to add to the list (usually an li element)
 	 * @return void
 	 */
 	addElementToList: function(item) {
 		if (item.className.indexOf('noresults') == -1) {
-			var arr = item.id.split('-');
-			var ins_table = arr[0];
-			var ins_uid = arr[1];
-			var rec_table = arr[2];
-			var rec_uid = arr[3];
-			var rec_field = arr[4];
+			var arr = item.id.split('-'),
+				ins_table = arr[0],
+				ins_uid = arr[1],
+				rec_table = arr[2],
+				rec_uid = arr[3],
+				rec_field = arr[4],
+				formElStr = 'data[' + rec_table + '][' + rec_uid + '][' + rec_field + ']',
+				label = (item.firstChild.textContent ? item.firstChild.textContent : item.firstChild.innerText),
+				formEl = document.editform[formElStr];
 
-			var formEl = 'data[' + rec_table + '][' + rec_uid + '][' + rec_field + ']';
-			var label = (item.firstChild.textContent ? item.firstChild.textContent : item.firstChild.innerText)
-			setFormValueFromBrowseWin(formEl, ins_table + '_' + ins_uid, label);
-			TBE_EDITOR.fieldChanged(rec_table, rec_uid, rec_field, formEl);
+			if (!Ext.isDefined(formEl.selectedIndex)) {
+				setFormValueFromBrowseWin(formElStr, ins_table + '_' + ins_uid, label);
+			} else {
+				Ext.each(formEl.options, function(el, i) {
+					if (el.value === ins_uid) {
+						formEl.selectedIndex = i;
+					}
+				});
+			}
 
+			TBE_EDITOR.fieldChanged(rec_table, rec_uid, rec_field, formElStr);
 			$(this.suggestField).value = this.defaultValue;
 		}
 	}
