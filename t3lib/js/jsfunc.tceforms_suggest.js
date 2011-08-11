@@ -54,11 +54,12 @@ TCEForms.Suggest = Class.create({
 	 * @param  integer minimumCharacters the minimum characaters that is need to trigger the initial search
 	 */
 	initialize: function(objectId, table, field, uid, pid, minimumCharacters) {
+		var PATH_typo3 = top.TS.PATH_typo3 || window.opener.top.TS.PATH_typo3;
 		this.objectId = objectId;
 		this.suggestField = objectId + 'Suggest';
 		this.suggestResultList = objectId + 'SuggestChoices';
 
-		new Ajax.Autocompleter(this.suggestField, this.suggestResultList, top.TS.PATH_typo3 + 'ajax.php', {
+		new Ajax.Autocompleter(this.suggestField, this.suggestResultList, PATH_typo3 + 'ajax.php', {
 				paramName: 'value',
 				minChars: (minimumCharacters ? minimumCharacters : this.minimumCharacters),
 				updateElement: this.addElementToList.bind(this),
