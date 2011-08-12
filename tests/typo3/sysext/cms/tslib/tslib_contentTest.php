@@ -222,7 +222,7 @@ class tslib_contentTest extends tx_phpunit_testcase {
 		$getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
 		$getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
 
-		$expectedResult = '&key2=value2&key3[key32][key322]=value322';
+		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2&key3[key32][key322]=value322');
 		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
@@ -251,7 +251,7 @@ class tslib_contentTest extends tx_phpunit_testcase {
 		$getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
 		$getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
 
-		$expectedResult = '&key2=value2&key3[key32][key322]=value322';
+		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2&key3[key32][key322]=value322');
 		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
@@ -315,7 +315,7 @@ class tslib_contentTest extends tx_phpunit_testcase {
 			),
 		);
 
-		$expectedResult = '&key2=value2Overruled&key3[key32][key322]=value322Overruled';
+		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2Overruled&key3[key32][key322]=value322Overruled');
 		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
@@ -364,13 +364,27 @@ class tslib_contentTest extends tx_phpunit_testcase {
 			),
 		);
 
-		$expectedResult = '&key2=value2Overruled&key3[key32][key321]=value321Overruled&key3[key32][key323]=value323Overruled';
+		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2Overruled&key3[key32][key321]=value321Overruled&key3[key32][key323]=value323Overruled');
 		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments, TRUE);
 		$this->assertEquals($expectedResult, $actualResult);
 
 		$getQueryArgumentsConfiguration['method'] = 'POST';
 		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments, TRUE);
 		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * Encodes square brackets in URL.
+	 *
+	 * @param string $string
+	 * @return string
+	 */
+	private function rawUrlEncodeSquareBracketsInUrl($string) {
+		return str_replace(
+			array('[', ']'),
+			array('%5B', '%5D'),
+			$string
+		);
 	}
 
 
