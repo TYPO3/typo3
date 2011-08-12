@@ -311,10 +311,9 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	public function flush() {
 		$this->throwExceptionIfFrontendDoesNotExist();
 
-		$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($this->cacheTable);
-		$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($this->tagsTable);
 		$GLOBALS['TYPO3_DB']->admin_query('DROP TABLE IF EXISTS ' . $this->cacheTable);
 		$GLOBALS['TYPO3_DB']->admin_query('DROP TABLE IF EXISTS ' . $this->tagsTable);
+
 		$this->createCacheTable();
 		$this->createTagsTable();
 	}
