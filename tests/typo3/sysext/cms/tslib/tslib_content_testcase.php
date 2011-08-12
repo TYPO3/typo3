@@ -49,6 +49,11 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 	private $tsfe;
 
 	/**
+	 * @var t3lib_timeTrack
+	 */
+	private $timeTrack;
+
+	/**
 	 * @var	t3lib_TStemplate
 	 */
 	private $template;
@@ -66,6 +71,9 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 		$this->tsfe->tmpl = $this->template;
 		$this->tsfe->config = array();
 		$GLOBALS['TSFE'] = $this->tsfe;
+
+		$this->timeTrack = $this->getMock('t3lib_timeTrack');
+		$GLOBALS['TT'] = $this->timeTrack;
 
 		$className = 'tslib_cObj_' . uniqid('test');
 		eval('
@@ -85,8 +93,9 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 
 	public function tearDown() {
 		$GLOBALS['TSFE'] = null;
+		$GLOBALS['TT'] = null;
 
-		unset($this->cObj, $this->tsfe, $this->template,$this->typoScriptImage);
+		unset($this->cObj, $this->tsfe, $this->timeTrack, $this->template,$this->typoScriptImage);
 	}
 
 	/**
@@ -161,6 +170,66 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 				array('recipient' => 'foo@bar.com', 'recipient.' => array()),
 				array()
 			)
+		);
+	}
+
+	//////////////////////////////
+	// Tests concerning stdWrap
+	//////////////////////////////
+
+	/**
+	 * Tests whether fontTag is replaced by dataWrap if the default
+	 * css_styled_content configuration is used. This individual check
+	 * is related to a security fix that would break compatibility to
+	 * older TYPO3 default settings.
+	 *
+	 * @test
+	 * @return void
+	 * @see http://forge.typo3.org/issues/28847
+	 */
+	public function isFontTagReplacedByDataWrapIfDefaultConfigurationIsFound() {
+		$testRegister = '{register:' . uniqid('register') . '}';
+		$testContent = uniqid('content');
+		$testToken = uniqid();
+		$configuration = array(
+			'fontTag' => '<h1 class="' . $testToken . '">|</h1>',
+			'dataWrap' => '<h1{register:headerStyle}{register:headerClass}>|</h1>',
+			'insertData' => '1',
+		);
+
+		$this->timeTrack->expects($this->once())->method('setTSlogMessage');
+
+		$this->assertEquals(
+			'<h1 class="' . $testToken . '">' . $testContent . $testRegister . '</h1>',
+			$this->cObj->stdWrap($testContent . $testRegister, $configuration)
+		);
+	}
+
+	/**
+	 * Tests whether fontTag is replaced by dataWrap if the default
+	 * css_styled_content configuration is used. This individual check
+	 * is related to a security fix that would break compatibility to
+	 * older TYPO3 default settings.
+	 *
+	 * @test
+	 * @return void
+	 * @see http://forge.typo3.org/issues/28847
+	 */
+	public function isFontTagNotReplacedByDataWrapIfIndividualConfigurationIsFound() {
+		$testRegister = '{register:' . uniqid('register') . '}';
+		$testContent = uniqid('content');
+		$testToken = uniqid();
+		$configuration = array(
+			'fontTag' => '<h1 class="' . $testToken . '">|</h1>',
+			'dataWrap' => '<div>|</div>',
+			'insertData' => '1',
+		);
+
+		$this->timeTrack->expects($this->never())->method('setTSlogMessage');
+
+		$this->assertEquals(
+			'<div><h1 class="' . $testToken . '">' . $testContent . '</h1></div>',
+			$this->cObj->stdWrap($testContent . $testRegister, $configuration)
 		);
 	}
 }

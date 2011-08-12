@@ -3720,6 +3720,32 @@ class tslib_cObj {
 				$content = $hookObject->stdWrapPreProcess($content, $conf, $this);
 			}
 
+				// Temporary workaround (to maintain compatibility for security fix! @see #26876)
+				// If the fontTag property is set and the dataWrap property is set to the default value
+				// then this indicates that we have a custom setup.
+			if (isset($conf['fontTag']) && isset($conf['dataWrap']) && preg_match(
+					'|<h[0-9]\{register:headerStyle\}\{register:headerClass\}>\|</h[0-9]>|',
+					$conf['dataWrap']
+				)) {
+				// Write the fontTag property value to dataWrap like before the security fix was introduced.
+				$conf['dataWrap'] = $conf['fontTag'];
+
+				// Unset fontTag and insertData properties
+				// insertData is removed because it would reintroduce the security issue which was already fixed.
+				// In theory this may again break a site if someone really intended to let users write getData
+				// values in the headline. However, unlike before the layout is no longer affected as only content
+				// would change...
+				unset($conf['fontTag']);
+				if (isset($conf['insertData'])) {
+					unset($conf['insertData']);
+				}
+
+				// Since this is magic, log the action
+				$message = 'For security reasons, the properties "fontTag" and "insertData" have replaced in lib.stdheader.10 with a dataWrap (see http://forge.typo3.org/issues/28847)';
+				$GLOBALS['TT']->setTSlogMessage($message, 2);
+				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_WARNING);
+			}
+
 				// Setting current value, if so
 			if ($conf['setContentToCurrent']){$this->data[$this->currentValKey]=$content;}
 			if ($conf['setCurrent'] || $conf['setCurrent.']){$this->data[$this->currentValKey] = $this->stdWrap($conf['setCurrent'], $conf['setCurrent.']);}
