@@ -334,7 +334,7 @@ class SC_show_item {
 			// If the file was an image...:
 		if (is_array($imgInfo))	{
 
-			$imgInfo = $imgObj->imageMagickConvert($this->file,'web','346','200m','','','',1);
+			$imgInfo = $imgObj->imageMagickConvert($this->file,'web','400','400m','','','',1);
 			$imgInfo[3] = '../'.substr($imgInfo[3],strlen(PATH_site));
 			$code = '<br />
 				<div align="center">'.$returnLinkTag.$imgObj->imgTag($imgInfo).'</a></div>';

@@ -108,7 +108,7 @@ class SC_t3lib_thumbs {
 
 	var $outdir = 'typo3temp/';		// The output directory of temporary files in PATH_site
 	var $output = '';
-	var $sizeDefault='56x56';
+	var $sizeDefault='64x64';
 
 	var $imageList;		// Coming from $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
 	var $input;		// Contains the absolute path to the file for which to make a thumbnail (after init())
@@ -287,23 +287,23 @@ class SC_t3lib_thumbs {
 			$im = imagecreatefromgif(PATH_typo3 . 'gfx/notfound_thumb.gif');
 		}
 			// Sets background color and print color.
-		$white = imageColorAllocate($im, 0, 0, 0);
-		$black = imageColorAllocate($im, 255, 255, 0);
+		$white = imageColorAllocate($im, 255, 255, 255);
+		$black = imageColorAllocate($im, 0, 0, 0);
 
 			// Prints the text strings with the build-in font functions of GD
 		$x=0;
 		$font=0;
 		if ($l1) {
-			imagefilledrectangle($im, $x, 9, 56, 16, $black);
-			imageString($im,$font,$x,9,$l1,$white);
+			imagefilledrectangle($im, $x, 9, 56, 16, $white);
+			imageString($im,$font,$x,9,$l1, $black);
 		}
 		if ($l2) {
-			imagefilledrectangle($im, $x, 19, 56, 26, $black);
-			imageString($im,$font,$x,19,$l2,$white);
+			imagefilledrectangle($im, $x, 19, 56, 26, $white);
+			imageString($im,$font,$x,19,$l2, $black);
 		}
 		if ($l3) {
-			imagefilledrectangle($im, $x, 29, 56, 36, $black);
-			imageString($im,$font,$x,29,substr($l3,-14),$white);
+			imagefilledrectangle($im, $x, 29, 56, 36, $white);
+			imageString($im,$font,$x,29,substr($l3,-14), $black	);
 		}
 
 			// Outputting the image stream and exit
