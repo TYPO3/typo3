@@ -108,7 +108,7 @@ class SC_t3lib_thumbs {
 
 	var $outdir = 'typo3temp/';		// The output directory of temporary files in PATH_site
 	var $output = '';
-	var $sizeDefault='56x56';
+	var $sizeDefault='64x64';
 
 	var $imageList;		// Coming from $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
 	var $input;		// Contains the absolute path to the file for which to make a thumbnail (after init())
