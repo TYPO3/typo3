@@ -134,6 +134,14 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlarea_api {
 			if (!in_array('*', $restrictTo)) {
 				$blockElementsOrder = array_intersect($blockElementsOrder, $restrictTo);
 			}
+				// Add div element if indent is configured in the toolbar
+			if (in_array('indent', $this->toolbar) || in_array('outdent', $this->toolbar)) {
+				$blockElementsOrder = array_merge($blockElementsOrder, array('div'));
+			}
+				// Add blockquote element if blockquote is configured in the toolbar
+			if (in_array('blockquote', $this->toolbar)) {
+				$blockElementsOrder = array_merge($blockElementsOrder, array('blockquote'));
+			}
 				// Localizing the options
 			$blockElementsOptions = array();
 			if ($this->htmlAreaRTE->cleanList($this->thisConfig['hidePStyleItems']) != '*') {
