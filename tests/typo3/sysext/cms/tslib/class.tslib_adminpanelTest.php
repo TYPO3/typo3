@@ -82,7 +82,7 @@ class tslib_AdminPanelTest extends tx_phpunit_testcase {
 
 		$hookMock->expects($this->once())
 			->method('extendAdminPanel')
-			->with($this->isInstanceOf('tslib_AdminPanel'));
+			->with($this->isType('string'), $this->isInstanceOf('tslib_AdminPanel'));
 
 		$adminPanelMock->display();
 	}
