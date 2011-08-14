@@ -136,8 +136,11 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 				blockElements.push(option[1]);
 			}
 		});
-		this.allowedBlockElements = new RegExp( "^(" + blockElements.join("|") + ")$", "i");
-
+		if (blockElements.length) {
+			this.allowedBlockElements = new RegExp( "^(" + blockElements.join("|") + ")$", "i");
+		} else {
+			this.allowedBlockElements = this.standardBlockElements;
+		}
 		/*
 		 * Registering hot keys for the dropdown list items
 		 */
