@@ -112,5 +112,24 @@ class t3lib_cache {
 	public function enableCachingFramework() {
 		t3lib_div::logDeprecatedFunction();
 	}
+
+	/**
+	 * Helper method for install tool and extension manager to determine
+	 * required table structure of all caches that depend on it
+	 *
+	 * This is not a public API method!
+	 *
+	 * @return string Required table structure of all registered caches
+	 */
+	public function getDatabaseTableDefinitions() {
+		$tableDefinitions = '';
+		foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] as $cacheName => $_) {
+			$backend = $GLOBALS['typo3CacheManager']->getCache($cacheName)->getBackend();
+			if (method_exists($backend, 'getTableDefinitions')) {
+				$tableDefinitions .= LF . $backend->getTableDefinitions();
+			}
+		}
+		return $tableDefinitions;
+	}
 }
 ?>

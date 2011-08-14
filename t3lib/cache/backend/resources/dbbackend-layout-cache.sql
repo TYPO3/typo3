@@ -4,5 +4,5 @@ CREATE TABLE ###CACHE_TABLE### (
 	expires int(11) unsigned DEFAULT '0' NOT NULL,
 	content mediumblob,
 	PRIMARY KEY (id),
-	KEY cache_id (identifier, expires)
+	KEY cache_id (identifier,expires)
 ) ENGINE=InnoDB;

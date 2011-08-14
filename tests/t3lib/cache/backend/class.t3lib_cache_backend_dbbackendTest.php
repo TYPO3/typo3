@@ -66,7 +66,7 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 */
 	public function setUp() {
 		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
-		$tablePrefix = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['tablePrefix'];
+		$tablePrefix = 'cf_';
 		$this->testingCacheTable = $tablePrefix . 'Testing';
 		$this->testingTagsTable = $tablePrefix . 'Testing_tags';
 	}
@@ -519,88 +519,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 		);
 
 		$this->assertTrue(count($entriesFound) == 0);
-	}
-
-	/**
-	 * @test
-	 */
-	public function flushDropsDataTable() {
-		$backend = $this->setUpBackend();
-		$this->setUpMockFrontendOfBackend($backend);
-
-		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_TRUNCATEquery', 'INSERTquery', 'sql_query', 'admin_query'));
-		$GLOBALS['TYPO3_DB']->expects($this->at(2))
-			->method('admin_query')
-			->with('DROP TABLE IF EXISTS ' . $this->testingCacheTable);
-
-		$backend->flush();
-	}
-
-	/**
-	 * @test
-	 */
-	public function flushDropsTagsTable() {
-		$backend = $this->setUpBackend();
-		$this->setUpMockFrontendOfBackend($backend);
-
-		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_TRUNCATEquery', 'INSERTquery', 'sql_query', 'admin_query'));
-		$GLOBALS['TYPO3_DB']->expects($this->at(3))
-			->method('admin_query')
-			->with('DROP TABLE IF EXISTS ' . $this->testingTagsTable);
-
-		$backend->flush();
-	}
-
-	/**
-	 * @test
-	 */
-	public function flushCreatesDataTable() {
-		$backend = $this->setUpBackend();
-		$this->setUpMockFrontendOfBackend($backend);
-
-		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_TRUNCATEquery', 'INSERTquery', 'sql_query', 'admin_query'));
-		$GLOBALS['TYPO3_DB']->expects($this->at(4))
-			->method('admin_query')
-			->will($this->returnCallback(array($this, flushCreatesDataTableCallback)));
-
-		$backend->flush();
-	}
-
-	/**
-	 * Callback of flushCreatesDataTable to check if data table is created
-	 *
-	 * @param string $sql SQL of admin_query
-	 * @return void
-	 */
-	public function flushCreatesDataTableCallback($sql) {
-		$startOfStatement = 'CREATE TABLE ' . $this->testingCacheTable . ' (';
-		$this->assertEquals($startOfStatement, substr($sql, 0, strlen($startOfStatement)));
-	}
-
-	/**
-	 * @test
-	 */
-	public function flushCreatesTagsTable() {
-		$backend = $this->setUpBackend();
-		$this->setUpMockFrontendOfBackend($backend);
-
-		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_TRUNCATEquery', 'INSERTquery', 'sql_query', 'admin_query'));
-		$GLOBALS['TYPO3_DB']->expects($this->at(5))
-			->method('admin_query')
-			->will($this->returnCallback(array($this, flushCreatesTagsTableCallback)));
-
-		$backend->flush();
-	}
-
-	/**
-	 * Callback of flushCreatesTagsTable to check if tags table is created
-	 *
-	 * @param string $sql SQL of admin_query
-	 * @return void
-	 */
-	public function flushCreatesTagsTableCallback($sql) {
-		$startOfStatement = 'CREATE TABLE ' . $this->testingTagsTable . ' (';
-		$this->assertEquals($startOfStatement, substr($sql, 0, strlen($startOfStatement)));
 	}
 
 	/**

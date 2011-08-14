@@ -125,7 +125,6 @@ $TYPO3_CONF_VARS = array(
 		'reverseProxySSL' => '',				// String: '*' or list of IP addresses of proxies that use SSL (https) for the connection to the client, but an unencrypted connection (http) to the server. If '*' all proxies defined in <a href="#SYS-reverseProxyIP">[SYS][reverseProxyIP]</a> use SSL.
 		'reverseProxyPrefixSSL' => '',				// String: prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI) when accessing the server via an SSL proxy. This setting overrides <a href="#SYS-reverseProxyPrefix">[SYS][reverseProxyPrefix]</a>.
 		'caching' => array(
-			'tablePrefix' => 'cachingframework_',
 			'cacheConfigurations' => array(
 				'cache_hash' => array(
 					'frontend' => 't3lib_cache_frontend_VariableFrontend',
