@@ -177,7 +177,7 @@ CREATE TABLE pages (
   backend_layout_next_level int(10) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
   KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-  KEY parent (pid,sorting,deleted,hidden),
+  KEY parent (pid,deleted,hidden,sorting),
   KEY alias (alias)
 );
 
