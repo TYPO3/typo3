@@ -825,6 +825,7 @@ class tx_em_Install {
 		if (is_array($extInfo['files']) && in_array('ext_tables.sql', $extInfo['files'])) {
 			$path = tx_em_Tools::getExtPath($extKey, $extInfo['type']);
 			$fileContent = t3lib_div::getUrl($path . 'ext_tables.sql');
+			$fileContent .= t3lib_cache::getDatabaseTableDefinitions();
 
 			$FDfile = $this->installerSql->getFieldDefinitions_fileContent($fileContent);
 			if (count($FDfile)) {
@@ -1193,6 +1194,10 @@ class tx_em_Install {
 			}
 		}
 
+		if ($this->extensionHasCacheConfiguration($absPath)) {
+			$infoArray['hasCacheConfiguration'] = TRUE;
+		}
+
 		if (@is_file($absPath . 'ext_typoscript_constants.txt')) {
 			$infoArray['TSfiles'][] = $GLOBALS['LANG']->getLL('detailedExtAnalysis_constants');
 		}
@@ -1267,8 +1272,7 @@ class tx_em_Install {
 		$form = '';
 
 			// Look for template file for form:
-		if (t3lib_extMgm::isLoaded($extKey) && @is_file($absPath . 'ext_conf_template.txt')) {
-
+		if (t3lib_extMgm::isLoaded($extKey) && (@is_file($absPath . 'ext_conf_template.txt') || $this->extensionHasCacheConfiguration($absPath))) {
 				// Load tsStyleConfig class and parse configuration template:
 			$tsStyleConfig = t3lib_div::makeInstance('t3lib_tsStyleConfig');
 			$tsStyleConfig->doNotSortCategoriesBeforeMakingForm = TRUE;
@@ -1367,9 +1371,24 @@ class tx_em_Install {
 				</table>';
 		}
 
-
 		return $form;
+	}
 
+	/**
+	 * Determine if an extension defines own caching framework caches
+	 *
+	 * @param string $extensionAbsolutePath Path to extension
+	 * @return boolean TRUE if extension defines own caches
+	 */
+	protected function extensionHasCacheConfiguration($extensionAbsolutePath) {
+		$result = FALSE;
+		if (@is_file($extensionAbsolutePath . 'ext_localconf.php')) {
+			$content = t3lib_div::getUrl($extensionAbsolutePath . 'ext_localconf.php');
+			if (stristr($content, 'cacheConfigurations')) {
+				$result = TRUE;
+			}
+		}
+		return $result;
 	}
 
 	/**
@@ -1429,7 +1448,7 @@ class tx_em_Install {
 		$updates .= $extensionDetails->checkUploadFolder($extKey, $extInfo);
 
 		$absPath = tx_em_Tools::getExtPath($extKey, $extInfo['type']);
-		if ($notSilent && @is_file($absPath . 'ext_conf_template.txt')) {
+		if ($notSilent && @is_file($absPath . 'ext_conf_template.txt') || $this->extensionHasCacheConfiguration($absPath)) {
 			$configForm = $this->tsStyleConfigForm($extKey, $extInfo, 1, $script, $updates . $addFields . '<br />');
 		}
 
@@ -1535,6 +1554,7 @@ class tx_em_Install {
 		// Updating tables and fields?
 		if (is_array($extInfo['files']) && in_array('ext_tables.sql', $extInfo['files'])) {
 			$fileContent = t3lib_div::getUrl(tx_em_Tools::getExtPath($extKey, $extInfo['type']) . 'ext_tables.sql');
+			$fileContent .= t3lib_cache::getDatabaseTableDefinitions();
 
 			$FDfile = $this->installerSql->getFieldDefinitions_fileContent($fileContent);
 			if (count($FDfile)) {

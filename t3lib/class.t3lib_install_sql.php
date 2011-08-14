@@ -41,11 +41,6 @@ class t3lib_install_Sql {
 	protected $deletedPrefixKey = 'zzz_deleted_'; // Prefix used for tables/fields when deleted/renamed.
 
 	/**
-	 * @var array Tables starting with this name are ignored during compare
-	 */
-	protected $ignoreTablePrefixes = array();
-
-	/**
 	 * @var float|int Multiplier of SQL field size (for char, varchar and text fields)
 	 */
 	protected $multiplySize = 1;
@@ -62,7 +57,6 @@ class t3lib_install_Sql {
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize'] >= 1 && $GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize'] <= 5) {
 			$this->multiplySize = (double) $GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize'];
 		}
-		$this->ignoreTablePrefixes[] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['tablePrefix'];
 	}
 
 	/**
@@ -529,19 +523,8 @@ class t3lib_install_Sql {
 					if ($info['whole_table']) {
 						if ($remove) {
 							if (substr($table, 0, strlen($deletedPrefixKey)) != $deletedPrefixKey) {
-									// Ignore table operation if the table name starts with a
-									// prefix that should be ignored
-								$ignoreTable = FALSE;
-								foreach ($this->ignoreTablePrefixes as $ignorePrefix) {
-									if (substr($table, 0, strlen($ignorePrefix)) === $ignorePrefix) {
-										$ignoreTable = TRUE;
-										break;
-									}
-								}
-								if (!$ignoreTable) {
-									$statement = 'ALTER TABLE ' . $table . ' RENAME ' . $deletedPrefixKey . $table . ';';
-									$statements['change_table'][md5($statement)] = $statement;
-								}
+								$statement = 'ALTER TABLE ' . $table . ' RENAME ' . $deletedPrefixKey . $table . ';';
+								$statements['change_table'][md5($statement)] = $statement;
 							} else {
 								$statement = 'DROP TABLE ' . $table . ';';
 								$statements['drop_table'][md5($statement)] = $statement;

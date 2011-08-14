@@ -1609,8 +1609,11 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 								);
 								t3lib_FlashMessageQueue::addMessage($flashMessage);
 							}
+							$techInfo = $this->install->makeDetailedExtensionAnalysis($extKey, $list[$extKey]);
 							if ($this->CMD['clrCmd'] || t3lib_div::_GP('_clrCmd')) {
 								if ($this->CMD['load'] && @is_file($absPath . 'ext_conf_template.txt')) {
+									$vA = array('CMD' => array('showExt' => $extKey));
+								} elseif ($this->CMD['load'] && $techInfo['hasCacheConfiguration']) {
 									$vA = array('CMD' => array('showExt' => $extKey));
 								} else {
 									$vA = array('CMD' => '');
@@ -1629,7 +1632,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 										'<br /><br />' . $this->getSubmitAndOpenerCloseLink();
 							} else {
 								// Determine if new modules were installed:
-								$techInfo = $this->install->makeDetailedExtensionAnalysis($extKey, $list[$extKey]);
 								if (($this->CMD['load'] || $this->CMD['remove']) && is_array($techInfo['flags']) && in_array('Module', $techInfo['flags'], TRUE)) {
 									$vA['CMD']['refreshMenu'] = 1;
 								}

@@ -104,9 +104,8 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	public function setCache(t3lib_cache_frontend_Frontend $cache) {
 		parent::setCache($cache);
 
-		$tablePrefix = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['tablePrefix'];
-		$this->cacheTable = $tablePrefix . $this->cacheIdentifier;
-		$this->tagsTable = $tablePrefix . $this->cacheIdentifier . '_tags';
+		$this->cacheTable = 'cf_' .$this->cacheIdentifier;
+		$this->tagsTable = 'cf_' . $this->cacheIdentifier . '_tags';
 		$this->initializeCommonReferences();
 	}
 
@@ -207,10 +206,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable) .
 				' AND ' . $this->notExpiredStatement
 		);
-
-		if (strlen($GLOBALS['TYPO3_DB']->sql_error()) > 0) {
-			$this->flush();
-		}
 
 		if (is_array($cacheEntry)) {
 			$cacheEntry = $cacheEntry['content'];
@@ -313,10 +308,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 
 		$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($this->cacheTable);
 		$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($this->tagsTable);
-		$GLOBALS['TYPO3_DB']->admin_query('DROP TABLE IF EXISTS ' . $this->cacheTable);
-		$GLOBALS['TYPO3_DB']->admin_query('DROP TABLE IF EXISTS ' . $this->tagsTable);
-		$this->createCacheTable();
-		$this->createTagsTable();
 	}
 
 	/**
@@ -459,25 +450,18 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	}
 
 	/**
-	 * Create data table of cache
+	 * Calculate needed table definitions for this cache.
+	 * This helper method is used by install tool and extension manager
+	 * and is not part of the public API!
 	 *
-	 * @return void
+	 * @return string SQL of table definitions
 	 */
-	protected function createCacheTable() {
-		$sql = file_get_contents(PATH_t3lib . 'cache/backend/resources/dbbackend-layout-cache.sql');
-		$sql = str_replace('###CACHE_TABLE###', $this->cacheTable, $sql);
-		$GLOBALS['TYPO3_DB']->admin_query($sql);
-	}
-
-	/**
-	 * Create tags table of cache
-	 *
-	 * @return void
-	 */
-	protected function createTagsTable() {
-		$sql = file_get_contents(PATH_t3lib . 'cache/backend/resources/dbbackend-layout-tags.sql');
-		$sql = str_replace('###TAGS_TABLE###', $this->tagsTable, $sql);
-		$GLOBALS['TYPO3_DB']->admin_query($sql);
+	public function getTableDefinitions() {
+		$cacheTableSql = file_get_contents(PATH_t3lib . 'cache/backend/resources/dbbackend-layout-cache.sql');
+		$requiredTableStructures = str_replace('###CACHE_TABLE###', $this->cacheTable, $cacheTableSql) . LF . LF;
+		$tagsTableSql = file_get_contents(PATH_t3lib . 'cache/backend/resources/dbbackend-layout-tags.sql');
+		$requiredTableStructures .= str_replace('###TAGS_TABLE###', $this->tagsTable, $tagsTableSql) . LF;
+		return $requiredTableStructures;
 	}
 
 	/**
