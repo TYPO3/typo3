@@ -341,9 +341,8 @@ class fileList extends t3lib_recordList {
 							break;
 						}
 					}
-					$altRows = 'class="' . ($i++ % 2 == 0 ? 'bgColor6' : 'bgColor4') . '"';
 
-					$out .= $this->addelement(1, $theIcon, $theData, $altRows);
+					$out .= $this->addelement(1, $theIcon, $theData, ' class="file_list_normal"');
 				}
 				$this->eCounter++;
 				$this->dirCounter = $this->eCounter;
@@ -499,13 +498,8 @@ class fileList extends t3lib_recordList {
 							break;
 						}
 					}
-					if ($this->dirCounter % 2 == 0) {
-						$altRows = 'class="' . ($i++ % 2 == 0 ? 'bgColor6' : 'bgColor4') . '"';
-					} else {
-						$altRows = 'class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '"';
-					}
 
-					$out .= $this->addelement(1, $theIcon, $theData, $altRows);
+					$out .= $this->addelement(1, $theIcon, $theData, ' class="file_list_normal"');
 				}
 				$this->eCounter++;
 			}

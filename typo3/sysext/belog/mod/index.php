@@ -181,7 +181,7 @@ class SC_mod_tools_log_index {
 
 			// Add custom workspaces (selecting all, filtering by BE_USER check):
 		if (t3lib_extMgm::isLoaded('workspaces')) {
-			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(	
 				'uid,title',
 				'sys_workspace',
 				'pid = 0' . t3lib_BEfunc::deleteClause('sys_workspace'),
