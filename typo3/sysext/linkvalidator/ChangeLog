@@ -1,3 +1,27 @@
+2011-08-11  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* [TASK] Refactor to t3lib_http_Request for external URLs
+
+2011-08-10  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* [TASK] Add XLIFF files
+
+2011-07-17  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* [TASK] Fix localization handling to support XLIFF
+
+2011-07-17  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* [TASK] Merge changes from 4.5 upstream to master
+
+2011-07-17  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* [BUGFIX] Correct initialisation of BACK_PATH
+
+2011-07-15  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* [TASK] Add .gitignore file
+
 2011-05-22  Philipp Gampe  <forge.typo3.org@philippgampe.info>
 
 	* Task: Fix whitespace issues in all branches
