@@ -931,7 +931,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		foreach ($blockSplit as $k => $v) {
 			if ($k % 2) { // If an A-tag was found:
 				$attribArray = $this->get_tag_attributes_classic($this->getFirstTag($v), 1);
-				if ($attribArray['style']) { // If "style" attribute is set!
+					// If "style" attribute is set and rteerror is not set!
+				if ($attribArray['style'] && !$attribArray['rteerror']) {
 					$attribArray_copy['style'] = $attribArray['style'];
 					unset($attribArray['style']);
 					$bTag = '<span ' . t3lib_div::implodeAttributes($attribArray_copy, 1) . '><a ' . t3lib_div::implodeAttributes($attribArray, 1) . '>';
