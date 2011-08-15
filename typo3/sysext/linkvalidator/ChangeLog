@@ -1,3 +1,21 @@
+2011-08-15  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Task: Update Version Number to 1.0.5
+	* Cleaned emconf for the release of TYPO3 4.5.5
+	* Release linkvalidator 1.0.5
+
+2011-07-17  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* Correct initialisation of BACK_PATH
+
+2011-07-15  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Add .gitignore file
+
+2011-07-12  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* Task: CGLize code, which was changed for TYPO3 4.5.3
+
 2011-05-22  Philipp Gampe  <forge.typo3.org@philippgampe.info>
 
 	* Task: Fix whitespace issues in all branches
