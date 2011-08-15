@@ -111,7 +111,7 @@ class Tx_Extbase_Configuration_ConfigurationManager implements Tx_Extbase_Config
 			case self::CONFIGURATION_TYPE_FULL_TYPOSCRIPT :
 				return $this->concreteConfigurationManager->getTypoScriptSetup();
 			default :
-				throw new Tx_Extbase_Configuration_Exception_InvalidConfigurationTypeException('Invalid configuration type "' . $configurationType . '"', 1206031879);
+				throw new Tx_Extbase_Configuration_Exception_InvalidConfigurationType('Invalid configuration type "' . $configurationType . '"', 1206031879);
 		}
 	}
 
