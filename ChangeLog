@@ -1,3 +1,14 @@
+2011-08-16  f79bd1f            [RELEASE] Release of TYPO3 4.4.10 (TYPO3 v4 Release Team)
+2011-08-12  becd370  #28946    [BUGFIX] Unit tests for tslib_content query arguments fail (Oliver Hader)
+2011-08-12  1c946cb  #28847    [BUGFIX] Maintain compatibility with changed headline rendering (Helmut Hummel)
+2011-08-11  7ee7eba  #27028    [BUGFIX] Wrong usage of Ext.encodeURL in TBE_EDITOR.rawurlencode (Marco Huber)
+2011-08-03  0395e1f  #26876    [BUGFIX] Unprivileged backend user can read arbitrarily from database (Helmut Hummel)
+2011-07-30  121d6bf  #28536    [BUGFIX] JSwindow-typolink URLs are encoded twice (Helmut Hummel)
+2011-07-29  34b1e70            [BUGFIX] htmlArea RTE not loading with Safari 5.1 (Stanislas Rolland)
+2011-07-27  1efb49b            [TASK] Set TYPO3 version to 4.4.10-dev (TYPO3 v4 Release Team)
+2011-07-27  439f3f0            [RELEASE] Release of TYPO3 4.4.9 (TYPO3 v4 Release Team)
+
+
 2011-07-27  5233451            [RELEASE] Release of TYPO3 4.4.9 (TYPO3 v4 Release Team)
 2011-07-27  cf83434  #25307    [BUGFIX] Ext Direct API lacks the possibility of adding access control (Stefan Galinski)
 2011-07-27  a69919e  #24577    [BUGFIX] Untrusted GP data is unserialized in wizard_colorpicker.php and view_help.php (Christian Kuhn)
