@@ -552,7 +552,11 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			}
 
 				// Filename:
-			$dlFile = $inData['filename'] ? $inData['filename'] : 'T3D_'.substr(preg_replace('/[^[:alnum:]_]/','-',$inData['download_export_name']),0,20).'_'.date('d-m-H-i-s').$fExt;
+			$dlFile = $inData['filename']
+					? $inData['filename']
+					: 'T3D_' .
+						substr(preg_replace('/[^[:alnum:]_]/', '-', $inData['download_export_name']), 0, 20) .
+						'_' . date('Y-m-d_H-i') . $fExt;
 
 				// Export for download:
 			if ($inData['download_export'])	{
