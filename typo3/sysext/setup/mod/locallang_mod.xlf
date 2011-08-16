@@ -13,7 +13,7 @@
       </trans-unit>
       <trans-unit id="mlang_tabs_tab">
         <source>User settings</source>
-        <target approved="yes">User settings</target>
+        <target approved="yes">User Settings</target>
       </trans-unit>
     </body>
   </file>
