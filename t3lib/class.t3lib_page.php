@@ -314,7 +314,7 @@ class t3lib_pageSelect {
 
 			// If language UID is different from zero, do overlay:
 		if ($lUid) {
-			$fieldArr = explode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields']);
+			$fieldArr = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields']);
 			if (is_array($pageInput)) {
 				$page_id = $pageInput['uid']; // Was the whole record
 				$fieldArr = array_intersect($fieldArr, array_keys($pageInput)); // Make sure that only fields which exist in the incoming record are overlaid!
