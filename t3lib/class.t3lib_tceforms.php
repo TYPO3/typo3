@@ -2488,7 +2488,7 @@ class t3lib_TCEforms {
 			// Manipulate Flexform DS via TSConfig and group access lists
 		if (is_array($dataStructArray)) {
 			$flexFormHelper = t3lib_div::makeInstance('t3lib_TCEforms_Flexforms');
-			$dataStructArray = $flexFormHelper->modifyFlexFormDS($dataStructArray, $table, $field, $row, $PA['fieldConf']['config']);
+			$dataStructArray = $flexFormHelper->modifyFlexFormDS($dataStructArray, $table, $field, $row, $PA['fieldConf']);
 			unset($flexFormHelper);
 		}
 
