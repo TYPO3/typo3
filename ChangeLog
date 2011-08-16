@@ -1,3 +1,12 @@
+2011-08-16  ae3c49c            [RELEASE] Release of TYPO3 4.3.13 (TYPO3 v4 Release Team)
+2011-08-12  e6febd7  #28847    [BUGFIX] Maintain compatibility with changed headline rendering (Helmut Hummel)
+2011-08-03  d0f08cd  #26876    [BUGFIX] Unprivileged backend user can read arbitrarily from database (Helmut Hummel)
+2011-07-31  25f5a87            [BUGFIX] htmlArea RTE not loading with Safari 5.1 (Stanislas Rolland)
+2011-07-30  2ba1620  #28536    [BUGFIX] JSwindow-typolink URLs are encoded twice (Helmut Hummel)
+2011-07-27  6380111            [TASK] Set TYPO3 version to 4.3.13-dev (TYPO3 v4 Release Team)
+2011-07-27  bf3b11f            [RELEASE] Release of TYPO3 4.3.12 (TYPO3 v4 Release Team)
+
+
 2011-07-27  277d945            [RELEASE] Release of TYPO3 4.3.12 (TYPO3 v4 Release Team)
 2011-07-27  b1ab0e2  #24577    [BUGFIX] Untrusted GP data is unserialized in wizard_colorpicker.php and view_help.php (Christian Kuhn)
 2011-07-27  875a385  #26876    [BUGFIX] Unprivileged backend user can read arbitrarily from database (Helmut Hummel)
