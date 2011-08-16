@@ -1721,7 +1721,7 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 		var editor = this.getEditor();
 		element.blur();
 		if (!Ext.isIE) {
-			if (/^(img)$/i.test(element.ancestor.nodeName)) {
+			if (/^(img|table)$/i.test(element.ancestor.nodeName)) {
 				editor.selectNode(element.ancestor);
 			} else {
 				editor.selectNodeContents(element.ancestor);
