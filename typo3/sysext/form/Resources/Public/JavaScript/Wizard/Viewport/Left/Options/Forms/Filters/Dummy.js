@@ -37,8 +37,8 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Dummy = Ext.extend(Ext.Pan
 	 * the Component.
 	 */
 	data: [{
-		title: TYPO3.lang.filters_dummy_title,
-		description: TYPO3.lang.filters_dummy_description
+		title: TYPO3.l10n.localize('filters_dummy_title'),
+		description: TYPO3.l10n.localize('filters_dummy_description')
 	}],
 
 	/**

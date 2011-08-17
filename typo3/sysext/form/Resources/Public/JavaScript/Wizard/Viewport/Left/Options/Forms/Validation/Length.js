@@ -25,8 +25,8 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Length = Ext.extend(TYP
 			configuration: {
 				breakOnError: 0,
 				showMessage: 1,
-				message: TYPO3.lang['tx_form_system_validate_length.message'],
-				error: TYPO3.lang['tx_form_system_validate_length.error'],
+				message: TYPO3.l10n.localize('tx_form_system_validate_length.message'),
+				error: TYPO3.l10n.localize('tx_form_system_validate_length.error'),
 				minimum: 0,
 				maximum: 0
 			}

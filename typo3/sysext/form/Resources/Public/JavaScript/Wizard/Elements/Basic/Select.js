@@ -87,15 +87,15 @@ TYPO3.Form.Wizard.Elements.Basic.Select = Ext.extend(TYPO3.Form.Wizard.Elements,
 				},
 				filters: {},
 				label: {
-					value: TYPO3.lang.elements_label
+					value: TYPO3.l10n.localize('elements_label')
 				},
 				options: [
 					{
-						data: TYPO3.lang.elements_option_1
+						data: TYPO3.l10n.localize('elements_option_')1
 					}, {
-						data: TYPO3.lang.elements_option_2
+						data: TYPO3.l10n.localize('elements_option_')2
 					}, {
-						data: TYPO3.lang.elements_option_3
+						data: TYPO3.l10n.localize('elements_option_')3
 					}
 				],
 				layout: 'front',

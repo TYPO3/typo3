@@ -27,7 +27,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Content = Ext.extend(TYPO3.Form.Wizard.
 	 * The title text to be used as innerHTML (html tags are accepted) to
 	 * display in the panel header (defaults to '').
 	 */
-	title: TYPO3.lang.left_elements_content,
+	title: TYPO3.l10n.localize('left_elements_content'),
 
 	/**
 	 * Constructor
@@ -42,7 +42,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Content = Ext.extend(TYPO3.Form.Wizard.
 			switch (option) {
 				case 'header':
 					buttons.push({
-						text: TYPO3.lang.content_header,
+						text: TYPO3.l10n.localize('content_header'),
 						id: 'content-header',
 						clickEvent: 'dblclick',
 						handler: this.onDoubleClick,

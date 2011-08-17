@@ -25,8 +25,8 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.RegExp = Ext.extend(TYP
 			configuration: {
 				breakOnError: 0,
 				showMessage: 1,
-				message: TYPO3.lang['tx_form_system_validate_regexp.message'],
-				error: TYPO3.lang['tx_form_system_validate_regexp.error'],
+				message: TYPO3.l10n.localize('tx_form_system_validate_regexp.message'),
+				error: TYPO3.l10n.localize('tx_form_system_validate_regexp.error'),
 				expression: ''
 			}
 		});

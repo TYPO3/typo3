@@ -25,8 +25,8 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Email = Ext.extend(TYPO
 			configuration: {
 				breakOnError: 0,
 				showMessage: 1,
-				message: TYPO3.lang['tx_form_system_validate_email.message'],
-				error: TYPO3.lang['tx_form_system_validate_email.error']
+				message: TYPO3.l10n.localize('tx_form_system_validate_email.message'),
+				error: TYPO3.l10n.localize('tx_form_system_validate_email.error')
 			}
 		});
 		TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Email.superclass.constructor.apply(this, arguments);

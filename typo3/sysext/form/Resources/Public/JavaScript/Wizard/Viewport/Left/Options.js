@@ -35,7 +35,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options = Ext.extend(Ext.Panel, {
 	 * The title text to be used as innerHTML (html tags are accepted) to
 	 * display in the panel header (defaults to '').
 	 */
-	title: TYPO3.lang.left_options,
+	title: TYPO3.l10n.localize('left_options'),
 
 	/**
 	 * @cfg {Boolean} border

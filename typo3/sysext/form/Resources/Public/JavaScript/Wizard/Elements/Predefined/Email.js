@@ -17,20 +17,20 @@ TYPO3.Form.Wizard.Elements.Predefined.Email = Ext.extend(TYPO3.Form.Wizard.Eleme
 					name: 'email'
 				},
 				label: {
-					value: TYPO3.lang.elements_label_email
+					value: TYPO3.l10n.localize('elements_label_email')
 				},
 				validation: {
 					required: {
 						breakOnError: 0,
 						showMessage: 1,
-						message: TYPO3.lang['tx_form_system_validate_required.message'],
-						error: TYPO3.lang['tx_form_system_validate_required.error']
+						message: TYPO3.l10n.localize('tx_form_system_validate_required.message'),
+						error: TYPO3.l10n.localize('tx_form_system_validate_required.error')
 					},
 					email: {
 						breakOnError: 0,
 						showMessage: 1,
-						message: TYPO3.lang['tx_form_system_validate_email.message'],
-						error: TYPO3.lang['tx_form_system_validate_email.error']
+						message: TYPO3.l10n.localize('tx_form_system_validate_email.message'),
+						error: TYPO3.l10n.localize('tx_form_system_validate_email.error')
 					}
 				}
 			}

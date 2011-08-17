@@ -89,7 +89,7 @@ TYPO3.Form.Wizard.Elements.Basic.Password = Ext.extend(TYPO3.Form.Wizard.Element
 				},
 				filters: {},
 				label: {
-					value: TYPO3.lang.elements_label
+					value: TYPO3.l10n.localize('elements_label')
 				},
 				layout: 'front',
 				validation: {}
