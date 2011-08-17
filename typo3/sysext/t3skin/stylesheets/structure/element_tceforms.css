@@ -191,6 +191,7 @@ table.typo3-TCEforms .class-main53 {
 
 table.typo3-TCEforms td.formField-header,
 table.typo3-TCEforms td.formField-field {
+	display: block;
 	position: relative;
 	padding-left: 10px;
 	padding-right: 10px;
@@ -278,6 +279,10 @@ table.typo3-TCEforms span.filetypes {
 	margin-top: 6px;
 	white-space: normal;
 	width: 250px;
+}
+
+.t3-form-field-container {
+	display: block;
 }
 
 .typo3-TCEforms-palette .typo3-csh-link img {
