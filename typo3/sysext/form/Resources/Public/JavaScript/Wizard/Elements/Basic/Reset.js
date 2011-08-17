@@ -82,7 +82,7 @@ TYPO3.Form.Wizard.Elements.Basic.Reset = Ext.extend(TYPO3.Form.Wizard.Elements, 
 					tabindex: '',
 					title: '',
 					type: 'reset',
-					value: TYPO3.lang['tx_form_domain_model_element_reset.value']
+					value: TYPO3.l10n.localize('tx_form_domain_model_element_reset.value')
 				},
 				filters: {},
 				label: {

@@ -44,8 +44,8 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Dummy = Ext.extend(Ext.Panel, {
 	 * the Component.
 	 */
 	data: [{
-		title: TYPO3.lang.options_dummy_title,
-		description: TYPO3.lang.options_dummy_description
+		title: TYPO3.l10n.localize('options_dummy_title'),
+		description: TYPO3.l10n.localize('options_dummy_description')
 	}],
 
 	/**

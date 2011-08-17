@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation = Ext.extend(Ext.Panel,
 	 * The title text to be used as innerHTML (html tags are accepted) to
 	 * display in the panel header (defaults to '').
 	 */
-	title: TYPO3.lang.options_validation,
+	title: TYPO3.l10n.localize('options_validation'),
 
 	/**
 	 * @cfg {String} id
@@ -86,7 +86,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation = Ext.extend(Ext.Panel,
 					forceSelection: true,
 					editable: false,
 					hiddenName: 'rules',
-					emptyText: TYPO3.lang.validation_emptytext,
+					emptyText: TYPO3.l10n.localize('validation_emptytext'),
 					width: 150,
 					displayField: 'label',
 					valueField: 'value',
@@ -154,7 +154,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation = Ext.extend(Ext.Panel,
 		var xtype = 'typo3-form-wizard-viewport-left-options-forms-validation-' + rule;
 
 		if (!Ext.isEmpty(this.findByType(xtype))) {
-			Ext.MessageBox.alert(TYPO3.lang.validation_alert_title, TYPO3.lang.validation_alert_description);
+			Ext.MessageBox.alert(TYPO3.l10n.localize('validation_alert_title'), TYPO3.l10n.localize('validation_alert_description'));
 		} else {
 			this.remove(this.dummy);
 
@@ -237,7 +237,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation = Ext.extend(Ext.Panel,
 
 		Ext.iterate(allowedElementRules, function(item, index, allItems) {
 			if (allowedDefaultRules.indexOf(item) > -1) {
-				rules.push({label: TYPO3.lang['validation_' + item], value: item});
+				rules.push({label: TYPO3.l10n.localize('validation_' + item), value: item});
 			}
 		}, this);
 

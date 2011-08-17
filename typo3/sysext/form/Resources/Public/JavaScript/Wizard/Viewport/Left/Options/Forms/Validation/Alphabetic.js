@@ -25,8 +25,8 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Alphabetic = Ext.extend
 			configuration: {
 				breakOnError: 0,
 				showMessage: 1,
-				message: TYPO3.lang['tx_form_system_validate_alphabetic.message'],
-				error: TYPO3.lang['tx_form_system_validate_alphabetic.error'],
+				message: TYPO3.l10n.localize('tx_form_system_validate_alphabetic.message'),
+				error: TYPO3.l10n.localize('tx_form_system_validate_alphabetic.error'),
 				allowWhiteSpace: 0
 			}
 		});

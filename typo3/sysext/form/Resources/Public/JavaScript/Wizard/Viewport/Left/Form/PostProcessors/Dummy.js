@@ -31,8 +31,8 @@ TYPO3.Form.Wizard.Viewport.Left.Form.PostProcessors.Dummy = Ext.extend(Ext.Panel
 	 * the Component.
 	 */
 	data: [{
-		title: TYPO3.lang.postprocessor_dummy_title,
-		description: TYPO3.lang.postprocessor_dummy_description
+		title: TYPO3.l10n.localize('postprocessor_dummy_title'),
+		description: TYPO3.l10n.localize('postprocessor_dummy_description')
 	}],
 
 	/**

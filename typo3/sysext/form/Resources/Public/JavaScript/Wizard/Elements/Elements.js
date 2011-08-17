@@ -194,8 +194,8 @@ TYPO3.Form.Wizard.Elements = Ext.extend(Ext.Container, {
 	 */
 	confirmDeleteElement: function(event, target, object) {
 		Ext.MessageBox.confirm(
-			TYPO3.lang.elements_confirm_delete_title,
-			TYPO3.lang.elements_confirm_delete_description,
+			TYPO3.l10n.localize('elements_confirm_delete_title'),
+			TYPO3.l10n.localize('elements_confirm_delete_description'),
 			this.deleteElement,
 			this
 		);

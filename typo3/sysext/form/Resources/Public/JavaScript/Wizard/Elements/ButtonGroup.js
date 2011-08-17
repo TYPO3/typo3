@@ -46,12 +46,12 @@ TYPO3.Form.Wizard.ButtonGroup = Ext.extend(Ext.Container, {
 			items: [
 				{
 					iconCls: 't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-delete',
-					tooltip: TYPO3.lang.elements_button_delete,
+					tooltip: TYPO3.l10n.localize('elements_button_delete'),
 					handler: this.removeElement,
 					scope: this
 				}, {
 					iconCls: 't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-open',
-					tooltip: TYPO3.lang.elements_button_edit,
+					tooltip: TYPO3.l10n.localize('elements_button_edit'),
 					handler: this.setActive,
 					scope: this
 				}

@@ -648,7 +648,7 @@ TYPO3.EM.LanguagesProgressPanel = {
 		TYPO3.EM.LanguagesProgressBar,
 		{
 			xtype: 'button',
-			text: 'cancel', //TYPO3.lang.cancel,
+			text: 'cancel', //TYPO3.l10n.localize('cancel'),
 			id: 'lang-cancelbutton',
 			margins: '0 0 10 10',
 			width: 80

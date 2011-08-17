@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Label = Ext.extend(Ext.FormPanel, 
 	 * The title text to be used as innerHTML (html tags are accepted) to
 	 * display in the panel header (defaults to '').
 	 */
-	title: TYPO3.lang.options_label,
+	title: TYPO3.l10n.localize('options_label'),
 
 	/** @cfg {String} defaultType
 	 *
@@ -60,7 +60,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Label = Ext.extend(Ext.FormPanel, 
 			switch(item) {
 				case 'label':
 					formItems.push({
-						fieldLabel: TYPO3.lang.label_label,
+						fieldLabel: TYPO3.l10n.localize('label_label'),
 						name: 'label',
 						listeners: {
 							'triggerclick': {
@@ -72,7 +72,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Label = Ext.extend(Ext.FormPanel, 
 					break;
 				case 'layout':
 					formItems.push({
-						fieldLabel: TYPO3.lang.label_layout,
+						fieldLabel: TYPO3.l10n.localize('label_layout'),
 						name: 'layout',
 						xtype: 'combo',
 						mode: 'local',
@@ -85,8 +85,8 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Label = Ext.extend(Ext.FormPanel, 
 						store: new Ext.data.JsonStore({
 							fields: ['label', 'value'],
 							data: [
-								{label: TYPO3.lang.label_layout_front, value: 'front'},
-								{label: TYPO3.lang.label_layout_back, value: 'back'}
+								{label: TYPO3.l10n.localize('label_layout_front'), value: 'front'},
+								{label: TYPO3.l10n.localize('label_layout_back'), value: 'back'}
 							]
 						}),
 						listeners: {

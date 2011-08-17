@@ -27,7 +27,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Basic = Ext.extend(TYPO3.Form.Wizard.Vi
 	 * The title text to be used as innerHTML (html tags are accepted) to
 	 * display in the panel header (defaults to '').
 	 */
-	title: TYPO3.lang.left_elements_basic,
+	title: TYPO3.l10n.localize('left_elements_basic'),
 
 	/**
 	 * Constructor
@@ -42,7 +42,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Basic = Ext.extend(TYPO3.Form.Wizard.Vi
 			switch (option) {
 				case 'button':
 					buttons.push({
-						text: TYPO3.lang.basic_button,
+						text: TYPO3.l10n.localize('basic_button'),
 						id: 'basic-button',
 						clickEvent: 'dblclick',
 						handler: this.onDoubleClick,
@@ -52,7 +52,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Basic = Ext.extend(TYPO3.Form.Wizard.Vi
 					break;
 				case 'checkbox':
 					buttons.push({
-						text: TYPO3.lang.basic_checkbox,
+						text: TYPO3.l10n.localize('basic_checkbox'),
 						id: 'basic-checkbox',
 						clickEvent: 'dblclick',
 						handler: this.onDoubleClick,
@@ -62,7 +62,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Basic = Ext.extend(TYPO3.Form.Wizard.Vi
 					break;
 				case 'fieldset':
 					buttons.push({
-						text: TYPO3.lang.basic_fieldset,
+						text: TYPO3.l10n.localize('basic_fieldset'),
 						id: 'basic-fieldset',
 						clickEvent: 'dblclick',
 						handler: this.onDoubleClick,
@@ -72,7 +72,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Basic = Ext.extend(TYPO3.Form.Wizard.Vi
 					break;
 				case 'fileupload':
 					buttons.push({
-						text: TYPO3.lang.basic_fileupload,
+						text: TYPO3.l10n.localize('basic_fileupload'),
 						id: 'basic-fileupload',
 						clickEvent: 'dblclick',
 						handler: this.onDoubleClick,
@@ -82,7 +82,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Basic = Ext.extend(TYPO3.Form.Wizard.Vi
 					break;
 				case 'hidden':
 					buttons.push({
-						text: TYPO3.lang.basic_hidden,
+						text: TYPO3.l10n.localize('basic_hidden'),
 						id: 'basic-hidden',
 						clickEvent: 'dblclick',
 						handler: this.onDoubleClick,
@@ -92,7 +92,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Basic = Ext.extend(TYPO3.Form.Wizard.Vi
 					break;
 				case 'password':
 					buttons.push({
-						text: TYPO3.lang.basic_password,
+						text: TYPO3.l10n.localize('basic_password'),
 						id: 'basic-password',
 						clickEvent: 'dblclick',
 						handler: this.onDoubleClick,
@@ -102,7 +102,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Basic = Ext.extend(TYPO3.Form.Wizard.Vi
 					break;
 				case 'radio':
 					buttons.push({
-						text: TYPO3.lang.basic_radio,
+						text: TYPO3.l10n.localize('basic_radio'),
 						id: 'basic-radio',
 						clickEvent: 'dblclick',
 						handler: this.onDoubleClick,
@@ -112,7 +112,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Basic = Ext.extend(TYPO3.Form.Wizard.Vi
 					break;
 				case 'reset':
 					buttons.push({
-						text: TYPO3.lang.basic_reset,
+						text: TYPO3.l10n.localize('basic_reset'),
 						id: 'basic-reset',
 						clickEvent: 'dblclick',
 						handler: this.onDoubleClick,
@@ -122,7 +122,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Basic = Ext.extend(TYPO3.Form.Wizard.Vi
 					break;
 				case 'select':
 					buttons.push({
-						text: TYPO3.lang.basic_select,
+						text: TYPO3.l10n.localize('basic_select'),
 						id: 'basic-select',
 						clickEvent: 'dblclick',
 						handler: this.onDoubleClick,
@@ -132,7 +132,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Basic = Ext.extend(TYPO3.Form.Wizard.Vi
 					break;
 				case 'submit':
 					buttons.push({
-						text: TYPO3.lang.basic_submit,
+						text: TYPO3.l10n.localize('basic_submit'),
 						id: 'basic-submit',
 						clickEvent: 'dblclick',
 						handler: this.onDoubleClick,
@@ -142,7 +142,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Basic = Ext.extend(TYPO3.Form.Wizard.Vi
 					break;
 				case 'textarea':
 					buttons.push({
-						text: TYPO3.lang.basic_textarea,
+						text: TYPO3.l10n.localize('basic_textarea'),
 						id: 'basic-textarea',
 						clickEvent: 'dblclick',
 						handler: this.onDoubleClick,
@@ -152,7 +152,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Basic = Ext.extend(TYPO3.Form.Wizard.Vi
 					break;
 				case 'textline':
 					buttons.push({
-						text: TYPO3.lang.basic_textline,
+						text: TYPO3.l10n.localize('basic_textline'),
 						id: 'basic-textline',
 						clickEvent: 'dblclick',
 						handler: this.onDoubleClick,

@@ -66,7 +66,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Filter = Ext.extend(Ext.Fo
 				case 'allowWhiteSpace':
 					formItems.push({
 						xtype: 'checkbox',
-						fieldLabel: TYPO3.lang.filters_properties_allowwhitespace,
+						fieldLabel: TYPO3.l10n.localize('filters_properties_allowwhitespace'),
 						name: 'allowWhiteSpace',
 						inputValue: '1',
 						listeners: {
@@ -79,7 +79,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Filter = Ext.extend(Ext.Fo
 					break;
 				case 'decimalPoint':
 					formItems.push({
-						fieldLabel: TYPO3.lang.filters_properties_decimalpoint,
+						fieldLabel: TYPO3.l10n.localize('filters_properties_decimalpoint'),
 						name: 'decimalPoint',
 						allowBlank: false,
 						listeners: {
@@ -92,7 +92,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Filter = Ext.extend(Ext.Fo
 					break;
 				case 'thousandSeparator':
 					formItems.push({
-						fieldLabel: TYPO3.lang.filters_properties_thousandseparator,
+						fieldLabel: TYPO3.l10n.localize('filters_properties_thousandseparator'),
 						name: 'thousandSeparator',
 						allowBlank: false,
 						listeners: {
@@ -105,7 +105,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Filter = Ext.extend(Ext.Fo
 					break;
 				case 'expression':
 					formItems.push({
-						fieldLabel: TYPO3.lang.filters_properties_expression,
+						fieldLabel: TYPO3.l10n.localize('filters_properties_expression'),
 						name: 'expression',
 						allowBlank: false,
 						listeners: {
@@ -118,7 +118,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Filter = Ext.extend(Ext.Fo
 					break;
 				case 'characterList':
 					formItems.push({
-						fieldLabel: TYPO3.lang.filters_properties_characterlist,
+						fieldLabel: TYPO3.l10n.localize('filters_properties_characterlist'),
 						name: 'characterList',
 						allowBlank: false,
 						listeners: {
@@ -141,8 +141,8 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Filter = Ext.extend(Ext.Fo
 				width: 256,
 				cls: 'typo3-message message-information',
 				data: [{
-					title: TYPO3.lang.filters_properties_none_title,
-					description: TYPO3.lang.filters_properties_none
+					title: TYPO3.l10n.localize('filters_properties_none_title'),
+					description: TYPO3.l10n.localize('filters_properties_none')
 				}],
 				tpl: new Ext.XTemplate(
 					'<tpl for=".">',
@@ -156,7 +156,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Filter = Ext.extend(Ext.Fo
 
 		formItems.push({
 			xtype: 'button',
-			text: TYPO3.lang.button_remove,
+			text: TYPO3.l10n.localize('button_remove'),
 			handler: this.removeFilter,
 			scope: this
 		});

@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 	 * The title text to be used as innerHTML (html tags are accepted) to
 	 * display in the panel header (defaults to '').
 	 */
-	title: TYPO3.lang.options_attributes,
+	title: TYPO3.l10n.localize('options_attributes'),
 
 	/** @cfg {String} defaultType
 	 *
@@ -62,7 +62,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 			switch(item) {
 				case 'accept':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_accept,
+						fieldLabel: TYPO3.l10n.localize('attributes_accept'),
 						name: 'accept',
 						listeners: {
 							'triggerclick': {
@@ -74,7 +74,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'acceptcharset':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_acceptcharset,
+						fieldLabel: TYPO3.l10n.localize('attributes_acceptcharset'),
 						name: 'acceptcharset',
 						listeners: {
 							'triggerclick': {
@@ -86,7 +86,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'accesskey':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_accesskey,
+						fieldLabel: TYPO3.l10n.localize('attributes_accesskey'),
 						name: 'accesskey',
 						maxlength: 1,
 						listeners: {
@@ -99,7 +99,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'action':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_action,
+						fieldLabel: TYPO3.l10n.localize('attributes_action'),
 						name: 'action',
 						listeners: {
 							'triggerclick': {
@@ -111,7 +111,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'alt':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_alt,
+						fieldLabel: TYPO3.l10n.localize('attributes_alt'),
 						name: 'alt',
 						listeners: {
 							'triggerclick': {
@@ -124,7 +124,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 				case 'checked':
 					formItems.push({
 						xtype: 'checkbox',
-						fieldLabel: TYPO3.lang.attributes_checked,
+						fieldLabel: TYPO3.l10n.localize('attributes_checked'),
 						name: 'checked',
 						inputValue: 'checked',
 						listeners: {
@@ -137,7 +137,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'class':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_class,
+						fieldLabel: TYPO3.l10n.localize('attributes_class'),
 						name: 'class',
 						listeners: {
 							'triggerclick': {
@@ -149,7 +149,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'cols':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_cols,
+						fieldLabel: TYPO3.l10n.localize('attributes_cols'),
 						name: 'cols',
 						xtype: 'spinnerfield',
 						allowBlank: false,
@@ -163,7 +163,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'dir':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_dir,
+						fieldLabel: TYPO3.l10n.localize('attributes_dir'),
 						name: 'dir',
 						xtype: 'combo',
 						mode: 'local',
@@ -176,8 +176,8 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 						store: new Ext.data.JsonStore({
 							fields: ['label', 'value'],
 							data: [
-								{label: TYPO3.lang.attributes_dir_ltr, value: 'ltr'},
-								{label: TYPO3.lang.attributes_dir_rtl, value: 'rtl'}
+								{label: TYPO3.l10n.localize('attributes_dir_ltr'), value: 'ltr'},
+								{label: TYPO3.l10n.localize('attributes_dir_rtl'), value: 'rtl'}
 							]
 						}),
 						listeners: {
@@ -191,7 +191,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 				case 'disabled':
 					formItems.push({
 						xtype: 'checkbox',
-						fieldLabel: TYPO3.lang.attributes_disabled,
+						fieldLabel: TYPO3.l10n.localize('attributes_disabled'),
 						name: 'disabled',
 						inputValue: 'disabled',
 						listeners: {
@@ -204,7 +204,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'enctype':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_enctype,
+						fieldLabel: TYPO3.l10n.localize('attributes_enctype'),
 						name: 'enctype',
 						xtype: 'combo',
 						mode: 'local',
@@ -217,9 +217,9 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 						store: new Ext.data.JsonStore({
 							fields: ['label', 'value'],
 							data: [
-								{label: TYPO3.lang.attributes_enctype_1, value: 'application/x-www-form-urlencoded'},
-								{label: TYPO3.lang.attributes_enctype_2, value: 'multipart/form-data'},
-								{label: TYPO3.lang.attributes_enctype_3, value: 'text/plain'}
+								{label: TYPO3.l10n.localize('attributes_enctype_1'), value: 'application/x-www-form-urlencoded'},
+								{label: TYPO3.l10n.localize('attributes_enctype_2'), value: 'multipart/form-data'},
+								{label: TYPO3.l10n.localize('attributes_enctype_3'), value: 'text/plain'}
 							]
 						}),
 						listeners: {
@@ -232,7 +232,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'id':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_id,
+						fieldLabel: TYPO3.l10n.localize('attributes_id'),
 						name: 'id',
 						listeners: {
 							'triggerclick': {
@@ -244,7 +244,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'label':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_label,
+						fieldLabel: TYPO3.l10n.localize('attributes_label'),
 						name: 'label',
 						listeners: {
 							'triggerclick': {
@@ -256,7 +256,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'lang':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_lang,
+						fieldLabel: TYPO3.l10n.localize('attributes_lang'),
 						name: 'lang',
 						listeners: {
 							'triggerclick': {
@@ -268,7 +268,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'maxlength':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_maxlength,
+						fieldLabel: TYPO3.l10n.localize('attributes_maxlength'),
 						name: 'maxlength',
 						xtype: 'spinnerfield',
 						listeners: {
@@ -281,7 +281,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'method':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_method,
+						fieldLabel: TYPO3.l10n.localize('attributes_method'),
 						name: 'method',
 						xtype: 'combo',
 						mode: 'local',
@@ -294,8 +294,8 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 						store: new Ext.data.JsonStore({
 							fields: ['label', 'value'],
 							data: [
-								{label: TYPO3.lang.attributes_method_get, value: 'get'},
-								{label: TYPO3.lang.attributes_method_post, value: 'post'}
+								{label: TYPO3.l10n.localize('attributes_method_get'), value: 'get'},
+								{label: TYPO3.l10n.localize('attributes_method_post'), value: 'post'}
 							]
 						}),
 						listeners: {
@@ -309,7 +309,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 				case 'multiple':
 					formItems.push({
 						xtype: 'checkbox',
-						fieldLabel: TYPO3.lang.attributes_multiple,
+						fieldLabel: TYPO3.l10n.localize('attributes_multiple'),
 						name: 'multiple',
 						inputValue: 'multiple',
 						listeners: {
@@ -322,7 +322,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'name':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_name,
+						fieldLabel: TYPO3.l10n.localize('attributes_name'),
 						name: 'name',
 						allowBlank:false,
 						listeners: {
@@ -336,7 +336,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 				case 'readonly':
 					formItems.push({
 						xtype: 'checkbox',
-						fieldLabel: TYPO3.lang.attributes_readonly,
+						fieldLabel: TYPO3.l10n.localize('attributes_readonly'),
 						name: 'readonly',
 						inputValue: 'readonly',
 						listeners: {
@@ -349,7 +349,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'rows':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_rows,
+						fieldLabel: TYPO3.l10n.localize('attributes_rows'),
 						name: 'rows',
 						xtype: 'spinnerfield',
 						allowBlank: false,
@@ -364,7 +364,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 				case 'selected':
 					formItems.push({
 						xtype: 'checkbox',
-						fieldLabel: TYPO3.lang.attributes_selected,
+						fieldLabel: TYPO3.l10n.localize('attributes_selected'),
 						name: 'selected',
 						inputValue: 'selected',
 						listeners: {
@@ -377,7 +377,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'size':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_size,
+						fieldLabel: TYPO3.l10n.localize('attributes_size'),
 						name: 'size',
 						xtype: 'spinnerfield',
 						listeners: {
@@ -390,7 +390,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'src':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_src,
+						fieldLabel: TYPO3.l10n.localize('attributes_src'),
 						name: 'src',
 						listeners: {
 							'triggerclick': {
@@ -402,7 +402,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'style':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_style,
+						fieldLabel: TYPO3.l10n.localize('attributes_style'),
 						name: 'style',
 						listeners: {
 							'triggerclick': {
@@ -414,7 +414,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'tabindex':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_tabindex,
+						fieldLabel: TYPO3.l10n.localize('attributes_tabindex'),
 						name: 'tabindex',
 						xtype: 'spinnerfield',
 						listeners: {
@@ -427,7 +427,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'title':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_title,
+						fieldLabel: TYPO3.l10n.localize('attributes_title'),
 						name: 'title',
 						listeners: {
 							'triggerclick': {
@@ -439,7 +439,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'type':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_type,
+						fieldLabel: TYPO3.l10n.localize('attributes_type'),
 						name: 'type',
 						xtype: 'combo',
 						mode: 'local',
@@ -452,16 +452,16 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 						store: new Ext.data.JsonStore({
 							fields: ['label', 'value'],
 							data: [
-								{label: TYPO3.lang.attributes_type_button, value: 'button'},
-								{label: TYPO3.lang.attributes_type_checkbox, value: 'checkbox'},
-								{label: TYPO3.lang.attributes_type_file, value: 'file'},
-								{label: TYPO3.lang.attributes_type_hidden, value: 'hidden'},
-								{label: TYPO3.lang.attributes_type_image, value: 'image'},
-								{label: TYPO3.lang.attributes_type_password, value: 'password'},
-								{label: TYPO3.lang.attributes_type_radio, value: 'radio'},
-								{label: TYPO3.lang.attributes_type_reset, value: 'reset'},
-								{label: TYPO3.lang.attributes_type_submit, value: 'submit'},
-								{label: TYPO3.lang.attributes_type_text, value: 'text'}
+								{label: TYPO3.l10n.localize('attributes_type_button'), value: 'button'},
+								{label: TYPO3.l10n.localize('attributes_type_checkbox'), value: 'checkbox'},
+								{label: TYPO3.l10n.localize('attributes_type_file'), value: 'file'},
+								{label: TYPO3.l10n.localize('attributes_type_hidden'), value: 'hidden'},
+								{label: TYPO3.l10n.localize('attributes_type_image'), value: 'image'},
+								{label: TYPO3.l10n.localize('attributes_type_password'), value: 'password'},
+								{label: TYPO3.l10n.localize('attributes_type_radio'), value: 'radio'},
+								{label: TYPO3.l10n.localize('attributes_type_reset'), value: 'reset'},
+								{label: TYPO3.l10n.localize('attributes_type_submit'), value: 'submit'},
+								{label: TYPO3.l10n.localize('attributes_type_text'), value: 'text'}
 							]
 						}),
 						listeners: {
@@ -474,7 +474,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'value':
 					formItems.push({
-						fieldLabel: TYPO3.lang.attributes_value,
+						fieldLabel: TYPO3.l10n.localize('attributes_value'),
 						name: 'value',
 						listeners: {
 							'triggerclick': {

@@ -67,7 +67,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.F
 			switch(item) {
 				case 'message':
 					formItems.push({
-						fieldLabel: TYPO3.lang.validation_properties_message,
+						fieldLabel: TYPO3.l10n.localize('validation_properties_message'),
 						name: 'message',
 						allowBlank: false,
 						listeners: {
@@ -80,7 +80,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.F
 					break;
 				case 'error':
 					formItems.push({
-						fieldLabel: TYPO3.lang.validation_properties_error,
+						fieldLabel: TYPO3.l10n.localize('validation_properties_error'),
 						name: 'error',
 						allowBlank: false,
 						listeners: {
@@ -94,7 +94,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.F
 				case 'breakOnError':
 					formItems.push({
 						xtype: 'checkbox',
-						fieldLabel: TYPO3.lang.validation_properties_breakonerror,
+						fieldLabel: TYPO3.l10n.localize('validation_properties_breakonerror'),
 						name: 'breakOnError',
 						inputValue: '1',
 						listeners: {
@@ -108,7 +108,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.F
 				case 'showMessage':
 					formItems.push({
 						xtype: 'checkbox',
-						fieldLabel: TYPO3.lang.validation_properties_showmessage,
+						fieldLabel: TYPO3.l10n.localize('validation_properties_showmessage'),
 						name: 'showMessage',
 						inputValue: '1',
 						listeners: {
@@ -122,7 +122,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.F
 				case 'allowWhiteSpace':
 					formItems.push({
 						xtype: 'checkbox',
-						fieldLabel: TYPO3.lang.validation_properties_allowwhitespace,
+						fieldLabel: TYPO3.l10n.localize('validation_properties_allowwhitespace'),
 						name: 'allowWhiteSpace',
 						inputValue: '1',
 						listeners: {
@@ -136,7 +136,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.F
 				case 'minimum':
 					formItems.push({
 						xtype: 'spinnerfield',
-						fieldLabel: TYPO3.lang.validation_properties_minimum,
+						fieldLabel: TYPO3.l10n.localize('validation_properties_minimum'),
 						name: 'minimum',
 						minValue: 0,
 						accelerate: true,
@@ -151,7 +151,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.F
 				case 'maximum':
 					formItems.push({
 						xtype: 'spinnerfield',
-						fieldLabel: TYPO3.lang.validation_properties_maximum,
+						fieldLabel: TYPO3.l10n.localize('validation_properties_maximum'),
 						name: 'maximum',
 						minValue: 0,
 						accelerate: true,
@@ -166,7 +166,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.F
 				case 'inclusive':
 					formItems.push({
 						xtype: 'checkbox',
-						fieldLabel: TYPO3.lang.validation_properties_inclusive,
+						fieldLabel: TYPO3.l10n.localize('validation_properties_inclusive'),
 						name: 'inclusive',
 						inputValue: '1',
 						listeners: {
@@ -179,7 +179,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.F
 					break;
 				case 'format':
 					formItems.push({
-						fieldLabel: TYPO3.lang.validation_properties_format,
+						fieldLabel: TYPO3.l10n.localize('validation_properties_format'),
 						name: 'format',
 						allowBlank: false,
 						listeners: {
@@ -192,7 +192,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.F
 					break;
 				case 'field':
 					formItems.push({
-						fieldLabel: TYPO3.lang.validation_properties_field,
+						fieldLabel: TYPO3.l10n.localize('validation_properties_field'),
 						name: 'field',
 						allowBlank: false,
 						listeners: {
@@ -205,7 +205,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.F
 					break;
 				case 'array':
 					formItems.push({
-						fieldLabel: TYPO3.lang.validation_properties_array,
+						fieldLabel: TYPO3.l10n.localize('validation_properties_array'),
 						name: 'array',
 						allowBlank: false,
 						listeners: {
@@ -218,7 +218,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.F
 					break;
 				case 'expression':
 					formItems.push({
-						fieldLabel: TYPO3.lang.validation_properties_expression,
+						fieldLabel: TYPO3.l10n.localize('validation_properties_expression'),
 						name: 'expression',
 						allowBlank: false,
 						listeners: {
@@ -230,7 +230,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.F
 					});
 				case 'types':
 					formItems.push({
-						fieldLabel: TYPO3.lang.validation_properties_types,
+						fieldLabel: TYPO3.l10n.localize('validation_properties_types'),
 						name: 'types',
 						allowBlank: false,
 						listeners: {
@@ -246,7 +246,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.F
 
 		formItems.push({
 			xtype: 'button',
-			text: TYPO3.lang.button_remove,
+			text: TYPO3.l10n.localize('button_remove'),
 			handler: this.removeRule,
 			scope: this
 		});
@@ -255,7 +255,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.F
 			items: [
 				{
 					xtype: 'fieldset',
-					title: TYPO3.lang['validation_' + this.rule],
+					title: TYPO3.l10n.localize('validation_' + this.rule),
 					autoHeight: true,
 					defaults: {
 						width: 128,

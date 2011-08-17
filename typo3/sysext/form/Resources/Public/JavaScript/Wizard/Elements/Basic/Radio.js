@@ -86,7 +86,7 @@ TYPO3.Form.Wizard.Elements.Basic.Radio = Ext.extend(TYPO3.Form.Wizard.Elements, 
 				},
 				filters: {},
 				label: {
-					value: TYPO3.lang.elements_label
+					value: TYPO3.l10n.localize('elements_label')
 				},
 				layout: 'back',
 				validation: {}

@@ -1121,8 +1121,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				if (event.code === Ext.Direct.exceptions.TRANSPORT && !event.where) {
 					TYPO3.Flashmessage.display(
 						TYPO3.Severity.error,
-						TYPO3.lang.extDirect_timeoutHeader,
-						TYPO3.lang.extDirect_timeoutMessage,
+						TYPO3.l10n.localize("extDirect_timeoutHeader"),
+						TYPO3.l10n.localize("extDirect_timeoutMessage"),
 						30
 					);
 				} else {

@@ -68,15 +68,15 @@ TYPO3.Form.Wizard.Elements.Predefined.RadioGroup = Ext.extend(TYPO3.Form.Wizard.
 					style: ''
 				},
 				legend: {
-					value: TYPO3.lang.elements_legend
+					value: TYPO3.l10n.localize('elements_legend')
 				},
 				options: [
 					{
-						data: TYPO3.lang.elements_option_1
+						data: TYPO3.l10n.localize('elements_option_1')
 					}, {
-						data: TYPO3.lang.elements_option_2
+						data: TYPO3.l10n.localize('elements_option_2')
 					}, {
-						data: TYPO3.lang.elements_option_3
+						data: TYPO3.l10n.localize('elements_option_3')
 					}
 				],
 				various: {

@@ -35,7 +35,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements = Ext.extend(Ext.Panel, {
 	 * The title text to be used as innerHTML (html tags are accepted) to
 	 * display in the panel header (defaults to '').
 	 */
-	title: TYPO3.lang.left_elements,
+	title: TYPO3.l10n.localize('left_elements'),
 
 	/**
 	 * Constructor
@@ -67,8 +67,8 @@ TYPO3.Form.Wizard.Viewport.Left.Elements = Ext.extend(Ext.Panel, {
 						'</tpl>'
 					),
 					data: [{
-						title: TYPO3.lang.left_elements_intro_title,
-						description: TYPO3.lang.left_elements_intro_description
+						title: TYPO3.l10n.localize('left_elements_intro_title'),
+						description: TYPO3.l10n.localize('left_elements_intro_description')
 					}],
 					cls: 'formwizard-left-dummy typo3-message message-information'
 				}, {
