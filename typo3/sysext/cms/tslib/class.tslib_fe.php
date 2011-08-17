@@ -3219,6 +3219,17 @@ if (version == "n3") {
 	/*]]>*/
 </script>';
 		}
+		if ($this->JSCode || count($this->additionalJavaScript)) { // Add javascript
+			$this->additionalHeaderData['JSCode'] = '
+<script type="text/javascript">
+	/*<![CDATA[*/
+<!--
+' . implode(LF, $this->additionalJavaScript) . '
+' . trim($this->JSCode) . '
+// -->
+	/*]]>*/
+</script>';
+		}
 		if (count($this->additionalCSS))	{	// Add javascript
 			$this->additionalHeaderData['_CSS']='
 <style type="text/css">
