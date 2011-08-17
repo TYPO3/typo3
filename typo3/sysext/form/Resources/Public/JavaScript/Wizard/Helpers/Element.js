@@ -39,8 +39,8 @@ TYPO3.Form.Wizard.Helpers.Element = Ext.extend(Ext.util.Observable, {
 			this.fireEvent('setactive', this.active);
 		} else {
 			Ext.MessageBox.show({
-				title: TYPO3.lang.options_error,
-				msg: TYPO3.lang.options_error_message,
+				title: TYPO3.l10n.localize('options_error'),
+				msg: TYPO3.l10n.localize('options_error_message'),
 				icon: Ext.MessageBox.ERROR,
 				buttons: Ext.MessageBox.OK
 			});

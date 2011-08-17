@@ -82,7 +82,7 @@ TYPO3.Form.Wizard.Elements.Basic.Button = Ext.extend(TYPO3.Form.Wizard.Elements,
 					tabindex: '',
 					title: '',
 					type: 'button',
-					value: TYPO3.lang['tx_form_domain_model_element_button.value']
+					value: TYPO3.l10n.localize('tx_form_domain_model_element_button.value')
 				},
 				filters: {},
 				label: {

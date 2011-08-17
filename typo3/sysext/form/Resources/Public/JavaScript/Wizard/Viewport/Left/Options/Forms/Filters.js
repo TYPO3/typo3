@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters = Ext.extend(Ext.Panel, {
 	 * The title text to be used as innerHTML (html tags are accepted) to
 	 * display in the panel header (defaults to '').
 	 */
-	title: TYPO3.lang.options_filters,
+	title: TYPO3.l10n.localize('options_filters'),
 
 	/**
 	 * @cfg {Object} validFilters
@@ -65,7 +65,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters = Ext.extend(Ext.Panel, {
 					forceSelection: true,
 					editable: false,
 					hiddenName: 'filters',
-					emptyText: TYPO3.lang.filters_emptytext,
+					emptyText: TYPO3.l10n.localize('filters_emptytext'),
 					width: 150,
 					displayField: 'label',
 					valueField: 'value',
@@ -130,7 +130,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters = Ext.extend(Ext.Panel, {
 		var xtype = 'typo3-form-wizard-viewport-left-options-forms-filters-' + filter;
 
 		if (!Ext.isEmpty(this.findByType(xtype))) {
-			Ext.MessageBox.alert(TYPO3.lang.filters_alert_title, TYPO3.lang.filters_alert_description);
+			Ext.MessageBox.alert(TYPO3.l10n.localize('filters_alert_title'), TYPO3.l10n.localize('filters_alert_description'));
 		} else {
 			this.remove(this.dummy);
 
@@ -207,7 +207,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters = Ext.extend(Ext.Panel, {
 
 		Ext.iterate(allowedElementFilters, function(item, index, allItems) {
 			if (allowedDefaultFilters.indexOf(item) > -1) {
-				filters.push({label: TYPO3.lang['filters_' + item], value: item});
+				filters.push({label: TYPO3.l10n.localize('filters_' + item), value: item});
 			}
 		}, this);
 

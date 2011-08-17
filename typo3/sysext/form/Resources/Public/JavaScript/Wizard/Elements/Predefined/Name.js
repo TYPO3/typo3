@@ -21,7 +21,7 @@ TYPO3.Form.Wizard.Elements.Predefined.Name = Ext.extend(TYPO3.Form.Wizard.Elemen
 					style: ''
 				},
 				legend: {
-					value: TYPO3.lang.elements_legend_name
+					value: TYPO3.l10n.localize('elements_legend_name')
 				},
 				various: {
 					prefix: true,
@@ -61,7 +61,7 @@ TYPO3.Form.Wizard.Elements.Predefined.Name = Ext.extend(TYPO3.Form.Wizard.Elemen
 				cls: '',
 				configuration: {
 					label: {
-						value: TYPO3.lang.elements_label_prefix
+						value: TYPO3.l10n.localize('elements_label_prefix')
 					},
 					attributes: {
 						name: 'prefix',
@@ -77,7 +77,7 @@ TYPO3.Form.Wizard.Elements.Predefined.Name = Ext.extend(TYPO3.Form.Wizard.Elemen
 			cls: '',
 			configuration: {
 				label: {
-					value: TYPO3.lang.elements_label_firstname
+					value: TYPO3.l10n.localize('elements_label_firstname')
 				},
 				attributes: {
 					name: 'firstName',
@@ -101,7 +101,7 @@ TYPO3.Form.Wizard.Elements.Predefined.Name = Ext.extend(TYPO3.Form.Wizard.Elemen
 				cls: '',
 				configuration: {
 					label: {
-						value: TYPO3.lang.elements_label_middlename
+						value: TYPO3.l10n.localize('elements_label_middlename')
 					},
 					attributes: {
 						name: 'middleName',
@@ -117,7 +117,7 @@ TYPO3.Form.Wizard.Elements.Predefined.Name = Ext.extend(TYPO3.Form.Wizard.Elemen
 			cls: '',
 			configuration: {
 				label: {
-					value: TYPO3.lang.elements_label_lastname
+					value: TYPO3.l10n.localize('elements_label_lastname')
 				},
 				attributes: {
 					name: 'lastName',
@@ -141,7 +141,7 @@ TYPO3.Form.Wizard.Elements.Predefined.Name = Ext.extend(TYPO3.Form.Wizard.Elemen
 				cls: '',
 				configuration: {
 					label: {
-						value: TYPO3.lang.elements_label_suffix
+						value: TYPO3.l10n.localize('elements_label_suffix')
 					},
 					attributes: {
 						name: 'suffix',

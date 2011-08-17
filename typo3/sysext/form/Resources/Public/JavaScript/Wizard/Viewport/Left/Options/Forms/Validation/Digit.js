@@ -25,8 +25,8 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Digit = Ext.extend(TYPO
 			configuration: {
 				breakOnError: 0,
 				showMessage: 1,
-				message: TYPO3.lang['tx_form_system_validate_digit.message'],
-				error: TYPO3.lang['tx_form_system_validate_digit.error']
+				message: TYPO3.l10n.localize('tx_form_system_validate_digit.message'),
+				error: TYPO3.l10n.localize('tx_form_system_validate_digit.error')
 			}
 		});
 		TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Digit.superclass.constructor.apply(this, arguments);

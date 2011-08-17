@@ -41,8 +41,8 @@ TYPO3.Form.Wizard.Elements.Dummy = Ext.extend(TYPO3.Form.Wizard.Elements, {
 	 * rendering the xtemplate, so we need a copy.
 	 */
 	configuration: {
-		title: TYPO3.lang.elements_dummy_title,
-		description: TYPO3.lang.elements_dummy_description
+		title: TYPO3.l10n.localize('elements_dummy_title'),
+		description: TYPO3.l10n.localize('elements_dummy_description')
 	},
 
 	/**

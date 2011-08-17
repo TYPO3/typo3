@@ -69,7 +69,7 @@ TYPO3.Form.Wizard.Elements.Basic.Fieldset = Ext.extend(TYPO3.Form.Wizard.Element
 					style: ''
 				},
 				legend: {
-					value: TYPO3.lang.elements_legend
+					value: TYPO3.l10n.localize('elements_legend')
 				}
 			}
 		});

@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Legend = Ext.extend(Ext.FormPanel,
 	 * The title text to be used as innerHTML (html tags are accepted) to
 	 * display in the panel header (defaults to '').
 	 */
-	title: TYPO3.lang.options_legend,
+	title: TYPO3.l10n.localize('options_legend'),
 
 	/** @cfg {String} defaultType
 	 *
@@ -66,7 +66,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Legend = Ext.extend(Ext.FormPanel,
 				defaultType: 'textfieldsubmit',
 				items: [
 					{
-						fieldLabel: TYPO3.lang.legend_legend,
+						fieldLabel: TYPO3.l10n.localize('legend_legend'),
 						name: 'legend',
 						enableKeyEvents: true,
 						listeners: {

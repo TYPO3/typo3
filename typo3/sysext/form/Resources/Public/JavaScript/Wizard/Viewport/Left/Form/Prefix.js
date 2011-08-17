@@ -27,7 +27,7 @@ TYPO3.Form.Wizard.Viewport.Left.Form.Prefix = Ext.extend(Ext.FormPanel, {
 	 * The title text to be used as innerHTML (html tags are accepted) to
 	 * display in the panel header (defaults to '').
 	 */
-	title: TYPO3.lang.form_prefix,
+	title: TYPO3.l10n.localize('form_prefix'),
 
 	/** @cfg {String} defaultType
 	 *
@@ -90,7 +90,7 @@ TYPO3.Form.Wizard.Viewport.Left.Form.Prefix = Ext.extend(Ext.FormPanel, {
 				defaultType: 'textfieldsubmit',
 				items: [
 					{
-						fieldLabel: TYPO3.lang.prefix_prefix,
+						fieldLabel: TYPO3.l10n.localize('prefix_prefix'),
 						name: 'prefix',
 						allowBlank: false,
 						listeners: {

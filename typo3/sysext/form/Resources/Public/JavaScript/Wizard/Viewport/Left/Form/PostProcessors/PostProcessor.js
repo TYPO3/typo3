@@ -67,7 +67,7 @@ TYPO3.Form.Wizard.Viewport.Left.Form.PostProcessors.PostProcessor = Ext.extend(E
 			switch(item) {
 				case 'recipientEmail':
 					formItems.push({
-						fieldLabel: TYPO3.lang.postprocessor_properties_recipientemail,
+						fieldLabel: TYPO3.l10n.localize('postprocessor_properties_recipientemail'),
 						name: 'recipientEmail',
 						allowBlank: false,
 						listeners: {
@@ -80,7 +80,7 @@ TYPO3.Form.Wizard.Viewport.Left.Form.PostProcessors.PostProcessor = Ext.extend(E
 					break;
 				case 'senderEmail':
 					formItems.push({
-						fieldLabel: TYPO3.lang.postprocessor_properties_senderemail,
+						fieldLabel: TYPO3.l10n.localize('postprocessor_properties_senderemail'),
 						name: 'senderEmail',
 						allowBlank: false,
 						listeners: {
@@ -97,7 +97,7 @@ TYPO3.Form.Wizard.Viewport.Left.Form.PostProcessors.PostProcessor = Ext.extend(E
 		// TODO: Add the remove button when more post processors are available
 		/*formItems.push({
 			xtype: 'button',
-			text: TYPO3.lang.button_remove,
+			text: TYPO3.l10n.localize('button_remove'),
 			handler: this.removePostProcessor,
 			scope: this
 		});*/
@@ -106,7 +106,7 @@ TYPO3.Form.Wizard.Viewport.Left.Form.PostProcessors.PostProcessor = Ext.extend(E
 			items: [
 				{
 					xtype: 'fieldset',
-					title: TYPO3.lang['postprocessor_' + this.processor],
+					title: TYPO3.l10n.localize('postprocessor_' + this.processor),
 					autoHeight: true,
 					defaults: {
 						width: 128,

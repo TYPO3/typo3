@@ -97,7 +97,7 @@ TYPO3.Form.Wizard.Viewport = Ext.extend(Ext.Container, {
 				tag: 'span',
 				cls: 't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save',
 				id: 'formwizard-save',
-				title: TYPO3.lang.save
+				title: TYPO3.l10n.localize('save')
 			})
 		);
 
@@ -106,7 +106,7 @@ TYPO3.Form.Wizard.Viewport = Ext.extend(Ext.Container, {
 					tag: 'span',
 					cls: 't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save-close',
 					id: 'formwizard-saveandclose',
-					title: TYPO3.lang.saveAndClose
+					title: TYPO3.l10n.localize('saveAndClose')
 				})
 			);
 
@@ -123,7 +123,7 @@ TYPO3.Form.Wizard.Viewport = Ext.extend(Ext.Container, {
 				tag: 'span',
 				cls: 't3-icon t3-icon-actions t3-icon-actions-document t3-icon-view-go-back',
 				id: 'formwizard-history-undo',
-				title: TYPO3.lang.history_undo
+				title: TYPO3.l10n.localize('history_undo')
 			})
 		);
 
@@ -132,7 +132,7 @@ TYPO3.Form.Wizard.Viewport = Ext.extend(Ext.Container, {
 				tag: 'span',
 				cls: 't3-icon t3-icon-actions t3-icon-actions-document t3-icon-view-go-forward',
 				id: 'formwizard-history-redo',
-				title: TYPO3.lang.history_redo
+				title: TYPO3.l10n.localize('history_redo')
 			})
 		);
 
@@ -163,15 +163,15 @@ TYPO3.Form.Wizard.Viewport = Ext.extend(Ext.Container, {
 			success: function(response, opts) {
 				var responseObject = Ext.decode(response.responseText);
 				Ext.MessageBox.alert(
-					TYPO3.lang.action_save,
+					TYPO3.l10n.localize('action_save'),
 					responseObject.message
 				);
 			},
 			failure: function(response, opts) {
 				var responseObject = Ext.decode(response.responseText);
 				Ext.MessageBox.alert(
-					TYPO3.lang.action_save,
-					TYPO3.lang.action_save_error + ' ' + response.status
+					TYPO3.l10n.localize('action_save'),
+					TYPO3.l10n.localize('action_save_error') + ' ' + response.status
 				);
 			},
 			scope: this
@@ -202,8 +202,8 @@ TYPO3.Form.Wizard.Viewport = Ext.extend(Ext.Container, {
 			failure: function(response, opts) {
 				var responseObject = Ext.decode(response.responseText);
 				Ext.MessageBox.alert(
-					TYPO3.lang.action_save,
-					TYPO3.lang.action_save_error + ' ' + response.status
+					TYPO3.l10n.localize('action_save'),
+					TYPO3.l10n.localize('action_save_error') + ' ' + response.status
 				);
 			},
 			scope: this

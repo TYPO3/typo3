@@ -27,7 +27,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Predefined = Ext.extend(TYPO3.Form.Wiza
 	 * The title text to be used as innerHTML (html tags are accepted) to
 	 * display in the panel header (defaults to '').
 	 */
-	title: TYPO3.lang.left_elements_predefined,
+	title: TYPO3.l10n.localize('left_elements_predefined'),
 
 	/**
 	 * Constructor
@@ -42,7 +42,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Predefined = Ext.extend(TYPO3.Form.Wiza
 			switch (option) {
 				case 'email':
 					buttons.push({
-						text: TYPO3.lang.predefined_email,
+						text: TYPO3.l10n.localize('predefined_email'),
 						id: 'predefined-email',
 						clickEvent: 'dblclick',
 						handler: this.onDoubleClick,
@@ -52,7 +52,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Predefined = Ext.extend(TYPO3.Form.Wiza
 					break;
 				case 'radiogroup':
 					buttons.push({
-						text: TYPO3.lang.predefined_radiogroup,
+						text: TYPO3.l10n.localize('predefined_radiogroup'),
 						id: 'predefined-radiogroup',
 						clickEvent: 'dblclick',
 						handler: this.onDoubleClick,
@@ -62,7 +62,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Predefined = Ext.extend(TYPO3.Form.Wiza
 					break;
 				case 'checkboxgroup':
 					buttons.push({
-						text: TYPO3.lang.predefined_checkboxgroup,
+						text: TYPO3.l10n.localize('predefined_checkboxgroup'),
 						id: 'predefined-checkboxgroup',
 						clickEvent: 'dblclick',
 						handler: this.onDoubleClick,
@@ -72,7 +72,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Predefined = Ext.extend(TYPO3.Form.Wiza
 					break;
 				case 'name':
 					buttons.push({
-						text: TYPO3.lang.predefined_name,
+						text: TYPO3.l10n.localize('predefined_name'),
 						id: 'predefined-name',
 						clickEvent: 'dblclick',
 						handler: this.onDoubleClick,
