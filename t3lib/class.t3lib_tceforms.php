@@ -4936,12 +4936,15 @@ class t3lib_TCEforms {
 	function intoTemplate($inArr, $altTemplate = '') {
 			// Put into template_
 		$fieldTemplateParts = explode('###FIELD_', $this->rplColorScheme($altTemplate ? $altTemplate : $this->fieldTemplate));
+//		t3lib_utility_Debug::debug($fieldTemplateParts, 'template parts');
 		$out = current($fieldTemplateParts);
+//		t3lib_utility_Debug::debug($out, 'out 1');
 		foreach ($fieldTemplateParts as $part) {
 			list($key, $val) = explode('###', $part, 2);
 			$out .= $inArr[$key];
 			$out .= $val;
 		}
+//		t3lib_utility_Debug::debug($out, 'out 2');
 		return $out;
 	}
 
