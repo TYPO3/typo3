@@ -215,7 +215,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		if ($this->modTS['showCheckLinkTab'] == 1) {
 			$panelCheck = '{
 
-		       title: TYPO3.lang.CheckLink,
+		       title: TYPO3.l10n.localize('CheckLink'),
 		       html: ' . json_encode($this->flush()) . ',
 			},	';
 		}
@@ -231,7 +231,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			plugins: [new Ext.ux.plugins.FitToParent()],
 			items : [
 			{
-		       title: TYPO3.lang.Report,
+		       title: TYPO3.l10n.localize('Report'),
 				html: ' . json_encode($this->flush(TRUE)) . '
 			},
 			' . $panelCheck . '

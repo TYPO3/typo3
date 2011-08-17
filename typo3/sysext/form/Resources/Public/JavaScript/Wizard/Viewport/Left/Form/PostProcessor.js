@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Form.PostProcessor = Ext.extend(Ext.Panel, {
 	 * The title text to be used as innerHTML (html tags are accepted) to
 	 * display in the panel header (defaults to '').
 	 */
-	title: TYPO3.lang.form_postprocessor,
+	title: TYPO3.l10n.localize('form_postprocessor'),
 
 	/**
 	 * @cfg {Object} validPostProcessors
@@ -56,7 +56,7 @@ TYPO3.Form.Wizard.Viewport.Left.Form.PostProcessor = Ext.extend(Ext.Panel, {
 					forceSelection: true,
 					editable: false,
 					hiddenName: 'postprocessor',
-					emptyText: TYPO3.lang.postprocessor_emptytext,
+					emptyText: TYPO3.l10n.localize('postprocessor_emptytext'),
 					width: 150,
 					displayField: 'label',
 					valueField: 'value',
@@ -124,7 +124,7 @@ TYPO3.Form.Wizard.Viewport.Left.Form.PostProcessor = Ext.extend(Ext.Panel, {
 		var xtype = 'typo3-form-wizard-viewport-left-form-postprocessors-' + postProcessor;
 
 		if (!Ext.isEmpty(this.findByType(xtype))) {
-			Ext.MessageBox.alert(TYPO3.lang.postprocessor_alert_title, TYPO3.lang.postprocessor_alert_description);
+			Ext.MessageBox.alert(TYPO3.l10n.localize('postprocessor_alert_title'), TYPO3.l10n.localize('postprocessor_alert_description'));
 		} else {
 			this.remove(this.dummy);
 
@@ -175,7 +175,7 @@ TYPO3.Form.Wizard.Viewport.Left.Form.PostProcessor = Ext.extend(Ext.Panel, {
 		}
 
 		Ext.iterate(allowedPostProcessors, function(item, index, allItems) {
-			postProcessors.push({label: TYPO3.lang['postprocessor_' + item], value: item});
+			postProcessors.push({label: TYPO3.l10n.localize('postprocessor_' + item), value: item});
 		}, this);
 
 		return postProcessors;

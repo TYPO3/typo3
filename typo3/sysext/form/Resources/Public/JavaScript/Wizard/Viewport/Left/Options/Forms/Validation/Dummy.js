@@ -37,8 +37,8 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Dummy = Ext.extend(Ext.
 	 * the Component.
 	 */
 	data: [{
-		title: TYPO3.lang.validation_dummy_title,
-		description: TYPO3.lang.validation_dummy_description
+		title: TYPO3.l10n.localize('validation_dummy_title'),
+		description: TYPO3.l10n.localize('validation_dummy_description')
 	}],
 
 	/**

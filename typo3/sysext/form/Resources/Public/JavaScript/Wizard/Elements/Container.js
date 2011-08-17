@@ -503,8 +503,8 @@ TYPO3.Form.Wizard.Container = Ext.extend(Ext.Container, {
 			// The current active element has errors, show it!
 		} else {
 			Ext.MessageBox.show({
-				title: TYPO3.lang.options_error,
-				msg: TYPO3.lang.options_error_message,
+				title: TYPO3.l10n.localize('options_error'),
+				msg: TYPO3.l10n.localize('options_error_message'),
 				icon: Ext.MessageBox.ERROR,
 				buttons: Ext.MessageBox.OK
 			});

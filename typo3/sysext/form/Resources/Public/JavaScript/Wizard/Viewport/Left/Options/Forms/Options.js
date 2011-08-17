@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 	 * The title text to be used as innerHTML (html tags are accepted) to
 	 * display in the panel header (defaults to '').
 	 */
-	title: TYPO3.lang.options_fieldoptions,
+	title: TYPO3.l10n.localize('options_fieldoptions'),
 
 	/**
 	 * @cfg {String} autoExpandColumn
@@ -44,7 +44,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 	 */
 	viewConfig:{
 		forceFit: true,
-		emptyText: TYPO3.lang.fieldoptions_emptytext,
+		emptyText: TYPO3.l10n.localize('fieldoptions_emptytext'),
 		scrollOffset: 0
 	},
 
@@ -90,7 +90,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 
 		var checkColumn = new Ext.ux.grid.SingleSelectCheckColumn({
 			id: 'selected',
-			header: TYPO3.lang.fieldoptions_selected,
+			header: TYPO3.l10n.localize('fieldoptions_selected'),
 			dataIndex: 'selected',
 			width: 30
 		});
@@ -106,7 +106,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 				columns: [
 					{
 						id: 'data',
-						header: TYPO3.lang.fieldoptions_data,
+						header: TYPO3.l10n.localize('fieldoptions_data'),
 						dataIndex: 'data',
 						editor: new Ext.ux.form.TextFieldSubmit({
 							allowBlank: false,
@@ -124,7 +124,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 			selModel: itemDeleter,
 			plugins: [checkColumn],
 			tbar: [{
-				text: TYPO3.lang.fieldoptions_button_add,
+				text: TYPO3.l10n.localize('fieldoptions_button_add'),
 				handler: this.addOption,
 				scope: this
 			}]
@@ -145,7 +145,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 	addOption: function() {
 		var option = this.store.recordType;
 		var newOption = new option({
-			data: TYPO3.lang.fieldoptions_new,
+			data: TYPO3.l10n.localize('fieldoptions_new'),
 			selected: false
 		});
 		this.stopEditing();

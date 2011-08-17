@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Various = Ext.extend(Ext.FormPanel
 	 * The title text to be used as innerHTML (html tags are accepted) to
 	 * display in the panel header (defaults to '').
 	 */
-	title: TYPO3.lang.options_various,
+	title: TYPO3.l10n.localize('options_various'),
 
 	/** @cfg {String} defaultType
 	 *
@@ -52,7 +52,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Various = Ext.extend(Ext.FormPanel
 			switch(key) {
 				case 'name':
 					formItems.push({
-						fieldLabel: TYPO3.lang.various_properties_name,
+						fieldLabel: TYPO3.l10n.localize('various_properties_name'),
 						name: 'name',
 						allowBlank: false,
 						listeners: {
@@ -65,7 +65,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Various = Ext.extend(Ext.FormPanel
 					break;
 				case 'heading':
 					formItems.push({
-						fieldLabel: TYPO3.lang.various_properties_heading,
+						fieldLabel: TYPO3.l10n.localize('various_properties_heading'),
 						name: 'heading',
 						allowBlank: false,
 						listeners: {
@@ -78,7 +78,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Various = Ext.extend(Ext.FormPanel
 					break;
 				case 'headingSize':
 					formItems.push({
-						fieldLabel: TYPO3.lang.various_properties_headingsize,
+						fieldLabel: TYPO3.l10n.localize('various_properties_headingsize'),
 						name: 'headingSize',
 						xtype: 'combo',
 						mode: 'local',
@@ -108,7 +108,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Various = Ext.extend(Ext.FormPanel
 					break;
 				case 'prefix':
 					formItems.push({
-						fieldLabel: TYPO3.lang.various_properties_prefix,
+						fieldLabel: TYPO3.l10n.localize('various_properties_prefix'),
 						name: 'prefix',
 						xtype: 'combo',
 						mode: 'local',
@@ -121,8 +121,8 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Various = Ext.extend(Ext.FormPanel
 						store: new Ext.data.JsonStore({
 							fields: ['label', 'value'],
 							data: [
-								{label: TYPO3.lang.yes, value: true},
-								{label: TYPO3.lang.no, value: false}
+								{label: TYPO3.l10n.localize('yes'), value: true},
+								{label: TYPO3.l10n.localize('no'), value: false}
 							]
 						}),
 						listeners: {
@@ -135,7 +135,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Various = Ext.extend(Ext.FormPanel
 					break;
 				case 'suffix':
 					formItems.push({
-						fieldLabel: TYPO3.lang.various_properties_suffix,
+						fieldLabel: TYPO3.l10n.localize('various_properties_suffix'),
 						name: 'suffix',
 						xtype: 'combo',
 						mode: 'local',
@@ -148,8 +148,8 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Various = Ext.extend(Ext.FormPanel
 						store: new Ext.data.JsonStore({
 							fields: ['label', 'value'],
 							data: [
-								{label: TYPO3.lang.yes, value: true},
-								{label: TYPO3.lang.no, value: false}
+								{label: TYPO3.l10n.localize('yes'), value: true},
+								{label: TYPO3.l10n.localize('no'), value: false}
 							]
 						}),
 						listeners: {
@@ -162,7 +162,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Various = Ext.extend(Ext.FormPanel
 					break;
 				case 'middleName':
 					formItems.push({
-						fieldLabel: TYPO3.lang.various_properties_middlename,
+						fieldLabel: TYPO3.l10n.localize('various_properties_middlename'),
 						name: 'middleName',
 						xtype: 'combo',
 						mode: 'local',
@@ -175,8 +175,8 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Various = Ext.extend(Ext.FormPanel
 						store: new Ext.data.JsonStore({
 							fields: ['label', 'value'],
 							data: [
-								{label: TYPO3.lang.yes, value: true},
-								{label: TYPO3.lang.no, value: false}
+								{label: TYPO3.l10n.localize('yes'), value: true},
+								{label: TYPO3.l10n.localize('no'), value: false}
 							]
 						}),
 						listeners: {

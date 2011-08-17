@@ -207,7 +207,7 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 				layout: 'fit',
 				items: [{
 					xtype:'fieldset',
-					//title: TYPO3.lang.translation_status,
+					//title: TYPO3.l10n.localize('translation_status'),
 					collapsible: false,
 					items: [
 						TYPO3.EM.LanguagesActionPanel,

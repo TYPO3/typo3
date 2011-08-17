@@ -25,8 +25,8 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Date = Ext.extend(TYPO3
 			configuration: {
 				breakOnError: 0,
 				showMessage: 1,
-				message: TYPO3.lang['tx_form_system_validate_date.message'],
-				error: TYPO3.lang['tx_form_system_validate_date.error'],
+				message: TYPO3.l10n.localize('tx_form_system_validate_date.message'),
+				error: TYPO3.l10n.localize('tx_form_system_validate_date.error'),
 				format: '%e-%m-%Y'
 			}
 		});

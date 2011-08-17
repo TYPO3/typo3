@@ -60,7 +60,7 @@ TYPO3.Form.Wizard.Elements.Content.Header = Ext.extend(TYPO3.Form.Wizard.Element
 				},
 				various: {
 					headingSize: 'h1',
-					heading: TYPO3.lang.elements_heading
+					heading: TYPO3.l10n.localize('elements_heading')
 				}
 			}
 		});
