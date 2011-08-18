@@ -311,6 +311,7 @@ TCEforms suggest
 div.typo3-TCEforms-suggest-position-right {
 	margin-left: 10px;
 	margin-top: 5px;
+	position: relative;
 }
 
 div.typo3-TCEforms-suggest label {
