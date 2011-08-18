@@ -706,6 +706,16 @@ tt_content.image.20 {
 			editIconsStdWrap.wrap = <div> | </div>
 			caption.wrap = <div class="csc-textpic-caption"> | </div>
 		}
+		figure {
+			# Every image and caption is rendered as ad figure + img + figcaption 
+			imageRowStdWrap.dataWrap = <div class="csc-textpic-imagerow" style="width:{register:rowwidth}px;"> | </div>
+			imageLastRowStdWrap.dataWrap = <div class="csc-textpic-imagerow csc-textpic-imagerow-last" style="width:{register:rowwidth}px;"> | </div>
+			noRowsStdWrap.wrap = 
+			oneImageStdWrap.dataWrap = <figure class="csc-textpic-image###CLASSES###" style="width:{register:imagespace}px;"> | </figure>
+			imgTagStdWrap.wrap =   |  
+			editIconsStdWrap.wrap = <div> | </div>
+			caption.wrap = <figcaption> | </figcaption>
+		}
 		simple {
 			imageRowStdWrap.dataWrap = |
 			imageLastRowStdWrap.dataWrap = |
@@ -1608,8 +1618,8 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 
 	DIV.csc-textpic IMG { border: none; }
 
-	/* DIV: This will place the images side by side */
-	DIV.csc-textpic DIV.csc-textpic-imagewrap DIV.csc-textpic-image { float: left; }
+	/* FIGURE + DIV: This will place the images side by side */
+	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-image { float: left; margin: 0; padding: 0;}
 
 	/* UL: This will place the images side by side */
 	DIV.csc-textpic DIV.csc-textpic-imagewrap UL { list-style: none; margin: 0; padding: 0; }
