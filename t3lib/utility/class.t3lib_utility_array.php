@@ -79,7 +79,7 @@ final class t3lib_utility_Array {
 				$resultArray[$key] = $value;
 			} elseif (is_array($value)) {
 					// self does not work in lambda functions, use t3lib_utility_Array for recursion
-				$subArrayMatches = t3lib_utility_Array::filterByValueRecursive($needle, $value, $array[$key]);
+				$subArrayMatches = t3lib_utility_Array::filterByValueRecursive($needle, $value);
 				if (count($subArrayMatches) > 0) {
 					$resultArray[$key] = $subArrayMatches;
 				}
