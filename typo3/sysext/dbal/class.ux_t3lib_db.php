@@ -217,19 +217,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return void
 	 */
 	protected function analyzeCachingTables() {
-		$sqlTemplate = file_get_contents(PATH_t3lib . 'cache/backend/resources/dbbackend-layout-cache.sql');
-		$sqlTemplate .= LF;
-		$sqlTemplate .= file_get_contents(PATH_t3lib . 'cache/backend/resources/dbbackend-layout-tags.sql');
-
-		foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] as $cacheIdentifier => $cacheConfiguration) {
-			if ($this->hasDatabaseBackend($cacheConfiguration)) {
-				$cacheTable = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['tablePrefix'] . $cacheIdentifier;
-				$tagsTable = $cacheTable . '_tags';
-				$cachingTablesSql = str_replace('###CACHE_TABLE###', $cacheTable, $sqlTemplate);
-				$cachingTablesSql = str_replace('###TAGS_TABLE###', $tagsTable, $cachingTablesSql);
-				$this->parseAndAnalyzeSql($cachingTablesSql);
-			}
-		}
+		$this->parseAndAnalyzeSql(t3lib_cache::getDatabaseTableDefinitions());
 	}
 
 	/**
@@ -246,20 +234,6 @@ class ux_t3lib_DB extends t3lib_DB {
 			$extensionsSql = file_get_contents($extensionConfiguration['ext_tables.sql']);
 			$this->parseAndAnalyzeSql($extensionsSql);
 		}
-	}
-
-	/**
-	 * Checks if the given configuration has a
-	 * database backend. This is the case if
-	 * it is not configured because then
-	 *
-	 * @param array $cacheConfiguration
-	 * @return bool
-	 */
-	protected function hasDatabaseBackend(array $cacheConfiguration) {
-		return !isset($cacheConfiguration['backend']) ||
-			$cacheConfiguration['backend'] === 't3lib_cache_backend_DbBackend' ||
-			is_subclass_of($cacheConfiguration['backend'], 't3lib_cache_backend_DbBackend');
 	}
 
 	/**
