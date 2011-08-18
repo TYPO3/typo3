@@ -99,5 +99,16 @@ final class Tx_Extbase_MVC_View_EmptyView implements Tx_Extbase_MVC_View_ViewInt
 	 */
 	public function __call($methodName, array $arguments) {
 	}
+
+	/**
+	 * Initializes this view.
+	 *
+	 * Override this method for initializing your concrete view implementation.
+	 *
+	 * @return void
+	 * @api
+	 */
+	public function initializeView() {
+	}
 }
 ?>
