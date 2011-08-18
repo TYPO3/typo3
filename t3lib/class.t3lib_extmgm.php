@@ -1507,17 +1507,17 @@ $_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];
 	}
 
 	/**
-	 * Returns TRUE if both the localconf and tables cache file exists (with $cacheFilePrefix)
-	 * Usage: 2
+	 * Returns TRUE if both the localconf and tables cache file exists (with $cacheFilePrefix) and if they are not empty
 	 *
-	 * @param	string		Prefix of the cache file to check
-	 * @return	boolean
-	 * @internal
+	 * @param $cacheFilePrefix string Prefix of the cache file to check
+	 * @return boolean
 	 */
 	public static function isCacheFilesAvailable($cacheFilePrefix) {
 		return
-				@is_file(PATH_typo3conf . $cacheFilePrefix . '_ext_localconf.php') &&
-						@is_file(PATH_typo3conf . $cacheFilePrefix . '_ext_tables.php');
+			@is_file(PATH_typo3conf . $cacheFilePrefix . '_ext_localconf.php') &&
+				@is_file(PATH_typo3conf . $cacheFilePrefix . '_ext_tables.php') &&
+				@filesize(PATH_typo3conf . $cacheFilePrefix . '_ext_localconf.php') > 0 &&
+				@filesize(PATH_typo3conf . $cacheFilePrefix . '_ext_tables.php') > 0;
 	}
 
 	/**
