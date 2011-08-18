@@ -256,14 +256,14 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	/**
 	 * Get errors for the property and form name of this view helper
 	 *
-	 * @return array<\F3\FLOW3\Error\Error> Array of errors
+	 * @return array<Tx_Extbase_Error_Result> Array of errors
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function getMappingResultsForProperty() {
 		if (!$this->isObjectAccessorMode()) {
-			return new \F3\FLOW3\Error\Result();
+			return new Tx_Extbase_Error_Result();
 		}
 		$originalRequestMappingResults = $this->controllerContext->getRequest()->getOriginalRequestMappingResults();
 		$formObjectName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
