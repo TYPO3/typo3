@@ -34,7 +34,7 @@
  * @package TYPO3
  * @subpackage scheduler
  */
-final class tx_scheduler_CronCmd_Normalize {
+class tx_scheduler_CronCmd_Normalize {
 
 	/**
 	 * Main API method: Get the cron command and normalize it.
@@ -62,7 +62,7 @@ final class tx_scheduler_CronCmd_Normalize {
 	 * @param string $cronCommand Cron command
 	 * @return string Normalized cron command if keyword was found, else unchanged cron command
 	 */
-	public static function convertKeywordsToCronCommand($cronCommand) {
+	protected static function convertKeywordsToCronCommand($cronCommand) {
 		switch ($cronCommand) {
 			case '@yearly':
 			case '@annually':
@@ -92,7 +92,7 @@ final class tx_scheduler_CronCmd_Normalize {
 	 * @param string $cronCommand cron command
 	 * @return string Normalized cron command
 	 */
-	public static function normalizeFields($cronCommand) {
+	protected static function normalizeFields($cronCommand) {
 		$fieldArray = self::splitFields($cronCommand);
 
 		$fieldArray[0] = self::normalizeIntegerField($fieldArray[0], 0, 59);
@@ -117,7 +117,7 @@ final class tx_scheduler_CronCmd_Normalize {
 	 * 		3 => month field
 	 * 		4 => day of week field
 	 */
-	public static function splitFields($cronCommand) {
+	protected static function splitFields($cronCommand) {
 		$fields = explode(' ', $cronCommand);
 
 		if (count($fields) !== 5) {
@@ -137,7 +137,7 @@ final class tx_scheduler_CronCmd_Normalize {
 	 * @param boolean $isMonthField TRUE if month field is handled, FALSE for weekday field
 	 * @return string Normalized expression
 	 */
-	public static function normalizeMonthAndWeekdayField($expression, $isMonthField = TRUE) {
+	protected static function normalizeMonthAndWeekdayField($expression, $isMonthField = TRUE) {
 		if ((string)$expression === '*') {
 			$fieldValues = '*';
 		} else {
@@ -182,7 +182,7 @@ final class tx_scheduler_CronCmd_Normalize {
 	 * @param integer $upperBound Upper limit of result list
 	 * @return string Normalized expression
 	 */
-	public static function normalizeIntegerField($expression, $lowerBound = 0, $upperBound = 59) {
+	protected static function normalizeIntegerField($expression, $lowerBound = 0, $upperBound = 59) {
 		if ((string)$expression === '*') {
 			$fieldValues = '*';
 		} else {
@@ -252,7 +252,7 @@ final class tx_scheduler_CronCmd_Normalize {
 	 * @param string $range Integer-integer
 	 * @return array
 	 */
-	public static function convertRangeToListOfValues($range) {
+	protected static function convertRangeToListOfValues($range) {
 		if (strlen($range) === 0) {
 			throw new InvalidArgumentException(
 				'Unable to convert range to list of values with empty string.',
@@ -313,7 +313,7 @@ final class tx_scheduler_CronCmd_Normalize {
 	 * @param string $stepExpression Step value expression
 	 * @return string Comma separated list of valid values
 	 */
-	public static function reduceListOfValuesByStepValue($stepExpression) {
+	protected static function reduceListOfValuesByStepValue($stepExpression) {
 		if (strlen($stepExpression) === 0) {
 			throw new InvalidArgumentException(
 				'Unable to convert step values.',
@@ -395,7 +395,7 @@ final class tx_scheduler_CronCmd_Normalize {
 	 * @param boolean $isMonth TRUE if a month is handled, FALSE for weekday
 	 * @return string normalized month or weekday
 	 */
-	public static function normalizeMonthAndWeekday($expression, $isMonth = TRUE) {
+	protected static function normalizeMonthAndWeekday($expression, $isMonth = TRUE) {
 		$expression = $isMonth ? self::normalizeMonth($expression) : self::normalizeWeekday($expression);
 
 		return (string)$expression;
@@ -409,7 +409,7 @@ final class tx_scheduler_CronCmd_Normalize {
 	 * @param string $month Month representation
 	 * @return integer month integer representation between 1 and 12
 	 */
-	public static function normalizeMonth($month) {
+	protected static function normalizeMonth($month) {
 		$timestamp = strtotime('2010-' . $month . '-01');
 
 			// timestamp must be >= 2010-01-01 and <= 2010-12-01
@@ -431,7 +431,7 @@ final class tx_scheduler_CronCmd_Normalize {
 	 * @param string $weekday Weekday representation
 	 * @return integer weekday integer representation between 1 and 7
 	 */
-	public static function normalizeWeekday($weekday) {
+	protected static function normalizeWeekday($weekday) {
 		$normalizedWeekday = FALSE;
 
 			// 0 (sunday) -> 7
