@@ -82,7 +82,7 @@ class Tx_Fluid_ViewHelpers_Form_TextfieldViewHelper extends Tx_Fluid_ViewHelpers
 			$this->tag->addAttribute('placeholder', $placeholder);
 		}
 
-		if (!empty($value)) {
+		if ($value !== NULL) {
 			$this->tag->addAttribute('value', $value);
 		}
 
