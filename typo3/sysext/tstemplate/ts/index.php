@@ -448,7 +448,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 	}
 
 	function createTemplate($id, $actTemplateId = 0) {
-		if (t3lib_div::_GP('createExtension')) {
+		if (t3lib_div::_GP('createExtension') || t3lib_div::_GP('createExtension_x')) {
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			/* @var $tce t3lib_TCEmain */
 			$tce->stripslashes_values = 0;
