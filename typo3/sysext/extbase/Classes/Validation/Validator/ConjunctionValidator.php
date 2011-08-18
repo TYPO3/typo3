@@ -41,7 +41,7 @@ class Tx_Extbase_Validation_Validator_ConjunctionValidator extends Tx_Extbase_Va
 	 * Checks if the given value is valid according to the validators of the conjunction.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @return \F3\FLOW3\Error\Result
+	 * @return Tx_Extbase_Error_Result
 	 * @api
 	 */
 	public function validate($value) {

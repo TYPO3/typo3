@@ -526,7 +526,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	/**
 	 * Return the Property Mapping Configuration used for this argument; can be used by the initialize*action to modify the Property Mapping.
 	 *
-	 * @return \F3\FLOW3\MVC\Controller\MvcPropertyMappingConfiguration
+	 * @return Tx_Extbase_MVC_Controller_MvcPropertyMappingConfiguration
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
@@ -544,7 +544,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	}
 
 	/**
-	 * @return array<F3\FLOW3\Error\Result> Validation errors which have occured.
+	 * @return array<Tx_Extbase_Error_Result> Validation errors which have occured.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */

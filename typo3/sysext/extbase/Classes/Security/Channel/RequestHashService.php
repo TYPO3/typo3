@@ -52,7 +52,7 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 	protected $hashService;
 
 	/**
-	 * @param Tx_Extbase_Security_Cryptography_HashService $hashService 
+	 * @param Tx_Extbase_Security_Cryptography_HashService $hashService
 	 * @return void
 	 */
 	public function injectHashService(Tx_Extbase_Security_Cryptography_HashService $hashService) {
@@ -124,7 +124,7 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 	 * Verify the request. Checks if there is an __hmac argument, and if yes, tries to validate and verify it.
 	 *
 	 * In the end, $request->setHmacVerified is set depending on the value.
-	 * @param \F3\FLOW3\MVC\Web\Request $request The request to verify
+	 * @param Tx_Extbase_MVC_Web_Request $request The request to verify
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */

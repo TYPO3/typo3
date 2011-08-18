@@ -59,7 +59,7 @@ interface Tx_Extbase_Validation_Validator_ValidatorInterface {
 	 * the Error Messages object which occured.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @return \F3\FLOW3\Error\Result
+	 * @return Tx_Extbase_Error_Result
 	 * @api
 	 */
 	//public function validate($value);

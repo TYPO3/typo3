@@ -69,7 +69,7 @@ class Tx_Extbase_Validation_Validator_RawValidator implements Tx_Extbase_Validat
 	 * Always returns TRUE
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @return \F3\FLOW3\Error\Result
+	 * @return Tx_Extbase_Error_Result
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
