@@ -52,7 +52,7 @@ class t3lib_autoloader {
 	 *
 	 * @var string
 	 */
-	protected static $autoloadCacheIdentifier = '';
+	protected static $autoloadCacheIdentifier = NULL;
 
 	/**
 	 * The autoloader is static, thus we do not allow instances of this class.
@@ -66,7 +66,6 @@ class t3lib_autoloader {
 	 * @return boolean TRUE in case of success
 	 */
 	public static function registerAutoloader() {
-		self::$autoloadCacheIdentifier = TYPO3_MODE === 'FE' ? 't3lib_autoload_FE' : 't3lib_autoload_BE';
 		self::loadCoreAndExtensionRegistry();
 		return spl_autoload_register('t3lib_autoloader::autoload', TRUE, TRUE);
 	}
@@ -118,13 +117,13 @@ class t3lib_autoloader {
 		$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
 
 			// Create autoloader cache file if it does not exist yet
-		if (!$phpCodeCache->has(self::$autoloadCacheIdentifier)) {
+		if (!$phpCodeCache->has(self::getAutoloadCacheIdentifier())) {
 			$classRegistry = self::createCoreAndExtensionRegistry();
 			self::updateRegistryCacheEntry($classRegistry);
 		}
 
 			// Require calculated cache file
-		$mappingArray = $phpCodeCache->requireOnce(self::$autoloadCacheIdentifier);
+		$mappingArray = $phpCodeCache->requireOnce(self::getAutoloadCacheIdentifier());
 
 			// This can only happen if the autoloader was already registered
 			// in the same call once, the requireOnce of the cache file then
@@ -217,10 +216,28 @@ class t3lib_autoloader {
 		}
 		$cachedFileContent .= LF . ');';
 		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->set(
-			self::$autoloadCacheIdentifier,
+			self::getAutoloadCacheIdentifier(),
 			$cachedFileContent,
 			array('t3lib_autoloader')
 		);
+	}
+
+	/**
+	 * Gets the identifier used for caching the registry files.
+	 * The identifier depends on wether or not frontend or backend
+	 * is called the current TYPO3 version.
+	 *
+	 * In effect, if updating TYPO3 to a newer version with possible new
+	 * core classes a new registry cache file will be created.
+	 *
+	 * @return string identifier
+	 */
+	protected static function getAutoloadCacheIdentifier() {
+		if (is_null(self::$autoloadCacheIdentifier)) {
+			$frontendOrBackend = TYPO3_MODE === 'FE' ? 'FE' : 'BE';
+			self::$autoloadCacheIdentifier = sha1($frontendOrBackend . TYPO3_version . 'autoload');
+		}
+		return self::$autoloadCacheIdentifier;
 	}
 }
 ?>
