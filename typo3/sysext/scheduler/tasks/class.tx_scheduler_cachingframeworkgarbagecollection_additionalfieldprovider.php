@@ -83,8 +83,14 @@ class tx_scheduler_CachingFrameworkGarbageCollection_AdditionalFieldProvider imp
 		$validData = TRUE;
 
 		$availableBackends = $this->getRegisteredBackends();
-		$invalidBackends = array_diff($submittedData['scheduler_cachingFrameworkGarbageCollection_selectedBackends'], $availableBackends);
-		if (!empty($invalidBackends)) {
+		if(is_array($submittedData['scheduler_cachingFrameworkGarbageCollection_selectedBackends'])) {
+			$invalidBackends = array_diff($submittedData['scheduler_cachingFrameworkGarbageCollection_selectedBackends'], $availableBackends);
+			if (!empty($invalidBackends)) {
+				$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xml:msg.selectionOfNonExistingCacheBackends'), t3lib_FlashMessage::ERROR);
+				$validData = FALSE;
+			}
+		} else {
+			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xml:msg.noCacheBackendSelected'), t3lib_FlashMessage::ERROR);
 			$validData = FALSE;
 		}
 
@@ -134,10 +140,17 @@ class tx_scheduler_CachingFrameworkGarbageCollection_AdditionalFieldProvider imp
 	 */
 	protected function getRegisteredBackends() {
 		$backends = array();
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheBackends'])) {
-			$backends = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheBackends'];
+		$cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
+		if (is_array($cacheConfigurations)) {
+			foreach ($cacheConfigurations as $cacheConfiguration) {
+				$backend = $cacheConfiguration['backend'];
+				if (!in_array($backend, $backends)) {
+					$backends[] = $backend;
+				}
+			}
 		}
-		return array_keys($backends);
+
+		return $backends;
 	}
 } // End of class
 
