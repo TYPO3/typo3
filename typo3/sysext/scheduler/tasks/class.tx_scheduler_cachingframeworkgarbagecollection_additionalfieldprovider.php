@@ -134,10 +134,17 @@ class tx_scheduler_CachingFrameworkGarbageCollection_AdditionalFieldProvider imp
 	 */
 	protected function getRegisteredBackends() {
 		$backends = array();
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheBackends'])) {
-			$backends = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheBackends'];
+		$cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
+		if (is_array($cacheConfigurations)) {
+			foreach ($cacheConfigurations as $cacheConfiguration) {
+				$backend = $cacheConfiguration['backend'];
+				if (!in_array($backend, $backends)) {
+					$backends[] = $backend;
+				}
+			}
 		}
-		return array_keys($backends);
+
+		return $backends;
 	}
 } // End of class
 
