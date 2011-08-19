@@ -462,7 +462,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		} else {
 				// Initialise table layout
 			$tableLayout = array (
-				'table' => array ('<table border="0" cellspacing="1" cellpadding="2" class="typo3-dblist">', '</table>'),
+				'table' => array ('<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist">', '</table>'),
 				'0' => array (
 					'tr' => array('<tr class="t3-row-header" valign="top">', '</tr>'),
 					'defCol' => array('<td>', '</td>')
@@ -979,7 +979,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				// Initialise table layout
 			$tableLayout = array(
 				'table' => array(
-					'<table border="0" cellspacing="1" cellpadding="2" class="typo3-dblist">', '</table>'
+					'<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist">', '</table>'
 				),
 				'0'     => array(
 					'tr'     => array('<tr class="t3-row-header">', '</tr>'),

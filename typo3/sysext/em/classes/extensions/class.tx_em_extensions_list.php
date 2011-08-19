@@ -387,7 +387,7 @@ class tx_em_Extensions_List {
 		$content .= '</form>
 
 			<!-- Loaded Extensions List -->
-			<table cellspacing="1" class="t3-em-extension-list t3-em-extension-list-loaded">' . implode('', $lines) . '</table>';
+			<table cellspacing="0" class="t3-em-extension-list t3-em-extension-list-loaded">' . implode('', $lines) . '</table>';
 
 		return $content;
 	}
@@ -468,7 +468,7 @@ EXTENSION KEYS:
 			$content .= '<label for="lookUp">' . $GLOBALS['LANG']->getLL('look_up') . '</label> <input type="text" id="lookUp" name="lookUp" value="' . htmlspecialchars($this->parentObject->lookUpStr) . '" /><input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:search') . '" /></form><br /><br />';
 			$content .= $this->securityHint . '<br /><br />';
 
-			$content .= '<table cellspacing="1" class="t3-em-extension-list t3-em-extension-list-installed">' . implode('', $lines) . '</table>';
+			$content .= '<table cellspacing="0" class="t3-em-extension-list t3-em-extension-list-installed">' . implode('', $lines) . '</table>';
 
 			return $content;
 		}
@@ -725,7 +725,7 @@ EXTENSION KEYS:
 		global $LANG;
 		$extList = $this->getInstalledExtensions();
 
-		$content = '<table cellspacing="1" class="t3-em-extension-list t3-em-extension-list-to-update">' .
+		$content = '<table cellspacing="0" class="t3-em-extension-list t3-em-extension-list-to-update">' .
 				'<tr class="t3-row-header">' .
 				'<td></td>' .
 				'<td>' . $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:tab_mod_name') . '</td>' .
