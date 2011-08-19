@@ -1,3 +1,7 @@
+2011-08-19  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* [TASK] Unify table layouts
+
 2011-08-11  Philipp Gampe  <forge.typo3.org@philippgampe.info>
 
 	* [TASK] Refactor to t3lib_http_Request for external URLs
