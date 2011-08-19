@@ -405,7 +405,7 @@ class t3lib_positionMap {
 
 		if (isset($backendLayout['__config']['backend_layout.'])) {
 
-			$table = '<div class="t3-gridContainer"><table border="0" cellspacing="1" cellpadding="4" id="typo3-ttContentList">';
+			$table = '<div class="t3-gridContainer"><table border="0" cellspacing="0" cellpadding="0" id="typo3-ttContentList">';
 
 			$colCount = intval($backendLayout['__config']['backend_layout.']['colCount']);
 			$rowCount = intval($backendLayout['__config']['backend_layout.']['rowCount']);
@@ -488,7 +488,7 @@ class t3lib_positionMap {
 			<!--
 				Map of records in columns:
 			-->
-			<table border="0" cellpadding="0" cellspacing="1" id="typo3-ttContentList">
+			<table border="0" cellpadding="0" cellspacing="0" id="typo3-ttContentList">
 				<tr>' . $row1 . '</tr>
 				<tr>' . $row2 . '</tr>
 			</table>

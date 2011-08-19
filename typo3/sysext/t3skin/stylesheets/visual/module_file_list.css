@@ -4,6 +4,7 @@ File > List
 - - - - - - - - - - - - - - - - - - - - - */
 
 table#typo3-filelist {
+	background: #fff;
 	border: 1px solid #a2aab8;
 }
 
@@ -18,21 +19,22 @@ table#typo3-filelist tr td.c-headLine a {
 	color: #fff;
 }
 
-table#typo3-filelist td {
-	border-right: 1px solid #f1f1f1;
+table#typo3-filelist tr.file_list_normal:nth-child(even) td {
+	background-color: #f7f7f7;
 }
 
-table#typo3-filelist td:last-child {
-	border-right: none;
+table#typo3-filelist tr.file_list_normal:nth-child(odd) td {
+	background-color: #ffffff;
 }
 
-table#typo3-filelist tbody tr:hover td {
+table#typo3-filelist tbody tr.file_list_normal:hover td {
 	background-color: #dedede;
 }
 
 table#typo3-filelist tr td img {
 	text-align: center;
 }
+
 
 table#typo3-filelist tr td div.typo3-clipCtrl,
 table#typo3-filelist tr td div.typo3-editCtrl {

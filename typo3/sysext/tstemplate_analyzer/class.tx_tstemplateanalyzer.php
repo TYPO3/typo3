@@ -119,7 +119,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		$head.= '<td>' . $GLOBALS['LANG']->getLL('nextLevel', TRUE) . '</td>';
 		$head.= '</tr>';
 		$hierar = implode(array_reverse($GLOBALS['tmpl']->ext_getTemplateHierarchyArr($GLOBALS['tmpl']->hierarchyInfoArr, "", array(), 1)), "");
-		$hierar= '<table id="ts-analyzer" border="0" cellpadding="0" cellspacing="1">' . $head . $hierar . '</table>';
+		$hierar= '<table id="ts-analyzer" border="0" cellpadding="0" cellspacing="0">' . $head . $hierar . '</table>';
 
 		$theOutput.=$this->pObj->doc->spacer(5);
 		$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('templateHierarchy', TRUE), $hierar, 0, 1);
