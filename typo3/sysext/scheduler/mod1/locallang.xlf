@@ -311,6 +311,14 @@
         <source>Number of days is invalid.</source>
         <target approved="yes">Number of days is invalid.</target>
       </trans-unit>
+	  <trans-unit id="msg.selectionOfNonExistingCacheBackends">
+        <source>Some of the selected cache backends do not exist. Please select valid backends only.</source>
+        <target approved="yes">Some of the selected cache backends do not exist. Please select valid backends only.</target>
+      </trans-unit>
+	  <trans-unit id="msg.noCacheBackendSelected">
+        <source>Please select at least one cache backend.</source>
+        <target approved="yes">Please select at least one cache backend.</target>
+      </trans-unit>
       <trans-unit id="msg.invalidTaskClass">
         <source>Class %s of the registered task could not be found. You should re-install the extension that provided it or simply delete this task.</source>
         <target approved="yes">Class %s of the registered task could not be found. You should re-install the extension that provided it or simply delete this task.</target>
