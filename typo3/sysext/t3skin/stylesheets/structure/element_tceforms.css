@@ -410,6 +410,10 @@ TCEforms Inline-Relational-Record-Editing
 /* - - - - - - - - - - - - - - - - - - - - -
 TCEforms Sections
 - - - - - - - - - - - - - - - - - - - - - */
+.t3-form-field-container-flex {
+	display: block;
+}
+
 .t3-form-field-container-flexsection {
 	padding-left: 20px;
 }
