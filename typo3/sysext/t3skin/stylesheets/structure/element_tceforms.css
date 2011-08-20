@@ -281,7 +281,7 @@ table.typo3-TCEforms span.filetypes {
 }
 
 .t3-form-field-container {
-	display: inline-block;
+	display: block;
 }
 
 .typo3-TCEforms-palette .typo3-csh-link img {
