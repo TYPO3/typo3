@@ -58,7 +58,9 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 
 	/**
 	 * The default date format is "YYYY-MM-DDT##:##:##+##:##", for example "2005-08-15T15:52:01+00:00"
-	 * according to the W3C standard @see http://www.w3.org/TR/NOTE-datetime.html
+	 * according to the W3C standard
+	 *
+	 * @see http://www.w3.org/TR/NOTE-datetime.html
 	 *
 	 * @var string
 	 */
@@ -67,7 +69,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	/**
 	 * @var array<string>
 	 */
-	protected $sourceTypes = array('string', 'array');
+	protected $sourceTypes = array('string', 'integer','array');
 
 	/**
 	 * @var string
@@ -80,43 +82,56 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	protected $priority = 1;
 
 	/**
-	 * Empty strings can't be converted
+	 * If conversion is possible.
 	 *
 	 * @param string $source
 	 * @param string $targetType
+	 *
 	 * @return boolean
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function canConvertFrom($source, $targetType) {
-		if ($targetType !== 'DateTime') {
+		if (!is_callable(array($targetType, 'createFromFormat'))) {
 			return FALSE;
 		}
 		if (is_array($source)) {
+			return TRUE;
+		}
+		if (is_integer($source)) {
 			return TRUE;
 		}
 		return is_string($source);
 	}
 
 	/**
-	 * Converts $source to a DateTime using the configured dateFormat
+	 * Converts $source to a \DateTime using the configured dateFormat
 	 *
-	 * @param string $source the string to be converted to a DateTime object
-	 * @param string $targetType must be "DateTime
+	 * @param string|integer|array $source the string to be converted to a DateTime object
+	 * @param string $targetType must be "DateTime"
 	 * @param array $convertedChildProperties not used currently
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-	 * @throws \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
+	 *
 	 * @return \DateTime
-	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @throws \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
 		$dateFormat = $this->getDefaultDateFormat($configuration);
 		if (is_string($source)) {
 			$dateAsString = $source;
+		} elseif (is_integer($source)) {
+			$dateAsString = strval($source);
 		} else {
-			if (!isset($source['date']) || !is_string($source['date'])) {
+			if (isset($source['date']) && is_string($source['date'])) {
+				$dateAsString = $source['date'];
+			} elseif (isset($source['date']) && is_integer($source['date'])) {
+				$dateAsString = strval($source['date']);
+			} elseif ($this->isDatePartKeysProvided($source)) {
+				if ($source['day'] < 1 || $source['month'] < 1 || $source['year'] < 1) {
+					return new \TYPO3\CMS\Extbase\Error\Error('Could not convert the given date parts into a DateTime object because one or more parts were 0.', 1333032779);
+				}
+				$dateAsString = sprintf('%d-%d-%d', $source['year'], $source['month'], $source['day']);
+			} else {
 				throw new \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException('Could not convert the given source into a DateTime object because it was not an array with a valid date as a string', 1308003914);
 			}
-			$dateAsString = $source['date'];
 			if (isset($source['dateFormat']) && strlen($source['dateFormat']) > 0) {
 				$dateFormat = $source['dateFormat'];
 			}
@@ -124,15 +139,42 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 		if ($dateAsString === '') {
 			return NULL;
 		}
-		$date = \DateTime::createFromFormat($dateFormat, $dateAsString);
+		if (ctype_digit($dateAsString) && (!is_array($source) || !isset($source['dateFormat'])) && $configuration === NULL) {
+			$dateFormat = 'U';
+		}
+		if (is_array($source) && isset($source['timezone']) && strlen($source['timezone']) !== 0) {
+			try {
+				$timezone = new \DateTimeZone($source['timezone']);
+			} catch (\Exception $e) {
+				throw new \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException('The specified timezone "' . $source['timezone'] . '" is invalid.', 1308240974);
+			}
+			$date = $targetType::createFromFormat($dateFormat, $dateAsString, $timezone);
+		} else {
+			$date = $targetType::createFromFormat($dateFormat, $dateAsString);
+		}
 		if ($date === FALSE) {
-			return new \TYPO3\CMS\Extbase\Error\Error('The string"' . $dateAsString . '" could not be converted to DateTime with format "' . $dateFormat . '"', 1307719788);
+			return new \TYPO3\CMS\Extbase\Error\Error('The date "%s" was not recognized (for format "%s").', 1307719788, array(
+				$dateAsString,
+				$dateFormat
+			));
 		}
 		if (is_array($source)) {
 			$this->overrideTimeIfSpecified($date, $source);
-			$this->overrideTimezoneIfSpecified($date, $source);
 		}
 		return $date;
+	}
+
+	/**
+	 * Returns whether date information (day, month, year) are present as keys in $source.
+	 *
+	 * @param array $source
+	 *
+	 * @return boolean
+	 */
+	protected function isDatePartKeysProvided(array $source) {
+		return isset($source['day']) && ctype_digit((string)$source['day'])
+			&& isset($source['month']) && ctype_digit((string)$source['month'])
+			&& isset($source['year']) && ctype_digit((string)$source['year']);
 	}
 
 	/**
@@ -140,9 +182,9 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	 * If no format is specified in the mapping configuration DEFAULT_DATE_FORMAT is used.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
+	 *
 	 * @return string
-	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
 	 */
 	protected function getDefaultDateFormat(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
 		if ($configuration === NULL) {
@@ -162,36 +204,18 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	 *
 	 * @param \DateTime $date
 	 * @param array $source
+	 *
 	 * @return void
 	 */
 	protected function overrideTimeIfSpecified(\DateTime $date, array $source) {
 		if (!isset($source['hour']) && !isset($source['minute']) && !isset($source['second'])) {
 			return;
 		}
-		$hour = isset($source['hour']) ? (integer) $source['hour'] : 0;
-		$minute = isset($source['minute']) ? (integer) $source['minute'] : 0;
-		$second = isset($source['second']) ? (integer) $source['second'] : 0;
-		$date->setTime($hour, $minute, $second);
-	}
 
-	/**
-	 * Overrides timezone of the given date with $source['timezone']
-	 *
-	 * @param \DateTime $date
-	 * @param array $source
-	 * @throws \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
-	 * @return void
-	 */
-	protected function overrideTimezoneIfSpecified(\DateTime $date, array $source) {
-		if (!isset($source['timezone']) || strlen($source['timezone']) === 0) {
-			return;
-		}
-		try {
-			$timezone = new \DateTimeZone($source['timezone']);
-		} catch (\Exception $e) {
-			throw new \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException('The specified timezone "' . $source['timezone'] . '" is invalid', 1308240974);
-		}
-		$date->setTimezone($timezone);
+		$hour = isset($source['hour']) ? (integer)$source['hour'] : 0;
+		$minute = isset($source['minute']) ? (integer)$source['minute'] : 0;
+		$second = isset($source['second']) ? (integer)$source['second'] : 0;
+		$date->setTime($hour, $minute, $second);
 	}
 }
 

@@ -276,7 +276,6 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function transformToObject($propertyValue, $targetType, $propertyName) {
 		if ($targetType === 'DateTime' || is_subclass_of($targetType, 'DateTime')) {
-			// TODO replace this with converter implementation of FLOW3
 			if ($propertyValue === '') {
 				$propertyValue = NULL;
 			} else {
@@ -287,7 +286,7 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 			}
 		} else {
-			if (is_numeric($propertyValue)) {
+			if (ctype_digit((string)$propertyValue)) {
 				$propertyValue = $this->findObjectByUid($targetType, $propertyValue);
 				if ($propertyValue === FALSE) {
 					$this->mappingResults->addError(new \TYPO3\CMS\Extbase\Error\Error('Querying the repository for the specified object with UUID ' . $propertyValue . ' was not successful.', 1249379517), $propertyName);
