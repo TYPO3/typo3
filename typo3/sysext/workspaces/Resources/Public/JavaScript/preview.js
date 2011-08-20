@@ -39,7 +39,110 @@ Ext.onReady(function() {
 	var iconClsChecked = 't3-icon t3-icon-status t3-icon-status-status t3-icon-status-checked';
 	var iconClsEmpty = 't3-icon t3-icon-empty t3-icon-empty-empty t3-icon-empty';
 	var viewMode = 0;
+	var changePreviewMode = function(config, mode) {
+		var visual = Ext.getCmp('wsVisualWrap');
+		if ((typeof mode != 'undefined') && (mode != viewMode)) {
+			viewMode = mode;
+			visual.remove(0);
+			visual.add(Ext.apply(config, {}));
+		};
+		visual.doLayout();
+	}
 
+	var sliderSetup = {
+		layout: 'fit',
+		x: 0, y:0,
+		anchor: '100% 100%',
+		autoScroll: true,
+		items: [{
+			layout: 'absolute',
+			id: 'visualPanel',
+			items: [{
+				x: 0, y:0,
+				anchor: '100% 100%',
+				id: 'wsContainer',
+				layout: 'absolute',
+				autoScroll: false,
+				items:[{
+					xtype: 'iframePanel',
+					x: 0, y:0,
+					id: 'wsPanel',
+					doMask: false,
+					src: wsUrl,
+					autoScroll: false
+				}]
+			},{
+				x: 0, y:0,
+				anchor: '100% 0%',
+				id: 'liveContainer',
+				layout: 'absolute',
+				bodyStyle: 'height:0px;border-bottom: 2px solid red;',
+				autoScroll: false,
+				items:[{
+					xtype: 'iframePanel',
+					x: 0, y:0,
+					id: 'livePanel',
+					doMask: false,
+					src: liveUrl,
+					autoScroll: false
+				}]
+			}]
+		}]
+	};
+	var hboxSetup = {
+		layout: 'hbox',
+		x: 0, y:0,
+		anchor: '100% 100%',
+		layoutConfig: {
+			align : 'stretch',
+			pack  : 'start'
+		},
+		id: 'visualPanel-hbox',
+		items: [{
+			xtype: 'iframePanel',
+			x: 0, y:0,
+			id: 'wsPanel-hbox',
+			doMask: false,
+			src: wsUrl,
+			autoScroll: false,
+			flex: 1
+		},{
+			xtype: 'iframePanel',
+			x: 0, y:0,
+			id: 'livePanel-hbox',
+			doMask: false,
+			src: liveUrl,
+			autoScroll: false,
+			flex: 1
+		}]
+	};
+	var vboxSetup = {
+		layout: 'vbox',
+		x: 0, y:0,
+		anchor: '100% 100%',
+		layoutConfig: {
+			align : 'stretch',
+			pack  : 'start'
+		},
+		id: 'visualPanel-vbox',
+		items: [{
+			xtype: 'iframePanel',
+			x: 0, y:0,
+			id: 'wsPanel-vbox',
+			doMask: false,
+			src: wsUrl,
+			autoScroll: false,
+			flex: 1
+		},{
+			xtype: 'iframePanel',
+			x: 0, y:0,
+			id: 'livePanel-vbox',
+			doMask: false,
+			src: liveUrl,
+			autoScroll: false,
+			flex: 1
+		}]
+	};
 
 	var viewport = new Ext.Viewport({
 		layout: 'border',
@@ -90,7 +193,6 @@ Ext.onReady(function() {
 											fn: function resizeFromValue(slider, newValue, thumb) {
 												var height = Ext.getCmp('wsPanel').getHeight();
 												Ext.getCmp('liveContainer').setHeight(height * (100 - newValue) / 100);
-												//Ext.getCmp('visualPanel').setHeight(height);
 											}
 										}
 									}
@@ -148,7 +250,6 @@ Ext.onReady(function() {
 									return {viewMode: viewMode};
 								},
 								applyState: function(state) {
-									viewMode = state.viewMode;
 									modeChange(null, true, viewMode);
 								}
 							}
@@ -170,103 +271,11 @@ Ext.onReady(function() {
 					}
 				},
 				items: [{
+					id: 'wsVisualWrap',
 					layout: 'absolute',
 					anchor: '100% 100%',
 					x: 0, y:0,
-					items: [{
-							layout: 'fit',
-							x: 0, y:0,
-							anchor: '100% 100%',
-							autoScroll: true,
-							items: [{
-								layout: 'absolute',
-								id: 'visualPanel',
-								items: [{
-									x: 0, y:0,
-									anchor: '100% 100%',
-									id: 'wsContainer',
-									layout: 'absolute',
-									autoScroll: false,
-									items:[{
-										xtype: 'iframePanel',
-										x: 0, y:0,
-										id: 'wsPanel',
-										doMask: false,
-										src: wsUrl,
-										autoScroll: false
-									}]
-								},{
-									x: 0, y:0,
-									anchor: '100% 0%',
-									id: 'liveContainer',
-									layout: 'absolute',
-									bodyStyle: 'height:0px;border-bottom: 2px solid red;',
-									autoScroll: false,
-									items:[{
-										xtype: 'iframePanel',
-										x: 0, y:0,
-										id: 'livePanel',
-										doMask: false,
-										src: liveUrl,
-										autoScroll: false
-									}]
-								}]
-							}]
-						},{
-							layout: 'hbox',
-							hidden: true,
-							x: 0, y:0,
-							anchor: '100% 100%',
-							layoutConfig: {
-								align : 'stretch',
-								pack  : 'start'
-							},
-							id: 'visualPanel-hbox',
-							items: [{
-								xtype: 'iframePanel',
-								x: 0, y:0,
-								id: 'wsPanel-hbox',
-								doMask: false,
-								src: wsUrl,
-								autoScroll: false,
-								flex: 1
-							},{
-								xtype: 'iframePanel',
-								x: 0, y:0,
-								id: 'livePanel-hbox',
-								doMask: false,
-								src: liveUrl,
-								autoScroll: false,
-								flex: 1
-							}]
-					},{
-							layout: 'vbox',
-							hidden: true,
-							x: 0, y:0,
-							anchor: '100% 100%',
-							layoutConfig: {
-								align : 'stretch',
-								pack  : 'start'
-							},
-							id: 'visualPanel-vbox',
-							items: [{
-								xtype: 'iframePanel',
-								x: 0, y:0,
-								id: 'wsPanel-vbox',
-								doMask: false,
-								src: wsUrl,
-								autoScroll: false,
-								flex: 1
-							},{
-								xtype: 'iframePanel',
-								x: 0, y:0,
-								id: 'livePanel-vbox',
-								doMask: false,
-								src: liveUrl,
-								autoScroll: false,
-								flex: 1
-							}]
-					}]
+					items: [sliderSetup]
 				}]
 			},{
 				title: TYPO3.LLL.Workspaces.listView,
@@ -286,17 +295,12 @@ Ext.onReady(function() {
 				}]
 			}]
 		}]
-
-
 	});
 
 	function modeChange(item, checked, mode) {
 		if (checked) {
 			var id ,
 				ids = ['visual-mode-selector-slider', 'visual-mode-selector-hbox', 'visual-mode-selector-vbox'],
-				panelHbox = Ext.getCmp('visualPanel-hbox'),
-				panelVbox = Ext.getCmp('visualPanel-vbox'),
-				panelSlider = Ext.getCmp('visualPanel'),
 				slider = Ext.getCmp('slider'),
 				itemSlider = Ext.getCmp('visual-mode-selector-slider'),
 				itemHbox = Ext.getCmp('visual-mode-selector-hbox'),
@@ -309,34 +313,24 @@ Ext.onReady(function() {
 			Ext.select('#visual-mode-selector ul li a img.t3-icon-status-checked').removeClass(iconClsChecked.split(" "));
 
 			if (mode === 0) {
-				panelHbox.hide();
-				panelVbox.hide();
-				panelSlider.show();
+				changePreviewMode(sliderSetup, mode);
 				slider.show();
-				viewMode = 0;
 				itemSlider.setIconClass(iconClsChecked);
 				itemHbox.setIconClass(iconClsEmpty);
 				itemVbox.setIconClass(iconClsEmpty);
 			} else if (mode === 1) {
-				panelHbox.show();
-				panelVbox.hide();
-				panelSlider.hide();
+				changePreviewMode(vboxSetup, mode);
 				slider.hide();
-				viewMode = 1;
 				itemSlider.setIconClass(iconClsEmpty);
 				itemHbox.setIconClass(iconClsChecked);
 				itemVbox.setIconClass(iconClsEmpty);
 			} else if (mode === 2) {
-				panelHbox.hide();
-				panelVbox.show();
-				panelSlider.hide();
+				changePreviewMode(hboxSetup, mode);
 				slider.hide();
-				viewMode = 2;
 				itemSlider.setIconClass(iconClsEmpty);
 				itemHbox.setIconClass(iconClsEmpty);
 				itemVbox.setIconClass(iconClsChecked);
 			}
-
 		}
 	}
 });
