@@ -251,6 +251,46 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 	/**
 	 * @test
+	 * @expectedException Tx_Extbase_MVC_Exception_InvalidActionName
+	 */
+	public function resolveActionNameThrowsInvalidActionExceptionIfSpecifiedActionIsNotAllowed() {
+		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
+		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
+		$parameters = array('action' => 'new');
+		$this->requestBuilder->_call('resolveActionName', 'TheSecondController', $parameters);
+	}
+
+	/**
+	 * @test
+	 * @expectedException t3lib_error_http_PageNotFoundException
+	 */
+	public function resolveActionNameThrowsPageNotFoundExceptionIfSpecifiedActionIsNotAllowedAndPageNotFoundExceptionIsConfigured() {
+		$this->configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved'] = 1;
+		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
+		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
+		$parameters = array('action' => 'new');
+		$this->requestBuilder->_call('resolveActionName', 'TheSecondController', $parameters);
+	}
+
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_MVC_Exception
+	 */
+	public function buildThrowsExceptionIfNoDefaultControllerCanBeResolved() {
+		$this->configuration['controllerConfiguration'] = array(
+			'' => array(
+				'actions' => array('foo')
+			)
+		);
+		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
+		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
+		$this->requestBuilder->build();
+	}
+
+	/**
+	 * @test
 	 */
 	public function buildSetsParametersFromGetAndPostVariables() {
 		$this->configuration['extensionName'] = 'SomeExtensionName';
@@ -328,5 +368,6 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 		$actualResult = $this->requestBuilder->_get('allowedControllerActions');
 		$this->assertEquals($expectedResult, $actualResult);
 	}
+
 }
 ?>

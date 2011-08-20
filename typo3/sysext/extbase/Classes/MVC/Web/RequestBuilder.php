@@ -154,30 +154,8 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 		$pluginNamespace = $this->extensionService->getPluginNamespace($this->extensionName, $this->pluginName);
 		$parameters = t3lib_div::_GPmerged($pluginNamespace);
 
-		if (is_string($parameters['controller']) && array_key_exists($parameters['controller'], $this->allowedControllerActions)) {
-			$controllerName = filter_var($parameters['controller'], FILTER_SANITIZE_STRING);
-		} elseif (!empty($this->defaultControllerName)) {
-			$controllerName = $this->defaultControllerName;
-		} else {
-			throw new Tx_Extbase_MVC_Exception(
-				'The default controller can not be determined.<br />'
-				. 'Please check for Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
-				1295479650
-			);
-		}
-
-		$allowedActions = $this->allowedControllerActions[$controllerName];
-		if (is_string($parameters['action']) && is_array($allowedActions) && in_array($parameters['action'], $allowedActions)) {
-			$actionName = filter_var($parameters['action'], FILTER_SANITIZE_STRING);
-		} elseif (!empty($this->defaultActionName)) {
-			$actionName = $this->defaultActionName;
-		} else {
-			throw new Tx_Extbase_MVC_Exception(
-				'The default action can not be determined for controller "' . $controllerName . '".<br />'
-				. 'Please check Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
-				1295479651
-			);
-		}
+		$controllerName = $this->resolveControllerName($parameters);
+		$actionName = $this->resolveActionName($controllerName, $parameters);
 
 		$request = $this->objectManager->create('Tx_Extbase_MVC_Web_Request');
 		$request->setPluginName($this->pluginName);
@@ -199,6 +177,66 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 		}
 
 		return $request;
+	}
+
+	/**
+	 * Returns the current ControllerName extracted from given $parameters.
+	 * If no controller is specified, the defaultControllerName will be returned.
+	 * If that's not available, an exception is thrown.
+	 *
+	 * @param array $parameters
+	 * @return string
+	 * @throws Tx_Extbase_MVC_Exception if the controller could not be resolved
+	 */
+	protected function resolveControllerName(array $parameters) {
+		if (isset($parameters['controller']) && in_array($parameters['controller'], $this->allowedControllerActions)) {
+			return filter_var($parameters['controller'], FILTER_SANITIZE_STRING);
+		} elseif (!empty($this->defaultControllerName)) {
+			return $this->defaultControllerName;
+		} else {
+			throw new Tx_Extbase_MVC_Exception(
+				'The default controller can not be determined. Please check for Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
+				1295479650
+			);
+		}
+	}
+
+	/**
+	 * Returns the current actionName extracted from given $parameters.
+	 * If no action is specified, the defaultActionName will be returned.
+	 * If that's not available or the specified action is not defined in the current plugin, an exception is thrown.
+	 *
+	 * @param $controllerName
+	 * @param array $parameters
+	 * @return string
+	 * @throws t3lib_error_http_PageNotFoundException|Tx_Extbase_MVC_Exception|Tx_Extbase_MVC_Exception_InvalidActionName if the action could not be resolved
+	 */
+	protected function resolveActionName($controllerName, array $parameters) {
+		if (!isset($parameters['action']) || strlen($parameters['action']) === 0) {
+			if (!empty($this->defaultActionName)) {
+				return $this->defaultActionName;
+			}
+			throw new Tx_Extbase_MVC_Exception(
+				'The default action can not be determined for controller "' . $controllerName . '". Please check Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
+				1295479651
+			);
+		}
+		$actionName = $parameters['action'];
+		$allowedActions = $this->allowedControllerActions[$controllerName];
+		if (!in_array($actionName, $allowedActions)) {
+			$configuration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+			if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (boolean)$configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
+				throw new t3lib_error_http_PageNotFoundException(
+					'The requested resource was not found',
+					1313857897
+				);
+			}
+			throw new Tx_Extbase_MVC_Exception_InvalidActionName(
+				'There is no action "' . $actionName . '" for controller "' . $controllerName . '".',
+				1313855173
+			);
+		}
+		return filter_var($actionName, FILTER_SANITIZE_STRING);
 	}
 
 

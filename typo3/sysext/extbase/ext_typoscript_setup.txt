@@ -12,6 +12,7 @@ config.tx_extbase {
 			Tx_Extbase_MVC_Web_FrontendRequestHandler = Tx_Extbase_MVC_Web_FrontendRequestHandler
 			Tx_Extbase_MVC_Web_BackendRequestHandler = Tx_Extbase_MVC_Web_BackendRequestHandler
 		}
+		throwPageNotFoundExceptionIfActionCantBeResolved = 0
 	}
 	persistence{
 		enableAutomaticCacheClearing = 1
