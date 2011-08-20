@@ -26,7 +26,9 @@
 			parent.resize(docHeight);
 				// remove the ugly red box if we're in the ws-repview frames
 			var element = document.getElementById('typo3-previewInfo');
-			element.parentNode.removeChild(element);
+			if (element) {
+				element.parentNode.removeChild(element);
+			}
 		}
 	};
 		// trigger this after content is loaded, inspired by jQuery
