@@ -4774,6 +4774,12 @@ final class t3lib_div {
 	 * @return bool TRUE if name is allowed
 	 */
 	public static function hasValidClassPrefix($classRef, array $additionalPrefixes = array()) {
+		if(empty($classRef)) {
+			return FALSE;
+		}
+		if(!is_string($classRef)) {
+			throw new InvalidArgumentException('$classRef has to be of type string', 1313917992);
+		}
 		$hasValidPrefix = FALSE;
 		$validPrefixes = array('tx_', 'Tx_', $GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix']);
 		$classRef = trim($classRef);
@@ -4781,9 +4787,8 @@ final class t3lib_div {
 		if (count($additionalPrefixes)) {
 			$validPrefixes = array_merge($validPrefixes, $additionalPrefixes);
 		}
-
 		foreach ($validPrefixes as $prefixToCheck) {
-			if (self::isFirstPartOfStr($classRef, $prefixToCheck)) {
+			if (self::isFirstPartOfStr($classRef, $prefixToCheck) || $prefixToCheck === '') {
 				$hasValidPrefix = TRUE;
 				break;
 			}

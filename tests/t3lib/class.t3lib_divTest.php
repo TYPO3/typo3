@@ -3318,10 +3318,10 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	public function validClassPrefixDataProvider() {
 		return array(
-			array('tx_foo'),
-			array('tx_foo_bar'),
-			array('Tx_foo'),
-			array($GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'] . 'foo'),
+			'normal prefix' => array('tx_foo'),
+			'normal long prefix' => array('tx_foo_bar'),
+			'extbase named prefix' => array('Tx_foo'),
+			'user func named prefix' => array('user_foo'),
 		);
 	}
 
@@ -3331,6 +3331,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 * @param string $className Class name to test
 	 */
 	public function hasValidClassPrefixAcceptsValidPrefixes($className) {
+		$GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'] = 'user_';
 		$this->assertTrue(
 			t3lib_div::hasValidClassPrefix($className)
 		);
@@ -3341,7 +3342,6 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	public function invalidClassPrefixDataProvider() {
 		return array(
-			array(''),
 			array('ab_c'),
 			array('txfoo'),
 			array('Txfoo'),
@@ -3356,7 +3356,51 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 * @param string $className Class name to test
 	 */
 	public function hasValidClassPrefixRefusesInvalidPrefixes($className) {
+		$GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'] = 'user_';
 		$this->assertFalse(
+			t3lib_div::hasValidClassPrefix($className)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function hasValidClassPrefixReturnsFalseIfEmptyClassNameGiven() {
+		$this->assertFalse(
+			t3lib_div::hasValidClassPrefix('')
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function invalidClassReferenceDataTypeDataProvider() {
+		return array(
+			'array' => array(array('someClassArray')),
+			'integer' => array(123),
+			'boolean' => array(TRUE),
+			'object' => array(new stdClass()),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider invalidClassReferenceDataTypeDataProvider
+	 * @param string $className Class name to test
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function hasValidClassPrefixThrowsExceptionForInvalidClassReferenceDataType($className) {
+		t3lib_div::hasValidClassPrefix($className);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider invalidClassPrefixDataProvider
+	 * @param string $className Class name to test
+	 */
+	public function hasValidClassPrefixAllowsEmptyPrefix($className) {
+		$GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'] = '';
+		$this->assertTrue(
 			t3lib_div::hasValidClassPrefix($className)
 		);
 	}
