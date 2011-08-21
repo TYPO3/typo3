@@ -44,15 +44,50 @@
  * @see	class.t3lib_tstemplate.php, class.tslib_fe.php
  */
 class t3lib_lock {
+
+	/**
+	 * @var string Locking method: One of 'simple', 'flock', 'semaphore' or 'disable'
+	 */
 	protected $method;
-	protected $id; // Identifier used for this lock
-	protected $resource; // Resource used for this lock (can be a file or a semaphore resource)
+
+	/**
+	 * @var mixed Identifier used for this lock
+	 */
+	protected $id;
+
+	/**
+	 * @var mixed Resource used for this lock (can be a file or a semaphore resource)
+	 */
+	protected $resource;
+
+	/**
+	 * @var resource File pointer if using flock method
+	 */
 	protected $filepointer;
+
+	/**
+	 * @var boolean True if lock is acquired
+	 */
 	protected $isAcquired = FALSE;
 
-	protected $loops = 150; // Number of times a locked resource is tried to be acquired. This is only used by manual locks like the "simple" method.
-	protected $step = 200; // Milliseconds after lock acquire is retried. $loops * $step results in the maximum delay of a lock. Only used by manual locks like the "simple" method.
+	/**
+	 * @var integer Number of times a locked resource is tried to be acquired. Only used in manual locks method "simple".
+	 */
+	protected $loops = 150;
+
+	/**
+	 * @var integer Milliseconds after lock acquire is retried. $loops * $step results in the maximum delay of a lock. Only used in manual lock method "simple".
+	 */
+	protected $step = 200;
+
+	/**
+	 * @var string Logging facility
+	 */
 	protected $syslogFacility = 'cms';
+
+	/**
+	 * @var boolean True if locking should be logged
+	 */
 	protected $isLoggingEnabled = TRUE;
 
 
@@ -60,16 +95,15 @@ class t3lib_lock {
 	 * Constructor:
 	 * initializes locking, check input parameters and set variables accordingly.
 	 *
-	 * @param	string		ID to identify this lock in the system
-	 * @param	string		Define which locking method to use. Defaults to "simple".
-	 * @param	integer		Number of times a locked resource is tried to be acquired. This is only used by manual locks like the "simple" method.
-	 * @param	integer		Milliseconds after lock acquire is retried. $loops * $step results in the maximum delay of a lock. Only used by manual locks like the "simple" method.
-	 * @return	boolean		Returns TRUE unless something went wrong
+	 * @param string $id ID to identify this lock in the system
+	 * @param string $method Define which locking method to use. Defaults to "simple".
+	 * @param integer $loops Number of times a locked resource is tried to be acquired. Only used in manual locks method "simple".
+	 * @param integer step Milliseconds after lock acquire is retried. $loops * $step results in the maximum delay of a lock. Only used in manual lock method "simple".
 	 */
-	public function __construct($id, $method = '', $loops = 0, $step = 0) {
+	public function __construct($id, $method = 'simple', $loops = 0, $step = 0) {
+			// Force ID to be string
+		$id = (string) $id;
 
-			// Input checks
-		$id = (string) $id; // Force ID to be string
 		if (intval($loops)) {
 			$this->loops = intval($loops);
 		}
@@ -77,14 +111,8 @@ class t3lib_lock {
 			$this->step = intval($step);
 		}
 
-			// Detect locking method
-		if (in_array($method, array('disable', 'simple', 'flock', 'semaphore'))) {
-			$this->method = $method;
-		} else {
-			throw new InvalidArgumentException('No such method "' . $method . '"', 1294586097);
-		}
+		$this->method = $method;
 
-		$success = FALSE;
 		switch ($this->method) {
 			case 'simple':
 			case 'flock':
@@ -94,20 +122,24 @@ class t3lib_lock {
 				}
 				$this->id = md5($id);
 				$this->resource = $path . $this->id;
-				$success = TRUE;
 			break;
 			case 'semaphore':
 				$this->id = abs(crc32($id));
-				if (($this->resource = sem_get($this->id, 1)) == TRUE) {
-					$success = TRUE;
+				if (($this->resource = sem_get($this->id, 1)) === FALSE) {
+					throw new Exception(
+						'Unable to get semaphore',
+						1313828196
+					);
 				}
 			break;
 			case 'disable':
-				return FALSE;
 			break;
+			default:
+				throw new InvalidArgumentException(
+					'No such method "' . $method . '"',
+					1294586097
+				);
 		}
-
-		return $success;
 	}
 
 	/**

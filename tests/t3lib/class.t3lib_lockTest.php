@@ -49,8 +49,138 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	///////////////////////////////
+	// tests concerning __construct
+	///////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function constructorUsesDefaultLockingMethodSimple() {
+		$instance = new t3lib_lock('999999999');
+		$this->assertSame('simple', $instance->getMethod());
+	}
+
+	/**
+	 * @test
+	 */
+	public function constructorSetsMethodToGivenParameter() {
+		$instance = new t3lib_lock('999999999', 'flock');
+		$this->assertSame('flock', $instance->getMethod());
+	}
+
+	/**
+	 * @test
+	 */
+	public function constructorDoesNotThrowExceptionIfUsingDisableMethod() {
+		$instance = new t3lib_lock('999999999', 'disable');
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function constructorThrowsExceptionForNotExistingLockingMethod() {
+		$instance = new t3lib_lock('999999999', 'foo');
+	}
+
+	/**
+	 * @test
+	 */
+	public function constructorUsesDefaultValueForLoops() {
+		$instance = new t3lib_lock('999999999');
+		$instance->setEnableLogging(FALSE);
+		$t3libLockReflection = new ReflectionClass('t3lib_lock');
+		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('loops');
+		$t3libLockReflectionResourceProperty->setAccessible(TRUE);
+		$this->assertSame(150, $t3libLockReflectionResourceProperty->getValue($instance));
+	}
+
+	/**
+	 * @test
+	 */
+	public function constructorSetsLoopsToGivenNumberOfLoops() {
+		$instance = new t3lib_lock('999999999', 'simple', 10);
+		$instance->setEnableLogging(FALSE);
+		$t3libLockReflection = new ReflectionClass('t3lib_lock');
+		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('loops');
+		$t3libLockReflectionResourceProperty->setAccessible(TRUE);
+		$this->assertSame(10, $t3libLockReflectionResourceProperty->getValue($instance));
+	}
+
+	/**
+	 * @test
+	 */
+	public function constructorUsesDefaultValueForSteps() {
+		$instance = new t3lib_lock('999999999');
+		$instance->setEnableLogging(FALSE);
+		$t3libLockReflection = new ReflectionClass('t3lib_lock');
+		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('step');
+		$t3libLockReflectionResourceProperty->setAccessible(TRUE);
+		$this->assertSame(200, $t3libLockReflectionResourceProperty->getValue($instance));
+	}
+
+	/**
+	 * @test
+	 */
+	public function constructorSetsStepToGivenNumberOfStep() {
+		$instance = new t3lib_lock('999999999', 'simple', 0, 10);
+		$instance->setEnableLogging(FALSE);
+		$t3libLockReflection = new ReflectionClass('t3lib_lock');
+		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('step');
+		$t3libLockReflectionResourceProperty->setAccessible(TRUE);
+		$this->assertSame(10, $t3libLockReflectionResourceProperty->getValue($instance));
+	}
+
+	/**
+	 * @test
+	 */
+	public function constructorCreatesLockDirectoryIfNotExisting() {
+		t3lib_div::rmdir(PATH_site . 'typo3temp/locks/', TRUE);
+		$instance = new t3lib_lock('999999999', 'simple');
+		$this->assertTrue(is_dir(PATH_site . 'typo3temp/locks/'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function constructorSetsIdToMd5OfStringIfUsingSimleLocking() {
+		$instance = new t3lib_lock('999999999', 'simple');
+		$this->assertSame(md5('999999999'), $instance->getId());
+	}
+
+	/**
+	 * @test
+	 */
+	public function constructorSetsResourceToPathWithIdIfUsingSimpleLocking() {
+		$instance = new t3lib_lock('999999999', 'simple');
+		$this->assertSame(PATH_site . 'typo3temp/locks/' . md5('999999999'), $instance->getResource());
+	}
+
+	/**
+	 * @test
+	 */
+	public function constructorSetsIdToAbsCrc32OfIdStringIfUsingSemaphoreLocking() {
+		if (!function_exists('sem_get')) {
+			$this->markTestSkipped('The system does not support semaphore base locking.');
+		}
+		$instance = new t3lib_lock('999999999', 'semaphore');
+		$this->assertSame(abs(crc32('999999999')), $instance->getId());
+	}
+
+	/**
+	 * @test
+	 */
+	public function constructorSetsResourceToSemaphoreResourceIfUsingSemaphoreLocking() {
+		if (!function_exists('sem_get')) {
+			$this->markTestSkipped('The system does not support semaphore base locking.');
+		}
+		$instance = new t3lib_lock('999999999', 'semaphore');
+		$this->assertTrue(is_resource($instance->getResource()));
+	}
+
+	///////////////////////////////
 	// tests concerning acquire
-	///////////////////////////////a
+	///////////////////////////////
 
 	/**
 	 * @test
@@ -73,6 +203,7 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 
 		$this->assertEquals($resultFilePermissions, '0777');
 	}
+
 
 	///////////////////////////////
 	// tests concerning release
