@@ -9,7 +9,7 @@ t3lib_extMgm::addService($_EXTKEY,  'auth' /* sv type */,  'tx_rsaauth_sv1' /* s
 		'title' => 'RSA authentication',
 		'description' => 'Authenticates users by using encrypted passwords',
 
-		'subtype' => 'getUserBE,authUserBE,getUserFE,authUserFE',
+		'subtype' => 'processLoginDataBE,processLoginDataFE',
 
 		'available' => TRUE,
 		'priority' => 60,	// tx_svauth_sv1 has 50, t3sec_saltedpw has 55. This service must have higher priority!
