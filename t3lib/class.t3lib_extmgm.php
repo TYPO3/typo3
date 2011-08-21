@@ -24,14 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains a class with Extension Management functions
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-
 
 /**
  * Extension Management functions
@@ -39,11 +31,12 @@
  * This class is never instantiated, rather the methods inside is called as functions like
  *		 t3lib_extMgm::isLoaded('my_extension');
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
 final class t3lib_extMgm {
+
 	protected static $extensionKeyMap;
 
 
@@ -55,7 +48,6 @@ final class t3lib_extMgm {
 
 	/**
 	 * Returns TRUE if the extension with extension key $key is loaded.
-	 * Usage: 109
 	 *
 	 * @param	string		Extension key to test
 	 * @param	boolean		If $exitOnError is TRUE and the extension is not loaded the function will die with an error message
@@ -75,7 +67,6 @@ final class t3lib_extMgm {
 	 * Returns the absolute path to the extension with extension key $key
 	 * If the extension is not loaded the function will die with an error message
 	 * Useful for internal fileoperations
-	 * Usage: 136
 	 *
 	 * @param $key string Extension key
 	 * @param $script string $script is appended to the output if set.
@@ -124,7 +115,6 @@ final class t3lib_extMgm {
 	 * Returns the relative path to the extension as measured from from the TYPO3_mainDir
 	 * If the extension is not loaded the function will die with an error message
 	 * Useful for images and links from backend
-	 * Usage: 54
 	 *
 	 * @param	string		Extension key
 	 * @return	string
@@ -143,7 +133,6 @@ final class t3lib_extMgm {
 	 * Returns the relative path to the extension as measured from the PATH_site (frontend)
 	 * If the extension is not loaded the function will die with an error message
 	 * Useful for images and links from the frontend
-	 * Usage: 6
 	 *
 	 * @param	string		Extension key
 	 * @return	string
@@ -154,7 +143,6 @@ final class t3lib_extMgm {
 
 	/**
 	 * Returns the correct class name prefix for the extension key $key
-	 * Usage: 3
 	 *
 	 * @param	string		Extension key
 	 * @return	string
@@ -240,7 +228,6 @@ final class t3lib_extMgm {
 	 * This function adds the configuration needed for rendering of the field in TCEFORMS - but it does NOT add the field names to the types lists!
 	 * So to have the fields displayed you must also call fx. addToAllTCAtypes or manually add the fields to the types list.
 	 * FOR USE IN ext_tables.php FILES
-	 * Usage: 4
 	 *
 	 * @param	string		$table is the table name of a table already present in $GLOBALS['TCA'] with a columns section
 	 * @param	array		$columnArray is the array with the additional columns (typical some fields an extension wants to add)
@@ -265,7 +252,6 @@ final class t3lib_extMgm {
 	 * This is needed to have new fields shown automatically in the TCEFORMS of a record from $table.
 	 * Typically this function is called after having added new columns (database fields) with the addTCAcolumns function
 	 * FOR USE IN ext_tables.php FILES
-	 * Usage: 1
 	 *
 	 * @param	string		Table name
 	 * @param	string		Field list to add.
@@ -756,7 +742,6 @@ final class t3lib_extMgm {
 	 * Add tablename to default list of allowed tables on pages (in $PAGES_TYPES)
 	 * Will add the $table to the list of tables allowed by default on pages as setup by $PAGES_TYPES['default']['allowedTables']
 	 * FOR USE IN ext_tables.php FILES
-	 * Usage: 11
 	 *
 	 * @param	string		Table name
 	 * @return	void
@@ -768,7 +753,6 @@ final class t3lib_extMgm {
 	/**
 	 * Adds a module (main or sub) to the backend interface
 	 * FOR USE IN ext_tables.php FILES
-	 * Usage: 18
 	 *
 	 * @param	string		$main is the main module key, $sub is the submodule key. So $main would be an index in the $TBE_MODULES array and $sub could be an element in the lists there.
 	 * @param	string		$sub is the submodule key. If $sub is not set a blank $main module is created.
@@ -904,7 +888,6 @@ final class t3lib_extMgm {
 	 * The arguments values are generally determined by which function menu this is supposed to interact with
 	 * See Inside TYPO3 for information on how to use this function.
 	 * FOR USE IN ext_tables.php FILES
-	 * Usage: 26
 	 *
 	 * @param	string		Module name
 	 * @param	string		Class name
@@ -928,7 +911,6 @@ final class t3lib_extMgm {
 	 * Adds $content to the default Page TSconfig as set in $GLOBALS['TYPO3_CONF_VARS'][BE]['defaultPageTSconfig']
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_tables.php/ext_localconf.php FILES
-	 * Usage: 5
 	 *
 	 * @param	string		Page TSconfig content
 	 * @return	void
@@ -941,7 +923,6 @@ final class t3lib_extMgm {
 	 * Adds $content to the default User TSconfig as set in $GLOBALS['TYPO3_CONF_VARS'][BE]['defaultUserTSconfig']
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_tables.php/ext_localconf.php FILES
-	 * Usage: 3
 	 *
 	 * @param	string		User TSconfig content
 	 * @return	void
@@ -954,7 +935,6 @@ final class t3lib_extMgm {
 	 * Adds a reference to a locallang file with $GLOBALS['TCA_DESCR'] labels
 	 * FOR USE IN ext_tables.php FILES
 	 * eg. t3lib_extMgm::addLLrefForTCAdescr('pages', 'EXT:lang/locallang_csh_pages.xml'); for the pages table or t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_layout', 'EXT:cms/locallang_csh_weblayout.php'); for the Web > Page module.
-	 * Usage: 31
 	 *
 	 * @param	string		Description key. Typically a database table (like "pages") but for applications can be other strings, but prefixed with "_MOD_")
 	 * @param	string		File reference to locallang file, eg. "EXT:lang/locallang_csh_pages.php" (or ".xml")
@@ -1175,7 +1155,6 @@ final class t3lib_extMgm {
 	 * If the value (array pos. 1) is already found in that items-array, the entry is substituted, otherwise the input array is added to the bottom.
 	 * Use this function to add a frontend plugin to this list of plugin-types - or more generally use this function to add an entry to any selectorbox/radio-button set in the TCEFORMS
 	 * FOR USE IN ext_tables.php FILES
-	 * Usage: 13
 	 *
 	 * @param	array		Item Array
 	 * @param	string		Type (eg. "list_type") - basically a field from "tt_content" table
@@ -1202,7 +1181,6 @@ final class t3lib_extMgm {
 	/**
 	 * Adds an entry to the "ds" array of the tt_content field "pi_flexform".
 	 * This is used by plugins to add a flexform XML reference / content for use when they are selected as plugin or content element.
-	 * Usage: 0
 	 *
 	 * @param	string		Plugin key as used in the list_type field. Use the asterisk * to match all list_type values.
 	 * @param	string		Either a reference to a flex-form XML file (eg. "FILE:EXT:newloginbox/flexform_ds.xml") or the XML directly.
@@ -1222,7 +1200,6 @@ final class t3lib_extMgm {
 	 * Adds the $table tablename to the list of tables allowed to be includes by content element type "Insert records"
 	 * By using $content_table and $content_field you can also use the function for other tables.
 	 * FOR USE IN ext_tables.php FILES
-	 * Usage: 9
 	 *
 	 * @param	string		Table name to allow for "insert record"
 	 * @param	string		Table name TO WHICH the $table name is applied. See $content_field as well.
@@ -1250,7 +1227,6 @@ final class t3lib_extMgm {
 	 *		 "includeLib" - just includes the library for manual use somewhere in TypoScript.
 	 *	 (Remember that your $type definition should correspond to the column/items array in $GLOBALS['TCA'][tt_content] where you added the selector item for the element! See addPlugin() function)
 	 * FOR USE IN ext_localconf.php FILES
-	 * Usage: 2
 	 *
 	 * @param	string		$key is the extension key
 	 * @param	string		$classFile is the PHP-class filename relative to the extension root directory. If set to blank a default value is chosen according to convensions.
@@ -1316,7 +1292,6 @@ tt_content.' . $key . $prefix . ' {
 	 * Call this method to add an entry in the static template list found in sys_templates
 	 * "static template files" are the modern equivalent (provided from extensions) to the traditional records in "static_templates"
 	 * FOR USE IN ext_localconf.php FILES
-	 * Usage: 3
 	 *
 	 * @param	string		$extKey is of course the extension key
 	 * @param	string		$path is the path where the template files (fixed names) include_static.txt (integer list of uids from the table "static_templates"), constants.txt, setup.txt, editorcfg.txt, and include_static_file.txt is found (relative to extPath, eg. 'static/'). The file include_static_file.txt, allows you to include other static templates defined in files, from your static template, and thus corresponds to the field 'include_static_file' in the sys_template table. The syntax for this is a commaseperated list of static templates to include, like:  EXT:css_styled_content/static/,EXT:da_newsletter_subscription/static/,EXT:cc_random_image/pi2/static/
@@ -1337,7 +1312,6 @@ tt_content.' . $key . $prefix . ' {
 	 * Adds $content to the default TypoScript setup code as set in $GLOBALS['TYPO3_CONF_VARS'][FE]['defaultTypoScript_setup']
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_localconf.php FILES
-	 * Usage: 6
 	 *
 	 * @param	string		TypoScript Setup string
 	 * @return	void
@@ -1350,7 +1324,6 @@ tt_content.' . $key . $prefix . ' {
 	 * Adds $content to the default TypoScript constants code as set in $GLOBALS['TYPO3_CONF_VARS'][FE]['defaultTypoScript_constants']
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_localconf.php FILES
-	 * Usage: 0
 	 *
 	 * @param	string		TypoScript Constants string
 	 * @return	void
@@ -1363,7 +1336,6 @@ tt_content.' . $key . $prefix . ' {
 	 * Adds $content to the default TypoScript code for either setup, constants or editorcfg as set in $GLOBALS['TYPO3_CONF_VARS'][FE]['defaultTypoScript_*']
 	 * (Basically this function can do the same as addTypoScriptSetup and addTypoScriptConstants - just with a little more hazzle, but also with some more options!)
 	 * FOR USE IN ext_localconf.php FILES
-	 * Usage: 7
 	 *
 	 * @param	string		$key is the extension key (informative only).
 	 * @param	string		$type is either "setup", "constants" or "editorcfg" and obviously determines which kind of TypoScript code we are adding.
@@ -1414,7 +1386,6 @@ tt_content.' . $key . $prefix . ' {
 	 *
 	 * Usages of this function can be seen in config_default.php
 	 * Extensions are always detected in the order local - global - system.
-	 * Usage: 1
 	 *
 	 * @return	array		Extension Array
 	 * @internal
@@ -1522,7 +1493,6 @@ $_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];
 
 	/**
 	 * Returns TRUE if the "localconf.php" file in "typo3conf/" is writable
-	 * Usage: 1
 	 *
 	 * @return	boolean
 	 * @internal
@@ -1534,7 +1504,6 @@ $_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];
 	/**
 	 * Returns an error string if typo3conf/ or cache-files with $cacheFilePrefix are NOT writable
 	 * Returns FALSE if no problem.
-	 * Usage: 1
 	 *
 	 * @param	string		Prefix of the cache file to check
 	 * @return	string
@@ -1559,7 +1528,6 @@ $_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];
 	/**
 	 * Returns an array with the two cache-files (0=>localconf, 1=>tables) from typo3conf/ if they (both) exist. Otherwise FALSE.
 	 * Evaluation relies on $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE']
-	 * Usage: 2
 	 *
 	 * @param string $cacheFilePrefix Cache file prefix to be used (optional)
 	 * @return	array
@@ -1590,7 +1558,6 @@ $_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];
 	/**
 	 * Compiles/Creates the two cache-files in typo3conf/ based on $cacheFilePrefix
 	 * Returns a array with the key "_CACHEFILE" set to the $cacheFilePrefix value
-	 * Usage: 1
 	 *
 	 * @param	array		Extension information array
 	 * @param	string		Prefix for the cache files
