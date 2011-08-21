@@ -69,10 +69,4 @@ if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['t
 		'expirePeriod' => 180,
 	);
 }
-	// Register cache_pages table in table garbage collection task
-if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables']['cache_pages'])) {
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables']['cache_pages'] = array(
-		'expireField' => 'expires',
-	);
-}
 ?>
