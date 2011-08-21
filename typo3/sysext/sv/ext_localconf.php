@@ -8,7 +8,7 @@ t3lib_extMgm::addService($_EXTKEY,  'auth' /* sv type */,  'tx_sv_auth' /* sv ke
 			'title' => 'User authentication',
 			'description' => 'Authentication with username/password.',
 
-			'subtype' => 'getUserBE,authUserBE,getUserFE,authUserFE,getGroupsFE',
+			'subtype' => 'getUserBE,authUserBE,getUserFE,authUserFE,getGroupsFE,processLoginDataBE,processLoginDataFE',
 
 			'available' => TRUE,
 			'priority' => 50,

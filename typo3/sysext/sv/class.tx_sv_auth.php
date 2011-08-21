@@ -41,6 +41,44 @@
  */
 class tx_sv_auth extends tx_sv_authbase 	{
 
+	/**
+	 * Process the submitted credentials.
+	 * In this case hash the clear text password if it has been submitted.
+	 *
+	 * @param array $loginData Credentials that are submitted and potentially modified by other services
+	 * @param string $passwordTransmissionStrategy Keyword of how the password has been hashed or encrypted before submission
+	 * @return bool
+	 */
+	public function processLoginData(array &$loginData, $passwordTransmissionStrategy) {
+		$isProcessed = TRUE;
+
+			// Processing data according to the state it was submitted in.
+		switch ($passwordTransmissionStrategy) {
+			case 'normal':
+				$loginData['uident_text'] = $loginData['uident'];
+			break;
+			case 'challenged':
+				$loginData['uident_text'] = '';
+				$loginData['uident_challenged'] = $loginData['uident'];
+				$loginData['uident_superchallenged'] = '';
+			break;
+			case 'superchallenged':
+				$loginData['uident_text'] = '';
+				$loginData['uident_challenged'] = '';
+				$loginData['uident_superchallenged'] = $loginData['uident'];
+			break;
+			default:
+				$isProcessed = FALSE;
+		}
+
+		if (!empty($loginData['uident_text'])) {
+			$loginData['uident_challenged'] = (string) md5($loginData['uname'] . ':' . $loginData['uident_text'] . ':' . $loginData['chalvalue']);
+			$loginData['uident_superchallenged'] = (string) md5($loginData['uname'] . ':' . (md5($loginData['uident_text'])) . ':' . $loginData['chalvalue']);
+			$isProcessed = TRUE;
+		}
+
+		return $isProcessed;
+	}
 
 	/**
 	 * Find a user (eg. look up the user record in database when a login is sent)
