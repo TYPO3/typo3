@@ -40,9 +40,14 @@ require_once(PATH_t3lib . 'class.t3lib_svbase.php');
  * @package TYPO3
  * @subpackage tx_sv
  */
-class tx_sv_authbase extends t3lib_svbase 	{
+class tx_sv_authbase extends t3lib_svbase {
 
-	var $pObj; 			// Parent object
+	/**
+	 * User object
+	 *
+	 * @var t3lib_userAuth
+	 */
+	var $pObj;
 
 	var $mode;			// Subtype of the service which is used to call the service.
 
@@ -83,13 +88,24 @@ class tx_sv_authbase extends t3lib_svbase 	{
  	/**
 	 * Check the login data with the user record data for builtin login methods
 	 *
-	 * @param	array		user data array
-	 * @param	array		login data array
-	 * @param	string		security_level
-	 * @return	boolean		TRUE if login data matched
+	 * @param array $user user data array
+	 * @param array $loginData login data array
+	 * @param string $passwordCompareStrategy password compare strategy
+	 * @return boolean TRUE if login data matched
 	 */
-	function compareUident(array $user, array $loginData, $security_level = '') {
-		return $this->pObj->compareUident($user, $loginData, $security_level);
+	function compareUident(array $user, array $loginData, $passwordCompareStrategy = '') {
+		if ($this->authInfo['loginType'] === 'BE') {
+				// Challenge is only stored in session during BE login with the superchallenged login type.
+				// In the frontend context the challenge is never stored in the session.
+			if ($passwordCompareStrategy !== 'superchallenged') {
+				$this->pObj->challengeStoredInCookie = FALSE;
+			}
+				// The TYPO3 standard login service relies on $passwordCompareStrategy being set
+				// to 'superchallenged' because of the password in the database is stored as md5 hash
+			$passwordCompareStrategy = 'superchallenged';
+		}
+
+		return $this->pObj->compareUident($user, $loginData, $passwordCompareStrategy);
 	}
 
 	/**

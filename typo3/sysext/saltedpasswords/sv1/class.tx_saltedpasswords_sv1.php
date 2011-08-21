@@ -225,19 +225,6 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 		$OK = 100;
 		$validPasswd = FALSE;
 
-		if ($this->pObj->security_level == 'rsa' && t3lib_extMgm::isLoaded('rsaauth')) {
-			$backend = tx_rsaauth_backendfactory::getBackend();
-			$storage = tx_rsaauth_storagefactory::getStorage();
-				// Preprocess the password
-			$password = $this->login['uident'];
-			$key = $storage->get();
-			if ($key != NULL && substr($password, 0, 4) == 'rsa:') {
-				// Decode password and pass to parent
-				$decryptedPassword = $backend->decrypt($key, substr($password, 4));
-				$this->login['uident_text'] = $decryptedPassword;
-			}
-		}
-
 		if ($this->login['uident'] && $this->login['uname']) {
 			if (!empty($this->login['uident_text'])) {
 				$validPasswd = $this->compareUident(
