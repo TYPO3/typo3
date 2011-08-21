@@ -23,7 +23,7 @@
  ***************************************************************/
 
 /**
- * This class provides Check Base plugin implementation.
+ * This class provides Check Base plugin implementation
  *
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  * @package TYPO3
@@ -39,12 +39,12 @@ abstract class tx_linkvalidator_linktype_Abstract implements tx_linkvalidator_li
 	protected $errorParams = array();
 
 	/**
-	 * Base type fetching method, based on the type that softRefParserObj returns.
+	 * Base type fetching method, based on the type that softRefParserObj returns
 	 *
-	 * @param   array	 $value: reference properties
-	 * @param   string	 $type: current type
-	 * @param   string	 $key: validator hook name
-	 * @return  string	 fetched type
+	 * @param array $value Reference properties
+	 * @param string $type Current type
+	 * @param string $key Validator hook name
+	 * @return string Fetched type
 	 */
 	public function fetchType(array $value, $type, $key) {
 		if ($value['type'] == $key) {
@@ -54,9 +54,9 @@ abstract class tx_linkvalidator_linktype_Abstract implements tx_linkvalidator_li
 	}
 
 	/**
-	 * Set the value of the private property errorParams.
+	 * Set the value of the protected property errorParams
 	 *
-	 * @param  array      all parameters needed for the rendering of the error message
+	 * @param array $value All parameters needed for the rendering of the error message
 	 * @return void
 	 */
 	protected function setErrorParams(array $value) {
@@ -64,21 +64,21 @@ abstract class tx_linkvalidator_linktype_Abstract implements tx_linkvalidator_li
 	}
 
 	/**
-	 * Get the value of the private property errorParams.
+	 * Get the value of the private property errorParams
 	 *
-	 * @return  array      all parameters needed for the rendering of the error message
+	 * @return array All parameters needed for the rendering of the error message
 	 */
 	public function getErrorParams() {
 		return $this->errorParams;
 	}
 
 	/**
-	 * Base url parsing
+	 * Construct a valid Url for browser output
 	 *
-	 * @param	array		$row: broken link record
-	 * @return	string		parsed broken url
+	 * @param array $row Broken link record
+	 * @return string Parsed broken url
 	 */
-	public function getBrokenUrl($row) {
+	public function getBrokenUrl(array $row) {
 		return $row['url'];
 	}
 }

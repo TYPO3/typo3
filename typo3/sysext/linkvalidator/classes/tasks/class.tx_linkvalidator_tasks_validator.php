@@ -23,7 +23,7 @@
  ***************************************************************/
 
 /**
- * This class provides Scheduler plugin implementation.
+ * This class provides Scheduler plugin implementation
  *
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  * @package TYPO3
@@ -47,21 +47,21 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	protected $countInARun;
 
 	/**
-	 * Total number of broken links.
+	 * Total number of broken links
 	 *
 	 * @var integer
 	 */
 	protected $totalBrokenLink = 0;
 
 	/**
-	 * Total number of broken links from the last run.
+	 * Total number of broken links from the last run
 	 *
 	 * @var integer
 	 */
 	protected $oldTotalBrokenLink = 0;
 
 	/**
-	 * Mail template fetched from the given template file.
+	 * Mail template fetched from the given template file
 	 *
 	 * @var string
 	 */
@@ -75,51 +75,51 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	protected $configuration = array();
 
 	/**
-	 * Shows if number of result was diferent from the result of the last check or not.
+	 * Shows if number of result was different from the result of the last check or not
 	 *
 	 * @var boolean
 	 */
 	protected $dif;
 
 	/**
-	 * Template to be used for the email.
+	 * Template to be used for the email
 	 *
 	 * @var string
 	 */
 	protected $emailTemplateFile;
 
 	/**
-	 * Level of pages the task should check.
+	 * Level of pages the task should check
 	 *
 	 * @var integer
 	 */
 	protected $depth;
 
 	/**
-	 * UID of the start page for this task.
+	 * UID of the start page for this task
 	 *
 	 * @var integer
 	 */
 	protected $page;
 
 	/**
-	 * Email address to which an email report is sent.
+	 * Email address to which an email report is sent
 	 *
 	 * @var string
 	 */
 	protected $email;
 
 	/**
-	 * Only send an email, if new broken links were found.
+	 * Only send an email, if new broken links were found
 	 *
 	 * @var boolean
 	 */
 	protected $emailOnBrokenLinkOnly;
 
 	/**
-	 * Get the value of the protected property email.
+	 * Get the value of the protected property email
 	 *
-	 * @return  string      Email address to which an email report is sent
+	 * @return string Email address to which an email report is sent
 	 */
 	public function getEmail() {
 		return $this->email;
@@ -128,7 +128,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	/**
 	 * Set the value of the private property email.
 	 *
-	 * @param  string       Email address to which an email report is sent
+	 * @param string $email Email address to which an email report is sent
 	 * @return void
 	 */
 	public function setEmail($email) {
@@ -136,18 +136,18 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	}
 
 	/**
-	 * Get the value of the protected property emailOnBrokenLinkOnly.
+	 * Get the value of the protected property emailOnBrokenLinkOnly
 	 *
-	 * @return  boolean      Only send an email, if new broken links were found.
+	 * @return boolean Whether to send an email, if new broken links were found
 	 */
 	public function getEmailOnBrokenLinkOnly() {
 		return $this->emailOnBrokenLinkOnly;
 	}
 
 	/**
-	 * Set the value of the private property emailOnBrokenLinkOnly.
+	 * Set the value of the private property emailOnBrokenLinkOnly
 	 *
-	 * @param  boolean      Only send an email, if new broken links were found.
+	 * @param boolean $emailOnBrokenLinkOnly Only send an email, if new broken links were found
 	 * @return void
 	 */
 	public function setEmailOnBrokenLinkOnly($emailOnBrokenLinkOnly) {
@@ -155,18 +155,18 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	}
 
 	/**
-	 * Get the value of the protected property page.
+	 * Get the value of the protected property page
 	 *
-	 * @return  integer      UID of the start page for this task.
+	 * @return integer UID of the start page for this task
 	 */
 	public function getPage() {
 		return $this->page;
 	}
 
 	/**
-	 * Set the value of the private property page.
+	 * Set the value of the private property page
 	 *
-	 * @param  integer      UID of the start page for this task.
+	 * @param integer $page UID of the start page for this task.
 	 * @return void
 	 */
 	public function setPage($page) {
@@ -174,18 +174,18 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	}
 
 	/**
-	 * Get the value of the protected property depth.
+	 * Get the value of the protected property depth
 	 *
-	 * @return  integer     Level of pages the task should check.
+	 * @return integer Level of pages the task should check
 	 */
 	public function getDepth() {
 		return $this->depth;
 	}
 
 	/**
-	 * Set the value of the private property depth.
+	 * Set the value of the private property depth
 	 *
-	 * @param  integer     Level of pages the task should check.
+	 * @param integer $depth Level of pages the task should check
 	 * @return void
 	 */
 	public function setDepth($depth) {
@@ -193,18 +193,18 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	}
 
 	/**
-	 * Get the value of the protected property emailTemplateFile.
+	 * Get the value of the protected property emailTemplateFile
 	 *
-	 * @return  string    Template to be used for the email.
+	 * @return string Template to be used for the email
 	 */
 	public function getEmailTemplateFile() {
 		return $this->emailTemplateFile;
 	}
 
 	/**
-	 * Set the value of the private property emailTemplateFile.
+	 * Set the value of the private property emailTemplateFile
 	 *
-	 * @param  string    Template to be used for the email.
+	 * @param string $emailTemplateFile Template to be used for the email
 	 * @return void
 	 */
 	public function setEmailTemplateFile($emailTemplateFile) {
@@ -212,18 +212,18 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	}
 
 	/**
-	 * Get the value of the protected property configuration.
+	 * Get the value of the protected property configuration
 	 *
-	 * @return  array    specific TSconfig for this task.
+	 * @return array specific TSconfig for this task
 	 */
 	public function getConfiguration() {
 		return $this->configuration;
 	}
 
 	/**
-	 * Set the value of the private property configuration.
+	 * Set the value of the private property configuration
 	 *
-	 * @param  array    specific TSconfig for this task.
+	 * @param array $configuration specific TSconfig for this task
 	 * @return void
 	 */
 	public function setConfiguration($configuration) {
@@ -232,9 +232,9 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 
 
 	/**
-	 * Function executed from the Scheduler.
+	 * Function execute from the Scheduler
 	 *
-	 * @return	void
+	 * @return boolean TRUE on successful execution, FALSE on error
 	 */
 	public function execute() {
 		$this->setCliArguments();
@@ -272,10 +272,10 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	}
 
 	/**
-	 * Validate all links for a page based on the task configuration.
+	 * Validate all links for a page based on the task configuration
 	 *
-	 * @param	integer $page: uid of the page to parse.
-	 * @return	string	$pageSections: Content of page section.
+	 * @param integer $page Uid of the page to parse
+	 * @return string $pageSections Content of page section
 	 */
 	protected function checkPageLinks($page) {
 		$pageSections = '';
@@ -309,10 +309,10 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	}
 
 	/**
-	 * Get the linkvalidator modTSconfig for a page.
+	 * Get the linkvalidator modTSconfig for a page
 	 *
-	 * @param	integer $page: uid of the page.
-	 * @return	array	$modTS: mod.linkvalidator TSconfig array.
+	 * @param integer $page Uid of the page
+	 * @return array $modTS mod.linkvalidator TSconfig array
 	 */
 	protected function loadModTSconfig($page) {
 		$modTS = t3lib_BEfunc::getModTSconfig($page, 'mod.linkvalidator');
@@ -338,29 +338,29 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	}
 
 	/**
-	 * Get the list of fields to parse in modTSconfig.
+	 * Get the list of fields to parse in modTSconfig
 	 *
-	 * @param	array	$modTS: mod.linkvalidator TSconfig array.
-	 * @return	array	$searchFields: list of fields.
+	 * @param array $modTS mod.linkvalidator TSconfig array
+	 * @return array $searchFields List of fields
 	 */
-	protected function getSearchField($modTS) {
-			// get the searchFields from TypoScript
+	protected function getSearchField(array $modTS) {
+			// Get the searchFields from TypoScript
 		foreach ($modTS['searchFields.'] as $table => $fieldList) {
 			$fields = t3lib_div::trimExplode(',', $fieldList);
 			foreach ($fields as $field) {
 				$searchFields[$table][] = $field;
 			}
 		}
-		return $searchFields;
+		return isset($searchFields) ? $searchFields : array();
 	}
 
 	/**
-	 * Get the list of linkTypes to parse in modTSconfig.
+	 * Get the list of linkTypes to parse in modTSconfig
 	 *
-	 * @param	array	$modTS: mod.linkvalidator TSconfig array.
-	 * @return	array	$linkTypes: list of link types.
+	 * @param array $modTS mod.linkvalidator TSconfig array
+	 * @return array $linkTypes list of link types
 	 */
-	protected function getLinkTypes($modTS) {
+	protected function getLinkTypes(array $modTS) {
 		$linkTypes = array();
 		$typesTmp = t3lib_div::trimExplode(',', $modTS['linktypes'], 1);
 		if (is_array($typesTmp)) {
@@ -377,26 +377,26 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	}
 
 	/**
-	 * Build and send warning email when new broken links were found.
+	 * Build and send warning email when new broken links were found
 	 *
-	 * @param	string		$pageSections: Content of page section
-	 * @param	string		$modTS: TSconfig array
-	 * @return	bool		TRUE if mail was sent, FALSE if or not
+	 * @param string $pageSections Content of page section
+	 * @param array $modTS TSconfig array
+	 * @return boolean TRUE if mail was sent, FALSE if or not
 	 */
-	protected function reportEmail($pageSections, $modTS) {
+	protected function reportEmail($pageSections, array $modTS) {
 		$content = t3lib_parsehtml::substituteSubpart($this->templateMail, '###PAGE_SECTION###', $pageSections);
-		/** @var array $markerArray */
+			/** @var array $markerArray */
 		$markerArray = array();
-		/** @var array $validEmailList */
+			/** @var array $validEmailList */
 		$validEmailList = array();
-		/** @var boolean $sendEmail */
+			/** @var boolean $sendEmail */
 		$sendEmail = TRUE;
 
 		$markerArray['totalBrokenLink'] = $this->totalBrokenLink;
 		$markerArray['totalBrokenLink_old'] = $this->oldTotalBrokenLink;
 		$content = t3lib_parsehtml::substituteMarkerArray($content, $markerArray, '###|###', TRUE, TRUE);
 
-		/** @var t3lib_mail_Message $mail */
+			/** @var t3lib_mail_Message $mail */
 		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
 		if(empty($modTS['mail.']['fromemail'])) {
 			$modTS['mail.']['fromemail'] = t3lib_utility_Mail::getSystemFromAddress();
@@ -453,15 +453,15 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 
 
 	/**
-	 * Build the mail content.
+	 * Build the mail content
 	 *
-	 * @param	int			$curPage: id of the current page
-	 * @param	string		$pageList: list of pages id
-	 * @param	array		$markerArray: array of markers
-	 * @param	array		$oldBrokenLink: markerarray with the number of link found
-	 * @return	string		Content of the mail
+	 * @param int $curPage Id of the current page
+	 * @param string $pageList List of pages id
+	 * @param array $markerArray Array of markers
+	 * @param array $oldBrokenLink Marker array with the number of link found
+	 * @return string Content of the mail
 	 */
-	protected function buildMail($curPage, $pageList, $markerArray, $oldBrokenLink) {
+	protected function buildMail($curPage, $pageList, array $markerArray, array $oldBrokenLink) {
 		$pageSectionHTML = t3lib_parsehtml::getSubpart($this->templateMail, '###PAGE_SECTION###');
 
 		if (is_array($markerArray)) {
@@ -488,8 +488,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	/**
 	 * Simulate cli call with setting the required options to the $_SERVER['argv']
 	 *
-	 * @return	void
-	 * @access protected
+	 * @return void
 	 */
 	protected function setCliArguments() {
 		$_SERVER['argv'] = array(

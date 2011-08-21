@@ -32,39 +32,39 @@
 interface tx_linkvalidator_linktype_Interface {
 
 	/**
-	 * Checks a given URL + /path/filename.ext for validity
+	 * Checks a given link for validity
 	 *
-	 * @param   string	  $url: url to check
-	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
-	 * @param   object	  $reference:  parent instance of tx_linkvalidator_Processor
-	 * @return  string	  validation error message or succes code
+	 * @param string $url Url to check
+	 * @param array $softRefEntry The soft reference entry which builds the context of that url
+	 * @param tx_linkvalidator_Processor $reference Parent instance of tx_linkvalidator_Processor
+	 * @return string Validation error message or success code
 	 */
 	public function checkLink($url, array $softRefEntry, tx_linkvalidator_Processor $reference);
 
 	/**
 	 * Base type fetching method, based on the type that softRefParserObj returns.
 	 *
-	 * @param   array	 $value: reference properties
-	 * @param   string	 $type: current type
-	 * @param   string	 $key: validator hook name
-	 * @return  string	 fetched type
+	 * @param array $value Reference properties
+	 * @param string $type Current type
+	 * @param string $key Validator hook name
+	 * @return string Fetched type
 	 */
 	public function fetchType(array $value, $type, $key);
 
 	/**
 	 * Get the value of the private property errorParams.
 	 *
-	 * @return  array      all parameters needed for the rendering of the error message
+	 * @return array All parameters needed for the rendering of the error message
 	 */
 	public function getErrorParams();
 
 	/**
-	 * Base url parsing
+	 * Construct a valid Url for browser output
 	 *
-	 * @param	array		$row: broken link record
-	 * @return	string		parsed broken url
+	 * @param array $row Broken link record
+	 * @return string Parsed broken url
 	 */
-	public function getBrokenUrl($row);
+	public function getBrokenUrl(array $row);
 
 }
 

@@ -23,7 +23,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * This class provides Check File Links plugin implementation.
+ * This class provides Check File Links plugin implementation
  *
  * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
@@ -33,12 +33,12 @@
 class tx_linkvalidator_linktype_File extends tx_linkvalidator_linktype_Abstract {
 
 	/**
-	 * Checks a given URL + /path/filename.ext for validity.
+	 * Checks a given URL + /path/filename.ext for validity
 	 *
-	 * @param   string	  $url: url to check
-	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
-	 * @param   object	  $reference:  parent instance of tx_linkvalidator_Processor
-	 * @return  string	  TRUE on success or FALSE on error
+	 * @param string $url Url to check
+	 * @param array $softRefEntry The soft reference entry which builds the context of that url
+	 * @param tx_linkvalidator_Processor $reference Parent instance of tx_linkvalidator_Processor
+	 * @return boolean TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, array $softRefEntry, tx_linkvalidator_Processor $reference) {
 		if (!@file_exists(PATH_site . rawurldecode($url))) {
@@ -49,10 +49,10 @@ class tx_linkvalidator_linktype_File extends tx_linkvalidator_linktype_Abstract 
 	}
 
 	/**
-	 * Generate the localized error message from the error params saved from the parsing.
+	 * Generate the localized error message from the error params saved from the parsing
 	 *
-	 * @param   array    all parameters needed for the rendering of the error message
-	 * @return  string    validation error message
+	 * @param array $errorParams All parameters needed for the rendering of the error message
+	 * @return string Validation error message
 	 */
 	public function getErrorMessage($errorParams) {
 		$response = $GLOBALS['LANG']->getLL('list.report.filenotexisting');
@@ -61,12 +61,12 @@ class tx_linkvalidator_linktype_File extends tx_linkvalidator_linktype_Abstract 
 
 
 	/**
-	 * Url parsing
+	 * Construct a valid Url for browser output
 	 *
-	 * @param   array	   $row: broken link record
-	 * @return  string	  parsed broken url
+	 * @param array $row Broken link record
+	 * @return string Parsed broken url
 	 */
-	public function getBrokenUrl($row) {
+	public function getBrokenUrl(array $row) {
 		$brokenUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $row['url'];
 		return $brokenUrl;
 	}

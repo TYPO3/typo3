@@ -23,7 +23,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * This class provides Check Link Handler plugin implementation.
+ * This class provides Check Link Handler plugin implementation
  *
  * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
@@ -35,26 +35,26 @@ class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Ab
 	const DELETED = 'deleted';
 
 	/**
-	 * TSconfig of the module tx_linkhandler.
+	 * TSconfig of the module tx_linkhandler
 	 *
 	 * @var array
 	 */
 	protected $tsconfig;
 
 	/**
-	 * Get TSconfig when loading the class.
+	 * Get TSconfig when loading the class
 	 */
 	function __construct() {
 		$this->tsconfig = t3lib_BEfunc::getModTSconfig(1, 'mod.tx_linkhandler');
 	}
 
 	/**
-	 * Checks a given URL + /path/filename.ext for validity
+	 * Checks a given URL for validity
 	 *
-	 * @param   string	  $url: url to check
-	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
-	 * @param   object	  $reference:  parent instance of tx_linkvalidator_Processor
-	 * @return  string	  TRUE on success or FALSE on error
+	 * @param string $url Url to check
+	 * @param array $softRefEntry The soft reference entry which builds the context of that url
+	 * @param tx_linkvalidator_Processor $reference Parent instance of tx_linkvalidator_Processor
+	 * @return boolean TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, array $softRefEntry, tx_linkvalidator_Processor $reference) {
 		$response = TRUE;
@@ -71,7 +71,7 @@ class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Ab
 
 			if ($row) {
 				if ($row['deleted'] == '1') {
-					$errorParams['errorType'] = DELETED;
+					$errorParams['errorType'] = self::DELETED;
 					$errorParams['tablename'] = $tableName;
 					$errorParams['uid'] = $rowid;
 					$response =  FALSE;
@@ -91,12 +91,12 @@ class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Ab
 	}
 
 	/**
-	 * type fetching method, based on the type that softRefParserObj returns.
+	 * Type fetching method, based on the type that softRefParserObj returns
 	 *
-	 * @param   array	  $value: reference properties
-	 * @param   string	 $type: current type
-	 * @param   string	 $key: validator hook name
-	 * @return  string	 fetched type
+	 * @param array $value Reference properties
+	 * @param string $type Current type
+	 * @param string $key Validator hook name
+	 * @return string fetched type
 	 */
 	public function fetchType(array $value, $type, $key) {
 		if ($type == 'string' && strtolower(substr($value['tokenValue'], 0, 7)) == 'record:') {
@@ -106,10 +106,10 @@ class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Ab
 	}
 
 	/**
-	 * Generate the localized error message from the error params saved from the parsing.
+	 * Generate the localized error message from the error params saved from the parsing
 	 *
-	 * @param   array    all parameters needed for the rendering of the error message
-	 * @return  string    validation error message
+	 * @param array $errorParams All parameters needed for the rendering of the error message
+	 * @return string Validation error message
 	 */
 	public function getErrorMessage($errorParams) {
 		$errorType = $errorParams['errorType'];
@@ -121,7 +121,7 @@ class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Ab
 		}
 
 		switch ($errorType) {
-			case DELETED:
+			case self::DELETED:
 				$response = $GLOBALS['LANG']->getLL('list.report.rowdeleted');
 				$response = str_replace('###title###', $title, $response);
 				$response = str_replace('###uid###', $errorParams['uid'], $response);

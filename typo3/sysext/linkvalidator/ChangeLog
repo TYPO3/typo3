@@ -1,6 +1,7 @@
 2011-08-26 Philipp Gampe <forge.typo3.org@philippgampe.info>
 
 	* [BUGFIX] Fatal error with E_STRICT: Declaration of fetchType must be compatible with interface
+	* [TASK] Fix phpdoc and method signatures
 
 2011-08-26  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 

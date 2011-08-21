@@ -23,7 +23,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * This class provides Check External Links plugin implementation.
+ * This class provides Check External Links plugin implementation
  *
  * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
@@ -34,21 +34,21 @@
 class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstract {
 
 	/**
-	 * Cached list of the URLs, which were already checked for the current processing.
+	 * Cached list of the URLs, which were already checked for the current processing
 	 *
 	 * @var array $urlReports
 	 */
 	protected $urlReports = array();
 
 	/**
-	 * Cached list of all error parameters of the URLs, which were already checked for the current processing.
+	 * Cached list of all error parameters of the URLs, which were already checked for the current processing
 	 *
 	 * @var array $urlErrorParams
 	 */
 	protected $urlErrorParams = array();
 
 	/**
-	 * List of headers to be used for metching an URL for the current processing
+	 * List of headers to be used for matching an URL for the current processing
 	 *
 	 * @var array $additionalHeaders
 	 */
@@ -59,7 +59,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 	 * Checks a given URL for validity
 	 *
 	 * @param string $url The URL to check
-	 * @param array $softRefEntry The softref entry which builds the context of that URL
+	 * @param array $softRefEntry The soft reference entry which builds the context of that URL
 	 * @param tx_linkvalidator_Processor $reference Parent instance of tx_linkvalidator_Processor
 	 * @return boolean TRUE on success or FALSE on error
 	 */
@@ -99,7 +99,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 		}
 		catch (Exception $e) {
 			$isValidUrl = FALSE;
-				// we hit a redirect loop
+				// A redirect loop occurred
 			if ($e->getCode() === 40) {
 					// Parse the exception for more information
 				$trace = $e->getTrace();
@@ -132,7 +132,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 	}
 
 	/**
-	 * Generate the localized error message from the error params saved from the parsing.
+	 * Generate the localized error message from the error params saved from the parsing
 	 *
 	 * @param array $errorParams All parameters needed for the rendering of the error message
 	 * @return string Validation error message
@@ -172,7 +172,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 	}
 
 	/**
-	 * Get the external type from the softRefParserObj result.
+	 * Get the external type from the softRefParserObj result
 	 *
 	 * @param array $value Reference properties
 	 * @param string $type Current type
