@@ -41,7 +41,7 @@ class tx_rsaauth_feloginhook {
 	public function loginFormHook() {
 		$result = array(0 => '', 1 => '');
 
-		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel'] == 'rsa') {
+		if (trim($GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel']) === 'rsa') {
 			$backend = tx_rsaauth_backendfactory::getBackend();
 			if ($backend) {
 				$result[0] = 'tx_rsaauth_feencrypt(this);';
