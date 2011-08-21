@@ -74,7 +74,15 @@ abstract class t3lib_userAuth {
 	var $formfield_uident = ''; // formfield with password
 	var $formfield_chalvalue = ''; // formfield with a unique value which is used to encrypt the password and username
 	var $formfield_status = ''; // formfield with status: *'login', 'logout'. If empty login is not verified.
-	var $security_level = 'normal'; // sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
+
+	/**
+	 * Sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username.
+	 * from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
+	 *
+	 * @var	string
+	 * @deprecated since 4.7 will be removed in 4.9
+	 */
+	public $security_level = 'normal';
 
 	var $auth_timeout_field = 0; // Server session lifetime. If > 0: session-timeout in seconds. If FALSE or <0: no timeout. If string: The string is a fieldname from the usertable where the timeout can be found.
 	var $lifetime = 0; // Client session lifetime. 0 = Session-cookies. If session-cookies, the browser will stop the session when the browser is closed. Otherwise this specifies the lifetime of a cookie that keeps the session.
@@ -1152,42 +1160,48 @@ abstract class t3lib_userAuth {
 
 	/**
 	 * Processes Login data submitted by a form or params depending on the
-	 * security_level
+	 * passwordTransmissionStrategy
 	 *
 	 * @param	array		login data array
-	 * @param	string		Alternative security_level. Used when authentication services wants to override the default.
+	 * @param	string		Alternative passwordTransmissionStrategy. Used when authentication services wants to override the default.
 	 * @return	array		processed login data array
 	 * @internal
 	 */
-	function processLoginData($loginData, $security_level = '') {
-		$loginSecurityLevel = $security_level ? $security_level : ($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel'] ? $GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel'] : $this->security_level);
+	function processLoginData($loginData, $passwordTransmissionStrategy = '') {
+		$passwordTransmissionStrategy = $passwordTransmissionStrategy ? $passwordTransmissionStrategy : ($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel'] ? trim($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel']) : $this->security_level);
 
-			// Processing data according to the state it was submitted in.
-			// ($loginSecurityLevel should reflect the security level used on the data being submitted in the login form)
-		if ($loginSecurityLevel == 'normal') {
-			$loginData['uident_text'] = $loginData['uident'];
-			$loginData['uident_challenged'] = (string) md5($loginData['uname'] . ':' . $loginData['uident'] . ':' . $loginData['chalvalue']);
-			$loginData['uident_superchallenged'] = (string) md5($loginData['uname'] . ':' . (md5($loginData['uident'])) . ':' . $loginData['chalvalue']);
-		} elseif ($loginSecurityLevel == 'challenged') {
-			$loginData['uident_text'] = '';
-			$loginData['uident_challenged'] = $loginData['uident'];
-			$loginData['uident_superchallenged'] = '';
-		} elseif ($loginSecurityLevel == 'superchallenged') {
-			$loginData['uident_text'] = '';
-			$loginData['uident_challenged'] = '';
-			$loginData['uident_superchallenged'] = $loginData['uident'];
+		if ($this->writeDevLog) {
+			t3lib_div::devLog('Login data before processing: ' . t3lib_div::arrayToLogString($loginData), 't3lib_userAuth');
 		}
 
-			// The password "uident" is set based on the internal security setting of TYPO3
-			// Example:
-			// $this->security_level for the backend must be "superchallenged" because passwords are stored as md5-hashes in the be_users table
-			// $this->security_level for the frontend must be "normal" or "challenged" because passwords are stored as clear-text in the fe_users tables
-		if ($this->security_level == 'normal') {
-			$loginData['uident'] = $loginData['uident_text'];
-		} elseif ($this->security_level == 'challenged') {
-			$loginData['uident'] = $loginData['uident_challenged'];
-		} elseif ($this->security_level == 'superchallenged') {
-			$loginData['uident'] = $loginData['uident_superchallenged'];
+		$serviceChain = '';
+		$subType = 'processLoginData' . $this->loginType;
+		$authInfo = $this->getAuthInfoArray();
+		$isLoginDataProcessed = FALSE;
+		$processedLoginData = $loginData;
+		while (is_object($serviceObject = t3lib_div::makeInstanceService('auth', $subType, $serviceChain))) {
+			$serviceChain .= ',' . $serviceObject->getServiceKey();
+			$serviceObject->initAuth($subType, $loginData, $authInfo, $this);
+
+			$serviceResult = $serviceObject->processLoginData($processedLoginData, $passwordTransmissionStrategy);
+
+			if (!empty($serviceResult)) {
+				$isLoginDataProcessed = TRUE;
+
+					// if the service returns >=200 then no more processing is needed
+				if (intval($serviceResult) >= 200)	{
+					unset($serviceObject);
+					break;
+				}
+			}
+			unset($serviceObject);
+		}
+
+		if ($isLoginDataProcessed) {
+			$loginData = $processedLoginData;
+			if ($this->writeDevLog) {
+				t3lib_div::devLog('Processed login data: '.t3lib_div::arrayToLogString($processedLoginData), 't3lib_userAuth');
+			}
 		}
 
 		return $loginData;
@@ -1206,6 +1220,7 @@ abstract class t3lib_userAuth {
 		$authInfo['HTTP_HOST'] = t3lib_div::getIndpEnv('HTTP_HOST');
 		$authInfo['REMOTE_ADDR'] = t3lib_div::getIndpEnv('REMOTE_ADDR');
 		$authInfo['REMOTE_HOST'] = t3lib_div::getIndpEnv('REMOTE_HOST');
+		/** @deprecated the usage of $authInfo['security_level'] is deprecated since 4.7 */
 		$authInfo['security_level'] = $this->security_level;
 		$authInfo['showHiddenRecords'] = $this->showHiddenRecords;
 			// can be overidden in localconf by SVCONF:
@@ -1226,15 +1241,15 @@ abstract class t3lib_userAuth {
 	 *
 	 * @param	array		user data array
 	 * @param	array		login data array
-	 * @param	string		Alternative security_level. Used when authentication services wants to override the default.
+	 * @param	string		Alternative passwordCompareStrategy. Used when authentication services wants to override the default.
 	 * @return	boolean		TRUE if login data matched
 	 */
-	function compareUident($user, $loginData, $security_level = '') {
+	function compareUident($user, $loginData, $passwordCompareStrategy = '') {
 
 		$OK = FALSE;
-		$security_level = $security_level ? $security_level : $this->security_level;
+		$passwordCompareStrategy = $passwordCompareStrategy ? $passwordCompareStrategy : $this->security_level;
 
-		switch ($security_level) {
+		switch ($passwordCompareStrategy) {
 			case 'superchallenged': // If superchallenged the password in the database ($user[$this->userident_column]) must be a md5-hash of the original password.
 			case 'challenged':
 
@@ -1250,12 +1265,12 @@ abstract class t3lib_userAuth {
 					}
 				}
 
-				if ((string) $loginData['uident'] === (string) md5($user[$this->username_column] . ':' . $user[$this->userident_column] . ':' . $loginData['chalvalue'])) {
+				if ((string) $loginData['uident_' . $passwordCompareStrategy] === (string) md5($user[$this->username_column] . ':' . $user[$this->userident_column] . ':' . $loginData['chalvalue'])) {
 					$OK = TRUE;
 				}
 			break;
 			default: // normal
-				if ((string) $loginData['uident'] === (string) $user[$this->userident_column]) {
+				if ((string) $loginData['uident_text'] === (string) $user[$this->userident_column]) {
 					$OK = TRUE;
 				}
 			break;

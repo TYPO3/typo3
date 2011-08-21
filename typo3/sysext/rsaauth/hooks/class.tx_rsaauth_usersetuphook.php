@@ -110,12 +110,12 @@ class tx_rsaauth_usersetuphook {
 	}
 
 	/**
-	 * Rsa is available if security_level is set and rsa backend is working.
+	 * Rsa is available if loginSecurityLevel is set and rsa backend is working.
 	 *
 	 * @return bool
 	 */
 	protected function isRsaAvailable() {
-		return ($GLOBALS['BE_USER']->security_level === 'rsa') && (tx_rsaauth_backendfactory::getBackend() !== NULL);
+		return (trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) === 'rsa') && (tx_rsaauth_backendfactory::getBackend() !== NULL);
 	}
 
 

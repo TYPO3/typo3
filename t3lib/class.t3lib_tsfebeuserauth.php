@@ -69,6 +69,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 	 *
 	 * @var	string
+	 * @deprecated since 4.7 will be removed in 4.9
 	 */
 	public $security_level = '';
 

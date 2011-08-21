@@ -140,14 +140,11 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		$securityLevel = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']);
 		$standardSecurityLevels = array('normal', 'challenged', 'superchallenged');
 
-			// No challenge is stored in the session if security level is normal
-		if ($securityLevel === 'normal') {
-			$this->challengeStoredInCookie = FALSE;
-		}
-
 			// The TYPO3 standard login service relies on $this->security_level being set
-			// to 'superchallenged' because of the password in the database is stored as md5 hash
-			// @see t3lib_userauth::processLoginData()
+			// to 'superchallenged' because of the password in the database is stored as md5 hash.
+			// @deprecated since 4.7
+			// These lines are here for compatibility purpose only, can be removed in 4.9.
+			// @see tx_sv_auth::processLoginData()
 		if (!empty($securityLevel) && !in_array($securityLevel, $standardSecurityLevels)) {
 			$this->security_level = $securityLevel;
 		} else {
