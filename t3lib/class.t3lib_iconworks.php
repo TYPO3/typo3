@@ -24,18 +24,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Contains class for icon generation in the backend
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-
-
-/**
- * Icon generation, backend
  * This library has functions that returns - and if necessary creates - the icon for an element in TYPO3
  *
  * Expects global vars:
@@ -49,7 +40,7 @@
  * The class is included in eg. init.php
  * ALL functions called without making a class instance, eg. "t3lib_iconWorks::getIconImage()"
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -124,7 +115,6 @@ final class t3lib_iconWorks {
 	/**
 	 * Returns an icon image tag, 18x16 pixels, based on input information.
 	 * This function is recommended to use in your backend modules.
-	 * Usage: 60
 	 *
 	 * @param	string		The table name
 	 * @param	array		The table row ("enablefields" are at least needed for correct icon display and for pages records some more fields in addition!)
@@ -148,7 +138,6 @@ final class t3lib_iconWorks {
 	/**
 	 * Creates the icon for input table/row
 	 * Returns filename for the image icon, relative to PATH_typo3
-	 * Usage: 24
 	 *
 	 * @param	string		The table name
 	 * @param	array		The table row ("enablefields" are at least needed for correct icon display and for pages records some more fields in addition!)
@@ -309,7 +298,6 @@ final class t3lib_iconWorks {
 	/**
 	 * Returns the src=... for the input $src value OR any alternative found in $TBE_STYLES['skinImg']
 	 * Used for skinning the TYPO3 backend with an alternative set of icons
-	 * Usage: 336
 	 *
 	 * @param	string		Current backpath to PATH_typo3 folder
 	 * @param	string		Icon file name relative to PATH_typo3 folder

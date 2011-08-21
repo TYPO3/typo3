@@ -24,17 +24,13 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Contains the class "t3lib_db" containing functions for building SQL queries
  * and mysql wrappers, thus providing a foundational API to all database
  * interaction.
  * This class is instantiated globally as $TYPO3_DB in TYPO3 scripts.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-
-
-/**
  * TYPO3 "database wrapper" class (new in 3.6.0)
  * This class contains
  * - abstraction functions for executing INSERT/UPDATE/DELETE/SELECT queries ("Query execution"; These are REQUIRED for all future connectivity to the database, thus ensuring DBAL compliance!)
@@ -59,7 +55,6 @@
  * @subpackage t3lib
  */
 class t3lib_DB {
-
 
 		// Debug:
 	var $debugOutput = FALSE; // Set "TRUE" or "1" if you want database errors outputted. Set to "2" if you also want successful database actions outputted.
@@ -100,7 +95,6 @@ class t3lib_DB {
 	/**
 	 * Creates and executes an INSERT SQL-statement for $table from the array with field/value pairs $fields_values.
 	 * Using this function specifically allows us to handle BLOB and CLOB fields depending on DB
-	 * Usage count/core: 47
 	 *
 	 * @param	string		Table name
 	 * @param	array		Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
@@ -141,7 +135,6 @@ class t3lib_DB {
 	/**
 	 * Creates and executes an UPDATE SQL-statement for $table where $where-clause (typ. 'uid=...') from the array with field/value pairs $fields_values.
 	 * Using this function specifically allow us to handle BLOB and CLOB fields depending on DB
-	 * Usage count/core: 50
 	 *
 	 * @param	string		Database tablename
 	 * @param	string		WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
@@ -162,7 +155,6 @@ class t3lib_DB {
 
 	/**
 	 * Creates and executes a DELETE SQL-statement for $table where $where-clause
-	 * Usage count/core: 40
 	 *
 	 * @param	string		Database tablename
 	 * @param	string		WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
@@ -182,7 +174,6 @@ class t3lib_DB {
 	/**
 	 * Creates and executes a SELECT SQL-statement
 	 * Using this function specifically allow us to handle the LIMIT feature independently of DB.
-	 * Usage count/core: 340
 	 *
 	 * @param	string		List of fields to select from the table. This is what comes right after "SELECT ...". Required value.
 	 * @param	string		Table(s) from which to select. This is what comes right after "FROM ...". Required value.
@@ -211,8 +202,6 @@ class t3lib_DB {
 	 * Use $mm_table together with $local_table or $foreign_table to select over two tables. Or use all three tables to select the full MM-relation.
 	 * The JOIN is done with [$local_table].uid <--> [$mm_table].uid_local  / [$mm_table].uid_foreign <--> [$foreign_table].uid
 	 * The function is very useful for selecting MM-relations between tables adhering to the MM-format used by TCE (TYPO3 Core Engine). See the section on $GLOBALS['TCA'] in Inside TYPO3 for more details.
-	 *
-	 * Usage: 12 (spec. ext. sys_action, sys_messages, sys_todos)
 	 *
 	 * @param	string		Field list for SELECT
 	 * @param	string		Tablename, local table
@@ -253,8 +242,6 @@ class t3lib_DB {
 
 	/**
 	 * Executes a select based on input query parts array
-	 *
-	 * Usage: 9
 	 *
 	 * @param	array		Query parts array
 	 * @return	pointer		MySQL select result pointer / DBAL object
@@ -381,7 +368,6 @@ class t3lib_DB {
 
 	/**
 	 * Creates an INSERT SQL-statement for $table from the array with field/value pairs $fields_values.
-	 * Usage count/core: 4
 	 *
 	 * @param	string		See exec_INSERTquery()
 	 * @param	array		See exec_INSERTquery()
@@ -454,7 +440,6 @@ class t3lib_DB {
 
 	/**
 	 * Creates an UPDATE SQL-statement for $table where $where-clause (typ. 'uid=...') from the array with field/value pairs $fields_values.
-	 * Usage count/core: 6
 	 *
 	 * @param	string		See exec_UPDATEquery()
 	 * @param	string		See exec_UPDATEquery()
@@ -499,7 +484,6 @@ class t3lib_DB {
 
 	/**
 	 * Creates a DELETE SQL-statement for $table where $where-clause
-	 * Usage count/core: 3
 	 *
 	 * @param	string		See exec_DELETEquery()
 	 * @param	string		See exec_DELETEquery()
@@ -529,7 +513,6 @@ class t3lib_DB {
 
 	/**
 	 * Creates a SELECT SQL-statement
-	 * Usage count/core: 11
 	 *
 	 * @param	string		See exec_SELECTquery()
 	 * @param	string		See exec_SELECTquery()
@@ -734,7 +717,6 @@ class t3lib_DB {
 
 	/**
 	 * Escaping and quoting values for SQL statements.
-	 * Usage count/core: 100
 	 *
 	 * @param	string		Input string
 	 * @param	string		Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
@@ -775,8 +757,6 @@ class t3lib_DB {
 	 * Use this function instead of the PHP addslashes() function when you build queries - this will prepare your code for DBAL.
 	 * NOTICE: You must wrap the output of this function in SINGLE QUOTES to be DBAL compatible. Unless you have to apply the single quotes yourself you should rather use ->fullQuoteStr()!
 	 *
-	 * Usage count/core: 20
-	 *
 	 * @param	string		Input string
 	 * @param	string		Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
 	 * @return	string		Output string; Quotes (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
@@ -801,7 +781,6 @@ class t3lib_DB {
 	/**
 	 * Will convert all values in the one-dimensional array to integers.
 	 * Useful when you want to make sure an array contains only integers before imploding them in a select-list.
-	 * Usage count/core: 7
 	 *
 	 * @param	array		Array with values
 	 * @return	array		The input array with all values passed through intval()
@@ -817,7 +796,6 @@ class t3lib_DB {
 	/**
 	 * Will force all entries in the input comma list to integers
 	 * Useful when you want to make sure a commalist of supposed integers really contain only integers; You want to know that when you don't trust content that could go into an SQL statement.
-	 * Usage count/core: 6
 	 *
 	 * @param	string		List of comma-separated values which should be integers
 	 * @return	string		The input list but with every value passed through intval()
@@ -831,7 +809,6 @@ class t3lib_DB {
 	 * Removes the prefix "ORDER BY" from the input string.
 	 * This function is used when you call the exec_SELECTquery() function and want to pass the ORDER BY parameter by can't guarantee that "ORDER BY" is not prefixed.
 	 * Generally; This function provides a work-around to the situation where you cannot pass only the fields by which to order the result.
-	 * Usage count/core: 11
 	 *
 	 * @param	string		eg. "ORDER BY title, uid"
 	 * @return	string		eg. "title, uid"
@@ -845,7 +822,6 @@ class t3lib_DB {
 	 * Removes the prefix "GROUP BY" from the input string.
 	 * This function is used when you call the SELECTquery() function and want to pass the GROUP BY parameter by can't guarantee that "GROUP BY" is not prefixed.
 	 * Generally; This function provides a work-around to the situation where you cannot pass only the fields by which to order the result.
-	 * Usage count/core: 1
 	 *
 	 * @param	string		eg. "GROUP BY title, uid"
 	 * @return	string		eg. "title, uid"
@@ -858,7 +834,6 @@ class t3lib_DB {
 	/**
 	 * Takes the last part of a query, eg. "... uid=123 GROUP BY title ORDER BY title LIMIT 5,2" and splits each part into a table (WHERE, GROUPBY, ORDERBY, LIMIT)
 	 * Work-around function for use where you know some userdefined end to an SQL clause is supplied and you need to separate these factors.
-	 * Usage count/core: 13
 	 *
 	 * @param	string		Input string
 	 * @return	array
@@ -915,7 +890,6 @@ class t3lib_DB {
 	 * mysql_query() wrapper function
 	 * Beware: Use of this method should be avoided as it is experimentally supported by DBAL. You should consider
 	 *         using exec_SELECTquery() and similar methods instead.
-	 * Usage count/core: 1
 	 *
 	 * @param	string		Query to execute
 	 * @return	pointer		Result pointer / DBAL object
@@ -931,7 +905,6 @@ class t3lib_DB {
 	/**
 	 * Returns the error status on the last sql() execution
 	 * mysql_error() wrapper function
-	 * Usage count/core: 32
 	 *
 	 * @return	string		MySQL error string.
 	 */
@@ -952,7 +925,6 @@ class t3lib_DB {
 	/**
 	 * Returns the number of selected rows.
 	 * mysql_num_rows() wrapper function
-	 * Usage count/core: 85
 	 *
 	 * @param	pointer		MySQL result pointer (of SELECT query) / DBAL object
 	 * @return	integer		Number of resulting rows
@@ -968,7 +940,6 @@ class t3lib_DB {
 	/**
 	 * Returns an associative array that corresponds to the fetched row, or FALSE if there are no more rows.
 	 * mysql_fetch_assoc() wrapper function
-	 * Usage count/core: 307
 	 *
 	 * @param	pointer		MySQL result pointer (of SELECT query) / DBAL object
 	 * @return	array		Associative array of result row.
@@ -985,7 +956,6 @@ class t3lib_DB {
 	 * Returns an array that corresponds to the fetched row, or FALSE if there are no more rows.
 	 * The array contains the values in numerical indices.
 	 * mysql_fetch_row() wrapper function
-	 * Usage count/core: 56
 	 *
 	 * @param	pointer		MySQL result pointer (of SELECT query) / DBAL object
 	 * @return	array		Array with result rows.
@@ -1001,7 +971,6 @@ class t3lib_DB {
 	/**
 	 * Free result memory
 	 * mysql_free_result() wrapper function
-	 * Usage count/core: 3
 	 *
 	 * @param	pointer		MySQL result pointer to free / DBAL object
 	 * @return	boolean		Returns TRUE on success or FALSE on failure.
@@ -1017,7 +986,6 @@ class t3lib_DB {
 	/**
 	 * Get the ID generated from the previous INSERT operation
 	 * mysql_insert_id() wrapper function
-	 * Usage count/core: 13
 	 *
 	 * @return	integer		The uid of the last inserted record.
 	 */
@@ -1028,7 +996,6 @@ class t3lib_DB {
 	/**
 	 * Returns the number of rows affected by the last INSERT, UPDATE or DELETE query
 	 * mysql_affected_rows() wrapper function
-	 * Usage count/core: 1
 	 *
 	 * @return	integer		Number of rows affected by last query
 	 */
@@ -1039,7 +1006,6 @@ class t3lib_DB {
 	/**
 	 * Move internal result pointer
 	 * mysql_data_seek() wrapper function
-	 * Usage count/core: 3
 	 *
 	 * @param	pointer		MySQL result pointer (of SELECT query) / DBAL object
 	 * @param	integer		Seek result number.
@@ -1056,7 +1022,6 @@ class t3lib_DB {
 	/**
 	 * Get the type of the specified field in a result
 	 * mysql_field_type() wrapper function
-	 * Usage count/core: 2
 	 *
 	 * @param	pointer		MySQL result pointer (of SELECT query) / DBAL object
 	 * @param	integer		Field index.
@@ -1073,7 +1038,6 @@ class t3lib_DB {
 	/**
 	 * Open a (persistent) connection to a MySQL server
 	 * mysql_pconnect() wrapper function
-	 * Usage count/core: 12
 	 *
 	 * @param	string		Database host IP/domain
 	 * @param	string		Username to connect with.
@@ -1168,7 +1132,6 @@ class t3lib_DB {
 	/**
 	 * Select a MySQL database
 	 * mysql_select_db() wrapper function
-	 * Usage count/core: 8
 	 *
 	 * @param	string		Database to connect to.
 	 * @return	boolean		Returns TRUE on success or FALSE on failure.
@@ -1198,7 +1161,6 @@ class t3lib_DB {
 	 * This is only used as a service function in the (1-2-3 process) of the Install Tool.
 	 * In any case a lookup should be done in the _DEFAULT handler DBMS then.
 	 * Use in Install Tool only!
-	 * Usage count/core: 1
 	 *
 	 * @return	array		Each entry represents a database name
 	 */
@@ -1217,7 +1179,6 @@ class t3lib_DB {
 	 * Returns the list of tables from the default database, TYPO3_db (quering the DBMS)
 	 * In a DBAL this method should 1) look up all tables from the DBMS  of
 	 * the _DEFAULT handler and then 2) add all tables *configured* to be managed by other handlers
-	 * Usage count/core: 2
 	 *
 	 * @return	array		Array with tablenames as key and arrays with status information as value
 	 */
@@ -1309,7 +1270,6 @@ class t3lib_DB {
 
 	/**
 	 * mysql() wrapper function, used by the Install Tool and EM for all queries regarding management of the database!
-	 * Usage count/core: 10
 	 *
 	 * @param	string		Query to execute
 	 * @return	pointer		Result pointer
