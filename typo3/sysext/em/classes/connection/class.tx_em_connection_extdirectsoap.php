@@ -56,8 +56,6 @@ class tx_em_Connection_ExtDirectSoap {
 
 	/**
 	 * Constructor
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 		$this->settings = $this->getSettingsObject()->getSettings();
@@ -67,8 +65,6 @@ class tx_em_Connection_ExtDirectSoap {
 		if (isset($this->settings['fe_u']) && isset($this->settings['fe_p']) && $this->settings['fe_u'] !== '' && $this->settings['fe_p'] !== '' ) {
 			$this->setAccountData($this->settings['fe_u'], $this->settings['fe_p']);
 		}
-
-
 	}
 
 	/**
@@ -78,6 +74,9 @@ class tx_em_Connection_ExtDirectSoap {
 	 */
 	public function testUserLogin() {
 		if (is_array($this->accountData)) {
+				// There is a theory which states that if ever anybody discovers exactly what this method is for and why it is here,
+				// it will instantly disappear and be replaced by something even more bizarre and inexplicable.
+				// There is another theory which states that this has already happened.
 			$login = FALSE;
 			if ($login) {
 				$data = array(
@@ -106,8 +105,8 @@ class tx_em_Connection_ExtDirectSoap {
 	 * @param  array $record
 	 * @return string
 	 */
-	public function  showRemoteExtInfo($record) {
-		return t3lib_div::view_array(array($record, $this->settings));
+	public function showRemoteExtInfo($record) {
+		return t3lib_utility_Debug::viewArray(array($record, $this->settings));
 	}
 
 	/**
@@ -118,12 +117,12 @@ class tx_em_Connection_ExtDirectSoap {
 	 * @return array
 	 */
 	public function checkExtensionkey($parameter) {
+		$this->initSoap();
 	    $params = array(
 		 	'extensionKey' => $parameter['extkey']
 		);
 		$result = $this->soapCall('checkExtensionKey', $params);
 		$message = $this->getSoapResultMessageFromCode($result['resultCode']);
-		//debug(array($result,$parameter), $message);
 		if ($result['resultCode'] == 10501) {
 			$return =  array(
 				'success' => TRUE,
@@ -150,6 +149,7 @@ class tx_em_Connection_ExtDirectSoap {
 	 * @return array
 	 */
 	public function registerExtensionkey($parameter) {
+		$this->initSoap();
 	    $params = array(
 		 	'registerExtensionKeyData' => array(
 				 'extensionKey' => $parameter['extkey'],
@@ -183,7 +183,8 @@ class tx_em_Connection_ExtDirectSoap {
 	 *
 	 * @return array
 	 */
-	public function getExtensions($parameter) {
+	public function getExtensions() {
+		$this->initSoap();
 		$params = array(
 			'extensionKeyFilterOptions' => array(
 				'username' => $this->settings['fe_u']
@@ -213,9 +214,10 @@ class tx_em_Connection_ExtDirectSoap {
 	 * Delete extension key
 	 *
 	 * @param  string $key
-	 * @return void
+	 * @return array
 	 */
 	public function deleteExtensionKey($key) {
+		$this->initSoap();
 		$params = array(
 		 	'extensionKey' => $key
 		);
@@ -244,9 +246,10 @@ class tx_em_Connection_ExtDirectSoap {
 	 *
 	 * @param  $key
 	 * @param  $user
-	 * @return void
+	 * @return array
 	 */
 	public function transferExtensionKey($key, $user) {
+		$this->initSoap();
 		$params = array(
 		 	'modifyExtensionKeyData' => array(
 				 'extensionKey' => $key,
@@ -294,7 +297,6 @@ class tx_em_Connection_ExtDirectSoap {
 				'password' => $password
 			)
 		);
-		$this->initSoap();
 	}
 
 	/**
@@ -303,22 +305,24 @@ class tx_em_Connection_ExtDirectSoap {
 	 * @return void
 	 */
 	protected function initSoap() {
-		if ($this->repository->getWsdlUrl()) {
-			/** @var $soap tx_em_Connection_Soap */
-			$this->soap = t3lib_div::makeInstance('tx_em_Connection_Soap');
-			$this->soap->init(
-				array(
-					'wsdl' => $this->repository->getWsdlUrl(),
-					//'authentication' => 'headers',
-					'soapoptions' =>
+		if(!is_object($this->soap) || !($this->soap instanceof tx_em_Connection_Soap)) {
+			if ($this->repository->getWsdlUrl()) {
+				/** @var $soap tx_em_Connection_Soap */
+				$this->soap = t3lib_div::makeInstance('tx_em_Connection_Soap');
+				$this->soap->init(
 					array(
-						'trace' => 1,
-						'exceptions' => 1
-					)
-				),
-				$this->settings['fe_u'],
-				$this->settings['fe_p']
-			);
+						'wsdl' => $this->repository->getWsdlUrl(),
+						//'authentication' => 'headers',
+						'soapoptions' =>
+						array(
+							'trace' => 1,
+							'exceptions' => 1
+						)
+					),
+					$this->settings['fe_u'],
+					$this->settings['fe_p']
+				);
+			}
 		}
 	}
 	/**
