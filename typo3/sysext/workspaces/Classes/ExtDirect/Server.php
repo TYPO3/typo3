@@ -93,6 +93,7 @@ class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHan
 		$fieldsOfRecords = array_keys($liveRecord);
 
 		// get field list from TCA configuration, if available
+		t3lib_div::loadTCA($parameter->table);
 		if ($TCA[$parameter->table]) {
 			if ($TCA[$parameter->table]['interface']['showRecordFieldList']) {
 				$fieldsOfRecords = $TCA[$parameter->table]['interface']['showRecordFieldList'];
