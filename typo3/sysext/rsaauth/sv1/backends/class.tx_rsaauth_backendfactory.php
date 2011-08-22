@@ -22,7 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rsaauth', 'sv1/backends/class.tx_rsaauth_abstract_backend.php'));
 
 /**
  * This class contains a factory for the RSA backends.
