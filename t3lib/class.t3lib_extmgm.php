@@ -913,7 +913,6 @@ final class t3lib_extMgm {
 			// but maybe it's better to move non-available services to a different array??
 
 		if ($serviceType &&
-				!t3lib_div::hasValidClassPrefix($serviceType) &&
 				t3lib_div::hasValidClassPrefix($serviceKey, array('user_')) &&
 				is_array($info)) {
 
