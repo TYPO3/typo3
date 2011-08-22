@@ -154,6 +154,7 @@ $TYPO3_CONF_VARS = array(
 			),
 		),
 		'useCachingFramework' => -1,	// <i>Obsolete setting</i>. Please remove manually from <tt>localconf.php</tt>, if it is defined there. Caching Framework is now always enabled.
+		'additionalAllowedClassPrefixes' => NULL,	// Class names in TYPO3 must usually start with tx_, Tx, user_ or User_. This setting allows to register additional prefixes in a comma separated list.
 		'displayErrors' => -1,					// <p>Integer (-1, 0, 1, 2). Configures whether PHP errors should be displayed.</p><dl><dt>0</dt><dd>Do not display any PHP error messages. Overrides the value of "exceptionalErrors" and sets it to 0 (= no errors are turned into exceptions), the configured "productionExceptionHandler" is used as exception handler</dd><dt>1</dt><dd>Display error messages with the registered errorhandler. The configured "debugExceptionHandler" is used as exception handler</dd><dt>2</dt><dd>Display errors only if client matches <a href="#SYS-devIPmask">[SYS][devIPmask]</a>. If devIPmask matches the users IP address  the configured "debugExceptionHandler" is used  for exceptions, if not "productionExceptionHandler" will be used</dd><dt>-1</dt><dd>Default setting. With this option, you can override the PHP setting "display_errors". If devIPmask matches the users IP address  the configured "debugExceptionHandler" is used  for exceptions, if not "productionExceptionHandler" will be used.</dd></dl>
 		'productionExceptionHandler'  => 't3lib_error_ProductionExceptionHandler',	// String: Classname to handle exceptions that might happen in the TYPO3-code. Leave empty to disable exception handling. Default: "t3lib_error_ProductionExceptionHandler". This exception handler displays a nice error message when something went wrong. The error message is logged to the configured logs. Note: The configured "productionExceptionHandler" is used if displayErrors is set to "0" or to "-1" and devIPmask doesn't match the users IP.
 		'debugExceptionHandler' => 't3lib_error_DebugExceptionHandler',				// String: Classname to handle exceptions that might happen in the TYPO3-code. Leave empty to disable exception handling. Default: "t3lib_error_DebugExceptionHandler". This exception handler displays the complete stack trace of any encountered exception. The error message and the stack trace  is logged to the configured logs. Note: The configured "debugExceptionHandler" is used if displayErrors is set to "1" and if displayErrors is "-1"  or "2" and the devIPmask matches the users IP.
@@ -542,7 +543,6 @@ $TYPO3_CONF_VARS = array(
 		'pageUnavailable_handling' => '',		// <p>How TYPO3 should handle requests when pages are unavailable due to system problems.</p><dl><dt>empty (default)</dt><dd>An error message is shown.</dd><dt>String</dt><dd>HTML file or URL to show (reads content and outputs with correct headers), e.g. 'unavailable.html' or 'http://www.example.org/errors/unavailable.html'.</dd><dt>Prefix "REDIRECT:"</dt><dd>If prefixed "REDIRECT:" it will redirect to the URL/script after the prefix.</dd><dt>Prefix "READFILE:"</dt><dd>If prefixed with "READFILE:" then it will expect the remaining string to be a HTML file which will be read and outputted directly after having the marker "###CURRENT_URL###" substituted with REQUEST_URI and ###REASON### with reason text, for example: "READFILE:fileadmin/unavailable.html".</dd><dt>Prefix "USER_FUNCTION:"</dt><dd>If prefixed "USER_FUNCTION:" then it will call a user function, eg. "USER_FUNCTION:fileadmin/class.user_unavailable.php:user_unavailable->pageUnavailable" where the file must contain a class "user_unavailable" with a method "pageUnavailable" inside with two parameters $param and $ref. If the client matches <a href="#SYS-devIPmask">[SYS][devIPmask]</a>, this setting is ignored and the page is shown as normal.</dd></dl>
 		'pageUnavailable_handling_statheader' => 'HTTP/1.0 503 Service Temporarily Unavailable',		// If 'pageUnavailable_handling' is enabled, this string will always be sent as header before the actual handling.
 		'pageUnavailable_force' => FALSE,		// Boolean: If TRUE, pageUnavailable_handling is used for every frontend page. If the client matches <a href="#SYS-devIPmask">[SYS][devIPmask]</a>, the page is shown as normal. This is useful during temporary site maintenance.
-		'userFuncClassPrefix' => 'user_',		// This prefix must be the first part of any function or class name called from TypoScript, for instance in the stdWrap function.
 		'addRootLineFields' => '',				// Comma-list of fields from the 'pages'-table. These fields are added to the select query for fields in the rootline.
 		'checkFeUserPid' => TRUE,				// Boolean: If set, the pid of fe_user logins must be sent in the form as the field 'pid' and then the user must be located in the pid. If you unset this, you should change the fe_users.username eval-flag 'uniqueInPid' to 'unique' in $TCA. This will do: $TCA['fe_users']['columns']['username']['config']['eval']= 'nospace,lower,required,unique';
 		'lockIP' => 2,							// Integer (0-4). If >0, fe_users are locked to (a part of) their REMOTE_ADDR IP for their session. Enhances security but may throw off users that may change IP during their session (in which case you can lower it to 2 or 3). The integer indicates how many parts of the IP address to include in the check. Reducing to 1-3 means that only first, second or third part of the IP address is used. 4 is the FULL IP address and recommended. 0 (zero) disables checking of course.
@@ -841,6 +841,19 @@ if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework'] !== -1) {
 		// Deprecation log since 4.6, can be removed in 4.8. Checks if obsolete useCachingFramework is set
 	t3lib_div::deprecationLog('Setting $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'useCachingFramework\'] is obsolete since TYPO3 4.6 and should be removed from localconf.php.');
 }
+
+if (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'])) {
+	if(is_string($GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'])) {
+		if(is_null($GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'])) {
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'] = $GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'];
+		} else if(is_string($GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'])) {
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'] .= ',' . $GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'];
+		}
+	}
+		// Deprecation log since 4.6, can be removed in 4.8
+	t3lib_div::deprecationLog('$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'userFuncClassPrefix\'] is deprecated, use $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'additionalAllowedClassPrefixes\'] instead');
+}
+
 	// Force enabled caching framework
 	// @deprecated, constant can be removed in 4.8
 define('TYPO3_UseCachingFramework', TRUE);
