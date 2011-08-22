@@ -1454,14 +1454,13 @@ class tx_em_Install {
 
 		if ($updates || $configForm) {
 			if ($configForm) {
-				$updates = $configForm;
+				$updates =  $formWrap[0] . $configForm . $formWrap[1];
 			} else {
 				$updates = $formWrap[0] . $updates . $addFields . '
 					<br /><input type="submit" name="write" id="update-submit-' . $extKey . '" value="' . $GLOBALS['LANG']->getLL('updatesForm_make_updates') . '" />
 				' . $formWrap[1];
 			}
 		}
-
 		return $updates;
 	}
 
