@@ -4602,7 +4602,7 @@ final class t3lib_div {
 	 * @param string $funcName Function/Method reference, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call ("singleton").
 	 * @param mixed $params Parameters to be pass along (typically an array) (REFERENCE!)
 	 * @param mixed $ref Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
-	 * @param string $checkPrefix Required prefix of class or function name
+	 * @param string $checkPrefix Alternative allowed prefix of class or function name
 	 * @param integer $errorMode Error mode (when class/function could not be found): 0 - call debug(), 1 - do nothing, 2 - raise an exception (allows to call a user function that may return FALSE)
 	 * @return mixed Content from method/function call or FALSE if the class/method/function was not found
 	 * @see getUserObj()
@@ -4787,7 +4787,7 @@ final class t3lib_div {
 			throw new InvalidArgumentException('$classRef has to be of type string', 1313917992);
 		}
 		$hasValidPrefix = FALSE;
-		$validPrefixes = array('tx_', 'Tx_', $GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix']);
+		$validPrefixes = self::getValidClassPrefixes();
 		$classRef = trim($classRef);
 
 		if (count($additionalPrefixes)) {
@@ -4801,6 +4801,25 @@ final class t3lib_div {
 		}
 
 		return $hasValidPrefix;
+	}
+
+	/**
+	 * Returns all valid class prefixes.
+	 *
+	 * @return array Array of valid prefixed of class names
+	 */
+	public static function getValidClassPrefixes() {
+		$validPrefixes = array('tx_', 'Tx_', 'user_', 'User_');
+		if (
+			isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'])
+			&& is_string($GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'])
+		) {
+			$validPrefixes = array_merge(
+				$validPrefixes,
+				t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'])
+			);
+		}
+		return $validPrefixes;
 	}
 
 	/**

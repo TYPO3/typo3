@@ -404,11 +404,9 @@ abstract class t3lib_matchCondition_abstract {
 				$values = preg_split('/\(|\)/', $value);
 				$funcName = trim($values[0]);
 				$funcValue = t3lib_div::trimExplode(',', $values[1]);
-				$prefix = $this->getUserFuncClassPrefix();
-				if ($prefix &&
-					!t3lib_div::hasValidClassPrefix($funcName, array($prefix))
+				if (!t3lib_div::hasValidClassPrefix($funcName)
 				) {
-					$this->log('Match condition: Function "' . $funcName . '" was not prepended with "' . $prefix . '"');
+					$this->log('Match condition: Function "' . $funcName . '" was not prepended with one of "' . implode(', ', t3lib_div::getValidClassPrefixes()) . '"');
 					return FALSE;
 				}
 				if (function_exists($funcName) && call_user_func($funcName, $funcValue[0])) {
@@ -633,13 +631,6 @@ abstract class t3lib_matchCondition_abstract {
 	 * @return	array		The rootline for the current page.
 	 */
 	abstract protected function determineRootline();
-
-	/**
-	 * Gets prefix for user functions (normally 'user_').
-	 *
-	 * @return	string		The prefix for user functions (normally 'user_').
-	 */
-	abstract protected function getUserFuncClassPrefix();
 
 	/**
 	 * Gets the id of the current user.

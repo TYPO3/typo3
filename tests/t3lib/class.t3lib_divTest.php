@@ -3331,7 +3331,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 * @param string $className Class name to test
 	 */
 	public function hasValidClassPrefixAcceptsValidPrefixes($className) {
-		$GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'] = 'user_';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'] = 'foo_';
 		$this->assertTrue(
 			t3lib_div::hasValidClassPrefix($className)
 		);
@@ -3346,7 +3346,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			array('txfoo'),
 			array('Txfoo'),
 			array('userfoo'),
-			array('User_foo'),
+			array('aser_foo'),
 		);
 	}
 
@@ -3356,7 +3356,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 * @param string $className Class name to test
 	 */
 	public function hasValidClassPrefixRefusesInvalidPrefixes($className) {
-		$GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'] = 'user_';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'] = 'foo_';
 		$this->assertFalse(
 			t3lib_div::hasValidClassPrefix($className)
 		);
@@ -3399,10 +3399,35 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 * @param string $className Class name to test
 	 */
 	public function hasValidClassPrefixAllowsEmptyPrefix($className) {
-		$GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'] = '';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'] = '';
 		$this->assertTrue(
 			t3lib_div::hasValidClassPrefix($className)
 		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getValidClassPrefixesReturnsListOfValidClassPrefixesDataProvider() {
+		return array(
+			array('user_'),
+			array('User_'),
+			array('Tx_'),
+			array('tx_'),
+			array('foo_'),
+			array('bar_'),
+			array('BAZ_')
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getValidClassPrefixesReturnsListOfValidClassPrefixesDataProvider
+	 * @param string $prefix prefix to test
+	 */
+	public function getValidClassPrefixesReturnsListOfValidClassPrefixes($prefix) {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'] = 'foo_,bar_,BAZ_';
+		$this->assertTrue(in_array($prefix, t3lib_div::getValidClassPrefixes()));
 	}
 
 	/**
