@@ -22,7 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rsaauth', 'sv1/backends/class.tx_rsaauth_keypair.php'));
 
 /**
  * This class contains an abstract SSL backend for the TYPO3 RSA authentication

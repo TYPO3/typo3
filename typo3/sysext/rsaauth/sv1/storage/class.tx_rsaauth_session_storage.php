@@ -22,7 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rsaauth', 'sv1/storage/class.tx_rsaauth_abstract_storage.php'));
 
 /**
  * This class contains a session-based storage for private keys. This storage
