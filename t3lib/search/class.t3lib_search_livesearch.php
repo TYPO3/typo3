@@ -117,10 +117,13 @@ class t3lib_search_livesearch {
 	 */
 	public function find($searchQuery) {
 		$recordArray = array();
-		$pageIdList = $this->getAvailablePageIds(
-			implode(',', $GLOBALS['BE_USER']->returnWebmounts()),
-			self::RECURSIVE_PAGE_LEVEL
-		);
+                $pagelist = array();
+                $mounts = $GLOBALS['BE_USER']->returnWebmounts();
+                foreach ($mounts as $pageId) {
+                    $pagelist[] = $this->getAvailablePageIds($pageId, self::RECURSIVE_PAGE_LEVEL);
+                }
+                $pageIdList = implode(',', $pagelist);
+                unset($pagelist);
 		$limit = $this->startCount . ',' . $this->limitCount;
 
 		if ($this->queryParser->isValidCommand($searchQuery)) {
