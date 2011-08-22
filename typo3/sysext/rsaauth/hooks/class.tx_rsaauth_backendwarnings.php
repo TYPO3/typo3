@@ -22,7 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(t3lib_extMgm::extPath('rsaauth', 'sv1/backends/class.tx_rsaauth_backendfactory.php'));
 
 /**
  * This class contains a hook to the backend warnings collection. It checks
