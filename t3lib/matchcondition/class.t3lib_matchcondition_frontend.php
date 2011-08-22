@@ -157,16 +157,6 @@ class t3lib_matchCondition_frontend extends t3lib_matchCondition_abstract {
 	}
 
 	/**
-	 * Get prefix for user functions (normally 'user_').
-	 *
-	 * @return	string		The prefix for user functions (normally 'user_').
-	 */
-	protected function getUserFuncClassPrefix() {
-		$userFuncClassPrefix = $GLOBALS['TSFE']->TYPO3_CONF_VARS['FE']['userFuncClassPrefix'];
-		return $userFuncClassPrefix;
-	}
-
-	/**
 	 * Get the id of the current user.
 	 *
 	 * @return	integer		The id of the current user

@@ -999,13 +999,7 @@ final class t3lib_extMgm {
 	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
 	public static function addService($extKey, $serviceType, $serviceKey, $info) {
-			// even not available services will be included to make it possible to give the admin a feedback of non-available services.
-			// but maybe it's better to move non-available services to a different array??
-
-		if ($serviceType &&
-				t3lib_div::hasValidClassPrefix($serviceKey, array('user_')) &&
-				is_array($info)) {
-
+		if ($serviceType && t3lib_div::hasValidClassPrefix($serviceKey) && is_array($info)) {
 			$info['priority'] = max(0, min(100, $info['priority']));
 
 			$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey] = $info;
