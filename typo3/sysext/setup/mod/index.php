@@ -135,7 +135,7 @@ class SC_mod_user_setup_index {
 	 */
 	public function storeIncomingData() {
 
-			// First check if something is submittet in the data-array from POST vars
+			// First check if something is submitted in the data-array from POST vars
 		$d = t3lib_div::_POST('data');
 		$columns = $GLOBALS['TYPO3_USER_SETTINGS']['columns'];
 		$beUserId = $GLOBALS['BE_USER']->user['uid'];
@@ -199,6 +199,14 @@ class SC_mod_user_setup_index {
 					// If email and name is changed, set it in the users record:
 				$be_user_data = $d['be_users'];
 
+					// Possibility to modify the transmitted values. Useful to do transformations, like RSA password decryption
+				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['modifyUserDataBeforeSave'])) {
+					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['modifyUserDataBeforeSave'] as $function) {
+						$params = array('be_user_data' => &$be_user_data);
+						t3lib_div::callUserFunction($function, $params, $this);
+					}
+				}
+
 				$this->passwordIsSubmitted = (strlen($be_user_data['password']) > 0);
 				$passwordIsConfirmed = ($this->passwordIsSubmitted && $be_user_data['password'] === $be_user_data['password2']);
 
@@ -252,16 +260,6 @@ class SC_mod_user_setup_index {
 	}
 
 
-
-
-
-
-
-
-
-
-
-
 	/******************************
 	 *
 	 * Rendering module
@@ -308,6 +306,24 @@ class SC_mod_user_setup_index {
 		);
 		$this->doc->table_TR = '<tr>';
 		$this->doc->table_TABLE = '<table border="0" cellspacing="1" cellpadding="2" class="typo3-usersettings">';
+		$this->doc->JScode .= $this->getJavaScript();
+	}
+
+	/**
+	 * Generate necessary JavaScript
+	 *
+	 * @return string
+	 */
+	protected function getJavaScript() {
+		$javaScript = '';
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['setupScriptHook'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['setupScriptHook'] as $function) {
+				$params = array();
+				$javaScript .= t3lib_div::callUserFunction($function, $params, $this);
+			}
+		}
+
+		return $javaScript;
 	}
 
 	/**
