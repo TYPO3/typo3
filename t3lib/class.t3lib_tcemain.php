@@ -6658,11 +6658,8 @@ class t3lib_TCEmain {
 			break;
 			case 'all':
 				if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.all')) {
-
 						// Clear all caching framework caches
-					if (t3lib_cache::isCachingFrameworkInitialized()) {
-						$GLOBALS['typo3CacheManager']->flushCaches();
-					}
+					$GLOBALS['typo3CacheManager']->flushCaches();
 
 					if (t3lib_extMgm::isLoaded('cms')) {
 						$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_treelist');
