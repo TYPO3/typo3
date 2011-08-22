@@ -29,7 +29,7 @@
  * @package Workspaces
  * @subpackage Service
  */
-class tx_Workspaces_Service_AutoPublish {
+class Tx_Workspaces_Service_AutoPublish {
 	/**
 	 * This method is called by the Scheduler task that triggers
 	 * the autopublication process
@@ -57,7 +57,7 @@ class tx_Workspaces_Service_AutoPublish {
 				t3lib_BEfunc::deleteClause('sys_workspace')
 			);
 
-		$workspaceService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+		$workspaceService = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 
 		foreach ($workspaces as $rec) {
 

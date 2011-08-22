@@ -34,7 +34,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 	 * @return void
 	 */
 	public function indexAction() {
-		$wsService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+		$wsService = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 		$this->view->assign('showGrid', !($GLOBALS['BE_USER']->workspace === 0 && !$GLOBALS['BE_USER']->isAdmin()));
 		$this->view->assign('showAllWorkspaceTab', $GLOBALS['BE_USER']->isAdmin());
 		$this->view->assign('pageUid', t3lib_div::_GP('id'));
@@ -60,7 +60,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 					$GLOBALS['BE_USER']->setWorkspace($activeWorkspace);
 					$performWorkspaceSwitch = TRUE;
 					t3lib_BEfunc::setUpdateSignal('updatePageTree');
-				} elseif ($switchWs == tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES) {
+				} elseif ($switchWs == Tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES) {
 					$this->redirect('fullIndex');
 				}
 			}
@@ -69,7 +69,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 		$this->view->assign('performWorkspaceSwitch', $performWorkspaceSwitch);
 		$this->view->assign('workspaceList', $wsList);
 		$this->view->assign('activeWorkspaceUid', $activeWorkspace);
-		$this->view->assign('activeWorkspaceTitle', tx_Workspaces_Service_Workspaces::getWorkspaceTitle($activeWorkspace));
+		$this->view->assign('activeWorkspaceTitle', Tx_Workspaces_Service_Workspaces::getWorkspaceTitle($activeWorkspace));
 		$this->view->assign('showPreviewLink', $wsService->canCreatePreviewLink( t3lib_div::_GP('id'), $activeWorkspace));
 		$GLOBALS['BE_USER']->setAndSaveSessionData('tx_workspace_activeWorkspace', $activeWorkspace);
 	}
@@ -84,15 +84,15 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
 			$this->redirect('index');
 		} else {
-			$wsService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+			$wsService = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 			$this->view->assign('pageUid', t3lib_div::_GP('id'));
 			$this->view->assign('showGrid', TRUE);
 			$this->view->assign('showLegend', TRUE);
 			$this->view->assign('showAllWorkspaceTab', $GLOBALS['BE_USER']->isAdmin());
 			$this->view->assign('workspaceList', $wsService->getAvailableWorkspaces());
-			$this->view->assign('activeWorkspaceUid', tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
+			$this->view->assign('activeWorkspaceUid', Tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
 			$this->view->assign('showPreviewLink', FALSE);
-			$GLOBALS['BE_USER']->setAndSaveSessionData('tx_workspace_activeWorkspace', tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
+			$GLOBALS['BE_USER']->setAndSaveSessionData('tx_workspace_activeWorkspace', Tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
 				// set flag for javascript
 			$this->pageRenderer->addInlineSetting('Workspaces', 'allView', '1');
 		}
@@ -106,7 +106,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 	 */
 	public function singleIndexAction() {
 
-		$wsService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+		$wsService = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 		$wsList = $wsService->getAvailableWorkspaces();
 		$activeWorkspace = $GLOBALS['BE_USER']->workspace;
 
@@ -132,7 +132,7 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 
 		$this->template->setExtDirectStateProvider();
 
-		if (tx_Workspaces_Service_Workspaces::isOldStyleWorkspaceUsed()) {
+		if (Tx_Workspaces_Service_Workspaces::isOldStyleWorkspaceUsed()) {
 			$message = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
 				$GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:warning.oldStyleWorkspaceInUser'),

@@ -34,7 +34,7 @@
  * @package Workspaces
  * @subpackage ExtDirect
  */
-class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_AbstractHandler {
+class Tx_Workspaces_ExtDirect_MassActionHandler extends Tx_Workspaces_ExtDirect_AbstractHandler {
 	const MAX_RECORDS_TO_PROCESS = 30;
 
 	/**
@@ -54,7 +54,7 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 		$currentWorkspace = $this->getCurrentWorkspace();
 
 			// in case we're working within "All Workspaces" we can't provide Mass Actions
-		if ($currentWorkspace != tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES) {
+		if ($currentWorkspace != Tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES) {
 			$publishAccess = $GLOBALS['BE_USER']->workspacePublishAccess($currentWorkspace);
 			if ($publishAccess && !($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1)) {
 				$actions[] = array('action' => 'publish', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_publish')
@@ -65,7 +65,7 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 				}
 			}
 
-			if ($currentWorkspace !== tx_Workspaces_Service_Workspaces::LIVE_WORKSPACE_ID) {
+			if ($currentWorkspace !== Tx_Workspaces_Service_Workspaces::LIVE_WORKSPACE_ID) {
 				$actions[] = array('action' => 'discard', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_discard')
 				);
 			}
@@ -142,7 +142,7 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 	 * @return integer
 	 */
 	protected function initPublishData($workspace, $swap) {
-		$workspaceService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+		$workspaceService = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 			// workspace might be -98 a.k.a "All Workspaces but that's save here
 		$publishData = $workspaceService->getCmdArrayForPublishWS($workspace, $swap);
 		$recordCount = 0;
@@ -164,7 +164,7 @@ class tx_Workspaces_ExtDirect_MassActionHandler extends tx_Workspaces_ExtDirect_
 	 * @return integer
 	 */
 	protected function initFlushData($workspace) {
-		$workspaceService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+		$workspaceService = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 			// workspace might be -98 a.k.a "All Workspaces but that's save here
 		$flushData = $workspaceService->getCmdArrayForFlushWS($workspace);
 		$recordCount = 0;

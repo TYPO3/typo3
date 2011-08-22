@@ -32,7 +32,7 @@
  * @package	TYPO3
  * @subpackage t3lib
  */
-class tx_workspaces_pagetree_CollectionsProcessor implements t3lib_tree_pagetree_interfaces_CollectionProcessor {
+class Tx_Workspaces_ExtDirect_PagetreeCollectionsProcessor implements t3lib_tree_pagetree_interfaces_CollectionProcessor {
 
 	/**
 	 * @abstract

@@ -35,9 +35,9 @@ if(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
  *
  * @author	Ingo Renner <ingo@typo3.org>
  * @package Workspaces
- * @subpackage BackendUserInterface
+ * @subpackage ExtDirect
  */
-class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
+class Tx_Workspaces_ExtDirect_WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 
 	protected $changeWorkspace;
 	protected $changeWorkspacePreview;
@@ -62,7 +62,7 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 		$this->changeWorkspacePreview = t3lib_div::_GP('changeWorkspacePreview');
 
 		$pageRenderer = t3lib_div::makeInstance('t3lib_pageRenderer');
-		$this->backendReference->addJavaScript("TYPO3.Workspaces = { workspaceTitle : '" . htmlspecialchars(tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace)) . "'};\n");
+		$this->backendReference->addJavaScript("TYPO3.Workspaces = { workspaceTitle : '" . htmlspecialchars(Tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace)) . "'};\n");
 	}
 
 	/**
@@ -74,7 +74,7 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 	public function checkAccess() {
 		if (t3lib_extMgm::isLoaded('workspaces')) {
 			if ($this->checkAccess == NULL) {
-					$availableWorkspaces = tx_Workspaces_Service_Workspaces::getAvailableWorkspaces();
+					$availableWorkspaces = Tx_Workspaces_Service_Workspaces::getAvailableWorkspaces();
 					if (count($availableWorkspaces) > 0) {
 						$this->checkAccess = TRUE;
 					} else {
@@ -94,7 +94,7 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 	public function render() {
 		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.workspace', TRUE);
 		$this->addJavascriptToBackend();
-		$availableWorkspaces = tx_Workspaces_Service_Workspaces::getAvailableWorkspaces();
+		$availableWorkspaces = Tx_Workspaces_Service_Workspaces::getAvailableWorkspaces();
 		$workspaceMenu       = array();
 
 		$stateCheckedIcon = t3lib_iconWorks::getSpriteIcon('status-status-checked');
@@ -161,11 +161,11 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 
 
 if(!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
-	$GLOBALS['TYPO3backend']->addToolbarItem('workSpaceSelector', 'WorkspaceSelectorToolbarItem');
+	$GLOBALS['TYPO3backend']->addToolbarItem('workSpaceSelector', 'Tx_Workspaces_ExtDirect_WorkspaceSelectorToolbarItem');
 }
 
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/BackendUserInterface/WorkspaceSelectorToolbarItem.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/BackendUserInterface/WorkspaceSelectorToolbarItem.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/Tx_Workspaces_ExtDirect_WorkspaceSelectorToolbarItem.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/Tx_Workspaces_ExtDirect_WorkspaceSelectorToolbarItem.php']);
 }
 ?>

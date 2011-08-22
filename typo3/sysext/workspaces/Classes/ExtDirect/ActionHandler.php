@@ -30,7 +30,7 @@
  * @package Workspaces
  * @subpackage ExtDirect
  */
-class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_AbstractHandler {
+class Tx_Workspaces_ExtDirect_ActionHandler extends Tx_Workspaces_ExtDirect_AbstractHandler {
 
 	/**
 	 * @var Tx_Workspaces_Service_Stages
@@ -99,7 +99,7 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	 * @return void
 	 */
 	public function viewSingleRecord($table, $uid) {
-		return tx_Workspaces_Service_Workspaces::viewSingleRecord($table, $uid);
+		return Tx_Workspaces_Service_Workspaces::viewSingleRecord($table, $uid);
 	}
 
 	/**
@@ -278,8 +278,8 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	 */
 	public function discardStagesFromPage($pageId) {
 		$cmdMapArray      = array();
-			/** @var $workspaceService tx_Workspaces_Service_Workspaces */
-		$workspaceService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+			/** @var $workspaceService Tx_Workspaces_Service_Workspaces */
+		$workspaceService = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 			/** @var $stageService Tx_Workspaces_Service_Stages */
 		$stageService     = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
 		$workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($stageService->getWorkspaceId(), $filter = 1, $stage = -99, $pageId, $recursionLevel = 0, $selectionType = 'tables_modify');
@@ -657,7 +657,7 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	public function sendPageToPreviousStage($id) {
-		$workspaceService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+		$workspaceService = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 		$workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), $filter = 1, $stage = -99, $id, $recursionLevel = 0, $selectionType = 'tables_modify');
 		list($currentStage, $previousStage) = $this->getStageService()->getPreviousStageForElementCollection($workspaceItemsArray);
 
@@ -681,7 +681,7 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	public function sendPageToNextStage($id) {
-		$workspaceService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+		$workspaceService = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 		$workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), $filter = 1, $stage = -99, $id, $recursionLevel = 0, $selectionType = 'tables_modify');
 		list($currentStage, $nextStage) = $this->getStageService()->getNextStageForElementCollection($workspaceItemsArray);
 			// get only the relevant items for processing
@@ -706,7 +706,7 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	public function updateStageChangeButtons($id) {
 
 		$stageService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
-		$workspaceService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+		$workspaceService = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 
 			// fetch the next and previous stage
 		$workspaceItemsArray   = $workspaceService->selectVersionsInWorkspace($stageService->getWorkspaceId(), $filter = 1, $stage = -99, $id, $recursionLevel = 0, $selectionType = 'tables_modify');

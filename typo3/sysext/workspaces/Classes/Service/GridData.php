@@ -30,7 +30,7 @@
  * @package Workspaces
  * @subpackage Service
  */
-class tx_Workspaces_Service_GridData {
+class Tx_Workspaces_Service_GridData {
 	protected $currentWorkspace = NULL;
 	protected $dataArray = array();
 	protected $sort = '';
@@ -112,7 +112,7 @@ class tx_Workspaces_Service_GridData {
 						$recordState = $this->workspaceState($versionRecord['t3ver_state']);
 					}
 					$isDeletedPage = ($table == 'pages' && $recordState == 'deleted');
-					$viewUrl =  tx_Workspaces_Service_Workspaces::viewSingleRecord($table, $record['t3ver_oid'], $origRecord);
+					$viewUrl =  Tx_Workspaces_Service_Workspaces::viewSingleRecord($table, $record['t3ver_oid'], $origRecord);
 
 					$pctChange = $this->calculateChangePercentage($table, $origRecord, $versionRecord);
 					$versionArray['uid'] = $record['uid'];
@@ -123,7 +123,7 @@ class tx_Workspaces_Service_GridData {
 					$versionArray['change'] = $pctChange;
 					$versionArray['path_Live'] = htmlspecialchars(t3lib_BEfunc::getRecordPath($record['livepid'], '', 999));
 					$versionArray['path_Workspace'] = htmlspecialchars(t3lib_BEfunc::getRecordPath($record['wspid'], '', 999));
-					$versionArray['workspace_Title'] = htmlspecialchars(tx_Workspaces_Service_Workspaces::getWorkspaceTitle($versionRecord['t3ver_wsid']));
+					$versionArray['workspace_Title'] = htmlspecialchars(Tx_Workspaces_Service_Workspaces::getWorkspaceTitle($versionRecord['t3ver_wsid']));
 
 					$versionArray['workspace_Tstamp'] = $versionRecord['tstamp'];
 					$versionArray['workspace_Formated_Tstamp'] = t3lib_BEfunc::datetime($versionRecord['tstamp']);
@@ -278,7 +278,7 @@ class tx_Workspaces_Service_GridData {
 					break;
 			}
 		} else {
-			t3lib_div::sysLog('Try to sort "' . $this->sort . '" in "tx_Workspaces_Service_GridData::sortDataArray" but $this->dataArray is empty! This might be the Bug #26422 which could not reproduced yet.', 3);
+			t3lib_div::sysLog('Try to sort "' . $this->sort . '" in "Tx_Workspaces_Service_GridData::sortDataArray" but $this->dataArray is empty! This might be the Bug #26422 which could not reproduced yet.', 3);
 		}
 	}
 

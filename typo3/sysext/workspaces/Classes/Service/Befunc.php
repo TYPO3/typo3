@@ -30,7 +30,7 @@
  * @package Workspaces
  * @subpackage Service
  */
-class tx_Workspaces_Service_Befunc {
+class Tx_Workspaces_Service_Befunc {
 
 	/**
 	 * Hooks into the t3lib_beFunc::viewOnClick and redirects to the workspace preview
@@ -58,20 +58,20 @@ class tx_Workspaces_Service_Befunc {
 	 * @throws InvalidArgumentException
 	 * @param integer $uid
 	 * @return integer
-	 * @deprecated since TYPO3 4.6 - use tx_Workspaces_Service_Workspaces::getLivePageUid() instead
+	 * @deprecated since TYPO3 4.6 - use Tx_Workspaces_Service_Workspaces::getLivePageUid() instead
 	 */
 	protected function getLivePageUid($uid) {
-		t3lib_div::deprecationLog(__METHOD__ . ' is deprected since TYPO3 4.6 - use tx_Workspaces_Service_Workspaces::getLivePageUid() instead');
+		t3lib_div::deprecationLog(__METHOD__ . ' is deprected since TYPO3 4.6 - use Tx_Workspaces_Service_Workspaces::getLivePageUid() instead');
 		return $this->getWorkspaceService()->getLivePageUid($uid);
 	}
 
 	/**
 	 * Gets an instance of the workspaces service.
 	 *
-	 * @return tx_Workspaces_Service_Workspaces
+	 * @return Tx_Workspaces_Service_Workspaces
 	 */
 	protected function getWorkspaceService() {
-		return t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+		return t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 	}
 
 	/**

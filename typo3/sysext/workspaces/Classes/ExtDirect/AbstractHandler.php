@@ -30,7 +30,7 @@
  * @package Workspaces
  * @subpackage ExtDirect
  */
-abstract class tx_Workspaces_ExtDirect_AbstractHandler {
+abstract class Tx_Workspaces_ExtDirect_AbstractHandler {
 	/**
 	 * Gets the current workspace ID.
 	 *
@@ -65,10 +65,10 @@ abstract class tx_Workspaces_ExtDirect_AbstractHandler {
 	/**
 	 * Gets an instance of the workspaces service.
 	 *
-	 * @return tx_Workspaces_Service_Workspaces
+	 * @return Tx_Workspaces_Service_Workspaces
 	 */
 	protected function getWorkspaceService() {
-		return t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+		return t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 	}
 }
 

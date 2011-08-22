@@ -30,7 +30,7 @@
  * @package Workspaces
  * @subpackage Service
  */
-class tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
+class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	/**
 	 * @var array
 	 */

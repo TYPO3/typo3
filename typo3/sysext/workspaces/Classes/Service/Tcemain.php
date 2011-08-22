@@ -31,7 +31,7 @@
  * @package Workspaces
  * @subpackage Service
  */
-class tx_Workspaces_Service_Tcemain {
+class Tx_Workspaces_Service_Tcemain {
 
 	/**
 	 * In case a sys_workspace_stage record is deleted we do a hard reset
@@ -49,7 +49,7 @@ class tx_Workspaces_Service_Tcemain {
 		if ($command === 'delete') {
 			if ($table === Tx_Workspaces_Service_Stages::TABLE_STAGE) {
 				$this->resetStageOfElements($id);
-			} elseif ($table === tx_Workspaces_Service_Workspaces::TABLE_WORKSPACE) {
+			} elseif ($table === Tx_Workspaces_Service_Workspaces::TABLE_WORKSPACE) {
 				$this->flushWorkspaceElements($id);
 			}
 		}
@@ -151,7 +151,7 @@ class tx_Workspaces_Service_Tcemain {
 	protected function flushWorkspaceCacheEntriesByWorkspaceId($workspaceId) {
 		$workspacesCache = $GLOBALS['typo3CacheManager']->getCache('workspaces_cache');
 		$workspacesCache->flushByTag($workspaceId);
-		$workspacesCache->flushByTag(tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
+		$workspacesCache->flushByTag(Tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
 	}
 }
 

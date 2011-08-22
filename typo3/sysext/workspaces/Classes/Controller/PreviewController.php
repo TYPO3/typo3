@@ -40,7 +40,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 	protected $stageService;
 
 	/**
-	 * @var tx_Workspaces_Service_Workspaces
+	 * @var Tx_Workspaces_Service_Workspaces
 	 */
 	protected $workspaceService;
 
@@ -52,7 +52,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 	protected function initializeAction() {
 		parent::initializeAction();
 		$this->stageService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
-		$this->workspaceService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+		$this->workspaceService = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 		$this->template->setExtDirectStateProvider();
 
 		$resourcePath = t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/StyleSheet/preview.css';
@@ -113,8 +113,8 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		list(, $nextStage) = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
 		list(, $previousStage) = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
 
-		/** @var $wsService tx_Workspaces_Service_Workspaces */
-		$wsService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+		/** @var $wsService Tx_Workspaces_Service_Workspaces */
+		$wsService = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 		$wsList = $wsService->getAvailableWorkspaces();
 		$activeWorkspace = $GLOBALS['BE_USER']->workspace;
 
@@ -139,7 +139,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 
 		// @todo - handle new pages here
 		// branchpoints are not handled anymore because this feature is not supposed anymore
-		if (tx_Workspaces_Service_Workspaces::isNewPage($this->pageId)) {
+		if (Tx_Workspaces_Service_Workspaces::isNewPage($this->pageId)) {
 			$wsNewPageUri = $uriBuilder->uriFor('newPage', array(), 'Tx_Workspaces_Controller_PreviewController', 'workspaces', 'web_workspacesworkspaces');
 			$wsNewPageParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Preview';
 			$this->view->assign('liveUrl', $wsSettingsPath . $wsNewPageUri . $wsNewPageParams);

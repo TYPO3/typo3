@@ -30,7 +30,7 @@
  * @package Workspaces
  * @subpackage Service
  */
-class tx_Workspaces_Service_Fehooks {
+class Tx_Workspaces_Service_Fehooks {
 
 	/**
 	 * @param tslib_fe $pObj

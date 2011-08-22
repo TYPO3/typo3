@@ -30,7 +30,7 @@
  * @package Workspaces
  * @subpackage ExtDirect
  */
-class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHandler {
+class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHandler {
 	/**
 	 * Get List of workspace changes
 	 *
@@ -41,10 +41,10 @@ class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHan
 			// To avoid too much work we use -1 to indicate that every page is relevant
 		$pageId = $parameter->id > 0 ? $parameter->id : -1;
 
-		$wslibObj = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+		$wslibObj = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 		$versions = $wslibObj->selectVersionsInWorkspace($this->getCurrentWorkspace(), 0, -99, $pageId, $parameter->depth);
 
-		$workspacesService = t3lib_div::makeInstance('tx_Workspaces_Service_GridData');
+		$workspacesService = t3lib_div::makeInstance('Tx_Workspaces_Service_GridData');
 		$data = $workspacesService->generateGridListFromVersions($versions, $parameter, $this->getCurrentWorkspace());
 		return $data;
 	}
@@ -58,7 +58,7 @@ class tx_Workspaces_ExtDirect_Server extends tx_Workspaces_ExtDirect_AbstractHan
 	public function getStageActions($parameter) {
 		$currentWorkspace = $this->getCurrentWorkspace();
 		$stages = array();
-		if ($currentWorkspace != tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES) {
+		if ($currentWorkspace != Tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES) {
 			$stagesService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
 			$stages = $stagesService->getStagesForWSUser();
 		}
