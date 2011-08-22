@@ -181,7 +181,7 @@ class t3lib_Registry implements t3lib_Singleton {
 	 * @throws	InvalidArgumentException	Throws an exception if the given namespace is not valid
 	 */
 	protected function validateNamespace($namespace) {
-		if (t3lib_div::hasValidClassPrefix($namespace, array('user_'))) {
+		if (t3lib_div::hasValidClassPrefix($namespace)) {
 			return;
 		}
 
