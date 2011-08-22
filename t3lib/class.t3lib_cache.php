@@ -25,7 +25,7 @@
 /**
  * A cache handling helper class
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -88,9 +88,9 @@ class t3lib_cache {
 	 * Determines whether the caching framework is initialized.
 	 * The caching framework could be disabled for the core but used by an extension.
 	 *
-	 * @return	boolean
+	 * @return boolean True if caching framework is initialized
 	 */
-	public function isCachingFrameworkInitialized() {
+	public static function isCachingFrameworkInitialized() {
 		if (!self::$isCachingFrameworkInitialized
 				&& isset($GLOBALS['typo3CacheManager']) && $GLOBALS['typo3CacheManager'] instanceof t3lib_cache_Manager
 				&& isset($GLOBALS['typo3CacheFactory']) && $GLOBALS['typo3CacheFactory'] instanceof t3lib_cache_Factory
@@ -107,9 +107,9 @@ class t3lib_cache {
 	 * since rendering is already started using the defined caches.
 	 *
 	 * @deprecated since 4.6, will be removed in 4.8: The caching framework is enabled by default
-	 * @return	void
+	 * @return void
 	 */
-	public function enableCachingFramework() {
+	public static function enableCachingFramework() {
 		t3lib_div::logDeprecatedFunction();
 	}
 
@@ -121,7 +121,7 @@ class t3lib_cache {
 	 *
 	 * @return string Required table structure of all registered caches
 	 */
-	public function getDatabaseTableDefinitions() {
+	public static function getDatabaseTableDefinitions() {
 		$tableDefinitions = '';
 		foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] as $cacheName => $_) {
 			$backend = $GLOBALS['typo3CacheManager']->getCache($cacheName)->getBackend();
