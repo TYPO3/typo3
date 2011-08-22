@@ -371,7 +371,7 @@ class tx_version_tcemain {
 				}
 			}
 
-			if ($notificationAlternativeRecipients == FALSE) {
+			if ($notificationAlternativeRecipients === FALSE) {
 					// Compile list of recipients:
 				$emails = array();
 				switch((int)$stat['stagechg_notification'])	{
