@@ -1015,13 +1015,6 @@ final class t3lib_extMgm {
 			$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['serviceKey'] = $serviceKey;
 			$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['serviceType'] = $serviceType;
 
-
-				// mapping a service key to a service type
-				// all service keys begin with tx_ or Tx_ - service types don't
-				// this way a selection of a special service key as service type is easy
-			$GLOBALS['T3_SERVICES'][$serviceKey][$serviceKey] = &$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey];
-
-
 				// change the priority (and other values) from $GLOBALS['TYPO3_CONF_VARS']
 				// $GLOBALS['TYPO3_CONF_VARS']['T3_SERVICES'][$serviceType][$serviceKey]['priority']
 				// even the activation is possible (a unix service might be possible on windows for some reasons)
