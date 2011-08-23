@@ -377,6 +377,7 @@ class t3lib_DB {
 		$resultSet = $this->exec_SELECTquery('COUNT(' . $field . ')', $table, $where);
 		if ($resultSet !== false) {
 			list($count) = $this->sql_fetch_row($resultSet);
+			$count = intval($count);
 			$this->sql_free_result($resultSet);
 		}
 		return $count;
