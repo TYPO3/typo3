@@ -4206,7 +4206,7 @@ final class t3lib_div {
 	 * @param string $langKey TYPO3 language key, eg. "dk" or "de" or "default"
 	 * @param string $charset Character set (optional)
 	 * @return array LOCAL_LANG array in return.
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - use tx_lang_parser_Llphp::getParsedData() from now on
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - use t3lib_l10n_parser_Llphp::getParsedData() from now on
 	 */
 	public static function readLLPHPfile($fileRef, $langKey, $charset = '') {
 		t3lib_div::logDeprecatedFunction();
@@ -4293,7 +4293,7 @@ final class t3lib_div {
 	 * @param string $langKey TYPO3 language key, eg. "dk" or "de" or "default"
 	 * @param string $charset Character set (optional)
 	 * @return array LOCAL_LANG array in return.
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - use tx_lang_parser_Llxml::getParsedData() from now on
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - use t3lib_l10n_parser_Llxml::getParsedData() from now on
 	 */
 	public static function readLLXMLfile($fileRef, $langKey, $charset = '') {
 		t3lib_div::logDeprecatedFunction();
