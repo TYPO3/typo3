@@ -343,13 +343,15 @@ HTMLArea.BlockStyle = HTMLArea.Plugin.extend({
 					store.getAt(0).set('text', this.localize('Remove style'));
 				}
 			}
+				// Remove already assigned classes from the dropDown box
+			var classNamesString = ',' + classNames.join(',') + ',';
 			store.each(function (option) {
-				if (store.indexOf(option) != index && (',' + classNames.join(',') + ',').indexOf(',' + option.get('value') + ',') != -1) {
+				if (classNamesString.indexOf(',' + option.get('value') + ',') != -1) {
 					store.removeAt(store.indexOf(option));
 				}
 				return true;
 			});
 		}
-		dropDown.setDisabled(!(store.getCount()>1));
+		dropDown.setDisabled(!store.getCount() || (store.getCount() == 1 && dropDown.getValue() == 'none'));
 	}
 });

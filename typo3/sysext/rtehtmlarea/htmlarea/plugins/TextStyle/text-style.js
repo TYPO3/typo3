@@ -375,14 +375,16 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 					store.getAt(0).set('text', this.localize('Remove style'));
 				}
 			}
+				// Remove already assigned classes from the dropDown box
+			var classNamesString = ',' + classNames.join(',') + ',';
 			store.each(function (option) {
-				if (("," + classNames.join(",") + ",").indexOf("," + option.get('value') + ",") != -1 && store.indexOf(option) != index) {
+				if (classNamesString.indexOf("," + option.get('value') + ",") != -1) {
 					store.removeAt(store.indexOf(option));
 				}
 				return true;
 			});
 		}
-		dropDown.setDisabled(!(store.getCount()>1));
+		dropDown.setDisabled(!store.getCount() || (store.getCount() == 1 && dropDown.getValue() == 'none'));
 	},
 	/*
 	 * This function updates the current value of the dropdown list
@@ -396,7 +398,7 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 				this.setSelectedOption(dropDown, classNames);
 			}
 			var store = dropDown.getStore();
-			dropDown.setDisabled(!(store.getCount()>1) || disabled);
+			dropDown.setDisabled(!store.getCount() || (store.getCount() == 1 && dropDown.getValue() == 'none') || disabled);
 		}
 	}
 });
