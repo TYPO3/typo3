@@ -996,8 +996,13 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		} else {
 				// Test if the styleSheets array is at all accessible
 			if (Ext.isIE) {
-				try { 
-					rules = this.document.styleSheets[0].rules;
+				try {
+					var rules = this.document.styleSheets[0].rules;
+					var imports = this.document.styleSheets[0].imports;
+					if ((!rules || !rules.length) && (!imports || !imports.length)) {
+						stylesAreLoaded = false;
+						errorText = 'Empty rules and imports arrays';
+					}
 				} catch(e) {
 					stylesAreLoaded = false;
 					errorText = e;
