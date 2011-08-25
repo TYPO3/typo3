@@ -48,7 +48,6 @@ $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 
 
 
-
 /**
  * Class for generating the click menu
  *
@@ -358,17 +357,40 @@ class clickMenu {
 	/**
 	 * Returning JavaScript for the onClick event linking to the input URL.
 	 *
-	 * @param	string		The URL relative to TYPO3_mainDir
-	 * @param	string		The return_url-parameter
-	 * @param	boolean		If set, the "hideCM()" will be called
-	 * @param	string		If set, gives alternative location to load in (for example top frame or somewhere else)
-	 * @return	string		JavaScript for an onClick event.
+	 * @param string $url The URL relative to TYPO3_mainDir
+	 * @param string $returnUrl The return_url-parameter
+	 * @param boolean $hideClickmenu If set, the "hideCM()" will be called
+	 * @param string $overrideLocation If set, gives alternative location to load in (for example top frame or somewhere else)
+	 * @return string JavaScript for an onClick event.
 	 */
-	function urlRefForCM($url,$retUrl='',$hideCM=1,$overrideLoc='')	{
-		$loc = 'top.content.list_frame';
-		$editOnClick= ($overrideLoc ? 'var docRef='.$overrideLoc : 'var docRef=(top.content.list_frame)?top.content.list_frame:'.$loc).'; docRef.location.href=top.TS.PATH_typo3+\''.$url.'\''.
-			($retUrl ? "+'&" . $retUrl . "='+top.rawurlencode(" . $this->frameLocation('docRef.document') . '.pathname+' . $this->frameLocation('docRef.document') . '.search)' : '') . ';' .
-			($hideCM ? 'return hideCM();' : '');
+	public function urlRefForCM($url, $returnUrl = '', $hideClickmenu = TRUE, $overrideLocation = '') {
+
+		$clickmenuUrl = 'top.TS.PATH_typo3+\''.$url.'\'';
+		$clickmenuReturnUrl = '';
+
+		if ($overrideLocation) {
+			if ($returnUrl) {
+				$clickmenuReturnUrl = "+'&" . $returnUrl . "='+top.rawurlencode(" . $this->frameLocation('docRef.document')
+					. '.pathname+' . $this->frameLocation('docRef.document') . '.search)';
+			}
+			$editOnClick = sprintf(
+				'var docRef=%1$s;docRef.location=%2$s;',
+				$overrideLocation,
+				$clickmenuUrl . $clickmenuReturnUrl
+			);
+		} else {
+			if ($returnUrl) {
+				$clickmenuReturnUrl = "+'&" . $returnUrl . "='+top.rawurlencode(top.TYPO3.ModuleMenu.App.getContentFrameUrl())";
+			}
+			$editOnClick = sprintf(
+				'top.TYPO3.ModuleMenu.App.openInContentFrame(%1$s);',
+				$clickmenuUrl . $clickmenuReturnUrl
+			);
+		}
+
+		if ($hideClickmenu) {
+			$editOnClick .= 'return hideCM();';
+		}
 		return $editOnClick;
 	}
 
@@ -418,7 +440,7 @@ class clickMenu {
 		} else {
 			$conf = $loc;
 		}
-		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . $this->clipObj->pasteUrl($table, $uid, 0) . '&redirect=\'+top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . '.search); hideCM();}';
+		$editOnClick = 'if(' . $conf . '){top.TYPO3.ModuleMenu.App.openInContentFrame(top.TS.PATH_typo3+\'' . $this->clipObj->pasteUrl($table, $uid, 0) . '&redirect=\'+top.rawurlencode(top.TYPO3.ModuleMenu.App.getContentFrameUrl())); hideCM();}';
 
 		return $this->linkItem(
 			$this->label('paste'.$type),
@@ -478,7 +500,7 @@ class clickMenu {
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_perms')),
 			$this->excludeIcon(t3lib_iconWorks::getSpriteIcon('status-status-locked')),
-			$this->urlRefForCM($url),
+			$this->urlRefForCM($url, 'returnUrl'),
 			0
 		);
 	}
@@ -521,7 +543,7 @@ class clickMenu {
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_moveWizard' . ($table=='pages' ? '_page' : ''))),
 			$this->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-' . ($table === 'pages' ? 'page' : 'document' ) . '-move')),
-			$this->urlRefForCM($url,'returnUrl'),
+			$this->urlRefForCM($url, 'returnUrl'),
 			0
 		);
 	}
@@ -545,7 +567,7 @@ class clickMenu {
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_newWizard')),
 			$this->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-' . ($table === 'pages' ? 'page' : 'document' ) . '-new')),
-			$this->urlRefForCM($url,'returnUrl'),
+			$this->urlRefForCM($url, 'returnUrl'),
 			0
 		);
 	}
@@ -564,7 +586,7 @@ class clickMenu {
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_editAccess')),
 			$this->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-document-edit-access')),
-			$this->urlRefForCM($url,'returnUrl'),
+			$this->urlRefForCM($url, 'returnUrl'),
 			1	// no top frame CM!
 		);
 	}
@@ -581,7 +603,7 @@ class clickMenu {
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_editPageProperties')),
 			$this->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-page-open')),
-			$this->urlRefForCM($url,'returnUrl'),
+			$this->urlRefForCM($url, 'returnUrl'),
 			1	// no top frame CM!
 		);
 	}
@@ -594,14 +616,13 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function DB_edit($table,$uid)	{
+	function DB_edit($table, $uid) {
 
 			// If another module was specified, replace the default Page module with the new one
 		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
 		$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
 
-		$editOnClick='';
-		$loc = 'top.content.list_frame';
+		$url = '';
 		$addParam='';
 		$theIcon = 'actions-document-open';
 		if (
@@ -614,17 +635,17 @@ class clickMenu {
 			if ($GLOBALS['BE_USER']->uc['classicPageEditMode'] || !t3lib_extMgm::isLoaded('cms')) {
 				$addParam='&editRegularContentFromId='.intval($this->iParts[1]);
 			} else {
-				$editOnClick='if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'alt_doc.php?returnUrl='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . ".search)+'&edit[".$table."][".$uid."]=edit".$addParam."';}";
+				$url = 'alt_doc.php?edit[' . $table . '][' . $uid . ']=edit' . $addParam;
 			}
 		}
-		if (!$editOnClick)	{
-			$editOnClick='if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'alt_doc.php?returnUrl='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . ".search)+'&edit[".$table."][".$uid."]=edit".$addParam."';}";
+		if (!$url) {
+			$url = 'alt_doc.php?edit[' . $table . '][' . $uid . ']=edit' . $addParam;
 		}
 
 		return $this->linkItem(
 			$this->label('edit'),
 			$this->excludeIcon(t3lib_iconWorks::getSpriteIcon($theIcon)),
-			$editOnClick.'return hideCM();'
+			$this->urlRefForCM($url, 'returnUrl')
 		);
 	}
 
@@ -637,18 +658,16 @@ class clickMenu {
 	 * @internal
 	 */
 	function DB_new($table,$uid)	{
-		$editOnClick='';
-		$loc = 'top.content.list_frame';
-		$editOnClick='if('.$loc.'){'.$loc.".location.href=top.TS.PATH_typo3+'".
-			($this->listFrame?
-				"alt_doc.php?returnUrl='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . ".search)+'&edit[".$table."][-".$uid."]=new'":
-				'db_new.php?id='.intval($uid)."'").
-			';}';
+		if ($this->listFrame) {
+			$url = 'alt_doc.php?edit[' . $table . '][-' . $uid . ']=new';
+		} else {
+			$url = 'db_new.php?id=' . intval($uid);
+		}
 
 		return $this->linkItem(
 			$this->label('new'),
 			$this->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-' . ($table === 'pages' ? 'page' : 'document' ) . '-new')),
-			$editOnClick.'return hideCM();'
+			$this->urlRefForCM($url, 'returnUrl')
 		);
 	}
 
@@ -662,8 +681,6 @@ class clickMenu {
 	 * @internal
 	 */
 	function DB_delete($table,$uid,$elInfo)	{
-		$editOnClick='';
-		$loc = 'top.content.list_frame';
 		if($GLOBALS['BE_USER']->jsConfirmation(4))	{
 			$conf = "confirm(".$GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.delete'),$elInfo[0]) .
 						t3lib_BEfunc::referenceCount($table,$uid,' (There are %s reference(s) to this record!)') .
@@ -672,13 +689,16 @@ class clickMenu {
 		} else {
 			$conf = '1==1';
 		}
-		$editOnClick = 'if(' . $loc . " && " . $conf . " ){" . $loc . ".location.href=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . ".search)+'" .
-			"&cmd[" . $table . '][' . $uid . '][delete]=1&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . t3lib_BEfunc::getUrlToken('tceAction') . "';}hideCM();top.nav.refresh.defer(500, top.nav);";
+
+		$jsWrapBefore = 'if(' . $conf . '){';
+		$jsWrapAfter = '}hideCM();top.nav.refresh.defer(500, top.nav);';
+
+		$url = 'tce_db.php?cmd[' . $table . '][' . $uid . '][delete]=1&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . t3lib_BEfunc::getUrlToken('tceAction');
 
 		return $this->linkItem(
 			$this->label('delete'),
 			$this->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-edit-delete')),
-			$editOnClick.'return false;'
+			$jsWrapBefore . $this->urlRefForCM($url, 'redirect') . $jsWrapAfter
 		);
 	}
 
@@ -756,17 +776,16 @@ class clickMenu {
 	 */
 	function DB_changeFlag($table, $rec, $flagField, $title, $name, $iconRelPath='gfx/')    {
 		$uid = $rec['_ORIG_uid'] ? $rec['_ORIG_uid'] : $rec['uid'];
-		$editOnClick='';
-		$loc = 'top.content.list_frame';
-		$editOnClick = 'if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'tce_db.php?redirect='" .
-			"+top.rawurlencode(" . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . ".search)+'" .
-			"&data[" . $table . '][' . $uid . '][' . $flagField . ']=' .
-				($rec[$flagField] ? 0 : 1) . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . t3lib_BEfunc::getUrlToken('tceAction') . "';}hideCM();top.nav.refresh.defer(500, top.nav);";
+		$url = 'tce_db.php?' .
+				"data[" . $table . '][' . $uid . '][' . $flagField . ']=' .
+				($rec[$flagField] ? 0 : 1) . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . t3lib_BEfunc::getUrlToken('tceAction');
+
+		$jsWrapAfter = 'top.nav.refresh.defer(500, top.nav);return false;';
 
 		return $this->linkItem(
 			$title,
 			$this->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-edit-' . ( $rec[$flagField] ? 'un' : '') . 'hide')),
-			$editOnClick.'return false;',
+			$this->urlRefForCM($url, 'redirect') . $jsWrapAfter,
 			1
 		);
 	}
@@ -872,13 +891,13 @@ class clickMenu {
 	 * @internal
 	 */
 	function FILE_launch($path,$script,$type,$image,$noReturnUrl=FALSE)	{
-		$loc = 'top.content.list_frame';
-
-		$editOnClick = 'if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'".$script.'?target=' . rawurlencode($path) . ($noReturnUrl ? "'" : "&returnUrl='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . ".search)") . ";}";
+		$url = $script.'?target=' . rawurlencode($path);
+		$jsWrapAfter = 'top.nav.refresh();return hideCM();';
+		$returnUrlParameter = $noReturnUrl ? '' : 'returnUrl';
 		return $this->linkItem(
 			$this->label($type),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/'.$image,'width="12" height="12"').' alt="" />'),
-			$editOnClick . 'top.nav.refresh();return hideCM();'
+			$this->urlRefForCM($url, $returnUrlParameter) . $jsWrapAfter
 		);
 	}
 
