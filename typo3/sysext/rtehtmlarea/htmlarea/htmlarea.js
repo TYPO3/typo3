@@ -996,8 +996,13 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		} else {
 				// Test if the styleSheets array is at all accessible
 			if (Ext.isIE) {
-				try { 
-					rules = this.document.styleSheets[0].rules;
+				try {
+					var rules = this.document.styleSheets[0].rules;
+					var imports = this.document.styleSheets[0].imports;
+					if (!rules.length && !imports.length) {
+						stylesAreLoaded = false;
+						errorText = 'Empty rules and imports arrays';
+					}
 				} catch(e) {
 					stylesAreLoaded = false;
 					errorText = e;
@@ -1012,18 +1017,37 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			}
 				// Then test if all stylesheets are accessible
 			if (stylesAreLoaded) {
-				if (this.document.styleSheets.length) {
-					Ext.each(this.document.styleSheets, function (styleSheet) {
+					// Expecting 3 stylesheets...
+				if (this.document.styleSheets.length > 2) {
+					Ext.each(this.document.styleSheets, function (styleSheet, index) {
 						if (Ext.isIE) {
-							try { rules = styleSheet.rules; } catch(e) { stylesAreLoaded = false; errorText = e; return false; }
-							try { rules = styleSheet.imports; } catch(e) { stylesAreLoaded = false; errorText = e; return false; }
+							try { 
+								var rules = styleSheet.rules;
+								var imports = styleSheet.imports;
+									// Default page style may contain only a comment
+								if (!rules.length && !imports.length && index != 1) {
+									stylesAreLoaded = false;
+									errorText = 'Empty rules and imports arrays of styleSheets[' + index + ']';
+									return false;
+								}
+							} catch(e) {
+								stylesAreLoaded = false;
+								errorText = e;
+								return false;
+							}
 						} else {
-							try { rules = styleSheet.cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; return false; }
+							try {
+								var rules = styleSheet.cssRules;
+							} catch(e) {
+								stylesAreLoaded = false;
+								errorText = e;
+								return false;
+							}
 						}
 					});
 				} else {
 					stylesAreLoaded = false;
-					errorText = 'Empty stylesheets array';
+					errorText = 'Empty stylesheets array or missing linked stylesheets';
 				}
 			}
 		}
