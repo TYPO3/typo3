@@ -338,6 +338,18 @@ TYPO3.ModuleMenu.App = {
 		}
 	},
 
+	getContentFrameUrl: function() {
+		var url = '';
+		var card = Ext.getCmp('typo3-contentContainerWrapper').get('typo3-card-' + this.loadedModule);
+		var activeCard = typeof card == 'undefined' ? TYPO3.Backend.ContentContainer : card;
+
+		if (typeof activeCard.getUrl == 'function') {
+			url = activeCard.getUrl();
+		}
+		return url;
+	},
+
+
 	highlightModuleMenuItem: function(module, mainModule) {
 		TYPO3.Backend.ModuleMenuContainer.getComponent('modDataView').select(module, false, false);
 	},
