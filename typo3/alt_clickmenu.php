@@ -365,10 +365,19 @@ class clickMenu {
 	 * @return	string		JavaScript for an onClick event.
 	 */
 	function urlRefForCM($url,$retUrl='',$hideCM=1,$overrideLoc='')	{
-		$loc = 'top.content.list_frame';
-		$editOnClick= ($overrideLoc ? 'var docRef='.$overrideLoc : 'var docRef=(top.content.list_frame)?top.content.list_frame:'.$loc).'; docRef.location.href=top.TS.PATH_typo3+\''.$url.'\''.
-			($retUrl ? "+'&" . $retUrl . "='+top.rawurlencode(" . $this->frameLocation('docRef.document') . '.pathname+' . $this->frameLocation('docRef.document') . '.search)' : '') . ';' .
-			($hideCM ? 'return hideCM();' : '');
+
+		$cmUrl = 'top.TS.PATH_typo3+\''.$url.'\'';
+		if ($overrideLoc) {
+			$cmUrl .= ($retUrl ? "+'&" . $retUrl . "='+top.rawurlencode(" . $this->frameLocation('docRef.document') . '.pathname+' . $this->frameLocation('docRef.document') . '.search)' : '');
+			$editOnClick = sprintf('var docRef=%1$s;docRef.location=%2$s;', $overrideLoc, $cmUrl);
+		} else {
+			$cmUrl .= ($retUrl ? "+'&" . $retUrl . "='+top.rawurlencode(top.TYPO3.ModuleMenu.App.getContentFrameUrl())" : '');
+			$editOnClick = sprintf('top.TYPO3.ModuleMenu.App.openInContentFrame(%1$s);', $cmUrl);
+		}
+
+		if ($hideCM) {
+			$editOnClick .= 'return hideCM();';
+		}
 		return $editOnClick;
 	}
 
@@ -418,7 +427,7 @@ class clickMenu {
 		} else {
 			$conf = $loc;
 		}
-		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . $this->clipObj->pasteUrl($table, $uid, 0) . '&redirect=\'+top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . '.search); hideCM();}';
+		$editOnClick = 'if(' . $conf . '){top.TYPO3.ModuleMenu.App.openInContentFrame(top.TS.PATH_typo3+\'' . $this->clipObj->pasteUrl($table, $uid, 0) . '&redirect=\'+top.rawurlencode(top.TYPO3.ModuleMenu.App.getContentFrameUrl())); hideCM();}';
 
 		return $this->linkItem(
 			$this->label('paste'.$type),
