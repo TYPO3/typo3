@@ -784,7 +784,7 @@ class t3lib_parsehtml {
 										if (strlen($params['set'])) {
 											$tagAttrib[0][$attr] = $params['set'];
 										}
-										if (strlen($params['unset'])) {
+										if (isset($params['unset']) && !empty($params['unset'])) {
 											unset($tagAttrib[0][$attr]);
 										}
 										if (strcmp($params['default'], '') && !isset($tagAttrib[0][$attr])) {
