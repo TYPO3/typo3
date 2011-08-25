@@ -64,9 +64,7 @@ abstract class t3lib_l10n_parser_AbstractXml implements t3lib_l10n_parser {
 		$this->charset = $this->getCharset($languageKey, $charset);
 
 		if (($this->languageKey !== 'default' && $this->languageKey !== 'en')) {
-			$this->sourcePath = t3lib_div::getFileAbsFileName(
-				t3lib_div::llXmlAutoFileName($this->sourcePath, $this->languageKey)
-			);
+			$this->sourcePath = $this->llXmlAutoFileName($this->sourcePath, $this->languageKey);
 
 			if (!@is_file($this->sourcePath)) {
 				throw new t3lib_l10n_exception_FileNotFound(
@@ -128,6 +126,26 @@ abstract class t3lib_l10n_parser_AbstractXml implements t3lib_l10n_parser {
 		}
 
 		return $this->doParsingFromRoot($rootXmlNode);
+	}
+
+	/**
+	 * Returns an auto-filename for locallang localizations.
+	 *
+	 * @param string $sourcePath
+	 * @param string $languageKey
+	 * @return string Returns the filename reference for the language
+	 */
+	protected function llXmlAutoFileName($sourcePath, $languageKey) {
+		$localizedTargetPath = t3lib_div::getFileAbsFileName(
+			t3lib_div::llXmlAutoFileName($sourcePath, $languageKey, FALSE)
+		);
+		if (!@is_file($localizedTargetPath)) {
+				// Global localization is not available, try split localization file
+			$localizedTargetPath = t3lib_div::getFileAbsFileName(
+				t3lib_div::llXmlAutoFileName($sourcePath, $languageKey, TRUE)
+			);
+		}
+		return $localizedTargetPath;
 	}
 
 	/**

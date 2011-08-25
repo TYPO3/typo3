@@ -58,7 +58,7 @@ class t3lib_l10n_parser_Llxml extends t3lib_l10n_parser_AbstractXml {
 		$parsedSource = $this->parseXmlFile();
 
 			// Parse target
-		$localizedTargetPath = t3lib_div::getFileAbsFileName(t3lib_div::llXmlAutoFileName($this->sourcePath, $this->languageKey));
+		$localizedTargetPath = $this->llXmlAutoFileName($this->sourcePath, $this->languageKey);
 		$targetPath = ($this->languageKey !== 'default' && @is_file($localizedTargetPath)) ? $localizedTargetPath : $this->sourcePath;
 
 		try {

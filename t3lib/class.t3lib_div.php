@@ -4360,6 +4360,11 @@ final class t3lib_div {
 						// If no entry is found for the language key, then force a value depending on meta-data setting. By default an automated filename will be used:
 					$LOCAL_LANG[$langKey] = self::llXmlAutoFileName($fileRef, $langKey);
 					$localized_file = self::getFileAbsFileName($LOCAL_LANG[$langKey]);
+					if (!@is_file($localized_file)) {
+							// Global localization is not available, try split localization file
+						$LOCAL_LANG[$langKey] = self::llXmlAutoFileName($fileRef, $langKey, TRUE);
+						$localized_file = self::getFileAbsFileName($LOCAL_LANG[$langKey]);
+					}
 					if (!@is_file($localized_file) && isset($xmlContent['data'][$langKey])) {
 						$LOCAL_LANG[$langKey] = $xmlContent['data'][$langKey];
 					}
@@ -4463,14 +4468,18 @@ final class t3lib_div {
 	 *
 	 * @param string $fileRef Absolute file reference to locallang-XML file. Must be inside system/global/local extension
 	 * @param string $language Language key
+	 * @param boolean $sameLocation if TRUE, then locallang-XML localization file name will be returned with same directory as $fileRef
 	 * @return string Returns the filename reference for the language unless error occured (or local mode is used) in which case it will be NULL
 	 */
-	public static function llXmlAutoFileName($fileRef, $language) {
+	public static function llXmlAutoFileName($fileRef, $language, $sameLocation = FALSE) {
 			// Analyse file reference:
-		$location = 'typo3conf/l10n/' . $language . '/'; // Default location of translations
+		if ($sameLocation) {
+			$location = 'EXT:';
+		} else {
+			$location = 'typo3conf/l10n/' . $language . '/'; // Default location of translations
+		}
 		if (self::isFirstPartOfStr($fileRef, PATH_typo3 . 'sysext/')) { // Is system:
 			$validatedPrefix = PATH_typo3 . 'sysext/';
-			#$location = 'EXT:csh_'.$language.'/';	// For system extensions translations are found in "csh_*" extensions (language packs)
 		} elseif (self::isFirstPartOfStr($fileRef, PATH_typo3 . 'ext/')) { // Is global:
 			$validatedPrefix = PATH_typo3 . 'ext/';
 		} elseif (self::isFirstPartOfStr($fileRef, PATH_typo3conf . 'ext/')) { // Is local:
