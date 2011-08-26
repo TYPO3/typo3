@@ -3,257 +3,257 @@
 	<file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun	7 20:26:51 UTC 2011" product-name="linkvalidator">
 		<header/>
 		<body>
-			<trans-unit id="menu.introduction">
+			<trans-unit id="menu.introduction" approved="yes">
 				<source>Introduction</source>
-				<target approved="yes">Introduction</target>
+				<target>Introduction</target>
 			</trans-unit>
-			<trans-unit id="menu.checkLinks">
+			<trans-unit id="menu.checkLinks" approved="yes">
 				<source>Check Links for validity</source>
-				<target approved="yes">Check Links for validity</target>
+				<target>Check Links for validity</target>
 			</trans-unit>
-			<trans-unit id="menu.overview">
+			<trans-unit id="menu.overview" approved="yes">
 				<source>Overview of links on website</source>
-				<target approved="yes">Overview of links on website</target>
+				<target>Overview of links on website</target>
 			</trans-unit>
-			<trans-unit id="overview.header">
+			<trans-unit id="overview.header" approved="yes">
 				<source>Overview - choose options to check the links</source>
-				<target approved="yes">Overview - choose options to check the links</target>
+				<target>Overview - choose options to check the links</target>
 			</trans-unit>
-			<trans-unit id="overview.all.header">
+			<trans-unit id="overview.all.header" approved="yes">
 				<source>Total amounts in tt_content</source>
-				<target approved="yes">Total amounts in tt_content</target>
+				<target>Total amounts in tt_content</target>
 			</trans-unit>
-			<trans-unit id="overview.all.records">
+			<trans-unit id="overview.all.records" approved="yes">
 				<source>Records with ext. links:</source>
-				<target approved="yes">Records with ext. links:</target>
+				<target>Records with ext. links:</target>
 			</trans-unit>
-			<trans-unit id="overview.all.links">
+			<trans-unit id="overview.all.links" approved="yes">
 				<source>External links:</source>
-				<target approved="yes">External links:</target>
+				<target>External links:</target>
 			</trans-unit>
-			<trans-unit id="overview.branch.header">
+			<trans-unit id="overview.branch.header" approved="yes">
 				<source>Amounts from actual branch in tt_content</source>
-				<target approved="yes">Amounts from actual branch in tt_content</target>
+				<target>Amounts from actual branch in tt_content</target>
 			</trans-unit>
-			<trans-unit id="overview.branch.records">
+			<trans-unit id="overview.branch.records" approved="yes">
 				<source>Records with ext. links:</source>
-				<target approved="yes">Records with ext. links:</target>
+				<target>Records with ext. links:</target>
 			</trans-unit>
-			<trans-unit id="overview.branch.links">
+			<trans-unit id="overview.branch.links" approved="yes">
 				<source>External links:</source>
-				<target approved="yes">External links:</target>
+				<target>External links:</target>
 			</trans-unit>
-			<trans-unit id="overview.attention.header">
+			<trans-unit id="overview.attention.header" approved="yes">
 				<source>Attention:</source>
-				<target approved="yes">Attention:</target>
+				<target>Attention:</target>
 			</trans-unit>
-			<trans-unit id="overview.attention.text">
+			<trans-unit id="overview.attention.text" approved="yes">
 				<source>Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</source>
-				<target approved="yes">Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</target>
+				<target>Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</target>
 			</trans-unit>
-			<trans-unit id="Report">
+			<trans-unit id="Report" approved="yes">
 				<source>Report</source>
-				<target approved="yes">Report</target>
+				<target>Report</target>
 			</trans-unit>
-			<trans-unit id="CheckLink">
+			<trans-unit id="CheckLink" approved="yes">
 				<source>Check Links</source>
-				<target approved="yes">Check Links</target>
+				<target>Check Links</target>
 			</trans-unit>
-			<trans-unit id="report.statistics.header">
+			<trans-unit id="report.statistics.header" approved="yes">
 				<source>Show these types of broken links</source>
-				<target approved="yes">Show these types of broken links</target>
+				<target>Show these types of broken links</target>
 			</trans-unit>
-			<trans-unit id="checklinks.statistics.header">
+			<trans-unit id="checklinks.statistics.header" approved="yes">
 				<source>Check these types of broken links</source>
-				<target approved="yes">Check these types of broken links</target>
+				<target>Check these types of broken links</target>
 			</trans-unit>
-			<trans-unit id="report.func.title">
+			<trans-unit id="report.func.title" approved="yes">
 				<source>Show this level</source>
-				<target approved="yes">Show this level</target>
+				<target>Show this level</target>
 			</trans-unit>
-			<trans-unit id="checklinks.func.title">
+			<trans-unit id="checklinks.func.title" approved="yes">
 				<source>Check this level</source>
-				<target approved="yes">Check this level</target>
+				<target>Check this level</target>
 			</trans-unit>
-			<trans-unit id="overviews.nbtotal">
+			<trans-unit id="overviews.nbtotal" approved="yes">
 				<source>Broken links total:</source>
-				<target approved="yes">Broken links total:</target>
+				<target>Broken links total:</target>
 			</trans-unit>
-			<trans-unit id="hooks.db">
+			<trans-unit id="hooks.db" approved="yes">
 				<source>Internal Links:</source>
-				<target approved="yes">Internal Links:</target>
+				<target>Internal Links:</target>
 			</trans-unit>
-			<trans-unit id="hooks.file">
+			<trans-unit id="hooks.file" approved="yes">
 				<source>File Links:</source>
-				<target approved="yes">File Links:</target>
+				<target>File Links:</target>
 			</trans-unit>
-			<trans-unit id="hooks.external">
+			<trans-unit id="hooks.external" approved="yes">
 				<source>External Links:</source>
-				<target approved="yes">External Links:</target>
+				<target>External Links:</target>
 			</trans-unit>
-			<trans-unit id="hooks.linkhandler">
+			<trans-unit id="hooks.linkhandler" approved="yes">
 				<source>Linkhandler Links:</source>
-				<target approved="yes">Linkhandler Links:</target>
+				<target>Linkhandler Links:</target>
 			</trans-unit>
-			<trans-unit id="label_refresh">
+			<trans-unit id="label_refresh" approved="yes">
 				<source>Refresh display</source>
-				<target approved="yes">Refresh display</target>
+				<target>Refresh display</target>
 			</trans-unit>
-			<trans-unit id="label_update">
+			<trans-unit id="label_update" approved="yes">
 				<source>Check links</source>
-				<target approved="yes">Check links</target>
+				<target>Check links</target>
 			</trans-unit>
-			<trans-unit id="list.header">
+			<trans-unit id="list.header" approved="yes">
 				<source>Listing of broken links</source>
-				<target approved="yes">Listing of broken links</target>
+				<target>Listing of broken links</target>
 			</trans-unit>
-			<trans-unit id="list.tableHead.path">
+			<trans-unit id="list.tableHead.path" approved="yes">
 				<source>Path</source>
-				<target approved="yes">Path</target>
+				<target>Path</target>
 			</trans-unit>
-			<trans-unit id="list.tableHead.element">
+			<trans-unit id="list.tableHead.element" approved="yes">
 				<source>Element</source>
-				<target approved="yes">Element</target>
+				<target>Element</target>
 			</trans-unit>
-			<trans-unit id="list.tableHead.headlink">
+			<trans-unit id="list.tableHead.headlink" approved="yes">
 				<source>Link</source>
-				<target approved="yes">Link</target>
+				<target>Link</target>
 			</trans-unit>
-			<trans-unit id="list.tableHead.linktarget">
+			<trans-unit id="list.tableHead.linktarget" approved="yes">
 				<source>URL / Link Target</source>
-				<target approved="yes">URL / Link Target</target>
+				<target>URL / Link Target</target>
 			</trans-unit>
-			<trans-unit id="list.tableHead.linkmessage">
+			<trans-unit id="list.tableHead.linkmessage" approved="yes">
 				<source>Error message</source>
-				<target approved="yes">Error message</target>
+				<target>Error message</target>
 			</trans-unit>
-			<trans-unit id="list.tableHead.lastCheck">
+			<trans-unit id="list.tableHead.lastCheck" approved="yes">
 				<source>Last check</source>
-				<target approved="yes">Last check</target>
+				<target>Last check</target>
 			</trans-unit>
-			<trans-unit id="list.edit">
+			<trans-unit id="list.edit" approved="yes">
 				<source>Edit element containing this broken link</source>
-				<target approved="yes">Edit element containing this broken link</target>
+				<target>Edit element containing this broken link</target>
 			</trans-unit>
-			<trans-unit id="list.field">
+			<trans-unit id="list.field" approved="yes">
 				<source>(Field: %s)</source>
-				<target approved="yes">(Field: %s)</target>
+				<target>(Field: %s)</target>
 			</trans-unit>
-			<trans-unit id="list.no.headline">
+			<trans-unit id="list.no.headline" approved="yes">
 				<source>no headline</source>
-				<target approved="yes">no headline</target>
+				<target>no headline</target>
 			</trans-unit>
-			<trans-unit id="list.report.pagedeleted">
+			<trans-unit id="list.report.pagedeleted" approved="yes">
 				<source>Page '###title###' (###uid###) is deleted.</source>
-				<target approved="yes">Page '###title###' (###uid###) is deleted.</target>
+				<target>Page '###title###' (###uid###) is deleted.</target>
 			</trans-unit>
-			<trans-unit id="list.report.pagenotvisible">
+			<trans-unit id="list.report.pagenotvisible" approved="yes">
 				<source>Page '###title###' (###uid###) is not visible.</source>
-				<target approved="yes">Page '###title###' (###uid###) is not visible.</target>
+				<target>Page '###title###' (###uid###) is not visible.</target>
 			</trans-unit>
-			<trans-unit id="list.report.pagenotexisting">
+			<trans-unit id="list.report.pagenotexisting" approved="yes">
 				<source>Page (###uid###) does not exist.</source>
-				<target approved="yes">Page (###uid###) does not exist.</target>
+				<target>Page (###uid###) does not exist.</target>
 			</trans-unit>
-			<trans-unit id="list.report.contentmoved">
+			<trans-unit id="list.report.contentmoved" approved="yes">
 				<source>Element '###title###' (###uid###) is not located on page ###wrongpage###, but on page ###rightpage###.</source>
-				<target approved="yes">Element '###title###' (###uid###) is not located on page ###wrongpage###, but on page ###rightpage###.</target>
+				<target>Element '###title###' (###uid###) is not located on page ###wrongpage###, but on page ###rightpage###.</target>
 			</trans-unit>
-			<trans-unit id="list.report.contentdeleted">
+			<trans-unit id="list.report.contentdeleted" approved="yes">
 				<source>Element '###title###' (###uid###) is deleted.</source>
-				<target approved="yes">Element '###title###' (###uid###) is deleted.</target>
+				<target>Element '###title###' (###uid###) is deleted.</target>
 			</trans-unit>
-			<trans-unit id="list.report.contentnotvisible">
+			<trans-unit id="list.report.contentnotvisible" approved="yes">
 				<source>Element '###title###' (###uid###) is not visible.</source>
-				<target approved="yes">Element '###title###' (###uid###) is not visible.</target>
+				<target>Element '###title###' (###uid###) is not visible.</target>
 			</trans-unit>
-			<trans-unit id="list.report.contentnotexisting">
+			<trans-unit id="list.report.contentnotexisting" approved="yes">
 				<source>Element (###uid###) does not exist.</source>
-				<target approved="yes">Element (###uid###) does not exist.</target>
+				<target>Element (###uid###) does not exist.</target>
 			</trans-unit>
-			<trans-unit id="list.report.rowdeleted">
+			<trans-unit id="list.report.rowdeleted" approved="yes">
 				<source>###title### row (###uid###) is deleted.</source>
-				<target approved="yes">###title### row (###uid###) is deleted.</target>
+				<target>###title### row (###uid###) is deleted.</target>
 			</trans-unit>
-			<trans-unit id="list.report.rowdeleted.default.title">
+			<trans-unit id="list.report.rowdeleted.default.title" approved="yes">
 				<source>Linked</source>
-				<target approved="yes">Linked</target>
+				<target>Linked</target>
 			</trans-unit>
-			<trans-unit id="list.report.rownotexisting">
+			<trans-unit id="list.report.rownotexisting" approved="yes">
 				<source>Row (###uid###) does not exist.</source>
-				<target approved="yes">Row (###uid###) does not exist.</target>
+				<target>Row (###uid###) does not exist.</target>
 			</trans-unit>
-			<trans-unit id="list.report.noresponse">
+			<trans-unit id="list.report.noresponse" approved="yes">
 				<source>External Link not reachable.</source>
-				<target approved="yes">External Link not reachable.</target>
+				<target>External Link not reachable.</target>
 			</trans-unit>
-			<trans-unit id="list.report.redirectloop">
+			<trans-unit id="list.report.redirectloop" approved="yes">
 				<source>A redirect loop occurred. (%s: %s)</source>
-				<target approved="yes">A redirect loop occurred. (%s: %s)</target>
+				<target>A redirect loop occurred. (%s: %s)</target>
 			</trans-unit>
-			<trans-unit id="list.report.pageforbidden403">
+			<trans-unit id="list.report.pageforbidden403" approved="yes">
 				<source>Accessing this address is not allowed (403).</source>
-				<target approved="yes">Accessing this address is not allowed (403).</target>
+				<target>Accessing this address is not allowed (403).</target>
 			</trans-unit>
-			<trans-unit id="list.report.pagenotfound404">
+			<trans-unit id="list.report.pagenotfound404" approved="yes">
 				<source>The requested url was not found (404).</source>
-				<target approved="yes">The requested url was not found (404).</target>
+				<target>The requested url was not found (404).</target>
 			</trans-unit>
-			<trans-unit id="list.report.externalerror">
+			<trans-unit id="list.report.externalerror" approved="yes">
 				<source>External Link returned HTTP error code (%s).</source>
-				<target approved="yes">External Link returned HTTP error code (%s).</target>
+				<target>External Link returned HTTP error code (%s).</target>
 			</trans-unit>
-			<trans-unit id="list.report.filenotexisting">
+			<trans-unit id="list.report.filenotexisting" approved="yes">
 				<source>File doesn't exist.</source>
-				<target approved="yes">File doesn't exist.</target>
+				<target>File doesn't exist.</target>
 			</trans-unit>
-			<trans-unit id="list.report.timeout">
+			<trans-unit id="list.report.timeout" approved="yes">
 				<source>Operation timeout. The specified time-out period was reached according to the conditions.</source>
-				<target approved="yes">Operation timeout. The specified time-out period was reached according to the conditions.</target>
+				<target>Operation timeout. The specified time-out period was reached according to the conditions.</target>
 			</trans-unit>
-			<trans-unit id="list.report.internalerror500">
+			<trans-unit id="list.report.internalerror500" approved="yes">
 				<source>Internal Server Error (500)</source>
-				<target approved="yes">Internal Server Error (500)</target>
+				<target>Internal Server Error (500)</target>
 			</trans-unit>
-			<trans-unit id="list.report.couldnotresolvehost">
+			<trans-unit id="list.report.couldnotresolvehost" approved="yes">
 				<source>Could not resolve host. The given remote host was not resolved.</source>
-				<target approved="yes">Could not resolve host. The given remote host was not resolved.</target>
+				<target>Could not resolve host. The given remote host was not resolved.</target>
 			</trans-unit>
-			<trans-unit id="list.report.errornetworkdata">
+			<trans-unit id="list.report.errornetworkdata" approved="yes">
 				<source>Failure with receiving network data.</source>
-				<target approved="yes">Failure with receiving network data.</target>
+				<target>Failure with receiving network data.</target>
 			</trans-unit>
-			<trans-unit id="list.report.otherhttpcode">
+			<trans-unit id="list.report.otherhttpcode" approved="yes">
 				<source>An error occurred (%s): "%s".</source>
-				<target approved="yes">An error occurred (%s): "%s".</target>
+				<target>An error occurred (%s): "%s".</target>
 			</trans-unit>
-			<trans-unit id="list.report.httpexception">
+			<trans-unit id="list.report.httpexception" approved="yes">
 				<source>Exception: %s</source>
-				<target approved="yes">Exception: %s</target>
+				<target>Exception: %s</target>
 			</trans-unit>
-			<trans-unit id="list.msg.ok">
+			<trans-unit id="list.msg.ok" approved="yes">
 				<source>Ok</source>
-				<target approved="yes">Ok</target>
+				<target>Ok</target>
 			</trans-unit>
-			<trans-unit id="list.msg.lastRun">
+			<trans-unit id="list.msg.lastRun" approved="yes">
 				<source>%1$s %2$s</source>
-				<target approved="yes">%1$s %2$s</target>
+				<target>%1$s %2$s</target>
 			</trans-unit>
-			<trans-unit id="list.no.broken.links.title">
+			<trans-unit id="list.no.broken.links.title" approved="yes">
 				<source>No broken links to show!</source>
-				<target approved="yes">No broken links to show!</target>
+				<target>No broken links to show!</target>
 			</trans-unit>
-			<trans-unit id="list.no.broken.links">
+			<trans-unit id="list.no.broken.links" approved="yes">
 				<source>There are no broken links to be displayed.</source>
-				<target approved="yes">There are no broken links to be displayed.</target>
+				<target>There are no broken links to be displayed.</target>
 			</trans-unit>
-			<trans-unit id="no.access.title">
+			<trans-unit id="no.access.title" approved="yes">
 				<source>No access!</source>
-				<target approved="yes">No access!</target>
+				<target>No access!</target>
 			</trans-unit>
-			<trans-unit id="no.access">
+			<trans-unit id="no.access" approved="yes">
 				<source>You do not have access to these listings.</source>
-				<target approved="yes">You do not have access to these listings.</target>
+				<target>You do not have access to these listings.</target>
 			</trans-unit>
 		</body>
 	</file>

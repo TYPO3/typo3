@@ -1,3 +1,7 @@
+2011-08-26  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* [BUGFIX] XLIFF: Approved attribute is on wrong element
+
 2011-08-19  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* [TASK] Unify table layouts
