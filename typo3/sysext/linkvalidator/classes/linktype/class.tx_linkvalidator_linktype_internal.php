@@ -66,7 +66,7 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	 * @param   object	  $reference:  parent instance of tx_linkvalidator_Processor
 	 * @return  string	  TRUE on success or FALSE on error
 	 */
-	public function checkLink($url, $softRefEntry, $reference) {
+	public function checkLink($url, array $softRefEntry, tx_linkvalidator_Processor $reference) {
 		$page = '';
 		$anchor = '';
 		$response = TRUE;

@@ -1,3 +1,7 @@
+2011-08-26 Philipp Gampe <forge.typo3.org@philippgampe.info>
+
+	* [BUGFIX] Fatal error with E_STRICT: Declaration of fetchType must be compatible with interface
+
 2011-08-26  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* [BUGFIX] XLIFF: Approved attribute is on wrong element

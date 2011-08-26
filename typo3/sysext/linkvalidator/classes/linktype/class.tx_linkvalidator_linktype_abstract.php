@@ -46,7 +46,7 @@ abstract class tx_linkvalidator_linktype_Abstract implements tx_linkvalidator_li
 	 * @param   string	 $key: validator hook name
 	 * @return  string	 fetched type
 	 */
-	public function fetchType($value, $type, $key) {
+	public function fetchType(array $value, $type, $key) {
 		if ($value['type'] == $key) {
 			$type = $value['type'];
 		}

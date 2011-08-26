@@ -39,7 +39,7 @@ interface tx_linkvalidator_linktype_Interface {
 	 * @param   object	  $reference:  parent instance of tx_linkvalidator_Processor
 	 * @return  string	  validation error message or succes code
 	 */
-	public function checkLink($url, $softRefEntry, $reference);
+	public function checkLink($url, array $softRefEntry, tx_linkvalidator_Processor $reference);
 
 	/**
 	 * Base type fetching method, based on the type that softRefParserObj returns.
@@ -49,7 +49,7 @@ interface tx_linkvalidator_linktype_Interface {
 	 * @param   string	 $key: validator hook name
 	 * @return  string	 fetched type
 	 */
-	public function fetchType($value, $type, $key);
+	public function fetchType(array $value, $type, $key);
 
 	/**
 	 * Get the value of the private property errorParams.

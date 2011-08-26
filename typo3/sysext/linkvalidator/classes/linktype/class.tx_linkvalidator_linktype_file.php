@@ -40,7 +40,7 @@ class tx_linkvalidator_linktype_File extends tx_linkvalidator_linktype_Abstract 
 	 * @param   object	  $reference:  parent instance of tx_linkvalidator_Processor
 	 * @return  string	  TRUE on success or FALSE on error
 	 */
-	public function checkLink($url, $softRefEntry, $reference) {
+	public function checkLink($url, array $softRefEntry, tx_linkvalidator_Processor $reference) {
 		if (!@file_exists(PATH_site . rawurldecode($url))) {
 			return FALSE;
 		}
