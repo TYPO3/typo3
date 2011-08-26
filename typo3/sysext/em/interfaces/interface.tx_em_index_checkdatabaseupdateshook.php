@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Xavier Perseguers <typo3@perseguers.ch>
+*  (c) 2010-2011 Xavier Perseguers <xavier@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,9 +26,9 @@
 ***************************************************************/
 
 /**
- * Interface for hook in SC_mod_tools_em_index::checkDBupdates.
+ * Interface for hook in tx_em_Install::checkDBupdates.
  *
- * @author Xavier Perseguers <typo3@perseguers.ch>
+ * @author Xavier Perseguers <xavier@typo3.org>
  * @package TYPO3
  * @subpackage em
  */
@@ -44,10 +44,10 @@ interface tx_em_Index_CheckDatabaseUpdatesHook {
 	 * @param array $extInfo: Extension information array
 	 * @param array $diff: Database differences
 	 * @param t3lib_install $instObj: Instance of the installer
-	 * @param SC_mod_tools_em_index $parent: The calling parent object
+	 * @param tx_em_Install $parent: The calling parent object
 	 * @return string Either empty string or a pre-processing user form
 	 */
-	public function preProcessDatabaseUpdates($extKey, array $extInfo, array $diff, t3lib_install $instObj, SC_mod_tools_em_index $parent);
+	public function preProcessDatabaseUpdates($extKey, array $extInfo, array $diff, t3lib_install $instObj, tx_em_Install $parent);
 
 }
 
