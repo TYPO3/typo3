@@ -3,33 +3,33 @@
   <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:29:09 UTC 2011" product-name="workspaces">
     <header/>
     <body>
-      <trans-unit id=".description">
+      <trans-unit id=".description" approved="yes">
         <source>Defines custom workspace stages in TYPO3 which allows for groups of people to work together in a defined process. More information about workspaces can be found in the document "Inside TYPO3".</source>
-        <target approved="yes">Defines custom workspace stages in TYPO3 which allows for groups of people to work together in a defined process. More information about workspaces can be found in the document "Inside TYPO3".</target>
+        <target>Defines custom workspace stages in TYPO3 which allows for groups of people to work together in a defined process. More information about workspaces can be found in the document "Inside TYPO3".</target>
       </trans-unit>
-      <trans-unit id="title.description">
+      <trans-unit id="title.description" approved="yes">
         <source>Enter the name of the workspace stage.</source>
-        <target approved="yes">Enter the name of the workspace stage.</target>
+        <target>Enter the name of the workspace stage.</target>
       </trans-unit>
-      <trans-unit id="responsible_persons.description">
+      <trans-unit id="responsible_persons.description" approved="yes">
         <source>Define which BE users are responsible for this workspace stage. This selected BE users are possible recipients for the stage change emails.</source>
-        <target approved="yes">Define which BE users are responsible for this workspace stage. This selected BE users are possible recipients for the stage change emails.</target>
+        <target>Define which BE users are responsible for this workspace stage. This selected BE users are possible recipients for the stage change emails.</target>
       </trans-unit>
-      <trans-unit id="default_mailcomment.description">
+      <trans-unit id="default_mailcomment.description" approved="yes">
         <source>Here its possible to define a standard mail comment which will be inserted into the stage change mail. When no standard mail comment was defined here its possible to write a comment for the mail on every stage change.</source>
-        <target approved="yes">Here its possible to define a standard mail comment which will be inserted into the stage change mail. When no standard mail comment was defined here its possible to write a comment for the mail on every stage change.</target>
+        <target>Here its possible to define a standard mail comment which will be inserted into the stage change mail. When no standard mail comment was defined here its possible to write a comment for the mail on every stage change.</target>
       </trans-unit>
-      <trans-unit id="notification_mode.description">
+      <trans-unit id="notification_mode.description" approved="yes">
         <source>You can choose one of three settings for the recipient suggestion list on stage change. In the most configurations the default option is a good choice. For exact explanation about the single options please refer to the documentation.</source>
-        <target approved="yes">You can choose one of three settings for the recipient suggestion list on stage change. In the most configurations the default option is a good choice. For exact explanation about the single options please refer to the documentation.</target>
+        <target>You can choose one of three settings for the recipient suggestion list on stage change. In the most configurations the default option is a good choice. For exact explanation about the single options please refer to the documentation.</target>
       </trans-unit>
-      <trans-unit id="notification_defaults.description">
+      <trans-unit id="notification_defaults.description" approved="yes">
         <source>Select these backend users or backend groups that should be selected per default to receive a notification mail. Select only users/groups that are also selected as responsible for this stage.</source>
-        <target approved="yes">Select these backend users or backend groups that should be selected per default to receive a notification mail. Select only users/groups that are also selected as responsible for this stage.</target>
+        <target>Select these backend users or backend groups that should be selected per default to receive a notification mail. Select only users/groups that are also selected as responsible for this stage.</target>
       </trans-unit>
-      <trans-unit id="allow_notificaton_settings.description">
+      <trans-unit id="allow_notificaton_settings.description" approved="yes">
         <source>Disable this checkbox to hide the recipient and additional recipient fields from the stage change popup window. Notifications are sent in the background nevertheless but based on configuration in workspace stage setting.</source>
-        <target approved="yes">Disable this checkbox to hide the recipient and additional recipient fields from the stage change popup window. Notifications are sent in the background nevertheless but based on configuration in workspace stage setting.</target>
+        <target>Disable this checkbox to hide the recipient and additional recipient fields from the stage change popup window. Notifications are sent in the background nevertheless but based on configuration in workspace stage setting.</target>
       </trans-unit>
     </body>
   </file>
