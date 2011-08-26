@@ -3,21 +3,21 @@
   <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:28 UTC 2011" product-name="dbal">
     <header/>
     <body>
-      <trans-unit id="title">
+      <trans-unit id="title" approved="yes">
         <source>DBAL Analysis Module</source>
-        <target approved="yes">DBAL Analysis Module</target>
+        <target>DBAL Analysis Module</target>
       </trans-unit>
-      <trans-unit id="Debug_log">
+      <trans-unit id="Debug_log" approved="yes">
         <source>Debug log</source>
-        <target approved="yes">Debug log</target>
+        <target>Debug log</target>
       </trans-unit>
-      <trans-unit id="Cached_info">
+      <trans-unit id="Cached_info" approved="yes">
         <source>Cached info</source>
-        <target approved="yes">Cached info</target>
+        <target>Cached info</target>
       </trans-unit>
-      <trans-unit id="SQL_check">
+      <trans-unit id="SQL_check" approved="yes">
         <source>SQL Check</source>
-        <target approved="yes">SQL Check</target>
+        <target>SQL Check</target>
       </trans-unit>
     </body>
   </file>

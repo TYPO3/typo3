@@ -3,9 +3,9 @@
   <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:24:28 UTC 2011" product-name="dbal">
     <header/>
     <body>
-      <trans-unit id="mlang_tabs_tab">
+      <trans-unit id="mlang_tabs_tab" approved="yes">
         <source>DBAL Debug</source>
-        <target approved="yes">DBAL Debug</target>
+        <target>DBAL Debug</target>
       </trans-unit>
     </body>
   </file>
