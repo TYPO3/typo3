@@ -3,89 +3,89 @@
   <file source-language="EN" target-language="vn" datatype="plaintext" original="messages" date="Tue Jun  7 20:29:09 UTC 2011" product-name="workspaces">
     <header/>
     <body>
-      <trans-unit id="sys_filemounts.tabs.staging">
+      <trans-unit id="sys_filemounts.tabs.staging" approved="yes">
         <source>Staging</source>
-        <target approved="yes">Staging</target>
+        <target>Staging</target>
       </trans-unit>
-      <trans-unit id="sys_workspace.custom_stages">
+      <trans-unit id="sys_workspace.custom_stages" approved="yes">
         <source>Custom stages:</source>
-        <target approved="yes">Custom stages:</target>
+        <target>Custom stages:</target>
       </trans-unit>
-      <trans-unit id="sys_workspace_stage.responsible_persons">
+      <trans-unit id="sys_workspace_stage.responsible_persons" approved="yes">
         <source>Responsible persons:</source>
-        <target approved="yes">Responsible persons:</target>
+        <target>Responsible persons:</target>
       </trans-unit>
-      <trans-unit id="sys_workspace_stage.default_mailcomment">
+      <trans-unit id="sys_workspace_stage.default_mailcomment" approved="yes">
         <source>Default mail comment:</source>
-        <target approved="yes">Default mail comment:</target>
+        <target>Default mail comment:</target>
       </trans-unit>
-      <trans-unit id="sys_workspace_stage.parentid">
+      <trans-unit id="sys_workspace_stage.parentid" approved="yes">
         <source>UID of parent record:</source>
-        <target approved="yes">UID of parent record:</target>
+        <target>UID of parent record:</target>
       </trans-unit>
-      <trans-unit id="sys_workspace_stage.parenttable">
+      <trans-unit id="sys_workspace_stage.parenttable" approved="yes">
         <source>Parent table:</source>
-        <target approved="yes">Parent table:</target>
+        <target>Parent table:</target>
       </trans-unit>
-      <trans-unit id="sys_workspace_stage">
+      <trans-unit id="sys_workspace_stage" approved="yes">
         <source>Workspace Stage</source>
-        <target approved="yes">Workspace Stage</target>
+        <target>Workspace Stage</target>
       </trans-unit>
-      <trans-unit id="tabs.notification_settings">
+      <trans-unit id="tabs.notification_settings" approved="yes">
         <source>Notification settings</source>
-        <target approved="yes">Notification settings</target>
+        <target>Notification settings</target>
       </trans-unit>
-      <trans-unit id="sys_workspace.edit_notification_mode">
+      <trans-unit id="sys_workspace.edit_notification_mode" approved="yes">
         <source>Edit stage: Recipient suggestion checkboxes</source>
-        <target approved="yes">Edit stage: Recipient suggestion checkboxes</target>
+        <target>Edit stage: Recipient suggestion checkboxes</target>
       </trans-unit>
-      <trans-unit id="sys_workspace.notification_mode.0">
+      <trans-unit id="sys_workspace.notification_mode.0" approved="yes">
         <source>All are selected per default (can be changed)</source>
-        <target approved="yes">All are selected per default (can be changed)</target>
+        <target>All are selected per default (can be changed)</target>
       </trans-unit>
-      <trans-unit id="sys_workspace.notification_mode.1">
+      <trans-unit id="sys_workspace.notification_mode.1" approved="yes">
         <source>Some are selected per default (defaults cannot be unchecked)</source>
-        <target approved="yes">Some are selected per default (defaults cannot be unchecked)</target>
+        <target>Some are selected per default (defaults cannot be unchecked)</target>
       </trans-unit>
-      <trans-unit id="sys_workspace.notification_mode.2">
+      <trans-unit id="sys_workspace.notification_mode.2" approved="yes">
         <source>All are selected per default (cannot be changed)</source>
-        <target approved="yes">All are selected per default (cannot be changed)</target>
+        <target>All are selected per default (cannot be changed)</target>
       </trans-unit>
-      <trans-unit id="sys_workspace.edit_notification_defaults">
+      <trans-unit id="sys_workspace.edit_notification_defaults" approved="yes">
         <source>Edit stage: default notification mail recipients</source>
-        <target approved="yes">Edit stage: default notification mail recipients</target>
+        <target>Edit stage: default notification mail recipients</target>
       </trans-unit>
-      <trans-unit id="sys_workspace.edit_allow_notificaton_settings">
+      <trans-unit id="sys_workspace.edit_allow_notificaton_settings" approved="yes">
         <source>Allow notification settings during stage change back to edit stage</source>
-        <target approved="yes">Allow notification settings during stage change back to edit stage</target>
+        <target>Allow notification settings during stage change back to edit stage</target>
       </trans-unit>
-      <trans-unit id="sys_workspace.publish_notification_mode">
+      <trans-unit id="sys_workspace.publish_notification_mode" approved="yes">
         <source>Ready to publish stage: Recipient suggestion checkboxes</source>
-        <target approved="yes">Ready to publish stage: Recipient suggestion checkboxes</target>
+        <target>Ready to publish stage: Recipient suggestion checkboxes</target>
       </trans-unit>
-      <trans-unit id="sys_workspace.publish_notification_defaults">
+      <trans-unit id="sys_workspace.publish_notification_defaults" approved="yes">
         <source>Ready to publish stage: default notification mail recipients</source>
-        <target approved="yes">Ready to publish stage: default notification mail recipients</target>
+        <target>Ready to publish stage: default notification mail recipients</target>
       </trans-unit>
-      <trans-unit id="sys_workspace.publish_allow_notificaton_settings">
+      <trans-unit id="sys_workspace.publish_allow_notificaton_settings" approved="yes">
         <source>Allow notification settings during stage change to ready to publish</source>
-        <target approved="yes">Allow notification settings during stage change to ready to publish</target>
+        <target>Allow notification settings during stage change to ready to publish</target>
       </trans-unit>
-      <trans-unit id="tabs.general">
+      <trans-unit id="tabs.general" approved="yes">
         <source>General</source>
-        <target approved="yes">General</target>
+        <target>General</target>
       </trans-unit>
-      <trans-unit id="sys_workspace_stage.notification_mode">
+      <trans-unit id="sys_workspace_stage.notification_mode" approved="yes">
         <source>Recipient suggestion checkboxes</source>
-        <target approved="yes">Recipient suggestion checkboxes</target>
+        <target>Recipient suggestion checkboxes</target>
       </trans-unit>
-      <trans-unit id="sys_workspace_stage.notification_defaults">
+      <trans-unit id="sys_workspace_stage.notification_defaults" approved="yes">
         <source>Default notification mail recipients</source>
-        <target approved="yes">Default notification mail recipients</target>
+        <target>Default notification mail recipients</target>
       </trans-unit>
-      <trans-unit id="sys_workspace_stage.allow_notificaton_settings">
+      <trans-unit id="sys_workspace_stage.allow_notificaton_settings" approved="yes">
         <source>Allow notification settings during stage change</source>
-        <target approved="yes">Allow notification settings during stage change</target>
+        <target>Allow notification settings during stage change</target>
       </trans-unit>
     </body>
   </file>
