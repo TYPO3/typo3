@@ -3,173 +3,173 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:24 UTC" product-name="lang">
     <header/>
     <body>
-      <trans-unit id="labels.username">
+      <trans-unit id="labels.username" approved="yes">
         <source>Username</source>
-        <target approved="yes">Username</target>
+        <target>Username</target>
       </trans-unit>
-      <trans-unit id="labels.openId">
+      <trans-unit id="labels.openId" approved="yes">
         <source>OpenID</source>
-        <target approved="yes">OpenID</target>
+        <target>OpenID</target>
       </trans-unit>
-      <trans-unit id="labels.password">
+      <trans-unit id="labels.password" approved="yes">
         <source>Password</source>
-        <target approved="yes">Password</target>
+        <target>Password</target>
       </trans-unit>
-      <trans-unit id="labels.interface">
+      <trans-unit id="labels.interface" approved="yes">
         <source>Interface</source>
-        <target approved="yes">Interface</target>
+        <target>Interface</target>
       </trans-unit>
-      <trans-unit id="labels.submitLogin">
+      <trans-unit id="labels.submitLogin" approved="yes">
         <source>Login</source>
-        <target approved="yes">Login</target>
+        <target>Login</target>
       </trans-unit>
-      <trans-unit id="labels.submitLogout">
+      <trans-unit id="labels.submitLogout" approved="yes">
         <source>Log Out</source>
-        <target approved="yes">Log Out</target>
+        <target>Log Out</target>
       </trans-unit>
-      <trans-unit id="labels.donate">
+      <trans-unit id="labels.donate" approved="yes">
         <source>Donate</source>
-        <target approved="yes">Donate</target>
+        <target>Donate</target>
       </trans-unit>
-      <trans-unit id="labels.whatIsOpenId">
+      <trans-unit id="labels.whatIsOpenId" approved="yes">
         <source>What is OpenId?</source>
-        <target approved="yes">What is OpenId?</target>
+        <target>What is OpenId?</target>
       </trans-unit>
-      <trans-unit id="labels.switchToOpenId">
+      <trans-unit id="labels.switchToOpenId" approved="yes">
         <source>Switch to OpenID</source>
-        <target approved="yes">Switch to OpenID</target>
+        <target>Switch to OpenID</target>
       </trans-unit>
-      <trans-unit id="labels.switchToDefault">
+      <trans-unit id="labels.switchToDefault" approved="yes">
         <source>Switch to default login</source>
-        <target approved="yes">Switch to default login</target>
+        <target>Switch to default login</target>
       </trans-unit>
-      <trans-unit id="availableInterfaces">
+      <trans-unit id="availableInterfaces" approved="yes">
         <source>Backend,Front End,Traditional Backend</source>
-        <target approved="yes">Backend,Front End,Traditional Backend</target>
+        <target>Backend,Front End,Traditional Backend</target>
       </trans-unit>
-      <trans-unit id="interface.backend">
+      <trans-unit id="interface.backend" approved="yes">
         <source>Backend</source>
-        <target approved="yes">Backend</target>
+        <target>Backend</target>
       </trans-unit>
-      <trans-unit id="interface.frontend">
+      <trans-unit id="interface.frontend" approved="yes">
         <source>Frontend</source>
-        <target approved="yes">Frontend</target>
+        <target>Frontend</target>
       </trans-unit>
-      <trans-unit id="interface.backend_old">
+      <trans-unit id="interface.backend_old" approved="yes">
         <source>Traditional Backend</source>
-        <target approved="yes">Traditional Backend</target>
+        <target>Traditional Backend</target>
       </trans-unit>
-      <trans-unit id="headline">
+      <trans-unit id="headline" approved="yes">
         <source>Login to the TYPO3 Backend on ###SITENAME###</source>
-        <target approved="yes">Login to the TYPO3 Backend on ###SITENAME###</target>
+        <target>Login to the TYPO3 Backend on ###SITENAME###</target>
       </trans-unit>
-      <trans-unit id="info.about">
+      <trans-unit id="info.about" approved="yes">
         <source>This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</source>
-        <target approved="yes">This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</target>
+        <target>This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</target>
       </trans-unit>
-      <trans-unit id="info.reset">
+      <trans-unit id="info.reset" approved="yes">
         <source>Reset this form</source>
-        <target approved="yes">Reset this form</target>
+        <target>Reset this form</target>
       </trans-unit>
-      <trans-unit id="info.cookies_and_js">
+      <trans-unit id="info.cookies_and_js" approved="yes">
         <source>(Note: Cookies and JavaScript must be enabled!)</source>
-        <target approved="yes">(Note: Cookies and JavaScript must be enabled!)</target>
+        <target>(Note: Cookies and JavaScript must be enabled!)</target>
       </trans-unit>
-      <trans-unit id="clear">
+      <trans-unit id="clear" approved="yes">
         <source>Clear this field!</source>
-        <target approved="yes">Clear this field!</target>
+        <target>Clear this field!</target>
       </trans-unit>
-      <trans-unit id="login_process">
+      <trans-unit id="login_process" approved="yes">
         <source>Verifying Login Data ...</source>
-        <target approved="yes">Verifying Login Data ...</target>
+        <target>Verifying Login Data ...</target>
       </trans-unit>
-      <trans-unit id="warning.incompatibleBrowserHeadline">
+      <trans-unit id="warning.incompatibleBrowserHeadline" approved="yes">
         <source>Unsupported Browser</source>
-        <target approved="yes">Unsupported Browser</target>
+        <target>Unsupported Browser</target>
       </trans-unit>
-      <trans-unit id="warning.incompatibleBrowser">
+      <trans-unit id="warning.incompatibleBrowser" approved="yes">
         <source>You are using an unsupported browser version.</source>
-        <target approved="yes">You are using an unsupported browser version.</target>
+        <target>You are using an unsupported browser version.</target>
       </trans-unit>
-      <trans-unit id="warning.incompatibleBrowserInternetExplorer">
+      <trans-unit id="warning.incompatibleBrowserInternetExplorer" approved="yes">
         <source>Please install &lt;a href="http://www.microsoft.com/internetexplorer/" target="_blank" /&gt;a more modern browser version&lt;/a&gt;.</source>
-        <target approved="yes">Please install &lt;a href="http://www.microsoft.com/internetexplorer/" target="_blank" /&gt;a more modern browser version&lt;/a&gt;.</target>
+        <target>Please install &lt;a href="http://www.microsoft.com/internetexplorer/" target="_blank" /&gt;a more modern browser version&lt;/a&gt;.</target>
       </trans-unit>
-      <trans-unit id="newsheadline">
+      <trans-unit id="newsheadline" approved="yes">
         <source>Important Messages:</source>
-        <target approved="yes">Important Messages:</target>
+        <target>Important Messages:</target>
       </trans-unit>
-      <trans-unit id="error.login">
+      <trans-unit id="error.login" approved="yes">
         <source>Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
-        <target approved="yes">Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</target>
+        <target>Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</target>
       </trans-unit>
-      <trans-unit id="error.login.title">
+      <trans-unit id="error.login.title" approved="yes">
         <source>Your login attempt did not succeed</source>
-        <target approved="yes">Your login attempt did not succeed</target>
+        <target>Your login attempt did not succeed</target>
       </trans-unit>
-      <trans-unit id="error.login.description">
+      <trans-unit id="error.login.description" approved="yes">
         <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
-        <target approved="yes">Make sure to spell your username and password correctly, including upper/lowercase characters.</target>
+        <target>Make sure to spell your username and password correctly, including upper/lowercase characters.</target>
       </trans-unit>
-      <trans-unit id="error.javascript">
+      <trans-unit id="error.javascript" approved="yes">
         <source>Activate JavaScript, please!</source>
-        <target approved="yes">Activate JavaScript, please!</target>
+        <target>Activate JavaScript, please!</target>
       </trans-unit>
-      <trans-unit id="error.cookies">
+      <trans-unit id="error.cookies" approved="yes">
         <source>Activate Cookies, please!</source>
-        <target approved="yes">Activate Cookies, please!</target>
+        <target>Activate Cookies, please!</target>
       </trans-unit>
-      <trans-unit id="error.cookies_ignore">
+      <trans-unit id="error.cookies_ignore" approved="yes">
         <source>Ignore!</source>
-        <target approved="yes">Ignore!</target>
+        <target>Ignore!</target>
       </trans-unit>
-      <trans-unit id="error.capslock">
+      <trans-unit id="error.capslock" approved="yes">
         <source>Attention: Caps lock enabled!</source>
-        <target approved="yes">Attention: Caps lock enabled!</target>
+        <target>Attention: Caps lock enabled!</target>
       </trans-unit>
-      <trans-unit id="error.furtherInformation">
+      <trans-unit id="error.furtherInformation" approved="yes">
         <source>For more information or further help click here</source>
-        <target approved="yes">For more information or further help click here</target>
+        <target>For more information or further help click here</target>
       </trans-unit>
-      <trans-unit id="warranty.by">
+      <trans-unit id="warranty.by" approved="yes">
         <source>Warranty is supplied by %s; %sclick for details.%s</source>
-        <target approved="yes">Warranty is supplied by %s; %sclick for details.%s</target>
+        <target>Warranty is supplied by %s; %sclick for details.%s</target>
       </trans-unit>
-      <trans-unit id="no.warranty">
+      <trans-unit id="no.warranty" approved="yes">
         <source>TYPO3 comes with ABSOLUTELY NO WARRANTY; %sclick for details.%s</source>
-        <target approved="yes">TYPO3 comes with ABSOLUTELY NO WARRANTY; %sclick for details.%s</target>
+        <target>TYPO3 comes with ABSOLUTELY NO WARRANTY; %sclick for details.%s</target>
       </trans-unit>
-      <trans-unit id="typo3.logo">
+      <trans-unit id="typo3.logo" approved="yes">
         <source>TYPO3 logo</source>
-        <target approved="yes">TYPO3 logo</target>
+        <target>TYPO3 logo</target>
       </trans-unit>
-      <trans-unit id="typo3.cms">
+      <trans-unit id="typo3.cms" approved="yes">
         <source>TYPO3 CMS</source>
-        <target approved="yes">TYPO3 CMS</target>
+        <target>TYPO3 CMS</target>
       </trans-unit>
-      <trans-unit id="version.short">
+      <trans-unit id="version.short" approved="yes">
         <source>ver.</source>
-        <target approved="yes">ver.</target>
+        <target>ver.</target>
       </trans-unit>
-      <trans-unit id="copyright">
+      <trans-unit id="copyright" approved="yes">
         <source>Copyright</source>
-        <target approved="yes">Copyright</target>
+        <target>Copyright</target>
       </trans-unit>
-      <trans-unit id="extension.copyright">
+      <trans-unit id="extension.copyright" approved="yes">
         <source>Extensions are copyright of their respective owners.</source>
-        <target approved="yes">Extensions are copyright of their respective owners.</target>
+        <target>Extensions are copyright of their respective owners.</target>
       </trans-unit>
-      <trans-unit id="details.link">
+      <trans-unit id="details.link" approved="yes">
         <source>Go to %s for details.</source>
-        <target approved="yes">Go to %s for details.</target>
+        <target>Go to %s for details.</target>
       </trans-unit>
-      <trans-unit id="free.software">
+      <trans-unit id="free.software" approved="yes">
         <source>This is free software, and you are welcome to redistribute it under certain conditions; %sclick for details.%s</source>
-        <target approved="yes">This is free software, and you are welcome to redistribute it under certain conditions; %sclick for details.%s</target>
+        <target>This is free software, and you are welcome to redistribute it under certain conditions; %sclick for details.%s</target>
       </trans-unit>
-      <trans-unit id="keep.notice">
+      <trans-unit id="keep.notice" approved="yes">
         <source>Obstructing the appearance of this notice is prohibited by law.</source>
-        <target approved="yes">Obstructing the appearance of this notice is prohibited by law.</target>
+        <target>Obstructing the appearance of this notice is prohibited by law.</target>
       </trans-unit>
     </body>
   </file>

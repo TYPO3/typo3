@@ -3,77 +3,77 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="taskcenter">
     <header/>
     <body>
-      <trans-unit id="taskcenter">
+      <trans-unit id="taskcenter" approved="yes">
         <source>Taskcenter</source>
-        <target approved="yes">Taskcenter</target>
+        <target>Taskcenter</target>
       </trans-unit>
-      <trans-unit id="choose_task">
+      <trans-unit id="choose_task" approved="yes">
         <source>Task:</source>
-        <target approved="yes">Task:</target>
+        <target>Task:</target>
       </trans-unit>
-      <trans-unit id="mlang_tabs_tab">
+      <trans-unit id="mlang_tabs_tab" approved="yes">
         <source>Tasks</source>
-        <target approved="yes">Tasks</target>
+        <target>Tasks</target>
       </trans-unit>
-      <trans-unit id="task_overview">
+      <trans-unit id="task_overview" approved="yes">
         <source>Overview</source>
-        <target approved="yes">Overview</target>
+        <target>Overview</target>
       </trans-unit>
-      <trans-unit id="lReplyAddress">
+      <trans-unit id="lReplyAddress" approved="yes">
         <source>Reply address is your email</source>
-        <target approved="yes">Reply address is your email</target>
+        <target>Reply address is your email</target>
       </trans-unit>
-      <trans-unit id="lSelf">
+      <trans-unit id="lSelf" approved="yes">
         <source>Self</source>
-        <target approved="yes">Self</target>
+        <target>Self</target>
       </trans-unit>
-      <trans-unit id="lSendNew">
+      <trans-unit id="lSendNew" approved="yes">
         <source>Send message</source>
-        <target approved="yes">Send message</target>
+        <target>Send message</target>
       </trans-unit>
-      <trans-unit id="lSendReply">
+      <trans-unit id="lSendReply" approved="yes">
         <source>Reply to message</source>
-        <target approved="yes">Reply to message</target>
+        <target>Reply to message</target>
       </trans-unit>
-      <trans-unit id="listSeparator_Groups">
+      <trans-unit id="listSeparator_Groups" approved="yes">
         <source>__Groups:__</source>
-        <target approved="yes">__Groups:__</target>
+        <target>__Groups:__</target>
       </trans-unit>
-      <trans-unit id="lHomedir">
+      <trans-unit id="lHomedir" approved="yes">
         <source>Home dir</source>
-        <target approved="yes">Home dir</target>
+        <target>Home dir</target>
       </trans-unit>
-      <trans-unit id="lNone">
+      <trans-unit id="lNone" approved="yes">
         <source>[none]</source>
-        <target approved="yes">[none]</target>
+        <target>[none]</target>
       </trans-unit>
-      <trans-unit id="lCreate">
+      <trans-unit id="lCreate" approved="yes">
         <source>Create</source>
-        <target approved="yes">Create</target>
+        <target>Create</target>
       </trans-unit>
-      <trans-unit id="lCancel">
+      <trans-unit id="lCancel" approved="yes">
         <source>Cancel</source>
-        <target approved="yes">Cancel</target>
+        <target>Cancel</target>
       </trans-unit>
-      <trans-unit id="lDelete_warning">
+      <trans-unit id="lDelete_warning" approved="yes">
         <source>Are you sure you want to delete this user?</source>
-        <target approved="yes">Are you sure you want to delete this user?</target>
+        <target>Are you sure you want to delete this user?</target>
       </trans-unit>
-      <trans-unit id="lDelete">
+      <trans-unit id="lDelete" approved="yes">
         <source>Delete</source>
-        <target approved="yes">Delete</target>
+        <target>Delete</target>
       </trans-unit>
-      <trans-unit id="lUpdate">
+      <trans-unit id="lUpdate" approved="yes">
         <source>Update</source>
-        <target approved="yes">Update</target>
+        <target>Update</target>
       </trans-unit>
-      <trans-unit id="task_help_title">
+      <trans-unit id="task_help_title" approved="yes">
         <source>About the taskcenter</source>
-        <target approved="yes">About the taskcenter</target>
+        <target>About the taskcenter</target>
       </trans-unit>
-      <trans-unit id="task_help_description">
+      <trans-unit id="task_help_description" approved="yes">
         <source>Get more information about the taskcenter</source>
-        <target approved="yes">Get more information about the taskcenter</target>
+        <target>Get more information about the taskcenter</target>
       </trans-unit>
     </body>
   </file>

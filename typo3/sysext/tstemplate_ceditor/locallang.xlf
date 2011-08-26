@@ -3,21 +3,21 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="tstemplate_ceditor">
     <header/>
     <body>
-      <trans-unit id="editConstants">
+      <trans-unit id="editConstants" approved="yes">
         <source>Edit constants for template:</source>
-        <target approved="yes">Edit constants for template:</target>
+        <target>Edit constants for template:</target>
       </trans-unit>
-      <trans-unit id="category">
+      <trans-unit id="category" approved="yes">
         <source>Category:</source>
-        <target approved="yes">Category:</target>
+        <target>Category:</target>
       </trans-unit>
-      <trans-unit id="noConstants">
+      <trans-unit id="noConstants" approved="yes">
         <source>No constants available</source>
-        <target approved="yes">No constants available</target>
+        <target>No constants available</target>
       </trans-unit>
-      <trans-unit id="noConstantsDescription">
+      <trans-unit id="noConstantsDescription" approved="yes">
         <source>There are no editable constants available for the Constant Editor.</source>
-        <target approved="yes">There are no editable constants available for the Constant Editor.</target>
+        <target>There are no editable constants available for the Constant Editor.</target>
       </trans-unit>
     </body>
   </file>

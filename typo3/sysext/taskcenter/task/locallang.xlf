@@ -3,83 +3,83 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="taskcenter">
     <header/>
     <body>
-      <trans-unit id="mlang_tabs_tab">
+      <trans-unit id="mlang_tabs_tab" approved="yes">
         <source>Tasks</source>
-        <target approved="yes">Tasks</target>
+        <target>Tasks</target>
       </trans-unit>
-      <trans-unit id="task_overview">
+      <trans-unit id="task_overview" approved="yes">
         <source>Overview</source>
-        <target approved="yes">Overview</target>
+        <target>Overview</target>
       </trans-unit>
-      <trans-unit id="error_header">
+      <trans-unit id="error_header" approved="yes">
         <source>Error</source>
-        <target approved="yes">Error</target>
+        <target>Error</target>
       </trans-unit>
-      <trans-unit id="error-access">
+      <trans-unit id="error-access" approved="yes">
         <source>No access to this module.</source>
-        <target approved="yes">No access to this module.</target>
+        <target>No access to this module.</target>
       </trans-unit>
-      <trans-unit id="error_no-instance">
+      <trans-unit id="error_no-instance" approved="yes">
         <source>The class "%s" does not implement the task interface "%s" which is necessary to be displayed here.</source>
-        <target approved="yes">The class "%s" does not implement the task interface "%s" which is necessary to be displayed here.</target>
+        <target>The class "%s" does not implement the task interface "%s" which is necessary to be displayed here.</target>
       </trans-unit>
-      <trans-unit id="no-tasks">
+      <trans-unit id="no-tasks" approved="yes">
         <source>No tasks have been registered yet.</source>
-        <target approved="yes">No tasks have been registered yet.</target>
+        <target>No tasks have been registered yet.</target>
       </trans-unit>
-      <trans-unit id="lReplyAddress">
+      <trans-unit id="lReplyAddress" approved="yes">
         <source>Reply address is your email</source>
-        <target approved="yes">Reply address is your email</target>
+        <target>Reply address is your email</target>
       </trans-unit>
-      <trans-unit id="lSelf">
+      <trans-unit id="lSelf" approved="yes">
         <source>Self</source>
-        <target approved="yes">Self</target>
+        <target>Self</target>
       </trans-unit>
-      <trans-unit id="lSendNew">
+      <trans-unit id="lSendNew" approved="yes">
         <source>Send message</source>
-        <target approved="yes">Send message</target>
+        <target>Send message</target>
       </trans-unit>
-      <trans-unit id="lSendReply">
+      <trans-unit id="lSendReply" approved="yes">
         <source>Reply to message</source>
-        <target approved="yes">Reply to message</target>
+        <target>Reply to message</target>
       </trans-unit>
-      <trans-unit id="listSeparator_Groups">
+      <trans-unit id="listSeparator_Groups" approved="yes">
         <source>__Groups:__</source>
-        <target approved="yes">__Groups:__</target>
+        <target>__Groups:__</target>
       </trans-unit>
-      <trans-unit id="lHomedir">
+      <trans-unit id="lHomedir" approved="yes">
         <source>Home dir</source>
-        <target approved="yes">Home dir</target>
+        <target>Home dir</target>
       </trans-unit>
-      <trans-unit id="lNone">
+      <trans-unit id="lNone" approved="yes">
         <source>[none]</source>
-        <target approved="yes">[none]</target>
+        <target>[none]</target>
       </trans-unit>
-      <trans-unit id="lCreate">
+      <trans-unit id="lCreate" approved="yes">
         <source>Create</source>
-        <target approved="yes">Create</target>
+        <target>Create</target>
       </trans-unit>
-      <trans-unit id="lCancel">
+      <trans-unit id="lCancel" approved="yes">
         <source>Cancel</source>
-        <target approved="yes">Cancel</target>
+        <target>Cancel</target>
       </trans-unit>
-      <trans-unit id="lDelete_warning">
+      <trans-unit id="lDelete_warning" approved="yes">
         <source>Are you sure you want to delete this user?</source>
-        <target approved="yes">Are you sure you want to delete this user?</target>
+        <target>Are you sure you want to delete this user?</target>
       </trans-unit>
-      <trans-unit id="lDelete">
+      <trans-unit id="lDelete" approved="yes">
         <source>Delete</source>
-        <target approved="yes">Delete</target>
+        <target>Delete</target>
       </trans-unit>
-      <trans-unit id="lUpdate">
+      <trans-unit id="lUpdate" approved="yes">
         <source>Update</source>
-        <target approved="yes">Update</target>
+        <target>Update</target>
       </trans-unit>
-      <trans-unit id="task_description">
+      <trans-unit id="task_description" approved="yes">
         <source>Description, blablabla lipusm</source>
-        <target approved="yes">Description, blablabla lipusm</target>
+        <target>Description, blablabla lipusm</target>
       </trans-unit>
-      <trans-unit id="taskcenter-about">
+      <trans-unit id="taskcenter-about" approved="yes">
         <source>
 				
 					&lt;p&gt;The menu on the left side shows all allowed tasks and let you allow to complete your tasks in an effecient way.&lt;/p&gt;
@@ -92,7 +92,7 @@
 
 				
 			</source>
-        <target approved="yes">
+        <target>
 				
 					&lt;p&gt;The menu on the left side shows all allowed tasks and let you allow to complete your tasks in an effecient way.&lt;/p&gt;
 					&lt;ul class="withicons"&gt;
@@ -105,13 +105,13 @@
 				
 			</target>
       </trans-unit>
-      <trans-unit id="taskcenter-adminheader">
+      <trans-unit id="taskcenter-adminheader" approved="yes">
         <source>Create a task</source>
-        <target approved="yes">Create a task</target>
+        <target>Create a task</target>
       </trans-unit>
-      <trans-unit id="taskcenter-admin">
+      <trans-unit id="taskcenter-admin" approved="yes">
         <source>It is simple to extend the taskcenter by a custom task. For more information please look into the manual of the extension 'taskcenter'.</source>
-        <target approved="yes">It is simple to extend the taskcenter by a custom task. For more information please look into the manual of the extension 'taskcenter'.</target>
+        <target>It is simple to extend the taskcenter by a custom task. For more information please look into the manual of the extension 'taskcenter'.</target>
       </trans-unit>
     </body>
   </file>

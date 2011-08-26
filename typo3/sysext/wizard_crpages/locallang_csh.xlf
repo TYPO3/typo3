@@ -3,17 +3,17 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="wizard_crpages">
     <header/>
     <body>
-      <trans-unit id="tx_wizardcrpages.alttitle">
+      <trans-unit id="tx_wizardcrpages.alttitle" approved="yes">
         <source>Create Pages wizard</source>
-        <target approved="yes">Create Pages wizard</target>
+        <target>Create Pages wizard</target>
       </trans-unit>
-      <trans-unit id="tx_wizardcrpages.description">
+      <trans-unit id="tx_wizardcrpages.description" approved="yes">
         <source>Enables you to create a batch of new, empty pages for quickly building up a new page tree. 
 Just enter the titles for the pages you need. Only filled in fields will be created as pages.</source>
-        <target approved="yes">Enables you to create a batch of new, empty pages for quickly building up a new page tree. 
+        <target>Enables you to create a batch of new, empty pages for quickly building up a new page tree. 
 Just enter the titles for the pages you need. Only filled in fields will be created as pages.</target>
       </trans-unit>
-      <trans-unit id="tx_wizardcrpages.details">
+      <trans-unit id="tx_wizardcrpages.details" approved="yes">
         <source>The new pages will always be created as subpages to the currently active page from the page tree. This page is shown in the top of the page. In the example image below it is "/Intro/Startpage/".
 
 &lt;b&gt;"Place new pages after the existing subpages"&lt;/b&gt;
@@ -25,7 +25,7 @@ Select this if the new pages should be hidden by default. This option may be for
 
 &lt;b&gt;Lorem Ipsum...&lt;/b&gt;
 The Create new page wizard supports the Lorem Ipsum extension providing dummy content for the fields.</source>
-        <target approved="yes">The new pages will always be created as subpages to the currently active page from the page tree. This page is shown in the top of the page. In the example image below it is "/Intro/Startpage/".
+        <target>The new pages will always be created as subpages to the currently active page from the page tree. This page is shown in the top of the page. In the example image below it is "/Intro/Startpage/".
 
 &lt;b&gt;"Place new pages after the existing subpages"&lt;/b&gt;
 If you select this option the pages will be create &lt;em&gt;after&lt;/em&gt; any existing subpages.
@@ -37,20 +37,20 @@ Select this if the new pages should be hidden by default. This option may be for
 &lt;b&gt;Lorem Ipsum...&lt;/b&gt;
 The Create new page wizard supports the Lorem Ipsum extension providing dummy content for the fields.</target>
       </trans-unit>
-      <trans-unit id="_tx_wizardcrpages.seeAlso">
+      <trans-unit id="_tx_wizardcrpages.seeAlso" approved="yes">
         <source>xEXT_loremipsum</source>
-        <target approved="yes">xEXT_loremipsum</target>
+        <target>xEXT_loremipsum</target>
       </trans-unit>
-      <trans-unit id="_tx_wizardcrpages.image">
+      <trans-unit id="_tx_wizardcrpages.image" approved="yes">
         <source>EXT:wizard_crpages/cshimages/wizards_1.png,
 EXT:wizard_crpages/cshimages/wizards_2.png</source>
-        <target approved="yes">EXT:wizard_crpages/cshimages/wizards_1.png,
+        <target>EXT:wizard_crpages/cshimages/wizards_1.png,
 EXT:wizard_crpages/cshimages/wizards_2.png</target>
       </trans-unit>
-      <trans-unit id="tx_wizardcrpages.image_descr">
+      <trans-unit id="tx_wizardcrpages.image_descr" approved="yes">
         <source>You simply enter the new page titles in the fields. Only fields you fill in will be created as pages.
 After pressing the "Create pages" button the page tree to the left will update instantly, showing you the position of the new pages!</source>
-        <target approved="yes">You simply enter the new page titles in the fields. Only fields you fill in will be created as pages.
+        <target>You simply enter the new page titles in the fields. Only fields you fill in will be created as pages.
 After pressing the "Create pages" button the page tree to the left will update instantly, showing you the position of the new pages!</target>
       </trans-unit>
     </body>

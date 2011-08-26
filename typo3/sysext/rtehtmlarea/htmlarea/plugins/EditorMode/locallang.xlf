@@ -3,13 +3,13 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="TextMode-Tooltip">
+      <trans-unit id="TextMode-Tooltip" approved="yes">
         <source>Toggle text mode</source>
-        <target approved="yes">Toggle text mode</target>
+        <target>Toggle text mode</target>
       </trans-unit>
-      <trans-unit id="HTMLMode-Tooltip">
+      <trans-unit id="HTMLMode-Tooltip" approved="yes">
         <source>Toggle HTML mode</source>
-        <target approved="yes">Toggle HTML mode</target>
+        <target>Toggle HTML mode</target>
       </trans-unit>
     </body>
   </file>

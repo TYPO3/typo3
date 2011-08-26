@@ -3,53 +3,53 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:24 UTC" product-name="install">
     <header/>
     <body>
-      <trans-unit id="status_fileSystem">
+      <trans-unit id="status_fileSystem" approved="yes">
         <source>File System</source>
-        <target approved="yes">File System</target>
+        <target>File System</target>
       </trans-unit>
-      <trans-unit id="status_writable">
+      <trans-unit id="status_writable" approved="yes">
         <source>Writable</source>
-        <target approved="yes">Writable</target>
+        <target>Writable</target>
       </trans-unit>
-      <trans-unit id="status_missingDirectory">
+      <trans-unit id="status_missingDirectory" approved="yes">
         <source>Required Directory Missing</source>
-        <target approved="yes">Required Directory Missing</target>
+        <target>Required Directory Missing</target>
       </trans-unit>
-      <trans-unit id="status_nonExistingDirectory">
+      <trans-unit id="status_nonExistingDirectory" approved="yes">
         <source>Directory not existing</source>
-        <target approved="yes">Directory not existing</target>
+        <target>Directory not existing</target>
       </trans-unit>
-      <trans-unit id="status_recommendedWritableDirectory">
+      <trans-unit id="status_recommendedWritableDirectory" approved="yes">
         <source>Directory should be writable</source>
-        <target approved="yes">Directory should be writable</target>
+        <target>Directory should be writable</target>
       </trans-unit>
-      <trans-unit id="status_requiredWritableDirectory">
+      <trans-unit id="status_requiredWritableDirectory" approved="yes">
         <source>Directory not writable</source>
-        <target approved="yes">Directory not writable</target>
+        <target>Directory not writable</target>
       </trans-unit>
-      <trans-unit id="status_directoryDoesNotExist">
+      <trans-unit id="status_directoryDoesNotExist" approved="yes">
         <source>%s does not exist.</source>
-        <target approved="yes">%s does not exist.</target>
+        <target>%s does not exist.</target>
       </trans-unit>
-      <trans-unit id="status_directoryDoesNotExistCouldNotCreate">
+      <trans-unit id="status_directoryDoesNotExistCouldNotCreate" approved="yes">
         <source>%s does not exist and could not be created.</source>
-        <target approved="yes">%s does not exist and could not be created.</target>
+        <target>%s does not exist and could not be created.</target>
       </trans-unit>
-      <trans-unit id="status_directoryShouldAlsoBeWritable">
+      <trans-unit id="status_directoryShouldAlsoBeWritable" approved="yes">
         <source>Also note that it should be writable, if it did exist.</source>
-        <target approved="yes">Also note that it should be writable, if it did exist.</target>
+        <target>Also note that it should be writable, if it did exist.</target>
       </trans-unit>
-      <trans-unit id="status_directoryShouldBeWritable">
+      <trans-unit id="status_directoryShouldBeWritable" approved="yes">
         <source>%s should be writable.</source>
-        <target approved="yes">%s should be writable.</target>
+        <target>%s should be writable.</target>
       </trans-unit>
-      <trans-unit id="status_directoryMustBeWritable">
+      <trans-unit id="status_directoryMustBeWritable" approved="yes">
         <source>%s must be writable.</source>
-        <target approved="yes">%s must be writable.</target>
+        <target>%s must be writable.</target>
       </trans-unit>
-      <trans-unit id="status_remainingUpdates">
+      <trans-unit id="status_remainingUpdates" approved="yes">
         <source>Remaining Updates</source>
-        <target approved="yes">Remaining Updates</target>
+        <target>Remaining Updates</target>
       </trans-unit>
     </body>
   </file>

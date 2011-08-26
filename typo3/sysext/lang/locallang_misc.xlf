@@ -3,569 +3,569 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:24 UTC" product-name="lang">
     <header/>
     <body>
-      <trans-unit id="shortcutDescription">
+      <trans-unit id="shortcutDescription" approved="yes">
         <source>This is the shortcuts menu. You do not have any shortcuts added yet, you can do so by clicking the shortcut icon %icon%, which you can find on each page in the backend.</source>
-        <target approved="yes">This is the shortcuts menu. You do not have any shortcuts added yet, you can do so by clicking the shortcut icon %icon%, which you can find on each page in the backend.</target>
+        <target>This is the shortcuts menu. You do not have any shortcuts added yet, you can do so by clicking the shortcut icon %icon%, which you can find on each page in the backend.</target>
       </trans-unit>
-      <trans-unit id="shortcut_edit">
+      <trans-unit id="shortcut_edit" approved="yes">
         <source>Edit</source>
-        <target approved="yes">Edit</target>
+        <target>Edit</target>
       </trans-unit>
-      <trans-unit id="shortcut_create">
+      <trans-unit id="shortcut_create" approved="yes">
         <source>Create</source>
-        <target approved="yes">Create</target>
+        <target>Create</target>
       </trans-unit>
-      <trans-unit id="shortcut_editID">
+      <trans-unit id="shortcut_editID" approved="yes">
         <source>Edit/Search</source>
-        <target approved="yes">Edit/Search</target>
+        <target>Edit/Search</target>
       </trans-unit>
-      <trans-unit id="shortcut_save">
+      <trans-unit id="shortcut_save" approved="yes">
         <source>Update shortcut title</source>
-        <target approved="yes">Update shortcut title</target>
+        <target>Update shortcut title</target>
       </trans-unit>
-      <trans-unit id="shortcut_saveClose">
+      <trans-unit id="shortcut_saveClose" approved="yes">
         <source>Update and close editor</source>
-        <target approved="yes">Update and close editor</target>
+        <target>Update and close editor</target>
       </trans-unit>
-      <trans-unit id="shortcut_close">
+      <trans-unit id="shortcut_close" approved="yes">
         <source>Close shortcut editor</source>
-        <target approved="yes">Close shortcut editor</target>
+        <target>Close shortcut editor</target>
       </trans-unit>
-      <trans-unit id="shortcut_delete">
+      <trans-unit id="shortcut_delete" approved="yes">
         <source>Remove shortcut</source>
-        <target approved="yes">Remove shortcut</target>
+        <target>Remove shortcut</target>
       </trans-unit>
-      <trans-unit id="shortcut_loadEdit">
+      <trans-unit id="shortcut_loadEdit" approved="yes">
         <source>Loading page</source>
-        <target approved="yes">Loading page</target>
+        <target>Loading page</target>
       </trans-unit>
-      <trans-unit id="shortcut_searchFor">
+      <trans-unit id="shortcut_searchFor" approved="yes">
         <source>Search for:</source>
-        <target approved="yes">Search for:</target>
+        <target>Search for:</target>
       </trans-unit>
-      <trans-unit id="shortcut_notEditable">
+      <trans-unit id="shortcut_notEditable" approved="yes">
         <source>No editable page found!</source>
-        <target approved="yes">No editable page found!</target>
+        <target>No editable page found!</target>
       </trans-unit>
-      <trans-unit id="shortcut_group">
+      <trans-unit id="shortcut_group" approved="yes">
         <source>Group</source>
-        <target approved="yes">Group</target>
+        <target>Group</target>
       </trans-unit>
-      <trans-unit id="shortcut_group_1">
+      <trans-unit id="shortcut_group_1" approved="yes">
         <source>Pages</source>
-        <target approved="yes">Pages</target>
+        <target>Pages</target>
       </trans-unit>
-      <trans-unit id="shortcut_group_2">
+      <trans-unit id="shortcut_group_2" approved="yes">
         <source>Records</source>
-        <target approved="yes">Records</target>
+        <target>Records</target>
       </trans-unit>
-      <trans-unit id="shortcut_group_3">
+      <trans-unit id="shortcut_group_3" approved="yes">
         <source>Files</source>
-        <target approved="yes">Files</target>
+        <target>Files</target>
       </trans-unit>
-      <trans-unit id="shortcut_group_4">
+      <trans-unit id="shortcut_group_4" approved="yes">
         <source>Tools</source>
-        <target approved="yes">Tools</target>
+        <target>Tools</target>
       </trans-unit>
-      <trans-unit id="shortcut_group_5">
+      <trans-unit id="shortcut_group_5" approved="yes">
         <source>Miscellaneous</source>
-        <target approved="yes">Miscellaneous</target>
+        <target>Miscellaneous</target>
       </trans-unit>
-      <trans-unit id="shortcut_global">
+      <trans-unit id="shortcut_global" approved="yes">
         <source>Global</source>
-        <target approved="yes">Global</target>
+        <target>Global</target>
       </trans-unit>
-      <trans-unit id="shortcut_all">
+      <trans-unit id="shortcut_all" approved="yes">
         <source>All</source>
-        <target approved="yes">All</target>
+        <target>All</target>
       </trans-unit>
-      <trans-unit id="shortcut_onlyAdmin">
+      <trans-unit id="shortcut_onlyAdmin" approved="yes">
         <source>You cannot edit a shared shortcut!</source>
-        <target approved="yes">You cannot edit a shared shortcut!</target>
+        <target>You cannot edit a shared shortcut!</target>
       </trans-unit>
-      <trans-unit id="shortcut_selSC">
+      <trans-unit id="shortcut_selSC" approved="yes">
         <source>Select shortcut</source>
-        <target approved="yes">Select shortcut</target>
+        <target>Select shortcut</target>
       </trans-unit>
-      <trans-unit id="shortcut_delAllInCat">
+      <trans-unit id="shortcut_delAllInCat" approved="yes">
         <source>Delete all shortcuts in this group?</source>
-        <target approved="yes">Delete all shortcuts in this group?</target>
+        <target>Delete all shortcuts in this group?</target>
       </trans-unit>
-      <trans-unit id="shortcut_onlineWS">
+      <trans-unit id="shortcut_onlineWS" approved="yes">
         <source>LIVE workspace</source>
-        <target approved="yes">LIVE workspace</target>
+        <target>LIVE workspace</target>
       </trans-unit>
-      <trans-unit id="shortcut_offlineWS">
+      <trans-unit id="shortcut_offlineWS" approved="yes">
         <source>Draft workspace</source>
-        <target approved="yes">Draft workspace</target>
+        <target>Draft workspace</target>
       </trans-unit>
-      <trans-unit id="shortcut_active">
+      <trans-unit id="shortcut_active" approved="yes">
         <source>active</source>
-        <target approved="yes">active</target>
+        <target>active</target>
       </trans-unit>
-      <trans-unit id="shortcut_inactive">
+      <trans-unit id="shortcut_inactive" approved="yes">
         <source>inactive</source>
-        <target approved="yes">inactive</target>
+        <target>inactive</target>
       </trans-unit>
-      <trans-unit id="shortcut_noWSfound">
+      <trans-unit id="shortcut_noWSfound" approved="yes">
         <source>ERROR: No workspaces found!</source>
-        <target approved="yes">ERROR: No workspaces found!</target>
+        <target>ERROR: No workspaces found!</target>
       </trans-unit>
-      <trans-unit id="shortcut_FEPreview">
+      <trans-unit id="shortcut_FEPreview" approved="yes">
         <source>Enable Frontend Preview</source>
-        <target approved="yes">Enable Frontend Preview</target>
+        <target>Enable Frontend Preview</target>
       </trans-unit>
-      <trans-unit id="shortcut_workspace">
+      <trans-unit id="shortcut_workspace" approved="yes">
         <source>Go to Workspace Module</source>
-        <target approved="yes">Go to Workspace Module</target>
+        <target>Go to Workspace Module</target>
       </trans-unit>
-      <trans-unit id="bookmarkDescription">
+      <trans-unit id="bookmarkDescription" approved="yes">
         <source>This is the bookmarks menu. You do not have any bookmarks added yet, you can do so by clicking the bookmark icon %icon%, which you can find on each page in the backend.</source>
-        <target approved="yes">This is the bookmarks menu. You do not have any bookmarks added yet, you can do so by clicking the bookmark icon %icon%, which you can find on each page in the backend.</target>
+        <target>This is the bookmarks menu. You do not have any bookmarks added yet, you can do so by clicking the bookmark icon %icon%, which you can find on each page in the backend.</target>
       </trans-unit>
-      <trans-unit id="bookmark_edit">
+      <trans-unit id="bookmark_edit" approved="yes">
         <source>Edit</source>
-        <target approved="yes">Edit</target>
+        <target>Edit</target>
       </trans-unit>
-      <trans-unit id="bookmark_create">
+      <trans-unit id="bookmark_create" approved="yes">
         <source>Create</source>
-        <target approved="yes">Create</target>
+        <target>Create</target>
       </trans-unit>
-      <trans-unit id="bookmark_editID">
+      <trans-unit id="bookmark_editID" approved="yes">
         <source>Edit/Search</source>
-        <target approved="yes">Edit/Search</target>
+        <target>Edit/Search</target>
       </trans-unit>
-      <trans-unit id="bookmark_save">
+      <trans-unit id="bookmark_save" approved="yes">
         <source>Update bookmark title</source>
-        <target approved="yes">Update bookmark title</target>
+        <target>Update bookmark title</target>
       </trans-unit>
-      <trans-unit id="bookmark_saveClose">
+      <trans-unit id="bookmark_saveClose" approved="yes">
         <source>Update and close editor</source>
-        <target approved="yes">Update and close editor</target>
+        <target>Update and close editor</target>
       </trans-unit>
-      <trans-unit id="bookmark_close">
+      <trans-unit id="bookmark_close" approved="yes">
         <source>Close bookmark editor</source>
-        <target approved="yes">Close bookmark editor</target>
+        <target>Close bookmark editor</target>
       </trans-unit>
-      <trans-unit id="bookmark_delete">
+      <trans-unit id="bookmark_delete" approved="yes">
         <source>Remove bookmark</source>
-        <target approved="yes">Remove bookmark</target>
+        <target>Remove bookmark</target>
       </trans-unit>
-      <trans-unit id="bookmark_loadEdit">
+      <trans-unit id="bookmark_loadEdit" approved="yes">
         <source>Loading page</source>
-        <target approved="yes">Loading page</target>
+        <target>Loading page</target>
       </trans-unit>
-      <trans-unit id="bookmark_searchFor">
+      <trans-unit id="bookmark_searchFor" approved="yes">
         <source>Search for:</source>
-        <target approved="yes">Search for:</target>
+        <target>Search for:</target>
       </trans-unit>
-      <trans-unit id="bookmark_notEditable">
+      <trans-unit id="bookmark_notEditable" approved="yes">
         <source>No editable page found!</source>
-        <target approved="yes">No editable page found!</target>
+        <target>No editable page found!</target>
       </trans-unit>
-      <trans-unit id="bookmark_group">
+      <trans-unit id="bookmark_group" approved="yes">
         <source>Group</source>
-        <target approved="yes">Group</target>
+        <target>Group</target>
       </trans-unit>
-      <trans-unit id="bookmark_group_1">
+      <trans-unit id="bookmark_group_1" approved="yes">
         <source>Pages</source>
-        <target approved="yes">Pages</target>
+        <target>Pages</target>
       </trans-unit>
-      <trans-unit id="bookmark_group_2">
+      <trans-unit id="bookmark_group_2" approved="yes">
         <source>Records</source>
-        <target approved="yes">Records</target>
+        <target>Records</target>
       </trans-unit>
-      <trans-unit id="bookmark_group_3">
+      <trans-unit id="bookmark_group_3" approved="yes">
         <source>Files</source>
-        <target approved="yes">Files</target>
+        <target>Files</target>
       </trans-unit>
-      <trans-unit id="bookmark_group_4">
+      <trans-unit id="bookmark_group_4" approved="yes">
         <source>Tools</source>
-        <target approved="yes">Tools</target>
+        <target>Tools</target>
       </trans-unit>
-      <trans-unit id="bookmark_group_5">
+      <trans-unit id="bookmark_group_5" approved="yes">
         <source>Miscellaneous</source>
-        <target approved="yes">Miscellaneous</target>
+        <target>Miscellaneous</target>
       </trans-unit>
-      <trans-unit id="bookmark_global">
+      <trans-unit id="bookmark_global" approved="yes">
         <source>Global</source>
-        <target approved="yes">Global</target>
+        <target>Global</target>
       </trans-unit>
-      <trans-unit id="bookmark_all">
+      <trans-unit id="bookmark_all" approved="yes">
         <source>All</source>
-        <target approved="yes">All</target>
+        <target>All</target>
       </trans-unit>
-      <trans-unit id="bookmark_onlyAdmin">
+      <trans-unit id="bookmark_onlyAdmin" approved="yes">
         <source>You cannot edit a shared bookmark!</source>
-        <target approved="yes">You cannot edit a shared bookmark!</target>
+        <target>You cannot edit a shared bookmark!</target>
       </trans-unit>
-      <trans-unit id="bookmark_selSC">
+      <trans-unit id="bookmark_selSC" approved="yes">
         <source>Select bookmark</source>
-        <target approved="yes">Select bookmark</target>
+        <target>Select bookmark</target>
       </trans-unit>
-      <trans-unit id="bookmark_delAllInCat">
+      <trans-unit id="bookmark_delAllInCat" approved="yes">
         <source>Delete all bookmarks in this group</source>
-        <target approved="yes">Delete all bookmarks in this group</target>
+        <target>Delete all bookmarks in this group</target>
       </trans-unit>
-      <trans-unit id="bookmark_onlineWS">
+      <trans-unit id="bookmark_onlineWS" approved="yes">
         <source>LIVE workspace</source>
-        <target approved="yes">LIVE workspace</target>
+        <target>LIVE workspace</target>
       </trans-unit>
-      <trans-unit id="bookmark_offlineWS">
+      <trans-unit id="bookmark_offlineWS" approved="yes">
         <source>Draft workspace</source>
-        <target approved="yes">Draft workspace</target>
+        <target>Draft workspace</target>
       </trans-unit>
-      <trans-unit id="bookmark_active">
+      <trans-unit id="bookmark_active" approved="yes">
         <source>active</source>
-        <target approved="yes">active</target>
+        <target>active</target>
       </trans-unit>
-      <trans-unit id="bookmark_inactive">
+      <trans-unit id="bookmark_inactive" approved="yes">
         <source>inactive</source>
-        <target approved="yes">inactive</target>
+        <target>inactive</target>
       </trans-unit>
-      <trans-unit id="bookmark_noWSfound">
+      <trans-unit id="bookmark_noWSfound" approved="yes">
         <source>ERROR: No workspaces found!</source>
-        <target approved="yes">ERROR: No workspaces found!</target>
+        <target>ERROR: No workspaces found!</target>
       </trans-unit>
-      <trans-unit id="bookmark_FEPreview">
+      <trans-unit id="bookmark_FEPreview" approved="yes">
         <source>Enable Frontend Preview</source>
-        <target approved="yes">Enable Frontend Preview</target>
+        <target>Enable Frontend Preview</target>
       </trans-unit>
-      <trans-unit id="bookmark_workspaceComparisonView">
+      <trans-unit id="bookmark_workspaceComparisonView" approved="yes">
         <source>Enable comparison view</source>
-        <target approved="yes">Enable comparison view</target>
+        <target>Enable comparison view</target>
       </trans-unit>
-      <trans-unit id="bookmark_workspace">
+      <trans-unit id="bookmark_workspace" approved="yes">
         <source>Go to Workspace Module</source>
-        <target approved="yes">Go to Workspace Module</target>
+        <target>Go to Workspace Module</target>
       </trans-unit>
-      <trans-unit id="overwriteExistingFiles">
+      <trans-unit id="overwriteExistingFiles" approved="yes">
         <source>Overwrite existing files</source>
-        <target approved="yes">Overwrite existing files</target>
+        <target>Overwrite existing files</target>
       </trans-unit>
-      <trans-unit id="selectPosition">
+      <trans-unit id="selectPosition" approved="yes">
         <source>Select a position for the new page</source>
-        <target approved="yes">Select a position for the new page</target>
+        <target>Select a position for the new page</target>
       </trans-unit>
-      <trans-unit id="pageSelectPosition">
+      <trans-unit id="pageSelectPosition" approved="yes">
         <source>Page (select position)</source>
-        <target approved="yes">Page (select position)</target>
+        <target>Page (select position)</target>
       </trans-unit>
-      <trans-unit id="goBack">
+      <trans-unit id="goBack" approved="yes">
         <source>Go back</source>
-        <target approved="yes">Go back</target>
+        <target>Go back</target>
       </trans-unit>
-      <trans-unit id="createNewPage">
+      <trans-unit id="createNewPage" approved="yes">
         <source>Create a new page</source>
-        <target approved="yes">Create a new page</target>
+        <target>Create a new page</target>
       </trans-unit>
-      <trans-unit id="createNewContent">
+      <trans-unit id="createNewContent" approved="yes">
         <source>Create a new content element</source>
-        <target approved="yes">Create a new content element</target>
+        <target>Create a new content element</target>
       </trans-unit>
-      <trans-unit id="clickForWizard">
+      <trans-unit id="clickForWizard" approved="yes">
         <source>Click here for wizard!</source>
-        <target approved="yes">Click here for wizard!</target>
+        <target>Click here for wizard!</target>
       </trans-unit>
-      <trans-unit id="insertNewPageHere">
+      <trans-unit id="insertNewPageHere" approved="yes">
         <source>Insert the new page here</source>
-        <target approved="yes">Insert the new page here</target>
+        <target>Insert the new page here</target>
       </trans-unit>
-      <trans-unit id="insertNewRecordHere">
+      <trans-unit id="insertNewRecordHere" approved="yes">
         <source>Insert new record here</source>
-        <target approved="yes">Insert new record here</target>
+        <target>Insert new record here</target>
       </trans-unit>
-      <trans-unit id="movePageToHere">
+      <trans-unit id="movePageToHere" approved="yes">
         <source>Move page to this position</source>
-        <target approved="yes">Move page to this position</target>
+        <target>Move page to this position</target>
       </trans-unit>
-      <trans-unit id="moveElement">
+      <trans-unit id="moveElement" approved="yes">
         <source>Move element</source>
-        <target approved="yes">Move element</target>
+        <target>Move element</target>
       </trans-unit>
-      <trans-unit id="moveElements">
+      <trans-unit id="moveElements" approved="yes">
         <source>Move elements</source>
-        <target approved="yes">Move elements</target>
+        <target>Move elements</target>
       </trans-unit>
-      <trans-unit id="copyElements">
+      <trans-unit id="copyElements" approved="yes">
         <source>Copy elements</source>
-        <target approved="yes">Copy elements</target>
+        <target>Copy elements</target>
       </trans-unit>
-      <trans-unit id="selectPositionOfElement">
+      <trans-unit id="selectPositionOfElement" approved="yes">
         <source>Select position of the element</source>
-        <target approved="yes">Select position of the element</target>
+        <target>Select position of the element</target>
       </trans-unit>
-      <trans-unit id="movingElement">
+      <trans-unit id="movingElement" approved="yes">
         <source>Move element</source>
-        <target approved="yes">Move element</target>
+        <target>Move element</target>
       </trans-unit>
-      <trans-unit id="makeCopy">
+      <trans-unit id="makeCopy" approved="yes">
         <source>Make copy instead of moving element</source>
-        <target approved="yes">Make copy instead of moving element</target>
+        <target>Make copy instead of moving element</target>
       </trans-unit>
-      <trans-unit id="newContentElement">
+      <trans-unit id="newContentElement" approved="yes">
         <source>New content element</source>
-        <target approved="yes">New content element</target>
+        <target>New content element</target>
       </trans-unit>
-      <trans-unit id="system_records">
+      <trans-unit id="system_records" approved="yes">
         <source>System Records</source>
-        <target approved="yes">System Records</target>
+        <target>System Records</target>
       </trans-unit>
-      <trans-unit id="1_selectType">
+      <trans-unit id="1_selectType" approved="yes">
         <source>1: Select type of content element:</source>
-        <target approved="yes">1: Select type of content element:</target>
+        <target>1: Select type of content element:</target>
       </trans-unit>
-      <trans-unit id="2_selectPosition">
+      <trans-unit id="2_selectPosition" approved="yes">
         <source>2: Select position:</source>
-        <target approved="yes">2: Select position:</target>
+        <target>2: Select position:</target>
       </trans-unit>
-      <trans-unit id="CM_editAccess">
+      <trans-unit id="CM_editAccess" approved="yes">
         <source>Visibility settings</source>
-        <target approved="yes">Visibility settings</target>
+        <target>Visibility settings</target>
       </trans-unit>
-      <trans-unit id="CM_history">
+      <trans-unit id="CM_history" approved="yes">
         <source>History/Undo</source>
-        <target approved="yes">History/Undo</target>
+        <target>History/Undo</target>
       </trans-unit>
-      <trans-unit id="CM_perms">
+      <trans-unit id="CM_perms" approved="yes">
         <source>Access</source>
-        <target approved="yes">Access</target>
+        <target>Access</target>
       </trans-unit>
-      <trans-unit id="CM_moveWizard">
+      <trans-unit id="CM_moveWizard" approved="yes">
         <source>Move element</source>
-        <target approved="yes">Move element</target>
+        <target>Move element</target>
       </trans-unit>
-      <trans-unit id="CM_moveWizard_page">
+      <trans-unit id="CM_moveWizard_page" approved="yes">
         <source>Move page</source>
-        <target approved="yes">Move page</target>
+        <target>Move page</target>
       </trans-unit>
-      <trans-unit id="CM_newWizard">
+      <trans-unit id="CM_newWizard" approved="yes">
         <source>'Create New' wizard</source>
-        <target approved="yes">'Create New' wizard</target>
+        <target>'Create New' wizard</target>
       </trans-unit>
-      <trans-unit id="CM_editPageProperties">
+      <trans-unit id="CM_editPageProperties" approved="yes">
         <source>Edit page properties</source>
-        <target approved="yes">Edit page properties</target>
+        <target>Edit page properties</target>
       </trans-unit>
-      <trans-unit id="CM_db_list">
+      <trans-unit id="CM_db_list" approved="yes">
         <source>Web&gt;List module</source>
-        <target approved="yes">Web&gt;List module</target>
+        <target>Web&gt;List module</target>
       </trans-unit>
-      <trans-unit id="noEditPage">
+      <trans-unit id="noEditPage" approved="yes">
         <source>You asked to edit page "%s" but you cannot edit this page. Now loading backend as usual.</source>
-        <target approved="yes">You asked to edit page "%s" but you cannot edit this page. Now loading backend as usual.</target>
+        <target>You asked to edit page "%s" but you cannot edit this page. Now loading backend as usual.</target>
       </trans-unit>
-      <trans-unit id="localize">
+      <trans-unit id="localize" approved="yes">
         <source>Localize</source>
-        <target approved="yes">Localize</target>
+        <target>Localize</target>
       </trans-unit>
-      <trans-unit id="localize.isLocalizable">
+      <trans-unit id="localize.isLocalizable" approved="yes">
         <source>Record can be localized</source>
-        <target approved="yes">Record can be localized</target>
+        <target>Record can be localized</target>
       </trans-unit>
-      <trans-unit id="localize.wasRemovedInOriginal">
+      <trans-unit id="localize.wasRemovedInOriginal" approved="yes">
         <source>Record was removed in original language</source>
-        <target approved="yes">Record was removed in original language</target>
+        <target>Record was removed in original language</target>
       </trans-unit>
-      <trans-unit id="localizeAllRecords">
+      <trans-unit id="localizeAllRecords" approved="yes">
         <source>Localize all records</source>
-        <target approved="yes">Localize all records</target>
+        <target>Localize all records</target>
       </trans-unit>
-      <trans-unit id="localizeMergeIfNotBlank">
+      <trans-unit id="localizeMergeIfNotBlank" approved="yes">
         <source>The value of the default language will be used if this field is left empty in the translation.</source>
         <target>The value of the default language will be used if this field is left empty in the translation.</target>
       </trans-unit>
-      <trans-unit id="synchronizeWithOriginalLanguage">
+      <trans-unit id="synchronizeWithOriginalLanguage" approved="yes">
         <source>Synchronize with original language</source>
-        <target approved="yes">Synchronize with original language</target>
+        <target>Synchronize with original language</target>
       </trans-unit>
-      <trans-unit id="pageTree_filter">
+      <trans-unit id="pageTree_filter" approved="yes">
         <source>Filter</source>
-        <target approved="yes">Filter</target>
+        <target>Filter</target>
       </trans-unit>
-      <trans-unit id="switchtouser">
+      <trans-unit id="switchtouser" approved="yes">
         <source>Switch to User</source>
-        <target approved="yes">Switch to User</target>
+        <target>Switch to User</target>
       </trans-unit>
-      <trans-unit id="switchtousershort">
+      <trans-unit id="switchtousershort" approved="yes">
         <source>SU:</source>
-        <target approved="yes">SU:</target>
+        <target>SU:</target>
       </trans-unit>
-      <trans-unit id="fileUpload_windowTitle">
+      <trans-unit id="fileUpload_windowTitle" approved="yes">
         <source>File Upload Progress</source>
-        <target approved="yes">File Upload Progress</target>
+        <target>File Upload Progress</target>
       </trans-unit>
-      <trans-unit id="fileUpload_buttonSelectFiles">
+      <trans-unit id="fileUpload_buttonSelectFiles" approved="yes">
         <source>Select Files</source>
-        <target approved="yes">Select Files</target>
+        <target>Select Files</target>
       </trans-unit>
-      <trans-unit id="fileUpload_buttonCancelAll">
+      <trans-unit id="fileUpload_buttonCancelAll" approved="yes">
         <source>Cancel All Uploads</source>
-        <target approved="yes">Cancel All Uploads</target>
+        <target>Cancel All Uploads</target>
       </trans-unit>
-      <trans-unit id="fileUpload_infoComponentMaxFileSize">
+      <trans-unit id="fileUpload_infoComponentMaxFileSize" approved="yes">
         <source>You can upload files with a maximum size of {0}.</source>
-        <target approved="yes">You can upload files with a maximum size of {0}.</target>
+        <target>You can upload files with a maximum size of {0}.</target>
       </trans-unit>
-      <trans-unit id="fileUpload_infoComponentFileUploadLimit">
+      <trans-unit id="fileUpload_infoComponentFileUploadLimit" approved="yes">
         <source>You can upload a total of {0}.</source>
-        <target approved="yes">You can upload a total of {0}.</target>
+        <target>You can upload a total of {0}.</target>
       </trans-unit>
-      <trans-unit id="fileUpload_infoComponentFileTypeLimit">
+      <trans-unit id="fileUpload_infoComponentFileTypeLimit" approved="yes">
         <source>You can upload the following file types {0}.</source>
-        <target approved="yes">You can upload the following file types {0}.</target>
+        <target>You can upload the following file types {0}.</target>
       </trans-unit>
-      <trans-unit id="fileUpload_infoComponentOverrideFiles">
+      <trans-unit id="fileUpload_infoComponentOverrideFiles" approved="yes">
         <source>Overwrite existing files</source>
-        <target approved="yes">Overwrite existing files</target>
+        <target>Overwrite existing files</target>
       </trans-unit>
-      <trans-unit id="fileUpload_processRunning">
+      <trans-unit id="fileUpload_processRunning" approved="yes">
         <source>Another process is already uploading</source>
-        <target approved="yes">Another process is already uploading</target>
+        <target>Another process is already uploading</target>
       </trans-unit>
-      <trans-unit id="fileUpload_uploadWait">
+      <trans-unit id="fileUpload_uploadWait" approved="yes">
         <source>Waiting to start upload of {0}</source>
-        <target approved="yes">Waiting to start upload of {0}</target>
+        <target>Waiting to start upload of {0}</target>
       </trans-unit>
-      <trans-unit id="fileUpload_uploadStarting">
+      <trans-unit id="fileUpload_uploadStarting" approved="yes">
         <source>Starting upload of {0}</source>
-        <target approved="yes">Starting upload of {0}</target>
+        <target>Starting upload of {0}</target>
       </trans-unit>
-      <trans-unit id="fileUpload_uploadProgress">
+      <trans-unit id="fileUpload_uploadProgress" approved="yes">
         <source>{0}% of {1} uploaded</source>
-        <target approved="yes">{0}% of {1} uploaded</target>
+        <target>{0}% of {1} uploaded</target>
       </trans-unit>
-      <trans-unit id="fileUpload_uploadSuccess">
+      <trans-unit id="fileUpload_uploadSuccess" approved="yes">
         <source>{0} was successfully uploaded!</source>
-        <target approved="yes">{0} was successfully uploaded!</target>
+        <target>{0} was successfully uploaded!</target>
       </trans-unit>
-      <trans-unit id="fileUpload_errorQueueLimitExceeded">
+      <trans-unit id="fileUpload_errorQueueLimitExceeded" approved="yes">
         <source>Too many files selected</source>
-        <target approved="yes">Too many files selected</target>
+        <target>Too many files selected</target>
       </trans-unit>
-      <trans-unit id="fileUpload_errorQueueFileSizeLimit">
+      <trans-unit id="fileUpload_errorQueueFileSizeLimit" approved="yes">
         <source>{0} is too big</source>
-        <target approved="yes">{0} is too big</target>
+        <target>{0} is too big</target>
       </trans-unit>
-      <trans-unit id="fileUpload_errorQueueZeroByteFile">
+      <trans-unit id="fileUpload_errorQueueZeroByteFile" approved="yes">
         <source>{0} is empty</source>
-        <target approved="yes">{0} is empty</target>
+        <target>{0} is empty</target>
       </trans-unit>
-      <trans-unit id="fileUpload_errorQueueInvalidFiletype">
+      <trans-unit id="fileUpload_errorQueueInvalidFiletype" approved="yes">
         <source>Filetype not allowed for {0}</source>
-        <target approved="yes">Filetype not allowed for {0}</target>
+        <target>Filetype not allowed for {0}</target>
       </trans-unit>
-      <trans-unit id="fileUpload_errorUploadHttp">
+      <trans-unit id="fileUpload_errorUploadHttp" approved="yes">
         <source>Too many files selected</source>
-        <target approved="yes">Too many files selected</target>
+        <target>Too many files selected</target>
       </trans-unit>
-      <trans-unit id="fileUpload_errorUploadHttpError">
+      <trans-unit id="fileUpload_errorUploadHttpError" approved="yes">
         <source>A HTTP error occured: {0}</source>
-        <target approved="yes">A HTTP error occured: {0}</target>
+        <target>A HTTP error occured: {0}</target>
       </trans-unit>
-      <trans-unit id="fileUpload_errorUploadMissingUrl">
+      <trans-unit id="fileUpload_errorUploadMissingUrl" approved="yes">
         <source>Internal error: No Upload URL set</source>
-        <target approved="yes">Internal error: No Upload URL set</target>
+        <target>Internal error: No Upload URL set</target>
       </trans-unit>
-      <trans-unit id="fileUpload_errorUploadIO">
+      <trans-unit id="fileUpload_errorUploadIO" approved="yes">
         <source>Internal error: Problems while reading/writing the file</source>
-        <target approved="yes">Internal error: Problems while reading/writing the file</target>
+        <target>Internal error: Problems while reading/writing the file</target>
       </trans-unit>
-      <trans-unit id="fileUpload_errorUploadSecurityError">
+      <trans-unit id="fileUpload_errorUploadSecurityError" approved="yes">
         <source>Internal error: {0}</source>
-        <target approved="yes">Internal error: {0}</target>
+        <target>Internal error: {0}</target>
       </trans-unit>
-      <trans-unit id="fileUpload_errorUploadLimit">
+      <trans-unit id="fileUpload_errorUploadLimit" approved="yes">
         <source>Upload limit exceeded</source>
-        <target approved="yes">Upload limit exceeded</target>
+        <target>Upload limit exceeded</target>
       </trans-unit>
-      <trans-unit id="fileUpload_errorUploadFailed">
+      <trans-unit id="fileUpload_errorUploadFailed" approved="yes">
         <source>Upload failed</source>
-        <target approved="yes">Upload failed</target>
+        <target>Upload failed</target>
       </trans-unit>
-      <trans-unit id="fileUpload_errorUploadFileIDNotFound">
+      <trans-unit id="fileUpload_errorUploadFileIDNotFound" approved="yes">
         <source>Internal error: File ID not found</source>
-        <target approved="yes">Internal error: File ID not found</target>
+        <target>Internal error: File ID not found</target>
       </trans-unit>
-      <trans-unit id="fileUpload_errorUploadFileValidation">
+      <trans-unit id="fileUpload_errorUploadFileValidation" approved="yes">
         <source>Internal error while validating the file</source>
-        <target approved="yes">Internal error while validating the file</target>
+        <target>Internal error while validating the file</target>
       </trans-unit>
-      <trans-unit id="fileUpload_errorUploadFileCancelled">
+      <trans-unit id="fileUpload_errorUploadFileCancelled" approved="yes">
         <source>Upload of {0} canceled</source>
-        <target approved="yes">Upload of {0} canceled</target>
+        <target>Upload of {0} canceled</target>
       </trans-unit>
-      <trans-unit id="fileUpload_errorUploadStopped">
+      <trans-unit id="fileUpload_errorUploadStopped" approved="yes">
         <source>Upload of {0} stopped</source>
-        <target approved="yes">Upload of {0} stopped</target>
+        <target>Upload of {0} stopped</target>
       </trans-unit>
-      <trans-unit id="fileUpload_allErrorMessageTitle">
+      <trans-unit id="fileUpload_allErrorMessageTitle" approved="yes">
         <source>All uploads failed</source>
-        <target approved="yes">All uploads failed</target>
+        <target>All uploads failed</target>
       </trans-unit>
-      <trans-unit id="fileUpload_allErrorMessageText">
+      <trans-unit id="fileUpload_allErrorMessageText" approved="yes">
         <source>All of your uploads failed.&lt;br /&gt;&lt;br /&gt;If this problem persists, please try another browser, contact your administrator or disable this "Flash Uploader" in your User Settings.&lt;br /&gt;&lt;br /&gt;Detailed problem description:&lt;br /&gt;</source>
-        <target approved="yes">All of your uploads failed.&lt;br /&gt;&lt;br /&gt;If this problem persists, please try another browser, contact your administrator or disable this "Flash Uploader" in your User Settings.&lt;br /&gt;&lt;br /&gt;Detailed problem description:&lt;br /&gt;</target>
+        <target>All of your uploads failed.&lt;br /&gt;&lt;br /&gt;If this problem persists, please try another browser, contact your administrator or disable this "Flash Uploader" in your User Settings.&lt;br /&gt;&lt;br /&gt;Detailed problem description:&lt;br /&gt;</target>
       </trans-unit>
-      <trans-unit id="fileUpload_allError401">
+      <trans-unit id="fileUpload_allError401" approved="yes">
         <source>The server returned the status code 401, which is related to a .htaccess file used for password protection on your server. Unfortunately this can not be handled by your browser's Flash plugin.</source>
-        <target approved="yes">The server returned the status code 401, which is related to a .htaccess file used for password protection on your server. Unfortunately this can not be handled by your browser's Flash plugin.</target>
+        <target>The server returned the status code 401, which is related to a .htaccess file used for password protection on your server. Unfortunately this can not be handled by your browser's Flash plugin.</target>
       </trans-unit>
-      <trans-unit id="fileUpload_allError2038">
+      <trans-unit id="fileUpload_allError2038" approved="yes">
         <source>An input/output error occured (Error #2038). This i.e. happens with servers using a self-signed SSL certificate, which is a limitation of your browser's Flash plugin.</source>
-        <target approved="yes">An input/output error occured (Error #2038). This i.e. happens with servers using a self-signed SSL certificate, which is a limitation of your browser's Flash plugin.</target>
+        <target>An input/output error occured (Error #2038). This i.e. happens with servers using a self-signed SSL certificate, which is a limitation of your browser's Flash plugin.</target>
       </trans-unit>
-      <trans-unit id="liveSearch_title">
+      <trans-unit id="liveSearch_title" approved="yes">
         <source>Short result list</source>
-        <target approved="yes">Short result list</target>
+        <target>Short result list</target>
       </trans-unit>
-      <trans-unit id="liveSearch_emptyText">
+      <trans-unit id="liveSearch_emptyText" approved="yes">
         <source>Enter search term</source>
-        <target approved="yes">Enter search term</target>
+        <target>Enter search term</target>
       </trans-unit>
-      <trans-unit id="liveSearch_loadingText">
+      <trans-unit id="liveSearch_loadingText" approved="yes">
         <source>Searching...</source>
-        <target approved="yes">Searching...</target>
+        <target>Searching...</target>
       </trans-unit>
-      <trans-unit id="liveSearch_listEmptyText">
+      <trans-unit id="liveSearch_listEmptyText" approved="yes">
         <source>No results found.</source>
-        <target approved="yes">No results found.</target>
+        <target>No results found.</target>
       </trans-unit>
-      <trans-unit id="liveSearch_showAllResults">
+      <trans-unit id="liveSearch_showAllResults" approved="yes">
         <source>Show All</source>
-        <target approved="yes">Show All</target>
+        <target>Show All</target>
       </trans-unit>
-      <trans-unit id="liveSearch_helpTitle">
+      <trans-unit id="liveSearch_helpTitle" approved="yes">
         <source>How to use advanced search tags</source>
-        <target approved="yes">How to use advanced search tags</target>
+        <target>How to use advanced search tags</target>
       </trans-unit>
-      <trans-unit id="liveSearch_helpDescription">
+      <trans-unit id="liveSearch_helpDescription" approved="yes">
         <source>Search in certain tables:</source>
-        <target approved="yes">Search in certain tables:</target>
+        <target>Search in certain tables:</target>
       </trans-unit>
-      <trans-unit id="liveSearch_helpDescriptionPages">
+      <trans-unit id="liveSearch_helpDescriptionPages" approved="yes">
         <source>#page:Home will search for all pages with the title "Home"</source>
-        <target approved="yes">#page:Home will search for all pages with the title "Home"</target>
+        <target>#page:Home will search for all pages with the title "Home"</target>
       </trans-unit>
-      <trans-unit id="extDirect_timeoutHeader">
+      <trans-unit id="extDirect_timeoutHeader" approved="yes">
         <source>Connection Problem</source>
-        <target approved="yes">Connection Problem</target>
+        <target>Connection Problem</target>
       </trans-unit>
-      <trans-unit id="extDirect_timeoutMessage">
+      <trans-unit id="extDirect_timeoutMessage" approved="yes">
         <source>Sorry, but an error occurred while connecting to the server. Please check your network connection.</source>
-        <target approved="yes">Sorry, but an error occurred while connecting to the server. Please check your network connection.</target>
+        <target>Sorry, but an error occurred while connecting to the server. Please check your network connection.</target>
       </trans-unit>
-      <trans-unit id="viewPort_tooltipModuleMenuSplit">
+      <trans-unit id="viewPort_tooltipModuleMenuSplit" approved="yes">
         <source>Drag to resize the Modules Menu</source>
-        <target approved="yes">Drag to resize the Modules Menu</target>
+        <target>Drag to resize the Modules Menu</target>
       </trans-unit>
-      <trans-unit id="viewPort_tooltipNavigationContainerSplitDrag">
+      <trans-unit id="viewPort_tooltipNavigationContainerSplitDrag" approved="yes">
         <source>Drag to resize or double click to collapse the tree</source>
-        <target approved="yes">Drag to resize or double click to collapse the tree</target>
+        <target>Drag to resize or double click to collapse the tree</target>
       </trans-unit>
-      <trans-unit id="viewPort_tooltipDebugPanelSplitDrag">
+      <trans-unit id="viewPort_tooltipDebugPanelSplitDrag" approved="yes">
         <source>Drag to resize or click to collapse the Debug Panel.</source>
-        <target approved="yes">Drag to resize or click to collapse the Debug Panel.</target>
+        <target>Drag to resize or click to collapse the Debug Panel.</target>
       </trans-unit>
     </body>
   </file>

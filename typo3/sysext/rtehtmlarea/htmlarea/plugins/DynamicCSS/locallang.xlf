@@ -3,45 +3,45 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="Default">
+      <trans-unit id="Default" approved="yes">
         <source>Default</source>
-        <target approved="yes">Default</target>
+        <target>Default</target>
       </trans-unit>
-      <trans-unit id="Undefined">
+      <trans-unit id="Undefined" approved="yes">
         <source>Undefined</source>
-        <target approved="yes">Undefined</target>
+        <target>Undefined</target>
       </trans-unit>
-      <trans-unit id="DynamicCSSStyleTooltip">
+      <trans-unit id="DynamicCSSStyleTooltip" approved="yes">
         <source>Apply style to the containing paragraph</source>
-        <target approved="yes">Apply style to the containing paragraph</target>
+        <target>Apply style to the containing paragraph</target>
       </trans-unit>
-      <trans-unit id="frame-frame1">
+      <trans-unit id="frame-frame1" approved="yes">
         <source>Frame with grey background</source>
-        <target approved="yes">Frame with grey background</target>
+        <target>Frame with grey background</target>
       </trans-unit>
-      <trans-unit id="frame-frame2">
+      <trans-unit id="frame-frame2" approved="yes">
         <source>Frame with yellow background</source>
-        <target approved="yes">Frame with yellow background</target>
+        <target>Frame with yellow background</target>
       </trans-unit>
-      <trans-unit id="important">
+      <trans-unit id="important" approved="yes">
         <source>Important</source>
-        <target approved="yes">Important</target>
+        <target>Important</target>
       </trans-unit>
-      <trans-unit id="name-of-person">
+      <trans-unit id="name-of-person" approved="yes">
         <source>Name of person</source>
-        <target approved="yes">Name of person</target>
+        <target>Name of person</target>
       </trans-unit>
-      <trans-unit id="detail">
+      <trans-unit id="detail" approved="yes">
         <source>Detail</source>
-        <target approved="yes">Detail</target>
+        <target>Detail</target>
       </trans-unit>
-      <trans-unit id="component-items">
+      <trans-unit id="component-items" approved="yes">
         <source>Component items</source>
-        <target approved="yes">Component items</target>
+        <target>Component items</target>
       </trans-unit>
-      <trans-unit id="action-items">
+      <trans-unit id="action-items" approved="yes">
         <source>Action items</source>
-        <target approved="yes">Action items</target>
+        <target>Action items</target>
       </trans-unit>
     </body>
   </file>

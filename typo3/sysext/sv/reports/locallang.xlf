@@ -3,73 +3,73 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="sv">
     <header/>
     <body>
-      <trans-unit id="report_title">
+      <trans-unit id="report_title" approved="yes">
         <source>Installed Services</source>
-        <target approved="yes">Installed Services</target>
+        <target>Installed Services</target>
       </trans-unit>
-      <trans-unit id="report_description">
+      <trans-unit id="report_description" approved="yes">
         <source>List of all installed services with information and status for each of them.</source>
-        <target approved="yes">List of all installed services with information and status for each of them.</target>
+        <target>List of all installed services with information and status for each of them.</target>
       </trans-unit>
-      <trans-unit id="report_explanation">
+      <trans-unit id="report_explanation" approved="yes">
         <source>This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</source>
-        <target approved="yes">This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</target>
+        <target>This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</target>
       </trans-unit>
-      <trans-unit id="externals_explanation">
+      <trans-unit id="externals_explanation" approved="yes">
         <source>The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</source>
-        <target approved="yes">The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</target>
+        <target>The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</target>
       </trans-unit>
-      <trans-unit id="service_type">
+      <trans-unit id="service_type" approved="yes">
         <source>Service type: %s</source>
-        <target approved="yes">Service type: %s</target>
+        <target>Service type: %s</target>
       </trans-unit>
-      <trans-unit id="service">
+      <trans-unit id="service" approved="yes">
         <source>Service</source>
-        <target approved="yes">Service</target>
+        <target>Service</target>
       </trans-unit>
-      <trans-unit id="priority">
+      <trans-unit id="priority" approved="yes">
         <source>Priority</source>
-        <target approved="yes">Priority</target>
+        <target>Priority</target>
       </trans-unit>
-      <trans-unit id="quality">
+      <trans-unit id="quality" approved="yes">
         <source>Quality</source>
-        <target approved="yes">Quality</target>
+        <target>Quality</target>
       </trans-unit>
-      <trans-unit id="subtypes">
+      <trans-unit id="subtypes" approved="yes">
         <source>Subtypes</source>
-        <target approved="yes">Subtypes</target>
+        <target>Subtypes</target>
       </trans-unit>
-      <trans-unit id="os">
+      <trans-unit id="os" approved="yes">
         <source>OS</source>
-        <target approved="yes">OS</target>
+        <target>OS</target>
       </trans-unit>
-      <trans-unit id="externals">
+      <trans-unit id="externals" approved="yes">
         <source>Externals</source>
-        <target approved="yes">Externals</target>
+        <target>Externals</target>
       </trans-unit>
-      <trans-unit id="available">
+      <trans-unit id="available" approved="yes">
         <source>Available</source>
-        <target approved="yes">Available</target>
+        <target>Available</target>
       </trans-unit>
-      <trans-unit id="any">
+      <trans-unit id="any" approved="yes">
         <source>Any</source>
-        <target approved="yes">Any</target>
+        <target>Any</target>
       </trans-unit>
-      <trans-unit id="search_paths">
+      <trans-unit id="search_paths" approved="yes">
         <source>Configured search paths for external programs</source>
-        <target approved="yes">Configured search paths for external programs</target>
+        <target>Configured search paths for external programs</target>
       </trans-unit>
-      <trans-unit id="path">
+      <trans-unit id="path" approved="yes">
         <source>Path</source>
-        <target approved="yes">Path</target>
+        <target>Path</target>
       </trans-unit>
-      <trans-unit id="valid">
+      <trans-unit id="valid" approved="yes">
         <source>Valid</source>
-        <target approved="yes">Valid</target>
+        <target>Valid</target>
       </trans-unit>
-      <trans-unit id="no_search_paths">
+      <trans-unit id="no_search_paths" approved="yes">
         <source>No search paths configured.</source>
-        <target approved="yes">No search paths configured.</target>
+        <target>No search paths configured.</target>
       </trans-unit>
     </body>
   </file>

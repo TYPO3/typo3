@@ -3,9 +3,9 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="tx_rtepbhtmlarea_pi2.list_type">
+      <trans-unit id="tx_rtepbhtmlarea_pi2.list_type" approved="yes">
         <source>Front End HTMLArea RTE</source>
-        <target approved="yes">Front End HTMLArea RTE</target>
+        <target>Front End HTMLArea RTE</target>
       </trans-unit>
     </body>
   </file>

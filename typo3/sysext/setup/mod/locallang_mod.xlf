@@ -3,17 +3,17 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="setup">
     <header/>
     <body>
-      <trans-unit id="mlang_labels_tablabel">
+      <trans-unit id="mlang_labels_tablabel" approved="yes">
         <source>Personal user setup</source>
-        <target approved="yes">Personal user setup</target>
+        <target>Personal user setup</target>
       </trans-unit>
-      <trans-unit id="mlang_labels_tabdescr">
+      <trans-unit id="mlang_labels_tabdescr" approved="yes">
         <source>This module allows you to customize your backend user profile. Here you can change your active system language, name and email address. You may also configure other general features in the system.</source>
-        <target approved="yes">This module allows you to customize your backend user profile. Here you can change your active system language, name and email address. You may also configure other general features in the system.</target>
+        <target>This module allows you to customize your backend user profile. Here you can change your active system language, name and email address. You may also configure other general features in the system.</target>
       </trans-unit>
-      <trans-unit id="mlang_tabs_tab">
+      <trans-unit id="mlang_tabs_tab" approved="yes">
         <source>User settings</source>
-        <target approved="yes">User Settings</target>
+        <target>User Settings</target>
       </trans-unit>
     </body>
   </file>

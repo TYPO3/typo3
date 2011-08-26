@@ -3,43 +3,43 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:24 UTC" product-name="lang">
     <header/>
     <body>
-      <trans-unit id=".description">
+      <trans-unit id=".description" approved="yes">
         <source>Filemounts describe a filepath on the server, relative or absolute.</source>
-        <target approved="yes">Filemounts describe a filepath on the server, relative or absolute.</target>
+        <target>Filemounts describe a filepath on the server, relative or absolute.</target>
       </trans-unit>
-      <trans-unit id=".details">
+      <trans-unit id=".details" approved="yes">
         <source>By creating a file mount record and placing a reference to it in a Backend usergroup you can allow a user access to the file mount in the File&gt;List module.
 Filemounts may also configure access to a path on the server to which the user has FTP-access. Just remember to set file-permissions on the server correctly so the webserver user (which PHP is running as) has at least read access to the FTP-dir.
 You can only mount absolute paths if they are within the base path set in $TYPO3_CONF_VARS[BE][lockRootPath]</source>
-        <target approved="yes">By creating a file mount record and placing a reference to it in a Backend usergroup you can allow a user access to the file mount in the File&gt;List module.
+        <target>By creating a file mount record and placing a reference to it in a Backend usergroup you can allow a user access to the file mount in the File&gt;List module.
 Filemounts may also configure access to a path on the server to which the user has FTP-access. Just remember to set file-permissions on the server correctly so the webserver user (which PHP is running as) has at least read access to the FTP-dir.
 You can only mount absolute paths if they are within the base path set in $TYPO3_CONF_VARS[BE][lockRootPath]</target>
       </trans-unit>
-      <trans-unit id="_.seeAlso">
+      <trans-unit id="_.seeAlso" approved="yes">
         <source>be_groups:file_mountpoints,
 be_users:file_mountpoints,
 More about File mounts | http://typo3.org/documentation/document-library/doc_core_inside/More_about_File_Moun/</source>
-        <target approved="yes">be_groups:file_mountpoints,
+        <target>be_groups:file_mountpoints,
 be_users:file_mountpoints,
 More about File mounts | http://typo3.org/documentation/document-library/doc_core_inside/More_about_File_Moun/</target>
       </trans-unit>
-      <trans-unit id="_.image">
+      <trans-unit id="_.image" approved="yes">
         <source>EXT:lang/cshimages/filemount_1.png</source>
-        <target approved="yes">EXT:lang/cshimages/filemount_1.png</target>
+        <target>EXT:lang/cshimages/filemount_1.png</target>
       </trans-unit>
-      <trans-unit id="title.description">
+      <trans-unit id="title.description" approved="yes">
         <source>Enter a title for the filemount. The title will appear as the name of the file mount when it is applied to users and groups.</source>
-        <target approved="yes">Enter a title for the filemount. The title will appear as the name of the file mount when it is applied to users and groups.</target>
+        <target>Enter a title for the filemount. The title will appear as the name of the file mount when it is applied to users and groups.</target>
       </trans-unit>
-      <trans-unit id="_title.image">
+      <trans-unit id="_title.image" approved="yes">
         <source>EXT:lang/cshimages/be_groups_5.png</source>
-        <target approved="yes">EXT:lang/cshimages/be_groups_5.png</target>
+        <target>EXT:lang/cshimages/be_groups_5.png</target>
       </trans-unit>
-      <trans-unit id="path.description">
+      <trans-unit id="path.description" approved="yes">
         <source>Enter the path of the filemount, relative or absolute depending on the settings of BASE.</source>
-        <target approved="yes">Enter the path of the filemount, relative or absolute depending on the settings of BASE.</target>
+        <target>Enter the path of the filemount, relative or absolute depending on the settings of BASE.</target>
       </trans-unit>
-      <trans-unit id="path.details">
+      <trans-unit id="path.details" approved="yes">
         <source>If BASE is set to relative, the path mounted is found in the subfolder "fileadmin/" of the website. Then you should enter the subfolder in "fileadmin/" as path. For instance if you want to mount access to "fileadmin/user_uploads/all/" then enter the value "user_uploads/all" as the value of PATH.
 If BASE is absolute you should enter the absolute path on the server, eg. "/home/ftp_upload" or "C:/home/ftp_upload". Further you must make sure the configuration variable $TYPO3_CONF_VARS[BE][lockRootPath] contains the first part of the path you want to mount.
 
@@ -47,7 +47,7 @@ If BASE is absolute you should enter the absolute path on the server, eg. "/home
 If you have problems - especially with absolute mounts - try to mount something "simple" like a relative path in fileadmin. If that is working well, try the absolute path.
 
 Your PHP-configuration may also impose other restrictions on you if open_basedir is enabled. Then use relative paths.</source>
-        <target approved="yes">If BASE is set to relative, the path mounted is found in the subfolder "fileadmin/" of the website. Then you should enter the subfolder in "fileadmin/" as path. For instance if you want to mount access to "fileadmin/user_uploads/all/" then enter the value "user_uploads/all" as the value of PATH.
+        <target>If BASE is set to relative, the path mounted is found in the subfolder "fileadmin/" of the website. Then you should enter the subfolder in "fileadmin/" as path. For instance if you want to mount access to "fileadmin/user_uploads/all/" then enter the value "user_uploads/all" as the value of PATH.
 If BASE is absolute you should enter the absolute path on the server, eg. "/home/ftp_upload" or "C:/home/ftp_upload". Further you must make sure the configuration variable $TYPO3_CONF_VARS[BE][lockRootPath] contains the first part of the path you want to mount.
 
 &lt;strong&gt;Notice:&lt;/strong&gt; In any case, make sure the webserver user which PHP is running as has &lt;em&gt;at least&lt;/em&gt; read-access to the path. If not, the mount will simply not appear without any warnings.
@@ -55,41 +55,41 @@ If you have problems - especially with absolute mounts - try to mount something 
 
 Your PHP-configuration may also impose other restrictions on you if open_basedir is enabled. Then use relative paths.</target>
       </trans-unit>
-      <trans-unit id="_path.seeAlso">
+      <trans-unit id="_path.seeAlso" approved="yes">
         <source>sys_filemounts:base,
 be_groups:file_mountpoints,
 sys_filemounts</source>
-        <target approved="yes">sys_filemounts:base,
+        <target>sys_filemounts:base,
 be_groups:file_mountpoints,
 sys_filemounts</target>
       </trans-unit>
-      <trans-unit id="_path.image">
+      <trans-unit id="_path.image" approved="yes">
         <source>EXT:lang/cshimages/be_groups_6.png,
 EXT:lang/cshimages/be_groups_7.png</source>
-        <target approved="yes">EXT:lang/cshimages/be_groups_6.png,
+        <target>EXT:lang/cshimages/be_groups_6.png,
 EXT:lang/cshimages/be_groups_7.png</target>
       </trans-unit>
-      <trans-unit id="path.image_descr">
+      <trans-unit id="path.image_descr" approved="yes">
         <source>This is a filemount relative to "fileadmin/". The mounted folder is "fileadmin/user_upload/" since "user_upload" is the value of the "Path" field.
 The directory structure of "fileadmin/" where you can see the "user_upload" folder in the bottom of the list.</source>
-        <target approved="yes">This is a filemount relative to "fileadmin/". The mounted folder is "fileadmin/user_upload/" since "user_upload" is the value of the "Path" field.
+        <target>This is a filemount relative to "fileadmin/". The mounted folder is "fileadmin/user_upload/" since "user_upload" is the value of the "Path" field.
 The directory structure of "fileadmin/" where you can see the "user_upload" folder in the bottom of the list.</target>
       </trans-unit>
-      <trans-unit id="hidden.description">
+      <trans-unit id="hidden.description" approved="yes">
         <source>Use this option to temporarily disable the filemount.</source>
-        <target approved="yes">Use this option to temporarily disable the filemount.</target>
+        <target>Use this option to temporarily disable the filemount.</target>
       </trans-unit>
-      <trans-unit id="hidden.details">
+      <trans-unit id="hidden.details" approved="yes">
         <source>All backend users using the mount will not have access anymore. This includes 'Admin'-users.</source>
-        <target approved="yes">All backend users using the mount will not have access anymore. This includes 'Admin'-users.</target>
+        <target>All backend users using the mount will not have access anymore. This includes 'Admin'-users.</target>
       </trans-unit>
-      <trans-unit id="base.description">
+      <trans-unit id="base.description" approved="yes">
         <source>Determines whether the value of the PATH field is to be recognized as an absolute path on the server or a path relative to the fileadmin/ subfolder to the website.</source>
-        <target approved="yes">Determines whether the value of the PATH field is to be recognized as an absolute path on the server or a path relative to the fileadmin/ subfolder to the website.</target>
+        <target>Determines whether the value of the PATH field is to be recognized as an absolute path on the server or a path relative to the fileadmin/ subfolder to the website.</target>
       </trans-unit>
-      <trans-unit id="_base.seeAlso">
+      <trans-unit id="_base.seeAlso" approved="yes">
         <source>sys_filemounts:path</source>
-        <target approved="yes">sys_filemounts:path</target>
+        <target>sys_filemounts:path</target>
       </trans-unit>
     </body>
   </file>

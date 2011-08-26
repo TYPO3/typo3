@@ -3,329 +3,329 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:22 UTC" product-name="cms">
     <header/>
     <body>
-      <trans-unit id="title">
+      <trans-unit id="title" approved="yes">
         <source>Page content</source>
-        <target approved="yes">Page content</target>
+        <target>Page content</target>
       </trans-unit>
-      <trans-unit id="advancedFunctions">
+      <trans-unit id="advancedFunctions" approved="yes">
         <source>Advanced functions</source>
-        <target approved="yes">Advanced functions</target>
+        <target>Advanced functions</target>
       </trans-unit>
-      <trans-unit id="noEditItems">
+      <trans-unit id="noEditItems" approved="yes">
         <source>Sorry, you do not have permissions to edit items on this page!</source>
-        <target approved="yes">Sorry, you do not have permissions to edit items on this page!</target>
+        <target>Sorry, you do not have permissions to edit items on this page!</target>
       </trans-unit>
-      <trans-unit id="noEditPage">
+      <trans-unit id="noEditPage" approved="yes">
         <source>Sorry, you do not have permissions to edit this page!</source>
-        <target approved="yes">Sorry, you do not have permissions to edit this page!</target>
+        <target>Sorry, you do not have permissions to edit this page!</target>
       </trans-unit>
-      <trans-unit id="nextThree">
+      <trans-unit id="nextThree" approved="yes">
         <source>Edit next %s records</source>
-        <target approved="yes">Edit next %s records</target>
+        <target>Edit next %s records</target>
       </trans-unit>
-      <trans-unit id="moveUp">
+      <trans-unit id="moveUp" approved="yes">
         <source>Move record up</source>
-        <target approved="yes">Move record up</target>
+        <target>Move record up</target>
       </trans-unit>
-      <trans-unit id="moveDown">
+      <trans-unit id="moveDown" approved="yes">
         <source>Move record down</source>
-        <target approved="yes">Move record down</target>
+        <target>Move record down</target>
       </trans-unit>
-      <trans-unit id="unHide">
+      <trans-unit id="unHide" approved="yes">
         <source>Un-hide</source>
-        <target approved="yes">Un-hide</target>
+        <target>Un-hide</target>
       </trans-unit>
-      <trans-unit id="hide">
+      <trans-unit id="hide" approved="yes">
         <source>Hide</source>
-        <target approved="yes">Hide</target>
+        <target>Hide</target>
       </trans-unit>
-      <trans-unit id="edit">
+      <trans-unit id="edit" approved="yes">
         <source>Edit</source>
-        <target approved="yes">Edit</target>
+        <target>Edit</target>
       </trans-unit>
-      <trans-unit id="newAfter">
+      <trans-unit id="newAfter" approved="yes">
         <source>New record after this one</source>
-        <target approved="yes">New record after this one</target>
+        <target>New record after this one</target>
       </trans-unit>
-      <trans-unit id="move_record">
+      <trans-unit id="move_record" approved="yes">
         <source>Re-position current content element</source>
-        <target approved="yes">Re-position current content element</target>
+        <target>Re-position current content element</target>
       </trans-unit>
-      <trans-unit id="move_page">
+      <trans-unit id="move_page" approved="yes">
         <source>Move page</source>
-        <target approved="yes">Move page</target>
+        <target>Move page</target>
       </trans-unit>
-      <trans-unit id="deleteItem">
+      <trans-unit id="deleteItem" approved="yes">
         <source>Delete</source>
-        <target approved="yes">Delete</target>
+        <target>Delete</target>
       </trans-unit>
-      <trans-unit id="deleteWarning">
+      <trans-unit id="deleteWarning" approved="yes">
         <source>Are you sure you want to delete this record?</source>
-        <target approved="yes">Are you sure you want to delete this record?</target>
+        <target>Are you sure you want to delete this record?</target>
       </trans-unit>
-      <trans-unit id="recursiveDeleteWarning">
+      <trans-unit id="recursiveDeleteWarning" approved="yes">
         <source>You can recover pages with subpages only with the recycler. Are you sure you want to delete these pages?</source>
-        <target approved="yes">You can recover pages with subpages only with the recycler. Are you sure you want to delete these pages?</target>
+        <target>You can recover pages with subpages only with the recycler. Are you sure you want to delete these pages?</target>
       </trans-unit>
-      <trans-unit id="editColumn">
+      <trans-unit id="editColumn" approved="yes">
         <source>Edit this column</source>
-        <target approved="yes">Edit this column</target>
+        <target>Edit this column</target>
       </trans-unit>
-      <trans-unit id="editPageProperties_curLang">
+      <trans-unit id="editPageProperties_curLang" approved="yes">
         <source>Edit translation properties</source>
-        <target approved="yes">Edit translation properties</target>
+        <target>Edit translation properties</target>
       </trans-unit>
-      <trans-unit id="editInRTE">
+      <trans-unit id="editInRTE" approved="yes">
         <source>Edit in Rich Text Editor</source>
-        <target approved="yes">Edit in Rich Text Editor</target>
+        <target>Edit in Rich Text Editor</target>
       </trans-unit>
-      <trans-unit id="newPageContent">
+      <trans-unit id="newPageContent" approved="yes">
         <source>Create page content</source>
-        <target approved="yes">Create page content</target>
+        <target>Create page content</target>
       </trans-unit>
-      <trans-unit id="newPageContent_copyForLang">
+      <trans-unit id="newPageContent_copyForLang" approved="yes">
         <source>Copy default content elements</source>
-        <target approved="yes">Copy default content elements</target>
+        <target>Copy default content elements</target>
       </trans-unit>
-      <trans-unit id="newPageContent2">
+      <trans-unit id="newPageContent2" approved="yes">
         <source>New content</source>
-        <target approved="yes">New content</target>
+        <target>New content</target>
       </trans-unit>
-      <trans-unit id="newInColumn">
+      <trans-unit id="newInColumn" approved="yes">
         <source>Create new record in top of this column</source>
-        <target approved="yes">Create new record in top of this column</target>
+        <target>Create new record in top of this column</target>
       </trans-unit>
-      <trans-unit id="records">
+      <trans-unit id="records" approved="yes">
         <source>records</source>
-        <target approved="yes">records</target>
+        <target>records</target>
       </trans-unit>
-      <trans-unit id="pageInformation">
+      <trans-unit id="pageInformation" approved="yes">
         <source>Page information</source>
-        <target approved="yes">Page information</target>
+        <target>Page information</target>
       </trans-unit>
-      <trans-unit id="goToTable">
+      <trans-unit id="goToTable" approved="yes">
         <source>Go to table</source>
-        <target approved="yes">Go to table</target>
+        <target>Go to table</target>
       </trans-unit>
-      <trans-unit id="internalNotes">
+      <trans-unit id="internalNotes" approved="yes">
         <source>Internal notes</source>
-        <target approved="yes">Internal notes</target>
+        <target>Internal notes</target>
       </trans-unit>
-      <trans-unit id="clearCache">
+      <trans-unit id="clearCache" approved="yes">
         <source>Click here to clear cache for this page.</source>
-        <target approved="yes">Click here to clear cache for this page.</target>
+        <target>Click here to clear cache for this page.</target>
       </trans-unit>
-      <trans-unit id="hiddenCE">
+      <trans-unit id="hiddenCE" approved="yes">
         <source>Show hidden content elements</source>
-        <target approved="yes">Show hidden content elements</target>
+        <target>Show hidden content elements</target>
       </trans-unit>
-      <trans-unit id="new_language">
+      <trans-unit id="new_language" approved="yes">
         <source>Make new translation of this page</source>
-        <target approved="yes">Make new translation of this page</target>
+        <target>Make new translation of this page</target>
       </trans-unit>
-      <trans-unit id="newLabel">
+      <trans-unit id="newLabel" approved="yes">
         <source>NEW</source>
-        <target approved="yes">NEW</target>
+        <target>NEW</target>
       </trans-unit>
-      <trans-unit id="defaultLanguage">
+      <trans-unit id="defaultLanguage" approved="yes">
         <source>Default</source>
-        <target approved="yes">Default</target>
+        <target>Default</target>
       </trans-unit>
-      <trans-unit id="editLanguageHeader">
+      <trans-unit id="editLanguageHeader" approved="yes">
         <source>Edit language header</source>
-        <target approved="yes">Edit language header</target>
+        <target>Edit language header</target>
       </trans-unit>
-      <trans-unit id="editPageProperties">
+      <trans-unit id="editPageProperties" approved="yes">
         <source>Edit page properties</source>
-        <target approved="yes">Edit page properties</target>
+        <target>Edit page properties</target>
       </trans-unit>
-      <trans-unit id="newRecordGeneral">
+      <trans-unit id="newRecordGeneral" approved="yes">
         <source>Create new record</source>
-        <target approved="yes">Create new record</target>
+        <target>Create new record</target>
       </trans-unit>
-      <trans-unit id="newContentElement">
+      <trans-unit id="newContentElement" approved="yes">
         <source>Create new content element</source>
-        <target approved="yes">Create new content element</target>
+        <target>Create new content element</target>
       </trans-unit>
-      <trans-unit id="CEonThisPage">
+      <trans-unit id="CEonThisPage" approved="yes">
         <source>Content elements on this page:</source>
-        <target approved="yes">Content elements on this page:</target>
+        <target>Content elements on this page:</target>
       </trans-unit>
-      <trans-unit id="newPage">
+      <trans-unit id="newPage" approved="yes">
         <source>Create new page</source>
-        <target approved="yes">Create new page</target>
+        <target>Create new page</target>
       </trans-unit>
-      <trans-unit id="newPage2">
+      <trans-unit id="newPage2" approved="yes">
         <source>New page</source>
-        <target approved="yes">New page</target>
+        <target>New page</target>
       </trans-unit>
-      <trans-unit id="noAccess">
+      <trans-unit id="noAccess" approved="yes">
         <source>No edit access</source>
-        <target approved="yes">No edit access</target>
+        <target>No edit access</target>
       </trans-unit>
-      <trans-unit id="noAccess_msg">
+      <trans-unit id="noAccess_msg" approved="yes">
         <source>You do not have access to edit the requested record.</source>
-        <target approved="yes">You do not have access to edit the requested record.</target>
+        <target>You do not have access to edit the requested record.</target>
       </trans-unit>
-      <trans-unit id="notAssigned">
+      <trans-unit id="notAssigned" approved="yes">
         <source>Not assigned</source>
-        <target approved="yes">Not assigned</target>
+        <target>Not assigned</target>
       </trans-unit>
-      <trans-unit id="undoLastChange">
+      <trans-unit id="undoLastChange" approved="yes">
         <source>Undo/Redo last change (%s ago)</source>
-        <target approved="yes">Undo/Redo last change (%s ago)</target>
+        <target>Undo/Redo last change (%s ago)</target>
       </trans-unit>
-      <trans-unit id="recordHistory">
+      <trans-unit id="recordHistory" approved="yes">
         <source>View record change history</source>
-        <target approved="yes">View record change history</target>
+        <target>View record change history</target>
       </trans-unit>
-      <trans-unit id="viewContent">
+      <trans-unit id="viewContent" approved="yes">
         <source>Viewing content of</source>
-        <target approved="yes">Viewing content of</target>
+        <target>Viewing content of</target>
       </trans-unit>
-      <trans-unit id="tt_board_subject">
+      <trans-unit id="tt_board_subject" approved="yes">
         <source>Subject</source>
-        <target approved="yes">Subject</target>
+        <target>Subject</target>
       </trans-unit>
-      <trans-unit id="tt_board_author">
+      <trans-unit id="tt_board_author" approved="yes">
         <source>Author</source>
-        <target approved="yes">Author</target>
+        <target>Author</target>
       </trans-unit>
-      <trans-unit id="tt_board_date">
+      <trans-unit id="tt_board_date" approved="yes">
         <source>Date</source>
-        <target approved="yes">Date</target>
+        <target>Date</target>
       </trans-unit>
-      <trans-unit id="tt_board_age">
+      <trans-unit id="tt_board_age" approved="yes">
         <source>Age</source>
-        <target approved="yes">Age</target>
+        <target>Age</target>
       </trans-unit>
-      <trans-unit id="tt_board_RE">
+      <trans-unit id="tt_board_RE" approved="yes">
         <source>RE</source>
-        <target approved="yes">RE</target>
+        <target>RE</target>
       </trans-unit>
-      <trans-unit id="m_function_0">
+      <trans-unit id="m_function_0" approved="yes">
         <source>QuickEdit</source>
-        <target approved="yes">QuickEdit</target>
+        <target>QuickEdit</target>
       </trans-unit>
-      <trans-unit id="m_function_1">
+      <trans-unit id="m_function_1" approved="yes">
         <source>Columns</source>
-        <target approved="yes">Columns</target>
+        <target>Columns</target>
       </trans-unit>
-      <trans-unit id="m_function_2">
+      <trans-unit id="m_function_2" approved="yes">
         <source>Languages</source>
-        <target approved="yes">Languages</target>
+        <target>Languages</target>
       </trans-unit>
-      <trans-unit id="gridView">
+      <trans-unit id="gridView" approved="yes">
         <source>Grid-View</source>
-        <target approved="yes">Grid-View</target>
+        <target>Grid-View</target>
       </trans-unit>
-      <trans-unit id="m_tt_board_0">
+      <trans-unit id="m_tt_board_0" approved="yes">
         <source>List topics only</source>
-        <target approved="yes">List topics only</target>
+        <target>List topics only</target>
       </trans-unit>
-      <trans-unit id="m_tt_board_expand">
+      <trans-unit id="m_tt_board_expand" approved="yes">
         <source>Expand Threads</source>
-        <target approved="yes">Expand Threads</target>
+        <target>Expand Threads</target>
       </trans-unit>
-      <trans-unit id="m_tt_address_0">
+      <trans-unit id="m_tt_address_0" approved="yes">
         <source>Short List</source>
-        <target approved="yes">Short List</target>
+        <target>Short List</target>
       </trans-unit>
-      <trans-unit id="m_tt_address_1">
+      <trans-unit id="m_tt_address_1" approved="yes">
         <source>Address list</source>
-        <target approved="yes">Address list</target>
+        <target>Address list</target>
       </trans-unit>
-      <trans-unit id="m_tt_address_2">
+      <trans-unit id="m_tt_address_2" approved="yes">
         <source>Personal info</source>
-        <target approved="yes">Personal info</target>
+        <target>Personal info</target>
       </trans-unit>
-      <trans-unit id="m_tt_links_1">
+      <trans-unit id="m_tt_links_1" approved="yes">
         <source>Whole URL</source>
-        <target approved="yes">Whole URL</target>
+        <target>Whole URL</target>
       </trans-unit>
-      <trans-unit id="m_tt_links_2">
+      <trans-unit id="m_tt_links_2" approved="yes">
         <source>Alternative note</source>
-        <target approved="yes">Alternative note</target>
+        <target>Alternative note</target>
       </trans-unit>
-      <trans-unit id="m_tt_calender_date">
+      <trans-unit id="m_tt_calender_date" approved="yes">
         <source>Date</source>
-        <target approved="yes">Date</target>
+        <target>Date</target>
       </trans-unit>
-      <trans-unit id="m_tt_calender_date_ext">
+      <trans-unit id="m_tt_calender_date_ext" approved="yes">
         <source>Date - extended</source>
-        <target approved="yes">Date - extended</target>
+        <target>Date - extended</target>
       </trans-unit>
-      <trans-unit id="m_tt_calender_todo">
+      <trans-unit id="m_tt_calender_todo" approved="yes">
         <source>Todo</source>
-        <target approved="yes">Todo</target>
+        <target>Todo</target>
       </trans-unit>
-      <trans-unit id="m_tt_calender_todo_ext">
+      <trans-unit id="m_tt_calender_todo_ext" approved="yes">
         <source>Todo - extended</source>
-        <target approved="yes">Todo - extended</target>
+        <target>Todo - extended</target>
       </trans-unit>
-      <trans-unit id="m_tt_calender_ext">
+      <trans-unit id="m_tt_calender_ext" approved="yes">
         <source>Extended</source>
-        <target approved="yes">Extended</target>
+        <target>Extended</target>
       </trans-unit>
-      <trans-unit id="m_tt_products_ext">
+      <trans-unit id="m_tt_products_ext" approved="yes">
         <source>Extended</source>
-        <target approved="yes">Extended</target>
+        <target>Extended</target>
       </trans-unit>
-      <trans-unit id="m_default">
+      <trans-unit id="m_default" approved="yes">
         <source>Default</source>
-        <target approved="yes">Default</target>
+        <target>Default</target>
       </trans-unit>
-      <trans-unit id="clickAPage_header">
+      <trans-unit id="clickAPage_header" approved="yes">
         <source>Web&gt;Page module</source>
-        <target approved="yes">Web&gt;Page module</target>
+        <target>Web&gt;Page module</target>
       </trans-unit>
-      <trans-unit id="clickAPage_content">
+      <trans-unit id="clickAPage_content" approved="yes">
         <source>Please click the page title in the page tree to the left to edit page content.</source>
-        <target approved="yes">Please click the page title in the page tree to the left to edit page content.</target>
+        <target>Please click the page title in the page tree to the left to edit page content.</target>
       </trans-unit>
-      <trans-unit id="pI_crUser">
+      <trans-unit id="pI_crUser" approved="yes">
         <source>Created by</source>
-        <target approved="yes">Created by</target>
+        <target>Created by</target>
       </trans-unit>
-      <trans-unit id="pI_crDate">
+      <trans-unit id="pI_crDate" approved="yes">
         <source>Created date</source>
-        <target approved="yes">Created date</target>
+        <target>Created date</target>
       </trans-unit>
-      <trans-unit id="pI_lastChange">
+      <trans-unit id="pI_lastChange" approved="yes">
         <source>Last change</source>
-        <target approved="yes">Last change</target>
+        <target>Last change</target>
       </trans-unit>
-      <trans-unit id="pI_lastChangeContent">
+      <trans-unit id="pI_lastChangeContent" approved="yes">
         <source>Last change, content</source>
-        <target approved="yes">Last change, content</target>
+        <target>Last change, content</target>
       </trans-unit>
-      <trans-unit id="pI_hitsTotal">
+      <trans-unit id="pI_hitsTotal" approved="yes">
         <source>Total Hits</source>
-        <target approved="yes">Total Hits</target>
+        <target>Total Hits</target>
       </trans-unit>
-      <trans-unit id="pI_hitsPeriod">
+      <trans-unit id="pI_hitsPeriod" approved="yes">
         <source>Hits Period</source>
-        <target approved="yes">Hits Period</target>
+        <target>Hits Period</target>
       </trans-unit>
-      <trans-unit id="pI_hits24hours">
+      <trans-unit id="pI_hits24hours" approved="yes">
         <source>Last 24 hours</source>
-        <target approved="yes">Last 24 hours</target>
+        <target>Last 24 hours</target>
       </trans-unit>
-      <trans-unit id="pI_hits10days">
+      <trans-unit id="pI_hits10days" approved="yes">
         <source>Last 10 days</source>
-        <target approved="yes">Last 10 days</target>
+        <target>Last 10 days</target>
       </trans-unit>
-      <trans-unit id="content_from_pid_title">
+      <trans-unit id="content_from_pid_title" approved="yes">
         <source>Page uses content from this page: %s</source>
-        <target approved="yes">Page uses content from this page: %s</target>
+        <target>Page uses content from this page: %s</target>
       </trans-unit>
-      <trans-unit id="goToListModule">
+      <trans-unit id="goToListModule" approved="yes">
         <source>Go to list module</source>
-        <target approved="yes">Go to list module</target>
+        <target>Go to list module</target>
       </trans-unit>
-      <trans-unit id="goToListModuleMessage">
+      <trans-unit id="goToListModuleMessage" approved="yes">
         <source>The current page is a folder. Folders usually don't contain content elements but are used for collecting other types of records.</source>
-        <target approved="yes">The current page is a folder. Folders usually don't contain content elements but are used for collecting other types of records.</target>
+        <target>The current page is a folder. Folders usually don't contain content elements but are used for collecting other types of records.</target>
       </trans-unit>
     </body>
   </file>

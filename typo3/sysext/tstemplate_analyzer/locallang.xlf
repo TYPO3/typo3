@@ -3,81 +3,81 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="tstemplate_analyzer">
     <header/>
     <body>
-      <trans-unit id="currentTemplate">
+      <trans-unit id="currentTemplate" approved="yes">
         <source>Current template:</source>
-        <target approved="yes">Current template:</target>
+        <target>Current template:</target>
       </trans-unit>
-      <trans-unit id="title">
+      <trans-unit id="title" approved="yes">
         <source>Title</source>
-        <target approved="yes">Title</target>
+        <target>Title</target>
       </trans-unit>
-      <trans-unit id="rootlevel">
+      <trans-unit id="rootlevel" approved="yes">
         <source>Rootlevel</source>
-        <target approved="yes">Rootlevel</target>
+        <target>Rootlevel</target>
       </trans-unit>
-      <trans-unit id="clearSetup">
+      <trans-unit id="clearSetup" approved="yes">
         <source>Clear Setup</source>
-        <target approved="yes">Clear Setup</target>
+        <target>Clear Setup</target>
       </trans-unit>
-      <trans-unit id="clearConstants">
+      <trans-unit id="clearConstants" approved="yes">
         <source>Clear Constants</source>
-        <target approved="yes">Clear Constants</target>
+        <target>Clear Constants</target>
       </trans-unit>
-      <trans-unit id="pid">
+      <trans-unit id="pid" approved="yes">
         <source>PID</source>
-        <target approved="yes">PID</target>
+        <target>PID</target>
       </trans-unit>
-      <trans-unit id="rootline">
+      <trans-unit id="rootline" approved="yes">
         <source>Rootline</source>
-        <target approved="yes">Rootline</target>
+        <target>Rootline</target>
       </trans-unit>
-      <trans-unit id="nextLevel">
+      <trans-unit id="nextLevel" approved="yes">
         <source>Next Level</source>
-        <target approved="yes">Next Level</target>
+        <target>Next Level</target>
       </trans-unit>
-      <trans-unit id="templateHierarchy">
+      <trans-unit id="templateHierarchy" approved="yes">
         <source>Template hierarchy:</source>
-        <target approved="yes">Template hierarchy:</target>
+        <target>Template hierarchy:</target>
       </trans-unit>
-      <trans-unit id="displayOptions">
+      <trans-unit id="displayOptions" approved="yes">
         <source>Display Options</source>
-        <target approved="yes">Display Options</target>
+        <target>Display Options</target>
       </trans-unit>
-      <trans-unit id="lineNumbers">
+      <trans-unit id="lineNumbers" approved="yes">
         <source>Line numbers</source>
-        <target approved="yes">Line numbers</target>
+        <target>Line numbers</target>
       </trans-unit>
-      <trans-unit id="syntaxHighlight">
+      <trans-unit id="syntaxHighlight" approved="yes">
         <source>Syntax highlight</source>
-        <target approved="yes">Syntax highlight</target>
+        <target>Syntax highlight</target>
       </trans-unit>
-      <trans-unit id="comments">
+      <trans-unit id="comments" approved="yes">
         <source>Comments</source>
-        <target approved="yes">Comments</target>
+        <target>Comments</target>
       </trans-unit>
-      <trans-unit id="cropLines">
+      <trans-unit id="cropLines" approved="yes">
         <source>Crop lines</source>
-        <target approved="yes">Crop lines</target>
+        <target>Crop lines</target>
       </trans-unit>
-      <trans-unit id="blockMode">
+      <trans-unit id="blockMode" approved="yes">
         <source>Block mode</source>
-        <target approved="yes">Block mode</target>
+        <target>Block mode</target>
       </trans-unit>
-      <trans-unit id="constants">
+      <trans-unit id="constants" approved="yes">
         <source>Constants:</source>
-        <target approved="yes">Constants:</target>
+        <target>Constants:</target>
       </trans-unit>
-      <trans-unit id="setup">
+      <trans-unit id="setup" approved="yes">
         <source>Setup:</source>
-        <target approved="yes">Setup:</target>
+        <target>Setup:</target>
       </trans-unit>
-      <trans-unit id="viewCompleteTS">
+      <trans-unit id="viewCompleteTS" approved="yes">
         <source>View the complete TS Listing</source>
-        <target approved="yes">View the complete TS Listing</target>
+        <target>View the complete TS Listing</target>
       </trans-unit>
-      <trans-unit id="completeTS">
+      <trans-unit id="completeTS" approved="yes">
         <source>Complete TS:</source>
-        <target approved="yes">Complete TS:</target>
+        <target>Complete TS:</target>
       </trans-unit>
     </body>
   </file>

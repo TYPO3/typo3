@@ -3,149 +3,149 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:24 UTC" product-name="lang">
     <header/>
     <body>
-      <trans-unit id="removeLink">
+      <trans-unit id="removeLink" approved="yes">
         <source>Remove link</source>
-        <target approved="yes">Remove link</target>
+        <target>Remove link</target>
       </trans-unit>
-      <trans-unit id="uploadImage">
+      <trans-unit id="uploadImage" approved="yes">
         <source>Upload Image</source>
-        <target approved="yes">Upload Image</target>
+        <target>Upload Image</target>
       </trans-unit>
-      <trans-unit id="update">
+      <trans-unit id="update" approved="yes">
         <source>Update</source>
-        <target approved="yes">Update</target>
+        <target>Update</target>
       </trans-unit>
-      <trans-unit id="path">
+      <trans-unit id="path" approved="yes">
         <source>Path</source>
-        <target approved="yes">Path</target>
+        <target>Path</target>
       </trans-unit>
-      <trans-unit id="page">
+      <trans-unit id="page" approved="yes">
         <source>Page</source>
-        <target approved="yes">Page</target>
+        <target>Page</target>
       </trans-unit>
-      <trans-unit id="file">
+      <trans-unit id="file" approved="yes">
         <source>File</source>
-        <target approved="yes">File</target>
+        <target>File</target>
       </trans-unit>
-      <trans-unit id="folder">
+      <trans-unit id="folder" approved="yes">
         <source>Folder</source>
-        <target approved="yes">Folder</target>
+        <target>Folder</target>
       </trans-unit>
-      <trans-unit id="extUrl">
+      <trans-unit id="extUrl" approved="yes">
         <source>External URL</source>
-        <target approved="yes">External URL</target>
+        <target>External URL</target>
       </trans-unit>
-      <trans-unit id="email">
+      <trans-unit id="email" approved="yes">
         <source>Email</source>
-        <target approved="yes">Email</target>
+        <target>Email</target>
       </trans-unit>
-      <trans-unit id="special">
+      <trans-unit id="special" approved="yes">
         <source>Special</source>
-        <target approved="yes">Special</target>
+        <target>Special</target>
       </trans-unit>
-      <trans-unit id="folderTree">
+      <trans-unit id="folderTree" approved="yes">
         <source>Folder Tree</source>
-        <target approved="yes">Folder Tree</target>
+        <target>Folder Tree</target>
       </trans-unit>
-      <trans-unit id="files">
+      <trans-unit id="files" approved="yes">
         <source>Files</source>
-        <target approved="yes">Files</target>
+        <target>Files</target>
       </trans-unit>
-      <trans-unit id="target">
+      <trans-unit id="target" approved="yes">
         <source>Target</source>
-        <target approved="yes">Target</target>
+        <target>Target</target>
       </trans-unit>
-      <trans-unit id="class">
+      <trans-unit id="class" approved="yes">
         <source>CSS-Class</source>
-        <target approved="yes">CSS-Class</target>
+        <target>CSS-Class</target>
       </trans-unit>
-      <trans-unit id="title">
+      <trans-unit id="title" approved="yes">
         <source>Title</source>
-        <target approved="yes">Title</target>
+        <target>Title</target>
       </trans-unit>
-      <trans-unit id="params">
+      <trans-unit id="params" approved="yes">
         <source>Additional link parameters</source>
-        <target approved="yes">Additional link parameters</target>
+        <target>Additional link parameters</target>
       </trans-unit>
-      <trans-unit id="target_popUpWindow">
+      <trans-unit id="target_popUpWindow" approved="yes">
         <source>Open in window</source>
-        <target approved="yes">Open in window</target>
+        <target>Open in window</target>
       </trans-unit>
-      <trans-unit id="target_popUpWindow_width">
+      <trans-unit id="target_popUpWindow_width" approved="yes">
         <source>Width</source>
-        <target approved="yes">Width</target>
+        <target>Width</target>
       </trans-unit>
-      <trans-unit id="target_popUpWindow_height">
+      <trans-unit id="target_popUpWindow_height" approved="yes">
         <source>Height</source>
-        <target approved="yes">Height</target>
+        <target>Height</target>
       </trans-unit>
-      <trans-unit id="newWindow">
+      <trans-unit id="newWindow" approved="yes">
         <source>New window</source>
-        <target approved="yes">New window</target>
+        <target>New window</target>
       </trans-unit>
-      <trans-unit id="top">
+      <trans-unit id="top" approved="yes">
         <source>Top</source>
-        <target approved="yes">Top</target>
+        <target>Top</target>
       </trans-unit>
-      <trans-unit id="none">
+      <trans-unit id="none" approved="yes">
         <source>None - new link!</source>
-        <target approved="yes">None - new link!</target>
+        <target>None - new link!</target>
       </trans-unit>
-      <trans-unit id="pageTree">
+      <trans-unit id="pageTree" approved="yes">
         <source>Page tree</source>
-        <target approved="yes">Page tree</target>
+        <target>Page tree</target>
       </trans-unit>
-      <trans-unit id="contentElements">
+      <trans-unit id="contentElements" approved="yes">
         <source>Content elements</source>
-        <target approved="yes">Content elements</target>
+        <target>Content elements</target>
       </trans-unit>
-      <trans-unit id="selectRecords">
+      <trans-unit id="selectRecords" approved="yes">
         <source>Select Records</source>
-        <target approved="yes">Select Records</target>
+        <target>Select Records</target>
       </trans-unit>
-      <trans-unit id="addToList">
+      <trans-unit id="addToList" approved="yes">
         <source>Add to list...</source>
-        <target approved="yes">Add to list...</target>
+        <target>Add to list...</target>
       </trans-unit>
-      <trans-unit id="info">
+      <trans-unit id="info" approved="yes">
         <source>Info</source>
-        <target approved="yes">Info</target>
+        <target>Info</target>
       </trans-unit>
-      <trans-unit id="emailAddress">
+      <trans-unit id="emailAddress" approved="yes">
         <source>Email address</source>
-        <target approved="yes">Email address</target>
+        <target>Email address</target>
       </trans-unit>
-      <trans-unit id="setLink">
+      <trans-unit id="setLink" approved="yes">
         <source>Set Link</source>
-        <target approved="yes">Set Link</target>
+        <target>Set Link</target>
       </trans-unit>
-      <trans-unit id="clickToRedrawFullSize">
+      <trans-unit id="clickToRedrawFullSize" approved="yes">
         <source>Image is larger than shown here! Click to redraw page with full sized images.</source>
-        <target approved="yes">Image is larger than shown here! Click to redraw page with full sized images.</target>
+        <target>Image is larger than shown here! Click to redraw page with full sized images.</target>
       </trans-unit>
-      <trans-unit id="findDragDrop">
+      <trans-unit id="findDragDrop" approved="yes">
         <source>Find and click on your image then drag it into the editor in the main window!</source>
-        <target approved="yes">Find and click on your image then drag it into the editor in the main window!</target>
+        <target>Find and click on your image then drag it into the editor in the main window!</target>
       </trans-unit>
-      <trans-unit id="noWebFolder">
+      <trans-unit id="noWebFolder" approved="yes">
         <source>You cannot drag images from this folder (yellow) because it is internal on the server.</source>
-        <target approved="yes">You cannot drag images from this folder (yellow) because it is internal on the server.</target>
+        <target>You cannot drag images from this folder (yellow) because it is internal on the server.</target>
       </trans-unit>
-      <trans-unit id="currentLink">
+      <trans-unit id="currentLink" approved="yes">
         <source>Current Link</source>
-        <target approved="yes">Current Link</target>
+        <target>Current Link</target>
       </trans-unit>
-      <trans-unit id="invalidChar">
+      <trans-unit id="invalidChar" approved="yes">
         <source>ERROR: Invalid character found in file path (%s). Cannot add the file!</source>
-        <target approved="yes">ERROR: Invalid character found in file path (%s). Cannot add the file!</target>
+        <target>ERROR: Invalid character found in file path (%s). Cannot add the file!</target>
       </trans-unit>
-      <trans-unit id="toggleSelection">
+      <trans-unit id="toggleSelection" approved="yes">
         <source>Toggle selection</source>
-        <target approved="yes">Toggle selection</target>
+        <target>Toggle selection</target>
       </trans-unit>
-      <trans-unit id="importSelection">
+      <trans-unit id="importSelection" approved="yes">
         <source>Import selection</source>
-        <target approved="yes">Import selection</target>
+        <target>Import selection</target>
       </trans-unit>
     </body>
   </file>

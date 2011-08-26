@@ -3,57 +3,57 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="No style">
+      <trans-unit id="No style" approved="yes">
         <source>No block style</source>
-        <target approved="yes">No block style</target>
+        <target>No block style</target>
       </trans-unit>
-      <trans-unit id="Remove style">
+      <trans-unit id="Remove style" approved="yes">
         <source>Remove block style</source>
-        <target approved="yes">Remove block style</target>
+        <target>Remove block style</target>
       </trans-unit>
-      <trans-unit id="Unknown style">
+      <trans-unit id="Unknown style" approved="yes">
         <source>Unknown block style</source>
-        <target approved="yes">Unknown block style</target>
+        <target>Unknown block style</target>
       </trans-unit>
-      <trans-unit id="Element style">
+      <trans-unit id="Element style" approved="yes">
         <source>Block element style</source>
-        <target approved="yes">Block element style</target>
+        <target>Block element style</target>
       </trans-unit>
-      <trans-unit id="BlockStyle-Tooltip">
+      <trans-unit id="BlockStyle-Tooltip" approved="yes">
         <source>Apply style to the containing block</source>
-        <target approved="yes">Apply style to the containing block</target>
+        <target>Apply style to the containing block</target>
       </trans-unit>
-      <trans-unit id="frame-frame1">
+      <trans-unit id="frame-frame1" approved="yes">
         <source>Frame with grey background</source>
-        <target approved="yes">Frame with grey background</target>
+        <target>Frame with grey background</target>
       </trans-unit>
-      <trans-unit id="frame-frame2">
+      <trans-unit id="frame-frame2" approved="yes">
         <source>Frame with yellow background</source>
-        <target approved="yes">Frame with yellow background</target>
+        <target>Frame with yellow background</target>
       </trans-unit>
-      <trans-unit id="important">
+      <trans-unit id="important" approved="yes">
         <source>Important</source>
-        <target approved="yes">Important</target>
+        <target>Important</target>
       </trans-unit>
-      <trans-unit id="name-of-person">
+      <trans-unit id="name-of-person" approved="yes">
         <source>Name of person</source>
-        <target approved="yes">Name of person</target>
+        <target>Name of person</target>
       </trans-unit>
-      <trans-unit id="detail">
+      <trans-unit id="detail" approved="yes">
         <source>Detail</source>
-        <target approved="yes">Detail</target>
+        <target>Detail</target>
       </trans-unit>
-      <trans-unit id="component-items">
+      <trans-unit id="component-items" approved="yes">
         <source>Component items</source>
-        <target approved="yes">Component items</target>
+        <target>Component items</target>
       </trans-unit>
-      <trans-unit id="action-items">
+      <trans-unit id="action-items" approved="yes">
         <source>Action items</source>
-        <target approved="yes">Action items</target>
+        <target>Action items</target>
       </trans-unit>
-      <trans-unit id="Technische Universitat Ilmenau">
+      <trans-unit id="Technische Universitat Ilmenau" approved="yes">
         <source>Technische Universität Ilmenau</source>
-        <target approved="yes">Technische Universität Ilmenau</target>
+        <target>Technische Universität Ilmenau</target>
       </trans-unit>
     </body>
   </file>

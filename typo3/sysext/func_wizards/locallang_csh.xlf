@@ -3,18 +3,18 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:23 UTC" product-name="func_wizards">
     <header/>
     <body>
-      <trans-unit id="tx_funcwizards.alttitle">
+      <trans-unit id="tx_funcwizards.alttitle" approved="yes">
         <source>Page Wizards</source>
-        <target approved="yes">Page Wizards</target>
+        <target>Page Wizards</target>
       </trans-unit>
-      <trans-unit id="tx_funcwizards.description">
+      <trans-unit id="tx_funcwizards.description" approved="yes">
         <source>This submodule provides a framework where wizards can be added. Available wizards currently include a wizard for creating pages and sorting pages by title etc.</source>
-        <target approved="yes">This submodule provides a framework where wizards can be added. Available wizards currently include a wizard for creating pages and sorting pages by title etc.</target>
+        <target>This submodule provides a framework where wizards can be added. Available wizards currently include a wizard for creating pages and sorting pages by title etc.</target>
       </trans-unit>
-      <trans-unit id="_tx_funcwizards.seeAlso">
+      <trans-unit id="_tx_funcwizards.seeAlso" approved="yes">
         <source>_MOD_web_func:tx_wizardcrpages,
 _MOD_web_func:tx_wizardsortpages</source>
-        <target approved="yes">_MOD_web_func:tx_wizardcrpages,
+        <target>_MOD_web_func:tx_wizardcrpages,
 _MOD_web_func:tx_wizardsortpages</target>
       </trans-unit>
     </body>

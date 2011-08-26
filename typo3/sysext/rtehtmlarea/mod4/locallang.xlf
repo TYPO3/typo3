@@ -3,125 +3,125 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="folderTree">
+      <trans-unit id="folderTree" approved="yes">
         <source>Folder tree</source>
-        <target approved="yes">Folder tree</target>
+        <target>Folder tree</target>
       </trans-unit>
-      <trans-unit id="uploadImage">
+      <trans-unit id="uploadImage" approved="yes">
         <source>Upload Image</source>
-        <target approved="yes">Upload Image</target>
+        <target>Upload Image</target>
       </trans-unit>
-      <trans-unit id="path">
+      <trans-unit id="path" approved="yes">
         <source>Path</source>
-        <target approved="yes">Path</target>
+        <target>Path</target>
       </trans-unit>
-      <trans-unit id="images">
+      <trans-unit id="images" approved="yes">
         <source>Images</source>
-        <target approved="yes">Images</target>
+        <target>Images</target>
       </trans-unit>
-      <trans-unit id="magicImage_msg">
+      <trans-unit id="magicImage_msg" approved="yes">
         <source>In "Magic" mode you can select any kind of image with any dimensions. The image is automatically converted to a web image format and any adjustments you make to the size of the image is post processed in order to optimize size and quality.</source>
-        <target approved="yes">In "Magic" mode you can select any kind of image with any dimensions. The image is automatically converted to a web image format and any adjustments you make to the size of the image is post processed in order to optimize size and quality.</target>
+        <target>In "Magic" mode you can select any kind of image with any dimensions. The image is automatically converted to a web image format and any adjustments you make to the size of the image is post processed in order to optimize size and quality.</target>
       </trans-unit>
-      <trans-unit id="plainImage_msg">
+      <trans-unit id="plainImage_msg" approved="yes">
         <source>In "Plain" mode you can insert only web image formats (jpg,jpeg,gif,png) up to %1$sx%2$s pixels. This method is designed for images which are optimized for web already.</source>
-        <target approved="yes">In "Plain" mode you can insert only web image formats (jpg,jpeg,gif,png) up to %1$sx%2$s pixels. This method is designed for images which are optimized for web already.</target>
+        <target>In "Plain" mode you can insert only web image formats (jpg,jpeg,gif,png) up to %1$sx%2$s pixels. This method is designed for images which are optimized for web already.</target>
       </trans-unit>
-      <trans-unit id="class">
+      <trans-unit id="class" approved="yes">
         <source>Style</source>
-        <target approved="yes">Style</target>
+        <target>Style</target>
       </trans-unit>
-      <trans-unit id="width">
+      <trans-unit id="width" approved="yes">
         <source>Width</source>
-        <target approved="yes">Width</target>
+        <target>Width</target>
       </trans-unit>
-      <trans-unit id="height">
+      <trans-unit id="height" approved="yes">
         <source>Height</source>
-        <target approved="yes">Height</target>
+        <target>Height</target>
       </trans-unit>
-      <trans-unit id="border">
+      <trans-unit id="border" approved="yes">
         <source>Border</source>
-        <target approved="yes">Border</target>
+        <target>Border</target>
       </trans-unit>
-      <trans-unit id="margin_tb">
+      <trans-unit id="margin_tb" approved="yes">
         <source>Margin top/bottom</source>
-        <target approved="yes">Margin top/bottom</target>
+        <target>Margin top/bottom</target>
       </trans-unit>
-      <trans-unit id="margin_lr">
+      <trans-unit id="margin_lr" approved="yes">
         <source>Margin left/right</source>
-        <target approved="yes">Margin left/right</target>
+        <target>Margin left/right</target>
       </trans-unit>
-      <trans-unit id="padding_top">
+      <trans-unit id="padding_top" approved="yes">
         <source>Top padding</source>
-        <target approved="yes">Top padding</target>
+        <target>Top padding</target>
       </trans-unit>
-      <trans-unit id="padding_right">
+      <trans-unit id="padding_right" approved="yes">
         <source>Right padding</source>
-        <target approved="yes">Right padding</target>
+        <target>Right padding</target>
       </trans-unit>
-      <trans-unit id="padding_bottom">
+      <trans-unit id="padding_bottom" approved="yes">
         <source>Bottom padding</source>
-        <target approved="yes">Bottom padding</target>
+        <target>Bottom padding</target>
       </trans-unit>
-      <trans-unit id="padding_left">
+      <trans-unit id="padding_left" approved="yes">
         <source>Left padding</source>
-        <target approved="yes">Left padding</target>
+        <target>Left padding</target>
       </trans-unit>
-      <trans-unit id="float">
+      <trans-unit id="float" approved="yes">
         <source>Float</source>
-        <target approved="yes">Float</target>
+        <target>Float</target>
       </trans-unit>
-      <trans-unit id="notSet">
+      <trans-unit id="notSet" approved="yes">
         <source>Not set</source>
-        <target approved="yes">Not set</target>
+        <target>Not set</target>
       </trans-unit>
-      <trans-unit id="nonFloating">
+      <trans-unit id="nonFloating" approved="yes">
         <source>Non-floating</source>
-        <target approved="yes">Non-floating</target>
+        <target>Non-floating</target>
       </trans-unit>
-      <trans-unit id="left">
+      <trans-unit id="left" approved="yes">
         <source>Left</source>
-        <target approved="yes">Left</target>
+        <target>Left</target>
       </trans-unit>
-      <trans-unit id="right">
+      <trans-unit id="right" approved="yes">
         <source>Right</source>
-        <target approved="yes">Right</target>
+        <target>Right</target>
       </trans-unit>
-      <trans-unit id="title">
+      <trans-unit id="title" approved="yes">
         <source>Title</source>
-        <target approved="yes">Title</target>
+        <target>Title</target>
       </trans-unit>
-      <trans-unit id="alt">
+      <trans-unit id="alt" approved="yes">
         <source>Alternate text</source>
-        <target approved="yes">Alternate text</target>
+        <target>Alternate text</target>
       </trans-unit>
-      <trans-unit id="update">
+      <trans-unit id="update" approved="yes">
         <source>Update</source>
-        <target approved="yes">Update</target>
+        <target>Update</target>
       </trans-unit>
-      <trans-unit id="magicImage">
+      <trans-unit id="magicImage" approved="yes">
         <source>New Magic Image</source>
-        <target approved="yes">New Magic Image</target>
+        <target>New Magic Image</target>
       </trans-unit>
-      <trans-unit id="plainImage">
+      <trans-unit id="plainImage" approved="yes">
         <source>New Plain Image</source>
-        <target approved="yes">New Plain Image</target>
+        <target>New Plain Image</target>
       </trans-unit>
-      <trans-unit id="dragDropImage">
+      <trans-unit id="dragDropImage" approved="yes">
         <source>Drag and Drop</source>
-        <target approved="yes">Drag and Drop</target>
+        <target>Drag and Drop</target>
       </trans-unit>
-      <trans-unit id="currentImage">
+      <trans-unit id="currentImage" approved="yes">
         <source>Current Image</source>
-        <target approved="yes">Current Image</target>
+        <target>Current Image</target>
       </trans-unit>
-      <trans-unit id="bytes">
+      <trans-unit id="bytes" approved="yes">
         <source>bytes</source>
-        <target approved="yes">bytes</target>
+        <target>bytes</target>
       </trans-unit>
-      <trans-unit id="pixels">
+      <trans-unit id="pixels" approved="yes">
         <source>pixels</source>
-        <target approved="yes">pixels</target>
+        <target>pixels</target>
       </trans-unit>
     </body>
   </file>

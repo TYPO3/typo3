@@ -3,73 +3,73 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="Type_of_abridged_form">
+      <trans-unit id="Type_of_abridged_form" approved="yes">
         <source>Acronym or Abbreviation?</source>
-        <target approved="yes">Acronym or Abbreviation?</target>
+        <target>Acronym or Abbreviation?</target>
       </trans-unit>
-      <trans-unit id="Term_to_abridge">
+      <trans-unit id="Term_to_abridge" approved="yes">
         <source>Term to abridge</source>
-        <target approved="yes">Term to abridge</target>
+        <target>Term to abridge</target>
       </trans-unit>
-      <trans-unit id="Defined_term">
+      <trans-unit id="Defined_term" approved="yes">
         <source>Pre-defined Acronyms and Abbreviations</source>
-        <target approved="yes">Pre-defined Acronyms and Abbreviations</target>
+        <target>Pre-defined Acronyms and Abbreviations</target>
       </trans-unit>
-      <trans-unit id="Term">
+      <trans-unit id="Term" approved="yes">
         <source>Term:</source>
-        <target approved="yes">Term:</target>
+        <target>Term:</target>
       </trans-unit>
-      <trans-unit id="Unabridged_term">
+      <trans-unit id="Unabridged_term" approved="yes">
         <source>Unabridged Term:</source>
-        <target approved="yes">Unabridged Term:</target>
+        <target>Unabridged Term:</target>
       </trans-unit>
-      <trans-unit id="Select_a_term">
+      <trans-unit id="Select_a_term" approved="yes">
         <source>Select a term</source>
-        <target approved="yes">Select a term</target>
+        <target>Select a term</target>
       </trans-unit>
-      <trans-unit id="Abridged_term">
+      <trans-unit id="Abridged_term" approved="yes">
         <source>Abridged Term:</source>
-        <target approved="yes">Abridged Term:</target>
+        <target>Abridged Term:</target>
       </trans-unit>
-      <trans-unit id="Acronym">
+      <trans-unit id="Acronym" approved="yes">
         <source>Acronym</source>
-        <target approved="yes">Acronym</target>
+        <target>Acronym</target>
       </trans-unit>
-      <trans-unit id="Abbreviation">
+      <trans-unit id="Abbreviation" approved="yes">
         <source>Abbreviation</source>
-        <target approved="yes">Abbreviation</target>
+        <target>Abbreviation</target>
       </trans-unit>
-      <trans-unit id="Select_an_acronym">
+      <trans-unit id="Select_an_acronym" approved="yes">
         <source>Select an acronym or abbreviation</source>
-        <target approved="yes">Select an acronym or abbreviation</target>
+        <target>Select an acronym or abbreviation</target>
       </trans-unit>
-      <trans-unit id="Use_this_term">
+      <trans-unit id="Use_this_term" approved="yes">
         <source>Use this term:</source>
-        <target approved="yes">Use this term:</target>
+        <target>Use this term:</target>
       </trans-unit>
-      <trans-unit id="Use_this_term_explain">
+      <trans-unit id="Use_this_term_explain" approved="yes">
         <source>Associate this term to the current selection</source>
-        <target approved="yes">Associate this term to the current selection</target>
+        <target>Associate this term to the current selection</target>
       </trans-unit>
-      <trans-unit id="OK">
+      <trans-unit id="OK" approved="yes">
         <source>OK</source>
-        <target approved="yes">OK</target>
+        <target>OK</target>
       </trans-unit>
-      <trans-unit id="Delete">
+      <trans-unit id="Delete" approved="yes">
         <source>Delete</source>
-        <target approved="yes">Delete</target>
+        <target>Delete</target>
       </trans-unit>
-      <trans-unit id="Cancel">
+      <trans-unit id="Cancel" approved="yes">
         <source>Cancel</source>
-        <target approved="yes">Cancel</target>
+        <target>Cancel</target>
       </trans-unit>
-      <trans-unit id="Language">
+      <trans-unit id="Language" approved="yes">
         <source>Language:</source>
-        <target approved="yes">Language:</target>
+        <target>Language:</target>
       </trans-unit>
-      <trans-unit id="Select_a_language">
+      <trans-unit id="Select_a_language" approved="yes">
         <source>Select a language</source>
-        <target approved="yes">Select a language</target>
+        <target>Select a language</target>
       </trans-unit>
     </body>
   </file>

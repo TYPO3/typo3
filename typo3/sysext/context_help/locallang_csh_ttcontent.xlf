@@ -3,41 +3,41 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:23 UTC" product-name="context_help">
     <header/>
     <body>
-      <trans-unit id=".description">
+      <trans-unit id=".description" approved="yes">
         <source>All visible content on webpages in TYPO3 is typically made by "Pagecontent" records. They are typically referred to as "Content Elements". Often Content Elements are managed by the "Page" module which is designed to handle Content Elements in multiple columns and languages.</source>
-        <target approved="yes">All visible content on webpages in TYPO3 is typically made by "Pagecontent" records. They are typically referred to as "Content Elements". Often Content Elements are managed by the "Page" module which is designed to handle Content Elements in multiple columns and languages.</target>
+        <target>All visible content on webpages in TYPO3 is typically made by "Pagecontent" records. They are typically referred to as "Content Elements". Often Content Elements are managed by the "Page" module which is designed to handle Content Elements in multiple columns and languages.</target>
       </trans-unit>
-      <trans-unit id=".details">
+      <trans-unit id=".details" approved="yes">
         <source>"Pagecontent" records is ordered and can thus be rearranged. Also notice that the "Language" and "Column" selector of the "Pagecontent" records determines where and in which situation they appear. If you do not change the value of the "Language" and "Column" selectors you are most sure that the element will appear by default.</source>
-        <target approved="yes">"Pagecontent" records is ordered and can thus be rearranged. Also notice that the "Language" and "Column" selector of the "Pagecontent" records determines where and in which situation they appear. If you do not change the value of the "Language" and "Column" selectors you are most sure that the element will appear by default.</target>
+        <target>"Pagecontent" records is ordered and can thus be rearranged. Also notice that the "Language" and "Column" selector of the "Pagecontent" records determines where and in which situation they appear. If you do not change the value of the "Language" and "Column" selectors you are most sure that the element will appear by default.</target>
       </trans-unit>
-      <trans-unit id="_.seeAlso">
+      <trans-unit id="_.seeAlso" approved="yes">
         <source>Page Content principles | http://typo3.org/documentation/document-library/doc_tut_quickstart/Page_content/,
 _MOD_web_layout</source>
-        <target approved="yes">Page Content principles | http://typo3.org/documentation/document-library/doc_tut_quickstart/Page_content/,
+        <target>Page Content principles | http://typo3.org/documentation/document-library/doc_tut_quickstart/Page_content/,
 _MOD_web_layout</target>
       </trans-unit>
-      <trans-unit id="_.image">
+      <trans-unit id="_.image" approved="yes">
         <source>EXT:context_help/cshimages/ttcontent_1.png,
 EXT:context_help/cshimages/ttcontent_2.png,
 EXT:context_help/cshimages/ttcontent_3.png</source>
-        <target approved="yes">EXT:context_help/cshimages/ttcontent_1.png,
+        <target>EXT:context_help/cshimages/ttcontent_1.png,
 EXT:context_help/cshimages/ttcontent_2.png,
 EXT:context_help/cshimages/ttcontent_3.png</target>
       </trans-unit>
-      <trans-unit id=".image_descr">
+      <trans-unit id=".image_descr" approved="yes">
         <source>The Page module is used to manage Content Elements effectively as they appear arranged in columns and languages.
 A Content Element has a large editing form with many options. The "Type" determines which options are visible.
 In the frontend - on the webpage - a Content Element like the above could look like this.</source>
-        <target approved="yes">The Page module is used to manage Content Elements effectively as they appear arranged in columns and languages.
+        <target>The Page module is used to manage Content Elements effectively as they appear arranged in columns and languages.
 A Content Element has a large editing form with many options. The "Type" determines which options are visible.
 In the frontend - on the webpage - a Content Element like the above could look like this.</target>
       </trans-unit>
-      <trans-unit id="CType.description">
+      <trans-unit id="CType.description" approved="yes">
         <source>Select the kind of page content this element represents. New options will appear when you save the record.</source>
-        <target approved="yes">Select the kind of page content this element represents. New options will appear when you save the record.</target>
+        <target>Select the kind of page content this element represents. New options will appear when you save the record.</target>
       </trans-unit>
-      <trans-unit id="CType.details">
+      <trans-unit id="CType.details" approved="yes">
         <source>The 'Type' of content you select determines which options you have in the editform, so make sure to save the record before you make changes.
 
 This is a description of the various types:
@@ -94,7 +94,7 @@ This is reserved for custom purposes where the template developer can allow you 
 
 &lt;strong&gt;HTML&lt;/strong&gt;
 This is plain HTML content. Everything put here will be displayed directly on the page without any preprocessing.</source>
-        <target approved="yes">The 'Type' of content you select determines which options you have in the editform, so make sure to save the record before you make changes.
+        <target>The 'Type' of content you select determines which options you have in the editform, so make sure to save the record before you make changes.
 
 This is a description of the various types:
 
@@ -151,111 +151,111 @@ This is reserved for custom purposes where the template developer can allow you 
 &lt;strong&gt;HTML&lt;/strong&gt;
 This is plain HTML content. Everything put here will be displayed directly on the page without any preprocessing.</target>
       </trans-unit>
-      <trans-unit id="_CType.seeAlso">
+      <trans-unit id="_CType.seeAlso" approved="yes">
         <source>tt_content:colPos,
 tt_content:sys_language_uid,
 About Content Elements | http://typo3.org/documentation/document-library/doc_tut_quickstart/Content_element_type/</source>
-        <target approved="yes">tt_content:colPos,
+        <target>tt_content:colPos,
 tt_content:sys_language_uid,
 About Content Elements | http://typo3.org/documentation/document-library/doc_tut_quickstart/Content_element_type/</target>
       </trans-unit>
-      <trans-unit id="_CType.image">
+      <trans-unit id="_CType.image" approved="yes">
         <source>EXT:context_help/cshimages/ttcontent_4.png</source>
-        <target approved="yes">EXT:context_help/cshimages/ttcontent_4.png</target>
+        <target>EXT:context_help/cshimages/ttcontent_4.png</target>
       </trans-unit>
-      <trans-unit id="hidden.description">
+      <trans-unit id="hidden.description" approved="yes">
         <source>Check this box if you wish to hide the content element from being displayed.</source>
-        <target approved="yes">Check this box if you wish to hide the content element from being displayed.</target>
+        <target>Check this box if you wish to hide the content element from being displayed.</target>
       </trans-unit>
-      <trans-unit id="_hidden.seeAlso">
+      <trans-unit id="_hidden.seeAlso" approved="yes">
         <source>tt_content:starttime,
 tt_content:endtime,
 tt_content:fe_group,
 tt_content:colPos,
 tt_content:sys_language_uid</source>
-        <target approved="yes">tt_content:starttime,
+        <target>tt_content:starttime,
 tt_content:endtime,
 tt_content:fe_group,
 tt_content:colPos,
 tt_content:sys_language_uid</target>
       </trans-unit>
-      <trans-unit id="starttime.description">
+      <trans-unit id="starttime.description" approved="yes">
         <source>Enter the date from which the content element will be visible.</source>
-        <target approved="yes">Enter the date from which the content element will be visible.</target>
+        <target>Enter the date from which the content element will be visible.</target>
       </trans-unit>
-      <trans-unit id="_starttime.seeAlso">
+      <trans-unit id="_starttime.seeAlso" approved="yes">
         <source>pages:starttime,
 tt_content:endtime,
 tt_content:hidden,
 tt_content:fe_group</source>
-        <target approved="yes">pages:starttime,
+        <target>pages:starttime,
 tt_content:endtime,
 tt_content:hidden,
 tt_content:fe_group</target>
       </trans-unit>
-      <trans-unit id="endtime.description">
+      <trans-unit id="endtime.description" approved="yes">
         <source>Enter the date from which the content element will disappear from the website.</source>
-        <target approved="yes">Enter the date from which the content element will disappear from the website.</target>
+        <target>Enter the date from which the content element will disappear from the website.</target>
       </trans-unit>
-      <trans-unit id="_endtime.seeAlso">
+      <trans-unit id="_endtime.seeAlso" approved="yes">
         <source>pages:endtime,
 tt_content:starttime,
 tt_content:hidden,
 tt_content:fe_group</source>
-        <target approved="yes">pages:endtime,
+        <target>pages:endtime,
 tt_content:starttime,
 tt_content:hidden,
 tt_content:fe_group</target>
       </trans-unit>
-      <trans-unit id="fe_group.description">
+      <trans-unit id="fe_group.description" approved="yes">
         <source>Select a Website usergroup which is exclusively allowed to view the element.</source>
-        <target approved="yes">Select a Website usergroup which is exclusively allowed to view the element.</target>
+        <target>Select a Website usergroup which is exclusively allowed to view the element.</target>
       </trans-unit>
-      <trans-unit id="fe_group.details">
+      <trans-unit id="fe_group.details" approved="yes">
         <source>The options in this box depends on which Website usergroups are created and available for you. When you select a user group here, the content element will no longer be visible to users which are not logged in. Only Website users which are logged in and members of the group you selected will be allowed to see the element.
 If you select "Hide at login" the effect is kind of reversed in that the element &lt;em&gt;disappears&lt;/em&gt; if &lt;em&gt;any&lt;/em&gt; Website user is logged in. This is useful if you want to present information like "How to login" and such which is irrelevant if a user is finally logged in.</source>
-        <target approved="yes">The options in this box depends on which Website usergroups are created and available for you. When you select a user group here, the content element will no longer be visible to users which are not logged in. Only Website users which are logged in and members of the group you selected will be allowed to see the element.
+        <target>The options in this box depends on which Website usergroups are created and available for you. When you select a user group here, the content element will no longer be visible to users which are not logged in. Only Website users which are logged in and members of the group you selected will be allowed to see the element.
 If you select "Hide at login" the effect is kind of reversed in that the element &lt;em&gt;disappears&lt;/em&gt; if &lt;em&gt;any&lt;/em&gt; Website user is logged in. This is useful if you want to present information like "How to login" and such which is irrelevant if a user is finally logged in.</target>
       </trans-unit>
-      <trans-unit id="_fe_group.seeAlso">
+      <trans-unit id="_fe_group.seeAlso" approved="yes">
         <source>tt_content:hidden,
 tt_content:starttime,
 tt_content:endtime,
 pages:fe_group,
 fe_users,
 fe_groups</source>
-        <target approved="yes">tt_content:hidden,
+        <target>tt_content:hidden,
 tt_content:starttime,
 tt_content:endtime,
 pages:fe_group,
 fe_users,
 fe_groups</target>
       </trans-unit>
-      <trans-unit id="sys_language_uid.description">
+      <trans-unit id="sys_language_uid.description" approved="yes">
         <source>Select the system language of this element. &lt;strong&gt;Notice&lt;/strong&gt; this will affect whether the element is visible.</source>
-        <target approved="yes">Select the system language of this element. &lt;strong&gt;Notice&lt;/strong&gt; this will affect whether the element is visible.</target>
+        <target>Select the system language of this element. &lt;strong&gt;Notice&lt;/strong&gt; this will affect whether the element is visible.</target>
       </trans-unit>
-      <trans-unit id="sys_language_uid.details">
+      <trans-unit id="sys_language_uid.details" approved="yes">
         <source>This allows you to assign a specific language to the content element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.
 The available system languages are created by the administrator.</source>
-        <target approved="yes">This allows you to assign a specific language to the content element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.
+        <target>This allows you to assign a specific language to the content element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.
 The available system languages are created by the administrator.</target>
       </trans-unit>
-      <trans-unit id="_sys_language_uid.seeAlso">
+      <trans-unit id="_sys_language_uid.seeAlso" approved="yes">
         <source>tt_content:colPos,
 sys_language,
 Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
 _MOD_web_layout:language_list</source>
-        <target approved="yes">tt_content:colPos,
+        <target>tt_content:colPos,
 sys_language,
 Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
 _MOD_web_layout:language_list</target>
       </trans-unit>
-      <trans-unit id="layout.description">
+      <trans-unit id="layout.description" approved="yes">
         <source>Select a layout.</source>
-        <target approved="yes">Select a layout.</target>
+        <target>Select a layout.</target>
       </trans-unit>
-      <trans-unit id="layout.details">
+      <trans-unit id="layout.details" approved="yes">
         <source>This option is not used in the default templates but may be used by any custom rendering.
 
 There are a number of default implementations depending on the content element type:
@@ -265,7 +265,7 @@ There are a number of default implementations depending on the content element t
 "Layout 1" adds a file icon to the left of the link
 "Layout 2" adds a thumbnail if the file is an image file and if not an icon. A black border is wrapped around.
 "Layout 3" is like Layout 2, but without the black border.</source>
-        <target approved="yes">This option is not used in the default templates but may be used by any custom rendering.
+        <target>This option is not used in the default templates but may be used by any custom rendering.
 
 There are a number of default implementations depending on the content element type:
 
@@ -275,119 +275,119 @@ There are a number of default implementations depending on the content element t
 "Layout 2" adds a thumbnail if the file is an image file and if not an icon. A black border is wrapped around.
 "Layout 3" is like Layout 2, but without the black border.</target>
       </trans-unit>
-      <trans-unit id="colPos.description">
+      <trans-unit id="colPos.description" approved="yes">
         <source>Select the column position this element. &lt;strong&gt;Notice&lt;/strong&gt; this will affect whether the element is visible.</source>
-        <target approved="yes">Select the column position this element. &lt;strong&gt;Notice&lt;/strong&gt; this will affect whether the element is visible.</target>
+        <target>Select the column position this element. &lt;strong&gt;Notice&lt;/strong&gt; this will affect whether the element is visible.</target>
       </trans-unit>
-      <trans-unit id="colPos.details">
+      <trans-unit id="colPos.details" approved="yes">
         <source>Most websites use only one column of content. However some templates lets you put content in multiple columns and this option allows you to select another column for the element.
 
 &lt;strong&gt;Notice&lt;/strong&gt; that selecting another column than "Normal" will make the content element disappear unless that column is also displayed in the website template. If your content element is 'strangely' not visible please make sure the Column and Language selectors are set correctly.</source>
-        <target approved="yes">Most websites use only one column of content. However some templates lets you put content in multiple columns and this option allows you to select another column for the element.
+        <target>Most websites use only one column of content. However some templates lets you put content in multiple columns and this option allows you to select another column for the element.
 
 &lt;strong&gt;Notice&lt;/strong&gt; that selecting another column than "Normal" will make the content element disappear unless that column is also displayed in the website template. If your content element is 'strangely' not visible please make sure the Column and Language selectors are set correctly.</target>
       </trans-unit>
-      <trans-unit id="_colPos.seeAlso">
+      <trans-unit id="_colPos.seeAlso" approved="yes">
         <source>tt_content:sys_language_uid,
 _MOD_web_layout:columns_multi,
 _MOD_web_layout:columns_single</source>
-        <target approved="yes">tt_content:sys_language_uid,
+        <target>tt_content:sys_language_uid,
 _MOD_web_layout:columns_multi,
 _MOD_web_layout:columns_single</target>
       </trans-unit>
-      <trans-unit id="date.description">
+      <trans-unit id="date.description" approved="yes">
         <source>Enter a date to be displayed above the header.</source>
-        <target approved="yes">Enter a date to be displayed above the header.</target>
+        <target>Enter a date to be displayed above the header.</target>
       </trans-unit>
-      <trans-unit id="header.description">
+      <trans-unit id="header.description" approved="yes">
         <source>Enter a headline for the content element.</source>
-        <target approved="yes">Enter a headline for the content element.</target>
+        <target>Enter a headline for the content element.</target>
       </trans-unit>
-      <trans-unit id="header.details">
+      <trans-unit id="header.details" approved="yes">
         <source>Almost all content elements (except the HTML type for instance) will display this header above the content. If you don't want a header displayed, select the header Layout to "Hidden". Alternatively you can choose not to enter any content in this field.
 
 Some content element types do not display the header by default. In those cases the Header field is typically labeled "Name" instead. One of these are the HTML type content element.</source>
-        <target approved="yes">Almost all content elements (except the HTML type for instance) will display this header above the content. If you don't want a header displayed, select the header Layout to "Hidden". Alternatively you can choose not to enter any content in this field.
+        <target>Almost all content elements (except the HTML type for instance) will display this header above the content. If you don't want a header displayed, select the header Layout to "Hidden". Alternatively you can choose not to enter any content in this field.
 
 Some content element types do not display the header by default. In those cases the Header field is typically labeled "Name" instead. One of these are the HTML type content element.</target>
       </trans-unit>
-      <trans-unit id="_header.seeAlso">
+      <trans-unit id="_header.seeAlso" approved="yes">
         <source>tt_content:header_position,
 tt_content:header_link,
 tt_content:header_layout,
 tt_content:date,</source>
-        <target approved="yes">tt_content:header_position,
+        <target>tt_content:header_position,
 tt_content:header_link,
 tt_content:header_layout,
 tt_content:date,</target>
       </trans-unit>
-      <trans-unit id="_header.image">
+      <trans-unit id="_header.image" approved="yes">
         <source>EXT:context_help/cshimages/ttcontent_6.png</source>
-        <target approved="yes">EXT:context_help/cshimages/ttcontent_6.png</target>
+        <target>EXT:context_help/cshimages/ttcontent_6.png</target>
       </trans-unit>
-      <trans-unit id="header_position.description">
+      <trans-unit id="header_position.description" approved="yes">
         <source>Places the header to the left, centered or to the right.</source>
-        <target approved="yes">Places the header to the left, centered or to the right.</target>
+        <target>Places the header to the left, centered or to the right.</target>
       </trans-unit>
-      <trans-unit id="_header_position.seeAlso">
+      <trans-unit id="_header_position.seeAlso" approved="yes">
         <source>tt_content:header</source>
-        <target approved="yes">tt_content:header</target>
+        <target>tt_content:header</target>
       </trans-unit>
-      <trans-unit id="header_link.description">
+      <trans-unit id="header_link.description" approved="yes">
         <source>Creates a link from the header. Insert a page id, email address or URL.</source>
-        <target approved="yes">Creates a link from the header. Insert a page id, email address or URL.</target>
+        <target>Creates a link from the header. Insert a page id, email address or URL.</target>
       </trans-unit>
-      <trans-unit id="header_link.syntax">
+      <trans-unit id="header_link.syntax" approved="yes">
         <source>If you insert an id-number, eg. "51", the link will refer to page with id=51 &lt;em&gt;inside&lt;/em&gt; TYPO3.
 If you insert an email address, eg. "name@my-domain.test", the link will point to that email address.
 If you insert an URL or domain, eg. "www.typo3.com" or "http://www.my-domain.org", the link will point to that website.</source>
-        <target approved="yes">If you insert an id-number, eg. "51", the link will refer to page with id=51 &lt;em&gt;inside&lt;/em&gt; TYPO3.
+        <target>If you insert an id-number, eg. "51", the link will refer to page with id=51 &lt;em&gt;inside&lt;/em&gt; TYPO3.
 If you insert an email address, eg. "name@my-domain.test", the link will point to that email address.
 If you insert an URL or domain, eg. "www.typo3.com" or "http://www.my-domain.org", the link will point to that website.</target>
       </trans-unit>
-      <trans-unit id="_header_link.seeAlso">
+      <trans-unit id="_header_link.seeAlso" approved="yes">
         <source>tt_content:header</source>
-        <target approved="yes">tt_content:header</target>
+        <target>tt_content:header</target>
       </trans-unit>
-      <trans-unit id="header_layout.description">
+      <trans-unit id="header_layout.description" approved="yes">
         <source>Select a visual design for the header.</source>
-        <target approved="yes">Select a visual design for the header.</target>
+        <target>Select a visual design for the header.</target>
       </trans-unit>
-      <trans-unit id="header_layout.details">
+      <trans-unit id="header_layout.details" approved="yes">
         <source>If you select "Default" the standard design (which is one of the layouts 1-5) will be used.
 Alternatively you can select from Layout 1 through 5 which are configured in the website template with individual visual designs.
 If you select "Hidden" the header will simply not appear. This is usefull if you wish a header for the content element (in order to identify it in the backend) but do not wish the header to be displayed on the website.</source>
-        <target approved="yes">If you select "Default" the standard design (which is one of the layouts 1-5) will be used.
+        <target>If you select "Default" the standard design (which is one of the layouts 1-5) will be used.
 Alternatively you can select from Layout 1 through 5 which are configured in the website template with individual visual designs.
 If you select "Hidden" the header will simply not appear. This is usefull if you wish a header for the content element (in order to identify it in the backend) but do not wish the header to be displayed on the website.</target>
       </trans-unit>
-      <trans-unit id="_header_layout.seeAlso">
+      <trans-unit id="_header_layout.seeAlso" approved="yes">
         <source>tt_content:header</source>
-        <target approved="yes">tt_content:header</target>
+        <target>tt_content:header</target>
       </trans-unit>
-      <trans-unit id="subheader.description">
+      <trans-unit id="subheader.description" approved="yes">
         <source>Enter a subheader. This is displayed below the ordinary headline. If the content element type is "Form" this field is the recipient email.</source>
-        <target approved="yes">Enter a subheader. This is displayed below the ordinary headline. If the content element type is "Form" this field is the recipient email.</target>
+        <target>Enter a subheader. This is displayed below the ordinary headline. If the content element type is "Form" this field is the recipient email.</target>
       </trans-unit>
-      <trans-unit id="subheader.details">
+      <trans-unit id="subheader.details" approved="yes">
         <source>A subheader is displayed only with the "Header" content element type.
 
 &lt;b&gt;Notice:&lt;/b&gt; When using the content element type "Form", this field is named 'Recipient-email:' and contains the email address of the form mail recipient. It's therefore important to allow access to this field for the users.</source>
-        <target approved="yes">A subheader is displayed only with the "Header" content element type.
+        <target>A subheader is displayed only with the "Header" content element type.
 
 &lt;b&gt;Notice:&lt;/b&gt; When using the content element type "Form", this field is named 'Recipient-email:' and contains the email address of the form mail recipient. It's therefore important to allow access to this field for the users.</target>
       </trans-unit>
-      <trans-unit id="_subheader.seeAlso">
+      <trans-unit id="_subheader.seeAlso" approved="yes">
         <source>tt_content:header
 tt_content:bodytext</source>
-        <target approved="yes">tt_content:header
+        <target>tt_content:header
 tt_content:bodytext</target>
       </trans-unit>
-      <trans-unit id="bodytext.description">
+      <trans-unit id="bodytext.description" approved="yes">
         <source>Enter the body text.</source>
-        <target approved="yes">Enter the body text.</target>
+        <target>Enter the body text.</target>
       </trans-unit>
-      <trans-unit id="bodytext.details">
+      <trans-unit id="bodytext.details" approved="yes">
         <source>Here you enter the body text of the content element. Usually you can use some HTML formatting tags, if you're using Internet Explorer you can even format the content visually.
 The field is reused in most other types and so switching between the content element types will bring the value of this field with it.
 
@@ -423,7 +423,7 @@ Then there are three important lines in the end. The first makes a submit button
 It is much easier to use the Form Wizard for creating forms.
 
 &lt;b&gt;Notice:&lt;/b&gt; Before any form will ever work, you must enter a recipient email address. The "Recipient-email:" field is used for that (this is in fact the Subheader field used!).</source>
-        <target approved="yes">Here you enter the body text of the content element. Usually you can use some HTML formatting tags, if you're using Internet Explorer you can even format the content visually.
+        <target>Here you enter the body text of the content element. Usually you can use some HTML formatting tags, if you're using Internet Explorer you can even format the content visually.
 The field is reused in most other types and so switching between the content element types will bring the value of this field with it.
 
 When you're using this field with the "Text" and "Text w/image" types, the content is used as ordinary body text. Each linebreak normally signifies a new paragraph, you can use the special TYPO3 tag, &amp;lt;LINK&amp;gt;, for making links. You can use many HTML tags but there are limitations as well. This will depend on the implementation.
@@ -459,83 +459,83 @@ It is much easier to use the Form Wizard for creating forms.
 
 &lt;b&gt;Notice:&lt;/b&gt; Before any form will ever work, you must enter a recipient email address. The "Recipient-email:" field is used for that (this is in fact the Subheader field used!).</target>
       </trans-unit>
-      <trans-unit id="_bodytext.seeAlso">
+      <trans-unit id="_bodytext.seeAlso" approved="yes">
         <source>tt_content:CType,
 tt_content:subheader,
 xMOD_csh_corebe:wizard_forms_wiz,
 xMOD_csh_corebe:wizard_table_wiz</source>
-        <target approved="yes">tt_content:CType,
+        <target>tt_content:CType,
 tt_content:subheader,
 xMOD_csh_corebe:wizard_forms_wiz,
 xMOD_csh_corebe:wizard_table_wiz</target>
       </trans-unit>
-      <trans-unit id="text_align.description">
+      <trans-unit id="text_align.description" approved="yes">
         <source>Places the body text to the left, centered or to the right.</source>
-        <target approved="yes">Places the body text to the left, centered or to the right.</target>
+        <target>Places the body text to the left, centered or to the right.</target>
       </trans-unit>
-      <trans-unit id="text_align.details">
+      <trans-unit id="text_align.details" approved="yes">
         <source>See Pagecontent / Fontface for comments.
 &lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</source>
-        <target approved="yes">See Pagecontent / Fontface for comments.
+        <target>See Pagecontent / Fontface for comments.
 &lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</target>
       </trans-unit>
-      <trans-unit id="_text_align.seeAlso">
+      <trans-unit id="_text_align.seeAlso" approved="yes">
         <source>tt_content:text_face,
 tt_content:bodytext</source>
-        <target approved="yes">tt_content:text_face,
+        <target>tt_content:text_face,
 tt_content:bodytext</target>
       </trans-unit>
-      <trans-unit id="text_face.description">
+      <trans-unit id="text_face.description" approved="yes">
         <source>Select a font fact family for the body text.</source>
-        <target approved="yes">Select a font fact family for the body text.</target>
+        <target>Select a font fact family for the body text.</target>
       </trans-unit>
-      <trans-unit id="text_face.details">
+      <trans-unit id="text_face.details" approved="yes">
         <source>&lt;strong&gt;Notice&lt;/strong&gt; that these options are only meant for special design. The general (default) design should be configured in the template instead. Furthermore you should NOT use these options if your template implements stylesheets and are based on using styles in general.</source>
-        <target approved="yes">&lt;strong&gt;Notice&lt;/strong&gt; that these options are only meant for special design. The general (default) design should be configured in the template instead. Furthermore you should NOT use these options if your template implements stylesheets and are based on using styles in general.</target>
+        <target>&lt;strong&gt;Notice&lt;/strong&gt; that these options are only meant for special design. The general (default) design should be configured in the template instead. Furthermore you should NOT use these options if your template implements stylesheets and are based on using styles in general.</target>
       </trans-unit>
-      <trans-unit id="_text_face.seeAlso">
+      <trans-unit id="_text_face.seeAlso" approved="yes">
         <source>tt_content:text_face,
 tt_content:bodytext</source>
-        <target approved="yes">tt_content:text_face,
+        <target>tt_content:text_face,
 tt_content:bodytext</target>
       </trans-unit>
-      <trans-unit id="text_size.description">
+      <trans-unit id="text_size.description" approved="yes">
         <source>Select a font size for the body text.</source>
-        <target approved="yes">Select a font size for the body text.</target>
+        <target>Select a font size for the body text.</target>
       </trans-unit>
-      <trans-unit id="text_size.details">
+      <trans-unit id="text_size.details" approved="yes">
         <source>See Pagecontent / Fontface for comments.
 &lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</source>
-        <target approved="yes">See Pagecontent / Fontface for comments.
+        <target>See Pagecontent / Fontface for comments.
 &lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</target>
       </trans-unit>
-      <trans-unit id="_text_size.seeAlso">
+      <trans-unit id="_text_size.seeAlso" approved="yes">
         <source>tt_content:text_face,
 tt_content:bodytext</source>
-        <target approved="yes">tt_content:text_face,
+        <target>tt_content:text_face,
 tt_content:bodytext</target>
       </trans-unit>
-      <trans-unit id="text_color.description">
+      <trans-unit id="text_color.description" approved="yes">
         <source>Select a color for the body text.</source>
-        <target approved="yes">Select a color for the body text.</target>
+        <target>Select a color for the body text.</target>
       </trans-unit>
-      <trans-unit id="text_color.details">
+      <trans-unit id="text_color.details" approved="yes">
         <source>See Pagecontent / Fontface for comments.
 &lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</source>
-        <target approved="yes">See Pagecontent / Fontface for comments.
+        <target>See Pagecontent / Fontface for comments.
 &lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</target>
       </trans-unit>
-      <trans-unit id="_text_color.seeAlso">
+      <trans-unit id="_text_color.seeAlso" approved="yes">
         <source>tt_content:text_face,
 tt_content:bodytext</source>
-        <target approved="yes">tt_content:text_face,
+        <target>tt_content:text_face,
 tt_content:bodytext</target>
       </trans-unit>
-      <trans-unit id="text_properties.description">
+      <trans-unit id="text_properties.description" approved="yes">
         <source>Select additional font properties.</source>
-        <target approved="yes">Select additional font properties.</target>
+        <target>Select additional font properties.</target>
       </trans-unit>
-      <trans-unit id="text_properties.details">
+      <trans-unit id="text_properties.details" approved="yes">
         <source>These options will select font properties for all the body text. However you may wish to mark only a part of the bodytext as bold or underline in which case you should use the formatting options in the Rich Text Editor. Alternatively you can use the HTML tags here:
 
 &amp;lt;b&amp;gt;&lt;strong&gt;This is bold&lt;/strong&gt;&amp;lt;b&amp;gt;
@@ -544,7 +544,7 @@ tt_content:bodytext</target>
 
 See Pagecontent / Fontface for comments.
 &lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</source>
-        <target approved="yes">These options will select font properties for all the body text. However you may wish to mark only a part of the bodytext as bold or underline in which case you should use the formatting options in the Rich Text Editor. Alternatively you can use the HTML tags here:
+        <target>These options will select font properties for all the body text. However you may wish to mark only a part of the bodytext as bold or underline in which case you should use the formatting options in the Rich Text Editor. Alternatively you can use the HTML tags here:
 
 &amp;lt;b&amp;gt;&lt;strong&gt;This is bold&lt;/strong&gt;&amp;lt;b&amp;gt;
 &amp;lt;i&amp;gt;&lt;em&gt;This is italics&lt;/em&gt;&amp;lt;i&amp;gt;
@@ -553,31 +553,31 @@ See Pagecontent / Fontface for comments.
 See Pagecontent / Fontface for comments.
 &lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</target>
       </trans-unit>
-      <trans-unit id="_text_properties.seeAlso">
+      <trans-unit id="_text_properties.seeAlso" approved="yes">
         <source>tt_content:text_face,
 tt_content:bodytext</source>
-        <target approved="yes">tt_content:text_face,
+        <target>tt_content:text_face,
 tt_content:bodytext</target>
       </trans-unit>
-      <trans-unit id="image.description">
+      <trans-unit id="image.description" approved="yes">
         <source>Insert one or more images.</source>
-        <target approved="yes">Insert one or more images.</target>
+        <target>Insert one or more images.</target>
       </trans-unit>
-      <trans-unit id="image.details">
+      <trans-unit id="image.details" approved="yes">
         <source>You can attach images to the content element and almost as many as you like.
 Depending on the configuration of TYPO3 you can even attach them in any format you like. Especially you do not need to worry about size and compression because these factors are normally handled by TYPO3 internally.
 
 When you use the "Text w/image" type, it's important to select a proper position of the imageblock. For this purpose, use the Position selector which is displayed below (or if you click in the image list field in the Classic backend). See link to "Pagecontent / Position" below.
 You can also display images in multiple columns and enable an option which enables a link so you can click the image and see a bigger version. Just to name a few options.
 Most likely you don't have all options available. This depends on your permissions in the system.</source>
-        <target approved="yes">You can attach images to the content element and almost as many as you like.
+        <target>You can attach images to the content element and almost as many as you like.
 Depending on the configuration of TYPO3 you can even attach them in any format you like. Especially you do not need to worry about size and compression because these factors are normally handled by TYPO3 internally.
 
 When you use the "Text w/image" type, it's important to select a proper position of the imageblock. For this purpose, use the Position selector which is displayed below (or if you click in the image list field in the Classic backend). See link to "Pagecontent / Position" below.
 You can also display images in multiple columns and enable an option which enables a link so you can click the image and see a bigger version. Just to name a few options.
 Most likely you don't have all options available. This depends on your permissions in the system.</target>
       </trans-unit>
-      <trans-unit id="_image.seeAlso">
+      <trans-unit id="_image.seeAlso" approved="yes">
         <source>tt_content:imagewidth,
 tt_content:imageheight,
 tt_content:imageorient,
@@ -592,7 +592,7 @@ tt_content:image_frames,
 tt_content:image_compression,
 Using images ("Getting Started") | http://typo3.org/documentation/document-library/doc_tut_quickstart/Managing_files_in_TY/
 Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif</source>
-        <target approved="yes">tt_content:imagewidth,
+        <target>tt_content:imagewidth,
 tt_content:imageheight,
 tt_content:imageorient,
 tt_content:imageborder,
@@ -607,197 +607,197 @@ tt_content:image_compression,
 Using images ("Getting Started") | http://typo3.org/documentation/document-library/doc_tut_quickstart/Managing_files_in_TY/
 Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif</target>
       </trans-unit>
-      <trans-unit id="_image.image">
+      <trans-unit id="_image.image" approved="yes">
         <source>EXT:context_help/cshimages/ttcontent_5.png</source>
-        <target approved="yes">EXT:context_help/cshimages/ttcontent_5.png</target>
+        <target>EXT:context_help/cshimages/ttcontent_5.png</target>
       </trans-unit>
-      <trans-unit id="image.image_descr">
+      <trans-unit id="image.image_descr" approved="yes">
         <source>This shows all the options related to inserting images in Content Elements. You might not be able to use all of them.</source>
-        <target approved="yes">This shows all the options related to inserting images in Content Elements. You might not be able to use all of them.</target>
+        <target>This shows all the options related to inserting images in Content Elements. You might not be able to use all of them.</target>
       </trans-unit>
-      <trans-unit id="imagewidth.description">
+      <trans-unit id="imagewidth.description" approved="yes">
         <source>Enter the width in pixels of the image.</source>
-        <target approved="yes">Enter the width in pixels of the image.</target>
+        <target>Enter the width in pixels of the image.</target>
       </trans-unit>
-      <trans-unit id="imagewidth.details">
+      <trans-unit id="imagewidth.details" approved="yes">
         <source>The template is normally configured to a max width of an image and so you don't need to specify the width if the image fits perfectly into those dimensions. However this does give you an opportunity to specify a specific width.</source>
-        <target approved="yes">The template is normally configured to a max width of an image and so you don't need to specify the width if the image fits perfectly into those dimensions. However this does give you an opportunity to specify a specific width.</target>
+        <target>The template is normally configured to a max width of an image and so you don't need to specify the width if the image fits perfectly into those dimensions. However this does give you an opportunity to specify a specific width.</target>
       </trans-unit>
-      <trans-unit id="_imagewidth.seeAlso">
+      <trans-unit id="_imagewidth.seeAlso" approved="yes">
         <source>tt_content:imageheight,
 tt_content:image</source>
-        <target approved="yes">tt_content:imageheight,
+        <target>tt_content:imageheight,
 tt_content:image</target>
       </trans-unit>
-      <trans-unit id="imageheight.description">
+      <trans-unit id="imageheight.description" approved="yes">
         <source>Enter the height of the image in pixels.</source>
-        <target approved="yes">Enter the height of the image in pixels.</target>
+        <target>Enter the height of the image in pixels.</target>
       </trans-unit>
-      <trans-unit id="_imageheight.seeAlso">
+      <trans-unit id="_imageheight.seeAlso" approved="yes">
         <source>tt_content:imagewidth,
 tt_content:image</source>
-        <target approved="yes">tt_content:imagewidth,
+        <target>tt_content:imagewidth,
 tt_content:image</target>
       </trans-unit>
-      <trans-unit id="imageorient.description">
+      <trans-unit id="imageorient.description" approved="yes">
         <source>Select the position of the imageblock relative to the body text.</source>
-        <target approved="yes">Select the position of the imageblock relative to the body text.</target>
+        <target>Select the position of the imageblock relative to the body text.</target>
       </trans-unit>
-      <trans-unit id="imageorient.details">
+      <trans-unit id="imageorient.details" approved="yes">
         <source>The position above and below the body text is pretty straight forward.
 The options "In text" means that the image block is displayed with text aside it. When you select this option the template will probably force the images into smaller dimensions because they cannot take up the same space when text is supposed to float around them.
 When you select "In text" you can choose the options either above or below the divider "No wrap". If you select the "In text" option above, the bodytext will float &lt;em&gt;under&lt;/em&gt; the image block when the bodytext reaches the end of the image block. So in other words the body text &lt;em&gt;wraps around&lt;/em&gt; the image block. If you select "In text" below the "No wrap" divider, the body text will not float under the image block, but simply continue in its column.
 Apart from the visual difference there is a technical aspect as well. Because if you choose to allow the content to wrap the image block you will experience a strange phenomenon when you do not have enough bodytext to make it float around the image: You experience that the subsequent content elements on the page is somehow layered on top of the image block - and this certainly looks like a bug. However it's easily solved by changing the "In text" position to the equal value but below the "No wrap" divider.</source>
-        <target approved="yes">The position above and below the body text is pretty straight forward.
+        <target>The position above and below the body text is pretty straight forward.
 The options "In text" means that the image block is displayed with text aside it. When you select this option the template will probably force the images into smaller dimensions because they cannot take up the same space when text is supposed to float around them.
 When you select "In text" you can choose the options either above or below the divider "No wrap". If you select the "In text" option above, the bodytext will float &lt;em&gt;under&lt;/em&gt; the image block when the bodytext reaches the end of the image block. So in other words the body text &lt;em&gt;wraps around&lt;/em&gt; the image block. If you select "In text" below the "No wrap" divider, the body text will not float under the image block, but simply continue in its column.
 Apart from the visual difference there is a technical aspect as well. Because if you choose to allow the content to wrap the image block you will experience a strange phenomenon when you do not have enough bodytext to make it float around the image: You experience that the subsequent content elements on the page is somehow layered on top of the image block - and this certainly looks like a bug. However it's easily solved by changing the "In text" position to the equal value but below the "No wrap" divider.</target>
       </trans-unit>
-      <trans-unit id="imageborder.description">
+      <trans-unit id="imageborder.description" approved="yes">
         <source>Check this, if you wish a colored border around the images.</source>
-        <target approved="yes">Check this, if you wish a colored border around the images.</target>
+        <target>Check this, if you wish a colored border around the images.</target>
       </trans-unit>
-      <trans-unit id="_imageborder.seeAlso">
+      <trans-unit id="_imageborder.seeAlso" approved="yes">
         <source>tt_content:imagecols,
 tt_content:image</source>
-        <target approved="yes">tt_content:imagecols,
+        <target>tt_content:imagecols,
 tt_content:image</target>
       </trans-unit>
-      <trans-unit id="image_noRows.description">
+      <trans-unit id="image_noRows.description" approved="yes">
         <source>Disables strict tablerows in the image block.</source>
-        <target approved="yes">Disables strict tablerows in the image block.</target>
+        <target>Disables strict tablerows in the image block.</target>
       </trans-unit>
-      <trans-unit id="image_noRows.details">
+      <trans-unit id="image_noRows.details" approved="yes">
         <source>This options is kind of hard to explain, but imagine you have 2 or more columns &lt;em&gt;and&lt;/em&gt; rows of images. If one image in the upper row is a bit taller than the second this will generate an empty extra space beneath the second image. This is due to the normal procedure in which the images are placed in a table cell each.
 If you set this option, the table will place all images in a column in a single table cell which make the distance between them vertically identical throughout. This may provide a better look if the alternative looks stupid.</source>
-        <target approved="yes">This options is kind of hard to explain, but imagine you have 2 or more columns &lt;em&gt;and&lt;/em&gt; rows of images. If one image in the upper row is a bit taller than the second this will generate an empty extra space beneath the second image. This is due to the normal procedure in which the images are placed in a table cell each.
+        <target>This options is kind of hard to explain, but imagine you have 2 or more columns &lt;em&gt;and&lt;/em&gt; rows of images. If one image in the upper row is a bit taller than the second this will generate an empty extra space beneath the second image. This is due to the normal procedure in which the images are placed in a table cell each.
 If you set this option, the table will place all images in a column in a single table cell which make the distance between them vertically identical throughout. This may provide a better look if the alternative looks stupid.</target>
       </trans-unit>
-      <trans-unit id="_image_noRows.seeAlso">
+      <trans-unit id="_image_noRows.seeAlso" approved="yes">
         <source>tt_content:imagecols,
 tt_content:image</source>
-        <target approved="yes">tt_content:imagecols,
+        <target>tt_content:imagecols,
 tt_content:image</target>
       </trans-unit>
-      <trans-unit id="image_link.description">
+      <trans-unit id="image_link.description" approved="yes">
         <source>Enter a link for the images.</source>
-        <target approved="yes">Enter a link for the images.</target>
+        <target>Enter a link for the images.</target>
       </trans-unit>
-      <trans-unit id="image_link.details">
+      <trans-unit id="image_link.details" approved="yes">
         <source>By default all images share the same link. However you may ask the administrator to configure the TypoScript template to allow a separate link for each image. If this is the case, you simply separate the link values by a comma.
 
 See Pagecontent&gt;Link below for details on syntax.</source>
-        <target approved="yes">By default all images share the same link. However you may ask the administrator to configure the TypoScript template to allow a separate link for each image. If this is the case, you simply separate the link values by a comma.
+        <target>By default all images share the same link. However you may ask the administrator to configure the TypoScript template to allow a separate link for each image. If this is the case, you simply separate the link values by a comma.
 
 See Pagecontent&gt;Link below for details on syntax.</target>
       </trans-unit>
-      <trans-unit id="_image_link.seeAlso">
+      <trans-unit id="_image_link.seeAlso" approved="yes">
         <source>tt_content:header_link,
 tt_content:image_zoom,
 tt_content:image</source>
-        <target approved="yes">tt_content:header_link,
+        <target>tt_content:header_link,
 tt_content:image_zoom,
 tt_content:image</target>
       </trans-unit>
-      <trans-unit id="image_zoom.description">
+      <trans-unit id="image_zoom.description" approved="yes">
         <source>Check this option, and the image will link to a new window with a bigger version.</source>
-        <target approved="yes">Check this option, and the image will link to a new window with a bigger version.</target>
+        <target>Check this option, and the image will link to a new window with a bigger version.</target>
       </trans-unit>
-      <trans-unit id="image_zoom.details">
+      <trans-unit id="image_zoom.details" approved="yes">
         <source>This option overrides the value in the Link-field.</source>
-        <target approved="yes">This option overrides the value in the Link-field.</target>
+        <target>This option overrides the value in the Link-field.</target>
       </trans-unit>
-      <trans-unit id="_image_zoom.seeAlso">
+      <trans-unit id="_image_zoom.seeAlso" approved="yes">
         <source>tt_content:image_link,
 tt_content:image</source>
-        <target approved="yes">tt_content:image_link,
+        <target>tt_content:image_link,
 tt_content:image</target>
       </trans-unit>
-      <trans-unit id="image_effects.description">
+      <trans-unit id="image_effects.description" approved="yes">
         <source>Select special image processing effects.</source>
-        <target approved="yes">Select special image processing effects.</target>
+        <target>Select special image processing effects.</target>
       </trans-unit>
-      <trans-unit id="_image_effects.seeAlso">
+      <trans-unit id="_image_effects.seeAlso" approved="yes">
         <source>tt_content:image_compression,
 tt_content:image_frames,
 tt_content:image</source>
-        <target approved="yes">tt_content:image_compression,
+        <target>tt_content:image_compression,
 tt_content:image_frames,
 tt_content:image</target>
       </trans-unit>
-      <trans-unit id="image_frames.description">
+      <trans-unit id="image_frames.description" approved="yes">
         <source>Select special image framing options.</source>
-        <target approved="yes">Select special image framing options.</target>
+        <target>Select special image framing options.</target>
       </trans-unit>
-      <trans-unit id="_image_frames.seeAlso">
+      <trans-unit id="_image_frames.seeAlso" approved="yes">
         <source>tt_content:image_compression,
 tt_content:image_effects,
 tt_content:image</source>
-        <target approved="yes">tt_content:image_compression,
+        <target>tt_content:image_compression,
 tt_content:image_effects,
 tt_content:image</target>
       </trans-unit>
-      <trans-unit id="image_compression.description">
+      <trans-unit id="image_compression.description" approved="yes">
         <source>Select compression/quality options.</source>
-        <target approved="yes">Select compression/quality options.</target>
+        <target>Select compression/quality options.</target>
       </trans-unit>
-      <trans-unit id="_image_compression.seeAlso">
+      <trans-unit id="_image_compression.seeAlso" approved="yes">
         <source>tt_content:image_frames,
 tt_content:image_effects,
 tt_content:image</source>
-        <target approved="yes">tt_content:image_frames,
+        <target>tt_content:image_frames,
 tt_content:image_effects,
 tt_content:image</target>
       </trans-unit>
-      <trans-unit id="imagecols.description">
+      <trans-unit id="imagecols.description" approved="yes">
         <source>Select the number of columns in the image block.</source>
-        <target approved="yes">Select the number of columns in the image block.</target>
+        <target>Select the number of columns in the image block.</target>
       </trans-unit>
-      <trans-unit id="_imagecols.seeAlso">
+      <trans-unit id="_imagecols.seeAlso" approved="yes">
         <source>tt_content:image_noRows,
 tt_content:image</source>
-        <target approved="yes">tt_content:image_noRows,
+        <target>tt_content:image_noRows,
 tt_content:image</target>
       </trans-unit>
-      <trans-unit id="imagecaption.description">
+      <trans-unit id="imagecaption.description" approved="yes">
         <source>Enter a caption for the image block</source>
-        <target approved="yes">Enter a caption for the image block</target>
+        <target>Enter a caption for the image block</target>
       </trans-unit>
-      <trans-unit id="imagecaption.details">
+      <trans-unit id="imagecaption.details" approved="yes">
         <source>By default the caption is positioned below the whole image block. However your website template may be configured to allow individual image captions by setting "styles.content.imgtext.captionSplit=1" in your template constants.
 			In that case each line in this field will be the image caption of the corresponding image in the list.
 
 The caption text field is also used by the content element type "Filelinks" where each line represents a description of a file in the list.</source>
-        <target approved="yes">By default the caption is positioned below the whole image block. However your website template may be configured to allow individual image captions by setting "styles.content.imgtext.captionSplit=1" in your template constants.
+        <target>By default the caption is positioned below the whole image block. However your website template may be configured to allow individual image captions by setting "styles.content.imgtext.captionSplit=1" in your template constants.
 			In that case each line in this field will be the image caption of the corresponding image in the list.
 
 The caption text field is also used by the content element type "Filelinks" where each line represents a description of a file in the list.</target>
       </trans-unit>
-      <trans-unit id="_imagecaption.seeAlso">
+      <trans-unit id="_imagecaption.seeAlso" approved="yes">
         <source>tt_content:imagecaption_position,
 tt_content:image</source>
-        <target approved="yes">tt_content:imagecaption_position,
+        <target>tt_content:imagecaption_position,
 tt_content:image</target>
       </trans-unit>
-      <trans-unit id="imagecaption_position.description">
+      <trans-unit id="imagecaption_position.description" approved="yes">
         <source>Places the image caption to the left, centered or to the right.</source>
-        <target approved="yes">Places the image caption to the left, centered or to the right.</target>
+        <target>Places the image caption to the left, centered or to the right.</target>
       </trans-unit>
-      <trans-unit id="_imagecaption_position.seeAlso">
+      <trans-unit id="_imagecaption_position.seeAlso" approved="yes">
         <source>tt_content:imagecaption,
 tt_content:image</source>
-        <target approved="yes">tt_content:imagecaption,
+        <target>tt_content:imagecaption,
 tt_content:image</target>
       </trans-unit>
-      <trans-unit id="cols.description">
+      <trans-unit id="cols.description" approved="yes">
         <source>Select a fixed number of table columns</source>
-        <target approved="yes">Select a fixed number of table columns</target>
+        <target>Select a fixed number of table columns</target>
       </trans-unit>
-      <trans-unit id="pages.description">
+      <trans-unit id="pages.description" approved="yes">
         <source>Insert page(s)</source>
-        <target approved="yes">Insert page(s)</target>
+        <target>Insert page(s)</target>
       </trans-unit>
-      <trans-unit id="pages.details">
+      <trans-unit id="pages.details" approved="yes">
         <source>With this field you can generally create a relation to a page (or more) in TYPO3. This field is used by many of the content element types. If you don't specify a page here, the current page will generally be used.
 
 Using the "Search" type, the page you insert will be the page to which the search is targeted. You must make sure that this page has a similar "Search" content element (or something similar) to render a search result. Else it makes no sense.
@@ -809,7 +809,7 @@ In order for the login procedure to work, you must make sure that 1) you have cr
 The "Menu/Sitemap" element also uses this field. In that case the page(s) will determine from which point the menu is drawn or maybe even represent the actual pages to which the menu links. All this depends on the subtype of Menu/Sitemap you have selected.
 
 Finally the "Form" element uses this field as the page to which the form is submitted. You might thus insert a page which is the "Thank you" page of the form mail.</source>
-        <target approved="yes">With this field you can generally create a relation to a page (or more) in TYPO3. This field is used by many of the content element types. If you don't specify a page here, the current page will generally be used.
+        <target>With this field you can generally create a relation to a page (or more) in TYPO3. This field is used by many of the content element types. If you don't specify a page here, the current page will generally be used.
 
 Using the "Search" type, the page you insert will be the page to which the search is targeted. You must make sure that this page has a similar "Search" content element (or something similar) to render a search result. Else it makes no sense.
 
@@ -821,33 +821,33 @@ The "Menu/Sitemap" element also uses this field. In that case the page(s) will d
 
 Finally the "Form" element uses this field as the page to which the form is submitted. You might thus insert a page which is the "Thank you" page of the form mail.</target>
       </trans-unit>
-      <trans-unit id="_pages.seeAlso">
+      <trans-unit id="_pages.seeAlso" approved="yes">
         <source>tt_content:CType,
 tt_content:recursive</source>
-        <target approved="yes">tt_content:CType,
+        <target>tt_content:CType,
 tt_content:recursive</target>
       </trans-unit>
-      <trans-unit id="recursive.description">
+      <trans-unit id="recursive.description" approved="yes">
         <source>Select how many subleves should be additionally selected for each page in the list.</source>
-        <target approved="yes">Select how many subleves should be additionally selected for each page in the list.</target>
+        <target>Select how many subleves should be additionally selected for each page in the list.</target>
       </trans-unit>
-      <trans-unit id="recursive.details">
+      <trans-unit id="recursive.details" approved="yes">
         <source>Whether this feature makes sense or not depends solely on the template implementation and/or content element type. But basically if this feature is enabled it means that for each page listed in the "Send to page/Starting point" box subpages - to the depth specified here - will &lt;em&gt;also&lt;/em&gt; be selected!
 
 &lt;strong&gt;Warning:&lt;/strong&gt; If there are many subpages, be aware of this option. It may select an incredible amount of pages then!</source>
-        <target approved="yes">Whether this feature makes sense or not depends solely on the template implementation and/or content element type. But basically if this feature is enabled it means that for each page listed in the "Send to page/Starting point" box subpages - to the depth specified here - will &lt;em&gt;also&lt;/em&gt; be selected!
+        <target>Whether this feature makes sense or not depends solely on the template implementation and/or content element type. But basically if this feature is enabled it means that for each page listed in the "Send to page/Starting point" box subpages - to the depth specified here - will &lt;em&gt;also&lt;/em&gt; be selected!
 
 &lt;strong&gt;Warning:&lt;/strong&gt; If there are many subpages, be aware of this option. It may select an incredible amount of pages then!</target>
       </trans-unit>
-      <trans-unit id="_recursive.seeAlso">
+      <trans-unit id="_recursive.seeAlso" approved="yes">
         <source>tt_content:pages</source>
-        <target approved="yes">tt_content:pages</target>
+        <target>tt_content:pages</target>
       </trans-unit>
-      <trans-unit id="menu_type.description">
+      <trans-unit id="menu_type.description" approved="yes">
         <source>Select which kind of menu you wish to create.</source>
-        <target approved="yes">Select which kind of menu you wish to create.</target>
+        <target>Select which kind of menu you wish to create.</target>
       </trans-unit>
-      <trans-unit id="menu_type.details">
+      <trans-unit id="menu_type.details" approved="yes">
         <source>This is a short description of each type:
 
 &lt;strong&gt;Menu of these pages&lt;/strong&gt;
@@ -878,7 +878,7 @@ Displays other related pages based on the keywords set for this page matched up 
 
 
 &lt;b&gt;Notice:&lt;/b&gt; With many of the above menu types, the default starting point is the current page. However you can specify another startingpoint (or more than one in fact!) by adding pages to the "Startingpoint" list. See link below.</source>
-        <target approved="yes">This is a short description of each type:
+        <target>This is a short description of each type:
 
 &lt;strong&gt;Menu of these pages&lt;/strong&gt;
 This will create a list of links to the pages you insert in the Startingpoint list.
@@ -909,157 +909,157 @@ Displays other related pages based on the keywords set for this page matched up 
 
 &lt;b&gt;Notice:&lt;/b&gt; With many of the above menu types, the default starting point is the current page. However you can specify another startingpoint (or more than one in fact!) by adding pages to the "Startingpoint" list. See link below.</target>
       </trans-unit>
-      <trans-unit id="_menu_type.seeAlso">
+      <trans-unit id="_menu_type.seeAlso" approved="yes">
         <source>tt_content:pages,
 tt_content:sectionIndex</source>
-        <target approved="yes">tt_content:pages,
+        <target>tt_content:pages,
 tt_content:sectionIndex</target>
       </trans-unit>
-      <trans-unit id="list_type.description">
+      <trans-unit id="list_type.description" approved="yes">
         <source>Select a plugin to insert.</source>
-        <target approved="yes">Select a plugin to insert.</target>
+        <target>Select a plugin to insert.</target>
       </trans-unit>
-      <trans-unit id="list_type.details">
+      <trans-unit id="list_type.details" approved="yes">
         <source>The list of plugins you can insert on a page. The available plugins depends on which extensions are installed.</source>
-        <target approved="yes">The list of plugins you can insert on a page. The available plugins depends on which extensions are installed.</target>
+        <target>The list of plugins you can insert on a page. The available plugins depends on which extensions are installed.</target>
       </trans-unit>
-      <trans-unit id="_list_type.seeAlso">
+      <trans-unit id="_list_type.seeAlso" approved="yes">
         <source>_MOD_tools_em</source>
-        <target approved="yes">_MOD_tools_em</target>
+        <target>_MOD_tools_em</target>
       </trans-unit>
-      <trans-unit id="_list_type.image">
+      <trans-unit id="_list_type.image" approved="yes">
         <source>EXT:context_help/cshimages/ttcontent_7.png</source>
-        <target approved="yes">EXT:context_help/cshimages/ttcontent_7.png</target>
+        <target>EXT:context_help/cshimages/ttcontent_7.png</target>
       </trans-unit>
-      <trans-unit id="select_key.description">
+      <trans-unit id="select_key.description" approved="yes">
         <source>Enter a code string.</source>
-        <target approved="yes">Enter a code string.</target>
+        <target>Enter a code string.</target>
       </trans-unit>
-      <trans-unit id="select_key.details">
+      <trans-unit id="select_key.details" approved="yes">
         <source>Whether or not the content of this field is used and how it's intepreted depends on the context. It is considered obsolete today.</source>
-        <target approved="yes">Whether or not the content of this field is used and how it's intepreted depends on the context. It is considered obsolete today.</target>
+        <target>Whether or not the content of this field is used and how it's intepreted depends on the context. It is considered obsolete today.</target>
       </trans-unit>
-      <trans-unit id="_select_key.seeAlso">
+      <trans-unit id="_select_key.seeAlso" approved="yes">
         <source>tt_content:list_type</source>
-        <target approved="yes">tt_content:list_type</target>
+        <target>tt_content:list_type</target>
       </trans-unit>
-      <trans-unit id="table_bgColor.description">
+      <trans-unit id="table_bgColor.description" approved="yes">
         <source>Select table background color.</source>
-        <target approved="yes">Select table background color.</target>
+        <target>Select table background color.</target>
       </trans-unit>
-      <trans-unit id="table_border.description">
+      <trans-unit id="table_border.description" approved="yes">
         <source>Select table border thickness.</source>
-        <target approved="yes">Select table border thickness.</target>
+        <target>Select table border thickness.</target>
       </trans-unit>
-      <trans-unit id="table_cellspacing.description">
+      <trans-unit id="table_cellspacing.description" approved="yes">
         <source>Select table cell spacing.</source>
-        <target approved="yes">Select table cell spacing.</target>
+        <target>Select table cell spacing.</target>
       </trans-unit>
-      <trans-unit id="table_cellspacing.details">
+      <trans-unit id="table_cellspacing.details" approved="yes">
         <source>Cell spacing is the distance between table cells in rows an columns. The distance is equally applied in all directions, top, bottom, left and right.</source>
-        <target approved="yes">Cell spacing is the distance between table cells in rows an columns. The distance is equally applied in all directions, top, bottom, left and right.</target>
+        <target>Cell spacing is the distance between table cells in rows an columns. The distance is equally applied in all directions, top, bottom, left and right.</target>
       </trans-unit>
-      <trans-unit id="table_cellpadding.description">
+      <trans-unit id="table_cellpadding.description" approved="yes">
         <source>Select table cellpadding.</source>
-        <target approved="yes">Select table cellpadding.</target>
+        <target>Select table cellpadding.</target>
       </trans-unit>
-      <trans-unit id="table_cellpadding.details">
+      <trans-unit id="table_cellpadding.details" approved="yes">
         <source>Cell padding is the 'internal' margin of a table cell. The distance is equally applied in all directions, top, bottom, left and right.</source>
-        <target approved="yes">Cell padding is the 'internal' margin of a table cell. The distance is equally applied in all directions, top, bottom, left and right.</target>
+        <target>Cell padding is the 'internal' margin of a table cell. The distance is equally applied in all directions, top, bottom, left and right.</target>
       </trans-unit>
-      <trans-unit id="media.description">
+      <trans-unit id="media.description" approved="yes">
         <source>Add files to the list here.</source>
-        <target approved="yes">Add files to the list here.</target>
+        <target>Add files to the list here.</target>
       </trans-unit>
-      <trans-unit id="multimedia.description">
+      <trans-unit id="multimedia.description" approved="yes">
         <source>Insert the multimedia element, eg. a flash movie here.</source>
-        <target approved="yes">Insert the multimedia element, eg. a flash movie here.</target>
+        <target>Insert the multimedia element, eg. a flash movie here.</target>
       </trans-unit>
-      <trans-unit id="filelink_size.description">
+      <trans-unit id="filelink_size.description" approved="yes">
         <source>Check this, if you wish the filesizes to be displayed.</source>
-        <target approved="yes">Check this, if you wish the filesizes to be displayed.</target>
+        <target>Check this, if you wish the filesizes to be displayed.</target>
       </trans-unit>
-      <trans-unit id="records.description">
+      <trans-unit id="records.description" approved="yes">
         <source>Insert relations to records.</source>
-        <target approved="yes">Insert relations to records.</target>
+        <target>Insert relations to records.</target>
       </trans-unit>
-      <trans-unit id="spaceBefore.description">
+      <trans-unit id="spaceBefore.description" approved="yes">
         <source>Enter the amount of whitespace (in pixels) to insert &lt;em&gt;before&lt;/em&gt; this content element.</source>
-        <target approved="yes">Enter the amount of whitespace (in pixels) to insert &lt;em&gt;before&lt;/em&gt; this content element.</target>
+        <target>Enter the amount of whitespace (in pixels) to insert &lt;em&gt;before&lt;/em&gt; this content element.</target>
       </trans-unit>
-      <trans-unit id="_spaceBefore.seeAlso">
+      <trans-unit id="_spaceBefore.seeAlso" approved="yes">
         <source>tt_content:spaceAfter,
 tt_content:section_frame</source>
-        <target approved="yes">tt_content:spaceAfter,
+        <target>tt_content:spaceAfter,
 tt_content:section_frame</target>
       </trans-unit>
-      <trans-unit id="spaceAfter.description">
+      <trans-unit id="spaceAfter.description" approved="yes">
         <source>Enter the amount of whitespace (in pixels) to insert &lt;em&gt;after&lt;/em&gt; this content element.</source>
-        <target approved="yes">Enter the amount of whitespace (in pixels) to insert &lt;em&gt;after&lt;/em&gt; this content element.</target>
+        <target>Enter the amount of whitespace (in pixels) to insert &lt;em&gt;after&lt;/em&gt; this content element.</target>
       </trans-unit>
-      <trans-unit id="_spaceAfter.seeAlso">
+      <trans-unit id="_spaceAfter.seeAlso" approved="yes">
         <source>tt_content:spaceBefore,
 tt_content:section_frame</source>
-        <target approved="yes">tt_content:spaceBefore,
+        <target>tt_content:spaceBefore,
 tt_content:section_frame</target>
       </trans-unit>
-      <trans-unit id="section_frame.description">
+      <trans-unit id="section_frame.description" approved="yes">
         <source>Select a framing option for the content element.</source>
-        <target approved="yes">Select a framing option for the content element.</target>
+        <target>Select a framing option for the content element.</target>
       </trans-unit>
-      <trans-unit id="_section_frame.seeAlso">
+      <trans-unit id="_section_frame.seeAlso" approved="yes">
         <source>tt_content:spaceAfter,
 tt_content:spaceBefore</source>
-        <target approved="yes">tt_content:spaceAfter,
+        <target>tt_content:spaceAfter,
 tt_content:spaceBefore</target>
       </trans-unit>
-      <trans-unit id="splash_layout.description">
+      <trans-unit id="splash_layout.description" approved="yes">
         <source>Select the design for the Text box.</source>
-        <target approved="yes">Select the design for the Text box.</target>
+        <target>Select the design for the Text box.</target>
       </trans-unit>
-      <trans-unit id="splash_layout.details">
+      <trans-unit id="splash_layout.details" approved="yes">
         <source>&lt;strong&gt;Notice:&lt;/strong&gt; The Textbox type has a few default renderings but are primarily designed to be used for custom purposes. Therefore the availability of features will depend on the current website template.</source>
-        <target approved="yes">&lt;strong&gt;Notice:&lt;/strong&gt; The Textbox type has a few default renderings but are primarily designed to be used for custom purposes. Therefore the availability of features will depend on the current website template.</target>
+        <target>&lt;strong&gt;Notice:&lt;/strong&gt; The Textbox type has a few default renderings but are primarily designed to be used for custom purposes. Therefore the availability of features will depend on the current website template.</target>
       </trans-unit>
-      <trans-unit id="_splash_layout.seeAlso">
+      <trans-unit id="_splash_layout.seeAlso" approved="yes">
         <source>tt_content:CType</source>
-        <target approved="yes">tt_content:CType</target>
+        <target>tt_content:CType</target>
       </trans-unit>
-      <trans-unit id="sectionIndex.description">
+      <trans-unit id="sectionIndex.description" approved="yes">
         <source>If set, the content element will appear in section indices.</source>
-        <target approved="yes">If set, the content element will appear in section indices.</target>
+        <target>If set, the content element will appear in section indices.</target>
       </trans-unit>
-      <trans-unit id="sectionIndex.details">
+      <trans-unit id="sectionIndex.details" approved="yes">
         <source>See details for the Menu-type selector (click below).</source>
-        <target approved="yes">See details for the Menu-type selector (click below).</target>
+        <target>See details for the Menu-type selector (click below).</target>
       </trans-unit>
-      <trans-unit id="_sectionIndex.seeAlso">
+      <trans-unit id="_sectionIndex.seeAlso" approved="yes">
         <source>tt_content:menu_type</source>
-        <target approved="yes">tt_content:menu_type</target>
+        <target>tt_content:menu_type</target>
       </trans-unit>
-      <trans-unit id="linkToTop.description">
+      <trans-unit id="linkToTop.description" approved="yes">
         <source>If checked, a little "To top" link will be inserted after the content element.</source>
-        <target approved="yes">If checked, a little "To top" link will be inserted after the content element.</target>
+        <target>If checked, a little "To top" link will be inserted after the content element.</target>
       </trans-unit>
-      <trans-unit id="rte_enabled.description">
+      <trans-unit id="rte_enabled.description" approved="yes">
         <source>If checked, the Rich Text Editor will be disabled for the "Text" and "Text w/Image" types (&lt;em&gt;in this element only&lt;/em&gt;).</source>
-        <target approved="yes">If checked, the Rich Text Editor will be disabled for the "Text" and "Text w/Image" types (&lt;em&gt;in this element only&lt;/em&gt;).</target>
+        <target>If checked, the Rich Text Editor will be disabled for the "Text" and "Text w/Image" types (&lt;em&gt;in this element only&lt;/em&gt;).</target>
       </trans-unit>
-      <trans-unit id="_rte_enabled.seeAlso">
+      <trans-unit id="_rte_enabled.seeAlso" approved="yes">
         <source>tt_content:bodytext</source>
-        <target approved="yes">tt_content:bodytext</target>
+        <target>tt_content:bodytext</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.description">
+      <trans-unit id="pi_flexform.description" approved="yes">
         <source>FlexForm Configuration of Plugins</source>
-        <target approved="yes">FlexForm Configuration of Plugins</target>
+        <target>FlexForm Configuration of Plugins</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.details">
+      <trans-unit id="pi_flexform.details" approved="yes">
         <source>Some plugins may require configuration of their options. They may use this field for FlexForm based configuration settings (stored as XML).</source>
-        <target approved="yes">Some plugins may require configuration of their options. They may use this field for FlexForm based configuration settings (stored as XML).</target>
+        <target>Some plugins may require configuration of their options. They may use this field for FlexForm based configuration settings (stored as XML).</target>
       </trans-unit>
-      <trans-unit id="_pi_flexform.seeAlso">
+      <trans-unit id="_pi_flexform.seeAlso" approved="yes">
         <source>tt_content:list_type</source>
-        <target approved="yes">tt_content:list_type</target>
+        <target>tt_content:list_type</target>
       </trans-unit>
     </body>
   </file>

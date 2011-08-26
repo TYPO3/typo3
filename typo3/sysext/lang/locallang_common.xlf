@@ -3,261 +3,261 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:24 UTC" product-name="lang">
     <header/>
     <body>
-      <trans-unit id="about">
+      <trans-unit id="about" approved="yes">
         <source>About</source>
-        <target approved="yes">About</target>
+        <target>About</target>
       </trans-unit>
-      <trans-unit id="and">
+      <trans-unit id="and" approved="yes">
         <source>and</source>
-        <target approved="yes">and</target>
+        <target>and</target>
       </trans-unit>
-      <trans-unit id="ascending">
+      <trans-unit id="ascending" approved="yes">
         <source>Ascending</source>
-        <target approved="yes">Ascending</target>
+        <target>Ascending</target>
       </trans-unit>
-      <trans-unit id="back">
+      <trans-unit id="back" approved="yes">
         <source>Back</source>
-        <target approved="yes">Back</target>
+        <target>Back</target>
       </trans-unit>
-      <trans-unit id="byteSizeUnits">
+      <trans-unit id="byteSizeUnits" approved="yes">
         <source> B| KB| MB| GB</source>
-        <target approved="yes"> B| KB| MB| GB</target>
+        <target> B| KB| MB| GB</target>
       </trans-unit>
-      <trans-unit id="cancel">
+      <trans-unit id="cancel" approved="yes">
         <source>Cancel</source>
-        <target approved="yes">Cancel</target>
+        <target>Cancel</target>
       </trans-unit>
-      <trans-unit id="category">
+      <trans-unit id="category" approved="yes">
         <source>Category</source>
-        <target approved="yes">Category</target>
+        <target>Category</target>
       </trans-unit>
-      <trans-unit id="close">
+      <trans-unit id="close" approved="yes">
         <source>Close</source>
-        <target approved="yes">Close</target>
+        <target>Close</target>
       </trans-unit>
-      <trans-unit id="delete">
+      <trans-unit id="delete" approved="yes">
         <source>Delete</source>
-        <target approved="yes">Delete</target>
+        <target>Delete</target>
       </trans-unit>
-      <trans-unit id="descending">
+      <trans-unit id="descending" approved="yes">
         <source>Descending</source>
-        <target approved="yes">Descending</target>
+        <target>Descending</target>
       </trans-unit>
-      <trans-unit id="details">
+      <trans-unit id="details" approved="yes">
         <source>Details</source>
-        <target approved="yes">Details</target>
+        <target>Details</target>
       </trans-unit>
-      <trans-unit id="disable">
+      <trans-unit id="disable" approved="yes">
         <source>Disable</source>
-        <target approved="yes">Disable</target>
+        <target>Disable</target>
       </trans-unit>
-      <trans-unit id="disabled">
+      <trans-unit id="disabled" approved="yes">
         <source>Disabled</source>
-        <target approved="yes">Disabled</target>
+        <target>Disabled</target>
       </trans-unit>
-      <trans-unit id="down">
+      <trans-unit id="down" approved="yes">
         <source>Down</source>
-        <target approved="yes">Down</target>
+        <target>Down</target>
       </trans-unit>
-      <trans-unit id="download">
+      <trans-unit id="download" approved="yes">
         <source>Download</source>
-        <target approved="yes">Download</target>
+        <target>Download</target>
       </trans-unit>
-      <trans-unit id="edit">
+      <trans-unit id="edit" approved="yes">
         <source>Edit</source>
-        <target approved="yes">Edit</target>
+        <target>Edit</target>
       </trans-unit>
-      <trans-unit id="editField">
+      <trans-unit id="editField" approved="yes">
         <source>Edit field</source>
-        <target approved="yes">Edit field</target>
+        <target>Edit field</target>
       </trans-unit>
-      <trans-unit id="editFile">
+      <trans-unit id="editFile" approved="yes">
         <source>Edit file</source>
-        <target approved="yes">Edit file</target>
+        <target>Edit file</target>
       </trans-unit>
-      <trans-unit id="enable">
+      <trans-unit id="enable" approved="yes">
         <source>Enable</source>
-        <target approved="yes">Enable</target>
+        <target>Enable</target>
       </trans-unit>
-      <trans-unit id="enabled">
+      <trans-unit id="enabled" approved="yes">
         <source>Enabled</source>
-        <target approved="yes">Enabled</target>
+        <target>Enabled</target>
       </trans-unit>
-      <trans-unit id="file">
+      <trans-unit id="file" approved="yes">
         <source>File</source>
-        <target approved="yes">File</target>
+        <target>File</target>
       </trans-unit>
-      <trans-unit id="files">
+      <trans-unit id="files" approved="yes">
         <source>Files</source>
-        <target approved="yes">Files</target>
+        <target>Files</target>
       </trans-unit>
-      <trans-unit id="first">
+      <trans-unit id="first" approved="yes">
         <source>First</source>
-        <target approved="yes">First</target>
+        <target>First</target>
       </trans-unit>
-      <trans-unit id="from">
+      <trans-unit id="from" approved="yes">
         <source>From</source>
-        <target approved="yes">From</target>
+        <target>From</target>
       </trans-unit>
-      <trans-unit id="go">
+      <trans-unit id="go" approved="yes">
         <source>Go</source>
-        <target approved="yes">Go</target>
+        <target>Go</target>
       </trans-unit>
-      <trans-unit id="goTo">
+      <trans-unit id="goTo" approved="yes">
         <source>Go to</source>
-        <target approved="yes">Go to</target>
+        <target>Go to</target>
       </trans-unit>
-      <trans-unit id="help">
+      <trans-unit id="help" approved="yes">
         <source>Help</source>
-        <target approved="yes">Help</target>
+        <target>Help</target>
       </trans-unit>
-      <trans-unit id="item">
+      <trans-unit id="item" approved="yes">
         <source>Item</source>
-        <target approved="yes">Item</target>
+        <target>Item</target>
       </trans-unit>
-      <trans-unit id="items">
+      <trans-unit id="items" approved="yes">
         <source>Items</source>
-        <target approved="yes">Items</target>
+        <target>Items</target>
       </trans-unit>
-      <trans-unit id="last">
+      <trans-unit id="last" approved="yes">
         <source>Last</source>
-        <target approved="yes">Last</target>
+        <target>Last</target>
       </trans-unit>
-      <trans-unit id="left">
+      <trans-unit id="left" approved="yes">
         <source>Left</source>
-        <target approved="yes">Left</target>
+        <target>Left</target>
       </trans-unit>
-      <trans-unit id="login">
+      <trans-unit id="login" approved="yes">
         <source>Login</source>
-        <target approved="yes">Login</target>
+        <target>Login</target>
       </trans-unit>
-      <trans-unit id="logout">
+      <trans-unit id="logout" approved="yes">
         <source>Logout</source>
-        <target approved="yes">Logout</target>
+        <target>Logout</target>
       </trans-unit>
-      <trans-unit id="more">
+      <trans-unit id="more" approved="yes">
         <source>More</source>
-        <target approved="yes">More</target>
+        <target>More</target>
       </trans-unit>
-      <trans-unit id="move">
+      <trans-unit id="move" approved="yes">
         <source>Move</source>
-        <target approved="yes">Move</target>
+        <target>Move</target>
       </trans-unit>
-      <trans-unit id="new">
+      <trans-unit id="new" approved="yes">
         <source>New</source>
-        <target approved="yes">New</target>
+        <target>New</target>
       </trans-unit>
-      <trans-unit id="next">
+      <trans-unit id="next" approved="yes">
         <source>Next</source>
-        <target approved="yes">Next</target>
+        <target>Next</target>
       </trans-unit>
-      <trans-unit id="no">
+      <trans-unit id="no" approved="yes">
         <source>No</source>
-        <target approved="yes">No</target>
+        <target>No</target>
       </trans-unit>
-      <trans-unit id="ok">
+      <trans-unit id="ok" approved="yes">
         <source>OK</source>
-        <target approved="yes">OK</target>
+        <target>OK</target>
       </trans-unit>
-      <trans-unit id="open">
+      <trans-unit id="open" approved="yes">
         <source>Open</source>
-        <target approved="yes">Open</target>
+        <target>Open</target>
       </trans-unit>
-      <trans-unit id="page">
+      <trans-unit id="page" approved="yes">
         <source>Page</source>
-        <target approved="yes">Page</target>
+        <target>Page</target>
       </trans-unit>
-      <trans-unit id="pages">
+      <trans-unit id="pages" approved="yes">
         <source>Pages</source>
-        <target approved="yes">Pages</target>
+        <target>Pages</target>
       </trans-unit>
-      <trans-unit id="previous">
+      <trans-unit id="previous" approved="yes">
         <source>Previous</source>
-        <target approved="yes">Previous</target>
+        <target>Previous</target>
       </trans-unit>
-      <trans-unit id="print">
+      <trans-unit id="print" approved="yes">
         <source>Print</source>
-        <target approved="yes">Print</target>
+        <target>Print</target>
       </trans-unit>
-      <trans-unit id="reload">
+      <trans-unit id="reload" approved="yes">
         <source>Reload</source>
-        <target approved="yes">Reload</target>
+        <target>Reload</target>
       </trans-unit>
-      <trans-unit id="right">
+      <trans-unit id="right" approved="yes">
         <source>Right</source>
-        <target approved="yes">Right</target>
+        <target>Right</target>
       </trans-unit>
-      <trans-unit id="save">
+      <trans-unit id="save" approved="yes">
         <source>Save</source>
-        <target approved="yes">Save</target>
+        <target>Save</target>
       </trans-unit>
-      <trans-unit id="saveAndClose">
+      <trans-unit id="saveAndClose" approved="yes">
         <source>Save and close</source>
-        <target approved="yes">Save and close</target>
+        <target>Save and close</target>
       </trans-unit>
-      <trans-unit id="saveAndCloseDoc">
+      <trans-unit id="saveAndCloseDoc" approved="yes">
         <source>Save and close document</source>
-        <target approved="yes">Save and close document</target>
+        <target>Save and close document</target>
       </trans-unit>
-      <trans-unit id="saveAndCreateNewDoc">
+      <trans-unit id="saveAndCreateNewDoc" approved="yes">
         <source>Save and create new document</source>
-        <target approved="yes">Save and create new document</target>
+        <target>Save and create new document</target>
       </trans-unit>
-      <trans-unit id="saveAndViewPage">
+      <trans-unit id="saveAndViewPage" approved="yes">
         <source>Save and view page</source>
-        <target approved="yes">Save and view page</target>
+        <target>Save and view page</target>
       </trans-unit>
-      <trans-unit id="search">
+      <trans-unit id="search" approved="yes">
         <source>Search</source>
-        <target approved="yes">Search</target>
+        <target>Search</target>
       </trans-unit>
-      <trans-unit id="send">
+      <trans-unit id="send" approved="yes">
         <source>Send</source>
-        <target approved="yes">Send</target>
+        <target>Send</target>
       </trans-unit>
-      <trans-unit id="start">
+      <trans-unit id="start" approved="yes">
         <source>Start</source>
-        <target approved="yes">Start</target>
+        <target>Start</target>
       </trans-unit>
-      <trans-unit id="stop">
+      <trans-unit id="stop" approved="yes">
         <source>Stop</source>
-        <target approved="yes">Stop</target>
+        <target>Stop</target>
       </trans-unit>
-      <trans-unit id="submit">
+      <trans-unit id="submit" approved="yes">
         <source>Submit</source>
-        <target approved="yes">Submit</target>
+        <target>Submit</target>
       </trans-unit>
-      <trans-unit id="to">
+      <trans-unit id="to" approved="yes">
         <source>To</source>
-        <target approved="yes">To</target>
+        <target>To</target>
       </trans-unit>
-      <trans-unit id="tsRef">
+      <trans-unit id="tsRef" approved="yes">
         <source>TSref reference</source>
-        <target approved="yes">TSref reference</target>
+        <target>TSref reference</target>
       </trans-unit>
-      <trans-unit id="up">
+      <trans-unit id="up" approved="yes">
         <source>Up</source>
-        <target approved="yes">Up</target>
+        <target>Up</target>
       </trans-unit>
-      <trans-unit id="upload">
+      <trans-unit id="upload" approved="yes">
         <source>Upload</source>
-        <target approved="yes">Upload</target>
+        <target>Upload</target>
       </trans-unit>
-      <trans-unit id="user">
+      <trans-unit id="user" approved="yes">
         <source>User</source>
-        <target approved="yes">User</target>
+        <target>User</target>
       </trans-unit>
-      <trans-unit id="users">
+      <trans-unit id="users" approved="yes">
         <source>Users</source>
-        <target approved="yes">Users</target>
+        <target>Users</target>
       </trans-unit>
-      <trans-unit id="view">
+      <trans-unit id="view" approved="yes">
         <source>View</source>
-        <target approved="yes">View</target>
+        <target>View</target>
       </trans-unit>
-      <trans-unit id="yes">
+      <trans-unit id="yes" approved="yes">
         <source>Yes</source>
-        <target approved="yes">Yes</target>
+        <target>Yes</target>
       </trans-unit>
     </body>
   </file>

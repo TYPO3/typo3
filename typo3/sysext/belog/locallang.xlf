@@ -3,81 +3,81 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:22 UTC" product-name="belog">
     <header/>
     <body>
-      <trans-unit id="chLog_title">
+      <trans-unit id="chLog_title" approved="yes">
         <source>Admin Changelog</source>
-        <target approved="yes">Admin Changelog</target>
+        <target>Admin Changelog</target>
       </trans-unit>
-      <trans-unit id="chLog_users_0">
+      <trans-unit id="chLog_users_0" approved="yes">
         <source>All users</source>
-        <target approved="yes">All users</target>
+        <target>All users</target>
       </trans-unit>
-      <trans-unit id="chLog_users_-1">
+      <trans-unit id="chLog_users_-1" approved="yes">
         <source>Self</source>
-        <target approved="yes">Self</target>
+        <target>Self</target>
       </trans-unit>
-      <trans-unit id="chLog_time_0">
+      <trans-unit id="chLog_time_0" approved="yes">
         <source>This week</source>
-        <target approved="yes">This week</target>
+        <target>This week</target>
       </trans-unit>
-      <trans-unit id="chLog_time_1">
+      <trans-unit id="chLog_time_1" approved="yes">
         <source>Last week</source>
-        <target approved="yes">Last week</target>
+        <target>Last week</target>
       </trans-unit>
-      <trans-unit id="chLog_time_2">
+      <trans-unit id="chLog_time_2" approved="yes">
         <source>Last 7 days</source>
-        <target approved="yes">Last 7 days</target>
+        <target>Last 7 days</target>
       </trans-unit>
-      <trans-unit id="chLog_time_10">
+      <trans-unit id="chLog_time_10" approved="yes">
         <source>This month</source>
-        <target approved="yes">This month</target>
+        <target>This month</target>
       </trans-unit>
-      <trans-unit id="chLog_time_11">
+      <trans-unit id="chLog_time_11" approved="yes">
         <source>Last month</source>
-        <target approved="yes">Last month</target>
+        <target>Last month</target>
       </trans-unit>
-      <trans-unit id="chLog_time_12">
+      <trans-unit id="chLog_time_12" approved="yes">
         <source>Last 31 days</source>
-        <target approved="yes">Last 31 days</target>
+        <target>Last 31 days</target>
       </trans-unit>
-      <trans-unit id="chLog_time_20">
+      <trans-unit id="chLog_time_20" approved="yes">
         <source>No limit</source>
-        <target approved="yes">No limit</target>
+        <target>No limit</target>
       </trans-unit>
-      <trans-unit id="chLog_l_time">
+      <trans-unit id="chLog_l_time" approved="yes">
         <source>Time</source>
-        <target approved="yes">Time</target>
+        <target>Time</target>
       </trans-unit>
-      <trans-unit id="chLog_l_user">
+      <trans-unit id="chLog_l_user" approved="yes">
         <source>User</source>
-        <target approved="yes">User</target>
+        <target>User</target>
       </trans-unit>
-      <trans-unit id="chLog_l_error">
+      <trans-unit id="chLog_l_error" approved="yes">
         <source>E</source>
-        <target approved="yes">E</target>
+        <target>E</target>
       </trans-unit>
-      <trans-unit id="chLog_l_action">
+      <trans-unit id="chLog_l_action" approved="yes">
         <source>Action</source>
-        <target approved="yes">Action</target>
+        <target>Action</target>
       </trans-unit>
-      <trans-unit id="chLog_l_table">
+      <trans-unit id="chLog_l_table" approved="yes">
         <source>Table</source>
-        <target approved="yes">Table</target>
+        <target>Table</target>
       </trans-unit>
-      <trans-unit id="chLog_l_details">
+      <trans-unit id="chLog_l_details" approved="yes">
         <source>Details</source>
-        <target approved="yes">Details</target>
+        <target>Details</target>
       </trans-unit>
-      <trans-unit id="chLog_menuUsers">
+      <trans-unit id="chLog_menuUsers" approved="yes">
         <source>Users</source>
-        <target approved="yes">Users</target>
+        <target>Users</target>
       </trans-unit>
-      <trans-unit id="chLog_menuDepth">
+      <trans-unit id="chLog_menuDepth" approved="yes">
         <source>Depth</source>
-        <target approved="yes">Depth</target>
+        <target>Depth</target>
       </trans-unit>
-      <trans-unit id="chLog_menuTime">
+      <trans-unit id="chLog_menuTime" approved="yes">
         <source>Time</source>
-        <target approved="yes">Time</target>
+        <target>Time</target>
       </trans-unit>
     </body>
   </file>

@@ -3,129 +3,129 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:23 UTC" product-name="css_styled_content">
     <header/>
     <body>
-      <trans-unit id="label.toTop">
+      <trans-unit id="label.toTop" approved="yes">
         <source>To top</source>
-        <target approved="yes">To top</target>
+        <target>To top</target>
       </trans-unit>
-      <trans-unit id="login.username">
+      <trans-unit id="login.username" approved="yes">
         <source>Username:</source>
-        <target approved="yes">Username:</target>
+        <target>Username:</target>
       </trans-unit>
-      <trans-unit id="login.password">
+      <trans-unit id="login.password" approved="yes">
         <source>Password:</source>
-        <target approved="yes">Password:</target>
+        <target>Password:</target>
       </trans-unit>
-      <trans-unit id="login.login">
+      <trans-unit id="login.login" approved="yes">
         <source>Login</source>
-        <target approved="yes">Login</target>
+        <target>Login</target>
       </trans-unit>
-      <trans-unit id="login.logout">
+      <trans-unit id="login.logout" approved="yes">
         <source>Logout</source>
-        <target approved="yes">Logout</target>
+        <target>Logout</target>
       </trans-unit>
-      <trans-unit id="search.emptySearch">
+      <trans-unit id="search.emptySearch" approved="yes">
         <source>Sorry, your search was empty!</source>
-        <target approved="yes">Sorry, your search was empty!</target>
+        <target>Sorry, your search was empty!</target>
       </trans-unit>
-      <trans-unit id="search.resultRange">
+      <trans-unit id="search.resultRange" approved="yes">
         <source>Searchresult: ###RANGELOW###-###RANGEHIGH### of ###TOTAL###</source>
-        <target approved="yes">Searchresult: ###RANGELOW###-###RANGEHIGH### of ###TOTAL###</target>
+        <target>Searchresult: ###RANGELOW###-###RANGEHIGH### of ###TOTAL###</target>
       </trans-unit>
-      <trans-unit id="search.searchResultNext">
+      <trans-unit id="search.searchResultNext" approved="yes">
         <source>Next</source>
-        <target approved="yes">Next</target>
+        <target>Next</target>
       </trans-unit>
-      <trans-unit id="search.searchResultPrev">
+      <trans-unit id="search.searchResultPrev" approved="yes">
         <source>Prev</source>
-        <target approved="yes">Prev</target>
+        <target>Prev</target>
       </trans-unit>
-      <trans-unit id="search.searchWord">
+      <trans-unit id="search.searchWord" approved="yes">
         <source>Searchword:</source>
-        <target approved="yes">Searchword:</target>
+        <target>Searchword:</target>
       </trans-unit>
-      <trans-unit id="search.searchIn">
+      <trans-unit id="search.searchIn" approved="yes">
         <source>Search in:</source>
-        <target approved="yes">Search in:</target>
+        <target>Search in:</target>
       </trans-unit>
-      <trans-unit id="search.headersKeywords">
+      <trans-unit id="search.headersKeywords" approved="yes">
         <source>Headers and keywords</source>
-        <target approved="yes">Headers and keywords</target>
+        <target>Headers and keywords</target>
       </trans-unit>
-      <trans-unit id="search.pageContent">
+      <trans-unit id="search.pageContent" approved="yes">
         <source>Page content</source>
-        <target approved="yes">Page content</target>
+        <target>Page content</target>
       </trans-unit>
-      <trans-unit id="search.searchButton">
+      <trans-unit id="search.searchButton" approved="yes">
         <source>Search now!</source>
-        <target approved="yes">Search now!</target>
+        <target>Search now!</target>
       </trans-unit>
-      <trans-unit id="eIcon.html">
+      <trans-unit id="eIcon.html" approved="yes">
         <source>Edit pure HTML content</source>
-        <target approved="yes">Edit pure HTML content</target>
+        <target>Edit pure HTML content</target>
       </trans-unit>
-      <trans-unit id="eIcon.header">
+      <trans-unit id="eIcon.header" approved="yes">
         <source>Edit header</source>
-        <target approved="yes">Edit header</target>
+        <target>Edit header</target>
       </trans-unit>
-      <trans-unit id="eIcon.subheader">
+      <trans-unit id="eIcon.subheader" approved="yes">
         <source>Edit subheader</source>
-        <target approved="yes">Edit subheader</target>
+        <target>Edit subheader</target>
       </trans-unit>
-      <trans-unit id="eIcon.bodytext">
+      <trans-unit id="eIcon.bodytext" approved="yes">
         <source>Edit bodytext</source>
-        <target approved="yes">Edit bodytext</target>
+        <target>Edit bodytext</target>
       </trans-unit>
-      <trans-unit id="eIcon.images">
+      <trans-unit id="eIcon.images" approved="yes">
         <source>Edit images</source>
-        <target approved="yes">Edit images</target>
+        <target>Edit images</target>
       </trans-unit>
-      <trans-unit id="eIcon.caption">
+      <trans-unit id="eIcon.caption" approved="yes">
         <source>Edit image caption</source>
-        <target approved="yes">Edit image caption</target>
+        <target>Edit image caption</target>
       </trans-unit>
-      <trans-unit id="eIcon.bullets">
+      <trans-unit id="eIcon.bullets" approved="yes">
         <source>Edit bullet list</source>
-        <target approved="yes">Edit bullet list</target>
+        <target>Edit bullet list</target>
       </trans-unit>
-      <trans-unit id="eIcon.table">
+      <trans-unit id="eIcon.table" approved="yes">
         <source>Edit table</source>
-        <target approved="yes">Edit table</target>
+        <target>Edit table</target>
       </trans-unit>
-      <trans-unit id="eIcon.filelist">
+      <trans-unit id="eIcon.filelist" approved="yes">
         <source>Edit file list</source>
-        <target approved="yes">Edit file list</target>
+        <target>Edit file list</target>
       </trans-unit>
-      <trans-unit id="eIcon.menuSitemap">
+      <trans-unit id="eIcon.menuSitemap" approved="yes">
         <source>Edit menu / sitemap</source>
-        <target approved="yes">Edit menu / sitemap</target>
+        <target>Edit menu / sitemap</target>
       </trans-unit>
-      <trans-unit id="eIcon.recordList">
+      <trans-unit id="eIcon.recordList" approved="yes">
         <source>Edit recordlist</source>
-        <target approved="yes">Edit recordlist</target>
+        <target>Edit recordlist</target>
       </trans-unit>
-      <trans-unit id="eIcon.plugin">
+      <trans-unit id="eIcon.plugin" approved="yes">
         <source>Change/configure plugin</source>
-        <target approved="yes">Change/configure plugin</target>
+        <target>Change/configure plugin</target>
       </trans-unit>
-      <trans-unit id="eIcon.multimedia">
+      <trans-unit id="eIcon.multimedia" approved="yes">
         <source>Edit multimedia element</source>
-        <target approved="yes">Edit multimedia element</target>
+        <target>Edit multimedia element</target>
       </trans-unit>
-      <trans-unit id="eIcon.form">
+      <trans-unit id="eIcon.form" approved="yes">
         <source>Edit email form</source>
-        <target approved="yes">Edit email form</target>
+        <target>Edit email form</target>
       </trans-unit>
-      <trans-unit id="eIcon.search">
+      <trans-unit id="eIcon.search" approved="yes">
         <source>Edit search element</source>
-        <target approved="yes">Edit search element</target>
+        <target>Edit search element</target>
       </trans-unit>
-      <trans-unit id="eIcon.login">
+      <trans-unit id="eIcon.login" approved="yes">
         <source>Edit login element</source>
-        <target approved="yes">Edit login element</target>
+        <target>Edit login element</target>
       </trans-unit>
-      <trans-unit id="eIcon.page">
+      <trans-unit id="eIcon.page" approved="yes">
         <source>Page:</source>
-        <target approved="yes">Page:</target>
+        <target>Page:</target>
       </trans-unit>
     </body>
   </file>

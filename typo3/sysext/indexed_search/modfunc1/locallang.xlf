@@ -3,9 +3,9 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:23 UTC" product-name="indexed_search">
     <header/>
     <body>
-      <trans-unit id="title">
+      <trans-unit id="title" approved="yes">
         <source>Indexed search</source>
-        <target approved="yes">Indexed search</target>
+        <target>Indexed search</target>
       </trans-unit>
     </body>
   </file>

@@ -3,53 +3,53 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="No block">
+      <trans-unit id="No block" approved="yes">
         <source>No block format</source>
-        <target approved="yes">No block format</target>
+        <target>No block format</target>
       </trans-unit>
-      <trans-unit id="Paragraph">
+      <trans-unit id="Paragraph" approved="yes">
         <source>Paragraph</source>
-        <target approved="yes">Paragraph</target>
+        <target>Paragraph</target>
       </trans-unit>
-      <trans-unit id="Heading 1">
+      <trans-unit id="Heading 1" approved="yes">
         <source>Heading 1</source>
-        <target approved="yes">Heading 1</target>
+        <target>Heading 1</target>
       </trans-unit>
-      <trans-unit id="Heading 2">
+      <trans-unit id="Heading 2" approved="yes">
         <source>Heading 2</source>
-        <target approved="yes">Heading 2</target>
+        <target>Heading 2</target>
       </trans-unit>
-      <trans-unit id="Heading 3">
+      <trans-unit id="Heading 3" approved="yes">
         <source>Heading 3</source>
-        <target approved="yes">Heading 3</target>
+        <target>Heading 3</target>
       </trans-unit>
-      <trans-unit id="Heading 4">
+      <trans-unit id="Heading 4" approved="yes">
         <source>Heading 4</source>
-        <target approved="yes">Heading 4</target>
+        <target>Heading 4</target>
       </trans-unit>
-      <trans-unit id="Heading 5">
+      <trans-unit id="Heading 5" approved="yes">
         <source>Heading 5</source>
-        <target approved="yes">Heading 5</target>
+        <target>Heading 5</target>
       </trans-unit>
-      <trans-unit id="Heading 6">
+      <trans-unit id="Heading 6" approved="yes">
         <source>Heading 6</source>
-        <target approved="yes">Heading 6</target>
+        <target>Heading 6</target>
       </trans-unit>
-      <trans-unit id="Preformatted">
+      <trans-unit id="Preformatted" approved="yes">
         <source>Preformatted</source>
-        <target approved="yes">Preformatted</target>
+        <target>Preformatted</target>
       </trans-unit>
-      <trans-unit id="Long quotation">
+      <trans-unit id="Long quotation" approved="yes">
         <source>Quotation</source>
-        <target approved="yes">Quotation</target>
+        <target>Quotation</target>
       </trans-unit>
-      <trans-unit id="Address">
+      <trans-unit id="Address" approved="yes">
         <source>Address</source>
-        <target approved="yes">Address</target>
+        <target>Address</target>
       </trans-unit>
-      <trans-unit id="Section">
+      <trans-unit id="Section" approved="yes">
         <source>Container</source>
-        <target approved="yes">Container</target>
+        <target>Container</target>
       </trans-unit>
     </body>
   </file>

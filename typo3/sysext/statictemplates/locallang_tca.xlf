@@ -3,37 +3,37 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="statictemplates">
     <header/>
     <body>
-      <trans-unit id="static_template">
+      <trans-unit id="static_template" approved="yes">
         <source>Static templates</source>
-        <target approved="yes">Static templates</target>
+        <target>Static templates</target>
       </trans-unit>
-      <trans-unit id="static_template.title">
+      <trans-unit id="static_template.title" approved="yes">
         <source>Template title:</source>
-        <target approved="yes">Template title:</target>
+        <target>Template title:</target>
       </trans-unit>
-      <trans-unit id="static_template.constants">
+      <trans-unit id="static_template.constants" approved="yes">
         <source>Constants:</source>
-        <target approved="yes">Constants:</target>
+        <target>Constants:</target>
       </trans-unit>
-      <trans-unit id="static_template.include_static">
+      <trans-unit id="static_template.include_static" approved="yes">
         <source>Include static:</source>
-        <target approved="yes">Include static:</target>
+        <target>Include static:</target>
       </trans-unit>
-      <trans-unit id="static_template.config">
+      <trans-unit id="static_template.config" approved="yes">
         <source>Setup:</source>
-        <target approved="yes">Setup:</target>
+        <target>Setup:</target>
       </trans-unit>
-      <trans-unit id="static_template.editorcfg">
+      <trans-unit id="static_template.editorcfg" approved="yes">
         <source>Backend Editor Configuration:</source>
-        <target approved="yes">Backend Editor Configuration:</target>
+        <target>Backend Editor Configuration:</target>
       </trans-unit>
-      <trans-unit id="static_template.description">
+      <trans-unit id="static_template.description" approved="yes">
         <source>Description:</source>
-        <target approved="yes">Description:</target>
+        <target>Description:</target>
       </trans-unit>
-      <trans-unit id="include_static">
+      <trans-unit id="include_static" approved="yes">
         <source>Include static:</source>
-        <target approved="yes">Include static:</target>
+        <target>Include static:</target>
       </trans-unit>
     </body>
   </file>

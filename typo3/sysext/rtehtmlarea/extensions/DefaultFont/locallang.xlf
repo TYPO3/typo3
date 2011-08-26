@@ -3,13 +3,13 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="No font">
+      <trans-unit id="No font" approved="yes">
         <source>No font</source>
-        <target approved="yes">No font</target>
+        <target>No font</target>
       </trans-unit>
-      <trans-unit id="No size">
+      <trans-unit id="No size" approved="yes">
         <source>No font size</source>
-        <target approved="yes">No font size</target>
+        <target>No font size</target>
       </trans-unit>
     </body>
   </file>

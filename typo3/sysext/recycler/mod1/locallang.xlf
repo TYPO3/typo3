@@ -3,145 +3,145 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="recycler">
     <header/>
     <body>
-      <trans-unit id="title">
+      <trans-unit id="title" approved="yes">
         <source>Recycler</source>
-        <target approved="yes">Recycler</target>
+        <target>Recycler</target>
       </trans-unit>
-      <trans-unit id="description">
+      <trans-unit id="description" approved="yes">
         <source>The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</source>
-        <target approved="yes">The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</target>
+        <target>The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</target>
       </trans-unit>
-      <trans-unit id="label_alltables">
+      <trans-unit id="label_alltables" approved="yes">
         <source>All tables</source>
-        <target approved="yes">All tables</target>
+        <target>All tables</target>
       </trans-unit>
-      <trans-unit id="js.label_lostandfound">
+      <trans-unit id="js.label_lostandfound" approved="yes">
         <source>Lost and found</source>
-        <target approved="yes">Lost and found</target>
+        <target>Lost and found</target>
       </trans-unit>
-      <trans-unit id="js.label_deletedTab">
+      <trans-unit id="js.label_deletedTab" approved="yes">
         <source>Deleted data</source>
-        <target approved="yes">Deleted data</target>
+        <target>Deleted data</target>
       </trans-unit>
-      <trans-unit id="js.label_loadMessage">
+      <trans-unit id="js.label_loadMessage" approved="yes">
         <source>Please wait...&lt;br/&gt;Records would be loaded!</source>
-        <target approved="yes">Please wait...&lt;br/&gt;Records would be loaded!</target>
+        <target>Please wait...&lt;br/&gt;Records would be loaded!</target>
       </trans-unit>
-      <trans-unit id="js.label_doDelete_confirmText">
+      <trans-unit id="js.label_doDelete_confirmText" approved="yes">
         <source>Delete this record AND if page ALL subrecords ? &lt;br/&gt;ATTENTION: Data will be finally deleted from the database</source>
-        <target approved="yes">Delete this record AND if page ALL subrecords ? &lt;br/&gt;ATTENTION: Data will be finally deleted from the database</target>
+        <target>Delete this record AND if page ALL subrecords ? &lt;br/&gt;ATTENTION: Data will be finally deleted from the database</target>
       </trans-unit>
-      <trans-unit id="js.label_deleteButton_text">
+      <trans-unit id="js.label_deleteButton_text" approved="yes">
         <source>Delete</source>
-        <target approved="yes">Delete</target>
+        <target>Delete</target>
       </trans-unit>
-      <trans-unit id="js.label_deleteButton_tooltip">
+      <trans-unit id="js.label_deleteButton_tooltip" approved="yes">
         <source>Delete selected items</source>
-        <target approved="yes">Delete selected items</target>
+        <target>Delete selected items</target>
       </trans-unit>
-      <trans-unit id="js.label_undeleteButton_text">
+      <trans-unit id="js.label_undeleteButton_text" approved="yes">
         <source>Undelete</source>
-        <target approved="yes">Undelete</target>
+        <target>Undelete</target>
       </trans-unit>
-      <trans-unit id="js.label_undeleteButton_tooltip">
+      <trans-unit id="js.label_undeleteButton_tooltip" approved="yes">
         <source>Undelete selected items</source>
-        <target approved="yes">Undelete selected items</target>
+        <target>Undelete selected items</target>
       </trans-unit>
-      <trans-unit id="js.label_error_NoSelectedRows_title">
+      <trans-unit id="js.label_error_NoSelectedRows_title" approved="yes">
         <source>No row selected</source>
-        <target approved="yes">No row selected</target>
+        <target>No row selected</target>
       </trans-unit>
-      <trans-unit id="js.label_error_NoSelectedRows_msg">
+      <trans-unit id="js.label_error_NoSelectedRows_msg" approved="yes">
         <source>You must select a row!</source>
-        <target approved="yes">You must select a row!</target>
+        <target>You must select a row!</target>
       </trans-unit>
-      <trans-unit id="js.label_yes">
+      <trans-unit id="js.label_yes" approved="yes">
         <source>Yes</source>
-        <target approved="yes">Yes</target>
+        <target>Yes</target>
       </trans-unit>
-      <trans-unit id="js.label_no">
+      <trans-unit id="js.label_no" approved="yes">
         <source>No</source>
-        <target approved="yes">No</target>
+        <target>No</target>
       </trans-unit>
-      <trans-unit id="js.label_sure">
+      <trans-unit id="js.label_sure" approved="yes">
         <source>Are you Sure?</source>
-        <target approved="yes">Are you Sure?</target>
+        <target>Are you Sure?</target>
       </trans-unit>
-      <trans-unit id="js.label_crdate">
+      <trans-unit id="js.label_crdate" approved="yes">
         <source>Created</source>
-        <target approved="yes">Created</target>
+        <target>Created</target>
       </trans-unit>
-      <trans-unit id="js.label_owner">
+      <trans-unit id="js.label_owner" approved="yes">
         <source>Owner</source>
-        <target approved="yes">Owner</target>
+        <target>Owner</target>
       </trans-unit>
-      <trans-unit id="js.label_tstamp">
+      <trans-unit id="js.label_tstamp" approved="yes">
         <source>Last edit</source>
-        <target approved="yes">Last edit</target>
+        <target>Last edit</target>
       </trans-unit>
-      <trans-unit id="js.label_clear">
+      <trans-unit id="js.label_clear" approved="yes">
         <source>Clear</source>
-        <target approved="yes">Clear</target>
+        <target>Clear</target>
       </trans-unit>
-      <trans-unit id="js.label_filter">
+      <trans-unit id="js.label_filter" approved="yes">
         <source>Filter</source>
-        <target approved="yes">Filter</target>
+        <target>Filter</target>
       </trans-unit>
-      <trans-unit id="js.label_title_undelete">
+      <trans-unit id="js.label_title_undelete" approved="yes">
         <source>Undelete?</source>
-        <target approved="yes">Undelete?</target>
+        <target>Undelete?</target>
       </trans-unit>
-      <trans-unit id="js.label_text_undelete">
+      <trans-unit id="js.label_text_undelete" approved="yes">
         <source>Undelete records from tables: </source>
-        <target approved="yes">Undelete records from tables: </target>
+        <target>Undelete records from tables: </target>
       </trans-unit>
-      <trans-unit id="js.label_title_delete">
+      <trans-unit id="js.label_title_delete" approved="yes">
         <source>Delete?</source>
-        <target approved="yes">Delete?</target>
+        <target>Delete?</target>
       </trans-unit>
-      <trans-unit id="js.label_text_delete">
+      <trans-unit id="js.label_text_delete" approved="yes">
         <source>Delete records from tables: </source>
-        <target approved="yes">Delete records from tables: </target>
+        <target>Delete records from tables: </target>
       </trans-unit>
-      <trans-unit id="js.label_boxLabel_undelete_recursive">
+      <trans-unit id="js.label_boxLabel_undelete_recursive" approved="yes">
         <source>Undelete recursively</source>
-        <target approved="yes">Undelete recursively</target>
+        <target>Undelete recursively</target>
       </trans-unit>
-      <trans-unit id="js.label_tableMenu_label">
+      <trans-unit id="js.label_tableMenu_label" approved="yes">
         <source>Table:</source>
-        <target approved="yes">Table:</target>
+        <target>Table:</target>
       </trans-unit>
-      <trans-unit id="js.label_tableMenu_emptyText">
+      <trans-unit id="js.label_tableMenu_emptyText" approved="yes">
         <source>Choose a table...</source>
-        <target approved="yes">Choose a table...</target>
+        <target>Choose a table...</target>
       </trans-unit>
-      <trans-unit id="js.label_filter_emptyText">
+      <trans-unit id="js.label_filter_emptyText" approved="yes">
         <source>Keyword</source>
-        <target approved="yes">Keyword</target>
+        <target>Keyword</target>
       </trans-unit>
-      <trans-unit id="js.label_search">
+      <trans-unit id="js.label_search" approved="yes">
         <source>Search:</source>
-        <target approved="yes">Search:</target>
+        <target>Search:</target>
       </trans-unit>
-      <trans-unit id="js.label_pagingMessage">
+      <trans-unit id="js.label_pagingMessage" approved="yes">
         <source>Displaying records {0} - {1} of {2}</source>
-        <target approved="yes">Displaying records {0} - {1} of {2}</target>
+        <target>Displaying records {0} - {1} of {2}</target>
       </trans-unit>
-      <trans-unit id="js.label_pagingEmpty">
+      <trans-unit id="js.label_pagingEmpty" approved="yes">
         <source>No records to display</source>
-        <target approved="yes">No records to display</target>
+        <target>No records to display</target>
       </trans-unit>
-      <trans-unit id="js.label_noValueFound">
+      <trans-unit id="js.label_noValueFound" approved="yes">
         <source>No records for {0}</source>
-        <target approved="yes">No records for {0}</target>
+        <target>No records for {0}</target>
       </trans-unit>
-      <trans-unit id="js.label_records">
+      <trans-unit id="js.label_records" approved="yes">
         <source>Records</source>
-        <target approved="yes">Records</target>
+        <target>Records</target>
       </trans-unit>
-      <trans-unit id="js.label_table">
+      <trans-unit id="js.label_table" approved="yes">
         <source>Table</source>
-        <target approved="yes">Table</target>
+        <target>Table</target>
       </trans-unit>
     </body>
   </file>

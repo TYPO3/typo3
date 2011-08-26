@@ -3,37 +3,37 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="sys_note">
     <header/>
     <body>
-      <trans-unit id="sys_note">
+      <trans-unit id="sys_note" approved="yes">
         <source>Internal note</source>
-        <target approved="yes">Internal note</target>
+        <target>Internal note</target>
       </trans-unit>
-      <trans-unit id="sys_note.category.I.1">
+      <trans-unit id="sys_note.category.I.1" approved="yes">
         <source>Instructions</source>
-        <target approved="yes">Instructions</target>
+        <target>Instructions</target>
       </trans-unit>
-      <trans-unit id="sys_note.category.I.2">
+      <trans-unit id="sys_note.category.I.2" approved="yes">
         <source>Notes</source>
-        <target approved="yes">Notes</target>
+        <target>Notes</target>
       </trans-unit>
-      <trans-unit id="sys_note.category.I.3">
+      <trans-unit id="sys_note.category.I.3" approved="yes">
         <source>To-do</source>
-        <target approved="yes">To-do</target>
+        <target>To-do</target>
       </trans-unit>
-      <trans-unit id="sys_note.category.I.4">
+      <trans-unit id="sys_note.category.I.4" approved="yes">
         <source>Template</source>
-        <target approved="yes">Template</target>
+        <target>Template</target>
       </trans-unit>
-      <trans-unit id="sys_note.subject">
+      <trans-unit id="sys_note.subject" approved="yes">
         <source>Subject:</source>
-        <target approved="yes">Subject:</target>
+        <target>Subject:</target>
       </trans-unit>
-      <trans-unit id="sys_note.message">
+      <trans-unit id="sys_note.message" approved="yes">
         <source>Message:</source>
-        <target approved="yes">Message:</target>
+        <target>Message:</target>
       </trans-unit>
-      <trans-unit id="sys_note.personal">
+      <trans-unit id="sys_note.personal" approved="yes">
         <source>Personal:</source>
-        <target approved="yes">Personal:</target>
+        <target>Personal:</target>
       </trans-unit>
     </body>
   </file>

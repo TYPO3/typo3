@@ -3,113 +3,113 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="tstemplate">
     <header/>
     <body>
-      <trans-unit id="moduleTitle">
+      <trans-unit id="moduleTitle" approved="yes">
         <source>Template tools</source>
-        <target approved="yes">Template tools</target>
+        <target>Template tools</target>
       </trans-unit>
-      <trans-unit id="templateAnalyzer">
+      <trans-unit id="templateAnalyzer" approved="yes">
         <source>Template Analyzer</source>
-        <target approved="yes">Template Analyzer</target>
+        <target>Template Analyzer</target>
       </trans-unit>
-      <trans-unit id="constantEditor">
+      <trans-unit id="constantEditor" approved="yes">
         <source>Constant Editor</source>
-        <target approved="yes">Constant Editor</target>
+        <target>Constant Editor</target>
       </trans-unit>
-      <trans-unit id="infoModify">
+      <trans-unit id="infoModify" approved="yes">
         <source>Info/Modify</source>
-        <target approved="yes">Info/Modify</target>
+        <target>Info/Modify</target>
       </trans-unit>
-      <trans-unit id="objectBrowser">
+      <trans-unit id="objectBrowser" approved="yes">
         <source>TypoScript Object Browser</source>
-        <target approved="yes">TypoScript Object Browser</target>
+        <target>TypoScript Object Browser</target>
       </trans-unit>
-      <trans-unit id="viewTemplates">
+      <trans-unit id="viewTemplates" approved="yes">
         <source>Viewing templates of</source>
-        <target approved="yes">Viewing templates of</target>
+        <target>Viewing templates of</target>
       </trans-unit>
-      <trans-unit id="pageName">
+      <trans-unit id="pageName" approved="yes">
         <source>Page name</source>
-        <target approved="yes">Page name</target>
+        <target>Page name</target>
       </trans-unit>
-      <trans-unit id="templates">
+      <trans-unit id="templates" approved="yes">
         <source># Templates</source>
-        <target approved="yes"># Templates</target>
+        <target># Templates</target>
       </trans-unit>
-      <trans-unit id="isRoot">
+      <trans-unit id="isRoot" approved="yes">
         <source>Is Root?</source>
-        <target approved="yes">Is Root?</target>
+        <target>Is Root?</target>
       </trans-unit>
-      <trans-unit id="isExt">
+      <trans-unit id="isExt" approved="yes">
         <source>Is Ext?</source>
-        <target approved="yes">Is Ext?</target>
+        <target>Is Ext?</target>
       </trans-unit>
-      <trans-unit id="overview">
+      <trans-unit id="overview" approved="yes">
         <source>This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.</source>
-        <target approved="yes">This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.</target>
+        <target>This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.</target>
       </trans-unit>
-      <trans-unit id="areYouSure">
+      <trans-unit id="areYouSure" approved="yes">
         <source>Are you sure you want to do this?</source>
-        <target approved="yes">Are you sure you want to do this?</target>
+        <target>Are you sure you want to do this?</target>
       </trans-unit>
-      <trans-unit id="noTemplate">
+      <trans-unit id="noTemplate" approved="yes">
         <source>No template</source>
-        <target approved="yes">No template</target>
+        <target>No template</target>
       </trans-unit>
-      <trans-unit id="noTemplateDescription">
+      <trans-unit id="noTemplateDescription" approved="yes">
         <source>There was no template on this page!</source>
-        <target approved="yes">There was no template on this page!</target>
+        <target>There was no template on this page!</target>
       </trans-unit>
-      <trans-unit id="createTemplate">
+      <trans-unit id="createTemplate" approved="yes">
         <source>Create a template record first in order to edit constants!</source>
-        <target approved="yes">Create a template record first in order to edit constants!</target>
+        <target>Create a template record first in order to edit constants!</target>
       </trans-unit>
-      <trans-unit id="createTemplateToEditConfiguration">
+      <trans-unit id="createTemplateToEditConfiguration" approved="yes">
         <source>You need to create a template record below in order to edit your configuration.</source>
-        <target approved="yes">You need to create a template record below in order to edit your configuration.</target>
+        <target>You need to create a template record below in order to edit your configuration.</target>
       </trans-unit>
-      <trans-unit id="newWebsite">
+      <trans-unit id="newWebsite" approved="yes">
         <source>Create new website</source>
-        <target approved="yes">Create new website</target>
+        <target>Create new website</target>
       </trans-unit>
-      <trans-unit id="newWebsiteDescription">
+      <trans-unit id="newWebsiteDescription" approved="yes">
         <source>If you want this page to be the root of a new website, optionally based on one of the standard templates, then press the button below:</source>
-        <target approved="yes">If you want this page to be the root of a new website, optionally based on one of the standard templates, then press the button below:</target>
+        <target>If you want this page to be the root of a new website, optionally based on one of the standard templates, then press the button below:</target>
       </trans-unit>
-      <trans-unit id="newWebsiteAction">
+      <trans-unit id="newWebsiteAction" approved="yes">
         <source>Create template for a new site</source>
-        <target approved="yes">Create template for a new site</target>
+        <target>Create template for a new site</target>
       </trans-unit>
-      <trans-unit id="extTemplate">
+      <trans-unit id="extTemplate" approved="yes">
         <source>Create extension template</source>
-        <target approved="yes">Create extension template</target>
+        <target>Create extension template</target>
       </trans-unit>
-      <trans-unit id="extTemplateDescription">
+      <trans-unit id="extTemplateDescription" approved="yes">
         <source>An extension template allows you to enter TypoScript values that will affect only this page and subpages.</source>
-        <target approved="yes">An extension template allows you to enter TypoScript values that will affect only this page and subpages.</target>
+        <target>An extension template allows you to enter TypoScript values that will affect only this page and subpages.</target>
       </trans-unit>
-      <trans-unit id="extTemplateAction">
+      <trans-unit id="extTemplateAction" approved="yes">
         <source>Click here to create an extension template.</source>
-        <target approved="yes">Click here to create an extension template.</target>
+        <target>Click here to create an extension template.</target>
       </trans-unit>
-      <trans-unit id="goToClosest">
+      <trans-unit id="goToClosest" approved="yes">
         <source>Go to closest page with template</source>
-        <target approved="yes">Go to closest page with template</target>
+        <target>Go to closest page with template</target>
       </trans-unit>
-      <trans-unit id="goToClosestDescription">
+      <trans-unit id="goToClosestDescription" approved="yes">
         <source>Closest template is on page '%s' (uid %s).</source>
-        <target approved="yes">Closest template is on page '%s' (uid %s).</target>
+        <target>Closest template is on page '%s' (uid %s).</target>
       </trans-unit>
-      <trans-unit id="goToClosestAction">
+      <trans-unit id="goToClosestAction" approved="yes">
         <source>Click here to go.</source>
-        <target approved="yes">Click here to go.</target>
+        <target>Click here to go.</target>
       </trans-unit>
-      <trans-unit id="titleNewSiteStandard">
+      <trans-unit id="titleNewSiteStandard" approved="yes">
         <source>NEW SITE, based on standard</source>
-        <target approved="yes">NEW SITE, based on standard</target>
+        <target>NEW SITE, based on standard</target>
       </trans-unit>
-      <trans-unit id="titleNewSite">
+      <trans-unit id="titleNewSite" approved="yes">
         <source>NEW SITE</source>
-        <target approved="yes">NEW SITE</target>
+        <target>NEW SITE</target>
       </trans-unit>
     </body>
   </file>

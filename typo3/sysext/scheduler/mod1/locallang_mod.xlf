@@ -3,17 +3,17 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="scheduler">
     <header/>
     <body>
-      <trans-unit id="mlang_tabs_tab">
+      <trans-unit id="mlang_tabs_tab" approved="yes">
         <source>Scheduler</source>
-        <target approved="yes">Scheduler</target>
+        <target>Scheduler</target>
       </trans-unit>
-      <trans-unit id="mlang_labels_tabdescr">
+      <trans-unit id="mlang_labels_tabdescr" approved="yes">
         <source>Scheduler administration module. Check all registered tasks. Add, modify or delete tasks.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
-        <target approved="yes">Scheduler administration module. Check all registered tasks. Add, modify or delete tasks.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</target>
+        <target>Scheduler administration module. Check all registered tasks. Add, modify or delete tasks.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</target>
       </trans-unit>
-      <trans-unit id="mlang_labels_tablabel">
+      <trans-unit id="mlang_labels_tablabel" approved="yes">
         <source>TYPO3 Scheduler</source>
-        <target approved="yes">TYPO3 Scheduler</target>
+        <target>TYPO3 Scheduler</target>
       </trans-unit>
     </body>
   </file>

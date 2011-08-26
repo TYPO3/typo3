@@ -3,129 +3,129 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="No markup">
+      <trans-unit id="No markup" approved="yes">
         <source>No text format</source>
-        <target approved="yes">No text format</target>
+        <target>No text format</target>
       </trans-unit>
-      <trans-unit id="Remove markup">
+      <trans-unit id="Remove markup" approved="yes">
         <source>Remove text format</source>
-        <target approved="yes">Remove text format</target>
+        <target>Remove text format</target>
       </trans-unit>
-      <trans-unit id="FormatText-Tooltip">
+      <trans-unit id="FormatText-Tooltip" approved="yes">
         <source>Apply format to selected text</source>
-        <target approved="yes">Apply format to selected text</target>
+        <target>Apply format to selected text</target>
       </trans-unit>
-      <trans-unit id="BiDiOverride-Tooltip">
+      <trans-unit id="BiDiOverride-Tooltip" approved="yes">
         <source>Bidirectionality override</source>
-        <target approved="yes">Bidirectionality override</target>
+        <target>Bidirectionality override</target>
       </trans-unit>
-      <trans-unit id="Big-Tooltip">
+      <trans-unit id="Big-Tooltip" approved="yes">
         <source>Large text</source>
-        <target approved="yes">Large text</target>
+        <target>Large text</target>
       </trans-unit>
-      <trans-unit id="Bold-Tooltip">
+      <trans-unit id="Bold-Tooltip" approved="yes">
         <source>Bold</source>
-        <target approved="yes">Bold</target>
+        <target>Bold</target>
       </trans-unit>
-      <trans-unit id="Citation-Tooltip">
+      <trans-unit id="Citation-Tooltip" approved="yes">
         <source>Citation</source>
-        <target approved="yes">Citation</target>
+        <target>Citation</target>
       </trans-unit>
-      <trans-unit id="Code-Tooltip">
+      <trans-unit id="Code-Tooltip" approved="yes">
         <source>Computer code fragment</source>
-        <target approved="yes">Computer code fragment</target>
+        <target>Computer code fragment</target>
       </trans-unit>
-      <trans-unit id="Code-contextMenuTitle">
+      <trans-unit id="Code-contextMenuTitle" approved="yes">
         <source>Code fragment</source>
-        <target approved="yes">Code fragment</target>
+        <target>Code fragment</target>
       </trans-unit>
-      <trans-unit id="Definition-Tooltip">
+      <trans-unit id="Definition-Tooltip" approved="yes">
         <source>Definition</source>
-        <target approved="yes">Definition</target>
+        <target>Definition</target>
       </trans-unit>
-      <trans-unit id="DeletedText-Tooltip">
+      <trans-unit id="DeletedText-Tooltip" approved="yes">
         <source>Deleted text</source>
-        <target approved="yes">Deleted text</target>
+        <target>Deleted text</target>
       </trans-unit>
-      <trans-unit id="Emphasis-Tooltip">
+      <trans-unit id="Emphasis-Tooltip" approved="yes">
         <source>Emphasis</source>
-        <target approved="yes">Emphasis</target>
+        <target>Emphasis</target>
       </trans-unit>
-      <trans-unit id="Keyboard-Tooltip">
+      <trans-unit id="Keyboard-Tooltip" approved="yes">
         <source>Text to be entered by the user</source>
-        <target approved="yes">Text to be entered by the user</target>
+        <target>Text to be entered by the user</target>
       </trans-unit>
-      <trans-unit id="Keyboard-contextMenuTitle">
+      <trans-unit id="Keyboard-contextMenuTitle" approved="yes">
         <source>Text to enter</source>
-        <target approved="yes">Text to enter</target>
+        <target>Text to enter</target>
       </trans-unit>
-      <trans-unit id="InsertedText-Tooltip">
+      <trans-unit id="InsertedText-Tooltip" approved="yes">
         <source>Inserted text</source>
-        <target approved="yes">Inserted text</target>
+        <target>Inserted text</target>
       </trans-unit>
-      <trans-unit id="Italic-Tooltip">
+      <trans-unit id="Italic-Tooltip" approved="yes">
         <source>Italic</source>
-        <target approved="yes">Italic</target>
+        <target>Italic</target>
       </trans-unit>
-      <trans-unit id="MonoSpaced-Tooltip">
+      <trans-unit id="MonoSpaced-Tooltip" approved="yes">
         <source>Monospaced text</source>
-        <target approved="yes">Monospaced text</target>
+        <target>Monospaced text</target>
       </trans-unit>
-      <trans-unit id="Quotation-Tooltip">
+      <trans-unit id="Quotation-Tooltip" approved="yes">
         <source>Short inline quotation</source>
-        <target approved="yes">Short inline quotation</target>
+        <target>Short inline quotation</target>
       </trans-unit>
-      <trans-unit id="Quotation-contextMenuTitle">
+      <trans-unit id="Quotation-contextMenuTitle" approved="yes">
         <source>Short quotation</source>
-        <target approved="yes">Short quotation</target>
+        <target>Short quotation</target>
       </trans-unit>
-      <trans-unit id="Sample-Tooltip">
+      <trans-unit id="Sample-Tooltip" approved="yes">
         <source>Sample program output or script</source>
-        <target approved="yes">Sample program output or script</target>
+        <target>Sample program output or script</target>
       </trans-unit>
-      <trans-unit id="Sample-contextMenuTitle">
+      <trans-unit id="Sample-contextMenuTitle" approved="yes">
         <source>Sample output</source>
-        <target approved="yes">Sample output</target>
+        <target>Sample output</target>
       </trans-unit>
-      <trans-unit id="Small-Tooltip">
+      <trans-unit id="Small-Tooltip" approved="yes">
         <source>Small text</source>
-        <target approved="yes">Small text</target>
+        <target>Small text</target>
       </trans-unit>
-      <trans-unit id="Span-Tooltip">
+      <trans-unit id="Span-Tooltip" approved="yes">
         <source>Style container</source>
-        <target approved="yes">Style container</target>
+        <target>Style container</target>
       </trans-unit>
-      <trans-unit id="StrikeThrough-Tooltip">
+      <trans-unit id="StrikeThrough-Tooltip" approved="yes">
         <source>Strike-through text</source>
-        <target approved="yes">Strike-through text</target>
+        <target>Strike-through text</target>
       </trans-unit>
-      <trans-unit id="Strong-Tooltip">
+      <trans-unit id="Strong-Tooltip" approved="yes">
         <source>Strong emphasis</source>
-        <target approved="yes">Strong emphasis</target>
+        <target>Strong emphasis</target>
       </trans-unit>
-      <trans-unit id="Subscript-Tooltip">
+      <trans-unit id="Subscript-Tooltip" approved="yes">
         <source>Subscript</source>
-        <target approved="yes">Subscript</target>
+        <target>Subscript</target>
       </trans-unit>
-      <trans-unit id="Superscript-Tooltip">
+      <trans-unit id="Superscript-Tooltip" approved="yes">
         <source>Superscript</source>
-        <target approved="yes">Superscript</target>
+        <target>Superscript</target>
       </trans-unit>
-      <trans-unit id="Underline-Tooltip">
+      <trans-unit id="Underline-Tooltip" approved="yes">
         <source>Underline</source>
-        <target approved="yes">Underline</target>
+        <target>Underline</target>
       </trans-unit>
-      <trans-unit id="Variable-Tooltip">
+      <trans-unit id="Variable-Tooltip" approved="yes">
         <source>Variable or program argument</source>
-        <target approved="yes">Variable or program argument</target>
+        <target>Variable or program argument</target>
       </trans-unit>
-      <trans-unit id="Variable-contextMenuTitle">
+      <trans-unit id="Variable-contextMenuTitle" approved="yes">
         <source>Variable</source>
-        <target approved="yes">Variable</target>
+        <target>Variable</target>
       </trans-unit>
-      <trans-unit id="Technische Universitat Ilmenau">
+      <trans-unit id="Technische Universitat Ilmenau" approved="yes">
         <source>Technische Universität Ilmenau</source>
-        <target approved="yes">Technische Universität Ilmenau</target>
+        <target>Technische Universität Ilmenau</target>
       </trans-unit>
     </body>
   </file>

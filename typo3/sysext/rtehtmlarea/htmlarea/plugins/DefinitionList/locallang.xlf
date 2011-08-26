@@ -3,49 +3,49 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="Indent-Tooltip">
+      <trans-unit id="Indent-Tooltip" approved="yes">
         <source>Increase indent</source>
-        <target approved="yes">Increase indent</target>
+        <target>Increase indent</target>
       </trans-unit>
-      <trans-unit id="Indent-helpText">
+      <trans-unit id="Indent-helpText" approved="yes">
         <source>Increases text indentation</source>
-        <target approved="yes">Increases text indentation</target>
+        <target>Increases text indentation</target>
       </trans-unit>
-      <trans-unit id="Outdent-Tooltip">
+      <trans-unit id="Outdent-Tooltip" approved="yes">
         <source>Reduce indent</source>
-        <target approved="yes">Reduce indent</target>
+        <target>Reduce indent</target>
       </trans-unit>
-      <trans-unit id="Outdent-helpText">
+      <trans-unit id="Outdent-helpText" approved="yes">
         <source>Reduces text indentation</source>
-        <target approved="yes">Reduces text indentation</target>
+        <target>Reduces text indentation</target>
       </trans-unit>
-      <trans-unit id="DefinitionList-Tooltip">
+      <trans-unit id="DefinitionList-Tooltip" approved="yes">
         <source>Definition list</source>
-        <target approved="yes">Definition list</target>
+        <target>Definition list</target>
       </trans-unit>
-      <trans-unit id="DefinitionList-helpText">
+      <trans-unit id="DefinitionList-helpText" approved="yes">
         <source>Makes a definition list from the current selection</source>
-        <target approved="yes">Makes a definition list from the current selection</target>
+        <target>Makes a definition list from the current selection</target>
       </trans-unit>
-      <trans-unit id="DefinitionItem-Tooltip">
+      <trans-unit id="DefinitionItem-Tooltip" approved="yes">
         <source>Toggle term and definition</source>
-        <target approved="yes">Toggle term and definition</target>
+        <target>Toggle term and definition</target>
       </trans-unit>
-      <trans-unit id="DefinitionItem-helpText">
+      <trans-unit id="DefinitionItem-helpText" approved="yes">
         <source>Toggles term and definition elements</source>
-        <target approved="yes">Toggles term and definition elements</target>
+        <target>Toggles term and definition elements</target>
       </trans-unit>
-      <trans-unit id="No block">
+      <trans-unit id="No block" approved="yes">
         <source>No block format</source>
-        <target approved="yes">No block format</target>
+        <target>No block format</target>
       </trans-unit>
-      <trans-unit id="Remove block">
+      <trans-unit id="Remove block" approved="yes">
         <source>Remove block format</source>
-        <target approved="yes">Remove block format</target>
+        <target>Remove block format</target>
       </trans-unit>
-      <trans-unit id="Technische Universitat Ilmenau">
+      <trans-unit id="Technische Universitat Ilmenau" approved="yes">
         <source>Technische Universität Ilmenau</source>
-        <target approved="yes">Technische Universität Ilmenau</target>
+        <target>Technische Universität Ilmenau</target>
       </trans-unit>
     </body>
   </file>

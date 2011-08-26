@@ -3,81 +3,81 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="Insert Smiley">
+      <trans-unit id="Insert Smiley" approved="yes">
         <source>Insert Smiley</source>
-        <target approved="yes">Insert Smiley</target>
+        <target>Insert Smiley</target>
       </trans-unit>
-      <trans-unit id="Smiley">
+      <trans-unit id="Smiley" approved="yes">
         <source>Smiley</source>
-        <target approved="yes">Smiley</target>
+        <target>Smiley</target>
       </trans-unit>
-      <trans-unit id="Cancel">
+      <trans-unit id="Cancel" approved="yes">
         <source>Cancel</source>
-        <target approved="yes">Cancel</target>
+        <target>Cancel</target>
       </trans-unit>
-      <trans-unit id="mozilla_smile">
+      <trans-unit id="mozilla_smile" approved="yes">
         <source>Smile</source>
-        <target approved="yes">Smile</target>
+        <target>Smile</target>
       </trans-unit>
-      <trans-unit id="mozilla_frown">
+      <trans-unit id="mozilla_frown" approved="yes">
         <source>Frown</source>
-        <target approved="yes">Frown</target>
+        <target>Frown</target>
       </trans-unit>
-      <trans-unit id="mozilla_wink">
+      <trans-unit id="mozilla_wink" approved="yes">
         <source>Wink</source>
-        <target approved="yes">Wink</target>
+        <target>Wink</target>
       </trans-unit>
-      <trans-unit id="mozilla_tongueout">
+      <trans-unit id="mozilla_tongueout" approved="yes">
         <source>Tongue out</source>
-        <target approved="yes">Tongue out</target>
+        <target>Tongue out</target>
       </trans-unit>
-      <trans-unit id="mozilla_laughing">
+      <trans-unit id="mozilla_laughing" approved="yes">
         <source>Laughing</source>
-        <target approved="yes">Laughing</target>
+        <target>Laughing</target>
       </trans-unit>
-      <trans-unit id="mozilla_embarassed">
+      <trans-unit id="mozilla_embarassed" approved="yes">
         <source>Embarassed</source>
-        <target approved="yes">Embarassed</target>
+        <target>Embarassed</target>
       </trans-unit>
-      <trans-unit id="mozilla_undecided">
+      <trans-unit id="mozilla_undecided" approved="yes">
         <source>Undecided</source>
-        <target approved="yes">Undecided</target>
+        <target>Undecided</target>
       </trans-unit>
-      <trans-unit id="mozilla_surprised">
+      <trans-unit id="mozilla_surprised" approved="yes">
         <source>Surprise</source>
-        <target approved="yes">Surprise</target>
+        <target>Surprise</target>
       </trans-unit>
-      <trans-unit id="mozilla_kiss">
+      <trans-unit id="mozilla_kiss" approved="yes">
         <source>Kiss</source>
-        <target approved="yes">Kiss</target>
+        <target>Kiss</target>
       </trans-unit>
-      <trans-unit id="mozilla_yell">
+      <trans-unit id="mozilla_yell" approved="yes">
         <source>Yell</source>
-        <target approved="yes">Yell</target>
+        <target>Yell</target>
       </trans-unit>
-      <trans-unit id="mozilla_cool">
+      <trans-unit id="mozilla_cool" approved="yes">
         <source>Cool</source>
-        <target approved="yes">Cool</target>
+        <target>Cool</target>
       </trans-unit>
-      <trans-unit id="mozilla_moneyinmouth">
+      <trans-unit id="mozilla_moneyinmouth" approved="yes">
         <source>Money Mouth</source>
-        <target approved="yes">Money Mouth</target>
+        <target>Money Mouth</target>
       </trans-unit>
-      <trans-unit id="mozilla_footinmouth">
+      <trans-unit id="mozilla_footinmouth" approved="yes">
         <source>Foot in mouth</source>
-        <target approved="yes">Foot in mouth</target>
+        <target>Foot in mouth</target>
       </trans-unit>
-      <trans-unit id="mozilla_innocent">
+      <trans-unit id="mozilla_innocent" approved="yes">
         <source>Innocent</source>
-        <target approved="yes">Innocent</target>
+        <target>Innocent</target>
       </trans-unit>
-      <trans-unit id="mozilla_cry">
+      <trans-unit id="mozilla_cry" approved="yes">
         <source>Cry</source>
-        <target approved="yes">Cry</target>
+        <target>Cry</target>
       </trans-unit>
-      <trans-unit id="mozilla_sealed">
+      <trans-unit id="mozilla_sealed" approved="yes">
         <source>Lips are sealed</source>
-        <target approved="yes">Lips are sealed</target>
+        <target>Lips are sealed</target>
       </trans-unit>
     </body>
   </file>

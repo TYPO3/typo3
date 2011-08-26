@@ -121,7 +121,6 @@ class t3lib_l10n_parser_Llxml extends t3lib_l10n_parser_AbstractXml {
 	 *
 	 * @param \SimpleXMLElement $root A root node
 	 * @return array An array representing parsed XLIFF
-	 * @todo Support "approved" attribute
 	 */
 	protected function doParsingFromRoot(SimpleXMLElement $root) {
 		return $this->_doParsingFromRoot($root, 'source');
@@ -132,7 +131,6 @@ class t3lib_l10n_parser_Llxml extends t3lib_l10n_parser_AbstractXml {
 	 *
 	 * @param \SimpleXMLElement $root A root node
 	 * @return array An array representing parsed XLIFF
-	 * @todo Support "approved" attribute
 	 */
 	protected function doParsingTargetFromRoot(SimpleXMLElement $root) {
 		return $this->_doParsingFromRoot($root, 'target');

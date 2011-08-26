@@ -3,85 +3,85 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="No font">
+      <trans-unit id="No font" approved="yes">
         <source>No font</source>
-        <target approved="yes">No font</target>
+        <target>No font</target>
       </trans-unit>
-      <trans-unit id="No size">
+      <trans-unit id="No size" approved="yes">
         <source>No font size</source>
-        <target approved="yes">No font size</target>
+        <target>No font size</target>
       </trans-unit>
-      <trans-unit id="Default font">
+      <trans-unit id="Default font" approved="yes">
         <source>Default font</source>
-        <target approved="yes">Default font</target>
+        <target>Default font</target>
       </trans-unit>
-      <trans-unit id="Default size">
+      <trans-unit id="Default size" approved="yes">
         <source>Default size</source>
-        <target approved="yes">Default size</target>
+        <target>Default size</target>
       </trans-unit>
-      <trans-unit id="Extra small">
+      <trans-unit id="Extra small" approved="yes">
         <source>Extra small</source>
-        <target approved="yes">Extra small</target>
+        <target>Extra small</target>
       </trans-unit>
-      <trans-unit id="Very small">
+      <trans-unit id="Very small" approved="yes">
         <source>Very small</source>
-        <target approved="yes">Very small</target>
+        <target>Very small</target>
       </trans-unit>
-      <trans-unit id="Small">
+      <trans-unit id="Small" approved="yes">
         <source>Small</source>
-        <target approved="yes">Small</target>
+        <target>Small</target>
       </trans-unit>
-      <trans-unit id="Medium">
+      <trans-unit id="Medium" approved="yes">
         <source>Medium</source>
-        <target approved="yes">Medium</target>
+        <target>Medium</target>
       </trans-unit>
-      <trans-unit id="Large">
+      <trans-unit id="Large" approved="yes">
         <source>Large</source>
-        <target approved="yes">Large</target>
+        <target>Large</target>
       </trans-unit>
-      <trans-unit id="Very large">
+      <trans-unit id="Very large" approved="yes">
         <source>Very large</source>
-        <target approved="yes">Very large</target>
+        <target>Very large</target>
       </trans-unit>
-      <trans-unit id="Extra large">
+      <trans-unit id="Extra large" approved="yes">
         <source>Extra large</source>
-        <target approved="yes">Extra large</target>
+        <target>Extra large</target>
       </trans-unit>
-      <trans-unit id="Arial">
+      <trans-unit id="Arial" approved="yes">
         <source>Arial</source>
-        <target approved="yes">Arial</target>
+        <target>Arial</target>
       </trans-unit>
-      <trans-unit id="Arial Black">
+      <trans-unit id="Arial Black" approved="yes">
         <source>Arial Black</source>
-        <target approved="yes">Arial Black</target>
+        <target>Arial Black</target>
       </trans-unit>
-      <trans-unit id="Verdana">
+      <trans-unit id="Verdana" approved="yes">
         <source>Verdana</source>
-        <target approved="yes">Verdana</target>
+        <target>Verdana</target>
       </trans-unit>
-      <trans-unit id="Times New Roman">
+      <trans-unit id="Times New Roman" approved="yes">
         <source>Times New Roman</source>
-        <target approved="yes">Times New Roman</target>
+        <target>Times New Roman</target>
       </trans-unit>
-      <trans-unit id="Garamond">
+      <trans-unit id="Garamond" approved="yes">
         <source>Garamond</source>
-        <target approved="yes">Garamond</target>
+        <target>Garamond</target>
       </trans-unit>
-      <trans-unit id="Lucida Handwriting">
+      <trans-unit id="Lucida Handwriting" approved="yes">
         <source>Lucida Handwriting</source>
-        <target approved="yes">Lucida Handwriting</target>
+        <target>Lucida Handwriting</target>
       </trans-unit>
-      <trans-unit id="Courier">
+      <trans-unit id="Courier" approved="yes">
         <source>Courier</source>
-        <target approved="yes">Courier</target>
+        <target>Courier</target>
       </trans-unit>
-      <trans-unit id="Webdings">
+      <trans-unit id="Webdings" approved="yes">
         <source>Webdings</source>
-        <target approved="yes">Webdings</target>
+        <target>Webdings</target>
       </trans-unit>
-      <trans-unit id="Wingdings">
+      <trans-unit id="Wingdings" approved="yes">
         <source>Wingdings</source>
-        <target approved="yes">Wingdings</target>
+        <target>Wingdings</target>
       </trans-unit>
     </body>
   </file>

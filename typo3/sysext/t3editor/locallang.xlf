@@ -3,57 +3,57 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="t3editor">
     <header/>
     <body>
-      <trans-unit id="deactivate">
+      <trans-unit id="deactivate" approved="yes">
         <source>Deactivate t3editor</source>
-        <target approved="yes">Deactivate t3editor</target>
+        <target>Deactivate t3editor</target>
       </trans-unit>
-      <trans-unit id="template">
+      <trans-unit id="template" approved="yes">
         <source>Template</source>
-        <target approved="yes">Template</target>
+        <target>Template</target>
       </trans-unit>
-      <trans-unit id="file">
+      <trans-unit id="file" approved="yes">
         <source>File</source>
-        <target approved="yes">File</target>
+        <target>File</target>
       </trans-unit>
-      <trans-unit id="delimiter">
+      <trans-unit id="delimiter" approved="yes">
         <source>:</source>
-        <target approved="yes">:</target>
+        <target>:</target>
       </trans-unit>
-      <trans-unit id="constants">
+      <trans-unit id="constants" approved="yes">
         <source>Constants</source>
-        <target approved="yes">Constants</target>
+        <target>Constants</target>
       </trans-unit>
-      <trans-unit id="setup">
+      <trans-unit id="setup" approved="yes">
         <source>Setup</source>
-        <target approved="yes">Setup</target>
+        <target>Setup</target>
       </trans-unit>
-      <trans-unit id="unknownContentType">
+      <trans-unit id="unknownContentType" approved="yes">
         <source>Unknown content type:</source>
-        <target approved="yes">Unknown content type:</target>
+        <target>Unknown content type:</target>
       </trans-unit>
-      <trans-unit id="pageIDInteger">
+      <trans-unit id="pageIDInteger" approved="yes">
         <source>Syntax error: Parameter pageID must be a valid integer.</source>
-        <target approved="yes">Syntax error: Parameter pageID must be a valid integer.</target>
+        <target>Syntax error: Parameter pageID must be a valid integer.</target>
       </trans-unit>
-      <trans-unit id="noPermission">
+      <trans-unit id="noPermission" approved="yes">
         <source>Access denied: No permission to template records.</source>
-        <target approved="yes">Access denied: No permission to template records.</target>
+        <target>Access denied: No permission to template records.</target>
       </trans-unit>
-      <trans-unit id="typeIDMissing">
+      <trans-unit id="typeIDMissing" approved="yes">
         <source>Syntax error: At least parameter typeID has to be supplied.</source>
-        <target approved="yes">Syntax error: At least parameter typeID has to be supplied.</target>
+        <target>Syntax error: At least parameter typeID has to be supplied.</target>
       </trans-unit>
-      <trans-unit id="js.label_lines">
+      <trans-unit id="js.label_lines" approved="yes">
         <source>lines</source>
-        <target approved="yes">lines</target>
+        <target>lines</target>
       </trans-unit>
-      <trans-unit id="js.label_documentModified">
+      <trans-unit id="js.label_documentModified" approved="yes">
         <source>document has been modified</source>
-        <target approved="yes">document has been modified</target>
+        <target>document has been modified</target>
       </trans-unit>
-      <trans-unit id="js.label_errorWhileSaving">
+      <trans-unit id="js.label_errorWhileSaving" approved="yes">
         <source>An error occured while saving the data.</source>
-        <target approved="yes">An error occured while saving the data.</target>
+        <target>An error occured while saving the data.</target>
       </trans-unit>
     </body>
   </file>

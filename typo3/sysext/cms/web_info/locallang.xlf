@@ -3,113 +3,113 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:23 UTC" product-name="cms">
     <header/>
     <body>
-      <trans-unit id="page_title">
+      <trans-unit id="page_title" approved="yes">
         <source>Pagetree overview</source>
-        <target approved="yes">Pagetree overview</target>
+        <target>Pagetree overview</target>
       </trans-unit>
-      <trans-unit id="page_sysnote">
+      <trans-unit id="page_sysnote" approved="yes">
         <source>Internal notes</source>
-        <target approved="yes">Internal notes</target>
+        <target>Internal notes</target>
       </trans-unit>
-      <trans-unit id="pageInformation">
+      <trans-unit id="pageInformation" approved="yes">
         <source>Page information</source>
-        <target approved="yes">Page information</target>
+        <target>Page information</target>
       </trans-unit>
-      <trans-unit id="pages_0">
+      <trans-unit id="pages_0" approved="yes">
         <source>Basic settings</source>
-        <target approved="yes">Basic settings</target>
+        <target>Basic settings</target>
       </trans-unit>
-      <trans-unit id="pages_2">
+      <trans-unit id="pages_2" approved="yes">
         <source>Cache and Age</source>
-        <target approved="yes">Cache and Age</target>
+        <target>Cache and Age</target>
       </trans-unit>
-      <trans-unit id="pages_1">
+      <trans-unit id="pages_1" approved="yes">
         <source>Record overview</source>
-        <target approved="yes">Record overview</target>
+        <target>Record overview</target>
       </trans-unit>
-      <trans-unit id="stat_type_0">
+      <trans-unit id="stat_type_0" approved="yes">
         <source>Page hits</source>
-        <target approved="yes">Page hits</target>
+        <target>Page hits</target>
       </trans-unit>
-      <trans-unit id="stat_type_1">
+      <trans-unit id="stat_type_1" approved="yes">
         <source>Total hits</source>
-        <target approved="yes">Total hits</target>
+        <target>Total hits</target>
       </trans-unit>
-      <trans-unit id="stat_type_2">
+      <trans-unit id="stat_type_2" approved="yes">
         <source>Hits in main sections</source>
-        <target approved="yes">Hits in main sections</target>
+        <target>Hits in main sections</target>
       </trans-unit>
-      <trans-unit id="stat_period">
+      <trans-unit id="stat_period" approved="yes">
         <source>Statistics in the period %s back to %s</source>
-        <target approved="yes">Statistics in the period %s back to %s</target>
+        <target>Statistics in the period %s back to %s</target>
       </trans-unit>
-      <trans-unit id="pI_crUser">
+      <trans-unit id="pI_crUser" approved="yes">
         <source>Created by</source>
-        <target approved="yes">Created by</target>
+        <target>Created by</target>
       </trans-unit>
-      <trans-unit id="pI_crDate">
+      <trans-unit id="pI_crDate" approved="yes">
         <source>Created date</source>
-        <target approved="yes">Created date</target>
+        <target>Created date</target>
       </trans-unit>
-      <trans-unit id="pI_lastChange">
+      <trans-unit id="pI_lastChange" approved="yes">
         <source>Last change</source>
-        <target approved="yes">Last change</target>
+        <target>Last change</target>
       </trans-unit>
-      <trans-unit id="pI_lastChangeContent">
+      <trans-unit id="pI_lastChangeContent" approved="yes">
         <source>Last change, content</source>
-        <target approved="yes">Last change, content</target>
+        <target>Last change, content</target>
       </trans-unit>
-      <trans-unit id="hits_title">
+      <trans-unit id="hits_title" approved="yes">
         <source>Hit Statistics</source>
-        <target approved="yes">Hit Statistics</target>
+        <target>Hit Statistics</target>
       </trans-unit>
-      <trans-unit id="lang_renderl10n_viewPage">
+      <trans-unit id="lang_renderl10n_viewPage" approved="yes">
         <source>View page</source>
-        <target approved="yes">View page</target>
+        <target>View page</target>
       </trans-unit>
-      <trans-unit id="lang_renderl10n_editDefaultLanguagePage">
+      <trans-unit id="lang_renderl10n_editDefaultLanguagePage" approved="yes">
         <source>Edit default language page properties</source>
-        <target approved="yes">Edit default language page properties</target>
+        <target>Edit default language page properties</target>
       </trans-unit>
-      <trans-unit id="lang_renderl10n_editLangOverlays">
+      <trans-unit id="lang_renderl10n_editLangOverlays" approved="yes">
         <source>Edit all language overlay records</source>
-        <target approved="yes">Edit all language overlay records</target>
+        <target>Edit all language overlay records</target>
       </trans-unit>
-      <trans-unit id="lang_renderl10n_editPageProperties">
+      <trans-unit id="lang_renderl10n_editPageProperties" approved="yes">
         <source>Edit all page properties</source>
-        <target approved="yes">Edit all page properties</target>
+        <target>Edit all page properties</target>
       </trans-unit>
-      <trans-unit id="lang_renderl10n_editPage">
+      <trans-unit id="lang_renderl10n_editPage" approved="yes">
         <source>Edit page</source>
-        <target approved="yes">Edit page</target>
+        <target>Edit page</target>
       </trans-unit>
-      <trans-unit id="lang_renderl10n_editPageLang">
+      <trans-unit id="lang_renderl10n_editPageLang" approved="yes">
         <source>Edit page translation</source>
-        <target approved="yes">Edit page translation</target>
+        <target>Edit page translation</target>
       </trans-unit>
-      <trans-unit id="lang_renderl10n_badThingThereAre">
+      <trans-unit id="lang_renderl10n_badThingThereAre" approved="yes">
         <source>ERROR: there are two or more page overlay records for this language! Only one is allowed!</source>
-        <target approved="yes">ERROR: there are two or more page overlay records for this language! Only one is allowed!</target>
+        <target>ERROR: there are two or more page overlay records for this language! Only one is allowed!</target>
       </trans-unit>
-      <trans-unit id="lang_renderl10n_editLanguageOverlayRecord">
+      <trans-unit id="lang_renderl10n_editLanguageOverlayRecord" approved="yes">
         <source>Edit language overlay record</source>
-        <target approved="yes">Edit language overlay record</target>
+        <target>Edit language overlay record</target>
       </trans-unit>
-      <trans-unit id="lang_renderl10n_page">
+      <trans-unit id="lang_renderl10n_page" approved="yes">
         <source>Page</source>
-        <target approved="yes">Page</target>
+        <target>Page</target>
       </trans-unit>
-      <trans-unit id="lang_renderl10n_default">
+      <trans-unit id="lang_renderl10n_default" approved="yes">
         <source>Default</source>
-        <target approved="yes">Default</target>
+        <target>Default</target>
       </trans-unit>
-      <trans-unit id="lang_getlangsta_createNewTranslationHeaders">
+      <trans-unit id="lang_getlangsta_createNewTranslationHeaders" approved="yes">
         <source>Create new translation headers</source>
-        <target approved="yes">Create new translation headers</target>
+        <target>Create new translation headers</target>
       </trans-unit>
-      <trans-unit id="lang_renderl10n_CEcount">
+      <trans-unit id="lang_renderl10n_CEcount" approved="yes">
         <source>Content Element Count</source>
-        <target approved="yes">Content Element Count</target>
+        <target>Content Element Count</target>
       </trans-unit>
     </body>
   </file>
