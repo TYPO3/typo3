@@ -3,161 +3,161 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="bold">
+      <trans-unit id="bold" approved="yes">
         <source>Bold</source>
-        <target approved="yes">Bold</target>
+        <target>Bold</target>
       </trans-unit>
-      <trans-unit id="italic">
+      <trans-unit id="italic" approved="yes">
         <source>Italic</source>
-        <target approved="yes">Italic</target>
+        <target>Italic</target>
       </trans-unit>
-      <trans-unit id="underline">
+      <trans-unit id="underline" approved="yes">
         <source>Underline</source>
-        <target approved="yes">Underline</target>
+        <target>Underline</target>
       </trans-unit>
-      <trans-unit id="strikethrough">
+      <trans-unit id="strikethrough" approved="yes">
         <source>Strikethrough</source>
-        <target approved="yes">Strikethrough</target>
+        <target>Strikethrough</target>
       </trans-unit>
-      <trans-unit id="subscript">
+      <trans-unit id="subscript" approved="yes">
         <source>Subscript</source>
-        <target approved="yes">Subscript</target>
+        <target>Subscript</target>
       </trans-unit>
-      <trans-unit id="superscript">
+      <trans-unit id="superscript" approved="yes">
         <source>Superscript</source>
-        <target approved="yes">Superscript</target>
+        <target>Superscript</target>
       </trans-unit>
-      <trans-unit id="justifyleft">
+      <trans-unit id="justifyleft" approved="yes">
         <source>Justify Left</source>
-        <target approved="yes">Justify Left</target>
+        <target>Justify Left</target>
       </trans-unit>
-      <trans-unit id="justifycenter">
+      <trans-unit id="justifycenter" approved="yes">
         <source>Justify Center</source>
-        <target approved="yes">Justify Center</target>
+        <target>Justify Center</target>
       </trans-unit>
-      <trans-unit id="justifyright">
+      <trans-unit id="justifyright" approved="yes">
         <source>Justify Right</source>
-        <target approved="yes">Justify Right</target>
+        <target>Justify Right</target>
       </trans-unit>
-      <trans-unit id="justifyfull">
+      <trans-unit id="justifyfull" approved="yes">
         <source>Justify Full</source>
-        <target approved="yes">Justify Full</target>
+        <target>Justify Full</target>
       </trans-unit>
-      <trans-unit id="insertorderedlist">
+      <trans-unit id="insertorderedlist" approved="yes">
         <source>Ordered List</source>
-        <target approved="yes">Ordered List</target>
+        <target>Ordered List</target>
       </trans-unit>
-      <trans-unit id="insertunorderedlist">
+      <trans-unit id="insertunorderedlist" approved="yes">
         <source>Bulleted List</source>
-        <target approved="yes">Bulleted List</target>
+        <target>Bulleted List</target>
       </trans-unit>
-      <trans-unit id="outdent">
+      <trans-unit id="outdent" approved="yes">
         <source>Decrease Indent</source>
-        <target approved="yes">Decrease Indent</target>
+        <target>Decrease Indent</target>
       </trans-unit>
-      <trans-unit id="indent">
+      <trans-unit id="indent" approved="yes">
         <source>Increase Indent</source>
-        <target approved="yes">Increase Indent</target>
+        <target>Increase Indent</target>
       </trans-unit>
-      <trans-unit id="forecolor">
+      <trans-unit id="forecolor" approved="yes">
         <source>Font Color</source>
-        <target approved="yes">Font Color</target>
+        <target>Font Color</target>
       </trans-unit>
-      <trans-unit id="hilitecolor">
+      <trans-unit id="hilitecolor" approved="yes">
         <source>Background Color</source>
-        <target approved="yes">Background Color</target>
+        <target>Background Color</target>
       </trans-unit>
-      <trans-unit id="inserthorizontalrule">
+      <trans-unit id="inserthorizontalrule" approved="yes">
         <source>Horizontal Rule</source>
-        <target approved="yes">Horizontal Rule</target>
+        <target>Horizontal Rule</target>
       </trans-unit>
-      <trans-unit id="createlink">
+      <trans-unit id="createlink" approved="yes">
         <source>Insert Web Link</source>
-        <target approved="yes">Insert Web Link</target>
+        <target>Insert Web Link</target>
       </trans-unit>
-      <trans-unit id="unlink">
+      <trans-unit id="unlink" approved="yes">
         <source>Remove link</source>
-        <target approved="yes">Remove link</target>
+        <target>Remove link</target>
       </trans-unit>
-      <trans-unit id="insertimage">
+      <trans-unit id="insertimage" approved="yes">
         <source>Insert/Modify Image</source>
-        <target approved="yes">Insert/Modify Image</target>
+        <target>Insert/Modify Image</target>
       </trans-unit>
-      <trans-unit id="inserttable">
+      <trans-unit id="inserttable" approved="yes">
         <source>Insert Table</source>
-        <target approved="yes">Insert Table</target>
+        <target>Insert Table</target>
       </trans-unit>
-      <trans-unit id="htmlmode">
+      <trans-unit id="htmlmode" approved="yes">
         <source>Toggle HTML Source</source>
-        <target approved="yes">Toggle HTML Source</target>
+        <target>Toggle HTML Source</target>
       </trans-unit>
-      <trans-unit id="popupeditor">
+      <trans-unit id="popupeditor" approved="yes">
         <source>Enlarge the editor</source>
-        <target approved="yes">Enlarge the editor</target>
+        <target>Enlarge the editor</target>
       </trans-unit>
-      <trans-unit id="about">
+      <trans-unit id="about" approved="yes">
         <source>About this editor</source>
-        <target approved="yes">About this editor</target>
+        <target>About this editor</target>
       </trans-unit>
-      <trans-unit id="showhelp">
+      <trans-unit id="showhelp" approved="yes">
         <source>Help using editor</source>
-        <target approved="yes">Help using editor</target>
+        <target>Help using editor</target>
       </trans-unit>
-      <trans-unit id="textindicator">
+      <trans-unit id="textindicator" approved="yes">
         <source>Current style</source>
-        <target approved="yes">Current style</target>
+        <target>Current style</target>
       </trans-unit>
-      <trans-unit id="undo">
+      <trans-unit id="undo" approved="yes">
         <source>Undo the last action</source>
-        <target approved="yes">Undo the last action</target>
+        <target>Undo the last action</target>
       </trans-unit>
-      <trans-unit id="redo">
+      <trans-unit id="redo" approved="yes">
         <source>Redo the last action</source>
-        <target approved="yes">Redo the last action</target>
+        <target>Redo the last action</target>
       </trans-unit>
-      <trans-unit id="cut">
+      <trans-unit id="cut" approved="yes">
         <source>Cut selection</source>
-        <target approved="yes">Cut selection</target>
+        <target>Cut selection</target>
       </trans-unit>
-      <trans-unit id="copy">
+      <trans-unit id="copy" approved="yes">
         <source>Copy selection</source>
-        <target approved="yes">Copy selection</target>
+        <target>Copy selection</target>
       </trans-unit>
-      <trans-unit id="paste">
+      <trans-unit id="paste" approved="yes">
         <source>Paste from clipboard</source>
-        <target approved="yes">Paste from clipboard</target>
+        <target>Paste from clipboard</target>
       </trans-unit>
-      <trans-unit id="lefttoright">
+      <trans-unit id="lefttoright" approved="yes">
         <source>Direction left to right</source>
-        <target approved="yes">Direction left to right</target>
+        <target>Direction left to right</target>
       </trans-unit>
-      <trans-unit id="righttoleft">
+      <trans-unit id="righttoleft" approved="yes">
         <source>Direction right to left</source>
-        <target approved="yes">Direction right to left</target>
+        <target>Direction right to left</target>
       </trans-unit>
-      <trans-unit id="removeformat">
+      <trans-unit id="removeformat" approved="yes">
         <source>Remove formatting</source>
-        <target approved="yes">Remove formatting</target>
+        <target>Remove formatting</target>
       </trans-unit>
-      <trans-unit id="print">
+      <trans-unit id="print" approved="yes">
         <source>Print document</source>
-        <target approved="yes">Print document</target>
+        <target>Print document</target>
       </trans-unit>
-      <trans-unit id="killword">
+      <trans-unit id="killword" approved="yes">
         <source>Clear MSOffice tags</source>
-        <target approved="yes">Clear MSOffice tags</target>
+        <target>Clear MSOffice tags</target>
       </trans-unit>
-      <trans-unit id="fontname">
+      <trans-unit id="fontname" approved="yes">
         <source>Font</source>
-        <target approved="yes">Font</target>
+        <target>Font</target>
       </trans-unit>
-      <trans-unit id="fontsize">
+      <trans-unit id="fontsize" approved="yes">
         <source>Font size</source>
-        <target approved="yes">Font size</target>
+        <target>Font size</target>
       </trans-unit>
-      <trans-unit id="formatblock">
+      <trans-unit id="formatblock" approved="yes">
         <source>Type of paragragh</source>
-        <target approved="yes">Type of paragragh</target>
+        <target>Type of paragragh</target>
       </trans-unit>
     </body>
   </file>

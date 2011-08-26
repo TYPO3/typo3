@@ -3,89 +3,89 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:24 UTC" product-name="lang">
     <header/>
     <body>
-      <trans-unit id="title">
+      <trans-unit id="title" approved="yes">
         <source>About TYPO3</source>
-        <target approved="yes">About TYPO3</target>
+        <target>About TYPO3</target>
       </trans-unit>
-      <trans-unit id="typo3_logo">
+      <trans-unit id="typo3_logo" approved="yes">
         <source>TYPO3 logo</source>
-        <target approved="yes">TYPO3 logo</target>
+        <target>TYPO3 logo</target>
       </trans-unit>
-      <trans-unit id="information">
+      <trans-unit id="information" approved="yes">
         <source>TYPO3 Information</source>
-        <target approved="yes">TYPO3 Information</target>
+        <target>TYPO3 Information</target>
       </trans-unit>
-      <trans-unit id="welcome">
+      <trans-unit id="welcome" approved="yes">
         <source>TYPO3 Professional Web Content Management System</source>
-        <target approved="yes">TYPO3 Professional Web Content Management System</target>
+        <target>TYPO3 Professional Web Content Management System</target>
       </trans-unit>
-      <trans-unit id="minor">
+      <trans-unit id="minor" approved="yes">
         <source>TYPO3 is a flexible and professional Open Source Web-CMS based on PHP and MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="http://typo3.com/1316.0.html" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</source>
-        <target approved="yes">TYPO3 is a flexible and professional Open Source Web-CMS based on PHP and MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="http://typo3.com/1316.0.html" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</target>
+        <target>TYPO3 is a flexible and professional Open Source Web-CMS based on PHP and MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="http://typo3.com/1316.0.html" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</target>
       </trans-unit>
-      <trans-unit id="community_credits">
+      <trans-unit id="community_credits" approved="yes">
         <source>Community Credits</source>
-        <target approved="yes">Community Credits</target>
+        <target>Community Credits</target>
       </trans-unit>
-      <trans-unit id="information_detail">
+      <trans-unit id="information_detail" approved="yes">
         <source>Visit &lt;a href="http://typo3.org/community/" target="_blank"&gt;typo3.org/community/&lt;/a&gt; if you want to know why TYPO3 rocks.</source>
-        <target approved="yes">Visit &lt;a href="http://typo3.org/community/" target="_blank"&gt;typo3.org/community/&lt;/a&gt; if you want to know why TYPO3 rocks.</target>
+        <target>Visit &lt;a href="http://typo3.org/community/" target="_blank"&gt;typo3.org/community/&lt;/a&gt; if you want to know why TYPO3 rocks.</target>
       </trans-unit>
-      <trans-unit id="coredevs">
+      <trans-unit id="coredevs" approved="yes">
         <source>Core Team</source>
-        <target approved="yes">Core Team</target>
+        <target>Core Team</target>
       </trans-unit>
-      <trans-unit id="coredevs_detail">
+      <trans-unit id="coredevs_detail" approved="yes">
         <source>Visit &lt;a href="http://typo3.org/teams/core/members/" target="_blank"&gt;typo3.org/teams/core/members/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The SVN Repository and the ChangeLog can be found &lt;a href="http://forge.typo3.org/projects/show/typo3v4-core/" target="_blank"&gt;here&lt;/a&gt;.</source>
-        <target approved="yes">Visit &lt;a href="http://typo3.org/teams/core/members/" target="_blank"&gt;typo3.org/teams/core/members/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The SVN Repository and the ChangeLog can be found &lt;a href="http://forge.typo3.org/projects/show/typo3v4-core/" target="_blank"&gt;here&lt;/a&gt;.</target>
+        <target>Visit &lt;a href="http://typo3.org/teams/core/members/" target="_blank"&gt;typo3.org/teams/core/members/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The SVN Repository and the ChangeLog can be found &lt;a href="http://forge.typo3.org/projects/show/typo3v4-core/" target="_blank"&gt;here&lt;/a&gt;.</target>
       </trans-unit>
-      <trans-unit id="extension_authors">
+      <trans-unit id="extension_authors" approved="yes">
         <source>Extension Authors</source>
-        <target approved="yes">Extension Authors</target>
+        <target>Extension Authors</target>
       </trans-unit>
-      <trans-unit id="extension_list_info">
+      <trans-unit id="extension_list_info" approved="yes">
         <source>This is a list of the people who contributed to the extensions you're using in your installation.</source>
-        <target approved="yes">This is a list of the people who contributed to the extensions you're using in your installation.</target>
+        <target>This is a list of the people who contributed to the extensions you're using in your installation.</target>
       </trans-unit>
-      <trans-unit id="extension">
+      <trans-unit id="extension" approved="yes">
         <source>Extension</source>
-        <target approved="yes">Extension</target>
+        <target>Extension</target>
       </trans-unit>
-      <trans-unit id="extension_author">
+      <trans-unit id="extension_author" approved="yes">
         <source>Author</source>
-        <target approved="yes">Author</target>
+        <target>Author</target>
       </trans-unit>
-      <trans-unit id="mlang_labels_tablabel">
+      <trans-unit id="mlang_labels_tablabel" approved="yes">
         <source>About TYPO3</source>
-        <target approved="yes">About TYPO3</target>
+        <target>About TYPO3</target>
       </trans-unit>
-      <trans-unit id="mlang_labels_tabdescr">
+      <trans-unit id="mlang_labels_tabdescr" approved="yes">
         <source>Displays the basic facts about the TYPO3 application, version and licensing terms.</source>
-        <target approved="yes">Displays the basic facts about the TYPO3 application, version and licensing terms.</target>
+        <target>Displays the basic facts about the TYPO3 application, version and licensing terms.</target>
       </trans-unit>
-      <trans-unit id="mlang_tabs_tab">
+      <trans-unit id="mlang_tabs_tab" approved="yes">
         <source>About TYPO3</source>
-        <target approved="yes">About TYPO3</target>
+        <target>About TYPO3</target>
       </trans-unit>
-      <trans-unit id="donation_header">
+      <trans-unit id="donation_header" approved="yes">
         <source>TYPO3 Donation</source>
-        <target approved="yes">TYPO3 Donation</target>
+        <target>TYPO3 Donation</target>
       </trans-unit>
-      <trans-unit id="donation_message">
+      <trans-unit id="donation_message" approved="yes">
         <source>It would be great if you could donate. TYPO3 is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt; &lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your help!</source>
-        <target approved="yes">It would be great if you could donate. TYPO3 is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt; &lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your help!</target>
+        <target>It would be great if you could donate. TYPO3 is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt; &lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your help!</target>
       </trans-unit>
-      <trans-unit id="donation_button">
+      <trans-unit id="donation_button" approved="yes">
         <source>Donate now</source>
-        <target approved="yes">Donate now</target>
+        <target>Donate now</target>
       </trans-unit>
-      <trans-unit id="external_libraries">
+      <trans-unit id="external_libraries" approved="yes">
         <source>External Libraries</source>
-        <target approved="yes">External Libraries</target>
+        <target>External Libraries</target>
       </trans-unit>
-      <trans-unit id="external_thanks">
+      <trans-unit id="external_thanks" approved="yes">
         <source>TYPO3 core uses and thanks these external Open Source projects:</source>
-        <target approved="yes">TYPO3 core uses and thanks these external Open Source projects:</target>
+        <target>TYPO3 core uses and thanks these external Open Source projects:</target>
       </trans-unit>
     </body>
   </file>

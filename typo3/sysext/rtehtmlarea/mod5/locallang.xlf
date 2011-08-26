@@ -3,25 +3,25 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="noTitle">
+      <trans-unit id="noTitle" approved="yes">
         <source>No title</source>
-        <target approved="yes">No title</target>
+        <target>No title</target>
       </trans-unit>
-      <trans-unit id="expand">
+      <trans-unit id="expand" approved="yes">
         <source>Expand category</source>
-        <target approved="yes">Expand category</target>
+        <target>Expand category</target>
       </trans-unit>
-      <trans-unit id="noTextSelection">
+      <trans-unit id="noTextSelection" approved="yes">
         <source>Error: There was no selected text to wrap.</source>
-        <target approved="yes">Error: There was no selected text to wrap.</target>
+        <target>Error: There was no selected text to wrap.</target>
       </trans-unit>
-      <trans-unit id="pixels">
+      <trans-unit id="pixels" approved="yes">
         <source>Pixels</source>
-        <target approved="yes">Pixels</target>
+        <target>Pixels</target>
       </trans-unit>
-      <trans-unit id="filesize">
+      <trans-unit id="filesize" approved="yes">
         <source>Filesize</source>
-        <target approved="yes">Filesize</target>
+        <target>Filesize</target>
       </trans-unit>
     </body>
   </file>

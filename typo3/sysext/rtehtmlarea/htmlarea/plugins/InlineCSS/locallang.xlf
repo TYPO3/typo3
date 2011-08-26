@@ -3,25 +3,25 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="Default">
+      <trans-unit id="Default" approved="yes">
         <source>Default</source>
-        <target approved="yes">Default</target>
+        <target>Default</target>
       </trans-unit>
-      <trans-unit id="Undefined">
+      <trans-unit id="Undefined" approved="yes">
         <source>Undefined</source>
-        <target approved="yes">Undefined</target>
+        <target>Undefined</target>
       </trans-unit>
-      <trans-unit id="InlineCSSStyleTooltip">
+      <trans-unit id="InlineCSSStyleTooltip" approved="yes">
         <source>Apply style to the selected text</source>
-        <target approved="yes">Apply style to the selected text</target>
+        <target>Apply style to the selected text</target>
       </trans-unit>
-      <trans-unit id="InlineCSS-class-Tooltip">
+      <trans-unit id="InlineCSS-class-Tooltip" approved="yes">
         <source>Apply style to the selected text</source>
-        <target approved="yes">Apply style to the selected text</target>
+        <target>Apply style to the selected text</target>
       </trans-unit>
-      <trans-unit id="You have to select some text">
+      <trans-unit id="You have to select some text" approved="yes">
         <source>You have to select some text</source>
-        <target approved="yes">You have to select some text</target>
+        <target>You have to select some text</target>
       </trans-unit>
     </body>
   </file>

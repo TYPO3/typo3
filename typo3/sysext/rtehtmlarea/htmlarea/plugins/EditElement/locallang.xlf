@@ -3,73 +3,73 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="editElement">
+      <trans-unit id="editElement" approved="yes">
         <source>Edit element</source>
-        <target approved="yes">Edit element</target>
+        <target>Edit element</target>
       </trans-unit>
-      <trans-unit id="general">
+      <trans-unit id="general" approved="yes">
         <source>General</source>
-        <target approved="yes">General</target>
+        <target>General</target>
       </trans-unit>
-      <trans-unit id="identification">
+      <trans-unit id="identification" approved="yes">
         <source>Identification</source>
-        <target approved="yes">Identification</target>
+        <target>Identification</target>
       </trans-unit>
-      <trans-unit id="id">
+      <trans-unit id="id" approved="yes">
         <source>Id</source>
-        <target approved="yes">Id</target>
+        <target>Id</target>
       </trans-unit>
-      <trans-unit id="title">
+      <trans-unit id="title" approved="yes">
         <source>Title</source>
-        <target approved="yes">Title</target>
+        <target>Title</target>
       </trans-unit>
-      <trans-unit id="className">
+      <trans-unit id="className" approved="yes">
         <source>Class</source>
-        <target approved="yes">Class</target>
+        <target>Class</target>
       </trans-unit>
-      <trans-unit id="events">
+      <trans-unit id="events" approved="yes">
         <source>Events</source>
-        <target approved="yes">Events</target>
+        <target>Events</target>
       </trans-unit>
-      <trans-unit id="onkeydown">
+      <trans-unit id="onkeydown" approved="yes">
         <source>Onkeydown</source>
-        <target approved="yes">Onkeydown</target>
+        <target>Onkeydown</target>
       </trans-unit>
-      <trans-unit id="onkeypress">
+      <trans-unit id="onkeypress" approved="yes">
         <source>Onkeypress</source>
-        <target approved="yes">Onkeypress</target>
+        <target>Onkeypress</target>
       </trans-unit>
-      <trans-unit id="onkeyup">
+      <trans-unit id="onkeyup" approved="yes">
         <source>Onkeyup</source>
-        <target approved="yes">Onkeyup</target>
+        <target>Onkeyup</target>
       </trans-unit>
-      <trans-unit id="onclick">
+      <trans-unit id="onclick" approved="yes">
         <source>Onclick</source>
-        <target approved="yes">Onclick</target>
+        <target>Onclick</target>
       </trans-unit>
-      <trans-unit id="ondblclick">
+      <trans-unit id="ondblclick" approved="yes">
         <source>Ondblclick</source>
-        <target approved="yes">Ondblclick</target>
+        <target>Ondblclick</target>
       </trans-unit>
-      <trans-unit id="onmousedown">
+      <trans-unit id="onmousedown" approved="yes">
         <source>Onmousedown</source>
-        <target approved="yes">Onmousedown</target>
+        <target>Onmousedown</target>
       </trans-unit>
-      <trans-unit id="onmousemove">
+      <trans-unit id="onmousemove" approved="yes">
         <source>Onmousemove</source>
-        <target approved="yes">Onmousemove</target>
+        <target>Onmousemove</target>
       </trans-unit>
-      <trans-unit id="onmouseout">
+      <trans-unit id="onmouseout" approved="yes">
         <source>Onmouseout</source>
-        <target approved="yes">Onmouseout</target>
+        <target>Onmouseout</target>
       </trans-unit>
-      <trans-unit id="onmouseover">
+      <trans-unit id="onmouseover" approved="yes">
         <source>Onmouseover</source>
-        <target approved="yes">Onmouseover</target>
+        <target>Onmouseover</target>
       </trans-unit>
-      <trans-unit id="onmouseup">
+      <trans-unit id="onmouseup" approved="yes">
         <source>Onmouseup</source>
-        <target approved="yes">Onmouseup</target>
+        <target>Onmouseup</target>
       </trans-unit>
     </body>
   </file>

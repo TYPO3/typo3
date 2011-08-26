@@ -3,25 +3,25 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="lang">
     <header/>
     <body>
-      <trans-unit id="query_loaded">
+      <trans-unit id="query_loaded" approved="yes">
         <source>Query "%s" loaded!</source>
-        <target approved="yes">Query "%s" loaded!</target>
+        <target>Query "%s" loaded!</target>
       </trans-unit>
-      <trans-unit id="query_from_action_loaded">
+      <trans-unit id="query_from_action_loaded" approved="yes">
         <source>Query from action "%s" loaded!</source>
-        <target approved="yes">Query from action "%s" loaded!</target>
+        <target>Query from action "%s" loaded!</target>
       </trans-unit>
-      <trans-unit id="query_saved">
+      <trans-unit id="query_saved" approved="yes">
         <source>Query saved!</source>
-        <target approved="yes">Query saved!</target>
+        <target>Query saved!</target>
       </trans-unit>
-      <trans-unit id="query_notsaved">
+      <trans-unit id="query_notsaved" approved="yes">
         <source>No query saved!</source>
-        <target approved="yes">No query saved!</target>
+        <target>No query saved!</target>
       </trans-unit>
-      <trans-unit id="query_removed">
+      <trans-unit id="query_removed" approved="yes">
         <source>"%s" query entry removed!</source>
-        <target approved="yes">"%s" query entry removed!</target>
+        <target>"%s" query entry removed!</target>
       </trans-unit>
     </body>
   </file>

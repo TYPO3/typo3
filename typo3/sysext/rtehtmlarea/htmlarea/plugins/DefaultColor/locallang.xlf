@@ -3,9 +3,9 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="Invalid color code">
+      <trans-unit id="Invalid color code" approved="yes">
         <source>Invalid color code</source>
-        <target approved="yes">Invalid color code</target>
+        <target>Invalid color code</target>
       </trans-unit>
     </body>
   </file>

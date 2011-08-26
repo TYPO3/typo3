@@ -3,9 +3,9 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="No style">
+      <trans-unit id="No style" approved="yes">
         <source>No text style</source>
-        <target approved="yes">No text style</target>
+        <target>No text style</target>
       </trans-unit>
     </body>
   </file>

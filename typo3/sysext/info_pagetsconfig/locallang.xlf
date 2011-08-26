@@ -3,73 +3,73 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:24 UTC" product-name="info_pagetsconfig">
     <header/>
     <body>
-      <trans-unit id="tsconf_title">
+      <trans-unit id="tsconf_title" approved="yes">
         <source>Page TSconfig</source>
-        <target approved="yes">Page TSconfig</target>
+        <target>Page TSconfig</target>
       </trans-unit>
-      <trans-unit id="tsconf_parts_0">
+      <trans-unit id="tsconf_parts_0" approved="yes">
         <source>All</source>
-        <target approved="yes">All</target>
+        <target>All</target>
       </trans-unit>
-      <trans-unit id="tsconf_parts_1">
+      <trans-unit id="tsconf_parts_1" approved="yes">
         <source>Module key ('mod') with overruling user settings</source>
-        <target approved="yes">Module key ('mod') with overruling user settings</target>
+        <target>Module key ('mod') with overruling user settings</target>
       </trans-unit>
-      <trans-unit id="tsconf_parts_1a">
+      <trans-unit id="tsconf_parts_1a" approved="yes">
         <source>Module: Web&gt;Page</source>
-        <target approved="yes">Module: Web&gt;Page</target>
+        <target>Module: Web&gt;Page</target>
       </trans-unit>
-      <trans-unit id="tsconf_parts_1b">
+      <trans-unit id="tsconf_parts_1b" approved="yes">
         <source>Module: Web&gt;View</source>
-        <target approved="yes">Module: Web&gt;View</target>
+        <target>Module: Web&gt;View</target>
       </trans-unit>
-      <trans-unit id="tsconf_parts_1c">
+      <trans-unit id="tsconf_parts_1c" approved="yes">
         <source>Module: Web&gt;Modules</source>
-        <target approved="yes">Module: Web&gt;Modules</target>
+        <target>Module: Web&gt;Modules</target>
       </trans-unit>
-      <trans-unit id="tsconf_parts_1d">
+      <trans-unit id="tsconf_parts_1d" approved="yes">
         <source>Module: Web&gt;List</source>
-        <target approved="yes">Module: Web&gt;List</target>
+        <target>Module: Web&gt;List</target>
       </trans-unit>
-      <trans-unit id="tsconf_parts_1e">
+      <trans-unit id="tsconf_parts_1e" approved="yes">
         <source>Module: Web&gt;Info</source>
-        <target approved="yes">Module: Web&gt;Info</target>
+        <target>Module: Web&gt;Info</target>
       </trans-unit>
-      <trans-unit id="tsconf_parts_1f">
+      <trans-unit id="tsconf_parts_1f" approved="yes">
         <source>Module: Web&gt;Func</source>
-        <target approved="yes">Module: Web&gt;Func</target>
+        <target>Module: Web&gt;Func</target>
       </trans-unit>
-      <trans-unit id="tsconf_parts_1g">
+      <trans-unit id="tsconf_parts_1g" approved="yes">
         <source>Module: Web&gt;Template</source>
-        <target approved="yes">Module: Web&gt;Template</target>
+        <target>Module: Web&gt;Template</target>
       </trans-unit>
-      <trans-unit id="tsconf_configFields">
+      <trans-unit id="tsconf_configFields" approved="yes">
         <source>View TSconfig fields content</source>
-        <target approved="yes">View TSconfig fields content</target>
+        <target>View TSconfig fields content</target>
       </trans-unit>
-      <trans-unit id="editThisColumn">
+      <trans-unit id="editThisColumn" approved="yes">
         <source>Edit the field '%s' for all listed pages</source>
-        <target approved="yes">Edit the field '%s' for all listed pages</target>
+        <target>Edit the field '%s' for all listed pages</target>
       </trans-unit>
-      <trans-unit id="editTSconfig">
+      <trans-unit id="editTSconfig" approved="yes">
         <source>Edit TSconfig for this page</source>
-        <target approved="yes">Edit TSconfig for this page</target>
+        <target>Edit TSconfig for this page</target>
       </trans-unit>
-      <trans-unit id="editTSconfig_all">
+      <trans-unit id="editTSconfig_all" approved="yes">
         <source>Edit TSconfig for all shown pages</source>
-        <target approved="yes">Edit TSconfig for all shown pages</target>
+        <target>Edit TSconfig for all shown pages</target>
       </trans-unit>
-      <trans-unit id="editTSconfig_default">
+      <trans-unit id="editTSconfig_default" approved="yes">
         <source>Default Configuration from TYPO3_CONF_VARS</source>
-        <target approved="yes">Default Configuration from TYPO3_CONF_VARS</target>
+        <target>Default Configuration from TYPO3_CONF_VARS</target>
       </trans-unit>
-      <trans-unit id="mod_pagetsconfig">
+      <trans-unit id="mod_pagetsconfig" approved="yes">
         <source>Page TSconfig</source>
-        <target approved="yes">Page TSconfig</target>
+        <target>Page TSconfig</target>
       </trans-unit>
-      <trans-unit id="sort_alphabetic">
+      <trans-unit id="sort_alphabetic" approved="yes">
         <source>Sort alphabetically:</source>
-        <target approved="yes">Sort alphabetically:</target>
+        <target>Sort alphabetically:</target>
       </trans-unit>
     </body>
   </file>

@@ -3,21 +3,21 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="opendocs">
     <header/>
     <body>
-      <trans-unit id="toolbaritem">
+      <trans-unit id="toolbaritem" approved="yes">
         <source>Open and Recently Used Documents</source>
-        <target approved="yes">Open and Recently Used Documents</target>
+        <target>Open and Recently Used Documents</target>
       </trans-unit>
-      <trans-unit id="open_docs">
+      <trans-unit id="open_docs" approved="yes">
         <source>Open Documents</source>
-        <target approved="yes">Open Documents</target>
+        <target>Open Documents</target>
       </trans-unit>
-      <trans-unit id="recent_docs">
+      <trans-unit id="recent_docs" approved="yes">
         <source>Recently Used Documents</source>
-        <target approved="yes">Recently Used Documents</target>
+        <target>Recently Used Documents</target>
       </trans-unit>
-      <trans-unit id="no_docs">
+      <trans-unit id="no_docs" approved="yes">
         <source>There are no open documents at this time.</source>
-        <target approved="yes">There are no open documents at this time.</target>
+        <target>There are no open documents at this time.</target>
       </trans-unit>
     </body>
   </file>

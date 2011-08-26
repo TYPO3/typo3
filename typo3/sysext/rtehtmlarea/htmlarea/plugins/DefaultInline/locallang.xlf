@@ -3,29 +3,29 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="Bold-Tooltip">
+      <trans-unit id="Bold-Tooltip" approved="yes">
         <source>Bold</source>
-        <target approved="yes">Bold</target>
+        <target>Bold</target>
       </trans-unit>
-      <trans-unit id="Italic-Tooltip">
+      <trans-unit id="Italic-Tooltip" approved="yes">
         <source>Italic</source>
-        <target approved="yes">Italic</target>
+        <target>Italic</target>
       </trans-unit>
-      <trans-unit id="StrikeThrough-Tooltip">
+      <trans-unit id="StrikeThrough-Tooltip" approved="yes">
         <source>Strike-through</source>
-        <target approved="yes">Strike-through</target>
+        <target>Strike-through</target>
       </trans-unit>
-      <trans-unit id="Subscript-Tooltip">
+      <trans-unit id="Subscript-Tooltip" approved="yes">
         <source>Subscript</source>
-        <target approved="yes">Subscript</target>
+        <target>Subscript</target>
       </trans-unit>
-      <trans-unit id="Superscript-Tooltip">
+      <trans-unit id="Superscript-Tooltip" approved="yes">
         <source>Superscript</source>
-        <target approved="yes">Superscript</target>
+        <target>Superscript</target>
       </trans-unit>
-      <trans-unit id="Underline-Tooltip">
+      <trans-unit id="Underline-Tooltip" approved="yes">
         <source>Underline</source>
-        <target approved="yes">Underline</target>
+        <target>Underline</target>
       </trans-unit>
     </body>
   </file>

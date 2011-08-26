@@ -3,101 +3,101 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="No markup">
+      <trans-unit id="No markup" approved="yes">
         <source>No text format</source>
-        <target approved="yes">No text format</target>
+        <target>No text format</target>
       </trans-unit>
-      <trans-unit id="Bold">
+      <trans-unit id="Bold" approved="yes">
         <source>Bold</source>
-        <target approved="yes">Bold</target>
+        <target>Bold</target>
       </trans-unit>
-      <trans-unit id="BiDi override">
+      <trans-unit id="BiDi override" approved="yes">
         <source>BiDi override</source>
-        <target approved="yes">BiDi override</target>
+        <target>BiDi override</target>
       </trans-unit>
-      <trans-unit id="Large text">
+      <trans-unit id="Large text" approved="yes">
         <source>Large text</source>
-        <target approved="yes">Large text</target>
+        <target>Large text</target>
       </trans-unit>
-      <trans-unit id="Citation">
+      <trans-unit id="Citation" approved="yes">
         <source>Citation</source>
-        <target approved="yes">Citation</target>
+        <target>Citation</target>
       </trans-unit>
-      <trans-unit id="Code">
+      <trans-unit id="Code" approved="yes">
         <source>Code</source>
-        <target approved="yes">Code</target>
+        <target>Code</target>
       </trans-unit>
-      <trans-unit id="Definition">
+      <trans-unit id="Definition" approved="yes">
         <source>Definition</source>
-        <target approved="yes">Definition</target>
+        <target>Definition</target>
       </trans-unit>
-      <trans-unit id="Deleted text">
+      <trans-unit id="Deleted text" approved="yes">
         <source>Deleted text</source>
-        <target approved="yes">Deleted text</target>
+        <target>Deleted text</target>
       </trans-unit>
-      <trans-unit id="Emphasis">
+      <trans-unit id="Emphasis" approved="yes">
         <source>Emphasis</source>
-        <target approved="yes">Emphasis</target>
+        <target>Emphasis</target>
       </trans-unit>
-      <trans-unit id="Inserted text">
+      <trans-unit id="Inserted text" approved="yes">
         <source>Inserted text</source>
-        <target approved="yes">Inserted text</target>
+        <target>Inserted text</target>
       </trans-unit>
-      <trans-unit id="Italic">
+      <trans-unit id="Italic" approved="yes">
         <source>Italic</source>
-        <target approved="yes">Italic</target>
+        <target>Italic</target>
       </trans-unit>
-      <trans-unit id="Keyboard">
+      <trans-unit id="Keyboard" approved="yes">
         <source>Keyboard</source>
-        <target approved="yes">Keyboard</target>
+        <target>Keyboard</target>
       </trans-unit>
-      <trans-unit id="Label">
+      <trans-unit id="Label" approved="yes">
         <source>Label</source>
-        <target approved="yes">Label</target>
+        <target>Label</target>
       </trans-unit>
-      <trans-unit id="Monospaced text">
+      <trans-unit id="Monospaced text" approved="yes">
         <source>Monospaced text</source>
-        <target approved="yes">Monospaced text</target>
+        <target>Monospaced text</target>
       </trans-unit>
-      <trans-unit id="Quotation">
+      <trans-unit id="Quotation" approved="yes">
         <source>Quotation</source>
-        <target approved="yes">Quotation</target>
+        <target>Quotation</target>
       </trans-unit>
-      <trans-unit id="Sample">
+      <trans-unit id="Sample" approved="yes">
         <source>Sample</source>
-        <target approved="yes">Sample</target>
+        <target>Sample</target>
       </trans-unit>
-      <trans-unit id="Small text">
+      <trans-unit id="Small text" approved="yes">
         <source>Small text</source>
-        <target approved="yes">Small text</target>
+        <target>Small text</target>
       </trans-unit>
-      <trans-unit id="Style container">
+      <trans-unit id="Style container" approved="yes">
         <source>Style container</source>
-        <target approved="yes">Style container</target>
+        <target>Style container</target>
       </trans-unit>
-      <trans-unit id="Strike-through">
+      <trans-unit id="Strike-through" approved="yes">
         <source>Strike-through</source>
-        <target approved="yes">Strike-through</target>
+        <target>Strike-through</target>
       </trans-unit>
-      <trans-unit id="Strong emphasis">
+      <trans-unit id="Strong emphasis" approved="yes">
         <source>Strong emphasis</source>
-        <target approved="yes">Strong emphasis</target>
+        <target>Strong emphasis</target>
       </trans-unit>
-      <trans-unit id="Subscript">
+      <trans-unit id="Subscript" approved="yes">
         <source>Subscript</source>
-        <target approved="yes">Subscript</target>
+        <target>Subscript</target>
       </trans-unit>
-      <trans-unit id="Superscript">
+      <trans-unit id="Superscript" approved="yes">
         <source>Superscript</source>
-        <target approved="yes">Superscript</target>
+        <target>Superscript</target>
       </trans-unit>
-      <trans-unit id="Underline">
+      <trans-unit id="Underline" approved="yes">
         <source>Underline</source>
-        <target approved="yes">Underline</target>
+        <target>Underline</target>
       </trans-unit>
-      <trans-unit id="Variable">
+      <trans-unit id="Variable" approved="yes">
         <source>Variable</source>
-        <target approved="yes">Variable</target>
+        <target>Variable</target>
       </trans-unit>
     </body>
   </file>

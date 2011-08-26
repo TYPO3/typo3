@@ -3,25 +3,25 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="LeftToRight-Tooltip">
+      <trans-unit id="LeftToRight-Tooltip" approved="yes">
         <source>Direction left to right</source>
-        <target approved="yes">Direction left to right</target>
+        <target>Direction left to right</target>
       </trans-unit>
-      <trans-unit id="RightToLeft-Tooltip">
+      <trans-unit id="RightToLeft-Tooltip" approved="yes">
         <source>Direction right to left</source>
-        <target approved="yes">Direction right to left</target>
+        <target>Direction right to left</target>
       </trans-unit>
-      <trans-unit id="Language-Tooltip">
+      <trans-unit id="Language-Tooltip" approved="yes">
         <source>Language</source>
-        <target approved="yes">Language</target>
+        <target>Language</target>
       </trans-unit>
-      <trans-unit id="ShowLanguageMarks-Tooltip">
+      <trans-unit id="ShowLanguageMarks-Tooltip" approved="yes">
         <source>Show language marks</source>
-        <target approved="yes">Show language marks</target>
+        <target>Show language marks</target>
       </trans-unit>
-      <trans-unit id="Technische Universitat Ilmenau">
+      <trans-unit id="Technische Universitat Ilmenau" approved="yes">
         <source>Technische Universität Ilmenau</source>
-        <target approved="yes">Technische Universität Ilmenau</target>
+        <target>Technische Universität Ilmenau</target>
       </trans-unit>
     </body>
   </file>

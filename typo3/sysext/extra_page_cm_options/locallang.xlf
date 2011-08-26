@@ -3,9 +3,9 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:23 UTC" product-name="extra_page_cm_options">
     <header/>
     <body>
-      <trans-unit id="label">
+      <trans-unit id="label" approved="yes">
         <source>More options...</source>
-        <target approved="yes">More options...</target>
+        <target>More options...</target>
       </trans-unit>
     </body>
   </file>

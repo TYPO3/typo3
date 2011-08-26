@@ -3,69 +3,69 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="sys_action">
     <header/>
     <body>
-      <trans-unit id="sys_action">
+      <trans-unit id="sys_action" approved="yes">
         <source>Action</source>
-        <target approved="yes">Action</target>
+        <target>Action</target>
       </trans-unit>
-      <trans-unit id="tx_sys_action">
+      <trans-unit id="tx_sys_action" approved="yes">
         <source>Actions</source>
-        <target approved="yes">Actions</target>
+        <target>Actions</target>
       </trans-unit>
-      <trans-unit id="sys_action.hidden">
+      <trans-unit id="sys_action.hidden" approved="yes">
         <source>Deactivated:</source>
-        <target approved="yes">Deactivated:</target>
+        <target>Deactivated:</target>
       </trans-unit>
-      <trans-unit id="sys_action.assign_to_groups">
+      <trans-unit id="sys_action.assign_to_groups" approved="yes">
         <source>Assign action to groups:</source>
-        <target approved="yes">Assign action to groups:</target>
+        <target>Assign action to groups:</target>
       </trans-unit>
-      <trans-unit id="sys_action.t1_userprefix">
+      <trans-unit id="sys_action.t1_userprefix" approved="yes">
         <source>User prefix:</source>
-        <target approved="yes">User prefix:</target>
+        <target>User prefix:</target>
       </trans-unit>
-      <trans-unit id="sys_action.t1_allowed_groups">
+      <trans-unit id="sys_action.t1_allowed_groups" approved="yes">
         <source>Groups which may be assigned through the action:</source>
-        <target approved="yes">Groups which may be assigned through the action:</target>
+        <target>Groups which may be assigned through the action:</target>
       </trans-unit>
-      <trans-unit id="sys_action.t1_create_user_dir">
+      <trans-unit id="sys_action.t1_create_user_dir" approved="yes">
         <source>Create User Home Directory:</source>
-        <target approved="yes">Create User Home Directory:</target>
+        <target>Create User Home Directory:</target>
       </trans-unit>
-      <trans-unit id="sys_action.t1_copy_of_user">
+      <trans-unit id="sys_action.t1_copy_of_user" approved="yes">
         <source>Template user:</source>
-        <target approved="yes">Template user:</target>
+        <target>Template user:</target>
       </trans-unit>
-      <trans-unit id="sys_action.t3_listPid">
+      <trans-unit id="sys_action.t3_listPid" approved="yes">
         <source>List pid:</source>
-        <target approved="yes">List pid:</target>
+        <target>List pid:</target>
       </trans-unit>
-      <trans-unit id="sys_action.t3_tables">
+      <trans-unit id="sys_action.t3_tables" approved="yes">
         <source>List only table:</source>
-        <target approved="yes">List only table:</target>
+        <target>List only table:</target>
       </trans-unit>
-      <trans-unit id="sys_action.t4_recordsToEdit">
+      <trans-unit id="sys_action.t4_recordsToEdit" approved="yes">
         <source>Records to edit:</source>
-        <target approved="yes">Records to edit:</target>
+        <target>Records to edit:</target>
       </trans-unit>
-      <trans-unit id="sys_action.type.1">
+      <trans-unit id="sys_action.type.1" approved="yes">
         <source>Create Backend User</source>
-        <target approved="yes">Create Backend User</target>
+        <target>Create Backend User</target>
       </trans-unit>
-      <trans-unit id="sys_action.type.2">
+      <trans-unit id="sys_action.type.2" approved="yes">
         <source>SQL query</source>
-        <target approved="yes">SQL query</target>
+        <target>SQL query</target>
       </trans-unit>
-      <trans-unit id="sys_action.type.3">
+      <trans-unit id="sys_action.type.3" approved="yes">
         <source>Record list</source>
-        <target approved="yes">Record list</target>
+        <target>Record list</target>
       </trans-unit>
-      <trans-unit id="sys_action.type.4">
+      <trans-unit id="sys_action.type.4" approved="yes">
         <source>Edit records</source>
-        <target approved="yes">Edit records</target>
+        <target>Edit records</target>
       </trans-unit>
-      <trans-unit id="sys_action.type.5">
+      <trans-unit id="sys_action.type.5" approved="yes">
         <source>New Record</source>
-        <target approved="yes">New Record</target>
+        <target>New Record</target>
       </trans-unit>
     </body>
   </file>

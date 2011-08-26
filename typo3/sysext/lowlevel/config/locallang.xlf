@@ -3,85 +3,85 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="lowlevel">
     <header/>
     <body>
-      <trans-unit id="configuration">
+      <trans-unit id="configuration" approved="yes">
         <source>Configuration</source>
-        <target approved="yes">Configuration</target>
+        <target>Configuration</target>
       </trans-unit>
-      <trans-unit id="typo3ConfVars">
+      <trans-unit id="typo3ConfVars" approved="yes">
         <source>$TYPO3_CONF_VARS (Global Configuration)</source>
-        <target approved="yes">$TYPO3_CONF_VARS (Global Configuration)</target>
+        <target>$TYPO3_CONF_VARS (Global Configuration)</target>
       </trans-unit>
-      <trans-unit id="tca">
+      <trans-unit id="tca" approved="yes">
         <source>$TCA (Table configuration array)</source>
-        <target approved="yes">$TCA (Table configuration array)</target>
+        <target>$TCA (Table configuration array)</target>
       </trans-unit>
-      <trans-unit id="tcaDescr">
+      <trans-unit id="tcaDescr" approved="yes">
         <source>$TCA_DESCR (Table Help Description)</source>
-        <target approved="yes">$TCA_DESCR (Table Help Description)</target>
+        <target>$TCA_DESCR (Table Help Description)</target>
       </trans-unit>
-      <trans-unit id="loadedExt">
+      <trans-unit id="loadedExt" approved="yes">
         <source>$TYPO3_LOADED_EXT (Loaded Extensions)</source>
-        <target approved="yes">$TYPO3_LOADED_EXT (Loaded Extensions)</target>
+        <target>$TYPO3_LOADED_EXT (Loaded Extensions)</target>
       </trans-unit>
-      <trans-unit id="tbeStyles">
+      <trans-unit id="tbeStyles" approved="yes">
         <source>$TBE_STYLES (Skinning Styles)</source>
-        <target approved="yes">$TBE_STYLES (Skinning Styles)</target>
+        <target>$TBE_STYLES (Skinning Styles)</target>
       </trans-unit>
-      <trans-unit id="beUser">
+      <trans-unit id="beUser" approved="yes">
         <source>$BE_USER-&gt;uc (User Settings)</source>
-        <target approved="yes">$BE_USER-&gt;uc (User Settings)</target>
+        <target>$BE_USER-&gt;uc (User Settings)</target>
       </trans-unit>
-      <trans-unit id="usersettings">
+      <trans-unit id="usersettings" approved="yes">
         <source>$TYPO3_USER_SETTINGS (User Settings Configuration)</source>
-        <target approved="yes">$TYPO3_USER_SETTINGS (User Settings Configuration)</target>
+        <target>$TYPO3_USER_SETTINGS (User Settings Configuration)</target>
       </trans-unit>
-      <trans-unit id="t3services">
+      <trans-unit id="t3services" approved="yes">
         <source>$T3_SERVICES (Registered Services)</source>
-        <target approved="yes">$T3_SERVICES (Registered Services)</target>
+        <target>$T3_SERVICES (Registered Services)</target>
       </trans-unit>
-      <trans-unit id="tbemodulesext">
+      <trans-unit id="tbemodulesext" approved="yes">
         <source>$TBE_MODULES_EXT (BE Modules Extensions)</source>
-        <target approved="yes">$TBE_MODULES_EXT (BE Modules Extensions)</target>
+        <target>$TBE_MODULES_EXT (BE Modules Extensions)</target>
       </trans-unit>
-      <trans-unit id="tbemodules">
+      <trans-unit id="tbemodules" approved="yes">
         <source>$TBE_MODULES (BE Modules)</source>
-        <target approved="yes">$TBE_MODULES (BE Modules)</target>
+        <target>$TBE_MODULES (BE Modules)</target>
       </trans-unit>
-      <trans-unit id="cropLines">
+      <trans-unit id="cropLines" approved="yes">
         <source>Crop lines</source>
-        <target approved="yes">Crop lines</target>
+        <target>Crop lines</target>
       </trans-unit>
-      <trans-unit id="variable">
+      <trans-unit id="variable" approved="yes">
         <source>Variable:</source>
-        <target approved="yes">Variable:</target>
+        <target>Variable:</target>
       </trans-unit>
-      <trans-unit id="copyPaste">
+      <trans-unit id="copyPaste" approved="yes">
         <source>(Now, copy/paste this value into the configuration file where you can set it. This is all you can do from here...)</source>
-        <target approved="yes">(Now, copy/paste this value into the configuration file where you can set it. This is all you can do from here...)</target>
+        <target>(Now, copy/paste this value into the configuration file where you can set it. This is all you can do from here...)</target>
       </trans-unit>
-      <trans-unit id="enterSearchPhrase">
+      <trans-unit id="enterSearchPhrase" approved="yes">
         <source>Enter search phrase:</source>
-        <target approved="yes">Enter search phrase:</target>
+        <target>Enter search phrase:</target>
       </trans-unit>
-      <trans-unit id="search">
+      <trans-unit id="search" approved="yes">
         <source>Search</source>
-        <target approved="yes">Search</target>
+        <target>Search</target>
       </trans-unit>
-      <trans-unit id="useRegExp">
+      <trans-unit id="useRegExp" approved="yes">
         <source>Use regular expression</source>
-        <target approved="yes">Use regular expression</target>
+        <target>Use regular expression</target>
       </trans-unit>
-      <trans-unit id="writeValue">
+      <trans-unit id="writeValue" approved="yes">
         <source>Write value to configuration file</source>
-        <target approved="yes">Write value to configuration file</target>
+        <target>Write value to configuration file</target>
       </trans-unit>
-      <trans-unit id="writeMessage">
+      <trans-unit id="writeMessage" approved="yes">
         <source>Following line was added to configuration file (%s): %s%s</source>
-        <target approved="yes">Following line was added to configuration file (%s): %s%s</target>
+        <target>Following line was added to configuration file (%s): %s%s</target>
       </trans-unit>
-      <trans-unit id="writeMessageFailed">
+      <trans-unit id="writeMessageFailed" approved="yes">
         <source>Write to configuration file failed (%s)!</source>
-        <target approved="yes">Write to configuration file failed (%s)!</target>
+        <target>Write to configuration file failed (%s)!</target>
       </trans-unit>
     </body>
   </file>

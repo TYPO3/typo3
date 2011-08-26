@@ -3,89 +3,89 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="Substitute this occurrence?">
+      <trans-unit id="Substitute this occurrence?" approved="yes">
         <source>Substitute this occurrence?</source>
-        <target approved="yes">Substitute this occurrence?</target>
+        <target>Substitute this occurrence?</target>
       </trans-unit>
-      <trans-unit id="Enter the text you want to find">
+      <trans-unit id="Enter the text you want to find" approved="yes">
         <source>Enter the text you want to find</source>
-        <target approved="yes">Enter the text you want to find</target>
+        <target>Enter the text you want to find</target>
       </trans-unit>
-      <trans-unit id="Inform a replacement word">
+      <trans-unit id="Inform a replacement word" approved="yes">
         <source>This will erase all occurrences.</source>
-        <target approved="yes">This will erase all occurrences.</target>
+        <target>This will erase all occurrences.</target>
       </trans-unit>
-      <trans-unit id="found items">
+      <trans-unit id="found items" approved="yes">
         <source>found items</source>
-        <target approved="yes">found items</target>
+        <target>found items</target>
       </trans-unit>
-      <trans-unit id="replaced items">
+      <trans-unit id="replaced items" approved="yes">
         <source>replaced items</source>
-        <target approved="yes">replaced items</target>
+        <target>replaced items</target>
       </trans-unit>
-      <trans-unit id="found item">
+      <trans-unit id="found item" approved="yes">
         <source>item found</source>
-        <target approved="yes">item found</target>
+        <target>item found</target>
       </trans-unit>
-      <trans-unit id="replaced item">
+      <trans-unit id="replaced item" approved="yes">
         <source>item replaced</source>
-        <target approved="yes">item replaced</target>
+        <target>item replaced</target>
       </trans-unit>
-      <trans-unit id="not found">
+      <trans-unit id="not found" approved="yes">
         <source>not found</source>
-        <target approved="yes">not found</target>
+        <target>not found</target>
       </trans-unit>
-      <trans-unit id="Find and Replace">
+      <trans-unit id="Find and Replace" approved="yes">
         <source>Find And Replace</source>
-        <target approved="yes">Find And Replace</target>
+        <target>Find And Replace</target>
       </trans-unit>
-      <trans-unit id="Options">
+      <trans-unit id="Options" approved="yes">
         <source>Options</source>
-        <target approved="yes">Options</target>
+        <target>Options</target>
       </trans-unit>
-      <trans-unit id="Whole words only">
+      <trans-unit id="Whole words only" approved="yes">
         <source>Whole words only</source>
-        <target approved="yes">Whole words only</target>
+        <target>Whole words only</target>
       </trans-unit>
-      <trans-unit id="Case sensitive search">
+      <trans-unit id="Case sensitive search" approved="yes">
         <source>Case sensitive search</source>
-        <target approved="yes">Case sensitive search</target>
+        <target>Case sensitive search</target>
       </trans-unit>
-      <trans-unit id="Substitute all occurrences">
+      <trans-unit id="Substitute all occurrences" approved="yes">
         <source>Substitute all occurrences</source>
-        <target approved="yes">Substitute all occurrences</target>
+        <target>Substitute all occurrences</target>
       </trans-unit>
-      <trans-unit id="Search for:">
+      <trans-unit id="Search for:" approved="yes">
         <source>Search for:</source>
-        <target approved="yes">Search for:</target>
+        <target>Search for:</target>
       </trans-unit>
-      <trans-unit id="Replace with:">
+      <trans-unit id="Replace with:" approved="yes">
         <source>Replace with:</source>
-        <target approved="yes">Replace with:</target>
+        <target>Replace with:</target>
       </trans-unit>
-      <trans-unit id="Actions">
+      <trans-unit id="Actions" approved="yes">
         <source>Actions</source>
-        <target approved="yes">Actions</target>
+        <target>Actions</target>
       </trans-unit>
-      <trans-unit id="Clear">
+      <trans-unit id="Clear" approved="yes">
         <source>Clear</source>
-        <target approved="yes">Clear</target>
+        <target>Clear</target>
       </trans-unit>
-      <trans-unit id="Highlight">
+      <trans-unit id="Highlight" approved="yes">
         <source>Highlight</source>
-        <target approved="yes">Highlight</target>
+        <target>Highlight</target>
       </trans-unit>
-      <trans-unit id="Undo">
+      <trans-unit id="Undo" approved="yes">
         <source>Undo</source>
-        <target approved="yes">Undo</target>
+        <target>Undo</target>
       </trans-unit>
-      <trans-unit id="Next">
+      <trans-unit id="Next" approved="yes">
         <source>Next</source>
-        <target approved="yes">Next</target>
+        <target>Next</target>
       </trans-unit>
-      <trans-unit id="Done">
+      <trans-unit id="Done" approved="yes">
         <source>Done</source>
-        <target approved="yes">Done</target>
+        <target>Done</target>
       </trans-unit>
     </body>
   </file>

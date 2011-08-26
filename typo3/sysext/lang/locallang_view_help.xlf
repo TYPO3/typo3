@@ -3,93 +3,93 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="lang">
     <header/>
     <body>
-      <trans-unit id="details">
+      <trans-unit id="details" approved="yes">
         <source>Details</source>
-        <target approved="yes">Details</target>
+        <target>Details</target>
       </trans-unit>
-      <trans-unit id="syntax">
+      <trans-unit id="syntax" approved="yes">
         <source>Syntax</source>
-        <target approved="yes">Syntax</target>
+        <target>Syntax</target>
       </trans-unit>
-      <trans-unit id="seeAlso">
+      <trans-unit id="seeAlso" approved="yes">
         <source>See also</source>
-        <target approved="yes">See also</target>
+        <target>See also</target>
       </trans-unit>
-      <trans-unit id="goBack">
+      <trans-unit id="goBack" approved="yes">
         <source>Go back</source>
-        <target approved="yes">Go back</target>
+        <target>Go back</target>
       </trans-unit>
-      <trans-unit id="fullDescription">
+      <trans-unit id="fullDescription" approved="yes">
         <source>See full description of table</source>
-        <target approved="yes">See full description of table</target>
+        <target>See full description of table</target>
       </trans-unit>
-      <trans-unit id="fullDescription_module">
+      <trans-unit id="fullDescription_module" approved="yes">
         <source>See full description of module</source>
-        <target approved="yes">See full description of module</target>
+        <target>See full description of module</target>
       </trans-unit>
-      <trans-unit id="goToToc">
+      <trans-unit id="goToToc" approved="yes">
         <source>&lt;&lt; go to Manual Index</source>
-        <target approved="yes">&lt;&lt; go to Manual Index</target>
+        <target>&lt;&lt; go to Manual Index</target>
       </trans-unit>
-      <trans-unit id="to_top">
+      <trans-unit id="to_top" approved="yes">
         <source>To top</source>
-        <target approved="yes">To top</target>
+        <target>To top</target>
       </trans-unit>
-      <trans-unit id="TOC">
+      <trans-unit id="TOC" approved="yes">
         <source>Table Of Contents</source>
-        <target approved="yes">Table Of Contents</target>
+        <target>Table Of Contents</target>
       </trans-unit>
-      <trans-unit id="TOC_core">
+      <trans-unit id="TOC_core" approved="yes">
         <source>TYPO3 Core Features</source>
-        <target approved="yes">TYPO3 Core Features</target>
+        <target>TYPO3 Core Features</target>
       </trans-unit>
-      <trans-unit id="TOC_modules">
+      <trans-unit id="TOC_modules" approved="yes">
         <source>Backend Modules</source>
-        <target approved="yes">Backend Modules</target>
+        <target>Backend Modules</target>
       </trans-unit>
-      <trans-unit id="TOC_tables">
+      <trans-unit id="TOC_tables" approved="yes">
         <source>Database Tables</source>
-        <target approved="yes">Database Tables</target>
+        <target>Database Tables</target>
       </trans-unit>
-      <trans-unit id="TOC_extensions">
+      <trans-unit id="TOC_extensions" approved="yes">
         <source>Extensions</source>
-        <target approved="yes">Extensions</target>
+        <target>Extensions</target>
       </trans-unit>
-      <trans-unit id="TOC_glossary">
+      <trans-unit id="TOC_glossary" approved="yes">
         <source>Glossary</source>
-        <target approved="yes">Glossary</target>
+        <target>Glossary</target>
       </trans-unit>
-      <trans-unit id="TOC_other">
+      <trans-unit id="TOC_other" approved="yes">
         <source>Other</source>
-        <target approved="yes">Other</target>
+        <target>Other</target>
       </trans-unit>
-      <trans-unit id="close">
+      <trans-unit id="close" approved="yes">
         <source>Close</source>
-        <target approved="yes">Close</target>
+        <target>Close</target>
       </trans-unit>
-      <trans-unit id="title">
+      <trans-unit id="title" approved="yes">
         <source>TYPO3 Inline Help</source>
-        <target approved="yes">TYPO3 Inline Help</target>
+        <target>TYPO3 Inline Help</target>
       </trans-unit>
-      <trans-unit id="manual_title">
+      <trans-unit id="manual_title" approved="yes">
         <source>TYPO3 Inline User Manual</source>
-        <target approved="yes">TYPO3 Inline User Manual</target>
+        <target>TYPO3 Inline User Manual</target>
       </trans-unit>
-      <trans-unit id="introduction">
+      <trans-unit id="introduction" approved="yes">
         <source>Introduction</source>
-        <target approved="yes">Introduction</target>
+        <target>Introduction</target>
       </trans-unit>
-      <trans-unit id="description">
+      <trans-unit id="description" approved="yes">
         <source>The TYPO3 Inline User Manual is composed from the available help in this TYPO3 Installation (Context Sensitive Help). Here you will find a general description of the TYPO3 Core modules, installation specific Backend Modules and Database Tables that are available based on your login credentials.</source>
-        <target approved="yes">The TYPO3 Inline User Manual is composed from the available help in this TYPO3 Installation (Context Sensitive Help). Here you will find a general description of the TYPO3 Core modules, installation specific Backend Modules and Database Tables that are available based on your login credentials.</target>
+        <target>The TYPO3 Inline User Manual is composed from the available help in this TYPO3 Installation (Context Sensitive Help). Here you will find a general description of the TYPO3 Core modules, installation specific Backend Modules and Database Tables that are available based on your login credentials.</target>
       </trans-unit>
-      <trans-unit id="full_manual">
+      <trans-unit id="full_manual" approved="yes">
         <source>Full Manual (in one page)</source>
-        <target approved="yes">Full Manual (in one page)</target>
+        <target>Full Manual (in one page)</target>
       </trans-unit>
-      <trans-unit id="full_manual_chapters">
+      <trans-unit id="full_manual_chapters" approved="yes">
         <source>Manual Chapters</source>
-        <target approved="yes">Manual Chapters</target>
+        <target>Manual Chapters</target>
       </trans-unit>
     </body>
   </file>

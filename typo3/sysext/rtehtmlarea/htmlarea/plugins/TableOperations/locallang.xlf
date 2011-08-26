@@ -3,681 +3,681 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="Not set">
+      <trans-unit id="Not set" approved="yes">
         <source>Not set</source>
-        <target approved="yes">Not set</target>
+        <target>Not set</target>
       </trans-unit>
-      <trans-unit id="None">
+      <trans-unit id="None" approved="yes">
         <source>None</source>
-        <target approved="yes">None</target>
+        <target>None</target>
       </trans-unit>
-      <trans-unit id="Size and Headers">
+      <trans-unit id="Size and Headers" approved="yes">
         <source>Size and Headers</source>
-        <target approved="yes">Size and Headers</target>
+        <target>Size and Headers</target>
       </trans-unit>
-      <trans-unit id="Headers">
+      <trans-unit id="Headers" approved="yes">
         <source>Headers</source>
-        <target approved="yes">Headers</target>
+        <target>Headers</target>
       </trans-unit>
-      <trans-unit id="CSS Style">
+      <trans-unit id="CSS Style" approved="yes">
         <source>Style</source>
-        <target approved="yes">Style</target>
+        <target>Style</target>
       </trans-unit>
-      <trans-unit id="Class:">
+      <trans-unit id="Class:" approved="yes">
         <source>Classes:</source>
-        <target approved="yes">Classes:</target>
+        <target>Classes:</target>
       </trans-unit>
-      <trans-unit id="Class selector">
+      <trans-unit id="Class selector" approved="yes">
         <source>Classes</source>
-        <target approved="yes">Classes</target>
+        <target>Classes</target>
       </trans-unit>
-      <trans-unit id="Table class:">
+      <trans-unit id="Table class:" approved="yes">
         <source>Table classes:</source>
-        <target approved="yes">Table classes:</target>
+        <target>Table classes:</target>
       </trans-unit>
-      <trans-unit id="Table class selector">
+      <trans-unit id="Table class selector" approved="yes">
         <source>Classes of the table</source>
-        <target approved="yes">Classes of the table</target>
+        <target>Classes of the table</target>
       </trans-unit>
-      <trans-unit id="Table body class:">
+      <trans-unit id="Table body class:" approved="yes">
         <source>Body:</source>
-        <target approved="yes">Body:</target>
+        <target>Body:</target>
       </trans-unit>
-      <trans-unit id="Table body class selector">
+      <trans-unit id="Table body class selector" approved="yes">
         <source>Classes of the table body</source>
-        <target approved="yes">Classes of the table body</target>
+        <target>Classes of the table body</target>
       </trans-unit>
-      <trans-unit id="Table header class:">
+      <trans-unit id="Table header class:" approved="yes">
         <source>Header:</source>
-        <target approved="yes">Header:</target>
+        <target>Header:</target>
       </trans-unit>
-      <trans-unit id="Table header class selector">
+      <trans-unit id="Table header class selector" approved="yes">
         <source>Classes of the table header</source>
-        <target approved="yes">Classes of the table header</target>
+        <target>Classes of the table header</target>
       </trans-unit>
-      <trans-unit id="Table footer class:">
+      <trans-unit id="Table footer class:" approved="yes">
         <source>Footer:</source>
-        <target approved="yes">Footer:</target>
+        <target>Footer:</target>
       </trans-unit>
-      <trans-unit id="Table footer class selector">
+      <trans-unit id="Table footer class selector" approved="yes">
         <source>Classes of the table footer</source>
-        <target approved="yes">Classes of the table footer</target>
+        <target>Classes of the table footer</target>
       </trans-unit>
-      <trans-unit id="Default">
+      <trans-unit id="Default" approved="yes">
         <source>Default</source>
-        <target approved="yes">Default</target>
+        <target>Default</target>
       </trans-unit>
-      <trans-unit id="Undefined">
+      <trans-unit id="Undefined" approved="yes">
         <source>Undefined</source>
-        <target approved="yes">Undefined</target>
+        <target>Undefined</target>
       </trans-unit>
-      <trans-unit id="Alignment">
+      <trans-unit id="Alignment" approved="yes">
         <source>Alignment</source>
-        <target approved="yes">Alignment</target>
+        <target>Alignment</target>
       </trans-unit>
-      <trans-unit id="All four sides">
+      <trans-unit id="All four sides" approved="yes">
         <source>All four sides</source>
-        <target approved="yes">All four sides</target>
+        <target>All four sides</target>
       </trans-unit>
-      <trans-unit id="Background and colors">
+      <trans-unit id="Background and colors" approved="yes">
         <source>Background and colors</source>
-        <target approved="yes">Background and colors</target>
+        <target>Background and colors</target>
       </trans-unit>
-      <trans-unit id="Background:">
+      <trans-unit id="Background:" approved="yes">
         <source>Background:</source>
-        <target approved="yes">Background:</target>
+        <target>Background:</target>
       </trans-unit>
-      <trans-unit id="Baseline">
+      <trans-unit id="Baseline" approved="yes">
         <source>Baseline</source>
-        <target approved="yes">Baseline</target>
+        <target>Baseline</target>
       </trans-unit>
-      <trans-unit id="Border style">
+      <trans-unit id="Border style" approved="yes">
         <source>Border style</source>
-        <target approved="yes">Border style</target>
+        <target>Border style</target>
       </trans-unit>
-      <trans-unit id="Border style:">
+      <trans-unit id="Border style:" approved="yes">
         <source>Border style:</source>
-        <target approved="yes">Border style:</target>
+        <target>Border style:</target>
       </trans-unit>
-      <trans-unit id="No border">
+      <trans-unit id="No border" approved="yes">
         <source>None</source>
-        <target approved="yes">None</target>
+        <target>None</target>
       </trans-unit>
-      <trans-unit id="Dotted">
+      <trans-unit id="Dotted" approved="yes">
         <source>Dotted</source>
-        <target approved="yes">Dotted</target>
+        <target>Dotted</target>
       </trans-unit>
-      <trans-unit id="Dashed">
+      <trans-unit id="Dashed" approved="yes">
         <source>Dashed</source>
-        <target approved="yes">Dashed</target>
+        <target>Dashed</target>
       </trans-unit>
-      <trans-unit id="Solid">
+      <trans-unit id="Solid" approved="yes">
         <source>Solid</source>
-        <target approved="yes">Solid</target>
+        <target>Solid</target>
       </trans-unit>
-      <trans-unit id="Double">
+      <trans-unit id="Double" approved="yes">
         <source>Double</source>
-        <target approved="yes">Double</target>
+        <target>Double</target>
       </trans-unit>
-      <trans-unit id="Groove">
+      <trans-unit id="Groove" approved="yes">
         <source>Groove</source>
-        <target approved="yes">Groove</target>
+        <target>Groove</target>
       </trans-unit>
-      <trans-unit id="Ridge">
+      <trans-unit id="Ridge" approved="yes">
         <source>Ridge</source>
-        <target approved="yes">Ridge</target>
+        <target>Ridge</target>
       </trans-unit>
-      <trans-unit id="Inset">
+      <trans-unit id="Inset" approved="yes">
         <source>Inset</source>
-        <target approved="yes">Inset</target>
+        <target>Inset</target>
       </trans-unit>
-      <trans-unit id="Outset">
+      <trans-unit id="Outset" approved="yes">
         <source>Outset</source>
-        <target approved="yes">Outset</target>
+        <target>Outset</target>
       </trans-unit>
-      <trans-unit id="Borders">
+      <trans-unit id="Borders" approved="yes">
         <source>Borders</source>
-        <target approved="yes">Borders</target>
+        <target>Borders</target>
       </trans-unit>
-      <trans-unit id="Bottom">
+      <trans-unit id="Bottom" approved="yes">
         <source>Bottom</source>
-        <target approved="yes">Bottom</target>
+        <target>Bottom</target>
       </trans-unit>
-      <trans-unit id="Border width">
+      <trans-unit id="Border width" approved="yes">
         <source>Border width</source>
-        <target approved="yes">Border width</target>
+        <target>Border width</target>
       </trans-unit>
-      <trans-unit id="Border width:">
+      <trans-unit id="Border width:" approved="yes">
         <source>Border width:</source>
-        <target approved="yes">Border width:</target>
+        <target>Border width:</target>
       </trans-unit>
-      <trans-unit id="Border color">
+      <trans-unit id="Border color" approved="yes">
         <source>Border color</source>
-        <target approved="yes">Border color</target>
+        <target>Border color</target>
       </trans-unit>
-      <trans-unit id="Caption:">
+      <trans-unit id="Caption:" approved="yes">
         <source>Caption:</source>
-        <target approved="yes">Caption:</target>
+        <target>Caption:</target>
       </trans-unit>
-      <trans-unit id="Description of the nature of the table">
+      <trans-unit id="Description of the nature of the table" approved="yes">
         <source>Description of the nature of the table</source>
-        <target approved="yes">Description of the nature of the table</target>
+        <target>Description of the nature of the table</target>
       </trans-unit>
-      <trans-unit id="Row group">
+      <trans-unit id="Row group" approved="yes">
         <source>Row group</source>
-        <target approved="yes">Row group</target>
+        <target>Row group</target>
       </trans-unit>
-      <trans-unit id="Row group:">
+      <trans-unit id="Row group:" approved="yes">
         <source>Row group:</source>
-        <target approved="yes">Row group:</target>
+        <target>Row group:</target>
       </trans-unit>
-      <trans-unit id="Table section">
+      <trans-unit id="Table section" approved="yes">
         <source>Table section to which the row belongs</source>
-        <target approved="yes">Table section to which the row belongs</target>
+        <target>Table section to which the row belongs</target>
       </trans-unit>
-      <trans-unit id="Table body">
+      <trans-unit id="Table body" approved="yes">
         <source>Table body</source>
-        <target approved="yes">Table body</target>
+        <target>Table body</target>
       </trans-unit>
-      <trans-unit id="Table header">
+      <trans-unit id="Table header" approved="yes">
         <source>Table header</source>
-        <target approved="yes">Table header</target>
+        <target>Table header</target>
       </trans-unit>
-      <trans-unit id="Table footer">
+      <trans-unit id="Table footer" approved="yes">
         <source>Table footer</source>
-        <target approved="yes">Table footer</target>
+        <target>Table footer</target>
       </trans-unit>
-      <trans-unit id="Cell Properties">
+      <trans-unit id="Cell Properties" approved="yes">
         <source>Cell Properties</source>
-        <target approved="yes">Cell Properties</target>
+        <target>Cell Properties</target>
       </trans-unit>
-      <trans-unit id="Cell Type and Scope">
+      <trans-unit id="Cell Type and Scope" approved="yes">
         <source>Cell Type and Scope</source>
-        <target approved="yes">Cell Type and Scope</target>
+        <target>Cell Type and Scope</target>
       </trans-unit>
-      <trans-unit id="Type of cell">
+      <trans-unit id="Type of cell" approved="yes">
         <source>Type of cell:</source>
-        <target approved="yes">Type of cell:</target>
+        <target>Type of cell:</target>
       </trans-unit>
-      <trans-unit id="Normal">
+      <trans-unit id="Normal" approved="yes">
         <source>Data cell</source>
-        <target approved="yes">Data cell</target>
+        <target>Data cell</target>
       </trans-unit>
-      <trans-unit id="Header">
+      <trans-unit id="Header" approved="yes">
         <source>Header cell</source>
-        <target approved="yes">Header cell</target>
+        <target>Header cell</target>
       </trans-unit>
-      <trans-unit id="Specifies the type of cell">
+      <trans-unit id="Specifies the type of cell" approved="yes">
         <source>Specifies the type of cell</source>
-        <target approved="yes">Specifies the type of cell</target>
+        <target>Specifies the type of cell</target>
       </trans-unit>
-      <trans-unit id="Scope">
+      <trans-unit id="Scope" approved="yes">
         <source>Scope:</source>
-        <target approved="yes">Scope:</target>
+        <target>Scope:</target>
       </trans-unit>
-      <trans-unit id="scope_row">
+      <trans-unit id="scope_row" approved="yes">
         <source>Row</source>
-        <target approved="yes">Row</target>
+        <target>Row</target>
       </trans-unit>
-      <trans-unit id="scope_column">
+      <trans-unit id="scope_column" approved="yes">
         <source>Column</source>
-        <target approved="yes">Column</target>
+        <target>Column</target>
       </trans-unit>
-      <trans-unit id="scope_rowgroup">
+      <trans-unit id="scope_rowgroup" approved="yes">
         <source>Group of rows</source>
-        <target approved="yes">Group of rows</target>
+        <target>Group of rows</target>
       </trans-unit>
-      <trans-unit id="Scope of header cell">
+      <trans-unit id="Scope of header cell" approved="yes">
         <source>Scope of the header</source>
-        <target approved="yes">Scope of the header</target>
+        <target>Scope of the header</target>
       </trans-unit>
-      <trans-unit id="Abbreviation">
+      <trans-unit id="Abbreviation" approved="yes">
         <source>Abbreviation</source>
-        <target approved="yes">Abbreviation</target>
+        <target>Abbreviation</target>
       </trans-unit>
-      <trans-unit id="Header abbreviation">
+      <trans-unit id="Header abbreviation" approved="yes">
         <source>Header abbreviation</source>
-        <target approved="yes">Header abbreviation</target>
+        <target>Header abbreviation</target>
       </trans-unit>
-      <trans-unit id="Center">
+      <trans-unit id="Center" approved="yes">
         <source>Center</source>
-        <target approved="yes">Center</target>
+        <target>Center</target>
       </trans-unit>
-      <trans-unit id="Character">
+      <trans-unit id="Character" approved="yes">
         <source>Character</source>
-        <target approved="yes">Character</target>
+        <target>Character</target>
       </trans-unit>
-      <trans-unit id="Align on this character">
+      <trans-unit id="Align on this character" approved="yes">
         <source>Align text relative to this character</source>
-        <target approved="yes">Align text relative to this character</target>
+        <target>Align text relative to this character</target>
       </trans-unit>
-      <trans-unit id="Collapsed borders">
+      <trans-unit id="Collapsed borders" approved="yes">
         <source>Collapsed borders</source>
-        <target approved="yes">Collapsed borders</target>
+        <target>Collapsed borders</target>
       </trans-unit>
-      <trans-unit id="Detached borders">
+      <trans-unit id="Detached borders" approved="yes">
         <source>Detached borders</source>
-        <target approved="yes">Detached borders</target>
+        <target>Detached borders</target>
       </trans-unit>
-      <trans-unit id="Color:">
+      <trans-unit id="Color:" approved="yes">
         <source>Color:</source>
-        <target approved="yes">Color:</target>
+        <target>Color:</target>
       </trans-unit>
-      <trans-unit id="Description">
+      <trans-unit id="Description" approved="yes">
         <source>Description</source>
-        <target approved="yes">Description</target>
+        <target>Description</target>
       </trans-unit>
-      <trans-unit id="FG Color:">
+      <trans-unit id="FG Color:" approved="yes">
         <source>FG Color:</source>
-        <target approved="yes">FG Color:</target>
+        <target>FG Color:</target>
       </trans-unit>
-      <trans-unit id="Float:">
+      <trans-unit id="Float:" approved="yes">
         <source>Float:</source>
-        <target approved="yes">Float:</target>
+        <target>Float:</target>
       </trans-unit>
-      <trans-unit id="Specifies where the table should float">
+      <trans-unit id="Specifies where the table should float" approved="yes">
         <source>Specifies where the table should float</source>
-        <target approved="yes">Specifies where the table should float</target>
+        <target>Specifies where the table should float</target>
       </trans-unit>
-      <trans-unit id="Non-floating">
+      <trans-unit id="Non-floating" approved="yes">
         <source>Non-floating</source>
-        <target approved="yes">Non-floating</target>
+        <target>Non-floating</target>
       </trans-unit>
-      <trans-unit id="Frames:">
+      <trans-unit id="Frames:" approved="yes">
         <source>Frames:</source>
-        <target approved="yes">Frames:</target>
+        <target>Frames:</target>
       </trans-unit>
-      <trans-unit id="Specifies which sides should have a border">
+      <trans-unit id="Specifies which sides should have a border" approved="yes">
         <source>Specifies which sides should have a border</source>
-        <target approved="yes">Specifies which sides should have a border</target>
+        <target>Specifies which sides should have a border</target>
       </trans-unit>
-      <trans-unit id="Height:">
+      <trans-unit id="Height:" approved="yes">
         <source>Height:</source>
-        <target approved="yes">Height:</target>
+        <target>Height:</target>
       </trans-unit>
-      <trans-unit id="Height unit">
+      <trans-unit id="Height unit" approved="yes">
         <source>Height unit</source>
-        <target approved="yes">Height unit</target>
+        <target>Height unit</target>
       </trans-unit>
-      <trans-unit id="Table height">
+      <trans-unit id="Table height" approved="yes">
         <source>Table height</source>
-        <target approved="yes">Table height</target>
+        <target>Table height</target>
       </trans-unit>
-      <trans-unit id="Row height">
+      <trans-unit id="Row height" approved="yes">
         <source>Row height</source>
-        <target approved="yes">Row height</target>
+        <target>Row height</target>
       </trans-unit>
-      <trans-unit id="Cell height">
+      <trans-unit id="Cell height" approved="yes">
         <source>Cell height</source>
-        <target approved="yes">Cell height</target>
+        <target>Cell height</target>
       </trans-unit>
-      <trans-unit id="How many columns would you like to merge?">
+      <trans-unit id="How many columns would you like to merge?" approved="yes">
         <source>How many columns would you like to merge?</source>
-        <target approved="yes">How many columns would you like to merge?</target>
+        <target>How many columns would you like to merge?</target>
       </trans-unit>
-      <trans-unit id="How many rows would you like to merge?">
+      <trans-unit id="How many rows would you like to merge?" approved="yes">
         <source>How many rows would you like to merge?</source>
-        <target approved="yes">How many rows would you like to merge?</target>
+        <target>How many rows would you like to merge?</target>
       </trans-unit>
-      <trans-unit id="Image URL:">
+      <trans-unit id="Image URL:" approved="yes">
         <source>Image URL:</source>
-        <target approved="yes">Image URL:</target>
+        <target>Image URL:</target>
       </trans-unit>
-      <trans-unit id="URL of the background image">
+      <trans-unit id="URL of the background image" approved="yes">
         <source>URL of the background image</source>
-        <target approved="yes">URL of the background image</target>
+        <target>URL of the background image</target>
       </trans-unit>
-      <trans-unit id="Justify">
+      <trans-unit id="Justify" approved="yes">
         <source>Justify</source>
-        <target approved="yes">Justify</target>
+        <target>Justify</target>
       </trans-unit>
-      <trans-unit id="Layout">
+      <trans-unit id="Layout" approved="yes">
         <source>Layout</source>
-        <target approved="yes">Layout</target>
+        <target>Layout</target>
       </trans-unit>
-      <trans-unit id="Left">
+      <trans-unit id="Left" approved="yes">
         <source>Left</source>
-        <target approved="yes">Left</target>
+        <target>Left</target>
       </trans-unit>
-      <trans-unit id="Margin">
+      <trans-unit id="Margin" approved="yes">
         <source>Margin</source>
-        <target approved="yes">Margin</target>
+        <target>Margin</target>
       </trans-unit>
-      <trans-unit id="Middle">
+      <trans-unit id="Middle" approved="yes">
         <source>Middle</source>
-        <target approved="yes">Middle</target>
+        <target>Middle</target>
       </trans-unit>
-      <trans-unit id="No rules">
+      <trans-unit id="No rules" approved="yes">
         <source>No rules</source>
-        <target approved="yes">No rules</target>
+        <target>No rules</target>
       </trans-unit>
-      <trans-unit id="No sides">
+      <trans-unit id="No sides" approved="yes">
         <source>No sides</source>
-        <target approved="yes">No sides</target>
+        <target>No sides</target>
       </trans-unit>
-      <trans-unit id="Cell padding:">
+      <trans-unit id="Cell padding:" approved="yes">
         <source>Cell padding:</source>
-        <target approved="yes">Cell padding:</target>
+        <target>Cell padding:</target>
       </trans-unit>
-      <trans-unit id="Space between content and border in cell">
+      <trans-unit id="Space between content and border in cell" approved="yes">
         <source>Space between content and border in cell</source>
-        <target approved="yes">Space between content and border in cell</target>
+        <target>Space between content and border in cell</target>
       </trans-unit>
-      <trans-unit id="Please click into some cell">
+      <trans-unit id="Please click into some cell" approved="yes">
         <source>Please click into some cell</source>
-        <target approved="yes">Please click into some cell</target>
+        <target>Please click into some cell</target>
       </trans-unit>
-      <trans-unit id="Right">
+      <trans-unit id="Right" approved="yes">
         <source>Right</source>
-        <target approved="yes">Right</target>
+        <target>Right</target>
       </trans-unit>
-      <trans-unit id="Row Properties">
+      <trans-unit id="Row Properties" approved="yes">
         <source>Row Properties</source>
-        <target approved="yes">Row Properties</target>
+        <target>Row Properties</target>
       </trans-unit>
-      <trans-unit id="Rules will appear between all rows and columns">
+      <trans-unit id="Rules will appear between all rows and columns" approved="yes">
         <source>Rules will appear between all rows and columns</source>
-        <target approved="yes">Rules will appear between all rows and columns</target>
+        <target>Rules will appear between all rows and columns</target>
       </trans-unit>
-      <trans-unit id="Rules will appear between columns only">
+      <trans-unit id="Rules will appear between columns only" approved="yes">
         <source>Rules will appear between columns only</source>
-        <target approved="yes">Rules will appear between columns only</target>
+        <target>Rules will appear between columns only</target>
       </trans-unit>
-      <trans-unit id="Rules will appear between rows only">
+      <trans-unit id="Rules will appear between rows only" approved="yes">
         <source>Rules will appear between rows only</source>
-        <target approved="yes">Rules will appear between rows only</target>
+        <target>Rules will appear between rows only</target>
       </trans-unit>
-      <trans-unit id="Rules:">
+      <trans-unit id="Rules:" approved="yes">
         <source>Rules:</source>
-        <target approved="yes">Rules:</target>
+        <target>Rules:</target>
       </trans-unit>
-      <trans-unit id="Specifies where rules should be displayed">
+      <trans-unit id="Specifies where rules should be displayed" approved="yes">
         <source>Specifies where rules should be displayed</source>
-        <target approved="yes">Specifies where rules should be displayed</target>
+        <target>Specifies where rules should be displayed</target>
       </trans-unit>
-      <trans-unit id="Spacing and padding">
+      <trans-unit id="Spacing and padding" approved="yes">
         <source>Spacing and padding</source>
-        <target approved="yes">Spacing and padding</target>
+        <target>Spacing and padding</target>
       </trans-unit>
-      <trans-unit id="Frame and borders">
+      <trans-unit id="Frame and borders" approved="yes">
         <source>Frame and borders</source>
-        <target approved="yes">Frame and borders</target>
+        <target>Frame and borders</target>
       </trans-unit>
-      <trans-unit id="Cell spacing:">
+      <trans-unit id="Cell spacing:" approved="yes">
         <source>Cell spacing:</source>
-        <target approved="yes">Cell spacing:</target>
+        <target>Cell spacing:</target>
       </trans-unit>
-      <trans-unit id="Space between adjacent cells">
+      <trans-unit id="Space between adjacent cells" approved="yes">
         <source>Space between adjacent cells</source>
-        <target approved="yes">Space between adjacent cells</target>
+        <target>Space between adjacent cells</target>
       </trans-unit>
-      <trans-unit id="Summary:">
+      <trans-unit id="Summary:" approved="yes">
         <source>Summary:</source>
-        <target approved="yes">Summary:</target>
+        <target>Summary:</target>
       </trans-unit>
-      <trans-unit id="Summary of the table purpose and structure">
+      <trans-unit id="Summary of the table purpose and structure" approved="yes">
         <source>Summary of the table's purpose and structure</source>
-        <target approved="yes">Summary of the table's purpose and structure</target>
+        <target>Summary of the table's purpose and structure</target>
       </trans-unit>
-      <trans-unit id="captionOrSummary-required">
+      <trans-unit id="captionOrSummary-required" approved="yes">
         <source>Please enter at least one of caption or summary</source>
-        <target approved="yes">Please enter at least one of caption or summary</target>
+        <target>Please enter at least one of caption or summary</target>
       </trans-unit>
-      <trans-unit id="caption-required">
+      <trans-unit id="caption-required" approved="yes">
         <source>Please enter a caption</source>
-        <target approved="yes">Please enter a caption</target>
+        <target>Please enter a caption</target>
       </trans-unit>
-      <trans-unit id="summary-required">
+      <trans-unit id="summary-required" approved="yes">
         <source>Please enter a summary</source>
-        <target approved="yes">Please enter a summary</target>
+        <target>Please enter a summary</target>
       </trans-unit>
-      <trans-unit id="TO-cell-delete">
+      <trans-unit id="TO-cell-delete" approved="yes">
         <source>Delete cell</source>
-        <target approved="yes">Delete cell</target>
+        <target>Delete cell</target>
       </trans-unit>
-      <trans-unit id="TO-cell-insert-after">
+      <trans-unit id="TO-cell-insert-after" approved="yes">
         <source>Insert cell after</source>
-        <target approved="yes">Insert cell after</target>
+        <target>Insert cell after</target>
       </trans-unit>
-      <trans-unit id="TO-cell-insert-before">
+      <trans-unit id="TO-cell-insert-before" approved="yes">
         <source>Insert cell before</source>
-        <target approved="yes">Insert cell before</target>
+        <target>Insert cell before</target>
       </trans-unit>
-      <trans-unit id="TO-cell-merge">
+      <trans-unit id="TO-cell-merge" approved="yes">
         <source>Merge cells</source>
-        <target approved="yes">Merge cells</target>
+        <target>Merge cells</target>
       </trans-unit>
-      <trans-unit id="TO-cell-prop">
+      <trans-unit id="TO-cell-prop" approved="yes">
         <source>Cell properties</source>
-        <target approved="yes">Cell properties</target>
+        <target>Cell properties</target>
       </trans-unit>
-      <trans-unit id="TO-cell-split">
+      <trans-unit id="TO-cell-split" approved="yes">
         <source>Split cell</source>
-        <target approved="yes">Split cell</target>
+        <target>Split cell</target>
       </trans-unit>
-      <trans-unit id="TO-col-prop">
+      <trans-unit id="TO-col-prop" approved="yes">
         <source>Column properties</source>
-        <target approved="yes">Column properties</target>
+        <target>Column properties</target>
       </trans-unit>
-      <trans-unit id="TO-col-delete">
+      <trans-unit id="TO-col-delete" approved="yes">
         <source>Delete column</source>
-        <target approved="yes">Delete column</target>
+        <target>Delete column</target>
       </trans-unit>
-      <trans-unit id="TO-col-insert-after">
+      <trans-unit id="TO-col-insert-after" approved="yes">
         <source>Insert column after</source>
-        <target approved="yes">Insert column after</target>
+        <target>Insert column after</target>
       </trans-unit>
-      <trans-unit id="TO-col-insert-before">
+      <trans-unit id="TO-col-insert-before" approved="yes">
         <source>Insert column before</source>
-        <target approved="yes">Insert column before</target>
+        <target>Insert column before</target>
       </trans-unit>
-      <trans-unit id="TO-col-split">
+      <trans-unit id="TO-col-split" approved="yes">
         <source>Split column</source>
-        <target approved="yes">Split column</target>
+        <target>Split column</target>
       </trans-unit>
-      <trans-unit id="TO-row-delete">
+      <trans-unit id="TO-row-delete" approved="yes">
         <source>Delete row</source>
-        <target approved="yes">Delete row</target>
+        <target>Delete row</target>
       </trans-unit>
-      <trans-unit id="TO-row-insert-above">
+      <trans-unit id="TO-row-insert-above" approved="yes">
         <source>Insert row before</source>
-        <target approved="yes">Insert row before</target>
+        <target>Insert row before</target>
       </trans-unit>
-      <trans-unit id="TO-row-insert-under">
+      <trans-unit id="TO-row-insert-under" approved="yes">
         <source>Insert row after</source>
-        <target approved="yes">Insert row after</target>
+        <target>Insert row after</target>
       </trans-unit>
-      <trans-unit id="TO-row-prop">
+      <trans-unit id="TO-row-prop" approved="yes">
         <source>Row properties</source>
-        <target approved="yes">Row properties</target>
+        <target>Row properties</target>
       </trans-unit>
-      <trans-unit id="TO-row-split">
+      <trans-unit id="TO-row-split" approved="yes">
         <source>Split row</source>
-        <target approved="yes">Split row</target>
+        <target>Split row</target>
       </trans-unit>
-      <trans-unit id="TO-table-prop">
+      <trans-unit id="TO-table-prop" approved="yes">
         <source>Table properties</source>
-        <target approved="yes">Table properties</target>
+        <target>Table properties</target>
       </trans-unit>
-      <trans-unit id="TO-table-restyle">
+      <trans-unit id="TO-table-restyle" approved="yes">
         <source>Re-apply table styles</source>
-        <target approved="yes">Re-apply table styles</target>
+        <target>Re-apply table styles</target>
       </trans-unit>
-      <trans-unit id="TO-toggle-borders">
+      <trans-unit id="TO-toggle-borders" approved="yes">
         <source>Toggle borders</source>
-        <target approved="yes">Toggle borders</target>
+        <target>Toggle borders</target>
       </trans-unit>
-      <trans-unit id="Table Properties">
+      <trans-unit id="Table Properties" approved="yes">
         <source>Table Properties</source>
-        <target approved="yes">Table Properties</target>
+        <target>Table Properties</target>
       </trans-unit>
-      <trans-unit id="Text alignment:">
+      <trans-unit id="Text alignment:" approved="yes">
         <source>Text alignment:</source>
-        <target approved="yes">Text alignment:</target>
+        <target>Text alignment:</target>
       </trans-unit>
-      <trans-unit id="Horizontal alignment of text within cell">
+      <trans-unit id="Horizontal alignment of text within cell" approved="yes">
         <source>Horizontal alignment of text within cell</source>
-        <target approved="yes">Horizontal alignment of text within cell</target>
+        <target>Horizontal alignment of text within cell</target>
       </trans-unit>
-      <trans-unit id="The bottom side only">
+      <trans-unit id="The bottom side only" approved="yes">
         <source>The bottom side only</source>
-        <target approved="yes">The bottom side only</target>
+        <target>The bottom side only</target>
       </trans-unit>
-      <trans-unit id="The left-hand side only">
+      <trans-unit id="The left-hand side only" approved="yes">
         <source>The left-hand side only</source>
-        <target approved="yes">The left-hand side only</target>
+        <target>The left-hand side only</target>
       </trans-unit>
-      <trans-unit id="The right and left sides only">
+      <trans-unit id="The right and left sides only" approved="yes">
         <source>The right and left sides only</source>
-        <target approved="yes">The right and left sides only</target>
+        <target>The right and left sides only</target>
       </trans-unit>
-      <trans-unit id="The right-hand side only">
+      <trans-unit id="The right-hand side only" approved="yes">
         <source>The right-hand side only</source>
-        <target approved="yes">The right-hand side only</target>
+        <target>The right-hand side only</target>
       </trans-unit>
-      <trans-unit id="The top and bottom sides only">
+      <trans-unit id="The top and bottom sides only" approved="yes">
         <source>The top and bottom sides only</source>
-        <target approved="yes">The top and bottom sides only</target>
+        <target>The top and bottom sides only</target>
       </trans-unit>
-      <trans-unit id="The top side only">
+      <trans-unit id="The top side only" approved="yes">
         <source>The top side only</source>
-        <target approved="yes">The top side only</target>
+        <target>The top side only</target>
       </trans-unit>
-      <trans-unit id="Top">
+      <trans-unit id="Top" approved="yes">
         <source>Top</source>
-        <target approved="yes">Top</target>
+        <target>Top</target>
       </trans-unit>
-      <trans-unit id="Unset color">
+      <trans-unit id="Unset color" approved="yes">
         <source>Unset color</source>
-        <target approved="yes">Unset color</target>
+        <target>Unset color</target>
       </trans-unit>
-      <trans-unit id="Vertical alignment:">
+      <trans-unit id="Vertical alignment:" approved="yes">
         <source>Vertical alignment:</source>
-        <target approved="yes">Vertical alignment:</target>
+        <target>Vertical alignment:</target>
       </trans-unit>
-      <trans-unit id="Vertical alignment of content within cell">
+      <trans-unit id="Vertical alignment of content within cell" approved="yes">
         <source>Vertical alignment of content within cell</source>
-        <target approved="yes">Vertical alignment of content within cell</target>
+        <target>Vertical alignment of content within cell</target>
       </trans-unit>
-      <trans-unit id="Width:">
+      <trans-unit id="Width:" approved="yes">
         <source>Width:</source>
-        <target approved="yes">Width:</target>
+        <target>Width:</target>
       </trans-unit>
-      <trans-unit id="Width unit">
+      <trans-unit id="Width unit" approved="yes">
         <source>Width unit</source>
-        <target approved="yes">Width unit</target>
+        <target>Width unit</target>
       </trans-unit>
-      <trans-unit id="Table width">
+      <trans-unit id="Table width" approved="yes">
         <source>Table width</source>
-        <target approved="yes">Table width</target>
+        <target>Table width</target>
       </trans-unit>
-      <trans-unit id="Row width">
+      <trans-unit id="Row width" approved="yes">
         <source>Row width</source>
-        <target approved="yes">Row width</target>
+        <target>Row width</target>
       </trans-unit>
-      <trans-unit id="Cell width">
+      <trans-unit id="Cell width" approved="yes">
         <source>Cell width</source>
-        <target approved="yes">Cell width</target>
+        <target>Cell width</target>
       </trans-unit>
-      <trans-unit id="not-del-last-cell">
+      <trans-unit id="not-del-last-cell" approved="yes">
         <source>HTMLArea cowardly refuses to delete the last cell in row.</source>
-        <target approved="yes">HTMLArea cowardly refuses to delete the last cell in row.</target>
+        <target>HTMLArea cowardly refuses to delete the last cell in row.</target>
       </trans-unit>
-      <trans-unit id="not-del-last-col">
+      <trans-unit id="not-del-last-col" approved="yes">
         <source>HTMLArea cowardly refuses to delete the last column in table.</source>
-        <target approved="yes">HTMLArea cowardly refuses to delete the last column in table.</target>
+        <target>HTMLArea cowardly refuses to delete the last column in table.</target>
       </trans-unit>
-      <trans-unit id="not-del-last-row">
+      <trans-unit id="not-del-last-row" approved="yes">
         <source>HTMLArea cowardly refuses to delete the last row in table.</source>
-        <target approved="yes">HTMLArea cowardly refuses to delete the last row in table.</target>
+        <target>HTMLArea cowardly refuses to delete the last row in table.</target>
       </trans-unit>
-      <trans-unit id="percent">
+      <trans-unit id="percent" approved="yes">
         <source>percent</source>
-        <target approved="yes">percent</target>
+        <target>percent</target>
       </trans-unit>
-      <trans-unit id="pixels">
+      <trans-unit id="pixels" approved="yes">
         <source>pixels</source>
-        <target approved="yes">pixels</target>
+        <target>pixels</target>
       </trans-unit>
-      <trans-unit id="em">
+      <trans-unit id="em" approved="yes">
         <source>em</source>
-        <target approved="yes">em</target>
+        <target>em</target>
       </trans-unit>
-      <trans-unit id="Headers:">
+      <trans-unit id="Headers:" approved="yes">
         <source>Headers:</source>
-        <target approved="yes">Headers:</target>
+        <target>Headers:</target>
       </trans-unit>
-      <trans-unit id="Table headers">
+      <trans-unit id="Table headers" approved="yes">
         <source>Table headers</source>
-        <target approved="yes">Table headers</target>
+        <target>Table headers</target>
       </trans-unit>
-      <trans-unit id="No header cells">
+      <trans-unit id="No header cells" approved="yes">
         <source>No header cells</source>
-        <target approved="yes">No header cells</target>
+        <target>No header cells</target>
       </trans-unit>
-      <trans-unit id="Header cells on top">
+      <trans-unit id="Header cells on top" approved="yes">
         <source>Header cells on top</source>
-        <target approved="yes">Header cells on top</target>
+        <target>Header cells on top</target>
       </trans-unit>
-      <trans-unit id="Header cells on left">
+      <trans-unit id="Header cells on left" approved="yes">
         <source>Header cells on left</source>
-        <target approved="yes">Header cells on left</target>
+        <target>Header cells on left</target>
       </trans-unit>
-      <trans-unit id="Header cells on top and left">
+      <trans-unit id="Header cells on top and left" approved="yes">
         <source>Header cells on top and left</source>
-        <target approved="yes">Header cells on top and left</target>
+        <target>Header cells on top and left</target>
       </trans-unit>
-      <trans-unit id="Make cells header cells">
+      <trans-unit id="Make cells header cells" approved="yes">
         <source>Make all row cells header cells</source>
-        <target approved="yes">Make all row cells header cells</target>
+        <target>Make all row cells header cells</target>
       </trans-unit>
-      <trans-unit id="Make cells data cells">
+      <trans-unit id="Make cells data cells" approved="yes">
         <source>Make all row cells data cells</source>
-        <target approved="yes">Make all row cells data cells</target>
+        <target>Make all row cells data cells</target>
       </trans-unit>
-      <trans-unit id="Header for column">
+      <trans-unit id="Header for column" approved="yes">
         <source>Header cell for column</source>
-        <target approved="yes">Header cell for column</target>
+        <target>Header cell for column</target>
       </trans-unit>
-      <trans-unit id="Header for row">
+      <trans-unit id="Header for row" approved="yes">
         <source>Header cell for row</source>
-        <target approved="yes">Header cell for row</target>
+        <target>Header cell for row</target>
       </trans-unit>
-      <trans-unit id="Header for row group">
+      <trans-unit id="Header for row group" approved="yes">
         <source>Header cell for row group</source>
-        <target approved="yes">Header cell for row group</target>
+        <target>Header cell for row group</target>
       </trans-unit>
-      <trans-unit id="Column Properties">
+      <trans-unit id="Column Properties" approved="yes">
         <source>Column Cells Properties</source>
-        <target approved="yes">Column Cells Properties</target>
+        <target>Column Cells Properties</target>
       </trans-unit>
-      <trans-unit id="Type of cells">
+      <trans-unit id="Type of cells" approved="yes">
         <source>Type of cells</source>
-        <target approved="yes">Type of cells</target>
+        <target>Type of cells</target>
       </trans-unit>
-      <trans-unit id="Type of cells of the column">
+      <trans-unit id="Type of cells of the column" approved="yes">
         <source>Type of cells of the column:</source>
-        <target approved="yes">Type of cells of the column:</target>
+        <target>Type of cells of the column:</target>
       </trans-unit>
-      <trans-unit id="Specifies the type of cells">
+      <trans-unit id="Specifies the type of cells" approved="yes">
         <source>Specifies the type of cells of the column</source>
-        <target approved="yes">Specifies the type of cells of the column</target>
+        <target>Specifies the type of cells of the column</target>
       </trans-unit>
-      <trans-unit id="Data cells">
+      <trans-unit id="Data cells" approved="yes">
         <source>Data cells</source>
-        <target approved="yes">Data cells</target>
+        <target>Data cells</target>
       </trans-unit>
-      <trans-unit id="Headers for rows">
+      <trans-unit id="Headers for rows" approved="yes">
         <source>Headers for rows</source>
-        <target approved="yes">Headers for rows</target>
+        <target>Headers for rows</target>
       </trans-unit>
-      <trans-unit id="Headers for row groups">
+      <trans-unit id="Headers for row groups" approved="yes">
         <source>Headers for row groups</source>
-        <target approved="yes">Headers for row groups</target>
+        <target>Headers for row groups</target>
       </trans-unit>
-      <trans-unit id="Technische Universitat Ilmenau">
+      <trans-unit id="Technische Universitat Ilmenau" approved="yes">
         <source>Technische Universität Ilmenau</source>
-        <target approved="yes">Technische Universität Ilmenau</target>
+        <target>Technische Universität Ilmenau</target>
       </trans-unit>
     </body>
   </file>

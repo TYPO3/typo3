@@ -3,35 +3,35 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:24 UTC" product-name="lang">
     <header/>
     <body>
-      <trans-unit id=".alttitle">
+      <trans-unit id=".alttitle" approved="yes">
         <source>Web &gt; Functions module</source>
-        <target approved="yes">Web &gt; Functions module</target>
+        <target>Web &gt; Functions module</target>
       </trans-unit>
-      <trans-unit id=".description">
+      <trans-unit id=".description" approved="yes">
         <source>The idea of the Web&gt;Functions module is to be a host module for backend applications that wish to perform processing of pages or branches of the page tree.</source>
-        <target approved="yes">The idea of the Web&gt;Functions module is to be a host module for backend applications that wish to perform processing of pages or branches of the page tree.</target>
+        <target>The idea of the Web&gt;Functions module is to be a host module for backend applications that wish to perform processing of pages or branches of the page tree.</target>
       </trans-unit>
-      <trans-unit id=".details">
+      <trans-unit id=".details" approved="yes">
         <source>Conceptually the Web&gt;Functions module is different from the Web&gt;Info module only by offering processing  functionality rather than offering information only. It is up to extension programmers to decide in which of these two modules they want to insert functionality.</source>
-        <target approved="yes">Conceptually the Web&gt;Functions module is different from the Web&gt;Info module only by offering processing  functionality rather than offering information only. It is up to extension programmers to decide in which of these two modules they want to insert functionality.</target>
+        <target>Conceptually the Web&gt;Functions module is different from the Web&gt;Info module only by offering processing  functionality rather than offering information only. It is up to extension programmers to decide in which of these two modules they want to insert functionality.</target>
       </trans-unit>
-      <trans-unit id="_.seeAlso">
+      <trans-unit id="_.seeAlso" approved="yes">
         <source>_MOD_web_info,
 More about the Web&gt;Functions module | http://typo3.org/documentation/document-library/doc_core_inside/Functions_module/,,
 _MOD_web_func:tx_funcwizards,
 _MOD_web_func:tx_wizardsortpages</source>
-        <target approved="yes">_MOD_web_info,
+        <target>_MOD_web_info,
 More about the Web&gt;Functions module | http://typo3.org/documentation/document-library/doc_core_inside/Functions_module/,,
 _MOD_web_func:tx_funcwizards,
 _MOD_web_func:tx_wizardsortpages</target>
       </trans-unit>
-      <trans-unit id="_.image">
+      <trans-unit id="_.image" approved="yes">
         <source>EXT:lang/cshimages/pagetree_overview_11.png</source>
-        <target approved="yes">EXT:lang/cshimages/pagetree_overview_11.png</target>
+        <target>EXT:lang/cshimages/pagetree_overview_11.png</target>
       </trans-unit>
-      <trans-unit id=".image_descr">
+      <trans-unit id=".image_descr" approved="yes">
         <source>The Web&gt;Functions module as provided by the core is an empty shell. It provides an API that extensions can use to attach function menu items to the Web&gt;Function module. This shows the Wizard extension (func_wizards) providing the main Function Menu item in upper right corner. The "Select Wizard" selectorbox allows the user to select another level of functionality (different wizards) which are provided by other extensions, here the "wizard_sortpages" extension.</source>
-        <target approved="yes">The Web&gt;Functions module as provided by the core is an empty shell. It provides an API that extensions can use to attach function menu items to the Web&gt;Function module. This shows the Wizard extension (func_wizards) providing the main Function Menu item in upper right corner. The "Select Wizard" selectorbox allows the user to select another level of functionality (different wizards) which are provided by other extensions, here the "wizard_sortpages" extension.</target>
+        <target>The Web&gt;Functions module as provided by the core is an empty shell. It provides an API that extensions can use to attach function menu items to the Web&gt;Function module. This shows the Wizard extension (func_wizards) providing the main Function Menu item in upper right corner. The "Select Wizard" selectorbox allows the user to select another level of functionality (different wizards) which are provided by other extensions, here the "wizard_sortpages" extension.</target>
       </trans-unit>
     </body>
   </file>

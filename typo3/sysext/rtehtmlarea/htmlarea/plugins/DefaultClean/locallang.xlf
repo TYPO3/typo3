@@ -3,9 +3,9 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="CleanWord-Tooltip">
+      <trans-unit id="CleanWord-Tooltip" approved="yes">
         <source>Clean up HTML content</source>
-        <target approved="yes">Clean up HTML content</target>
+        <target>Clean up HTML content</target>
       </trans-unit>
     </body>
   </file>

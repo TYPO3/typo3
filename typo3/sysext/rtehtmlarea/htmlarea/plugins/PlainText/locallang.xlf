@@ -3,65 +3,65 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="PasteToggleTooltip">
+      <trans-unit id="PasteToggleTooltip" approved="yes">
         <source>Toggle paste behaviour</source>
-        <target approved="yes">Toggle paste behaviour</target>
+        <target>Toggle paste behaviour</target>
       </trans-unit>
-      <trans-unit id="plainText">
+      <trans-unit id="plainText" approved="yes">
         <source>Paste as plain text</source>
-        <target approved="yes">Paste as plain text</target>
+        <target>Paste as plain text</target>
       </trans-unit>
-      <trans-unit id="pasteStructure">
+      <trans-unit id="pasteStructure" approved="yes">
         <source>Paste structure only</source>
-        <target approved="yes">Paste structure only</target>
+        <target>Paste structure only</target>
       </trans-unit>
-      <trans-unit id="pasteFormat">
+      <trans-unit id="pasteFormat" approved="yes">
         <source>Paste structure and basic format</source>
-        <target approved="yes">Paste structure and basic format</target>
+        <target>Paste structure and basic format</target>
       </trans-unit>
-      <trans-unit id="PasteBehaviourTooltip">
+      <trans-unit id="PasteBehaviourTooltip" approved="yes">
         <source>Select alternate paste behaviour</source>
-        <target approved="yes">Select alternate paste behaviour</target>
+        <target>Select alternate paste behaviour</target>
       </trans-unit>
-      <trans-unit id="Paste-as-Plain-Text">
+      <trans-unit id="Paste-as-Plain-Text" approved="yes">
         <source>Paste as plain text</source>
-        <target approved="yes">Paste as plain text</target>
+        <target>Paste as plain text</target>
       </trans-unit>
-      <trans-unit id="Access-to-clipboard-denied">
+      <trans-unit id="Access-to-clipboard-denied" approved="yes">
         <source>Content could not be pasted as plain text because permission to access the clipboard was denied.</source>
-        <target approved="yes">Content could not be pasted as plain text because permission to access the clipboard was denied.</target>
+        <target>Content could not be pasted as plain text because permission to access the clipboard was denied.</target>
       </trans-unit>
-      <trans-unit id="enableplainText">
+      <trans-unit id="enableplainText" approved="yes">
         <source>Enable paste as plain text</source>
-        <target approved="yes">Enable paste as plain text</target>
+        <target>Enable paste as plain text</target>
       </trans-unit>
-      <trans-unit id="enablepasteStructure">
+      <trans-unit id="enablepasteStructure" approved="yes">
         <source>Enable paste structure only</source>
-        <target approved="yes">Enable paste structure only</target>
+        <target>Enable paste structure only</target>
       </trans-unit>
-      <trans-unit id="enablepasteFormat">
+      <trans-unit id="enablepasteFormat" approved="yes">
         <source>Enable paste structure and basic format</source>
-        <target approved="yes">Enable paste structure and basic format</target>
+        <target>Enable paste structure and basic format</target>
       </trans-unit>
-      <trans-unit id="disableplainText">
+      <trans-unit id="disableplainText" approved="yes">
         <source>Disable paste as plain text</source>
-        <target approved="yes">Disable paste as plain text</target>
+        <target>Disable paste as plain text</target>
       </trans-unit>
-      <trans-unit id="disablepasteStructure">
+      <trans-unit id="disablepasteStructure" approved="yes">
         <source>Disable paste structure only</source>
-        <target approved="yes">Disable paste structure only</target>
+        <target>Disable paste structure only</target>
       </trans-unit>
-      <trans-unit id="disablepasteFormat">
+      <trans-unit id="disablepasteFormat" approved="yes">
         <source>Disable paste structure and basic format</source>
-        <target approved="yes">Disable paste structure and basic format</target>
+        <target>Disable paste structure and basic format</target>
       </trans-unit>
-      <trans-unit id="pasteInPastingPad">
+      <trans-unit id="pasteInPastingPad" approved="yes">
         <source>Paste the content into this pasting pad and click OK.</source>
-        <target approved="yes">Paste the content into this pasting pad and click OK.</target>
+        <target>Paste the content into this pasting pad and click OK.</target>
       </trans-unit>
-      <trans-unit id="rteCleanPasteBehaviour">
+      <trans-unit id="rteCleanPasteBehaviour" approved="yes">
         <source>Clean paste behaviour</source>
-        <target approved="yes">Clean paste behaviour</target>
+        <target>Clean paste behaviour</target>
       </trans-unit>
     </body>
   </file>

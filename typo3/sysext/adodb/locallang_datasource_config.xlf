@@ -3,33 +3,33 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:22 UTC" product-name="adodb">
     <header/>
     <body>
-      <trans-unit id="dbtype">
+      <trans-unit id="dbtype" approved="yes">
         <source>Database type</source>
-        <target approved="yes">Database type</target>
+        <target>Database type</target>
       </trans-unit>
-      <trans-unit id="host">
+      <trans-unit id="host" approved="yes">
         <source>Host or DSN</source>
-        <target approved="yes">Host or DSN</target>
+        <target>Host or DSN</target>
       </trans-unit>
-      <trans-unit id="dbname">
+      <trans-unit id="dbname" approved="yes">
         <source>Database name</source>
-        <target approved="yes">Database name</target>
+        <target>Database name</target>
       </trans-unit>
-      <trans-unit id="username">
+      <trans-unit id="username" approved="yes">
         <source>Username</source>
-        <target approved="yes">Username</target>
+        <target>Username</target>
       </trans-unit>
-      <trans-unit id="password">
+      <trans-unit id="password" approved="yes">
         <source>Password</source>
-        <target approved="yes">Password</target>
+        <target>Password</target>
       </trans-unit>
-      <trans-unit id="table">
+      <trans-unit id="table" approved="yes">
         <source>Table name</source>
-        <target approved="yes">Table name</target>
+        <target>Table name</target>
       </trans-unit>
-      <trans-unit id="checkconnectionwizard">
+      <trans-unit id="checkconnectionwizard" approved="yes">
         <source>Check connection to database with configuration entered below</source>
-        <target approved="yes">Check connection to database with configuration entered below</target>
+        <target>Check connection to database with configuration entered below</target>
       </trans-unit>
     </body>
   </file>

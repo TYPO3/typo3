@@ -3,101 +3,101 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="tstemplate_info">
     <header/>
     <body>
-      <trans-unit id="delete">
+      <trans-unit id="delete" approved="yes">
         <source>Delete:</source>
-        <target approved="yes">Delete:</target>
+        <target>Delete:</target>
       </trans-unit>
-      <trans-unit id="toTop">
+      <trans-unit id="toTop" approved="yes">
         <source>To top:</source>
-        <target approved="yes">To top:</target>
+        <target>To top:</target>
       </trans-unit>
-      <trans-unit id="fileChanged">
+      <trans-unit id="fileChanged" approved="yes">
         <source>File changed</source>
-        <target approved="yes">File changed</target>
+        <target>File changed</target>
       </trans-unit>
-      <trans-unit id="resourceUpdated">
+      <trans-unit id="resourceUpdated" approved="yes">
         <source>Resource '%s' has been updated.</source>
-        <target approved="yes">Resource '%s' has been updated.</target>
+        <target>Resource '%s' has been updated.</target>
       </trans-unit>
-      <trans-unit id="templateInformation">
+      <trans-unit id="templateInformation" approved="yes">
         <source>Template information:</source>
-        <target approved="yes">Template information:</target>
+        <target>Template information:</target>
       </trans-unit>
-      <trans-unit id="title">
+      <trans-unit id="title" approved="yes">
         <source>Title:</source>
-        <target approved="yes">Title:</target>
+        <target>Title:</target>
       </trans-unit>
-      <trans-unit id="sitetitle">
+      <trans-unit id="sitetitle" approved="yes">
         <source>Sitetitle:</source>
-        <target approved="yes">Sitetitle:</target>
+        <target>Sitetitle:</target>
       </trans-unit>
-      <trans-unit id="description">
+      <trans-unit id="description" approved="yes">
         <source>Description:</source>
-        <target approved="yes">Description:</target>
+        <target>Description:</target>
       </trans-unit>
-      <trans-unit id="allowedExtensions">
+      <trans-unit id="allowedExtensions" approved="yes">
         <source>Allowed extensions:</source>
-        <target approved="yes">Allowed extensions:</target>
+        <target>Allowed extensions:</target>
       </trans-unit>
-      <trans-unit id="maxFilesize">
+      <trans-unit id="maxFilesize" approved="yes">
         <source>Max filesize:</source>
-        <target approved="yes">Max filesize:</target>
+        <target>Max filesize:</target>
       </trans-unit>
-      <trans-unit id="uploadResource">
+      <trans-unit id="uploadResource" approved="yes">
         <source>Upload resource:</source>
-        <target approved="yes">Upload resource:</target>
+        <target>Upload resource:</target>
       </trans-unit>
-      <trans-unit id="newTextResource">
+      <trans-unit id="newTextResource" approved="yes">
         <source>New text resource (enter name):</source>
-        <target approved="yes">New text resource (enter name):</target>
+        <target>New text resource (enter name):</target>
       </trans-unit>
-      <trans-unit id="copyResource">
+      <trans-unit id="copyResource" approved="yes">
         <source>Make a copy of resource:</source>
-        <target approved="yes">Make a copy of resource:</target>
+        <target>Make a copy of resource:</target>
       </trans-unit>
-      <trans-unit id="updateResourceList">
+      <trans-unit id="updateResourceList" approved="yes">
         <source>Update resource list:</source>
-        <target approved="yes">Update resource list:</target>
+        <target>Update resource list:</target>
       </trans-unit>
-      <trans-unit id="constants">
+      <trans-unit id="constants" approved="yes">
         <source>Constants:</source>
-        <target approved="yes">Constants:</target>
+        <target>Constants:</target>
       </trans-unit>
-      <trans-unit id="file">
+      <trans-unit id="file" approved="yes">
         <source>File:</source>
-        <target approved="yes">File:</target>
+        <target>File:</target>
       </trans-unit>
-      <trans-unit id="editResource">
+      <trans-unit id="editResource" approved="yes">
         <source>Edit Resource:</source>
-        <target approved="yes">Edit Resource:</target>
+        <target>Edit Resource:</target>
       </trans-unit>
-      <trans-unit id="filesizeExceeded">
+      <trans-unit id="filesizeExceeded" approved="yes">
         <source>Filesize exceeded %s KBytes</source>
-        <target approved="yes">Filesize exceeded %s KBytes</target>
+        <target>Filesize exceeded %s KBytes</target>
       </trans-unit>
-      <trans-unit id="notAllowed">
+      <trans-unit id="notAllowed" approved="yes">
         <source>Files larger than %s KBytes are not allowed to be edited.</source>
-        <target approved="yes">Files larger than %s KBytes are not allowed to be edited.</target>
+        <target>Files larger than %s KBytes are not allowed to be edited.</target>
       </trans-unit>
-      <trans-unit id="setup">
+      <trans-unit id="setup" approved="yes">
         <source>Setup:</source>
-        <target approved="yes">Setup:</target>
+        <target>Setup:</target>
       </trans-unit>
-      <trans-unit id="resources">
+      <trans-unit id="resources" approved="yes">
         <source>Resources:</source>
-        <target approved="yes">Resources:</target>
+        <target>Resources:</target>
       </trans-unit>
-      <trans-unit id="editToView">
+      <trans-unit id="editToView" approved="yes">
         <source>(edit to view, %s lines)</source>
-        <target approved="yes">(edit to view, %s lines)</target>
+        <target>(edit to view, %s lines)</target>
       </trans-unit>
-      <trans-unit id="editTemplateRecord">
+      <trans-unit id="editTemplateRecord" approved="yes">
         <source>Edit the whole template record</source>
-        <target approved="yes">Edit the whole template record</target>
+        <target>Edit the whole template record</target>
       </trans-unit>
-      <trans-unit id="includeTypoScriptFileContent">
+      <trans-unit id="includeTypoScriptFileContent" approved="yes">
         <source>Include TypoScript file content</source>
-        <target approved="yes">Include TypoScript file content</target>
+        <target>Include TypoScript file content</target>
       </trans-unit>
     </body>
   </file>

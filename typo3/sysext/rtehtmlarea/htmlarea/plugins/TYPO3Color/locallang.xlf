@@ -3,29 +3,29 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="ForeColor">
+      <trans-unit id="ForeColor" approved="yes">
         <source>Text Color</source>
-        <target approved="yes">Text Color</target>
+        <target>Text Color</target>
       </trans-unit>
-      <trans-unit id="HiliteColor">
+      <trans-unit id="HiliteColor" approved="yes">
         <source>Background Color</source>
-        <target approved="yes">Background Color</target>
+        <target>Background Color</target>
       </trans-unit>
-      <trans-unit id="ForeColor_title">
+      <trans-unit id="ForeColor_title" approved="yes">
         <source>Set the text color</source>
-        <target approved="yes">Set the text color</target>
+        <target>Set the text color</target>
       </trans-unit>
-      <trans-unit id="HiliteColor_title">
+      <trans-unit id="HiliteColor_title" approved="yes">
         <source>Set the background color</source>
-        <target approved="yes">Set the background color</target>
+        <target>Set the background color</target>
       </trans-unit>
-      <trans-unit id="color_title">
+      <trans-unit id="color_title" approved="yes">
         <source>Choose a color</source>
-        <target approved="yes">Choose a color</target>
+        <target>Choose a color</target>
       </trans-unit>
-      <trans-unit id="no_color">
+      <trans-unit id="no_color" approved="yes">
         <source>No color</source>
-        <target approved="yes">No color</target>
+        <target>No color</target>
       </trans-unit>
     </body>
   </file>

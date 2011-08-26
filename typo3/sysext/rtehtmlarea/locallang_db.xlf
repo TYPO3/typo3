@@ -3,33 +3,33 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="tx_rtehtmlarea_acronym">
+      <trans-unit id="tx_rtehtmlarea_acronym" approved="yes">
         <source>Abbreviation</source>
-        <target approved="yes">Abbreviation</target>
+        <target>Abbreviation</target>
       </trans-unit>
-      <trans-unit id="tx_rtehtmlarea_acronym.type">
+      <trans-unit id="tx_rtehtmlarea_acronym.type" approved="yes">
         <source>Type</source>
-        <target approved="yes">Type</target>
+        <target>Type</target>
       </trans-unit>
-      <trans-unit id="tx_rtehtmlarea_acronym.type.I.0">
+      <trans-unit id="tx_rtehtmlarea_acronym.type.I.0" approved="yes">
         <source>Acronym</source>
-        <target approved="yes">Acronym</target>
+        <target>Acronym</target>
       </trans-unit>
-      <trans-unit id="tx_rtehtmlarea_acronym.type.I.1">
+      <trans-unit id="tx_rtehtmlarea_acronym.type.I.1" approved="yes">
         <source>Abbreviation</source>
-        <target approved="yes">Abbreviation</target>
+        <target>Abbreviation</target>
       </trans-unit>
-      <trans-unit id="tx_rtehtmlarea_acronym.term">
+      <trans-unit id="tx_rtehtmlarea_acronym.term" approved="yes">
         <source>Term</source>
-        <target approved="yes">Term</target>
+        <target>Term</target>
       </trans-unit>
-      <trans-unit id="tx_rtehtmlarea_acronym.acronym">
+      <trans-unit id="tx_rtehtmlarea_acronym.acronym" approved="yes">
         <source>Abbreviation</source>
-        <target approved="yes">Abbreviation</target>
+        <target>Abbreviation</target>
       </trans-unit>
-      <trans-unit id="tx_rtehtmlarea_acronym.static_lang_isocode">
+      <trans-unit id="tx_rtehtmlarea_acronym.static_lang_isocode" approved="yes">
         <source>Language of the abbreviation</source>
-        <target approved="yes">Language of the abbreviation</target>
+        <target>Language of the abbreviation</target>
       </trans-unit>
     </body>
   </file>

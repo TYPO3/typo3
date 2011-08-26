@@ -3,9 +3,9 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:23 UTC" product-name="impexp">
     <header/>
     <body>
-      <trans-unit id="link_allRecs">
+      <trans-unit id="link_allRecs" approved="yes">
         <source>Show details of all presets</source>
-        <target approved="yes">Show details of all presets</target>
+        <target>Show details of all presets</target>
       </trans-unit>
     </body>
   </file>

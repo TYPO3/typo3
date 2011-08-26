@@ -3,105 +3,105 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:24 UTC" product-name="lang">
     <header/>
     <body>
-      <trans-unit id="bigControlPanel">
+      <trans-unit id="bigControlPanel" approved="yes">
         <source>Extended view</source>
-        <target approved="yes">Extended view</target>
+        <target>Extended view</target>
       </trans-unit>
-      <trans-unit id="clipBoard">
+      <trans-unit id="clipBoard" approved="yes">
         <source>Show clipboard</source>
-        <target approved="yes">Show clipboard</target>
+        <target>Show clipboard</target>
       </trans-unit>
-      <trans-unit id="clip_paste">
+      <trans-unit id="clip_paste" approved="yes">
         <source>Paste in clipboard content</source>
-        <target approved="yes">Paste in clipboard content</target>
+        <target>Paste in clipboard content</target>
       </trans-unit>
-      <trans-unit id="clip_pasteInto">
+      <trans-unit id="clip_pasteInto" approved="yes">
         <source>Paste into: Clipboard content is inserted into this folder</source>
-        <target approved="yes">Paste into: Clipboard content is inserted into this folder</target>
+        <target>Paste into: Clipboard content is inserted into this folder</target>
       </trans-unit>
-      <trans-unit id="clip_markRecords">
+      <trans-unit id="clip_markRecords" approved="yes">
         <source>Mark All/Mark none</source>
-        <target approved="yes">Mark All/Mark none</target>
+        <target>Mark All/Mark none</target>
       </trans-unit>
-      <trans-unit id="clip_selectMarked">
+      <trans-unit id="clip_selectMarked" approved="yes">
         <source>Transfer the selection of files to clipboard</source>
-        <target approved="yes">Transfer the selection of files to clipboard</target>
+        <target>Transfer the selection of files to clipboard</target>
       </trans-unit>
-      <trans-unit id="clip_deleteMarked">
+      <trans-unit id="clip_deleteMarked" approved="yes">
         <source>Delete marked</source>
-        <target approved="yes">Delete marked</target>
+        <target>Delete marked</target>
       </trans-unit>
-      <trans-unit id="clip_deleteMarkedWarning">
+      <trans-unit id="clip_deleteMarkedWarning" approved="yes">
         <source>Are you sure you want to delete all marked files from this folder?</source>
-        <target approved="yes">Are you sure you want to delete all marked files from this folder?</target>
+        <target>Are you sure you want to delete all marked files from this folder?</target>
       </trans-unit>
-      <trans-unit id="displayThumbs">
+      <trans-unit id="displayThumbs" approved="yes">
         <source>Display thumbnails</source>
-        <target approved="yes">Display thumbnails</target>
+        <target>Display thumbnails</target>
       </trans-unit>
-      <trans-unit id="c_file">
+      <trans-unit id="c_file" approved="yes">
         <source>Filename</source>
-        <target approved="yes">Filename</target>
+        <target>Filename</target>
       </trans-unit>
-      <trans-unit id="c_size">
+      <trans-unit id="c_size" approved="yes">
         <source>Size</source>
-        <target approved="yes">Size</target>
+        <target>Size</target>
       </trans-unit>
-      <trans-unit id="c_fileext">
+      <trans-unit id="c_fileext" approved="yes">
         <source>Type</source>
-        <target approved="yes">Type</target>
+        <target>Type</target>
       </trans-unit>
-      <trans-unit id="c_tstamp">
+      <trans-unit id="c_tstamp" approved="yes">
         <source>Date</source>
-        <target approved="yes">Date</target>
+        <target>Date</target>
       </trans-unit>
-      <trans-unit id="c_rw">
+      <trans-unit id="c_rw" approved="yes">
         <source>RW</source>
-        <target approved="yes">RW</target>
+        <target>RW</target>
       </trans-unit>
-      <trans-unit id="c__REF_">
+      <trans-unit id="c__REF_" approved="yes">
         <source>Ref</source>
-        <target approved="yes">Ref</target>
+        <target>Ref</target>
       </trans-unit>
-      <trans-unit id="files">
+      <trans-unit id="files" approved="yes">
         <source>files</source>
-        <target approved="yes">files</target>
+        <target>files</target>
       </trans-unit>
-      <trans-unit id="temp">
+      <trans-unit id="temp" approved="yes">
         <source>Temporary files</source>
-        <target approved="yes">Temporary files</target>
+        <target>Temporary files</target>
       </trans-unit>
-      <trans-unit id="read">
+      <trans-unit id="read" approved="yes">
         <source>R</source>
-        <target approved="yes">R</target>
+        <target>R</target>
       </trans-unit>
-      <trans-unit id="recycler">
+      <trans-unit id="recycler" approved="yes">
         <source>Recycler</source>
-        <target approved="yes">Recycler</target>
+        <target>Recycler</target>
       </trans-unit>
-      <trans-unit id="mlang_labels_tablabel">
+      <trans-unit id="mlang_labels_tablabel" approved="yes">
         <source>Listing of files in the directory</source>
-        <target approved="yes">Listing of files in the directory</target>
+        <target>Listing of files in the directory</target>
       </trans-unit>
-      <trans-unit id="mlang_labels_tabdescr">
+      <trans-unit id="mlang_labels_tabdescr" approved="yes">
         <source>This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</source>
-        <target approved="yes">This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</target>
+        <target>This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</target>
       </trans-unit>
-      <trans-unit id="mlang_tabs_tab">
+      <trans-unit id="mlang_tabs_tab" approved="yes">
         <source>Filelist</source>
-        <target approved="yes">Filelist</target>
+        <target>Filelist</target>
       </trans-unit>
-      <trans-unit id="write">
+      <trans-unit id="write" approved="yes">
         <source>W</source>
-        <target approved="yes">W</target>
+        <target>W</target>
       </trans-unit>
-      <trans-unit id="paramError">
+      <trans-unit id="paramError" approved="yes">
         <source>Parameter Error:</source>
-        <target approved="yes">Parameter Error:</target>
+        <target>Parameter Error:</target>
       </trans-unit>
-      <trans-unit id="targetNoDir">
+      <trans-unit id="targetNoDir" approved="yes">
         <source>Target was not a directory!</source>
-        <target approved="yes">Target was not a directory!</target>
+        <target>Target was not a directory!</target>
       </trans-unit>
     </body>
   </file>

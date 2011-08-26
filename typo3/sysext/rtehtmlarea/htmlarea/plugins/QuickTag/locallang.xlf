@@ -3,53 +3,53 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="Quick Tag Editor">
+      <trans-unit id="Quick Tag Editor" approved="yes">
         <source>Insert tag</source>
-        <target approved="yes">Insert tag</target>
+        <target>Insert tag</target>
       </trans-unit>
-      <trans-unit id="Enter the TAG you want to insert">
+      <trans-unit id="Enter the TAG you want to insert" approved="yes">
         <source>Enter the TAG you want to insert</source>
-        <target approved="yes">Enter the TAG you want to insert</target>
+        <target>Enter the TAG you want to insert</target>
       </trans-unit>
-      <trans-unit id="You have to select some text">
+      <trans-unit id="You have to select some text" approved="yes">
         <source>You have to select some text</source>
-        <target approved="yes">You have to select some text</target>
+        <target>You have to select some text</target>
       </trans-unit>
-      <trans-unit id="There are some unclosed quote">
+      <trans-unit id="There are some unclosed quote" approved="yes">
         <source>There are some unclosed quotes</source>
-        <target approved="yes">There are some unclosed quotes</target>
+        <target>There are some unclosed quotes</target>
       </trans-unit>
-      <trans-unit id="This attribute already exists in the TAG">
+      <trans-unit id="This attribute already exists in the TAG" approved="yes">
         <source>This attribute already exists in the TAG</source>
-        <target approved="yes">This attribute already exists in the TAG</target>
+        <target>This attribute already exists in the TAG</target>
       </trans-unit>
-      <trans-unit id="No CSS class avaiable">
+      <trans-unit id="No CSS class avaiable" approved="yes">
         <source>No CSS classes available</source>
-        <target approved="yes">No CSS classes available</target>
+        <target>No CSS classes available</target>
       </trans-unit>
-      <trans-unit id="OPTIONS">
+      <trans-unit id="OPTIONS" approved="yes">
         <source>Options</source>
-        <target approved="yes">Options</target>
+        <target>Options</target>
       </trans-unit>
-      <trans-unit id="ATTRIBUTES">
+      <trans-unit id="ATTRIBUTES" approved="yes">
         <source>Attributes</source>
-        <target approved="yes">Attributes</target>
+        <target>Attributes</target>
       </trans-unit>
-      <trans-unit id="TAGs">
+      <trans-unit id="TAGs" approved="yes">
         <source>Tags</source>
-        <target approved="yes">Tags</target>
+        <target>Tags</target>
       </trans-unit>
-      <trans-unit id="Colors">
+      <trans-unit id="Colors" approved="yes">
         <source>Colors</source>
-        <target approved="yes">Colors</target>
+        <target>Colors</target>
       </trans-unit>
-      <trans-unit id="Ok">
+      <trans-unit id="Ok" approved="yes">
         <source>Ok</source>
-        <target approved="yes">Ok</target>
+        <target>Ok</target>
       </trans-unit>
-      <trans-unit id="Cancel">
+      <trans-unit id="Cancel" approved="yes">
         <source>Cancel</source>
-        <target approved="yes">Cancel</target>
+        <target>Cancel</target>
       </trans-unit>
     </body>
   </file>

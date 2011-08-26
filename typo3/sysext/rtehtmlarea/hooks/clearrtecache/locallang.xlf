@@ -3,9 +3,9 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="title">
+      <trans-unit id="title" approved="yes">
         <source>Clear RTE Cache</source>
-        <target approved="yes">Clear RTE Cache</target>
+        <target>Clear RTE Cache</target>
       </trans-unit>
     </body>
   </file>

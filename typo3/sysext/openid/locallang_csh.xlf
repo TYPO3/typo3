@@ -3,21 +3,21 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="openid">
     <header/>
     <body>
-      <trans-unit id="tx_openid_openid.description">
+      <trans-unit id="tx_openid_openid.description" approved="yes">
         <source>OpenID identifier</source>
-        <target approved="yes">OpenID identifier</target>
+        <target>OpenID identifier</target>
       </trans-unit>
-      <trans-unit id="tx_openid_openid.details">
+      <trans-unit id="tx_openid_openid.details" approved="yes">
         <source>This field contains option OpenID identifier. If the field is not empty, users can login to the system using their OpenID identifier.</source>
-        <target approved="yes">This field contains option OpenID identifier. If the field is not empty, users can login to the system using their OpenID identifier.</target>
+        <target>This field contains option OpenID identifier. If the field is not empty, users can login to the system using their OpenID identifier.</target>
       </trans-unit>
-      <trans-unit id="tx_openid_openid.seeAlso">
+      <trans-unit id="tx_openid_openid.seeAlso" approved="yes">
         <source>http://openid.net/</source>
-        <target approved="yes">http://openid.net/</target>
+        <target>http://openid.net/</target>
       </trans-unit>
-      <trans-unit id="tx_openid_change_allowed.description">
+      <trans-unit id="tx_openid_change_allowed.description" approved="yes">
         <source>If this setting is active, users can change their own OpenID identifier using the setup module.</source>
-        <target approved="yes">If this setting is active, users can change their own OpenID identifier using the setup module.</target>
+        <target>If this setting is active, users can change their own OpenID identifier using the setup module.</target>
       </trans-unit>
     </body>
   </file>

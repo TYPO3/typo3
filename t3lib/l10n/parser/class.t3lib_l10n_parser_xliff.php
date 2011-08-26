@@ -48,6 +48,7 @@ class t3lib_l10n_parser_Xliff extends t3lib_l10n_parser_AbstractXml {
 			if ($translationElement->getName() === 'trans-unit' && !isset($translationElement['restype'])) {
 					// If restype would be set, it could be metadata from Gettext to XLIFF conversion (and we don't need this data)
 
+					// @todo Support "approved" attribute
 				$parsedData[(string)$translationElement['id']][0] = array(
 					'source' => (string)$translationElement->source,
 					'target' => (string)$translationElement->target,
@@ -61,6 +62,7 @@ class t3lib_l10n_parser_Xliff extends t3lib_l10n_parser_AbstractXml {
 							// When using plural forms, ID looks like this: 1[0], 1[1] etc
 						$formIndex = substr((string)$translationPluralForm['id'], strpos((string)$translationPluralForm['id'], '[') + 1, -1);
 
+							// @todo Support "approved" attribute
 						$parsedTranslationElement[(int)$formIndex] = array(
 							'source' => (string)$translationPluralForm->source,
 							'target' => (string)$translationPluralForm->target,

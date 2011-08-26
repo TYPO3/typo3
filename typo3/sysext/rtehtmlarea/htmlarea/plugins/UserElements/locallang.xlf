@@ -3,9 +3,9 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="Insert custom element">
+      <trans-unit id="Insert custom element" approved="yes">
         <source>Insert custom element</source>
-        <target approved="yes">Insert custom element</target>
+        <target>Insert custom element</target>
       </trans-unit>
     </body>
   </file>

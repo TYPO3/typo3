@@ -3,53 +3,53 @@
   <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
     <header/>
     <body>
-      <trans-unit id="external_link_altText">
+      <trans-unit id="external_link_altText" approved="yes">
         <source>Opens external link in current window</source>
-        <target approved="yes">Opens external link in current window</target>
+        <target>Opens external link in current window</target>
       </trans-unit>
-      <trans-unit id="external_link_titleText">
+      <trans-unit id="external_link_titleText" approved="yes">
         <source>Opens external link in current window</source>
-        <target approved="yes">Opens external link in current window</target>
+        <target>Opens external link in current window</target>
       </trans-unit>
-      <trans-unit id="external_link_new_window_altText">
+      <trans-unit id="external_link_new_window_altText" approved="yes">
         <source>Opens external link in new window</source>
-        <target approved="yes">Opens external link in new window</target>
+        <target>Opens external link in new window</target>
       </trans-unit>
-      <trans-unit id="external_link_new_window_titleText">
+      <trans-unit id="external_link_new_window_titleText" approved="yes">
         <source>Opens external link in new window</source>
-        <target approved="yes">Opens external link in new window</target>
+        <target>Opens external link in new window</target>
       </trans-unit>
-      <trans-unit id="internal_link_altText">
+      <trans-unit id="internal_link_altText" approved="yes">
         <source>Opens internal link in current window</source>
-        <target approved="yes">Opens internal link in current window</target>
+        <target>Opens internal link in current window</target>
       </trans-unit>
-      <trans-unit id="internal_link_titleText">
+      <trans-unit id="internal_link_titleText" approved="yes">
         <source>Opens internal link in current window</source>
-        <target approved="yes">Opens internal link in current window</target>
+        <target>Opens internal link in current window</target>
       </trans-unit>
-      <trans-unit id="internal_link_new_window_altText">
+      <trans-unit id="internal_link_new_window_altText" approved="yes">
         <source>Opens internal link in new window</source>
-        <target approved="yes">Opens internal link in new window</target>
+        <target>Opens internal link in new window</target>
       </trans-unit>
-      <trans-unit id="internal_link_new_window_titleText">
+      <trans-unit id="internal_link_new_window_titleText" approved="yes">
         <source>Opens internal link in new window</source>
-        <target approved="yes">Opens internal link in new window</target>
+        <target>Opens internal link in new window</target>
       </trans-unit>
-      <trans-unit id="download_altText">
+      <trans-unit id="download_altText" approved="yes">
         <source>Initiates file download</source>
-        <target approved="yes">Initiates file download</target>
+        <target>Initiates file download</target>
       </trans-unit>
-      <trans-unit id="download_titleText">
+      <trans-unit id="download_titleText" approved="yes">
         <source>Initiates file download</source>
-        <target approved="yes">Initiates file download</target>
+        <target>Initiates file download</target>
       </trans-unit>
-      <trans-unit id="mail_altText">
+      <trans-unit id="mail_altText" approved="yes">
         <source>Opens window for sending email</source>
-        <target approved="yes">Opens window for sending email</target>
+        <target>Opens window for sending email</target>
       </trans-unit>
-      <trans-unit id="mail_titleText">
+      <trans-unit id="mail_titleText" approved="yes">
         <source>Opens window for sending email</source>
-        <target approved="yes">Opens window for sending email</target>
+        <target>Opens window for sending email</target>
       </trans-unit>
     </body>
   </file>
