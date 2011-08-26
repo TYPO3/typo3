@@ -80,10 +80,10 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 	 * @param array $extInfo: Extension information array
 	 * @param array $diff: Database differences
 	 * @param t3lib_install $instObj: Instance of the installer
-	 * @param SC_mod_tools_em_index $parent: The calling parent object
+	 * @param tx_em_Install $parent: The calling parent object
 	 * @return string Either empty string or a pre-processing user form
 	 */
-	public function preProcessDatabaseUpdates($extKey, array $extInfo, array $diff, t3lib_install $instObj, SC_mod_tools_em_index $parent) {
+	public function preProcessDatabaseUpdates($extKey, array $extInfo, array $diff, t3lib_install $instObj, tx_em_Install $parent) {
 		$content = '';
 
 		// Remapping is only mandatory for Oracle:
