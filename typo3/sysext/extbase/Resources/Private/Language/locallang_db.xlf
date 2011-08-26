@@ -3,29 +3,29 @@
   <file source-language="EN" target-language="fr_CH.UTF-8" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 17:52:59 UTC" product-name="extbase">
     <header/>
     <body>
-      <trans-unit id="fe_users.tx_extbase_type">
+      <trans-unit id="fe_users.tx_extbase_type" approved="yes">
         <source>Record Type</source>
-        <target approved="yes">Record Type</target>
+        <target>Record Type</target>
       </trans-unit>
-      <trans-unit id="fe_users.tx_extbase_type.0">
+      <trans-unit id="fe_users.tx_extbase_type.0" approved="yes">
         <source>undefined</source>
-        <target approved="yes">undefined</target>
+        <target>undefined</target>
       </trans-unit>
-      <trans-unit id="fe_users.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUser">
+      <trans-unit id="fe_users.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUser" approved="yes">
         <source>Tx_Extbase_Domain_Model_FrontendUser</source>
-        <target approved="yes">Tx_Extbase_Domain_Model_FrontendUser</target>
+        <target>Tx_Extbase_Domain_Model_FrontendUser</target>
       </trans-unit>
-      <trans-unit id="fe_groups.tx_extbase_type">
+      <trans-unit id="fe_groups.tx_extbase_type" approved="yes">
         <source>Record Type</source>
-        <target approved="yes">Record Type</target>
+        <target>Record Type</target>
       </trans-unit>
-      <trans-unit id="fe_groups.tx_extbase_type.0">
+      <trans-unit id="fe_groups.tx_extbase_type.0" approved="yes">
         <source>undefined</source>
-        <target approved="yes">undefined</target>
+        <target>undefined</target>
       </trans-unit>
-      <trans-unit id="fe_groups.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUserGroup">
+      <trans-unit id="fe_groups.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUserGroup" approved="yes">
         <source>Tx_Extbase_Domain_Model_FrontendUserGroup</source>
-        <target approved="yes">Tx_Extbase_Domain_Model_FrontendUserGroup</target>
+        <target>Tx_Extbase_Domain_Model_FrontendUserGroup</target>
       </trans-unit>
     </body>
   </file>
