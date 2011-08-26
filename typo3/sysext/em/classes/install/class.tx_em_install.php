@@ -822,6 +822,7 @@ class tx_em_Install {
 		$content = '';
 
 		// Updating tables and fields?
+		$showUpdateStatements = TRUE;
 		if (is_array($extInfo['files']) && in_array('ext_tables.sql', $extInfo['files'])) {
 			$path = tx_em_Tools::getExtPath($extKey, $extInfo['type']);
 			$fileContent = t3lib_div::getUrl($path . 'ext_tables.sql');
@@ -842,12 +843,31 @@ class tx_em_Install {
 					$this->installerSql->performUpdateQueries($update_statements['change'], $this->install->INSTALL['database_update']);
 					$this->installerSql->performUpdateQueries($update_statements['create_table'], $this->install->INSTALL['database_update']);
 				} else {
-					$content .= $this->install->generateUpdateDatabaseForm_checkboxes(
-						$update_statements['add'], $GLOBALS['LANG']->getLL('checkDBupdates_add_fields'));
-					$content .= $this->install->generateUpdateDatabaseForm_checkboxes(
-						$update_statements['change'], $GLOBALS['LANG']->getLL('checkDBupdates_changing_fields'), 1, 0, $update_statements['change_currentValue']);
-					$content .= $this->install->generateUpdateDatabaseForm_checkboxes(
-						$update_statements['create_table'], $GLOBALS['LANG']->getLL('checkDBupdates_add_tables'));
+					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/mod/tools/em/index.php']['checkDBupdates'])) {
+						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/mod/tools/em/index.php']['checkDBupdates'] as $classData) {
+							$hookObject = t3lib_div::getUserObj($classData);
+
+							if (!($hookObject instanceof tx_em_Index_CheckDatabaseUpdatesHook)) {
+								throw new UnexpectedValueException('$hookObject must implement interface em_index_checkDatabaseUpdatesHook', 1288418476);
+							}
+
+							/* @var $hookObject tx_em_Index_CheckDatabaseUpdatesHook */
+							$preprocessContent = $hookObject->preProcessDatabaseUpdates($extKey, $extInfo, $diff, $this->install, $this);
+							if ($preprocessContent) {
+								$content .= $preprocessContent;
+								$showUpdateStatements = FALSE;
+								break;
+							}
+						}
+					}
+					if ($showUpdateStatements) {
+						$content .= $this->install->generateUpdateDatabaseForm_checkboxes(
+							$update_statements['add'], $GLOBALS['LANG']->getLL('checkDBupdates_add_fields'));
+						$content .= $this->install->generateUpdateDatabaseForm_checkboxes(
+							$update_statements['change'], $GLOBALS['LANG']->getLL('checkDBupdates_changing_fields'), 1, 0, $update_statements['change_currentValue']);
+						$content .= $this->install->generateUpdateDatabaseForm_checkboxes(
+							$update_statements['create_table'], $GLOBALS['LANG']->getLL('checkDBupdates_add_tables'));
+					}
 				}
 			}
 		}
