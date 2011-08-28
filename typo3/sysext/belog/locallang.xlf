@@ -1,84 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:22 UTC" product-name="belog">
-    <header/>
-    <body>
-      <trans-unit id="chLog_title" approved="yes">
-        <source>Admin Changelog</source>
-        <target>Admin Changelog</target>
-      </trans-unit>
-      <trans-unit id="chLog_users_0" approved="yes">
-        <source>All users</source>
-        <target>All users</target>
-      </trans-unit>
-      <trans-unit id="chLog_users_-1" approved="yes">
-        <source>Self</source>
-        <target>Self</target>
-      </trans-unit>
-      <trans-unit id="chLog_time_0" approved="yes">
-        <source>This week</source>
-        <target>This week</target>
-      </trans-unit>
-      <trans-unit id="chLog_time_1" approved="yes">
-        <source>Last week</source>
-        <target>Last week</target>
-      </trans-unit>
-      <trans-unit id="chLog_time_2" approved="yes">
-        <source>Last 7 days</source>
-        <target>Last 7 days</target>
-      </trans-unit>
-      <trans-unit id="chLog_time_10" approved="yes">
-        <source>This month</source>
-        <target>This month</target>
-      </trans-unit>
-      <trans-unit id="chLog_time_11" approved="yes">
-        <source>Last month</source>
-        <target>Last month</target>
-      </trans-unit>
-      <trans-unit id="chLog_time_12" approved="yes">
-        <source>Last 31 days</source>
-        <target>Last 31 days</target>
-      </trans-unit>
-      <trans-unit id="chLog_time_20" approved="yes">
-        <source>No limit</source>
-        <target>No limit</target>
-      </trans-unit>
-      <trans-unit id="chLog_l_time" approved="yes">
-        <source>Time</source>
-        <target>Time</target>
-      </trans-unit>
-      <trans-unit id="chLog_l_user" approved="yes">
-        <source>User</source>
-        <target>User</target>
-      </trans-unit>
-      <trans-unit id="chLog_l_error" approved="yes">
-        <source>E</source>
-        <target>E</target>
-      </trans-unit>
-      <trans-unit id="chLog_l_action" approved="yes">
-        <source>Action</source>
-        <target>Action</target>
-      </trans-unit>
-      <trans-unit id="chLog_l_table" approved="yes">
-        <source>Table</source>
-        <target>Table</target>
-      </trans-unit>
-      <trans-unit id="chLog_l_details" approved="yes">
-        <source>Details</source>
-        <target>Details</target>
-      </trans-unit>
-      <trans-unit id="chLog_menuUsers" approved="yes">
-        <source>Users</source>
-        <target>Users</target>
-      </trans-unit>
-      <trans-unit id="chLog_menuDepth" approved="yes">
-        <source>Depth</source>
-        <target>Depth</target>
-      </trans-unit>
-      <trans-unit id="chLog_menuTime" approved="yes">
-        <source>Time</source>
-        <target>Time</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:22 UTC" product-name="belog">
+		<header/>
+		<body>
+			<trans-unit id="chLog_title" approved="yes">
+				<source>Admin Changelog</source>
+				<target>Admin Changelog</target>
+			</trans-unit>
+			<trans-unit id="chLog_users_0" approved="yes">
+				<source>All users</source>
+				<target>All users</target>
+			</trans-unit>
+			<trans-unit id="chLog_users_-1" approved="yes">
+				<source>Self</source>
+				<target>Self</target>
+			</trans-unit>
+			<trans-unit id="chLog_time_0" approved="yes">
+				<source>This week</source>
+				<target>This week</target>
+			</trans-unit>
+			<trans-unit id="chLog_time_1" approved="yes">
+				<source>Last week</source>
+				<target>Last week</target>
+			</trans-unit>
+			<trans-unit id="chLog_time_2" approved="yes">
+				<source>Last 7 days</source>
+				<target>Last 7 days</target>
+			</trans-unit>
+			<trans-unit id="chLog_time_10" approved="yes">
+				<source>This month</source>
+				<target>This month</target>
+			</trans-unit>
+			<trans-unit id="chLog_time_11" approved="yes">
+				<source>Last month</source>
+				<target>Last month</target>
+			</trans-unit>
+			<trans-unit id="chLog_time_12" approved="yes">
+				<source>Last 31 days</source>
+				<target>Last 31 days</target>
+			</trans-unit>
+			<trans-unit id="chLog_time_20" approved="yes">
+				<source>No limit</source>
+				<target>No limit</target>
+			</trans-unit>
+			<trans-unit id="chLog_l_time" approved="yes">
+				<source>Time</source>
+				<target>Time</target>
+			</trans-unit>
+			<trans-unit id="chLog_l_user" approved="yes">
+				<source>User</source>
+				<target>User</target>
+			</trans-unit>
+			<trans-unit id="chLog_l_error" approved="yes">
+				<source>E</source>
+				<target>E</target>
+			</trans-unit>
+			<trans-unit id="chLog_l_action" approved="yes">
+				<source>Action</source>
+				<target>Action</target>
+			</trans-unit>
+			<trans-unit id="chLog_l_table" approved="yes">
+				<source>Table</source>
+				<target>Table</target>
+			</trans-unit>
+			<trans-unit id="chLog_l_details" approved="yes">
+				<source>Details</source>
+				<target>Details</target>
+			</trans-unit>
+			<trans-unit id="chLog_menuUsers" approved="yes">
+				<source>Users</source>
+				<target>Users</target>
+			</trans-unit>
+			<trans-unit id="chLog_menuDepth" approved="yes">
+				<source>Depth</source>
+				<target>Depth</target>
+			</trans-unit>
+			<trans-unit id="chLog_menuTime" approved="yes">
+				<source>Time</source>
+				<target>Time</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="lang">
-    <header/>
-    <body>
-      <trans-unit id="version_swap.online_record_updated" approved="yes">
-        <source>Record '%s' (%s) was updated. (Online version)</source>
-        <target>Record '%s' (%s) was updated. (Online version)</target>
-      </trans-unit>
-      <trans-unit id="version_swap.offline_record_updated" approved="yes">
-        <source>Record '%s' (%s) was updated. (Offline version)</source>
-        <target>Record '%s' (%s) was updated. (Offline version)</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="lang">
+		<header/>
+		<body>
+			<trans-unit id="version_swap.online_record_updated" approved="yes">
+				<source>Record '%s' (%s) was updated. (Online version)</source>
+				<target>Record '%s' (%s) was updated. (Online version)</target>
+			</trans-unit>
+			<trans-unit id="version_swap.offline_record_updated" approved="yes">
+				<source>Record '%s' (%s) was updated. (Offline version)</source>
+				<target>Record '%s' (%s) was updated. (Offline version)</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

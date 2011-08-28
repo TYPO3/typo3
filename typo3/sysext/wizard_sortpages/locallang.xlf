@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="wizard_sortpages">
-    <header/>
-    <body>
-      <trans-unit id="wiz_sort" approved="yes">
-        <source>Sort pages</source>
-        <target>Sort pages</target>
-      </trans-unit>
-      <trans-unit id="wiz_W" approved="yes">
-        <source>W!</source>
-        <target>W!</target>
-      </trans-unit>
-      <trans-unit id="wiz_currentPageOrder" approved="yes">
-        <source>Current page order</source>
-        <target>Current page order</target>
-      </trans-unit>
-      <trans-unit id="wiz_changeOrder" approved="yes">
-        <source>Sort these pages by</source>
-        <target>Sort these pages by</target>
-      </trans-unit>
-      <trans-unit id="wiz_changeOrder_title" approved="yes">
-        <source>Page title</source>
-        <target>Page title</target>
-      </trans-unit>
-      <trans-unit id="wiz_changeOrder_subtitle" approved="yes">
-        <source>Subtitle</source>
-        <target>Subtitle</target>
-      </trans-unit>
-      <trans-unit id="wiz_changeOrder_tCreate" approved="yes">
-        <source>Create-time</source>
-        <target>Create-time</target>
-      </trans-unit>
-      <trans-unit id="wiz_changeOrder_tChange" approved="yes">
-        <source>Change-time</source>
-        <target>Change-time</target>
-      </trans-unit>
-      <trans-unit id="wiz_changeOrder_REVERSE" approved="yes">
-        <source>Reverse current order</source>
-        <target>Reverse current order</target>
-      </trans-unit>
-      <trans-unit id="wiz_changeOrder_msg1" approved="yes">
-        <source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
-        <target>You're about to change the order of the above pages. Are you sure you want to continue?</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="wizard_sortpages">
+		<header/>
+		<body>
+			<trans-unit id="wiz_sort" approved="yes">
+				<source>Sort pages</source>
+				<target>Sort pages</target>
+			</trans-unit>
+			<trans-unit id="wiz_W" approved="yes">
+				<source>W!</source>
+				<target>W!</target>
+			</trans-unit>
+			<trans-unit id="wiz_currentPageOrder" approved="yes">
+				<source>Current page order</source>
+				<target>Current page order</target>
+			</trans-unit>
+			<trans-unit id="wiz_changeOrder" approved="yes">
+				<source>Sort these pages by</source>
+				<target>Sort these pages by</target>
+			</trans-unit>
+			<trans-unit id="wiz_changeOrder_title" approved="yes">
+				<source>Page title</source>
+				<target>Page title</target>
+			</trans-unit>
+			<trans-unit id="wiz_changeOrder_subtitle" approved="yes">
+				<source>Subtitle</source>
+				<target>Subtitle</target>
+			</trans-unit>
+			<trans-unit id="wiz_changeOrder_tCreate" approved="yes">
+				<source>Create-time</source>
+				<target>Create-time</target>
+			</trans-unit>
+			<trans-unit id="wiz_changeOrder_tChange" approved="yes">
+				<source>Change-time</source>
+				<target>Change-time</target>
+			</trans-unit>
+			<trans-unit id="wiz_changeOrder_REVERSE" approved="yes">
+				<source>Reverse current order</source>
+				<target>Reverse current order</target>
+			</trans-unit>
+			<trans-unit id="wiz_changeOrder_msg1" approved="yes">
+				<source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
+				<target>You're about to change the order of the above pages. Are you sure you want to continue?</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

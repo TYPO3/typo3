@@ -1,168 +1,168 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="tstemplate_objbrowser">
-    <header/>
-    <body>
-      <trans-unit id="constants" approved="yes">
-        <source>Constants</source>
-        <target>Constants</target>
-      </trans-unit>
-      <trans-unit id="setup" approved="yes">
-        <source>Setup</source>
-        <target>Setup</target>
-      </trans-unit>
-      <trans-unit id="all" approved="yes">
-        <source>All</source>
-        <target>All</target>
-      </trans-unit>
-      <trans-unit id="plainSubstitution" approved="yes">
-        <source>Plain substitution (default)</source>
-        <target>Plain substitution (default)</target>
-      </trans-unit>
-      <trans-unit id="substitutedGreen" approved="yes">
-        <source>Substituted constants in green</source>
-        <target>Substituted constants in green</target>
-      </trans-unit>
-      <trans-unit id="unsubstitutedGreen" approved="yes">
-        <source>UN-substituted constants in green</source>
-        <target>UN-substituted constants in green</target>
-      </trans-unit>
-      <trans-unit id="currentTemplate" approved="yes">
-        <source>Current template:</source>
-        <target>Current template:</target>
-      </trans-unit>
-      <trans-unit id="badProperty" approved="yes">
-        <source>Bad property!</source>
-        <target>Bad property!</target>
-      </trans-unit>
-      <trans-unit id="noSpaces" approved="yes">
-        <source>You must enter a property with characters a-z, A-Z and 0-9, no spaces!</source>
-        <target>You must enter a property with characters a-z, A-Z and 0-9, no spaces!</target>
-      </trans-unit>
-      <trans-unit id="nothingUpdated" approved="yes">
-        <source>Nothing was updated!</source>
-        <target>Nothing was updated!</target>
-      </trans-unit>
-      <trans-unit id="propertyAdded" approved="yes">
-        <source>Property added</source>
-        <target>Property added</target>
-      </trans-unit>
-      <trans-unit id="valueUpdated" approved="yes">
-        <source>Value updated</source>
-        <target>Value updated</target>
-      </trans-unit>
-      <trans-unit id="objectCleared" approved="yes">
-        <source>Object cleared</source>
-        <target>Object cleared</target>
-      </trans-unit>
-      <trans-unit id="updateButton" approved="yes">
-        <source>Update</source>
-        <target>Update</target>
-      </trans-unit>
-      <trans-unit id="editProperty" approved="yes">
-        <source>Edit object/property value:</source>
-        <target>Edit object/property value:</target>
-      </trans-unit>
-      <trans-unit id="addButton" approved="yes">
-        <source>Add</source>
-        <target>Add</target>
-      </trans-unit>
-      <trans-unit id="addProperty" approved="yes">
-        <source>Add object property:</source>
-        <target>Add object property:</target>
-      </trans-unit>
-      <trans-unit id="clear" approved="yes">
-        <source>Clear?</source>
-        <target>Clear?</target>
-      </trans-unit>
-      <trans-unit id="clearButton" approved="yes">
-        <source>Clear</source>
-        <target>Clear</target>
-      </trans-unit>
-      <trans-unit id="clearObject" approved="yes">
-        <source>Clear object:</source>
-        <target>Clear object:</target>
-      </trans-unit>
-      <trans-unit id="edit" approved="yes">
-        <source>Edit:</source>
-        <target>Edit:</target>
-      </trans-unit>
-      <trans-unit id="noCurrentTemplate" approved="yes">
-        <source>You cannot edit properties and values, if there's no current template.</source>
-        <target>You cannot edit properties and values, if there's no current template.</target>
-      </trans-unit>
-      <trans-unit id="addKey" approved="yes">
-        <source>&lt;b&gt;Add key&lt;/b&gt;&lt;/a&gt; "%s" to Object List</source>
-        <target>&lt;b&gt;Add key&lt;/b&gt;&lt;/a&gt; "%s" to Object List</target>
-      </trans-unit>
-      <trans-unit id="removeKey" approved="yes">
-        <source>&lt;b&gt;Remove key&lt;/b&gt;&lt;/a&gt; "%s" from Object List</source>
-        <target>&lt;b&gt;Remove key&lt;/b&gt;&lt;/a&gt; "%s" from Object List</target>
-      </trans-unit>
-      <trans-unit id="back" approved="yes">
-        <source>&lt; Back</source>
-        <target>&lt; Back</target>
-      </trans-unit>
-      <trans-unit id="browse" approved="yes">
-        <source>Browse:</source>
-        <target>Browse:</target>
-      </trans-unit>
-      <trans-unit id="objectList" approved="yes">
-        <source>Object List:</source>
-        <target>Object List:</target>
-      </trans-unit>
-      <trans-unit id="search" approved="yes">
-        <source>Search:</source>
-        <target>Search:</target>
-      </trans-unit>
-      <trans-unit id="regExp" approved="yes">
-        <source>Regular expressions</source>
-        <target>Regular expressions</target>
-      </trans-unit>
-      <trans-unit id="errorsWarnings" approved="yes">
-        <source>Errors and warnings</source>
-        <target>Errors and warnings</target>
-      </trans-unit>
-      <trans-unit id="removeKey" approved="yes">
-        <source>Remove key from OL</source>
-        <target>Remove key from OL</target>
-      </trans-unit>
-      <trans-unit id="setupRoot" approved="yes">
-        <source>setup root</source>
-        <target>setup root</target>
-      </trans-unit>
-      <trans-unit id="constantRoot" approved="yes">
-        <source>constants root</source>
-        <target>constants root</target>
-      </trans-unit>
-      <trans-unit id="displayComments" approved="yes">
-        <source>Display comments</source>
-        <target>Display comments</target>
-      </trans-unit>
-      <trans-unit id="sortAlphabetically" approved="yes">
-        <source>Sort alphabetically</source>
-        <target>Sort alphabetically</target>
-      </trans-unit>
-      <trans-unit id="cropLines" approved="yes">
-        <source>Crop lines</source>
-        <target>Crop lines</target>
-      </trans-unit>
-      <trans-unit id="displayConstants" approved="yes">
-        <source>Display constants:</source>
-        <target>Display constants:</target>
-      </trans-unit>
-      <trans-unit id="displayOptions" approved="yes">
-        <source>Display options:</source>
-        <target>Display options:</target>
-      </trans-unit>
-      <trans-unit id="conditions" approved="yes">
-        <source>Conditions:</source>
-        <target>Conditions:</target>
-      </trans-unit>
-      <trans-unit id="setConditions" approved="yes">
-        <source>Set conditions</source>
-        <target>Set conditions</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="tstemplate_objbrowser">
+		<header/>
+		<body>
+			<trans-unit id="constants" approved="yes">
+				<source>Constants</source>
+				<target>Constants</target>
+			</trans-unit>
+			<trans-unit id="setup" approved="yes">
+				<source>Setup</source>
+				<target>Setup</target>
+			</trans-unit>
+			<trans-unit id="all" approved="yes">
+				<source>All</source>
+				<target>All</target>
+			</trans-unit>
+			<trans-unit id="plainSubstitution" approved="yes">
+				<source>Plain substitution (default)</source>
+				<target>Plain substitution (default)</target>
+			</trans-unit>
+			<trans-unit id="substitutedGreen" approved="yes">
+				<source>Substituted constants in green</source>
+				<target>Substituted constants in green</target>
+			</trans-unit>
+			<trans-unit id="unsubstitutedGreen" approved="yes">
+				<source>UN-substituted constants in green</source>
+				<target>UN-substituted constants in green</target>
+			</trans-unit>
+			<trans-unit id="currentTemplate" approved="yes">
+				<source>Current template:</source>
+				<target>Current template:</target>
+			</trans-unit>
+			<trans-unit id="badProperty" approved="yes">
+				<source>Bad property!</source>
+				<target>Bad property!</target>
+			</trans-unit>
+			<trans-unit id="noSpaces" approved="yes">
+				<source>You must enter a property with characters a-z, A-Z and 0-9, no spaces!</source>
+				<target>You must enter a property with characters a-z, A-Z and 0-9, no spaces!</target>
+			</trans-unit>
+			<trans-unit id="nothingUpdated" approved="yes">
+				<source>Nothing was updated!</source>
+				<target>Nothing was updated!</target>
+			</trans-unit>
+			<trans-unit id="propertyAdded" approved="yes">
+				<source>Property added</source>
+				<target>Property added</target>
+			</trans-unit>
+			<trans-unit id="valueUpdated" approved="yes">
+				<source>Value updated</source>
+				<target>Value updated</target>
+			</trans-unit>
+			<trans-unit id="objectCleared" approved="yes">
+				<source>Object cleared</source>
+				<target>Object cleared</target>
+			</trans-unit>
+			<trans-unit id="updateButton" approved="yes">
+				<source>Update</source>
+				<target>Update</target>
+			</trans-unit>
+			<trans-unit id="editProperty" approved="yes">
+				<source>Edit object/property value:</source>
+				<target>Edit object/property value:</target>
+			</trans-unit>
+			<trans-unit id="addButton" approved="yes">
+				<source>Add</source>
+				<target>Add</target>
+			</trans-unit>
+			<trans-unit id="addProperty" approved="yes">
+				<source>Add object property:</source>
+				<target>Add object property:</target>
+			</trans-unit>
+			<trans-unit id="clear" approved="yes">
+				<source>Clear?</source>
+				<target>Clear?</target>
+			</trans-unit>
+			<trans-unit id="clearButton" approved="yes">
+				<source>Clear</source>
+				<target>Clear</target>
+			</trans-unit>
+			<trans-unit id="clearObject" approved="yes">
+				<source>Clear object:</source>
+				<target>Clear object:</target>
+			</trans-unit>
+			<trans-unit id="edit" approved="yes">
+				<source>Edit:</source>
+				<target>Edit:</target>
+			</trans-unit>
+			<trans-unit id="noCurrentTemplate" approved="yes">
+				<source>You cannot edit properties and values, if there's no current template.</source>
+				<target>You cannot edit properties and values, if there's no current template.</target>
+			</trans-unit>
+			<trans-unit id="addKey" approved="yes">
+				<source>&lt;b&gt;Add key&lt;/b&gt;&lt;/a&gt; "%s" to Object List</source>
+				<target>&lt;b&gt;Add key&lt;/b&gt;&lt;/a&gt; "%s" to Object List</target>
+			</trans-unit>
+			<trans-unit id="removeKey" approved="yes">
+				<source>&lt;b&gt;Remove key&lt;/b&gt;&lt;/a&gt; "%s" from Object List</source>
+				<target>&lt;b&gt;Remove key&lt;/b&gt;&lt;/a&gt; "%s" from Object List</target>
+			</trans-unit>
+			<trans-unit id="back" approved="yes">
+				<source>&lt; Back</source>
+				<target>&lt; Back</target>
+			</trans-unit>
+			<trans-unit id="browse" approved="yes">
+				<source>Browse:</source>
+				<target>Browse:</target>
+			</trans-unit>
+			<trans-unit id="objectList" approved="yes">
+				<source>Object List:</source>
+				<target>Object List:</target>
+			</trans-unit>
+			<trans-unit id="search" approved="yes">
+				<source>Search:</source>
+				<target>Search:</target>
+			</trans-unit>
+			<trans-unit id="regExp" approved="yes">
+				<source>Regular expressions</source>
+				<target>Regular expressions</target>
+			</trans-unit>
+			<trans-unit id="errorsWarnings" approved="yes">
+				<source>Errors and warnings</source>
+				<target>Errors and warnings</target>
+			</trans-unit>
+			<trans-unit id="removeKey" approved="yes">
+				<source>Remove key from OL</source>
+				<target>Remove key from OL</target>
+			</trans-unit>
+			<trans-unit id="setupRoot" approved="yes">
+				<source>setup root</source>
+				<target>setup root</target>
+			</trans-unit>
+			<trans-unit id="constantRoot" approved="yes">
+				<source>constants root</source>
+				<target>constants root</target>
+			</trans-unit>
+			<trans-unit id="displayComments" approved="yes">
+				<source>Display comments</source>
+				<target>Display comments</target>
+			</trans-unit>
+			<trans-unit id="sortAlphabetically" approved="yes">
+				<source>Sort alphabetically</source>
+				<target>Sort alphabetically</target>
+			</trans-unit>
+			<trans-unit id="cropLines" approved="yes">
+				<source>Crop lines</source>
+				<target>Crop lines</target>
+			</trans-unit>
+			<trans-unit id="displayConstants" approved="yes">
+				<source>Display constants:</source>
+				<target>Display constants:</target>
+			</trans-unit>
+			<trans-unit id="displayOptions" approved="yes">
+				<source>Display options:</source>
+				<target>Display options:</target>
+			</trans-unit>
+			<trans-unit id="conditions" approved="yes">
+				<source>Conditions:</source>
+				<target>Conditions:</target>
+			</trans-unit>
+			<trans-unit id="setConditions" approved="yes">
+				<source>Set conditions</source>
+				<target>Set conditions</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

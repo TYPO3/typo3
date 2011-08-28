@@ -1,106 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="scheduler">
-    <header/>
-    <body>
-      <trans-unit id=".alttitle" approved="yes">
-        <source>Scheduler</source>
-        <target>Scheduler</target>
-      </trans-unit>
-      <trans-unit id=".description" approved="yes">
-        <source>The Scheduler provides an interface to register and manage recurring or one-time tasks.</source>
-        <target>The Scheduler provides an interface to register and manage recurring or one-time tasks.</target>
-      </trans-unit>
-      <trans-unit id=".syntax" approved="yes">
-        <source>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="scheduler">
+		<header/>
+		<body>
+			<trans-unit id=".alttitle" approved="yes">
+				<source>Scheduler</source>
+				<target>Scheduler</target>
+			</trans-unit>
+			<trans-unit id=".description" approved="yes">
+				<source>The Scheduler provides an interface to register and manage recurring or one-time tasks.</source>
+				<target>The Scheduler provides an interface to register and manage recurring or one-time tasks.</target>
+			</trans-unit>
+			<trans-unit id=".syntax" approved="yes">
+				<source>
 				The Scheduler uses a single cron job to handle all registered tasks. It is thus very convenient as only one cron job needs to be set up and all task frequencies can be managed from the BE module.
 			</source>
-        <target>
+				<target>
 				The Scheduler uses a single cron job to handle all registered tasks. It is thus very convenient as only one cron job needs to be set up and all task frequencies can be managed from the BE module.
 			</target>
-      </trans-unit>
-      <trans-unit id="task_class.alttitle" approved="yes">
-        <source>Class of the task</source>
-        <target>Class of the task</target>
-      </trans-unit>
-      <trans-unit id="task_class.description" approved="yes">
-        <source>Choose a class from the list of available tasks</source>
-        <target>Choose a class from the list of available tasks</target>
-      </trans-unit>
-      <trans-unit id="task_class.details" approved="yes">
-        <source>
+			</trans-unit>
+			<trans-unit id="task_class.alttitle" approved="yes">
+				<source>Class of the task</source>
+				<target>Class of the task</target>
+			</trans-unit>
+			<trans-unit id="task_class.description" approved="yes">
+				<source>Choose a class from the list of available tasks</source>
+				<target>Choose a class from the list of available tasks</target>
+			</trans-unit>
+			<trans-unit id="task_class.details" approved="yes">
+				<source>
 				Some tasks are provided by the TYPO3 Core itself. Others come from extensions. See the manual to learn how to create your own tasks and register them with the Scheduler.
 			</source>
-        <target>
+				<target>
 				Some tasks are provided by the TYPO3 Core itself. Others come from extensions. See the manual to learn how to create your own tasks and register them with the Scheduler.
 			</target>
-      </trans-unit>
-      <trans-unit id="task_disable.alttitle" approved="yes">
-        <source>Disable task</source>
-        <target>Disable task</target>
-      </trans-unit>
-      <trans-unit id="task_disable.description" approved="yes">
-        <source>Check this box to disable the automatic, scheduled execution of this task. It can still be launched manually from the BE module.</source>
-        <target>Check this box to disable the automatic, scheduled execution of this task. It can still be launched manually from the BE module.</target>
-      </trans-unit>
-      <trans-unit id="task_type.alttitle" approved="yes">
-        <source>Type of task</source>
-        <target>Type of task</target>
-      </trans-unit>
-      <trans-unit id="task_type.description" approved="yes">
-        <source>Choose whether the task must happen a single time or will be repeated</source>
-        <target>Choose whether the task must happen a single time or will be repeated</target>
-      </trans-unit>
-      <trans-unit id="task_start.alttitle" approved="yes">
-        <source>Start of task</source>
-        <target>Start of task</target>
-      </trans-unit>
-      <trans-unit id="task_start.description" approved="yes">
-        <source>Enter a start date and time for the task</source>
-        <target>Enter a start date and time for the task</target>
-      </trans-unit>
-      <trans-unit id="task_start.details" approved="yes">
-        <source>
+			</trans-unit>
+			<trans-unit id="task_disable.alttitle" approved="yes">
+				<source>Disable task</source>
+				<target>Disable task</target>
+			</trans-unit>
+			<trans-unit id="task_disable.description" approved="yes">
+				<source>Check this box to disable the automatic, scheduled execution of this task. It can still be launched manually from the BE module.</source>
+				<target>Check this box to disable the automatic, scheduled execution of this task. It can still be launched manually from the BE module.</target>
+			</trans-unit>
+			<trans-unit id="task_type.alttitle" approved="yes">
+				<source>Type of task</source>
+				<target>Type of task</target>
+			</trans-unit>
+			<trans-unit id="task_type.description" approved="yes">
+				<source>Choose whether the task must happen a single time or will be repeated</source>
+				<target>Choose whether the task must happen a single time or will be repeated</target>
+			</trans-unit>
+			<trans-unit id="task_start.alttitle" approved="yes">
+				<source>Start of task</source>
+				<target>Start of task</target>
+			</trans-unit>
+			<trans-unit id="task_start.description" approved="yes">
+				<source>Enter a start date and time for the task</source>
+				<target>Enter a start date and time for the task</target>
+			</trans-unit>
+			<trans-unit id="task_start.details" approved="yes">
+				<source>
 				Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
 				Date and time must correspond to the server's time zone.
 			</source>
-        <target>
+				<target>
 				Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
 				Date and time must correspond to the server's time zone.
 			</target>
-      </trans-unit>
-      <trans-unit id="task_end.alttitle" approved="yes">
-        <source>End of task</source>
-        <target>End of task</target>
-      </trans-unit>
-      <trans-unit id="task_end.description" approved="yes">
-        <source>Enter an end date and time for the task, can be blank</source>
-        <target>Enter an end date and time for the task, can be blank</target>
-      </trans-unit>
-      <trans-unit id="task_end.details" approved="yes">
-        <source>
+			</trans-unit>
+			<trans-unit id="task_end.alttitle" approved="yes">
+				<source>End of task</source>
+				<target>End of task</target>
+			</trans-unit>
+			<trans-unit id="task_end.description" approved="yes">
+				<source>Enter an end date and time for the task, can be blank</source>
+				<target>Enter an end date and time for the task, can be blank</target>
+			</trans-unit>
+			<trans-unit id="task_end.details" approved="yes">
+				<source>
 				Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
 				Date and time must correspond to the server's time zone.
 
 				Can be left blank, if task is not supposed to end at any point.
 			</source>
-        <target>
+				<target>
 				Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
 				Date and time must correspond to the server's time zone.
 
 				Can be left blank, if task is not supposed to end at any point.
 			</target>
-      </trans-unit>
-      <trans-unit id="task_frequency.alttitle" approved="yes">
-        <source>Frequency of task</source>
-        <target>Frequency of task</target>
-      </trans-unit>
-      <trans-unit id="task_frequency.description" approved="yes">
-        <source>Enter a frequency, either in seconds or using a cron-like syntax (minutes, hours, day of month, months and day of week)</source>
-        <target>Enter a frequency, either in seconds or using a cron-like syntax (minutes, hours, day of month, months and day of week)</target>
-      </trans-unit>
-      <trans-unit id="task_frequency.details" approved="yes">
-        <source>
+			</trans-unit>
+			<trans-unit id="task_frequency.alttitle" approved="yes">
+				<source>Frequency of task</source>
+				<target>Frequency of task</target>
+			</trans-unit>
+			<trans-unit id="task_frequency.description" approved="yes">
+				<source>Enter a frequency, either in seconds or using a cron-like syntax (minutes, hours, day of month, months and day of week)</source>
+				<target>Enter a frequency, either in seconds or using a cron-like syntax (minutes, hours, day of month, months and day of week)</target>
+			</trans-unit>
+			<trans-unit id="task_frequency.details" approved="yes">
+				<source>
 				The frequency of the task can be simply entered as a number of seconds.
 
 				Alternatively it is possible to use the same syntax as for cron jobs. This is simply a list of five numbers or the wildcard "*", separated by blanks. The five numbers are (in order) minutes, hours, day of month, months and day of week. Examples:
@@ -110,7 +110,7 @@
 
 				The Scheduler supports the full cron syntax.
 			</source>
-        <target>
+				<target>
 				The frequency of the task can be simply entered as a number of seconds.
 
 				Alternatively it is possible to use the same syntax as for cron jobs. This is simply a list of five numbers or the wildcard "*", separated by blanks. The five numbers are (in order) minutes, hours, day of month, months and day of week. Examples:
@@ -120,79 +120,79 @@
 
 				The Scheduler supports the full cron syntax.
 			</target>
-      </trans-unit>
-      <trans-unit id="task_frequency.seeAlso" approved="yes">
-        <source>
+			</trans-unit>
+			<trans-unit id="task_frequency.seeAlso" approved="yes">
+				<source>
 				Wikipedia reference|http://en.wikipedia.org/wiki/Cron
 			</source>
-        <target>
+				<target>
 				Wikipedia reference|http://en.wikipedia.org/wiki/Cron
 			</target>
-      </trans-unit>
-      <trans-unit id="task_multiple.alttitle" approved="yes">
-        <source>Multiple executions</source>
-        <target>Multiple executions</target>
-      </trans-unit>
-      <trans-unit id="task_multiple.description" approved="yes">
-        <source>Choose whether a task can be running several times simultaneously or not</source>
-        <target>Choose whether a task can be running several times simultaneously or not</target>
-      </trans-unit>
-      <trans-unit id="task_email.alttitle" approved="yes">
-        <source>Email address</source>
-        <target>Email address</target>
-      </trans-unit>
-      <trans-unit id="task_email.description" approved="yes">
-        <source>Enter a recipient for the mails sent by the test task</source>
-        <target>Enter a recipient for the mails sent by the test task</target>
-      </trans-unit>
-      <trans-unit id="task_sleepTime.alttitle" approved="yes">
-        <source>Sleep time</source>
-        <target>Sleep time</target>
-      </trans-unit>
-      <trans-unit id="task_sleepTime.description" approved="yes">
-        <source>Enter a number of seconds during which the task will just sleep.</source>
-        <target>Enter a number of seconds during which the task will just sleep.</target>
-      </trans-unit>
-      <trans-unit id="task_cachingFrameworkGarbageCollection_selectedBackends.alttitle" approved="yes">
-        <source>Select backends</source>
-        <target>Select backends</target>
-      </trans-unit>
-      <trans-unit id="task_cachingFrameworkGarbageCollection_selectedBackends.description" approved="yes">
-        <source>If a cache uses one of the selected backends, the garbage collection will be called for this cache.</source>
-        <target>If a cache uses one of the selected backends, the garbage collection will be called for this cache.</target>
-      </trans-unit>
-      <trans-unit id="task_tableGarbageCollection_numberOfDays.alttitle" approved="yes">
-        <source>Number of days</source>
-        <target>Number of days</target>
-      </trans-unit>
-      <trans-unit id="task_tableGarbageCollection_numberOfDays.description" approved="yes">
-        <source>Delete rows from selected table that are older than given number of days.</source>
-        <target>Delete rows from selected table that are older than given number of days.</target>
-      </trans-unit>
-      <trans-unit id="task_tableGarbageCollection_table.alttitle" approved="yes">
-        <source>Select table</source>
-        <target>Select table</target>
-      </trans-unit>
-      <trans-unit id="task_tableGarbageCollection_table.description" approved="yes">
-        <source>Select one of the registered tables to be cleaned up with this task.</source>
-        <target>Select one of the registered tables to be cleaned up with this task.</target>
-      </trans-unit>
-      <trans-unit id="task_tableGarbageCollection_allTables.alttitle" approved="yes">
-        <source>Clean up all tables</source>
-        <target>Clean up all tables</target>
-      </trans-unit>
-      <trans-unit id="task_tableGarbageCollection_allTables.description" approved="yes">
-        <source>If selected, all configured tables are cleaned. The selection below is ignored.</source>
-        <target>If selected, all configured tables are cleaned. The selection below is ignored.</target>
-      </trans-unit>
-      <trans-unit id="task_recyclerGarbageCollection_numberOfDays.alttitle" approved="yes">
-        <source>Number of days</source>
-        <target>Number of days</target>
-      </trans-unit>
-      <trans-unit id="task_recyclerGarbageCollection_numberOfDays.description" approved="yes">
-        <source>Delete files in _recycler_ folders that are older than the given number of days.</source>
-        <target>Delete files in _recycler_ folders that are older than the given number of days.</target>
-      </trans-unit>
-    </body>
-  </file>
+			</trans-unit>
+			<trans-unit id="task_multiple.alttitle" approved="yes">
+				<source>Multiple executions</source>
+				<target>Multiple executions</target>
+			</trans-unit>
+			<trans-unit id="task_multiple.description" approved="yes">
+				<source>Choose whether a task can be running several times simultaneously or not</source>
+				<target>Choose whether a task can be running several times simultaneously or not</target>
+			</trans-unit>
+			<trans-unit id="task_email.alttitle" approved="yes">
+				<source>Email address</source>
+				<target>Email address</target>
+			</trans-unit>
+			<trans-unit id="task_email.description" approved="yes">
+				<source>Enter a recipient for the mails sent by the test task</source>
+				<target>Enter a recipient for the mails sent by the test task</target>
+			</trans-unit>
+			<trans-unit id="task_sleepTime.alttitle" approved="yes">
+				<source>Sleep time</source>
+				<target>Sleep time</target>
+			</trans-unit>
+			<trans-unit id="task_sleepTime.description" approved="yes">
+				<source>Enter a number of seconds during which the task will just sleep.</source>
+				<target>Enter a number of seconds during which the task will just sleep.</target>
+			</trans-unit>
+			<trans-unit id="task_cachingFrameworkGarbageCollection_selectedBackends.alttitle" approved="yes">
+				<source>Select backends</source>
+				<target>Select backends</target>
+			</trans-unit>
+			<trans-unit id="task_cachingFrameworkGarbageCollection_selectedBackends.description" approved="yes">
+				<source>If a cache uses one of the selected backends, the garbage collection will be called for this cache.</source>
+				<target>If a cache uses one of the selected backends, the garbage collection will be called for this cache.</target>
+			</trans-unit>
+			<trans-unit id="task_tableGarbageCollection_numberOfDays.alttitle" approved="yes">
+				<source>Number of days</source>
+				<target>Number of days</target>
+			</trans-unit>
+			<trans-unit id="task_tableGarbageCollection_numberOfDays.description" approved="yes">
+				<source>Delete rows from selected table that are older than given number of days.</source>
+				<target>Delete rows from selected table that are older than given number of days.</target>
+			</trans-unit>
+			<trans-unit id="task_tableGarbageCollection_table.alttitle" approved="yes">
+				<source>Select table</source>
+				<target>Select table</target>
+			</trans-unit>
+			<trans-unit id="task_tableGarbageCollection_table.description" approved="yes">
+				<source>Select one of the registered tables to be cleaned up with this task.</source>
+				<target>Select one of the registered tables to be cleaned up with this task.</target>
+			</trans-unit>
+			<trans-unit id="task_tableGarbageCollection_allTables.alttitle" approved="yes">
+				<source>Clean up all tables</source>
+				<target>Clean up all tables</target>
+			</trans-unit>
+			<trans-unit id="task_tableGarbageCollection_allTables.description" approved="yes">
+				<source>If selected, all configured tables are cleaned. The selection below is ignored.</source>
+				<target>If selected, all configured tables are cleaned. The selection below is ignored.</target>
+			</trans-unit>
+			<trans-unit id="task_recyclerGarbageCollection_numberOfDays.alttitle" approved="yes">
+				<source>Number of days</source>
+				<target>Number of days</target>
+			</trans-unit>
+			<trans-unit id="task_recyclerGarbageCollection_numberOfDays.description" approved="yes">
+				<source>Delete files in _recycler_ folders that are older than the given number of days.</source>
+				<target>Delete files in _recycler_ folders that are older than the given number of days.</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

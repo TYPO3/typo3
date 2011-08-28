@@ -1,120 +1,120 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:23 UTC" product-name="context_help">
-    <header/>
-    <body>
-      <trans-unit id="username.description" approved="yes">
-        <source>Enter the username of the website user. This is needed to login.</source>
-        <target>Enter the username of the website user. This is needed to login.</target>
-      </trans-unit>
-      <trans-unit id="username.syntax" approved="yes">
-        <source>A username is required and must be in lowercase without spaces in it. The username must be unique among other usernames in the page where it's saved. If it is not unique a number will be prepended automatically.</source>
-        <target>A username is required and must be in lowercase without spaces in it. The username must be unique among other usernames in the page where it's saved. If it is not unique a number will be prepended automatically.</target>
-      </trans-unit>
-      <trans-unit id="_username.seeAlso" approved="yes">
-        <source>Creating Frontend Users and Groups | http://typo3.org/documentation/document-library/doc_tut_quickstart/Create_users_group/</source>
-        <target>Creating Frontend Users and Groups | http://typo3.org/documentation/document-library/doc_tut_quickstart/Create_users_group/</target>
-      </trans-unit>
-      <trans-unit id="password.description" approved="yes">
-        <source>Enter the password for the username above. This is needed to login.</source>
-        <target>Enter the password for the username above. This is needed to login.</target>
-      </trans-unit>
-      <trans-unit id="password.syntax" approved="yes">
-        <source>A password is required and must be in lowercase without spaces in it.</source>
-        <target>A password is required and must be in lowercase without spaces in it.</target>
-      </trans-unit>
-      <trans-unit id="usergroup.description" approved="yes">
-        <source>Select a user group for the username.</source>
-        <target>Select a user group for the username.</target>
-      </trans-unit>
-      <trans-unit id="usergroup.details" approved="yes">
-        <source>When a user logs in he is able to view all content which is access restricted to the user &lt;em&gt;group(s)&lt;/em&gt; the user is a member of. Therefore the user login primarily makes sense with regard to the member groups.</source>
-        <target>When a user logs in he is able to view all content which is access restricted to the user &lt;em&gt;group(s)&lt;/em&gt; the user is a member of. Therefore the user login primarily makes sense with regard to the member groups.</target>
-      </trans-unit>
-      <trans-unit id="lockToDomain.description" approved="yes">
-        <source>Enter the host name from which the user is forced to login.</source>
-        <target>Enter the host name from which the user is forced to login.</target>
-      </trans-unit>
-      <trans-unit id="lockToDomain.details" approved="yes">
-        <source>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</source>
-        <target>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</target>
-      </trans-unit>
-      <trans-unit id="lockToDomain.syntax" approved="yes">
-        <source>Either a domain name, "www.typo3.com" or an IP address, "10.34.222.83"</source>
-        <target>Either a domain name, "www.typo3.com" or an IP address, "10.34.222.83"</target>
-      </trans-unit>
-      <trans-unit id="_lockToDomain.seeAlso" approved="yes">
-        <source>fe_groups:lockToDomain</source>
-        <target>fe_groups:lockToDomain</target>
-      </trans-unit>
-      <trans-unit id="name.description" approved="yes">
-        <source>Enter the regular name of the user, both first- and surname.</source>
-        <target>Enter the regular name of the user, both first- and surname.</target>
-      </trans-unit>
-      <trans-unit id="address.description" approved="yes">
-        <source>Enter the street address of the user.</source>
-        <target>Enter the street address of the user.</target>
-      </trans-unit>
-      <trans-unit id="www.description" approved="yes">
-        <source>Enter the homepage URL</source>
-        <target>Enter the homepage URL</target>
-      </trans-unit>
-      <trans-unit id="title.description" approved="yes">
-        <source>Enter the job title, eg. 'Director' or 'Accountant'.</source>
-        <target>Enter the job title, eg. 'Director' or 'Accountant'.</target>
-      </trans-unit>
-      <trans-unit id="company.description" approved="yes">
-        <source>Enter the name of the company in which the user is employed.</source>
-        <target>Enter the name of the company in which the user is employed.</target>
-      </trans-unit>
-      <trans-unit id="image.description" approved="yes">
-        <source>Insert a photo of the user.</source>
-        <target>Insert a photo of the user.</target>
-      </trans-unit>
-      <trans-unit id="disable.description" approved="yes">
-        <source>This option will temporarily disable the user from logging in.</source>
-        <target>This option will temporarily disable the user from logging in.</target>
-      </trans-unit>
-      <trans-unit id="_disable.seeAlso" approved="yes">
-        <source>fe_users:starttime,fe_users:endtime</source>
-        <target>fe_users:starttime,fe_users:endtime</target>
-      </trans-unit>
-      <trans-unit id="starttime.description" approved="yes">
-        <source>Enter the date from which the account is active.</source>
-        <target>Enter the date from which the account is active.</target>
-      </trans-unit>
-      <trans-unit id="starttime.syntax" approved="yes">
-        <source>The syntax is dd-mm-yy, but you can just enter a "d" in the field to insert todays date. Or "d+10" to insert the date 10 days from now etc.
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:23 UTC" product-name="context_help">
+		<header/>
+		<body>
+			<trans-unit id="username.description" approved="yes">
+				<source>Enter the username of the website user. This is needed to login.</source>
+				<target>Enter the username of the website user. This is needed to login.</target>
+			</trans-unit>
+			<trans-unit id="username.syntax" approved="yes">
+				<source>A username is required and must be in lowercase without spaces in it. The username must be unique among other usernames in the page where it's saved. If it is not unique a number will be prepended automatically.</source>
+				<target>A username is required and must be in lowercase without spaces in it. The username must be unique among other usernames in the page where it's saved. If it is not unique a number will be prepended automatically.</target>
+			</trans-unit>
+			<trans-unit id="_username.seeAlso" approved="yes">
+				<source>Creating Frontend Users and Groups | http://typo3.org/documentation/document-library/doc_tut_quickstart/Create_users_group/</source>
+				<target>Creating Frontend Users and Groups | http://typo3.org/documentation/document-library/doc_tut_quickstart/Create_users_group/</target>
+			</trans-unit>
+			<trans-unit id="password.description" approved="yes">
+				<source>Enter the password for the username above. This is needed to login.</source>
+				<target>Enter the password for the username above. This is needed to login.</target>
+			</trans-unit>
+			<trans-unit id="password.syntax" approved="yes">
+				<source>A password is required and must be in lowercase without spaces in it.</source>
+				<target>A password is required and must be in lowercase without spaces in it.</target>
+			</trans-unit>
+			<trans-unit id="usergroup.description" approved="yes">
+				<source>Select a user group for the username.</source>
+				<target>Select a user group for the username.</target>
+			</trans-unit>
+			<trans-unit id="usergroup.details" approved="yes">
+				<source>When a user logs in he is able to view all content which is access restricted to the user &lt;em&gt;group(s)&lt;/em&gt; the user is a member of. Therefore the user login primarily makes sense with regard to the member groups.</source>
+				<target>When a user logs in he is able to view all content which is access restricted to the user &lt;em&gt;group(s)&lt;/em&gt; the user is a member of. Therefore the user login primarily makes sense with regard to the member groups.</target>
+			</trans-unit>
+			<trans-unit id="lockToDomain.description" approved="yes">
+				<source>Enter the host name from which the user is forced to login.</source>
+				<target>Enter the host name from which the user is forced to login.</target>
+			</trans-unit>
+			<trans-unit id="lockToDomain.details" approved="yes">
+				<source>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</source>
+				<target>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</target>
+			</trans-unit>
+			<trans-unit id="lockToDomain.syntax" approved="yes">
+				<source>Either a domain name, "www.typo3.com" or an IP address, "10.34.222.83"</source>
+				<target>Either a domain name, "www.typo3.com" or an IP address, "10.34.222.83"</target>
+			</trans-unit>
+			<trans-unit id="_lockToDomain.seeAlso" approved="yes">
+				<source>fe_groups:lockToDomain</source>
+				<target>fe_groups:lockToDomain</target>
+			</trans-unit>
+			<trans-unit id="name.description" approved="yes">
+				<source>Enter the regular name of the user, both first- and surname.</source>
+				<target>Enter the regular name of the user, both first- and surname.</target>
+			</trans-unit>
+			<trans-unit id="address.description" approved="yes">
+				<source>Enter the street address of the user.</source>
+				<target>Enter the street address of the user.</target>
+			</trans-unit>
+			<trans-unit id="www.description" approved="yes">
+				<source>Enter the homepage URL</source>
+				<target>Enter the homepage URL</target>
+			</trans-unit>
+			<trans-unit id="title.description" approved="yes">
+				<source>Enter the job title, eg. 'Director' or 'Accountant'.</source>
+				<target>Enter the job title, eg. 'Director' or 'Accountant'.</target>
+			</trans-unit>
+			<trans-unit id="company.description" approved="yes">
+				<source>Enter the name of the company in which the user is employed.</source>
+				<target>Enter the name of the company in which the user is employed.</target>
+			</trans-unit>
+			<trans-unit id="image.description" approved="yes">
+				<source>Insert a photo of the user.</source>
+				<target>Insert a photo of the user.</target>
+			</trans-unit>
+			<trans-unit id="disable.description" approved="yes">
+				<source>This option will temporarily disable the user from logging in.</source>
+				<target>This option will temporarily disable the user from logging in.</target>
+			</trans-unit>
+			<trans-unit id="_disable.seeAlso" approved="yes">
+				<source>fe_users:starttime,fe_users:endtime</source>
+				<target>fe_users:starttime,fe_users:endtime</target>
+			</trans-unit>
+			<trans-unit id="starttime.description" approved="yes">
+				<source>Enter the date from which the account is active.</source>
+				<target>Enter the date from which the account is active.</target>
+			</trans-unit>
+			<trans-unit id="starttime.syntax" approved="yes">
+				<source>The syntax is dd-mm-yy, but you can just enter a "d" in the field to insert todays date. Or "d+10" to insert the date 10 days from now etc.
 The field will re-format any input to fit the format it understands so you can just experiment and you will be able to clearly see how dates should be entered.</source>
-        <target>The syntax is dd-mm-yy, but you can just enter a "d" in the field to insert todays date. Or "d+10" to insert the date 10 days from now etc.
+				<target>The syntax is dd-mm-yy, but you can just enter a "d" in the field to insert todays date. Or "d+10" to insert the date 10 days from now etc.
 The field will re-format any input to fit the format it understands so you can just experiment and you will be able to clearly see how dates should be entered.</target>
-      </trans-unit>
-      <trans-unit id="_starttime.seeAlso" approved="yes">
-        <source>fe_users:disable,fe_users:endtime</source>
-        <target>fe_users:disable,fe_users:endtime</target>
-      </trans-unit>
-      <trans-unit id="endtime.description" approved="yes">
-        <source>Enter the date from which the account is disabled.</source>
-        <target>Enter the date from which the account is disabled.</target>
-      </trans-unit>
-      <trans-unit id="endtime.syntax" approved="yes">
-        <source>See "Start"</source>
-        <target>See "Start"</target>
-      </trans-unit>
-      <trans-unit id="_endtime.seeAlso" approved="yes">
-        <source>fe_users:disable,fe_users:starttime</source>
-        <target>fe_users:disable,fe_users:starttime</target>
-      </trans-unit>
-      <trans-unit id="lastlogin.description" approved="yes">
-        <source>This field shows the user's last log in date.</source>
-        <target>This field shows the user's last log in date.</target>
-      </trans-unit>
-      <trans-unit id="TSconfig.description" approved="yes">
-        <source>Enter additional TSconfig for the user (advanced).</source>
-        <target>Enter additional TSconfig for the user (advanced).</target>
-      </trans-unit>
-      <trans-unit id="TSconfig.details" approved="yes">
-        <source>This field allows you to enter TypoScript style configuration values for the user. Currently there are no system defined keys. If there ever will be, they will be described in detail in the administrative documentation.
+			</trans-unit>
+			<trans-unit id="_starttime.seeAlso" approved="yes">
+				<source>fe_users:disable,fe_users:endtime</source>
+				<target>fe_users:disable,fe_users:endtime</target>
+			</trans-unit>
+			<trans-unit id="endtime.description" approved="yes">
+				<source>Enter the date from which the account is disabled.</source>
+				<target>Enter the date from which the account is disabled.</target>
+			</trans-unit>
+			<trans-unit id="endtime.syntax" approved="yes">
+				<source>See "Start"</source>
+				<target>See "Start"</target>
+			</trans-unit>
+			<trans-unit id="_endtime.seeAlso" approved="yes">
+				<source>fe_users:disable,fe_users:starttime</source>
+				<target>fe_users:disable,fe_users:starttime</target>
+			</trans-unit>
+			<trans-unit id="lastlogin.description" approved="yes">
+				<source>This field shows the user's last log in date.</source>
+				<target>This field shows the user's last log in date.</target>
+			</trans-unit>
+			<trans-unit id="TSconfig.description" approved="yes">
+				<source>Enter additional TSconfig for the user (advanced).</source>
+				<target>Enter additional TSconfig for the user (advanced).</target>
+			</trans-unit>
+			<trans-unit id="TSconfig.details" approved="yes">
+				<source>This field allows you to enter TypoScript style configuration values for the user. Currently there are no system defined keys. If there ever will be, they will be described in detail in the administrative documentation.
 
 The primary use of this field (as well as the 'sister'-field in the Website usergroup table) is for custom purposes. In this case, you should use the root-key "user" for your customly defined values. Thus you don't risk any future system keys to interfere with your configuration.
 
@@ -137,9 +137,9 @@ user.printUserName = 1
 
 $userTSConfig = $GLOBALS["TSFE"]-&gt;fe_user-&gt;getUserTSconf();
 if ($userTSConfig["user."]["printUserName"]) {
-  return $GLOBALS["TSFE"]-&gt;fe_user-&gt;user["name"];
+	return $GLOBALS["TSFE"]-&gt;fe_user-&gt;user["name"];
 }</source>
-        <target>This field allows you to enter TypoScript style configuration values for the user. Currently there are no system defined keys. If there ever will be, they will be described in detail in the administrative documentation.
+				<target>This field allows you to enter TypoScript style configuration values for the user. Currently there are no system defined keys. If there ever will be, they will be described in detail in the administrative documentation.
 
 The primary use of this field (as well as the 'sister'-field in the Website usergroup table) is for custom purposes. In this case, you should use the root-key "user" for your customly defined values. Thus you don't risk any future system keys to interfere with your configuration.
 
@@ -162,51 +162,51 @@ user.printUserName = 1
 
 $userTSConfig = $GLOBALS["TSFE"]-&gt;fe_user-&gt;getUserTSconf();
 if ($userTSConfig["user."]["printUserName"]) {
-  return $GLOBALS["TSFE"]-&gt;fe_user-&gt;user["name"];
+	return $GLOBALS["TSFE"]-&gt;fe_user-&gt;user["name"];
 }</target>
-      </trans-unit>
-      <trans-unit id="TSconfig.syntax" approved="yes">
-        <source>TypoScript syntax, without conditions and constants.</source>
-        <target>TypoScript syntax, without conditions and constants.</target>
-      </trans-unit>
-      <trans-unit id="_TSconfig.seeAlso" approved="yes">
-        <source>TSconfig for TSFE | http://typo3.org/documentation/document-library/doc_core_tsconfig/TCEMAIN/
+			</trans-unit>
+			<trans-unit id="TSconfig.syntax" approved="yes">
+				<source>TypoScript syntax, without conditions and constants.</source>
+				<target>TypoScript syntax, without conditions and constants.</target>
+			</trans-unit>
+			<trans-unit id="_TSconfig.seeAlso" approved="yes">
+				<source>TSconfig for TSFE | http://typo3.org/documentation/document-library/doc_core_tsconfig/TCEMAIN/
 pages:TSconfig,
 fe_groups:TSconfig,
 be_users:TSconfig,
 be_groups:TSconfig</source>
-        <target>TSconfig for TSFE | http://typo3.org/documentation/document-library/doc_core_tsconfig/TCEMAIN/
+				<target>TSconfig for TSFE | http://typo3.org/documentation/document-library/doc_core_tsconfig/TCEMAIN/
 pages:TSconfig,
 fe_groups:TSconfig,
 be_users:TSconfig,
 be_groups:TSconfig</target>
-      </trans-unit>
-      <trans-unit id=".description" approved="yes">
-        <source>A website login user.</source>
-        <target>A website login user.</target>
-      </trans-unit>
-      <trans-unit id=".details" approved="yes">
-        <source>These are users with a username and password who are allowed specific access to otherwise restricted areas on your website.</source>
-        <target>These are users with a username and password who are allowed specific access to otherwise restricted areas on your website.</target>
-      </trans-unit>
-      <trans-unit id="_.seeAlso" approved="yes">
-        <source>fe_groups
+			</trans-unit>
+			<trans-unit id=".description" approved="yes">
+				<source>A website login user.</source>
+				<target>A website login user.</target>
+			</trans-unit>
+			<trans-unit id=".details" approved="yes">
+				<source>These are users with a username and password who are allowed specific access to otherwise restricted areas on your website.</source>
+				<target>These are users with a username and password who are allowed specific access to otherwise restricted areas on your website.</target>
+			</trans-unit>
+			<trans-unit id="_.seeAlso" approved="yes">
+				<source>fe_groups
 be_users</source>
-        <target>fe_groups
+				<target>fe_groups
 be_users</target>
-      </trans-unit>
-      <trans-unit id="_.image" approved="yes">
-        <source>EXT:context_help/cshimages/feusers_1.png,
+			</trans-unit>
+			<trans-unit id="_.image" approved="yes">
+				<source>EXT:context_help/cshimages/feusers_1.png,
 EXT:context_help/cshimages/feusers_2.png,</source>
-        <target>EXT:context_help/cshimages/feusers_1.png,
+				<target>EXT:context_help/cshimages/feusers_1.png,
 EXT:context_help/cshimages/feusers_2.png,</target>
-      </trans-unit>
-      <trans-unit id=".image_descr" approved="yes">
-        <source>Part of the form for editing a frontend user.
+			</trans-unit>
+			<trans-unit id=".image_descr" approved="yes">
+				<source>Part of the form for editing a frontend user.
 A typical login box (standard) on the website where frontend users can login.</source>
-        <target>Part of the form for editing a frontend user.
+				<target>Part of the form for editing a frontend user.
 A typical login box (standard) on the website where frontend users can login.</target>
-      </trans-unit>
-    </body>
-  </file>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

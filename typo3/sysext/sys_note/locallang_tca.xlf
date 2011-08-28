@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="sys_note">
-    <header/>
-    <body>
-      <trans-unit id="sys_note" approved="yes">
-        <source>Internal note</source>
-        <target>Internal note</target>
-      </trans-unit>
-      <trans-unit id="sys_note.category.I.1" approved="yes">
-        <source>Instructions</source>
-        <target>Instructions</target>
-      </trans-unit>
-      <trans-unit id="sys_note.category.I.2" approved="yes">
-        <source>Notes</source>
-        <target>Notes</target>
-      </trans-unit>
-      <trans-unit id="sys_note.category.I.3" approved="yes">
-        <source>To-do</source>
-        <target>To-do</target>
-      </trans-unit>
-      <trans-unit id="sys_note.category.I.4" approved="yes">
-        <source>Template</source>
-        <target>Template</target>
-      </trans-unit>
-      <trans-unit id="sys_note.subject" approved="yes">
-        <source>Subject:</source>
-        <target>Subject:</target>
-      </trans-unit>
-      <trans-unit id="sys_note.message" approved="yes">
-        <source>Message:</source>
-        <target>Message:</target>
-      </trans-unit>
-      <trans-unit id="sys_note.personal" approved="yes">
-        <source>Personal:</source>
-        <target>Personal:</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="sys_note">
+		<header/>
+		<body>
+			<trans-unit id="sys_note" approved="yes">
+				<source>Internal note</source>
+				<target>Internal note</target>
+			</trans-unit>
+			<trans-unit id="sys_note.category.I.1" approved="yes">
+				<source>Instructions</source>
+				<target>Instructions</target>
+			</trans-unit>
+			<trans-unit id="sys_note.category.I.2" approved="yes">
+				<source>Notes</source>
+				<target>Notes</target>
+			</trans-unit>
+			<trans-unit id="sys_note.category.I.3" approved="yes">
+				<source>To-do</source>
+				<target>To-do</target>
+			</trans-unit>
+			<trans-unit id="sys_note.category.I.4" approved="yes">
+				<source>Template</source>
+				<target>Template</target>
+			</trans-unit>
+			<trans-unit id="sys_note.subject" approved="yes">
+				<source>Subject:</source>
+				<target>Subject:</target>
+			</trans-unit>
+			<trans-unit id="sys_note.message" approved="yes">
+				<source>Message:</source>
+				<target>Message:</target>
+			</trans-unit>
+			<trans-unit id="sys_note.personal" approved="yes">
+				<source>Personal:</source>
+				<target>Personal:</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>
