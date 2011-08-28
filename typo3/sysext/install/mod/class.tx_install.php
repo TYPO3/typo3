@@ -3361,8 +3361,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$databaseNotAvailableMarkers = array(
 						'typo3Db' => htmlspecialchars(TYPO3_db),
 						'labelNoDatabase' => '
-							(Can only select database if username/password/host
-							is correctly set first)
+							(Database cannot be selected. Make sure that username, password and host
+							are set correctly. If MySQL does not allow persistent connections,
+							check that $TYPO3_CONF_VARS[\'SYS\'][\'no_pconnect\'] is set to "1".)
 						'
 					);
 						// Fill the markers in the subpart
