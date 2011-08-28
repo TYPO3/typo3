@@ -122,6 +122,7 @@ TYPO3.Workspaces.RowDetail.rowDetailTemplate = new Ext.XTemplate(
 						'</div>',
 					'</td>',
 				'</tr>',
+				'<tpl if="this.hasComments(comments)">',
 				'<tr>',
 					'<td class="t3-workspaces-foldout-subheaderLeft">',
 						'<div class="t3-workspaces-foldout-subheader-container">User comments for <b>step {stage_position} of stage</b> "{label_Stage}"</div>',
@@ -150,12 +151,18 @@ TYPO3.Workspaces.RowDetail.rowDetailTemplate = new Ext.XTemplate(
 					'<td class="char_select_profile_title">',
 						'&nbsp;',
 					'</td>',
+					'</tpl>',
 				'</tr>',
 			'</table>',
 		'</tpl>',
 	'</tpl>',
 	'</div>',
-	'<div class="x-clear"></div>'
+	'<div class="x-clear"></div>',
+	{
+		hasComments: function(comments){
+			return comments.length>0;
+		}
+	}
 );
 
 TYPO3.Workspaces.RowDetail.rowDataView = new Ext.DataView({
