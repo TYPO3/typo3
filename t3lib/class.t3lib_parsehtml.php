@@ -800,7 +800,7 @@ class t3lib_parsehtml	{
 									$tagParts[1]='';
 									foreach ($tags[$tagName]['fixAttrib'] as $attr => $params) {
 										if (strlen($params['set']))	$tagAttrib[0][$attr] = $params['set'];
-										if (strlen($params['unset']))	unset($tagAttrib[0][$attr]);
+										if (isset($params['unset']) && !empty($params['unset']))	unset($tagAttrib[0][$attr]);
 										if (strcmp($params['default'],'') && !isset($tagAttrib[0][$attr]))	$tagAttrib[0][$attr]=$params['default'];
 										if ($params['always'] || isset($tagAttrib[0][$attr]))	{
 											if ($params['trim'])	{$tagAttrib[0][$attr]=trim($tagAttrib[0][$attr]);}
