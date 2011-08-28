@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
-    <header/>
-    <body>
-      <trans-unit id="noTitle" approved="yes">
-        <source>No title</source>
-        <target>No title</target>
-      </trans-unit>
-      <trans-unit id="expand" approved="yes">
-        <source>Expand category</source>
-        <target>Expand category</target>
-      </trans-unit>
-      <trans-unit id="noTextSelection" approved="yes">
-        <source>Error: There was no selected text to wrap.</source>
-        <target>Error: There was no selected text to wrap.</target>
-      </trans-unit>
-      <trans-unit id="pixels" approved="yes">
-        <source>Pixels</source>
-        <target>Pixels</target>
-      </trans-unit>
-      <trans-unit id="filesize" approved="yes">
-        <source>Filesize</source>
-        <target>Filesize</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id="noTitle" approved="yes">
+				<source>No title</source>
+				<target>No title</target>
+			</trans-unit>
+			<trans-unit id="expand" approved="yes">
+				<source>Expand category</source>
+				<target>Expand category</target>
+			</trans-unit>
+			<trans-unit id="noTextSelection" approved="yes">
+				<source>Error: There was no selected text to wrap.</source>
+				<target>Error: There was no selected text to wrap.</target>
+			</trans-unit>
+			<trans-unit id="pixels" approved="yes">
+				<source>Pixels</source>
+				<target>Pixels</target>
+			</trans-unit>
+			<trans-unit id="filesize" approved="yes">
+				<source>Filesize</source>
+				<target>Filesize</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="statictemplates">
-    <header/>
-    <body>
-      <trans-unit id="static_template" approved="yes">
-        <source>Static templates</source>
-        <target>Static templates</target>
-      </trans-unit>
-      <trans-unit id="static_template.title" approved="yes">
-        <source>Template title:</source>
-        <target>Template title:</target>
-      </trans-unit>
-      <trans-unit id="static_template.constants" approved="yes">
-        <source>Constants:</source>
-        <target>Constants:</target>
-      </trans-unit>
-      <trans-unit id="static_template.include_static" approved="yes">
-        <source>Include static:</source>
-        <target>Include static:</target>
-      </trans-unit>
-      <trans-unit id="static_template.config" approved="yes">
-        <source>Setup:</source>
-        <target>Setup:</target>
-      </trans-unit>
-      <trans-unit id="static_template.editorcfg" approved="yes">
-        <source>Backend Editor Configuration:</source>
-        <target>Backend Editor Configuration:</target>
-      </trans-unit>
-      <trans-unit id="static_template.description" approved="yes">
-        <source>Description:</source>
-        <target>Description:</target>
-      </trans-unit>
-      <trans-unit id="include_static" approved="yes">
-        <source>Include static:</source>
-        <target>Include static:</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="statictemplates">
+		<header/>
+		<body>
+			<trans-unit id="static_template" approved="yes">
+				<source>Static templates</source>
+				<target>Static templates</target>
+			</trans-unit>
+			<trans-unit id="static_template.title" approved="yes">
+				<source>Template title:</source>
+				<target>Template title:</target>
+			</trans-unit>
+			<trans-unit id="static_template.constants" approved="yes">
+				<source>Constants:</source>
+				<target>Constants:</target>
+			</trans-unit>
+			<trans-unit id="static_template.include_static" approved="yes">
+				<source>Include static:</source>
+				<target>Include static:</target>
+			</trans-unit>
+			<trans-unit id="static_template.config" approved="yes">
+				<source>Setup:</source>
+				<target>Setup:</target>
+			</trans-unit>
+			<trans-unit id="static_template.editorcfg" approved="yes">
+				<source>Backend Editor Configuration:</source>
+				<target>Backend Editor Configuration:</target>
+			</trans-unit>
+			<trans-unit id="static_template.description" approved="yes">
+				<source>Description:</source>
+				<target>Description:</target>
+			</trans-unit>
+			<trans-unit id="include_static" approved="yes">
+				<source>Include static:</source>
+				<target>Include static:</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

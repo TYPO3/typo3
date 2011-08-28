@@ -1,76 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
-    <header/>
-    <body>
-      <trans-unit id="editElement" approved="yes">
-        <source>Edit element</source>
-        <target>Edit element</target>
-      </trans-unit>
-      <trans-unit id="general" approved="yes">
-        <source>General</source>
-        <target>General</target>
-      </trans-unit>
-      <trans-unit id="identification" approved="yes">
-        <source>Identification</source>
-        <target>Identification</target>
-      </trans-unit>
-      <trans-unit id="id" approved="yes">
-        <source>Id</source>
-        <target>Id</target>
-      </trans-unit>
-      <trans-unit id="title" approved="yes">
-        <source>Title</source>
-        <target>Title</target>
-      </trans-unit>
-      <trans-unit id="className" approved="yes">
-        <source>Class</source>
-        <target>Class</target>
-      </trans-unit>
-      <trans-unit id="events" approved="yes">
-        <source>Events</source>
-        <target>Events</target>
-      </trans-unit>
-      <trans-unit id="onkeydown" approved="yes">
-        <source>Onkeydown</source>
-        <target>Onkeydown</target>
-      </trans-unit>
-      <trans-unit id="onkeypress" approved="yes">
-        <source>Onkeypress</source>
-        <target>Onkeypress</target>
-      </trans-unit>
-      <trans-unit id="onkeyup" approved="yes">
-        <source>Onkeyup</source>
-        <target>Onkeyup</target>
-      </trans-unit>
-      <trans-unit id="onclick" approved="yes">
-        <source>Onclick</source>
-        <target>Onclick</target>
-      </trans-unit>
-      <trans-unit id="ondblclick" approved="yes">
-        <source>Ondblclick</source>
-        <target>Ondblclick</target>
-      </trans-unit>
-      <trans-unit id="onmousedown" approved="yes">
-        <source>Onmousedown</source>
-        <target>Onmousedown</target>
-      </trans-unit>
-      <trans-unit id="onmousemove" approved="yes">
-        <source>Onmousemove</source>
-        <target>Onmousemove</target>
-      </trans-unit>
-      <trans-unit id="onmouseout" approved="yes">
-        <source>Onmouseout</source>
-        <target>Onmouseout</target>
-      </trans-unit>
-      <trans-unit id="onmouseover" approved="yes">
-        <source>Onmouseover</source>
-        <target>Onmouseover</target>
-      </trans-unit>
-      <trans-unit id="onmouseup" approved="yes">
-        <source>Onmouseup</source>
-        <target>Onmouseup</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id="editElement" approved="yes">
+				<source>Edit element</source>
+				<target>Edit element</target>
+			</trans-unit>
+			<trans-unit id="general" approved="yes">
+				<source>General</source>
+				<target>General</target>
+			</trans-unit>
+			<trans-unit id="identification" approved="yes">
+				<source>Identification</source>
+				<target>Identification</target>
+			</trans-unit>
+			<trans-unit id="id" approved="yes">
+				<source>Id</source>
+				<target>Id</target>
+			</trans-unit>
+			<trans-unit id="title" approved="yes">
+				<source>Title</source>
+				<target>Title</target>
+			</trans-unit>
+			<trans-unit id="className" approved="yes">
+				<source>Class</source>
+				<target>Class</target>
+			</trans-unit>
+			<trans-unit id="events" approved="yes">
+				<source>Events</source>
+				<target>Events</target>
+			</trans-unit>
+			<trans-unit id="onkeydown" approved="yes">
+				<source>Onkeydown</source>
+				<target>Onkeydown</target>
+			</trans-unit>
+			<trans-unit id="onkeypress" approved="yes">
+				<source>Onkeypress</source>
+				<target>Onkeypress</target>
+			</trans-unit>
+			<trans-unit id="onkeyup" approved="yes">
+				<source>Onkeyup</source>
+				<target>Onkeyup</target>
+			</trans-unit>
+			<trans-unit id="onclick" approved="yes">
+				<source>Onclick</source>
+				<target>Onclick</target>
+			</trans-unit>
+			<trans-unit id="ondblclick" approved="yes">
+				<source>Ondblclick</source>
+				<target>Ondblclick</target>
+			</trans-unit>
+			<trans-unit id="onmousedown" approved="yes">
+				<source>Onmousedown</source>
+				<target>Onmousedown</target>
+			</trans-unit>
+			<trans-unit id="onmousemove" approved="yes">
+				<source>Onmousemove</source>
+				<target>Onmousemove</target>
+			</trans-unit>
+			<trans-unit id="onmouseout" approved="yes">
+				<source>Onmouseout</source>
+				<target>Onmouseout</target>
+			</trans-unit>
+			<trans-unit id="onmouseover" approved="yes">
+				<source>Onmouseover</source>
+				<target>Onmouseover</target>
+			</trans-unit>
+			<trans-unit id="onmouseup" approved="yes">
+				<source>Onmouseup</source>
+				<target>Onmouseup</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

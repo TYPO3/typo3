@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
-    <header/>
-    <body>
-      <trans-unit id="Indent-Tooltip" approved="yes">
-        <source>Increase indent</source>
-        <target>Increase indent</target>
-      </trans-unit>
-      <trans-unit id="Indent-helpText" approved="yes">
-        <source>Increases text indentation</source>
-        <target>Increases text indentation</target>
-      </trans-unit>
-      <trans-unit id="Outdent-Tooltip" approved="yes">
-        <source>Reduce indent</source>
-        <target>Reduce indent</target>
-      </trans-unit>
-      <trans-unit id="Outdent-helpText" approved="yes">
-        <source>Reduces text indentation</source>
-        <target>Reduces text indentation</target>
-      </trans-unit>
-      <trans-unit id="DefinitionList-Tooltip" approved="yes">
-        <source>Definition list</source>
-        <target>Definition list</target>
-      </trans-unit>
-      <trans-unit id="DefinitionList-helpText" approved="yes">
-        <source>Makes a definition list from the current selection</source>
-        <target>Makes a definition list from the current selection</target>
-      </trans-unit>
-      <trans-unit id="DefinitionItem-Tooltip" approved="yes">
-        <source>Toggle term and definition</source>
-        <target>Toggle term and definition</target>
-      </trans-unit>
-      <trans-unit id="DefinitionItem-helpText" approved="yes">
-        <source>Toggles term and definition elements</source>
-        <target>Toggles term and definition elements</target>
-      </trans-unit>
-      <trans-unit id="No block" approved="yes">
-        <source>No block format</source>
-        <target>No block format</target>
-      </trans-unit>
-      <trans-unit id="Remove block" approved="yes">
-        <source>Remove block format</source>
-        <target>Remove block format</target>
-      </trans-unit>
-      <trans-unit id="Technische Universitat Ilmenau" approved="yes">
-        <source>Technische Universität Ilmenau</source>
-        <target>Technische Universität Ilmenau</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id="Indent-Tooltip" approved="yes">
+				<source>Increase indent</source>
+				<target>Increase indent</target>
+			</trans-unit>
+			<trans-unit id="Indent-helpText" approved="yes">
+				<source>Increases text indentation</source>
+				<target>Increases text indentation</target>
+			</trans-unit>
+			<trans-unit id="Outdent-Tooltip" approved="yes">
+				<source>Reduce indent</source>
+				<target>Reduce indent</target>
+			</trans-unit>
+			<trans-unit id="Outdent-helpText" approved="yes">
+				<source>Reduces text indentation</source>
+				<target>Reduces text indentation</target>
+			</trans-unit>
+			<trans-unit id="DefinitionList-Tooltip" approved="yes">
+				<source>Definition list</source>
+				<target>Definition list</target>
+			</trans-unit>
+			<trans-unit id="DefinitionList-helpText" approved="yes">
+				<source>Makes a definition list from the current selection</source>
+				<target>Makes a definition list from the current selection</target>
+			</trans-unit>
+			<trans-unit id="DefinitionItem-Tooltip" approved="yes">
+				<source>Toggle term and definition</source>
+				<target>Toggle term and definition</target>
+			</trans-unit>
+			<trans-unit id="DefinitionItem-helpText" approved="yes">
+				<source>Toggles term and definition elements</source>
+				<target>Toggles term and definition elements</target>
+			</trans-unit>
+			<trans-unit id="No block" approved="yes">
+				<source>No block format</source>
+				<target>No block format</target>
+			</trans-unit>
+			<trans-unit id="Remove block" approved="yes">
+				<source>Remove block format</source>
+				<target>Remove block format</target>
+			</trans-unit>
+			<trans-unit id="Technische Universitat Ilmenau" approved="yes">
+				<source>Technische Universität Ilmenau</source>
+				<target>Technische Universität Ilmenau</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

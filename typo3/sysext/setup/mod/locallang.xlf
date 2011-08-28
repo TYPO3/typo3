@@ -1,528 +1,528 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="setup">
-    <header/>
-    <body>
-      <trans-unit id="UserSettings" approved="yes">
-        <source>User Settings</source>
-        <target>User Settings</target>
-      </trans-unit>
-      <trans-unit id="language" approved="yes">
-        <source>Language</source>
-        <target>Language</target>
-      </trans-unit>
-      <trans-unit id="lang_default" approved="yes">
-        <source>English</source>
-        <target>English</target>
-      </trans-unit>
-      <trans-unit id="lang_ar" approved="yes">
-        <source>Arabic</source>
-        <target>Arabic</target>
-      </trans-unit>
-      <trans-unit id="lang_ba" approved="yes">
-        <source>Bosnian</source>
-        <target>Bosnian</target>
-      </trans-unit>
-      <trans-unit id="lang_bs" approved="yes">
-        <source>Bosnian</source>
-        <target>Bosnian</target>
-      </trans-unit>
-      <trans-unit id="lang_bg" approved="yes">
-        <source>Bulgarian</source>
-        <target>Bulgarian</target>
-      </trans-unit>
-      <trans-unit id="lang_ca" approved="yes">
-        <source>Catalan</source>
-        <target>Catalan</target>
-      </trans-unit>
-      <trans-unit id="lang_ch" approved="yes">
-        <source>Chinese (Simpl)</source>
-        <target>Chinese (Simpl)</target>
-      </trans-unit>
-      <trans-unit id="lang_cs" approved="yes">
-        <source>Czech</source>
-        <target>Czech</target>
-      </trans-unit>
-      <trans-unit id="lang_cz" approved="yes">
-        <source>Czech</source>
-        <target>Czech</target>
-      </trans-unit>
-      <trans-unit id="lang_da" approved="yes">
-        <source>Danish</source>
-        <target>Danish</target>
-      </trans-unit>
-      <trans-unit id="lang_dk" approved="yes">
-        <source>Danish</source>
-        <target>Danish</target>
-      </trans-unit>
-      <trans-unit id="lang_de" approved="yes">
-        <source>German</source>
-        <target>German</target>
-      </trans-unit>
-      <trans-unit id="lang_el" approved="yes">
-        <source>Greek</source>
-        <target>Greek</target>
-      </trans-unit>
-      <trans-unit id="lang_gr" approved="yes">
-        <source>Greek</source>
-        <target>Greek</target>
-      </trans-unit>
-      <trans-unit id="lang_eo" approved="yes">
-        <source>Esperanto</source>
-        <target>Esperanto</target>
-      </trans-unit>
-      <trans-unit id="lang_es" approved="yes">
-        <source>Spanish</source>
-        <target>Spanish</target>
-      </trans-unit>
-      <trans-unit id="lang_et" approved="yes">
-        <source>Estonian</source>
-        <target>Estonian</target>
-      </trans-unit>
-      <trans-unit id="lang_eu" approved="yes">
-        <source>Basque</source>
-        <target>Basque</target>
-      </trans-unit>
-      <trans-unit id="lang_fa" approved="yes">
-        <source>Persian</source>
-        <target>Persian</target>
-      </trans-unit>
-      <trans-unit id="lang_fi" approved="yes">
-        <source>Finnish</source>
-        <target>Finnish</target>
-      </trans-unit>
-      <trans-unit id="lang_fo" approved="yes">
-        <source>Faroese</source>
-        <target>Faroese</target>
-      </trans-unit>
-      <trans-unit id="lang_fr" approved="yes">
-        <source>French</source>
-        <target>French</target>
-      </trans-unit>
-      <trans-unit id="lang_fr_CA" approved="yes">
-        <source>French (Canada)</source>
-        <target>French (Canada)</target>
-      </trans-unit>
-      <trans-unit id="lang_qc" approved="yes">
-        <source>French (Canada)</source>
-        <target>French (Canada)</target>
-      </trans-unit>
-      <trans-unit id="lang_ga" approved="yes">
-        <source>Galician</source>
-        <target>Galician</target>
-      </trans-unit>
-      <trans-unit id="lang_gl" approved="yes">
-        <source>Galician</source>
-        <target>Galician</target>
-      </trans-unit>
-      <trans-unit id="lang_he" approved="yes">
-        <source>Hebrew</source>
-        <target>Hebrew</target>
-      </trans-unit>
-      <trans-unit id="lang_hi" approved="yes">
-        <source>Hindi</source>
-        <target>Hindi</target>
-      </trans-unit>
-      <trans-unit id="lang_hr" approved="yes">
-        <source>Croatian</source>
-        <target>Croatian</target>
-      </trans-unit>
-      <trans-unit id="lang_hu" approved="yes">
-        <source>Hungarian</source>
-        <target>Hungarian</target>
-      </trans-unit>
-      <trans-unit id="lang_is" approved="yes">
-        <source>Icelandic</source>
-        <target>Icelandic</target>
-      </trans-unit>
-      <trans-unit id="lang_it" approved="yes">
-        <source>Italian</source>
-        <target>Italian</target>
-      </trans-unit>
-      <trans-unit id="lang_ja" approved="yes">
-        <source>Japanese</source>
-        <target>Japanese</target>
-      </trans-unit>
-      <trans-unit id="lang_jp" approved="yes">
-        <source>Japanese</source>
-        <target>Japanese</target>
-      </trans-unit>
-      <trans-unit id="lang_ge" approved="yes">
-        <source>Georgian</source>
-        <target>Georgian</target>
-      </trans-unit>
-      <trans-unit id="lang_ka" approved="yes">
-        <source>Georgian</source>
-        <target>Georgian</target>
-      </trans-unit>
-      <trans-unit id="lang_kl" approved="yes">
-        <source>Greenlandic</source>
-        <target>Greenlandic</target>
-      </trans-unit>
-      <trans-unit id="lang_km" approved="yes">
-        <source>Khmer</source>
-        <target>Khmer</target>
-      </trans-unit>
-      <trans-unit id="lang_ko" approved="yes">
-        <source>Korean</source>
-        <target>Korean</target>
-      </trans-unit>
-      <trans-unit id="lang_kr" approved="yes">
-        <source>Korean</source>
-        <target>Korean</target>
-      </trans-unit>
-      <trans-unit id="lang_lt" approved="yes">
-        <source>Lithuanian</source>
-        <target>Lithuanian</target>
-      </trans-unit>
-      <trans-unit id="lang_lv" approved="yes">
-        <source>Latvian</source>
-        <target>Latvian</target>
-      </trans-unit>
-      <trans-unit id="lang_ms" approved="yes">
-        <source>Bahasa Malaysia</source>
-        <target>Bahasa Malaysia</target>
-      </trans-unit>
-      <trans-unit id="lang_my" approved="yes">
-        <source>Bahasa Malaysia</source>
-        <target>Bahasa Malaysia</target>
-      </trans-unit>
-      <trans-unit id="lang_nl" approved="yes">
-        <source>Dutch</source>
-        <target>Dutch</target>
-      </trans-unit>
-      <trans-unit id="lang_no" approved="yes">
-        <source>Norwegian</source>
-        <target>Norwegian</target>
-      </trans-unit>
-      <trans-unit id="lang_pl" approved="yes">
-        <source>Polish</source>
-        <target>Polish</target>
-      </trans-unit>
-      <trans-unit id="lang_pt" approved="yes">
-        <source>Portuguese</source>
-        <target>Portuguese</target>
-      </trans-unit>
-      <trans-unit id="lang_br" approved="yes">
-        <source>Brazilian Portuguese</source>
-        <target>Brazilian Portuguese</target>
-      </trans-unit>
-      <trans-unit id="lang_pt_BR" approved="yes">
-        <source>Brazilian Portuguese</source>
-        <target>Brazilian Portuguese</target>
-      </trans-unit>
-      <trans-unit id="lang_ro" approved="yes">
-        <source>Romanian</source>
-        <target>Romanian</target>
-      </trans-unit>
-      <trans-unit id="lang_ru" approved="yes">
-        <source>Russian</source>
-        <target>Russian</target>
-      </trans-unit>
-      <trans-unit id="lang_sk" approved="yes">
-        <source>Slovak</source>
-        <target>Slovak</target>
-      </trans-unit>
-      <trans-unit id="lang_si" approved="yes">
-        <source>Slovenian</source>
-        <target>Slovenian</target>
-      </trans-unit>
-      <trans-unit id="lang_sl" approved="yes">
-        <source>Slovenian</source>
-        <target>Slovenian</target>
-      </trans-unit>
-      <trans-unit id="lang_sq" approved="yes">
-        <source>Albanian</source>
-        <target>Albanian</target>
-      </trans-unit>
-      <trans-unit id="lang_sr" approved="yes">
-        <source>Serbian</source>
-        <target>Serbian</target>
-      </trans-unit>
-      <trans-unit id="lang_se" approved="yes">
-        <source>Swedish</source>
-        <target>Swedish</target>
-      </trans-unit>
-      <trans-unit id="lang_sv" approved="yes">
-        <source>Swedish</source>
-        <target>Swedish</target>
-      </trans-unit>
-      <trans-unit id="lang_th" approved="yes">
-        <source>Thai</source>
-        <target>Thai</target>
-      </trans-unit>
-      <trans-unit id="lang_tr" approved="yes">
-        <source>Turkish</source>
-        <target>Turkish</target>
-      </trans-unit>
-      <trans-unit id="lang_ua" approved="yes">
-        <source>Ukrainian</source>
-        <target>Ukrainian</target>
-      </trans-unit>
-      <trans-unit id="lang_uk" approved="yes">
-        <source>Ukrainian</source>
-        <target>Ukrainian</target>
-      </trans-unit>
-      <trans-unit id="lang_vi" approved="yes">
-        <source>Vietnamese</source>
-        <target>Vietnamese</target>
-      </trans-unit>
-      <trans-unit id="lang_vn" approved="yes">
-        <source>Vietnamese</source>
-        <target>Vietnamese</target>
-      </trans-unit>
-      <trans-unit id="lang_hk" approved="yes">
-        <source>Chinese (Trad)</source>
-        <target>Chinese (Trad)</target>
-      </trans-unit>
-      <trans-unit id="lang_zh" approved="yes">
-        <source>Chinese (Trad)</source>
-        <target>Chinese (Trad)</target>
-      </trans-unit>
-      <trans-unit id="default" approved="yes">
-        <source>Default</source>
-        <target>Default</target>
-      </trans-unit>
-      <trans-unit id="simulate" approved="yes">
-        <source>Simulate backend user</source>
-        <target>Simulate backend user</target>
-      </trans-unit>
-      <trans-unit id="opening" approved="yes">
-        <source>Startup</source>
-        <target>Startup</target>
-      </trans-unit>
-      <trans-unit id="personal_data" approved="yes">
-        <source>Personal data</source>
-        <target>Personal data</target>
-      </trans-unit>
-      <trans-unit id="showThumbs" approved="yes">
-        <source>Show Thumbnails by default</source>
-        <target>Show Thumbnails by default</target>
-      </trans-unit>
-      <trans-unit id="condensedMode" approved="yes">
-        <source>Use condensed mode in backend&lt;br /&gt;(for small screens)</source>
-        <target>Use condensed mode in backend&lt;br /&gt;(for small screens)</target>
-      </trans-unit>
-      <trans-unit id="noMenuMode" approved="yes">
-        <source>Select navigation mode</source>
-        <target>Select navigation mode</target>
-      </trans-unit>
-      <trans-unit id="noMenuMode_def" approved="yes">
-        <source>Left frame menu (default)</source>
-        <target>Left frame menu (default)</target>
-      </trans-unit>
-      <trans-unit id="noMenuMode_sel" approved="yes">
-        <source>Selectorbox in top frame</source>
-        <target>Selectorbox in top frame</target>
-      </trans-unit>
-      <trans-unit id="noMenuMode_icons" approved="yes">
-        <source>Icons in top frame</source>
-        <target>Icons in top frame</target>
-      </trans-unit>
-      <trans-unit id="startModule" approved="yes">
-        <source>Start up in the following module</source>
-        <target>Start up in the following module</target>
-      </trans-unit>
-      <trans-unit id="emailMeAtLogin" approved="yes">
-        <source>Notify me by email, when somebody logs in &lt;br /&gt;from my account</source>
-        <target>Notify me by email, when somebody logs in &lt;br /&gt;from my account</target>
-      </trans-unit>
-      <trans-unit id="helpText" approved="yes">
-        <source>Show help text when applicable</source>
-        <target>Show help text when applicable</target>
-      </trans-unit>
-      <trans-unit id="maxTitleLen" approved="yes">
-        <source>Max. Title Length</source>
-        <target>Max. Title Length</target>
-      </trans-unit>
-      <trans-unit id="edit_showFieldHelp" approved="yes">
-        <source>Context Sensitive Help mode</source>
-        <target>Context Sensitive Help mode</target>
-      </trans-unit>
-      <trans-unit id="edit_showFieldHelp_none" approved="yes">
-        <source>Display no help information</source>
-        <target>Display no help information</target>
-      </trans-unit>
-      <trans-unit id="edit_showFieldHelp_icon" approved="yes">
-        <source>Display help icon only</source>
-        <target>Display help icon only</target>
-      </trans-unit>
-      <trans-unit id="edit_showFieldHelp_message" approved="yes">
-        <source>Display full text message</source>
-        <target>Display full text message</target>
-      </trans-unit>
-      <trans-unit id="edit_wideDocument" approved="yes">
-        <source>Wide document background</source>
-        <target>Wide document background</target>
-      </trans-unit>
-      <trans-unit id="edit_RTE" approved="yes">
-        <source>Enable Rich Text Editor (if available)</source>
-        <target>Enable Rich Text Editor (if available)</target>
-      </trans-unit>
-      <trans-unit id="edit_docModuleUpload" approved="yes">
-        <source>File upload directly in Doc-module</source>
-        <target>File upload directly in Doc-module</target>
-      </trans-unit>
-      <trans-unit id="enableFlashUploader" approved="yes">
-        <source>Enable Flash Uploader (requires Flash 9+)</source>
-        <target>Enable Flash Uploader (requires Flash 9+)</target>
-      </trans-unit>
-      <trans-unit id="resizeTextareas" approved="yes">
-        <source>Make Textareas resizable</source>
-        <target>Make Textareas resizable</target>
-      </trans-unit>
-      <trans-unit id="resizeTextareas_MaxHeight" approved="yes">
-        <source>Maximal Height of resizable Textarea in Pixel</source>
-        <target>Maximal Height of resizable Textarea in Pixel</target>
-      </trans-unit>
-      <trans-unit id="resizeTextareas_Flexible" approved="yes">
-        <source>Make Textareas flexible</source>
-        <target>Make Textareas flexible</target>
-      </trans-unit>
-      <trans-unit id="editFunctionsTab" approved="yes">
-        <source>Edit &amp; Advanced functions</source>
-        <target>Edit &amp; Advanced functions</target>
-      </trans-unit>
-      <trans-unit id="edit_functions" approved="yes">
-        <source>Edit</source>
-        <target>Edit</target>
-      </trans-unit>
-      <trans-unit id="disableCMlayers" approved="yes">
-        <source>Disable Popup Context Menus</source>
-        <target>Disable Popup Context Menus</target>
-      </trans-unit>
-      <trans-unit id="setToStandard" approved="yes">
-        <source>Reset all Values to default</source>
-        <target>Reset all Values to default</target>
-      </trans-unit>
-      <trans-unit id="resetConfiguration" approved="yes">
-        <source>Reset Configuration and Clear Temporary Data</source>
-        <target>Reset Configuration and Clear Temporary Data</target>
-      </trans-unit>
-      <trans-unit id="setToStandardQuestion" approved="yes">
-        <source>Are you sure you want to reset all values to default?</source>
-        <target>Are you sure you want to reset all values to default?</target>
-      </trans-unit>
-      <trans-unit id="clearSessionVars" approved="yes">
-        <source>Clear Temporary Data</source>
-        <target>Clear Temporary Data</target>
-      </trans-unit>
-      <trans-unit id="clearSessionVarsQuestion" approved="yes">
-        <source>Are you sure you want to clear the temporary data?</source>
-        <target>Are you sure you want to clear the temporary data?</target>
-      </trans-unit>
-      <trans-unit id="functions" approved="yes">
-        <source>Advanced functions</source>
-        <target>Advanced functions</target>
-      </trans-unit>
-      <trans-unit id="copyLevels" approved="yes">
-        <source>&lt;b&gt;Recursive Copy:&lt;/b&gt; Enter the number of page&lt;br /&gt;sublevels to include, when a page is copied</source>
-        <target>&lt;b&gt;Recursive Copy:&lt;/b&gt; Enter the number of page&lt;br /&gt;sublevels to include, when a page is copied</target>
-      </trans-unit>
-      <trans-unit id="recursiveDelete" approved="yes">
-        <source>&lt;b&gt;Recursive Delete(!):&lt;/b&gt; Allow ALL subpages&lt;br /&gt;to be deleted when deleting a page</source>
-        <target>&lt;b&gt;Recursive Delete(!):&lt;/b&gt; Allow ALL subpages&lt;br /&gt;to be deleted when deleting a page</target>
-      </trans-unit>
-      <trans-unit id="activateChanges" approved="yes">
-        <source>Notice! In order to activate most of these changes, please reload the backend (eg. logout and login again).</source>
-        <target>Notice! In order to activate most of these changes, please reload the backend (eg. logout and login again).</target>
-      </trans-unit>
-      <trans-unit id="levels" approved="yes">
-        <source>levels</source>
-        <target>levels</target>
-      </trans-unit>
-      <trans-unit id="beUser_realName" approved="yes">
-        <source>Your name</source>
-        <target>Your name</target>
-      </trans-unit>
-      <trans-unit id="beUser_email" approved="yes">
-        <source>Your email address</source>
-        <target>Your email address</target>
-      </trans-unit>
-      <trans-unit id="save" approved="yes">
-        <source>Save Configuration</source>
-        <target>Save Configuration</target>
-      </trans-unit>
-      <trans-unit id="newPassword" approved="yes">
-        <source>New password</source>
-        <target>New password</target>
-      </trans-unit>
-      <trans-unit id="newPasswordAgain" approved="yes">
-        <source>New password, again</source>
-        <target>New password, again</target>
-      </trans-unit>
-      <trans-unit id="newPassword_ok" approved="yes">
-        <source>Password was updated.</source>
-        <target>Password was updated.</target>
-      </trans-unit>
-      <trans-unit id="setupWasUpdated" approved="yes">
-        <source>User settings were updated.</source>
-        <target>User settings were updated.</target>
-      </trans-unit>
-      <trans-unit id="newPassword_failed" approved="yes">
-        <source>Password was NOT updated because you didn't enter the same password twice.</source>
-        <target>Password was NOT updated because you didn't enter the same password twice.</target>
-      </trans-unit>
-      <trans-unit id="adminFunctions" approved="yes">
-        <source>Admin functions</source>
-        <target>Admin functions</target>
-      </trans-unit>
-      <trans-unit id="enableInstallTool.label" approved="yes">
-        <source>Install Tool Access</source>
-        <target>Install Tool Access</target>
-      </trans-unit>
-      <trans-unit id="enableInstallTool.createFile" approved="yes">
-        <source>Create Install Tool Enable File</source>
-        <target>Create Install Tool Enable File</target>
-      </trans-unit>
-      <trans-unit id="enableInstallTool.file" approved="yes">
-        <source>Install Tool Enable file</source>
-        <target>Install Tool Enable file</target>
-      </trans-unit>
-      <trans-unit id="enableInstallTool.fileCreate_ok" approved="yes">
-        <source>The Install Tool Enable file has been created.</source>
-        <target>The Install Tool Enable file has been created.</target>
-      </trans-unit>
-      <trans-unit id="enableInstallTool.fileCreate_failed" approved="yes">
-        <source>The Install Tool Enable file could not be created.</source>
-        <target>The Install Tool Enable file could not be created.</target>
-      </trans-unit>
-      <trans-unit id="enableInstallTool.deleteFile" approved="yes">
-        <source>Delete Install Tool Enable File</source>
-        <target>Delete Install Tool Enable File</target>
-      </trans-unit>
-      <trans-unit id="enableInstallTool.fileDelete_ok" approved="yes">
-        <source>The Install Tool Enable file has been deleted.</source>
-        <target>The Install Tool Enable file has been deleted.</target>
-      </trans-unit>
-      <trans-unit id="enableInstallTool.fileDelete_failed" approved="yes">
-        <source>The Install Tool Enable file could not be deleted!</source>
-        <target>The Install Tool Enable file could not be deleted!</target>
-      </trans-unit>
-      <trans-unit id="enableInstallTool.fileHasKeep" approved="yes">
-        <source>The Install Tool file has the content "KEEP_FILE" and can not be deleted!</source>
-        <target>The Install Tool file has the content "KEEP_FILE" and can not be deleted!</target>
-      </trans-unit>
-      <trans-unit id="tempDataCleared" approved="yes">
-        <source>Temporary data cleared</source>
-        <target>Temporary data cleared</target>
-      </trans-unit>
-      <trans-unit id="tempDataClearedFlashMessage" approved="yes">
-        <source>The temporary data has been cleared.</source>
-        <target>The temporary data has been cleared.</target>
-      </trans-unit>
-      <trans-unit id="tempDataClearedLog" approved="yes">
-        <source>Temporary data cleared</source>
-        <target>Temporary data cleared</target>
-      </trans-unit>
-      <trans-unit id="settingsAreReset" approved="yes">
-        <source>The user settings have been reset to default values and temporary data has been cleared.</source>
-        <target>The user settings have been reset to default values and temporary data has been cleared.</target>
-      </trans-unit>
-      <trans-unit id="debugInWindow" approved="yes">
-        <source>Display debug messages in a new browser window</source>
-        <target>Display debug messages in a new browser window</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="setup">
+		<header/>
+		<body>
+			<trans-unit id="UserSettings" approved="yes">
+				<source>User Settings</source>
+				<target>User Settings</target>
+			</trans-unit>
+			<trans-unit id="language" approved="yes">
+				<source>Language</source>
+				<target>Language</target>
+			</trans-unit>
+			<trans-unit id="lang_default" approved="yes">
+				<source>English</source>
+				<target>English</target>
+			</trans-unit>
+			<trans-unit id="lang_ar" approved="yes">
+				<source>Arabic</source>
+				<target>Arabic</target>
+			</trans-unit>
+			<trans-unit id="lang_ba" approved="yes">
+				<source>Bosnian</source>
+				<target>Bosnian</target>
+			</trans-unit>
+			<trans-unit id="lang_bs" approved="yes">
+				<source>Bosnian</source>
+				<target>Bosnian</target>
+			</trans-unit>
+			<trans-unit id="lang_bg" approved="yes">
+				<source>Bulgarian</source>
+				<target>Bulgarian</target>
+			</trans-unit>
+			<trans-unit id="lang_ca" approved="yes">
+				<source>Catalan</source>
+				<target>Catalan</target>
+			</trans-unit>
+			<trans-unit id="lang_ch" approved="yes">
+				<source>Chinese (Simpl)</source>
+				<target>Chinese (Simpl)</target>
+			</trans-unit>
+			<trans-unit id="lang_cs" approved="yes">
+				<source>Czech</source>
+				<target>Czech</target>
+			</trans-unit>
+			<trans-unit id="lang_cz" approved="yes">
+				<source>Czech</source>
+				<target>Czech</target>
+			</trans-unit>
+			<trans-unit id="lang_da" approved="yes">
+				<source>Danish</source>
+				<target>Danish</target>
+			</trans-unit>
+			<trans-unit id="lang_dk" approved="yes">
+				<source>Danish</source>
+				<target>Danish</target>
+			</trans-unit>
+			<trans-unit id="lang_de" approved="yes">
+				<source>German</source>
+				<target>German</target>
+			</trans-unit>
+			<trans-unit id="lang_el" approved="yes">
+				<source>Greek</source>
+				<target>Greek</target>
+			</trans-unit>
+			<trans-unit id="lang_gr" approved="yes">
+				<source>Greek</source>
+				<target>Greek</target>
+			</trans-unit>
+			<trans-unit id="lang_eo" approved="yes">
+				<source>Esperanto</source>
+				<target>Esperanto</target>
+			</trans-unit>
+			<trans-unit id="lang_es" approved="yes">
+				<source>Spanish</source>
+				<target>Spanish</target>
+			</trans-unit>
+			<trans-unit id="lang_et" approved="yes">
+				<source>Estonian</source>
+				<target>Estonian</target>
+			</trans-unit>
+			<trans-unit id="lang_eu" approved="yes">
+				<source>Basque</source>
+				<target>Basque</target>
+			</trans-unit>
+			<trans-unit id="lang_fa" approved="yes">
+				<source>Persian</source>
+				<target>Persian</target>
+			</trans-unit>
+			<trans-unit id="lang_fi" approved="yes">
+				<source>Finnish</source>
+				<target>Finnish</target>
+			</trans-unit>
+			<trans-unit id="lang_fo" approved="yes">
+				<source>Faroese</source>
+				<target>Faroese</target>
+			</trans-unit>
+			<trans-unit id="lang_fr" approved="yes">
+				<source>French</source>
+				<target>French</target>
+			</trans-unit>
+			<trans-unit id="lang_fr_CA" approved="yes">
+				<source>French (Canada)</source>
+				<target>French (Canada)</target>
+			</trans-unit>
+			<trans-unit id="lang_qc" approved="yes">
+				<source>French (Canada)</source>
+				<target>French (Canada)</target>
+			</trans-unit>
+			<trans-unit id="lang_ga" approved="yes">
+				<source>Galician</source>
+				<target>Galician</target>
+			</trans-unit>
+			<trans-unit id="lang_gl" approved="yes">
+				<source>Galician</source>
+				<target>Galician</target>
+			</trans-unit>
+			<trans-unit id="lang_he" approved="yes">
+				<source>Hebrew</source>
+				<target>Hebrew</target>
+			</trans-unit>
+			<trans-unit id="lang_hi" approved="yes">
+				<source>Hindi</source>
+				<target>Hindi</target>
+			</trans-unit>
+			<trans-unit id="lang_hr" approved="yes">
+				<source>Croatian</source>
+				<target>Croatian</target>
+			</trans-unit>
+			<trans-unit id="lang_hu" approved="yes">
+				<source>Hungarian</source>
+				<target>Hungarian</target>
+			</trans-unit>
+			<trans-unit id="lang_is" approved="yes">
+				<source>Icelandic</source>
+				<target>Icelandic</target>
+			</trans-unit>
+			<trans-unit id="lang_it" approved="yes">
+				<source>Italian</source>
+				<target>Italian</target>
+			</trans-unit>
+			<trans-unit id="lang_ja" approved="yes">
+				<source>Japanese</source>
+				<target>Japanese</target>
+			</trans-unit>
+			<trans-unit id="lang_jp" approved="yes">
+				<source>Japanese</source>
+				<target>Japanese</target>
+			</trans-unit>
+			<trans-unit id="lang_ge" approved="yes">
+				<source>Georgian</source>
+				<target>Georgian</target>
+			</trans-unit>
+			<trans-unit id="lang_ka" approved="yes">
+				<source>Georgian</source>
+				<target>Georgian</target>
+			</trans-unit>
+			<trans-unit id="lang_kl" approved="yes">
+				<source>Greenlandic</source>
+				<target>Greenlandic</target>
+			</trans-unit>
+			<trans-unit id="lang_km" approved="yes">
+				<source>Khmer</source>
+				<target>Khmer</target>
+			</trans-unit>
+			<trans-unit id="lang_ko" approved="yes">
+				<source>Korean</source>
+				<target>Korean</target>
+			</trans-unit>
+			<trans-unit id="lang_kr" approved="yes">
+				<source>Korean</source>
+				<target>Korean</target>
+			</trans-unit>
+			<trans-unit id="lang_lt" approved="yes">
+				<source>Lithuanian</source>
+				<target>Lithuanian</target>
+			</trans-unit>
+			<trans-unit id="lang_lv" approved="yes">
+				<source>Latvian</source>
+				<target>Latvian</target>
+			</trans-unit>
+			<trans-unit id="lang_ms" approved="yes">
+				<source>Bahasa Malaysia</source>
+				<target>Bahasa Malaysia</target>
+			</trans-unit>
+			<trans-unit id="lang_my" approved="yes">
+				<source>Bahasa Malaysia</source>
+				<target>Bahasa Malaysia</target>
+			</trans-unit>
+			<trans-unit id="lang_nl" approved="yes">
+				<source>Dutch</source>
+				<target>Dutch</target>
+			</trans-unit>
+			<trans-unit id="lang_no" approved="yes">
+				<source>Norwegian</source>
+				<target>Norwegian</target>
+			</trans-unit>
+			<trans-unit id="lang_pl" approved="yes">
+				<source>Polish</source>
+				<target>Polish</target>
+			</trans-unit>
+			<trans-unit id="lang_pt" approved="yes">
+				<source>Portuguese</source>
+				<target>Portuguese</target>
+			</trans-unit>
+			<trans-unit id="lang_br" approved="yes">
+				<source>Brazilian Portuguese</source>
+				<target>Brazilian Portuguese</target>
+			</trans-unit>
+			<trans-unit id="lang_pt_BR" approved="yes">
+				<source>Brazilian Portuguese</source>
+				<target>Brazilian Portuguese</target>
+			</trans-unit>
+			<trans-unit id="lang_ro" approved="yes">
+				<source>Romanian</source>
+				<target>Romanian</target>
+			</trans-unit>
+			<trans-unit id="lang_ru" approved="yes">
+				<source>Russian</source>
+				<target>Russian</target>
+			</trans-unit>
+			<trans-unit id="lang_sk" approved="yes">
+				<source>Slovak</source>
+				<target>Slovak</target>
+			</trans-unit>
+			<trans-unit id="lang_si" approved="yes">
+				<source>Slovenian</source>
+				<target>Slovenian</target>
+			</trans-unit>
+			<trans-unit id="lang_sl" approved="yes">
+				<source>Slovenian</source>
+				<target>Slovenian</target>
+			</trans-unit>
+			<trans-unit id="lang_sq" approved="yes">
+				<source>Albanian</source>
+				<target>Albanian</target>
+			</trans-unit>
+			<trans-unit id="lang_sr" approved="yes">
+				<source>Serbian</source>
+				<target>Serbian</target>
+			</trans-unit>
+			<trans-unit id="lang_se" approved="yes">
+				<source>Swedish</source>
+				<target>Swedish</target>
+			</trans-unit>
+			<trans-unit id="lang_sv" approved="yes">
+				<source>Swedish</source>
+				<target>Swedish</target>
+			</trans-unit>
+			<trans-unit id="lang_th" approved="yes">
+				<source>Thai</source>
+				<target>Thai</target>
+			</trans-unit>
+			<trans-unit id="lang_tr" approved="yes">
+				<source>Turkish</source>
+				<target>Turkish</target>
+			</trans-unit>
+			<trans-unit id="lang_ua" approved="yes">
+				<source>Ukrainian</source>
+				<target>Ukrainian</target>
+			</trans-unit>
+			<trans-unit id="lang_uk" approved="yes">
+				<source>Ukrainian</source>
+				<target>Ukrainian</target>
+			</trans-unit>
+			<trans-unit id="lang_vi" approved="yes">
+				<source>Vietnamese</source>
+				<target>Vietnamese</target>
+			</trans-unit>
+			<trans-unit id="lang_vn" approved="yes">
+				<source>Vietnamese</source>
+				<target>Vietnamese</target>
+			</trans-unit>
+			<trans-unit id="lang_hk" approved="yes">
+				<source>Chinese (Trad)</source>
+				<target>Chinese (Trad)</target>
+			</trans-unit>
+			<trans-unit id="lang_zh" approved="yes">
+				<source>Chinese (Trad)</source>
+				<target>Chinese (Trad)</target>
+			</trans-unit>
+			<trans-unit id="default" approved="yes">
+				<source>Default</source>
+				<target>Default</target>
+			</trans-unit>
+			<trans-unit id="simulate" approved="yes">
+				<source>Simulate backend user</source>
+				<target>Simulate backend user</target>
+			</trans-unit>
+			<trans-unit id="opening" approved="yes">
+				<source>Startup</source>
+				<target>Startup</target>
+			</trans-unit>
+			<trans-unit id="personal_data" approved="yes">
+				<source>Personal data</source>
+				<target>Personal data</target>
+			</trans-unit>
+			<trans-unit id="showThumbs" approved="yes">
+				<source>Show Thumbnails by default</source>
+				<target>Show Thumbnails by default</target>
+			</trans-unit>
+			<trans-unit id="condensedMode" approved="yes">
+				<source>Use condensed mode in backend&lt;br /&gt;(for small screens)</source>
+				<target>Use condensed mode in backend&lt;br /&gt;(for small screens)</target>
+			</trans-unit>
+			<trans-unit id="noMenuMode" approved="yes">
+				<source>Select navigation mode</source>
+				<target>Select navigation mode</target>
+			</trans-unit>
+			<trans-unit id="noMenuMode_def" approved="yes">
+				<source>Left frame menu (default)</source>
+				<target>Left frame menu (default)</target>
+			</trans-unit>
+			<trans-unit id="noMenuMode_sel" approved="yes">
+				<source>Selectorbox in top frame</source>
+				<target>Selectorbox in top frame</target>
+			</trans-unit>
+			<trans-unit id="noMenuMode_icons" approved="yes">
+				<source>Icons in top frame</source>
+				<target>Icons in top frame</target>
+			</trans-unit>
+			<trans-unit id="startModule" approved="yes">
+				<source>Start up in the following module</source>
+				<target>Start up in the following module</target>
+			</trans-unit>
+			<trans-unit id="emailMeAtLogin" approved="yes">
+				<source>Notify me by email, when somebody logs in &lt;br /&gt;from my account</source>
+				<target>Notify me by email, when somebody logs in &lt;br /&gt;from my account</target>
+			</trans-unit>
+			<trans-unit id="helpText" approved="yes">
+				<source>Show help text when applicable</source>
+				<target>Show help text when applicable</target>
+			</trans-unit>
+			<trans-unit id="maxTitleLen" approved="yes">
+				<source>Max. Title Length</source>
+				<target>Max. Title Length</target>
+			</trans-unit>
+			<trans-unit id="edit_showFieldHelp" approved="yes">
+				<source>Context Sensitive Help mode</source>
+				<target>Context Sensitive Help mode</target>
+			</trans-unit>
+			<trans-unit id="edit_showFieldHelp_none" approved="yes">
+				<source>Display no help information</source>
+				<target>Display no help information</target>
+			</trans-unit>
+			<trans-unit id="edit_showFieldHelp_icon" approved="yes">
+				<source>Display help icon only</source>
+				<target>Display help icon only</target>
+			</trans-unit>
+			<trans-unit id="edit_showFieldHelp_message" approved="yes">
+				<source>Display full text message</source>
+				<target>Display full text message</target>
+			</trans-unit>
+			<trans-unit id="edit_wideDocument" approved="yes">
+				<source>Wide document background</source>
+				<target>Wide document background</target>
+			</trans-unit>
+			<trans-unit id="edit_RTE" approved="yes">
+				<source>Enable Rich Text Editor (if available)</source>
+				<target>Enable Rich Text Editor (if available)</target>
+			</trans-unit>
+			<trans-unit id="edit_docModuleUpload" approved="yes">
+				<source>File upload directly in Doc-module</source>
+				<target>File upload directly in Doc-module</target>
+			</trans-unit>
+			<trans-unit id="enableFlashUploader" approved="yes">
+				<source>Enable Flash Uploader (requires Flash 9+)</source>
+				<target>Enable Flash Uploader (requires Flash 9+)</target>
+			</trans-unit>
+			<trans-unit id="resizeTextareas" approved="yes">
+				<source>Make Textareas resizable</source>
+				<target>Make Textareas resizable</target>
+			</trans-unit>
+			<trans-unit id="resizeTextareas_MaxHeight" approved="yes">
+				<source>Maximal Height of resizable Textarea in Pixel</source>
+				<target>Maximal Height of resizable Textarea in Pixel</target>
+			</trans-unit>
+			<trans-unit id="resizeTextareas_Flexible" approved="yes">
+				<source>Make Textareas flexible</source>
+				<target>Make Textareas flexible</target>
+			</trans-unit>
+			<trans-unit id="editFunctionsTab" approved="yes">
+				<source>Edit &amp; Advanced functions</source>
+				<target>Edit &amp; Advanced functions</target>
+			</trans-unit>
+			<trans-unit id="edit_functions" approved="yes">
+				<source>Edit</source>
+				<target>Edit</target>
+			</trans-unit>
+			<trans-unit id="disableCMlayers" approved="yes">
+				<source>Disable Popup Context Menus</source>
+				<target>Disable Popup Context Menus</target>
+			</trans-unit>
+			<trans-unit id="setToStandard" approved="yes">
+				<source>Reset all Values to default</source>
+				<target>Reset all Values to default</target>
+			</trans-unit>
+			<trans-unit id="resetConfiguration" approved="yes">
+				<source>Reset Configuration and Clear Temporary Data</source>
+				<target>Reset Configuration and Clear Temporary Data</target>
+			</trans-unit>
+			<trans-unit id="setToStandardQuestion" approved="yes">
+				<source>Are you sure you want to reset all values to default?</source>
+				<target>Are you sure you want to reset all values to default?</target>
+			</trans-unit>
+			<trans-unit id="clearSessionVars" approved="yes">
+				<source>Clear Temporary Data</source>
+				<target>Clear Temporary Data</target>
+			</trans-unit>
+			<trans-unit id="clearSessionVarsQuestion" approved="yes">
+				<source>Are you sure you want to clear the temporary data?</source>
+				<target>Are you sure you want to clear the temporary data?</target>
+			</trans-unit>
+			<trans-unit id="functions" approved="yes">
+				<source>Advanced functions</source>
+				<target>Advanced functions</target>
+			</trans-unit>
+			<trans-unit id="copyLevels" approved="yes">
+				<source>&lt;b&gt;Recursive Copy:&lt;/b&gt; Enter the number of page&lt;br /&gt;sublevels to include, when a page is copied</source>
+				<target>&lt;b&gt;Recursive Copy:&lt;/b&gt; Enter the number of page&lt;br /&gt;sublevels to include, when a page is copied</target>
+			</trans-unit>
+			<trans-unit id="recursiveDelete" approved="yes">
+				<source>&lt;b&gt;Recursive Delete(!):&lt;/b&gt; Allow ALL subpages&lt;br /&gt;to be deleted when deleting a page</source>
+				<target>&lt;b&gt;Recursive Delete(!):&lt;/b&gt; Allow ALL subpages&lt;br /&gt;to be deleted when deleting a page</target>
+			</trans-unit>
+			<trans-unit id="activateChanges" approved="yes">
+				<source>Notice! In order to activate most of these changes, please reload the backend (eg. logout and login again).</source>
+				<target>Notice! In order to activate most of these changes, please reload the backend (eg. logout and login again).</target>
+			</trans-unit>
+			<trans-unit id="levels" approved="yes">
+				<source>levels</source>
+				<target>levels</target>
+			</trans-unit>
+			<trans-unit id="beUser_realName" approved="yes">
+				<source>Your name</source>
+				<target>Your name</target>
+			</trans-unit>
+			<trans-unit id="beUser_email" approved="yes">
+				<source>Your email address</source>
+				<target>Your email address</target>
+			</trans-unit>
+			<trans-unit id="save" approved="yes">
+				<source>Save Configuration</source>
+				<target>Save Configuration</target>
+			</trans-unit>
+			<trans-unit id="newPassword" approved="yes">
+				<source>New password</source>
+				<target>New password</target>
+			</trans-unit>
+			<trans-unit id="newPasswordAgain" approved="yes">
+				<source>New password, again</source>
+				<target>New password, again</target>
+			</trans-unit>
+			<trans-unit id="newPassword_ok" approved="yes">
+				<source>Password was updated.</source>
+				<target>Password was updated.</target>
+			</trans-unit>
+			<trans-unit id="setupWasUpdated" approved="yes">
+				<source>User settings were updated.</source>
+				<target>User settings were updated.</target>
+			</trans-unit>
+			<trans-unit id="newPassword_failed" approved="yes">
+				<source>Password was NOT updated because you didn't enter the same password twice.</source>
+				<target>Password was NOT updated because you didn't enter the same password twice.</target>
+			</trans-unit>
+			<trans-unit id="adminFunctions" approved="yes">
+				<source>Admin functions</source>
+				<target>Admin functions</target>
+			</trans-unit>
+			<trans-unit id="enableInstallTool.label" approved="yes">
+				<source>Install Tool Access</source>
+				<target>Install Tool Access</target>
+			</trans-unit>
+			<trans-unit id="enableInstallTool.createFile" approved="yes">
+				<source>Create Install Tool Enable File</source>
+				<target>Create Install Tool Enable File</target>
+			</trans-unit>
+			<trans-unit id="enableInstallTool.file" approved="yes">
+				<source>Install Tool Enable file</source>
+				<target>Install Tool Enable file</target>
+			</trans-unit>
+			<trans-unit id="enableInstallTool.fileCreate_ok" approved="yes">
+				<source>The Install Tool Enable file has been created.</source>
+				<target>The Install Tool Enable file has been created.</target>
+			</trans-unit>
+			<trans-unit id="enableInstallTool.fileCreate_failed" approved="yes">
+				<source>The Install Tool Enable file could not be created.</source>
+				<target>The Install Tool Enable file could not be created.</target>
+			</trans-unit>
+			<trans-unit id="enableInstallTool.deleteFile" approved="yes">
+				<source>Delete Install Tool Enable File</source>
+				<target>Delete Install Tool Enable File</target>
+			</trans-unit>
+			<trans-unit id="enableInstallTool.fileDelete_ok" approved="yes">
+				<source>The Install Tool Enable file has been deleted.</source>
+				<target>The Install Tool Enable file has been deleted.</target>
+			</trans-unit>
+			<trans-unit id="enableInstallTool.fileDelete_failed" approved="yes">
+				<source>The Install Tool Enable file could not be deleted!</source>
+				<target>The Install Tool Enable file could not be deleted!</target>
+			</trans-unit>
+			<trans-unit id="enableInstallTool.fileHasKeep" approved="yes">
+				<source>The Install Tool file has the content "KEEP_FILE" and can not be deleted!</source>
+				<target>The Install Tool file has the content "KEEP_FILE" and can not be deleted!</target>
+			</trans-unit>
+			<trans-unit id="tempDataCleared" approved="yes">
+				<source>Temporary data cleared</source>
+				<target>Temporary data cleared</target>
+			</trans-unit>
+			<trans-unit id="tempDataClearedFlashMessage" approved="yes">
+				<source>The temporary data has been cleared.</source>
+				<target>The temporary data has been cleared.</target>
+			</trans-unit>
+			<trans-unit id="tempDataClearedLog" approved="yes">
+				<source>Temporary data cleared</source>
+				<target>Temporary data cleared</target>
+			</trans-unit>
+			<trans-unit id="settingsAreReset" approved="yes">
+				<source>The user settings have been reset to default values and temporary data has been cleared.</source>
+				<target>The user settings have been reset to default values and temporary data has been cleared.</target>
+			</trans-unit>
+			<trans-unit id="debugInWindow" approved="yes">
+				<source>Display debug messages in a new browser window</source>
+				<target>Display debug messages in a new browser window</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

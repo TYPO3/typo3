@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="lang">
-    <header/>
-    <body>
-      <trans-unit id="tsparser_ext.make_copy" approved="yes">
-        <source>This will make a copy of the current file, '%s'. Do you really want that?</source>
-        <target>This will make a copy of the current file, '%s'. Do you really want that?</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="lang">
+		<header/>
+		<body>
+			<trans-unit id="tsparser_ext.make_copy" approved="yes">
+				<source>This will make a copy of the current file, '%s'. Do you really want that?</source>
+				<target>This will make a copy of the current file, '%s'. Do you really want that?</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

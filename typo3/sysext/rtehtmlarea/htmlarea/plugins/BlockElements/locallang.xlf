@@ -1,132 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
-    <header/>
-    <body>
-      <trans-unit id="Indent-Tooltip" approved="yes">
-        <source>Increase indent</source>
-        <target>Increase indent</target>
-      </trans-unit>
-      <trans-unit id="Indent-helpText" approved="yes">
-        <source>Increases text indentation</source>
-        <target>Increases text indentation</target>
-      </trans-unit>
-      <trans-unit id="Outdent-Tooltip" approved="yes">
-        <source>Reduce indent</source>
-        <target>Reduce indent</target>
-      </trans-unit>
-      <trans-unit id="Outdent-helpText" approved="yes">
-        <source>Reduces text indentation</source>
-        <target>Reduces text indentation</target>
-      </trans-unit>
-      <trans-unit id="Blockquote-Tooltip" approved="yes">
-        <source>Large quotation</source>
-        <target>Large quotation</target>
-      </trans-unit>
-      <trans-unit id="Blockquote-helpText" approved="yes">
-        <source>Makes a large quotation block</source>
-        <target>Makes a large quotation block</target>
-      </trans-unit>
-      <trans-unit id="FormatBlock-Tooltip" approved="yes">
-        <source>Type of block</source>
-        <target>Type of block</target>
-      </trans-unit>
-      <trans-unit id="InsertParagraphBefore-Tooltip" approved="yes">
-        <source>Insert a paragraph before the current block</source>
-        <target>Insert a paragraph before the current block</target>
-      </trans-unit>
-      <trans-unit id="InsertParagraphBefore-contextMenuTitle" approved="yes">
-        <source>Insert paragraph before</source>
-        <target>Insert paragraph before</target>
-      </trans-unit>
-      <trans-unit id="InsertParagraphBefore-helpText" approved="yes">
-        <source>Inserts a paragraph before the current block</source>
-        <target>Inserts a paragraph before the current block</target>
-      </trans-unit>
-      <trans-unit id="InsertParagraphAfter-Tooltip" approved="yes">
-        <source>Insert a paragraph after the current block</source>
-        <target>Insert a paragraph after the current block</target>
-      </trans-unit>
-      <trans-unit id="InsertParagraphAfter-contextMenuTitle" approved="yes">
-        <source>Insert paragraph after</source>
-        <target>Insert paragraph after</target>
-      </trans-unit>
-      <trans-unit id="InsertParagraphAfter-helpText" approved="yes">
-        <source>Inserts a paragraph after the current block</source>
-        <target>Inserts a paragraph after the current block</target>
-      </trans-unit>
-      <trans-unit id="JustifyLeft-Tooltip" approved="yes">
-        <source>Justify left</source>
-        <target>Justify left</target>
-      </trans-unit>
-      <trans-unit id="JustifyLeft-helpText" approved="yes">
-        <source>Aligns the text to the left</source>
-        <target>Aligns the text to the left</target>
-      </trans-unit>
-      <trans-unit id="JustifyCenter-Tooltip" approved="yes">
-        <source>Center</source>
-        <target>Center</target>
-      </trans-unit>
-      <trans-unit id="JustifyCenter-helpText" approved="yes">
-        <source>Centers the text</source>
-        <target>Centers the text</target>
-      </trans-unit>
-      <trans-unit id="JustifyRight-Tooltip" approved="yes">
-        <source>Justify right</source>
-        <target>Justify right</target>
-      </trans-unit>
-      <trans-unit id="JustifyRight-helpText" approved="yes">
-        <source>Aligns the text to the right</source>
-        <target>Aligns the text to the right</target>
-      </trans-unit>
-      <trans-unit id="JustifyFull-Tooltip" approved="yes">
-        <source>Justify left and right</source>
-        <target>Justify left and right</target>
-      </trans-unit>
-      <trans-unit id="JustifyFull-helpText" approved="yes">
-        <source>Aligns the text both to the left and the right</source>
-        <target>Aligns the text both to the left and the right</target>
-      </trans-unit>
-      <trans-unit id="Left-Tooltip" approved="yes">
-        <source>Left</source>
-        <target>Left</target>
-      </trans-unit>
-      <trans-unit id="InsertOrderedList-Tooltip" approved="yes">
-        <source>Ordered List</source>
-        <target>Ordered List</target>
-      </trans-unit>
-      <trans-unit id="InsertOrderedList-helpText" approved="yes">
-        <source>Makes an ordered list from the curent selection</source>
-        <target>Makes an ordered list from the curent selection</target>
-      </trans-unit>
-      <trans-unit id="InsertUnorderedList-Tooltip" approved="yes">
-        <source>Bulleted List</source>
-        <target>Bulleted List</target>
-      </trans-unit>
-      <trans-unit id="InsertUnorderedList-helpText" approved="yes">
-        <source>Makes an bulleted list from the curent selection</source>
-        <target>Makes an bulleted list from the curent selection</target>
-      </trans-unit>
-      <trans-unit id="InsertHorizontalRule-Tooltip" approved="yes">
-        <source>Horizontal Rule</source>
-        <target>Horizontal Rule</target>
-      </trans-unit>
-      <trans-unit id="InsertHorizontalRule-helpText" approved="yes">
-        <source>Inserts an horizontal rule</source>
-        <target>Inserts an horizontal rule</target>
-      </trans-unit>
-      <trans-unit id="No block" approved="yes">
-        <source>No block format</source>
-        <target>No block format</target>
-      </trans-unit>
-      <trans-unit id="Remove block" approved="yes">
-        <source>Remove block format</source>
-        <target>Remove block format</target>
-      </trans-unit>
-      <trans-unit id="Technische Universitat Ilmenau" approved="yes">
-        <source>Technische Universität Ilmenau</source>
-        <target>Technische Universität Ilmenau</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id="Indent-Tooltip" approved="yes">
+				<source>Increase indent</source>
+				<target>Increase indent</target>
+			</trans-unit>
+			<trans-unit id="Indent-helpText" approved="yes">
+				<source>Increases text indentation</source>
+				<target>Increases text indentation</target>
+			</trans-unit>
+			<trans-unit id="Outdent-Tooltip" approved="yes">
+				<source>Reduce indent</source>
+				<target>Reduce indent</target>
+			</trans-unit>
+			<trans-unit id="Outdent-helpText" approved="yes">
+				<source>Reduces text indentation</source>
+				<target>Reduces text indentation</target>
+			</trans-unit>
+			<trans-unit id="Blockquote-Tooltip" approved="yes">
+				<source>Large quotation</source>
+				<target>Large quotation</target>
+			</trans-unit>
+			<trans-unit id="Blockquote-helpText" approved="yes">
+				<source>Makes a large quotation block</source>
+				<target>Makes a large quotation block</target>
+			</trans-unit>
+			<trans-unit id="FormatBlock-Tooltip" approved="yes">
+				<source>Type of block</source>
+				<target>Type of block</target>
+			</trans-unit>
+			<trans-unit id="InsertParagraphBefore-Tooltip" approved="yes">
+				<source>Insert a paragraph before the current block</source>
+				<target>Insert a paragraph before the current block</target>
+			</trans-unit>
+			<trans-unit id="InsertParagraphBefore-contextMenuTitle" approved="yes">
+				<source>Insert paragraph before</source>
+				<target>Insert paragraph before</target>
+			</trans-unit>
+			<trans-unit id="InsertParagraphBefore-helpText" approved="yes">
+				<source>Inserts a paragraph before the current block</source>
+				<target>Inserts a paragraph before the current block</target>
+			</trans-unit>
+			<trans-unit id="InsertParagraphAfter-Tooltip" approved="yes">
+				<source>Insert a paragraph after the current block</source>
+				<target>Insert a paragraph after the current block</target>
+			</trans-unit>
+			<trans-unit id="InsertParagraphAfter-contextMenuTitle" approved="yes">
+				<source>Insert paragraph after</source>
+				<target>Insert paragraph after</target>
+			</trans-unit>
+			<trans-unit id="InsertParagraphAfter-helpText" approved="yes">
+				<source>Inserts a paragraph after the current block</source>
+				<target>Inserts a paragraph after the current block</target>
+			</trans-unit>
+			<trans-unit id="JustifyLeft-Tooltip" approved="yes">
+				<source>Justify left</source>
+				<target>Justify left</target>
+			</trans-unit>
+			<trans-unit id="JustifyLeft-helpText" approved="yes">
+				<source>Aligns the text to the left</source>
+				<target>Aligns the text to the left</target>
+			</trans-unit>
+			<trans-unit id="JustifyCenter-Tooltip" approved="yes">
+				<source>Center</source>
+				<target>Center</target>
+			</trans-unit>
+			<trans-unit id="JustifyCenter-helpText" approved="yes">
+				<source>Centers the text</source>
+				<target>Centers the text</target>
+			</trans-unit>
+			<trans-unit id="JustifyRight-Tooltip" approved="yes">
+				<source>Justify right</source>
+				<target>Justify right</target>
+			</trans-unit>
+			<trans-unit id="JustifyRight-helpText" approved="yes">
+				<source>Aligns the text to the right</source>
+				<target>Aligns the text to the right</target>
+			</trans-unit>
+			<trans-unit id="JustifyFull-Tooltip" approved="yes">
+				<source>Justify left and right</source>
+				<target>Justify left and right</target>
+			</trans-unit>
+			<trans-unit id="JustifyFull-helpText" approved="yes">
+				<source>Aligns the text both to the left and the right</source>
+				<target>Aligns the text both to the left and the right</target>
+			</trans-unit>
+			<trans-unit id="Left-Tooltip" approved="yes">
+				<source>Left</source>
+				<target>Left</target>
+			</trans-unit>
+			<trans-unit id="InsertOrderedList-Tooltip" approved="yes">
+				<source>Ordered List</source>
+				<target>Ordered List</target>
+			</trans-unit>
+			<trans-unit id="InsertOrderedList-helpText" approved="yes">
+				<source>Makes an ordered list from the curent selection</source>
+				<target>Makes an ordered list from the curent selection</target>
+			</trans-unit>
+			<trans-unit id="InsertUnorderedList-Tooltip" approved="yes">
+				<source>Bulleted List</source>
+				<target>Bulleted List</target>
+			</trans-unit>
+			<trans-unit id="InsertUnorderedList-helpText" approved="yes">
+				<source>Makes an bulleted list from the curent selection</source>
+				<target>Makes an bulleted list from the curent selection</target>
+			</trans-unit>
+			<trans-unit id="InsertHorizontalRule-Tooltip" approved="yes">
+				<source>Horizontal Rule</source>
+				<target>Horizontal Rule</target>
+			</trans-unit>
+			<trans-unit id="InsertHorizontalRule-helpText" approved="yes">
+				<source>Inserts an horizontal rule</source>
+				<target>Inserts an horizontal rule</target>
+			</trans-unit>
+			<trans-unit id="No block" approved="yes">
+				<source>No block format</source>
+				<target>No block format</target>
+			</trans-unit>
+			<trans-unit id="Remove block" approved="yes">
+				<source>Remove block format</source>
+				<target>Remove block format</target>
+			</trans-unit>
+			<trans-unit id="Technische Universitat Ilmenau" approved="yes">
+				<source>Technische Universität Ilmenau</source>
+				<target>Technische Universität Ilmenau</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

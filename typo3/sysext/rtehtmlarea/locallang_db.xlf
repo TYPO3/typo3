@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
-    <header/>
-    <body>
-      <trans-unit id="tx_rtehtmlarea_acronym" approved="yes">
-        <source>Abbreviation</source>
-        <target>Abbreviation</target>
-      </trans-unit>
-      <trans-unit id="tx_rtehtmlarea_acronym.type" approved="yes">
-        <source>Type</source>
-        <target>Type</target>
-      </trans-unit>
-      <trans-unit id="tx_rtehtmlarea_acronym.type.I.0" approved="yes">
-        <source>Acronym</source>
-        <target>Acronym</target>
-      </trans-unit>
-      <trans-unit id="tx_rtehtmlarea_acronym.type.I.1" approved="yes">
-        <source>Abbreviation</source>
-        <target>Abbreviation</target>
-      </trans-unit>
-      <trans-unit id="tx_rtehtmlarea_acronym.term" approved="yes">
-        <source>Term</source>
-        <target>Term</target>
-      </trans-unit>
-      <trans-unit id="tx_rtehtmlarea_acronym.acronym" approved="yes">
-        <source>Abbreviation</source>
-        <target>Abbreviation</target>
-      </trans-unit>
-      <trans-unit id="tx_rtehtmlarea_acronym.static_lang_isocode" approved="yes">
-        <source>Language of the abbreviation</source>
-        <target>Language of the abbreviation</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id="tx_rtehtmlarea_acronym" approved="yes">
+				<source>Abbreviation</source>
+				<target>Abbreviation</target>
+			</trans-unit>
+			<trans-unit id="tx_rtehtmlarea_acronym.type" approved="yes">
+				<source>Type</source>
+				<target>Type</target>
+			</trans-unit>
+			<trans-unit id="tx_rtehtmlarea_acronym.type.I.0" approved="yes">
+				<source>Acronym</source>
+				<target>Acronym</target>
+			</trans-unit>
+			<trans-unit id="tx_rtehtmlarea_acronym.type.I.1" approved="yes">
+				<source>Abbreviation</source>
+				<target>Abbreviation</target>
+			</trans-unit>
+			<trans-unit id="tx_rtehtmlarea_acronym.term" approved="yes">
+				<source>Term</source>
+				<target>Term</target>
+			</trans-unit>
+			<trans-unit id="tx_rtehtmlarea_acronym.acronym" approved="yes">
+				<source>Abbreviation</source>
+				<target>Abbreviation</target>
+			</trans-unit>
+			<trans-unit id="tx_rtehtmlarea_acronym.static_lang_isocode" approved="yes">
+				<source>Language of the abbreviation</source>
+				<target>Language of the abbreviation</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

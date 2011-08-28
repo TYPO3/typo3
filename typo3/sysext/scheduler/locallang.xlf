@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="scheduler">
-    <header/>
-    <body>
-      <trans-unit id="testTask.name" approved="yes">
-        <source>Scheduler test task</source>
-        <target>Scheduler test task</target>
-      </trans-unit>
-      <trans-unit id="testTask.description" approved="yes">
-        <source>The Scheduler test task just sends a mail to a given email address. It is designed to be used for testing purposes.</source>
-        <target>The Scheduler test task just sends a mail to a given email address. It is designed to be used for testing purposes.</target>
-      </trans-unit>
-      <trans-unit id="sleepTask.name" approved="yes">
-        <source>Scheduler sleep task</source>
-        <target>Scheduler sleep task</target>
-      </trans-unit>
-      <trans-unit id="sleepTask.description" approved="yes">
-        <source>This task does nothing but put PHP to sleep for a number of seconds. It is designed to test multiple executions.</source>
-        <target>This task does nothing but put PHP to sleep for a number of seconds. It is designed to test multiple executions.</target>
-      </trans-unit>
-      <trans-unit id="cachingFrameworkGarbageCollection.name" approved="yes">
-        <source>Caching framework garbage collection</source>
-        <target>Caching framework garbage collection</target>
-      </trans-unit>
-      <trans-unit id="cachingFrameworkGarbageCollection.description" approved="yes">
-        <source>This task calls the garbage collection of configured caching framework caches which use one of the selected backends. This will free some space in cache backends which do not have an internal garbage collection. In case of the default database backend it is advisable to run this task once a day when the database is mostly idle.</source>
-        <target>This task calls the garbage collection of configured caching framework caches which use one of the selected backends. This will free some space in cache backends which do not have an internal garbage collection. In case of the default database backend it is advisable to run this task once a day when the database is mostly idle.</target>
-      </trans-unit>
-      <trans-unit id="tableGarbageCollection.name" approved="yes">
-        <source>Table garbage collection</source>
-        <target>Table garbage collection</target>
-      </trans-unit>
-      <trans-unit id="tableGarbageCollection.description" approved="yes">
-        <source>Task to delete old entries from specific tables like sys_log. Use $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables'] to configure tables. Refer to the manual for more details.</source>
-        <target>Task to delete old entries from specific tables like sys_log. Use $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables'] to configure tables. Refer to the manual for more details.</target>
-      </trans-unit>
-      <trans-unit id="recyclerGarbageCollection.name" approved="yes">
-        <source>Fileadmin garbage collection</source>
-        <target>Fileadmin garbage collection</target>
-      </trans-unit>
-      <trans-unit id="recyclerGarbageCollection.description" approved="yes">
-        <source>This task empties all "_recycler_" folders below fileadmin. This helps free some space in the file system.</source>
-        <target>This task empties all "_recycler_" folders below fileadmin. This helps free some space in the file system.</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="scheduler">
+		<header/>
+		<body>
+			<trans-unit id="testTask.name" approved="yes">
+				<source>Scheduler test task</source>
+				<target>Scheduler test task</target>
+			</trans-unit>
+			<trans-unit id="testTask.description" approved="yes">
+				<source>The Scheduler test task just sends a mail to a given email address. It is designed to be used for testing purposes.</source>
+				<target>The Scheduler test task just sends a mail to a given email address. It is designed to be used for testing purposes.</target>
+			</trans-unit>
+			<trans-unit id="sleepTask.name" approved="yes">
+				<source>Scheduler sleep task</source>
+				<target>Scheduler sleep task</target>
+			</trans-unit>
+			<trans-unit id="sleepTask.description" approved="yes">
+				<source>This task does nothing but put PHP to sleep for a number of seconds. It is designed to test multiple executions.</source>
+				<target>This task does nothing but put PHP to sleep for a number of seconds. It is designed to test multiple executions.</target>
+			</trans-unit>
+			<trans-unit id="cachingFrameworkGarbageCollection.name" approved="yes">
+				<source>Caching framework garbage collection</source>
+				<target>Caching framework garbage collection</target>
+			</trans-unit>
+			<trans-unit id="cachingFrameworkGarbageCollection.description" approved="yes">
+				<source>This task calls the garbage collection of configured caching framework caches which use one of the selected backends. This will free some space in cache backends which do not have an internal garbage collection. In case of the default database backend it is advisable to run this task once a day when the database is mostly idle.</source>
+				<target>This task calls the garbage collection of configured caching framework caches which use one of the selected backends. This will free some space in cache backends which do not have an internal garbage collection. In case of the default database backend it is advisable to run this task once a day when the database is mostly idle.</target>
+			</trans-unit>
+			<trans-unit id="tableGarbageCollection.name" approved="yes">
+				<source>Table garbage collection</source>
+				<target>Table garbage collection</target>
+			</trans-unit>
+			<trans-unit id="tableGarbageCollection.description" approved="yes">
+				<source>Task to delete old entries from specific tables like sys_log. Use $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables'] to configure tables. Refer to the manual for more details.</source>
+				<target>Task to delete old entries from specific tables like sys_log. Use $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables'] to configure tables. Refer to the manual for more details.</target>
+			</trans-unit>
+			<trans-unit id="recyclerGarbageCollection.name" approved="yes">
+				<source>Fileadmin garbage collection</source>
+				<target>Fileadmin garbage collection</target>
+			</trans-unit>
+			<trans-unit id="recyclerGarbageCollection.description" approved="yes">
+				<source>This task empties all "_recycler_" folders below fileadmin. This helps free some space in the file system.</source>
+				<target>This task empties all "_recycler_" folders below fileadmin. This helps free some space in the file system.</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

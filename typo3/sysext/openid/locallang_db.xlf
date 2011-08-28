@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="openid">
-    <header/>
-    <body>
-      <trans-unit id="be_users.tx_openid_openid" approved="yes">
-        <source>OpenID identifier:</source>
-        <target>OpenID identifier:</target>
-      </trans-unit>
-      <trans-unit id="fe_users.tx_openid_openid" approved="yes">
-        <source>OpenID identifier:</source>
-        <target>OpenID identifier:</target>
-      </trans-unit>
-      <trans-unit id="be_groups.tx_openid_change_allowed" approved="yes">
-        <source>Change own OpenID:</source>
-        <target>Change own OpenID:</target>
-      </trans-unit>
-      <trans-unit id="_MOD_user_setup.tx_openid_openid" approved="yes">
-        <source>OpenID identifier</source>
-        <target>OpenID identifier</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="openid">
+		<header/>
+		<body>
+			<trans-unit id="be_users.tx_openid_openid" approved="yes">
+				<source>OpenID identifier:</source>
+				<target>OpenID identifier:</target>
+			</trans-unit>
+			<trans-unit id="fe_users.tx_openid_openid" approved="yes">
+				<source>OpenID identifier:</source>
+				<target>OpenID identifier:</target>
+			</trans-unit>
+			<trans-unit id="be_groups.tx_openid_change_allowed" approved="yes">
+				<source>Change own OpenID:</source>
+				<target>Change own OpenID:</target>
+			</trans-unit>
+			<trans-unit id="_MOD_user_setup.tx_openid_openid" approved="yes">
+				<source>OpenID identifier</source>
+				<target>OpenID identifier</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>
