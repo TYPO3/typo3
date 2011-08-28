@@ -3320,8 +3320,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$databaseNotAvailableMarkers = array(
 						'typo3Db' => htmlspecialchars(TYPO3_db),
 						'labelNoDatabase' => '
-							(Can only select database if username/password/host
-							is correctly set first)
+							(Database cannot be selected. Make sure that username, password and host
+							are set correctly. If MySQL does not allow persistent connections,
+							check that $TYPO3_CONF_VARS[\'SYS\'][\'no_pconnect\'] is set to "1".)
 						'
 					);
 						// Fill the markers in the subpart
@@ -7867,7 +7868,7 @@ $out="
 					Change the Install Tool password.
 				</li>
 				<li>
-					Delete the ENABLE_INSTALL_TOOL file in the /typo3conf folder. This can be done 
+					Delete the ENABLE_INSTALL_TOOL file in the /typo3conf folder. This can be done
 					manually or through User tools &gt; User settings in the backend.
 				</li>
 				<li>
@@ -7941,7 +7942,7 @@ $out="
 	function messageBasicFinished() {
 		return '
 			<p>
-				You have completed the basic setup of the TYPO3 Content Management System. 
+				You have completed the basic setup of the TYPO3 Content Management System.
 				Choose between these options to continue:
 			</p>
 			<ul>
