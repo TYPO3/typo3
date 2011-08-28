@@ -343,6 +343,30 @@
 				<source>Element is in workspace stage "%s", modifications will send it back to "%s".</source>
 				<target>Element is in workspace stage "%s", modifications will send it back to "%s".</target>
 			</trans-unit>
+			<trans-unit id="live_workspace" approved="yes">
+				<source>Live Workspace</source>
+				<target>Live Workspace</target>
+			</trans-unit>
+			<trans-unit id="workspace_version" approved="yes">
+				<source>Workspace version</source>
+				<target>Workspace version</target>
+			</trans-unit>
+			<trans-unit id="current_step" approved="yes">
+				<source><![CDATA[<b>Current stage step</b>: {0} (<b>{1}</b>/{2})]]></source>
+				<target><![CDATA[<b>Current stage step</b>: {0} (<b>{1}</b>/{2})]]></target>
+			</trans-unit>
+			<trans-unit id="path" approved="yes">
+				<source><![CDATA[<b>Path</b>: {0}]]></source>
+				<target><![CDATA[<b>Path</b>: {0}]]></target>
+			</trans-unit>
+			<trans-unit id="stage" approved="yes">
+				<source>Stage {0}</source>
+				<target>Stage {0}</target>
+			</trans-unit>
+			<trans-unit id="comments" approved="yes">
+				<source><![CDATA[User comments for <b>step {0} of stage</b> "{1}"]]></source>
+				<target><![CDATA[User comments for <b>step {0} of stage</b> "{1}"]]></target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
