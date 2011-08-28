@@ -1,564 +1,564 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:23 UTC" product-name="impexp">
-    <header/>
-    <body>
-      <trans-unit id="import" approved="yes">
-        <source>Import from .t3d</source>
-        <target>Import from .t3d</target>
-      </trans-unit>
-      <trans-unit id="export" approved="yes">
-        <source>Export to .t3d</source>
-        <target>Export to .t3d</target>
-      </trans-unit>
-      <trans-unit id="title" approved="yes">
-        <source>Import / Export</source>
-        <target>Import / Export</target>
-      </trans-unit>
-      <trans-unit id="moduleFunction.tx_impexp_modfunc1" approved="yes">
-        <source>Export Presets</source>
-        <target>Export Presets</target>
-      </trans-unit>
-      <trans-unit id="tableselec_configuration" approved="yes">
-        <source>Configuration</source>
-        <target>Configuration</target>
-      </trans-unit>
-      <trans-unit id="exportdata_savedFile" approved="yes">
-        <source>SAVED FILE</source>
-        <target>SAVED FILE</target>
-      </trans-unit>
-      <trans-unit id="exportdata_savedInSBytes" approved="yes">
-        <source>Saved in "%s", bytes %s</source>
-        <target>Saved in "%s", bytes %s</target>
-      </trans-unit>
-      <trans-unit id="exportdata_problemsSavingFile" approved="yes">
-        <source>Problems saving file</source>
-        <target>Problems saving file</target>
-      </trans-unit>
-      <trans-unit id="exportdata_badPathS" approved="yes">
-        <source>Bad path: "%s"</source>
-        <target>Bad path: "%s"</target>
-      </trans-unit>
-      <trans-unit id="exportdata_filePreset" approved="yes">
-        <source>File &amp; Preset</source>
-        <target>File &amp; Preset</target>
-      </trans-unit>
-      <trans-unit id="exportdata_advancedOptions" approved="yes">
-        <source>Advanced Options</source>
-        <target>Advanced Options</target>
-      </trans-unit>
-      <trans-unit id="exportdata_messages" approved="yes">
-        <source>Messages</source>
-        <target>Messages</target>
-      </trans-unit>
-      <trans-unit id="execlistqu_structureToBeExported" approved="yes">
-        <source>Structure to be exported:</source>
-        <target>Structure to be exported:</target>
-      </trans-unit>
-      <trans-unit id="execlistqu_maxNumberLimit" approved="yes">
-        <source>Max number limit!</source>
-        <target>Max number limit!</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_anSqlQueryReturned" approved="yes">
-        <source>An SQL query returned exactly the amount of records specified by the limit value (%s) - that could indicate an incomplete selection of records! Make sure this is on purpose.</source>
-        <target>An SQL query returned exactly the amount of records specified by the limit value (%s) - that could indicate an incomplete selection of records! Make sure this is on purpose.</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_exportPagetreeConfiguration" approved="yes">
-        <source>Export pagetree configuration:</source>
-        <target>Export pagetree configuration:</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_pageId" approved="yes">
-        <source>Page ID:</source>
-        <target>Page ID:</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_tree" approved="yes">
-        <source>Tree:</source>
-        <target>Tree:</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_noTreeExportedOnly" approved="yes">
-        <source>No tree exported - only tables on the page.</source>
-        <target>No tree exported - only tables on the page.</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_tablesOnThisPage" approved="yes">
-        <source>Tables on this page</source>
-        <target>Tables on this page</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_expandedTree" approved="yes">
-        <source>Expanded tree</source>
-        <target>Expanded tree</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_onlyThisPage" approved="yes">
-        <source>Only this page</source>
-        <target>Only this page</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_1Level" approved="yes">
-        <source>1 level</source>
-        <target>1 level</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_2Levels" approved="yes">
-        <source>2 levels</source>
-        <target>2 levels</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_3Levels" approved="yes">
-        <source>3 levels</source>
-        <target>3 levels</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_4Levels" approved="yes">
-        <source>4 levels</source>
-        <target>4 levels</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_infinite" approved="yes">
-        <source>Infinite</source>
-        <target>Infinite</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_levels" approved="yes">
-        <source>Levels:</source>
-        <target>Levels:</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_includeTables" approved="yes">
-        <source>Include tables:</source>
-        <target>Include tables:</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_maxNumberOfRecords" approved="yes">
-        <source>Max number of records:</source>
-        <target>Max number of records:</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_exportSingleRecord" approved="yes">
-        <source>Export single record:</source>
-        <target>Export single record:</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_record" approved="yes">
-        <source>Record:</source>
-        <target>Record:</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_exportTablesFromPages" approved="yes">
-        <source>Export tables from pages:</source>
-        <target>Export tables from pages:</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_tablePids" approved="yes">
-        <source>Table/Pids:</source>
-        <target>Table/Pids:</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_relationsAndExclusions" approved="yes">
-        <source>Relations and Exclusions:</source>
-        <target>Relations and Exclusions:</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_includeRelationsToTables" approved="yes">
-        <source>Include relations to tables:</source>
-        <target>Include relations to tables:</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_useStaticRelationsFor" approved="yes">
-        <source>Use static relations for tables:</source>
-        <target>Use static relations for tables:</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_showStaticRelations" approved="yes">
-        <source>Show static relations:</source>
-        <target>Show static relations:</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_excludeElements" approved="yes">
-        <source>Exclude elements:</source>
-        <target>Exclude elements:</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_clearAllExclusions" approved="yes">
-        <source>Clear all exclusions:</source>
-        <target>Clear all exclusions:</target>
-      </trans-unit>
-      <trans-unit id="makeconfig_noExcludedElementsYet" approved="yes">
-        <source>No excluded elements yet. Exclude by setting checkboxes below in the element display.</source>
-        <target>No excluded elements yet. Exclude by setting checkboxes below in the element display.</target>
-      </trans-unit>
-      <trans-unit id="makeadvanc_update" approved="yes">
-        <source>Update</source>
-        <target>Update</target>
-      </trans-unit>
-      <trans-unit id="makeadvanc_softReferences" approved="yes">
-        <source>Soft References:</source>
-        <target>Soft References:</target>
-      </trans-unit>
-      <trans-unit id="makeadvanc_excludeHtmlCssFile" approved="yes">
-        <source>Exclude HTML/CSS file resources:</source>
-        <target>Exclude HTML/CSS file resources:</target>
-      </trans-unit>
-      <trans-unit id="makeadvanc_extensionDependencies" approved="yes">
-        <source>Extension dependencies:</source>
-        <target>Extension dependencies:</target>
-      </trans-unit>
-      <trans-unit id="makeadvanc_selectExtensionsThatThe" approved="yes">
-        <source>Select extensions that the exported content depends on:</source>
-        <target>Select extensions that the exported content depends on:</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_update" approved="yes">
-        <source>Update</source>
-        <target>Update</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_presets" approved="yes">
-        <source>Presets:</source>
-        <target>Presets:</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_selectPreset" approved="yes">
-        <source>Select preset:</source>
-        <target>Select preset:</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_load" approved="yes">
-        <source>Load</source>
-        <target>Load</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_save" approved="yes">
-        <source>Save</source>
-        <target>Save</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_areYouSure" approved="yes">
-        <source>Are you sure?</source>
-        <target>Are you sure?</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_delete" approved="yes">
-        <source>Delete</source>
-        <target>Delete</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_merge" approved="yes">
-        <source>Merge</source>
-        <target>Merge</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_titleOfNewPreset" approved="yes">
-        <source>Title of new preset:</source>
-        <target>Title of new preset:</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_public" approved="yes">
-        <source>Public:</source>
-        <target>Public:</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_outputOptions" approved="yes">
-        <source>Output options:</source>
-        <target>Output options:</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_metaData" approved="yes">
-        <source>Meta data:</source>
-        <target>Meta data:</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_title" approved="yes">
-        <source>Title:</source>
-        <target>Title:</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_description" approved="yes">
-        <source>Description:</source>
-        <target>Description:</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_notes" approved="yes">
-        <source>Notes:</source>
-        <target>Notes:</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_thumbnail" approved="yes">
-        <source>Thumbnail:</source>
-        <target>Thumbnail:</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_uploadThumbnail" approved="yes">
-        <source>Upload thumbnail:</source>
-        <target>Upload thumbnail:</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_t3dFileCompressed" approved="yes">
-        <source>T3D file / compressed</source>
-        <target>T3D file / compressed</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_t3dFile" approved="yes">
-        <source>T3D file</source>
-        <target>T3D file</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_xml" approved="yes">
-        <source>XML</source>
-        <target>XML</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_fileFormat" approved="yes">
-        <source>File format:</source>
-        <target>File format:</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_maxSizeOfFiles" approved="yes">
-        <source>Max size of files to include (kb):</source>
-        <target>Max size of files to include (kb):</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_filenameSavedInS" approved="yes">
-        <source>Filename (saved in "%s"):</source>
-        <target>Filename (saved in "%s"):</target>
-      </trans-unit>
-      <trans-unit id="makesavefo_downloadExport" approved="yes">
-        <source>Download export</source>
-        <target>Download export</target>
-      </trans-unit>
-      <trans-unit id="importdata_saveToFilename" approved="yes">
-        <source>Save to filename</source>
-        <target>Save to filename</target>
-      </trans-unit>
-      <trans-unit id="importdata_selectFileToImport" approved="yes">
-        <source>Select file to import:</source>
-        <target>Select file to import:</target>
-      </trans-unit>
-      <trans-unit id="importdata_file" approved="yes">
-        <source>File:</source>
-        <target>File:</target>
-      </trans-unit>
-      <trans-unit id="importdata_fromPathS" approved="yes">
-        <source>(From path: %s)</source>
-        <target>(From path: %s)</target>
-      </trans-unit>
-      <trans-unit id="importdata_noteNoDecompressorAvailable" approved="yes">
-        <source>NOTE: No decompressor available for compressed files!</source>
-        <target>NOTE: No decompressor available for compressed files!</target>
-      </trans-unit>
-      <trans-unit id="importdata_importOptions" approved="yes">
-        <source>Import Options:</source>
-        <target>Import Options:</target>
-      </trans-unit>
-      <trans-unit id="importdata_update" approved="yes">
-        <source>Update:</source>
-        <target>Update:</target>
-      </trans-unit>
-      <trans-unit id="importdata_updateRecords" approved="yes">
-        <source>Update records</source>
-        <target>Update records</target>
-      </trans-unit>
-      <trans-unit id="importdata_thisOptionRequiresThat" approved="yes">
-        <source>This option requires that the structure you import already exists on this server and only needs to be updated with new content!</source>
-        <target>This option requires that the structure you import already exists on this server and only needs to be updated with new content!</target>
-      </trans-unit>
-      <trans-unit id="importdata_ignorePidDifferencesGlobally" approved="yes">
-        <source>Ignore PID differences globally</source>
-        <target>Ignore PID differences globally</target>
-      </trans-unit>
-      <trans-unit id="importdata_ifYouSetThis" approved="yes">
-        <source>If you set this option, the position of updated elements will not be updated to match the structure of the input file.</source>
-        <target>If you set this option, the position of updated elements will not be updated to match the structure of the input file.</target>
-      </trans-unit>
-      <trans-unit id="importdata_force_all_UIDS" approved="yes">
-        <source>Force ALL UIDs values</source>
-        <target>Force ALL UIDs values</target>
-      </trans-unit>
-      <trans-unit id="importdata_force_all_UIDS_descr" approved="yes">
-        <source>With this option the original UID value of all imported records are forced to be the same. BE VERY CAREFUL WITH THIS! (Admin Only).</source>
-        <target>With this option the original UID value of all imported records are forced to be the same. BE VERY CAREFUL WITH THIS! (Admin Only).</target>
-      </trans-unit>
-      <trans-unit id="importdata_options" approved="yes">
-        <source>Options:</source>
-        <target>Options:</target>
-      </trans-unit>
-      <trans-unit id="importdata_doNotShowDifferences" approved="yes">
-        <source>Do not show differences in records</source>
-        <target>Do not show differences in records</target>
-      </trans-unit>
-      <trans-unit id="importdata_greenValuesAreFrom" approved="yes">
-        <source>Green values are from the import file, red values from the current database record and black values are similar in both versions.</source>
-        <target>Green values are from the import file, red values from the current database record and black values are similar in both versions.</target>
-      </trans-unit>
-      <trans-unit id="importdata_allowToWriteBanned" approved="yes">
-        <source>Allow to write banned file extensions (eg. PHP scripts), if any</source>
-        <target>Allow to write banned file extensions (eg. PHP scripts), if any</target>
-      </trans-unit>
-      <trans-unit id="importdata_action" approved="yes">
-        <source>Action:</source>
-        <target>Action:</target>
-      </trans-unit>
-      <trans-unit id="importdata_preview" approved="yes">
-        <source>Preview</source>
-        <target>Preview</target>
-      </trans-unit>
-      <trans-unit id="importdata_update_299e" approved="yes">
-        <source>Update</source>
-        <target>Update</target>
-      </trans-unit>
-      <trans-unit id="importdata_import" approved="yes">
-        <source>Import</source>
-        <target>Import</target>
-      </trans-unit>
-      <trans-unit id="importdata_areYouSure" approved="yes">
-        <source>Are you sure?</source>
-        <target>Are you sure?</target>
-      </trans-unit>
-      <trans-unit id="importdata_newImport" approved="yes">
-        <source>New import</source>
-        <target>New import</target>
-      </trans-unit>
-      <trans-unit id="importdata_enableLogging" approved="yes">
-        <source>Enable logging:</source>
-        <target>Enable logging:</target>
-      </trans-unit>
-      <trans-unit id="importdata_writeIndividualDbActions" approved="yes">
-        <source>Write individual DB actions during import to the log</source>
-        <target>Write individual DB actions during import to the log</target>
-      </trans-unit>
-      <trans-unit id="importdata_thisIsDisabledBy" approved="yes">
-        <source>This is disabled by default since there may be hundred of entries generated.</source>
-        <target>This is disabled by default since there may be hundred of entries generated.</target>
-      </trans-unit>
-      <trans-unit id="importdata_uploadFileFromLocal" approved="yes">
-        <source>Upload file from local computer:</source>
-        <target>Upload file from local computer:</target>
-      </trans-unit>
-      <trans-unit id="importdata_browse" approved="yes">
-        <source>Browse:</source>
-        <target>Browse:</target>
-      </trans-unit>
-      <trans-unit id="importdata_uploadStatus" approved="yes">
-        <source>Upload status:</source>
-        <target>Upload status:</target>
-      </trans-unit>
-      <trans-unit id="importdata_success" approved="yes">
-        <source>Success:</source>
-        <target>Success:</target>
-      </trans-unit>
-      <trans-unit id="importdata_failureNoFileUploaded" approved="yes">
-        <source>Failure: No file uploaded - was it too big? Check system log.</source>
-        <target>Failure: No file uploaded - was it too big? Check system log.</target>
-      </trans-unit>
-      <trans-unit id="importdata_upload" approved="yes">
-        <source>Upload</source>
-        <target>Upload</target>
-      </trans-unit>
-      <trans-unit id="importdata_metaData" approved="yes">
-        <source>Meta data:</source>
-        <target>Meta data:</target>
-      </trans-unit>
-      <trans-unit id="importdata_title" approved="yes">
-        <source>Title:</source>
-        <target>Title:</target>
-      </trans-unit>
-      <trans-unit id="importdata_description" approved="yes">
-        <source>Description:</source>
-        <target>Description:</target>
-      </trans-unit>
-      <trans-unit id="importdata_notes" approved="yes">
-        <source>Notes:</source>
-        <target>Notes:</target>
-      </trans-unit>
-      <trans-unit id="importdata_packager" approved="yes">
-        <source>Packager:</source>
-        <target>Packager:</target>
-      </trans-unit>
-      <trans-unit id="importdata_email" approved="yes">
-        <source>Email:</source>
-        <target>Email:</target>
-      </trans-unit>
-      <trans-unit id="importdata_icon" approved="yes">
-        <source>Icon:</source>
-        <target>Icon:</target>
-      </trans-unit>
-      <trans-unit id="importdata_metaData_1387" approved="yes">
-        <source>Meta data</source>
-        <target>Meta data</target>
-      </trans-unit>
-      <trans-unit id="importdata_messages" approved="yes">
-        <source>Messages</source>
-        <target>Messages</target>
-      </trans-unit>
-      <trans-unit id="importdata_structureHasBeenImported" approved="yes">
-        <source>Structure has been imported, here is the result:</source>
-        <target>Structure has been imported, here is the result:</target>
-      </trans-unit>
-      <trans-unit id="filterpage_structureToBeImported" approved="yes">
-        <source>Structure to be imported:</source>
-        <target>Structure to be imported:</target>
-      </trans-unit>
-      <trans-unit id="ALL_tables" approved="yes">
-        <source>ALL tables</source>
-        <target>ALL tables</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_displaycon_controls" approved="yes">
-        <source>Controls:</source>
-        <target>Controls:</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_displaycon_title" approved="yes">
-        <source>Title:</source>
-        <target>Title:</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_displaycon_size" approved="yes">
-        <source>Size:</source>
-        <target>Size:</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_displaycon_message" approved="yes">
-        <source>Message:</source>
-        <target>Message:</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_displaycon_updateMode" approved="yes">
-        <source>Update Mode:</source>
-        <target>Update Mode:</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_displaycon_currentPath" approved="yes">
-        <source>Current Path:</source>
-        <target>Current Path:</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_displaycon_result" approved="yes">
-        <source>Result:</source>
-        <target>Result:</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_displaycon_insidePagetree" approved="yes">
-        <source>Inside pagetree:</source>
-        <target>Inside pagetree:</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_singlereco_outsidePagetree" approved="yes">
-        <source>Outside pagetree:</source>
-        <target>Outside pagetree:</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_singlereco_softReferencesFiles" approved="yes">
-        <source>Soft References Files:</source>
-        <target>Soft References Files:</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_singlereco_update" approved="yes">
-        <source>Update</source>
-        <target>Update</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_singlereco_insert" approved="yes">
-        <source>Insert</source>
-        <target>Insert</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_singlereco_importAsNew" approved="yes">
-        <source>Import as new</source>
-        <target>Import as new</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_singlereco_ignorePid" approved="yes">
-        <source>Ignore PID</source>
-        <target>Ignore PID</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_singlereco_respectPid" approved="yes">
-        <source>Respect PID</source>
-        <target>Respect PID</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_singlereco_forceUidSAdmin" approved="yes">
-        <source>Force UID [%s] (Admin)</source>
-        <target>Force UID [%s] (Admin)</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_singlereco_exclude" approved="yes">
-        <source>Exclude</source>
-        <target>Exclude</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_singlereco_title" approved="yes">
-        <source>Title:</source>
-        <target>Title:</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_singlereco_descr" approved="yes">
-        <source>Descr:</source>
-        <target>Descr:</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_singlereco_filename" approved="yes">
-        <source>Filename:</source>
-        <target>Filename:</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_singlereco_value" approved="yes">
-        <source>Value:</source>
-        <target>Value:</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_softrefsel_record" approved="yes">
-        <source>Record:</source>
-        <target>Record:</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_softrefsel_editable" approved="yes">
-        <source>Editable</source>
-        <target>Editable</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_softrefsel_exclude" approved="yes">
-        <source>Exclude</source>
-        <target>Exclude</target>
-      </trans-unit>
-      <trans-unit id="impexpcore_printerror_description" approved="yes">
-        <source>Description:</source>
-        <target>Description:</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:23 UTC" product-name="impexp">
+		<header/>
+		<body>
+			<trans-unit id="import" approved="yes">
+				<source>Import from .t3d</source>
+				<target>Import from .t3d</target>
+			</trans-unit>
+			<trans-unit id="export" approved="yes">
+				<source>Export to .t3d</source>
+				<target>Export to .t3d</target>
+			</trans-unit>
+			<trans-unit id="title" approved="yes">
+				<source>Import / Export</source>
+				<target>Import / Export</target>
+			</trans-unit>
+			<trans-unit id="moduleFunction.tx_impexp_modfunc1" approved="yes">
+				<source>Export Presets</source>
+				<target>Export Presets</target>
+			</trans-unit>
+			<trans-unit id="tableselec_configuration" approved="yes">
+				<source>Configuration</source>
+				<target>Configuration</target>
+			</trans-unit>
+			<trans-unit id="exportdata_savedFile" approved="yes">
+				<source>SAVED FILE</source>
+				<target>SAVED FILE</target>
+			</trans-unit>
+			<trans-unit id="exportdata_savedInSBytes" approved="yes">
+				<source>Saved in "%s", bytes %s</source>
+				<target>Saved in "%s", bytes %s</target>
+			</trans-unit>
+			<trans-unit id="exportdata_problemsSavingFile" approved="yes">
+				<source>Problems saving file</source>
+				<target>Problems saving file</target>
+			</trans-unit>
+			<trans-unit id="exportdata_badPathS" approved="yes">
+				<source>Bad path: "%s"</source>
+				<target>Bad path: "%s"</target>
+			</trans-unit>
+			<trans-unit id="exportdata_filePreset" approved="yes">
+				<source>File &amp; Preset</source>
+				<target>File &amp; Preset</target>
+			</trans-unit>
+			<trans-unit id="exportdata_advancedOptions" approved="yes">
+				<source>Advanced Options</source>
+				<target>Advanced Options</target>
+			</trans-unit>
+			<trans-unit id="exportdata_messages" approved="yes">
+				<source>Messages</source>
+				<target>Messages</target>
+			</trans-unit>
+			<trans-unit id="execlistqu_structureToBeExported" approved="yes">
+				<source>Structure to be exported:</source>
+				<target>Structure to be exported:</target>
+			</trans-unit>
+			<trans-unit id="execlistqu_maxNumberLimit" approved="yes">
+				<source>Max number limit!</source>
+				<target>Max number limit!</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_anSqlQueryReturned" approved="yes">
+				<source>An SQL query returned exactly the amount of records specified by the limit value (%s) - that could indicate an incomplete selection of records! Make sure this is on purpose.</source>
+				<target>An SQL query returned exactly the amount of records specified by the limit value (%s) - that could indicate an incomplete selection of records! Make sure this is on purpose.</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_exportPagetreeConfiguration" approved="yes">
+				<source>Export pagetree configuration:</source>
+				<target>Export pagetree configuration:</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_pageId" approved="yes">
+				<source>Page ID:</source>
+				<target>Page ID:</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_tree" approved="yes">
+				<source>Tree:</source>
+				<target>Tree:</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_noTreeExportedOnly" approved="yes">
+				<source>No tree exported - only tables on the page.</source>
+				<target>No tree exported - only tables on the page.</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_tablesOnThisPage" approved="yes">
+				<source>Tables on this page</source>
+				<target>Tables on this page</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_expandedTree" approved="yes">
+				<source>Expanded tree</source>
+				<target>Expanded tree</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_onlyThisPage" approved="yes">
+				<source>Only this page</source>
+				<target>Only this page</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_1Level" approved="yes">
+				<source>1 level</source>
+				<target>1 level</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_2Levels" approved="yes">
+				<source>2 levels</source>
+				<target>2 levels</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_3Levels" approved="yes">
+				<source>3 levels</source>
+				<target>3 levels</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_4Levels" approved="yes">
+				<source>4 levels</source>
+				<target>4 levels</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_infinite" approved="yes">
+				<source>Infinite</source>
+				<target>Infinite</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_levels" approved="yes">
+				<source>Levels:</source>
+				<target>Levels:</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_includeTables" approved="yes">
+				<source>Include tables:</source>
+				<target>Include tables:</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_maxNumberOfRecords" approved="yes">
+				<source>Max number of records:</source>
+				<target>Max number of records:</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_exportSingleRecord" approved="yes">
+				<source>Export single record:</source>
+				<target>Export single record:</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_record" approved="yes">
+				<source>Record:</source>
+				<target>Record:</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_exportTablesFromPages" approved="yes">
+				<source>Export tables from pages:</source>
+				<target>Export tables from pages:</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_tablePids" approved="yes">
+				<source>Table/Pids:</source>
+				<target>Table/Pids:</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_relationsAndExclusions" approved="yes">
+				<source>Relations and Exclusions:</source>
+				<target>Relations and Exclusions:</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_includeRelationsToTables" approved="yes">
+				<source>Include relations to tables:</source>
+				<target>Include relations to tables:</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_useStaticRelationsFor" approved="yes">
+				<source>Use static relations for tables:</source>
+				<target>Use static relations for tables:</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_showStaticRelations" approved="yes">
+				<source>Show static relations:</source>
+				<target>Show static relations:</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_excludeElements" approved="yes">
+				<source>Exclude elements:</source>
+				<target>Exclude elements:</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_clearAllExclusions" approved="yes">
+				<source>Clear all exclusions:</source>
+				<target>Clear all exclusions:</target>
+			</trans-unit>
+			<trans-unit id="makeconfig_noExcludedElementsYet" approved="yes">
+				<source>No excluded elements yet. Exclude by setting checkboxes below in the element display.</source>
+				<target>No excluded elements yet. Exclude by setting checkboxes below in the element display.</target>
+			</trans-unit>
+			<trans-unit id="makeadvanc_update" approved="yes">
+				<source>Update</source>
+				<target>Update</target>
+			</trans-unit>
+			<trans-unit id="makeadvanc_softReferences" approved="yes">
+				<source>Soft References:</source>
+				<target>Soft References:</target>
+			</trans-unit>
+			<trans-unit id="makeadvanc_excludeHtmlCssFile" approved="yes">
+				<source>Exclude HTML/CSS file resources:</source>
+				<target>Exclude HTML/CSS file resources:</target>
+			</trans-unit>
+			<trans-unit id="makeadvanc_extensionDependencies" approved="yes">
+				<source>Extension dependencies:</source>
+				<target>Extension dependencies:</target>
+			</trans-unit>
+			<trans-unit id="makeadvanc_selectExtensionsThatThe" approved="yes">
+				<source>Select extensions that the exported content depends on:</source>
+				<target>Select extensions that the exported content depends on:</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_update" approved="yes">
+				<source>Update</source>
+				<target>Update</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_presets" approved="yes">
+				<source>Presets:</source>
+				<target>Presets:</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_selectPreset" approved="yes">
+				<source>Select preset:</source>
+				<target>Select preset:</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_load" approved="yes">
+				<source>Load</source>
+				<target>Load</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_save" approved="yes">
+				<source>Save</source>
+				<target>Save</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_areYouSure" approved="yes">
+				<source>Are you sure?</source>
+				<target>Are you sure?</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_delete" approved="yes">
+				<source>Delete</source>
+				<target>Delete</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_merge" approved="yes">
+				<source>Merge</source>
+				<target>Merge</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_titleOfNewPreset" approved="yes">
+				<source>Title of new preset:</source>
+				<target>Title of new preset:</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_public" approved="yes">
+				<source>Public:</source>
+				<target>Public:</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_outputOptions" approved="yes">
+				<source>Output options:</source>
+				<target>Output options:</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_metaData" approved="yes">
+				<source>Meta data:</source>
+				<target>Meta data:</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_title" approved="yes">
+				<source>Title:</source>
+				<target>Title:</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_description" approved="yes">
+				<source>Description:</source>
+				<target>Description:</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_notes" approved="yes">
+				<source>Notes:</source>
+				<target>Notes:</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_thumbnail" approved="yes">
+				<source>Thumbnail:</source>
+				<target>Thumbnail:</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_uploadThumbnail" approved="yes">
+				<source>Upload thumbnail:</source>
+				<target>Upload thumbnail:</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_t3dFileCompressed" approved="yes">
+				<source>T3D file / compressed</source>
+				<target>T3D file / compressed</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_t3dFile" approved="yes">
+				<source>T3D file</source>
+				<target>T3D file</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_xml" approved="yes">
+				<source>XML</source>
+				<target>XML</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_fileFormat" approved="yes">
+				<source>File format:</source>
+				<target>File format:</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_maxSizeOfFiles" approved="yes">
+				<source>Max size of files to include (kb):</source>
+				<target>Max size of files to include (kb):</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_filenameSavedInS" approved="yes">
+				<source>Filename (saved in "%s"):</source>
+				<target>Filename (saved in "%s"):</target>
+			</trans-unit>
+			<trans-unit id="makesavefo_downloadExport" approved="yes">
+				<source>Download export</source>
+				<target>Download export</target>
+			</trans-unit>
+			<trans-unit id="importdata_saveToFilename" approved="yes">
+				<source>Save to filename</source>
+				<target>Save to filename</target>
+			</trans-unit>
+			<trans-unit id="importdata_selectFileToImport" approved="yes">
+				<source>Select file to import:</source>
+				<target>Select file to import:</target>
+			</trans-unit>
+			<trans-unit id="importdata_file" approved="yes">
+				<source>File:</source>
+				<target>File:</target>
+			</trans-unit>
+			<trans-unit id="importdata_fromPathS" approved="yes">
+				<source>(From path: %s)</source>
+				<target>(From path: %s)</target>
+			</trans-unit>
+			<trans-unit id="importdata_noteNoDecompressorAvailable" approved="yes">
+				<source>NOTE: No decompressor available for compressed files!</source>
+				<target>NOTE: No decompressor available for compressed files!</target>
+			</trans-unit>
+			<trans-unit id="importdata_importOptions" approved="yes">
+				<source>Import Options:</source>
+				<target>Import Options:</target>
+			</trans-unit>
+			<trans-unit id="importdata_update" approved="yes">
+				<source>Update:</source>
+				<target>Update:</target>
+			</trans-unit>
+			<trans-unit id="importdata_updateRecords" approved="yes">
+				<source>Update records</source>
+				<target>Update records</target>
+			</trans-unit>
+			<trans-unit id="importdata_thisOptionRequiresThat" approved="yes">
+				<source>This option requires that the structure you import already exists on this server and only needs to be updated with new content!</source>
+				<target>This option requires that the structure you import already exists on this server and only needs to be updated with new content!</target>
+			</trans-unit>
+			<trans-unit id="importdata_ignorePidDifferencesGlobally" approved="yes">
+				<source>Ignore PID differences globally</source>
+				<target>Ignore PID differences globally</target>
+			</trans-unit>
+			<trans-unit id="importdata_ifYouSetThis" approved="yes">
+				<source>If you set this option, the position of updated elements will not be updated to match the structure of the input file.</source>
+				<target>If you set this option, the position of updated elements will not be updated to match the structure of the input file.</target>
+			</trans-unit>
+			<trans-unit id="importdata_force_all_UIDS" approved="yes">
+				<source>Force ALL UIDs values</source>
+				<target>Force ALL UIDs values</target>
+			</trans-unit>
+			<trans-unit id="importdata_force_all_UIDS_descr" approved="yes">
+				<source>With this option the original UID value of all imported records are forced to be the same. BE VERY CAREFUL WITH THIS! (Admin Only).</source>
+				<target>With this option the original UID value of all imported records are forced to be the same. BE VERY CAREFUL WITH THIS! (Admin Only).</target>
+			</trans-unit>
+			<trans-unit id="importdata_options" approved="yes">
+				<source>Options:</source>
+				<target>Options:</target>
+			</trans-unit>
+			<trans-unit id="importdata_doNotShowDifferences" approved="yes">
+				<source>Do not show differences in records</source>
+				<target>Do not show differences in records</target>
+			</trans-unit>
+			<trans-unit id="importdata_greenValuesAreFrom" approved="yes">
+				<source>Green values are from the import file, red values from the current database record and black values are similar in both versions.</source>
+				<target>Green values are from the import file, red values from the current database record and black values are similar in both versions.</target>
+			</trans-unit>
+			<trans-unit id="importdata_allowToWriteBanned" approved="yes">
+				<source>Allow to write banned file extensions (eg. PHP scripts), if any</source>
+				<target>Allow to write banned file extensions (eg. PHP scripts), if any</target>
+			</trans-unit>
+			<trans-unit id="importdata_action" approved="yes">
+				<source>Action:</source>
+				<target>Action:</target>
+			</trans-unit>
+			<trans-unit id="importdata_preview" approved="yes">
+				<source>Preview</source>
+				<target>Preview</target>
+			</trans-unit>
+			<trans-unit id="importdata_update_299e" approved="yes">
+				<source>Update</source>
+				<target>Update</target>
+			</trans-unit>
+			<trans-unit id="importdata_import" approved="yes">
+				<source>Import</source>
+				<target>Import</target>
+			</trans-unit>
+			<trans-unit id="importdata_areYouSure" approved="yes">
+				<source>Are you sure?</source>
+				<target>Are you sure?</target>
+			</trans-unit>
+			<trans-unit id="importdata_newImport" approved="yes">
+				<source>New import</source>
+				<target>New import</target>
+			</trans-unit>
+			<trans-unit id="importdata_enableLogging" approved="yes">
+				<source>Enable logging:</source>
+				<target>Enable logging:</target>
+			</trans-unit>
+			<trans-unit id="importdata_writeIndividualDbActions" approved="yes">
+				<source>Write individual DB actions during import to the log</source>
+				<target>Write individual DB actions during import to the log</target>
+			</trans-unit>
+			<trans-unit id="importdata_thisIsDisabledBy" approved="yes">
+				<source>This is disabled by default since there may be hundred of entries generated.</source>
+				<target>This is disabled by default since there may be hundred of entries generated.</target>
+			</trans-unit>
+			<trans-unit id="importdata_uploadFileFromLocal" approved="yes">
+				<source>Upload file from local computer:</source>
+				<target>Upload file from local computer:</target>
+			</trans-unit>
+			<trans-unit id="importdata_browse" approved="yes">
+				<source>Browse:</source>
+				<target>Browse:</target>
+			</trans-unit>
+			<trans-unit id="importdata_uploadStatus" approved="yes">
+				<source>Upload status:</source>
+				<target>Upload status:</target>
+			</trans-unit>
+			<trans-unit id="importdata_success" approved="yes">
+				<source>Success:</source>
+				<target>Success:</target>
+			</trans-unit>
+			<trans-unit id="importdata_failureNoFileUploaded" approved="yes">
+				<source>Failure: No file uploaded - was it too big? Check system log.</source>
+				<target>Failure: No file uploaded - was it too big? Check system log.</target>
+			</trans-unit>
+			<trans-unit id="importdata_upload" approved="yes">
+				<source>Upload</source>
+				<target>Upload</target>
+			</trans-unit>
+			<trans-unit id="importdata_metaData" approved="yes">
+				<source>Meta data:</source>
+				<target>Meta data:</target>
+			</trans-unit>
+			<trans-unit id="importdata_title" approved="yes">
+				<source>Title:</source>
+				<target>Title:</target>
+			</trans-unit>
+			<trans-unit id="importdata_description" approved="yes">
+				<source>Description:</source>
+				<target>Description:</target>
+			</trans-unit>
+			<trans-unit id="importdata_notes" approved="yes">
+				<source>Notes:</source>
+				<target>Notes:</target>
+			</trans-unit>
+			<trans-unit id="importdata_packager" approved="yes">
+				<source>Packager:</source>
+				<target>Packager:</target>
+			</trans-unit>
+			<trans-unit id="importdata_email" approved="yes">
+				<source>Email:</source>
+				<target>Email:</target>
+			</trans-unit>
+			<trans-unit id="importdata_icon" approved="yes">
+				<source>Icon:</source>
+				<target>Icon:</target>
+			</trans-unit>
+			<trans-unit id="importdata_metaData_1387" approved="yes">
+				<source>Meta data</source>
+				<target>Meta data</target>
+			</trans-unit>
+			<trans-unit id="importdata_messages" approved="yes">
+				<source>Messages</source>
+				<target>Messages</target>
+			</trans-unit>
+			<trans-unit id="importdata_structureHasBeenImported" approved="yes">
+				<source>Structure has been imported, here is the result:</source>
+				<target>Structure has been imported, here is the result:</target>
+			</trans-unit>
+			<trans-unit id="filterpage_structureToBeImported" approved="yes">
+				<source>Structure to be imported:</source>
+				<target>Structure to be imported:</target>
+			</trans-unit>
+			<trans-unit id="ALL_tables" approved="yes">
+				<source>ALL tables</source>
+				<target>ALL tables</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_displaycon_controls" approved="yes">
+				<source>Controls:</source>
+				<target>Controls:</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_displaycon_title" approved="yes">
+				<source>Title:</source>
+				<target>Title:</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_displaycon_size" approved="yes">
+				<source>Size:</source>
+				<target>Size:</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_displaycon_message" approved="yes">
+				<source>Message:</source>
+				<target>Message:</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_displaycon_updateMode" approved="yes">
+				<source>Update Mode:</source>
+				<target>Update Mode:</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_displaycon_currentPath" approved="yes">
+				<source>Current Path:</source>
+				<target>Current Path:</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_displaycon_result" approved="yes">
+				<source>Result:</source>
+				<target>Result:</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_displaycon_insidePagetree" approved="yes">
+				<source>Inside pagetree:</source>
+				<target>Inside pagetree:</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_singlereco_outsidePagetree" approved="yes">
+				<source>Outside pagetree:</source>
+				<target>Outside pagetree:</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_singlereco_softReferencesFiles" approved="yes">
+				<source>Soft References Files:</source>
+				<target>Soft References Files:</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_singlereco_update" approved="yes">
+				<source>Update</source>
+				<target>Update</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_singlereco_insert" approved="yes">
+				<source>Insert</source>
+				<target>Insert</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_singlereco_importAsNew" approved="yes">
+				<source>Import as new</source>
+				<target>Import as new</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_singlereco_ignorePid" approved="yes">
+				<source>Ignore PID</source>
+				<target>Ignore PID</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_singlereco_respectPid" approved="yes">
+				<source>Respect PID</source>
+				<target>Respect PID</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_singlereco_forceUidSAdmin" approved="yes">
+				<source>Force UID [%s] (Admin)</source>
+				<target>Force UID [%s] (Admin)</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_singlereco_exclude" approved="yes">
+				<source>Exclude</source>
+				<target>Exclude</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_singlereco_title" approved="yes">
+				<source>Title:</source>
+				<target>Title:</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_singlereco_descr" approved="yes">
+				<source>Descr:</source>
+				<target>Descr:</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_singlereco_filename" approved="yes">
+				<source>Filename:</source>
+				<target>Filename:</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_singlereco_value" approved="yes">
+				<source>Value:</source>
+				<target>Value:</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_softrefsel_record" approved="yes">
+				<source>Record:</source>
+				<target>Record:</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_softrefsel_editable" approved="yes">
+				<source>Editable</source>
+				<target>Editable</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_softrefsel_exclude" approved="yes">
+				<source>Exclude</source>
+				<target>Exclude</target>
+			</trans-unit>
+			<trans-unit id="impexpcore_printerror_description" approved="yes">
+				<source>Description:</source>
+				<target>Description:</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

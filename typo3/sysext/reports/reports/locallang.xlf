@@ -1,232 +1,232 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="reports">
-    <header/>
-    <body>
-      <trans-unit id="status_report_title" approved="yes">
-        <source>Status Report</source>
-        <target>Status Report</target>
-      </trans-unit>
-      <trans-unit id="status_report_description" approved="yes">
-        <source>Get a status report about your site's operation and any detected problems.</source>
-        <target>Get a status report about your site's operation and any detected problems.</target>
-      </trans-unit>
-      <trans-unit id="status_report_explanation" approved="yes">
-        <source>Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailinglists and project issue trackers.</source>
-        <target>Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailinglists and project issue trackers.</target>
-      </trans-unit>
-      <trans-unit id="status_ok" approved="yes">
-        <source>OK</source>
-        <target>OK</target>
-      </trans-unit>
-      <trans-unit id="status_insecure" approved="yes">
-        <source>Insecure</source>
-        <target>Insecure</target>
-      </trans-unit>
-      <trans-unit id="status_disabled" approved="yes">
-        <source>Disabled</source>
-        <target>Disabled</target>
-      </trans-unit>
-      <trans-unit id="status_enabled" approved="yes">
-        <source>Enabled</source>
-        <target>Enabled</target>
-      </trans-unit>
-      <trans-unit id="status_enabledPermanently" approved="yes">
-        <source>Enabled permanently</source>
-        <target>Enabled permanently</target>
-      </trans-unit>
-      <trans-unit id="status_enabledTemporarily" approved="yes">
-        <source>Enabled temporarily</source>
-        <target>Enabled temporarily</target>
-      </trans-unit>
-      <trans-unit id="status_empty" approved="yes">
-        <source>Empty</source>
-        <target>Empty</target>
-      </trans-unit>
-      <trans-unit id="status_connectionFailed" approved="yes">
-        <source>Connection Failed</source>
-        <target>Connection Failed</target>
-      </trans-unit>
-      <trans-unit id="status_updateComplete" approved="yes">
-        <source>Update Complete</source>
-        <target>Update Complete</target>
-      </trans-unit>
-      <trans-unit id="status_updateIncomplete" approved="yes">
-        <source>Update Incomplete</source>
-        <target>Update Incomplete</target>
-      </trans-unit>
-      <trans-unit id="status_problemNotification" approved="yes">
-        <source>One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
-        <target>One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</target>
-      </trans-unit>
-      <trans-unit id="status_typo3" approved="yes">
-        <source>TYPO3 System</source>
-        <target>TYPO3 System</target>
-      </trans-unit>
-      <trans-unit id="status_system" approved="yes">
-        <source>System</source>
-        <target>System</target>
-      </trans-unit>
-      <trans-unit id="status_security" approved="yes">
-        <source>Security</source>
-        <target>Security</target>
-      </trans-unit>
-      <trans-unit id="status_configuration" approved="yes">
-        <source>Configuration</source>
-        <target>Configuration</target>
-      </trans-unit>
-      <trans-unit id="status_referenceIndex" approved="yes">
-        <source>Reference Index</source>
-        <target>Reference Index</target>
-      </trans-unit>
-      <trans-unit id="status_memcachedConfiguration" approved="yes">
-        <source>Memcached Configuration</source>
-        <target>Memcached Configuration</target>
-      </trans-unit>
-      <trans-unit id="status_PhpSafeMode" approved="yes">
-        <source>PHP safe_mode</source>
-        <target>PHP safe_mode</target>
-      </trans-unit>
-      <trans-unit id="status_adminUserAccount" approved="yes">
-        <source>Admin User Account</source>
-        <target>Admin User Account</target>
-      </trans-unit>
-      <trans-unit id="status_encryptionKey" approved="yes">
-        <source>Encryption Key</source>
-        <target>Encryption Key</target>
-      </trans-unit>
-      <trans-unit id="status_fileDenyPattern" approved="yes">
-        <source>File Deny Pattern</source>
-        <target>File Deny Pattern</target>
-      </trans-unit>
-      <trans-unit id="status_htaccessUploadProtection" approved="yes">
-        <source>.htaccess Upload Protection</source>
-        <target>.htaccess Upload Protection</target>
-      </trans-unit>
-      <trans-unit id="status_installToolPassword" approved="yes">
-        <source>Install Tool Password</source>
-        <target>Install Tool Password</target>
-      </trans-unit>
-      <trans-unit id="status_installTool" approved="yes">
-        <source>Install Tool</source>
-        <target>Install Tool</target>
-      </trans-unit>
-      <trans-unit id="status_phpVersion" approved="yes">
-        <source>PHP Version</source>
-        <target>PHP Version</target>
-      </trans-unit>
-      <trans-unit id="status_phpTooOld" approved="yes">
-        <source>Your PHP installation is too old.</source>
-        <target>Your PHP installation is too old.</target>
-      </trans-unit>
-      <trans-unit id="status_phpMemory" approved="yes">
-        <source>PHP Memory Limit</source>
-        <target>PHP Memory Limit</target>
-      </trans-unit>
-      <trans-unit id="status_phpMemoryRecommendation" approved="yes">
-        <source>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is recommended, especially if your site uses additional extensions.</source>
-        <target>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is recommended, especially if your site uses additional extensions.</target>
-      </trans-unit>
-      <trans-unit id="status_phpMemoryRequirement" approved="yes">
-        <source>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is required especially if your site uses additional extensions.</source>
-        <target>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is required especially if your site uses additional extensions.</target>
-      </trans-unit>
-      <trans-unit id="status_phpMemoryEditLimit" approved="yes">
-        <source>Increase the memory limit by editing the memory_limit parameter in the file %s and then restart your web server (or contact your system administrator or hosting provider for assistance).</source>
-        <target>Increase the memory limit by editing the memory_limit parameter in the file %s and then restart your web server (or contact your system administrator or hosting provider for assistance).</target>
-      </trans-unit>
-      <trans-unit id="status_phpMemoryContactAdmin" approved="yes">
-        <source>Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.</source>
-        <target>Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.</target>
-      </trans-unit>
-      <trans-unit id="status_phpPeakMemory" approved="yes">
-        <source>PHP peak memory usage</source>
-        <target>PHP peak memory usage</target>
-      </trans-unit>
-      <trans-unit id="status_phpPeakMemoryTooHigh" approved="yes">
-        <source>During a request %2$s of the memory limit was used. On %4$s a request to %5$s used %1$s of %3$s.</source>
-        <target>During a request %2$s of the memory limit was used. On %4$s a request to %5$s used %1$s of %3$s.</target>
-      </trans-unit>
-      <trans-unit id="status_phpPeakMemoryClearFlag" approved="yes">
-        <source>Clear this flag</source>
-        <target>Clear this flag</target>
-      </trans-unit>
-      <trans-unit id="status_phpRegisterGlobals" approved="yes">
-        <source>PHP Register Globals</source>
-        <target>PHP Register Globals</target>
-      </trans-unit>
-      <trans-unit id="status_phpRegisterGlobalsEnabled" approved="yes">
-        <source>%s is enabled. TYPO3 requires this configuration directive to be disabled.</source>
-        <target>%s is enabled. TYPO3 requires this configuration directive to be disabled.</target>
-      </trans-unit>
-      <trans-unit id="status_phpRegisterGlobalsSecurity" approved="yes">
-        <source>Your site may not be secure when %s is enabled.</source>
-        <target>Your site may not be secure when %s is enabled.</target>
-      </trans-unit>
-      <trans-unit id="status_phpRegisterGlobalsHowToChange" approved="yes">
-        <source>how to change configuration settings</source>
-        <target>how to change configuration settings</target>
-      </trans-unit>
-      <trans-unit id="status_phpRegisterGlobalsPHPManual" approved="yes">
-        <source>The PHP manual has instructions for %s.</source>
-        <target>The PHP manual has instructions for %s.</target>
-      </trans-unit>
-      <trans-unit id="status_webServer" approved="yes">
-        <source>Web Server</source>
-        <target>Web Server</target>
-      </trans-unit>
-      <trans-unit id="status_installEnabledTemporarily" approved="yes">
-        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
-        <target>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</target>
-      </trans-unit>
-      <trans-unit id="status_configuration_DeprecationLog" approved="yes">
-        <source>Deprecation Log</source>
-        <target>Deprecation Log</target>
-      </trans-unit>
-      <trans-unit id="status_configuration_DeprecationLogEnabled" approved="yes">
-        <source>The deprecation log tracks whether old APIs are being used in extensions. Depending on the extensions you use and whether they use deprecated APIs it can happen that the log takes up quite some space over time. The more space it takes up, the more it may affect your installation's performance. It is recommended to disable deprecation log in production environments.</source>
-        <target>The deprecation log tracks whether old APIs are being used in extensions. Depending on the extensions you use and whether they use deprecated APIs it can happen that the log takes up quite some space over time. The more space it takes up, the more it may affect your installation's performance. It is recommended to disable deprecation log in production environments.</target>
-      </trans-unit>
-      <trans-unit id="status_configuration_DeprecationLogFile" approved="yes">
-        <source>You can find the deprecation log file at %s.</source>
-        <target>You can find the deprecation log file at %s.</target>
-      </trans-unit>
-      <trans-unit id="status_configuration_DeprecationLogSize" approved="yes">
-        <source>Your deprecation log file currently takes up %s.</source>
-        <target>Your deprecation log file currently takes up %s.</target>
-      </trans-unit>
-      <trans-unit id="status_configuration_PhpSafeModeEnabled" approved="yes">
-        <source>PHP INI setting safe_mode "On" is deprecated since PHP 5.3 and is not supported by TYPO3 anymore.</source>
-        <target>PHP INI setting safe_mode "On" is deprecated since PHP 5.3 and is not supported by TYPO3 anymore.</target>
-      </trans-unit>
-      <trans-unit id="status_updateTaskTitle" approved="yes">
-        <source>System Status Update</source>
-        <target>System Status Update</target>
-      </trans-unit>
-      <trans-unit id="status_updateTaskDescription" approved="yes">
-        <source>Runs a system status check and sends notifications if problems have been found.</source>
-        <target>Runs a system status check and sends notifications if problems have been found.</target>
-      </trans-unit>
-      <trans-unit id="status_updateTaskField_notificationEmail" approved="yes">
-        <source>Notification Email Address</source>
-        <target>Notification Email Address</target>
-      </trans-unit>
-      <trans-unit id="status_updateTaskField_notificationEmail_invalid" approved="yes">
-        <source>Empty or invalid notification email address.</source>
-        <target>Empty or invalid notification email address.</target>
-      </trans-unit>
-      <trans-unit id="status_updateTask_email_subject" approved="yes">
-        <source>System Status Notification for site %s</source>
-        <target>System Status Notification for site %s</target>
-      </trans-unit>
-      <trans-unit id="status_updateTask_email_site" approved="yes">
-        <source>Site</source>
-        <target>Site</target>
-      </trans-unit>
-      <trans-unit id="status_updateTask_email_issues" approved="yes">
-        <source>Issues</source>
-        <target>Issues</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:25 UTC" product-name="reports">
+		<header/>
+		<body>
+			<trans-unit id="status_report_title" approved="yes">
+				<source>Status Report</source>
+				<target>Status Report</target>
+			</trans-unit>
+			<trans-unit id="status_report_description" approved="yes">
+				<source>Get a status report about your site's operation and any detected problems.</source>
+				<target>Get a status report about your site's operation and any detected problems.</target>
+			</trans-unit>
+			<trans-unit id="status_report_explanation" approved="yes">
+				<source>Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailinglists and project issue trackers.</source>
+				<target>Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailinglists and project issue trackers.</target>
+			</trans-unit>
+			<trans-unit id="status_ok" approved="yes">
+				<source>OK</source>
+				<target>OK</target>
+			</trans-unit>
+			<trans-unit id="status_insecure" approved="yes">
+				<source>Insecure</source>
+				<target>Insecure</target>
+			</trans-unit>
+			<trans-unit id="status_disabled" approved="yes">
+				<source>Disabled</source>
+				<target>Disabled</target>
+			</trans-unit>
+			<trans-unit id="status_enabled" approved="yes">
+				<source>Enabled</source>
+				<target>Enabled</target>
+			</trans-unit>
+			<trans-unit id="status_enabledPermanently" approved="yes">
+				<source>Enabled permanently</source>
+				<target>Enabled permanently</target>
+			</trans-unit>
+			<trans-unit id="status_enabledTemporarily" approved="yes">
+				<source>Enabled temporarily</source>
+				<target>Enabled temporarily</target>
+			</trans-unit>
+			<trans-unit id="status_empty" approved="yes">
+				<source>Empty</source>
+				<target>Empty</target>
+			</trans-unit>
+			<trans-unit id="status_connectionFailed" approved="yes">
+				<source>Connection Failed</source>
+				<target>Connection Failed</target>
+			</trans-unit>
+			<trans-unit id="status_updateComplete" approved="yes">
+				<source>Update Complete</source>
+				<target>Update Complete</target>
+			</trans-unit>
+			<trans-unit id="status_updateIncomplete" approved="yes">
+				<source>Update Incomplete</source>
+				<target>Update Incomplete</target>
+			</trans-unit>
+			<trans-unit id="status_problemNotification" approved="yes">
+				<source>One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+				<target>One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</target>
+			</trans-unit>
+			<trans-unit id="status_typo3" approved="yes">
+				<source>TYPO3 System</source>
+				<target>TYPO3 System</target>
+			</trans-unit>
+			<trans-unit id="status_system" approved="yes">
+				<source>System</source>
+				<target>System</target>
+			</trans-unit>
+			<trans-unit id="status_security" approved="yes">
+				<source>Security</source>
+				<target>Security</target>
+			</trans-unit>
+			<trans-unit id="status_configuration" approved="yes">
+				<source>Configuration</source>
+				<target>Configuration</target>
+			</trans-unit>
+			<trans-unit id="status_referenceIndex" approved="yes">
+				<source>Reference Index</source>
+				<target>Reference Index</target>
+			</trans-unit>
+			<trans-unit id="status_memcachedConfiguration" approved="yes">
+				<source>Memcached Configuration</source>
+				<target>Memcached Configuration</target>
+			</trans-unit>
+			<trans-unit id="status_PhpSafeMode" approved="yes">
+				<source>PHP safe_mode</source>
+				<target>PHP safe_mode</target>
+			</trans-unit>
+			<trans-unit id="status_adminUserAccount" approved="yes">
+				<source>Admin User Account</source>
+				<target>Admin User Account</target>
+			</trans-unit>
+			<trans-unit id="status_encryptionKey" approved="yes">
+				<source>Encryption Key</source>
+				<target>Encryption Key</target>
+			</trans-unit>
+			<trans-unit id="status_fileDenyPattern" approved="yes">
+				<source>File Deny Pattern</source>
+				<target>File Deny Pattern</target>
+			</trans-unit>
+			<trans-unit id="status_htaccessUploadProtection" approved="yes">
+				<source>.htaccess Upload Protection</source>
+				<target>.htaccess Upload Protection</target>
+			</trans-unit>
+			<trans-unit id="status_installToolPassword" approved="yes">
+				<source>Install Tool Password</source>
+				<target>Install Tool Password</target>
+			</trans-unit>
+			<trans-unit id="status_installTool" approved="yes">
+				<source>Install Tool</source>
+				<target>Install Tool</target>
+			</trans-unit>
+			<trans-unit id="status_phpVersion" approved="yes">
+				<source>PHP Version</source>
+				<target>PHP Version</target>
+			</trans-unit>
+			<trans-unit id="status_phpTooOld" approved="yes">
+				<source>Your PHP installation is too old.</source>
+				<target>Your PHP installation is too old.</target>
+			</trans-unit>
+			<trans-unit id="status_phpMemory" approved="yes">
+				<source>PHP Memory Limit</source>
+				<target>PHP Memory Limit</target>
+			</trans-unit>
+			<trans-unit id="status_phpMemoryRecommendation" approved="yes">
+				<source>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is recommended, especially if your site uses additional extensions.</source>
+				<target>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is recommended, especially if your site uses additional extensions.</target>
+			</trans-unit>
+			<trans-unit id="status_phpMemoryRequirement" approved="yes">
+				<source>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is required especially if your site uses additional extensions.</source>
+				<target>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is required especially if your site uses additional extensions.</target>
+			</trans-unit>
+			<trans-unit id="status_phpMemoryEditLimit" approved="yes">
+				<source>Increase the memory limit by editing the memory_limit parameter in the file %s and then restart your web server (or contact your system administrator or hosting provider for assistance).</source>
+				<target>Increase the memory limit by editing the memory_limit parameter in the file %s and then restart your web server (or contact your system administrator or hosting provider for assistance).</target>
+			</trans-unit>
+			<trans-unit id="status_phpMemoryContactAdmin" approved="yes">
+				<source>Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.</source>
+				<target>Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.</target>
+			</trans-unit>
+			<trans-unit id="status_phpPeakMemory" approved="yes">
+				<source>PHP peak memory usage</source>
+				<target>PHP peak memory usage</target>
+			</trans-unit>
+			<trans-unit id="status_phpPeakMemoryTooHigh" approved="yes">
+				<source>During a request %2$s of the memory limit was used. On %4$s a request to %5$s used %1$s of %3$s.</source>
+				<target>During a request %2$s of the memory limit was used. On %4$s a request to %5$s used %1$s of %3$s.</target>
+			</trans-unit>
+			<trans-unit id="status_phpPeakMemoryClearFlag" approved="yes">
+				<source>Clear this flag</source>
+				<target>Clear this flag</target>
+			</trans-unit>
+			<trans-unit id="status_phpRegisterGlobals" approved="yes">
+				<source>PHP Register Globals</source>
+				<target>PHP Register Globals</target>
+			</trans-unit>
+			<trans-unit id="status_phpRegisterGlobalsEnabled" approved="yes">
+				<source>%s is enabled. TYPO3 requires this configuration directive to be disabled.</source>
+				<target>%s is enabled. TYPO3 requires this configuration directive to be disabled.</target>
+			</trans-unit>
+			<trans-unit id="status_phpRegisterGlobalsSecurity" approved="yes">
+				<source>Your site may not be secure when %s is enabled.</source>
+				<target>Your site may not be secure when %s is enabled.</target>
+			</trans-unit>
+			<trans-unit id="status_phpRegisterGlobalsHowToChange" approved="yes">
+				<source>how to change configuration settings</source>
+				<target>how to change configuration settings</target>
+			</trans-unit>
+			<trans-unit id="status_phpRegisterGlobalsPHPManual" approved="yes">
+				<source>The PHP manual has instructions for %s.</source>
+				<target>The PHP manual has instructions for %s.</target>
+			</trans-unit>
+			<trans-unit id="status_webServer" approved="yes">
+				<source>Web Server</source>
+				<target>Web Server</target>
+			</trans-unit>
+			<trans-unit id="status_installEnabledTemporarily" approved="yes">
+				<source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+				<target>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</target>
+			</trans-unit>
+			<trans-unit id="status_configuration_DeprecationLog" approved="yes">
+				<source>Deprecation Log</source>
+				<target>Deprecation Log</target>
+			</trans-unit>
+			<trans-unit id="status_configuration_DeprecationLogEnabled" approved="yes">
+				<source>The deprecation log tracks whether old APIs are being used in extensions. Depending on the extensions you use and whether they use deprecated APIs it can happen that the log takes up quite some space over time. The more space it takes up, the more it may affect your installation's performance. It is recommended to disable deprecation log in production environments.</source>
+				<target>The deprecation log tracks whether old APIs are being used in extensions. Depending on the extensions you use and whether they use deprecated APIs it can happen that the log takes up quite some space over time. The more space it takes up, the more it may affect your installation's performance. It is recommended to disable deprecation log in production environments.</target>
+			</trans-unit>
+			<trans-unit id="status_configuration_DeprecationLogFile" approved="yes">
+				<source>You can find the deprecation log file at %s.</source>
+				<target>You can find the deprecation log file at %s.</target>
+			</trans-unit>
+			<trans-unit id="status_configuration_DeprecationLogSize" approved="yes">
+				<source>Your deprecation log file currently takes up %s.</source>
+				<target>Your deprecation log file currently takes up %s.</target>
+			</trans-unit>
+			<trans-unit id="status_configuration_PhpSafeModeEnabled" approved="yes">
+				<source>PHP INI setting safe_mode "On" is deprecated since PHP 5.3 and is not supported by TYPO3 anymore.</source>
+				<target>PHP INI setting safe_mode "On" is deprecated since PHP 5.3 and is not supported by TYPO3 anymore.</target>
+			</trans-unit>
+			<trans-unit id="status_updateTaskTitle" approved="yes">
+				<source>System Status Update</source>
+				<target>System Status Update</target>
+			</trans-unit>
+			<trans-unit id="status_updateTaskDescription" approved="yes">
+				<source>Runs a system status check and sends notifications if problems have been found.</source>
+				<target>Runs a system status check and sends notifications if problems have been found.</target>
+			</trans-unit>
+			<trans-unit id="status_updateTaskField_notificationEmail" approved="yes">
+				<source>Notification Email Address</source>
+				<target>Notification Email Address</target>
+			</trans-unit>
+			<trans-unit id="status_updateTaskField_notificationEmail_invalid" approved="yes">
+				<source>Empty or invalid notification email address.</source>
+				<target>Empty or invalid notification email address.</target>
+			</trans-unit>
+			<trans-unit id="status_updateTask_email_subject" approved="yes">
+				<source>System Status Notification for site %s</source>
+				<target>System Status Notification for site %s</target>
+			</trans-unit>
+			<trans-unit id="status_updateTask_email_site" approved="yes">
+				<source>Site</source>
+				<target>Site</target>
+			</trans-unit>
+			<trans-unit id="status_updateTask_email_issues" approved="yes">
+				<source>Issues</source>
+				<target>Issues</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

@@ -1,132 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
-    <header/>
-    <body>
-      <trans-unit id="No markup" approved="yes">
-        <source>No text format</source>
-        <target>No text format</target>
-      </trans-unit>
-      <trans-unit id="Remove markup" approved="yes">
-        <source>Remove text format</source>
-        <target>Remove text format</target>
-      </trans-unit>
-      <trans-unit id="FormatText-Tooltip" approved="yes">
-        <source>Apply format to selected text</source>
-        <target>Apply format to selected text</target>
-      </trans-unit>
-      <trans-unit id="BiDiOverride-Tooltip" approved="yes">
-        <source>Bidirectionality override</source>
-        <target>Bidirectionality override</target>
-      </trans-unit>
-      <trans-unit id="Big-Tooltip" approved="yes">
-        <source>Large text</source>
-        <target>Large text</target>
-      </trans-unit>
-      <trans-unit id="Bold-Tooltip" approved="yes">
-        <source>Bold</source>
-        <target>Bold</target>
-      </trans-unit>
-      <trans-unit id="Citation-Tooltip" approved="yes">
-        <source>Citation</source>
-        <target>Citation</target>
-      </trans-unit>
-      <trans-unit id="Code-Tooltip" approved="yes">
-        <source>Computer code fragment</source>
-        <target>Computer code fragment</target>
-      </trans-unit>
-      <trans-unit id="Code-contextMenuTitle" approved="yes">
-        <source>Code fragment</source>
-        <target>Code fragment</target>
-      </trans-unit>
-      <trans-unit id="Definition-Tooltip" approved="yes">
-        <source>Definition</source>
-        <target>Definition</target>
-      </trans-unit>
-      <trans-unit id="DeletedText-Tooltip" approved="yes">
-        <source>Deleted text</source>
-        <target>Deleted text</target>
-      </trans-unit>
-      <trans-unit id="Emphasis-Tooltip" approved="yes">
-        <source>Emphasis</source>
-        <target>Emphasis</target>
-      </trans-unit>
-      <trans-unit id="Keyboard-Tooltip" approved="yes">
-        <source>Text to be entered by the user</source>
-        <target>Text to be entered by the user</target>
-      </trans-unit>
-      <trans-unit id="Keyboard-contextMenuTitle" approved="yes">
-        <source>Text to enter</source>
-        <target>Text to enter</target>
-      </trans-unit>
-      <trans-unit id="InsertedText-Tooltip" approved="yes">
-        <source>Inserted text</source>
-        <target>Inserted text</target>
-      </trans-unit>
-      <trans-unit id="Italic-Tooltip" approved="yes">
-        <source>Italic</source>
-        <target>Italic</target>
-      </trans-unit>
-      <trans-unit id="MonoSpaced-Tooltip" approved="yes">
-        <source>Monospaced text</source>
-        <target>Monospaced text</target>
-      </trans-unit>
-      <trans-unit id="Quotation-Tooltip" approved="yes">
-        <source>Short inline quotation</source>
-        <target>Short inline quotation</target>
-      </trans-unit>
-      <trans-unit id="Quotation-contextMenuTitle" approved="yes">
-        <source>Short quotation</source>
-        <target>Short quotation</target>
-      </trans-unit>
-      <trans-unit id="Sample-Tooltip" approved="yes">
-        <source>Sample program output or script</source>
-        <target>Sample program output or script</target>
-      </trans-unit>
-      <trans-unit id="Sample-contextMenuTitle" approved="yes">
-        <source>Sample output</source>
-        <target>Sample output</target>
-      </trans-unit>
-      <trans-unit id="Small-Tooltip" approved="yes">
-        <source>Small text</source>
-        <target>Small text</target>
-      </trans-unit>
-      <trans-unit id="Span-Tooltip" approved="yes">
-        <source>Style container</source>
-        <target>Style container</target>
-      </trans-unit>
-      <trans-unit id="StrikeThrough-Tooltip" approved="yes">
-        <source>Strike-through text</source>
-        <target>Strike-through text</target>
-      </trans-unit>
-      <trans-unit id="Strong-Tooltip" approved="yes">
-        <source>Strong emphasis</source>
-        <target>Strong emphasis</target>
-      </trans-unit>
-      <trans-unit id="Subscript-Tooltip" approved="yes">
-        <source>Subscript</source>
-        <target>Subscript</target>
-      </trans-unit>
-      <trans-unit id="Superscript-Tooltip" approved="yes">
-        <source>Superscript</source>
-        <target>Superscript</target>
-      </trans-unit>
-      <trans-unit id="Underline-Tooltip" approved="yes">
-        <source>Underline</source>
-        <target>Underline</target>
-      </trans-unit>
-      <trans-unit id="Variable-Tooltip" approved="yes">
-        <source>Variable or program argument</source>
-        <target>Variable or program argument</target>
-      </trans-unit>
-      <trans-unit id="Variable-contextMenuTitle" approved="yes">
-        <source>Variable</source>
-        <target>Variable</target>
-      </trans-unit>
-      <trans-unit id="Technische Universitat Ilmenau" approved="yes">
-        <source>Technische Universität Ilmenau</source>
-        <target>Technische Universität Ilmenau</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id="No markup" approved="yes">
+				<source>No text format</source>
+				<target>No text format</target>
+			</trans-unit>
+			<trans-unit id="Remove markup" approved="yes">
+				<source>Remove text format</source>
+				<target>Remove text format</target>
+			</trans-unit>
+			<trans-unit id="FormatText-Tooltip" approved="yes">
+				<source>Apply format to selected text</source>
+				<target>Apply format to selected text</target>
+			</trans-unit>
+			<trans-unit id="BiDiOverride-Tooltip" approved="yes">
+				<source>Bidirectionality override</source>
+				<target>Bidirectionality override</target>
+			</trans-unit>
+			<trans-unit id="Big-Tooltip" approved="yes">
+				<source>Large text</source>
+				<target>Large text</target>
+			</trans-unit>
+			<trans-unit id="Bold-Tooltip" approved="yes">
+				<source>Bold</source>
+				<target>Bold</target>
+			</trans-unit>
+			<trans-unit id="Citation-Tooltip" approved="yes">
+				<source>Citation</source>
+				<target>Citation</target>
+			</trans-unit>
+			<trans-unit id="Code-Tooltip" approved="yes">
+				<source>Computer code fragment</source>
+				<target>Computer code fragment</target>
+			</trans-unit>
+			<trans-unit id="Code-contextMenuTitle" approved="yes">
+				<source>Code fragment</source>
+				<target>Code fragment</target>
+			</trans-unit>
+			<trans-unit id="Definition-Tooltip" approved="yes">
+				<source>Definition</source>
+				<target>Definition</target>
+			</trans-unit>
+			<trans-unit id="DeletedText-Tooltip" approved="yes">
+				<source>Deleted text</source>
+				<target>Deleted text</target>
+			</trans-unit>
+			<trans-unit id="Emphasis-Tooltip" approved="yes">
+				<source>Emphasis</source>
+				<target>Emphasis</target>
+			</trans-unit>
+			<trans-unit id="Keyboard-Tooltip" approved="yes">
+				<source>Text to be entered by the user</source>
+				<target>Text to be entered by the user</target>
+			</trans-unit>
+			<trans-unit id="Keyboard-contextMenuTitle" approved="yes">
+				<source>Text to enter</source>
+				<target>Text to enter</target>
+			</trans-unit>
+			<trans-unit id="InsertedText-Tooltip" approved="yes">
+				<source>Inserted text</source>
+				<target>Inserted text</target>
+			</trans-unit>
+			<trans-unit id="Italic-Tooltip" approved="yes">
+				<source>Italic</source>
+				<target>Italic</target>
+			</trans-unit>
+			<trans-unit id="MonoSpaced-Tooltip" approved="yes">
+				<source>Monospaced text</source>
+				<target>Monospaced text</target>
+			</trans-unit>
+			<trans-unit id="Quotation-Tooltip" approved="yes">
+				<source>Short inline quotation</source>
+				<target>Short inline quotation</target>
+			</trans-unit>
+			<trans-unit id="Quotation-contextMenuTitle" approved="yes">
+				<source>Short quotation</source>
+				<target>Short quotation</target>
+			</trans-unit>
+			<trans-unit id="Sample-Tooltip" approved="yes">
+				<source>Sample program output or script</source>
+				<target>Sample program output or script</target>
+			</trans-unit>
+			<trans-unit id="Sample-contextMenuTitle" approved="yes">
+				<source>Sample output</source>
+				<target>Sample output</target>
+			</trans-unit>
+			<trans-unit id="Small-Tooltip" approved="yes">
+				<source>Small text</source>
+				<target>Small text</target>
+			</trans-unit>
+			<trans-unit id="Span-Tooltip" approved="yes">
+				<source>Style container</source>
+				<target>Style container</target>
+			</trans-unit>
+			<trans-unit id="StrikeThrough-Tooltip" approved="yes">
+				<source>Strike-through text</source>
+				<target>Strike-through text</target>
+			</trans-unit>
+			<trans-unit id="Strong-Tooltip" approved="yes">
+				<source>Strong emphasis</source>
+				<target>Strong emphasis</target>
+			</trans-unit>
+			<trans-unit id="Subscript-Tooltip" approved="yes">
+				<source>Subscript</source>
+				<target>Subscript</target>
+			</trans-unit>
+			<trans-unit id="Superscript-Tooltip" approved="yes">
+				<source>Superscript</source>
+				<target>Superscript</target>
+			</trans-unit>
+			<trans-unit id="Underline-Tooltip" approved="yes">
+				<source>Underline</source>
+				<target>Underline</target>
+			</trans-unit>
+			<trans-unit id="Variable-Tooltip" approved="yes">
+				<source>Variable or program argument</source>
+				<target>Variable or program argument</target>
+			</trans-unit>
+			<trans-unit id="Variable-contextMenuTitle" approved="yes">
+				<source>Variable</source>
+				<target>Variable</target>
+			</trans-unit>
+			<trans-unit id="Technische Universitat Ilmenau" approved="yes">
+				<source>Technische Universität Ilmenau</source>
+				<target>Technische Universität Ilmenau</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

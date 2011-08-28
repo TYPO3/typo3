@@ -1,56 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
-    <header/>
-    <body>
-      <trans-unit id="Quick Tag Editor" approved="yes">
-        <source>Insert tag</source>
-        <target>Insert tag</target>
-      </trans-unit>
-      <trans-unit id="Enter the TAG you want to insert" approved="yes">
-        <source>Enter the TAG you want to insert</source>
-        <target>Enter the TAG you want to insert</target>
-      </trans-unit>
-      <trans-unit id="You have to select some text" approved="yes">
-        <source>You have to select some text</source>
-        <target>You have to select some text</target>
-      </trans-unit>
-      <trans-unit id="There are some unclosed quote" approved="yes">
-        <source>There are some unclosed quotes</source>
-        <target>There are some unclosed quotes</target>
-      </trans-unit>
-      <trans-unit id="This attribute already exists in the TAG" approved="yes">
-        <source>This attribute already exists in the TAG</source>
-        <target>This attribute already exists in the TAG</target>
-      </trans-unit>
-      <trans-unit id="No CSS class avaiable" approved="yes">
-        <source>No CSS classes available</source>
-        <target>No CSS classes available</target>
-      </trans-unit>
-      <trans-unit id="OPTIONS" approved="yes">
-        <source>Options</source>
-        <target>Options</target>
-      </trans-unit>
-      <trans-unit id="ATTRIBUTES" approved="yes">
-        <source>Attributes</source>
-        <target>Attributes</target>
-      </trans-unit>
-      <trans-unit id="TAGs" approved="yes">
-        <source>Tags</source>
-        <target>Tags</target>
-      </trans-unit>
-      <trans-unit id="Colors" approved="yes">
-        <source>Colors</source>
-        <target>Colors</target>
-      </trans-unit>
-      <trans-unit id="Ok" approved="yes">
-        <source>Ok</source>
-        <target>Ok</target>
-      </trans-unit>
-      <trans-unit id="Cancel" approved="yes">
-        <source>Cancel</source>
-        <target>Cancel</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id="Quick Tag Editor" approved="yes">
+				<source>Insert tag</source>
+				<target>Insert tag</target>
+			</trans-unit>
+			<trans-unit id="Enter the TAG you want to insert" approved="yes">
+				<source>Enter the TAG you want to insert</source>
+				<target>Enter the TAG you want to insert</target>
+			</trans-unit>
+			<trans-unit id="You have to select some text" approved="yes">
+				<source>You have to select some text</source>
+				<target>You have to select some text</target>
+			</trans-unit>
+			<trans-unit id="There are some unclosed quote" approved="yes">
+				<source>There are some unclosed quotes</source>
+				<target>There are some unclosed quotes</target>
+			</trans-unit>
+			<trans-unit id="This attribute already exists in the TAG" approved="yes">
+				<source>This attribute already exists in the TAG</source>
+				<target>This attribute already exists in the TAG</target>
+			</trans-unit>
+			<trans-unit id="No CSS class avaiable" approved="yes">
+				<source>No CSS classes available</source>
+				<target>No CSS classes available</target>
+			</trans-unit>
+			<trans-unit id="OPTIONS" approved="yes">
+				<source>Options</source>
+				<target>Options</target>
+			</trans-unit>
+			<trans-unit id="ATTRIBUTES" approved="yes">
+				<source>Attributes</source>
+				<target>Attributes</target>
+			</trans-unit>
+			<trans-unit id="TAGs" approved="yes">
+				<source>Tags</source>
+				<target>Tags</target>
+			</trans-unit>
+			<trans-unit id="Colors" approved="yes">
+				<source>Colors</source>
+				<target>Colors</target>
+			</trans-unit>
+			<trans-unit id="Ok" approved="yes">
+				<source>Ok</source>
+				<target>Ok</target>
+			</trans-unit>
+			<trans-unit id="Cancel" approved="yes">
+				<source>Cancel</source>
+				<target>Cancel</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

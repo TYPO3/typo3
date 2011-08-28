@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
-    <header/>
-    <body>
-      <trans-unit id="LeftToRight-Tooltip" approved="yes">
-        <source>Direction left to right</source>
-        <target>Direction left to right</target>
-      </trans-unit>
-      <trans-unit id="RightToLeft-Tooltip" approved="yes">
-        <source>Direction right to left</source>
-        <target>Direction right to left</target>
-      </trans-unit>
-      <trans-unit id="Language-Tooltip" approved="yes">
-        <source>Language</source>
-        <target>Language</target>
-      </trans-unit>
-      <trans-unit id="ShowLanguageMarks-Tooltip" approved="yes">
-        <source>Show language marks</source>
-        <target>Show language marks</target>
-      </trans-unit>
-      <trans-unit id="Technische Universitat Ilmenau" approved="yes">
-        <source>Technische Universität Ilmenau</source>
-        <target>Technische Universität Ilmenau</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id="LeftToRight-Tooltip" approved="yes">
+				<source>Direction left to right</source>
+				<target>Direction left to right</target>
+			</trans-unit>
+			<trans-unit id="RightToLeft-Tooltip" approved="yes">
+				<source>Direction right to left</source>
+				<target>Direction right to left</target>
+			</trans-unit>
+			<trans-unit id="Language-Tooltip" approved="yes">
+				<source>Language</source>
+				<target>Language</target>
+			</trans-unit>
+			<trans-unit id="ShowLanguageMarks-Tooltip" approved="yes">
+				<source>Show language marks</source>
+				<target>Show language marks</target>
+			</trans-unit>
+			<trans-unit id="Technische Universitat Ilmenau" approved="yes">
+				<source>Technische Universität Ilmenau</source>
+				<target>Technische Universität Ilmenau</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

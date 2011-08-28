@@ -1,76 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="sv">
-    <header/>
-    <body>
-      <trans-unit id="report_title" approved="yes">
-        <source>Installed Services</source>
-        <target>Installed Services</target>
-      </trans-unit>
-      <trans-unit id="report_description" approved="yes">
-        <source>List of all installed services with information and status for each of them.</source>
-        <target>List of all installed services with information and status for each of them.</target>
-      </trans-unit>
-      <trans-unit id="report_explanation" approved="yes">
-        <source>This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</source>
-        <target>This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</target>
-      </trans-unit>
-      <trans-unit id="externals_explanation" approved="yes">
-        <source>The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</source>
-        <target>The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</target>
-      </trans-unit>
-      <trans-unit id="service_type" approved="yes">
-        <source>Service type: %s</source>
-        <target>Service type: %s</target>
-      </trans-unit>
-      <trans-unit id="service" approved="yes">
-        <source>Service</source>
-        <target>Service</target>
-      </trans-unit>
-      <trans-unit id="priority" approved="yes">
-        <source>Priority</source>
-        <target>Priority</target>
-      </trans-unit>
-      <trans-unit id="quality" approved="yes">
-        <source>Quality</source>
-        <target>Quality</target>
-      </trans-unit>
-      <trans-unit id="subtypes" approved="yes">
-        <source>Subtypes</source>
-        <target>Subtypes</target>
-      </trans-unit>
-      <trans-unit id="os" approved="yes">
-        <source>OS</source>
-        <target>OS</target>
-      </trans-unit>
-      <trans-unit id="externals" approved="yes">
-        <source>Externals</source>
-        <target>Externals</target>
-      </trans-unit>
-      <trans-unit id="available" approved="yes">
-        <source>Available</source>
-        <target>Available</target>
-      </trans-unit>
-      <trans-unit id="any" approved="yes">
-        <source>Any</source>
-        <target>Any</target>
-      </trans-unit>
-      <trans-unit id="search_paths" approved="yes">
-        <source>Configured search paths for external programs</source>
-        <target>Configured search paths for external programs</target>
-      </trans-unit>
-      <trans-unit id="path" approved="yes">
-        <source>Path</source>
-        <target>Path</target>
-      </trans-unit>
-      <trans-unit id="valid" approved="yes">
-        <source>Valid</source>
-        <target>Valid</target>
-      </trans-unit>
-      <trans-unit id="no_search_paths" approved="yes">
-        <source>No search paths configured.</source>
-        <target>No search paths configured.</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:28 UTC" product-name="sv">
+		<header/>
+		<body>
+			<trans-unit id="report_title" approved="yes">
+				<source>Installed Services</source>
+				<target>Installed Services</target>
+			</trans-unit>
+			<trans-unit id="report_description" approved="yes">
+				<source>List of all installed services with information and status for each of them.</source>
+				<target>List of all installed services with information and status for each of them.</target>
+			</trans-unit>
+			<trans-unit id="report_explanation" approved="yes">
+				<source>This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</source>
+				<target>This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</target>
+			</trans-unit>
+			<trans-unit id="externals_explanation" approved="yes">
+				<source>The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</source>
+				<target>The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</target>
+			</trans-unit>
+			<trans-unit id="service_type" approved="yes">
+				<source>Service type: %s</source>
+				<target>Service type: %s</target>
+			</trans-unit>
+			<trans-unit id="service" approved="yes">
+				<source>Service</source>
+				<target>Service</target>
+			</trans-unit>
+			<trans-unit id="priority" approved="yes">
+				<source>Priority</source>
+				<target>Priority</target>
+			</trans-unit>
+			<trans-unit id="quality" approved="yes">
+				<source>Quality</source>
+				<target>Quality</target>
+			</trans-unit>
+			<trans-unit id="subtypes" approved="yes">
+				<source>Subtypes</source>
+				<target>Subtypes</target>
+			</trans-unit>
+			<trans-unit id="os" approved="yes">
+				<source>OS</source>
+				<target>OS</target>
+			</trans-unit>
+			<trans-unit id="externals" approved="yes">
+				<source>Externals</source>
+				<target>Externals</target>
+			</trans-unit>
+			<trans-unit id="available" approved="yes">
+				<source>Available</source>
+				<target>Available</target>
+			</trans-unit>
+			<trans-unit id="any" approved="yes">
+				<source>Any</source>
+				<target>Any</target>
+			</trans-unit>
+			<trans-unit id="search_paths" approved="yes">
+				<source>Configured search paths for external programs</source>
+				<target>Configured search paths for external programs</target>
+			</trans-unit>
+			<trans-unit id="path" approved="yes">
+				<source>Path</source>
+				<target>Path</target>
+			</trans-unit>
+			<trans-unit id="valid" approved="yes">
+				<source>Valid</source>
+				<target>Valid</target>
+			</trans-unit>
+			<trans-unit id="no_search_paths" approved="yes">
+				<source>No search paths configured.</source>
+				<target>No search paths configured.</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

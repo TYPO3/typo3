@@ -1,296 +1,296 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
-    <header/>
-    <body>
-      <trans-unit id="Remove the" approved="yes">
-        <source>Remove the</source>
-        <target>Remove the</target>
-      </trans-unit>
-      <trans-unit id="Remove this node from the document" approved="yes">
-        <source>Removes this node from the document</source>
-        <target>Removes this node from the document</target>
-      </trans-unit>
-      <trans-unit id="TO-toggle-borders-tooltip" approved="yes">
-        <source>Toggle borders</source>
-        <target>Toggle borders</target>
-      </trans-unit>
-      <trans-unit id="TO-cell-prop-tooltip" approved="yes">
-        <source>Shows the Table Cell Properties dialogue</source>
-        <target>Shows the Table Cell Properties dialogue</target>
-      </trans-unit>
-      <trans-unit id="TO-cell-insert-before-tooltip" approved="yes">
-        <source>Inserts a new cell before the current one</source>
-        <target>Inserts a new cell before the current one</target>
-      </trans-unit>
-      <trans-unit id="TO-cell-insert-after-tooltip" approved="yes">
-        <source>Inserts a new cell after the current one</source>
-        <target>Inserts a new cell after the current one</target>
-      </trans-unit>
-      <trans-unit id="TO-cell-delete-tooltip" approved="yes">
-        <source>Deletes the current cell</source>
-        <target>Deletes the current cell</target>
-      </trans-unit>
-      <trans-unit id="TO-cell-split-tooltip" approved="yes">
-        <source>Splits the current cell</source>
-        <target>Splits the current cell</target>
-      </trans-unit>
-      <trans-unit id="TO-cell-merge-tooltip" approved="yes">
-        <source>Merges the selected cells</source>
-        <target>Merges the selected cells</target>
-      </trans-unit>
-      <trans-unit id="TO-row-prop-tooltip" approved="yes">
-        <source>Shows the Table Row Properties dialogue</source>
-        <target>Shows the Table Row Properties dialogue</target>
-      </trans-unit>
-      <trans-unit id="TO-row-insert-above-tooltip" approved="yes">
-        <source>Inserts a new row before the current one</source>
-        <target>Inserts a new row before the current one</target>
-      </trans-unit>
-      <trans-unit id="TO-row-insert-under-tooltip" approved="yes">
-        <source>Inserts a new row after the current one</source>
-        <target>Inserts a new row after the current one</target>
-      </trans-unit>
-      <trans-unit id="TO-row-delete-tooltip" approved="yes">
-        <source>Deletes the current row</source>
-        <target>Deletes the current row</target>
-      </trans-unit>
-      <trans-unit id="TO-row-split-tooltip" approved="yes">
-        <source>Splits the current row</source>
-        <target>Splits the current row</target>
-      </trans-unit>
-      <trans-unit id="TO-table-prop-tooltip" approved="yes">
-        <source>Shows the Table Properties dialogue</source>
-        <target>Shows the Table Properties dialogue</target>
-      </trans-unit>
-      <trans-unit id="TO-table-restyle-tooltip" approved="yes">
-        <source>Re-applies the odd-even styles on the table</source>
-        <target>Re-applies the odd-even styles on the table</target>
-      </trans-unit>
-      <trans-unit id="TO-col-prop-tooltip" approved="yes">
-        <source>Shows the Column Cells Properties dialogue</source>
-        <target>Shows the Column Cells Properties dialogue</target>
-      </trans-unit>
-      <trans-unit id="TO-col-insert-before-tooltip" approved="yes">
-        <source>Inserts a new column before the current one</source>
-        <target>Inserts a new column before the current one</target>
-      </trans-unit>
-      <trans-unit id="TO-col-insert-after-tooltip" approved="yes">
-        <source>Inserts a new column after the current one</source>
-        <target>Inserts a new column after the current one</target>
-      </trans-unit>
-      <trans-unit id="TO-col-delete-tooltip" approved="yes">
-        <source>Deletes the current column</source>
-        <target>Deletes the current column</target>
-      </trans-unit>
-      <trans-unit id="TO-col-split-tooltip" approved="yes">
-        <source>Splits the current column</source>
-        <target>Splits the current column</target>
-      </trans-unit>
-      <trans-unit id="Element" approved="yes">
-        <source>Element</source>
-        <target>Element</target>
-      </trans-unit>
-      <trans-unit id="Please confirm remove" approved="yes">
-        <source>Please confirm that you want to remove this element:</source>
-        <target>Please confirm that you want to remove this element:</target>
-      </trans-unit>
-      <trans-unit id="Remove this node from the document" approved="yes">
-        <source>Removes this node from the document</source>
-        <target>Removes this node from the document</target>
-      </trans-unit>
-      <trans-unit id="How did you get here? (Please report!)" approved="yes">
-        <source>How did you get here? (Please report!)</source>
-        <target>How did you get here? (Please report!)</target>
-      </trans-unit>
-      <trans-unit id="Show the image properties dialog" approved="yes">
-        <source>Show the image properties dialog</source>
-        <target>Show the image properties dialog</target>
-      </trans-unit>
-      <trans-unit id="Modify URL" approved="yes">
-        <source>Modify URL</source>
-        <target>Modify URL</target>
-      </trans-unit>
-      <trans-unit id="Current URL is" approved="yes">
-        <source>Current URL is</source>
-        <target>Current URL is</target>
-      </trans-unit>
-      <trans-unit id="Opens this link in a new window" approved="yes">
-        <source>Opens this link in a new window</source>
-        <target>Opens this link in a new window</target>
-      </trans-unit>
-      <trans-unit id="Please confirm unlink" approved="yes">
-        <source>Please confirm that you want to unlink this element.</source>
-        <target>Please confirm that you want to unlink this element.</target>
-      </trans-unit>
-      <trans-unit id="Link points to:" approved="yes">
-        <source>Link points to:</source>
-        <target>Link points to:</target>
-      </trans-unit>
-      <trans-unit id="Unlink the current element" approved="yes">
-        <source>Unlink the current element</source>
-        <target>Unlink the current element</target>
-      </trans-unit>
-      <trans-unit id="Cut" approved="yes">
-        <source>Cut</source>
-        <target>Cut</target>
-      </trans-unit>
-      <trans-unit id="Copy" approved="yes">
-        <source>Copy</source>
-        <target>Copy</target>
-      </trans-unit>
-      <trans-unit id="Paste" approved="yes">
-        <source>Paste</source>
-        <target>Paste</target>
-      </trans-unit>
-      <trans-unit id="Image Properties" approved="yes">
-        <source>_Image Properties</source>
-        <target>_Image Properties</target>
-      </trans-unit>
-      <trans-unit id="Modify Link" approved="yes">
-        <source>_Modify Link</source>
-        <target>_Modify Link</target>
-      </trans-unit>
-      <trans-unit id="Check Link" approved="yes">
-        <source>Chec_k Link</source>
-        <target>Chec_k Link</target>
-      </trans-unit>
-      <trans-unit id="Remove Link" approved="yes">
-        <source>_Remove Link</source>
-        <target>_Remove Link</target>
-      </trans-unit>
-      <trans-unit id="TO-toggle-borders-title" approved="yes">
-        <source>Toggle borders</source>
-        <target>Toggle borders</target>
-      </trans-unit>
-      <trans-unit id="TO-cell-prop-title" approved="yes">
-        <source>C_ell Properties</source>
-        <target>C_ell Properties</target>
-      </trans-unit>
-      <trans-unit id="TO-cell-insert-before-title" approved="yes">
-        <source>Insert cell before</source>
-        <target>Insert cell before</target>
-      </trans-unit>
-      <trans-unit id="TO-cell-insert-after-title" approved="yes">
-        <source>Insert cell after</source>
-        <target>Insert cell after</target>
-      </trans-unit>
-      <trans-unit id="TO-cell-delete-title" approved="yes">
-        <source>Delete Cell</source>
-        <target>Delete Cell</target>
-      </trans-unit>
-      <trans-unit id="TO-cell-split-title" approved="yes">
-        <source>Split Cell</source>
-        <target>Split Cell</target>
-      </trans-unit>
-      <trans-unit id="TO-cell-merge-title" approved="yes">
-        <source>Merge Cells</source>
-        <target>Merge Cells</target>
-      </trans-unit>
-      <trans-unit id="TO-row-prop-title" approved="yes">
-        <source>Ro_w Properties</source>
-        <target>Ro_w Properties</target>
-      </trans-unit>
-      <trans-unit id="TO-row-insert-above-title" approved="yes">
-        <source>I_nsert Row Before</source>
-        <target>I_nsert Row Before</target>
-      </trans-unit>
-      <trans-unit id="TO-row-insert-under-title" approved="yes">
-        <source>In_sert Row After</source>
-        <target>In_sert Row After</target>
-      </trans-unit>
-      <trans-unit id="TO-row-delete-title" approved="yes">
-        <source>_Delete Row</source>
-        <target>_Delete Row</target>
-      </trans-unit>
-      <trans-unit id="TO-row-split-title" approved="yes">
-        <source>Split Row</source>
-        <target>Split Row</target>
-      </trans-unit>
-      <trans-unit id="TO-table-prop-title" approved="yes">
-        <source>_Table Properties</source>
-        <target>_Table Properties</target>
-      </trans-unit>
-      <trans-unit id="TO-table-restyle-title" approved="yes">
-        <source>Re-apply table styles</source>
-        <target>Re-apply table styles</target>
-      </trans-unit>
-      <trans-unit id="TO-col-prop-title" approved="yes">
-        <source>Column Cells Properties</source>
-        <target>Column Cells Properties</target>
-      </trans-unit>
-      <trans-unit id="TO-col-insert-before-title" approved="yes">
-        <source>Insert _Column Before</source>
-        <target>Insert _Column Before</target>
-      </trans-unit>
-      <trans-unit id="TO-col-insert-after-title" approved="yes">
-        <source>Insert C_olumn After</source>
-        <target>Insert C_olumn After</target>
-      </trans-unit>
-      <trans-unit id="TO-col-delete-title" approved="yes">
-        <source>De_lete Column</source>
-        <target>De_lete Column</target>
-      </trans-unit>
-      <trans-unit id="TO-col-split-title" approved="yes">
-        <source>Split Column</source>
-        <target>Split Column</target>
-      </trans-unit>
-      <trans-unit id="Create a link" approved="yes">
-        <source>Create a link</source>
-        <target>Create a link</target>
-      </trans-unit>
-      <trans-unit id="Insert paragraph before" approved="yes">
-        <source>Insert paragraph before</source>
-        <target>Insert paragraph before</target>
-      </trans-unit>
-      <trans-unit id="Insert a paragraph before the current node" approved="yes">
-        <source>Insert a paragraph before the current node</source>
-        <target>Insert a paragraph before the current node</target>
-      </trans-unit>
-      <trans-unit id="Insert paragraph after" approved="yes">
-        <source>Insert paragraph after</source>
-        <target>Insert paragraph after</target>
-      </trans-unit>
-      <trans-unit id="Insert a paragraph after the current node" approved="yes">
-        <source>Insert a paragraph after the current node</source>
-        <target>Insert a paragraph after the current node</target>
-      </trans-unit>
-      <trans-unit id="JustifyLeft-title" approved="yes">
-        <source>Justify Left</source>
-        <target>Justify Left</target>
-      </trans-unit>
-      <trans-unit id="JustifyCenter-title" approved="yes">
-        <source>Justify Center</source>
-        <target>Justify Center</target>
-      </trans-unit>
-      <trans-unit id="JustifyRight-title" approved="yes">
-        <source>Justify Right</source>
-        <target>Justify Right</target>
-      </trans-unit>
-      <trans-unit id="JustifyFull-title" approved="yes">
-        <source>Justify Full</source>
-        <target>Justify Full</target>
-      </trans-unit>
-      <trans-unit id="JustifyLeft-tooltip" approved="yes">
-        <source>Aligns text to the left</source>
-        <target>Aligns text to the left</target>
-      </trans-unit>
-      <trans-unit id="JustifyCenter-tooltip" approved="yes">
-        <source>Centers the text</source>
-        <target>Centers the text</target>
-      </trans-unit>
-      <trans-unit id="JustifyRight-tooltip" approved="yes">
-        <source>Aligns text to the right</source>
-        <target>Aligns text to the right</target>
-      </trans-unit>
-      <trans-unit id="JustifyFull-tooltip" approved="yes">
-        <source>Aligns text both to the left and the right</source>
-        <target>Aligns text both to the left and the right</target>
-      </trans-unit>
-      <trans-unit id="Make link" approved="yes">
-        <source>Make lin_k</source>
-        <target>Make lin_k</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id="Remove the" approved="yes">
+				<source>Remove the</source>
+				<target>Remove the</target>
+			</trans-unit>
+			<trans-unit id="Remove this node from the document" approved="yes">
+				<source>Removes this node from the document</source>
+				<target>Removes this node from the document</target>
+			</trans-unit>
+			<trans-unit id="TO-toggle-borders-tooltip" approved="yes">
+				<source>Toggle borders</source>
+				<target>Toggle borders</target>
+			</trans-unit>
+			<trans-unit id="TO-cell-prop-tooltip" approved="yes">
+				<source>Shows the Table Cell Properties dialogue</source>
+				<target>Shows the Table Cell Properties dialogue</target>
+			</trans-unit>
+			<trans-unit id="TO-cell-insert-before-tooltip" approved="yes">
+				<source>Inserts a new cell before the current one</source>
+				<target>Inserts a new cell before the current one</target>
+			</trans-unit>
+			<trans-unit id="TO-cell-insert-after-tooltip" approved="yes">
+				<source>Inserts a new cell after the current one</source>
+				<target>Inserts a new cell after the current one</target>
+			</trans-unit>
+			<trans-unit id="TO-cell-delete-tooltip" approved="yes">
+				<source>Deletes the current cell</source>
+				<target>Deletes the current cell</target>
+			</trans-unit>
+			<trans-unit id="TO-cell-split-tooltip" approved="yes">
+				<source>Splits the current cell</source>
+				<target>Splits the current cell</target>
+			</trans-unit>
+			<trans-unit id="TO-cell-merge-tooltip" approved="yes">
+				<source>Merges the selected cells</source>
+				<target>Merges the selected cells</target>
+			</trans-unit>
+			<trans-unit id="TO-row-prop-tooltip" approved="yes">
+				<source>Shows the Table Row Properties dialogue</source>
+				<target>Shows the Table Row Properties dialogue</target>
+			</trans-unit>
+			<trans-unit id="TO-row-insert-above-tooltip" approved="yes">
+				<source>Inserts a new row before the current one</source>
+				<target>Inserts a new row before the current one</target>
+			</trans-unit>
+			<trans-unit id="TO-row-insert-under-tooltip" approved="yes">
+				<source>Inserts a new row after the current one</source>
+				<target>Inserts a new row after the current one</target>
+			</trans-unit>
+			<trans-unit id="TO-row-delete-tooltip" approved="yes">
+				<source>Deletes the current row</source>
+				<target>Deletes the current row</target>
+			</trans-unit>
+			<trans-unit id="TO-row-split-tooltip" approved="yes">
+				<source>Splits the current row</source>
+				<target>Splits the current row</target>
+			</trans-unit>
+			<trans-unit id="TO-table-prop-tooltip" approved="yes">
+				<source>Shows the Table Properties dialogue</source>
+				<target>Shows the Table Properties dialogue</target>
+			</trans-unit>
+			<trans-unit id="TO-table-restyle-tooltip" approved="yes">
+				<source>Re-applies the odd-even styles on the table</source>
+				<target>Re-applies the odd-even styles on the table</target>
+			</trans-unit>
+			<trans-unit id="TO-col-prop-tooltip" approved="yes">
+				<source>Shows the Column Cells Properties dialogue</source>
+				<target>Shows the Column Cells Properties dialogue</target>
+			</trans-unit>
+			<trans-unit id="TO-col-insert-before-tooltip" approved="yes">
+				<source>Inserts a new column before the current one</source>
+				<target>Inserts a new column before the current one</target>
+			</trans-unit>
+			<trans-unit id="TO-col-insert-after-tooltip" approved="yes">
+				<source>Inserts a new column after the current one</source>
+				<target>Inserts a new column after the current one</target>
+			</trans-unit>
+			<trans-unit id="TO-col-delete-tooltip" approved="yes">
+				<source>Deletes the current column</source>
+				<target>Deletes the current column</target>
+			</trans-unit>
+			<trans-unit id="TO-col-split-tooltip" approved="yes">
+				<source>Splits the current column</source>
+				<target>Splits the current column</target>
+			</trans-unit>
+			<trans-unit id="Element" approved="yes">
+				<source>Element</source>
+				<target>Element</target>
+			</trans-unit>
+			<trans-unit id="Please confirm remove" approved="yes">
+				<source>Please confirm that you want to remove this element:</source>
+				<target>Please confirm that you want to remove this element:</target>
+			</trans-unit>
+			<trans-unit id="Remove this node from the document" approved="yes">
+				<source>Removes this node from the document</source>
+				<target>Removes this node from the document</target>
+			</trans-unit>
+			<trans-unit id="How did you get here? (Please report!)" approved="yes">
+				<source>How did you get here? (Please report!)</source>
+				<target>How did you get here? (Please report!)</target>
+			</trans-unit>
+			<trans-unit id="Show the image properties dialog" approved="yes">
+				<source>Show the image properties dialog</source>
+				<target>Show the image properties dialog</target>
+			</trans-unit>
+			<trans-unit id="Modify URL" approved="yes">
+				<source>Modify URL</source>
+				<target>Modify URL</target>
+			</trans-unit>
+			<trans-unit id="Current URL is" approved="yes">
+				<source>Current URL is</source>
+				<target>Current URL is</target>
+			</trans-unit>
+			<trans-unit id="Opens this link in a new window" approved="yes">
+				<source>Opens this link in a new window</source>
+				<target>Opens this link in a new window</target>
+			</trans-unit>
+			<trans-unit id="Please confirm unlink" approved="yes">
+				<source>Please confirm that you want to unlink this element.</source>
+				<target>Please confirm that you want to unlink this element.</target>
+			</trans-unit>
+			<trans-unit id="Link points to:" approved="yes">
+				<source>Link points to:</source>
+				<target>Link points to:</target>
+			</trans-unit>
+			<trans-unit id="Unlink the current element" approved="yes">
+				<source>Unlink the current element</source>
+				<target>Unlink the current element</target>
+			</trans-unit>
+			<trans-unit id="Cut" approved="yes">
+				<source>Cut</source>
+				<target>Cut</target>
+			</trans-unit>
+			<trans-unit id="Copy" approved="yes">
+				<source>Copy</source>
+				<target>Copy</target>
+			</trans-unit>
+			<trans-unit id="Paste" approved="yes">
+				<source>Paste</source>
+				<target>Paste</target>
+			</trans-unit>
+			<trans-unit id="Image Properties" approved="yes">
+				<source>_Image Properties</source>
+				<target>_Image Properties</target>
+			</trans-unit>
+			<trans-unit id="Modify Link" approved="yes">
+				<source>_Modify Link</source>
+				<target>_Modify Link</target>
+			</trans-unit>
+			<trans-unit id="Check Link" approved="yes">
+				<source>Chec_k Link</source>
+				<target>Chec_k Link</target>
+			</trans-unit>
+			<trans-unit id="Remove Link" approved="yes">
+				<source>_Remove Link</source>
+				<target>_Remove Link</target>
+			</trans-unit>
+			<trans-unit id="TO-toggle-borders-title" approved="yes">
+				<source>Toggle borders</source>
+				<target>Toggle borders</target>
+			</trans-unit>
+			<trans-unit id="TO-cell-prop-title" approved="yes">
+				<source>C_ell Properties</source>
+				<target>C_ell Properties</target>
+			</trans-unit>
+			<trans-unit id="TO-cell-insert-before-title" approved="yes">
+				<source>Insert cell before</source>
+				<target>Insert cell before</target>
+			</trans-unit>
+			<trans-unit id="TO-cell-insert-after-title" approved="yes">
+				<source>Insert cell after</source>
+				<target>Insert cell after</target>
+			</trans-unit>
+			<trans-unit id="TO-cell-delete-title" approved="yes">
+				<source>Delete Cell</source>
+				<target>Delete Cell</target>
+			</trans-unit>
+			<trans-unit id="TO-cell-split-title" approved="yes">
+				<source>Split Cell</source>
+				<target>Split Cell</target>
+			</trans-unit>
+			<trans-unit id="TO-cell-merge-title" approved="yes">
+				<source>Merge Cells</source>
+				<target>Merge Cells</target>
+			</trans-unit>
+			<trans-unit id="TO-row-prop-title" approved="yes">
+				<source>Ro_w Properties</source>
+				<target>Ro_w Properties</target>
+			</trans-unit>
+			<trans-unit id="TO-row-insert-above-title" approved="yes">
+				<source>I_nsert Row Before</source>
+				<target>I_nsert Row Before</target>
+			</trans-unit>
+			<trans-unit id="TO-row-insert-under-title" approved="yes">
+				<source>In_sert Row After</source>
+				<target>In_sert Row After</target>
+			</trans-unit>
+			<trans-unit id="TO-row-delete-title" approved="yes">
+				<source>_Delete Row</source>
+				<target>_Delete Row</target>
+			</trans-unit>
+			<trans-unit id="TO-row-split-title" approved="yes">
+				<source>Split Row</source>
+				<target>Split Row</target>
+			</trans-unit>
+			<trans-unit id="TO-table-prop-title" approved="yes">
+				<source>_Table Properties</source>
+				<target>_Table Properties</target>
+			</trans-unit>
+			<trans-unit id="TO-table-restyle-title" approved="yes">
+				<source>Re-apply table styles</source>
+				<target>Re-apply table styles</target>
+			</trans-unit>
+			<trans-unit id="TO-col-prop-title" approved="yes">
+				<source>Column Cells Properties</source>
+				<target>Column Cells Properties</target>
+			</trans-unit>
+			<trans-unit id="TO-col-insert-before-title" approved="yes">
+				<source>Insert _Column Before</source>
+				<target>Insert _Column Before</target>
+			</trans-unit>
+			<trans-unit id="TO-col-insert-after-title" approved="yes">
+				<source>Insert C_olumn After</source>
+				<target>Insert C_olumn After</target>
+			</trans-unit>
+			<trans-unit id="TO-col-delete-title" approved="yes">
+				<source>De_lete Column</source>
+				<target>De_lete Column</target>
+			</trans-unit>
+			<trans-unit id="TO-col-split-title" approved="yes">
+				<source>Split Column</source>
+				<target>Split Column</target>
+			</trans-unit>
+			<trans-unit id="Create a link" approved="yes">
+				<source>Create a link</source>
+				<target>Create a link</target>
+			</trans-unit>
+			<trans-unit id="Insert paragraph before" approved="yes">
+				<source>Insert paragraph before</source>
+				<target>Insert paragraph before</target>
+			</trans-unit>
+			<trans-unit id="Insert a paragraph before the current node" approved="yes">
+				<source>Insert a paragraph before the current node</source>
+				<target>Insert a paragraph before the current node</target>
+			</trans-unit>
+			<trans-unit id="Insert paragraph after" approved="yes">
+				<source>Insert paragraph after</source>
+				<target>Insert paragraph after</target>
+			</trans-unit>
+			<trans-unit id="Insert a paragraph after the current node" approved="yes">
+				<source>Insert a paragraph after the current node</source>
+				<target>Insert a paragraph after the current node</target>
+			</trans-unit>
+			<trans-unit id="JustifyLeft-title" approved="yes">
+				<source>Justify Left</source>
+				<target>Justify Left</target>
+			</trans-unit>
+			<trans-unit id="JustifyCenter-title" approved="yes">
+				<source>Justify Center</source>
+				<target>Justify Center</target>
+			</trans-unit>
+			<trans-unit id="JustifyRight-title" approved="yes">
+				<source>Justify Right</source>
+				<target>Justify Right</target>
+			</trans-unit>
+			<trans-unit id="JustifyFull-title" approved="yes">
+				<source>Justify Full</source>
+				<target>Justify Full</target>
+			</trans-unit>
+			<trans-unit id="JustifyLeft-tooltip" approved="yes">
+				<source>Aligns text to the left</source>
+				<target>Aligns text to the left</target>
+			</trans-unit>
+			<trans-unit id="JustifyCenter-tooltip" approved="yes">
+				<source>Centers the text</source>
+				<target>Centers the text</target>
+			</trans-unit>
+			<trans-unit id="JustifyRight-tooltip" approved="yes">
+				<source>Aligns text to the right</source>
+				<target>Aligns text to the right</target>
+			</trans-unit>
+			<trans-unit id="JustifyFull-tooltip" approved="yes">
+				<source>Aligns text both to the left and the right</source>
+				<target>Aligns text both to the left and the right</target>
+			</trans-unit>
+			<trans-unit id="Make link" approved="yes">
+				<source>Make lin_k</source>
+				<target>Make lin_k</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

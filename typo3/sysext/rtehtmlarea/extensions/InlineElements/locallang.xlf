@@ -1,104 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
-    <header/>
-    <body>
-      <trans-unit id="No markup" approved="yes">
-        <source>No text format</source>
-        <target>No text format</target>
-      </trans-unit>
-      <trans-unit id="Bold" approved="yes">
-        <source>Bold</source>
-        <target>Bold</target>
-      </trans-unit>
-      <trans-unit id="BiDi override" approved="yes">
-        <source>BiDi override</source>
-        <target>BiDi override</target>
-      </trans-unit>
-      <trans-unit id="Large text" approved="yes">
-        <source>Large text</source>
-        <target>Large text</target>
-      </trans-unit>
-      <trans-unit id="Citation" approved="yes">
-        <source>Citation</source>
-        <target>Citation</target>
-      </trans-unit>
-      <trans-unit id="Code" approved="yes">
-        <source>Code</source>
-        <target>Code</target>
-      </trans-unit>
-      <trans-unit id="Definition" approved="yes">
-        <source>Definition</source>
-        <target>Definition</target>
-      </trans-unit>
-      <trans-unit id="Deleted text" approved="yes">
-        <source>Deleted text</source>
-        <target>Deleted text</target>
-      </trans-unit>
-      <trans-unit id="Emphasis" approved="yes">
-        <source>Emphasis</source>
-        <target>Emphasis</target>
-      </trans-unit>
-      <trans-unit id="Inserted text" approved="yes">
-        <source>Inserted text</source>
-        <target>Inserted text</target>
-      </trans-unit>
-      <trans-unit id="Italic" approved="yes">
-        <source>Italic</source>
-        <target>Italic</target>
-      </trans-unit>
-      <trans-unit id="Keyboard" approved="yes">
-        <source>Keyboard</source>
-        <target>Keyboard</target>
-      </trans-unit>
-      <trans-unit id="Label" approved="yes">
-        <source>Label</source>
-        <target>Label</target>
-      </trans-unit>
-      <trans-unit id="Monospaced text" approved="yes">
-        <source>Monospaced text</source>
-        <target>Monospaced text</target>
-      </trans-unit>
-      <trans-unit id="Quotation" approved="yes">
-        <source>Quotation</source>
-        <target>Quotation</target>
-      </trans-unit>
-      <trans-unit id="Sample" approved="yes">
-        <source>Sample</source>
-        <target>Sample</target>
-      </trans-unit>
-      <trans-unit id="Small text" approved="yes">
-        <source>Small text</source>
-        <target>Small text</target>
-      </trans-unit>
-      <trans-unit id="Style container" approved="yes">
-        <source>Style container</source>
-        <target>Style container</target>
-      </trans-unit>
-      <trans-unit id="Strike-through" approved="yes">
-        <source>Strike-through</source>
-        <target>Strike-through</target>
-      </trans-unit>
-      <trans-unit id="Strong emphasis" approved="yes">
-        <source>Strong emphasis</source>
-        <target>Strong emphasis</target>
-      </trans-unit>
-      <trans-unit id="Subscript" approved="yes">
-        <source>Subscript</source>
-        <target>Subscript</target>
-      </trans-unit>
-      <trans-unit id="Superscript" approved="yes">
-        <source>Superscript</source>
-        <target>Superscript</target>
-      </trans-unit>
-      <trans-unit id="Underline" approved="yes">
-        <source>Underline</source>
-        <target>Underline</target>
-      </trans-unit>
-      <trans-unit id="Variable" approved="yes">
-        <source>Variable</source>
-        <target>Variable</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id="No markup" approved="yes">
+				<source>No text format</source>
+				<target>No text format</target>
+			</trans-unit>
+			<trans-unit id="Bold" approved="yes">
+				<source>Bold</source>
+				<target>Bold</target>
+			</trans-unit>
+			<trans-unit id="BiDi override" approved="yes">
+				<source>BiDi override</source>
+				<target>BiDi override</target>
+			</trans-unit>
+			<trans-unit id="Large text" approved="yes">
+				<source>Large text</source>
+				<target>Large text</target>
+			</trans-unit>
+			<trans-unit id="Citation" approved="yes">
+				<source>Citation</source>
+				<target>Citation</target>
+			</trans-unit>
+			<trans-unit id="Code" approved="yes">
+				<source>Code</source>
+				<target>Code</target>
+			</trans-unit>
+			<trans-unit id="Definition" approved="yes">
+				<source>Definition</source>
+				<target>Definition</target>
+			</trans-unit>
+			<trans-unit id="Deleted text" approved="yes">
+				<source>Deleted text</source>
+				<target>Deleted text</target>
+			</trans-unit>
+			<trans-unit id="Emphasis" approved="yes">
+				<source>Emphasis</source>
+				<target>Emphasis</target>
+			</trans-unit>
+			<trans-unit id="Inserted text" approved="yes">
+				<source>Inserted text</source>
+				<target>Inserted text</target>
+			</trans-unit>
+			<trans-unit id="Italic" approved="yes">
+				<source>Italic</source>
+				<target>Italic</target>
+			</trans-unit>
+			<trans-unit id="Keyboard" approved="yes">
+				<source>Keyboard</source>
+				<target>Keyboard</target>
+			</trans-unit>
+			<trans-unit id="Label" approved="yes">
+				<source>Label</source>
+				<target>Label</target>
+			</trans-unit>
+			<trans-unit id="Monospaced text" approved="yes">
+				<source>Monospaced text</source>
+				<target>Monospaced text</target>
+			</trans-unit>
+			<trans-unit id="Quotation" approved="yes">
+				<source>Quotation</source>
+				<target>Quotation</target>
+			</trans-unit>
+			<trans-unit id="Sample" approved="yes">
+				<source>Sample</source>
+				<target>Sample</target>
+			</trans-unit>
+			<trans-unit id="Small text" approved="yes">
+				<source>Small text</source>
+				<target>Small text</target>
+			</trans-unit>
+			<trans-unit id="Style container" approved="yes">
+				<source>Style container</source>
+				<target>Style container</target>
+			</trans-unit>
+			<trans-unit id="Strike-through" approved="yes">
+				<source>Strike-through</source>
+				<target>Strike-through</target>
+			</trans-unit>
+			<trans-unit id="Strong emphasis" approved="yes">
+				<source>Strong emphasis</source>
+				<target>Strong emphasis</target>
+			</trans-unit>
+			<trans-unit id="Subscript" approved="yes">
+				<source>Subscript</source>
+				<target>Subscript</target>
+			</trans-unit>
+			<trans-unit id="Superscript" approved="yes">
+				<source>Superscript</source>
+				<target>Superscript</target>
+			</trans-unit>
+			<trans-unit id="Underline" approved="yes">
+				<source>Underline</source>
+				<target>Underline</target>
+			</trans-unit>
+			<trans-unit id="Variable" approved="yes">
+				<source>Variable</source>
+				<target>Variable</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

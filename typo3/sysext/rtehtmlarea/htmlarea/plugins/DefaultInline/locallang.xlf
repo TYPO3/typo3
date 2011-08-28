@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
-    <header/>
-    <body>
-      <trans-unit id="Bold-Tooltip" approved="yes">
-        <source>Bold</source>
-        <target>Bold</target>
-      </trans-unit>
-      <trans-unit id="Italic-Tooltip" approved="yes">
-        <source>Italic</source>
-        <target>Italic</target>
-      </trans-unit>
-      <trans-unit id="StrikeThrough-Tooltip" approved="yes">
-        <source>Strike-through</source>
-        <target>Strike-through</target>
-      </trans-unit>
-      <trans-unit id="Subscript-Tooltip" approved="yes">
-        <source>Subscript</source>
-        <target>Subscript</target>
-      </trans-unit>
-      <trans-unit id="Superscript-Tooltip" approved="yes">
-        <source>Superscript</source>
-        <target>Superscript</target>
-      </trans-unit>
-      <trans-unit id="Underline-Tooltip" approved="yes">
-        <source>Underline</source>
-        <target>Underline</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id="Bold-Tooltip" approved="yes">
+				<source>Bold</source>
+				<target>Bold</target>
+			</trans-unit>
+			<trans-unit id="Italic-Tooltip" approved="yes">
+				<source>Italic</source>
+				<target>Italic</target>
+			</trans-unit>
+			<trans-unit id="StrikeThrough-Tooltip" approved="yes">
+				<source>Strike-through</source>
+				<target>Strike-through</target>
+			</trans-unit>
+			<trans-unit id="Subscript-Tooltip" approved="yes">
+				<source>Subscript</source>
+				<target>Subscript</target>
+			</trans-unit>
+			<trans-unit id="Superscript-Tooltip" approved="yes">
+				<source>Superscript</source>
+				<target>Superscript</target>
+			</trans-unit>
+			<trans-unit id="Underline-Tooltip" approved="yes">
+				<source>Underline</source>
+				<target>Underline</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

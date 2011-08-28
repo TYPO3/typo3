@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:24 UTC" product-name="lang">
-    <header/>
-    <body>
-      <trans-unit id=".description" approved="yes">
-        <source>A 'Page' record usually represents a webpage in TYPO3. All pages have an id-number by which they can be linked and referenced. The 'Page' record does not itself contain the content of the page - for this purpose you should create 'Page content' records (Content Elements).</source>
-        <target>A 'Page' record usually represents a webpage in TYPO3. All pages have an id-number by which they can be linked and referenced. The 'Page' record does not itself contain the content of the page - for this purpose you should create 'Page content' records (Content Elements).</target>
-      </trans-unit>
-      <trans-unit id=".details" approved="yes">
-        <source>The pages table is the very backbone in TYPO3. All records editable by the mainstream modules in TYPO3 must 'belong' to a page. It's exactly like files and folders on your computers harddrive.
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:24 UTC" product-name="lang">
+		<header/>
+		<body>
+			<trans-unit id=".description" approved="yes">
+				<source>A 'Page' record usually represents a webpage in TYPO3. All pages have an id-number by which they can be linked and referenced. The 'Page' record does not itself contain the content of the page - for this purpose you should create 'Page content' records (Content Elements).</source>
+				<target>A 'Page' record usually represents a webpage in TYPO3. All pages have an id-number by which they can be linked and referenced. The 'Page' record does not itself contain the content of the page - for this purpose you should create 'Page content' records (Content Elements).</target>
+			</trans-unit>
+			<trans-unit id=".details" approved="yes">
+				<source>The pages table is the very backbone in TYPO3. All records editable by the mainstream modules in TYPO3 must 'belong' to a page. It's exactly like files and folders on your computers harddrive.
 
 &lt;b&gt;The page tree&lt;/b&gt;
 The pages are organized in a tree structure which is not only a very handy way of organizing in general but also a optimal reflection of how you should organize the pages on your website. And thus you'll normally find that the page tree is a reflection of the website navigation itself.
@@ -18,7 +18,7 @@ Technically all database elements has a field 'uid' which is a unique identifica
 
 &lt;b&gt;Storage of database records&lt;/b&gt;
 Depending on the 'Type' of the page, it may also represent a general storage for database elements in TYPO3. In that case it is not necessarily available as a webpage but only internally in the page tree as a place to store items such as users, subscriptions etc. Such pages are typically of the type "SysFolder".</source>
-        <target>The pages table is the very backbone in TYPO3. All records editable by the mainstream modules in TYPO3 must 'belong' to a page. It's exactly like files and folders on your computers harddrive.
+				<target>The pages table is the very backbone in TYPO3. All records editable by the mainstream modules in TYPO3 must 'belong' to a page. It's exactly like files and folders on your computers harddrive.
 
 &lt;b&gt;The page tree&lt;/b&gt;
 The pages are organized in a tree structure which is not only a very handy way of organizing in general but also a optimal reflection of how you should organize the pages on your website. And thus you'll normally find that the page tree is a reflection of the website navigation itself.
@@ -28,53 +28,53 @@ Technically all database elements has a field 'uid' which is a unique identifica
 
 &lt;b&gt;Storage of database records&lt;/b&gt;
 Depending on the 'Type' of the page, it may also represent a general storage for database elements in TYPO3. In that case it is not necessarily available as a webpage but only internally in the page tree as a place to store items such as users, subscriptions etc. Such pages are typically of the type "SysFolder".</target>
-      </trans-unit>
-      <trans-unit id="_.seeAlso" approved="yes">
-        <source>xMOD_csh_corebe:pagetree,
+			</trans-unit>
+			<trans-unit id="_.seeAlso" approved="yes">
+				<source>xMOD_csh_corebe:pagetree,
 tt_content,
 About pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Pagetree/</source>
-        <target>xMOD_csh_corebe:pagetree,
+				<target>xMOD_csh_corebe:pagetree,
 tt_content,
 About pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Pagetree/</target>
-      </trans-unit>
-      <trans-unit id="_.image" approved="yes">
-        <source>EXT:lang/cshimages/pages_1.png,
+			</trans-unit>
+			<trans-unit id="_.image" approved="yes">
+				<source>EXT:lang/cshimages/pages_1.png,
 EXT:lang/cshimages/pages_2.png,</source>
-        <target>EXT:lang/cshimages/pages_1.png,
+				<target>EXT:lang/cshimages/pages_1.png,
 EXT:lang/cshimages/pages_2.png,</target>
-      </trans-unit>
-      <trans-unit id=".image_descr" approved="yes">
-        <source>The most basic fields of a page is the hidden flag, the type of page ("doktype") and the page title. Other fields are also available but typically added by extensions in TYPO3.
+			</trans-unit>
+			<trans-unit id=".image_descr" approved="yes">
+				<source>The most basic fields of a page is the hidden flag, the type of page ("doktype") and the page title. Other fields are also available but typically added by extensions in TYPO3.
 Pages are arranged in a page tree in TYPO3. The page from the editing form in the previous screenshot was the "Intro" page from this page tree. As you can see it belongs in the root of the page tree and has a number of "child" pages under it.</source>
-        <target>The most basic fields of a page is the hidden flag, the type of page ("doktype") and the page title. Other fields are also available but typically added by extensions in TYPO3.
+				<target>The most basic fields of a page is the hidden flag, the type of page ("doktype") and the page title. Other fields are also available but typically added by extensions in TYPO3.
 Pages are arranged in a page tree in TYPO3. The page from the editing form in the previous screenshot was the "Intro" page from this page tree. As you can see it belongs in the root of the page tree and has a number of "child" pages under it.</target>
-      </trans-unit>
-      <trans-unit id="title.description" approved="yes">
-        <source>Enter the title of the page or folder. You must enter a page title. The field is required.</source>
-        <target>Enter the title of the page or folder. You must enter a page title. The field is required.</target>
-      </trans-unit>
-      <trans-unit id="title.details" approved="yes">
-        <source>The page title is used to represent the page visually in the system, for example in the page tree. Also the page title is used by default for navigation links on webpages.
+			</trans-unit>
+			<trans-unit id="title.description" approved="yes">
+				<source>Enter the title of the page or folder. You must enter a page title. The field is required.</source>
+				<target>Enter the title of the page or folder. You must enter a page title. The field is required.</target>
+			</trans-unit>
+			<trans-unit id="title.details" approved="yes">
+				<source>The page title is used to represent the page visually in the system, for example in the page tree. Also the page title is used by default for navigation links on webpages.
 You can always change a page title without affecting links to a page. This is because pages are always referenced by their "uid" number, not their title.
 You can use any characters in the page title.</source>
-        <target>The page title is used to represent the page visually in the system, for example in the page tree. Also the page title is used by default for navigation links on webpages.
+				<target>The page title is used to represent the page visually in the system, for example in the page tree. Also the page title is used by default for navigation links on webpages.
 You can always change a page title without affecting links to a page. This is because pages are always referenced by their "uid" number, not their title.
 You can use any characters in the page title.</target>
-      </trans-unit>
-      <trans-unit id="_title.image" approved="yes">
-        <source>EXT:lang/cshimages/pages_3.png</source>
-        <target>EXT:lang/cshimages/pages_3.png</target>
-      </trans-unit>
-      <trans-unit id="title.image_descr" approved="yes">
-        <source>The field for the page title has a little "required" icon next to it; You must supply a page title and you cannot save the new page unless you enter a title for it.</source>
-        <target>The field for the page title has a little "required" icon next to it; You must supply a page title and you cannot save the new page unless you enter a title for it.</target>
-      </trans-unit>
-      <trans-unit id="doktype.description" approved="yes">
-        <source>Select the page type. This affects whether the page represents a visible webpage or is used for other purposes.</source>
-        <target>Select the page type. This affects whether the page represents a visible webpage or is used for other purposes.</target>
-      </trans-unit>
-      <trans-unit id="doktype.details" approved="yes">
-        <source>The 'Standard' type represents a webpage.
+			</trans-unit>
+			<trans-unit id="_title.image" approved="yes">
+				<source>EXT:lang/cshimages/pages_3.png</source>
+				<target>EXT:lang/cshimages/pages_3.png</target>
+			</trans-unit>
+			<trans-unit id="title.image_descr" approved="yes">
+				<source>The field for the page title has a little "required" icon next to it; You must supply a page title and you cannot save the new page unless you enter a title for it.</source>
+				<target>The field for the page title has a little "required" icon next to it; You must supply a page title and you cannot save the new page unless you enter a title for it.</target>
+			</trans-unit>
+			<trans-unit id="doktype.description" approved="yes">
+				<source>Select the page type. This affects whether the page represents a visible webpage or is used for other purposes.</source>
+				<target>Select the page type. This affects whether the page represents a visible webpage or is used for other purposes.</target>
+			</trans-unit>
+			<trans-unit id="doktype.details" approved="yes">
+				<source>The 'Standard' type represents a webpage.
 'SysFolder' represents a non-webpage - a folder acting as a storage for records of your choice.
 'Recycler' is a garbage bin.
 
@@ -82,7 +82,7 @@ You can use any characters in the page title.</target>
 
 &lt;b&gt;$PAGES_TYPES [Technical]&lt;/b&gt;
 The restrictions that apply to each page type is defined in the global array $PAGES_TYPES. Here it is defined which tables are allowed on a page. When extensions adds tables to TYPO3 they may need to register their tables in $PAGES_TYPES so they can be created on standard pages.</source>
-        <target>The 'Standard' type represents a webpage.
+				<target>The 'Standard' type represents a webpage.
 'SysFolder' represents a non-webpage - a folder acting as a storage for records of your choice.
 'Recycler' is a garbage bin.
 
@@ -90,123 +90,123 @@ The restrictions that apply to each page type is defined in the global array $PA
 
 &lt;b&gt;$PAGES_TYPES [Technical]&lt;/b&gt;
 The restrictions that apply to each page type is defined in the global array $PAGES_TYPES. Here it is defined which tables are allowed on a page. When extensions adds tables to TYPO3 they may need to register their tables in $PAGES_TYPES so they can be created on standard pages.</target>
-      </trans-unit>
-      <trans-unit id="_doktype.seeAlso" approved="yes">
-        <source>be_groups:pagetypes_select,
+			</trans-unit>
+			<trans-unit id="_doktype.seeAlso" approved="yes">
+				<source>be_groups:pagetypes_select,
 About $PAGES_TYPES | http://typo3.org/documentation/document-library/doc_core_api/PAGES_TYPES/</source>
-        <target>be_groups:pagetypes_select,
+				<target>be_groups:pagetypes_select,
 About $PAGES_TYPES | http://typo3.org/documentation/document-library/doc_core_api/PAGES_TYPES/</target>
-      </trans-unit>
-      <trans-unit id="_doktype.image" approved="yes">
-        <source>EXT:lang/cshimages/pages_4.png</source>
-        <target>EXT:lang/cshimages/pages_4.png</target>
-      </trans-unit>
-      <trans-unit id="doktype.image_descr" approved="yes">
-        <source>This snippet of the page tree shows regular pages which usually have the yellow icons in top of this screenshot. You also see a Garbage bin page. Any records stored in a garbage bin should be regarded as waste and therefore not shown on the website etc. Finally the gray folders are "SysFolders". They cannot be viewed as regular webpages but serve as storage pages for database records of some kind.</source>
-        <target>This snippet of the page tree shows regular pages which usually have the yellow icons in top of this screenshot. You also see a Garbage bin page. Any records stored in a garbage bin should be regarded as waste and therefore not shown on the website etc. Finally the gray folders are "SysFolders". They cannot be viewed as regular webpages but serve as storage pages for database records of some kind.</target>
-      </trans-unit>
-      <trans-unit id="TSconfig.description" approved="yes">
-        <source>Page TypoScript configuration.</source>
-        <target>Page TypoScript configuration.</target>
-      </trans-unit>
-      <trans-unit id="TSconfig.details" approved="yes">
-        <source>Basically 'TypoScript' is a concept for entering values in a tree-structure. This is known especially in relation to creating templates for TYPO3 websites.
+			</trans-unit>
+			<trans-unit id="_doktype.image" approved="yes">
+				<source>EXT:lang/cshimages/pages_4.png</source>
+				<target>EXT:lang/cshimages/pages_4.png</target>
+			</trans-unit>
+			<trans-unit id="doktype.image_descr" approved="yes">
+				<source>This snippet of the page tree shows regular pages which usually have the yellow icons in top of this screenshot. You also see a Garbage bin page. Any records stored in a garbage bin should be regarded as waste and therefore not shown on the website etc. Finally the gray folders are "SysFolders". They cannot be viewed as regular webpages but serve as storage pages for database records of some kind.</source>
+				<target>This snippet of the page tree shows regular pages which usually have the yellow icons in top of this screenshot. You also see a Garbage bin page. Any records stored in a garbage bin should be regarded as waste and therefore not shown on the website etc. Finally the gray folders are "SysFolders". They cannot be viewed as regular webpages but serve as storage pages for database records of some kind.</target>
+			</trans-unit>
+			<trans-unit id="TSconfig.description" approved="yes">
+				<source>Page TypoScript configuration.</source>
+				<target>Page TypoScript configuration.</target>
+			</trans-unit>
+			<trans-unit id="TSconfig.details" approved="yes">
+				<source>Basically 'TypoScript' is a concept for entering values in a tree-structure. This is known especially in relation to creating templates for TYPO3 websites.
 However the same principle for entering the hierarchy of values is used here to configure various features in relation to the backend, functions in modules, the Rich Text Editor etc.
 The resulting 'TSconfig' for a page is actually an accumulation of all 'TSconfig' values from the root of the page tree and outwards to the current page. And thus all subpages are affected as well. A print of the page TSconfig is available from the 'Page TSconfig' menu in the 'Web&gt;Info' module (requires the extension "info_pagetsconfig" to be installed).</source>
-        <target>Basically 'TypoScript' is a concept for entering values in a tree-structure. This is known especially in relation to creating templates for TYPO3 websites.
+				<target>Basically 'TypoScript' is a concept for entering values in a tree-structure. This is known especially in relation to creating templates for TYPO3 websites.
 However the same principle for entering the hierarchy of values is used here to configure various features in relation to the backend, functions in modules, the Rich Text Editor etc.
 The resulting 'TSconfig' for a page is actually an accumulation of all 'TSconfig' values from the root of the page tree and outwards to the current page. And thus all subpages are affected as well. A print of the page TSconfig is available from the 'Page TSconfig' menu in the 'Web&gt;Info' module (requires the extension "info_pagetsconfig" to be installed).</target>
-      </trans-unit>
-      <trans-unit id="TSconfig.syntax" approved="yes">
-        <source>Basic TypoScript syntax &lt;em&gt;without&lt;/em&gt; 'Conditions' and 'Constants'.
+			</trans-unit>
+			<trans-unit id="TSconfig.syntax" approved="yes">
+				<source>Basic TypoScript syntax &lt;em&gt;without&lt;/em&gt; 'Conditions' and 'Constants'.
 
 It's recommended that only admin-users are allowed access to this field!</source>
-        <target>Basic TypoScript syntax &lt;em&gt;without&lt;/em&gt; 'Conditions' and 'Constants'.
+				<target>Basic TypoScript syntax &lt;em&gt;without&lt;/em&gt; 'Conditions' and 'Constants'.
 
 It's recommended that only admin-users are allowed access to this field!</target>
-      </trans-unit>
-      <trans-unit id="_TSconfig.seeAlso" approved="yes">
-        <source>_MOD_web_info:tsconfig_hierarchy,
+			</trans-unit>
+			<trans-unit id="_TSconfig.seeAlso" approved="yes">
+				<source>_MOD_web_info:tsconfig_hierarchy,
 More about Page TSconfig | http://typo3.org/documentation/document-library/doc_core_tsconfig/Page_TSconfig/</source>
-        <target>_MOD_web_info:tsconfig_hierarchy,
+				<target>_MOD_web_info:tsconfig_hierarchy,
 More about Page TSconfig | http://typo3.org/documentation/document-library/doc_core_tsconfig/Page_TSconfig/</target>
-      </trans-unit>
-      <trans-unit id="_TSconfig.image" approved="yes">
-        <source>EXT:lang/cshimages/pages_5.png</source>
-        <target>EXT:lang/cshimages/pages_5.png</target>
-      </trans-unit>
-      <trans-unit id="TSconfig.image_descr" approved="yes">
-        <source>Page TSconfig customizing the Rich Text Editors behaviour in this branch of the page tree. The cool thing about Page TSconfig is that the configuration is specific for that page and subpages since the configuration settings are inherited down the page tree.</source>
-        <target>Page TSconfig customizing the Rich Text Editors behaviour in this branch of the page tree. The cool thing about Page TSconfig is that the configuration is specific for that page and subpages since the configuration settings are inherited down the page tree.</target>
-      </trans-unit>
-      <trans-unit id="php_tree_stop.description" approved="yes">
-        <source>Stops backend rendering of the page tree in navigation and lists.</source>
-        <target>Stops backend rendering of the page tree in navigation and lists.</target>
-      </trans-unit>
-      <trans-unit id="php_tree_stop.details" approved="yes">
-        <source>If you set this flag the page tree in the navigation frame will not expand that branch. Rather you will see a red "+" which indicates that the tree stopped here due to this flag being set.
+			</trans-unit>
+			<trans-unit id="_TSconfig.image" approved="yes">
+				<source>EXT:lang/cshimages/pages_5.png</source>
+				<target>EXT:lang/cshimages/pages_5.png</target>
+			</trans-unit>
+			<trans-unit id="TSconfig.image_descr" approved="yes">
+				<source>Page TSconfig customizing the Rich Text Editors behaviour in this branch of the page tree. The cool thing about Page TSconfig is that the configuration is specific for that page and subpages since the configuration settings are inherited down the page tree.</source>
+				<target>Page TSconfig customizing the Rich Text Editors behaviour in this branch of the page tree. The cool thing about Page TSconfig is that the configuration is specific for that page and subpages since the configuration settings are inherited down the page tree.</target>
+			</trans-unit>
+			<trans-unit id="php_tree_stop.description" approved="yes">
+				<source>Stops backend rendering of the page tree in navigation and lists.</source>
+				<target>Stops backend rendering of the page tree in navigation and lists.</target>
+			</trans-unit>
+			<trans-unit id="php_tree_stop.details" approved="yes">
+				<source>If you set this flag the page tree in the navigation frame will not expand that branch. Rather you will see a red "+" which indicates that the tree stopped here due to this flag being set.
 
 The point with this flag is to prevent descendence into a branch that might have an unusual amount of subpages (hundreds).
 
 You can click the red "+" and the page will become a temporary mount point in the navigation frame.</source>
-        <target>If you set this flag the page tree in the navigation frame will not expand that branch. Rather you will see a red "+" which indicates that the tree stopped here due to this flag being set.
+				<target>If you set this flag the page tree in the navigation frame will not expand that branch. Rather you will see a red "+" which indicates that the tree stopped here due to this flag being set.
 
 The point with this flag is to prevent descendence into a branch that might have an unusual amount of subpages (hundreds).
 
 You can click the red "+" and the page will become a temporary mount point in the navigation frame.</target>
-      </trans-unit>
-      <trans-unit id="_php_tree_stop.seeAlso" approved="yes">
-        <source>_MOD_web_info:pagetree_overview</source>
-        <target>_MOD_web_info:pagetree_overview</target>
-      </trans-unit>
-      <trans-unit id="_php_tree_stop.image" approved="yes">
-        <source>EXT:lang/cshimages/pages_8.png,
+			</trans-unit>
+			<trans-unit id="_php_tree_stop.seeAlso" approved="yes">
+				<source>_MOD_web_info:pagetree_overview</source>
+				<target>_MOD_web_info:pagetree_overview</target>
+			</trans-unit>
+			<trans-unit id="_php_tree_stop.image" approved="yes">
+				<source>EXT:lang/cshimages/pages_8.png,
 EXT:lang/cshimages/pages_6.png,
 EXT:lang/cshimages/pages_7.png</source>
-        <target>EXT:lang/cshimages/pages_8.png,
+				<target>EXT:lang/cshimages/pages_8.png,
 EXT:lang/cshimages/pages_6.png,
 EXT:lang/cshimages/pages_7.png</target>
-      </trans-unit>
-      <trans-unit id="php_tree_stop.image_descr" approved="yes">
-        <source>Here the "Stop page tree" flag is set. It is a palette field under "TSconfig".
+			</trans-unit>
+			<trans-unit id="php_tree_stop.image_descr" approved="yes">
+				<source>Here the "Stop page tree" flag is set. It is a palette field under "TSconfig".
 In the pagetree the setting is reflected with the red "+" and it is not possible to expand that branch of the tree.
 If you click the red "+" you will get the page mounted temporarily in the navigation frame.</source>
-        <target>Here the "Stop page tree" flag is set. It is a palette field under "TSconfig".
+				<target>Here the "Stop page tree" flag is set. It is a palette field under "TSconfig".
 In the pagetree the setting is reflected with the red "+" and it is not possible to expand that branch of the tree.
 If you click the red "+" you will get the page mounted temporarily in the navigation frame.</target>
-      </trans-unit>
-      <trans-unit id="storage_pid.description" approved="yes">
-        <source>A General Storage Folder is meant to be a global page for storage of general database elements of a website. That could be for templates, frontend users etc. which does not really relate to a single page but more to the whole site.</source>
-        <target>A General Storage Folder is meant to be a global page for storage of general database elements of a website. That could be for templates, frontend users etc. which does not really relate to a single page but more to the whole site.</target>
-      </trans-unit>
-      <trans-unit id="storage_pid.details" approved="yes">
-        <source>It is recommended that applications support "General Storage pages" so that they look for records in the sites general storage folder by default and that they should be specifically configured to look elsewhere.
+			</trans-unit>
+			<trans-unit id="storage_pid.description" approved="yes">
+				<source>A General Storage Folder is meant to be a global page for storage of general database elements of a website. That could be for templates, frontend users etc. which does not really relate to a single page but more to the whole site.</source>
+				<target>A General Storage Folder is meant to be a global page for storage of general database elements of a website. That could be for templates, frontend users etc. which does not really relate to a single page but more to the whole site.</target>
+			</trans-unit>
+			<trans-unit id="storage_pid.details" approved="yes">
+				<source>It is recommended that applications support "General Storage pages" so that they look for records in the sites general storage folder by default and that they should be specifically configured to look elsewhere.
 
 A General Record Storage Page is typically a page of the "SysFolder" type.</source>
-        <target>It is recommended that applications support "General Storage pages" so that they look for records in the sites general storage folder by default and that they should be specifically configured to look elsewhere.
+				<target>It is recommended that applications support "General Storage pages" so that they look for records in the sites general storage folder by default and that they should be specifically configured to look elsewhere.
 
 A General Record Storage Page is typically a page of the "SysFolder" type.</target>
-      </trans-unit>
-      <trans-unit id="_storage_pid.seeAlso" approved="yes">
-        <source>The Storage Folder | http://typo3.org/documentation/document-library/doc_tut_ftb1/The_Storage_Folder/</source>
-        <target>The Storage Folder | http://typo3.org/documentation/document-library/doc_tut_ftb1/The_Storage_Folder/</target>
-      </trans-unit>
-      <trans-unit id="editlock.description" approved="yes">
-        <source>If set, non-Admin users cannot edit the page properties or any records on the page (except subpages). They cannot create new records or pages on the page either.</source>
-        <target>If set, non-Admin users cannot edit the page properties or any records on the page (except subpages). They cannot create new records or pages on the page either.</target>
-      </trans-unit>
-      <trans-unit id="fe_login_mode.description" approved="yes">
-        <source>The Login Mode disables the ability to "be logged in" at this page.</source>
-        <target>The Login Mode disables the ability to "be logged in" at this page.</target>
-      </trans-unit>
-      <trans-unit id="fe_login_mode.details" approved="yes">
-        <source>Usually, if the user logs into TYPO3's Frontend the session gets carried around and for each page that user visits, it's calculated whether there is content that the user can see.
+			</trans-unit>
+			<trans-unit id="_storage_pid.seeAlso" approved="yes">
+				<source>The Storage Folder | http://typo3.org/documentation/document-library/doc_tut_ftb1/The_Storage_Folder/</source>
+				<target>The Storage Folder | http://typo3.org/documentation/document-library/doc_tut_ftb1/The_Storage_Folder/</target>
+			</trans-unit>
+			<trans-unit id="editlock.description" approved="yes">
+				<source>If set, non-Admin users cannot edit the page properties or any records on the page (except subpages). They cannot create new records or pages on the page either.</source>
+				<target>If set, non-Admin users cannot edit the page properties or any records on the page (except subpages). They cannot create new records or pages on the page either.</target>
+			</trans-unit>
+			<trans-unit id="fe_login_mode.description" approved="yes">
+				<source>The Login Mode disables the ability to "be logged in" at this page.</source>
+				<target>The Login Mode disables the ability to "be logged in" at this page.</target>
+			</trans-unit>
+			<trans-unit id="fe_login_mode.details" approved="yes">
+				<source>Usually, if the user logs into TYPO3's Frontend the session gets carried around and for each page that user visits, it's calculated whether there is content that the user can see.
 
 By disabling the login, this check does not happen anymore. So the content is the same for all states whether logged in or not or for different FE user groups. This again results in being able to send cache headers.</source>
-        <target>Usually, if the user logs into TYPO3's Frontend the session gets carried around and for each page that user visits, it's calculated whether there is content that the user can see.
+				<target>Usually, if the user logs into TYPO3's Frontend the session gets carried around and for each page that user visits, it's calculated whether there is content that the user can see.
 
 By disabling the login, this check does not happen anymore. So the content is the same for all states whether logged in or not or for different FE user groups. This again results in being able to send cache headers.</target>
-      </trans-unit>
-    </body>
-  </file>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

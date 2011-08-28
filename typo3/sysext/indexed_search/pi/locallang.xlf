@@ -1,210 +1,210 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:24 UTC" product-name="indexed_search">
-    <header/>
-    <body>
-      <trans-unit id="default_search_word_entry" approved="yes">
-        <source>Search for</source>
-        <target>Search for</target>
-      </trans-unit>
-      <trans-unit id="submit_button_label" approved="yes">
-        <source>Search</source>
-        <target>Search</target>
-      </trans-unit>
-      <trans-unit id="opt_type_0" approved="yes">
-        <source>Distinct word</source>
-        <target>Distinct word</target>
-      </trans-unit>
-      <trans-unit id="opt_type_1" approved="yes">
-        <source>Part of word</source>
-        <target>Part of word</target>
-      </trans-unit>
-      <trans-unit id="opt_type_2" approved="yes">
-        <source>First part of word</source>
-        <target>First part of word</target>
-      </trans-unit>
-      <trans-unit id="opt_type_3" approved="yes">
-        <source>Last part of word</source>
-        <target>Last part of word</target>
-      </trans-unit>
-      <trans-unit id="opt_type_10" approved="yes">
-        <source>Sounds like</source>
-        <target>Sounds like</target>
-      </trans-unit>
-      <trans-unit id="opt_type_20" approved="yes">
-        <source>Sentence</source>
-        <target>Sentence</target>
-      </trans-unit>
-      <trans-unit id="opt_defOp_0" approved="yes">
-        <source>All words (AND)</source>
-        <target>All words (AND)</target>
-      </trans-unit>
-      <trans-unit id="opt_defOp_1" approved="yes">
-        <source>Any words (OR)</source>
-        <target>Any words (OR)</target>
-      </trans-unit>
-      <trans-unit id="opt_sections_0" approved="yes">
-        <source>Whole site</source>
-        <target>Whole site</target>
-      </trans-unit>
-      <trans-unit id="opt_sections_-1" approved="yes">
-        <source>Only this page</source>
-        <target>Only this page</target>
-      </trans-unit>
-      <trans-unit id="opt_sections_-2" approved="yes">
-        <source>Top + level 1</source>
-        <target>Top + level 1</target>
-      </trans-unit>
-      <trans-unit id="opt_sections_-3" approved="yes">
-        <source>Level 2 and out</source>
-        <target>Level 2 and out</target>
-      </trans-unit>
-      <trans-unit id="opt_freeIndexUid_-1" approved="yes">
-        <source>All, mixed</source>
-        <target>All, mixed</target>
-      </trans-unit>
-      <trans-unit id="opt_freeIndexUid_-2" approved="yes">
-        <source>All, categorized</source>
-        <target>All, categorized</target>
-      </trans-unit>
-      <trans-unit id="opt_freeIndexUid_0" approved="yes">
-        <source>Pages</source>
-        <target>Pages</target>
-      </trans-unit>
-      <trans-unit id="opt_freeIndexUid_header_-1" approved="yes">
-        <source>Mixed categories</source>
-        <target>Mixed categories</target>
-      </trans-unit>
-      <trans-unit id="opt_freeIndexUid_header_0" approved="yes">
-        <source>Website Pages</source>
-        <target>Website Pages</target>
-      </trans-unit>
-      <trans-unit id="opt_media_-1" approved="yes">
-        <source>All media</source>
-        <target>All media</target>
-      </trans-unit>
-      <trans-unit id="opt_media_0" approved="yes">
-        <source>Internal pages</source>
-        <target>Internal pages</target>
-      </trans-unit>
-      <trans-unit id="opt_media_-2" approved="yes">
-        <source>All External</source>
-        <target>All External</target>
-      </trans-unit>
-      <trans-unit id="opt_order_rank_flag" approved="yes">
-        <source>Weight/Frequency</source>
-        <target>Weight/Frequency</target>
-      </trans-unit>
-      <trans-unit id="opt_order_rank_freq" approved="yes">
-        <source>Frequency</source>
-        <target>Frequency</target>
-      </trans-unit>
-      <trans-unit id="opt_order_rank_first" approved="yes">
-        <source>Close to top</source>
-        <target>Close to top</target>
-      </trans-unit>
-      <trans-unit id="opt_order_rank_count" approved="yes">
-        <source>Number of words</source>
-        <target>Number of words</target>
-      </trans-unit>
-      <trans-unit id="opt_order_mtime" approved="yes">
-        <source>Date Modified</source>
-        <target>Date Modified</target>
-      </trans-unit>
-      <trans-unit id="opt_order_title" approved="yes">
-        <source>Document title</source>
-        <target>Document title</target>
-      </trans-unit>
-      <trans-unit id="opt_order_crdate" approved="yes">
-        <source>Creation date</source>
-        <target>Creation date</target>
-      </trans-unit>
-      <trans-unit id="opt_group_sections" approved="yes">
-        <source>Section hierarchy</source>
-        <target>Section hierarchy</target>
-      </trans-unit>
-      <trans-unit id="opt_group_flat" approved="yes">
-        <source>Flat list</source>
-        <target>Flat list</target>
-      </trans-unit>
-      <trans-unit id="opt_lang_-1" approved="yes">
-        <source>All languages</source>
-        <target>All languages</target>
-      </trans-unit>
-      <trans-unit id="opt_lang_0" approved="yes">
-        <source>Default</source>
-        <target>Default</target>
-      </trans-unit>
-      <trans-unit id="opt_desc_0" approved="yes">
-        <source>Highest first</source>
-        <target>Highest first</target>
-      </trans-unit>
-      <trans-unit id="opt_desc_1" approved="yes">
-        <source>Lowest first</source>
-        <target>Lowest first</target>
-      </trans-unit>
-      <trans-unit id="opt_RL1" approved="yes">
-        <source>Level 1:</source>
-        <target>Level 1:</target>
-      </trans-unit>
-      <trans-unit id="opt_RL1ALL" approved="yes">
-        <source>All pages on level 1</source>
-        <target>All pages on level 1</target>
-      </trans-unit>
-      <trans-unit id="opt_RL2" approved="yes">
-        <source>- Level 2:</source>
-        <target>- Level 2:</target>
-      </trans-unit>
-      <trans-unit id="opt_RL2ALL" approved="yes">
-        <source>- All pages on level 2</source>
-        <target>- All pages on level 2</target>
-      </trans-unit>
-      <trans-unit id="form_legend" approved="yes">
-        <source>Search form</source>
-        <target>Search form</target>
-      </trans-unit>
-      <trans-unit id="form_searchFor" approved="yes">
-        <source>Search for:</source>
-        <target>Search for:</target>
-      </trans-unit>
-      <trans-unit id="form_extResume" approved="yes">
-        <source>Extended resume</source>
-        <target>Extended resume</target>
-      </trans-unit>
-      <trans-unit id="form_atATime" approved="yes">
-        <source>at a time</source>
-        <target>at a time</target>
-      </trans-unit>
-      <trans-unit id="form_orderBy" approved="yes">
-        <source>Order by:</source>
-        <target>Order by:</target>
-      </trans-unit>
-      <trans-unit id="form_fromSection" approved="yes">
-        <source>From section:</source>
-        <target>From section:</target>
-      </trans-unit>
-      <trans-unit id="form_freeIndexUid" approved="yes">
-        <source>Category:</source>
-        <target>Category:</target>
-      </trans-unit>
-      <trans-unit id="form_searchIn" approved="yes">
-        <source>Search in:</source>
-        <target>Search in:</target>
-      </trans-unit>
-      <trans-unit id="form_match" approved="yes">
-        <source>Match:</source>
-        <target>Match:</target>
-      </trans-unit>
-      <trans-unit id="form_style" approved="yes">
-        <source>Style:</source>
-        <target>Style:</target>
-      </trans-unit>
-      <trans-unit id="rules_header" approved="yes">
-        <source>Rules:</source>
-        <target>Rules:</target>
-      </trans-unit>
-      <trans-unit id="rules_text" approved="yes">
-        <source>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:24 UTC" product-name="indexed_search">
+		<header/>
+		<body>
+			<trans-unit id="default_search_word_entry" approved="yes">
+				<source>Search for</source>
+				<target>Search for</target>
+			</trans-unit>
+			<trans-unit id="submit_button_label" approved="yes">
+				<source>Search</source>
+				<target>Search</target>
+			</trans-unit>
+			<trans-unit id="opt_type_0" approved="yes">
+				<source>Distinct word</source>
+				<target>Distinct word</target>
+			</trans-unit>
+			<trans-unit id="opt_type_1" approved="yes">
+				<source>Part of word</source>
+				<target>Part of word</target>
+			</trans-unit>
+			<trans-unit id="opt_type_2" approved="yes">
+				<source>First part of word</source>
+				<target>First part of word</target>
+			</trans-unit>
+			<trans-unit id="opt_type_3" approved="yes">
+				<source>Last part of word</source>
+				<target>Last part of word</target>
+			</trans-unit>
+			<trans-unit id="opt_type_10" approved="yes">
+				<source>Sounds like</source>
+				<target>Sounds like</target>
+			</trans-unit>
+			<trans-unit id="opt_type_20" approved="yes">
+				<source>Sentence</source>
+				<target>Sentence</target>
+			</trans-unit>
+			<trans-unit id="opt_defOp_0" approved="yes">
+				<source>All words (AND)</source>
+				<target>All words (AND)</target>
+			</trans-unit>
+			<trans-unit id="opt_defOp_1" approved="yes">
+				<source>Any words (OR)</source>
+				<target>Any words (OR)</target>
+			</trans-unit>
+			<trans-unit id="opt_sections_0" approved="yes">
+				<source>Whole site</source>
+				<target>Whole site</target>
+			</trans-unit>
+			<trans-unit id="opt_sections_-1" approved="yes">
+				<source>Only this page</source>
+				<target>Only this page</target>
+			</trans-unit>
+			<trans-unit id="opt_sections_-2" approved="yes">
+				<source>Top + level 1</source>
+				<target>Top + level 1</target>
+			</trans-unit>
+			<trans-unit id="opt_sections_-3" approved="yes">
+				<source>Level 2 and out</source>
+				<target>Level 2 and out</target>
+			</trans-unit>
+			<trans-unit id="opt_freeIndexUid_-1" approved="yes">
+				<source>All, mixed</source>
+				<target>All, mixed</target>
+			</trans-unit>
+			<trans-unit id="opt_freeIndexUid_-2" approved="yes">
+				<source>All, categorized</source>
+				<target>All, categorized</target>
+			</trans-unit>
+			<trans-unit id="opt_freeIndexUid_0" approved="yes">
+				<source>Pages</source>
+				<target>Pages</target>
+			</trans-unit>
+			<trans-unit id="opt_freeIndexUid_header_-1" approved="yes">
+				<source>Mixed categories</source>
+				<target>Mixed categories</target>
+			</trans-unit>
+			<trans-unit id="opt_freeIndexUid_header_0" approved="yes">
+				<source>Website Pages</source>
+				<target>Website Pages</target>
+			</trans-unit>
+			<trans-unit id="opt_media_-1" approved="yes">
+				<source>All media</source>
+				<target>All media</target>
+			</trans-unit>
+			<trans-unit id="opt_media_0" approved="yes">
+				<source>Internal pages</source>
+				<target>Internal pages</target>
+			</trans-unit>
+			<trans-unit id="opt_media_-2" approved="yes">
+				<source>All External</source>
+				<target>All External</target>
+			</trans-unit>
+			<trans-unit id="opt_order_rank_flag" approved="yes">
+				<source>Weight/Frequency</source>
+				<target>Weight/Frequency</target>
+			</trans-unit>
+			<trans-unit id="opt_order_rank_freq" approved="yes">
+				<source>Frequency</source>
+				<target>Frequency</target>
+			</trans-unit>
+			<trans-unit id="opt_order_rank_first" approved="yes">
+				<source>Close to top</source>
+				<target>Close to top</target>
+			</trans-unit>
+			<trans-unit id="opt_order_rank_count" approved="yes">
+				<source>Number of words</source>
+				<target>Number of words</target>
+			</trans-unit>
+			<trans-unit id="opt_order_mtime" approved="yes">
+				<source>Date Modified</source>
+				<target>Date Modified</target>
+			</trans-unit>
+			<trans-unit id="opt_order_title" approved="yes">
+				<source>Document title</source>
+				<target>Document title</target>
+			</trans-unit>
+			<trans-unit id="opt_order_crdate" approved="yes">
+				<source>Creation date</source>
+				<target>Creation date</target>
+			</trans-unit>
+			<trans-unit id="opt_group_sections" approved="yes">
+				<source>Section hierarchy</source>
+				<target>Section hierarchy</target>
+			</trans-unit>
+			<trans-unit id="opt_group_flat" approved="yes">
+				<source>Flat list</source>
+				<target>Flat list</target>
+			</trans-unit>
+			<trans-unit id="opt_lang_-1" approved="yes">
+				<source>All languages</source>
+				<target>All languages</target>
+			</trans-unit>
+			<trans-unit id="opt_lang_0" approved="yes">
+				<source>Default</source>
+				<target>Default</target>
+			</trans-unit>
+			<trans-unit id="opt_desc_0" approved="yes">
+				<source>Highest first</source>
+				<target>Highest first</target>
+			</trans-unit>
+			<trans-unit id="opt_desc_1" approved="yes">
+				<source>Lowest first</source>
+				<target>Lowest first</target>
+			</trans-unit>
+			<trans-unit id="opt_RL1" approved="yes">
+				<source>Level 1:</source>
+				<target>Level 1:</target>
+			</trans-unit>
+			<trans-unit id="opt_RL1ALL" approved="yes">
+				<source>All pages on level 1</source>
+				<target>All pages on level 1</target>
+			</trans-unit>
+			<trans-unit id="opt_RL2" approved="yes">
+				<source>- Level 2:</source>
+				<target>- Level 2:</target>
+			</trans-unit>
+			<trans-unit id="opt_RL2ALL" approved="yes">
+				<source>- All pages on level 2</source>
+				<target>- All pages on level 2</target>
+			</trans-unit>
+			<trans-unit id="form_legend" approved="yes">
+				<source>Search form</source>
+				<target>Search form</target>
+			</trans-unit>
+			<trans-unit id="form_searchFor" approved="yes">
+				<source>Search for:</source>
+				<target>Search for:</target>
+			</trans-unit>
+			<trans-unit id="form_extResume" approved="yes">
+				<source>Extended resume</source>
+				<target>Extended resume</target>
+			</trans-unit>
+			<trans-unit id="form_atATime" approved="yes">
+				<source>at a time</source>
+				<target>at a time</target>
+			</trans-unit>
+			<trans-unit id="form_orderBy" approved="yes">
+				<source>Order by:</source>
+				<target>Order by:</target>
+			</trans-unit>
+			<trans-unit id="form_fromSection" approved="yes">
+				<source>From section:</source>
+				<target>From section:</target>
+			</trans-unit>
+			<trans-unit id="form_freeIndexUid" approved="yes">
+				<source>Category:</source>
+				<target>Category:</target>
+			</trans-unit>
+			<trans-unit id="form_searchIn" approved="yes">
+				<source>Search in:</source>
+				<target>Search in:</target>
+			</trans-unit>
+			<trans-unit id="form_match" approved="yes">
+				<source>Match:</source>
+				<target>Match:</target>
+			</trans-unit>
+			<trans-unit id="form_style" approved="yes">
+				<source>Style:</source>
+				<target>Style:</target>
+			</trans-unit>
+			<trans-unit id="rules_header" approved="yes">
+				<source>Rules:</source>
+				<target>Rules:</target>
+			</trans-unit>
+			<trans-unit id="rules_text" approved="yes">
+				<source>
 			Only words with 2 or more characters are accepted
 			Max 200 chars total
 			Space is used to split words, "" can be used to search for a whole string (not indexed search then)
@@ -212,7 +212,7 @@
 			+/|/- equals AND, OR and NOT as operators.
 			All search words are converted to lowercase.
 		</source>
-        <target>
+				<target>
 			Only words with 2 or more characters are accepted
 			Max 200 chars total
 			Space is used to split words, "" can be used to search for a whole string (not indexed search then)
@@ -220,127 +220,127 @@
 			+/|/- equals AND, OR and NOT as operators.
 			All search words are converted to lowercase.
 		</target>
-      </trans-unit>
-      <trans-unit id="searchFor" approved="yes">
-        <source>Search for</source>
-        <target>Search for</target>
-      </trans-unit>
-      <trans-unit id="searchFor_or" approved="yes">
-        <source>or</source>
-        <target>or</target>
-      </trans-unit>
-      <trans-unit id="searchFor_and" approved="yes">
-        <source>and</source>
-        <target>and</target>
-      </trans-unit>
-      <trans-unit id="searchFor_butNot" approved="yes">
-        <source>but not</source>
-        <target>but not</target>
-      </trans-unit>
-      <trans-unit id="noResults" approved="yes">
-        <source>NO results found.</source>
-        <target>NO results found.</target>
-      </trans-unit>
-      <trans-unit id="inSection" approved="yes">
-        <source>in the section</source>
-        <target>in the section</target>
-      </trans-unit>
-      <trans-unit id="inNsection" approved="yes">
-        <source>in %s section:</source>
-        <target>in %s section:</target>
-      </trans-unit>
-      <trans-unit id="inNsections" approved="yes">
-        <source>in %s sections:</source>
-        <target>in %s sections:</target>
-      </trans-unit>
-      <trans-unit id="word_page" approved="yes">
-        <source>page</source>
-        <target>page</target>
-      </trans-unit>
-      <trans-unit id="word_pages" approved="yes">
-        <source>pages</source>
-        <target>pages</target>
-      </trans-unit>
-      <trans-unit id="unnamedSection" approved="yes">
-        <source>Other</source>
-        <target>Other</target>
-      </trans-unit>
-      <trans-unit id="link_regularSearch" approved="yes">
-        <source>Regular search</source>
-        <target>Regular search</target>
-      </trans-unit>
-      <trans-unit id="link_advancedSearch" approved="yes">
-        <source>Advanced search</source>
-        <target>Advanced search</target>
-      </trans-unit>
-      <trans-unit id="res_path" approved="yes">
-        <source>Path:</source>
-        <target>Path:</target>
-      </trans-unit>
-      <trans-unit id="res_modified" approved="yes">
-        <source>Modified:</source>
-        <target>Modified:</target>
-      </trans-unit>
-      <trans-unit id="res_created" approved="yes">
-        <source>Created:</source>
-        <target>Created:</target>
-      </trans-unit>
-      <trans-unit id="res_size" approved="yes">
-        <source>Size:</source>
-        <target>Size:</target>
-      </trans-unit>
-      <trans-unit id="res_noResume" approved="yes">
-        <source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
-        <target>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</target>
-      </trans-unit>
-      <trans-unit id="res_otherMatching" approved="yes">
-        <source>Other matching pages in the same document:</source>
-        <target>Other matching pages in the same document:</target>
-      </trans-unit>
-      <trans-unit id="res_otherPageAsWell" approved="yes">
-        <source>INFO: There was another page indexed as well... Probably indexed with another or no usergroup.</source>
-        <target>INFO: There was another page indexed as well... Probably indexed with another or no usergroup.</target>
-      </trans-unit>
-      <trans-unit id="res_memberGroups" approved="yes">
-        <source>Require membership of group numbers %s</source>
-        <target>Require membership of group numbers %s</target>
-      </trans-unit>
-      <trans-unit id="pi_list_browseresults_prev" approved="yes">
-        <source>&lt; Previous</source>
-        <target>&lt; Previous</target>
-      </trans-unit>
-      <trans-unit id="pi_list_browseresults_page" approved="yes">
-        <source>Page</source>
-        <target>Page</target>
-      </trans-unit>
-      <trans-unit id="pi_list_browseresults_next" approved="yes">
-        <source>Next &gt;</source>
-        <target>Next &gt;</target>
-      </trans-unit>
-      <trans-unit id="pi_list_browseresults_display" approved="yes">
-        <source>Displaying results ###TAG_BEGIN###%s to %s###TAG_END### out of ###TAG_BEGIN###%s###TAG_END###</source>
-        <target>Displaying results ###TAG_BEGIN###%s to %s###TAG_END### out of ###TAG_BEGIN###%s###TAG_END###</target>
-      </trans-unit>
-      <trans-unit id="local_operator_AND" approved="yes">
-        <source>AND</source>
-        <target>AND</target>
-      </trans-unit>
-      <trans-unit id="local_operator_OR" approved="yes">
-        <source>OR</source>
-        <target>OR</target>
-      </trans-unit>
-      <trans-unit id="local_operator_NOT" approved="yes">
-        <source>NOT</source>
-        <target>NOT</target>
-      </trans-unit>
-      <trans-unit id="makerating_addToCurrentSearch" approved="yes">
-        <source>Add to current search words</source>
-        <target>Add to current search words</target>
-      </trans-unit>
-      <trans-unit id="maketitle_matches" approved="yes">
-        <source>matches</source>
-        <target>matches</target>
-      </trans-unit>
-    </body>
-  </file>
+			</trans-unit>
+			<trans-unit id="searchFor" approved="yes">
+				<source>Search for</source>
+				<target>Search for</target>
+			</trans-unit>
+			<trans-unit id="searchFor_or" approved="yes">
+				<source>or</source>
+				<target>or</target>
+			</trans-unit>
+			<trans-unit id="searchFor_and" approved="yes">
+				<source>and</source>
+				<target>and</target>
+			</trans-unit>
+			<trans-unit id="searchFor_butNot" approved="yes">
+				<source>but not</source>
+				<target>but not</target>
+			</trans-unit>
+			<trans-unit id="noResults" approved="yes">
+				<source>NO results found.</source>
+				<target>NO results found.</target>
+			</trans-unit>
+			<trans-unit id="inSection" approved="yes">
+				<source>in the section</source>
+				<target>in the section</target>
+			</trans-unit>
+			<trans-unit id="inNsection" approved="yes">
+				<source>in %s section:</source>
+				<target>in %s section:</target>
+			</trans-unit>
+			<trans-unit id="inNsections" approved="yes">
+				<source>in %s sections:</source>
+				<target>in %s sections:</target>
+			</trans-unit>
+			<trans-unit id="word_page" approved="yes">
+				<source>page</source>
+				<target>page</target>
+			</trans-unit>
+			<trans-unit id="word_pages" approved="yes">
+				<source>pages</source>
+				<target>pages</target>
+			</trans-unit>
+			<trans-unit id="unnamedSection" approved="yes">
+				<source>Other</source>
+				<target>Other</target>
+			</trans-unit>
+			<trans-unit id="link_regularSearch" approved="yes">
+				<source>Regular search</source>
+				<target>Regular search</target>
+			</trans-unit>
+			<trans-unit id="link_advancedSearch" approved="yes">
+				<source>Advanced search</source>
+				<target>Advanced search</target>
+			</trans-unit>
+			<trans-unit id="res_path" approved="yes">
+				<source>Path:</source>
+				<target>Path:</target>
+			</trans-unit>
+			<trans-unit id="res_modified" approved="yes">
+				<source>Modified:</source>
+				<target>Modified:</target>
+			</trans-unit>
+			<trans-unit id="res_created" approved="yes">
+				<source>Created:</source>
+				<target>Created:</target>
+			</trans-unit>
+			<trans-unit id="res_size" approved="yes">
+				<source>Size:</source>
+				<target>Size:</target>
+			</trans-unit>
+			<trans-unit id="res_noResume" approved="yes">
+				<source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
+				<target>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</target>
+			</trans-unit>
+			<trans-unit id="res_otherMatching" approved="yes">
+				<source>Other matching pages in the same document:</source>
+				<target>Other matching pages in the same document:</target>
+			</trans-unit>
+			<trans-unit id="res_otherPageAsWell" approved="yes">
+				<source>INFO: There was another page indexed as well... Probably indexed with another or no usergroup.</source>
+				<target>INFO: There was another page indexed as well... Probably indexed with another or no usergroup.</target>
+			</trans-unit>
+			<trans-unit id="res_memberGroups" approved="yes">
+				<source>Require membership of group numbers %s</source>
+				<target>Require membership of group numbers %s</target>
+			</trans-unit>
+			<trans-unit id="pi_list_browseresults_prev" approved="yes">
+				<source>&lt; Previous</source>
+				<target>&lt; Previous</target>
+			</trans-unit>
+			<trans-unit id="pi_list_browseresults_page" approved="yes">
+				<source>Page</source>
+				<target>Page</target>
+			</trans-unit>
+			<trans-unit id="pi_list_browseresults_next" approved="yes">
+				<source>Next &gt;</source>
+				<target>Next &gt;</target>
+			</trans-unit>
+			<trans-unit id="pi_list_browseresults_display" approved="yes">
+				<source>Displaying results ###TAG_BEGIN###%s to %s###TAG_END### out of ###TAG_BEGIN###%s###TAG_END###</source>
+				<target>Displaying results ###TAG_BEGIN###%s to %s###TAG_END### out of ###TAG_BEGIN###%s###TAG_END###</target>
+			</trans-unit>
+			<trans-unit id="local_operator_AND" approved="yes">
+				<source>AND</source>
+				<target>AND</target>
+			</trans-unit>
+			<trans-unit id="local_operator_OR" approved="yes">
+				<source>OR</source>
+				<target>OR</target>
+			</trans-unit>
+			<trans-unit id="local_operator_NOT" approved="yes">
+				<source>NOT</source>
+				<target>NOT</target>
+			</trans-unit>
+			<trans-unit id="makerating_addToCurrentSearch" approved="yes">
+				<source>Add to current search words</source>
+				<target>Add to current search words</target>
+			</trans-unit>
+			<trans-unit id="maketitle_matches" approved="yes">
+				<source>matches</source>
+				<target>matches</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

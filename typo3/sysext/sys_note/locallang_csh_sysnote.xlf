@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="sys_note">
-    <header/>
-    <body>
-      <trans-unit id=".description" approved="yes">
-        <source>Internal reminder note attached to a page.</source>
-        <target>Internal reminder note attached to a page.</target>
-      </trans-unit>
-      <trans-unit id=".details" approved="yes">
-        <source>This provides a simple way to attach informative notes to a page regarding backend-related issues. Use it as you like for reminders, instructions, etc.</source>
-        <target>This provides a simple way to attach informative notes to a page regarding backend-related issues. Use it as you like for reminders, instructions, etc.</target>
-      </trans-unit>
-      <trans-unit id="_.seeAlso" approved="yes">
-        <source>pages</source>
-        <target>pages</target>
-      </trans-unit>
-      <trans-unit id="category.description" approved="yes">
-        <source>Select a category which describes the character of the note.</source>
-        <target>Select a category which describes the character of the note.</target>
-      </trans-unit>
-      <trans-unit id="subject.description" approved="yes">
-        <source>Enter a title for the note.</source>
-        <target>Enter a title for the note.</target>
-      </trans-unit>
-      <trans-unit id="message.description" approved="yes">
-        <source>This is the note itself.</source>
-        <target>This is the note itself.</target>
-      </trans-unit>
-      <trans-unit id="author.description" approved="yes">
-        <source>Enter your name.</source>
-        <target>Enter your name.</target>
-      </trans-unit>
-      <trans-unit id="email.description" approved="yes">
-        <source>Enter your email address.</source>
-        <target>Enter your email address.</target>
-      </trans-unit>
-      <trans-unit id="personal.description" approved="yes">
-        <source>Check this if you don't want other users to see this note.</source>
-        <target>Check this if you don't want other users to see this note.</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:28 UTC" product-name="sys_note">
+		<header/>
+		<body>
+			<trans-unit id=".description" approved="yes">
+				<source>Internal reminder note attached to a page.</source>
+				<target>Internal reminder note attached to a page.</target>
+			</trans-unit>
+			<trans-unit id=".details" approved="yes">
+				<source>This provides a simple way to attach informative notes to a page regarding backend-related issues. Use it as you like for reminders, instructions, etc.</source>
+				<target>This provides a simple way to attach informative notes to a page regarding backend-related issues. Use it as you like for reminders, instructions, etc.</target>
+			</trans-unit>
+			<trans-unit id="_.seeAlso" approved="yes">
+				<source>pages</source>
+				<target>pages</target>
+			</trans-unit>
+			<trans-unit id="category.description" approved="yes">
+				<source>Select a category which describes the character of the note.</source>
+				<target>Select a category which describes the character of the note.</target>
+			</trans-unit>
+			<trans-unit id="subject.description" approved="yes">
+				<source>Enter a title for the note.</source>
+				<target>Enter a title for the note.</target>
+			</trans-unit>
+			<trans-unit id="message.description" approved="yes">
+				<source>This is the note itself.</source>
+				<target>This is the note itself.</target>
+			</trans-unit>
+			<trans-unit id="author.description" approved="yes">
+				<source>Enter your name.</source>
+				<target>Enter your name.</target>
+			</trans-unit>
+			<trans-unit id="email.description" approved="yes">
+				<source>Enter your email address.</source>
+				<target>Enter your email address.</target>
+			</trans-unit>
+			<trans-unit id="personal.description" approved="yes">
+				<source>Check this if you don't want other users to see this note.</source>
+				<target>Check this if you don't want other users to see this note.</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

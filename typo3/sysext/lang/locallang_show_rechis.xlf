@@ -1,156 +1,156 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="lang">
-    <header/>
-    <body>
-      <trans-unit id="title" approved="yes">
-        <source>Show record history</source>
-        <target>Show record history</target>
-      </trans-unit>
-      <trans-unit id="time" approved="yes">
-        <source>Time</source>
-        <target>Time</target>
-      </trans-unit>
-      <trans-unit id="age" approved="yes">
-        <source>Age</source>
-        <target>Age</target>
-      </trans-unit>
-      <trans-unit id="user" approved="yes">
-        <source>User</source>
-        <target>User</target>
-      </trans-unit>
-      <trans-unit id="tableUid" approved="yes">
-        <source>Table:uid</source>
-        <target>Table:uid</target>
-      </trans-unit>
-      <trans-unit id="differences" approved="yes">
-        <source>Differences</source>
-        <target>Differences</target>
-      </trans-unit>
-      <trans-unit id="changes" approved="yes">
-        <source>Changelog</source>
-        <target>Changelog</target>
-      </trans-unit>
-      <trans-unit id="return" approved="yes">
-        <source>Return</source>
-        <target>Return</target>
-      </trans-unit>
-      <trans-unit id="returnLink" approved="yes">
-        <source>Click here to go back</source>
-        <target>Click here to go back</target>
-      </trans-unit>
-      <trans-unit id="revertAll" approved="yes">
-        <source>Rollback all changes shown</source>
-        <target>Rollback all changes shown</target>
-      </trans-unit>
-      <trans-unit id="revertRecord" approved="yes">
-        <source>Rollback single record</source>
-        <target>Rollback single record</target>
-      </trans-unit>
-      <trans-unit id="revertField" approved="yes">
-        <source>Rollback single field</source>
-        <target>Rollback single field</target>
-      </trans-unit>
-      <trans-unit id="externalChange" approved="yes">
-        <source>Intermediate external change!</source>
-        <target>Intermediate external change!</target>
-      </trans-unit>
-      <trans-unit id="sumUpChanges" approved="yes">
-        <source>Rollback (Preview)</source>
-        <target>Rollback (Preview)</target>
-      </trans-unit>
-      <trans-unit id="markState" approved="yes">
-        <source>mark this change</source>
-        <target>mark this change</target>
-      </trans-unit>
-      <trans-unit id="unmarkState" approved="yes">
-        <source>unMark this change</source>
-        <target>unMark this change</target>
-      </trans-unit>
-      <trans-unit id="elementHistory" approved="yes">
-        <source>You are currently seeing the history for an element.</source>
-        <target>You are currently seeing the history for an element.</target>
-      </trans-unit>
-      <trans-unit id="elementHistory_link" approved="yes">
-        <source>Show the full page history!</source>
-        <target>Show the full page history!</target>
-      </trans-unit>
-      <trans-unit id="linkRecordHistory" approved="yes">
-        <source>Limit history to this record</source>
-        <target>Limit history to this record</target>
-      </trans-unit>
-      <trans-unit id="differenceMsg" approved="yes">
-        <source>In the Difference column you can see the changes at every modification of records. New changes are displayed in &lt;span class="diff-g"&gt;green colored text&lt;/span&gt; and the &lt;span class="diff-r"&gt;red colored text&lt;/span&gt; are the old values which were removed.</source>
-        <target>In the Difference column you can see the changes at every modification of records. New changes are displayed in &lt;span class="diff-g"&gt;green colored text&lt;/span&gt; and the &lt;span class="diff-r"&gt;red colored text&lt;/span&gt; are the old values which were removed.</target>
-      </trans-unit>
-      <trans-unit id="fullView" approved="yes">
-        <source>Return to full view</source>
-        <target>Return to full view</target>
-      </trans-unit>
-      <trans-unit id="insert" approved="yes">
-        <source>insert</source>
-        <target>insert</target>
-      </trans-unit>
-      <trans-unit id="delete" approved="yes">
-        <source>delete</source>
-        <target>delete</target>
-      </trans-unit>
-      <trans-unit id="mergedDifferences" approved="yes">
-        <source>Preview for Rollback</source>
-        <target>Preview for Rollback</target>
-      </trans-unit>
-      <trans-unit id="settings" approved="yes">
-        <source>Settings</source>
-        <target>Settings</target>
-      </trans-unit>
-      <trans-unit id="maxSteps" approved="yes">
-        <source>Show entries:</source>
-        <target>Show entries:</target>
-      </trans-unit>
-      <trans-unit id="maxSteps_all" approved="yes">
-        <source>ALL</source>
-        <target>ALL</target>
-      </trans-unit>
-      <trans-unit id="maxSteps_marked" approved="yes">
-        <source>marked</source>
-        <target>marked</target>
-      </trans-unit>
-      <trans-unit id="showDiff" approved="yes">
-        <source>Show differences:</source>
-        <target>Show differences:</target>
-      </trans-unit>
-      <trans-unit id="showDiff_no" approved="yes">
-        <source>No</source>
-        <target>No</target>
-      </trans-unit>
-      <trans-unit id="showDiff_inline" approved="yes">
-        <source>Inline</source>
-        <target>Inline</target>
-      </trans-unit>
-      <trans-unit id="showSubElements" approved="yes">
-        <source>Show sub elements:</source>
-        <target>Show sub elements:</target>
-      </trans-unit>
-      <trans-unit id="no" approved="yes">
-        <source>No</source>
-        <target>No</target>
-      </trans-unit>
-      <trans-unit id="yes" approved="yes">
-        <source>Yes</source>
-        <target>Yes</target>
-      </trans-unit>
-      <trans-unit id="showInsertDelete" approved="yes">
-        <source>Show inserts/deletes of records:</source>
-        <target>Show inserts/deletes of records:</target>
-      </trans-unit>
-      <trans-unit id="consistenceWarning" approved="yes">
-        <source>From this point on, there is no guarantee that a rollback reverts all changes, as changes of records  prior to this message are normally not preserved.</source>
-        <target>From this point on, there is no guarantee that a rollback reverts all changes, as changes of records  prior to this message are normally not preserved.</target>
-      </trans-unit>
-      <trans-unit id="noDifferences" approved="yes">
-        <source>There are no differences to the current page!</source>
-        <target>There are no differences to the current page!</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:25 UTC" product-name="lang">
+		<header/>
+		<body>
+			<trans-unit id="title" approved="yes">
+				<source>Show record history</source>
+				<target>Show record history</target>
+			</trans-unit>
+			<trans-unit id="time" approved="yes">
+				<source>Time</source>
+				<target>Time</target>
+			</trans-unit>
+			<trans-unit id="age" approved="yes">
+				<source>Age</source>
+				<target>Age</target>
+			</trans-unit>
+			<trans-unit id="user" approved="yes">
+				<source>User</source>
+				<target>User</target>
+			</trans-unit>
+			<trans-unit id="tableUid" approved="yes">
+				<source>Table:uid</source>
+				<target>Table:uid</target>
+			</trans-unit>
+			<trans-unit id="differences" approved="yes">
+				<source>Differences</source>
+				<target>Differences</target>
+			</trans-unit>
+			<trans-unit id="changes" approved="yes">
+				<source>Changelog</source>
+				<target>Changelog</target>
+			</trans-unit>
+			<trans-unit id="return" approved="yes">
+				<source>Return</source>
+				<target>Return</target>
+			</trans-unit>
+			<trans-unit id="returnLink" approved="yes">
+				<source>Click here to go back</source>
+				<target>Click here to go back</target>
+			</trans-unit>
+			<trans-unit id="revertAll" approved="yes">
+				<source>Rollback all changes shown</source>
+				<target>Rollback all changes shown</target>
+			</trans-unit>
+			<trans-unit id="revertRecord" approved="yes">
+				<source>Rollback single record</source>
+				<target>Rollback single record</target>
+			</trans-unit>
+			<trans-unit id="revertField" approved="yes">
+				<source>Rollback single field</source>
+				<target>Rollback single field</target>
+			</trans-unit>
+			<trans-unit id="externalChange" approved="yes">
+				<source>Intermediate external change!</source>
+				<target>Intermediate external change!</target>
+			</trans-unit>
+			<trans-unit id="sumUpChanges" approved="yes">
+				<source>Rollback (Preview)</source>
+				<target>Rollback (Preview)</target>
+			</trans-unit>
+			<trans-unit id="markState" approved="yes">
+				<source>mark this change</source>
+				<target>mark this change</target>
+			</trans-unit>
+			<trans-unit id="unmarkState" approved="yes">
+				<source>unMark this change</source>
+				<target>unMark this change</target>
+			</trans-unit>
+			<trans-unit id="elementHistory" approved="yes">
+				<source>You are currently seeing the history for an element.</source>
+				<target>You are currently seeing the history for an element.</target>
+			</trans-unit>
+			<trans-unit id="elementHistory_link" approved="yes">
+				<source>Show the full page history!</source>
+				<target>Show the full page history!</target>
+			</trans-unit>
+			<trans-unit id="linkRecordHistory" approved="yes">
+				<source>Limit history to this record</source>
+				<target>Limit history to this record</target>
+			</trans-unit>
+			<trans-unit id="differenceMsg" approved="yes">
+				<source>In the Difference column you can see the changes at every modification of records. New changes are displayed in &lt;span class="diff-g"&gt;green colored text&lt;/span&gt; and the &lt;span class="diff-r"&gt;red colored text&lt;/span&gt; are the old values which were removed.</source>
+				<target>In the Difference column you can see the changes at every modification of records. New changes are displayed in &lt;span class="diff-g"&gt;green colored text&lt;/span&gt; and the &lt;span class="diff-r"&gt;red colored text&lt;/span&gt; are the old values which were removed.</target>
+			</trans-unit>
+			<trans-unit id="fullView" approved="yes">
+				<source>Return to full view</source>
+				<target>Return to full view</target>
+			</trans-unit>
+			<trans-unit id="insert" approved="yes">
+				<source>insert</source>
+				<target>insert</target>
+			</trans-unit>
+			<trans-unit id="delete" approved="yes">
+				<source>delete</source>
+				<target>delete</target>
+			</trans-unit>
+			<trans-unit id="mergedDifferences" approved="yes">
+				<source>Preview for Rollback</source>
+				<target>Preview for Rollback</target>
+			</trans-unit>
+			<trans-unit id="settings" approved="yes">
+				<source>Settings</source>
+				<target>Settings</target>
+			</trans-unit>
+			<trans-unit id="maxSteps" approved="yes">
+				<source>Show entries:</source>
+				<target>Show entries:</target>
+			</trans-unit>
+			<trans-unit id="maxSteps_all" approved="yes">
+				<source>ALL</source>
+				<target>ALL</target>
+			</trans-unit>
+			<trans-unit id="maxSteps_marked" approved="yes">
+				<source>marked</source>
+				<target>marked</target>
+			</trans-unit>
+			<trans-unit id="showDiff" approved="yes">
+				<source>Show differences:</source>
+				<target>Show differences:</target>
+			</trans-unit>
+			<trans-unit id="showDiff_no" approved="yes">
+				<source>No</source>
+				<target>No</target>
+			</trans-unit>
+			<trans-unit id="showDiff_inline" approved="yes">
+				<source>Inline</source>
+				<target>Inline</target>
+			</trans-unit>
+			<trans-unit id="showSubElements" approved="yes">
+				<source>Show sub elements:</source>
+				<target>Show sub elements:</target>
+			</trans-unit>
+			<trans-unit id="no" approved="yes">
+				<source>No</source>
+				<target>No</target>
+			</trans-unit>
+			<trans-unit id="yes" approved="yes">
+				<source>Yes</source>
+				<target>Yes</target>
+			</trans-unit>
+			<trans-unit id="showInsertDelete" approved="yes">
+				<source>Show inserts/deletes of records:</source>
+				<target>Show inserts/deletes of records:</target>
+			</trans-unit>
+			<trans-unit id="consistenceWarning" approved="yes">
+				<source>From this point on, there is no guarantee that a rollback reverts all changes, as changes of records	prior to this message are normally not preserved.</source>
+				<target>From this point on, there is no guarantee that a rollback reverts all changes, as changes of records	prior to this message are normally not preserved.</target>
+			</trans-unit>
+			<trans-unit id="noDifferences" approved="yes">
+				<source>There are no differences to the current page!</source>
+				<target>There are no differences to the current page!</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

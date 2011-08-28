@@ -1,84 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="tstemplate_analyzer">
-    <header/>
-    <body>
-      <trans-unit id="currentTemplate" approved="yes">
-        <source>Current template:</source>
-        <target>Current template:</target>
-      </trans-unit>
-      <trans-unit id="title" approved="yes">
-        <source>Title</source>
-        <target>Title</target>
-      </trans-unit>
-      <trans-unit id="rootlevel" approved="yes">
-        <source>Rootlevel</source>
-        <target>Rootlevel</target>
-      </trans-unit>
-      <trans-unit id="clearSetup" approved="yes">
-        <source>Clear Setup</source>
-        <target>Clear Setup</target>
-      </trans-unit>
-      <trans-unit id="clearConstants" approved="yes">
-        <source>Clear Constants</source>
-        <target>Clear Constants</target>
-      </trans-unit>
-      <trans-unit id="pid" approved="yes">
-        <source>PID</source>
-        <target>PID</target>
-      </trans-unit>
-      <trans-unit id="rootline" approved="yes">
-        <source>Rootline</source>
-        <target>Rootline</target>
-      </trans-unit>
-      <trans-unit id="nextLevel" approved="yes">
-        <source>Next Level</source>
-        <target>Next Level</target>
-      </trans-unit>
-      <trans-unit id="templateHierarchy" approved="yes">
-        <source>Template hierarchy:</source>
-        <target>Template hierarchy:</target>
-      </trans-unit>
-      <trans-unit id="displayOptions" approved="yes">
-        <source>Display Options</source>
-        <target>Display Options</target>
-      </trans-unit>
-      <trans-unit id="lineNumbers" approved="yes">
-        <source>Line numbers</source>
-        <target>Line numbers</target>
-      </trans-unit>
-      <trans-unit id="syntaxHighlight" approved="yes">
-        <source>Syntax highlight</source>
-        <target>Syntax highlight</target>
-      </trans-unit>
-      <trans-unit id="comments" approved="yes">
-        <source>Comments</source>
-        <target>Comments</target>
-      </trans-unit>
-      <trans-unit id="cropLines" approved="yes">
-        <source>Crop lines</source>
-        <target>Crop lines</target>
-      </trans-unit>
-      <trans-unit id="blockMode" approved="yes">
-        <source>Block mode</source>
-        <target>Block mode</target>
-      </trans-unit>
-      <trans-unit id="constants" approved="yes">
-        <source>Constants:</source>
-        <target>Constants:</target>
-      </trans-unit>
-      <trans-unit id="setup" approved="yes">
-        <source>Setup:</source>
-        <target>Setup:</target>
-      </trans-unit>
-      <trans-unit id="viewCompleteTS" approved="yes">
-        <source>View the complete TS Listing</source>
-        <target>View the complete TS Listing</target>
-      </trans-unit>
-      <trans-unit id="completeTS" approved="yes">
-        <source>Complete TS:</source>
-        <target>Complete TS:</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:28 UTC" product-name="tstemplate_analyzer">
+		<header/>
+		<body>
+			<trans-unit id="currentTemplate" approved="yes">
+				<source>Current template:</source>
+				<target>Current template:</target>
+			</trans-unit>
+			<trans-unit id="title" approved="yes">
+				<source>Title</source>
+				<target>Title</target>
+			</trans-unit>
+			<trans-unit id="rootlevel" approved="yes">
+				<source>Rootlevel</source>
+				<target>Rootlevel</target>
+			</trans-unit>
+			<trans-unit id="clearSetup" approved="yes">
+				<source>Clear Setup</source>
+				<target>Clear Setup</target>
+			</trans-unit>
+			<trans-unit id="clearConstants" approved="yes">
+				<source>Clear Constants</source>
+				<target>Clear Constants</target>
+			</trans-unit>
+			<trans-unit id="pid" approved="yes">
+				<source>PID</source>
+				<target>PID</target>
+			</trans-unit>
+			<trans-unit id="rootline" approved="yes">
+				<source>Rootline</source>
+				<target>Rootline</target>
+			</trans-unit>
+			<trans-unit id="nextLevel" approved="yes">
+				<source>Next Level</source>
+				<target>Next Level</target>
+			</trans-unit>
+			<trans-unit id="templateHierarchy" approved="yes">
+				<source>Template hierarchy:</source>
+				<target>Template hierarchy:</target>
+			</trans-unit>
+			<trans-unit id="displayOptions" approved="yes">
+				<source>Display Options</source>
+				<target>Display Options</target>
+			</trans-unit>
+			<trans-unit id="lineNumbers" approved="yes">
+				<source>Line numbers</source>
+				<target>Line numbers</target>
+			</trans-unit>
+			<trans-unit id="syntaxHighlight" approved="yes">
+				<source>Syntax highlight</source>
+				<target>Syntax highlight</target>
+			</trans-unit>
+			<trans-unit id="comments" approved="yes">
+				<source>Comments</source>
+				<target>Comments</target>
+			</trans-unit>
+			<trans-unit id="cropLines" approved="yes">
+				<source>Crop lines</source>
+				<target>Crop lines</target>
+			</trans-unit>
+			<trans-unit id="blockMode" approved="yes">
+				<source>Block mode</source>
+				<target>Block mode</target>
+			</trans-unit>
+			<trans-unit id="constants" approved="yes">
+				<source>Constants:</source>
+				<target>Constants:</target>
+			</trans-unit>
+			<trans-unit id="setup" approved="yes">
+				<source>Setup:</source>
+				<target>Setup:</target>
+			</trans-unit>
+			<trans-unit id="viewCompleteTS" approved="yes">
+				<source>View the complete TS Listing</source>
+				<target>View the complete TS Listing</target>
+			</trans-unit>
+			<trans-unit id="completeTS" approved="yes">
+				<source>Complete TS:</source>
+				<target>Complete TS:</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

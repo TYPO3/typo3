@@ -1,196 +1,196 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="lang">
-    <header/>
-    <body>
-      <trans-unit id="mlang_labels_tablabel" approved="yes">
-        <source>List of database-records</source>
-        <target>List of database-records</target>
-      </trans-unit>
-      <trans-unit id="mlang_labels_tabdescr" approved="yes">
-        <source>The Web&gt;List module provides low level access to records appearing on a page.</source>
-        <target>The Web&gt;List module provides low level access to records appearing on a page.</target>
-      </trans-unit>
-      <trans-unit id="mlang_tabs_tab" approved="yes">
-        <source>List</source>
-        <target>List</target>
-      </trans-unit>
-      <trans-unit id="clip_pasteAfter" approved="yes">
-        <source>Paste after: Clipboard content is inserted after this record</source>
-        <target>Paste after: Clipboard content is inserted after this record</target>
-      </trans-unit>
-      <trans-unit id="clip_pasteInto" approved="yes">
-        <source>Paste into: Clipboard content is inserted on this page</source>
-        <target>Paste into: Clipboard content is inserted on this page</target>
-      </trans-unit>
-      <trans-unit id="clip_paste" approved="yes">
-        <source>Paste in clipboard content</source>
-        <target>Paste in clipboard content</target>
-      </trans-unit>
-      <trans-unit id="clip_markRecords" approved="yes">
-        <source>Mark All/Mark none</source>
-        <target>Mark All/Mark none</target>
-      </trans-unit>
-      <trans-unit id="clip_selectMarked" approved="yes">
-        <source>Transfer the selection of records to clipboard</source>
-        <target>Transfer the selection of records to clipboard</target>
-      </trans-unit>
-      <trans-unit id="clip_duplicates" approved="yes">
-        <source>Mark duplicates</source>
-        <target>Mark duplicates</target>
-      </trans-unit>
-      <trans-unit id="clip_editMarked" approved="yes">
-        <source>Edit marked</source>
-        <target>Edit marked</target>
-      </trans-unit>
-      <trans-unit id="clip_deleteMarked" approved="yes">
-        <source>Delete marked</source>
-        <target>Delete marked</target>
-      </trans-unit>
-      <trans-unit id="clip_deleteMarkedWarning" approved="yes">
-        <source>Are you sure you want to delete all marked records from the table '%s'?</source>
-        <target>Are you sure you want to delete all marked records from the table '%s'?</target>
-      </trans-unit>
-      <trans-unit id="showInfo" approved="yes">
-        <source>Display information</source>
-        <target>Display information</target>
-      </trans-unit>
-      <trans-unit id="edit" approved="yes">
-        <source>Edit record</source>
-        <target>Edit record</target>
-      </trans-unit>
-      <trans-unit id="editPage" approved="yes">
-        <source>Edit page properties</source>
-        <target>Edit page properties</target>
-      </trans-unit>
-      <trans-unit id="new" approved="yes">
-        <source>New record</source>
-        <target>New record</target>
-      </trans-unit>
-      <trans-unit id="newPage" approved="yes">
-        <source>Create new page after this page</source>
-        <target>Create new page after this page</target>
-      </trans-unit>
-      <trans-unit id="newRecord" approved="yes">
-        <source>Create new record after this record</source>
-        <target>Create new record after this record</target>
-      </trans-unit>
-      <trans-unit id="newRecordGeneral" approved="yes">
-        <source>Create new record</source>
-        <target>Create new record</target>
-      </trans-unit>
-      <trans-unit id="moveUp" approved="yes">
-        <source>Move up in list</source>
-        <target>Move up in list</target>
-      </trans-unit>
-      <trans-unit id="moveDown" approved="yes">
-        <source>Move down in list</source>
-        <target>Move down in list</target>
-      </trans-unit>
-      <trans-unit id="move_record" approved="yes">
-        <source>Re-position content element</source>
-        <target>Re-position content element</target>
-      </trans-unit>
-      <trans-unit id="move_page" approved="yes">
-        <source>Move page</source>
-        <target>Move page</target>
-      </trans-unit>
-      <trans-unit id="hide" approved="yes">
-        <source>Hide record</source>
-        <target>Hide record</target>
-      </trans-unit>
-      <trans-unit id="unHide" approved="yes">
-        <source>Un-hide record</source>
-        <target>Un-hide record</target>
-      </trans-unit>
-      <trans-unit id="hidePage" approved="yes">
-        <source>Hide page</source>
-        <target>Hide page</target>
-      </trans-unit>
-      <trans-unit id="unHidePage" approved="yes">
-        <source>Un-hide page</source>
-        <target>Un-hide page</target>
-      </trans-unit>
-      <trans-unit id="prevLevel" approved="yes">
-        <source>Move this page to the position after the current parent page (Inwards)</source>
-        <target>Move this page to the position after the current parent page (Inwards)</target>
-      </trans-unit>
-      <trans-unit id="nextLevel" approved="yes">
-        <source>Move this page to be a subpage of the page above (Outwards)</source>
-        <target>Move this page to be a subpage of the page above (Outwards)</target>
-      </trans-unit>
-      <trans-unit id="delete" approved="yes">
-        <source>Delete record (!)</source>
-        <target>Delete record (!)</target>
-      </trans-unit>
-      <trans-unit id="history" approved="yes">
-        <source>Display change history / Un-do</source>
-        <target>Display change history / Un-do</target>
-      </trans-unit>
-      <trans-unit id="displayVersions" approved="yes">
-        <source>Display versions</source>
-        <target>Display versions</target>
-      </trans-unit>
-      <trans-unit id="permissions" approved="yes">
-        <source>Set permissions for page</source>
-        <target>Set permissions for page</target>
-      </trans-unit>
-      <trans-unit id="largeControl" approved="yes">
-        <source>Extended view</source>
-        <target>Extended view</target>
-      </trans-unit>
-      <trans-unit id="contractView" approved="yes">
-        <source>List all tables</source>
-        <target>List all tables</target>
-      </trans-unit>
-      <trans-unit id="expandView" approved="yes">
-        <source>List only this table</source>
-        <target>List only this table</target>
-      </trans-unit>
-      <trans-unit id="showClipBoard" approved="yes">
-        <source>Show clipboard</source>
-        <target>Show clipboard</target>
-      </trans-unit>
-      <trans-unit id="editShownColumns" approved="yes">
-        <source>Edit all shown fields of the listed records</source>
-        <target>Edit all shown fields of the listed records</target>
-      </trans-unit>
-      <trans-unit id="editThisColumn" approved="yes">
-        <source>Edit the '%s' field of the listed records</source>
-        <target>Edit the '%s' field of the listed records</target>
-      </trans-unit>
-      <trans-unit id="deleteWarning" approved="yes">
-        <source>Are you sure you want to delete this record?</source>
-        <target>Are you sure you want to delete this record?</target>
-      </trans-unit>
-      <trans-unit id="localization" approved="yes">
-        <source>Localization view</source>
-        <target>Localization view</target>
-      </trans-unit>
-      <trans-unit id="defaultLanguage" approved="yes">
-        <source>Default</source>
-        <target>Default</target>
-      </trans-unit>
-      <trans-unit id="multipleLanguages" approved="yes">
-        <source>All languages</source>
-        <target>All languages</target>
-      </trans-unit>
-      <trans-unit id="Localize" approved="yes">
-        <source>Localize to:</source>
-        <target>Localize to:</target>
-      </trans-unit>
-      <trans-unit id="viewRecords" approved="yes">
-        <source>Viewing records of</source>
-        <target>Viewing records of</target>
-      </trans-unit>
-      <trans-unit id="pageIndicator" approved="yes">
-        <source>Page %1$s of %2$d</source>
-        <target>Page %1$s of %2$d</target>
-      </trans-unit>
-      <trans-unit id="rangeIndicator" approved="yes">
-        <source>Records %1$d - %2$d</source>
-        <target>Records %1$d - %2$d</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:25 UTC" product-name="lang">
+		<header/>
+		<body>
+			<trans-unit id="mlang_labels_tablabel" approved="yes">
+				<source>List of database-records</source>
+				<target>List of database-records</target>
+			</trans-unit>
+			<trans-unit id="mlang_labels_tabdescr" approved="yes">
+				<source>The Web&gt;List module provides low level access to records appearing on a page.</source>
+				<target>The Web&gt;List module provides low level access to records appearing on a page.</target>
+			</trans-unit>
+			<trans-unit id="mlang_tabs_tab" approved="yes">
+				<source>List</source>
+				<target>List</target>
+			</trans-unit>
+			<trans-unit id="clip_pasteAfter" approved="yes">
+				<source>Paste after: Clipboard content is inserted after this record</source>
+				<target>Paste after: Clipboard content is inserted after this record</target>
+			</trans-unit>
+			<trans-unit id="clip_pasteInto" approved="yes">
+				<source>Paste into: Clipboard content is inserted on this page</source>
+				<target>Paste into: Clipboard content is inserted on this page</target>
+			</trans-unit>
+			<trans-unit id="clip_paste" approved="yes">
+				<source>Paste in clipboard content</source>
+				<target>Paste in clipboard content</target>
+			</trans-unit>
+			<trans-unit id="clip_markRecords" approved="yes">
+				<source>Mark All/Mark none</source>
+				<target>Mark All/Mark none</target>
+			</trans-unit>
+			<trans-unit id="clip_selectMarked" approved="yes">
+				<source>Transfer the selection of records to clipboard</source>
+				<target>Transfer the selection of records to clipboard</target>
+			</trans-unit>
+			<trans-unit id="clip_duplicates" approved="yes">
+				<source>Mark duplicates</source>
+				<target>Mark duplicates</target>
+			</trans-unit>
+			<trans-unit id="clip_editMarked" approved="yes">
+				<source>Edit marked</source>
+				<target>Edit marked</target>
+			</trans-unit>
+			<trans-unit id="clip_deleteMarked" approved="yes">
+				<source>Delete marked</source>
+				<target>Delete marked</target>
+			</trans-unit>
+			<trans-unit id="clip_deleteMarkedWarning" approved="yes">
+				<source>Are you sure you want to delete all marked records from the table '%s'?</source>
+				<target>Are you sure you want to delete all marked records from the table '%s'?</target>
+			</trans-unit>
+			<trans-unit id="showInfo" approved="yes">
+				<source>Display information</source>
+				<target>Display information</target>
+			</trans-unit>
+			<trans-unit id="edit" approved="yes">
+				<source>Edit record</source>
+				<target>Edit record</target>
+			</trans-unit>
+			<trans-unit id="editPage" approved="yes">
+				<source>Edit page properties</source>
+				<target>Edit page properties</target>
+			</trans-unit>
+			<trans-unit id="new" approved="yes">
+				<source>New record</source>
+				<target>New record</target>
+			</trans-unit>
+			<trans-unit id="newPage" approved="yes">
+				<source>Create new page after this page</source>
+				<target>Create new page after this page</target>
+			</trans-unit>
+			<trans-unit id="newRecord" approved="yes">
+				<source>Create new record after this record</source>
+				<target>Create new record after this record</target>
+			</trans-unit>
+			<trans-unit id="newRecordGeneral" approved="yes">
+				<source>Create new record</source>
+				<target>Create new record</target>
+			</trans-unit>
+			<trans-unit id="moveUp" approved="yes">
+				<source>Move up in list</source>
+				<target>Move up in list</target>
+			</trans-unit>
+			<trans-unit id="moveDown" approved="yes">
+				<source>Move down in list</source>
+				<target>Move down in list</target>
+			</trans-unit>
+			<trans-unit id="move_record" approved="yes">
+				<source>Re-position content element</source>
+				<target>Re-position content element</target>
+			</trans-unit>
+			<trans-unit id="move_page" approved="yes">
+				<source>Move page</source>
+				<target>Move page</target>
+			</trans-unit>
+			<trans-unit id="hide" approved="yes">
+				<source>Hide record</source>
+				<target>Hide record</target>
+			</trans-unit>
+			<trans-unit id="unHide" approved="yes">
+				<source>Un-hide record</source>
+				<target>Un-hide record</target>
+			</trans-unit>
+			<trans-unit id="hidePage" approved="yes">
+				<source>Hide page</source>
+				<target>Hide page</target>
+			</trans-unit>
+			<trans-unit id="unHidePage" approved="yes">
+				<source>Un-hide page</source>
+				<target>Un-hide page</target>
+			</trans-unit>
+			<trans-unit id="prevLevel" approved="yes">
+				<source>Move this page to the position after the current parent page (Inwards)</source>
+				<target>Move this page to the position after the current parent page (Inwards)</target>
+			</trans-unit>
+			<trans-unit id="nextLevel" approved="yes">
+				<source>Move this page to be a subpage of the page above (Outwards)</source>
+				<target>Move this page to be a subpage of the page above (Outwards)</target>
+			</trans-unit>
+			<trans-unit id="delete" approved="yes">
+				<source>Delete record (!)</source>
+				<target>Delete record (!)</target>
+			</trans-unit>
+			<trans-unit id="history" approved="yes">
+				<source>Display change history / Un-do</source>
+				<target>Display change history / Un-do</target>
+			</trans-unit>
+			<trans-unit id="displayVersions" approved="yes">
+				<source>Display versions</source>
+				<target>Display versions</target>
+			</trans-unit>
+			<trans-unit id="permissions" approved="yes">
+				<source>Set permissions for page</source>
+				<target>Set permissions for page</target>
+			</trans-unit>
+			<trans-unit id="largeControl" approved="yes">
+				<source>Extended view</source>
+				<target>Extended view</target>
+			</trans-unit>
+			<trans-unit id="contractView" approved="yes">
+				<source>List all tables</source>
+				<target>List all tables</target>
+			</trans-unit>
+			<trans-unit id="expandView" approved="yes">
+				<source>List only this table</source>
+				<target>List only this table</target>
+			</trans-unit>
+			<trans-unit id="showClipBoard" approved="yes">
+				<source>Show clipboard</source>
+				<target>Show clipboard</target>
+			</trans-unit>
+			<trans-unit id="editShownColumns" approved="yes">
+				<source>Edit all shown fields of the listed records</source>
+				<target>Edit all shown fields of the listed records</target>
+			</trans-unit>
+			<trans-unit id="editThisColumn" approved="yes">
+				<source>Edit the '%s' field of the listed records</source>
+				<target>Edit the '%s' field of the listed records</target>
+			</trans-unit>
+			<trans-unit id="deleteWarning" approved="yes">
+				<source>Are you sure you want to delete this record?</source>
+				<target>Are you sure you want to delete this record?</target>
+			</trans-unit>
+			<trans-unit id="localization" approved="yes">
+				<source>Localization view</source>
+				<target>Localization view</target>
+			</trans-unit>
+			<trans-unit id="defaultLanguage" approved="yes">
+				<source>Default</source>
+				<target>Default</target>
+			</trans-unit>
+			<trans-unit id="multipleLanguages" approved="yes">
+				<source>All languages</source>
+				<target>All languages</target>
+			</trans-unit>
+			<trans-unit id="Localize" approved="yes">
+				<source>Localize to:</source>
+				<target>Localize to:</target>
+			</trans-unit>
+			<trans-unit id="viewRecords" approved="yes">
+				<source>Viewing records of</source>
+				<target>Viewing records of</target>
+			</trans-unit>
+			<trans-unit id="pageIndicator" approved="yes">
+				<source>Page %1$s of %2$d</source>
+				<target>Page %1$s of %2$d</target>
+			</trans-unit>
+			<trans-unit id="rangeIndicator" approved="yes">
+				<source>Records %1$d - %2$d</source>
+				<target>Records %1$d - %2$d</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

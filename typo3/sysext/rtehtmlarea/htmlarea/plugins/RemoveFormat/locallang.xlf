@@ -1,68 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
-    <header/>
-    <body>
-      <trans-unit id="RemoveFormatTooltip" approved="yes">
-        <source>Remove format</source>
-        <target>Remove format</target>
-      </trans-unit>
-      <trans-unit id="Cleaning Area" approved="yes">
-        <source>Cleaning Area</source>
-        <target>Cleaning Area</target>
-      </trans-unit>
-      <trans-unit id="Selection" approved="yes">
-        <source>Selected text</source>
-        <target>Selected text</target>
-      </trans-unit>
-      <trans-unit id="All" approved="yes">
-        <source>All</source>
-        <target>All</target>
-      </trans-unit>
-      <trans-unit id="Remove formatting" approved="yes">
-        <source>Remove format</source>
-        <target>Remove format</target>
-      </trans-unit>
-      <trans-unit id="Cleaning options" approved="yes">
-        <source>Type(s) of format to remove</source>
-        <target>Type(s) of format to remove</target>
-      </trans-unit>
-      <trans-unit id="Formatting:" approved="yes">
-        <source>HTML Format:</source>
-        <target>HTML Format:</target>
-      </trans-unit>
-      <trans-unit id="MS Word Formatting:" approved="yes">
-        <source>MS Word Format:</source>
-        <target>MS Word Format:</target>
-      </trans-unit>
-      <trans-unit id="Typographical punctuation:" approved="yes">
-        <source>Typographical punctuation:</source>
-        <target>Typographical punctuation:</target>
-      </trans-unit>
-      <trans-unit id="Spaces" approved="yes">
-        <source>Non-breaking spaces:</source>
-        <target>Non-breaking spaces:</target>
-      </trans-unit>
-      <trans-unit id="Images:" approved="yes">
-        <source>Images:</source>
-        <target>Images:</target>
-      </trans-unit>
-      <trans-unit id="All HTML:" approved="yes">
-        <source>All HTML tags:</source>
-        <target>All HTML tags:</target>
-      </trans-unit>
-      <trans-unit id="Select the type of formatting you wish to remove." approved="yes">
-        <source>Select the type(s) of format to remove.</source>
-        <target>Select the type(s) of format to remove.</target>
-      </trans-unit>
-      <trans-unit id="OK" approved="yes">
-        <source>OK</source>
-        <target>OK</target>
-      </trans-unit>
-      <trans-unit id="Cancel" approved="yes">
-        <source>Cancel</source>
-        <target>Cancel</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id="RemoveFormatTooltip" approved="yes">
+				<source>Remove format</source>
+				<target>Remove format</target>
+			</trans-unit>
+			<trans-unit id="Cleaning Area" approved="yes">
+				<source>Cleaning Area</source>
+				<target>Cleaning Area</target>
+			</trans-unit>
+			<trans-unit id="Selection" approved="yes">
+				<source>Selected text</source>
+				<target>Selected text</target>
+			</trans-unit>
+			<trans-unit id="All" approved="yes">
+				<source>All</source>
+				<target>All</target>
+			</trans-unit>
+			<trans-unit id="Remove formatting" approved="yes">
+				<source>Remove format</source>
+				<target>Remove format</target>
+			</trans-unit>
+			<trans-unit id="Cleaning options" approved="yes">
+				<source>Type(s) of format to remove</source>
+				<target>Type(s) of format to remove</target>
+			</trans-unit>
+			<trans-unit id="Formatting:" approved="yes">
+				<source>HTML Format:</source>
+				<target>HTML Format:</target>
+			</trans-unit>
+			<trans-unit id="MS Word Formatting:" approved="yes">
+				<source>MS Word Format:</source>
+				<target>MS Word Format:</target>
+			</trans-unit>
+			<trans-unit id="Typographical punctuation:" approved="yes">
+				<source>Typographical punctuation:</source>
+				<target>Typographical punctuation:</target>
+			</trans-unit>
+			<trans-unit id="Spaces" approved="yes">
+				<source>Non-breaking spaces:</source>
+				<target>Non-breaking spaces:</target>
+			</trans-unit>
+			<trans-unit id="Images:" approved="yes">
+				<source>Images:</source>
+				<target>Images:</target>
+			</trans-unit>
+			<trans-unit id="All HTML:" approved="yes">
+				<source>All HTML tags:</source>
+				<target>All HTML tags:</target>
+			</trans-unit>
+			<trans-unit id="Select the type of formatting you wish to remove." approved="yes">
+				<source>Select the type(s) of format to remove.</source>
+				<target>Select the type(s) of format to remove.</target>
+			</trans-unit>
+			<trans-unit id="OK" approved="yes">
+				<source>OK</source>
+				<target>OK</target>
+			</trans-unit>
+			<trans-unit id="Cancel" approved="yes">
+				<source>Cancel</source>
+				<target>Cancel</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

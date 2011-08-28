@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
-    <header/>
-    <body>
-      <trans-unit id="Top padding" approved="yes">
-        <source>Top padding</source>
-        <target>Top padding</target>
-      </trans-unit>
-      <trans-unit id="Right padding" approved="yes">
-        <source>Right padding</source>
-        <target>Right padding</target>
-      </trans-unit>
-      <trans-unit id="Bottom padding" approved="yes">
-        <source>Bottom padding</source>
-        <target>Bottom padding</target>
-      </trans-unit>
-      <trans-unit id="Left padding" approved="yes">
-        <source>Left padding</source>
-        <target>Left padding</target>
-      </trans-unit>
-      <trans-unit id="Top:" approved="yes">
-        <source>Top:</source>
-        <target>Top:</target>
-      </trans-unit>
-      <trans-unit id="Right:" approved="yes">
-        <source>Right:</source>
-        <target>Right:</target>
-      </trans-unit>
-      <trans-unit id="Bottom:" approved="yes">
-        <source>Bottom:</source>
-        <target>Bottom:</target>
-      </trans-unit>
-      <trans-unit id="image_url" approved="yes">
-        <source>Image URL</source>
-        <target>Image URL</target>
-      </trans-unit>
-      <trans-unit id="image_url_invalid" approved="yes">
-        <source>The url could not be accessed or is not a valid image.</source>
-        <target>The url could not be accessed or is not a valid image.</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id="Top padding" approved="yes">
+				<source>Top padding</source>
+				<target>Top padding</target>
+			</trans-unit>
+			<trans-unit id="Right padding" approved="yes">
+				<source>Right padding</source>
+				<target>Right padding</target>
+			</trans-unit>
+			<trans-unit id="Bottom padding" approved="yes">
+				<source>Bottom padding</source>
+				<target>Bottom padding</target>
+			</trans-unit>
+			<trans-unit id="Left padding" approved="yes">
+				<source>Left padding</source>
+				<target>Left padding</target>
+			</trans-unit>
+			<trans-unit id="Top:" approved="yes">
+				<source>Top:</source>
+				<target>Top:</target>
+			</trans-unit>
+			<trans-unit id="Right:" approved="yes">
+				<source>Right:</source>
+				<target>Right:</target>
+			</trans-unit>
+			<trans-unit id="Bottom:" approved="yes">
+				<source>Bottom:</source>
+				<target>Bottom:</target>
+			</trans-unit>
+			<trans-unit id="image_url" approved="yes">
+				<source>Image URL</source>
+				<target>Image URL</target>
+			</trans-unit>
+			<trans-unit id="image_url_invalid" approved="yes">
+				<source>The url could not be accessed or is not a valid image.</source>
+				<target>The url could not be accessed or is not a valid image.</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>

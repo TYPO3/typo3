@@ -1,996 +1,996 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
-    <header/>
-    <body>
-      <trans-unit id="CharacterMapTooltip" approved="yes">
-        <source>Insert special character</source>
-        <target>Insert special character</target>
-      </trans-unit>
-      <trans-unit id="InsertCharacter-Tooltip" approved="yes">
-        <source>Insert special character</source>
-        <target>Insert special character</target>
-      </trans-unit>
-      <trans-unit id="Insert special character" approved="yes">
-        <source>Insert special character</source>
-        <target>Insert special character</target>
-      </trans-unit>
-      <trans-unit id="general" approved="yes">
-        <source>General</source>
-        <target>General</target>
-      </trans-unit>
-      <trans-unit id="mathematical" approved="yes">
-        <source>Mathematical</source>
-        <target>Mathematical</target>
-      </trans-unit>
-      <trans-unit id="graphical" approved="yes">
-        <source>Shapes and arrows</source>
-        <target>Shapes and arrows</target>
-      </trans-unit>
-      <trans-unit id="HTML value:" approved="yes">
-        <source>HTML value:</source>
-        <target>HTML value:</target>
-      </trans-unit>
-      <trans-unit id="Close" approved="yes">
-        <source>Close</source>
-        <target>Close</target>
-      </trans-unit>
-      <trans-unit id="nbsp" approved="yes">
-        <source>Non-breaking space</source>
-        <target>Non-breaking space</target>
-      </trans-unit>
-      <trans-unit id="Agrave" approved="yes">
-        <source>Capital a with grave accent</source>
-        <target>Capital a with grave accent</target>
-      </trans-unit>
-      <trans-unit id="agrave" approved="yes">
-        <source>Small a with grave accent</source>
-        <target>Small a with grave accent</target>
-      </trans-unit>
-      <trans-unit id="Aacute" approved="yes">
-        <source>Capital a with acute accent</source>
-        <target>Capital a with acute accent</target>
-      </trans-unit>
-      <trans-unit id="aacute" approved="yes">
-        <source>Small a with acute accent</source>
-        <target>Small a with acute accent</target>
-      </trans-unit>
-      <trans-unit id="Acirc" approved="yes">
-        <source>Capital a with circumflex accent</source>
-        <target>Capital a with circumflex accent</target>
-      </trans-unit>
-      <trans-unit id="acirc" approved="yes">
-        <source>Small a with circumflex accent</source>
-        <target>Small a with circumflex accent</target>
-      </trans-unit>
-      <trans-unit id="Atilde" approved="yes">
-        <source>Capital a with tilde</source>
-        <target>Capital a with tilde</target>
-      </trans-unit>
-      <trans-unit id="atilde" approved="yes">
-        <source>Small a with tilde</source>
-        <target>Small a with tilde</target>
-      </trans-unit>
-      <trans-unit id="Auml" approved="yes">
-        <source>Capital a with umlaut/diaeresis</source>
-        <target>Capital a with umlaut/diaeresis</target>
-      </trans-unit>
-      <trans-unit id="auml" approved="yes">
-        <source>Small a with umlaut/diaeresis</source>
-        <target>Small a with umlaut/diaeresis</target>
-      </trans-unit>
-      <trans-unit id="Aring" approved="yes">
-        <source>Capital a with ring</source>
-        <target>Capital a with ring</target>
-      </trans-unit>
-      <trans-unit id="aring" approved="yes">
-        <source>Small a with ring</source>
-        <target>Small a with ring</target>
-      </trans-unit>
-      <trans-unit id="AElig" approved="yes">
-        <source>Capital ligature ae</source>
-        <target>Capital ligature ae</target>
-      </trans-unit>
-      <trans-unit id="aelig" approved="yes">
-        <source>Small ligature ae</source>
-        <target>Small ligature ae</target>
-      </trans-unit>
-      <trans-unit id="ordf" approved="yes">
-        <source>Feminine ordinal indicator</source>
-        <target>Feminine ordinal indicator</target>
-      </trans-unit>
-      <trans-unit id="Ccedil" approved="yes">
-        <source>Capital c with cedilla</source>
-        <target>Capital c with cedilla</target>
-      </trans-unit>
-      <trans-unit id="ccedil" approved="yes">
-        <source>Small c with cedilla</source>
-        <target>Small c with cedilla</target>
-      </trans-unit>
-      <trans-unit id="ETH" approved="yes">
-        <source>Capital eth, Icelandic</source>
-        <target>Capital eth, Icelandic</target>
-      </trans-unit>
-      <trans-unit id="eth" approved="yes">
-        <source>Small eth, Icelandic</source>
-        <target>Small eth, Icelandic</target>
-      </trans-unit>
-      <trans-unit id="Egrave" approved="yes">
-        <source>Capital e with grave accent</source>
-        <target>Capital e with grave accent</target>
-      </trans-unit>
-      <trans-unit id="egrave" approved="yes">
-        <source>Small e with grave accent</source>
-        <target>Small e with grave accent</target>
-      </trans-unit>
-      <trans-unit id="Eacute" approved="yes">
-        <source>Capital e with acute accent</source>
-        <target>Capital e with acute accent</target>
-      </trans-unit>
-      <trans-unit id="eacute" approved="yes">
-        <source>Small e with acute accent</source>
-        <target>Small e with acute accent</target>
-      </trans-unit>
-      <trans-unit id="Ecirc" approved="yes">
-        <source>Capital e with circumflex accent</source>
-        <target>Capital e with circumflex accent</target>
-      </trans-unit>
-      <trans-unit id="ecirc" approved="yes">
-        <source>Small e with circumflex accent</source>
-        <target>Small e with circumflex accent</target>
-      </trans-unit>
-      <trans-unit id="Euml" approved="yes">
-        <source>Capital e with umlaut/diaeresis</source>
-        <target>Capital e with umlaut/diaeresis</target>
-      </trans-unit>
-      <trans-unit id="euml" approved="yes">
-        <source>Small e with umlaut/diaeresis</source>
-        <target>Small e with umlaut/diaeresis</target>
-      </trans-unit>
-      <trans-unit id="Igrave" approved="yes">
-        <source>Capital i with grave accent</source>
-        <target>Capital i with grave accent</target>
-      </trans-unit>
-      <trans-unit id="igrave" approved="yes">
-        <source>Small i with grave accent</source>
-        <target>Small i with grave accent</target>
-      </trans-unit>
-      <trans-unit id="Iacute" approved="yes">
-        <source>Capital i with acute accent</source>
-        <target>Capital i with acute accent</target>
-      </trans-unit>
-      <trans-unit id="iacute" approved="yes">
-        <source>Small i with acute accent</source>
-        <target>Small i with acute accent</target>
-      </trans-unit>
-      <trans-unit id="Icirc" approved="yes">
-        <source>Capital i with circumflex accent</source>
-        <target>Capital i with circumflex accent</target>
-      </trans-unit>
-      <trans-unit id="icirc" approved="yes">
-        <source>Small i with circumflex accent</source>
-        <target>Small i with circumflex accent</target>
-      </trans-unit>
-      <trans-unit id="Iuml" approved="yes">
-        <source>Capital i with umlaut/diaeresis</source>
-        <target>Capital i with umlaut/diaeresis</target>
-      </trans-unit>
-      <trans-unit id="iuml" approved="yes">
-        <source>Small i with umlaut/diaeresis</source>
-        <target>Small i with umlaut/diaeresis</target>
-      </trans-unit>
-      <trans-unit id="Ntilde" approved="yes">
-        <source>Capital n with tilde</source>
-        <target>Capital n with tilde</target>
-      </trans-unit>
-      <trans-unit id="ntilde" approved="yes">
-        <source>Small n with tilde</source>
-        <target>Small n with tilde</target>
-      </trans-unit>
-      <trans-unit id="Ograve" approved="yes">
-        <source>Capital o with grave accent</source>
-        <target>Capital o with grave accent</target>
-      </trans-unit>
-      <trans-unit id="ograve" approved="yes">
-        <source>Small o with grave accent</source>
-        <target>Small o with grave accent</target>
-      </trans-unit>
-      <trans-unit id="Oacute" approved="yes">
-        <source>Capital o with acute accent</source>
-        <target>Capital o with acute accent</target>
-      </trans-unit>
-      <trans-unit id="oacute" approved="yes">
-        <source>Small o with acute accent</source>
-        <target>Small o with acute accent</target>
-      </trans-unit>
-      <trans-unit id="Ocirc" approved="yes">
-        <source>Capital o with circumflex accent</source>
-        <target>Capital o with circumflex accent</target>
-      </trans-unit>
-      <trans-unit id="ocirc" approved="yes">
-        <source>Small o with circumflex accent</source>
-        <target>Small o with circumflex accent</target>
-      </trans-unit>
-      <trans-unit id="Otilde" approved="yes">
-        <source>Capital o with tilde</source>
-        <target>Capital o with tilde</target>
-      </trans-unit>
-      <trans-unit id="otilde" approved="yes">
-        <source>Small o with tilde</source>
-        <target>Small o with tilde</target>
-      </trans-unit>
-      <trans-unit id="Ouml" approved="yes">
-        <source>Capital o with umlaut/diaeresis</source>
-        <target>Capital o with umlaut/diaeresis</target>
-      </trans-unit>
-      <trans-unit id="ouml" approved="yes">
-        <source>Small o with umlaut/diaeresis</source>
-        <target>Small o with umlaut/diaeresis</target>
-      </trans-unit>
-      <trans-unit id="Oslash" approved="yes">
-        <source>Capital o with slash</source>
-        <target>Capital o with slash</target>
-      </trans-unit>
-      <trans-unit id="oslash" approved="yes">
-        <source>Small o with slash</source>
-        <target>Small o with slash</target>
-      </trans-unit>
-      <trans-unit id="OElig" approved="yes">
-        <source>Capital ligature OE</source>
-        <target>Capital ligature OE</target>
-      </trans-unit>
-      <trans-unit id="oelig" approved="yes">
-        <source>Small ligature OE</source>
-        <target>Small ligature OE</target>
-      </trans-unit>
-      <trans-unit id="ordm" approved="yes">
-        <source>Masculine ordinal indicator</source>
-        <target>Masculine ordinal indicator</target>
-      </trans-unit>
-      <trans-unit id="Scaron" approved="yes">
-        <source>Capital s with caron</source>
-        <target>Capital s with caron</target>
-      </trans-unit>
-      <trans-unit id="scaron" approved="yes">
-        <source>Small s with caron</source>
-        <target>Small s with caron</target>
-      </trans-unit>
-      <trans-unit id="szlig" approved="yes">
-        <source>Small sharp s, German</source>
-        <target>Small sharp s, German</target>
-      </trans-unit>
-      <trans-unit id="THORN" approved="yes">
-        <source>Capital THORN, Icelandic</source>
-        <target>Capital THORN, Icelandic</target>
-      </trans-unit>
-      <trans-unit id="thorn" approved="yes">
-        <source>Small thorn, Icelandic</source>
-        <target>Small thorn, Icelandic</target>
-      </trans-unit>
-      <trans-unit id="Ugrave" approved="yes">
-        <source>Capital u with grave accent</source>
-        <target>Capital u with grave accent</target>
-      </trans-unit>
-      <trans-unit id="ugrave" approved="yes">
-        <source>Small u with grave accent</source>
-        <target>Small u with grave accent</target>
-      </trans-unit>
-      <trans-unit id="Uacute" approved="yes">
-        <source>Capital u with acute accent</source>
-        <target>Capital u with acute accent</target>
-      </trans-unit>
-      <trans-unit id="uacute" approved="yes">
-        <source>Small u with acute accent</source>
-        <target>Small u with acute accent</target>
-      </trans-unit>
-      <trans-unit id="Ucirc" approved="yes">
-        <source>Capital u with circumflex accent</source>
-        <target>Capital u with circumflex accent</target>
-      </trans-unit>
-      <trans-unit id="ucirc" approved="yes">
-        <source>Small u with circumflex accent</source>
-        <target>Small u with circumflex accent</target>
-      </trans-unit>
-      <trans-unit id="Uuml" approved="yes">
-        <source>Capital u with umlaut/diaeresis</source>
-        <target>Capital u with umlaut/diaeresis</target>
-      </trans-unit>
-      <trans-unit id="uuml" approved="yes">
-        <source>Small u with umlaut/diaeresis</source>
-        <target>Small u with umlaut/diaeresis</target>
-      </trans-unit>
-      <trans-unit id="Yacute" approved="yes">
-        <source>Capital y with acute accent</source>
-        <target>Capital y with acute accent</target>
-      </trans-unit>
-      <trans-unit id="yacute" approved="yes">
-        <source>Small y with acute accent</source>
-        <target>Small y with acute accent</target>
-      </trans-unit>
-      <trans-unit id="Yuml" approved="yes">
-        <source>Capital y with umlaut/diaeresis</source>
-        <target>Capital y with umlaut/diaeresis</target>
-      </trans-unit>
-      <trans-unit id="yuml" approved="yes">
-        <source>Small y with umlaut/diaeresis</source>
-        <target>Small y with umlaut/diaeresis</target>
-      </trans-unit>
-      <trans-unit id="acute" approved="yes">
-        <source>Spacing acute</source>
-        <target>Spacing acute</target>
-      </trans-unit>
-      <trans-unit id="circ" approved="yes">
-        <source>Modifier letter circumflex accent</source>
-        <target>Modifier letter circumflex accent</target>
-      </trans-unit>
-      <trans-unit id="tilde" approved="yes">
-        <source>Small tilde</source>
-        <target>Small tilde</target>
-      </trans-unit>
-      <trans-unit id="uml" approved="yes">
-        <source>Spacing diaeresis</source>
-        <target>Spacing diaeresis</target>
-      </trans-unit>
-      <trans-unit id="cedil" approved="yes">
-        <source>Spacing cedilla</source>
-        <target>Spacing cedilla</target>
-      </trans-unit>
-      <trans-unit id="shy" approved="yes">
-        <source>Soft hyphen</source>
-        <target>Soft hyphen</target>
-      </trans-unit>
-      <trans-unit id="ndash" approved="yes">
-        <source>En dash</source>
-        <target>En dash</target>
-      </trans-unit>
-      <trans-unit id="mdash" approved="yes">
-        <source>Em dash</source>
-        <target>Em dash</target>
-      </trans-unit>
-      <trans-unit id="lsquo" approved="yes">
-        <source>Left single quotation mark</source>
-        <target>Left single quotation mark</target>
-      </trans-unit>
-      <trans-unit id="rsquo" approved="yes">
-        <source>Right single quotation mark</source>
-        <target>Right single quotation mark</target>
-      </trans-unit>
-      <trans-unit id="sbquo" approved="yes">
-        <source>Single low-9 quotation mark</source>
-        <target>Single low-9 quotation mark</target>
-      </trans-unit>
-      <trans-unit id="ldquo" approved="yes">
-        <source>Left double quotation mark</source>
-        <target>Left double quotation mark</target>
-      </trans-unit>
-      <trans-unit id="rdquo" approved="yes">
-        <source>Right double quotation mark</source>
-        <target>Right double quotation mark</target>
-      </trans-unit>
-      <trans-unit id="bdquo" approved="yes">
-        <source>Double low-9 quotation mark</source>
-        <target>Double low-9 quotation mark</target>
-      </trans-unit>
-      <trans-unit id="lsaquo" approved="yes">
-        <source>Single left angle quotation</source>
-        <target>Single left angle quotation</target>
-      </trans-unit>
-      <trans-unit id="rsaquo" approved="yes">
-        <source>Single right angle quotation</source>
-        <target>Single right angle quotation</target>
-      </trans-unit>
-      <trans-unit id="laquo" approved="yes">
-        <source>Left angle quotation mark</source>
-        <target>Left angle quotation mark</target>
-      </trans-unit>
-      <trans-unit id="raquo" approved="yes">
-        <source>Right angle quotation mark</source>
-        <target>Right angle quotation mark</target>
-      </trans-unit>
-      <trans-unit id="quot" approved="yes">
-        <source>Quotation mark</source>
-        <target>Quotation mark</target>
-      </trans-unit>
-      <trans-unit id="hellip" approved="yes">
-        <source>Horizontal ellipsis</source>
-        <target>Horizontal ellipsis</target>
-      </trans-unit>
-      <trans-unit id="iquest" approved="yes">
-        <source>Inverted question mark</source>
-        <target>Inverted question mark</target>
-      </trans-unit>
-      <trans-unit id="iexcl" approved="yes">
-        <source>Inverted exclamation mark</source>
-        <target>Inverted exclamation mark</target>
-      </trans-unit>
-      <trans-unit id="bull" approved="yes">
-        <source>Bullet</source>
-        <target>Bullet</target>
-      </trans-unit>
-      <trans-unit id="dagger" approved="yes">
-        <source>Dagger</source>
-        <target>Dagger</target>
-      </trans-unit>
-      <trans-unit id="Dagger" approved="yes">
-        <source>Double dagger</source>
-        <target>Double dagger</target>
-      </trans-unit>
-      <trans-unit id="brvbar" approved="yes">
-        <source>Broken vertical bar</source>
-        <target>Broken vertical bar</target>
-      </trans-unit>
-      <trans-unit id="para" approved="yes">
-        <source>Paragraph</source>
-        <target>Paragraph</target>
-      </trans-unit>
-      <trans-unit id="sect" approved="yes">
-        <source>Section</source>
-        <target>Section</target>
-      </trans-unit>
-      <trans-unit id="loz" approved="yes">
-        <source>Lozenge</source>
-        <target>Lozenge</target>
-      </trans-unit>
-      <trans-unit id="#064" approved="yes">
-        <source>At</source>
-        <target>At</target>
-      </trans-unit>
-      <trans-unit id="copy" approved="yes">
-        <source>Copyright</source>
-        <target>Copyright</target>
-      </trans-unit>
-      <trans-unit id="reg" approved="yes">
-        <source>Registered trademark</source>
-        <target>Registered trademark</target>
-      </trans-unit>
-      <trans-unit id="trade" approved="yes">
-        <source>Trademark</source>
-        <target>Trademark</target>
-      </trans-unit>
-      <trans-unit id="curren" approved="yes">
-        <source>Currency</source>
-        <target>Currency</target>
-      </trans-unit>
-      <trans-unit id="cent" approved="yes">
-        <source>Cent</source>
-        <target>Cent</target>
-      </trans-unit>
-      <trans-unit id="euro" approved="yes">
-        <source>Euro</source>
-        <target>Euro</target>
-      </trans-unit>
-      <trans-unit id="pound" approved="yes">
-        <source>Pound</source>
-        <target>Pound</target>
-      </trans-unit>
-      <trans-unit id="yen" approved="yes">
-        <source>Yen</source>
-        <target>Yen</target>
-      </trans-unit>
-      <trans-unit id="emsp" approved="yes">
-        <source>Em space</source>
-        <target>Em space</target>
-      </trans-unit>
-      <trans-unit id="ensp" approved="yes">
-        <source>En space</source>
-        <target>En space</target>
-      </trans-unit>
-      <trans-unit id="thinsp" approved="yes">
-        <source>Thin space</source>
-        <target>Thin space</target>
-      </trans-unit>
-      <trans-unit id="zwj" approved="yes">
-        <source>Zero width joiner</source>
-        <target>Zero width joiner</target>
-      </trans-unit>
-      <trans-unit id="zwnj" approved="yes">
-        <source>Zero width non-joiner</source>
-        <target>Zero width non-joiner</target>
-      </trans-unit>
-      <trans-unit id="minus" approved="yes">
-        <source>Minus sign</source>
-        <target>Minus sign</target>
-      </trans-unit>
-      <trans-unit id="plusmn" approved="yes">
-        <source>Plus-or-minus sign</source>
-        <target>Plus-or-minus sign</target>
-      </trans-unit>
-      <trans-unit id="times" approved="yes">
-        <source>Multiplication</source>
-        <target>Multiplication</target>
-      </trans-unit>
-      <trans-unit id="divide" approved="yes">
-        <source>Division</source>
-        <target>Division</target>
-      </trans-unit>
-      <trans-unit id="radic" approved="yes">
-        <source>Square root</source>
-        <target>Square root</target>
-      </trans-unit>
-      <trans-unit id="sdot" approved="yes">
-        <source>Dot operator</source>
-        <target>Dot operator</target>
-      </trans-unit>
-      <trans-unit id="otimes" approved="yes">
-        <source>Vector product</source>
-        <target>Vector product</target>
-      </trans-unit>
-      <trans-unit id="lowast" approved="yes">
-        <source>Asterisk operator</source>
-        <target>Asterisk operator</target>
-      </trans-unit>
-      <trans-unit id="ge" approved="yes">
-        <source>Greater than or equal to</source>
-        <target>Greater than or equal to</target>
-      </trans-unit>
-      <trans-unit id="le" approved="yes">
-        <source>Less than or equal to</source>
-        <target>Less than or equal to</target>
-      </trans-unit>
-      <trans-unit id="ne" approved="yes">
-        <source>Not equal to</source>
-        <target>Not equal to</target>
-      </trans-unit>
-      <trans-unit id="asymp" approved="yes">
-        <source>Almost equal to, asymptotic to</source>
-        <target>Almost equal to, asymptotic to</target>
-      </trans-unit>
-      <trans-unit id="sim" approved="yes">
-        <source>Varies with, similar to</source>
-        <target>Varies with, similar to</target>
-      </trans-unit>
-      <trans-unit id="prop" approved="yes">
-        <source>Proportional to</source>
-        <target>Proportional to</target>
-      </trans-unit>
-      <trans-unit id="deg" approved="yes">
-        <source>Degree</source>
-        <target>Degree</target>
-      </trans-unit>
-      <trans-unit id="prime" approved="yes">
-        <source>Prime, minutes, feet</source>
-        <target>Prime, minutes, feet</target>
-      </trans-unit>
-      <trans-unit id="Prime" approved="yes">
-        <source>Double prime, seconds, inches</source>
-        <target>Double prime, seconds, inches</target>
-      </trans-unit>
-      <trans-unit id="micro" approved="yes">
-        <source>Micro</source>
-        <target>Micro</target>
-      </trans-unit>
-      <trans-unit id="ang" approved="yes">
-        <source>Angle</source>
-        <target>Angle</target>
-      </trans-unit>
-      <trans-unit id="perp" approved="yes">
-        <source>Orthogonal to, perpendicular to</source>
-        <target>Orthogonal to, perpendicular to</target>
-      </trans-unit>
-      <trans-unit id="permil" approved="yes">
-        <source>Per mille</source>
-        <target>Per mille</target>
-      </trans-unit>
-      <trans-unit id="frasl" approved="yes">
-        <source>Fraction slash</source>
-        <target>Fraction slash</target>
-      </trans-unit>
-      <trans-unit id="frac14" approved="yes">
-        <source>Fraction 1/4</source>
-        <target>Fraction 1/4</target>
-      </trans-unit>
-      <trans-unit id="frac12" approved="yes">
-        <source>Fraction 1/2</source>
-        <target>Fraction 1/2</target>
-      </trans-unit>
-      <trans-unit id="frac34" approved="yes">
-        <source>Fraction 3/4</source>
-        <target>Fraction 3/4</target>
-      </trans-unit>
-      <trans-unit id="sup1" approved="yes">
-        <source>Superscript 1</source>
-        <target>Superscript 1</target>
-      </trans-unit>
-      <trans-unit id="sup2" approved="yes">
-        <source>Superscript 2</source>
-        <target>Superscript 2</target>
-      </trans-unit>
-      <trans-unit id="sup3" approved="yes">
-        <source>Superscript 3</source>
-        <target>Superscript 3</target>
-      </trans-unit>
-      <trans-unit id="not" approved="yes">
-        <source>Negation</source>
-        <target>Negation</target>
-      </trans-unit>
-      <trans-unit id="and" approved="yes">
-        <source>Logical and</source>
-        <target>Logical and</target>
-      </trans-unit>
-      <trans-unit id="or" approved="yes">
-        <source>Logical or</source>
-        <target>Logical or</target>
-      </trans-unit>
-      <trans-unit id="there4" approved="yes">
-        <source>Therefore</source>
-        <target>Therefore</target>
-      </trans-unit>
-      <trans-unit id="cong" approved="yes">
-        <source>Congruent to</source>
-        <target>Congruent to</target>
-      </trans-unit>
-      <trans-unit id="isin" approved="yes">
-        <source>Is element of</source>
-        <target>Is element of</target>
-      </trans-unit>
-      <trans-unit id="ni" approved="yes">
-        <source>Contains as member</source>
-        <target>Contains as member</target>
-      </trans-unit>
-      <trans-unit id="notin" approved="yes">
-        <source>Is not an element of</source>
-        <target>Is not an element of</target>
-      </trans-unit>
-      <trans-unit id="sub" approved="yes">
-        <source>Proper subset of</source>
-        <target>Proper subset of</target>
-      </trans-unit>
-      <trans-unit id="sube" approved="yes">
-        <source>Subset of or equal to</source>
-        <target>Subset of or equal to</target>
-      </trans-unit>
-      <trans-unit id="nsub" approved="yes">
-        <source>Not subset of</source>
-        <target>Not subset of</target>
-      </trans-unit>
-      <trans-unit id="sup" approved="yes">
-        <source>Proper superset of</source>
-        <target>Proper superset of</target>
-      </trans-unit>
-      <trans-unit id="supe" approved="yes">
-        <source>Superset of or equal to</source>
-        <target>Superset of or equal to</target>
-      </trans-unit>
-      <trans-unit id="cap" approved="yes">
-        <source>Intersection</source>
-        <target>Intersection</target>
-      </trans-unit>
-      <trans-unit id="cup" approved="yes">
-        <source>Union</source>
-        <target>Union</target>
-      </trans-unit>
-      <trans-unit id="oplus" approved="yes">
-        <source>Direct sum</source>
-        <target>Direct sum</target>
-      </trans-unit>
-      <trans-unit id="nabla" approved="yes">
-        <source>Gradient</source>
-        <target>Gradient</target>
-      </trans-unit>
-      <trans-unit id="empty" approved="yes">
-        <source>Empty set</source>
-        <target>Empty set</target>
-      </trans-unit>
-      <trans-unit id="equiv" approved="yes">
-        <source>Equivalent</source>
-        <target>Equivalent</target>
-      </trans-unit>
-      <trans-unit id="sum" approved="yes">
-        <source>Sum</source>
-        <target>Sum</target>
-      </trans-unit>
-      <trans-unit id="prod" approved="yes">
-        <source>Product</source>
-        <target>Product</target>
-      </trans-unit>
-      <trans-unit id="weierp" approved="yes">
-        <source>Power set (Weierstrass p)</source>
-        <target>Power set (Weierstrass p)</target>
-      </trans-unit>
-      <trans-unit id="exist" approved="yes">
-        <source>There exists</source>
-        <target>There exists</target>
-      </trans-unit>
-      <trans-unit id="forall" approved="yes">
-        <source>For all</source>
-        <target>For all</target>
-      </trans-unit>
-      <trans-unit id="infin" approved="yes">
-        <source>Infinity</source>
-        <target>Infinity</target>
-      </trans-unit>
-      <trans-unit id="alefsym" approved="yes">
-        <source>Alef (first transfinite cardinal)</source>
-        <target>Alef (first transfinite cardinal)</target>
-      </trans-unit>
-      <trans-unit id="real" approved="yes">
-        <source>Real part of complex number</source>
-        <target>Real part of complex number</target>
-      </trans-unit>
-      <trans-unit id="image" approved="yes">
-        <source>Imaginary part of complex number</source>
-        <target>Imaginary part of complex number</target>
-      </trans-unit>
-      <trans-unit id="fnof" approved="yes">
-        <source>Function</source>
-        <target>Function</target>
-      </trans-unit>
-      <trans-unit id="int" approved="yes">
-        <source>Integral</source>
-        <target>Integral</target>
-      </trans-unit>
-      <trans-unit id="part" approved="yes">
-        <source>Partial differential</source>
-        <target>Partial differential</target>
-      </trans-unit>
-      <trans-unit id="Alpha" approved="yes">
-        <source>Greek capital letter alpha</source>
-        <target>Greek capital letter alpha</target>
-      </trans-unit>
-      <trans-unit id="alpha" approved="yes">
-        <source>Greek small letter alpha</source>
-        <target>Greek small letter alpha</target>
-      </trans-unit>
-      <trans-unit id="Beta" approved="yes">
-        <source>Greek capital letter beta</source>
-        <target>Greek capital letter beta</target>
-      </trans-unit>
-      <trans-unit id="beta" approved="yes">
-        <source>Greek small letter beta</source>
-        <target>Greek small letter beta</target>
-      </trans-unit>
-      <trans-unit id="Gamma" approved="yes">
-        <source>Greek capital letter gamma</source>
-        <target>Greek capital letter gamma</target>
-      </trans-unit>
-      <trans-unit id="gamma" approved="yes">
-        <source>Greek small letter gamma</source>
-        <target>Greek small letter gamma</target>
-      </trans-unit>
-      <trans-unit id="Delta" approved="yes">
-        <source>Greek capital letter delta</source>
-        <target>Greek capital letter delta</target>
-      </trans-unit>
-      <trans-unit id="delta" approved="yes">
-        <source>Greek small letter delta</source>
-        <target>Greek small letter delta</target>
-      </trans-unit>
-      <trans-unit id="Epsilon" approved="yes">
-        <source>Greek capital letter epsilon</source>
-        <target>Greek capital letter epsilon</target>
-      </trans-unit>
-      <trans-unit id="epsilon" approved="yes">
-        <source>Greek small letter epsilon</source>
-        <target>Greek small letter epsilon</target>
-      </trans-unit>
-      <trans-unit id="Zeta" approved="yes">
-        <source>Greek capital letter zeta</source>
-        <target>Greek capital letter zeta</target>
-      </trans-unit>
-      <trans-unit id="zeta" approved="yes">
-        <source>Greek small letter zeta</source>
-        <target>Greek small letter zeta</target>
-      </trans-unit>
-      <trans-unit id="Eta" approved="yes">
-        <source>Greek capital letter eta</source>
-        <target>Greek capital letter eta</target>
-      </trans-unit>
-      <trans-unit id="eta" approved="yes">
-        <source>Greek small letter eta</source>
-        <target>Greek small letter eta</target>
-      </trans-unit>
-      <trans-unit id="Theta" approved="yes">
-        <source>Greek capital letter theta</source>
-        <target>Greek capital letter theta</target>
-      </trans-unit>
-      <trans-unit id="theta" approved="yes">
-        <source>Greek small letter theta</source>
-        <target>Greek small letter theta</target>
-      </trans-unit>
-      <trans-unit id="thetasym" approved="yes">
-        <source>Greek small letter theta symbol</source>
-        <target>Greek small letter theta symbol</target>
-      </trans-unit>
-      <trans-unit id="Iota" approved="yes">
-        <source>Greek capital letter iota</source>
-        <target>Greek capital letter iota</target>
-      </trans-unit>
-      <trans-unit id="iota" approved="yes">
-        <source>Greek small letter iota</source>
-        <target>Greek small letter iota</target>
-      </trans-unit>
-      <trans-unit id="Kappa" approved="yes">
-        <source>Greek capital letter kappa</source>
-        <target>Greek capital letter kappa</target>
-      </trans-unit>
-      <trans-unit id="kappa" approved="yes">
-        <source>Greek small letter kappa</source>
-        <target>Greek small letter kappa</target>
-      </trans-unit>
-      <trans-unit id="Lambda" approved="yes">
-        <source>Greek capital letter lambda</source>
-        <target>Greek capital letter lambda</target>
-      </trans-unit>
-      <trans-unit id="lambda" approved="yes">
-        <source>Greek small letter lambda</source>
-        <target>Greek small letter lambda</target>
-      </trans-unit>
-      <trans-unit id="Mu" approved="yes">
-        <source>Greek capital letter mu</source>
-        <target>Greek capital letter mu</target>
-      </trans-unit>
-      <trans-unit id="mu" approved="yes">
-        <source>Greek small letter mu</source>
-        <target>Greek small letter mu</target>
-      </trans-unit>
-      <trans-unit id="Nu" approved="yes">
-        <source>Greek capital letter nu</source>
-        <target>Greek capital letter nu</target>
-      </trans-unit>
-      <trans-unit id="nu" approved="yes">
-        <source>Greek small letter nu</source>
-        <target>Greek small letter nu</target>
-      </trans-unit>
-      <trans-unit id="Xi" approved="yes">
-        <source>Greek capital letter xi</source>
-        <target>Greek capital letter xi</target>
-      </trans-unit>
-      <trans-unit id="xi" approved="yes">
-        <source>Greek small letter xi</source>
-        <target>Greek small letter xi</target>
-      </trans-unit>
-      <trans-unit id="Omicron" approved="yes">
-        <source>Greek capital letter omicron</source>
-        <target>Greek capital letter omicron</target>
-      </trans-unit>
-      <trans-unit id="omicron" approved="yes">
-        <source>Greek small letter omicron</source>
-        <target>Greek small letter omicron</target>
-      </trans-unit>
-      <trans-unit id="Pi" approved="yes">
-        <source>Greek capital letter pi</source>
-        <target>Greek capital letter pi</target>
-      </trans-unit>
-      <trans-unit id="pi" approved="yes">
-        <source>Greek small letter pi</source>
-        <target>Greek small letter pi</target>
-      </trans-unit>
-      <trans-unit id="piv" approved="yes">
-        <source>Greek pi symbol</source>
-        <target>Greek pi symbol</target>
-      </trans-unit>
-      <trans-unit id="Rho" approved="yes">
-        <source>Greek capital letter rho</source>
-        <target>Greek capital letter rho</target>
-      </trans-unit>
-      <trans-unit id="rho" approved="yes">
-        <source>Greek small letter rho</source>
-        <target>Greek small letter rho</target>
-      </trans-unit>
-      <trans-unit id="Sigma" approved="yes">
-        <source>Greek capital letter sigma</source>
-        <target>Greek capital letter sigma</target>
-      </trans-unit>
-      <trans-unit id="sigma" approved="yes">
-        <source>Greek small letter sigma</source>
-        <target>Greek small letter sigma</target>
-      </trans-unit>
-      <trans-unit id="sigmaf" approved="yes">
-        <source>Greek small letter final sigma</source>
-        <target>Greek small letter final sigma</target>
-      </trans-unit>
-      <trans-unit id="Tau" approved="yes">
-        <source>Greek capital letter tau</source>
-        <target>Greek capital letter tau</target>
-      </trans-unit>
-      <trans-unit id="tau" approved="yes">
-        <source>Greek small letter tau</source>
-        <target>Greek small letter tau</target>
-      </trans-unit>
-      <trans-unit id="Upsilon" approved="yes">
-        <source>Greek capital letter upsilon</source>
-        <target>Greek capital letter upsilon</target>
-      </trans-unit>
-      <trans-unit id="upsih" approved="yes">
-        <source>Greek upsilon with hook symbol</source>
-        <target>Greek upsilon with hook symbol</target>
-      </trans-unit>
-      <trans-unit id="upsilon" approved="yes">
-        <source>Greek small letter upsilon</source>
-        <target>Greek small letter upsilon</target>
-      </trans-unit>
-      <trans-unit id="Phi" approved="yes">
-        <source>Greek capital letter phi</source>
-        <target>Greek capital letter phi</target>
-      </trans-unit>
-      <trans-unit id="phi" approved="yes">
-        <source>Greek small letter phi</source>
-        <target>Greek small letter phi</target>
-      </trans-unit>
-      <trans-unit id="Chi" approved="yes">
-        <source>Greek capital letter chi</source>
-        <target>Greek capital letter chi</target>
-      </trans-unit>
-      <trans-unit id="chi" approved="yes">
-        <source>Greek small letter chi</source>
-        <target>Greek small letter chi</target>
-      </trans-unit>
-      <trans-unit id="Psi" approved="yes">
-        <source>Greek capital letter psi</source>
-        <target>Greek capital letter psi</target>
-      </trans-unit>
-      <trans-unit id="psi" approved="yes">
-        <source>Greek small letter psi</source>
-        <target>Greek small letter psi</target>
-      </trans-unit>
-      <trans-unit id="Omega" approved="yes">
-        <source>Greek capital letter omega</source>
-        <target>Greek capital letter omega</target>
-      </trans-unit>
-      <trans-unit id="omega" approved="yes">
-        <source>Greek small letter omega</source>
-        <target>Greek small letter omega</target>
-      </trans-unit>
-      <trans-unit id="crarr" approved="yes">
-        <source>Carriage return arrow</source>
-        <target>Carriage return arrow</target>
-      </trans-unit>
-      <trans-unit id="uarr" approved="yes">
-        <source>Upwards arrow</source>
-        <target>Upwards arrow</target>
-      </trans-unit>
-      <trans-unit id="darr" approved="yes">
-        <source>Downwards arrow</source>
-        <target>Downwards arrow</target>
-      </trans-unit>
-      <trans-unit id="larr" approved="yes">
-        <source>Leftwards arrow</source>
-        <target>Leftwards arrow</target>
-      </trans-unit>
-      <trans-unit id="rarr" approved="yes">
-        <source>Rightwards arrow</source>
-        <target>Rightwards arrow</target>
-      </trans-unit>
-      <trans-unit id="harr" approved="yes">
-        <source>Left right arrow</source>
-        <target>Left right arrow</target>
-      </trans-unit>
-      <trans-unit id="uArr" approved="yes">
-        <source>Upwards double arrow</source>
-        <target>Upwards double arrow</target>
-      </trans-unit>
-      <trans-unit id="dArr" approved="yes">
-        <source>Downwards double arrow</source>
-        <target>Downwards double arrow</target>
-      </trans-unit>
-      <trans-unit id="lArr" approved="yes">
-        <source>Leftwards double arrow</source>
-        <target>Leftwards double arrow</target>
-      </trans-unit>
-      <trans-unit id="rArr" approved="yes">
-        <source>Rightwards double arrow</source>
-        <target>Rightwards double arrow</target>
-      </trans-unit>
-      <trans-unit id="hArr" approved="yes">
-        <source>Left right double arrow</source>
-        <target>Left right double arrow</target>
-      </trans-unit>
-      <trans-unit id="clubs" approved="yes">
-        <source>Club</source>
-        <target>Club</target>
-      </trans-unit>
-      <trans-unit id="diams" approved="yes">
-        <source>Diamond</source>
-        <target>Diamond</target>
-      </trans-unit>
-      <trans-unit id="hearts" approved="yes">
-        <source>Heart</source>
-        <target>Heart</target>
-      </trans-unit>
-      <trans-unit id="spades" approved="yes">
-        <source>Spade</source>
-        <target>Spade</target>
-      </trans-unit>
-    </body>
-  </file>
+	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun	1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id="CharacterMapTooltip" approved="yes">
+				<source>Insert special character</source>
+				<target>Insert special character</target>
+			</trans-unit>
+			<trans-unit id="InsertCharacter-Tooltip" approved="yes">
+				<source>Insert special character</source>
+				<target>Insert special character</target>
+			</trans-unit>
+			<trans-unit id="Insert special character" approved="yes">
+				<source>Insert special character</source>
+				<target>Insert special character</target>
+			</trans-unit>
+			<trans-unit id="general" approved="yes">
+				<source>General</source>
+				<target>General</target>
+			</trans-unit>
+			<trans-unit id="mathematical" approved="yes">
+				<source>Mathematical</source>
+				<target>Mathematical</target>
+			</trans-unit>
+			<trans-unit id="graphical" approved="yes">
+				<source>Shapes and arrows</source>
+				<target>Shapes and arrows</target>
+			</trans-unit>
+			<trans-unit id="HTML value:" approved="yes">
+				<source>HTML value:</source>
+				<target>HTML value:</target>
+			</trans-unit>
+			<trans-unit id="Close" approved="yes">
+				<source>Close</source>
+				<target>Close</target>
+			</trans-unit>
+			<trans-unit id="nbsp" approved="yes">
+				<source>Non-breaking space</source>
+				<target>Non-breaking space</target>
+			</trans-unit>
+			<trans-unit id="Agrave" approved="yes">
+				<source>Capital a with grave accent</source>
+				<target>Capital a with grave accent</target>
+			</trans-unit>
+			<trans-unit id="agrave" approved="yes">
+				<source>Small a with grave accent</source>
+				<target>Small a with grave accent</target>
+			</trans-unit>
+			<trans-unit id="Aacute" approved="yes">
+				<source>Capital a with acute accent</source>
+				<target>Capital a with acute accent</target>
+			</trans-unit>
+			<trans-unit id="aacute" approved="yes">
+				<source>Small a with acute accent</source>
+				<target>Small a with acute accent</target>
+			</trans-unit>
+			<trans-unit id="Acirc" approved="yes">
+				<source>Capital a with circumflex accent</source>
+				<target>Capital a with circumflex accent</target>
+			</trans-unit>
+			<trans-unit id="acirc" approved="yes">
+				<source>Small a with circumflex accent</source>
+				<target>Small a with circumflex accent</target>
+			</trans-unit>
+			<trans-unit id="Atilde" approved="yes">
+				<source>Capital a with tilde</source>
+				<target>Capital a with tilde</target>
+			</trans-unit>
+			<trans-unit id="atilde" approved="yes">
+				<source>Small a with tilde</source>
+				<target>Small a with tilde</target>
+			</trans-unit>
+			<trans-unit id="Auml" approved="yes">
+				<source>Capital a with umlaut/diaeresis</source>
+				<target>Capital a with umlaut/diaeresis</target>
+			</trans-unit>
+			<trans-unit id="auml" approved="yes">
+				<source>Small a with umlaut/diaeresis</source>
+				<target>Small a with umlaut/diaeresis</target>
+			</trans-unit>
+			<trans-unit id="Aring" approved="yes">
+				<source>Capital a with ring</source>
+				<target>Capital a with ring</target>
+			</trans-unit>
+			<trans-unit id="aring" approved="yes">
+				<source>Small a with ring</source>
+				<target>Small a with ring</target>
+			</trans-unit>
+			<trans-unit id="AElig" approved="yes">
+				<source>Capital ligature ae</source>
+				<target>Capital ligature ae</target>
+			</trans-unit>
+			<trans-unit id="aelig" approved="yes">
+				<source>Small ligature ae</source>
+				<target>Small ligature ae</target>
+			</trans-unit>
+			<trans-unit id="ordf" approved="yes">
+				<source>Feminine ordinal indicator</source>
+				<target>Feminine ordinal indicator</target>
+			</trans-unit>
+			<trans-unit id="Ccedil" approved="yes">
+				<source>Capital c with cedilla</source>
+				<target>Capital c with cedilla</target>
+			</trans-unit>
+			<trans-unit id="ccedil" approved="yes">
+				<source>Small c with cedilla</source>
+				<target>Small c with cedilla</target>
+			</trans-unit>
+			<trans-unit id="ETH" approved="yes">
+				<source>Capital eth, Icelandic</source>
+				<target>Capital eth, Icelandic</target>
+			</trans-unit>
+			<trans-unit id="eth" approved="yes">
+				<source>Small eth, Icelandic</source>
+				<target>Small eth, Icelandic</target>
+			</trans-unit>
+			<trans-unit id="Egrave" approved="yes">
+				<source>Capital e with grave accent</source>
+				<target>Capital e with grave accent</target>
+			</trans-unit>
+			<trans-unit id="egrave" approved="yes">
+				<source>Small e with grave accent</source>
+				<target>Small e with grave accent</target>
+			</trans-unit>
+			<trans-unit id="Eacute" approved="yes">
+				<source>Capital e with acute accent</source>
+				<target>Capital e with acute accent</target>
+			</trans-unit>
+			<trans-unit id="eacute" approved="yes">
+				<source>Small e with acute accent</source>
+				<target>Small e with acute accent</target>
+			</trans-unit>
+			<trans-unit id="Ecirc" approved="yes">
+				<source>Capital e with circumflex accent</source>
+				<target>Capital e with circumflex accent</target>
+			</trans-unit>
+			<trans-unit id="ecirc" approved="yes">
+				<source>Small e with circumflex accent</source>
+				<target>Small e with circumflex accent</target>
+			</trans-unit>
+			<trans-unit id="Euml" approved="yes">
+				<source>Capital e with umlaut/diaeresis</source>
+				<target>Capital e with umlaut/diaeresis</target>
+			</trans-unit>
+			<trans-unit id="euml" approved="yes">
+				<source>Small e with umlaut/diaeresis</source>
+				<target>Small e with umlaut/diaeresis</target>
+			</trans-unit>
+			<trans-unit id="Igrave" approved="yes">
+				<source>Capital i with grave accent</source>
+				<target>Capital i with grave accent</target>
+			</trans-unit>
+			<trans-unit id="igrave" approved="yes">
+				<source>Small i with grave accent</source>
+				<target>Small i with grave accent</target>
+			</trans-unit>
+			<trans-unit id="Iacute" approved="yes">
+				<source>Capital i with acute accent</source>
+				<target>Capital i with acute accent</target>
+			</trans-unit>
+			<trans-unit id="iacute" approved="yes">
+				<source>Small i with acute accent</source>
+				<target>Small i with acute accent</target>
+			</trans-unit>
+			<trans-unit id="Icirc" approved="yes">
+				<source>Capital i with circumflex accent</source>
+				<target>Capital i with circumflex accent</target>
+			</trans-unit>
+			<trans-unit id="icirc" approved="yes">
+				<source>Small i with circumflex accent</source>
+				<target>Small i with circumflex accent</target>
+			</trans-unit>
+			<trans-unit id="Iuml" approved="yes">
+				<source>Capital i with umlaut/diaeresis</source>
+				<target>Capital i with umlaut/diaeresis</target>
+			</trans-unit>
+			<trans-unit id="iuml" approved="yes">
+				<source>Small i with umlaut/diaeresis</source>
+				<target>Small i with umlaut/diaeresis</target>
+			</trans-unit>
+			<trans-unit id="Ntilde" approved="yes">
+				<source>Capital n with tilde</source>
+				<target>Capital n with tilde</target>
+			</trans-unit>
+			<trans-unit id="ntilde" approved="yes">
+				<source>Small n with tilde</source>
+				<target>Small n with tilde</target>
+			</trans-unit>
+			<trans-unit id="Ograve" approved="yes">
+				<source>Capital o with grave accent</source>
+				<target>Capital o with grave accent</target>
+			</trans-unit>
+			<trans-unit id="ograve" approved="yes">
+				<source>Small o with grave accent</source>
+				<target>Small o with grave accent</target>
+			</trans-unit>
+			<trans-unit id="Oacute" approved="yes">
+				<source>Capital o with acute accent</source>
+				<target>Capital o with acute accent</target>
+			</trans-unit>
+			<trans-unit id="oacute" approved="yes">
+				<source>Small o with acute accent</source>
+				<target>Small o with acute accent</target>
+			</trans-unit>
+			<trans-unit id="Ocirc" approved="yes">
+				<source>Capital o with circumflex accent</source>
+				<target>Capital o with circumflex accent</target>
+			</trans-unit>
+			<trans-unit id="ocirc" approved="yes">
+				<source>Small o with circumflex accent</source>
+				<target>Small o with circumflex accent</target>
+			</trans-unit>
+			<trans-unit id="Otilde" approved="yes">
+				<source>Capital o with tilde</source>
+				<target>Capital o with tilde</target>
+			</trans-unit>
+			<trans-unit id="otilde" approved="yes">
+				<source>Small o with tilde</source>
+				<target>Small o with tilde</target>
+			</trans-unit>
+			<trans-unit id="Ouml" approved="yes">
+				<source>Capital o with umlaut/diaeresis</source>
+				<target>Capital o with umlaut/diaeresis</target>
+			</trans-unit>
+			<trans-unit id="ouml" approved="yes">
+				<source>Small o with umlaut/diaeresis</source>
+				<target>Small o with umlaut/diaeresis</target>
+			</trans-unit>
+			<trans-unit id="Oslash" approved="yes">
+				<source>Capital o with slash</source>
+				<target>Capital o with slash</target>
+			</trans-unit>
+			<trans-unit id="oslash" approved="yes">
+				<source>Small o with slash</source>
+				<target>Small o with slash</target>
+			</trans-unit>
+			<trans-unit id="OElig" approved="yes">
+				<source>Capital ligature OE</source>
+				<target>Capital ligature OE</target>
+			</trans-unit>
+			<trans-unit id="oelig" approved="yes">
+				<source>Small ligature OE</source>
+				<target>Small ligature OE</target>
+			</trans-unit>
+			<trans-unit id="ordm" approved="yes">
+				<source>Masculine ordinal indicator</source>
+				<target>Masculine ordinal indicator</target>
+			</trans-unit>
+			<trans-unit id="Scaron" approved="yes">
+				<source>Capital s with caron</source>
+				<target>Capital s with caron</target>
+			</trans-unit>
+			<trans-unit id="scaron" approved="yes">
+				<source>Small s with caron</source>
+				<target>Small s with caron</target>
+			</trans-unit>
+			<trans-unit id="szlig" approved="yes">
+				<source>Small sharp s, German</source>
+				<target>Small sharp s, German</target>
+			</trans-unit>
+			<trans-unit id="THORN" approved="yes">
+				<source>Capital THORN, Icelandic</source>
+				<target>Capital THORN, Icelandic</target>
+			</trans-unit>
+			<trans-unit id="thorn" approved="yes">
+				<source>Small thorn, Icelandic</source>
+				<target>Small thorn, Icelandic</target>
+			</trans-unit>
+			<trans-unit id="Ugrave" approved="yes">
+				<source>Capital u with grave accent</source>
+				<target>Capital u with grave accent</target>
+			</trans-unit>
+			<trans-unit id="ugrave" approved="yes">
+				<source>Small u with grave accent</source>
+				<target>Small u with grave accent</target>
+			</trans-unit>
+			<trans-unit id="Uacute" approved="yes">
+				<source>Capital u with acute accent</source>
+				<target>Capital u with acute accent</target>
+			</trans-unit>
+			<trans-unit id="uacute" approved="yes">
+				<source>Small u with acute accent</source>
+				<target>Small u with acute accent</target>
+			</trans-unit>
+			<trans-unit id="Ucirc" approved="yes">
+				<source>Capital u with circumflex accent</source>
+				<target>Capital u with circumflex accent</target>
+			</trans-unit>
+			<trans-unit id="ucirc" approved="yes">
+				<source>Small u with circumflex accent</source>
+				<target>Small u with circumflex accent</target>
+			</trans-unit>
+			<trans-unit id="Uuml" approved="yes">
+				<source>Capital u with umlaut/diaeresis</source>
+				<target>Capital u with umlaut/diaeresis</target>
+			</trans-unit>
+			<trans-unit id="uuml" approved="yes">
+				<source>Small u with umlaut/diaeresis</source>
+				<target>Small u with umlaut/diaeresis</target>
+			</trans-unit>
+			<trans-unit id="Yacute" approved="yes">
+				<source>Capital y with acute accent</source>
+				<target>Capital y with acute accent</target>
+			</trans-unit>
+			<trans-unit id="yacute" approved="yes">
+				<source>Small y with acute accent</source>
+				<target>Small y with acute accent</target>
+			</trans-unit>
+			<trans-unit id="Yuml" approved="yes">
+				<source>Capital y with umlaut/diaeresis</source>
+				<target>Capital y with umlaut/diaeresis</target>
+			</trans-unit>
+			<trans-unit id="yuml" approved="yes">
+				<source>Small y with umlaut/diaeresis</source>
+				<target>Small y with umlaut/diaeresis</target>
+			</trans-unit>
+			<trans-unit id="acute" approved="yes">
+				<source>Spacing acute</source>
+				<target>Spacing acute</target>
+			</trans-unit>
+			<trans-unit id="circ" approved="yes">
+				<source>Modifier letter circumflex accent</source>
+				<target>Modifier letter circumflex accent</target>
+			</trans-unit>
+			<trans-unit id="tilde" approved="yes">
+				<source>Small tilde</source>
+				<target>Small tilde</target>
+			</trans-unit>
+			<trans-unit id="uml" approved="yes">
+				<source>Spacing diaeresis</source>
+				<target>Spacing diaeresis</target>
+			</trans-unit>
+			<trans-unit id="cedil" approved="yes">
+				<source>Spacing cedilla</source>
+				<target>Spacing cedilla</target>
+			</trans-unit>
+			<trans-unit id="shy" approved="yes">
+				<source>Soft hyphen</source>
+				<target>Soft hyphen</target>
+			</trans-unit>
+			<trans-unit id="ndash" approved="yes">
+				<source>En dash</source>
+				<target>En dash</target>
+			</trans-unit>
+			<trans-unit id="mdash" approved="yes">
+				<source>Em dash</source>
+				<target>Em dash</target>
+			</trans-unit>
+			<trans-unit id="lsquo" approved="yes">
+				<source>Left single quotation mark</source>
+				<target>Left single quotation mark</target>
+			</trans-unit>
+			<trans-unit id="rsquo" approved="yes">
+				<source>Right single quotation mark</source>
+				<target>Right single quotation mark</target>
+			</trans-unit>
+			<trans-unit id="sbquo" approved="yes">
+				<source>Single low-9 quotation mark</source>
+				<target>Single low-9 quotation mark</target>
+			</trans-unit>
+			<trans-unit id="ldquo" approved="yes">
+				<source>Left double quotation mark</source>
+				<target>Left double quotation mark</target>
+			</trans-unit>
+			<trans-unit id="rdquo" approved="yes">
+				<source>Right double quotation mark</source>
+				<target>Right double quotation mark</target>
+			</trans-unit>
+			<trans-unit id="bdquo" approved="yes">
+				<source>Double low-9 quotation mark</source>
+				<target>Double low-9 quotation mark</target>
+			</trans-unit>
+			<trans-unit id="lsaquo" approved="yes">
+				<source>Single left angle quotation</source>
+				<target>Single left angle quotation</target>
+			</trans-unit>
+			<trans-unit id="rsaquo" approved="yes">
+				<source>Single right angle quotation</source>
+				<target>Single right angle quotation</target>
+			</trans-unit>
+			<trans-unit id="laquo" approved="yes">
+				<source>Left angle quotation mark</source>
+				<target>Left angle quotation mark</target>
+			</trans-unit>
+			<trans-unit id="raquo" approved="yes">
+				<source>Right angle quotation mark</source>
+				<target>Right angle quotation mark</target>
+			</trans-unit>
+			<trans-unit id="quot" approved="yes">
+				<source>Quotation mark</source>
+				<target>Quotation mark</target>
+			</trans-unit>
+			<trans-unit id="hellip" approved="yes">
+				<source>Horizontal ellipsis</source>
+				<target>Horizontal ellipsis</target>
+			</trans-unit>
+			<trans-unit id="iquest" approved="yes">
+				<source>Inverted question mark</source>
+				<target>Inverted question mark</target>
+			</trans-unit>
+			<trans-unit id="iexcl" approved="yes">
+				<source>Inverted exclamation mark</source>
+				<target>Inverted exclamation mark</target>
+			</trans-unit>
+			<trans-unit id="bull" approved="yes">
+				<source>Bullet</source>
+				<target>Bullet</target>
+			</trans-unit>
+			<trans-unit id="dagger" approved="yes">
+				<source>Dagger</source>
+				<target>Dagger</target>
+			</trans-unit>
+			<trans-unit id="Dagger" approved="yes">
+				<source>Double dagger</source>
+				<target>Double dagger</target>
+			</trans-unit>
+			<trans-unit id="brvbar" approved="yes">
+				<source>Broken vertical bar</source>
+				<target>Broken vertical bar</target>
+			</trans-unit>
+			<trans-unit id="para" approved="yes">
+				<source>Paragraph</source>
+				<target>Paragraph</target>
+			</trans-unit>
+			<trans-unit id="sect" approved="yes">
+				<source>Section</source>
+				<target>Section</target>
+			</trans-unit>
+			<trans-unit id="loz" approved="yes">
+				<source>Lozenge</source>
+				<target>Lozenge</target>
+			</trans-unit>
+			<trans-unit id="#064" approved="yes">
+				<source>At</source>
+				<target>At</target>
+			</trans-unit>
+			<trans-unit id="copy" approved="yes">
+				<source>Copyright</source>
+				<target>Copyright</target>
+			</trans-unit>
+			<trans-unit id="reg" approved="yes">
+				<source>Registered trademark</source>
+				<target>Registered trademark</target>
+			</trans-unit>
+			<trans-unit id="trade" approved="yes">
+				<source>Trademark</source>
+				<target>Trademark</target>
+			</trans-unit>
+			<trans-unit id="curren" approved="yes">
+				<source>Currency</source>
+				<target>Currency</target>
+			</trans-unit>
+			<trans-unit id="cent" approved="yes">
+				<source>Cent</source>
+				<target>Cent</target>
+			</trans-unit>
+			<trans-unit id="euro" approved="yes">
+				<source>Euro</source>
+				<target>Euro</target>
+			</trans-unit>
+			<trans-unit id="pound" approved="yes">
+				<source>Pound</source>
+				<target>Pound</target>
+			</trans-unit>
+			<trans-unit id="yen" approved="yes">
+				<source>Yen</source>
+				<target>Yen</target>
+			</trans-unit>
+			<trans-unit id="emsp" approved="yes">
+				<source>Em space</source>
+				<target>Em space</target>
+			</trans-unit>
+			<trans-unit id="ensp" approved="yes">
+				<source>En space</source>
+				<target>En space</target>
+			</trans-unit>
+			<trans-unit id="thinsp" approved="yes">
+				<source>Thin space</source>
+				<target>Thin space</target>
+			</trans-unit>
+			<trans-unit id="zwj" approved="yes">
+				<source>Zero width joiner</source>
+				<target>Zero width joiner</target>
+			</trans-unit>
+			<trans-unit id="zwnj" approved="yes">
+				<source>Zero width non-joiner</source>
+				<target>Zero width non-joiner</target>
+			</trans-unit>
+			<trans-unit id="minus" approved="yes">
+				<source>Minus sign</source>
+				<target>Minus sign</target>
+			</trans-unit>
+			<trans-unit id="plusmn" approved="yes">
+				<source>Plus-or-minus sign</source>
+				<target>Plus-or-minus sign</target>
+			</trans-unit>
+			<trans-unit id="times" approved="yes">
+				<source>Multiplication</source>
+				<target>Multiplication</target>
+			</trans-unit>
+			<trans-unit id="divide" approved="yes">
+				<source>Division</source>
+				<target>Division</target>
+			</trans-unit>
+			<trans-unit id="radic" approved="yes">
+				<source>Square root</source>
+				<target>Square root</target>
+			</trans-unit>
+			<trans-unit id="sdot" approved="yes">
+				<source>Dot operator</source>
+				<target>Dot operator</target>
+			</trans-unit>
+			<trans-unit id="otimes" approved="yes">
+				<source>Vector product</source>
+				<target>Vector product</target>
+			</trans-unit>
+			<trans-unit id="lowast" approved="yes">
+				<source>Asterisk operator</source>
+				<target>Asterisk operator</target>
+			</trans-unit>
+			<trans-unit id="ge" approved="yes">
+				<source>Greater than or equal to</source>
+				<target>Greater than or equal to</target>
+			</trans-unit>
+			<trans-unit id="le" approved="yes">
+				<source>Less than or equal to</source>
+				<target>Less than or equal to</target>
+			</trans-unit>
+			<trans-unit id="ne" approved="yes">
+				<source>Not equal to</source>
+				<target>Not equal to</target>
+			</trans-unit>
+			<trans-unit id="asymp" approved="yes">
+				<source>Almost equal to, asymptotic to</source>
+				<target>Almost equal to, asymptotic to</target>
+			</trans-unit>
+			<trans-unit id="sim" approved="yes">
+				<source>Varies with, similar to</source>
+				<target>Varies with, similar to</target>
+			</trans-unit>
+			<trans-unit id="prop" approved="yes">
+				<source>Proportional to</source>
+				<target>Proportional to</target>
+			</trans-unit>
+			<trans-unit id="deg" approved="yes">
+				<source>Degree</source>
+				<target>Degree</target>
+			</trans-unit>
+			<trans-unit id="prime" approved="yes">
+				<source>Prime, minutes, feet</source>
+				<target>Prime, minutes, feet</target>
+			</trans-unit>
+			<trans-unit id="Prime" approved="yes">
+				<source>Double prime, seconds, inches</source>
+				<target>Double prime, seconds, inches</target>
+			</trans-unit>
+			<trans-unit id="micro" approved="yes">
+				<source>Micro</source>
+				<target>Micro</target>
+			</trans-unit>
+			<trans-unit id="ang" approved="yes">
+				<source>Angle</source>
+				<target>Angle</target>
+			</trans-unit>
+			<trans-unit id="perp" approved="yes">
+				<source>Orthogonal to, perpendicular to</source>
+				<target>Orthogonal to, perpendicular to</target>
+			</trans-unit>
+			<trans-unit id="permil" approved="yes">
+				<source>Per mille</source>
+				<target>Per mille</target>
+			</trans-unit>
+			<trans-unit id="frasl" approved="yes">
+				<source>Fraction slash</source>
+				<target>Fraction slash</target>
+			</trans-unit>
+			<trans-unit id="frac14" approved="yes">
+				<source>Fraction 1/4</source>
+				<target>Fraction 1/4</target>
+			</trans-unit>
+			<trans-unit id="frac12" approved="yes">
+				<source>Fraction 1/2</source>
+				<target>Fraction 1/2</target>
+			</trans-unit>
+			<trans-unit id="frac34" approved="yes">
+				<source>Fraction 3/4</source>
+				<target>Fraction 3/4</target>
+			</trans-unit>
+			<trans-unit id="sup1" approved="yes">
+				<source>Superscript 1</source>
+				<target>Superscript 1</target>
+			</trans-unit>
+			<trans-unit id="sup2" approved="yes">
+				<source>Superscript 2</source>
+				<target>Superscript 2</target>
+			</trans-unit>
+			<trans-unit id="sup3" approved="yes">
+				<source>Superscript 3</source>
+				<target>Superscript 3</target>
+			</trans-unit>
+			<trans-unit id="not" approved="yes">
+				<source>Negation</source>
+				<target>Negation</target>
+			</trans-unit>
+			<trans-unit id="and" approved="yes">
+				<source>Logical and</source>
+				<target>Logical and</target>
+			</trans-unit>
+			<trans-unit id="or" approved="yes">
+				<source>Logical or</source>
+				<target>Logical or</target>
+			</trans-unit>
+			<trans-unit id="there4" approved="yes">
+				<source>Therefore</source>
+				<target>Therefore</target>
+			</trans-unit>
+			<trans-unit id="cong" approved="yes">
+				<source>Congruent to</source>
+				<target>Congruent to</target>
+			</trans-unit>
+			<trans-unit id="isin" approved="yes">
+				<source>Is element of</source>
+				<target>Is element of</target>
+			</trans-unit>
+			<trans-unit id="ni" approved="yes">
+				<source>Contains as member</source>
+				<target>Contains as member</target>
+			</trans-unit>
+			<trans-unit id="notin" approved="yes">
+				<source>Is not an element of</source>
+				<target>Is not an element of</target>
+			</trans-unit>
+			<trans-unit id="sub" approved="yes">
+				<source>Proper subset of</source>
+				<target>Proper subset of</target>
+			</trans-unit>
+			<trans-unit id="sube" approved="yes">
+				<source>Subset of or equal to</source>
+				<target>Subset of or equal to</target>
+			</trans-unit>
+			<trans-unit id="nsub" approved="yes">
+				<source>Not subset of</source>
+				<target>Not subset of</target>
+			</trans-unit>
+			<trans-unit id="sup" approved="yes">
+				<source>Proper superset of</source>
+				<target>Proper superset of</target>
+			</trans-unit>
+			<trans-unit id="supe" approved="yes">
+				<source>Superset of or equal to</source>
+				<target>Superset of or equal to</target>
+			</trans-unit>
+			<trans-unit id="cap" approved="yes">
+				<source>Intersection</source>
+				<target>Intersection</target>
+			</trans-unit>
+			<trans-unit id="cup" approved="yes">
+				<source>Union</source>
+				<target>Union</target>
+			</trans-unit>
+			<trans-unit id="oplus" approved="yes">
+				<source>Direct sum</source>
+				<target>Direct sum</target>
+			</trans-unit>
+			<trans-unit id="nabla" approved="yes">
+				<source>Gradient</source>
+				<target>Gradient</target>
+			</trans-unit>
+			<trans-unit id="empty" approved="yes">
+				<source>Empty set</source>
+				<target>Empty set</target>
+			</trans-unit>
+			<trans-unit id="equiv" approved="yes">
+				<source>Equivalent</source>
+				<target>Equivalent</target>
+			</trans-unit>
+			<trans-unit id="sum" approved="yes">
+				<source>Sum</source>
+				<target>Sum</target>
+			</trans-unit>
+			<trans-unit id="prod" approved="yes">
+				<source>Product</source>
+				<target>Product</target>
+			</trans-unit>
+			<trans-unit id="weierp" approved="yes">
+				<source>Power set (Weierstrass p)</source>
+				<target>Power set (Weierstrass p)</target>
+			</trans-unit>
+			<trans-unit id="exist" approved="yes">
+				<source>There exists</source>
+				<target>There exists</target>
+			</trans-unit>
+			<trans-unit id="forall" approved="yes">
+				<source>For all</source>
+				<target>For all</target>
+			</trans-unit>
+			<trans-unit id="infin" approved="yes">
+				<source>Infinity</source>
+				<target>Infinity</target>
+			</trans-unit>
+			<trans-unit id="alefsym" approved="yes">
+				<source>Alef (first transfinite cardinal)</source>
+				<target>Alef (first transfinite cardinal)</target>
+			</trans-unit>
+			<trans-unit id="real" approved="yes">
+				<source>Real part of complex number</source>
+				<target>Real part of complex number</target>
+			</trans-unit>
+			<trans-unit id="image" approved="yes">
+				<source>Imaginary part of complex number</source>
+				<target>Imaginary part of complex number</target>
+			</trans-unit>
+			<trans-unit id="fnof" approved="yes">
+				<source>Function</source>
+				<target>Function</target>
+			</trans-unit>
+			<trans-unit id="int" approved="yes">
+				<source>Integral</source>
+				<target>Integral</target>
+			</trans-unit>
+			<trans-unit id="part" approved="yes">
+				<source>Partial differential</source>
+				<target>Partial differential</target>
+			</trans-unit>
+			<trans-unit id="Alpha" approved="yes">
+				<source>Greek capital letter alpha</source>
+				<target>Greek capital letter alpha</target>
+			</trans-unit>
+			<trans-unit id="alpha" approved="yes">
+				<source>Greek small letter alpha</source>
+				<target>Greek small letter alpha</target>
+			</trans-unit>
+			<trans-unit id="Beta" approved="yes">
+				<source>Greek capital letter beta</source>
+				<target>Greek capital letter beta</target>
+			</trans-unit>
+			<trans-unit id="beta" approved="yes">
+				<source>Greek small letter beta</source>
+				<target>Greek small letter beta</target>
+			</trans-unit>
+			<trans-unit id="Gamma" approved="yes">
+				<source>Greek capital letter gamma</source>
+				<target>Greek capital letter gamma</target>
+			</trans-unit>
+			<trans-unit id="gamma" approved="yes">
+				<source>Greek small letter gamma</source>
+				<target>Greek small letter gamma</target>
+			</trans-unit>
+			<trans-unit id="Delta" approved="yes">
+				<source>Greek capital letter delta</source>
+				<target>Greek capital letter delta</target>
+			</trans-unit>
+			<trans-unit id="delta" approved="yes">
+				<source>Greek small letter delta</source>
+				<target>Greek small letter delta</target>
+			</trans-unit>
+			<trans-unit id="Epsilon" approved="yes">
+				<source>Greek capital letter epsilon</source>
+				<target>Greek capital letter epsilon</target>
+			</trans-unit>
+			<trans-unit id="epsilon" approved="yes">
+				<source>Greek small letter epsilon</source>
+				<target>Greek small letter epsilon</target>
+			</trans-unit>
+			<trans-unit id="Zeta" approved="yes">
+				<source>Greek capital letter zeta</source>
+				<target>Greek capital letter zeta</target>
+			</trans-unit>
+			<trans-unit id="zeta" approved="yes">
+				<source>Greek small letter zeta</source>
+				<target>Greek small letter zeta</target>
+			</trans-unit>
+			<trans-unit id="Eta" approved="yes">
+				<source>Greek capital letter eta</source>
+				<target>Greek capital letter eta</target>
+			</trans-unit>
+			<trans-unit id="eta" approved="yes">
+				<source>Greek small letter eta</source>
+				<target>Greek small letter eta</target>
+			</trans-unit>
+			<trans-unit id="Theta" approved="yes">
+				<source>Greek capital letter theta</source>
+				<target>Greek capital letter theta</target>
+			</trans-unit>
+			<trans-unit id="theta" approved="yes">
+				<source>Greek small letter theta</source>
+				<target>Greek small letter theta</target>
+			</trans-unit>
+			<trans-unit id="thetasym" approved="yes">
+				<source>Greek small letter theta symbol</source>
+				<target>Greek small letter theta symbol</target>
+			</trans-unit>
+			<trans-unit id="Iota" approved="yes">
+				<source>Greek capital letter iota</source>
+				<target>Greek capital letter iota</target>
+			</trans-unit>
+			<trans-unit id="iota" approved="yes">
+				<source>Greek small letter iota</source>
+				<target>Greek small letter iota</target>
+			</trans-unit>
+			<trans-unit id="Kappa" approved="yes">
+				<source>Greek capital letter kappa</source>
+				<target>Greek capital letter kappa</target>
+			</trans-unit>
+			<trans-unit id="kappa" approved="yes">
+				<source>Greek small letter kappa</source>
+				<target>Greek small letter kappa</target>
+			</trans-unit>
+			<trans-unit id="Lambda" approved="yes">
+				<source>Greek capital letter lambda</source>
+				<target>Greek capital letter lambda</target>
+			</trans-unit>
+			<trans-unit id="lambda" approved="yes">
+				<source>Greek small letter lambda</source>
+				<target>Greek small letter lambda</target>
+			</trans-unit>
+			<trans-unit id="Mu" approved="yes">
+				<source>Greek capital letter mu</source>
+				<target>Greek capital letter mu</target>
+			</trans-unit>
+			<trans-unit id="mu" approved="yes">
+				<source>Greek small letter mu</source>
+				<target>Greek small letter mu</target>
+			</trans-unit>
+			<trans-unit id="Nu" approved="yes">
+				<source>Greek capital letter nu</source>
+				<target>Greek capital letter nu</target>
+			</trans-unit>
+			<trans-unit id="nu" approved="yes">
+				<source>Greek small letter nu</source>
+				<target>Greek small letter nu</target>
+			</trans-unit>
+			<trans-unit id="Xi" approved="yes">
+				<source>Greek capital letter xi</source>
+				<target>Greek capital letter xi</target>
+			</trans-unit>
+			<trans-unit id="xi" approved="yes">
+				<source>Greek small letter xi</source>
+				<target>Greek small letter xi</target>
+			</trans-unit>
+			<trans-unit id="Omicron" approved="yes">
+				<source>Greek capital letter omicron</source>
+				<target>Greek capital letter omicron</target>
+			</trans-unit>
+			<trans-unit id="omicron" approved="yes">
+				<source>Greek small letter omicron</source>
+				<target>Greek small letter omicron</target>
+			</trans-unit>
+			<trans-unit id="Pi" approved="yes">
+				<source>Greek capital letter pi</source>
+				<target>Greek capital letter pi</target>
+			</trans-unit>
+			<trans-unit id="pi" approved="yes">
+				<source>Greek small letter pi</source>
+				<target>Greek small letter pi</target>
+			</trans-unit>
+			<trans-unit id="piv" approved="yes">
+				<source>Greek pi symbol</source>
+				<target>Greek pi symbol</target>
+			</trans-unit>
+			<trans-unit id="Rho" approved="yes">
+				<source>Greek capital letter rho</source>
+				<target>Greek capital letter rho</target>
+			</trans-unit>
+			<trans-unit id="rho" approved="yes">
+				<source>Greek small letter rho</source>
+				<target>Greek small letter rho</target>
+			</trans-unit>
+			<trans-unit id="Sigma" approved="yes">
+				<source>Greek capital letter sigma</source>
+				<target>Greek capital letter sigma</target>
+			</trans-unit>
+			<trans-unit id="sigma" approved="yes">
+				<source>Greek small letter sigma</source>
+				<target>Greek small letter sigma</target>
+			</trans-unit>
+			<trans-unit id="sigmaf" approved="yes">
+				<source>Greek small letter final sigma</source>
+				<target>Greek small letter final sigma</target>
+			</trans-unit>
+			<trans-unit id="Tau" approved="yes">
+				<source>Greek capital letter tau</source>
+				<target>Greek capital letter tau</target>
+			</trans-unit>
+			<trans-unit id="tau" approved="yes">
+				<source>Greek small letter tau</source>
+				<target>Greek small letter tau</target>
+			</trans-unit>
+			<trans-unit id="Upsilon" approved="yes">
+				<source>Greek capital letter upsilon</source>
+				<target>Greek capital letter upsilon</target>
+			</trans-unit>
+			<trans-unit id="upsih" approved="yes">
+				<source>Greek upsilon with hook symbol</source>
+				<target>Greek upsilon with hook symbol</target>
+			</trans-unit>
+			<trans-unit id="upsilon" approved="yes">
+				<source>Greek small letter upsilon</source>
+				<target>Greek small letter upsilon</target>
+			</trans-unit>
+			<trans-unit id="Phi" approved="yes">
+				<source>Greek capital letter phi</source>
+				<target>Greek capital letter phi</target>
+			</trans-unit>
+			<trans-unit id="phi" approved="yes">
+				<source>Greek small letter phi</source>
+				<target>Greek small letter phi</target>
+			</trans-unit>
+			<trans-unit id="Chi" approved="yes">
+				<source>Greek capital letter chi</source>
+				<target>Greek capital letter chi</target>
+			</trans-unit>
+			<trans-unit id="chi" approved="yes">
+				<source>Greek small letter chi</source>
+				<target>Greek small letter chi</target>
+			</trans-unit>
+			<trans-unit id="Psi" approved="yes">
+				<source>Greek capital letter psi</source>
+				<target>Greek capital letter psi</target>
+			</trans-unit>
+			<trans-unit id="psi" approved="yes">
+				<source>Greek small letter psi</source>
+				<target>Greek small letter psi</target>
+			</trans-unit>
+			<trans-unit id="Omega" approved="yes">
+				<source>Greek capital letter omega</source>
+				<target>Greek capital letter omega</target>
+			</trans-unit>
+			<trans-unit id="omega" approved="yes">
+				<source>Greek small letter omega</source>
+				<target>Greek small letter omega</target>
+			</trans-unit>
+			<trans-unit id="crarr" approved="yes">
+				<source>Carriage return arrow</source>
+				<target>Carriage return arrow</target>
+			</trans-unit>
+			<trans-unit id="uarr" approved="yes">
+				<source>Upwards arrow</source>
+				<target>Upwards arrow</target>
+			</trans-unit>
+			<trans-unit id="darr" approved="yes">
+				<source>Downwards arrow</source>
+				<target>Downwards arrow</target>
+			</trans-unit>
+			<trans-unit id="larr" approved="yes">
+				<source>Leftwards arrow</source>
+				<target>Leftwards arrow</target>
+			</trans-unit>
+			<trans-unit id="rarr" approved="yes">
+				<source>Rightwards arrow</source>
+				<target>Rightwards arrow</target>
+			</trans-unit>
+			<trans-unit id="harr" approved="yes">
+				<source>Left right arrow</source>
+				<target>Left right arrow</target>
+			</trans-unit>
+			<trans-unit id="uArr" approved="yes">
+				<source>Upwards double arrow</source>
+				<target>Upwards double arrow</target>
+			</trans-unit>
+			<trans-unit id="dArr" approved="yes">
+				<source>Downwards double arrow</source>
+				<target>Downwards double arrow</target>
+			</trans-unit>
+			<trans-unit id="lArr" approved="yes">
+				<source>Leftwards double arrow</source>
+				<target>Leftwards double arrow</target>
+			</trans-unit>
+			<trans-unit id="rArr" approved="yes">
+				<source>Rightwards double arrow</source>
+				<target>Rightwards double arrow</target>
+			</trans-unit>
+			<trans-unit id="hArr" approved="yes">
+				<source>Left right double arrow</source>
+				<target>Left right double arrow</target>
+			</trans-unit>
+			<trans-unit id="clubs" approved="yes">
+				<source>Club</source>
+				<target>Club</target>
+			</trans-unit>
+			<trans-unit id="diams" approved="yes">
+				<source>Diamond</source>
+				<target>Diamond</target>
+			</trans-unit>
+			<trans-unit id="hearts" approved="yes">
+				<source>Heart</source>
+				<target>Heart</target>
+			</trans-unit>
+			<trans-unit id="spades" approved="yes">
+				<source>Spade</source>
+				<target>Spade</target>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>
