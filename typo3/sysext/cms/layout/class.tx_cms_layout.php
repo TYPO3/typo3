@@ -683,7 +683,7 @@ class tx_cms_layout extends recordList {
 						list($lpRecord) = t3lib_BEfunc::getRecordsByField('pages_language_overlay', 'pid', $id, 'AND sys_language_uid=' . intval($lP));
 						t3lib_BEfunc::workspaceOL('pages_language_overlay', $lpRecord);
 						$params = '&edit[pages_language_overlay][' . $lpRecord['uid'] . ']=edit&overrideVals[pages_language_overlay][sys_language_uid]=' . $lP;
-						$lPLabel = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon(t3lib_iconWorks::getSpriteIconForRecord('pages_language_overlay', $lpRecord), $lpRecord['uid']) .
+						$lPLabel = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon(t3lib_iconWorks::getSpriteIconForRecord('pages_language_overlay', $lpRecord), 'pages_language_overlay', $lpRecord['uid']) .
 								$viewLink .
 								($GLOBALS['BE_USER']->check('tables_modify', 'pages_language_overlay') ? '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' .
 										t3lib_iconWorks::getSpriteIcon('actions-document-open') .
