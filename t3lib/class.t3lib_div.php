@@ -4463,11 +4463,17 @@ final class t3lib_div {
 	 *
 	 * @param string $fileRef Absolute file reference to locallang-XML file. Must be inside system/global/local extension
 	 * @param string $language Language key
+	 * @param boolean $sameLocation if TRUE, then locallang-XML localization file name will be returned with same directory as $fileRef
 	 * @return string Returns the filename reference for the language unless error occured (or local mode is used) in which case it will be NULL
 	 */
-	public static function llXmlAutoFileName($fileRef, $language) {
+	public static function llXmlAutoFileName($fileRef, $language, $sameLocation = FALSE) {
+		if ($sameLocation) {
+			$location = 'EXT:';
+		} else {
+			$location = 'typo3conf/l10n/' . $language . '/'; // Default location of translations
+		}
+
 			// Analyse file reference:
-		$location = 'typo3conf/l10n/' . $language . '/'; // Default location of translations
 		if (self::isFirstPartOfStr($fileRef, PATH_typo3 . 'sysext/')) { // Is system:
 			$validatedPrefix = PATH_typo3 . 'sysext/';
 			#$location = 'EXT:csh_'.$language.'/';	// For system extensions translations are found in "csh_*" extensions (language packs)
