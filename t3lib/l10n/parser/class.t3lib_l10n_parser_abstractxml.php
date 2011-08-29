@@ -67,6 +67,12 @@ abstract class t3lib_l10n_parser_AbstractXml implements t3lib_l10n_parser {
 			$this->sourcePath = t3lib_div::getFileAbsFileName(
 				t3lib_div::llXmlAutoFileName($this->sourcePath, $this->languageKey)
 			);
+			if (!@is_file($this->sourcePath)) {
+						// Global localization is not available, try split localization file
+					$this->sourcePath = t3lib_div::getFileAbsFileName(
+					t3lib_div::llXmlAutoFileName($sourcePath, $languageKey, TRUE)
+				);
+			}
 
 			if (!@is_file($this->sourcePath)) {
 				throw new t3lib_l10n_exception_FileNotFound(
