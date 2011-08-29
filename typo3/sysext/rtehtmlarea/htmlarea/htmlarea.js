@@ -3152,18 +3152,21 @@ HTMLArea.DOM = function () {
 		 */
 		addBaseUrl: function (url, baseUrl) {
 			var absoluteUrl = url;
-			var base = baseUrl;
-			while (absoluteUrl.match(/^\.\.\/(.*)/)) {
-					// Remove leading ../ from url
-				absoluteUrl = RegExp.$1;
-				base.match(/(.*\:\/\/.*\/)[^\/]+\/$/);
-					// Remove lowest directory level from base
-				base = RegExp.$1;
-				absoluteUrl = base + absoluteUrl;
-			}
-				// If the url is still not absolute...
-			if (!/^.*\:\/\//.test(absoluteUrl)) {
-				absoluteUrl = baseUrl + absoluteUrl;
+				// If the url has no scheme...
+			if (!/^[a-z0-9_]{2,}\:/i.test(absoluteUrl)) {
+				var base = baseUrl;
+				while (absoluteUrl.match(/^\.\.\/(.*)/)) {
+						// Remove leading ../ from url
+					absoluteUrl = RegExp.$1;
+					base.match(/(.*\:\/\/.*\/)[^\/]+\/$/);
+						// Remove lowest directory level from base
+					base = RegExp.$1;
+					absoluteUrl = base + absoluteUrl;
+				}
+					// If the url is still not absolute...
+				if (!/^.*\:\/\//.test(absoluteUrl)) {
+					absoluteUrl = baseUrl + absoluteUrl;
+				}
 			}
 			return absoluteUrl;
 		}
