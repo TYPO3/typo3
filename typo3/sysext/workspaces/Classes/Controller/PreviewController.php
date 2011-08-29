@@ -163,9 +163,10 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		$this->pageRenderer->addInlineSetting('Workspaces', 'disableNextStageButton', $this->isInvalidStage($nextStage));
 		$this->pageRenderer->addInlineSetting('Workspaces', 'disablePreviousStageButton', $this->isInvalidStage($previousStage));
 		$this->pageRenderer->addInlineSetting('Workspaces', 'disableDiscardStageButton', $this->isInvalidStage($nextStage) && $this->isInvalidStage($previousStage));
-
+		$resourcePath = t3lib_extMgm::extRelPath('lang') . 'res/js/be/';
+		$this->pageRenderer->addJsFile($resourcePath . 'typo3lang.js');
 		$this->pageRenderer->addJsInlineCode("workspaces.preview.lll", "
-		TYPO3.LLL.Workspaces = {
+		TYPO3.lang = {
 			visualPreview: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.visualPreview', TRUE) . "',
 			listView: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.listView', TRUE) . "',
 			livePreview: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.livePreview', TRUE) . "',
@@ -178,7 +179,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 			discard: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:label_doaction_discard', TRUE) . "',
 			nextStage: '" . $nextStage['title'] . "',
 			previousStage: '" . $previousStage['title'] . "'
-		};\n");
+		};TYPO3.l10n.initialize();\n");
 
 		$resourcePath = t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/';
 		$this->pageRenderer->addJsFile($resourcePath . 'JavaScript/preview.js');

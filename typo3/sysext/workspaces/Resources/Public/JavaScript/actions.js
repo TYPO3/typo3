@@ -218,7 +218,7 @@ TYPO3.Workspaces.Actions = {
 				TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction(response);
 			} else {
 				var dialog = TYPO3.Workspaces.Helpers.getSendToStageWindow({
-					title: TYPO3.LLL.Workspaces.nextStage,
+					title: TYPO3.l10n.localize('nextStage'),
 					items: response.items.items,
 					executeHandler: function(event) {
 						var values = top.Ext.getCmp('sendToStageForm').getForm().getValues();
@@ -262,7 +262,7 @@ TYPO3.Workspaces.Actions = {
 				TYPO3.Workspaces.Actions.handlerResponseOnExecuteAction(response);
 			} else {
 				var dialog = TYPO3.Workspaces.Helpers.getSendToStageWindow({
-					title: TYPO3.LLL.Workspaces.nextStage,
+					title: TYPO3.l10n.localize('nextStage'),
 					items: response.items.items,
 					executeHandler: function(event) {
 						var values = top.Ext.getCmp('sendToStageForm').getForm().getValues();
