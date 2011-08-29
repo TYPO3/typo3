@@ -104,6 +104,14 @@ class t3lib_l10n_parser_Llxml extends t3lib_l10n_parser_AbstractXml {
 	protected function _getParsedData(SimpleXMLElement $bodyOfFileTag, $element) {
 		$parsedData = array();
 
+		if (count($bodyOfFileTag->children()) == 0) {
+				// Check for externally-referenced resource:
+				// <languageKey index="fr">EXT:yourext/path/to/localized/locallang.xml</languageKey>
+			$reference = sprintf('%s', $bodyOfFileTag);
+			if (substr($reference, -4) === '.xml') {
+				return $this->getParsedTargetData(t3lib_div::getFileAbsFileName($reference));
+			}
+		}
 		foreach ($bodyOfFileTag->children() as $translationElement) {
 			if ($translationElement->getName() === 'label') {
 					// If restype would be set, it could be metadata from Gettext to XLIFF conversion (and we don't need this data)
