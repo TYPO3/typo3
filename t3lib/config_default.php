@@ -570,6 +570,12 @@ $TYPO3_CONF_VARS = array(
 		'hidePagesIfNotTranslatedByDefault' => FALSE,	// Boolean: If TRUE, pages that has no translation will be hidden by default. Basically this will inverse the effect of the page localization setting "Hide page if no translation for current language exists" to "Show page even if no translation exists"
 		'eID_include' => array(),				// Array of key/value pairs where key is "tx_[ext]_[optional suffix]" and value is relative filename of class to include. Key is used as "?eID=" for index_ts.php to include the code file which renders the page from that point. (Useful for functionality that requires a low initialization footprint, eg. frontend ajax applications)
 		'disableNoCacheParameter' => FALSE,		// Boolean: If set, the no_cache request parameter will become ineffective. This is currently still an experimental feature and will require a website only with plugins that don't use this parameter. However, using "&amp;no_cache=1" should be avoided anyway because there are better ways to disable caching for a certain part of the website (see COA_INT/USER_INT documentation in TSref).
+		'cacheHash' => array(
+			'cHashExcludedParameters' => 'L', // String: The the given parameters will be ignored in the cHash calculation. Example: L,tx_search_pi1[query]
+			'cHashOnlyForParameters' => '', // String: Only the given parameters will be evaluated in the cHash calculation. Example: tx_news_pi1[uid]
+			'cHashRequiredParameters' => '', // Optional: Configure Parameters that require a cHash. If no cHash is given but one of the parameters are set, then TYPO3 triggers the configured cHash Error behaviour
+			'cHashExcludedParametersIfEmpty' => '', // Optional: Configure Parameters that are only relevant for the chash if there's an associated value available. And asterisk "*" can be used to skip all empty parameters.
+		),
 		'workspacePreviewLogoutTemplate' => '',	// If set, points to an HTML file relative to the TYPO3_site root which will be read and outputted as template for this message. Example: fileadmin/templates/template_workspace_preview_logout.html. Inside you can put the marker %1$s to insert the URL to go back to. Use this in &lt;a href="%1$s"&gt;Go back...&lt;/a&gt; links
 		'versionNumberInFilename' => 'querystring',	// String: embed,querystring,''. Allows to automatically include a version number (timestamp of the file) to referred CSS and JS filenames on the rendered page. This will make browsers and proxies reload the files if they change (thus avoiding caching issues). Set to 'embed' will have the timestamp embedded in the filename, ie. filename.1269312081.js. IMPORTANT: 'embed' requires extra .htaccess rules to work (please refer to _.htaccess or the _.htaccess file from the dummy package)<p>Set to 'querystring' (default setting) to append the version number as a query parameter (doesn't require mod_rewrite). Set to '' will turn this functionality off (behaves like TYPO3 &lt; v4.4).</p>
 		'XCLASS' => array(),					// See 'Inside TYPO3' document for more information.
@@ -764,6 +770,79 @@ if ($TYPO3_CONF_VARS['SYS']['setDBinit'] == '-1' && $typo_db) {
 		'The DB, its connection and TYPO3 should be migrated to UTF-8 therefore. Please check your setup.');
 }
 
+
+	// If this value is not -1, then the setting has been modified in localconf.php
+if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework'] !== -1) {
+		// Deprecation log since 4.6, can be removed in 4.8. Checks if obsolete useCachingFramework is set
+	t3lib_div::deprecationLog('Setting $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'useCachingFramework\'] is obsolete since TYPO3 4.6 and should be removed from localconf.php.');
+}
+
+if (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'])) {
+	if(is_string($GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'])) {
+		if(is_null($GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'])) {
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'] = $GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'];
+		} elseif (is_string($GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'])) {
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'] .= ',' . $GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'];
+		}
+	}
+		// Deprecation log since 4.6, can be removed in 4.8
+	t3lib_div::deprecationLog('$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'userFuncClassPrefix\'] is deprecated, use $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'additionalAllowedClassPrefixes\'] instead');
+}
+
+	// Force enabled caching framework
+	// @deprecated, constant can be removed in 4.8
+define('TYPO3_UseCachingFramework', TRUE);
+	// @deprecated, can be removed in 4.8
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework'] = TRUE;
+
+
+/**
+ * Parse old curl options and set new http ones instead
+ *
+ * @deprecated Deprecated since 4.6 - will be removed in 4.8.
+ */
+if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'])) {
+	$proxyParts = explode(':', $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'], 2);
+	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_host'] = $proxyParts[0];
+	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_port'] = $proxyParts[1];
+    /* TODO: uncomment after refactoring getUrl()
+	t3lib_div::deprecationLog(
+		'This TYPO3 installation is using the $TYPO3_CONF_VARS[\'SYS\'][\'curlProxyServer\'] property with the following value: ' .
+		$TYPO3_CONF_VARS['SYS']['curlProxyServer'] . LF . 'Please make sure to set $TYPO3_CONF_VARS[\'HTTP\'][\'proxy_host\']' .
+		' and $TYPO3_CONF_VARS[\'HTTP\'][\'proxy_port\'] instead.' . LF . 'Remove this line from your localconf.php.'
+	);*/
+}
+if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass'])) {
+	$userPassParts = explode(':', $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass'], 2);
+	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_user'] = $userPassParts[0];
+	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_password'] = $userPassParts[1];
+	/* TODO: uncomment after refactoring getUrl()
+	t3lib_div::deprecationLog(
+		'This TYPO3 installation is using the $TYPO3_CONF_VARS[\'SYS\'][\'curlProxyUserPass\'] property with the following value: ' .
+		$TYPO3_CONF_VARS['SYS']['curlProxyUserPass'] . LF . 'Please make sure to set $TYPO3_CONF_VARS[\'HTTP\'][\'proxy_user\']' .
+		' and $TYPO3_CONF_VARS[\'HTTP\'][\'proxy_password\'] instead.' . LF . 'Remove this line from your localconf.php.'
+	);*/
+}
+
+/**
+ * Set cacheHash options
+ */
+$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash'] = array(
+	'cachedParametersWhiteList' => t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashOnlyForParameters'], TRUE),
+	'excludedParameters' => t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'], TRUE),
+	'requireCacheHashPresenceParameters' => t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'], TRUE),
+);
+if (trim($GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParametersIfEmpty']) === '*') {
+	$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludeAllEmptyParameters'] = TRUE;
+} else {
+	$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParametersIfEmpty'] = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParametersIfEmpty'], TRUE);
+}
+
+
+	// ['HTTP']['proxy_auth_scheme'] can only be 'digest' or 'basic'
+$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_auth_scheme'] === 'digest' ?
+	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_auth_scheme'] = 'digest' :
+	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_auth_scheme'] = 'basic';
 
 
 $timeZone = $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'];

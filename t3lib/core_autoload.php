@@ -15,6 +15,7 @@ $t3libClasses = array(
 	't3lib_beuserauth' => PATH_t3lib . 'class.t3lib_beuserauth.php',
 	't3lib_browsetree' => PATH_t3lib . 'class.t3lib_browsetree.php',
 	't3lib_cache' => PATH_t3lib . 'class.t3lib_cache.php',
+	't3lib_cachehash' => PATH_t3lib . 'class.t3lib_cacheHash.php',
 	't3lib_cli' => PATH_t3lib . 'class.t3lib_cli.php',
 	't3lib_clipboard' => PATH_t3lib . 'class.t3lib_clipboard.php',
 	't3lib_compressor' => PATH_t3lib . 'class.t3lib_compressor.php',

@@ -4591,18 +4591,15 @@ final class t3lib_div {
 	 * @param	string		Query-parameters: "&xxx=yyy&zzz=uuu"
 	 * @return	array		Array with key/value pairs of query-parameters WITHOUT a certain list of variable names (like id, type, no_cache etc.) and WITH a variable, encryptionKey, specific for this server/installation
 	 * @see tslib_fe::makeCacheHash(), tslib_cObj::typoLink(), t3lib_div::calculateCHash()
+	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 4.9 - use t3lib_cacheHash instead
 	 */
 	public static function cHashParams($addQueryParams) {
+		t3lib_div::logDeprecatedFunction();
 		$params = explode('&', substr($addQueryParams, 1)); // Splitting parameters up
+		/* @var $cacheHash t3lib_cacheHash */
+		$cacheHash = t3lib_div::makeInstance('t3lib_cacheHash');
+		$pA = $cacheHash->getRelevantParameters($addQueryParams);
 
-			// Make array:
-		$pA = array();
-		foreach ($params as $theP) {
-			$pKV = explode('=', $theP); // Splitting single param by '=' sign
-			if (!self::inList('id,type,no_cache,cHash,MP,ftu', $pKV[0]) && !preg_match('/TSFE_ADMIN_PANEL\[.*?\]/', $pKV[0])) {
-				$pA[rawurldecode($pKV[0])] = (string) rawurldecode($pKV[1]);
-			}
-		}
 			// Hook: Allows to manipulate the parameters which are taken to build the chash:
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['cHashParamsHook'])) {
 			$cHashParamsHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['cHashParamsHook'];
@@ -4618,9 +4615,6 @@ final class t3lib_div {
 				}
 			}
 		}
-			// Finish and sort parameters array by keys:
-		$pA['encryptionKey'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-		ksort($pA);
 
 		return $pA;
 	}
@@ -4631,11 +4625,13 @@ final class t3lib_div {
 	 * @param	string		Query-parameters: "&xxx=yyy&zzz=uuu"
 	 * @return	string		Hash of all the values
 	 * @see t3lib_div::cHashParams(), t3lib_div::calculateCHash()
+	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 4.9 - use t3lib_cacheHash instead
 	 */
 	public static function generateCHash($addQueryParams) {
-		$cHashParams = self::cHashParams($addQueryParams);
-		$cHash = self::calculateCHash($cHashParams);
-		return $cHash;
+		t3lib_div::logDeprecatedFunction();
+		/* @var $cacheHash t3lib_cacheHash */
+		$cacheHash = t3lib_div::makeInstance('t3lib_cacheHash');
+		return $cacheHash->generateForParameters($addQueryParams);
 	}
 
 	/**
@@ -4643,10 +4639,13 @@ final class t3lib_div {
 	 *
 	 * @param	array		Array of key-value pairs
 	 * @return	string		Hash of all the values
+	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 4.9 - use t3lib_cacheHash instead
 	 */
 	public static function calculateCHash($params) {
-		$cHash = md5(serialize($params));
-		return $cHash;
+		t3lib_div::logDeprecatedFunction();
+		/* @var $cacheHash t3lib_cacheHash */
+		$cacheHash = t3lib_div::makeInstance('t3lib_cacheHash');
+		return $cacheHash->calculateCacheHash($params);
 	}
 
 	/**
