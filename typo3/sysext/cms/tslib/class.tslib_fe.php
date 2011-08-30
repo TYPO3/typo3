@@ -1762,7 +1762,7 @@
 				if ($this->tempContent)	{ $this->clearPageCacheContent(); }
 				$this->pageNotFoundAndExit('Request parameters could not be validated (&cHash empty)');
 			} else {
-				$this->set_no_cache();
+				$this->disableCache();
 				$GLOBALS['TT']->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled',2);
 			}
 		}
