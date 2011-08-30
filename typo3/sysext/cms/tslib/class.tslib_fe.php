@@ -1732,7 +1732,10 @@
 	 *******************************************/
 
 	/**
-	 * Calculates a hash string based on additional parameters in the url. This is used to cache pages with more parameters than just id and type
+	 * Calculates a hash string based on additional parameters in the url.
+	 *
+	 * Calculated hash is stored in $this->cHash_array.
+	 * This is used to cache pages with more parameters than just id and type.
 	 *
 	 * @return	void
 	 * @see reqCHash()
@@ -1745,8 +1748,8 @@
 
 		$GET = t3lib_div::_GET();
 		if ($this->cHash && is_array($GET))	{
-			$this->cHash_array = t3lib_div::cHashParams(t3lib_div::implodeArrayForUrl('',$GET));
-			$cHash_calc = t3lib_div::calculateCHash($this->cHash_array);
+			$this->cHash_array = t3lib_cacheHash::getRelevantHashParameters(t3lib_div::implodeArrayForUrl('', $GET));
+			$cHash_calc = t3lib_cacheHash::calculateCacheHash($this->cHash_array);
 
 			if ($cHash_calc!=$this->cHash)	{
 				if ($this->TYPO3_CONF_VARS['FE']['pageNotFoundOnCHashError']) {
@@ -1755,6 +1758,11 @@
 					$this->disableCache();
 					$GLOBALS['TT']->setTSlogMessage('The incoming cHash "'.$this->cHash.'" and calculated cHash "'.$cHash_calc.'" did not match, so caching was disabled. The fieldlist used was "'.implode(',',array_keys($this->cHash_array)).'"',2);
 				}
+			}
+		} elseif (is_array($GET)) {
+				// no cHash is set, check if that is correct
+			if (t3lib_cacheHash::hasParameterRequiringCacheHash(t3lib_div::implodeArrayForUrl('', $GET))) {
+				$this->reqCHash();
 			}
 		}
 	}
@@ -1789,7 +1797,7 @@
 	 * @obsolete
 	 */
 	function cHashParams($addQueryParams) {
-		return t3lib_div::cHashParams($addQueryParams);
+		return t3lib_cacheHash::calculateCacheHash($addQueryParams);
 	}
 
 	/**
