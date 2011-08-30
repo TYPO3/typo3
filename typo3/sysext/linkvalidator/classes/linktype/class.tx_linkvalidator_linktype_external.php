@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 - 2009 Jochen Rieger (j.rieger@connecta.ag) 
+ *  (c) 2010 - 2009 Jochen Rieger (j.rieger@connecta.ag)
  *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
@@ -23,39 +23,50 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * This class provides Check External Links plugin implementation.
+ * This class provides Check External Links plugin implementation
  *
  * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
+ * @author Philipp Gampe <typo3.dev@philippgampe.info>
  * @package TYPO3
  * @subpackage linkvalidator
  */
 class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstract {
 
 	/**
-	 * Cached list of the URLs, which were already checked for the current processing.
+	 * Cached list of the URLs, which were already checked for the current processing
 	 *
-	 * @var array
+	 * @var array $urlReports
 	 */
 	protected $urlReports = array();
 
 	/**
-	 * Cached list of all error parameters of the URLs, which were already checked for the current processing.
+	 * Cached list of all error parameters of the URLs, which were already checked for the current processing
 	 *
-	 * @var array
+	 * @var array $urlErrorParams
 	 */
 	protected $urlErrorParams = array();
 
 	/**
-	 * Checks a given URL + /path/filename.ext for validity
+	 * List of headers to be used for matching an URL for the current processing
 	 *
-	 * @param	string		$url: url to check
-	 * @param	 array	   $softRefEntry: the softref entry which builds the context of that url
-	 * @param	object		$reference:  parent instance of tx_linkvalidator_Processor
-	 * @return	string		TRUE on success or FALSE on error
+	 * @var array $additionalHeaders
 	 */
-	public function checkLink($url, $softRefEntry, $reference) {
+	protected $additionalHeaders = array();
+
+
+	/**
+	 * Checks a given URL for validity
+	 *
+	 * @param string $url The URL to check
+	 * @param array $softRefEntry The soft reference entry which builds the context of that URL
+	 * @param tx_linkvalidator_Processor $reference Parent instance of tx_linkvalidator_Processor
+	 * @return boolean TRUE on success or FALSE on error
+	 */
+	public function checkLink($url, array $softRefEntry, tx_linkvalidator_Processor $reference) {
 		$errorParams = array();
+		$isValidUrl = TRUE;
+
 		if (isset($this->urlReports[$url])) {
 			if(!$this->urlReports[$url]) {
 				if(is_array($this->urlErrorParams[$url])) {
@@ -65,88 +76,66 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 			return $this->urlReports[$url];
 		}
 
-			// remove possible anchor from the url
-		if (strrpos($url, '#') !== FALSE) {
-			$url = substr($url, 0, strrpos($url, '#'));
-		}
+		$config = array(
+			'follow_redirects' => TRUE,
+			'strict_redirects' => TRUE,
+		);
 
-			// try to fetch the content of the URL (headers only)
-		$report = array();
+			/** @var t3lib_http_Request|HTTP_Request2 $request  */
+		$request = t3lib_div::makeInstance('t3lib_http_Request', $url, 'HEAD', $config);
+			// Observe cookies
+		$request->setCookieJar(TRUE);
 
-			// try fetching the content of the URL (just fetching the headers does not work correctly)
-		$content = '';
-		$content = t3lib_div::getURL($url, 1, FALSE, $report);
-
-		$tries = 0;
-		while (($report['http_code'] == 301 || $report['http_code'] == 302
-			|| $report['http_code'] == 303 || $report['http_code'] == 307)
-			&& ($tries < 5)) {
-				$isCodeRedirect = preg_match('/Location: (.*)/', $content, $location);
-				if (isset($location[1])) {
-					$content = t3lib_div::getURL($location[1], 2, FALSE, $report);
-				}
-				$tries++;
-		}
-
-		$response = TRUE;
-
-			// analyze the response
-		if ($report['error']) {
-				// More cURL error codes can be found here:
-				// http://curl.haxx.se/libcurl/c/libcurl-errors.html
-			if ($report['lib'] === 'cURL' && $report['error'] === 28) {
-				$errorParams['errorType'] = 'cURL28';
-			} elseif ($report['lib'] === 'cURL' && $report['error'] === 22) {
-				if (strstr($report['message'], '404')) {
-					$errorParams['errorType'] = 404;
-				} elseif(strstr($report['message'], '403')) {
-					$errorParams['errorType'] = 403;
-				} elseif(strstr($report['message'], '500')) {
-					$errorParams['errorType'] = 500;
-				}
-			} elseif ($report['lib'] === 'cURL' && $report['error'] === 6) {
-				$errorParams['errorType'] = 'cURL6';
-			} elseif ($report['lib'] === 'cURL' && $report['error'] === 56) {
-				$errorParams['errorType'] = 'cURL56';
+		try {
+				/** @var HTTP_Request2_Response $response  */
+			$response = $request->send();
+				// HEAD was not allowed, now trying GET
+			if (isset($response) && $response->getStatus() === 405) {
+				$request->setMethod('GET');
+				$request->setHeader('Range', 'bytes = 0 - 4048');
+					/** @var HTTP_Request2_Response $response  */
+				$response = $request->send();
 			}
+		}
+		catch (Exception $e) {
+			$isValidUrl = FALSE;
+				// A redirect loop occurred
+			if ($e->getCode() === 40) {
+					// Parse the exception for more information
+				$trace = $e->getTrace();
+				$traceUrl = $trace[0]['args'][0]->getUrl()->getUrl();
+				$traceCode = $trace[0]['args'][1]->getStatus();
 
-			$response = FALSE;
+				$errorParams['errorType'] = 'loop';
+				$errorParams['location'] = $traceUrl;
+				$errorParams['errorCode'] = $traceCode;
+			} else {
+				$errorParams['errorType'] = 'exception';
+			}
+			$errorParams['message'] = $e->getMessage();
 		}
 
-
-			// special handling for more information
-		if (($report['http_code'] == 301) || ($report['http_code'] == 302)
-			|| ($report['http_code'] == 303) || ($report['http_code'] == 307)) {
-				$errorParams['errorType'] = $report['http_code'];
-				$errorParams['location'] = $location[1];
-				$response = FALSE;
+		if (isset($response) && $response->getStatus() >= 300) {
+			$isValidUrl = FALSE;
+			$errorParams['errorType'] = $response->getStatus();
+			$errorParams['message'] = $response->getReasonPhrase();
 		}
 
-		if ($report['http_code'] == 404 || $report['http_code'] == 403) {
-			$errorParams['errorType'] = $report['http_code'];
-			$response = FALSE;
-		}
-
-		if ($report['http_code'] >= 300 && $response) {
-			$errorParams['errorType'] = $report['http_code'];
-			$response = FALSE;
-		}
-
-		if(!$response) {
+		if(!$isValidUrl) {
 			$this->setErrorParams($errorParams);
 		}
 
-		$this->urlReports[$url] = $response;
+		$this->urlReports[$url] = $isValidUrl;
 		$this->urlErrorParams[$url] = $errorParams;
 
-		return $response;
+		return $isValidUrl;
 	}
 
 	/**
-	 * Generate the localized error message from the error params saved from the parsing.
+	 * Generate the localized error message from the error params saved from the parsing
 	 *
-	 * @param   array    all parameters needed for the rendering of the error message
-	 * @return  string    validation error message
+	 * @param array $errorParams All parameters needed for the rendering of the error message
+	 * @return string Validation error message
 	 */
 	public function getErrorMessage($errorParams) {
 		$errorType = $errorParams['errorType'];
@@ -155,54 +144,43 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 				$response = sprintf($GLOBALS['LANG']->getLL('list.report.externalerror'), $errorType);
 				break;
 
-			case 301:
-			case 302:
-			case 303:
-			case 307:
-				$response = sprintf($GLOBALS['LANG']->getLL('list.report.redirectloop'), $errorType, $errorParams['location']);
+			case 403:
+				$response = $GLOBALS['LANG']->getLL('list.report.pageforbidden403');
 				break;
 
 			case 404:
 				$response = $GLOBALS['LANG']->getLL('list.report.pagenotfound404');
 				break;
 
-			case 403:
-				$response = $GLOBALS['LANG']->getLL('list.report.pageforbidden403');
-				break;
-
 			case 500:
 				$response = $GLOBALS['LANG']->getLL('list.report.internalerror500');
 				break;
 
-			case 'cURL6':
-				$response = $GLOBALS['LANG']->getLL('list.report.couldnotresolvehost');
+			case 'loop':
+				$response = sprintf($GLOBALS['LANG']->getLL('list.report.redirectloop'), $errorParams['errorCode'], $errorParams['location']);
 				break;
 
-			case 'cURL28':
-				$response = $GLOBALS['LANG']->getLL('list.report.timeout');
-				break;
-
-			case 'cURL56':
-				$response = $GLOBALS['LANG']->getLL('list.report.errornetworkdata');
+			case 'exception':
+				$response = sprintf($GLOBALS['LANG']->getLL('list.report.httpexception'), $errorParams['message']);
 				break;
 
 			default:
-				$response = $GLOBALS['LANG']->getLL('list.report.noresponse');
+				$response = sprintf($GLOBALS['LANG']->getLL('list.report.otherhttpcode'), $errorType, $errorParams['message']);
 		}
 
 		return $response;
 	}
 
 	/**
-	 * get the external type from the softRefParserObj result.
+	 * Get the external type from the softRefParserObj result
 	 *
-	 * @param   array	  $value: reference properties
-	 * @param   string	 $type: current type
-	 * @param   string	 $key: validator hook name
-	 * @return  string	 fetched type
+	 * @param array $value Reference properties
+	 * @param string $type Current type
+	 * @param string $key Validator hook name
+	 * @return string Fetched type
 	 */
-	public function fetchType($value, $type, $key) {
-		preg_match_all('/((?:http|https|ftp|ftps))(?::\/\/)(?:[^\s<>]+)/i', $value['tokenValue'], $urls, PREG_PATTERN_ORDER);
+	public function fetchType(array $value, $type, $key) {
+		preg_match_all('/((?:http|https))(?::\/\/)(?:[^\s<>]+)/i', $value['tokenValue'], $urls, PREG_PATTERN_ORDER);
 
 		if (!empty($urls[0][0])) {
 			$type = "external";

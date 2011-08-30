@@ -22,7 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * This class provides Scheduler Additional Field plugin implementation.
+ * This class provides Scheduler Additional Field plugin implementation
  *
  * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
@@ -34,10 +34,10 @@ class tx_linkvalidator_tasks_ValidatorAdditionalFieldProvider implements tx_sche
 	/**
 	 * Render additional information fields within the scheduler backend.
 	 *
-	 * @param	array		$taksInfo: array information of task to return
-	 * @param	task		$task: task object
-	 * @param	tx_scheduler_Module		$schedulerModule: reference to the calling object (BE module of the Scheduler)
-	 * @return	array		additional fields
+	 * @param array $taskInfo Array information of task to return
+	 * @param task $task Task object
+	 * @param tx_scheduler_Module $schedulerModule Reference to the calling object (BE module of the Scheduler)
+	 * @return array Additional fields
 	 * @see interfaces/tx_scheduler_AdditionalFieldProvider#getAdditionalFields($taskInfo, $task, $schedulerModule)
 	 */
 	public function getAdditionalFields(array &$taskInfo, $task, tx_scheduler_Module $schedulerModule) {
@@ -174,14 +174,13 @@ class tx_linkvalidator_tasks_ValidatorAdditionalFieldProvider implements tx_sche
 
 
 	/**
-	 * Mark current value as selected by returning the "selected" attribute.
+	 * Mark current value as selected by returning the "selected" attribute
 	 *
-	 * @param	array		$configurationArray: array of configuration
-	 * @param	string		$currentValue: value of selector object
-	 * @return	string		Html fragment for a selected option or empty
-	 * @access protected
+	 * @param array $configurationArray Array of configuration
+	 * @param string $currentValue Value of selector object
+	 * @return string Html fragment for a selected option or empty
 	 */
-	protected function getSelectedState($configurationArray, $currentValue) {
+	protected function getSelectedState(array $configurationArray, $currentValue) {
 		$selected = '';
 		for ($i = 0; $i < count($configurationArray); $i++) {
 			if (strcmp($configurationArray[$i], $currentValue) === 0) {
@@ -196,14 +195,14 @@ class tx_linkvalidator_tasks_ValidatorAdditionalFieldProvider implements tx_sche
 	 * This method checks any additional data that is relevant to the specific task.
 	 * If the task class is not relevant, the method is expected to return TRUE.
 	 *
-	 * @param	array		$submittedData: reference to the array containing the data submitted by the user
-	 * @param	tx_scheduler_module1		$parentObject: reference to the calling object (BE module of the Scheduler)
-	 * @return	boolean		TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
+	 * @param array $submittedData Reference to the array containing the data submitted by the user
+	 * @param tx_scheduler_Module $schedulerModule Reference to the calling object (BE module of the Scheduler)
+	 * @return boolean TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
 	 */
 	public function validateAdditionalFields(array &$submittedData, tx_scheduler_Module $schedulerModule) {
 		$isValid = TRUE;
 
-		//!TODO add validation to validate the $submittedData['configuration'] wich is normally a comma seperated string
+		//TODO add validation to validate the $submittedData['configuration'] which is normally a comma separated string
 		if (!empty($submittedData['linkvalidator']['email'])) {
 			$emailList = t3lib_div::trimExplode(',', $submittedData['linkvalidator']['email']);
 			foreach ($emailList as $emailAdd) {
@@ -249,9 +248,9 @@ class tx_linkvalidator_tasks_ValidatorAdditionalFieldProvider implements tx_sche
 	 * This method is used to save any additional input into the current task object
 	 * if the task class matches.
 	 *
-	 * @param	array		$submittedData: array containing the data submitted by the user
-	 * @param	tx_scheduler_Task		$task: reference to the current task object
-	 * @return	void
+	 * @param array $submittedData Array containing the data submitted by the user
+	 * @param tx_scheduler_Task $task Reference to the current task object
+	 * @return void
 	 */
 	public function saveAdditionalFields(array $submittedData, tx_scheduler_Task $task) {
 		$task->setDepth($submittedData['linkvalidator']['depth']);

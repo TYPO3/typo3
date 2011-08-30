@@ -1,4 +1,95 @@
-2011-01-21  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+2011-08-30 Philipp Gampe <forge.typo3.org@philippgampe.info>
+
+	* [TASK] Release linkvalidator 1.0.4
+
+2011-08-26 Philipp Gampe <forge.typo3.org@philippgampe.info>
+
+	* [BUGFIX] Fatal error with E_STRICT: Declaration of fetchType must be compatible with interface
+	* [TASK] Fix phpdoc and method signatures
+
+2011-08-26  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* [BUGFIX] XLIFF: Approved attribute is on wrong element
+
+2011-08-19  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* [TASK] Unify table layouts
+
+2011-08-11  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* [TASK] Refactor to t3lib_http_Request for external URLs
+
+2011-08-10  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* [TASK] Add XLIFF files
+
+2011-07-17  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* [TASK] Fix localization handling to support XLIFF
+
+2011-07-17  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* [TASK] Merge changes from 4.5 upstream to master
+
+2011-07-17  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* [BUGFIX] Correct initialisation of BACK_PATH
+
+2011-07-15  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* [TASK] Add .gitignore file
+
+2011-05-22  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* Task: Fix whitespace issues in all branches
+	* Task: Update Version Number to 1.0.3
+	* Release linkvalidator 1.0.3
+
+2011-05-21  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* Feature #13800: Add user-agent header
+	* Fixed Bug #13680: Refactor external link, do not follow senseless loop, add user agent (thanks to Daniel Minder)
+
+2011-05-18  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* Fixed bug #13828: checkhidden has no effect for some configurations (Michael Miousse)
+	* Fixed bug #26731: The info module does not show up in IE 7 and 8 (Michael Miousse)
+	* Fixed bug #13368: Content of Tab is not scrollable (Michael Miousse)
+
+2011-04-26 	Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #13757: Scheduler task does not work at all
+
+2011-04-21 	Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #13953: Third-party classes cannot be checked due to dynamicConfigFile in TCA (thanks to Jan Philipp Timme)
+	
+2011-02-24  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #13340: Regression in TYPO3 4.5.1: pid and uid database fields are always 0
+
+2011-02-24  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #13318: Regression in linkvalidator
+
+2011-02-22  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #12649: Split up analyzeRecord()
+	* Cleaned emconf for the release of TYPO3 4.5.1
+	* Release linkvalidator 1.0.1
+	
+2011-02-15	Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #12652:	If none of the link types are marked to be checked, all of them are checked
+	* Fixed bug #12650:	tx_linkvalidator_tasks_validator: exec() is too long
+	* Fixed bug #12454: Use setting "defaultMailFromName" and "defaultMailFromAddress"
+	
+2011-02-06  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #12517: Replace exec_SELECTgetRows with exec_SELECTgetSingleRow whenever a single record is expected (thanks to Jo Hasenau)
+	* Fixed bug #12549: Unify capitalization of language labels
+
+2011-01-26  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Fixed bug #12526: Manual needs new screenshots and text since we now use 2 tabs in the module (thanks to Patrick Gaumond)
 	* Cleaned emconf for the release of TYPO3 4.5
@@ -77,7 +168,7 @@
 	* Fixed bug #12008: Row "Title" should be called "Headline"
 	* Fixed bug #12009: Display a nice text, if an element does not have a headline
 
-2011-01-07  Pierre Boivin <pierre.boivin@infoglobe.ca>
+2011-01-07  Pierre Boivin  <pierre.boivin@infoglobe.ca>
 
 	* Followup to bug #11794: If website root is active, searching for links does not work
 
@@ -87,7 +178,7 @@
 	* Fixed bug #11888: Button "Check Links" only checks those categories of links which are marked with the checkboxes below
 	* Fixed bug #11269: Proofread the manual
 
-2011-01-05  Pierre Boivin <pierre.boivin@infoglobe.ca>
+2011-01-05  Pierre Boivin  <pierre.boivin@infoglobe.ca>
 
 	* Fixed bug #11794: If website root is active, searching for links does not work
 
@@ -142,11 +233,11 @@
 	* Fixed bug #11775: Table should use new design for TYPO3 4.5
 	* Fixed bug #11796: Improve usage of $GLOBALS['LANG']
 
-2010-12-28  Pierre Boivin <pierre.boivin@infoglobe.ca>
+2010-12-28  Pierre Boivin  <pierre.boivin@infoglobe.ca>
 
 	* Fixed bug #11715: Use localized format for date and time
 
-2010-12-06  Pierre Boivin <pierre.boivin@infoglobe.ca>
+2010-12-06  Pierre Boivin  <pierre.boivin@infoglobe.ca>
 
 	* Fixed bug #11277: Initialize and other methods in modfunc1 could be protected
 	* Fixed bug #11278: Create an interface for the linktype classes
@@ -157,7 +248,7 @@
 	* Fixed bug #11275: Remove clear.gif in modfunc1
 	* Fixed bug #10987: linkvalidator doesn't detect hidden pages (Thanks to Joh. Feustel)
 
-2010-12-03  Pierre Boivin <pierre.boivin@infoglobe.ca>
+2010-12-03  Pierre Boivin  <pierre.boivin@infoglobe.ca>
 
 	* Fixed bug #11271: Lowercase all filenames
 	* Fixed bug #11280: Refactor class tx_linkvalidator_processing
