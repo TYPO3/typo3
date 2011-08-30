@@ -250,6 +250,11 @@
 	 */
 	protected $pageCache;
 	protected $pageCacheTags = array();
+	
+	/**
+	 * @var tslib_caching_chash
+	 */
+	protected $cachingChash;
 
 	/**
 	 * Class constructor
@@ -292,7 +297,8 @@
 		$this->uniqueString=md5(microtime());
 
 		$this->csConvObj = t3lib_div::makeInstance('t3lib_cs');
-
+		$this->cachingChash = t3lib_div::makeInstance('tslib_caching_chash',$this->TYPO3_CONF_VARS);
+		
 			// Call post processing function for constructor:
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc']))	{
 			$_params = array('pObj' => &$this);
@@ -1722,7 +1728,8 @@
 	 *******************************************/
 
 	/**
-	 * Calculates a hash string based on additional parameters in the url. This is used to cache pages with more parameters than just id and type
+	 * Calculates a hash string based on additional parameters in the url. And stores into $this->cHash_array  which is used later
+	 * This is used to cache pages with more parameters than just id and type
 	 *
 	 * @return	void
 	 * @see reqCHash()
@@ -1735,8 +1742,8 @@
 
 		$GET = t3lib_div::_GET();
 		if ($this->cHash && is_array($GET))	{
-			$this->cHash_array = t3lib_div::cHashParams(t3lib_div::implodeArrayForUrl('',$GET));
-			$cHash_calc = t3lib_div::calculateCHash($this->cHash_array);
+			$this->cHash_array = $this->cachingChash->getRelevantHashParameters(t3lib_div::implodeArrayForUrl('',$GET));
+			$cHash_calc = $this->cachingChash->calculateCHash($this->cHash_array);
 
 			if ($cHash_calc!=$this->cHash)	{
 				if ($this->TYPO3_CONF_VARS['FE']['pageNotFoundOnCHashError']) {
@@ -1746,7 +1753,12 @@
 					$GLOBALS['TT']->setTSlogMessage('The incoming cHash "'.$this->cHash.'" and calculated cHash "'.$cHash_calc.'" did not match, so caching was disabled. The fieldlist used was "'.implode(',',array_keys($this->cHash_array)).'"',2);
 				}
 			}
-		}
+		} elseif (is_array($GET)) {
+				// no cHash is set, check if that is correct			
+			if ($this->cachingChash->hasParametersThatRequireCHash(t3lib_div::implodeArrayForUrl('', $GET))) {
+				$this->reqCHash();
+			}
+ 		}
 	}
 
 	/**

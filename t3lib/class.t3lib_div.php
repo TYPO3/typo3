@@ -4107,21 +4107,14 @@ final class t3lib_div {
 	 * Splits the input query-parameters into an array with certain parameters filtered out.
 	 * Used to create the cHash value
 	 *
+	 * @deprecated		Use tslib_caching_chash instead
 	 * @param string $addQueryParams Query-parameters: "&xxx=yyy&zzz=uuu"
 	 * @return array Array with key/value pairs of query-parameters WITHOUT a certain list of variable names (like id, type, no_cache etc.) and WITH a variable, encryptionKey, specific for this server/installation
 	 * @see tslib_fe::makeCacheHash(), tslib_cObj::typoLink(), t3lib_div::calculateCHash()
 	 */
 	public static function cHashParams($addQueryParams) {
-		$params = explode('&', substr($addQueryParams, 1)); // Splitting parameters up
-
-			// Make array:
-		$pA = array();
-		foreach ($params as $theP) {
-			$pKV = explode('=', $theP); // Splitting single param by '=' sign
-			if (!self::inList('id,type,no_cache,cHash,MP,ftu', $pKV[0]) && !preg_match('/TSFE_ADMIN_PANEL\[.*?\]/', $pKV[0])) {
-				$pA[rawurldecode($pKV[0])] = (string) rawurldecode($pKV[1]);
-			}
-		}
+		$tslib_caching_chash = self::makeInstance('tslib_caching_chash');
+		$pA = $tslib_caching_chash->getRelevantHashParameters($addQueryParams);
 			// Hook: Allows to manipulate the parameters which are taken to build the chash:
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['cHashParamsHook'])) {
 			$cHashParamsHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['cHashParamsHook'];
@@ -4137,9 +4130,6 @@ final class t3lib_div {
 				}
 			}
 		}
-			// Finish and sort parameters array by keys:
-		$pA['encryptionKey'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-		ksort($pA);
 
 		return $pA;
 	}
@@ -4147,25 +4137,26 @@ final class t3lib_div {
 	/**
 	 * Returns the cHash based on provided query parameters and added values from internal call
 	 *
+	 * @deprecated		Use tslib_caching_chash instead
 	 * @param string $addQueryParams Query-parameters: "&xxx=yyy&zzz=uuu"
 	 * @return string Hash of all the values
 	 * @see t3lib_div::cHashParams(), t3lib_div::calculateCHash()
 	 */
 	public static function generateCHash($addQueryParams) {
-		$cHashParams = self::cHashParams($addQueryParams);
-		$cHash = self::calculateCHash($cHashParams);
-		return $cHash;
+		$tslib_caching_chash = self::makeInstance('tslib_caching_chash');
+		return $tslib_caching_chash->generateCHashForGetQuery($addQueryParams);
 	}
 
 	/**
 	 * Calculates the cHash based on the provided parameters
 	 *
+	 * @deprecated use tslib_caching_chash instead
 	 * @param array $params Array of key-value pairs
 	 * @return string Hash of all the values
 	 */
 	public static function calculateCHash($params) {
-		$cHash = md5(serialize($params));
-		return $cHash;
+		$tslib_caching_chash = self::makeInstance('tslib_caching_chash');
+		return $tslib_caching_chash->calculateCHash($params);
 	}
 
 	/**

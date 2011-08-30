@@ -42,6 +42,8 @@ return array(
 	'tslib_mediawizardprovider' => PATH_tslib . 'interfaces/interface.tslib_mediawizardprovider.php',
 	'tslib_mediawizardcoreprovider' => PATH_tslib . 'class.tslib_mediawizardcoreprovider.php',
 	'tslib_mediawizardmanager' => PATH_tslib . 'class.tslib_mediawizardmanager.php',
+		//Caching
+	'tslib_caching_chash' => PATH_tslib . 'caching/class.tslib_caching_chash.php',
 		//content objects
 	'tslib_content_abstract' => PATH_tslib . 'content/class.tslib_content_abstract.php',
 	'tslib_content_case' => PATH_tslib . 'content/class.tslib_content_case.php',

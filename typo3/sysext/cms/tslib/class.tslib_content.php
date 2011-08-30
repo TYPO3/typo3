@@ -5679,7 +5679,8 @@ class tslib_cObj {
 								// Mind the order below! See http://bugs.typo3.org/view.php?id=5117
 							$params = $GLOBALS['TSFE']->linkVars . $addQueryParams;
 							if (trim($params, '& ') != '') {
-								$addQueryParams .= '&cHash=' . t3lib_div::generateCHash($params);
+								$cachingChash=t3lib_div::makeInstance('tslib_caching_chash');
++								$addQueryParams .= '&cHash=' . $cachingChash->generateCHashForGetQuery($params);
 							}
 							unset($params);
 						}
