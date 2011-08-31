@@ -28,6 +28,7 @@ TypoScript by Example | http://typo3.org/documentation/document-library/doc_core
 EXT:context_help/cshimages/systemplate1.png</source>
 				<target>EXT:context_help/cshimages/systemplate.png,
 EXT:context_help/cshimages/systemplate1.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" approved="yes">
 				<source>A Template Record with constants and setup code.
@@ -66,6 +67,7 @@ The Web&gt;Template module contains tools which will help you to edit and valida
 			<trans-unit id="_constants.seeAlso" approved="yes">
 				<source>static_template:constants</source>
 				<target>static_template:constants</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="config.description" approved="yes">
 				<source>TypoScript Setup code</source>
@@ -86,6 +88,7 @@ TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
 Getting Started | http://typo3.org/documentation/document-library/doc_tut_quickstart/
 TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/
 TypoScript Syntax | http://typo3.org/documentation/document-library/doc_core_ts/</target>
+				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="resources.description" approved="yes">
 				<source>Resource files for the template. For example a logo, a TTF-font etc.</source>
@@ -106,10 +109,12 @@ TypoScript Syntax | http://typo3.org/documentation/document-library/doc_core_ts/
 			<trans-unit id="_clear.seeAlso" approved="yes">
 				<source>sys_template:root</source>
 				<target>sys_template:root</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_clear.image" approved="yes">
 				<source>EXT:context_help/cshimages/systemplate2.png</source>
 				<target>EXT:context_help/cshimages/systemplate2.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="root.description" approved="yes">
 				<source>Defines that the template represents a root of a website.</source>
@@ -118,6 +123,7 @@ TypoScript Syntax | http://typo3.org/documentation/document-library/doc_core_ts/
 			<trans-unit id="_root.seeAlso" approved="yes">
 				<source>sys_template:clear</source>
 				<target>sys_template:clear</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="includeStaticAfterBasedOn.description" approved="yes">
 				<source>If set, static templates will be included after "based-on" templates. It basically swaps the order of inclusion of these external TypoScript sources.</source>
@@ -146,6 +152,7 @@ TypoScript Syntax | http://typo3.org/documentation/document-library/doc_core_ts/
 			<trans-unit id="_include_static_file.seeAlso" approved="yes">
 				<source>sys_template:include_static</source>
 				<target>sys_template:include_static</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="basedOn.description" approved="yes">
 				<source>Other Template Records that are included like "static templates".</source>

@@ -44,6 +44,7 @@
 pages:url</source>
 				<target>pages:shortcut,
 pages:url</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="hidden.description" approved="yes">
 				<source>If this is checked, the page will be hidden on the website.</source>
@@ -60,12 +61,14 @@ When you're logged in as a backend user you can preview hidden pages if you have
 			<trans-unit id="_hidden.seeAlso" approved="yes">
 				<source>pages:starttime,pages:endtime,pages:fe_group,pages:extendToSubpages</source>
 				<target>pages:starttime,pages:endtime,pages:fe_group,pages:extendToSubpages</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_hidden.image" approved="yes">
 				<source>EXT:context_help/cshimages/hidden_page.gif,
 EXT:context_help/cshimages/pages_1.png</source>
 				<target>EXT:context_help/cshimages/hidden_page.gif,
 EXT:context_help/cshimages/pages_1.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="hidden.image_descr" approved="yes">
 				<source>The page icon of a hidden page is dimmed and a red X is added.
@@ -86,6 +89,7 @@ If you insert eg. a 'd' the current date is inserted. You can also append any va
 			<trans-unit id="_starttime.seeAlso" approved="yes">
 				<source>pages:endtime,pages:hidden</source>
 				<target>pages:endtime,pages:hidden</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_.seeAlso" approved="yes">
 				<source>tt_content</source>
@@ -102,6 +106,7 @@ If you insert eg. a 'd' the current date is inserted. You can also append any va
 			<trans-unit id="_endtime.seeAlso" approved="yes">
 				<source>pages:starttime</source>
 				<target>pages:starttime</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="fe_group.description" approved="yes">
 				<source>If 'Access' is set to a usergroup name, only website users which are members of the selected usergroup will be able to view the page when they are logged in. The special option 'Hide at login' means the page will &lt;em&gt;not&lt;/em&gt; be visible for website users that are logged in. Likewise "Show at login" will make the page visible for any logged in frontend user.</source>
@@ -114,6 +119,7 @@ If you insert eg. a 'd' the current date is inserted. You can also append any va
 			<trans-unit id="_fe_group.image" approved="yes">
 				<source>EXT:context_help/cshimages/fegroups_4.png</source>
 				<target>EXT:context_help/cshimages/fegroups_4.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="extendToSubpages.description" approved="yes">
 				<source>By default the Start, Stop, Access and Hidden options are effective &lt;em&gt;only&lt;/em&gt; for the page on which they are set. If the option 'Include subpages' is checked for the page, then their effect is inherited by all subpages to that page.</source>
@@ -134,10 +140,12 @@ pages:fe_group</source>
 pages:starttime,
 pages:endtime,
 pages:fe_group</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_extendToSubpages.image" approved="yes">
 				<source>EXT:context_help/cshimages/pages_2.png</source>
 				<target>EXT:context_help/cshimages/pages_2.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="extendToSubpages.image_descr" approved="yes">
 				<source>This page icon has access restricted to a certain group and "Include subpages" set as well. This is reflected in the way the icon changed look.</source>
@@ -210,6 +218,7 @@ However you may need to disable caching for a page if it contains dynamic conten
 			<trans-unit id="_no_cache.seeAlso" approved="yes">
 				<source>pages:cache_timeout</source>
 				<target>pages:cache_timeout</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="cache_timeout.description" approved="yes">
 				<source>Sets the cache timeout for the page.</source>
@@ -226,6 +235,7 @@ This option is used quite rarely.</target>
 			<trans-unit id="_cache_timeout.seeAlso" approved="yes">
 				<source>pages:no_cache</source>
 				<target>pages:no_cache</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="no_search.description" approved="yes">
 				<source>If enabled, this option excludes the page from searching operations on the website.</source>
@@ -248,6 +258,7 @@ This option is used quite rarely.</target>
 			<trans-unit id="_author.seeAlso" approved="yes">
 				<source>pages:author_email</source>
 				<target>pages:author_email</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="author_email.description" approved="yes">
 				<source>Enter the page authors email address.</source>
@@ -256,6 +267,7 @@ This option is used quite rarely.</target>
 			<trans-unit id="_author_email.seeAlso" approved="yes">
 				<source>pages:author</source>
 				<target>pages:author</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="module.description" approved="yes">
 				<source>Define the page as a frontend 'module'.</source>
@@ -316,6 +328,7 @@ This option is used only if the page 'Type' is set to 'External URL'.</target>
 			<trans-unit id="_url.seeAlso" approved="yes">
 				<source>pages:urltype</source>
 				<target>pages:urltype</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="shortcut.description" approved="yes">
 				<source>Insert a reference to the page to which this page is supposed to be a shortcut. Requesting this ID in the frontend will redirect people to the page referred to by this value.</source>
@@ -334,10 +347,12 @@ This option is used only if the page 'Type' is set to 'Shortcut'.</target>
 pages:shortcut_mode</source>
 				<target>pages:doktype,
 pages:shortcut_mode</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_shortcut.image" approved="yes">
 				<source>EXT:context_help/cshimages/page_shortcut.gif</source>
 				<target>EXT:context_help/cshimages/page_shortcut.gif</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="shortcut.image_descr" approved="yes">
 				<source>Select a page to shortcut to by the Element Browser.</source>
@@ -366,6 +381,7 @@ In TYPO3, the keywords can also be used to create a menu of related pages. Creat
 			<trans-unit id="_keywords.seeAlso" approved="yes">
 				<source>pages:description</source>
 				<target>pages:description</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="description.description" approved="yes">
 				<source>Enter a short description of the page. It will be displayed in the result lists of search engines.</source>
@@ -394,6 +410,7 @@ Also, the description will be displayed if you create a content element of type 
 pages:abstract</source>
 				<target>pages:keywords
 pages:abstract</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="abstract.description" approved="yes">
 				<source>Enter an abstract of the contents. It may be displayed in an overview of articles.</source>
@@ -422,6 +439,7 @@ Of course, admins can make custom use of this field via their TypoScript templat
 			<trans-unit id="_abstract.seeAlso" approved="yes">
 				<source>pages:description</source>
 				<target>pages:description</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="backend_layout.description" approved="yes">
 				<source>Select a backend layout for this particular page only.</source>
@@ -452,6 +470,7 @@ The selection is &lt;b&gt;NOT&lt;/b&gt; inherited automatically by subpages - us
 			<trans-unit id="_backend_layout.seeAlso" approved="yes">
 				<source>pages:backend_layout_next_level</source>
 				<target>pages:backend_layout_next_level</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="backend_layout_next_level.description" approved="yes">
 				<source>Select a backend layout for all subpages of this page.</source>
@@ -480,6 +499,7 @@ The selection is inherited automatically by all subpages - so you don't have to 
 			<trans-unit id="_backend_layout_next_level.seeAlso" approved="yes">
 				<source>pages:backend_layout</source>
 				<target>pages:backend_layout</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="newUntil.description" approved="yes">
 				<source>Enter the 'expiry date' of the page.</source>
@@ -498,6 +518,7 @@ In order to obtain an overview of the expiry dates of pages, use the 'Pagetree o
 			<trans-unit id="_newUntil.seeAlso" approved="yes">
 				<source>pages:starttime</source>
 				<target>pages:starttime</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="lastUpdated.description" approved="yes">
 				<source>Enter the time and date of the most recent update of this page.</source>
@@ -522,6 +543,7 @@ If you insert eg. a 'd' the current time and date is inserted. You can also appe
 			<trans-unit id="_nav_hide.seeAlso" approved="yes">
 				<source>pages:nav_title</source>
 				<target>pages:nav_title</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="nav_title.description" approved="yes">
 				<source>Alternative title for menu items in the frontend. This value takes precedence over the page title if this value is filled in.</source>
@@ -552,6 +574,7 @@ Depends on template implementation whether this applies.</target>
 			<trans-unit id="_mount_pid.seeAlso" approved="yes">
 				<source>pages:mount_pid_ol</source>
 				<target>pages:mount_pid_ol</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="mount_pid_ol.description" approved="yes">
 				<source>If set, the mount point is "overlaid" by the mounted page. It will look like if the mount point does not exist and the mounted page is inserted in its position instead.</source>
@@ -560,6 +583,7 @@ Depends on template implementation whether this applies.</target>
 			<trans-unit id="_mount_pid_ol.seeAlso" approved="yes">
 				<source>pages:mount_pid</source>
 				<target>pages:mount_pid</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="title.description.+" approved="yes">
 				<source>This is normally shown in the website navigation.</source>

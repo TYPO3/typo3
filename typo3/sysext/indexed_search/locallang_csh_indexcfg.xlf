@@ -30,6 +30,7 @@
 			<trans-unit id="_hidden.seeAlso" approved="yes">
 				<source>index_config:starttime</source>
 				<target>index_config:starttime</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="starttime.description" approved="yes">
 				<source>Set a start time for the configuration. If set, the configuration will be bypassed by the crawlers cron job until this time is reached.</source>
@@ -38,6 +39,7 @@
 			<trans-unit id="_starttime.seeAlso" approved="yes">
 				<source>index_config:hidden</source>
 				<target>index_config:hidden</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="timer_frequency.description" approved="yes">
 				<source>Use this setting to adjust how often you would like a re-indexing process to run for the configuration.</source>
@@ -48,6 +50,7 @@
 index_config:timer_offset</source>
 				<target>index_config:timer_next_indexing, 
 index_config:timer_offset</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="timer_offset.description" approved="yes">
 				<source>The offset adjusts at what time of day you want the indexing process to run.</source>
@@ -56,6 +59,7 @@ index_config:timer_offset</target>
 			<trans-unit id="_timer_offset.seeAlso" approved="yes">
 				<source>index_config:timer_frequency</source>
 				<target>index_config:timer_frequency</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="timer_next_indexing.description" approved="yes">
 				<source>This field contains the date and time of the next occuring indexing session. If left blank the next indexing will occur as soon as the cron-script is run again (typically within the next minute) and afterwards set to the next time according to frequency and offset.</source>
@@ -66,6 +70,7 @@ index_config:timer_offset</target>
 index_config:timer_frequency</source>
 				<target>index_config:timer_offset, 
 index_config:timer_frequency</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="type.description" approved="yes">
 				<source>Select the type of Indexing Configuration here.</source>
@@ -96,6 +101,7 @@ index_config:timer_frequency</target>
 			<trans-unit id="_alternative_source_pid.seeAlso" approved="yes">
 				<source>index_config:table2index</source>
 				<target>index_config:table2index</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="get_params.description" approved="yes">
 				<source>Enter the GET parameters necessary to display the search results. You can use ###UID### as a marker in the parameter template.</source>
@@ -110,6 +116,7 @@ Example value: "&amp;showUid=###UID###"</target>
 			<trans-unit id="_get_params.seeAlso" approved="yes">
 				<source>index_config:table2index</source>
 				<target>index_config:table2index</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="fieldlist.description" approved="yes">
 				<source>Enter a comma-list of fields to be indexed. The first field name will be used for the search result title.</source>
@@ -122,6 +129,7 @@ Example value: "&amp;showUid=###UID###"</target>
 			<trans-unit id="_fieldlist.seeAlso" approved="yes">
 				<source>index_config:table2index</source>
 				<target>index_config:table2index</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="chashcalc.description" approved="yes">
 				<source>If checked, the URL in the search result for records will be encoded with a "&amp;cHash" parameter to make it cachable. Use only if supported by the plugin!</source>
@@ -130,6 +138,7 @@ Example value: "&amp;showUid=###UID###"</target>
 			<trans-unit id="_chashcalc.seeAlso" approved="yes">
 				<source>index_config:table2index</source>
 				<target>index_config:table2index</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="recordsbatch.description" approved="yes">
 				<source>Enter how many records to index for each instance of the indexing process (how many per minute). Default is 100 records.</source>
@@ -138,6 +147,7 @@ Example value: "&amp;showUid=###UID###"</target>
 			<trans-unit id="_recordsbatch.seeAlso" approved="yes">
 				<source>index_config:table2index</source>
 				<target>index_config:table2index</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="records_indexonchange.description" approved="yes">
 				<source>If set, new and changed records from this table will be indexed through a hook in the core (TCEmain) meaning that they will be searchable immediately after addition to the system.</source>
@@ -146,6 +156,7 @@ Example value: "&amp;showUid=###UID###"</target>
 			<trans-unit id="_records_indexonchange.seeAlso" approved="yes">
 				<source>index_config:table2index</source>
 				<target>index_config:table2index</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="externalUrl.description" approved="yes">
 				<source>Enter the URL of the external website you want to index.</source>
@@ -170,6 +181,7 @@ http://typo3.org/extensions/</target>
 			<trans-unit id="_url_deny.seeAlso" approved="yes">
 				<source>index_config:externalUrl</source>
 				<target>index_config:externalUrl</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="filepath.description" approved="yes">
 				<source>Enter a filepath inside fileadmin/ where you want the files to be indexed.</source>
@@ -186,6 +198,7 @@ http://typo3.org/extensions/</target>
 			<trans-unit id="_extensions.seeAlso" approved="yes">
 				<source>index_config:filepath</source>
 				<target>index_config:filepath</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="depth.description" approved="yes">
 				<source>Levels of recursion.</source>
@@ -200,6 +213,7 @@ http://typo3.org/extensions/</target>
 index_config:filepath</source>
 				<target>index_config:externalUrl, 
 index_config:filepath</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="indexcfgs.description" approved="yes">
 				<source>When a search is conducted in this indexing configuration the actual search will take place in the indexed content from the configurations listed here. You can also enter pages and if you do so the search will take place in indexing configurations found on those pages.</source>

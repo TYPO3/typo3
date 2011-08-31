@@ -28,6 +28,7 @@ Setting up groups (from "Getting Started") | http://typo3.org/documentation/docu
 EXT:lang/cshimages/be_groups_1.png</source>
 				<target>EXT:lang/cshimages/be_groups_2.png,
 EXT:lang/cshimages/be_groups_1.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" approved="yes">
 				<source>Backend Usergroups are found in the root of the page tree where only "admin" users can edit them. The usergroups with red icons in this image are the ones with Access Lists enabled. The blue are just plain usergroups.
@@ -46,6 +47,7 @@ This usergroup has Access Lists enabled. In the Access Lists you specify which m
 			<trans-unit id="_title.image" approved="yes">
 				<source>EXT:lang/cshimages/be_groups_2.png</source>
 				<target>EXT:lang/cshimages/be_groups_2.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="title.image_descr" approved="yes">
 				<source>The usergroup title is shown in the record lists.</source>
@@ -72,12 +74,14 @@ xMOD_csh_corebe:list_module</source>
 be_users:db_mountpoints,
 be_users:options,
 xMOD_csh_corebe:list_module</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_db_mountpoints.image" approved="yes">
 				<source>EXT:lang/cshimages/be_groups_3.png,
 EXT:lang/cshimages/be_groups_4.png</source>
 				<target>EXT:lang/cshimages/be_groups_3.png,
 EXT:lang/cshimages/be_groups_4.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="db_mountpoints.image_descr" approved="yes">
 				<source>Here a page is added as a "DB mount"...
@@ -114,6 +118,7 @@ be_users,
 sys_filemounts,
 xMOD_csh_corebe:filelist_module,
 More about File Mounts | http://typo3.org/documentation/document-library/doc_core_inside/More_about_File_Moun/</target>
+				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_file_mountpoints.image" approved="yes">
 				<source>EXT:lang/cshimages/be_groups_5.png,
@@ -124,6 +129,7 @@ EXT:lang/cshimages/be_groups_8.png</source>
 EXT:lang/cshimages/be_groups_6.png,
 EXT:lang/cshimages/be_groups_7.png,
 EXT:lang/cshimages/be_groups_8.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="file_mountpoints.image_descr" approved="yes">
 				<source>The File Mounts are references to records from the "Filemounts" table.
@@ -156,6 +162,7 @@ be_users:fileoper_perms</source>
 				<target>be_groups:file_mountpoints,
 be_users:file_mountpoints,
 be_users:fileoper_perms</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="pagetypes_select.description" approved="yes">
 				<source>Select which 'Types' of Pages the members may set.</source>
@@ -172,10 +179,12 @@ Choice of Page types (doktype) for a page is associated with a) a special icon f
 be_groups:inc_access_lists</source>
 				<target>pages:doktype,
 be_groups:inc_access_lists</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_pagetypes_select.image" approved="yes">
 				<source>EXT:lang/cshimages/be_groups_9.png</source>
 				<target>EXT:lang/cshimages/be_groups_9.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="pagetypes_select.image_descr" approved="yes">
 				<source>The list of typical page types available in a CMS context. Selecting Page types for a usergroup defines which of these options can be selected by member users.</source>
@@ -202,6 +211,7 @@ xMOD_csh_corebe:new_ce</source>
 				<target>be_groups:tables_select,
 be_groups:inc_access_lists,
 xMOD_csh_corebe:new_ce</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_tables_modify.image" approved="yes">
 				<source>EXT:lang/cshimages/be_groups_10.png,
@@ -210,6 +220,7 @@ EXT:lang/cshimages/be_groups_11.png</source>
 				<target>EXT:lang/cshimages/be_groups_10.png,
 EXT:lang/cshimages/be_groups_15.png,
 EXT:lang/cshimages/be_groups_11.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="tables_modify.image_descr" approved="yes">
 				<source>The screen shot above shows how the "Create new record" dialog looks for a user limited to editing only "Page" and "Pagecontent" elements.
@@ -234,6 +245,7 @@ This list is not very important. It's a pretty rare situation that a user may se
 be_groups:inc_access_lists</source>
 				<target>be_groups:tables_modify,
 be_groups:inc_access_lists</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="non_exclude_fields.description" approved="yes">
 				<source>Certain table fields are not available by default. Those fields can be explicitly enabled for the group members here.</source>
@@ -252,10 +264,12 @@ Of course it does not make any sense to add fields from tables which are not inc
 Examples from "Getting Started" | http://typo3.org/documentation/document-library/doc_tut_quickstart/Groups/</source>
 				<target>be_groups:inc_access_lists,
 Examples from "Getting Started" | http://typo3.org/documentation/document-library/doc_tut_quickstart/Groups/</target>
+				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_non_exclude_fields.image" approved="yes">
 				<source>EXT:lang/cshimages/be_groups_14.png</source>
 				<target>EXT:lang/cshimages/be_groups_14.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="hidden.description" approved="yes">
 				<source>Disables a user group.</source>
@@ -282,6 +296,7 @@ fe_groups:lockToDomain</source>
 				<target>be_users:lockToDomain,
 fe_users:lockToDomain,
 fe_groups:lockToDomain</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="groupMods.description" approved="yes">
 				<source>Select available backend modules for the group members.</source>
@@ -300,12 +315,14 @@ Backend Interface | http://typo3.org/documentation/document-library/doc_core_ins
 				<target>be_users:userMods,
 be_groups:inc_access_lists,
 Backend Interface | http://typo3.org/documentation/document-library/doc_core_inside/Backend_interface/</target>
+				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_groupMods.image" approved="yes">
 				<source>EXT:lang/cshimages/be_groups_12.png,
 EXT:lang/cshimages/be_groups_13.png</source>
 				<target>EXT:lang/cshimages/be_groups_12.png,
 EXT:lang/cshimages/be_groups_13.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="groupMods.image_descr" approved="yes">
 				<source>The Backend Modules available for a user is reflected in the menu items of the backend. For most regular users only modules in the Web and File main modules are enabled. Typically "Web &gt; Page" is used for editing of page content.
@@ -334,6 +351,7 @@ be_groups:tables_modify,
 be_groups:tables_select,
 be_groups:groupMods,
 be_groups:non_exclude_fields</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="description.description" approved="yes">
 				<source>Enter a short description of the user group, what it is for and who should be members. This is for internal use only.</source>
@@ -342,6 +360,7 @@ be_groups:non_exclude_fields</target>
 			<trans-unit id="_description.seeAlso" approved="yes">
 				<source>fe_groups:description</source>
 				<target>fe_groups:description</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TSconfig.description" approved="yes">
 				<source>User TSconfig: Additional configuration through TypoScript style values (Advanced).</source>
@@ -368,12 +387,14 @@ fe_groups:TSconfig
 pages:TSconfig,
 TSconfig Reference| http://typo3.org/documentation/document-library/doc_core_tsconfig/User_TSconfig/,
 TypoScript Syntax | http://typo3.org/documentation/document-library/doc_core_ts/</target>
+				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_TSconfig.image" approved="yes">
 				<source>EXT:lang/cshimages/be_groups_16.png,
 EXT:lang/cshimages/be_groups_17.png</source>
 				<target>EXT:lang/cshimages/be_groups_16.png,
 EXT:lang/cshimages/be_groups_17.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TSconfig.image_descr" approved="yes">
 				<source>In the TSconfig field help is right at hand - just click the TS wizard icon, then a window will pop up.
@@ -418,6 +439,7 @@ The list is organized so values from the same selector box is listed together. I
 			<trans-unit id="_explicit_allowdeny.image" approved="yes">
 				<source>EXT:lang/cshimages/be_groups_19.png</source>
 				<target>EXT:lang/cshimages/be_groups_19.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="allowed_languages.description" approved="yes">
 				<source>Select which record languages the group members are limited to edit.</source>
@@ -432,10 +454,12 @@ If a user has no languages listed all together it simply means that he can edit 
 			<trans-unit id="_allowed_languages.seeAlso" approved="yes">
 				<source>be_users:allowed_languages</source>
 				<target>be_users:allowed_languages</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_allowed_languages.image" approved="yes">
 				<source>EXT:lang/cshimages/be_groups_18.png</source>
 				<target>EXT:lang/cshimages/be_groups_18.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="allowed_languages.image_descr" approved="yes">
 				<source>This example shows a situation where two languages, Danish and German, are created in addition to the default language.</source>
@@ -452,6 +476,7 @@ If a user has no languages listed all together it simply means that he can edit 
 			<trans-unit id="_custom_options.image" approved="yes">
 				<source>EXT:lang/cshimages/be_groups_20.png</source>
 				<target>EXT:lang/cshimages/be_groups_20.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="custom_options.image_descr" approved="yes">
 				<source>This is just an example from an internal test application. It shows how checkboxes are added by a custom module under its own header. You can also show a description text with each checkbox to explain its function.</source>

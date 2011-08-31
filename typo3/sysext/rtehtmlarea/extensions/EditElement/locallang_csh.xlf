@@ -20,6 +20,7 @@ The dialogue allows to edit the id, title, class, lang and dir attributes of the
 			<trans-unit id=".image" approved="yes">
 				<source>EXT:rtehtmlarea/extensions/EditElement/skin/images/element-edit.png</source>
 				<target>EXT:rtehtmlarea/extensions/EditElement/skin/images/element-edit.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" approved="yes">
 				<source>"Edit element" icon in the editor tool bar.</source>
@@ -40,6 +41,7 @@ xEXT_rtehtmlarea_Language:languageCombo,
 xEXT_rtehtmlarea_Language:directionCombo,
 xEXT_rtehtmlarea_EditElement:events
 </target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="id.alttitle" approved="yes">
 				<source>Id attribute</source>

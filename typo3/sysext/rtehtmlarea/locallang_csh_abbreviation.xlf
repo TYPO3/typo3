@@ -16,6 +16,7 @@ A defined abbreviation may further be configured so as to be made available only
 			<trans-unit id=".seeAlso" approved="yes">
 				<source>xEXT_rtehtmlarea_Acronym</source>
 				<target>xEXT_rtehtmlarea_Acronym</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="term.description" approved="yes">
 				<source>Enter the term to be abbreviated.</source>

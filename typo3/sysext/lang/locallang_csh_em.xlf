@@ -34,6 +34,7 @@ Managing Extensions | http://typo3.org/documentation/document-library/doc_core_i
 				<target>xMOD_csh_corebe,
 Core / Extension Architecture | http://typo3.org/documentation/document-library/doc_core_inside/This_document-1/
 Managing Extensions | http://typo3.org/documentation/document-library/doc_core_inside/Backend_user_setup/</target>
+				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="loaded.alttitle" approved="yes">
 				<source>Loaded Extensions</source>
@@ -56,6 +57,7 @@ The "Rq" extensions in the loaded extensions list are "required extensions". The
 			<trans-unit id="_loaded.image" approved="yes">
 				<source>EXT:lang/cshimages/em_1.png</source>
 				<target>EXT:lang/cshimages/em_1.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="loaded.image_descr" approved="yes">
 				<source>The list of loaded extensions shown in the loading order.</source>
@@ -82,6 +84,7 @@ When you click the install button ("+") you will most often end in a dialog wher
 EXT:lang/cshimages/em_12.png</source>
 				<target>EXT:lang/cshimages/em_2.png,
 EXT:lang/cshimages/em_12.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="avail.image_descr" approved="yes">
 				<source>The list of available extension on the server. The list is compiled from extensions found in the "local", "global" and "system" extension folders.
@@ -116,10 +119,12 @@ For private projects the exchange of extensions is easily done by sending "t3x" 
 _MOD_tools_em:settings</source>
 				<target>_MOD_tools_em:backup_delete,
 _MOD_tools_em:settings</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_import.image" approved="yes">
 				<source>EXT:lang/cshimages/em_3.png</source>
 				<target>EXT:lang/cshimages/em_3.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="import.image_descr" approved="yes">
 				<source>The "Import" screen. Before you connect to the online repository you might like to configure typo3.org username and password since that will be used to also select "Member" extensions in TER, if any. You can also enable "Get own/member/selected extensions only" if you want to limit the list further.</source>
@@ -162,6 +167,7 @@ You can also ask to have the most recent translations downloaded.</target>
 EXT:lang/cshimages/em_11.png</source>
 				<target>EXT:lang/cshimages/em_10.png,
 EXT:lang/cshimages/em_11.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="import_ter.image_descr" approved="yes">
 				<source>List of extensions from TER. The red arrow icon is the "Import" link (for new extensions), the green arrow icon is the "Update" link (for an extension that is already on your server). If an extension is already available in the most recent version you will not see any icon at all to the left of the extension.
@@ -188,6 +194,7 @@ The Extension Manager will also go a bit further and perform some analysis of th
 			<trans-unit id="_info.image" approved="yes">
 				<source>EXT:lang/cshimages/em_4.png</source>
 				<target>EXT:lang/cshimages/em_4.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="info.image_descr" approved="yes">
 				<source>The details view of an extension displays live statistics from analysis as well as static data from the "ext_emconf.php" file.</source>
@@ -204,10 +211,12 @@ The Extension Manager will also go a bit further and perform some analysis of th
 			<trans-unit id="_backup_delete.seeAlso" approved="yes">
 				<source>_MOD_tools_em:import</source>
 				<target>_MOD_tools_em:import</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_backup_delete.image" approved="yes">
 				<source>EXT:lang/cshimages/em_5.png</source>
 				<target>EXT:lang/cshimages/em_5.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="backup_delete.image_descr" approved="yes">
 				<source>"Backup" of extensions - also very useful for exchange of extensions between members of a workgroup.</source>
@@ -238,10 +247,12 @@ Select a method for incrementation of the version number. For new "versions" of 
 Register Extension Keys | http://typo3.org/extensions/register-extension-keys/</source>
 				<target>_MOD_tools_em:settings,
 Register Extension Keys | http://typo3.org/extensions/register-extension-keys/</target>
+				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_upload.image" approved="yes">
 				<source>EXT:lang/cshimages/em_6.png</source>
 				<target>EXT:lang/cshimages/em_6.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="upload.image_descr" approved="yes">
 				<source>The upload form for extensions. The extension is submitted to the selected repository, usually TYPO3.org (default).</source>
@@ -264,6 +275,7 @@ Before editing of extension scripts can be performed you have to disable the con
 			<trans-unit id="_editfiles.image" approved="yes">
 				<source>EXT:lang/cshimages/em_7.png</source>
 				<target>EXT:lang/cshimages/em_7.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="editfiles.image_descr" approved="yes">
 				<source>Some file types - like PHP scripts - can be edited by a textarea field inside the Extension Manager.</source>
@@ -286,6 +298,7 @@ This information is not very well protected! It is send and stored in clear-text
 			<trans-unit id="_settings.image" approved="yes">
 				<source>EXT:lang/cshimages/em_8.png</source>
 				<target>EXT:lang/cshimages/em_8.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="settings.image_descr" approved="yes">
 				<source>Settings for TER connections.</source>
@@ -320,6 +333,7 @@ Documentation Matrix | http://typo3.org/documentation/document-library/Matrix/</
 			<trans-unit id="_makenew.image" approved="yes">
 				<source>EXT:lang/cshimages/em_9.png</source>
 				<target>EXT:lang/cshimages/em_9.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="makenew.image_descr" approved="yes">
 				<source>When the "Extension Repository Kickstarter" is enabled it adds itself in the menu of the Extension Manager. From here you will be able to start your new extensions. Before you do so you should register an extension key and enter a title and description as base data. From that point it is just clicking the "+" icons to add the various types of functionality you want. Finally you click "View result" to write the extension to the server.</source>
@@ -540,6 +554,7 @@ You can set and clear the private flag every time you upload your extension.</ta
 			<trans-unit id="_emconf_private.seeAlso" approved="yes">
 				<source>_MOD_tools_em:emconf_download_password</source>
 				<target>_MOD_tools_em:emconf_download_password</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="emconf_download_password.alttitle" approved="yes">
 				<source>Download password</source>
@@ -556,6 +571,7 @@ You can set and clear the private flag every time you upload your extension.</ta
 			<trans-unit id="_emconf_download_password.seeAlso" approved="yes">
 				<source>_MOD_tools_em:emconf_private</source>
 				<target>_MOD_tools_em:emconf_private</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="emconf_type.alttitle" approved="yes">
 				<source>Installation type</source>

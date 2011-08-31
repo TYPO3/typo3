@@ -16,6 +16,7 @@ For instance if a page or content element was assigned access only by this group
 			<trans-unit id="_hidden.seeAlso" approved="yes">
 				<source>fe_users:disable</source>
 				<target>fe_users:disable</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="title.description" approved="yes">
 				<source>Name of the group.</source>
@@ -40,6 +41,7 @@ For instance if a page or content element was assigned access only by this group
 			<trans-unit id="_lockToDomain.seeAlso" approved="yes">
 				<source>fe_users:lockToDomain</source>
 				<target>fe_users:lockToDomain</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="subgroup.description" approved="yes">
 				<source>Member of other groups.</source>
@@ -76,6 +78,7 @@ The configuration is subject to being overridden in other groups and by the TSco
 			<trans-unit id="_TSconfig.seeAlso" approved="yes">
 				<source>fe_users:TSconfig</source>
 				<target>fe_users:TSconfig</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".description" approved="yes">
 				<source>Usergroups for Website users.</source>
@@ -96,6 +99,7 @@ About access restricting pages | http://typo3.org/documentation/document-library
 EXT:context_help/cshimages/fegroups_4.png</source>
 				<target>EXT:context_help/cshimages/fegroups_3.png,
 EXT:context_help/cshimages/fegroups_4.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" approved="yes">
 				<source>The form for editing frontend users groups.

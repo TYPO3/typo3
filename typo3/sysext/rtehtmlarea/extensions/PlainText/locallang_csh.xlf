@@ -28,6 +28,7 @@ Clicking again on the toggle button puts it "off". Any subsequent paste operatio
 EXT:rtehtmlarea/extensions/PlainText/skin/images/paste-behaviour.gif</source>
 				<target>EXT:rtehtmlarea/extensions/PlainText/skin/images/paste-toggle.gif,
 EXT:rtehtmlarea/extensions/PlainText/skin/images/paste-behaviour.gif</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" approved="yes">
 				<source>"Clean paste" toggle icon in the editor tool bar. Clicking on it changes the behaviour of subsequent paste operations.
@@ -38,6 +39,7 @@ EXT:rtehtmlarea/extensions/PlainText/skin/images/paste-behaviour.gif</target>
 			<trans-unit id=".seeAlso" approved="yes">
 				<source>xEXT_rtehtmlarea_PlainText:behaviour</source>
 				<target>xEXT_rtehtmlarea_PlainText:behaviour</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="behaviour.alttitle" approved="yes">
 				<source>Select a paste behaviour</source>
@@ -66,6 +68,7 @@ The "Clean Paste Behaviour" dialogue is activated by clicking on the "Clean Past
 			<trans-unit id="behaviour.seeAlso" approved="yes">
 				<source>xEXT_rtehtmlarea_PlainText:plainText,xEXT_rtehtmlarea_PlainText:pasteStructure,xEXT_rtehtmlarea_PlainText:pasteFormat,_MOD_user_setup</source>
 				<target>xEXT_rtehtmlarea_PlainText:plainText,xEXT_rtehtmlarea_PlainText:pasteStructure,xEXT_rtehtmlarea_PlainText:pasteFormat,_MOD_user_setup</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="plainText.alttitle" approved="yes">
 				<source>Paste as plain text</source>
@@ -78,6 +81,7 @@ The "Clean Paste Behaviour" dialogue is activated by clicking on the "Clean Past
 			<trans-unit id="plainText.seeAlso" approved="yes">
 				<source>xEXT_rtehtmlarea_PlainText:behaviour</source>
 				<target>xEXT_rtehtmlarea_PlainText:behaviour</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="pasteStructure.alttitle" approved="yes">
 				<source>Paste structure only</source>
@@ -102,6 +106,7 @@ These defaults may be modified in Page TSConfig.</target>
 			<trans-unit id="pasteStructure.seeAlso" approved="yes">
 				<source>xEXT_rtehtmlarea_PlainText:behaviour</source>
 				<target>xEXT_rtehtmlarea_PlainText:behaviour</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="pasteFormat.alttitle" approved="yes">
 				<source>Paste structure and basic format</source>
@@ -128,6 +133,7 @@ These defaults may be modified in Page TSConfig.</target>
 			<trans-unit id="pasteFormat.seeAlso" approved="yes">
 				<source>xEXT_rtehtmlarea_PlainText:behaviour</source>
 				<target>xEXT_rtehtmlarea_PlainText:behaviour</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="pasteInPastingPad.description" approved="yes">
 				<source>Contents pasted into this pasting pad will be cleaned. Click OK to insert the cleaned contents into the RTE editing area.</source>

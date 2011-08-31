@@ -36,12 +36,14 @@ About pages | http://typo3.org/documentation/document-library/doc_tut_quickstart
 				<target>xMOD_csh_corebe:pagetree,
 tt_content,
 About pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Pagetree/</target>
+				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_.image" approved="yes">
 				<source>EXT:lang/cshimages/pages_1.png,
 EXT:lang/cshimages/pages_2.png,</source>
 				<target>EXT:lang/cshimages/pages_1.png,
 EXT:lang/cshimages/pages_2.png,</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" approved="yes">
 				<source>The most basic fields on a page are the Disable Page option, the Type of page ("doktype") and the Page Title.
@@ -64,6 +66,7 @@ You can use any characters in the Page Title.</target>
 			<trans-unit id="_title.image" approved="yes">
 				<source>EXT:lang/cshimages/pages_3.png</source>
 				<target>EXT:lang/cshimages/pages_3.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="title.image_descr" approved="yes">
 				<source>The field for the Page Title has a small "Required" icon next to it; You must supply a Page Title. You cannot save the new page unless you enter a title for it.</source>
@@ -96,10 +99,12 @@ The restrictions that apply to each Page Type is defined in the global array $PA
 About $PAGES_TYPES | http://typo3.org/documentation/document-library/doc_core_api/PAGES_TYPES/</source>
 				<target>be_groups:pagetypes_select,
 About $PAGES_TYPES | http://typo3.org/documentation/document-library/doc_core_api/PAGES_TYPES/</target>
+				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_doktype.image" approved="yes">
 				<source>EXT:lang/cshimages/pages_4.png</source>
 				<target>EXT:lang/cshimages/pages_4.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="doktype.image_descr" approved="yes">
 				<source>This snippet of the page tree shows regular pages (white icons) at the top of this screenshot. You also see a Recycler page. Any records stored in a Reycler page are considered trash and not shown on the website. The gray folders icons represent "Folders". They cannot be viewed as regular webpages but serve as storage pages for other database records.</source>
@@ -130,10 +135,12 @@ It is recommended that only admin users have access to this field!</target>
 More about Page TSconfig | http://typo3.org/documentation/document-library/doc_core_tsconfig/Page_TSconfig/</source>
 				<target>_MOD_web_info:tsconfig_hierarchy,
 More about Page TSconfig | http://typo3.org/documentation/document-library/doc_core_tsconfig/Page_TSconfig/</target>
+				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_TSconfig.image" approved="yes">
 				<source>EXT:lang/cshimages/pages_5.png</source>
 				<target>EXT:lang/cshimages/pages_5.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TSconfig.image_descr" approved="yes">
 				<source>Page TSConfig customizing layout labels in the Page Module. Note that the Page TSconfig is specific to that page and will be inherited by its subpages.</source>
@@ -154,6 +161,7 @@ This option was designed to prevent the display of a branch with an unmanageable
 			<trans-unit id="_php_tree_stop.seeAlso" approved="yes">
 				<source>_MOD_web_info:pagetree_overview</source>
 				<target>_MOD_web_info:pagetree_overview</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_php_tree_stop.image" approved="yes">
 				<source>EXT:lang/cshimages/pages_8.png,
@@ -162,6 +170,7 @@ EXT:lang/cshimages/pages_7.png</source>
 				<target>EXT:lang/cshimages/pages_8.png,
 EXT:lang/cshimages/pages_6.png,
 EXT:lang/cshimages/pages_7.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="php_tree_stop.image_descr" approved="yes">
 				<source>Here the "Stop page tree" option is enabled.
