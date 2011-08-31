@@ -14,6 +14,7 @@
 			<trans-unit id="_.image" approved="yes">
 				<source>EXT:impexp/cshimages/impexp.png</source>
 				<target>EXT:impexp/cshimages/impexp.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" approved="yes">
 				<source>Example of the preview display during export configuration of a page. Notice how records on the page are include plus how references inside the record is found and included as well (bottom of screen).</source>
@@ -54,6 +55,7 @@ Regardless of your configuration for export you will always see a complete refle
 			<trans-unit id="_export.seeAlso" approved="yes">
 				<source>xMOD_tx_impexp:import</source>
 				<target>xMOD_tx_impexp:import</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_export.image" approved="yes">
 				<source>EXT:impexp/cshimages/export.png,
@@ -62,6 +64,7 @@ EXT:impexp/cshimages/export2.png</source>
 				<target>EXT:impexp/cshimages/export.png,
 EXT:impexp/cshimages/export1.png,
 EXT:impexp/cshimages/export2.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="export.image_descr" approved="yes">
 				<source>To export a page or record, simply click the icon and select "Export" from the context menu.
@@ -84,6 +87,7 @@ By default all records belonging to a page is included when a page is exported.<
 			<trans-unit id="_pageTreeCfg.image" approved="yes">
 				<source>EXT:impexp/cshimages/pagetreecfg.png</source>
 				<target>EXT:impexp/cshimages/pagetreecfg.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="pageTreeDisplay.alttitle" approved="yes">
 				<source>Page Tree</source>
@@ -108,6 +112,7 @@ By default all records belonging to a page is included when a page is exported.<
 			<trans-unit id="_pageTreeMode.image" approved="yes">
 				<source>EXT:impexp/cshimages/impexp_misc.png</source>
 				<target>EXT:impexp/cshimages/impexp_misc.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="pageTreeRecordLimit.alttitle" approved="yes">
 				<source>Include tables</source>
@@ -134,6 +139,7 @@ By default all records belonging to a page is included when a page is exported.<
 EXT:impexp/cshimages/export2.png</source>
 				<target>EXT:impexp/cshimages/singlerecord.png,
 EXT:impexp/cshimages/export2.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="singleRecord.image_descr" approved="yes">
 				<source>The way to export multiple records like this is using the clipboard like shown below.</source>
@@ -156,6 +162,7 @@ EXT:impexp/cshimages/export2.png</target>
 EXT:impexp/cshimages/export1.png</source>
 				<target>EXT:impexp/cshimages/tablelist.png,
 EXT:impexp/cshimages/export1.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="tableList.image_descr" approved="yes">
 				<source>Here two tables from different pages are selected. This is done by first selecting the one, saving it as a preset, then select the other and merge with the saved preset.
@@ -200,6 +207,7 @@ EXT:impexp/cshimages/references2.png</source>
 				<target>EXT:impexp/cshimages/references.png,
 EXT:impexp/cshimages/references1.png,
 EXT:impexp/cshimages/references2.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="inclRelations.image_descr" approved="yes">
 				<source>This example shows tree examples of references; a) an image attached to a content element, b) a relation to a frontend usergroup UID, and c) a soft reference found in the bodytext field of a record, here it is the link-tag pointing to the page with UID 1.
@@ -226,6 +234,7 @@ This example shows a TypoScript Template Record where multiple soft references h
 EXT:impexp/cshimages/static1.png</source>
 				<target>EXT:impexp/cshimages/static.png,
 EXT:impexp/cshimages/static1.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="staticRelations.image_descr" approved="yes">
 				<source>In this example you see how a number of records are pointing to a System Language record which will become lost relations when imported because the record is not included in the export. However; in the target system the System Languages are exactly the same and therefore you just want a static mapping of the relations.
@@ -244,6 +253,7 @@ The static mapping is obtained by selecting the "sys_language" table as a static
 			<trans-unit id="_excludedElements.image" approved="yes">
 				<source>EXT:impexp/cshimages/excludebox.png</source>
 				<target>EXT:impexp/cshimages/excludebox.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="htmlCssResources.alttitle" approved="yes">
 				<source>Exclude resources from HTML and CSS files</source>
@@ -260,6 +270,7 @@ The static mapping is obtained by selecting the "sys_language" table as a static
 			<trans-unit id="_htmlCssResources.image" approved="yes">
 				<source>EXT:impexp/cshimages/htmlcss.png</source>
 				<target>EXT:impexp/cshimages/htmlcss.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="htmlCssResources.image_descr" approved="yes">
 				<source>In this example you can see that a soft reference has been found pointing to an HTML file inside fileadmin/ Since it was an HTML file it was parsed and further a number of files were found referenced inside it and now included with the export. This feature is specifically created to support export of template configurations where external HTML files play a role.</source>
@@ -280,6 +291,7 @@ The static mapping is obtained by selecting the "sys_language" table as a static
 			<trans-unit id="_extensionDependencies.image" approved="yes">
 				<source>EXT:impexp/cshimages/extdep.png</source>
 				<target>EXT:impexp/cshimages/extdep.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="presets.alttitle" approved="yes">
 				<source>Configuration presets</source>
@@ -312,6 +324,7 @@ In the Taskcenter you can see a list of your presets and jump directly to them.<
 EXT:impexp/cshimages/impexp_misc2.png</source>
 				<target>EXT:impexp/cshimages/impexp_misc1.png,
 EXT:impexp/cshimages/impexp_misc2.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="presets.image_descr" approved="yes">
 				<source>The preset selector in the export interface.
@@ -340,6 +353,7 @@ The thumbnail field is used for thumbnails if you need that for your export. Thi
 			<trans-unit id="_metadata.image" approved="yes">
 				<source>EXT:impexp/cshimages/metadata.png</source>
 				<target>EXT:impexp/cshimages/metadata.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="fileFormat.alttitle" approved="yes">
 				<source>File format options</source>
@@ -364,6 +378,7 @@ Entering a file name to save to makes it possible to write your export directly 
 			<trans-unit id="_fileFormat.image" approved="yes">
 				<source>EXT:impexp/cshimages/fileformat.png</source>
 				<target>EXT:impexp/cshimages/fileformat.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="import.alttitle" approved="yes">
 				<source>Importing TYPO3 records</source>
@@ -386,10 +401,12 @@ To make sure that no records are lost during the import, you can make yourself s
 			<trans-unit id="_import.seeAlso" approved="yes">
 				<source>xMOD_tx_impexp:export</source>
 				<target>xMOD_tx_impexp:export</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_import.image" approved="yes">
 				<source>EXT:impexp/cshimages/import.png</source>
 				<target>EXT:impexp/cshimages/import.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="importFile.alttitle" approved="yes">
 				<source>Select file to import</source>
@@ -402,10 +419,12 @@ To make sure that no records are lost during the import, you can make yourself s
 			<trans-unit id="_importFile.seeAlso" approved="yes">
 				<source>xMOD_tx_impexp:fileFormat</source>
 				<target>xMOD_tx_impexp:fileFormat</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_importFile.image" approved="yes">
 				<source>EXT:impexp/cshimages/import_selectfile.png</source>
 				<target>EXT:impexp/cshimages/import_selectfile.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="update.alttitle" approved="yes">
 				<source>Update instead of Insert</source>
@@ -440,6 +459,7 @@ If you intend to update a system and some elements from the import are not mappa
 EXT:impexp/cshimages/update.png</source>
 				<target>EXT:impexp/cshimages/impexp_misc4.png,
 EXT:impexp/cshimages/update.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="update.image_descr" approved="yes">
 				<source>In Update mode you can select various settings for each record. You will also be able to see a diff-view where the differences between the existing record and the one from the import is shown.</source>
@@ -472,6 +492,7 @@ Also an option for admins-only; Allows PHP-files (for example from soft referenc
 EXT:impexp/cshimages/phpext.png</source>
 				<target>EXT:impexp/cshimages/impexp_misc3.png,
 EXT:impexp/cshimages/phpext.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="options.image_descr" approved="yes">
 				<source>Options for import.
@@ -496,6 +517,7 @@ Before importing make sure you change any editable soft references that are show
 			<trans-unit id="_action.image" approved="yes">
 				<source>EXT:impexp/cshimages/diffview.png</source>
 				<target>EXT:impexp/cshimages/diffview.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="action.image_descr" approved="yes">
 				<source>Example of the result view after importing. As you can see the RTE attached images (soft references) has been written to new file names and the difference view tells you that the names changed in the bodytext content.</source>

@@ -28,6 +28,7 @@ sys_template:include_static</target>
 			<trans-unit id="_.image" approved="yes">
 				<source>EXT:context_help/cshimages/static.png</source>
 				<target>EXT:context_help/cshimages/static.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" approved="yes">
 				<source>The static templates are located in the page tree root where only the Admin users can access them. However they are read-only by default so you can only look at their content, not change it.</source>
@@ -44,6 +45,7 @@ sys_template:include_static</target>
 			<trans-unit id="_constants.seeAlso" approved="yes">
 				<source>sys_template:constants</source>
 				<target>sys_template:constants</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="config.description" approved="yes">
 				<source>TypoScript Setup code field</source>
@@ -52,6 +54,7 @@ sys_template:include_static</target>
 			<trans-unit id="_config.seeAlso" approved="yes">
 				<source>sys_template:config</source>
 				<target>sys_template:config</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="include_static.description" approved="yes">
 				<source>Inclusion of other static templates</source>

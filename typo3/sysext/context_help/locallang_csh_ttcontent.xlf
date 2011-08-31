@@ -24,6 +24,7 @@ EXT:context_help/cshimages/ttcontent_3.png</source>
 				<target>EXT:context_help/cshimages/ttcontent_1.png,
 EXT:context_help/cshimages/ttcontent_2.png,
 EXT:context_help/cshimages/ttcontent_3.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" approved="yes">
 				<source>The Page module is used to manage Content Elements effectively as they appear arranged in columns and languages.
@@ -158,10 +159,12 @@ About Content Elements | http://typo3.org/documentation/document-library/doc_tut
 				<target>tt_content:colPos,
 tt_content:sys_language_uid,
 About Content Elements | http://typo3.org/documentation/document-library/doc_tut_quickstart/Content_element_type/</target>
+				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_CType.image" approved="yes">
 				<source>EXT:context_help/cshimages/ttcontent_4.png</source>
 				<target>EXT:context_help/cshimages/ttcontent_4.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="hidden.description" approved="yes">
 				<source>Check this box if you wish to hide the content element from being displayed.</source>
@@ -178,6 +181,7 @@ tt_content:endtime,
 tt_content:fe_group,
 tt_content:colPos,
 tt_content:sys_language_uid</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="starttime.description" approved="yes">
 				<source>Enter the date from which the content element will be visible.</source>
@@ -192,6 +196,7 @@ tt_content:fe_group</source>
 tt_content:endtime,
 tt_content:hidden,
 tt_content:fe_group</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="endtime.description" approved="yes">
 				<source>Enter the date from which the content element will disappear from the website.</source>
@@ -206,6 +211,7 @@ tt_content:fe_group</source>
 tt_content:starttime,
 tt_content:hidden,
 tt_content:fe_group</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="fe_group.description" approved="yes">
 				<source>Select a Website usergroup which is exclusively allowed to view the element.</source>
@@ -230,6 +236,7 @@ tt_content:endtime,
 pages:fe_group,
 fe_users,
 fe_groups</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="sys_language_uid.description" approved="yes">
 				<source>Select the system language of this element. &lt;strong&gt;Notice&lt;/strong&gt; this will affect whether the element is visible.</source>
@@ -250,6 +257,7 @@ _MOD_web_layout:language_list</source>
 sys_language,
 Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
 _MOD_web_layout:language_list</target>
+				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="layout.description" approved="yes">
 				<source>Select a layout.</source>
@@ -294,6 +302,7 @@ _MOD_web_layout:columns_single</source>
 				<target>tt_content:sys_language_uid,
 _MOD_web_layout:columns_multi,
 _MOD_web_layout:columns_single</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="date.description" approved="yes">
 				<source>Enter a date to be displayed above the header.</source>
@@ -320,10 +329,12 @@ tt_content:date,</source>
 tt_content:header_link,
 tt_content:header_layout,
 tt_content:date,</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_header.image" approved="yes">
 				<source>EXT:context_help/cshimages/ttcontent_6.png</source>
 				<target>EXT:context_help/cshimages/ttcontent_6.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="header_position.description" approved="yes">
 				<source>Places the header to the left, centered or to the right.</source>
@@ -332,6 +343,7 @@ tt_content:date,</target>
 			<trans-unit id="_header_position.seeAlso" approved="yes">
 				<source>tt_content:header</source>
 				<target>tt_content:header</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="header_link.description" approved="yes">
 				<source>Creates a link from the header. Insert a page id, email address or URL.</source>
@@ -348,6 +360,7 @@ If you insert an URL or domain, eg. "www.typo3.com" or "http://www.my-domain.org
 			<trans-unit id="_header_link.seeAlso" approved="yes">
 				<source>tt_content:header</source>
 				<target>tt_content:header</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="header_layout.description" approved="yes">
 				<source>Select a visual design for the header.</source>
@@ -364,6 +377,7 @@ If you select "Hidden" the header will simply not appear. This is usefull if you
 			<trans-unit id="_header_layout.seeAlso" approved="yes">
 				<source>tt_content:header</source>
 				<target>tt_content:header</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="subheader.description" approved="yes">
 				<source>Enter a subheader. This is displayed below the ordinary headline. If the content element type is "Form" this field is the recipient email.</source>
@@ -382,6 +396,7 @@ If you select "Hidden" the header will simply not appear. This is usefull if you
 tt_content:bodytext</source>
 				<target>tt_content:header
 tt_content:bodytext</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="bodytext.description" approved="yes">
 				<source>Enter the body text.</source>
@@ -468,6 +483,7 @@ xMOD_csh_corebe:wizard_table_wiz</source>
 tt_content:subheader,
 xMOD_csh_corebe:wizard_forms_wiz,
 xMOD_csh_corebe:wizard_table_wiz</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="text_align.description" approved="yes">
 				<source>Places the body text to the left, centered or to the right.</source>
@@ -484,6 +500,7 @@ xMOD_csh_corebe:wizard_table_wiz</target>
 tt_content:bodytext</source>
 				<target>tt_content:text_face,
 tt_content:bodytext</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="text_face.description" approved="yes">
 				<source>Select a font fact family for the body text.</source>
@@ -498,6 +515,7 @@ tt_content:bodytext</target>
 tt_content:bodytext</source>
 				<target>tt_content:text_face,
 tt_content:bodytext</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="text_size.description" approved="yes">
 				<source>Select a font size for the body text.</source>
@@ -514,6 +532,7 @@ tt_content:bodytext</target>
 tt_content:bodytext</source>
 				<target>tt_content:text_face,
 tt_content:bodytext</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="text_color.description" approved="yes">
 				<source>Select a color for the body text.</source>
@@ -530,6 +549,7 @@ tt_content:bodytext</target>
 tt_content:bodytext</source>
 				<target>tt_content:text_face,
 tt_content:bodytext</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="text_properties.description" approved="yes">
 				<source>Select additional font properties.</source>
@@ -558,6 +578,7 @@ See Pagecontent / Fontface for comments.
 tt_content:bodytext</source>
 				<target>tt_content:text_face,
 tt_content:bodytext</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="image.description" approved="yes">
 				<source>Insert one or more images.</source>
@@ -606,10 +627,12 @@ tt_content:image_frames,
 tt_content:image_compression,
 Using images ("Getting Started") | http://typo3.org/documentation/document-library/doc_tut_quickstart/Managing_files_in_TY/
 Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif</target>
+				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_image.image" approved="yes">
 				<source>EXT:context_help/cshimages/ttcontent_5.png</source>
 				<target>EXT:context_help/cshimages/ttcontent_5.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="image.image_descr" approved="yes">
 				<source>This shows all the options related to inserting images in Content Elements. You might not be able to use all of them.</source>
@@ -628,6 +651,7 @@ Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif</target>
 tt_content:image</source>
 				<target>tt_content:imageheight,
 tt_content:image</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="imageheight.description" approved="yes">
 				<source>Enter the height of the image in pixels.</source>
@@ -638,6 +662,7 @@ tt_content:image</target>
 tt_content:image</source>
 				<target>tt_content:imagewidth,
 tt_content:image</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="imageorient.description" approved="yes">
 				<source>Select the position of the imageblock relative to the body text.</source>
@@ -662,6 +687,7 @@ Apart from the visual difference there is a technical aspect as well. Because if
 tt_content:image</source>
 				<target>tt_content:imagecols,
 tt_content:image</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="image_noRows.description" approved="yes">
 				<source>Disables strict tablerows in the image block.</source>
@@ -678,6 +704,7 @@ If you set this option, the table will place all images in a column in a single 
 tt_content:image</source>
 				<target>tt_content:imagecols,
 tt_content:image</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="image_link.description" approved="yes">
 				<source>Enter a link for the images.</source>
@@ -698,6 +725,7 @@ tt_content:image</source>
 				<target>tt_content:header_link,
 tt_content:image_zoom,
 tt_content:image</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="image_zoom.description" approved="yes">
 				<source>Check this option, and the image will link to a new window with a bigger version.</source>
@@ -712,6 +740,7 @@ tt_content:image</target>
 tt_content:image</source>
 				<target>tt_content:image_link,
 tt_content:image</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="image_effects.description" approved="yes">
 				<source>Select special image processing effects.</source>
@@ -724,6 +753,7 @@ tt_content:image</source>
 				<target>tt_content:image_compression,
 tt_content:image_frames,
 tt_content:image</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="image_frames.description" approved="yes">
 				<source>Select special image framing options.</source>
@@ -736,6 +766,7 @@ tt_content:image</source>
 				<target>tt_content:image_compression,
 tt_content:image_effects,
 tt_content:image</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="image_compression.description" approved="yes">
 				<source>Select compression/quality options.</source>
@@ -748,6 +779,7 @@ tt_content:image</source>
 				<target>tt_content:image_frames,
 tt_content:image_effects,
 tt_content:image</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="imagecols.description" approved="yes">
 				<source>Select the number of columns in the image block.</source>
@@ -758,6 +790,7 @@ tt_content:image</target>
 tt_content:image</source>
 				<target>tt_content:image_noRows,
 tt_content:image</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="imagecaption.description" approved="yes">
 				<source>Enter a caption for the image block</source>
@@ -778,6 +811,7 @@ The caption text field is also used by the content element type "Filelinks" wher
 tt_content:image</source>
 				<target>tt_content:imagecaption_position,
 tt_content:image</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="imagecaption_position.description" approved="yes">
 				<source>Places the image caption to the left, centered or to the right.</source>
@@ -788,6 +822,7 @@ tt_content:image</target>
 tt_content:image</source>
 				<target>tt_content:imagecaption,
 tt_content:image</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="cols.description" approved="yes">
 				<source>Select a fixed number of table columns</source>
@@ -826,6 +861,7 @@ Finally the "Form" element uses this field as the page to which the form is subm
 tt_content:recursive</source>
 				<target>tt_content:CType,
 tt_content:recursive</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="recursive.description" approved="yes">
 				<source>Select how many subleves should be additionally selected for each page in the list.</source>
@@ -842,6 +878,7 @@ tt_content:recursive</target>
 			<trans-unit id="_recursive.seeAlso" approved="yes">
 				<source>tt_content:pages</source>
 				<target>tt_content:pages</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="menu_type.description" approved="yes">
 				<source>Select which kind of menu you wish to create.</source>
@@ -914,6 +951,7 @@ Displays other related pages based on the keywords set for this page matched up 
 tt_content:sectionIndex</source>
 				<target>tt_content:pages,
 tt_content:sectionIndex</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="list_type.description" approved="yes">
 				<source>Select a plugin to insert.</source>
@@ -926,10 +964,12 @@ tt_content:sectionIndex</target>
 			<trans-unit id="_list_type.seeAlso" approved="yes">
 				<source>_MOD_tools_em</source>
 				<target>_MOD_tools_em</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_list_type.image" approved="yes">
 				<source>EXT:context_help/cshimages/ttcontent_7.png</source>
 				<target>EXT:context_help/cshimages/ttcontent_7.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="select_key.description" approved="yes">
 				<source>Enter a code string.</source>
@@ -942,6 +982,7 @@ tt_content:sectionIndex</target>
 			<trans-unit id="_select_key.seeAlso" approved="yes">
 				<source>tt_content:list_type</source>
 				<target>tt_content:list_type</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="table_bgColor.description" approved="yes">
 				<source>Select table background color.</source>
@@ -992,6 +1033,7 @@ tt_content:sectionIndex</target>
 tt_content:section_frame</source>
 				<target>tt_content:spaceAfter,
 tt_content:section_frame</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="spaceAfter.description" approved="yes">
 				<source>Enter the amount of whitespace (in pixels) to insert &lt;em&gt;after&lt;/em&gt; this content element.</source>
@@ -1002,6 +1044,7 @@ tt_content:section_frame</target>
 tt_content:section_frame</source>
 				<target>tt_content:spaceBefore,
 tt_content:section_frame</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="section_frame.description" approved="yes">
 				<source>Select a framing option for the content element.</source>
@@ -1012,6 +1055,7 @@ tt_content:section_frame</target>
 tt_content:spaceBefore</source>
 				<target>tt_content:spaceAfter,
 tt_content:spaceBefore</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="splash_layout.description" approved="yes">
 				<source>Select the design for the Text box.</source>
@@ -1024,6 +1068,7 @@ tt_content:spaceBefore</target>
 			<trans-unit id="_splash_layout.seeAlso" approved="yes">
 				<source>tt_content:CType</source>
 				<target>tt_content:CType</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="sectionIndex.description" approved="yes">
 				<source>If set, the content element will appear in section indices.</source>
@@ -1036,6 +1081,7 @@ tt_content:spaceBefore</target>
 			<trans-unit id="_sectionIndex.seeAlso" approved="yes">
 				<source>tt_content:menu_type</source>
 				<target>tt_content:menu_type</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="linkToTop.description" approved="yes">
 				<source>If checked, a little "To top" link will be inserted after the content element.</source>
@@ -1048,6 +1094,7 @@ tt_content:spaceBefore</target>
 			<trans-unit id="_rte_enabled.seeAlso" approved="yes">
 				<source>tt_content:bodytext</source>
 				<target>tt_content:bodytext</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="pi_flexform.description" approved="yes">
 				<source>FlexForm Configuration of Plugins</source>
@@ -1060,6 +1107,7 @@ tt_content:spaceBefore</target>
 			<trans-unit id="_pi_flexform.seeAlso" approved="yes">
 				<source>tt_content:list_type</source>
 				<target>tt_content:list_type</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 		</body>
 	</file>

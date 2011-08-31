@@ -22,6 +22,7 @@ The dialogue allows to associate an abbreviation to a term. The abbreviation may
 			<trans-unit id=".image" approved="yes">
 				<source>EXT:rtehtmlarea/extensions/Acronym/skin/images/acronym.gif</source>
 				<target>EXT:rtehtmlarea/extensions/Acronym/skin/images/acronym.gif</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" approved="yes">
 				<source>"Insert abbreviation" icon in the editor tool bar.</source>
@@ -44,6 +45,7 @@ xEXT_rtehtmlarea_Acronym:termToAbridge,
 xEXT_rtehtmlarea_Acronym:useThisTerm
 tx_rtehtmlarea_acronym
 </target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="preDefinedAbbreviation.alttitle" approved="yes">
 				<source>Pre-defined abbreviations</source>

@@ -88,6 +88,7 @@ EXT:cms/cshimages/pagemodule_15.png</source>
 				<target>EXT:cms/cshimages/pagemodule_13.png,
 EXT:cms/cshimages/pagemodule_14.png,
 EXT:cms/cshimages/pagemodule_15.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" approved="yes">
 				<source>Click the Page module, then the title of a page in the page tree.
@@ -112,10 +113,12 @@ These buttons are direct links to the History/Undo function (1), Create new cont
 			<trans-unit id="_quickEdit.seeAlso" approved="yes">
 				<source>_MOD_web_layout:quickEdit_selElement</source>
 				<target>_MOD_web_layout:quickEdit_selElement</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_quickEdit.image" approved="yes">
 				<source>EXT:cms/cshimages/pagemodule_5.png</source>
 				<target>EXT:cms/cshimages/pagemodule_5.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="quickEdit.image_descr" approved="yes">
 				<source>The QuickEdit view cuts of one extra click by bringing the user directly to the editing form after clicking a page title in the page tree. The record shown is always the first content element from the Normal column.</source>
@@ -136,10 +139,12 @@ xMOD_csh_corebe:new_ce</source>
 				<target>_MOD_web_layout:quickEdit,
 xMOD_csh_corebe:move_el_cs,
 xMOD_csh_corebe:new_ce</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_quickEdit_selElement.image" approved="yes">
 				<source>EXT:cms/cshimages/pagemodule_4.png</source>
 				<target>EXT:cms/cshimages/pagemodule_4.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="quickEdit_selElement.image_descr" approved="yes">
 				<source>Overview of page content elements in the QuickEdit view. In the bottom there are links to two wizards: The "Move Content Element Wizard" and the "Create new Content Element Wizard". See the links below.</source>
@@ -182,6 +187,7 @@ You can also see the subtitle, keywords and descriptions. This information is of
 			<trans-unit id="_columns_3.image" approved="yes">
 				<source>EXT:cms/cshimages/pagemodule_9.png</source>
 				<target>EXT:cms/cshimages/pagemodule_9.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="language_list.alttitle" approved="yes">
 				<source>Language view</source>
@@ -204,6 +210,7 @@ EXT:cms/cshimages/pagemodule_10.png,</source>
 EXT:cms/cshimages/pagemodule_7.png,
 EXT:cms/cshimages/pagemodule_11.png,
 EXT:cms/cshimages/pagemodule_10.png,</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="language_list.image_descr" approved="yes">
 				<source>In the Language view you can select to create a new translation of the page if one does not exist already. The available languages must be defined first by language records created in the root of the page tree.
@@ -234,10 +241,12 @@ Click the icon of a content element if you wish to access the context menu of th
 			<trans-unit id="_columns_single.seeAlso" approved="yes">
 				<source>_MOD_web_layout:columns_multi</source>
 				<target>_MOD_web_layout:columns_multi</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_columns_single.image" approved="yes">
 				<source>EXT:cms/cshimages/pagemodule_1.png</source>
 				<target>EXT:cms/cshimages/pagemodule_1.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="columns_single.image_descr" approved="yes">
 				<source>Content Elements on a page are arranged in a specific order - the order they appear on the website. This order is also shown in the page module. The control panel allows you to move elements up and down as well as edit, hide and delete them. You can also just click the preview text shown here to access the editing form of the element.</source>
@@ -254,10 +263,12 @@ Click the icon of a content element if you wish to access the context menu of th
 			<trans-unit id="_columns_multi.seeAlso" approved="yes">
 				<source>_MOD_web_layout:columns_single</source>
 				<target>_MOD_web_layout:columns_single</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_columns_multi.image" approved="yes">
 				<source>EXT:cms/cshimages/pagemodule_12.png</source>
 				<target>EXT:cms/cshimages/pagemodule_12.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="columns_multi.image_descr" approved="yes">
 				<source>When your website supports multiple content element zones in the template you will be able to use another column than the "Normal" column. Here the "Left" column is enabled. TYPO3 offers four columns by default, "Normal", "Right", "Left" and "Border". Their significance depends on individual implementations in the frontend templates.</source>
@@ -280,10 +291,12 @@ xMOD_csh_corebe:new_ce,</source>
 xMOD_csh_corebe:move_el_pages,
 xMOD_csh_corebe:new_pages,
 xMOD_csh_corebe:new_ce,</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_button_panel.image" approved="yes">
 				<source>EXT:cms/cshimages/pagemodule_2.png</source>
 				<target>EXT:cms/cshimages/pagemodule_2.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 		</body>
 	</file>

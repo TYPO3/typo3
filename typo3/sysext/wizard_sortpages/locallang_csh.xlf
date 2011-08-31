@@ -52,6 +52,7 @@ Click this to reverse the current order. For example, if you want to sort pages 
 			<trans-unit id="_tx_wizardsortpages.image" approved="yes">
 				<source>EXT:wizard_sortpages/cshimages/wizards_1.png</source>
 				<target>EXT:wizard_sortpages/cshimages/wizards_1.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 		</body>
 	</file>

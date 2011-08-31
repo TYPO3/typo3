@@ -28,6 +28,7 @@ xEXT_rtehtmlarea_Language,
 xEXT_rtehtmlarea_PlainText,
 xEXT_rtehtmlarea_RemoveFormat
 </target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="beUserSettings.alttitle" approved="yes">
 				<source>BE User settings</source>
@@ -40,6 +41,7 @@ xEXT_rtehtmlarea_RemoveFormat
 			<trans-unit id="beUserSettings.seeAlso" approved="yes">
 				<source>xEXT_rtehtmlarea_General:rteWidth,xEXT_rtehtmlarea_General:rteHeight,xEXT_rtehtmlarea_General:rteResize,xEXT_rtehtmlarea_General:rteMaxHeight,xEXT_rtehtmlarea_PlainText:behaviour,_MOD_user_setup</source>
 				<target>xEXT_rtehtmlarea_General:rteWidth,xEXT_rtehtmlarea_General:rteHeight,xEXT_rtehtmlarea_General:rteResize,xEXT_rtehtmlarea_General:rteMaxHeight,xEXT_rtehtmlarea_PlainText:behaviour,_MOD_user_setup</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="rteWidth.alttitle" approved="yes">
 				<source>Default width of the RTE in px or %</source>

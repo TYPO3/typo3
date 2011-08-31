@@ -40,12 +40,14 @@ The Create new page wizard supports the Lorem Ipsum extension providing dummy co
 			<trans-unit id="_tx_wizardcrpages.seeAlso" approved="yes">
 				<source>xEXT_loremipsum</source>
 				<target>xEXT_loremipsum</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_tx_wizardcrpages.image" approved="yes">
 				<source>EXT:wizard_crpages/cshimages/wizards_1.png,
 EXT:wizard_crpages/cshimages/wizards_2.png</source>
 				<target>EXT:wizard_crpages/cshimages/wizards_1.png,
 EXT:wizard_crpages/cshimages/wizards_2.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="tx_wizardcrpages.image_descr" approved="yes">
 				<source>You simply enter the new page titles in the fields. Only fields you fill in will be created as pages.

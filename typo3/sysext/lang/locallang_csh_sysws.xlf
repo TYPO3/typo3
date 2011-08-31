@@ -30,6 +30,7 @@
 			<trans-unit id="_members.seeAlso" approved="yes">
 				<source>sys_workspace:reviewers</source>
 				<target>sys_workspace:reviewers</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="reviewers.description" approved="yes">
 				<source>Content have to pass through reviewers approval before it can finally be published by a workspace owner. Reviewers can be backend users or groups and will have access to the workspace just as members have, but can in addition approve content for final publication.</source>
@@ -42,6 +43,7 @@
 			<trans-unit id="_reviewers.seeAlso" approved="yes">
 				<source>sys_workspace:members</source>
 				<target>sys_workspace:members</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="stagechg_notification.description" approved="yes">
 				<source>When the stage of content changes, users in the workspace can receive a notification by email. Only members/reviewers who are attached to the workspace as users and not through their groups will be notified.</source>
@@ -84,6 +86,7 @@
 			<trans-unit id="_publish_time.seeAlso" approved="yes">
 				<source>sys_workspace:unpublish_time</source>
 				<target>sys_workspace:unpublish_time</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="unpublish_time.description" approved="yes">
 				<source>Specify an additional time of (un)publication of the workspace content.</source>
@@ -96,6 +99,7 @@
 			<trans-unit id="_unpublish_time.seeAlso" approved="yes">
 				<source>sys_workspace:publish_time,sys_workspace:swap_modes</source>
 				<target>sys_workspace:publish_time,sys_workspace:swap_modes</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="freeze.description" approved="yes">
 				<source>If set, no editing is allowed inside workspace.</source>
@@ -126,6 +130,7 @@ Another mode "Swap-Into-Workspace on Auto-publish" will force the automatic publ
 			<trans-unit id="_swap_modes.seeAlso" approved="yes">
 				<source>sys_workspace:unpublish_time</source>
 				<target>sys_workspace:unpublish_time</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="vtypes.description" approved="yes">
 				<source>Select versioning types you want to disable for workspace editors/reviewers (admin users and owners are not limited).</source>

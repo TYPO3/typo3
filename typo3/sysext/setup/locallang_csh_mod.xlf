@@ -24,6 +24,7 @@
 EXT:setup/cshimages/setup7.png</source>
 				<target>EXT:setup/cshimages/setup8.png,
 EXT:setup/cshimages/setup7.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" approved="yes">
 				<source>The Setup module is selected in the left menu.
@@ -48,6 +49,7 @@ The solution clearly is to set the configuration option mentioned above to a val
 			<trans-unit id="_language.image" approved="yes">
 				<source>EXT:setup/cshimages/lang.png</source>
 				<target>EXT:setup/cshimages/lang.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="language.image_descr" approved="yes">
 				<source>TYPO3 is translated into around 40 languages. English is the default language and all labels must be available in English first and foremost. This screenshot shows translations for Hebrew, Arabic, Russian and Chinese.</source>
@@ -64,12 +66,14 @@ The solution clearly is to set the configuration option mentioned above to a val
 			<trans-unit id="_option_condensedMode.seeAlso" approved="yes">
 				<source>_MOD_user_setup:option_noMenuMode</source>
 				<target>_MOD_user_setup:option_noMenuMode</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_option_condensedMode.image" approved="yes">
 				<source>EXT:setup/cshimages/setup3.png,
 EXT:setup/cshimages/setup4.png</source>
 				<target>EXT:setup/cshimages/setup3.png,
 EXT:setup/cshimages/setup4.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_condensedMode.image_descr" approved="yes">
 				<source>In this example Condensed Mode is enabled. The page tree is &lt;em&gt;not&lt;/em&gt; shown in the normal navigation frame but rather in the full content frame to the right of the menu.
@@ -104,12 +108,14 @@ This option shows all menu items in the top frame as a horizontal list of icons.
 			<trans-unit id="_option_noMenuMode.seeAlso" approved="yes">
 				<source>_MOD_user_setup:option_condensedMode</source>
 				<target>_MOD_user_setup:option_condensedMode</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_option_noMenuMode.image" approved="yes">
 				<source>EXT:setup/cshimages/setup1.png,
 EXT:setup/cshimages/setup2.png</source>
 				<target>EXT:setup/cshimages/setup1.png,
 EXT:setup/cshimages/setup2.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_noMenuMode.image_descr" approved="yes">
 				<source>The "Selectorbox" menu. Selecting an item makes the backend jump to that module.
@@ -138,6 +144,7 @@ The default module is "About Modules".</target>
 			<trans-unit id="_option_showThumbs.image" approved="yes">
 				<source>EXT:setup/cshimages/setup5.png</source>
 				<target>EXT:setup/cshimages/setup5.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_showThumbs.image_descr" approved="yes">
 				<source>When thumbnails display is enabled, files attached to records will be shown in the "Web &gt; List" module like this.</source>
@@ -162,6 +169,7 @@ The default module is "About Modules".</target>
 			<trans-unit id="_option_maxTitleLen.image" approved="yes">
 				<source>EXT:setup/cshimages/setup6.png</source>
 				<target>EXT:setup/cshimages/setup6.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_maxTitleLen.image_descr" approved="yes">
 				<source>In this case the Maximum Title lenght is set to 10 - and the result is that titles in the page tree - as well as other places in the backend - will be cropped after 10 characters, then suffixed by "...". The default value is "30".</source>
@@ -210,6 +218,7 @@ The default module is "About Modules".</target>
 			<trans-unit id="_option_edit_RTE.image" approved="yes">
 				<source>EXT:setup/cshimages/rte.png</source>
 				<target>EXT:setup/cshimages/rte.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_edit_docModuleUpload.alttitle" approved="yes">
 				<source>Enable File Uploads in editing forms</source>
@@ -226,6 +235,7 @@ The default module is "About Modules".</target>
 			<trans-unit id="_option_edit_docModuleUpload.image" approved="yes">
 				<source>EXT:setup/cshimages/setup12.png</source>
 				<target>EXT:setup/cshimages/setup12.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_enableFlashUploader.alttitle" approved="yes">
 				<source>Enable Flash Uploader</source>
@@ -282,6 +292,7 @@ Context Sensitive Help is also available as a full user manual in the Help&gt;Ma
 EXT:setup/cshimages/setup10.png</source>
 				<target>EXT:setup/cshimages/setup11.png,
 EXT:setup/cshimages/setup10.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_edit_showFieldHelp.image_descr" approved="yes">
 				<source>The default mode, "Display help icon only", will show the help icons with no additional text.
@@ -300,6 +311,7 @@ When "Display full text message" is selected you will see a short description sh
 			<trans-unit id="_option_disableCMlayers.image" approved="yes">
 				<source>EXT:setup/cshimages/setup9.png</source>
 				<target>EXT:setup/cshimages/setup9.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_disableCMlayers.image_descr" approved="yes">
 				<source>This is the context menu (or "Clickmenu") of a page in the page tree. Notice that it is activated by a regular "left-click" opposite to the normal "right-click" activation known from most Operating Systems.</source>

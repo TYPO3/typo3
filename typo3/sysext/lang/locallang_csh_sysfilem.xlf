@@ -22,10 +22,12 @@ More about File mounts | http://typo3.org/documentation/document-library/doc_cor
 				<target>be_groups:file_mountpoints,
 be_users:file_mountpoints,
 More about File mounts | http://typo3.org/documentation/document-library/doc_core_inside/More_about_File_Moun/</target>
+				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_.image" approved="yes">
 				<source>EXT:lang/cshimages/filemount_1.png</source>
 				<target>EXT:lang/cshimages/filemount_1.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="title.description" approved="yes">
 				<source>Enter a title for the filemount. The title will appear as the name of the file mount when it is applied to users and groups.</source>
@@ -34,6 +36,7 @@ More about File mounts | http://typo3.org/documentation/document-library/doc_cor
 			<trans-unit id="_title.image" approved="yes">
 				<source>EXT:lang/cshimages/be_groups_5.png</source>
 				<target>EXT:lang/cshimages/be_groups_5.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="path.description" approved="yes">
 				<source>Enter the path of the filemount, relative or absolute depending on the settings of BASE.</source>
@@ -62,12 +65,14 @@ sys_filemounts</source>
 				<target>sys_filemounts:base,
 be_groups:file_mountpoints,
 sys_filemounts</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_path.image" approved="yes">
 				<source>EXT:lang/cshimages/be_groups_6.png,
 EXT:lang/cshimages/be_groups_7.png</source>
 				<target>EXT:lang/cshimages/be_groups_6.png,
 EXT:lang/cshimages/be_groups_7.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="path.image_descr" approved="yes">
 				<source>This is a filemount relative to "fileadmin/". The mounted folder is "fileadmin/user_upload/" since "user_upload" is the value of the "Path" field.
@@ -90,6 +95,7 @@ The directory structure of "fileadmin/" where you can see the "user_upload" fold
 			<trans-unit id="_base.seeAlso" approved="yes">
 				<source>sys_filemounts:path</source>
 				<target>sys_filemounts:path</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 		</body>
 	</file>

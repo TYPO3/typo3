@@ -16,6 +16,7 @@
 _MOD_web_func:tx_wizardsortpages</source>
 				<target>_MOD_web_func:tx_wizardcrpages,
 _MOD_web_func:tx_wizardsortpages</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 		</body>
 	</file>

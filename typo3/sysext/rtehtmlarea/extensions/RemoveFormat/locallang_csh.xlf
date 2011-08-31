@@ -32,6 +32,7 @@ In the dialogue window that opens when the button is clicked:
 			<trans-unit id=".image" approved="yes">
 				<source>EXT:rtehtmlarea/extensions/RemoveFormat/skin/images/remove-format.gif</source>
 				<target>EXT:rtehtmlarea/extensions/RemoveFormat/skin/images/remove-format.gif</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" approved="yes">
 				<source>Remove format icon in the editor tool bar.</source>
@@ -40,6 +41,7 @@ In the dialogue window that opens when the button is clicked:
 			<trans-unit id=".seeAlso" approved="yes">
 				<source>xEXT_rtehtmlarea_RemoveFormat:area,xEXT_rtehtmlarea_RemoveFormat:options</source>
 				<target>xEXT_rtehtmlarea_RemoveFormat:area,xEXT_rtehtmlarea_RemoveFormat:options</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="area.alttitle" approved="yes">
 				<source>Select the area to be cleaned</source>
@@ -64,6 +66,7 @@ In the dialogue window that opens when the button is clicked:
 			<trans-unit id="_selection.seeAlso" approved="yes">
 				<source>xEXT_rtehtmlarea_RemoveFormat:area</source>
 				<target>xEXT_rtehtmlarea_RemoveFormat:area</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="all.alttitle" approved="yes">
 				<source>Remove format on all contents</source>
@@ -76,6 +79,7 @@ In the dialogue window that opens when the button is clicked:
 			<trans-unit id="_all.seeAlso" approved="yes">
 				<source>xEXT_rtehtmlarea_RemoveFormat:area</source>
 				<target>xEXT_rtehtmlarea_RemoveFormat:area</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="options.alttitle" approved="yes">
 				<source>Select the types of format to be removed</source>
@@ -92,6 +96,7 @@ In the dialogue window that opens when the button is clicked:
 			<trans-unit id="options.seeAlso" approved="yes">
 				<source>xEXT_rtehtmlarea_RemoveFormat:htmlFormat,xEXT_rtehtmlarea_RemoveFormat:msWordFormat,xEXT_rtehtmlarea_RemoveFormat:typographicalPunctuation,xEXT_rtehtmlarea_RemoveFormat:nonBreakingSpace,xEXT_rtehtmlarea_RemoveFormat:images,xEXT_rtehtmlarea_RemoveFormat:allHtml</source>
 				<target>xEXT_rtehtmlarea_RemoveFormat:htmlFormat,xEXT_rtehtmlarea_RemoveFormat:msWordFormat,xEXT_rtehtmlarea_RemoveFormat:typographicalPunctuation,xEXT_rtehtmlarea_RemoveFormat:nonBreakingSpace,xEXT_rtehtmlarea_RemoveFormat:images,xEXT_rtehtmlarea_RemoveFormat:allHtml</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="htmlFormat.alttitle" approved="yes">
 				<source>Remove all HTML inline markup and style</source>

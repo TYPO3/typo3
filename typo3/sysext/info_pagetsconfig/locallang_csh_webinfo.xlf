@@ -28,12 +28,14 @@ Page TSconfig objects | http://typo3.org/documentation/document-library/doc_core
 				<target>_MOD_web_info:tsconfig_edit,
 pages:TSconfig,
 Page TSconfig objects | http://typo3.org/documentation/document-library/doc_core_tsconfig/Page_TSconfig/</target>
+				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_tsconfig_hierarchy.image" approved="yes">
 				<source>EXT:info_pagetsconfig/cshimages/img_1.png,
 EXT:info_pagetsconfig/cshimages/img_2.png,</source>
 				<target>EXT:info_pagetsconfig/cshimages/img_1.png,
 EXT:info_pagetsconfig/cshimages/img_2.png,</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="tsconfig_hierarchy.image_descr" approved="yes">
 				<source>This is how the parsed Page TSconfig tree can look. It contains the "sum" of all the configuration code from the root line and any default settings. This shows the whole tree but you can also select other top level objects (TLO) in the selector box in the top if you want to limit the view to a single branch
@@ -58,6 +60,7 @@ You can also click the edit-icons of the various pages to go directly to the TSc
 			<trans-unit id="_tsconfig_edit.seeAlso" approved="yes">
 				<source>_MOD_web_info:tsconfig_hierarchy</source>
 				<target>_MOD_web_info:tsconfig_hierarchy</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_tsconfig_edit.image" approved="yes">
 				<source>EXT:info_pagetsconfig/cshimages/img_3.png,
@@ -66,6 +69,7 @@ EXT:info_pagetsconfig/cshimages/img_5.png</source>
 				<target>EXT:info_pagetsconfig/cshimages/img_3.png,
 EXT:info_pagetsconfig/cshimages/img_4.png,
 EXT:info_pagetsconfig/cshimages/img_5.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="tsconfig_edit.image_descr" approved="yes">
 				<source>Shows the raw Page TSconfig code. First you see the default content from TYPO3_CONF_VARS (probably added by extensions), then the content from the "TSconfig" field of the first page in the root line ("Intro") and then for each root line page up to the current page (not shown in screenshot).

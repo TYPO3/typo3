@@ -30,6 +30,7 @@ EXT:rtehtmlarea/extensions/Language/skin/images/show-language-marks.gif</source>
 				<target>EXT:rtehtmlarea/extensions/Language/skin/images/left_to_right.gif,
 EXT:rtehtmlarea/extensions/Language/skin/images/right_to_left.gif,
 EXT:rtehtmlarea/extensions/Language/skin/images/show-language-marks.gif</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" approved="yes">
 				<source>"Left to right" icon in the editor tool bar.
@@ -48,6 +49,7 @@ xEXT_rtehtmlarea_Language:directionCombo,
 				<target>xEXT_rtehtmlarea_Language:languageCombo,
 xEXT_rtehtmlarea_Language:directionCombo,
 </target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="languageCombo.alttitle" approved="yes">
 				<source>Language of contents</source>

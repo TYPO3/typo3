@@ -20,10 +20,12 @@ _MOD_web_info:stat</source>
 _MOD_web_info:func_1,
 _MOD_web_info:func_2,
 _MOD_web_info:stat</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_pagetree_overview.image" approved="yes">
 				<source>EXT:cms/cshimages/pagetree_overview_1.png</source>
 				<target>EXT:cms/cshimages/pagetree_overview_1.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="pagetree_overview.image_descr" approved="yes">
 				<source>One of the features of the Pagetree Overview module is that you can see what types of records are found on pages in a branch. Here record counts are shown for a page tree branch 2 levels down.</source>
@@ -56,6 +58,7 @@ _MOD_web_info:pagetree_overview</source>
 				<target>xMOD_csh_corebe:list_module,
 _MOD_web_info:func_2,
 _MOD_web_info:pagetree_overview</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_func_0.image" approved="yes">
 				<source>EXT:cms/cshimages/pagetree_overview_4.png,
@@ -64,6 +67,7 @@ EXT:cms/cshimages/pagetree_overview_9.png</source>
 				<target>EXT:cms/cshimages/pagetree_overview_4.png,
 EXT:cms/cshimages/pagetree_overview_8.png,
 EXT:cms/cshimages/pagetree_overview_9.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="func_0.image_descr" approved="yes">
 				<source>The Basic Settings view offers a very convenient overview of page aliases, start times and access restriction settings in the tree branch.
@@ -94,10 +98,12 @@ Notice the red "+" next to a page in the page tree? This is due to a setting for
 pages:php_tree_stop</source>
 				<target>_MOD_web_info:pagetree_overview,
 pages:php_tree_stop</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_func_1.image" approved="yes">
 				<source>EXT:cms/cshimages/pagetree_overview_6.png</source>
 				<target>EXT:cms/cshimages/pagetree_overview_6.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="func_1.image_descr" approved="yes">
 				<source>You can easily see the distribution of Content Elements on a page. You can also see where Template Records - and basically any record! - are located in the page tree!</source>
@@ -118,12 +124,14 @@ pages:TSconfig</source>
 				<target>_MOD_web_info:func_0,
 _MOD_web_info:pagetree_overview,
 pages:TSconfig</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_func_2.image" approved="yes">
 				<source>EXT:cms/cshimages/pagetree_overview_5.png,
 EXT:cms/cshimages/pagetree_overview_7.png</source>
 				<target>EXT:cms/cshimages/pagetree_overview_5.png,
 EXT:cms/cshimages/pagetree_overview_7.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="func_2.image_descr" approved="yes">
 				<source>The "Cache and Age" view.
@@ -146,6 +154,7 @@ Here you see the "TSconfig" column. The overview exposes that these two pages in
 			<trans-unit id="_stat.image" approved="yes">
 				<source>EXT:cms/cshimages/pagetree_overview_3.png</source>
 				<target>EXT:cms/cshimages/pagetree_overview_3.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="lang.details" approved="yes">
 				<source>The overview uses colors to signal the availability and fall back situation for a given page. Here is a description for each color code:
@@ -186,6 +195,7 @@ Finally, the number found in each column tells you how many content elements are
 EXT:cms/cshimages/localizationoverview1.png</source>
 				<target>EXT:cms/cshimages/localizationoverview.png,
 EXT:cms/cshimages/localizationoverview1.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="lang.image_descr" approved="yes">
 				<source>Localization overview in the Web&gt;Info module. Use the buttons to edit, view and create new page translation headers. Use the regular page module to put localized content on the pages.
@@ -232,6 +242,7 @@ Will show the total number of page hits/sessions within main sections of a websi
 			<trans-unit id="_func_hits.image" approved="yes">
 				<source>EXT:cms/cshimages/pagetree_overview_2.png</source>
 				<target>EXT:cms/cshimages/pagetree_overview_2.png</target>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="lang.alttitle" approved="yes">
 				<source>Localization overview</source>
