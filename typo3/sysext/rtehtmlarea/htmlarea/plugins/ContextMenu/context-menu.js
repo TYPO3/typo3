@@ -90,7 +90,7 @@ HTMLArea.ContextMenu = HTMLArea.Plugin.extend({
 			items: this.buildItemsConfig()
 		}, this.pageTSConfiguration));
 			// Monitor contextmenu clicks on the iframe
-		this.menu.mon(Ext.get(this.editor.document.documentElement), 'contextmenu', this.show, this, {single: true});
+		this.menu.mon(Ext.get(this.editor.document.documentElement), 'contextmenu', this.show, this);
 			// Monitor editor being destroyed
 		this.menu.mon(this.editor, 'beforedestroy', this.onBeforeDestroy, this, {single: true});
 	},
@@ -161,29 +161,26 @@ HTMLArea.ContextMenu = HTMLArea.Plugin.extend({
 	 * Handler when the menu gets shown
 	 */
 	onShow: function () {
-		this.menu.mun(Ext.get(this.editor.document.documentElement), 'contextmenu', this.show, this);
 		this.menu.mon(Ext.get(this.editor.document.documentElement), 'mousedown', this.menu.hide, this.menu, {single: true});
 	},
 	/*
 	 * Handler when the menu gets hidden
 	 */
 	onHide: function () {
-		this.menu.mon(Ext.get(this.editor.document.documentElement), 'contextmenu', this.show, this, {single: true});
 		this.menu.mun(Ext.get(this.editor.document.documentElement), 'mousedown', this.menu.hide, this.menu);
 	},
 	/*
 	 * Handler to show the context menu
 	 */
 	show: function (event, target) {
-			// Need to wait a while for the toolbar state to be updated
-		this.showMenu.defer(150, this, [event, target]);
 		event.stopEvent();
-		return false;
+			// Need to wait a while for the toolbar state to be updated
+		this.showMenu.defer(150, this, [target]);
 	},
 	/*
 	 * Show the context menu
 	 */
-	showMenu: function (event, target) {
+	showMenu: function (target) {
 		this.showContextItems(target);
 		if (!Ext.isIE) {
 			this.ranges = this.editor.getSelectionRanges();
