@@ -789,9 +789,21 @@ class tslib_menu {
 
 			$c=0;
 			$c_b=0;
+
 			$minItems = intval($this->mconf['minItems'] ? $this->mconf['minItems'] : $this->conf['minItems']);
+			if (isset($this->conf['minItems.'])) {
+				$minItems = $this->parent_cObj->stdWrap($minItems, $this->conf['minItems.']);
+			}
+
 			$maxItems = intval($this->mconf['maxItems'] ? $this->mconf['maxItems'] : $this->conf['maxItems']);
+			if (isset($this->conf['maxItems.'])) {
+				$maxItems = $this->parent_cObj->stdWrap($maxItems, $this->conf['maxItems.']);
+			}
+
 			$begin = tslib_cObj::calc($this->mconf['begin'] ? $this->mconf['begin'] : $this->conf['begin']);
+			if (isset($this->conf['begin.'])) {
+				$begin = $this->parent_cObj->stdWrap($begin, $this->conf['begin.']);
+			}
 
 			$banUidArray = $this->getBannedUids();
 
