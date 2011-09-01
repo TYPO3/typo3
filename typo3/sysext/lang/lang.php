@@ -117,6 +117,13 @@ class language {
 	public $parserFactory;
 
 	/**
+	 * List of language dependencies for actual language
+	 *
+	 * @var array
+	 */
+	protected $languageDependencies = array();
+
+	/**
 	 * Initializes the backend language.
 	 * This is for example done in typo3/template.php with lines like these:
 	 *
@@ -149,6 +156,11 @@ class language {
 			if ($this->charSetArray[$this->lang]) {
 					// The charset if different from the default.
 				$this->charSet = $this->charSetArray[$this->lang];
+			}
+
+			$this->languageDependencies[] = $this->lang;
+			foreach ($locales->getLocaleDependencies($this->lang) as $language) {
+				$this->languageDependencies[] = $language;
 			}
 		}
 
@@ -522,7 +534,27 @@ class language {
 	 * @access	private
 	 */
 	protected function readLLfile($fileRef) {
-		return t3lib_div::readLLfile($fileRef, $this->lang, $this->charSet);
+		if ($this->lang !== 'default') {
+			$languages = array_reverse($this->languageDependencies);
+		} else {
+			$languages = array('default');
+		}
+
+		$localLanguage = array();
+		foreach ($languages as $language) {
+			$tempLL = t3lib_div::readLLfile($fileRef, $language, $this->charSet);
+			$localLanguage['default'] = $tempLL['default'];
+			if (!isset($localLanguage[$this->lang])) {
+				$localLanguage[$this->lang] = $localLanguage['default'];
+			}
+			if ($this->lang !== 'default') {
+					// Merge current language labels onto labels from previous language
+					// This way we have a labels with fall back applied
+				$localLanguage[$this->lang] = t3lib_div::array_merge_recursive_overrule($localLanguage[$this->lang], $tempLL[$language], FALSE, FALSE);
+			}
+		}
+
+		return $localLanguage;
 	}
 
 	/**
