@@ -249,7 +249,7 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 	 *
 	 * @return array the TypoScript setup
 	 */
-	abstract protected function getTypoScriptSetup();
+	abstract public function getTypoScriptSetup();
 
 	/**
 	 * Returns the TypoScript configuration found in plugin.tx_yourextension_yourplugin / module.tx_yourextension_yourmodule
