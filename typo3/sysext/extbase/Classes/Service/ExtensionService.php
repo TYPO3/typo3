@@ -177,5 +177,36 @@ class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
 		return (integer)$frameworkConfiguration['view']['defaultPid'];
 	}
 
+	/**
+	 * This returns the name of the first controller of the given plugin.
+	 *
+	 * @param string $extensionName name of the extension to retrieve the target PID for
+	 * @param string $pluginName name of the plugin to retrieve the target PID for
+	 * @return string
+	 */
+	public function getDefaultControllerNameByPlugin($extensionName, $pluginName) {
+		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'])) {
+			return;
+		}
+		$controllers = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'];
+		return key($controllers);
+	}
+
+	/**
+	 * This returns the name of the first action of the given plugin controller.
+	 *
+	 * @param string $extensionName name of the extension to retrieve the target PID for
+	 * @param string $pluginName name of the plugin to retrieve the target PID for
+	 * @param string $controllerName name of the controller to retrieve default action for
+	 * @return string
+	 */
+	public function getDefaultActionNameByPluginAndController($extensionName, $pluginName, $controllerName) {
+		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerName]['actions'])) {
+			return;
+		}
+		$actions = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerName]['actions'];
+		return current($actions);
+	}
+
 }
 ?>

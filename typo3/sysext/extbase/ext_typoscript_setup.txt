@@ -37,5 +37,8 @@ config.tx_extbase {
 			}
 		}
 	}
-	features.rewrittenPropertyMapper = 1
+	features {
+		rewrittenPropertyMapper = 1
+		skipDefaultArguments = 0
+	}
 }

@@ -40,6 +40,11 @@ class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Te
 	protected $getBackup;
 
 	/**
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 */
+	protected $mockConfigurationManager;
+
+	/**
 	 * @var tslib_cObj
 	 */
 	protected $mockContentObject;
@@ -68,10 +73,12 @@ class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Te
 		$this->mockContentObject = $this->getMock('tslib_cObj');
 		$this->mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request');
 		$this->mockExtensionService = $this->getMock('Tx_Extbase_Service_ExtensionService');
+		$this->mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
 
 		$this->uriBuilder = $this->getAccessibleMock('Tx_Extbase_MVC_Web_Routing_UriBuilder', array('build'));
 		$this->uriBuilder->setRequest($this->mockRequest);
 		$this->uriBuilder->_set('contentObject', $this->mockContentObject);
+		$this->uriBuilder->injectConfigurationManager($this->mockConfigurationManager);
 
 		$this->uriBuilder->injectExtensionService($this->mockExtensionService);
 	}
@@ -641,6 +648,69 @@ class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Te
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
+	/**
+	 * @test
+	 */
+	public function removeDefaultControllerAndActionDoesNotModifyArgumentsifSpecifiedControlerAndActionIsNotEqualToDefaults() {
+		$this->mockExtensionService->expects($this->atLeastOnce())->method('getDefaultControllerNameByPlugin')->with('ExtensionName', 'PluginName')->will($this->returnValue('DefaultController'));
+		$this->mockExtensionService->expects($this->atLeastOnce())->method('getDefaultActionNameByPluginAndController')->with('ExtensionName', 'PluginName', 'SomeController')->will($this->returnValue('defaultAction'));
+
+		$arguments = array('controller' => 'SomeController', 'action' => 'someAction', 'foo' => 'bar');
+		$extensionName = 'ExtensionName';
+		$pluginName = 'PluginName';
+		$expectedResult = array('controller' => 'SomeController', 'action' => 'someAction', 'foo' => 'bar');
+
+		$actualResult = $this->uriBuilder->_callRef('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function removeDefaultControllerAndActionRemovesControllerIfItIsEqualToTheDefault() {
+		$this->mockExtensionService->expects($this->atLeastOnce())->method('getDefaultControllerNameByPlugin')->with('ExtensionName', 'PluginName')->will($this->returnValue('DefaultController'));
+		$this->mockExtensionService->expects($this->atLeastOnce())->method('getDefaultActionNameByPluginAndController')->with('ExtensionName', 'PluginName', 'DefaultController')->will($this->returnValue('defaultAction'));
+
+		$arguments = array('controller' => 'DefaultController', 'action' => 'someAction', 'foo' => 'bar');
+		$extensionName = 'ExtensionName';
+		$pluginName = 'PluginName';
+		$expectedResult = array('action' => 'someAction', 'foo' => 'bar');
+
+		$actualResult = $this->uriBuilder->_callRef('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function removeDefaultControllerAndActionRemovesActionIfItIsEqualToTheDefault() {
+		$this->mockExtensionService->expects($this->atLeastOnce())->method('getDefaultControllerNameByPlugin')->with('ExtensionName', 'PluginName')->will($this->returnValue('DefaultController'));
+		$this->mockExtensionService->expects($this->atLeastOnce())->method('getDefaultActionNameByPluginAndController')->with('ExtensionName', 'PluginName', 'SomeController')->will($this->returnValue('defaultAction'));
+
+		$arguments = array('controller' => 'SomeController', 'action' => 'defaultAction', 'foo' => 'bar');
+		$extensionName = 'ExtensionName';
+		$pluginName = 'PluginName';
+		$expectedResult = array('controller' => 'SomeController', 'foo' => 'bar');
+
+		$actualResult = $this->uriBuilder->_callRef('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function removeDefaultControllerAndActionRemovesControllerAndActionIfBothAreEqualToTheDefault() {
+		$this->mockExtensionService->expects($this->atLeastOnce())->method('getDefaultControllerNameByPlugin')->with('ExtensionName', 'PluginName')->will($this->returnValue('DefaultController'));
+		$this->mockExtensionService->expects($this->atLeastOnce())->method('getDefaultActionNameByPluginAndController')->with('ExtensionName', 'PluginName', 'DefaultController')->will($this->returnValue('defaultAction'));
+
+		$arguments = array('controller' => 'DefaultController', 'action' => 'defaultAction', 'foo' => 'bar');
+		$extensionName = 'ExtensionName';
+		$pluginName = 'PluginName';
+		$expectedResult = array('foo' => 'bar');
+
+		$actualResult = $this->uriBuilder->_callRef('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
 
 }
 ?>

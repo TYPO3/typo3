@@ -296,5 +296,58 @@ class Tx_Extbase_Tests_Unit_Service_ExtensionServiceTest extends Tx_Extbase_Test
 		$this->extensionService->getTargetPidByPlugin('ExtensionName', 'SomePlugin');
 	}
 
+	/**
+	 * @test
+	 */
+	public function getDefaultControllerNameByPluginReturnsNullIfGivenExtensionCantBeFound() {
+		$this->assertNull($this->extensionService->getDefaultControllerNameByPlugin('NonExistingExtensionName', 'SomePlugin'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getDefaultControllerNameByPluginReturnsNullIfGivenPluginCantBeFound() {
+		$this->assertNull($this->extensionService->getDefaultControllerNameByPlugin('ExtensionName', 'NonExistingPlugin'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getDefaultControllerNameByPluginReturnsFirstControllerNameOfGivenPlugin() {
+		$expectedResult = 'ControllerName';
+		$actualResult = $this->extensionService->getDefaultControllerNameByPlugin('ExtensionName', 'SomePlugin');
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getDefaultActionNameByPluginAndControllerReturnsNullIfGivenExtensionCantBeFound() {
+		$this->assertNull($this->extensionService->getDefaultActionNameByPluginAndController('NonExistingExtensionName', 'SomePlugin', 'ControllerName'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getDefaultActionNameByPluginAndControllerReturnsNullIfGivenPluginCantBeFound() {
+		$this->assertNull($this->extensionService->getDefaultActionNameByPluginAndController('ExtensionName', 'NonExistingPlugin', 'ControllerName'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getDefaultActionNameByPluginAndControllerReturnsNullIfGivenControllerCantBeFound() {
+		$this->assertNull($this->extensionService->getDefaultActionNameByPluginAndController('ExtensionName', 'SomePlugin', 'NonExistingControllerName'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getDefaultActionNameByPluginAndControllerReturnsFirstActionNameOfGivenController() {
+		$expectedResult = 'someAction';
+		$actualResult = $this->extensionService->getDefaultActionNameByPluginAndController('SomeOtherExtensionName', 'SecondPlugin', 'SecondControllerName');
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
 }
 ?>

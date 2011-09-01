@@ -489,6 +489,9 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		if ($pluginName === NULL) {
 			$pluginName = $this->request->getPluginName();
 		}
+		if (TYPO3_MODE === 'FE' && $this->configurationManager->isFeatureEnabled('skipDefaultArguments')) {
+			$controllerArguments = $this->removeDefaultControllerAndAction($controllerArguments, $extensionName, $pluginName);
+		}
 		if ($this->targetPageUid === NULL && TYPO3_MODE === 'FE') {
 			$this->targetPageUid = $this->extensionService->getTargetPidByPlugin($extensionName, $pluginName);
 		}
@@ -504,6 +507,31 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		$this->arguments = t3lib_div::array_merge_recursive_overrule($this->arguments, $prefixedControllerArguments);
 
 		return $this->build();
+	}
+
+	/**
+	 * This removes controller and/or action arguments from given controllerArguments
+	 * if they are equal to the default controller/action of the target plugin.
+	 * Note: This is only active in FE mode and if feature "skipDefaultArguments" is enabled
+	 * @see Tx_Extbase_Configuration_ConfigurationManagerInterface::isFeatureEnabled()
+	 *
+	 * @param array $controllerArguments the current controller arguments to be modified
+	 * @param string $extensionName target extension name
+	 * @param string $pluginName target plugin name
+	 * @return array
+	 */
+	protected function removeDefaultControllerAndAction(array $controllerArguments, $extensionName, $pluginName) {
+		$defaultControllerName = $this->extensionService->getDefaultControllerNameByPlugin($extensionName, $pluginName);
+		if (isset($controllerArguments['action'])) {
+			$defaultActionName = $this->extensionService->getDefaultActionNameByPluginAndController($extensionName, $pluginName, $controllerArguments['controller']);
+			if ($controllerArguments['action'] === $defaultActionName) {
+				unset($controllerArguments['action']);
+			}
+		}
+		if ($controllerArguments['controller'] === $defaultControllerName) {
+			unset($controllerArguments['controller']);
+		}
+		return $controllerArguments;
 	}
 
 	/**
