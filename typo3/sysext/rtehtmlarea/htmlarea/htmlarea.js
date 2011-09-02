@@ -2325,7 +2325,14 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 			case 'wysiwyg':
 				return this.iframe.getHTML();
 			case 'textmode':
-				return this.textArea.getValue();
+					// Collapse repeated spaces non-editable in wysiwyg
+					// Replace leading and trailing spaces non-editable in wysiwyg
+				return this.textArea.getValue().
+					replace(/[\x20]+/g, '\x20').
+					replace(/^\x20/g, '&nbsp;').
+					replace(/\x20$/g, '&nbsp;').
+					replace(/>\x20/g, '>&nbsp;').
+					replace(/\x20</g, '&nbsp;<');
 			default:
 				return '';
 		}
