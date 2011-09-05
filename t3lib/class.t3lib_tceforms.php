@@ -4749,12 +4749,25 @@ class t3lib_TCEforms {
 		$f_table = $fieldValue['config'][$pF . 'foreign_table'];
 		$uidPre = $pFFlag ? '-' : '';
 
-			// Get query:
+			// Exec query:
 		$res = t3lib_BEfunc::exec_foreign_table_where_query($fieldValue, $field, $TSconfig, $pF);
 
-			// Perform lookup
+			// Perform error test
 		if ($GLOBALS['TYPO3_DB']->sql_error()) {
-			echo($GLOBALS['TYPO3_DB']->sql_error() . "\n\nThis may indicate a table defined in tables.php is not existing in the database!");
+			$msg = htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
+			$msg .= '<br />' . LF;
+			$msg .= $this->sL('LLL:EXT:lang/locallang_core.php:error.database_schema_mismatch');
+			$msgTitle = $this->sL('LLL:EXT:lang/locallang_core.php:error.database_schema_mismatch_title');
+			/** @var $flashMessage t3lib_FlashMessage */
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$msg,
+				$msgTitle,
+				t3lib_FlashMessage::ERROR,
+				TRUE
+			);
+			t3lib_FlashMessageQueue::addMessage($flashMessage);
+
 			return array();
 		}
 
