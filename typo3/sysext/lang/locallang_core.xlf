@@ -1235,6 +1235,14 @@ Check also the following points:\n
 				<source>Loading help...</source>
 				<target>Loading help...</target>
 			</trans-unit>
+			<trans-unit id="error.database_schema_mismatch" approved="yes">
+				<source>A SQL error occured. This may indicate a schema mismatch between TCA and the database. Try running database compare in the install tool.</source>
+				<target>A SQL error occured. This may indicate a schema mismatch between TCA and the database. Try running database compare in the install tool.</target>
+			</trans-unit>
+			<trans-unit id="error.database_schema_mismatch_title" approved="yes">
+				<source>Database Error</source>
+				<target>Database Error</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
