@@ -4861,7 +4861,7 @@ class t3lib_TCEforms {
 
 			// Perform lookup
 		if ($GLOBALS['TYPO3_DB']->sql_error()) {
-			echo($GLOBALS['TYPO3_DB']->sql_error() . "\n\nThis may indicate a table defined in tables.php is not existing in the database!");
+			echo($GLOBALS['TYPO3_DB']->sql_error() . "\n\nThis may indicate a table defined in the table configuration does not exist in the database!");
 			return array();
 		}
 
