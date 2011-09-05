@@ -522,6 +522,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				if (document.ltargetform.anchor_class) browse_links_setClass(document.ltargetform.anchor_class.value);
 				if (document.ltargetform.ltarget) browse_links_setTarget(document.ltargetform.ltarget.value);
 				if (document.ltargetform.lrel) browse_links_setAdditionalValue("rel", document.ltargetform.lrel.value);
+				browse_links_setAdditionalValue("external", "");
 				plugin.createLink(theLink,cur_target,cur_class,cur_title,additionalValues);
 				return false;
 			}
@@ -531,6 +532,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				if (document.ltargetform.anchor_class) browse_links_setClass(document.ltargetform.anchor_class.value);
 				if (document.ltargetform.ltarget) browse_links_setTarget(document.ltargetform.ltarget.value);
 				if (document.ltargetform.lrel) browse_links_setAdditionalValue("rel", document.ltargetform.lrel.value);
+				browse_links_setAdditionalValue("external", "");
 				plugin.createLink(theLink,cur_target,cur_class,cur_title,additionalValues);
 				return false;
 			}
@@ -538,6 +540,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				if (document.ltargetform.anchor_title) browse_links_setTitle(document.ltargetform.anchor_title.value);
 				if (document.ltargetform.anchor_class) browse_links_setClass(document.ltargetform.anchor_class.value);
 				if (document.ltargetform.ltarget) browse_links_setTarget(document.ltargetform.ltarget.value);
+				browse_links_setAdditionalValue("external", "");
 				plugin.createLink(theLink,cur_target,cur_class,cur_title,additionalValues);
 				return false;
 			}
@@ -683,7 +686,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							<tr>
 								<td>'.$LANG->getLL('emailAddress',1).':</td>
 								<td><input type="text" name="lemail"'.$this->doc->formWidth(20).' value="'.htmlspecialchars($this->curUrlInfo['act']=='mail'?$this->curUrlInfo['info']:'').'" /> '.
-									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="browse_links_setTarget(\'\');browse_links_setHref(\'mailto:\'+document.lurlform.lemail.value); return link_current();" /></td>
+									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="browse_links_setTarget(\'\');browse_links_setHref(\'mailto:\'+document.lurlform.lemail.value);browse_links_setAdditionalValue(\'external\', \'\');return link_current();" /></td>
 							</tr>
 						</table>
 					</form>';
