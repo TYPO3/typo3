@@ -92,30 +92,30 @@ if (1==2 || !is_file($enableInstallToolFile)) {
 			<p>
 				To enable the Install Tool, the file ENABLE_INSTALL_TOOL must be created.
 			</p>
-			<ul>
-				<li>
-					In the typo3conf/ folder, create a file named ENABLE_INSTALL_TOOL. The file name is
-					case sensitive, but the file itself can simply be an empty file.
-				</li>
-				<li class="t3-install-locked-user-settings">
-					Alternatively, in the Backend, go to <a href="javascript:top.goToModule(\'user_setup\',1);">User tools &gt; User settings</a>
-					and let TYPO3 create this file for you. When you\'re finished, you can also visit
-					<a href="javascript:top.goToModule(\'user_setup\',1);">User tools &gt; User settings</a> and delete the file from there.
-				</li>
-			</ul>
+			<p>
+				In the typo3conf/ folder, create a file named ENABLE_INSTALL_TOOL. The file name is
+				case sensitive, but the file itself can simply be an empty file.
+			</p>
 			<p>
 				For security reasons, it is highly recommended that you either rename or delete the file after the operation is finished.
 			</p>
 			<p>
 				As an additional security measure, if the file is older than one hour, TYPO3 will automatically delete it.
 			</p>
-		'
-	);
-		// Fill the markers
-	$content = t3lib_parsehtml::substituteMarkerArray(
-		$template,
-		$markers,
-		'###|###',
+			<p class="t3-install-locked-user-settings">
+				By hitting the button below, this file is created for you and the Install Tool gets unlocked.
+			</p>
+			<form method="post" id="t3-install-form-unlock" action="../mod.php?M=tools_install" class="t3-install-locked-user-settings">
+				<input type="hidden" name="enableInstallTool" value="1" />
+				<button type="submit">Unlock the Install Tool<span class="t3-install-form-button-icon-positive">&nbsp;</span></button>
+			</form>
+	'
+   );
+	   // Fill the markers
+   $content = t3lib_parsehtml::substituteMarkerArray(
+	   $template,
+	   $markers,
+	   '###|###',
 		1,
 		1
 	);

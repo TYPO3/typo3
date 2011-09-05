@@ -47,11 +47,52 @@ class tx_install_mod1 extends t3lib_SCbase {
 			throw new t3lib_error_Exception('Access denied', 1306866845);
 		}
 
-		if (!Tx_Install_Service_BasicService::checkInstallToolEnableFile()) {
-			Tx_Install_Service_BasicService::createInstallToolEnableFile();
+		/** @var $installToolService Tx_Install_Service_BasicService */
+		$installToolService = t3lib_div::makeInstance('Tx_Install_Service_BasicService');
+
+		if ($installToolService->checkInstallToolEnableFile()) {
+				// Install Tool is already enabled
+			t3lib_utility_Http::redirect('install/');
+		} elseif (t3lib_div::_POST('enableInstallTool')) {
+				// Install Tool should be enabled
+			$installToolService->createInstallToolEnableFile();
+			t3lib_utility_Http::redirect('install/');
+		} else {
+				// ask the user to enable the Install Tool
+			$this->showInstallToolEnableRequest();
 		}
-		t3lib_utility_Http::redirect('install/');
 	}
+
+	/**
+	 * Shows warning message about ENABLE_INSTALL_TOOL file and a button to create this file
+	 *
+	 * @return void
+	 */
+	protected function showInstallToolEnableRequest() {
+		/** @var $message t3lib_message_ErrorpageMessage */
+		$message = t3lib_div::makeInstance('t3lib_message_ErrorPageMessage');
+
+		$message->setTitle($GLOBALS['LANG']->sL('LLL:EXT:install/mod/locallang_mod.xlf:confirmUnlockInstallToolTitle'));
+		$message->setSeverity(t3lib_message_ErrorPageMessage::WARNING);
+		$message->setHtmlTemplate('/typo3/templates/install.html');
+
+		$content = $GLOBALS['LANG']->sL('LLL:EXT:install/mod/locallang_mod.xlf:confirmUnlockInstallToolMessage') .
+			'<form method="post" id="t3-install-form-unlock" action="">
+				<input type="hidden" name="enableInstallTool" value="1" />
+				<button type="submit">' .
+				$GLOBALS['LANG']->sL('LLL:EXT:install/mod/locallang_mod.xlf:confirmUnlockInstallToolButton') .
+				'<span class="t3-install-form-button-icon-positive">&nbsp;</span></button>
+			</form>
+			';
+
+		$markers = array();
+		$markers['###STYLESHEET###'] = '<link rel="stylesheet" type="text/css" href="stylesheets/install/install.css" />';
+		$markers['###CONTENT###'] = $content;
+		$message->setMarkers($markers);
+
+		$message->output();
+	}
+
 }
 
 
