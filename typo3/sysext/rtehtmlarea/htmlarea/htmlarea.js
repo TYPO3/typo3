@@ -1881,7 +1881,9 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 		if (this.resizable) {
 			this.resizer.resizeTo(frameworkWidth, frameworkHeight);
 		} else {
-			this.setSize(frameworkWidth, frameworkHeight);
+				// this.setSize is NOT setting size in ExtJS 3.3.1 or ExtJS 3.4
+			this.setWidth(frameworkWidth);
+			this.setHeight(frameworkHeight);
 		}
 	},
 	/*
