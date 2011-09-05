@@ -98,9 +98,10 @@ if (1==2 || !is_file($enableInstallToolFile)) {
 					case sensitive, but the file itself can simply be an empty file.
 				</li>
 				<li class="t3-install-locked-user-settings">
-					Alternatively, in the Backend, go to <a href="javascript:top.goToModule(\'user_setup\',1);">User tools &gt; User settings</a>
-					and let TYPO3 create this file for you. When you\'re finished, you can also visit
-					<a href="javascript:top.goToModule(\'user_setup\',1);">User tools &gt; User settings</a> and delete the file from there.
+					Alternatively, in the Backend, go to <a href="javascript:top.goToModule(\'tools_install\',1);">Admin tools &gt; Install</a>
+					and let TYPO3 create this file for you.<br />
+					You are recommended to log out from the Install Tool after finishing your work.
+					The file will then automatically be deleted.
 				</li>
 			</ul>
 			<p>
