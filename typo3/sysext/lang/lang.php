@@ -345,6 +345,10 @@ class language {
 	 * @access	public
 	 */
 	public function sL($input, $hsc = FALSE) {
+		if (substr($input, 0, 4) !== 'LLL:') {
+			return $input;
+		}
+
 			// If cached label
 		if (!isset($this->LL_labels_cache[$this->lang][$input]) && substr($input, 0, 4) === 'LLL:') {
 			$restStr = trim(substr($input, 4));
