@@ -1146,12 +1146,15 @@ class tx_em_Connection_ExtDirectServer {
 
 		/** @var $locales t3lib_l10n_Locales */
 		$locales = t3lib_div::makeInstance('t3lib_l10n_Locales');
-		$theLanguages = $locales->getLocales();
+		$theLanguages = $locales->getLanguages();
 			//drop default
 		array_shift($theLanguages);
 		$lang = $meta = array();
-		foreach ($theLanguages as $language) {
+		foreach ($theLanguages as $language => $name) {
 			$label = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:lang_' . $language));
+			if ($label === '') {
+				$label = htmlspecialchars($name);
+			}
 			$lang[] = array(
 				'label' => $label,
 				'lang' => $language,
