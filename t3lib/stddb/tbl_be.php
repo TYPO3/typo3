@@ -25,7 +25,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Contains the dynamic configuation of the fields in the core tables of TYPO3: be_users, be_groups and sys_filemounts
+ * Contains the dynamic configuration of the fields in the core tables of TYPO3: be_users, be_groups and sys_filemounts
  *
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  *
@@ -280,56 +280,7 @@ $TCA['be_users'] = array(
 				'type' => 'select',
 				'items' => array(
 					array('English', ''),
-					array('Albanian', 'sq'),
-					array('Arabic', 'ar'),
-					array('Basque', 'eu'),
-					array('Bosnian', 'bs'),
-					array('Brazilian Portuguese', 'pt_BR'),
-					array('Bulgarian', 'bg'),
-					array('Catalan', 'ca'),
-					array('Chinese (Simpl.)', 'ch'),
-					array('Chinese (Trad.)', 'zh'),
-					array('Croatian', 'hr'),
-					array('Czech', 'cs'),
-					array('Danish', 'da'),
-					array('Dutch', 'nl'),
-					array('Esperanto', 'eo'),
-					array('Estonian', 'et'),
-					array('Faroese', 'fo'),
-					array('Finnish', 'fi'),
-					array('French', 'fr'),
-					array('French (Canada)', 'fr_CA'),
-					array('Galician', 'gl'),
-					array('Georgian', 'ka'),
-					array('German', 'de'),
-					array('Greek', 'el'),
-					array('Greenlandic', 'kl'),
-					array('Hebrew', 'he'),
-					array('Hindi', 'hi'),
-					array('Hungarian', 'hu'),
-					array('Icelandic', 'is'),
-					array('Italian', 'it'),
-					array('Japanese', 'ja'),
-					array('Khmer', 'km'),
-					array('Korean', 'ko'),
-					array('Latvian', 'lv'),
-					array('Lithuanian', 'lt'),
-					array('Malay', 'ms'),
-					array('Norwegian', 'no'),
-					array('Persian', 'fa'),
-					array('Polish', 'pl'),
-					array('Portuguese', 'pt'),
-					array('Romanian', 'ro'),
-					array('Russian', 'ru'),
-					array('Serbian', 'sr'),
-					array('Slovak', 'sk'),
-					array('Slovenian', 'sl'),
-					array('Spanish', 'es'),
-					array('Swedish', 'sv'),
-					array('Thai', 'th'),
-					array('Turkish', 'tr'),
-					array('Ukrainian', 'uk'),
-					array('Vietnamese', 'vi'),
+					// Other languages are dynamically populated below
 				)
 			)
 		),
@@ -406,6 +357,17 @@ $TCA['be_users'] = array(
 	),
 );
 
+	// Populate available languages
+/** @var $locales t3lib_l10n_locales */
+$locales = t3lib_div::makeInstance('t3lib_l10n_Locales');
+$languageItems = $locales->getLanguages();
+
+unset($languageItems['default']);
+asort($languageItems);
+
+foreach ($languageItems as $locale => $name) {
+	$TCA['be_users']['columns']['lang']['config']['items'][] = array($name, $locale);
+}
 
 /**
  * Backend usergroups - Much permission criterias are based on membership of backend groups.
