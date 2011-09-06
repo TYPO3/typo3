@@ -30,10 +30,9 @@
  *
  * Defining backend system languages
  * When adding new keys, remember to:
- * 		- Update pages.lang item array (t3lib/stddb/tbl_be.php)
  * 		- Add character encoding for lang. key in t3lib/class.t3lib_cs.php (default for new languages is "utf-8")
  * 		- Add mappings for language in t3lib/class.t3lib_cs.php (TYPO3/ISO, language/script, script/charset)
- * 		- Update 'setup' extension labels (sysext/setup/mod/locallang.xml)
+ * 		- Update 'setup' extension labels (sysext/setup/mod/locallang.xlf)
  * That's it!
  *
  * @package	Core
@@ -43,62 +42,69 @@
 class t3lib_l10n_Locales implements t3lib_Singleton {
 
 	/**
-	 * Supported TYPO3 locales
+	 * Supported TYPO3 languages with locales
 	 * @var array
 	 */
-	protected $locales = array(
-		'default',	// English
-		'ar',		// Arabic
-		'bs',		// Bosnian
-		'bg',		// Bulgarian
-		'ca',		// Catalan; Valencian
-		'ch',		// Chinese (Simplified)
-		'cs',		// Czech
-		'da',		// Danish
-		'de',		// German
-		'el',		// Greek
-		'eo',		// Esperanto
-		'es',		// Spanish; Castilian
-		'et',		// Estonian
-		'eu',		// Basque
-		'fa',		// Persian
-		'fi',		// Finnish
-		'fo',		// Faroese
-		'fr',		// French
-		'fr_CA',	// French (Canada)
-		'gl',		// Galician
-		'he',		// Hebrew
-		'hi',		// Hindi
-		'hr',		// Croatian
-		'hu',		// Hungarian
-		'is',		// Icelandic
-		'it',		// Italian
-		'ja',		// Japanese
-		'ka',		// Georgian
-		'kl',		// Greenlandic
-		'km',		// Khmer
-		'ko',		// Korean
-		'lt',		// Lithuanian
-		'lv',		// Latvian
-		'ms',		// Malay
-		'nl',		// Dutch
-		'no',		// Norwegian
-		'pl',		// Polish
-		'pt',		// Portuguese
-		'pt_BR',	// Portuguese (Brazil)
-		'ro',		// Romanian
-		'ru',		// Russian
-		'sk',		// Slovak
-		'sl',		// Slovenian
-		'sq',		// Albanian
-		'sr',		// Serbian
-		'sv',		// Swedish
-		'th',		// Thai
-		'tr',		// Turkish
-		'uk',		// Ukrainian
-		'vi',		// Vietnamese
-		'zh',		// Chinese (China)
+	protected $languages = array(
+		'default' => 'English',
+		'ar' => 'Arabic',
+		'bs' => 'Bosnian',
+		'bg' => 'Bulgarian',
+		'ca' => 'Catalan',
+		'ch' => 'Chinese (Simpl.)',
+		'cs' => 'Czech',
+		'da' => 'Danish',
+		'de' => 'German',
+		'el' => 'Greek',
+		'eo' => 'Esperanto',
+		'es' => 'Spanish',
+		'et' => 'Estonian',
+		'eu' => 'Basque',
+		'fa' => 'Persian',
+		'fi' => 'Finnish',
+		'fo' => 'Faroese',
+		'fr' => 'French',
+		'fr_CA' => 'French (Canada)',
+		'gl' => 'Galician',
+		'he' => 'Hebrew',
+		'hi' => 'Hindi',
+		'hr' => 'Croatian',
+		'hu' => 'Hungarian',
+		'is' => 'Icelandic',
+		'it' => 'Italian',
+		'ja' => 'Japanese',
+		'ka' => 'Georgian',
+		'kl' => 'Greenlandic',
+		'km' => 'Khmer',
+		'ko' => 'Korean',
+		'lt' => 'Lithuanian',
+		'lv' => 'Latvian',
+		'ms' => 'Malay',
+		'nl' => 'Dutch',
+		'no' => 'Norwegian',
+		'pl' => 'Polish',
+		'pt' => 'Portuguese',
+		'pt_BR' => 'Brazilian Portuguese',
+		'ro' => 'Romanian',
+		'ru' => 'Russian',
+		'sk' => 'Slovak',
+		'sl' => 'Slovenian',
+		'sq' => 'Albanian',
+		'sr' => 'Serbian',
+		'sv' => 'Swedish',
+		'th' => 'Thai',
+		'tr' => 'Turkish',
+		'uk' => 'Ukrainian',
+		'vi' => 'Vietnamese',
+		'zh' => 'Chinese (Trad.)',
 	);
+
+	/**
+	 * Supported TYPO3 locales
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
+	 * @var array
+	 */
+	protected $locales = array();
 
 	/**
 	 * Mapping with codes used by TYPO3 4.5 and below
@@ -148,9 +154,18 @@ class t3lib_l10n_Locales implements t3lib_Singleton {
 		$instance = t3lib_div::makeInstance('t3lib_l10n_Locales');
 		$instance->isoMapping = array_flip($instance->isoReverseMapping);
 
+			// Allow user-defined locales
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user'] as $locale => $name) {
+				if (!isset($instance->languages[$locale])) {
+					$instance->languages[$locale] = $name;
+				}
+			}
+		}
+
 			// Initializes the locale dependencies with TYPO3 supported locales
 		$instance->localeDependencies = array();
-		foreach ($instance->locales as $locale) {
+		foreach ($instance->languages as $locale => $name) {
 			if (strlen($locale) == 5) {
 				$instance->localeDependencies[$locale] = array(substr($locale, 0, 2));
 			}
@@ -159,6 +174,11 @@ class t3lib_l10n_Locales implements t3lib_Singleton {
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies'])) {
 			$instance->localeDependencies = t3lib_div::array_merge_recursive_overrule($instance->localeDependencies, $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies']);
 		}
+
+		/**
+		 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
+		 */
+		$instance->locales = array_keys($instance->languages);
 
 		/**
 		 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
@@ -172,7 +192,16 @@ class t3lib_l10n_Locales implements t3lib_Singleton {
 	 * @return array
 	 */
 	public function getLocales() {
-		return $this->locales;
+		return array_keys($this->languages);
+	}
+
+	/**
+	 * Returns the supported languages indexed by their corresponding locale.
+	 *
+	 * @return array
+	 */
+	public function getLanguages() {
+		return $this->languages;
 	}
 
 	/**
@@ -191,7 +220,7 @@ class t3lib_l10n_Locales implements t3lib_Singleton {
 	 * @deprecated since TYPO3 4.6
 	 */
 	public function getTerLocales() {
-		return $this->convertToTerLocales($this->locales);
+		return $this->convertToTerLocales(array_keys($this->languages));
 	}
 
 	/**

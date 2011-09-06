@@ -141,13 +141,18 @@ class tx_em_Translations {
 		}
 		/** @var $locales t3lib_l10n_Locales */
 		$locales = t3lib_div::makeInstance('t3lib_l10n_Locales');
-		$theLanguages = $locales->getLocales();
-		foreach ($theLanguages as $val) {
-			if ($val != 'default') {
-				$localLabel = '  -  [' . htmlspecialchars($GLOBALS['LOCAL_LANG']['default']['lang_' . $val][0]['target']) . ']';
-				$selected = (is_array($selectedLanguages) && in_array($val, $selectedLanguages)) ? ' selected="selected"' : '';
-				$opt[$GLOBALS['LANG']->getLL('lang_' . $val, 1) . '--' . $val] = '
-			 <option value="' . $val . '"' . $selected . '>' . $GLOBALS['LANG']->getLL('lang_' . $val, 1) . $localLabel . '</option>';
+		$theLanguages = $locales->getLanguages();
+		foreach ($theLanguages as $locale => $name) {
+			if ($locale !== 'default') {
+				$defaultName = isset($GLOBALS['LOCAL_LANG']['default']['lang_' . $locale]) ? $GLOBALS['LOCAL_LANG']['default']['lang_' . $locale][0]['target'] : $name;
+				$localizedName = $GLOBALS['LANG']->getLL('lang_' . $locale, TRUE);
+				if ($localizedName === '') {
+					$localizedName = htmlspecialchars($name);
+				}
+				$localLabel = '  -  [' . htmlspecialchars($defaultName) . ']';
+				$selected = (is_array($selectedLanguages) && in_array($locale, $selectedLanguages)) ? ' selected="selected"' : '';
+				$opt[$localizedName . '--' . $locale] = '
+			 <option value="' . $locale . '"' . $selected . '>' . $localizedName . $localLabel . '</option>';
 			}
 		}
 		ksort($opt);
