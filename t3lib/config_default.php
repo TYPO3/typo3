@@ -188,7 +188,7 @@ $TYPO3_CONF_VARS = array(
 	),
 	'BE' => array(		// Backend Configuration.
 		'lang' => array(
-			'degug' => FALSE,					// Debug LL in the backend
+			'debug' => FALSE,					// Debug LL in the backend
 		),
 		'unzip_path' => '',						// Path to "unzip".
 		'diff_path' => 'diff',					// Path to "diff". For Windows this program can be downloaded here: <a href="http://unxutils.sourceforge.net/" target="_blank">unxutils.sourceforge.net</a>
