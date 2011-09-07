@@ -776,15 +776,20 @@ class SC_mod_user_setup_index {
 			// traverse the number of languages
 		/** @var $locales t3lib_l10n_Locales */
 		$locales = t3lib_div::makeInstance('t3lib_l10n_Locales');
-		foreach ($locales->getLocales() as $language) {
-			if ($language != 'default') {
-				$languageValue = $GLOBALS['LOCAL_LANG']['default']['lang_' . $language][0]['source'];
-				$localLabel = '  -  ['.htmlspecialchars($languageValue) . ']';
-				$unavailable = (is_dir(PATH_typo3conf . 'l10n/' . $language) ? FALSE : TRUE);
-				if (!$unavailable) {
-					$languageOptions[$languageValue] = '<option value="'.$language.'"'.($GLOBALS['BE_USER']->uc['lang'] == $language ?
-						' selected="selected"' : '') . ($unavailable ? ' class="c-na"' : '') . '>' .
-						$GLOBALS['LANG']->getLL('lang_' . $language, 1) . $localLabel . '</option>';
+		$languages = $locales->getLanguages();
+		foreach ($languages as $locale => $name) {
+			if ($locale !== 'default') {
+				$defaultName = isset($GLOBALS['LOCAL_LANG']['default']['lang_' . $locale]) ? $GLOBALS['LOCAL_LANG']['default']['lang_' . $locale][0]['source'] : $name;
+				$localizedName = $GLOBALS['LANG']->getLL('lang_' . $locale, TRUE);
+				if ($localizedName === '') {
+					$localizedName = htmlspecialchars($name);
+				}
+				$localLabel = '  -  [' . htmlspecialchars($defaultName) . ']';
+				$available = (is_dir(PATH_typo3conf . 'l10n/' . $locale) ? TRUE : FALSE);
+				if ($available) {
+					$languageOptions[$defaultName] = '<option value="' . $locale . '"' . ($GLOBALS['BE_USER']->uc['lang'] === $locale ?
+						' selected="selected"' : '') . '>' .
+						$localizedName . $localLabel . '</option>';
 				}
 			}
 		}
