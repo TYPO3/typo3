@@ -508,7 +508,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 		$controllerName = $request->getControllerName();
 		$templateModifiedTimestamp = filemtime($pathAndFilename);
 		$templateIdentifier = sprintf('%s_%s_%s_%s', $extensionName, $controllerName, $prefix, sha1($pathAndFilename . '|' . $templateModifiedTimestamp));
-		$templateIdentifier = str_replace('/', '_', str_replace('.', '_', $templateIdentifier));
 		return $templateIdentifier;
 	}
 }
