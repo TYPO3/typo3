@@ -515,5 +515,22 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 		$actualResult = $abstractConfigurationManager->getConfiguration('CurrentExtensionName', 'CurrentPluginName');
 		$this->assertEquals($expectedResult, $actualResult);
 	}
+
+	/**
+	 * @test
+	 */
+	public function getContentObjectReturnsNullIfNoContentObjectHasBeenSet() {
+		$this->assertNull($this->abstractConfigurationManager->getContentObject());
+	}
+
+	/**
+	 * @test
+	 */
+	public function getContentObjectReturnsACloneOfTheContentObject() {
+		$mockContentObject = $this->getMock('tslib_cObj');
+		$this->abstractConfigurationManager->setContentObject($mockContentObject);
+		$this->assertType('tslib_cObj', $mockContentObject);
+		$this->assertNotSame($this->abstractConfigurationManager->getContentObject(), $mockContentObject);
+	}
 }
 ?>
