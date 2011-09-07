@@ -825,20 +825,15 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	/*
 	 * The editor iframe may become hidden with style.display = "none" on some parent div
 	 * This breaks the editor in Firefox: the designMode attribute needs to be reset after the style.display of the container div is reset to "block"
-	 * In all browsers, it breaks the evaluation of the framework dimensions
+	 * In all browsers, it breaks the evaluation of the framework dimensions: see HTMLArea.Framework.render and HTMLArea.Framework.doLayout
 	 */
 	initStyleChangeEventListener: function () {
-		if (this.isNested  && !Ext.isWebKit) {
+		if (this.isNested  && Ext.isGecko) {
 			var options = {
-				stopEvent: true
+				stopEvent: true,
+				delay: 50
 			};
-			if (Ext.isGecko) {
-				options.delay = 50;
-			}
 			Ext.each(this.nestedParentElements.sorted, function (nested) {
-				if (!Ext.isGecko) {
-					options.target = Ext.get(nested);
-				}
 				this.mon(
 					Ext.get(nested),
 					Ext.isIE ? 'propertychange' : 'DOMAttrModified',
@@ -1895,6 +1890,19 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 		}
 	},
 	/*
+	 * onLayout will fail if inside a hidden tab or inline element
+	 */
+	onLayout: function () {
+		if (!this.isNested || HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
+			HTMLArea.Framework.superclass.onLayout.call(this);
+		} else {
+				// Clone the array of nested tabs and inline levels instead of using a reference as HTMLArea.util.TYPO3.accessParentElements will modify the array
+			var parentElements = [].concat(this.nestedParentElements.sorted);
+				// Walk through all nested tabs and inline levels to get correct sizes
+				HTMLArea.util.TYPO3.accessParentElements(parentElements, 'HTMLArea.Framework.superclass.onLayout.call(args[0])', [this]);
+		}
+	},
+	/*
 	 * Make the framework resizable, if configured
 	 */
 	makeResizable: function () {
@@ -1953,18 +1961,14 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 			this.resizer.resizeTo(frameworkWidth, frameworkHeight);
 		} else {
 			this.setSize(frameworkWidth, frameworkHeight);
+			this.doLayout();
 		}
 	},
 	/*
 	 * Resize the framework components
 	 */
 	onFrameworkResize: function () {
-			// For unknown reason, in Chrome 7, this following is the only way to set the height of the iframe
-		if (Ext.isChrome) {
-			this.iframe.getResizeEl().dom.setAttribute('style', 'width:' + this.getInnerWidth() + 'px; height:' + this.getInnerHeight() + 'px;');
-		} else {
-			this.iframe.setSize(this.getInnerWidth(), this.getInnerHeight());
-		}
+		this.iframe.setSize(this.getInnerWidth(), this.getInnerHeight());
 		this.textArea.setSize(this.getInnerWidth(), this.getInnerHeight());
 	},
 	/*
@@ -1981,12 +1985,7 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 		if (this.getInnerHeight() <= 0) {
 			this.onWindowResize();
 		} else {
-				// For unknown reason, in Chrome 7, this following is the only way to set the height of the iframe
-			if (Ext.isChrome) {
-				this.iframe.getResizeEl().dom.setAttribute('style', 'width:' + this.getInnerWidth() + 'px; height:' + this.getInnerHeight() + 'px;');
-			} else {
-				this.iframe.setHeight(this.getInnerHeight());
-			}
+			this.iframe.setHeight(this.getInnerHeight());
 			this.textArea.setHeight(this.getInnerHeight());
 		}
 	},
