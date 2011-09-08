@@ -3522,7 +3522,7 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 				try {
 					var rules = this.editor.document.styleSheets[0].rules;
 					var imports = this.editor.document.styleSheets[0].imports;
-					if ((!rules || !rules.length) && (!imports || !imports.length)) {
+					if (!rules.length && !imports.length) {
 						this.cssLoaded = false;
 						this.error = 'Empty rules and imports arrays';
 					}
@@ -3540,10 +3540,19 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 			}
 		}
 		if (this.cssLoaded) {
-			if (this.editor.document.styleSheets.length) {
-				Ext.each(this.editor.document.styleSheets, function (styleSheet) {
+				// Expecting 3 stylesheets...
+			if (this.editor.document.styleSheets.length > 2) {
+				Ext.each(this.editor.document.styleSheets, function (styleSheet, index) {
 					try {
 						if (Ext.isIE) {
+							var rules = styleSheet.rules;
+							var imports = styleSheet.imports;
+								// Default page style may contain only a comment
+							if (!rules.length && !imports.length && index != 1) {
+								this.cssLoaded = false;
+								this.error = 'Empty rules and imports arrays of styleSheets[' + index + ']';
+								return false;
+							}
 							if (styleSheet.imports) {
 								this.parseIeRules(styleSheet.imports);
 							}
@@ -3562,7 +3571,7 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 				}, this);
 			} else {
 				this.cssLoaded = false;
-				this.error = 'Empty stylesheets array';
+				this.error = 'Empty stylesheets array or missing linked stylesheets';
 			}
 		}
 	},
