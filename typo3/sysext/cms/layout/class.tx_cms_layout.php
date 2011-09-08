@@ -1585,7 +1585,8 @@ class tx_cms_layout extends recordList {
 				$lockIcon . ' ' .
 				$stat . ' ' .
 				($langMode ? $this->languageFlag($row['sys_language_uid']) : '') . ' ' .
-				'&nbsp;<strong>' . htmlspecialchars($this->CType_labels[$row['CType']]) . '</strong>';
+				$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content', 'list_type'), 1) . ' ' .
+				'<strong>' . $GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content', 'list_type', $row['list_type']), 1) . '</strong><br />';
 
 		// If show info is set...;
 		if ($this->tt_contentConfig['showInfo']) {
@@ -1795,8 +1796,7 @@ class tx_cms_layout extends recordList {
 					}
 					break;
 				case 'list':
-					$out .= $GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content', 'list_type'), 1) . ' ' .
-							$GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content', 'list_type', $row['list_type']), 1) . '<br />';
+
 					$hookArr = array();
 					$hookOut = '';
 					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info'][$row['list_type']])) {
@@ -1812,7 +1812,7 @@ class tx_cms_layout extends recordList {
 					}
 					if (strcmp($hookOut, '')) {
 						$out .= $hookOut;
-					} else {
+					} elseif (!empty($row['select_key'])) {
 						$out .= $GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content', 'select_key'), 1) . ' ' . $row['select_key'] . '<br />';
 					}
 
