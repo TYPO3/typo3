@@ -632,8 +632,7 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 		} else {
 			new Ext.Window({
 				title: TYPO3.EM.Tools.renderExtensionTitle(record),
-				width: 720,
-				height: 400,
+				maximized: true,
 				layout: 'fit',
 				items : tabs,
 				id: id
