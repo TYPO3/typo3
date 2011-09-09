@@ -135,7 +135,8 @@ class Tx_Extbase_Utility_Localization {
 	 */
 	protected function translateFileReference($key) {
 		if (TYPO3_MODE === 'FE') {
-			return $GLOBALS['TSFE']->sL($key);
+			$value = $GLOBALS['TSFE']->sL($key);
+			return $value !== FALSE ? $value : NULL;
 		} elseif (is_object($GLOBALS['LANG'])) {
 			$value = $GLOBALS['LANG']->sL($key);
 			return $value !== '' ? $value : NULL;
