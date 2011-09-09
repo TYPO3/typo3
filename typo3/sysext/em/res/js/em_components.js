@@ -152,7 +152,7 @@ TYPO3.EM.GridColumns.DummyColumn = {
 
 TYPO3.EM.GridColumns.InstallExtension = {
 	header: '',
-	width: 45,
+	width: 29,
 	sortable: false,
 	hideable: false,
 	fixed: true,
@@ -199,26 +199,13 @@ TYPO3.EM.GridColumns.InstallExtension = {
 					});
 				}
 			}
-		},
-		{
-			hidden: (TYPO3.settings.EM.inlineToWindow == 0),
-			getClass: function(value, meta, record) {
-				meta.css += ' paddingActionIcon';
-				if (TYPO3.settings.EM.inlineToWindow == 1) {
-					return 't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-info';
-				}
-				return '';
-			},
-			handler: function(grid, rowIndex, colIndex) {
-				grid.showExtInfoInWindow(rowIndex);
-			}
 		}
 	]
 };
 
 TYPO3.EM.GridColumns.ImportExtension = {
 	header: '',
-	width: 45,
+	width: 29,
 	sortable: false,
 	fixed: true,
 	groupable: false,
@@ -262,18 +249,6 @@ TYPO3.EM.GridColumns.ImportExtension = {
 				}).show(true, function(){
 					Ext.getCmp('emInstallIframeWindow').setUrl(link);
 				});
-			}
-		},
-		{
-			getClass: function(value, meta, record) {
-				meta.css += ' paddingActionIcon';
-				if (TYPO3.settings.EM.inlineToWindow == 1) {
-					return 't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-info';
-				}
-				return '';
-			},
-			handler: function(grid, rowIndex, colIndex) {
-				grid.showExtInfoInWindow(rowIndex);
 			}
 		}
 	]
