@@ -690,9 +690,9 @@ class tx_em_Connection_ExtDirectServer {
 		$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List', $this);
 		/** @var $extensionDetails tx_em_Extensions_Details */
 		$extensionDetails = t3lib_div::makeInstance('tx_em_Extensions_Details');
-		/** @var $extensionDetails tx_em_Connection_Ter */
+		/** @var $terConnection tx_em_Connection_Ter */
 		$terConnection = t3lib_div::makeInstance('tx_em_Connection_Ter', $this);
-		/** @var $extensionDetails tx_em_Install */
+		/** @var $install tx_em_Install */
 		$install = t3lib_div::makeInstance('tx_em_Install');
 		/** @var $api tx_em_API */
 		$api = t3lib_div::makeInstance('tx_em_API');
