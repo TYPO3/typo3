@@ -522,7 +522,7 @@ class user_plaintext {
 	 */
 	function renderImages($str,$links,$caption,$upload_path='uploads/pics/')	{
 		$images = explode(',',$str);
-		$linksArr = explode(',',$links);
+		$linksArr = explode(LF, $links);
 		$lines=array();
 		if ($this->conf['images.']['header'])	{$lines[]=$this->getString($this->conf['images.']['header']);}
 		foreach ($images as $k => $file) {
