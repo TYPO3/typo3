@@ -705,7 +705,7 @@ class tx_em_Connection_ExtDirectServer {
 			$backUpData = $terConnection->makeUploadDataFromarray($uploadArray);
 			$filename = 'T3X_' . $extKey . '-' . str_replace('.', '_', $list[$extKey]['EM_CONF']['version']) . '-z-' . date('YmdHi') . '.t3x';
 
-			$techInfo = $install->makeDetailedExtensionAnalysis($extKey, $list[$extKey]);
+			$techInfo = $install->makeDetailedExtensionAnalysis($extKey, $list[$extKey], FALSE, FALSE);
 			$lines = array();
 
 			// Backup

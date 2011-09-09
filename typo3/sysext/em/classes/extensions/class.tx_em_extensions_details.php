@@ -51,7 +51,7 @@ class tx_em_Extensions_Details {
 	/**
 	 * Class for install extensions
 	 *
-	 * @var em_install
+	 * @var tx_em_Install
 	 */
 	public $install;
 
@@ -579,8 +579,8 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 			);
 
 
-			// Installation status:
-			$techInfo = $this->install->makeDetailedExtensionAnalysis($extKey, $extInfo, 1);
+				// Installation status
+			$techInfo = $this->install->makeDetailedExtensionAnalysis($extKey, $extInfo, TRUE, FALSE);
 			$lines[] = array('<tr><td colspan="2">&nbsp;</td></tr>');
 			$lines[] = array('<tr class="t3-row-header"><td colspan="2"><strong>' . $GLOBALS['LANG']->getLL('extInfoArray_inst_status') . '</strong></td></tr>');
 
