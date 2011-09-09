@@ -440,22 +440,6 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	}
 
 	/**
-	 * Matches against the (internal) uid.
-	 *
-	 * @param int $uid The uid to match against
-	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
-	 * @deprecated since Extbase 1.2.0; was removed in FLOW3; will be removed in Extbase 1.4.0; use equals() instead
-	 */
-	public function withUid($operand) {
-		t3lib_div::logDeprecatedFunction();
-		return $this->qomFactory->comparison(
-			$this->qomFactory->propertyValue('uid', $this->getSelectorName()),
-			Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO,
-			$operand
-			);
-	}
-
-	/**
 	 * Returns an equals criterion used for matching objects against a query
 	 *
 	 * @param string $propertyName The name of the property to compare against
