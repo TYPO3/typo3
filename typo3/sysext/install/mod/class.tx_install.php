@@ -5518,16 +5518,52 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			switch($actionParts[0]) {
 				case 'cmpFile':
 					$tblFileContent='';
+					$hookObjects = array();
+
+					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['checkTheDatabase'])) {
+						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['checkTheDatabase'] as $classData) {
+							/** @var $hookObject Tx_Install_Interfaces_CheckTheDatabaseHook **/
+							$hookObject = t3lib_div::getUserObj($classData);
+
+							if (!($hookObject instanceof Tx_Install_Interfaces_CheckTheDatabaseHook)) {
+								throw new UnexpectedValueException('$hookObject must implement interface Tx_Install_Interfaces_CheckTheDatabaseHook', 1315554770);
+							}
+
+							$hookObjects[] = $hookObject;
+						}
+					}
+
 					if (!strcmp($actionParts[1],'CURRENT_TABLES')) {
 						$tblFileContent = t3lib_div::getUrl(PATH_t3lib.'stddb/tables.sql');
 
-						foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $loadedExtConf) {
+						foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $loadedExtConf) {
 							if (is_array($loadedExtConf) && $loadedExtConf['ext_tables.sql']) {
-								$tblFileContent .= LF . LF . LF . LF . t3lib_div::getUrl($loadedExtConf['ext_tables.sql']);
+								$extensionSqlContent = t3lib_div::getUrl($loadedExtConf['ext_tables.sql']);
+								$tblFileContent .= LF . LF . LF . LF . $extensionSqlContent;
+
+								foreach ($hookObjects as $hookObject) {
+									/** @var $hookObject Tx_Install_Interfaces_CheckTheDatabaseHook **/
+									$appendableTableDefinitions = $hookObject->appendExtensionTableDefinitions($extKey, $loadedExtConf, $extensionSqlContent, $this->sqlHandler, $this);
+									if ($appendableTableDefinitions) {
+										$tblFileContent .= $appendableTableDefinitions;
+										break;
+									}
+								}
 							}
 						}
+
 					} elseif (@is_file($actionParts[1])) {
 						$tblFileContent = t3lib_div::getUrl($actionParts[1]);
+					}
+
+
+					foreach ($hookObjects as $hookObject) {
+						/** @var $hookObject Tx_Install_Interfaces_CheckTheDatabaseHook **/
+						$appendableTableDefinitions = $hookObject->appendGlobalTableDefinitions($tblFileContent, $this->sqlHandler,  $this);
+						if ($appendableTableDefinitions) {
+							$tblFileContent .= $appendableTableDefinitions;
+							break;
+						}
 					}
 					$tblFileContent .= t3lib_cache::getDatabaseTableDefinitions();
 					if ($tblFileContent) {
