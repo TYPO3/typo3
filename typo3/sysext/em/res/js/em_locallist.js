@@ -74,6 +74,7 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 													var w = new Ext.Window({
 																width: 500,
 																height: 500,
+																modal: true,
 																layout: 'fit',
 																title: TYPO3.lang.ext_details_updateScript + ' (' + record.data.extkey + ')',
 																items: [
