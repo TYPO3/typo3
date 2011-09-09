@@ -810,13 +810,13 @@ class tx_em_Install {
 	 * Prints form for changes if any. If none, returns blank. If an update is ordered, empty is returned as well.
 	 * DBAL compliant (based on Install Tool code)
 	 *
-	 * @param	string		Extension key
-	 * @param	array		Extension information array
-	 * @param	boolean		If TRUE, returns array with info.
-	 * @return	mixed		If $infoOnly, returns array with information. Otherwise performs update.
+	 * @param string $extKey Extension key
+	 * @param array $extInfo Extension information array
+	 * @param boolean $infoOnly If TRUE, returns array with info
+	 * @param boolean $skipCachingTables If TRUE, don't validate take the caching tables into account
+	 * @return mixed If $infoOnly, returns array with information. Otherwise performs update.
 	 */
-	function checkDBupdates($extKey, $extInfo, $infoOnly = 0) {
-
+	function checkDBupdates($extKey, $extInfo, $infoOnly = FALSE, $skipCachingTables = FALSE) {
 
 		$dbStatus = array();
 		$content = '';
@@ -826,7 +826,12 @@ class tx_em_Install {
 		if (is_array($extInfo['files']) && in_array('ext_tables.sql', $extInfo['files'])) {
 			$path = tx_em_Tools::getExtPath($extKey, $extInfo['type']);
 			$fileContent = t3lib_div::getUrl($path . 'ext_tables.sql');
-			$fileContent .= t3lib_cache::getDatabaseTableDefinitions();
+				// Take caching tables into account only if necessary
+				// (this is not always the case, because this method is also called, for example,
+				// to list all tables for which to dump data for in the extension maintenance operations)
+			if (!$skipCachingTables) {
+				$fileContent .= t3lib_cache::getDatabaseTableDefinitions();
+			}
 
 			$FDfile = $this->installerSql->getFieldDefinitions_fileContent($fileContent);
 			if (count($FDfile)) {
@@ -1024,14 +1029,15 @@ class tx_em_Install {
 	/**
 	 * Perform a detailed, technical analysis of the available extension on server!
 	 * Includes all kinds of verifications
-	 * Takes some time to process, therfore use with care, in particular in listings.
+	 * Takes some time to process, therefore use with care, in particular in listings.
 	 *
-	 * @param	string		Extension key
-	 * @param	array		Extension information
-	 * @param	boolean		If set, checks for validity of classes etc.
-	 * @return	array		Information in an array.
+	 * @param string $extKey Extension key
+	 * @param array $extInfo Extension information
+	 * @param boolean $validity If set, checks for validity of classes etc.
+	 * @param boolean $skipCachingTables If TRUE, don't validate take the caching tables into account
+	 * @return array Information in an array
 	 */
-	function makeDetailedExtensionAnalysis($extKey, $extInfo, $validity = 0) {
+	function makeDetailedExtensionAnalysis($extKey, $extInfo, $validity = FALSE, $skipCachingTables = FALSE) {
 
 		// Get absolute path of the extension
 		$absPath = tx_em_Tools::getExtPath($extKey, $extInfo['type']);
@@ -1041,8 +1047,8 @@ class tx_em_Install {
 		$table_class_prefix = substr($extKey, 0, 5) == 'user_' ? 'user_' : 'tx_' . str_replace('_', '', $extKey) . '_';
 		$module_prefix = substr($extKey, 0, 5) == 'user_' ? 'u' : 'tx' . str_replace('_', '', $extKey);
 
-		// Database status:
-		$dbInfo = $this->checkDBupdates($extKey, $extInfo, 1);
+			// Database status:
+		$dbInfo = $this->checkDBupdates($extKey, $extInfo, TRUE, $skipCachingTables);
 
 		// Database structure required:
 		if (is_array($dbInfo['structure']['tables_fields'])) {
