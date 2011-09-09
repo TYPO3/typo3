@@ -213,36 +213,35 @@ HTMLArea.TYPO3Link = HTMLArea.Plugin.extend({
 				}
 			}
 		}
-		if (!Ext.isIE && node != null && /^a$/i.test(node.nodeName)) {
-				// Update existing link in non-IE
+		if (node != null && /^a$/i.test(node.nodeName)) {
+				// Update existing link
 			this.editor.selectNode(node);
 			selection = this.editor._getSelection();
 			range = this.editor._createRange(selection);
-				// Clean images
+				// Clean images, keep links
 			if (HTMLArea.classesAnchorSetup) {
 				this.cleanAllLinks(node, range, true);
 			}
 				// Update link href
+				// In IE, setting href may update the content of the element. We don't want this feature.
+			if (Ext.isIE) {
+				var content = node.innerHTML;
+			}
 			node.href = Ext.isGecko ? encodeURI(theLink) : theLink;
+			if (Ext.isIE) {
+				node.innerHTML = content;
+			}
 				// Update link attributes
 			this.setLinkAttributes(node, range, cur_target, cur_class, cur_title, imageNode, addIconAfterLink, additionalValues);
 		} else {
 				// Create new link
-				// Update links in IE
 			selection = this.editor._getSelection();
 			range = this.editor._createRange(selection);
-			if (Ext.isIE) {
-					// Clean images, keep links
-				if (HTMLArea.classesAnchorSetup) {
-					this.cleanAllLinks(node, range, true);
-				}
-			} else {
-					// Clean existing anchors otherwise Mozilla may create nested anchors
-					// Selection may be lost when cleaning links
-				var bookmark = this.editor.getBookmark(range);
-				this.cleanAllLinks(node, range);
-				this.editor.selectRange(this.editor.moveToBookmark(bookmark));
-			}
+				// Clean existing anchors otherwise Mozilla may create nested anchors while IE may update exisitng link
+				// Selection may be lost when cleaning links
+			var bookmark = this.editor.getBookmark(range);
+			this.cleanAllLinks(node, range);
+			this.editor.selectRange(this.editor.moveToBookmark(bookmark));
 			if (Ext.isGecko) {
 				this.editor.document.execCommand('CreateLink', false, encodeURI(theLink));
 			} else {
