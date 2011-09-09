@@ -51,11 +51,6 @@ class Tx_Fluid_ViewHelpers_CObjectViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	protected $escapingInterceptorEnabled = FALSE;
 
 	/**
-	 * @var tslib_cObj
-	 */
-	protected $contentObject;
-
-	/**
 	 * @var array
 	 */
 	protected $typoScriptSetup;
@@ -76,7 +71,6 @@ class Tx_Fluid_ViewHelpers_CObjectViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	 */
 	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
-		$this->contentObject = $this->configurationManager->getContentObject();
 		$this->typoScriptSetup = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 	}
 
@@ -105,11 +99,12 @@ class Tx_Fluid_ViewHelpers_CObjectViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 			$currentValue = (string) $data;
 			$data = array($data);
 		}
-		$this->contentObject->start($data);
+		$contentObject = t3lib_div::makeInstance('tslib_cObj');
+		$contentObject->start($data);
 		if ($currentValue !== NULL) {
-			$this->contentObject->setCurrentVal($currentValue);
+			$contentObject->setCurrentVal($currentValue);
 		} elseif ($currentValueKey !== NULL && isset($data[$currentValueKey])) {
-			$this->contentObject->setCurrentVal($data[$currentValueKey]);
+			$contentObject->setCurrentVal($data[$currentValueKey]);
 		}
 
 		$pathSegments = t3lib_div::trimExplode('.', $typoscriptObjectPath);
@@ -121,7 +116,7 @@ class Tx_Fluid_ViewHelpers_CObjectViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 			}
 			$setup = $setup[$segment . '.'];
 		}
-		$content = $this->contentObject->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
+		$content = $contentObject->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
 
 		if (TYPO3_MODE === 'BE') {
 			$this->resetFrontendEnvironment();
