@@ -121,10 +121,10 @@ class tslib_feUserAuth extends t3lib_userAuth {
 
 
 	/**
+	 * Returns the configured cookie name
+	 *
 	 * @static
 	 * @return string
-	 *
-	 * returns the configured cookie name
 	 */
 	public static function getCookieName() {
 		$configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['FE']['cookieName']);
