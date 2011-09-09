@@ -526,11 +526,10 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 	/**
 	 * @test
 	 */
-	public function getContentObjectReturnsACloneOfTheContentObject() {
+	public function getContentObjectTheCurrentContentObject() {
 		$mockContentObject = $this->getMock('tslib_cObj');
 		$this->abstractConfigurationManager->setContentObject($mockContentObject);
-		$this->assertType('tslib_cObj', $mockContentObject);
-		$this->assertNotSame($this->abstractConfigurationManager->getContentObject(), $mockContentObject);
+		$this->assertSame($this->abstractConfigurationManager->getContentObject(), $mockContentObject);
 	}
 }
 ?>

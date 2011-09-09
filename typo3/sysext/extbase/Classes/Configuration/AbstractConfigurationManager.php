@@ -105,7 +105,7 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 	 */
 	public function getContentObject() {
 		if ($this->contentObject !== NULL) {
-			return clone $this->contentObject;
+			return $this->contentObject;
 		}
 	}
 
