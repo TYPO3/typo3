@@ -29,10 +29,26 @@
  * Interface for hook in tx_em_Install::checkDBupdates.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
+ * @author Thomas Maroschik <tmaroschik@dfau.de>
  * @package TYPO3
  * @subpackage em
  */
 interface tx_em_Index_CheckDatabaseUpdatesHook {
+
+	/**
+	 * Hook that allows to dynamically extend the table definitions for e.g. custom caches.
+	 * The hook implementation may return table create strings that will be respected by
+	 * the extension manager during installation of an extension.
+	 *
+	 * @param string $extKey: Extension key
+	 * @param array $extInfo: Extension information array
+	 * @param string $fileContent: Content of the current extension sql file
+	 * @param t3lib_install $instObj: Instance of the installer
+	 * @param t3lib_install_Sql $instSqlObj: Instance of the installer sql object
+	 * @param tx_em_Install $parent: The calling parent object
+	 * @return string Either empty string or table create strings
+	 */
+	public function appendTableDefinitions($extKey, array $extInfo, $fileContent, t3lib_install $instObj, t3lib_install_Sql $instSqlObj, tx_em_Install $parent);
 
 	/**
 	 * Hook that allows pre-processing of database structure modifications.

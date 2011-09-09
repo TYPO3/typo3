@@ -817,9 +817,21 @@ class tx_em_Install {
 	 */
 	function checkDBupdates($extKey, $extInfo, $infoOnly = 0) {
 
-
 		$dbStatus = array();
 		$content = '';
+		$hookObjects = array();
+
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/mod/tools/em/index.php']['checkDBupdates'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/mod/tools/em/index.php']['checkDBupdates'] as $classData) {
+				$hookObject = t3lib_div::getUserObj($classData);
+
+				if (!($hookObject instanceof tx_em_Index_CheckDatabaseUpdatesHook)) {
+					throw new UnexpectedValueException('$hookObject must implement interface em_index_checkDatabaseUpdatesHook', 1288418476);
+				}
+
+				$hookObjects[] = $hookObject;
+			}
+		}
 
 		// Updating tables and fields?
 		$showUpdateStatements = TRUE;
@@ -827,6 +839,14 @@ class tx_em_Install {
 			$path = tx_em_Tools::getExtPath($extKey, $extInfo['type']);
 			$fileContent = t3lib_div::getUrl($path . 'ext_tables.sql');
 			$fileContent .= t3lib_cache::getDatabaseTableDefinitions();
+			foreach ($hookObjects as $hookObject) {
+				/* @var $hookObject tx_em_Index_CheckDatabaseUpdatesHook */
+				$appendableTableDefinitions = $hookObject->appendTableDefinitions($extKey, $extInfo, $fileContent, $this->install, $this->installerSql, $this);
+				if ($appendableTableDefinitions) {
+					$fileContent .= $appendableTableDefinitions;
+					break;
+				}
+			}
 
 			$FDfile = $this->installerSql->getFieldDefinitions_fileContent($fileContent);
 			if (count($FDfile)) {
@@ -843,21 +863,13 @@ class tx_em_Install {
 					$this->installerSql->performUpdateQueries($update_statements['change'], $this->install->INSTALL['database_update']);
 					$this->installerSql->performUpdateQueries($update_statements['create_table'], $this->install->INSTALL['database_update']);
 				} else {
-					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/mod/tools/em/index.php']['checkDBupdates'])) {
-						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/mod/tools/em/index.php']['checkDBupdates'] as $classData) {
-							$hookObject = t3lib_div::getUserObj($classData);
-
-							if (!($hookObject instanceof tx_em_Index_CheckDatabaseUpdatesHook)) {
-								throw new UnexpectedValueException('$hookObject must implement interface em_index_checkDatabaseUpdatesHook', 1288418476);
-							}
-
-							/* @var $hookObject tx_em_Index_CheckDatabaseUpdatesHook */
-							$preprocessContent = $hookObject->preProcessDatabaseUpdates($extKey, $extInfo, $diff, $this->install, $this);
-							if ($preprocessContent) {
-								$content .= $preprocessContent;
-								$showUpdateStatements = FALSE;
-								break;
-							}
+					foreach ($hookObjects as $hookObject) {
+						/* @var $hookObject tx_em_Index_CheckDatabaseUpdatesHook */
+						$preprocessContent = $hookObject->preProcessDatabaseUpdates($extKey, $extInfo, $diff, $this->install, $this);
+						if ($preprocessContent) {
+							$content .= $preprocessContent;
+							$showUpdateStatements = FALSE;
+							break;
 						}
 					}
 					if ($showUpdateStatements) {
