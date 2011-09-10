@@ -307,6 +307,14 @@
 				<source>Local Extension List</source>
 				<target>Local Extension List</target>
 			</trans-unit>
+			<trans-unit id="extensionList" approved="yes">
+				<source>Extension List</source>
+				<target>Extension List</target>
+			</trans-unit>
+			<trans-unit id="importInstall" approved="yes">
+				<source>Import &amp; Install</source>
+				<target>Import &amp; Install</target>
+			</trans-unit>
 			<trans-unit id="go_back" approved="yes">
 				<source>Go back</source>
 				<target>Go back</target>
