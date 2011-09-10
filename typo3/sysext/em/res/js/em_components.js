@@ -678,8 +678,10 @@ TYPO3.EM.LanguagesProgressPanel = {
 };
 
 TYPO3.EM.InstallWindow = Ext.extend(Ext.Window, {
-	width: 500,
-	height: 400,
+	width: 750,
+	height: 550,
+	maximized: TYPO3.settings.EM.fullScreenMode,
+	maximizable: (TYPO3.settings.EM.fullScreenMode ? false : true),
 	closable: true,
 	resizable: true,
 	plain: true,
@@ -702,8 +704,10 @@ TYPO3.EM.InstallWindow = Ext.extend(Ext.Window, {
 });
 
 TYPO3.EM.ImportWindow = Ext.extend(Ext.Window, {
-	width: 500,
-	height: 400,
+	width: 750,
+	height: 550,
+	maximized: TYPO3.settings.EM.fullScreenMode,
+	maximizable: (TYPO3.settings.EM.fullScreenMode ? false : true),
 	closable: true,
 	resizable: true,
 	plain: true,
