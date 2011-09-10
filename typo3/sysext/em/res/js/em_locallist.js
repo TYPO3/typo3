@@ -305,8 +305,8 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 		this.localstore = new Ext.data.GroupingStore({
 			storeId: 'localstore',
 			proxy: new Ext.data.DirectProxy({
-						directFn: TYPO3.EM.ExtDirect.getExtensionList
-					}),
+				directFn: TYPO3.EM.ExtDirect.getExtensionList
+			}),
 			autoLoad: false,
 			reader: new Ext.data.JsonReader({
 						idProperty: 'extkey',
@@ -340,7 +340,9 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 							{name:'doNotLoadInFE'},
 							{name:'depends'},
 							{name:'conflicts'},
-							{name:'suggests'}
+							{name:'suggests'},
+							{name:'versionislower'},
+							{name:'maxversion'}
 						]
 					}),
 
@@ -370,7 +372,7 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 						this.doClearFilters.hide();
 						this.doClearFiltersSeperator.hide();
 					}
-					if (!TYPO3.settings.EM.hide_obsolete && !TYPO3.settings.EM.hide_shy && !TYPO3.settings.EM.display_installed) {
+					if (!TYPO3.settings.EM.hide_obsolete && !TYPO3.settings.EM.hide_shy && !TYPO3.settings.EM.display_installed && !TYPO3.settings.EM.display_updatable) {
 						this.filterMenuButton.removeClass('bold');
 					} else {
 						this.filterMenuButton.addClass('bold');
@@ -407,20 +409,24 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 				if (TYPO3.settings.EM.display_installed == 1 && record.data.installed == 0) {
 					return false;
 				}
+				if (TYPO3.settings.EM.display_updatable == 1 && record.data.versionislower == 0) {
+					return false;
+				}
 
 				return true;
 			},
 
 			hasStoreFilter: function() {
-				return (TYPO3.settings.EM.hide_obsolete || TYPO3.settings.EM.hide_shy || TYPO3.settings.EM.display_installed);
+				return (TYPO3.settings.EM.hide_obsolete || TYPO3.settings.EM.hide_shy || TYPO3.settings.EM.display_installed || TYPO3.settings.EM.display_updatable);
 			},
 
 			clearStoreFilters: function(scope) {
 				Ext.each(scope.filterMenuButton.menu.items.items, function(item) {
 					item.setChecked(false, true);
 				});
-				TYPO3.settings.EM.hide_obsolete = TYPO3.settings.EM.hide_shy = TYPO3.settings.EM.display_installed = 0;
+				TYPO3.settings.EM.hide_obsolete = TYPO3.settings.EM.hide_shy = TYPO3.settings.EM.display_installed = TYPO3.settings.EM.display_updatable = 0;
 				TYPO3.EM.ExtDirect.saveSetting('display_installed', 0);
+				TYPO3.EM.ExtDirect.saveSetting('display_updatable', 0);
 				TYPO3.EM.ExtDirect.saveSetting('hide_shy', 0);
 				TYPO3.EM.ExtDirect.saveSetting('hide_obsolete', 0);
 				scope.filterRecords();
@@ -515,6 +521,16 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 								scope: this
 							},
 							{
+								checked: TYPO3.settings.EM.display_updatable ? true : false,
+								text: TYPO3.l10n.localize('display_updatesOnly'),
+								handler: function(item, event) {
+									TYPO3.settings.EM.display_updatable = item.checked ? 0 : 1;
+									TYPO3.EM.ExtDirect.saveSetting('display_updatable', TYPO3.settings.EM.display_updatable);
+									this.filterRecords();
+								},
+								scope: this
+							},
+							{
 								checked: TYPO3.settings.EM.hide_shy ? true : false,
 								text: TYPO3.l10n.localize('hide_shy'),
 								handler: function(item, event) {
@@ -594,7 +610,11 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 	onRender: function() {
 		TYPO3.EM.LocalList.superclass.onRender.apply(this, arguments);
 		if (this.localstore.getCount() == 0) {
-			this.localstore.load();
+			this.localstore.load({
+				params: {
+					repository: TYPO3.settings.EM.selectedRepository
+				}
+			});
 		}
 
 		this.on('rowdblclick', function(grid, rowIndex, event) {

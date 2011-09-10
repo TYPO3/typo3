@@ -152,7 +152,7 @@ TYPO3.EM.GridColumns.DummyColumn = {
 
 TYPO3.EM.GridColumns.InstallExtension = {
 	header: '',
-	width: 29,
+	width: 45,
 	sortable: false,
 	hideable: false,
 	fixed: true,
@@ -162,6 +162,44 @@ TYPO3.EM.GridColumns.InstallExtension = {
 	items: [
 		{
 			getClass: function(value, meta, record) {
+				if (record.data.versionislower) {
+					this.items[0].tooltip = String.format(TYPO3.l10n.localize('menu_update_extension'), record.data.version, record.data.maxversion);
+					return 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-update';
+				}
+                meta.css += ' paddingNoActionIcon';
+				return '';
+			},
+			handler: function(grid, rowIndex, colIndex) {
+				var record = grid.store.getAt(rowIndex).data;
+                if (!record.versionislower) {
+					return;
+				}
+				var action = TYPO3.l10n.localize('menu_update_extensions');
+				var link = TYPO3.settings.EM.scriptLink
+						+ '&nodoc=1&view=info&CMD[silentMode]=1&CMD[standAlone]=1&ter_connect=1&CMD[importExt]='
+						+ record.extkey  + '&CMD[extVersion]=' + record.maxversion + '&CMD[loc]=L';
+
+				TYPO3.EM.ImportWindow = new TYPO3.EM.InstallWindow({
+					title: action + ': ' + record.title + ' (' + record.extkey + ') version ' + record.maxversion,
+					record: record,
+					installAction: 'import',
+					listeners: {
+						close: function() {
+                            grid.store.reload({
+                                params: {
+                                    repository: TYPO3.settings.EM.selectedRepository
+                                }
+                            });
+						}
+					}
+				}).show(true, function(){
+					Ext.getCmp('emInstallIframeWindow').setUrl(link);
+				});
+			}
+		},
+		{
+			getClass: function(value, meta, record) {
+				meta.css += ' paddingActionIcon';
 				if (record.get('installed') == 0) {
 					this.items[0].tooltip = TYPO3.l10n.localize('menu_install_extensions');
 					return 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-install';
@@ -190,7 +228,11 @@ TYPO3.EM.GridColumns.InstallExtension = {
 						url: link,
 						listeners: {
 							close: function() {
-								grid.store.reload();
+								grid.store.reload({
+									params: {
+										repository: TYPO3.settings.EM.selectedRepository
+									}
+								});
 								TYPO3.EM.Tools.refreshMenu(record, 'install');
 							}
 						}
@@ -479,7 +521,11 @@ TYPO3.EM.LocalListTab = {
 	listeners: {
 		activate: function(panel) {
 			if (TYPO3.EM.App.refreshLocalList) {
-				Ext.StoreMgr.get('localstore').load();
+				Ext.StoreMgr.get('localstore').load({
+					params: {
+						repository: TYPO3.settings.EM.selectedRepository
+					}
+				});
 			}
 		},
 		scope: this

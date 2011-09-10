@@ -214,7 +214,7 @@ final class tx_em_Database {
 	 * Update the lastversion field after update
 	 *
 	 * @param int $repositoryUid
-	 * @return void
+	 * @return integer
 	 */
 	public function insertLastVersion($repositoryUid = 1) {
 		$groupedRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -252,6 +252,7 @@ final class tx_em_Database {
 	 *
 	 * @access  public
 	 * @param   int  $uid  repository UID
+	 * @return array
 	 */
 	public function getRepositoryByUID($uid) {
 		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', self::TABLE_REPOSITORY, 'uid=' . intval($uid));
@@ -263,7 +264,7 @@ final class tx_em_Database {
 	 * Method finds and returns repository identified by its title
 	 *
 	 * @param  $title
-	 * @return
+	 * @return array
 	 */
 	public function getRepositoryByTitle($title) {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(

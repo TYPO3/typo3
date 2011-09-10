@@ -133,6 +133,7 @@ class tx_em_Settings implements t3lib_Singleton {
 			'display_own' => '',
 			'display_obsolete' => '',
 			'display_installed' => '',
+			'display_updatable' => '',
 			'display_files' => '',
 			'hide_shy' => 0,
 			'hide_obsolete' => 0,
