@@ -789,9 +789,18 @@ class tslib_menu {
 
 			$c=0;
 			$c_b=0;
-			$minItems = intval($this->mconf['minItems'] ? $this->mconf['minItems'] : $this->conf['minItems']);
-			$maxItems = intval($this->mconf['maxItems'] ? $this->mconf['maxItems'] : $this->conf['maxItems']);
-			$begin = tslib_cObj::calc($this->mconf['begin'] ? $this->mconf['begin'] : $this->conf['begin']);
+
+			$minItems = $this->mconf['minItems'] ? 
+				$this->parent_cObj->stdWrap(intval($this->mconf['minItems']), $this->mconf['minItems.']) :
+				$this->parent_cObj->stdWrap(intval($this->conf['minItems']), $this->conf['minItems.']);
+
+			$maxItems = $this->mconf['maxItems'] ?
+				$this->parent_cObj->stdWrap(intval($this->mconf['maxItems']), $this->mconf['maxItems.']) :
+				$this->parent_cObj->stdWrap(intval($this->conf['maxItems']), $this->conf['maxItems.']);
+
+			$begin = $this->mconf['begin'] ?
+				$this->parent_cObj->stdWrap(tslib_cObj::calc($this->mconf['begin']), $this->mconf['begin.']) :
+				$this->parent_cObj->stdWrap(tslib_cObj::calc($this->conf['begin']), $this->conf['begin.']);
 
 			$banUidArray = $this->getBannedUids();
 
