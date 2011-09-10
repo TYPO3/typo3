@@ -399,6 +399,14 @@
 			<trans-unit id="debugInWindow" xml:space="preserve">
 				<source>Display debug messages in a new browser window</source>
 			</trans-unit>
+			<trans-unit id="emFullScreenMode" approved="yes">
+				<source>Full-screen mode for dialogs</source>
+				<target>Full-screen mode for dialogs</target>
+			</trans-unit>
+			<trans-unit id="emSettingsTab" approved="yes">
+				<source>Extension Manager</source>
+				<target>Extension Manager</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
