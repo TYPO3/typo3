@@ -102,25 +102,55 @@ class tx_em_Connection_ExtDirectServer {
 	/**
 	 * Render local extension list
 	 *
-	 * @return string $content
+	 * @param object $parameters
+	 * @return array
 	 */
-	public function getExtensionList() {
+	public function getExtensionList($parameters) {
+		$repositoryId = $parameters->repository;
+
 		/** @var $list tx_em_Extensions_List */
 		$list = t3lib_div::makeInstance('tx_em_Extensions_List');
 		$extList = $list->getInstalledExtensions(TRUE);
 
+		$temp = array();
+		$localList = array();
+		foreach ($extList as $entry) {
+			$temp[] = '"' . $entry['extkey'] . '"';
+			$entry['intversion'] = t3lib_utility_VersionNumber::convertVersionNumberToInteger($entry['version']);
+			$localList[$entry['extkey']] = $entry;
+		}
 
-		return array(
-			'length' => count($extList),
-			'data' => $extList
+		$where = ' AND cache_extensions.extkey IN (' . implode(',', $temp) . ')';
+		$additionalData = tx_em_Database::getExtensionListFromRepository(
+			$repositoryId,
+			'',
+			$where
 		);
 
+		foreach ($additionalData['results'] as $key => $value) {
+			$isUpdatable = ($localList[$value['extkey']]['intversion'] < $value['maxintversion']);
+			$localList[$value['extkey']]['versionislower'] = $isUpdatable;
+			$localList[$value['extkey']]['maxversion'] = tx_em_Tools::versionFromInt($value['maxintversion']);
+		}
+
+		return array(
+			'length' => count($localList),
+			'data' => array_values($localList)
+		);
 	}
 
+	/**
+	 * Returns the list of extensions with additional data
+	 *
+	 * @return array
+	 */
 	public function getFlatExtensionList() {
-		$list = $this->getExtensionList();
+		/** @var $list tx_em_Extensions_List */
+		$list = t3lib_div::makeInstance('tx_em_Extensions_List');
+		$extList = $list->getInstalledExtensions(TRUE);
+
 		$flatList = array();
-		foreach ($list['data'] as $entry) {
+		foreach ($extList as $entry) {
 			$flatList[$entry['extkey']] = array(
 				'version' => $entry['version'],
 				'intversion' => t3lib_utility_VersionNumber::convertVersionNumberToInteger($entry['version']),
@@ -137,10 +167,11 @@ class tx_em_Connection_ExtDirectServer {
 	/**
 	 * Render extensionlist for languages
 	 *
-	 * @return unknown
+	 * @param object $parameters
+	 * @return array
 	 */
-	public function getInstalledExtkeys() {
-		$list = $this->getExtensionList();
+	public function getInstalledExtkeys($parameters) {
+		$list = $this->getExtensionList($parameters);
 		$extList = $list['data'];
 
 		$selectedLanguages = t3lib_div::trimExplode(',', $this->globalSettings['selectedLanguages']);
@@ -678,7 +709,7 @@ class tx_em_Connection_ExtDirectServer {
 	}
 
 
-/**
+	/**
 	 * Prints backupdelete
 	 *
 	 * @param string $parameter

@@ -218,6 +218,10 @@ a.email {
 	margin-right: 5px;
 }
 
+.paddingNoActionIcon img {
+    margin-right: 20px;
+}
+
 .filteringList-highlight {
 	background-color: #f48e0c;
     color: #fff;

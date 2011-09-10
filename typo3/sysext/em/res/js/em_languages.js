@@ -130,6 +130,9 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 			root		: 'data',
 			idProperty  : 'extkey',
 			fields : [{name : 'extkey'},{name : 'icon'},{name: 'stype'}],
+			baseParams: {
+				repository: TYPO3.settings.EM.selectedRepository
+			},
 			listeners : {
 				'load': function(store, records, options){
 					if(records.length) {

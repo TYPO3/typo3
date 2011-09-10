@@ -43,7 +43,11 @@ TYPO3.EM.Tools = function() {
 				var search = Ext.getCmp('localSearchField');
 				search.setValue(extKey);
 				search.refreshTrigger();
-				localStore.load();
+				localStore.load({
+					params: {
+						repository: TYPO3.settings.EM.selectedRepository
+					}
+				});
 			}
 		},
 

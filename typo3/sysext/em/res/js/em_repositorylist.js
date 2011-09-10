@@ -250,15 +250,6 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 									this.store.reload();
 								},
 								scope: this
-							}, {
-								checked: false,
-								group: 'installFilter',
-								text: TYPO3.l10n.localize('display_updatesOnly'),
-								handler: function(item, event) {
-									this.showInstalledOnly = 2;
-									this.store.reload();
-								},
-								scope: this
 							}
 						]
 					}
