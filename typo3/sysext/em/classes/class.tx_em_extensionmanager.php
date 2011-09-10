@@ -175,6 +175,7 @@ class tx_em_ExtensionManager {
 			'codemirrorContribPath' => $this->parentObject->doc->backPath . 'contrib/codemirror/contrib/',
 			'selectedLanguages' => t3lib_div::trimExplode(',', $globalSettings['selectedLanguages'], TRUE),
 			'inlineToWindow' => $globalSettings['inlineToWindow'],
+			'fullScreenMode' => (empty($GLOBALS['BE_USER']->uc['emFullScreenMode'])) ? FALSE : TRUE,
 			'allowRepositoryUpdate' => $allowRepositoryUpdate,
 			'displayMyExtensions' => $globalSettings['displayMyExtensions'],
 			'debug' => $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] > 0,
@@ -186,7 +187,6 @@ class tx_em_ExtensionManager {
 			'fileAllowUpload' => 0, //$fileAllowUpload,
 			'fileAllowCreate' => 0, //$fileAllowCreate,
 			'fileAllowDownload' => $fileAllowDownload,
-
 		);
 		$settings = array_merge($settings, $additionalSettings);
 

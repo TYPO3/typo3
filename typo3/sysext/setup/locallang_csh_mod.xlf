@@ -389,6 +389,10 @@ When "Display full text message" is selected you will see a short description sh
 				<source>By clicking this button, a file typo3conf/ENABLE_INSTALL_TOOL is created (or removed if it already exists). It unlocks the access to the Install Tool (password is still needed!) and will be removed automatically after 1 hour.</source>
 				<target>By clicking this button, a file typo3conf/ENABLE_INSTALL_TOOL is created (or removed if it already exists). It unlocks the access to the Install Tool (password is still needed!) and will be removed automatically after 1 hour.</target>
 			</trans-unit>
+			<trans-unit id="option_emFullScreenMode.description" approved="yes">
+				<source>Check this box if you want the most information-rich pop-up windows and dialog boxes of the Extension Manager to use the full module screen.</source>
+				<target>Check this box if you want the most information-rich pop-up windows and dialog boxes of the Extension Manager to use the full module screen.</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

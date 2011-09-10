@@ -71,7 +71,10 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 												panel.getEl().unmask();
 												if (response.success) {
 													var w = new Ext.Window({
-																maximized: true,
+																modal: true,
+																width: 500,
+																height: 500,
+																maximized: TYPO3.settings.EM.fullScreenMode,
 																layout: 'fit',
 																title: TYPO3.l10n.localize('ext_details_updateScript') + ' (' + record.data.extkey + ')',
 																items: [
@@ -639,7 +642,10 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 		} else {
 			new Ext.Window({
 				title: TYPO3.EM.Tools.renderExtensionTitle(record),
-				maximized: true,
+				width: 720,
+				height: 550,
+				maximized: TYPO3.settings.EM.fullScreenMode,
+				modal: true,
 				layout: 'fit',
 				items : tabs,
 				id: id
