@@ -276,7 +276,7 @@ class tx_em_Install {
 													$messageContent,
 													$GLOBALS['LANG']->getLL('ext_import_success')
 												);
-												$content = $flashMessage->render();
+												$content = $flashMessage->render() . $updateContent;
 											} else {
 												$content = $updateContent;
 											}
