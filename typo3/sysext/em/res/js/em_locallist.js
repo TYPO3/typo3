@@ -370,7 +370,7 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 						this.doClearFilters.hide();
 						this.doClearFiltersSeperator.hide();
 					}
-					if (!TYPO3.settings.EM.hide_obsolete && !TYPO3.settings.EM.hide_shy && !TYPO3.settings.EM.display_installed) {
+					if (!TYPO3.settings.EM.hide_obsolete && !TYPO3.settings.EM.hide_shy && !TYPO3.settings.EM.hide_uninstalled) {
 						this.filterMenuButton.removeClass('bold');
 					} else {
 						this.filterMenuButton.addClass('bold');
@@ -404,7 +404,7 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 				if (TYPO3.settings.EM.hide_shy == 1 && record.data.shy == 1) {
 					return false;
 				}
-				if (TYPO3.settings.EM.display_installed == 1 && record.data.installed == 0) {
+				if (TYPO3.settings.EM.hide_uninstalled == 1 && record.data.installed == 0) {
 					return false;
 				}
 
@@ -412,15 +412,15 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 			},
 
 			hasStoreFilter: function() {
-				return (TYPO3.settings.EM.hide_obsolete || TYPO3.settings.EM.hide_shy || TYPO3.settings.EM.display_installed);
+				return (TYPO3.settings.EM.hide_obsolete || TYPO3.settings.EM.hide_shy || TYPO3.settings.EM.hide_uninstalled);
 			},
 
 			clearStoreFilters: function(scope) {
 				Ext.each(scope.filterMenuButton.menu.items.items, function(item) {
 					item.setChecked(false, true);
 				});
-				TYPO3.settings.EM.hide_obsolete = TYPO3.settings.EM.hide_shy = TYPO3.settings.EM.display_installed = 0;
-				TYPO3.EM.ExtDirect.saveSetting('display_installed', 0);
+				TYPO3.settings.EM.hide_obsolete = TYPO3.settings.EM.hide_shy = TYPO3.settings.EM.hide_uninstalled = 0;
+				TYPO3.EM.ExtDirect.saveSetting('hide_uninstalled', 0);
 				TYPO3.EM.ExtDirect.saveSetting('hide_shy', 0);
 				TYPO3.EM.ExtDirect.saveSetting('hide_obsolete', 0);
 				scope.filterRecords();
@@ -505,11 +505,11 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 					menu : {
 						items: [
 							{
-								checked: TYPO3.settings.EM.display_installed ? true : false,
-								text: TYPO3.l10n.localize('display_installedOnly'),
+								checked: TYPO3.settings.EM.hide_uninstalled ? true : false,
+								text: TYPO3.l10n.localize('hide_uninstalled'),
 								handler: function(item, event) {
-									TYPO3.settings.EM.display_installed = item.checked ? 0 : 1;
-									TYPO3.EM.ExtDirect.saveSetting('display_installed', TYPO3.settings.EM.display_installed);
+									TYPO3.settings.EM.hide_uninstalled = item.checked ? 0 : 1;
+									TYPO3.EM.ExtDirect.saveSetting('hide_uninstalled', TYPO3.settings.EM.hide_uninstalled);
 									this.filterRecords();
 								},
 								scope: this
