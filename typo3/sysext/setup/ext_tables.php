@@ -126,11 +126,16 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 			'label' => 'LLL:EXT:setup/mod/locallang.xml:debugInWindow',
 			'access' => 'admin',
 		),
+		'emFullScreenMode' => array(
+			'type' => 'check',
+			'label' => 'LLL:EXT:setup/mod/locallang.xml:emFullScreenMode',
+			'csh' => 'emFullScreenMode',
+		),
 	),
 	'showitem' => '--div--;LLL:EXT:setup/mod/locallang.xml:personal_data,realName,email,emailMeAtLogin,password,password2,lang,
 			--div--;LLL:EXT:setup/mod/locallang.xml:opening,startModule,thumbnailsByDefault,titleLen,
 			--div--;LLL:EXT:setup/mod/locallang.xml:editFunctionsTab,edit_RTE,edit_wideDocument,edit_docModuleUpload,enableFlashUploader,resizeTextareas,resizeTextareas_MaxHeight,resizeTextareas_Flexible,disableCMlayers,copyLevels,recursiveDelete,
-			--div--;LLL:EXT:setup/mod/locallang.xml:adminFunctions,simulate,debugInWindow'
-
+			--div--;LLL:EXT:setup/mod/locallang.xml:adminFunctions,simulate,debugInWindow,
+			--div--;LLL:EXT:setup/mod/locallang.xml:emSettingsTab,emFullScreenMode'
 );
 ?>

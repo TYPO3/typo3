@@ -680,6 +680,7 @@ TYPO3.EM.LanguagesProgressPanel = {
 TYPO3.EM.InstallWindow = Ext.extend(Ext.Window, {
 	width: 500,
 	height: 400,
+	maximized: TYPO3.settings.EM.fullScreenMode,
 	closable: true,
 	resizable: true,
 	plain: true,
