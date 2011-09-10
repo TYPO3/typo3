@@ -482,7 +482,7 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 
 		Ext.apply(this, {
 			itemId: 'em-localLocalExtensionlist',
-			title: TYPO3.l10n.localize('localExtensionList'),
+			title: TYPO3.l10n.localize('availableExtensions'),
 			loadMask: {msg: TYPO3.l10n.localize('action_loading_extlist')},
 			layout: 'fit',
 			store: this.localstore,

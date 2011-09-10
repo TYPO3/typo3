@@ -533,7 +533,7 @@ TYPO3.EM.LocalListTab = {
 };
 
 TYPO3.EM.RepositoryListTab = {
-	title : TYPO3.l10n.localize('remoteRepository'),
+	title : TYPO3.l10n.localize('importExtensions'),
 	layout: 'fit',
 	items: [/*{
 		xtype: 'repository',
