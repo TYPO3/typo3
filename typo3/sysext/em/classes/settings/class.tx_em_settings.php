@@ -132,11 +132,10 @@ class tx_em_Settings implements t3lib_Singleton {
 			'display_shy' => '',
 			'display_own' => '',
 			'display_obsolete' => '',
-			'display_installed' => '',
 			'display_files' => '',
+			'hide_uninstalled' => '',
 			'hide_shy' => 0,
 			'hide_obsolete' => 0,
-
 
 			'singleDetails' => array(
 				'info' => $GLOBALS['LANG']->getLL('details_info'),

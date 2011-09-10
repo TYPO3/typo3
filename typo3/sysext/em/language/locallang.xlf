@@ -279,6 +279,10 @@
 				<source>Hide obsolete extensions</source>
 				<target>Hide obsolete extensions</target>
 			</trans-unit>
+			<trans-unit id="hide_uninstalled" approved="yes">
+				<source>Hide uninstalled extensions</source>
+				<target>Hide uninstalled extensions</target>
+			</trans-unit>
 			<trans-unit id="display_installedOnly" approved="yes">
 				<source>Only display installed extensions</source>
 				<target>Only display installed extensions</target>
