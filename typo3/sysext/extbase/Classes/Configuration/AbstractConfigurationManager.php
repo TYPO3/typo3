@@ -180,10 +180,14 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 				 * stdWrap. Than we convert the configuration to normal TypoScript
 				 * and apply the stdWrap to the storagePid
 				 */
-			Tx_Extbase_Utility_FrontendSimulator::simulateFrontendEnvironment($this->getContentObject());
-			$conf = $this->typoScriptService->convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
-			$frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrap($conf['storagePid'], $conf['storagePid.']);
-			Tx_Extbase_Utility_FrontendSimulator::resetFrontendEnvironment();
+			if (TYPO3_MODE !== 'FE') {
+				Tx_Extbase_Utility_FrontendSimulator::simulateFrontendEnvironment($this->getContentObject());
+			}
+			$configuration = $this->typoScriptService->convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
+			$frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrap($configuration['storagePid'], $configuration['storagePid.']);
+			if (TYPO3_MODE !== 'FE') {
+				Tx_Extbase_Utility_FrontendSimulator::resetFrontendEnvironment();
+			}
 		}
 
 		// 1st level cache
