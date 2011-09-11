@@ -62,6 +62,10 @@ if (is_file($quickstartFile) && is_writeable($quickstartFile) && unlink($quickst
 	touch($enableInstallToolFile);
 }
 
+	// Additional security measure if ENABLE_INSTALL_TOOL file cannot, but
+	// should be deleted (in case it is write-protected, for example).
+$removeInstallToolFileFailed = FALSE;
+
 	// Only allow Install Tool access if the file "typo3conf/ENABLE_INSTALL_TOOL" is found
 if (is_file($enableInstallToolFile) && (time() - filemtime($enableInstallToolFile) > 3600)) {
 	$content = file_get_contents($enableInstallToolFile);
@@ -69,12 +73,14 @@ if (is_file($enableInstallToolFile) && (time() - filemtime($enableInstallToolFil
 
 	if (trim($content) !== $verifyString) {
 			// Delete the file if it is older than 3600s (1 hour)
-		unlink($enableInstallToolFile);
+		if (!@unlink($enableInstallToolFile)) {
+			$removeInstallToolFileFailed = TRUE;
+		}
 	}
 }
 
 	// Change 1==2 to 1==1 if you want to lock the Install Tool regardless of the file ENABLE_INSTALL_TOOL
-if (1==2 || !is_file($enableInstallToolFile)) {
+if (1==2 || !is_file($enableInstallToolFile) || $removeInstallToolFileFailed) {
 		// Include t3lib_div and t3lib_parsehtml for templating
 	require_once($PATH_site . '/t3lib/class.t3lib_div.php');
 	require_once($PATH_site . '/t3lib/class.t3lib_parsehtml.php');
@@ -113,7 +119,7 @@ if (1==2 || !is_file($enableInstallToolFile)) {
 				For security reasons, it is highly recommended that you either rename or delete the file after the operation is finished.
 			</p>
 			<p>
-				As an additional security measure, if the file is older than one hour, TYPO3 will automatically delete it.
+				As an additional security measure, if the file is older than one hour, TYPO3 will automatically delete it. The file must be writable by the web server user.
 			</p>
 		'
 	);
