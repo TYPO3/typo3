@@ -286,7 +286,10 @@ class t3lib_Compressor {
 			// we add up the filenames, filemtimes and filsizes to later build a checksum over
 			// it and include it in the temporary file name
 		$unique = '';
-		foreach ($filesToInclude as $filename) {
+		foreach ($filesToInclude as &$filename) {
+			if (t3lib_div::isValidUrl($filename)) {
+				$filename = $this->retrieveExternalFile($filename);
+			}
 			$filepath = t3lib_div::resolveBackPath($this->rootPath . $filename);
 			$unique .= $filename . filemtime($filepath) . filesize($filepath);
 		}
@@ -643,6 +646,19 @@ class t3lib_Compressor {
 		} else {
 			return $filename;
 		}
+	}
+
+	/**
+	 * Retrieves an external file and stores it locally.
+	 *
+	 * @param string $url
+	 * @return string Temporary local filename for the externally-retrieved file
+	 */
+	protected function retrieveExternalFile($url) {
+		$externalContent = t3lib_div::getUrl($url);
+		$filename = $this->targetDirectory . 'external-' . md5($url);
+		t3lib_div::writeFile(PATH_site . $filename, $externalContent);
+		return $filename;
 	}
 
 }
