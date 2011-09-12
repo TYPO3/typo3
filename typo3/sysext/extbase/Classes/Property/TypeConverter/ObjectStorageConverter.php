@@ -29,6 +29,19 @@
 class Tx_Extbase_Property_TypeConverter_ObjectStorageConverter extends Tx_Extbase_Property_TypeConverter_AbstractTypeConverter implements t3lib_Singleton {
 
 	/**
+	 * @var Tx_Extbase_Service_TypeHandlingService
+	 */
+	protected $typeHandlingService;
+
+	/**
+	 * @param Tx_Extbase_Service_TypeHandlingService $typeHandlingService
+	 * @return void
+	 */
+	public function injectTypeHandlingService(Tx_Extbase_Service_TypeHandlingService $typeHandlingService) {
+		$this->typeHandlingService = $typeHandlingService;
+	}
+
+	/**
 	 * @var array<string>
 	 */
 	protected $sourceTypes = array('string', 'array');
@@ -86,7 +99,8 @@ class Tx_Extbase_Property_TypeConverter_ObjectStorageConverter extends Tx_Extbas
 	 * @api
 	 */
 	public function getTypeOfChildProperty($targetType, $propertyName, Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration) {
-		$parsedTargetType = Tx_Extbase_Utility_TypeHandling::parseType($targetType);
+
+		$parsedTargetType = $this->typeHandlingService->parseType($targetType);
 		return $parsedTargetType['elementType'];
 	}
 }

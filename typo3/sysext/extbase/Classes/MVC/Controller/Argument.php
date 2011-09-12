@@ -80,6 +80,11 @@ class Tx_Extbase_MVC_Controller_Argument {
 	protected $reflectionService;
 
 	/**
+	 * @var Tx_Extbase_Service_TypeHandlingService
+	 */
+	protected $typeHandlingService;
+
+	/**
 	 * Name of this argument
 	 * @var string
 	 */
@@ -164,7 +169,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 		if (!is_string($name)) throw new InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
 		if (strlen($name) === 0) throw new InvalidArgumentException('$name must be a non-empty string, ' . strlen($name) . ' characters given.', 1232551853);
 		$this->name = $name;
-		$this->dataType = Tx_Extbase_Utility_TypeHandling::normalizeType($dataType);
+		$this->dataType = $dataType;
 	}
 
 	/**
@@ -246,6 +251,16 @@ class Tx_Extbase_MVC_Controller_Argument {
 	public function initializeObject() {
 		$this->propertyMappingConfiguration = $this->propertyMappingConfigurationBuilder->build('Tx_Extbase_MVC_Controller_MvcPropertyMappingConfiguration');
 	}
+
+	/**
+	 * @param Tx_Extbase_Service_TypeHandlingService $typeHandlingService
+	 * @return void
+	 */
+	public function injectTypeHandlingService(Tx_Extbase_Service_TypeHandlingService $typeHandlingService) {
+		$this->typeHandlingService = $typeHandlingService;
+		$this->dataType = $this->typeHandlingService->normalizeType($this->dataType);
+	}
+
 	/**
 	 * Returns the name of this argument
 	 *

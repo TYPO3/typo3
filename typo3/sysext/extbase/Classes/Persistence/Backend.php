@@ -273,7 +273,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		} else {
 			$query = $this->queryFactory->create($className);
 			return $query->matching(
-				$query->withUid($identifier))
+				$query->equals('uid', $identifier))
 				->execute()
 				->getFirst();
 		}
@@ -468,26 +468,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		} else {
 			$row[$columnMap->getColumnName()] = $this->dataMapper->countRelated($parentObject, $propertyName);
 		}
-	}
-
-	/**
-	 * Returns the current field value of the given object property from the storage backend.
-	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object
-	 * @param string $propertyName The property name
-	 * @return mixed The field value
-	 */
-	protected function getCurrentFieldValue(Tx_Extbase_DomainObject_DomainObjectInterface $object, $propertyName) {
-		$className = get_class($object);
-		$columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
-		$query = $this->queryFactory->create($className);
-		$query->getQuerySettings()->setReturnRawQueryResult(TRUE);
-		$currentRow = $query->matching(
-			$query->withUid($object->getUid()))
-			->execute()
-			->getFirst();
-		$fieldValue = $currentRow[$columnMap->getColumnName()];
-		return $fieldValue;
 	}
 
 	/**

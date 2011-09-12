@@ -197,15 +197,6 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	public function logicalNot($constraint);
 
 	/**
-	 * Matches against the (internal) identifier.
-	 *
-	 * @param string $uid An identifier to match against
-	 * @return object
-	 * @deprecated since Extbase 1.2.0; was removed in FLOW3; will be removed in Extbase 1.4.0; use equals() instead
-	 */
-	public function withUid($uid);
-
-	/**
 	 * Returns an equals criterion used for matching objects against a query
 	 *
 	 * @param string $propertyName The name of the property to compare against
