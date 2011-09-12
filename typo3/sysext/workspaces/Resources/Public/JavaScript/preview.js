@@ -68,8 +68,8 @@ Ext.onReady(function() {
 									xtype: 'button',
 									id: 'sizeSliderButtonLive',
 									cls: 'sliderButton',
-									text: TYPO3.LLL.Workspaces.livePreview,
-									tooltip: TYPO3.LLL.Workspaces.livePreviewDetail,
+									text: TYPO3.l10n.localize('livePreview'),
+									tooltip: TYPO3.l10n.localize('livePreviewDetail'),
 									width: 100,
 									listeners: {
 										click: {
@@ -102,8 +102,8 @@ Ext.onReady(function() {
 									xtype: 'button',
 									id: 'sizeSliderButtonWorkspace',
 									cls: 'sliderButton',
-									text: TYPO3.LLL.Workspaces.workspacePreview,
-									tooltip: TYPO3.LLL.Workspaces.workspacePreviewDetail,
+									text: TYPO3.l10n.localize('workspacePreview'),
+									tooltip: TYPO3.l10n.localize('workspacePreviewDetail'),
 									width: 100,
 									listeners: {
 										click: {
@@ -121,7 +121,7 @@ Ext.onReady(function() {
 						columns: 4,
 						width: 400,
 						items: [{
-							text: TYPO3.LLL.Workspaces.nextStage,
+							text: TYPO3.l10n.localize('nextStage'),
 							xtype: 'button',
 							iconCls: 'x-btn-text',
 							id: 'feToolbarButtonNextStage',
@@ -134,7 +134,7 @@ Ext.onReady(function() {
 								}
 							}
 						}, {
-							text: TYPO3.LLL.Workspaces.previousStage,
+							text: TYPO3.l10n.localize('previousStage'),
 							xtype: 'button',
 							iconCls: 'x-btn-text',
 							id: 'feToolbarButtonPreviousStage',
@@ -147,7 +147,7 @@ Ext.onReady(function() {
 								}
 							}
 						}, {
-							text: TYPO3.LLL.Workspaces.discard,
+							text: TYPO3.l10n.localize('discard'),
 							iconCls: 'x-btn-text',
 							xtype: 'button',
 							id: 'feToolbarButtonDiscardStage',
@@ -169,14 +169,14 @@ Ext.onReady(function() {
 								stateId: 'WorkspacePreviewModeSelect',
 								stateEvents: ['itemclick'],
 								items: [{
-									text: TYPO3.LLL.Workspaces.modeSlider,
+									text: TYPO3.l10n.localize('modeSlider'),
 									id: 'visual-mode-selector-slider',
 									checked: false,
 									group: 'mode',
 									hidden: TYPO3.settings.Workspaces.SplitPreviewModes.indexOf('slider') == -1,
 									checkHandler: modeChange
 								},{
-									text: TYPO3.LLL.Workspaces.modeVbox,
+									text: TYPO3.l10n.localize('modeVbox'),
 									id: 'visual-mode-selector-vbox',
 									checked: false,
 									group: 'mode',
@@ -184,7 +184,7 @@ Ext.onReady(function() {
 									checkHandler: modeChange
 
 								},{
-									text: TYPO3.LLL.Workspaces.modeHbox,
+									text: TYPO3.l10n.localize('modeHbox'),
 									id: 'visual-mode-selector-hbox',
 									checked: false,
 									group: 'mode',
@@ -204,7 +204,7 @@ Ext.onReady(function() {
 				]
 			}],
 			items: [{
-				title: TYPO3.LLL.Workspaces.visualPreview,
+				title: TYPO3.l10n.localize('visualPreview'),
 				id: 'wsVisual',
 				layout: 'fit',
 				anchor: '100% 100%',
@@ -317,7 +317,7 @@ Ext.onReady(function() {
 					}]
 				}]
 			},{
-				title: TYPO3.LLL.Workspaces.listView,
+				title: TYPO3.l10n.localize('listView'),
 				id: 'wsSettings',
 				layout: 'fit',
 				listeners: {
