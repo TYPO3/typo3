@@ -42,7 +42,7 @@ var WorkspaceMenu = Class.create({
 			Event.observe(window, 'resize', TYPO3BackendToolbarManager.positionMenu('workspace-selector-menu'));
 			if (top.TYPO3.configuration.inWorkspace == 1) {
 				Ext.getBody().addClass('typo3-in-workspace');
-				Ext.select('#username a').insertHtml('beforeEnd', '<span id="typo3-topbar-workspaces-title">@' + top.TYPO3.Workspaces.workspaceTitle + '</span>');
+				this.updateTopBar(top.TYPO3.Workspaces.workspaceTitle);
 			} else {
 				Ext.getBody().removeClass('typo3-in-workspace');
 			}
@@ -146,13 +146,10 @@ var WorkspaceMenu = Class.create({
 		top.TYPO3.configuration.inWorkspace = id === 0 ? 0 : 1;
 		if (top.TYPO3.configuration.inWorkspace == 1) {
 			Ext.getBody().addClass('typo3-in-workspace');
-			if (Ext.get('typo3-topbar-workspaces-title')) {
-				Ext.get('typo3-topbar-workspaces-title').remove();
-			}
-			Ext.select('#username a').insertHtml('beforeEnd', '<span id="typo3-topbar-workspaces-title">@' + top.TYPO3.Workspaces.workspaceTitle + '</span>');
+			this.updateTopBar(top.TYPO3.Workspaces.workspaceTitle);
 		} else {
 			Ext.getBody().removeClass('typo3-in-workspace');
-			Ext.select('#typo3-topbar-workspaces-title').remove();
+			this.updateTopBar();
 		}
 
 		TYPO3BackendToolbarManager.refreshAll();
@@ -168,6 +165,22 @@ var WorkspaceMenu = Class.create({
 		// add "selected" class and checkmark
 		$$('#ws-' + id)[0].previous().removeClassName(stateInactiveClass).addClassName(stateActiveClass);
 		$$('#ws-' + id)[0].up().addClassName('selected');
+	},
+
+	updateTopBar: function(workspaceTitle) {
+		if (Ext.get('typo3-topbar-workspaces-title')) {
+			Ext.get('typo3-topbar-workspaces-title').remove();
+		}
+
+		if (workspaceTitle && workspaceTitle.length) {
+			var userItem;
+			if (Ext.select('#username a').elements.length) {
+				userItem = Ext.select('#username a');
+			} else {
+				userItem = Ext.select ('#username');
+			}
+			userItem.insertHtml('beforeEnd', '<span id="typo3-topbar-workspaces-title">@' + workspaceTitle + '</span>')
+		}
 	}
 
 });
