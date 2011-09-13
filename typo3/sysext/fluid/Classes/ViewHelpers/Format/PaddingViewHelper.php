@@ -40,7 +40,7 @@
  * TYPO3-=-=-
  * </output>
  *
- * <code title="Specify padding string and padding type">
+ * <code title="Specify padding type">
  * <f:format.padding padLength="10" padString="-" padType="both">TYPO3</f:format.padding>
  * </code>
  * <output>
@@ -53,29 +53,26 @@
 class Tx_Fluid_ViewHelpers_Format_PaddingViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * Format the arguments with the given printf format string.
+	 * Pad a string to a certain length with another string
 	 *
 	 * @param integer $padLength Length of the resulting string. If the value of pad_length is negative or less than the length of the input string, no padding takes place.
 	 * @param string $padString The padding string
-	 * @param string $padType The padding type ("right", "left" or "both")
+	 * @param string $padType Append the padding at this site (Possible values: right,left,both. Default: right)
 	 * @return string The formatted value
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
-	public function render($padLength, $padString = ' ', $padType = '') {
+	public function render($padLength, $padString = ' ', $padType = 'right') {
 		$string = $this->renderChildren();
-		switch (strtoupper($padType)) {
-			case 'LEFT':
-				$padding = STR_PAD_LEFT;
-				break;
-			case 'BOTH':
-				$padding = STR_PAD_BOTH;
-				break;
-			case 'RIGHT':
-			default:
-				$padding = STR_PAD_RIGHT;
+		$padTypes = array(
+			'left' => STR_PAD_LEFT,
+			'right' => STR_PAD_RIGHT,
+			'both' => STR_PAD_BOTH,
+		);
+		if (!isset($padTypes[$padType])) {
+			$padType = 'right';
 		}
-		return str_pad($string, $padLength, $padString, $padding);
+		return str_pad($string, $padLength, $padString, $padTypes[$padType]);
 	}
 }
 ?>
