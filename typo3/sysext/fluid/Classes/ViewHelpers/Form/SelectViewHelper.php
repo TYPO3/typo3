@@ -172,7 +172,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 			if (is_object($value)) {
 
 				if ($this->hasArgument('optionValueField')) {
-					$key = Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
+					$key = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($value, $this->arguments['optionValueField']);
 					if (is_object($key)) {
 						if (method_exists($key, '__toString')) {
 							$key = (string)$key;
@@ -189,7 +189,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 				}
 
 				if ($this->hasArgument('optionLabelField')) {
-					$value = Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $this->arguments['optionLabelField']);
+					$value = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($value, $this->arguments['optionLabelField']);
 					if (is_object($value)) {
 						if (method_exists($value, '__toString')) {
 							$value = (string)$value;
@@ -247,7 +247,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 		}
 		if (!is_array($value) && !($value instanceof Iterator)) {
 			if (is_object($value)) {
-				return Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
+				return Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($value, $this->arguments['optionValueField']);
 			} else {
 				return $value;
 			}
@@ -255,7 +255,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 		$selectedValues = array();
 		foreach($value as $selectedValueElement) {
 			if (is_object($selectedValueElement)) {
-				$selectedValues[] = Tx_Extbase_Reflection_ObjectAccess::getProperty($selectedValueElement, $this->arguments['optionValueField']);
+				$selectedValues[] = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($selectedValueElement, $this->arguments['optionValueField']);
 			} else {
 				$selectedValues[] = $selectedValueElement;
 			}
