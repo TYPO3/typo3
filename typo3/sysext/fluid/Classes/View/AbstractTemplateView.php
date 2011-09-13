@@ -230,13 +230,14 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 * Renders a given section.
 	 *
 	 * @param string $sectionName Name of section to render
-	 * @param array $variables the variables to use.
+	 * @param array $variables The variables to use
+	 * @param boolean $ignoreUnknown Ignore an unknown section and just return an empty string
 	 * @return string rendered template for the section
 	 * @throws Tx_Fluid_View_Exception_InvalidSectionException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function renderSection($sectionName, array $variables) {
+	public function renderSection($sectionName, array $variables, $ignoreUnknown = FALSE) {
 		$renderingContext = $this->getCurrentRenderingContext();
 		if ($this->getCurrentRenderingType() === self::RENDERING_LAYOUT) {
 			// in case we render a layout right now, we will render a section inside a TEMPLATE.
@@ -251,15 +252,22 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 		$parsedTemplate = $this->getCurrentParsedTemplate();
 
 		if ($parsedTemplate->isCompiled()) {
-			$this->startRendering($renderingTypeOnNextLevel, $parsedTemplate, $renderingContext);
 			$methodNameOfSection = 'section_' . sha1($sectionName);
+			if ($ignoreUnknown && !method_exists($parsedTemplate, $methodNameOfSection)) {
+				return '';
+			}
+			$this->startRendering($renderingTypeOnNextLevel, $parsedTemplate, $renderingContext);
 			$output = $parsedTemplate->$methodNameOfSection($renderingContext);
 			$this->stopRendering();
 		} else {
 			$sections = $parsedTemplate->getVariableContainer()->get('sections');
 			if(!array_key_exists($sectionName, $sections)) {
 				$controllerObjectName = $this->controllerContext->getRequest()->getControllerObjectName();
-				throw new Tx_Fluid_View_Exception_InvalidSectionException(sprintf('Could not render unknown section "%s" in %s used by %s.', $sectionName, get_class($this), $controllerObjectName), 1227108982);
+				if ($ignoreUnknown) {
+					return '';
+				} else {
+					throw new Tx_Fluid_View_Exception_InvalidSectionException(sprintf('Could not render unknown section "%s" in %s used by %s.', $sectionName, get_class($this), $controllerObjectName), 1227108982);
+				}
 			}
 			$section = $sections[$sectionName];
 
