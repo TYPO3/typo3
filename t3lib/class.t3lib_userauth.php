@@ -177,6 +177,16 @@ abstract class t3lib_userAuth {
 		}
 		$this->cookieId = $id;
 
+			// Hook before session is started
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['preSession'])) {
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['preSession'] as $funcName) {
+				$_params = array(
+					'pObj' => &$this
+				);
+				t3lib_div::callUserFunction($funcName, $_params, $this);
+			}
+		}
+
 			// If new session or client tries to fix session...
 		if (!$id || !$this->isExistingSessionRecord($id)) {
 				// New random session-$id is made
