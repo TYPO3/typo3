@@ -3570,7 +3570,10 @@ class t3lib_TCEforms {
 			// Create selector box of the options
 		$sSize = $params['autoSizeMax'] ? t3lib_utility_Math::forceIntegerInRange($itemArrayC + 1, t3lib_utility_Math::forceIntegerInRange($params['size'], 1), $params['autoSizeMax']) : $params['size'];
 		if (!$selector) {
-			$isMultiple = ($params['size'] != 1 && $params['multiple']);
+			$isMultiple = ($params['size'] != 1) && $params['multiple'] && ($params['maxItems'] != 1);
+            if (!$isMultiple) {
+                $sSize = 1;
+            }
 			$selector = '<select id="' . uniqid('tceforms-multiselect-') . '" ' . ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '"' . $this->insertDefStyle('group', 'tceforms-multiselect')) . ($isMultiple ? ' multiple="multiple"' : '') . ' name="' . $fName . '_list" ' . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt) . '</select>';
 		}
 
