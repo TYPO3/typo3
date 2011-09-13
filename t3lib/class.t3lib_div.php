@@ -2551,8 +2551,7 @@ final class t3lib_div {
 			}
 
 				// External URL without error checking.
-			$ch = curl_init();
-			if (!$ch) {
+			if (!function_exists('curl_init') || !($ch = curl_init())) {
 				if (isset($report)) {
 					$report['error'] = -1;
 					$report['message'] = 'Couldn\'t initialize cURL.';
