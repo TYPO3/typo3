@@ -1,3 +1,12 @@
+2011-09-14  e29c35f            [RELEASE] Release of TYPO3 4.3.14 (TYPO3 v4 Release Team)
+2011-09-14  99d993a  #29366    [BUGFIX] Disabling the cache does not work on invalid cHash value (Daniel Pötzinger)
+2011-09-14  685aaee  #29769    [BUGFIX] Parse error in t3lib/class.t3lib_parsehtml.php (Oliver Hader)
+2011-08-29  d27f4ab  #29246    [BUGFIX] HTMLparser, treat fixAttrib.unset as boolean (Markus Klein)
+2011-08-21  134f988  #29130    [BUGFIX] Fix security level "normal" for backend login (Helmut Hummel)
+2011-08-16  263d56f            [TASK] Set TYPO3 version to 4.3.14-dev (TYPO3 v4 Release Team)
+2011-08-16  f9994d2            [RELEASE] Release of TYPO3 4.3.13 (TYPO3 v4 Release Team)
+
+
 2011-08-16  ae3c49c            [RELEASE] Release of TYPO3 4.3.13 (TYPO3 v4 Release Team)
 2011-08-12  e6febd7  #28847    [BUGFIX] Maintain compatibility with changed headline rendering (Helmut Hummel)
 2011-08-03  d0f08cd  #26876    [BUGFIX] Unprivileged backend user can read arbitrarily from database (Helmut Hummel)
