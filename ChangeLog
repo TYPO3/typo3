@@ -1,3 +1,17 @@
+2011-09-14  debb3da            [RELEASE] Release of TYPO3 4.4.11 (TYPO3 v4 Release Team)
+2011-09-14  8b74a5d  #29366    [BUGFIX] Disabling the cache does not work on invalid cHash value (Daniel Pötzinger)
+2011-09-12  f92e618  #26674    [BUGFIX] Check for a valid Date object before opening datepicker (Patrick Schriner)
+2011-09-09  a8a33f7  #27740    [BUGFIX] FE session transfer is broken (Dmitry Dulepov)
+2011-09-04  2d430f5  #29211    [BUGFIX] Height of RTE editing area sometimes null in Safari 5.1 (Stanislas Rolland)
+2011-08-30  6177f8c  #27801    [BUGFIX] Incorrect behaviour of style selector in RTE (Stanislas Rolland)
+2011-08-29  b670ca8  #29246    [BUGFIX] HTMLparser, treat fixAttrib.unset as boolean (Markus Klein)
+2011-08-24  4066821  #29169    [BUGFIX] exec_SELECTcountRows returns string (Georg Ringer)
+2011-08-21  a3fe076  #25302    [BUGFIX] Broken links representation gets saved to the database (Stanislas Rolland)
+2011-08-21  9094c73  #29130    [BUGFIX] Fix security level "normal" for backend login (Helmut Hummel)
+2011-08-16  401b7e7            [TASK] Set TYPO3 version to 4.4.11-dev (TYPO3 v4 Release Team)
+2011-08-16  982793c            [RELEASE] Release of TYPO3 4.4.10 (TYPO3 v4 Release Team)
+
+
 2011-08-16  f79bd1f            [RELEASE] Release of TYPO3 4.4.10 (TYPO3 v4 Release Team)
 2011-08-12  becd370  #28946    [BUGFIX] Unit tests for tslib_content query arguments fail (Oliver Hader)
 2011-08-12  1c946cb  #28847    [BUGFIX] Maintain compatibility with changed headline rendering (Helmut Hummel)
