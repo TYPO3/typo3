@@ -425,110 +425,133 @@ class SC_show_item {
 	}
 
 	/**
+	 * Get table field name
+	 *
+	 * @param string $tableName Table name
+	 * @param string $fieldName Field name
+	 * @return string Field name
+	 */
+	public function getFieldName($tableName, $fieldName) {
+		t3lib_div::loadTCA($tableName);
+		if ($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label'] !== NULL) {
+			$field = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
+			if (trim($field) === '') {
+				$field = $fieldName;
+			}
+		} else {
+			$field = $fieldName;
+		}
+		return $field;
+	}
+
+	/**
 	 * Make reference display
 	 *
-	 * @param	string		Table name
-	 * @param	string		Filename or uid
-	 * @return	string		HTML
+	 * @param string $table Table name
+	 * @param string $ref Filename or uid
+	 * @return string HTML
 	 */
-	function makeRef($table,$ref)	{
+	function makeRef($table, $ref) {
 
-		if ($table==='_FILE')	{
+		if ($table === '_FILE') {
 				// First, fit path to match what is stored in the refindex:
 			$fullIdent = $ref;
 
-			if (t3lib_div::isFirstPartOfStr($fullIdent,PATH_site))	{
-				$fullIdent = substr($fullIdent,strlen(PATH_site));
+			if (t3lib_div::isFirstPartOfStr($fullIdent, PATH_site)) {
+				$fullIdent = substr($fullIdent, strlen(PATH_site));
 			}
 
 				// Look up the path:
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'*',
 				'sys_refindex',
-				'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr('_FILE','sys_refindex').
-					' AND ref_string='.$GLOBALS['TYPO3_DB']->fullQuoteStr($fullIdent,'sys_refindex').
-					' AND deleted=0'
+				'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('_FILE', 'sys_refindex') . ' AND ref_string=' .
+					$GLOBALS['TYPO3_DB']->fullQuoteStr($fullIdent, 'sys_refindex') . ' AND deleted=0'
 			);
 		} else {
 				// Look up the path:
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'*',
 				'sys_refindex',
-				'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_refindex').
-					' AND ref_uid='.intval($ref).
+				'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_refindex') . ' AND ref_uid=' . intval($ref) .
 					' AND deleted=0'
 			);
 		}
 
 			// Compile information for title tag:
 		$infoData = array();
-		if (count($rows))	{
+		if (count($rows)) {
 			$infoData[] = '<tr class="t3-row-header">' .
-					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.table').'</td>' .
-					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.uid').'</td>' .
-					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.field').'</td>'.
-					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.flexpointer').'</td>'.
-					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.softrefKey').'</td>'.
-					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.sorting').'</td>'.
-					'</tr>';
+				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.table') . '</td>' .
+				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.title') . '</td>' .
+				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.field') . '</td>' .
+				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.flexpointer') . '</td>' .
+				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.softrefKey') . '</td>' .
+				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.sorting') . '</td>' .
+				'</tr>';
 		}
-		foreach($rows as $row)	{
-			$infoData[] = '<tr class="bgColor4"">' .
-					'<td>'.$row['tablename'].'</td>' .
-					'<td>'.$row['recuid'].'</td>' .
-					'<td>'.$row['field'].'</td>'.
-					'<td>'.$row['flexpointer'].'</td>'.
-					'<td>'.$row['softref_key'].'</td>'.
-					'<td>'.$row['sorting'].'</td>'.
-					'</tr>';
+		foreach($rows as $row) {
+			$record = t3lib_BEfunc::getRecord($row['tablename'], $row['recuid']);
+			$infoData[] = '<tr class="bgColor4">' .
+				'<td>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'], TRUE) . '</td>' .
+				'<td>' . t3lib_BEfunc::getRecordTitle($row['tablename'], $record, TRUE) . '</td>' .
+				'<td>' . htmlspecialchars($this->getFieldName($row['tablename'], $row['field'])) . '</td>'.
+				'<td>' . $row['flexpointer'] . '</td>' .
+				'<td>' . $row['softref_key'] . '</td>' .
+				'<td>' . $row['sorting'] . '</td>' .
+				'</tr>';
 		}
 
-		return count($infoData) ? '<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' . implode('', $infoData) . '</table>' : '';
+		return count($infoData)
+			? '<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' . implode('', $infoData) . '</table>'
+			: '';
 	}
 
 	/**
 	 * Make reference display (what this elements points to)
 	 *
-	 * @param	string		Table name
-	 * @param	string		Filename or uid
-	 * @return	string		HTML
+	 * @param $table string Table name
+	 * @param $ref string Filename or uid
+	 * @return string HTML
 	 */
-	function makeRefFrom($table,$ref)	{
+	function makeRefFrom($table, $ref) {
 
 			// Look up the path:
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
 			'sys_refindex',
-			'tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_refindex').
-				' AND recuid='.intval($ref)
+			'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') .
+				' AND recuid=' . intval($ref)
 		);
 
 			// Compile information for title tag:
 		$infoData = array();
-		if (count($rows))	{
+		if (count($rows)) {
 			$infoData[] = '<tr class="t3-row-header">' .
-					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.field').'</td>'.
-					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.flexpointer').'</td>'.
-					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.softrefKey').'</td>'.
-					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.sorting').'</td>'.
-					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refTable').'</td>' .
-					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refUid').'</td>' .
-					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refString').'</td>' .
-					'</tr>';
+				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.field') . '</td>' .
+				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.flexpointer') . '</td>' .
+				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.softrefKey') . '</td>' .
+				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.sorting') . '</td>' .
+				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refTable') . '</td>' .
+				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refUid') . '</td>' .
+				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refString') . '</td>' .
+				'</tr>';
 		}
-		foreach($rows as $row)	{
-			$infoData[] = '<tr class="bgColor4"">' .
-					'<td>'.$row['field'].'</td>'.
-					'<td>'.$row['flexpointer'].'</td>'.
-					'<td>'.$row['softref_key'].'</td>'.
-					'<td>'.$row['sorting'].'</td>'.
-					'<td>'.$row['ref_table'].'</td>' .
-					'<td>'.$row['ref_uid'].'</td>' .
-					'<td>'.$row['ref_string'].'</td>' .
-					'</tr>';
+		foreach($rows as $row) {
+			$infoData[] = '<tr class="bgColor4">' .
+				'<td>' . htmlspecialchars($this->getFieldName($table, $row['field'])) . '</td>' .
+				'<td>' . $row['flexpointer'] . '</td>' .
+				'<td>' . $row['softref_key'] . '</td>' .
+				'<td>' . $row['sorting'] . '</td>' .
+				'<td>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'], TRUE) . '</td>' .
+				'<td>' . $row['ref_uid'] . '</td>' .
+				'<td>' . $row['ref_string'] . '</td>' .
+				'</tr>';
 		}
 
-		return count($infoData) ? '<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' . implode('', $infoData) . '</table>' : '';
+		return count($infoData)
+			? '<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' . implode('', $infoData) . '</table>'
+			: '';
 	}
 }
 
