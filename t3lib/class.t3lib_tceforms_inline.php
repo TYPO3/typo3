@@ -410,7 +410,7 @@ class t3lib_TCEforms_inline {
 					// Replace returnUrl in Wizard-Code, if this is an AJAX call
 				$ajaxArguments = t3lib_div::_GP('ajax');
 				if (isset($ajaxArguments[2]) && trim($ajaxArguments[2]) != '') {
-					$fields = str_replace('P[returnUrl]=%2F' . rawurlencode(TYPO3_mainDir) . '%2Fajax.php', 'P[returnUrl]=' . rawurlencode($ajaxArguments[2]), $fields);
+					$fields = str_replace('P[returnUrl]=%2F' . rawurlencode(TYPO3_mainDir) . 'ajax.php', 'P[returnUrl]=' . rawurlencode($ajaxArguments[2]), $fields);
 				}
 			} else {
 				$combination = '';
