@@ -1053,7 +1053,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$clearCacheCommands = t3lib_div::trimExplode(',',strtolower($this->pageTSConfigCache[$storagePage]['TCEMAIN.']['clearCacheCmd']),1);
 			$clearCacheCommands = array_unique($clearCacheCommands);
 			foreach ($clearCacheCommands as $clearCacheCommand)	{
-				if (t3lib_div::testInt($clearCacheCommand))	{
+				if (t3lib_utility_Math::canBeInterpretedAsInteger($clearCacheCommand))	{
 					$pageIdsToClear[] = $clearCacheCommand;
 				}
 			}
