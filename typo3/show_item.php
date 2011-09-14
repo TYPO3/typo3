@@ -425,6 +425,25 @@ class SC_show_item {
 	}
 
 	/**
+	 * Get table field name
+	 *
+	 * @param string Table name
+	 * @param string Field name
+	 *
+	 * @return string Field name
+	 */
+	public function getFieldName($tableName, $fieldName) {
+		t3lib_div::loadTCA($tableName);
+		if($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label'] !== NULL) {
+			   $field = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
+		} else {
+			   $field = $fieldName;
+		}
+
+		return $field;
+	}
+
+	/**
 	 * Make reference display
 	 *
 	 * @param	string		Table name
@@ -465,7 +484,7 @@ class SC_show_item {
 		if (count($rows))	{
 			$infoData[] = '<tr class="t3-row-header">' .
 					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.table').'</td>' .
-					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.uid').'</td>' .
+					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.title').'</td>' .
 					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.field').'</td>'.
 					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.flexpointer').'</td>'.
 					'<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.softrefKey').'</td>'.
@@ -474,9 +493,9 @@ class SC_show_item {
 		}
 		foreach($rows as $row)	{
 			$infoData[] = '<tr class="bgColor4"">' .
-					'<td>'.$row['tablename'].'</td>' .
-					'<td>'.$row['recuid'].'</td>' .
-					'<td>'.$row['field'].'</td>'.
+					'<td>'.$GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'], TRUE).'</td>' .
+					'<td>'. htmlspecialchars(t3lib_BEfunc::getRecordTitle($row['tablename'], $row['recuid'])) . '</td>' .
+					'<td>'. htmlspecialchars($this->getFieldName($row['tablename'], $row['field'])) . '</td>'.
 					'<td>'.$row['flexpointer'].'</td>'.
 					'<td>'.$row['softref_key'].'</td>'.
 					'<td>'.$row['sorting'].'</td>'.
@@ -518,11 +537,11 @@ class SC_show_item {
 		}
 		foreach($rows as $row)	{
 			$infoData[] = '<tr class="bgColor4"">' .
-					'<td>'.$row['field'].'</td>'.
+					'<td>' . htmlspecialchars($this->getFieldName($table, $row['field'])) . '</td>'.
 					'<td>'.$row['flexpointer'].'</td>'.
 					'<td>'.$row['softref_key'].'</td>'.
 					'<td>'.$row['sorting'].'</td>'.
-					'<td>'.$row['ref_table'].'</td>' .
+					'<td>' .$GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'], TRUE) . '</td>'.
 					'<td>'.$row['ref_uid'].'</td>' .
 					'<td>'.$row['ref_string'].'</td>' .
 					'</tr>';

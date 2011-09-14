@@ -521,6 +521,10 @@ Do you want to continue WITHOUT saving?</target>
 				<source>Uid:</source>
 				<target>Uid:</target>
 			</trans-unit>
+			<trans-unit id="show_item.php.title" approved="yes">
+				<source>Title:</source>
+				<target>Title:</target>
+			</trans-unit>
 			<trans-unit id="show_item.php.field" approved="yes">
 				<source>Field:</source>
 				<target>Field:</target>
