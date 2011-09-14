@@ -7425,9 +7425,15 @@ class tslib_cObj {
 			$queryParts['SELECT'] = $conf['selectFields'];
 				// add uid, pid and t3ver_state in order to allow
 				// versioning for TCA-based table
-			if (isset($GLOBALS['TCA'][$table])) {
-				$queryParts['SELECT'] .= ',uid,pid';
-				if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+			if (isset($GLOBALS['TCA'][$table]) && !strstr($queryParts['SELECT'], '*')) {
+
+				if (!preg_match('/^uid,|,uid|^uid$/',$queryParts['SELECT'])) {
+					$queryParts['SELECT'] .= ',uid';
+				}
+				if (!preg_match('/^pid,|,pid|^pid$/',$queryParts['SELECT'])) {
+					$queryParts['SELECT'] .= ',pid';
+				}
+				if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && (!preg_match('/^t3ver_state,|,t3ver_state|^t3ver_state$/',$queryParts['SELECT']))) {
 					$queryParts['SELECT'] .= ',t3ver_state';
 				}
 			}
