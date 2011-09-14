@@ -7417,7 +7417,7 @@ class tslib_cObj {
 			$queryParts['SELECT'] = $conf['selectFields'];
 				// add uid, pid and t3ver_state in order to allow
 				// versioning for TCA-based table
-			if (isset($GLOBALS['TCA'][$table])) {
+			if (isset($GLOBALS['TCA'][$table]) && !strstr($queryParts['SELECT'], '*')) {
 				$queryParts['SELECT'] .= ',uid,pid';
 				if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 					$queryParts['SELECT'] .= ',t3ver_state';
