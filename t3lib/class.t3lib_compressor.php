@@ -286,9 +286,11 @@ class t3lib_Compressor {
 			// we add up the filenames, filemtimes and filsizes to later build a checksum over
 			// it and include it in the temporary file name
 		$unique = '';
-		foreach ($filesToInclude as &$filename) {
+
+			// avoid reference because of php bug when filename is used later on
+		foreach ($filesToInclude as $key => $filename) {
 			if (t3lib_div::isValidUrl($filename)) {
-				$filename = $this->retrieveExternalFile($filename);
+				$filesToInclude[$key] = $this->retrieveExternalFile($filename);
 			}
 			$filepath = t3lib_div::resolveBackPath($this->rootPath . $filename);
 			$unique .= $filename . filemtime($filepath) . filesize($filepath);
