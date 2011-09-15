@@ -88,7 +88,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 					'actions' => array('show', 'index')
 				),
 				'TheThirdController' => array(
-					'actions' => array('delete', 'create')
+					'actions' => array('delete', 'create', 'onlyInThirdController')
 				)
 			)
 		);
@@ -251,30 +251,6 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception_InvalidActionName
-	 */
-	public function resolveActionNameThrowsInvalidActionExceptionIfSpecifiedActionIsNotAllowed() {
-		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
-		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
-		$parameters = array('action' => 'new');
-		$this->requestBuilder->_call('resolveActionName', 'TheSecondController', $parameters);
-	}
-
-	/**
-	 * @test
-	 * @expectedException t3lib_error_http_PageNotFoundException
-	 */
-	public function resolveActionNameThrowsPageNotFoundExceptionIfSpecifiedActionIsNotAllowedAndPageNotFoundExceptionIsConfigured() {
-		$this->configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved'] = 1;
-		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
-		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
-		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
-		$parameters = array('action' => 'new');
-		$this->requestBuilder->_call('resolveActionName', 'TheSecondController', $parameters);
-	}
-
-	/**
-	 * @test
 	 * @expectedException Tx_Extbase_MVC_Exception
 	 */
 	public function buildThrowsExceptionIfNoDefaultControllerCanBeResolved() {
@@ -361,12 +337,194 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 				'show', 'index'
 			),
 			'TheThirdController' => array(
-				'delete', 'create'
+				'delete', 'create', 'onlyInThirdController'
 			)
 		);
 		$this->requestBuilder->build();
 		$actualResult = $this->requestBuilder->_get('allowedControllerActions');
 		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_MVC_Exception
+	 */
+	public function buildThrowsExceptionIfDefaultControllerCantBeDetermined() {
+		$this->configuration['controllerConfiguration'] = array();
+
+		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
+
+		$this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
+		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
+
+		$this->requestBuilder->build();
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildSetsDefaultControllerIfNoControllerIsSpecified() {
+		$this->injectDependencies();
+		$_GET = array(
+			'tx_myextension_pi1' => array(
+				'foo' => 'bar',
+			)
+		);
+		$this->mockRequest->expects($this->once())->method('setControllerName')->with('TheFirstController');
+		$this->requestBuilder->build();
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildCorrectlySetsSpecifiedControllerNameIfItsAllowedForTheCurrentPlugin() {
+		$this->injectDependencies();
+		$_GET = array(
+			'tx_myextension_pi1' => array(
+				'controller' => 'TheSecondController',
+			)
+		);
+		$this->mockRequest->expects($this->once())->method('setControllerName')->with('TheSecondController');
+		$this->requestBuilder->build();
+	}
+
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_MVC_Exception_InvalidControllerName
+	 */
+	public function buildThrowsInvalidControllerNameExceptionIfSpecifiedControllerIsNotAllowed() {
+		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
+
+		$this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
+		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
+
+		$_GET = array(
+			'tx_myextension_pi1' => array(
+				'controller' => 'SomeIllegalController',
+			)
+		);
+		$this->requestBuilder->build();
+	}
+
+	/**
+	 * @test
+	 * @expectedException t3lib_error_http_PageNotFoundException
+	 */
+	public function buildThrowsPageNotFoundExceptionIfEnabledAndSpecifiedControllerIsNotAllowed() {
+		$this->configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved'] = 1;
+		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
+
+		$this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
+		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
+
+		$_GET = array(
+			'tx_myextension_pi1' => array(
+				'controller' => 'SomeIllegalController',
+			)
+		);
+		$this->requestBuilder->build();
+	}
+
+
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_MVC_Exception
+	 */
+	public function buildThrowsExceptionIfDefaultActionCantBeDetermined() {
+		$this->configuration['controllerConfiguration'] = array();
+
+		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
+
+		$this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
+		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
+
+		$this->requestBuilder->build();
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildSetsDefaultActionOfTheCurrentControllerIfNoActionIsSpecified() {
+		$this->injectDependencies();
+		$_GET = array(
+			'tx_myextension_pi1' => array(
+				'controller' => 'TheThirdController',
+			)
+		);
+		$this->mockRequest->expects($this->once())->method('setControllerActionName')->with('delete');
+		$this->requestBuilder->build();
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildCorrectlySetsSpecifiedActionNameForTheDefaultControllerIfItsAllowedForTheCurrentPlugin() {
+		$this->injectDependencies();
+		$_GET = array(
+			'tx_myextension_pi1' => array(
+				'action' => 'create',
+			)
+		);
+		$this->mockRequest->expects($this->once())->method('setControllerActionName')->with('create');
+		$this->requestBuilder->build();
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildCorrectlySetsSpecifiedActionNameForTheSpecifiedControllerIfItsAllowedForTheCurrentPlugin() {
+		$this->injectDependencies();
+		$_GET = array(
+			'tx_myextension_pi1' => array(
+				'controller' => 'TheThirdController',
+				'action' => 'onlyInThirdController',
+			)
+		);
+		$this->mockRequest->expects($this->once())->method('setControllerActionName')->with('onlyInThirdController');
+		$this->requestBuilder->build();
+	}
+
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_MVC_Exception_InvalidActionName
+	 */
+	public function buildThrowsInvalidActionNameExceptionIfSpecifiedActionIsNotAllowed() {
+		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
+
+		$this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
+		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
+
+		$_GET = array(
+			'tx_myextension_pi1' => array(
+				'action' => 'someIllegalAction',
+			)
+		);
+		$this->requestBuilder->build();
+	}
+
+	/**
+	 * @test
+	 * @expectedException t3lib_error_http_PageNotFoundException
+	 */
+	public function buildThrowsPageNotFoundExceptionIfEnabledAndSpecifiedActionIsNotAllowed() {
+		$this->configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved'] = 1;
+		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
+
+		$this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
+		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
+
+		$_GET = array(
+			'tx_myextension_pi1' => array(
+				'action' => 'someIllegalAction',
+			)
+		);
+		$this->requestBuilder->build();
 	}
 
 }

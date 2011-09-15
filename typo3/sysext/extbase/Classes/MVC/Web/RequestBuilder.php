@@ -63,13 +63,6 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	protected $defaultControllerName;
 
 	/**
-	 * The default action of the default controller
-	 *
-	 * @var string
-	 */
-	protected $defaultActionName;
-
-	/**
 	 * The default format of the response object
 	 *
 	 * @var string
@@ -132,13 +125,11 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 		$this->extensionName = $configuration['extensionName'];
 		$this->pluginName = $configuration['pluginName'];
 		$this->defaultControllerName = current(array_keys($configuration['controllerConfiguration']));
-		$this->defaultActionName = current($configuration['controllerConfiguration'][$this->defaultControllerName]['actions']);
 
-		$allowedControllerActions = array();
+		$this->allowedControllerActions = array();
 		foreach ($configuration['controllerConfiguration'] as $controllerName => $controllerActions) {
-			$allowedControllerActions[$controllerName] = $controllerActions['actions'];
+			$this->allowedControllerActions[$controllerName] = $controllerActions['actions'];
 		}
-		$this->allowedControllerActions = $allowedControllerActions;
 		if (!empty($configuration['format'])) {
 			$this->defaultFormat = $configuration['format'];
 		}
@@ -189,16 +180,30 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	 * @throws Tx_Extbase_MVC_Exception if the controller could not be resolved
 	 */
 	protected function resolveControllerName(array $parameters) {
-		if (isset($parameters['controller']) && in_array($parameters['controller'], $this->allowedControllerActions)) {
-			return filter_var($parameters['controller'], FILTER_SANITIZE_STRING);
-		} elseif (!empty($this->defaultControllerName)) {
+		if (!isset($parameters['controller']) || strlen($parameters['controller']) === 0) {
+			if (strlen($this->defaultControllerName) === 0) {
+				throw new Tx_Extbase_MVC_Exception(
+					'The default controller can not be determined. Please check for Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
+					1316104317
+				);
+			}
 			return $this->defaultControllerName;
-		} else {
-			throw new Tx_Extbase_MVC_Exception(
-				'The default controller can not be determined. Please check for Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
-				1295479650
+		}
+		$allowedControllerNames = array_keys($this->allowedControllerActions);
+		if (!in_array($parameters['controller'], $allowedControllerNames)) {
+			$configuration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+			if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (boolean)$configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
+				throw new t3lib_error_http_PageNotFoundException(
+					'The requested resource was not found',
+					1313857897
+				);
+			}
+			throw new Tx_Extbase_MVC_Exception_InvalidControllerName(
+				'The controller "' . $parameters['controller'] . '" is not allowed by this plugin. Please check for Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
+				1313855173
 			);
 		}
+		return filter_var($parameters['controller'], FILTER_SANITIZE_STRING);
 	}
 
 	/**
@@ -213,17 +218,18 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	 */
 	protected function resolveActionName($controllerName, array $parameters) {
 		if (!isset($parameters['action']) || strlen($parameters['action']) === 0) {
-			if (!empty($this->defaultActionName)) {
-				return $this->defaultActionName;
+			$defaultActionName = is_array($this->allowedControllerActions[$controllerName]) ? current($this->allowedControllerActions[$controllerName]) : '';
+			if (strlen($defaultActionName) === 0) {
+				throw new Tx_Extbase_MVC_Exception(
+					'The default action can not be determined for controller "' . $controllerName . '". Please check Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
+					1295479651
+				);
 			}
-			throw new Tx_Extbase_MVC_Exception(
-				'The default action can not be determined for controller "' . $controllerName . '". Please check Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
-				1295479651
-			);
+			return $defaultActionName;
 		}
 		$actionName = $parameters['action'];
-		$allowedActions = $this->allowedControllerActions[$controllerName];
-		if (!in_array($actionName, $allowedActions)) {
+		$allowedActionNames = $this->allowedControllerActions[$controllerName];
+		if (!in_array($actionName, $allowedActionNames)) {
 			$configuration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 			if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (boolean)$configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
 				throw new t3lib_error_http_PageNotFoundException(
@@ -232,7 +238,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 				);
 			}
 			throw new Tx_Extbase_MVC_Exception_InvalidActionName(
-				'There is no action "' . $actionName . '" for controller "' . $controllerName . '".',
+				'The action "' . $actionName . '" (controller "' . $controllerName . '") is not allowed by this plugin. Please check Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
 				1313855173
 			);
 		}
