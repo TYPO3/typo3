@@ -314,7 +314,7 @@ class SC_show_item {
 		$fI = t3lib_div::split_fileref($this->file);
 		$ext = $fI['fileext'];
 
-		$code = '';
+		$code = '<div class="fileInfoContainer">';
 
 			// Setting header:
 		$fileName = t3lib_iconWorks::getSpriteIconForFile($ext) . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.file', TRUE) . ':</strong> ' . $fI['file'];
@@ -323,10 +323,10 @@ class SC_show_item {
 		} else {
 			$code.= $fileName;
 		}
-		$code.=' &nbsp;&nbsp;<strong>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.filesize').':</strong> '.t3lib_div::formatSize(@filesize($this->file)).'<br />
+		$code.=' &nbsp;&nbsp;<strong>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.filesize').':</strong> '.t3lib_div::formatSize(@filesize($this->file)).'</div>
 			';
 		if (is_array($imgInfo))	{
-			$code.= '<strong>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.dimensions').':</strong> '.$imgInfo[0].'x'.$imgInfo[1].' '.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.pixels');
+			$code.= '<div class="fileInfoContainer fileDimensions"><strong>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.dimensions').':</strong> '.$imgInfo[0].'x'.$imgInfo[1].' '.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.pixels').'</div>';
 		}
 		$this->content.=$this->doc->section('',$code);
 		$this->content.=$this->doc->divider(2);
