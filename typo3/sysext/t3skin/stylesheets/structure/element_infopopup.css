@@ -18,3 +18,7 @@ Information popup, show_item.php
 table#typo3-showitem {
 	margin: 10px 0;
 }
+
+#typo3-show-item-php div.fileInfoContainer.fileDimensions {
+	margin-left: 18px;
+}
