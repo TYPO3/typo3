@@ -5760,6 +5760,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								}
 							}
 						}
+						$tblFileContent .= t3lib_cache::getDatabaseTableDefinitions();
 					} elseif (@is_file($actionParts[1])) {
 						$tblFileContent = t3lib_div::getUrl($actionParts[1]);
 					}
