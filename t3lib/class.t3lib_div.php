@@ -896,16 +896,14 @@ final class t3lib_div {
 	 *
 	 * @param string $verNumberStr	Minimum branch number required (format x.y / e.g. "4.0" NOT "4.0.0"!)
 	 * @return boolean Returns TRUE if this setup is compatible with the provided version number
-	 * @todo Still needs a function to convert versions to branches
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.9 - Use t3lib_utility_VersionNumber::isCompatibleToVersion() instead
 	 */
 	public static function compat_version($verNumberStr) {
-		$currVersionStr = $GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'] : TYPO3_branch;
-
-		if (t3lib_utility_VersionNumber::convertVersionNumberToInteger($currVersionStr) < t3lib_utility_VersionNumber::convertVersionNumberToInteger($verNumberStr)) {
-			return FALSE;
-		} else {
-			return TRUE;
+			// Deprecation log is activated only for TYPO3 4.7 and above
+		if (t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 4007000) {
+			self::logDeprecatedFunction();
 		}
+		return t3lib_utility_VersionNumber::isCompatibleToVersion($verNumberStr);
 	}
 
 	/**
