@@ -571,8 +571,8 @@ class t3lib_Compressor {
 				// remove '," or white-spaces around
 			$match = trim($match, '\'" ');
 
-				// we must not rewrite paths containing ":" or "url(", e.g. data URIs (see RFC 2397)
-			if (strpos($match, ':') === FALSE && !preg_match('/url\s*\(/i', $match)) {
+				// we must not rewrite absolute paths (beginning with "/") and paths containing ":" or "url(", e.g. data URIs (see RFC 2397)
+			if (substr($match, 0, 1) !== '/' && strpos($match, ':') === FALSE && !preg_match('/url\s*\(/i', $match)) {
 				$newPath = t3lib_div::resolveBackPath($newDir . $match);
 				$replacements[$matches[1][$matchCount]] = $wrap[0] . $newPath . $wrap[1];
 			}
