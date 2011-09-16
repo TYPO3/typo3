@@ -44,6 +44,25 @@ final class t3lib_utility_VersionNumber {
 		$versionParts = explode('.', $versionNumber);
 		return intval((int) $versionParts[0] . str_pad((int) $versionParts[1], 3, '0', STR_PAD_LEFT) . str_pad((int) $versionParts[2], 3, '0', STR_PAD_LEFT));
 	}
+
+
+	/**
+	 * Returns TRUE if the current TYPO3 version (or compatibility version) is compatible to the input version
+	 * Notice that this function compares branches, not versions (4.0.1 would be > 4.0.0 although they use the same compat_version)
+	 *
+	 * @param string $versionNumber Minimum branch number required (format x.y / e.g. "4.0" NOT "4.0.0"!)
+	 * @return boolean Returns TRUE if this setup is compatible with the provided version number
+	 * @todo Still needs a function to convert versions to branches
+	 */
+	public static function isCompatibleToVersion($versionNumber) {
+		$currentVersion = $GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'] : TYPO3_branch;
+
+		if (self::convertVersionNumberToInteger($currentVersion) < self::convertVersionNumberToInteger($versionNumber)) {
+			return FALSE;
+		} else {
+			return TRUE;
+		}
+	}
 }
 
 ?>
