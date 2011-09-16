@@ -225,17 +225,19 @@ class t3lib_autoloader {
 	/**
 	 * Gets the identifier used for caching the registry files.
 	 * The identifier depends on whether or not frontend or backend
-	 * is called and on the current TYPO3 version.
+	 * is called, on the current TYPO3 version and the installation path
+	 * of the TYPO3 site (TYPO3_site).
 	 *
-	 * In effect, if updating TYPO3 to a newer version with possible new
-	 * core classes a new registry cache file will be created.
+	 * In effect, a new registry cache file will be created
+	 * when moving to a newer version with possible new core classes
+	 * or moving the webroot to another absolute path.
 	 *
 	 * @return string identifier
 	 */
 	protected static function getAutoloadCacheIdentifier() {
 		if (is_null(self::$autoloadCacheIdentifier)) {
 			$frontendOrBackend = TYPO3_MODE === 'FE' ? 'FE' : 'BE';
-			self::$autoloadCacheIdentifier = sha1($frontendOrBackend . TYPO3_version . 'autoload');
+			self::$autoloadCacheIdentifier = sha1($frontendOrBackend . TYPO3_version . PATH_site . 'autoload');
 		}
 		return self::$autoloadCacheIdentifier;
 	}
