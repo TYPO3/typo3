@@ -42,3 +42,8 @@ dl.typo3-tstemplate-ceditor-constant dt {
 	vertical-align: middle;
 	padding: 5px;
 }
+
+div.tst-analyzer-options label {
+	margin-right: 10px;
+	vertical-align: middle;
+}
