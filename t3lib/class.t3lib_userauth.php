@@ -252,8 +252,13 @@ class t3lib_userAuth {
 			// Make certain that NO user is set initially
 		$this->user = '';
 
-			// We need a PHP session session for most login levels
-		session_start();
+			// Set all posible headers that could ensure that the script is not cached on the client-side
+		if ($this->sendNoCacheHeaders) {
+			header('Expires: 0');
+			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+			header('Cache-Control: no-cache, must-revalidate');
+			header('Pragma: no-cache');
+		}
 
 			// Check to see if anyone has submitted login-information and if so register the user with the session. $this->user[uid] may be used to write log...
 		$this->checkAuthentication();
@@ -293,14 +298,6 @@ class t3lib_userAuth {
 
 			// If any redirection (inclusion of file) then it will happen in this function
 		$this->redirect();
-
-			// Set all posible headers that could ensure that the script is not cached on the client-side
-		if ($this->sendNoCacheHeaders)	{
-			header('Expires: 0');
-			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-			header('Cache-Control: no-cache, must-revalidate');
-			header('Pragma: no-cache');
-		}
 
 			// Set $this->gc_time if not explicitely specified
 		if ($this->gc_time==0)	{
@@ -1246,6 +1243,7 @@ class t3lib_userAuth {
 
 					// Check challenge stored in cookie:
 				if ($this->challengeStoredInCookie)	{
+					session_start();
 					if ($_SESSION['login_challenge'] !== $loginData['chalvalue']) {
 						if ($this->writeDevLog) 	t3lib_div::devLog('PHP Session stored challenge "'.$_SESSION['login_challenge'].'" and submitted challenge "'.$loginData['chalvalue'].'" did not match, so authentication failed!', 't3lib_userAuth', 2);
 						$this->logoff();
