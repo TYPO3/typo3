@@ -264,7 +264,11 @@ class SC_move_el {
 
 				// Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
 			$onClick = 'window.location.href=\''.t3lib_div::linkThisScript(array('makeCopy'=>!$this->makeCopy)).'\';';
-			$hline.= '<br /><input type="hidden" name="makeCopy" value="0" /><input type="checkbox" name="makeCopy" id="makeCopy" value="1"'.($this->makeCopy?' checked="checked"':'').' onclick="'.htmlspecialchars($onClick).'" /> <label for="makeCopy">'.
+			$hline .= $this->doc->spacer(5);
+			$hline .= '<input type="hidden" name="makeCopy" value="0" />' .
+				'<input type="checkbox" name="makeCopy" id="makeCopy" value="1"' .
+				($this->makeCopy ? ' checked="checked"' : '') .
+				' onclick="' . htmlspecialchars($onClick) . '" /> <label for="makeCopy" class="t3-label-valign-top">' .
 				$GLOBALS['LANG']->getLL('makeCopy', 1) . '</label>';
 
 				// Add the header-content to the module content:
