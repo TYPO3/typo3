@@ -88,6 +88,11 @@ label {
 	vertical-align: middle;
 }
 
+div.tst-analyzer-options label {
+	margin-right: 10px;
+	vertical-align: middle;
+}
+
 .checkbox,
 .radio,
 .checkbox:hover {
