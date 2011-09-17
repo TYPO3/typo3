@@ -23,3 +23,7 @@ table#typo3-about-modules tr.c-subitem-row {
 	border-left: 1px solid #ccc;
 	border-right: 1px solid #ccc;
 }
+
+table#typo3-about-modules tr.c-mainitem {
+	background-color: #f8f8f8;
+}
