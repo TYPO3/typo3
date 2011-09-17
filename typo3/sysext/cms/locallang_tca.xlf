@@ -400,16 +400,16 @@
 				<target>Selected page</target>
 			</trans-unit>
 			<trans-unit id="pages.shortcut_mode.I.1" approved="yes">
-				<source>First subpage of current page</source>
-				<target>First subpage of current page</target>
+				<source>First subpage of selected/current page</source>
+				<target>First subpage of selected/current page</target>
 			</trans-unit>
 			<trans-unit id="pages.shortcut_mode.I.2" approved="yes">
-				<source>Random subpage of current page</source>
-				<target>Random subpage of current page</target>
+				<source>Random subpage of selected/current page</source>
+				<target>Random subpage of selected/current page</target>
 			</trans-unit>
 			<trans-unit id="pages.shortcut_mode.I.3" approved="yes">
-				<source>Parent page of current page</source>
-				<target>Parent page of current page</target>
+				<source>Parent page of selected/current page</source>
+				<target>Parent page of selected/current page</target>
 			</trans-unit>
 			<trans-unit id="pages.shortcut_formlabel" approved="yes">
 				<source>Shortcut Target</source>
