@@ -301,13 +301,13 @@
 				<source>Selected page</source>
 			</trans-unit>
 			<trans-unit id="pages.shortcut_mode.I.1" xml:space="preserve">
-				<source>First subpage of current page</source>
+				<source>First subpage of selected/current page</source>
 			</trans-unit>
 			<trans-unit id="pages.shortcut_mode.I.2" xml:space="preserve">
-				<source>Random subpage of current page</source>
+				<source>Random subpage of selected/current page</source>
 			</trans-unit>
 			<trans-unit id="pages.shortcut_mode.I.3" xml:space="preserve">
-				<source>Parent page of current page</source>
+				<source>Parent page of selected/current page</source>
 			</trans-unit>
 			<trans-unit id="pages.shortcut_formlabel" xml:space="preserve">
 				<source>Shortcut Target</source>
