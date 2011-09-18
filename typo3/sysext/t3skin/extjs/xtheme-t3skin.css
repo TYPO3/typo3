@@ -171,6 +171,10 @@
 	background-image:url(images/toolbar/btn-arrow.gif);
 }
 
+table.x-toolbar-ct table#undeleteButton {
+	margin-left: 10px;
+}
+
 /* Tabs */
 
 .x-tab-panel-header, .x-tab-panel-footer {
