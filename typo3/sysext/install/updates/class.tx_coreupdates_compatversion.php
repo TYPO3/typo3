@@ -42,49 +42,7 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 	function checkForUpdate(&$description)	{
 		global $TYPO3_CONF_VARS;
 
-		if ($this->compatVersionIsCurrent())	{
-			$description = '
-				<p>
-					<strong>Up to date!</strong>
-					<br />
-					If you do not use the wizard, your current TYPO3
-					installation is configured to use all the features included
-					in the current release ' . TYPO3_version . '.
-					<br />
-					There are two possibilities that you see this screen:
-				</p>
-				<ol>
-					<li>
-						<strong>You just updated from a previous version of
-						TYPO3:</strong>
-						Because of some new features, the frontend output of
-						your site might have changed. To emulate the "old"
-						frontend behavior, change the compatibility version
-						by continuing to step 2.
-						This is <strong>recommended</strong> after every update
-						to make sure the frontend output is not altered. When
-						re-running the wizard, you will see the changes needed
-						for using the new features.
-						<em>Please continue to step two.</em>
-					</li>
-					<li>
-						<strong>You just made a fresh install of TYPO3:</strong>
-						Perfect! All new features will be used.
-						<em>You can stop here and do not need this wizard now.</em>
-					</li>
-				</ol>
-			';
-
-			if (!$TYPO3_CONF_VARS['SYS']['compat_version'])	{
-				$description .= '
-					<p>
-						The compatibility version has been set to the current
-						TYPO3 version. This is a stamp and has no impact for
-						your installation.
-					</p>
-				';
-			}
-		} else {
+		if (!$this->compatVersionIsCurrent()) {
 			$description = '
 				<p>
 					Your current TYPO3 installation is configured to
@@ -100,9 +58,10 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 					features.
 				</p>
 			';
+			return 1;
 		}
 
-		return 1;	// Return 1 in any case so user has possibility to switch back to a previous compat_version.
+		return 0;
 	}
 
 	/**
