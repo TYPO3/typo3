@@ -52,13 +52,24 @@ class tx_saltedpasswords_autoloader {
 	}
 
 	/**
-	 * Returns TRUE if PHP modules to run saltedpasswords are loaded and working.
+	 * Returns TRUE if PHP modules to run saltedpasswords and rsaauth are loaded and working.
+	 * The only known requirement is a working openssl extension which is required by rsaauth.
 	 *
 	 * @return boolean
+	 * @see tx_rsaauth_php_backend
 	 */
 	protected function isSaltedPasswordsSupported() {
-			//FIXME: needs to be implemented!
-		return TRUE;
+		$isSupported = FALSE;
+
+		if (is_callable('openssl_pkey_new')) {
+			$testKey = @openssl_pkey_new();
+			if (is_resource($testKey)) {
+				openssl_free_key($testKey);
+				$isSupported = TRUE;
+			}
+		}
+
+		return $isSupported;
 	}
 
 	/**
