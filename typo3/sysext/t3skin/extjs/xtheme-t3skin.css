@@ -170,6 +170,11 @@
 	background-image:url(images/toolbar/btn-arrow.gif);
 }
 
+.x-btn {
+	margin-left: 1px;
+	margin-right: 1px;
+}
+
 /* Tabs */
 
 .x-tab-panel-header, .x-tab-panel-footer {
