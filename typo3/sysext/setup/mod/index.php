@@ -95,7 +95,17 @@ class SC_mod_user_setup_index {
 	protected $setupIsUpdated = FALSE;
 	protected $tempDataIsCleared = FALSE;
 	protected $settingsAreResetToDefault = FALSE;
+
+	/**
+	 * @var bool
+	 * @deprecated since TYPO3 4.6 - will be removed with TYPO3 4.8
+	 */
 	protected $installToolFileExists = FALSE;
+
+	/**
+	 * @var bool
+	 * @deprecated since TYPO3 4.6 - will be removed with TYPO3 4.8
+	 */
 	protected $installToolFileKeep = FALSE;
 
 	/**
@@ -275,6 +285,7 @@ class SC_mod_user_setup_index {
 		$this->MCONF = $GLOBALS['MCONF'];
 
 			// check Install Tool enable file
+			// @deprecated since TYPO3 4.6 - will be removed with TYPO3 4.8
 		$this->setInstallToolFileExists();
 		$this->setInstallToolFileKeep();
 
@@ -333,61 +344,6 @@ class SC_mod_user_setup_index {
 	 */
 	function main()	{
 		global $LANG;
-
-			// file creation / delete
-		if ($this->isAdmin) {
-			if ($this->installToolFileKeep) {
-				$flashMessage = t3lib_div::makeInstance(
-					't3lib_FlashMessage',
-					$LANG->getLL('enableInstallTool.fileHasKeep'),
-					$LANG->getLL('enableInstallTool.file'),
-					t3lib_FlashMessage::WARNING
-				);
-				$this->content .= $flashMessage->render();
-			}
-
-			if (t3lib_div::_POST('deleteInstallToolEnableFile')) {
-				unlink(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
-				$this->setInstallToolFileExists();
-				if ($this->getInstallToolFileExists()) {
-					$flashMessage = t3lib_div::makeInstance(
-						't3lib_FlashMessage',
-						$LANG->getLL('enableInstallTool.fileDelete_failed'),
-						$LANG->getLL('enableInstallTool.file'),
-						t3lib_FlashMessage::ERROR
-					);
-				} else {
-					$flashMessage = t3lib_div::makeInstance(
-						't3lib_FlashMessage',
-						$LANG->getLL('enableInstallTool.fileDelete_ok'),
-						$LANG->getLL('enableInstallTool.file'),
-						t3lib_FlashMessage::OK
-					);
-			}
-				$this->content .= $flashMessage->render();
-			}
-			if (t3lib_div::_POST('createInstallToolEnableFile')) {
-				touch(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
-				t3lib_div::fixPermissions(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
-				$this->setInstallToolFileExists();
-				if ($this->getInstallToolFileExists()) {
-					$flashMessage = t3lib_div::makeInstance(
-						't3lib_FlashMessage',
-						$LANG->getLL('enableInstallTool.fileCreate_ok'),
-						$LANG->getLL('enableInstallTool.file'),
-						t3lib_FlashMessage::OK
-					);
-				} else {
-					$flashMessage = t3lib_div::makeInstance(
-						't3lib_FlashMessage',
-						$LANG->getLL('enableInstallTool.fileCreate_failed'),
-						$LANG->getLL('enableInstallTool.file'),
-						t3lib_FlashMessage::ERROR
-					);
-			}
-				$this->content .= $flashMessage->render();
-		}
-		}
 
 		if ($this->languageUpdate) {
 			$this->doc->JScodeArray['languageUpdate'] .=  '
@@ -516,16 +472,20 @@ class SC_mod_user_setup_index {
 	/**
 	 * Sets existance of Install Tool file
 	 *
-	 * return void
+	 * @return void
+	 * @deprecated since TYPO3 4.6 - will be removed with TYPO3 4.8 - use Tx_Install_Service_BasicService
 	 */
 	public function setInstallToolFileExists() {
+		t3lib_div::logDeprecatedFunction();
 		$this->installToolFileExists = is_file(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
 	}
 
 	/**
 	 * Sets property if Install Tool file contains "KEEP_FILE"
+	 * @deprecated since TYPO3 4.6 - will be removed with TYPO3 4.8 - use Tx_Install_Service_BasicService
 	 */
 	public function setInstallToolFileKeep() {
+		t3lib_div::logDeprecatedFunction();
 		if ($this->installToolFileExists) {
 			$this->installToolFileKeep = (trim(file_get_contents(PATH_typo3conf . 'ENABLE_INSTALL_TOOL')) === 'KEEP_FILE');
 		}
@@ -535,8 +495,10 @@ class SC_mod_user_setup_index {
 	 * Gets property installToolFileExists
 	 *
 	 * @return boolean $this->installToolFileExists
+	 * @deprecated since TYPO3 4.6 - will be removed with TYPO3 4.8 - use Tx_Install_Service_BasicService
 	 */
 	public function getInstallToolFileExists() {
+		t3lib_div::logDeprecatedFunction();
 		return $this->installToolFileExists;
 	}
 
@@ -544,8 +506,10 @@ class SC_mod_user_setup_index {
 	 * Gets property installToolFileKeep
 	 *
 	 * @return boolean $this->installToolFileKeep
+	 * @deprecated since TYPO3 4.6 - will be removed with TYPO3 4.8 - use Tx_Install_Service_BasicService
 	 */
 	public function getInstallToolFileKeep() {
+		t3lib_div::logDeprecatedFunction();
 		return $this->installToolFileKeep;
 	}
 
@@ -852,8 +816,11 @@ class SC_mod_user_setup_index {
 	 * @param array $params                    config of the field
 	 * @param SC_mod_user_setup_index $parent  this class as reference
 	 * @return string	                       html with description and button
+	 * @deprecated since TYPO3 4.6 - will be removed with TYPO3 4.8
 	 */
 	public function renderInstallToolEnableFileButton(array $params, SC_mod_user_setup_index $parent) {
+		t3lib_div::logDeprecatedFunction();
+
 			// Install Tool access file
 		$installToolEnableFile = PATH_typo3conf . 'ENABLE_INSTALL_TOOL';
 		if ($parent->getInstallToolFileExists() && ($GLOBALS['EXEC_TIME'] - filemtime($installToolEnableFile) > 3600)) {
