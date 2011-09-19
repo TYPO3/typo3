@@ -558,7 +558,7 @@ class t3lib_TSparser {
 	 * @return	string		Complete TypoScript with includes added.
 	 * @static
 	 */
-	function checkIncludeLines($string, $cycle_counter = 1, $returnFiles = FALSE) {
+	public static function checkIncludeLines($string, $cycle_counter = 1, $returnFiles = FALSE) {
 		$includedFiles = array();
 		if ($cycle_counter > 100) {
 			t3lib_div::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'Core', 2);
@@ -637,9 +637,9 @@ class t3lib_TSparser {
 	 * @param	array		Array with TypoScript in each value
 	 * @return	array		Same array but where the values has been parsed for include-commands
 	 */
-	function checkIncludeLines_array($array) {
+	public static function checkIncludeLines_array($array) {
 		foreach ($array as $k => $v) {
-			$array[$k] = t3lib_TSparser::checkIncludeLines($array[$k]);
+			$array[$k] = self::checkIncludeLines($array[$k]);
 		}
 		return $array;
 	}
@@ -653,7 +653,7 @@ class t3lib_TSparser {
 	 * @return	 string	 template content with uncommented include statements
 	 * @author	 Fabrizio Branca <typo3@fabrizio-branca.de>
 	 */
-	function extractIncludes($string, $cycle_counter = 1, $extractedFileNames = array()) {
+	public static function extractIncludes($string, $cycle_counter = 1, $extractedFileNames = array()) {
 
 		if ($cycle_counter > 10) {
 			t3lib_div::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'Core', 2);
@@ -768,7 +768,7 @@ class t3lib_TSparser {
 	 * @return	array		Same array but where the values has been processed with extractIncludes
 	 * @author	 Fabrizio Branca <typo3@fabrizio-branca.de>
 	 */
-	function extractIncludes_array($array) {
+	public static function extractIncludes_array($array) {
 		foreach ($array as $k => $v) {
 			$array[$k] = t3lib_TSparser::extractIncludes($array[$k]);
 		}
