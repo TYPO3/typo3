@@ -539,13 +539,13 @@ class t3lib_Compressor {
 
 			// Replace "url()" paths
 		if (stripos($contents, 'url') !== FALSE) {
-			$regex = '/url(\(\s*["\']?([^"\']+)["\']?\s*\))/iU';
+			$regex = '/url(\(\s*["\']?(?!\/)([^"\']+)["\']?\s*\))/iU';
 			$contents = $this->findAndReplaceUrlPathsByRegex($contents, $regex, $newDir, '(\'|\')');
 		}
 
 			// Replace "@import" paths
 		if (stripos($contents, '@import') !== FALSE) {
-			$regex = '/@import\s*(["\']?([^"\']+)["\']?)/i';
+			$regex = '/@import\s*(["\']?(?!\/)([^"\']+)["\']?)/i';
 			$contents = $this->findAndReplaceUrlPathsByRegex($contents, $regex, $newDir, '"|"');
 		}
 
