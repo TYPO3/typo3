@@ -386,11 +386,11 @@ final class t3lib_div {
 	 * @param string $newlineChar The string to implode the broken lines with (default/typically \n)
 	 * @param integer $lineWidth The line width
 	 * @return string reformatted text
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Mail::breakLinesForPlainEmail()
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Mail::breakLinesForEmail()
 	 */
 	public static function breakLinesForEmail($str, $newlineChar = LF, $lineWidth = 76) {
 		self::logDeprecatedFunction();
-		return t3lib_utility_Mail::breakLinesForPlainEmail($str, $newlineChar, $lineWidth);
+		return t3lib_utility_Mail::breakLinesForEmail($str, $newlineChar, $lineWidth);
 	}
 
 	/**
