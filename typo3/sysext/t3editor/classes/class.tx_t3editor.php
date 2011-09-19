@@ -218,7 +218,11 @@ class tx_t3editor implements t3lib_Singleton {
 			)
 		);
 		$T3Editor_template = addslashes($T3Editor_template);
-		$T3Editor_template = str_replace(LF, "' + '", $T3Editor_template);
+		$T3Editor_template = str_replace(
+			array(CR, LF),
+			array('', "' + '"),
+			$T3Editor_template
+		);
 
 		return '\'' . $T3Editor_template . '\'';
 	}
