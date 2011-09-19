@@ -29,19 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_Domain_Model_Attributes_Method extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
-
-	/**
-	 * Constructor
-	 *
-	 * @param string $value Attribute value
-	 * @param integer $elementId The ID of the element
-	 * @return void
-	 */
-	public function __construct($value, $elementId) {
-		parent::__construct($value, $elementId);
-	}
-
+class tx_form_Domain_Model_Attributes_Method extends tx_form_Domain_Model_Attributes_Abstract {
 	/**
 	 * Sets the attribute 'method'.
 	 * Used with element 'form'
@@ -56,7 +44,7 @@ class tx_form_Domain_Model_Attributes_Method extends tx_form_Domain_Model_Attrib
 	public function getValue() {
 		$value = strtolower((string) $this->value);
 
-		if($value == 'post' || $value == 'get') {
+		if ($value == 'post' || $value == 'get') {
 			$attribute = $value;
 		} else {
 			$attribute = 'post';

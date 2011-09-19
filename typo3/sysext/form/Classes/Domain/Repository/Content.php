@@ -30,8 +30,6 @@
  * @package TYPO3
  * @subpackage form
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @license http://www.gnu.org/copyleft/gpl.html
- * @version $Id$
  */
 class tx_form_Domain_Repository_Content {
 	/**
@@ -39,7 +37,7 @@ class tx_form_Domain_Repository_Content {
 	 *
 	 * Using the GET or POST variable 'P'
 	 *
-	 * @return mixed|tx_form_Domain_Model_Content if found, FALSE if not
+	 * @return boolean|tx_form_Domain_Model_Content if found, FALSE if not
 	 */
 	public function getRecord() {
 		$record = FALSE;
@@ -67,24 +65,16 @@ class tx_form_Domain_Repository_Content {
 	/**
 	 * Check if the referenced record exists
 	 *
-	 * @return TRUE if record exists, FALSE if not
+	 * @return boolean TRUE if record exists, FALSE if not
 	 */
 	public function hasRecord() {
-		$hasRecord = FALSE;
-
-		$record = $this->getRecord();
-
-		if ($record) {
-			$hasRecord = TRUE;
-		}
-
-		return $hasRecord;
+		return ($this->getRecord() !== FALSE);
 	}
 
 	/**
 	 * Convert and save the incoming data of the FORM wizard
 	 *
-	 * @return TRUE if succeeded, FALSE if not
+	 * @return boolean TRUE if succeeded, FALSE if not
 	 */
 	public function save() {
 		$json = t3lib_div::_GP('configuration');

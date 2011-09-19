@@ -33,12 +33,9 @@
  */
 class tx_form_Domain_Factory_TyposcriptToJson {
 	/**
-	 * Constructor
-	 *
-	 * @return void
+	 * @var array
 	 */
-	public function __construct() {
-	}
+	protected $validationRules;
 
 	/**
 	 * Convert TypoScript string to JSON
@@ -46,7 +43,7 @@ class tx_form_Domain_Factory_TyposcriptToJson {
 	 * @param string $typoscript TypoScript string containing all configuration for the form
 	 * @return string The JSON for the form
 	 */
-	public function convert($typoscript) {
+	public function convert(array $typoscript) {
 		$this->setValidationRules($typoscript);
 		$jsonObject = $this->createElement('form', $typoscript);
 
@@ -59,7 +56,7 @@ class tx_form_Domain_Factory_TyposcriptToJson {
 	 *
 	 * @param string $class Type of element
 	 * @param array $arguments Configuration array
-	 * @return object
+	 * @return tx_form_Domain_Model_JSON_Element
 	 */
 	public function createElement($class, array $arguments = array()) {
 		$class = strtolower((string) $class);
@@ -67,6 +64,7 @@ class tx_form_Domain_Factory_TyposcriptToJson {
 
 		$this->addValidationRules($arguments);
 
+		/** @var $object tx_form_Domain_Model_JSON_Element */
 		$object = t3lib_div::makeInstance($className);
 		$object->setParameters($arguments);
 
@@ -81,16 +79,17 @@ class tx_form_Domain_Factory_TyposcriptToJson {
 	 * Rendering of a "numerical array" of Form objects from TypoScript
 	 * Creates new object for each element found
 	 *
+	 * @param tx_form_Domain_Model_JSON_Container $parentElement Parent model object
 	 * @param array $arguments Configuration array
 	 * @return void
 	 */
-	protected function getChildElementsByIntegerKey(&$parentElement, $typoscript) {
+	protected function getChildElementsByIntegerKey(tx_form_Domain_Model_JSON_Container $parentElement, array $typoscript) {
 		if (is_array($typoscript)) {
 			$keys = t3lib_TStemplate::sortedKeyList($typoscript);
 			foreach ($keys as $key)	{
 				$class = $typoscript[$key];
 				if (intval($key) && !strstr($key, '.')) {
-					if(isset($typoscript[$key . '.'])) {
+					if (isset($typoscript[$key . '.'])) {
 						$elementArguments = $typoscript[$key . '.'];
 					} else {
 						$elementArguments = array();
@@ -107,12 +106,12 @@ class tx_form_Domain_Factory_TyposcriptToJson {
 	 * Checks if the typoscript object is part of the FORM or has a predefined
 	 * class for name or header object
 	 *
-	 * @param object $parentElement The parent object
+	 * @param tx_form_Domain_Model_JSON_Container $parentElement The parent object
 	 * @param string $class A predefined class
 	 * @param array $arguments Configuration array
 	 * @return void
 	 */
-	private function setElementType(&$parentElement, $class, array $arguments) {
+	private function setElementType(tx_form_Domain_Model_JSON_Container $parentElement, $class, array $arguments) {
 		if (in_array($class, tx_form_Common::getInstance()->getFormObjects())) {
 			if (strstr($arguments['class'], 'predefined-name')) {
 				$class = 'NAME';
@@ -127,12 +126,12 @@ class tx_form_Domain_Factory_TyposcriptToJson {
 	/**
 	 * Add child object to this element
 	 *
-	 * @param object The parent object
+	 * @param tx_form_Domain_Model_JSON_Container $parentElement The parent object
 	 * @param string $class Type of element
 	 * @param array $arguments Configuration array
 	 * @return void
 	 */
-	public function addElement(&$parentElement, $class, array $arguments) {
+	public function addElement(tx_form_Domain_Model_JSON_Container $parentElement, $class, array $arguments) {
 		$element = $this->createElement($class, $arguments);
 		$parentElement->addElement($element);
 	}
@@ -143,7 +142,7 @@ class tx_form_Domain_Factory_TyposcriptToJson {
 	 * @param array $typoscript Configuration array
 	 * @return void
 	 */
-	protected function setValidationRules($typoscript) {
+	protected function setValidationRules(array $typoscript) {
 		if (isset($typoscript['rules.']) && is_array($typoscript['rules.'])) {
 			$this->validationRules = $typoscript['rules.'];
 		}
@@ -159,14 +158,14 @@ class tx_form_Domain_Factory_TyposcriptToJson {
 	 * @param array $arguments The element arguments
 	 * @return void
 	 */
-	protected function addValidationRules(&$arguments) {
+	protected function addValidationRules(array &$arguments) {
 		$validationRulesAvailable = FALSE;
 
 		if (!empty($this->validationRules) && isset($arguments['name'])) {
 			foreach ($this->validationRules as $key => $ruleName) {
 				if (intval($key) && !strstr($key, '.')) {
 					$ruleConfiguration = array();
-					if(isset($this->validationRules[$key . '.'])) {
+					if (isset($this->validationRules[$key . '.'])) {
 						$ruleConfiguration = $this->validationRules[$key . '.'];
 						if (isset($ruleConfiguration['element']) && $ruleConfiguration['element'] === $arguments['name']) {
 							$arguments['validation'][$ruleName] = $ruleConfiguration;

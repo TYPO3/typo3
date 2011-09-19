@@ -29,19 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_Domain_Model_Additional_Mandatory extends tx_form_Domain_Model_Additional_Abstract implements tx_form_Domain_Model_Additional_Interface {
-
-	/**
-	 * Constructor
-	 *
-	 * @param string $type Type of the object
-	 * @param mixed $value Value of the object
-	 * @return void
-	 */
-	public function __construct($type, $value) {
-		parent::__construct($type, $value);
-	}
-
+class tx_form_Domain_Model_Additional_Mandatory extends tx_form_Domain_Model_Additional_Abstract {
 	/**
 	 * Return the value of the object
 	 *
@@ -50,7 +38,7 @@ class tx_form_Domain_Model_Additional_Mandatory extends tx_form_Domain_Model_Add
 	public function getValue() {
 		$messages = array();
 
-		foreach($this->value as $message) {
+		foreach ($this->value as $message) {
 			$messages[] = $this->localCobj->cObjGetSingle($this->type, $message);
 		}
 

@@ -30,15 +30,6 @@
  * @subpackage form
  */
 class tx_form_System_Filter_Titlecase implements tx_form_System_Filter_Interface {
-
-	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-	}
-
 	/**
 	 * Convert alphabetic characters to title case
 	 *

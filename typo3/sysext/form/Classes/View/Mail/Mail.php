@@ -43,7 +43,7 @@ class tx_form_View_Mail {
 	 *
 	 * @var array
 	 */
-	protected $typoscript = array();
+	protected $typoScript = array();
 
 	/**
 	 * The localization handler
@@ -102,7 +102,7 @@ class tx_form_View_Mail {
 			$message = $this->typoScript['messages.'][$isSent . '.'];
 		}
 
-		if(empty($message)) {
+		if (empty($message)) {
 			if (!empty($type)) {
 				$message = $type;
 				$type = 'TEXT';
@@ -112,7 +112,7 @@ class tx_form_View_Mail {
 			}
 			$value['value'] = $message;
 			$value['wrap'] = '<p>|</p>';
-		} elseif(!is_array($message)) {
+		} elseif (!is_array($message)) {
 			$value['value'] = $message;
 			$value['wrap'] = '<p>|</p>';
 		} else {
@@ -126,10 +126,11 @@ class tx_form_View_Mail {
 	 * Get the local language label(s) for the message
 	 * In some cases this method will be override by rule class
 	 *
+	 * @param string $type The type
 	 * @return string The local language message label
 	 */
 	protected function getLocalLanguageLabel($type) {
-		$label = get_class($this) . '.' . $type;
+		$label = strtolower(get_class($this)) . '.' . $type;
 		$message = $this->localizationHandler->getLocalLanguageLabel($label);
 		return $message;
 	}

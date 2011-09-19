@@ -29,21 +29,9 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_Domain_Model_Attributes_Action extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
-
+class tx_form_Domain_Model_Attributes_Action extends tx_form_Domain_Model_Attributes_Abstract {
 	/**
-	 * Constructor
-	 *
-	 * @param string $value Attribute value
-	 * @param integer $elementId The ID of the element
-	 * @return void
-	 */
-	public function __construct($value, $elementId) {
-		parent::__construct($value, $elementId);
-	}
-
-	/**
-	 * Sets the attribute 'action'
+	 * Gets the attribute 'action'
 	 * Used with the element 'form'
 	 * Lower case
 	 *
@@ -55,7 +43,7 @@ class tx_form_Domain_Model_Attributes_Action extends tx_form_Domain_Model_Attrib
 	public function getValue() {
 		$value = $this->value;
 
-		if(empty($value)) {
+		if (empty($value)) {
 			$value = $GLOBALS['TSFE']->id;
 		}
 

@@ -75,14 +75,5 @@ class tx_form_Domain_Model_JSON_Textarea extends tx_form_Domain_Model_JSON_Eleme
 		'tabindex',
 		'title'
 	);
-
-	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
 }
 ?>

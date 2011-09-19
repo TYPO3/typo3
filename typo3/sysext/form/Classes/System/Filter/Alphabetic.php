@@ -42,7 +42,6 @@ class tx_form_System_Filter_Alphabetic implements tx_form_System_Filter_Interfac
 	 * Constructor
 	 *
 	 * @param array $arguments Filter configuration
-	 * @return void
 	 */
 	public function __construct($arguments = array()) {
 		$this->setAllowWhiteSpace($arguments['allowWhiteSpace']);

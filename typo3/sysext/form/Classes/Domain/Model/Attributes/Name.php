@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_Domain_Model_Attributes_Name extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
+class tx_form_Domain_Model_Attributes_Name extends tx_form_Domain_Model_Attributes_Abstract {
 
 	/**
 	 * Addition to the name value
@@ -46,17 +46,6 @@ class tx_form_Domain_Model_Attributes_Name extends tx_form_Domain_Model_Attribut
 	protected $returnValueWithoutPrefix = FALSE;
 
 	/**
-	 * Constructor
-	 *
-	 * @param string $value Attribute value
-	 * @param integer $elementId The ID of the element
-	 * @return void
-	 */
-	public function __construct($value, $elementId) {
-		parent::__construct($value, $elementId);
-	}
-
-	/**
 	 * Return the name attribute without the prefix
 	 *
 	 * @return string
@@ -65,12 +54,12 @@ class tx_form_Domain_Model_Attributes_Name extends tx_form_Domain_Model_Attribut
 		$value = (string) $this->value;
 
 			// Change spaces into hyphens
-		$value = preg_replace('/\s/' , '-', $value);
+		$value = preg_replace('/\s/', '-', $value);
 
 			// Remove non-word characters
 		$value = preg_replace('/[^a-zA-Z0-9_\-]+/', '', $value);
 
-		if(empty($value)) {
+		if (empty($value)) {
 			$value = $this->elementId;
 		}
 
@@ -78,7 +67,7 @@ class tx_form_Domain_Model_Attributes_Name extends tx_form_Domain_Model_Attribut
 	}
 
 	/**
-	 * Sets the attribute 'name'.
+	 * Gets the attribute 'name'.
 	 * Used with all elements
 	 * Case Insensitive
 	 *
@@ -94,7 +83,7 @@ class tx_form_Domain_Model_Attributes_Name extends tx_form_Domain_Model_Attribut
 	public function getValue() {
 		$value = $this->getValueWithoutPrefix();
 
-		if($this->returnValueWithoutPrefix === FALSE) {
+		if ($this->returnValueWithoutPrefix === FALSE) {
 			$requestHandler = t3lib_div::makeInstance('tx_form_System_Request');
 			$attribute = $requestHandler->getPrefix() . '[' . $value . ']' . $this->addition;
 		} else {

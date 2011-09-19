@@ -29,21 +29,9 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_Domain_Model_Attributes_Lang extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
-
+class tx_form_Domain_Model_Attributes_Lang extends tx_form_Domain_Model_Attributes_Abstract {
 	/**
-	 * Constructor
-	 *
-	 * @param string $value Attribute value
-	 * @param integer $elementId The ID of the element
-	 * @return void
-	 */
-	public function __construct($value, $elementId) {
-		parent::__construct($value, $elementId);
-	}
-
-	/**
-	 * Sets the attribute 'lang'.
+	 * Gets the attribute 'lang'.
 	 * Used with all elements
 	 * Case Insensitive
 	 *

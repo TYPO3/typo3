@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2011 Patrick Broens (patrick@patrickbroens.nl)
+*  (c) 2011 Oliver Hader <oliver.hader@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,46 +23,50 @@
 ***************************************************************/
 
 /**
- * View object for the hidden element
+ * The form wizard load view
  *
- * @author Patrick Broens <patrick@patrickbroens.nl>
+ * @category View
  * @package TYPO3
  * @subpackage form
+ * @author Oliver Hader <oliver.hader@typo3.org>
  */
-class tx_form_View_Mail_Plain_Element_Hidden extends tx_form_View_Mail_Plain_Element_Abstract {
-
+abstract class tx_form_View_Wizard_Abstract {
 	/**
-	 * Constructor
+	 * Is the referenced record available
 	 *
-	 * @param tx_form_Domain_Model_Element_Hidden $model Model for this element
-	 * @param integer $spaces
+	 * @var boolean TRUE if available, FALSE if not
 	 */
-	public function __construct(tx_form_Domain_Model_Element_Hidden $model, $spaces) {
-		parent::__construct($model, $spaces);
+	protected $recordIsAvailable = FALSE;
+
+	/**
+	 * @var tx_form_Domain_Repository_Content
+	 */
+	protected $repository;
+
+	/**
+	 * Creates the object and calls the initialize() method.
+	 *
+	 * @param tx_form_Domain_Repository_Content $repository
+	 */
+	public function __construct(tx_form_Domain_Repository_Content $repository) {
+		$this->setRepository($repository);
 	}
 
 	/**
-	 * @return string
+	 * Sets the content repository to be used.
+	 *
+	 * @param tx_form_Domain_Repository_Content $repository
+	 * @return void
 	 */
-	public function render() {
-		$content = $this->getLabel() . ': ' . $this->getValue();
-
-		return str_repeat(chr(32), $this->spaces) . $content;
+	public function setRepository(tx_form_Domain_Repository_Content $repository) {
+		$this->repository = $repository;
 	}
 
 	/**
-	 * @return string
+	 * The main render method
+	 *
+	 * @return void
 	 */
-	protected function getLabel() {
-		$label = $this->model->getName();
-
-		return $label;
-	}
-
-	protected function getValue() {
-		$value = $this->model->getAttributeValue('value');
-
-		return $value;
-	}
+	abstract public function render();
 }
 ?>

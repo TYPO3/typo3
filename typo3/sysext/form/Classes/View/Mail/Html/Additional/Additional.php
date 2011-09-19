@@ -56,7 +56,7 @@ class tx_form_View_Mail_Html_Additional extends tx_form_View_Mail_Html_Element_A
 	public function getAdditionalValue() {
 		return htmlspecialchars(
 			$this->model->getAdditionalValue(
-				$this->getLastPartOfClassName(TRUE)
+				tx_form_Common::getInstance()->getLastPartOfClassName($this, TRUE)
 			),
 			ENT_QUOTES
 		);

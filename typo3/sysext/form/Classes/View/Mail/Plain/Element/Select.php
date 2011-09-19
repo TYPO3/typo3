@@ -35,12 +35,15 @@ class tx_form_View_Mail_Plain_Element_Select extends tx_form_View_Mail_Plain_Ele
 	 * Constructor
 	 *
 	 * @param tx_form_Domain_Model_Element_Select $model Model for this element
-	 * @return void
+	 * @param integer $spaces
 	 */
 	public function __construct(tx_form_Domain_Model_Element_Select $model, $spaces) {
 		parent::__construct($model, $spaces);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function render() {
 		$content = $this->getLabel() . ': ' .
 			chr(10) .
@@ -49,6 +52,9 @@ class tx_form_View_Mail_Plain_Element_Select extends tx_form_View_Mail_Plain_Ele
 		return str_repeat(chr(32), $this->spaces) . $content;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	protected function getLabel() {
 		$label = '';
 
@@ -61,6 +67,9 @@ class tx_form_View_Mail_Plain_Element_Select extends tx_form_View_Mail_Plain_Ele
 		return $label;
 	}
 
+	/**
+	 * @return string
+	 */
 	protected function getValues() {
 		$values = $this->renderChildren(
 			$this->model->getElements(),

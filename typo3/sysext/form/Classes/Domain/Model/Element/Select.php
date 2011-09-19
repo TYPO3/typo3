@@ -60,22 +60,12 @@ class tx_form_Domain_Model_Element_Select extends tx_form_Domain_Model_Element_C
 	);
 
 	/**
-	 * Constructor
-	 * Sets the configuration, calls parent constructor and fills the attributes
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Add child object to this element
 	 *
-	 * @param object $element The child object
-	 * @return object
+	 * @param tx_form_Domain_Model_Element_Option $element The child object
+	 * @return tx_form_Domain_Model_Element_Select
 	 */
-	public function addElement($element) {
+	public function addElement(tx_form_Domain_Model_Element_Option $element) {
 		$element->setParentName($this->getName());
 		$this->elements[] = $element;
 		return $this;
@@ -86,10 +76,10 @@ class tx_form_Domain_Model_Element_Select extends tx_form_Domain_Model_Element_C
 	 *
 	 * @param string $attribute Name of the attribute
 	 * @param mixed $value Value of the attribute
-	 * @return object
+	 * @return tx_form_Domain_Model_Element_Select
 	 */
 	public function setAttribute($attribute, $value) {
-		if(array_key_exists($attribute, $this->allowedAttributes)) {
+		if (array_key_exists($attribute, $this->allowedAttributes)) {
 			$this->attributes->addAttribute($attribute, $value);
 		}
 
@@ -99,9 +89,9 @@ class tx_form_Domain_Model_Element_Select extends tx_form_Domain_Model_Element_C
 			|| ($attribute === 'multiple'
 			&& $this->attributes->hasAttribute('name')))
 		{
+			/** @var $nameAttribute tx_form_Domain_Model_Attributes_Name */
 			$nameAttribute = $this->attributes->getAttributeObjectByKey('name');
 			$nameAttribute->setAddition('[]');
-			$this->attributes->setAttribute('name', $nameAttribute);
 		}
 
 		return $this;

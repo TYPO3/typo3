@@ -71,18 +71,17 @@ class tx_form_System_Validate_Between extends tx_form_System_Validate_Abstract i
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see tx_form_System_Validate_Interface::isValid()
 	 */
 	public function isValid() {
-		if($this->requestHandler->has($this->fieldName)) {
+		if ($this->requestHandler->has($this->fieldName)) {
 			$value = $this->requestHandler->getByMethod($this->fieldName);
-			if($this->inclusive) {
-				if($value < $this->minimum || $value > $this->maximum) {
+			if ($this->inclusive) {
+				if ($value < $this->minimum || $value > $this->maximum) {
 					return FALSE;
 				}
 			} else {
-				if($value <= $this->minimum || $value >= $this->maximum) {
+				if ($value <= $this->minimum || $value >= $this->maximum) {
 					return FALSE;
 				}
 			}
@@ -121,7 +120,7 @@ class tx_form_System_Validate_Between extends tx_form_System_Validate_Abstract i
 	 * @return object Rule object
 	 */
 	public function setInclusive($inclusive) {
-		if($inclusive === NULL) {
+		if ($inclusive === NULL) {
 			$this->inclusive = FALSE;
 		} else {
 			$this->inclusive = (boolean) $inclusive;
@@ -134,15 +133,15 @@ class tx_form_System_Validate_Between extends tx_form_System_Validate_Abstract i
 	 * Get the local language label(s) for the message
 	 * Overrides the abstract
 	 *
+	 * @param string $type The type
 	 * @return string The local language message label
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see tx_form_System_Validate_Abstract::_getLocalLanguageLabel()
 	 */
 	protected function getLocalLanguageLabel($type) {
-		$label = get_class($this) . '.' . $type;
+		$label = strtolower(get_class($this)) . '.' . $type;
 		$messages[] = $this->localizationHandler->getLocalLanguageLabel($label);
 
-		if($this->inclusive) {
+		if ($this->inclusive) {
 			$messages[] = $this->localizationHandler->getLocalLanguageLabel($label . '2');
 		}
 

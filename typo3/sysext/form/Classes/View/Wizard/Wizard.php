@@ -29,10 +29,8 @@
  * @package TYPO3
  * @subpackage form
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @license http://www.gnu.org/copyleft/gpl.html
- * @version $Id$
  */
-class tx_form_View_Wizard_Wizard {
+class tx_form_View_Wizard_Wizard extends tx_form_View_Wizard_Abstract {
 	/**
 	 * The document template object
 	 *
@@ -42,13 +40,6 @@ class tx_form_View_Wizard_Wizard {
 	 * @var mediumDoc
 	 */
 	public $doc;
-
-	/**
-	 * Is the referenced record available
-	 *
-	 * @var boolean TRUE if available, FALSE if not
-	 */
-	protected $recordIsAvailable = FALSE;
 
 	/**
 	 * Constructs this view
@@ -61,7 +52,9 @@ class tx_form_View_Wizard_Wizard {
 	 *
 	 * @return void
 	 */
-	public function __construct() {
+	public function __construct(tx_form_Domain_Repository_Content $repository) {
+		parent::__construct($repository);
+
 		$GLOBALS['LANG']->includeLLFile(
 			'EXT:form/Resources/Private/Language/locallang_wizard.xml'
 		);
@@ -93,6 +86,8 @@ class tx_form_View_Wizard_Wizard {
 	 * @return void
 	 */
 	public function render() {
+		$docHeaderButtons = array();
+
 			// Check if the referenced record is available
 		$this->recordIsAvailable = $this->repository->hasRecord();
 
@@ -341,17 +336,15 @@ class tx_form_View_Wizard_Wizard {
 	 *
 	 * @param array $array The array with the trailing dots
 	 */
-	protected function removeTrailingDotsFromTyposcript(&$array) {
-		if (is_array($array)) {
-			foreach ($array as $key => $value) {
-				if (is_array($value)) {
-					$this->removeTrailingDotsFromTyposcript($value);
-				}
-				if (substr($key, -1) === '.') {
-					$newKey = substr($key, 0, -1);
-					unset($array[$key]);
-					$array[$newKey] = $value;
-				}
+	protected function removeTrailingDotsFromTyposcript(array &$array) {
+		foreach ($array as $key => $value) {
+			if (is_array($value)) {
+				$this->removeTrailingDotsFromTyposcript($value);
+			}
+			if (substr($key, -1) === '.') {
+				$newKey = substr($key, 0, -1);
+				unset($array[$key]);
+				$array[$newKey] = $value;
 			}
 		}
 	}
@@ -423,6 +416,7 @@ class tx_form_View_Wizard_Wizard {
 		if ($this->recordIsAvailable) {
 			$bodyContent = '';
 		} else {
+			/** @var $flashMessage t3lib_FlashMessage */
 			$flashMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
 				$GLOBALS['LANG']->getLL('errorMessage', 1),
@@ -433,16 +427,6 @@ class tx_form_View_Wizard_Wizard {
 		}
 
 		return $bodyContent;
-	}
-
-	/**
-	 * Set the content repository to use in this view
-	 *
-	 * @param tx_form_Domain_Repository_Content $repository
-	 * @return void
-	 */
-	public function setRepository(tx_form_Domain_Repository_Content $repository) {
-		$this->repository = $repository;
 	}
 }
 ?>

@@ -30,32 +30,25 @@
  * @subpackage form
  */
 abstract class tx_form_View_Mail_Plain_Element_Abstract {
+	/**
+	 * @var tx_form_Domain_Model_Element_Abstract
+	 */
+	protected $model;
+
+	/**
+	 * @var integer
+	 */
+	protected $spaces;
 
 	/**
 	 * Constructor
 	 *
-	 * @return void
+	 * @param tx_form_Domain_Model_Element_Abstract $model
+	 * @param integer $spaces
 	 */
-	public function __construct($model, $spaces) {
-		$this->model = (object) $model;
+	public function __construct(tx_form_Domain_Model_Element_Abstract $model, $spaces) {
+		$this->model = $model;
 		$this->spaces = (integer) $spaces;
-	}
-
-	/**
-	 * Gets the last part of the current object's class name.
-	 * e.g. for 'tx_form_View_Confirmation_Additional' it will be 'Additional'
-	 *
-	 * @param boolean $lowercase Whether to convert to lowercase
-	 * @return string
-	 */
-	protected function getLastPartOfClassName($lowercase = FALSE) {
-		$lastPart = preg_replace('/.*_([^_]*)$/', '${1}', get_class($this), 1);
-
-		if ($lowercase) {
-			$lastPart = strtolower($lastPart);
-		}
-
-		return $lastPart;
 	}
 }
 ?>

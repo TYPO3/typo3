@@ -45,11 +45,10 @@ class tx_form_System_Validate_Integer extends tx_form_System_Validate_Abstract {
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see tx_form_System_Validate_Interface::isValid()
 	 */
 	public function isValid() {
-		if($this->requestHandler->has($this->fieldName)) {
+		if ($this->requestHandler->has($this->fieldName)) {
 			$value = $this->requestHandler->getByMethod($this->fieldName);
 
 			$locale = localeconv();

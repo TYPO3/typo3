@@ -65,23 +65,13 @@ class tx_form_Domain_Model_JSON_Header extends tx_form_Domain_Model_JSON_Element
 	);
 
 	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Set all the parameters for this object
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see tx_form_Domain_Model_Json_Element::setParameters()
 	 */
-	public function setParameters($parameters) {
+	public function setParameters(array $parameters) {
 		parent::setParameters($parameters);
 		$this->setVarious($parameters);
 	}
@@ -94,7 +84,7 @@ class tx_form_Domain_Model_JSON_Header extends tx_form_Domain_Model_JSON_Element
 	 * @param array $parameters Configuration array
 	 * @return void
 	 */
-	protected function setVarious($parameters) {
+	protected function setVarious(array $parameters) {
 		if (isset($parameters['wrap'])) {
 			preg_match('/<(h[1-5]{1}).*?>/', $parameters['wrap'], $matches);
 			if (!empty($matches)) {

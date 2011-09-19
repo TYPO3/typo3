@@ -72,23 +72,12 @@ class tx_form_Domain_Model_Element_Radio extends tx_form_Domain_Model_Element_Ab
 	protected $acceptsParentName = TRUE;
 
 	/**
-	 * Constructor
-	 * Sets the configuration, calls parent constructor and fills the attributes
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Set the value of the radiobutton
 	 *
 	 * If there is submitted data for this field
 	 * it will change the checked attribute
 	 *
-	 * @return object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 * @return tx_form_Domain_Model_Element_Radio
 	 * @see tx_form_Domain_Model_Element::checkFilterAndSetIncomingDataFromRequest()
 	 */
 	public function checkFilterAndSetIncomingDataFromRequest() {
@@ -97,12 +86,12 @@ class tx_form_Domain_Model_Element_Radio extends tx_form_Domain_Model_Element_Ab
 			$this->setAttribute('value', $this->value);
 		}
 
-		if($this->requestHandler->has($this->getName())) {
+		if ($this->requestHandler->has($this->getName())) {
 			$submittedValue = $this->requestHandler->getByMethod($this->getName());
-			if($submittedValue === $this->value) {
+			if ($submittedValue === $this->value) {
 				$this->setAttribute('checked', 'checked');
 			}
-		} elseif($this->requestHandler->hasRequest()) {
+		} elseif ($this->requestHandler->hasRequest()) {
 			$this->attributes->removeAttribute('checked');
 		}
 		return $this;

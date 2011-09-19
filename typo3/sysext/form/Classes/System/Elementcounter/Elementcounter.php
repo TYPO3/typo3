@@ -39,14 +39,6 @@ class tx_form_System_Elementcounter implements t3lib_Singleton {
 	protected $elementCounter = 1;
 
 	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-	}
-
-	/**
 	 * Raise the element counter by one
 	 *
 	 * @return integer

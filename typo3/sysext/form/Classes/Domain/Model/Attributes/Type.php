@@ -29,8 +29,10 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_Domain_Model_Attributes_Type extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
-
+class tx_form_Domain_Model_Attributes_Type extends tx_form_Domain_Model_Attributes_Abstract {
+	/**
+	 * @var array
+	 */
 	protected $allowedValues = array(
 		'text',
 		'password',
@@ -45,18 +47,7 @@ class tx_form_Domain_Model_Attributes_Type extends tx_form_Domain_Model_Attribut
 	);
 
 	/**
-	 * Constructor
-	 *
-	 * @param string $value Attribute value
-	 * @param integer $elementId The ID of the element
-	 * @return void
-	 */
-	public function __construct($value, $elementId) {
-		parent::__construct($value, $elementId);
-	}
-
-	/**
-	 * Sets the attribute 'type'.
+	 * Gets the attribute 'type'.
 	 * Used with all input elements
 	 * Case Insensitive
 	 *
@@ -67,7 +58,7 @@ class tx_form_Domain_Model_Attributes_Type extends tx_form_Domain_Model_Attribut
 	public function getValue() {
 		$attribute = strtolower((string) $this->value);
 
-		if(empty($attribute) || !in_array($attribute, $this->allowedValues)) {
+		if (empty($attribute) || !in_array($attribute, $this->allowedValues)) {
 			$attribute = 'text';
 		}
 

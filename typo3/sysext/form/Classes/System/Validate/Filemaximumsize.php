@@ -55,15 +55,14 @@ class tx_form_System_Validate_Filemaximumsize extends tx_form_System_Validate_Ab
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see tx_form_System_Validate_Interface::isValid()
 	 */
 	public function isValid() {
-		if($this->requestHandler->has($this->fieldName)) {
+		if ($this->requestHandler->has($this->fieldName)) {
 			$fileValue = $this->requestHandler->getByMethod($this->fieldName);
 			$value = $fileValue['size'];
 
-			if($value > $this->maximum) {
+			if ($value > $this->maximum) {
 				return FALSE;
 			}
 		}

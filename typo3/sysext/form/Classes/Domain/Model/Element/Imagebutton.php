@@ -62,15 +62,5 @@ class tx_form_Domain_Model_Element_Imagebutton extends tx_form_Domain_Model_Elem
 		'name',
 		'id'
 	);
-
-	/**
-	 * Constructor
-	 * Sets the configuration, calls parent constructor and fills the attributes
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
 }
 ?>

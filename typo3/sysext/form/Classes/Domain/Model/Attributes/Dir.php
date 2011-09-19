@@ -29,21 +29,9 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_Domain_Model_Attributes_Dir extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
-
+class tx_form_Domain_Model_Attributes_Dir extends tx_form_Domain_Model_Attributes_Abstract {
 	/**
-	 * Constructor
-	 *
-	 * @param string $value Attribute value
-	 * @param integer $elementId The ID of the element
-	 * @return void
-	 */
-	public function __construct($value, $elementId) {
-		parent::__construct($value, $elementId);
-	}
-
-	/**
-	 * Sets the attribute 'dir'.
+	 * Gets the attribute 'dir'.
 	 * Used with all elements
 	 * Case Insensitive
 	 *
@@ -64,7 +52,7 @@ class tx_form_Domain_Model_Attributes_Dir extends tx_form_Domain_Model_Attribute
 	 */
 	public function getValue() {
 		$value = strtolower((string) $this->value);
-		if($value == 'ltr' || $value == 'rtl') {
+		if ($value == 'ltr' || $value == 'rtl') {
 			$attribute = $value;
 		}
 		return $attribute;

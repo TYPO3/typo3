@@ -62,20 +62,19 @@ class tx_form_System_Validate_Length extends tx_form_System_Validate_Abstract {
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see tx_form_System_Validate_Interface::isValid()
 	 */
 	public function isValid() {
-		if($this->requestHandler->has($this->fieldName)) {
+		if ($this->requestHandler->has($this->fieldName)) {
 			$value = $this->requestHandler->getByMethod($this->fieldName);
 
 			$length = iconv_strlen($value);
 
-			if($length < $this->minimum) {
+			if ($length < $this->minimum) {
 				return FALSE;
 			}
 
-			if($this->maximum !== NULL && $length > $this->maximum) {
+			if ($this->maximum !== NULL && $length > $this->maximum) {
 				return FALSE;
 			}
 		}
@@ -101,7 +100,7 @@ class tx_form_System_Validate_Length extends tx_form_System_Validate_Abstract {
 	 * @return object Rule object
 	 */
 	public function setMaximum($maximum) {
-		if(empty($maximum)) {
+		if (empty($maximum)) {
 			$this->maximum = NULL;
 		} else {
 			$this->maximum = (integer) $maximum;
@@ -114,15 +113,15 @@ class tx_form_System_Validate_Length extends tx_form_System_Validate_Abstract {
 	 * Get the local language label(s) for the message
 	 * Overrides the abstract
 	 *
+	 * @param string $type The type
 	 * @return string The local language message label
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see tx_form_System_Validate_Abstract::_getLocalLanguageLabel()
 	 */
 	protected function getLocalLanguageLabel($type) {
-		$label = get_class($this) . '.' . $type;
+		$label = strtolower(get_class($this)) . '.' . $type;
 		$messages[] = $this->localizationHandler->getLocalLanguageLabel($label);
 
-		if($this->maximum !== NULL) {
+		if ($this->maximum !== NULL) {
 			$messages[] = $this->localizationHandler->getLocalLanguageLabel($label . '2');
 		}
 

@@ -29,21 +29,9 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_Domain_Model_Attributes_Checked extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
-
+class tx_form_Domain_Model_Attributes_Checked extends tx_form_Domain_Model_Attributes_Abstract {
 	/**
-	 * Constructor
-	 *
-	 * @param string $value Attribute value
-	 * @param integer $elementId The ID of the element
-	 * @return void
-	 */
-	public function __construct($value, $elementId) {
-		parent::__construct($value, $elementId);
-	}
-
-	/**
-	 * Sets the attribute 'checked'
+	 * Gets the attribute 'checked'
 	 * Used with the element 'input' only if type attribute has the value
 	 * 'radio, checkbox'
 	 * Case insensitive
@@ -55,7 +43,7 @@ class tx_form_Domain_Model_Attributes_Checked extends tx_form_Domain_Model_Attri
 	 * @return string Attribute value
 	 */
 	public function getValue() {
-		if((integer) $this->value === 1
+		if ((integer) $this->value === 1
 			|| (boolean) $this->value === TRUE
 			|| strtolower((string) $this->value === 'checked'))
 		{

@@ -123,10 +123,10 @@ class tx_form_View_Confirmation extends tx_form_View_Confirmation_Element_Contai
 	 * @return string XHTML string containing the message
 	 */
 	protected function getMessage() {
-		if(isset($this->typoscript['message']) && isset($this->typoscript['message.'])) {
+		if (isset($this->typoscript['message']) && isset($this->typoscript['message.'])) {
 			$value = $this->typoscript['message.'];
 			$type = $this->typoscript['message'];
-		} elseif(isset($this->typoscript['message.'])) {
+		} elseif (isset($this->typoscript['message.'])) {
 			$value = $this->typoscript['message.'];
 			$type = 'TEXT';
 		} else {

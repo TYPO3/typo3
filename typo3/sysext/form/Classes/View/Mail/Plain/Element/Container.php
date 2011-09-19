@@ -30,17 +30,15 @@
  * @subpackage form
  */
 class tx_form_View_Mail_Plain_Element_Container extends tx_form_View_Mail_Plain_Element_Abstract {
-
 	/**
-	 * Constructor
-	 *
-	 * @return void
+	 * @param array $children
+	 * @param integer $spaces
+	 * @return string
 	 */
-	public function __construct($model, $spaces) {
-		parent::__construct($model, $spaces);
-	}
-
 	protected function renderChildren(array $children, $spaces = 0) {
+		$content = '';
+
+		/** @var $child tx_form_Domain_Model_Element_Abstract */
 		foreach ($children as $child) {
 			$content .= $this->renderChild($child, $spaces);
 		}
@@ -48,14 +46,19 @@ class tx_form_View_Mail_Plain_Element_Container extends tx_form_View_Mail_Plain_
 		return $content;
 	}
 
-	protected function renderChild($modelChild, $spaces) {
+	/**
+	 * @param tx_form_Domain_Model_Element_Abstract $modelChild
+	 * @param integer $spaces
+	 * @return string
+	 */
+	protected function renderChild(tx_form_Domain_Model_Element_Abstract $modelChild, $spaces) {
 		$content = '';
-		$modelChildClass = get_class($modelChild);
-		$class = preg_replace('/.*_([^_]*)$/', '${1}', $modelChildClass, 1);
 
+		$class = tx_form_Common::getInstance()->getLastPartOfClassName($modelChild);
 		$className = 'tx_form_View_Mail_Plain_Element_' . ucfirst($class);
 
 		if (class_exists($className)) {
+			/** @var $childElement tx_form_View_Mail_Plain_Element_Abstract */
 			$childElement = t3lib_div::makeInstance($className, $modelChild, $spaces);
 			$elementContent = $childElement->render();
 
