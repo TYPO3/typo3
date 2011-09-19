@@ -4107,7 +4107,8 @@ final class t3lib_div {
 			case 'TYPO3_HOST_ONLY':
 				$httpHost = self::getIndpEnv('HTTP_HOST');
 				$httpHostBracketPosition = strpos($httpHost, ']');
-				$retVal = ($httpHostBracketPosition !== FALSE) ? substr($httpHost, 0, ($httpHostBracketPosition + 1)) : array_shift(explode(':', $httpHost));
+				$httpHostParts = explode(':', $httpHost);
+				$retVal = ($httpHostBracketPosition !== FALSE) ? substr($httpHost, 0, ($httpHostBracketPosition + 1)) : array_shift($httpHostParts);
 				break;
 			case 'TYPO3_PORT':
 				$httpHost = self::getIndpEnv('HTTP_HOST');
