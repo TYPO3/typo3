@@ -100,13 +100,14 @@ class ext_posMap extends t3lib_positionMap {
 	/**
 	 * Create on-click event value.
 	 *
-	 * @param	array		The record.
-	 * @param	string		Column position value.
-	 * @param	integer		Move uid
-	 * @param	integer		PID value.
-	 * @return	string
+	 * @param array	The record.
+	 * @param string Column position value.
+	 * @param integer Move uid
+	 * @param integer PID value.
+	 * @param integer System language
+	 * @return string
 	 */
-	function onClickInsertRecord($row,$vv,$moveUid,$pid) {
+	function onClickInsertRecord($row, $vv, $moveUid, $pid, $sys_lang = 0) {
 		if (is_array($row))	{
 			$location=$GLOBALS['SOBE']->local_linkThisScript(array('edit_record'=>'tt_content:new/-'.$row['uid'].'/'.$row['colPos']));
 		} else {
