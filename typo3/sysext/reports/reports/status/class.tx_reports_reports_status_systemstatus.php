@@ -32,6 +32,11 @@
  */
 class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvider {
 
+		// PHP modules which are required. Can be changed by hook in getMissingPhpModules()
+	protected $requiredPhpModules = array(
+		'filter', 'gd', 'json', 'mysql', 'pcre', 'session', 'SPL', 'standard', 'openssl', 'xml', 'zlib'
+	);
+
 	/**
 	 * Determines the Install Tool's status, mainly concerning its protection.
 	 *
@@ -47,6 +52,7 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 			'PhpPeakMemory'       => $this->getPhpPeakMemoryStatus(),
 			'PhpRegisterGlobals'  => $this->getPhpRegisterGlobalsStatus(),
 			'Webserver'           => $this->getWebserverStatus(),
+			'PhpModules'          => $this->getMissingPhpModules(),
 		);
 
 		return $statuses;
@@ -202,6 +208,51 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
 			$GLOBALS['LANG']->getLL('status_webServer'),
 			$_SERVER['SERVER_SOFTWARE']
+		);
+	}
+
+	/**
+	 * Reports whether any of the required PHP modules are missing
+	 *
+	 * @return tx_reports_reports_status_Status A status of missing PHP modules
+	 */
+	protected function getMissingPhpModules() {
+			// Hook to adjust the required PHP modules
+		$modules = $this->requiredPhpModules;
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['requiredPhpModules'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['requiredPhpModules'] as $classData) {
+				$hookObject = t3lib_div::getUserObj($classData);
+				$modules = $hookObject->setRequiredPhpModules($modules, $this);
+			}
+		}
+		$missingPhpModules = array();
+		foreach ($modules as $module) {
+			if (is_array($module)) {
+				$detectedSubmodules = FALSE;
+				foreach ($module as $submodule) {
+					if (extension_loaded($submodule)) {
+						$detectedSubmodules = TRUE;
+					}
+				}
+				if ($detectedSubmodules === FALSE) {
+					$missingPhpModules[] = sprintf($GLOBALS['LANG']->getLL('status_phpModulesGroup'), '(' . implode(', ', $module) . ')');
+				}
+			} elseif (!extension_loaded($module)) {
+				$missingPhpModules[] = $module;
+			}
+		}
+		if (count($missingPhpModules) > 0) {
+			$value = $GLOBALS['LANG']->getLL('status_phpModulesMissing');
+			$message = sprintf($GLOBALS['LANG']->getLL('status_phpModulesList'), implode(', ', $missingPhpModules));
+			$message .= ' ' . $GLOBALS['LANG']->getLL('status_phpModulesInfo');
+			$severity = tx_reports_reports_status_Status::ERROR;
+		} else {
+			$value = $GLOBALS['LANG']->getLL('status_phpModulesPresent');
+			$message = '';
+			$severity = tx_reports_reports_status_Status::OK;
+		}
+		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
+			$GLOBALS['LANG']->getLL('status_phpModules'), $value, $message, $severity
 		);
 	}
 }

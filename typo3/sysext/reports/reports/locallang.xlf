@@ -179,6 +179,30 @@
 				<source>Web Server</source>
 				<target>Web Server</target>
 			</trans-unit>
+			<trans-unit id="status_phpModules" approved="yes">
+				<source>PHP Modules</source>
+				<target>PHP Modules</target>
+			</trans-unit>
+			<trans-unit id="status_phpModulesMissing" approved="yes">
+				<source>One or more modules are missing.</source>
+				<target>One or more modules are missing.</target>
+			</trans-unit>
+			<trans-unit id="status_phpModulesList" approved="yes">
+				<source>The following PHP module(s) is/are missing: %s.</source>
+				<target>The following PHP module(s) is/are missing: %s.</target>
+			</trans-unit>
+			<trans-unit id="status_phpModulesInfo" approved="yes">
+				<source>You need to install and enable these modules to let TYPO3 function correctly.</source>
+				<target>You need to install and enable these modules to let TYPO3 function correctly.</target>
+			</trans-unit>
+			<trans-unit id="status_phpModulesGroup" approved="yes">
+				<source>one of: %s</source>
+				<target>one of: %s</target>
+			</trans-unit>
+			<trans-unit id="status_phpModulesPresent" approved="yes">
+				<source>All required modules are installed.</source>
+				<target>All required modules are installed.</target>
+			</trans-unit>
 			<trans-unit id="status_installEnabledTemporarily" approved="yes">
 				<source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
 				<target>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</target>
