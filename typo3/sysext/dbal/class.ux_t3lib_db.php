@@ -2194,12 +2194,13 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	pointer		Result pointer / DBAL object
 	 * @return	integer		Number of resulting rows.
 	 */
-	public function sql_num_rows(&$res) {
+	public function sql_num_rows($res) {
 		if ($res === FALSE) {
 			return FALSE;
 		}
 
 		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : 'native';
+		$output = 0;
 		switch ($handlerType) {
 			case 'native':
 				$output = mysql_num_rows($res);
@@ -2220,7 +2221,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	pointer		MySQL result pointer (of SELECT query) / DBAL object
 	 * @return	array		Associative array of result row.
 	 */
-	public function sql_fetch_assoc(&$res) {
+	public function sql_fetch_assoc($res) {
 		$output = FALSE;
 
 		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : (is_resource($res) ? 'native' : FALSE);
@@ -2283,7 +2284,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	pointer		MySQL result pointer (of SELECT query) / DBAL object
 	 * @return	array		Array with result rows.
 	 */
-	public function sql_fetch_row(&$res) {
+	public function sql_fetch_row($res) {
 		$output = FALSE;
 
 		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : 'native';
@@ -2331,12 +2332,13 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	pointer		MySQL result pointer to free / DBAL object
 	 * @return	boolean		Returns TRUE on success or FALSE on failure.
 	 */
-	public function sql_free_result(&$res) {
+	public function sql_free_result($res) {
 		if ($res === FALSE) {
 			return FALSE;
 		}
 
 		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : 'native';
+		$output = TRUE;
 		switch ($handlerType) {
 			case 'native':
 				$output = mysql_free_result($res);
@@ -2363,6 +2365,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	integer		The uid of the last inserted record.
 	 */
 	public function sql_insert_id() {
+		$output = 0;
 		switch ($this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
 				$output = mysql_insert_id($this->handlerInstance[$this->lastHandlerKey]['link']);
@@ -2404,7 +2407,8 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	integer		Seek result number.
 	 * @return	boolean		Returns TRUE on success or FALSE on failure.
 	 */
-	public function sql_data_seek(&$res, $seek) {
+	public function sql_data_seek($res, $seek) {
+		$output = TRUE;
 		$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : 'native';
 		switch ($handlerType) {
 			case 'native':
@@ -2459,7 +2463,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	integer		Field index. In case of ADOdb a string (field name!) FIXME
 	 * @return	string		Returns the type of the specified field index
 	 */
-	public function sql_field_type(&$res, $pointer) {
+	public function sql_field_type($res, $pointer) {
 		if ($res === NULL) {
 			debug(array('no res in sql_field_type!'));
 			return 'text';
@@ -2472,6 +2476,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : 'native';
 		}
 
+		$output = '';
 		switch ($handlerType) {
 			case 'native':
 				$output = mysql_field_type($res, $pointer);
