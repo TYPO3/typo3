@@ -68,23 +68,13 @@ class tx_form_Domain_Model_JSON_Name extends tx_form_Domain_Model_JSON_Fieldset 
 	);
 
 	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Set all the parameters for this object
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see tx_form_Domain_Model_Json_Fieldset::setParameters()
 	 */
-	public function setParameters($parameters) {
+	public function setParameters(array $parameters) {
 		parent::setParameters($parameters);
 		$this->setVarious($parameters);
 	}
@@ -98,13 +88,13 @@ class tx_form_Domain_Model_JSON_Name extends tx_form_Domain_Model_JSON_Fieldset 
 	 * @param array $parameters Configuration array
 	 * @return void
 	 */
-	protected function setVarious($parameters) {
+	protected function setVarious(array $parameters) {
 		if (is_array($parameters)) {
 			$keys = t3lib_TStemplate::sortedKeyList($parameters);
 			foreach ($keys as $key)	{
 				$class = $parameters[$key];
 				if (intval($key) && !strstr($key, '.')) {
-					if(isset($parameters[$key . '.'])) {
+					if (isset($parameters[$key . '.'])) {
 						$childElementArguments = $parameters[$key . '.'];
 						if (in_array($childElementArguments['name'], array('prefix', 'suffix', 'middleName'))) {
 							$this->configuration['various'][$childElementArguments['name']] = TRUE;

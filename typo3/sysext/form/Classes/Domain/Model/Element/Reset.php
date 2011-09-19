@@ -63,16 +63,6 @@ class tx_form_Domain_Model_Element_Reset extends tx_form_Domain_Model_Element_Ab
 	);
 
 	/**
-	 * Constructor
-	 * Sets the configuration, calls parent constructor and fills the attributes
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Set the value of the button
 	 * Checks if value is set from Typoscript,
 	 * otherwise use localized value.
@@ -87,8 +77,8 @@ class tx_form_Domain_Model_Element_Reset extends tx_form_Domain_Model_Element_Ab
 
 			// value not set from typoscript
 		$oldValue = $this->getAttributeValue('value');
-		if(empty($oldValue)) {
-			if(!empty($value)) {
+		if (empty($oldValue)) {
+			if (!empty($value)) {
 				$newValue = (string) $value;
 			} else {
 				$newValue = $localizationHandler->getLocalLanguageLabel('tx_form_domain_model_element_reset.value');

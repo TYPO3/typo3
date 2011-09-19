@@ -106,7 +106,7 @@ class tx_form_Domain_Model_Attributes_Attributes {
 	 * Get a specific attribute object by using the key
 	 *
 	 * @param string $key Key of the attribute
-	 * @return string The attribute object
+	 * @return tx_form_Domain_Model_Attributes_Abstract The attribute object
 	 */
 	public function getAttributeObjectByKey($key) {
 		return $this->attributes[$key];
@@ -130,10 +130,7 @@ class tx_form_Domain_Model_Attributes_Attributes {
 	 * @return boolean
 	 */
 	public function hasAttribute($key) {
-		if(isset($this->attributes[$key])) {
-			return TRUE;
-		}
-		return FALSE;
+		return isset($this->attributes[$key]);
 	}
 
 	/**
@@ -144,7 +141,7 @@ class tx_form_Domain_Model_Attributes_Attributes {
 	 * @return void
 	 */
 	public function setValue($key, $value) {
-		$this->attributes[$key]->setValue($value);
+		$this->getAttributeObjectByKey($key)->setValue($value);
 	}
 
 	/**
@@ -154,9 +151,7 @@ class tx_form_Domain_Model_Attributes_Attributes {
 	 * @return string The content of the attribute
 	 */
 	public function getValue($key) {
-		if($this->attributes[$key]) {
-			return $this->attributes[$key]->getValue();
-		}
+		return $this->getAttributeObjectByKey($key)->getValue();
 	}
 }
 ?>

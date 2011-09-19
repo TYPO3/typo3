@@ -74,14 +74,5 @@ class tx_form_Domain_Model_JSON_Button extends tx_form_Domain_Model_JSON_Element
 		'type',
 		'value'
 	);
-
-	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
 }
 ?>

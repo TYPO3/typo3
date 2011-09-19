@@ -35,18 +35,24 @@ class tx_form_View_Mail_Plain_Element_Fileupload extends tx_form_View_Mail_Plain
 	 * Constructor
 	 *
 	 * @param tx_form_Domain_Model_Element_Fileupload $model Model for this element
-	 * @return void
+	 * @param integer $spaces
 	 */
 	public function __construct(tx_form_Domain_Model_Element_Fileupload $model, $spaces) {
 		parent::__construct($model, $spaces);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function render() {
 		$content = $this->getLabel() . ': ' . $this->getValue();
 
 		return str_repeat(chr(32), $this->spaces) . $content;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	protected function getLabel() {
 		if ($this->model->additionalIsSet('label')) {
 			$label = $this->model->getAdditionalValue('label');
@@ -57,6 +63,9 @@ class tx_form_View_Mail_Plain_Element_Fileupload extends tx_form_View_Mail_Plain
 		return $label;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	protected function getValue() {
 		$value = $this->model->getAttributeValue('value');
 

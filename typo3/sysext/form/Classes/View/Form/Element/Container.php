@@ -59,12 +59,12 @@ class tx_form_View_Form_Element_Container extends tx_form_View_Form_Element_Abst
 	 * @param DOMDocument $dom DOMDocument
 	 * @return DOMDocumentFragment
 	 */
-	public function getChildElements(DOMDocument &$dom) {
+	public function getChildElements(DOMDocument $dom) {
 		$modelChildren = $this->model->getElements();
 		$documentFragment = $dom->createDocumentFragment();
-		foreach($modelChildren as $key => $modelChild) {
+		foreach ($modelChildren as $key => $modelChild) {
 			$child = $this->createChildElementFromModel($modelChild);
-			if($child->noWrap() === TRUE) {
+			if ($child->noWrap() === TRUE) {
 				$childNode = $child->render();
 			} else {
 				$childNode = $child->render('elementWrap');
@@ -83,12 +83,14 @@ class tx_form_View_Form_Element_Container extends tx_form_View_Form_Element_Abst
 	 * @return object
 	 */
 	public function createChildElementFromModel($modelChild) {
-		$modelChildClass = get_class($modelChild);
-		$class = preg_replace('/.*_([^_]*)$/', '${1}', $modelChildClass, 1);
+		$childElement = NULL;
 
+		$class = tx_form_Common::getInstance()->getLastPartOfClassName($modelChild);
 		$className = 'tx_form_View_Form_Element_' . ucfirst($class);
 
-		$childElement = t3lib_div::makeInstance($className, $modelChild);
+		if (class_exists($className)) {
+			$childElement = t3lib_div::makeInstance($className, $modelChild);
+		}
 
 		return $childElement;
 	}

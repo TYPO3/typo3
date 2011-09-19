@@ -64,7 +64,6 @@ abstract class tx_form_Domain_Model_Additional_Abstract {
 	 *
 	 * @param string $type Type of the object
 	 * @param mixed $value Value of the object
-	 * @return void
 	 */
 	public function __construct($type, $value) {
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
@@ -90,5 +89,12 @@ abstract class tx_form_Domain_Model_Additional_Abstract {
 	public function setLayout($layout) {
 		$this->layout = (string) $layout;
 	}
+
+	/**
+	 * Returns the value of the object
+	 *
+	 * @return string
+	 */
+	abstract public function getValue();
 }
 ?>

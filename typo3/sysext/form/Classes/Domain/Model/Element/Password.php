@@ -66,26 +66,15 @@ class tx_form_Domain_Model_Element_Password extends tx_form_Domain_Model_Element
 	);
 
 	/**
-	 * Constructor
-	 * Sets the configuration, calls parent constructor and fills the attributes
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Check the request handler on input of this field,
 	 * filter the submitted data and add this to the right
 	 * datapart of the element
 	 *
-	 * @return object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 * @return tx_form_Domain_Model_Element_Password
 	 * @see tx_form_Domain_Model_Element::checkFilterAndSetIncomingDataFromRequest()
 	 */
 	public function checkFilterAndSetIncomingDataFromRequest() {
-		if($this->requestHandler->has($this->getName())) {
+		if ($this->requestHandler->has($this->getName())) {
 			$value = $this->requestHandler->getByMethod($this->getName());
 			$value = $this->filter->filter($value);
 

@@ -29,21 +29,9 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_Domain_Model_Attributes_Size extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
-
+class tx_form_Domain_Model_Attributes_Size extends tx_form_Domain_Model_Attributes_Abstract {
 	/**
-	 * Constructor
-	 *
-	 * @param string $value Attribute value
-	 * @param integer $elementId The ID of the element
-	 * @return void
-	 */
-	public function __construct($value, $elementId) {
-		parent::__construct($value, $elementId);
-	}
-
-	/**
-	 * Sets the attribute 'size'.
+	 * Gets the attribute 'size'.
 	 * Used with the element 'input'
 	 * Not subject to case changes, because it's an integer
 	 *
@@ -57,7 +45,7 @@ class tx_form_Domain_Model_Attributes_Size extends tx_form_Domain_Model_Attribut
 	public function getValue() {
 		$value = (integer) $this->value;
 
-		if($value <= 0) {
+		if ($value <= 0) {
 			$attribute = 40;
 		} else {
 			$attribute = $value;

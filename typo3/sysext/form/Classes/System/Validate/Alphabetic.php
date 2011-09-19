@@ -61,11 +61,10 @@ class tx_form_System_Validate_Alphabetic extends tx_form_System_Validate_Abstrac
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see tx_form_System_Validate_Interface::isValid()
 	 */
 	public function isValid() {
-		if($this->requestHandler->has($this->fieldName)) {
+		if ($this->requestHandler->has($this->fieldName)) {
 			$value = $this->requestHandler->getByMethod($this->fieldName);
 			if ($this->filter === NULL) {
 				$className = 'tx_form_System_Filter_Alphabetic';
@@ -88,7 +87,7 @@ class tx_form_System_Validate_Alphabetic extends tx_form_System_Validate_Abstrac
 	 * @return object Rule object
 	 */
 	public function setAllowWhiteSpace($allowWhiteSpace) {
-		if($allowWhiteSpace === NULL) {
+		if ($allowWhiteSpace === NULL) {
 			$this->allowWhiteSpace = FALSE;
 		} else {
 			$this->allowWhiteSpace = (boolean) $allowWhiteSpace;
@@ -102,14 +101,13 @@ class tx_form_System_Validate_Alphabetic extends tx_form_System_Validate_Abstrac
 	 * Overrides the abstract
 	 *
 	 * @return string The local language message label
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see tx_form_System_Validate_Abstract::_getLocalLanguageLabel()
 	 */
 	protected function getLocalLanguageLabel() {
-		$label = get_class($this) . '.message';
+		$label = strtolower(get_class($this)) . '.message';
 		$messages[] = $this->localizationHandler->getLocalLanguageLabel($label);
 
-		if($this->allowWhiteSpace) {
+		if ($this->allowWhiteSpace) {
 			$messages[] = $this->localizationHandler->getLocalLanguageLabel($label . '2');
 		}
 

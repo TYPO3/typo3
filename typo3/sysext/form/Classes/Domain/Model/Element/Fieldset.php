@@ -43,16 +43,5 @@ class tx_form_Domain_Model_Element_Fieldset extends tx_form_Domain_Model_Element
 		'lang' => '',
 		'style' => '',
 	);
-
-	/**
-	 * Constructor
-	 * Sets the configuration, calls parent constructor, fills the attributes
-	 * and adds all child objects
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
 }
 ?>

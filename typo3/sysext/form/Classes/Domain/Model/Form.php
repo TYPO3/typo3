@@ -65,17 +65,6 @@ class tx_form_Domain_Model_Form extends tx_form_Domain_Model_Element_Container {
 	);
 
 	/**
-	 * Constructor
-	 * Sets the configuration, calls parent constructor, fills the attributes
-	 * and adds all form element objects
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Set a specific attribute by name and value
 	 *
 	 * @param string $attribute Name of the attribute
@@ -83,11 +72,11 @@ class tx_form_Domain_Model_Form extends tx_form_Domain_Model_Element_Container {
 	 * @return object
 	 */
 	public function setAttribute($attribute, $value) {
-		if(array_key_exists($attribute, $this->allowedAttributes)) {
+		if (array_key_exists($attribute, $this->allowedAttributes)) {
 			$this->attributes->addAttribute($attribute, $value);
 		}
 
-		if($attribute == 'id' || $attribute == 'name') {
+		if ($attribute == 'id' || $attribute == 'name') {
 			$this->equalizeNameAndIdAttribute();
 		}
 
@@ -101,14 +90,17 @@ class tx_form_Domain_Model_Form extends tx_form_Domain_Model_Element_Container {
 	 * @return void
 	 */
 	protected function equalizeNameAndIdAttribute() {
+		/** @var $nameAttribute tx_form_Domain_Model_Attributes_Name */
 		$nameAttribute = $this->attributes->getAttributeObjectByKey('name');
 		$idAttribute = $this->attributes->getAttributeObjectByKey('id');
-		if(is_object($nameAttribute) && is_object($idAttribute)) {
+
+		if (is_object($nameAttribute) && is_object($idAttribute)) {
 			$nameAttribute->setReturnValueWithoutPrefix(TRUE);
 			$this->attributes->setAttribute('name', $nameAttribute);
 			$nameAttributeValue = $nameAttribute->getValueWithoutPrefix();
 			$idAttributeValue = $idAttribute->getValue('id');
-			if(!empty($nameAttributeValue) && !empty($idAttributeValue)) {
+
+			if (!empty($nameAttributeValue) && !empty($idAttributeValue)) {
 				$this->attributes->setValue('id', $nameAttributeValue);
 			}
 		}

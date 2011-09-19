@@ -45,14 +45,13 @@ class tx_form_System_Validate_Email extends tx_form_System_Validate_Abstract {
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see tx_form_System_Validate_Interface::isValid()
 	 */
 	public function isValid() {
-		if($this->requestHandler->has($this->fieldName)) {
+		if ($this->requestHandler->has($this->fieldName)) {
 			$value = $this->requestHandler->getByMethod($this->fieldName);
 
-			if(!preg_match('/^(?:(?#local-part)(?#quoted)"[^\"]*"|(?#non-quoted)[a-z0-9&+_-](?:\.?[a-z0-9&+_-]+)*)@(?:(?#domain)(?#domain-name)[a-z0-9](?:[a-z0-9-]*[a-z0-9])*(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])*)*|(?#ip)(\[)?(?:[01]?\d?\d|2[0-4]\d|25[0-5])(?:\.(?:[01]?\d?\d|2[0-4]\d|25[0-5])){3}(?(1)\]|))$/', $value)) {
+			if (!preg_match('/^(?:(?#local-part)(?#quoted)"[^\"]*"|(?#non-quoted)[a-z0-9&+_-](?:\.?[a-z0-9&+_-]+)*)@(?:(?#domain)(?#domain-name)[a-z0-9](?:[a-z0-9-]*[a-z0-9])*(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])*)*|(?#ip)(\[)?(?:[01]?\d?\d|2[0-4]\d|25[0-5])(?:\.(?:[01]?\d?\d|2[0-4]\d|25[0-5])){3}(?(1)\]|))$/', $value)) {
 				return FALSE;
 			}
 		}

@@ -54,11 +54,10 @@ class tx_form_System_Validate_Date extends tx_form_System_Validate_Abstract {
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see tx_form_System_Validate_Interface::isValid()
 	 */
 	public function isValid() {
-		if($this->requestHandler->has($this->fieldName)) {
+		if ($this->requestHandler->has($this->fieldName)) {
 			$value = $this->requestHandler->getByMethod($this->fieldName);
 
 			$parsedDate = strptime($value, $this->format);
@@ -79,7 +78,7 @@ class tx_form_System_Validate_Date extends tx_form_System_Validate_Abstract {
 	 * @return Rule object
 	 */
 	public function setFormat($format) {
-		if($format === NULL) {
+		if ($format === NULL) {
 			$this->format = '%e-%m-%Y';
 		} else {
 			$this->format = (string) $format;
@@ -131,94 +130,6 @@ class tx_form_System_Validate_Date extends tx_form_System_Validate_Abstract {
 
 		$humanReadableFormat = str_replace(array_keys($pairs), array_values($pairs), $format);
 		return $humanReadableFormat;
-	}
-}
-
-/**
- * Replacement for strptime
- *
- * The function strptime does not exist on PHP < 5.1.0RC1 and Windows
- * This function tries to do the same
- *
- * @param string $value Date input from user
- * @param string $format strftime format
- * @return array strptime formatted date
- * @author Patrick Broens <patrick@patrickbroens.nl>
- * @see http://php.net/manual/en/function.strptime.php
- */
-if(!function_exists('strptime')) {
-	function strptime($value, $format) {
-		static $expand = array(
-			'%D' => '%m/%d/%y',
-			'%T' => '%H:%M:%S',
-		);
-
-		static $mapConversionSpecifiers = array(
-			'%S'=>'tm_sec',
-			'%M'=>'tm_min',
-			'%H'=>'tm_hour',
-			'%d'=>'tm_mday',
-			'%e'=>'tm_mday',
-			'%m'=>'tm_mon',
-			'%Y'=>'tm_year',
-			'%y'=>'tm_year',
-			'%W'=>'tm_wday',
-			'%D'=>'tm_yday',
-			'%u'=>'unparsed',
-		);
-
-		static $names = array(
-			'Jan' => 1,
-			'Feb' => 2,
-			'Mar' => 3,
-			'Apr' => 4,
-			'May' => 5,
-			'Jun' => 6,
-			'Jul' => 7,
-			'Aug' => 8,
-			'Sep' => 9,
-			'Oct' => 10,
-			'Nov' => 11,
-			'Dec' => 12,
-			'Sun' => 0,
-			'Mon' => 1,
-			'Tue' => 2,
-			'Wed' => 3,
-			'Thu' => 4,
-			'Fri' => 5,
-			'Sat' => 6,
-		);
-
-		$format = str_replace(array_keys($expand), array_values($expand), $format);
-		$preg = preg_replace('/(%\w)/', '(\w+)', preg_quote($format));
-		preg_match_all('/(%\w)/', $format, $positions);
-		$positions = $positions[1];
-
-		if(preg_match("#$preg#", "$value", $extracted)) {
-			foreach($positions as $position => $conversionSpecifier) {
-				$extractedNumber = $extracted[$position + 1];
-				if($parameter = $mapConversionSpecifiers[$conversionSpecifier]) {
-					$strptimeValue[$parameter] = ($extractedNumber > 0) ? (int) $extractedNumber : $extractedNumber;
-				} else {
-					$strptimeValue['unparsed'] .= $extractedNumber . ' ';
-				}
-			}
-
-			$strptimeValue['tm_wday'] = $names[substr($strptimeValue['tm_wday'], 0, 3)];
-
-			if($strptimeValue['tm_year'] >= 1900) {
-				$strptimeValue['tm_year'] -= 1900;
-			} elseif($strptimeValue['tm_year'] > 0) {
-				$strptimeValue['tm_year'] += 100;
-			}
-
-			if ($strptimeValue['tm_mon']) {
-				$strptimeValue['tm_mon'] -= 1;
-			} else {
-				$strptimeValue['tm_mon'] = $names[substr($strptimeValue['tm_mon'], 0, 3)] - 1;
-			}
-		}
-		return isset($strptimeValue) ? $strptimeValue : FALSE;
 	}
 }
 ?>

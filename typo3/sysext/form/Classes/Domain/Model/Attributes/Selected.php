@@ -29,28 +29,16 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_Domain_Model_Attributes_Selected extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
-
+class tx_form_Domain_Model_Attributes_Selected extends tx_form_Domain_Model_Attributes_Abstract {
 	/**
-	 * Constructor
-	 *
-	 * @param string $value Attribute value
-	 * @param integer $elementId The ID of the element
-	 * @return void
-	 */
-	public function __construct($value, $elementId) {
-		parent::__construct($value, $elementId);
-	}
-
-	/**
-	 * Sets the attribute 'selected'
+	 * Gets the attribute 'selected'
 	 * Used with the element 'option'
 	 * Case insensitive
 	 *
 	 * @return string Attribute value
 	 */
 	public function getValue() {
-		if((integer) $this->value === 1
+		if ((integer) $this->value === 1
 			|| (boolean) $this->value === TRUE
 			|| strtolower((string) $this->value) === 'selected')
 		{

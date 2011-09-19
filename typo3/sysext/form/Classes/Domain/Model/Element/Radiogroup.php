@@ -30,25 +30,13 @@
  * @subpackage form
  */
 class tx_form_Domain_Model_Element_Radiogroup extends tx_form_Domain_Model_Element_Fieldset {
-
-	/**
-	 * Constructor
-	 * Sets the configuration, calls parent constructor, fills the attributes
-	 * and adds all child objects
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
 	/**
 	 * Add child object to this element
 	 *
-	 * @param object $element The child object
+	 * @param tx_form_Domain_Model_Element_Radio $element The child object
 	 * @return object
 	 */
-	public function addElement($element) {
+	public function addElement(tx_form_Domain_Model_Element_Radio $element) {
 		if ($element->acceptsParentName()) {
 			$element->setName($this->getName());
 			$element->attributes->setValue('name', $this->getName());

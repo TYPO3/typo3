@@ -30,16 +30,6 @@
  * @subpackage form
  */
 class tx_form_System_Filter_Removexss implements tx_form_System_Filter_Interface {
-
-	/**
-	 * Constructor
-	 *
-	 * @param array $arguments Filter configuration
-	 * @return void
-	 */
-	public function __construct($arguments = array()) {
-	}
-
 	/**
 	 * Return filtered value
 	 * Removes potential XSS code from the input string.

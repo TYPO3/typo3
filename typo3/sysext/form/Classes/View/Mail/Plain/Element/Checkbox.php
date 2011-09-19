@@ -35,20 +35,28 @@ class tx_form_View_Mail_Plain_Element_Checkbox extends tx_form_View_Mail_Plain_E
 	 * Constructor
 	 *
 	 * @param tx_form_Domain_Model_Element_Checkbox $model Model for this element
-	 * @return void
+	 * @param integer $spaces
 	 */
 	public function __construct(tx_form_Domain_Model_Element_Checkbox $model, $spaces) {
 		parent::__construct($model, $spaces);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function render() {
 		$content = $this->getValue();
 
-		if ($content) {
-			return str_repeat(chr(32), $this->spaces) . $content;
+		if (empty($content) === FALSE) {
+			$content = str_repeat(chr(32), $this->spaces) . $content;
 		}
+
+		return $content;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	protected function getValue() {
 		$value = NULL;
 

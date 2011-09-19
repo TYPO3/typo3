@@ -35,12 +35,15 @@ class tx_form_View_Mail_Plain_Element_Radiogroup extends tx_form_View_Mail_Plain
 	 * Constructor
 	 *
 	 * @param tx_form_Domain_Model_Element_Radiogroup $model Model for this element
-	 * @return void
+	 * @param integer $spaces
 	 */
 	public function __construct(tx_form_Domain_Model_Element_Radiogroup $model, $spaces) {
 		parent::__construct($model, $spaces);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function render() {
 		$content = '';
 

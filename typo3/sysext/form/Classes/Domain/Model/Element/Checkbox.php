@@ -72,23 +72,12 @@ class tx_form_Domain_Model_Element_Checkbox extends tx_form_Domain_Model_Element
 	protected $acceptsParentName = TRUE;
 
 	/**
-	 * Constructor
-	 * Sets the configuration, calls parent constructor and fills the attributes
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Set the value of the checkbox
 	 *
 	 * If there is submitted data for this field
 	 * it will change the checked attribute
 	 *
-	 * @return object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 * @return tx_form_Domain_Model_Element_Checkbox
 	 * @see tx_form_Domain_Model_Element::checkFilterAndSetIncomingDataFromRequest()
 	 */
 	public function checkFilterAndSetIncomingDataFromRequest() {
@@ -97,16 +86,16 @@ class tx_form_Domain_Model_Element_Checkbox extends tx_form_Domain_Model_Element
 			$this->setAttribute('value', $this->value);
 		}
 
-		if($this->requestHandler->has($this->getName())) {
+		if ($this->requestHandler->has($this->getName())) {
 			$submittedValue = $this->requestHandler->getByMethod($this->getName());
-			if(is_array($submittedValue) && in_array($this->value, $submittedValue)) {
+			if (is_array($submittedValue) && in_array($this->value, $submittedValue)) {
 				$this->setAttribute('checked', 'checked');
-			} elseif($submittedValue === $this->value) {
+			} elseif ($submittedValue === $this->value) {
 				$this->setAttribute('checked', 'checked');
-			} elseif(is_array($submittedValue) && in_array('on', $submittedValue)) {
+			} elseif (is_array($submittedValue) && in_array('on', $submittedValue)) {
 				$this->setAttribute('checked', 'checked');
 			}
-		} elseif($this->requestHandler->hasRequest()) {
+		} elseif ($this->requestHandler->hasRequest()) {
 			$this->attributes->removeAttribute('checked');
 		}
 		return $this;
@@ -117,17 +106,17 @@ class tx_form_Domain_Model_Element_Checkbox extends tx_form_Domain_Model_Element
 	 *
 	 * @param string $attribute Name of the attribute
 	 * @param mixed $value Value of the attribute
-	 * @return object
+	 * @return tx_form_Domain_Model_Element_Checkbox
 	 */
 	public function setAttribute($attribute, $value) {
-		if(array_key_exists($attribute, $this->allowedAttributes)) {
+		if (array_key_exists($attribute, $this->allowedAttributes)) {
 			$this->attributes->addAttribute($attribute, $value);
 		}
 
-		if($attribute === 'name') {
+		if ($attribute === 'name') {
+			/** @var $nameAttribute tx_form_Domain_Model_Attributes_Name */
 			$nameAttribute = $this->attributes->getAttributeObjectByKey('name');
 			$nameAttribute->setAddition('[]');
-			$this->attributes->setAttribute('name', $nameAttribute);
 		}
 
 		return $this;

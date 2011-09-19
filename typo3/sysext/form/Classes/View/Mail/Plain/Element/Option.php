@@ -34,13 +34,16 @@ class tx_form_View_Mail_Plain_Element_Option extends tx_form_View_Mail_Plain_Ele
 	/**
 	 * Constructor
 	 *
-	 * @param tx_form_Domain_Model_Element_Textarea $model Model for this element
-	 * @return void
+	 * @param tx_form_Domain_Model_Element_Option $model Model for this element
+	 * @param integer $spaces
 	 */
 	public function __construct(tx_form_Domain_Model_Element_Option $model, $spaces) {
 		parent::__construct($model, $spaces);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function render() {
 		$data = $this->getData();
 
@@ -49,6 +52,9 @@ class tx_form_View_Mail_Plain_Element_Option extends tx_form_View_Mail_Plain_Ele
 		}
 	}
 
+	/**
+	 * @return string
+	 */
 	protected function getData() {
 		$value = '';
 

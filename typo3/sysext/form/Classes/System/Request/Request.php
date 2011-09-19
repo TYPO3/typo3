@@ -57,16 +57,6 @@ class tx_form_System_Request implements t3lib_Singleton {
 	protected $sessionData = array();
 
 	/**
-	 * Constructor
-	 *
-	 * @param string $prefix Proposal for prefix
-	 * @param string $method The used method
-	 * @return void
-	 */
-	public function __construct() {
-	}
-
-	/**
 	 * Set the prefix used in the form
 	 * If prefix is available in configuration array of the object, it will take it from there.
 	 * Otherwise if not given at all, it will set it to default
@@ -75,11 +65,11 @@ class tx_form_System_Request implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function setPrefix($prefix = 'tx_form') {
-		if(empty($prefix)) {
+		if (empty($prefix)) {
 			$prefix = 'tx_form';
 		}
 
-		$prefix = preg_replace('/\s/' , '_', (string) $prefix);
+		$prefix = preg_replace('/\s/', '_', (string) $prefix);
 		$this->prefix = preg_replace('/[^a-zA-Z0-9_\-]/', '', $prefix);
 	}
 
@@ -118,7 +108,7 @@ class tx_form_System_Request implements t3lib_Singleton {
 			$method = 'session';
 		}
 
-		if(!in_array($method, $allowedMethods)) {
+		if (!in_array($method, $allowedMethods)) {
 			$method = 'post';
 		}
 
@@ -202,7 +192,7 @@ class tx_form_System_Request implements t3lib_Singleton {
 	 * @return mixed Returns NULL if key does not exist
 	 */
 	public function getQuery($key = NULL, $default = NULL) {
-		if($key === NULL) {
+		if ($key === NULL) {
 			return $_GET[$this->prefix];
 		}
 		return (isset($_GET[$this->prefix][$key])) ? $_GET[$this->prefix][$key] : $default;
@@ -218,7 +208,7 @@ class tx_form_System_Request implements t3lib_Singleton {
 	 * @return mixed Returns NULL if key does not exist
 	 */
 	public function getPost($key = NULL, $default = NULL) {
-		if($key === NULL) {
+		if ($key === NULL) {
 			return $_POST[$this->prefix];
 		}
 		return (isset($_POST[$this->prefix][$key])) ? $_POST[$this->prefix][$key] : $default;
@@ -234,7 +224,7 @@ class tx_form_System_Request implements t3lib_Singleton {
 	 * @return mixed Returns NULL if key does not exist
 	 */
 	public function getSession($key = NULL, $default = NULL) {
-		if($key === NULL) {
+		if ($key === NULL) {
 			return $this->sessionData;
 		}
 		return (isset($this->sessionData[$key])) ? $this->sessionData[$key] : $default;
@@ -251,11 +241,11 @@ class tx_form_System_Request implements t3lib_Singleton {
 	 * @return mixed The member, or FALSE when wrong method is used
 	 */
 	public function getByMethod($key = NULL, $default = NULL) {
-		if($this->method === 'get') {
+		if ($this->method === 'get') {
 			return $this->getQuery($key, $default);
-		} elseif($this->method === 'post') {
+		} elseif ($this->method === 'post') {
 			return $this->getPost($key, $default);
-		} elseif($this->method === 'session') {
+		} elseif ($this->method === 'session') {
 			return $this->getSession($key, $default);
 		} else {
 			return FALSE;
@@ -315,7 +305,7 @@ class tx_form_System_Request implements t3lib_Singleton {
 		$formData = $this->getByMethod();
 
 		if (isset($_FILES[$this->prefix]) && is_array($_FILES[$this->prefix])) {
-			foreach($_FILES[$this->prefix]['tmp_name'] as $fieldName => $uploadedFile) {
+			foreach ($_FILES[$this->prefix]['tmp_name'] as $fieldName => $uploadedFile) {
 				if (is_uploaded_file($uploadedFile)) {
 					$tempFilename = t3lib_div::upload_to_tempfile($uploadedFile);
 

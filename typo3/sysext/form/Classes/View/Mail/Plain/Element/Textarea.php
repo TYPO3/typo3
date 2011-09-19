@@ -35,12 +35,15 @@ class tx_form_View_Mail_Plain_Element_Textarea extends tx_form_View_Mail_Plain_E
 	 * Constructor
 	 *
 	 * @param tx_form_Domain_Model_Element_Textarea $model Model for this element
-	 * @return void
+	 * @param integer $spaces
 	 */
 	public function __construct(tx_form_Domain_Model_Element_Textarea $model, $spaces) {
 		parent::__construct($model, $spaces);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function render() {
 		$content = $this->getLabel() . ': ' .
 			chr(10) .
@@ -50,6 +53,9 @@ class tx_form_View_Mail_Plain_Element_Textarea extends tx_form_View_Mail_Plain_E
 		return str_repeat(chr(32), $this->spaces) . $content;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	protected function getLabel() {
 		$label = '';
 

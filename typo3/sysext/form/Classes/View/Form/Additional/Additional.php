@@ -56,7 +56,7 @@ class tx_form_View_Form_Additional extends tx_form_View_Form_Element_Abstract {
 	public function getAdditionalValue() {
 		return htmlspecialchars(
 			$this->model->getAdditionalValue(
-				$this->getLastPartOfClassName(TRUE)
+				tx_form_Common::getInstance()->getLastPartOfClassName($this, TRUE)
 			),
 			ENT_QUOTES
 		);

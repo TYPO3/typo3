@@ -41,8 +41,7 @@ class tx_form_System_Localization implements t3lib_Singleton {
 	/**
 	 * Constructor
 	 *
-	 * @param $localLanguageFile string File reference to the local language file
-	 * @return void
+	 * @param string $localLanguageFile File reference to the local language file
 	 */
 	public function __construct($localLanguageFile) {
 		$this->localLanguageFile = (string) $localLanguageFile;
@@ -51,7 +50,7 @@ class tx_form_System_Localization implements t3lib_Singleton {
 	/**
 	 * Get a label from local language
 	 *
-	 * @param $labelKey string Key to look for
+	 * @param string $labelKey Key to look for
 	 * @return string
 	 */
 	public function getLocalLanguageLabel($labelKey) {

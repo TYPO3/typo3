@@ -33,8 +33,6 @@ require($BACK_PATH . 'template.php');
  * @package TYPO3
  * @subpackage form
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @license http://www.gnu.org/copyleft/gpl.html
- * @version $Id$
  */
 class tx_form_Controller_Wizard {
 	/**
@@ -65,12 +63,8 @@ class tx_form_Controller_Wizard {
 	 * @return void
 	 */
 	protected function indexAction() {
-		/** @var $repository tx_form_Domain_Repository_Content */
-		$repository = t3lib_div::makeInstance('tx_form_Domain_Repository_Content');
-
 		/** @var $view tx_form_View_Wizard_Wizard */
-		$view = t3lib_div::makeInstance('tx_form_View_Wizard_Wizard');
-		$view->setRepository($repository);
+		$view = t3lib_div::makeInstance('tx_form_View_Wizard_Wizard', $this->getRepository());
 		$view->render();
 	}
 
@@ -82,12 +76,8 @@ class tx_form_Controller_Wizard {
 	 * @return void
 	 */
 	protected function saveAction() {
-		/** @var $repository tx_form_Domain_Repository_Content */
-		$repository = t3lib_div::makeInstance('tx_form_Domain_Repository_Content');
-
 		/** @var $view tx_form_View_Wizard_Save */
-		$view = t3lib_div::makeInstance('tx_form_View_Wizard_Save');
-		$view->setRepository($repository);
+		$view = t3lib_div::makeInstance('tx_form_View_Wizard_Save', $this->getRepository());
 		$view->render();
 	}
 
@@ -99,13 +89,18 @@ class tx_form_Controller_Wizard {
 	 * @return void
 	 */
 	protected function loadAction() {
-		/** @var $repository tx_form_Domain_Repository_Content */
-		$repository = t3lib_div::makeInstance('tx_form_Domain_Repository_Content');
-
 		/** @var $view tx_form_View_Wizard_Load */
-		$view = t3lib_div::makeInstance('tx_form_View_Wizard_Load');
-		$view->setRepository($repository);
+		$view = t3lib_div::makeInstance('tx_form_View_Wizard_Load', $this->getRepository());
 		$view->render();
+	}
+
+	/**
+	 * Gets the repository object.
+	 *
+	 * @return tx_form_Domain_Repository_Content
+	 */
+	protected function getRepository() {
+		return t3lib_div::makeInstance('tx_form_Domain_Repository_Content');
 	}
 }
 

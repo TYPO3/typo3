@@ -29,21 +29,9 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_Domain_Model_Attributes_Accept extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
-
+class tx_form_Domain_Model_Attributes_Accept extends tx_form_Domain_Model_Attributes_Abstract {
 	/**
-	 * Constructor
-	 *
-	 * @param string $value Attribute value
-	 * @param integer $elementId The ID of the element
-	 * @return void
-	 */
-	public function __construct($value, $elementId) {
-		parent::__construct($value, $elementId);
-	}
-
-	/**
-	 * Sets the attribute 'accept'.
+	 * Gets the attribute 'accept'.
 	 * Used with the elements 'form', 'input'
 	 * Case Insensitive
 	 *
