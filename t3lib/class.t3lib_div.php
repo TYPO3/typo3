@@ -540,7 +540,7 @@ final class t3lib_div {
 	/**
 	 * Transform an IPv6 address from binary to hex-representation
 	 *
-	 * @param string $hex IPv6 address in hex-presentation
+	 * @param string $bin IPv6 address in hex-presentation
 	 * @return string Binary representation (16 characters, 128 characters)
 	 * @see IPv6Hex2Bin()
 	 */
@@ -711,7 +711,7 @@ final class t3lib_div {
 	/**
 	 * Match fully qualified domain name with list of strings with wildcard
 	 *
-	 * @param string $baseIP A hostname or an IPv4/IPv6-address (will by reverse-resolved; typically REMOTE_ADDR)
+	 * @param string $baseHost A hostname or an IPv4/IPv6-address (will by reverse-resolved; typically REMOTE_ADDR)
 	 * @param string $list A comma-list of domain names to match with. *-wildcard allowed but cannot be part of a string, so it must match the full host name (eg. myhost.*.com => correct, myhost.*domain.com => wrong)
 	 * @return boolean TRUE if a domain name mask from $list matches $baseIP
 	 */
@@ -825,7 +825,6 @@ final class t3lib_div {
 	 *
 	 * @param string $list comma-separated list of integers with ranges (string)
 	 * @return string new comma-separated list of items
-	 * @author Martin Kutschker <martin.kutschker@activesolution.at>
 	 */
 	public static function expandList($list) {
 		$items = explode(',', $list);
@@ -946,13 +945,13 @@ final class t3lib_div {
 		} else {
 				// outer padding
 			$opad = str_repeat(chr(0x5C), $hashBlocksize);
-				// innner padding
+				// inner padding
 			$ipad = str_repeat(chr(0x36), $hashBlocksize);
 			if (strlen($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) > $hashBlocksize) {
-					// keys longer than blocksize are shorten
+					// keys longer than block size are shorten
 				$key = str_pad(pack('H*', call_user_func($hashAlgorithm, $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])), $hashBlocksize, chr(0x00));
 			} else {
-					// keys shorter than blocksize are zero-padded
+					// keys shorter than block size are zero-padded
 				$key = str_pad($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'], $hashBlocksize, chr(0x00));
 			}
 			$hmac = call_user_func($hashAlgorithm, ($key ^ $opad) . pack('H*', call_user_func($hashAlgorithm, ($key ^ $ipad) . $input)));
@@ -964,8 +963,8 @@ final class t3lib_div {
 	 * Takes comma-separated lists and arrays and removes all duplicates
 	 * If a value in the list is trim(empty), the value is ignored.
 	 *
-	 * @param string $in_list Accept multiple parameters wich can be comma-separated lists of values and arrays.
-	 * @param mixed	$secondParameter: Dummy field, which if set will show a warning!
+	 * @param string $in_list Accept multiple parameters which can be comma-separated lists of values and arrays.
+	 * @param mixed $secondParameter: Dummy field, which if set will show a warning!
 	 * @return string Returns the list without any duplicates of values, space around values are trimmed
 	 */
 	public static function uniqueList($in_list, $secondParameter = NULL) {
@@ -1252,7 +1251,7 @@ final class t3lib_div {
 
 	/**
 	 * rawurlencode which preserves "/" chars
-	 * Useful when filepaths should keep the "/" chars, but have all other special chars encoded.
+	 * Useful when file paths should keep the "/" chars, but have all other special chars encoded.
 	 *
 	 * @param string $str Input string
 	 * @return string Output string
@@ -1647,7 +1646,7 @@ final class t3lib_div {
 	 * Implodes a multidim-array into GET-parameters (eg. &param[key][key2]=value2&param[key][key3]=value3)
 	 *
 	 * @param string $name Name prefix for entries. Set to blank if you wish none.
-	 * @param array $theArray The (multidim) array to implode
+	 * @param array $theArray The (multidimensional) array to implode
 	 * @param string $str (keep blank)
 	 * @param boolean $skipBlank If set, parameters which were blank strings would be removed.
 	 * @param boolean $rawurlencodeParamName If set, the param name itself (for example "param[key][key2]") would be rawurlencoded as well.
@@ -1717,7 +1716,7 @@ final class t3lib_div {
 
 	/**
 	 * AddSlash array
-	 * This function traverses a multidimentional array and adds slashes to the values.
+	 * This function traverses a multidimensional array and adds slashes to the values.
 	 * NOTE that the input array is and argument by reference.!!
 	 * Twin-function to stripSlashesOnArray
 	 *
@@ -1738,7 +1737,7 @@ final class t3lib_div {
 
 	/**
 	 * StripSlash array
-	 * This function traverses a multidimentional array and strips slashes to the values.
+	 * This function traverses a multidimensional array and strips slashes to the values.
 	 * NOTE that the input array is and argument by reference.!!
 	 * Twin-function to addSlashesOnArray
 	 *
@@ -1840,7 +1839,7 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Filters keys off from first array that also exist in second array. Comparision is done by keys.
+	 * Filters keys off from first array that also exist in second array. Comparison is done by keys.
 	 * This method is a recursive version of php array_diff_assoc()
 	 *
 	 * @param array $array1 Source array
@@ -1866,7 +1865,7 @@ final class t3lib_div {
 	 * Takes a row and returns a CSV string of the values with $delim (default is ,) and $quote (default is ") as separator chars.
 	 *
 	 * @param array $row Input array of values
-	 * @param string $delim Delimited, default is comman
+	 * @param string $delim Delimited, default is comma
 	 * @param string $quote Quote-character to wrap around the values.
 	 * @return string A single line of CSV
 	 */
@@ -1925,7 +1924,7 @@ final class t3lib_div {
 
 	/**
 	 * Returns an array with all attributes of the input HTML tag as key/value pairs. Attributes are only lowercase a-z
-	 * $tag is either a whole tag (eg '<TAG OPTION ATTRIB=VALUE>') or the parameterlist (ex ' OPTION ATTRIB=VALUE>')
+	 * $tag is either a whole tag (eg '<TAG OPTION ATTRIB=VALUE>') or the parameter list (ex ' OPTION ATTRIB=VALUE>')
 	 * If an attribute is empty, then the value for the key is empty. You can check if it existed with isset()
 	 *
 	 * @param string $tag HTML-tag string (or attributes only)
@@ -2019,14 +2018,12 @@ final class t3lib_div {
 
 	/**
 	 * Wraps JavaScript code XHTML ready with <script>-tags
-	 * Automatic re-identing of the JS code is done by using the first line as ident reference.
-	 * This is nice for identing JS code with PHP code on the same level.
+	 * Automatic re-indenting of the JS code is done by using the first line as indent reference.
+	 * This is nice for indenting JS code with PHP code on the same level.
 	 *
 	 * @param string $string JavaScript code
-	 * @param boolean $linebreak Wrap script element in linebreaks? Default is TRUE.
+	 * @param boolean $linebreak Wrap script element in line breaks? Default is TRUE.
 	 * @return string The wrapped JS code, ready to put into a XHTML page
-	 * @author Ingmar Schlecht <ingmars@web.de>
-	 * @author René Fritz <r.fritz@colorcube.de>
 	 */
 	public static function wrapJS($string, $linebreak = TRUE) {
 		if (trim($string)) {
@@ -2111,7 +2108,6 @@ final class t3lib_div {
 								$startPoint + 1,
 								$key - $startPoint - 1
 						);
-						#$oldtagi=array('XMLvalue'=>self::xmlRecompileFromStructValArray($partArray));
 						$oldtagi['XMLvalue'] = self::xmlRecompileFromStructValArray($partArray);
 					} else {
 						$oldtagi['XMLvalue'] = $oldtagi['values'][0];
@@ -2161,9 +2157,9 @@ final class t3lib_div {
 	 * Deprecated to call directly (unless you are aware of using XML prologues)! Use "array2xml_cs" instead (which adds an XML-prologue)
 	 *
 	 * Converts a PHP array into an XML string.
-	 * The XML output is optimized for readability since associative keys are used as tagnames.
+	 * The XML output is optimized for readability since associative keys are used as tag names.
 	 * This also means that only alphanumeric characters are allowed in the tag names AND only keys NOT starting with numbers (so watch your usage of keys!). However there are options you can set to avoid this problem.
-	 * Numeric keys are stored with the default tagname "numIndex" but can be overridden to other formats)
+	 * Numeric keys are stored with the default tag name "numIndex" but can be overridden to other formats)
 	 * The function handles input values from the PHP array in a binary-safe way; All characters below 32 (except 9,10,13) will trigger the content to be converted to a base64-string
 	 * The PHP variable type of the data IS preserved as long as the types are strings, arrays, integers and booleans. Strings are the default type unless the "type" attribute is set.
 	 * The output XML has been tested with the PHP XML-parser and parses OK under all tested circumstances with 4.x versions. However, with PHP5 there seems to be the need to add an XML prologue a la <?xml version="1.0" encoding="[charset]" standalone="yes" ?> - otherwise UTF-8 is assumed! Unfortunately, many times the output from this function is used without adding that prologue meaning that non-ASCII characters will break the parsing!! This suchs of course! Effectively it means that the prologue should always be prepended setting the right characterset, alternatively the system should always run as utf-8!
@@ -2303,7 +2299,6 @@ final class t3lib_div {
 	 * @param boolean $reportDocTag If set, the document tag will be set in the key "_DOCUMENT_TAG" of the output array
 	 * @return mixed If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
 	 * @see array2xml(),xml2arrayProcess()
-	 * @author Fabrizio Branca <typo3@fabrizio-branca.de> (added caching)
 	 */
 	public static function xml2array($string, $NSprefix = '', $reportDocTag = FALSE) {
 		static $firstLevelCache = array();
@@ -2534,7 +2529,7 @@ final class t3lib_div {
 	 * @param integer $includeHeader Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
 	 * @param array $requestHeaders HTTP headers to be used in the request
 	 * @param array $report Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
-	 * @return string The content from the resource given as input. FALSE if an error has occured.
+	 * @return mixed The content from the resource given as input. FALSE if an error has occured.
 	 */
 	public static function getUrl($url, $includeHeader = 0, $requestHeaders = FALSE, &$report = NULL) {
 		$content = FALSE;
@@ -2802,7 +2797,7 @@ final class t3lib_div {
 	 * Writes $content to a filename in the typo3temp/ folder (and possibly one or two subfolders...)
 	 * Accepts an additional subdirectory in the file path!
 	 *
-	 * @param string $filepath Absolute filepath to write to inside "typo3temp/". First part of this string must match PATH_site."typo3temp/"
+	 * @param string $filepath Absolute file path to write to inside "typo3temp/". First part of this string must match PATH_site."typo3temp/"
 	 * @param string $content Content string to write
 	 * @return string Returns NULL on success, otherwise an error string telling about the problem.
 	 */
@@ -2986,14 +2981,15 @@ final class t3lib_div {
 	 *
 	 * @param string $path Is the path to the file
 	 * @param string $extensionList is the comma list of extensions to read only (blank = all)
-	 * @param boolean $prependPath If set, then the path is prepended the filenames. Otherwise only the filenames are returned in the array
+	 * @param boolean $prependPath If set, then the path is prepended the file names. Otherwise only the file names are returned in the array
 	 * @param string $order is sorting: 1= sort alphabetically, 'mtime' = sort by modification time.
-	 * @param string $excludePattern A comma seperated list of filenames to exclude, no wildcards
+	 *
+	 * @param string $excludePattern A comma separated list of file names to exclude, no wildcards
 	 * @return array Array of the files found
 	 */
 	public static function getFilesInDir($path, $extensionList = '', $prependPath = FALSE, $order = '', $excludePattern = '') {
 
-			// Initialize variabels:
+			// Initialize variables:
 		$filearray = array();
 		$sortarray = array();
 		$path = rtrim($path, '/');
@@ -3150,7 +3146,7 @@ final class t3lib_div {
 	 *
 	 * @param integer $localLimit: the number of Kilobytes (!) that should be used as
 	 *						the initial Limit, otherwise $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'] will be used
-	 * @return integer the maximum size of uploads that are allowed (measuered in kilobytes)
+	 * @return integer the maximum size of uploads that are allowed (measured in kilobytes)
 	 */
 	public static function getMaxUploadFileSize($localLimit = 0) {
 			// don't allow more than the global max file size at all
@@ -3197,7 +3193,6 @@ final class t3lib_div {
 	 * Retrieves the maximum path length that is valid in the current environment.
 	 *
 	 * @return integer The maximum available path length
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public static function getMaximumPathLength() {
 		return PHP_MAXPATHLEN;
@@ -3220,7 +3215,6 @@ final class t3lib_div {
 	 * @param string $file Relative path to file including all potential query parameters (not htmlspecialchared yet)
 	 * @param boolean $forceQueryString If settings would suggest to embed in filename, this parameter allows us to force the versioning to occur in the query string. This is needed for scriptaculous.js which cannot have a different filename in order to load its modules (?load=...)
 	 * @return Relative path with version filename including the timestamp
-	 * @author Lars Houmark <lars@houmark.com>
 	 */
 	public static function createVersionNumberedFilename($file, $forceQueryString = FALSE) {
 		$lookupFile = explode('?', $file);
@@ -3456,7 +3450,6 @@ final class t3lib_div {
 									[path_info] = '/arg1/arg2/arg3/'
 									[path] = [path_script/path_dir][path_info]
 
-
 			Keys supported:
 
 			URI______:
@@ -3493,15 +3486,11 @@ final class t3lib_div {
 
 			Notice: [fragment] is apparently NEVER available to the script!
 
-
 			Testing suggestions:
 			- Output all the values.
 			- In the script, make a link to the script it self, maybe add some parameters and click the link a few times so HTTP_REFERER is seen
 			- ALSO TRY the script from the ROOT of a site (like 'http://www.mytest.com/' and not 'http://www.mytest.com/test/' !!)
-
 		*/
-
-		#		if ($getEnvName=='HTTP_REFERER')	return '';
 
 		$retVal = '';
 
@@ -3893,10 +3882,10 @@ final class t3lib_div {
 	 * This should make sure that the path is not pointing 'backwards' and further doesn't contain double/back slashes.
 	 * So it's compatible with the UNIX style path strings valid for TYPO3 internally.
 	 *
-	 * @param string $theFile Filepath to evaluate
+	 * @param string $theFile File path to evaluate
 	 * @return boolean TRUE, $theFile is allowed path string
 	 * @see http://php.net/manual/en/security.filesystem.nullbytes.php
-	 * @todo Possible improvement: Should it rawurldecode the string first to check if any of these characters is encoded ?
+	 * @todo Possible improvement: Should it rawurldecode the string first to check if any of these characters is encoded?
 	 */
 	public static function validPathStr($theFile) {
 		if (strpos($theFile, '//') === FALSE && strpos($theFile, '\\') === FALSE && !preg_match('#(?:^\.\.|/\.\./|[[:cntrl:]])#', $theFile)) {
@@ -3907,7 +3896,7 @@ final class t3lib_div {
 	/**
 	 * Checks if the $path is absolute or relative (detecting either '/' or 'x:/' as first part of string) and returns TRUE if so.
 	 *
-	 * @param string $path Filepath to evaluate
+	 * @param string $path File path to evaluate
 	 * @return boolean
 	 */
 	public static function isAbsPath($path) {
@@ -3923,7 +3912,7 @@ final class t3lib_div {
 	/**
 	 * Returns TRUE if the path is absolute, without backpath '..' and within the PATH_site OR within the lockRootPath
 	 *
-	 * @param string $path Filepath to evaluate
+	 * @param string $path File path to evaluate
 	 * @return boolean
 	 */
 	public static function isAllowedAbsPath($path) {
@@ -3939,9 +3928,9 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Verifies the input filename againts the 'fileDenyPattern'. Returns TRUE if OK.
+	 * Verifies the input filename against the 'fileDenyPattern'. Returns TRUE if OK.
 	 *
-	 * @param string $filename Filepath to evaluate
+	 * @param string $filename File path to evaluate
 	 * @return boolean
 	 */
 	public static function verifyFilenameAgainstDenyPattern($filename) {
@@ -4062,7 +4051,7 @@ final class t3lib_div {
 
 	/**
 	 * Create temporary filename (Create file with unique file name)
-	 * This function should be used for getting temporary filenames - will make your applications safe for open_basedir = on
+	 * This function should be used for getting temporary file names - will make your applications safe for open_basedir = on
 	 * REMEMBER to delete the temporary files after use! This is done by t3lib_div::unlink_tempfile()
 	 *
 	 * @param string $filePrefix Prefix to temp file (which will have no extension btw)
@@ -4464,7 +4453,7 @@ final class t3lib_div {
 	 * @param string $fileRef Absolute file reference to locallang-XML file. Must be inside system/global/local extension
 	 * @param string $language Language key
 	 * @param boolean $sameLocation if TRUE, then locallang-XML localization file name will be returned with same directory as $fileRef
-	 * @return string Returns the filename reference for the language unless error occured (or local mode is used) in which case it will be NULL
+	 * @return string Returns the filename reference for the language unless error occurred (or local mode is used) in which case it will be NULL
 	 */
 	public static function llXmlAutoFileName($fileRef, $language, $sameLocation = FALSE) {
 		if ($sameLocation) {
@@ -4546,7 +4535,7 @@ final class t3lib_div {
 	 *
 	 * @param array $dataStructArray Input data structure, possibly with a sheet-definition and references to external data source files.
 	 * @param string $sheet The sheet to return, preferably.
-	 * @return array An array with two num. keys: key0: The data structure is returned in this key (array) UNLESS an error happend in which case an error string is returned (string). key1: The used sheet key value!
+	 * @return array An array with two num. keys: key0: The data structure is returned in this key (array) UNLESS an error occurred in which case an error string is returned (string). key1: The used sheet key value!
 	 */
 	public static function resolveSheetDefInDS($dataStructArray, $sheet = 'sDEF') {
 		if (!is_array($dataStructArray)) {
@@ -4602,7 +4591,7 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Calls a userdefined function/method in class
+	 * Calls a user-defined function/method in class
 	 * Such a function/method should look like this: "function proc(&$params, &$ref)	{...}"
 	 *
 	 * @param string $funcName Function/Method reference, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call ("singleton").
@@ -4979,7 +4968,7 @@ final class t3lib_div {
 	/**
 	 * Purge all instances returned by makeInstance.
 	 *
-	 * This function is most useful when called from tearDown in a testcase
+	 * This function is most useful when called from tearDown in a test case
 	 * to drop any instances that have been created by the tests.
 	 *
 	 * Warning: This is a helper method for unit tests. Do not call this directly in production code!
@@ -4998,9 +4987,8 @@ final class t3lib_div {
 	 *
 	 * @param string $serviceType Type of service (service key).
 	 * @param string $serviceSubType Sub type like file extensions or similar. Defined by the service.
-	 * @param mixed $excludeServiceKeys List of service keys which should be exluded in the search for a service. Array or comma list.
+	 * @param mixed $excludeServiceKeys List of service keys which should be excluded in the search for a service. Array or comma list.
 	 * @return object The service object or an array with error info's.
-	 * @author René Fritz <r.fritz@colorcube.de>
 	 */
 	public static function makeInstanceService($serviceType, $serviceSubType = '', $excludeServiceKeys = array()) {
 		$error = FALSE;
@@ -5160,17 +5148,15 @@ final class t3lib_div {
 		}
 
 			// Headers must be separated by CRLF according to RFC 2822, not just LF.
-			// But many servers (Gmail, for example) behave incorectly and want only LF.
+			// But many servers (Gmail, for example) behave incorrectly and want only LF.
 			// So we stick to LF in all cases.
 		$headers = trim(implode(LF, self::trimExplode(LF, $headers, TRUE))); // Make sure no empty lines are there.
-
 
 		return t3lib_utility_Mail::mail($email, $subject, $message, $headers);
 	}
 
 	/**
 	 * Implementation of quoted-printable encode.
-	 * This functions is buggy. It seems that in the part where the lines are breaked every 76th character, that it fails if the break happens right in a quoted_printable encode character!
 	 * See RFC 1521, section 5.1 Quoted-Printable Content-Transfer-Encoding
 	 *
 	 * @param string $string Content to encode
@@ -5178,13 +5164,13 @@ final class t3lib_div {
 	 * @return string The QP encoded string
 	 */
 	public static function quoted_printable($string, $maxlen = 76) {
-			// Make sure the string contains only Unix linebreaks
+			// Make sure the string contains only Unix line breaks
 		$string = str_replace(CRLF, LF, $string); // Replace Windows breaks (\r\n)
 		$string = str_replace(CR, LF, $string); // Replace Mac breaks (\r)
 
 		$linebreak = LF; // Default line break for Unix systems.
 		if (TYPO3_OS == 'WIN') {
-			$linebreak = CRLF; // Line break for Windows. This is needed because PHP on Windows systems send mails via SMTP instead of using sendmail, and thus the linebreak needs to be \r\n.
+			$linebreak = CRLF; // Line break for Windows. This is needed because PHP on Windows systems send mails via SMTP instead of using sendmail, and thus the line break needs to be \r\n.
 		}
 
 		$newString = '';
@@ -5302,7 +5288,7 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Subfunction for substUrlsInPlainText() above.
+	 * Sub-function for substUrlsInPlainText() above.
 	 *
 	 * @param string $inUrl Input URL
 	 * @param integer $l URL string length limit
