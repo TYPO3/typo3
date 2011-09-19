@@ -127,7 +127,7 @@ class tx_coreupdates_installsysexts extends Tx_Install_Updates_Base {
 	 * @param	mixed		&$customMessages: custom messages
 	 * @return	boolean		whether it worked (TRUE) or not (FALSE)
 	 */
-	public function performUpdate(&$dbQueries, &$customMessages) {
+	public function performUpdate(array &$dbQueries, &$customMessages) {
 
 			// Get extension keys that were submitted by the user to be installed and that are valid for this update wizard
 		if (is_array($this->pObj->INSTALL['update']['installSystemExtensions']['sysext'])) {
