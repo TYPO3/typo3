@@ -76,10 +76,11 @@ class t3lib_pageTree extends t3lib_treeView {
 	 * Init function
 	 * REMEMBER to feed a $clause which will filter out non-readable pages!
 	 *
-	 * @param	string		Part of where query which will filter out non-readable pages.
-	 * @return	void
+	 * @param string $clause Part of where query which will filter out non-readable pages.
+	 * @param string $orderByFields record ORDER BY field
+	 * @return void
 	 */
-	function init($clause = '') {
+	function init($clause = '', $orderByFields = '') {
 		parent::init(' AND deleted=0 ' . $clause, 'sorting');
 
 		if (t3lib_extMgm::isLoaded('cms')) {

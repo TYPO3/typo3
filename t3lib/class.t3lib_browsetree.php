@@ -65,10 +65,11 @@ class t3lib_browseTree extends t3lib_treeView {
 	 * Initialize, setting what is necessary for browsing pages.
 	 * Using the current user.
 	 *
-	 * @param	string		Additional clause for selecting pages.
-	 * @return	void
+	 * @param string $clause Additional clause for selecting pages.
+	 * @param string $orderByFields record ORDER BY field
+	 * @return void
 	 */
-	function init($clause = '') {
+	function init($clause = '', $orderByFields = '') {
 
 			// this will hide records from display - it has nothing todo with user rights!!
 		$clauseExludePidList = '';
