@@ -550,9 +550,10 @@ class t3lib_tree_extdirect_Node extends t3lib_tree_Node {
 	/**
 	 * Returns the node in an array representation that can be used for serialization
 	 *
+	 * @param bool $addChildNodes
 	 * @return array
 	 */
-	public function toArray() {
+	public function toArray($addChildNodes = TRUE) {
 		$arrayRepresentation = array(
 			'serializeClassName' => get_class($this),
 			'id' => $this->getId(),
