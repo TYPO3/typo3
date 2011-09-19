@@ -1261,7 +1261,7 @@ class t3lib_TStemplate {
 	 * @return	array		An array with all integer properties listed in numeric order.
 	 * @see tslib_cObj::cObjGet(), tslib_gifBuilder, tslib_imgmenu::makeImageMap()
 	 */
-	function sortedKeyList($setupArr, $acceptOnlyProperties = FALSE) {
+	public static function sortedKeyList($setupArr, $acceptOnlyProperties = FALSE) {
 		$keyArr = array();
 		$setupArrKeys = array_keys($setupArr);
 		foreach ($setupArrKeys as $key) {
