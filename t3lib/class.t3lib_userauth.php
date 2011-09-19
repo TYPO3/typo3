@@ -1299,10 +1299,13 @@ abstract class t3lib_userAuth {
 	/**
 	 * DUMMY: Check login failures (in some extension classes)
 	 *
-	 * @return	void
+	 * @param string $email Email address
+	 * @param integer $secondsBack Number of sections back in time to check. This is a kind of limit for how many failures an hour for instance
+	 * @param integer $maxFailures Max allowed failures before a warning mail is sent
+	 * @return void
 	 * @ignore
 	 */
-	function checkLogFailures() {
+	function checkLogFailures($email, $secondsBack, $maxFailures) {
 	}
 
 	/**
