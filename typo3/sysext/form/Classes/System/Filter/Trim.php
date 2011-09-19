@@ -42,9 +42,8 @@ class tx_form_System_Filter_Trim implements tx_form_System_Filter_Interface {
 	 * Constructor
 	 *
 	 * @param array $arguments Filter configuration
-	 * @return void
 	 */
-	public function __construct($arguments = array()) {
+	public function __construct(array $arguments = array()) {
 		$this->setCharacterList($arguments['characterList']);
 	}
 

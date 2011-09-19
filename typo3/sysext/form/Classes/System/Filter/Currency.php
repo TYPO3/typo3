@@ -51,21 +51,20 @@ class tx_form_System_Filter_Currency implements tx_form_System_Filter_Interface 
 	 * Constructor
 	 *
 	 * @param array $arguments Filter configuration
-	 * @return void
 	 */
 	public function __construct($arguments = array()) {
-		$this->setDecimalsPoint($arguments['decimalPoint'])
-			->setThousandSeparator($arguments['thousandSeparator']);
+		$this->setDecimalsPoint($arguments['decimalPoint']);
+		$this->setThousandSeparator($arguments['thousandSeparator']);
 	}
 
 	/**
 	 * Set the decimal point character
 	 *
 	 * @param string $decimalsPoint Character used for decimal point
-	 * @return tx_form_Filter_Currency
+	 * @return tx_form_System_Filter_Currency
 	 */
 	public function setDecimalsPoint($decimalsPoint = '.') {
-		if(empty($decimalsPoint)) {
+		if (empty($decimalsPoint)) {
 			$this->decimalsPoint = '.';
 		} else {
 			$this->decimalsPoint = (string) $decimalsPoint;
@@ -78,14 +77,14 @@ class tx_form_System_Filter_Currency implements tx_form_System_Filter_Interface 
 	 * Set the thousand separator character
 	 *
 	 * @param string $thousandSeparator Character used for thousand separator
-	 * @return tx_form_Filter_Currency
+	 * @return tx_form_System_Filter_Currency
 	 */
 	public function setThousandSeparator($thousandSeparator = ',') {
-		if(empty($thousandSeparator)) {
+		if (empty($thousandSeparator)) {
 			$this->thousandSeparator = ',';
-		} elseif($thousandSeparator === 'space') {
+		} elseif ($thousandSeparator === 'space') {
 			$this->thousandSeparator = ' ';
-		} elseif($thousandSeparator === 'none') {
+		} elseif ($thousandSeparator === 'none') {
 			$this->thousandSeparator = '';
 		} else {
 			$this->thousandSeparator = (string) $thousandSeparator;

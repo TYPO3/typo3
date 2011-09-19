@@ -77,14 +77,5 @@ class tx_form_Domain_Model_JSON_Textline extends tx_form_Domain_Model_JSON_Eleme
 		'type',
 		'value'
 	);
-
-	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
 }
 ?>

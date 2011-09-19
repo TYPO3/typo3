@@ -55,7 +55,7 @@ class tx_form_View_Confirmation_Additional extends tx_form_View_Confirmation_Ele
 	 */
 	public function getAdditionalValue() {
 		return htmlspecialchars($this->model->getAdditionalValue(
-			$this->getLastPartOfClassName(TRUE)
+			tx_form_Common::getInstance()->getLastPartOfClassName($this, TRUE)
 		));
 	}
 }

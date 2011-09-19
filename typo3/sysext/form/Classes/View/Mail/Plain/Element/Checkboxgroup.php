@@ -34,13 +34,16 @@ class tx_form_View_Mail_Plain_Element_Checkboxgroup extends tx_form_View_Mail_Pl
 	/**
 	 * Constructor
 	 *
-	 * @param tx_form_Domain_Model_Element_Radiogroup $model Model for this element
-	 * @return void
+	 * @param tx_form_Domain_Model_Element_Checkboxgroup $model Model for this element
+	 * @param integer $spaces
 	 */
 	public function __construct(tx_form_Domain_Model_Element_Checkboxgroup $model, $spaces) {
 		parent::__construct($model, $spaces);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function render() {
 		$content = '';
 

@@ -30,8 +30,6 @@
  * @package TYPO3
  * @subpackage form
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @license http://www.gnu.org/copyleft/gpl.html
- * @version $Id$
  */
 class tx_form_Controller_Form {
 
@@ -68,7 +66,7 @@ class tx_form_Controller_Form {
 	 * @param array $typoscript TS configuration for this cObject
 	 * @return void
 	 */
-	public function initialize($typoscript) {
+	public function initialize(array $typoscript) {
 		t3lib_div::makeInstance(
 			'tx_form_System_Localization',
 			'LLL:EXT:form/Resources/Private/Language/locallang_controller.xml'
@@ -101,7 +99,7 @@ class tx_form_Controller_Form {
 	 */
 	public function cObjGetSingleExt(
 		$typoscriptObjectName,
-		$typoscript,
+		array $typoscript,
 		$typoscriptKey,
 		tslib_cObj $contentObject
 	) {
@@ -135,20 +133,17 @@ class tx_form_Controller_Form {
 	 * @return string HTML Output
 	 */
 	public function execute() {
-		$content = '';
-
 			// Form
 		if ($this->showForm()) {
 			$content = $this->renderForm();
-		} else {
-				// Confirmation screen
-			if ($this->showConfirmation()) {
-				$content = $this->renderConfirmation();
 
-				// We need the post processing
-			} else {
-				$content = $this->doPostProcessing();
-			}
+			// Confirmation screen
+		} elseif ($this->showConfirmation()) {
+			$content = $this->renderConfirmation();
+
+			// We need the post processing
+		} else {
+			$content = $this->doPostProcessing();
 		}
 
 		return $content;

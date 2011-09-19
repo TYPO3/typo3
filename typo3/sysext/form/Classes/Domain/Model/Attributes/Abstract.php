@@ -73,5 +73,12 @@ abstract class tx_form_Domain_Model_Attributes_Abstract {
 	public function setValue($value) {
 		$this->value = (string) $value;
 	}
+
+	/**
+	 * Gets the accordant attribute value.
+	 *
+	 * @return string
+	 */
+	abstract public function getValue();
 }
 ?>

@@ -30,15 +30,6 @@
  * @subpackage form
  */
 class tx_form_System_Filter_Uppercase implements tx_form_System_Filter_Interface {
-
-	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-	}
-
 	/**
 	 * Convert alphabetic characters to uppercase
 	 *

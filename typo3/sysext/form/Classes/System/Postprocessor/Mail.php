@@ -30,6 +30,30 @@
  * @subpackage form
  */
 class tx_form_System_Postprocessor_Mail {
+	/**
+	 * @var tx_form_Domain_Model_Form
+	 */
+	protected $form;
+
+	/**
+	 * @var array
+	 */
+	protected $typoScript;
+
+	/**
+	 * @var t3lib_mail_Message
+	 */
+	protected $mailMessage;
+
+	/**
+	 * @var tx_form_System_Request
+	 */
+	protected $requestHandler;
+
+	/**
+	 * @var array
+	 */
+	protected $dirtyHeaders = array();
 
 	/**
 	 * Constructor
@@ -60,8 +84,11 @@ class tx_form_System_Postprocessor_Mail {
 		$this->setCc();
 		$this->setPriority();
 		$this->setOrganization();
-		$this->setHtmlContent($htmlContent);
-		$this->setPlainContent($plainContent);
+
+		// @todo The whole content rendering seems to be missing here!
+
+		$this->setHtmlContent();
+		$this->setPlainContent();
 		$this->addAttachments();
 		$this->send();
 
@@ -178,7 +205,7 @@ class tx_form_System_Postprocessor_Mail {
 	protected function setPriority() {
 		$priority = 3;
 		if ($this->typoScript['priority']) {
-			$priority = t3lib_div::intInRange($valueList['priority'], 1, 5);
+			$priority = t3lib_utility_Math::forceIntegerInRange($this->typoScript['priority'], 1, 5);
 		}
 		$this->mailMessage->setPriority($priority);
 	}
@@ -226,6 +253,7 @@ class tx_form_System_Postprocessor_Mail {
 	 * @return void
 	 */
 	protected function setHtmlContent() {
+		/** @var $view tx_form_View_Mail_Html */
 		$view = t3lib_div::makeInstance(
 			'tx_form_View_Mail_Html',
 			$this->form,
@@ -243,6 +271,7 @@ class tx_form_System_Postprocessor_Mail {
 	 * @return void
 	 */
 	protected function setPlainContent() {
+		/** @var $view tx_form_View_Mail_Plain */
 		$view = t3lib_div::makeInstance(
 			'tx_form_View_Mail_Plain',
 			$this->form
@@ -252,17 +281,13 @@ class tx_form_System_Postprocessor_Mail {
 	}
 
 	/**
-	 * Send the mail
-	 *
+	 * Sends the mail.
 	 * Sending the mail requires the recipient and message to be set.
 	 *
 	 * @return void
 	 */
 	protected function send() {
-		if (
-			$this->mailMessage->getTo() &&
-			$this->mailMessage->getBody()
-		) {
+		if ($this->mailMessage->getTo() && $this->mailMessage->getBody()) {
 			$this->mailMessage->send();
 		}
 	}
@@ -273,6 +298,7 @@ class tx_form_System_Postprocessor_Mail {
 	 * @return string HTML message from the mail view
 	 */
 	protected function render() {
+		/** @var $view tx_form_View_Mail */
 		$view = t3lib_div::makeInstance(
 			'tx_form_View_Mail',
 			$this->mailMessage,
@@ -306,6 +332,7 @@ class tx_form_System_Postprocessor_Mail {
 		$formElements = $this->form->getElements();
 		$values = $this->requestHandler->getByMethod();
 
+		/** @var $element tx_form_Domain_Model_Element_Abstract */
 		foreach ($formElements as $element) {
 			if (is_a($element, 'tx_form_Domain_Model_Element_Fileupload')) {
 				$elementName = $element->getName();

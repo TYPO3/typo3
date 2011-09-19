@@ -41,21 +41,12 @@ class tx_form_Domain_Model_JSON_Container extends tx_form_Domain_Model_JSON_Elem
 	);
 
 	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Add an element to this container
 	 *
-	 * @param object $element The element to add
+	 * @param tx_form_Domain_Model_JSON_Element $element The element to add
 	 * @return void
 	 */
-	public function addElement($element) {
+	public function addElement(tx_form_Domain_Model_JSON_Element $element) {
 		$this->elementContainer['items'][] = $element;
 	}
 }

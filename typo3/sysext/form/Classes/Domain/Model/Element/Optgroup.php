@@ -51,36 +51,18 @@ class tx_form_Domain_Model_Element_Optgroup extends tx_form_Domain_Model_Element
 	 *
 	 * @var array
 	 */
-	protected $mandatoryAttributes = array(
-	);
-
-	/**
-	 * Parent object
-	 *
-	 * @var object
-	 */
-	protected $parentName;
-
-	/**
-	 * Constructor
-	 * Sets the configuration, calls parent constructor and fills the attributes
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
+	protected $mandatoryAttributes = array();
 
 	/**
 	 * Set the name of the parent object
 	 *
 	 * @param string $parentName Name of the parent
-	 * @return object The element object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 * @return tx_form_Domain_Model_Element_Optgroup The element object
 	 * @see tx_form_Domain_Model_Element::setParent()
 	 */
 	public function setParentName($parentName) {
-		foreach($this->elements as $element) {
+		/** @var $element tx_form_Domain_Model_Element_Option */
+		foreach ($this->elements as $element) {
 			$element->setParentName($parentName);
 		}
 		return $this;
@@ -89,10 +71,10 @@ class tx_form_Domain_Model_Element_Optgroup extends tx_form_Domain_Model_Element
 	/**
 	 * Add child object to this element
 	 *
-	 * @param object $element The child object
-	 * @return object
+	 * @param tx_form_Domain_Model_Element_Option $element The child object
+	 * @return tx_form_Domain_Model_Element_Optgroup
 	 */
-	public function addElement($element) {
+	public function addElement(tx_form_Domain_Model_Element_Option $element) {
 		$this->elements[] = $element;
 		return $this;
 	}

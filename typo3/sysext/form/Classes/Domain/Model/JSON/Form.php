@@ -69,23 +69,13 @@ class tx_form_Domain_Model_JSON_Form extends tx_form_Domain_Model_JSON_Container
 	);
 
 	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Set all the parameters for this object
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see tx_form_Domain_Model_Json_Container::setParameters()
 	 */
-	public function setParameters($parameters) {
+	public function setParameters(array $parameters) {
 		parent::setParameters($parameters);
 		$this->setPrefix($parameters);
 		$this->setConfirmation($parameters);
@@ -98,7 +88,7 @@ class tx_form_Domain_Model_JSON_Form extends tx_form_Domain_Model_JSON_Container
 	 * @param array $parameters Configuration array
 	 * @return void
 	 */
-	protected function setConfirmation($parameters) {
+	protected function setConfirmation(array $parameters) {
 		if (isset($parameters['confirmation'])) {
 			$this->configuration['confirmation'] = $parameters['confirmation'];
 		}
@@ -110,14 +100,14 @@ class tx_form_Domain_Model_JSON_Form extends tx_form_Domain_Model_JSON_Container
 	 * @param array $parameters Configuration array
 	 * @return void
 	 */
-	protected function setPostProcessors($parameters) {
+	protected function setPostProcessors(array $parameters) {
 		if (isset($parameters['postProcessor.']) && is_array($parameters['postProcessor.'])) {
 			$postProcessors = $parameters['postProcessor.'];
 
 			foreach ($postProcessors as $key => $postProcessorName) {
 				if (intval($key) && !strstr($key, '.')) {
 					$postProcessorConfiguration = array();
-					if(isset($postProcessors[$key . '.'])) {
+					if (isset($postProcessors[$key . '.'])) {
 						$postProcessorConfiguration = $postProcessors[$key . '.'];
 					}
 					$this->configuration['postProcessor'][$postProcessorName] = $postProcessorConfiguration;
@@ -139,7 +129,7 @@ class tx_form_Domain_Model_JSON_Form extends tx_form_Domain_Model_JSON_Container
 	 * @param array $parameters Configuration array
 	 * @return void
 	 */
-	protected function setPrefix($parameters) {
+	protected function setPrefix(array $parameters) {
 		if (isset($parameters['prefix'])) {
 			$this->configuration['prefix'] = $parameters['prefix'];
 		}

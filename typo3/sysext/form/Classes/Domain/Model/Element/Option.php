@@ -57,21 +57,11 @@ class tx_form_Domain_Model_Element_Option extends tx_form_Domain_Model_Element_A
 	);
 
 	/**
-	 * Parent object
+	 * Parent object name
 	 *
-	 * @var object
+	 * @var string
 	 */
-	protected $parentObject;
-
-	/**
-	 * Constructor
-	 * Sets the configuration, calls parent constructor and fills the attributes
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
+	protected $parentName;
 
 	/**
 	 * Returns the content of the option tag
@@ -87,8 +77,7 @@ class tx_form_Domain_Model_Element_Option extends tx_form_Domain_Model_Element_A
 	 * Set the name of the parent object
 	 *
 	 * @param string $parentName Name of the parent
-	 * @return object The element object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 * @return tx_form_Domain_Model_Element_Option The element object
 	 * @see tx_form_Domain_Model_Element::setParent()
 	 */
 	public function setParentName($parentName) {
@@ -104,8 +93,7 @@ class tx_form_Domain_Model_Element_Option extends tx_form_Domain_Model_Element_A
 	 * If there is submitted data for this field
 	 * it will change the selected attribute
 	 *
-	 * @return object
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
+	 * @return tx_form_Domain_Model_Element_Option
 	 * @see tx_form_Domain_Model_Element::checkFilterAndSetIncomingDataFromRequest()
 	 */
 	public function checkFilterAndSetIncomingDataFromRequest() {
@@ -113,19 +101,19 @@ class tx_form_Domain_Model_Element_Option extends tx_form_Domain_Model_Element_A
 			$this->value = (string) $this->getElementId();
 			$this->setAttribute('value', $this->value);
 		}
-		if(!empty($this->parentName)) {
-			if($this->requestHandler->has($this->parentName)) {
+		if (!empty($this->parentName)) {
+			if ($this->requestHandler->has($this->parentName)) {
 				$submittedValue = $this->requestHandler->getByMethod($this->parentName);
-				if(is_array($submittedValue) && in_array($this->value, $submittedValue)) {
+				if (is_array($submittedValue) && in_array($this->value, $submittedValue)) {
 					$this->setAttribute('selected', 'selected');
-				} elseif($submittedValue === $this->value) {
+				} elseif ($submittedValue === $this->value) {
 					$this->setAttribute('selected', 'selected');
-				} elseif(is_array($submittedValue) && in_array('on', $submittedValue)) {
+				} elseif (is_array($submittedValue) && in_array('on', $submittedValue)) {
 					$this->setAttribute('selected', 'selected');
 				} else {
 					$this->attributes->removeAttribute('selected');
 				}
-			} elseif($this->requestHandler->hasRequest()) {
+			} elseif ($this->requestHandler->hasRequest()) {
 				$this->attributes->removeAttribute('selected');
 			}
 		}

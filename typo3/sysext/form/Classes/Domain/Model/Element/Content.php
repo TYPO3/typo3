@@ -30,6 +30,15 @@
  * @subpackage form
  */
 class tx_form_Domain_Model_Element_Content extends tx_form_Domain_Model_Element_Abstract {
+	/**
+	 * @var string
+	 */
+	protected $objectName;
+
+	/**
+	 * @var array
+	 */
+	protected $objectConfiguration;
 
 	/**
 	 * Allowed attributes for this object
@@ -45,25 +54,15 @@ class tx_form_Domain_Model_Element_Content extends tx_form_Domain_Model_Element_
 	protected $mandatoryAttributes = array();
 
 	/**
-	 * Constructor
-	 * Sets the configuration, calls parent constructor and fills the attributes
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Set the content for the element
 	 *
-	 * @param string $cObj The name of the object
-	 * @param array $cObjDot The configuration of the object
+	 * @param string $objectName The name of the object
+	 * @param array $objectConfiguration The configuration of the object
 	 * @return void
 	 */
-	public function setData($cObj, $cObjDot) {
-		$this->cObj = $cObj;
-		$this->cObjDot = $cObjDot;
+	public function setData($objectName, array $objectConfiguration) {
+		$this->objectName = $objectName;
+		$this->objectConfiguration = $objectConfiguration;
 	}
 
 	/**
@@ -74,7 +73,10 @@ class tx_form_Domain_Model_Element_Content extends tx_form_Domain_Model_Element_
 	 * @return string
 	 */
 	public function getData() {
-		$data = $this->localCobj->cObjGetSingle($this->cObj, $this->cObjDot);
+		$data = $this->localCobj->cObjGetSingle(
+			$this->objectName,
+			$this->objectConfiguration
+		);
 
 		return $data;
 	}

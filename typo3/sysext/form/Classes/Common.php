@@ -28,7 +28,6 @@
  * @package TYPO3
  * @subpackage form
  * @author Oliver Hader <oliver.hader@typo3.org>
- * @license http://www.gnu.org/copyleft/gpl.html
  */
 class tx_form_Common implements t3lib_Singleton {
 	/**
@@ -100,7 +99,7 @@ class tx_form_Common implements t3lib_Singleton {
 	 */
 	public function initializeFormObjects() {
 			// Assign new FORM objects
-		foreach($this->getFormObjects() as $formObject) {
+		foreach ($this->getFormObjects() as $formObject) {
 			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = array(
 				$formObject,
 				'EXT:form/Classes/Controller/Form.php:&tx_form_Controller_Form'
@@ -121,6 +120,24 @@ class tx_form_Common implements t3lib_Singleton {
 		);
 
 		return $this;
+	}
+
+	/**
+	 * Gets the last part of the current object's class name.
+	 * e.g. for 'tx_form_View_Confirmation_Additional' it will be 'Additional'
+	 *
+	 * @param object $object The object to be used
+	 * @param boolean $lowercase Whether to convert to lowercase
+	 * @return string
+	 */
+	public function getLastPartOfClassName($object, $lowercase = FALSE) {
+		$lastPart = preg_replace('/.*_([^_]*)$/', '${1}', get_class($object), 1);
+
+		if ($lowercase) {
+			$lastPart = strtolower($lastPart);
+		}
+
+		return $lastPart;
 	}
 }
 ?>

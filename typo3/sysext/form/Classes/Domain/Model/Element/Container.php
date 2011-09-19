@@ -39,21 +39,12 @@ class tx_form_Domain_Model_Element_Container extends tx_form_Domain_Model_Elemen
 	protected $elements = array();
 
 	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Add child object to this element
 	 *
-	 * @param object $element The child object
-	 * @return object
+	 * @param tx_form_Domain_Model_Element_Abstract $element The child object
+	 * @return tx_form_Domain_Model_Element_Container
 	 */
-	public function addElement($element) {
+	public function addElement(tx_form_Domain_Model_Element_Abstract $element) {
 		$this->elements[] = $element;
 		return $this;
 	}

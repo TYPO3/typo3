@@ -45,11 +45,10 @@ class tx_form_System_Validate_Float extends tx_form_System_Validate_Abstract {
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see tx_form_System_Validate_Interface::isValid()
 	 */
 	public function isValid() {
-		if($this->requestHandler->has($this->fieldName)) {
+		if ($this->requestHandler->has($this->fieldName)) {
 			$value = $this->requestHandler->getByMethod($this->fieldName);
 
 			$locale = localeconv();
@@ -59,7 +58,7 @@ class tx_form_System_Validate_Float extends tx_form_System_Validate_Abstract {
 			$valueFiltered = str_replace($locale['decimal_point'], '.', $valueFiltered);
 			$valueFiltered = str_replace($locale['mon_decimal_point'], '.', $valueFiltered);
 
-			if($valueFiltered != strval(floatval($valueFiltered))) {
+			if ($valueFiltered != strval(floatval($valueFiltered))) {
 				return FALSE;
 			}
 		}

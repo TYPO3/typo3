@@ -43,11 +43,8 @@ class tx_form_System_Filter implements tx_form_System_Filter_Interface {
 	 * Adds the removeXSS filter by default
 	 * Never remove these lines, otherwise the forms
 	 * will be vulnerable for XSS attacks
-	 *
-	 * @param array $arguments Filter configuration
-	 * @return void
 	 */
-	public function __construct($arguments = array()) {
+	public function __construct() {
 		$removeXssFilter = $this->makeFilter('removexss');
 		$this->addFilter($removeXssFilter);
 	}
@@ -55,12 +52,11 @@ class tx_form_System_Filter implements tx_form_System_Filter_Interface {
 	/**
 	 * Add a filter object to the filter array
 	 *
-	 * @param string $class Name of the filter
-	 * @param mixed $value Typoscript configuration
-	 * @return tx_form_Filter
+	 * @param tx_form_System_Filter_Interface $filter The filter
+	 * @return tx_form_System_Filter
 	 */
-	public function addFilter($filter) {
-		$this->filters[] = (object) $filter;
+	public function addFilter(tx_form_System_Filter_Interface $filter) {
+		$this->filters[] = $filter;
 
 		return $this;
 	}
@@ -71,26 +67,22 @@ class tx_form_System_Filter implements tx_form_System_Filter_Interface {
 	 *
 	 * @param string $class Name of the filter
 	 * @param array $arguments Configuration of the filter
-	 * @return object The filter object
+	 * @return tx_form_System_Filter_Interface The filter object
 	 */
-	public function makeFilter($class, $arguments = array()) {
-		$class = strtolower((string) $class);
-		$className = 'tx_form_System_Filter_' . ucfirst($class);
-
-		$filter = t3lib_div::makeInstance($className, $arguments);
-
-		return $filter;
+	public function makeFilter($class, array $arguments = NULL) {
+		return self::createFilter($class, $arguments);
 	}
 
 	/**
 	 * Go through all filters added to the array
 	 *
-	 * @param  mixed $value
+	 * @param mixed $value
 	 * @return mixed
 	 */
 	public function filter($value) {
-		if(!empty($this->filters)) {
-			foreach($this->filters as $filter) {
+		if (!empty($this->filters)) {
+			/** @var $filter tx_form_System_Filter_Interface */
+			foreach ($this->filters as $filter) {
 				$value = $filter->filter($value);
 			}
 		}
@@ -100,19 +92,34 @@ class tx_form_System_Filter implements tx_form_System_Filter_Interface {
 	/**
 	 * Call filter through this class with automatic instantiation of filter
 	 *
-	 * @param $class
-	 * @param $value
-	 * @param $arguments
+	 * @param string $class
+	 * @param mixed $value
+	 * @param array $arguments
 	 * @return mixed
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public static function get($class, $value, array $arguments = array()) {
+		return self::createFilter($class, $arguments)->filter($value);
+	}
+
+	/**
+	 * Create a filter object according to class
+	 * and sent some arguments
+	 *
+	 * @param string $class Name of the filter
+	 * @param array $arguments Configuration of the filter
+	 * @return tx_form_System_Filter_Interface The filter object
+	 */
+	public static function createFilter($class, array $arguments = NULL) {
 		$class = strtolower((string) $class);
 		$className = 'tx_form_System_Filter_' . ucfirst($class);
 
-		$object = t3lib_div::makeInstance($className, $arguments);
+		if (is_null($arguments)) {
+			$filter = t3lib_div::makeInstance($className);
+		} else {
+			$filter = t3lib_div::makeInstance($className, $arguments);
+		}
 
-		return $object->filter($value);
+		return $filter;
 	}
 }
 ?>

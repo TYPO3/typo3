@@ -29,8 +29,6 @@
  * @package TYPO3
  * @subpackage form
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @license http://www.gnu.org/copyleft/gpl.html
- * @version $Id$
  */
 class tx_form_Domain_Model_Content {
 
@@ -54,14 +52,6 @@ class tx_form_Domain_Model_Content {
 	 * @var array
 	 */
 	protected $typoscript = array();
-
-	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-	}
 
 	/**
 	 * Sets the uid

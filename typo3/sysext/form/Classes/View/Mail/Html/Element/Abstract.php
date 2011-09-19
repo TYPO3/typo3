@@ -74,11 +74,12 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 	 * to the DOMDocument of the current tag
 	 *
 	 * @param DOMDocument $dom
-	 * @param DOMDocument $reference Current XML structure
-	 * @return void
+	 * @param DOMNode $reference Current XML structure
+	 * @param boolean $emptyElement
+	 * @return boolean
 	 */
-	protected function parseXML(DOMDocument &$dom, &$reference, &$emptyElement) {
-		$node = &$reference->firstChild;
+	protected function parseXML(DOMDocument $dom, DOMNode $reference, $emptyElement = FALSE) {
+		$node = $reference->firstChild;
 
 		while (!is_null($node)) {
 			$deleteNode = FALSE;
@@ -107,8 +108,8 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 							}
 							break;
 						case 'label':
-							if(!strstr(get_class($this), '_Additional_')) {
-								if($this->model->additionalIsSet($nodeName)) {
+							if (!strstr(get_class($this), '_Additional_')) {
+								if ($this->model->additionalIsSet($nodeName)) {
 									$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('label'));
 								} else {
 									$replaceNode = $dom->createTextNode($this->model->getName());
@@ -118,8 +119,8 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 							$deleteNode = TRUE;
 							break;
 						case 'legend':
-							if(!strstr(get_class($this), '_Additional_')) {
-								if($this->model->additionalIsSet($nodeName)) {
+							if (!strstr(get_class($this), '_Additional_')) {
+								if ($this->model->additionalIsSet($nodeName)) {
 									$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('legend'));
 								}
 								$deleteNode = TRUE;
@@ -156,20 +157,22 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 
 				// Parse the child nodes of this node if available
 			if ($node->hasChildNodes()) {
-				$this->parseXML($dom, $node, $emptyElement);
+				$emptyElement = $this->parseXML($dom, $node, $emptyElement);
 			}
 
 				// Get the current node for deletion if replaced. We need this because nextSibling can be empty
-			$oldNode = &$node;
+			$oldNode = $node;
 
 				// Go to next sibling to parse
-			$node = &$node->nextSibling;
+			$node = $node->nextSibling;
 
 				// Delete the old node. This can only be done after going to the next sibling
-			if($deleteNode) {
+			if ($deleteNode) {
 				$oldNode->parentNode->removeChild($oldNode);
 			}
 		}
+
+		return $emptyElement;
 	}
 
 	/**
@@ -181,23 +184,20 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 	 */
 	public function render($type = 'element', $returnFirstChild = TRUE) {
 		$useLayout = $this->getLayout((string) $type);
-		$emptyElement = FALSE;
 
 		$dom = new DOMDocument('1.0', 'utf-8');
 		$dom->formatOutput = TRUE;
 		$dom->preserveWhiteSpace = FALSE;
 		$dom->loadXML($useLayout);
 
-		$this->parseXML($dom, $dom, $emptyElement);
+		$emptyElement = $this->parseXML($dom, $dom);
 
 		if ($emptyElement) {
 			return NULL;
+		} elseif ($returnFirstChild) {
+			return $dom->firstChild;
 		} else {
-			if($returnFirstChild) {
-				return $dom->firstChild;
-			} else {
-				return $dom;
-			}
+			return $dom;
 		}
 	}
 
@@ -215,7 +215,7 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 			case 'element':
 				$layoutDefault = $this->layout;
 				$layout = $layoutHandler->getLayoutByObject(
-					$this->getLastPartOfClassName(TRUE),
+					tx_form_Common::getInstance()->getLastPartOfClassName($this, TRUE),
 					$layoutDefault
 				);
 				break;
@@ -242,12 +242,12 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 	/**
 	 * Replace the current node with a document fragment
 	 *
-	 * @param $dom DOMDocument
-	 * @param $node Current Node
-	 * @param $value Value to import
+	 * @param DOMDocument $dom
+	 * @param DOMNode $node Current Node
+	 * @param DOMNode $value Value to import
 	 * @return void
 	 */
-	public function replaceNodeWithFragment(DOMDocument &$dom, &$node, $value) {
+	public function replaceNodeWithFragment(DOMDocument $dom, DOMNode $node, DOMNode $value) {
 		$replaceNode = $dom->createDocumentFragment();
 		$domNode = $dom->importNode($value, TRUE);
 		$replaceNode->appendChild($domNode);
@@ -261,12 +261,12 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 	 * @param DOMElement $domElement DOM element of the specific HTML tag
 	 * @return void
 	 */
-	public function setAttributes(DOMElement &$domElement) {
+	public function setAttributes(DOMElement $domElement) {
 		$attributes = $this->model->getAttributes();
-		foreach($attributes as $key => $attribute) {
-			if(!empty($attribute)) {
+		foreach ($attributes as $key => $attribute) {
+			if (!empty($attribute)) {
 				$value = htmlspecialchars($attribute->getValue(), ENT_QUOTES);
-				if(!empty($value)) {
+				if (!empty($value)) {
 					$domElement->setAttribute($key, $value);
 				}
 			}
@@ -280,10 +280,10 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 	 * @param string $key Attribute key
 	 * @return void
 	 */
-	public function setAttribute(DOMElement &$domElement, $key) {
+	public function setAttribute(DOMElement $domElement, $key) {
 		$value = htmlspecialchars($this->model->getAttributeValue((string) $key), ENT_QUOTES);
 
-		if(!empty($value)) {
+		if (!empty($value)) {
 			$domElement->setAttribute($key, $value);
 		}
 	}
@@ -297,10 +297,10 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 	 * @param string $other Key of the attribute to take the value from
 	 * @return unknown_type
 	 */
-	public function setAttributeWithValueofOtherAttribute(DOMElement &$domElement, $key, $other) {
+	public function setAttributeWithValueofOtherAttribute(DOMElement $domElement, $key, $other) {
 		$value = htmlspecialchars($this->model->getAttributeValue((string) $other), ENT_QUOTES);
 
-		if(!empty($value)) {
+		if (!empty($value)) {
 			$domElement->setAttribute($key, $value);
 		}
 	}
@@ -330,8 +330,6 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 	}
 
 	public function getInputValue() {
-		$inputValue = '';
-
 		if (method_exists($this->model, 'getData')) {
 			$inputValue = nl2br($this->model->getData(), TRUE);
 		} else {
@@ -363,23 +361,6 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 	 */
 	public function noWrap() {
 		return $this->noWrap;
-	}
-
-	/**
-	 * Gets the last part of the current object's class name.
-	 * e.g. for 'tx_form_View_Confirmation_Additional' it will be 'Additional'
-	 *
-	 * @param boolean $lowercase Whether to convert to lowercase
-	 * @return string
-	 */
-	protected function getLastPartOfClassName($lowercase = FALSE) {
-		$lastPart = preg_replace('/.*_([^_]*)$/', '${1}', get_class($this), 1);
-
-		if ($lowercase) {
-			$lastPart = strtolower($lastPart);
-		}
-
-		return $lastPart;
 	}
 }
 ?>

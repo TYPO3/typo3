@@ -63,23 +63,13 @@ class tx_form_Domain_Model_JSON_Fieldset extends tx_form_Domain_Model_JSON_Conta
 	);
 
 	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Set all the parameters for this object
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see tx_form_Domain_Model_Json_Element::setParameters()
 	 */
-	public function setParameters($parameters) {
+	public function setParameters(array $parameters) {
 		parent::setParameters($parameters);
 		$this->setLegend($parameters);
 	}
@@ -90,7 +80,7 @@ class tx_form_Domain_Model_JSON_Fieldset extends tx_form_Domain_Model_JSON_Conta
 	 * @param array $parameters Configuration array
 	 * @return void
 	 */
-	protected function setLegend($parameters) {
+	protected function setLegend(array $parameters) {
 		if (isset($parameters['legend']) && !isset($parameters['legend.'])) {
 			$this->configuration['legend']['value'] = $parameters['legend'];
 		} elseif (!isset($parameters['legend']) && isset($parameters['legend.'])) {

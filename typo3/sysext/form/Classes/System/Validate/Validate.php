@@ -66,7 +66,7 @@ class tx_form_System_Validate implements t3lib_Singleton {
 	 *
 	 * @param string $class Name of the validation rule
 	 * @param array $arguments Configuration of the rule
-	 * @return object The rule object
+	 * @return tx_form_System_Validate_Abstract The rule object
 	 */
 	public function createRule($class, $arguments = array()) {
 		$class = strtolower((string) $class);
@@ -93,8 +93,8 @@ class tx_form_System_Validate implements t3lib_Singleton {
 			'breakOnError' => (boolean) $breakOnError
 		);
 
-		if($rule->messageMustBeDisplayed()) {
-			if(!isset($this->messages[$fieldName])) {
+		if ($rule->messageMustBeDisplayed()) {
+			if (!isset($this->messages[$fieldName])) {
 				$this->messages[$fieldName] = array();
 			}
 			end($this->rules);
@@ -126,7 +126,7 @@ class tx_form_System_Validate implements t3lib_Singleton {
 				continue;
 			}
 			$result = FALSE;
-			if(!isset($this->errors[$fieldName])) {
+			if (!isset($this->errors[$fieldName])) {
 				$this->errors[$fieldName] = array();
 			}
 			$error = $rule->getError();
@@ -165,7 +165,7 @@ class tx_form_System_Validate implements t3lib_Singleton {
 	 * @return boolean
 	 */
 	public function hasMessage($name) {
-		if(isset($this->messages[$name])) {
+		if (isset($this->messages[$name])) {
 			return TRUE;
 		}
 		return FALSE;
@@ -197,7 +197,7 @@ class tx_form_System_Validate implements t3lib_Singleton {
 	 * @return boolean
 	 */
 	public function hasErrors($name) {
-		if(isset($this->errors[$name])) {
+		if (isset($this->errors[$name])) {
 			return TRUE;
 		}
 		return FALSE;

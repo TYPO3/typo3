@@ -68,14 +68,14 @@ abstract class tx_form_System_Validate_Abstract implements tx_form_System_Valida
 	/**
 	 * Localization handler object
 	 *
-	 * @var tx_form_Localizationhandler
+	 * @var tx_form_System_Localization
 	 */
 	protected $localizationHandler;
 
 	/**
 	 * Request handler object
 	 *
-	 * @var tx_form_Requesthandler
+	 * @var tx_form_System_Request
 	 */
 	protected $requestHandler;
 
@@ -156,7 +156,7 @@ abstract class tx_form_System_Validate_Abstract implements tx_form_System_Valida
 	 * @return void
 	 */
 	public function setMessage($message = '', $type = 'TEXT') {
-		if(empty($message)) {
+		if (empty($message)) {
 			if (!empty($type)) {
 				$message = $type;
 				$type = 'TEXT';
@@ -165,7 +165,7 @@ abstract class tx_form_System_Validate_Abstract implements tx_form_System_Valida
 				$message = $this->getLocalLanguageLabel('message');
 			}
 			$value['value'] = $this->substituteValues($message);
-		} elseif(!is_array($message)) {
+		} elseif (!is_array($message)) {
 			$value['value'] = $this->substituteValues($message);
 		} else {
 			$value = $message;
@@ -184,12 +184,12 @@ abstract class tx_form_System_Validate_Abstract implements tx_form_System_Valida
 	 * When both are filled, it's supposed to be a cObj made by the administrator
 	 * In the last case, no markers will be substituted
 	 *
-	 * @param mixed $message Message as string or TS
+	 * @param mixed $error Message as string or TS
 	 * @param string $type Name of the cObj
 	 * @return void
 	 */
 	public function setError($error = '', $type = 'TEXT') {
-		if(empty($error)) {
+		if (empty($error)) {
 			if (!empty($type)) {
 				$error = $type;
 				$type = 'TEXT';
@@ -198,7 +198,7 @@ abstract class tx_form_System_Validate_Abstract implements tx_form_System_Valida
 				$error = $this->getLocalLanguageLabel('error');
 			}
 			$value['value'] = $this->substituteValues($error);
-		} elseif(!is_array($error)) {
+		} elseif (!is_array($error)) {
 			$value['value'] = $this->substituteValues($error);
 		} else {
 			$value = $error;
@@ -215,7 +215,7 @@ abstract class tx_form_System_Validate_Abstract implements tx_form_System_Valida
 	 * @return object The rule object
 	 */
 	public function setShowMessage($show) {
-		if($show === NULL) {
+		if ($show === NULL) {
 			$this->showMessage = TRUE;
 		} else {
 			$this->showMessage = (boolean) $show;
@@ -248,10 +248,11 @@ abstract class tx_form_System_Validate_Abstract implements tx_form_System_Valida
 	 * Get the local language label(s) for the message
 	 * In some cases this method will be override by rule class
 	 *
+	 * @param string $type The type
 	 * @return string The local language message label
 	 */
 	protected function getLocalLanguageLabel($type) {
-		$label = get_class($this) . '.' . $type;
+		$label = strtolower(get_class($this)) . '.' . $type;
 		$message = $this->localizationHandler->getLocalLanguageLabel($label);
 		return $message;
 	}

@@ -34,9 +34,8 @@ class tx_form_System_Postprocessor {
 	/**
 	 * Constructor
 	 *
-	 * @param $form tx_form_Domain_Model_Form Form domain model
-	 * @param $typoscript array Post processor TypoScript settings
-	 * @return void
+	 * @param tx_form_Domain_Model_Form $form Form domain model
+	 * @param array $typoScript Post processor TypoScript settings
 	 */
 	public function __construct(tx_form_Domain_Model_Form $form, array $typoScript) {
 		$this->form = $form;
@@ -56,14 +55,16 @@ class tx_form_System_Postprocessor {
 
 		if (is_array($this->typoScript)) {
 			$keys = t3lib_TStemplate::sortedKeyList($this->typoScript);
-			foreach ($keys as $key)	{
+			foreach ($keys as $key) {
+				if (!intval($key) || strpos($key, '.') !== FALSE) {
+					continue;
+				}
+
 				$className = 'tx_form_System_Postprocessor_' . ucfirst(strtolower($this->typoScript[$key]));
-				if (intval($key) && !strstr($key, '.')) {
-					if(isset($this->typoScript[$key . '.'])) {
-						$processorArguments = $this->typoScript[$key . '.'];
-					} else {
-						$processorArguments = array();
-					}
+				$processorArguments = array();
+
+				if (isset($this->typoScript[$key . '.'])) {
+					$processorArguments = $this->typoScript[$key . '.'];
 				}
 
 				if (class_exists($className, TRUE)) {

@@ -29,21 +29,9 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_Domain_Model_Attributes_Id extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
-
+class tx_form_Domain_Model_Attributes_Id extends tx_form_Domain_Model_Attributes_Abstract {
 	/**
-	 * Constructor
-	 *
-	 * @param string $value Attribute value
-	 * @param integer $elementId The ID of the element
-	 * @return void
-	 */
-	public function __construct($value, $elementId) {
-		parent::__construct($value, $elementId);
-	}
-
-	/**
-	 * Sets the attribute 'id'.
+	 * Gets the attribute 'id'.
 	 * Used with all elements
 	 * Case Sensitive
 	 *
@@ -55,22 +43,22 @@ class tx_form_Domain_Model_Attributes_Id extends tx_form_Domain_Model_Attributes
 	public function getValue() {
 		$value = (string) $this->value;
 
-		if($this->elementClassName === 'tx_form_Domain_Model_Form') {
-			if(empty($value)) {
+		if ($this->elementClassName === 'tx_form_Domain_Model_Form') {
+			if (empty($value)) {
 				$value = 'form-' . $GLOBALS['TSFE']->id;
 			}
-		} elseif(empty($value)) {
+		} elseif (empty($value)) {
 			$value = $this->elementId;
-			if(is_integer($value)) {
+			if (is_integer($value)) {
 				$value = 'field-' . $value;
 			}
 		}
 
 			// Change spaces into hyphens
-		$attribute = preg_replace('/\s/' , '-', $value);
+		$attribute = preg_replace('/\s/', '-', $value);
 
 			// Change first non-letter to field-
-		if(preg_match('/^([^a-zA-Z]{1})/', $attribute)) {
+		if (preg_match('/^([^a-zA-Z]{1})/', $attribute)) {
 			$attribute = 'field-' . $attribute;
 		}
 			// Remove non-word characters

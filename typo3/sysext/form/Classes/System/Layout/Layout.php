@@ -42,9 +42,8 @@ class tx_form_System_Layout implements t3lib_Singleton {
 	 * Constructor
 	 *
 	 * @param $layout array Layout array from form configuration
-	 * @return void
 	 */
-	public function __construct($layout = array()) {
+	public function __construct(array $layout = array()) {
 		$this->setLayout($layout);
 	}
 
@@ -54,15 +53,15 @@ class tx_form_System_Layout implements t3lib_Singleton {
 	 * otherwise it will look if there is a layout set in the form configuration
 	 * If both values are not assigned, take the default one
 	 *
-	 * @param $elementName string Type of object
-	 * @param $layoutDefault string The default layout of the object
-	 * @param $layoutOverride string Assigned layout to this object
+	 * @param string $elementName Type of object
+	 * @param string $layoutDefault The default layout of the object
+	 * @param string $layoutOverride Assigned layout to this object
 	 * @return string The new layout if changed
 	 */
 	public function getLayoutByObject($elementName, $layoutDefault, $layoutOverride = '') {
-		if(!empty($layoutOverride)) {
+		if (!empty($layoutOverride)) {
 			$layout = $layoutOverride;
-		} elseif(!empty($this->layout[$elementName])) {
+		} elseif (!empty($this->layout[$elementName])) {
 			$layout = $this->layout[$elementName];
 		} else {
 			$layout = $layoutDefault;
@@ -77,8 +76,8 @@ class tx_form_System_Layout implements t3lib_Singleton {
 	 * @param array $layout The layout array
 	 * @return tx_form_System_Layout
 	 */
-	public function setLayout($layout = array()) {
-		if(!empty($layout)) {
+	public function setLayout(array $layout = array()) {
+		if (!empty($layout)) {
 			$this->layout = $layout;
 		}
 

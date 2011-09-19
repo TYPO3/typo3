@@ -29,21 +29,9 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_Domain_Model_Attributes_Enctype extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
-
+class tx_form_Domain_Model_Attributes_Enctype extends tx_form_Domain_Model_Attributes_Abstract {
 	/**
-	 * Constructor
-	 *
-	 * @param string $value Attribute value
-	 * @param integer $elementId The ID of the element
-	 * @return void
-	 */
-	public function __construct($value, $elementId) {
-		parent::__construct($value, $elementId);
-	}
-
-	/**
-	 * Sets the attribute 'enctype'.
+	 * Gets the attribute 'enctype'.
 	 * Used with the element 'form'
 	 * Case Insensitive
 	 *
@@ -57,7 +45,7 @@ class tx_form_Domain_Model_Attributes_Enctype extends tx_form_Domain_Model_Attri
 	 */
 	public function getValue() {
 		$value = strtolower((string) $this->value);
-		if($value == 'multipart/form-data' || $value == 'application/x-www-form-urlencoded') {
+		if ($value == 'multipart/form-data' || $value == 'application/x-www-form-urlencoded') {
 			$attribute = $value;
 		} elseif (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'])) {
 			$attribute = $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'];

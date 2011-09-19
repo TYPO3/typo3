@@ -69,15 +69,5 @@ class tx_form_Domain_Model_Element_Fileupload extends tx_form_Domain_Model_Eleme
 		$uploadData = $this->requestHandler->get($this->name);
 		return $uploadData['originalFilename'];
 	}
-
-	/**
-	 * Constructor
-	 * Sets the configuration, calls parent constructor and fills the attributes
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
 }
 ?>

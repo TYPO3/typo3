@@ -29,25 +29,8 @@
  * @package TYPO3
  * @subpackage form
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @license http://www.gnu.org/copyleft/gpl.html
- * @version $Id$
  */
-class tx_form_View_Wizard_Save {
-	/**
-	 * Is the referenced record available
-	 *
-	 * @var boolean TRUE if available, FALSE if not
-	 */
-	protected $recordIsAvailable = FALSE;
-
-	/**
-	 * Constructs this view
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-	}
-
+class tx_form_View_Wizard_Save extends tx_form_View_Wizard_Abstract {
 	/**
 	 * The main render method
 	 *
@@ -95,16 +78,6 @@ class tx_form_View_Wizard_Save {
 		echo $json;
 
 		exit;
-	}
-
-	/**
-	 * Set the content repository to use in this view
-	 *
-	 * @param tx_form_Domain_Repository_Content $repository
-	 * @return void
-	 */
-	public function setRepository(tx_form_Domain_Repository_Content $repository) {
-		$this->repository = $repository;
 	}
 }
 ?>

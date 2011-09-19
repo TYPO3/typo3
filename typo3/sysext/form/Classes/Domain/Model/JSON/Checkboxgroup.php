@@ -68,15 +68,6 @@ class tx_form_Domain_Model_JSON_Checkboxgroup extends tx_form_Domain_Model_JSON_
 	);
 
 	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Set all the parameters for this object
 	 *
 	 * @param array $parameters Configuration array
@@ -84,7 +75,7 @@ class tx_form_Domain_Model_JSON_Checkboxgroup extends tx_form_Domain_Model_JSON_
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see tx_form_Domain_Model_Json_Fieldset::setParameters()
 	 */
-	public function setParameters($parameters) {
+	public function setParameters(array $parameters) {
 		parent::setParameters($parameters);
 		$this->setOptions($parameters);
 		$this->setVarious($parameters);
@@ -96,13 +87,13 @@ class tx_form_Domain_Model_JSON_Checkboxgroup extends tx_form_Domain_Model_JSON_
 	 * @param array $parameters Configuration array
 	 * @return void
 	 */
-	protected function setOptions($parameters) {
+	protected function setOptions(array $parameters) {
 		if (is_array($parameters)) {
 			$keys = t3lib_TStemplate::sortedKeyList($parameters);
 			foreach ($keys as $key)	{
 				$class = $parameters[$key];
 				if (intval($key) && !strstr($key, '.')) {
-					if(isset($parameters[$key . '.']) && $class === 'CHECKBOX') {
+					if (isset($parameters[$key . '.']) && $class === 'CHECKBOX') {
 						$childElementArguments = $parameters[$key . '.'];
 						if (isset($childElementArguments['checked'])) {
 							$childElementArguments['attributes']['selected'] = 'selected';
@@ -125,7 +116,7 @@ class tx_form_Domain_Model_JSON_Checkboxgroup extends tx_form_Domain_Model_JSON_
 	 * @param array $parameters Configuration array
 	 * @return void
 	 */
-	protected function setVarious($parameters) {
+	protected function setVarious(array $parameters) {
 		if (isset($parameters['name'])) {
 			$this->configuration['various']['name'] = $parameters['name'];
 		}

@@ -29,18 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_Domain_Model_Additional_Label extends tx_form_Domain_Model_Additional_Abstract implements tx_form_Domain_Model_Additional_Interface {
-
-	/**
-	 * Constructor
-	 *
-	 * @param string $value Attribute value
-	 * @return void
-	 */
-	public function __construct($type, $value) {
-		parent::__construct($type, $value);
-	}
-
+class tx_form_Domain_Model_Additional_Label extends tx_form_Domain_Model_Additional_Abstract {
 	/**
 	 * Return the value of the object
 	 *

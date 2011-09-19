@@ -39,14 +39,6 @@ class tx_form_Domain_Model_Additional_Additional {
 	protected $additional = array();
 
 	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-	}
-
-	/**
 	 * Add an additional object to the additional array
 	 *
 	 * @param string $class Name of the additional
@@ -76,7 +68,7 @@ class tx_form_Domain_Model_Additional_Additional {
 	 * Get a specific additional object by using the key
 	 *
 	 * @param string $key Key of the additional
-	 * @return string The additional object
+	 * @return tx_form_Domain_Model_Additional_Abstract The additional object
 	 */
 	public function getAdditionalObjectByKey($key) {
 		return $this->additional[$key];
@@ -90,11 +82,7 @@ class tx_form_Domain_Model_Additional_Additional {
 	 * @return boolean
 	 */
 	public function additionalIsSet($key) {
-		if (isset($this->additional[$key])) {
-			return TRUE;
-		} else {
-			return FALSE;
-		}
+		return isset($this->additional[$key]);
 	}
 
 	/**
@@ -105,7 +93,7 @@ class tx_form_Domain_Model_Additional_Additional {
 	 * @return void
 	 */
 	public function setLayout($key, $layout) {
-		$this->additional[$key]->setLayout($layout);
+		$this->getAdditionalObjectByKey($key)->setLayout($layout);
 	}
 
 	/**
@@ -115,7 +103,7 @@ class tx_form_Domain_Model_Additional_Additional {
 	 * @return string The value of the additional
 	 */
 	public function getValue($key) {
-		return $this->additional[$key]->getValue();
+		return $this->getAdditionalObjectByKey($key)->getValue();
 	}
 }
 ?>

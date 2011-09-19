@@ -33,23 +33,16 @@
  * @subpackage form
  */
 class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
-
 	/**
-	 * Constructor
-	 * Sets the configuration, calls parent constructor, fills the attributes
-	 * and adds all form element objects
-	 *
-	 * @param array $arguments Typoscript configuration
-	 * @return void
+	 * @var tslib_cObj
 	 */
-	public function __construct() {
-	}
+	protected $localContentObject;
 
 	/**
 	 * Build model from Typoscript
 	 *
 	 * @param array $typoscript Typoscript containing all configuration
-	 * @return object The form object containing the child elements
+	 * @return tx_form_Domain_Model_Form The form object containing the child elements
 	 */
 	public function buildModelFromTyposcript(array $typoscript) {
 		$this->setLayoutHandler($typoscript);
@@ -63,17 +56,18 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 	 * Rendering of a "numerical array" of Form objects from TypoScript
 	 * Creates new object for each element found
 	 *
+	 * @param tx_form_Domain_Model_Element_Abstract $parentElement Parent model object
 	 * @param array $arguments Configuration array
 	 * @throws Exception
 	 * @return void
 	 */
-	public function getChildElementsByIntegerKey(&$parentElement, $typoscript) {
+	public function getChildElementsByIntegerKey(tx_form_Domain_Model_Element_Abstract $parentElement, array $typoscript) {
 		if (is_array($typoscript)) {
 			$keys = t3lib_TStemplate::sortedKeyList($typoscript);
 			foreach ($keys as $key)	{
 				$class = $typoscript[$key];
 				if (intval($key) && !strstr($key, '.')) {
-					if(isset($typoscript[$key . '.'])) {
+					if (isset($typoscript[$key . '.'])) {
 						$elementArguments = $typoscript[$key . '.'];
 					} else {
 						$elementArguments = array();
@@ -82,7 +76,7 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 				}
 			}
 		} else {
-			throw new Exception ('Container element with id=' . $this->elementId . ' has no configuration which means no children');
+			throw new Exception ('Container element with id=' . $parentElement->getElementId() . ' has no configuration which means no children');
 		}
 	}
 
@@ -91,19 +85,20 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 	 * This can be a derived Typoscript object by "<",
 	 * a form element, or a regular Typoscript object.
 	 *
-	 * @param object $parentElement The parent for the new element
+	 * @param tx_form_Domain_Model_Element_Abstract $parentElement The parent for the new element
 	 * @param string $class Classname for the element
 	 * @param array $arguments Configuration array
 	 * @return void
 	 */
-	public function setElementType(&$parentElement, $class, array $arguments) {
+	public function setElementType(tx_form_Domain_Model_Element_Abstract $parentElement, $class, array $arguments) {
 		if (substr($class, 0, 1) == '<') {
 			$key = trim(substr($class, 1));
+			/** @var $typoscriptParser t3lib_TSparser */
 			$typoscriptParser = t3lib_div::makeInstance('t3lib_TSparser');
 			$oldArguments = $arguments;
 			list($class, $arguments) = $typoscriptParser->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
 			if (is_array($oldArguments) && count($oldArguments)) {
-				$arguments = $this->joinTSarrays($arguments, $oldArguments);
+				$arguments = $this->getLocalConentObject()->joinTSarrays($arguments, $oldArguments);
 			}
 			$GLOBALS['TT']->incStackPointer();
 			$contentObject['cObj'] = $class;
@@ -126,11 +121,12 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 	/**
 	 * Add child object to this element
 	 *
+	 * @param tx_form_Domain_Model_Element_Abstract $parentElement Parent model object
 	 * @param string $class Type of element
 	 * @param array $arguments Configuration array
 	 * @return object
 	 */
-	public function addElement(&$parentElement, $class, array $arguments = array()) {
+	public function addElement(tx_form_Domain_Model_Element_Abstract $parentElement, $class, array $arguments = array()) {
 		$element = $this->createElement($class, $arguments);
 		$parentElement->addElement($element);
 	}
@@ -141,17 +137,18 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 	 *
 	 * @param string $class Type of element
 	 * @param array $arguments Configuration array
-	 * @return object
+	 * @return tx_form_Domain_Model_Element_Abstract
 	 */
 	public function createElement($class, array $arguments = array()) {
 		$class = strtolower((string) $class);
 
-		if($class === 'form') {
+		if ($class === 'form') {
 			$className = 'tx_form_Domain_Model_' . ucfirst($class);
 		} else {
 			$className = 'tx_form_Domain_Model_Element_' . ucfirst($class);
 		}
 
+		/** @var $object tx_form_Domain_Model_Element_Abstract */
 		$object = t3lib_div::makeInstance($className);
 
 		$this->setAttributes($object, $arguments);
@@ -162,7 +159,7 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 		$object->setValue($arguments['value']);
 		$object->setName($arguments['name']);
 
-		if($class === 'content') {
+		if ($class === 'content') {
 			$object->setData($arguments['cObj'], $arguments['cObj.']);
 		} else {
 			$object->setData($arguments['data']);
@@ -180,22 +177,24 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 	/**
 	 * Set the attributes
 	 *
-	 * @param array $configuration Configuration
+	 * @param tx_form_Domain_Model_Element_Abstract $element Model object
+	 * @param array $arguments Arguments
+	 * @return void
 	 */
-	public function setAttributes(&$element, $arguments) {
-		if($element->hasAllowedAttributes()) {
+	public function setAttributes(tx_form_Domain_Model_Element_Abstract $element, array $arguments) {
+		if ($element->hasAllowedAttributes()) {
 			$attributes = $element->getAllowedAttributes();
 			$mandatoryAttributes = $element->getMandatoryAttributes();
-			foreach($attributes as $attribute => $value) {
-				if(
+			foreach ($attributes as $attribute => $value) {
+				if (
 					isset($arguments[$attribute]) ||
 					isset($arguments[$attribute . '.']) ||
 					in_array($attribute, $mandatoryAttributes) ||
 					!empty($value)
 				) {
-					if(!empty($arguments[$attribute])) {
+					if (!empty($arguments[$attribute])) {
 						$value = $arguments[$attribute];
-					} elseif(!empty($arguments[$attribute . '.'])) {
+					} elseif (!empty($arguments[$attribute . '.'])) {
 						$value = $arguments[$attribute . '.'];
 					}
 
@@ -207,25 +206,27 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 				}
 			}
 		} else {
-			throw new Exception ('The element with id=' . $elementId . ' has no default attributes set');
+			throw new Exception ('The element with id=' . $element->getElementId() . ' has no default attributes set');
 		}
 	}
 
 	/**
 	 * Set the additionals from Element Typoscript configuration
 	 *
+	 * @param tx_form_Domain_Model_Element_Abstract $element Model object
+	 * @param array $arguments Arguments
 	 * @return void
 	 */
-	public function setAdditionals(&$element, $arguments) {
-		if(!empty($arguments)) {
-			if($element->hasAllowedAdditionals()) {
+	public function setAdditionals(tx_form_Domain_Model_Element_Abstract $element, array $arguments) {
+		if (!empty($arguments)) {
+			if ($element->hasAllowedAdditionals()) {
 				$additionals = $element->getAllowedAdditionals();
-				foreach($additionals as $additional) {
-					if(isset($arguments[$additional . '.']) || isset($arguments[$additional])) {
-						if(isset($arguments[$additional]) && isset($arguments[$additional . '.'])) {
+				foreach ($additionals as $additional) {
+					if (isset($arguments[$additional . '.']) || isset($arguments[$additional])) {
+						if (isset($arguments[$additional]) && isset($arguments[$additional . '.'])) {
 							$value = $arguments[$additional . '.'];
 							$type = $arguments[$additional];
-						} elseif(isset($arguments[$additional . '.'])) {
+						} elseif (isset($arguments[$additional . '.'])) {
 							$value = $arguments[$additional . '.'];
 							$type = 'TEXT';
 						} else {
@@ -239,13 +240,13 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 							throw new Exception ('Cannot call user function for additional ' . ucfirst($additional));
 						}
 					}
-					if(isset($arguments['layout.'][$additional]) && $element->additionalIsSet($additional)) {
+					if (isset($arguments['layout.'][$additional]) && $element->additionalIsSet($additional)) {
 						$layout = $arguments['layout.'][$additional];
 						$element->setAdditionalLayout($additional, $layout);
 					}
 				}
 			} else {
-				throw new Exception ('The element with id=' . $elementId . ' has no additionals set');
+				throw new Exception ('The element with id=' . $element->getElementId() . ' has no additionals set');
 			}
 		}
 	}
@@ -253,10 +254,11 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 	/**
 	 * Add the filters according to the settings in the Typoscript array
 	 *
+	 * @param tx_form_Domain_Model_Element_Abstract $element Model object
 	 * @param array $arguments TypoScript
 	 * @return void
 	 */
-	protected function setFilters(&$element, $arguments) {
+	protected function setFilters(tx_form_Domain_Model_Element_Abstract $element, $arguments) {
 		if (is_array($arguments)) {
 			$keys = t3lib_TStemplate::sortedKeyList($arguments);
 			foreach ($keys as $key)	{
@@ -276,9 +278,13 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 	 * @param array $typoscript TypoScript
 	 * @return tx_form_System_Layout The layout handler
 	 */
-	public function setLayoutHandler($typoscript) {
+	public function setLayoutHandler(array $typoscript) {
+		/** @var $layoutHandler tx_form_System_Layout */
 		$layoutHandler = t3lib_div::makeInstance('tx_form_System_Layout'); // singleton
-		$layoutHandler->setLayout($typoscript['layout.']);
+
+		if (isset($typoscript['layout.'])) {
+			$layoutHandler->setLayout($typoscript['layout.']);
+		}
 
 		return $layoutHandler;
 	}
@@ -310,8 +316,9 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 	 * @param array $typoscript TypoScript
 	 * @return tx_form_System_Validate The validation object
 	 */
-	public function setRules($typoscript) {
+	public function setRules(array $typoscript) {
 		$rulesTyposcript = isset($typoscript['rules.']) ? $typoscript['rules.'] : NULL;
+		/** @var $rulesClass tx_form_System_Validate */
 		$rulesClass = t3lib_div::makeInstance('tx_form_System_Validate', $rulesTyposcript); // singleton
 
 		if (is_array($rulesTyposcript)) {
@@ -329,6 +336,18 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 		}
 
 		return $rulesClass;
+	}
+
+	/**
+	 * Gets the local content object.
+	 *
+	 * @return tslib_cObj
+	 */
+	protected function getLocalConentObject() {
+		if (!isset($this->localContentObject)) {
+			$this->localContentObject = t3lib_div::makeInstance('tslib_cObj');
+		}
+		return $this->localContentObject;
 	}
 }
 ?>

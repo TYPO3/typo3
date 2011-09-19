@@ -61,20 +61,12 @@ class tx_form_Domain_Model_JSON_Element {
 	protected $childElementsAllowed = TRUE;
 
 	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-	}
-
-	/**
 	 * Set all the parameters for this object
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
 	 */
-	public function setParameters($parameters) {
+	public function setParameters(array $parameters) {
 		foreach ($this->configuration as $key => $value) {
 			switch ($key) {
 				case 'attributes':
@@ -111,7 +103,7 @@ class tx_form_Domain_Model_JSON_Element {
 	 * @param array $parameters Configuration array
 	 * @return void
 	 */
-	protected function setAttributes($parameters) {
+	protected function setAttributes(array $parameters) {
 		foreach ($this->allowedAttributes as $allowedAttribute) {
 			if (isset($parameters[$allowedAttribute])) {
 				$this->configuration['attributes'][$allowedAttribute] = $parameters[$allowedAttribute];
@@ -127,14 +119,14 @@ class tx_form_Domain_Model_JSON_Element {
 	 * @param array $parameters Configuration array
 	 * @return void
 	 */
-	protected function setFilters($parameters) {
+	protected function setFilters(array $parameters) {
 		if (isset($parameters['filters.']) && is_array($parameters['filters.'])) {
 			$filters = $parameters['filters.'];
 
 			foreach ($filters as $key => $filterName) {
 				if (intval($key) && !strstr($key, '.')) {
 					$filterConfiguration = array();
-					if(isset($filters[$key . '.'])) {
+					if (isset($filters[$key . '.'])) {
 						$filterConfiguration = $filters[$key . '.'];
 					}
 					$this->configuration['filters'][$filterName] = $filterConfiguration;
@@ -151,7 +143,7 @@ class tx_form_Domain_Model_JSON_Element {
 	 * @param array $parameters Configuration array
 	 * @return void
 	 */
-	protected function setLabel($parameters) {
+	protected function setLabel(array $parameters) {
 		if (isset($parameters['label']) && !isset($parameters['label.'])) {
 			$this->configuration['label']['value'] = $parameters['label'];
 		} elseif (!isset($parameters['label']) && isset($parameters['label.'])) {
@@ -165,7 +157,7 @@ class tx_form_Domain_Model_JSON_Element {
 	 * @param array $parameters Configuration array
 	 * @return void
 	 */
-	protected function setLayout($parameters) {
+	protected function setLayout(array $parameters) {
 		if (isset($parameters['layout'])) {
 			if ($this->configuration['layout'] === 'front') {
 				$this->configuration['layout'] = 'back';
@@ -181,7 +173,7 @@ class tx_form_Domain_Model_JSON_Element {
 	 * @param array $parameters Configuration array
 	 * @return void
 	 */
-	protected function setValidation($parameters) {
+	protected function setValidation(array $parameters) {
 		if (isset($parameters['validation']) && is_array($parameters['validation'])) {
 			$this->configuration['validation'] = $parameters['validation'];
 		} else {

@@ -55,14 +55,6 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	protected $validationRulesCounter = 1;
 
 	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-	}
-
-	/**
 	 * Convert JSON to TypoScript
 	 *
 	 * First a TypoScript array is constructed,
@@ -98,10 +90,10 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param boolean $childrenWithParentName Indicates if the children use the parent name
 	 * @return void
 	 */
-	protected function convertToTyposcriptArray($elements, &$parent, $childrenWithParentName = FALSE) {
+	protected function convertToTyposcriptArray(array $elements, array &$parent, $childrenWithParentName = FALSE) {
 		if (is_array($elements)) {
 			$elementCounter = 10;
-			foreach($elements as $element) {
+			foreach ($elements as $element) {
 				if ($element['xtype']) {
 					$this->elementId++;
 					switch($element['xtype']) {
@@ -152,7 +144,7 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param integer $elementCounter The element counter
 	 * @return void
 	 */
-	protected function getContainer($element, &$parent, $elementCounter, $childrenWithParentName = FALSE) {
+	protected function getContainer(array $element, array &$parent, $elementCounter, $childrenWithParentName = FALSE) {
 		if ($element['elementContainer'] && $element['elementContainer']['items']) {
 			$this->convertToTyposcriptArray(
 				$element['elementContainer']['items'],
@@ -174,7 +166,7 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param integer $elementCounter The element counter
 	 * @return void
 	 */
-	protected function getForm($element, &$parent, $elementCounter) {
+	protected function getForm(array $element, array &$parent, $elementCounter) {
 			// TODO: Put at the top of the form
 		if (!empty($this->validationRules)) {
 			$parent[$elementCounter . '.']['rules'] = $this->validationRules;
@@ -193,11 +185,15 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param boolean $childrenWithParentName Indicates if the children use the parent name
 	 * @return void
 	 */
-	protected function getDefaultElementSetup($element, &$parent, $elementCounter, $childrenWithParentName = FALSE) {
-		$parent[$elementCounter] = $this->getContentObjectType($element);
-		$parent[$elementCounter . '.'] = array();
-		if ($element['configuration']) {
-			$this->setConfiguration($element, $parent, $elementCounter, $childrenWithParentName);
+	protected function getDefaultElementSetup(array $element, array &$parent, $elementCounter, $childrenWithParentName = FALSE) {
+		$contentObjectType = $this->getContentObjectType($element);
+
+		if (is_null($contentObjectType) === FALSE) {
+			$parent[$elementCounter] = $contentObjectType;
+			$parent[$elementCounter . '.'] = array();
+			if ($element['configuration']) {
+				$this->setConfiguration($element, $parent, $elementCounter, $childrenWithParentName);
+			}
 		}
 	}
 
@@ -207,7 +203,9 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param array $element The JSON array for this element
 	 * @return string The Content Object Type
 	 */
-	protected function getContentObjectType($element) {
+	protected function getContentObjectType(array $element) {
+		$contentObjectType = NULL;
+
 		$shortXType = str_replace('typo3-form-wizard-elements-', '', $element['xtype']);
 		list($category, $type) = explode('-', $shortXType);
 
@@ -247,7 +245,7 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param boolean $childrenWithParentName Indicates if the children use the parent name
 	 * @return void
 	 */
-	protected function setConfiguration($element, &$parent, $elementCounter, $childrenWithParentName = FALSE) {
+	protected function setConfiguration(array $element, array &$parent, $elementCounter, $childrenWithParentName = FALSE) {
 		foreach ($element['configuration'] as $key => $value) {
 			switch ($key) {
 				case 'attributes':
@@ -297,7 +295,7 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param boolean $childrenWithParentName Indicates if the children use the parent name
 	 * @return void
 	 */
-	protected function setAttributes($attributes, &$parent, $elementCounter, $childrenWithParentName = FALSE) {
+	protected function setAttributes(array $attributes, array &$parent, $elementCounter, $childrenWithParentName = FALSE) {
 		foreach ($attributes as $key => $value) {
 			if ($key === 'name' && $value === '' && !$childrenWithParentName) {
 				$value = $this->elementId;
@@ -318,7 +316,7 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param integer $elementCounter The element counter
 	 * @return void
 	 */
-	protected function setConfirmation($confirmation, &$parent, $elementCounter) {
+	protected function setConfirmation($confirmation, array &$parent, $elementCounter) {
 		$parent[$elementCounter . '.']['confirmation'] = $confirmation;
 	}
 
@@ -330,8 +328,8 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param integer $elementCounter The element counter
 	 * @return void
 	 */
-	protected function setFilters($filters, &$parent, $elementCounter) {
-		if (is_array($filters) && !empty($filters)) {
+	protected function setFilters(array $filters, array &$parent, $elementCounter) {
+		if (!empty($filters)) {
 			$parent[$elementCounter . '.']['filters'] = array();
 			$filterCounter = 1;
 			foreach ($filters as $name => $filterConfiguration) {
@@ -350,7 +348,7 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param integer $elementCounter The element counter
 	 * @return void
 	 */
-	protected function setLabel($label, &$parent, $elementCounter) {
+	protected function setLabel(array $label, array &$parent, $elementCounter) {
 		if ($label['value'] != '') {
 			$parent[$elementCounter . '.']['label.']['value'] = $label['value'];
 		}
@@ -369,7 +367,7 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param integer $elementCounter The element counter
 	 * @return void
 	 */
-	protected function setLayout($element, $value, &$parent, $elementCounter) {
+	protected function setLayout(array $element, $value, array &$parent, $elementCounter) {
 		switch($element['xtype']) {
 			case 'typo3-form-wizard-elements-basic-button':
 			case 'typo3-form-wizard-elements-basic-fileupload':
@@ -410,7 +408,7 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param integer $elementCounter The element counter
 	 * @return void
 	 */
-	protected function setLegend($legend, &$parent, $elementCounter) {
+	protected function setLegend(array $legend, array &$parent, $elementCounter) {
 		if ($legend['value'] != '') {
 			$parent[$elementCounter . '.']['legend.']['value'] = $legend['value'];
 		}
@@ -429,7 +427,7 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param integer $elementCounter The element counter
 	 * @return void
 	 */
-	protected function setOptions($element, $options, &$parent, $elementCounter) {
+	protected function setOptions(array $element, array $options, array &$parent, $elementCounter) {
 		if (is_array($options) && $element['xtype'] === 'typo3-form-wizard-elements-basic-select') {
 			$optionCounter = 10;
 			foreach ($options as $option) {
@@ -451,8 +449,8 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param integer $elementCounter The element counter
 	 * @return void
 	 */
-	protected function setPostProcessor($postProcessors, &$parent, $elementCounter) {
-		if (is_array($postProcessors) && !empty($postProcessors)) {
+	protected function setPostProcessor(array $postProcessors, array &$parent, $elementCounter) {
+		if (!empty($postProcessors)) {
 			$parent[$elementCounter . '.']['postProcessor'] = array();
 			$postProcessorCounter = 1;
 			foreach ($postProcessors as $name => $postProcessorConfiguration) {
@@ -473,7 +471,7 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param integer $elementCounter The element counter
 	 * @return void
 	 */
-	protected function setPrefix($prefix, &$parent, $elementCounter) {
+	protected function setPrefix($prefix, array &$parent, $elementCounter) {
 		$parent[$elementCounter . '.']['prefix'] = $prefix;
 	}
 
@@ -487,27 +485,25 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param array $validationRules The temporary storage array for the rules
 	 * @return void
 	 */
-	protected function setValidationRules($element, $validationRules) {
-		if (is_array($validationRules)) {
-			foreach ($validationRules as $name => $ruleConfiguration) {
-				if (
-					isset($element['configuration']['attributes']['name']) &&
-					$element['configuration']['attributes']['name'] != ''
-				) {
-					$ruleConfiguration['element'] = $element['configuration']['attributes']['name'];
-				} elseif (
-					isset($element['configuration']['various']['name']) &&
-					$element['configuration']['various']['name'] != ''
-				) {
-					$ruleConfiguration['element'] = $element['configuration']['various']['name'];
-				} else {
-					$ruleConfiguration['element'] = $this->elementId;
-				}
-
-				$this->validationRules[$this->validationRulesCounter] = $name;
-				$this->validationRules[$this->validationRulesCounter . '.'] = $ruleConfiguration;
-				$this->validationRulesCounter++;
+	protected function setValidationRules(array $element, array $validationRules) {
+		foreach ($validationRules as $name => $ruleConfiguration) {
+			if (
+				isset($element['configuration']['attributes']['name']) &&
+				$element['configuration']['attributes']['name'] != ''
+			) {
+				$ruleConfiguration['element'] = $element['configuration']['attributes']['name'];
+			} elseif (
+				isset($element['configuration']['various']['name']) &&
+				$element['configuration']['various']['name'] != ''
+			) {
+				$ruleConfiguration['element'] = $element['configuration']['various']['name'];
+			} else {
+				$ruleConfiguration['element'] = $this->elementId;
 			}
+
+			$this->validationRules[$this->validationRulesCounter] = $name;
+			$this->validationRules[$this->validationRulesCounter . '.'] = $ruleConfiguration;
+			$this->validationRulesCounter++;
 		}
 	}
 
@@ -520,7 +516,7 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param integer $elementCounter The element counter
 	 * @return void
 	 */
-	protected function setVarious($element, $various, &$parent, $elementCounter) {
+	protected function setVarious(array $element, array $various, array &$parent, $elementCounter) {
 		foreach ($various as $key => $value) {
 			switch ($key) {
 				case 'headingSize':
@@ -551,14 +547,14 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 	 * @param integer $tabCount The amount of tabs for indentation
 	 * @return string The formatted TypoScript string
 	 */
-	protected function typoscriptArrayToString($typoscriptArray, $addKey = '', $tabCount = -1) {
+	protected function typoscriptArrayToString(array $typoscriptArray, $addKey = '', $tabCount = -1) {
 		$typoscript = '';
 
 		if ($addKey != '') {
 			$typoscript .= str_repeat(chr(9), $tabCount) . str_replace('.', '', $addKey) . ' {' . chr(10);
 		}
 		$tabCount++;
-		foreach($typoscriptArray as $key => $value) {
+		foreach ($typoscriptArray as $key => $value) {
 			if (!is_array($value)) {
 				if (strstr($value, chr(10))) {
 					$typoscript .= str_repeat(chr(9), $tabCount) . $key . ' (' . chr(10);

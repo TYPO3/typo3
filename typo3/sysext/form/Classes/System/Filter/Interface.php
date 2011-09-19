@@ -34,7 +34,7 @@ interface tx_form_System_Filter_Interface {
 	/**
 	 * Return filtered value
 	 *
-	 * @param  mixed $value
+	 * @param mixed $value
 	 * @return mixed
 	 */
 	public function filter($value);

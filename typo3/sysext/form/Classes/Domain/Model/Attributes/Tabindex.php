@@ -29,21 +29,9 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_Domain_Model_Attributes_Tabindex extends tx_form_Domain_Model_Attributes_Abstract implements tx_form_Domain_Model_Attributes_Interface {
-
+class tx_form_Domain_Model_Attributes_Tabindex extends tx_form_Domain_Model_Attributes_Abstract {
 	/**
-	 * Constructor
-	 *
-	 * @param string $value Attribute value
-	 * @param integer $elementId The ID of the element
-	 * @return void
-	 */
-	public function __construct($value, $elementId) {
-		parent::__construct($value, $elementId);
-	}
-
-	/**
-	 * Sets the attribute 'tabindex'.
+	 * Gets the attribute 'tabindex'.
 	 * Used with the elements button, input, select and textarea
 	 * Not subject to case changes
 	 *
@@ -82,7 +70,7 @@ class tx_form_Domain_Model_Attributes_Tabindex extends tx_form_Domain_Model_Attr
 	public function getValue() {
 		$attribute = (integer) $this->value;
 
-		if($attribute < 0 || $attribute > 32767) {
+		if ($attribute < 0 || $attribute > 32767) {
 			$attribute = 0;
 		}
 

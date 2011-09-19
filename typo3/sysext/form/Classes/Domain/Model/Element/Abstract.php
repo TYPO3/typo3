@@ -56,14 +56,14 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	/**
 	 * Attribute object
 	 *
-	 * @var tx_form_Domain_Model_Attributes
+	 * @var tx_form_Domain_Model_Attributes_Attributes
 	 */
 	protected $attributes;
 
 	/**
 	 * Additional object
 	 *
-	 * @var tx_form_Domain_Model_Additional
+	 * @var tx_form_Domain_Model_Additional_Additional
 	 */
 	protected $additional;
 
@@ -107,11 +107,36 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	protected $mandatoryAttributes = array();
 
 	/**
+	 * @var array
+	 */
+	protected $allowedAttributes = array();
+
+	/**
 	 * The content object
 	 *
 	 * @var tslib_cObj
 	 */
 	protected $localCobj;
+
+	/**
+	 * @var tx_form_System_Request
+	 */
+	protected $requestHandler;
+
+	/**
+	 * @var tx_form_System_Elementcounter
+	 */
+	protected $elementCounter;
+
+	/**
+	 * @var tx_form_System_Validate
+	 */
+	protected $validateClass;
+
+	/**
+	 * @var tx_form_System_Filter
+	 */
+	protected $filter;
 
 	/**
 	 * Constructor
@@ -177,7 +202,7 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	/**
 	 * Check to see if this element accepts the parent name instead of its own
 	 *
-	 * @return void
+	 * @return boolean
 	 */
 	public function acceptsParentName() {
 		return $this->acceptsParentName;
@@ -188,10 +213,10 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	 *
 	 * @param string $attribute Name of the attribute
 	 * @param mixed $value Value of the attribute
-	 * @return object
+	 * @return tx_form_Domain_Model_Element_Abstract
 	 */
 	public function setAttribute($attribute, $value) {
-		if(array_key_exists($attribute, $this->allowedAttributes)) {
+		if (array_key_exists($attribute, $this->allowedAttributes)) {
 			$this->attributes->addAttribute($attribute, $value);
 		}
 
@@ -222,10 +247,7 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	 * @return boolean TRUE if there is a list of allowed attributes
 	 */
 	public function hasAllowedAttributes() {
-		if(isset($this->allowedAttributes)) {
-			return TRUE;
-		}
-		return FALSE;
+		return (empty($this->allowedAttributes) === FALSE);
 	}
 
 	/**
@@ -234,10 +256,7 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	 * @return boolean TRUE if there is a list of allowed additionals
 	 */
 	public function hasAllowedAdditionals() {
-		if(isset($this->allowedAdditional)) {
-			return TRUE;
-		}
-		return FALSE;
+		return (empty($this->allowedAdditional) === FALSE);
 	}
 
 	/**
@@ -310,11 +329,10 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	/**
 	 * Load the attributes object
 	 *
-	 * @return tx_form_Domain_Model_Attributes
+	 * @return void
 	 */
 	protected function createAttributes() {
 		$className = 'tx_form_Domain_Model_Attributes_Attributes';
-
 		$this->attributes = t3lib_div::makeInstance($className, $this->elementId);
 	}
 
@@ -372,14 +390,10 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	 * @return void
 	 */
 	public function setMessagesFromValidation() {
-		if($this->validateClass->hasMessage($this->getName())) {
+		if ($this->validateClass->hasMessage($this->getName())) {
 			$messages = $this->validateClass->getMessagesByName($this->getName());
 
-			try {
-				$this->setAdditional('mandatory', 'COA', $messages);
-			} catch (Exception $exception) {
-				throw new Exception ('Cannot call user function for additional ' . ucfirst($additional));
-			}
+			$this->setAdditional('mandatory', 'COA', $messages);
 		}
 	}
 
@@ -389,14 +403,10 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	 * @return void
 	 */
 	public function setErrorsFromValidation() {
-		if($this->validateClass->hasErrors($this->getName())) {
+		if ($this->validateClass->hasErrors($this->getName())) {
 			$errors = $this->validateClass->getErrorsByName($this->getName());
 
-			try {
-				$this->setAdditional('error', 'COA', $errors);
-			} catch (Exception $exception) {
-				throw new Exception ('Cannot call user function for additional ' . ucfirst($additional));
-			}
+			$this->setAdditional('error', 'COA', $errors);
 		}
 	}
 
@@ -405,7 +415,7 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	 *
 	 * @param string $additional Name of the additional
 	 * @param mixed $value Value of the additional
-	 * @return object
+	 * @return tx_form_Domain_Model_Element_Abstract
 	 */
 	public function setAdditional($additional, $type, $value) {
 		$this->additional->addAdditional($additional, $type, $value);
@@ -483,7 +493,7 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	 * Dummy function to check the request handler on input
 	 * and set submitted data right for elements
 	 *
-	 * @return object
+	 * @return tx_form_Domain_Model_Element_Abstract
 	 */
 	public function checkFilterAndSetIncomingDataFromRequest() {
 		return $this;

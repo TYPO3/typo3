@@ -59,14 +59,14 @@ class tx_form_View_Mail_Html_Element_Container extends tx_form_View_Mail_Html_El
 	 * @param DOMDocument $dom DOMDocument
 	 * @return DOMDocumentFragment
 	 */
-	public function getChildElements(DOMDocument &$dom) {
+	public function getChildElements(DOMDocument $dom) {
 		$modelChildren = $this->model->getElements();
 		$documentFragment = NULL;
-		foreach($modelChildren as $key => $modelChild) {
+		foreach ($modelChildren as $key => $modelChild) {
 			$child = $this->createChildElementFromModel($modelChild);
 
 			if ($child) {
-				if($child->noWrap() === TRUE) {
+				if ($child->noWrap() === TRUE) {
 					$childNode = $child->render();
 				} else {
 					$childNode = $child->render('elementWrap');
@@ -92,9 +92,7 @@ class tx_form_View_Mail_Html_Element_Container extends tx_form_View_Mail_Html_El
 	public function createChildElementFromModel($modelChild) {
 		$childElement = NULL;
 
-		$modelChildClass = get_class($modelChild);
-		$class = preg_replace('/.*_([^_]*)$/', '${1}', $modelChildClass, 1);
-
+		$class = tx_form_Common::getInstance()->getLastPartOfClassName($modelChild);
 		$className = 'tx_form_View_Mail_Html_Element_' . ucfirst($class);
 
 		if (class_exists($className)) {
