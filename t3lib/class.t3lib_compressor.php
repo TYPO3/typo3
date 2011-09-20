@@ -327,7 +327,7 @@ class t3lib_Compressor {
 	protected function cssFixRelativeUrlPaths($contents, $oldDir) {
 		$matches = array();
 
-		preg_match_all('/url(\(\s*["\']?([^"\']+)["\']?\s*\))/iU', $contents, $matches);
+		preg_match_all('/url(\(\s*["\']?(?!\/)([^"\']+)["\']?\s*\))/iU', $contents, $matches);
 		foreach ($matches[2] as $matchCount => $match) {
 				// remove '," or white-spaces around
 			$match = preg_replace('/[\"\'\s]/', '', $match);
