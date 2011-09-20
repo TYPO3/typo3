@@ -221,10 +221,11 @@ class tx_em_Settings implements t3lib_Singleton {
 	 * Registered repositories are global (per installation) settings.
 	 *
 	 * @access  public
-	 * @return  array of {@link em_repository em_repository} instances
+	 * @return  array of {@link tx_em_Repository tx_em_Repository} instances
 	 * @see	 registerDefaultRepository(), setRegisteredRepositories()
 	 */
 	public function getRegisteredRepositories() {
+		/** @var $registry t3lib_Registry */
 		$registry = t3lib_div::makeInstance('t3lib_Registry');
 		$regRepos = $registry->get('core', 'em.repositories.registered');
 
@@ -256,20 +257,22 @@ class tx_em_Settings implements t3lib_Singleton {
 	 * Registered repositories are global (per installation) settings.
 	 *
 	 * @access  public
-	 * @param   array  $repositories  array of {@link em_repository em_repository} instances
+	 * @param   array  $repositories  array of {@link tx_em_Repository tx_em_Repository} instances
 	 * @see	 registerDefaultRepository(), setRegisteredRepositories()
-	 * @throws  InvalidArgumentException in case argument contains no instances of {@link em_repository em_repository}
+	 * @throws  InvalidArgumentException in case argument contains no instances of {@link tx_em_Repository tx_em_Repository}
 	 */
 	public function setRegisteredRepositories(array $repositories) {
 		// removing mirror instances
 		foreach ($repositories as $repository) {
-			if ($repository instanceof em_repository) {
+			if ($repository instanceof tx_em_Repository) {
+				/** @var $repository tx_em_Repository */
 				$repository->removeMirrors();
 			} else {
-				throw new InvalidArgumentException(get_class($this) . ': ' . 'No valid instances of em_repository given.');
+				throw new InvalidArgumentException(get_class($this) . ': ' . 'No valid instances of tx_em_Repository given.', 1316504665);
 			}
 		}
 		if (count($repositories)) {
+			/** @var $registry t3lib_Registry */
 			$registry = t3lib_div::makeInstance('t3lib_Registry');
 			$registry->set('core', 'em.repositories.registered', $repositories);
 		}
@@ -281,7 +284,7 @@ class tx_em_Settings implements t3lib_Singleton {
 	 * Selected repository is local (per user) settings.
 	 *
 	 * @access  public
-	 * @return  em_repository  repository instance that is currently selected by a BE user
+	 * @return  tx_em_Repository  repository instance that is currently selected by a BE user
 	 * @see	 setSelectedRepository()
 	 */
 	public function getSelectedRepository() {
@@ -295,10 +298,10 @@ class tx_em_Settings implements t3lib_Singleton {
 	 *
 	 * @todo	STUB, implementation missing
 	 * @access  public
-	 * @param   em_repository  $repository  repository instance that is currently selected by a BE user
+	 * @param   tx_em_Repository  $repository  repository instance that is currently selected by a BE user
 	 * @see	 getSelectedRepository()
 	 */
-	public function setSelectedRepository(em_repository $repository) {
+	public function setSelectedRepository(tx_em_Repository $repository) {
 		// this method would set sth. like "REPOSITORY_TITLE:INT" in a setting field
 		// REPOSITORY_TITLE = example: main
 		// INT = 0 means randomly selected mirror, >0 selects specific mirror

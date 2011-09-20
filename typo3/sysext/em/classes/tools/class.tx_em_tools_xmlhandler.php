@@ -37,7 +37,6 @@
  */
 class tx_em_Tools_XmlHandler {
 
-
 	/**
 	 * Holds the parsed XML from extensions.xml.gz
 	 * @see parseExtensionsXML()

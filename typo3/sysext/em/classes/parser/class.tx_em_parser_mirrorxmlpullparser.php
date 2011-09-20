@@ -51,7 +51,7 @@ class tx_em_Parser_MirrorXmlPullParser extends tx_em_Parser_MirrorXmlAbstractPar
 	/**
 	 * Keeps list of attached observers.
 	 *
-	 * @var  array
+	 * @var  SplObserver[]
 	 */
 	protected $observers = array();
 
@@ -76,7 +76,7 @@ class tx_em_Parser_MirrorXmlPullParser extends tx_em_Parser_MirrorXmlAbstractPar
 	 * @access  public
 	 * @param   string  $file  file resource, typically a stream
 	 * @return  void
-	 * @throws  em_mirrorxml_Exception  in case of XML parser errors
+	 * @throws  tx_em_MirrorXmlException  in case of XML parser errors
 	 */
 	public function parseXML($file) {
 		if (!(is_object($this->objXML) && (get_class($this->objXML) == 'XMLReader'))) {

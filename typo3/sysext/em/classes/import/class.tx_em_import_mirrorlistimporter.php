@@ -79,17 +79,18 @@ class tx_em_Import_MirrorListImporter implements SplObserver {
 	}
 
 	/**
-	 * Method collects mirrors' details and returns instance of em_repository_mirrors
+	 * Method collects mirrors' details and returns instance of tx_em_Repository_Mirrors
 	 * with retrieved details.
 	 *
 	 * @access  public
-	 * @param   string  $localMirrorListFile  bsolute path to (gzipped) local mirror list xml file
-	 * @return  em_repository_mirrors
+	 * @param   string  $localMirrorListFile  absolute path to (gzipped) local mirror list xml file
+	 * @return  tx_em_Repository_Mirrors
 	 */
 	public function getMirrors($localMirrorListFile) {
 		$zlibStream = 'compress.zlib://';
 
 		$this->parser->parseXML($zlibStream . $localMirrorListFile);
+		/** @var $objRepositoryMirrors tx_em_Repository_Mirrors */
 		$objRepositoryMirrors = t3lib_div::makeInstance('tx_em_Repository_Mirrors');
 		$objRepositoryMirrors->setMirrors($this->arrTmpMirrors);
 		$this->arrTmpMirrors = array();

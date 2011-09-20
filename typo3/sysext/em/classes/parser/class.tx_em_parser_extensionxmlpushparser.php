@@ -55,6 +55,13 @@ class tx_em_Parser_ExtensionXmlPushParser extends tx_em_Parser_ExtensionXmlAbstr
 	protected $element = NULL;
 
 	/**
+	 * Keeps list of attached observers.
+	 *
+	 * @var  SplObserver[]
+	 */
+	protected $observers = array();
+
+	/**
 	 * Class constructor.
 	 *
 	 * @return void
