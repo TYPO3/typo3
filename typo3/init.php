@@ -325,7 +325,7 @@ if (intval($TYPO3_CONF_VARS['BE']['lockSSL']) && !(TYPO3_REQUESTTYPE & TYPO3_REQ
 // Checking environment
 // *******************************
 if (isset($_POST['GLOBALS']) || isset($_GET['GLOBALS']))	die('You cannot set the GLOBALS-array from outside the script.');
-if (!get_magic_quotes_gpc())	{
+if (!version_compare(phpversion(), '5.4', '<') || !get_magic_quotes_gpc()) {
 	t3lib_div::addSlashesOnArray($_GET);
 	t3lib_div::addSlashesOnArray($_POST);
 	$HTTP_GET_VARS = $_GET;
