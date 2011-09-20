@@ -149,7 +149,7 @@ abstract class tx_form_View_Form_Element_Abstract {
 							$deleteNode = TRUE;
 							break;
 						case 'content':
-							$replaceNode = $dom->createTextNode($this->getElementData());
+							$replaceNode = $dom->createTextNode($this->getElementData(FALSE));
 							$node->parentNode->insertBefore($replaceNode, $node);
 							$deleteNode = TRUE;
 							break;
@@ -334,10 +334,17 @@ abstract class tx_form_View_Form_Element_Abstract {
 	 * like <option>content</option>
 	 * or <textarea>content</textarea>
 	 *
+	 * @param boolean $encodeSpecialCharacters Whether to encode the data
 	 * @return string
 	 */
-	public function getElementData() {
-		return htmlspecialchars($this->model->getData(), ENT_QUOTES);
+	public function getElementData($encodeSpecialCharacters = TRUE) {
+		$elementData = $this->model->getData();
+
+		if ($encodeSpecialCharacters) {
+			$elementData = htmlspecialchars($elementData, ENT_QUOTES);
+		}
+
+		return $elementData;
 	}
 
 	/**
