@@ -215,17 +215,21 @@ final class t3lib_utility_Mail {
 				// has line exceeded (reached) the maximum width?
 			if (strlen($substr) == $lineWidth) {
 					// find last space-char
-				$count = count(explode(' ', trim(strrev($substr))));
+				$spacePos = strrpos($substr, ' ');
 					// space-char found?
-				if ($count > 1) {
+				if ($spacePos !== FALSE) {
 						// take everything up to last space-char
-					$parts = explode(' ', strrev($substr), 2);
-					$theLine = strrev($parts[1]);
+					$theLine = substr($substr, 0, $spacePos);
 				} else {
 						// search for space-char in remaining text
 						// makes this line longer than $lineWidth!
-					$afterParts = explode(' ', substr($str, $lineWidth + $substrStart), 2);
-					$theLine = $substr . $afterParts[0];
+					$afterStr = substr($str, $lineWidth + $substrStart);
+					$spacePos = strpos($afterStr, ' ');
+					if ($spacePos !== FALSE) {
+						$theLine = $substr . substr($afterStr, 0, $spacePos);
+					} else {
+						$theLine = $substr . $afterStr;
+					}
 				}
 				if (!strlen($theLine)) {
 						// prevent endless loop because of empty line
