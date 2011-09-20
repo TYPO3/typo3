@@ -183,8 +183,12 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	 * @return void
 	 */
 	public function setName($name = '') {
-		if ($name != '') {
-			$this->name = (string) $name;
+		if (is_string($name) === FALSE) {
+			$name = '';
+		}
+
+		if ($name !== '') {
+			$this->name = $name;
 		} else {
 			$this->name = 'id-' . $this->getElementId();
 		}

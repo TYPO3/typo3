@@ -60,18 +60,22 @@ abstract class tx_form_Domain_Model_Attributes_Abstract {
 	 */
 	public function __construct($value, $elementId) {
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
-		$this->value = $value;
+		$this->setValue($value);
 		$this->elementId = (integer) $elementId;
 	}
 
 	/**
 	 * Set the value
 	 *
-	 * @param $value string The value to set
+	 * @param string $valueThe value to set
 	 * @return void
 	 */
 	public function setValue($value) {
-		$this->value = (string) $value;
+		if (is_string($value) === FALSE) {
+			$value = '';
+		}
+
+		$this->value = $value;
 	}
 
 	/**
