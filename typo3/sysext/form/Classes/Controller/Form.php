@@ -116,8 +116,10 @@ class tx_form_Controller_Form {
 					(array) $typoscript
 				);
 			}
-			$newTyposcript['10'] = 'FORM_INT';
-			$newTyposcript['10.'] = $typoscript;
+			$newTyposcript = array(
+				'10' => 'FORM_INT',
+				'10.' => $typoscript,
+			);
 			$content = $contentObject->COBJ_ARRAY($newTyposcript, 'INT');
 		} elseif ($typoscriptObjectName == 'FORM_INT') {
 			$this->initialize($typoscript);

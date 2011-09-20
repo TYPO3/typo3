@@ -101,8 +101,10 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 				$arguments = $this->getLocalConentObject()->joinTSarrays($arguments, $oldArguments);
 			}
 			$GLOBALS['TT']->incStackPointer();
-			$contentObject['cObj'] = $class;
-			$contentObject['cObj.'] = $arguments;
+			$contentObject = array(
+				'cObj' => $class,
+				'cObj.' => $arguments,
+			);
 			$this->addElement($parentElement, 'content', $contentObject);
 			$GLOBALS['TT']->decStackPointer();
 		} elseif (in_array($class, tx_form_Common::getInstance()->getFormObjects())) {
@@ -112,8 +114,10 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 				throw $exception;
 			}
 		} else {
-			$contentObject['cObj'] = $class;
-			$contentObject['cObj.'] = $arguments;
+			$contentObject = array(
+				'cObj' => $class,
+				'cObj.' => $arguments,
+			);
 			$this->addElement($parentElement, 'content', $contentObject);
 		}
 	}
@@ -151,27 +155,40 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 		/** @var $object tx_form_Domain_Model_Element_Abstract */
 		$object = t3lib_div::makeInstance($className);
 
-		$this->setAttributes($object, $arguments);
-		$this->setAdditionals($object, $arguments);
-		$this->setFilters($object, $arguments['filters.']);
-
-		$object->setLayout($arguments['layout']);
-		$object->setValue($arguments['value']);
-		$object->setName($arguments['name']);
-
 		if ($class === 'content') {
 			$object->setData($arguments['cObj'], $arguments['cObj.']);
 		} else {
 			$object->setData($arguments['data']);
+			$this->reconstituteElement($object, $arguments);
 		}
 
-		$object->setMessagesFromValidation();
-		$object->setErrorsFromValidation();
-		$object->checkFilterAndSetIncomingDataFromRequest();
-
-		$this->getChildElementsByIntegerKey($object, $arguments);
-
 		return $object;
+	}
+
+	/**
+	 * Reconstitutes the domain model of the accordant element.
+	 *
+	 * @param tx_form_Domain_Model_Element_Abstract $element
+	 * @param array $arguments Configuration array
+	 * @return void
+	 */
+	protected function reconstituteElement(tx_form_Domain_Model_Element_Abstract $element, array $arguments = array()) {
+		$this->setAttributes($element, $arguments);
+		$this->setAdditionals($element, $arguments);
+
+		if (isset($arguments['filters.'])) {
+			$this->setFilters($element, $arguments['filters.']);
+		}
+
+		$element->setLayout($arguments['layout']);
+		$element->setValue($arguments['value']);
+		$element->setName($arguments['name']);
+
+		$element->setMessagesFromValidation();
+		$element->setErrorsFromValidation();
+		$element->checkFilterAndSetIncomingDataFromRequest();
+
+		$this->getChildElementsByIntegerKey($element, $arguments);
 	}
 
 	/**
@@ -258,16 +275,14 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 	 * @param array $arguments TypoScript
 	 * @return void
 	 */
-	protected function setFilters(tx_form_Domain_Model_Element_Abstract $element, $arguments) {
-		if (is_array($arguments)) {
-			$keys = t3lib_TStemplate::sortedKeyList($arguments);
-			foreach ($keys as $key)	{
-				$class = $arguments[$key];
-				if (intval($key) && !strstr($key, '.')) {
-					$filterArguments = $arguments[$key . '.'];
-					$filter = $element->makeFilter($class, $filterArguments);
-					$element->addFilter($filter);
-				}
+	protected function setFilters(tx_form_Domain_Model_Element_Abstract $element, array $arguments) {
+		$keys = t3lib_TStemplate::sortedKeyList($arguments);
+		foreach ($keys as $key)	{
+			$class = $arguments[$key];
+			if (intval($key) && !strstr($key, '.')) {
+				$filterArguments = $arguments[$key . '.'];
+				$filter = $element->makeFilter($class, $filterArguments);
+				$element->addFilter($filter);
 			}
 		}
 	}
