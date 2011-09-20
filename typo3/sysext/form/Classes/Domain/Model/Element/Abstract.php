@@ -30,6 +30,9 @@
  * @subpackage form
  */
 abstract class tx_form_Domain_Model_Element_Abstract {
+	const ELEMENT_TYPE_FORM = 'FORM';
+	const ELEMENT_TYPE_PLAIN = 'PLAIN';
+	const ELEMENT_TYPE_CONTENT = 'CONTENT';
 
 	/**
 	 * Internal Id of the element
@@ -37,6 +40,11 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	 * @var integer
 	 */
 	protected $elementId;
+
+	/**
+	 * @var string
+	 */
+	protected $elementType = self::ELEMENT_TYPE_FORM;
 
 	/**
 	 * The name of the element
@@ -174,6 +182,15 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	 */
 	public function getElementId() {
 		return $this->elementId;
+	}
+
+	/**
+	 * Gets the element type.
+	 *
+	 * @return string
+	 */
+	public function getElementType() {
+		return $this->elementType;
 	}
 
 	/**

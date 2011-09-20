@@ -110,6 +110,7 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 						case 'typo3-form-wizard-elements-basic-textline':
 						case 'typo3-form-wizard-elements-predefined-email':
 						case 'typo3-form-wizard-elements-content-header':
+						case 'typo3-form-wizard-elements-content-textblock':
 							$this->getDefaultElementSetup($element, $parent, $elementCounter, $childrenWithParentName);
 							break;
 						case 'typo3-form-wizard-elements-basic-fieldset':
@@ -227,8 +228,11 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 				}
 				break;
 			case 'content':
-				$contentObjectType = 'TEXT';
-				break;
+				switch ($type) {
+					case 'header':
+					case 'textblock':
+						$contentObjectType = strtoupper($type);
+				}
 			default:
 		}
 
@@ -520,19 +524,10 @@ class tx_form_Domain_Factory_JsonToTyposcript {
 		foreach ($various as $key => $value) {
 			switch ($key) {
 				case 'headingSize':
-					$parent[$elementCounter . '.']['wrap'] = str_replace(
-						'%headingSize%',
-						$value,
-						'<%headingSize%>|</%headingSize%>'
-					);
-					break;
-				case 'heading':
-					$parent[$elementCounter . '.']['value'] = $value;
-					break;
+				case 'content':
 				case 'name':
-					$parent[$elementCounter . '.']['name'] = $value;
+					$parent[$elementCounter . '.'][$key] = (string) $value;
 					break;
-				default:
 			}
 		}
 	}

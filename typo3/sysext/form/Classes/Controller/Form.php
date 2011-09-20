@@ -91,38 +91,45 @@ class tx_form_Controller_Form {
 	 * It simply calls execute because this function name is not really descriptive
 	 * but is needed by the core of TYPO3
 	 *
-	 * @param string $typoscriptObjectName Name of the object
-	 * @param array $typoscript TS configuration for this cObject
-	 * @param string $typoscriptKey A string label used for the internal debugging tracking.
+	 * @param string $typoScriptObjectName Name of the object
+	 * @param array $typoScript TS configuration for this cObject
+	 * @param string $typoScriptKey A string label used for the internal debugging tracking.
 	 * @param tslib_cObj $contentObject reference
 	 * @return string HTML output
 	 */
 	public function cObjGetSingleExt(
-		$typoscriptObjectName,
-		array $typoscript,
-		$typoscriptKey,
+		$typoScriptObjectName,
+		array $typoScript,
+		$typoScriptKey,
 		tslib_cObj $contentObject
 	) {
 		$content = '';
 
-		if ($typoscriptObjectName === 'FORM') {
+		if ($typoScriptObjectName === 'FORM') {
 			if ($contentObject->data['CType'] === 'mailform') {
 				$bodytext = $contentObject->data['bodytext'];
+
 				/** @var $typoScriptParser t3lib_tsparser */
 				$typoScriptParser = t3lib_div::makeInstance('t3lib_tsparser');
 				$typoScriptParser->parse($bodytext);
-				$typoscript = t3lib_div::array_merge_recursive_overrule(
+				$typoScript = t3lib_div::array_merge_recursive_overrule(
 					(array) $typoScriptParser->setup,
-					(array) $typoscript
+					(array) $typoScript
 				);
+
+				// Disables content elements since TypoScript is handled that could contain insecure settings:
+				$typoScript[tx_form_Domain_Factory_Typoscript::PROPERTY_DisableContentElement] = TRUE;
 			}
-			$newTyposcript = array(
+
+			$newTypoScript = array(
 				'10' => 'FORM_INT',
-				'10.' => $typoscript,
+				'10.' => $typoScript,
 			);
-			$content = $contentObject->COBJ_ARRAY($newTyposcript, 'INT');
-		} elseif ($typoscriptObjectName == 'FORM_INT') {
-			$this->initialize($typoscript);
+
+			$content = $contentObject->COBJ_ARRAY($newTypoScript, 'INT');
+
+		} elseif ($typoScriptObjectName === 'FORM_INT') {
+			$this->initialize($typoScript);
 			$content = $this->execute();
 		}
 

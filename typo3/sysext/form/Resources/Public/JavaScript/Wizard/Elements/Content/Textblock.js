@@ -6,12 +6,12 @@ Ext.namespace('TYPO3.Form.Wizard.Elements.Content');
  * @class TYPO3.Form.Wizard.Elements.Content.Header
  * @extends TYPO3.Form.Wizard.Elements
  */
-TYPO3.Form.Wizard.Elements.Content.Header = Ext.extend(TYPO3.Form.Wizard.Elements, {
+TYPO3.Form.Wizard.Elements.Content.Textblock = Ext.extend(TYPO3.Form.Wizard.Elements, {
 	/**
 	 * @cfg {String} elementClass
 	 * An extra CSS class that will be added to this component's Element
 	 */
-	elementClass: 'header',
+	elementClass: 'textblock',
 
 	/**
 	 * @cfg {Mixed} tpl
@@ -22,7 +22,7 @@ TYPO3.Form.Wizard.Elements.Content.Header = Ext.extend(TYPO3.Form.Wizard.Element
 	tpl: new Ext.XTemplate(
 		'<div class="overflow-hidden">',
 			'<tpl for="various">',
-				'<{headingSize} {[this.getAttributes(parent.attributes)]}>',
+				'<div {[this.getAttributes(parent.attributes)]}>',
 				'{content}',
 				'</{type}>',
 			'</tpl>',
@@ -51,7 +51,7 @@ TYPO3.Form.Wizard.Elements.Content.Header = Ext.extend(TYPO3.Form.Wizard.Element
 		Ext.apply(this, {
 			configuration: {
 				attributes: {
-					class: 'content-header',
+					class: 'content-textblock',
 					dir: '',
 					id: '',
 					lang: '',
@@ -59,13 +59,12 @@ TYPO3.Form.Wizard.Elements.Content.Header = Ext.extend(TYPO3.Form.Wizard.Element
 					title: ''
 				},
 				various: {
-					headingSize: 'h1',
-					content: TYPO3.l10n.localize('elements_header_content')
+					content: TYPO3.l10n.localize('elements_textblock_content')
 				}
 			}
 		});
-		TYPO3.Form.Wizard.Elements.Content.Header.superclass.constructor.apply(this, arguments);
+		TYPO3.Form.Wizard.Elements.Content.Textblock.superclass.constructor.apply(this, arguments);
 	}
 });
 
-Ext.reg('typo3-form-wizard-elements-content-header', TYPO3.Form.Wizard.Elements.Content.Header);
+Ext.reg('typo3-form-wizard-elements-content-textblock', TYPO3.Form.Wizard.Elements.Content.Textblock);

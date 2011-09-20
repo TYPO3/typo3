@@ -26,7 +26,7 @@ prefix = tx_form
 							showButtons = email, radiogroup, checkboxgroup, name
 						}
 						content {
-							showButtons = header
+							showButtons = header, textblock
 						}
 					}
 				}
@@ -267,6 +267,9 @@ prefix = tx_form
 			}
 			email < .textline
 			header {
+				showAccordions = various
+			}
+			textblock {
 				showAccordions = various
 			}
 			name {

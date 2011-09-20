@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008 Patrick Broens (patrick@patrickbroens.nl)
+*  (c) 2011 Oliver Hader <oliver.hader@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,27 +23,17 @@
 ***************************************************************/
 
 /**
- * Content model object
+ * Hidden field model object
  *
- * @author Patrick Broens <patrick@patrickbroens.nl>
+ * @author Oliver Hader <oliver.hader@typo3.org>
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_Domain_Model_Element_Content extends tx_form_Domain_Model_Element_Abstract {
+class tx_form_Domain_Model_Element_AbstractPlain extends tx_form_Domain_Model_Element_Abstract {
 	/**
 	 * @var string
 	 */
-	protected $elementType = self::ELEMENT_TYPE_CONTENT;
-
-	/**
-	 * @var string
-	 */
-	protected $objectName;
-
-	/**
-	 * @var array
-	 */
-	protected $objectConfiguration;
+	protected $elementType = self::ELEMENT_TYPE_PLAIN;
 
 	/**
 	 * Allowed attributes for this object
@@ -54,36 +44,48 @@ class tx_form_Domain_Model_Element_Content extends tx_form_Domain_Model_Element_
 
 	/**
 	 * Mandatory attributes for this object
+	 *
 	 * @var array
 	 */
 	protected $mandatoryAttributes = array();
 
 	/**
-	 * Set the content for the element
+	 * @var array
+	 */
+	protected $properties = array();
+
+	/**
+	 * Sets the properties.
 	 *
-	 * @param string $objectName The name of the object
-	 * @param array $objectConfiguration The configuration of the object
+	 * @param array $properties
 	 * @return void
 	 */
-	public function setData($objectName, array $objectConfiguration) {
-		$this->objectName = $objectName;
-		$this->objectConfiguration = $objectConfiguration;
+	public function setProperties(array $properties) {
+		$this->properties = $properties;
 	}
 
 	/**
-	 * Return the value data of the content object
-	 * Calls tslib_cObj->cObjGetSingle which renders
-	 * configuration into html string
+	 * Gets the data.
 	 *
 	 * @return string
 	 */
 	public function getData() {
-		$data = $this->localCobj->cObjGetSingle(
-			$this->objectName,
-			$this->objectConfiguration
-		);
+		return $this->getContent();
+	}
 
-		return $data;
+	/**
+	 * Gets the content.
+	 *
+	 * @return string
+	 */
+	protected function getContent() {
+		$content = '';
+
+		if (isset($this->properties['content'])) {
+			$content = $this->properties['content'];
+		}
+
+		return $content;
 	}
 }
 ?>

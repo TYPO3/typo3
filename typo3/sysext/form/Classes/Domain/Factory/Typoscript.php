@@ -33,10 +33,17 @@
  * @subpackage form
  */
 class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
+	const PROPERTY_DisableContentElement = 'disableContentElement';
+
 	/**
 	 * @var tslib_cObj
 	 */
 	protected $localContentObject;
+
+	/**
+	 * @var boolean
+	 */
+	protected $disableContentElement = FALSE;
 
 	/**
 	 * Build model from Typoscript
@@ -45,11 +52,25 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 	 * @return tx_form_Domain_Model_Form The form object containing the child elements
 	 */
 	public function buildModelFromTyposcript(array $typoscript) {
+		if (isset($typoscript[self::PROPERTY_DisableContentElement])) {
+			$this->setDisableContentElement($typoscript[self::PROPERTY_DisableContentElement]);
+		}
+
 		$this->setLayoutHandler($typoscript);
 
 		$form = $this->createElement('form', $typoscript);
 
 		return $form;
+	}
+
+	/**
+	 * Disables the content element.
+	 *
+	 * @param boolean $disableContentElement
+	 * @return void
+	 */
+	public function setDisableContentElement($disableContentElement) {
+		$this->disableContentElement = (bool) $disableContentElement;
 	}
 
 	/**
@@ -91,34 +112,33 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function setElementType(tx_form_Domain_Model_Element_Abstract $parentElement, $class, array $arguments) {
-		if (substr($class, 0, 1) == '<') {
-			$key = trim(substr($class, 1));
-			/** @var $typoscriptParser t3lib_TSparser */
-			$typoscriptParser = t3lib_div::makeInstance('t3lib_TSparser');
-			$oldArguments = $arguments;
-			list($class, $arguments) = $typoscriptParser->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
-			if (is_array($oldArguments) && count($oldArguments)) {
-				$arguments = $this->getLocalConentObject()->joinTSarrays($arguments, $oldArguments);
+		if (in_array($class, tx_form_Common::getInstance()->getFormObjects())) {
+			$this->addElement($parentElement, $class, $arguments);
+
+		} elseif ($this->disableContentElement === FALSE) {
+			if (substr($class, 0, 1) == '<') {
+				$key = trim(substr($class, 1));
+				/** @var $typoscriptParser t3lib_TSparser */
+				$typoscriptParser = t3lib_div::makeInstance('t3lib_TSparser');
+				$oldArguments = $arguments;
+				list($class, $arguments) = $typoscriptParser->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
+				if (is_array($oldArguments) && count($oldArguments)) {
+					$arguments = $this->getLocalConentObject()->joinTSarrays($arguments, $oldArguments);
+				}
+				$GLOBALS['TT']->incStackPointer();
+				$contentObject = array(
+					'cObj' => $class,
+					'cObj.' => $arguments,
+				);
+				$this->addElement($parentElement, 'content', $contentObject);
+				$GLOBALS['TT']->decStackPointer();
+			} else {
+				$contentObject = array(
+					'cObj' => $class,
+					'cObj.' => $arguments,
+				);
+				$this->addElement($parentElement, 'content', $contentObject);
 			}
-			$GLOBALS['TT']->incStackPointer();
-			$contentObject = array(
-				'cObj' => $class,
-				'cObj.' => $arguments,
-			);
-			$this->addElement($parentElement, 'content', $contentObject);
-			$GLOBALS['TT']->decStackPointer();
-		} elseif (in_array($class, tx_form_Common::getInstance()->getFormObjects())) {
-			try {
-				$this->addElement($parentElement, $class, $arguments);
-			} catch (Exception $exception) {
-				throw $exception;
-			}
-		} else {
-			$contentObject = array(
-				'cObj' => $class,
-				'cObj.' => $arguments,
-			);
-			$this->addElement($parentElement, 'content', $contentObject);
 		}
 	}
 
@@ -155,11 +175,15 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 		/** @var $object tx_form_Domain_Model_Element_Abstract */
 		$object = t3lib_div::makeInstance($className);
 
-		if ($class === 'content') {
+		if ($object->getElementType() === tx_form_Domain_Model_Element_Abstract::ELEMENT_TYPE_CONTENT) {
 			$object->setData($arguments['cObj'], $arguments['cObj.']);
-		} else {
+		} elseif ($object->getElementType() === tx_form_Domain_Model_Element_Abstract::ELEMENT_TYPE_PLAIN) {
+			$object->setProperties($arguments);
+		} elseif ($object->getElementType() === tx_form_Domain_Model_Element_Abstract::ELEMENT_TYPE_FORM) {
 			$object->setData($arguments['data']);
 			$this->reconstituteElement($object, $arguments);
+		} else {
+			throw new Exception('Element type "' . $object->getElementType() . '" is not supported.');
 		}
 
 		return $object;

@@ -117,9 +117,6 @@ class tx_form_Domain_Factory_TyposcriptToJson {
 				$class = 'NAME';
 			}
 			$this->addElement($parentElement, $class, $arguments);
-		} elseif (strstr($arguments['class'], 'content-header')) {
-			$class = 'HEADER';
-			$this->addElement($parentElement, $class, $arguments);
 		}
 	}
 

@@ -50,6 +50,16 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Content = Ext.extend(TYPO3.Form.Wizard.
 						scope: this
 					});
 					break;
+				case 'textblock':
+					buttons.push({
+						text: TYPO3.l10n.localize('content_textblock'),
+						id: 'content-textblock',
+						clickEvent: 'dblclick',
+						handler: this.onDoubleClick,
+						iconCls: 'formwizard-left-elements-content-textblock',
+						scope: this
+					});
+					break;
 			}
 		}, this);
 
