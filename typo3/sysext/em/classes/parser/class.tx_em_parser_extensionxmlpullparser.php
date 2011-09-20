@@ -45,7 +45,7 @@ class tx_em_Parser_ExtensionXmlPullParser extends tx_em_Parser_ExtensionXmlAbstr
 	/**
 	 * Keeps list of attached observers.
 	 *
-	 * @var  array
+	 * @var  SplObserver[]
 	 */
 	protected $observers = array();
 
@@ -67,7 +67,7 @@ class tx_em_Parser_ExtensionXmlPullParser extends tx_em_Parser_ExtensionXmlAbstr
 	 *
 	 * @param   string  $file: GZIP stream resource
 	 * @return  void
-	 * @throws  em_extensionxml_Exception  in case of XML parser errors
+	 * @throws  tx_em_ExtensionXmlException  in case of XML parser errors
 	 */
 	public function parseXML($file) {
 		if (!(is_object($this->objXML) && (get_class($this->objXML) == 'XMLReader'))) {

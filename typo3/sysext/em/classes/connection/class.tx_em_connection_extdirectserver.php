@@ -60,6 +60,9 @@ class tx_em_Connection_ExtDirectServer {
 	 */
 	static protected $objSettings;
 
+	/**
+	 * @var array
+	 */
 	protected $globalSettings;
 
 	/*********************************************************************/
@@ -84,7 +87,7 @@ class tx_em_Connection_ExtDirectServer {
 	 * Method returns instance of settings class.
 	 *
 	 * @access  protected
-	 * @return  em_settings  instance of settings class
+	 * @return  tx_em_Settings  instance of settings class
 	 */
 	protected function getSettingsObject() {
 		if (!is_object(self::$objSettings) && !(self::$objSettings instanceof tx_em_Settings)) {
@@ -165,7 +168,7 @@ class tx_em_Connection_ExtDirectServer {
 	}
 
 	/**
-	 * Render extensionlist for languages
+	 * Render extension list for languages
 	 *
 	 * @param object $parameters
 	 * @return array
@@ -316,7 +319,6 @@ class tx_em_Connection_ExtDirectServer {
 		$tsStyleConfig->ext_procesInput($parameter, array(), $theConstants, array());
 		$arr = $tsStyleConfig->ext_mergeIncomingWithExisting($arr);
 
-
 		/** @var $install tx_em_Install */
 		$install = t3lib_div::makeInstance('tx_em_Install');
 		$install->setSilentMode(TRUE);
@@ -374,7 +376,7 @@ class tx_em_Connection_ExtDirectServer {
 		$type = $list[$extKey]['type'];
 		$absPath = tx_em_Tools::getExtPath($extKey, $type);
 
-		/** @var $extensionDetails tx_em_Install */
+		/** @var $install tx_em_Install */
 		$install = t3lib_div::makeInstance('tx_em_Install');
 		$install->setSilentMode(TRUE);
 
@@ -396,7 +398,7 @@ class tx_em_Connection_ExtDirectServer {
 	}
 
 	/**
-	 * genereates a file tree
+	 * generates a file tree
 	 *
 	 * @param object $parameter
 	 * @return array
@@ -410,8 +412,6 @@ class tx_em_Connection_ExtDirectServer {
 
 		$dirs = t3lib_div::get_dirs($path);
 		$files = t3lib_div::getFilesInDir($path, '', FALSE, '', '');
-
-
 
 		if (!is_array($dirs) && !is_array($files)) {
 			return array();
@@ -427,7 +427,6 @@ class tx_em_Connection_ExtDirectServer {
 				);
 			}
 		}
-
 
 		foreach ($files as $key => $file) {
 			$fileInfo = $this->getFileInfo($file);
@@ -613,9 +612,10 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return array
 	 */
 	public function makeDiff($original, $content) {
+		/** @var $diff t3lib_diff */
 		$diff = t3lib_div::makeInstance('t3lib_diff');
 		$result = $diff->makeDiffDisplay($original, $content);
-		//debug(array($original, $content, $result));
+
 		return array(
 			'success' => TRUE,
 			'diff' => '<pre>' . $result . '</pre>'
@@ -662,7 +662,7 @@ class tx_em_Connection_ExtDirectServer {
 		/** @var $extensionDetails tx_em_Extensions_Details */
 		$this->extensionDetails = t3lib_div::makeInstance('tx_em_Extensions_Details', $this);
 
-		/** @var $terConnection  tx_em_Connection_Ter*/
+		/** @var $terConnection tx_em_Connection_Ter */
 		$terConnection = t3lib_div::makeInstance('tx_em_Connection_Ter', $this);
 		$terConnection->wsdlURL = $wsdlURL;
 
@@ -699,7 +699,7 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return string
 	 */
 	public function getExtensionDevelopInfo($extKey) {
-		/** @var $extensionList  tx_em_Extensions_List*/
+		/** @var $extensionList tx_em_Extensions_List */
 		$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List', $this);
 		list($list,) = $extensionList->getInstalledExtensions();
 		/** @var $extensionDetails tx_em_Extensions_Details */
@@ -708,16 +708,15 @@ class tx_em_Connection_ExtDirectServer {
 		return $extensionDetails->extInformationarray($extKey, $list[$extKey]);
 	}
 
-
 	/**
-	 * Prints backupdelete
+	 * Prints backup delete
 	 *
 	 * @param string $parameter
 	 * @return string
 	 */
 	public function getExtensionBackupDelete($extKey) {
-		$content='';
-	   /** @var $extensionList  tx_em_Extensions_List*/
+		$content = '';
+		/** @var $extensionList tx_em_Extensions_List */
 		$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List', $this);
 		/** @var $extensionDetails tx_em_Extensions_Details */
 		$extensionDetails = t3lib_div::makeInstance('tx_em_Extensions_Details');
@@ -727,7 +726,6 @@ class tx_em_Connection_ExtDirectServer {
 		$install = t3lib_div::makeInstance('tx_em_Install');
 		/** @var $api tx_em_API */
 		$api = t3lib_div::makeInstance('tx_em_API');
-
 
 		list($list,) = $extensionList->getInstalledExtensions();
 		$uploadArray = $extensionDetails->makeUploadarray($extKey, $list[$extKey]);
@@ -883,7 +881,7 @@ class tx_em_Connection_ExtDirectServer {
 				'data' => array(),
 			);
 		} elseif ($search === '*') {
-
+			// Nothing to do
 		} else {
 			$quotedSearch = $GLOBALS['TYPO3_DB']->escapeStrForLike(
 				$GLOBALS['TYPO3_DB']->quoteStr($search, 'cache_extensions'),
@@ -1015,9 +1013,9 @@ class tx_em_Connection_ExtDirectServer {
 		$objRepository = t3lib_div::makeInstance('tx_em_Repository', $parameter->repository);
 
 		if ($objRepository->getMirrorListUrl()) {
+			/** @var $objRepositoryUtility tx_em_Repository_Utility */
 			$objRepositoryUtility = t3lib_div::makeInstance('tx_em_Repository_Utility', $objRepository);
 			$mirrors = $objRepositoryUtility->getMirrors(TRUE)->getMirrors();
-
 
 			if (count($mirrors)) {
 				$data = array(
@@ -1095,7 +1093,6 @@ class tx_em_Connection_ExtDirectServer {
 		}
 	}
 
-
 	/**
 	 * Delete repository
 	 *
@@ -1116,14 +1113,14 @@ class tx_em_Connection_ExtDirectServer {
 				'uid' => intval($uid)
 			);
 	}
+
 	/**
 	 * Update repository
 	 *
-	 * @param array $parameter
+	 * @param integer $repositoryId
 	 * @return array
 	 */
 	public function repositoryUpdate($repositoryId) {
-
 		if (!intval($repositoryId)) {
 			return array(
 				'success' => FALSE,
@@ -1268,7 +1265,6 @@ class tx_em_Connection_ExtDirectServer {
 			$terConnection = t3lib_div::makeInstance('tx_em_Connection_Ter', $this);
 			/** @var $xmlHandler tx_em_Tools_XmlHandler */
 			$this->xmlHandler = t3lib_div::makeInstance('tx_em_Tools_XmlHandler');
-			$this->xmlHandler->emObj = $this;
 			$mirrorURL = $this->getSettingsObject()->getMirrorURL();
 
 			$infoIcon = '<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-info">&nbsp;</span>';
