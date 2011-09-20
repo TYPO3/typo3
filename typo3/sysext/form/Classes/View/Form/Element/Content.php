@@ -30,7 +30,6 @@
  * @subpackage form
  */
 class tx_form_View_Form_Element_Content extends tx_form_View_Form_Element_Abstract {
-
 	/**
 	 * Default layout of this object
 	 *
@@ -39,15 +38,5 @@ class tx_form_View_Form_Element_Content extends tx_form_View_Form_Element_Abstra
 	protected $layout = '
 		<content />
 	';
-
-	/**
-	 * Constructor
-	 *
-	 * @param tx_form_Domain_Model_Element_Content $model Model for this element
-	 * @return void
-	 */
-	public function __construct(tx_form_Domain_Model_Element_Content $model) {
-		parent::__construct($model);
-	}
 }
 ?>

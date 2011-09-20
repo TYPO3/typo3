@@ -30,7 +30,6 @@
  * @subpackage form
  */
 class tx_form_View_Form_Element_Password extends tx_form_View_Form_Element_Abstract {
-
 	/**
 	 * Default layout of this object
 	 *
@@ -40,15 +39,5 @@ class tx_form_View_Form_Element_Password extends tx_form_View_Form_Element_Abstr
 		<label />
 		<input />
 	';
-
-	/**
-	 * Constructor
-	 *
-	 * @param tx_form_Domain_Model_Element_Password $model Model for this element
-	 * @return void
-	 */
-	public function __construct(tx_form_Domain_Model_Element_Password $model) {
-		parent::__construct($model);
-	}
 }
 ?>

@@ -30,7 +30,6 @@
  * @subpackage form
  */
 class tx_form_View_Form_Element_Optgroup extends tx_form_View_Form_Element_Container {
-
 	/**
 	 * Default layout of this object
 	 *
@@ -49,15 +48,5 @@ class tx_form_View_Form_Element_Optgroup extends tx_form_View_Form_Element_Conta
 	 * @var boolean
 	 */
 	protected $noWrap = TRUE;
-
-	/**
-	 * Constructor
-	 *
-	 * @param tx_form_Domain_Model_Element_Optgroup $model Model for this element
-	 * @return void
-	 */
-	public function __construct(tx_form_Domain_Model_Element_Optgroup $model) {
-		parent::__construct($model);
-	}
 }
 ?>

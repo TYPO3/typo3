@@ -34,9 +34,14 @@ abstract class tx_form_View_Form_Element_Abstract {
 	/**
 	 * The model for the current object
 	 *
-	 * @var object
+	 * @var tx_form_Domain_Model_Element_Abstract
 	 */
 	protected $model;
+
+	/**
+	 * @var string
+	 */
+	protected $expectedModelName;
 
 	/**
 	 * Wrap for elements
@@ -60,11 +65,40 @@ abstract class tx_form_View_Form_Element_Abstract {
 	/**
 	 * Constructor
 	 *
-	 * @param object $model Current elements model
+	 * @param tx_form_Domain_Model_Element_Abstract $model Current elements model
 	 * @return void
 	 */
-	public function __construct($model) {
+	public function __construct(tx_form_Domain_Model_Element_Abstract $model) {
+		if ($this->isValidModel($model) === FALSE) {
+			throw new RuntimeException('Unexpected model "' . get_class($model) . '".');
+		}
+
 		$this->model = $model;
+	}
+
+	/**
+	 * Determines whether the model is expected in this object.
+	 *
+	 * @param tx_form_Domain_Model_Element_Abstract $model
+	 * @return boolean
+	 */
+	protected function isValidModel(tx_form_Domain_Model_Element_Abstract $model) {
+		return is_a($model, $this->getExpectedModelName($model));
+	}
+
+	/**
+	 * Gets the expected model name.
+	 *
+	 * @param tx_form_Domain_Model_Element_Abstract $model
+	 * @return string
+	 */
+	protected function getExpectedModelName(tx_form_Domain_Model_Element_Abstract $model) {
+		if (!isset($this->expectedModelName)) {
+			$specificName = tx_form_Common::getInstance()->getLastPartOfClassName($this);
+			$this->expectedModelName = 'tx_form_Domain_Model_Element_' . $specificName;
+		}
+
+		return $this->expectedModelName;
 	}
 
 	/**
