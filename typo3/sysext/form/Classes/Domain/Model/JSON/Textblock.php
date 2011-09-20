@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2011 Patrick Broens (patrick@patrickbroens.nl)
+*  (c) 2011 Oliver Hader <oliver.hader@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,19 +23,19 @@
 ***************************************************************/
 
 /**
- * JSON header
+ * JSON textblock
  *
- * @author Patrick Broens <patrick@patrickbroens.nl>
+ * @author Oliver Hader <oliver.hader@typo3.org>
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_Domain_Model_JSON_Header extends tx_form_Domain_Model_JSON_Element {
+class tx_form_Domain_Model_JSON_Textblock extends tx_form_Domain_Model_JSON_Element {
 	/**
 	 * The ExtJS xtype of the element
 	 *
 	 * @var string
 	 */
-	public $xtype = 'typo3-form-wizard-elements-content-header';
+	public $xtype = 'typo3-form-wizard-elements-content-textblock';
 
 	/**
 	 * The configuration array for the xtype
@@ -45,7 +45,6 @@ class tx_form_Domain_Model_JSON_Header extends tx_form_Domain_Model_JSON_Element
 	public $configuration = array(
 		'attributes' => array(),
 		'various' => array(
-			'headingSize' => 'h1',
 			'content' => ''
 		)
 	);
@@ -85,11 +84,6 @@ class tx_form_Domain_Model_JSON_Header extends tx_form_Domain_Model_JSON_Element
 	 * @return void
 	 */
 	protected function setVarious(array $parameters) {
-		if (isset($parameters['headingSize'])) {
-			if (preg_match('#^h[1-5]$#', $parameters['headingSize'])) {
-				$this->configuration['various']['headingSize'] = $parameters['headingSize'];
-			}
-		}
 		if (isset($parameters['content'])) {
 			$this->configuration['various']['content'] = $parameters['content'];
 		}

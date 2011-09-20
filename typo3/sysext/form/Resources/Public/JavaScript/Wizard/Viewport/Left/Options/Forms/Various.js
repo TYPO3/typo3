@@ -63,10 +63,10 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Various = Ext.extend(Ext.FormPanel
 						}
 					});
 					break;
-				case 'heading':
+				case 'content':
 					formItems.push({
-						fieldLabel: TYPO3.l10n.localize('various_properties_heading'),
-						name: 'heading',
+						fieldLabel: TYPO3.l10n.localize('various_properties_content'),
+						name: 'content',
 						allowBlank: false,
 						listeners: {
 							'triggerclick': {

@@ -183,6 +183,8 @@ abstract class tx_form_View_Form_Element_Abstract {
 							$deleteNode = TRUE;
 							break;
 						case 'content':
+						case 'header':
+						case 'textblock':
 							$replaceNode = $dom->createTextNode($this->getElementData(FALSE));
 							$node->parentNode->insertBefore($replaceNode, $node);
 							$deleteNode = TRUE;
