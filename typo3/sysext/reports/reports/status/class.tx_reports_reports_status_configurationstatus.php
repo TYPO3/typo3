@@ -110,7 +110,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 		if (t3lib_utility_PhpOptions::isSafeModeEnabled()) {
 			$value    = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:enabled');
 			$severity = tx_reports_reports_status_Status::WARNING;
-			$message  = $GLOBALS['LANG']->sL('status_configuration_PhpSafeModeEnabled');
+			$message  = $GLOBALS['LANG']->getLL('status_configuration_PhpSafeModeEnabled');
 		}
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
