@@ -30,6 +30,10 @@
  * @subpackage form
  */
 class tx_form_View_Form extends tx_form_View_Form_Element_Container {
+	/**
+	 * @var string
+	 */
+	protected $expectedModelName = 'tx_form_Domain_Model_Form';
 
 	/**
 	 * Default layout of this object
@@ -40,15 +44,6 @@ class tx_form_View_Form extends tx_form_View_Form_Element_Container {
 		<form>
 			<containerWrap />
 		</form>';
-
-	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct(tx_form_Domain_Model_Form $model) {
-		parent::__construct($model);
-	}
 
 	/**
 	 * Set the data for the FORM tag

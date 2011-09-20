@@ -30,7 +30,6 @@
  * @subpackage form
  */
 class tx_form_View_Form_Element_Container extends tx_form_View_Form_Element_Abstract {
-
 	/**
 	 * Default layout of the container
 	 *
@@ -41,16 +40,6 @@ class tx_form_View_Form_Element_Container extends tx_form_View_Form_Element_Abst
 			<elements />
 		</ol>
 	';
-
-	/**
-	 * Constructor
-	 *
-	 * @param object $model Model for this element
-	 * @return void
-	 */
-	public function __construct($model) {
-		parent::__construct($model);
-	}
 
 	/**
 	 * Get the child objects

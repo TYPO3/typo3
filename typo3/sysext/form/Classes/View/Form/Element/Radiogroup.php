@@ -30,7 +30,6 @@
  * @subpackage form
  */
 class tx_form_View_Form_Element_Radiogroup extends tx_form_View_Form_Element_Fieldset {
-
 	/**
 	 * Default layout of this object
 	 *
@@ -42,15 +41,5 @@ class tx_form_View_Form_Element_Radiogroup extends tx_form_View_Form_Element_Fie
 			<containerWrap />
 		</fieldset>
 	';
-
-	/**
-	 * Constructor
-	 *
-	 * @param tx_form_Domain_Model_Element_Radiogroup $model Model for this element
-	 * @return void
-	 */
-	public function __construct(tx_form_Domain_Model_Element_Radiogroup $model) {
-		parent::__construct($model);
-	}
 }
 ?>
