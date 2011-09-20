@@ -43,6 +43,19 @@ final class t3lib_utility_PhpOptions {
 	}
 
 	/**
+	 * Check if php magic_quotes_gpc is enabled
+	 *
+	 * @return boolean TRUE if magic_quotes_gpc is enabled, FALSE if disabled
+	 */
+	public static function isMagicQuotesGpcEnabled() {
+		if (version_compare(phpversion(), '5.4', '<')) {
+			return self::getIniValueBoolean('magic_quotes_gpc');
+		} else {
+			return FALSE;
+		}
+	}
+
+	/**
 	 * Check if php sql.safe_mode is enabled
 	 *
 	 * @return boolean TRUE if sql.safe_mode is enabled, FALSE if disabled

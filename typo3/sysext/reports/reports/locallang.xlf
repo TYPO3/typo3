@@ -87,6 +87,10 @@
 				<source>PHP safe_mode</source>
 				<target>PHP safe_mode</target>
 			</trans-unit>
+			<trans-unit id="status_PhpMagicQuotesGpc" approved="yes">
+				<source>PHP magic_quotes_gpc</source>
+				<target>PHP magic_quotes_gpc</target>
+			</trans-unit>
 			<trans-unit id="status_adminUserAccount" approved="yes">
 				<source>Admin User Account</source>
 				<target>Admin User Account</target>
@@ -198,6 +202,10 @@
 			<trans-unit id="status_configuration_PhpSafeModeEnabled" approved="yes">
 				<source>PHP INI setting safe_mode "On" is deprecated since PHP 5.3 and is not supported by TYPO3 anymore.</source>
 				<target>PHP INI setting safe_mode "On" is deprecated since PHP 5.3 and is not supported by TYPO3 anymore.</target>
+			</trans-unit>
+			<trans-unit id="status_configuration_PhpMagicQuotesGpcEnabled" approved="yes">
+				<source>PHP INI setting magic_quotes_gpc "On" is deprecated since PHP 5.3. You are advised to set it to "Off" until it gets completely removed.</source>
+				<target>PHP INI setting magic_quotes_gpc "On" is deprecated since PHP 5.3. You are advised to set it to "Off" until it gets completely removed.</target>
 			</trans-unit>
 			<trans-unit id="status_updateTaskTitle" approved="yes">
 				<source>System Status Update</source>
