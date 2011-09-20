@@ -337,11 +337,11 @@ class tx_em_Repository {
 	 * Repository mirrors object is passed by reference.
 	 *
 	 * @access  public
-	 * @param   tx_em_Repository_Mirrors  &$mirrors  instance of {@link tx_em_Repository_Mirrors repository mirrors} class
+	 * @param   tx_em_Repository_Mirrors  $mirrors  instance of {@link tx_em_Repository_Mirrors repository mirrors} class
 	 * @return  void
 	 * @see	 $mirrors, getMirrors(), hasMirrors(), removeMirrors()
 	 */
-	public function addMirrors(tx_em_Repository_Mirrors &$mirrors) {
+	public function addMirrors(tx_em_Repository_Mirrors $mirrors) {
 		$this->mirrors = $mirrors;
 	}
 
