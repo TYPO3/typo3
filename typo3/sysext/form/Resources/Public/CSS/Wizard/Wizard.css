@@ -217,6 +217,10 @@ div.overflow-hidden {
 	background-image: url("../../Images/edit-heading.png");
 }
 
+.formwizard-left-elements-content-textblock {
+	background-image: url("../../Images/edit-textblock.png");
+}
+
 .x-form-field-wrap .x-form-submit-trigger {
 	background-image: url("../../Images/submit-trigger.gif");
 }

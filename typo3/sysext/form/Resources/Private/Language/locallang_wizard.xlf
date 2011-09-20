@@ -127,6 +127,10 @@
 				<source>Header</source>
 				<target>Header</target>
 			</trans-unit>
+			<trans-unit id="content_textblock" approved="yes">
+				<source>Text block</source>
+				<target>Text block</target>
+			</trans-unit>
 			<trans-unit id="left_elements_predefined" approved="yes">
 				<source>Predefined form elements</source>
 				<target>Predefined form elements</target>
@@ -663,9 +667,9 @@
 				<source>Name</source>
 				<target>Name</target>
 			</trans-unit>
-			<trans-unit id="various_properties_heading" approved="yes">
-				<source>Heading</source>
-				<target>Heading</target>
+			<trans-unit id="various_properties_content" approved="yes">
+				<source>Content</source>
+				<target>Content</target>
 			</trans-unit>
 			<trans-unit id="various_properties_headingsize" approved="yes">
 				<source>Heading size</source>
@@ -795,9 +799,13 @@
 				<source>Full name</source>
 				<target>Full name</target>
 			</trans-unit>
-			<trans-unit id="elements_heading" approved="yes">
-				<source>Edit this heading</source>
-				<target>Edit this heading</target>
+			<trans-unit id="elements_header_content" approved="yes">
+				<source>Edit this header</source>
+				<target>Edit this header</target>
+			</trans-unit>
+			<trans-unit id="elements_textblock_content" approved="yes">
+				<source>Edit this textblock</source>
+				<target>Edit this textblock</target>
 			</trans-unit>
 			<trans-unit id="elements_option_1" approved="yes">
 				<source>Option 1</source>

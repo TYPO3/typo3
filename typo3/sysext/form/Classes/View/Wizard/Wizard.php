@@ -172,6 +172,7 @@ class tx_form_View_Wizard_Wizard extends tx_form_View_Wizard_Abstract {
 			'Elements/Predefined/Name.js',
 			'Elements/Predefined/RadioGroup.js',
 			'Elements/Content/Header.js',
+			'Elements/Content/Textblock.js',
 			'Viewport.js',
 			'Viewport/Left.js',
 			'Viewport/Right.js',
