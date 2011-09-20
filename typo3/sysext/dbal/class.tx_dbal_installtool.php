@@ -73,10 +73,11 @@ class tx_dbal_installtool {
 	 * Hooks into Installer to set required PHP modules.
 	 *
 	 * @param array $modules
-	 * @param tx_install $instObj
+	 * @param tx_install|tx_reports_reports_status_SystemStatus $instObj
 	 * @return array modules
 	 */
-	public function setRequiredPhpModules(array &$modules, tx_install $instObj) {
+	public function setRequiredPhpModules(array &$modules, $instObj) {
+		$modifiedModules = array();
 		foreach ($modules as $key => $module) {
 			if ($module === 'mysql') {
 				$dbModules = array();
