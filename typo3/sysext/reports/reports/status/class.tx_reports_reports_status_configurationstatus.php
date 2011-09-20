@@ -52,9 +52,10 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 	 */
 	public function getStatus() {
 		$statuses = array(
-			'emptyReferenceIndex' => $this->getReferenceIndexStatus(),
-			'deprecationLog'      => $this->getDeprecationLogStatus(),
-			'safeModeEnabled'     => $this->getPhpSafeModeStatus()
+			'emptyReferenceIndex'   => $this->getReferenceIndexStatus(),
+			'deprecationLog'        => $this->getDeprecationLogStatus(),
+			'safeModeEnabled'       => $this->getPhpSafeModeStatus(),
+			'magicQuotesGpcEnabled' => $this->getPhpMagicQuotesGpcStatus(),
 		);
 
 		if ($this->isMemcachedUsed()) {
@@ -113,6 +114,27 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
 			$GLOBALS['LANG']->getLL('status_PhpSafeMode'), $value, $message, $severity
+		);
+	}
+
+	/**
+	 * Checks if PHP magic_quotes_gpc is enabled.
+	 *
+	 * @return	tx_reports_reports_status_Status	A tx_reports_reports_status_Status object representing whether the magic_quote_gpc is enabled or not
+	 */
+	protected function getPhpMagicQuotesGpcStatus() {
+		$value    = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:disabled');
+		$message  = '';
+		$severity = tx_reports_reports_status_Status::OK;
+
+		if (t3lib_utility_PhpOptions::isMagicQuotesGpcEnabled()) {
+			$value    = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:enabled');
+			$severity = tx_reports_reports_status_Status::WARNING;
+			$message  = $GLOBALS['LANG']->getLL('status_configuration_PhpMagicQuotesGpcEnabled');
+		}
+
+		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
+			$GLOBALS['LANG']->getLL('status_PhpMagicQuotesGpc'), $value, $message, $severity
 		);
 	}
 
