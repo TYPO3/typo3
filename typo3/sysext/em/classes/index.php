@@ -74,6 +74,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 	var $states = array(); // Extension States; see init()
 
+	var $typeDescr = array();
+
 	var $detailCols = array(
 		0 => 2,
 		1 => 5,
@@ -123,14 +125,12 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 */
 	public $terConnection;
 
-
 	/**
 	 * XML handling class for the TYPO3 Extension Manager
 	 *
 	 * @var tx_em_Tools_XmlHandler
 	 */
 	public $xmlHandler;
-
 
 	/**
 	 * Class for printing extension lists
@@ -174,8 +174,22 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 */
 	public $settings;
 
+	/**
+	 * @var string
+	 */
+	protected $excludeForPackaging;
 
-	var $JScode; // JavaScript code to be forwared to $this->doc->JScode
+	/**
+	 * @var string
+	 */
+	protected $listRemote_search;
+
+	/**
+	 * @var string
+	 */
+	protected $descrTable;
+
+	var $JScode; // JavaScript code to be forwarded to $this->doc->JScode
 
 	// GPvars:
 	var $CMD = array(); // CMD array
@@ -225,6 +239,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				'<br /><br />' . sprintf($GLOBALS['LANG']->getLL('security_descr'),
 			'<a href="http://typo3.org/teams/security/" target="_blank">', '</a>'
 		);
+		/** @var $flashMessage t3lib_FlashMessage */
 		$flashMessage = t3lib_div::makeInstance(
 			't3lib_FlashMessage',
 			$securityMessage,
@@ -276,7 +291,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 
 		$this->xmlHandler = t3lib_div::makeInstance('tx_em_Tools_XmlHandler');
-		$this->xmlHandler->emObj = $this;
 		$this->xmlHandler->useObsolete = $this->MOD_SETTINGS['display_obsolete'];
 
 
@@ -414,7 +428,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function main() {
+	public function main() {
 
 		$menu = '';
 
@@ -856,7 +870,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	/**
 	 * Generates a link to the next page of extensions
 	 *
-	 * @return	void
+	 * @return string
 	 */
 	function browseLinks() {
 		$content = '';
@@ -897,7 +911,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	/**
 	 * Allows changing of settings
 	 *
-	 * @return	void
+	 * @return string
 	 */
 	function alterSettings() {
 		$content = '';
@@ -988,13 +1002,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		return $content;
 	}
-
-	/**
-	 * Allows to set the translation preferences and check the status
-	 *
-	 * @return	void
-	 */
-
 
 	/*********************************
 	 *
@@ -1095,7 +1102,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 *
 	 * @param	string		Type of data to fetch: (mirrors)
 	 * @param	boolean		If TRUE the method doesn't produce any output
-	 * @return	void
+	 * @return	string
 	 */
 	function fetchMetaData($metaType) {
 		$content = '';
@@ -1135,6 +1142,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				$mirror = $this->getMirrorURL();
 				$extfile = $mirror . 'extensions.xml.gz';
 				$extmd5 = t3lib_div::getUrl($mirror . 'extensions.md5', 0, array(TYPO3_user_agent));
+				$localmd5 = '';
 				if (is_file(PATH_site . 'typo3temp/extensions.xml.gz')) {
 					$localmd5 = md5_file(PATH_site . 'typo3temp/extensions.xml.gz');
 				}
@@ -1149,6 +1157,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 							) .
 							$GLOBALS['LANG']->getLL('translation_problems') . '</p>';
 				} elseif ($extmd5 == $localmd5 && $cacheCount) {
+					/** @var $flashMessage t3lib_FlashMessage */
 					$flashMessage = t3lib_div::makeInstance(
 						't3lib_FlashMessage',
 						$GLOBALS['LANG']->getLL('ext_import_list_unchanged'),
@@ -1368,6 +1377,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					if (!is_uploaded_file($_FILES['upload_ext_file']['tmp_name'])) {
 						t3lib_div::sysLog('Possible file upload attack: ' . $_FILES['upload_ext_file']['tmp_name'], 'Extension Manager', 3);
 
+						/** @var $flashMessage t3lib_FlashMessage */
 						$flashMessage = t3lib_div::makeInstance(
 							't3lib_FlashMessage',
 							$GLOBALS['LANG']->getLL('ext_import_file_not_uploaded'),
@@ -1468,6 +1478,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return	void		Writes content to $this->content
 	 */
 	function showExtDetails($extKey) {
+		$theOutput = '';
+		$dependencyUpdates = '';
 		list($list,) = $this->extensionList->getInstalledExtensions();
 		$absPath = tx_em_Tools::getExtPath($extKey, $list[$extKey]['type']);
 
@@ -1771,6 +1783,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 									$this->kbMax
 								)
 							);
+							$this->content .= $theOutput;
 						}
 					}
 				} else {
@@ -1844,6 +1857,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 						break;
 					case 'upload':
 						$em = t3lib_div::_POST('em');
+						$headline = '';
+						$eC = 0;
 						if ($em['action'] == 'doUpload') {
 							$em['extKey'] = $extKey;
 							$em['extInfo'] = $list[$extKey];
@@ -1865,6 +1880,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 								$eC = 2;
 							}
 							if (!$this->fe_user['username']) {
+								/** @var $flashMessage t3lib_FlashMessage */
 								$flashMessage = t3lib_div::makeInstance(
 									't3lib_FlashMessage',
 									sprintf($GLOBALS['LANG']->getLL('ext_details_no_username'),
@@ -2470,7 +2486,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$content = '<div class="em-repupdate"><strong>Repository:</strong>';
 
 		// print registered repositories
-		/* @var $settings em_settings */
+		/** @var $settings tx_em_Settings */
 		$settings = t3lib_div::makeInstance('tx_em_Settings');
 		$registeredRepos = $settings->getRegisteredRepositories();
 		$content .= '<select>';
@@ -2480,7 +2496,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$content .= '</select>';
 
 		$selectedRepo = $settings->getSelectedRepository();
-		/* @var $repoUtility em_repository_utility */
+		/** @var $repoUtility tx_em_Repository_Utility */
 		$repoUtility = t3lib_div::makeInstance('tx_em_Repository_Utility');
 		$repoUtility->setRepository($selectedRepo);
 
@@ -2556,7 +2572,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	/* Compatibility wrappers */
 
 
-/**
+	/**
 	 * Returns the absolute path where the extension $extKey is installed (based on 'type' (SGL))
 	 *
 	 * @param	string		Extension key
@@ -2579,6 +2595,7 @@ if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLA
 
 
 // Make instance:
+/** @var $SOBE SC_mod_tools_em_index */
 $SOBE = t3lib_div::makeInstance('SC_mod_tools_em_index');
 $SOBE->init();
 foreach ($SOBE->include_once as $INC_FILE) {

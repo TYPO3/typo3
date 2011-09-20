@@ -79,7 +79,7 @@ class tx_em_Parser_MirrorXmlPushParser extends tx_em_Parser_MirrorXmlAbstractPar
 	 *
 	 * @param   string  $file: GZIP stream resource
 	 * @return  void
-	 * @throws  em_mirrorxml_Exception  in case of XML parser errors
+	 * @throws  tx_em_MirrorXmlException  in case of XML parser errors
 	 */
 	public function parseXML($file) {
 

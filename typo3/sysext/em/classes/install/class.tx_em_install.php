@@ -853,7 +853,7 @@ class tx_em_Install {
 							$hookObject = t3lib_div::getUserObj($classData);
 
 							if (!($hookObject instanceof tx_em_Index_CheckDatabaseUpdatesHook)) {
-								throw new UnexpectedValueException('$hookObject must implement interface em_index_checkDatabaseUpdatesHook', 1288418476);
+								throw new UnexpectedValueException('$hookObject must implement interface tx_em_Index_CheckDatabaseUpdatesHook', 1288418476);
 							}
 
 							/* @var $hookObject tx_em_Index_CheckDatabaseUpdatesHook */

@@ -46,7 +46,7 @@ class tx_em_reports_ExtensionStatus  implements tx_reports_StatusProvider {
 	 * Determines the status of extension manager
 	 *
 	 * @return	array	List of statuses
-	 * @see typo3/sysext/reports/interfaces/tx_reports_StatusProvider::getStatus()
+	 * @see tx_reports_StatusProvider::getStatus()
 	 */
 	public function getStatus() {
 		$this->ok = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_ok');

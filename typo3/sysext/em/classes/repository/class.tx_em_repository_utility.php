@@ -75,7 +75,7 @@ class tx_em_Repository_Utility implements t3lib_Singleton {
 	/**
 	 * Keeps instance of repository class.
 	 *
-	 * @var em_repository
+	 * @var tx_em_Repository
 	 */
 	protected $repository = NULL;
 
@@ -84,7 +84,7 @@ class tx_em_Repository_Utility implements t3lib_Singleton {
 	 * Class constructor.
 	 *
 	 * @access  public
-	 * @param   object  &$repository  (optional) instance of {@link em_repository repository} class
+	 * @param   object  &$repository  (optional) instance of {@link tx_em_Repository repository} class
 	 * @return  void
 	 */
 	function __construct(&$repository = NULL) {
@@ -113,7 +113,7 @@ class tx_em_Repository_Utility implements t3lib_Singleton {
 	 * Repository instance is passed by reference.
 	 *
 	 * @access  public
-	 * @param   em_repository  &$repository  instance of {@link em_repository repository} class
+	 * @param   tx_em_Repository  &$repository  instance of {@link tx_em_Repository repository} class
 	 * @return  void
 	 * @see	 $repository
 	 */
@@ -247,7 +247,7 @@ class tx_em_Repository_Utility implements t3lib_Singleton {
 	 *
 	 * @access  public
 	 * @param   boolean  $forcedUpdateFromRemote  if boolean TRUE, mirror configuration will always retrieved from remote server
-	 * @return  em_repository_mirrors  instance of repository mirrors class
+	 * @return  tx_em_Repository_Mirrors  instance of repository mirrors class
 	 */
 	public function getMirrors($forcedUpdateFromRemote = TRUE) {
 		$assignedMirror = $this->repository->getMirrors();
@@ -255,6 +255,7 @@ class tx_em_Repository_Utility implements t3lib_Singleton {
 			if ($forcedUpdateFromRemote || !is_file($this->getLocalMirrorListFile())) {
 				$this->fetchMirrorListFile();
 			}
+			/** @var $objMirrorListImporter tx_em_Import_MirrorListImporter */
 			$objMirrorListImporter = t3lib_div::makeInstance('tx_em_Import_MirrorListImporter');
 			$this->repository->addMirrors($objMirrorListImporter->getMirrors($this->getLocalMirrorListFile()));
 		}
@@ -266,9 +267,9 @@ class tx_em_Repository_Utility implements t3lib_Singleton {
 	 * extension list might be outdated.
 	 *
 	 * @access  public
-	 * @see	 em_repository_utility::PROBLEM_NO_VERSIONS_IN_DATABASE,
-	 *		  em_repository_utility::PROBLEM_EXTENSION_FILE_NOT_EXISTING,
-	 *		  em_repository_utility::PROBLEM_EXTENSION_HASH_CHANGED
+	 * @see	 tx_em_Repository_Utility::PROBLEM_NO_VERSIONS_IN_DATABASE,
+	 *		  tx_em_Repository_Utility::PROBLEM_EXTENSION_FILE_NOT_EXISTING,
+	 *		  tx_em_Repository_Utility::PROBLEM_EXTENSION_HASH_CHANGED
 	 * @return  integer  integer "0" if everything is perfect, otherwise bitmask with occured problems
 	 * @see	 updateExtList()
 	 */

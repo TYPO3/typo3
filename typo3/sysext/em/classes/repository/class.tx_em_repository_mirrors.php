@@ -68,16 +68,6 @@ class tx_em_Repository_Mirrors {
 	protected $isRandomSelection = TRUE;
 
 	/**
-	 * Class constructor.
-	 *
-	 * @access  public
-	 * @return  void
-	 */
-	function __construct() {
-		// empty constructor
-	}
-
-	/**
 	 * Method selects one specific mirror to be used.
 	 *
 	 * @access  public

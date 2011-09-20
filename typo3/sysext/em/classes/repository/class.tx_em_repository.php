@@ -82,7 +82,7 @@ class tx_em_Repository {
 	/**
 	 * Keeps repository mirrors object.
 	 *
-	 * @var  em_repository_mirrors
+	 * @var  tx_em_Repository_Mirrors
 	 */
 	protected $mirrors;
 
@@ -249,12 +249,12 @@ class tx_em_Repository {
 	}
 
 	/**
-	 * Method sets URL of a ressource that contains repository mirrors.
+	 * Method sets URL of a resource that contains repository mirrors.
 	 *
 	 * Parameter is typically a remote gzipped xml file.
 	 *
 	 * @access  public
-	 * @param   string  $url  URL of file that contains repository mirros
+	 * @param   string  $url  URL of file that contains repository mirrors
 	 * @return  void
 	 * @see	 $mirrorListUrl, getMirrorListUrl()
 	 */
@@ -314,7 +314,7 @@ class tx_em_Repository {
 	 * Method returns extension count
 	 *
 	 * @access  public
-	 * @return  int count of readed extensions
+	 * @return  int count of read extensions
 	 */
 	public function getExtensionCount() {
 		return $this->extensionCount;
@@ -324,7 +324,7 @@ class tx_em_Repository {
 	 * Method sets extension count
 	 *
 	 * @access  public
-	 * @param   string  $count count of readed extensions
+	 * @param   string  $count count of read extensions
 	 * @return  void
 	 */
 	public function setExtensionCount($count) {
@@ -337,7 +337,7 @@ class tx_em_Repository {
 	 * Repository mirrors object is passed by reference.
 	 *
 	 * @access  public
-	 * @param   em_repository_mirrors  &$mirrors  instance of {@link em_repository_mirrors repository mirrors} class
+	 * @param   tx_em_Repository_Mirrors  &$mirrors  instance of {@link tx_em_Repository_Mirrors repository mirrors} class
 	 * @return  void
 	 * @see	 $mirrors, getMirrors(), hasMirrors(), removeMirrors()
 	 */
@@ -365,7 +365,7 @@ class tx_em_Repository {
 	 * Method returns a repository mirrors object.
 	 *
 	 * @access  public
-	 * @return  em_repository_mirrors  registered instance of {@link em_repository_mirrors repository mirrors} class or NULL
+	 * @return  tx_em_Repository_Mirrors  registered instance of {@link tx_em_Repository_Mirrors repository mirrors} class or NULL
 	 * @see	 $mirrors, addMirrors(), hasMirrors(), removeMirrors()
 	 */
 	public function getMirrors() {
