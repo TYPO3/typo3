@@ -36,8 +36,8 @@
 				<target>Core Team</target>
 			</trans-unit>
 			<trans-unit id="coredevs_detail" approved="yes">
-				<source>Visit &lt;a href="http://typo3.org/teams/core/members/" target="_blank"&gt;typo3.org/teams/core/members/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The SVN Repository and the ChangeLog can be found &lt;a href="http://forge.typo3.org/projects/show/typo3v4-core/" target="_blank"&gt;here&lt;/a&gt;.</source>
-				<target>Visit &lt;a href="http://typo3.org/teams/core/members/" target="_blank"&gt;typo3.org/teams/core/members/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The SVN Repository and the ChangeLog can be found &lt;a href="http://forge.typo3.org/projects/show/typo3v4-core/" target="_blank"&gt;here&lt;/a&gt;.</target>
+				<source>Visit &lt;a href="http://typo3.org/teams/core/members/" target="_blank"&gt;typo3.org/teams/core/members/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The Git Repository and the ChangeLog can be found &lt;a href="http://forge.typo3.org/projects/show/typo3v4-core/" target="_blank"&gt;here&lt;/a&gt;.</source>
+				<target>Visit &lt;a href="http://typo3.org/teams/core/members/" target="_blank"&gt;typo3.org/teams/core/members/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The Git Repository and the ChangeLog can be found &lt;a href="http://forge.typo3.org/projects/show/typo3v4-core/" target="_blank"&gt;here&lt;/a&gt;.</target>
 			</trans-unit>
 			<trans-unit id="extension_authors" approved="yes">
 				<source>Extension Authors</source>
