@@ -565,7 +565,7 @@ class tx_cms_layout extends recordList {
 				// Separator between language columns (black thin line)
 				$midSep = '
 						<td><img src="clear.gif" width="4" height="1" alt="" /></td>
-						<td bgcolor="black"><img src="clear.gif" width="1" height="1" alt="" /></td>
+						<td bgcolor="#cfcfcf" style="width: 1px"><img src="clear.gif" width="1" height="1" alt="" /></td>
 						<td><img src="clear.gif" width="4" height="1" alt="" /></td>';
 
 				// Traverse languages found on the page and build up the table displaying them side by side:
@@ -600,13 +600,10 @@ class tx_cms_layout extends recordList {
 					$sCont[$lP] = '
 						<td nowrap="nowrap">' . $lPLabel . '</td>';
 				}
+
 				// Add headers:
-				$out .= '
-					<tr class="bgColor5">' . implode($midSep, $cCont) . '
-					</tr>';
-				$out .= '
-					<tr class="bgColor5">' . implode($midSep, $sCont) . '
-					</tr>';
+				$out .= '<tr>' . implode($midSep, $cCont) . '</tr>';
+				$out .= '<tr class="bgColor5">' . implode($midSep, $sCont) . '</tr>';
 
 				// Traverse previously built content for the columns:
 				foreach ($languageColumn as $cKey => $cCont) {
@@ -646,7 +643,7 @@ class tx_cms_layout extends recordList {
 
 				// Finally, wrap it all in a table and add the language selector on top of it:
 				$out = $languageSelector . '
-					<table border="0" cellpadding="0" cellspacing="0" width="480" class="typo3-page-langMode">
+					<table border="0" cellpadding="0" cellspacing="0" width="100%" class="typo3-page-langMode">
 						' . $out . '
 					</table>';
 
