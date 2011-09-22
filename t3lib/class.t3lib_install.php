@@ -79,7 +79,6 @@ class t3lib_install {
 	 *
 	 * Writing to localconf.php
 	 *
-
 	 **************************************/
 
 	/**
@@ -128,13 +127,20 @@ class t3lib_install {
 				} // If stopAtToken and token found, break out of the loop..
 				if (!strcmp(substr($v2, 0, strlen($variable . ' ')), $variable . ' ')) {
 					$mainparts = explode($variable, $v, 2);
+
 						// Should ALWAYS be.
 					if (count($mainparts) == 2) {
-						$subparts = explode('//', $mainparts[1], 2);
 						if ($quoteValue) {
 							$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
 						}
-						$line_array[$k] = $mainparts[0] . $variable . ' = ' . $value . ';	' . ('//' . $comment . str_replace($comment, '', $subparts[1]));
+
+							// When an extension's configuration value contains two subsequent slashes ("//"),
+							// the part after the slashes until rest of the line is placed at the end of
+							// the newly generated comment. This will happen each time localconf.php is written
+						$oldComment = $this->preventExpandingLines($comment, $mainparts[1]);
+
+						$line_array[$k] = $mainparts[0] . $variable . ' = ' . $value . ';	//' . $comment . $oldComment;
+
 						$this->touchedLine = count($line_array) - $k - 1;
 						$found = 1;
 						break;
@@ -146,13 +152,20 @@ class t3lib_install {
 						// localconf.php. The following code was added to make sure that values with
 						// double quotes are updated, too.
 					$mainparts = explode($varDoubleQuotes, $v, 2);
+
 						// Should ALWAYS be.
 					if (count($mainparts) == 2) {
-						$subparts = explode('//', $mainparts[1], 2);
 						if ($quoteValue) {
 							$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
 						}
-						$line_array[$k] = $mainparts[0] . $variable . ' = ' . $value . ';	' . ('//' . $comment . str_replace($comment, '', $subparts[1]));
+
+							// When an extension's configuration value contains two subsequent slashes ("//"),
+							// the part after the slashes until rest of the line is placed at the end of
+							// the newly generated comment. This will happen each time localconf.php is written
+						$oldComment = $this->preventExpandingLines($comment, $mainparts[1]);
+
+						$line_array[$k] = $mainparts[0] . $variable . ' = ' . $value . ';	//' . $comment . $oldComment;
+
 						$this->touchedLine = count($line_array) - $k - 1;
 						$found = 1;
 						break;
@@ -502,5 +515,29 @@ class t3lib_install {
 
 		return $content;
 	}
+
+	/**
+	 * Prevent endlessly expanding of lines with two subsequent slashes ("//") when
+	 * localconf.php is rewritten
+	 *
+	 * @var string $comment The comment text
+	 * @var string $mainPart The part to look for the double slashes
+	 * @return string
+	 */
+	protected function preventExpandingLines($comment, $mainPart) {
+		$oldComment = '';
+		$tokens = @token_get_all('<?php $dummy = ' . $mainPart . "\n ?>");
+		foreach ($tokens as $token) {
+			if (is_array($token) && $token[0] == T_COMMENT) {
+				$oldComment = (substr($token[1], 0, 2) === '//' ? substr($token[1], 2, 999) : $token[1]);
+				$oldComment = str_replace(array($comment, CR, LF, '?>'), '', $oldComment);
+				$oldComment = ' ' . trim($oldcomment);
+				break;
+			}
+		}
+
+		return $oldComment;
+	}
+
 }
 ?>
