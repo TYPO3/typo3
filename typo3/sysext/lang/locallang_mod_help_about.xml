@@ -14,7 +14,7 @@
 			<label index="community_credits">Community Credits</label>
 			<label index="information_detail">Visit &lt;a href=&quot;http://typo3.org/community/&quot; target=&quot;_blank&quot;&gt;typo3.org/community/&lt;/a&gt; if you want to know why TYPO3 rocks.</label>
 			<label index="coredevs">Core Team</label>
-			<label index="coredevs_detail">Visit &lt;a href=&quot;http://typo3.org/teams/core/members/&quot; target=&quot;_blank&quot;&gt;typo3.org/teams/core/members/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The SVN Repository and the ChangeLog can be found &lt;a href=&quot;http://forge.typo3.org/projects/show/typo3v4-core/&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt;.</label>
+			<label index="coredevs_detail">Visit &lt;a href=&quot;http://typo3.org/teams/core/members/&quot; target=&quot;_blank&quot;&gt;typo3.org/teams/core/members/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The Git Repository and the ChangeLog can be found &lt;a href=&quot;http://forge.typo3.org/projects/show/typo3v4-core/&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt;.</label>
 			<label index="extension_authors">Extension Authors</label>
 			<label index="extension_list_info">This is a list of the people who contributed to the extensions you're using in your installation.</label>
 			<label index="extension">Extension</label>
