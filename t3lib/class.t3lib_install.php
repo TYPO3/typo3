@@ -126,11 +126,19 @@ class t3lib_install {
 				if (!strcmp(substr($v2, 0, strlen($variable . ' ')), $variable . ' ')) {
 					$mainparts = explode($variable, $v, 2);
 					if (count($mainparts) == 2) { // should ALWAYS be....
-						$subparts = explode('//', $mainparts[1], 2);
 						if ($quoteValue) {
 							$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
 						}
-						$line_array[$k] = $mainparts[0] . $variable . " = " . $value . ";	" . ('//' . $comment . str_replace($comment, '', $subparts[1]));
+						$oldcomment = '';
+						foreach (@token_get_all('<?php $dummy = ' . $mainparts[1] . "\n ?>") as $token) {
+							if (is_array($token) && $token[0] == T_COMMENT) {
+							$oldcomment = (substr($token[1], 0, 2) === '//' ? substr($token[1], 2, 999) : $token[1]);
+							$oldcomment = str_replace(array($comment, CR, LF, '?>'), '', $oldcomment);
+							$oldcomment = ' ' . trim($oldcomment);
+							break;
+							}
+						}
+						$line_array[$k] = $mainparts[0] . $variable . ' = ' . $value . ';       //' . $comment . $oldcomment;
 						$this->touchedLine = count($line_array) - $k - 1;
 						$found = 1;
 						break;
@@ -143,11 +151,19 @@ class t3lib_install {
 						// double quotes are updated, too.
 					$mainparts = explode($varDoubleQuotes, $v, 2);
 					if (count($mainparts) == 2) { // should ALWAYS be....
-						$subparts = explode('//', $mainparts[1], 2);
 						if ($quoteValue) {
 							$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
 						}
-						$line_array[$k] = $mainparts[0] . $variable . " = " . $value . ";	" . ('//' . $comment . str_replace($comment, '', $subparts[1]));
+						$oldcomment = '';
+						foreach (@token_get_all('<?php $dummy = ' . $mainparts[1] . "\n ?>") as $token) {
+							if (is_array($token) && $token[0] == T_COMMENT) {
+								$oldcomment = (substr($token[1], 0, 2) === '//' ? substr($token[1], 2, 999) : $token[1]);
+								$oldcomment = str_replace(array($comment, CR, LF, '?>'), '', $oldcomment);
+								$oldcomment = ' ' . trim($oldcomment);
+								break;
+							}
+						}
+						$line_array[$k] = $mainparts[0] . $variable . ' = ' . $value . ';	//' . $comment . $oldcomment;
 						$this->touchedLine = count($line_array) - $k - 1;
 						$found = 1;
 						break;
