@@ -529,12 +529,12 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 				$this->writelog(2, 1, 123, 'Target "%s" already exists!', array($theDestFile));
 				return FALSE;
 			}
-			if (!t3lib_div::isFirstPartOfStr($theDestFile . '/', $theFile . '/')) {
+			if (t3lib_div::isFirstPartOfStr($theDestFile . '/', $theFile . '/')) {
 				$this->writelog(2, 1, 122, 'Destination cannot be inside the target! D="%s", T="%s"', array($theDestFile . '/', $theFile . '/'));
 				return FALSE;
 			}
 				// Check if the one folder is inside the other or on the same level... to target/dest is the same?
-			if ($this->checkIfFullAccess($theDest) || $this->is_webPath($theDestFile) == $this->is_webPath($theFile)) { // no copy of folders between spaces
+			if (!$this->checkIfFullAccess($theDest) && $this->is_webPath($theDestFile) !== $this->is_webPath($theFile)) { // no copy of folders between spaces
 				$this->writelog(2, 1, 121, 'You don\'t have full access to the destination directory "%s"!', array($theDest . '/'));
 				return FALSE;
 			}
