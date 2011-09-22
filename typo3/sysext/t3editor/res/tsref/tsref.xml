@@ -1173,6 +1173,24 @@ If found (another domain), then that domain is prepended the link, the external 
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="typolinkEnableLinksAcrossDomains" type="boolean">
+			<description><![CDATA[This option enables to create links across domains using current domain's linking scheme.
+
+If this option is not set, then all cross-domain links will be generated as
+
+"http://domain.tld/index.php?id=12345" (where 12345 is page id). If this option is set and current site uses, for example, simulateStatic, then links will be generated as "http://domain.tld/PageTitle.12345.html" (includes RTE links too). Setting this option requires that domains, where pages are linked, have the same configuration for:
+
+- linking scheme (i.e. all use simulateStatic or RealURL or CoolURI but not any mixture)
+
+- all domains have identical localization settings (config.sys_language_XXX directives)
+
+- all domains have the same set of languages defined
+
+This option implies "config.typolinkCheckRootline=1", which will be activated automatically. Setting value of "config. typolinkCheckRootline" inside TS template will have no effect.
+
+Disclaimer: it must be understood that while link is generated to another domain, it is still generated in the context of current domain. No side effects are known at the time of writing of this documentation but they may exist. If any side effects are found, this documentation will be updated to include them.]]></description>
+			<default><![CDATA[false]]></default>
+		</property>
 		<property name="typolinkLinkAccessRestrictedPages" type="string">
 			<description><![CDATA[integer (page id) / keyword "NONE"
 			If set, typolinks pointing to access restricted pages will still link to the page even though the page cannot be accessed. If the value of this setting is an integer it will be interpreted as a page id to which the link will be directed.
