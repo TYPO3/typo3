@@ -646,7 +646,7 @@ class tx_cms_layout extends recordList {
 
 				// Finally, wrap it all in a table and add the language selector on top of it:
 				$out = $languageSelector . '
-					<table border="0" cellpadding="0" cellspacing="0" width="480" class="typo3-page-langMode">
+					<table border="0" cellpadding="0" cellspacing="0" width="100%" class="typo3-page-langMode">
 						' . $out . '
 					</table>';
 
