@@ -4662,6 +4662,17 @@ final class t3lib_div {
 	}
 
 	/**
+	 * Returns true if the "l18n_cfg" field value is not set to hide
+	 * pages in the default language
+	 *
+	 * @param int $localizationConfiguration
+	 * @return boolean
+	 */
+	public static function hideIfDefaultLanguage($localizationConfiguration) {
+		return ($localizationConfiguration & 1);
+	}
+
+	/**
 	 * Includes a locallang file and returns the $LOCAL_LANG array found inside.
 	 *
 	 * @param	string		Input is a file-reference (see t3lib_div::getFileAbsFileName). That file is expected to be a 'locallang.php' file containing a $LOCAL_LANG array (will be included!) or a 'locallang.xml' file conataining a valid XML TYPO3 language structure.
