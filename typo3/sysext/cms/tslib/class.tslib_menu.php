@@ -1389,24 +1389,54 @@ class tslib_menu {
 	 * Returns TRUE if there is a submenu with items for the page id, $uid
 	 * Used by the item states "IFSUB", "ACTIFSUB" and "CURIFSUB" to check if there is a submenu
 	 *
-	 * @param	integer		Page uid for which to search for a submenu
-	 * @return	boolean		Returns TRUE if there was a submenu with items found
+	 * @param int $uid Page uid for which to search for a submenu
+	 * @return boolean Returns TRUE if there was a submenu with items found
 	 * @access private
 	 */
-	function isSubMenu($uid)	{
-
-			// Looking for a mount-pid for this UID since if that exists we should look for a subpages THERE and not in the input $uid;
+	function isSubMenu($uid) {
+			// Looking for a mount-pid for this UID since if that
+			// exists we should look for a subpages THERE and not in the input $uid;
 		$mount_info = $this->sys_page->getMountPointInfo($uid);
-		if (is_array($mount_info))	{
+		if (is_array($mount_info)) {
 			$uid = $mount_info['mount_pid'];
 		}
 
-		$recs = $this->sys_page->getMenu($uid,'uid,pid,doktype,mount_pid,mount_pid_ol,nav_hide,shortcut,shortcut_mode');
-		foreach($recs as $theRec)	{
-			if (!t3lib_div::inList($this->doktypeExcludeList,$theRec['doktype']) && (!$theRec['nav_hide'] || $this->conf['includeNotInMenu']))	{	// If a menu item seems to be another type than 'Not in menu', then return TRUE (there were items!)
-				return TRUE;
+		$recs = $this->sys_page->getMenu(
+			$uid,
+			'uid,pid,doktype,mount_pid,mount_pid_ol,nav_hide,shortcut,shortcut_mode,l18n_cfg'
+		);
+
+		$hasSubPages = FALSE;
+		foreach ($recs as $theRec) {
+				// no valid subpage if the document type is excluded from the menu
+			if (t3lib_div::inList($this->doktypeExcludeList, $theRec['doktype'])) {
+				continue;
 			}
+
+				// no valid subpage if the page is hidden inside menus and
+				// it wasn't forced to show such entries
+			if ($theRec['nav_hide'] && !$this->conf['includeNotInMenu']) {
+				continue;
+			}
+
+				// no valid subpage if the default language should be shown and the page settings
+				// are excluding the visibility of the default language
+			if (!$GLOBALS['TSFE']->sys_language_uid && t3lib_div::hideIfDefaultLanguage($theRec['l18n_cfg'])) {
+				continue;
+			}
+
+				// no valid subpage if the alternative language should be shown and the page settings
+				// are requiring a valid overlay but it doesn't exists
+			$hideIfNotTranslated = t3lib_div::hideIfNotTranslated($theRec['l18n_cfg']);
+			if ($GLOBALS['TSFE']->sys_language_uid && $hideIfNotTranslated && !$theRec['_PAGES_OVERLAY']) {
+				continue;
+			}
+
+			$hasSubPages = TRUE;
+			break;
 		}
+
+		return $hasSubPages;
 	}
 
 	/**
