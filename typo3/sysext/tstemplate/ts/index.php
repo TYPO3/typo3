@@ -154,7 +154,6 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 				// Build the modulle content
 			$this->content = $this->doc->header($GLOBALS['LANG']->getLL('moduleTitle'));
 			$this->extObjContent();
-			$this->content .= $this->doc->spacer(10);
 
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
@@ -201,7 +200,9 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			$lines = array_merge($lines, $this->renderList($pArray));
 
 			$table = '<table border="0" cellpadding="0" cellspacing="1" id="ts-overview">' . implode('', $lines) . '</table>';
-			$this->content = $this->doc->section($GLOBALS['LANG']->getLL('moduleTitle'), '
+
+			$this->content = $this->doc->header($GLOBALS['LANG']->getLL('moduleTitle'));
+			$this->content .= $this->doc->section('', '
 			<br />
 			' . $GLOBALS['LANG']->getLL('overview') . '
 			<br /><br />' . $table);
@@ -209,8 +210,6 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			// ********************************************
 			// RENDER LIST of pages with templates, END
 			// ********************************************
-
-			$this->content .= $this->doc->spacer(10);
 
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
@@ -350,9 +349,6 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		$tmpl->tt_track = FALSE;	// Do not log time-performance information
 		$tmpl->init();
 
-			// No template
-		$theOutput .= $this->doc->spacer(10);
-
 		$flashMessage = t3lib_div::makeInstance(
 			't3lib_FlashMessage',
 			$GLOBALS['LANG']->getLL('noTemplateDescription') . '<br />' . $GLOBALS['LANG']->getLL('createTemplateToEditConfiguration'),
@@ -380,7 +376,6 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
  			}
 
 				// Extension?
-			$theOutput .= $this->doc->spacer(10);
 			$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('newWebsite') . $staticsText, $GLOBALS['LANG']->getLL('newWebsiteDescription') . '<br /><br />' .
 			$selector .
 			'<input type="Submit" name="newWebsite" value="' . $GLOBALS['LANG']->getLL('newWebsiteAction') . '" />', 0, 1);

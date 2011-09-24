@@ -263,6 +263,10 @@
 				<source>This will analyse the content of the tables and check if there are 'empty' relations between records or if files are missing from their expected position.</source>
 				<target>This will analyse the content of the tables and check if there are 'empty' relations between records or if files are missing from their expected position.</target>
 			</trans-unit>
+			<trans-unit id="no_files_found" approved="yes">
+				<source>No files found.</source>
+				<target>No files found.</target>
+			</trans-unit>
 			<trans-unit id="files_many_ref" approved="yes">
 				<source>Files referenced from more than one record:</source>
 				<target>Files referenced from more than one record:</target>
