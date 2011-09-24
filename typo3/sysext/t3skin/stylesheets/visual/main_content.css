@@ -159,6 +159,10 @@ table.t3-table-info {
 	font-weight: bold;
 }
 
+.section {
+	margin-bottom: 15px;
+}
+
 .nobr {
 	white-space: nowrap;
 }

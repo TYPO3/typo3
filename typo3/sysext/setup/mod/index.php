@@ -372,8 +372,7 @@ class SC_mod_user_setup_index {
 		$this->loadModules->observeWorkspaces = TRUE;
 		$this->loadModules->load($GLOBALS['TBE_MODULES']);
 
-		$this->content .= $this->doc->header($LANG->getLL('UserSettings') . ' - '.$GLOBALS['BE_USER']->user['realName'] .
-			' ['.$GLOBALS['BE_USER']->user['username'] . ']');
+		$this->content .= $this->doc->header($LANG->getLL('UserSettings'));
 
 			// show if setup was saved
 		if ($this->setupIsUpdated && !$this->tempDataIsCleared && !$this->settingsAreResetToDefault) {
@@ -437,7 +436,7 @@ class SC_mod_user_setup_index {
 			// render the menu items
 		$menuItems = $this->renderUserSetup();
 
-		$this->content .= $this->doc->spacer(20) . $this->doc->getDynTabMenu($menuItems, 'user-setup', FALSE, FALSE, 1, FALSE, 1, $this->dividers2tabs);
+		$this->content .= $this->doc->getDynTabMenu($menuItems, 'user-setup', FALSE, FALSE, 0, 1, FALSE, 1, $this->dividers2tabs);
 
 		$formToken = $this->formProtection->generateToken('BE user setup', 'edit');
 

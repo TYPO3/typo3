@@ -44,8 +44,8 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 */
 	function main()	{
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
-		$theOutput = $this->pObj->doc->spacer(5);
-		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('title'), $this->showStats(), 0, 1);
+		$theOutput = $this->pObj->doc->header($GLOBALS['LANG']->getLL('title'));
+		$theOutput .= $this->pObj->doc->section('', $this->showStats(), 0, 1);
 
 		$menu = array();
 		$functionMenu = t3lib_BEfunc::getFuncCheck(

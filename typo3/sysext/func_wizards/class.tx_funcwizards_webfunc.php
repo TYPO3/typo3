@@ -94,7 +94,7 @@ class tx_funcwizards_webfunc extends t3lib_extobjbase {
 
 		$content = '';
 		$content.=$theOutput;
-		$content.=$this->pObj->doc->spacer(5);
+		$content.=$this->pObj->doc->spacer(20);
 		$content.=$this->extObjContent();
 
 		return $content;

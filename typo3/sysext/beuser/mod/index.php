@@ -1123,10 +1123,7 @@ class SC_mod_tools_be_user_index {
 	 * @return	void
 	 */
 	function main()	{
-		$this->content='';
-
-		$this->content.=$this->doc->header($GLOBALS['LANG']->getLL('backendUserAdministration', TRUE));
-		$this->content.=$this->doc->spacer(5);
+		$this->content = $this->doc->header($GLOBALS['LANG']->getLL('backendUserAdministration', TRUE));
 
 		switch($this->MOD_SETTINGS['function'])	{
 			case 'compare':
@@ -1269,7 +1266,7 @@ class SC_mod_tools_be_user_index {
 			$outTable.= '<strong><a href="'.htmlspecialchars($this->MCONF['_']).'">' . $GLOBALS['LANG']->getLL('backToOverview', TRUE) . '</a></strong><br />';
 
 			$outTable.= '<br /><table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
-			$content.= $this->doc->section($GLOBALS['LANG']->getLL('userInfo', TRUE),$outTable,0,1);
+			$content .= $this->doc->section($GLOBALS['LANG']->getLL('userInfo', TRUE), $outTable, FALSE, TRUE);
 		} else {
 			$menu = array(0 => array());
 			$rowCounter = 0;
@@ -1291,8 +1288,7 @@ class SC_mod_tools_be_user_index {
 			}
 			$outCode .= '</tr></table>';
 			$outCode.='<br /><input type="submit" name="ads" value="' . $GLOBALS['LANG']->getLL('update', TRUE) . '">';
-			$content = $this->doc->section($GLOBALS['LANG']->getLL('groupAndCompareUsers', TRUE),$outCode,0,1);
-
+			$content = $this->doc->section($GLOBALS['LANG']->getLL('groupAndCompareUsers', TRUE), $outCode, FALSE, TRUE);
 
 				// Traverse all users
 			$users = t3lib_BEfunc::getUserNames();
@@ -1586,7 +1582,7 @@ class SC_mod_tools_be_user_index {
 			</tr>' . $outTable . '
 		</table>';
 
-		$content.= $this->doc->section($GLOBALS['LANG']->getLL('whoIsOnline', TRUE),$outTable,0,1);
+		$content .= $this->doc->section($GLOBALS['LANG']->getLL('whoIsOnline', TRUE), $outTable, FALSE, TRUE);
 		return $content;
 	}
 
