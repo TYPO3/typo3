@@ -143,7 +143,6 @@ class SC_mod_tools_config_index {
 		$arrayBrowser = t3lib_div::makeInstance('t3lib_arrayBrowser');
 
 		$this->content= $this->doc->header($GLOBALS['LANG']->getLL('configuration', TRUE));
-		$this->content.= $this->doc->spacer(5);
 
 		$this->content .= '<div id="lowlevel-config">
 						<label for="search_field">' . $GLOBALS['LANG']->getLL('enterSearchPhrase', TRUE) . '</label>

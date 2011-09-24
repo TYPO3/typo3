@@ -76,9 +76,9 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 	function main()	{
 		global $BACK_PATH,$LANG,$SOBE;
 
-		if ($this->pObj->id)	{
-			$theOutput = '';
+		$theOutput = $this->pObj->doc->header($GLOBALS['LANG']->getLL('lang_title'));
 
+		if ($this->pObj->id) {
 				// Depth selector:
 			$h_func = t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[depth]',$this->pObj->MOD_SETTINGS['depth'],$this->pObj->MOD_MENU['depth'],'index.php');
 			$h_func.= t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[lang]',$this->pObj->MOD_SETTINGS['lang'],$this->pObj->MOD_MENU['lang'],'index.php');

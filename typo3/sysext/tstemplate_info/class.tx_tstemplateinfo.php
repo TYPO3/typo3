@@ -364,7 +364,6 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				}
 			}
 
-			$theOutput.= $this->pObj->doc->spacer(5);
 			$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('templateInformation'), t3lib_iconWorks::getSpriteIconForRecord('sys_template', $tplRow).'<strong>'.htmlspecialchars($tplRow['title']).'</strong>'.htmlspecialchars(trim($tplRow['sitetitle'])?' - ('.$tplRow['sitetitle'].')':''), 0, 1);
 			if ($manyTemplatesMenu)	{
 				$theOutput.= $this->pObj->doc->section('', $manyTemplatesMenu);
