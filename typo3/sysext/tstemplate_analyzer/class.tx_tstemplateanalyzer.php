@@ -89,7 +89,6 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		// BUGBUG: Should we check if the uset may at all read and write template-records???
 		$existTemplate = $this->initialize_editor($this->pObj->id,$template_uid);		// initialize
 		if ($existTemplate)	{
-			$theOutput.=$this->pObj->doc->divider(5);
 			$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('currentTemplate', TRUE) ,
 				t3lib_iconWorks::getSpriteIconForRecord('sys_template', $GLOBALS['tplRow']) . '<strong>' .
 				$this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']["title"]) . '</strong>' .
