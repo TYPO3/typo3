@@ -314,6 +314,7 @@ class tx_linkvalidator_Processor {
 	 * @return void
 	 */
 	private function analyseTypoLinks(array $resultArray, array &$results, $htmlParser, array $record, $field, $table) {
+		$currentR = array();
 		$linkTags = $htmlParser->splitIntoBlock('link', $resultArray['content']);
 		$idRecord = $record['uid'];
 		for ($i = 1; $i < count($linkTags); $i += 2) {
