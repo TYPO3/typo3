@@ -201,6 +201,9 @@
 			<trans-unit id="files_many_ref" xml:space="preserve">
 				<source>Files referenced from more than one record:</source>
 			</trans-unit>
+			<trans-unit id="no_files_found" xml:space="preserve">
+				<source>No files found.</source>
+			</trans-unit>
 			<trans-unit id="files_no_ref" xml:space="preserve">
 				<source>Files with no references at all (delete them!):</source>
 			</trans-unit>

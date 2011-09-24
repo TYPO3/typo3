@@ -51,6 +51,9 @@
 			<trans-unit id="lang_renderl10n_viewPage" xml:space="preserve">
 				<source>View page</source>
 			</trans-unit>
+			<trans-unit id="lang_title" xml:space="preserve">
+				<source>Localization overview</source>
+			</trans-unit>
 			<trans-unit id="lang_renderl10n_editDefaultLanguagePage" xml:space="preserve">
 				<source>Edit default language page properties</source>
 			</trans-unit>
