@@ -121,20 +121,20 @@ class tx_linkvalidator_Processor {
 	 */
 	public function getLinkStatistics($checkOptions = array(), $considerHidden = FALSE) {
 		$results = array();
-		if(count($checkOptions) > 0) {
+		if (count($checkOptions) > 0) {
 			$checkKeys = array_keys($checkOptions);
-			$checkLinkTypeCondition = ' and link_type in (\'' . implode('\',\'',$checkKeys) . '\')';
+			$checkLinkTypeCondition = ' and link_type in (\'' . implode('\',\'', $checkKeys) . '\')';
 
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_linkvalidator_link',
-				'(record_pid in (' . $this->pidList . ') or ( record_uid IN (' . $this->pidList . ') and table_name like \'pages\')) '
-				. $checkLinkTypeCondition);
+									'(record_pid in (' . $this->pidList . ')'
+									. ' or ( record_uid IN (' . $this->pidList . ') and table_name like \'pages\')) '
+									. $checkLinkTypeCondition);
 
 				// Traverse all configured tables
 			foreach ($this->searchFields as $table => $fields) {
-				if($table == 'pages'){
+				if ($table === 'pages') {
 					$where = 'deleted = 0 AND uid IN (' . $this->pidList . ')';
-				}
-				else{
+				} else {
 					$where = 'deleted = 0 AND pid IN (' . $this->pidList . ')';
 				}
 				if (!$considerHidden) {
@@ -150,10 +150,11 @@ class tx_linkvalidator_Processor {
 					// TODO: only select rows that have content in at least one of the relevant fields (via OR)
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $table, $where);
 					// Get record rows of table
-				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					// Analyse each record
+				while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) !== FALSE) {
+						// Analyse each record
 					$this->analyzeRecord($results, $table, $fields, $row);
 				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 
 			foreach ($this->hookObjectsArr as $key => $hookObj) {
@@ -284,9 +285,8 @@ class tx_linkvalidator_Processor {
 	private function analyseLinks(array $resultArray, array &$results, array $record, $field, $table) {
 		foreach ($resultArray['elements'] as $element) {
 			$r = $element['subst'];
-			$title = '';
 			$type = '';
- 			$idRecord = $record['uid'];
+			$idRecord = $record['uid'];
 			if (!empty($r)) {
 					// Parse string for special TYPO3 <link> tag:
 				foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
@@ -319,29 +319,29 @@ class tx_linkvalidator_Processor {
 		$idRecord = $record['uid'];
 		for ($i = 1; $i < count($linkTags); $i += 2) {
 			$referencedRecordType = '';
-			foreach($resultArray['elements'] as $element) {
-					$type = '';
-					$r = $element['subst'];
+			foreach ($resultArray['elements'] as $element) {
+				$type = '';
+				$r = $element['subst'];
 
-					if (!empty($r['tokenID'])) {
-						if (substr_count($linkTags[$i], $r['tokenID'])) {
-								// Type of referenced record
-							if (strpos($r['recordRef'], 'pages') !== FALSE) {
-								$currentR = $r;
-									// Contains number of the page
-								$referencedRecordType = $r['tokenValue'];
-								$wasPage = TRUE;
-							}
-								// Append number of content element to the page saved in the last loop
-							elseif ((strpos($r['recordRef'], 'tt_content') !== FALSE) && ($wasPage === TRUE)) {
-								$referencedRecordType = $referencedRecordType . '#c' . $r['tokenValue'];
-								$wasPage = FALSE;
-							} else {
-								$currentR = $r;
-							}
-							$title = strip_tags($linkTags[$i]);
+				if (!empty($r['tokenID'])) {
+					if (substr_count($linkTags[$i], $r['tokenID'])) {
+							// Type of referenced record
+						if (strpos($r['recordRef'], 'pages') !== FALSE) {
+							$currentR = $r;
+								// Contains number of the page
+							$referencedRecordType = $r['tokenValue'];
+							$wasPage = TRUE;
+
+							// Append number of content element to the page saved in the last loop
+						} elseif ((strpos($r['recordRef'], 'tt_content') !== FALSE) && (isset($wasPage) && $wasPage === TRUE)) {
+							$referencedRecordType = $referencedRecordType . '#c' . $r['tokenValue'];
+							$wasPage = FALSE;
+						} else {
+							$currentR = $r;
 						}
+						$title = strip_tags($linkTags[$i]);
 					}
+				}
 			}
 			foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
 				$type = $hookObj->fetchType($currentR, $type, $keyArr);
@@ -367,16 +367,18 @@ class tx_linkvalidator_Processor {
 	public function getLinkCounts($curPage) {
 		$markerArray = array();
 		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'count(uid) as nbBrokenLinks,link_type',
-				'tx_linkvalidator_link',
-				'record_pid in (' . $this->pidList . ')',
-				'link_type'
-		))) {
-			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
+			'count(uid) as nbBrokenLinks,link_type',
+			'tx_linkvalidator_link',
+			'record_pid in (' . $this->pidList . ')',
+			'link_type'
+		))
+		) {
+			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) !== FALSE) {
 				$markerArray[$row['link_type']] = $row['nbBrokenLinks'];
 				$markerArray['brokenlinkCount'] += $row['nbBrokenLinks'];
 			}
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $markerArray;
 	}
 
@@ -395,7 +397,7 @@ class tx_linkvalidator_Processor {
 	 * @param boolean $considerHidden Whether to consider hidden pages or not
 	 * @return string Returns the list with a comma in the end (if any pages selected!)
 	 */
-	public function extGetTreeList($id, $depth, $begin = 0, $permsClause,  $considerHidden = FALSE) {
+	public function extGetTreeList($id, $depth, $begin = 0, $permsClause, $considerHidden = FALSE) {
 		$depth = intval($depth);
 		$begin = intval($begin);
 		$id = intval($id);
@@ -408,16 +410,17 @@ class tx_linkvalidator_Processor {
 				'pid=' . $id . ' AND deleted=0 AND ' . $permsClause
 			);
 
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				if ($begin <= 0 && ($row['hidden']==0 || $considerHidden == 1)) {
+			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) !== FALSE) {
+				if ($begin <= 0 && ($row['hidden'] == 0 || $considerHidden == 1)) {
 					$theList .= $row['uid'] . ',';
 					$this->extPageInTreeInfo[] = array($row['uid'], htmlspecialchars($row['title'], $depth));
 				}
-				if ($depth > 1 && (!($row['hidden']==1 && $row['extendToSubpages']==1) || $considerHidden == 1)) {
+				if ($depth > 1 && (!($row['hidden'] == 1 && $row['extendToSubpages'] == 1) || $considerHidden == 1)) {
 					$theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $permsClause, $considerHidden);
 				}
 			}
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $theList;
 	}
 
@@ -425,9 +428,9 @@ class tx_linkvalidator_Processor {
 	 * @param array $pageInfo Array with uid, title, hidden, extendToSubpages from pages table
 	 * @return boolean TRUE if rootline contains a hidden page, FALSE if not
 	 */
-	public function getRootLineIsHidden(array $pageInfo){
+	public function getRootLineIsHidden(array $pageInfo) {
 		$hidden = FALSE;
-		if ($pageInfo['extendToSubpages'] == 1 && $pageInfo['hidden'] == 1){
+		if ($pageInfo['extendToSubpages'] == 1 && $pageInfo['hidden'] == 1) {
 			$hidden = TRUE;
 		} else {
 			if ($pageInfo['pid'] > 0) {
@@ -437,11 +440,11 @@ class tx_linkvalidator_Processor {
 					'uid=' . $pageInfo['pid']
 				);
 
-				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) !== FALSE) {
 					$hidden = $this->getRootLineIsHidden($row);
 				}
-			}
-			else {
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			} else {
 				$hidden = FALSE;
 			}
 		}

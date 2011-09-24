@@ -67,9 +67,7 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	 * @return boolean TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, array $softRefEntry, tx_linkvalidator_Processor $reference) {
-		$page = '';
 		$anchor = '';
-		$response = TRUE;
 		$this->responseContent = TRUE;
 
 			// Might already contain values - empty it

@@ -108,7 +108,8 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	protected $refreshListHtml;
 
 	/**
-	 * Html for the statistics table with the checkboxes of the link types and the numbers of broken links for report tab
+	 * Html for the statistics table with the checkboxes of the link types
+	 * and the numbers of broken links for report tab
 	 *
 	 * @var string
 	 */
@@ -116,7 +117,8 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 
 
 	/**
-	 * Html for the statistics table with the checkboxes of the link types and the numbers of broken links for check links tab
+	 * Html for the statistics table with the checkboxes of the link types
+	 * and the numbers of broken links for check links tab
 	 *
 	 * @var string
 	 */
@@ -128,6 +130,9 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	 * @var string
 	 */
 	protected $content;
+
+	/** @var t3lib_pageRenderer $pageRenderer */
+	protected $pageRenderer;
 
 	/**
 	 * Main method of modfuncreport
@@ -151,7 +156,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		$set = t3lib_div::_GP($prefix . 'SET');
 		$this->pObj->handleExternalFunctionValue();
 
-		if(isset($this->searchLevel)) {
+		if (isset($this->searchLevel)) {
 			$this->pObj->MOD_SETTINGS['searchlevel'] = $this->searchLevel;
 		} else {
 			$this->searchLevel = $this->pObj->MOD_SETTINGS['searchlevel'];
@@ -178,42 +183,41 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		$this->initialize();
 			// Setting up the context sensitive menu
 		$this->resPath = $this->doc->backPath . t3lib_extMgm::extRelPath('linkvalidator') . 'res/';
-			/** @var t3lib_pageRenderer $pageRenderer */
 		$this->pageRenderer = $this->doc->getPageRenderer();
 
 			// Localization
 		$this->pageRenderer->addInlineLanguageLabelFile(t3lib_extMgm::extPath('linkvalidator', 'modfuncreport/locallang.xml'));
 
 
-	$this->pageRenderer->addJsInlineCode('linkvalidator','function toggleActionButton(prefix) {
+		$this->pageRenderer->addJsInlineCode('linkvalidator', 'function toggleActionButton(prefix) {
 			var buttonDisable = true;
 			Ext.select(\'.\' + prefix ,false).each(function(checkBox,i){
 			checkDom = checkBox.dom;
-			if(checkDom.checked){
+			if (checkDom.checked){
 				buttonDisable = false;
 			}
 
 			});
-			if(prefix == \'check\'){
+			if (prefix == \'check\'){
 				checkSub = document.getElementById(\'updateLinkList\');
-			}
-			else{
+			} else {
 				checkSub = document.getElementById(\'refreshLinkList\');
 			}
 			checkSub.disabled = buttonDisable;
-
-
 		}');
+
 			// Add JS
 		$this->pageRenderer->addJsFile($this->doc->backPath . '../t3lib/js/extjs/ux/Ext.ux.FitToParent.js');
 		$this->pageRenderer->addJsFile($this->doc->backPath . '../t3lib/js/extjs/ux/flashmessages.js');
 		$this->pageRenderer->addJsFile($this->doc->backPath . 'js/extjs/iframepanel.js');
 
 		if ($this->modTS['showCheckLinkTab'] == 1) {
-			$this->updateListHtml = '<input type="submit" name="updateLinkList" id="updateLinkList" value="' . $GLOBALS['LANG']->getLL('label_update') . '"/>';
+			$this->updateListHtml = '<input type="submit" name="updateLinkList" id="updateLinkList" value="'
+									. $GLOBALS['LANG']->getLL('label_update') . '"/>';
 		}
 
-		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" id="refreshLinkList"  value="' . $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
+		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" id="refreshLinkList"  value="'
+								 . $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
 
 		$this->processor = t3lib_div::makeInstance('tx_linkvalidator_Processor');
 		$this->updateBrokenLinks();
@@ -234,8 +238,8 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		$panelCheck = '';
 		if ($this->modTS['showCheckLinkTab'] == 1) {
 			$panelCheck = "{
-		       title: TYPO3.l10n.localize('CheckLink'),
-		       html: " . json_encode($this->flush()) . ",
+				title: TYPO3.l10n.localize('CheckLink'),
+				html: " . json_encode($this->flush()) . ",
 			}";
 		}
 
@@ -266,7 +270,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	 * @return array Module menu
 	 */
 	public function modMenu() {
-		$modMenu = array (
+		$modMenu = array(
 			'checkAllLink' => 0,
 		);
 
@@ -342,7 +346,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			);
 
 
-			if ($this->pObj->pageinfo['hidden'] == 0 || $this->modTS['checkhidden'] == 1){
+			if ($this->pObj->pageinfo['hidden'] == 0 || $this->modTS['checkhidden'] == 1) {
 				$pageList .= $this->pObj->id;
 			}
 
@@ -389,7 +393,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		$content = $this->doc->moduleBody(
 			$this->pageRecord,
 			$this->getDocHeaderButtons(),
-			($form) ? $this->getTemplateMarkers(): $this->getTemplateMarkersCheck()
+			($form) ? $this->getTemplateMarkers() : $this->getTemplateMarkersCheck()
 		);
 
 		return $content;
@@ -413,7 +417,11 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		);
 
 		foreach ($parts as $kv => $label) {
-			$opt[] = '<option value="' . $kv . '"' . ($kv == intval($this->searchLevel) ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
+			$opt[] = '<option value="' . $kv . '"'
+					. ($kv == intval($this->searchLevel)
+					? ' selected="selected"'
+					: '') . '>' . htmlspecialchars($label)
+					. '</option>';
 		}
 		$lMenu = '<select name="search_levels">' . implode('', $opt) . '</select>';
 		return $lMenu;
@@ -442,7 +450,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 				$GLOBALS['BE_USER']->getPagePermsClause(1),
 				$this->modTS['checkhidden']
 			);
-			if ($this->pObj->pageinfo['hidden'] == 0 || $this->modTS['checkhidden'] == 1){
+			if ($this->pObj->pageinfo['hidden'] == 0 || $this->modTS['checkhidden'] == 1) {
 				$pageList .= $this->pObj->id;
 			}
 
@@ -463,7 +471,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 					$brokenLinksMarker = $this->startTable();
 
 						// Table rows containing the broken links
-					while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
+					while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) !== FALSE) {
 						$items[] = $this->renderTableRow($row['table_name'], $row, $brokenLinksItemTemplate);
 					}
 					$brokenLinkItems = implode(chr(10), $items);
@@ -483,7 +491,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		return $content;
 	}
 
-	protected  function getNoBrokenLinkMessage($brokenLinksMarker){
+	protected function getNoBrokenLinkMessage($brokenLinksMarker) {
 		$brokenLinksMarker['LIST_HEADER'] = $this->doc->sectionHeader($GLOBALS['LANG']->getLL('list.header'));
 		$message = t3lib_div::makeInstance(
 			't3lib_FlashMessage',
@@ -514,7 +522,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		$makerTableHead['tablehead_lastcheck'] = $GLOBALS['LANG']->getLL('list.tableHead.lastCheck');
 
 			// Add CSH to the header of each column
-		foreach($makerTableHead as $column => $label) {
+		foreach ($makerTableHead as $column => $label) {
 			$label = t3lib_BEfunc::wrapInHelp('linkvalidator', $column, $label);
 			$makerTableHead[$column] = $label;
 		}
@@ -544,13 +552,13 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 
 		$params = '&edit[' . $table . '][' . $row['record_uid'] . ']=edit';
 		$actionLinks = '<a href="#" onclick="' .
-				t3lib_BEfunc::editOnClick(
-					$params,
-					$GLOBALS['BACK_PATH'],
-					t3lib_div::getIndpEnv('REQUEST_URI') . '?id=' . $this->pObj->id . '&search_levels=' . $this->searchLevel
-				) . '"' .
-				' title="' . $GLOBALS['LANG']->getLL('list.edit') . '">' .
-				t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a>';
+					   t3lib_BEfunc::editOnClick(
+						   $params,
+						   $GLOBALS['BACK_PATH'],
+						   t3lib_div::getIndpEnv('REQUEST_URI') . '?id=' . $this->pObj->id . '&search_levels=' . $this->searchLevel
+					   ) . '"' .
+					   ' title="' . $GLOBALS['LANG']->getLL('list.edit') . '">' .
+					   t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a>';
 
 		$elementHeadline = $row['headline'];
 		if (empty($elementHeadline)) {
@@ -563,7 +571,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			$fieldName = $GLOBALS['LANG']->sL($fieldName);
 				// Crop colon from end if present
 			if (substr($fieldName, '-1', '1') === ':') {
-				$fieldName = substr($fieldName, '0', strlen($fieldName)-1);
+				$fieldName = substr($fieldName, '0', strlen($fieldName) - 1);
 			}
 		}
 			// Fallback, if there is no label
@@ -608,7 +616,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	protected function getCheckOptions(array $brokenLinkOverView, $prefix = '') {
 		$markerArray = array();
 		$additionalAttr = '';
-		if(!empty($prefix)) {
+		if (!empty($prefix)) {
 			$additionalAttr = ' onclick="toggleActionButton(\'' . $prefix . '\');" class="' . $prefix . '" ';
 		}
 		else {
@@ -616,7 +624,6 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		}
 		$checkOptionsTemplate = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, '###CHECKOPTIONS_SECTION###');
 
-		$hookSectionContent = '';
 		$hookSectionTemplate = t3lib_parsehtml::getSubpart($checkOptionsTemplate, '###HOOK_SECTION###');
 
 		$markerArray['statistics_header'] = $this->doc->sectionHeader($GLOBALS['LANG']->getLL('report.statistics.header'));
@@ -648,8 +655,10 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 						}
 						$translation = $GLOBALS['LANG']->getLL('hooks.' . $type);
 						$translation = $translation ? $translation : $type;
-						$option =  '<input type="checkbox" ' . $additionalAttr . '  id="' . $prefix . 'SET_' . $type . '" name="' . $prefix . 'SET[' . $type . ']" value="1"' . ($this->pObj->MOD_SETTINGS[$type]  ? ' checked="checked"' : '') .
-							'/>'.'<label for="' . $prefix . 'SET[' . $type . ']">' . htmlspecialchars( $translation ) . '</label>';
+						$option = '<input type="checkbox" ' . $additionalAttr . '  id="' . $prefix . 'SET_' . $type
+								  . '" name="' . $prefix . 'SET[' . $type . ']" value="1"' . ($this->pObj->MOD_SETTINGS[$type]
+								  ? ' checked="checked"' : '') . '/>' . '<label for="' . $prefix . 'SET[' . $type . ']">'
+								  . htmlspecialchars($translation) . '</label>';
 						$hookSectionMarker['option'] = $option;
 						$hookSectionContent .= t3lib_parsehtml::substituteMarkerArray($hookSectionTemplate, $hookSectionMarker, '###|###', TRUE, TRUE);
 					}
@@ -710,15 +719,15 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	 */
 	protected function getTemplateMarkers() {
 		$markers = array(
-			'FUNC_TITLE'            => $GLOBALS['LANG']->getLL('report.func.title'),
-			'CHECKOPTIONS_TITLE'    => $GLOBALS['LANG']->getLL('report.statistics.header'),
-			'FUNC_MENU'             => $this->getLevelSelector(),
-			'CONTENT'               => $this->content,
-			'CHECKALLLINK'          => $this->checkAllHtml,
-			'CHECKOPTIONS'          => $this->checkOptHtml,
-			'ID'                    => '<input type="hidden" name="id" value="' . $this->pObj->id . '" />',
-			'REFRESH'               => $this->refreshListHtml,
-			'UPDATE'                => ''
+			'FUNC_TITLE' => $GLOBALS['LANG']->getLL('report.func.title'),
+			'CHECKOPTIONS_TITLE' => $GLOBALS['LANG']->getLL('report.statistics.header'),
+			'FUNC_MENU' => $this->getLevelSelector(),
+			'CONTENT' => $this->content,
+			'CHECKALLLINK' => $this->checkAllHtml,
+			'CHECKOPTIONS' => $this->checkOptHtml,
+			'ID' => '<input type="hidden" name="id" value="' . $this->pObj->id . '" />',
+			'REFRESH' => $this->refreshListHtml,
+			'UPDATE' => ''
 		);
 
 		return $markers;
@@ -731,15 +740,15 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	 */
 	protected function getTemplateMarkersCheck() {
 		$markers = array(
-			'FUNC_TITLE'			=>$GLOBALS['LANG']->getLL('checklinks.func.title'),
-			'CHECKOPTIONS_TITLE'	=>$GLOBALS['LANG']->getLL('checklinks.statistics.header'),
-			'FUNC_MENU'             => $this->getLevelSelector(),
-			'CONTENT'               => '',
-			'CHECKALLLINK'          => $this->checkAllHtml,
-			'CHECKOPTIONS'          => $this->checkOptHtmlCheck,
-			'ID'                    => '<input type="hidden" name="id" value="' . $this->pObj->id . '" />',
-			'REFRESH'               => '',
-			'UPDATE'                => $this->updateListHtml
+			'FUNC_TITLE' => $GLOBALS['LANG']->getLL('checklinks.func.title'),
+			'CHECKOPTIONS_TITLE' => $GLOBALS['LANG']->getLL('checklinks.statistics.header'),
+			'FUNC_MENU' => $this->getLevelSelector(),
+			'CONTENT' => '',
+			'CHECKALLLINK' => $this->checkAllHtml,
+			'CHECKOPTIONS' => $this->checkOptHtmlCheck,
+			'ID' => '<input type="hidden" name="id" value="' . $this->pObj->id . '" />',
+			'REFRESH' => '',
+			'UPDATE' => $this->updateListHtml
 		);
 
 		return $markers;
@@ -752,7 +761,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	 * @return boolean Whether the current user is admin
 	 */
 	protected function isCurrentUserAdmin() {
-		return ((bool) $GLOBALS['BE_USER']->user['admin']);
+		return ((bool)$GLOBALS['BE_USER']->user['admin']);
 	}
 }
 

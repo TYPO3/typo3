@@ -1,8 +1,12 @@
-2011-08-30 Philipp Gampe <forge.typo3.org@philippgampe.info>
+2011-10-05  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* [TASK] Fix CGL issues
+
+2011-08-30  Philipp Gampe  <forge.typo3.org@philippgampe.info>
 
 	* [TASK] Release linkvalidator 1.0.4
 
-2011-08-26 Philipp Gampe <forge.typo3.org@philippgampe.info>
+2011-08-26  Philipp Gampe  <forge.typo3.org@philippgampe.info>
 
 	* [BUGFIX] Fatal error with E_STRICT: Declaration of fetchType must be compatible with interface
 	* [TASK] Fix phpdoc and method signatures
@@ -56,14 +60,14 @@
 	* Fixed bug #26731: The info module does not show up in IE 7 and 8 (Michael Miousse)
 	* Fixed bug #13368: Content of Tab is not scrollable (Michael Miousse)
 
-2011-04-26 	Michael Miousse  <michael.miousse@infoglobe.ca>
+2011-04-26  Michael Miousse  <michael.miousse@infoglobe.ca>
 
 	* Fixed bug #13757: Scheduler task does not work at all
 
-2011-04-21 	Michael Miousse  <michael.miousse@infoglobe.ca>
+2011-04-21  Michael Miousse  <michael.miousse@infoglobe.ca>
 
 	* Fixed bug #13953: Third-party classes cannot be checked due to dynamicConfigFile in TCA (thanks to Jan Philipp Timme)
-	
+
 2011-02-24  Michael Miousse  <michael.miousse@infoglobe.ca>
 
 	* Fixed bug #13340: Regression in TYPO3 4.5.1: pid and uid database fields are always 0
@@ -77,13 +81,13 @@
 	* Fixed bug #12649: Split up analyzeRecord()
 	* Cleaned emconf for the release of TYPO3 4.5.1
 	* Release linkvalidator 1.0.1
-	
-2011-02-15	Michael Miousse  <michael.miousse@infoglobe.ca>
 
-	* Fixed bug #12652:	If none of the link types are marked to be checked, all of them are checked
-	* Fixed bug #12650:	tx_linkvalidator_tasks_validator: exec() is too long
+2011-02-15  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #12652: If none of the link types are marked to be checked, all of them are checked
+	* Fixed bug #12650: tx_linkvalidator_tasks_validator: exec() is too long
 	* Fixed bug #12454: Use setting "defaultMailFromName" and "defaultMailFromAddress"
-	
+
 2011-02-06  Christopher Stelmaszyk  <chrissitopher@gmx.de>
 
 	* Fixed bug #12517: Replace exec_SELECTgetRows with exec_SELECTgetSingleRow whenever a single record is expected (thanks to Jo Hasenau)

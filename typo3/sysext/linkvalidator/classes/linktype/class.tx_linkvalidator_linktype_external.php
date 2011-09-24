@@ -68,7 +68,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 		$isValidUrl = TRUE;
 
 		if (isset($this->urlReports[$url])) {
-			if(!$this->urlReports[$url]) {
+			if (!$this->urlReports[$url]) {
 				if(is_array($this->urlErrorParams[$url])) {
 				    $this->setErrorParams($this->urlErrorParams[$url]);
 				}
@@ -121,7 +121,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 			$errorParams['message'] = $response->getReasonPhrase();
 		}
 
-		if(!$isValidUrl) {
+		if (!$isValidUrl) {
 			$this->setErrorParams($errorParams);
 		}
 

@@ -132,7 +132,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	 * @return void
 	 */
 	public function setEmail($email) {
-		$this->email=$email;
+		$this->email = $email;
 	}
 
 	/**
@@ -170,7 +170,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	 * @return void
 	 */
 	public function setPage($page) {
-		$this->page =$page;
+		$this->page = $page;
 	}
 
 	/**
@@ -318,9 +318,9 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		$modTS = t3lib_BEfunc::getModTSconfig($page, 'mod.linkvalidator');
 		$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
 		$parseObj->parse($this->configuration);
-		if(count($parseObj->errors) > 0){
+		if (count($parseObj->errors) > 0) {
 			$parseErrorMessage = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidTSconfig') . '<br />';
-			foreach($parseObj->errors as $errorInfo){
+			foreach ($parseObj->errors as $errorInfo) {
 				$parseErrorMessage .= $errorInfo[0] . '<br />';
 			}
 			throw new Exception(
@@ -344,7 +344,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	 * @return array $searchFields List of fields
 	 */
 	protected function getSearchField(array $modTS) {
-			// Get the searchFields from TypoScript
+		// Get the searchFields from TypoScript
 		foreach ($modTS['searchFields.'] as $table => $fieldList) {
 			$fields = t3lib_div::trimExplode(',', $fieldList);
 			foreach ($fields as $field) {
@@ -365,7 +365,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		$typesTmp = t3lib_div::trimExplode(',', $modTS['linktypes'], 1);
 		if (is_array($typesTmp)) {
 			if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])
-					&& is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
+				&& is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $type => $value) {
 					if (in_array($type, $typesTmp)) {
 						$linkTypes[$type] = 1;
@@ -385,38 +385,38 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	 */
 	protected function reportEmail($pageSections, array $modTS) {
 		$content = t3lib_parsehtml::substituteSubpart($this->templateMail, '###PAGE_SECTION###', $pageSections);
-			/** @var array $markerArray */
+		/** @var array $markerArray */
 		$markerArray = array();
-			/** @var array $validEmailList */
+		/** @var array $validEmailList */
 		$validEmailList = array();
-			/** @var boolean $sendEmail */
+		/** @var boolean $sendEmail */
 		$sendEmail = TRUE;
 
 		$markerArray['totalBrokenLink'] = $this->totalBrokenLink;
 		$markerArray['totalBrokenLink_old'] = $this->oldTotalBrokenLink;
 		$content = t3lib_parsehtml::substituteMarkerArray($content, $markerArray, '###|###', TRUE, TRUE);
 
-			/** @var t3lib_mail_Message $mail */
+		/** @var t3lib_mail_Message $mail */
 		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
-		if(empty($modTS['mail.']['fromemail'])) {
+		if (empty($modTS['mail.']['fromemail'])) {
 			$modTS['mail.']['fromemail'] = t3lib_utility_Mail::getSystemFromAddress();
 		}
-		if(empty($modTS['mail.']['fromname'])) {
+		if (empty($modTS['mail.']['fromname'])) {
 			$modTS['mail.']['fromname'] = t3lib_utility_Mail::getSystemFromName();
 		}
 		if (t3lib_div::validEmail($modTS['mail.']['fromemail'])) {
 			$mail->setFrom(array($modTS['mail.']['fromemail'] => $modTS['mail.']['fromname']));
-		}  else {
+		} else {
 			throw new Exception(
 				$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidFromEmail'),
 				'1295476760'
 			);
 		}
-		if(t3lib_div::validEmail($modTS['mail.']['replytoemail'])) {
+		if (t3lib_div::validEmail($modTS['mail.']['replytoemail'])) {
 			$mail->setReplyTo(array($modTS['mail.']['replytoemail'] => $modTS['mail.']['replytoname']));
 		}
 
-		if(!empty($modTS['mail.']['subject'])) {
+		if (!empty($modTS['mail.']['subject'])) {
 			$mail->setSubject($modTS['mail.']['subject']);
 		} else {
 			throw new Exception(
@@ -443,8 +443,8 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 			$sendEmail = FALSE;
 		}
 
-		if($sendEmail) {
-			$mail->setBody($content,'text/html');
+		if ($sendEmail) {
+			$mail->setBody($content, 'text/html');
 			$mail->send();
 		}
 
