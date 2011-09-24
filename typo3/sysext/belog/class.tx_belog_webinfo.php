@@ -146,8 +146,9 @@ class tx_belog_webinfo extends t3lib_extobjbase {
 				$this->pObj->MOD_SETTINGS['log_time'],
 				$this->pObj->MOD_MENU['log_time']
 			);
+		$theOutput .= $this->pObj->doc->header($GLOBALS['LANG']->getLL('chLog_title'));
 		$theOutput .= $this->pObj->doc->section(
-			$GLOBALS['LANG']->getLL('chLog_title'),
+			'',
 			'<span class="nobr">' . $menu . '</span>',
 			0,
 			1

@@ -161,14 +161,14 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 
 		} else {	// Detail listings:
 				// Depth function menu:
-			$h_func = t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[type]',$this->pObj->MOD_SETTINGS['type'],$this->pObj->MOD_MENU['type'],'index.php');
-			$h_func.= t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[depth]',$this->pObj->MOD_SETTINGS['depth'],$this->pObj->MOD_MENU['depth'],'index.php');
+			$h_func = t3lib_BEfunc::getFuncMenu($this->pObj->id, 'SET[type]', $this->pObj->MOD_SETTINGS['type'], $this->pObj->MOD_MENU['type'], 'index.php');
+			$h_func .= t3lib_BEfunc::getFuncMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth'], 'index.php');
 
 				// Show title / function menu:
-			$theOutput.=$this->pObj->doc->spacer(5);
-			$theOutput.=$this->pObj->doc->section($LANG->getLL('title'),$h_func,0,1);
+			$theOutput .= $this->pObj->doc->header($LANG->getLL('title'));
+			$theOutput .= $this->pObj->doc->section('', $h_func, 0, 1);
 
-			$theOutput.=$this->drawTableOfIndexedPages();
+			$theOutput .= $this->drawTableOfIndexedPages();
 		}
 
         return $theOutput;
