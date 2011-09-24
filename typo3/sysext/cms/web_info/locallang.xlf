@@ -63,6 +63,10 @@
 				<source>Hit Statistics</source>
 				<target>Hit Statistics</target>
 			</trans-unit>
+			<trans-unit id="lang_title" approved="yes">
+				<source>Localization overview</source>
+				<target>Localization overview</target>
+			</trans-unit>
 			<trans-unit id="lang_renderl10n_viewPage" approved="yes">
 				<source>View page</source>
 				<target>View page</target>

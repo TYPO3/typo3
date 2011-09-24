@@ -87,6 +87,8 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 		$menu .= '<br /><label for="checkTsconf_alphaSort">' . $GLOBALS['LANG']->getLL('sort_alphabetic', TRUE) . '</label> ' . t3lib_BEfunc::getFuncCheck($this->pObj->id, 'SET[tsconf_alphaSort]', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'], '', '', 'id="checkTsconf_alphaSort"');
 		$menu .= '<br /><br />';
 
+		$theOutput = $this->pObj->doc->header($LANG->getLL('tsconf_title'));
+
 		if ($this->pObj->MOD_SETTINGS['tsconf_parts']==99)	{
 			$TSparts = t3lib_BEfunc::getPagesTSconfig($this->pObj->id,'',1);
 			$lines = array();
@@ -133,8 +135,7 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 						'</a>';
 			} else $editIcon = '';
 
-
-			$theOutput.= $this->pObj->doc->section($LANG->getLL('tsconf_title'),
+			$theOutput .= $this->pObj->doc->section('',
 				t3lib_BEfunc::cshItem('_MOD_' . $GLOBALS['MCONF']['name'], 'tsconfig_edit', $GLOBALS['BACK_PATH'], '|<br />') .
 					$menu.
 					'
@@ -203,7 +204,7 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 
 			if (!is_array($modTSconfig))	$modTSconfig = array();
 
-			$theOutput.= $this->pObj->doc->section($LANG->getLL('tsconf_title'),
+			$theOutput .= $this->pObj->doc->section('',
 					t3lib_BEfunc::cshItem('_MOD_' . $GLOBALS['MCONF']['name'], 'tsconfig_hierarchy', $GLOBALS['BACK_PATH'], '|<br />') .
 					$menu.
 					'
