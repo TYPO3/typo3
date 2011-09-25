@@ -282,6 +282,9 @@
 			<trans-unit id="resizeTextareas_MaxHeight" xml:space="preserve">
 				<source>Maximal Height of resizable Textarea in Pixel</source>
 			</trans-unit>
+			<trans-unit id="flexibleTextareas_MaxHeight" xml:space="preserve">
+				<source>Maximal Height of flexible Textareas in Pixel</source>
+			</trans-unit>
 			<trans-unit id="resizeTextareas_Flexible" xml:space="preserve">
 				<source>Make Textareas flexible</source>
 			</trans-unit>

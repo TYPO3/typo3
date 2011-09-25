@@ -116,7 +116,6 @@ TYPO3.TCEFORMS = {
 				var dwrapped = new Ext.Resizable(element.dom.id, {
 					minWidth:  300,
 					minHeight: 50,
-					maxHeight: TYPO3.settings.textareaMaxHeight,
 					dynamic:   true
 				});
 			}
