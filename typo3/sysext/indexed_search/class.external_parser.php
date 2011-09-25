@@ -369,178 +369,261 @@ class tx_indexed_search_extparse {
 	/**
 	 * Reads the content of an external file being indexed.
 	 *
-	 * @param	string		File extension, eg. "pdf", "doc" etc.
-	 * @param	string		Absolute filename of file (must exist and be validated OK before calling function)
-	 * @param	string		Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be splitted.)
-	 * @return	array		Standard content array (title, description, keywords, body keys)
+	 * @param string $ext File extension, eg. "pdf", "doc" etc.
+	 * @param string $absFile Absolute filename of file (must exist and be validated OK before calling function)
+	 * @param string $cPKey Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be split.)
+	 * @return array Standard content array (title, description, keywords, body keys)
 	 */
-	function readFileContent($ext,$absFile,$cPKey)	{
-		unset($contentArr);
+	function readFileContent($ext, $absFile, $cPKey) {
 
 			// Return immediately if initialization didn't set support up:
-		if (!$this->supportedExtensions[$ext])	return FALSE;
+		if (!$this->supportedExtensions[$ext]) {
+			return FALSE;
+		}
 
 			// Switch by file extension
-		switch ($ext)	{
+		switch ($ext) {
 			case 'pdf':
-				if ($this->app['pdfinfo'])	{
+				if ($this->app['pdfinfo']) {
+						// Use locale for server file system
+					if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+						$currentLocale = setlocale(LC_CTYPE, 0);
+						setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+					}
 						// Getting pdf-info:
 					$cmd = $this->app['pdfinfo'] . ' ' . escapeshellarg($absFile);
 					t3lib_utility_Command::exec($cmd, $res);
 					$pdfInfo = $this->splitPdfInfo($res);
 					unset($res);
-					if (intval($pdfInfo['pages']))	{
-						list($low,$high) = explode('-',$cPKey);
+					if (intval($pdfInfo['pages'])) {
+						list($low, $high) = explode('-', $cPKey);
 
 							// Get pdf content:
-						$tempFileName = t3lib_div::tempnam('Typo3_indexer');		// Create temporary name
+							// Create temporary name
+						$tempFileName = t3lib_div::tempnam('Typo3_indexer');
 						@unlink ($tempFileName);	// Delete if exists, just to be safe.
-						$cmd = $this->app['pdftotext'] . ' -f ' . $low . ' -l ' . $high . ' -enc UTF-8 -q ' . escapeshellarg($absFile) . ' ' . $tempFileName;
+						$cmd = $this->app['pdftotext'] . ' -f ' . $low . ' -l ' . $high . ' -enc UTF-8 -q ' .
+							escapeshellarg($absFile) . ' ' . $tempFileName;
 						t3lib_utility_Command::exec($cmd);
-						if (@is_file($tempFileName))	{
+						if (@is_file($tempFileName)) {
 							$content = t3lib_div::getUrl($tempFileName);
 							unlink($tempFileName);
 						} else {
 							$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:pdfToolsFailed'), $absFile), 2);
 						}
-						if (strlen($content))	{
+						if (strlen($content)) {
 							$contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));
 						}
 					}
+					if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+						setlocale(LC_CTYPE, $currentLocale);
+					}
 				}
-			break;
+				break;
 			case 'doc':
-				if ($this->app['catdoc'])	{
+				if ($this->app['catdoc']) {
+						// Use locale for server file system
+					if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+						$currentLocale = setlocale(LC_CTYPE, 0);
+						setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+					}
 					$cmd = $this->app['catdoc'] . ' -d utf-8 ' . escapeshellarg($absFile);
 					t3lib_utility_Command::exec($cmd, $res);
-					$content = implode(LF,$res);
+					$content = implode(LF, $res);
 					unset($res);
 					$contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));
+					if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+						setlocale(LC_CTYPE, $currentLocale);
+					}
 				}
-			break;
+				break;
 			case 'pps':
 			case 'ppt':
-				if ($this->app['ppthtml'])	{
+				if ($this->app['ppthtml']) {
+						// Use locale for server file system
+					if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+						$currentLocale = setlocale(LC_CTYPE, 0);
+						setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+					}
 					$cmd = $this->app['ppthtml'] . ' ' . escapeshellarg($absFile);
 					t3lib_utility_Command::exec($cmd, $res);
-					$content = implode(LF,$res);
+					$content = implode(LF, $res);
 					unset($res);
 					$content = $this->pObj->convertHTMLToUtf8($content);
 					$contentArr = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
 					$contentArr['title'] = basename($absFile);	// Make sure the title doesn't expose the absolute path!
+					if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+						setlocale(LC_CTYPE, $currentLocale);
+					}
 				}
-			break;
+				break;
 			case 'xls':
-				if ($this->app['xlhtml'])	{
+				if ($this->app['xlhtml']) {
+						// Use locale for server file system
+					if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+						$currentLocale = setlocale(LC_CTYPE, 0);
+						setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+					}
 					$cmd = $this->app['xlhtml'] . ' -nc -te ' . escapeshellarg($absFile);
 					t3lib_utility_Command::exec($cmd, $res);
-					$content = implode(LF,$res);
+					$content = implode(LF, $res);
 					unset($res);
 					$content = $this->pObj->convertHTMLToUtf8($content);
 					$contentArr = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
 					$contentArr['title'] = basename($absFile);	// Make sure the title doesn't expose the absolute path!
+					if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+						setlocale(LC_CTYPE, $currentLocale);
+					}
 				}
-			break;
+				break;
 			case 'sxi':
 			case 'sxc':
 			case 'sxw':
 			case 'ods':
 			case 'odp':
 			case 'odt':
-				if ($this->app['unzip'])	{
+				if ($this->app['unzip']) {
+						// Use locale for server file system
+					if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+						$currentLocale = setlocale(LC_CTYPE, 0);
+						setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+					}
 						// Read content.xml:
 					$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' content.xml';
 					t3lib_utility_Command::exec($cmd, $res);
-					$content_xml = implode(LF,$res);
+					$content_xml = implode(LF, $res);
 					unset($res);
 
 						// Read meta.xml:
 					$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' meta.xml';
 					t3lib_utility_Command::exec($cmd, $res);
-					$meta_xml = implode(LF,$res);
+					$meta_xml = implode(LF, $res);
 					unset($res);
 
-					$utf8_content = trim(strip_tags(str_replace('<',' <',$content_xml)));
+					$utf8_content = trim(strip_tags(str_replace('<', ' <', $content_xml)));
 					$contentArr = $this->pObj->splitRegularContent($utf8_content);
 					$contentArr['title'] = basename($absFile);	// Make sure the title doesn't expose the absolute path!
 
 						// Meta information
 					$metaContent = t3lib_div::xml2tree($meta_xml);
 					$metaContent = $metaContent['office:document-meta'][0]['ch']['office:meta'][0]['ch'];
-					if (is_array($metaContent))	{
-						$contentArr['title'] = $metaContent['dc:title'][0]['values'][0] ? $metaContent['dc:title'][0]['values'][0] : $contentArr['title'];
-						$contentArr['description'] = $metaContent['dc:subject'][0]['values'][0].' '.$metaContent['dc:description'][0]['values'][0];
+					if (is_array($metaContent)) {
+						$contentArr['title'] = $metaContent['dc:title'][0]['values'][0]
+							? $metaContent['dc:title'][0]['values'][0]
+							: $contentArr['title'];
+						$contentArr['description'] = $metaContent['dc:subject'][0]['values'][0] . ' ' .
+							$metaContent['dc:description'][0]['values'][0];
 
 							// Keywords collected:
-						if (is_array($metaContent['meta:keywords'][0]['ch']['meta:keyword']))	{
-							foreach ($metaContent['meta:keywords'][0]['ch']['meta:keyword'] as $kwDat)	{
-								$contentArr['keywords'].= $kwDat['values'][0].' ';
+						if (is_array($metaContent['meta:keywords'][0]['ch']['meta:keyword'])) {
+							foreach ($metaContent['meta:keywords'][0]['ch']['meta:keyword'] as $kwDat) {
+								$contentArr['keywords'] .= $kwDat['values'][0] . ' ';
 							}
 						}
 					}
+					if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+						setlocale(LC_CTYPE, $currentLocale);
+					}
 				}
-			break;
+				break;
 			case 'rtf':
-				if ($this->app['unrtf'])	{
+				if ($this->app['unrtf']) {
+						// Use locale for server file system
+					if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+						$currentLocale = setlocale(LC_CTYPE, 0);
+						setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+					}
 					$cmd = $this->app['unrtf'] . ' ' . escapeshellarg($absFile);
 					t3lib_utility_Command::exec($cmd, $res);
-					$fileContent = implode(LF,$res);
+					$fileContent = implode(LF, $res);
 					unset($res);
 					$fileContent = $this->pObj->convertHTMLToUtf8($fileContent);
 					$contentArr = $this->pObj->splitHTMLContent($fileContent);
+					if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+						setlocale(LC_CTYPE, $currentLocale);
+					}
 				}
-			break;
+				break;
 			case 'txt':
-			case 'csv':		// Raw text
+			case 'csv':	// Raw text
+					// Use locale for server file system
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+					$currentLocale = setlocale(LC_CTYPE, 0);
+					setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+				}
 				$content = t3lib_div::getUrl($absFile);
 					// TODO: Implement auto detection of charset (currently assuming utf-8)
 				$contentCharset = 'utf-8';
 				$content = $this->pObj->convertHTMLToUtf8($content, $contentCharset);
 				$contentArr = $this->pObj->splitRegularContent($content);
 				$contentArr['title'] = basename($absFile);	// Make sure the title doesn't expose the absolute path!
-			break;
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+					setlocale(LC_CTYPE, $currentLocale);
+				}
+				break;
 			case 'html':
 			case 'htm':
 				$fileContent = t3lib_div::getUrl($absFile);
 				$fileContent = $this->pObj->convertHTMLToUtf8($fileContent);
 				$contentArr = $this->pObj->splitHTMLContent($fileContent);
-			break;
-			case 'xml':		// PHP strip-tags()
+				break;
+			case 'xml':	// PHP strip-tags()
+					// Use locale for server file system
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+					$currentLocale = setlocale(LC_CTYPE, 0);
+					setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+				}
 				$fileContent = t3lib_div::getUrl($absFile);
 
 					// Finding charset:
-				preg_match('/^[[:space:]]*<\?xml[^>]+encoding[[:space:]]*=[[:space:]]*["\'][[:space:]]*([[:alnum:]_-]+)[[:space:]]*["\']/i',substr($fileContent,0,200),$reg);
+				preg_match('/^[[:space:]]*<\?xml[^>]+encoding[[:space:]]*=[[:space:]]*["\'][[:space:]]*([[:alnum:]_-]+)[[:space:]]*["\']/i',
+					substr($fileContent, 0, 200),
+					$reg
+				);
 				$charset = $reg[1] ? $this->pObj->csObj->parse_charset($reg[1]) : 'utf-8';
 
 					// Converting content:
 				$fileContent = $this->pObj->convertHTMLToUtf8(strip_tags(str_replace('<',' <',$fileContent)), $charset);
 				$contentArr = $this->pObj->splitRegularContent($fileContent);
 				$contentArr['title'] = basename($absFile);	// Make sure the title doesn't expose the absolute path!
-			break;
-			case 'jpg':		// PHP EXIF
-			case 'jpeg':	// PHP EXIF
-			case 'tif':		// PHP EXIF
-				if (function_exists('exif_read_data'))	{
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+					setlocale(LC_CTYPE, $currentLocale);
+				}
+				break;
+			case 'jpg':	// PHP EXIF
+			case 'jpeg':
+			case 'tif':
+					// Use locale for server file system
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+					$currentLocale = setlocale(LC_CTYPE, 0);
+					setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+				}
+				if (function_exists('exif_read_data')) {
 					$exif = exif_read_data($absFile, 'IFD0');
 				} else {
 					$exif = FALSE;
 				}
 
-				if ($exif)	{
-					$comment = trim($exif['COMMENT'][0].' '.$exif['ImageDescription']);	// The comments in JPEG files are utf-8, while in Tif files they are 7-bit ascii.
+				if ($exif) {
+						// The comments in JPEG files are utf-8, while in Tif files they are 7-bit ascii.
+					$comment = trim($exif['COMMENT'][0] . ' ' . $exif['ImageDescription']);
 				} else {
 					$comment = '';
 				}
 				$contentArr = $this->pObj->splitRegularContent($comment);
 				$contentArr['title'] = basename($absFile);	// Make sure the title doesn't expose the absolute path!
-			break;
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+					setlocale(LC_CTYPE, $currentLocale);
+				}
+				break;
 			default:
 				return FALSE;
-			break;
 		}
-			// If no title (and why should there be...) then the file-name is set as title. This will raise the hits considerably if the search matches the document name.
-		if (is_array($contentArr) && !$contentArr['title'])	{
-			$contentArr['title'] = str_replace('_',' ',basename($absFile));	// Substituting "_" for " " because many filenames may have this instead of a space char.
+			// If no title (and why should there be...) then the file-name is set as title. This will raise the hits considerably
+			// if the search matches the document name.
+		if (is_array($contentArr) && !$contentArr['title']) {
+				// Substituting "_" for " " because many filenames may have this instead of a space char.
+			$contentArr['title'] = str_replace('_', ' ', basename($absFile));
 		}
 
 		return $contentArr;
@@ -548,38 +631,48 @@ class tx_indexed_search_extparse {
 
 	/**
 	 * Creates an array with pointers to divisions of document.
-	 * ONLY for PDF files at this point. All other types will have an array with a single element with the value "0" (zero) coming back.
 	 *
-	 * @param	string		File extension
-	 * @param	string		Absolute filename (must exist and be validated OK before calling function)
-	 * @return	array		Array of pointers to sections that the document should be divided into
+	 * ONLY for PDF files at this point. All other types will have an array with a single element with the value "0" (zero)
+	 * coming back.
+	 *
+	 * @param string $ext File extension
+	 * @param string $absFile Absolute filename (must exist and be validated OK before calling function)
+	 * @return array Array of pointers to sections that the document should be divided into
 	 */
-	function fileContentParts($ext,$absFile)	{
+	function fileContentParts($ext,$absFile) {
 		$cParts = array(0);
-		switch ($ext)	{
+		switch ($ext) {
 			case 'pdf':
+					// Use locale for server file system
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+					$currentLocale = setlocale(LC_CTYPE, 0);
+					setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+				}
 					// Getting pdf-info:
 				$cmd = $this->app['pdfinfo'] . ' ' . escapeshellarg($absFile);
 				t3lib_utility_Command::exec($cmd, $res);
 				$pdfInfo = $this->splitPdfInfo($res);
 				unset($res);
 
-				if (intval($pdfInfo['pages']))	{
+				if (intval($pdfInfo['pages'])) {
 					$cParts = array();
 
 						// Calculate mode
-					if ($this->pdf_mode>0)	{
-						$iter = ceil($pdfInfo['pages']/$this->pdf_mode);
+					if ($this->pdf_mode > 0) {
+						$iter = ceil($pdfInfo['pages'] / $this->pdf_mode);
 					} else {
-						$iter = t3lib_utility_Math::forceIntegerInRange(abs($this->pdf_mode),1,$pdfInfo['pages']);
+						$iter = t3lib_utility_Math::forceIntegerInRange(abs($this->pdf_mode), 1, $pdfInfo['pages']);
 					}
 
 						// Traverse and create intervals.
-					for ($a=0;$a<$iter;$a++)	{
-						$low = floor($a*($pdfInfo['pages']/$iter))+1;
-						$high = floor(($a+1)*($pdfInfo['pages']/$iter));
-						$cParts[] = $low.'-'.$high;
+					for ($a = 0; $a < $iter; $a++) {
+						$low = floor($a * ($pdfInfo['pages'] / $iter)) + 1;
+						$high = floor(($a + 1) * ($pdfInfo['pages'] / $iter));
+						$cParts[] = $low . '-' . $high;
 					}
+				}
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+					setlocale(LC_CTYPE, $currentLocale);
 				}
 			break;
 		}
