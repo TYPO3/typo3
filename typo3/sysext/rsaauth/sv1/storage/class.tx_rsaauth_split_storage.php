@@ -47,7 +47,7 @@ class tx_rsaauth_split_storage extends tx_rsaauth_abstract_storage {
 	 * @return	void
 	 */
 	public function __construct() {
-		if (!isset($_SESSION) || !is_array($_SESSION)) {
+		if (session_id() === '') {
 			session_start();
 		}
 	}
