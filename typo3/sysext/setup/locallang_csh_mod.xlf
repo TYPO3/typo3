@@ -261,9 +261,17 @@ The default module is "About Modules".</target>
 				<source>Maximal Height of Textarea</source>
 				<target>Maximal Height of Textarea</target>
 			</trans-unit>
+			<trans-unit id="option_flexibleTextareas_MaxHeight.alttitle" approved="yes">
+				<source>Maximal Height of flexible textareas</source>
+				<target>Maximal Height of felxible textareas</target>
+			</trans-unit>
 			<trans-unit id="option_resizeTextareas_MaxHeight.description" approved="yes">
 				<source>Define the maximal height of textarea (in Pixel).</source>
 				<target>Define the maximal height of textarea (in Pixel).</target>
+			</trans-unit>
+			<trans-unit id="option_flexibleTextareas_MaxHeight.description" approved="yes">
+				<source>Define the maximal height of flexible textareas (in Pixel).</source>
+				<target>Define the maximal height of flexible textareas (in Pixel).</target>
 			</trans-unit>
 			<trans-unit id="option_resizeTextareas_Flexible.alttitle" approved="yes">
 				<source>Make Textareas Flexible</source>

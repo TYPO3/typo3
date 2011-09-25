@@ -375,6 +375,10 @@
 				<source>Maximal Height of resizable Textarea in Pixel</source>
 				<target>Maximal Height of resizable Textarea in Pixel</target>
 			</trans-unit>
+			<trans-unit id="flexibleTextareas_MaxHeight" approved="yes">
+				<source>Maximal Height of flexible Textareas in Pixel</source>
+				<target>Maximal Height of flexible Textareas in Pixel</target>
+			</trans-unit>
 			<trans-unit id="resizeTextareas_Flexible" approved="yes">
 				<source>Make Textareas flexible</source>
 				<target>Make Textareas flexible</target>
