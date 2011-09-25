@@ -449,8 +449,7 @@ class tx_cms_layout extends recordList {
 				// For EACH column, fit the rendered content into a table cell:
 				$out = '';
 
-				$backendLayoutUid = $this->getSelectedBackendLayoutUid($id);
-				$backendLayoutRecord = t3lib_BEfunc::getRecord('backend_layout', intval($backendLayoutUid));
+				$backendLayoutRecord = $tcaItems = t3lib_div::callUserFunction('EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getSelectedBackendLayout', $id, $this);
 				$this->tt_contentConfig['showAsGrid'] = !empty($backendLayoutRecord['config']) && !$this->tt_contentConfig['languageMode'];
 
 				if (!$this->tt_contentConfig['showAsGrid']) {
