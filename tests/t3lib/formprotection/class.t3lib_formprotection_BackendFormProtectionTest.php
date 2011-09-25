@@ -32,11 +32,20 @@
  */
 class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase {
 	/**
-	 * a backup of the current BE user
+	 * Enable backup of global and system variables
 	 *
-	 * @var t3lib_beUserAuth
+	 * @var boolean
 	 */
-	private $backEndUserBackup = NULL;
+	protected $backupGlobals = TRUE;
+
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
+	 *
+	 * @var array
+	 */
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
+
 
 	/**
 	 * @var t3lib_formprotection_BackendFormProtection
@@ -44,7 +53,6 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 	private $fixture;
 
 	public function setUp() {
-		$this->backEndUserBackup = $GLOBALS['BE_USER'];
 		$GLOBALS['BE_USER'] = $this->getMock(
 			't3lib_beUserAuth',
 			array('getSessionData', 'setAndSaveSessionData')
@@ -58,9 +66,6 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 	public function tearDown() {
 		$this->fixture->__destruct();
 		unset($this->fixture);
-
-		$GLOBALS['BE_USER'] = $this->backEndUserBackup;
-
 		t3lib_FlashMessageQueue::getAllMessagesAndFlush();
 	}
 
@@ -228,6 +233,27 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 		$this->fixture->createValidationErrorMessage();
 
 		$messages = t3lib_FlashMessageQueue::getAllMessagesAndFlush();
+
+		$this->assertNotEmpty($messages);
+		$this->assertContains(
+			$GLOBALS['LANG']->sL(
+				'LLL:EXT:lang/locallang_core.xml:error.formProtection.tokenInvalid'
+			),
+			$messages[0]->render()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function createValidationErrorMessageAddsErrorFlashMessageButNotInSessionInAjaxRequest() {
+		$GLOBALS['BE_USER'] = $this->createBackendUserSessionStorageStub();
+		$GLOBALS['TYPO3_AJAX'] = TRUE;
+		$this->fixture->createValidationErrorMessage();
+
+		$messages = t3lib_FlashMessageQueue::$messages;
+
+		$this->assertNotEmpty($messages);
 		$this->assertContains(
 			$GLOBALS['LANG']->sL(
 				'LLL:EXT:lang/locallang_core.xml:error.formProtection.tokenInvalid'
