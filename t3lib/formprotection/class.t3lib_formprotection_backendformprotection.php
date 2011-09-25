@@ -130,7 +130,8 @@ class t3lib_formprotection_BackendFormProtection extends t3lib_formprotection_Ab
 			),
 			'',
 			t3lib_FlashMessage::ERROR,
-			TRUE
+				// Do not save error message in session if we are in an Ajax action
+			!(isset($GLOBALS['TYPO3_AJAX']) && $GLOBALS['TYPO3_AJAX'] === TRUE)
 		);
 		t3lib_FlashMessageQueue::addMessage($message);
 	}
