@@ -449,15 +449,15 @@ class FileContentParser {
 	/**
 	 * Reads the content of an external file being indexed.
 	 *
-	 * @param 	string		File extension, eg. "pdf", "doc" etc.
-	 * @param 	string		Absolute filename of file (must exist and be validated OK before calling function)
-	 * @param 	string		Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be splitted.)
-	 * @return 	array		Standard content array (title, description, keywords, body keys)
+	 * @param string $ext File extension, eg. "pdf", "doc" etc.
+	 * @param string $absFile Absolute filename of file (must exist and be validated OK before calling function)
+	 * @param string $cPKey Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be split.)
+	 * @return array Standard content array (title, description, keywords, body keys)
 	 * @todo Define visibility
 	 */
 	public function readFileContent($ext, $absFile, $cPKey) {
 		unset($contentArr);
-		// Return immediately if initialization didn't set support up:
+			// Return immediately if initialization didn't set support up:
 		if (!$this->supportedExtensions[$ext]) {
 			return FALSE;
 		}
@@ -465,6 +465,7 @@ class FileContentParser {
 		switch ($ext) {
 		case 'pdf':
 			if ($this->app['pdfinfo']) {
+				$this->setLocaleForServerFileSystem();
 				// Getting pdf-info:
 				$cmd = ($this->app['pdfinfo'] . ' ') . escapeshellarg($absFile);
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
@@ -489,21 +490,25 @@ class FileContentParser {
 						$contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));
 					}
 				}
+				$this->setLocaleForServerFileSystem(TRUE);
 			}
 			break;
 		case 'doc':
 			if ($this->app['catdoc']) {
+				$this->setLocaleForServerFileSystem();
 				$cmd = ($this->app['catdoc'] . ' -d utf-8 ') . escapeshellarg($absFile);
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
 				$content = implode(LF, $res);
 				unset($res);
 				$contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));
+				$this->setLocaleForServerFileSystem(TRUE);
 			}
 			break;
 		case 'pps':
 
 		case 'ppt':
 			if ($this->app['ppthtml']) {
+				$this->setLocaleForServerFileSystem();
 				$cmd = ($this->app['ppthtml'] . ' ') . escapeshellarg($absFile);
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
 				$content = implode(LF, $res);
@@ -511,10 +516,12 @@ class FileContentParser {
 				$content = $this->pObj->convertHTMLToUtf8($content);
 				$contentArr = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
 				$contentArr['title'] = basename($absFile);
+				$this->setLocaleForServerFileSystem(TRUE);
 			}
 			break;
 		case 'xls':
 			if ($this->app['xlhtml']) {
+				$this->setLocaleForServerFileSystem();
 				$cmd = ($this->app['xlhtml'] . ' -nc -te ') . escapeshellarg($absFile);
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
 				$content = implode(LF, $res);
@@ -522,6 +529,7 @@ class FileContentParser {
 				$content = $this->pObj->convertHTMLToUtf8($content);
 				$contentArr = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
 				$contentArr['title'] = basename($absFile);
+				$this->setLocaleForServerFileSystem(TRUE);
 			}
 			break;
 		case 'sxi':
@@ -536,6 +544,7 @@ class FileContentParser {
 
 		case 'odt':
 			if ($this->app['unzip']) {
+				$this->setLocaleForServerFileSystem();
 				// Read content.xml:
 				$cmd = (($this->app['unzip'] . ' -p ') . escapeshellarg($absFile)) . ' content.xml';
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
@@ -563,21 +572,25 @@ class FileContentParser {
 						}
 					}
 				}
+				$this->setLocaleForServerFileSystem(TRUE);
 			}
 			break;
 		case 'rtf':
 			if ($this->app['unrtf']) {
+				$this->setLocaleForServerFileSystem();
 				$cmd = ($this->app['unrtf'] . ' ') . escapeshellarg($absFile);
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
 				$fileContent = implode(LF, $res);
 				unset($res);
 				$fileContent = $this->pObj->convertHTMLToUtf8($fileContent);
 				$contentArr = $this->pObj->splitHTMLContent($fileContent);
+				$this->setLocaleForServerFileSystem(TRUE);
 			}
 			break;
 		case 'txt':
 
 		case 'csv':
+			$this->setLocaleForServerFileSystem();
 			// Raw text
 			$content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($absFile);
 			// TODO: Implement auto detection of charset (currently assuming utf-8)
@@ -586,6 +599,7 @@ class FileContentParser {
 			$contentArr = $this->pObj->splitRegularContent($content);
 			$contentArr['title'] = basename($absFile);
 			// Make sure the title doesn't expose the absolute path!
+			$this->setLocaleForServerFileSystem(TRUE);
 			break;
 		case 'html':
 
@@ -595,6 +609,7 @@ class FileContentParser {
 			$contentArr = $this->pObj->splitHTMLContent($fileContent);
 			break;
 		case 'xml':
+			$this->setLocaleForServerFileSystem();
 			// PHP strip-tags()
 			$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($absFile);
 			// Finding charset:
@@ -605,12 +620,14 @@ class FileContentParser {
 			$contentArr = $this->pObj->splitRegularContent($fileContent);
 			$contentArr['title'] = basename($absFile);
 			// Make sure the title doesn't expose the absolute path!
+			$this->setLocaleForServerFileSystem(TRUE);
 			break;
 		case 'jpg':
 
 		case 'jpeg':
 
 		case 'tif':
+			$this->setLocaleForServerFileSystem();
 			// PHP EXIF
 			if (function_exists('exif_read_data')) {
 				$exif = exif_read_data($absFile, 'IFD0');
@@ -625,6 +642,7 @@ class FileContentParser {
 			$contentArr = $this->pObj->splitRegularContent($comment);
 			$contentArr['title'] = basename($absFile);
 			// Make sure the title doesn't expose the absolute path!
+			$this->setLocaleForServerFileSystem(TRUE);
 			break;
 		default:
 			return FALSE;
@@ -639,18 +657,44 @@ class FileContentParser {
 	}
 
 	/**
-	 * Creates an array with pointers to divisions of document.
-	 * ONLY for PDF files at this point. All other types will have an array with a single element with the value "0" (zero) coming back.
+	 * Sets the locale for LC_CTYPE to $TYPO3_CONF_VARS['SYS']['systemLocale']
+	 * if $TYPO3_CONF_VARS['SYS']['UTF8filesystem'] is set.
 	 *
-	 * @param 	string		File extension
-	 * @param 	string		Absolute filename (must exist and be validated OK before calling function)
-	 * @return 	array		Array of pointers to sections that the document should be divided into
+	 * @staticvar string $lastLocale Stores the locale used before it is overriden by this method.
+	 * @param boolean $resetLocale TRUE resets the locale to $lastLocale.
+	 * @return void
+	 */
+	protected function setLocaleForServerFileSystem($resetLocale = FALSE) {
+		static $lastLocale = NULL;
+		if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+			return;
+		}
+
+		if ($resetLocale) {
+			setlocale(LC_CTYPE, $lastLocale);
+			$lastLocale = NULL;
+		} else {
+			$lastLocale = setlocale(LC_CTYPE, 0);
+			setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+		}
+	}
+
+	/**
+	 * Creates an array with pointers to divisions of document.
+	 *
+	 * ONLY for PDF files at this point. All other types will have an array with a single element with the value "0" (zero)
+	 * coming back.
+	 *
+	 * @param string $ext File extension
+	 * @param string $absFile Absolute filename (must exist and be validated OK before calling function)
+	 * @return array Array of pointers to sections that the document should be divided into
 	 * @todo Define visibility
 	 */
 	public function fileContentParts($ext, $absFile) {
 		$cParts = array(0);
 		switch ($ext) {
 		case 'pdf':
+			$this->setLocaleForServerFileSystem();
 			// Getting pdf-info:
 			$cmd = ($this->app['pdfinfo'] . ' ') . escapeshellarg($absFile);
 			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
@@ -671,6 +715,7 @@ class FileContentParser {
 					$cParts[] = ($low . '-') . $high;
 				}
 			}
+			$this->setLocaleForServerFileSystem(TRUE);
 			break;
 		}
 		return $cParts;
