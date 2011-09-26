@@ -2219,7 +2219,7 @@ body.x-body-masked .x-window-plain .x-window-mc {
 /* Tree frame split bar */
 #typo3-module-menu-xsplit,
 #typo3-navigationContainer-xsplit {
-	width: 0;
+	/*width: 0;*/
 }
 
 /* Collapse icon */
