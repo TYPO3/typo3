@@ -2219,7 +2219,7 @@ body.x-body-masked .x-window-plain .x-window-mc {
 /* Tree frame split bar */
 #typo3-module-menu-xsplit,
 #typo3-navigationContainer-xsplit {
-	width: 0;
+	width: 1px;
 }
 
 /* Collapse icon */
@@ -2295,6 +2295,12 @@ body.x-body-masked .x-window-plain .x-window-mc {
 	left: -5px;
 	position: absolute;
 	width: 10px;
+}
+
+.x-layout-mini-wrapper:hover {
+	background-color: gray;
+	opacity: 0.3;
+	z-index: 9999;
 }
 
 .x-splitbar-proxy.x-splitbar-proxy-h {
