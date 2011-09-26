@@ -391,6 +391,21 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		$validEmailList = array();
 			/** @var boolean $sendEmail */
 		$sendEmail = TRUE;
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['reportEmailMarkers'])) {
+
+            foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['reportEmailMarkers'] as $userFunc) {
+                $params = array(
+                    'pObj' => &$this,
+					'curPage' => $curPage,
+					'pageList' => $pageList,
+					'markerArray' => $markerArray,
+					'oldBrokenLink' => $oldBrokenLink
+                );
+                if(is_array($newMarkers = t3lib_div::callUserFunction(&$userFunc, $params, $this))) {
+                    $markerArray = $newMarkers;
+                }
+            }
+        }
 
 		$markerArray['totalBrokenLink'] = $this->totalBrokenLink;
 		$markerArray['totalBrokenLink_old'] = $this->oldTotalBrokenLink;
@@ -463,6 +478,21 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	 */
 	protected function buildMail($curPage, $pageList, array $markerArray, array $oldBrokenLink) {
 		$pageSectionHTML = t3lib_parsehtml::getSubpart($this->templateMail, '###PAGE_SECTION###');
+
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['buildMailMarkers'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['buildMailMarkers'] as $userFunc) {
+				$params = array(
+					'curPage' => $curPage,
+					'pageList' => $pageList,
+					'markerArray' => $markerArray,
+					'oldBrokenLink' => $oldBrokenLink,
+					'pObj' => &$this,
+				);
+				if (is_array($newMarkers = t3lib_div::callUserFunction($userFunc, $params, $this))) {
+					$markerArray = $newMarkers;
+				}
+			}
+		}
 
 		if (is_array($markerArray)) {
 			foreach ($markerArray as $markerKey => $markerValue) {
