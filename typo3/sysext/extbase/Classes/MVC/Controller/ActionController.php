@@ -280,7 +280,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 				foreach ($validationResult->getSubResults() as $argumentName => $subValidationResult) {
 					if (!$subValidationResult->hasErrors()) continue;
 
-					if (array_search($argumentName, $ignoreValidationAnnotations) !== FALSE) continue;
+					if (array_search('$' . $argumentName, $ignoreValidationAnnotations) !== FALSE) continue;
 
 					$shouldCallActionMethod = FALSE;
 				}
