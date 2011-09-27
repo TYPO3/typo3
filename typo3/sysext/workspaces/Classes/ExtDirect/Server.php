@@ -84,6 +84,7 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 		$t3lib_diff = t3lib_div::makeInstance('t3lib_diff');
 		/** @var $stagesService Tx_Workspaces_Service_Stages */
 		$stagesService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
+		$parseObj = t3lib_div::makeInstance('t3lib_parsehtml_proc');
 
 		$liveRecord = t3lib_BEfunc::getRecord($parameter->table, $parameter->t3ver_oid);
 		$versionRecord = t3lib_BEfunc::getRecord($parameter->table, $parameter->uid);
@@ -140,7 +141,7 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 						$liveReturnArray[] = array(
 							'field' => $fieldName,
 							'label' => $fieldTitle,
-							'content' => $liveRecord[$fieldName]
+							'content' => $parseObj->TS_images_rte($liveRecord[$fieldName])
 						);
 					}
 				}
