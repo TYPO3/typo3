@@ -30,7 +30,6 @@
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $ID:$
  * @api
  */
 class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_RepositoryInterface, t3lib_Singleton {
@@ -92,7 +91,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	public function __construct(Tx_Extbase_Object_ObjectManagerInterface $objectManager = NULL) {
 		$this->addedObjects = new Tx_Extbase_Persistence_ObjectStorage();
 		$this->removedObjects = new Tx_Extbase_Persistence_ObjectStorage();
-		$this->objectType = str_replace(array('_Repository_', 'Repository'), array('_Model_', ''), $this->getRepositoryClassName());
+		$this->objectType = preg_replace(array('/_Repository_(?!.*_Repository_)/', '/Repository$/'), array('_Model_', ''), $this->getRepositoryClassName());
 
 		if ($objectManager === NULL) {
 			// Legacy creation, in case the object manager is NOT injected
