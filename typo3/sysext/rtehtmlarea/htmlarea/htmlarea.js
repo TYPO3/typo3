@@ -3355,7 +3355,15 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 		}
 			// Normal node
 		var attributes = this.getAttributes(node);
+			// Store all attributes in a sortable array
+		var attributeArray = new Array();
 		for (var attributeName in attributes) {
+			attributeArray.push(attributeName);
+		}
+		attributeArray.sort();
+		      // Fetch attributes in sorted order
+		for (var i = 0; i < attributeArray.length; i++) {
+			var attributeName = attributeArray[i];
 			html +=  ' ' + attributeName + '="' + HTMLArea.htmlEncode(attributes[attributeName]) + '"';
 		}
 		html = '<' + node.nodeName.toLowerCase() + html + (HTMLArea.RE_noClosingTag.test(node.nodeName) ? ' />' : '>');
