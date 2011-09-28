@@ -4064,6 +4064,9 @@ class t3lib_TCEforms {
 			$iconPath = substr($selIconFile, strlen($this->backPath));
 			$selIconInfo = @getimagesize(PATH_typo3 . $iconPath);
 		}
+		if ($selIconInfo === FALSE) {
+			$selIconFile = ''; // unset to empty string if icon is not available
+		}
 		return array($selIconFile, $selIconInfo);
 	}
 
@@ -4092,7 +4095,9 @@ class t3lib_TCEforms {
 	function optionTagStyle($iconString) {
 		if ($iconString) {
 			list($selIconFile, $selIconInfo) = $this->getIcon($iconString);
-
+			if (empty($selIconFile))  {
+				return ''; // skip background style if image is unavailable
+			}
 			$padLeft = $selIconInfo[0] + 4;
 
 			if ($padLeft >= 18 && $padLeft <= 24) {
@@ -4114,7 +4119,9 @@ class t3lib_TCEforms {
 	function optgroupTagStyle($iconString) {
 		if ($iconString) {
 			list($selIconFile, $selIconInfo) = $this->getIcon($iconString);
-
+			if (empty($selIconFile)) {
+				return ''; // skip background style if image is unavailable
+			}
 			$padLeft = $selIconInfo[0] + 4;
 
 			if($padLeft >= 18 && $padLeft <= 24) {
