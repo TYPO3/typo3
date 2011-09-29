@@ -445,7 +445,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
 			$errorFlashMessage = $this->getErrorFlashMessage();
 			if ($errorFlashMessage !== FALSE) {
-				$this->flashMessageContainer->add($errorFlashMessage);
+				$this->flashMessageContainer->add($errorFlashMessage, '', t3lib_FlashMessage::ERROR);
 			}
 
 			$referringRequest = $this->request->getReferringRequest();
