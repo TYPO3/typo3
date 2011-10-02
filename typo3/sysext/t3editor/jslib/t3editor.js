@@ -203,7 +203,7 @@ T3editor.prototype = {
 		// update the line numbers
 		updateLinenum: function() {
 			// escape if editor is not yet loaded
-			if (!this.mirror.editor) return;
+			try { if (!this.mirror.editor) return; } catch(e) { return; }
 			
 			var bodyContentLineCount = this.mirror.lineNumber(this.mirror.lastLine());
 			disLineCount = this.linenum.childNodes.length;
