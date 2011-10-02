@@ -711,8 +711,8 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	/**
 	 * Calculates the GIFBUILDER output filename/path based on a serialized, hashed value of this->setup
 	 *
-	 * @param	string		Filename prefix, eg. "GB_"
-	 * @return	string		The relative filepath (relative to PATH_site)
+	 * @param $pre string Filename prefix, eg. "GB_"
+	 * @return string The relative filepath (relative to PATH_site)
 	 * @access private
 	 */
 	function fileName($pre)	{
@@ -725,7 +725,15 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 			$meaningfulPrefix = implode('_', array_merge($this->combinedTextStrings, $this->combinedFileNames));
 			$meaningfulPrefix = $basicFileFunctions->cleanFileName($meaningfulPrefix);
-			$meaningfulPrefix = substr($meaningfulPrefix, 0, intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix'])) . '_';
+			$meaningfulPrefixLength = intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']);
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+					/** @var $t3libCsInstance t3lib_cs */
+				$t3libCsInstance = t3lib_div::makeInstance('t3lib_cs');
+				$meaningfulPrefix = $t3libCsInstance->substr('utf-8', $meaningfulPrefix, 0, $meaningfulPrefixLength);
+			} else {
+				$meaningfulPrefix = substr($meaningfulPrefix, 0, $meaningfulPrefixLength);
+			}
+			$meaningfulPrefix .= '_';
 		}
 
 			// WARNING: In PHP5 I discovered that rendering with freetype of Japanese letters was totally corrupt. Not only the wrong glyphs are printed but also some memory stack overflow resulted in strange additional chars - and finally the reason for this investigation: The Bounding box data was changing all the time resulting in new images being generated all the time. With PHP4 it works fine.
