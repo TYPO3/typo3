@@ -286,8 +286,10 @@ class SC_mod_user_setup_index {
 
 			// check Install Tool enable file
 			// @deprecated since TYPO3 4.6 - will be removed with TYPO3 4.8
-		$this->setInstallToolFileExists();
-		$this->setInstallToolFileKeep();
+		$this->installToolFileExists = is_file(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
+		if ($this->installToolFileExists) {
+			$this->installToolFileKeep = (trim(file_get_contents(PATH_typo3conf . 'ENABLE_INSTALL_TOOL')) === 'KEEP_FILE');
+		}
 
 			// Returns the script user - that is the REAL logged in user! ($GLOBALS[BE_USER] might be another user due to simulation!)
 		$scriptUser = $this->getRealScriptUserObj();
