@@ -4965,7 +4965,15 @@ class tslib_cObj {
 								$filename = substr($filename, 0, strrpos($filename, '.'));
 									// strip everything non-ascii
 								$filename = preg_replace('/[^A-Za-z0-9_-]/', '', trim($filename));
-								$gifCreator->filenamePrefix = substr($filename, 0, intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix'])) . '_';
+								$tempFilePrefixLength = intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']);
+								if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+										/** @var $t3libCsInstance t3lib_cs */
+									$t3libCsInstance = t3lib_div::makeInstance('t3lib_cs');
+									$filenamePrefix = $t3libCsInstance->substr('utf8', $filename, 0, $tempFilePrefixLength);
+								} else {
+									$filenamePrefix = substr($filename, 0, $tempFilePrefixLength);
+								}
+								$gifCreator->filenamePrefix = $filenamePrefix . '_';
 								unset($filename);
 							}
 
