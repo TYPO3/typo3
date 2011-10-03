@@ -27,6 +27,11 @@ the stage has changed for the element(s) "###RECORD_TITLE###" (###ELEMENT_NAME##
 User Comment:
 "###COMMENT###"
 
+Preview:
+###PREVIEW_LINK###
+
+###SPLITTED_PREVIEW_LINK###
+
 State was changed by ###USER_FULLNAME### (username: ###USER_USERNAME###)</target>
 			</trans-unit>
 		</body>

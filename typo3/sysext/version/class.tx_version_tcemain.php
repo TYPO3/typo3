@@ -483,6 +483,30 @@ class tx_version_tcemain {
 					'###USER_USERNAME###' => $tcemainObj->BE_USER->user['username']
 				);
 
+					// add marker for preview links if workspace extension is loaded
+				if (t3lib_extMgm::isLoaded('workspaces')) {
+					$this->workspaceService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+						// only generate the link if the marker is in the template - prevents database from getting to much entries
+					if (t3lib_div::isFirstPartOfStr($emailConfig['message'], 'LLL:')) {
+						$tempEmailMessage = $GLOBALS['LANG']->sL($emailConfig['message']);
+					} else {
+						$tempEmailMessage = $emailConfig['message'];
+					}
+					if (strpos($tempEmailMessage, '###PREVIEW_LINK###') !== FALSE) {
+						$markers['###PREVIEW_LINK###'] = $this->workspaceService->generateWorkspacePreviewLink($elementUid);
+					}
+					unset($tempEmailMessage);
+
+					$markers['###SPLITTED_PREVIEW_LINK###'] = $this->workspaceService->generateWorkspaceSplittedPreviewLink($elementUid, TRUE);
+				}
+
+					// Hook for preprocessing of the content for formmails:
+				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'])) {
+					foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'] as $_classRef) {
+						$_procObj = &t3lib_div::getUserObj($_classRef);
+						$markers = $_procObj->postModifyMarkers($markers, $this);
+					}
+				}
 
 					// sending the emails the old way with sprintf(),
 					// because it was set explicitly in TSconfig
