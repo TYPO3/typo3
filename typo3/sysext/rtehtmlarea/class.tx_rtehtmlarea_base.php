@@ -1151,7 +1151,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$output = $contents;
 		}
 		$compress = $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] && ($fileExtension == 'js') && ($output != '');
-		$relativeFilename = 'typo3temp/' . $this->ID . '/' . str_replace('-','_',$label) . '_' . t3lib_div::shortMD5(($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . ($sourceFileName ? $sourceFileName : $output)), 20) . ($compress ? '_compressed' : '') . '.' . $fileExtension;
+		$relativeFilename = 'typo3temp/' . $this->ID . '/' . str_replace('-','_',$label) . '_' . t3lib_div::shortMD5((TYPO3_version . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . ($sourceFileName ? $sourceFileName : $output)), 20) . ($compress ? '_compressed' : '') . '.' . $fileExtension;
 		$destination = PATH_site . $relativeFilename;
 		if(!file_exists($destination)) {
 			$compressedJavaScript = '';
