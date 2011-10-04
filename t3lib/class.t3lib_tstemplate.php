@@ -408,11 +408,13 @@ class t3lib_TStemplate {
 						'content' => serialize($cc),
 						'tstamp' => $GLOBALS['EXEC_TIME']
 					);
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery('cache_pagesection', 'page_id=' . intval($GLOBALS['TSFE']->id) . ' AND mpvar_hash=' . $mpvarHash, $dbFields);
+					$GLOBALS['TYPO3_DB']->exec_SELECTquery('page_id','cache_pagesection', 'page_id=' . intval($GLOBALS['TSFE']->id) . ' AND mpvar_hash=' . $mpvarHash);
 					if ($GLOBALS['TYPO3_DB']->sql_affected_rows() == 0) {
 						$dbFields['page_id'] = intval($GLOBALS['TSFE']->id);
 						$dbFields['mpvar_hash'] = $mpvarHash;
 						$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_pagesection', $dbFields);
+					} else {
+						$GLOBALS['TYPO3_DB']->exec_UPDATEquery('cache_pagesection', 'page_id=' . intval($GLOBALS['TSFE']->id) . ' AND mpvar_hash=' . $mpvarHash, $dbFields);
 					}
 				}
 			}
