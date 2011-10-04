@@ -605,6 +605,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		$blockSplit = $this->splitIntoBlock('A', $value);
 		foreach ($blockSplit as $k => $v) {
 			if ($k % 2) { // If an A-tag was found:
+				$attribArray = array();
+				$attribArray_copy = array();
 				$attribArray = $this->get_tag_attributes_classic($this->getFirstTag($v), 1);
 				$info = $this->urlInfoForLinkTags($attribArray['href']);
 
@@ -666,6 +668,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		foreach ($blockSplit as $k => $v) {
 			$error = '';
 			if ($k % 2) { // block:
+				$external = FALSE;
 				$tagCode = t3lib_div::unQuoteFilenames(trim(substr($this->getFirstTag($v), 0, -1)), true);
 				$link_param = $tagCode[1];
 				$href = '';
@@ -677,7 +680,6 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				} else {
 					$fileChar = intval(strpos($link_param, '/'));
 					$urlChar = intval(strpos($link_param, '.'));
-					$external = FALSE;
 						// Parse URL:
 					$pU = parse_url($link_param);
 						// Detects if a file is found in site-root OR is a simulateStaticDocument.
