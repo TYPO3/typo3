@@ -998,7 +998,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 				$GLOBALS['TSFE']->config['config']['compressCss'] = $GLOBALS['TSFE']->config['config']['minifyCSS'];
 			}
 		}
-		if ($GLOBALS['TSFE']->config['config']['minifyCSS']) {
+		if ($GLOBALS['TSFE']->config['config']['compressCss']) {
 			$pageRenderer->enableCompressCss();
 		}
 		if (isset($GLOBALS['TSFE']->config['config']['minifyJS'])) {
