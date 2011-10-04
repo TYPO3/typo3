@@ -151,11 +151,12 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 			<p class="service-header">
 				<span class="service-title">' . $serviceInformation['title'] . '</span> (' . $serviceInformation['extKey'] . ': ' . $serviceKey . ')
 			</p>';
+
 		if (!empty($serviceInformation['description'])) {
 			$serviceDescription .= '<p class="service-description">' . $serviceInformation['description']. '</p>';
 		}
 
-		$sericeSubtypes = empty($serviceInformation['serviceSubTypes']) ?
+		$serviceSubtypes = empty($serviceInformation['serviceSubTypes']) ?
 			'-' :
 			implode(', ', $serviceInformation['serviceSubTypes']);
 
@@ -166,10 +167,10 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 		$serviceRequiredExecutables = empty($serviceInformation['exec']) ?
 			'-' :
 			$serviceInformation['exec'];
-
 		$serviceAvailabilityClass = 'typo3-message message-error';
 		$serviceAvailable = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no');
-		if (t3lib_extmgm::findService($serviceKey, '*')) {
+
+		if (t3lib_extmgm::serviceHasHighestPriorityOfType($serviceKey, $serviceInformation['serviceType'], '*')) {
 			$serviceAvailabilityClass = 'typo3-message message-ok';
 			$serviceAvailable = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes');
 		}
@@ -179,7 +180,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 			<td class="first-cell ' . $serviceAvailabilityClass . '">' . $serviceDescription . '</td>
 			<td class="cell ' . $serviceAvailabilityClass . '">' . $serviceInformation['priority'] . '</td>
 			<td class="cell ' . $serviceAvailabilityClass . '">' . $serviceInformation['quality'] . '</td>
-			<td class="cell ' . $serviceAvailabilityClass . '">' . $sericeSubtypes . '</td>
+			<td class="cell ' . $serviceAvailabilityClass . '">' . $serviceSubtypes . '</td>
 			<td class="cell ' . $serviceAvailabilityClass . '">' . $serviceOperatingSystem . '</td>
 			<td class="cell ' . $serviceAvailabilityClass . '">' . $serviceRequiredExecutables . '</td>
 			<td class="last-cell ' . $serviceAvailabilityClass . '">' . $serviceAvailable . '</td>

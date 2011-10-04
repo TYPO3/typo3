@@ -1052,7 +1052,7 @@ final class t3lib_extMgm {
 	 * @param	string		Service type
 	 * @param	string		Service sub type
 	 * @param	mixed		Service keys that should be excluded in the search for a service. Array or comma list.
-	 * @return	mixed		Service info array if a service was found, FLASE otherwise
+	 * @return	mixed		Service info array if a service was found, FALSE otherwise
 	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
 	public static function findService($serviceType, $serviceSubType = '', $excludeServiceKeys = array()) {
@@ -1066,6 +1066,7 @@ final class t3lib_extMgm {
 		}
 
 		if (is_array($GLOBALS['T3_SERVICES'][$serviceType])) {
+
 			foreach ($GLOBALS['T3_SERVICES'][$serviceType] as $key => $info) {
 
 				if (in_array($key, $excludeServiceKeys)) {
@@ -1073,7 +1074,7 @@ final class t3lib_extMgm {
 				}
 
 					// select a subtype randomly
-					// usefull to start a service by service key without knowing his subtypes - for testing purposes
+					// useful to start a service by service key without knowing his subtypes - for testing purposes
 				if ($serviceSubType == '*') {
 					$serviceSubType = key($info['serviceSubTypes']);
 				}
@@ -1112,6 +1113,29 @@ final class t3lib_extMgm {
 			$serviceInfo = $GLOBALS['T3_SERVICES'][$serviceType][$serviceKey];
 		}
 		return $serviceInfo;
+	}
+
+	/**
+	 * Find the available service with highest priority
+	 *
+	 * @param	string		Service key
+	 * @param	string		Service type
+	 * @param	string		Service sub type
+	 * @param	mixed		Service keys that should be excluded in the search for a service. Array or comma list.
+	 * @return	boolean		Service info array if a service was found, FALSE otherwise
+	 * @author	Lorenz Ulrich <lorenz.ulrich@visol.ch>
+	 */
+	public static function serviceHasHighestPriorityOfType($serviceKey, $serviceType, $serviceSubType = '', $excludeServiceKeys = array()) {
+
+		$serviceHasHighestPriorityOfType = FALSE;
+
+		$bestAvailableService = t3lib_extMgm::findService($serviceType, $serviceSubType, $excludeServiceKeys);
+		if ($bestAvailableService['serviceKey'] === $serviceKey) {
+			$serviceHasHighestPriorityOfType = TRUE;
+		}
+
+		return $serviceHasHighestPriorityOfType;
+
 	}
 
 	/**
