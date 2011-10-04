@@ -3288,7 +3288,7 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 	 */
 	getAttributes: function (node) {
 		var attributes = node.attributes;
-		var filterededAttributes = {};
+		var filterededAttributes = [];
 		var attribute, attributeName, attributeValue;
 		for (var i = attributes.length; --i >= 0 ;) {
 			attribute = attributes.item(i);
@@ -3326,9 +3326,12 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 			if (attributeName === 'id' && /^ext-gen/.test(attributeValue)) {
 				continue;
 			}
-			filterededAttributes[attributeName] = attributeValue;
+			filterededAttributes.push({
+				attributeName: attributeName,
+				attributeValue: attributeValue
+			});
 		}
-		return filterededAttributes;
+		return (Ext.isWebKit || Ext.isOpera) ? filterededAttributes.reverse() : filterededAttributes;
 	},
 	/*
 	 * Set opening tag for a node
@@ -3355,8 +3358,8 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 		}
 			// Normal node
 		var attributes = this.getAttributes(node);
-		for (var attributeName in attributes) {
-			html +=  ' ' + attributeName + '="' + HTMLArea.htmlEncode(attributes[attributeName]) + '"';
+		for (var i = 0, n = attributes.length; i < n; i++) {
+			html +=  ' ' + attributes[i]['attributeName'] + '="' + HTMLArea.htmlEncode(attributes[i]['attributeValue']) + '"';
 		}
 		html = '<' + node.nodeName.toLowerCase() + html + (HTMLArea.RE_noClosingTag.test(node.nodeName) ? ' />' : '>');
 			// Fix orphan list elements
