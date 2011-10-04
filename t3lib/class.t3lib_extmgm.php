@@ -1013,7 +1013,7 @@ final class t3lib_extMgm {
 	 * @param	string		Service type
 	 * @param	string		Service sub type
 	 * @param	mixed		Service keys that should be excluded in the search for a service. Array or comma list.
-	 * @return	mixed		Service info array if a service was found, FLASE otherwise
+	 * @return	mixed		Service info array if a service was found, FALSE otherwise
 	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
 	public static function findService($serviceType, $serviceSubType = '', $excludeServiceKeys = array()) {
@@ -1027,6 +1027,7 @@ final class t3lib_extMgm {
 		}
 
 		if (is_array($GLOBALS['T3_SERVICES'][$serviceType])) {
+
 			foreach ($GLOBALS['T3_SERVICES'][$serviceType] as $key => $info) {
 
 				if (in_array($key, $excludeServiceKeys)) {
@@ -1034,7 +1035,7 @@ final class t3lib_extMgm {
 				}
 
 					// select a subtype randomly
-					// usefull to start a service by service key without knowing his subtypes - for testing purposes
+					// useful to start a service by service key without knowing his subtypes - for testing purposes
 				if ($serviceSubType == '*') {
 					$serviceSubType = key($info['serviceSubTypes']);
 				}
@@ -1047,17 +1048,8 @@ final class t3lib_extMgm {
 						continue;
 					}
 
-						// service depends on external programs - check if they exists
-					if (trim($info['exec'])) {
-						$executables = t3lib_div::trimExplode(',', $info['exec'], 1);
-						foreach ($executables as $executable) {
-							if (!t3lib_exec::checkCommand($executable)) {
-								self::deactivateService($serviceType, $key);
-								$info['available'] = FALSE;
-								break;
-							}
-						}
-					}
+						// Check if the service is available
+					$info['available'] = self::isServiceAvailable($serviceType, $key, $info);
 
 						// still available after exec check?
 					if ($info['available']) {
@@ -1073,6 +1065,57 @@ final class t3lib_extMgm {
 			$serviceInfo = $GLOBALS['T3_SERVICES'][$serviceType][$serviceKey];
 		}
 		return $serviceInfo;
+	}
+
+	/**
+	 * Find a specific service identified by its key
+	 * Note that this completely bypasses the notions of priority and quality
+	 *
+	 * @param string $serviceKey Service key
+	 * @return array Service info array if a service was found
+	 * @throws t3lib_exception
+	 */
+	public static function findServiceByKey($serviceKey) {
+		if (is_array($GLOBALS['T3_SERVICES'])) {
+				// Loop on all service types
+				// NOTE: we don't care about the actual type, we are looking for a specific key
+			foreach ($GLOBALS['T3_SERVICES'] as $serviceType => $servicesPerType) {
+				if (isset($servicesPerType[$serviceKey])) {
+					$serviceDetails = $servicesPerType[$serviceKey];
+						// Test if service is available
+					if (self::isServiceAvailable($serviceType, $serviceKey, $serviceDetails)) {
+							// We have found the right service, return its information
+						return $serviceDetails;
+					}
+				}
+			}
+		}
+		throw new t3lib_exception('Service not found for key: ' . $serviceKey, 1319217244);
+	}
+
+	/**
+	 * Check if a given service is available, based on the executable files it depends on
+	 *
+	 * @param string $serviceType Type of service
+	 * @param string $serviceKey Specific key of the service
+	 * @param array $serviceDetails Information about the service
+	 * @return boolean Service availability
+	 */
+	public static function isServiceAvailable($serviceType, $serviceKey, $serviceDetails) {
+
+			// If the service depends on external programs - check if they exists
+		if (trim($serviceDetails['exec'])) {
+			$executables = t3lib_div::trimExplode(',', $serviceDetails['exec'], 1);
+			foreach ($executables as $executable) {
+					// If at least one executable file is not available, exit early returning FALSE
+				if (!t3lib_exec::checkCommand($executable)) {
+					self::deactivateService($serviceType, $serviceKey);
+					return FALSE;
+				}
+			}
+		}
+			// The service is available
+		return TRUE;
 	}
 
 	/**
