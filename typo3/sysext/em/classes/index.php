@@ -1451,6 +1451,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			// Fetch extension from TER:
 			if (!strlen($version)) {
 				$versions = array_keys($this->xmlHandler->extensionsXML[$extKey]['versions']);
+					// sort version numbers ascending to pick the highest version
+				natsort($versions);
 				$version = end($versions);
 			}
 			$fetchData = $this->terConnection->fetchExtension($extKey, $version, $this->xmlHandler->extensionsXML[$extKey]['versions'][$version]['t3xfilemd5'], $this->getMirrorURL());
