@@ -280,6 +280,9 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	protected function checkPageLinks($page) {
 		$page = intval($page);
 		$pageSections = '';
+		$pageIds = '';
+		$oldLinkCounts = array();
+
 		$modTS = $this->loadModTSconfig($page);
 		$searchFields = $this->getSearchField($modTS);
 		$linkTypes = $this->getLinkTypes($modTS);
@@ -297,23 +300,28 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		if (!$rootLineHidden || $modTS['checkhidden'] == 1) {
 			$pageIds = $processor->extGetTreeList($page, $this->depth, 0, '1=1', $modTS['checkhidden']);
 			if ($pageRow['hidden'] == 0 || $modTS['checkhidden'] == 1) {
+					// tx_linkvalidator_Processor::extGetTreeList always adds trailing comma:
 				$pageIds .= $page;
 			}
+		}
 
+		if (!empty($pageIds)) {
 			$processor->init($searchFields, $pageIds);
+
 			if (!empty($this->email)) {
 				$oldLinkCounts = $processor->getLinkCounts($page);
 				$this->oldTotalBrokenLink += $oldLinkCounts['brokenlinkCount'];
 			}
+
+			$processor->getLinkStatistics($linkTypes, $modTS['checkhidden']);
+
+			if (!empty($this->email)) {
+				$linkCounts = $processor->getLinkCounts($page);
+				$this->totalBrokenLink += $linkCounts['brokenlinkCount'];
+				$pageSections = $this->buildMail($page, $pageIds, $linkCounts, $oldLinkCounts);
+			}
 		}
 
-		$processor->getLinkStatistics($linkTypes, $modTS['checkhidden']);
-
-		if (!empty($this->email)) {
-			$linkCounts = $processor->getLinkCounts($page);
-			$this->totalBrokenLink += $linkCounts['brokenlinkCount'];
-			$pageSections = $this->buildMail($page, $pageIds, $linkCounts, $oldLinkCounts);
-		}
 		return $pageSections;
 	}
 
