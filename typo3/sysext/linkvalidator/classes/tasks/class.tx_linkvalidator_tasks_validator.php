@@ -278,13 +278,22 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	 * @return string $pageSections Content of page section
 	 */
 	protected function checkPageLinks($page) {
+		$page = intval($page);
 		$pageSections = '';
 		$modTS = $this->loadModTSconfig($page);
 		$searchFields = $this->getSearchField($modTS);
 		$linkTypes = $this->getLinkTypes($modTS);
+
+			/** @var tx_linkvalidator_processor $processor */
 		$processor = t3lib_div::makeInstance('tx_linkvalidator_Processor');
-		$pageRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . $page);
-		$rootLineHidden = $processor->getRootLineIsHidden($pageRow);
+
+		if ($page === 0) {
+			$rootLineHidden = FALSE;
+		} else {
+			$pageRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . $page);
+			$rootLineHidden = $processor->getRootLineIsHidden($pageRow);
+		}
+
 		if (!$rootLineHidden || $modTS['checkhidden'] == 1) {
 			$pageIds = $processor->extGetTreeList($page, $this->depth, 0, '1=1', $modTS['checkhidden']);
 			if ($pageRow['hidden'] == 0 || $modTS['checkhidden'] == 1) {
