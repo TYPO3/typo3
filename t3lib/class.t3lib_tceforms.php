@@ -4907,7 +4907,7 @@ class t3lib_TCEforms {
 				} elseif (t3lib_div::inList('singlebox,checkbox', $fieldValue['config']['renderMode'])) {
 					$icon = t3lib_iconWorks::mapRecordTypeToSpriteIconName($f_table, $row);
 				} else {
-					$icon = 'empty-empty';
+					$icon = '';
 				}
 
 					// Add the item:
