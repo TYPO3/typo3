@@ -366,6 +366,11 @@ class tx_linkvalidator_Processor {
 	 */
 	public function getLinkCounts($curPage) {
 		$markerArray = array();
+
+		if (empty($this->pidList)) {
+			$this->pidList = $curPage;
+		}
+
 		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'count(uid) as nbBrokenLinks,link_type',
 			'tx_linkvalidator_link',
