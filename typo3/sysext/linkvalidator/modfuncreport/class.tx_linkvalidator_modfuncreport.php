@@ -443,9 +443,9 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 				$GLOBALS['BE_USER']->getPagePermsClause(1),
 				$this->modTS['checkhidden']
 			);
-			if ($this->pObj->pageinfo['hidden'] == 0 || $this->modTS['checkhidden']==1){
-				$pageList .= $this->pObj->id;
-			}
+
+				// Always add the current page, because we are just displaying the results
+			$pageList .= $this->pObj->id;
 
 			if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*',
