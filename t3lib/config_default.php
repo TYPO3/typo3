@@ -134,12 +134,16 @@ $TYPO3_CONF_VARS = array(
 				'cache_pages' => array(
 					'frontend' => 't3lib_cache_frontend_VariableFrontend',
 					'backend' => 't3lib_cache_backend_DbBackend',
-					'options' => array(),
+					'options' => array(
+						'compression' => TRUE
+					),
 				),
 				'cache_pagesection' => array(
 					'frontend' => 't3lib_cache_frontend_VariableFrontend',
 					'backend' => 't3lib_cache_backend_DbBackend',
-					'options' => array(),
+					'options' => array(
+						'compression' => TRUE
+					),
 				),
 				'cache_phpcode' => array(
 					'frontend' => 't3lib_cache_frontend_PhpFrontend',
