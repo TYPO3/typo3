@@ -66,7 +66,7 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	 * @param tx_linkvalidator_Processor $reference Parent instance of tx_linkvalidator_Processor
 	 * @return boolean TRUE on success or FALSE on error
 	 */
-	public function checkLink($url, array $softRefEntry, tx_linkvalidator_Processor $reference) {
+	public function checkLink($url, $softRefEntry, $reference) {
 		$anchor = '';
 		$this->responseContent = TRUE;
 
@@ -115,7 +115,7 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	 * @param tx_linkvalidator_Processor $reference Parent instance of tx_linkvalidator_Processor
 	 * @return boolean TRUE on success or FALSE on error
 	 */
-	protected function checkPage($page, array $softRefEntry, tx_linkvalidator_Processor $reference) {
+	protected function checkPage($page, $softRefEntry, $reference) {
 		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'uid, title, deleted, hidden, starttime, endtime',
 			'pages',
@@ -211,7 +211,7 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	 * @param array $errorParams All parameters needed for the rendering of the error message
 	 * @return string Validation error message
 	 */
-	public function getErrorMessage(array $errorParams) {
+	public function getErrorMessage($errorParams) {
 		$errorType = $errorParams['errorType'];
 
 		if (is_array($errorParams['page'])) {
@@ -282,7 +282,7 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	 * @param array $row Broken link record
 	 * @return string Parsed broken url
 	 */
-	public function getBrokenUrl(array $row) {
+	public function getBrokenUrl($row) {
 		$domain = rtrim(t3lib_div::getIndpEnv('TYPO3_SITE_URL'), '/');
 		$rootLine = t3lib_BEfunc::BEgetRootLine($row['record_pid']);
 			// checks alternate domains

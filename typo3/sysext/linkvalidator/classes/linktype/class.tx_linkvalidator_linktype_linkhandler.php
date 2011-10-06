@@ -56,7 +56,7 @@ class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Ab
 	 * @param tx_linkvalidator_Processor $reference Parent instance of tx_linkvalidator_Processor
 	 * @return boolean TRUE on success or FALSE on error
 	 */
-	public function checkLink($url, array $softRefEntry, tx_linkvalidator_Processor $reference) {
+	public function checkLink($url, $softRefEntry, $reference) {
 		$response = TRUE;
 		$errorParams = array();
 		$parts = explode(":", $url);
@@ -98,7 +98,7 @@ class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Ab
 	 * @param string $key Validator hook name
 	 * @return string fetched type
 	 */
-	public function fetchType(array $value, $type, $key) {
+	public function fetchType($value, $type, $key) {
 		if ($type == 'string' && strtolower(substr($value['tokenValue'], 0, 7)) == 'record:') {
 			$type = 'linkhandler';
 		}

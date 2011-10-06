@@ -63,7 +63,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 	 * @param tx_linkvalidator_Processor $reference Parent instance of tx_linkvalidator_Processor
 	 * @return boolean TRUE on success or FALSE on error
 	 */
-	public function checkLink($url, array $softRefEntry, tx_linkvalidator_Processor $reference) {
+	public function checkLink($url, $softRefEntry, $reference) {
 		$errorParams = array();
 		$isValidUrl = TRUE;
 
@@ -179,7 +179,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 	 * @param string $key Validator hook name
 	 * @return string Fetched type
 	 */
-	public function fetchType(array $value, $type, $key) {
+	public function fetchType($value, $type, $key) {
 		preg_match_all('/((?:http|https))(?::\/\/)(?:[^\s<>]+)/i', $value['tokenValue'], $urls, PREG_PATTERN_ORDER);
 
 		if (!empty($urls[0][0])) {
