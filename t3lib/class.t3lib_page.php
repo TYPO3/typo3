@@ -1155,21 +1155,14 @@ class t3lib_pageSelect {
 					$wsAlt['_ORIG_pid'] = $wsAlt['pid']; // Keep the old (-1) - indicates it was a version...
 					$wsAlt['pid'] = $row['pid']; // Set in the online versions PID.
 
-						// "element" and "page" type versions:
 						// For versions of single elements or page+content, preserve online UID and PID (this will produce true "overlay" of element _content_, not any references)
 						// For page+content the "_ORIG_uid" should actually be used as PID for selection of tables with "versioning_followPages" enabled.
-					if ($table !== 'pages' || $wsAlt['t3ver_swapmode'] <= 0) {
-						$wsAlt['_ORIG_uid'] = $wsAlt['uid'];
-						$wsAlt['uid'] = $row['uid'];
+					$wsAlt['_ORIG_uid'] = $wsAlt['uid'];
+					$wsAlt['uid'] = $row['uid'];
 
-							// Translate page alias as well so links are pointing to the _online_ page:
-						if ($table === 'pages') {
-							$wsAlt['alias'] = $row['alias'];
-						}
-					} else {
-							// "branch" versions:
-							// Keeping overlay uid and pid so references are changed. This is only for page-versions with BRANCH below!
-						$wsAlt['_ONLINE_uid'] = $row['uid']; // The UID of the versionized record is kept and the uid of the online version is stored
+						// Translate page alias as well so links are pointing to the _online_ page:
+					if ($table === 'pages') {
+						$wsAlt['alias'] = $row['alias'];
 					}
 
 						// Changing input record to the workspace version alternative:
@@ -1276,7 +1269,7 @@ class t3lib_pageSelect {
 	 * @see t3lib_befunc::getWorkspaceVersionOfRecord()
 	 */
 	function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields = '*', $bypassEnableFieldsCheck = FALSE) {
-		if ($workspace !== 0 && ($table == 'pages' || $GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
+		if ($workspace !== 0) {
 				// Have to hardcode it for "pages" table since TCA is not loaded at this moment!
 
 				// Setting up enableFields for version record:

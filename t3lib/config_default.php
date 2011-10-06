@@ -464,7 +464,6 @@ $TYPO3_CONF_VARS = array(
 //			'group' => '',						// default in tce_main is 'show,edit,new,editcontent'. If this is set (uncomment), this value is used instead.
 //			'everybody' => ''					// default in tce_main is ''. If this is set (uncomment), this value is used instead.
 		),
-		'newPagesVersioningType' => -1,			// Integer: Default versioning type for new pages create as versions. -1 means "element", 0 means "page", 1 means "branch". If using enything else than -1 ("element") here you also have to set "elementVersioningOnly=FALSE" . Please note that "page" and "branch" types are deprecated since TYPO3 4.2 and will be unsupported in TYPO3 4.6. Thus, this option will be removed in TYPO3 4.6.
 		'defaultUC' => array (					// Override default settings for BE-users. See class.t3lib_beuserauth.php, array $uc_default
 		),
 			// The control of fileextensions goes in two catagories. Webspace and Ftpspace. Webspace is folders accessible from a webbrowser (below TYPO3_DOCUMENT_ROOT) and ftpspace is everything else.
@@ -491,7 +490,6 @@ $TYPO3_CONF_VARS = array(
 		'compactFlexFormXML' => 0,				// If set, the flexform XML will not contain indentation spaces making XML more compact
 		'flexformForceCDATA' => 0,				// Boolean:  If set, will add CDATA to Flexform XML. Some versions of libxml have a bug that causes HTML entities to be stripped from any XML content and this setting will avoid the bug by adding CDATA.
 		'explicitConfirmationOfTranslation' => FALSE,	// If set, then the diff-data of localized records is not saved automatically when updated but requires that a translator clicks the special finish_translation/save/close button that becomes available.
-		'elementVersioningOnly' => TRUE,		// If TRUE, only element versioning is allowed in the backend (see option newPagesVersioningType). Setting this flag is recommended for new installations of TYPO3 4.2+ since "page" and "branch" versioning types are known for the drawbacks of loosing ids and "element" type versions supports moving now. Please note that "page" and "branch" types are deprecated since TYPO3 4.2 and will be unsupported in TYPO3 4.6. Thus, this option will be removed in TYPO3 4.6.
 		'versionNumberInFilename' => FALSE,	// <p>Boolean: If TRUE, included CSS and JS files will have the timestamp embedded in the filename, ie. filename.1269312081.js. This will make browsers and proxies reload the files if they change (thus avoiding caching issues). IMPORTANT: this feature requires extra .htaccess rules to work (please refer to _.htaccess or the _.htaccess file from the dummy package)</p><p>If FALSE the filemtime will be appended as a query-string.</p>
 		'spriteIconGenerator_handler' => '',	// String: Used to register own/other spriteGenerating Handler, they have to implement the interface t3lib_spritemanager_SpriteIconGenerator. If set to "t3lib_spritemanager_SpriteBuildingHandler" icons from extensions will automatically merged into sprites.
 		'debug' => FALSE,			// Boolean: If set, the loginrefresh is disabled and pageRenderer is set to debug mode. Use this to debug the backend only!

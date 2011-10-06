@@ -878,7 +878,7 @@ class t3lib_treeView {
 				// Passing on default <td> class for subelements:
 			if (is_array($row) && $subCSSclass !== '') {
 
-				if ($this->table === 'pages' && $this->highlightPagesWithVersions && !isset($row['_CSSCLASS']) && count(t3lib_BEfunc::countVersionsOfRecordsOnPage($this->BE_USER->workspace, $row['uid'], TRUE))) {
+				if ($this->table === 'pages' && $this->highlightPagesWithVersions && !isset($row['_CSSCLASS']) && count(t3lib_BEfunc::countVersionsOfRecordsOnPage($this->BE_USER->workspace, $row['uid']))) {
 					$row['_CSSCLASS'] = 'ver-versions';
 				}
 
