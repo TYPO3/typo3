@@ -161,10 +161,10 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			}
 
 			if(isset($this->setup['transparentBackground.'])) {
-				$this->setup['transparentBackground'] = $this->cOjb->stdWrap($this->setup['transparentBackground'], $this->setup['transparentBackground.']);
+				$this->setup['transparentBackground'] = $this->cObj->stdWrap($this->setup['transparentBackground'], $this->setup['transparentBackground.']);
 			}
 			if(isset($this->setup['reduceColors.'])) {
-				$this->setup['reduceColors'] = $this->cOjb->stdWrap($this->setup['reduceColors'], $this->setup['reduceColors.']);
+				$this->setup['reduceColors'] = $this->cObj->stdWrap($this->setup['reduceColors'], $this->setup['reduceColors.']);
 			}
 
 				// Set default dimensions
