@@ -138,7 +138,7 @@ class tx_em_ExtensionManager {
 		if (!is_array($globalSettings)) {
 			$globalSettings = array(
 				'displayMyExtensions' => 0,
-				'selectedLanguages' => array(),
+				'selectedLanguages' => '',
 				'inlineToWindow' => 1,
 			);
 		}
