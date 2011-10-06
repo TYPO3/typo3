@@ -1265,9 +1265,7 @@ class clickMenu {
 				$onClick=preg_replace('/hideCM\(\);/i','',$onClick);
 				if (!$i[5])	$onClick.='Clickmenu.hideAll();';
 
-				if ($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler'])   {
-					$CSM = ' oncontextmenu="'.htmlspecialchars($onClick).';return false;"';
-				}
+				$CSM = ' oncontextmenu="'.htmlspecialchars($onClick).';return false;"';
 
 				$out[]='
 					<tr class="typo3-CSM-itemRow" onclick="'.htmlspecialchars($onClick).'" onmouseover="this.bgColor=\''.$GLOBALS['TBE_TEMPLATE']->bgColor5.'\';" onmouseout="this.bgColor=\'\';"'.$CSM.'>

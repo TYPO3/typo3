@@ -106,10 +106,7 @@ class t3lib_folderTree extends t3lib_treeView {
 	 */
 	function wrapTitle($title, $row, $bank = 0) {
 		$aOnClick = 'return jumpTo(\'' . $this->getJumpToParam($row) . '\',this,\'' . $this->domIdPrefix . $this->getId($row) . '\',' . $bank . ');';
-		$CSM = '';
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler']) {
-			$CSM = ' oncontextmenu="' . htmlspecialchars($GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('', $row['path'], '', 0, '', '', TRUE)) . '"';
-		}
+		$CSM = ' oncontextmenu="' . htmlspecialchars($GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('', $row['path'], '', 0, '', '', TRUE)) . '"';
 		return '<a href="#" title="' . htmlspecialchars($row['title']) . '" onclick="' . htmlspecialchars($aOnClick) . '"' . $CSM . '>' . $title . '</a>';
 	}
 
