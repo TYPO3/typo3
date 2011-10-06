@@ -282,10 +282,10 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 				);
 			}
 		} catch (Exception $exception) {
-			throw new t3lib_cache_Exception(
-				'Could not set value. ' .
-				$exception->getMessage(),
-				1207208100
+			t3lib_div::sysLog(
+				'Memcache: could not set value. Reason: ' . $exception->getMessage(),
+				'Core',
+				t3lib_div::SYSLOG_SEVERITY_WARNING
 			);
 		}
 	}
