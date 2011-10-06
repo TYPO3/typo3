@@ -499,17 +499,6 @@ class t3lib_TCEmain {
 									} else {
 										$OK = 0;
 									} // If not found in the substArray we must stop the process...
-								} elseif ($pid_value >= 0 && $this->BE_USER->workspace !== 0
-									&& $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages']) {
-										// PID points to page, the workspace is an offline space and the table follows
-										// page during versioning: This means we must check if the PID page has a version
-										// in the workspace with swapmode set to 0 (zero = page+content) and if so, change
-										// the pid to the uid of that version.
-									if ($WSdestPage = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace, 'pages', $pid_value, 'uid,t3ver_swapmode')) { // Looks for workspace version of page.
-										if ($WSdestPage['t3ver_swapmode'] == 0) { // if swapmode is zero, then change pid value.
-											$pid_value = $WSdestPage['uid'];
-										}
-									}
 								}
 								$pid_value = intval($pid_value);
 
@@ -710,40 +699,30 @@ class t3lib_TCEmain {
 							if (is_array($fieldArray)) {
 								if ($status == 'new') {
 									if ($createNewVersion) { // This creates a new version of the record with online placeholder and offline version
-										$versioningType = ($table === 'pages'
-											? $this->BE_USER->workspaceVersioningTypeGetClosest(-1)
-											: -1);
-										if ($this->BE_USER->workspaceVersioningTypeAccess($versioningType)) {
-											$newVersion_placeholderFieldArray['t3ver_label'] = 'INITIAL PLACEHOLDER';
-											$newVersion_placeholderFieldArray['t3ver_state'] = 1; // Setting placeholder state value for temporary record
-											$newVersion_placeholderFieldArray['t3ver_wsid'] = $this->BE_USER->workspace; // Setting workspace - only so display of place holders can filter out those from other workspaces.
-											$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['label']] = '[PLACEHOLDER, WS#' . $this->BE_USER->workspace . ']';
-											$this->insertDB($table, $id, $newVersion_placeholderFieldArray, FALSE); // Saving placeholder as 'original'
+										$newVersion_placeholderFieldArray['t3ver_label'] = 'INITIAL PLACEHOLDER';
+										$newVersion_placeholderFieldArray['t3ver_state'] = 1; // Setting placeholder state value for temporary record
+										$newVersion_placeholderFieldArray['t3ver_wsid'] = $this->BE_USER->workspace; // Setting workspace - only so display of place holders can filter out those from other workspaces.
+										$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['label']] = '[PLACEHOLDER, WS#' . $this->BE_USER->workspace . ']';
+										$this->insertDB($table, $id, $newVersion_placeholderFieldArray, FALSE); // Saving placeholder as 'original'
 
-												// For the actual new offline version, set versioning values to point to placeholder:
-											$fieldArray['pid'] = -1;
-											$fieldArray['t3ver_oid'] = $this->substNEWwithIDs[$id];
-											$fieldArray['t3ver_id'] = 1;
-											$fieldArray['t3ver_state'] = -1; // Setting placeholder state value for version (so it can know it is currently a new version...)
-											$fieldArray['t3ver_label'] = 'First draft version';
-											$fieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
-											if ($table === 'pages') { // Swap mode set to "branch" so we can build branches for pages.
-												$fieldArray['t3ver_swapmode'] = $versioningType;
-											}
-											$phShadowId = $this->insertDB($table, $id, $fieldArray, TRUE, 0, TRUE); // When inserted, $this->substNEWwithIDs[$id] will be changed to the uid of THIS version and so the interface will pick it up just nice!
-											if ($phShadowId) {
-													// Processes fields of the placeholder record:
-												$this->triggerRemapAction(
-													$table,
-													$id,
-													array($this, 'placeholderShadowing'),
-													array($table, $phShadowId)
-												);
-													// Hold auto-versionized ids of placeholders:
-												$this->autoVersionIdMap[$table][$this->substNEWwithIDs[$id]] = $phShadowId;
-											}
-										} else {
-											$this->newlog('Versioning type "' . $versioningType . '" was not allowed, so could not create new record.', 1);
+											// For the actual new offline version, set versioning values to point to placeholder:
+										$fieldArray['pid'] = -1;
+										$fieldArray['t3ver_oid'] = $this->substNEWwithIDs[$id];
+										$fieldArray['t3ver_id'] = 1;
+										$fieldArray['t3ver_state'] = -1; // Setting placeholder state value for version (so it can know it is currently a new version...)
+										$fieldArray['t3ver_label'] = 'First draft version';
+										$fieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
+										$phShadowId = $this->insertDB($table, $id, $fieldArray, TRUE, 0, TRUE); // When inserted, $this->substNEWwithIDs[$id] will be changed to the uid of THIS version and so the interface will pick it up just nice!
+										if ($phShadowId) {
+												// Processes fields of the placeholder record:
+											$this->triggerRemapAction(
+												$table,
+												$id,
+												array($this, 'placeholderShadowing'),
+												array($table, $phShadowId)
+											);
+												// Hold auto-versionized ids of placeholders:
+											$this->autoVersionIdMap[$table][$this->substNEWwithIDs[$id]] = $phShadowId;
 										}
 									} else {
 										$this->insertDB($table, $id, $fieldArray, FALSE, $incomingFieldArray['uid']);
@@ -2590,7 +2569,7 @@ class t3lib_TCEmain {
 				) { //Used to check language and general editing rights
 					$data = array();
 
-					$nonFields = array_unique(t3lib_div::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_label,t3ver_state,t3ver_swapmode,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, 1));
+					$nonFields = array_unique(t3lib_div::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_label,t3ver_state,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, 1));
 
 						// $row = $this->recordInfo($table,$uid,'*');
 					$row = t3lib_BEfunc::getRecordWSOL($table, $uid); // So it copies (and localized) content from workspace...
@@ -2819,7 +2798,7 @@ class t3lib_TCEmain {
 			if ($this->doesRecordExist($table, $uid, 'show')) {
 
 					// Set up fields which should not be processed. They are still written - just passed through no-questions-asked!
-				$nonFields = array('uid', 'pid', 't3ver_id', 't3ver_oid', 't3ver_wsid', 't3ver_label', 't3ver_state', 't3ver_swapmode', 't3ver_count', 't3ver_stage', 't3ver_tstamp', 'perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody');
+				$nonFields = array('uid', 'pid', 't3ver_id', 't3ver_oid', 't3ver_wsid', 't3ver_label', 't3ver_state', 't3ver_count', 't3ver_stage', 't3ver_tstamp', 'perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody');
 
 					// Select main record:
 				$row = $this->recordInfo($table, $uid, '*');
@@ -4394,11 +4373,10 @@ class t3lib_TCEmain {
 	 * @param	integer		Record uid to versionize
 	 * @param	string		Version label
 	 * @param	boolean		If TRUE, the version is created to delete the record.
-	 * @param	integer		Indicating "treeLevel" - or versioning type - "element" (-1), "page" (0) or "branch" (>=1)
 	 * @return	integer		Returns the id of the new version (if any)
 	 * @see copyRecord()
 	 */
-	function versionizeRecord($table, $id, $label, $delete = FALSE, $versionizeTree = -1) {
+	function versionizeRecord($table, $id, $label, $delete = FALSE) {
 		$id = intval($id);
 
 		// Stop any actions if the record is marked to be deleted:
@@ -4409,85 +4387,78 @@ class t3lib_TCEmain {
 
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && $id > 0) {
 			if ($this->doesRecordExist($table, $id, 'show')) {
-				if ($this->BE_USER->workspaceVersioningTypeAccess($versionizeTree)) {
 
-						// Select main record:
-					$row = $this->recordInfo($table, $id, 'pid,t3ver_id,t3ver_state');
-					if (is_array($row)) {
-						if ($row['pid'] >= 0) { // record must be online record
-							if ($row['t3ver_state'] != 3) { // record must not be placeholder for moving.
-								if (!$delete || !$this->cannotDeleteRecord($table, $id)) {
+					// Select main record:
+				$row = $this->recordInfo($table, $id, 'pid,t3ver_id,t3ver_state');
+				if (is_array($row)) {
+					if ($row['pid'] >= 0) { // record must be online record
+						if ($row['t3ver_state'] != 3) { // record must not be placeholder for moving.
+							if (!$delete || !$this->cannotDeleteRecord($table, $id)) {
 
-										// Look for next version number:
-									$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-										't3ver_id',
-										$table,
-										'((pid=-1 && t3ver_oid=' . $id . ') OR uid=' . $id . ')' . $this->deleteClause($table),
-										'',
-										't3ver_id DESC',
-										'1'
-									);
-									list($highestVerNumber) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-									$GLOBALS['TYPO3_DB']->sql_free_result($res);
+									// Look for next version number:
+								$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+									't3ver_id',
+									$table,
+									'((pid=-1 && t3ver_oid=' . $id . ') OR uid=' . $id . ')' . $this->deleteClause($table),
+									'',
+									't3ver_id DESC',
+									'1'
+								);
+								list($highestVerNumber) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+								$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
-										// Look for version number of the current:
-									$subVer = $row['t3ver_id'] . '.' . ($highestVerNumber + 1);
+									// Look for version number of the current:
+								$subVer = $row['t3ver_id'] . '.' . ($highestVerNumber + 1);
 
-										// Set up the values to override when making a raw-copy:
-									$overrideArray = array(
-										't3ver_id' => $highestVerNumber + 1,
-										't3ver_oid' => $id,
-										't3ver_label' => ($label ? $label : $subVer . ' / ' . date('d-m-Y H:m:s')),
-										't3ver_wsid' => $this->BE_USER->workspace,
-										't3ver_state' => $delete ? 2 : 0,
-										't3ver_count' => 0,
-										't3ver_stage' => 0,
-										't3ver_tstamp' => 0
-									);
-									if ($GLOBALS['TCA'][$table]['ctrl']['editlock']) {
-										$overrideArray[$GLOBALS['TCA'][$table]['ctrl']['editlock']] = 0;
+									// Set up the values to override when making a raw-copy:
+								$overrideArray = array(
+									't3ver_id' => $highestVerNumber + 1,
+									't3ver_oid' => $id,
+									't3ver_label' => ($label ? $label : $subVer . ' / ' . date('d-m-Y H:m:s')),
+									't3ver_wsid' => $this->BE_USER->workspace,
+									't3ver_state' => $delete ? 2 : 0,
+									't3ver_count' => 0,
+									't3ver_stage' => 0,
+									't3ver_tstamp' => 0
+								);
+								if ($GLOBALS['TCA'][$table]['ctrl']['editlock']) {
+									$overrideArray[$GLOBALS['TCA'][$table]['ctrl']['editlock']] = 0;
+								}
+
+									// Checking if the record already has a version in the current workspace of the backend user
+								$workspaceCheck = TRUE;
+								if ($this->BE_USER->workspace !== 0) {
+										// Look for version already in workspace:
+									$workspaceCheck = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid') ? FALSE : TRUE;
+								}
+
+								if ($workspaceCheck) {
+
+										// Create raw-copy and return result:
+										// The information of the label to be used for the workspace record
+										// as well as the information whether the record shall be removed
+										// must be forwarded (creating remove placeholders on a workspace are
+										// done by copying the record and override several fields).
+									$workspaceOptions = array();
+									if ($delete) {
+										$workspaceOptions['delete'] = $delete;
+										$workspaceOptions['label'] = $label;
 									}
-									if ($table === 'pages') {
-										$overrideArray['t3ver_swapmode'] = $versionizeTree;
-									}
-
-										// Checking if the record already has a version in the current workspace of the backend user
-									$workspaceCheck = TRUE;
-									if ($this->BE_USER->workspace !== 0) {
-											// Look for version already in workspace:
-										$workspaceCheck = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid') ? FALSE : TRUE;
-									}
-
-									if ($workspaceCheck) {
-
-											// Create raw-copy and return result:
-											// The information of the label to be used for the workspace record
-											// as well as the information whether the record shall be removed
-											// must be forwarded (creating remove placeholders on a workspace are
-											// done by copying the record and override several fields).
-										$workspaceOptions = array();
-										if ($delete) {
-											$workspaceOptions['delete'] = $delete;
-											$workspaceOptions['label'] = $label;
-										}
-										return $this->copyRecord_raw($table, $id, -1, $overrideArray, $workspaceOptions);
-									} else {
-										$this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize was already a version in the workspace (wsid=' . $this->BE_USER->workspace . ')!', 1);
-									}
+									return $this->copyRecord_raw($table, $id, -1, $overrideArray, $workspaceOptions);
 								} else {
-									$this->newlog('Record cannot be deleted: ' . $this->cannotDeleteRecord($table, $id), 1);
+									$this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize was already a version in the workspace (wsid=' . $this->BE_USER->workspace . ')!', 1);
 								}
 							} else {
-								$this->newlog('Record cannot be versioned because it is a placeholder for a moving operation', 1);
+								$this->newlog('Record cannot be deleted: ' . $this->cannotDeleteRecord($table, $id), 1);
 							}
 						} else {
-							$this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize was already a version in archive (pid=-1)!', 1);
+							$this->newlog('Record cannot be versioned because it is a placeholder for a moving operation', 1);
 						}
 					} else {
-						$this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize did not exist!', 1);
+						$this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize was already a version in archive (pid=-1)!', 1);
 					}
 				} else {
-					$this->newlog('The versioning type ' . $versionizeTree . ' mode you requested was not allowed', 1);
+					$this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize did not exist!', 1);
 				}
 			} else {
 				$this->newlog('You didnt have correct permissions to make a new version (copy) of this record "' . $table . '" / ' . $id, 1);
@@ -6464,22 +6435,15 @@ class t3lib_TCEmain {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', $table, 'uid=' . abs($pid));
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 
-				// Look, if the record UID happens to be an offline record. If so, find its live version. Offline uids will be used when a page is versionized as "branch" so this is when we must correct - otherwise a pid of "-1" and a wrong sort-row number is returned which we don't want.
+				// Look, if the record UID happens to be an offline record. If so, find its live version.
+				// Offline uids will be used when a page is versionized as "branch" so this is when we
+				// must correct - otherwise a pid of "-1" and a wrong sort-row number
+				// is returned which we don't want.
 			if ($lookForLiveVersion = t3lib_BEfunc::getLiveVersionOfRecord($table, abs($pid), 'pid')) {
 				$row = $lookForLiveVersion;
 			}
 
 			$pid = intval($row['pid']);
-		} elseif ($this->BE_USER->workspace !== 0 && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages']) {
-			// PID points to page, the workspace is an offline space and the table follows page during versioning:
-			// This means we must check if the PID page has a version in the workspace with swapmode set to 0
-			// zero = page+content) and if so, change the pid to the uid of that version.
-
-			if ($WSdestPage = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace, 'pages', $pid, 'uid,t3ver_swapmode')) { // Looks for workspace version of page.
-				if ($WSdestPage['t3ver_swapmode'] == 0) { // if swapmode is zero, then change pid value.
-					$pid = $WSdestPage['uid'];
-				}
-			}
 		}
 		return $pid;
 	}

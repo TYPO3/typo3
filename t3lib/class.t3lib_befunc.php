@@ -105,7 +105,7 @@ final class t3lib_BEfunc {
 	 */
 	public static function getRecordWSOL($table, $uid, $fields = '*', $where = '', $useDeleteClause = TRUE, $unsetMovePointers = FALSE) {
 		if ($fields !== '*') {
-			$internalFields = t3lib_div::uniqueList($fields . ',uid,pid' . ($table == 'pages' ? ',t3ver_swapmode' : ''));
+			$internalFields = t3lib_div::uniqueList($fields . ',uid,pid');
 			$row = self::getRecord($table, $uid, $internalFields, $where, $useDeleteClause);
 			self::workspaceOL($table, $row, -99, $unsetMovePointers);
 
@@ -343,7 +343,6 @@ final class t3lib_BEfunc {
 					't3ver_oid' => $val['t3ver_oid'],
 					't3ver_wsid' => $val['t3ver_wsid'],
 					't3ver_state' => $val['t3ver_state'],
-					't3ver_swapmode' => $val['t3ver_swapmode'],
 					't3ver_stage' => $val['t3ver_stage'],
 					'backend_layout_next_level' => $val['backend_layout_next_level']
 				);
@@ -373,7 +372,7 @@ final class t3lib_BEfunc {
 			$row = $getPageForRootline_cache[$ident];
 		} else {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'pid,uid,title,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_swapmode,t3ver_stage,backend_layout_next_level',
+				'pid,uid,title,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage,backend_layout_next_level',
 				'pages',
 					'uid=' . intval($uid) . ' ' .
 							self::deleteClause('pages') . ' ' .
@@ -462,9 +461,6 @@ final class t3lib_BEfunc {
 		foreach ($data as $record) {
 			if ($record['uid'] === 0) {
 				continue;
-			}
-			if ($record['_ORIG_pid'] && $record['t3ver_swapmode'] > 0) { // Branch points
-				$output = ' [#VEP#]' . $output; // Adding visual token - Versioning Entry Point - that tells that THIS position was where the versionized branch got connected to the main tree. I will have to find a better name or something...
 			}
 			$output = '/' . t3lib_div::fixed_lgd_cs(strip_tags($record['title']), $titleLimit) . $output;
 			if ($fullTitleLimit) {
@@ -3719,7 +3715,7 @@ final class t3lib_BEfunc {
 	 * Recently, this function has been modified so it MAY set $row to FALSE. This happens if a version overlay with the move-id pointer is found in which case we would like a backend preview. In other words, you should check if the input record is still an array afterwards when using this function.
 	 *
 	 * @param	string		Table name
-	 * @param	array		Record array passed by reference. As minimum, the "uid", "pid" and "t3ver_swapmode" (pages) fields must exist! Fake fields cannot exist since the fields in the array is used as field names in the SQL look up. It would be nice to have fields like "t3ver_state" and "t3ver_mode_id" as well to avoid a new lookup inside movePlhOL().
+	 * @param	array		Record array passed by reference. As minimum, the "uid" and  "pid" fields must exist! Fake fields cannot exist since the fields in the array is used as field names in the SQL look up. It would be nice to have fields like "t3ver_state" and "t3ver_mode_id" as well to avoid a new lookup inside movePlhOL().
 	 * @param	integer		Workspace ID, if not specified will use $GLOBALS['BE_USER']->workspace
 	 * @param	boolean		If TRUE the function does not return a "pointer" row for moved records in a workspace
 	 * @return	void		(Passed by ref).
@@ -3775,19 +3771,11 @@ final class t3lib_BEfunc {
 					}
 
 						// For versions of single elements or page+content, swap UID and PID:
-					if ($table !== 'pages' || $wsAlt['t3ver_swapmode'] <= 0) {
-						$wsAlt['_ORIG_uid'] = $wsAlt['uid'];
-						$wsAlt['uid'] = $row['uid'];
+					$wsAlt['_ORIG_uid'] = $wsAlt['uid'];
+					$wsAlt['uid'] = $row['uid'];
 
-							// Backend css class:
-						$wsAlt['_CSSCLASS'] = $table === 'pages' && $wsAlt['t3ver_swapmode'] == 0 ? 'ver-page' : 'ver-element';
-					} else { // This is only for page-versions with BRANCH below!
-						$wsAlt['_ONLINE_uid'] = $row['uid'];
-
-							// Backend css class:
-						$wsAlt['_CSSCLASS'] = 'ver-branchpoint';
-						$wsAlt['_SUBCSSCLASS'] = 'ver-branch';
-					}
+						// Backend css class:
+					$wsAlt['_CSSCLASS'] = 'ver-element';
 
 						// Changing input record to the workspace version alternative:
 					$row = $wsAlt;
@@ -3911,8 +3899,10 @@ final class t3lib_BEfunc {
 	 * @param	string		Table name you are checking for. If you don't give the table name ONLY "branch" types are found and returned TRUE. Specifying table you might also get a positive response if the pid is a "page" versioning type AND the table has "versioning_followPages" set.
 	 * @param	boolean		If set, the keyword "branchpoint" or "first" is not returned by rather the "t3ver_stage" value of the branch-point.
 	 * @return	mixed		Returns either "branchpoint" (if branch) or "first" (if page) or FALSE if nothing. Alternatively, it returns the value of "t3ver_stage" for the branchpoint (if any)
+	 * @deprecated since TYPO3 4.4, will be removed in TYPO3 4.7, as branch versioning is not supported anymore
 	 */
 	public static function isPidInVersionizedBranch($pid, $table = '', $returnStage = FALSE) {
+		t3lib_div::logDeprecatedFunction();
 		$rl = self::BEgetRootLine($pid);
 		$c = 0;
 
@@ -3953,11 +3943,11 @@ final class t3lib_BEfunc {
 	public static function getWorkspaceWhereClause($table, $workspaceId = NULL) {
 		$whereClause = '';
 
-		if (is_null($workspaceId)) {
-			$workspaceId = $GLOBALS['BE_USER']->workspace;
-		}
-
 		if (self::isTableWorkspaceEnabled($table)) {
+			if (is_null($workspaceId)) {
+				$workspaceId = $GLOBALS['BE_USER']->workspace;
+			}
+
 			$workspaceId = intval($workspaceId);
 			$pidOperator = ($workspaceId === 0 ? '!=' : '=');
 			$whereClause = ' AND ' . $table . '.t3ver_wsid=' . $workspaceId . ' AND ' . $table . '.pid' . $pidOperator . '-1';
@@ -3971,14 +3961,13 @@ final class t3lib_BEfunc {
 	 *
 	 * @param	integer		Workspace ID
 	 * @param	integer		Page ID
-	 * @param	boolean		If set, then all tables and not only "versioning_followPages" are found (except other pages)
 	 * @return	array		Overview of records
 	 */
-	public static function countVersionsOfRecordsOnPage($workspace, $pageId, $allTables = FALSE) {
+	public static function countVersionsOfRecordsOnPage($workspace, $pageId) {
 		$output = array();
 		if ($workspace != 0) {
 			foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
-				if ($tableName != 'pages' && $cfg['ctrl']['versioningWS'] && ($cfg['ctrl']['versioning_followPages'] || $allTables)) {
+				if ($tableName != 'pages' && $cfg['ctrl']['versioningWS']) {
 
 						// Select all records from this table in the database from the workspace
 						// This joins the online version with the offline version as tables A and B

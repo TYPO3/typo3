@@ -739,10 +739,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			// Always for Live workspace AND if live-edit is enabled and tables are completely without versioning it is ok as well.
 		if ($this->workspace === 0 || ($this->workspaceRec['live_edit'] && !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) || $GLOBALS['TCA'][$table]['ctrl']['versioningWS_alwaysAllowLiveEdit']) {
 			return 2; // OK to create for this table.
-		} elseif (t3lib_BEfunc::isPidInVersionizedBranch($pid, $table)) { // Check if records from $table can be created with this PID: Either if inside "branch" versioning type or a "versioning_followPages" table on a "page" versioning type.
-				// Now, check what the stage of that "page" or "branch" version type is:
-			$stage = t3lib_BEfunc::isPidInVersionizedBranch($pid, $table, TRUE);
-			return $this->workspaceCheckStageForCurrent($stage) ? 1 : -1;
 		} else {
 			return FALSE; // If the answer is FALSE it means the only valid way to create or edit records in the PID is by versioning
 		}
@@ -756,11 +752,14 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	boolean		TRUE if OK.
 	 */
 	function workspaceCreateNewRecord($pid, $table) {
-		if ($res = $this->workspaceAllowLiveRecordsInPID($pid, $table)) { // If LIVE records cannot be created in the current PID due to workspace restrictions, prepare creation of placeholder-record
+		if ($res = $this->workspaceAllowLiveRecordsInPID($pid, $table)) {
+				// If LIVE records cannot be created in the current PID due to workspace restrictions, prepare creation of placeholder-record
 			if ($res < 0) {
-				return FALSE; // Stage for versioning root point and users access level did not allow for editing
+					// Stage for versioning root point and users access level did not allow for editing
+				return FALSE;
 			}
-		} elseif (!$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) { // So, if no live records were allowed, we have to create a new version of this record:
+		} elseif (!$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+				// So, if no live records were allowed, we have to create a new version of this record:
 			return FALSE;
 		}
 		return TRUE;
@@ -775,7 +774,9 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	boolean		TRUE if ok.
 	 */
 	function workspaceAllowAutoCreation($table, $id, $recpid) {
-			// Auto-creation of version: In offline workspace, test if versioning is enabled and look for workspace version of input record. If there is no versionized record found we will create one and save to that.
+			// Auto-creation of version: In offline workspace, test if versioning is
+			// enabled and look for workspace version of input record.
+			// If there is no versionized record found we will create one and save to that.
 		if ($this->workspace !== 0 // Only in draft workspaces
 			&& !$this->workspaceRec['disable_autocreate'] // Auto-creation must not be disabled.
 			&& $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] // Table must be versionizable
@@ -790,7 +791,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 
 	/**
 	 * Checks if an element stage allows access for the user in the current workspace
-	 * In workspaces 0 (Live) and -1 (Default draft) access is always granted for any stage.
+	 * In live workspace (= 0) access is always granted for any stage.
 	 * Admins are always allowed.
 	 * An option for custom workspaces allows members to also edit when the stage is "Review"
 	 *
@@ -798,17 +799,18 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	boolean		TRUE if user is allowed access
 	 */
 	function workspaceCheckStageForCurrent($stage) {
-		$stage = intval($stage);
+			// always allow for admins
 		if ($this->isAdmin()) {
 			return TRUE;
 		}
 
-		if ($this->workspace > 0 && t3lib_extMgm::isLoaded('workspaces')) {
+		if ($this->workspace !== 0 && t3lib_extMgm::isLoaded('workspaces')) {
+			$stage = intval($stage);
 			$stat = $this->checkWorkspaceCurrent();
 
 				// Check if custom staging is activated
 			$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $stat['uid']);
-			if ($workspaceRec['custom_stages'] > 0 && $stage !== 0 && $stage !== '-10') {
+			if ($workspaceRec['custom_stages'] > 0 && $stage !== 0 && $stage !== -10) {
 
 					// Get custom stage record
 				$workspaceStageRec = t3lib_BEfunc::getRecord('sys_workspace_stage', $stage);
@@ -828,7 +830,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 					}
 				}
 				// only owner is allowed to change records which are "ready to publish"
-			} elseif ($stage == '-10' || $stage == '-20') {
+			} elseif ($stage == -10 || $stage == -20) {
 				if ($stat['_ACCESS'] === 'owner') {
 					return TRUE;
 				} else {
@@ -843,8 +845,9 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				}
 			}
 		} else {
+				// Always OK for live workspace.
 			return TRUE;
-		} // Always OK for live and draft workspaces.
+		}
 	}
 
 	/**
@@ -901,40 +904,15 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *						-1 = element
 	 *						>1 = branch (deprecated), indicating the "nesting" level
 	 * @return	boolean		TRUE if OK
+	 * @deprecated since TYPO3 4.4, will be removed in TYPO3 4.8 as only element versioning is supported now
 	 */
 	function workspaceVersioningTypeAccess($type) {
-		$retVal = FALSE;
+		t3lib_div::logDeprecatedFunction();
 
 		$type = t3lib_utility_Math::forceIntegerInRange($type, -1);
 
-			// Check if only element versioning is allowed:
-		if ($type != -1) {
-			return FALSE;
-		}
-
-		if ($this->workspace > 0 && !$this->isAdmin()) {
-			$stat = $this->checkWorkspaceCurrent();
-			if ($stat['_ACCESS'] !== 'owner') {
-
-				switch ((int) $type) {
-					case -1:
-						$retVal = $this->workspaceRec['vtypes'] & 1 ? FALSE : TRUE;
-					break;
-					case 0:
-						$retVal = $this->workspaceRec['vtypes'] & 2 ? FALSE : TRUE;
-					break;
-					default:
-						$retVal = $this->workspaceRec['vtypes'] & 4 ? FALSE : TRUE;
-					break;
-				}
-			} else {
-				$retVal = TRUE;
-			}
-		} else {
-			$retVal = TRUE;
-		}
-
-		return $retVal;
+			// only element versioning is allowed now
+		return $type == -1;
 	}
 
 	/**
@@ -943,8 +921,11 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @see workspaceVersioningTypeAccess() for hints on $type
 	 * @param	integer		Versioning type to evaluation: -1, 0, >1
 	 * @return	integer		Returning versioning type
+	 * @deprecated since TYPO3 4.4, will be removed in TYPO3 4.8 as only element versioning is supported now
 	 */
 	function workspaceVersioningTypeGetClosest($type) {
+		t3lib_div::logDeprecatedFunction();
+
 		$type = t3lib_utility_Math::forceIntegerInRange($type, -1);
 
 		if ($this->workspace > 0) {
