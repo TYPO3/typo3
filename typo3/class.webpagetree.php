@@ -176,10 +176,7 @@ class webPageTree extends t3lib_browseTree {
 		}
 
 		$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->domIdPrefix.$this->getId($row).'\','.$bank.');';
-		$CSM = '';
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler'])	{
-			$CSM = ' oncontextmenu="'.htmlspecialchars($GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('','pages',$row['uid'],0,'&bank='.$this->bank,'',TRUE)).';"';
-		}
+		$CSM = ' oncontextmenu="'.htmlspecialchars($GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('','pages',$row['uid'],0,'&bank='.$this->bank,'',TRUE)).';"';
 		$thePageTitle='<a href="#" onclick="'.htmlspecialchars($aOnClick).'"'.$CSM.'>'.$title.'</a>';
 
 			// Wrap title in a drag/drop span.
