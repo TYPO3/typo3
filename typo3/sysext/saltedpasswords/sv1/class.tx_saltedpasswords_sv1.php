@@ -100,8 +100,7 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 		$mode = TYPO3_MODE;
 		if ($this->info['requestedServiceSubType'] === 'authUserBE') {
 			$mode = 'BE';
-		}
-		elseif ($this->info['requestedServiceSubType'] === 'authUserFE') {
+		} elseif ($this->info['requestedServiceSubType'] === 'authUserFE') {
 			$mode = 'FE';
 		}
 
