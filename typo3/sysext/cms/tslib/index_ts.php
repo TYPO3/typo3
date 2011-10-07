@@ -285,11 +285,6 @@ $TSFE->workspacePreviewInit();
 // After this point we have an array, $page in TSFE, which is the page-record of the current page, $id
 // *****************************************
 $TT->push('Process ID','');
-		// Initialize admin panel since simulation settings are required here:
-	if ($TSFE->isBackendUserLoggedIn()) {
-		$BE_USER->initializeAdminPanel();
-	}
-
 	$TSFE->checkAlternativeIdMethods();
 	$TSFE->clear_preview();
 	$TSFE->determineId();
@@ -311,6 +306,9 @@ $TT->pull();
 
 // *****************************************
 // Admin Panel & Frontend editing
+// The admin panel itself needs to be initialized before
+// (during TSFE->initializeBackendUser) since simulation settings are required
+// when determining the ID etc
 // *****************************************
 if ($TSFE->isBackendUserLoggedIn()) {
 		// if a BE User is present load, the sprite manager for frontend-editing
