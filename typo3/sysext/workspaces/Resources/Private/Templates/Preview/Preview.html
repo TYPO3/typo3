@@ -8,7 +8,7 @@
 	var asNumber = function(val) {
 		return isNaN(val) ? 0 : parseInt(val, 10);
 	};
-	var TYPO3 = {};
+	var TYPO3 = TYPO3 || {};
 	TYPO3.ready = function () {
 		// make sure we're in the workspace preview module
 		if (typeof parent.resize == 'function') {
