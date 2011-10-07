@@ -642,6 +642,10 @@
 			$GLOBALS['TT']->pull();
 			$GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] = microtime(TRUE);
 
+				// Initialize admin panel since simulation settings are
+				// required after this TSFE call
+			$BE_USER->initializeAdminPanel();
+
 		} elseif ($this->ADMCMD_preview_BEUSER_uid) {
 				// TODO: validate the comment below: is this necessary? if so,
 				// formfield_status should be set to "" in t3lib_tsfeBeUserAuth
