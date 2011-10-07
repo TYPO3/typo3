@@ -177,7 +177,7 @@ TYPO3.Workspaces.Toolbar.selectStateMassActionCombo = new Ext.form.ComboBox({
 
 TYPO3.Workspaces.Toolbar.Pager = new Ext.PagingToolbar({
 	store :  TYPO3.Workspaces.MainStore,
-	pageSize : 10,
+	pageSize : 30,
 	displayInfo: false,
 	plugins : [ TYPO3.Workspaces.Configuration.GridFilters ]
 });
