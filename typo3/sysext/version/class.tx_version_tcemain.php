@@ -479,7 +479,9 @@ class tx_version_tcemain {
 					'###ELEMENT_NAME###' => $elementName,
 					'###NEXT_STAGE###' => $newStage,
 					'###COMMENT###' => $comment,
+						// See: #30212 - keep both markers for compatibility
 					'###USER_REALNAME###' => $tcemainObj->BE_USER->user['realName'],
+					'###USER_FULLNAME###' => $tcemainObj->BE_USER->user['realName'],
 					'###USER_USERNAME###' => $tcemainObj->BE_USER->user['username']
 				);
 
