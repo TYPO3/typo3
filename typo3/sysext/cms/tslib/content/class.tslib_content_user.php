@@ -37,8 +37,8 @@ class tslib_content_User extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject, USER
 	 *
-	 * @param	array		Array of TypoScript properties
-	 * @return	string		Output
+	 * @param array Array of TypoScript properties
+	 * @return string Output
 	 */
 	public function render($conf = array()) {
 		$content = '';
@@ -46,7 +46,10 @@ class tslib_content_User extends tslib_content_Abstract {
 				// Come here only if we are not called from $TSFE->INTincScript_process()!
 			$this->cObj->setUserObjectType(tslib_cObj::OBJECTTYPE_USER);
 		}
-		$this->cObj->includeLibs($conf);
+			// check if $conf is an array, before calling includeLibs
+		if (is_array($conf)) {
+			$this->cObj->includeLibs($conf);
+		}
 		$tempContent = $this->cObj->callUserFunction($conf['userFunc'], $conf, '');
 		if ($this->cObj->doConvertToUserIntObject) {
 			$this->cObj->doConvertToUserIntObject = FALSE;
