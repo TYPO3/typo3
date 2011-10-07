@@ -1718,31 +1718,29 @@
 				// Get: Backend login status, Frontend login status
 				// - Make sure to remove fe/be cookies (temporarily); BE already done in ADMCMD_preview_postInit()
 			if (is_array($previewData))	{
-				if (!count(t3lib_div::_POST()))	{
-						// Unserialize configuration:
-					$previewConfig = unserialize($previewData['config']);
+					// Unserialize configuration:
+				$previewConfig = unserialize($previewData['config']);
 
-					if ($previewConfig['fullWorkspace']) {	// For full workspace preview we only ADD a get variable to set the preview of the workspace - so all other Get vars are accepted. Hope this is not a security problem. Still posting is not allowed and even if a backend user get initialized it shouldn't lead to situations where users can use those credentials.
+				if ($previewConfig['fullWorkspace']) {	// For full workspace preview we only ADD a get variable to set the preview of the workspace - so all other Get vars are accepted. Hope this is not a security problem. Even if a backend user get initialized it shouldn't lead to situations where users can use those credentials.
 
-							// Set the workspace preview value:
-						t3lib_div::_GETset($previewConfig['fullWorkspace'],'ADMCMD_previewWS');
+						// Set the workspace preview value:
+					t3lib_div::_GETset($previewConfig['fullWorkspace'],'ADMCMD_previewWS');
 
-							// If ADMCMD_prev is set the $inputCode value cannot come from a cookie and we set that cookie here. Next time it will be found from the cookie if ADMCMD_prev is not set again...
-						if (t3lib_div::_GP('ADMCMD_prev'))	{
-							SetCookie('ADMCMD_prev', t3lib_div::_GP('ADMCMD_prev'), 0, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));	// Lifetime is 1 hour, does it matter much? Requires the user to click the link from their email again if it expires.
-						}
-						return $previewConfig;
-					} elseif (t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$inputCode === t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'))	{
+						// If ADMCMD_prev is set the $inputCode value cannot come from a cookie and we set that cookie here. Next time it will be found from the cookie if ADMCMD_prev is not set again...
+					if (t3lib_div::_GP('ADMCMD_prev'))	{
+						SetCookie('ADMCMD_prev', t3lib_div::_GP('ADMCMD_prev'), 0, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));	// Lifetime is 1 hour, does it matter much? Requires the user to click the link from their email again if it expires.
+					}
+					return $previewConfig;
+				} elseif (t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$inputCode === t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'))	{
 
-							// Set GET variables:
-						$GET_VARS = '';
-						parse_str($previewConfig['getVars'], $GET_VARS);
-						t3lib_div::_GETset($GET_VARS);
+						// Set GET variables:
+					$GET_VARS = '';
+					parse_str($previewConfig['getVars'], $GET_VARS);
+					t3lib_div::_GETset($GET_VARS);
 
-							// Return preview keyword configuration:
-						return $previewConfig;
-					} else die(htmlspecialchars('Request URL did not match "'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$inputCode.'"'));	// This check is to prevent people from setting additional GET vars via realurl or other URL path based ways of passing parameters.
-				} else die('POST requests are incompatible with keyword preview.');
+						// Return preview keyword configuration:
+					return $previewConfig;
+				} else die(htmlspecialchars('Request URL did not match "'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$inputCode.'"'));	// This check is to prevent people from setting additional GET vars via realurl or other URL path based ways of passing parameters.
 			} else die('ADMCMD command could not be executed! (No keyword configuration found)');
 		}
 	}
