@@ -46,6 +46,7 @@ class tslib_content_User extends tslib_content_Abstract {
 				// Come here only if we are not called from $TSFE->INTincScript_process()!
 			$this->cObj->setUserObjectType(tslib_cObj::OBJECTTYPE_USER);
 		}
+		// check if $conf is an array, before calling includeLibs
 		if (is_array($conf)) {
 			$this->cObj->includeLibs($conf);
 		}
