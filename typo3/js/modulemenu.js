@@ -223,37 +223,31 @@ TYPO3.ModuleMenu.App = {
 	},
 
 	loadModuleComponents: function(record, params) {
-		var url;
 		var mod = record.name;
 		var relatedCard;
 		if (record.navigationComponentId) {
-			this.loadNavigationComponent(record.navigationComponentId);
-			TYPO3.Backend.NavigationDummy.hide();
-			TYPO3.Backend.NavigationIframe.getEl().parent().setStyle('overflow', 'auto');
-		} else if (record.navframe || record.navigationFrameScript) {
-			TYPO3.Backend.NavigationDummy.hide();
-			TYPO3.Backend.NavigationContainer.show();
-			this.loadNavigationComponent('typo3-navigationIframe');
-			this.openInNavFrame(record.navigationFrameScript || record.navframe, record.navigationFrameScriptParam);
-			TYPO3.Backend.NavigationIframe.getEl().parent().setStyle('overflow', 'hidden');
-		} else {
-			TYPO3.Backend.NavigationContainer.hide();
-			TYPO3.Backend.NavigationDummy.show();
-		}
-			//set internal state
-		this.loadedModule = mod;
-		this.highlightModuleMenuItem(mod);
-			//load uri, either force if module is alread opened or lazy
-		if (Ext.getCmp('typo3-contentContainerWrapper').layout.activeItem.id == 'typo3-card-' + record.name) {
-			this.openInContentFrame(record.originalLink, params, true);
-		} else {
+				this.loadNavigationComponent(record.navigationComponentId);
+				TYPO3.Backend.NavigationDummy.hide();
+				TYPO3.Backend.NavigationIframe.getEl().parent().setStyle('overflow', 'auto');
+			} else if (record.navframe || record.navigationFrameScript) {
+				TYPO3.Backend.NavigationDummy.hide();
+				TYPO3.Backend.NavigationContainer.show();
+				this.loadNavigationComponent('typo3-navigationIframe');
+				this.openInNavFrame(record.navigationFrameScript || record.navframe, record.navigationFrameScriptParam);
+				TYPO3.Backend.NavigationIframe.getEl().parent().setStyle('overflow', 'hidden');
+			} else {
+				TYPO3.Backend.NavigationContainer.hide();
+				TYPO3.Backend.NavigationDummy.show();
+			}
 			this.openInContentFrame(record.originalLink, params);
-		}
-			// compatibility
-		top.currentSubScript = record.originalLink;
-		top.currentModuleLoaded = mod;
+			this.loadedModule = mod;
+			this.highlightModuleMenuItem(mod);
 
-		TYPO3.Backend.doLayout();
+				// compatibility
+			top.currentSubScript = record.originalLink;
+			top.currentModuleLoaded = mod;
+
+			TYPO3.Backend.doLayout();
 	},
 
 	includeId: function(mod, params) {
@@ -294,7 +288,7 @@ TYPO3.ModuleMenu.App = {
 
 			// backwards compatibility
 		top.nav = component;
-
+		
 		TYPO3.Backend.NavigationContainer.show();
 		this.loadedNavigationComponentId = navigationComponentId;
 	},
@@ -311,30 +305,12 @@ TYPO3.ModuleMenu.App = {
 		}
 	},
 
-	openInContentFrame: function(url, params, forceLoad) {
-		var urlToLoad, relatedCard;
-
+	openInContentFrame: function(url, params) {
 		if (top.nextLoadModuleUrl) {
-			urlToLoad = top.nextLoadModuleUrl;
+			TYPO3.Backend.ContentContainer.setUrl(top.nextLoadModuleUrl);
 			top.nextLoadModuleUrl = '';
 		} else {
-			urlToLoad = url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : '');
-		}
-			// Make shourtcut to card
-		relatedCard = Ext.getCmp('typo3-contentContainerWrapper').get('typo3-card-' + this.loadedModule);
-			// Decide where to load module, either in card or compatibility card
-		if (relatedCard) {
-			if (relatedCard.getXType() == 'iframePanel') {
-				if(forceLoad == true) {
-					relatedCard.setUrl(urlToLoad);
-				} else {
-					relatedCard.setUrlIfChanged(urlToLoad);
-				}
-			}
-			Ext.getCmp('typo3-contentContainerWrapper').layout.setActiveItem('typo3-card-' + this.loadedModule);
-		} else {
-			TYPO3.Backend.ContentContainer.setUrl(urlToLoad);
-			Ext.getCmp('typo3-contentContainerWrapper').layout.setActiveItem(0);
+			TYPO3.Backend.ContentContainer.setUrl(url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : ''));
 		}
 	},
 
