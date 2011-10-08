@@ -155,13 +155,6 @@ class TYPO3backend {
 		}
 
 		$this->executeHook('constructPostProcess');
-
-			// Add previously generated JS to the backend
-		if (isset($GLOBALS['TBE_MODULES']['_JSINIT']) && is_array($GLOBALS['TBE_MODULES']['_JSINIT'])) {
-			foreach ($GLOBALS['TBE_MODULES']['_JSINIT'] as $value) {
-				$this->js .= $value;
-			}
-		}
 	}
 
 	/**

@@ -86,6 +86,7 @@ class t3lib_loadModules {
 		}
 
 		/*
+
 					 $modulesArray might look like this when entering this function.
 					 Notice the two modules added by extensions - they have a path attached
 
@@ -103,11 +104,19 @@ class t3lib_loadModules {
 							)
 
 					)
-		*/
 
-			// Collect required module meta information
+					 */
+			//
 		$this->absPathArray = $modulesArray['_PATHS'];
+		unset($modulesArray['_PATHS']);
+			// unset the array for calling external backend module dispatchers in typo3/mod.php
+		unset($modulesArray['_dispatcher']);
+			// unset the array for calling backend modules based on external backend module dispatchers in typo3/mod.php
+		unset($modulesArray['_configuration']);
+
 		$this->navigationComponents = $modulesArray['_navigationComponents'];
+		unset($modulesArray['_navigationComponents']);
+
 		$theMods = $this->parseModulesArray($modulesArray);
 
 		/*
@@ -393,12 +402,7 @@ class t3lib_loadModules {
 		$theMods = array();
 		if (is_array($arr)) {
 			foreach ($arr as $mod => $subs) {
-					// Module names must not start with an underline character
-				if (strpos($mod, '_') === 0) {
-					continue;
-				}
-					// Module names must be alpha-numeric
-				$mod = $this->cleanName($mod);
+				$mod = $this->cleanName($mod); // clean module name to alphanum
 				if ($mod) {
 					if ($subs) {
 						$subsArr = t3lib_div::trimExplode(',', $subs);
