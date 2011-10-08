@@ -97,6 +97,10 @@ img.removeExtension {
 	cursor: pointer;
 }
 
+.action-title-cell img {
+	padding-right: 3px;
+}
+
 .extLangTitleWithIcon img {
 	vertical-align: bottom;
 }
@@ -220,7 +224,7 @@ img.removeExtension {
 
 .em-extlist-extinfo-left {
 	float: left;
-	padding: 10px 40px 0 0;
+	addingActionadding: 10px 40px 0 0;
 }
 
 .em-extlist-extinfo-right {
@@ -276,12 +280,12 @@ a.email {
 	font-weight: bold;
 }
 
-.paddingActionIcon img {
-	margin-right: 5px;
+.paddingActionIcon {
+	text-align: right;
 }
 
-.paddingNoActionIcon img {
-	margin-right: 20px;
+.paddingActionIcon .x-action-col-0 {
+	margin-right: 8px;
 }
 
 .filteringList-highlight {
