@@ -1,5 +1,4 @@
 /* Global overwrite */
-
 .x-menu-list-item a {
 	display: block !important;
 }
@@ -7,22 +6,24 @@
 strong {
 	font-weight: bold;
 }
+
 /* Extension list */
 .x-grid3-col-col-title {
 	font-weight: bold;
 	padding: 5px;
 }
+
 .x-grid3-col-col-title img {
 	vertical-align: middle;
 }
 
 .x-panel-tbar {
-    border-bottom: none;
-    padding: 0;
+	border-bottom: none;
+	padding: 0;
 }
 
 .x-form fieldset, .x-fieldset {
-	 border: none;
+	border: none;
 }
 
 .bold button {
@@ -31,30 +32,64 @@ strong {
 
 .gridrowpanel .x-panel-body {
 	background: #fff;
-	padding:10px;
+	padding: 10px;
 	overflow: auto !important;
 }
 
 .x-grid-panel1 .x-panel-body,
 .extfiletree .x-panel-body {
-    overflow: auto !important;
+	overflow: auto !important;
 }
 
 .t3-icon-em-extension-required {
 	cursor: default;
 }
 
-
 /* extension states */
-.state-alpha div {background-color:#d12438;color:#fff !important;font-weight:bold !important;}
-.state-beta div {background-color:#97b17e;color:#fff !important;font-weight:bold !important;}
-.state-stable div {background-color:#3bb65c;color:#fff !important;font-weight:bold !important;}
-.state-experimental div {background-color:#007eba;color:#fff !important;font-weight:bold !important;}
-.state-test div {background-color:#979797;color:#fff !important;font-weight:bold !important;}
-.state-obsolete div {background-color:#000000;color:#fff !important;font-weight:bold !important;}
-.state-excludeFromUpdates div {background-color:#cf7307;color:#fff !important;font-weight:bold !important;}
+.state-alpha div {
+	background-color: #d12438;
+	color: #ffffff !important;
+	font-weight: bold !important;
+}
 
-img.installExtension, img.removeExtension {
+.state-beta div {
+	background-color:#97b17e;
+	color: #ffffff !important;
+	font-weight: bold !important;
+}
+
+.state-stable div {
+	background-color: #3bb65c;
+	color: #ffffff !important;
+	font-weight: bold !important;
+}
+
+.state-experimental div {
+	background-color: #007eba;
+	color: #ffffff !important;
+	font-weight: bold !important;
+}
+
+.state-test div {
+	background-color: #979797;
+	color: #ffffff !important;
+	font-weight: bold !important;
+}
+
+.state-obsolete div {
+	background-color: #000000;
+	color: #ffffff !important;
+	font-weight: bold !important;
+}
+
+.state-excludeFromUpdates div {
+	background-color: #cf7307;
+	color: #ffffff !important;
+	font-weight: bold !important;
+}
+
+img.installExtension,
+img.removeExtension {
 	cursor: pointer;
 }
 
@@ -87,62 +122,88 @@ img.installExtension, img.removeExtension {
 	-webkit-user-select: text;
 }
 
+.x-btn-filebrowser {
+	background-image: url(../icons/filebrowser.png) !important;
+}
 
+.x-tree-node-leaf img.tree-image {
+	background-image: url(../icons/image.png);
+}
 
-.x-btn-filebrowser { background-image:url(../icons/filebrowser.png) !important; }
-.x-tree-node-leaf img.tree-image { background-image:url(../icons/image.png); }
-.x-btn-cancel { background-image:url(../icons/cancel.png) !important;}
-.x-btn-drive { background-image:url(../icons/drive.png) !important;}
-.x-btn-server { background-image:url(../icons/server.png) !important;}
-.x-btn-flag { background-image:url(../icons/flag.png) !important;}
-.x-btn-tools { background-image:url(../icons/tools.png) !important;}
-.x-btn-settings { background-image:url(../icons/settings.png) !important;}
-.x-btn-repupdate { background-image:url(../icons/repupdate.png) !important;}
+.x-btn-cancel {
+	background-image: url(../icons/cancel.png) !important;
+}
 
+.x-btn-drive {
+	background-image: url(../icons/drive.png) !important;
+}
+
+.x-btn-server {
+	background-image: url(../icons/server.png) !important;
+}
+
+.x-btn-flag {
+	background-image: url(../icons/flag.png) !important;
+}
+
+.x-btn-tools {
+	background-image: url(../icons/tools.png) !important;
+}
+
+.x-btn-settings {
+	background-image: url(../icons/settings.png) !important;
+}
+
+.x-btn-repupdate {
+	background-image: url(../icons/repupdate.png) !important;
+}
 
 /*
  * FileUploadField component styles
  */
 .x-form-file-wrap {
-    position: relative;
-    height: 22px;
+	position: relative;
+	height: 22px;
 }
+
 .x-form-file-wrap .x-form-file {
 	position: absolute;
 	right: 0;
 	-moz-opacity: 0;
-	filter:alpha(opacity: 0);
+	filter: alpha(opacity: 0);
 	opacity: 0;
 	z-index: 2;
-    height: 22px;
+	height: 22px;
 }
+
 .x-form-file-wrap .x-form-file-btn {
 	position: absolute;
 	right: 0;
 	z-index: 1;
 }
+
 .x-form-file-wrap .x-form-file-text {
-    position: absolute;
-    left: 0;
-    z-index: 3;
-    color: #777;
+	position: absolute;
+	left: 0;
+	z-index: 3;
+	color: #777777;
 }
 
 /*
  * Settings
  */
- .h1Panel {
- 	margin: 0 0 5px 0 !important;
- }
- .panelDescription {
- 	margin: 15px 0;
- }
+.h1Panel {
+	margin: 0 0 5px 0 !important;
+}
+
+.panelDescription {
+	margin: 15px 0;
+}
 
 .em-info {
 	margin: 10px;
 	line-height: 18px;
 }
-
 
 .extvalidinfo ul {
 	list-style: disc;
@@ -185,6 +246,7 @@ img.installExtension, img.removeExtension {
 	width: 100px;
 	font-weight: bold;
 }
+
 .em-extlist-extinfo-right label {
 	width: auto;
 	margin-bottom: 5px;
@@ -203,7 +265,7 @@ a.email {
 .CodeMirror-line-numbers {
 	width: 48px;
 	padding: 0 1px;
-	background-color: #ddd;
+	background-color: #dddddd;
 	color: #888;
 	font-size: 12px;
 	line-height: 14px;
@@ -219,35 +281,35 @@ a.email {
 }
 
 .paddingNoActionIcon img {
-    margin-right: 20px;
+	margin-right: 20px;
 }
 
 .filteringList-highlight {
 	background-color: #f48e0c;
-    color: #fff;
+	color: #ffffff;
 }
 
-
-#localSearchField, #rsearchField, #myExtSearchField {
+#localSearchField,
+#rsearchField,
+#myExtSearchField {
 	height: 21px !important;
 	padding: 0 20px;
 }
 
 .ux-searchfield-trigger1 {
 	right: 0 !important;
-    position: absolute !important;
-    top: 5px !important;
+	position: absolute !important;
+	top: 5px !important;
 	border: none !important;
 }
 
 .ux-searchfield-trigger2 {
 	left: 4px !important;
-    position: absolute !important;
-    top: 3px !important;
+	position: absolute !important;
+	top: 3px !important;
 	border: none !important;
 }
 
 .fileChanged {
 	color: red;
 }
-
