@@ -35,7 +35,6 @@ var SysActionMenu = Class.create({
 	initialize: function() {
 
 		Ext.onReady(function() {
-			Event.observe(window, 'resize', TYPO3BackendToolbarManager.positionMenu('tx-sys-action-menu'));
 			TYPO3BackendToolbarManager.positionMenu('tx-sys-action-menu');
 			this.toolbarItemIcon = $$('#tx-sys-action-menu .toolbar-item span')[0].src;
 

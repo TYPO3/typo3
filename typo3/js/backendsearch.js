@@ -34,7 +34,8 @@ var BackendSearch = Class.create({
 	 */
 	initialize: function() {
 		Ext.onReady(function() {
-			Event.observe(window, 'resize', TYPO3BackendToolbarManager.positionMenu('backend-search-menu'));
+			//Event.observe(window, 'resize', TYPO3BackendToolbarManager.positionMenu('backend-search-menu'));
+			//Event.observe(window, 'resize', console.log('BackendSearch resize event'));
 			TYPO3BackendToolbarManager.positionMenu('backend-search-menu');
 			this.toolbarItemIcon = $$('#backend-search-menu .toolbar-item span.t3-icon')[0];
 
