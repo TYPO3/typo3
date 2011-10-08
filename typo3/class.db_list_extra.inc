@@ -1080,6 +1080,8 @@ class localRecordList extends recordList {
 	 */
 	function makeControl($table,$row)	{
 		if ($this->dontShowClipControlPanels)	return '';
+		
+		$ver_uid=$row['_ORIG_uid'] ? $row['_ORIG_uid'] : $row['uid'];
 
 			// Initialize:
 		t3lib_div::loadTCA($table);
@@ -1229,12 +1231,12 @@ class localRecordList extends recordList {
 				$hiddenField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
 				if ($permsEdit && $hiddenField && $GLOBALS['TCA'][$table]['columns'][$hiddenField] && (!$GLOBALS['TCA'][$table]['columns'][$hiddenField]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $table . ':' . $hiddenField))) {
 					if ($row[$hiddenField])	{
-						$params='&data['.$table.']['.$row['uid'].']['.$hiddenField.']=0';
+						$params='&data['.$table.']['.$ver_uid.']['.$hiddenField.']=0';
 						$cells['hide']='<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '" title="'.$GLOBALS['LANG']->getLL('unHide' . ($table == 'pages' ? 'Page' : ''), TRUE) . '">' .
 									t3lib_iconWorks::getSpriteIcon('actions-edit-unhide') .
 								'</a>';
 					} else {
-						$params='&data['.$table.']['.$row['uid'].']['.$hiddenField.']=1';
+						$params='&data['.$table.']['.$ver_uid.']['.$hiddenField.']=1';
 						$cells['hide']='<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '" title="' . $GLOBALS['LANG']->getLL('hide' . ($table == 'pages' ? 'Page' : ''), TRUE) . '">' .
 									t3lib_iconWorks::getSpriteIcon('actions-edit-hide') .
 								'</a>';
