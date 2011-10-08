@@ -1978,7 +1978,7 @@ $str.=$this->docBodyTagBegin().
 				// remove current page title
 			$pos = strrpos($title, '/');
 			if ($pos !== FALSE) {
-				$title = substr($title, 0, $pos) . '/';
+				$title = substr($title, 0, $pos);
 			}
 		} else {
 			$title = '';
