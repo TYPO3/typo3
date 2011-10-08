@@ -37,7 +37,10 @@ var ShortcutMenu = Class.create({
 	 */
 	initialize: function() {
 		Ext.onReady(function() {
-			Event.observe(window, 'resize', TYPO3BackendToolbarManager.positionMenu('shortcut-menu'));
+			Event.observe(
+				window, 'resize',
+				function() { TYPO3BackendToolbarManager.positionMenu('shortcut-menu'); }
+			);
 			TYPO3BackendToolbarManager.positionMenu('shortcut-menu');
 			
 			this.toolbarItemIcon = $$('#shortcut-menu .toolbar-item span.t3-icon')[0];
