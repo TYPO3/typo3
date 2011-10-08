@@ -387,6 +387,8 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 			return;
 		}
 		var record = this.repositoryStore.getAt(index - 1);
+			// This is hard stuff to do. So increase the timeout for the AJAX request
+		Ext.Ajax.timeout = 900000;
 		TYPO3.EM.ExtDirect.repositoryUpdate(index, function(response) {
 			if (!response.success) {
 				if (response.rep == 0) {
