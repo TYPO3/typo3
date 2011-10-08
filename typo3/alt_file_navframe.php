@@ -173,7 +173,7 @@ class SC_alt_file_navframe {
 				theUrl += "?id=" + id
 			}
 			top.fsMod.currentBank = bank;
-			top.TYPO3.ModuleMenu.App.openInContentFrame(theUrl);
+			top.TYPO3.Backend.ContentContainer.setUrl(theUrl);
 
 			'.($this->doHighlight ? 'Tree.highlightActiveItem("file", highlightID + "_" + bank);' : '').'
 			'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) linkObj.blur(); ').'

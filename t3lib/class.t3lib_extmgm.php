@@ -810,46 +810,7 @@ final class t3lib_extMgm {
 		if ($path) {
 			$GLOBALS['TBE_MODULES']['_PATHS'][$main . ($sub ? '_' . $sub : '')] = $path;
 		}
-			//add module JS
-		self::addModuleContentCard('{xtype: "iframePanel"}', $main, $sub);
 	}
-
-	/**
-	 * Sets the JS card of an ExtJS module for the card layout
-	 * Replaces default JS
-	 * Used by Card Layout
-	 *
-	 * @param	string		$jsCode is plain valid JavaScript, which is added directly, usefull for small modules only!
-	 * @param	string		$mainModule is the main module key, $sub is the submodule key. So $main would be an index in the $TBE_MODULES array and $sub could be an element in the lists there.
-	 * @param	string		$subModule is the submodule key. If $sub is not set a blank $main module is created.
-	 * @return	void
-	 */
-	public static function addModuleContentCard($jsCode, $mainModule, $subModule = '') {
-		$moduleName = $mainModule . ($subModule ? '_' . $subModule : '');
-		$GLOBALS['TBE_MODULES']['_JSINIT'][$moduleName] = '
-			TYPO3.Viewport.ContentCards.addContentCard(
-				"' . $moduleName . '",
-				' . $jsCode . '
-			);
-		';
-	}
-
-	/**
-	 * Removes the JS card of an ExtJS module directly
-	 * Used by Card Layout
-	 *
-	 * @param	string		$mainModule is the main module key, $sub is the submodule key. So $main would be an index in the $TBE_MODULES array and $sub could be an element in the lists there.
-	 * @param	string		$subModule is the submodule key. If $sub is not set a blank $main module is created.
-	 * @return void
-	 */
-	public static function removeModuleContentCard($mainModule, $subModule = '') {
-		$moduleName = $mainModule . ($subModule ? '_' . $subModule : '');
-		if (array_key_exists($moduleName, $GLOBALS['TBE_MODULES']['_JSINIT'])) {
-			unset($GLOBALS['TBE_MODULES']['_JSINIT'][$moduleName]);
-		}
-	}
-
-
 
 	/**
 	 * Registers an Ext.Direct component with access restrictions.
