@@ -102,6 +102,12 @@ class template {
 	 */
 	protected $useCompatibilityTag = TRUE;
 
+	/**
+	 * X-Ua-Compatible version output in meta tag
+	 * @var string
+	 */
+	protected $xUaCompatibilityVersion = 'IE=9';
+
 		// Skinning
 		// stylesheets from core
 	protected $stylesheetsCore = array(
@@ -700,7 +706,7 @@ class template {
 		$this->pageRenderer->addMetaTag($this->generator());
 		$this->pageRenderer->addMetaTag('<meta name="robots" content="noindex,follow" />');
 		if ($this->useCompatibilityTag) {
-			$this->pageRenderer->addMetaTag($this->xUaCompatible());
+			$this->pageRenderer->addMetaTag($this->xUaCompatible($this->xUaCompatibilityVersion));
 		}
 		$this->pageRenderer->setTitle($title);
 
