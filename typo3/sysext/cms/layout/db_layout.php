@@ -1086,20 +1086,20 @@ class SC_db_layout {
 			// For Context Sensitive Menus:
 		$this->doc->getContextMenuCode();
 
-			// Now, create listing based on which element is selected in the function menu:
+		$content .= $this->doc->header($this->pageinfo['title']);
 
+			// Now, create listing based on which element is selected in the function menu:
 		if ($this->MOD_SETTINGS['function']==3) {
 
 				// Making page info:
-			$content.=$this->doc->spacer(10);
-			$content.=$this->doc->section($GLOBALS['LANG']->getLL('pageInformation'), $dblist->getPageInfoBox($this->pageinfo, $this->CALC_PERMS&2), 0, 1);
+			$content .= $this->doc->section($GLOBALS['LANG']->getLL('pageInformation'), $dblist->getPageInfoBox($this->pageinfo, $this->CALC_PERMS&2), 0, 1);
 		} else {
 
 				// Add the content for each table we have rendered (traversing $tableOutput variable)
-			foreach($tableOutput as $table => $output)	{
-				$content.=$this->doc->section('<a name="'.$table.'"></a>'.$dblist->activeTables[$table],$output,TRUE,TRUE,0,TRUE);
-				$content.=$this->doc->spacer(15);
-				$content.=$this->doc->sectionEnd();
+			foreach ($tableOutput as $table => $output)	{
+				$content .= $this->doc->section('', $output, TRUE, TRUE, 0, TRUE);
+				$content .= $this->doc->spacer(15);
+				$content .= $this->doc->sectionEnd();
 			}
 
 				// Making search form:
