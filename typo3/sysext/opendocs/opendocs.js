@@ -39,7 +39,10 @@ var OpenDocs = Class.create({
 	initialize: function() {
 
 		Ext.onReady(function() {
-			Event.observe(window, 'resize', TYPO3BackendToolbarManager.positionMenu('tx-opendocs-menu'));
+			Event.observe(
+				window, 'resize',
+				function() { TYPO3BackendToolbarManager.positionMenu('tx-opendocs-menu'); }
+			);
 			TYPO3BackendToolbarManager.positionMenu('tx-opendocs-menu');
 			this.toolbarItemIcon = $$('#tx-opendocs-menu .toolbar-item span.t3-icon')[0];
 			this.ajaxScript      = top.TS.PATH_typo3 + this.ajaxScript; // can't be initialized earlier
