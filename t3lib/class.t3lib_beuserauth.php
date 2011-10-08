@@ -94,7 +94,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		'startModule' => 'help_aboutmodules',
 		'hideSubmoduleIcons' => 0,
 		'helpText' => 1,
-		'titleLen' => 30,
+		'titleLen' => 50,
 		'edit_wideDocument' => '0',
 		'edit_showFieldHelp' => 'icon',
 		'edit_RTE' => '1',
