@@ -601,7 +601,7 @@
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'])) {
 			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preBeUser'] as $_funcRef) {
 				$_params = array();
-				t3lib_div::callUserFunction($_funcRef, $_params, $_params);
+				t3lib_div::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
 
@@ -663,6 +663,18 @@
 				$BE_USER = NULL;
 				$this->beUserLogin = 0;
 				$_SESSION['TYPO3-TT-start'] = FALSE;
+			}
+		}
+
+		// *****************
+		// POST BE_USER HOOK
+		// *****************
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'])) {
+			$_params = array(
+				'BE_USER' => &$BE_USER
+			);
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['postBeUser'] as $_funcRef) {
+				t3lib_div::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
 
