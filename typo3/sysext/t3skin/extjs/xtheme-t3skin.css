@@ -2222,6 +2222,15 @@ body.x-body-masked .x-window-plain .x-window-mc {
 	width: 0;
 }
 
+/* Tree frame split bar fix for chrome in extjs 3.4 */
+body.ext-chrome #typo3-module-menu-xsplit,
+body.ext-chrome #typo3-navigationContainer-xsplit {
+	width: 5px;
+	background-color: rgb(235, 235 ,235);
+	background-image: url('images/splitbar/splitbar-background-top.png');
+	background-repeat: repeat-x;
+}
+
 /* Collapse icon */
 #typo3-module-menu-xsplit .x-layout-mini-west,
 #typo3-module-menu-xcollapsed .x-layout-mini-west,
