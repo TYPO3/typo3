@@ -105,6 +105,10 @@ body#typo3-index-php #t3-login-form-fields {
 	padding: 14px 0 5px 30px;
 }
 
+body#typo3-index-php #t3-login-password-section {
+	clear: left;
+}
+
 body#typo3-index-php #t3-interfaceselector {
 	width: 198px;
 }
