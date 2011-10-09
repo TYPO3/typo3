@@ -153,7 +153,7 @@ TYPO3.EM.GridColumns.DummyColumn = {
 
 TYPO3.EM.GridColumns.InstallExtension = {
 	header: '',
-	width: 45,
+	width: 47,
 	sortable: false,
 	hideable: false,
 	fixed: true,
