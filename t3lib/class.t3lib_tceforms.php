@@ -3572,7 +3572,7 @@ class t3lib_TCEforms {
 			// Create selector box of the options
 		$sSize = $params['autoSizeMax'] ? t3lib_utility_Math::forceIntegerInRange($itemArrayC + 1, t3lib_utility_Math::forceIntegerInRange($params['size'], 1), $params['autoSizeMax']) : $params['size'];
 		if (!$selector) {
-			$isMultiple = ($params['size'] != 1 && $params['multiple']);
+			$isMultiple = ($params['size'] != 1);
 			$selector = '<select id="' . uniqid('tceforms-multiselect-') . '" ' . ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '"' . $this->insertDefStyle('group', 'tceforms-multiselect')) . ($isMultiple ? ' multiple="multiple"' : '') . ' name="' . $fName . '_list" ' . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt) . '</select>';
 		}
 
@@ -5583,7 +5583,7 @@ class t3lib_TCEforms {
 						// The "_list" element exists for multiple selection select types
 					if (formObj[fName + "_list"]) {
 						fObj = formObj[fName + "_list"];
-						isMultiple =  ( fObj.getAttribute("multiple") == null || fObj.getAttribute("multiple") == "multiple" ) && fObj.getAttribute("size") != "1";
+						isMultiple =  fObj.multiple && fObj.getAttribute("size") != "1";
 						isList = true;
 					} else {
 						fObj = formObj[fName];
