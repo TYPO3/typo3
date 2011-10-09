@@ -39,7 +39,9 @@ config.tx_extbase {
 		}
 	}
 	features {
-		rewrittenPropertyMapper = 1
+		 # this enables/disables the reworked property mapper (see http://forge.typo3.org/projects/typo3v4-mvc/wiki/PropertyMapper_rework)
+		rewrittenPropertyMapper = 0
+		 # if enabled, default controller and/or action is skipped when creating URIs through the URI Builder (see http://forge.typo3.org/projects/typo3v4-mvc/wiki/Skip_default_arguments_in_URIs)
 		skipDefaultArguments = 0
 	}
 }
