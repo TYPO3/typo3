@@ -159,7 +159,10 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	public function modelAndRepositoryClassNames() {
 		return array(
 			array('Tx_BlogExample_Domain_Repository_BlogRepository', 'Tx_BlogExample_Domain_Model_Blog'),
-			array('﻿_Domain_Repository_Content_PageRepository', '﻿_Domain_Model_Content_Page')
+			array('﻿_Domain_Repository_Content_PageRepository', '﻿_Domain_Model_Content_Page'),
+			array('Tx_RepositoryExample_Domain_Repository_SomeModelRepository', 'Tx_RepositoryExample_Domain_Model_SomeModel'),
+			array('Tx_RepositoryExample_Domain_Repository_RepositoryRepository', 'Tx_RepositoryExample_Domain_Model_Repository'),
+			array('Tx_Repository_Domain_Repository_RepositoryRepository', 'Tx_Repository_Domain_Model_Repository'),
 		);
 	}
 
