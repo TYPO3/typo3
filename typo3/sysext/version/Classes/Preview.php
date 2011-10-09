@@ -31,7 +31,7 @@
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  * @package Version
  */
-class Tx_Version_Preview {
+class Tx_Version_Preview implements t3lib_Singleton {
 
 	/**
 	 * the GET parameter to be used
@@ -46,6 +46,12 @@ class Tx_Version_Preview {
 	protected $tsfeObj;
 
 	/**
+	 * preview configuration
+	 * @var array
+	 */
+	protected $previewConfiguration = FALSE;
+
+	/**
 	 * hook to check if the preview is activated
 	 * right now, this hook is called at the end of "$TSFE->connectToDB"
 	 * 
@@ -55,9 +61,9 @@ class Tx_Version_Preview {
 	 */
 	public function checkForPreview($params, &$pObj) {
 		$this->tsfeObj = $pObj;
-		$previewConfiguration = $this->getPreviewConfiguration();
+		$this->previewConfiguration = $this->getPreviewConfiguration();
 
-		if (is_array($previewConfiguration)) {
+		if (is_array($this->previewConfiguration)) {
 				// In case of a keyword-authenticated preview,
 				// re-initialize the TSFE object:
 				// because the GET variables are taken from the preview
@@ -79,7 +85,50 @@ class Tx_Version_Preview {
 				// @previouslyknownas TSFE->ADMCMD_preview_postInit
 				// Clear cookies:
 			unset($_COOKIE['be_typo_user']);
-			$this->tsfeObj->ADMCMD_preview_BEUSER_uid = $previewConfiguration['BEUSER_uid'];
+		}
+	}
+
+	/**
+	 * hook after the regular BE user has been initialized
+	 * if there is no BE user login, but a preview configuration
+	 * the BE user of the preview configuration gets initialized
+	 *
+	 * @param $params holding the BE_USER object
+	 * @param $pObj the instance of the tslib_fe object
+	 * @return void
+	 */
+	public function initializePreviewUser(&$params, &$pObj) {
+		if ((is_null($params['BE_USER']) || ($params['BE_USER'] === FALSE)) && $this->previewConfiguration !== FALSE && $this->previewConfiguration['BEUSER_uid'] > 0) {
+
+				// New backend user object
+			$BE_USER = t3lib_div::makeInstance('t3lib_tsfeBeUserAuth');
+			$BE_USER->userTS_dontGetCached = 1;
+			$BE_USER->OS = TYPO3_OS;
+			$BE_USER->setBeUserByUid($this->previewConfiguration['BEUSER_uid']);
+			$BE_USER->unpack_uc('');
+			if ($BE_USER->user['uid']) {
+				$BE_USER->fetchGroupData();
+				$pObj->beUserLogin = 1;
+			} else {
+				$BE_USER = NULL;
+				$pObj->beUserLogin = 0;
+				$_SESSION['TYPO3-TT-start'] = FALSE;
+			}
+			$params['BE_USER'] = $BE_USER;
+		}
+
+		// @previouslyknownas $TSFE->workspacePreviewInit()
+		// if there is a valid BE user, and the full workspace should be
+		// previewed, the workspacePreview option shouldbe set
+		$workspaceUid = $this->previewConfiguration['fullWorkspace'];
+		if ($pObj->beUserLogin && is_object($params['BE_USER']) && t3lib_utility_Math::canBeInterpretedAsInteger($workspaceUid)) {
+			if ($workspaceUid == 0 || ($workspaceUid >= -1 && $params['BE_USER']->checkWorkspace($workspaceUid))) {
+					// Check Access to workspace. Live (0) is OK to preview for all.
+				$pObj->workspacePreview = intval($workspaceUid);
+			} else {
+					// No preview, will default to "Live" at the moment
+				$pObj->workspacePreview = -99;
+			}
 		}
 	}
 
