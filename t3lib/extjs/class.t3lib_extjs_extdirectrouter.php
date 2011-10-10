@@ -135,11 +135,6 @@ class t3lib_extjs_ExtDirectRouter {
 				}
 
 				$callbackClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName];
-				debug('ExtDirect (Namespace: ' . $endpointName .
-					'): Registration code changed. Use the API method t3lib_extMgm::registerExtDirectComponent(). ' .
-					'More Information: http://wiki.typo3.org/ExtDirect' .
-					'Will be removed in 4.7.'
-				);
 			}
 
 			$response = array(
