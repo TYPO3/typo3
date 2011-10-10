@@ -6,7 +6,7 @@
 
 .linkvalidator_funcmenu {
 	margin-bottom: 25px;
-	margin-left: 35px;
+	margin-left: 25px;
 	margin-top: 0;
 	float: left;
 }
@@ -29,7 +29,7 @@
 	float: left;
 	display: block;
 	margin-top: 0px;
-	width: 235px;
+	width: 225px;
 }
 .linkvalidator_checkoptions div {
 	float: left;
@@ -82,11 +82,11 @@
 	padding-right: 6px;
 	text-align: center;
 }
+#linkvalidator_statsTable td,
+#linkvalidator_brokenLinksTable td {
+	border-left: 1px solid white;
+} 
 #linkvalidator_statsTable td:first-child,
 #linkvalidator_brokenLinksTable td:first-child {
 	border-left: none;
-}
-
-input#updateLinkList:disabled, input#refreshLinkList:disabled {
-	color: graytext;
 }
