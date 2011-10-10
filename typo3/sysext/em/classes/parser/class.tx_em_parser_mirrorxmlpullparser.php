@@ -82,7 +82,7 @@ class tx_em_Parser_MirrorXmlPullParser extends tx_em_Parser_MirrorXmlAbstractPar
 		if (!(is_object($this->objXML) && (get_class($this->objXML) == 'XMLReader'))) {
 			$this->throwException('Unable to create XML parser.');
 		}
-		$this->objXML->open($file, 'utf-8') || $this->throwException(sprintf('Unable to open file ressource %s.', htmlspecialchars($file)));
+		$this->objXML->open($file, 'utf-8') || $this->throwException(sprintf('Unable to open file resource %s.', htmlspecialchars($file)));
 
 		while ($this->objXML->read()) {
 
