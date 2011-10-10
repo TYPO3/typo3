@@ -221,8 +221,7 @@ var PHPParser = Editor.Parser = (function() {
     }
     // Pop off the current lexical context.
     function poplex(){
-      if (lexical.prev)
-        lexical = lexical.prev;
+      lexical = lexical.prev;
     }
     poplex.lex = true;
     // The 'lex' flag on these actions is used by the 'next' function
@@ -253,8 +252,9 @@ var PHPParser = Editor.Parser = (function() {
         else
           ok = wanted.indexOf(type);
         if (ok >= 0) {
-          if (execute && typeof(execute[ok]) == "function") pass(execute[ok]);
-          else cont();
+          if (execute && typeof(execute[ok]) == "function")
+            execute[ok](token);
+            cont();  // just consume the token
         }
         else {
           if (!marked) mark(token.style);
@@ -272,7 +272,7 @@ var PHPParser = Editor.Parser = (function() {
     function statement(token){
       var type = token.type;
       if (type == "keyword a") cont(pushlex("form"), expression, altsyntax, statement, poplex);
-      else if (type == "keyword b") cont(pushlex("form"), altsyntax, statement, poplex);
+      else if (type == "keyword b") cont(pushlex("form"), statement, poplex);
       else if (type == "{") cont(pushlex("}"), block, poplex);
       else if (type == "function") funcdef();
       // technically, "class implode {...}" is correct, but we'll flag that as an error because it overrides a predefined function
@@ -280,8 +280,7 @@ var PHPParser = Editor.Parser = (function() {
       else if (type == "foreach") cont(pushlex("form"), require("("), pushlex(")"), expression, require("as"), require("variable"), /* => $value */ expect(")"), altsyntax, poplex, statement, poplex);
       else if (type == "for") cont(pushlex("form"), require("("), pushlex(")"), expression, require(";"), expression, require(";"), expression, require(")"), altsyntax, poplex, statement, poplex);
       // public final function foo(), protected static $bar;
-      else if (type == "modifier") cont(require(["modifier", "variable", "function", "abstract"],
-                                                [null, commasep(require("variable")), funcdef, absfun]));
+      else if (type == "modifier") cont(require(["modifier", "variable", "function", "abstract"], [null, null, funcdef, absfun]));
       else if (type == "abstract") abs();
       else if (type == "switch") cont(pushlex("form"), require("("), expression, require(")"), pushlex("}", "switch"), require([":", "{"]), block, poplex, poplex);
       else if (type == "case") cont(expression, require(":"));
