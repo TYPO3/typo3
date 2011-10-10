@@ -1,3 +1,34 @@
+2011-10-10 TYPO3 4.6-RC1 (linkvalidator 1.5.0)
+5607748    Merge "[BUGFIX] SQL error if a task is run on a disabled page" (Philipp Gampe)
+e2bb756    [TASK] Update manual (Philipp Gampe)
+79b4741    [BUGFIX] SQL error if a task is run on a disabled page (Philipp Gampe)
+0fece3f    [BUGFIX] It is not possible to set page 0 to schedular task (Philipp Gampe)
+df464d4    [BUGFIX] Revert change in interface signature (Philipp Gampe)
+4335331    [BUGFIX] SQL error if opening a disabled page with module (Philipp Gampe)
+c12d8f5    [TASK] Fix CGL issues (Philipp Gampe)
+74a9c14    [BUGFIX] Initialize $currentR in analyseTypoLinks (Bjoern Pedersen)
+e5d6b19    [TASK] Bump version number (Christopher)
+0c69001    [TASK] Release linkvalidator 1.0.4 (Philipp Gampe)
+defb32e    [TASK] Fix phpdoc and method signatures (Philipp Gampe)
+2f1f5e0    [BUGFIX] Fatal error with E_STRICT: Declarations of fetchType and checkLink must be compatible with interface (Christopher)
+64769ad    [BUGFIX] XLIFF: Approved attribute is on wrong element (Christopher)
+11b6535    [TASK] Unify table layouts (Christopher)
+fb76d81    [TASK] Update ChangeLog (Christopher)
+5096f76    [TASK] Refactor to t3lib_http_Request for external URLs (Philipp Gampe)
+ad08acf    [TASK] Add XLIFF files (Philipp Gampe)
+267122e    [TASK] Fix localization handling to support XLIFF (Christopher)
+2a9f3ff    [TASK] Merge changes from 4.5 upstream to master (Philipp Gampe)
+6b026f3    [BUGFIX] Correct initialisation of BACK_PATH (Stefan Neufeind)
+79e5177    [TASK] Add .gitignore file. (Christopher)
+
+
+Since linkvalidator witched to git, you can always get the full changelog via:
+http://git.typo3.org/TYPO3v4/Extensions/linkvalidator.git
+
+For you convenience the git log is included above.
+
+
+
 2011-10-05  Philipp Gampe  <forge.typo3.org@philippgampe.info>
 
 	* [TASK] Fix CGL issues
