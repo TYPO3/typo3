@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "wizard_sortpages".
 #
-# Auto generated 26-01-2011 20:08
+# Auto generated 10-10-2011 14:48
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -31,7 +31,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_email' => 'kasperYYYY@typo3.com',
 	'author_company' => 'Curby Soft Multimedia',
 	'version' => '1.0.0',
-	'_md5_values_when_last_written' => 'a:6:{s:38:"class.tx_wizardsortpages_webfunc_2.php";s:4:"3d2d";s:12:"ext_icon.gif";s:4:"6751";s:14:"ext_tables.php";s:4:"f74d";s:13:"locallang.xml";s:4:"4ca6";s:17:"locallang_csh.xml";s:4:"6194";s:23:"cshimages/wizards_1.png";s:4:"44a0";}',
+	'_md5_values_when_last_written' => 'a:6:{s:38:"class.tx_wizardsortpages_webfunc_2.php";s:4:"d19e";s:12:"ext_icon.gif";s:4:"6751";s:14:"ext_tables.php";s:4:"f74d";s:13:"locallang.xlf";s:4:"5e14";s:17:"locallang_csh.xlf";s:4:"bb8c";s:23:"cshimages/wizards_1.png";s:4:"44a0";}',
 	'constraints' => array(
 		'depends' => array(
 			'func_wizards' => '',
