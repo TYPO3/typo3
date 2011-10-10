@@ -135,15 +135,17 @@ function openUrlInWindow(url,windowName)	{	//
 /**
  * Loads a page id for editing in the page edit module:
  */
-function loadEditId(id,addGetVars)	{	//
-	top.fsMod.recentIds.web = id;
-	top.fsMod.navFrameHighlightedID.web = "pages" + id + "_0";		// For highlighting
-
-	if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
-		top.content.nav_frame.refresh_nav();
-	}
-	if (TYPO3.configuration.pageModule) {
-		top.goToModule(TYPO3.configuration.pageModule, 0, addGetVars?addGetVars:"");
+function loadEditId(id,addGetVars) {
+	if(!TYPO3.ModuleMenu.App.selectedModule) {
+		new Ext.util.DelayedTask(function(id, addGetVars) {
+			loadEditId(id, addGetVars);
+		}, this, [id, addGetVars]).delay(500);
+	} else {
+		if (top.fsMod) {
+			top.fsMod.recentIds["web"] = id;
+			top.fsMod.navFrameHighlightedID["web"] = "pages" + id + "_" + top.fsMod.currentBank;
+		}
+		jump('alt_doc.php?edit[pages][' + id + ']=edit', 'web_list');
 	}
 }
 
