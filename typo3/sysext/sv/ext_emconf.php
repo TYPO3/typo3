@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "sv".
 #
-# Auto generated 26-01-2011 20:08
+# Auto generated 10-10-2011 14:47
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -30,7 +30,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_email' => 'r.fritz@colorcube.de',
 	'author_company' => 'Colorcube',
 	'version' => '1.1.0',
-	'_md5_values_when_last_written' => 'a:11:{s:20:"class.tx_sv_auth.php";s:4:"afe2";s:24:"class.tx_sv_authbase.php";s:4:"5d94";s:29:"class.tx_sv_loginformhook.php";s:4:"b3dc";s:16:"ext_autoload.php";s:4:"1d73";s:12:"ext_icon.gif";s:4:"87d7";s:17:"ext_localconf.php";s:4:"9a4f";s:14:"ext_tables.php";s:4:"8b1c";s:44:"reports/class.tx_sv_reports_serviceslist.php";s:4:"3ad8";s:21:"reports/locallang.xml";s:4:"dbc2";s:24:"reports/tx_sv_report.css";s:4:"27d0";s:24:"reports/tx_sv_report.png";s:4:"a01d";}',
+	'_md5_values_when_last_written' => 'a:11:{s:20:"class.tx_sv_auth.php";s:4:"9cd7";s:24:"class.tx_sv_authbase.php";s:4:"6cf1";s:29:"class.tx_sv_loginformhook.php";s:4:"43cc";s:16:"ext_autoload.php";s:4:"af04";s:12:"ext_icon.gif";s:4:"87d7";s:17:"ext_localconf.php";s:4:"9a4f";s:14:"ext_tables.php";s:4:"8b1c";s:44:"reports/class.tx_sv_reports_serviceslist.php";s:4:"9270";s:21:"reports/locallang.xlf";s:4:"9b9a";s:24:"reports/tx_sv_report.css";s:4:"4e02";s:24:"reports/tx_sv_report.png";s:4:"a01d";}',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.1.0-0.0.0',

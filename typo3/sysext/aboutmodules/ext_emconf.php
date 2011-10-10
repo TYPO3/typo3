@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "aboutmodules".
 #
-# Auto generated 26-01-2011 20:08
+# Auto generated 10-10-2011 14:47
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -34,7 +34,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '1.0.0',
-	'_md5_values_when_last_written' => 'a:5:{s:12:"ext_icon.gif";s:4:"6101";s:14:"ext_tables.php";s:4:"920d";s:20:"mod/aboutmodules.gif";s:4:"711d";s:12:"mod/conf.php";s:4:"d61c";s:21:"mod/locallang_mod.xml";s:4:"f533";}',
+	'_md5_values_when_last_written' => 'a:8:{s:35:"class.tx_aboutmodules_functions.php";s:4:"80cb";s:16:"ext_autoload.php";s:4:"06c5";s:12:"ext_icon.gif";s:4:"6101";s:14:"ext_tables.php";s:4:"920d";s:20:"mod/aboutmodules.gif";s:4:"711d";s:12:"mod/conf.php";s:4:"9a03";s:13:"mod/index.php";s:4:"acd7";s:21:"mod/locallang_mod.xlf";s:4:"bb91";}',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.1.0-0.0.0',
