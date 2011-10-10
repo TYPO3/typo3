@@ -292,6 +292,7 @@ var PythonParser = Editor.Parser = (function() {
                             break;
                         }
                         ch = source.next();
+                        ch = source.next();
                     }
                     if (ch == terminator.charAt(0)) {
                         matches.push(terminator);
