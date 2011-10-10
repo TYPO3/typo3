@@ -238,7 +238,7 @@ class tx_em_Repository {
 	}
 
 	/**
-	 * Method returns URL of a ressource that contains repository mirrors.
+	 * Method returns URL of a resource that contains repository mirrors.
 	 *
 	 * @access  public
 	 * @return  string  URL of file that contains repository mirros

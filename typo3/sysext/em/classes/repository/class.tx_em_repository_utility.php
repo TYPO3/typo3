@@ -152,20 +152,20 @@ class tx_em_Repository_Utility implements t3lib_Singleton {
 	 * writes them into a file in the local file system.
 	 *
 	 * @access  protected
-	 * @param   string  $remoteRessource  remote ressource to read contents from
-	 * @param   string  $localRessource   local ressource (absolute file path) to store retrieved contents to
+	 * @param   string  $remoteresource  remote resource to read contents from
+	 * @param   string  $localresource   local resource (absolute file path) to store retrieved contents to
 	 * @return  void
 	 * @see	 t3lib_div::getUrl(), t3lib_div::writeFile()
 	 * @throws  tx_em_ConnectionException
 	 */
-	protected function fetchFile($remoteRessource, $localRessource) {
-		if (is_string($remoteRessource) && is_string($localRessource)
-				&& !empty($remoteRessource) && !empty($localRessource)) {
-			$fileContent = t3lib_div::getUrl($remoteRessource, 0, array(TYPO3_user_agent));
+	protected function fetchFile($remoteresource, $localresource) {
+		if (is_string($remoteresource) && is_string($localresource)
+				&& !empty($remoteresource) && !empty($localresource)) {
+			$fileContent = t3lib_div::getUrl($remoteresource, 0, array(TYPO3_user_agent));
 			if ($fileContent !== FALSE) {
-				t3lib_div::writeFile($localRessource, $fileContent) || $this->throwConnectionException(sprintf('Could not write to file %s.', htmlspecialchars($localRessource)));
+				t3lib_div::writeFile($localresource, $fileContent) || $this->throwConnectionException(sprintf('Could not write to file %s.', htmlspecialchars($localresource)));
 			} else {
-				$this->throwConnectionException(sprintf('Could not access remote ressource %s.', htmlspecialchars($remoteRessource)));
+				$this->throwConnectionException(sprintf('Could not access remote resource %s.', htmlspecialchars($remoteresource)));
 			}
 		}
 	}
