@@ -66,6 +66,13 @@ class t3lib_TCEforms_Suggest {
 		$containerCssClass = $this->cssClass . ' ' . $this->cssClass . '-position-right';
 		$suggestId = 'suggest-' . $table . '-' . $field . '-' . $row['uid'];
 
+		if ($GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'flex') {
+			$fieldPattern = 'data[' . $table . '][' . $row['uid'] . '][';
+			$flexformField = str_replace($fieldPattern, '', $fieldname);
+			$flexformField = substr($flexformField, 0, -1);
+			$field = str_replace(array(']['), '|', $flexformField);
+		}
+
 		$selector = '
 		<div class="' . $containerCssClass . '" id="' . $suggestId . '">
 			<input type="text" id="' . $fieldname . 'Suggest" value="' .
@@ -131,12 +138,40 @@ class t3lib_TCEforms_Suggest {
 		$TSconfig = t3lib_BEfunc::getPagesTSconfig($pageId);
 		$queryTables = array();
 		$foreign_table_where = '';
-		$wizardConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config']['wizards']['suggest'];
-		if (isset($GLOBALS['TCA'][$table]['columns'][$field]['config']['allowed'])) {
-			$queryTables = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$table]['columns'][$field]['config']['allowed']);
-		} elseif (isset($GLOBALS['TCA'][$table]['columns'][$field]['config']['foreign_table'])) {
-			$queryTables = array($GLOBALS['TCA'][$table]['columns'][$field]['config']['foreign_table']);
-			$foreign_table_where = $GLOBALS['TCA'][$table]['columns'][$field]['config']['foreign_table_where'];
+
+		$fieldConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+
+		$parts = explode('|', $field);
+		if ($GLOBALS['TCA'][$table]['columns'][$parts[0]]['config']['type'] === 'flex') {
+			if (is_array($row) && (count($row) > 0)) {
+				$flexfieldTCAConfig = $GLOBALS['TCA'][$table]['columns'][$parts[0]]['config'];
+				$flexformDSArray = t3lib_BEfunc::getFlexFormDS($flexfieldTCAConfig, $row, $table);
+				$flexformDSArray = t3lib_div::resolveAllSheetsInDS($flexformDSArray);
+				$flexformElement = $parts[count($parts) - 2];
+				$continue = TRUE;
+				foreach ($flexformDSArray as $sheet) {
+					foreach ($sheet as $_ => $dataStructure) {
+						if (isset($dataStructure['ROOT']['el'][$flexformElement]['TCEforms']['config'])) {
+							$fieldConfig = $dataStructure['ROOT']['el'][$flexformElement]['TCEforms']['config'];
+							$continue = FALSE;
+							break;
+						}
+					}
+					if (!$continue) {
+						break;
+					}
+				}
+				$field = str_replace('|', '][', $field);
+			}
+		}
+
+		$wizardConfig = $fieldConfig['wizards']['suggest'];
+
+		if (isset($fieldConfig['allowed'])) {
+			$queryTables = t3lib_div::trimExplode(',', $fieldConfig['allowed']);
+		} elseif (isset($fieldConfig['foreign_table'])) {
+			$queryTables = array($fieldConfig['foreign_table']);
+			$foreign_table_where = $fieldConfig['foreign_table_where'];
 				// strip ORDER BY clause
 			$foreign_table_where = trim(preg_replace('/ORDER[[:space:]]+BY.*/i', '', $foreign_table_where));
 		}
