@@ -140,15 +140,33 @@ function openUrlInWindow(url,windowName)	{	//
 /**
  * Loads a page id for editing in the page edit module:
  */
-function loadEditId(id,addGetVars)	{	//
-	top.fsMod.recentIds.web = id;
-	top.fsMod.navFrameHighlightedID.web = "pages" + id + "_0";		// For highlighting
+function loadEditId(id,addGetVars) {
+	if(!TYPO3.ModuleMenu.App.selectedModule) {
+		new Ext.util.DelayedTask(function(id, addGetVars) {
+			Ext.getBody().mask();
+			loadEditId(id, addGetVars);
+		}, this, [id, addGetVars]).delay(500);
+	} else {
 
-	if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav) {
-		top.content.nav_frame.refresh_nav();
-	}
-	if (TYPO3.configuration.pageModule) {
-		top.goToModule(TYPO3.configuration.pageModule, 0, addGetVars?addGetVars:"");
+		if (top.fsMod) {
+			top.fsMod.recentIds["web"] = id;
+			top.fsMod.navFrameHighlightedID["web"] = "pages" + id + "_" + top.fsMod.currentBank;
+		}
+
+		new Ext.util.DelayedTask(function(id, addGetVars) {
+			if(TYPO3.configuration.pageModule) {
+				top.fsMod.navFrameHighlightedID['web'] = id;
+				top.fsMod.recentIds['web'] = id;
+				top.TYPO3.ModuleMenu.App.showModule(TYPO3.configuration.pageModule);
+				new Ext.util.DelayedTask(function(id) {
+					module = TYPO3.ModuleMenu.App.getRecordFromName(TYPO3.configuration.pageModule);
+					TYPO3.Backend.NavigationContainer.PageTree.select(id, true);
+					Ext.getCmp('typo3-contentContainer').setUrl(module.link + '?id=' + id);
+					console.log('select:' + id);
+					Ext.getBody().unmask();
+				}, this, [id]).delay(10000);
+			}
+		}, this, [id, addGetVars]).delay(500);
 	}
 }
 
