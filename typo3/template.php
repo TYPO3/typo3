@@ -1432,8 +1432,10 @@ $str.=$this->docBodyTagBegin().
 	 * @param	integer		The page uid of the "current page" - the one that will be cleared as "clear cache for this page".
 	 * @param	boolean		If $addSaveOptions is set, then also the array of save-options for TCE_FORMS will appear.
 	 * @return	string		<select> tag with content - a selector box for clearing the cache
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
 	 */
 	function clearCacheMenu($id,$addSaveOptions=0)	{
+		t3lib_div::logDeprecatedFunction();
 		$opt=array();
 		if ($addSaveOptions)	{
 			$opt[]='<option value="">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.menu',1).'</option>';
