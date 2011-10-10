@@ -653,7 +653,7 @@ class TYPO3backend {
 					// Setting JS code to open editing:
 				$this->js .= '
 		// Load page to edit:
-	window.setTimeout("top.loadEditId('.intval($editRecord['uid']).');", 500);
+	window.setTimeout("top.loadEditId(' . intval($editRecord['uid']) . ');", 5000);
 			';
 
 					// "Shortcuts" have been renamed to "Bookmarks"
