@@ -46,7 +46,7 @@ abstract class tx_linkvalidator_linktype_Abstract implements tx_linkvalidator_li
 	 * @param string $key Validator hook name
 	 * @return string Fetched type
 	 */
-	public function fetchType(array $value, $type, $key) {
+	public function fetchType($value, $type, $key) {
 		if ($value['type'] == $key) {
 			$type = $value['type'];
 		}
@@ -59,7 +59,7 @@ abstract class tx_linkvalidator_linktype_Abstract implements tx_linkvalidator_li
 	 * @param array $value All parameters needed for the rendering of the error message
 	 * @return void
 	 */
-	protected function setErrorParams(array $value) {
+	protected function setErrorParams($value) {
 		$this->errorParams = $value;
 	}
 
@@ -78,7 +78,7 @@ abstract class tx_linkvalidator_linktype_Abstract implements tx_linkvalidator_li
 	 * @param array $row Broken link record
 	 * @return string Parsed broken url
 	 */
-	public function getBrokenUrl(array $row) {
+	public function getBrokenUrl($row) {
 		return $row['url'];
 	}
 }
