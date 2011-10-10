@@ -50,6 +50,19 @@ TYPO3.ModuleMenu.Store = new Ext.data.JsonStore({
 	url: 'ajax.php?ajaxID=ModuleMenu::getData',
 	baseParams: {
 		'action': 'getModules'
+	},
+	listeners: {
+		beforeload: function(store) {
+			this.loaded = false;
+		},
+		load: function(store) {
+			this.loaded = true;
+		}
+	},
+	// Custom indicator for loaded store:
+	loaded: false,
+	isLoaded: function() {
+		return this.loaded;
 	}
 
 });
@@ -212,8 +225,14 @@ TYPO3.ModuleMenu.App = {
 	},
 
 	loadFirstAvailableModule: function(params) {
+		self = this;
 		params = params || '';
-		if (TYPO3.ModuleMenu.Store.getCount() === 0) {
+		if (TYPO3.ModuleMenu.Store.isLoaded() === false) {
+			setTimeout(
+				function () { self.loadFirstAvailableModule.call(self, params); },
+				250
+			);
+		} else if (TYPO3.ModuleMenu.Store.getCount() === 0) {
 				// Store is empty, something went wrong
 			TYPO3.Flashmessage.display(TYPO3.Severity.error, 'Module loader', 'No module found. If this is a temporary error, please reload the Backend!', 50000);
 		} else {
