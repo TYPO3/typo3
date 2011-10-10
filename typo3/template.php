@@ -1201,7 +1201,7 @@ $str.=$this->docBodyTagBegin().
 	 * @return	string		<meta> tag with name "generator"
 	 */
 	function generator()	{
-		$str = 'TYPO3 '.TYPO3_branch.', http://typo3.com, &#169; Kasper Sk&#229;rh&#248;j 1998-2009, extensions are copyright of their respective owners.';
+		$str = 'TYPO3 '.TYPO3_branch.', http://typo3.com, &#169; Kasper Sk&#229;rh&#248;j ' . TYPO3_copyright_year . ', extensions are copyright of their respective owners.';
 		return '<meta name="generator" content="'.$str .'" />';
 	}
 
