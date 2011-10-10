@@ -60,6 +60,15 @@ class tx_rsaauth_loginformhook {
 				// Add RSA hidden fields
 				$form .= '<input type="hidden" id="rsa_n" name="n" value="' . htmlspecialchars($keyPair->getPublicKeyModulus()) . '" />';
 				$form .= '<input type="hidden" id="rsa_e" name="e" value="' . sprintf('%x', $keyPair->getExponent()) . '" />';
+			} else {
+					// man, you're in bad trouble...
+				throw new t3lib_error_Exception(
+					'No OpenSSL backend could be obtained for rsaauth. Please make sure that either the OpenSSL PHP '
+					. 'extension is working, or the OpenSSL binary is configured correctly for rsaauth. You could set '
+					. '$TYPO3_CONF_VARS[\''. TYPO3_mode . '\'][\'loginSecurityLevel\'] to \'normal\' instead of \'rsa\'. '
+					. 'However, you still have to reset password hashes to be md5 hashed. So better go for fixing OpenSSL!',
+					1318283565
+				);
 			}
 		}
 		return $form;
