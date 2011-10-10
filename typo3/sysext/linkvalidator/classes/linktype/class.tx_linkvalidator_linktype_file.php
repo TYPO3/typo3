@@ -40,7 +40,7 @@ class tx_linkvalidator_linktype_File extends tx_linkvalidator_linktype_Abstract 
 	 * @param tx_linkvalidator_Processor $reference Parent instance of tx_linkvalidator_Processor
 	 * @return boolean TRUE on success or FALSE on error
 	 */
-	public function checkLink($url, array $softRefEntry, tx_linkvalidator_Processor $reference) {
+	public function checkLink($url, $softRefEntry, $reference) {
 		if (!@file_exists(PATH_site . rawurldecode($url))) {
 			return FALSE;
 		}
@@ -66,7 +66,7 @@ class tx_linkvalidator_linktype_File extends tx_linkvalidator_linktype_Abstract 
 	 * @param array $row Broken link record
 	 * @return string Parsed broken url
 	 */
-	public function getBrokenUrl(array $row) {
+	public function getBrokenUrl($row) {
 		$brokenUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $row['url'];
 		return $brokenUrl;
 	}
