@@ -1,7 +1,7 @@
 ﻿Manual for Linkvalidator
 Extension Key: linkvalidator
 Language: en
-Version: 1.0.0
+Version: 1.5.0
 Keywords: forEditors, forAdmins, forBeginners, forIntermediates, forAdvanced
 Copyright 2000-2011, Linkvalidator Team, <j.rieger@connecta.ag>, <mmiousse@infoglobe.ca>
 
@@ -71,11 +71,14 @@ The type and ID of the content containing the broken link become visible when yo
 Linkvalidator features full support of the TYPO3 scheduler. This is the linkvalidator task: 
 
 With this task you can run linkvalidator regularly via cron without having to manually update the stored information on broken links. 
-You can e.g. overwrite the TypoScript configuration. Without any change, the linkvalidator settings which apply for the respective pages will be used. If you set values there, the former will be overwritten. 
+You can e.g. overwrite the TSconfig configuration. Without any change, the linkvalidator settings which apply for the respective pages will be used. If you set values there, the former will be overwritten. 
 The linkvalidator task can send you a status report via email. You can create an own email template as needed. The default template is located in typo3/sysext/linkvalidator/res/mailtemplate.html. 
 Administration
 Use the extension manager to install linkvalidator. It is not installed by default. 
 Apply the needed changes to the database. 
+
+You are advised to use cURL to check for links. Linkvalidator uses the HTTP request library shipped with TYPO3. Please have a look in the Install Tool at the section “All Configuration” which includes an HTTP section at the end.
+There you may define a default timeout and you may change from using sockets to using the cURL library.
 
 
 Configuration
@@ -108,10 +111,12 @@ db: Check links to database records.
 file: Check links to files located in your local TYPO3 installation. 
 external: Check links to external files. 
 linkhandler: Check links provided by the extension "linkhandler". 
+
+This list may be extended by other extensions providing a linktype checker, e.g. DAM.
 db,file,external
 checkhidden
 boolean
-If set, hidden content elements are checked for broken links, too. 
+If set, disabled pages and content elements are checked for broken links, too.
 0
 showCheckLinkTab
 boolean
