@@ -39,7 +39,10 @@ var WorkspaceMenu = Class.create({
 	initialize: function() {
 
 		Ext.onReady(function() {
-			Event.observe(window, 'resize', TYPO3BackendToolbarManager.positionMenu('workspace-selector-menu'));
+			Event.observe(
+				window, 'resize',
+				function() { TYPO3BackendToolbarManager.positionMenu('workspace-selector-menu'); }
+			);
 			if (top.TYPO3.configuration.inWorkspace == 1) {
 				Ext.getBody().addClass('typo3-in-workspace');
 				this.updateTopBar(top.TYPO3.Workspaces.workspaceTitle);
