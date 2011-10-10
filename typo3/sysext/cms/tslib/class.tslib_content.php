@@ -7463,7 +7463,11 @@ class tslib_cObj {
 		$queryParts = $this->getWhere($table, $conf, TRUE);
 
 			// Fields:
-		$queryParts['SELECT'] = $conf['selectFields'] ? $conf['selectFields'] : '*';
+		if ($conf['selectFields']) {
+			$queryParts['SELECT'] = self::sanitizeSelectPart($conf['selectFields'], $table);
+		} else {
+			$queryParts['SELECT'] = '*';
+		}
 
 			// Setting LIMIT:
 		if ($conf['max'] || $conf['begin']) {
@@ -7638,6 +7642,47 @@ class tslib_cObj {
 			// Return result:
 		return $returnQueryArray ? $queryParts : $query;
 	}
+
+	/**
+	 * Helper function for getQuery, sanitizing the select part
+	 *
+	 * This functions checks if the necessary fields are part of the select
+	 * and adds them if necessary.
+	 *
+	 * @param string 	select part
+	 * @param string	table to select from
+	 * @return string	sanitized select part
+	 * @access private
+	 * @see getQuery
+	 */
+	protected function sanitizeSelectPart($selectPart, $table) {
+		// pattern matching parts
+		$matchStart = '/(^\s*|,\s*|' . $table . '\.)';
+		$matchEnd = '(\s*,|\s*$)/';
+
+		$necessaryFields = array('uid', 'pid');
+		$wsFields = array('t3ver_state');
+
+		if (isset($GLOBALS['TCA'][$table]) && strpos($selectPart, '*')!== FALSE) {
+			foreach ($necessaryFields as $field) {
+				$match = $matchStart . $field . $matchEnd;
+				if (!preg_match($match, $selectPart)) {
+					$selectPart .= ', ' . $table . '.' . $field . ' as ' . $field;
+				}
+			}
+
+			if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+				foreach ($wsFields as $field) {
+					$match = $matchStart . $field . $matchEnd;
+					if (!preg_match($match, $selectPart)) {
+						$selectPart .= ', ' . $table . '.' . $field . ' as ' . $field;
+					}
+				}
+			}
+		}
+		return $selectPart;
+	}
+
 
 	/**
 	 * Removes Page UID numbers from the input array which are not available due to enableFields() or the list of bad doktype numbers ($this->checkPid_badDoktypeList)
