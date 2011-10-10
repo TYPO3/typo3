@@ -68,6 +68,11 @@ class tx_rsaauth_loginformhook {
 				// Add RSA hidden fields
 				$form .= '<input type="hidden" id="rsa_n" name="n" value="' . htmlspecialchars($keyPair->getPublicKeyModulus()) . '" />';
 				$form .= '<input type="hidden" id="rsa_e" name="e" value="' . sprintf('%x', $keyPair->getExponent()) . '" />';
+			} else {
+				throw new t3lib_error_Exception(
+					'No OpenSSL backend could be obtained for rsaauth.',
+					1318283565
+				);
 			}
 		}
 		return $form;
