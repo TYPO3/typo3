@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "info_pagetsconfig".
 #
-# Auto generated 26-01-2011 20:08
+# Auto generated 10-10-2011 13:55
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -34,7 +34,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '1.0.0',
-	'_md5_values_when_last_written' => 'a:11:{s:37:"class.tx_infopagetsconfig_webinfo.php";s:4:"038e";s:12:"ext_icon.gif";s:4:"04b0";s:14:"ext_tables.php";s:4:"935e";s:13:"locallang.xml";s:4:"9750";s:25:"locallang_csh_webinfo.xml";s:4:"fd3b";s:19:"cshimages/img_1.png";s:4:"a129";s:19:"cshimages/img_2.png";s:4:"a10c";s:19:"cshimages/img_3.png";s:4:"329d";s:19:"cshimages/img_4.png";s:4:"e596";s:19:"cshimages/img_5.png";s:4:"34b9";s:12:"doc/TODO.txt";s:4:"418c";}',
+	'_md5_values_when_last_written' => 'a:11:{s:37:"class.tx_infopagetsconfig_webinfo.php";s:4:"8451";s:12:"ext_icon.gif";s:4:"04b0";s:14:"ext_tables.php";s:4:"935e";s:13:"locallang.xlf";s:4:"29ea";s:25:"locallang_csh_webinfo.xlf";s:4:"6537";s:19:"cshimages/img_1.png";s:4:"a129";s:19:"cshimages/img_2.png";s:4:"a10c";s:19:"cshimages/img_3.png";s:4:"329d";s:19:"cshimages/img_4.png";s:4:"e596";s:19:"cshimages/img_5.png";s:4:"34b9";s:12:"doc/TODO.txt";s:4:"418c";}',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.1.0-0.0.0',
