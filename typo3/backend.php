@@ -660,7 +660,7 @@ class TYPO3backend {
 					// @deprecated remove shortcuts code in TYPO3 4.7
 				$shortcutSetPageTree = $GLOBALS['BE_USER']->getTSConfigVal('options.shortcut_onEditId_dontSetPageTree');
 				$bookmarkSetPageTree = $GLOBALS['BE_USER']->getTSConfigVal('options.bookmark_onEditId_dontSetPageTree');
-				if ($shortcutSetPageTree !== '') {
+				if (!is_null($shortcutSetPageTree) && $shortcutSetPageTree !== '') {
 					t3lib_div::deprecationLog('options.shortcut_onEditId_dontSetPageTree - since TYPO3 4.5, will be removed in TYPO3 4.7 - use options.bookmark_onEditId_dontSetPageTree instead');
 				}
 
