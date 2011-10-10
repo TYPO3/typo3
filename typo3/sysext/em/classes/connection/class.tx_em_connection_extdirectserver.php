@@ -296,7 +296,7 @@ class tx_em_Connection_ExtDirectServer {
 
 		$html = '';
 		if ($noSave) {
-			$html = $install->updatesForm($extKey, $list[$extKey], 1);
+			$html = $install->updatesForm($extKey, $list[$extKey], 1, '', '', FALSE);
 		} else {
 			$install->writeTsStyleConfig($extKey, $arr);
 		}
