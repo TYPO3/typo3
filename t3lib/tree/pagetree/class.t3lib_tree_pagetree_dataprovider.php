@@ -200,16 +200,20 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 
 				$rootlineElement = t3lib_tree_pagetree_Commands::getNodeRecord($rootlineElement['uid']);
 				$ident = intval($rootlineElement['sorting']) . intval($rootlineElement['uid']);
-				if ($reference->offsetExists($ident)) {
-					/** @var $refNode t3lib_tree_pagetree_Node */
-					$refNode = $reference->offsetGet($ident);
-					$refNode->setExpanded(TRUE);
-					$refNode->setLeaf(FALSE);
+				if(is_object($reference)) {
+					if ($reference->offsetExists($ident)) {
+						/** @var $refNode t3lib_tree_pagetree_Node */
+						$refNode = $reference->offsetGet($ident);
+						$refNode->setExpanded(TRUE);
+						$refNode->setLeaf(FALSE);
 
-					$reference = $refNode->getChildNodes();
+						$reference = $refNode->getChildNodes();
+						continue;
+					}
+				}
+				else {
 					continue;
 				}
-
 				$refNode = t3lib_tree_pagetree_Commands::getNewNode($rootlineElement, $mountPoint);
 				$replacement = '<span class="typo3-pagetree-filteringTree-highlight">$1</span>';
 				if ($isNumericSearchFilter && intval($rootlineElement['uid']) === intval($searchFilter)) {
