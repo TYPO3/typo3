@@ -493,25 +493,25 @@ class tx_em_Install {
 						$msg[] = '<br />' . sprintf($GLOBALS['LANG']->getLL('checkDependencies_ext_not_available'),
 							$depK);
 						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;' . t3lib_iconWorks::getSpriteIcon('actions-system-extension-import', array('title' => $GLOBALS['LANG']->getLL('checkDependencies_import_ext'))) . '&nbsp;
-							<a href="' . t3lib_div::linkThisUrl($this->parentObject->script, array(
+							<a href="#" onclick="window.open(\'' . t3lib_div::linkThisUrl($this->parentObject->script, array(
 							'CMD[importExt]' => $depK,
 							'CMD[loc]' => 'L',
 							'CMD[standAlone]' => 1
-						)) . '" target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_import_now') . '</a>';
+						)) . '\', \'' . md5($instExtInfo[$depK]['EM_CONF']['title']) . '\', \'width=650, height=500\'); return false;" target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_import_now') . '</a>';
 						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $depK . ']" id="checkIgnore_' . $depK . '" />
 							<label for="checkIgnore_' . $depK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_ext_requirement') . '</label>';
 					} else {
 						$msg[] = '<br />' . sprintf($GLOBALS['LANG']->getLL('checkDependencies_ext_not_installed'),
 							$depK, $instExtInfo[$depK]['EM_CONF']['title']);
 						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;' . tx_em_Tools::installButton() . '&nbsp;
-							<a href="' . t3lib_div::linkThisUrl($this->parentObject->script, array(
+							<a href="#" onclick="window.open(\'' . t3lib_div::linkThisUrl($this->parentObject->script, array(
 							'CMD[showExt]' => $depK,
 							'CMD[load]' => 1,
 							'CMD[clrCmd]' => 1,
 							'CMD[standAlone]' => 1,
 							'SET[singleDetails]' => 'info'
 						)) .
-								'" target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_install_now') . '</a>';
+								'\', \'' . md5($instExtInfo[$depK]['EM_CONF']['title']) . '\', \'width=650, height=500\'); return false; " target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_install_now') . '</a>';
 						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $depK . ']" id="checkIgnore_' . $depK . '" />
 							<label for="checkIgnore_' . $depK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_ext_requirement') . '</label>';
 					}
