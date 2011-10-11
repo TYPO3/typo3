@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "fluid".
 #
-# Auto generated 19-09-2011 19:58
+# Auto generated 11-10-2011 11:47
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
 	'author_company' => '',
-	'version' => '1.4.0-beta3',
+	'version' => '1.4.0-rc1',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.3.0-0.0.0',
