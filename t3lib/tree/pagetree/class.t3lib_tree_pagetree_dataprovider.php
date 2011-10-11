@@ -200,7 +200,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 
 				$rootlineElement = t3lib_tree_pagetree_Commands::getNodeRecord($rootlineElement['uid']);
 				$ident = intval($rootlineElement['sorting']) . intval($rootlineElement['uid']);
-				if(is_object($reference)) {
+				if (is_object($reference)) {
 					if ($reference->offsetExists($ident)) {
 						/** @var $refNode t3lib_tree_pagetree_Node */
 						$refNode = $reference->offsetGet($ident);
@@ -210,8 +210,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 						$reference = $refNode->getChildNodes();
 						continue;
 					}
-				}
-				else {
+				} else {
 					continue;
 				}
 				$refNode = t3lib_tree_pagetree_Commands::getNewNode($rootlineElement, $mountPoint);
