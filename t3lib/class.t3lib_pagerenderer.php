@@ -927,6 +927,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			$type = 'text/javascript';
 		}
 		if (!isset($this->jsFiles[$file])) {
+			if (strpos($file, 'ajax.php?') !== FALSE) {
+				$compress = FALSE;
+			}
 			$this->jsFiles[$file] = array(
 				'file' => $file,
 				'type' => $type,
@@ -955,6 +958,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			$type = 'text/javascript';
 		}
 		if (!isset($this->jsFiles[$file])) {
+			if (strpos($file, 'ajax.php?') !== FALSE) {
+				$compress = FALSE;
+			}
 			$this->jsFiles[$file] = array(
 				'file' => $file,
 				'type' => $type,
