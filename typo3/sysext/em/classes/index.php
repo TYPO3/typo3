@@ -2571,7 +2571,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				$GLOBALS['LANG']->getLL('ext_import_close_check') . '</a>';
 			return $link;
 		} else {
-			return '<a id="closewindow" href="javascript:if (parent.TYPO3.EM) {parent.TYPO3.EM.Tools.closeImportWindow();} else {window.close();}">' . $GLOBALS['LANG']->getLL('ext_import_close') . '</a>';
+			return '<a id="closewindow" href="javascript:if (parent.TYPO3.EM && top.frames.length) {parent.TYPO3.EM.Tools.closeImportWindow();} else {window.close();}">' . $GLOBALS['LANG']->getLL('ext_import_close') . '</a>';
 		}
 	}
 
