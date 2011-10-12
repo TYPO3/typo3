@@ -353,7 +353,7 @@ TCEforms Flexforms
 	border-top: 1px solid #c0c0c0;
 }
 
-.t3-form-field-container:first-child .t3-form-field-label-flex {
+div.t3-form-field-container:first-child .t3-form-field-label-flex {
 	border-top: 0;
 }
 
