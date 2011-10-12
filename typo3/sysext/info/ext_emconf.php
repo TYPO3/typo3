@@ -33,13 +33,13 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => '',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '1.0.0',
+	'version' => '1.1.0',
 	'_md5_values_when_last_written' => 'a:7:{s:12:"ext_icon.gif";s:4:"8c52";s:14:"ext_tables.php";s:4:"d1b4";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"da7c";s:14:"mod1/index.php";s:4:"a28b";s:13:"mod1/info.gif";s:4:"8a42";s:12:"mod1/log.gif";s:4:"70bb";}',
 	'constraints' => array(
 		'depends' => array(
 			'cms' => '',
-			'php' => '5.1.0-0.0.0',
-			'typo3' => '4.5.0-0.0.0',
+			'php' => '5.3.0-0.0.0',
+			'typo3' => '4.6.0-0.0.0',
 		),
 		'conflicts' => array(
 		),

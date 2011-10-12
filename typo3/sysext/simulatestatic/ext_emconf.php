@@ -32,12 +32,12 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => '',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '1.0.0',
+	'version' => '1.1.0',
 	'_md5_values_when_last_written' => 'a:2:{s:27:"class.tx_simulatestatic.php";s:4:"976e";s:17:"ext_localconf.php";s:4:"eace";}',
 	'constraints' => array(
 		'depends' => array(
-			'php' => '5.1.0-0.0.0',
-			'typo3' => '4.4.0-0.0.0',
+			'php' => '5.3.0-0.0.0',
+			'typo3' => '4.6.0-0.0.0',
 		),
 		'conflicts' => array(
 		),

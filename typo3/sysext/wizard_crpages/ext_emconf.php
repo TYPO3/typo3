@@ -30,13 +30,13 @@ $EM_CONF[$_EXTKEY] = array(
 	'author' => 'Kasper Skaarhoj',
 	'author_email' => 'kasperYYYY@typo3.com',
 	'author_company' => 'Curby Soft Multimedia',
-	'version' => '1.1.0',
+	'version' => '1.2.0',
 	'_md5_values_when_last_written' => 'a:7:{s:36:"class.tx_wizardcrpages_webfunc_2.php";s:4:"0474";s:12:"ext_icon.gif";s:4:"c0a7";s:14:"ext_tables.php";s:4:"7e2d";s:13:"locallang.xlf";s:4:"fb20";s:17:"locallang_csh.xlf";s:4:"8aaa";s:23:"cshimages/wizards_1.png";s:4:"aa69";s:23:"cshimages/wizards_2.png";s:4:"294b";}',
 	'constraints' => array(
 		'depends' => array(
+			'php' => '5.3.0-0.0.0',
+			'typo3' => '4.6.0-0.0.0',
 			'func_wizards' => '',
-			'php' => '5.1.0-0.0.0',
-			'typo3' => '4.4.0-0.0.0',
 		),
 		'conflicts' => array(
 		),

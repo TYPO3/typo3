@@ -33,13 +33,13 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => 'Curby Soft Multimedia',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '1.0.0',
+	'version' => '1.1.0',
 	'_md5_values_when_last_written' => 'a:5:{s:9:"ChangeLog";s:4:"4105";s:27:"class.tx_tstemplateinfo.php";s:4:"840e";s:12:"ext_icon.gif";s:4:"a332";s:14:"ext_tables.php";s:4:"d827";s:13:"locallang.xlf";s:4:"8167";}',
 	'constraints' => array(
 		'depends' => array(
+			'php' => '5.3.0-0.0.0',
+			'typo3' => '4.6.0-0.0.0',
 			'tstemplate' => '',
-			'php' => '5.1.0-0.0.0',
-			'typo3' => '4.4.0-0.0.0',
 		),
 		'conflicts' => array(
 		),
