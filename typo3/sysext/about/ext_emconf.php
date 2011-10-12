@@ -37,8 +37,8 @@ $EM_CONF[$_EXTKEY] = array(
 	'_md5_values_when_last_written' => 'a:8:{s:16:"ext_autoload.php";s:4:"5a89";s:12:"ext_icon.gif";s:4:"f3ab";s:14:"ext_tables.php";s:4:"57f3";s:48:"interfaces/interface.tx_about_customsections.php";s:4:"3f4a";s:13:"mod/clear.gif";s:4:"cc11";s:12:"mod/conf.php";s:4:"e02a";s:13:"mod/index.php";s:4:"24bf";s:12:"mod/info.gif";s:4:"2723";}',
 	'constraints' => array(
 		'depends' => array(
-			'php' => '5.1.0-0.0.0',
-			'typo3' => '4.4.0-0.0.0',
+			'php' => '5.3.0-0.0.0',
+			'typo3' => '4.6.0-0.0.0',
 		),
 		'conflicts' => array(
 		),
