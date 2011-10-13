@@ -845,7 +845,7 @@ if (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'])) {
 	if(is_string($GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'])) {
 		if(is_null($GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'])) {
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'] = $GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'];
-		} else if(is_string($GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'])) {
+		} elseif (is_string($GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'])) {
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'] .= ',' . $GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'];
 		}
 	}
