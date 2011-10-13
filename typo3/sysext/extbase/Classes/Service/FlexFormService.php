@@ -112,7 +112,7 @@ class Tx_Extbase_Service_FlexFormService implements t3lib_Singleton {
 
 					$newNode = array(next($nodeKeyParts) => $nodeValue);
 					$currentNode = $this->walkFlexFormNode($newNode, $valuePointer);
-				} else if (is_array($nodeValue)) {
+				} elseif (is_array($nodeValue)) {
 					if (array_key_exists($valuePointer, $nodeValue)) {
 						$return[$nodeKey] = $nodeValue[$valuePointer];
 					} else {

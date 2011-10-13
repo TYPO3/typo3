@@ -143,7 +143,7 @@ class Tx_Extbase_Utility_Arrays {
 			foreach ($array as $key => $value) {
 				if (!isset($previousType)) {
 					$previousType = gettype($value);
-				} else if ($previousType !== gettype($value)) {
+				} elseif ($previousType !== gettype($value)) {
 					return TRUE;
 				}
 			}
