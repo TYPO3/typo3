@@ -551,9 +551,8 @@ class recordList extends t3lib_recordList {
 			// Make query, only if table is valid and a search string is actually defined:
 		if ($this->searchString) {
 			$result = ' AND 0=1';
-			if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['searchFields']) {
-				$searchableFields = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['searchFields'], TRUE);
-
+			$searchableFields = $this->getSearchFields($table);
+			if (count($searchableFields) > 0) {
 					// Loading full table description - we need to traverse fields:
 				t3lib_div::loadTCA($table);
 
@@ -610,6 +609,38 @@ class recordList extends t3lib_recordList {
 			}
 		}
 		return $result;
+	}
+
+	/**
+	 * Fetches a list of fields to use in the Backend search for the given table.
+	 *
+	 * @param string $tableName
+	 * @return array
+	 */
+	protected function getSearchFields($tableName) {
+		$fieldArray = array();
+		$fieldListWasSet = FALSE;
+
+		// Get fields from ctrl section of TCA first
+		if (isset($GLOBALS['TCA'][$tableName]['ctrl']['searchFields'])) {
+			$fieldArray = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$tableName]['ctrl']['searchFields'], TRUE);
+			$fieldListWasSet = TRUE;
+		}
+
+		// Call hook to add or change the list
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList']))	{
+			$hookParameters = array(
+				'tableHasSearchConfiguration' => $fieldListWasSet,
+				'tableName' => $tableName,
+				'searchFields' => &$fieldArray,
+				'searchString' => $this->searchString
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList'] as $hookFunction)	{
+				t3lib_div::callUserFunction($hookFunction, $hookParameters, $this);
+			}
+		}
+
+		return $fieldArray;
 	}
 
 	/**
