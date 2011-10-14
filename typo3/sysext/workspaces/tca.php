@@ -65,7 +65,7 @@ $TCA['sys_workspace'] = array(
 				'internal_type' => 'db',
 					'allowed' => 'pages',
 				'size' => '3',
-				'maxitems' => '10',
+				'maxitems' => 25,
 				'autoSizeMax' => 10,
 				'show_thumbs' => '1',
 				'wizards' => array(
@@ -82,7 +82,7 @@ $TCA['sys_workspace'] = array(
 				'foreign_table' => 'sys_filemounts',
 				'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
 				'size' => '3',
-				'maxitems' => '10',
+				'maxitems' => 25,
 				'autoSizeMax' => 10,
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
 				'iconsInOptionTags' => 1,
