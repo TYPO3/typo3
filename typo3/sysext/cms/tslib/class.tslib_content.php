@@ -2417,11 +2417,26 @@ class tslib_cObj {
 	 * Will return a formatted date based on configuration given according to PHP date/gmdate properties
 	 * Will return gmdate when the property GMT returns TRUE
 	 *
-	 * @param	string		Input value undergoing processing in this function.
-	 * @param	array		stdWrap properties for date.
-	 * @return	string		The processed input value
+	 * @param string $content Input value undergoing processing in this function.
+	 * @param array $conf stdWrap properties for date.
+	 * @return string The processed input value
 	 */
 	public function stdWrap_date($content = '', $conf = array()) {
+		if (is_string($content)
+			&& !preg_match('/^[[:space:]]* #allow whitespace at beginning
+					(
+						[+-]?(\d+)(?![xX]) #(un)signed decimal which is not the start of a hexadecimal number
+						|
+						0[xX][0-9a-fA-F]+ #unsigned hexadecimal number
+						|
+						[+-]?((\d+|((\d*\.\d+)|(\d+\.\d*)))[eE][+-]?\d+) #floating point notation
+					)
+					/x',
+				$content
+			)
+		) {
+			$content = time();
+		}
 		$content = ($conf['date.']['GMT'] ? gmdate($conf['date'], $content) : date($conf['date'], $content));
 		return $content;
 	}
