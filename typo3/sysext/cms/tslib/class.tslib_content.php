@@ -2422,7 +2422,11 @@ class tslib_cObj {
 	 * @return	string		The processed input value
 	 */
 	public function stdWrap_date($content = '', $conf = array()) {
-		$content = ($conf['date.']['GMT'] ? gmdate($conf['date'], $content) : date($conf['date'], $content));
+		if ($content !== '') {
+			$content = ($conf['date.']['GMT'] ? gmdate($conf['date'], $content) : date($conf['date'], $content));
+		} else {
+			$content = ($conf['date.']['GMT'] ? gmdate($conf['date']) : date($conf['date']));
+		}
 		return $content;
 	}
 
