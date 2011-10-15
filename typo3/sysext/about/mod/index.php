@@ -250,7 +250,11 @@ class SC_mod_help_about_index {
 	 * @return void
 	 */
 	protected function renderExtensionAuthors() {
-		$content = '<table border="0" cellspacing="2" cellpadding="1"><tr><th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:extension', TRUE) . '</th><th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:extension_author', TRUE) . '</th></tr>';
+		$content = '<div class="typo3-mod-help-about-index-php-inner">' . LF .
+			'<h2>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:extension_authors', TRUE) . '</h2>' . LF .
+			'<p>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:extension_list_info') . '</p>' . LF .
+			'<br/>' .
+			'<table border="0" cellspacing="2" cellpadding="1"><tr><th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:extension', TRUE) . '</th><th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:extension_author', TRUE) . '</th></tr>';
 
 		$loadedExtensions = $GLOBALS['TYPO3_LOADED_EXT'];
 		foreach ($loadedExtensions as $extensionKey => $extension) {
@@ -264,8 +268,11 @@ class SC_mod_help_about_index {
 						'<td><a href="mailto:' . $emconf['author_email'] . '?subject=' . rawurlencode('Thanks for your ' . $emconf['title'] . ' extension') . '">' . $emconf['author'] . '</a></td></tr>';
 			}
 		}
-	}
 
+		$content .= '</div>';
+
+		$this->sections['extensions'] = $content;
+	}
 }
 
 // Include extension?
