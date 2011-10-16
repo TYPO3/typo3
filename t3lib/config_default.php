@@ -753,6 +753,7 @@ require(PATH_typo3conf.'localconf.php');
 function initializeCachingFramework() {
 	require (PATH_t3lib . 'class.t3lib_cache.php');
 	require (PATH_t3lib . 'cache/class.t3lib_cache_exception.php');
+	require (PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_nosuchcache.php');
 	require (PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invaliddata.php');
 	require (PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
 	require (PATH_t3lib . 'cache/class.t3lib_cache_factory.php');
