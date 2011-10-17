@@ -1,115 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:23 UTC" product-name="cms">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="cms">
 		<header/>
 		<body>
-			<trans-unit id="page_title" approved="yes">
+			<trans-unit id="page_title">
 				<source>Pagetree overview</source>
-				<target>Pagetree overview</target>
 			</trans-unit>
-			<trans-unit id="page_sysnote" approved="yes">
+			<trans-unit id="page_sysnote">
 				<source>Internal notes</source>
-				<target>Internal notes</target>
 			</trans-unit>
-			<trans-unit id="pageInformation" approved="yes">
+			<trans-unit id="pageInformation">
 				<source>Page information</source>
-				<target>Page information</target>
 			</trans-unit>
-			<trans-unit id="pages_0" approved="yes">
+			<trans-unit id="pages_0">
 				<source>Basic settings</source>
-				<target>Basic settings</target>
 			</trans-unit>
-			<trans-unit id="pages_2" approved="yes">
+			<trans-unit id="pages_2">
 				<source>Cache and Age</source>
-				<target>Cache and Age</target>
 			</trans-unit>
-			<trans-unit id="pages_1" approved="yes">
+			<trans-unit id="pages_1">
 				<source>Record overview</source>
-				<target>Record overview</target>
 			</trans-unit>
-			<trans-unit id="stat_type_0" approved="yes">
+			<trans-unit id="stat_type_0">
 				<source>Page hits</source>
-				<target>Page hits</target>
 			</trans-unit>
-			<trans-unit id="stat_type_1" approved="yes">
+			<trans-unit id="stat_type_1">
 				<source>Total hits</source>
-				<target>Total hits</target>
 			</trans-unit>
-			<trans-unit id="stat_type_2" approved="yes">
+			<trans-unit id="stat_type_2">
 				<source>Hits in main sections</source>
-				<target>Hits in main sections</target>
 			</trans-unit>
-			<trans-unit id="stat_period" approved="yes">
+			<trans-unit id="stat_period">
 				<source>Statistics in the period %s back to %s</source>
-				<target>Statistics in the period %s back to %s</target>
 			</trans-unit>
-			<trans-unit id="pI_crUser" approved="yes">
+			<trans-unit id="pI_crUser">
 				<source>Created by</source>
-				<target>Created by</target>
 			</trans-unit>
-			<trans-unit id="pI_crDate" approved="yes">
+			<trans-unit id="pI_crDate">
 				<source>Created date</source>
-				<target>Created date</target>
 			</trans-unit>
-			<trans-unit id="pI_lastChange" approved="yes">
+			<trans-unit id="pI_lastChange">
 				<source>Last change</source>
-				<target>Last change</target>
 			</trans-unit>
-			<trans-unit id="pI_lastChangeContent" approved="yes">
+			<trans-unit id="pI_lastChangeContent">
 				<source>Last change, content</source>
-				<target>Last change, content</target>
 			</trans-unit>
-			<trans-unit id="hits_title" approved="yes">
+			<trans-unit id="hits_title">
 				<source>Hit Statistics</source>
-				<target>Hit Statistics</target>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_viewPage" approved="yes">
+			<trans-unit id="lang_renderl10n_viewPage">
 				<source>View page</source>
-				<target>View page</target>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editDefaultLanguagePage" approved="yes">
+			<trans-unit id="lang_renderl10n_editDefaultLanguagePage">
 				<source>Edit default language page properties</source>
-				<target>Edit default language page properties</target>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editLangOverlays" approved="yes">
+			<trans-unit id="lang_renderl10n_editLangOverlays">
 				<source>Edit all language overlay records</source>
-				<target>Edit all language overlay records</target>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editPageProperties" approved="yes">
+			<trans-unit id="lang_renderl10n_editPageProperties">
 				<source>Edit all page properties</source>
-				<target>Edit all page properties</target>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editPage" approved="yes">
+			<trans-unit id="lang_renderl10n_editPage">
 				<source>Edit page</source>
-				<target>Edit page</target>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editPageLang" approved="yes">
+			<trans-unit id="lang_renderl10n_editPageLang">
 				<source>Edit page translation</source>
-				<target>Edit page translation</target>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_badThingThereAre" approved="yes">
+			<trans-unit id="lang_renderl10n_badThingThereAre">
 				<source>ERROR: there are two or more page overlay records for this language! Only one is allowed!</source>
-				<target>ERROR: there are two or more page overlay records for this language! Only one is allowed!</target>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editLanguageOverlayRecord" approved="yes">
+			<trans-unit id="lang_renderl10n_editLanguageOverlayRecord">
 				<source>Edit language overlay record</source>
-				<target>Edit language overlay record</target>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_page" approved="yes">
+			<trans-unit id="lang_renderl10n_page">
 				<source>Page</source>
-				<target>Page</target>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_default" approved="yes">
+			<trans-unit id="lang_renderl10n_default">
 				<source>Default</source>
-				<target>Default</target>
 			</trans-unit>
-			<trans-unit id="lang_getlangsta_createNewTranslationHeaders" approved="yes">
+			<trans-unit id="lang_getlangsta_createNewTranslationHeaders">
 				<source>Create new translation headers</source>
-				<target>Create new translation headers</target>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_CEcount" approved="yes">
+			<trans-unit id="lang_renderl10n_CEcount">
 				<source>Content Element Count</source>
-				<target>Content Element Count</target>
 			</trans-unit>
 		</body>
 	</file>

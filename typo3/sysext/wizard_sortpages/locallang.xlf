@@ -1,47 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="wizard_sortpages">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="wizard_sortpages">
 		<header/>
 		<body>
-			<trans-unit id="wiz_sort" approved="yes">
+			<trans-unit id="wiz_sort">
 				<source>Sort pages</source>
-				<target>Sort pages</target>
 			</trans-unit>
-			<trans-unit id="wiz_W" approved="yes">
+			<trans-unit id="wiz_W">
 				<source>W!</source>
-				<target>W!</target>
 			</trans-unit>
-			<trans-unit id="wiz_currentPageOrder" approved="yes">
+			<trans-unit id="wiz_currentPageOrder">
 				<source>Current page order</source>
-				<target>Current page order</target>
 			</trans-unit>
-			<trans-unit id="wiz_changeOrder" approved="yes">
+			<trans-unit id="wiz_changeOrder">
 				<source>Sort these pages by</source>
-				<target>Sort these pages by</target>
 			</trans-unit>
-			<trans-unit id="wiz_changeOrder_title" approved="yes">
+			<trans-unit id="wiz_changeOrder_title">
 				<source>Page title</source>
-				<target>Page title</target>
 			</trans-unit>
-			<trans-unit id="wiz_changeOrder_subtitle" approved="yes">
+			<trans-unit id="wiz_changeOrder_subtitle">
 				<source>Subtitle</source>
-				<target>Subtitle</target>
 			</trans-unit>
-			<trans-unit id="wiz_changeOrder_tCreate" approved="yes">
+			<trans-unit id="wiz_changeOrder_tCreate">
 				<source>Create-time</source>
-				<target>Create-time</target>
 			</trans-unit>
-			<trans-unit id="wiz_changeOrder_tChange" approved="yes">
+			<trans-unit id="wiz_changeOrder_tChange">
 				<source>Change-time</source>
-				<target>Change-time</target>
 			</trans-unit>
-			<trans-unit id="wiz_changeOrder_REVERSE" approved="yes">
+			<trans-unit id="wiz_changeOrder_REVERSE">
 				<source>Reverse current order</source>
-				<target>Reverse current order</target>
 			</trans-unit>
-			<trans-unit id="wiz_changeOrder_msg1" approved="yes">
+			<trans-unit id="wiz_changeOrder_msg1">
 				<source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
-				<target>You're about to change the order of the above pages. Are you sure you want to continue?</target>
 			</trans-unit>
 		</body>
 	</file>

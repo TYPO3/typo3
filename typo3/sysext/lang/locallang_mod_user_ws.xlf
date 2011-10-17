@@ -1,603 +1,454 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="lang">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="mlang_labels_tablabel" approved="yes">
+			<trans-unit id="mlang_labels_tablabel">
 				<source>Workspace overview</source>
-				<target>Workspace overview</target>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr" approved="yes">
+			<trans-unit id="mlang_labels_tabdescr">
 				<source>Workspace overview showing the changes you have made in the workspace. Here you can also publish the changes to the website if you are allowed to do that.</source>
-				<target>Workspace overview showing the changes you have made in the workspace. Here you can also publish the changes to the website if you are allowed to do that.</target>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab" approved="yes">
+			<trans-unit id="mlang_tabs_tab">
 				<source>Workspace</source>
-				<target>Workspace</target>
 			</trans-unit>
-			<trans-unit id="title" approved="yes">
+			<trans-unit id="title">
 				<source>Workspace Manager</source>
-				<target>Workspace Manager</target>
 			</trans-unit>
-			<trans-unit id="menuitem_review" approved="yes">
+			<trans-unit id="menuitem_review">
 				<source>Review and Publish</source>
-				<target>Review and Publish</target>
 			</trans-unit>
-			<trans-unit id="menuitem_workspaces" approved="yes">
+			<trans-unit id="menuitem_workspaces">
 				<source>Workspace List</source>
-				<target>Workspace List</target>
 			</trans-unit>
-			<trans-unit id="filter_drafts" approved="yes">
+			<trans-unit id="filter_drafts">
 				<source>Drafts</source>
-				<target>Drafts</target>
 			</trans-unit>
-			<trans-unit id="filter_archive" approved="yes">
+			<trans-unit id="filter_archive">
 				<source>Archive</source>
-				<target>Archive</target>
 			</trans-unit>
-			<trans-unit id="filter_all" approved="yes">
+			<trans-unit id="filter_all">
 				<source>All</source>
-				<target>All</target>
 			</trans-unit>
-			<trans-unit id="diff_no_diff" approved="yes">
+			<trans-unit id="diff_no_diff">
 				<source>Do not show differences</source>
-				<target>Do not show differences</target>
 			</trans-unit>
-			<trans-unit id="diff_show_inline" approved="yes">
+			<trans-unit id="diff_show_inline">
 				<source>Show differences inline</source>
-				<target>Show differences inline</target>
 			</trans-unit>
-			<trans-unit id="diff_show_popup" approved="yes">
+			<trans-unit id="diff_show_popup">
 				<source>Show diff. popups (branches)</source>
-				<target>Show diff. popups (branches)</target>
 			</trans-unit>
-			<trans-unit id="label_errors" approved="yes">
+			<trans-unit id="label_errors">
 				<source>Errors:</source>
-				<target>Errors:</target>
 			</trans-unit>
-			<trans-unit id="workspace_description_live" approved="yes">
+			<trans-unit id="workspace_description_live">
 				<source>The LIVE workspace allows changes to take effect immediately on the website. However versioning can be applied inside the live workspace and this overview shows you draft and archive versions from the various workspaces, including the LIVE workspace.</source>
-				<target>The LIVE workspace allows changes to take effect immediately on the website. However versioning can be applied inside the live workspace and this overview shows you draft and archive versions from the various workspaces, including the LIVE workspace.</target>
 			</trans-unit>
-			<trans-unit id="workspace_description_draft" approved="yes">
+			<trans-unit id="workspace_description_draft">
 				<source>In the Draft workspace all changes will be made as new versions of the live content. Changes can be previewed, reviewed and eventually published live.</source>
-				<target>In the Draft workspace all changes will be made as new versions of the live content. Changes can be previewed, reviewed and eventually published live.</target>
 			</trans-unit>
-			<trans-unit id="workspace_description_no_access" approved="yes">
+			<trans-unit id="workspace_description_no_access">
 				<source>You have no access to any workspace which might be an error. Please contact you administrator!</source>
-				<target>You have no access to any workspace which might be an error. Please contact you administrator!</target>
 			</trans-unit>
-			<trans-unit id="edit_workspace_no_permission" approved="yes">
+			<trans-unit id="edit_workspace_no_permission">
 				<source>You have no permission to edit this workspace. Only admin users or owners of the workspace can modify its parameters.</source>
-				<target>You have no permission to edit this workspace. Only admin users or owners of the workspace can modify its parameters.</target>
 			</trans-unit>
-			<trans-unit id="create_workspace_no_permission" approved="yes">
+			<trans-unit id="create_workspace_no_permission">
 				<source>You have no permission to create workspaces. Only admin users can create workspaces.</source>
-				<target>You have no permission to create workspaces. Only admin users can create workspaces.</target>
 			</trans-unit>
-			<trans-unit id="submit_publish_workspace" approved="yes">
+			<trans-unit id="submit_publish_workspace">
 				<source>Publish workspace</source>
-				<target>Publish workspace</target>
 			</trans-unit>
-			<trans-unit id="submit_publish_workspace_confirmation_1" approved="yes">
+			<trans-unit id="submit_publish_workspace_confirmation_1">
 				<source>Are you sure you want to publish all content in "Publish" stage from the workspace?</source>
-				<target>Are you sure you want to publish all content in "Publish" stage from the workspace?</target>
 			</trans-unit>
-			<trans-unit id="submit_publish_workspace_confirmation_2" approved="yes">
+			<trans-unit id="submit_publish_workspace_confirmation_2">
 				<source>Are you sure you want to publish all content from the workspace?</source>
-				<target>Are you sure you want to publish all content from the workspace?</target>
 			</trans-unit>
-			<trans-unit id="submit_swap_workspace" approved="yes">
+			<trans-unit id="submit_swap_workspace">
 				<source>Swap workspace</source>
-				<target>Swap workspace</target>
 			</trans-unit>
-			<trans-unit id="submit_swap_workspace_confirmation_1" approved="yes">
+			<trans-unit id="submit_swap_workspace_confirmation_1">
 				<source>Are you sure you want to publish (swap) all content in "Publish" stage from the workspace?</source>
-				<target>Are you sure you want to publish (swap) all content in "Publish" stage from the workspace?</target>
 			</trans-unit>
-			<trans-unit id="submit_swap_workspace_confirmation_2" approved="yes">
+			<trans-unit id="submit_swap_workspace_confirmation_2">
 				<source>Are you sure you want to publish (swap) all content from the workspace?</source>
-				<target>Are you sure you want to publish (swap) all content from the workspace?</target>
 			</trans-unit>
-			<trans-unit id="submit_apply_action_on_selected_elements" approved="yes">
+			<trans-unit id="submit_apply_action_on_selected_elements">
 				<source>Sure you want to perform this action with selected elements?</source>
-				<target>Sure you want to perform this action with selected elements?</target>
 			</trans-unit>
-			<trans-unit id="no_publish_permission" approved="yes">
+			<trans-unit id="no_publish_permission">
 				<source>You are not permitted to publish from this workspace</source>
-				<target>You are not permitted to publish from this workspace</target>
 			</trans-unit>
-			<trans-unit id="label_workspace" approved="yes">
+			<trans-unit id="label_workspace">
 				<source>Workspace:</source>
-				<target>Workspace:</target>
 			</trans-unit>
-			<trans-unit id="label_description" approved="yes">
+			<trans-unit id="label_description">
 				<source>Description:</source>
-				<target>Description:</target>
 			</trans-unit>
-			<trans-unit id="label_options" approved="yes">
+			<trans-unit id="label_options">
 				<source>Options:</source>
-				<target>Options:</target>
 			</trans-unit>
-			<trans-unit id="label_status" approved="yes">
+			<trans-unit id="label_status">
 				<source>Status:</source>
-				<target>Status:</target>
 			</trans-unit>
-			<trans-unit id="label_pagetree" approved="yes">
+			<trans-unit id="label_pagetree">
 				<source>Pagetree:</source>
-				<target>Pagetree:</target>
 			</trans-unit>
-			<trans-unit id="label_live_version" approved="yes">
+			<trans-unit id="label_live_version">
 				<source>Live Version:</source>
-				<target>Live Version:</target>
 			</trans-unit>
-			<trans-unit id="label_draft_versions" approved="yes">
+			<trans-unit id="label_draft_versions">
 				<source>Workspace Versions:</source>
-				<target>Workspace Versions:</target>
 			</trans-unit>
-			<trans-unit id="label_stage" approved="yes">
+			<trans-unit id="label_stage">
 				<source>Stage:</source>
-				<target>Stage:</target>
 			</trans-unit>
-			<trans-unit id="label_publish" approved="yes">
+			<trans-unit id="label_publish">
 				<source>Publish:</source>
-				<target>Publish:</target>
 			</trans-unit>
-			<trans-unit id="label_lifecycle" approved="yes">
+			<trans-unit id="label_lifecycle">
 				<source>Lifecycle:</source>
-				<target>Lifecycle:</target>
 			</trans-unit>
-			<trans-unit id="label_access_level" approved="yes">
+			<trans-unit id="label_access_level">
 				<source>Access level:</source>
-				<target>Access level:</target>
 			</trans-unit>
-			<trans-unit id="img_title_publish" approved="yes">
+			<trans-unit id="img_title_publish">
 				<source>Publish</source>
-				<target>Publish</target>
 			</trans-unit>
-			<trans-unit id="img_title_swap" approved="yes">
+			<trans-unit id="img_title_swap">
 				<source>Swap</source>
-				<target>Swap</target>
 			</trans-unit>
-			<trans-unit id="remove_from_ws_confirmation" approved="yes">
+			<trans-unit id="remove_from_ws_confirmation">
 				<source>Remove from workspace?</source>
-				<target>Remove from workspace?</target>
 			</trans-unit>
-			<trans-unit id="img_title_remove_from_ws" approved="yes">
+			<trans-unit id="img_title_remove_from_ws">
 				<source>Remove from workspace?</source>
-				<target>Remove from workspace?</target>
 			</trans-unit>
-			<trans-unit id="img_title_edit_page" approved="yes">
+			<trans-unit id="img_title_edit_page">
 				<source>Edit page</source>
-				<target>Edit page</target>
 			</trans-unit>
-			<trans-unit id="img_title_edit_element" approved="yes">
+			<trans-unit id="img_title_edit_element">
 				<source>Edit element</source>
-				<target>Edit element</target>
 			</trans-unit>
-			<trans-unit id="img_title_show_log" approved="yes">
+			<trans-unit id="img_title_show_log">
 				<source>Show Log</source>
-				<target>Show Log</target>
 			</trans-unit>
-			<trans-unit id="diffview_label_field_name" approved="yes">
+			<trans-unit id="diffview_label_field_name">
 				<source>Fieldname:</source>
-				<target>Fieldname:</target>
 			</trans-unit>
-			<trans-unit id="diffview_label_colored_diff_view" approved="yes">
+			<trans-unit id="diffview_label_colored_diff_view">
 				<source>Colored diff-view:</source>
-				<target>Colored diff-view:</target>
 			</trans-unit>
-			<trans-unit id="diffview_complete_match" approved="yes">
+			<trans-unit id="diffview_complete_match">
 				<source>Complete match on editable fields.</source>
-				<target>Complete match on editable fields.</target>
 			</trans-unit>
-			<trans-unit id="diffview_cannot_find_records" approved="yes">
+			<trans-unit id="diffview_cannot_find_records">
 				<source>ERROR: Records could strangely not be found!</source>
-				<target>ERROR: Records could strangely not be found!</target>
 			</trans-unit>
-			<trans-unit id="img_title_show_more" approved="yes">
+			<trans-unit id="img_title_show_more">
 				<source>Show more</source>
-				<target>Show more</target>
 			</trans-unit>
-			<trans-unit id="img_title_current_workspace" approved="yes">
+			<trans-unit id="img_title_current_workspace">
 				<source>This is a current workspace!</source>
-				<target>This is a current workspace!</target>
 			</trans-unit>
-			<trans-unit id="img_title_create_new_workspace" approved="yes">
+			<trans-unit id="img_title_create_new_workspace">
 				<source>Create new workspace</source>
-				<target>Create new workspace</target>
 			</trans-unit>
-			<trans-unit id="link_text_create_new_workspace" approved="yes">
+			<trans-unit id="link_text_create_new_workspace">
 				<source>Create new workspace</source>
-				<target>Create new workspace</target>
 			</trans-unit>
-			<trans-unit id="edit_workspace_go_back" approved="yes">
+			<trans-unit id="edit_workspace_go_back">
 				<source>Go back</source>
-				<target>Go back</target>
 			</trans-unit>
-			<trans-unit id="edit_workspace_title_edit" approved="yes">
+			<trans-unit id="edit_workspace_title_edit">
 				<source>Edit workspace</source>
-				<target>Edit workspace</target>
 			</trans-unit>
-			<trans-unit id="edit_workspace_title_new" approved="yes">
+			<trans-unit id="edit_workspace_title_new">
 				<source>Create new workspace</source>
-				<target>Create new workspace</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_current_workspace" approved="yes">
+			<trans-unit id="workspace_list_label_current_workspace">
 				<source>Current:</source>
-				<target>Current:</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_workspace_title" approved="yes">
+			<trans-unit id="workspace_list_label_workspace_title">
 				<source>Title:</source>
-				<target>Title:</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_workspace_description" approved="yes">
+			<trans-unit id="workspace_list_label_workspace_description">
 				<source>Description:</source>
-				<target>Description:</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_owners" approved="yes">
+			<trans-unit id="workspace_list_label_owners">
 				<source>Owners:</source>
-				<target>Owners:</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_members" approved="yes">
+			<trans-unit id="workspace_list_label_members">
 				<source>Members:</source>
-				<target>Members:</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_reviewers" approved="yes">
+			<trans-unit id="workspace_list_label_reviewers">
 				<source>Reviewers:</source>
-				<target>Reviewers:</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_access_admins_only" approved="yes">
+			<trans-unit id="workspace_list_access_admins_only">
 				<source>Admins only</source>
-				<target>Admins only</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_access_anyone" approved="yes">
+			<trans-unit id="workspace_list_access_anyone">
 				<source>no restrictions</source>
-				<target>no restrictions</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_file_mountpoints" approved="yes">
+			<trans-unit id="workspace_list_label_file_mountpoints">
 				<source>File mountpoints:</source>
-				<target>File mountpoints:</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_db_mountpoints" approved="yes">
+			<trans-unit id="workspace_list_label_db_mountpoints">
 				<source>Database mountpoints:</source>
-				<target>Database mountpoints:</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_frozen" approved="yes">
+			<trans-unit id="workspace_list_label_frozen">
 				<source>Frozen:</source>
-				<target>Frozen:</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_publish_date" approved="yes">
+			<trans-unit id="workspace_list_label_publish_date">
 				<source>Publish date:</source>
-				<target>Publish date:</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_unpublish_date" approved="yes">
+			<trans-unit id="workspace_list_label_unpublish_date">
 				<source>Unpublish date:</source>
-				<target>Unpublish date:</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_your_access" approved="yes">
+			<trans-unit id="workspace_list_label_your_access">
 				<source>Your access:</source>
-				<target>Your access:</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_workspace_users" approved="yes">
+			<trans-unit id="workspace_list_label_workspace_users">
 				<source>Workspace users:</source>
-				<target>Workspace users:</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_frozen_yes" approved="yes">
+			<trans-unit id="workspace_list_label_frozen_yes">
 				<source>Yes</source>
-				<target>Yes</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_frozen_no" approved="yes">
+			<trans-unit id="workspace_list_label_frozen_no">
 				<source>No</source>
-				<target>No</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_icon_title_edit_workspace" approved="yes">
+			<trans-unit id="workspace_list_icon_title_edit_workspace">
 				<source>Edit workspace</source>
-				<target>Edit workspace</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_icon_title_switch_workspace" approved="yes">
+			<trans-unit id="workspace_list_icon_title_switch_workspace">
 				<source>Switch workspace</source>
-				<target>Switch workspace</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_access_admin" approved="yes">
+			<trans-unit id="workspace_list_access_admin">
 				<source>Admin</source>
-				<target>Admin</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_access_online" approved="yes">
+			<trans-unit id="workspace_list_access_online">
 				<source>Online</source>
-				<target>Online</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_access_offline" approved="yes">
+			<trans-unit id="workspace_list_access_offline">
 				<source>Offline</source>
-				<target>Offline</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_access_owner" approved="yes">
+			<trans-unit id="workspace_list_access_owner">
 				<source>Owner</source>
-				<target>Owner</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_access_member" approved="yes">
+			<trans-unit id="workspace_list_access_member">
 				<source>Member</source>
-				<target>Member</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_access_reviewer" approved="yes">
+			<trans-unit id="workspace_list_access_reviewer">
 				<source>Reviewer</source>
-				<target>Reviewer</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_publishing_count_draft" approved="yes">
+			<trans-unit id="workspace_list_publishing_count_draft">
 				<source>Draft</source>
-				<target>Draft</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_publishing_count_archive" approved="yes">
+			<trans-unit id="workspace_list_publishing_count_archive">
 				<source>Archive</source>
-				<target>Archive</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_publishing_count" approved="yes">
+			<trans-unit id="workspace_list_publishing_count">
 				<source>Published %d times</source>
-				<target>Published %d times</target>
 			</trans-unit>
-			<trans-unit id="stage_sent_to_review" approved="yes">
+			<trans-unit id="stage_sent_to_review">
 				<source>"%s" sent element to "Review"</source>
-				<target>"%s" sent element to "Review"</target>
 			</trans-unit>
-			<trans-unit id="stage_approved_for_publish" approved="yes">
+			<trans-unit id="stage_approved_for_publish">
 				<source>"%s" approved for "Publish"</source>
-				<target>"%s" approved for "Publish"</target>
 			</trans-unit>
-			<trans-unit id="stage_rejected" approved="yes">
+			<trans-unit id="stage_rejected">
 				<source>"%s" rejected element!</source>
-				<target>"%s" rejected element!</target>
 			</trans-unit>
-			<trans-unit id="stage_reset_to_editing" approved="yes">
+			<trans-unit id="stage_reset_to_editing">
 				<source>"%s" reset to "Editing"</source>
-				<target>"%s" reset to "Editing"</target>
 			</trans-unit>
-			<trans-unit id="stage_undefined" approved="yes">
+			<trans-unit id="stage_undefined">
 				<source>[undefined]</source>
-				<target>[undefined]</target>
 			</trans-unit>
-			<trans-unit id="stage_label_user_comment" approved="yes">
+			<trans-unit id="stage_label_user_comment">
 				<source>User Comment:</source>
-				<target>User Comment:</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_mount_point_inaccessible" approved="yes">
+			<trans-unit id="workspace_list_mount_point_inaccessible">
 				<source>This mount point is defined for workspace but not accessible to you. If you need access to this mount point, ask your system administrator to give you access to it.</source>
-				<target>This mount point is defined for workspace but not accessible to you. If you need access to this mount point, ask your system administrator to give you access to it.</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_file_mount_point_live" approved="yes">
+			<trans-unit id="workspace_list_file_mount_point_live">
 				<source>Mount points from user profile are used.</source>
-				<target>Mount points from user profile are used.</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_file_mount_point_draft" approved="yes">
+			<trans-unit id="workspace_list_file_mount_point_draft">
 				<source>File mount points are not available in draft workspace.</source>
-				<target>File mount points are not available in draft workspace.</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_file_mount_point_custom" approved="yes">
+			<trans-unit id="workspace_list_file_mount_point_custom">
 				<source>File mount points are not defined for this workspace. Therefore no file mount points available in the workspace.</source>
-				<target>File mount points are not defined for this workspace. Therefore no file mount points available in the workspace.</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_db_mount_point_live" approved="yes">
+			<trans-unit id="workspace_list_db_mount_point_live">
 				<source>Mount points from user profile are used.</source>
-				<target>Mount points from user profile are used.</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_db_mount_point_draft" approved="yes">
+			<trans-unit id="workspace_list_db_mount_point_draft">
 				<source>Mount points from user profile are used.</source>
-				<target>Mount points from user profile are used.</target>
 			</trans-unit>
-			<trans-unit id="workspace_list_db_mount_point_custom" approved="yes">
+			<trans-unit id="workspace_list_db_mount_point_custom">
 				<source>Mount points from user profile are used.</source>
-				<target>Mount points from user profile are used.</target>
 			</trans-unit>
-			<trans-unit id="publish_title" approved="yes">
+			<trans-unit id="publish_title">
 				<source>Publish workspace</source>
-				<target>Publish workspace</target>
 			</trans-unit>
-			<trans-unit id="swap_title" approved="yes">
+			<trans-unit id="swap_title">
 				<source>Swap workspace</source>
-				<target>Swap workspace</target>
 			</trans-unit>
-			<trans-unit id="publish_status" approved="yes">
+			<trans-unit id="publish_status">
 				<source>Published records &lt;strong&gt;%d&lt;/strong&gt; to &lt;strong&gt;%d&lt;/strong&gt; of &lt;strong&gt;%d&lt;/strong&gt;.</source>
-				<target>Published records &lt;strong&gt;%d&lt;/strong&gt; to &lt;strong&gt;%d&lt;/strong&gt; of &lt;strong&gt;%d&lt;/strong&gt;.</target>
 			</trans-unit>
-			<trans-unit id="swap_status" approved="yes">
+			<trans-unit id="swap_status">
 				<source>Swapped records &lt;strong&gt;%d&lt;/strong&gt; to &lt;strong&gt;%d&lt;/strong&gt; of &lt;strong&gt;%d&lt;/strong&gt;.</source>
-				<target>Swapped records &lt;strong&gt;%d&lt;/strong&gt; to &lt;strong&gt;%d&lt;/strong&gt; of &lt;strong&gt;%d&lt;/strong&gt;.</target>
 			</trans-unit>
-			<trans-unit id="publish_prepare" approved="yes">
+			<trans-unit id="publish_prepare">
 				<source>TYPO3 is preparing to publish records.</source>
-				<target>TYPO3 is preparing to publish records.</target>
 			</trans-unit>
-			<trans-unit id="swap_prepare" approved="yes">
+			<trans-unit id="swap_prepare">
 				<source>TYPO3 is preparing to swap records.</source>
-				<target>TYPO3 is preparing to swap records.</target>
 			</trans-unit>
-			<trans-unit id="please_wait" approved="yes">
+			<trans-unit id="please_wait">
 				<source>Please, wait...</source>
-				<target>Please, wait...</target>
 			</trans-unit>
-			<trans-unit id="return_to_index" approved="yes">
+			<trans-unit id="return_to_index">
 				<source>Return to Workspace module</source>
-				<target>Return to Workspace module</target>
 			</trans-unit>
-			<trans-unit id="do_not_interrupt_publishing_1" approved="yes">
+			<trans-unit id="do_not_interrupt_publishing_1">
 				<source>Do not interrupt publishing process or</source>
-				<target>Do not interrupt publishing process or</target>
 			</trans-unit>
-			<trans-unit id="do_not_interrupt_publishing_2" approved="yes">
+			<trans-unit id="do_not_interrupt_publishing_2">
 				<source>workspace may be left in half-published state!</source>
-				<target>workspace may be left in half-published state!</target>
 			</trans-unit>
-			<trans-unit id="workspace_published" approved="yes">
+			<trans-unit id="workspace_published">
 				<source>Workspace has been published.</source>
-				<target>Workspace has been published.</target>
 			</trans-unit>
-			<trans-unit id="workspace_swapped" approved="yes">
+			<trans-unit id="workspace_swapped">
 				<source>Workspace has been swapped.</source>
-				<target>Workspace has been swapped.</target>
 			</trans-unit>
-			<trans-unit id="label_reject" approved="yes">
+			<trans-unit id="label_reject">
 				<source>Reject</source>
-				<target>Reject</target>
 			</trans-unit>
-			<trans-unit id="label_review" approved="yes">
+			<trans-unit id="label_review">
 				<source>Review</source>
-				<target>Review</target>
 			</trans-unit>
-			<trans-unit id="label_sendtoreview" approved="yes">
+			<trans-unit id="label_sendtoreview">
 				<source>Send to review</source>
-				<target>Send to review</target>
 			</trans-unit>
-			<trans-unit id="label_approveforpublishing" approved="yes">
+			<trans-unit id="label_approveforpublishing">
 				<source>Approve for publishing</source>
-				<target>Approve for publishing</target>
 			</trans-unit>
-			<trans-unit id="stage_editing" approved="yes">
+			<trans-unit id="stage_editing">
 				<source>Editing</source>
-				<target>Editing</target>
 			</trans-unit>
-			<trans-unit id="stage_review" approved="yes">
+			<trans-unit id="stage_review">
 				<source>Review</source>
-				<target>Review</target>
 			</trans-unit>
-			<trans-unit id="stage_publish" approved="yes">
+			<trans-unit id="stage_publish">
 				<source>Publish</source>
-				<target>Publish</target>
 			</trans-unit>
-			<trans-unit id="label_subelements" approved="yes">
+			<trans-unit id="label_subelements">
 				<source>Sub elements</source>
-				<target>Sub elements</target>
 			</trans-unit>
-			<trans-unit id="label_subelementsdetails" approved="yes">
+			<trans-unit id="label_subelementsdetails">
 				<source>Sub elements, click for details</source>
-				<target>Sub elements, click for details</target>
 			</trans-unit>
-			<trans-unit id="label_commentforreviewer" approved="yes">
+			<trans-unit id="label_commentforreviewer">
 				<source>Comment for Reviewer:</source>
-				<target>Comment for Reviewer:</target>
 			</trans-unit>
-			<trans-unit id="label_commentforpublisher" approved="yes">
+			<trans-unit id="label_commentforpublisher">
 				<source>Comment for Publisher:</source>
-				<target>Comment for Publisher:</target>
 			</trans-unit>
-			<trans-unit id="label_resetstage" approved="yes">
+			<trans-unit id="label_resetstage">
 				<source>Reset stage</source>
-				<target>Reset stage</target>
 			</trans-unit>
-			<trans-unit id="label_undefined" approved="yes">
+			<trans-unit id="label_undefined">
 				<source>Undefined</source>
-				<target>Undefined</target>
 			</trans-unit>
-			<trans-unit id="explain_reject" approved="yes">
+			<trans-unit id="explain_reject">
 				<source>Please explain why you reject:</source>
-				<target>Please explain why you reject:</target>
 			</trans-unit>
-			<trans-unit id="label_element" approved="yes">
+			<trans-unit id="label_element">
 				<source>Element</source>
-				<target>Element</target>
 			</trans-unit>
-			<trans-unit id="label_page" approved="yes">
+			<trans-unit id="label_page">
 				<source>Page</source>
-				<target>Page</target>
 			</trans-unit>
-			<trans-unit id="label_branch" approved="yes">
+			<trans-unit id="label_branch">
 				<source>Branch</source>
-				<target>Branch</target>
 			</trans-unit>
-			<trans-unit id="label_newrecord" approved="yes">
+			<trans-unit id="label_newrecord">
 				<source>New element</source>
-				<target>New element</target>
 			</trans-unit>
-			<trans-unit id="label_deletedrecord" approved="yes">
+			<trans-unit id="label_deletedrecord">
 				<source>Deleted element</source>
-				<target>Deleted element</target>
 			</trans-unit>
-			<trans-unit id="label_otherversions" approved="yes">
+			<trans-unit id="label_otherversions">
 				<source>Other version(s) in workspace(s):</source>
-				<target>Other version(s) in workspace(s):</target>
 			</trans-unit>
-			<trans-unit id="label_multipleversions" approved="yes">
+			<trans-unit id="label_multipleversions">
 				<source>Multiple versions in same workspace!</source>
-				<target>Multiple versions in same workspace!</target>
 			</trans-unit>
-			<trans-unit id="label_nestedversions" approved="yes">
+			<trans-unit id="label_nestedversions">
 				<source>Version inside version!</source>
-				<target>Version inside version!</target>
 			</trans-unit>
-			<trans-unit id="label_rejected" approved="yes">
+			<trans-unit id="label_rejected">
 				<source>Rejected</source>
-				<target>Rejected</target>
 			</trans-unit>
-			<trans-unit id="label_showsubelements" approved="yes">
+			<trans-unit id="label_showsubelements">
 				<source>Show sub elements</source>
-				<target>Show sub elements</target>
 			</trans-unit>
-			<trans-unit id="label_onlymychanges" approved="yes">
+			<trans-unit id="label_onlymychanges">
 				<source>Show only my changes</source>
-				<target>Show only my changes</target>
 			</trans-unit>
-			<trans-unit id="label_offlineWSes" approved="yes">
+			<trans-unit id="label_offlineWSes">
 				<source>Draft workspaces</source>
-				<target>Draft workspaces</target>
 			</trans-unit>
-			<trans-unit id="label_allWSes" approved="yes">
+			<trans-unit id="label_allWSes">
 				<source>All workspaces</source>
-				<target>All workspaces</target>
 			</trans-unit>
-			<trans-unit id="label_notapplicable" approved="yes">
+			<trans-unit id="label_notapplicable">
 				<source>n/a</source>
-				<target>n/a</target>
 			</trans-unit>
-			<trans-unit id="label_percentchange" approved="yes">
+			<trans-unit id="label_percentchange">
 				<source>%%% change:</source>
-				<target>%%% change:</target>
 			</trans-unit>
-			<trans-unit id="label_percentChange" approved="yes">
+			<trans-unit id="label_percentChange">
 				<source>%d%% change:</source>
-				<target>%d%% change:</target>
 			</trans-unit>
-			<trans-unit id="label_doaction_default" approved="yes">
+			<trans-unit id="label_doaction_default">
 				<source>Do:</source>
-				<target>Do:</target>
 			</trans-unit>
-			<trans-unit id="label_doaction_publish" approved="yes">
+			<trans-unit id="label_doaction_publish">
 				<source>Publish</source>
-				<target>Publish</target>
 			</trans-unit>
-			<trans-unit id="label_doaction_swap" approved="yes">
+			<trans-unit id="label_doaction_swap">
 				<source>Swap</source>
-				<target>Swap</target>
 			</trans-unit>
-			<trans-unit id="label_doaction_release" approved="yes">
+			<trans-unit id="label_doaction_release">
 				<source>Remove this version</source>
-				<target>Remove this version</target>
 			</trans-unit>
-			<trans-unit id="label_doaction_stage_reject" approved="yes">
+			<trans-unit id="label_doaction_stage_reject">
 				<source>Reject changes</source>
-				<target>Reject changes</target>
 			</trans-unit>
-			<trans-unit id="label_doaction_stage_editing" approved="yes">
+			<trans-unit id="label_doaction_stage_editing">
 				<source>Send to stage: Editing</source>
-				<target>Send to stage: Editing</target>
 			</trans-unit>
-			<trans-unit id="label_doaction_stage_review" approved="yes">
+			<trans-unit id="label_doaction_stage_review">
 				<source>Send to stage: Review</source>
-				<target>Send to stage: Review</target>
 			</trans-unit>
-			<trans-unit id="label_doaction_stage_publish" approved="yes">
+			<trans-unit id="label_doaction_stage_publish">
 				<source>Send to stage: Publish</source>
-				<target>Send to stage: Publish</target>
 			</trans-unit>
-			<trans-unit id="label_doaction_flush" approved="yes">
+			<trans-unit id="label_doaction_flush">
 				<source>Flush ALL changes/versions</source>
-				<target>Flush ALL changes/versions</target>
 			</trans-unit>
-			<trans-unit id="label_moveto_placeholder" approved="yes">
+			<trans-unit id="label_moveto_placeholder">
 				<source>Move-to placeholder (destination)</source>
-				<target>Move-to placeholder (destination)</target>
 			</trans-unit>
-			<trans-unit id="label_moveto_pointer" approved="yes">
+			<trans-unit id="label_moveto_pointer">
 				<source>Move-to pointer (source)</source>
-				<target>Move-to pointer (source)</target>
 			</trans-unit>
 		</body>
 	</file>

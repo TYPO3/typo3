@@ -1,823 +1,619 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:22 UTC" product-name="cms">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="cms">
 		<header/>
 		<body>
-			<trans-unit id="mod_tx_cms_webinfo_page" approved="yes">
+			<trans-unit id="mod_tx_cms_webinfo_page">
 				<source>Pagetree Overview</source>
-				<target>Pagetree Overview</target>
 			</trans-unit>
-			<trans-unit id="mod_tx_cms_webinfo_lang" approved="yes">
+			<trans-unit id="mod_tx_cms_webinfo_lang">
 				<source>Localization Overview</source>
-				<target>Localization Overview</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.standard" approved="yes">
+			<trans-unit id="pages.palettes.standard">
 				<source>Page</source>
-				<target>Page</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.title" approved="yes">
+			<trans-unit id="pages.palettes.title">
 				<source>Title</source>
-				<target>Title</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.visibility" approved="yes">
+			<trans-unit id="pages.palettes.visibility">
 				<source>Visibility</source>
-				<target>Visibility</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.access" approved="yes">
+			<trans-unit id="pages.palettes.access">
 				<source>Publish Dates and Access Rights</source>
-				<target>Publish Dates and Access Rights</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.abstract" approved="yes">
+			<trans-unit id="pages.palettes.abstract">
 				<source>Abstract</source>
-				<target>Abstract</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.metatags" approved="yes">
+			<trans-unit id="pages.palettes.metatags">
 				<source>Meta Tags</source>
-				<target>Meta Tags</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.editorial" approved="yes">
+			<trans-unit id="pages.palettes.editorial">
 				<source>Editorial</source>
-				<target>Editorial</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.abstract" approved="yes">
+			<trans-unit id="pages.palettes.abstract">
 				<source>Abstract</source>
-				<target>Abstract</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.layout" approved="yes">
+			<trans-unit id="pages.palettes.layout">
 				<source>Page Layout</source>
-				<target>Page Layout</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.module" approved="yes">
+			<trans-unit id="pages.palettes.module">
 				<source>Use as Container</source>
-				<target>Use as Container</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.replace" approved="yes">
+			<trans-unit id="pages.palettes.replace">
 				<source>Replace Content</source>
-				<target>Replace Content</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.links" approved="yes">
+			<trans-unit id="pages.palettes.links">
 				<source>Links to this Page</source>
-				<target>Links to this Page</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.caching" approved="yes">
+			<trans-unit id="pages.palettes.caching">
 				<source>Caching</source>
-				<target>Caching</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.language" approved="yes">
+			<trans-unit id="pages.palettes.language">
 				<source>Language</source>
-				<target>Language</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.miscellaneous" approved="yes">
+			<trans-unit id="pages.palettes.miscellaneous">
 				<source>Miscellaneous</source>
-				<target>Miscellaneous</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.media" approved="yes">
+			<trans-unit id="pages.palettes.media">
 				<source>Files</source>
-				<target>Files</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.storage" approved="yes">
+			<trans-unit id="pages.palettes.storage">
 				<source>General Record Storage Page</source>
-				<target>General Record Storage Page</target>
 			</trans-unit>
-			<trans-unit id="pages.palettes.config" approved="yes">
+			<trans-unit id="pages.palettes.config">
 				<source>TypoScript Configuration</source>
-				<target>TypoScript Configuration</target>
 			</trans-unit>
-			<trans-unit id="pages.doktype_formlabel" approved="yes">
+			<trans-unit id="pages.doktype_formlabel">
 				<source>Type</source>
-				<target>Type</target>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.0" approved="yes">
+			<trans-unit id="pages.doktype.I.0">
 				<source>Advanced</source>
-				<target>Advanced</target>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.2" approved="yes">
+			<trans-unit id="pages.doktype.I.2">
 				<source>Shortcut</source>
-				<target>Shortcut</target>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.3" approved="yes">
+			<trans-unit id="pages.doktype.I.3">
 				<source>Not in Menu</source>
-				<target>Not in Menu</target>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.4" approved="yes">
+			<trans-unit id="pages.doktype.I.4">
 				<source>Backend User Section</source>
-				<target>Backend User Section</target>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.5" approved="yes">
+			<trans-unit id="pages.doktype.I.5">
 				<source>Mount Point</source>
-				<target>Mount Point</target>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.7" approved="yes">
+			<trans-unit id="pages.doktype.I.7">
 				<source>Menu Separator</source>
-				<target>Menu Separator</target>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.8" approved="yes">
+			<trans-unit id="pages.doktype.I.8">
 				<source>Link to External URL</source>
-				<target>Link to External URL</target>
 			</trans-unit>
-			<trans-unit id="pages.doktype.div.page" approved="yes">
+			<trans-unit id="pages.doktype.div.page">
 				<source>Page</source>
-				<target>Page</target>
 			</trans-unit>
-			<trans-unit id="pages.doktype.div.link" approved="yes">
+			<trans-unit id="pages.doktype.div.link">
 				<source>Link</source>
-				<target>Link</target>
 			</trans-unit>
-			<trans-unit id="pages.doktype.div.special" approved="yes">
+			<trans-unit id="pages.doktype.div.special">
 				<source>Special</source>
-				<target>Special</target>
 			</trans-unit>
-			<trans-unit id="pages.title_formlabel" approved="yes">
+			<trans-unit id="pages.title_formlabel">
 				<source>Page Title</source>
-				<target>Page Title</target>
 			</trans-unit>
-			<trans-unit id="pages.starttime_formlabel" approved="yes">
+			<trans-unit id="pages.starttime_formlabel">
 				<source>Publish Date</source>
-				<target>Publish Date</target>
 			</trans-unit>
-			<trans-unit id="pages.endtime_formlabel" approved="yes">
+			<trans-unit id="pages.endtime_formlabel">
 				<source>Expiration Date</source>
-				<target>Expiration Date</target>
 			</trans-unit>
-			<trans-unit id="pages.fe_group_formlabel" approved="yes">
+			<trans-unit id="pages.fe_group_formlabel">
 				<source>Usergroup Access Rights</source>
-				<target>Usergroup Access Rights</target>
 			</trans-unit>
-			<trans-unit id="pages.hidden" approved="yes">
+			<trans-unit id="pages.hidden">
 				<source>Hide page:</source>
-				<target>Hide page:</target>
 			</trans-unit>
-			<trans-unit id="pages.hidden_formlabel" approved="yes">
+			<trans-unit id="pages.hidden_formlabel">
 				<source>Page</source>
-				<target>Page</target>
 			</trans-unit>
-			<trans-unit id="pages.hidden_checkbox_1_formlabel" approved="yes">
+			<trans-unit id="pages.hidden_checkbox_1_formlabel">
 				<source>Disable</source>
-				<target>Disable</target>
 			</trans-unit>
-			<trans-unit id="pages.layout_formlabel" approved="yes">
+			<trans-unit id="pages.layout_formlabel">
 				<source>Frontend Layout</source>
-				<target>Frontend Layout</target>
 			</trans-unit>
-			<trans-unit id="pages.layout.I.1" approved="yes">
+			<trans-unit id="pages.layout.I.1">
 				<source>Layout 1</source>
-				<target>Layout 1</target>
 			</trans-unit>
-			<trans-unit id="pages.layout.I.2" approved="yes">
+			<trans-unit id="pages.layout.I.2">
 				<source>Layout 2</source>
-				<target>Layout 2</target>
 			</trans-unit>
-			<trans-unit id="pages.layout.I.3" approved="yes">
+			<trans-unit id="pages.layout.I.3">
 				<source>Layout 3</source>
-				<target>Layout 3</target>
 			</trans-unit>
-			<trans-unit id="pages.url_scheme" approved="yes">
+			<trans-unit id="pages.url_scheme">
 				<source>Enforce Protocol:</source>
-				<target>Enforce Protocol:</target>
 			</trans-unit>
-			<trans-unit id="pages.url_scheme_formlabel" approved="yes">
+			<trans-unit id="pages.url_scheme_formlabel">
 				<source>Use Protocol</source>
-				<target>Use Protocol</target>
 			</trans-unit>
-			<trans-unit id="pages.url_scheme.http" approved="yes">
+			<trans-unit id="pages.url_scheme.http">
 				<source>http://</source>
-				<target>http://</target>
 			</trans-unit>
-			<trans-unit id="pages.url_scheme.https" approved="yes">
+			<trans-unit id="pages.url_scheme.https">
 				<source>https://</source>
-				<target>https://</target>
 			</trans-unit>
-			<trans-unit id="pages.extendToSubpages" approved="yes">
+			<trans-unit id="pages.extendToSubpages">
 				<source>Include Subpages:</source>
-				<target>Include Subpages:</target>
 			</trans-unit>
-			<trans-unit id="pages.extendToSubpages_formlabel" approved="yes">
+			<trans-unit id="pages.extendToSubpages_formlabel">
 				<source>Extend to Subpages</source>
-				<target>Extend to Subpages</target>
 			</trans-unit>
-			<trans-unit id="pages.nav_title" approved="yes">
+			<trans-unit id="pages.nav_title">
 				<source>Navigation Title:</source>
-				<target>Navigation Title:</target>
 			</trans-unit>
-			<trans-unit id="pages.nav_title_formlabel" approved="yes">
+			<trans-unit id="pages.nav_title_formlabel">
 				<source>Alternative Navigation Title</source>
-				<target>Alternative Navigation Title</target>
 			</trans-unit>
-			<trans-unit id="pages.nav_hide" approved="yes">
+			<trans-unit id="pages.nav_hide">
 				<source>Hide in Menu:</source>
-				<target>Hide in Menu:</target>
 			</trans-unit>
-			<trans-unit id="pages.nav_hide_formlabel" approved="yes">
+			<trans-unit id="pages.nav_hide_formlabel">
 				<source>In Menus</source>
-				<target>In Menus</target>
 			</trans-unit>
-			<trans-unit id="pages.nav_hide_checkbox_1_formlabel" approved="yes">
+			<trans-unit id="pages.nav_hide_checkbox_1_formlabel">
 				<source>Hide</source>
-				<target>Hide</target>
 			</trans-unit>
-			<trans-unit id="pages.subtitle" approved="yes">
+			<trans-unit id="pages.subtitle">
 				<source>Subtitle:</source>
-				<target>Subtitle:</target>
 			</trans-unit>
-			<trans-unit id="pages.subtitle_formlabel" approved="yes">
+			<trans-unit id="pages.subtitle_formlabel">
 				<source>Subtitle</source>
-				<target>Subtitle</target>
 			</trans-unit>
-			<trans-unit id="pages.target" approved="yes">
+			<trans-unit id="pages.target">
 				<source>Target:</source>
-				<target>Target:</target>
 			</trans-unit>
-			<trans-unit id="pages.target_formlabel" approved="yes">
+			<trans-unit id="pages.target_formlabel">
 				<source>Link Target</source>
-				<target>Link Target</target>
 			</trans-unit>
-			<trans-unit id="pages.alias" approved="yes">
+			<trans-unit id="pages.alias">
 				<source>Alias:</source>
-				<target>Alias:</target>
 			</trans-unit>
-			<trans-unit id="pages.alias_formlabel" approved="yes">
+			<trans-unit id="pages.alias_formlabel">
 				<source>URL Alias</source>
-				<target>URL Alias</target>
 			</trans-unit>
-			<trans-unit id="pages.url" approved="yes">
+			<trans-unit id="pages.url">
 				<source>URL:</source>
-				<target>URL:</target>
 			</trans-unit>
-			<trans-unit id="pages.url_formlabel" approved="yes">
+			<trans-unit id="pages.url_formlabel">
 				<source>URL</source>
-				<target>URL</target>
 			</trans-unit>
-			<trans-unit id="pages.urltype_formlabel" approved="yes">
+			<trans-unit id="pages.urltype_formlabel">
 				<source>Protocol</source>
-				<target>Protocol</target>
 			</trans-unit>
-			<trans-unit id="pages.lastUpdated" approved="yes">
+			<trans-unit id="pages.lastUpdated">
 				<source>Last Updated:</source>
-				<target>Last Updated:</target>
 			</trans-unit>
-			<trans-unit id="pages.lastUpdated_formlabel" approved="yes">
+			<trans-unit id="pages.lastUpdated_formlabel">
 				<source>Last Update</source>
-				<target>Last Update</target>
 			</trans-unit>
-			<trans-unit id="pages.newUntil" approved="yes">
+			<trans-unit id="pages.newUntil">
 				<source>'New' Until:</source>
-				<target>'New' Until:</target>
 			</trans-unit>
-			<trans-unit id="pages.newUntil_formlabel" approved="yes">
+			<trans-unit id="pages.newUntil_formlabel">
 				<source>Mark as 'New' Until</source>
-				<target>Mark as 'New' Until</target>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout" approved="yes">
+			<trans-unit id="pages.cache_timeout">
 				<source>Cache Expires:</source>
-				<target>Cache Expires:</target>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout_formlabel" approved="yes">
+			<trans-unit id="pages.cache_timeout_formlabel">
 				<source>Cache Lifetime</source>
-				<target>Cache Lifetime</target>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.1" approved="yes">
+			<trans-unit id="pages.cache_timeout.I.1">
 				<source>1 min</source>
-				<target>1 min</target>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.2" approved="yes">
+			<trans-unit id="pages.cache_timeout.I.2">
 				<source>5 min</source>
-				<target>5 min</target>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.3" approved="yes">
+			<trans-unit id="pages.cache_timeout.I.3">
 				<source>15 min</source>
-				<target>15 min</target>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.4" approved="yes">
+			<trans-unit id="pages.cache_timeout.I.4">
 				<source>30 min</source>
-				<target>30 min</target>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.5" approved="yes">
+			<trans-unit id="pages.cache_timeout.I.5">
 				<source>1 hour</source>
-				<target>1 hour</target>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.6" approved="yes">
+			<trans-unit id="pages.cache_timeout.I.6">
 				<source>4 hours</source>
-				<target>4 hours</target>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.7" approved="yes">
+			<trans-unit id="pages.cache_timeout.I.7">
 				<source>1 day</source>
-				<target>1 day</target>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.8" approved="yes">
+			<trans-unit id="pages.cache_timeout.I.8">
 				<source>2 days</source>
-				<target>2 days</target>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.9" approved="yes">
+			<trans-unit id="pages.cache_timeout.I.9">
 				<source>7 days</source>
-				<target>7 days</target>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.10" approved="yes">
+			<trans-unit id="pages.cache_timeout.I.10">
 				<source>1 month</source>
-				<target>1 month</target>
 			</trans-unit>
-			<trans-unit id="pages.editlock_formlabel" approved="yes">
+			<trans-unit id="pages.editlock_formlabel">
 				<source>Editable for Admins Only</source>
-				<target>Editable for Admins Only</target>
 			</trans-unit>
-			<trans-unit id="pages.tabs.metadata" approved="yes">
+			<trans-unit id="pages.tabs.metadata">
 				<source>Metadata</source>
-				<target>Metadata</target>
 			</trans-unit>
-			<trans-unit id="pages.tabs.files" approved="yes">
+			<trans-unit id="pages.tabs.files">
 				<source>Resources</source>
-				<target>Resources</target>
 			</trans-unit>
-			<trans-unit id="pages.tabs.resources" approved="yes">
+			<trans-unit id="pages.tabs.resources">
 				<source>Resources</source>
-				<target>Resources</target>
 			</trans-unit>
-			<trans-unit id="pages.tabs.access" approved="yes">
+			<trans-unit id="pages.tabs.access">
 				<source>Access</source>
-				<target>Access</target>
 			</trans-unit>
-			<trans-unit id="pages.tabs.options" approved="yes">
+			<trans-unit id="pages.tabs.options">
 				<source>Options</source>
-				<target>Options</target>
 			</trans-unit>
-			<trans-unit id="pages.tabs.mount" approved="yes">
+			<trans-unit id="pages.tabs.mount">
 				<source>Mount</source>
-				<target>Mount</target>
 			</trans-unit>
-			<trans-unit id="pages.tabs.shortcut" approved="yes">
+			<trans-unit id="pages.tabs.shortcut">
 				<source>Shortcut</source>
-				<target>Shortcut</target>
 			</trans-unit>
-			<trans-unit id="pages.tabs.url" approved="yes">
+			<trans-unit id="pages.tabs.url">
 				<source>URL</source>
-				<target>URL</target>
 			</trans-unit>
-			<trans-unit id="pages.tabs.extended" approved="yes">
+			<trans-unit id="pages.tabs.extended">
 				<source>Extended</source>
-				<target>Extended</target>
 			</trans-unit>
-			<trans-unit id="pages.tabs.appearance" approved="yes">
+			<trans-unit id="pages.tabs.appearance">
 				<source>Appearance</source>
-				<target>Appearance</target>
 			</trans-unit>
-			<trans-unit id="pages.tabs.behaviour" approved="yes">
+			<trans-unit id="pages.tabs.behaviour">
 				<source>Behaviour</source>
-				<target>Behaviour</target>
 			</trans-unit>
-			<trans-unit id="pages.no_cache" approved="yes">
+			<trans-unit id="pages.no_cache">
 				<source>No Cache:</source>
-				<target>No Cache:</target>
 			</trans-unit>
-			<trans-unit id="pages.no_cache_formlabel" approved="yes">
+			<trans-unit id="pages.no_cache_formlabel">
 				<source>Cache</source>
-				<target>Cache</target>
 			</trans-unit>
-			<trans-unit id="pages.no_cache_checkbox_1_formlabel" approved="yes">
+			<trans-unit id="pages.no_cache_checkbox_1_formlabel">
 				<source>Disable</source>
-				<target>Disable</target>
 			</trans-unit>
-			<trans-unit id="pages.no_search" approved="yes">
+			<trans-unit id="pages.no_search">
 				<source>No Search:</source>
-				<target>No Search:</target>
 			</trans-unit>
-			<trans-unit id="pages.no_search_formlabel" approved="yes">
+			<trans-unit id="pages.no_search_formlabel">
 				<source>Include in Search</source>
-				<target>Include in Search</target>
 			</trans-unit>
-			<trans-unit id="pages.no_search_checkbox_1_formlabel" approved="yes">
+			<trans-unit id="pages.no_search_checkbox_1_formlabel">
 				<source>Disable</source>
-				<target>Disable</target>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode" approved="yes">
+			<trans-unit id="pages.shortcut_mode">
 				<source>Shortcut Mode:</source>
-				<target>Shortcut Mode:</target>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode_formlabel" approved="yes">
+			<trans-unit id="pages.shortcut_mode_formlabel">
 				<source>Shortcut Mode</source>
-				<target>Shortcut Mode</target>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode.I.0" approved="yes">
+			<trans-unit id="pages.shortcut_mode.I.0">
 				<source>Selected page</source>
-				<target>Selected page</target>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode.I.1" approved="yes">
+			<trans-unit id="pages.shortcut_mode.I.1">
 				<source>First subpage of current page</source>
-				<target>First subpage of current page</target>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode.I.2" approved="yes">
+			<trans-unit id="pages.shortcut_mode.I.2">
 				<source>Random subpage of current page</source>
-				<target>Random subpage of current page</target>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode.I.3" approved="yes">
+			<trans-unit id="pages.shortcut_mode.I.3">
 				<source>Parent page of current page</source>
-				<target>Parent page of current page</target>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_formlabel" approved="yes">
+			<trans-unit id="pages.shortcut_formlabel">
 				<source>Shortcut Target</source>
-				<target>Shortcut Target</target>
 			</trans-unit>
-			<trans-unit id="pages.content_from_pid" approved="yes">
+			<trans-unit id="pages.content_from_pid">
 				<source>Show content from this page instead:</source>
-				<target>Show content from this page instead:</target>
 			</trans-unit>
-			<trans-unit id="pages.content_from_pid_formlabel" approved="yes">
+			<trans-unit id="pages.content_from_pid_formlabel">
 				<source>Show Content from Page</source>
-				<target>Show Content from Page</target>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid" approved="yes">
+			<trans-unit id="pages.mount_pid">
 				<source>Mount Point (advanced):</source>
-				<target>Mount Point (advanced):</target>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid_formlabel" approved="yes">
+			<trans-unit id="pages.mount_pid_formlabel">
 				<source>Mounted page</source>
-				<target>Mounted page</target>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid_ol" approved="yes">
+			<trans-unit id="pages.mount_pid_ol">
 				<source>Substitute Mount Point (this page) with Mounted page:</source>
-				<target>Substitute Mount Point (this page) with Mounted page:</target>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid_ol_formlabel" approved="yes">
+			<trans-unit id="pages.mount_pid_ol_formlabel">
 				<source>Show Content from</source>
-				<target>Show Content from</target>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid_ol.I.0" approved="yes">
+			<trans-unit id="pages.mount_pid_ol.I.0">
 				<source>This Page</source>
-				<target>This Page</target>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid_ol.I.1" approved="yes">
+			<trans-unit id="pages.mount_pid_ol.I.1">
 				<source>Mounted Page</source>
-				<target>Mounted Page</target>
 			</trans-unit>
-			<trans-unit id="pages.abstract" approved="yes">
+			<trans-unit id="pages.abstract">
 				<source>Abstract:</source>
-				<target>Abstract:</target>
 			</trans-unit>
-			<trans-unit id="pages.abstract_formlabel" approved="yes">
+			<trans-unit id="pages.abstract_formlabel">
 				<source>Abstract</source>
-				<target>Abstract</target>
 			</trans-unit>
-			<trans-unit id="pages.keywords_formlabel" approved="yes">
+			<trans-unit id="pages.keywords_formlabel">
 				<source>Keywords</source>
-				<target>Keywords</target>
 			</trans-unit>
-			<trans-unit id="pages.description_formlabel" approved="yes">
+			<trans-unit id="pages.description_formlabel">
 				<source>Description</source>
-				<target>Description</target>
 			</trans-unit>
-			<trans-unit id="pages.author_formlabel" approved="yes">
+			<trans-unit id="pages.author_formlabel">
 				<source>Author Name</source>
-				<target>Author Name</target>
 			</trans-unit>
-			<trans-unit id="pages.author_email_formlabel" approved="yes">
+			<trans-unit id="pages.author_email_formlabel">
 				<source>Author Email</source>
-				<target>Author Email</target>
 			</trans-unit>
-			<trans-unit id="pages.media" approved="yes">
+			<trans-unit id="pages.media">
 				<source>Files:</source>
-				<target>Files:</target>
 			</trans-unit>
-			<trans-unit id="pages.media_formlabel" approved="yes">
+			<trans-unit id="pages.media_formlabel">
 				<source>Media</source>
-				<target>Media</target>
 			</trans-unit>
-			<trans-unit id="pages.php_tree_stop_formlabel" approved="yes">
+			<trans-unit id="pages.php_tree_stop_formlabel">
 				<source>Stop Page Tree</source>
-				<target>Stop Page Tree</target>
 			</trans-unit>
-			<trans-unit id="pages.is_siteroot" approved="yes">
+			<trans-unit id="pages.is_siteroot">
 				<source>Is Root of Website:</source>
-				<target>Is Root of Website:</target>
 			</trans-unit>
-			<trans-unit id="pages.is_siteroot_formlabel" approved="yes">
+			<trans-unit id="pages.is_siteroot_formlabel">
 				<source>Use as Root Page</source>
-				<target>Use as Root Page</target>
 			</trans-unit>
-			<trans-unit id="pages.module" approved="yes">
+			<trans-unit id="pages.module">
 				<source>Contains Plugin:</source>
-				<target>Contains Plugin:</target>
 			</trans-unit>
-			<trans-unit id="pages.module_formlabel" approved="yes">
+			<trans-unit id="pages.module_formlabel">
 				<source>Contains Plugin</source>
-				<target>Contains Plugin</target>
 			</trans-unit>
-			<trans-unit id="pages.module.I.1" approved="yes">
+			<trans-unit id="pages.module.I.1">
 				<source>Shop</source>
-				<target>Shop</target>
 			</trans-unit>
-			<trans-unit id="pages.module.I.2" approved="yes">
+			<trans-unit id="pages.module.I.2">
 				<source>Board</source>
-				<target>Board</target>
 			</trans-unit>
-			<trans-unit id="pages.module.I.3" approved="yes">
+			<trans-unit id="pages.module.I.3">
 				<source>News</source>
-				<target>News</target>
 			</trans-unit>
-			<trans-unit id="pages.module.I.4" approved="yes">
+			<trans-unit id="pages.module.I.4">
 				<source>Website Users</source>
-				<target>Website Users</target>
 			</trans-unit>
-			<trans-unit id="pages.module.I.5" approved="yes">
+			<trans-unit id="pages.module.I.5">
 				<source>Direct Mail</source>
-				<target>Direct Mail</target>
 			</trans-unit>
-			<trans-unit id="pages.module.I.6" approved="yes">
+			<trans-unit id="pages.module.I.6">
 				<source>Approvals</source>
-				<target>Approvals</target>
 			</trans-unit>
-			<trans-unit id="pages.l18n_cfg" approved="yes">
+			<trans-unit id="pages.l18n_cfg">
 				<source>Localization Settings:</source>
-				<target>Localization Settings:</target>
 			</trans-unit>
-			<trans-unit id="pages.l18n_cfg_formlabel" approved="yes">
+			<trans-unit id="pages.l18n_cfg_formlabel">
 				<source>Localization</source>
-				<target>Localization</target>
 			</trans-unit>
-			<trans-unit id="pages.l18n_cfg.I.1" approved="yes">
+			<trans-unit id="pages.l18n_cfg.I.1">
 				<source>Hide default translation of page</source>
-				<target>Hide default translation of page</target>
 			</trans-unit>
-			<trans-unit id="pages.l18n_cfg.I.2" approved="yes">
+			<trans-unit id="pages.l18n_cfg.I.2">
 				<source>Hide page if no translation for current language exists</source>
-				<target>Hide page if no translation for current language exists</target>
 			</trans-unit>
-			<trans-unit id="pages.l18n_cfg.I.2a" approved="yes">
+			<trans-unit id="pages.l18n_cfg.I.2a">
 				<source>Show page even if no translation exists</source>
-				<target>Show page even if no translation exists</target>
 			</trans-unit>
-			<trans-unit id="pages.fe_login_mode" approved="yes">
+			<trans-unit id="pages.fe_login_mode">
 				<source>Login Mode:</source>
-				<target>Login Mode:</target>
 			</trans-unit>
-			<trans-unit id="pages.fe_login_mode_formlabel" approved="yes">
+			<trans-unit id="pages.fe_login_mode_formlabel">
 				<source>Login Behaviour</source>
-				<target>Login Behaviour</target>
 			</trans-unit>
-			<trans-unit id="pages.fe_login_mode.disable" approved="yes">
+			<trans-unit id="pages.fe_login_mode.disable">
 				<source>Disable</source>
-				<target>Disable</target>
 			</trans-unit>
-			<trans-unit id="pages.fe_login_mode.enable" approved="yes">
+			<trans-unit id="pages.fe_login_mode.enable">
 				<source>Enable login</source>
-				<target>Enable login</target>
 			</trans-unit>
-			<trans-unit id="pages.fe_login_mode.disableAll" approved="yes">
+			<trans-unit id="pages.fe_login_mode.disableAll">
 				<source>Disable login</source>
-				<target>Disable login</target>
 			</trans-unit>
-			<trans-unit id="pages.fe_login_mode.disableGroups" approved="yes">
+			<trans-unit id="pages.fe_login_mode.disableGroups">
 				<source>Enable user login, Disable usergroup login</source>
-				<target>Enable user login, Disable usergroup login</target>
 			</trans-unit>
-			<trans-unit id="pages.fe_login_mode.enableAgain" approved="yes">
+			<trans-unit id="pages.fe_login_mode.enableAgain">
 				<source>Re-Enable login</source>
-				<target>Re-Enable login</target>
 			</trans-unit>
-			<trans-unit id="pages.storage_pid_formlabel" approved="yes">
+			<trans-unit id="pages.storage_pid_formlabel">
 				<source>Page</source>
-				<target>Page</target>
 			</trans-unit>
-			<trans-unit id="pages.TSconfig_formlabel" approved="yes">
+			<trans-unit id="pages.TSconfig_formlabel">
 				<source>Page TSConfig</source>
-				<target>Page TSConfig</target>
 			</trans-unit>
-			<trans-unit id="pages.backend_layout_formlabel" approved="yes">
+			<trans-unit id="pages.backend_layout_formlabel">
 				<source>Backend Layout (this page only)</source>
-				<target>Backend Layout (this page only)</target>
 			</trans-unit>
-			<trans-unit id="pages.backend_layout_next_level_formlabel" approved="yes">
+			<trans-unit id="pages.backend_layout_next_level_formlabel">
 				<source>Backend Layout (subpages of this page)</source>
-				<target>Backend Layout (subpages of this page)</target>
 			</trans-unit>
-			<trans-unit id="pages.backend_layout.none" approved="yes">
+			<trans-unit id="pages.backend_layout.none">
 				<source>None</source>
-				<target>None</target>
 			</trans-unit>
-			<trans-unit id="tt_content" approved="yes">
+			<trans-unit id="tt_content">
 				<source>Page Content</source>
-				<target>Page Content</target>
 			</trans-unit>
-			<trans-unit id="fe_users" approved="yes">
+			<trans-unit id="fe_users">
 				<source>Website User</source>
-				<target>Website User</target>
 			</trans-unit>
-			<trans-unit id="fe_users.username" approved="yes">
+			<trans-unit id="fe_users.username">
 				<source>Username:</source>
-				<target>Username:</target>
 			</trans-unit>
-			<trans-unit id="fe_users.password" approved="yes">
+			<trans-unit id="fe_users.password">
 				<source>Password:</source>
-				<target>Password:</target>
 			</trans-unit>
-			<trans-unit id="fe_users.usergroup" approved="yes">
+			<trans-unit id="fe_users.usergroup">
 				<source>Groups:</source>
-				<target>Groups:</target>
 			</trans-unit>
-			<trans-unit id="fe_users.lockToDomain" approved="yes">
+			<trans-unit id="fe_users.lockToDomain">
 				<source>Lock to Domain:</source>
-				<target>Lock to Domain:</target>
 			</trans-unit>
-			<trans-unit id="fe_users.tabs.personelData" approved="yes">
+			<trans-unit id="fe_users.tabs.personelData">
 				<source>Personal Data</source>
-				<target>Personal Data</target>
 			</trans-unit>
-			<trans-unit id="fe_users.tabs.access" approved="yes">
+			<trans-unit id="fe_users.tabs.access">
 				<source>Access</source>
-				<target>Access</target>
 			</trans-unit>
-			<trans-unit id="fe_users.tabs.options" approved="yes">
+			<trans-unit id="fe_users.tabs.options">
 				<source>Options</source>
-				<target>Options</target>
 			</trans-unit>
-			<trans-unit id="fe_users.tabs.extended" approved="yes">
+			<trans-unit id="fe_users.tabs.extended">
 				<source>Extended</source>
-				<target>Extended</target>
 			</trans-unit>
-			<trans-unit id="fe_groups" approved="yes">
+			<trans-unit id="fe_groups">
 				<source>Website Usergroup</source>
-				<target>Website Usergroup</target>
 			</trans-unit>
-			<trans-unit id="fe_groups.title" approved="yes">
+			<trans-unit id="fe_groups.title">
 				<source>Group Title:</source>
-				<target>Group Title:</target>
 			</trans-unit>
-			<trans-unit id="fe_groups.lockToDomain" approved="yes">
+			<trans-unit id="fe_groups.lockToDomain">
 				<source>Lock to Domain:</source>
-				<target>Lock to Domain:</target>
 			</trans-unit>
-			<trans-unit id="fe_groups.subgroup" approved="yes">
+			<trans-unit id="fe_groups.subgroup">
 				<source>Subgroups:</source>
-				<target>Subgroups:</target>
 			</trans-unit>
-			<trans-unit id="fe_groups.tabs.options" approved="yes">
+			<trans-unit id="fe_groups.tabs.options">
 				<source>Options</source>
-				<target>Options</target>
 			</trans-unit>
-			<trans-unit id="fe_groups.tabs.extended" approved="yes">
+			<trans-unit id="fe_groups.tabs.extended">
 				<source>Extended</source>
-				<target>Extended</target>
 			</trans-unit>
-			<trans-unit id="sys_domain" approved="yes">
+			<trans-unit id="sys_domain">
 				<source>Domain</source>
-				<target>Domain</target>
 			</trans-unit>
-			<trans-unit id="sys_domain.domainName" approved="yes">
+			<trans-unit id="sys_domain.domainName">
 				<source>Domain:</source>
-				<target>Domain:</target>
 			</trans-unit>
-			<trans-unit id="sys_domain.redirectTo" approved="yes">
+			<trans-unit id="sys_domain.redirectTo">
 				<source>Redirect to:</source>
-				<target>Redirect to:</target>
 			</trans-unit>
-			<trans-unit id="sys_domain.redirectHttpStatusCode" approved="yes">
+			<trans-unit id="sys_domain.redirectHttpStatusCode">
 				<source>HTTP Status Code for the Redirect:</source>
-				<target>HTTP Status Code for the Redirect:</target>
 			</trans-unit>
-			<trans-unit id="sys_domain.redirectHttpStatusCode.301" approved="yes">
+			<trans-unit id="sys_domain.redirectHttpStatusCode.301">
 				<source>Moved permanently (301)</source>
-				<target>Moved permanently (301)</target>
 			</trans-unit>
-			<trans-unit id="sys_domain.redirectHttpStatusCode.302" approved="yes">
+			<trans-unit id="sys_domain.redirectHttpStatusCode.302">
 				<source>Found (302)</source>
-				<target>Found (302)</target>
 			</trans-unit>
-			<trans-unit id="sys_domain.redirectHttpStatusCode.303" approved="yes">
+			<trans-unit id="sys_domain.redirectHttpStatusCode.303">
 				<source>See Other (303)</source>
-				<target>See Other (303)</target>
 			</trans-unit>
-			<trans-unit id="sys_domain.redirectHttpStatusCode.307" approved="yes">
+			<trans-unit id="sys_domain.redirectHttpStatusCode.307">
 				<source>Moved Temporarily (307)</source>
-				<target>Moved Temporarily (307)</target>
 			</trans-unit>
-			<trans-unit id="sys_domain.prepend_params" approved="yes">
+			<trans-unit id="sys_domain.prepend_params">
 				<source>Transfer parameters to Redirect URL:</source>
-				<target>Transfer parameters to Redirect URL:</target>
 			</trans-unit>
-			<trans-unit id="sys_domain.forced" approved="yes">
+			<trans-unit id="sys_domain.forced">
 				<source>Always prepend this domain in links:</source>
-				<target>Always prepend this domain in links:</target>
 			</trans-unit>
-			<trans-unit id="sys_template" approved="yes">
+			<trans-unit id="sys_template">
 				<source>Template</source>
-				<target>Template</target>
 			</trans-unit>
-			<trans-unit id="sys_template.title" approved="yes">
+			<trans-unit id="sys_template.title">
 				<source>Template Title:</source>
-				<target>Template Title:</target>
 			</trans-unit>
-			<trans-unit id="sys_template.root" approved="yes">
+			<trans-unit id="sys_template.root">
 				<source>Rootlevel:</source>
-				<target>Rootlevel:</target>
 			</trans-unit>
-			<trans-unit id="sys_template.clear" approved="yes">
+			<trans-unit id="sys_template.clear">
 				<source>Clear:</source>
-				<target>Clear:</target>
 			</trans-unit>
-			<trans-unit id="sys_template.sitetitle" approved="yes">
+			<trans-unit id="sys_template.sitetitle">
 				<source>Website Title:</source>
-				<target>Website Title:</target>
 			</trans-unit>
-			<trans-unit id="sys_template.constants" approved="yes">
+			<trans-unit id="sys_template.constants">
 				<source>Constants:</source>
-				<target>Constants:</target>
 			</trans-unit>
-			<trans-unit id="sys_template.resources" approved="yes">
+			<trans-unit id="sys_template.resources">
 				<source>Resources:</source>
-				<target>Resources:</target>
 			</trans-unit>
-			<trans-unit id="sys_template.nextLevel" approved="yes">
+			<trans-unit id="sys_template.nextLevel">
 				<source>Template on Next Level:</source>
-				<target>Template on Next Level:</target>
 			</trans-unit>
-			<trans-unit id="sys_template.include_static_file" approved="yes">
+			<trans-unit id="sys_template.include_static_file">
 				<source>Include static (from extensions):</source>
-				<target>Include static (from extensions):</target>
 			</trans-unit>
-			<trans-unit id="sys_template.basedOn" approved="yes">
+			<trans-unit id="sys_template.basedOn">
 				<source>Include Basis Template:</source>
-				<target>Include Basis Template:</target>
 			</trans-unit>
-			<trans-unit id="sys_template.includeStaticAfterBasedOn" approved="yes">
+			<trans-unit id="sys_template.includeStaticAfterBasedOn">
 				<source>Include Static Templates After Basis Templates:</source>
-				<target>Include Static Templates After Basis Templates:</target>
 			</trans-unit>
-			<trans-unit id="sys_template.config" approved="yes">
+			<trans-unit id="sys_template.config">
 				<source>Setup:</source>
-				<target>Setup:</target>
 			</trans-unit>
-			<trans-unit id="sys_template.editorcfg" approved="yes">
+			<trans-unit id="sys_template.editorcfg">
 				<source>Backend Editor Configuration:</source>
-				<target>Backend Editor Configuration:</target>
 			</trans-unit>
-			<trans-unit id="sys_template.description" approved="yes">
+			<trans-unit id="sys_template.description">
 				<source>Description:</source>
-				<target>Description:</target>
 			</trans-unit>
-			<trans-unit id="sys_template.static_file_mode" approved="yes">
+			<trans-unit id="sys_template.static_file_mode">
 				<source>Static Template Files from TYPO3 Extensions:</source>
-				<target>Static Template Files from TYPO3 Extensions:</target>
 			</trans-unit>
-			<trans-unit id="sys_template.static_file_mode.0" approved="yes">
+			<trans-unit id="sys_template.static_file_mode.0">
 				<source>Default (include before if root flag is set)</source>
-				<target>Default (include before if root flag is set)</target>
 			</trans-unit>
-			<trans-unit id="sys_template.static_file_mode.1" approved="yes">
+			<trans-unit id="sys_template.static_file_mode.1">
 				<source>Always include before this template record</source>
-				<target>Always include before this template record</target>
 			</trans-unit>
-			<trans-unit id="sys_template.static_file_mode.2" approved="yes">
+			<trans-unit id="sys_template.static_file_mode.2">
 				<source>Never include before this template record</source>
-				<target>Never include before this template record</target>
 			</trans-unit>
-			<trans-unit id="sys_template.static_file_mode.3" approved="yes">
+			<trans-unit id="sys_template.static_file_mode.3">
 				<source>Include before all static templates if root flag is set</source>
-				<target>Include before all static templates if root flag is set</target>
 			</trans-unit>
-			<trans-unit id="sys_template.basedOn_add" approved="yes">
+			<trans-unit id="sys_template.basedOn_add">
 				<source>Add New Basis Template</source>
-				<target>Add New Basis Template</target>
 			</trans-unit>
-			<trans-unit id="sys_template.tabs.files" approved="yes">
+			<trans-unit id="sys_template.tabs.files">
 				<source>Resources</source>
-				<target>Resources</target>
 			</trans-unit>
-			<trans-unit id="sys_template.tabs.include" approved="yes">
+			<trans-unit id="sys_template.tabs.include">
 				<source>Includes</source>
-				<target>Includes</target>
 			</trans-unit>
-			<trans-unit id="sys_template.tabs.options" approved="yes">
+			<trans-unit id="sys_template.tabs.options">
 				<source>Options</source>
-				<target>Options</target>
 			</trans-unit>
-			<trans-unit id="sys_template.tabs.access" approved="yes">
+			<trans-unit id="sys_template.tabs.access">
 				<source>Access</source>
-				<target>Access</target>
 			</trans-unit>
-			<trans-unit id="pages_language_overlay" approved="yes">
+			<trans-unit id="pages_language_overlay">
 				<source>Alternative Page Language</source>
-				<target>Alternative Page Language</target>
 			</trans-unit>
-			<trans-unit id="backend_layout" approved="yes">
+			<trans-unit id="backend_layout">
 				<source>Backend Layout</source>
-				<target>Backend Layout</target>
 			</trans-unit>
-			<trans-unit id="backend_layout.title" approved="yes">
+			<trans-unit id="backend_layout.title">
 				<source>Title</source>
-				<target>Title</target>
 			</trans-unit>
-			<trans-unit id="backend_layout.description" approved="yes">
+			<trans-unit id="backend_layout.description">
 				<source>Description</source>
-				<target>Description</target>
 			</trans-unit>
-			<trans-unit id="backend_layout.config" approved="yes">
+			<trans-unit id="backend_layout.config">
 				<source>Config</source>
-				<target>Config</target>
 			</trans-unit>
-			<trans-unit id="backend_layout.wizard" approved="yes">
+			<trans-unit id="backend_layout.wizard">
 				<source>Wizard</source>
-				<target>Wizard</target>
 			</trans-unit>
-			<trans-unit id="backend_layout.icon" approved="yes">
+			<trans-unit id="backend_layout.icon">
 				<source>Icon</source>
-				<target>Icon</target>
 			</trans-unit>
 		</body>
 	</file>

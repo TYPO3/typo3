@@ -1,117 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="taskcenter">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="taskcenter">
 		<header/>
 		<body>
-			<trans-unit id="mlang_tabs_tab" approved="yes">
+			<trans-unit id="mlang_tabs_tab">
 				<source>Tasks</source>
-				<target>Tasks</target>
 			</trans-unit>
-			<trans-unit id="task_overview" approved="yes">
+			<trans-unit id="task_overview">
 				<source>Overview</source>
-				<target>Overview</target>
 			</trans-unit>
-			<trans-unit id="error_header" approved="yes">
+			<trans-unit id="error_header">
 				<source>Error</source>
-				<target>Error</target>
 			</trans-unit>
-			<trans-unit id="error-access" approved="yes">
+			<trans-unit id="error-access">
 				<source>No access to this module.</source>
-				<target>No access to this module.</target>
 			</trans-unit>
-			<trans-unit id="error_no-instance" approved="yes">
+			<trans-unit id="error_no-instance">
 				<source>The class "%s" does not implement the task interface "%s" which is necessary to be displayed here.</source>
-				<target>The class "%s" does not implement the task interface "%s" which is necessary to be displayed here.</target>
 			</trans-unit>
-			<trans-unit id="no-tasks" approved="yes">
+			<trans-unit id="no-tasks">
 				<source>No tasks have been registered yet.</source>
-				<target>No tasks have been registered yet.</target>
 			</trans-unit>
-			<trans-unit id="lReplyAddress" approved="yes">
+			<trans-unit id="lReplyAddress">
 				<source>Reply address is your email</source>
-				<target>Reply address is your email</target>
 			</trans-unit>
-			<trans-unit id="lSelf" approved="yes">
+			<trans-unit id="lSelf">
 				<source>Self</source>
-				<target>Self</target>
 			</trans-unit>
-			<trans-unit id="lSendNew" approved="yes">
+			<trans-unit id="lSendNew">
 				<source>Send message</source>
-				<target>Send message</target>
 			</trans-unit>
-			<trans-unit id="lSendReply" approved="yes">
+			<trans-unit id="lSendReply">
 				<source>Reply to message</source>
-				<target>Reply to message</target>
 			</trans-unit>
-			<trans-unit id="listSeparator_Groups" approved="yes">
+			<trans-unit id="listSeparator_Groups">
 				<source>__Groups:__</source>
-				<target>__Groups:__</target>
 			</trans-unit>
-			<trans-unit id="lHomedir" approved="yes">
+			<trans-unit id="lHomedir">
 				<source>Home dir</source>
-				<target>Home dir</target>
 			</trans-unit>
-			<trans-unit id="lNone" approved="yes">
+			<trans-unit id="lNone">
 				<source>[none]</source>
-				<target>[none]</target>
 			</trans-unit>
-			<trans-unit id="lCreate" approved="yes">
+			<trans-unit id="lCreate">
 				<source>Create</source>
-				<target>Create</target>
 			</trans-unit>
-			<trans-unit id="lCancel" approved="yes">
+			<trans-unit id="lCancel">
 				<source>Cancel</source>
-				<target>Cancel</target>
 			</trans-unit>
-			<trans-unit id="lDelete_warning" approved="yes">
+			<trans-unit id="lDelete_warning">
 				<source>Are you sure you want to delete this user?</source>
-				<target>Are you sure you want to delete this user?</target>
 			</trans-unit>
-			<trans-unit id="lDelete" approved="yes">
+			<trans-unit id="lDelete">
 				<source>Delete</source>
-				<target>Delete</target>
 			</trans-unit>
-			<trans-unit id="lUpdate" approved="yes">
+			<trans-unit id="lUpdate">
 				<source>Update</source>
-				<target>Update</target>
 			</trans-unit>
-			<trans-unit id="task_description" approved="yes">
+			<trans-unit id="task_description">
 				<source>Description, blablabla lipusm</source>
-				<target>Description, blablabla lipusm</target>
 			</trans-unit>
-			<trans-unit id="taskcenter-about" approved="yes">
+			<trans-unit id="taskcenter-about">
 				<source>
-				
+
 					&lt;p&gt;The menu on the left side shows all allowed tasks and let you allow to complete your tasks in an effecient way.&lt;/p&gt;
 					&lt;ul class="withicons"&gt;
-						&lt;li&gt;Clicking on the title of a task will open a detailed view of the task itself.&lt;/li&gt;
-						&lt;li&gt;Click on the arrow on the right side will open/close the submenu of the task.&lt;/li&gt;
+					&lt;li&gt;Clicking on the title of a task will open a detailed view of the task itself.&lt;/li&gt;
+					&lt;li&gt;Click on the arrow on the right side will open/close the submenu of the task.&lt;/li&gt;
 					&lt;/ul&gt;
 					&lt;br /&gt;
 					&lt;strong&gt;Note:&lt;/strong&gt; Set the taskcenter as the default module after your login to be even faster!
 
-				
-			</source>
-				<target>
-				
-					&lt;p&gt;The menu on the left side shows all allowed tasks and let you allow to complete your tasks in an effecient way.&lt;/p&gt;
-					&lt;ul class="withicons"&gt;
-						&lt;li&gt;Clicking on the title of a task will open a detailed view of the task itself.&lt;/li&gt;
-						&lt;li&gt;Click on the arrow on the right side will open/close the submenu of the task.&lt;/li&gt;
-					&lt;/ul&gt;
-					&lt;br /&gt;
-					&lt;strong&gt;Note:&lt;/strong&gt; Set the taskcenter as the default module after your login to be even faster!
 
-				
-			</target>
+				</source>
 			</trans-unit>
-			<trans-unit id="taskcenter-adminheader" approved="yes">
+			<trans-unit id="taskcenter-adminheader">
 				<source>Create a task</source>
-				<target>Create a task</target>
 			</trans-unit>
-			<trans-unit id="taskcenter-admin" approved="yes">
+			<trans-unit id="taskcenter-admin">
 				<source>It is simple to extend the taskcenter by a custom task. For more information please look into the manual of the extension 'taskcenter'.</source>
-				<target>It is simple to extend the taskcenter by a custom task. For more information please look into the manual of the extension 'taskcenter'.</target>
 			</trans-unit>
 		</body>
 	</file>

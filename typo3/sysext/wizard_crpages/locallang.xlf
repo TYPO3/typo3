@@ -1,63 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="wizard_crpages">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="wizard_crpages">
 		<header/>
 		<body>
-			<trans-unit id="wiz_crMany" approved="yes">
+			<trans-unit id="wiz_crMany">
 				<source>Create multiple pages</source>
-				<target>Create multiple pages</target>
 			</trans-unit>
-			<trans-unit id="wiz_W" approved="yes">
+			<trans-unit id="wiz_W">
 				<source>W!</source>
-				<target>W!</target>
 			</trans-unit>
-			<trans-unit id="wiz_newPages" approved="yes">
+			<trans-unit id="wiz_newPages">
 				<source>Create new pages</source>
-				<target>Create new pages</target>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_page" approved="yes">
+			<trans-unit id="wiz_newPages_page">
 				<source>Page</source>
-				<target>Page</target>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_currentMenu" approved="yes">
+			<trans-unit id="wiz_newPages_currentMenu">
 				<source>New page structure</source>
-				<target>New page structure</target>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_errorMsg1" approved="yes">
+			<trans-unit id="wiz_newPages_errorMsg1">
 				<source>You are not allowed to create new subpages to this page!</source>
-				<target>You are not allowed to create new subpages to this page!</target>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_lCreate" approved="yes">
+			<trans-unit id="wiz_newPages_lCreate">
 				<source>Create pages</source>
-				<target>Create pages</target>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_listEnd" approved="yes">
+			<trans-unit id="wiz_newPages_listEnd">
 				<source>Place new pages after the existing subpages</source>
-				<target>Place new pages after the existing subpages</target>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_hidePages" approved="yes">
+			<trans-unit id="wiz_newPages_hidePages">
 				<source>Hide new pages</source>
-				<target>Hide new pages</target>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_lCreate_msg1" approved="yes">
+			<trans-unit id="wiz_newPages_lCreate_msg1">
 				<source>You're about to create many new pages. Are you sure you want to continue?</source>
-				<target>You're about to create many new pages. Are you sure you want to continue?</target>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_lReset" approved="yes">
+			<trans-unit id="wiz_newPages_lReset">
 				<source>Clear fields</source>
-				<target>Clear fields</target>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_noCreate" approved="yes">
+			<trans-unit id="wiz_newPages_noCreate">
 				<source>No pages were created!</source>
-				<target>No pages were created!</target>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_create" approved="yes">
+			<trans-unit id="wiz_newPages_create">
 				<source>The pages were created!</source>
-				<target>The pages were created!</target>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_addMoreLines" approved="yes">
+			<trans-unit id="wiz_newPages_addMoreLines">
 				<source>Add more lines</source>
-				<target>Add more lines</target>
 			</trans-unit>
 		</body>
 	</file>
