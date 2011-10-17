@@ -31,6 +31,7 @@ The following configuration is the minimum required:
 	- SPL
 	- SOAP
 	- standard
+	- openssl
 	- xml
 	- zlib
 	Some extensions can be optionally compiled into PHP. A list of loaded
@@ -52,6 +53,7 @@ The following configuration is recommended:
 	- JSON
 	- mbstring
 	- mysql
+	- openssl
 	- pcre
 	- session
 	- SOAP
