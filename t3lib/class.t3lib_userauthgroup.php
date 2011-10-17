@@ -263,7 +263,8 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 		}
 
 			// Workspaces check:
-		if ($conf['workspaces']) {
+
+		if (t3lib_extMgm::isLoaded('workspaces') && $conf['workspaces']) {
 			if (($this->workspace === 0 && t3lib_div::inList($conf['workspaces'], 'online')) ||
 				($this->workspace === -1 && t3lib_div::inList($conf['workspaces'], 'offline')) ||
 				($this->workspace > 0 && t3lib_div::inList($conf['workspaces'], 'custom'))) {
@@ -1765,25 +1766,30 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	}
 
 	/**
-	 * Return default workspace ID for user
+	 * Return default workspace ID for user,
+	 * If EXT:workspaces is not installed the user will be pushed the the
+	 * Live workspace
 	 *
 	 * @return	integer		Default workspace id. If no workspace is available it will be "-99"
 	 */
 	function getDefaultWorkspace() {
 
-		if ($this->checkWorkspace(0)) { // Check online
-			return 0;
+		$defaultWorkspace = -99;
+
+		if (!t3lib_extMgm::isLoaded('workspaces') || $this->checkWorkspace(0)) { // Check online
+			$defaultWorkspace = 0;
 		} elseif ($this->checkWorkspace(-1)) { // Check offline
-			return -1;
+			$defaultWorkspace = -1;
 		} elseif (t3lib_extMgm::isLoaded('workspaces')) { // Traverse custom workspaces:
 			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers', 'sys_workspace', 'pid=0' . t3lib_BEfunc::deleteClause('sys_workspace'), '', 'title');
 			foreach ($workspaces as $rec) {
 				if ($this->checkWorkspace($rec)) {
-					return $rec['uid'];
+					$defaultWorkspace = $rec['uid'];
+					break;
 				}
 			}
 		}
-		return -99;
+		return $defaultWorkspace;
 	}
 
 
