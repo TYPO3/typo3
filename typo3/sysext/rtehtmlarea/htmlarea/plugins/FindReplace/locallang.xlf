@@ -1,91 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T19:41:27Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
 			<trans-unit id="Substitute this occurrence?" approved="yes">
 				<source>Substitute this occurrence?</source>
-				<target>Substitute this occurrence?</target>
 			</trans-unit>
 			<trans-unit id="Enter the text you want to find" approved="yes">
 				<source>Enter the text you want to find</source>
-				<target>Enter the text you want to find</target>
 			</trans-unit>
 			<trans-unit id="Inform a replacement word" approved="yes">
 				<source>This will erase all occurrences.</source>
-				<target>This will erase all occurrences.</target>
 			</trans-unit>
 			<trans-unit id="found items" approved="yes">
 				<source>found items</source>
-				<target>found items</target>
 			</trans-unit>
 			<trans-unit id="replaced items" approved="yes">
 				<source>replaced items</source>
-				<target>replaced items</target>
 			</trans-unit>
 			<trans-unit id="found item" approved="yes">
 				<source>item found</source>
-				<target>item found</target>
 			</trans-unit>
 			<trans-unit id="replaced item" approved="yes">
 				<source>item replaced</source>
-				<target>item replaced</target>
 			</trans-unit>
 			<trans-unit id="not found" approved="yes">
 				<source>not found</source>
-				<target>not found</target>
 			</trans-unit>
 			<trans-unit id="Find and Replace" approved="yes">
 				<source>Find And Replace</source>
-				<target>Find And Replace</target>
 			</trans-unit>
 			<trans-unit id="Options" approved="yes">
 				<source>Options</source>
-				<target>Options</target>
 			</trans-unit>
 			<trans-unit id="Whole words only" approved="yes">
 				<source>Whole words only</source>
-				<target>Whole words only</target>
 			</trans-unit>
 			<trans-unit id="Case sensitive search" approved="yes">
 				<source>Case sensitive search</source>
-				<target>Case sensitive search</target>
 			</trans-unit>
 			<trans-unit id="Substitute all occurrences" approved="yes">
 				<source>Substitute all occurrences</source>
-				<target>Substitute all occurrences</target>
 			</trans-unit>
 			<trans-unit id="Search for:" approved="yes">
 				<source>Search for:</source>
-				<target>Search for:</target>
 			</trans-unit>
 			<trans-unit id="Replace with:" approved="yes">
 				<source>Replace with:</source>
-				<target>Replace with:</target>
 			</trans-unit>
 			<trans-unit id="Actions" approved="yes">
 				<source>Actions</source>
-				<target>Actions</target>
 			</trans-unit>
 			<trans-unit id="Clear" approved="yes">
 				<source>Clear</source>
-				<target>Clear</target>
 			</trans-unit>
 			<trans-unit id="Highlight" approved="yes">
 				<source>Highlight</source>
-				<target>Highlight</target>
 			</trans-unit>
 			<trans-unit id="Undo" approved="yes">
 				<source>Undo</source>
-				<target>Undo</target>
 			</trans-unit>
 			<trans-unit id="Next" approved="yes">
 				<source>Next</source>
-				<target>Next</target>
 			</trans-unit>
 			<trans-unit id="Done" approved="yes">
 				<source>Done</source>
-				<target>Done</target>
 			</trans-unit>
 		</body>
 	</file>

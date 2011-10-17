@@ -1,31 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T19:41:27Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
 			<trans-unit id="TextStyle-Tooltip" approved="yes">
 				<source>Apply style to the selected text</source>
-				<target>Apply style to the selected text</target>
 			</trans-unit>
 			<trans-unit id="Technische Universitat Ilmenau" approved="yes">
 				<source>Technische Universität Ilmenau</source>
-				<target>Technische Universität Ilmenau</target>
 			</trans-unit>
 			<trans-unit id="No style" approved="yes">
 				<source>No text style</source>
-				<target>No text style</target>
 			</trans-unit>
 			<trans-unit id="Remove style" approved="yes">
 				<source>Remove text style</source>
-				<target>Remove text style</target>
 			</trans-unit>
 			<trans-unit id="Unknown style" approved="yes">
 				<source>Unknown text style</source>
-				<target>Unknown text style</target>
 			</trans-unit>
 			<trans-unit id="Element style" approved="yes">
 				<source>Inline element style</source>
-				<target>Inline element style</target>
 			</trans-unit>
 		</body>
 	</file>

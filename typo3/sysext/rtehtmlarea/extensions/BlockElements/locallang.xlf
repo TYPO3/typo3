@@ -1,55 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T19:41:26Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
 			<trans-unit id="No block" approved="yes">
 				<source>No block format</source>
-				<target>No block format</target>
 			</trans-unit>
 			<trans-unit id="Paragraph" approved="yes">
 				<source>Paragraph</source>
-				<target>Paragraph</target>
 			</trans-unit>
 			<trans-unit id="Heading 1" approved="yes">
 				<source>Heading 1</source>
-				<target>Heading 1</target>
 			</trans-unit>
 			<trans-unit id="Heading 2" approved="yes">
 				<source>Heading 2</source>
-				<target>Heading 2</target>
 			</trans-unit>
 			<trans-unit id="Heading 3" approved="yes">
 				<source>Heading 3</source>
-				<target>Heading 3</target>
 			</trans-unit>
 			<trans-unit id="Heading 4" approved="yes">
 				<source>Heading 4</source>
-				<target>Heading 4</target>
 			</trans-unit>
 			<trans-unit id="Heading 5" approved="yes">
 				<source>Heading 5</source>
-				<target>Heading 5</target>
 			</trans-unit>
 			<trans-unit id="Heading 6" approved="yes">
 				<source>Heading 6</source>
-				<target>Heading 6</target>
 			</trans-unit>
 			<trans-unit id="Preformatted" approved="yes">
 				<source>Preformatted</source>
-				<target>Preformatted</target>
 			</trans-unit>
 			<trans-unit id="Long quotation" approved="yes">
 				<source>Quotation</source>
-				<target>Quotation</target>
 			</trans-unit>
 			<trans-unit id="Address" approved="yes">
 				<source>Address</source>
-				<target>Address</target>
 			</trans-unit>
 			<trans-unit id="Section" approved="yes">
 				<source>Container</source>
-				<target>Container</target>
 			</trans-unit>
 		</body>
 	</file>

@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:23 UTC" product-name="func_wizards">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T19:41:24Z" product-name="func_wizards">
 		<header/>
 		<body>
 			<trans-unit id="wiz_lWizards" approved="yes">
 				<source>Select Wizard</source>
-				<target>Select Wizard</target>
 			</trans-unit>
 			<trans-unit id="mod_wizards" approved="yes">
 				<source>Wizards</source>
-				<target>Wizards</target>
 			</trans-unit>
 		</body>
 	</file>

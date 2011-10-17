@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="opendocs">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T19:41:26Z" product-name="opendocs">
 		<header/>
 		<body>
 			<trans-unit id="toolbaritem" approved="yes">
 				<source>Open and Recently Used Documents</source>
-				<target>Open and Recently Used Documents</target>
 			</trans-unit>
 			<trans-unit id="open_docs" approved="yes">
 				<source>Open Documents</source>
-				<target>Open Documents</target>
 			</trans-unit>
 			<trans-unit id="recent_docs" approved="yes">
 				<source>Recently Used Documents</source>
-				<target>Recently Used Documents</target>
 			</trans-unit>
 			<trans-unit id="no_docs" approved="yes">
 				<source>There are no open documents at this time.</source>
-				<target>There are no open documents at this time.</target>
 			</trans-unit>
 		</body>
 	</file>

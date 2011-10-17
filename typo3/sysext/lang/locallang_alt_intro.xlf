@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:24 UTC" product-name="lang">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T19:41:24Z" product-name="lang">
 		<header/>
 		<body>
 			<trans-unit id="introtext" approved="yes">
 				<source>Web Content Management System</source>
-				<target>Web Content Management System</target>
 			</trans-unit>
 			<trans-unit id="introtext2" approved="yes">
 				<source>This is a brief description of the available modules:</source>
-				<target>This is a brief description of the available modules:</target>
 			</trans-unit>
 			<trans-unit id="endText" approved="yes">
 				<source>Features may vary depending on your website and permissions</source>
-				<target>Features may vary depending on your website and permissions</target>
 			</trans-unit>
 			<trans-unit id="userInfo" approved="yes">
 				<source>You're logged in as user:</source>
-				<target>You're logged in as user:</target>
 			</trans-unit>
 		</body>
 	</file>

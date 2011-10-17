@@ -1,215 +1,163 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:24 UTC" product-name="lang">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T19:41:25Z" product-name="lang">
 		<header/>
 		<body>
 			<trans-unit id="LGL.endtime" approved="yes">
 				<source>Stop:</source>
-				<target>Stop:</target>
 			</trans-unit>
 			<trans-unit id="LGL.hidden" approved="yes">
 				<source>Hide:</source>
-				<target>Hide:</target>
 			</trans-unit>
 			<trans-unit id="LGL.starttime" approved="yes">
 				<source>Start:</source>
-				<target>Start:</target>
 			</trans-unit>
 			<trans-unit id="LGL.fe_group" approved="yes">
 				<source>Access:</source>
-				<target>Access:</target>
 			</trans-unit>
 			<trans-unit id="LGL.hide_at_login" approved="yes">
 				<source>Hide at login</source>
-				<target>Hide at login</target>
 			</trans-unit>
 			<trans-unit id="LGL.any_login" approved="yes">
 				<source>Show at any login</source>
-				<target>Show at any login</target>
 			</trans-unit>
 			<trans-unit id="LGL.usergroups" approved="yes">
 				<source>__Usergroups:__</source>
-				<target>__Usergroups:__</target>
 			</trans-unit>
 			<trans-unit id="LGL.type" approved="yes">
 				<source>Type:</source>
-				<target>Type:</target>
 			</trans-unit>
 			<trans-unit id="LGL.description" approved="yes">
 				<source>Description:</source>
-				<target>Description:</target>
 			</trans-unit>
 			<trans-unit id="LGL.prependAtCopy" approved="yes">
 				<source>(copy %s)</source>
-				<target>(copy %s)</target>
 			</trans-unit>
 			<trans-unit id="LGL.layout" approved="yes">
 				<source>Layout:</source>
-				<target>Layout:</target>
 			</trans-unit>
 			<trans-unit id="LGL.default_value" approved="yes">
 				<source>Default</source>
-				<target>Default</target>
 			</trans-unit>
 			<trans-unit id="LGL.normal" approved="yes">
 				<source>Normal</source>
-				<target>Normal</target>
 			</trans-unit>
 			<trans-unit id="LGL.images" approved="yes">
 				<source>Images:</source>
-				<target>Images:</target>
 			</trans-unit>
 			<trans-unit id="LGL.image" approved="yes">
 				<source>Image:</source>
-				<target>Image:</target>
 			</trans-unit>
 			<trans-unit id="LGL.caption" approved="yes">
 				<source>Caption:</source>
-				<target>Caption:</target>
 			</trans-unit>
 			<trans-unit id="LGL.subheader" approved="yes">
 				<source>Subheader:</source>
-				<target>Subheader:</target>
 			</trans-unit>
 			<trans-unit id="LGL.text" approved="yes">
 				<source>Text:</source>
-				<target>Text:</target>
 			</trans-unit>
 			<trans-unit id="LGL.name" approved="yes">
 				<source>Name:</source>
-				<target>Name:</target>
 			</trans-unit>
 			<trans-unit id="LGL.first_name" approved="yes">
 				<source>First name:</source>
-				<target>First name:</target>
 			</trans-unit>
 			<trans-unit id="LGL.middle_name" approved="yes">
 				<source>Middle name:</source>
-				<target>Middle name:</target>
 			</trans-unit>
 			<trans-unit id="LGL.last_name" approved="yes">
 				<source>Last name:</source>
-				<target>Last name:</target>
 			</trans-unit>
 			<trans-unit id="LGL.title" approved="yes">
 				<source>Title:</source>
-				<target>Title:</target>
 			</trans-unit>
 			<trans-unit id="LGL.title_person" approved="yes">
 				<source>Title:</source>
-				<target>Title:</target>
 			</trans-unit>
 			<trans-unit id="LGL.address" approved="yes">
 				<source>Address:</source>
-				<target>Address:</target>
 			</trans-unit>
 			<trans-unit id="LGL.phone" approved="yes">
 				<source>Phone:</source>
-				<target>Phone:</target>
 			</trans-unit>
 			<trans-unit id="LGL.fax" approved="yes">
 				<source>Fax:</source>
-				<target>Fax:</target>
 			</trans-unit>
 			<trans-unit id="LGL.author" approved="yes">
 				<source>Author:</source>
-				<target>Author:</target>
 			</trans-unit>
 			<trans-unit id="LGL.email" approved="yes">
 				<source>Email:</source>
-				<target>Email:</target>
 			</trans-unit>
 			<trans-unit id="LGL.company" approved="yes">
 				<source>Company:</source>
-				<target>Company:</target>
 			</trans-unit>
 			<trans-unit id="LGL.city" approved="yes">
 				<source>City:</source>
-				<target>City:</target>
 			</trans-unit>
 			<trans-unit id="LGL.zip" approved="yes">
 				<source>Zipcode:</source>
-				<target>Zipcode:</target>
 			</trans-unit>
 			<trans-unit id="LGL.country" approved="yes">
 				<source>Country:</source>
-				<target>Country:</target>
 			</trans-unit>
 			<trans-unit id="LGL.www" approved="yes">
 				<source>www:</source>
-				<target>www:</target>
 			</trans-unit>
 			<trans-unit id="LGL.lastlogin" approved="yes">
 				<source>Last login:</source>
-				<target>Last login:</target>
 			</trans-unit>
 			<trans-unit id="LGL.note" approved="yes">
 				<source>Note:</source>
-				<target>Note:</target>
 			</trans-unit>
 			<trans-unit id="LGL.parameters" approved="yes">
 				<source>Parameters:</source>
-				<target>Parameters:</target>
 			</trans-unit>
 			<trans-unit id="LGL.code" approved="yes">
 				<source>CODE:</source>
-				<target>CODE:</target>
 			</trans-unit>
 			<trans-unit id="LGL.links" approved="yes">
 				<source>Links</source>
-				<target>Links</target>
 			</trans-unit>
 			<trans-unit id="LGL.language" approved="yes">
 				<source>Language:</source>
-				<target>Language:</target>
 			</trans-unit>
 			<trans-unit id="LGL.category" approved="yes">
 				<source>Category:</source>
-				<target>Category:</target>
 			</trans-unit>
 			<trans-unit id="LGL.shortcut_page" approved="yes">
 				<source>Shortcut to page:</source>
-				<target>Shortcut to page:</target>
 			</trans-unit>
 			<trans-unit id="LGL.keywords" approved="yes">
 				<source>Keywords (,):</source>
-				<target>Keywords (,):</target>
 			</trans-unit>
 			<trans-unit id="LGL.disable" approved="yes">
 				<source>Disable:</source>
-				<target>Disable:</target>
 			</trans-unit>
 			<trans-unit id="LGL.startingpoint" approved="yes">
 				<source>Startingpoint:</source>
-				<target>Startingpoint:</target>
 			</trans-unit>
 			<trans-unit id="LGL.disableRTE" approved="yes">
 				<source>Disable Rich Text Editor:</source>
-				<target>Disable Rich Text Editor:</target>
 			</trans-unit>
 			<trans-unit id="LGL.external" approved="yes">
 				<source>External URL</source>
-				<target>External URL</target>
 			</trans-unit>
 			<trans-unit id="LGL.recursive" approved="yes">
 				<source>Recursive:</source>
-				<target>Recursive:</target>
 			</trans-unit>
 			<trans-unit id="LGL.l18n_parent" approved="yes">
 				<source>Transl.Orig:</source>
-				<target>Transl.Orig:</target>
 			</trans-unit>
 			<trans-unit id="LGL.allLanguages" approved="yes">
 				<source>[All]</source>
-				<target>[All]</target>
 			</trans-unit>
 			<trans-unit id="LGL.versionLabel" approved="yes">
 				<source>Versioning Label:</source>
-				<target>Versioning Label:</target>
 			</trans-unit>
 			<trans-unit id="LGL.error" approved="yes">
 				<source>Error!</source>
-				<target>Error!</target>
 			</trans-unit>
 		</body>
 	</file>

@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="openid">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T19:41:26Z" product-name="openid">
 		<header/>
 		<body>
 			<trans-unit id="option_tx_openid_openid.alttitle" approved="yes">
 				<source>OpenID identifier</source>
-				<target>OpenID identifier</target>
 			</trans-unit>
 			<trans-unit id="option_tx_openid_openid.description" approved="yes">
 				<source>Enter your OpenID identifier here, if you use want to use OpenID for backend logins.</source>
-				<target>Enter your OpenID identifier here, if you use want to use OpenID for backend logins.</target>
 			</trans-unit>
 			<trans-unit id="option_tx_openid_openid.details" approved="yes">
 				<source>OpenID is a free and open system to login to websites using only one single password (for your OpenID-provider). If you want to login to TYPO3 backend, enter your identifier here. Your identifier is an URL starting with http:// or https://.</source>
-				<target>OpenID is a free and open system to login to websites using only one single password (for your OpenID-provider). If you want to login to TYPO3 backend, enter your identifier here. Your identifier is an URL starting with http:// or https://.</target>
 			</trans-unit>
 			<trans-unit id="option_tx_openid_openid.seeAlso" approved="yes">
 				<source>http://openid.net | http://openid.net/</source>
-				<target>http://openid.net | http://openid.net/</target>
 			</trans-unit>
 		</body>
 	</file>

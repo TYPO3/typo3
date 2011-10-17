@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="tstemplate_ceditor">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T19:41:28Z" product-name="tstemplate_ceditor">
 		<header/>
 		<body>
 			<trans-unit id="editConstants" approved="yes">
 				<source>Edit constants for template:</source>
-				<target>Edit constants for template:</target>
 			</trans-unit>
 			<trans-unit id="category" approved="yes">
 				<source>Category:</source>
-				<target>Category:</target>
 			</trans-unit>
 			<trans-unit id="noConstants" approved="yes">
 				<source>No constants available</source>
-				<target>No constants available</target>
 			</trans-unit>
 			<trans-unit id="noConstantsDescription" approved="yes">
 				<source>There are no editable constants available for the Constant Editor.</source>
-				<target>There are no editable constants available for the Constant Editor.</target>
 			</trans-unit>
 		</body>
 	</file>

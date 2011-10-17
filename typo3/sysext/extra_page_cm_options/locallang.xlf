@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:23 UTC" product-name="extra_page_cm_options">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T19:41:24Z" product-name="extra_page_cm_options">
 		<header/>
 		<body>
 			<trans-unit id="label" approved="yes">
 				<source>More options...</source>
-				<target>More options...</target>
 			</trans-unit>
 		</body>
 	</file>

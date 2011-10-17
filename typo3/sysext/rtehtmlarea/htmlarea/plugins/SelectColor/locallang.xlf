@@ -1,31 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T19:41:27Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
 			<trans-unit id="CO-forecolor" approved="yes">
 				<source>Text Color</source>
-				<target>Text Color</target>
 			</trans-unit>
 			<trans-unit id="CO-hilitecolor" approved="yes">
 				<source>Background Color</source>
-				<target>Background Color</target>
 			</trans-unit>
 			<trans-unit id="CO-forecolor_title" approved="yes">
 				<source>Set the text color</source>
-				<target>Set the text color</target>
 			</trans-unit>
 			<trans-unit id="CO-hilitecolor_title" approved="yes">
 				<source>Set the background color</source>
-				<target>Set the background color</target>
 			</trans-unit>
 			<trans-unit id="color_title" approved="yes">
 				<source>Choose a color</source>
-				<target>Choose a color</target>
 			</trans-unit>
 			<trans-unit id="no_color" approved="yes">
 				<source>No color</source>
-				<target>No color</target>
 			</trans-unit>
 		</body>
 	</file>

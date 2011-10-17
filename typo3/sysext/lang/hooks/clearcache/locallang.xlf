@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:24 UTC" product-name="lang">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T19:41:24Z" product-name="lang">
 		<header/>
 		<body>
 			<trans-unit id="title" approved="yes">
 				<source>Clear language cache</source>
-				<target>Clear language cache</target>
 			</trans-unit>
 		</body>
 	</file>
