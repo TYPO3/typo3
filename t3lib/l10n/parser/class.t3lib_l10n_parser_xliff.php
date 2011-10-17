@@ -49,10 +49,18 @@ class t3lib_l10n_parser_Xliff extends t3lib_l10n_parser_AbstractXml {
 					// If restype would be set, it could be metadata from Gettext to XLIFF conversion (and we don't need this data)
 
 					// @todo Support "approved" attribute
-				$parsedData[(string)$translationElement['id']][0] = array(
-					'source' => (string)$translationElement->source,
-					'target' => (string)$translationElement->target,
-				);
+				if ($this->languageKey === 'default') {
+						// Default language come from XLIFF template (no target element)
+					$parsedData[(string)$translationElement['id']][0] = array(
+						'source' => (string)$translationElement->source,
+						'target' => (string)$translationElement->source,
+					);
+				} else {
+					$parsedData[(string)$translationElement['id']][0] = array(
+						'source' => (string)$translationElement->source,
+						'target' => (string)$translationElement->target,
+					);
+				}
 			} elseif ($translationElement->getName() === 'group' && isset($translationElement['restype']) && (string)$translationElement['restype'] === 'x-gettext-plurals') {
 					// This is a translation with plural forms
 				$parsedTranslationElement = array();
@@ -63,10 +71,18 @@ class t3lib_l10n_parser_Xliff extends t3lib_l10n_parser_AbstractXml {
 						$formIndex = substr((string)$translationPluralForm['id'], strpos((string)$translationPluralForm['id'], '[') + 1, -1);
 
 							// @todo Support "approved" attribute
-						$parsedTranslationElement[(int)$formIndex] = array(
-							'source' => (string)$translationPluralForm->source,
-							'target' => (string)$translationPluralForm->target,
-						);
+						if ($this->languageKey === 'default') {
+								// Default language come from XLIFF template (no target element)
+							$parsedTranslationElement[(int)$formIndex] = array(
+								'source' => (string)$translationPluralForm->source,
+								'target' => (string)$translationPluralForm->source,
+							);
+						} else {
+							$parsedTranslationElement[(int)$formIndex] = array(
+								'source' => (string)$translationPluralForm->source,
+								'target' => (string)$translationPluralForm->target,
+							);
+						}
 					}
 				}
 
