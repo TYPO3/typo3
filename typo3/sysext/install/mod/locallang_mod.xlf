@@ -1,41 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:24 UTC" product-name="install">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="install">
 		<header/>
 		<body>
-			<trans-unit id="mlang_labels_tablabel" approved="yes">
+			<trans-unit id="mlang_labels_tablabel">
 				<source>Install&amp;nbsp;Tool</source>
-				<target>Install&amp;nbsp;Tool</target>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr" approved="yes">
+			<trans-unit id="mlang_labels_tabdescr">
 				<source>Provides a simple link to the Install&amp;nbsp;Tool. Notice the Install&amp;nbsp;Tool (in typo3/install/) must be enabled.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
-				<target>Provides a simple link to the Install&amp;nbsp;Tool. Notice the Install&amp;nbsp;Tool (in typo3/install/) must be enabled.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</target>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab" approved="yes">
+			<trans-unit id="mlang_tabs_tab">
 				<source>Install</source>
-				<target>Install</target>
 			</trans-unit>
-			<trans-unit id="confirmUnlockInstallToolTitle" approved="yes">
+			<trans-unit id="confirmUnlockInstallToolTitle">
 				<source>The Install&amp;nbsp;Tool is locked</source>
-				<target>The Install&amp;nbsp;Tool is locked</target>
 			</trans-unit>
-			<trans-unit id="confirmUnlockInstallToolMessage" approved="yes">
+			<trans-unit id="confirmUnlockInstallToolMessage">
 				<source>&lt;p&gt;For security reasons the Install&amp;nbsp;Tool is locked by default.&lt;/p&gt;
 					&lt;p&gt;To unlock the Install&amp;nbsp;Tool, an empty file with the name ENABLE_INSTALL_TOOL must be created in typo3conf/.&lt;/p&gt;
 					&lt;p&gt;By hitting the button below, this file is created for you and the Install&amp;nbsp;Tool will be unlocked.&lt;/p&gt;
 					&lt;p&gt;You are recommended to log out from the Install&amp;nbsp;Tool after finishing your work. Otherwise
 					TYPO3 will automatically lock the Install&amp;nbsp;Tool after one hour.&lt;/p&gt;
 				</source>
-				<target>&lt;p&gt;For security reasons the Install&amp;nbsp;Tool is locked by default.&lt;/p&gt;
-					&lt;p&gt;To unlock the Install&amp;nbsp;Tool, an empty file with the name ENABLE_INSTALL_TOOL must be created in typo3conf/.&lt;/p&gt;
-					&lt;p&gt;By hitting the button below, this file is created for you and the Install&amp;nbsp;Tool will be unlocked.&lt;/p&gt;
-					&lt;p&gt;You are recommended to log out from the Install&amp;nbsp;Tool after finishing your work. Otherwise
-					TYPO3 will automatically lock the Install&amp;nbsp;Tool after one hour.&lt;/p&gt;
-				</target>
 			</trans-unit>
-			<trans-unit id="confirmUnlockInstallToolButton" approved="yes">
+			<trans-unit id="confirmUnlockInstallToolButton">
 				<source>Unlock the Install&amp;nbsp;Tool</source>
-				<target>Unlock the Install&amp;nbsp;Tool</target>
 			</trans-unit>
 		</body>
 	</file>

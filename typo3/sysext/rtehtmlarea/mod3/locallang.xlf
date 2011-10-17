@@ -1,147 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="removeLink" approved="yes">
+			<trans-unit id="removeLink">
 				<source>Remove link</source>
-				<target>Remove link</target>
 			</trans-unit>
-			<trans-unit id="uploadImage" approved="yes">
+			<trans-unit id="uploadImage">
 				<source>Upload Image</source>
-				<target>Upload Image</target>
 			</trans-unit>
-			<trans-unit id="update" approved="yes">
+			<trans-unit id="update">
 				<source>Update</source>
-				<target>Update</target>
 			</trans-unit>
-			<trans-unit id="path" approved="yes">
+			<trans-unit id="path">
 				<source>Path</source>
-				<target>Path</target>
 			</trans-unit>
-			<trans-unit id="page" approved="yes">
+			<trans-unit id="page">
 				<source>Page</source>
-				<target>Page</target>
 			</trans-unit>
-			<trans-unit id="file" approved="yes">
+			<trans-unit id="file">
 				<source>File</source>
-				<target>File</target>
 			</trans-unit>
-			<trans-unit id="extUrl" approved="yes">
+			<trans-unit id="extUrl">
 				<source>External URL</source>
-				<target>External URL</target>
 			</trans-unit>
-			<trans-unit id="email" approved="yes">
+			<trans-unit id="email">
 				<source>Email</source>
-				<target>Email</target>
 			</trans-unit>
-			<trans-unit id="special" approved="yes">
+			<trans-unit id="special">
 				<source>Special</source>
-				<target>Special</target>
 			</trans-unit>
-			<trans-unit id="folderTree" approved="yes">
+			<trans-unit id="folderTree">
 				<source>Folder Tree</source>
-				<target>Folder Tree</target>
 			</trans-unit>
-			<trans-unit id="files" approved="yes">
+			<trans-unit id="files">
 				<source>Files</source>
-				<target>Files</target>
 			</trans-unit>
-			<trans-unit id="target" approved="yes">
+			<trans-unit id="target">
 				<source>Target</source>
-				<target>Target</target>
 			</trans-unit>
-			<trans-unit id="linkRelationship" approved="yes">
+			<trans-unit id="linkRelationship">
 				<source>Relationship</source>
-				<target>Relationship</target>
 			</trans-unit>
-			<trans-unit id="target_popUpWindow" approved="yes">
+			<trans-unit id="target_popUpWindow">
 				<source>Open in window</source>
-				<target>Open in window</target>
 			</trans-unit>
-			<trans-unit id="target_popUpWindow_width" approved="yes">
+			<trans-unit id="target_popUpWindow_width">
 				<source>Width</source>
-				<target>Width</target>
 			</trans-unit>
-			<trans-unit id="target_popUpWindow_height" approved="yes">
+			<trans-unit id="target_popUpWindow_height">
 				<source>Height</source>
-				<target>Height</target>
 			</trans-unit>
-			<trans-unit id="anchor_class" approved="yes">
+			<trans-unit id="anchor_class">
 				<source>Style</source>
-				<target>Style</target>
 			</trans-unit>
-			<trans-unit id="anchor_title" approved="yes">
+			<trans-unit id="anchor_title">
 				<source>Title</source>
-				<target>Title</target>
 			</trans-unit>
-			<trans-unit id="newWindow" approved="yes">
+			<trans-unit id="newWindow">
 				<source>New window</source>
-				<target>New window</target>
 			</trans-unit>
-			<trans-unit id="top" approved="yes">
+			<trans-unit id="top">
 				<source>Top</source>
-				<target>Top</target>
 			</trans-unit>
-			<trans-unit id="none" approved="yes">
+			<trans-unit id="none">
 				<source>None - new link!</source>
-				<target>None - new link!</target>
 			</trans-unit>
-			<trans-unit id="pageTree" approved="yes">
+			<trans-unit id="pageTree">
 				<source>Page tree</source>
-				<target>Page tree</target>
 			</trans-unit>
-			<trans-unit id="contentElements" approved="yes">
+			<trans-unit id="contentElements">
 				<source>Content elements</source>
-				<target>Content elements</target>
 			</trans-unit>
-			<trans-unit id="selectRecords" approved="yes">
+			<trans-unit id="selectRecords">
 				<source>Select Records</source>
-				<target>Select Records</target>
 			</trans-unit>
-			<trans-unit id="addToList" approved="yes">
+			<trans-unit id="addToList">
 				<source>Add to list...</source>
-				<target>Add to list...</target>
 			</trans-unit>
-			<trans-unit id="info" approved="yes">
+			<trans-unit id="info">
 				<source>Info</source>
-				<target>Info</target>
 			</trans-unit>
-			<trans-unit id="emailAddress" approved="yes">
+			<trans-unit id="emailAddress">
 				<source>Email address</source>
-				<target>Email address</target>
 			</trans-unit>
-			<trans-unit id="setLink" approved="yes">
+			<trans-unit id="setLink">
 				<source>Set Link</source>
-				<target>Set Link</target>
 			</trans-unit>
-			<trans-unit id="clickToRedrawFullSize" approved="yes">
+			<trans-unit id="clickToRedrawFullSize">
 				<source>Image is larger than shown here! Click to redraw with full size.</source>
-				<target>Image is larger than shown here! Click to redraw with full size.</target>
 			</trans-unit>
-			<trans-unit id="findDragDrop" approved="yes">
+			<trans-unit id="findDragDrop">
 				<source>Find your image, then click on the image and drag it into the editor in the main window!</source>
-				<target>Find your image, then click on the image and drag it into the editor in the main window!</target>
 			</trans-unit>
-			<trans-unit id="noWebFolder" approved="yes">
+			<trans-unit id="noWebFolder">
 				<source>You cannot drag images from this folder (yellow) because it is internal on the server.</source>
-				<target>You cannot drag images from this folder (yellow) because it is internal on the server.</target>
 			</trans-unit>
-			<trans-unit id="currentLink" approved="yes">
+			<trans-unit id="currentLink">
 				<source>Current Link</source>
-				<target>Current Link</target>
 			</trans-unit>
-			<trans-unit id="invalidChar" approved="yes">
+			<trans-unit id="invalidChar">
 				<source>ERROR: Invalid character found in file path (%s). Cannot add the file!</source>
-				<target>ERROR: Invalid character found in file path (%s). Cannot add the file!</target>
 			</trans-unit>
-			<trans-unit id="page_id" approved="yes">
+			<trans-unit id="page_id">
 				<source>Page Id</source>
-				<target>Page Id</target>
 			</trans-unit>
-			<trans-unit id="query_parameters" approved="yes">
+			<trans-unit id="query_parameters">
 				<source>Query parameters</source>
-				<target>Query parameters</target>
 			</trans-unit>
 		</body>
 	</file>

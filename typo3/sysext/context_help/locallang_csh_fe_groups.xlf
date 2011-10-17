@@ -1,111 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:23 UTC" product-name="context_help">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help">
 		<header/>
 		<body>
-			<trans-unit id="hidden.description" approved="yes">
+			<trans-unit id="hidden.description">
 				<source>This option disables the user group.</source>
-				<target>This option disables the user group.</target>
 			</trans-unit>
-			<trans-unit id="hidden.details" approved="yes">
+			<trans-unit id="hidden.details">
 				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
-For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</source>
-				<target>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
-For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</target>
+					For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.
+				</source>
 			</trans-unit>
-			<trans-unit id="_hidden.seeAlso" approved="yes">
+			<trans-unit id="_hidden.seeAlso">
 				<source>fe_users:disable</source>
-				<target>fe_users:disable</target>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="title.description" approved="yes">
+			<trans-unit id="title.description">
 				<source>Name of the group.</source>
-				<target>Name of the group.</target>
 			</trans-unit>
-			<trans-unit id="title.details" approved="yes">
+			<trans-unit id="title.details">
 				<source>This title will appear as the group name in the 'Access'-list in other records.</source>
-				<target>This title will appear as the group name in the 'Access'-list in other records.</target>
 			</trans-unit>
-			<trans-unit id="lockToDomain.description" approved="yes">
+			<trans-unit id="lockToDomain.description">
 				<source>Enter the host name from which the group will be available only.</source>
-				<target>Enter the host name from which the group will be available only.</target>
 			</trans-unit>
-			<trans-unit id="lockToDomain.details" approved="yes">
+			<trans-unit id="lockToDomain.details">
 				<source>This options may be important if you have multiple websites in the same TYPO3 database but still only one main storage page for all Website users. Thus the users may log in on any of the website URLs. This may be considered a feature (having a global login as a user) or a problem (in which case you should have multiple user storages anyway). However you may wish to limit the use of a Website usergroup to a specific website and thus you don't want the group to be enabled for the user when he logs in at another URL (still from the same database of course). By entering the host name of the website here, you restrict the group to be used only from within this domain.
 
-&lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.</source>
-				<target>This options may be important if you have multiple websites in the same TYPO3 database but still only one main storage page for all Website users. Thus the users may log in on any of the website URLs. This may be considered a feature (having a global login as a user) or a problem (in which case you should have multiple user storages anyway). However you may wish to limit the use of a Website usergroup to a specific website and thus you don't want the group to be enabled for the user when he logs in at another URL (still from the same database of course). By entering the host name of the website here, you restrict the group to be used only from within this domain.
-
-&lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.</target>
+					&lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.
+				</source>
 			</trans-unit>
-			<trans-unit id="_lockToDomain.seeAlso" approved="yes">
+			<trans-unit id="_lockToDomain.seeAlso">
 				<source>fe_users:lockToDomain</source>
-				<target>fe_users:lockToDomain</target>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="subgroup.description" approved="yes">
+			<trans-unit id="subgroup.description">
 				<source>Member of other groups.</source>
-				<target>Member of other groups.</target>
 			</trans-unit>
-			<trans-unit id="subgroup.details" approved="yes">
+			<trans-unit id="subgroup.details">
 				<source>List of other groups that this group is a member of.</source>
-				<target>List of other groups that this group is a member of.</target>
 			</trans-unit>
-			<trans-unit id="description.description" approved="yes">
+			<trans-unit id="description.description">
 				<source>Enter a description of the group.</source>
-				<target>Enter a description of the group.</target>
 			</trans-unit>
-			<trans-unit id="description.details" approved="yes">
+			<trans-unit id="description.details">
 				<source>This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
-Use it as you like.</source>
-				<target>This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
-Use it as you like.</target>
+					Use it as you like.
+				</source>
 			</trans-unit>
-			<trans-unit id="TSconfig.description" approved="yes">
+			<trans-unit id="TSconfig.description">
 				<source>TSconfig for the group (advanced).</source>
-				<target>TSconfig for the group (advanced).</target>
 			</trans-unit>
-			<trans-unit id="TSconfig.details" approved="yes">
+			<trans-unit id="TSconfig.details">
 				<source>This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
-The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.</source>
-				<target>This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
-The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.</target>
+					The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.
+				</source>
 			</trans-unit>
-			<trans-unit id="TSconfig.syntax" approved="yes">
+			<trans-unit id="TSconfig.syntax">
 				<source>TypoScript syntax, without conditions and constants.</source>
-				<target>TypoScript syntax, without conditions and constants.</target>
 			</trans-unit>
-			<trans-unit id="_TSconfig.seeAlso" approved="yes">
+			<trans-unit id="_TSconfig.seeAlso">
 				<source>fe_users:TSconfig</source>
-				<target>fe_users:TSconfig</target>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id=".description" approved="yes">
+			<trans-unit id=".description">
 				<source>Usergroups for Website users.</source>
-				<target>Usergroups for Website users.</target>
 			</trans-unit>
-			<trans-unit id=".details" approved="yes">
+			<trans-unit id=".details">
 				<source>The access restriction in TYPO3 is assigned to these usergroups. When a page or other element is access restricted to a group, only Website users which are members or that group will be able to view the element on the website.</source>
-				<target>The access restriction in TYPO3 is assigned to these usergroups. When a page or other element is access restricted to a group, only Website users which are members or that group will be able to view the element on the website.</target>
 			</trans-unit>
-			<trans-unit id="_.seeAlso" approved="yes">
+			<trans-unit id="_.seeAlso">
 				<source>fe_users,
-About access restricting pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Create_restricted_pa/</source>
-				<target>fe_users,
-About access restricting pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Create_restricted_pa/</target>
+					About access restricting pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Create_restricted_pa/
+				</source>
 			</trans-unit>
-			<trans-unit id="_.image" approved="yes">
+			<trans-unit id="_.image">
 				<source>EXT:context_help/cshimages/fegroups_3.png,
-EXT:context_help/cshimages/fegroups_4.png</source>
-				<target>EXT:context_help/cshimages/fegroups_3.png,
-EXT:context_help/cshimages/fegroups_4.png</target>
+					EXT:context_help/cshimages/fegroups_4.png
+				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id=".image_descr" approved="yes">
+			<trans-unit id=".image_descr">
 				<source>The form for editing frontend users groups.
-Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.</source>
-				<target>The form for editing frontend users groups.
-Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.</target>
+					Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.
+				</source>
 			</trans-unit>
 		</body>
 	</file>
