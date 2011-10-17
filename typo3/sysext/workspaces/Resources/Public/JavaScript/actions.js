@@ -306,7 +306,8 @@ TYPO3.Workspaces.Actions = {
 					if (!top.Ext.getCmp(componentId).isVisible()) {
 						top.Ext.getCmp(componentId).show();
 					}
-					top.Ext.getCmp(componentId).setText(response[componentId].text);
+					top.Ext.getCmp(componentId).setText(response[componentId].text.substr(0, 35));
+					top.Ext.getCmp(componentId).setTooltip(response[componentId].text);
 				} else {
 					if (top.Ext.getCmp(componentId).isVisible()) {
 						top.Ext.getCmp(componentId).hide();
