@@ -1,67 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="tsconfig_help">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="tsconfig_help">
 		<header/>
 		<body>
-			<trans-unit id="title" approved="yes">
+			<trans-unit id="title">
 				<source>TypoScript Help</source>
-				<target>TypoScript Help</target>
 			</trans-unit>
-			<trans-unit id="display" approved="yes">
+			<trans-unit id="display">
 				<source>Display TypoScript Help</source>
-				<target>Display TypoScript Help</target>
 			</trans-unit>
-			<trans-unit id="rebuild" approved="yes">
+			<trans-unit id="rebuild">
 				<source>Rebuild TypoScript Help</source>
-				<target>Rebuild TypoScript Help</target>
 			</trans-unit>
-			<trans-unit id="referenceExplanation" approved="yes">
+			<trans-unit id="referenceExplanation">
 				<source>Choose from the following reference data</source>
-				<target>Choose from the following reference data</target>
 			</trans-unit>
-			<trans-unit id="referenceExplanationDetailed" approved="yes">
+			<trans-unit id="referenceExplanationDetailed">
 				<source>In order to view the different TypoScript help popup windows, select from the following reference icons. This online help is built automatically from the manuals available in the installed extensions on your TYPO3 server. To rebuild the help files when you add or remove an extension, you will need to select the "Rebuild TypoScript Help" function of this module.</source>
-				<target>In order to view the different TypoScript help popup windows, select from the following reference icons. This online help is built automatically from the manuals available in the installed extensions on your TYPO3 server. To rebuild the help files when you add or remove an extension, you will need to select the "Rebuild TypoScript Help" function of this module.</target>
 			</trans-unit>
-			<trans-unit id="displayReferences" approved="yes">
+			<trans-unit id="displayReferences">
 				<source>Display TypoScript Online Help</source>
-				<target>Display TypoScript Online Help</target>
 			</trans-unit>
-			<trans-unit id="loadedTSfrom" approved="yes">
+			<trans-unit id="loadedTSfrom">
 				<source>Loaded TypoScript from:</source>
-				<target>Loaded TypoScript from:</target>
 			</trans-unit>
-			<trans-unit id="sections" approved="yes">
+			<trans-unit id="sections">
 				<source>sections</source>
-				<target>sections</target>
 			</trans-unit>
-			<trans-unit id="rebuildTS" approved="yes">
+			<trans-unit id="rebuildTS">
 				<source>Rebuild TypoScript online help</source>
-				<target>Rebuild TypoScript online help</target>
 			</trans-unit>
-			<trans-unit id="warning_manualsWithoutMarkers" approved="yes">
+			<trans-unit id="warning_manualsWithoutMarkers">
 				<source>The following manuals contain one or more tables without markers: </source>
-				<target>The following manuals contain one or more tables without markers: </target>
 			</trans-unit>
-			<trans-unit id="warning_duplicateMarkers" approved="yes">
+			<trans-unit id="warning_duplicateMarkers">
 				<source>The following markers appear in several manuals or several times in the same manual:</source>
-				<target>The following markers appear in several manuals or several times in the same manual:</target>
 			</trans-unit>
-			<trans-unit id="updateWarnings" approved="yes">
+			<trans-unit id="updateWarnings">
 				<source>Update warnings</source>
-				<target>Update warnings</target>
 			</trans-unit>
-			<trans-unit id="rebuildExplanation" approved="yes">
+			<trans-unit id="rebuildExplanation">
 				<source>Rebuilding the online help will totally wipe the online help database before parsing the TypoScript help for loaded extensions. We suggest you to have doc_core_tsref and doc_core_tsconfig installed to have them parsed as well.</source>
-				<target>Rebuilding the online help will totally wipe the online help database before parsing the TypoScript help for loaded extensions. We suggest you to have doc_core_tsref and doc_core_tsconfig installed to have them parsed as well.</target>
 			</trans-unit>
-			<trans-unit id="adminAccessOnly" approved="yes">
+			<trans-unit id="adminAccessOnly">
 				<source>Access to this function of the module is restricted to admins.</source>
-				<target>Access to this function of the module is restricted to admins.</target>
 			</trans-unit>
-			<trans-unit id="noRebuildOnWindows" approved="yes">
+			<trans-unit id="noRebuildOnWindows">
 				<source>The Rebuild function does not run on Windows systems. Sorry!</source>
-				<target>The Rebuild function does not run on Windows systems. Sorry!</target>
 			</trans-unit>
 		</body>
 	</file>

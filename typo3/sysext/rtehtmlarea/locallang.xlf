@@ -1,79 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:27 UTC" product-name="rtehtmlarea">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Please wait" approved="yes">
+			<trans-unit id="Please wait">
 				<source>The editor is being loaded. Please wait...</source>
-				<target>The editor is being loaded. Please wait...</target>
 			</trans-unit>
-			<trans-unit id="Normal" approved="yes">
+			<trans-unit id="Normal">
 				<source>Normal</source>
-				<target>Normal</target>
 			</trans-unit>
-			<trans-unit id="Heading 1" approved="yes">
+			<trans-unit id="Heading 1">
 				<source>Heading 1</source>
-				<target>Heading 1</target>
 			</trans-unit>
-			<trans-unit id="Heading 2" approved="yes">
+			<trans-unit id="Heading 2">
 				<source>Heading 2</source>
-				<target>Heading 2</target>
 			</trans-unit>
-			<trans-unit id="Heading 3" approved="yes">
+			<trans-unit id="Heading 3">
 				<source>Heading 3</source>
-				<target>Heading 3</target>
 			</trans-unit>
-			<trans-unit id="Heading 4" approved="yes">
+			<trans-unit id="Heading 4">
 				<source>Heading 4</source>
-				<target>Heading 4</target>
 			</trans-unit>
-			<trans-unit id="Heading 5" approved="yes">
+			<trans-unit id="Heading 5">
 				<source>Heading 5</source>
-				<target>Heading 5</target>
 			</trans-unit>
-			<trans-unit id="Heading 6" approved="yes">
+			<trans-unit id="Heading 6">
 				<source>Heading 6</source>
-				<target>Heading 6</target>
 			</trans-unit>
-			<trans-unit id="Preformatted" approved="yes">
+			<trans-unit id="Preformatted">
 				<source>Preformatted</source>
-				<target>Preformatted</target>
 			</trans-unit>
-			<trans-unit id="Address" approved="yes">
+			<trans-unit id="Address">
 				<source>Address</source>
-				<target>Address</target>
 			</trans-unit>
-			<trans-unit id="No font" approved="yes">
+			<trans-unit id="No font">
 				<source>No font</source>
-				<target>No font</target>
 			</trans-unit>
-			<trans-unit id="No size" approved="yes">
+			<trans-unit id="No size">
 				<source>No font size</source>
-				<target>No font size</target>
 			</trans-unit>
-			<trans-unit id="rteSettings" approved="yes">
+			<trans-unit id="rteSettings">
 				<source>Rich Text Editor</source>
-				<target>Rich Text Editor</target>
 			</trans-unit>
-			<trans-unit id="rteWidth" approved="yes">
+			<trans-unit id="rteWidth">
 				<source>Width of the RTE in pixels or percentage</source>
-				<target>Width of the RTE in pixels or percentage</target>
 			</trans-unit>
-			<trans-unit id="rteHeight" approved="yes">
+			<trans-unit id="rteHeight">
 				<source>Height of the RTE in pixels</source>
-				<target>Height of the RTE in pixels</target>
 			</trans-unit>
-			<trans-unit id="rteResize" approved="yes">
+			<trans-unit id="rteResize">
 				<source>Make RTE resizable</source>
-				<target>Make RTE resizable</target>
 			</trans-unit>
-			<trans-unit id="rteMaxHeight" approved="yes">
+			<trans-unit id="rteMaxHeight">
 				<source>Maximal height of resizable RTE in pixels</source>
-				<target>Maximal height of resizable RTE in pixels</target>
 			</trans-unit>
-			<trans-unit id="deprecatedPropertyMessage" approved="yes">
+			<trans-unit id="deprecatedPropertyMessage">
 				<source>Page TSConfig property "%1$s" used on page id #%4$s is DEPRECATED and will be removed in TYPO3 %3$s. Use "%2$s" instead.</source>
-				<target>Page TSConfig property "%1$s" used on page id #%4$s is DEPRECATED and will be removed in TYPO3 %3$s. Use "%2$s" instead.</target>
 			</trans-unit>
 		</body>
 	</file>

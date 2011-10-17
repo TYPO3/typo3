@@ -1,103 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="tstemplate_info">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="tstemplate_info">
 		<header/>
 		<body>
-			<trans-unit id="delete" approved="yes">
+			<trans-unit id="delete">
 				<source>Delete:</source>
-				<target>Delete:</target>
 			</trans-unit>
-			<trans-unit id="toTop" approved="yes">
+			<trans-unit id="toTop">
 				<source>To top:</source>
-				<target>To top:</target>
 			</trans-unit>
-			<trans-unit id="fileChanged" approved="yes">
+			<trans-unit id="fileChanged">
 				<source>File changed</source>
-				<target>File changed</target>
 			</trans-unit>
-			<trans-unit id="resourceUpdated" approved="yes">
+			<trans-unit id="resourceUpdated">
 				<source>Resource '%s' has been updated.</source>
-				<target>Resource '%s' has been updated.</target>
 			</trans-unit>
-			<trans-unit id="templateInformation" approved="yes">
+			<trans-unit id="templateInformation">
 				<source>Template information:</source>
-				<target>Template information:</target>
 			</trans-unit>
-			<trans-unit id="title" approved="yes">
+			<trans-unit id="title">
 				<source>Title:</source>
-				<target>Title:</target>
 			</trans-unit>
-			<trans-unit id="sitetitle" approved="yes">
+			<trans-unit id="sitetitle">
 				<source>Sitetitle:</source>
-				<target>Sitetitle:</target>
 			</trans-unit>
-			<trans-unit id="description" approved="yes">
+			<trans-unit id="description">
 				<source>Description:</source>
-				<target>Description:</target>
 			</trans-unit>
-			<trans-unit id="allowedExtensions" approved="yes">
+			<trans-unit id="allowedExtensions">
 				<source>Allowed extensions:</source>
-				<target>Allowed extensions:</target>
 			</trans-unit>
-			<trans-unit id="maxFilesize" approved="yes">
+			<trans-unit id="maxFilesize">
 				<source>Max filesize:</source>
-				<target>Max filesize:</target>
 			</trans-unit>
-			<trans-unit id="uploadResource" approved="yes">
+			<trans-unit id="uploadResource">
 				<source>Upload resource:</source>
-				<target>Upload resource:</target>
 			</trans-unit>
-			<trans-unit id="newTextResource" approved="yes">
+			<trans-unit id="newTextResource">
 				<source>New text resource (enter name):</source>
-				<target>New text resource (enter name):</target>
 			</trans-unit>
-			<trans-unit id="copyResource" approved="yes">
+			<trans-unit id="copyResource">
 				<source>Make a copy of resource:</source>
-				<target>Make a copy of resource:</target>
 			</trans-unit>
-			<trans-unit id="updateResourceList" approved="yes">
+			<trans-unit id="updateResourceList">
 				<source>Update resource list:</source>
-				<target>Update resource list:</target>
 			</trans-unit>
-			<trans-unit id="constants" approved="yes">
+			<trans-unit id="constants">
 				<source>Constants:</source>
-				<target>Constants:</target>
 			</trans-unit>
-			<trans-unit id="file" approved="yes">
+			<trans-unit id="file">
 				<source>File:</source>
-				<target>File:</target>
 			</trans-unit>
-			<trans-unit id="editResource" approved="yes">
+			<trans-unit id="editResource">
 				<source>Edit Resource:</source>
-				<target>Edit Resource:</target>
 			</trans-unit>
-			<trans-unit id="filesizeExceeded" approved="yes">
+			<trans-unit id="filesizeExceeded">
 				<source>Filesize exceeded %s KBytes</source>
-				<target>Filesize exceeded %s KBytes</target>
 			</trans-unit>
-			<trans-unit id="notAllowed" approved="yes">
+			<trans-unit id="notAllowed">
 				<source>Files larger than %s KBytes are not allowed to be edited.</source>
-				<target>Files larger than %s KBytes are not allowed to be edited.</target>
 			</trans-unit>
-			<trans-unit id="setup" approved="yes">
+			<trans-unit id="setup">
 				<source>Setup:</source>
-				<target>Setup:</target>
 			</trans-unit>
-			<trans-unit id="resources" approved="yes">
+			<trans-unit id="resources">
 				<source>Resources:</source>
-				<target>Resources:</target>
 			</trans-unit>
-			<trans-unit id="editToView" approved="yes">
+			<trans-unit id="editToView">
 				<source>(edit to view, %s lines)</source>
-				<target>(edit to view, %s lines)</target>
 			</trans-unit>
-			<trans-unit id="editTemplateRecord" approved="yes">
+			<trans-unit id="editTemplateRecord">
 				<source>Edit the whole template record</source>
-				<target>Edit the whole template record</target>
 			</trans-unit>
-			<trans-unit id="includeTypoScriptFileContent" approved="yes">
+			<trans-unit id="includeTypoScriptFileContent">
 				<source>Include TypoScript file content</source>
-				<target>Include TypoScript file content</target>
 			</trans-unit>
 		</body>
 	</file>
