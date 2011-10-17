@@ -1,27 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="lang">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="title" approved="yes">
+			<trans-unit id="title">
 				<source>Advanced functions</source>
-				<target>Advanced functions</target>
 			</trans-unit>
-			<trans-unit id="clickAPage_content" approved="yes">
+			<trans-unit id="clickAPage_content">
 				<source>Please click a page title in the page tree.</source>
-				<target>Please click a page title in the page tree.</target>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tablabel" approved="yes">
+			<trans-unit id="mlang_labels_tablabel">
 				<source>Advanced functions</source>
-				<target>Advanced functions</target>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr" approved="yes">
+			<trans-unit id="mlang_labels_tabdescr">
 				<source>This module contains general export and import functions in addition to specialised wizards enabling page sorting and batch creating of pages.</source>
-				<target>This module contains general export and import functions in addition to specialised wizards enabling page sorting and batch creating of pages.</target>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab" approved="yes">
+			<trans-unit id="mlang_tabs_tab">
 				<source>Functions</source>
-				<target>Functions</target>
 			</trans-unit>
 		</body>
 	</file>

@@ -1,27 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:25 UTC" product-name="lang">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="query_loaded" approved="yes">
+			<trans-unit id="query_loaded">
 				<source>Query "%s" loaded!</source>
-				<target>Query "%s" loaded!</target>
 			</trans-unit>
-			<trans-unit id="query_from_action_loaded" approved="yes">
+			<trans-unit id="query_from_action_loaded">
 				<source>Query from action "%s" loaded!</source>
-				<target>Query from action "%s" loaded!</target>
 			</trans-unit>
-			<trans-unit id="query_saved" approved="yes">
+			<trans-unit id="query_saved">
 				<source>Query saved!</source>
-				<target>Query saved!</target>
 			</trans-unit>
-			<trans-unit id="query_notsaved" approved="yes">
+			<trans-unit id="query_notsaved">
 				<source>No query saved!</source>
-				<target>No query saved!</target>
 			</trans-unit>
-			<trans-unit id="query_removed" approved="yes">
+			<trans-unit id="query_removed">
 				<source>"%s" query entry removed!</source>
-				<target>"%s" query entry removed!</target>
 			</trans-unit>
 		</body>
 	</file>
