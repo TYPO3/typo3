@@ -157,11 +157,11 @@ Ext.onReady(function() {
 			plugins : [{
 				ptype : 'Ext.ux.plugins.TabStripContainer',
 				id: 'controls',
-				width: 1000,
+				width: 930,
 				items: [
 					{
 						xtype: 'panel',
-						width: 460,
+						width: 360,
 						items: [{
 							xtype: 'panel',
 							id: 'slider',
@@ -189,7 +189,7 @@ Ext.onReady(function() {
 									maxValue: 100,
 									minValue: 0,
 									value: 100,
-									width: 200,
+									width: 150,
 									flex: 1,
 									listeners: {
 										change: {
@@ -223,7 +223,8 @@ Ext.onReady(function() {
 						columns: 4,
 						width: 400,
 						items: [{
-							text: TYPO3.l10n.localize('nextStage'),
+							text: TYPO3.l10n.localize('nextStage').substr(0, 35),
+							tooltip:  TYPO3.l10n.localize('nextStage'),
 							xtype: 'button',
 							iconCls: 'x-btn-text',
 							id: 'feToolbarButtonNextStage',
@@ -236,7 +237,8 @@ Ext.onReady(function() {
 								}
 							}
 						}, {
-							text: TYPO3.l10n.localize('previousStage'),
+							text: TYPO3.l10n.localize('previousStage').substr(0, 35),
+							tooltip:  TYPO3.l10n.localize('previousStage'),
 							xtype: 'button',
 							iconCls: 'x-btn-text',
 							id: 'feToolbarButtonPreviousStage',
