@@ -1,99 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:23 UTC" product-name="css_styled_content">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="css_styled_content">
 		<header/>
 		<body>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables">
 				<source>Accessibility</source>
-				<target>Accessibility</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_caption" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_caption">
 				<source>Table Caption</source>
-				<target>Table Caption</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_summary" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_summary">
 				<source>Table Summary</source>
-				<target>Table Summary</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_tfoot" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_tfoot">
 				<source>Use Table Footer (wrap last row with &lt;tfoot&gt; tags)</source>
-				<target>Use Table Footer (wrap last row with &lt;tfoot&gt; tags)</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos.I.0" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos.I.0">
 				<source>No header</source>
-				<target>No header</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos.I.1" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos.I.1">
 				<source>Top</source>
-				<target>Top</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos.I.2" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos.I.2">
 				<source>Left</source>
-				<target>Left</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos">
 				<source>Table Header Position</source>
-				<target>Table Header Position</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_nostyles" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_nostyles">
 				<source>No CSS styles for this table</source>
-				<target>No CSS styles for this table</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_tableclass" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_tableclass">
 				<source>Additional CSS Class</source>
-				<target>Additional CSS Class</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing">
 				<source>CSV parsing</source>
-				<target>CSV parsing</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote">
 				<source>Text Delimiter</source>
-				<target>Text Delimiter</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote_none" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote_none">
 				<source>None</source>
-				<target>None</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote_single" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote_single">
 				<source>' (Single quotes)</source>
-				<target>' (Single quotes)</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote_double" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote_double">
 				<source>" (Double quotes)</source>
-				<target>" (Double quotes)</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter">
 				<source>Field Delimiter</source>
-				<target>Field Delimiter</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_pipe" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_pipe">
 				<source>| (Pipe)</source>
-				<target>| (Pipe)</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_semicolon" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_semicolon">
 				<source>; (Semicolon)</source>
-				<target>; (Semicolon)</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_colon" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_colon">
 				<source>: (Colon)</source>
-				<target>: (Colon)</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_comma" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_comma">
 				<source>, (Comma)</source>
-				<target>, (Comma)</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_tab" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_tab">
 				<source>⇥ (Tab)</source>
-				<target>⇥ (Tab)</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_section_frame.I.9" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_section_frame.I.9">
 				<source>No Frame</source>
-				<target>No Frame</target>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_section_frame.I.0" approved="yes">
+			<trans-unit id="tt_content.tx_cssstyledcontent_section_frame.I.0">
 				<source>Default Frame</source>
-				<target>Default Frame</target>
 			</trans-unit>
 		</body>
 	</file>

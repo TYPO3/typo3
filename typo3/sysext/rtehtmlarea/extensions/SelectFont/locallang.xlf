@@ -1,87 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="No font" approved="yes">
+			<trans-unit id="No font">
 				<source>No font</source>
-				<target>No font</target>
 			</trans-unit>
-			<trans-unit id="No size" approved="yes">
+			<trans-unit id="No size">
 				<source>No font size</source>
-				<target>No font size</target>
 			</trans-unit>
-			<trans-unit id="Default font" approved="yes">
+			<trans-unit id="Default font">
 				<source>Default font</source>
-				<target>Default font</target>
 			</trans-unit>
-			<trans-unit id="Default size" approved="yes">
+			<trans-unit id="Default size">
 				<source>Default size</source>
-				<target>Default size</target>
 			</trans-unit>
-			<trans-unit id="Extra small" approved="yes">
+			<trans-unit id="Extra small">
 				<source>Extra small</source>
-				<target>Extra small</target>
 			</trans-unit>
-			<trans-unit id="Very small" approved="yes">
+			<trans-unit id="Very small">
 				<source>Very small</source>
-				<target>Very small</target>
 			</trans-unit>
-			<trans-unit id="Small" approved="yes">
+			<trans-unit id="Small">
 				<source>Small</source>
-				<target>Small</target>
 			</trans-unit>
-			<trans-unit id="Medium" approved="yes">
+			<trans-unit id="Medium">
 				<source>Medium</source>
-				<target>Medium</target>
 			</trans-unit>
-			<trans-unit id="Large" approved="yes">
+			<trans-unit id="Large">
 				<source>Large</source>
-				<target>Large</target>
 			</trans-unit>
-			<trans-unit id="Very large" approved="yes">
+			<trans-unit id="Very large">
 				<source>Very large</source>
-				<target>Very large</target>
 			</trans-unit>
-			<trans-unit id="Extra large" approved="yes">
+			<trans-unit id="Extra large">
 				<source>Extra large</source>
-				<target>Extra large</target>
 			</trans-unit>
-			<trans-unit id="Arial" approved="yes">
+			<trans-unit id="Arial">
 				<source>Arial</source>
-				<target>Arial</target>
 			</trans-unit>
-			<trans-unit id="Arial Black" approved="yes">
+			<trans-unit id="Arial Black">
 				<source>Arial Black</source>
-				<target>Arial Black</target>
 			</trans-unit>
-			<trans-unit id="Verdana" approved="yes">
+			<trans-unit id="Verdana">
 				<source>Verdana</source>
-				<target>Verdana</target>
 			</trans-unit>
-			<trans-unit id="Times New Roman" approved="yes">
+			<trans-unit id="Times New Roman">
 				<source>Times New Roman</source>
-				<target>Times New Roman</target>
 			</trans-unit>
-			<trans-unit id="Garamond" approved="yes">
+			<trans-unit id="Garamond">
 				<source>Garamond</source>
-				<target>Garamond</target>
 			</trans-unit>
-			<trans-unit id="Lucida Handwriting" approved="yes">
+			<trans-unit id="Lucida Handwriting">
 				<source>Lucida Handwriting</source>
-				<target>Lucida Handwriting</target>
 			</trans-unit>
-			<trans-unit id="Courier" approved="yes">
+			<trans-unit id="Courier">
 				<source>Courier</source>
-				<target>Courier</target>
 			</trans-unit>
-			<trans-unit id="Webdings" approved="yes">
+			<trans-unit id="Webdings">
 				<source>Webdings</source>
-				<target>Webdings</target>
 			</trans-unit>
-			<trans-unit id="Wingdings" approved="yes">
+			<trans-unit id="Wingdings">
 				<source>Wingdings</source>
-				<target>Wingdings</target>
 			</trans-unit>
 		</body>
 	</file>

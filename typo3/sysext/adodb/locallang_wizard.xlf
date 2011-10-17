@@ -1,35 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:22 UTC" product-name="adodb">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="adodb">
 		<header/>
 		<body>
-			<trans-unit id="dbtype" approved="yes">
+			<trans-unit id="dbtype">
 				<source>Database type</source>
-				<target>Database type</target>
 			</trans-unit>
-			<trans-unit id="host" approved="yes">
+			<trans-unit id="host">
 				<source>Host or DSN</source>
-				<target>Host or DSN</target>
 			</trans-unit>
-			<trans-unit id="dbname" approved="yes">
+			<trans-unit id="dbname">
 				<source>Database name</source>
-				<target>Database name</target>
 			</trans-unit>
-			<trans-unit id="username" approved="yes">
+			<trans-unit id="username">
 				<source>Username</source>
-				<target>Username</target>
 			</trans-unit>
-			<trans-unit id="password" approved="yes">
+			<trans-unit id="password">
 				<source>Password</source>
-				<target>Password</target>
 			</trans-unit>
-			<trans-unit id="table" approved="yes">
+			<trans-unit id="table">
 				<source>Table name</source>
-				<target>Table name</target>
 			</trans-unit>
-			<trans-unit id="checkconnectionwizard" approved="yes">
+			<trans-unit id="checkconnectionwizard">
 				<source>Check connection to database with configuration entered below</source>
-				<target>Check connection to database with configuration entered below</target>
 			</trans-unit>
 		</body>
 	</file>

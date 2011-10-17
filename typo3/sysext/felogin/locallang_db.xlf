@@ -1,207 +1,157 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:23 UTC" product-name="felogin">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="felogin">
 		<header/>
 		<body>
-			<trans-unit id="tt_content.CType_pi1" approved="yes">
+			<trans-unit id="tt_content.CType_pi1">
 				<source>Website User Login</source>
-				<target>Website User Login</target>
 			</trans-unit>
-			<trans-unit id="felogin_redirectPid" approved="yes">
+			<trans-unit id="felogin_redirectPid">
 				<source>Redirect at Login to Page (felogin)</source>
-				<target>Redirect at Login to Page (felogin)</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.general_header" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.general_header">
 				<source>General Header</source>
-				<target>General Header</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.general_message" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.general_message">
 				<source>General Message</source>
-				<target>General Message</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.redirect_header" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.redirect_header">
 				<source>Redirect Header</source>
-				<target>Redirect Header</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.redirect_message" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.redirect_message">
 				<source>Redirect Message</source>
-				<target>Redirect Message</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.welcome_header" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.welcome_header">
 				<source>Welcome Header</source>
-				<target>Welcome Header</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.welcome_message" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.welcome_message">
 				<source>Welcome Message</source>
-				<target>Welcome Message</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.success_header" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.success_header">
 				<source>Login Success Header</source>
-				<target>Login Success Header</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.success_message" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.success_message">
 				<source>Login Success Message</source>
-				<target>Login Success Message</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.error_header" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.error_header">
 				<source>Login Error Header</source>
-				<target>Login Error Header</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.error_message" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.error_message">
 				<source>Login Error Message</source>
-				<target>Login Error Message</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.status_header" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.status_header">
 				<source>Status Display Header</source>
-				<target>Status Display Header</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.status_message" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.status_message">
 				<source>Status Display Message</source>
-				<target>Status Display Message</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.logout_header" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.logout_header">
 				<source>Logout Header</source>
-				<target>Logout Header</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.logout_message" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.logout_message">
 				<source>Logout Message</source>
-				<target>Logout Message</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.forgot_header" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.forgot_header">
 				<source>Forgot Password Header</source>
-				<target>Forgot Password Header</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.forgot_message" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.forgot_message">
 				<source>Forgot Password Message</source>
-				<target>Forgot Password Message</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.sheet_general" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.sheet_general">
 				<source>General</source>
-				<target>General</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.sheet_redirect" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.sheet_redirect">
 				<source>Redirects</source>
-				<target>Redirects</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.sheet_messages" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.sheet_messages">
 				<source>Messages</source>
-				<target>Messages</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_forgot_password" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.show_forgot_password">
 				<source>Display Password Recovery Link</source>
-				<target>Display Password Recovery Link</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_permalogin" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.show_permalogin">
 				<source>Display Remember Login Option</source>
-				<target>Display Remember Login Option</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_logoutFormAfterLogin" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.show_logoutFormAfterLogin">
 				<source>Display Logout Form After Successful Login</source>
-				<target>Display Logout Form After Successful Login</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.groupSelectmode" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.groupSelectmode">
 				<source>FE group select mode:</source>
-				<target>FE group select mode:</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.groupSelectmode_showAll" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.groupSelectmode_showAll">
 				<source>Show all</source>
-				<target>Show all</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.groupSelectmode_showSelected" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.groupSelectmode_showSelected">
 				<source>Show selected</source>
-				<target>Show selected</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.groupSelectmode_DontShowSelected" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.groupSelectmode_DontShowSelected">
 				<source>Dont show selected</source>
-				<target>Dont show selected</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.groupSelectmode_FromTS" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.groupSelectmode_FromTS">
 				<source>(from Typoscript)</source>
-				<target>(from Typoscript)</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.groupSelection" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.groupSelection">
 				<source>FE group selection:</source>
-				<target>FE group selection:</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.groupSelection_noGroup" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.groupSelection_noGroup">
 				<source>no group</source>
-				<target>no group</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.field_manualOrder" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.field_manualOrder">
 				<source>Using fieldlists below:</source>
-				<target>Using fieldlists below:</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.field_orderList" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.field_orderList">
 				<source>User Fields/list:</source>
-				<target>User Fields/list:</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.field_orderDetails" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.field_orderDetails">
 				<source>User Fields/details:</source>
-				<target>User Fields/details:</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.redirectMode" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.redirectMode">
 				<source>Redirect Mode</source>
-				<target>Redirect Mode</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.redirectMode.I.0" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.redirectMode.I.0">
 				<source>Defined by Usergroup Record</source>
-				<target>Defined by Usergroup Record</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.redirectMode.I.1" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.redirectMode.I.1">
 				<source>Defined by User Record</source>
-				<target>Defined by User Record</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.redirectMode.I.2" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.redirectMode.I.2">
 				<source>After Login (TS or Flexform)</source>
-				<target>After Login (TS or Flexform)</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.redirectMode.I.3" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.redirectMode.I.3">
 				<source>After Logout (TS or Flexform)</source>
-				<target>After Logout (TS or Flexform)</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.redirectMode.I.4" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.redirectMode.I.4">
 				<source>After Login Error (TS or Flexform)</source>
-				<target>After Login Error (TS or Flexform)</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.redirectMode.I.5" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.redirectMode.I.5">
 				<source>Defined by GET/POST Parameters</source>
-				<target>Defined by GET/POST Parameters</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.redirectMode.I.6" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.redirectMode.I.6">
 				<source>Defined by Referrer</source>
-				<target>Defined by Referrer</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.redirectMode.I.7" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.redirectMode.I.7">
 				<source>Defined by Domain Entries</source>
-				<target>Defined by Domain Entries</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.redirectFirstMethod" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.redirectFirstMethod">
 				<source>Use First Supported Mode from Selection</source>
-				<target>Use First Supported Mode from Selection</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.redirectDisable" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.redirectDisable">
 				<source>Disable Redirect</source>
-				<target>Disable Redirect</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.redirectPageLogin" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.redirectPageLogin">
 				<source>After Successful Login Redirect to Page</source>
-				<target>After Successful Login Redirect to Page</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.redirectPageLoginError" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.redirectPageLoginError">
 				<source>After Failed Login Redirect to Page</source>
-				<target>After Failed Login Redirect to Page</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.redirectPageLogout" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.redirectPageLogout">
 				<source>After Logout Redirect to Page</source>
-				<target>After Logout Redirect to Page</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.template_file" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.template_file">
 				<source>Template File</source>
-				<target>Template File</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.user_storage" approved="yes">
+			<trans-unit id="tt_content.pi_flexform.user_storage">
 				<source>User Storage Page</source>
-				<target>User Storage Page</target>
 			</trans-unit>
 		</body>
 	</file>

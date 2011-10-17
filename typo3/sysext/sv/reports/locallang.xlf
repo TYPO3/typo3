@@ -1,75 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="sv">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="sv">
 		<header/>
 		<body>
-			<trans-unit id="report_title" approved="yes">
+			<trans-unit id="report_title">
 				<source>Installed Services</source>
-				<target>Installed Services</target>
 			</trans-unit>
-			<trans-unit id="report_description" approved="yes">
+			<trans-unit id="report_description">
 				<source>List of all installed services with information and status for each of them.</source>
-				<target>List of all installed services with information and status for each of them.</target>
 			</trans-unit>
-			<trans-unit id="report_explanation" approved="yes">
+			<trans-unit id="report_explanation">
 				<source>This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</source>
-				<target>This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</target>
 			</trans-unit>
-			<trans-unit id="externals_explanation" approved="yes">
+			<trans-unit id="externals_explanation">
 				<source>The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</source>
-				<target>The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</target>
 			</trans-unit>
-			<trans-unit id="service_type" approved="yes">
+			<trans-unit id="service_type">
 				<source>Service type: %s</source>
-				<target>Service type: %s</target>
 			</trans-unit>
-			<trans-unit id="service" approved="yes">
+			<trans-unit id="service">
 				<source>Service</source>
-				<target>Service</target>
 			</trans-unit>
-			<trans-unit id="priority" approved="yes">
+			<trans-unit id="priority">
 				<source>Priority</source>
-				<target>Priority</target>
 			</trans-unit>
-			<trans-unit id="quality" approved="yes">
+			<trans-unit id="quality">
 				<source>Quality</source>
-				<target>Quality</target>
 			</trans-unit>
-			<trans-unit id="subtypes" approved="yes">
+			<trans-unit id="subtypes">
 				<source>Subtypes</source>
-				<target>Subtypes</target>
 			</trans-unit>
-			<trans-unit id="os" approved="yes">
+			<trans-unit id="os">
 				<source>OS</source>
-				<target>OS</target>
 			</trans-unit>
-			<trans-unit id="externals" approved="yes">
+			<trans-unit id="externals">
 				<source>Externals</source>
-				<target>Externals</target>
 			</trans-unit>
-			<trans-unit id="available" approved="yes">
+			<trans-unit id="available">
 				<source>Available</source>
-				<target>Available</target>
 			</trans-unit>
-			<trans-unit id="any" approved="yes">
+			<trans-unit id="any">
 				<source>Any</source>
-				<target>Any</target>
 			</trans-unit>
-			<trans-unit id="search_paths" approved="yes">
+			<trans-unit id="search_paths">
 				<source>Configured search paths for external programs</source>
-				<target>Configured search paths for external programs</target>
 			</trans-unit>
-			<trans-unit id="path" approved="yes">
+			<trans-unit id="path">
 				<source>Path</source>
-				<target>Path</target>
 			</trans-unit>
-			<trans-unit id="valid" approved="yes">
+			<trans-unit id="valid">
 				<source>Valid</source>
-				<target>Valid</target>
 			</trans-unit>
-			<trans-unit id="no_search_paths" approved="yes">
+			<trans-unit id="no_search_paths">
 				<source>No search paths configured.</source>
-				<target>No search paths configured.</target>
 			</trans-unit>
 		</body>
 	</file>

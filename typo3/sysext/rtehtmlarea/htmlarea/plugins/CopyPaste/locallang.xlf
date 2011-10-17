@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:26 UTC" product-name="rtehtmlarea">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Allow-Clipboard-Helper-Add-On-Title" approved="yes">
+			<trans-unit id="Allow-Clipboard-Helper-Add-On-Title">
 				<source>Firefox Add-on AllowClipboard Helper</source>
-				<target>Firefox Add-on AllowClipboard Helper</target>
 			</trans-unit>
-			<trans-unit id="Firefox-Security-Prefs-Question-Title" approved="yes">
+			<trans-unit id="Firefox-Security-Prefs-Question-Title">
 				<source>Firefox Clipboard Access Security Settings</source>
-				<target>Firefox Clipboard Access Security Settings</target>
 			</trans-unit>
-			<trans-unit id="Technische Universitat Ilmenau" approved="yes">
+			<trans-unit id="Technische Universitat Ilmenau">
 				<source>Technische Universität Ilmenau</source>
-				<target>Technische Universität Ilmenau</target>
 			</trans-unit>
 		</body>
 	</file>

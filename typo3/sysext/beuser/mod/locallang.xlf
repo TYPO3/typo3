@@ -1,223 +1,169 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:22 UTC" product-name="beuser">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="beuser">
 		<header/>
 		<body>
-			<trans-unit id="pageTitle" approved="yes">
+			<trans-unit id="pageTitle">
 				<source>Page title:</source>
-				<target>Page title:</target>
 			</trans-unit>
-			<trans-unit id="path" approved="yes">
+			<trans-unit id="path">
 				<source>Path:</source>
-				<target>Path:</target>
 			</trans-unit>
-			<trans-unit id="user" approved="yes">
+			<trans-unit id="user">
 				<source>User:</source>
-				<target>User:</target>
 			</trans-unit>
-			<trans-unit id="group" approved="yes">
+			<trans-unit id="group">
 				<source>Group:</source>
-				<target>Group:</target>
 			</trans-unit>
-			<trans-unit id="everybody" approved="yes">
+			<trans-unit id="everybody">
 				<source>Everybody:</source>
-				<target>Everybody:</target>
 			</trans-unit>
-			<trans-unit id="thisUser" approved="yes">
+			<trans-unit id="thisUser">
 				<source>This user:</source>
-				<target>This user:</target>
 			</trans-unit>
-			<trans-unit id="mainGroup" approved="yes">
+			<trans-unit id="mainGroup">
 				<source>Main group:</source>
-				<target>Main group:</target>
 			</trans-unit>
-			<trans-unit id="editLock" approved="yes">
+			<trans-unit id="editLock">
 				<source>Edit lock prevents all editing</source>
-				<target>Edit lock prevents all editing</target>
 			</trans-unit>
-			<trans-unit id="noReadAccess" approved="yes">
+			<trans-unit id="noReadAccess">
 				<source>The user has no read-access to these DB-mounts!</source>
-				<target>The user has no read-access to these DB-mounts!</target>
 			</trans-unit>
-			<trans-unit id="live" approved="yes">
+			<trans-unit id="live">
 				<source>[LIVE]</source>
-				<target>[LIVE]</target>
 			</trans-unit>
-			<trans-unit id="defaultDraft" approved="yes">
+			<trans-unit id="defaultDraft">
 				<source>[Default Draft]</source>
-				<target>[Default Draft]</target>
 			</trans-unit>
-			<trans-unit id="notAccessible" approved="yes">
+			<trans-unit id="notAccessible">
 				<source>WARNING: Workspace Webmount page id not accessible:</source>
-				<target>WARNING: Workspace Webmount page id not accessible:</target>
 			</trans-unit>
-			<trans-unit id="compareUserSettings" approved="yes">
+			<trans-unit id="compareUserSettings">
 				<source>Compare User Settings</source>
-				<target>Compare User Settings</target>
 			</trans-unit>
-			<trans-unit id="listUsersOnline" approved="yes">
+			<trans-unit id="listUsersOnline">
 				<source>List Users Online</source>
-				<target>List Users Online</target>
 			</trans-unit>
-			<trans-unit id="backendUserAdministration" approved="yes">
+			<trans-unit id="backendUserAdministration">
 				<source>Backend User Administration</source>
-				<target>Backend User Administration</target>
 			</trans-unit>
-			<trans-unit id="filemounts" approved="yes">
+			<trans-unit id="filemounts">
 				<source>Filemounts</source>
-				<target>Filemounts</target>
 			</trans-unit>
-			<trans-unit id="webmounts" approved="yes">
+			<trans-unit id="webmounts">
 				<source>Webmounts</source>
-				<target>Webmounts</target>
 			</trans-unit>
-			<trans-unit id="defaultUploadPath" approved="yes">
+			<trans-unit id="defaultUploadPath">
 				<source>Default upload path</source>
-				<target>Default upload path</target>
 			</trans-unit>
-			<trans-unit id="mainUserGroup" approved="yes">
+			<trans-unit id="mainUserGroup">
 				<source>Main user group</source>
-				<target>Main user group</target>
 			</trans-unit>
-			<trans-unit id="memberOfGroups" approved="yes">
+			<trans-unit id="memberOfGroups">
 				<source>Member of groups</source>
-				<target>Member of groups</target>
 			</trans-unit>
-			<trans-unit id="pageTypesAccess" approved="yes">
+			<trans-unit id="pageTypesAccess">
 				<source>Page types access</source>
-				<target>Page types access</target>
 			</trans-unit>
-			<trans-unit id="selectTables" approved="yes">
+			<trans-unit id="selectTables">
 				<source>Select tables</source>
-				<target>Select tables</target>
 			</trans-unit>
-			<trans-unit id="modifyTables" approved="yes">
+			<trans-unit id="modifyTables">
 				<source>Modify tables</source>
-				<target>Modify tables</target>
 			</trans-unit>
-			<trans-unit id="nonExcludeFields" approved="yes">
+			<trans-unit id="nonExcludeFields">
 				<source>Non-exclude fields</source>
-				<target>Non-exclude fields</target>
 			</trans-unit>
-			<trans-unit id="explicitAllowDeny" approved="yes">
+			<trans-unit id="explicitAllowDeny">
 				<source>Explicit Allow/Deny</source>
-				<target>Explicit Allow/Deny</target>
 			</trans-unit>
-			<trans-unit id="limitToLanguages" approved="yes">
+			<trans-unit id="limitToLanguages">
 				<source>Limit to languages</source>
-				<target>Limit to languages</target>
 			</trans-unit>
-			<trans-unit id="workspacePermissions" approved="yes">
+			<trans-unit id="workspacePermissions">
 				<source>Workspace permissions</source>
-				<target>Workspace permissions</target>
 			</trans-unit>
-			<trans-unit id="workspaceMembership" approved="yes">
+			<trans-unit id="workspaceMembership">
 				<source>Workspace membership</source>
-				<target>Workspace membership</target>
 			</trans-unit>
-			<trans-unit id="customOptions" approved="yes">
+			<trans-unit id="customOptions">
 				<source>Custom options</source>
-				<target>Custom options</target>
 			</trans-unit>
-			<trans-unit id="modules" approved="yes">
+			<trans-unit id="modules">
 				<source>Modules</source>
-				<target>Modules</target>
 			</trans-unit>
-			<trans-unit id="tsconfig" approved="yes">
+			<trans-unit id="tsconfig">
 				<source>TSconfig</source>
-				<target>TSconfig</target>
 			</trans-unit>
-			<trans-unit id="tsconfigHL" approved="yes">
+			<trans-unit id="tsconfigHL">
 				<source>TSconfig HL</source>
-				<target>TSconfig HL</target>
 			</trans-unit>
-			<trans-unit id="nonMountedReadablePages" approved="yes">
+			<trans-unit id="nonMountedReadablePages">
 				<source>Non-mounted readable pages:</source>
-				<target>Non-mounted readable pages:</target>
 			</trans-unit>
-			<trans-unit id="backToOverview" approved="yes">
+			<trans-unit id="backToOverview">
 				<source>&lt; Back to overview</source>
-				<target>&lt; Back to overview</target>
 			</trans-unit>
-			<trans-unit id="userInfo" approved="yes">
+			<trans-unit id="userInfo">
 				<source>User Info</source>
-				<target>User Info</target>
 			</trans-unit>
-			<trans-unit id="groupBy" approved="yes">
+			<trans-unit id="groupBy">
 				<source>Group by:</source>
-				<target>Group by:</target>
 			</trans-unit>
-			<trans-unit id="update" approved="yes">
+			<trans-unit id="update">
 				<source>Update</source>
-				<target>Update</target>
 			</trans-unit>
-			<trans-unit id="groupAndCompareUsers" approved="yes">
+			<trans-unit id="groupAndCompareUsers">
 				<source>Group and Compare Users</source>
-				<target>Group and Compare Users</target>
 			</trans-unit>
-			<trans-unit id="tooManyUsers" approved="yes">
+			<trans-unit id="tooManyUsers">
 				<source>There were too many users:</source>
-				<target>There were too many users:</target>
 			</trans-unit>
-			<trans-unit id="canOnlyDisplay" approved="yes">
+			<trans-unit id="canOnlyDisplay">
 				<source>This tool can only display the following number of users at a time:</source>
-				<target>This tool can only display the following number of users at a time:</target>
 			</trans-unit>
-			<trans-unit id="newUser" approved="yes">
+			<trans-unit id="newUser">
 				<source>Create new user</source>
-				<target>Create new user</target>
 			</trans-unit>
-			<trans-unit id="usernames" approved="yes">
+			<trans-unit id="usernames">
 				<source>Usernames:</source>
-				<target>Usernames:</target>
 			</trans-unit>
-			<trans-unit id="switchUserTo" approved="yes">
+			<trans-unit id="switchUserTo">
 				<source>Switch user to:</source>
-				<target>Switch user to:</target>
 			</trans-unit>
-			<trans-unit id="changeToMode" approved="yes">
+			<trans-unit id="changeToMode">
 				<source>[change-to mode]</source>
-				<target>[change-to mode]</target>
 			</trans-unit>
-			<trans-unit id="switchBackMode" approved="yes">
+			<trans-unit id="switchBackMode">
 				<source>[switch-back mode]</source>
-				<target>[switch-back mode]</target>
 			</trans-unit>
-			<trans-unit id="cachedGrouplistsUpdated" approved="yes">
+			<trans-unit id="cachedGrouplistsUpdated">
 				<source>(All cached group-lists updated.)</source>
-				<target>(All cached group-lists updated.)</target>
 			</trans-unit>
-			<trans-unit id="result" approved="yes">
+			<trans-unit id="result">
 				<source>Result</source>
-				<target>Result</target>
 			</trans-unit>
-			<trans-unit id="showInformation" approved="yes">
+			<trans-unit id="showInformation">
 				<source>Show information</source>
-				<target>Show information</target>
 			</trans-unit>
-			<trans-unit id="sureToDelete" approved="yes">
+			<trans-unit id="sureToDelete">
 				<source>Are you sure you want to delete this element?</source>
-				<target>Are you sure you want to delete this element?</target>
 			</trans-unit>
-			<trans-unit id="delete" approved="yes">
+			<trans-unit id="delete">
 				<source>Delete(!)</source>
-				<target>Delete(!)</target>
 			</trans-unit>
-			<trans-unit id="timestamp" approved="yes">
+			<trans-unit id="timestamp">
 				<source>Timestamp:</source>
-				<target>Timestamp:</target>
 			</trans-unit>
-			<trans-unit id="host" approved="yes">
+			<trans-unit id="host">
 				<source>Host:</source>
-				<target>Host:</target>
 			</trans-unit>
-			<trans-unit id="username" approved="yes">
+			<trans-unit id="username">
 				<source>Username:</source>
-				<target>Username:</target>
 			</trans-unit>
-			<trans-unit id="whoIsOnline" approved="yes">
+			<trans-unit id="whoIsOnline">
 				<source>Who Is Online</source>
-				<target>Who Is Online</target>
 			</trans-unit>
 		</body>
 	</file>

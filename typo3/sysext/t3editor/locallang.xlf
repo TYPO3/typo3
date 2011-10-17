@@ -1,59 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="EN" target-language="en" datatype="plaintext" original="messages" date="Lun  1 aoû 2011 20:03:28 UTC" product-name="t3editor">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="t3editor">
 		<header/>
 		<body>
-			<trans-unit id="deactivate" approved="yes">
+			<trans-unit id="deactivate">
 				<source>Deactivate t3editor</source>
-				<target>Deactivate t3editor</target>
 			</trans-unit>
-			<trans-unit id="template" approved="yes">
+			<trans-unit id="template">
 				<source>Template</source>
-				<target>Template</target>
 			</trans-unit>
-			<trans-unit id="file" approved="yes">
+			<trans-unit id="file">
 				<source>File</source>
-				<target>File</target>
 			</trans-unit>
-			<trans-unit id="delimiter" approved="yes">
+			<trans-unit id="delimiter">
 				<source>:</source>
-				<target>:</target>
 			</trans-unit>
-			<trans-unit id="constants" approved="yes">
+			<trans-unit id="constants">
 				<source>Constants</source>
-				<target>Constants</target>
 			</trans-unit>
-			<trans-unit id="setup" approved="yes">
+			<trans-unit id="setup">
 				<source>Setup</source>
-				<target>Setup</target>
 			</trans-unit>
-			<trans-unit id="unknownContentType" approved="yes">
+			<trans-unit id="unknownContentType">
 				<source>Unknown content type:</source>
-				<target>Unknown content type:</target>
 			</trans-unit>
-			<trans-unit id="pageIDInteger" approved="yes">
+			<trans-unit id="pageIDInteger">
 				<source>Syntax error: Parameter pageID must be a valid integer.</source>
-				<target>Syntax error: Parameter pageID must be a valid integer.</target>
 			</trans-unit>
-			<trans-unit id="noPermission" approved="yes">
+			<trans-unit id="noPermission">
 				<source>Access denied: No permission to template records.</source>
-				<target>Access denied: No permission to template records.</target>
 			</trans-unit>
-			<trans-unit id="typeIDMissing" approved="yes">
+			<trans-unit id="typeIDMissing">
 				<source>Syntax error: At least parameter typeID has to be supplied.</source>
-				<target>Syntax error: At least parameter typeID has to be supplied.</target>
 			</trans-unit>
-			<trans-unit id="js.label_lines" approved="yes">
+			<trans-unit id="js.label_lines">
 				<source>lines</source>
-				<target>lines</target>
 			</trans-unit>
-			<trans-unit id="js.label_documentModified" approved="yes">
+			<trans-unit id="js.label_documentModified">
 				<source>document has been modified</source>
-				<target>document has been modified</target>
 			</trans-unit>
-			<trans-unit id="js.label_errorWhileSaving" approved="yes">
+			<trans-unit id="js.label_errorWhileSaving">
 				<source>An error occured while saving the data.</source>
-				<target>An error occured while saving the data.</target>
 			</trans-unit>
 		</body>
 	</file>
