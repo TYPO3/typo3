@@ -541,7 +541,7 @@ $TSFE->jumpurl();
 // *************
 // Preview info
 // *************
-$TSFE->previewInfo();
+$TSFE->content = str_ireplace('</body>', $TSFE->previewInfo() . '</body>', $TSFE->content);
 
 
 // ******************
