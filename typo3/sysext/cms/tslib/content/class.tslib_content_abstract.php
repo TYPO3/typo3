@@ -58,6 +58,15 @@ abstract class tslib_content_Abstract {
 	public abstract function render($conf = array());
 
 	/**
+	 * Getter for current cObj
+	 *
+	 * @return tslib_cObj
+	 */
+	public function getContentObject() {
+		return $this->cObj;
+	}
+
+	/**
 	 * Compatibility stdWrap wrapper.
 	 *
 	 * @param	string		$content The content to manipulate using stdWrap functions.
