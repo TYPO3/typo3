@@ -20,7 +20,7 @@ prefix = tx_form
 					showAccordions = basic, predefined, content
 					accordions {
 						basic {
-							showButtons = checkbox, fieldset, hidden, password, radio, reset, select, submit, textarea, textline
+							showButtons = checkbox, fieldset, fileupload, hidden, password, radio, reset, select, submit, textarea, textline
 						}
 						predefined {
 							showButtons = email, radiogroup, checkboxgroup, name

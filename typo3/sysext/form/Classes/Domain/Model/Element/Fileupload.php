@@ -63,11 +63,33 @@ class tx_form_Domain_Model_Element_Fileupload extends tx_form_Domain_Model_Eleme
 	);
 
 	/**
+	 * Gets the original filename.
+	 *
 	 * @return string
 	 */
 	public function getData() {
 		$uploadData = $this->requestHandler->get($this->name);
 		return $uploadData['originalFilename'];
+	}
+
+	/**
+	 * Gets the file type.
+	 *
+	 * @return string
+	 */
+	public function getType() {
+		$uploadData = $this->requestHandler->get($this->name);
+		return $uploadData['type'];
+	}
+
+	/**
+	 * Gets the file size.
+	 *
+	 * @return integer
+	 */
+	public function getSize() {
+		$uploadData = $this->requestHandler->get($this->name);
+		return $uploadData['size'];
 	}
 }
 ?>
