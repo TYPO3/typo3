@@ -80,15 +80,15 @@ class t3lib_l10n_parser_Llxml extends t3lib_l10n_parser_AbstractXml {
 	 * @param string $element Target or Source
 	 * @return array
 	 */
-	protected function _doParsingFromRoot(SimpleXMLElement $root, $element) {
+	protected function doParsingFromRootForElement(SimpleXMLElement $root, $element) {
 		$bodyOfFileTag = $root->data->languageKey;
 
-		$parsedData = $this->_getParsedData($bodyOfFileTag, $element);
+		$parsedData = $this->getParsedDataForElement($bodyOfFileTag, $element);
 
 			// Check if the source llxml file contains localized records
 		$localizedBodyOfFileTag = $root->data->xpath("languageKey[@index='" . $this->languageKey . "']");
 		if ($element === 'target' && isset($localizedBodyOfFileTag[0]) && $localizedBodyOfFileTag[0] instanceof SimpleXMLElement) {
-			$parsedData = array_merge($parsedData, $this->_getParsedData($localizedBodyOfFileTag[0], $element));
+			$parsedData = array_merge($parsedData, $this->getParsedDataForElement($localizedBodyOfFileTag[0], $element));
 		}
 
 		return $parsedData;
@@ -101,7 +101,7 @@ class t3lib_l10n_parser_Llxml extends t3lib_l10n_parser_AbstractXml {
 	 * @param string $element
 	 * @return array
 	 */
-	protected function _getParsedData(SimpleXMLElement $bodyOfFileTag, $element) {
+	protected function getParsedDataForElement(SimpleXMLElement $bodyOfFileTag, $element) {
 		$parsedData = array();
 
 		if (count($bodyOfFileTag->children()) == 0) {
@@ -131,7 +131,7 @@ class t3lib_l10n_parser_Llxml extends t3lib_l10n_parser_AbstractXml {
 	 * @return array An array representing parsed XLIFF
 	 */
 	protected function doParsingFromRoot(SimpleXMLElement $root) {
-		return $this->_doParsingFromRoot($root, 'source');
+		return $this->doParsingFromRootForElement($root, 'source');
 	}
 
 	/**
@@ -141,7 +141,7 @@ class t3lib_l10n_parser_Llxml extends t3lib_l10n_parser_AbstractXml {
 	 * @return array An array representing parsed XLIFF
 	 */
 	protected function doParsingTargetFromRoot(SimpleXMLElement $root) {
-		return $this->_doParsingFromRoot($root, 'target');
+		return $this->doParsingFromRootForElement($root, 'target');
 	}
 
 	/**
