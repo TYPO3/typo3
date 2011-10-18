@@ -217,7 +217,7 @@ class tx_linkvalidator_tasks_ValidatorAdditionalFieldProvider implements tx_sche
 			}
 		}
 
-		if ($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid = ' . $submittedData['linkvalidator']['page'])) {
+		if ($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid = ' . intval($submittedData['linkvalidator']['page']))) {
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) == 0 && $submittedData['linkvalidator']['page'] > 0) {
 				$isValid = FALSE;
 				$schedulerModule->addMessage(
