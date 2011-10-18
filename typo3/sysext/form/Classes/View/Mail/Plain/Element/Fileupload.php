@@ -30,6 +30,10 @@
  * @subpackage form
  */
 class tx_form_View_Mail_Plain_Element_Fileupload extends tx_form_View_Mail_Plain_Element_Container {
+	/**
+	 * @var tx_form_Domain_Model_Element_Fileupload
+	 */
+	protected $model;
 
 	/**
 	 * Constructor
@@ -45,7 +49,7 @@ class tx_form_View_Mail_Plain_Element_Fileupload extends tx_form_View_Mail_Plain
 	 * @return string
 	 */
 	public function render() {
-		$content = $this->getLabel() . ': ' . $this->getValue();
+		$content = $this->getLabel() . ': ' . $this->model->getValue();
 
 		return str_repeat(chr(32), $this->spaces) . $content;
 	}
@@ -61,15 +65,6 @@ class tx_form_View_Mail_Plain_Element_Fileupload extends tx_form_View_Mail_Plain
 		}
 
 		return $label;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	protected function getValue() {
-		$value = $this->model->getAttributeValue('value');
-
-		return $value;
 	}
 }
 ?>

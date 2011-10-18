@@ -89,7 +89,7 @@ class tx_form_System_Postprocessor_Mail {
 
 		$this->setHtmlContent();
 		$this->setPlainContent();
-		$this->addAttachments();
+		$this->addAttachmentsFromForm();
 		$this->send();
 
 		return $this->render();
@@ -328,18 +328,34 @@ class tx_form_System_Postprocessor_Mail {
 	 *
 	 * @return void
 	 */
-	protected function addAttachments() {
+	protected function addAttachmentsFromForm() {
 		$formElements = $this->form->getElements();
 		$values = $this->requestHandler->getByMethod();
+		$this->addAttachmentsFromElements($formElements, $values);
+	}
 
+	/**
+	 * Loop through all elements and attach the file when the element
+	 * is a fileupload
+	 *
+	 * @param array $elements
+	 * @param array $submittedValues
+	 * @return void
+	 */
+	protected function addAttachmentsFromElements($elements, $submittedValues) {
 		/** @var $element tx_form_Domain_Model_Element_Abstract */
-		foreach ($formElements as $element) {
+		foreach ($elements as $element) {
+			if (is_a($element, 'tx_form_Domain_Model_Element_Container')) {
+				$this->addAttachmentsFromElements($element->getElements(), $submittedValues);
+				continue;
+			}
 			if (is_a($element, 'tx_form_Domain_Model_Element_Fileupload')) {
 				$elementName = $element->getName();
-				if (is_array($values[$elementName])) {
-					if (file_exists($values[$elementName]['tempFilename'])) {
+				if (is_array($submittedValues[$elementName]) && isset($submittedValues[$elementName]['tempFilename'])) {
+					$filename = $submittedValues[$elementName]['tempFilename'];
+					if (is_file($filename) && t3lib_div::isAllowedAbsPath($filename)) {
 						$this->mailMessage->attach(
-							Swift_Attachment::fromPath($values[$elementName]['tempFilename'])->setFilename($values[$elementName]['originalFilename'])
+							Swift_Attachment::fromPath($filename)->setFilename($submittedValues[$elementName]['originalFilename'])
 						);
 					}
 				}
