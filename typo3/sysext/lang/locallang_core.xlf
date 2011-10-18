@@ -923,6 +923,12 @@ Check also the following points:\n
 			<trans-unit id="csh_tooltip_loading" xml:space="preserve">
 				<source>Loading help...</source>
 			</trans-unit>
+			<trans-unit id="error.database_schema_mismatch" xml:space="preserve">
+				<source>A SQL error occurred. This may indicate a schema mismatch between TCA and the database. Try running database compare in the Install Tool.</source>
+			</trans-unit>
+			<trans-unit id="error.database_schema_mismatch_title" xml:space="preserve">
+				<source>Database Error</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
