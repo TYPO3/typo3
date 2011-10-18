@@ -3848,6 +3848,8 @@ class tslib_cObj {
 				if ((string)$conf['char']!=''){$content=chr(intval($conf['char']));}
 				if ($conf['intval']){$content=intval($content);}
 				if ($conf['date']) {
+						// check for zero length string to mimic default case of date/gmdate.
+					$content = $content == '' ? $GLOBALS['EXEC_TIME'] : intval($content);
 					$content = ($conf['date.']['GMT'] ? gmdate($conf['date'], $content) : date($conf['date'], $content));
 				}
 				if ($conf['strftime']) {
