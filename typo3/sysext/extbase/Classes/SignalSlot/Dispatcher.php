@@ -65,11 +65,11 @@ class Tx_Extbase_SignalSlot_Dispatcher implements t3lib_Singleton {
 	 * @param string $signalName Name of the signal
 	 * @param mixed $slotClassNameOrObject Name of the class containing the slot or the instantiated class or a Closure object
 	 * @param string $slotMethodName Name of the method to be used as a slot. If $slotClassNameOrObject is a Closure object, this parameter is ignored
-	 * @param boolean $omitSignalInformation If set to TRUE, the first argument passed to the slot will be the first argument of the signal instead of some information about the signal.
+	 * @param boolean $passSignalInformation If set to TRUE, the last argument passed to the slot will be information about the signal (EmitterClassName::signalName)
 	 * @return void
 	 * @api
 	 */
-	public function connect($signalClassName, $signalName, $slotClassNameOrObject, $slotMethodName = '', $omitSignalInformation = FALSE) {
+	public function connect($signalClassName, $signalName, $slotClassNameOrObject, $slotMethodName = '', $passSignalInformation = TRUE) {
 		$class = NULL;
 		$object = NULL;
 
@@ -86,7 +86,7 @@ class Tx_Extbase_SignalSlot_Dispatcher implements t3lib_Singleton {
 			'class' => $class,
 			'method' => $method,
 			'object' => $object,
-			'omitSignalInformation' => ($omitSignalInformation === TRUE)
+			'passSignalInformation' => ($passSignalInformation === TRUE)
 		);
 
 		if (!is_array($this->slots[$signalClassName][$signalName]) || !in_array($slot, $this->slots[$signalClassName][$signalName])) {
@@ -105,7 +105,10 @@ class Tx_Extbase_SignalSlot_Dispatcher implements t3lib_Singleton {
 	 * @api
 	 */
 	public function dispatch($signalClassName, $signalName, array $signalArguments = array()) {
-		if (!isset($this->slots[$signalClassName][$signalName])) return;
+		if (!isset($this->slots[$signalClassName][$signalName])) {
+			return;
+		}
+
 		foreach ($this->slots[$signalClassName][$signalName] as $slotInformation) {
 			if (isset($slotInformation['object'])) {
 				$object = $slotInformation['object'];
@@ -118,14 +121,13 @@ class Tx_Extbase_SignalSlot_Dispatcher implements t3lib_Singleton {
 				}
 				$object = $this->objectManager->get($slotInformation['class']);
 			}
-			$slotArguments = $signalArguments;
-			if ($slotInformation['omitSignalInformation'] !== TRUE) {
-				$slotArguments[] = $signalClassName . '::' . $signalName;
+			if ($slotInformation['passSignalInformation'] === TRUE) {
+				$signalArguments[] = $signalClassName . '::' . $signalName;
 			}
 			if (!method_exists($object, $slotInformation['method'])) {
 				throw new Tx_Extbase_SignalSlot_Exception_InvalidSlotException('The slot method ' . get_class($object) . '->' . $slotInformation['method'] . '() does not exist.', 1245673368);
 			}
-			call_user_func_array(array($object, $slotInformation['method']), $slotArguments);
+			call_user_func_array(array($object, $slotInformation['method']), $signalArguments);
 		}
 	}
 
