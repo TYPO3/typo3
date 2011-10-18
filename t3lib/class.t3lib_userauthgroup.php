@@ -114,7 +114,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	function isMemberOfGroup($groupId) {
 		$groupId = intval($groupId);
 		if ($this->groupList && $groupId) {
-			return $this->inList($this->groupList, $groupId);
+			return t3lib_div::inList($this->groupList, $groupId);
 		}
 	}
 
@@ -354,7 +354,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 */
 	function check($type, $value) {
 		if (isset($this->groupData[$type])) {
-			if ($this->isAdmin() || $this->inList($this->groupData[$type], $value)) {
+			if ($this->isAdmin() || t3lib_div::inList($this->groupData[$type], $value)) {
 				return TRUE;
 			}
 		}
@@ -394,12 +394,12 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			// Checking value:
 		switch ((string) $authMode) {
 			case 'explicitAllow':
-				if (!$this->inList($this->groupData['explicit_allowdeny'], $testValue . ':ALLOW')) {
+				if (!t3lib_div::inList($this->groupData['explicit_allowdeny'], $testValue . ':ALLOW')) {
 					$out = FALSE;
 				}
 			break;
 			case 'explicitDeny':
-				if ($this->inList($this->groupData['explicit_allowdeny'], $testValue . ':DENY')) {
+				if (t3lib_div::inList($this->groupData['explicit_allowdeny'], $testValue . ':DENY')) {
 					$out = FALSE;
 				}
 			break;
@@ -412,12 +412,12 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 							if (!strcmp($iCfg[1], $value) && $iCfg[4]) {
 								switch ((string) $iCfg[4]) {
 									case 'EXPL_ALLOW':
-										if (!$this->inList($this->groupData['explicit_allowdeny'], $testValue . ':ALLOW')) {
+										if (!t3lib_div::inList($this->groupData['explicit_allowdeny'], $testValue . ':ALLOW')) {
 											$out = FALSE;
 										}
 									break;
 									case 'EXPL_DENY':
-										if ($this->inList($this->groupData['explicit_allowdeny'], $testValue . ':DENY')) {
+										if (t3lib_div::inList($this->groupData['explicit_allowdeny'], $testValue . ':DENY')) {
 											$out = FALSE;
 										}
 									break;
@@ -1034,9 +1034,11 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param	string		Comma list with items, no spaces between items!
 	 * @param	string		The string to find in the list of items
 	 * @return	string		Boolean
+	 * @deprecated since TYPO3 4.7, should be removed in TYPO3 4.9, use equivalent function t3lib_div::inList()
 	 */
 	function inList($in_list, $item) {
-		return strstr(',' . $in_list . ',', ',' . $item . ',');
+		t3lib_div::logDeprecatedFunction();
+		return t3lib_div::inList($in_list, $item);
 	}
 
 	/**
