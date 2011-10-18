@@ -93,7 +93,7 @@ Ext.override(Ext.ux.state.TreePanel, {
 								fn: this.restoreState
 							}
 						});
-						if (pageNode.expanded === false) {
+						if (pageNode.expanded === false && pageNode.rendered == true) {
 							pageNode.expand();
 						}
 					}
