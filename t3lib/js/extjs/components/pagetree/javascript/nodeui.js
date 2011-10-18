@@ -51,7 +51,14 @@ TYPO3.Components.PageTree.PageTreeNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
         var cb = Ext.isBoolean(a.checked),
             nel,
             href = this.getHref(a.href),
-            buf = ['<li class="x-tree-node"><div ext:tree-node-id="',n.id,'" class="x-tree-node-el x-tree-node-leaf x-unselectable ', a.cls,'" unselectable="on">',
+			rootline = '';
+
+			// TYPO3 modification to show the readable rootline above the user mounts
+		if (a.readableRootline !== '') {
+			var rootline = '<li class="x-tree-node-readableRootline">' + a.readableRootline + '</li>';
+		}
+
+		var buf = [rootline,'<li class="x-tree-node"><div ext:tree-node-id="',n.id,'" class="x-tree-node-el x-tree-node-leaf x-unselectable ', a.cls,'" unselectable="on">',
             '<span class="x-tree-node-indent">',this.indentMarkup,"</span>",
             '<img alt="" src="', this.emptyIcon, '" class="x-tree-ec-icon x-tree-elbow" />',
 //            '<img alt="" src="', a.icon || this.emptyIcon, '" class="x-tree-node-icon',(a.icon ? " x-tree-node-inline-icon" : ""),(a.iconCls ? " "+a.iconCls : ""),'" unselectable="on" />',
@@ -68,11 +75,6 @@ TYPO3.Components.PageTree.PageTreeNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
             this.wrap = Ext.DomHelper.insertHtml("beforeEnd", targetNode, buf);
         }
 
-			// TYPO3 modification to show the readable rootline above the user mounts
-		if (a.readableRootline !== '') {
-			var rootline = '<div class="x-tree-node-readableRootline">' + a.readableRootline + '</div>';
-			Ext.DomHelper.insertHtml("beforeBegin", this.wrap, rootline);
-		}
 
         this.elNode = this.wrap.childNodes[0];
         this.ctNode = this.wrap.childNodes[1];
