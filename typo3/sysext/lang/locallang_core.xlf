@@ -927,6 +927,12 @@
 			<trans-unit id="csh_tooltip_loading">
 				<source>Loading help...</source>
 			</trans-unit>
+			<trans-unit id="error.database_schema_mismatch">
+				<source>A SQL error occured. This may indicate a schema mismatch between TCA and the database. Try running database compare in the install tool.</source>
+			</trans-unit>
+			<trans-unit id="error.database_schema_mismatch_title">
+				<source>Database Error</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
