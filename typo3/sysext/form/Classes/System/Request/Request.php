@@ -308,6 +308,9 @@ class tx_form_System_Request implements t3lib_Singleton {
 			foreach ($_FILES[$this->prefix]['tmp_name'] as $fieldName => $uploadedFile) {
 				if (is_uploaded_file($uploadedFile)) {
 					$tempFilename = t3lib_div::upload_to_tempfile($uploadedFile);
+					if (TYPO3_OS === 'WIN') {
+						$tempFilename = t3lib_div::fixWindowsFilePath($tempFilename);
+					}
 
 					if ($tempFilename !== '') {
 							// Use finfo to get the mime type
