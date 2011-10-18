@@ -703,8 +703,9 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		$pageRenderer->loadExtJS();
 		$pageRenderer->addJsFile(t3lib_extMgm::extRelPath('scheduler') . 'res/tx_scheduler_be.js');
 		$pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/tceforms.js');
+		$pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ux/Ext.ux.DateTimePicker.js');
 
-			// Define settings for Date Picker
+		// Define settings for Date Picker
 		$typo3Settings = array(
 			'datePickerUSmode' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 1 : 0,
 			'dateFormat'       => array('j-n-Y', 'G:i j-n-Y'),
