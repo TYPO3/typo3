@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="scheduler">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="scheduler" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".alttitle">
@@ -11,7 +11,7 @@
 			</trans-unit>
 			<trans-unit id=".syntax">
 				<source>
-					The Scheduler uses a single cron job to handle all registered tasks. It is thus very convenient as only one cron job needs to be set up and all task frequencies can be managed from the BE module.
+The Scheduler uses a single cron job to handle all registered tasks. It is thus very convenient as only one cron job needs to be set up and all task frequencies can be managed from the BE module.
 				</source>
 			</trans-unit>
 			<trans-unit id="task_class.alttitle">
@@ -22,7 +22,7 @@
 			</trans-unit>
 			<trans-unit id="task_class.details">
 				<source>
-					Some tasks are provided by the TYPO3 Core itself. Others come from extensions. See the manual to learn how to create your own tasks and register them with the Scheduler.
+Some tasks are provided by the TYPO3 Core itself. Others come from extensions. See the manual to learn how to create your own tasks and register them with the Scheduler.
 				</source>
 			</trans-unit>
 			<trans-unit id="task_disable.alttitle">
@@ -45,8 +45,8 @@
 			</trans-unit>
 			<trans-unit id="task_start.details">
 				<source>
-					Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
-					Date and time must correspond to the server's time zone.
+Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
+Date and time must correspond to the server's time zone.
 				</source>
 			</trans-unit>
 			<trans-unit id="task_end.alttitle">
@@ -57,10 +57,10 @@
 			</trans-unit>
 			<trans-unit id="task_end.details">
 				<source>
-					Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
-					Date and time must correspond to the server's time zone.
+Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
+Date and time must correspond to the server's time zone.
 
-					Can be left blank, if task is not supposed to end at any point.
+Can be left blank, if task is not supposed to end at any point.
 				</source>
 			</trans-unit>
 			<trans-unit id="task_frequency.alttitle">
@@ -71,19 +71,19 @@
 			</trans-unit>
 			<trans-unit id="task_frequency.details">
 				<source>
-					The frequency of the task can be simply entered as a number of seconds.
+The frequency of the task can be simply entered as a number of seconds.
 
-					Alternatively it is possible to use the same syntax as for cron jobs. This is simply a list of five numbers or the wildcard "*", separated by blanks. The five numbers are (in order) minutes, hours, day of month, months and day of week. Examples:
+Alternatively it is possible to use the same syntax as for cron jobs. This is simply a list of five numbers or the wildcard "*", separated by blanks. The five numbers are (in order) minutes, hours, day of month, months and day of week. Examples:
 
-					*/5 * * * * means every 5 minutes
-					30 22 * * * means every day at 22:30
+*/5 * * * * means every 5 minutes
+30 22 * * * means every day at 22:30
 
-					The Scheduler supports the full cron syntax.
+The Scheduler supports the full cron syntax.
 				</source>
 			</trans-unit>
 			<trans-unit id="task_frequency.seeAlso">
 				<source>
-					Wikipedia reference|http://en.wikipedia.org/wiki/Cron
+Wikipedia reference|http://en.wikipedia.org/wiki/Cron
 				</source>
 			</trans-unit>
 			<trans-unit id="task_multiple.alttitle">

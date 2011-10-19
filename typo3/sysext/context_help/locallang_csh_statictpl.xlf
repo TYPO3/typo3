@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".description">
@@ -8,15 +8,15 @@
 			</trans-unit>
 			<trans-unit id=".details">
 				<source>The Static templates are meant to be included by your TypoScript Template records depending on your needs. Refer to the 'TSref' document (see below) for details on this process.
-					Notice that by each release of TYPO3 you should reinstall the Static Templates table by the install tool. See the 'Install/Upgrade' document for details (see below).
+Notice that by each release of TYPO3 you should reinstall the Static Templates table by the install tool. See the 'Install/Upgrade' document for details (see below).
 				</source>
 			</trans-unit>
 			<trans-unit id="_.seeAlso">
 				<source>sys_template
-					TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
-					TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/
-					Install/Upgrade | http://typo3.org/documentation/document-library/doc_inst_upgr/,
-					sys_template:include_static
+TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
+TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/
+Install/Upgrade | http://typo3.org/documentation/document-library/doc_inst_upgr/,
+sys_template:include_static
 				</source>
 			</trans-unit>
 			<trans-unit id="_.image">

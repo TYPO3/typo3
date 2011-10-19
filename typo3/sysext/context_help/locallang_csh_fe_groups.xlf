@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id="hidden.description">
@@ -8,7 +8,7 @@
 			</trans-unit>
 			<trans-unit id="hidden.details">
 				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
-					For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.
+For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.
 				</source>
 			</trans-unit>
 			<trans-unit id="_hidden.seeAlso">
@@ -27,7 +27,7 @@
 			<trans-unit id="lockToDomain.details">
 				<source>This options may be important if you have multiple websites in the same TYPO3 database but still only one main storage page for all Website users. Thus the users may log in on any of the website URLs. This may be considered a feature (having a global login as a user) or a problem (in which case you should have multiple user storages anyway). However you may wish to limit the use of a Website usergroup to a specific website and thus you don't want the group to be enabled for the user when he logs in at another URL (still from the same database of course). By entering the host name of the website here, you restrict the group to be used only from within this domain.
 
-					&lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.
+&lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.
 				</source>
 			</trans-unit>
 			<trans-unit id="_lockToDomain.seeAlso">
@@ -45,7 +45,7 @@
 			</trans-unit>
 			<trans-unit id="description.details">
 				<source>This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
-					Use it as you like.
+Use it as you like.
 				</source>
 			</trans-unit>
 			<trans-unit id="TSconfig.description">
@@ -53,7 +53,7 @@
 			</trans-unit>
 			<trans-unit id="TSconfig.details">
 				<source>This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
-					The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.
+The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.
 				</source>
 			</trans-unit>
 			<trans-unit id="TSconfig.syntax">
@@ -71,18 +71,18 @@
 			</trans-unit>
 			<trans-unit id="_.seeAlso">
 				<source>fe_users,
-					About access restricting pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Create_restricted_pa/
+About access restricting pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Create_restricted_pa/
 				</source>
 			</trans-unit>
 			<trans-unit id="_.image">
 				<source>EXT:context_help/cshimages/fegroups_3.png,
-					EXT:context_help/cshimages/fegroups_4.png
+EXT:context_help/cshimages/fegroups_4.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr">
 				<source>The form for editing frontend users groups.
-					Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.
+Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.
 				</source>
 			</trans-unit>
 		</body>

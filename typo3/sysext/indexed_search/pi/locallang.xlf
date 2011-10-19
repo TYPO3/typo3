@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="indexed_search">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="indexed_search" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id="default_search_word_entry">
@@ -155,12 +155,12 @@
 			</trans-unit>
 			<trans-unit id="rules_text">
 				<source>
-					Only words with 2 or more characters are accepted
-					Max 200 chars total
-					Space is used to split words, "" can be used to search for a whole string (not indexed search then)
-					AND, OR and NOT are prefix words, overruling the default operator
-					+/|/- equals AND, OR and NOT as operators.
-					All search words are converted to lowercase.
+Only words with 2 or more characters are accepted
+Max 200 chars total
+Space is used to split words, "" can be used to search for a whole string (not indexed search then)
+AND, OR and NOT are prefix words, overruling the default operator
++/|/- equals AND, OR and NOT as operators.
+All search words are converted to lowercase.
 				</source>
 			</trans-unit>
 			<trans-unit id="searchFor">

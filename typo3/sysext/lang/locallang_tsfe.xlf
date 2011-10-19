@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id="adminOptions">
@@ -158,7 +158,7 @@
 			</trans-unit>
 			<trans-unit id="p_hideConfirm">
 				<source>Hiding a record will make it invisible on the webpage.  To edit the hidden record enter the backend or enable the frontend preview.
-					Continue?
+Continue?
 				</source>
 			</trans-unit>
 		</body>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="felogin">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="felogin" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id="ll_welcome_header">
@@ -20,8 +20,8 @@
 			</trans-unit>
 			<trans-unit id="ll_error_message">
 				<source>An error occurred during login. Most likely you didn't enter the username or password correctly.
-					Be certain that you enter them precisely as they are, including upper/lower case.
-					Another possibility is that cookies might be disabled in your web browser.
+Be certain that you enter them precisely as they are, including upper/lower case.
+Another possibility is that cookies might be disabled in your web browser.
 				</source>
 			</trans-unit>
 			<trans-unit id="ll_success_header">
@@ -98,27 +98,27 @@
 			</trans-unit>
 			<trans-unit id="ll_forgot_email_password">
 				<source>Your password
-					Hi %s
+Hi %s
 
-					Your username is "%s"
-					Your password is "%s"
+Your username is "%s"
+Your password is "%s"
 				</source>
 			</trans-unit>
 			<trans-unit id="ll_forgot_email_nopassword">
 				<source>Your password
-					Hi %s
+Hi %s
 
-					We couldn't find a username for this email address and so cannot send the password to you. Probably you misspelled the email address (upper/lower case makes a difference) or maybe you even didn't register yet?
+We couldn't find a username for this email address and so cannot send the password to you. Probably you misspelled the email address (upper/lower case makes a difference) or maybe you even didn't register yet?
 				</source>
 			</trans-unit>
 			<trans-unit id="ll_forgot_validate_reset_password">
 				<source>Your new password
-					Dear %s,
+Dear %s,
 
-					This email was sent in response to your request to reset your password. Please click on the link below.
-					%s
+This email was sent in response to your request to reset your password. Please click on the link below.
+%s
 
-					For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.
 				</source>
 			</trans-unit>
 			<trans-unit id="ll_forgot_message">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".alttitle">
@@ -12,12 +12,12 @@
 			<trans-unit id=".details">
 				<source>This feature may be useful in order to clean up text that was copied from some external source and pasted into the editing area.
 
-					The feature is accessed by clicking on the "Remove format" button in the editor tool bar.
+The feature is accessed by clicking on the "Remove format" button in the editor tool bar.
 
-					In the dialogue window that opens when the button is clicked:
-					- First, select the area to be cleaned;
-					- Second, choose the format removal options that you wish to be applied to the selected area;
-					- Press the OK button for the format removal operation to be performed. The dialogue window will be automatically closed.
+In the dialogue window that opens when the button is clicked:
+- First, select the area to be cleaned;
+- Second, choose the format removal options that you wish to be applied to the selected area;
+- Press the OK button for the format removal operation to be performed. The dialogue window will be automatically closed.
 				</source>
 			</trans-unit>
 			<trans-unit id=".image">
@@ -81,8 +81,8 @@
 			</trans-unit>
 			<trans-unit id="htmlFormat.details">
 				<source>This option removes:
-					- the following HTML elements, but keeps their textual contents: abbr, acronym, b, big, cite, code, em, font, i, q, s, samp, small, span, strike, strong, sub, sup, tt, u, var;
-					- the following attributes on all HTML elements: align, bgcolor, cellpadding, cellspacing, class, frame, style.
+- the following HTML elements, but keeps their textual contents: abbr, acronym, b, big, cite, code, em, font, i, q, s, samp, small, span, strike, strong, sub, sup, tt, u, var;
+- the following attributes on all HTML elements: align, bgcolor, cellpadding, cellspacing, class, frame, style.
 				</source>
 			</trans-unit>
 			<trans-unit id="msWordFormat.alttitle">
@@ -93,16 +93,16 @@
 			</trans-unit>
 			<trans-unit id="msWordFormat.details">
 				<source>This option removes:
-					- all attributes on the following elements: b, em, i, li, p, strong, ul;
-					- the following attributes on all HTML elements: align, class, style;
-					- the following elements, but keeps their textual contents: div, f, formulas, link, lock, meta, path, shape, shapetype, span, stroke, ?xml, any element containing ":" in its name;
-					- the following elements and their contents: style, title;
-					- HTML comments;
-					- img, imagedata tags;
-					- xml tags;
-					- the following elements whenever they have no textual contents: b, big, i, s, small, strike, tt, u;
-					- double opening and double closing tags;
-					- multiples spaces, replacing them by single spaces.
+- all attributes on the following elements: b, em, i, li, p, strong, ul;
+- the following attributes on all HTML elements: align, class, style;
+- the following elements, but keeps their textual contents: div, f, formulas, link, lock, meta, path, shape, shapetype, span, stroke, ?xml, any element containing ":" in its name;
+- the following elements and their contents: style, title;
+- HTML comments;
+- img, imagedata tags;
+- xml tags;
+- the following elements whenever they have no textual contents: b, big, i, s, small, strike, tt, u;
+- double opening and double closing tags;
+- multiples spaces, replacing them by single spaces.
 				</source>
 			</trans-unit>
 			<trans-unit id="typographicalPunctuation.alttitle">
@@ -113,13 +113,13 @@
 			</trans-unit>
 			<trans-unit id="typographicalPunctuation.details">
 				<source>This option replaces typographical punctuation entities with ASCII character codes. The following substitutions are performed:
-					- replace horizontal ellipsis with three periods;
-					- replace en-dash and em-dash with hyphen;
-					- replace double low-9, left double and right double quotation mark with double quote;
-					- replace left single, right single and single low-9 quotation mark with single quote;
-					- replace single left/right-pointing angle quotation mark with single quote;
-					- replace left/right-pointing double angle quotation mark (also known as left/right pointing guillemet) with double quote;
-					- replace grave accent (spacing grave) and acute accent (spacing acute) with single quote.
+- replace horizontal ellipsis with three periods;
+- replace en-dash and em-dash with hyphen;
+- replace double low-9, left double and right double quotation mark with double quote;
+- replace left single, right single and single low-9 quotation mark with single quote;
+- replace single left/right-pointing angle quotation mark with single quote;
+- replace left/right-pointing double angle quotation mark (also known as left/right pointing guillemet) with double quote;
+- replace grave accent (spacing grave) and acute accent (spacing acute) with single quote.
 				</source>
 			</trans-unit>
 			<trans-unit id="nonBreakingSpace.alttitle">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="impexp">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="impexp" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".alttitle">
@@ -24,16 +24,16 @@
 			</trans-unit>
 			<trans-unit id="export.details">
 				<source>There are a number of methods by which you can export data from TYPO3:
-					- Export a single page or branch of the page tree (use page icon context menu)
-					- Export a single record from any page (use record icon context menu)
-					- Export all records from a specific table on a specific page (using the Web&gt;List module)
-					- Export an arbitrary selection of records from the clipboard (using the Web&gt;List module)
+- Export a single page or branch of the page tree (use page icon context menu)
+- Export a single record from any page (use record icon context menu)
+- Export all records from a specific table on a specific page (using the Web&gt;List module)
+- Export an arbitrary selection of records from the clipboard (using the Web&gt;List module)
 
-					The export format observes all TYPO3s methods for relations between the records in the export file. But you will have to configure how these relations are maintained, at least to some degree. Sometimes you would want to include records referred to, at other times you surely want to keep the original mapping. That depends on your objectives with the export.
+The export format observes all TYPO3s methods for relations between the records in the export file. But you will have to configure how these relations are maintained, at least to some degree. Sometimes you would want to include records referred to, at other times you surely want to keep the original mapping. That depends on your objectives with the export.
 
-					Regardless of your configuration for export you will always see a complete reflection of all chosen records and their internal relations in the preview display found in the bottom of the export module page.
+Regardless of your configuration for export you will always see a complete reflection of all chosen records and their internal relations in the preview display found in the bottom of the export module page.
 
-					&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before exporting if there are any error messages there!
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before exporting if there are any error messages there!
 				</source>
 			</trans-unit>
 			<trans-unit id="_export.seeAlso">
@@ -42,15 +42,15 @@
 			</trans-unit>
 			<trans-unit id="_export.image">
 				<source>EXT:impexp/cshimages/export.png,
-					EXT:impexp/cshimages/export1.png,
-					EXT:impexp/cshimages/export2.png
+EXT:impexp/cshimages/export1.png,
+EXT:impexp/cshimages/export2.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="export.image_descr">
 				<source>To export a page or record, simply click the icon and select "Export" from the context menu.
-					With the Web&gt;List module you can also export all records from a table by first clicking the table title to see only this table, then next to the CSV export you will find the export button for a T3D export of the table.
-					You can export the contents of the clipboard as well by simply selecting "Export" in the menu.
+With the Web&gt;List module you can also export all records from a table by first clicking the table title to see only this table, then next to the CSV export you will find the export button for a T3D export of the table.
+You can export the contents of the clipboard as well by simply selecting "Export" in the menu.
 				</source>
 			</trans-unit>
 			<trans-unit id="pageTreeCfg.alttitle">
@@ -58,7 +58,7 @@
 			</trans-unit>
 			<trans-unit id="pageTreeCfg.description">
 				<source>Here you configure how a page or a branch of the page tree should be exported. Using the selector box you can set the number of levels of subpages to include in the export.
-					By default all records belonging to a page is included when a page is exported.
+By default all records belonging to a page is included when a page is exported.
 				</source>
 			</trans-unit>
 			<trans-unit id="_pageTreeCfg.image">
@@ -101,7 +101,7 @@
 			</trans-unit>
 			<trans-unit id="_singleRecord.image">
 				<source>EXT:impexp/cshimages/singlerecord.png,
-					EXT:impexp/cshimages/export2.png
+EXT:impexp/cshimages/export2.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -119,13 +119,13 @@
 			</trans-unit>
 			<trans-unit id="_tableList.image">
 				<source>EXT:impexp/cshimages/tablelist.png,
-					EXT:impexp/cshimages/export1.png
+EXT:impexp/cshimages/export1.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="tableList.image_descr">
 				<source>Here two tables from different pages are selected. This is done by first selecting the one, saving it as a preset, then select the other and merge with the saved preset.
-					Here you see how to use the Web&gt;List module to export all records from a table on a page.
+Here you see how to use the Web&gt;List module to export all records from a table on a page.
 				</source>
 			</trans-unit>
 			<trans-unit id="tableListMaxNumber.alttitle">
@@ -142,24 +142,24 @@
 			</trans-unit>
 			<trans-unit id="inclRelations.details">
 				<source>Background: When you export a record in TYPO3 it might contain relations to other records in the system. You have to tell the export interface what to do with these relations. Basically there are three scenarios:
-					- If relations are found between records that are all in the export configuration, there is no problem: The relations are automatically mapped to the new id's of those records when imported.
-					- If the records related to are not included the relation will be lost (indicated with an error message in the preview) unless you a) either select that table in this selector box in which case all relations to that table will be included or b) if you set the table as a static table (in which case the relation is untouched and imported as-is - but which will of course break if no record with that UID is found in the import system).
+- If relations are found between records that are all in the export configuration, there is no problem: The relations are automatically mapped to the new id's of those records when imported.
+- If the records related to are not included the relation will be lost (indicated with an error message in the preview) unless you a) either select that table in this selector box in which case all relations to that table will be included or b) if you set the table as a static table (in which case the relation is untouched and imported as-is - but which will of course break if no record with that UID is found in the import system).
 
-					&lt;b&gt;Soft References:&lt;/b&gt; Soft references are when a record contains pointers to external files or records but in fields where there are no formal relation configured. Examples of this is when a content element contains a "&amp;lt;link 123&amp;gt;" tag that represents a link to the page 123. This is not picked up formally as a reference, but is found anyhow as a "soft reference". The same goes for &amp;lt;img&amp;gt; tags with images from eg. "fileadmin/".
-					By default soft references pointing to records or files will act as normal references; either including the referenced item or showing an error. However you can also choose to exclude the handling of individual soft references or maybe set the value as "editable" upon import. This is done with a selector box in the export preview.
+&lt;b&gt;Soft References:&lt;/b&gt; Soft references are when a record contains pointers to external files or records but in fields where there are no formal relation configured. Examples of this is when a content element contains a "&amp;lt;link 123&amp;gt;" tag that represents a link to the page 123. This is not picked up formally as a reference, but is found anyhow as a "soft reference". The same goes for &amp;lt;img&amp;gt; tags with images from eg. "fileadmin/".
+By default soft references pointing to records or files will act as normal references; either including the referenced item or showing an error. However you can also choose to exclude the handling of individual soft references or maybe set the value as "editable" upon import. This is done with a selector box in the export preview.
 				</source>
 			</trans-unit>
 			<trans-unit id="_inclRelations.image">
 				<source>EXT:impexp/cshimages/references.png,
-					EXT:impexp/cshimages/references1.png,
-					EXT:impexp/cshimages/references2.png
+EXT:impexp/cshimages/references1.png,
+EXT:impexp/cshimages/references2.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="inclRelations.image_descr">
 				<source>This example shows tree examples of references; a) an image attached to a content element, b) a relation to a frontend usergroup UID, and c) a soft reference found in the bodytext field of a record, here it is the link-tag pointing to the page with UID 1.
-					Notice in the previous image how the relation to the frontend user group was lost. This has been corrected in this screenshot where the fe_group table has been selected in the list of table for which to include relations. The result is that the frontend usergroup is included as a record outside the exported pagetree. If you wanted to keep the relation but not include the usergroup you have to set "fe_groups" as a static table instead. See below.
-					This example shows a TypoScript Template Record where multiple soft references has been found. The first one is an email address. Here it is configured to be editable. This means that upon import the user will have a chance to edit the value before the import is actually done. This is very useful when exported files are used as templates. Another example includes a PHP script which we don't want to include in the export and therefore we have selected the exclude option for the soft reference.
+Notice in the previous image how the relation to the frontend user group was lost. This has been corrected in this screenshot where the fe_group table has been selected in the list of table for which to include relations. The result is that the frontend usergroup is included as a record outside the exported pagetree. If you wanted to keep the relation but not include the usergroup you have to set "fe_groups" as a static table instead. See below.
+This example shows a TypoScript Template Record where multiple soft references has been found. The first one is an email address. Here it is configured to be editable. This means that upon import the user will have a chance to edit the value before the import is actually done. This is very useful when exported files are used as templates. Another example includes a PHP script which we don't want to include in the export and therefore we have selected the exclude option for the soft reference.
 				</source>
 			</trans-unit>
 			<trans-unit id="staticRelations.alttitle">
@@ -173,13 +173,13 @@
 			</trans-unit>
 			<trans-unit id="_staticRelations.image">
 				<source>EXT:impexp/cshimages/static.png,
-					EXT:impexp/cshimages/static1.png
+EXT:impexp/cshimages/static1.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="staticRelations.image_descr">
 				<source>In this example you see how a number of records are pointing to a System Language record which will become lost relations when imported because the record is not included in the export. However; in the target system the System Languages are exactly the same and therefore you just want a static mapping of the relations.
-					The static mapping is obtained by selecting the "sys_language" table as a static template meaning that the relations are kept at their current values assuming that they will be exactly the same in the target system when imported.
+The static mapping is obtained by selecting the "sys_language" table as a static template meaning that the relations are kept at their current values assuming that they will be exactly the same in the target system when imported.
 				</source>
 			</trans-unit>
 			<trans-unit id="excludedElements.alttitle">
@@ -229,24 +229,24 @@
 			</trans-unit>
 			<trans-unit id="presets.details">
 				<source>In the "Select preset" box you can select any previously saved preset to load. If you are exporting a page the presets listed will be those found for the start page ID. For records, any preset can be loaded.
-					To load a preset, select it in the selector and press "Load". If you press "Merge" instead the settings from the preset will be merged with the current configuration. This is meaningful in cases where you select multiple individual tables or records.
-					To save a preset, simply enter a title in the title box and press "Save". This will create a new preset. If you press save while having selected an existing preset you will overwrite it.
-					To delete old presets, simply select it and press "Delete".
+To load a preset, select it in the selector and press "Load". If you press "Merge" instead the settings from the preset will be merged with the current configuration. This is meaningful in cases where you select multiple individual tables or records.
+To save a preset, simply enter a title in the title box and press "Save". This will create a new preset. If you press save while having selected an existing preset you will overwrite it.
+To delete old presets, simply select it and press "Delete".
 
-					The checkbox "Public" can be set if you want to share your preset with other users of the system. Otherwise they are personal to you.
+The checkbox "Public" can be set if you want to share your preset with other users of the system. Otherwise they are personal to you.
 
-					In the Taskcenter you can see a list of your presets and jump directly to them.
+In the Taskcenter you can see a list of your presets and jump directly to them.
 				</source>
 			</trans-unit>
 			<trans-unit id="_presets.image">
 				<source>EXT:impexp/cshimages/impexp_misc1.png,
-					EXT:impexp/cshimages/impexp_misc2.png
+EXT:impexp/cshimages/impexp_misc2.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="presets.image_descr">
 				<source>The preset selector in the export interface.
-					Presets from the task center.
+Presets from the task center.
 				</source>
 			</trans-unit>
 			<trans-unit id="metadata.alttitle">
@@ -257,9 +257,9 @@
 			</trans-unit>
 			<trans-unit id="metadata.details">
 				<source>The meta data will help users of your exported files to know what they can expect to be inside and what things they should be aware of and take into account during import.
-					The "Title" and "Description" should contain the basic information about the export.
-					The "Notes" field can be used for additional details, especially remarks about intensions or requirements that apply.
-					The thumbnail field is used for thumbnails if you need that for your export. This is very useful when export files are used as page templates where the template selector can take advantage of the thumbnail. The format should be a web-format like jpg, gif or png and the dimensions should fit exactly the final display dimensions intended; so don't upload very large images!
+The "Title" and "Description" should contain the basic information about the export.
+The "Notes" field can be used for additional details, especially remarks about intensions or requirements that apply.
+The thumbnail field is used for thumbnails if you need that for your export. This is very useful when export files are used as page templates where the template selector can take advantage of the thumbnail. The format should be a web-format like jpg, gif or png and the dimensions should fit exactly the final display dimensions intended; so don't upload very large images!
 				</source>
 			</trans-unit>
 			<trans-unit id="_metadata.image">
@@ -275,9 +275,9 @@
 			<trans-unit id="fileFormat.details">
 				<source>Generally you should use the T3D format, preferably compressed. The T3D compressed format normally yields a size about 10 times less than the XML format which is bloaded due to the plain-text nature of the format.
 
-					With "Max size of files to include" you can set a limit to the size of attached files to records. This is useful if you have large PDF files or videoclips attached to records which you do not desire (or do desire!) to include; then with this limit you can adjust whether they are allowed in or not.
+With "Max size of files to include" you can set a limit to the size of attached files to records. This is useful if you have large PDF files or videoclips attached to records which you do not desire (or do desire!) to include; then with this limit you can adjust whether they are allowed in or not.
 
-					Entering a file name to save to makes it possible to write your export directly to a file (pressing "Save to filename") instead of downloading it (pressing "Download export"). The correct file extensions depending on file format is automatically applied. Files are saved in a proper filemount in "fileadmin/". This is shown to you upon saving. Existing files are overwritten.
+Entering a file name to save to makes it possible to write your export directly to a file (pressing "Save to filename") instead of downloading it (pressing "Download export"). The correct file extensions depending on file format is automatically applied. Files are saved in a proper filemount in "fileadmin/". This is shown to you upon saving. Existing files are overwritten.
 				</source>
 			</trans-unit>
 			<trans-unit id="_fileFormat.image">
@@ -292,9 +292,9 @@
 			</trans-unit>
 			<trans-unit id="import.details">
 				<source>&lt;b&gt;Tip: Import into a Sys Folder&lt;/b&gt;
-					To make sure that no records are lost during the import, you can make yourself safe by importing into a SysFolder you create first. After the import you can move all records to the final destinations. An example of such a scenario is if you configured the export to include relations; In that case a number of records may follow the export outside the page tree structure you are exporting. To make sure that all of these external records are written to the database, importing into a SysFolder is a good idea.
+To make sure that no records are lost during the import, you can make yourself safe by importing into a SysFolder you create first. After the import you can move all records to the final destinations. An example of such a scenario is if you configured the export to include relations; In that case a number of records may follow the export outside the page tree structure you are exporting. To make sure that all of these external records are written to the database, importing into a SysFolder is a good idea.
 
-					&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before/after importing to see if there are any error messages there!
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before/after importing to see if there are any error messages there!
 				</source>
 			</trans-unit>
 			<trans-unit id="_import.seeAlso">
@@ -328,18 +328,18 @@
 			<trans-unit id="update.details">
 				<source>There are certain requirements you have to meet if you want the "Update" process to work. The main thing is that the records updated are those with the SAME uid as the uid in the export file. Thus an update operation only makes real sense if the export and import systems are somehow related and the same UIDs can be expected in both ends. Otherwise it will be a mess!
 
-					When you update page structures the import operation will automatically try to rearrange records so they also appear in the same hierarchy and order as in the export file. This can be disabled by checking the option "Ignore PID differences globally". In any case you can set individual records to Ignore/Respect the PID with a selectorbox in the preview.
+When you update page structures the import operation will automatically try to rearrange records so they also appear in the same hierarchy and order as in the export file. This can be disabled by checking the option "Ignore PID differences globally". In any case you can set individual records to Ignore/Respect the PID with a selectorbox in the preview.
 
-					In the preview display you can also select if individual records should be flatly ignored during import or if you want them created as new records instead of being updates.
-					As a help for managing updates the preview display will inform you about the path where the existing element with that UID is found. Use this to verify that you get what you expect!
+In the preview display you can also select if individual records should be flatly ignored during import or if you want them created as new records instead of being updates.
+As a help for managing updates the preview display will inform you about the path where the existing element with that UID is found. Use this to verify that you get what you expect!
 
-					&lt;b&gt;Forcing the UID:&lt;/b&gt;
-					If you intend to update a system and some elements from the import are not mappable to a UID already (ei. does not exist) you can choose in the preview display to force the UID during creation. This is an unorthodox thing to do since UIDs are normally created automatically by the database. The option makes most sense if you are trying to "synchronize" a copy of another system. The option may mess up certain database internals and the feature is therefore only available for admins.
+&lt;b&gt;Forcing the UID:&lt;/b&gt;
+If you intend to update a system and some elements from the import are not mappable to a UID already (ei. does not exist) you can choose in the preview display to force the UID during creation. This is an unorthodox thing to do since UIDs are normally created automatically by the database. The option makes most sense if you are trying to "synchronize" a copy of another system. The option may mess up certain database internals and the feature is therefore only available for admins.
 				</source>
 			</trans-unit>
 			<trans-unit id="_update.image">
 				<source>EXT:impexp/cshimages/impexp_misc4.png,
-					EXT:impexp/cshimages/update.png
+EXT:impexp/cshimages/update.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -354,22 +354,22 @@
 			</trans-unit>
 			<trans-unit id="options.details">
 				<source>&lt;b&gt;Do not show differences in records&lt;/b&gt;
-					When a structure has been imported you will see a difference view of all records which tells you whether the written content matched the import data or if not, what changed. In many cases content &lt;i&gt;should&lt;/i&gt; change (eg. relations and file references) so it is not an error if you see red and green values. Basically the difference view is a feature you can use for visual validation of the import success. It brings piece-of-mind to those who is enlightened to understand what it tells... :-)
-					Green strings represent the actual written data while red represents the original value from the import file and black represents data that is the same.
+When a structure has been imported you will see a difference view of all records which tells you whether the written content matched the import data or if not, what changed. In many cases content &lt;i&gt;should&lt;/i&gt; change (eg. relations and file references) so it is not an error if you see red and green values. Basically the difference view is a feature you can use for visual validation of the import success. It brings piece-of-mind to those who is enlightened to understand what it tells... :-)
+Green strings represent the actual written data while red represents the original value from the import file and black represents data that is the same.
 
-					&lt;b&gt;Allow to write banned file extensions (eg. PHP scripts), if any&lt;/b&gt;
-					Also an option for admins-only; Allows PHP-files (for example from soft references in TypoScript templates) to be written to the system. This is normally not allowed behavior for security reasons.
+&lt;b&gt;Allow to write banned file extensions (eg. PHP scripts), if any&lt;/b&gt;
+Also an option for admins-only; Allows PHP-files (for example from soft references in TypoScript templates) to be written to the system. This is normally not allowed behavior for security reasons.
 				</source>
 			</trans-unit>
 			<trans-unit id="_options.image">
 				<source>EXT:impexp/cshimages/impexp_misc3.png,
-					EXT:impexp/cshimages/phpext.png
+EXT:impexp/cshimages/phpext.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="options.image_descr">
 				<source>Options for import.
-					Here you are told that this PHP file cannot be allowed - because you didn't select the option "Allow to write banned file extensions (eg. PHP scripts), if any"
+Here you are told that this PHP file cannot be allowed - because you didn't select the option "Allow to write banned file extensions (eg. PHP scripts), if any"
 				</source>
 			</trans-unit>
 			<trans-unit id="action.alttitle">
@@ -377,9 +377,9 @@
 			</trans-unit>
 			<trans-unit id="action.description">
 				<source>Press "Preview" to see the content of the import file or update the preview display according to changed configurations.
-					Press "Import"/"Update" if you want to perform the actual import.
+Press "Import"/"Update" if you want to perform the actual import.
 
-					Before importing make sure you change any editable soft references that are shown in the preview data.
+Before importing make sure you change any editable soft references that are shown in the preview data.
 				</source>
 			</trans-unit>
 			<trans-unit id="_action.image">

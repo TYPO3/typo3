@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="setup">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="setup" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".alttitle">
@@ -17,13 +17,13 @@
 			</trans-unit>
 			<trans-unit id="_.image">
 				<source>EXT:setup/cshimages/setup8.png,
-					EXT:setup/cshimages/setup7.png
+EXT:setup/cshimages/setup7.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr">
 				<source>The Setup module is selected in the left menu.
-					This is how the Setup module interface looks like - a list of options to configure.
+This is how the Setup module interface looks like - a list of options to configure.
 				</source>
 			</trans-unit>
 			<trans-unit id="language.alttitle">
@@ -34,7 +34,7 @@
 			</trans-unit>
 			<trans-unit id="language.details">
 				<source>&lt;b&gt;Warning [technical]:&lt;/b&gt; If TYPO3 is not configured to use a single character set (through $TYPO3_CONF_VARS[BE][forceCharset]) then all data entered in the backend is submitted in the character set of the selected backend language. This leads to inconsistent data storage if some users are using the backend in Russian and others in English which uses different character sets.
-					The solution clearly is to set the configuration option mentioned above to a value like "utf-8". This must be done by the developers responsible for the whole system configuration.
+The solution clearly is to set the configuration option mentioned above to a value like "utf-8". This must be done by the developers responsible for the whole system configuration.
 				</source>
 			</trans-unit>
 			<trans-unit id="_language.image">
@@ -56,13 +56,13 @@
 			</trans-unit>
 			<trans-unit id="_option_condensedMode.image">
 				<source>EXT:setup/cshimages/setup3.png,
-					EXT:setup/cshimages/setup4.png
+EXT:setup/cshimages/setup4.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_condensedMode.image_descr">
 				<source>In this example Condensed Mode is enabled. The page tree is &lt;em&gt;not&lt;/em&gt; shown in the normal navigation frame but rather in the full content frame to the right of the menu.
-					When a page title is clicked in the page tree the module page (here the Web &gt; List module) will be loaded in the &lt;u&gt;same&lt;/u&gt; frame of the backend. In this way Condensed Mode saves horizontal screen space since the navigation frame is removed - but it takes an extra click if you need to go to another page.
+When a page title is clicked in the page tree the module page (here the Web &gt; List module) will be loaded in the &lt;u&gt;same&lt;/u&gt; frame of the backend. In this way Condensed Mode saves horizontal screen space since the navigation frame is removed - but it takes an extra click if you need to go to another page.
 				</source>
 			</trans-unit>
 			<trans-unit id="option_noMenuMode.alttitle">
@@ -74,11 +74,11 @@
 			<trans-unit id="option_noMenuMode.details">
 				<source>By default you navigate between backend modules with the menu in the left frame. By this option you can select alternative navigation modes:
 
-					&lt;b&gt;Selectorbox in top frame:&lt;/b&gt;
-					If set, the backend will not load the left menu frame but rather put a selector-box menu in the topframe. This saves a lot of space on small screens.
+&lt;b&gt;Selectorbox in top frame:&lt;/b&gt;
+If set, the backend will not load the left menu frame but rather put a selector-box menu in the topframe. This saves a lot of space on small screens.
 
-					&lt;b&gt;Icons in top frame&lt;/b&gt;
-					This option shows all menu items in the top frame as a horizontal list of icons. This is for experienced users only who knows the order of modules and can recognize them based on their icon.
+&lt;b&gt;Icons in top frame&lt;/b&gt;
+This option shows all menu items in the top frame as a horizontal list of icons. This is for experienced users only who knows the order of modules and can recognize them based on their icon.
 				</source>
 			</trans-unit>
 			<trans-unit id="_option_noMenuMode.seeAlso">
@@ -87,13 +87,13 @@
 			</trans-unit>
 			<trans-unit id="_option_noMenuMode.image">
 				<source>EXT:setup/cshimages/setup1.png,
-					EXT:setup/cshimages/setup2.png
+EXT:setup/cshimages/setup2.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_noMenuMode.image_descr">
 				<source>The "Selectorbox" menu. Selecting an item makes the backend jump to that module.
-					The "Icons" menu. As you can see you will need to know the icons by heart. You can also position the mouse over the icon and the tool-tip text will reveal the module name.
+The "Icons" menu. As you can see you will need to know the icons by heart. You can also position the mouse over the icon and the tool-tip text will reveal the module name.
 				</source>
 			</trans-unit>
 			<trans-unit id="option_startModule.alttitle">
@@ -101,7 +101,7 @@
 			</trans-unit>
 			<trans-unit id="option_startModule.description">
 				<source>Let you select the module that is called when you login in the Backend
-					The default module is "About Modules".
+The default module is "About Modules".
 				</source>
 			</trans-unit>
 			<trans-unit id="option_showThumbs.alttitle">
@@ -215,20 +215,20 @@
 			</trans-unit>
 			<trans-unit id="option_edit_showFieldHelp.details">
 				<source>Alternatively you can select that descriptions are shown inline. This is useful for people who are still learning how TYPO3 works and want to browse the backend with descriptions shown directly.
-					Finally experienced users will want to totally disable the help icons if they seem to just bloat the backend interface.
+Finally experienced users will want to totally disable the help icons if they seem to just bloat the backend interface.
 
-					Context Sensitive Help is also available as a full user manual in the Help&gt;Manual module.
+Context Sensitive Help is also available as a full user manual in the Help&gt;Manual module.
 				</source>
 			</trans-unit>
 			<trans-unit id="_option_edit_showFieldHelp.image">
 				<source>EXT:setup/cshimages/setup11.png,
-					EXT:setup/cshimages/setup10.png
+EXT:setup/cshimages/setup10.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_edit_showFieldHelp.image_descr">
 				<source>The default mode, "Display help icon only", will show the help icons with no additional text.
-					When "Display full text message" is selected you will see a short description shown together with the help icon and framed into a box. Clicking the help icon always links to the full description of the element shown in a pop-up window.
+When "Display full text message" is selected you will see a short description shown together with the help icon and framed into a box. Clicking the help icon always links to the full description of the element shown in a pop-up window.
 				</source>
 			</trans-unit>
 			<trans-unit id="option_disableCMlayers.alttitle">

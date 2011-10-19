@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".description">
@@ -8,25 +8,25 @@
 			</trans-unit>
 			<trans-unit id=".details">
 				<source>The 'Template' records are the vital components used to set the design of the webpages. No matter how (almost) you would like to build your website, it must be initiated by a 'Template' record placed in the root of the page tree of the site.
-					Basically, create a 'Template' record, enter a title and make sure to check of Clear constants, setup and Rootline. Then enter some TypoScript configuration in the Setup field and you're set.
-					It's very important to read how to do all this in the documents listed below! Also make sure you use the Web&gt;Template module to do all the working with templates. It's a specialized tool to help you with this.
+Basically, create a 'Template' record, enter a title and make sure to check of Clear constants, setup and Rootline. Then enter some TypoScript configuration in the Setup field and you're set.
+It's very important to read how to do all this in the documents listed below! Also make sure you use the Web&gt;Template module to do all the working with templates. It's a specialized tool to help you with this.
 				</source>
 			</trans-unit>
 			<trans-unit id="_.seeAlso">
 				<source>static_template
-					TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
-					TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/
+TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
+TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/
 				</source>
 			</trans-unit>
 			<trans-unit id="_.image">
 				<source>EXT:context_help/cshimages/systemplate.png,
-					EXT:context_help/cshimages/systemplate1.png
+EXT:context_help/cshimages/systemplate1.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr">
 				<source>A Template Record with constants and setup code.
-					The Web&gt;Template module contains tools which will help you to edit and validate TypoScript structures.
+The Web&gt;Template module contains tools which will help you to edit and validate TypoScript structures.
 				</source>
 			</trans-unit>
 			<trans-unit id="hidden.description">
@@ -62,10 +62,10 @@
 			</trans-unit>
 			<trans-unit id="_config.seeAlso">
 				<source>static_template:config,
-					TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
-					Getting Started | http://typo3.org/documentation/document-library/doc_tut_quickstart/
-					TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/
-					TypoScript Syntax | http://typo3.org/documentation/document-library/doc_core_ts/
+TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
+Getting Started | http://typo3.org/documentation/document-library/doc_tut_quickstart/
+TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/
+TypoScript Syntax | http://typo3.org/documentation/document-library/doc_core_ts/
 				</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>

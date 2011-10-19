@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".alttitle">
@@ -12,17 +12,17 @@
 			<trans-unit id=".details">
 				<source>TYPO3 can be extended in nearly any direction without loosing backwards compatibility. The Extension API provides a powerful framework for easily adding, removing, installing and developing such extensions to TYPO3. This is in particular powered by the Extension Manager (EM) inside TYPO3.
 
-					"Extensions" is a term in TYPO3 which covers two other terms, plugins and modules.
+"Extensions" is a term in TYPO3 which covers two other terms, plugins and modules.
 
-					A plugin is something that plays a role on the website itself. For example a board, guestbook, shop etc. It is normally enclosed in a PHP class and invoked through a USER or USER_INT cObject from TypoScript. A plugin is an extension in the frontend.
+A plugin is something that plays a role on the website itself. For example a board, guestbook, shop etc. It is normally enclosed in a PHP class and invoked through a USER or USER_INT cObject from TypoScript. A plugin is an extension in the frontend.
 
-					A module is a backend application which has it's own position in the administration menu. It requires backend login and works inside the framework of the backend. We might also call something a module if it exploits any connectivity of an existing module, that is if it simply adds itself to the function menu of existing modules. A module is an extension in the backend.
+A module is a backend application which has it's own position in the administration menu. It requires backend login and works inside the framework of the backend. We might also call something a module if it exploits any connectivity of an existing module, that is if it simply adds itself to the function menu of existing modules. A module is an extension in the backend.
 				</source>
 			</trans-unit>
 			<trans-unit id="_.seeAlso">
 				<source>xMOD_csh_corebe,
-					Core / Extension Architecture | http://typo3.org/documentation/document-library/doc_core_inside/This_document-1/
-					Managing Extensions | http://typo3.org/documentation/document-library/doc_core_inside/Backend_user_setup/
+Core / Extension Architecture | http://typo3.org/documentation/document-library/doc_core_inside/This_document-1/
+Managing Extensions | http://typo3.org/documentation/document-library/doc_core_inside/Backend_user_setup/
 				</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -31,13 +31,13 @@
 			</trans-unit>
 			<trans-unit id="loaded.description">
 				<source>"Loaded extensions" are currently running on the system. This list shows you which extensions are loaded and in which order.
-					"Shy" extensions are also loaded but "hidden" in this list because they are system related and generally you should just leave them alone unless you know what you are doing.
+"Shy" extensions are also loaded but "hidden" in this list because they are system related and generally you should just leave them alone unless you know what you are doing.
 				</source>
 			</trans-unit>
 			<trans-unit id="loaded.details">
 				<source>The extensions in this list are shown in the order they are found in $TYPO3_CONF_VARS[EXT][extList].
-					To de-install an extension you simply click the green "-" icon. If there are no dependencies requiring the extension it will be removed from the list of installed extensions.
-					The "Rq" extensions in the loaded extensions list are "required extensions". These are related so deeply to the system that you cannot disable them from the Extension Manager.
+To de-install an extension you simply click the green "-" icon. If there are no dependencies requiring the extension it will be removed from the list of installed extensions.
+The "Rq" extensions in the loaded extensions list are "required extensions". These are related so deeply to the system that you cannot disable them from the Extension Manager.
 				</source>
 			</trans-unit>
 			<trans-unit id="_loaded.image">
@@ -52,23 +52,23 @@
 			</trans-unit>
 			<trans-unit id="avail.description">
 				<source>Available extensions are extensions which are present in the extension folders. You can install any of the available extensions in this list. When you install an extension it will be loaded by TYPO3 from that moment.
-					In this list the extensions with dark background are installed (loaded) - the others just available (not loaded), ready to be installed on your request.
+In this list the extensions with dark background are installed (loaded) - the others just available (not loaded), ready to be installed on your request.
 				</source>
 			</trans-unit>
 			<trans-unit id="avail.details">
 				<source>You can install an extension by clicking the gray "+" icon in this list. If you want to de-install an extension you click the green "-" icon.
-					When you click the install button ("+") you will most often end in a dialog where you have to confirm the creation of database tables and fields or maybe you will be asked to "clear all cache". The Extension Manager automatically handles these requirements for you which makes it extremely easy to install new extensions.
+When you click the install button ("+") you will most often end in a dialog where you have to confirm the creation of database tables and fields or maybe you will be asked to "clear all cache". The Extension Manager automatically handles these requirements for you which makes it extremely easy to install new extensions.
 				</source>
 			</trans-unit>
 			<trans-unit id="_avail.image">
 				<source>EXT:lang/cshimages/em_2.png,
-					EXT:lang/cshimages/em_12.png
+EXT:lang/cshimages/em_12.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="avail.image_descr">
 				<source>The list of available extension on the server. The list is compiled from extensions found in the "local", "global" and "system" extension folders.
-					If you click the install icon ("+") of an extension you might end in a dialog like this. In this case a new database table is required. The Extension Manager will automatically detect that it does not exist yet and suggest that you create it. The creation automatically takes place as well, simply by accepting the changes when pressing "Make updates".
+If you click the install icon ("+") of an extension you might end in a dialog like this. In this case a new database table is required. The Extension Manager will automatically detect that it does not exist yet and suggest that you create it. The creation automatically takes place as well, simply by accepting the changes when pressing "Make updates".
 				</source>
 			</trans-unit>
 			<trans-unit id="import.alttitle">
@@ -79,16 +79,16 @@
 			</trans-unit>
 			<trans-unit id="import.details">
 				<source>&lt;b&gt;Import from TER&lt;/b&gt;
-					To connect to the TER you simply click the button "Connect to online repository". This will request the URL shown in the text above the button and the URL should return a list of available extension you can import.
-					If you know what you are looking for then enter a search word in the look-up box. In particular this helps you to look up a specific extension key. The connection to TER will be much faster if you use this since less data is sent over the wire!
+To connect to the TER you simply click the button "Connect to online repository". This will request the URL shown in the text above the button and the URL should return a list of available extension you can import.
+If you know what you are looking for then enter a search word in the look-up box. In particular this helps you to look up a specific extension key. The connection to TER will be much faster if you use this since less data is sent over the wire!
 
-					&lt;b&gt;Upload from file&lt;/b&gt;
-					For private projects the exchange of extensions is easily done by sending "t3x" files from system to system. In one TYPO3 installation you simply go to the menu "Backup/Delete" of an extension and download a "Backup" of the extension. The fileformat is a serialized PHP array, compressed if possible. This file can then be uploaded in the Extension Manager of another TYPO3 system where you want to import it.
+&lt;b&gt;Upload from file&lt;/b&gt;
+For private projects the exchange of extensions is easily done by sending "t3x" files from system to system. In one TYPO3 installation you simply go to the menu "Backup/Delete" of an extension and download a "Backup" of the extension. The fileformat is a serialized PHP array, compressed if possible. This file can then be uploaded in the Extension Manager of another TYPO3 system where you want to import it.
 				</source>
 			</trans-unit>
 			<trans-unit id="_import.seeAlso">
 				<source>_MOD_tools_em:backup_delete,
-					_MOD_tools_em:settings
+_MOD_tools_em:settings
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -104,31 +104,31 @@
 			</trans-unit>
 			<trans-unit id="import_ter.description">
 				<source>Extensions in this list are online for immediate download from the TYPO3 Extension Repository (TER).
-					Extensions with dark background are those already on your server - the others must be imported from the repository to your server before you can use them.
-					If you want to use an extension from the repository, you should simply click the "import" button with the red arrow left to the extension.
+Extensions with dark background are those already on your server - the others must be imported from the repository to your server before you can use them.
+If you want to use an extension from the repository, you should simply click the "import" button with the red arrow left to the extension.
 				</source>
 			</trans-unit>
 			<trans-unit id="import_ter.details">
 				<source>&lt;b&gt;Import Extensions&lt;/b&gt;
-					If an extension does not yet exist on your server you will see the icon with the red arrow next to that extension. A single click and the extension will be downloaded and the files extracted on your server. The download directory is seen if you move the mouse over the icon (in the tool-tip text).
+If an extension does not yet exist on your server you will see the icon with the red arrow next to that extension. A single click and the extension will be downloaded and the files extracted on your server. The download directory is seen if you move the mouse over the icon (in the tool-tip text).
 
-					&lt;b&gt;Update Extensions&lt;/b&gt;
-					You can update extensions that are always on your system by clicking the icon with the green arrows. The update icon will appear if the "minor" version number (middle digit) has been incremented. This means that extensions updated on the dev-version number (the third digit) will not be shown as "ready for update". (You can configure TYPO3 to do that though!).
+&lt;b&gt;Update Extensions&lt;/b&gt;
+You can update extensions that are always on your system by clicking the icon with the green arrows. The update icon will appear if the "minor" version number (middle digit) has been incremented. This means that extensions updated on the dev-version number (the third digit) will not be shown as "ready for update". (You can configure TYPO3 to do that though!).
 
-					&lt;b&gt;Seeing details about an extension in TER&lt;/b&gt;
-					You can also click the title of an extension to see details about it. That will also allow you to perform a more detailed update operation where you can select version number and download location (local/global/system).
-					You can also ask to have the most recent translations downloaded.
+&lt;b&gt;Seeing details about an extension in TER&lt;/b&gt;
+You can also click the title of an extension to see details about it. That will also allow you to perform a more detailed update operation where you can select version number and download location (local/global/system).
+You can also ask to have the most recent translations downloaded.
 				</source>
 			</trans-unit>
 			<trans-unit id="_import_ter.image">
 				<source>EXT:lang/cshimages/em_10.png,
-					EXT:lang/cshimages/em_11.png
+EXT:lang/cshimages/em_11.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="import_ter.image_descr">
 				<source>List of extensions from TER. The red arrow icon is the "Import" link (for new extensions), the green arrow icon is the "Update" link (for an extension that is already on your server). If an extension is already available in the most recent version you will not see any icon at all to the left of the extension.
-					If you clicked the title of an extension you will request the repository for details about the extension. This also allows you to select a specific version for import. You can also select the install location (global/local) and you can request to have the most recent translations merged into the extension upon retrieval.
+If you clicked the title of an extension you will request the repository for details about the extension. This also allows you to select a specific version for import. You can also select the install location (global/local) and you can request to have the most recent translations merged into the extension upon retrieval.
 				</source>
 			</trans-unit>
 			<trans-unit id="info.alttitle">
@@ -140,7 +140,7 @@
 			<trans-unit id="info.details">
 				<source>In this view some of the details are simply a display of the information from the "ext_emconf.php" file in the extension. The "emconf" file contains meta data for the Extension Manager.
 
-					The Extension Manager will also go a bit further and perform some analysis of the scripts in the extension. The list will include the findings of this analysis and if any errors were found they will be displayed. Usually these errors will not prevent the extension from working but more likely point out some theoretical problems that the extension developer should address.
+The Extension Manager will also go a bit further and perform some analysis of the scripts in the extension. The list will include the findings of this analysis and if any errors were found they will be displayed. Usually these errors will not prevent the extension from working but more likely point out some theoretical problems that the extension developer should address.
 				</source>
 			</trans-unit>
 			<trans-unit id="_info.image">
@@ -175,15 +175,15 @@
 			</trans-unit>
 			<trans-unit id="upload.details">
 				<source>&lt;b&gt;Changelog&lt;/b&gt;
-					In the changelog field you enter the changes made or the reason for the upload. This will be displayed in the list of new extensions.
+In the changelog field you enter the changes made or the reason for the upload. This will be displayed in the list of new extensions.
 
-					&lt;b&gt;Version numbers&lt;/b&gt;
-					Select a method for incrementation of the version number. For new "versions" of your extension you should select "sub" or "main" which will display your extension in the list of new extensions. For maintenance uploads you select "dev".
+&lt;b&gt;Version numbers&lt;/b&gt;
+Select a method for incrementation of the version number. For new "versions" of your extension you should select "sub" or "main" which will display your extension in the list of new extensions. For maintenance uploads you select "dev".
 				</source>
 			</trans-unit>
 			<trans-unit id="_upload.seeAlso">
 				<source>_MOD_tools_em:settings,
-					Register Extension Keys | http://typo3.org/extensions/register-extension-keys/
+Register Extension Keys | http://typo3.org/extensions/register-extension-keys/
 				</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -202,7 +202,7 @@
 			</trans-unit>
 			<trans-unit id="editfiles.details">
 				<source>&lt;b&gt;Notice:&lt;/b&gt;
-					Before editing of extension scripts can be performed you have to disable the configuration option "TYPO3_CONF_VARS[EXT][noEdit]" in "localconf.php".
+Before editing of extension scripts can be performed you have to disable the configuration option "TYPO3_CONF_VARS[EXT][noEdit]" in "localconf.php".
 				</source>
 			</trans-unit>
 			<trans-unit id="_editfiles.image">
@@ -220,7 +220,7 @@
 			</trans-unit>
 			<trans-unit id="settings.details">
 				<source>&lt;b&gt;Notice:&lt;/b&gt;
-					This information is not very well protected! It is send and stored in clear-text!
+This information is not very well protected! It is send and stored in clear-text!
 				</source>
 			</trans-unit>
 			<trans-unit id="_settings.image">
@@ -239,14 +239,14 @@
 			<trans-unit id="makenew.details">
 				<source>The Extension Repository Kickstarter is a separate extension, "extrep_wizard". Please see more information about the kickstarter otherwise.
 
-					&lt;b&gt;Notice:&lt;/b&gt;
-					The Kickstarter is NOT an editor! When a new extension is started you cannot - as a rule of thumb - go back an edit it with the kickstarter! It will just overwrite any custom changes you did in the meantime!
+&lt;b&gt;Notice:&lt;/b&gt;
+The Kickstarter is NOT an editor! When a new extension is started you cannot - as a rule of thumb - go back an edit it with the kickstarter! It will just overwrite any custom changes you did in the meantime!
 				</source>
 			</trans-unit>
 			<trans-unit id="_makenew.seeAlso">
 				<source>Register Extension Keys | http://typo3.org/extensions/register-extension-keys/
-					Extension API | http://typo3.org/documentation/document-library/doc_core_api/Introduction-f289e83016/
-					Documentation Matrix | http://typo3.org/documentation/document-library/Matrix/
+Extension API | http://typo3.org/documentation/document-library/doc_core_api/Introduction-f289e83016/
+Documentation Matrix | http://typo3.org/documentation/document-library/Matrix/
 				</source>
 			</trans-unit>
 			<trans-unit id="_makenew.image">
@@ -264,8 +264,8 @@
 			</trans-unit>
 			<trans-unit id="emconf_shy.details">
 				<source>Use this flag if an extension is of "rare interest" (which is not the same as un-important - just an extension not sought for very often...)
-					It does not affect whether or not it's enabled. Only display in EM.
-					Normally "shy" is set for all extensions loaded by default according to TYPO3_CONF_VARS.
+It does not affect whether or not it's enabled. Only display in EM.
+Normally "shy" is set for all extensions loaded by default according to TYPO3_CONF_VARS.
 				</source>
 			</trans-unit>
 			<trans-unit id="emconf_category.alttitle">
@@ -277,21 +277,21 @@
 			<trans-unit id="emconf_category.details">
 				<source>&lt;b&gt;be:&lt;/b&gt; Backend (Generally backend oriented, but not a module)
 
-					&lt;b&gt;module:&lt;/b&gt; Backend modules (When something is a module or connects with one)
+&lt;b&gt;module:&lt;/b&gt; Backend modules (When something is a module or connects with one)
 
-					&lt;b&gt;fe:&lt;/b&gt; Frontend (Generally frontend oriented, but not a "true" plugin)
+&lt;b&gt;fe:&lt;/b&gt; Frontend (Generally frontend oriented, but not a "true" plugin)
 
-					&lt;b&gt;plugin:&lt;/b&gt; Frontend plugins (Plugins inserted as a "Insert Plugin" content element)
+&lt;b&gt;plugin:&lt;/b&gt; Frontend plugins (Plugins inserted as a "Insert Plugin" content element)
 
-					&lt;b&gt;misc:&lt;/b&gt; Miscellaneous stuff (Where not easily placed elsewhere)
+&lt;b&gt;misc:&lt;/b&gt; Miscellaneous stuff (Where not easily placed elsewhere)
 
-					&lt;b&gt;services:&lt;/b&gt; Contains TYPO3 services.
+&lt;b&gt;services:&lt;/b&gt; Contains TYPO3 services.
 
-					&lt;b&gt;templates:&lt;/b&gt; Contains website templates
+&lt;b&gt;templates:&lt;/b&gt; Contains website templates
 
-					&lt;b&gt;doc:&lt;/b&gt; Documentation (Eg. tutorials, FAQ's etc.)
+&lt;b&gt;doc:&lt;/b&gt; Documentation (Eg. tutorials, FAQ's etc.)
 
-					&lt;b&gt;example:&lt;/b&gt; Example extension (Which serves as examples etc.)
+&lt;b&gt;example:&lt;/b&gt; Example extension (Which serves as examples etc.)
 				</source>
 			</trans-unit>
 			<trans-unit id="emconf_dependencies.alttitle">
@@ -338,19 +338,19 @@
 			</trans-unit>
 			<trans-unit id="emconf_state.details">
 				<source>&lt;b&gt;alpha&lt;/b&gt;
-					Very initial development. May do nothing at all.
+Very initial development. May do nothing at all.
 
-					&lt;b&gt;beta&lt;/b&gt;
-					Under current development. Should work partly but is not finished yet.
+&lt;b&gt;beta&lt;/b&gt;
+Under current development. Should work partly but is not finished yet.
 
-					&lt;b&gt;stable&lt;/b&gt;
-					Stable and used in production.
+&lt;b&gt;stable&lt;/b&gt;
+Stable and used in production.
 
-					&lt;b&gt;experimental&lt;/b&gt;
-					Nobody knows if this is going anywhere yet... Maybe still just an idea.
+&lt;b&gt;experimental&lt;/b&gt;
+Nobody knows if this is going anywhere yet... Maybe still just an idea.
 
-					&lt;b&gt;test&lt;/b&gt;
-					Test extension, demonstrates concepts etc.
+&lt;b&gt;test&lt;/b&gt;
+Test extension, demonstrates concepts etc.
 				</source>
 			</trans-unit>
 			<trans-unit id="emconf_internal.alttitle">
@@ -362,8 +362,8 @@
 			<trans-unit id="emconf_internal.details">
 				<source>In other words this flag should convey the message that "this extension could not be written without some core source code modifications".
 
-					An extension is not internal just because it uses TYPO3 general classes eg. those from t3lib/.
-					True non-internal extensions are characterized by the fact that they could be written without making core source code changes, but relies only on existing classes  in TYPO3 and/or other extensions, plus its own scripts in the extension folder.
+An extension is not internal just because it uses TYPO3 general classes eg. those from t3lib/.
+True non-internal extensions are characterized by the fact that they could be written without making core source code changes, but relies only on existing classes  in TYPO3 and/or other extensions, plus its own scripts in the extension folder.
 				</source>
 			</trans-unit>
 			<trans-unit id="emconf_clearCacheOnLoad.alttitle">
@@ -398,8 +398,8 @@
 			</trans-unit>
 			<trans-unit id="emconf_private.details">
 				<source>"Private" uploads requires you to manually enter a special key (which will be shown to you after an upload has been completed) to be able to import and view details for the uploaded extension.
-					This is nice when you are working on something internally which you do not want others to look at.
-					You can set and clear the private flag every time you upload your extension.
+This is nice when you are working on something internally which you do not want others to look at.
+You can set and clear the private flag every time you upload your extension.
 				</source>
 			</trans-unit>
 			<trans-unit id="_emconf_private.seeAlso">
@@ -428,18 +428,18 @@
 			<trans-unit id="emconf_type.details">
 				<source>The files for an extension are located in a folder named by the extension key. The location of this folder can be either inside typo3conf/ext/,  typo3/ext/ or typo3/sysext/. The extension must be programmed so that it automatically detects where it is located and can work from all three locations.
 
-					&lt;b&gt;Local location "typo3conf/ext/":&lt;/b&gt; This is where to put extensions which are local for a particular TYPO3 installation. The typo3conf/ directory is always local, containing local configuration (eg. localconf.php), local modules etc. If you put an extension here it will be available for this TYPO3 installation only. This is a "per-database" way to install an extension.
+&lt;b&gt;Local location "typo3conf/ext/":&lt;/b&gt; This is where to put extensions which are local for a particular TYPO3 installation. The typo3conf/ directory is always local, containing local configuration (eg. localconf.php), local modules etc. If you put an extension here it will be available for this TYPO3 installation only. This is a "per-database" way to install an extension.
 
-					&lt;b&gt;Global location "typo3/ext/":&lt;/b&gt; This is where to put extensions which are global for the TYPO3 source code on the web server. These extensions will be available for any TYPO3 installation sharing the source code.
-					When you upgrade your TYPO3 source code you probably want to copy the typo3/ext/ directory from the former source to the new source, overriding the default directory. In this way all global extension you use will be installed inside the new sourcecode. After that you can always enter TYPO3 and upgrade the versions if needed.
-					This is a "per-server" way to install an extension.
+&lt;b&gt;Global location "typo3/ext/":&lt;/b&gt; This is where to put extensions which are global for the TYPO3 source code on the web server. These extensions will be available for any TYPO3 installation sharing the source code.
+When you upgrade your TYPO3 source code you probably want to copy the typo3/ext/ directory from the former source to the new source, overriding the default directory. In this way all global extension you use will be installed inside the new sourcecode. After that you can always enter TYPO3 and upgrade the versions if needed.
+This is a "per-server" way to install an extension.
 
-					&lt;b&gt;System location "typo3/sysext/":&lt;/b&gt; This is system default extensions which cannot and should not be updated by the EM. They are distributed with the TYPO3 core.
+&lt;b&gt;System location "typo3/sysext/":&lt;/b&gt; This is system default extensions which cannot and should not be updated by the EM. They are distributed with the TYPO3 core.
 
 
-					&lt;b&gt;Loading precedence&lt;/b&gt;
-					Local extensions take precedence which means that if an extension exists both in typo3conf/ext/ and typo3/ext/ the one in typo3conf/ext/ is loaded. Likewise global extension takes predence over system extensions. This means that extensions are loaded in the order of priority local-global-system.
-					In effect you can therefore have, say, a "stable" version of an extension installed in the global dir (typo3/ext/) which is used by all your projects on a server sharing source code, but on a single experimental project you can import the same extension in a newer "experimental" version and for that particular project the locally available extension will be used instead.
+&lt;b&gt;Loading precedence&lt;/b&gt;
+Local extensions take precedence which means that if an extension exists both in typo3conf/ext/ and typo3/ext/ the one in typo3conf/ext/ is loaded. Likewise global extension takes predence over system extensions. This means that extensions are loaded in the order of priority local-global-system.
+In effect you can therefore have, say, a "stable" version of an extension installed in the global dir (typo3/ext/) which is used by all your projects on a server sharing source code, but on a single experimental project you can import the same extension in a newer "experimental" version and for that particular project the locally available extension will be used instead.
 				</source>
 			</trans-unit>
 			<trans-unit id="emconf_doubleInstall.alttitle">
@@ -484,25 +484,25 @@
 			<trans-unit id="emconf_flags.details">
 				<source>This is a list of the flags:
 
-					&lt;b&gt;Module:&lt;/b&gt; A true backend main/sub module is found to be added.
+&lt;b&gt;Module:&lt;/b&gt; A true backend main/sub module is found to be added.
 
-					&lt;b&gt;Module+:&lt;/b&gt; The extension adds itself to the function menu of an existing backend module.
+&lt;b&gt;Module+:&lt;/b&gt; The extension adds itself to the function menu of an existing backend module.
 
-					&lt;b&gt;loadTCA:&lt;/b&gt; The extension includes a function call to t3lib_div::loadTCA for loading a table. This potentially means that the system is slowed down, because the full table description of some table is always included. However there probably is a good reason for this to happen. Probably the extension tries to manipulate the TCA-config for an existing table in order to extend it.
+&lt;b&gt;loadTCA:&lt;/b&gt; The extension includes a function call to t3lib_div::loadTCA for loading a table. This potentially means that the system is slowed down, because the full table description of some table is always included. However there probably is a good reason for this to happen. Probably the extension tries to manipulate the TCA-config for an existing table in order to extend it.
 
-					&lt;b&gt;TCA:&lt;/b&gt; The extension contains configuration of a table in $TCA.
+&lt;b&gt;TCA:&lt;/b&gt; The extension contains configuration of a table in $TCA.
 
-					&lt;b&gt;Plugin:&lt;/b&gt; The extension adds a frontend plugin to the plugin list in Content Element type "Insert Plugin".
+&lt;b&gt;Plugin:&lt;/b&gt; The extension adds a frontend plugin to the plugin list in Content Element type "Insert Plugin".
 
-					&lt;b&gt;Plugin/ST43:&lt;/b&gt; TypoScript rendering code for the plugin is added to the static template "Content (default)". "Plugin" and "Plugin/ST43" are commonly used together.
+&lt;b&gt;Plugin/ST43:&lt;/b&gt; TypoScript rendering code for the plugin is added to the static template "Content (default)". "Plugin" and "Plugin/ST43" are commonly used together.
 
-					&lt;b&gt;Page-TSconfig:&lt;/b&gt; Default Page-TSconfig is added.
+&lt;b&gt;Page-TSconfig:&lt;/b&gt; Default Page-TSconfig is added.
 
-					&lt;b&gt;User-TSconfig:&lt;/b&gt; Default User-TSconfig is added.
+&lt;b&gt;User-TSconfig:&lt;/b&gt; Default User-TSconfig is added.
 
-					&lt;b&gt;TS/Setup:&lt;/b&gt; Default TypoScript Setup is added.
+&lt;b&gt;TS/Setup:&lt;/b&gt; Default TypoScript Setup is added.
 
-					&lt;b&gt;TS/Constants:&lt;/b&gt; Default TypoScript Constants is added.
+&lt;b&gt;TS/Constants:&lt;/b&gt; Default TypoScript Constants is added.
 				</source>
 			</trans-unit>
 			<trans-unit id="emconf_conf.description">

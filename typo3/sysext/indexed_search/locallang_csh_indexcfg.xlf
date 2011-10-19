@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="indexed_search">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="indexed_search" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".description">
@@ -36,8 +36,8 @@
 				<source>Use this setting to adjust how often you would like a re-indexing process to run for the configuration.</source>
 			</trans-unit>
 			<trans-unit id="_timer_frequency.seeAlso">
-				<source>index_config:timer_next_indexing, 
-					index_config:timer_offset
+				<source>index_config:timer_next_indexing,
+index_config:timer_offset
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -52,8 +52,8 @@
 				<source>This field contains the date and time of the next occuring indexing session. If left blank the next indexing will occur as soon as the cron-script is run again (typically within the next minute) and afterwards set to the next time according to frequency and offset.</source>
 			</trans-unit>
 			<trans-unit id="_timer_next_indexing.seeAlso">
-				<source>index_config:timer_offset, 
-					index_config:timer_frequency
+				<source>index_config:timer_offset,
+index_config:timer_frequency
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -62,11 +62,11 @@
 			</trans-unit>
 			<trans-unit id="type.details">
 				<source>&lt;b&gt;Records&lt;/b&gt; - You will be able to index records on a specified page from a specified database table. You can determine which fields from that record you want to index and how additional GET parameters should look like when linking to the search result.
-					&lt;b&gt;Files&lt;/b&gt; - Allows you to index a whole directory of files from the fileadmin/ folder. You can optionally specify how many levels of recursion you want.
-					&lt;b&gt;External URL&lt;/b&gt; - Allows you to index an external site and search it from your TYPO3 installation! You can specify how deep the crawler should go on that external URL.
-					&lt;b&gt;Page tree&lt;/b&gt; - Allows you to index the page tree using the cron script. This type will not be useful as a category for searching like the other types.
-					&lt;b&gt;Meta configuration&lt;/b&gt; - Points to a collection of other indexing configurations in which the search will be done. Cannot be used for cron-job based indexing.
-					&lt;b&gt;Custom&lt;/b&gt; - Other extensions might register custom types of configurations.
+&lt;b&gt;Files&lt;/b&gt; - Allows you to index a whole directory of files from the fileadmin/ folder. You can optionally specify how many levels of recursion you want.
+&lt;b&gt;External URL&lt;/b&gt; - Allows you to index an external site and search it from your TYPO3 installation! You can specify how deep the crawler should go on that external URL.
+&lt;b&gt;Page tree&lt;/b&gt; - Allows you to index the page tree using the cron script. This type will not be useful as a category for searching like the other types.
+&lt;b&gt;Meta configuration&lt;/b&gt; - Points to a collection of other indexing configurations in which the search will be done. Cannot be used for cron-job based indexing.
+&lt;b&gt;Custom&lt;/b&gt; - Other extensions might register custom types of configurations.
 				</source>
 			</trans-unit>
 			<trans-unit id="table2index.description">
@@ -84,7 +84,7 @@
 			</trans-unit>
 			<trans-unit id="get_params.details">
 				<source>Notice: The GET parameters are appended to the URL of the page where the Indexing Configuration is stored (which must be the page where a plugin exists that can display the records with the given parameters!).
-					Example value: "&amp;showUid=###UID###"
+Example value: "&amp;showUid=###UID###"
 				</source>
 			</trans-unit>
 			<trans-unit id="_get_params.seeAlso">
@@ -129,11 +129,11 @@
 				<source>Enter a URL on each line inside of which the crawler should not decend.</source>
 			</trans-unit>
 			<trans-unit id="url_deny.details">
-				<source>Example: 
-					If you wish to index "http://typo3.org/" but not "http://typo3.org/extensions/" and "http://typo3.org/downloads/" then you simply enter those two URLs into the box like this:
+				<source>Example:
+If you wish to index "http://typo3.org/" but not "http://typo3.org/extensions/" and "http://typo3.org/downloads/" then you simply enter those two URLs into the box like this:
 
-					http://typo3.org/downloads/
-					http://typo3.org/extensions/
+http://typo3.org/downloads/
+http://typo3.org/extensions/
 				</source>
 			</trans-unit>
 			<trans-unit id="_url_deny.seeAlso">
@@ -160,8 +160,8 @@
 				<source>For file indexing it is the level of directories to decend. For External URLs it's the depth to which the crawler will go with links.</source>
 			</trans-unit>
 			<trans-unit id="_depth.seeAlso">
-				<source>index_config:externalUrl, 
-					index_config:filepath
+				<source>index_config:externalUrl,
+index_config:filepath
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>

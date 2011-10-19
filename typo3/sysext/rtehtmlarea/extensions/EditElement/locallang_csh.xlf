@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".alttitle">
@@ -11,7 +11,7 @@
 			</trans-unit>
 			<trans-unit id=".details">
 				<source>Clicking the "Edit element" icon in the RTE tool bar opens a dialogue that allows to edit the general attributes of an element.
-					The dialogue allows to edit the id, title, class, lang and dir attributes of the element. It also allows to specify handlers for keyboard and mouse events.
+The dialogue allows to edit the id, title, class, lang and dir attributes of the element. It also allows to specify handlers for keyboard and mouse events.
 				</source>
 			</trans-unit>
 			<trans-unit id=".image">
@@ -23,11 +23,11 @@
 			</trans-unit>
 			<trans-unit id=".seeAlso">
 				<source>xEXT_rtehtmlarea_EditElement:id,
-					xEXT_rtehtmlarea_EditElement:title,
-					xEXT_rtehtmlarea_EditElement:className,
-					xEXT_rtehtmlarea_Language:languageCombo,
-					xEXT_rtehtmlarea_Language:directionCombo,
-					xEXT_rtehtmlarea_EditElement:events
+xEXT_rtehtmlarea_EditElement:title,
+xEXT_rtehtmlarea_EditElement:className,
+xEXT_rtehtmlarea_Language:languageCombo,
+xEXT_rtehtmlarea_Language:directionCombo,
+xEXT_rtehtmlarea_EditElement:events
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".alttitle">
@@ -14,9 +14,9 @@
 			</trans-unit>
 			<trans-unit id="_.seeAlso">
 				<source>_MOD_web_info,
-					More about the Web&gt;Functions module | http://typo3.org/documentation/document-library/doc_core_inside/Functions_module/,,
-					_MOD_web_func:tx_funcwizards,
-					_MOD_web_func:tx_wizardsortpages
+More about the Web&gt;Functions module | http://typo3.org/documentation/document-library/doc_core_inside/Functions_module/,,
+_MOD_web_func:tx_funcwizards,
+_MOD_web_func:tx_wizardsortpages
 				</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>

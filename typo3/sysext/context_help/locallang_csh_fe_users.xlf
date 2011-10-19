@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id="username.description">
@@ -67,7 +67,7 @@
 			</trans-unit>
 			<trans-unit id="starttime.syntax">
 				<source>The syntax is dd-mm-yy, but you can just enter a "d" in the field to insert todays date. Or "d+10" to insert the date 10 days from now etc.
-					The field will re-format any input to fit the format it understands so you can just experiment and you will be able to clearly see how dates should be entered.
+The field will re-format any input to fit the format it understands so you can just experiment and you will be able to clearly see how dates should be entered.
 				</source>
 			</trans-unit>
 			<trans-unit id="_starttime.seeAlso">
@@ -93,29 +93,29 @@
 			<trans-unit id="TSconfig.details">
 				<source>This field allows you to enter TypoScript style configuration values for the user. Currently there are no system defined keys. If there ever will be, they will be described in detail in the administrative documentation.
 
-					The primary use of this field (as well as the 'sister'-field in the Website usergroup table) is for custom purposes. In this case, you should use the root-key "user" for your customly defined values. Thus you don't risk any future system keys to interfere with your configuration.
+The primary use of this field (as well as the 'sister'-field in the Website usergroup table) is for custom purposes. In this case, you should use the root-key "user" for your customly defined values. Thus you don't risk any future system keys to interfere with your configuration.
 
-					You access the values of the configuration from your frontend plugins by calling the function &lt;em&gt;$GLOBALS["TSFE"]-&gt;fe_user-&gt;getUserTSconf()&lt;/em&gt; which will return an array with the valuetree in it.
+You access the values of the configuration from your frontend plugins by calling the function &lt;em&gt;$GLOBALS["TSFE"]-&gt;fe_user-&gt;getUserTSconf()&lt;/em&gt; which will return an array with the valuetree in it.
 
-					&lt;b&gt;Warning:&lt;/b&gt; You should use Website user/group TSconfig in your PHP-scripts ONLY if your resulting content is NOT being cached! So call it from TypoScript USER_INT cObjects or disable caching from your PHP-code by calling &lt;em&gt;$GLOBALS["TSFE"]-&gt;set_no_cache();&lt;/em&gt;
+&lt;b&gt;Warning:&lt;/b&gt; You should use Website user/group TSconfig in your PHP-scripts ONLY if your resulting content is NOT being cached! So call it from TypoScript USER_INT cObjects or disable caching from your PHP-code by calling &lt;em&gt;$GLOBALS["TSFE"]-&gt;set_no_cache();&lt;/em&gt;
 
-					&lt;b&gt;TSconfig from Website usergroups:&lt;/b&gt;
-					Notice that the configuration from the field TSconfig in the member groups of the user is accumulated and prepended to the TSconfig of the user before it's parsed. This means for instance that a key defined in the TSconfig of the user (this field) will override the same key defined in the last (bottom) usergroup in the list which will again override the same key defined in the first (top) usergroup in the list.
+&lt;b&gt;TSconfig from Website usergroups:&lt;/b&gt;
+Notice that the configuration from the field TSconfig in the member groups of the user is accumulated and prepended to the TSconfig of the user before it's parsed. This means for instance that a key defined in the TSconfig of the user (this field) will override the same key defined in the last (bottom) usergroup in the list which will again override the same key defined in the first (top) usergroup in the list.
 
-					&lt;b&gt;Example:&lt;/b&gt;
-					Let's imagine you want to define for a user that his name is printed in the bottom of the webpages when he is logged in. First of all you must write a PHP-function and insert the result from it as a USER_INT cObject in the bottom of the page. But your function needs to know, whether or not this user is configured to have his name printed. So you decide to use a custom TSconfig key, 'user.printUserName':
+&lt;b&gt;Example:&lt;/b&gt;
+Let's imagine you want to define for a user that his name is printed in the bottom of the webpages when he is logged in. First of all you must write a PHP-function and insert the result from it as a USER_INT cObject in the bottom of the page. But your function needs to know, whether or not this user is configured to have his name printed. So you decide to use a custom TSconfig key, 'user.printUserName':
 
-					&lt;em&gt;In the TSconfig field of the user or usergroup:&lt;/em&gt;
+&lt;em&gt;In the TSconfig field of the user or usergroup:&lt;/em&gt;
 
-					user.printUserName = 1
+user.printUserName = 1
 
 
-					&lt;em&gt;In your PHP-function:&lt;/em&gt;
+&lt;em&gt;In your PHP-function:&lt;/em&gt;
 
-					$userTSConfig = $GLOBALS["TSFE"]-&gt;fe_user-&gt;getUserTSconf();
-					if ($userTSConfig["user."]["printUserName"]) {
-					return $GLOBALS["TSFE"]-&gt;fe_user-&gt;user["name"];
-					}
+$userTSConfig = $GLOBALS["TSFE"]-&gt;fe_user-&gt;getUserTSconf();
+if ($userTSConfig["user."]["printUserName"]) {
+return $GLOBALS["TSFE"]-&gt;fe_user-&gt;user["name"];
+}
 				</source>
 			</trans-unit>
 			<trans-unit id="TSconfig.syntax">
@@ -123,10 +123,10 @@
 			</trans-unit>
 			<trans-unit id="_TSconfig.seeAlso">
 				<source>TSconfig for TSFE | http://typo3.org/documentation/document-library/doc_core_tsconfig/TCEMAIN/
-					pages:TSconfig,
-					fe_groups:TSconfig,
-					be_users:TSconfig,
-					be_groups:TSconfig
+pages:TSconfig,
+fe_groups:TSconfig,
+be_users:TSconfig,
+be_groups:TSconfig
 				</source>
 			</trans-unit>
 			<trans-unit id=".description">
@@ -137,18 +137,18 @@
 			</trans-unit>
 			<trans-unit id="_.seeAlso">
 				<source>fe_groups
-					be_users
+be_users
 				</source>
 			</trans-unit>
 			<trans-unit id="_.image">
 				<source>EXT:context_help/cshimages/feusers_1.png,
-					EXT:context_help/cshimages/feusers_2.png,
+EXT:context_help/cshimages/feusers_2.png,
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr">
 				<source>Part of the form for editing a frontend user.
-					A typical login box (standard) on the website where frontend users can login.
+A typical login box (standard) on the website where frontend users can login.
 				</source>
 			</trans-unit>
 		</body>
