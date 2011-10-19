@@ -112,22 +112,32 @@ class tx_form_Controller_Form {
 				/** @var $typoScriptParser t3lib_tsparser */
 				$typoScriptParser = t3lib_div::makeInstance('t3lib_tsparser');
 				$typoScriptParser->parse($bodytext);
-				$typoScript = t3lib_div::array_merge_recursive_overrule(
+				$mergedTypoScript = t3lib_div::array_merge_recursive_overrule(
 					(array) $typoScriptParser->setup,
 					(array) $typoScript
 				);
 
 				// Disables content elements since TypoScript is handled that could contain insecure settings:
-				$typoScript[tx_form_Domain_Factory_Typoscript::PROPERTY_DisableContentElement] = TRUE;
+				$mergedTypoScript[tx_form_Domain_Factory_Typoscript::PROPERTY_DisableContentElement] = TRUE;
 			}
 
 			$newTypoScript = array(
 				'10' => 'FORM_INT',
-				'10.' => $typoScript,
+				'10.' => $mergedTypoScript,
 			);
 
 			$content = $contentObject->COBJ_ARRAY($newTypoScript, 'INT');
 
+				// Only apply stdWrap to TypoScript that was NOT created by the wizard:
+			if (isset($typoScript['stdWrap.'])) {
+				$content = $contentObject->stdWrap(
+					$content,
+					$typoScript['stdWrap.']
+				);
+			}
+
+			// The FORM_INT object is basically created with the wizard and thus
+			// must not allow any stdWrap handling nor any custom TypoScript!
 		} elseif ($typoScriptObjectName === 'FORM_INT') {
 			$this->initialize($typoScript);
 			$content = $this->execute();

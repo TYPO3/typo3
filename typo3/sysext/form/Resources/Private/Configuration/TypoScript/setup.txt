@@ -1,7 +1,13 @@
 tt_content.mailform.20 >
 tt_content.mailform.20 = FORM
 tt_content.mailform.20 {
+	stdWrap.wrap = <div class="csc-mailform"> | </div>
+	stdWrap {
+		editIcons = tt_content: bodytext
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.form
 
+		prefixComment = 2 | Mail form inserted:
+	}
 }
 
 #tt_content.login.20 >
