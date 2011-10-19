@@ -2834,7 +2834,7 @@ class t3lib_TCEmain {
 						if ($language == 0) {
 								//repointing the new translation records to the parent record we just created
 							$overrideValues[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = $theNewSQLID;
-							$this->copyL10nOverlayRecords($table, $uid, $destPid < 0 ? $tscPID : $destPid, $first, $overrideValues, $excludeFields);
+							$this->copyL10nOverlayRecords($table, $uid, $destPid, $first, $overrideValues, $excludeFields);
 						}
 
 						return $theNewSQLID;
@@ -3391,15 +3391,15 @@ class t3lib_TCEmain {
 
 
 	/**
-	 * Find l10n-overlay records and perform the requested move action for these records.
+	 * Find l10n-overlay records and perform the requested copy action for these records.
 	 *
 	 * @param	string		$table: Record Table
 	 * @param	string		$uid: Record UID
-	 * @param	string		$destPid: Position to move to
+	 * @param	string		$destPid: Position to copy to
 	 * @return	void
 	 */
 	function copyL10nOverlayRecords($table, $uid, $destPid, $first = 0, $overrideValues = array(), $excludeFields = '') {
-			//there's no need to perform this for page-records
+			// There's no need to perform this for page-records or for tables that are not localizeable
 		if (!t3lib_BEfunc::isTableLocalizable($table) || !empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) || !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])) {
 			return;
 		}
@@ -3409,10 +3409,32 @@ class t3lib_TCEmain {
 			$where = ' AND t3ver_oid=0';
 		}
 
+			// If $destPid is < 0, get the pid of the record with uid equal to abs($destPid)
+		$tscPID = t3lib_BEfunc::getTSconfig_pidValue($table, $uid, $destPid);
+
+			// Get the localized records to be copied
 		$l10nRecords = t3lib_BEfunc::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
 		if (is_array($l10nRecords)) {
+				// If $destPid < 0, then it is the uid of the original language record we are inserting after
+			if ($destPid < 0) {
+				$localizedDestPids = array();
+					// Get the localized records of the record we are inserting after
+				$destL10nRecords = t3lib_BEfunc::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], abs($destPid), $where);
+					// Index the localized record uids by language
+				if (is_array($destL10nRecords)) {
+					foreach ($destL10nRecords as $record) {
+						$localizedDestPids[$record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]] = -$record['uid'];
+					}
+				}
+			}
+				// Copy the localized records after the corresponding localizations of the destination record
 			foreach ($l10nRecords as $record) {
-				$this->copyRecord($table, $record['uid'], $destPid, $first, $overrideValues, $excludeFields, $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+				$localizedDestPid = intval($localizedDestPids[$record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]]);
+				if ($localizedDestPid < 0) {
+					$this->copyRecord($table, $record['uid'], $localizedDestPid, $first, $overrideValues, $excludeFields, $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+				} else {
+					$this->copyRecord($table, $record['uid'], $destPid < 0 ? $tscPID : $destPid, $first, $overrideValues, $excludeFields, $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+				}
 			}
 		}
 	}
@@ -3595,6 +3617,8 @@ class t3lib_TCEmain {
 			}
 		} else { // Put after another record
 			if ($sortRow) { // table is being sorted
+					// Save the position to which the original record is requested to be moved
+				$originalRecordDestinationPid = $destPid;
 				$sortInfo = $this->getSortNumber($table, $uid, $destPid);
 				$destPid = $sortInfo['pid']; // Setting the destPid to the new pid of the record.
 				if (is_array($sortInfo)) { // If not an array, there was an error (which is already logged)
@@ -3610,7 +3634,7 @@ class t3lib_TCEmain {
 							// Create query for update:
 						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($uid), $updateFields);
 							// check for the localizations of that element
-						$this->moveL10nOverlayRecords($table, $uid, $destPid);
+						$this->moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid);
 
 							// Call post processing hooks:
 						foreach ($hookObjectsArr as $hookObj) {
@@ -3721,10 +3745,11 @@ class t3lib_TCEmain {
 	 * @param	string		$table: Record Table
 	 * @param	string		$uid: Record UID
 	 * @param	string		$destPid: Position to move to
+	 * @param	string		$originalRecordDestinationPid: Position to move the original record to
 	 * @return	void
 	 */
-	function moveL10nOverlayRecords($table, $uid, $destPid) {
-			//there's no need to perform this for page-records or not localizeable tables
+	function moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid) {
+			// There's no need to perform this for page-records or not localizeable tables
 		if (!t3lib_BEfunc::isTableLocalizable($table) || !empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) || !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])) {
 			return;
 		}
@@ -3735,8 +3760,26 @@ class t3lib_TCEmain {
 		}
 		$l10nRecords = t3lib_BEfunc::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
 		if (is_array($l10nRecords)) {
+				// If $$originalRecordDestinationPid < 0, then it is the uid of the original language record we are inserting after
+			if ($originalRecordDestinationPid < 0) {
+				$localizedDestPids = array();
+					// Get the localized records of the record we are inserting after
+				$destL10nRecords = t3lib_BEfunc::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], abs($originalRecordDestinationPid), $where);
+					// Index the localized record uids by language
+				if (is_array($destL10nRecords)) {
+					foreach ($destL10nRecords as $record) {
+						$localizedDestPids[$record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]] = -$record['uid'];
+					}
+				}
+			}
+				// Move the localized records after the corresponding localizations of the destination record
 			foreach ($l10nRecords as $record) {
-				$this->moveRecord($table, $record['uid'], $destPid);
+				$localizedDestPid = intval($localizedDestPids[$record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]]);
+				if ($localizedDestPid < 0) {
+					$this->moveRecord($table, $record['uid'], $localizedDestPid);
+				} else {
+					$this->moveRecord($table, $record['uid'], $destPid);
+				}
 			}
 		}
 	}
@@ -3808,9 +3851,10 @@ class t3lib_TCEmain {
 										}
 
 										if ($Ttable === $table) {
-
+												// Get the uid of record after which this localized record should be inserted
+											$previousUid = $this->getPreviousLocalizedRecordUid($table, $uid, $row['pid'], $language);
 												// Execute the copy:
-											$newId = $this->copyRecord($table, $uid, -$uid, 1, $overrideValues, implode(',', $excludeFields), $language);
+											$newId = $this->copyRecord($table, $uid, -$previousUid, 1, $overrideValues, implode(',', $excludeFields), $language);
 											$autoVersionNewId = $this->getAutoVersionId($table, $newId);
 											if (is_null($autoVersionNewId) === FALSE) {
 												$this->triggerRemapAction(
@@ -5970,6 +6014,44 @@ class t3lib_TCEmain {
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			return $returnVal;
 		}
+	}
+
+	/**
+	 * Returning uid of previous localized record, if any, for tables with a "sortby" column
+	 * Used when new localized records are created so that localized records are sorted in the same order as the default language records
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Uid of default language record
+	 * @param	integer		Pid of default language record
+	 * @param	integer		Language of localization
+	 *
+	 * @return	integer		uid of record after which the localized record should be inserted
+	 */
+	protected function getPreviousLocalizedRecordUid($table, $uid, $pid, $language) {
+		$previousLocalizedRecordUid = $uid;
+		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
+			$sortRow = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
+				// Get the sort value of the default language record
+			$row = t3lib_BEfunc::getRecord($table, $uid, $sortRow . ',pid,uid');
+			if (is_array($row)) {
+					// Find the previous record in default language on the same page
+				$where = 'pid=' . intval($pid) . ' AND ' . 'sys_language_uid=0' . ' AND ' . $sortRow . '<' . intval($row[$sortRow]);
+
+					// Respect the colPos for content elements
+				if ($table === 'tt_content') {
+					$where .= ' AND colPos=' . $row['colPos'];
+				}
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($sortRow . ',pid,uid', $table, $where . $this->deleteClause($table), '', $sortRow . ' DESC', '1');
+					// If there is an element, find its localized record in specified localization language
+				if ($previousRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					$previousLocalizedRecord = t3lib_BEfunc::getRecordLocalization($table, $previousRow['uid'], $language);
+					if (is_array($previousLocalizedRecord[0])) {
+						$previousLocalizedRecordUid = $previousLocalizedRecord[0]['uid'];
+					}
+				}
+			}
+		}
+		return $previousLocalizedRecordUid;
 	}
 
 	/**
