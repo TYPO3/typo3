@@ -69,7 +69,7 @@ class Tx_Fluid_ViewHelpers_Form_ErrorsViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 */
 	public function render($for = '', $as = 'error') {
 		$errors = $this->controllerContext->getRequest()->getErrors();
-		if ($for !== '') {
+		if ($for !== '' && $for !== NULL) {
 			$propertyPath = explode('.', $for);
 			foreach ($propertyPath as $currentPropertyName) {
 				$errors = $this->getErrorsForProperty($currentPropertyName, $errors);
