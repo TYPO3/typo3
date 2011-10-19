@@ -128,6 +128,15 @@ class tx_form_Controller_Form {
 
 			$content = $contentObject->COBJ_ARRAY($newTypoScript, 'INT');
 
+			if (isset($typoScript['stdWrap.'])) {
+				$content = $contentObject->stdWrap(
+					$content,
+					$typoScript['stdWrap.']
+				);
+			}
+
+			// The FORM_INT object is basically created with the wizard and thus
+			// must not allow any stdWrap handling nor any custom TypoScript!
 		} elseif ($typoScriptObjectName === 'FORM_INT') {
 			$this->initialize($typoScript);
 			$content = $this->execute();
