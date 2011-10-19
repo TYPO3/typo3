@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".description">
@@ -11,20 +11,20 @@
 			</trans-unit>
 			<trans-unit id="_.seeAlso">
 				<source>Page Content Principles | http://typo3.org/documentation/document-library/doc_tut_quickstart/Page_content/,
-					_MOD_web_layout
+_MOD_web_layout
 				</source>
 			</trans-unit>
 			<trans-unit id="_.image">
 				<source>EXT:context_help/cshimages/ttcontent_1.png,
-					EXT:context_help/cshimages/ttcontent_2.png,
-					EXT:context_help/cshimages/ttcontent_3.png
+EXT:context_help/cshimages/ttcontent_2.png,
+EXT:context_help/cshimages/ttcontent_3.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr">
 				<source>The Page Module is used to manage Content Elements arranged in columns and languages.
-					A Content Element has an editing form with many options. The "Type" determines which options are visible.
-					In the Frontend, a Content Element like the above could look like this.
+A Content Element has an editing form with many options. The "Type" determines which options are visible.
+In the Frontend, a Content Element like the above could look like this.
 				</source>
 			</trans-unit>
 			<trans-unit id="CType.description">
@@ -33,59 +33,59 @@
 			<trans-unit id="CType.details">
 				<source>The 'Type' of content you select determines which options are available in the editing form so be sure to save the record before making other changes.
 
-					This is a description of the various types:
+This is a description of the various types:
 
-					&lt;strong&gt;Header&lt;/strong&gt;
-					This type allows you to insert a standard Content Element header and nothing more.
-					Almost all the other types described below also include the Header and its options. The Header type provides a way to insert a header without any other content.
+&lt;strong&gt;Header&lt;/strong&gt;
+This type allows you to insert a standard Content Element header and nothing more.
+Almost all the other types described below also include the Header and its options. The Header type provides a way to insert a header without any other content.
 
-					&lt;strong&gt;Text&lt;/strong&gt;
-					The Text type allows you to insert regular page content. It is generally used for text only content.
+&lt;strong&gt;Text&lt;/strong&gt;
+The Text type allows you to insert regular page content. It is generally used for text only content.
 
-					&lt;strong&gt;Text &amp; Images&lt;/strong&gt;
-					This is the same as the Text type (regular page content) but with the option of attaching images.
+&lt;strong&gt;Text &amp; Images&lt;/strong&gt;
+This is the same as the Text type (regular page content) but with the option of attaching images.
 
-					&lt;strong&gt;Image&lt;/strong&gt;
-					The Image type allows you to insert image only page content.
+&lt;strong&gt;Image&lt;/strong&gt;
+The Image type allows you to insert image only page content.
 
-					&lt;strong&gt;Bullet List&lt;/strong&gt;
-					Lets you create a bullet list. Each line in the text field will appear as a single bullet.
+&lt;strong&gt;Bullet List&lt;/strong&gt;
+Lets you create a bullet list. Each line in the text field will appear as a single bullet.
 
-					&lt;strong&gt;Table&lt;/strong&gt;
-					Lets you create &lt;em&gt;simple&lt;/em&gt; tables. Each line represents a row in the table and vertical bars ('|') separate each column. A popup wizard is also available.
+&lt;strong&gt;Table&lt;/strong&gt;
+Lets you create &lt;em&gt;simple&lt;/em&gt; tables. Each line represents a row in the table and vertical bars ('|') separate each column. A popup wizard is also available.
 
-					&lt;strong&gt;File Links&lt;/strong&gt;
-					Allows you to present a list of files for download. Thumbnails can be attached to the list and you can also display the file size.
+&lt;strong&gt;File Links&lt;/strong&gt;
+Allows you to present a list of files for download. Thumbnails can be attached to the list and you can also display the file size.
 
-					&lt;strong&gt;Form&lt;/strong&gt;
-					Lets you create mail forms using a special syntax or a popup wizard.
+&lt;strong&gt;Form&lt;/strong&gt;
+Lets you create mail forms using a special syntax or a popup wizard.
 
-					&lt;strong&gt;Search&lt;/strong&gt;
-					This inserts a search box and also shows the search results when a search is performed on the page.
+&lt;strong&gt;Search&lt;/strong&gt;
+This inserts a search box and also shows the search results when a search is performed on the page.
 
-					&lt;strong&gt;Login&lt;/strong&gt;
-					Displays a login box for website users. This is only useful if you have already created website users and usergroups.
+&lt;strong&gt;Login&lt;/strong&gt;
+Displays a login box for website users. This is only useful if you have already created website users and usergroups.
 
-					&lt;strong&gt;Menu/Sitemap&lt;/strong&gt;
-					Offers a selection of menus and a sitemap you can insert on a page.
+&lt;strong&gt;Menu/Sitemap&lt;/strong&gt;
+Offers a selection of menus and a sitemap you can insert on a page.
 
-					&lt;strong&gt;Insert records&lt;/strong&gt;
-					This acts as placeholder for other records. With this Content Element, you can resuse multiple content elements from other pages.
+&lt;strong&gt;Insert records&lt;/strong&gt;
+This acts as placeholder for other records. With this Content Element, you can resuse multiple content elements from other pages.
 
-					&lt;strong&gt;Insert plugin&lt;/strong&gt;
-					This will allows you to insert news, forums, guestbooks, lists of addresses, and other functionality. Plugins are typically provided by TYPO3 extensions. The available fields and required configuration depend on the extension.
+&lt;strong&gt;Insert plugin&lt;/strong&gt;
+This will allows you to insert news, forums, guestbooks, lists of addresses, and other functionality. Plugins are typically provided by TYPO3 extensions. The available fields and required configuration depend on the extension.
 
-					&lt;strong&gt;Divider&lt;/strong&gt;
-					This inserts a simple horizontal rule on a page.
+&lt;strong&gt;Divider&lt;/strong&gt;
+This inserts a simple horizontal rule on a page.
 
-					&lt;strong&gt;HTML&lt;/strong&gt;
-					This is plain HTML content. Anything added in the HTML Code of this Content Element will be displayed directly on the page without any preprocessing.
+&lt;strong&gt;HTML&lt;/strong&gt;
+This is plain HTML content. Anything added in the HTML Code of this Content Element will be displayed directly on the page without any preprocessing.
 				</source>
 			</trans-unit>
 			<trans-unit id="_CType.seeAlso">
 				<source>tt_content:colPos,
-					tt_content:sys_language_uid,
-					About Content Elements | http://typo3.org/documentation/document-library/doc_tut_quickstart/Content_element_type/
+tt_content:sys_language_uid,
+About Content Elements | http://typo3.org/documentation/document-library/doc_tut_quickstart/Content_element_type/
 				</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -98,10 +98,10 @@
 			</trans-unit>
 			<trans-unit id="_hidden.seeAlso">
 				<source>tt_content:starttime,
-					tt_content:endtime,
-					tt_content:fe_group,
-					tt_content:colPos,
-					tt_content:sys_language_uid
+tt_content:endtime,
+tt_content:fe_group,
+tt_content:colPos,
+tt_content:sys_language_uid
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -110,9 +110,9 @@
 			</trans-unit>
 			<trans-unit id="_starttime.seeAlso">
 				<source>pages:starttime,
-					tt_content:endtime,
-					tt_content:hidden,
-					tt_content:fe_group
+tt_content:endtime,
+tt_content:hidden,
+tt_content:fe_group
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -121,9 +121,9 @@
 			</trans-unit>
 			<trans-unit id="_endtime.seeAlso">
 				<source>pages:endtime,
-					tt_content:starttime,
-					tt_content:hidden,
-					tt_content:fe_group
+tt_content:starttime,
+tt_content:hidden,
+tt_content:fe_group
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -135,11 +135,11 @@
 			</trans-unit>
 			<trans-unit id="_fe_group.seeAlso">
 				<source>tt_content:hidden,
-					tt_content:starttime,
-					tt_content:endtime,
-					pages:fe_group,
-					fe_users,
-					fe_groups
+tt_content:starttime,
+tt_content:endtime,
+pages:fe_group,
+fe_users,
+fe_groups
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -148,14 +148,14 @@
 			</trans-unit>
 			<trans-unit id="sys_language_uid.details">
 				<source>This allows you to assign a specific language to the Content Element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.
-					The available system languages are created by the administrator.
+The available system languages are created by the administrator.
 				</source>
 			</trans-unit>
 			<trans-unit id="_sys_language_uid.seeAlso">
 				<source>tt_content:colPos,
-					sys_language,
-					Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
-					_MOD_web_layout:language_list
+sys_language,
+Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
+_MOD_web_layout:language_list
 				</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -165,11 +165,11 @@
 			<trans-unit id="layout.details">
 				<source>This option does not work by default for all Content Elements but your website may display Content Elements differently depending on the layout.
 
-					The File Links Content Element does make use of the Layout field by default:
-					"Normal" will provide a list of file links with no thumbnail.
-					"Layout 1" adds a file icon to the left of the link
-					"Layout 2" adds a thumbnail for image files and an icon for other files. A black border is wrapped around the icon.
-					"Layout 3" is similar to Layout 2, but without the black border.
+The File Links Content Element does make use of the Layout field by default:
+"Normal" will provide a list of file links with no thumbnail.
+"Layout 1" adds a file icon to the left of the link
+"Layout 2" adds a thumbnail for image files and an icon for other files. A black border is wrapped around the icon.
+"Layout 3" is similar to Layout 2, but without the black border.
 				</source>
 			</trans-unit>
 			<trans-unit id="colPos.description">
@@ -178,13 +178,13 @@
 			<trans-unit id="colPos.details">
 				<source>Many websites only use one column of content. Some templates, however, let you put content in multiple columns using the Column option.
 
-					&lt;strong&gt;Notice:&lt;/strong&gt; Selecting a column other than "Normal" may cause the Content Element to disappear if the website template does not use that column. If your Content Element mysteriously disappears make sure the Column and Language selectors are set correctly.
+&lt;strong&gt;Notice:&lt;/strong&gt; Selecting a column other than "Normal" may cause the Content Element to disappear if the website template does not use that column. If your Content Element mysteriously disappears make sure the Column and Language selectors are set correctly.
 				</source>
 			</trans-unit>
 			<trans-unit id="_colPos.seeAlso">
 				<source>tt_content:sys_language_uid,
-					_MOD_web_layout:columns_multi,
-					_MOD_web_layout:columns_single
+_MOD_web_layout:columns_multi,
+_MOD_web_layout:columns_single
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -197,14 +197,14 @@
 			<trans-unit id="header.details">
 				<source>Almost all Content Elements will display this header above the content. If you don't want the header displayed, set the header Layout to "Hidden". You can also choose not to enter any content in this field.
 
-					Some content element types do not display the header by default. In those cases the Header field is typically labeled "Name" instead. One example is the HTML Content Element.
+Some content element types do not display the header by default. In those cases the Header field is typically labeled "Name" instead. One example is the HTML Content Element.
 				</source>
 			</trans-unit>
 			<trans-unit id="_header.seeAlso">
 				<source>tt_content:header_position,
-					tt_content:header_link,
-					tt_content:header_layout,
-					tt_content:date,
+tt_content:header_link,
+tt_content:header_layout,
+tt_content:date,
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -224,8 +224,8 @@
 			</trans-unit>
 			<trans-unit id="header_link.syntax">
 				<source>If you insert a Page ID (ex. 51), the link will point to the page with id=51 &lt;em&gt;inside&lt;/em&gt; TYPO3.
-					If you insert an email address (ex. name@my-domain.test), the link will point to that email address.
-					If you insert an URL or domain, (ex. www.typo3.com or http://www.my-domain.org), the link will point to that website.
+If you insert an email address (ex. name@my-domain.test), the link will point to that email address.
+If you insert an URL or domain, (ex. www.typo3.com or http://www.my-domain.org), the link will point to that website.
 				</source>
 			</trans-unit>
 			<trans-unit id="_header_link.seeAlso">
@@ -237,8 +237,8 @@
 			</trans-unit>
 			<trans-unit id="header_layout.details">
 				<source>If you select "Default" the standard design (which is one of the layouts 1-5) will be used.
-					Alternatively you can select from Layout 1 through 5 which are configured in the website template with individual visual designs.
-					If you select "Hidden" the header will simply not appear. This is useful when you don't need a header to display on the website but still want to identify the Content Element in the Backend.
+Alternatively you can select from Layout 1 through 5 which are configured in the website template with individual visual designs.
+If you select "Hidden" the header will simply not appear. This is useful when you don't need a header to display on the website but still want to identify the Content Element in the Backend.
 				</source>
 			</trans-unit>
 			<trans-unit id="_header_layout.seeAlso">
@@ -253,7 +253,7 @@
 			</trans-unit>
 			<trans-unit id="_subheader.seeAlso">
 				<source>tt_content:header
-					tt_content:bodytext
+tt_content:bodytext
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -262,45 +262,45 @@
 			</trans-unit>
 			<trans-unit id="bodytext.details">
 				<source>The main text of the Content Element is entered here and can be formatted with HTML or a Rich Text Editor.
-					The field is reused in other Content Element types so changing the type will cause any text to be reused in that new Content Element type.
+The field is reused in other Content Element types so changing the type will cause any text to be reused in that new Content Element type.
 
-					When you're using this field with the "Text" and "Text &amp; Images" types, the content is normal body text. Each linebreak signifies a new paragraph, you can use the special TYPO3 tag, &amp;lt;LINK&amp;gt;, for making links. You can use many HTML tags but there are limitations depending on your website configuration.
-					A Rich Text Editor is commonly used to add a visual editing interface for 'Text' and 'Text &amp; Images' Content Elements.
+When you're using this field with the "Text" and "Text &amp; Images" types, the content is normal body text. Each linebreak signifies a new paragraph, you can use the special TYPO3 tag, &amp;lt;LINK&amp;gt;, for making links. You can use many HTML tags but there are limitations depending on your website configuration.
+A Rich Text Editor is commonly used to add a visual editing interface for 'Text' and 'Text &amp; Images' Content Elements.
 
-					&lt;b&gt;Bullet Lists:&lt;/b&gt;
-					If the type is "Bullet List" each line in this field is a bullet item.
+&lt;b&gt;Bullet Lists:&lt;/b&gt;
+If the type is "Bullet List" each line in this field is a bullet item.
 
-					&lt;b&gt;Tables:&lt;/b&gt;
-					If the type is "Table" each line represents a table row. Within each line, columns are divided by a vertical bar ('|'). A table row with 3 columns could look like "This is column 1 | Column 2 here | Third column!". The table wizard can also be used for creating tables and is much easier than hand coding them.
+&lt;b&gt;Tables:&lt;/b&gt;
+If the type is "Table" each line represents a table row. Within each line, columns are divided by a vertical bar ('|'). A table row with 3 columns could look like "This is column 1 | Column 2 here | Third column!". The table wizard can also be used for creating tables and is much easier than hand coding them.
 
-					&lt;b&gt;Parameters:&lt;/b&gt;
-					Types like "Form" and "Multimedia" use this field for parameters than can be passed to the Content Element. The "HTML" type expects raw HTML which is simply displayed on the website without any processing.
+&lt;b&gt;Parameters:&lt;/b&gt;
+Types like "Form" and "Multimedia" use this field for parameters than can be passed to the Content Element. The "HTML" type expects raw HTML which is simply displayed on the website without any processing.
 
-					&lt;b&gt;Making a mail form:&lt;/b&gt;
-					When you have selected the "Form" Content Element you can enter form field and other options. This is a brief example:
+&lt;b&gt;Making a mail form:&lt;/b&gt;
+When you have selected the "Form" Content Element you can enter form field and other options. This is a brief example:
 
-					Your name: | *name=input,40 | [Enter name!]
-					Your email: | *email=input,40
-					Your address: | address=textarea,40,10
-					Your haircolor: |hair=radio|Blue=blue, Red=red
+Your name: | *name=input,40 | [Enter name!]
+Your email: | *email=input,40
+Your address: | address=textarea,40,10
+Your haircolor: |hair=radio|Blue=blue, Red=red
 
-					|formtype_mail = submit | Send Form
-					|subject=hidden| Enter a subject here!
-					|html_enabled=hidden | 1
+|formtype_mail = submit | Send Form
+|subject=hidden| Enter a subject here!
+|html_enabled=hidden | 1
 
-					The first two lines makes input fields for name and email. Both are marked as "required" and are designated by the *, and the name field has a default value of "[Enter name!]".
-					The third line is a text box and the fourth makes radio buttons to select a hair color.
-					After the input fields, there are three important lines in the end. The first makes a submit button with the label "Send Form", the second line is the subject of the email the receiver gets, and the third line formats the email using HTML.
-					Like the table wizard, it is easier to use the form wizard rather than hand coding the forms.
+The first two lines makes input fields for name and email. Both are marked as "required" and are designated by the *, and the name field has a default value of "[Enter name!]".
+The third line is a text box and the fourth makes radio buttons to select a hair color.
+After the input fields, there are three important lines in the end. The first makes a submit button with the label "Send Form", the second line is the subject of the email the receiver gets, and the third line formats the email using HTML.
+Like the table wizard, it is easier to use the form wizard rather than hand coding the forms.
 
-					&lt;b&gt;Note:&lt;/b&gt; For a form to work you must add an email address for the Recipient Email in its field.
+&lt;b&gt;Note:&lt;/b&gt; For a form to work you must add an email address for the Recipient Email in its field.
 				</source>
 			</trans-unit>
 			<trans-unit id="_bodytext.seeAlso">
 				<source>tt_content:CType,
-					tt_content:subheader,
-					xMOD_csh_corebe:wizard_forms_wiz,
-					xMOD_csh_corebe:wizard_table_wiz
+tt_content:subheader,
+xMOD_csh_corebe:wizard_forms_wiz,
+xMOD_csh_corebe:wizard_table_wiz
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -309,12 +309,12 @@
 			</trans-unit>
 			<trans-unit id="text_align.details">
 				<source>See Page Content / Fontface for comments.
-					&lt;b&gt;Note:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.
+&lt;b&gt;Note:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.
 				</source>
 			</trans-unit>
 			<trans-unit id="_text_align.seeAlso">
 				<source>tt_content:text_face,
-					tt_content:bodytext
+tt_content:bodytext
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -326,7 +326,7 @@
 			</trans-unit>
 			<trans-unit id="_text_face.seeAlso">
 				<source>tt_content:text_face,
-					tt_content:bodytext
+tt_content:bodytext
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -335,12 +335,12 @@
 			</trans-unit>
 			<trans-unit id="text_size.details">
 				<source>See Page Content / Fontface for comments.
-					&lt;b&gt;Note:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.
+&lt;b&gt;Note:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.
 				</source>
 			</trans-unit>
 			<trans-unit id="_text_size.seeAlso">
 				<source>tt_content:text_face,
-					tt_content:bodytext
+tt_content:bodytext
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -349,12 +349,12 @@
 			</trans-unit>
 			<trans-unit id="text_color.details">
 				<source>See Page Content / Fontface for comments.
-					&lt;b&gt;Note:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.
+&lt;b&gt;Note:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.
 				</source>
 			</trans-unit>
 			<trans-unit id="_text_color.seeAlso">
 				<source>tt_content:text_face,
-					tt_content:bodytext
+tt_content:bodytext
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -364,17 +364,17 @@
 			<trans-unit id="text_properties.details">
 				<source>These options will select font properties for all the body text. However you may wish to mark only a part of the bodytext as bold or underline in which case you should use the formatting options in the Rich Text Editor. Alternatively you can use the HTML tags here:
 
-					&amp;lt;b&amp;gt;&lt;strong&gt;This is bold&lt;/strong&gt;&amp;lt;b&amp;gt;
-					&amp;lt;i&amp;gt;&lt;em&gt;This is italics&lt;/em&gt;&amp;lt;i&amp;gt;
-					&amp;lt;u&amp;gt;&lt;u&gt;This is underlined&lt;/u&gt;&amp;lt;u&amp;gt;
+&amp;lt;b&amp;gt;&lt;strong&gt;This is bold&lt;/strong&gt;&amp;lt;b&amp;gt;
+&amp;lt;i&amp;gt;&lt;em&gt;This is italics&lt;/em&gt;&amp;lt;i&amp;gt;
+&amp;lt;u&amp;gt;&lt;u&gt;This is underlined&lt;/u&gt;&amp;lt;u&amp;gt;
 
-					See Page Content / Fontface for comments.
-					&lt;b&gt;Note:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.
+See Page Content / Fontface for comments.
+&lt;b&gt;Note:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.
 				</source>
 			</trans-unit>
 			<trans-unit id="_text_properties.seeAlso">
 				<source>tt_content:text_face,
-					tt_content:bodytext
+tt_content:bodytext
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -383,27 +383,27 @@
 			</trans-unit>
 			<trans-unit id="image.details">
 				<source>You can attach multiple images to the Content Element.
-					Depending on the configuration of TYPO3, you can attach images in many formats without worrying about size and compression. TYPO3's graphics processing handles these details for you.
+Depending on the configuration of TYPO3, you can attach images in many formats without worrying about size and compression. TYPO3's graphics processing handles these details for you.
 
-					When you use the "Text &amp; Images" type, it's important to select a proper position for images. For this purpose, use the Position and Aligment selector. See link to "Page Content / Position" below.
-					You can also display images in multiple columns and even enable an option that opens full size images when thumbnails are clicked.
+When you use the "Text &amp; Images" type, it's important to select a proper position for images. For this purpose, use the Position and Aligment selector. See link to "Page Content / Position" below.
+You can also display images in multiple columns and even enable an option that opens full size images when thumbnails are clicked.
 				</source>
 			</trans-unit>
 			<trans-unit id="_image.seeAlso">
 				<source>tt_content:imagewidth,
-					tt_content:imageheight,
-					tt_content:imageorient,
-					tt_content:imageborder,
-					tt_content:image_noRows,
-					tt_content:image_link,
-					tt_content:image_zoom,
-					tt_content:imagecols,
-					tt_content:imagecaption,
-					tt_content:image_effects,
-					tt_content:image_frames,
-					tt_content:image_compression,
-					Using images ("Getting Started") | http://typo3.org/documentation/document-library/doc_tut_quickstart/Managing_files_in_TY/
-					Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif
+tt_content:imageheight,
+tt_content:imageorient,
+tt_content:imageborder,
+tt_content:image_noRows,
+tt_content:image_link,
+tt_content:image_zoom,
+tt_content:imagecols,
+tt_content:imagecaption,
+tt_content:image_effects,
+tt_content:image_frames,
+tt_content:image_compression,
+Using images ("Getting Started") | http://typo3.org/documentation/document-library/doc_tut_quickstart/Managing_files_in_TY/
+Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif
 				</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -422,7 +422,7 @@
 			</trans-unit>
 			<trans-unit id="_imagewidth.seeAlso">
 				<source>tt_content:imageheight,
-					tt_content:image
+tt_content:image
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -431,7 +431,7 @@
 			</trans-unit>
 			<trans-unit id="_imageheight.seeAlso">
 				<source>tt_content:imagewidth,
-					tt_content:image
+tt_content:image
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -440,8 +440,8 @@
 			</trans-unit>
 			<trans-unit id="imageorient.details">
 				<source>The positions above and below the body text are pretty straight forward.
-					The options for "In text" mean that images are displayed with text wrapped around them. When you select this option the template will probably force the images into smaller dimensions to accomodate the width of the template and the width of the text. The bodytext will float &lt;em&gt;under&lt;/em&gt; the image block when it reaches the end of the image block. In other words, the body text &lt;em&gt;wraps around&lt;/em&gt; the image block. If you select "In text" below the "No wrap" divider, the body text will not float under the image block, but simply continue in its column.
-					Apart from the visual difference there is a technical aspect as well. If you choose to allow the content to wrap the image block you will experience a strange phenomenon when you do not have enough bodytext to make it float around the image: subsequent content elements on the page will appear to be layered on top of the image block. However it's easily solved by changing the "In text" position to the equal value but below the "No wrap" divider.
+The options for "In text" mean that images are displayed with text wrapped around them. When you select this option the template will probably force the images into smaller dimensions to accomodate the width of the template and the width of the text. The bodytext will float &lt;em&gt;under&lt;/em&gt; the image block when it reaches the end of the image block. In other words, the body text &lt;em&gt;wraps around&lt;/em&gt; the image block. If you select "In text" below the "No wrap" divider, the body text will not float under the image block, but simply continue in its column.
+Apart from the visual difference there is a technical aspect as well. If you choose to allow the content to wrap the image block you will experience a strange phenomenon when you do not have enough bodytext to make it float around the image: subsequent content elements on the page will appear to be layered on top of the image block. However it's easily solved by changing the "In text" position to the equal value but below the "No wrap" divider.
 				</source>
 			</trans-unit>
 			<trans-unit id="imageborder.description">
@@ -449,7 +449,7 @@
 			</trans-unit>
 			<trans-unit id="_imageborder.seeAlso">
 				<source>tt_content:imagecols,
-					tt_content:image
+tt_content:image
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -458,12 +458,12 @@
 			</trans-unit>
 			<trans-unit id="image_noRows.details">
 				<source>To illustrate, imagine you have 2 or more columns &lt;em&gt;and&lt;/em&gt; rows of images. If one image in the upper row is taller than the second this will generate empty space beneath the second image. This is due to the normal flow in which the images are placed in table cells.
-					If you enable the No Rows option, the table will place the images in a column into a single table cell which make the distance between them vertically identical throughout. This may provide a better look if the alternative is unacceptable.
+If you enable the No Rows option, the table will place the images in a column into a single table cell which make the distance between them vertically identical throughout. This may provide a better look if the alternative is unacceptable.
 				</source>
 			</trans-unit>
 			<trans-unit id="_image_noRows.seeAlso">
 				<source>tt_content:imagecols,
-					tt_content:image
+tt_content:image
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -473,13 +473,13 @@
 			<trans-unit id="image_link.details">
 				<source>By default all images share the same link. Your TypoScript template may be configured to allow a separate link for each image. If this is the case, you simply separate the links with a comma.
 
-					See Page Content&gt;Link below for details on syntax.
+See Page Content&gt;Link below for details on syntax.
 				</source>
 			</trans-unit>
 			<trans-unit id="_image_link.seeAlso">
 				<source>tt_content:header_link,
-					tt_content:image_zoom,
-					tt_content:image
+tt_content:image_zoom,
+tt_content:image
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -491,7 +491,7 @@
 			</trans-unit>
 			<trans-unit id="_image_zoom.seeAlso">
 				<source>tt_content:image_link,
-					tt_content:image
+tt_content:image
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -500,8 +500,8 @@
 			</trans-unit>
 			<trans-unit id="_image_effects.seeAlso">
 				<source>tt_content:image_compression,
-					tt_content:image_frames,
-					tt_content:image
+tt_content:image_frames,
+tt_content:image
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -510,8 +510,8 @@
 			</trans-unit>
 			<trans-unit id="_image_frames.seeAlso">
 				<source>tt_content:image_compression,
-					tt_content:image_effects,
-					tt_content:image
+tt_content:image_effects,
+tt_content:image
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -520,8 +520,8 @@
 			</trans-unit>
 			<trans-unit id="_image_compression.seeAlso">
 				<source>tt_content:image_frames,
-					tt_content:image_effects,
-					tt_content:image
+tt_content:image_effects,
+tt_content:image
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -530,7 +530,7 @@
 			</trans-unit>
 			<trans-unit id="_imagecols.seeAlso">
 				<source>tt_content:image_noRows,
-					tt_content:image
+tt_content:image
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -539,14 +539,14 @@
 			</trans-unit>
 			<trans-unit id="imagecaption.details">
 				<source>By default, the caption is positioned below the images. However, your TypoScript template may be configured to allow individual image captions by setting "styles.content.imgtext.captionSplit=1" in your template constants.
-					In this case, each line in this field will be the image caption of the corresponding image in the list.
+In this case, each line in this field will be the image caption of the corresponding image in the list.
 
-					The caption text field is also used by the Content Element type "File Links" where each line represents a description of a file in the list.
+The caption text field is also used by the Content Element type "File Links" where each line represents a description of a file in the list.
 				</source>
 			</trans-unit>
 			<trans-unit id="_imagecaption.seeAlso">
 				<source>tt_content:imagecaption_position,
-					tt_content:image
+tt_content:image
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -555,7 +555,7 @@
 			</trans-unit>
 			<trans-unit id="_imagecaption_position.seeAlso">
 				<source>tt_content:imagecaption,
-					tt_content:image
+tt_content:image
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -568,20 +568,20 @@
 			<trans-unit id="pages.details">
 				<source>This field is used by many of the Content Element types to create a relation to either a single target page or multiple target pages. If no target page is specified, the current page will generally be used.
 
-					Using the "Search" Content Element, the target page is where search results will appear. You must make sure that this page has a similar "Search" Content Element to display the results.
+Using the "Search" Content Element, the target page is where search results will appear. You must make sure that this page has a similar "Search" Content Element to display the results.
 
-					The "Login" Content Element (not to be confused with the Login plugin available when the felogin extension is installed) also uses this field to redirect the login to a certain page. That page does not need to contain a "Login" Content Element in order to perform the authentication since any TYPO3 page can handle a login request.
-					If you specify a second page in this list, the ID will be passed to the login system as the page inside TYPO3 where website users are found. You should use this only if your template is not already configured to pass this value on.
-					In order for the login procedure to work you must make sure that you have created website users and website usergroups, have specified where these website users can be found (typically a SysFolder), a page ID in the page list, and ensured that cookies are enabled for the site.
+The "Login" Content Element (not to be confused with the Login plugin available when the felogin extension is installed) also uses this field to redirect the login to a certain page. That page does not need to contain a "Login" Content Element in order to perform the authentication since any TYPO3 page can handle a login request.
+If you specify a second page in this list, the ID will be passed to the login system as the page inside TYPO3 where website users are found. You should use this only if your template is not already configured to pass this value on.
+In order for the login procedure to work you must make sure that you have created website users and website usergroups, have specified where these website users can be found (typically a SysFolder), a page ID in the page list, and ensured that cookies are enabled for the site.
 
-					The "Menu/Sitemap" Content Elements also use this field. In this case the page will determine the starting point for the menu or the actual pages shown in the menu. This behavior depends on the menu type you have selected.
+The "Menu/Sitemap" Content Elements also use this field. In this case the page will determine the starting point for the menu or the actual pages shown in the menu. This behavior depends on the menu type you have selected.
 
-					Finally the "Form" element uses this field as the target page to which the form is submitted. A common use is the "Thank you" page after the form is completed.
+Finally the "Form" element uses this field as the target page to which the form is submitted. A common use is the "Thank you" page after the form is completed.
 				</source>
 			</trans-unit>
 			<trans-unit id="_pages.seeAlso">
 				<source>tt_content:CType,
-					tt_content:recursive
+tt_content:recursive
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -591,7 +591,7 @@
 			<trans-unit id="recursive.details">
 				<source>This feature depends on the TypoScript template configuration and Content Element type. If enabled, each page listed in the "Pages" field will also have its subpages included to the specified depth.
 
-					&lt;strong&gt;Warning:&lt;/strong&gt; If there are many subpages, be aware that this option may return a large number of results
+&lt;strong&gt;Warning:&lt;/strong&gt; If there are many subpages, be aware that this option may return a large number of results
 				</source>
 			</trans-unit>
 			<trans-unit id="_recursive.seeAlso">
@@ -604,36 +604,36 @@
 			<trans-unit id="menu_type.details">
 				<source>This is a short description of each type:
 
-					&lt;strong&gt;Menu of selected pages&lt;/strong&gt;
-					This will create a menu with links to the pages in the Selected Pages list.
+&lt;strong&gt;Menu of selected pages&lt;/strong&gt;
+This will create a menu with links to the pages in the Selected Pages list.
 
-					&lt;strong&gt;Menu of subpages of selected pages&lt;/strong&gt;
-					This will create in a menu with links to the subpages of the pages in the Selected Pages list. If you do not specify any pages, the subpages to the current page will be used.
+&lt;strong&gt;Menu of subpages of selected pages&lt;/strong&gt;
+This will create in a menu with links to the subpages of the pages in the Selected Pages list. If you do not specify any pages, the subpages to the current page will be used.
 
-					&lt;strong&gt;Menu of subpages of selected pages (with abstract)&lt;/strong&gt;
-					Like the previous option, but also displays the content of the Abstract field (or the Description field) for each page in the menu. The Abstract field is given priority over the Description field if both are complete.
+&lt;strong&gt;Menu of subpages of selected pages (with abstract)&lt;/strong&gt;
+Like the previous option, but also displays the content of the Abstract field (or the Description field) for each page in the menu. The Abstract field is given priority over the Description field if both are complete.
 
-					&lt;strong&gt;Menu of subpages of selected pages + sections&lt;/strong&gt;
-					Like the previous option, but includes links to all Content Elements on the page that are marked to Show In Section Menus.
+&lt;strong&gt;Menu of subpages of selected pages + sections&lt;/strong&gt;
+Like the previous option, but includes links to all Content Elements on the page that are marked to Show In Section Menus.
 
-					&lt;strong&gt;Sitemap&lt;/strong&gt;
-					Generates a classic tree sitemap. Notice that the sitemap will begin from the current page unless you select another page instead.
+&lt;strong&gt;Sitemap&lt;/strong&gt;
+Generates a classic tree sitemap. Notice that the sitemap will begin from the current page unless you select another page instead.
 
-					&lt;strong&gt;Section index (page content marked for section menus)&lt;/strong&gt;
-					This makes a menu of Content Elements on the selected pages for all Content Elements marked to Show In Section Menu. This is a great way to make an index at the top of the page.
-					If you don't want certain Content Elements to appear in the list, just uncheck the Show in Section Menus checkbox for those elements.
+&lt;strong&gt;Section index (page content marked for section menus)&lt;/strong&gt;
+This makes a menu of Content Elements on the selected pages for all Content Elements marked to Show In Section Menu. This is a great way to make an index at the top of the page.
+If you don't want certain Content Elements to appear in the list, just uncheck the Show in Section Menus checkbox for those elements.
 
-					&lt;strong&gt;Recently updated pages&lt;/strong&gt;
-					This displays the 10 most recently updated pages.
-					&lt;strong&gt;Notice:&lt;/strong&gt; If you update a page and the updated page is not included in this list, clearing the Page Cache will resolve the issue.
+&lt;strong&gt;Recently updated pages&lt;/strong&gt;
+This displays the 10 most recently updated pages.
+&lt;strong&gt;Notice:&lt;/strong&gt; If you update a page and the updated page is not included in this list, clearing the Page Cache will resolve the issue.
 
-					&lt;strong&gt;Related pages (based on keywords)&lt;/strong&gt;
-					Displays other related pages based on the keywords of the selected pages matched against the keywords of other pages.
+&lt;strong&gt;Related pages (based on keywords)&lt;/strong&gt;
+Displays other related pages based on the keywords of the selected pages matched against the keywords of other pages.
 				</source>
 			</trans-unit>
 			<trans-unit id="_menu_type.seeAlso">
 				<source>tt_content:pages,
-					tt_content:sectionIndex
+tt_content:sectionIndex
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -696,7 +696,7 @@
 			</trans-unit>
 			<trans-unit id="_spaceBefore.seeAlso">
 				<source>tt_content:spaceAfter,
-					tt_content:section_frame
+tt_content:section_frame
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -705,7 +705,7 @@
 			</trans-unit>
 			<trans-unit id="_spaceAfter.seeAlso">
 				<source>tt_content:spaceBefore,
-					tt_content:section_frame
+tt_content:section_frame
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -714,7 +714,7 @@
 			</trans-unit>
 			<trans-unit id="_section_frame.seeAlso">
 				<source>tt_content:spaceAfter,
-					tt_content:spaceBefore
+tt_content:spaceBefore
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>

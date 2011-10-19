@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id="labels.openInNewWindow">
@@ -74,7 +74,7 @@
 			</trans-unit>
 			<trans-unit id="labels.fieldsChanged">
 				<source>There are unsaved changes in the form!
-					Do you want to continue WITHOUT saving?
+Do you want to continue WITHOUT saving?
 				</source>
 			</trans-unit>
 			<trans-unit id="labels.noRTEfound">
@@ -493,7 +493,7 @@
 			</trans-unit>
 			<trans-unit id="mess.refresh_login">
 				<source>Your login has probably expired.
-					Do you want to refresh it now?
+Do you want to refresh it now?
 				</source>
 			</trans-unit>
 			<trans-unit id="mess.refresh_login_refresh_button">
@@ -555,7 +555,7 @@
 			</trans-unit>
 			<trans-unit id="mess.onChangeAlert">
 				<source>This change will affect which fields are available in the form.
-					Would you like to save now in order to refresh the display?
+Would you like to save now in order to refresh the display?
 				</source>
 			</trans-unit>
 			<trans-unit id="mess.move_into">
@@ -902,11 +902,11 @@
 			</trans-unit>
 			<trans-unit id="ExtDirect.namespaceError">
 				<source>Ext Direct error in "%s" with namespace: "%s"\n
-					Try to clear the TYPO3 cache and / or use paramater no_cache=1 as parameter in URL typo3/ajax.php\n\n
-					Check also the following points:\n
-					- configuration in ext_localconf.php: registration key should be like "TYPO3.MyExtension.Sample"\n
-					- URL typo3/ajax.php: namespace parameter should be like: "TYPO3.MyExtension"\n
-					- javascript: method\'s name should be like: "TYPO3.MyExtension.Sample.myMethod"\n
+Try to clear the TYPO3 cache and / or use paramater no_cache=1 as parameter in URL typo3/ajax.php\n\n
+Check also the following points:\n
+- configuration in ext_localconf.php: registration key should be like "TYPO3.MyExtension.Sample"\n
+- URL typo3/ajax.php: namespace parameter should be like: "TYPO3.MyExtension"\n
+- javascript: method\'s name should be like: "TYPO3.MyExtension.Sample.myMethod"\n
 				</source>
 			</trans-unit>
 			<trans-unit id="ExtDirect.noNamespace">

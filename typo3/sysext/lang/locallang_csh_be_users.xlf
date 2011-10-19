@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".description">
@@ -8,37 +8,37 @@
 			</trans-unit>
 			<trans-unit id=".details">
 				<source>The main settings for a backend user is a username, password and group memberships. The username and password authenticates the user to the system. The group memberships enables the user to perform actions in TYPO3 since groups are the main source of permission settings for a backend user.
-					Backend usergroups can also be understood as "roles". A usergroup can contain a configuration of permissions which allows the user to play a certain role in the system.
+Backend usergroups can also be understood as "roles". A usergroup can contain a configuration of permissions which allows the user to play a certain role in the system.
 
-					&lt;b&gt;The "Admin" user&lt;/b&gt;
-					There is a special kind of user, the "Admin" user. This user has access to everything in TYPO3. There are no limits for Admin-users at all. You should normally have only a single or two admin-users in your system.
-					Admin-users are the only users who can create other backend users. Alternatively you can create an "Action" which enables other normal users to do it as well (with certain restrictions of course).
+&lt;b&gt;The "Admin" user&lt;/b&gt;
+There is a special kind of user, the "Admin" user. This user has access to everything in TYPO3. There are no limits for Admin-users at all. You should normally have only a single or two admin-users in your system.
+Admin-users are the only users who can create other backend users. Alternatively you can create an "Action" which enables other normal users to do it as well (with certain restrictions of course).
 
-					&lt;b&gt;Location&lt;/b&gt;
-					Backend users are always created in the root of the page tree (like Backend groups are).
+&lt;b&gt;Location&lt;/b&gt;
+Backend users are always created in the root of the page tree (like Backend groups are).
 
-					&lt;b&gt;Comparing Users&lt;/b&gt;
-					To manage and compare users, getting an overview of their access credentials etc. you can use the Tools &gt; User Admin module (extension: beuser). It allows you to group users by various categories of permissions. You can also switch to another users account by a single click of a button.
+&lt;b&gt;Comparing Users&lt;/b&gt;
+To manage and compare users, getting an overview of their access credentials etc. you can use the Tools &gt; User Admin module (extension: beuser). It allows you to group users by various categories of permissions. You can also switch to another users account by a single click of a button.
 				</source>
 			</trans-unit>
 			<trans-unit id="_.seeAlso">
 				<source>be_groups,
-					About backend users | http://typo3.org/documentation/document-library/doc_tut_quickstart/Backend_users/
-					Setting up a new user and group | http://typo3.org/documentation/document-library/doc_core_inside/Setting_up_a_new_use/
-					Users and Groups [Technical] | http://typo3.org/documentation/document-library/doc_core_inside/Users_and_groups/
+About backend users | http://typo3.org/documentation/document-library/doc_tut_quickstart/Backend_users/
+Setting up a new user and group | http://typo3.org/documentation/document-library/doc_core_inside/Setting_up_a_new_use/
+Users and Groups [Technical] | http://typo3.org/documentation/document-library/doc_core_inside/Users_and_groups/
 				</source>
 			</trans-unit>
 			<trans-unit id="_.image">
 				<source>EXT:lang/cshimages/beuser_2.png,
-					EXT:lang/cshimages/beuser_1.png,
-					EXT:lang/cshimages/beuser_3.png
+EXT:lang/cshimages/beuser_1.png,
+EXT:lang/cshimages/beuser_3.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr">
 				<source>Backend users are found in the root of the page tree. "Admin" backend users can always be recognized on their icon being red while normal users have a blue icon.
-					The editing form of a backend users record.
-					The "Tools &gt; User Admin" module where you can get an overview of the users on the system and what permissions they have. Click the "SU" button to switch to a users account.
+The editing form of a backend users record.
+The "Tools &gt; User Admin" module where you can get an overview of the users on the system and what permissions they have. Click the "SU" button to switch to a users account.
 				</source>
 			</trans-unit>
 			<trans-unit id="username.description">
@@ -56,14 +56,14 @@
 			</trans-unit>
 			<trans-unit id="password.details">
 				<source>The password is required. Before the password is sent to the server it's md5-hashed, so the password value itself is not transferred over the Internet. This is true both when editing the password and when the user logs in.
-					While this principle does not reveal the raw password it is &lt;i&gt;not&lt;/i&gt; the same as real encryption. If you need the highest degree of security you should install the TYPO3 backend on a secure server.
-					The password is stored in the database as an md5-hash and thus it's not possible to extract the original password from the database either. This means that 'lost passwords' must be substituted with a new password for the user.
+While this principle does not reveal the raw password it is &lt;i&gt;not&lt;/i&gt; the same as real encryption. If you need the highest degree of security you should install the TYPO3 backend on a secure server.
+The password is stored in the database as an md5-hash and thus it's not possible to extract the original password from the database either. This means that 'lost passwords' must be substituted with a new password for the user.
 
-					&lt;b&gt;Notice&lt;/b&gt;
-					When you enter the password in the password field it is initially visible in clear text! First when the password field focus is lost will the password become a "list of dots".
+&lt;b&gt;Notice&lt;/b&gt;
+When you enter the password in the password field it is initially visible in clear text! First when the password field focus is lost will the password become a "list of dots".
 
-					&lt;b&gt;User changing password&lt;/b&gt;
-					Users can change their password from the User &gt; Setup module
+&lt;b&gt;User changing password&lt;/b&gt;
+Users can change their password from the User &gt; Setup module
 				</source>
 			</trans-unit>
 			<trans-unit id="_password.seeAlso">
@@ -75,12 +75,12 @@
 			</trans-unit>
 			<trans-unit id="usergroup.details">
 				<source>The backend user groups defines the permissions which the backend user will inherit. So unless the backend user is an 'Admin' user, he needs to be a member of one or more user groups in order to have practically any permissions assigned. The properties set in the user groups are mostly added together.
-					The first (top) group in the list is the group which will, by default, be the owner of pages the user creates.
+The first (top) group in the list is the group which will, by default, be the owner of pages the user creates.
 				</source>
 			</trans-unit>
 			<trans-unit id="_usergroup.seeAlso">
 				<source>be_users:TSconfig,
-					be_groups
+be_groups
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -92,8 +92,8 @@
 			</trans-unit>
 			<trans-unit id="_lockToDomain.seeAlso">
 				<source>be_groups:lockToDomain,
-					fe_users:lockToDomain,
-					fe_groups:lockToDomain
+fe_users:lockToDomain,
+fe_groups:lockToDomain
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -109,27 +109,27 @@
 			<trans-unit id="db_mountpoints.details">
 				<source>The page tree used my all Web-submodules to navigate must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a 'Database mount'.
 
-					&lt;strong&gt;Notice&lt;/strong&gt; that backend user groups also has DB mounts which can be inherited by the user. So if you want a group of users to share a page tree, you should probably mount the page tree in the backend user group which they share instead.
+&lt;strong&gt;Notice&lt;/strong&gt; that backend user groups also has DB mounts which can be inherited by the user. So if you want a group of users to share a page tree, you should probably mount the page tree in the backend user group which they share instead.
 				</source>
 			</trans-unit>
 			<trans-unit id="_db_mountpoints.seeAlso">
 				<source>be_groups:db_mountpoints,
-					be_users:file_mountpoints,
-					be_users:options,
-					xMOD_csh_corebe:perm_module,
-					xMOD_csh_corebe:pagetree
+be_users:file_mountpoints,
+be_users:options,
+xMOD_csh_corebe:perm_module,
+xMOD_csh_corebe:pagetree
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_db_mountpoints.image">
 				<source>EXT:lang/cshimages/be_groups_3.png,
-					EXT:lang/cshimages/be_groups_4.png
+EXT:lang/cshimages/be_groups_4.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="db_mountpoints.image_descr">
 				<source>A DB mount is assigned to the user. Users can only operate on pages and records which are inside their DB mounts!
-					When a page is mounted for a user it will become the root of their page tree. The user must have access to the page through the regular page permissions set in the Web &gt; Access module.
+When a page is mounted for a user it will become the root of their page tree. The user must have access to the page through the regular page permissions set in the Web &gt; Access module.
 				</source>
 			</trans-unit>
 			<trans-unit id="file_mountpoints.description">
@@ -137,16 +137,16 @@
 			</trans-unit>
 			<trans-unit id="file_mountpoints.details">
 				<source>The file folder tree is used by all File-submodules to navigate between the file folders on the webserver.
-					Notice as with 'DB mounts' the file folder mounts may be inherited from the member groups of the user.
-					See Backend Groups for details
+Notice as with 'DB mounts' the file folder mounts may be inherited from the member groups of the user.
+See Backend Groups for details
 				</source>
 			</trans-unit>
 			<trans-unit id="_file_mountpoints.seeAlso">
 				<source>be_groups:file_mountpoints,
-					be_users:db_mountpoints,
-					be_users:options,
-					xMOD_csh_corebe:filetree,
-					sys_filemounts
+be_users:db_mountpoints,
+be_users:options,
+xMOD_csh_corebe:filetree,
+sys_filemounts
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -155,12 +155,12 @@
 			</trans-unit>
 			<trans-unit id="email.details">
 				<source>This address is rather important to enter because this is where messages from the system is sent.
-					&lt;strong&gt;Notice&lt;/strong&gt; the user is able to change this value by himself from within the User&gt;Setup module.
+&lt;strong&gt;Notice&lt;/strong&gt; the user is able to change this value by himself from within the User&gt;Setup module.
 				</source>
 			</trans-unit>
 			<trans-unit id="_email.seeAlso">
 				<source>be_users:realName,
-					_MOD_user_setup:option_newPassword
+_MOD_user_setup:option_newPassword
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -172,7 +172,7 @@
 			</trans-unit>
 			<trans-unit id="_realName.seeAlso">
 				<source>be_users:email,
-					_MOD_user_setup:option_newPassword
+_MOD_user_setup:option_newPassword
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -181,7 +181,7 @@
 			</trans-unit>
 			<trans-unit id="_disable.seeAlso">
 				<source>be_users:starttime,
-					be_users:endtime
+be_users:endtime
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -190,10 +190,10 @@
 			</trans-unit>
 			<trans-unit id="admin.details">
 				<source>'Admin' can do anything TYPO3 allows and this kind of user should be used only for administrative purposes. All daily handling should be done with regular users.
-					'Admin' users don't need to be members of any backend user groups. However you should be aware that any page created by an admin user without a group will not have any owner-group assigned and thus it will probably be invisible for other users. If this becomes a problem you can easily solve it by assigning a user group to the 'Admin' user anyway. This does of course not affect the permissions since they are unlimited, but the first group listed is by default the owner group of newly created pages.
-					'Admin' users are easily recognized as they appear with a red icon instead of the ordinary blue user-icon.
+'Admin' users don't need to be members of any backend user groups. However you should be aware that any page created by an admin user without a group will not have any owner-group assigned and thus it will probably be invisible for other users. If this becomes a problem you can easily solve it by assigning a user group to the 'Admin' user anyway. This does of course not affect the permissions since they are unlimited, but the first group listed is by default the owner group of newly created pages.
+'Admin' users are easily recognized as they appear with a red icon instead of the ordinary blue user-icon.
 
-					You should probably not assign any other users than yourself as an 'Admin' user.
+You should probably not assign any other users than yourself as an 'Admin' user.
 				</source>
 			</trans-unit>
 			<trans-unit id="_admin.image">
@@ -205,12 +205,12 @@
 			</trans-unit>
 			<trans-unit id="options.details">
 				<source>It's a great advantage to let users inherit mountpoints from membergroups because it makes administration of the same mountpoints for many users extremely easy.
-					If you don't check these options, you must make sure the mount points for the page tree and file folder tree is set specifically for the user.
+If you don't check these options, you must make sure the mount points for the page tree and file folder tree is set specifically for the user.
 				</source>
 			</trans-unit>
 			<trans-unit id="_options.seeAlso">
 				<source>be_users:db_mountpoints,
-					be_users:file_mountpoints
+be_users:file_mountpoints
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -220,12 +220,12 @@
 			<trans-unit id="fileoper_perms.details">
 				<source>These settings relate to the functions found in the File&gt;List module as well as general upload of files.
 
-					&lt;strong&gt;Notice&lt;/strong&gt; that backend user groups also have file operation permissions which automatically apply to the user if he's member of an accordant group. So if you want a group of users share identical file operation permissions, you should probably define them in a backend user group instead.
+&lt;strong&gt;Notice&lt;/strong&gt; that backend user groups also have file operation permissions which automatically apply to the user if he's member of an accordant group. So if you want a group of users share identical file operation permissions, you should probably define them in a backend user group instead.
 				</source>
 			</trans-unit>
 			<trans-unit id="_fileoper_perms.seeAlso">
 				<source>be_users:file_mountpoints,
-					be_group:fileoper_perms
+be_group:fileoper_perms
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -234,8 +234,8 @@
 			</trans-unit>
 			<trans-unit id="_starttime.seeAlso">
 				<source>be_users:disable,
-					be_users:endtime,
-					pages:starttime
+be_users:endtime,
+pages:starttime
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -244,8 +244,8 @@
 			</trans-unit>
 			<trans-unit id="_endtime.seeAlso">
 				<source>be_users:disable,
-					be_users:starttime,
-					pages:starttime
+be_users:starttime,
+pages:starttime
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -257,9 +257,9 @@
 			</trans-unit>
 			<trans-unit id="lang.details">
 				<source>This determines the language of the backend interface for the user. All mainstream parts available for regular users are available in the system language selected.
-					'Admin'-users however will experience that the 'Admin'-only parts of TYPO3 is in english. This includes all submodules in "Tools" and the Web&gt;Template module.
+'Admin'-users however will experience that the 'Admin'-only parts of TYPO3 is in english. This includes all submodules in "Tools" and the Web&gt;Template module.
 
-					&lt;b&gt;Notice&lt;/b&gt; this is only setting the default language. As soon as the user has logged in the language must be changed through the User&gt;Setup module. Also you will have to install the corresponding language pack which can be found as an extension on TYPO3.org with the prefix "csh_XX" where XX is the TYPO3 language key.
+&lt;b&gt;Notice&lt;/b&gt; this is only setting the default language. As soon as the user has logged in the language must be changed through the User&gt;Setup module. Also you will have to install the corresponding language pack which can be found as an extension on TYPO3.org with the prefix "csh_XX" where XX is the TYPO3 language key.
 				</source>
 			</trans-unit>
 			<trans-unit id="_lang.seeAlso">
@@ -272,7 +272,7 @@
 			<trans-unit id="userMods.details">
 				<source>This determines which 'menu items' are available for the user in the backend.
 
-					Notice that the same list of modules may be configured for the backend user groups and that these will be inherited by the user in addition to the modules you select here. It's highly likely that you should not set any modules for the user himself but rather select the modules in the backend groups he's a member of. However this list provides a great way to add a single module for specific users.
+Notice that the same list of modules may be configured for the backend user groups and that these will be inherited by the user in addition to the modules you select here. It's highly likely that you should not set any modules for the user himself but rather select the modules in the backend groups he's a member of. However this list provides a great way to add a single module for specific users.
 				</source>
 			</trans-unit>
 			<trans-unit id="_userMods.seeAlso">
@@ -287,9 +287,9 @@
 			</trans-unit>
 			<trans-unit id="_TSconfig.seeAlso">
 				<source>pages:TSconfig,
-					fe_users:TSconfig,
-					be_groups:TSconfig,
-					User TSconfig | http://typo3.org/documentation/document-library/doc_core_tsconfig/User_TSconfig/
+fe_users:TSconfig,
+be_groups:TSconfig,
+User TSconfig | http://typo3.org/documentation/document-library/doc_core_tsconfig/User_TSconfig/
 				</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>

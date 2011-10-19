@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".alttitle">
@@ -11,8 +11,8 @@
 			</trans-unit>
 			<trans-unit id=".details">
 				<source>Clicking the "Insert abbreviation" icon in the RTE tool bar opens a dialogue that allows to insert an abbreviation or to edit one that already exists in the content.
-					Any existing abbreviation is underlined with a broken line and the cursor changes to a question mark when the mouse goes over it.
-					The dialogue allows to associate an abbreviation to a term. The abbreviation may be selected among abbreviations that have been pre-defined in the database or may be entered directly in the dialogue.
+Any existing abbreviation is underlined with a broken line and the cursor changes to a question mark when the mouse goes over it.
+The dialogue allows to associate an abbreviation to a term. The abbreviation may be selected among abbreviations that have been pre-defined in the database or may be entered directly in the dialogue.
 				</source>
 			</trans-unit>
 			<trans-unit id=".image">
@@ -24,12 +24,12 @@
 			</trans-unit>
 			<trans-unit id=".seeAlso">
 				<source>xEXT_rtehtmlarea_Acronym:preDefinedAbbreviation,
-					xEXT_rtehtmlarea_Acronym:unabridgedTerm,
-					xEXT_rtehtmlarea_Acronym:abridgedTerm,
-					xEXT_rtehtmlarea_Acronym:language,
-					xEXT_rtehtmlarea_Acronym:termToAbridge,
-					xEXT_rtehtmlarea_Acronym:useThisTerm
-					tx_rtehtmlarea_acronym
+xEXT_rtehtmlarea_Acronym:unabridgedTerm,
+xEXT_rtehtmlarea_Acronym:abridgedTerm,
+xEXT_rtehtmlarea_Acronym:language,
+xEXT_rtehtmlarea_Acronym:termToAbridge,
+xEXT_rtehtmlarea_Acronym:useThisTerm
+tx_rtehtmlarea_acronym
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -74,7 +74,7 @@
 			</trans-unit>
 			<trans-unit id="language.details">
 				<source>The selected language will be set as the language attribute of the abbreviation (or acronym) element.
-					If a pre-defined abbreviation (or acronym) is selected, the language for which it is defined, if any, is initially selected.
+If a pre-defined abbreviation (or acronym) is selected, the language for which it is defined, if any, is initially selected.
 				</source>
 			</trans-unit>
 			<trans-unit id="termToAbridge.alttitle">

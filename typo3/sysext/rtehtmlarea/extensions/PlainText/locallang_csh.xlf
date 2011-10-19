@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".alttitle">
@@ -12,20 +12,20 @@
 			<trans-unit id=".details">
 				<source>This feature is useful when pasting text that was copied to the clipboard from some external source.
 
-					The "Clean paste" button allows to toggle to clean paste mode and back to normal paste mode.
-					Clicking on the "Clean paste" button puts the button "on". This action does not initiate any paste operation. But when the "clean paste" button is "on" in the RTE tool bar, whenever a paste operation is performed, content contained in the clipboard is transformed before being pasted into the editing area.
-					Clicking again on the toggle button puts it "off". Any subsequent paste operation is performed as a normal paste.
+The "Clean paste" button allows to toggle to clean paste mode and back to normal paste mode.
+Clicking on the "Clean paste" button puts the button "on". This action does not initiate any paste operation. But when the "clean paste" button is "on" in the RTE tool bar, whenever a paste operation is performed, content contained in the clipboard is transformed before being pasted into the editing area.
+Clicking again on the toggle button puts it "off". Any subsequent paste operation is performed as a normal paste.
 				</source>
 			</trans-unit>
 			<trans-unit id=".image">
 				<source>EXT:rtehtmlarea/extensions/PlainText/skin/images/paste-toggle.gif,
-					EXT:rtehtmlarea/extensions/PlainText/skin/images/paste-behaviour.gif
+EXT:rtehtmlarea/extensions/PlainText/skin/images/paste-behaviour.gif
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr">
 				<source>"Clean paste" toggle icon in the editor tool bar. Clicking on it changes the behaviour of subsequent paste operations.
-					"Clean Paste Behaviour" icon in the editor tool bar. Clicking on it opens a dialogue that allows to select an alternate paste behaviour.
+"Clean Paste Behaviour" icon in the editor tool bar. Clicking on it opens a dialogue that allows to select an alternate paste behaviour.
 				</source>
 			</trans-unit>
 			<trans-unit id=".seeAlso">
@@ -40,12 +40,12 @@
 			</trans-unit>
 			<trans-unit id="behaviour.details">
 				<source>When the "Clean paste" toggle is "on" in the RTE tool bar, the content may be tranformed according to the three following behaviours before being pasted:
-					- plain text: all HTML markup is removed;
-					- structure only: only structural HTML markup is retained, all format is removed;
-					- structure and basic format: structural HTML markup is preserved as well as basic format provided by inline HTML elements.
+- plain text: all HTML markup is removed;
+- structure only: only structural HTML markup is retained, all format is removed;
+- structure and basic format: structural HTML markup is preserved as well as basic format provided by inline HTML elements.
 
-					Which behaviour is activated when clicking the toggle button may be set either in the TYPO3 BE User Settings or in the "Clean Paste Behaviour" dialogue. If not set, it defaults to "Paste as plain text".
-					The "Clean Paste Behaviour" dialogue is activated by clicking on the "Clean Paste Behaviour" button in the toolbar of the RTE.
+Which behaviour is activated when clicking the toggle button may be set either in the TYPO3 BE User Settings or in the "Clean Paste Behaviour" dialogue. If not set, it defaults to "Paste as plain text".
+The "Clean Paste Behaviour" dialogue is activated by clicking on the "Clean Paste Behaviour" button in the toolbar of the RTE.
 				</source>
 			</trans-unit>
 			<trans-unit id="behaviour.seeAlso">
@@ -70,10 +70,10 @@
 			</trans-unit>
 			<trans-unit id="pasteStructure.details">
 				<source>By default, "Structure only" means that:
-					- only the following HTML elements are retained: a, p, h[0-6], pre, address, blockquote, div, hr, br, table, thead, tbody, tfoot, caption, tr, th, td, ul, ol, dl, li, dt, dd;
-					- the following HTML attributes are removed: id, style, class, lang, align, valign, bgcolor, color, border, face, any attribute starting with "on", and any attribute containing ":".
+- only the following HTML elements are retained: a, p, h[0-6], pre, address, blockquote, div, hr, br, table, thead, tbody, tfoot, caption, tr, th, td, ul, ol, dl, li, dt, dd;
+- the following HTML attributes are removed: id, style, class, lang, align, valign, bgcolor, color, border, face, any attribute starting with "on", and any attribute containing ":".
 
-					These defaults may be modified in Page TSConfig.
+These defaults may be modified in Page TSConfig.
 				</source>
 			</trans-unit>
 			<trans-unit id="pasteStructure.seeAlso">
@@ -88,11 +88,11 @@
 			</trans-unit>
 			<trans-unit id="pasteFormat.details">
 				<source>By default, "Structure and basic format" means that:
-					- the following HTML structural elements are retained: a, p, h[0-6], pre, address, blockquote, div, hr, br, table, thead, tbody, tfoot, caption, tr, th, td, ul, ol, dl, li, dt, dd;
-					- the following HTML inline elements are also retained: b, bdo, big, cite, code, del, dfn, em, i, ins, kbd, label, q, samp, small, strike, strong, sub, sup, tt, u, var;
-					- the following HTML attributes are removed: id, style, class, lang, align, valign, bgcolor, color, border, face, any attribute starting with "on", and any attribute containing ":".
+- the following HTML structural elements are retained: a, p, h[0-6], pre, address, blockquote, div, hr, br, table, thead, tbody, tfoot, caption, tr, th, td, ul, ol, dl, li, dt, dd;
+- the following HTML inline elements are also retained: b, bdo, big, cite, code, del, dfn, em, i, ins, kbd, label, q, samp, small, strike, strong, sub, sup, tt, u, var;
+- the following HTML attributes are removed: id, style, class, lang, align, valign, bgcolor, color, border, face, any attribute starting with "on", and any attribute containing ":".
 
-					These defaults may be modified in Page TSConfig.
+These defaults may be modified in Page TSConfig.
 				</source>
 			</trans-unit>
 			<trans-unit id="pasteFormat.seeAlso">

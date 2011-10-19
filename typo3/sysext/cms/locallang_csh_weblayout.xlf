@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="cms">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="cms" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".alttitle">
@@ -12,53 +12,53 @@
 			<trans-unit id=".details">
 				<source>Selecting the module will display the page tree.  Click the title of the page you wish to edit content on, and in the right frame you will see the content of the page displayed by the Page module.
 
-					The page module has various modes of display of content;
+The page module has various modes of display of content;
 
-					&lt;b&gt;Columns&lt;/b&gt;
-					The columns view will show Content Elements listed in the columns and in the order that they will appear on the website. A panel of buttons will allow you to hide/unhide, move and edit the elements easily.
+&lt;b&gt;Columns&lt;/b&gt;
+The columns view will show Content Elements listed in the columns and in the order that they will appear on the website. A panel of buttons will allow you to hide/unhide, move and edit the elements easily.
 
-					&lt;b&gt;QuickEdit&lt;/b&gt;
-					In QuickEdit the first element on the page will be loaded into a form right away. It will depend on the implementation of your website as well as your general preferences if you like this mode more than the columns view.
+&lt;b&gt;QuickEdit&lt;/b&gt;
+In QuickEdit the first element on the page will be loaded into a form right away. It will depend on the implementation of your website as well as your general preferences if you like this mode more than the columns view.
 
-					&lt;b&gt;Languages&lt;/b&gt;
-					If your site supports multiple languages and uses the "one-tree-fits-all" concept for localization you will need this mode to control the translations of the content elements on a page.
+&lt;b&gt;Languages&lt;/b&gt;
+If your site supports multiple languages and uses the "one-tree-fits-all" concept for localization you will need this mode to control the translations of the content elements on a page.
 
-					&lt;b&gt;Page information&lt;/b&gt;
-					The page information view shows some statistical data about a page. This includes hit statistics if available.
+&lt;b&gt;Page information&lt;/b&gt;
+The page information view shows some statistical data about a page. This includes hit statistics if available.
 
 
-					&lt;b&gt;General options&lt;/b&gt;
-					In the top of the Page module you will find a row of icons that will bring you right to various features such as History/Undo (1), Create new content element (2), Move page (3), Create new page (4) and Edit page properties (5). See image below.
+&lt;b&gt;General options&lt;/b&gt;
+In the top of the Page module you will find a row of icons that will bring you right to various features such as History/Undo (1), Create new content element (2), Move page (3), Create new page (4) and Edit page properties (5). See image below.
 
-					&lt;b&gt;Defining number of displayed columns [Admin]&lt;/b&gt;
-					Administrators can configure the Page module to display only the content columns that the website uses. This is done by Page TSconfig (so it can be configured per branch in the page tree!) and this particular option has the object path "mod.web_layout.tt_content.colPos_list".
-					For instance "mod.web_layout.tt_content.colPos_list = 0,3" will set the display of the "Normal" and "Border" columns only.
-					There are many other options for customization of the Page module in the object path "mod.web_layout" and Administrators should refer to the "TSconfig" reference linked to below.
+&lt;b&gt;Defining number of displayed columns [Admin]&lt;/b&gt;
+Administrators can configure the Page module to display only the content columns that the website uses. This is done by Page TSconfig (so it can be configured per branch in the page tree!) and this particular option has the object path "mod.web_layout.tt_content.colPos_list".
+For instance "mod.web_layout.tt_content.colPos_list = 0,3" will set the display of the "Normal" and "Border" columns only.
+There are many other options for customization of the Page module in the object path "mod.web_layout" and Administrators should refer to the "TSconfig" reference linked to below.
 				</source>
 			</trans-unit>
 			<trans-unit id="_.seeAlso">
 				<source>Configuring the Page module [Technical] | http://typo3.org/documentation/document-library/doc_core_tsconfig/TSFE/,
-					xMOD_csh_corebe:history_log,
-					xMOD_csh_corebe:new_ce,
-					xMOD_csh_corebe:move_el_pages,
-					xMOD_csh_corebe:new_pages,
-					xMOD_csh_corebe:TCEforms,
-					About the page module | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
-					Editing a page | http://typo3.org/documentation/document-library/doc_tut_quickstart/Edit_page/
-					The Page Module (Animation) | Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_05.gif
+xMOD_csh_corebe:history_log,
+xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:TCEforms,
+About the page module | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
+Editing a page | http://typo3.org/documentation/document-library/doc_tut_quickstart/Edit_page/
+The Page Module (Animation) | Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_05.gif
 				</source>
 			</trans-unit>
 			<trans-unit id="_.image">
 				<source>EXT:cms/cshimages/pagemodule_13.png,
-					EXT:cms/cshimages/pagemodule_14.png,
-					EXT:cms/cshimages/pagemodule_15.png
+EXT:cms/cshimages/pagemodule_14.png,
+EXT:cms/cshimages/pagemodule_15.png
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr">
 				<source>Click the Page module, then the title of a page in the page tree.
-					The page module is now activated in the right frame, showing the content of the page you clicked in the page tree.
-					These buttons are direct links to the History/Undo function (1), Create new content element wizard (2), Move page wizard (3), Create new page wizard (4) and Edit page properties form (5). See the links for more details.
+The page module is now activated in the right frame, showing the content of the page you clicked in the page tree.
+These buttons are direct links to the History/Undo function (1), Create new content element wizard (2), Move page wizard (3), Create new page wizard (4) and Edit page properties form (5). See the links for more details.
 				</source>
 			</trans-unit>
 			<trans-unit id="quickEdit.alttitle">
@@ -89,8 +89,8 @@
 			</trans-unit>
 			<trans-unit id="_quickEdit_selElement.seeAlso">
 				<source>_MOD_web_layout:quickEdit,
-					xMOD_csh_corebe:move_el_cs,
-					xMOD_csh_corebe:new_ce
+xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_ce
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -124,7 +124,7 @@
 			</trans-unit>
 			<trans-unit id="columns_3.details">
 				<source>The page information reveals information such as the date of creation and last modification of the page and its content.
-					You can also see the subtitle, keywords and descriptions. This information is often used on websites for meta data or searching.
+You can also see the subtitle, keywords and descriptions. This information is often used on websites for meta data or searching.
 				</source>
 			</trans-unit>
 			<trans-unit id="_columns_3.image">
@@ -142,17 +142,17 @@
 			</trans-unit>
 			<trans-unit id="_language_list.image">
 				<source>EXT:cms/cshimages/pagemodule_6.png,
-					EXT:cms/cshimages/pagemodule_7.png,
-					EXT:cms/cshimages/pagemodule_11.png,
-					EXT:cms/cshimages/pagemodule_10.png,
+EXT:cms/cshimages/pagemodule_7.png,
+EXT:cms/cshimages/pagemodule_11.png,
+EXT:cms/cshimages/pagemodule_10.png,
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="language_list.image_descr">
 				<source>In the Language view you can select to create a new translation of the page if one does not exist already. The available languages must be defined first by language records created in the root of the page tree.
-					This example shows how page content for three languages is shown side-by-side in the Page module.
-					In the top of the Page module you can also select between the available translations...
-					... and if you select any of the additional languages (here "Danish" and "German") you will see the default language displayed side-by-side with the selected language
+This example shows how page content for three languages is shown side-by-side in the Page module.
+In the top of the Page module you can also select between the available translations...
+... and if you select any of the additional languages (here "Danish" and "German") you will see the default language displayed side-by-side with the selected language
 				</source>
 			</trans-unit>
 			<trans-unit id="columns_single.alttitle">
@@ -163,8 +163,8 @@
 			</trans-unit>
 			<trans-unit id="columns_single.details">
 				<source>You can also hide, delete and move elements by using the control panels.
-					Clicking the "New content element" icon you will be able to create new content elements in between the existing elements on the page.
-					Click the icon of a content element if you wish to access the context menu of the element.
+Clicking the "New content element" icon you will be able to create new content elements in between the existing elements on the page.
+Click the icon of a content element if you wish to access the context menu of the element.
 				</source>
 			</trans-unit>
 			<trans-unit id="_columns_single.seeAlso">
@@ -203,9 +203,9 @@
 			</trans-unit>
 			<trans-unit id="_button_panel.seeAlso">
 				<source>xMOD_csh_corebe:TCEforms,
-					xMOD_csh_corebe:move_el_pages,
-					xMOD_csh_corebe:new_pages,
-					xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_ce,
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".description">
@@ -41,7 +41,7 @@
 			<trans-unit id="stagechg_notification.details">
 				<source>"Notify users on next stage only": When content is raised from "Editing" to "Review", reviewers are notified. When content is raised to "Publish", owners are notified. When content is rejected, members and reviewers are notified. When content is raised from rejected state, members are notified.
 
-					"Notify all users on any change" : All users in workspace are notified regardless of change.
+"Notify all users on any change" : All users in workspace are notified regardless of change.
 				</source>
 			</trans-unit>
 			<trans-unit id="db_mountpoints.description">
@@ -55,7 +55,7 @@
 			</trans-unit>
 			<trans-unit id="file_mountpoints.details">
 				<source>IMPORTANT: By default a draft workspace has all filemounts disabled! This is because versioning does not apply to any files edited through filemounts in TYPO3. Hence any access to those files would violate the principle that no content managed in a draft workspace will be live before published.
-					However, for specific projects this violation might be acceptable or necessary and therefore you can add a filemount. This will be forced upon any user in the workspace regardless of his filemounts inherited from his groups and user profile!
+However, for specific projects this violation might be acceptable or necessary and therefore you can add a filemount. This will be forced upon any user in the workspace regardless of his filemounts inherited from his groups and user profile!
 				</source>
 			</trans-unit>
 			<trans-unit id="publish_time.description">
@@ -95,7 +95,7 @@
 			</trans-unit>
 			<trans-unit id="swap_modes.details">
 				<source>By default swapping is allowed. Thereby two versions can be published "in and out" of a workspace multiple times, always substituting each other. If this is not desired, it can be disabled with "Disable Swap-Into-Workspace".
-					Another mode "Swap-Into-Workspace on Auto-publish" will force the automatic publishing through the cronjob to swap versions. This is necessary to use if you specify both a publish AND un-publish time because otherwise the workspace will be empty after the first publish action!
+Another mode "Swap-Into-Workspace on Auto-publish" will force the automatic publishing through the cronjob to swap versions. This is necessary to use if you specify both a publish AND un-publish time because otherwise the workspace will be empty after the first publish action!
 				</source>
 			</trans-unit>
 			<trans-unit id="_swap_modes.seeAlso">
@@ -107,18 +107,18 @@
 			</trans-unit>
 			<trans-unit id="vtypes.details">
 				<source>"Element" is the most common form of versioning where a single element is versionized solo.
-					"Page" is a versioning type where a page record and child records from specified tables (like "Content Elements" and "Language Overlay Records") are copied along. This form is more complex but offers flexibility in terms of rearrangement of elements on the page.
-					"Branch" versioning is where a page is versionized and all subpages and content is copied along. This can have quite heavy implications on data duplication and is recommended only in special circumstances.
+"Page" is a versioning type where a page record and child records from specified tables (like "Content Elements" and "Language Overlay Records") are copied along. This form is more complex but offers flexibility in terms of rearrangement of elements on the page.
+"Branch" versioning is where a page is versionized and all subpages and content is copied along. This can have quite heavy implications on data duplication and is recommended only in special circumstances.
 
-					More information about versioning types can be read in "Inside TYPO3"
+More information about versioning types can be read in "Inside TYPO3"
 				</source>
 			</trans-unit>
 			<trans-unit id="publish_access.description">
 				<source>Refines the rules of publishing</source>
 			</trans-unit>
 			<trans-unit id="publish_access.details">
-				<source>"Publish only content in publish stage" : Only when content is in publish stage can it be published. 
-					"Only workspace owner can publish" : Only the workspace owner can publish the content in the workspace, even if members or reviewers have access to the Live workspace.
+				<source>"Publish only content in publish stage" : Only when content is in publish stage can it be published.
+"Only workspace owner can publish" : Only the workspace owner can publish the content in the workspace, even if members or reviewers have access to the Live workspace.
 				</source>
 			</trans-unit>
 		</body>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".alttitle">
@@ -14,10 +14,10 @@
 			</trans-unit>
 			<trans-unit id=".seeAlso">
 				<source>xEXT_rtehtmlarea_General:beUserSettings,
-					xEXT_rtehtmlarea_EditElement,
-					xEXT_rtehtmlarea_Language,
-					xEXT_rtehtmlarea_PlainText,
-					xEXT_rtehtmlarea_RemoveFormat
+xEXT_rtehtmlarea_EditElement,
+xEXT_rtehtmlarea_Language,
+xEXT_rtehtmlarea_PlainText,
+xEXT_rtehtmlarea_RemoveFormat
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -48,7 +48,7 @@
 			</trans-unit>
 			<trans-unit id="rteHeight.details">
 				<source>The option specifies the height of the RTE when it is initially displayed. The height of the RTE must be specified as a fixed number of pixels not as a percentage.
-					The value you set should allow sufficient height for the tool bar, the editing area and the status bar of the RTE.
+The value you set should allow sufficient height for the tool bar, the editing area and the status bar of the RTE.
 				</source>
 			</trans-unit>
 			<trans-unit id="rteResize.alttitle">

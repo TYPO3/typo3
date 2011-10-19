@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="taskcenter">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="taskcenter" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id="mlang_tabs_tab">
@@ -63,13 +63,13 @@
 			<trans-unit id="taskcenter-about">
 				<source>
 
-					&lt;p&gt;The menu on the left side shows all allowed tasks and let you allow to complete your tasks in an effecient way.&lt;/p&gt;
-					&lt;ul class="withicons"&gt;
-					&lt;li&gt;Clicking on the title of a task will open a detailed view of the task itself.&lt;/li&gt;
-					&lt;li&gt;Click on the arrow on the right side will open/close the submenu of the task.&lt;/li&gt;
-					&lt;/ul&gt;
-					&lt;br /&gt;
-					&lt;strong&gt;Note:&lt;/strong&gt; Set the taskcenter as the default module after your login to be even faster!
+&lt;p&gt;The menu on the left side shows all allowed tasks and let you allow to complete your tasks in an effecient way.&lt;/p&gt;
+&lt;ul class="withicons"&gt;
+&lt;li&gt;Clicking on the title of a task will open a detailed view of the task itself.&lt;/li&gt;
+&lt;li&gt;Click on the arrow on the right side will open/close the submenu of the task.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br /&gt;
+&lt;strong&gt;Note:&lt;/strong&gt; Set the taskcenter as the default module after your login to be even faster!
 
 
 				</source>

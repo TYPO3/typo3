@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id=".description">
@@ -8,7 +8,7 @@
 			</trans-unit>
 			<trans-unit id=".details">
 				<source>Defined abbreviations are used in the htmlArea RTE Abbreviation dialogue.
-					A defined abbreviation may further be configured so as to be made available only when editing content in a given language.
+A defined abbreviation may further be configured so as to be made available only when editing content in a given language.
 				</source>
 			</trans-unit>
 			<trans-unit id=".seeAlso">
@@ -32,12 +32,12 @@
 			</trans-unit>
 			<trans-unit id="starttime.description">
 				<source>Enter a time at which you want the abbreviation to start being available to non-admin users.
-					If no time is specified, the abbreviation becomes immediately available to the users of the RTE, if not hidden.
+If no time is specified, the abbreviation becomes immediately available to the users of the RTE, if not hidden.
 				</source>
 			</trans-unit>
 			<trans-unit id="endtime.description">
 				<source>Enter a date and time at which you want the abbreviation to stop being available to non-admin users.
-					If no time is specified, the abbreviation is indefinitely available to the users of the RTE, unless it is hidden.
+If no time is specified, the abbreviation is indefinitely available to the users of the RTE, unless it is hidden.
 				</source>
 			</trans-unit>
 			<trans-unit id="sys_language_uid.description">

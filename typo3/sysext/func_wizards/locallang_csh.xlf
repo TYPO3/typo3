@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="func_wizards">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="func_wizards" xml:space="preserve">
 		<header/>
 		<body>
 			<trans-unit id="tx_funcwizards.alttitle">
@@ -11,7 +11,7 @@
 			</trans-unit>
 			<trans-unit id="_tx_funcwizards.seeAlso">
 				<source>_MOD_web_func:tx_wizardcrpages,
-					_MOD_web_func:tx_wizardsortpages
+_MOD_web_func:tx_wizardsortpages
 				</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
