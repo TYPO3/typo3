@@ -267,7 +267,7 @@ class tx_form_View_Wizard_Wizard extends tx_form_View_Wizard_Abstract {
 		);
 
 		$cssFiles = array(
-			'Form.css',
+			'Wizard/Form.css',
 			'Wizard/Wizard.css',
 		);
 

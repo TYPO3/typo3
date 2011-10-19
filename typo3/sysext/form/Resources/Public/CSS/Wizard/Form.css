@@ -1,38 +1,29 @@
 @CHARSET "UTF-8";
 
-div.csc-mailform ol,
-div.csc-mailform ol li {
-	margin: 0;
-	padding: 0;
-}
-
-div.csc-mailform ol li {
-	overflow: hidden;
-}
-
-div.csc-mailform fieldset {
+form fieldset {
 	margin: 0;
 	padding: 0;
 	position: relative;
 }
 
-div.csc-mailform legend {
+form legend {
 	margin-left: 1em;
 	color: #000000;
 	font-weight: bold;
 }
 
-div.csc-mailform fieldset ol {
+form fieldset ol {
 	padding: 1em 1em 0 1em;
-}
-
-div.csc-mailform fieldset li {
-	padding: 0.5em;
-	margin-bottom: 0.5em;
 	list-style: none;
 }
 
-div.csc-mailform fieldset.submit {
+form li {
+	overflow: hidden;
+	padding: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+form fieldset.submit {
 	border-style: none;
 }
 
@@ -40,23 +31,23 @@ div.csc-mailform fieldset.submit {
  * Normal label
  * Left aligned, in front of input
  */
-div.csc-mailform li label {
+form li label {
 	float: left;
 	width: 13em;
 	margin-right: 1em;
 	vertical-align: baseline;
 }
 
-div.csc-mailform li input + label,
-div.csc-mailform li textarea + label,
-div.csc-mailform li select + label {
+form li input + label,
+form li textarea + label,
+form li select + label {
 	float: none;
 	width: auto;
 	margin-right: 0;
 	margin-left: 1em;
 }
 
-div.csc-mailform li textarea + label {
+form li textarea + label {
 	vertical-align: top;
 }
 
