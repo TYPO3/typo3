@@ -3,247 +3,247 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="cms">
 		<header/>
 		<body>
-			<trans-unit id="title">
+			<trans-unit id="title" xml:space="preserve">
 				<source>Page content</source>
 			</trans-unit>
-			<trans-unit id="advancedFunctions">
+			<trans-unit id="advancedFunctions" xml:space="preserve">
 				<source>Advanced functions</source>
 			</trans-unit>
-			<trans-unit id="noEditItems">
+			<trans-unit id="noEditItems" xml:space="preserve">
 				<source>Sorry, you do not have permissions to edit items on this page!</source>
 			</trans-unit>
-			<trans-unit id="noEditPage">
+			<trans-unit id="noEditPage" xml:space="preserve">
 				<source>Sorry, you do not have permissions to edit this page!</source>
 			</trans-unit>
-			<trans-unit id="nextThree">
+			<trans-unit id="nextThree" xml:space="preserve">
 				<source>Edit next %s records</source>
 			</trans-unit>
-			<trans-unit id="moveUp">
+			<trans-unit id="moveUp" xml:space="preserve">
 				<source>Move record up</source>
 			</trans-unit>
-			<trans-unit id="moveDown">
+			<trans-unit id="moveDown" xml:space="preserve">
 				<source>Move record down</source>
 			</trans-unit>
-			<trans-unit id="unHide">
+			<trans-unit id="unHide" xml:space="preserve">
 				<source>Un-hide</source>
 			</trans-unit>
-			<trans-unit id="hide">
+			<trans-unit id="hide" xml:space="preserve">
 				<source>Hide</source>
 			</trans-unit>
-			<trans-unit id="edit">
+			<trans-unit id="edit" xml:space="preserve">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="newAfter">
+			<trans-unit id="newAfter" xml:space="preserve">
 				<source>New record after this one</source>
 			</trans-unit>
-			<trans-unit id="move_record">
+			<trans-unit id="move_record" xml:space="preserve">
 				<source>Re-position current content element</source>
 			</trans-unit>
-			<trans-unit id="move_page">
+			<trans-unit id="move_page" xml:space="preserve">
 				<source>Move page</source>
 			</trans-unit>
-			<trans-unit id="deleteItem">
+			<trans-unit id="deleteItem" xml:space="preserve">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="deleteWarning">
+			<trans-unit id="deleteWarning" xml:space="preserve">
 				<source>Are you sure you want to delete this record?</source>
 			</trans-unit>
-			<trans-unit id="recursiveDeleteWarning">
+			<trans-unit id="recursiveDeleteWarning" xml:space="preserve">
 				<source>You can recover pages with subpages only with the recycler. Are you sure you want to delete these pages?</source>
 			</trans-unit>
-			<trans-unit id="editColumn">
+			<trans-unit id="editColumn" xml:space="preserve">
 				<source>Edit this column</source>
 			</trans-unit>
-			<trans-unit id="editPageProperties_curLang">
+			<trans-unit id="editPageProperties_curLang" xml:space="preserve">
 				<source>Edit translation properties</source>
 			</trans-unit>
-			<trans-unit id="editInRTE">
+			<trans-unit id="editInRTE" xml:space="preserve">
 				<source>Edit in Rich Text Editor</source>
 			</trans-unit>
-			<trans-unit id="newPageContent">
+			<trans-unit id="newPageContent" xml:space="preserve">
 				<source>Create page content</source>
 			</trans-unit>
-			<trans-unit id="newPageContent_copyForLang">
+			<trans-unit id="newPageContent_copyForLang" xml:space="preserve">
 				<source>Copy default content elements</source>
 			</trans-unit>
-			<trans-unit id="newPageContent2">
+			<trans-unit id="newPageContent2" xml:space="preserve">
 				<source>New content</source>
 			</trans-unit>
-			<trans-unit id="newInColumn">
+			<trans-unit id="newInColumn" xml:space="preserve">
 				<source>Create new record in top of this column</source>
 			</trans-unit>
-			<trans-unit id="records">
+			<trans-unit id="records" xml:space="preserve">
 				<source>records</source>
 			</trans-unit>
-			<trans-unit id="pageInformation">
+			<trans-unit id="pageInformation" xml:space="preserve">
 				<source>Page information</source>
 			</trans-unit>
-			<trans-unit id="goToTable">
+			<trans-unit id="goToTable" xml:space="preserve">
 				<source>Go to table</source>
 			</trans-unit>
-			<trans-unit id="internalNotes">
+			<trans-unit id="internalNotes" xml:space="preserve">
 				<source>Internal notes</source>
 			</trans-unit>
-			<trans-unit id="clearCache">
+			<trans-unit id="clearCache" xml:space="preserve">
 				<source>Click here to clear cache for this page.</source>
 			</trans-unit>
-			<trans-unit id="hiddenCE">
+			<trans-unit id="hiddenCE" xml:space="preserve">
 				<source>Show hidden content elements</source>
 			</trans-unit>
-			<trans-unit id="new_language">
+			<trans-unit id="new_language" xml:space="preserve">
 				<source>Make new translation of this page</source>
 			</trans-unit>
-			<trans-unit id="newLabel">
+			<trans-unit id="newLabel" xml:space="preserve">
 				<source>NEW</source>
 			</trans-unit>
-			<trans-unit id="defaultLanguage">
+			<trans-unit id="defaultLanguage" xml:space="preserve">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="editLanguageHeader">
+			<trans-unit id="editLanguageHeader" xml:space="preserve">
 				<source>Edit language header</source>
 			</trans-unit>
-			<trans-unit id="editPageProperties">
+			<trans-unit id="editPageProperties" xml:space="preserve">
 				<source>Edit page properties</source>
 			</trans-unit>
-			<trans-unit id="newRecordGeneral">
+			<trans-unit id="newRecordGeneral" xml:space="preserve">
 				<source>Create new record</source>
 			</trans-unit>
-			<trans-unit id="newContentElement">
+			<trans-unit id="newContentElement" xml:space="preserve">
 				<source>Create new content element</source>
 			</trans-unit>
-			<trans-unit id="CEonThisPage">
+			<trans-unit id="CEonThisPage" xml:space="preserve">
 				<source>Content elements on this page:</source>
 			</trans-unit>
-			<trans-unit id="newPage">
+			<trans-unit id="newPage" xml:space="preserve">
 				<source>Create new page</source>
 			</trans-unit>
-			<trans-unit id="newPage2">
+			<trans-unit id="newPage2" xml:space="preserve">
 				<source>New page</source>
 			</trans-unit>
-			<trans-unit id="noAccess">
+			<trans-unit id="noAccess" xml:space="preserve">
 				<source>No edit access</source>
 			</trans-unit>
-			<trans-unit id="noAccess_msg">
+			<trans-unit id="noAccess_msg" xml:space="preserve">
 				<source>You do not have access to edit the requested record.</source>
 			</trans-unit>
-			<trans-unit id="notAssigned">
+			<trans-unit id="notAssigned" xml:space="preserve">
 				<source>Not assigned</source>
 			</trans-unit>
-			<trans-unit id="undoLastChange">
+			<trans-unit id="undoLastChange" xml:space="preserve">
 				<source>Undo/Redo last change (%s ago)</source>
 			</trans-unit>
-			<trans-unit id="recordHistory">
+			<trans-unit id="recordHistory" xml:space="preserve">
 				<source>View record change history</source>
 			</trans-unit>
-			<trans-unit id="viewContent">
+			<trans-unit id="viewContent" xml:space="preserve">
 				<source>Viewing content of</source>
 			</trans-unit>
-			<trans-unit id="tt_board_subject">
+			<trans-unit id="tt_board_subject" xml:space="preserve">
 				<source>Subject</source>
 			</trans-unit>
-			<trans-unit id="tt_board_author">
+			<trans-unit id="tt_board_author" xml:space="preserve">
 				<source>Author</source>
 			</trans-unit>
-			<trans-unit id="tt_board_date">
+			<trans-unit id="tt_board_date" xml:space="preserve">
 				<source>Date</source>
 			</trans-unit>
-			<trans-unit id="tt_board_age">
+			<trans-unit id="tt_board_age" xml:space="preserve">
 				<source>Age</source>
 			</trans-unit>
-			<trans-unit id="tt_board_RE">
+			<trans-unit id="tt_board_RE" xml:space="preserve">
 				<source>RE</source>
 			</trans-unit>
-			<trans-unit id="m_function_0">
+			<trans-unit id="m_function_0" xml:space="preserve">
 				<source>QuickEdit</source>
 			</trans-unit>
-			<trans-unit id="m_function_1">
+			<trans-unit id="m_function_1" xml:space="preserve">
 				<source>Columns</source>
 			</trans-unit>
-			<trans-unit id="m_function_2">
+			<trans-unit id="m_function_2" xml:space="preserve">
 				<source>Languages</source>
 			</trans-unit>
-			<trans-unit id="gridView">
+			<trans-unit id="gridView" xml:space="preserve">
 				<source>Grid-View</source>
 			</trans-unit>
-			<trans-unit id="m_tt_board_0">
+			<trans-unit id="m_tt_board_0" xml:space="preserve">
 				<source>List topics only</source>
 			</trans-unit>
-			<trans-unit id="m_tt_board_expand">
+			<trans-unit id="m_tt_board_expand" xml:space="preserve">
 				<source>Expand Threads</source>
 			</trans-unit>
-			<trans-unit id="m_tt_address_0">
+			<trans-unit id="m_tt_address_0" xml:space="preserve">
 				<source>Short List</source>
 			</trans-unit>
-			<trans-unit id="m_tt_address_1">
+			<trans-unit id="m_tt_address_1" xml:space="preserve">
 				<source>Address list</source>
 			</trans-unit>
-			<trans-unit id="m_tt_address_2">
+			<trans-unit id="m_tt_address_2" xml:space="preserve">
 				<source>Personal info</source>
 			</trans-unit>
-			<trans-unit id="m_tt_links_1">
+			<trans-unit id="m_tt_links_1" xml:space="preserve">
 				<source>Whole URL</source>
 			</trans-unit>
-			<trans-unit id="m_tt_links_2">
+			<trans-unit id="m_tt_links_2" xml:space="preserve">
 				<source>Alternative note</source>
 			</trans-unit>
-			<trans-unit id="m_tt_calender_date">
+			<trans-unit id="m_tt_calender_date" xml:space="preserve">
 				<source>Date</source>
 			</trans-unit>
-			<trans-unit id="m_tt_calender_date_ext">
+			<trans-unit id="m_tt_calender_date_ext" xml:space="preserve">
 				<source>Date - extended</source>
 			</trans-unit>
-			<trans-unit id="m_tt_calender_todo">
+			<trans-unit id="m_tt_calender_todo" xml:space="preserve">
 				<source>Todo</source>
 			</trans-unit>
-			<trans-unit id="m_tt_calender_todo_ext">
+			<trans-unit id="m_tt_calender_todo_ext" xml:space="preserve">
 				<source>Todo - extended</source>
 			</trans-unit>
-			<trans-unit id="m_tt_calender_ext">
+			<trans-unit id="m_tt_calender_ext" xml:space="preserve">
 				<source>Extended</source>
 			</trans-unit>
-			<trans-unit id="m_tt_products_ext">
+			<trans-unit id="m_tt_products_ext" xml:space="preserve">
 				<source>Extended</source>
 			</trans-unit>
-			<trans-unit id="m_default">
+			<trans-unit id="m_default" xml:space="preserve">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="clickAPage_header">
+			<trans-unit id="clickAPage_header" xml:space="preserve">
 				<source>Web&gt;Page module</source>
 			</trans-unit>
-			<trans-unit id="clickAPage_content">
+			<trans-unit id="clickAPage_content" xml:space="preserve">
 				<source>Please click the page title in the page tree to the left to edit page content.</source>
 			</trans-unit>
-			<trans-unit id="pI_crUser">
+			<trans-unit id="pI_crUser" xml:space="preserve">
 				<source>Created by</source>
 			</trans-unit>
-			<trans-unit id="pI_crDate">
+			<trans-unit id="pI_crDate" xml:space="preserve">
 				<source>Created date</source>
 			</trans-unit>
-			<trans-unit id="pI_lastChange">
+			<trans-unit id="pI_lastChange" xml:space="preserve">
 				<source>Last change</source>
 			</trans-unit>
-			<trans-unit id="pI_lastChangeContent">
+			<trans-unit id="pI_lastChangeContent" xml:space="preserve">
 				<source>Last change, content</source>
 			</trans-unit>
-			<trans-unit id="pI_hitsTotal">
+			<trans-unit id="pI_hitsTotal" xml:space="preserve">
 				<source>Total Hits</source>
 			</trans-unit>
-			<trans-unit id="pI_hitsPeriod">
+			<trans-unit id="pI_hitsPeriod" xml:space="preserve">
 				<source>Hits Period</source>
 			</trans-unit>
-			<trans-unit id="pI_hits24hours">
+			<trans-unit id="pI_hits24hours" xml:space="preserve">
 				<source>Last 24 hours</source>
 			</trans-unit>
-			<trans-unit id="pI_hits10days">
+			<trans-unit id="pI_hits10days" xml:space="preserve">
 				<source>Last 10 days</source>
 			</trans-unit>
-			<trans-unit id="content_from_pid_title">
+			<trans-unit id="content_from_pid_title" xml:space="preserve">
 				<source>Page uses content from this page: %s</source>
 			</trans-unit>
-			<trans-unit id="goToListModule">
+			<trans-unit id="goToListModule" xml:space="preserve">
 				<source>Go to list module</source>
 			</trans-unit>
-			<trans-unit id="goToListModuleMessage">
+			<trans-unit id="goToListModuleMessage" xml:space="preserve">
 				<source>The current page is a folder. Folders usually don't contain content elements but are used for collecting other types of records.</source>
 			</trans-unit>
 		</body>

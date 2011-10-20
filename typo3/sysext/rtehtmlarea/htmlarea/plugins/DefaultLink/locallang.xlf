@@ -3,16 +3,16 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="URL">
+			<trans-unit id="URL" xml:space="preserve">
 				<source>URL</source>
 			</trans-unit>
-			<trans-unit id="Select some text">
+			<trans-unit id="Select some text" xml:space="preserve">
 				<source>You need to select some text before creating a link</source>
 			</trans-unit>
-			<trans-unit id="frame">
+			<trans-unit id="frame" xml:space="preserve">
 				<source>Frame name:</source>
 			</trans-unit>
-			<trans-unit id="frame_help">
+			<trans-unit id="frame_help" xml:space="preserve">
 				<source>Enter the name of the frame to be used as target</source>
 			</trans-unit>
 		</body>

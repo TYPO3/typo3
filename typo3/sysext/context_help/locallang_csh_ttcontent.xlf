@@ -1,36 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help" xml:space="preserve">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help">
 		<header/>
 		<body>
-			<trans-unit id=".description">
+			<trans-unit id=".description" xml:space="preserve">
 				<source>All visible content on webpages in TYPO3 is typically made by "Pagecontent" records. They are typically referred to as "Content Elements". Often Content Elements are managed by the "Page" module which is designed to handle Content Elements in multiple columns and languages.</source>
 			</trans-unit>
-			<trans-unit id=".details">
+			<trans-unit id=".details" xml:space="preserve">
 				<source>"Pagecontent" records is ordered and can thus be rearranged. Also notice that the "Language" and "Column" selector of the "Pagecontent" records determines where and in which situation they appear. If you do not change the value of the "Language" and "Column" selectors you are most sure that the element will appear by default.</source>
 			</trans-unit>
-			<trans-unit id="_.seeAlso">
+			<trans-unit id="_.seeAlso" xml:space="preserve">
 				<source>Page Content principles | http://typo3.org/documentation/document-library/doc_tut_quickstart/Page_content/,
-_MOD_web_layout
-				</source>
+_MOD_web_layout</source>
 			</trans-unit>
-			<trans-unit id="_.image">
+			<trans-unit id="_.image" xml:space="preserve">
 				<source>EXT:context_help/cshimages/ttcontent_1.png,
 EXT:context_help/cshimages/ttcontent_2.png,
-EXT:context_help/cshimages/ttcontent_3.png
-				</source>
+EXT:context_help/cshimages/ttcontent_3.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id=".image_descr">
+			<trans-unit id=".image_descr" xml:space="preserve">
 				<source>The Page module is used to manage Content Elements effectively as they appear arranged in columns and languages.
 A Content Element has a large editing form with many options. The "Type" determines which options are visible.
-In the frontend - on the webpage - a Content Element like the above could look like this.
-				</source>
+In the frontend - on the webpage - a Content Element like the above could look like this.</source>
 			</trans-unit>
-			<trans-unit id="CType.description">
+			<trans-unit id="CType.description" xml:space="preserve">
 				<source>Select the kind of page content this element represents. New options will appear when you save the record.</source>
 			</trans-unit>
-			<trans-unit id="CType.details">
+			<trans-unit id="CType.details" xml:space="preserve">
 				<source>The 'Type' of content you select determines which options you have in the editform, so make sure to save the record before you make changes.
 
 This is a description of the various types:
@@ -86,92 +83,83 @@ This will allow you to insert a forum, guestbook, list of addresses, shopping ba
 This is reserved for custom purposes where the template developer can allow you to insert specialized page content by this element type along with a code to identify which special content you want.
 
 &lt;strong&gt;HTML&lt;/strong&gt;
-This is plain HTML content. Everything put here will be displayed directly on the page without any preprocessing.
-				</source>
+This is plain HTML content. Everything put here will be displayed directly on the page without any preprocessing.</source>
 			</trans-unit>
-			<trans-unit id="_CType.seeAlso">
+			<trans-unit id="_CType.seeAlso" xml:space="preserve">
 				<source>tt_content:colPos,
 tt_content:sys_language_uid,
-About Content Elements | http://typo3.org/documentation/document-library/doc_tut_quickstart/Content_element_type/
-				</source>
+About Content Elements | http://typo3.org/documentation/document-library/doc_tut_quickstart/Content_element_type/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_CType.image">
+			<trans-unit id="_CType.image" xml:space="preserve">
 				<source>EXT:context_help/cshimages/ttcontent_4.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="hidden.description">
+			<trans-unit id="hidden.description" xml:space="preserve">
 				<source>Check this box if you wish to hide the content element from being displayed.</source>
 			</trans-unit>
-			<trans-unit id="_hidden.seeAlso">
+			<trans-unit id="_hidden.seeAlso" xml:space="preserve">
 				<source>tt_content:starttime,
 tt_content:endtime,
 tt_content:fe_group,
 tt_content:colPos,
-tt_content:sys_language_uid
-				</source>
+tt_content:sys_language_uid</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="starttime.description">
+			<trans-unit id="starttime.description" xml:space="preserve">
 				<source>Enter the date from which the content element will be visible.</source>
 			</trans-unit>
-			<trans-unit id="_starttime.seeAlso">
+			<trans-unit id="_starttime.seeAlso" xml:space="preserve">
 				<source>pages:starttime,
 tt_content:endtime,
 tt_content:hidden,
-tt_content:fe_group
-				</source>
+tt_content:fe_group</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="endtime.description">
+			<trans-unit id="endtime.description" xml:space="preserve">
 				<source>Enter the date from which the content element will disappear from the website.</source>
 			</trans-unit>
-			<trans-unit id="_endtime.seeAlso">
+			<trans-unit id="_endtime.seeAlso" xml:space="preserve">
 				<source>pages:endtime,
 tt_content:starttime,
 tt_content:hidden,
-tt_content:fe_group
-				</source>
+tt_content:fe_group</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="fe_group.description">
+			<trans-unit id="fe_group.description" xml:space="preserve">
 				<source>Select a Website usergroup which is exclusively allowed to view the element.</source>
 			</trans-unit>
-			<trans-unit id="fe_group.details">
+			<trans-unit id="fe_group.details" xml:space="preserve">
 				<source>The options in this box depends on which Website usergroups are created and available for you. When you select a user group here, the content element will no longer be visible to users which are not logged in. Only Website users which are logged in and members of the group you selected will be allowed to see the element.
-If you select "Hide at login" the effect is kind of reversed in that the element &lt;em&gt;disappears&lt;/em&gt; if &lt;em&gt;any&lt;/em&gt; Website user is logged in. This is useful if you want to present information like "How to login" and such which is irrelevant if a user is finally logged in.
-				</source>
+If you select "Hide at login" the effect is kind of reversed in that the element &lt;em&gt;disappears&lt;/em&gt; if &lt;em&gt;any&lt;/em&gt; Website user is logged in. This is useful if you want to present information like "How to login" and such which is irrelevant if a user is finally logged in.</source>
 			</trans-unit>
-			<trans-unit id="_fe_group.seeAlso">
+			<trans-unit id="_fe_group.seeAlso" xml:space="preserve">
 				<source>tt_content:hidden,
 tt_content:starttime,
 tt_content:endtime,
 pages:fe_group,
 fe_users,
-fe_groups
-				</source>
+fe_groups</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="sys_language_uid.description">
+			<trans-unit id="sys_language_uid.description" xml:space="preserve">
 				<source>Select the system language of this element. &lt;strong&gt;Notice&lt;/strong&gt; this will affect whether the element is visible.</source>
 			</trans-unit>
-			<trans-unit id="sys_language_uid.details">
+			<trans-unit id="sys_language_uid.details" xml:space="preserve">
 				<source>This allows you to assign a specific language to the content element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.
-The available system languages are created by the administrator.
-				</source>
+The available system languages are created by the administrator.</source>
 			</trans-unit>
-			<trans-unit id="_sys_language_uid.seeAlso">
+			<trans-unit id="_sys_language_uid.seeAlso" xml:space="preserve">
 				<source>tt_content:colPos,
 sys_language,
 Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
-_MOD_web_layout:language_list
-				</source>
+_MOD_web_layout:language_list</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="layout.description">
+			<trans-unit id="layout.description" xml:space="preserve">
 				<source>Select a layout.</source>
 			</trans-unit>
-			<trans-unit id="layout.details">
+			<trans-unit id="layout.details" xml:space="preserve">
 				<source>This option is not used in the default templates but may be used by any custom rendering.
 
 There are a number of default implementations depending on the content element type:
@@ -180,101 +168,92 @@ There are a number of default implementations depending on the content element t
 "Normal" will provide a list of filelinks with no thumbnail.
 "Layout 1" adds a file icon to the left of the link
 "Layout 2" adds a thumbnail if the file is an image file and if not an icon. A black border is wrapped around.
-"Layout 3" is like Layout 2, but without the black border.
-				</source>
+"Layout 3" is like Layout 2, but without the black border.</source>
 			</trans-unit>
-			<trans-unit id="colPos.description">
+			<trans-unit id="colPos.description" xml:space="preserve">
 				<source>Select the column position this element. &lt;strong&gt;Notice&lt;/strong&gt; this will affect whether the element is visible.</source>
 			</trans-unit>
-			<trans-unit id="colPos.details">
+			<trans-unit id="colPos.details" xml:space="preserve">
 				<source>Most websites use only one column of content. However some templates lets you put content in multiple columns and this option allows you to select another column for the element.
 
-&lt;strong&gt;Notice&lt;/strong&gt; that selecting another column than "Normal" will make the content element disappear unless that column is also displayed in the website template. If your content element is 'strangely' not visible please make sure the Column and Language selectors are set correctly.
-				</source>
+&lt;strong&gt;Notice&lt;/strong&gt; that selecting another column than "Normal" will make the content element disappear unless that column is also displayed in the website template. If your content element is 'strangely' not visible please make sure the Column and Language selectors are set correctly.</source>
 			</trans-unit>
-			<trans-unit id="_colPos.seeAlso">
+			<trans-unit id="_colPos.seeAlso" xml:space="preserve">
 				<source>tt_content:sys_language_uid,
 _MOD_web_layout:columns_multi,
-_MOD_web_layout:columns_single
-				</source>
+_MOD_web_layout:columns_single</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="date.description">
+			<trans-unit id="date.description" xml:space="preserve">
 				<source>Enter a date to be displayed above the header.</source>
 			</trans-unit>
-			<trans-unit id="header.description">
+			<trans-unit id="header.description" xml:space="preserve">
 				<source>Enter a headline for the content element.</source>
 			</trans-unit>
-			<trans-unit id="header.details">
+			<trans-unit id="header.details" xml:space="preserve">
 				<source>Almost all content elements (except the HTML type for instance) will display this header above the content. If you don't want a header displayed, select the header Layout to "Hidden". Alternatively you can choose not to enter any content in this field.
 
-Some content element types do not display the header by default. In those cases the Header field is typically labeled "Name" instead. One of these are the HTML type content element.
-				</source>
+Some content element types do not display the header by default. In those cases the Header field is typically labeled "Name" instead. One of these are the HTML type content element.</source>
 			</trans-unit>
-			<trans-unit id="_header.seeAlso">
+			<trans-unit id="_header.seeAlso" xml:space="preserve">
 				<source>tt_content:header_position,
 tt_content:header_link,
 tt_content:header_layout,
-tt_content:date,
-				</source>
+tt_content:date,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_header.image">
+			<trans-unit id="_header.image" xml:space="preserve">
 				<source>EXT:context_help/cshimages/ttcontent_6.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="header_position.description">
+			<trans-unit id="header_position.description" xml:space="preserve">
 				<source>Places the header to the left, centered or to the right.</source>
 			</trans-unit>
-			<trans-unit id="_header_position.seeAlso">
+			<trans-unit id="_header_position.seeAlso" xml:space="preserve">
 				<source>tt_content:header</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="header_link.description">
+			<trans-unit id="header_link.description" xml:space="preserve">
 				<source>Creates a link from the header. Insert a page id, email address or URL.</source>
 			</trans-unit>
-			<trans-unit id="header_link.syntax">
+			<trans-unit id="header_link.syntax" xml:space="preserve">
 				<source>If you insert an id-number, eg. "51", the link will refer to page with id=51 &lt;em&gt;inside&lt;/em&gt; TYPO3.
 If you insert an email address, eg. "name@my-domain.test", the link will point to that email address.
-If you insert an URL or domain, eg. "www.typo3.com" or "http://www.my-domain.org", the link will point to that website.
-				</source>
+If you insert an URL or domain, eg. "www.typo3.com" or "http://www.my-domain.org", the link will point to that website.</source>
 			</trans-unit>
-			<trans-unit id="_header_link.seeAlso">
+			<trans-unit id="_header_link.seeAlso" xml:space="preserve">
 				<source>tt_content:header</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="header_layout.description">
+			<trans-unit id="header_layout.description" xml:space="preserve">
 				<source>Select a visual design for the header.</source>
 			</trans-unit>
-			<trans-unit id="header_layout.details">
+			<trans-unit id="header_layout.details" xml:space="preserve">
 				<source>If you select "Default" the standard design (which is one of the layouts 1-5) will be used.
 Alternatively you can select from Layout 1 through 5 which are configured in the website template with individual visual designs.
-If you select "Hidden" the header will simply not appear. This is usefull if you wish a header for the content element (in order to identify it in the backend) but do not wish the header to be displayed on the website.
-				</source>
+If you select "Hidden" the header will simply not appear. This is usefull if you wish a header for the content element (in order to identify it in the backend) but do not wish the header to be displayed on the website.</source>
 			</trans-unit>
-			<trans-unit id="_header_layout.seeAlso">
+			<trans-unit id="_header_layout.seeAlso" xml:space="preserve">
 				<source>tt_content:header</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="subheader.description">
+			<trans-unit id="subheader.description" xml:space="preserve">
 				<source>Enter a subheader. This is displayed below the ordinary headline. If the content element type is "Form" this field is the recipient email.</source>
 			</trans-unit>
-			<trans-unit id="subheader.details">
+			<trans-unit id="subheader.details" xml:space="preserve">
 				<source>A subheader is displayed only with the "Header" content element type.
 
-&lt;b&gt;Notice:&lt;/b&gt; When using the content element type "Form", this field is named 'Recipient-email:' and contains the email address of the form mail recipient. It's therefore important to allow access to this field for the users.
-				</source>
+&lt;b&gt;Notice:&lt;/b&gt; When using the content element type "Form", this field is named 'Recipient-email:' and contains the email address of the form mail recipient. It's therefore important to allow access to this field for the users.</source>
 			</trans-unit>
-			<trans-unit id="_subheader.seeAlso">
+			<trans-unit id="_subheader.seeAlso" xml:space="preserve">
 				<source>tt_content:header
-tt_content:bodytext
-				</source>
+tt_content:bodytext</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="bodytext.description">
+			<trans-unit id="bodytext.description" xml:space="preserve">
 				<source>Enter the body text.</source>
 			</trans-unit>
-			<trans-unit id="bodytext.details">
+			<trans-unit id="bodytext.details" xml:space="preserve">
 				<source>Here you enter the body text of the content element. Usually you can use some HTML formatting tags, if you're using Internet Explorer you can even format the content visually.
 The field is reused in most other types and so switching between the content element types will bring the value of this field with it.
 
@@ -309,75 +288,66 @@ The third line is a text box and the fourth makes radiobuttons to select haircol
 Then there are three important lines in the end. The first makes a submit button with the label "Send form", the second line is the subject of the email the receiver gets and the third line makes the form result render in an HTML-table.
 It is much easier to use the Form Wizard for creating forms.
 
-&lt;b&gt;Notice:&lt;/b&gt; Before any form will ever work, you must enter a recipient email address. The "Recipient-email:" field is used for that (this is in fact the Subheader field used!).
-				</source>
+&lt;b&gt;Notice:&lt;/b&gt; Before any form will ever work, you must enter a recipient email address. The "Recipient-email:" field is used for that (this is in fact the Subheader field used!).</source>
 			</trans-unit>
-			<trans-unit id="_bodytext.seeAlso">
+			<trans-unit id="_bodytext.seeAlso" xml:space="preserve">
 				<source>tt_content:CType,
 tt_content:subheader,
 xMOD_csh_corebe:wizard_forms_wiz,
-xMOD_csh_corebe:wizard_table_wiz
-				</source>
+xMOD_csh_corebe:wizard_table_wiz</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="text_align.description">
+			<trans-unit id="text_align.description" xml:space="preserve">
 				<source>Places the body text to the left, centered or to the right.</source>
 			</trans-unit>
-			<trans-unit id="text_align.details">
+			<trans-unit id="text_align.details" xml:space="preserve">
 				<source>See Pagecontent / Fontface for comments.
-&lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.
-				</source>
+&lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</source>
 			</trans-unit>
-			<trans-unit id="_text_align.seeAlso">
+			<trans-unit id="_text_align.seeAlso" xml:space="preserve">
 				<source>tt_content:text_face,
-tt_content:bodytext
-				</source>
+tt_content:bodytext</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="text_face.description">
+			<trans-unit id="text_face.description" xml:space="preserve">
 				<source>Select a font fact family for the body text.</source>
 			</trans-unit>
-			<trans-unit id="text_face.details">
+			<trans-unit id="text_face.details" xml:space="preserve">
 				<source>&lt;strong&gt;Notice&lt;/strong&gt; that these options are only meant for special design. The general (default) design should be configured in the template instead. Furthermore you should NOT use these options if your template implements stylesheets and are based on using styles in general.</source>
 			</trans-unit>
-			<trans-unit id="_text_face.seeAlso">
+			<trans-unit id="_text_face.seeAlso" xml:space="preserve">
 				<source>tt_content:text_face,
-tt_content:bodytext
-				</source>
+tt_content:bodytext</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="text_size.description">
+			<trans-unit id="text_size.description" xml:space="preserve">
 				<source>Select a font size for the body text.</source>
 			</trans-unit>
-			<trans-unit id="text_size.details">
+			<trans-unit id="text_size.details" xml:space="preserve">
 				<source>See Pagecontent / Fontface for comments.
-&lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.
-				</source>
+&lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</source>
 			</trans-unit>
-			<trans-unit id="_text_size.seeAlso">
+			<trans-unit id="_text_size.seeAlso" xml:space="preserve">
 				<source>tt_content:text_face,
-tt_content:bodytext
-				</source>
+tt_content:bodytext</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="text_color.description">
+			<trans-unit id="text_color.description" xml:space="preserve">
 				<source>Select a color for the body text.</source>
 			</trans-unit>
-			<trans-unit id="text_color.details">
+			<trans-unit id="text_color.details" xml:space="preserve">
 				<source>See Pagecontent / Fontface for comments.
-&lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.
-				</source>
+&lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</source>
 			</trans-unit>
-			<trans-unit id="_text_color.seeAlso">
+			<trans-unit id="_text_color.seeAlso" xml:space="preserve">
 				<source>tt_content:text_face,
-tt_content:bodytext
-				</source>
+tt_content:bodytext</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="text_properties.description">
+			<trans-unit id="text_properties.description" xml:space="preserve">
 				<source>Select additional font properties.</source>
 			</trans-unit>
-			<trans-unit id="text_properties.details">
+			<trans-unit id="text_properties.details" xml:space="preserve">
 				<source>These options will select font properties for all the body text. However you may wish to mark only a part of the bodytext as bold or underline in which case you should use the formatting options in the Rich Text Editor. Alternatively you can use the HTML tags here:
 
 &amp;lt;b&amp;gt;&lt;strong&gt;This is bold&lt;/strong&gt;&amp;lt;b&amp;gt;
@@ -385,28 +355,25 @@ tt_content:bodytext
 &amp;lt;u&amp;gt;&lt;u&gt;This is underlined&lt;/u&gt;&amp;lt;u&amp;gt;
 
 See Pagecontent / Fontface for comments.
-&lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.
-				</source>
+&lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</source>
 			</trans-unit>
-			<trans-unit id="_text_properties.seeAlso">
+			<trans-unit id="_text_properties.seeAlso" xml:space="preserve">
 				<source>tt_content:text_face,
-tt_content:bodytext
-				</source>
+tt_content:bodytext</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="image.description">
+			<trans-unit id="image.description" xml:space="preserve">
 				<source>Insert one or more images.</source>
 			</trans-unit>
-			<trans-unit id="image.details">
+			<trans-unit id="image.details" xml:space="preserve">
 				<source>You can attach images to the content element and almost as many as you like.
 Depending on the configuration of TYPO3 you can even attach them in any format you like. Especially you do not need to worry about size and compression because these factors are normally handled by TYPO3 internally.
 
 When you use the "Text w/image" type, it's important to select a proper position of the imageblock. For this purpose, use the Position selector which is displayed below (or if you click in the image list field in the Classic backend). See link to "Pagecontent / Position" below.
 You can also display images in multiple columns and enable an option which enables a link so you can click the image and see a bigger version. Just to name a few options.
-Most likely you don't have all options available. This depends on your permissions in the system.
-				</source>
+Most likely you don't have all options available. This depends on your permissions in the system.</source>
 			</trans-unit>
-			<trans-unit id="_image.seeAlso">
+			<trans-unit id="_image.seeAlso" xml:space="preserve">
 				<source>tt_content:imagewidth,
 tt_content:imageheight,
 tt_content:imageorient,
@@ -420,170 +387,153 @@ tt_content:image_effects,
 tt_content:image_frames,
 tt_content:image_compression,
 Using images ("Getting Started") | http://typo3.org/documentation/document-library/doc_tut_quickstart/Managing_files_in_TY/
-Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif
-				</source>
+Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_image.image">
+			<trans-unit id="_image.image" xml:space="preserve">
 				<source>EXT:context_help/cshimages/ttcontent_5.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="image.image_descr">
+			<trans-unit id="image.image_descr" xml:space="preserve">
 				<source>This shows all the options related to inserting images in Content Elements. You might not be able to use all of them.</source>
 			</trans-unit>
-			<trans-unit id="imagewidth.description">
+			<trans-unit id="imagewidth.description" xml:space="preserve">
 				<source>Enter the width in pixels of the image.</source>
 			</trans-unit>
-			<trans-unit id="imagewidth.details">
+			<trans-unit id="imagewidth.details" xml:space="preserve">
 				<source>The template is normally configured to a max width of an image and so you don't need to specify the width if the image fits perfectly into those dimensions. However this does give you an opportunity to specify a specific width.</source>
 			</trans-unit>
-			<trans-unit id="_imagewidth.seeAlso">
+			<trans-unit id="_imagewidth.seeAlso" xml:space="preserve">
 				<source>tt_content:imageheight,
-tt_content:image
-				</source>
+tt_content:image</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="imageheight.description">
+			<trans-unit id="imageheight.description" xml:space="preserve">
 				<source>Enter the height of the image in pixels.</source>
 			</trans-unit>
-			<trans-unit id="_imageheight.seeAlso">
+			<trans-unit id="_imageheight.seeAlso" xml:space="preserve">
 				<source>tt_content:imagewidth,
-tt_content:image
-				</source>
+tt_content:image</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="imageorient.description">
+			<trans-unit id="imageorient.description" xml:space="preserve">
 				<source>Select the position of the imageblock relative to the body text.</source>
 			</trans-unit>
-			<trans-unit id="imageorient.details">
+			<trans-unit id="imageorient.details" xml:space="preserve">
 				<source>The position above and below the body text is pretty straight forward.
 The options "In text" means that the image block is displayed with text aside it. When you select this option the template will probably force the images into smaller dimensions because they cannot take up the same space when text is supposed to float around them.
 When you select "In text" you can choose the options either above or below the divider "No wrap". If you select the "In text" option above, the bodytext will float &lt;em&gt;under&lt;/em&gt; the image block when the bodytext reaches the end of the image block. So in other words the body text &lt;em&gt;wraps around&lt;/em&gt; the image block. If you select "In text" below the "No wrap" divider, the body text will not float under the image block, but simply continue in its column.
-Apart from the visual difference there is a technical aspect as well. Because if you choose to allow the content to wrap the image block you will experience a strange phenomenon when you do not have enough bodytext to make it float around the image: You experience that the subsequent content elements on the page is somehow layered on top of the image block - and this certainly looks like a bug. However it's easily solved by changing the "In text" position to the equal value but below the "No wrap" divider.
-				</source>
+Apart from the visual difference there is a technical aspect as well. Because if you choose to allow the content to wrap the image block you will experience a strange phenomenon when you do not have enough bodytext to make it float around the image: You experience that the subsequent content elements on the page is somehow layered on top of the image block - and this certainly looks like a bug. However it's easily solved by changing the "In text" position to the equal value but below the "No wrap" divider.</source>
 			</trans-unit>
-			<trans-unit id="imageborder.description">
+			<trans-unit id="imageborder.description" xml:space="preserve">
 				<source>Check this, if you wish a colored border around the images.</source>
 			</trans-unit>
-			<trans-unit id="_imageborder.seeAlso">
+			<trans-unit id="_imageborder.seeAlso" xml:space="preserve">
 				<source>tt_content:imagecols,
-tt_content:image
-				</source>
+tt_content:image</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="image_noRows.description">
+			<trans-unit id="image_noRows.description" xml:space="preserve">
 				<source>Disables strict tablerows in the image block.</source>
 			</trans-unit>
-			<trans-unit id="image_noRows.details">
+			<trans-unit id="image_noRows.details" xml:space="preserve">
 				<source>This options is kind of hard to explain, but imagine you have 2 or more columns &lt;em&gt;and&lt;/em&gt; rows of images. If one image in the upper row is a bit taller than the second this will generate an empty extra space beneath the second image. This is due to the normal procedure in which the images are placed in a table cell each.
-If you set this option, the table will place all images in a column in a single table cell which make the distance between them vertically identical throughout. This may provide a better look if the alternative looks stupid.
-				</source>
+If you set this option, the table will place all images in a column in a single table cell which make the distance between them vertically identical throughout. This may provide a better look if the alternative looks stupid.</source>
 			</trans-unit>
-			<trans-unit id="_image_noRows.seeAlso">
+			<trans-unit id="_image_noRows.seeAlso" xml:space="preserve">
 				<source>tt_content:imagecols,
-tt_content:image
-				</source>
+tt_content:image</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="image_link.description">
+			<trans-unit id="image_link.description" xml:space="preserve">
 				<source>Enter a link for the images.</source>
 			</trans-unit>
-			<trans-unit id="image_link.details">
+			<trans-unit id="image_link.details" xml:space="preserve">
 				<source>By default all images share the same link. However you may ask the administrator to configure the TypoScript template to allow a separate link for each image. If this is the case, you simply separate the link values by a comma.
 
-See Pagecontent&gt;Link below for details on syntax.
-				</source>
+See Pagecontent&gt;Link below for details on syntax.</source>
 			</trans-unit>
-			<trans-unit id="_image_link.seeAlso">
+			<trans-unit id="_image_link.seeAlso" xml:space="preserve">
 				<source>tt_content:header_link,
 tt_content:image_zoom,
-tt_content:image
-				</source>
+tt_content:image</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="image_zoom.description">
+			<trans-unit id="image_zoom.description" xml:space="preserve">
 				<source>Check this option, and the image will link to a new window with a bigger version.</source>
 			</trans-unit>
-			<trans-unit id="image_zoom.details">
+			<trans-unit id="image_zoom.details" xml:space="preserve">
 				<source>This option overrides the value in the Link-field.</source>
 			</trans-unit>
-			<trans-unit id="_image_zoom.seeAlso">
+			<trans-unit id="_image_zoom.seeAlso" xml:space="preserve">
 				<source>tt_content:image_link,
-tt_content:image
-				</source>
+tt_content:image</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="image_effects.description">
+			<trans-unit id="image_effects.description" xml:space="preserve">
 				<source>Select special image processing effects.</source>
 			</trans-unit>
-			<trans-unit id="_image_effects.seeAlso">
+			<trans-unit id="_image_effects.seeAlso" xml:space="preserve">
 				<source>tt_content:image_compression,
 tt_content:image_frames,
-tt_content:image
-				</source>
+tt_content:image</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="image_frames.description">
+			<trans-unit id="image_frames.description" xml:space="preserve">
 				<source>Select special image framing options.</source>
 			</trans-unit>
-			<trans-unit id="_image_frames.seeAlso">
+			<trans-unit id="_image_frames.seeAlso" xml:space="preserve">
 				<source>tt_content:image_compression,
 tt_content:image_effects,
-tt_content:image
-				</source>
+tt_content:image</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="image_compression.description">
+			<trans-unit id="image_compression.description" xml:space="preserve">
 				<source>Select compression/quality options.</source>
 			</trans-unit>
-			<trans-unit id="_image_compression.seeAlso">
+			<trans-unit id="_image_compression.seeAlso" xml:space="preserve">
 				<source>tt_content:image_frames,
 tt_content:image_effects,
-tt_content:image
-				</source>
+tt_content:image</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="imagecols.description">
+			<trans-unit id="imagecols.description" xml:space="preserve">
 				<source>Select the number of columns in the image block.</source>
 			</trans-unit>
-			<trans-unit id="_imagecols.seeAlso">
+			<trans-unit id="_imagecols.seeAlso" xml:space="preserve">
 				<source>tt_content:image_noRows,
-tt_content:image
-				</source>
+tt_content:image</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="imagecaption.description">
+			<trans-unit id="imagecaption.description" xml:space="preserve">
 				<source>Enter a caption for the image block</source>
 			</trans-unit>
-			<trans-unit id="imagecaption.details">
+			<trans-unit id="imagecaption.details" xml:space="preserve">
 				<source>By default the caption is positioned below the whole image block. However your website template may be configured to allow individual image captions by setting "styles.content.imgtext.captionSplit=1" in your template constants.
 In that case each line in this field will be the image caption of the corresponding image in the list.
 
-The caption text field is also used by the content element type "Filelinks" where each line represents a description of a file in the list.
-				</source>
+The caption text field is also used by the content element type "Filelinks" where each line represents a description of a file in the list.</source>
 			</trans-unit>
-			<trans-unit id="_imagecaption.seeAlso">
+			<trans-unit id="_imagecaption.seeAlso" xml:space="preserve">
 				<source>tt_content:imagecaption_position,
-tt_content:image
-				</source>
+tt_content:image</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="imagecaption_position.description">
+			<trans-unit id="imagecaption_position.description" xml:space="preserve">
 				<source>Places the image caption to the left, centered or to the right.</source>
 			</trans-unit>
-			<trans-unit id="_imagecaption_position.seeAlso">
+			<trans-unit id="_imagecaption_position.seeAlso" xml:space="preserve">
 				<source>tt_content:imagecaption,
-tt_content:image
-				</source>
+tt_content:image</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="cols.description">
+			<trans-unit id="cols.description" xml:space="preserve">
 				<source>Select a fixed number of table columns</source>
 			</trans-unit>
-			<trans-unit id="pages.description">
+			<trans-unit id="pages.description" xml:space="preserve">
 				<source>Insert page(s)</source>
 			</trans-unit>
-			<trans-unit id="pages.details">
+			<trans-unit id="pages.details" xml:space="preserve">
 				<source>With this field you can generally create a relation to a page (or more) in TYPO3. This field is used by many of the content element types. If you don't specify a page here, the current page will generally be used.
 
 Using the "Search" type, the page you insert will be the page to which the search is targeted. You must make sure that this page has a similar "Search" content element (or something similar) to render a search result. Else it makes no sense.
@@ -594,32 +544,29 @@ In order for the login procedure to work, you must make sure that 1) you have cr
 
 The "Menu/Sitemap" element also uses this field. In that case the page(s) will determine from which point the menu is drawn or maybe even represent the actual pages to which the menu links. All this depends on the subtype of Menu/Sitemap you have selected.
 
-Finally the "Form" element uses this field as the page to which the form is submitted. You might thus insert a page which is the "Thank you" page of the form mail.
-				</source>
+Finally the "Form" element uses this field as the page to which the form is submitted. You might thus insert a page which is the "Thank you" page of the form mail.</source>
 			</trans-unit>
-			<trans-unit id="_pages.seeAlso">
+			<trans-unit id="_pages.seeAlso" xml:space="preserve">
 				<source>tt_content:CType,
-tt_content:recursive
-				</source>
+tt_content:recursive</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="recursive.description">
+			<trans-unit id="recursive.description" xml:space="preserve">
 				<source>Select how many subleves should be additionally selected for each page in the list.</source>
 			</trans-unit>
-			<trans-unit id="recursive.details">
+			<trans-unit id="recursive.details" xml:space="preserve">
 				<source>Whether this feature makes sense or not depends solely on the template implementation and/or content element type. But basically if this feature is enabled it means that for each page listed in the "Send to page/Starting point" box subpages - to the depth specified here - will &lt;em&gt;also&lt;/em&gt; be selected!
 
-&lt;strong&gt;Warning:&lt;/strong&gt; If there are many subpages, be aware of this option. It may select an incredible amount of pages then!
-				</source>
+&lt;strong&gt;Warning:&lt;/strong&gt; If there are many subpages, be aware of this option. It may select an incredible amount of pages then!</source>
 			</trans-unit>
-			<trans-unit id="_recursive.seeAlso">
+			<trans-unit id="_recursive.seeAlso" xml:space="preserve">
 				<source>tt_content:pages</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="menu_type.description">
+			<trans-unit id="menu_type.description" xml:space="preserve">
 				<source>Select which kind of menu you wish to create.</source>
 			</trans-unit>
-			<trans-unit id="menu_type.details">
+			<trans-unit id="menu_type.details" xml:space="preserve">
 				<source>This is a short description of each type:
 
 &lt;strong&gt;Menu of these pages&lt;/strong&gt;
@@ -649,133 +596,128 @@ This displays the 10 most recently updated pages.
 Displays other related pages based on the keywords set for this page matched up with the keywords on other pages.
 
 
-&lt;b&gt;Notice:&lt;/b&gt; With many of the above menu types, the default starting point is the current page. However you can specify another startingpoint (or more than one in fact!) by adding pages to the "Startingpoint" list. See link below.
-				</source>
+&lt;b&gt;Notice:&lt;/b&gt; With many of the above menu types, the default starting point is the current page. However you can specify another startingpoint (or more than one in fact!) by adding pages to the "Startingpoint" list. See link below.</source>
 			</trans-unit>
-			<trans-unit id="_menu_type.seeAlso">
+			<trans-unit id="_menu_type.seeAlso" xml:space="preserve">
 				<source>tt_content:pages,
-tt_content:sectionIndex
-				</source>
+tt_content:sectionIndex</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="list_type.description">
+			<trans-unit id="list_type.description" xml:space="preserve">
 				<source>Select a plugin to insert.</source>
 			</trans-unit>
-			<trans-unit id="list_type.details">
+			<trans-unit id="list_type.details" xml:space="preserve">
 				<source>The list of plugins you can insert on a page. The available plugins depends on which extensions are installed.</source>
 			</trans-unit>
-			<trans-unit id="_list_type.seeAlso">
+			<trans-unit id="_list_type.seeAlso" xml:space="preserve">
 				<source>_MOD_tools_em</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_list_type.image">
+			<trans-unit id="_list_type.image" xml:space="preserve">
 				<source>EXT:context_help/cshimages/ttcontent_7.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="select_key.description">
+			<trans-unit id="select_key.description" xml:space="preserve">
 				<source>Enter a code string.</source>
 			</trans-unit>
-			<trans-unit id="select_key.details">
+			<trans-unit id="select_key.details" xml:space="preserve">
 				<source>Whether or not the content of this field is used and how it's intepreted depends on the context. It is considered obsolete today.</source>
 			</trans-unit>
-			<trans-unit id="_select_key.seeAlso">
+			<trans-unit id="_select_key.seeAlso" xml:space="preserve">
 				<source>tt_content:list_type</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="table_bgColor.description">
+			<trans-unit id="table_bgColor.description" xml:space="preserve">
 				<source>Select table background color.</source>
 			</trans-unit>
-			<trans-unit id="table_border.description">
+			<trans-unit id="table_border.description" xml:space="preserve">
 				<source>Select table border thickness.</source>
 			</trans-unit>
-			<trans-unit id="table_cellspacing.description">
+			<trans-unit id="table_cellspacing.description" xml:space="preserve">
 				<source>Select table cell spacing.</source>
 			</trans-unit>
-			<trans-unit id="table_cellspacing.details">
+			<trans-unit id="table_cellspacing.details" xml:space="preserve">
 				<source>Cell spacing is the distance between table cells in rows an columns. The distance is equally applied in all directions, top, bottom, left and right.</source>
 			</trans-unit>
-			<trans-unit id="table_cellpadding.description">
+			<trans-unit id="table_cellpadding.description" xml:space="preserve">
 				<source>Select table cellpadding.</source>
 			</trans-unit>
-			<trans-unit id="table_cellpadding.details">
+			<trans-unit id="table_cellpadding.details" xml:space="preserve">
 				<source>Cell padding is the 'internal' margin of a table cell. The distance is equally applied in all directions, top, bottom, left and right.</source>
 			</trans-unit>
-			<trans-unit id="media.description">
+			<trans-unit id="media.description" xml:space="preserve">
 				<source>Add files to the list here.</source>
 			</trans-unit>
-			<trans-unit id="multimedia.description">
+			<trans-unit id="multimedia.description" xml:space="preserve">
 				<source>Insert the multimedia element, eg. a flash movie here.</source>
 			</trans-unit>
-			<trans-unit id="filelink_size.description">
+			<trans-unit id="filelink_size.description" xml:space="preserve">
 				<source>Check this, if you wish the filesizes to be displayed.</source>
 			</trans-unit>
-			<trans-unit id="records.description">
+			<trans-unit id="records.description" xml:space="preserve">
 				<source>Insert relations to records.</source>
 			</trans-unit>
-			<trans-unit id="spaceBefore.description">
+			<trans-unit id="spaceBefore.description" xml:space="preserve">
 				<source>Enter the amount of whitespace (in pixels) to insert &lt;em&gt;before&lt;/em&gt; this content element.</source>
 			</trans-unit>
-			<trans-unit id="_spaceBefore.seeAlso">
+			<trans-unit id="_spaceBefore.seeAlso" xml:space="preserve">
 				<source>tt_content:spaceAfter,
-tt_content:section_frame
-				</source>
+tt_content:section_frame</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="spaceAfter.description">
+			<trans-unit id="spaceAfter.description" xml:space="preserve">
 				<source>Enter the amount of whitespace (in pixels) to insert &lt;em&gt;after&lt;/em&gt; this content element.</source>
 			</trans-unit>
-			<trans-unit id="_spaceAfter.seeAlso">
+			<trans-unit id="_spaceAfter.seeAlso" xml:space="preserve">
 				<source>tt_content:spaceBefore,
-tt_content:section_frame
-				</source>
+tt_content:section_frame</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="section_frame.description">
+			<trans-unit id="section_frame.description" xml:space="preserve">
 				<source>Select a framing option for the content element.</source>
 			</trans-unit>
-			<trans-unit id="_section_frame.seeAlso">
+			<trans-unit id="_section_frame.seeAlso" xml:space="preserve">
 				<source>tt_content:spaceAfter,
-tt_content:spaceBefore
-				</source>
+tt_content:spaceBefore</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="splash_layout.description">
+			<trans-unit id="splash_layout.description" xml:space="preserve">
 				<source>Select the design for the Text box.</source>
 			</trans-unit>
-			<trans-unit id="splash_layout.details">
+			<trans-unit id="splash_layout.details" xml:space="preserve">
 				<source>&lt;strong&gt;Notice:&lt;/strong&gt; The Textbox type has a few default renderings but are primarily designed to be used for custom purposes. Therefore the availability of features will depend on the current website template.</source>
 			</trans-unit>
-			<trans-unit id="_splash_layout.seeAlso">
+			<trans-unit id="_splash_layout.seeAlso" xml:space="preserve">
 				<source>tt_content:CType</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="sectionIndex.description">
+			<trans-unit id="sectionIndex.description" xml:space="preserve">
 				<source>If set, the content element will appear in section indices.</source>
 			</trans-unit>
-			<trans-unit id="sectionIndex.details">
+			<trans-unit id="sectionIndex.details" xml:space="preserve">
 				<source>See details for the Menu-type selector (click below).</source>
 			</trans-unit>
-			<trans-unit id="_sectionIndex.seeAlso">
+			<trans-unit id="_sectionIndex.seeAlso" xml:space="preserve">
 				<source>tt_content:menu_type</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="linkToTop.description">
+			<trans-unit id="linkToTop.description" xml:space="preserve">
 				<source>If checked, a little "To top" link will be inserted after the content element.</source>
 			</trans-unit>
-			<trans-unit id="rte_enabled.description">
+			<trans-unit id="rte_enabled.description" xml:space="preserve">
 				<source>If checked, the Rich Text Editor will be disabled for the "Text" and "Text w/Image" types (&lt;em&gt;in this element only&lt;/em&gt;).</source>
 			</trans-unit>
-			<trans-unit id="_rte_enabled.seeAlso">
+			<trans-unit id="_rte_enabled.seeAlso" xml:space="preserve">
 				<source>tt_content:bodytext</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="pi_flexform.description">
+			<trans-unit id="pi_flexform.description" xml:space="preserve">
 				<source>FlexForm Configuration of Plugins</source>
 			</trans-unit>
-			<trans-unit id="pi_flexform.details">
+			<trans-unit id="pi_flexform.details" xml:space="preserve">
 				<source>Some plugins may require configuration of their options. They may use this field for FlexForm based configuration settings (stored as XML).</source>
 			</trans-unit>
-			<trans-unit id="_pi_flexform.seeAlso">
+			<trans-unit id="_pi_flexform.seeAlso" xml:space="preserve">
 				<source>tt_content:list_type</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>

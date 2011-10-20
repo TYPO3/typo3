@@ -3,55 +3,55 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="sv">
 		<header/>
 		<body>
-			<trans-unit id="report_title">
+			<trans-unit id="report_title" xml:space="preserve">
 				<source>Installed Services</source>
 			</trans-unit>
-			<trans-unit id="report_description">
+			<trans-unit id="report_description" xml:space="preserve">
 				<source>List of all installed services with information and status for each of them.</source>
 			</trans-unit>
-			<trans-unit id="report_explanation">
+			<trans-unit id="report_explanation" xml:space="preserve">
 				<source>This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</source>
 			</trans-unit>
-			<trans-unit id="externals_explanation">
+			<trans-unit id="externals_explanation" xml:space="preserve">
 				<source>The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</source>
 			</trans-unit>
-			<trans-unit id="service_type">
+			<trans-unit id="service_type" xml:space="preserve">
 				<source>Service type: %s</source>
 			</trans-unit>
-			<trans-unit id="service">
+			<trans-unit id="service" xml:space="preserve">
 				<source>Service</source>
 			</trans-unit>
-			<trans-unit id="priority">
+			<trans-unit id="priority" xml:space="preserve">
 				<source>Priority</source>
 			</trans-unit>
-			<trans-unit id="quality">
+			<trans-unit id="quality" xml:space="preserve">
 				<source>Quality</source>
 			</trans-unit>
-			<trans-unit id="subtypes">
+			<trans-unit id="subtypes" xml:space="preserve">
 				<source>Subtypes</source>
 			</trans-unit>
-			<trans-unit id="os">
+			<trans-unit id="os" xml:space="preserve">
 				<source>OS</source>
 			</trans-unit>
-			<trans-unit id="externals">
+			<trans-unit id="externals" xml:space="preserve">
 				<source>Externals</source>
 			</trans-unit>
-			<trans-unit id="available">
+			<trans-unit id="available" xml:space="preserve">
 				<source>Available</source>
 			</trans-unit>
-			<trans-unit id="any">
+			<trans-unit id="any" xml:space="preserve">
 				<source>Any</source>
 			</trans-unit>
-			<trans-unit id="search_paths">
+			<trans-unit id="search_paths" xml:space="preserve">
 				<source>Configured search paths for external programs</source>
 			</trans-unit>
-			<trans-unit id="path">
+			<trans-unit id="path" xml:space="preserve">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="valid">
+			<trans-unit id="valid" xml:space="preserve">
 				<source>Valid</source>
 			</trans-unit>
-			<trans-unit id="no_search_paths">
+			<trans-unit id="no_search_paths" xml:space="preserve">
 				<source>No search paths configured.</source>
 			</trans-unit>
 		</body>

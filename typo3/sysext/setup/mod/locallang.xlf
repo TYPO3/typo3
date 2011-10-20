@@ -3,394 +3,394 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="setup">
 		<header/>
 		<body>
-			<trans-unit id="UserSettings">
+			<trans-unit id="UserSettings" xml:space="preserve">
 				<source>User Settings</source>
 			</trans-unit>
-			<trans-unit id="language">
+			<trans-unit id="language" xml:space="preserve">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="lang_default">
+			<trans-unit id="lang_default" xml:space="preserve">
 				<source>English</source>
 			</trans-unit>
-			<trans-unit id="lang_ar">
+			<trans-unit id="lang_ar" xml:space="preserve">
 				<source>Arabic</source>
 			</trans-unit>
-			<trans-unit id="lang_ba">
+			<trans-unit id="lang_ba" xml:space="preserve">
 				<source>Bosnian</source>
 			</trans-unit>
-			<trans-unit id="lang_bs">
+			<trans-unit id="lang_bs" xml:space="preserve">
 				<source>Bosnian</source>
 			</trans-unit>
-			<trans-unit id="lang_bg">
+			<trans-unit id="lang_bg" xml:space="preserve">
 				<source>Bulgarian</source>
 			</trans-unit>
-			<trans-unit id="lang_ca">
+			<trans-unit id="lang_ca" xml:space="preserve">
 				<source>Catalan</source>
 			</trans-unit>
-			<trans-unit id="lang_ch">
+			<trans-unit id="lang_ch" xml:space="preserve">
 				<source>Chinese (Simpl)</source>
 			</trans-unit>
-			<trans-unit id="lang_cs">
+			<trans-unit id="lang_cs" xml:space="preserve">
 				<source>Czech</source>
 			</trans-unit>
-			<trans-unit id="lang_cz">
+			<trans-unit id="lang_cz" xml:space="preserve">
 				<source>Czech</source>
 			</trans-unit>
-			<trans-unit id="lang_da">
+			<trans-unit id="lang_da" xml:space="preserve">
 				<source>Danish</source>
 			</trans-unit>
-			<trans-unit id="lang_dk">
+			<trans-unit id="lang_dk" xml:space="preserve">
 				<source>Danish</source>
 			</trans-unit>
-			<trans-unit id="lang_de">
+			<trans-unit id="lang_de" xml:space="preserve">
 				<source>German</source>
 			</trans-unit>
-			<trans-unit id="lang_el">
+			<trans-unit id="lang_el" xml:space="preserve">
 				<source>Greek</source>
 			</trans-unit>
-			<trans-unit id="lang_gr">
+			<trans-unit id="lang_gr" xml:space="preserve">
 				<source>Greek</source>
 			</trans-unit>
-			<trans-unit id="lang_eo">
+			<trans-unit id="lang_eo" xml:space="preserve">
 				<source>Esperanto</source>
 			</trans-unit>
-			<trans-unit id="lang_es">
+			<trans-unit id="lang_es" xml:space="preserve">
 				<source>Spanish</source>
 			</trans-unit>
-			<trans-unit id="lang_et">
+			<trans-unit id="lang_et" xml:space="preserve">
 				<source>Estonian</source>
 			</trans-unit>
-			<trans-unit id="lang_eu">
+			<trans-unit id="lang_eu" xml:space="preserve">
 				<source>Basque</source>
 			</trans-unit>
-			<trans-unit id="lang_fa">
+			<trans-unit id="lang_fa" xml:space="preserve">
 				<source>Persian</source>
 			</trans-unit>
-			<trans-unit id="lang_fi">
+			<trans-unit id="lang_fi" xml:space="preserve">
 				<source>Finnish</source>
 			</trans-unit>
-			<trans-unit id="lang_fo">
+			<trans-unit id="lang_fo" xml:space="preserve">
 				<source>Faroese</source>
 			</trans-unit>
-			<trans-unit id="lang_fr">
+			<trans-unit id="lang_fr" xml:space="preserve">
 				<source>French</source>
 			</trans-unit>
-			<trans-unit id="lang_fr_CA">
+			<trans-unit id="lang_fr_CA" xml:space="preserve">
 				<source>French (Canada)</source>
 			</trans-unit>
-			<trans-unit id="lang_qc">
+			<trans-unit id="lang_qc" xml:space="preserve">
 				<source>French (Canada)</source>
 			</trans-unit>
-			<trans-unit id="lang_ga">
+			<trans-unit id="lang_ga" xml:space="preserve">
 				<source>Galician</source>
 			</trans-unit>
-			<trans-unit id="lang_gl">
+			<trans-unit id="lang_gl" xml:space="preserve">
 				<source>Galician</source>
 			</trans-unit>
-			<trans-unit id="lang_he">
+			<trans-unit id="lang_he" xml:space="preserve">
 				<source>Hebrew</source>
 			</trans-unit>
-			<trans-unit id="lang_hi">
+			<trans-unit id="lang_hi" xml:space="preserve">
 				<source>Hindi</source>
 			</trans-unit>
-			<trans-unit id="lang_hr">
+			<trans-unit id="lang_hr" xml:space="preserve">
 				<source>Croatian</source>
 			</trans-unit>
-			<trans-unit id="lang_hu">
+			<trans-unit id="lang_hu" xml:space="preserve">
 				<source>Hungarian</source>
 			</trans-unit>
-			<trans-unit id="lang_is">
+			<trans-unit id="lang_is" xml:space="preserve">
 				<source>Icelandic</source>
 			</trans-unit>
-			<trans-unit id="lang_it">
+			<trans-unit id="lang_it" xml:space="preserve">
 				<source>Italian</source>
 			</trans-unit>
-			<trans-unit id="lang_ja">
+			<trans-unit id="lang_ja" xml:space="preserve">
 				<source>Japanese</source>
 			</trans-unit>
-			<trans-unit id="lang_jp">
+			<trans-unit id="lang_jp" xml:space="preserve">
 				<source>Japanese</source>
 			</trans-unit>
-			<trans-unit id="lang_ge">
+			<trans-unit id="lang_ge" xml:space="preserve">
 				<source>Georgian</source>
 			</trans-unit>
-			<trans-unit id="lang_ka">
+			<trans-unit id="lang_ka" xml:space="preserve">
 				<source>Georgian</source>
 			</trans-unit>
-			<trans-unit id="lang_kl">
+			<trans-unit id="lang_kl" xml:space="preserve">
 				<source>Greenlandic</source>
 			</trans-unit>
-			<trans-unit id="lang_km">
+			<trans-unit id="lang_km" xml:space="preserve">
 				<source>Khmer</source>
 			</trans-unit>
-			<trans-unit id="lang_ko">
+			<trans-unit id="lang_ko" xml:space="preserve">
 				<source>Korean</source>
 			</trans-unit>
-			<trans-unit id="lang_kr">
+			<trans-unit id="lang_kr" xml:space="preserve">
 				<source>Korean</source>
 			</trans-unit>
-			<trans-unit id="lang_lt">
+			<trans-unit id="lang_lt" xml:space="preserve">
 				<source>Lithuanian</source>
 			</trans-unit>
-			<trans-unit id="lang_lv">
+			<trans-unit id="lang_lv" xml:space="preserve">
 				<source>Latvian</source>
 			</trans-unit>
-			<trans-unit id="lang_ms">
+			<trans-unit id="lang_ms" xml:space="preserve">
 				<source>Bahasa Malaysia</source>
 			</trans-unit>
-			<trans-unit id="lang_my">
+			<trans-unit id="lang_my" xml:space="preserve">
 				<source>Bahasa Malaysia</source>
 			</trans-unit>
-			<trans-unit id="lang_nl">
+			<trans-unit id="lang_nl" xml:space="preserve">
 				<source>Dutch</source>
 			</trans-unit>
-			<trans-unit id="lang_no">
+			<trans-unit id="lang_no" xml:space="preserve">
 				<source>Norwegian</source>
 			</trans-unit>
-			<trans-unit id="lang_pl">
+			<trans-unit id="lang_pl" xml:space="preserve">
 				<source>Polish</source>
 			</trans-unit>
-			<trans-unit id="lang_pt">
+			<trans-unit id="lang_pt" xml:space="preserve">
 				<source>Portuguese</source>
 			</trans-unit>
-			<trans-unit id="lang_br">
+			<trans-unit id="lang_br" xml:space="preserve">
 				<source>Brazilian Portuguese</source>
 			</trans-unit>
-			<trans-unit id="lang_pt_BR">
+			<trans-unit id="lang_pt_BR" xml:space="preserve">
 				<source>Brazilian Portuguese</source>
 			</trans-unit>
-			<trans-unit id="lang_ro">
+			<trans-unit id="lang_ro" xml:space="preserve">
 				<source>Romanian</source>
 			</trans-unit>
-			<trans-unit id="lang_ru">
+			<trans-unit id="lang_ru" xml:space="preserve">
 				<source>Russian</source>
 			</trans-unit>
-			<trans-unit id="lang_sk">
+			<trans-unit id="lang_sk" xml:space="preserve">
 				<source>Slovak</source>
 			</trans-unit>
-			<trans-unit id="lang_si">
+			<trans-unit id="lang_si" xml:space="preserve">
 				<source>Slovenian</source>
 			</trans-unit>
-			<trans-unit id="lang_sl">
+			<trans-unit id="lang_sl" xml:space="preserve">
 				<source>Slovenian</source>
 			</trans-unit>
-			<trans-unit id="lang_sq">
+			<trans-unit id="lang_sq" xml:space="preserve">
 				<source>Albanian</source>
 			</trans-unit>
-			<trans-unit id="lang_sr">
+			<trans-unit id="lang_sr" xml:space="preserve">
 				<source>Serbian</source>
 			</trans-unit>
-			<trans-unit id="lang_se">
+			<trans-unit id="lang_se" xml:space="preserve">
 				<source>Swedish</source>
 			</trans-unit>
-			<trans-unit id="lang_sv">
+			<trans-unit id="lang_sv" xml:space="preserve">
 				<source>Swedish</source>
 			</trans-unit>
-			<trans-unit id="lang_th">
+			<trans-unit id="lang_th" xml:space="preserve">
 				<source>Thai</source>
 			</trans-unit>
-			<trans-unit id="lang_tr">
+			<trans-unit id="lang_tr" xml:space="preserve">
 				<source>Turkish</source>
 			</trans-unit>
-			<trans-unit id="lang_ua">
+			<trans-unit id="lang_ua" xml:space="preserve">
 				<source>Ukrainian</source>
 			</trans-unit>
-			<trans-unit id="lang_uk">
+			<trans-unit id="lang_uk" xml:space="preserve">
 				<source>Ukrainian</source>
 			</trans-unit>
-			<trans-unit id="lang_vi">
+			<trans-unit id="lang_vi" xml:space="preserve">
 				<source>Vietnamese</source>
 			</trans-unit>
-			<trans-unit id="lang_vn">
+			<trans-unit id="lang_vn" xml:space="preserve">
 				<source>Vietnamese</source>
 			</trans-unit>
-			<trans-unit id="lang_hk">
+			<trans-unit id="lang_hk" xml:space="preserve">
 				<source>Chinese (Trad)</source>
 			</trans-unit>
-			<trans-unit id="lang_zh">
+			<trans-unit id="lang_zh" xml:space="preserve">
 				<source>Chinese (Trad)</source>
 			</trans-unit>
-			<trans-unit id="default">
+			<trans-unit id="default" xml:space="preserve">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="simulate">
+			<trans-unit id="simulate" xml:space="preserve">
 				<source>Simulate backend user</source>
 			</trans-unit>
-			<trans-unit id="opening">
+			<trans-unit id="opening" xml:space="preserve">
 				<source>Startup</source>
 			</trans-unit>
-			<trans-unit id="personal_data">
+			<trans-unit id="personal_data" xml:space="preserve">
 				<source>Personal data</source>
 			</trans-unit>
-			<trans-unit id="showThumbs">
+			<trans-unit id="showThumbs" xml:space="preserve">
 				<source>Show Thumbnails by default</source>
 			</trans-unit>
-			<trans-unit id="condensedMode">
+			<trans-unit id="condensedMode" xml:space="preserve">
 				<source>Use condensed mode in backend&lt;br /&gt;(for small screens)</source>
 			</trans-unit>
-			<trans-unit id="noMenuMode">
+			<trans-unit id="noMenuMode" xml:space="preserve">
 				<source>Select navigation mode</source>
 			</trans-unit>
-			<trans-unit id="noMenuMode_def">
+			<trans-unit id="noMenuMode_def" xml:space="preserve">
 				<source>Left frame menu (default)</source>
 			</trans-unit>
-			<trans-unit id="noMenuMode_sel">
+			<trans-unit id="noMenuMode_sel" xml:space="preserve">
 				<source>Selectorbox in top frame</source>
 			</trans-unit>
-			<trans-unit id="noMenuMode_icons">
+			<trans-unit id="noMenuMode_icons" xml:space="preserve">
 				<source>Icons in top frame</source>
 			</trans-unit>
-			<trans-unit id="startModule">
+			<trans-unit id="startModule" xml:space="preserve">
 				<source>Start up in the following module</source>
 			</trans-unit>
-			<trans-unit id="emailMeAtLogin">
+			<trans-unit id="emailMeAtLogin" xml:space="preserve">
 				<source>Notify me by email, when somebody logs in &lt;br /&gt;from my account</source>
 			</trans-unit>
-			<trans-unit id="helpText">
+			<trans-unit id="helpText" xml:space="preserve">
 				<source>Show help text when applicable</source>
 			</trans-unit>
-			<trans-unit id="maxTitleLen">
+			<trans-unit id="maxTitleLen" xml:space="preserve">
 				<source>Max. Title Length</source>
 			</trans-unit>
-			<trans-unit id="edit_showFieldHelp">
+			<trans-unit id="edit_showFieldHelp" xml:space="preserve">
 				<source>Context Sensitive Help mode</source>
 			</trans-unit>
-			<trans-unit id="edit_showFieldHelp_none">
+			<trans-unit id="edit_showFieldHelp_none" xml:space="preserve">
 				<source>Display no help information</source>
 			</trans-unit>
-			<trans-unit id="edit_showFieldHelp_icon">
+			<trans-unit id="edit_showFieldHelp_icon" xml:space="preserve">
 				<source>Display help icon only</source>
 			</trans-unit>
-			<trans-unit id="edit_showFieldHelp_message">
+			<trans-unit id="edit_showFieldHelp_message" xml:space="preserve">
 				<source>Display full text message</source>
 			</trans-unit>
-			<trans-unit id="edit_wideDocument">
+			<trans-unit id="edit_wideDocument" xml:space="preserve">
 				<source>Wide document background</source>
 			</trans-unit>
-			<trans-unit id="edit_RTE">
+			<trans-unit id="edit_RTE" xml:space="preserve">
 				<source>Enable Rich Text Editor (if available)</source>
 			</trans-unit>
-			<trans-unit id="edit_docModuleUpload">
+			<trans-unit id="edit_docModuleUpload" xml:space="preserve">
 				<source>File upload directly in Doc-module</source>
 			</trans-unit>
-			<trans-unit id="enableFlashUploader">
+			<trans-unit id="enableFlashUploader" xml:space="preserve">
 				<source>Enable Flash Uploader (requires Flash 9+)</source>
 			</trans-unit>
-			<trans-unit id="resizeTextareas">
+			<trans-unit id="resizeTextareas" xml:space="preserve">
 				<source>Make Textareas resizable</source>
 			</trans-unit>
-			<trans-unit id="resizeTextareas_MaxHeight">
+			<trans-unit id="resizeTextareas_MaxHeight" xml:space="preserve">
 				<source>Maximal Height of resizable Textarea in Pixel</source>
 			</trans-unit>
-			<trans-unit id="resizeTextareas_Flexible">
+			<trans-unit id="resizeTextareas_Flexible" xml:space="preserve">
 				<source>Make Textareas flexible</source>
 			</trans-unit>
-			<trans-unit id="editFunctionsTab">
+			<trans-unit id="editFunctionsTab" xml:space="preserve">
 				<source>Edit &amp; Advanced functions</source>
 			</trans-unit>
-			<trans-unit id="edit_functions">
+			<trans-unit id="edit_functions" xml:space="preserve">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="disableCMlayers">
+			<trans-unit id="disableCMlayers" xml:space="preserve">
 				<source>Disable Popup Context Menus</source>
 			</trans-unit>
-			<trans-unit id="setToStandard">
+			<trans-unit id="setToStandard" xml:space="preserve">
 				<source>Reset all Values to default</source>
 			</trans-unit>
-			<trans-unit id="resetConfiguration">
+			<trans-unit id="resetConfiguration" xml:space="preserve">
 				<source>Reset Configuration and Clear Temporary Data</source>
 			</trans-unit>
-			<trans-unit id="setToStandardQuestion">
+			<trans-unit id="setToStandardQuestion" xml:space="preserve">
 				<source>Are you sure you want to reset all values to default?</source>
 			</trans-unit>
-			<trans-unit id="clearSessionVars">
+			<trans-unit id="clearSessionVars" xml:space="preserve">
 				<source>Clear Temporary Data</source>
 			</trans-unit>
-			<trans-unit id="clearSessionVarsQuestion">
+			<trans-unit id="clearSessionVarsQuestion" xml:space="preserve">
 				<source>Are you sure you want to clear the temporary data?</source>
 			</trans-unit>
-			<trans-unit id="functions">
+			<trans-unit id="functions" xml:space="preserve">
 				<source>Advanced functions</source>
 			</trans-unit>
-			<trans-unit id="copyLevels">
+			<trans-unit id="copyLevels" xml:space="preserve">
 				<source>&lt;b&gt;Recursive Copy:&lt;/b&gt; Enter the number of page&lt;br /&gt;sublevels to include, when a page is copied</source>
 			</trans-unit>
-			<trans-unit id="recursiveDelete">
+			<trans-unit id="recursiveDelete" xml:space="preserve">
 				<source>&lt;b&gt;Recursive Delete(!):&lt;/b&gt; Allow ALL subpages&lt;br /&gt;to be deleted when deleting a page</source>
 			</trans-unit>
-			<trans-unit id="activateChanges">
+			<trans-unit id="activateChanges" xml:space="preserve">
 				<source>Notice! In order to activate most of these changes, please reload the backend (eg. logout and login again).</source>
 			</trans-unit>
-			<trans-unit id="levels">
+			<trans-unit id="levels" xml:space="preserve">
 				<source>levels</source>
 			</trans-unit>
-			<trans-unit id="beUser_realName">
+			<trans-unit id="beUser_realName" xml:space="preserve">
 				<source>Your name</source>
 			</trans-unit>
-			<trans-unit id="beUser_email">
+			<trans-unit id="beUser_email" xml:space="preserve">
 				<source>Your email address</source>
 			</trans-unit>
-			<trans-unit id="save">
+			<trans-unit id="save" xml:space="preserve">
 				<source>Save Configuration</source>
 			</trans-unit>
-			<trans-unit id="newPassword">
+			<trans-unit id="newPassword" xml:space="preserve">
 				<source>New password</source>
 			</trans-unit>
-			<trans-unit id="newPasswordAgain">
+			<trans-unit id="newPasswordAgain" xml:space="preserve">
 				<source>New password, again</source>
 			</trans-unit>
-			<trans-unit id="newPassword_ok">
+			<trans-unit id="newPassword_ok" xml:space="preserve">
 				<source>Password was updated.</source>
 			</trans-unit>
-			<trans-unit id="setupWasUpdated">
+			<trans-unit id="setupWasUpdated" xml:space="preserve">
 				<source>User settings were updated.</source>
 			</trans-unit>
-			<trans-unit id="newPassword_failed">
+			<trans-unit id="newPassword_failed" xml:space="preserve">
 				<source>Password was NOT updated because you didn't enter the same password twice.</source>
 			</trans-unit>
-			<trans-unit id="adminFunctions">
+			<trans-unit id="adminFunctions" xml:space="preserve">
 				<source>Admin functions</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.label">
+			<trans-unit id="enableInstallTool.label" xml:space="preserve">
 				<source>Install Tool Access</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.createFile">
+			<trans-unit id="enableInstallTool.createFile" xml:space="preserve">
 				<source>Create Install Tool Enable File</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.file">
+			<trans-unit id="enableInstallTool.file" xml:space="preserve">
 				<source>Install Tool Enable file</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.fileCreate_ok">
+			<trans-unit id="enableInstallTool.fileCreate_ok" xml:space="preserve">
 				<source>The Install Tool Enable file has been created.</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.fileCreate_failed">
+			<trans-unit id="enableInstallTool.fileCreate_failed" xml:space="preserve">
 				<source>The Install Tool Enable file could not be created.</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.deleteFile">
+			<trans-unit id="enableInstallTool.deleteFile" xml:space="preserve">
 				<source>Delete Install Tool Enable File</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.fileDelete_ok">
+			<trans-unit id="enableInstallTool.fileDelete_ok" xml:space="preserve">
 				<source>The Install Tool Enable file has been deleted.</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.fileDelete_failed">
+			<trans-unit id="enableInstallTool.fileDelete_failed" xml:space="preserve">
 				<source>The Install Tool Enable file could not be deleted!</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.fileHasKeep">
+			<trans-unit id="enableInstallTool.fileHasKeep" xml:space="preserve">
 				<source>The Install Tool file has the content "KEEP_FILE" and can not be deleted!</source>
 			</trans-unit>
-			<trans-unit id="tempDataCleared">
+			<trans-unit id="tempDataCleared" xml:space="preserve">
 				<source>Temporary data cleared</source>
 			</trans-unit>
-			<trans-unit id="tempDataClearedFlashMessage">
+			<trans-unit id="tempDataClearedFlashMessage" xml:space="preserve">
 				<source>The temporary data has been cleared.</source>
 			</trans-unit>
-			<trans-unit id="tempDataClearedLog">
+			<trans-unit id="tempDataClearedLog" xml:space="preserve">
 				<source>Temporary data cleared</source>
 			</trans-unit>
-			<trans-unit id="settingsAreReset">
+			<trans-unit id="settingsAreReset" xml:space="preserve">
 				<source>The user settings have been reset to default values and temporary data has been cleared.</source>
 			</trans-unit>
-			<trans-unit id="debugInWindow">
+			<trans-unit id="debugInWindow" xml:space="preserve">
 				<source>Display debug messages in a new browser window</source>
 			</trans-unit>
 		</body>

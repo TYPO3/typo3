@@ -3,16 +3,16 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="openid">
 		<header/>
 		<body>
-			<trans-unit id="tx_openid_openid.description">
+			<trans-unit id="tx_openid_openid.description" xml:space="preserve">
 				<source>OpenID identifier</source>
 			</trans-unit>
-			<trans-unit id="tx_openid_openid.details">
+			<trans-unit id="tx_openid_openid.details" xml:space="preserve">
 				<source>This field contains option OpenID identifier. If the field is not empty, users can login to the system using their OpenID identifier.</source>
 			</trans-unit>
-			<trans-unit id="tx_openid_openid.seeAlso">
+			<trans-unit id="tx_openid_openid.seeAlso" xml:space="preserve">
 				<source>http://openid.net/</source>
 			</trans-unit>
-			<trans-unit id="tx_openid_change_allowed.description">
+			<trans-unit id="tx_openid_change_allowed.description" xml:space="preserve">
 				<source>If this setting is active, users can change their own OpenID identifier using the setup module.</source>
 			</trans-unit>
 		</body>

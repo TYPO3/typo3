@@ -3,112 +3,112 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="sys_action">
 		<header/>
 		<body>
-			<trans-unit id="sys_action">
+			<trans-unit id="sys_action" xml:space="preserve">
 				<source>Action</source>
 			</trans-unit>
-			<trans-unit id="description">
+			<trans-unit id="description" xml:space="preserve">
 				<source>An 'Action' is a configuration of a specific task which may be performed by assigned usergroups via the Task Center.</source>
 			</trans-unit>
-			<trans-unit id="new-sys_action">
+			<trans-unit id="new-sys_action" xml:space="preserve">
 				<source>Create a new action</source>
 			</trans-unit>
-			<trans-unit id="edit-sys_action">
+			<trans-unit id="edit-sys_action" xml:space="preserve">
 				<source>Edit record</source>
 			</trans-unit>
-			<trans-unit id="action_error-not-found">
+			<trans-unit id="action_error-not-found" xml:space="preserve">
 				<source>The action doesn't exist</source>
 			</trans-unit>
-			<trans-unit id="action_not-found">
+			<trans-unit id="action_not-found" xml:space="preserve">
 				<source>No actions found</source>
 			</trans-unit>
-			<trans-unit id="action_not-found-description">
+			<trans-unit id="action_not-found-description" xml:space="preserve">
 				<source>Currently there are no actions yet defined!</source>
 			</trans-unit>
-			<trans-unit id="action_error-access">
+			<trans-unit id="action_error-access" xml:space="preserve">
 				<source>You don't have sufficient rights to see the records. Please ask the administrator to set those for you.</source>
 			</trans-unit>
-			<trans-unit id="error-wrong-email">
+			<trans-unit id="error-wrong-email" xml:space="preserve">
 				<source>The E-mail address is wrong.</source>
 			</trans-unit>
-			<trans-unit id="error-username-empty">
+			<trans-unit id="error-username-empty" xml:space="preserve">
 				<source>The username is empty.</source>
 			</trans-unit>
-			<trans-unit id="error-password-empty">
+			<trans-unit id="error-password-empty" xml:space="preserve">
 				<source>The password is empty.</source>
 			</trans-unit>
-			<trans-unit id="error-wrong-user">
+			<trans-unit id="error-wrong-user" xml:space="preserve">
 				<source>You are not allowed to edit this user.</source>
 			</trans-unit>
-			<trans-unit id="success">
+			<trans-unit id="success" xml:space="preserve">
 				<source>Success</source>
 			</trans-unit>
-			<trans-unit id="success-user-created">
+			<trans-unit id="success-user-created" xml:space="preserve">
 				<source>The user has been created.</source>
 			</trans-unit>
-			<trans-unit id="success-user-updated">
+			<trans-unit id="success-user-updated" xml:space="preserve">
 				<source>The user has been updated.</source>
 			</trans-unit>
-			<trans-unit id="action_noType">
+			<trans-unit id="action_noType" xml:space="preserve">
 				<source>Error: The action had no type defined.</source>
 			</trans-unit>
-			<trans-unit id="action_notReady">
+			<trans-unit id="action_notReady" xml:space="preserve">
 				<source>Error: The action configuration is not finished.</source>
 			</trans-unit>
-			<trans-unit id="action_download_file">
+			<trans-unit id="action_download_file" xml:space="preserve">
 				<source>Click here to download the exported data in a file</source>
 			</trans-unit>
-			<trans-unit id="action_editQuery">
+			<trans-unit id="action_editQuery" xml:space="preserve">
 				<source>Edit Query</source>
 			</trans-unit>
-			<trans-unit id="action_createQuery">
+			<trans-unit id="action_createQuery" xml:space="preserve">
 				<source>Create Query</source>
 			</trans-unit>
-			<trans-unit id="action_emptyQuery">
+			<trans-unit id="action_emptyQuery" xml:space="preserve">
 				<source>Query is empty, create one first!</source>
 			</trans-unit>
-			<trans-unit id="action_error">
+			<trans-unit id="action_error" xml:space="preserve">
 				<source>Action error!</source>
 			</trans-unit>
-			<trans-unit id="action_lowlevelMissing">
+			<trans-unit id="action_lowlevelMissing" xml:space="preserve">
 				<source>The extension "lowlevel" must be installed in order to create a query.</source>
 			</trans-unit>
-			<trans-unit id="action_BEu_hidden">
+			<trans-unit id="action_BEu_hidden" xml:space="preserve">
 				<source>Disable user</source>
 			</trans-unit>
-			<trans-unit id="action_BEu_username">
+			<trans-unit id="action_BEu_username" xml:space="preserve">
 				<source>Login name</source>
 			</trans-unit>
-			<trans-unit id="action_BEu_password">
+			<trans-unit id="action_BEu_password" xml:space="preserve">
 				<source>Password</source>
 			</trans-unit>
-			<trans-unit id="action_BEu_realName">
+			<trans-unit id="action_BEu_realName" xml:space="preserve">
 				<source>Real name</source>
 			</trans-unit>
-			<trans-unit id="action_BEu_email">
+			<trans-unit id="action_BEu_email" xml:space="preserve">
 				<source>Email</source>
 			</trans-unit>
-			<trans-unit id="action_BEu_usergroups">
+			<trans-unit id="action_BEu_usergroups" xml:space="preserve">
 				<source>Member of groups</source>
 			</trans-unit>
-			<trans-unit id="action_t2_result">
+			<trans-unit id="action_t2_result" xml:space="preserve">
 				<source>Result of query</source>
 			</trans-unit>
-			<trans-unit id="action_Create">
+			<trans-unit id="action_Create" xml:space="preserve">
 				<source>Create Backend User</source>
 			</trans-unit>
-			<trans-unit id="action_Update">
+			<trans-unit id="action_Update" xml:space="preserve">
 				<source>Update Backend User</source>
 			</trans-unit>
-			<trans-unit id="action_t1_listOfUsers">
+			<trans-unit id="action_t1_listOfUsers" xml:space="preserve">
 				<source>List of backend users</source>
 			</trans-unit>
-			<trans-unit id="action_BEu_db_mount">
+			<trans-unit id="action_BEu_db_mount" xml:space="preserve">
 				<source>Pagetree starting points</source>
 			</trans-unit>
-			<trans-unit id="action_t4_edit">
+			<trans-unit id="action_t4_edit" xml:space="preserve">
 				<source>Select record to edit:</source>
 			</trans-unit>
-			<trans-unit id="action_toolbaritem">
+			<trans-unit id="action_toolbaritem" xml:space="preserve">
 				<source>Open System Actions</source>
 			</trans-unit>
 		</body>

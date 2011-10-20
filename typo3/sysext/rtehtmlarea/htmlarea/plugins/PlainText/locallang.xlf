@@ -3,49 +3,49 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="PasteToggleTooltip">
+			<trans-unit id="PasteToggleTooltip" xml:space="preserve">
 				<source>Toggle paste behaviour</source>
 			</trans-unit>
-			<trans-unit id="plainText">
+			<trans-unit id="plainText" xml:space="preserve">
 				<source>Paste as plain text</source>
 			</trans-unit>
-			<trans-unit id="pasteStructure">
+			<trans-unit id="pasteStructure" xml:space="preserve">
 				<source>Paste structure only</source>
 			</trans-unit>
-			<trans-unit id="pasteFormat">
+			<trans-unit id="pasteFormat" xml:space="preserve">
 				<source>Paste structure and basic format</source>
 			</trans-unit>
-			<trans-unit id="PasteBehaviourTooltip">
+			<trans-unit id="PasteBehaviourTooltip" xml:space="preserve">
 				<source>Select alternate paste behaviour</source>
 			</trans-unit>
-			<trans-unit id="Paste-as-Plain-Text">
+			<trans-unit id="Paste-as-Plain-Text" xml:space="preserve">
 				<source>Paste as plain text</source>
 			</trans-unit>
-			<trans-unit id="Access-to-clipboard-denied">
+			<trans-unit id="Access-to-clipboard-denied" xml:space="preserve">
 				<source>Content could not be pasted as plain text because permission to access the clipboard was denied.</source>
 			</trans-unit>
-			<trans-unit id="enableplainText">
+			<trans-unit id="enableplainText" xml:space="preserve">
 				<source>Enable paste as plain text</source>
 			</trans-unit>
-			<trans-unit id="enablepasteStructure">
+			<trans-unit id="enablepasteStructure" xml:space="preserve">
 				<source>Enable paste structure only</source>
 			</trans-unit>
-			<trans-unit id="enablepasteFormat">
+			<trans-unit id="enablepasteFormat" xml:space="preserve">
 				<source>Enable paste structure and basic format</source>
 			</trans-unit>
-			<trans-unit id="disableplainText">
+			<trans-unit id="disableplainText" xml:space="preserve">
 				<source>Disable paste as plain text</source>
 			</trans-unit>
-			<trans-unit id="disablepasteStructure">
+			<trans-unit id="disablepasteStructure" xml:space="preserve">
 				<source>Disable paste structure only</source>
 			</trans-unit>
-			<trans-unit id="disablepasteFormat">
+			<trans-unit id="disablepasteFormat" xml:space="preserve">
 				<source>Disable paste structure and basic format</source>
 			</trans-unit>
-			<trans-unit id="pasteInPastingPad">
+			<trans-unit id="pasteInPastingPad" xml:space="preserve">
 				<source>Paste the content into this pasting pad and click OK.</source>
 			</trans-unit>
-			<trans-unit id="rteCleanPasteBehaviour">
+			<trans-unit id="rteCleanPasteBehaviour" xml:space="preserve">
 				<source>Clean paste behaviour</source>
 			</trans-unit>
 		</body>

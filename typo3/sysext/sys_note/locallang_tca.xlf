@@ -3,28 +3,28 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="sys_note">
 		<header/>
 		<body>
-			<trans-unit id="sys_note">
+			<trans-unit id="sys_note" xml:space="preserve">
 				<source>Internal note</source>
 			</trans-unit>
-			<trans-unit id="sys_note.category.I.1">
+			<trans-unit id="sys_note.category.I.1" xml:space="preserve">
 				<source>Instructions</source>
 			</trans-unit>
-			<trans-unit id="sys_note.category.I.2">
+			<trans-unit id="sys_note.category.I.2" xml:space="preserve">
 				<source>Notes</source>
 			</trans-unit>
-			<trans-unit id="sys_note.category.I.3">
+			<trans-unit id="sys_note.category.I.3" xml:space="preserve">
 				<source>To-do</source>
 			</trans-unit>
-			<trans-unit id="sys_note.category.I.4">
+			<trans-unit id="sys_note.category.I.4" xml:space="preserve">
 				<source>Template</source>
 			</trans-unit>
-			<trans-unit id="sys_note.subject">
+			<trans-unit id="sys_note.subject" xml:space="preserve">
 				<source>Subject:</source>
 			</trans-unit>
-			<trans-unit id="sys_note.message">
+			<trans-unit id="sys_note.message" xml:space="preserve">
 				<source>Message:</source>
 			</trans-unit>
-			<trans-unit id="sys_note.personal">
+			<trans-unit id="sys_note.personal" xml:space="preserve">
 				<source>Personal:</source>
 			</trans-unit>
 		</body>

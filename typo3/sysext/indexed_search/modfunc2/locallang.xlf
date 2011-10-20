@@ -3,28 +3,28 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="indexed_search">
 		<header/>
 		<body>
-			<trans-unit id="title">
+			<trans-unit id="title" xml:space="preserve">
 				<source>Indexed search statistics</source>
 			</trans-unit>
-			<trans-unit id="title2">
+			<trans-unit id="title2" xml:space="preserve">
 				<source>List of most searched words</source>
 			</trans-unit>
-			<trans-unit id="noresults">
+			<trans-unit id="noresults" xml:space="preserve">
 				<source>No results</source>
 			</trans-unit>
-			<trans-unit id="all">
+			<trans-unit id="all" xml:space="preserve">
 				<source>All</source>
 			</trans-unit>
-			<trans-unit id="last30days">
+			<trans-unit id="last30days" xml:space="preserve">
 				<source>Last 30 days</source>
 			</trans-unit>
-			<trans-unit id="last24hours">
+			<trans-unit id="last24hours" xml:space="preserve">
 				<source>Last 24 hours</source>
 			</trans-unit>
-			<trans-unit id="justthispage">
+			<trans-unit id="justthispage" xml:space="preserve">
 				<source>Statistics for this page only</source>
 			</trans-unit>
-			<trans-unit id="allpages">
+			<trans-unit id="allpages" xml:space="preserve">
 				<source>Statistics for all pages. Select a page with indexed search form to see several statistics</source>
 			</trans-unit>
 		</body>

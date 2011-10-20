@@ -3,16 +3,16 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="introtext">
+			<trans-unit id="introtext" xml:space="preserve">
 				<source>Web Content Management System</source>
 			</trans-unit>
-			<trans-unit id="introtext2">
+			<trans-unit id="introtext2" xml:space="preserve">
 				<source>This is a brief description of the available modules:</source>
 			</trans-unit>
-			<trans-unit id="endText">
+			<trans-unit id="endText" xml:space="preserve">
 				<source>Features may vary depending on your website and permissions</source>
 			</trans-unit>
-			<trans-unit id="userInfo">
+			<trans-unit id="userInfo" xml:space="preserve">
 				<source>You're logged in as user:</source>
 			</trans-unit>
 		</body>

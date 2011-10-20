@@ -3,73 +3,73 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="css_styled_content">
 		<header/>
 		<body>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables" xml:space="preserve">
 				<source>Accessibility</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_caption">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_caption" xml:space="preserve">
 				<source>Table Caption</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_summary">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_summary" xml:space="preserve">
 				<source>Table Summary</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_tfoot">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_tfoot" xml:space="preserve">
 				<source>Use Table Footer (wrap last row with &lt;tfoot&gt; tags)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos.I.0">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos.I.0" xml:space="preserve">
 				<source>No header</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos.I.1">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos.I.1" xml:space="preserve">
 				<source>Top</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos.I.2">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos.I.2" xml:space="preserve">
 				<source>Left</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_headerpos" xml:space="preserve">
 				<source>Table Header Position</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_nostyles">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_nostyles" xml:space="preserve">
 				<source>No CSS styles for this table</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_tableclass">
+			<trans-unit id="tt_content.tx_cssstyledcontent_acctables_tableclass" xml:space="preserve">
 				<source>Additional CSS Class</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing" xml:space="preserve">
 				<source>CSV parsing</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote" xml:space="preserve">
 				<source>Text Delimiter</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote_none">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote_none" xml:space="preserve">
 				<source>None</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote_single">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote_single" xml:space="preserve">
 				<source>' (Single quotes)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote_double">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_quote_double" xml:space="preserve">
 				<source>" (Double quotes)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter" xml:space="preserve">
 				<source>Field Delimiter</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_pipe">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_pipe" xml:space="preserve">
 				<source>| (Pipe)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_semicolon">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_semicolon" xml:space="preserve">
 				<source>; (Semicolon)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_colon">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_colon" xml:space="preserve">
 				<source>: (Colon)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_comma">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_comma" xml:space="preserve">
 				<source>, (Comma)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_tab">
+			<trans-unit id="tt_content.tx_cssstyledcontent_tableparsing_delimiter_tab" xml:space="preserve">
 				<source>⇥ (Tab)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_section_frame.I.9">
+			<trans-unit id="tt_content.tx_cssstyledcontent_section_frame.I.9" xml:space="preserve">
 				<source>No Frame</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_cssstyledcontent_section_frame.I.0">
+			<trans-unit id="tt_content.tx_cssstyledcontent_section_frame.I.0" xml:space="preserve">
 				<source>Default Frame</source>
 			</trans-unit>
 		</body>

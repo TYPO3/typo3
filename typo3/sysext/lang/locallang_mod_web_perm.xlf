@@ -3,118 +3,118 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="permissions">
+			<trans-unit id="permissions" xml:space="preserve">
 				<source>Permissions</source>
 			</trans-unit>
-			<trans-unit id="ch_permissions">
+			<trans-unit id="ch_permissions" xml:space="preserve">
 				<source>Change permissions</source>
 			</trans-unit>
-			<trans-unit id="Legend">
+			<trans-unit id="Legend" xml:space="preserve">
 				<source>Legend</source>
 			</trans-unit>
-			<trans-unit id="Owner">
+			<trans-unit id="Owner" xml:space="preserve">
 				<source>Owner</source>
 			</trans-unit>
-			<trans-unit id="Group">
+			<trans-unit id="Group" xml:space="preserve">
 				<source>Group</source>
 			</trans-unit>
-			<trans-unit id="Everybody">
+			<trans-unit id="Everybody" xml:space="preserve">
 				<source>Everybody</source>
 			</trans-unit>
-			<trans-unit id="EditLock">
+			<trans-unit id="EditLock" xml:space="preserve">
 				<source>Lock</source>
 			</trans-unit>
-			<trans-unit id="EditLock_descr">
+			<trans-unit id="EditLock_descr" xml:space="preserve">
 				<source>The page and all content is locked for editing by all non-Admin users.</source>
 			</trans-unit>
-			<trans-unit id="Save">
+			<trans-unit id="Save" xml:space="preserve">
 				<source>Save</source>
 			</trans-unit>
-			<trans-unit id="Abort">
+			<trans-unit id="Abort" xml:space="preserve">
 				<source>Abort</source>
 			</trans-unit>
-			<trans-unit id="Edit">
+			<trans-unit id="Edit" xml:space="preserve">
 				<source>EDIT</source>
 			</trans-unit>
-			<trans-unit id="recursive">
+			<trans-unit id="recursive" xml:space="preserve">
 				<source>Set recursively</source>
 			</trans-unit>
-			<trans-unit id="pages_affected">
+			<trans-unit id="pages_affected" xml:space="preserve">
 				<source>pages affected</source>
 			</trans-unit>
-			<trans-unit id="user_overview">
+			<trans-unit id="user_overview" xml:space="preserve">
 				<source>User overview</source>
 			</trans-unit>
-			<trans-unit id="Mode">
+			<trans-unit id="Mode" xml:space="preserve">
 				<source>Mode</source>
 			</trans-unit>
-			<trans-unit id="Depth">
+			<trans-unit id="Depth" xml:space="preserve">
 				<source>Depth</source>
 			</trans-unit>
-			<trans-unit id="levels">
+			<trans-unit id="levels" xml:space="preserve">
 				<source>levels</source>
 			</trans-unit>
-			<trans-unit id="User">
+			<trans-unit id="User" xml:space="preserve">
 				<source>User</source>
 			</trans-unit>
-			<trans-unit id="def">
+			<trans-unit id="def" xml:space="preserve">
 				<source>Definition: 'content' is records from all tables on a page - except from records from the table 'pages' (Pages).</source>
 			</trans-unit>
-			<trans-unit id="A_Granted">
+			<trans-unit id="A_Granted" xml:space="preserve">
 				<source>Access Granted</source>
 			</trans-unit>
-			<trans-unit id="A_Denied">
+			<trans-unit id="A_Denied" xml:space="preserve">
 				<source>Access Denied</source>
 			</trans-unit>
-			<trans-unit id="1">
+			<trans-unit id="1" xml:space="preserve">
 				<source>Show page</source>
 			</trans-unit>
-			<trans-unit id="16">
+			<trans-unit id="16" xml:space="preserve">
 				<source>Edit content</source>
 			</trans-unit>
-			<trans-unit id="2">
+			<trans-unit id="2" xml:space="preserve">
 				<source>Edit page</source>
 			</trans-unit>
-			<trans-unit id="4">
+			<trans-unit id="4" xml:space="preserve">
 				<source>Delete page</source>
 			</trans-unit>
-			<trans-unit id="8">
+			<trans-unit id="8" xml:space="preserve">
 				<source>New pages</source>
 			</trans-unit>
-			<trans-unit id="1_t">
+			<trans-unit id="1_t" xml:space="preserve">
 				<source>Show/Copy page and content.</source>
 			</trans-unit>
-			<trans-unit id="16_t">
+			<trans-unit id="16_t" xml:space="preserve">
 				<source>Change/Add/Delete/Move content.</source>
 			</trans-unit>
-			<trans-unit id="2_t">
+			<trans-unit id="2_t" xml:space="preserve">
 				<source>Change/Move page, eg. change pagetitle etc.</source>
 			</trans-unit>
-			<trans-unit id="4_t">
+			<trans-unit id="4_t" xml:space="preserve">
 				<source>Delete page and content.</source>
 			</trans-unit>
-			<trans-unit id="8_t">
+			<trans-unit id="8_t" xml:space="preserve">
 				<source>Create new pages under this page.</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tablabel">
+			<trans-unit id="mlang_labels_tablabel" xml:space="preserve">
 				<source>Page editing permissions</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr">
+			<trans-unit id="mlang_labels_tabdescr" xml:space="preserve">
 				<source>Setting of page permissions is vital for controlling backend user access to pages. You can assign a user and a group as owners of a page and set access permissions for each.</source>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab">
+			<trans-unit id="mlang_tabs_tab" xml:space="preserve">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="WorkspaceWarning">
+			<trans-unit id="WorkspaceWarning" xml:space="preserve">
 				<source>Workspace Warning</source>
 			</trans-unit>
-			<trans-unit id="WorkspaceWarningText">
+			<trans-unit id="WorkspaceWarningText" xml:space="preserve">
 				<source>Permissions you set in the workspace are effective on the elements only &lt;em&gt;after&lt;/em&gt; they are published! If you need to set permissions which are effective right now, you must do so in the Live workspace. (Permissions are always evaluated on the Live workspace record/placeholder of a draft version)</source>
 			</trans-unit>
-			<trans-unit id="notSet">
+			<trans-unit id="notSet" xml:space="preserve">
 				<source>not set</source>
 			</trans-unit>
-			<trans-unit id="deleted">
+			<trans-unit id="deleted" xml:space="preserve">
 				<source>deleted</source>
 			</trans-unit>
 		</body>

@@ -3,19 +3,19 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Default">
+			<trans-unit id="Default" xml:space="preserve">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="Undefined">
+			<trans-unit id="Undefined" xml:space="preserve">
 				<source>Undefined</source>
 			</trans-unit>
-			<trans-unit id="InlineCSSStyleTooltip">
+			<trans-unit id="InlineCSSStyleTooltip" xml:space="preserve">
 				<source>Apply style to the selected text</source>
 			</trans-unit>
-			<trans-unit id="InlineCSS-class-Tooltip">
+			<trans-unit id="InlineCSS-class-Tooltip" xml:space="preserve">
 				<source>Apply style to the selected text</source>
 			</trans-unit>
-			<trans-unit id="You have to select some text">
+			<trans-unit id="You have to select some text" xml:space="preserve">
 				<source>You have to select some text</source>
 			</trans-unit>
 		</body>

@@ -3,61 +3,61 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Insert Smiley">
+			<trans-unit id="Insert Smiley" xml:space="preserve">
 				<source>Insert Smiley</source>
 			</trans-unit>
-			<trans-unit id="Smiley">
+			<trans-unit id="Smiley" xml:space="preserve">
 				<source>Smiley</source>
 			</trans-unit>
-			<trans-unit id="Cancel">
+			<trans-unit id="Cancel" xml:space="preserve">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="mozilla_smile">
+			<trans-unit id="mozilla_smile" xml:space="preserve">
 				<source>Smile</source>
 			</trans-unit>
-			<trans-unit id="mozilla_frown">
+			<trans-unit id="mozilla_frown" xml:space="preserve">
 				<source>Frown</source>
 			</trans-unit>
-			<trans-unit id="mozilla_wink">
+			<trans-unit id="mozilla_wink" xml:space="preserve">
 				<source>Wink</source>
 			</trans-unit>
-			<trans-unit id="mozilla_tongueout">
+			<trans-unit id="mozilla_tongueout" xml:space="preserve">
 				<source>Tongue out</source>
 			</trans-unit>
-			<trans-unit id="mozilla_laughing">
+			<trans-unit id="mozilla_laughing" xml:space="preserve">
 				<source>Laughing</source>
 			</trans-unit>
-			<trans-unit id="mozilla_embarassed">
+			<trans-unit id="mozilla_embarassed" xml:space="preserve">
 				<source>Embarassed</source>
 			</trans-unit>
-			<trans-unit id="mozilla_undecided">
+			<trans-unit id="mozilla_undecided" xml:space="preserve">
 				<source>Undecided</source>
 			</trans-unit>
-			<trans-unit id="mozilla_surprised">
+			<trans-unit id="mozilla_surprised" xml:space="preserve">
 				<source>Surprise</source>
 			</trans-unit>
-			<trans-unit id="mozilla_kiss">
+			<trans-unit id="mozilla_kiss" xml:space="preserve">
 				<source>Kiss</source>
 			</trans-unit>
-			<trans-unit id="mozilla_yell">
+			<trans-unit id="mozilla_yell" xml:space="preserve">
 				<source>Yell</source>
 			</trans-unit>
-			<trans-unit id="mozilla_cool">
+			<trans-unit id="mozilla_cool" xml:space="preserve">
 				<source>Cool</source>
 			</trans-unit>
-			<trans-unit id="mozilla_moneyinmouth">
+			<trans-unit id="mozilla_moneyinmouth" xml:space="preserve">
 				<source>Money Mouth</source>
 			</trans-unit>
-			<trans-unit id="mozilla_footinmouth">
+			<trans-unit id="mozilla_footinmouth" xml:space="preserve">
 				<source>Foot in mouth</source>
 			</trans-unit>
-			<trans-unit id="mozilla_innocent">
+			<trans-unit id="mozilla_innocent" xml:space="preserve">
 				<source>Innocent</source>
 			</trans-unit>
-			<trans-unit id="mozilla_cry">
+			<trans-unit id="mozilla_cry" xml:space="preserve">
 				<source>Cry</source>
 			</trans-unit>
-			<trans-unit id="mozilla_sealed">
+			<trans-unit id="mozilla_sealed" xml:space="preserve">
 				<source>Lips are sealed</source>
 			</trans-unit>
 		</body>

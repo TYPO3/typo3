@@ -3,16 +3,16 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="tstemplate_ceditor">
 		<header/>
 		<body>
-			<trans-unit id="editConstants">
+			<trans-unit id="editConstants" xml:space="preserve">
 				<source>Edit constants for template:</source>
 			</trans-unit>
-			<trans-unit id="category">
+			<trans-unit id="category" xml:space="preserve">
 				<source>Category:</source>
 			</trans-unit>
-			<trans-unit id="noConstants">
+			<trans-unit id="noConstants" xml:space="preserve">
 				<source>No constants available</source>
 			</trans-unit>
-			<trans-unit id="noConstantsDescription">
+			<trans-unit id="noConstantsDescription" xml:space="preserve">
 				<source>There are no editable constants available for the Constant Editor.</source>
 			</trans-unit>
 		</body>

@@ -3,25 +3,25 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="adodb">
 		<header/>
 		<body>
-			<trans-unit id="dbtype">
+			<trans-unit id="dbtype" xml:space="preserve">
 				<source>Database type</source>
 			</trans-unit>
-			<trans-unit id="host">
+			<trans-unit id="host" xml:space="preserve">
 				<source>Host or DSN</source>
 			</trans-unit>
-			<trans-unit id="dbname">
+			<trans-unit id="dbname" xml:space="preserve">
 				<source>Database name</source>
 			</trans-unit>
-			<trans-unit id="username">
+			<trans-unit id="username" xml:space="preserve">
 				<source>Username</source>
 			</trans-unit>
-			<trans-unit id="password">
+			<trans-unit id="password" xml:space="preserve">
 				<source>Password</source>
 			</trans-unit>
-			<trans-unit id="table">
+			<trans-unit id="table" xml:space="preserve">
 				<source>Table name</source>
 			</trans-unit>
-			<trans-unit id="checkconnectionwizard">
+			<trans-unit id="checkconnectionwizard" xml:space="preserve">
 				<source>Check connection to database with configuration entered below</source>
 			</trans-unit>
 		</body>

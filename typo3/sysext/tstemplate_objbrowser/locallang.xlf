@@ -3,124 +3,124 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="tstemplate_objbrowser">
 		<header/>
 		<body>
-			<trans-unit id="constants">
+			<trans-unit id="constants" xml:space="preserve">
 				<source>Constants</source>
 			</trans-unit>
-			<trans-unit id="setup">
+			<trans-unit id="setup" xml:space="preserve">
 				<source>Setup</source>
 			</trans-unit>
-			<trans-unit id="all">
+			<trans-unit id="all" xml:space="preserve">
 				<source>All</source>
 			</trans-unit>
-			<trans-unit id="plainSubstitution">
+			<trans-unit id="plainSubstitution" xml:space="preserve">
 				<source>Plain substitution (default)</source>
 			</trans-unit>
-			<trans-unit id="substitutedGreen">
+			<trans-unit id="substitutedGreen" xml:space="preserve">
 				<source>Substituted constants in green</source>
 			</trans-unit>
-			<trans-unit id="unsubstitutedGreen">
+			<trans-unit id="unsubstitutedGreen" xml:space="preserve">
 				<source>UN-substituted constants in green</source>
 			</trans-unit>
-			<trans-unit id="currentTemplate">
+			<trans-unit id="currentTemplate" xml:space="preserve">
 				<source>Current template:</source>
 			</trans-unit>
-			<trans-unit id="badProperty">
+			<trans-unit id="badProperty" xml:space="preserve">
 				<source>Bad property!</source>
 			</trans-unit>
-			<trans-unit id="noSpaces">
+			<trans-unit id="noSpaces" xml:space="preserve">
 				<source>You must enter a property with characters a-z, A-Z and 0-9, no spaces!</source>
 			</trans-unit>
-			<trans-unit id="nothingUpdated">
+			<trans-unit id="nothingUpdated" xml:space="preserve">
 				<source>Nothing was updated!</source>
 			</trans-unit>
-			<trans-unit id="propertyAdded">
+			<trans-unit id="propertyAdded" xml:space="preserve">
 				<source>Property added</source>
 			</trans-unit>
-			<trans-unit id="valueUpdated">
+			<trans-unit id="valueUpdated" xml:space="preserve">
 				<source>Value updated</source>
 			</trans-unit>
-			<trans-unit id="objectCleared">
+			<trans-unit id="objectCleared" xml:space="preserve">
 				<source>Object cleared</source>
 			</trans-unit>
-			<trans-unit id="updateButton">
+			<trans-unit id="updateButton" xml:space="preserve">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="editProperty">
+			<trans-unit id="editProperty" xml:space="preserve">
 				<source>Edit object/property value:</source>
 			</trans-unit>
-			<trans-unit id="addButton">
+			<trans-unit id="addButton" xml:space="preserve">
 				<source>Add</source>
 			</trans-unit>
-			<trans-unit id="addProperty">
+			<trans-unit id="addProperty" xml:space="preserve">
 				<source>Add object property:</source>
 			</trans-unit>
-			<trans-unit id="clear">
+			<trans-unit id="clear" xml:space="preserve">
 				<source>Clear?</source>
 			</trans-unit>
-			<trans-unit id="clearButton">
+			<trans-unit id="clearButton" xml:space="preserve">
 				<source>Clear</source>
 			</trans-unit>
-			<trans-unit id="clearObject">
+			<trans-unit id="clearObject" xml:space="preserve">
 				<source>Clear object:</source>
 			</trans-unit>
-			<trans-unit id="edit">
+			<trans-unit id="edit" xml:space="preserve">
 				<source>Edit:</source>
 			</trans-unit>
-			<trans-unit id="noCurrentTemplate">
+			<trans-unit id="noCurrentTemplate" xml:space="preserve">
 				<source>You cannot edit properties and values, if there's no current template.</source>
 			</trans-unit>
-			<trans-unit id="addKey">
+			<trans-unit id="addKey" xml:space="preserve">
 				<source>&lt;b&gt;Add key&lt;/b&gt;&lt;/a&gt; "%s" to Object List</source>
 			</trans-unit>
-			<trans-unit id="removeKey">
+			<trans-unit id="removeKey" xml:space="preserve">
 				<source>&lt;b&gt;Remove key&lt;/b&gt;&lt;/a&gt; "%s" from Object List</source>
 			</trans-unit>
-			<trans-unit id="back">
+			<trans-unit id="back" xml:space="preserve">
 				<source>&lt; Back</source>
 			</trans-unit>
-			<trans-unit id="browse">
+			<trans-unit id="browse" xml:space="preserve">
 				<source>Browse:</source>
 			</trans-unit>
-			<trans-unit id="objectList">
+			<trans-unit id="objectList" xml:space="preserve">
 				<source>Object List:</source>
 			</trans-unit>
-			<trans-unit id="search">
+			<trans-unit id="search" xml:space="preserve">
 				<source>Search:</source>
 			</trans-unit>
-			<trans-unit id="regExp">
+			<trans-unit id="regExp" xml:space="preserve">
 				<source>Regular expressions</source>
 			</trans-unit>
-			<trans-unit id="errorsWarnings">
+			<trans-unit id="errorsWarnings" xml:space="preserve">
 				<source>Errors and warnings</source>
 			</trans-unit>
-			<trans-unit id="removeKey">
+			<trans-unit id="removeKey" xml:space="preserve">
 				<source>Remove key from OL</source>
 			</trans-unit>
-			<trans-unit id="setupRoot">
+			<trans-unit id="setupRoot" xml:space="preserve">
 				<source>setup root</source>
 			</trans-unit>
-			<trans-unit id="constantRoot">
+			<trans-unit id="constantRoot" xml:space="preserve">
 				<source>constants root</source>
 			</trans-unit>
-			<trans-unit id="displayComments">
+			<trans-unit id="displayComments" xml:space="preserve">
 				<source>Display comments</source>
 			</trans-unit>
-			<trans-unit id="sortAlphabetically">
+			<trans-unit id="sortAlphabetically" xml:space="preserve">
 				<source>Sort alphabetically</source>
 			</trans-unit>
-			<trans-unit id="cropLines">
+			<trans-unit id="cropLines" xml:space="preserve">
 				<source>Crop lines</source>
 			</trans-unit>
-			<trans-unit id="displayConstants">
+			<trans-unit id="displayConstants" xml:space="preserve">
 				<source>Display constants:</source>
 			</trans-unit>
-			<trans-unit id="displayOptions">
+			<trans-unit id="displayOptions" xml:space="preserve">
 				<source>Display options:</source>
 			</trans-unit>
-			<trans-unit id="conditions">
+			<trans-unit id="conditions" xml:space="preserve">
 				<source>Conditions:</source>
 			</trans-unit>
-			<trans-unit id="setConditions">
+			<trans-unit id="setConditions" xml:space="preserve">
 				<source>Set conditions</source>
 			</trans-unit>
 		</body>

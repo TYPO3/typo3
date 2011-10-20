@@ -3,46 +3,46 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="wizard_crpages">
 		<header/>
 		<body>
-			<trans-unit id="wiz_crMany">
+			<trans-unit id="wiz_crMany" xml:space="preserve">
 				<source>Create multiple pages</source>
 			</trans-unit>
-			<trans-unit id="wiz_W">
+			<trans-unit id="wiz_W" xml:space="preserve">
 				<source>W!</source>
 			</trans-unit>
-			<trans-unit id="wiz_newPages">
+			<trans-unit id="wiz_newPages" xml:space="preserve">
 				<source>Create new pages</source>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_page">
+			<trans-unit id="wiz_newPages_page" xml:space="preserve">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_currentMenu">
+			<trans-unit id="wiz_newPages_currentMenu" xml:space="preserve">
 				<source>New page structure</source>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_errorMsg1">
+			<trans-unit id="wiz_newPages_errorMsg1" xml:space="preserve">
 				<source>You are not allowed to create new subpages to this page!</source>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_lCreate">
+			<trans-unit id="wiz_newPages_lCreate" xml:space="preserve">
 				<source>Create pages</source>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_listEnd">
+			<trans-unit id="wiz_newPages_listEnd" xml:space="preserve">
 				<source>Place new pages after the existing subpages</source>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_hidePages">
+			<trans-unit id="wiz_newPages_hidePages" xml:space="preserve">
 				<source>Hide new pages</source>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_lCreate_msg1">
+			<trans-unit id="wiz_newPages_lCreate_msg1" xml:space="preserve">
 				<source>You're about to create many new pages. Are you sure you want to continue?</source>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_lReset">
+			<trans-unit id="wiz_newPages_lReset" xml:space="preserve">
 				<source>Clear fields</source>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_noCreate">
+			<trans-unit id="wiz_newPages_noCreate" xml:space="preserve">
 				<source>No pages were created!</source>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_create">
+			<trans-unit id="wiz_newPages_create" xml:space="preserve">
 				<source>The pages were created!</source>
 			</trans-unit>
-			<trans-unit id="wiz_newPages_addMoreLines">
+			<trans-unit id="wiz_newPages_addMoreLines" xml:space="preserve">
 				<source>Add more lines</source>
 			</trans-unit>
 		</body>

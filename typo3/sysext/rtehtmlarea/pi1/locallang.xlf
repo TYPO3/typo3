@@ -3,7 +3,7 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="tx_srspellcheck_pi1.list_type">
+			<trans-unit id="tx_srspellcheck_pi1.list_type" xml:space="preserve">
 				<source>Spell Checking for HTMLArea RTE</source>
 			</trans-unit>
 		</body>

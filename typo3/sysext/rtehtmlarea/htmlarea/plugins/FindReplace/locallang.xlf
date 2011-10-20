@@ -3,67 +3,67 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Substitute this occurrence?">
+			<trans-unit id="Substitute this occurrence?" xml:space="preserve">
 				<source>Substitute this occurrence?</source>
 			</trans-unit>
-			<trans-unit id="Enter the text you want to find">
+			<trans-unit id="Enter the text you want to find" xml:space="preserve">
 				<source>Enter the text you want to find</source>
 			</trans-unit>
-			<trans-unit id="Inform a replacement word">
+			<trans-unit id="Inform a replacement word" xml:space="preserve">
 				<source>This will erase all occurrences.</source>
 			</trans-unit>
-			<trans-unit id="found items">
+			<trans-unit id="found items" xml:space="preserve">
 				<source>found items</source>
 			</trans-unit>
-			<trans-unit id="replaced items">
+			<trans-unit id="replaced items" xml:space="preserve">
 				<source>replaced items</source>
 			</trans-unit>
-			<trans-unit id="found item">
+			<trans-unit id="found item" xml:space="preserve">
 				<source>item found</source>
 			</trans-unit>
-			<trans-unit id="replaced item">
+			<trans-unit id="replaced item" xml:space="preserve">
 				<source>item replaced</source>
 			</trans-unit>
-			<trans-unit id="not found">
+			<trans-unit id="not found" xml:space="preserve">
 				<source>not found</source>
 			</trans-unit>
-			<trans-unit id="Find and Replace">
+			<trans-unit id="Find and Replace" xml:space="preserve">
 				<source>Find And Replace</source>
 			</trans-unit>
-			<trans-unit id="Options">
+			<trans-unit id="Options" xml:space="preserve">
 				<source>Options</source>
 			</trans-unit>
-			<trans-unit id="Whole words only">
+			<trans-unit id="Whole words only" xml:space="preserve">
 				<source>Whole words only</source>
 			</trans-unit>
-			<trans-unit id="Case sensitive search">
+			<trans-unit id="Case sensitive search" xml:space="preserve">
 				<source>Case sensitive search</source>
 			</trans-unit>
-			<trans-unit id="Substitute all occurrences">
+			<trans-unit id="Substitute all occurrences" xml:space="preserve">
 				<source>Substitute all occurrences</source>
 			</trans-unit>
-			<trans-unit id="Search for:">
+			<trans-unit id="Search for:" xml:space="preserve">
 				<source>Search for:</source>
 			</trans-unit>
-			<trans-unit id="Replace with:">
+			<trans-unit id="Replace with:" xml:space="preserve">
 				<source>Replace with:</source>
 			</trans-unit>
-			<trans-unit id="Actions">
+			<trans-unit id="Actions" xml:space="preserve">
 				<source>Actions</source>
 			</trans-unit>
-			<trans-unit id="Clear">
+			<trans-unit id="Clear" xml:space="preserve">
 				<source>Clear</source>
 			</trans-unit>
-			<trans-unit id="Highlight">
+			<trans-unit id="Highlight" xml:space="preserve">
 				<source>Highlight</source>
 			</trans-unit>
-			<trans-unit id="Undo">
+			<trans-unit id="Undo" xml:space="preserve">
 				<source>Undo</source>
 			</trans-unit>
-			<trans-unit id="Next">
+			<trans-unit id="Next" xml:space="preserve">
 				<source>Next</source>
 			</trans-unit>
-			<trans-unit id="Done">
+			<trans-unit id="Done" xml:space="preserve">
 				<source>Done</source>
 			</trans-unit>
 		</body>

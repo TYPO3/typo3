@@ -3,112 +3,112 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="removeLink">
+			<trans-unit id="removeLink" xml:space="preserve">
 				<source>Remove link</source>
 			</trans-unit>
-			<trans-unit id="uploadImage">
+			<trans-unit id="uploadImage" xml:space="preserve">
 				<source>Upload Image</source>
 			</trans-unit>
-			<trans-unit id="update">
+			<trans-unit id="update" xml:space="preserve">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="path">
+			<trans-unit id="path" xml:space="preserve">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="page">
+			<trans-unit id="page" xml:space="preserve">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="file">
+			<trans-unit id="file" xml:space="preserve">
 				<source>File</source>
 			</trans-unit>
-			<trans-unit id="folder">
+			<trans-unit id="folder" xml:space="preserve">
 				<source>Folder</source>
 			</trans-unit>
-			<trans-unit id="extUrl">
+			<trans-unit id="extUrl" xml:space="preserve">
 				<source>External URL</source>
 			</trans-unit>
-			<trans-unit id="email">
+			<trans-unit id="email" xml:space="preserve">
 				<source>Email</source>
 			</trans-unit>
-			<trans-unit id="special">
+			<trans-unit id="special" xml:space="preserve">
 				<source>Special</source>
 			</trans-unit>
-			<trans-unit id="folderTree">
+			<trans-unit id="folderTree" xml:space="preserve">
 				<source>Folder Tree</source>
 			</trans-unit>
-			<trans-unit id="files">
+			<trans-unit id="files" xml:space="preserve">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="target">
+			<trans-unit id="target" xml:space="preserve">
 				<source>Target</source>
 			</trans-unit>
-			<trans-unit id="class">
+			<trans-unit id="class" xml:space="preserve">
 				<source>CSS-Class</source>
 			</trans-unit>
-			<trans-unit id="title">
+			<trans-unit id="title" xml:space="preserve">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="params">
+			<trans-unit id="params" xml:space="preserve">
 				<source>Additional link parameters</source>
 			</trans-unit>
-			<trans-unit id="target_popUpWindow">
+			<trans-unit id="target_popUpWindow" xml:space="preserve">
 				<source>Open in window</source>
 			</trans-unit>
-			<trans-unit id="target_popUpWindow_width">
+			<trans-unit id="target_popUpWindow_width" xml:space="preserve">
 				<source>Width</source>
 			</trans-unit>
-			<trans-unit id="target_popUpWindow_height">
+			<trans-unit id="target_popUpWindow_height" xml:space="preserve">
 				<source>Height</source>
 			</trans-unit>
-			<trans-unit id="newWindow">
+			<trans-unit id="newWindow" xml:space="preserve">
 				<source>New window</source>
 			</trans-unit>
-			<trans-unit id="top">
+			<trans-unit id="top" xml:space="preserve">
 				<source>Top</source>
 			</trans-unit>
-			<trans-unit id="none">
+			<trans-unit id="none" xml:space="preserve">
 				<source>None - new link!</source>
 			</trans-unit>
-			<trans-unit id="pageTree">
+			<trans-unit id="pageTree" xml:space="preserve">
 				<source>Page tree</source>
 			</trans-unit>
-			<trans-unit id="contentElements">
+			<trans-unit id="contentElements" xml:space="preserve">
 				<source>Content elements</source>
 			</trans-unit>
-			<trans-unit id="selectRecords">
+			<trans-unit id="selectRecords" xml:space="preserve">
 				<source>Select Records</source>
 			</trans-unit>
-			<trans-unit id="addToList">
+			<trans-unit id="addToList" xml:space="preserve">
 				<source>Add to list...</source>
 			</trans-unit>
-			<trans-unit id="info">
+			<trans-unit id="info" xml:space="preserve">
 				<source>Info</source>
 			</trans-unit>
-			<trans-unit id="emailAddress">
+			<trans-unit id="emailAddress" xml:space="preserve">
 				<source>Email address</source>
 			</trans-unit>
-			<trans-unit id="setLink">
+			<trans-unit id="setLink" xml:space="preserve">
 				<source>Set Link</source>
 			</trans-unit>
-			<trans-unit id="clickToRedrawFullSize">
+			<trans-unit id="clickToRedrawFullSize" xml:space="preserve">
 				<source>Image is larger than shown here! Click to redraw page with full sized images.</source>
 			</trans-unit>
-			<trans-unit id="findDragDrop">
+			<trans-unit id="findDragDrop" xml:space="preserve">
 				<source>Find and click on your image then drag it into the editor in the main window!</source>
 			</trans-unit>
-			<trans-unit id="noWebFolder">
+			<trans-unit id="noWebFolder" xml:space="preserve">
 				<source>You cannot drag images from this folder (yellow) because it is internal on the server.</source>
 			</trans-unit>
-			<trans-unit id="currentLink">
+			<trans-unit id="currentLink" xml:space="preserve">
 				<source>Current Link</source>
 			</trans-unit>
-			<trans-unit id="invalidChar">
+			<trans-unit id="invalidChar" xml:space="preserve">
 				<source>ERROR: Invalid character found in file path (%s). Cannot add the file!</source>
 			</trans-unit>
-			<trans-unit id="toggleSelection">
+			<trans-unit id="toggleSelection" xml:space="preserve">
 				<source>Toggle selection</source>
 			</trans-unit>
-			<trans-unit id="importSelection">
+			<trans-unit id="importSelection" xml:space="preserve">
 				<source>Import selection</source>
 			</trans-unit>
 		</body>

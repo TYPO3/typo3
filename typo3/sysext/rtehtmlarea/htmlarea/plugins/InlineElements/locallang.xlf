@@ -3,97 +3,97 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="No markup">
+			<trans-unit id="No markup" xml:space="preserve">
 				<source>No text format</source>
 			</trans-unit>
-			<trans-unit id="Remove markup">
+			<trans-unit id="Remove markup" xml:space="preserve">
 				<source>Remove text format</source>
 			</trans-unit>
-			<trans-unit id="FormatText-Tooltip">
+			<trans-unit id="FormatText-Tooltip" xml:space="preserve">
 				<source>Apply format to selected text</source>
 			</trans-unit>
-			<trans-unit id="BiDiOverride-Tooltip">
+			<trans-unit id="BiDiOverride-Tooltip" xml:space="preserve">
 				<source>Bidirectionality override</source>
 			</trans-unit>
-			<trans-unit id="Big-Tooltip">
+			<trans-unit id="Big-Tooltip" xml:space="preserve">
 				<source>Large text</source>
 			</trans-unit>
-			<trans-unit id="Bold-Tooltip">
+			<trans-unit id="Bold-Tooltip" xml:space="preserve">
 				<source>Bold</source>
 			</trans-unit>
-			<trans-unit id="Citation-Tooltip">
+			<trans-unit id="Citation-Tooltip" xml:space="preserve">
 				<source>Citation</source>
 			</trans-unit>
-			<trans-unit id="Code-Tooltip">
+			<trans-unit id="Code-Tooltip" xml:space="preserve">
 				<source>Computer code fragment</source>
 			</trans-unit>
-			<trans-unit id="Code-contextMenuTitle">
+			<trans-unit id="Code-contextMenuTitle" xml:space="preserve">
 				<source>Code fragment</source>
 			</trans-unit>
-			<trans-unit id="Definition-Tooltip">
+			<trans-unit id="Definition-Tooltip" xml:space="preserve">
 				<source>Definition</source>
 			</trans-unit>
-			<trans-unit id="DeletedText-Tooltip">
+			<trans-unit id="DeletedText-Tooltip" xml:space="preserve">
 				<source>Deleted text</source>
 			</trans-unit>
-			<trans-unit id="Emphasis-Tooltip">
+			<trans-unit id="Emphasis-Tooltip" xml:space="preserve">
 				<source>Emphasis</source>
 			</trans-unit>
-			<trans-unit id="Keyboard-Tooltip">
+			<trans-unit id="Keyboard-Tooltip" xml:space="preserve">
 				<source>Text to be entered by the user</source>
 			</trans-unit>
-			<trans-unit id="Keyboard-contextMenuTitle">
+			<trans-unit id="Keyboard-contextMenuTitle" xml:space="preserve">
 				<source>Text to enter</source>
 			</trans-unit>
-			<trans-unit id="InsertedText-Tooltip">
+			<trans-unit id="InsertedText-Tooltip" xml:space="preserve">
 				<source>Inserted text</source>
 			</trans-unit>
-			<trans-unit id="Italic-Tooltip">
+			<trans-unit id="Italic-Tooltip" xml:space="preserve">
 				<source>Italic</source>
 			</trans-unit>
-			<trans-unit id="MonoSpaced-Tooltip">
+			<trans-unit id="MonoSpaced-Tooltip" xml:space="preserve">
 				<source>Monospaced text</source>
 			</trans-unit>
-			<trans-unit id="Quotation-Tooltip">
+			<trans-unit id="Quotation-Tooltip" xml:space="preserve">
 				<source>Short inline quotation</source>
 			</trans-unit>
-			<trans-unit id="Quotation-contextMenuTitle">
+			<trans-unit id="Quotation-contextMenuTitle" xml:space="preserve">
 				<source>Short quotation</source>
 			</trans-unit>
-			<trans-unit id="Sample-Tooltip">
+			<trans-unit id="Sample-Tooltip" xml:space="preserve">
 				<source>Sample program output or script</source>
 			</trans-unit>
-			<trans-unit id="Sample-contextMenuTitle">
+			<trans-unit id="Sample-contextMenuTitle" xml:space="preserve">
 				<source>Sample output</source>
 			</trans-unit>
-			<trans-unit id="Small-Tooltip">
+			<trans-unit id="Small-Tooltip" xml:space="preserve">
 				<source>Small text</source>
 			</trans-unit>
-			<trans-unit id="Span-Tooltip">
+			<trans-unit id="Span-Tooltip" xml:space="preserve">
 				<source>Style container</source>
 			</trans-unit>
-			<trans-unit id="StrikeThrough-Tooltip">
+			<trans-unit id="StrikeThrough-Tooltip" xml:space="preserve">
 				<source>Strike-through text</source>
 			</trans-unit>
-			<trans-unit id="Strong-Tooltip">
+			<trans-unit id="Strong-Tooltip" xml:space="preserve">
 				<source>Strong emphasis</source>
 			</trans-unit>
-			<trans-unit id="Subscript-Tooltip">
+			<trans-unit id="Subscript-Tooltip" xml:space="preserve">
 				<source>Subscript</source>
 			</trans-unit>
-			<trans-unit id="Superscript-Tooltip">
+			<trans-unit id="Superscript-Tooltip" xml:space="preserve">
 				<source>Superscript</source>
 			</trans-unit>
-			<trans-unit id="Underline-Tooltip">
+			<trans-unit id="Underline-Tooltip" xml:space="preserve">
 				<source>Underline</source>
 			</trans-unit>
-			<trans-unit id="Variable-Tooltip">
+			<trans-unit id="Variable-Tooltip" xml:space="preserve">
 				<source>Variable or program argument</source>
 			</trans-unit>
-			<trans-unit id="Variable-contextMenuTitle">
+			<trans-unit id="Variable-contextMenuTitle" xml:space="preserve">
 				<source>Variable</source>
 			</trans-unit>
-			<trans-unit id="Technische Universitat Ilmenau">
+			<trans-unit id="Technische Universitat Ilmenau" xml:space="preserve">
 				<source>Technische Universität Ilmenau</source>
 			</trans-unit>
 		</body>

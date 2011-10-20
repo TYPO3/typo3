@@ -3,16 +3,16 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="openid">
 		<header/>
 		<body>
-			<trans-unit id="be_users.tx_openid_openid">
+			<trans-unit id="be_users.tx_openid_openid" xml:space="preserve">
 				<source>OpenID identifier:</source>
 			</trans-unit>
-			<trans-unit id="fe_users.tx_openid_openid">
+			<trans-unit id="fe_users.tx_openid_openid" xml:space="preserve">
 				<source>OpenID identifier:</source>
 			</trans-unit>
-			<trans-unit id="be_groups.tx_openid_change_allowed">
+			<trans-unit id="be_groups.tx_openid_change_allowed" xml:space="preserve">
 				<source>Change own OpenID:</source>
 			</trans-unit>
-			<trans-unit id="_MOD_user_setup.tx_openid_openid">
+			<trans-unit id="_MOD_user_setup.tx_openid_openid" xml:space="preserve">
 				<source>OpenID identifier</source>
 			</trans-unit>
 		</body>

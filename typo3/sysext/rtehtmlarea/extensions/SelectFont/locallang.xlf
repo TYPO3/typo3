@@ -3,64 +3,64 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="No font">
+			<trans-unit id="No font" xml:space="preserve">
 				<source>No font</source>
 			</trans-unit>
-			<trans-unit id="No size">
+			<trans-unit id="No size" xml:space="preserve">
 				<source>No font size</source>
 			</trans-unit>
-			<trans-unit id="Default font">
+			<trans-unit id="Default font" xml:space="preserve">
 				<source>Default font</source>
 			</trans-unit>
-			<trans-unit id="Default size">
+			<trans-unit id="Default size" xml:space="preserve">
 				<source>Default size</source>
 			</trans-unit>
-			<trans-unit id="Extra small">
+			<trans-unit id="Extra small" xml:space="preserve">
 				<source>Extra small</source>
 			</trans-unit>
-			<trans-unit id="Very small">
+			<trans-unit id="Very small" xml:space="preserve">
 				<source>Very small</source>
 			</trans-unit>
-			<trans-unit id="Small">
+			<trans-unit id="Small" xml:space="preserve">
 				<source>Small</source>
 			</trans-unit>
-			<trans-unit id="Medium">
+			<trans-unit id="Medium" xml:space="preserve">
 				<source>Medium</source>
 			</trans-unit>
-			<trans-unit id="Large">
+			<trans-unit id="Large" xml:space="preserve">
 				<source>Large</source>
 			</trans-unit>
-			<trans-unit id="Very large">
+			<trans-unit id="Very large" xml:space="preserve">
 				<source>Very large</source>
 			</trans-unit>
-			<trans-unit id="Extra large">
+			<trans-unit id="Extra large" xml:space="preserve">
 				<source>Extra large</source>
 			</trans-unit>
-			<trans-unit id="Arial">
+			<trans-unit id="Arial" xml:space="preserve">
 				<source>Arial</source>
 			</trans-unit>
-			<trans-unit id="Arial Black">
+			<trans-unit id="Arial Black" xml:space="preserve">
 				<source>Arial Black</source>
 			</trans-unit>
-			<trans-unit id="Verdana">
+			<trans-unit id="Verdana" xml:space="preserve">
 				<source>Verdana</source>
 			</trans-unit>
-			<trans-unit id="Times New Roman">
+			<trans-unit id="Times New Roman" xml:space="preserve">
 				<source>Times New Roman</source>
 			</trans-unit>
-			<trans-unit id="Garamond">
+			<trans-unit id="Garamond" xml:space="preserve">
 				<source>Garamond</source>
 			</trans-unit>
-			<trans-unit id="Lucida Handwriting">
+			<trans-unit id="Lucida Handwriting" xml:space="preserve">
 				<source>Lucida Handwriting</source>
 			</trans-unit>
-			<trans-unit id="Courier">
+			<trans-unit id="Courier" xml:space="preserve">
 				<source>Courier</source>
 			</trans-unit>
-			<trans-unit id="Webdings">
+			<trans-unit id="Webdings" xml:space="preserve">
 				<source>Webdings</source>
 			</trans-unit>
-			<trans-unit id="Wingdings">
+			<trans-unit id="Wingdings" xml:space="preserve">
 				<source>Wingdings</source>
 			</trans-unit>
 		</body>

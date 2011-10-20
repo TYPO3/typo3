@@ -3,22 +3,22 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="TextStyle-Tooltip">
+			<trans-unit id="TextStyle-Tooltip" xml:space="preserve">
 				<source>Apply style to the selected text</source>
 			</trans-unit>
-			<trans-unit id="Technische Universitat Ilmenau">
+			<trans-unit id="Technische Universitat Ilmenau" xml:space="preserve">
 				<source>Technische Universität Ilmenau</source>
 			</trans-unit>
-			<trans-unit id="No style">
+			<trans-unit id="No style" xml:space="preserve">
 				<source>No text style</source>
 			</trans-unit>
-			<trans-unit id="Remove style">
+			<trans-unit id="Remove style" xml:space="preserve">
 				<source>Remove text style</source>
 			</trans-unit>
-			<trans-unit id="Unknown style">
+			<trans-unit id="Unknown style" xml:space="preserve">
 				<source>Unknown text style</source>
 			</trans-unit>
-			<trans-unit id="Element style">
+			<trans-unit id="Element style" xml:space="preserve">
 				<source>Inline element style</source>
 			</trans-unit>
 		</body>

@@ -3,13 +3,13 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Allow-Clipboard-Helper-Add-On-Title">
+			<trans-unit id="Allow-Clipboard-Helper-Add-On-Title" xml:space="preserve">
 				<source>Firefox Add-on AllowClipboard Helper</source>
 			</trans-unit>
-			<trans-unit id="Firefox-Security-Prefs-Question-Title">
+			<trans-unit id="Firefox-Security-Prefs-Question-Title" xml:space="preserve">
 				<source>Firefox Clipboard Access Security Settings</source>
 			</trans-unit>
-			<trans-unit id="Technische Universitat Ilmenau">
+			<trans-unit id="Technische Universitat Ilmenau" xml:space="preserve">
 				<source>Technische Universität Ilmenau</source>
 			</trans-unit>
 		</body>

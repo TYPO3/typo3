@@ -3,220 +3,220 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Remove the">
+			<trans-unit id="Remove the" xml:space="preserve">
 				<source>Remove the</source>
 			</trans-unit>
-			<trans-unit id="Remove this node from the document">
+			<trans-unit id="Remove this node from the document" xml:space="preserve">
 				<source>Removes this node from the document</source>
 			</trans-unit>
-			<trans-unit id="TO-toggle-borders-tooltip">
+			<trans-unit id="TO-toggle-borders-tooltip" xml:space="preserve">
 				<source>Toggle borders</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-prop-tooltip">
+			<trans-unit id="TO-cell-prop-tooltip" xml:space="preserve">
 				<source>Shows the Table Cell Properties dialogue</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-insert-before-tooltip">
+			<trans-unit id="TO-cell-insert-before-tooltip" xml:space="preserve">
 				<source>Inserts a new cell before the current one</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-insert-after-tooltip">
+			<trans-unit id="TO-cell-insert-after-tooltip" xml:space="preserve">
 				<source>Inserts a new cell after the current one</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-delete-tooltip">
+			<trans-unit id="TO-cell-delete-tooltip" xml:space="preserve">
 				<source>Deletes the current cell</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-split-tooltip">
+			<trans-unit id="TO-cell-split-tooltip" xml:space="preserve">
 				<source>Splits the current cell</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-merge-tooltip">
+			<trans-unit id="TO-cell-merge-tooltip" xml:space="preserve">
 				<source>Merges the selected cells</source>
 			</trans-unit>
-			<trans-unit id="TO-row-prop-tooltip">
+			<trans-unit id="TO-row-prop-tooltip" xml:space="preserve">
 				<source>Shows the Table Row Properties dialogue</source>
 			</trans-unit>
-			<trans-unit id="TO-row-insert-above-tooltip">
+			<trans-unit id="TO-row-insert-above-tooltip" xml:space="preserve">
 				<source>Inserts a new row before the current one</source>
 			</trans-unit>
-			<trans-unit id="TO-row-insert-under-tooltip">
+			<trans-unit id="TO-row-insert-under-tooltip" xml:space="preserve">
 				<source>Inserts a new row after the current one</source>
 			</trans-unit>
-			<trans-unit id="TO-row-delete-tooltip">
+			<trans-unit id="TO-row-delete-tooltip" xml:space="preserve">
 				<source>Deletes the current row</source>
 			</trans-unit>
-			<trans-unit id="TO-row-split-tooltip">
+			<trans-unit id="TO-row-split-tooltip" xml:space="preserve">
 				<source>Splits the current row</source>
 			</trans-unit>
-			<trans-unit id="TO-table-prop-tooltip">
+			<trans-unit id="TO-table-prop-tooltip" xml:space="preserve">
 				<source>Shows the Table Properties dialogue</source>
 			</trans-unit>
-			<trans-unit id="TO-table-restyle-tooltip">
+			<trans-unit id="TO-table-restyle-tooltip" xml:space="preserve">
 				<source>Re-applies the odd-even styles on the table</source>
 			</trans-unit>
-			<trans-unit id="TO-col-prop-tooltip">
+			<trans-unit id="TO-col-prop-tooltip" xml:space="preserve">
 				<source>Shows the Column Cells Properties dialogue</source>
 			</trans-unit>
-			<trans-unit id="TO-col-insert-before-tooltip">
+			<trans-unit id="TO-col-insert-before-tooltip" xml:space="preserve">
 				<source>Inserts a new column before the current one</source>
 			</trans-unit>
-			<trans-unit id="TO-col-insert-after-tooltip">
+			<trans-unit id="TO-col-insert-after-tooltip" xml:space="preserve">
 				<source>Inserts a new column after the current one</source>
 			</trans-unit>
-			<trans-unit id="TO-col-delete-tooltip">
+			<trans-unit id="TO-col-delete-tooltip" xml:space="preserve">
 				<source>Deletes the current column</source>
 			</trans-unit>
-			<trans-unit id="TO-col-split-tooltip">
+			<trans-unit id="TO-col-split-tooltip" xml:space="preserve">
 				<source>Splits the current column</source>
 			</trans-unit>
-			<trans-unit id="Element">
+			<trans-unit id="Element" xml:space="preserve">
 				<source>Element</source>
 			</trans-unit>
-			<trans-unit id="Please confirm remove">
+			<trans-unit id="Please confirm remove" xml:space="preserve">
 				<source>Please confirm that you want to remove this element:</source>
 			</trans-unit>
-			<trans-unit id="Remove this node from the document">
+			<trans-unit id="Remove this node from the document" xml:space="preserve">
 				<source>Removes this node from the document</source>
 			</trans-unit>
-			<trans-unit id="How did you get here? (Please report!)">
+			<trans-unit id="How did you get here? (Please report!)" xml:space="preserve">
 				<source>How did you get here? (Please report!)</source>
 			</trans-unit>
-			<trans-unit id="Show the image properties dialog">
+			<trans-unit id="Show the image properties dialog" xml:space="preserve">
 				<source>Show the image properties dialog</source>
 			</trans-unit>
-			<trans-unit id="Modify URL">
+			<trans-unit id="Modify URL" xml:space="preserve">
 				<source>Modify URL</source>
 			</trans-unit>
-			<trans-unit id="Current URL is">
+			<trans-unit id="Current URL is" xml:space="preserve">
 				<source>Current URL is</source>
 			</trans-unit>
-			<trans-unit id="Opens this link in a new window">
+			<trans-unit id="Opens this link in a new window" xml:space="preserve">
 				<source>Opens this link in a new window</source>
 			</trans-unit>
-			<trans-unit id="Please confirm unlink">
+			<trans-unit id="Please confirm unlink" xml:space="preserve">
 				<source>Please confirm that you want to unlink this element.</source>
 			</trans-unit>
-			<trans-unit id="Link points to:">
+			<trans-unit id="Link points to:" xml:space="preserve">
 				<source>Link points to:</source>
 			</trans-unit>
-			<trans-unit id="Unlink the current element">
+			<trans-unit id="Unlink the current element" xml:space="preserve">
 				<source>Unlink the current element</source>
 			</trans-unit>
-			<trans-unit id="Cut">
+			<trans-unit id="Cut" xml:space="preserve">
 				<source>Cut</source>
 			</trans-unit>
-			<trans-unit id="Copy">
+			<trans-unit id="Copy" xml:space="preserve">
 				<source>Copy</source>
 			</trans-unit>
-			<trans-unit id="Paste">
+			<trans-unit id="Paste" xml:space="preserve">
 				<source>Paste</source>
 			</trans-unit>
-			<trans-unit id="Image Properties">
+			<trans-unit id="Image Properties" xml:space="preserve">
 				<source>_Image Properties</source>
 			</trans-unit>
-			<trans-unit id="Modify Link">
+			<trans-unit id="Modify Link" xml:space="preserve">
 				<source>_Modify Link</source>
 			</trans-unit>
-			<trans-unit id="Check Link">
+			<trans-unit id="Check Link" xml:space="preserve">
 				<source>Chec_k Link</source>
 			</trans-unit>
-			<trans-unit id="Remove Link">
+			<trans-unit id="Remove Link" xml:space="preserve">
 				<source>_Remove Link</source>
 			</trans-unit>
-			<trans-unit id="TO-toggle-borders-title">
+			<trans-unit id="TO-toggle-borders-title" xml:space="preserve">
 				<source>Toggle borders</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-prop-title">
+			<trans-unit id="TO-cell-prop-title" xml:space="preserve">
 				<source>C_ell Properties</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-insert-before-title">
+			<trans-unit id="TO-cell-insert-before-title" xml:space="preserve">
 				<source>Insert cell before</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-insert-after-title">
+			<trans-unit id="TO-cell-insert-after-title" xml:space="preserve">
 				<source>Insert cell after</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-delete-title">
+			<trans-unit id="TO-cell-delete-title" xml:space="preserve">
 				<source>Delete Cell</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-split-title">
+			<trans-unit id="TO-cell-split-title" xml:space="preserve">
 				<source>Split Cell</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-merge-title">
+			<trans-unit id="TO-cell-merge-title" xml:space="preserve">
 				<source>Merge Cells</source>
 			</trans-unit>
-			<trans-unit id="TO-row-prop-title">
+			<trans-unit id="TO-row-prop-title" xml:space="preserve">
 				<source>Ro_w Properties</source>
 			</trans-unit>
-			<trans-unit id="TO-row-insert-above-title">
+			<trans-unit id="TO-row-insert-above-title" xml:space="preserve">
 				<source>I_nsert Row Before</source>
 			</trans-unit>
-			<trans-unit id="TO-row-insert-under-title">
+			<trans-unit id="TO-row-insert-under-title" xml:space="preserve">
 				<source>In_sert Row After</source>
 			</trans-unit>
-			<trans-unit id="TO-row-delete-title">
+			<trans-unit id="TO-row-delete-title" xml:space="preserve">
 				<source>_Delete Row</source>
 			</trans-unit>
-			<trans-unit id="TO-row-split-title">
+			<trans-unit id="TO-row-split-title" xml:space="preserve">
 				<source>Split Row</source>
 			</trans-unit>
-			<trans-unit id="TO-table-prop-title">
+			<trans-unit id="TO-table-prop-title" xml:space="preserve">
 				<source>_Table Properties</source>
 			</trans-unit>
-			<trans-unit id="TO-table-restyle-title">
+			<trans-unit id="TO-table-restyle-title" xml:space="preserve">
 				<source>Re-apply table styles</source>
 			</trans-unit>
-			<trans-unit id="TO-col-prop-title">
+			<trans-unit id="TO-col-prop-title" xml:space="preserve">
 				<source>Column Cells Properties</source>
 			</trans-unit>
-			<trans-unit id="TO-col-insert-before-title">
+			<trans-unit id="TO-col-insert-before-title" xml:space="preserve">
 				<source>Insert _Column Before</source>
 			</trans-unit>
-			<trans-unit id="TO-col-insert-after-title">
+			<trans-unit id="TO-col-insert-after-title" xml:space="preserve">
 				<source>Insert C_olumn After</source>
 			</trans-unit>
-			<trans-unit id="TO-col-delete-title">
+			<trans-unit id="TO-col-delete-title" xml:space="preserve">
 				<source>De_lete Column</source>
 			</trans-unit>
-			<trans-unit id="TO-col-split-title">
+			<trans-unit id="TO-col-split-title" xml:space="preserve">
 				<source>Split Column</source>
 			</trans-unit>
-			<trans-unit id="Create a link">
+			<trans-unit id="Create a link" xml:space="preserve">
 				<source>Create a link</source>
 			</trans-unit>
-			<trans-unit id="Insert paragraph before">
+			<trans-unit id="Insert paragraph before" xml:space="preserve">
 				<source>Insert paragraph before</source>
 			</trans-unit>
-			<trans-unit id="Insert a paragraph before the current node">
+			<trans-unit id="Insert a paragraph before the current node" xml:space="preserve">
 				<source>Insert a paragraph before the current node</source>
 			</trans-unit>
-			<trans-unit id="Insert paragraph after">
+			<trans-unit id="Insert paragraph after" xml:space="preserve">
 				<source>Insert paragraph after</source>
 			</trans-unit>
-			<trans-unit id="Insert a paragraph after the current node">
+			<trans-unit id="Insert a paragraph after the current node" xml:space="preserve">
 				<source>Insert a paragraph after the current node</source>
 			</trans-unit>
-			<trans-unit id="JustifyLeft-title">
+			<trans-unit id="JustifyLeft-title" xml:space="preserve">
 				<source>Justify Left</source>
 			</trans-unit>
-			<trans-unit id="JustifyCenter-title">
+			<trans-unit id="JustifyCenter-title" xml:space="preserve">
 				<source>Justify Center</source>
 			</trans-unit>
-			<trans-unit id="JustifyRight-title">
+			<trans-unit id="JustifyRight-title" xml:space="preserve">
 				<source>Justify Right</source>
 			</trans-unit>
-			<trans-unit id="JustifyFull-title">
+			<trans-unit id="JustifyFull-title" xml:space="preserve">
 				<source>Justify Full</source>
 			</trans-unit>
-			<trans-unit id="JustifyLeft-tooltip">
+			<trans-unit id="JustifyLeft-tooltip" xml:space="preserve">
 				<source>Aligns text to the left</source>
 			</trans-unit>
-			<trans-unit id="JustifyCenter-tooltip">
+			<trans-unit id="JustifyCenter-tooltip" xml:space="preserve">
 				<source>Centers the text</source>
 			</trans-unit>
-			<trans-unit id="JustifyRight-tooltip">
+			<trans-unit id="JustifyRight-tooltip" xml:space="preserve">
 				<source>Aligns text to the right</source>
 			</trans-unit>
-			<trans-unit id="JustifyFull-tooltip">
+			<trans-unit id="JustifyFull-tooltip" xml:space="preserve">
 				<source>Aligns text both to the left and the right</source>
 			</trans-unit>
-			<trans-unit id="Make link">
+			<trans-unit id="Make link" xml:space="preserve">
 				<source>Make lin_k</source>
 			</trans-unit>
 		</body>
