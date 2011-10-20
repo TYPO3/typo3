@@ -928,28 +928,37 @@ class tx_em_Connection_ExtDirectServer {
 
 			// transform array
 		foreach ($list['results'] as $key => $value) {
-			$list['results'][$key]['dependencies'] = unserialize($value['dependencies']);
+			$newEntry = $value;
+			$newEntry['dependencies'] = unserialize($value['dependencies']);
 			$extPath = t3lib_div::strtolower($value['extkey']);
-			$list['results'][$key]['statevalue'] = $value['state'];
-			$list['results'][$key]['state'] = tx_em_Tools::getDefaultState(intval($value['state']));
-			$list['results'][$key]['stateCls'] = 'state-' . $list['results'][$key]['state'];
-			$list['results'][$key]['version'] = tx_em_Tools::versionFromInt($value['maxintversion']);
-			$list['results'][$key]['icon'] = '<img alt="" src="' . $mirrorUrl . $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '_' . $list['results'][$key]['version'] . '.gif" />';
+			$newEntry['statevalue'] = $value['state'];
+			$newEntry['state'] = tx_em_Tools::getDefaultState(intval($value['state']));
+			$newEntry['stateCls'] = 'state-' . $newEntry['state'];
+			$newEntry['version'] = tx_em_Tools::versionFromInt($value['maxintversion']);
+			$newEntry['icon'] = '<img alt="" src="' . $mirrorUrl . $extPath{0} . '/' . $extPath{1} . '/' . $extPath . '_' . $newEntry['version'] . '.gif" />';
 
-			$list['results'][$key]['exists'] = 0;
-			$list['results'][$key]['installed'] = 0;
-			$list['results'][$key]['versionislower'] = 0;
-			$list['results'][$key]['existingVersion'] = '';
+			$newEntry['exists'] = 0;
+			$newEntry['installed'] = 0;
+			$newEntry['versionislower'] = 0;
+			$newEntry['existingVersion'] = '';
 			if (isset($localList[$value['extkey']])) {
 				$isUpdatable = ($localList[$value['extkey']]['intversion'] < $value['maxintversion']);
-				$list['results'][$key]['exists'] = 1;
-				$list['results'][$key]['installed'] = $localList[$value['extkey']]['installed'];
-				$list['results'][$key]['versionislower'] = $isUpdatable;
-				$list['results'][$key]['existingVersion'] =  $localList[$value['extkey']]['version'];
+				$newEntry['exists'] = 1;
+				$newEntry['installed'] = $localList[$value['extkey']]['installed'];
+				$newEntry['versionislower'] = $isUpdatable;
+				$newEntry['existingVersion'] =  $localList[$value['extkey']]['version'];
 				if ($isUpdatable) {
 					$updateKeys[] = $key;
 				}
 			}
+
+				// If search expression matches an extension key, move it to 1st place in results
+			if ($value['extkey'] === strtolower($search)) {
+				array_unshift($list['results'], $newEntry);
+			} else {
+				$list['results'][$key] = $newEntry;
+			}
+
 		}
 			// updatable only
 		if ($installedOnly == 2) {
