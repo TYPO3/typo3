@@ -950,6 +950,12 @@ class tx_em_Connection_ExtDirectServer {
 					$updateKeys[] = $key;
 				}
 			}
+
+				// If search expression matches an extension key, move it to 1st place in results
+			if ($value['extkey'] === strtolower($search)) {
+				array_unshift($list['results'], $list['results'][$key]);
+			}
+
 		}
 			// updatable only
 		if ($installedOnly == 2) {
