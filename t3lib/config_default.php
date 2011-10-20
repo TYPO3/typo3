@@ -458,7 +458,10 @@ $TYPO3_CONF_VARS = array(
 		',	// String (exclude). Enter lines of default backend user/group TSconfig.
 		'defaultPageTSconfig' => 'mod.web_list.enableDisplayBigControlPanel=selectable
 			mod.web_list.enableClipBoard=selectable
-			mod.web_list.enableLocalizationView=selectable',			// String (exclude).Enter lines of default Page TSconfig.
+			mod.web_list.enableLocalizationView=selectable
+			mod.wizards.newRecord.pages.show.pageInside=1
+			mod.wizards.newRecord.pages.show.pageAfter=1
+			mod.wizards.newRecord.pages.show.pageSelectPosition=1',			// String (exclude).Enter lines of default Page TSconfig.
 		'defaultPermissions' => array (			// Default permissions set for new pages in t3lib/tce_main.php. Keys are 'show,edit,delete,new,editcontent'. Enter as comma-list
 //			'user' => '',						// default in tce_main is 'show,edit,delete,new,editcontent'. If this is set (uncomment), this value is used instead.
 //			'group' => '',						// default in tce_main is 'show,edit,new,editcontent'. If this is set (uncomment), this value is used instead.

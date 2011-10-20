@@ -96,7 +96,7 @@ class SC_db_new {
 	var $newPagesInto;
 	var $newContentInto;
 	var $newPagesAfter;
-	protected $newPagesSelectPosition = 1;
+	protected $newPagesSelectPosition;
 	var $web_list_modTSconfig;
 	var $allowedNewTables;
 	var $deniedNewTables;
@@ -351,12 +351,15 @@ class SC_db_new {
 		$pageTS = t3lib_BEfunc::getPagesTSconfig($this->id);
 			// Finish initializing new pages options with TSconfig
 			// Each new page option may be hidden by TSconfig
+		$this->newPagesInto = 1;
 		if (isset($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside']) && $pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside'] === '0') {
 			$this->newPagesInto = 0;
 		}
+		$this->newPagesAfter = 1;
 		if (isset($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter']) && $pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter'] === '0') {
 			$this->newPagesAfter = 0;
 		}
+		$this->newPagesSelectPosition = 1;
 		if (isset($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageSelectPosition']) && $pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageSelectPosition'] === '0') {
 			$this->newPagesSelectPosition = 0;
 		}
