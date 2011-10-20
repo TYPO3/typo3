@@ -1188,7 +1188,7 @@ class tslib_menu {
 			}
 
 			if (!is_array($shortcut)) {
-				return FALSE;
+				return array();
 			}
 
 				// Only setting url, not target
