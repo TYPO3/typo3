@@ -93,9 +93,9 @@ class localPageTree extends t3lib_pageTree {
 class SC_db_new {
 	var $pageinfo;
 	var $pidInfo;
-	var $newPagesInto;
+	var $newPagesInto = 1;
 	var $newContentInto;
-	var $newPagesAfter;
+	var $newPagesAfter = 1;
 	protected $newPagesSelectPosition = 1;
 	var $web_list_modTSconfig;
 	var $allowedNewTables;
