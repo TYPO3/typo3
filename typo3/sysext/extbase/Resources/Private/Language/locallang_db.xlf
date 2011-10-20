@@ -3,22 +3,22 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="extbase">
 		<header/>
 		<body>
-			<trans-unit id="fe_users.tx_extbase_type">
+			<trans-unit id="fe_users.tx_extbase_type" xml:space="preserve">
 				<source>Record Type</source>
 			</trans-unit>
-			<trans-unit id="fe_users.tx_extbase_type.0">
+			<trans-unit id="fe_users.tx_extbase_type.0" xml:space="preserve">
 				<source>undefined</source>
 			</trans-unit>
-			<trans-unit id="fe_users.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUser">
+			<trans-unit id="fe_users.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUser" xml:space="preserve">
 				<source>Tx_Extbase_Domain_Model_FrontendUser</source>
 			</trans-unit>
-			<trans-unit id="fe_groups.tx_extbase_type">
+			<trans-unit id="fe_groups.tx_extbase_type" xml:space="preserve">
 				<source>Record Type</source>
 			</trans-unit>
-			<trans-unit id="fe_groups.tx_extbase_type.0">
+			<trans-unit id="fe_groups.tx_extbase_type.0" xml:space="preserve">
 				<source>undefined</source>
 			</trans-unit>
-			<trans-unit id="fe_groups.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUserGroup">
+			<trans-unit id="fe_groups.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUserGroup" xml:space="preserve">
 				<source>Tx_Extbase_Domain_Model_FrontendUserGroup</source>
 			</trans-unit>
 		</body>
