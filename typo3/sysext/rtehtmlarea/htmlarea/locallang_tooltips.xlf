@@ -3,121 +3,121 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="bold">
+			<trans-unit id="bold" xml:space="preserve">
 				<source>Bold</source>
 			</trans-unit>
-			<trans-unit id="italic">
+			<trans-unit id="italic" xml:space="preserve">
 				<source>Italic</source>
 			</trans-unit>
-			<trans-unit id="underline">
+			<trans-unit id="underline" xml:space="preserve">
 				<source>Underline</source>
 			</trans-unit>
-			<trans-unit id="strikethrough">
+			<trans-unit id="strikethrough" xml:space="preserve">
 				<source>Strikethrough</source>
 			</trans-unit>
-			<trans-unit id="subscript">
+			<trans-unit id="subscript" xml:space="preserve">
 				<source>Subscript</source>
 			</trans-unit>
-			<trans-unit id="superscript">
+			<trans-unit id="superscript" xml:space="preserve">
 				<source>Superscript</source>
 			</trans-unit>
-			<trans-unit id="justifyleft">
+			<trans-unit id="justifyleft" xml:space="preserve">
 				<source>Justify Left</source>
 			</trans-unit>
-			<trans-unit id="justifycenter">
+			<trans-unit id="justifycenter" xml:space="preserve">
 				<source>Justify Center</source>
 			</trans-unit>
-			<trans-unit id="justifyright">
+			<trans-unit id="justifyright" xml:space="preserve">
 				<source>Justify Right</source>
 			</trans-unit>
-			<trans-unit id="justifyfull">
+			<trans-unit id="justifyfull" xml:space="preserve">
 				<source>Justify Full</source>
 			</trans-unit>
-			<trans-unit id="insertorderedlist">
+			<trans-unit id="insertorderedlist" xml:space="preserve">
 				<source>Ordered List</source>
 			</trans-unit>
-			<trans-unit id="insertunorderedlist">
+			<trans-unit id="insertunorderedlist" xml:space="preserve">
 				<source>Bulleted List</source>
 			</trans-unit>
-			<trans-unit id="outdent">
+			<trans-unit id="outdent" xml:space="preserve">
 				<source>Decrease Indent</source>
 			</trans-unit>
-			<trans-unit id="indent">
+			<trans-unit id="indent" xml:space="preserve">
 				<source>Increase Indent</source>
 			</trans-unit>
-			<trans-unit id="forecolor">
+			<trans-unit id="forecolor" xml:space="preserve">
 				<source>Font Color</source>
 			</trans-unit>
-			<trans-unit id="hilitecolor">
+			<trans-unit id="hilitecolor" xml:space="preserve">
 				<source>Background Color</source>
 			</trans-unit>
-			<trans-unit id="inserthorizontalrule">
+			<trans-unit id="inserthorizontalrule" xml:space="preserve">
 				<source>Horizontal Rule</source>
 			</trans-unit>
-			<trans-unit id="createlink">
+			<trans-unit id="createlink" xml:space="preserve">
 				<source>Insert Web Link</source>
 			</trans-unit>
-			<trans-unit id="unlink">
+			<trans-unit id="unlink" xml:space="preserve">
 				<source>Remove link</source>
 			</trans-unit>
-			<trans-unit id="insertimage">
+			<trans-unit id="insertimage" xml:space="preserve">
 				<source>Insert/Modify Image</source>
 			</trans-unit>
-			<trans-unit id="inserttable">
+			<trans-unit id="inserttable" xml:space="preserve">
 				<source>Insert Table</source>
 			</trans-unit>
-			<trans-unit id="htmlmode">
+			<trans-unit id="htmlmode" xml:space="preserve">
 				<source>Toggle HTML Source</source>
 			</trans-unit>
-			<trans-unit id="popupeditor">
+			<trans-unit id="popupeditor" xml:space="preserve">
 				<source>Enlarge the editor</source>
 			</trans-unit>
-			<trans-unit id="about">
+			<trans-unit id="about" xml:space="preserve">
 				<source>About this editor</source>
 			</trans-unit>
-			<trans-unit id="showhelp">
+			<trans-unit id="showhelp" xml:space="preserve">
 				<source>Help using editor</source>
 			</trans-unit>
-			<trans-unit id="textindicator">
+			<trans-unit id="textindicator" xml:space="preserve">
 				<source>Current style</source>
 			</trans-unit>
-			<trans-unit id="undo">
+			<trans-unit id="undo" xml:space="preserve">
 				<source>Undo the last action</source>
 			</trans-unit>
-			<trans-unit id="redo">
+			<trans-unit id="redo" xml:space="preserve">
 				<source>Redo the last action</source>
 			</trans-unit>
-			<trans-unit id="cut">
+			<trans-unit id="cut" xml:space="preserve">
 				<source>Cut selection</source>
 			</trans-unit>
-			<trans-unit id="copy">
+			<trans-unit id="copy" xml:space="preserve">
 				<source>Copy selection</source>
 			</trans-unit>
-			<trans-unit id="paste">
+			<trans-unit id="paste" xml:space="preserve">
 				<source>Paste from clipboard</source>
 			</trans-unit>
-			<trans-unit id="lefttoright">
+			<trans-unit id="lefttoright" xml:space="preserve">
 				<source>Direction left to right</source>
 			</trans-unit>
-			<trans-unit id="righttoleft">
+			<trans-unit id="righttoleft" xml:space="preserve">
 				<source>Direction right to left</source>
 			</trans-unit>
-			<trans-unit id="removeformat">
+			<trans-unit id="removeformat" xml:space="preserve">
 				<source>Remove formatting</source>
 			</trans-unit>
-			<trans-unit id="print">
+			<trans-unit id="print" xml:space="preserve">
 				<source>Print document</source>
 			</trans-unit>
-			<trans-unit id="killword">
+			<trans-unit id="killword" xml:space="preserve">
 				<source>Clear MSOffice tags</source>
 			</trans-unit>
-			<trans-unit id="fontname">
+			<trans-unit id="fontname" xml:space="preserve">
 				<source>Font</source>
 			</trans-unit>
-			<trans-unit id="fontsize">
+			<trans-unit id="fontsize" xml:space="preserve">
 				<source>Font size</source>
 			</trans-unit>
-			<trans-unit id="formatblock">
+			<trans-unit id="formatblock" xml:space="preserve">
 				<source>Type of paragragh</source>
 			</trans-unit>
 		</body>

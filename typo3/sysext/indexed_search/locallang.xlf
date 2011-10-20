@@ -3,100 +3,100 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="indexed_search">
 		<header/>
 		<body>
-			<trans-unit id="mod_indexed_search">
+			<trans-unit id="mod_indexed_search" xml:space="preserve">
 				<source>Indexed search</source>
 			</trans-unit>
-			<trans-unit id="mod2_indexed_search">
+			<trans-unit id="mod2_indexed_search" xml:space="preserve">
 				<source>Indexed search statistics</source>
 			</trans-unit>
-			<trans-unit id="ignoreExtensions">
+			<trans-unit id="ignoreExtensions" xml:space="preserve">
 				<source>Extension %s was set to be ignored.</source>
 			</trans-unit>
-			<trans-unit id="pdfToolsNotFound">
+			<trans-unit id="pdfToolsNotFound" xml:space="preserve">
 				<source>PDF tools was not found in paths '%1$spdftotext' and/or '%1$spdfinfo'"</source>
 			</trans-unit>
-			<trans-unit id="pdfToolsDisabled">
+			<trans-unit id="pdfToolsDisabled" xml:space="preserve">
 				<source>PDF tools disabled</source>
 			</trans-unit>
-			<trans-unit id="pdfToolsFailed">
+			<trans-unit id="pdfToolsFailed" xml:space="preserve">
 				<source>PDFtoText Failed on this document: '%s'. Maybe the PDF file is locked for printing or encrypted.</source>
 			</trans-unit>
-			<trans-unit id="catdocNotFound">
+			<trans-unit id="catdocNotFound" xml:space="preserve">
 				<source>'catdoc' tool for reading Word-files was not found in path '%scatdoc'</source>
 			</trans-unit>
-			<trans-unit id="catdocDisabled">
+			<trans-unit id="catdocDisabled" xml:space="preserve">
 				<source>catdoc tools (Word-files) disabled</source>
 			</trans-unit>
-			<trans-unit id="ppthtmlNotFound">
+			<trans-unit id="ppthtmlNotFound" xml:space="preserve">
 				<source>'ppthtml' tool for reading Powerpoint-files was not found in path '%sppthtml'</source>
 			</trans-unit>
-			<trans-unit id="ppthtmlDisabled">
+			<trans-unit id="ppthtmlDisabled" xml:space="preserve">
 				<source>ppthtml tools (Powerpoint-files) disabled</source>
 			</trans-unit>
-			<trans-unit id="xlhtmlNotFound">
+			<trans-unit id="xlhtmlNotFound" xml:space="preserve">
 				<source>'xlhtml' tool for reading Excel-files was not found in path '%sxlhtml'</source>
 			</trans-unit>
-			<trans-unit id="xlhtmlDisabled">
+			<trans-unit id="xlhtmlDisabled" xml:space="preserve">
 				<source>xlhtml tools (Excel-files) disabled</source>
 			</trans-unit>
-			<trans-unit id="unzipNotFound">
+			<trans-unit id="unzipNotFound" xml:space="preserve">
 				<source>'unzip' tool for reading OpenOffice.org-files was not found in path '%sunzip'</source>
 			</trans-unit>
-			<trans-unit id="unzipDisabled">
+			<trans-unit id="unzipDisabled" xml:space="preserve">
 				<source>unzip tool (OpenOffice.org-files) disabled</source>
 			</trans-unit>
-			<trans-unit id="unrtfNotFound">
+			<trans-unit id="unrtfNotFound" xml:space="preserve">
 				<source>'unrtf' tool for reading RTF-files was not found in path '%sunrtf'</source>
 			</trans-unit>
-			<trans-unit id="unrtfDisabled">
+			<trans-unit id="unrtfDisabled" xml:space="preserve">
 				<source>unrtf tool (RTF-files) disabled</source>
 			</trans-unit>
-			<trans-unit id="extension.PDF">
+			<trans-unit id="extension.PDF" xml:space="preserve">
 				<source>PDF (*.%s)</source>
 			</trans-unit>
-			<trans-unit id="extension.DOC">
+			<trans-unit id="extension.DOC" xml:space="preserve">
 				<source>MS Word (*.%s)</source>
 			</trans-unit>
-			<trans-unit id="extension.PP">
+			<trans-unit id="extension.PP" xml:space="preserve">
 				<source>MS Powerpoint (*.%s)</source>
 			</trans-unit>
-			<trans-unit id="extension.XLS">
+			<trans-unit id="extension.XLS" xml:space="preserve">
 				<source>MS Excel (*.%s)</source>
 			</trans-unit>
-			<trans-unit id="extension.SXC">
+			<trans-unit id="extension.SXC" xml:space="preserve">
 				<source>OpenOffice.org Calc (*.%s)</source>
 			</trans-unit>
-			<trans-unit id="extension.SXI">
+			<trans-unit id="extension.SXI" xml:space="preserve">
 				<source>OpenOffice.org Impress (*.%s)</source>
 			</trans-unit>
-			<trans-unit id="extension.SXW">
+			<trans-unit id="extension.SXW" xml:space="preserve">
 				<source>OpenOffice.org Writer (*.%s)</source>
 			</trans-unit>
-			<trans-unit id="extension.ODS">
+			<trans-unit id="extension.ODS" xml:space="preserve">
 				<source>ODF Spreadsheet (*.%s)</source>
 			</trans-unit>
-			<trans-unit id="extension.ODP">
+			<trans-unit id="extension.ODP" xml:space="preserve">
 				<source>ODF Presentation (*.%s)</source>
 			</trans-unit>
-			<trans-unit id="extension.ODT">
+			<trans-unit id="extension.ODT" xml:space="preserve">
 				<source>ODF Text (*.%s)</source>
 			</trans-unit>
-			<trans-unit id="extension.RTF">
+			<trans-unit id="extension.RTF" xml:space="preserve">
 				<source>Rich Text Format (*.%s)</source>
 			</trans-unit>
-			<trans-unit id="extension.images">
+			<trans-unit id="extension.images" xml:space="preserve">
 				<source>Images (*.%s)</source>
 			</trans-unit>
-			<trans-unit id="extension.HTML">
+			<trans-unit id="extension.HTML" xml:space="preserve">
 				<source>Webpages (*.%s)</source>
 			</trans-unit>
-			<trans-unit id="extension.TXT">
+			<trans-unit id="extension.TXT" xml:space="preserve">
 				<source>Textfiles (*.%s)</source>
 			</trans-unit>
-			<trans-unit id="extension.CSV">
+			<trans-unit id="extension.CSV" xml:space="preserve">
 				<source>Comma-Separated Values (*.%s)</source>
 			</trans-unit>
-			<trans-unit id="extension.XML">
+			<trans-unit id="extension.XML" xml:space="preserve">
 				<source>Extensible Markup Language (*.%s)</source>
 			</trans-unit>
 		</body>

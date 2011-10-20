@@ -1,66 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea" xml:space="preserve">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id=".alttitle">
+			<trans-unit id=".alttitle" xml:space="preserve">
 				<source>htmlArea RTE &gt; Language</source>
 			</trans-unit>
-			<trans-unit id=".description">
+			<trans-unit id=".description" xml:space="preserve">
 				<source>The Language feature allows to edit the language and text direction attributes of an element in the RTE editing area.</source>
 			</trans-unit>
-			<trans-unit id=".details">
+			<trans-unit id=".details" xml:space="preserve">
 				<source>The following items may appear in the RTE toolbar:
 - a selector box that allows to assign the language of contents of an element;
 - two buttons that allow to set the direction of text;
 - another button that allows to make the language marks visible wittin the RTE editing area.
-The language selector box may also appear in some dialogues along with a text direction selector box.
-				</source>
+The language selector box may also appear in some dialogues along with a text direction selector box.</source>
 			</trans-unit>
-			<trans-unit id=".image">
+			<trans-unit id=".image" xml:space="preserve">
 				<source>EXT:rtehtmlarea/extensions/Language/skin/images/left_to_right.gif,
 EXT:rtehtmlarea/extensions/Language/skin/images/right_to_left.gif,
-EXT:rtehtmlarea/extensions/Language/skin/images/show-language-marks.gif
-				</source>
+EXT:rtehtmlarea/extensions/Language/skin/images/show-language-marks.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id=".image_descr">
+			<trans-unit id=".image_descr" xml:space="preserve">
 				<source>"Left to right" icon in the editor tool bar.
 "Right to left" icon in the editor tool bar.
-"Show language marks" icon in the editor tool bar.
-				</source>
+"Show language marks" icon in the editor tool bar.</source>
 			</trans-unit>
-			<trans-unit id=".seeAlso">
+			<trans-unit id=".seeAlso" xml:space="preserve">
 				<source>xEXT_rtehtmlarea_Language:languageCombo,
-xEXT_rtehtmlarea_Language:directionCombo,
-				</source>
+xEXT_rtehtmlarea_Language:directionCombo,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="languageCombo.alttitle">
+			<trans-unit id="languageCombo.alttitle" xml:space="preserve">
 				<source>Language of contents</source>
 			</trans-unit>
-			<trans-unit id="languageCombo.description">
+			<trans-unit id="languageCombo.description" xml:space="preserve">
 				<source>Select the language of the contents of the element.</source>
 			</trans-unit>
-			<trans-unit id="languageCombo.details">
+			<trans-unit id="languageCombo.details" xml:space="preserve">
 				<source>The language selector box may appear in the RTE toolbar and in some dialogues.
 The selector shows the language currently assigned to the current element, if any.
 Selecting a language assigns it to the element. If a language was already assigned to the element, it is replaced by the newly selected language.
-Any currently assigned language may be removed by selecting the "Remove language mark" item at the top of the list of the selector box.
-				</source>
+Any currently assigned language may be removed by selecting the "Remove language mark" item at the top of the list of the selector box.</source>
 			</trans-unit>
-			<trans-unit id="directionCombo.alttitle">
+			<trans-unit id="directionCombo.alttitle" xml:space="preserve">
 				<source>Direction of text</source>
 			</trans-unit>
-			<trans-unit id="directionCombo.description">
+			<trans-unit id="directionCombo.description" xml:space="preserve">
 				<source>Select the direction of text within the contents of the element.</source>
 			</trans-unit>
-			<trans-unit id="directionCombo.details">
+			<trans-unit id="directionCombo.details" xml:space="preserve">
 				<source>The text direction selector box may appear in some dialogues.
 The selector shows the direction of text currently set on the current element, if any.
 Selecting a direction sets it on the element. If a direction was already set on the element, it is replaced by the newly selected direction.
-Any currently set direction may be removed by selecting the "Not set" item at the top of the list of the selector box.
-				</source>
+Any currently set direction may be removed by selecting the "Not set" item at the top of the list of the selector box.</source>
 			</trans-unit>
 		</body>
 	</file>

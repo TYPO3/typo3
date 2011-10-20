@@ -3,10 +3,10 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="No font">
+			<trans-unit id="No font" xml:space="preserve">
 				<source>No font</source>
 			</trans-unit>
-			<trans-unit id="No size">
+			<trans-unit id="No size" xml:space="preserve">
 				<source>No font size</source>
 			</trans-unit>
 		</body>

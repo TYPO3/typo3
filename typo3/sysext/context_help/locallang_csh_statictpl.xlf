@@ -1,55 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help" xml:space="preserve">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help">
 		<header/>
 		<body>
-			<trans-unit id=".description">
+			<trans-unit id=".description" xml:space="preserve">
 				<source>Static templates are a centrally distributed TypoScript library. You should never change these values.</source>
 			</trans-unit>
-			<trans-unit id=".details">
+			<trans-unit id=".details" xml:space="preserve">
 				<source>The Static templates are meant to be included by your TypoScript Template records depending on your needs. Refer to the 'TSref' document (see below) for details on this process.
-Notice that by each release of TYPO3 you should reinstall the Static Templates table by the install tool. See the 'Install/Upgrade' document for details (see below).
-				</source>
+Notice that by each release of TYPO3 you should reinstall the Static Templates table by the install tool. See the 'Install/Upgrade' document for details (see below).</source>
 			</trans-unit>
-			<trans-unit id="_.seeAlso">
+			<trans-unit id="_.seeAlso" xml:space="preserve">
 				<source>sys_template
 TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
 TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/
 Install/Upgrade | http://typo3.org/documentation/document-library/doc_inst_upgr/,
-sys_template:include_static
-				</source>
+sys_template:include_static</source>
 			</trans-unit>
-			<trans-unit id="_.image">
+			<trans-unit id="_.image" xml:space="preserve">
 				<source>EXT:context_help/cshimages/static.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id=".image_descr">
+			<trans-unit id=".image_descr" xml:space="preserve">
 				<source>The static templates are located in the page tree root where only the Admin users can access them. However they are read-only by default so you can only look at their content, not change it.</source>
 			</trans-unit>
-			<trans-unit id="title.description">
+			<trans-unit id="title.description" xml:space="preserve">
 				<source>Template Title. Will be visible in the list of static templates in Template Records</source>
 			</trans-unit>
-			<trans-unit id="constants.description">
+			<trans-unit id="constants.description" xml:space="preserve">
 				<source>TypoScript Constants field</source>
 			</trans-unit>
-			<trans-unit id="_constants.seeAlso">
+			<trans-unit id="_constants.seeAlso" xml:space="preserve">
 				<source>sys_template:constants</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="config.description">
+			<trans-unit id="config.description" xml:space="preserve">
 				<source>TypoScript Setup code field</source>
 			</trans-unit>
-			<trans-unit id="_config.seeAlso">
+			<trans-unit id="_config.seeAlso" xml:space="preserve">
 				<source>sys_template:config</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="include_static.description">
+			<trans-unit id="include_static.description" xml:space="preserve">
 				<source>Inclusion of other static templates</source>
 			</trans-unit>
-			<trans-unit id="description.description">
+			<trans-unit id="description.description" xml:space="preserve">
 				<source>Description of the static template record.</source>
 			</trans-unit>
-			<trans-unit id="editorcfg.description">
+			<trans-unit id="editorcfg.description" xml:space="preserve">
 				<source>Editor Configuration - used to configure Stylesheet editor.</source>
 			</trans-unit>
 		</body>

@@ -3,34 +3,34 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="wizard_sortpages">
 		<header/>
 		<body>
-			<trans-unit id="wiz_sort">
+			<trans-unit id="wiz_sort" xml:space="preserve">
 				<source>Sort pages</source>
 			</trans-unit>
-			<trans-unit id="wiz_W">
+			<trans-unit id="wiz_W" xml:space="preserve">
 				<source>W!</source>
 			</trans-unit>
-			<trans-unit id="wiz_currentPageOrder">
+			<trans-unit id="wiz_currentPageOrder" xml:space="preserve">
 				<source>Current page order</source>
 			</trans-unit>
-			<trans-unit id="wiz_changeOrder">
+			<trans-unit id="wiz_changeOrder" xml:space="preserve">
 				<source>Sort these pages by</source>
 			</trans-unit>
-			<trans-unit id="wiz_changeOrder_title">
+			<trans-unit id="wiz_changeOrder_title" xml:space="preserve">
 				<source>Page title</source>
 			</trans-unit>
-			<trans-unit id="wiz_changeOrder_subtitle">
+			<trans-unit id="wiz_changeOrder_subtitle" xml:space="preserve">
 				<source>Subtitle</source>
 			</trans-unit>
-			<trans-unit id="wiz_changeOrder_tCreate">
+			<trans-unit id="wiz_changeOrder_tCreate" xml:space="preserve">
 				<source>Create-time</source>
 			</trans-unit>
-			<trans-unit id="wiz_changeOrder_tChange">
+			<trans-unit id="wiz_changeOrder_tChange" xml:space="preserve">
 				<source>Change-time</source>
 			</trans-unit>
-			<trans-unit id="wiz_changeOrder_REVERSE">
+			<trans-unit id="wiz_changeOrder_REVERSE" xml:space="preserve">
 				<source>Reverse current order</source>
 			</trans-unit>
-			<trans-unit id="wiz_changeOrder_msg1">
+			<trans-unit id="wiz_changeOrder_msg1" xml:space="preserve">
 				<source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
 			</trans-unit>
 		</body>

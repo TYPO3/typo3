@@ -3,127 +3,127 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Spell Checker">
+			<trans-unit id="Spell Checker" xml:space="preserve">
 				<source>Spell Checker</source>
 			</trans-unit>
-			<trans-unit id="CONFIRM_LINK_CLICK">
+			<trans-unit id="CONFIRM_LINK_CLICK" xml:space="preserve">
 				<source>Please confirm that you want to open this link</source>
 			</trans-unit>
-			<trans-unit id="Cancel">
+			<trans-unit id="Cancel" xml:space="preserve">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="Dictionary">
+			<trans-unit id="Dictionary" xml:space="preserve">
 				<source>Dictionary</source>
 			</trans-unit>
-			<trans-unit id="Finished list of mispelled words">
+			<trans-unit id="Finished list of mispelled words" xml:space="preserve">
 				<source>Finished list of mispelled words</source>
 			</trans-unit>
-			<trans-unit id="I will open it in a new page.">
+			<trans-unit id="I will open it in a new page." xml:space="preserve">
 				<source>I will open it in a new page.</source>
 			</trans-unit>
-			<trans-unit id="Ignore all">
+			<trans-unit id="Ignore all" xml:space="preserve">
 				<source>Ignore all</source>
 			</trans-unit>
-			<trans-unit id="Ignore">
+			<trans-unit id="Ignore" xml:space="preserve">
 				<source>Ignore</source>
 			</trans-unit>
-			<trans-unit id="NO_ERRORS">
+			<trans-unit id="NO_ERRORS" xml:space="preserve">
 				<source>No mispelled words found with the selected dictionary.</source>
 			</trans-unit>
-			<trans-unit id="NO_ERRORS_CLOSING">
+			<trans-unit id="NO_ERRORS_CLOSING" xml:space="preserve">
 				<source>Spell check complete, didn't find any mispelled words.  Closing now...</source>
 			</trans-unit>
-			<trans-unit id="OK">
+			<trans-unit id="OK" xml:space="preserve">
 				<source>OK</source>
 			</trans-unit>
-			<trans-unit id="Original word">
+			<trans-unit id="Original word" xml:space="preserve">
 				<source>Original word</source>
 			</trans-unit>
-			<trans-unit id="Please wait. Calling spell checker.">
+			<trans-unit id="Please wait. Calling spell checker." xml:space="preserve">
 				<source>Please wait. Calling spell checker.</source>
 			</trans-unit>
-			<trans-unit id="Please wait: changing dictionary to">
+			<trans-unit id="Please wait: changing dictionary to" xml:space="preserve">
 				<source>Please wait: changing dictionary to</source>
 			</trans-unit>
-			<trans-unit id="HTMLArea Spell Checker">
+			<trans-unit id="HTMLArea Spell Checker" xml:space="preserve">
 				<source>HTMLArea Spell Checker</source>
 			</trans-unit>
-			<trans-unit id="QUIT_CONFIRMATION">
+			<trans-unit id="QUIT_CONFIRMATION" xml:space="preserve">
 				<source>This will drop changes and quit spell checker.  Please confirm.</source>
 			</trans-unit>
-			<trans-unit id="Re-check">
+			<trans-unit id="Re-check" xml:space="preserve">
 				<source>Re-check</source>
 			</trans-unit>
-			<trans-unit id="Replacement">
+			<trans-unit id="Replacement" xml:space="preserve">
 				<source>Replacement</source>
 			</trans-unit>
-			<trans-unit id="Replace all">
+			<trans-unit id="Replace all" xml:space="preserve">
 				<source>Replace all</source>
 			</trans-unit>
-			<trans-unit id="Replace with">
+			<trans-unit id="Replace with" xml:space="preserve">
 				<source>Replace with</source>
 			</trans-unit>
-			<trans-unit id="Replace">
+			<trans-unit id="Replace" xml:space="preserve">
 				<source>Replace</source>
 			</trans-unit>
-			<trans-unit id="Learn">
+			<trans-unit id="Learn" xml:space="preserve">
 				<source>Add to dictionary</source>
 			</trans-unit>
-			<trans-unit id="Revert">
+			<trans-unit id="Revert" xml:space="preserve">
 				<source>Revert</source>
 			</trans-unit>
-			<trans-unit id="SC-spell-check">
+			<trans-unit id="SC-spell-check" xml:space="preserve">
 				<source>Spell-check</source>
 			</trans-unit>
-			<trans-unit id="Suggestions">
+			<trans-unit id="Suggestions" xml:space="preserve">
 				<source>Suggestions</source>
 			</trans-unit>
-			<trans-unit id="One occurrence">
+			<trans-unit id="One occurrence" xml:space="preserve">
 				<source>One occurrence</source>
 			</trans-unit>
-			<trans-unit id="Two occurrences">
+			<trans-unit id="Two occurrences" xml:space="preserve">
 				<source>Two occurrences</source>
 			</trans-unit>
-			<trans-unit id="occurrences">
+			<trans-unit id="occurrences" xml:space="preserve">
 				<source>occurrences</source>
 			</trans-unit>
-			<trans-unit id="of the word">
+			<trans-unit id="of the word" xml:space="preserve">
 				<source>of the word</source>
 			</trans-unit>
-			<trans-unit id="was found.">
+			<trans-unit id="was found." xml:space="preserve">
 				<source>was found.</source>
 			</trans-unit>
-			<trans-unit id="were found.">
+			<trans-unit id="were found." xml:space="preserve">
 				<source>were found.</source>
 			</trans-unit>
-			<trans-unit id="Info">
+			<trans-unit id="Info" xml:space="preserve">
 				<source>Info</source>
 			</trans-unit>
-			<trans-unit id="Document information">
+			<trans-unit id="Document information" xml:space="preserve">
 				<source>Document information</source>
 			</trans-unit>
-			<trans-unit id="No information available">
+			<trans-unit id="No information available" xml:space="preserve">
 				<source>No information available</source>
 			</trans-unit>
-			<trans-unit id="Total words">
+			<trans-unit id="Total words" xml:space="preserve">
 				<source>Total words</source>
 			</trans-unit>
-			<trans-unit id="Misspelled words">
+			<trans-unit id="Misspelled words" xml:space="preserve">
 				<source>Misspelled words</source>
 			</trans-unit>
-			<trans-unit id="Total suggestions">
+			<trans-unit id="Total suggestions" xml:space="preserve">
 				<source>Total suggestions</source>
 			</trans-unit>
-			<trans-unit id="Total words suggested">
+			<trans-unit id="Total words suggested" xml:space="preserve">
 				<source>Total words suggested</source>
 			</trans-unit>
-			<trans-unit id="Spelling checked in">
+			<trans-unit id="Spelling checked in" xml:space="preserve">
 				<source>Spelling checked in</source>
 			</trans-unit>
-			<trans-unit id="seconds">
+			<trans-unit id="seconds" xml:space="preserve">
 				<source>seconds</source>
 			</trans-unit>
-			<trans-unit id="pliz weit ;-)">
+			<trans-unit id="pliz weit ;-)" xml:space="preserve">
 				<source>Please wait...</source>
 			</trans-unit>
 		</body>

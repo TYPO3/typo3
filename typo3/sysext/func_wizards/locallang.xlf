@@ -3,10 +3,10 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="func_wizards">
 		<header/>
 		<body>
-			<trans-unit id="wiz_lWizards">
+			<trans-unit id="wiz_lWizards" xml:space="preserve">
 				<source>Select Wizard</source>
 			</trans-unit>
-			<trans-unit id="mod_wizards">
+			<trans-unit id="mod_wizards" xml:space="preserve">
 				<source>Wizards</source>
 			</trans-unit>
 		</body>

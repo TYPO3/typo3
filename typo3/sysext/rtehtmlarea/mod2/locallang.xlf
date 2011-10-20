@@ -3,55 +3,55 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Type_of_abridged_form">
+			<trans-unit id="Type_of_abridged_form" xml:space="preserve">
 				<source>Acronym or Abbreviation?</source>
 			</trans-unit>
-			<trans-unit id="Term_to_abridge">
+			<trans-unit id="Term_to_abridge" xml:space="preserve">
 				<source>Term to abridge</source>
 			</trans-unit>
-			<trans-unit id="Defined_term">
+			<trans-unit id="Defined_term" xml:space="preserve">
 				<source>Pre-defined Acronyms and Abbreviations</source>
 			</trans-unit>
-			<trans-unit id="Term">
+			<trans-unit id="Term" xml:space="preserve">
 				<source>Term:</source>
 			</trans-unit>
-			<trans-unit id="Unabridged_term">
+			<trans-unit id="Unabridged_term" xml:space="preserve">
 				<source>Unabridged Term:</source>
 			</trans-unit>
-			<trans-unit id="Select_a_term">
+			<trans-unit id="Select_a_term" xml:space="preserve">
 				<source>Select a term</source>
 			</trans-unit>
-			<trans-unit id="Abridged_term">
+			<trans-unit id="Abridged_term" xml:space="preserve">
 				<source>Abridged Term:</source>
 			</trans-unit>
-			<trans-unit id="Acronym">
+			<trans-unit id="Acronym" xml:space="preserve">
 				<source>Acronym</source>
 			</trans-unit>
-			<trans-unit id="Abbreviation">
+			<trans-unit id="Abbreviation" xml:space="preserve">
 				<source>Abbreviation</source>
 			</trans-unit>
-			<trans-unit id="Select_an_acronym">
+			<trans-unit id="Select_an_acronym" xml:space="preserve">
 				<source>Select an acronym or abbreviation</source>
 			</trans-unit>
-			<trans-unit id="Use_this_term">
+			<trans-unit id="Use_this_term" xml:space="preserve">
 				<source>Use this term:</source>
 			</trans-unit>
-			<trans-unit id="Use_this_term_explain">
+			<trans-unit id="Use_this_term_explain" xml:space="preserve">
 				<source>Associate this term to the current selection</source>
 			</trans-unit>
-			<trans-unit id="OK">
+			<trans-unit id="OK" xml:space="preserve">
 				<source>OK</source>
 			</trans-unit>
-			<trans-unit id="Delete">
+			<trans-unit id="Delete" xml:space="preserve">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="Cancel">
+			<trans-unit id="Cancel" xml:space="preserve">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="Language">
+			<trans-unit id="Language" xml:space="preserve">
 				<source>Language:</source>
 			</trans-unit>
-			<trans-unit id="Select_a_language">
+			<trans-unit id="Select_a_language" xml:space="preserve">
 				<source>Select a language</source>
 			</trans-unit>
 		</body>

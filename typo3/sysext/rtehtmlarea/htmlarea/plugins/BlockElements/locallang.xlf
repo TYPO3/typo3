@@ -3,97 +3,97 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Indent-Tooltip">
+			<trans-unit id="Indent-Tooltip" xml:space="preserve">
 				<source>Increase indent</source>
 			</trans-unit>
-			<trans-unit id="Indent-helpText">
+			<trans-unit id="Indent-helpText" xml:space="preserve">
 				<source>Increases text indentation</source>
 			</trans-unit>
-			<trans-unit id="Outdent-Tooltip">
+			<trans-unit id="Outdent-Tooltip" xml:space="preserve">
 				<source>Reduce indent</source>
 			</trans-unit>
-			<trans-unit id="Outdent-helpText">
+			<trans-unit id="Outdent-helpText" xml:space="preserve">
 				<source>Reduces text indentation</source>
 			</trans-unit>
-			<trans-unit id="Blockquote-Tooltip">
+			<trans-unit id="Blockquote-Tooltip" xml:space="preserve">
 				<source>Large quotation</source>
 			</trans-unit>
-			<trans-unit id="Blockquote-helpText">
+			<trans-unit id="Blockquote-helpText" xml:space="preserve">
 				<source>Makes a large quotation block</source>
 			</trans-unit>
-			<trans-unit id="FormatBlock-Tooltip">
+			<trans-unit id="FormatBlock-Tooltip" xml:space="preserve">
 				<source>Type of block</source>
 			</trans-unit>
-			<trans-unit id="InsertParagraphBefore-Tooltip">
+			<trans-unit id="InsertParagraphBefore-Tooltip" xml:space="preserve">
 				<source>Insert a paragraph before the current block</source>
 			</trans-unit>
-			<trans-unit id="InsertParagraphBefore-contextMenuTitle">
+			<trans-unit id="InsertParagraphBefore-contextMenuTitle" xml:space="preserve">
 				<source>Insert paragraph before</source>
 			</trans-unit>
-			<trans-unit id="InsertParagraphBefore-helpText">
+			<trans-unit id="InsertParagraphBefore-helpText" xml:space="preserve">
 				<source>Inserts a paragraph before the current block</source>
 			</trans-unit>
-			<trans-unit id="InsertParagraphAfter-Tooltip">
+			<trans-unit id="InsertParagraphAfter-Tooltip" xml:space="preserve">
 				<source>Insert a paragraph after the current block</source>
 			</trans-unit>
-			<trans-unit id="InsertParagraphAfter-contextMenuTitle">
+			<trans-unit id="InsertParagraphAfter-contextMenuTitle" xml:space="preserve">
 				<source>Insert paragraph after</source>
 			</trans-unit>
-			<trans-unit id="InsertParagraphAfter-helpText">
+			<trans-unit id="InsertParagraphAfter-helpText" xml:space="preserve">
 				<source>Inserts a paragraph after the current block</source>
 			</trans-unit>
-			<trans-unit id="JustifyLeft-Tooltip">
+			<trans-unit id="JustifyLeft-Tooltip" xml:space="preserve">
 				<source>Justify left</source>
 			</trans-unit>
-			<trans-unit id="JustifyLeft-helpText">
+			<trans-unit id="JustifyLeft-helpText" xml:space="preserve">
 				<source>Aligns the text to the left</source>
 			</trans-unit>
-			<trans-unit id="JustifyCenter-Tooltip">
+			<trans-unit id="JustifyCenter-Tooltip" xml:space="preserve">
 				<source>Center</source>
 			</trans-unit>
-			<trans-unit id="JustifyCenter-helpText">
+			<trans-unit id="JustifyCenter-helpText" xml:space="preserve">
 				<source>Centers the text</source>
 			</trans-unit>
-			<trans-unit id="JustifyRight-Tooltip">
+			<trans-unit id="JustifyRight-Tooltip" xml:space="preserve">
 				<source>Justify right</source>
 			</trans-unit>
-			<trans-unit id="JustifyRight-helpText">
+			<trans-unit id="JustifyRight-helpText" xml:space="preserve">
 				<source>Aligns the text to the right</source>
 			</trans-unit>
-			<trans-unit id="JustifyFull-Tooltip">
+			<trans-unit id="JustifyFull-Tooltip" xml:space="preserve">
 				<source>Justify left and right</source>
 			</trans-unit>
-			<trans-unit id="JustifyFull-helpText">
+			<trans-unit id="JustifyFull-helpText" xml:space="preserve">
 				<source>Aligns the text both to the left and the right</source>
 			</trans-unit>
-			<trans-unit id="Left-Tooltip">
+			<trans-unit id="Left-Tooltip" xml:space="preserve">
 				<source>Left</source>
 			</trans-unit>
-			<trans-unit id="InsertOrderedList-Tooltip">
+			<trans-unit id="InsertOrderedList-Tooltip" xml:space="preserve">
 				<source>Ordered List</source>
 			</trans-unit>
-			<trans-unit id="InsertOrderedList-helpText">
+			<trans-unit id="InsertOrderedList-helpText" xml:space="preserve">
 				<source>Makes an ordered list from the curent selection</source>
 			</trans-unit>
-			<trans-unit id="InsertUnorderedList-Tooltip">
+			<trans-unit id="InsertUnorderedList-Tooltip" xml:space="preserve">
 				<source>Bulleted List</source>
 			</trans-unit>
-			<trans-unit id="InsertUnorderedList-helpText">
+			<trans-unit id="InsertUnorderedList-helpText" xml:space="preserve">
 				<source>Makes an bulleted list from the curent selection</source>
 			</trans-unit>
-			<trans-unit id="InsertHorizontalRule-Tooltip">
+			<trans-unit id="InsertHorizontalRule-Tooltip" xml:space="preserve">
 				<source>Horizontal Rule</source>
 			</trans-unit>
-			<trans-unit id="InsertHorizontalRule-helpText">
+			<trans-unit id="InsertHorizontalRule-helpText" xml:space="preserve">
 				<source>Inserts an horizontal rule</source>
 			</trans-unit>
-			<trans-unit id="No block">
+			<trans-unit id="No block" xml:space="preserve">
 				<source>No block format</source>
 			</trans-unit>
-			<trans-unit id="Remove block">
+			<trans-unit id="Remove block" xml:space="preserve">
 				<source>Remove block format</source>
 			</trans-unit>
-			<trans-unit id="Technische Universitat Ilmenau">
+			<trans-unit id="Technische Universitat Ilmenau" xml:space="preserve">
 				<source>Technische Universität Ilmenau</source>
 			</trans-unit>
 		</body>

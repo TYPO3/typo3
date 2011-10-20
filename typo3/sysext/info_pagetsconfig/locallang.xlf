@@ -3,55 +3,55 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="info_pagetsconfig">
 		<header/>
 		<body>
-			<trans-unit id="tsconf_title">
+			<trans-unit id="tsconf_title" xml:space="preserve">
 				<source>Page TSconfig</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_0">
+			<trans-unit id="tsconf_parts_0" xml:space="preserve">
 				<source>All</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1">
+			<trans-unit id="tsconf_parts_1" xml:space="preserve">
 				<source>Module key ('mod') with overruling user settings</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1a">
+			<trans-unit id="tsconf_parts_1a" xml:space="preserve">
 				<source>Module: Web&gt;Page</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1b">
+			<trans-unit id="tsconf_parts_1b" xml:space="preserve">
 				<source>Module: Web&gt;View</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1c">
+			<trans-unit id="tsconf_parts_1c" xml:space="preserve">
 				<source>Module: Web&gt;Modules</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1d">
+			<trans-unit id="tsconf_parts_1d" xml:space="preserve">
 				<source>Module: Web&gt;List</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1e">
+			<trans-unit id="tsconf_parts_1e" xml:space="preserve">
 				<source>Module: Web&gt;Info</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1f">
+			<trans-unit id="tsconf_parts_1f" xml:space="preserve">
 				<source>Module: Web&gt;Func</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1g">
+			<trans-unit id="tsconf_parts_1g" xml:space="preserve">
 				<source>Module: Web&gt;Template</source>
 			</trans-unit>
-			<trans-unit id="tsconf_configFields">
+			<trans-unit id="tsconf_configFields" xml:space="preserve">
 				<source>View TSconfig fields content</source>
 			</trans-unit>
-			<trans-unit id="editThisColumn">
+			<trans-unit id="editThisColumn" xml:space="preserve">
 				<source>Edit the field '%s' for all listed pages</source>
 			</trans-unit>
-			<trans-unit id="editTSconfig">
+			<trans-unit id="editTSconfig" xml:space="preserve">
 				<source>Edit TSconfig for this page</source>
 			</trans-unit>
-			<trans-unit id="editTSconfig_all">
+			<trans-unit id="editTSconfig_all" xml:space="preserve">
 				<source>Edit TSconfig for all shown pages</source>
 			</trans-unit>
-			<trans-unit id="editTSconfig_default">
+			<trans-unit id="editTSconfig_default" xml:space="preserve">
 				<source>Default Configuration from TYPO3_CONF_VARS</source>
 			</trans-unit>
-			<trans-unit id="mod_pagetsconfig">
+			<trans-unit id="mod_pagetsconfig" xml:space="preserve">
 				<source>Page TSconfig</source>
 			</trans-unit>
-			<trans-unit id="sort_alphabetic">
+			<trans-unit id="sort_alphabetic" xml:space="preserve">
 				<source>Sort alphabetically:</source>
 			</trans-unit>
 		</body>

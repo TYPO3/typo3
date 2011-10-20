@@ -3,37 +3,37 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Indent-Tooltip">
+			<trans-unit id="Indent-Tooltip" xml:space="preserve">
 				<source>Increase indent</source>
 			</trans-unit>
-			<trans-unit id="Indent-helpText">
+			<trans-unit id="Indent-helpText" xml:space="preserve">
 				<source>Increases text indentation</source>
 			</trans-unit>
-			<trans-unit id="Outdent-Tooltip">
+			<trans-unit id="Outdent-Tooltip" xml:space="preserve">
 				<source>Reduce indent</source>
 			</trans-unit>
-			<trans-unit id="Outdent-helpText">
+			<trans-unit id="Outdent-helpText" xml:space="preserve">
 				<source>Reduces text indentation</source>
 			</trans-unit>
-			<trans-unit id="DefinitionList-Tooltip">
+			<trans-unit id="DefinitionList-Tooltip" xml:space="preserve">
 				<source>Definition list</source>
 			</trans-unit>
-			<trans-unit id="DefinitionList-helpText">
+			<trans-unit id="DefinitionList-helpText" xml:space="preserve">
 				<source>Makes a definition list from the current selection</source>
 			</trans-unit>
-			<trans-unit id="DefinitionItem-Tooltip">
+			<trans-unit id="DefinitionItem-Tooltip" xml:space="preserve">
 				<source>Toggle term and definition</source>
 			</trans-unit>
-			<trans-unit id="DefinitionItem-helpText">
+			<trans-unit id="DefinitionItem-helpText" xml:space="preserve">
 				<source>Toggles term and definition elements</source>
 			</trans-unit>
-			<trans-unit id="No block">
+			<trans-unit id="No block" xml:space="preserve">
 				<source>No block format</source>
 			</trans-unit>
-			<trans-unit id="Remove block">
+			<trans-unit id="Remove block" xml:space="preserve">
 				<source>Remove block format</source>
 			</trans-unit>
-			<trans-unit id="Technische Universitat Ilmenau">
+			<trans-unit id="Technische Universitat Ilmenau" xml:space="preserve">
 				<source>Technische Universität Ilmenau</source>
 			</trans-unit>
 		</body>

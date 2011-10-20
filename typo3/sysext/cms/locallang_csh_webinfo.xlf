@@ -1,126 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="cms" xml:space="preserve">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="cms">
 		<header/>
 		<body>
-			<trans-unit id="pagetree_overview.alttitle">
+			<trans-unit id="pagetree_overview.alttitle" xml:space="preserve">
 				<source>Pagetree Overview</source>
 			</trans-unit>
-			<trans-unit id="pagetree_overview.description">
+			<trans-unit id="pagetree_overview.description" xml:space="preserve">
 				<source>The Pagetree Overview shows information related to pages for a branch of the page tree. This includes start- and stop-times, cache settings etc.</source>
 			</trans-unit>
-			<trans-unit id="_pagetree_overview.seeAlso">
+			<trans-unit id="_pagetree_overview.seeAlso" xml:space="preserve">
 				<source>_MOD_web_info:func_0,
 _MOD_web_info:func_1,
 _MOD_web_info:func_2,
-_MOD_web_info:stat
-				</source>
+_MOD_web_info:stat</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_pagetree_overview.image">
+			<trans-unit id="_pagetree_overview.image" xml:space="preserve">
 				<source>EXT:cms/cshimages/pagetree_overview_1.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="pagetree_overview.image_descr">
+			<trans-unit id="pagetree_overview.image_descr" xml:space="preserve">
 				<source>One of the features of the Pagetree Overview module is that you can see what types of records are found on pages in a branch. Here record counts are shown for a page tree branch 2 levels down.</source>
 			</trans-unit>
-			<trans-unit id="func_0.alttitle">
+			<trans-unit id="func_0.alttitle" xml:space="preserve">
 				<source>Basic Settings</source>
 			</trans-unit>
-			<trans-unit id="func_0.description">
+			<trans-unit id="func_0.description" xml:space="preserve">
 				<source>Displays a selection of fields from page records which are regarded as foundational settings for pages. That includes aliases, start- and stop times, access restriction information etc.</source>
 			</trans-unit>
-			<trans-unit id="func_0.details">
+			<trans-unit id="func_0.details" xml:space="preserve">
 				<source>The Basic Settings view resembles the Cache and Age view quite a lot. They are different only by the selection of fields they show.
 
 &lt;b&gt;Batch editing page fields&lt;/b&gt;
 You will find multiple edit-icons around the interface. All edit icons in head lines will bring you to an editing dialog where you can change exactly that field for all listed tables! Very useful for batch-editing of say all "Start" times.
-If you click the edit icon at the ID numbers of pages you will get straight to the regular editing of a whole page record.
-				</source>
+If you click the edit icon at the ID numbers of pages you will get straight to the regular editing of a whole page record.</source>
 			</trans-unit>
-			<trans-unit id="_func_0.seeAlso">
+			<trans-unit id="_func_0.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:list_module,
 _MOD_web_info:func_2,
-_MOD_web_info:pagetree_overview
-				</source>
+_MOD_web_info:pagetree_overview</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_func_0.image">
+			<trans-unit id="_func_0.image" xml:space="preserve">
 				<source>EXT:cms/cshimages/pagetree_overview_4.png,
 EXT:cms/cshimages/pagetree_overview_8.png,
-EXT:cms/cshimages/pagetree_overview_9.png
-				</source>
+EXT:cms/cshimages/pagetree_overview_9.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="func_0.image_descr">
+			<trans-unit id="func_0.image_descr" xml:space="preserve">
 				<source>The Basic Settings view offers a very convenient overview of page aliases, start times and access restriction settings in the tree branch.
-If you click an edit-icon in the header you will be able to edit that field for all listed pages.
-				</source>
+If you click an edit-icon in the header you will be able to edit that field for all listed pages.</source>
 			</trans-unit>
-			<trans-unit id="func_1.alttitle">
+			<trans-unit id="func_1.alttitle" xml:space="preserve">
 				<source>Record Overview</source>
 			</trans-unit>
-			<trans-unit id="func_1.description">
+			<trans-unit id="func_1.description" xml:space="preserve">
 				<source>Record overview gives you an indispensable overview of the distribution of records in the page tree. Each database table in the system is represented with a column and for each page you can see the number of records from that table located on the page.</source>
 			</trans-unit>
-			<trans-unit id="func_1.details">
+			<trans-unit id="func_1.details" xml:space="preserve">
 				<source>&lt;b&gt;Notice:&lt;/b&gt; Be careful with the level-setting. A high level-setting may cause the module to respond very slowly if there are many pages and many records in the database as well!
 
 &lt;b&gt;Tree stop?&lt;/b&gt;
-Notice the red "+" next to a page in the page tree? This is due to a setting for that page record which means that the page tree will not expand for this page. Typically this is set for protection when there are a large amount of subpages underneath (hundreds of pages typically). If you click the icon/title the overview will jump to make this page the new root of the overview.
-				</source>
+Notice the red "+" next to a page in the page tree? This is due to a setting for that page record which means that the page tree will not expand for this page. Typically this is set for protection when there are a large amount of subpages underneath (hundreds of pages typically). If you click the icon/title the overview will jump to make this page the new root of the overview.</source>
 			</trans-unit>
-			<trans-unit id="_func_1.seeAlso">
+			<trans-unit id="_func_1.seeAlso" xml:space="preserve">
 				<source>_MOD_web_info:pagetree_overview,
-pages:php_tree_stop
-				</source>
+pages:php_tree_stop</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_func_1.image">
+			<trans-unit id="_func_1.image" xml:space="preserve">
 				<source>EXT:cms/cshimages/pagetree_overview_6.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="func_1.image_descr">
+			<trans-unit id="func_1.image_descr" xml:space="preserve">
 				<source>You can easily see the distribution of Content Elements on a page. You can also see where Template Records - and basically any record! - are located in the page tree!</source>
 			</trans-unit>
-			<trans-unit id="func_2.alttitle">
+			<trans-unit id="func_2.alttitle" xml:space="preserve">
 				<source>Cache and Age</source>
 			</trans-unit>
-			<trans-unit id="func_2.description">
+			<trans-unit id="func_2.description" xml:space="preserve">
 				<source>Displays a selection of fields from page records related to page caching and time settings.</source>
 			</trans-unit>
-			<trans-unit id="_func_2.seeAlso">
+			<trans-unit id="_func_2.seeAlso" xml:space="preserve">
 				<source>_MOD_web_info:func_0,
 _MOD_web_info:pagetree_overview,
-pages:TSconfig
-				</source>
+pages:TSconfig</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_func_2.image">
+			<trans-unit id="_func_2.image" xml:space="preserve">
 				<source>EXT:cms/cshimages/pagetree_overview_5.png,
-EXT:cms/cshimages/pagetree_overview_7.png
-				</source>
+EXT:cms/cshimages/pagetree_overview_7.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="func_2.image_descr">
+			<trans-unit id="func_2.image_descr" xml:space="preserve">
 				<source>The "Cache and Age" view.
-Here you see the "TSconfig" column. The overview exposes that these two pages include some Page TSconfig code!
-				</source>
+Here you see the "TSconfig" column. The overview exposes that these two pages include some Page TSconfig code!</source>
 			</trans-unit>
-			<trans-unit id="stat.alttitle">
+			<trans-unit id="stat.alttitle" xml:space="preserve">
 				<source>Page Hit statistics</source>
 			</trans-unit>
-			<trans-unit id="stat.description">
+			<trans-unit id="stat.description" xml:space="preserve">
 				<source>Displays website hit statistics for a branch of the page tree. Based on the simple, internal MySQL statistics table which records page impressions and sessions only.</source>
 			</trans-unit>
-			<trans-unit id="stat.details">
+			<trans-unit id="stat.details" xml:space="preserve">
 				<source>&lt;b&gt;Notice:&lt;/b&gt; This function requires the extension "Simple hit statistics" (sys_stat) to be installed. Also you must configure TypoScript to register page hits in the statistics database table.</source>
 			</trans-unit>
-			<trans-unit id="_stat.image">
+			<trans-unit id="_stat.image" xml:space="preserve">
 				<source>EXT:cms/cshimages/pagetree_overview_3.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="lang.details">
+			<trans-unit id="lang.details" xml:space="preserve">
 				<source>The overview uses colors to signal the availability and fall back situation for a given page. Here is a description for each color code:
 &lt;b&gt;Green background:&lt;/b&gt; Page is translated and viewable in this language. For translations it means that an active page overlay record is present.
 &lt;b&gt;Red background:&lt;/b&gt; Page &lt;em&gt;cannot&lt;/em&gt; be viewed in this language and you will see an error message if you try. Menus should automatically filter out links to pages with this translation.
@@ -136,27 +126,24 @@ So, when the "Localization settings" checkboxes for a page are used, you will ge
 Menus generated from HMENU objects will always take "sys_language" into account and display only pages which can be accessed for that language. But combined with the "localization settings" of pages which may block page access this becomes a problem with pages which are &lt;em&gt;not&lt;/em&gt; translated (has gray background); You might get menu items which links to non-accessible pages.
 The problem basically is that "&amp;L=xx" is different from internal "sys_language". You would like to avoid that and to do so you should configure "sys_language_mode" to "content_fallback". If you do that sys_language will &lt;em&gt;always&lt;/em&gt; follow what "&amp;L=" instructs it to and your menus will be right. At the same time you will get the default content displayed if no translation exists (because content selection falls back).
 
-Finally, the number found in each column tells you how many content elements are found in the specified language.
-				</source>
+Finally, the number found in each column tells you how many content elements are found in the specified language.</source>
 			</trans-unit>
-			<trans-unit id="_lang.image">
+			<trans-unit id="_lang.image" xml:space="preserve">
 				<source>EXT:cms/cshimages/localizationoverview.png,
-EXT:cms/cshimages/localizationoverview1.png
-				</source>
+EXT:cms/cshimages/localizationoverview1.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="lang.image_descr">
+			<trans-unit id="lang.image_descr" xml:space="preserve">
 				<source>Localization overview in the Web&gt;Info module. Use the buttons to edit, view and create new page translation headers. Use the regular page module to put localized content on the pages.
-The "Localization settings" that affect availability of pages in the various languages.
-				</source>
+The "Localization settings" that affect availability of pages in the various languages.</source>
 			</trans-unit>
-			<trans-unit id="func_hits.alttitle">
+			<trans-unit id="func_hits.alttitle" xml:space="preserve">
 				<source>Statistic Views</source>
 			</trans-unit>
-			<trans-unit id="func_hits.description">
+			<trans-unit id="func_hits.description" xml:space="preserve">
 				<source>You can select between three views of the statistics in the selector box; "Page hits", "Total hits", "Hits in main sections". Use the right selector box to select the depth of the overview in the pagetree.</source>
 			</trans-unit>
-			<trans-unit id="func_hits.details">
+			<trans-unit id="func_hits.details" xml:space="preserve">
 				<source>You can view the page hit statistics 30 days back. Each day is shown in its own column.
 For each page in the page tree you can see the page hits each day as a number formatted like [page hits]/[user sessions]. So if the number is "286/34" it means that the page had 286 page hits that day and that there were at least 34 unique visitors (measured by at least two hits by a user accepting a cookie from the site).
 
@@ -169,17 +156,16 @@ This shows page hits/sessions for each page.
 This will show statistics for only pages that have a Template Record (with Root-flag set) on it. This means that page hits are shown as totals for a whole website.
 
 &lt;b&gt;Hits in main sections&lt;/b&gt;
-Will show the total number of page hits/sessions within main sections of a website. A "main section" is all subpages to a page on the first level of a website (defined by a Template Record with the Root flag set)
-				</source>
+Will show the total number of page hits/sessions within main sections of a website. A "main section" is all subpages to a page on the first level of a website (defined by a Template Record with the Root flag set)</source>
 			</trans-unit>
-			<trans-unit id="_func_hits.image">
+			<trans-unit id="_func_hits.image" xml:space="preserve">
 				<source>EXT:cms/cshimages/pagetree_overview_2.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="lang.alttitle">
+			<trans-unit id="lang.alttitle" xml:space="preserve">
 				<source>Localization overview</source>
 			</trans-unit>
-			<trans-unit id="lang.description">
+			<trans-unit id="lang.description" xml:space="preserve">
 				<source>Gives an overview of which pages in the page tree are translated to the system languages installed.</source>
 			</trans-unit>
 		</body>

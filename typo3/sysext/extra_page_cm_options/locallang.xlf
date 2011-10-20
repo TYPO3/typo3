@@ -3,7 +3,7 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="extra_page_cm_options">
 		<header/>
 		<body>
-			<trans-unit id="label">
+			<trans-unit id="label" xml:space="preserve">
 				<source>More options...</source>
 			</trans-unit>
 		</body>

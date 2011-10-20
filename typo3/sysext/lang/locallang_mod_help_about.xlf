@@ -3,67 +3,67 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="title">
+			<trans-unit id="title" xml:space="preserve">
 				<source>About TYPO3</source>
 			</trans-unit>
-			<trans-unit id="typo3_logo">
+			<trans-unit id="typo3_logo" xml:space="preserve">
 				<source>TYPO3 logo</source>
 			</trans-unit>
-			<trans-unit id="information">
+			<trans-unit id="information" xml:space="preserve">
 				<source>TYPO3 Information</source>
 			</trans-unit>
-			<trans-unit id="welcome">
+			<trans-unit id="welcome" xml:space="preserve">
 				<source>TYPO3 Professional Web Content Management System</source>
 			</trans-unit>
-			<trans-unit id="minor">
+			<trans-unit id="minor" xml:space="preserve">
 				<source>TYPO3 is a flexible and professional Open Source Web-CMS based on PHP and MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="http://typo3.com/1316.0.html" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</source>
 			</trans-unit>
-			<trans-unit id="community_credits">
+			<trans-unit id="community_credits" xml:space="preserve">
 				<source>Community Credits</source>
 			</trans-unit>
-			<trans-unit id="information_detail">
+			<trans-unit id="information_detail" xml:space="preserve">
 				<source>Visit &lt;a href="http://typo3.org/community/" target="_blank"&gt;typo3.org/community/&lt;/a&gt; if you want to know why TYPO3 rocks.</source>
 			</trans-unit>
-			<trans-unit id="coredevs">
+			<trans-unit id="coredevs" xml:space="preserve">
 				<source>Core Team</source>
 			</trans-unit>
-			<trans-unit id="coredevs_detail">
+			<trans-unit id="coredevs_detail" xml:space="preserve">
 				<source>Visit &lt;a href="http://typo3.org/teams/core/members/" target="_blank"&gt;typo3.org/teams/core/members/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The Git Repository and the ChangeLog can be found &lt;a href="http://forge.typo3.org/projects/show/typo3v4-core/" target="_blank"&gt;here&lt;/a&gt;.</source>
 			</trans-unit>
-			<trans-unit id="extension_authors">
+			<trans-unit id="extension_authors" xml:space="preserve">
 				<source>Extension Authors</source>
 			</trans-unit>
-			<trans-unit id="extension_list_info">
+			<trans-unit id="extension_list_info" xml:space="preserve">
 				<source>This is a list of the people who contributed to the extensions you're using in your installation.</source>
 			</trans-unit>
-			<trans-unit id="extension">
+			<trans-unit id="extension" xml:space="preserve">
 				<source>Extension</source>
 			</trans-unit>
-			<trans-unit id="extension_author">
+			<trans-unit id="extension_author" xml:space="preserve">
 				<source>Author</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tablabel">
+			<trans-unit id="mlang_labels_tablabel" xml:space="preserve">
 				<source>About TYPO3</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr">
+			<trans-unit id="mlang_labels_tabdescr" xml:space="preserve">
 				<source>Displays the basic facts about the TYPO3 application, version and licensing terms.</source>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab">
+			<trans-unit id="mlang_tabs_tab" xml:space="preserve">
 				<source>About TYPO3</source>
 			</trans-unit>
-			<trans-unit id="donation_header">
+			<trans-unit id="donation_header" xml:space="preserve">
 				<source>TYPO3 Donation</source>
 			</trans-unit>
-			<trans-unit id="donation_message">
+			<trans-unit id="donation_message" xml:space="preserve">
 				<source>It would be great if you could donate. TYPO3 is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt; &lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your help!</source>
 			</trans-unit>
-			<trans-unit id="donation_button">
+			<trans-unit id="donation_button" xml:space="preserve">
 				<source>Donate now</source>
 			</trans-unit>
-			<trans-unit id="external_libraries">
+			<trans-unit id="external_libraries" xml:space="preserve">
 				<source>External Libraries</source>
 			</trans-unit>
-			<trans-unit id="external_thanks">
+			<trans-unit id="external_thanks" xml:space="preserve">
 				<source>TYPO3 core uses and thanks these external Open Source projects:</source>
 			</trans-unit>
 		</body>

@@ -3,40 +3,40 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="external_link_altText">
+			<trans-unit id="external_link_altText" xml:space="preserve">
 				<source>Opens external link in current window</source>
 			</trans-unit>
-			<trans-unit id="external_link_titleText">
+			<trans-unit id="external_link_titleText" xml:space="preserve">
 				<source>Opens external link in current window</source>
 			</trans-unit>
-			<trans-unit id="external_link_new_window_altText">
+			<trans-unit id="external_link_new_window_altText" xml:space="preserve">
 				<source>Opens external link in new window</source>
 			</trans-unit>
-			<trans-unit id="external_link_new_window_titleText">
+			<trans-unit id="external_link_new_window_titleText" xml:space="preserve">
 				<source>Opens external link in new window</source>
 			</trans-unit>
-			<trans-unit id="internal_link_altText">
+			<trans-unit id="internal_link_altText" xml:space="preserve">
 				<source>Opens internal link in current window</source>
 			</trans-unit>
-			<trans-unit id="internal_link_titleText">
+			<trans-unit id="internal_link_titleText" xml:space="preserve">
 				<source>Opens internal link in current window</source>
 			</trans-unit>
-			<trans-unit id="internal_link_new_window_altText">
+			<trans-unit id="internal_link_new_window_altText" xml:space="preserve">
 				<source>Opens internal link in new window</source>
 			</trans-unit>
-			<trans-unit id="internal_link_new_window_titleText">
+			<trans-unit id="internal_link_new_window_titleText" xml:space="preserve">
 				<source>Opens internal link in new window</source>
 			</trans-unit>
-			<trans-unit id="download_altText">
+			<trans-unit id="download_altText" xml:space="preserve">
 				<source>Initiates file download</source>
 			</trans-unit>
-			<trans-unit id="download_titleText">
+			<trans-unit id="download_titleText" xml:space="preserve">
 				<source>Initiates file download</source>
 			</trans-unit>
-			<trans-unit id="mail_altText">
+			<trans-unit id="mail_altText" xml:space="preserve">
 				<source>Opens window for sending email</source>
 			</trans-unit>
-			<trans-unit id="mail_titleText">
+			<trans-unit id="mail_titleText" xml:space="preserve">
 				<source>Opens window for sending email</source>
 			</trans-unit>
 		</body>

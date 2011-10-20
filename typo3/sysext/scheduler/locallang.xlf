@@ -3,34 +3,34 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="scheduler">
 		<header/>
 		<body>
-			<trans-unit id="testTask.name">
+			<trans-unit id="testTask.name" xml:space="preserve">
 				<source>Scheduler test task</source>
 			</trans-unit>
-			<trans-unit id="testTask.description">
+			<trans-unit id="testTask.description" xml:space="preserve">
 				<source>The Scheduler test task just sends a mail to a given email address. It is designed to be used for testing purposes.</source>
 			</trans-unit>
-			<trans-unit id="sleepTask.name">
+			<trans-unit id="sleepTask.name" xml:space="preserve">
 				<source>Scheduler sleep task</source>
 			</trans-unit>
-			<trans-unit id="sleepTask.description">
+			<trans-unit id="sleepTask.description" xml:space="preserve">
 				<source>This task does nothing but put PHP to sleep for a number of seconds. It is designed to test multiple executions.</source>
 			</trans-unit>
-			<trans-unit id="cachingFrameworkGarbageCollection.name">
+			<trans-unit id="cachingFrameworkGarbageCollection.name" xml:space="preserve">
 				<source>Caching framework garbage collection</source>
 			</trans-unit>
-			<trans-unit id="cachingFrameworkGarbageCollection.description">
+			<trans-unit id="cachingFrameworkGarbageCollection.description" xml:space="preserve">
 				<source>This task calls the garbage collection of configured caching framework caches which use one of the selected backends. This will free some space in cache backends which do not have an internal garbage collection. In case of the default database backend it is advisable to run this task once a day when the database is mostly idle.</source>
 			</trans-unit>
-			<trans-unit id="tableGarbageCollection.name">
+			<trans-unit id="tableGarbageCollection.name" xml:space="preserve">
 				<source>Table garbage collection</source>
 			</trans-unit>
-			<trans-unit id="tableGarbageCollection.description">
+			<trans-unit id="tableGarbageCollection.description" xml:space="preserve">
 				<source>Task to delete old entries from specific tables like sys_log. Use $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables'] to configure tables. Refer to the manual for more details.</source>
 			</trans-unit>
-			<trans-unit id="recyclerGarbageCollection.name">
+			<trans-unit id="recyclerGarbageCollection.name" xml:space="preserve">
 				<source>Fileadmin garbage collection</source>
 			</trans-unit>
-			<trans-unit id="recyclerGarbageCollection.description">
+			<trans-unit id="recyclerGarbageCollection.description" xml:space="preserve">
 				<source>This task empties all "_recycler_" folders below fileadmin. This helps free some space in the file system.</source>
 			</trans-unit>
 		</body>

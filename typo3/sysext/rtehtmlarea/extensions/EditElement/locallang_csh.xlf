@@ -1,118 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea" xml:space="preserve">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id=".alttitle">
+			<trans-unit id=".alttitle" xml:space="preserve">
 				<source>htmlArea RTE &gt; Edit Element</source>
 			</trans-unit>
-			<trans-unit id=".description">
+			<trans-unit id=".description" xml:space="preserve">
 				<source>The "Edit element" dialogue allows to edit the general attributes of an element in the RTE editing area.</source>
 			</trans-unit>
-			<trans-unit id=".details">
+			<trans-unit id=".details" xml:space="preserve">
 				<source>Clicking the "Edit element" icon in the RTE tool bar opens a dialogue that allows to edit the general attributes of an element.
-The dialogue allows to edit the id, title, class, lang and dir attributes of the element. It also allows to specify handlers for keyboard and mouse events.
-				</source>
+The dialogue allows to edit the id, title, class, lang and dir attributes of the element. It also allows to specify handlers for keyboard and mouse events.</source>
 			</trans-unit>
-			<trans-unit id=".image">
+			<trans-unit id=".image" xml:space="preserve">
 				<source>EXT:rtehtmlarea/extensions/EditElement/skin/images/element-edit.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id=".image_descr">
+			<trans-unit id=".image_descr" xml:space="preserve">
 				<source>"Edit element" icon in the editor tool bar.</source>
 			</trans-unit>
-			<trans-unit id=".seeAlso">
+			<trans-unit id=".seeAlso" xml:space="preserve">
 				<source>xEXT_rtehtmlarea_EditElement:id,
 xEXT_rtehtmlarea_EditElement:title,
 xEXT_rtehtmlarea_EditElement:className,
 xEXT_rtehtmlarea_Language:languageCombo,
 xEXT_rtehtmlarea_Language:directionCombo,
-xEXT_rtehtmlarea_EditElement:events
-				</source>
+xEXT_rtehtmlarea_EditElement:events</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="id.alttitle">
+			<trans-unit id="id.alttitle" xml:space="preserve">
 				<source>Id attribute</source>
 			</trans-unit>
-			<trans-unit id="id.description">
+			<trans-unit id="id.description" xml:space="preserve">
 				<source>Enter or edit the value of the id attribute of the element.</source>
 			</trans-unit>
-			<trans-unit id="title.alttitle">
+			<trans-unit id="title.alttitle" xml:space="preserve">
 				<source>Title attribute</source>
 			</trans-unit>
-			<trans-unit id="title.description">
+			<trans-unit id="title.description" xml:space="preserve">
 				<source>Enter or edit the value of the title attribute of the element.</source>
 			</trans-unit>
-			<trans-unit id="className.alttitle">
+			<trans-unit id="className.alttitle" xml:space="preserve">
 				<source>Class attribute</source>
 			</trans-unit>
-			<trans-unit id="className.description">
+			<trans-unit id="className.description" xml:space="preserve">
 				<source>Choose a CSS class selector to be assigned to the element.</source>
 			</trans-unit>
-			<trans-unit id="events.alttitle">
+			<trans-unit id="events.alttitle" xml:space="preserve">
 				<source>Event handlers</source>
 			</trans-unit>
-			<trans-unit id="events.description">
+			<trans-unit id="events.description" xml:space="preserve">
 				<source>Using this fieldset, edit handlers for keyboard and mouse events.</source>
 			</trans-unit>
-			<trans-unit id="onkeydown.alttitle">
+			<trans-unit id="onkeydown.alttitle" xml:space="preserve">
 				<source>Onkeydown event handler</source>
 			</trans-unit>
-			<trans-unit id="onkeydown.description">
+			<trans-unit id="onkeydown.description" xml:space="preserve">
 				<source>Enter or edit the script to be run when a key is pressed.</source>
 			</trans-unit>
-			<trans-unit id="onkeypress.alttitle">
+			<trans-unit id="onkeypress.alttitle" xml:space="preserve">
 				<source>Onkeypress event handler</source>
 			</trans-unit>
-			<trans-unit id="onkeypress.description">
+			<trans-unit id="onkeypress.description" xml:space="preserve">
 				<source>Enter or edit the script to be run when a key is pressed and released.</source>
 			</trans-unit>
-			<trans-unit id="onkeyup.alttitle">
+			<trans-unit id="onkeyup.alttitle" xml:space="preserve">
 				<source>Onkeyup event handler</source>
 			</trans-unit>
-			<trans-unit id="onkeyup.description">
+			<trans-unit id="onkeyup.description" xml:space="preserve">
 				<source>Enter or edit the script to be run when a key is pressed and released.</source>
 			</trans-unit>
-			<trans-unit id="onclick.alttitle">
+			<trans-unit id="onclick.alttitle" xml:space="preserve">
 				<source>Onclick event handler</source>
 			</trans-unit>
-			<trans-unit id="onclick.description">
+			<trans-unit id="onclick.description" xml:space="preserve">
 				<source>Enter or edit the script to be run on a mouse click.</source>
 			</trans-unit>
-			<trans-unit id="ondblclick.alttitle">
+			<trans-unit id="ondblclick.alttitle" xml:space="preserve">
 				<source>Ondblclick event handler</source>
 			</trans-unit>
-			<trans-unit id="ondblclick.description">
+			<trans-unit id="ondblclick.description" xml:space="preserve">
 				<source>Enter or edit the script to be run on a mouse double-click.</source>
 			</trans-unit>
-			<trans-unit id="onmousedown.alttitle">
+			<trans-unit id="onmousedown.alttitle" xml:space="preserve">
 				<source>Onmousedown event handler</source>
 			</trans-unit>
-			<trans-unit id="onmousedown.description">
+			<trans-unit id="onmousedown.description" xml:space="preserve">
 				<source>Enter or edit the script to be run when a mouse button is pressed.</source>
 			</trans-unit>
-			<trans-unit id="onmousemove.alttitle">
+			<trans-unit id="onmousemove.alttitle" xml:space="preserve">
 				<source>Onmousemove event handler</source>
 			</trans-unit>
-			<trans-unit id="onmousemove.description">
+			<trans-unit id="onmousemove.description" xml:space="preserve">
 				<source>Enter or edit the script to be run when the mouse pointer moves.</source>
 			</trans-unit>
-			<trans-unit id="onmouseout.alttitle">
+			<trans-unit id="onmouseout.alttitle" xml:space="preserve">
 				<source>Onmouseout event handler</source>
 			</trans-unit>
-			<trans-unit id="onmouseout.description">
+			<trans-unit id="onmouseout.description" xml:space="preserve">
 				<source>Enter or edit the script to be run when mouse pointer moves out of the element.</source>
 			</trans-unit>
-			<trans-unit id="onmouseover.alttitle">
+			<trans-unit id="onmouseover.alttitle" xml:space="preserve">
 				<source>Onmouseover event handler</source>
 			</trans-unit>
-			<trans-unit id="onmouseover.description">
+			<trans-unit id="onmouseover.description" xml:space="preserve">
 				<source>Enter or edit the script to be run when mouse pointer moves over the element.</source>
 			</trans-unit>
-			<trans-unit id="onmouseup.alttitle">
+			<trans-unit id="onmouseup.alttitle" xml:space="preserve">
 				<source>Onmouseup event handler</source>
 			</trans-unit>
-			<trans-unit id="onmouseup.description">
+			<trans-unit id="onmouseup.description" xml:space="preserve">
 				<source>Enter or edit the script to be run when a mouse button is released.</source>
 			</trans-unit>
 		</body>

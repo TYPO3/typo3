@@ -3,511 +3,511 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Not set">
+			<trans-unit id="Not set" xml:space="preserve">
 				<source>Not set</source>
 			</trans-unit>
-			<trans-unit id="None">
+			<trans-unit id="None" xml:space="preserve">
 				<source>None</source>
 			</trans-unit>
-			<trans-unit id="Size and Headers">
+			<trans-unit id="Size and Headers" xml:space="preserve">
 				<source>Size and Headers</source>
 			</trans-unit>
-			<trans-unit id="Headers">
+			<trans-unit id="Headers" xml:space="preserve">
 				<source>Headers</source>
 			</trans-unit>
-			<trans-unit id="CSS Style">
+			<trans-unit id="CSS Style" xml:space="preserve">
 				<source>Style</source>
 			</trans-unit>
-			<trans-unit id="Class:">
+			<trans-unit id="Class:" xml:space="preserve">
 				<source>Classes:</source>
 			</trans-unit>
-			<trans-unit id="Class selector">
+			<trans-unit id="Class selector" xml:space="preserve">
 				<source>Classes</source>
 			</trans-unit>
-			<trans-unit id="Table class:">
+			<trans-unit id="Table class:" xml:space="preserve">
 				<source>Table classes:</source>
 			</trans-unit>
-			<trans-unit id="Table class selector">
+			<trans-unit id="Table class selector" xml:space="preserve">
 				<source>Classes of the table</source>
 			</trans-unit>
-			<trans-unit id="Table body class:">
+			<trans-unit id="Table body class:" xml:space="preserve">
 				<source>Body:</source>
 			</trans-unit>
-			<trans-unit id="Table body class selector">
+			<trans-unit id="Table body class selector" xml:space="preserve">
 				<source>Classes of the table body</source>
 			</trans-unit>
-			<trans-unit id="Table header class:">
+			<trans-unit id="Table header class:" xml:space="preserve">
 				<source>Header:</source>
 			</trans-unit>
-			<trans-unit id="Table header class selector">
+			<trans-unit id="Table header class selector" xml:space="preserve">
 				<source>Classes of the table header</source>
 			</trans-unit>
-			<trans-unit id="Table footer class:">
+			<trans-unit id="Table footer class:" xml:space="preserve">
 				<source>Footer:</source>
 			</trans-unit>
-			<trans-unit id="Table footer class selector">
+			<trans-unit id="Table footer class selector" xml:space="preserve">
 				<source>Classes of the table footer</source>
 			</trans-unit>
-			<trans-unit id="Default">
+			<trans-unit id="Default" xml:space="preserve">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="Undefined">
+			<trans-unit id="Undefined" xml:space="preserve">
 				<source>Undefined</source>
 			</trans-unit>
-			<trans-unit id="Alignment">
+			<trans-unit id="Alignment" xml:space="preserve">
 				<source>Alignment</source>
 			</trans-unit>
-			<trans-unit id="All four sides">
+			<trans-unit id="All four sides" xml:space="preserve">
 				<source>All four sides</source>
 			</trans-unit>
-			<trans-unit id="Background and colors">
+			<trans-unit id="Background and colors" xml:space="preserve">
 				<source>Background and colors</source>
 			</trans-unit>
-			<trans-unit id="Background:">
+			<trans-unit id="Background:" xml:space="preserve">
 				<source>Background:</source>
 			</trans-unit>
-			<trans-unit id="Baseline">
+			<trans-unit id="Baseline" xml:space="preserve">
 				<source>Baseline</source>
 			</trans-unit>
-			<trans-unit id="Border style">
+			<trans-unit id="Border style" xml:space="preserve">
 				<source>Border style</source>
 			</trans-unit>
-			<trans-unit id="Border style:">
+			<trans-unit id="Border style:" xml:space="preserve">
 				<source>Border style:</source>
 			</trans-unit>
-			<trans-unit id="No border">
+			<trans-unit id="No border" xml:space="preserve">
 				<source>None</source>
 			</trans-unit>
-			<trans-unit id="Dotted">
+			<trans-unit id="Dotted" xml:space="preserve">
 				<source>Dotted</source>
 			</trans-unit>
-			<trans-unit id="Dashed">
+			<trans-unit id="Dashed" xml:space="preserve">
 				<source>Dashed</source>
 			</trans-unit>
-			<trans-unit id="Solid">
+			<trans-unit id="Solid" xml:space="preserve">
 				<source>Solid</source>
 			</trans-unit>
-			<trans-unit id="Double">
+			<trans-unit id="Double" xml:space="preserve">
 				<source>Double</source>
 			</trans-unit>
-			<trans-unit id="Groove">
+			<trans-unit id="Groove" xml:space="preserve">
 				<source>Groove</source>
 			</trans-unit>
-			<trans-unit id="Ridge">
+			<trans-unit id="Ridge" xml:space="preserve">
 				<source>Ridge</source>
 			</trans-unit>
-			<trans-unit id="Inset">
+			<trans-unit id="Inset" xml:space="preserve">
 				<source>Inset</source>
 			</trans-unit>
-			<trans-unit id="Outset">
+			<trans-unit id="Outset" xml:space="preserve">
 				<source>Outset</source>
 			</trans-unit>
-			<trans-unit id="Borders">
+			<trans-unit id="Borders" xml:space="preserve">
 				<source>Borders</source>
 			</trans-unit>
-			<trans-unit id="Bottom">
+			<trans-unit id="Bottom" xml:space="preserve">
 				<source>Bottom</source>
 			</trans-unit>
-			<trans-unit id="Border width">
+			<trans-unit id="Border width" xml:space="preserve">
 				<source>Border width</source>
 			</trans-unit>
-			<trans-unit id="Border width:">
+			<trans-unit id="Border width:" xml:space="preserve">
 				<source>Border width:</source>
 			</trans-unit>
-			<trans-unit id="Border color">
+			<trans-unit id="Border color" xml:space="preserve">
 				<source>Border color</source>
 			</trans-unit>
-			<trans-unit id="Caption:">
+			<trans-unit id="Caption:" xml:space="preserve">
 				<source>Caption:</source>
 			</trans-unit>
-			<trans-unit id="Description of the nature of the table">
+			<trans-unit id="Description of the nature of the table" xml:space="preserve">
 				<source>Description of the nature of the table</source>
 			</trans-unit>
-			<trans-unit id="Row group">
+			<trans-unit id="Row group" xml:space="preserve">
 				<source>Row group</source>
 			</trans-unit>
-			<trans-unit id="Row group:">
+			<trans-unit id="Row group:" xml:space="preserve">
 				<source>Row group:</source>
 			</trans-unit>
-			<trans-unit id="Table section">
+			<trans-unit id="Table section" xml:space="preserve">
 				<source>Table section to which the row belongs</source>
 			</trans-unit>
-			<trans-unit id="Table body">
+			<trans-unit id="Table body" xml:space="preserve">
 				<source>Table body</source>
 			</trans-unit>
-			<trans-unit id="Table header">
+			<trans-unit id="Table header" xml:space="preserve">
 				<source>Table header</source>
 			</trans-unit>
-			<trans-unit id="Table footer">
+			<trans-unit id="Table footer" xml:space="preserve">
 				<source>Table footer</source>
 			</trans-unit>
-			<trans-unit id="Cell Properties">
+			<trans-unit id="Cell Properties" xml:space="preserve">
 				<source>Cell Properties</source>
 			</trans-unit>
-			<trans-unit id="Cell Type and Scope">
+			<trans-unit id="Cell Type and Scope" xml:space="preserve">
 				<source>Cell Type and Scope</source>
 			</trans-unit>
-			<trans-unit id="Type of cell">
+			<trans-unit id="Type of cell" xml:space="preserve">
 				<source>Type of cell:</source>
 			</trans-unit>
-			<trans-unit id="Normal">
+			<trans-unit id="Normal" xml:space="preserve">
 				<source>Data cell</source>
 			</trans-unit>
-			<trans-unit id="Header">
+			<trans-unit id="Header" xml:space="preserve">
 				<source>Header cell</source>
 			</trans-unit>
-			<trans-unit id="Specifies the type of cell">
+			<trans-unit id="Specifies the type of cell" xml:space="preserve">
 				<source>Specifies the type of cell</source>
 			</trans-unit>
-			<trans-unit id="Scope">
+			<trans-unit id="Scope" xml:space="preserve">
 				<source>Scope:</source>
 			</trans-unit>
-			<trans-unit id="scope_row">
+			<trans-unit id="scope_row" xml:space="preserve">
 				<source>Row</source>
 			</trans-unit>
-			<trans-unit id="scope_column">
+			<trans-unit id="scope_column" xml:space="preserve">
 				<source>Column</source>
 			</trans-unit>
-			<trans-unit id="scope_rowgroup">
+			<trans-unit id="scope_rowgroup" xml:space="preserve">
 				<source>Group of rows</source>
 			</trans-unit>
-			<trans-unit id="Scope of header cell">
+			<trans-unit id="Scope of header cell" xml:space="preserve">
 				<source>Scope of the header</source>
 			</trans-unit>
-			<trans-unit id="Abbreviation">
+			<trans-unit id="Abbreviation" xml:space="preserve">
 				<source>Abbreviation</source>
 			</trans-unit>
-			<trans-unit id="Header abbreviation">
+			<trans-unit id="Header abbreviation" xml:space="preserve">
 				<source>Header abbreviation</source>
 			</trans-unit>
-			<trans-unit id="Center">
+			<trans-unit id="Center" xml:space="preserve">
 				<source>Center</source>
 			</trans-unit>
-			<trans-unit id="Character">
+			<trans-unit id="Character" xml:space="preserve">
 				<source>Character</source>
 			</trans-unit>
-			<trans-unit id="Align on this character">
+			<trans-unit id="Align on this character" xml:space="preserve">
 				<source>Align text relative to this character</source>
 			</trans-unit>
-			<trans-unit id="Collapsed borders">
+			<trans-unit id="Collapsed borders" xml:space="preserve">
 				<source>Collapsed borders</source>
 			</trans-unit>
-			<trans-unit id="Detached borders">
+			<trans-unit id="Detached borders" xml:space="preserve">
 				<source>Detached borders</source>
 			</trans-unit>
-			<trans-unit id="Color:">
+			<trans-unit id="Color:" xml:space="preserve">
 				<source>Color:</source>
 			</trans-unit>
-			<trans-unit id="Description">
+			<trans-unit id="Description" xml:space="preserve">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="FG Color:">
+			<trans-unit id="FG Color:" xml:space="preserve">
 				<source>FG Color:</source>
 			</trans-unit>
-			<trans-unit id="Float:">
+			<trans-unit id="Float:" xml:space="preserve">
 				<source>Float:</source>
 			</trans-unit>
-			<trans-unit id="Specifies where the table should float">
+			<trans-unit id="Specifies where the table should float" xml:space="preserve">
 				<source>Specifies where the table should float</source>
 			</trans-unit>
-			<trans-unit id="Non-floating">
+			<trans-unit id="Non-floating" xml:space="preserve">
 				<source>Non-floating</source>
 			</trans-unit>
-			<trans-unit id="Frames:">
+			<trans-unit id="Frames:" xml:space="preserve">
 				<source>Frames:</source>
 			</trans-unit>
-			<trans-unit id="Specifies which sides should have a border">
+			<trans-unit id="Specifies which sides should have a border" xml:space="preserve">
 				<source>Specifies which sides should have a border</source>
 			</trans-unit>
-			<trans-unit id="Height:">
+			<trans-unit id="Height:" xml:space="preserve">
 				<source>Height:</source>
 			</trans-unit>
-			<trans-unit id="Height unit">
+			<trans-unit id="Height unit" xml:space="preserve">
 				<source>Height unit</source>
 			</trans-unit>
-			<trans-unit id="Table height">
+			<trans-unit id="Table height" xml:space="preserve">
 				<source>Table height</source>
 			</trans-unit>
-			<trans-unit id="Row height">
+			<trans-unit id="Row height" xml:space="preserve">
 				<source>Row height</source>
 			</trans-unit>
-			<trans-unit id="Cell height">
+			<trans-unit id="Cell height" xml:space="preserve">
 				<source>Cell height</source>
 			</trans-unit>
-			<trans-unit id="How many columns would you like to merge?">
+			<trans-unit id="How many columns would you like to merge?" xml:space="preserve">
 				<source>How many columns would you like to merge?</source>
 			</trans-unit>
-			<trans-unit id="How many rows would you like to merge?">
+			<trans-unit id="How many rows would you like to merge?" xml:space="preserve">
 				<source>How many rows would you like to merge?</source>
 			</trans-unit>
-			<trans-unit id="Image URL:">
+			<trans-unit id="Image URL:" xml:space="preserve">
 				<source>Image URL:</source>
 			</trans-unit>
-			<trans-unit id="URL of the background image">
+			<trans-unit id="URL of the background image" xml:space="preserve">
 				<source>URL of the background image</source>
 			</trans-unit>
-			<trans-unit id="Justify">
+			<trans-unit id="Justify" xml:space="preserve">
 				<source>Justify</source>
 			</trans-unit>
-			<trans-unit id="Layout">
+			<trans-unit id="Layout" xml:space="preserve">
 				<source>Layout</source>
 			</trans-unit>
-			<trans-unit id="Left">
+			<trans-unit id="Left" xml:space="preserve">
 				<source>Left</source>
 			</trans-unit>
-			<trans-unit id="Margin">
+			<trans-unit id="Margin" xml:space="preserve">
 				<source>Margin</source>
 			</trans-unit>
-			<trans-unit id="Middle">
+			<trans-unit id="Middle" xml:space="preserve">
 				<source>Middle</source>
 			</trans-unit>
-			<trans-unit id="No rules">
+			<trans-unit id="No rules" xml:space="preserve">
 				<source>No rules</source>
 			</trans-unit>
-			<trans-unit id="No sides">
+			<trans-unit id="No sides" xml:space="preserve">
 				<source>No sides</source>
 			</trans-unit>
-			<trans-unit id="Cell padding:">
+			<trans-unit id="Cell padding:" xml:space="preserve">
 				<source>Cell padding:</source>
 			</trans-unit>
-			<trans-unit id="Space between content and border in cell">
+			<trans-unit id="Space between content and border in cell" xml:space="preserve">
 				<source>Space between content and border in cell</source>
 			</trans-unit>
-			<trans-unit id="Please click into some cell">
+			<trans-unit id="Please click into some cell" xml:space="preserve">
 				<source>Please click into some cell</source>
 			</trans-unit>
-			<trans-unit id="Right">
+			<trans-unit id="Right" xml:space="preserve">
 				<source>Right</source>
 			</trans-unit>
-			<trans-unit id="Row Properties">
+			<trans-unit id="Row Properties" xml:space="preserve">
 				<source>Row Properties</source>
 			</trans-unit>
-			<trans-unit id="Rules will appear between all rows and columns">
+			<trans-unit id="Rules will appear between all rows and columns" xml:space="preserve">
 				<source>Rules will appear between all rows and columns</source>
 			</trans-unit>
-			<trans-unit id="Rules will appear between columns only">
+			<trans-unit id="Rules will appear between columns only" xml:space="preserve">
 				<source>Rules will appear between columns only</source>
 			</trans-unit>
-			<trans-unit id="Rules will appear between rows only">
+			<trans-unit id="Rules will appear between rows only" xml:space="preserve">
 				<source>Rules will appear between rows only</source>
 			</trans-unit>
-			<trans-unit id="Rules:">
+			<trans-unit id="Rules:" xml:space="preserve">
 				<source>Rules:</source>
 			</trans-unit>
-			<trans-unit id="Specifies where rules should be displayed">
+			<trans-unit id="Specifies where rules should be displayed" xml:space="preserve">
 				<source>Specifies where rules should be displayed</source>
 			</trans-unit>
-			<trans-unit id="Spacing and padding">
+			<trans-unit id="Spacing and padding" xml:space="preserve">
 				<source>Spacing and padding</source>
 			</trans-unit>
-			<trans-unit id="Frame and borders">
+			<trans-unit id="Frame and borders" xml:space="preserve">
 				<source>Frame and borders</source>
 			</trans-unit>
-			<trans-unit id="Cell spacing:">
+			<trans-unit id="Cell spacing:" xml:space="preserve">
 				<source>Cell spacing:</source>
 			</trans-unit>
-			<trans-unit id="Space between adjacent cells">
+			<trans-unit id="Space between adjacent cells" xml:space="preserve">
 				<source>Space between adjacent cells</source>
 			</trans-unit>
-			<trans-unit id="Summary:">
+			<trans-unit id="Summary:" xml:space="preserve">
 				<source>Summary:</source>
 			</trans-unit>
-			<trans-unit id="Summary of the table purpose and structure">
+			<trans-unit id="Summary of the table purpose and structure" xml:space="preserve">
 				<source>Summary of the table's purpose and structure</source>
 			</trans-unit>
-			<trans-unit id="captionOrSummary-required">
+			<trans-unit id="captionOrSummary-required" xml:space="preserve">
 				<source>Please enter at least one of caption or summary</source>
 			</trans-unit>
-			<trans-unit id="caption-required">
+			<trans-unit id="caption-required" xml:space="preserve">
 				<source>Please enter a caption</source>
 			</trans-unit>
-			<trans-unit id="summary-required">
+			<trans-unit id="summary-required" xml:space="preserve">
 				<source>Please enter a summary</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-delete">
+			<trans-unit id="TO-cell-delete" xml:space="preserve">
 				<source>Delete cell</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-insert-after">
+			<trans-unit id="TO-cell-insert-after" xml:space="preserve">
 				<source>Insert cell after</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-insert-before">
+			<trans-unit id="TO-cell-insert-before" xml:space="preserve">
 				<source>Insert cell before</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-merge">
+			<trans-unit id="TO-cell-merge" xml:space="preserve">
 				<source>Merge cells</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-prop">
+			<trans-unit id="TO-cell-prop" xml:space="preserve">
 				<source>Cell properties</source>
 			</trans-unit>
-			<trans-unit id="TO-cell-split">
+			<trans-unit id="TO-cell-split" xml:space="preserve">
 				<source>Split cell</source>
 			</trans-unit>
-			<trans-unit id="TO-col-prop">
+			<trans-unit id="TO-col-prop" xml:space="preserve">
 				<source>Column properties</source>
 			</trans-unit>
-			<trans-unit id="TO-col-delete">
+			<trans-unit id="TO-col-delete" xml:space="preserve">
 				<source>Delete column</source>
 			</trans-unit>
-			<trans-unit id="TO-col-insert-after">
+			<trans-unit id="TO-col-insert-after" xml:space="preserve">
 				<source>Insert column after</source>
 			</trans-unit>
-			<trans-unit id="TO-col-insert-before">
+			<trans-unit id="TO-col-insert-before" xml:space="preserve">
 				<source>Insert column before</source>
 			</trans-unit>
-			<trans-unit id="TO-col-split">
+			<trans-unit id="TO-col-split" xml:space="preserve">
 				<source>Split column</source>
 			</trans-unit>
-			<trans-unit id="TO-row-delete">
+			<trans-unit id="TO-row-delete" xml:space="preserve">
 				<source>Delete row</source>
 			</trans-unit>
-			<trans-unit id="TO-row-insert-above">
+			<trans-unit id="TO-row-insert-above" xml:space="preserve">
 				<source>Insert row before</source>
 			</trans-unit>
-			<trans-unit id="TO-row-insert-under">
+			<trans-unit id="TO-row-insert-under" xml:space="preserve">
 				<source>Insert row after</source>
 			</trans-unit>
-			<trans-unit id="TO-row-prop">
+			<trans-unit id="TO-row-prop" xml:space="preserve">
 				<source>Row properties</source>
 			</trans-unit>
-			<trans-unit id="TO-row-split">
+			<trans-unit id="TO-row-split" xml:space="preserve">
 				<source>Split row</source>
 			</trans-unit>
-			<trans-unit id="TO-table-prop">
+			<trans-unit id="TO-table-prop" xml:space="preserve">
 				<source>Table properties</source>
 			</trans-unit>
-			<trans-unit id="TO-table-restyle">
+			<trans-unit id="TO-table-restyle" xml:space="preserve">
 				<source>Re-apply table styles</source>
 			</trans-unit>
-			<trans-unit id="TO-toggle-borders">
+			<trans-unit id="TO-toggle-borders" xml:space="preserve">
 				<source>Toggle borders</source>
 			</trans-unit>
-			<trans-unit id="Table Properties">
+			<trans-unit id="Table Properties" xml:space="preserve">
 				<source>Table Properties</source>
 			</trans-unit>
-			<trans-unit id="Text alignment:">
+			<trans-unit id="Text alignment:" xml:space="preserve">
 				<source>Text alignment:</source>
 			</trans-unit>
-			<trans-unit id="Horizontal alignment of text within cell">
+			<trans-unit id="Horizontal alignment of text within cell" xml:space="preserve">
 				<source>Horizontal alignment of text within cell</source>
 			</trans-unit>
-			<trans-unit id="The bottom side only">
+			<trans-unit id="The bottom side only" xml:space="preserve">
 				<source>The bottom side only</source>
 			</trans-unit>
-			<trans-unit id="The left-hand side only">
+			<trans-unit id="The left-hand side only" xml:space="preserve">
 				<source>The left-hand side only</source>
 			</trans-unit>
-			<trans-unit id="The right and left sides only">
+			<trans-unit id="The right and left sides only" xml:space="preserve">
 				<source>The right and left sides only</source>
 			</trans-unit>
-			<trans-unit id="The right-hand side only">
+			<trans-unit id="The right-hand side only" xml:space="preserve">
 				<source>The right-hand side only</source>
 			</trans-unit>
-			<trans-unit id="The top and bottom sides only">
+			<trans-unit id="The top and bottom sides only" xml:space="preserve">
 				<source>The top and bottom sides only</source>
 			</trans-unit>
-			<trans-unit id="The top side only">
+			<trans-unit id="The top side only" xml:space="preserve">
 				<source>The top side only</source>
 			</trans-unit>
-			<trans-unit id="Top">
+			<trans-unit id="Top" xml:space="preserve">
 				<source>Top</source>
 			</trans-unit>
-			<trans-unit id="Unset color">
+			<trans-unit id="Unset color" xml:space="preserve">
 				<source>Unset color</source>
 			</trans-unit>
-			<trans-unit id="Vertical alignment:">
+			<trans-unit id="Vertical alignment:" xml:space="preserve">
 				<source>Vertical alignment:</source>
 			</trans-unit>
-			<trans-unit id="Vertical alignment of content within cell">
+			<trans-unit id="Vertical alignment of content within cell" xml:space="preserve">
 				<source>Vertical alignment of content within cell</source>
 			</trans-unit>
-			<trans-unit id="Width:">
+			<trans-unit id="Width:" xml:space="preserve">
 				<source>Width:</source>
 			</trans-unit>
-			<trans-unit id="Width unit">
+			<trans-unit id="Width unit" xml:space="preserve">
 				<source>Width unit</source>
 			</trans-unit>
-			<trans-unit id="Table width">
+			<trans-unit id="Table width" xml:space="preserve">
 				<source>Table width</source>
 			</trans-unit>
-			<trans-unit id="Row width">
+			<trans-unit id="Row width" xml:space="preserve">
 				<source>Row width</source>
 			</trans-unit>
-			<trans-unit id="Cell width">
+			<trans-unit id="Cell width" xml:space="preserve">
 				<source>Cell width</source>
 			</trans-unit>
-			<trans-unit id="not-del-last-cell">
+			<trans-unit id="not-del-last-cell" xml:space="preserve">
 				<source>HTMLArea cowardly refuses to delete the last cell in row.</source>
 			</trans-unit>
-			<trans-unit id="not-del-last-col">
+			<trans-unit id="not-del-last-col" xml:space="preserve">
 				<source>HTMLArea cowardly refuses to delete the last column in table.</source>
 			</trans-unit>
-			<trans-unit id="not-del-last-row">
+			<trans-unit id="not-del-last-row" xml:space="preserve">
 				<source>HTMLArea cowardly refuses to delete the last row in table.</source>
 			</trans-unit>
-			<trans-unit id="percent">
+			<trans-unit id="percent" xml:space="preserve">
 				<source>percent</source>
 			</trans-unit>
-			<trans-unit id="pixels">
+			<trans-unit id="pixels" xml:space="preserve">
 				<source>pixels</source>
 			</trans-unit>
-			<trans-unit id="em">
+			<trans-unit id="em" xml:space="preserve">
 				<source>em</source>
 			</trans-unit>
-			<trans-unit id="Headers:">
+			<trans-unit id="Headers:" xml:space="preserve">
 				<source>Headers:</source>
 			</trans-unit>
-			<trans-unit id="Table headers">
+			<trans-unit id="Table headers" xml:space="preserve">
 				<source>Table headers</source>
 			</trans-unit>
-			<trans-unit id="No header cells">
+			<trans-unit id="No header cells" xml:space="preserve">
 				<source>No header cells</source>
 			</trans-unit>
-			<trans-unit id="Header cells on top">
+			<trans-unit id="Header cells on top" xml:space="preserve">
 				<source>Header cells on top</source>
 			</trans-unit>
-			<trans-unit id="Header cells on left">
+			<trans-unit id="Header cells on left" xml:space="preserve">
 				<source>Header cells on left</source>
 			</trans-unit>
-			<trans-unit id="Header cells on top and left">
+			<trans-unit id="Header cells on top and left" xml:space="preserve">
 				<source>Header cells on top and left</source>
 			</trans-unit>
-			<trans-unit id="Make cells header cells">
+			<trans-unit id="Make cells header cells" xml:space="preserve">
 				<source>Make all row cells header cells</source>
 			</trans-unit>
-			<trans-unit id="Make cells data cells">
+			<trans-unit id="Make cells data cells" xml:space="preserve">
 				<source>Make all row cells data cells</source>
 			</trans-unit>
-			<trans-unit id="Header for column">
+			<trans-unit id="Header for column" xml:space="preserve">
 				<source>Header cell for column</source>
 			</trans-unit>
-			<trans-unit id="Header for row">
+			<trans-unit id="Header for row" xml:space="preserve">
 				<source>Header cell for row</source>
 			</trans-unit>
-			<trans-unit id="Header for row group">
+			<trans-unit id="Header for row group" xml:space="preserve">
 				<source>Header cell for row group</source>
 			</trans-unit>
-			<trans-unit id="Column Properties">
+			<trans-unit id="Column Properties" xml:space="preserve">
 				<source>Column Cells Properties</source>
 			</trans-unit>
-			<trans-unit id="Type of cells">
+			<trans-unit id="Type of cells" xml:space="preserve">
 				<source>Type of cells</source>
 			</trans-unit>
-			<trans-unit id="Type of cells of the column">
+			<trans-unit id="Type of cells of the column" xml:space="preserve">
 				<source>Type of cells of the column:</source>
 			</trans-unit>
-			<trans-unit id="Specifies the type of cells">
+			<trans-unit id="Specifies the type of cells" xml:space="preserve">
 				<source>Specifies the type of cells of the column</source>
 			</trans-unit>
-			<trans-unit id="Data cells">
+			<trans-unit id="Data cells" xml:space="preserve">
 				<source>Data cells</source>
 			</trans-unit>
-			<trans-unit id="Headers for rows">
+			<trans-unit id="Headers for rows" xml:space="preserve">
 				<source>Headers for rows</source>
 			</trans-unit>
-			<trans-unit id="Headers for row groups">
+			<trans-unit id="Headers for row groups" xml:space="preserve">
 				<source>Headers for row groups</source>
 			</trans-unit>
-			<trans-unit id="Technische Universitat Ilmenau">
+			<trans-unit id="Technische Universitat Ilmenau" xml:space="preserve">
 				<source>Technische Universität Ilmenau</source>
 			</trans-unit>
 		</body>

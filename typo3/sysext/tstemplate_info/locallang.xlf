@@ -3,76 +3,76 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="tstemplate_info">
 		<header/>
 		<body>
-			<trans-unit id="delete">
+			<trans-unit id="delete" xml:space="preserve">
 				<source>Delete:</source>
 			</trans-unit>
-			<trans-unit id="toTop">
+			<trans-unit id="toTop" xml:space="preserve">
 				<source>To top:</source>
 			</trans-unit>
-			<trans-unit id="fileChanged">
+			<trans-unit id="fileChanged" xml:space="preserve">
 				<source>File changed</source>
 			</trans-unit>
-			<trans-unit id="resourceUpdated">
+			<trans-unit id="resourceUpdated" xml:space="preserve">
 				<source>Resource '%s' has been updated.</source>
 			</trans-unit>
-			<trans-unit id="templateInformation">
+			<trans-unit id="templateInformation" xml:space="preserve">
 				<source>Template information:</source>
 			</trans-unit>
-			<trans-unit id="title">
+			<trans-unit id="title" xml:space="preserve">
 				<source>Title:</source>
 			</trans-unit>
-			<trans-unit id="sitetitle">
+			<trans-unit id="sitetitle" xml:space="preserve">
 				<source>Sitetitle:</source>
 			</trans-unit>
-			<trans-unit id="description">
+			<trans-unit id="description" xml:space="preserve">
 				<source>Description:</source>
 			</trans-unit>
-			<trans-unit id="allowedExtensions">
+			<trans-unit id="allowedExtensions" xml:space="preserve">
 				<source>Allowed extensions:</source>
 			</trans-unit>
-			<trans-unit id="maxFilesize">
+			<trans-unit id="maxFilesize" xml:space="preserve">
 				<source>Max filesize:</source>
 			</trans-unit>
-			<trans-unit id="uploadResource">
+			<trans-unit id="uploadResource" xml:space="preserve">
 				<source>Upload resource:</source>
 			</trans-unit>
-			<trans-unit id="newTextResource">
+			<trans-unit id="newTextResource" xml:space="preserve">
 				<source>New text resource (enter name):</source>
 			</trans-unit>
-			<trans-unit id="copyResource">
+			<trans-unit id="copyResource" xml:space="preserve">
 				<source>Make a copy of resource:</source>
 			</trans-unit>
-			<trans-unit id="updateResourceList">
+			<trans-unit id="updateResourceList" xml:space="preserve">
 				<source>Update resource list:</source>
 			</trans-unit>
-			<trans-unit id="constants">
+			<trans-unit id="constants" xml:space="preserve">
 				<source>Constants:</source>
 			</trans-unit>
-			<trans-unit id="file">
+			<trans-unit id="file" xml:space="preserve">
 				<source>File:</source>
 			</trans-unit>
-			<trans-unit id="editResource">
+			<trans-unit id="editResource" xml:space="preserve">
 				<source>Edit Resource:</source>
 			</trans-unit>
-			<trans-unit id="filesizeExceeded">
+			<trans-unit id="filesizeExceeded" xml:space="preserve">
 				<source>Filesize exceeded %s KBytes</source>
 			</trans-unit>
-			<trans-unit id="notAllowed">
+			<trans-unit id="notAllowed" xml:space="preserve">
 				<source>Files larger than %s KBytes are not allowed to be edited.</source>
 			</trans-unit>
-			<trans-unit id="setup">
+			<trans-unit id="setup" xml:space="preserve">
 				<source>Setup:</source>
 			</trans-unit>
-			<trans-unit id="resources">
+			<trans-unit id="resources" xml:space="preserve">
 				<source>Resources:</source>
 			</trans-unit>
-			<trans-unit id="editToView">
+			<trans-unit id="editToView" xml:space="preserve">
 				<source>(edit to view, %s lines)</source>
 			</trans-unit>
-			<trans-unit id="editTemplateRecord">
+			<trans-unit id="editTemplateRecord" xml:space="preserve">
 				<source>Edit the whole template record</source>
 			</trans-unit>
-			<trans-unit id="includeTypoScriptFileContent">
+			<trans-unit id="includeTypoScriptFileContent" xml:space="preserve">
 				<source>Include TypoScript file content</source>
 			</trans-unit>
 		</body>

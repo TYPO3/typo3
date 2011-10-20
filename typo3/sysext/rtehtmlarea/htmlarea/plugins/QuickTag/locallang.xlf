@@ -3,40 +3,40 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Quick Tag Editor">
+			<trans-unit id="Quick Tag Editor" xml:space="preserve">
 				<source>Insert tag</source>
 			</trans-unit>
-			<trans-unit id="Enter the TAG you want to insert">
+			<trans-unit id="Enter the TAG you want to insert" xml:space="preserve">
 				<source>Enter the TAG you want to insert</source>
 			</trans-unit>
-			<trans-unit id="You have to select some text">
+			<trans-unit id="You have to select some text" xml:space="preserve">
 				<source>You have to select some text</source>
 			</trans-unit>
-			<trans-unit id="There are some unclosed quote">
+			<trans-unit id="There are some unclosed quote" xml:space="preserve">
 				<source>There are some unclosed quotes</source>
 			</trans-unit>
-			<trans-unit id="This attribute already exists in the TAG">
+			<trans-unit id="This attribute already exists in the TAG" xml:space="preserve">
 				<source>This attribute already exists in the TAG</source>
 			</trans-unit>
-			<trans-unit id="No CSS class avaiable">
+			<trans-unit id="No CSS class avaiable" xml:space="preserve">
 				<source>No CSS classes available</source>
 			</trans-unit>
-			<trans-unit id="OPTIONS">
+			<trans-unit id="OPTIONS" xml:space="preserve">
 				<source>Options</source>
 			</trans-unit>
-			<trans-unit id="ATTRIBUTES">
+			<trans-unit id="ATTRIBUTES" xml:space="preserve">
 				<source>Attributes</source>
 			</trans-unit>
-			<trans-unit id="TAGs">
+			<trans-unit id="TAGs" xml:space="preserve">
 				<source>Tags</source>
 			</trans-unit>
-			<trans-unit id="Colors">
+			<trans-unit id="Colors" xml:space="preserve">
 				<source>Colors</source>
 			</trans-unit>
-			<trans-unit id="Ok">
+			<trans-unit id="Ok" xml:space="preserve">
 				<source>Ok</source>
 			</trans-unit>
-			<trans-unit id="Cancel">
+			<trans-unit id="Cancel" xml:space="preserve">
 				<source>Cancel</source>
 			</trans-unit>
 		</body>

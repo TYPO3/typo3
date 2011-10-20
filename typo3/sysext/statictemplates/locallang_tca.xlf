@@ -3,28 +3,28 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="statictemplates">
 		<header/>
 		<body>
-			<trans-unit id="static_template">
+			<trans-unit id="static_template" xml:space="preserve">
 				<source>Static templates</source>
 			</trans-unit>
-			<trans-unit id="static_template.title">
+			<trans-unit id="static_template.title" xml:space="preserve">
 				<source>Template title:</source>
 			</trans-unit>
-			<trans-unit id="static_template.constants">
+			<trans-unit id="static_template.constants" xml:space="preserve">
 				<source>Constants:</source>
 			</trans-unit>
-			<trans-unit id="static_template.include_static">
+			<trans-unit id="static_template.include_static" xml:space="preserve">
 				<source>Include static:</source>
 			</trans-unit>
-			<trans-unit id="static_template.config">
+			<trans-unit id="static_template.config" xml:space="preserve">
 				<source>Setup:</source>
 			</trans-unit>
-			<trans-unit id="static_template.editorcfg">
+			<trans-unit id="static_template.editorcfg" xml:space="preserve">
 				<source>Backend Editor Configuration:</source>
 			</trans-unit>
-			<trans-unit id="static_template.description">
+			<trans-unit id="static_template.description" xml:space="preserve">
 				<source>Description:</source>
 			</trans-unit>
-			<trans-unit id="include_static">
+			<trans-unit id="include_static" xml:space="preserve">
 				<source>Include static:</source>
 			</trans-unit>
 		</body>

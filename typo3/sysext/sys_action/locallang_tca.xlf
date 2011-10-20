@@ -3,52 +3,52 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="sys_action">
 		<header/>
 		<body>
-			<trans-unit id="sys_action">
+			<trans-unit id="sys_action" xml:space="preserve">
 				<source>Action</source>
 			</trans-unit>
-			<trans-unit id="tx_sys_action">
+			<trans-unit id="tx_sys_action" xml:space="preserve">
 				<source>Actions</source>
 			</trans-unit>
-			<trans-unit id="sys_action.hidden">
+			<trans-unit id="sys_action.hidden" xml:space="preserve">
 				<source>Deactivated:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.assign_to_groups">
+			<trans-unit id="sys_action.assign_to_groups" xml:space="preserve">
 				<source>Assign action to groups:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.t1_userprefix">
+			<trans-unit id="sys_action.t1_userprefix" xml:space="preserve">
 				<source>User prefix:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.t1_allowed_groups">
+			<trans-unit id="sys_action.t1_allowed_groups" xml:space="preserve">
 				<source>Groups which may be assigned through the action:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.t1_create_user_dir">
+			<trans-unit id="sys_action.t1_create_user_dir" xml:space="preserve">
 				<source>Create User Home Directory:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.t1_copy_of_user">
+			<trans-unit id="sys_action.t1_copy_of_user" xml:space="preserve">
 				<source>Template user:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.t3_listPid">
+			<trans-unit id="sys_action.t3_listPid" xml:space="preserve">
 				<source>List pid:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.t3_tables">
+			<trans-unit id="sys_action.t3_tables" xml:space="preserve">
 				<source>List only table:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.t4_recordsToEdit">
+			<trans-unit id="sys_action.t4_recordsToEdit" xml:space="preserve">
 				<source>Records to edit:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.type.1">
+			<trans-unit id="sys_action.type.1" xml:space="preserve">
 				<source>Create Backend User</source>
 			</trans-unit>
-			<trans-unit id="sys_action.type.2">
+			<trans-unit id="sys_action.type.2" xml:space="preserve">
 				<source>SQL query</source>
 			</trans-unit>
-			<trans-unit id="sys_action.type.3">
+			<trans-unit id="sys_action.type.3" xml:space="preserve">
 				<source>Record list</source>
 			</trans-unit>
-			<trans-unit id="sys_action.type.4">
+			<trans-unit id="sys_action.type.4" xml:space="preserve">
 				<source>Edit records</source>
 			</trans-unit>
-			<trans-unit id="sys_action.type.5">
+			<trans-unit id="sys_action.type.5" xml:space="preserve">
 				<source>New Record</source>
 			</trans-unit>
 		</body>

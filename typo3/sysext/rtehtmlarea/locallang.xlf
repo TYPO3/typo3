@@ -3,58 +3,58 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Please wait">
+			<trans-unit id="Please wait" xml:space="preserve">
 				<source>The editor is being loaded. Please wait...</source>
 			</trans-unit>
-			<trans-unit id="Normal">
+			<trans-unit id="Normal" xml:space="preserve">
 				<source>Normal</source>
 			</trans-unit>
-			<trans-unit id="Heading 1">
+			<trans-unit id="Heading 1" xml:space="preserve">
 				<source>Heading 1</source>
 			</trans-unit>
-			<trans-unit id="Heading 2">
+			<trans-unit id="Heading 2" xml:space="preserve">
 				<source>Heading 2</source>
 			</trans-unit>
-			<trans-unit id="Heading 3">
+			<trans-unit id="Heading 3" xml:space="preserve">
 				<source>Heading 3</source>
 			</trans-unit>
-			<trans-unit id="Heading 4">
+			<trans-unit id="Heading 4" xml:space="preserve">
 				<source>Heading 4</source>
 			</trans-unit>
-			<trans-unit id="Heading 5">
+			<trans-unit id="Heading 5" xml:space="preserve">
 				<source>Heading 5</source>
 			</trans-unit>
-			<trans-unit id="Heading 6">
+			<trans-unit id="Heading 6" xml:space="preserve">
 				<source>Heading 6</source>
 			</trans-unit>
-			<trans-unit id="Preformatted">
+			<trans-unit id="Preformatted" xml:space="preserve">
 				<source>Preformatted</source>
 			</trans-unit>
-			<trans-unit id="Address">
+			<trans-unit id="Address" xml:space="preserve">
 				<source>Address</source>
 			</trans-unit>
-			<trans-unit id="No font">
+			<trans-unit id="No font" xml:space="preserve">
 				<source>No font</source>
 			</trans-unit>
-			<trans-unit id="No size">
+			<trans-unit id="No size" xml:space="preserve">
 				<source>No font size</source>
 			</trans-unit>
-			<trans-unit id="rteSettings">
+			<trans-unit id="rteSettings" xml:space="preserve">
 				<source>Rich Text Editor</source>
 			</trans-unit>
-			<trans-unit id="rteWidth">
+			<trans-unit id="rteWidth" xml:space="preserve">
 				<source>Width of the RTE in pixels or percentage</source>
 			</trans-unit>
-			<trans-unit id="rteHeight">
+			<trans-unit id="rteHeight" xml:space="preserve">
 				<source>Height of the RTE in pixels</source>
 			</trans-unit>
-			<trans-unit id="rteResize">
+			<trans-unit id="rteResize" xml:space="preserve">
 				<source>Make RTE resizable</source>
 			</trans-unit>
-			<trans-unit id="rteMaxHeight">
+			<trans-unit id="rteMaxHeight" xml:space="preserve">
 				<source>Maximal height of resizable RTE in pixels</source>
 			</trans-unit>
-			<trans-unit id="deprecatedPropertyMessage">
+			<trans-unit id="deprecatedPropertyMessage" xml:space="preserve">
 				<source>Page TSConfig property "%1$s" used on page id #%4$s is DEPRECATED and will be removed in TYPO3 %3$s. Use "%2$s" instead.</source>
 			</trans-unit>
 		</body>

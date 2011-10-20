@@ -3,19 +3,19 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="saltedpasswords">
 		<header/>
 		<body>
-			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_phpass">
+			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_phpass" xml:space="preserve">
 				<source>Portable PHP password hashing (phpass)</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_md5">
+			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_md5" xml:space="preserve">
 				<source>MD5 salted hashing (secure)</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_blowfish">
+			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_blowfish" xml:space="preserve">
 				<source>Blowfish salted hashing (advanced)</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.name">
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.name" xml:space="preserve">
 				<source>Convert user passwords to salted hashes</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.description">
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.description" xml:space="preserve">
 				<source>Update all frontend and backend user passwords to salted hashes. This task deactivates itself when completed.</source>
 			</trans-unit>
 		</body>

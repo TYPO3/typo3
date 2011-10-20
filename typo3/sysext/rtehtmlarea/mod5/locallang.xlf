@@ -3,19 +3,19 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="noTitle">
+			<trans-unit id="noTitle" xml:space="preserve">
 				<source>No title</source>
 			</trans-unit>
-			<trans-unit id="expand">
+			<trans-unit id="expand" xml:space="preserve">
 				<source>Expand category</source>
 			</trans-unit>
-			<trans-unit id="noTextSelection">
+			<trans-unit id="noTextSelection" xml:space="preserve">
 				<source>Error: There was no selected text to wrap.</source>
 			</trans-unit>
-			<trans-unit id="pixels">
+			<trans-unit id="pixels" xml:space="preserve">
 				<source>Pixels</source>
 			</trans-unit>
-			<trans-unit id="filesize">
+			<trans-unit id="filesize" xml:space="preserve">
 				<source>Filesize</source>
 			</trans-unit>
 		</body>

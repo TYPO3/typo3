@@ -3,292 +3,292 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="belog">
 		<header/>
 		<body>
-			<trans-unit id="adminLog">
+			<trans-unit id="adminLog" xml:space="preserve">
 				<source>Administration log</source>
 			</trans-unit>
-			<trans-unit id="allUsers">
+			<trans-unit id="allUsers" xml:space="preserve">
 				<source>[All users]</source>
 			</trans-unit>
-			<trans-unit id="any">
+			<trans-unit id="any" xml:space="preserve">
 				<source>[Any]</source>
 			</trans-unit>
-			<trans-unit id="live">
+			<trans-unit id="live" xml:space="preserve">
 				<source>LIVE</source>
 			</trans-unit>
-			<trans-unit id="draft">
+			<trans-unit id="draft" xml:space="preserve">
 				<source>Draft</source>
 			</trans-unit>
-			<trans-unit id="self">
+			<trans-unit id="self" xml:space="preserve">
 				<source>Self</source>
 			</trans-unit>
-			<trans-unit id="userGroup">
+			<trans-unit id="userGroup" xml:space="preserve">
 				<source>Group:</source>
 			</trans-unit>
-			<trans-unit id="thisWeek">
+			<trans-unit id="thisWeek" xml:space="preserve">
 				<source>This week</source>
 			</trans-unit>
-			<trans-unit id="lastWeek">
+			<trans-unit id="lastWeek" xml:space="preserve">
 				<source>Last week</source>
 			</trans-unit>
-			<trans-unit id="last7Days">
+			<trans-unit id="last7Days" xml:space="preserve">
 				<source>Last 7 days</source>
 			</trans-unit>
-			<trans-unit id="thisMonth">
+			<trans-unit id="thisMonth" xml:space="preserve">
 				<source>This month</source>
 			</trans-unit>
-			<trans-unit id="lastMonth">
+			<trans-unit id="lastMonth" xml:space="preserve">
 				<source>Last month</source>
 			</trans-unit>
-			<trans-unit id="last31Days">
+			<trans-unit id="last31Days" xml:space="preserve">
 				<source>Last 31 days</source>
 			</trans-unit>
-			<trans-unit id="noLimit">
+			<trans-unit id="noLimit" xml:space="preserve">
 				<source>No limit</source>
 			</trans-unit>
-			<trans-unit id="userdefined">
+			<trans-unit id="userdefined" xml:space="preserve">
 				<source>User defined</source>
 			</trans-unit>
-			<trans-unit id="set">
+			<trans-unit id="set" xml:space="preserve">
 				<source>Set</source>
 			</trans-unit>
-			<trans-unit id="20">
+			<trans-unit id="20" xml:space="preserve">
 				<source>20</source>
 			</trans-unit>
-			<trans-unit id="50">
+			<trans-unit id="50" xml:space="preserve">
 				<source>50</source>
 			</trans-unit>
-			<trans-unit id="100">
+			<trans-unit id="100" xml:space="preserve">
 				<source>100</source>
 			</trans-unit>
-			<trans-unit id="200">
+			<trans-unit id="200" xml:space="preserve">
 				<source>200</source>
 			</trans-unit>
-			<trans-unit id="500">
+			<trans-unit id="500" xml:space="preserve">
 				<source>500</source>
 			</trans-unit>
-			<trans-unit id="1000">
+			<trans-unit id="1000" xml:space="preserve">
 				<source>1000</source>
 			</trans-unit>
-			<trans-unit id="actionAll">
+			<trans-unit id="actionAll" xml:space="preserve">
 				<source>All</source>
 			</trans-unit>
-			<trans-unit id="actionDatabase">
+			<trans-unit id="actionDatabase" xml:space="preserve">
 				<source>Database</source>
 			</trans-unit>
-			<trans-unit id="actionFile">
+			<trans-unit id="actionFile" xml:space="preserve">
 				<source>File</source>
 			</trans-unit>
-			<trans-unit id="actionCache">
+			<trans-unit id="actionCache" xml:space="preserve">
 				<source>Cache</source>
 			</trans-unit>
-			<trans-unit id="actionSettings">
+			<trans-unit id="actionSettings" xml:space="preserve">
 				<source>Settings</source>
 			</trans-unit>
-			<trans-unit id="actionLogin">
+			<trans-unit id="actionLogin" xml:space="preserve">
 				<source>Login</source>
 			</trans-unit>
-			<trans-unit id="actionErrors">
+			<trans-unit id="actionErrors" xml:space="preserve">
 				<source>Errors</source>
 			</trans-unit>
-			<trans-unit id="group">
+			<trans-unit id="group" xml:space="preserve">
 				<source>Group:</source>
 			</trans-unit>
-			<trans-unit id="user">
+			<trans-unit id="user" xml:space="preserve">
 				<source>User:</source>
 			</trans-unit>
-			<trans-unit id="users">
+			<trans-unit id="users" xml:space="preserve">
 				<source>Users:</source>
 			</trans-unit>
-			<trans-unit id="time">
+			<trans-unit id="time" xml:space="preserve">
 				<source>Time:</source>
 			</trans-unit>
-			<trans-unit id="max">
+			<trans-unit id="max" xml:space="preserve">
 				<source>Max:</source>
 			</trans-unit>
-			<trans-unit id="changesInFields">
+			<trans-unit id="changesInFields" xml:space="preserve">
 				<source>Changes in fields: %s.</source>
 			</trans-unit>
-			<trans-unit id="showHistory">
+			<trans-unit id="showHistory" xml:space="preserve">
 				<source>Show History</source>
 			</trans-unit>
-			<trans-unit id="action">
+			<trans-unit id="action" xml:space="preserve">
 				<source>Action:</source>
 			</trans-unit>
-			<trans-unit id="workspace">
+			<trans-unit id="workspace" xml:space="preserve">
 				<source>Workspace:</source>
 			</trans-unit>
-			<trans-unit id="groupByPage">
+			<trans-unit id="groupByPage" xml:space="preserve">
 				<source>Group by page:</source>
 			</trans-unit>
-			<trans-unit id="pagenameWithUID">
+			<trans-unit id="pagenameWithUID" xml:space="preserve">
 				<source>%s" [UID: %s]</source>
 			</trans-unit>
-			<trans-unit id="overview">
+			<trans-unit id="overview" xml:space="preserve">
 				<source>Overview</source>
 			</trans-unit>
-			<trans-unit id="timeInfo">
+			<trans-unit id="timeInfo" xml:space="preserve">
 				<source>These pages have log messages from %s to %s</source>
 			</trans-unit>
-			<trans-unit id="forNonPageRelatedActions">
+			<trans-unit id="forNonPageRelatedActions" xml:space="preserve">
 				<source>for NON-PAGE related actions</source>
 			</trans-unit>
-			<trans-unit id="forRootLevel">
+			<trans-unit id="forRootLevel" xml:space="preserve">
 				<source>for ROOT LEVEL</source>
 			</trans-unit>
-			<trans-unit id="forPage">
+			<trans-unit id="forPage" xml:space="preserve">
 				<source>for PAGE "%s" (UID: %s)</source>
 			</trans-unit>
-			<trans-unit id="logForNonPageRelatedActionsOrRootLevelOrPage">
+			<trans-unit id="logForNonPageRelatedActionsOrRootLevelOrPage" xml:space="preserve">
 				<source>Log %s from %s to %s</source>
 			</trans-unit>
-			<trans-unit id="type_1">
+			<trans-unit id="type_1" xml:space="preserve">
 				<source>DB</source>
 			</trans-unit>
-			<trans-unit id="action_1_1">
+			<trans-unit id="action_1_1" xml:space="preserve">
 				<source>Insert</source>
 			</trans-unit>
-			<trans-unit id="action_1_2">
+			<trans-unit id="action_1_2" xml:space="preserve">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="action_1_3">
+			<trans-unit id="action_1_3" xml:space="preserve">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="action_1_4">
+			<trans-unit id="action_1_4" xml:space="preserve">
 				<source>Check</source>
 			</trans-unit>
-			<trans-unit id="msg_1_0_1">
+			<trans-unit id="msg_1_0_1" xml:space="preserve">
 				<source>Referer host '%s' and server host '%s' did not match!</source>
 			</trans-unit>
-			<trans-unit id="msg_1_1_11">
+			<trans-unit id="msg_1_1_11" xml:space="preserve">
 				<source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
 			</trans-unit>
-			<trans-unit id="msg_1_1_12">
+			<trans-unit id="msg_1_1_12" xml:space="preserve">
 				<source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
 			</trans-unit>
-			<trans-unit id="msg_1_2_1">
+			<trans-unit id="msg_1_2_1" xml:space="preserve">
 				<source>Attempt to modify table '%s' without permission</source>
 			</trans-unit>
-			<trans-unit id="msg_1_2_2">
+			<trans-unit id="msg_1_2_2" xml:space="preserve">
 				<source>Attempt to modify record '%s' (%s) without permission. Or non-existing page.</source>
 			</trans-unit>
-			<trans-unit id="msg_1_2_10">
+			<trans-unit id="msg_1_2_10" xml:space="preserve">
 				<source>Record '%s' (%s) was updated.</source>
 			</trans-unit>
-			<trans-unit id="msg_1_2_12">
+			<trans-unit id="msg_1_2_12" xml:space="preserve">
 				<source>MySQL error: '%s' (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_1">
+			<trans-unit id="msg_1_4_1" xml:space="preserve">
 				<source>Attempt to move record '%s' (%s) to after a non-existing record (uid=%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_2">
+			<trans-unit id="msg_1_4_2" xml:space="preserve">
 				<source>Moved record '%s' (%s) to page '%s' (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_3">
+			<trans-unit id="msg_1_4_3" xml:space="preserve">
 				<source>Moved record '%s' (%s) from page '%s' (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_4">
+			<trans-unit id="msg_1_4_4" xml:space="preserve">
 				<source>Moved record '%s' (%s) on page '%s' (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_10">
+			<trans-unit id="msg_1_4_10" xml:space="preserve">
 				<source>Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_11">
+			<trans-unit id="msg_1_4_11" xml:space="preserve">
 				<source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_12">
+			<trans-unit id="msg_1_4_12" xml:space="preserve">
 				<source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_13">
+			<trans-unit id="msg_1_4_13" xml:space="preserve">
 				<source>Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_14">
+			<trans-unit id="msg_1_4_14" xml:space="preserve">
 				<source>Attempt to move record '%s' (%s) without having permissions to do so</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_1">
+			<trans-unit id="msg_1_5_1" xml:space="preserve">
 				<source>You cannot change the 'doktype' of page '%s' to the desired value.</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_2">
+			<trans-unit id="msg_1_5_2" xml:space="preserve">
 				<source>'doktype' of page '%s' could not be changed because the page contains records from disallowed tables; %s</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_3">
+			<trans-unit id="msg_1_5_3" xml:space="preserve">
 				<source>Too few items in the list of values. (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_10">
+			<trans-unit id="msg_1_5_10" xml:space="preserve">
 				<source>Could not delete file '%s' (does not exist). (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_11">
+			<trans-unit id="msg_1_5_11" xml:space="preserve">
 				<source>Copying file '%s' failed!: No destination file (%s) possible!. (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_12">
+			<trans-unit id="msg_1_5_12" xml:space="preserve">
 				<source>File extension '%s' is not allowed. (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_13">
+			<trans-unit id="msg_1_5_13" xml:space="preserve">
 				<source>File size (%s) of file '%s' exceeds limit (%s). (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_14">
+			<trans-unit id="msg_1_5_14" xml:space="preserve">
 				<source>The destination (%s) or the source file (%s) does not exist. (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_15">
+			<trans-unit id="msg_1_5_15" xml:space="preserve">
 				<source>Copying to file '%s' failed! (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_16">
+			<trans-unit id="msg_1_5_16" xml:space="preserve">
 				<source>Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)</source>
 			</trans-unit>
-			<trans-unit id="type_2">
+			<trans-unit id="type_2" xml:space="preserve">
 				<source>FILE</source>
 			</trans-unit>
-			<trans-unit id="action_2_1">
+			<trans-unit id="action_2_1" xml:space="preserve">
 				<source>Upload</source>
 			</trans-unit>
-			<trans-unit id="action_2_2">
+			<trans-unit id="action_2_2" xml:space="preserve">
 				<source>Copy</source>
 			</trans-unit>
-			<trans-unit id="action_2_3">
+			<trans-unit id="action_2_3" xml:space="preserve">
 				<source>Move</source>
 			</trans-unit>
-			<trans-unit id="action_2_4">
+			<trans-unit id="action_2_4" xml:space="preserve">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="action_2_5">
+			<trans-unit id="action_2_5" xml:space="preserve">
 				<source>Rename</source>
 			</trans-unit>
-			<trans-unit id="action_2_6">
+			<trans-unit id="action_2_6" xml:space="preserve">
 				<source>New</source>
 			</trans-unit>
-			<trans-unit id="action_2_7">
+			<trans-unit id="action_2_7" xml:space="preserve">
 				<source>Unzip</source>
 			</trans-unit>
-			<trans-unit id="action_2_8">
+			<trans-unit id="action_2_8" xml:space="preserve">
 				<source>New file</source>
 			</trans-unit>
-			<trans-unit id="action_2_9">
+			<trans-unit id="action_2_9" xml:space="preserve">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="msg_2_9_1">
+			<trans-unit id="msg_2_9_1" xml:space="preserve">
 				<source>File saved to '%s', bytes: %s, MD5: %s </source>
 			</trans-unit>
-			<trans-unit id="type_3">
+			<trans-unit id="type_3" xml:space="preserve">
 				<source>CACHE</source>
 			</trans-unit>
-			<trans-unit id="action_3_1">
+			<trans-unit id="action_3_1" xml:space="preserve">
 				<source>Clear Cache</source>
 			</trans-unit>
-			<trans-unit id="type_254">
+			<trans-unit id="type_254" xml:space="preserve">
 				<source>SETTING</source>
 			</trans-unit>
-			<trans-unit id="action_254_1">
+			<trans-unit id="action_254_1" xml:space="preserve">
 				<source>Change</source>
 			</trans-unit>
-			<trans-unit id="type_255">
+			<trans-unit id="type_255" xml:space="preserve">
 				<source>LOGIN</source>
 			</trans-unit>
-			<trans-unit id="action_255_1">
+			<trans-unit id="action_255_1" xml:space="preserve">
 				<source>LOGIN</source>
 			</trans-unit>
-			<trans-unit id="action_255_2">
+			<trans-unit id="action_255_2" xml:space="preserve">
 				<source>LOGOUT</source>
 			</trans-unit>
-			<trans-unit id="action_255_3">
+			<trans-unit id="action_255_3" xml:space="preserve">
 				<source>ATTEMPT</source>
 			</trans-unit>
 		</body>

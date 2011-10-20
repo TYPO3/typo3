@@ -3,43 +3,43 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="deleteItem">
+			<trans-unit id="deleteItem" xml:space="preserve">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="deleteWarning">
+			<trans-unit id="deleteWarning" xml:space="preserve">
 				<source>Are you sure you want to delete this record?</source>
 			</trans-unit>
-			<trans-unit id="undoLastChange">
+			<trans-unit id="undoLastChange" xml:space="preserve">
 				<source>Undo/Redo last change (%s ago)</source>
 			</trans-unit>
-			<trans-unit id="recordHistory">
+			<trans-unit id="recordHistory" xml:space="preserve">
 				<source>View record change history</source>
 			</trans-unit>
-			<trans-unit id="editWholeRecord">
+			<trans-unit id="editWholeRecord" xml:space="preserve">
 				<source>Edit whole record</source>
 			</trans-unit>
-			<trans-unit id="openDocs">
+			<trans-unit id="openDocs" xml:space="preserve">
 				<source>OPEN DOCUMENTS</source>
 			</trans-unit>
-			<trans-unit id="noDocuments">
+			<trans-unit id="noDocuments" xml:space="preserve">
 				<source>No open documents</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_msg">
+			<trans-unit id="noDocuments_msg" xml:space="preserve">
 				<source>There are no open documents available to edit.</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_msg2">
+			<trans-unit id="noDocuments_msg2" xml:space="preserve">
 				<source>You can go to %s to find the page or the record you wish to edit.</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_msg3">
+			<trans-unit id="noDocuments_msg3" xml:space="preserve">
 				<source>You can select one of your most recently edited records from this list:</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_pagemodule">
+			<trans-unit id="noDocuments_pagemodule" xml:space="preserve">
 				<source>the Web&gt;Page module</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_OR">
+			<trans-unit id="noDocuments_OR" xml:space="preserve">
 				<source>or</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_listmodule">
+			<trans-unit id="noDocuments_listmodule" xml:space="preserve">
 				<source>the Web&gt;List module</source>
 			</trans-unit>
 		</body>

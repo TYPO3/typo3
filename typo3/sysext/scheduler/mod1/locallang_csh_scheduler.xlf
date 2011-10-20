@@ -1,137 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="scheduler" xml:space="preserve">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="scheduler">
 		<header/>
 		<body>
-			<trans-unit id=".alttitle">
+			<trans-unit id=".alttitle" xml:space="preserve">
 				<source>Scheduler</source>
 			</trans-unit>
-			<trans-unit id=".description">
+			<trans-unit id=".description" xml:space="preserve">
 				<source>The Scheduler provides an interface to register and manage recurring or one-time tasks.</source>
 			</trans-unit>
-			<trans-unit id=".syntax">
-				<source>
-The Scheduler uses a single cron job to handle all registered tasks. It is thus very convenient as only one cron job needs to be set up and all task frequencies can be managed from the BE module.
-				</source>
+			<trans-unit id=".syntax" xml:space="preserve">
+				<source>The Scheduler uses a single cron job to handle all registered tasks. It is thus very convenient as only one cron job needs to be set up and all task frequencies can be managed from the BE module.</source>
 			</trans-unit>
-			<trans-unit id="task_class.alttitle">
+			<trans-unit id="task_class.alttitle" xml:space="preserve">
 				<source>Class of the task</source>
 			</trans-unit>
-			<trans-unit id="task_class.description">
+			<trans-unit id="task_class.description" xml:space="preserve">
 				<source>Choose a class from the list of available tasks</source>
 			</trans-unit>
-			<trans-unit id="task_class.details">
-				<source>
-Some tasks are provided by the TYPO3 Core itself. Others come from extensions. See the manual to learn how to create your own tasks and register them with the Scheduler.
-				</source>
+			<trans-unit id="task_class.details" xml:space="preserve">
+				<source>Some tasks are provided by the TYPO3 Core itself. Others come from extensions. See the manual to learn how to create your own tasks and register them with the Scheduler.</source>
 			</trans-unit>
-			<trans-unit id="task_disable.alttitle">
+			<trans-unit id="task_disable.alttitle" xml:space="preserve">
 				<source>Disable task</source>
 			</trans-unit>
-			<trans-unit id="task_disable.description">
+			<trans-unit id="task_disable.description" xml:space="preserve">
 				<source>Check this box to disable the automatic, scheduled execution of this task. It can still be launched manually from the BE module.</source>
 			</trans-unit>
-			<trans-unit id="task_type.alttitle">
+			<trans-unit id="task_type.alttitle" xml:space="preserve">
 				<source>Type of task</source>
 			</trans-unit>
-			<trans-unit id="task_type.description">
+			<trans-unit id="task_type.description" xml:space="preserve">
 				<source>Choose whether the task must happen a single time or will be repeated</source>
 			</trans-unit>
-			<trans-unit id="task_start.alttitle">
+			<trans-unit id="task_start.alttitle" xml:space="preserve">
 				<source>Start of task</source>
 			</trans-unit>
-			<trans-unit id="task_start.description">
+			<trans-unit id="task_start.description" xml:space="preserve">
 				<source>Enter a start date and time for the task</source>
 			</trans-unit>
-			<trans-unit id="task_start.details">
-				<source>
-Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
-Date and time must correspond to the server's time zone.
-				</source>
+			<trans-unit id="task_start.details" xml:space="preserve">
+				<source>Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
+Date and time must correspond to the server's time zone.</source>
 			</trans-unit>
-			<trans-unit id="task_end.alttitle">
+			<trans-unit id="task_end.alttitle" xml:space="preserve">
 				<source>End of task</source>
 			</trans-unit>
-			<trans-unit id="task_end.description">
+			<trans-unit id="task_end.description" xml:space="preserve">
 				<source>Enter an end date and time for the task, can be blank</source>
 			</trans-unit>
-			<trans-unit id="task_end.details">
-				<source>
-Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
+			<trans-unit id="task_end.details" xml:space="preserve">
+				<source>Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
 Date and time must correspond to the server's time zone.
 
-Can be left blank, if task is not supposed to end at any point.
-				</source>
+Can be left blank, if task is not supposed to end at any point.</source>
 			</trans-unit>
-			<trans-unit id="task_frequency.alttitle">
+			<trans-unit id="task_frequency.alttitle" xml:space="preserve">
 				<source>Frequency of task</source>
 			</trans-unit>
-			<trans-unit id="task_frequency.description">
+			<trans-unit id="task_frequency.description" xml:space="preserve">
 				<source>Enter a frequency, either in seconds or using a cron-like syntax (minutes, hours, day of month, months and day of week)</source>
 			</trans-unit>
-			<trans-unit id="task_frequency.details">
-				<source>
-The frequency of the task can be simply entered as a number of seconds.
+			<trans-unit id="task_frequency.details" xml:space="preserve">
+				<source>The frequency of the task can be simply entered as a number of seconds.
 
 Alternatively it is possible to use the same syntax as for cron jobs. This is simply a list of five numbers or the wildcard "*", separated by blanks. The five numbers are (in order) minutes, hours, day of month, months and day of week. Examples:
 
 */5 * * * * means every 5 minutes
 30 22 * * * means every day at 22:30
 
-The Scheduler supports the full cron syntax.
-				</source>
+The Scheduler supports the full cron syntax.</source>
 			</trans-unit>
-			<trans-unit id="task_frequency.seeAlso">
-				<source>
-Wikipedia reference|http://en.wikipedia.org/wiki/Cron
-				</source>
+			<trans-unit id="task_frequency.seeAlso" xml:space="preserve">
+				<source>Wikipedia reference|http://en.wikipedia.org/wiki/Cron</source>
 			</trans-unit>
-			<trans-unit id="task_multiple.alttitle">
+			<trans-unit id="task_multiple.alttitle" xml:space="preserve">
 				<source>Multiple executions</source>
 			</trans-unit>
-			<trans-unit id="task_multiple.description">
+			<trans-unit id="task_multiple.description" xml:space="preserve">
 				<source>Choose whether a task can be running several times simultaneously or not</source>
 			</trans-unit>
-			<trans-unit id="task_email.alttitle">
+			<trans-unit id="task_email.alttitle" xml:space="preserve">
 				<source>Email address</source>
 			</trans-unit>
-			<trans-unit id="task_email.description">
+			<trans-unit id="task_email.description" xml:space="preserve">
 				<source>Enter a recipient for the mails sent by the test task</source>
 			</trans-unit>
-			<trans-unit id="task_sleepTime.alttitle">
+			<trans-unit id="task_sleepTime.alttitle" xml:space="preserve">
 				<source>Sleep time</source>
 			</trans-unit>
-			<trans-unit id="task_sleepTime.description">
+			<trans-unit id="task_sleepTime.description" xml:space="preserve">
 				<source>Enter a number of seconds during which the task will just sleep.</source>
 			</trans-unit>
-			<trans-unit id="task_cachingFrameworkGarbageCollection_selectedBackends.alttitle">
+			<trans-unit id="task_cachingFrameworkGarbageCollection_selectedBackends.alttitle" xml:space="preserve">
 				<source>Select backends</source>
 			</trans-unit>
-			<trans-unit id="task_cachingFrameworkGarbageCollection_selectedBackends.description">
+			<trans-unit id="task_cachingFrameworkGarbageCollection_selectedBackends.description" xml:space="preserve">
 				<source>If a cache uses one of the selected backends, the garbage collection will be called for this cache.</source>
 			</trans-unit>
-			<trans-unit id="task_tableGarbageCollection_numberOfDays.alttitle">
+			<trans-unit id="task_tableGarbageCollection_numberOfDays.alttitle" xml:space="preserve">
 				<source>Number of days</source>
 			</trans-unit>
-			<trans-unit id="task_tableGarbageCollection_numberOfDays.description">
+			<trans-unit id="task_tableGarbageCollection_numberOfDays.description" xml:space="preserve">
 				<source>Delete rows from selected table that are older than given number of days.</source>
 			</trans-unit>
-			<trans-unit id="task_tableGarbageCollection_table.alttitle">
+			<trans-unit id="task_tableGarbageCollection_table.alttitle" xml:space="preserve">
 				<source>Select table</source>
 			</trans-unit>
-			<trans-unit id="task_tableGarbageCollection_table.description">
+			<trans-unit id="task_tableGarbageCollection_table.description" xml:space="preserve">
 				<source>Select one of the registered tables to be cleaned up with this task.</source>
 			</trans-unit>
-			<trans-unit id="task_tableGarbageCollection_allTables.alttitle">
+			<trans-unit id="task_tableGarbageCollection_allTables.alttitle" xml:space="preserve">
 				<source>Clean up all tables</source>
 			</trans-unit>
-			<trans-unit id="task_tableGarbageCollection_allTables.description">
+			<trans-unit id="task_tableGarbageCollection_allTables.description" xml:space="preserve">
 				<source>If selected, all configured tables are cleaned. The selection below is ignored.</source>
 			</trans-unit>
-			<trans-unit id="task_recyclerGarbageCollection_numberOfDays.alttitle">
+			<trans-unit id="task_recyclerGarbageCollection_numberOfDays.alttitle" xml:space="preserve">
 				<source>Number of days</source>
 			</trans-unit>
-			<trans-unit id="task_recyclerGarbageCollection_numberOfDays.description">
+			<trans-unit id="task_recyclerGarbageCollection_numberOfDays.description" xml:space="preserve">
 				<source>Delete files in _recycler_ folders that are older than the given number of days.</source>
 			</trans-unit>
 		</body>

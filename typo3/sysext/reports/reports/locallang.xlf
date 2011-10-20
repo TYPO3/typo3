@@ -3,196 +3,196 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="reports">
 		<header/>
 		<body>
-			<trans-unit id="status_report_title">
+			<trans-unit id="status_report_title" xml:space="preserve">
 				<source>Status Report</source>
 			</trans-unit>
-			<trans-unit id="status_report_description">
+			<trans-unit id="status_report_description" xml:space="preserve">
 				<source>Get a status report about your site's operation and any detected problems.</source>
 			</trans-unit>
-			<trans-unit id="status_report_explanation">
+			<trans-unit id="status_report_explanation" xml:space="preserve">
 				<source>Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailinglists and project issue trackers.</source>
 			</trans-unit>
-			<trans-unit id="status_ok">
+			<trans-unit id="status_ok" xml:space="preserve">
 				<source>OK</source>
 			</trans-unit>
-			<trans-unit id="status_insecure">
+			<trans-unit id="status_insecure" xml:space="preserve">
 				<source>Insecure</source>
 			</trans-unit>
-			<trans-unit id="status_disabled">
+			<trans-unit id="status_disabled" xml:space="preserve">
 				<source>Disabled</source>
 			</trans-unit>
-			<trans-unit id="status_enabled">
+			<trans-unit id="status_enabled" xml:space="preserve">
 				<source>Enabled</source>
 			</trans-unit>
-			<trans-unit id="status_enabledPermanently">
+			<trans-unit id="status_enabledPermanently" xml:space="preserve">
 				<source>Enabled permanently</source>
 			</trans-unit>
-			<trans-unit id="status_enabledTemporarily">
+			<trans-unit id="status_enabledTemporarily" xml:space="preserve">
 				<source>Enabled temporarily</source>
 			</trans-unit>
-			<trans-unit id="status_empty">
+			<trans-unit id="status_empty" xml:space="preserve">
 				<source>Empty</source>
 			</trans-unit>
-			<trans-unit id="status_connectionFailed">
+			<trans-unit id="status_connectionFailed" xml:space="preserve">
 				<source>Connection Failed</source>
 			</trans-unit>
-			<trans-unit id="status_updateComplete">
+			<trans-unit id="status_updateComplete" xml:space="preserve">
 				<source>Update Complete</source>
 			</trans-unit>
-			<trans-unit id="status_updateIncomplete">
+			<trans-unit id="status_updateIncomplete" xml:space="preserve">
 				<source>Update Incomplete</source>
 			</trans-unit>
-			<trans-unit id="status_problemNotification">
+			<trans-unit id="status_problemNotification" xml:space="preserve">
 				<source>One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
 			</trans-unit>
-			<trans-unit id="status_typo3">
+			<trans-unit id="status_typo3" xml:space="preserve">
 				<source>TYPO3 System</source>
 			</trans-unit>
-			<trans-unit id="status_system">
+			<trans-unit id="status_system" xml:space="preserve">
 				<source>System</source>
 			</trans-unit>
-			<trans-unit id="status_security">
+			<trans-unit id="status_security" xml:space="preserve">
 				<source>Security</source>
 			</trans-unit>
-			<trans-unit id="status_configuration">
+			<trans-unit id="status_configuration" xml:space="preserve">
 				<source>Configuration</source>
 			</trans-unit>
-			<trans-unit id="status_referenceIndex">
+			<trans-unit id="status_referenceIndex" xml:space="preserve">
 				<source>Reference Index</source>
 			</trans-unit>
-			<trans-unit id="status_memcachedConfiguration">
+			<trans-unit id="status_memcachedConfiguration" xml:space="preserve">
 				<source>Memcached Configuration</source>
 			</trans-unit>
-			<trans-unit id="status_PhpSafeMode">
+			<trans-unit id="status_PhpSafeMode" xml:space="preserve">
 				<source>PHP safe_mode</source>
 			</trans-unit>
-			<trans-unit id="status_PhpMagicQuotesGpc">
+			<trans-unit id="status_PhpMagicQuotesGpc" xml:space="preserve">
 				<source>PHP magic_quotes_gpc</source>
 			</trans-unit>
-			<trans-unit id="status_adminUserAccount">
+			<trans-unit id="status_adminUserAccount" xml:space="preserve">
 				<source>Admin User Account</source>
 			</trans-unit>
-			<trans-unit id="status_encryptionKey">
+			<trans-unit id="status_encryptionKey" xml:space="preserve">
 				<source>Encryption Key</source>
 			</trans-unit>
-			<trans-unit id="status_fileDenyPattern">
+			<trans-unit id="status_fileDenyPattern" xml:space="preserve">
 				<source>File Deny Pattern</source>
 			</trans-unit>
-			<trans-unit id="status_htaccessUploadProtection">
+			<trans-unit id="status_htaccessUploadProtection" xml:space="preserve">
 				<source>.htaccess Upload Protection</source>
 			</trans-unit>
-			<trans-unit id="status_installToolPassword">
+			<trans-unit id="status_installToolPassword" xml:space="preserve">
 				<source>Install Tool Password</source>
 			</trans-unit>
-			<trans-unit id="status_installTool">
+			<trans-unit id="status_installTool" xml:space="preserve">
 				<source>Install Tool</source>
 			</trans-unit>
-			<trans-unit id="status_phpVersion">
+			<trans-unit id="status_phpVersion" xml:space="preserve">
 				<source>PHP Version</source>
 			</trans-unit>
-			<trans-unit id="status_phpTooOld">
+			<trans-unit id="status_phpTooOld" xml:space="preserve">
 				<source>Your PHP installation is too old.</source>
 			</trans-unit>
-			<trans-unit id="status_phpMemory">
+			<trans-unit id="status_phpMemory" xml:space="preserve">
 				<source>PHP Memory Limit</source>
 			</trans-unit>
-			<trans-unit id="status_phpMemoryRecommendation">
+			<trans-unit id="status_phpMemoryRecommendation" xml:space="preserve">
 				<source>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is recommended, especially if your site uses additional extensions.</source>
 			</trans-unit>
-			<trans-unit id="status_phpMemoryRequirement">
+			<trans-unit id="status_phpMemoryRequirement" xml:space="preserve">
 				<source>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is required especially if your site uses additional extensions.</source>
 			</trans-unit>
-			<trans-unit id="status_phpMemoryEditLimit">
+			<trans-unit id="status_phpMemoryEditLimit" xml:space="preserve">
 				<source>Increase the memory limit by editing the memory_limit parameter in the file %s and then restart your web server (or contact your system administrator or hosting provider for assistance).</source>
 			</trans-unit>
-			<trans-unit id="status_phpMemoryContactAdmin">
+			<trans-unit id="status_phpMemoryContactAdmin" xml:space="preserve">
 				<source>Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.</source>
 			</trans-unit>
-			<trans-unit id="status_phpPeakMemory">
+			<trans-unit id="status_phpPeakMemory" xml:space="preserve">
 				<source>PHP peak memory usage</source>
 			</trans-unit>
-			<trans-unit id="status_phpPeakMemoryTooHigh">
+			<trans-unit id="status_phpPeakMemoryTooHigh" xml:space="preserve">
 				<source>During a request %2$s of the memory limit was used. On %4$s a request to %5$s used %1$s of %3$s.</source>
 			</trans-unit>
-			<trans-unit id="status_phpPeakMemoryClearFlag">
+			<trans-unit id="status_phpPeakMemoryClearFlag" xml:space="preserve">
 				<source>Clear this flag</source>
 			</trans-unit>
-			<trans-unit id="status_phpRegisterGlobals">
+			<trans-unit id="status_phpRegisterGlobals" xml:space="preserve">
 				<source>PHP Register Globals</source>
 			</trans-unit>
-			<trans-unit id="status_phpRegisterGlobalsEnabled">
+			<trans-unit id="status_phpRegisterGlobalsEnabled" xml:space="preserve">
 				<source>%s is enabled. TYPO3 requires this configuration directive to be disabled.</source>
 			</trans-unit>
-			<trans-unit id="status_phpRegisterGlobalsSecurity">
+			<trans-unit id="status_phpRegisterGlobalsSecurity" xml:space="preserve">
 				<source>Your site may not be secure when %s is enabled.</source>
 			</trans-unit>
-			<trans-unit id="status_phpRegisterGlobalsHowToChange">
+			<trans-unit id="status_phpRegisterGlobalsHowToChange" xml:space="preserve">
 				<source>how to change configuration settings</source>
 			</trans-unit>
-			<trans-unit id="status_phpRegisterGlobalsPHPManual">
+			<trans-unit id="status_phpRegisterGlobalsPHPManual" xml:space="preserve">
 				<source>The PHP manual has instructions for %s.</source>
 			</trans-unit>
-			<trans-unit id="status_webServer">
+			<trans-unit id="status_webServer" xml:space="preserve">
 				<source>Web Server</source>
 			</trans-unit>
-			<trans-unit id="status_phpModules">
+			<trans-unit id="status_phpModules" xml:space="preserve">
 				<source>PHP Modules</source>
 			</trans-unit>
-			<trans-unit id="status_phpModulesMissing">
+			<trans-unit id="status_phpModulesMissing" xml:space="preserve">
 				<source>One or more modules are missing.</source>
 			</trans-unit>
-			<trans-unit id="status_phpModulesList">
+			<trans-unit id="status_phpModulesList" xml:space="preserve">
 				<source>The following PHP module(s) is/are missing: %s.</source>
 			</trans-unit>
-			<trans-unit id="status_phpModulesInfo">
+			<trans-unit id="status_phpModulesInfo" xml:space="preserve">
 				<source>You need to install and enable these modules to let TYPO3 function correctly.</source>
 			</trans-unit>
-			<trans-unit id="status_phpModulesGroup">
+			<trans-unit id="status_phpModulesGroup" xml:space="preserve">
 				<source>one of: %s</source>
 			</trans-unit>
-			<trans-unit id="status_phpModulesPresent">
+			<trans-unit id="status_phpModulesPresent" xml:space="preserve">
 				<source>All required modules are installed.</source>
 			</trans-unit>
-			<trans-unit id="status_installEnabledTemporarily">
+			<trans-unit id="status_installEnabledTemporarily" xml:space="preserve">
 				<source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
 			</trans-unit>
-			<trans-unit id="status_configuration_DeprecationLog">
+			<trans-unit id="status_configuration_DeprecationLog" xml:space="preserve">
 				<source>Deprecation Log</source>
 			</trans-unit>
-			<trans-unit id="status_configuration_DeprecationLogEnabled">
+			<trans-unit id="status_configuration_DeprecationLogEnabled" xml:space="preserve">
 				<source>The deprecation log tracks whether old APIs are being used in extensions. Depending on the extensions you use and whether they use deprecated APIs it can happen that the log takes up quite some space over time. The more space it takes up, the more it may affect your installation's performance. It is recommended to disable deprecation log in production environments.</source>
 			</trans-unit>
-			<trans-unit id="status_configuration_DeprecationLogFile">
+			<trans-unit id="status_configuration_DeprecationLogFile" xml:space="preserve">
 				<source>You can find the deprecation log file at %s.</source>
 			</trans-unit>
-			<trans-unit id="status_configuration_DeprecationLogSize">
+			<trans-unit id="status_configuration_DeprecationLogSize" xml:space="preserve">
 				<source>Your deprecation log file currently takes up %s.</source>
 			</trans-unit>
-			<trans-unit id="status_configuration_PhpSafeModeEnabled">
+			<trans-unit id="status_configuration_PhpSafeModeEnabled" xml:space="preserve">
 				<source>PHP INI setting safe_mode "On" is deprecated since PHP 5.3 and is not supported by TYPO3 anymore.</source>
 			</trans-unit>
-			<trans-unit id="status_configuration_PhpMagicQuotesGpcEnabled">
+			<trans-unit id="status_configuration_PhpMagicQuotesGpcEnabled" xml:space="preserve">
 				<source>PHP INI setting magic_quotes_gpc "On" is deprecated since PHP 5.3. You are advised to set it to "Off" until it gets completely removed.</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskTitle">
+			<trans-unit id="status_updateTaskTitle" xml:space="preserve">
 				<source>System Status Update</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskDescription">
+			<trans-unit id="status_updateTaskDescription" xml:space="preserve">
 				<source>Runs a system status check and sends notifications if problems have been found.</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskField_notificationEmail">
+			<trans-unit id="status_updateTaskField_notificationEmail" xml:space="preserve">
 				<source>Notification Email Address</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskField_notificationEmail_invalid">
+			<trans-unit id="status_updateTaskField_notificationEmail_invalid" xml:space="preserve">
 				<source>Empty or invalid notification email address.</source>
 			</trans-unit>
-			<trans-unit id="status_updateTask_email_subject">
+			<trans-unit id="status_updateTask_email_subject" xml:space="preserve">
 				<source>System Status Notification for site %s</source>
 			</trans-unit>
-			<trans-unit id="status_updateTask_email_site">
+			<trans-unit id="status_updateTask_email_site" xml:space="preserve">
 				<source>Site</source>
 			</trans-unit>
-			<trans-unit id="status_updateTask_email_issues">
+			<trans-unit id="status_updateTask_email_issues" xml:space="preserve">
 				<source>Issues</source>
 			</trans-unit>
 		</body>

@@ -3,19 +3,19 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="query_loaded">
+			<trans-unit id="query_loaded" xml:space="preserve">
 				<source>Query "%s" loaded!</source>
 			</trans-unit>
-			<trans-unit id="query_from_action_loaded">
+			<trans-unit id="query_from_action_loaded" xml:space="preserve">
 				<source>Query from action "%s" loaded!</source>
 			</trans-unit>
-			<trans-unit id="query_saved">
+			<trans-unit id="query_saved" xml:space="preserve">
 				<source>Query saved!</source>
 			</trans-unit>
-			<trans-unit id="query_notsaved">
+			<trans-unit id="query_notsaved" xml:space="preserve">
 				<source>No query saved!</source>
 			</trans-unit>
-			<trans-unit id="query_removed">
+			<trans-unit id="query_removed" xml:space="preserve">
 				<source>"%s" query entry removed!</source>
 			</trans-unit>
 		</body>

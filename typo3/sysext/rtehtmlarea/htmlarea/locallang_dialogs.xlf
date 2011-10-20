@@ -3,346 +3,346 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="OK">
+			<trans-unit id="OK" xml:space="preserve">
 				<source>OK</source>
 			</trans-unit>
-			<trans-unit id="Cancel">
+			<trans-unit id="Cancel" xml:space="preserve">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="Delete">
+			<trans-unit id="Delete" xml:space="preserve">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="Close">
+			<trans-unit id="Close" xml:space="preserve">
 				<source>Close</source>
 			</trans-unit>
-			<trans-unit id="Not set">
+			<trans-unit id="Not set" xml:space="preserve">
 				<source>Not set</source>
 			</trans-unit>
-			<trans-unit id="General">
+			<trans-unit id="General" xml:space="preserve">
 				<source>General</source>
 			</trans-unit>
-			<trans-unit id="Alignment:">
+			<trans-unit id="Alignment:" xml:space="preserve">
 				<source>Text alignment:</source>
 			</trans-unit>
-			<trans-unit id="Alignment not set">
+			<trans-unit id="Alignment not set" xml:space="preserve">
 				<source>Not set</source>
 			</trans-unit>
-			<trans-unit id="Left">
+			<trans-unit id="Left" xml:space="preserve">
 				<source>Left</source>
 			</trans-unit>
-			<trans-unit id="Center">
+			<trans-unit id="Center" xml:space="preserve">
 				<source>Center</source>
 			</trans-unit>
-			<trans-unit id="Right">
+			<trans-unit id="Right" xml:space="preserve">
 				<source>Right</source>
 			</trans-unit>
-			<trans-unit id="Texttop">
+			<trans-unit id="Texttop" xml:space="preserve">
 				<source>Texttop</source>
 			</trans-unit>
-			<trans-unit id="Absmiddle">
+			<trans-unit id="Absmiddle" xml:space="preserve">
 				<source>Absmiddle</source>
 			</trans-unit>
-			<trans-unit id="Baseline">
+			<trans-unit id="Baseline" xml:space="preserve">
 				<source>Baseline</source>
 			</trans-unit>
-			<trans-unit id="Absbottom">
+			<trans-unit id="Absbottom" xml:space="preserve">
 				<source>Absbottom</source>
 			</trans-unit>
-			<trans-unit id="Bottom">
+			<trans-unit id="Bottom" xml:space="preserve">
 				<source>Bottom</source>
 			</trans-unit>
-			<trans-unit id="Middle">
+			<trans-unit id="Middle" xml:space="preserve">
 				<source>Middle</source>
 			</trans-unit>
-			<trans-unit id="Top">
+			<trans-unit id="Top" xml:space="preserve">
 				<source>Top</source>
 			</trans-unit>
-			<trans-unit id="Justify">
+			<trans-unit id="Justify" xml:space="preserve">
 				<source>Justify</source>
 			</trans-unit>
-			<trans-unit id="Float:">
+			<trans-unit id="Float:" xml:space="preserve">
 				<source>Float:</source>
 			</trans-unit>
-			<trans-unit id="Non-floating">
+			<trans-unit id="Non-floating" xml:space="preserve">
 				<source>Non-floating</source>
 			</trans-unit>
-			<trans-unit id="Layout">
+			<trans-unit id="Layout" xml:space="preserve">
 				<source>Layout</source>
 			</trans-unit>
-			<trans-unit id="Spacing and padding">
+			<trans-unit id="Spacing and padding" xml:space="preserve">
 				<source>Spacing and padding</source>
 			</trans-unit>
-			<trans-unit id="Horizontal:">
+			<trans-unit id="Horizontal:" xml:space="preserve">
 				<source>Horizontal:</source>
 			</trans-unit>
-			<trans-unit id="Horizontal padding">
+			<trans-unit id="Horizontal padding" xml:space="preserve">
 				<source>Horizontal padding</source>
 			</trans-unit>
-			<trans-unit id="Vertical:">
+			<trans-unit id="Vertical:" xml:space="preserve">
 				<source>Vertical:</source>
 			</trans-unit>
-			<trans-unit id="Vertical padding">
+			<trans-unit id="Vertical padding" xml:space="preserve">
 				<source>Vertical padding</source>
 			</trans-unit>
-			<trans-unit id="Border">
+			<trans-unit id="Border" xml:space="preserve">
 				<source>Border</source>
 			</trans-unit>
-			<trans-unit id="Border thickness:">
+			<trans-unit id="Border thickness:" xml:space="preserve">
 				<source>Border thickness:</source>
 			</trans-unit>
-			<trans-unit id="Leave empty for no border">
+			<trans-unit id="Leave empty for no border" xml:space="preserve">
 				<source>Leave empty for no border</source>
 			</trans-unit>
-			<trans-unit id="Insert/Modify Link">
+			<trans-unit id="Insert/Modify Link" xml:space="preserve">
 				<source>Insert/Modify Link</source>
 			</trans-unit>
-			<trans-unit id="Insert link">
+			<trans-unit id="Insert link" xml:space="preserve">
 				<source>Insert link</source>
 			</trans-unit>
-			<trans-unit id="Modify link">
+			<trans-unit id="Modify link" xml:space="preserve">
 				<source>Modify link</source>
 			</trans-unit>
-			<trans-unit id="URL:">
+			<trans-unit id="URL:" xml:space="preserve">
 				<source>URL:</source>
 			</trans-unit>
-			<trans-unit id="link_href_tooltip">
+			<trans-unit id="link_href_tooltip" xml:space="preserve">
 				<source>Enter the link URL here</source>
 			</trans-unit>
-			<trans-unit id="link_url_required">
+			<trans-unit id="link_url_required" xml:space="preserve">
 				<source>Please enter the URL where this link points to</source>
 			</trans-unit>
-			<trans-unit id="Title (tooltip):">
+			<trans-unit id="Title (tooltip):" xml:space="preserve">
 				<source>Title:</source>
 			</trans-unit>
-			<trans-unit id="link_title_tooltip">
+			<trans-unit id="link_title_tooltip" xml:space="preserve">
 				<source>Enter the link tooltip here</source>
 			</trans-unit>
-			<trans-unit id="Target:">
+			<trans-unit id="Target:" xml:space="preserve">
 				<source>Target:</source>
 			</trans-unit>
-			<trans-unit id="link_target_tooltip">
+			<trans-unit id="link_target_tooltip" xml:space="preserve">
 				<source>Select the name of the target frame</source>
 			</trans-unit>
-			<trans-unit id="target_none">
+			<trans-unit id="target_none" xml:space="preserve">
 				<source>None (use implicit)</source>
 			</trans-unit>
-			<trans-unit id="target_blank">
+			<trans-unit id="target_blank" xml:space="preserve">
 				<source>New window (_blank)</source>
 			</trans-unit>
-			<trans-unit id="target_self">
+			<trans-unit id="target_self" xml:space="preserve">
 				<source>Same frame (_self)</source>
 			</trans-unit>
-			<trans-unit id="target_top">
+			<trans-unit id="target_top" xml:space="preserve">
 				<source>Top frame (_top)</source>
 			</trans-unit>
-			<trans-unit id="target_other">
+			<trans-unit id="target_other" xml:space="preserve">
 				<source>Other frame</source>
 			</trans-unit>
-			<trans-unit id="Insert Custom Element">
+			<trans-unit id="Insert Custom Element" xml:space="preserve">
 				<source>Insert Custom Element</source>
 			</trans-unit>
-			<trans-unit id="Insert Table">
+			<trans-unit id="Insert Table" xml:space="preserve">
 				<source>Insert Table</source>
 			</trans-unit>
-			<trans-unit id="Dimension">
+			<trans-unit id="Dimension" xml:space="preserve">
 				<source>Dimension</source>
 			</trans-unit>
-			<trans-unit id="Rows:">
+			<trans-unit id="Rows:" xml:space="preserve">
 				<source>Rows:</source>
 			</trans-unit>
-			<trans-unit id="Number of rows">
+			<trans-unit id="Number of rows" xml:space="preserve">
 				<source>Number of rows</source>
 			</trans-unit>
-			<trans-unit id="You must enter a number of rows">
+			<trans-unit id="You must enter a number of rows" xml:space="preserve">
 				<source>You must enter a number of rows</source>
 			</trans-unit>
-			<trans-unit id="Cols:">
+			<trans-unit id="Cols:" xml:space="preserve">
 				<source>Cols:</source>
 			</trans-unit>
-			<trans-unit id="Number of columns">
+			<trans-unit id="Number of columns" xml:space="preserve">
 				<source>Number of columns</source>
 			</trans-unit>
-			<trans-unit id="You must enter a number of columns">
+			<trans-unit id="You must enter a number of columns" xml:space="preserve">
 				<source>You must enter a number of columns</source>
 			</trans-unit>
-			<trans-unit id="Width:">
+			<trans-unit id="Width:" xml:space="preserve">
 				<source>Width:</source>
 			</trans-unit>
-			<trans-unit id="Width of the table">
+			<trans-unit id="Width of the table" xml:space="preserve">
 				<source>Width of the table</source>
 			</trans-unit>
-			<trans-unit id="Percent">
+			<trans-unit id="Percent" xml:space="preserve">
 				<source>Percent</source>
 			</trans-unit>
-			<trans-unit id="Pixels">
+			<trans-unit id="Pixels" xml:space="preserve">
 				<source>Pixels</source>
 			</trans-unit>
-			<trans-unit id="Em">
+			<trans-unit id="Em" xml:space="preserve">
 				<source>Em</source>
 			</trans-unit>
-			<trans-unit id="Width unit">
+			<trans-unit id="Width unit" xml:space="preserve">
 				<source>Width unit</source>
 			</trans-unit>
-			<trans-unit id="Text alignment">
+			<trans-unit id="Text alignment" xml:space="preserve">
 				<source>Text alignment</source>
 			</trans-unit>
-			<trans-unit id="Where the table should float">
+			<trans-unit id="Where the table should float" xml:space="preserve">
 				<source>Specifies where the table should float</source>
 			</trans-unit>
-			<trans-unit id="Cell spacing:">
+			<trans-unit id="Cell spacing:" xml:space="preserve">
 				<source>Cell spacing:</source>
 			</trans-unit>
-			<trans-unit id="Space between adjacent cells">
+			<trans-unit id="Space between adjacent cells" xml:space="preserve">
 				<source>Space between adjacent cells</source>
 			</trans-unit>
-			<trans-unit id="Cell padding:">
+			<trans-unit id="Cell padding:" xml:space="preserve">
 				<source>Cell padding:</source>
 			</trans-unit>
-			<trans-unit id="Space between content and border in cell">
+			<trans-unit id="Space between content and border in cell" xml:space="preserve">
 				<source>Space between content and border in cell</source>
 			</trans-unit>
-			<trans-unit id="Insert Image">
+			<trans-unit id="Insert Image" xml:space="preserve">
 				<source>Insert/Modify Image</source>
 			</trans-unit>
-			<trans-unit id="Insert image">
+			<trans-unit id="Insert image" xml:space="preserve">
 				<source>Insert image</source>
 			</trans-unit>
-			<trans-unit id="Modify image">
+			<trans-unit id="Modify image" xml:space="preserve">
 				<source>Modify image</source>
 			</trans-unit>
-			<trans-unit id="Image URL:">
+			<trans-unit id="Image URL:" xml:space="preserve">
 				<source>Image URL:</source>
 			</trans-unit>
-			<trans-unit id="Enter the image URL here">
+			<trans-unit id="Enter the image URL here" xml:space="preserve">
 				<source>Enter the image URL here</source>
 			</trans-unit>
-			<trans-unit id="Preview">
+			<trans-unit id="Preview" xml:space="preserve">
 				<source>Preview</source>
 			</trans-unit>
-			<trans-unit id="Preview the image in a new window">
+			<trans-unit id="Preview the image in a new window" xml:space="preserve">
 				<source>Preview the image in a new window</source>
 			</trans-unit>
-			<trans-unit id="Alternate text:">
+			<trans-unit id="Alternate text:" xml:space="preserve">
 				<source>Alternate text:</source>
 			</trans-unit>
-			<trans-unit id="For browsers that dont support images">
+			<trans-unit id="For browsers that dont support images" xml:space="preserve">
 				<source>For browsers that don't support images</source>
 			</trans-unit>
-			<trans-unit id="Where the image should float">
+			<trans-unit id="Where the image should float" xml:space="preserve">
 				<source>Specifies where the image should float</source>
 			</trans-unit>
-			<trans-unit id="Image alignment:">
+			<trans-unit id="Image alignment:" xml:space="preserve">
 				<source>Image alignment:</source>
 			</trans-unit>
-			<trans-unit id="Positioning of this image">
+			<trans-unit id="Positioning of this image" xml:space="preserve">
 				<source>Positioning of this image relative to text</source>
 			</trans-unit>
-			<trans-unit id="Image Preview">
+			<trans-unit id="Image Preview" xml:space="preserve">
 				<source>Image Preview</source>
 			</trans-unit>
-			<trans-unit id="image_url_first">
+			<trans-unit id="image_url_first" xml:space="preserve">
 				<source>You have to enter the image URL first</source>
 			</trans-unit>
-			<trans-unit id="image_url_required">
+			<trans-unit id="image_url_required" xml:space="preserve">
 				<source>You must enter the image URL</source>
 			</trans-unit>
-			<trans-unit id="Select Color">
+			<trans-unit id="Select Color" xml:space="preserve">
 				<source>Select Color</source>
 			</trans-unit>
-			<trans-unit id="Insert/Modify Acronym">
+			<trans-unit id="Insert/Modify Acronym" xml:space="preserve">
 				<source>Insert/Modify Acronym or Abbreviation</source>
 			</trans-unit>
-			<trans-unit id="About HTMLArea">
+			<trans-unit id="About HTMLArea" xml:space="preserve">
 				<source>About htmlArea RTE</source>
 			</trans-unit>
-			<trans-unit id="About">
+			<trans-unit id="About" xml:space="preserve">
 				<source>About</source>
 			</trans-unit>
-			<trans-unit id="free_editor">
+			<trans-unit id="free_editor" xml:space="preserve">
 				<source>A free and open-source editor for &lt;textarea&gt; fields, featuring integration with TYPO3.</source>
 			</trans-unit>
-			<trans-unit id="Browser support">
+			<trans-unit id="Browser support" xml:space="preserve">
 				<source>Browser support</source>
 			</trans-unit>
-			<trans-unit id="Mozilla_or_IE">
+			<trans-unit id="Mozilla_or_IE" xml:space="preserve">
 				<source>For Firefox 1.5+, SeaMonkey 1.0+, Safari 3.0.4+, Google Chrome 1.0+ and Opera 9.62+ on any platform, and for Internet Explorer 6.0+ on Windows.</source>
 			</trans-unit>
-			<trans-unit id="product_documentation">
+			<trans-unit id="product_documentation" xml:space="preserve">
 				<source>For more information, please visit:</source>
 			</trans-unit>
-			<trans-unit id="All rights reserved.">
+			<trans-unit id="All rights reserved." xml:space="preserve">
 				<source>All Rights Reserved.</source>
 			</trans-unit>
-			<trans-unit id="License">
+			<trans-unit id="License" xml:space="preserve">
 				<source>License</source>
 			</trans-unit>
-			<trans-unit id="htmlArea License (based on BSD license)">
+			<trans-unit id="htmlArea License (based on BSD license)" xml:space="preserve">
 				<source>htmlArea RTE License, based on BSD License</source>
 			</trans-unit>
-			<trans-unit id="Plugins">
+			<trans-unit id="Plugins" xml:space="preserve">
 				<source>Plugins</source>
 			</trans-unit>
-			<trans-unit id="Name">
+			<trans-unit id="Name" xml:space="preserve">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="Developer">
+			<trans-unit id="Developer" xml:space="preserve">
 				<source>Developer</source>
 			</trans-unit>
-			<trans-unit id="Sponsored by">
+			<trans-unit id="Sponsored by" xml:space="preserve">
 				<source>Sponsored by</source>
 			</trans-unit>
-			<trans-unit id="The following plugins have been loaded.">
+			<trans-unit id="The following plugins have been loaded." xml:space="preserve">
 				<source>The following plugins have been loaded.</source>
 			</trans-unit>
-			<trans-unit id="No plugins have been loaded.">
+			<trans-unit id="No plugins have been loaded." xml:space="preserve">
 				<source>No plugins have been loaded.</source>
 			</trans-unit>
-			<trans-unit id="User agent reports:">
+			<trans-unit id="User agent reports:" xml:space="preserve">
 				<source>User agent reports:</source>
 			</trans-unit>
-			<trans-unit id="style">
+			<trans-unit id="style" xml:space="preserve">
 				<source>Paragraph:</source>
 			</trans-unit>
-			<trans-unit id="Block style label">
+			<trans-unit id="Block style label" xml:space="preserve">
 				<source>Block style:</source>
 			</trans-unit>
-			<trans-unit id="text_style">
+			<trans-unit id="text_style" xml:space="preserve">
 				<source>Text style:</source>
 			</trans-unit>
-			<trans-unit id="LeftToRight">
+			<trans-unit id="LeftToRight" xml:space="preserve">
 				<source>Left to right</source>
 			</trans-unit>
-			<trans-unit id="RightToLeft">
+			<trans-unit id="RightToLeft" xml:space="preserve">
 				<source>Right to left</source>
 			</trans-unit>
-			<trans-unit id="Language">
+			<trans-unit id="Language" xml:space="preserve">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="Text direction">
+			<trans-unit id="Text direction" xml:space="preserve">
 				<source>Text direction</source>
 			</trans-unit>
-			<trans-unit id="Language:">
+			<trans-unit id="Language:" xml:space="preserve">
 				<source>Language:</source>
 			</trans-unit>
-			<trans-unit id="Text direction:">
+			<trans-unit id="Text direction:" xml:space="preserve">
 				<source>Text direction:</source>
 			</trans-unit>
-			<trans-unit id="No language mark">
+			<trans-unit id="No language mark" xml:space="preserve">
 				<source>No language</source>
 			</trans-unit>
-			<trans-unit id="Remove language mark">
+			<trans-unit id="Remove language mark" xml:space="preserve">
 				<source>Remove language</source>
 			</trans-unit>
-			<trans-unit id="statusBarStyle">
+			<trans-unit id="statusBarStyle" xml:space="preserve">
 				<source>Style</source>
 			</trans-unit>
-			<trans-unit id="statusBarReady">
+			<trans-unit id="statusBarReady" xml:space="preserve">
 				<source>Ready</source>
 			</trans-unit>
-			<trans-unit id="word">
+			<trans-unit id="word" xml:space="preserve">
 				<source>word</source>
 			</trans-unit>
-			<trans-unit id="words">
+			<trans-unit id="words" xml:space="preserve">
 				<source>words</source>
 			</trans-unit>
 		</body>

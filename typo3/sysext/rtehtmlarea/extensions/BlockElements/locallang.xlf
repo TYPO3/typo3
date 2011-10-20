@@ -3,40 +3,40 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="No block">
+			<trans-unit id="No block" xml:space="preserve">
 				<source>No block format</source>
 			</trans-unit>
-			<trans-unit id="Paragraph">
+			<trans-unit id="Paragraph" xml:space="preserve">
 				<source>Paragraph</source>
 			</trans-unit>
-			<trans-unit id="Heading 1">
+			<trans-unit id="Heading 1" xml:space="preserve">
 				<source>Heading 1</source>
 			</trans-unit>
-			<trans-unit id="Heading 2">
+			<trans-unit id="Heading 2" xml:space="preserve">
 				<source>Heading 2</source>
 			</trans-unit>
-			<trans-unit id="Heading 3">
+			<trans-unit id="Heading 3" xml:space="preserve">
 				<source>Heading 3</source>
 			</trans-unit>
-			<trans-unit id="Heading 4">
+			<trans-unit id="Heading 4" xml:space="preserve">
 				<source>Heading 4</source>
 			</trans-unit>
-			<trans-unit id="Heading 5">
+			<trans-unit id="Heading 5" xml:space="preserve">
 				<source>Heading 5</source>
 			</trans-unit>
-			<trans-unit id="Heading 6">
+			<trans-unit id="Heading 6" xml:space="preserve">
 				<source>Heading 6</source>
 			</trans-unit>
-			<trans-unit id="Preformatted">
+			<trans-unit id="Preformatted" xml:space="preserve">
 				<source>Preformatted</source>
 			</trans-unit>
-			<trans-unit id="Long quotation">
+			<trans-unit id="Long quotation" xml:space="preserve">
 				<source>Quotation</source>
 			</trans-unit>
-			<trans-unit id="Address">
+			<trans-unit id="Address" xml:space="preserve">
 				<source>Address</source>
 			</trans-unit>
-			<trans-unit id="Section">
+			<trans-unit id="Section" xml:space="preserve">
 				<source>Container</source>
 			</trans-unit>
 		</body>

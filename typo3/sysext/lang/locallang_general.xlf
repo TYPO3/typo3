@@ -3,160 +3,160 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="LGL.endtime">
+			<trans-unit id="LGL.endtime" xml:space="preserve">
 				<source>Stop:</source>
 			</trans-unit>
-			<trans-unit id="LGL.hidden">
+			<trans-unit id="LGL.hidden" xml:space="preserve">
 				<source>Hide:</source>
 			</trans-unit>
-			<trans-unit id="LGL.starttime">
+			<trans-unit id="LGL.starttime" xml:space="preserve">
 				<source>Start:</source>
 			</trans-unit>
-			<trans-unit id="LGL.fe_group">
+			<trans-unit id="LGL.fe_group" xml:space="preserve">
 				<source>Access:</source>
 			</trans-unit>
-			<trans-unit id="LGL.hide_at_login">
+			<trans-unit id="LGL.hide_at_login" xml:space="preserve">
 				<source>Hide at login</source>
 			</trans-unit>
-			<trans-unit id="LGL.any_login">
+			<trans-unit id="LGL.any_login" xml:space="preserve">
 				<source>Show at any login</source>
 			</trans-unit>
-			<trans-unit id="LGL.usergroups">
+			<trans-unit id="LGL.usergroups" xml:space="preserve">
 				<source>__Usergroups:__</source>
 			</trans-unit>
-			<trans-unit id="LGL.type">
+			<trans-unit id="LGL.type" xml:space="preserve">
 				<source>Type:</source>
 			</trans-unit>
-			<trans-unit id="LGL.description">
+			<trans-unit id="LGL.description" xml:space="preserve">
 				<source>Description:</source>
 			</trans-unit>
-			<trans-unit id="LGL.prependAtCopy">
+			<trans-unit id="LGL.prependAtCopy" xml:space="preserve">
 				<source>(copy %s)</source>
 			</trans-unit>
-			<trans-unit id="LGL.layout">
+			<trans-unit id="LGL.layout" xml:space="preserve">
 				<source>Layout:</source>
 			</trans-unit>
-			<trans-unit id="LGL.default_value">
+			<trans-unit id="LGL.default_value" xml:space="preserve">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="LGL.normal">
+			<trans-unit id="LGL.normal" xml:space="preserve">
 				<source>Normal</source>
 			</trans-unit>
-			<trans-unit id="LGL.images">
+			<trans-unit id="LGL.images" xml:space="preserve">
 				<source>Images:</source>
 			</trans-unit>
-			<trans-unit id="LGL.image">
+			<trans-unit id="LGL.image" xml:space="preserve">
 				<source>Image:</source>
 			</trans-unit>
-			<trans-unit id="LGL.caption">
+			<trans-unit id="LGL.caption" xml:space="preserve">
 				<source>Caption:</source>
 			</trans-unit>
-			<trans-unit id="LGL.subheader">
+			<trans-unit id="LGL.subheader" xml:space="preserve">
 				<source>Subheader:</source>
 			</trans-unit>
-			<trans-unit id="LGL.text">
+			<trans-unit id="LGL.text" xml:space="preserve">
 				<source>Text:</source>
 			</trans-unit>
-			<trans-unit id="LGL.name">
+			<trans-unit id="LGL.name" xml:space="preserve">
 				<source>Name:</source>
 			</trans-unit>
-			<trans-unit id="LGL.first_name">
+			<trans-unit id="LGL.first_name" xml:space="preserve">
 				<source>First name:</source>
 			</trans-unit>
-			<trans-unit id="LGL.middle_name">
+			<trans-unit id="LGL.middle_name" xml:space="preserve">
 				<source>Middle name:</source>
 			</trans-unit>
-			<trans-unit id="LGL.last_name">
+			<trans-unit id="LGL.last_name" xml:space="preserve">
 				<source>Last name:</source>
 			</trans-unit>
-			<trans-unit id="LGL.title">
+			<trans-unit id="LGL.title" xml:space="preserve">
 				<source>Title:</source>
 			</trans-unit>
-			<trans-unit id="LGL.title_person">
+			<trans-unit id="LGL.title_person" xml:space="preserve">
 				<source>Title:</source>
 			</trans-unit>
-			<trans-unit id="LGL.address">
+			<trans-unit id="LGL.address" xml:space="preserve">
 				<source>Address:</source>
 			</trans-unit>
-			<trans-unit id="LGL.phone">
+			<trans-unit id="LGL.phone" xml:space="preserve">
 				<source>Phone:</source>
 			</trans-unit>
-			<trans-unit id="LGL.fax">
+			<trans-unit id="LGL.fax" xml:space="preserve">
 				<source>Fax:</source>
 			</trans-unit>
-			<trans-unit id="LGL.author">
+			<trans-unit id="LGL.author" xml:space="preserve">
 				<source>Author:</source>
 			</trans-unit>
-			<trans-unit id="LGL.email">
+			<trans-unit id="LGL.email" xml:space="preserve">
 				<source>Email:</source>
 			</trans-unit>
-			<trans-unit id="LGL.company">
+			<trans-unit id="LGL.company" xml:space="preserve">
 				<source>Company:</source>
 			</trans-unit>
-			<trans-unit id="LGL.city">
+			<trans-unit id="LGL.city" xml:space="preserve">
 				<source>City:</source>
 			</trans-unit>
-			<trans-unit id="LGL.zip">
+			<trans-unit id="LGL.zip" xml:space="preserve">
 				<source>Zipcode:</source>
 			</trans-unit>
-			<trans-unit id="LGL.country">
+			<trans-unit id="LGL.country" xml:space="preserve">
 				<source>Country:</source>
 			</trans-unit>
-			<trans-unit id="LGL.www">
+			<trans-unit id="LGL.www" xml:space="preserve">
 				<source>www:</source>
 			</trans-unit>
-			<trans-unit id="LGL.lastlogin">
+			<trans-unit id="LGL.lastlogin" xml:space="preserve">
 				<source>Last login:</source>
 			</trans-unit>
-			<trans-unit id="LGL.note">
+			<trans-unit id="LGL.note" xml:space="preserve">
 				<source>Note:</source>
 			</trans-unit>
-			<trans-unit id="LGL.parameters">
+			<trans-unit id="LGL.parameters" xml:space="preserve">
 				<source>Parameters:</source>
 			</trans-unit>
-			<trans-unit id="LGL.code">
+			<trans-unit id="LGL.code" xml:space="preserve">
 				<source>CODE:</source>
 			</trans-unit>
-			<trans-unit id="LGL.links">
+			<trans-unit id="LGL.links" xml:space="preserve">
 				<source>Links</source>
 			</trans-unit>
-			<trans-unit id="LGL.language">
+			<trans-unit id="LGL.language" xml:space="preserve">
 				<source>Language:</source>
 			</trans-unit>
-			<trans-unit id="LGL.category">
+			<trans-unit id="LGL.category" xml:space="preserve">
 				<source>Category:</source>
 			</trans-unit>
-			<trans-unit id="LGL.shortcut_page">
+			<trans-unit id="LGL.shortcut_page" xml:space="preserve">
 				<source>Shortcut to page:</source>
 			</trans-unit>
-			<trans-unit id="LGL.keywords">
+			<trans-unit id="LGL.keywords" xml:space="preserve">
 				<source>Keywords (,):</source>
 			</trans-unit>
-			<trans-unit id="LGL.disable">
+			<trans-unit id="LGL.disable" xml:space="preserve">
 				<source>Disable:</source>
 			</trans-unit>
-			<trans-unit id="LGL.startingpoint">
+			<trans-unit id="LGL.startingpoint" xml:space="preserve">
 				<source>Startingpoint:</source>
 			</trans-unit>
-			<trans-unit id="LGL.disableRTE">
+			<trans-unit id="LGL.disableRTE" xml:space="preserve">
 				<source>Disable Rich Text Editor:</source>
 			</trans-unit>
-			<trans-unit id="LGL.external">
+			<trans-unit id="LGL.external" xml:space="preserve">
 				<source>External URL</source>
 			</trans-unit>
-			<trans-unit id="LGL.recursive">
+			<trans-unit id="LGL.recursive" xml:space="preserve">
 				<source>Recursive:</source>
 			</trans-unit>
-			<trans-unit id="LGL.l18n_parent">
+			<trans-unit id="LGL.l18n_parent" xml:space="preserve">
 				<source>Transl.Orig:</source>
 			</trans-unit>
-			<trans-unit id="LGL.allLanguages">
+			<trans-unit id="LGL.allLanguages" xml:space="preserve">
 				<source>[All]</source>
 			</trans-unit>
-			<trans-unit id="LGL.versionLabel">
+			<trans-unit id="LGL.versionLabel" xml:space="preserve">
 				<source>Versioning Label:</source>
 			</trans-unit>
-			<trans-unit id="LGL.error">
+			<trans-unit id="LGL.error" xml:space="preserve">
 				<source>Error!</source>
 			</trans-unit>
 		</body>

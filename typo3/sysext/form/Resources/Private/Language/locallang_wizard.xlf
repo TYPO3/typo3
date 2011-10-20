@@ -3,616 +3,616 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="form">
 		<header/>
 		<body>
-			<trans-unit id="title">
+			<trans-unit id="title" xml:space="preserve">
 				<source>Form Wizard</source>
 			</trans-unit>
-			<trans-unit id="yes">
+			<trans-unit id="yes" xml:space="preserve">
 				<source>Yes</source>
 			</trans-unit>
-			<trans-unit id="no">
+			<trans-unit id="no" xml:space="preserve">
 				<source>No</source>
 			</trans-unit>
-			<trans-unit id="refresh">
+			<trans-unit id="refresh" xml:space="preserve">
 				<source>Refresh without saving</source>
 			</trans-unit>
-			<trans-unit id="errorTitle">
+			<trans-unit id="errorTitle" xml:space="preserve">
 				<source>Wizard error</source>
 			</trans-unit>
-			<trans-unit id="errorMessage">
+			<trans-unit id="errorMessage" xml:space="preserve">
 				<source>No reference to record</source>
 			</trans-unit>
-			<trans-unit id="save">
+			<trans-unit id="save" xml:space="preserve">
 				<source>Save form</source>
 			</trans-unit>
-			<trans-unit id="saveAndClose">
+			<trans-unit id="saveAndClose" xml:space="preserve">
 				<source>Save and close form</source>
 			</trans-unit>
-			<trans-unit id="history_undo">
+			<trans-unit id="history_undo" xml:space="preserve">
 				<source>Undo</source>
 			</trans-unit>
-			<trans-unit id="history_redo">
+			<trans-unit id="history_redo" xml:space="preserve">
 				<source>Redo</source>
 			</trans-unit>
-			<trans-unit id="action_save">
+			<trans-unit id="action_save" xml:space="preserve">
 				<source>Saving form</source>
 			</trans-unit>
-			<trans-unit id="action_save_error">
+			<trans-unit id="action_save_error" xml:space="preserve">
 				<source>Server-side failure with status code</source>
 			</trans-unit>
-			<trans-unit id="button_remove">
+			<trans-unit id="button_remove" xml:space="preserve">
 				<source>Remove</source>
 			</trans-unit>
-			<trans-unit id="left_elements">
+			<trans-unit id="left_elements" xml:space="preserve">
 				<source>Elements</source>
 			</trans-unit>
-			<trans-unit id="left_elements_intro_title">
+			<trans-unit id="left_elements_intro_title" xml:space="preserve">
 				<source>Adding elements to the form</source>
 			</trans-unit>
-			<trans-unit id="left_elements_intro_description">
+			<trans-unit id="left_elements_intro_description" xml:space="preserve">
 				<source>Drag or double-click elements to add</source>
 			</trans-unit>
-			<trans-unit id="left_elements_basic">
+			<trans-unit id="left_elements_basic" xml:space="preserve">
 				<source>Basic form elements</source>
 			</trans-unit>
-			<trans-unit id="basic_button">
+			<trans-unit id="basic_button" xml:space="preserve">
 				<source>Button</source>
 			</trans-unit>
-			<trans-unit id="basic_checkbox">
+			<trans-unit id="basic_checkbox" xml:space="preserve">
 				<source>Checkbox</source>
 			</trans-unit>
-			<trans-unit id="basic_fieldset">
+			<trans-unit id="basic_fieldset" xml:space="preserve">
 				<source>Fieldset</source>
 			</trans-unit>
-			<trans-unit id="basic_fileupload">
+			<trans-unit id="basic_fileupload" xml:space="preserve">
 				<source>Upload Field</source>
 			</trans-unit>
-			<trans-unit id="basic_hidden">
+			<trans-unit id="basic_hidden" xml:space="preserve">
 				<source>Hidden Field</source>
 			</trans-unit>
-			<trans-unit id="basic_password">
+			<trans-unit id="basic_password" xml:space="preserve">
 				<source>Password Field</source>
 			</trans-unit>
-			<trans-unit id="basic_radio">
+			<trans-unit id="basic_radio" xml:space="preserve">
 				<source>Radio Button</source>
 			</trans-unit>
-			<trans-unit id="basic_reset">
+			<trans-unit id="basic_reset" xml:space="preserve">
 				<source>Reset Button</source>
 			</trans-unit>
-			<trans-unit id="basic_select">
+			<trans-unit id="basic_select" xml:space="preserve">
 				<source>Drop Down</source>
 			</trans-unit>
-			<trans-unit id="basic_submit">
+			<trans-unit id="basic_submit" xml:space="preserve">
 				<source>Submit Button</source>
 			</trans-unit>
-			<trans-unit id="basic_textarea">
+			<trans-unit id="basic_textarea" xml:space="preserve">
 				<source>Text Area</source>
 			</trans-unit>
-			<trans-unit id="basic_textline">
+			<trans-unit id="basic_textline" xml:space="preserve">
 				<source>Text Field</source>
 			</trans-unit>
-			<trans-unit id="left_elements_content">
+			<trans-unit id="left_elements_content" xml:space="preserve">
 				<source>Content elements</source>
 			</trans-unit>
-			<trans-unit id="content_header">
+			<trans-unit id="content_header" xml:space="preserve">
 				<source>Header</source>
 			</trans-unit>
-			<trans-unit id="content_textblock">
+			<trans-unit id="content_textblock" xml:space="preserve">
 				<source>Text block</source>
 			</trans-unit>
-			<trans-unit id="left_elements_predefined">
+			<trans-unit id="left_elements_predefined" xml:space="preserve">
 				<source>Predefined form elements</source>
 			</trans-unit>
-			<trans-unit id="predefined_email">
+			<trans-unit id="predefined_email" xml:space="preserve">
 				<source>Email</source>
 			</trans-unit>
-			<trans-unit id="predefined_radiogroup">
+			<trans-unit id="predefined_radiogroup" xml:space="preserve">
 				<source>Radio Button Group</source>
 			</trans-unit>
-			<trans-unit id="predefined_checkboxgroup">
+			<trans-unit id="predefined_checkboxgroup" xml:space="preserve">
 				<source>Checkbox Group</source>
 			</trans-unit>
-			<trans-unit id="predefined_name">
+			<trans-unit id="predefined_name" xml:space="preserve">
 				<source>Full Name</source>
 			</trans-unit>
-			<trans-unit id="left_options">
+			<trans-unit id="left_options" xml:space="preserve">
 				<source>Options</source>
 			</trans-unit>
-			<trans-unit id="options_error">
+			<trans-unit id="options_error" xml:space="preserve">
 				<source>Error</source>
 			</trans-unit>
-			<trans-unit id="options_error_message">
+			<trans-unit id="options_error_message" xml:space="preserve">
 				<source>There is an error in the settings of the current element. Please check!</source>
 			</trans-unit>
-			<trans-unit id="options_dummy_title">
+			<trans-unit id="options_dummy_title" xml:space="preserve">
 				<source>Please select an element on the right</source>
 			</trans-unit>
-			<trans-unit id="options_dummy_description">
+			<trans-unit id="options_dummy_description" xml:space="preserve">
 				<source>When an element has been selected, this area will show the options for the selected element</source>
 			</trans-unit>
-			<trans-unit id="options_attributes">
+			<trans-unit id="options_attributes" xml:space="preserve">
 				<source>Attributes Properties</source>
 			</trans-unit>
-			<trans-unit id="attributes_accept">
+			<trans-unit id="attributes_accept" xml:space="preserve">
 				<source>Accept</source>
 			</trans-unit>
-			<trans-unit id="attributes_acceptcharset">
+			<trans-unit id="attributes_acceptcharset" xml:space="preserve">
 				<source>Acceptcharset</source>
 			</trans-unit>
-			<trans-unit id="attributes_accesskey">
+			<trans-unit id="attributes_accesskey" xml:space="preserve">
 				<source>Accesskey</source>
 			</trans-unit>
-			<trans-unit id="attributes_action">
+			<trans-unit id="attributes_action" xml:space="preserve">
 				<source>Action</source>
 			</trans-unit>
-			<trans-unit id="attributes_alt">
+			<trans-unit id="attributes_alt" xml:space="preserve">
 				<source>Alt</source>
 			</trans-unit>
-			<trans-unit id="attributes_checked">
+			<trans-unit id="attributes_checked" xml:space="preserve">
 				<source>Checked</source>
 			</trans-unit>
-			<trans-unit id="attributes_class">
+			<trans-unit id="attributes_class" xml:space="preserve">
 				<source>Class</source>
 			</trans-unit>
-			<trans-unit id="attributes_cols">
+			<trans-unit id="attributes_cols" xml:space="preserve">
 				<source>Cols</source>
 			</trans-unit>
-			<trans-unit id="attributes_dir">
+			<trans-unit id="attributes_dir" xml:space="preserve">
 				<source>Dir</source>
 			</trans-unit>
-			<trans-unit id="attributes_dir_ltr">
+			<trans-unit id="attributes_dir_ltr" xml:space="preserve">
 				<source>Left to right</source>
 			</trans-unit>
-			<trans-unit id="attributes_dir_rtl">
+			<trans-unit id="attributes_dir_rtl" xml:space="preserve">
 				<source>Right to left</source>
 			</trans-unit>
-			<trans-unit id="attributes_disabled">
+			<trans-unit id="attributes_disabled" xml:space="preserve">
 				<source>Disabled</source>
 			</trans-unit>
-			<trans-unit id="attributes_enctype">
+			<trans-unit id="attributes_enctype" xml:space="preserve">
 				<source>Enctype</source>
 			</trans-unit>
-			<trans-unit id="attributes_enctype_1">
+			<trans-unit id="attributes_enctype_1" xml:space="preserve">
 				<source>Encoded</source>
 			</trans-unit>
-			<trans-unit id="attributes_enctype_2">
+			<trans-unit id="attributes_enctype_2" xml:space="preserve">
 				<source>No encoding - File upload</source>
 			</trans-unit>
-			<trans-unit id="attributes_enctype_3">
+			<trans-unit id="attributes_enctype_3" xml:space="preserve">
 				<source>No encoding - Spaces converted</source>
 			</trans-unit>
-			<trans-unit id="attributes_id">
+			<trans-unit id="attributes_id" xml:space="preserve">
 				<source>Id</source>
 			</trans-unit>
-			<trans-unit id="attributes_label">
+			<trans-unit id="attributes_label" xml:space="preserve">
 				<source>Label</source>
 			</trans-unit>
-			<trans-unit id="attributes_lang">
+			<trans-unit id="attributes_lang" xml:space="preserve">
 				<source>Lang</source>
 			</trans-unit>
-			<trans-unit id="attributes_maxlength">
+			<trans-unit id="attributes_maxlength" xml:space="preserve">
 				<source>Maxlength</source>
 			</trans-unit>
-			<trans-unit id="attributes_method">
+			<trans-unit id="attributes_method" xml:space="preserve">
 				<source>Method</source>
 			</trans-unit>
-			<trans-unit id="attributes_method_get">
+			<trans-unit id="attributes_method_get" xml:space="preserve">
 				<source>Get</source>
 			</trans-unit>
-			<trans-unit id="attributes_method_post">
+			<trans-unit id="attributes_method_post" xml:space="preserve">
 				<source>Post</source>
 			</trans-unit>
-			<trans-unit id="attributes_multiple">
+			<trans-unit id="attributes_multiple" xml:space="preserve">
 				<source>Multiple</source>
 			</trans-unit>
-			<trans-unit id="attributes_name">
+			<trans-unit id="attributes_name" xml:space="preserve">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="attributes_readonly">
+			<trans-unit id="attributes_readonly" xml:space="preserve">
 				<source>Readonly</source>
 			</trans-unit>
-			<trans-unit id="attributes_rows">
+			<trans-unit id="attributes_rows" xml:space="preserve">
 				<source>Rows</source>
 			</trans-unit>
-			<trans-unit id="attributes_selected">
+			<trans-unit id="attributes_selected" xml:space="preserve">
 				<source>Selected</source>
 			</trans-unit>
-			<trans-unit id="attributes_size">
+			<trans-unit id="attributes_size" xml:space="preserve">
 				<source>Size</source>
 			</trans-unit>
-			<trans-unit id="attributes_src">
+			<trans-unit id="attributes_src" xml:space="preserve">
 				<source>Src</source>
 			</trans-unit>
-			<trans-unit id="attributes_style">
+			<trans-unit id="attributes_style" xml:space="preserve">
 				<source>Style</source>
 			</trans-unit>
-			<trans-unit id="attributes_tabindex">
+			<trans-unit id="attributes_tabindex" xml:space="preserve">
 				<source>Tabindex</source>
 			</trans-unit>
-			<trans-unit id="attributes_title">
+			<trans-unit id="attributes_title" xml:space="preserve">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="attributes_type">
+			<trans-unit id="attributes_type" xml:space="preserve">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="attributes_type_button">
+			<trans-unit id="attributes_type_button" xml:space="preserve">
 				<source>button</source>
 			</trans-unit>
-			<trans-unit id="attributes_type_checkbox">
+			<trans-unit id="attributes_type_checkbox" xml:space="preserve">
 				<source>checkbox</source>
 			</trans-unit>
-			<trans-unit id="attributes_type_file">
+			<trans-unit id="attributes_type_file" xml:space="preserve">
 				<source>file</source>
 			</trans-unit>
-			<trans-unit id="attributes_type_hidden">
+			<trans-unit id="attributes_type_hidden" xml:space="preserve">
 				<source>hidden</source>
 			</trans-unit>
-			<trans-unit id="attributes_type_image">
+			<trans-unit id="attributes_type_image" xml:space="preserve">
 				<source>image</source>
 			</trans-unit>
-			<trans-unit id="attributes_type_password">
+			<trans-unit id="attributes_type_password" xml:space="preserve">
 				<source>password</source>
 			</trans-unit>
-			<trans-unit id="attributes_type_radio">
+			<trans-unit id="attributes_type_radio" xml:space="preserve">
 				<source>radio</source>
 			</trans-unit>
-			<trans-unit id="attributes_type_reset">
+			<trans-unit id="attributes_type_reset" xml:space="preserve">
 				<source>reset</source>
 			</trans-unit>
-			<trans-unit id="attributes_type_submit">
+			<trans-unit id="attributes_type_submit" xml:space="preserve">
 				<source>submit</source>
 			</trans-unit>
-			<trans-unit id="attributes_type_text">
+			<trans-unit id="attributes_type_text" xml:space="preserve">
 				<source>text</source>
 			</trans-unit>
-			<trans-unit id="attributes_value">
+			<trans-unit id="attributes_value" xml:space="preserve">
 				<source>Value</source>
 			</trans-unit>
-			<trans-unit id="options_label">
+			<trans-unit id="options_label" xml:space="preserve">
 				<source>Label Properties</source>
 			</trans-unit>
-			<trans-unit id="label_label">
+			<trans-unit id="label_label" xml:space="preserve">
 				<source>Label</source>
 			</trans-unit>
-			<trans-unit id="label_layout">
+			<trans-unit id="label_layout" xml:space="preserve">
 				<source>Label position</source>
 			</trans-unit>
-			<trans-unit id="label_layout_front">
+			<trans-unit id="label_layout_front" xml:space="preserve">
 				<source>In front</source>
 			</trans-unit>
-			<trans-unit id="label_layout_back">
+			<trans-unit id="label_layout_back" xml:space="preserve">
 				<source>After</source>
 			</trans-unit>
-			<trans-unit id="options_legend">
+			<trans-unit id="options_legend" xml:space="preserve">
 				<source>Legend Properties</source>
 			</trans-unit>
-			<trans-unit id="legend_legend">
+			<trans-unit id="legend_legend" xml:space="preserve">
 				<source>Legend</source>
 			</trans-unit>
-			<trans-unit id="options_filters">
+			<trans-unit id="options_filters" xml:space="preserve">
 				<source>Filters</source>
 			</trans-unit>
-			<trans-unit id="filters_emptytext">
+			<trans-unit id="filters_emptytext" xml:space="preserve">
 				<source>Add a filter</source>
 			</trans-unit>
-			<trans-unit id="filters_alert_title">
+			<trans-unit id="filters_alert_title" xml:space="preserve">
 				<source>Adding a filter</source>
 			</trans-unit>
-			<trans-unit id="filters_alert_description">
+			<trans-unit id="filters_alert_description" xml:space="preserve">
 				<source>The selected filter is already present</source>
 			</trans-unit>
-			<trans-unit id="filters_dummy_title">
+			<trans-unit id="filters_dummy_title" xml:space="preserve">
 				<source>No filter selected</source>
 			</trans-unit>
-			<trans-unit id="filters_dummy_description">
+			<trans-unit id="filters_dummy_description" xml:space="preserve">
 				<source>To add a filter, select one from the dropdown</source>
 			</trans-unit>
-			<trans-unit id="filters_alphabetic">
+			<trans-unit id="filters_alphabetic" xml:space="preserve">
 				<source>Alphabetic</source>
 			</trans-unit>
-			<trans-unit id="filters_alphanumeric">
+			<trans-unit id="filters_alphanumeric" xml:space="preserve">
 				<source>Alphanumeric</source>
 			</trans-unit>
-			<trans-unit id="filters_currency">
+			<trans-unit id="filters_currency" xml:space="preserve">
 				<source>Currency</source>
 			</trans-unit>
-			<trans-unit id="filters_digit">
+			<trans-unit id="filters_digit" xml:space="preserve">
 				<source>Digit</source>
 			</trans-unit>
-			<trans-unit id="filters_integer">
+			<trans-unit id="filters_integer" xml:space="preserve">
 				<source>Integer</source>
 			</trans-unit>
-			<trans-unit id="filters_lowercase">
+			<trans-unit id="filters_lowercase" xml:space="preserve">
 				<source>Lowercase</source>
 			</trans-unit>
-			<trans-unit id="filters_regexp">
+			<trans-unit id="filters_regexp" xml:space="preserve">
 				<source>Regular Expression</source>
 			</trans-unit>
-			<trans-unit id="filters_removexss">
+			<trans-unit id="filters_removexss" xml:space="preserve">
 				<source>Remove XSS</source>
 			</trans-unit>
-			<trans-unit id="filters_stripnewlines">
+			<trans-unit id="filters_stripnewlines" xml:space="preserve">
 				<source>Strip New Lines</source>
 			</trans-unit>
-			<trans-unit id="filters_titlecase">
+			<trans-unit id="filters_titlecase" xml:space="preserve">
 				<source>Titlecase</source>
 			</trans-unit>
-			<trans-unit id="filters_trim">
+			<trans-unit id="filters_trim" xml:space="preserve">
 				<source>Trim</source>
 			</trans-unit>
-			<trans-unit id="filters_uppercase">
+			<trans-unit id="filters_uppercase" xml:space="preserve">
 				<source>Uppercase</source>
 			</trans-unit>
-			<trans-unit id="filters_properties_allowwhitespace">
+			<trans-unit id="filters_properties_allowwhitespace" xml:space="preserve">
 				<source>Allow whitespace</source>
 			</trans-unit>
-			<trans-unit id="filters_properties_decimalpoint">
+			<trans-unit id="filters_properties_decimalpoint" xml:space="preserve">
 				<source>Decimal point</source>
 			</trans-unit>
-			<trans-unit id="filters_properties_thousandseparator">
+			<trans-unit id="filters_properties_thousandseparator" xml:space="preserve">
 				<source>Thousand separator</source>
 			</trans-unit>
-			<trans-unit id="filters_properties_expression">
+			<trans-unit id="filters_properties_expression" xml:space="preserve">
 				<source>Expression</source>
 			</trans-unit>
-			<trans-unit id="filters_properties_characterlist">
+			<trans-unit id="filters_properties_characterlist" xml:space="preserve">
 				<source>Character list</source>
 			</trans-unit>
-			<trans-unit id="filters_properties_none">
+			<trans-unit id="filters_properties_none" xml:space="preserve">
 				<source>This filter has no configuration settings</source>
 			</trans-unit>
-			<trans-unit id="options_validation">
+			<trans-unit id="options_validation" xml:space="preserve">
 				<source>Validation</source>
 			</trans-unit>
-			<trans-unit id="validation_emptytext">
+			<trans-unit id="validation_emptytext" xml:space="preserve">
 				<source>Add a validation rule</source>
 			</trans-unit>
-			<trans-unit id="validation_alert_title">
+			<trans-unit id="validation_alert_title" xml:space="preserve">
 				<source>Adding a validation rule</source>
 			</trans-unit>
-			<trans-unit id="validation_alert_description">
+			<trans-unit id="validation_alert_description" xml:space="preserve">
 				<source>The selected validation rule is already present</source>
 			</trans-unit>
-			<trans-unit id="validation_dummy_title">
+			<trans-unit id="validation_dummy_title" xml:space="preserve">
 				<source>No validation rule selected</source>
 			</trans-unit>
-			<trans-unit id="validation_dummy_description">
+			<trans-unit id="validation_dummy_description" xml:space="preserve">
 				<source>To add a validation rule, select one from the dropdown</source>
 			</trans-unit>
-			<trans-unit id="validation_alphabetic">
+			<trans-unit id="validation_alphabetic" xml:space="preserve">
 				<source>Alphabetic</source>
 			</trans-unit>
-			<trans-unit id="validation_alphanumeric">
+			<trans-unit id="validation_alphanumeric" xml:space="preserve">
 				<source>Alphanumeric</source>
 			</trans-unit>
-			<trans-unit id="validation_between">
+			<trans-unit id="validation_between" xml:space="preserve">
 				<source>Between</source>
 			</trans-unit>
-			<trans-unit id="validation_date">
+			<trans-unit id="validation_date" xml:space="preserve">
 				<source>Date</source>
 			</trans-unit>
-			<trans-unit id="validation_digit">
+			<trans-unit id="validation_digit" xml:space="preserve">
 				<source>Digit</source>
 			</trans-unit>
-			<trans-unit id="validation_email">
+			<trans-unit id="validation_email" xml:space="preserve">
 				<source>Email address</source>
 			</trans-unit>
-			<trans-unit id="validation_equals">
+			<trans-unit id="validation_equals" xml:space="preserve">
 				<source>Equals</source>
 			</trans-unit>
-			<trans-unit id="validation_fileallowedtypes">
+			<trans-unit id="validation_fileallowedtypes" xml:space="preserve">
 				<source>Allowed mimetypes for file</source>
 			</trans-unit>
-			<trans-unit id="validation_filemaximumsize">
+			<trans-unit id="validation_filemaximumsize" xml:space="preserve">
 				<source>Maximum size for file (bytes)</source>
 			</trans-unit>
-			<trans-unit id="validation_fileminimumsize">
+			<trans-unit id="validation_fileminimumsize" xml:space="preserve">
 				<source>Minimum size for file (bytes)</source>
 			</trans-unit>
-			<trans-unit id="validation_float">
+			<trans-unit id="validation_float" xml:space="preserve">
 				<source>Float</source>
 			</trans-unit>
-			<trans-unit id="validation_greaterthan">
+			<trans-unit id="validation_greaterthan" xml:space="preserve">
 				<source>Greater than</source>
 			</trans-unit>
-			<trans-unit id="validation_inarray">
+			<trans-unit id="validation_inarray" xml:space="preserve">
 				<source>In array</source>
 			</trans-unit>
-			<trans-unit id="validation_integer">
+			<trans-unit id="validation_integer" xml:space="preserve">
 				<source>Integer</source>
 			</trans-unit>
-			<trans-unit id="validation_ip">
+			<trans-unit id="validation_ip" xml:space="preserve">
 				<source>Ip address</source>
 			</trans-unit>
-			<trans-unit id="validation_length">
+			<trans-unit id="validation_length" xml:space="preserve">
 				<source>Length</source>
 			</trans-unit>
-			<trans-unit id="validation_lessthan">
+			<trans-unit id="validation_lessthan" xml:space="preserve">
 				<source>Less than</source>
 			</trans-unit>
-			<trans-unit id="validation_regexp">
+			<trans-unit id="validation_regexp" xml:space="preserve">
 				<source>Regular Expression</source>
 			</trans-unit>
-			<trans-unit id="validation_required">
+			<trans-unit id="validation_required" xml:space="preserve">
 				<source>Required</source>
 			</trans-unit>
-			<trans-unit id="validation_uri">
+			<trans-unit id="validation_uri" xml:space="preserve">
 				<source>Uniform Resource Identifier</source>
 			</trans-unit>
-			<trans-unit id="validation_properties_message">
+			<trans-unit id="validation_properties_message" xml:space="preserve">
 				<source>Message</source>
 			</trans-unit>
-			<trans-unit id="validation_properties_error">
+			<trans-unit id="validation_properties_error" xml:space="preserve">
 				<source>Error</source>
 			</trans-unit>
-			<trans-unit id="validation_properties_breakonerror">
+			<trans-unit id="validation_properties_breakonerror" xml:space="preserve">
 				<source>Break on error</source>
 			</trans-unit>
-			<trans-unit id="validation_properties_showmessage">
+			<trans-unit id="validation_properties_showmessage" xml:space="preserve">
 				<source>Show message in label</source>
 			</trans-unit>
-			<trans-unit id="validation_properties_allowwhitespace">
+			<trans-unit id="validation_properties_allowwhitespace" xml:space="preserve">
 				<source>Allow whitespace</source>
 			</trans-unit>
-			<trans-unit id="validation_properties_minimum">
+			<trans-unit id="validation_properties_minimum" xml:space="preserve">
 				<source>Minimum</source>
 			</trans-unit>
-			<trans-unit id="validation_properties_maximum">
+			<trans-unit id="validation_properties_maximum" xml:space="preserve">
 				<source>Maximum</source>
 			</trans-unit>
-			<trans-unit id="validation_properties_inclusive">
+			<trans-unit id="validation_properties_inclusive" xml:space="preserve">
 				<source>Inclusive</source>
 			</trans-unit>
-			<trans-unit id="validation_properties_format">
+			<trans-unit id="validation_properties_format" xml:space="preserve">
 				<source>Format</source>
 			</trans-unit>
-			<trans-unit id="validation_properties_field">
+			<trans-unit id="validation_properties_field" xml:space="preserve">
 				<source>Field</source>
 			</trans-unit>
-			<trans-unit id="validation_properties_array">
+			<trans-unit id="validation_properties_array" xml:space="preserve">
 				<source>Array (Comma separated)</source>
 			</trans-unit>
-			<trans-unit id="validation_properties_expression">
+			<trans-unit id="validation_properties_expression" xml:space="preserve">
 				<source>Expression</source>
 			</trans-unit>
-			<trans-unit id="validation_properties_types">
+			<trans-unit id="validation_properties_types" xml:space="preserve">
 				<source>Mime types</source>
 			</trans-unit>
-			<trans-unit id="options_fieldoptions">
+			<trans-unit id="options_fieldoptions" xml:space="preserve">
 				<source>Field options</source>
 			</trans-unit>
-			<trans-unit id="fieldoptions_emptytext">
+			<trans-unit id="fieldoptions_emptytext" xml:space="preserve">
 				<source>No options to display</source>
 			</trans-unit>
-			<trans-unit id="fieldoptions_data">
+			<trans-unit id="fieldoptions_data" xml:space="preserve">
 				<source>Data</source>
 			</trans-unit>
-			<trans-unit id="fieldoptions_selected">
+			<trans-unit id="fieldoptions_selected" xml:space="preserve">
 				<source>Selected</source>
 			</trans-unit>
-			<trans-unit id="fieldoptions_button_add">
+			<trans-unit id="fieldoptions_button_add" xml:space="preserve">
 				<source>Add option</source>
 			</trans-unit>
-			<trans-unit id="fieldoptions_new">
+			<trans-unit id="fieldoptions_new" xml:space="preserve">
 				<source>New option</source>
 			</trans-unit>
-			<trans-unit id="options_various">
+			<trans-unit id="options_various" xml:space="preserve">
 				<source>Various Properties</source>
 			</trans-unit>
-			<trans-unit id="various_properties_name">
+			<trans-unit id="various_properties_name" xml:space="preserve">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="various_properties_content">
+			<trans-unit id="various_properties_content" xml:space="preserve">
 				<source>Content</source>
 			</trans-unit>
-			<trans-unit id="various_properties_headingsize">
+			<trans-unit id="various_properties_headingsize" xml:space="preserve">
 				<source>Heading size</source>
 			</trans-unit>
-			<trans-unit id="various_properties_prefix">
+			<trans-unit id="various_properties_prefix" xml:space="preserve">
 				<source>Show prefix</source>
 			</trans-unit>
-			<trans-unit id="various_properties_suffix">
+			<trans-unit id="various_properties_suffix" xml:space="preserve">
 				<source>Show suffix</source>
 			</trans-unit>
-			<trans-unit id="various_properties_middlename">
+			<trans-unit id="various_properties_middlename" xml:space="preserve">
 				<source>Show middle name</source>
 			</trans-unit>
-			<trans-unit id="left_form">
+			<trans-unit id="left_form" xml:space="preserve">
 				<source>Form</source>
 			</trans-unit>
-			<trans-unit id="form_prefix">
+			<trans-unit id="form_prefix" xml:space="preserve">
 				<source>Prefix</source>
 			</trans-unit>
-			<trans-unit id="form_postprocessor">
+			<trans-unit id="form_postprocessor" xml:space="preserve">
 				<source>Post Processors</source>
 			</trans-unit>
-			<trans-unit id="postprocessor_emptytext">
+			<trans-unit id="postprocessor_emptytext" xml:space="preserve">
 				<source>Add a Post Processor</source>
 			</trans-unit>
-			<trans-unit id="postprocessor_alert_title">
+			<trans-unit id="postprocessor_alert_title" xml:space="preserve">
 				<source>Adding a Post Processor</source>
 			</trans-unit>
-			<trans-unit id="postprocessor_alert_description">
+			<trans-unit id="postprocessor_alert_description" xml:space="preserve">
 				<source>The selected post processor is already present</source>
 			</trans-unit>
-			<trans-unit id="postprocessor_mail">
+			<trans-unit id="postprocessor_mail" xml:space="preserve">
 				<source>Send email</source>
 			</trans-unit>
-			<trans-unit id="postprocessor_dummy_title">
+			<trans-unit id="postprocessor_dummy_title" xml:space="preserve">
 				<source>No post processor selected</source>
 			</trans-unit>
-			<trans-unit id="postprocessor_dummy_description">
+			<trans-unit id="postprocessor_dummy_description" xml:space="preserve">
 				<source>To add a post processor, select one from the dropdown</source>
 			</trans-unit>
-			<trans-unit id="postprocessor_properties_recipientemail">
+			<trans-unit id="postprocessor_properties_recipientemail" xml:space="preserve">
 				<source>Email address of the recipient</source>
 			</trans-unit>
-			<trans-unit id="postprocessor_properties_senderemail">
+			<trans-unit id="postprocessor_properties_senderemail" xml:space="preserve">
 				<source>Email address of the sender</source>
 			</trans-unit>
-			<trans-unit id="postprocessor_mail">
+			<trans-unit id="postprocessor_mail" xml:space="preserve">
 				<source>Send email</source>
 			</trans-unit>
-			<trans-unit id="prefix_prefix">
+			<trans-unit id="prefix_prefix" xml:space="preserve">
 				<source>Prefix</source>
 			</trans-unit>
-			<trans-unit id="elements_dummy_title">
+			<trans-unit id="elements_dummy_title" xml:space="preserve">
 				<source>You haven't added any elements yet!</source>
 			</trans-unit>
-			<trans-unit id="elements_dummy_description">
+			<trans-unit id="elements_dummy_description" xml:space="preserve">
 				<source>To get started, drag an element from the left panel onto this area</source>
 			</trans-unit>
-			<trans-unit id="elements_button_delete">
+			<trans-unit id="elements_button_delete" xml:space="preserve">
 				<source>Delete this element</source>
 			</trans-unit>
-			<trans-unit id="elements_button_edit">
+			<trans-unit id="elements_button_edit" xml:space="preserve">
 				<source>Edit this element</source>
 			</trans-unit>
-			<trans-unit id="elements_confirm_delete_title">
+			<trans-unit id="elements_confirm_delete_title" xml:space="preserve">
 				<source>Delete element</source>
 			</trans-unit>
-			<trans-unit id="elements_confirm_delete_description">
+			<trans-unit id="elements_confirm_delete_description" xml:space="preserve">
 				<source>Are you sure you want to delete the selected element?</source>
 			</trans-unit>
-			<trans-unit id="elements_label">
+			<trans-unit id="elements_label" xml:space="preserve">
 				<source>Edit this label</source>
 			</trans-unit>
-			<trans-unit id="elements_label_email">
+			<trans-unit id="elements_label_email" xml:space="preserve">
 				<source>Email</source>
 			</trans-unit>
-			<trans-unit id="elements_label_prefix">
+			<trans-unit id="elements_label_prefix" xml:space="preserve">
 				<source>Prefix</source>
 			</trans-unit>
-			<trans-unit id="elements_label_firstname">
+			<trans-unit id="elements_label_firstname" xml:space="preserve">
 				<source>First name</source>
 			</trans-unit>
-			<trans-unit id="elements_label_middlename">
+			<trans-unit id="elements_label_middlename" xml:space="preserve">
 				<source>Middle name</source>
 			</trans-unit>
-			<trans-unit id="elements_label_lastname">
+			<trans-unit id="elements_label_lastname" xml:space="preserve">
 				<source>Last name</source>
 			</trans-unit>
-			<trans-unit id="elements_label_suffix">
+			<trans-unit id="elements_label_suffix" xml:space="preserve">
 				<source>Suffix</source>
 			</trans-unit>
-			<trans-unit id="elements_legend">
+			<trans-unit id="elements_legend" xml:space="preserve">
 				<source>Edit this legend</source>
 			</trans-unit>
-			<trans-unit id="elements_legend_name">
+			<trans-unit id="elements_legend_name" xml:space="preserve">
 				<source>Full name</source>
 			</trans-unit>
-			<trans-unit id="elements_header_content">
+			<trans-unit id="elements_header_content" xml:space="preserve">
 				<source>Edit this header</source>
 			</trans-unit>
-			<trans-unit id="elements_textblock_content">
+			<trans-unit id="elements_textblock_content" xml:space="preserve">
 				<source>Edit this textblock</source>
 			</trans-unit>
-			<trans-unit id="elements_option_1">
+			<trans-unit id="elements_option_1" xml:space="preserve">
 				<source>Option 1</source>
 			</trans-unit>
-			<trans-unit id="elements_option_2">
+			<trans-unit id="elements_option_2" xml:space="preserve">
 				<source>Option 2</source>
 			</trans-unit>
-			<trans-unit id="elements_option_3">
+			<trans-unit id="elements_option_3" xml:space="preserve">
 				<source>Option 3</source>
 			</trans-unit>
 		</body>

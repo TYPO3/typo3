@@ -1,256 +1,254 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="indexed_search" xml:space="preserve">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="indexed_search">
 		<header/>
 		<body>
-			<trans-unit id="default_search_word_entry">
+			<trans-unit id="default_search_word_entry" xml:space="preserve">
 				<source>Search for</source>
 			</trans-unit>
-			<trans-unit id="submit_button_label">
+			<trans-unit id="submit_button_label" xml:space="preserve">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="opt_type_0">
+			<trans-unit id="opt_type_0" xml:space="preserve">
 				<source>Distinct word</source>
 			</trans-unit>
-			<trans-unit id="opt_type_1">
+			<trans-unit id="opt_type_1" xml:space="preserve">
 				<source>Part of word</source>
 			</trans-unit>
-			<trans-unit id="opt_type_2">
+			<trans-unit id="opt_type_2" xml:space="preserve">
 				<source>First part of word</source>
 			</trans-unit>
-			<trans-unit id="opt_type_3">
+			<trans-unit id="opt_type_3" xml:space="preserve">
 				<source>Last part of word</source>
 			</trans-unit>
-			<trans-unit id="opt_type_10">
+			<trans-unit id="opt_type_10" xml:space="preserve">
 				<source>Sounds like</source>
 			</trans-unit>
-			<trans-unit id="opt_type_20">
+			<trans-unit id="opt_type_20" xml:space="preserve">
 				<source>Sentence</source>
 			</trans-unit>
-			<trans-unit id="opt_defOp_0">
+			<trans-unit id="opt_defOp_0" xml:space="preserve">
 				<source>All words (AND)</source>
 			</trans-unit>
-			<trans-unit id="opt_defOp_1">
+			<trans-unit id="opt_defOp_1" xml:space="preserve">
 				<source>Any words (OR)</source>
 			</trans-unit>
-			<trans-unit id="opt_sections_0">
+			<trans-unit id="opt_sections_0" xml:space="preserve">
 				<source>Whole site</source>
 			</trans-unit>
-			<trans-unit id="opt_sections_-1">
+			<trans-unit id="opt_sections_-1" xml:space="preserve">
 				<source>Only this page</source>
 			</trans-unit>
-			<trans-unit id="opt_sections_-2">
+			<trans-unit id="opt_sections_-2" xml:space="preserve">
 				<source>Top + level 1</source>
 			</trans-unit>
-			<trans-unit id="opt_sections_-3">
+			<trans-unit id="opt_sections_-3" xml:space="preserve">
 				<source>Level 2 and out</source>
 			</trans-unit>
-			<trans-unit id="opt_freeIndexUid_-1">
+			<trans-unit id="opt_freeIndexUid_-1" xml:space="preserve">
 				<source>All, mixed</source>
 			</trans-unit>
-			<trans-unit id="opt_freeIndexUid_-2">
+			<trans-unit id="opt_freeIndexUid_-2" xml:space="preserve">
 				<source>All, categorized</source>
 			</trans-unit>
-			<trans-unit id="opt_freeIndexUid_0">
+			<trans-unit id="opt_freeIndexUid_0" xml:space="preserve">
 				<source>Pages</source>
 			</trans-unit>
-			<trans-unit id="opt_freeIndexUid_header_-1">
+			<trans-unit id="opt_freeIndexUid_header_-1" xml:space="preserve">
 				<source>Mixed categories</source>
 			</trans-unit>
-			<trans-unit id="opt_freeIndexUid_header_0">
+			<trans-unit id="opt_freeIndexUid_header_0" xml:space="preserve">
 				<source>Website Pages</source>
 			</trans-unit>
-			<trans-unit id="opt_media_-1">
+			<trans-unit id="opt_media_-1" xml:space="preserve">
 				<source>All media</source>
 			</trans-unit>
-			<trans-unit id="opt_media_0">
+			<trans-unit id="opt_media_0" xml:space="preserve">
 				<source>Internal pages</source>
 			</trans-unit>
-			<trans-unit id="opt_media_-2">
+			<trans-unit id="opt_media_-2" xml:space="preserve">
 				<source>All External</source>
 			</trans-unit>
-			<trans-unit id="opt_order_rank_flag">
+			<trans-unit id="opt_order_rank_flag" xml:space="preserve">
 				<source>Weight/Frequency</source>
 			</trans-unit>
-			<trans-unit id="opt_order_rank_freq">
+			<trans-unit id="opt_order_rank_freq" xml:space="preserve">
 				<source>Frequency</source>
 			</trans-unit>
-			<trans-unit id="opt_order_rank_first">
+			<trans-unit id="opt_order_rank_first" xml:space="preserve">
 				<source>Close to top</source>
 			</trans-unit>
-			<trans-unit id="opt_order_rank_count">
+			<trans-unit id="opt_order_rank_count" xml:space="preserve">
 				<source>Number of words</source>
 			</trans-unit>
-			<trans-unit id="opt_order_mtime">
+			<trans-unit id="opt_order_mtime" xml:space="preserve">
 				<source>Date Modified</source>
 			</trans-unit>
-			<trans-unit id="opt_order_title">
+			<trans-unit id="opt_order_title" xml:space="preserve">
 				<source>Document title</source>
 			</trans-unit>
-			<trans-unit id="opt_order_crdate">
+			<trans-unit id="opt_order_crdate" xml:space="preserve">
 				<source>Creation date</source>
 			</trans-unit>
-			<trans-unit id="opt_group_sections">
+			<trans-unit id="opt_group_sections" xml:space="preserve">
 				<source>Section hierarchy</source>
 			</trans-unit>
-			<trans-unit id="opt_group_flat">
+			<trans-unit id="opt_group_flat" xml:space="preserve">
 				<source>Flat list</source>
 			</trans-unit>
-			<trans-unit id="opt_lang_-1">
+			<trans-unit id="opt_lang_-1" xml:space="preserve">
 				<source>All languages</source>
 			</trans-unit>
-			<trans-unit id="opt_lang_0">
+			<trans-unit id="opt_lang_0" xml:space="preserve">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="opt_desc_0">
+			<trans-unit id="opt_desc_0" xml:space="preserve">
 				<source>Highest first</source>
 			</trans-unit>
-			<trans-unit id="opt_desc_1">
+			<trans-unit id="opt_desc_1" xml:space="preserve">
 				<source>Lowest first</source>
 			</trans-unit>
-			<trans-unit id="opt_RL1">
+			<trans-unit id="opt_RL1" xml:space="preserve">
 				<source>Level 1:</source>
 			</trans-unit>
-			<trans-unit id="opt_RL1ALL">
+			<trans-unit id="opt_RL1ALL" xml:space="preserve">
 				<source>All pages on level 1</source>
 			</trans-unit>
-			<trans-unit id="opt_RL2">
+			<trans-unit id="opt_RL2" xml:space="preserve">
 				<source>- Level 2:</source>
 			</trans-unit>
-			<trans-unit id="opt_RL2ALL">
+			<trans-unit id="opt_RL2ALL" xml:space="preserve">
 				<source>- All pages on level 2</source>
 			</trans-unit>
-			<trans-unit id="form_legend">
+			<trans-unit id="form_legend" xml:space="preserve">
 				<source>Search form</source>
 			</trans-unit>
-			<trans-unit id="form_searchFor">
+			<trans-unit id="form_searchFor" xml:space="preserve">
 				<source>Search for:</source>
 			</trans-unit>
-			<trans-unit id="form_extResume">
+			<trans-unit id="form_extResume" xml:space="preserve">
 				<source>Extended resume</source>
 			</trans-unit>
-			<trans-unit id="form_atATime">
+			<trans-unit id="form_atATime" xml:space="preserve">
 				<source>at a time</source>
 			</trans-unit>
-			<trans-unit id="form_orderBy">
+			<trans-unit id="form_orderBy" xml:space="preserve">
 				<source>Order by:</source>
 			</trans-unit>
-			<trans-unit id="form_fromSection">
+			<trans-unit id="form_fromSection" xml:space="preserve">
 				<source>From section:</source>
 			</trans-unit>
-			<trans-unit id="form_freeIndexUid">
+			<trans-unit id="form_freeIndexUid" xml:space="preserve">
 				<source>Category:</source>
 			</trans-unit>
-			<trans-unit id="form_searchIn">
+			<trans-unit id="form_searchIn" xml:space="preserve">
 				<source>Search in:</source>
 			</trans-unit>
-			<trans-unit id="form_match">
+			<trans-unit id="form_match" xml:space="preserve">
 				<source>Match:</source>
 			</trans-unit>
-			<trans-unit id="form_style">
+			<trans-unit id="form_style" xml:space="preserve">
 				<source>Style:</source>
 			</trans-unit>
-			<trans-unit id="rules_header">
+			<trans-unit id="rules_header" xml:space="preserve">
 				<source>Rules:</source>
 			</trans-unit>
-			<trans-unit id="rules_text">
-				<source>
-Only words with 2 or more characters are accepted
+			<trans-unit id="rules_text" xml:space="preserve">
+				<source>Only words with 2 or more characters are accepted
 Max 200 chars total
 Space is used to split words, "" can be used to search for a whole string (not indexed search then)
 AND, OR and NOT are prefix words, overruling the default operator
 +/|/- equals AND, OR and NOT as operators.
-All search words are converted to lowercase.
-				</source>
+All search words are converted to lowercase.</source>
 			</trans-unit>
-			<trans-unit id="searchFor">
+			<trans-unit id="searchFor" xml:space="preserve">
 				<source>Search for</source>
 			</trans-unit>
-			<trans-unit id="searchFor_or">
+			<trans-unit id="searchFor_or" xml:space="preserve">
 				<source>or</source>
 			</trans-unit>
-			<trans-unit id="searchFor_and">
+			<trans-unit id="searchFor_and" xml:space="preserve">
 				<source>and</source>
 			</trans-unit>
-			<trans-unit id="searchFor_butNot">
+			<trans-unit id="searchFor_butNot" xml:space="preserve">
 				<source>but not</source>
 			</trans-unit>
-			<trans-unit id="noResults">
+			<trans-unit id="noResults" xml:space="preserve">
 				<source>NO results found.</source>
 			</trans-unit>
-			<trans-unit id="inSection">
+			<trans-unit id="inSection" xml:space="preserve">
 				<source>in the section</source>
 			</trans-unit>
-			<trans-unit id="inNsection">
+			<trans-unit id="inNsection" xml:space="preserve">
 				<source>in %s section:</source>
 			</trans-unit>
-			<trans-unit id="inNsections">
+			<trans-unit id="inNsections" xml:space="preserve">
 				<source>in %s sections:</source>
 			</trans-unit>
-			<trans-unit id="word_page">
+			<trans-unit id="word_page" xml:space="preserve">
 				<source>page</source>
 			</trans-unit>
-			<trans-unit id="word_pages">
+			<trans-unit id="word_pages" xml:space="preserve">
 				<source>pages</source>
 			</trans-unit>
-			<trans-unit id="unnamedSection">
+			<trans-unit id="unnamedSection" xml:space="preserve">
 				<source>Other</source>
 			</trans-unit>
-			<trans-unit id="link_regularSearch">
+			<trans-unit id="link_regularSearch" xml:space="preserve">
 				<source>Regular search</source>
 			</trans-unit>
-			<trans-unit id="link_advancedSearch">
+			<trans-unit id="link_advancedSearch" xml:space="preserve">
 				<source>Advanced search</source>
 			</trans-unit>
-			<trans-unit id="res_path">
+			<trans-unit id="res_path" xml:space="preserve">
 				<source>Path:</source>
 			</trans-unit>
-			<trans-unit id="res_modified">
+			<trans-unit id="res_modified" xml:space="preserve">
 				<source>Modified:</source>
 			</trans-unit>
-			<trans-unit id="res_created">
+			<trans-unit id="res_created" xml:space="preserve">
 				<source>Created:</source>
 			</trans-unit>
-			<trans-unit id="res_size">
+			<trans-unit id="res_size" xml:space="preserve">
 				<source>Size:</source>
 			</trans-unit>
-			<trans-unit id="res_noResume">
+			<trans-unit id="res_noResume" xml:space="preserve">
 				<source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
 			</trans-unit>
-			<trans-unit id="res_otherMatching">
+			<trans-unit id="res_otherMatching" xml:space="preserve">
 				<source>Other matching pages in the same document:</source>
 			</trans-unit>
-			<trans-unit id="res_otherPageAsWell">
+			<trans-unit id="res_otherPageAsWell" xml:space="preserve">
 				<source>INFO: There was another page indexed as well... Probably indexed with another or no usergroup.</source>
 			</trans-unit>
-			<trans-unit id="res_memberGroups">
+			<trans-unit id="res_memberGroups" xml:space="preserve">
 				<source>Require membership of group numbers %s</source>
 			</trans-unit>
-			<trans-unit id="pi_list_browseresults_prev">
+			<trans-unit id="pi_list_browseresults_prev" xml:space="preserve">
 				<source>&lt; Previous</source>
 			</trans-unit>
-			<trans-unit id="pi_list_browseresults_page">
+			<trans-unit id="pi_list_browseresults_page" xml:space="preserve">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="pi_list_browseresults_next">
+			<trans-unit id="pi_list_browseresults_next" xml:space="preserve">
 				<source>Next &gt;</source>
 			</trans-unit>
-			<trans-unit id="pi_list_browseresults_display">
+			<trans-unit id="pi_list_browseresults_display" xml:space="preserve">
 				<source>Displaying results ###TAG_BEGIN###%s to %s###TAG_END### out of ###TAG_BEGIN###%s###TAG_END###</source>
 			</trans-unit>
-			<trans-unit id="local_operator_AND">
+			<trans-unit id="local_operator_AND" xml:space="preserve">
 				<source>AND</source>
 			</trans-unit>
-			<trans-unit id="local_operator_OR">
+			<trans-unit id="local_operator_OR" xml:space="preserve">
 				<source>OR</source>
 			</trans-unit>
-			<trans-unit id="local_operator_NOT">
+			<trans-unit id="local_operator_NOT" xml:space="preserve">
 				<source>NOT</source>
 			</trans-unit>
-			<trans-unit id="makerating_addToCurrentSearch">
+			<trans-unit id="makerating_addToCurrentSearch" xml:space="preserve">
 				<source>Add to current search words</source>
 			</trans-unit>
-			<trans-unit id="maketitle_matches">
+			<trans-unit id="maketitle_matches" xml:space="preserve">
 				<source>matches</source>
 			</trans-unit>
 		</body>
