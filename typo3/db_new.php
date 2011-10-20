@@ -96,7 +96,13 @@ class SC_db_new {
 	var $newPagesInto;
 	var $newContentInto;
 	var $newPagesAfter;
-	protected $newPagesSelectPosition = 1;
+
+	/**
+	 * Determines, whether "Select Position" for new page should be shown
+	 * @var bool $newPagesSelectPosition
+	 */
+	protected $newPagesSelectPosition = TRUE;
+
 	var $web_list_modTSconfig;
 	var $allowedNewTables;
 	var $deniedNewTables;
@@ -351,15 +357,13 @@ class SC_db_new {
 		$pageTS = t3lib_BEfunc::getPagesTSconfig($this->id);
 			// Finish initializing new pages options with TSconfig
 			// Each new page option may be hidden by TSconfig
-		if (isset($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside']) && $pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside'] === '0') {
-			$this->newPagesInto = 0;
-		}
-		if (isset($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter']) && $pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter'] === '0') {
-			$this->newPagesAfter = 0;
-		}
-		if (isset($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageSelectPosition']) && $pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageSelectPosition'] === '0') {
-			$this->newPagesSelectPosition = 0;
-		}
+
+			// Enabled option for the position of a new page
+		$this->newPagesSelectPosition = !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageSelectPosition']);
+			// pseudo-boolean (0/1) for backward compatibility
+		$this->newPagesInto = (!empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside']) ? 1 : 0);
+		$this->newPagesAfter = (!empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter']) ? 1 : 0);
+
 
 			// Slight spacer from header:
 		$this->code .= $halfLine;
