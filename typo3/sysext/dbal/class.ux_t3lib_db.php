@@ -2519,7 +2519,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	public function sql_query($query) {
 		$globalConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dbal']);
-		if ($globalConfig['sql_query.passthrough']) {
+		if ($globalConfig['sql_query.']['passthrough']) {
 			return parent::sql_query($query);
 		}
 
