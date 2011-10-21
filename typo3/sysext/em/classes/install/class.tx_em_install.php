@@ -497,7 +497,7 @@ class tx_em_Install {
 							'CMD[importExt]' => $depK,
 							'CMD[loc]' => 'L',
 							'CMD[standAlone]' => 1
-						)) . '\', \'' . md5($instExtInfo[$depK]['EM_CONF']['title']) . '\', \'width=650, height=500\'); return false;" target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_import_now') . '</a>';
+						)) . '\', \'' . md5($instExtInfo[$depK]['EM_CONF']['title']) . '\', \'width=650,height=500,scrollbars=yes\'); return false;" target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_import_now') . '</a>';
 						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $depK . ']" id="checkIgnore_' . $depK . '" />
 							<label for="checkIgnore_' . $depK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_ext_requirement') . '</label>';
 					} else {
@@ -511,7 +511,7 @@ class tx_em_Install {
 							'CMD[standAlone]' => 1,
 							'SET[singleDetails]' => 'info'
 						)) .
-								'\', \'' . md5($instExtInfo[$depK]['EM_CONF']['title']) . '\', \'width=650, height=500\'); return false; " target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_install_now') . '</a>';
+								'\', \'' . md5($instExtInfo[$depK]['EM_CONF']['title']) . '\', \'width=650,height=500,scrollbars=yes\'); return false; " target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_install_now') . '</a>';
 						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $depK . ']" id="checkIgnore_' . $depK . '" />
 							<label for="checkIgnore_' . $depK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_ext_requirement') . '</label>';
 					}
@@ -611,7 +611,7 @@ class tx_em_Install {
 							'CMD[importExt]' => $suggestK,
 							'CMD[loc]' => 'L',
 							'CMD[standAlone]' => 1
-						)) . '\', \'' . md5($suggestK) . '\', \'width=650, height=500\'); return false; " target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_import_now') . '</a>';
+						)) . '\', \'' . md5($suggestK) . '\', \'width=650,height=500,scrollbars=yes\'); return false; " target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_import_now') . '</a>';
 						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $suggestK . ']" id="checkIgnore_' . $suggestK . '" />
 							<label for="checkIgnore_' . $suggestK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_suggestion') . '</label>';
 					} else {
@@ -625,7 +625,7 @@ class tx_em_Install {
 							'CMD[standAlone]' => 1,
 							'SET[singleDetails]' => 'info'
 						))) .
-								'\', \'' . md5($suggestK) . '\', \'width=650, height=500\'); return false; " target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_install_now') . '</a>';
+								'\', \'' . md5($suggestK) . '\', \'width=650,height=500,scrollbars=yes\'); return false; " target="_blank">' . $GLOBALS['LANG']->getLL('checkDependencies_install_now') . '</a>';
 						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $suggestK . ']" id="checkIgnore_' . $suggestK . '" />
 							<label for="checkIgnore_' . $suggestK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_suggestion') . '</label>';
 					}
