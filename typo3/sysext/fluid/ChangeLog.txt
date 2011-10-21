@@ -1,10 +1,9 @@
 ChangeLog for Fluid
 ===================
 
-
-Changes for 1.4.0 beta1:
-========================
-included in TYPO3 4.6 beta1.
+Changes for 1.4.0:
+==================
+included in TYPO3 4.6.0
 
 This change features numerous cleanups, and the following new features:
 
@@ -49,9 +48,27 @@ Widgets: Allow overriding templateRootPath
 ------------------------------------------
 It is now possible to override the widget template root path via the framework
 configuration, for example:
+
     plugin.tx_extension.view {
       widget.<WidgetViewHelperClassName>.templateRootPath=...
     }
+
+Full Changes from 1.4.0 beta1 to 1.4.0:
+=======================================
+[TASK] Update version to 1.4.0-rc1
+[TASK] Increase version number
+[BUGFIX] Create new CObject in CObject ViewHelper
+[BUGFIX] Fix Doc comment in format.padding ViewHelper
+[BUGFIX] ViewHelper: Make SelectViewHelper use property paths as arguments
+[FEATURE] Add parameter to RenderViewHelper for optional sections
+[BUGFIX] Sanitize identifier when compiling templates
+[BUGFIX] use $for only when not empty and not NULL
+[+BUGFIX] disable cache when displaying FlashMessages in frontend
+[+FEATURE] Comment ViewHelper
+[TASK] Remove fluid autoloader
+[+TASK] Marking Fluid as "stable" instead of "beta"
+[+BUGFIX] Incorrect type of Error thrown (FLOW3 Error)
+[BUGFIX] Make textfield view helper handle zero (not empty) values
 
 Full Changes for 1.4.0 beta1:
 =============================
