@@ -284,7 +284,7 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 	 */
 	public function renderThrowsExceptionIfSpecifiedTemplateFileDoesNotExist() {
 		$this->view->setTemplatePathAndFilename('NonExistingTemplatePath');
-		$this->view->render();
+		@$this->view->render();
 	}
 
 	/**
@@ -431,7 +431,7 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 	 */
 	public function getPartialSourceThrowsExceptionIfPartialRootPathDoesNotExist() {
 		$this->view->setPartialRootPath('some/non/existing/Path');
-		$this->view->_call('getPartialSource');
+		$this->view->_call('getPartialSource', 'SomePartial');
 	}
 
 	/**
