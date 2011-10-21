@@ -1,11 +1,11 @@
 ChangeLog for Extbase
 =====================
 
-Changes for 1.4.0 beta1:
-========================
-included in TYPO3 4.6.0 beta1.
+Changes for 1.4.0:
+==================
+included in TYPO3 4.6.0.
 
-This release features 76 changes, most of them being bugfixes in all areas of Extbase.
+This release features more than 100 changes, most of them being bugfixes in all areas of Extbase.
 Thanks every community member for bug reports, submitting patches and reviewing! Extbase
 would not be possible without you!
 
@@ -15,14 +15,17 @@ would not be possible without you!
 The Property Mapper has been completely rewritten in FLOW3, and this has also been backported
 to Extbase. The new property mapper is very configurable and extensible.
 
-Furthermore, the MVC stack has been adjusted to be in sync with FLOW3 again. We will provide
-up-to-date documentation until the final release.
+Furthermore, the MVC stack has been adjusted to be in sync with FLOW3 again. However, the new
+behavior is ONLY ACTIVATED MANUALLY. We suggest that you activate it for your new extensions
+by inserting:
 
-These are breaking changes in some cases. In order to get the old behavior back, set the
-TypoScript setting:
-	config.tx_extbase.features.rewrittenPropertyMapper = 0
+	plugin.tx_[yourExtensionName].features.rewrittenPropertyMapper = 1
 
-!!! The above way of switching to compatibility mode might still change until the final release!
+The documentation for the new property mapper can be found at
+
+http://flow3.typo3.org/documentation/guide/partiii/propertymapping.html
+
+They also apply to Extbase.
 
 !!! Updated Validation API
 --------------------------
@@ -42,6 +45,50 @@ Signal / Slot implementation
 The "Signal / Slot" feature has been backported from FLOW3, implementing a future-proof
 alternative to hooks.
 
+Command Controller
+------------------
+
+Use it from commandline like this:
+	./cli_dispatch.phpsh extbase <command identifier> --argumentName=value
+
+for example:
+	./cli_dispatch.phpsh extbase help
+
+NOTE: Unlike in FLOW3 Commands have to be registered explictly
+in ext_localconf.php in order to be callable via CLI:
+	if (TYPO3_MODE === 'BE') {
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'Tx_MyExtension_Command_FooCommandController';
+	}
+
+
+Full Changes for 1.4.0 beta1 - 1.4.0:
+=====================================
+[BUGFIX] Pootle: Multi-line labels are not rendered properly
+[TASK] English XLIFF files should not contain target element
+[TASK] Fix CGL issues on "else if" constructs
+[TASK] Update version to 1.4.0-rc1
+[FEATURE] Backport CommandController Implementation
+[!!!][TASK] Disable rewritten property mapper by default
+[BUGFIX] Removing "Repository" in class name makes extensions unusable
+[BUGFIX] Default error FlashMessage has wrong severity
+[BUGFIX] Fix check against @ignorevalidation annotations
+[BUGFIX] ConfigurationManager use FrontendSimulator only if neccessary
+[TASK] Increase version number
+[BUGFIX] Default action is not properly resolved
+[FEATURE] Descriptive error on invalid action name
+[BUGFIX] Replaced call to deprecated t3lib_div::testInt()
+[FEATURE] Skip default controller and action in generated URIs
+[FEATURE] Setting a scheme for a URI
+[BUGFIX] Don't clone ContentObject in ConfigurationManager
+[TASK] Remove deprecated methods & properties
+[BUGFIX] Tx_Extbase_Utility_Localization::translate() must return NULL for non-existing keys
+[BUGFIX] Clone ContentObject
+[BUGFIX] Fix method visibility of AbstractConfigurationManager::getTypoScriptSetup()
+[TASK] Convert XLIFF files to Tab indentation
+[BUGFIX] XLIFF: Approved attribute is on wrong element
+[+BUGFIX] Fixing incorrect references to F3 classes
+[+BUGFIX] Added missing initializeView method in EmptyView
+[+BUGFIX] Fix classname of Exception, ConfigurationManager
 
 Full Changes for 1.4.0 beta1:
 =============================
