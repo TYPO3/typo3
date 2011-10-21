@@ -230,7 +230,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 	 * @expectedException Tx_Extbase_MVC_Exception
 	 */
 	public function buildThrowsExceptionIfControllerConfigurationIsEmptyOrNotSet() {
-		unset($this->configuration['controllerConfiguration']);
+		$this->configuration['controllerConfiguration'] = array();
 		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
 		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
 		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
