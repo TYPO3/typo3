@@ -4255,7 +4255,7 @@ class tslib_cObj {
 		$conf['token'] = isset($conf['token.'])
 			? $this->stdWrap($conf['token'], $conf['token.'])
 			: $conf['token'];
-		if (!$conf['token']) {
+		if ($conf['token'] === '') {
 			return $value;
 		}
 		$conf['max'] = isset($conf['max.'])
