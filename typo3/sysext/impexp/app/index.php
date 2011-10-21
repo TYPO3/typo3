@@ -1289,7 +1289,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						unset($passParams['import_file']);
 
 						$thisScriptUrl = t3lib_div::getIndpEnv('REQUEST_URI').'?M=xMOD_tximpexp&id='.$this->id.t3lib_div::implodeArrayForUrl('tx_impexp',$passParams);
-						$emURL = $this->doc->backPath . t3lib_extMgm::extRelPath('em') . 'mod1/index.php?CMD[requestInstallExtensions]=' .
+						$emURL = $this->doc->backPath . t3lib_extMgm::extRelPath('em') . 'classes/index.php?CMD[requestInstallExtensions]=' .
 							implode(',', $extKeysToInstall) . '&returnUrl=' . rawurlencode($thisScriptUrl);
 						$extensionInstallationMessage = 'Before you can install this T3D file you need to install the extensions "'.implode('", "',$extKeysToInstall).'". Clicking Import will first take you to the Extension Manager so these dependencies can be resolved.';
 					}
