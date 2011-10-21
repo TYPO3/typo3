@@ -103,7 +103,7 @@ class tx_em_Connection_ExtDirectServer {
 
 
 	/**
-	 * Render local extension list
+	 * Render local extension list, sorted by extension key.
 	 *
 	 * @param object $parameters
 	 * @return array
@@ -135,6 +135,9 @@ class tx_em_Connection_ExtDirectServer {
 			$localList[$value['extkey']]['versionislower'] = $isUpdatable;
 			$localList[$value['extkey']]['maxversion'] = tx_em_Tools::versionFromInt($value['maxintversion']);
 		}
+
+			// Sort the list by extension key
+		ksort($localList);
 
 		return array(
 			'length' => count($localList),
