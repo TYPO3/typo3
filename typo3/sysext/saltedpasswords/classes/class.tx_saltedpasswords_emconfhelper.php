@@ -171,16 +171,33 @@ EOT;
 				$this->setErrorLevel('ok');
 				$problems[] = 'The backend is configured to use SaltedPasswords with RSA authentification.';
 			} else {
+					// this means that we are not using saltedpasswords
 				$this->setErrorLevel('error');
+
+				/**
+				 * Try to instantiate an RSAauth backend. If this does not work, it means that OpenSSL is not usable
+				 * @var $rsaauthBackendFactory tx_rsaauth_backendfactory
+				 */
+				$rsaauthBackendFactory = t3lib_div::makeInstance('tx_rsaauth_backendfactory');
+				$backend = $rsaauthBackendFactory->getBackend();
+				if ($backend !== NULL) {
+						// we have got a backend, so it's only about adjusting configuration
+					$rsaauthMessage = '<li>Install the "rsaauth" extension and use the Install Tool to set the
+						Login Security Level for the backend to "rsa"
+						(\$TYPO3_CONF_VARS[\'BE\'][\'loginSecurityLevel\'])</li>';
+				} else {
+						// we have no backend, so rsaauth is not usable
+					$rsaauthMessage = '<li><strong>Using the extension "rsaauth" is not possible, as no OpenSSL backend ' .
+						'is available. Please install and configure the PHP extension "openssl". '.
+						'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
+				}
+
 				$problems[] = <<< EOT
 Backend requirements for SaltedPasswords are not met, therefore the
 authentication will not work even if it was explicitely enabled for backend
 usage:<br />
 <ul>
-	<li>Install the "rsaauth" extension and use the Install Tool to set the
-		Login Security Level for the backend to "rsa"
-		(\$TYPO3_CONF_VARS['BE']['loginSecurityLevel'])</li>
-
+	$rsaauthMessage
 	<li>If you have the option to use SSL, you can also configure your
 		backend for SSL usage:<br />
 		Use the Install Tool to set the Security-Level for the backend
