@@ -19,31 +19,28 @@ Compatibility
 This version requires at least PHP 5.3, older versions of PHP are not supported
 anymore with TYPO3 4.6.
 
-* ImageMagick/GraphicsMagick
+	* safe_mode is not supported anymore
+	* magic_quotes_gpc is deprecated. You are encouraged to turn this option
+	  off as it still defaults to "On".
 
-...
+* ImageMagick
+
+If you are using ImageMagick, only versions 6.0 and above are supported.
 
 * PHP __constructor() methods
 
 The old PHP 4 style class constructors, which have been the same as the class
 name have been changed to use the PHP 5 __constructor() syntax. This is
-considered as breaking change if extension called the old contructor of an
+considered as breaking change, if extension called the old constructor of an
 object directly.
 
-===============================================================================
-Changes and improvements
-===============================================================================
+* Deprecated methods
 
-This will list all changes and improvements between TYPO3 4.5 and 4.6. For
-technical details see ChangeLog included in the typo3_src package.
+Deprecated methods that were initially targeted to be removed in TYPO3 4.5 have
+finally been removed. Starting from TYPO3 4.6, removal of deprecated methods
+will follow as announced in the deprecation log.
 
--------------------------------------------------------------------------------
-General
--------------------------------------------------------------------------------
-
--...
-
-Removed functionality
+Removed Functionality
 -------------------------------------------------------------------------------
 
 * Static Published Pages
@@ -57,32 +54,102 @@ EXT:nc_staticfilecache.
 The cache files in typo3conf/temp_CACHED_* were by default set to a hash that
 was based on the extensionlist, but this is quite unnecessary, so the extCache
 option was removed to be only used once in the typo3conf/ directory in order
-to prevent hundreds of temp_CACHED_* files that don't get cleaned up
-automatically. From now on the option $TYPO3_CONF_VARS['EXT']['extCache'] can
-only be set to 0 or 1.
+to prevent hundreds of temp_CACHED_* files that don't get cleaned up automati-
+cally. From now on the option $TYPO3_CONF_VARS['EXT']['extCache'] can only be
+set to 0 or 1.
 
+===============================================================================
+Changes and Improvements
+===============================================================================
 
-Workspaces
+This will list all changes and improvements between TYPO3 4.5 and 4.6. For
+technical details see ChangeLog included in the typo3_src package.
+
+-------------------------------------------------------------------------------
+General
 -------------------------------------------------------------------------------
 
-...
-
-Other general improvements
+XLIFF Support
 -------------------------------------------------------------------------------
 
-* New scheduler task to delete old data from tables
+XLIFF language files (*.xlf) are now the official format for localization
+files. These files are generated from our Translation Server
+(http://translation.typo3.org). You are encouraged to use your typo3.org user
+account to log into the Translation Server and suggest corrections. This
+server generates automatically the old ll-XML localization files to be used
+with previous versions of TYPO3.
 
-The scheduler task 'Table garbage collection' can be used to delete old data
+* Language dependency
+
+Language dependency may now be specified. This allows a user-defined fallback.
+By default, locales composed of a language code and a country code (e.g. fr_CA)
+now fall back to the main language (fr) before using English (default). This
+means that if fr_CA is being used (French Canada), a missing label will be
+searched within French localization files before being searched within the
+default (English) localization files. This behaviour may be changed by
+specifying arbitrary dependencies:
+
+ $TYPO3_CONF_VARS['SYS']['localization']['locales']['dependencies'] = array(
+     'de_CH' => array('de_AU', 'de'),
+ );
+
+Swiss German (de_CH) will fall back to Austrian German (de_AU), then German
+(de) and finally English (always used as last option).
+
+* Upgrade notes for JavaScript within user extensions
+
+JavaScript files using TYPO3.lang to retrieve localization labels should be
+updated to use the new TYPO3.l10n API instead:
+
+ TYPO3.lang.KEY => TYPO3.l10n.localize('KEY')
+ TYPO3.lang['KEY.SUBKEY'] => TYPO3.l10n.localize('KEY.SUBKEY')
+
+Form
+-------------------------------------------------------------------------------
+
+The new Form content element, available as a system extension, makes it easy to
+generate forms to be used as content elements. It provides a Form wizard based
+on ExtJS to allow editors to construct forms very efficiently with intuitive
+drag & drop functionality and sorting methods to add and replace form elements.
+While working in the wizard, the editor sees exactly how the form will be
+displayed in the website.
+
+This is a complete rewrite and enhancement of the Form content element you may
+have used in the past. It paves the way for future enhancements such as storing
+data in the database instead of sending an email or having AJAX validation to
+show an error immediately after filling in a single field without submitting
+the whole form.
+
+NOTE: If you upgrade from a previous version of TYPO3, you have to manually
+load the new Form content element using the Extension Manager. For new TYPO3
+installations based on the Introduction Package or the Blank Package, the new
+Form content element is loaded by default.
+
+BEWARE: Loading the new Form system extension deactivates the old Form content
+element and no upgrade wizard is available so you have to manually upgrade your
+old form definitions to use the new feature set of this extension.
+
+Other General Improvements
+-------------------------------------------------------------------------------
+
+* Precise publishing dates
+
+Editors can now set the publishing date for pages and elements using both date
+and time values, set down to the minute. This was previously not possible due
+to caching issues and required work-arounds.
+
+* New Scheduler task to delete old data from tables
+
+The Scheduler task 'Table garbage collection' can be used to delete old data
 from growing tables like log tables on a regular basis. Additional tables that
 can be cleaned up must be registered in $TYPO3_CONF_VARS['SC_OPTIONS']
 ['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']
 ['tables'] with its table name and a field. After that they can
-be selected in the scheduler task.
+be selected in the Scheduler task.
 
+* New Scheduler task to delete old files from fileadmin trash directories
 
-* New scheduler task to delete old files from fileadmin trash directories
-
-The scheduler task 'Fileadmin recycler garbage collection' can be used to
+The Scheduler task 'Fileadmin recycler garbage collection' can be used to
 definitely delete old files from _recycler_ directories. When a _recycler_
 directory exists within the path of a file to delete via the File module, the
 file is not actually deleted, but stored in the _recycler_ folder.
@@ -94,12 +161,12 @@ moved there for longer than a given number of days.
 It is now possible to customize the cookie names used by TYPO3 to avoid clashes
 when running more installations on the same domain. The names used can be con-
 figured with:
-$TYPO3_CONF_VARS['FE']['cookieName'] and
-$TYPO3_CONF_VARS['BE']['cookieName'].
+ $TYPO3_CONF_VARS['FE']['cookieName'] and
+ $TYPO3_CONF_VARS['BE']['cookieName'].
 
 * Moved t3d exports to fileadmin/_temp_ directory
 
-t3d packages exported by the import / extbase extension are now stored in
+t3d packages exported by the import / export extension are now stored in
 fileadmin/_temp_ by default which is access restricted by default .htaccess
 rules.
 
@@ -110,44 +177,87 @@ decode internationalized domain names (containing special characters like
 umlauts) from and to punycode.
 
 -------------------------------------------------------------------------------
+Security
+-------------------------------------------------------------------------------
+
+For new installations, extensions saltedpasswords and rsaauth are now
+automatically activated and used if the server meets the corresponding
+requirements, including non-broken OpenSSL configuration.
+
+Upgrading users are strongly advised to manually enable these extensions in
+order to strengthen the security of their website.
+
+If extension rsaauth is enabled, the password transmission when saving the user
+settings is now encrypted.
+
+-------------------------------------------------------------------------------
 Backend
 -------------------------------------------------------------------------------
 
-RTEhtmlarea
+Live Search
 -------------------------------------------------------------------------------
 
-...
+In previous TYPO3 versions, there were several problems with Backend search:
 
-Other improvements to the Backend
+* it searched far more fields than necessary (for example, TSConfig)
+* it searched "uid" and other numeric fields even if the value was not numeric
+* it used LIKE x search on numeric fields
+* it searched all tables even if they did not make sense to be searched
+* it was too slow
+* it searched only first four levels deep in the page tree
+
+All these problems came from the (wrong) idea that TYPO3 could detect where it
+could search. With the new backend search, tables needs to be marked as
+"searchable" and provide a list of fields that make sense to search for. In
+addition, some fields are searched without case sensitivity.
+
+Basically, the 'ctrl' section of TCA is extended with a new option:
+
+ 'searchFields' => 'username,email,realName'
+
+Extension Manager
 -------------------------------------------------------------------------------
 
-* Backend speedup with merged JavaScript files
+The old Extension Manager has now been officially obsolesced and the
+ExtJS-based one will be used regardless of your previous preferences.
+
+Other Improvements to the Backend
+-------------------------------------------------------------------------------
+
+* Backend speed-up with merged JavaScript files
 
 All jsLibs, jsFiles and jsFooterFiles are now concatenated by default into
 single files depending on type and section (header / footer). This reduces
 the webserver requests approximately by one third.
 
--------------------------------------------------------------------------------
-Skin / Backend UI
--------------------------------------------------------------------------------
+* On-the-fly minification of inline JavaScript code disabled
 
-...
-
-Other Improvements in the Skin / Backend UI
--------------------------------------------------------------------------------
-
-...
+The use of the JSmin library, which previously minified the inline JavaScript
+code in the Backend was dropped. Due to its immense performance impact, editors
+benefit from faster response times, while the increase of the output is only of
+negligible order.
 
 -------------------------------------------------------------------------------
 Administration / Customization
 -------------------------------------------------------------------------------
 
-...
-
-Install tool
+User-defined Languages
 -------------------------------------------------------------------------------
 
-...
+The Backend now supports user-defined languages. This allows dialects to be
+added or new languages to be prepared before official inclusion within TYPO3.
+
+New languages can be added by declaring them within typo3conf/localconf.php:
+
+ $TYPO3_CONF_VARS['SYS']['localization']['locales']['user'] = array(
+     'de_CH' => 'Swiss German',
+     ...
+     '<language_key>' => '<English Name>',
+ );
+
+Localization files should then be prepared as usual within
+typo3conf/l10n/<language_key>/ just as with localization files retrieved from
+TER.
 
 -------------------------------------------------------------------------------
 Development
@@ -156,7 +266,71 @@ Development
 Extbase / Fluid
 -------------------------------------------------------------------------------
 
-...
+Extbase, the MVC bridge between TYPO3 Phoenix' framework FLOW3 and TYPO3 v4 as
+well as the new templating engine Fluid are steadily improved with every new
+version of TYPO3 4.x.
+
+* New Property Mapper
+
+The Property Mapper has been completely rewritten in FLOW3, and this has also
+been backported to Extbase. The new property mapper is very configurable and
+extensible. Furthermore, the MVC stack has been adjusted to be in sync with
+FLOW3 again. However, the new behavior is ONLY ACTIVATED MANUALLY. We suggest
+that you activate it for your new extensions by inserting:
+
+ plugin.tx_[yourExtensionName].features.rewrittenPropertyMapper = 1
+
+The documentation for the new property mapper can be found at
+http://flow3.typo3.org/documentation/guide/partiii/propertymapping.html
+
+* Validation API
+
+The Validation API has changed, but this is only a breaking change if you do
+NOT subclass AbstractValidator, but implement ValidatorInterface yourself. In
+this case, you need to adjust your custom validator to support the new API.
+
+* Dependency Injection
+
+Dependency Injection is now also possible for reconstituted Domain Objects.
+
+* Signal / Slot: The "Signal / Slot" feature has been backported from FLOW3,
+implementing a future-proof alternative to hooks.
+
+* Compiled Fluid templates
+
+Fluid templates are now compiled to PHP files. This drastically speeds up the
+rendering process by factor 2-5 and reduces memory consumption as well.
+
+* $this->arguments->hasArgument() removed
+
+AbstractViewHelper::$arguments are no longer an object but an array. If you
+used $this->arguments->hasArgument() in your custom ViewHelpers, you'll have to
+replace this with $this->hasArgument().
+
+* Introduction of {_all} Variable
+
+You can now use {_all} inside your template to access all variables available
+right now. This is especially helpful for debugging:
+
+ {_all -> f:debug()}
+
+or for passing all currently available variables to a partial:
+
+ <f:render partial="..." arguments="{_all}" />
+
+This is a breaking change if you used a variable _all inside your own
+templates.
+
+* Widgets & templateRootPath
+
+It is now possible to override the widget template root path via the framework
+configuration, for example:
+
+ plugin.tx_extension.view {
+     widget.<WidgetViewHelperClassName>.templateRootPath = ...
+ }
+
+Please read the ChangeLog for further details.
 
 Although we do our best to make adjustments in a backwards-compatible manner,
 we needed to break backwards compatibility at a few places. In order to see if
@@ -168,57 +342,101 @@ http://forge.typo3.org/projects/typo3v4-mvc/wiki/Breaking_Changes
 Backend Development
 -------------------------------------------------------------------------------
 
-...
+* Language files
 
-Extension Development
+Localization parsing is now cached within typo3temp/Cache/Data/t3lib_l10n. This
+speeds up TYPO3 but may lead to weird behaviour when you add a new language
+label in an XLIFF file and it seems not to "exist" at all. Instead of
+clearing the aforementioned cache directory, you may add an item in the clear
+cache menu by adding enabling it in localconf.php:
+
+ $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['cache']['clear_menu'] = TRUE;
+
+Generally, you may disable caches by using a NULL backend as described in:
+
+http://wiki.typo3.org/Caching_framework#How_to_disable_specific_caches
+
+* xtype:modulepanel
+
+This new ExtJS panel type allows creation of pure ExtJS modules which fit the
+TYPO3 look 'n' feel.
+
+TypoScript / TCA / Frontend
 -------------------------------------------------------------------------------
 
-...
+* New TypoScript features
 
-TypoScript / Frontend
+stdWrap has new properties:
+
+	* .round: Round floating numbers
+	* .hash: Hash content with md5, sha1, and generally all algorithms
+	  available by PHP function hash()
+	* .capitalize: Make first character of each word uppercase
+	* .replacement: Replace part of the content
+	* .expandList: Expand a comma-separated list of integers
+	* listNum = rand: Random item out of the list
+	* select.where now supports stdWrap
+
+IMAGE and IMG_RESOURCE now support stdWrap on file.params.
+
+* TCA
+
+	* parameters for userFunc: When using a userFunc as field type, additional
+	  parameters may be provided.
+	* slider: New wizard for select fields as well as input fields for times,
+	  integers and doubles.
+	* groupName (section [ctrl]): New option that can be used to group records
+	  in the new record wizard.
+
 -------------------------------------------------------------------------------
+Performance
+-------------------------------------------------------------------------------
+
+* Caching Framework now mandatory
+
+The Caching Framework is enabled by default and the old database-only driven
+caching was removed. This opens a lot of options for administrators to optimize
+cache deployment and performance. Details about configuration options and usage
+in own extensions can be found at http://wiki.typo3.org/Caching_framework.
+
+* Caching Framework: DB Backend uses own table namespace
+
+The Database Backend must not define own tables and table definitions anymore.
+Cache tables and table layout of the database backend will created by the
+Caching Framework when needed.
 
 * Compression and concatenation of CSS and JavaScript files
 
-New builtin minification routines can now be used with config.compressCss and
+New built-in minification routines can now be used with config.compressCss and
 config.compressJs to reduce the file size of all files configured in
 page.includeCSS and page.includeJS. Single files can be excluded from
 compression using the new option disableCompression. Additionally, files can
 be concatenated into a single file using config.concatenateCss and
 config.concatenateJs. Please note that there is only limited support for
 @charset, @import and @namespace statements in concatenated CSS files.
+
+Together with
+
+ config.removeDefaultJS = external
+
+these routines will significantly lower web site traffic.
+
 Furthermore, if compressCss/compressJs is enabled,
-$TYPO3_CONF_VARS[FE][compressionLevel] now also affects CSS and JS files in
+$TYPO3_CONF_VARS['FE']['compressionLevel'] now also affects CSS and JS files in
 frontend and applies GZIP compression. This requires the same options as for
-[BE][compressionLevel] to be set in .htaccess.
+$TYPO3_CONF_VARS['BE']['compressionLevel'] to be set in .htaccess.
 
+You may disable compression and/or concatenation on the PAGE object. Example:
 
+ page.includeJSlibs {
+     jquery = http://code.jquery.com/jquery-1.6.1.min.js
+     jquery.external = 1
+     jquery.disableCompression = 1
+     jquery.excludeFromConcatenation = 1
+ }
 
-Database API / DBAL
--------------------------------------------------------------------------------
+The same options apply for includeCSS.
 
-...
-
--------------------------------------------------------------------------------
-Security
--------------------------------------------------------------------------------
-
-...
-
--------------------------------------------------------------------------------
-Performance
--------------------------------------------------------------------------------
-
-* Switch to caching framework
-
-The caching framework is enabled by default and the old database-only driven
-caching is removed. This opens a lot of options for administrators to optimize
-cache deployment and performance. Details about configuration options and usage
-in own extensions can be found at http://wiki.typo3.org/Caching_framework.
-
-
-* Caching framework: db backend uses own table namespace
-
-The database backend must not define own tables and table definitions anymore.
-Cache tables and table layout of the database backend will created by the
-caching framework when needed.
+Please note that compression and concatenation apply for external resources as
+well. But if activated, they will be dynamically retrieved to allow requested
+processing and will be served locally.
