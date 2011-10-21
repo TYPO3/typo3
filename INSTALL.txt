@@ -4,7 +4,7 @@ INSTALLING TYPO3
 
 This document is a part of the TYPO3 project. TYPO3 is an open source web
 content management system released under the GNU GPL. TYPO3 is copyright
-(c) 1999-2009 by Kasper Skaarhoj.
+(c) 1999-2011 by Kasper Skaarhoj.
 
 This document describes the system requirements for TYPO3 and the installation
 routine.
@@ -26,12 +26,12 @@ The following configuration is the minimum required:
 	- GD2
 	- JSON
 	- mysql
+	- openssl
 	- pcre
 	- session
-	- SPL
 	- SOAP
+	- SPL
 	- standard
-	- openssl
 	- xml
 	- zlib
 	Some extensions can be optionally compiled into PHP. A list of loaded
@@ -64,6 +64,7 @@ The following configuration is recommended:
 	Some extensions can be optionally compiled into PHP. A list of loaded
 	extensions can be checked using the phpinfo() function.
 - Safe mode is not supported, thus it must not be activated
+- Magic Quotes is deprecated, thus it should be deactivated
 - memory_limit set to 128M or more in php.ini
 - MySQL 5.1 or newer
 - GraphicsMagick or ImageMagick v6 or newer
@@ -129,8 +130,8 @@ Installation: recommended
 To install TYPO3, unpack the source package outside of the web site root
 directory on your server. The location must be accessible to the web server.
 Unpacking will produce a directory with a name like typo3_src-x.y.z, where x,
-y and z correspond to the TYPO3 version. For example, the TYPO3 4.3.0 source
-package will create a directory named typo3_src-4.3.0.
+y and z correspond to the TYPO3 version. For example, the TYPO3 4.6.0 source
+package will create a directory named typo3_src-4.6.0.
 
 Unpack the dummy package in the temporary location on the server. This will
 create a dummy-x.y.z directory. Move all files and directories from the
@@ -146,14 +147,14 @@ packages.
 
 On Linux, Unix or Mac OS X systems create a symbolic link named typo3_src
 pointing to the source package:
-	ln -s /var/www/typo3_src-4.3.0 /var/www/example.com/typo3_src
+	ln -s /var/www/typo3_src-4.6.0 /var/www/example.com/typo3_src
 
 On Windows Vista or Windows 7 create a symbolic link named typo3_src
 pointing to the source package:
-	mklink /D C:\<dir>\typo3_src-4.3.0 C:\<dir>\example.com\typo3_src
+	mklink /D C:\<dir>\typo3_src-4.6.0 C:\<dir>\example.com\typo3_src
 
-Users of Windows XP/2000 can use the "junction" program by Marc Russinovich to
-create links. The program can be obtained at:
+Users of Windows XP/2000 or newer can use the "junction" program by
+Marc Russinovich to create links. The program can be obtained at:
 	http://technet.microsoft.com/en-us/sysinternals/bb896768.aspx
 
 Next create links for the typo3/ and t3lib/ directories:
