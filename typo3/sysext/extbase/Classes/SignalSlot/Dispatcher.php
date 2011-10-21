@@ -93,7 +93,7 @@ class Tx_Extbase_SignalSlot_Dispatcher {
 			'omitSignalInformation' => ($omitSignalInformation === TRUE)
 		);
 
-		if (!in_array($slot, $this->slots[$signalClassName][$signalName])) {
+		if (!is_array($this->slots[$signalClassName][$signalName]) || !in_array($slot, $this->slots[$signalClassName][$signalName])) {
 			$this->slots[$signalClassName][$signalName][] = $slot;
 		}
 	}

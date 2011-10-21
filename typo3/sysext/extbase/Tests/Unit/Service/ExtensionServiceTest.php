@@ -107,6 +107,7 @@ class Tx_Extbase_Tests_Unit_Service_ExtensionServiceTest extends Tx_Extbase_Test
 	public function tearDown() {
 		$GLOBALS['TYPO3_CONF_VARS'] = $this->typo3ConfVars;
 		$GLOBALS['TSFE'] = $this->tsfeBackup;
+		$GLOBALS['TYPO3_DB'] = $this->typo3DbBackup;
 	}
 
 	/**

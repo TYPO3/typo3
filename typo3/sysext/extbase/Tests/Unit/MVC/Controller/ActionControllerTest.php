@@ -60,22 +60,16 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 		$mockUriBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 		$mockUriBuilder->expects($this->once())->method('setRequest')->with($mockRequest);
 
-		$mockControllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
-
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		$mockObjectManager->expects($this->once())->method('create')->with('Tx_Extbase_MVC_Web_Routing_UriBuilder')->will($this->returnValue($mockUriBuilder));
 
 		$mockResponse = $this->getMock('Tx_Extbase_MVC_Web_Response', array(), array(), '', FALSE);
 
-		$mockView = $this->getMock('Tx_Extbase_MVC_View_ViewInterface');
-
 		$mockController = $this->getAccessibleMock('Tx_Extbase_MVC_Controller_ActionController', array(
 			'initializeFooAction', 'initializeAction', 'resolveActionMethodName', 'initializeActionMethodArguments',
 			'initializeActionMethodValidators', 'mapRequestArgumentsToControllerArguments', 'buildControllerContext',
-			'resolveView', 'initializeView', 'callActionMethod'),
+			'resolveView', 'initializeView', 'callActionMethod', 'checkRequestHash'),
 			array(), '', FALSE);
-
-		$this->enableDeprecatedPropertyMapperInController($mockController);
 
 		$mockController->_set('objectManager', $mockObjectManager);
 		$mockController->expects($this->at(0))->method('resolveActionMethodName')->will($this->returnValue('fooAction'));

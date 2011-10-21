@@ -56,11 +56,9 @@ class Tx_Extbase_Tests_Unit_MVC_DispatcherTest extends Tx_Extbase_Tests_Unit_Bas
 	 */
 	public function dispatchThrowsAnInfiniteLoopExceptionIfTheRequestCouldNotBeDispachedAfter99Iterations() {
 		$requestCallCounter = 0;
-		/*
 		$requestCallBack = function() use (&$requestCallCounter) {
 			return ($requestCallCounter++ < 101) ? FALSE : TRUE;
 		};
-		 */
 		$mockRequest = $this->getMock('Tx_Extbase_MVC_RequestInterface');
 		$mockRequest->expects($this->any())->method('isDispatched')->will($this->returnCallBack($requestCallBack, '__invoke'));
 
