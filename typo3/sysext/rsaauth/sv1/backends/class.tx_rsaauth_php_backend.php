@@ -97,20 +97,13 @@ class tx_rsaauth_php_backend extends tx_rsaauth_abstract_backend {
 	public function isAvailable() {
 		$result = FALSE;
 		if (is_callable('openssl_pkey_new')) {
-			if (TYPO3_OS !== 'WIN') {
-				// If the server does not run Windows, we can be sure than
-				// OpenSSL will work
-				$result = TRUE;
-			}
-			else {
-				// On Windows PHP extension has to be configured properly. It
+				// PHP extension has to be configured properly. It
 				// can be installed and available but will not work unless
-				// configured. So we check if it works.
-				$testKey = @openssl_pkey_new();
-				if ($testKey) {
-					openssl_free_key($testKey);
-					$result = TRUE;
-				}
+				// properly configured. So we check if it works.
+			$testKey = @openssl_pkey_new();
+			if (is_resource($testKey)) {
+				openssl_free_key($testKey);
+				$result = TRUE;
 			}
 		}
 		return $result;
