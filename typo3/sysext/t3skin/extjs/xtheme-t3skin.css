@@ -2226,13 +2226,20 @@ body.x-body-masked .x-window-plain .x-window-mc {
 	width: 0;
 }
 
-/* Tree frame split bar fix for chrome in extjs 3.4 */
+/* Tree frame split bar fix for Google Chrome 14 in Ext JS 3.4, see #27660 */
 body.ext-chrome #typo3-module-menu-xsplit,
 body.ext-chrome #typo3-navigationContainer-xsplit {
 	width: 5px;
-	background-color: rgb(235, 235, 235);
 	background-image: url('images/splitbar/splitbar-background-top.png');
 	background-repeat: repeat-x;
+}
+
+body.ext-chrome #typo3-module-menu-xsplit {
+	background-color: #ebebeb;
+}
+
+body.ext-chrome #typo3-navigationContainer-xsplit {
+	background-color: #f8f8f8;
 }
 
 /* Collapse icon */
