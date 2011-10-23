@@ -118,7 +118,7 @@ class tx_form_Common implements t3lib_Singleton {
 	 */
 	public function initializePageTsConfig() {
 		t3lib_extMgm::addPageTSConfig(
-			'<INCLUDE_TYPOSCRIPT: source="FILE:EXT:form/Resources/Private/Configuration/PageTSconfig/modWizards.ts">'
+			'<INCLUDE_TYPOSCRIPT: source="FILE:EXT:form/Configuration/PageTSconfig/modWizards.ts">'
 		);
 
 		return $this;
