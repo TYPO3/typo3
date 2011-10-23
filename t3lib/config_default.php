@@ -1056,7 +1056,6 @@ define('TYPO3_REQUESTTYPE',
 
 
 // Load extensions:
-if (TYPO3_MODE=='FE' && is_object($TT)) $TT->push('Loading localconf.php extensions','');
 $TYPO3_LOADED_EXT = t3lib_extMgm::typo3_loadExtensions();
 if ($TYPO3_LOADED_EXT['_CACHEFILE'])	{
 	require(PATH_typo3conf.$TYPO3_LOADED_EXT['_CACHEFILE'].'_ext_localconf.php');
@@ -1069,7 +1068,6 @@ if ($TYPO3_LOADED_EXT['_CACHEFILE'])	{
 		}
 	}
 }
-if (TYPO3_MODE=='FE' && is_object($TT)) $TT->pull();
 
 	// Extensions may register new caches, so we set the
 	// global cache array to the manager again at this point
