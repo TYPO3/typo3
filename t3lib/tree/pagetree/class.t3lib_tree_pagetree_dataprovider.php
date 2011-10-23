@@ -146,6 +146,8 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 		$records = $this->getSubpages(-1, $searchFilter);
 		if (!is_array($records) || !count($records)) {
 			return $nodeCollection;
+		} elseif (count($records) > 500) {
+			return $nodeCollection;
 		}
 
 		$isNumericSearchFilter = (is_numeric($searchFilter) && $searchFilter > 0);
@@ -177,50 +179,53 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 
 				$rootlineElement = t3lib_tree_pagetree_Commands::getNodeRecord($rootlineElement['uid']);
 				$ident = intval($rootlineElement['sorting']) . intval($rootlineElement['uid']);
-				if ($reference->offsetExists($ident)) {
+				if ($reference && $reference->offsetExists($ident)) {
 					/** @var $refNode t3lib_tree_pagetree_Node */
 					$refNode = $reference->offsetGet($ident);
 					$refNode->setExpanded(TRUE);
 					$refNode->setLeaf(FALSE);
 
 					$reference = $refNode->getChildNodes();
-					continue;
-				}
-
-				$refNode = t3lib_tree_pagetree_Commands::getNewNode($rootlineElement, $mountPoint);
-				$replacement = '<span class="typo3-pagetree-filteringTree-highlight">$1</span>';
-				if ($isNumericSearchFilter && intval($rootlineElement['uid']) === intval($searchFilter)) {
-					$text = str_replace('$1', $refNode->getText(), $replacement);
-				} else {
-					$text = preg_replace('/(' . $searchFilter . ')/i', $replacement, $refNode->getText());
-				}
-
-				$refNode->setText(
-					$text,
-					$refNode->getTextSourceField(),
-					$refNode->getPrefix(),
-					$refNode->getSuffix()
-				);
-
-				/** @var $childCollection t3lib_tree_pagetree_NodeCollection */
-				$childCollection = t3lib_div::makeInstance('t3lib_tree_pagetree_NodeCollection');
-
-				if (($i +1) >= $amountOfRootlineElements) {
-					$childNodes = $this->getNodes($refNode, $mountPoint);
-					foreach ($childNodes as $childNode) {
-						/** @var $childNode t3lib_tree_pagetree_Node */
-						$childRecord = $childNode->getRecord();
-						$childIdent = intval($childRecord['sorting']) . intval($childRecord['uid']);
-						$childCollection->offsetSet($childIdent, $childNode);
+					if ($reference == NULL) {
+						$reference = t3lib_div::makeInstance('t3lib_tree_pagetree_NodeCollection');
+						$refNode->setChildNodes($reference);
 					}
-					$refNode->setChildNodes($childNodes);
+				} else {
+					$refNode = t3lib_tree_pagetree_Commands::getNewNode($rootlineElement, $mountPoint);
+					$replacement = '<span class="typo3-pagetree-filteringTree-highlight">$1</span>';
+					if ($isNumericSearchFilter && intval($rootlineElement['uid']) === intval($searchFilter)) {
+						$text = str_replace('$1', $refNode->getText(), $replacement);
+					} else {
+						$text = preg_replace('/(' . $searchFilter . ')/i', $replacement, $refNode->getText());
+					}
+
+					$refNode->setText(
+						$text,
+						$refNode->getTextSourceField(),
+						$refNode->getPrefix(),
+						$refNode->getSuffix()
+					);
+
+					/** @var $childCollection t3lib_tree_pagetree_NodeCollection */
+					$childCollection = t3lib_div::makeInstance('t3lib_tree_pagetree_NodeCollection');
+
+					if (($i +1) >= $amountOfRootlineElements) {
+						$childNodes = $this->getNodes($refNode, $mountPoint);
+						foreach ($childNodes as $childNode) {
+							/** @var $childNode t3lib_tree_pagetree_Node */
+							$childRecord = $childNode->getRecord();
+							$childIdent = intval($childRecord['sorting']) . intval($childRecord['uid']);
+							$childCollection->offsetSet($childIdent, $childNode);
+						}
+						$refNode->setChildNodes($childNodes);
+					}
+
+					$refNode->setChildNodes($childCollection);
+					$reference->offsetSet($ident, $refNode);
+					$reference->ksort();
+
+					$reference = $childCollection;
 				}
-
-				$refNode->setChildNodes($childCollection);
-				$reference->offsetSet($ident, $refNode);
-				$reference->ksort();
-
-				$reference = $childCollection;
 			}
 		}
 
