@@ -1,3 +1,10 @@
+2011-10-23 TYPO3 4.6 (linkvalidator 1.5.0)
+
+22feb54    [BUGFIX] Pootle: Multi-line labels are not rendered (Xavier Perseguers)
+b4393ad    [TASK] Fix version number of 4.6 branch (Philipp Gampe)
+a195d11    [TASK] English XLIFF files should not contain target element (Dominique Feyer)
+3b062e3    [TASK] Prepare merge for 4.6-RC1 (part 2)  05/5705/2 4.6RC1 (Philipp Gampe)
+
 2011-10-11 TYPO3 4.6-RC1 (linkvalidator 1.5.0-rc1)
 
 27e93d6    Merge "[BUGFIX] Invalid target language in localization file" (Philipp Gampe)
@@ -30,7 +37,7 @@ ad08acf    [TASK] Add XLIFF files (Philipp Gampe)
 79e5177    [TASK] Add .gitignore file. (Christopher)
 
 
-Since linkvalidator witched to git, you can always get the full changelog via:
+Since linkvalidator switched to git, you can always get the full changelog via:
 http://git.typo3.org/TYPO3v4/Extensions/linkvalidator.git
 
 For you convenience the git log is included above.
