@@ -4,7 +4,7 @@ if (!defined('TYPO3_MODE')) {
 }
 
 	// Add Default TS to Include static (from extensions)
-t3lib_extMgm::addStaticFile($_EXTKEY, 'Resources/Private/Configuration/TypoScript/', 'Default TS');
+t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript/', 'Default TS');
 
 $TCA['tt_content']['columns']['bodytext']['config']['wizards']['forms'] = array(
 	'notNewRecords' => 1,
