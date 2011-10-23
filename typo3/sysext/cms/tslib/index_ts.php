@@ -91,35 +91,17 @@ unset($error);
 // *********************
 ob_start();
 
-// *********************
-// Timetracking started
-// *********************
-if ($_SESSION['TYPO3-TT-start']) {
-	require_once(PATH_t3lib.'class.t3lib_timetrack.php');
-	$TT = new t3lib_timeTrack;
-} else {
-	require_once(PATH_t3lib.'class.t3lib_timetracknull.php');
-	$TT = new t3lib_timeTrackNull;
-}
-
-$TT->start();
-$TT->push('','Script start');
-
 
 // *********************
 // Mandatory libraries included
 // *********************
-$TT->push('Include class t3lib_db, t3lib_div, t3lib_extmgm','');
-	require_once(PATH_t3lib.'class.t3lib_div.php');
-	require_once(PATH_t3lib.'class.t3lib_extmgm.php');
-$TT->pull();
-
+require_once(PATH_t3lib . 'class.t3lib_div.php');
+require_once(PATH_t3lib . 'class.t3lib_extmgm.php');
 
 
 // **********************
 // Include configuration
 // **********************
-$TT->push('Include config files','');
 require(PATH_t3lib.'config_default.php');
 if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');	// the name of the TYPO3 database is stored in this constant. Here the inclusion of the config-file is verified by checking if this var is set.
 if (!t3lib_extMgm::isLoaded('cms'))	die('<strong>Error:</strong> The main frontend extension "cms" was not loaded. Enable it in the extension manager in the backend.');
@@ -129,15 +111,18 @@ if (!defined('PATH_tslib')) {
 }
 
 
-// Restart time tracking if BE login exists
-if (!$_SESSION['TYPO3-TT-start'] && $_COOKIE[t3lib_beUserAuth::getCookieName()]) {
-	$_SESSION['TYPO3-TT-start'] = TRUE;
-
+// *********************
+// Timetracking started
+// *********************
+if ($_COOKIE[t3lib_beUserAuth::getCookieName()]) {
+	require_once(PATH_t3lib . 'class.t3lib_timetrack.php');
 	$TT = new t3lib_timeTrack;
-	$TT->start();
-	$TT->push('', 'Script start (late)');
+} else {
+	require_once(PATH_t3lib . 'class.t3lib_timetracknull.php');
+	$TT = new t3lib_timeTrackNull;
 }
-
+$TT->start();
+$TT->push('', 'Script start');
 
 // *********************
 // Error & Exception handling
@@ -159,7 +144,6 @@ $TYPO3_DB->debugOutput = $TYPO3_CONF_VARS['SYS']['sqlDebug'];
 
 $CLIENT = t3lib_div::clientInfo();				// Set to the browser: net / msie if 4+ browsers
 $TT->pull();
-
 
 // *******************************
 // Checking environment
