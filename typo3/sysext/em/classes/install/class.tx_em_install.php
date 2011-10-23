@@ -534,11 +534,20 @@ class tx_em_Install {
 			}
 		}
 
-		if (($depError || $depIgnore) && $this->parentObject instanceof SC_mod_tools_em_index) {
-			$content .= $this->parentObject->doc->section(
-				$GLOBALS['LANG']->getLL('removeExtFromList_dependency_error'),
-				implode('<br />', $msg), 0, 1, 2
-			);
+		if ($depError || $depIgnore) {
+				// dependent of the context in which we are (AJAX with tx_em_connection_ExtDirectServer or
+				// old-school rendering with historic pages in shiny ExtJS frames) we have various options
+			if ($this->parentObject instanceof SC_mod_tools_em_index) {
+					// we're in the lucky position to ask the user to uninstall the extension again
+				$content .= $this->parentObject->doc->section(
+					$GLOBALS['LANG']->getLL('removeExtFromList_dependency_error'),
+					implode('<br />', $msg), 0, 1, 2
+				);
+			} elseif ($this->parentObject instanceof tx_em_Connection_ExtDirectServer) {
+					// with ExtDirect, we are in a context, where we cannot ask the user for feedback
+					// thus we silently uninstall the newly uploaded extension
+				$this->parentObject->disableExtension($extKey);
+			}
 		}
 
 		// Check conflicts with other extensions:
@@ -580,10 +589,20 @@ class tx_em_Install {
 				}
 			}
 		}
+
 		if ($conflictError || $conflictIgnore) {
-			$content .= $this->parentObject->doc->section(
-				$GLOBALS['LANG']->getLL('checkDependencies_conflict_error'), implode('<br />', $msg), 0, 1, 2
-			);
+				// dependent of the context in which we are (AJAX with tx_em_connection_ExtDirectServer or
+				// old-school rendering with historic pages in shiny ExtJS frames) we have various options
+			if ($this->parentObject instanceof SC_mod_tools_em_index) {
+					// we're in the lucky position to ask the user to uninstall the extension again
+				$content .= $this->parentObject->doc->section(
+					$GLOBALS['LANG']->getLL('checkDependencies_conflict_error'), implode('<br />', $msg), 0, 1, 2
+				);
+			} elseif ($this->parentObject instanceof tx_em_Connection_ExtDirectServer) {
+					// with ExtDirect, we are in a context, where we cannot ask the user for feedback
+					// thus we silently uninstall the newly uploaded extension
+				$this->parentObject->disableExtension($extKey);
+			}
 		}
 
 		// Check suggests on other extensions:
@@ -629,15 +648,26 @@ class tx_em_Install {
 					$suggestion = true;
 				}
 			}
+
 			if ($suggestion || $suggestionIgnore) {
-				$content .= $this->parentObject->doc->section(
-					sprintf($GLOBALS['LANG']->getLL('checkDependencies_exts_suggested_by_ext'), $extKey),
-					implode('<br />', $msg), 0, 1, 1
-				);
+					// dependent of the context in which we are (AJAX with tx_em_connection_ExtDirectServer or
+					// old-school rendering with historic pages in shiny ExtJS frames) we have various options
+				if ($this->parentObject instanceof SC_mod_tools_em_index) {
+						// we're in the lucky position to ask the user to uninstall the extension again
+					$content .= $this->parentObject->doc->section(
+						sprintf($GLOBALS['LANG']->getLL('checkDependencies_exts_suggested_by_ext'), $extKey),
+						implode('<br />', $msg), 0, 1, 1
+					);
+				} elseif ($this->parentObject instanceof tx_em_Connection_ExtDirectServer) {
+						// with ExtDirect, we are in a context, where we cannot ask the user for feedback
+						// thus we silently uninstall the newly uploaded extension
+					$this->parentObject->disableExtension($extKey);
+				}
 			}
 		}
 
-		if ($depError || $conflictError || $suggestion) {
+			// only when we are in old-school HTML output mode (thus not ExtDirect), we can ask for user feedback
+		if (($depError || $conflictError || $suggestion) && ($this->parentObject instanceof SC_mod_tools_em_index)) {
 			foreach ($this->parentObject->CMD as $k => $v) {
 				$content .= '<input type="hidden" name="CMD[' . $k . ']" value="' . $v . '" />';
 			}
