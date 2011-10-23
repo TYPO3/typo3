@@ -1446,6 +1446,25 @@ class tx_em_Connection_ExtDirectServer {
 	}
 
 	/**
+	 * Disables (uninstalls) an extension
+	 *
+	 * @param string $extensionKey Extension to uninstall
+	 * @return void
+	 */
+	public function disableExtension($extensionKey) {
+		/** @var tx_em_Extensions_List */
+		$this->extensionList = t3lib_div::makeInstance('tx_em_Extensions_List', $this);
+		/** @var $install tx_em_Install */
+		$install = t3lib_div::makeInstance('tx_em_Install', $this);
+
+		list($installedList,) = $this->extensionList->getInstalledExtensions();
+		$newExtensionList = $this->extensionList->removeExtFromList($extensionKey, $installedList);
+
+		$install->writeNewExtensionList($newExtensionList);
+		tx_em_Tools::refreshGlobalExtList();
+	}
+
+	/**
 	 * Reset all states for current user
 	 *
 	 * @return void
