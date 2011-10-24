@@ -1624,6 +1624,12 @@ class tx_em_Install {
 	function forceDBupdates($extKey, $extInfo) {
 		// Updating tables and fields?
 		if (is_array($extInfo['files']) && in_array('ext_tables.sql', $extInfo['files'])) {
+			// Update the cache configurations with information of new extensions,
+			// that have been installed during the current process
+			$GLOBALS['typo3CacheManager']->setCacheConfigurations(
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']
+			);
+
 			$fileContent = t3lib_div::getUrl(tx_em_Tools::getExtPath($extKey, $extInfo['type']) . 'ext_tables.sql');
 			$fileContent .= t3lib_cache::getDatabaseTableDefinitions();
 
