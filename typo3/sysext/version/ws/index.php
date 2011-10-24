@@ -193,7 +193,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				foreach($post['items'] as $item => $v)	{
 					list($table,$uid) = explode(':',$item,2);
 
-					if ($GLOBALS['TCA'][$table] && t3lib_div::testInt($uid))	{
+					if ($GLOBALS['TCA'][$table] && t3lib_utility_Math::canBeInterpretedAsInteger($uid)) {
 						switch($post['_with_selected_do'])	{
 							case "stage_-1":
 								$cmdArray[$table][$uid]['version']['action'] = 'setStage';
