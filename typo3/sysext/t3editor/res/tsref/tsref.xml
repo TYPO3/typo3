@@ -849,43 +849,32 @@ config.removeDefaultJS = 1]]></description>
 ]]></default>
 		</property>
 		<property name="minifyJS" type="boolean">
-			<description><![CDATA[If set, inline or externalized (see removeDefaultJS above) JavaScript will be minified. Minification will remove all excess space and will cause faster page loading. Together with removeDefaultJS = external it will significantly lower web site traffic.
-
-Example:
-
-config.minifyJS = 1
-
-Note: The built-in compression handler will compress files only if $GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'] is set to a value higher then "0". Otherwise the files will only be minified. This requires the same options as for ['BE']['compressionLevel'] to be set in .htaccess.
-
-Example:
-
-$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'] = 9;
-
-Note: TYPO3 comes with a built-in compression handler but you can also register your own one using $GLOBALS['TYPO3_CONF_VARS']['FE']['jsCompressHandler'].
-
-Example:
-
-$GLOBALS['TYPO3_CONF_VARS']['FE']['jsCompressHandler'] = t3lib_extMgm::extPath($_EXTKEY) . 'Classes/class.tx_myext_jsCompressHandler.php:tx_myext_jsCompressHandler->minifyJs';]]></description>
+			<description><![CDATA[This setting is deprecated and will be removed with TYPO3 4.8! Use config.compressJs instead, which has the same effect.]]></description>
 			<default><![CDATA[false]]></default>
 		</property>
 		<property name="minifyCSS" type="boolean">
-			<description><![CDATA[Setting this option will activate CSS minification.
+			<description><![CDATA[This setting is deprecated and will be removed with TYPO3 4.8! Use config.compressCss instead, which has the same effect.]]></description>
+			<default><![CDATA[false]]></default>
+		</property>
+		<property name="compressJs" type="boolean">
+			<description><![CDATA[If set, inline JavaScript and external JavaScript files will be minified and compressed.
+
+Minification will remove all excess space. The more significant compression step (using Gzip compression) requires $TYPO3_CONF_VARS['FE']['compressionLevel'] to be enabled in the Install Tool together with the gzip-related compressionLevel options in .htaccess, as otherwise the files will not be readable by the user agent.
 
 Example:
 
-config.minifyCSS = 1
+config.compressJs = 1
+			]]></description>
+			<default><![CDATA[false]]></default>
+		</property>
+		<property name="compressCss" type="boolean">
+			<description><![CDATA[If set, CSS files will be minified and compressed.
 
-Note: The built-in compression handler will compress files only, if $GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'] is set to a value higher then "0". Otherwise the files will only be minified. This requires the same options as for ['BE']['compressionLevel'] to be set in .htaccess.
+Minification will remove all excess space. The more significant compression step (using Gzip compression) requires $TYPO3_CONF_VARS['FE']['compressionLevel'] to be enabled in the Install Tool together with the gzip-related compressionLevel options in .htaccess, as otherwise the files will not be readable by the user agent.
 
 Example:
 
-$GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'] = 9;
-
-Note: TYPO3 comes with a built-in compression handler but you can also register your own one using $GLOBALS['TYPO3_CONF_VARS']['FE']['cssCompressHandler'].
-
-Example:
-
-$GLOBALS['TYPO3_CONF_VARS']['FE']['cssCompressHandler'] = t3lib_extMgm::extPath($_EXTKEY) . 'Classes/class.tx_myext_cssCompressHandler.php:tx_myext_cssCompressHandler->minifyJs';]]></description>
+config.compressCss = 1]]></description>
 			<default><![CDATA[false]]></default>
 		</property>
 		<property name="concatenateJs" type="boolean">
