@@ -50,6 +50,7 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 			'htaccessUpload'      => $this->getHtaccessUploadStatus(),
 			'installToolEnabled'  => $this->getInstallToolProtectionStatus(),
 			'installToolPassword' => $this->getInstallToolPasswordStatus(),
+			'saltedpasswords'     => $this->getSaltedPasswordsStatus()
 		);
 
 		return $statuses;
@@ -236,7 +237,53 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 		);
 	}
 
+	/**
+	 * Checks whether the Install Tool password is set to its default value.
+	 *
+	 * @return	tx_reports_reports_status_Status	An tx_reports_reports_status_Status object representing the security of the saltedpassswords extension
+	 */
+	protected function getSaltedPasswordsStatus() {
+		$value    = $GLOBALS['LANG']->getLL('status_ok');
+		$message  = '';
+		$severity = tx_reports_reports_status_Status::OK;
 
+		if (!t3lib_extMgm::isLoaded('saltedpasswords')) {
+			$value    = $GLOBALS['LANG']->getLL('status_insecure');
+			$severity = tx_reports_reports_status_Status::ERROR;
+			$message .= $GLOBALS['LANG']->getLL('status_saltedPasswords_notInstalled');
+		} else {
+			/** @var tx_saltedpasswords_emconfhelper $configCheck */
+			$configCheck = t3lib_div::makeInstance('tx_saltedpasswords_emconfhelper');
+			$message .= '<p>' . $GLOBALS['LANG']->getLL('status_saltedPasswords_infoText') . '</p>';
+			$flashMessage = $configCheck->checkConfigurationBackend(array(), new t3lib_tsStyleConfig());
+
+			if (strpos($flashMessage, 'message-error') !== FALSE ||
+				strpos($flashMessage, 'message-warning') !== FALSE ||
+				strpos($flashMessage, 'message-information') !== FALSE
+			) {
+				$value    = $GLOBALS['LANG']->getLL('status_insecure');
+				$severity = tx_reports_reports_status_Status::ERROR;
+				$message .= $flashMessage;
+			}
+
+			$unsecureUserCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+				'*',
+				'be_users',
+				'password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('$%', 'be_users')
+					. ' AND password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('M$%', 'be_users')
+			);
+			if ($unsecureUserCount > 0) {
+				$value    = $GLOBALS['LANG']->getLL('status_insecure');
+				$severity = tx_reports_reports_status_Status::ERROR;
+				$message .= '<div class="typo3-message message-warning">' .
+						$GLOBALS['LANG']->getLL('status_saltedPasswords_notAllPasswordsHashed') .'</div>';
+			}
+		}
+
+		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
+			$GLOBALS['LANG']->getLL('status_saltedPasswords'), $value, $message, $severity
+		);
+	}
 
 	/**
 	 * Checks for the existance of the ENABLE_INSTALL_TOOL file.
