@@ -75,6 +75,18 @@
 			<trans-unit id="status_encryptionKey" xml:space="preserve">
 				<source>Encryption Key</source>
 			</trans-unit>
+			<trans-unit id="status_saltedPasswords" xml:space="preserve">
+				<source>saltedpasswords Backend-Configuration</source>
+			</trans-unit>
+			<trans-unit id="status_saltedPasswords_infoText" xml:space="preserve">
+				<source>The configuration checks of of saltedpassword investigated the following:</source>
+			</trans-unit>
+			<trans-unit id="status_saltedPasswords_notInstalled" xml:space="preserve">
+				<source>the saltedpasswords extension is not installed. with standard password hashing you might be vulnerable to rainbow table attacks as soon as you password hashes become public.</source>
+			</trans-unit>
+			<trans-unit id="status_saltedPasswords_notAllPasswordsHashed" xml:space="preserve">
+				<source>not all passwords of your backend users have been hashed with salted passwords. Please consider running the bulk update script via scheduler.</source>
+			</trans-unit>
 			<trans-unit id="status_fileDenyPattern" xml:space="preserve">
 				<source>File Deny Pattern</source>
 			</trans-unit>
