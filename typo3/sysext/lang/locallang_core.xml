@@ -317,6 +317,8 @@ Check also the following points:\n
 			<label index="link.to.filefile.correctly">Please, do not link to this page.</label>
 			<label index="loadingIndicator">Loading ...</label>
 			<label index="csh_tooltip_loading">Loading help...</label>
+			<label index="error.database_schema_mismatch">A SQL error occurred. This may indicate a schema mismatch between TCA and the database. Try running database compare in the Install Tool.</label>
+			<label index="error.database_schema_mismatch_title">Database Error</label>
 		</languageKey>
 	</data>
 </T3locallang>
