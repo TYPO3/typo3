@@ -394,7 +394,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				$this->MOD_MENU['function']['installed_list'],
 				$this->MOD_MENU['function']['import'],
 				$this->MOD_MENU['function']['translations'],
-				$this->MOD_MENU['function']['settings']
+				$this->MOD_MENU['function']['settings'],
+				$this->MOD_MENU['function']['updates']
 			);
 		}
 		$this->MOD_MENU['singleDetails'] = $this->mergeExternalItems($this->MCONF['name'], 'singleDetails', $this->MOD_MENU['singleDetails']);
