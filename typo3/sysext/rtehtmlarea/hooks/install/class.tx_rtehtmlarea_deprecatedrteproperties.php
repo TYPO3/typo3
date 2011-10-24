@@ -132,11 +132,18 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 						'<table><thead><tr><th>Deprecated property</th></tr></thead><tbody>' . $replacementProperties . '</tboby></table>' . LF .
 						'<p>Therefore, the Page TSconfig column of those pages will need to be updated manually.</p>' . LF;
 				}
+				$result = TRUE;
+			} else {
+					// if we found no occurence of deprecated settings and wizard was already executed, then
+					// we do not show up anymore
+				if ($this->isWizardDone()) {
+					$result = FALSE;
+				}
 			}
 			$description .= '<p>Only page records were searched for deprecated properties. However, such properties can also be used in BE group and BE user records (prepended with page.). These are not searched nor updated by this wizard.</p>' . LF .
 				'<p>Page TSconfig may also be included from external files. These are not updated by this wizard. If required, the update will need to be done manually.</p>' . LF .
 				'<p>Note also that deprecated properties have been replaced in default configurations provided by htmlArea RTE';
-			$result = TRUE;
+
 		}
 		return $result;
 	}
@@ -167,6 +174,7 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 			$customMessages .= '<p>Only page records were searched for deprecated properties. However, such properties can also be used in BE group and BE user records (prepended with page.). These are not searched nor updated by this wizard.</p>' . LF .
 				'<p>Page TSconfig may also be included from external files. These were not updated by this wizard. If required, the update will need to be done manually.</p>';
 		}
+		$this->markWizardAsDone();
 		return empty($customMessages) || $success;
 	}
 
