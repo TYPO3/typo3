@@ -857,9 +857,11 @@ config.removeDefaultJS = 1]]></description>
 			<default><![CDATA[false]]></default>
 		</property>
 		<property name="compressJs" type="boolean">
-			<description><![CDATA[If set, inline JavaScript and external JavaScript files will be minified and compressed.
+			<description><![CDATA[Enabling this option together with $TYPO3_CONF_VARS['FE']['compressionLevel'] in the Install Tool delivers Frontend JavaScript files using GZIP compression.
 
-Minification will remove all excess space. The more significant compression step (using Gzip compression) requires $TYPO3_CONF_VARS['FE']['compressionLevel'] to be enabled in the Install Tool together with the gzip-related compressionLevel options in .htaccess, as otherwise the files will not be readable by the user agent.
+This can significantly reduce file sizes of linked JavaScript files and thus decrease loading times.
+
+Please not that this requires .htaccess to be adjusted, as otherwise the files will not be readable by the user agent. Please see the description of $TYPO3_CONF_VARS['FE']['compressionLevel'] in the Install Tool.
 
 Example:
 
