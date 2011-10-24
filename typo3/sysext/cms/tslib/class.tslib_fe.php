@@ -2055,9 +2055,10 @@
 								$this->config['config']['compressJs'] = $this->config['config']['minifyJS'];
 							}
 						}
-						if (!isset($this->config['config']['compressJs'])) {
-							$this->config['config']['compressJs'] = 1;
-						}
+					}
+
+					if (!isset($this->config['config']['compressJs'])) {
+						$this->config['config']['compressJs'] = 0;
 					}
 
 							// Processing for the config_array:
