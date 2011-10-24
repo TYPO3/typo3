@@ -209,7 +209,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 					$refNode->setLeaf(FALSE);
 
 					$reference = $refNode->getChildNodes();
-					if ($reference == null) {
+					if ($reference == NULL) {
 						$reference = t3lib_div::makeInstance('t3lib_tree_pagetree_NodeCollection');
 						$refNode->setChildNodes($reference);
 					}
