@@ -415,36 +415,47 @@ Caching Framework when needed.
 
 * Compression and concatenation of CSS and JavaScript files
 
-New built-in minification routines can now be used with config.compressCss and
-config.compressJs to reduce the file size of all files configured in
-page.includeCSS and page.includeJS. Single files can be excluded from
-compression using the new option disableCompression. Additionally, files can
-be concatenated into a single file using config.concatenateCss and
-config.concatenateJs. Please note that there is only limited support for
-@charset, @import and @namespace statements in concatenated CSS files.
+Built-in minification routines can now be used with config.compressCss to
+reduce the size of all files configured in page.includeCSS.
+With compressCss and/or compressJs enabled, CSS files and JavaScript files
+(included using page.includeJS) can be saved and delivered with GZIP
+compression in the Frontend, assuming $TYPO3_CONF_VARS['FE']
+['compressionLevel'] is set.
+Similar to $TYPO3_CONF_VARS['BE']['compressionLevel'] (available since TYPO3
+4.4), the following options must be set in .htaccess:
+
+ <FilesMatch "\.js\.gzip$">
+     AddType "text/javascript" .gzip
+ </FilesMatch>
+ <FilesMatch "\.css\.gzip$">
+     AddType "text/css" .gzip
+ </FilesMatch>
+ AddEncoding gzip .gzip
+
+Single files can be excluded from compression using the new option
+disableCompression. Additionally, files can be concatenated into a single file
+using config.concatenateCss and config.concatenateJs. Please note that there is
+only limited support for @charset, @import and @namespace statements in
+concatenated CSS files.
 
 Together with
 
  config.removeDefaultJS = external
 
-these routines will significantly lower web site traffic.
+these routines will significantly increase your website speed!
 
-Furthermore, if compressCss/compressJs is enabled,
-$TYPO3_CONF_VARS['FE']['compressionLevel'] now also affects CSS and JS files in
-frontend and applies GZIP compression. This requires the same options as for
-$TYPO3_CONF_VARS['BE']['compressionLevel'] to be set in .htaccess.
-
-You may disable compression and/or concatenation on the PAGE object. Example:
+You may disable compression and/or concatenation for CSS and JavaScript included
+with the PAGE object. Example:
 
  page.includeJSlibs {
-     jquery = http://code.jquery.com/jquery-1.6.1.min.js
-     jquery.external = 1
-     jquery.disableCompression = 1
-     jquery.excludeFromConcatenation = 1
+   jquery = http://code.jquery.com/jquery-1.6.1.min.js
+   jquery.external = 1
+   jquery.disableCompression = 1
+   jquery.excludeFromConcatenation = 1
  }
 
 The same options apply for includeCSS.
 
 Please note that compression and concatenation apply for external resources as
-well. But if activated, they will be dynamically retrieved to allow requested
-processing and will be served locally.
+well. If activated, external resources will be dynamically retrieved, processed,
+and served locally.
