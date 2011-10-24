@@ -123,12 +123,20 @@ class t3lib_cache {
 	 */
 	public static function getDatabaseTableDefinitions() {
 		$tableDefinitions = '';
-		foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] as $cacheName => $_) {
-			$backend = $GLOBALS['typo3CacheManager']->getCache($cacheName)->getBackend();
+		/** @var $cacheManager t3lib_cache_Manager */
+		$cacheManager = $GLOBALS['typo3CacheManager'];
+
+		foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] as $cacheName => $cacheConfiguration) {
+			if ($cacheManager->hasCache($cacheName) === FALSE) {
+				$cacheManager->addCacheConfiguration($cacheName, $cacheConfiguration);
+			}
+
+			$backend = $cacheManager->getCache($cacheName)->getBackend();
 			if (method_exists($backend, 'getTableDefinitions')) {
 				$tableDefinitions .= LF . $backend->getTableDefinitions();
 			}
 		}
+
 		return $tableDefinitions;
 	}
 }

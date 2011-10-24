@@ -96,6 +96,25 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	}
 
 	/**
+	 * Adds a configuration for a particular cache.
+	 *
+	 * @throws t3lib_cache_exception_DuplicateIdentifier
+	 * @param string $identifier The identifier of the cache
+	 * @param array $configuration The cache configuration to set
+	 * @return void
+	 */
+	public function addCacheConfiguration($identifier, array $configuration) {
+		if ($this->hasCache($identifier)) {
+			throw new t3lib_cache_exception_DuplicateIdentifier(
+				'A cache with identifier "' . $identifier . '" has already been registered.',
+				1319492046
+			);
+		}
+
+		$this->cacheConfigurations[$identifier] = $configuration;
+	}
+
+	/**
 	 * Registers a cache so it can be retrieved at a later point.
 	 *
 	 * @param t3lib_cache_frontend_Frontend $cache The cache frontend to be registered
