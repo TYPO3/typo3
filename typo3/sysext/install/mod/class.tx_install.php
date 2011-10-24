@@ -6345,6 +6345,22 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// clear cache files
 		t3lib_extMgm::removeCacheFiles(t3lib_extMgm::getCacheFilePrefix());
 
+			// Forces creation / update of caching framework tables that are needed by some update wizards
+		$cacheTablesConfiguration = implode(LF, $this->getStatementArray(t3lib_cache::getDatabaseTableDefinitions(), 1, '^CREATE TABLE '));
+		$neededTableDefinition = $this->sqlHandler->getFieldDefinitions_fileContent($cacheTablesConfiguration);
+		$currentTableDefinition = $this->sqlHandler->getFieldDefinitions_database();
+		$updateTableDefenition = $this->sqlHandler->getDatabaseExtra($neededTableDefinition, $currentTableDefinition);
+		$updateStatements = $this->sqlHandler->getUpdateSuggestions($updateTableDefenition);
+		if (isset($updateStatements['create_table']) && count($updateStatements['add']) > 0) {
+			$this->sqlHandler->performUpdateQueries($updateStatements['create_table'], $updateStatements['create_table']);
+		}
+		if (isset($updateStatements['add']) && count($updateStatements['add']) > 0) {
+			$this->sqlHandler->performUpdateQueries($updateStatements['add'], $updateStatements['add']);
+		}
+		if (isset($updateStatements['change']) && count($updateStatements['change']) > 0) {
+			$this->sqlHandler->performUpdateQueries($updateStatements['change'], $updateStatements['change']);
+		}
+
 			// call wizard
 		$action = ($this->INSTALL['database_type'] ? $this->INSTALL['database_type'] : 'checkForUpdate');
 		$this->updateWizard_parts($action);
