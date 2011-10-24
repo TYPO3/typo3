@@ -317,15 +317,16 @@ class Tx_Workspaces_ExtDirect_ActionHandler extends Tx_Workspaces_ExtDirect_Abst
 		$cmdMapArray = array();
 		$comment     = $parameters->comments;
 		$stageId     = $parameters->stageId;
-		$recipients  = $this->getRecipientList($parameters->receipients, $parameters->additional);
 
-		if (t3lib_div::testInt($stageId) === FALSE) {
-			throw new InvalidArgumentException('Missing "stageId" in $parameters array.');
+		if (t3lib_utility_Math::canBeInterpretedAsInteger($stageId) === FALSE) {
+			throw new InvalidArgumentException('Missing "stageId" in $parameters array.', 1319488194);
+		}
+		if (!is_array($parameters->affects) || count($parameters->affects) == 0) {
+			throw new InvalidArgumentException('Missing "affected items" in $parameters array.', 1319488195);
 		}
 
-		if (! is_array($parameters->affects) && count($parameters->affects) == 0) {
-			throw new InvalidArgumentException('Missing "affected items" in $parameters array.');
-		}
+		$recipients  = $this->getRecipientList($parameters->receipients, $parameters->additional, $stageId);
+
 		foreach ($parameters->affects as $tableName => $items) {
 			foreach ($items as $item) {
 				if ($stageId == Tx_Workspaces_Service_Stages::STAGE_PUBLISH_EXECUTE_ID) {
