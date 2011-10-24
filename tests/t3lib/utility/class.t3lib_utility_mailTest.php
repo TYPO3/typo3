@@ -64,11 +64,36 @@ class t3lib_utility_MailTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function mailCallsHook() {
+		$this->doMailCallsHook();
+	}
+
+	/**
+	 * @test
+	 */
+	public function mailCallsHookWithDefaultMailFrom() {
+		$this->doMailCallsHook('no-reply@localhost', 'TYPO3 Mailer');
+	}
+
+	/**
+	 * Method called from tests mailCallsHook() and mailCallsHookWithDefaultMailFrom().
+	 */
+	protected function doMailCallsHook($fromAddress = '', $fromName = '') {
+			// Backup configuration
+		$mailConfigurationBackup = $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
+
+		$GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] = $fromAddress;
+		$GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'] = $fromName;
+
 		$to = 'john@example.com';
 		$subject = 'Good news everybody!';
 		$messageBody = 'The hooks works!';
 		$additionalHeaders = 'Reply-to: jane@example.com';
 		$additionalParameters = '-f postmaster@example.com';
+
+		$additionalHeadersExpected = $additionalHeaders;
+		if ($fromAddress !== '' && $fromName !== '') {
+			$additionalHeadersExpected .= LF . sprintf('From: "%s" <%s>', $fromName, $fromAddress);
+		}
 
 		$mockMailer = $this->getMock('mockMailer', array('mail'));
 		$mockMailer->expects($this->once())->method('mail')
@@ -77,7 +102,7 @@ class t3lib_utility_MailTest extends tx_phpunit_testcase {
 					'to' => $to,
 					'subject' => $subject,
 					'messageBody' => $messageBody,
-					'additionalHeaders' => $additionalHeaders,
+					'additionalHeaders' => $additionalHeadersExpected,
 					'additionalParameters' => $additionalParameters,
 				),
 				FALSE
@@ -93,6 +118,9 @@ class t3lib_utility_MailTest extends tx_phpunit_testcase {
 			$to, $subject, $messageBody, $additionalHeaders,
 			$additionalParameters
 		);
+
+			// Restore configuration
+		$GLOBALS['TYPO3_CONF_VARS']['MAIL'] = $mailConfigurationBackup;
 	}
 
     /**
