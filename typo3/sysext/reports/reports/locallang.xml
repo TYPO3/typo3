@@ -29,6 +29,10 @@
 			<label index="status_PhpSafeMode">PHP safe_mode</label>
 			<label index="status_adminUserAccount">Admin User Account</label>
 			<label index="status_encryptionKey">Encryption Key</label>
+			<label index="status_saltedPasswords">Backend user password hashes</label>
+			<label index="status_saltedPasswords_infoText">During the configuration check of saltedpasswords the following issues have been found:</label>
+			<label index="status_saltedPasswords_notInstalled">The saltedpasswords extension is not installed. The passwords are only hashed with md5 which is considered to be insecure. Install and configure the saltedpasswords extension and run the scheduler task to convert all passwords to salted hashes.</label>
+			<label index="status_saltedPasswords_notAllPasswordsHashed">Some backend user passwords are found to be only md5 hashed. Run the scheduler task to convert all passwords to salted hashes.</label>
 			<label index="status_fileDenyPattern">File Deny Pattern</label>
 			<label index="status_htaccessUploadProtection">.htaccess Upload Protection</label>
 			<label index="status_installToolPassword">Install Tool Password</label>
