@@ -90,10 +90,10 @@ default (English) localization files. This behaviour may be changed by
 specifying arbitrary dependencies:
 
  $TYPO3_CONF_VARS['SYS']['localization']['locales']['dependencies'] = array(
-     'de_CH' => array('de_AU', 'de'),
+     'de_CH' => array('de_AT', 'de'),
  );
 
-Swiss German (de_CH) will fall back to Austrian German (de_AU), then German
+Swiss German (de_CH) will fall back to Austrian German (de_AT), then German
 (de) and finally English (always used as last option).
 
 * Upgrade notes for JavaScript within user extensions
