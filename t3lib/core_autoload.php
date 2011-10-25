@@ -78,7 +78,6 @@ $t3libClasses = array(
 	't3lib_sqlengine_resultobj' => PATH_t3lib . 'class.t3lib_sqlengine.php',
 	't3lib_sqlparser' => PATH_t3lib . 'class.t3lib_sqlparser.php',
 	't3lib_stdgraphic' => PATH_t3lib . 'class.t3lib_stdgraphic.php',
-	't3lib_superadmin' => PATH_t3lib . 'class.t3lib_superadmin.php',
 	't3lib_svbase' => PATH_t3lib . 'class.t3lib_svbase.php',
 	't3lib_syntaxhl' => PATH_t3lib . 'class.t3lib_syntaxhl.php',
 	't3lib_tceforms' => PATH_t3lib . 'class.t3lib_tceforms.php',
