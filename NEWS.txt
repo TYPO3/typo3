@@ -93,7 +93,7 @@ specifying arbitrary dependencies:
      'de_CH' => array('de_AU', 'de'),
  );
 
-Swiss German (de_CH) will fall back to Austrian German (de_AU), then German
+Swiss German (de_CH) will fall back to Austrian German (de_AT), then German
 (de) and finally English (always used as last option).
 
 * Upgrade notes for JavaScript within user extensions
