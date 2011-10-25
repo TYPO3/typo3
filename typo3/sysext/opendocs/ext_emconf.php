@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "opendocs".
 #
-# Auto generated 10-10-2011 14:47
+# Auto generated 25-10-2011 13:11
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -34,7 +34,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '1.1.0',
-	'_md5_values_when_last_written' => 'a:13:{s:21:"class.tx_opendocs.php";s:4:"062d";s:21:"ext_conf_template.txt";s:4:"967e";s:12:"ext_icon.gif";s:4:"fdf4";s:14:"ext_tables.php";s:4:"f56d";s:22:"locallang_opendocs.xlf";s:4:"d9c3";s:12:"opendocs.css";s:4:"c7f0";s:11:"opendocs.js";s:4:"613f";s:12:"opendocs.png";s:4:"08b3";s:23:"registerToolbarItem.php";s:4:"520e";s:26:"toolbar_item_active_bg.png";s:4:"5623";s:12:"mod/conf.php";s:4:"760d";s:16:"mod/document.gif";s:4:"fdf4";s:21:"mod/locallang_mod.xlf";s:4:"9b90";}',
+	'_md5_values_when_last_written' => 'a:13:{s:21:"class.tx_opendocs.php";s:4:"062d";s:21:"ext_conf_template.txt";s:4:"967e";s:12:"ext_icon.gif";s:4:"fdf4";s:14:"ext_tables.php";s:4:"f56d";s:22:"locallang_opendocs.xlf";s:4:"1d17";s:12:"opendocs.css";s:4:"c7f0";s:11:"opendocs.js";s:4:"a248";s:12:"opendocs.png";s:4:"08b3";s:23:"registerToolbarItem.php";s:4:"520e";s:26:"toolbar_item_active_bg.png";s:4:"5623";s:12:"mod/conf.php";s:4:"760d";s:16:"mod/document.gif";s:4:"fdf4";s:21:"mod/locallang_mod.xlf";s:4:"dec6";}',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.3.0-0.0.0',

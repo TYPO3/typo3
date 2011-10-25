@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "tstemplate_info".
 #
-# Auto generated 10-10-2011 14:48
+# Auto generated 25-10-2011 13:11
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -34,7 +34,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '1.1.0',
-	'_md5_values_when_last_written' => 'a:5:{s:9:"ChangeLog";s:4:"4105";s:27:"class.tx_tstemplateinfo.php";s:4:"840e";s:12:"ext_icon.gif";s:4:"a332";s:14:"ext_tables.php";s:4:"d827";s:13:"locallang.xlf";s:4:"8167";}',
+	'_md5_values_when_last_written' => 'a:5:{s:9:"ChangeLog";s:4:"4105";s:27:"class.tx_tstemplateinfo.php";s:4:"840e";s:12:"ext_icon.gif";s:4:"a332";s:14:"ext_tables.php";s:4:"d827";s:13:"locallang.xlf";s:4:"294c";}',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.3.0-0.0.0',
