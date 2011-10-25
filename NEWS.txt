@@ -27,6 +27,12 @@ anymore with TYPO3 4.6.
 
 If you are using ImageMagick, only versions 6.0 and above are supported.
 
+* Internet Explorer 6
+
+Support for Internet Explorer 6 has been dropped in the Backend. Extended
+support for MS Windows XP (and thus Internet Explorer 6) is still available
+through TYPO3 4.5 LTS until its end of life in April 2014.
+
 * PHP __constructor() methods
 
 The old PHP 4 style class constructors, which have been the same as the class
@@ -79,22 +85,22 @@ account to log into the Translation Server and suggest corrections. This
 server generates automatically the old ll-XML localization files to be used
 with previous versions of TYPO3.
 
-* Language dependency
+* Hierarchy of languages
 
-Language dependency may now be specified. This allows a user-defined fallback.
-By default, locales composed of a language code and a country code (e.g. fr_CA)
-now fall back to the main language (fr) before using English (default). This
-means that if fr_CA is being used (French Canada), a missing label will be
-searched within French localization files before being searched within the
-default (English) localization files. This behaviour may be changed by
-specifying arbitrary dependencies:
+User-defined hierarchy of languages may now be specified. By default, locales
+composed of a language code and a country code (e.g. fr_CA) now fall back to
+the main language (fr) before using English (default). This means that if
+fr_CA is being used (French Canada), a missing label will be searched within
+French localization files before being searched within the default (English)
+localization files. This behavior may be changed by specifying arbitrary
+dependencies:
 
  $TYPO3_CONF_VARS['SYS']['localization']['locales']['dependencies'] = array(
      'de_CH' => array('de_AT', 'de'),
  );
 
-Swiss German (de_CH) will fall back to Austrian German (de_AT), then German
-(de) and finally English (always used as last option).
+Swiss German (de_CH) will first use Austrian German (de_AT), then German
+(de) and only using English as a final option (as usual).
 
 * Upgrade notes for JavaScript within user extensions
 
@@ -111,14 +117,14 @@ The new Form content element, available as a system extension, makes it easy to
 generate forms to be used as content elements. It provides a Form wizard based
 on ExtJS to allow editors to construct forms very efficiently with intuitive
 drag & drop functionality and sorting methods to add and replace form elements.
-While working in the wizard, the editor sees exactly how the form will be
+While working in the wizard, the editor sees the form exactly as it will be
 displayed in the website.
 
 This is a complete rewrite and enhancement of the Form content element you may
-have used in the past. It paves the way for future enhancements such as storing
-data in the database instead of sending an email or having AJAX validation to
-show an error immediately after filling in a single field without submitting
-the whole form.
+have used in the past. It is a great step forward and also paves the way for
+future enhancements such as storing data in the database instead of sending an
+email or having AJAX validation to show an error immediately after filling in a
+single field without submitting the whole form.
 
 NOTE: If you upgrade from a previous version of TYPO3, you have to manually
 load the new Form content element using the Extension Manager. For new TYPO3
@@ -135,14 +141,14 @@ Other General Improvements
 * Precise publishing dates
 
 Editors can now set the publishing date for pages and elements using both date
-and time values, set down to the minute. This was previously not possible due
-to caching issues and required work-arounds.
+and time values, all the way down to the minute. This was previously not
+possible due to caching issues and required work-arounds.
 
 * New Scheduler task to delete old data from tables
 
 The Scheduler task 'Table garbage collection' can be used to delete old data
-from growing tables like log tables on a regular basis. Additional tables that
-can be cleaned up must be registered in $TYPO3_CONF_VARS['SC_OPTIONS']
+from ever-growing tables like log tables on a regular basis. Additional tables
+that can be cleaned up must be registered in $TYPO3_CONF_VARS['SC_OPTIONS']
 ['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']
 ['tables'] with its table name and a field. After that they can
 be selected in the Scheduler task.
@@ -166,26 +172,26 @@ figured with:
 
 * Moved t3d exports to fileadmin/_temp_ directory
 
-t3d packages exported by the import / export extension are now stored in
-fileadmin/_temp_ by default which is access restricted by default .htaccess
-rules.
+Packages in a .t3d format exported by the import/export extension are now stored
+in fileadmin/_temp_ by default. Access to this directory is automatically
+restricted by default .htaccess rules.
 
 * Added "IDNA Convert" libray for Internationalized Domain Names (IDN)
 
 The new library can be found in typo3/contrib/idna/ and is used to encode and
 decode internationalized domain names (containing special characters like
-umlauts) from and to punycode.
+umlauts) to and from punycode.
 
 -------------------------------------------------------------------------------
 Security
 -------------------------------------------------------------------------------
 
 For new installations, extensions saltedpasswords and rsaauth are now
-automatically activated and used if the server meets the corresponding
-requirements, including non-broken OpenSSL configuration.
+automatically activated and used if the necessary server requirements are met.
+This includes a non-broken OpenSSL configuration.
 
-Upgrading users are strongly advised to manually enable these extensions in
-order to strengthen the security of their website.
+Users upgrading to TYPO3 4.6 are strongly advised to manually enable these
+extensions in order to strengthen the security of their website.
 
 If extension rsaauth is enabled, the password transmission when saving the user
 settings is now encrypted.
@@ -218,7 +224,7 @@ Basically, the 'ctrl' section of TCA is extended with a new option:
 Extension Manager
 -------------------------------------------------------------------------------
 
-The old Extension Manager has now been officially obsolesced and the
+The old Extension Manager has now been officially declared obsolete and the
 ExtJS-based one will be used regardless of your previous preferences.
 
 Other Improvements to the Backend
