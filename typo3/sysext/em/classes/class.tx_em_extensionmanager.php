@@ -139,6 +139,8 @@ class tx_em_ExtensionManager {
 				'selectedLanguages' => '',
 				'inlineToWindow' => 1,
 			);
+		} elseif (!isset($globalSettings['inlineToWindow'])) {
+			$globalSettings['inlineToWindow'] = 1;
 		}
 		$settings = $this->parentObject->MOD_SETTINGS;
 		$mirrors = unserialize($settings['extMirrors']);
