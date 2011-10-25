@@ -32,82 +32,146 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
- * @subpackage core
+ * @subpackage aboutmodules
  */
 class SC_mod_help_aboutmodules_index {
 
 	/**
-	 * Object for backend modules.
-	 *
-	 * @var t3lib_loadModules
+	 * Default constructor
 	 */
-	var $loadModules;
-	var $content;
-
-	/**
-	 * Initialization of script class
-	 *
-	 * @return	void
-	 */
-	function init() {
-			// Loads the available backend modules so we can create the description overview.
+	public function __construct() {
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_alt_intro.xml');
-		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
-		$this->loadModules->observeWorkspaces = TRUE;
-		$this->loadModules->load($GLOBALS['TBE_MODULES']);
 	}
 
 	/**
-	 * Main content - displaying the module descriptions
+	 * Render the module
 	 *
-	 * @return	void
+	 * @return void
 	 */
-	function main() {
-			/** @var $menuObj tx_aboutmodules_Functions */
-		$menuObj = t3lib_div::makeInstance('tx_aboutmodules_Functions');
-
+	public function render() {
 		$GLOBALS['TBE_TEMPLATE']->divClass = $GLOBALS['TBE_TEMPLATE']->bodyTagId;
 		$GLOBALS['TBE_TEMPLATE']->backPath = $GLOBALS['BACK_PATH'];
 
-		$this->content = '
-			<div id="typo3-docheader">
-				<div id="typo3-docheader-row1">&nbsp;</div>
-			</div>
-			<div id="typo3-alt-intro-php-sub">
-			<h1>TYPO3 ' . TYPO3_version . '<br />' . $GLOBALS['LANG']->getLL('introtext') . '</h1>
+		$content = array();
+		$content[] = '<div id="typo3-docheader"><div id="typo3-docheader-row1">&nbsp;</div></div>';
+		$content[] = '<div id="typo3-alt-intro-php-sub">';
 
-			<p>' . t3lib_BEfunc::TYPO3_copyRightNotice() . '</p>';
+		$content[] = '<h1>TYPO3 ' . TYPO3_version . '<br />' . $GLOBALS['LANG']->getLL('introtext') . '</h1>';
+		$content[] = '<p>' . t3lib_BEfunc::TYPO3_copyRightNotice() . '</p>';
 
-		$this->content .= '
-			' . t3lib_BEfunc::displayWarningMessages();
+		$content[] = t3lib_BEfunc::displayWarningMessages();
+		$content[] = '<h3>' . $GLOBALS['LANG']->getLL('introtext2') . '</h3>';
 
-		$this->content .= '
-			<h3>' . $GLOBALS['LANG']->getLL('introtext2') . '</h3>';
+			/** @var $loadModules t3lib_loadModules */
+		$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
+		$loadModules->observeWorkspaces = TRUE;
+			// Load available backend modules to create the description overview.
+		$loadModules->load($GLOBALS['TBE_MODULES']);
+		$content[] = $this->renderModules($loadModules->modules);
+		$content[] = '<br />';
 
+			// End text: 'Features may vary depending on your website and permissions'
+		$content[] = '<p class="c-features"><em>(' . $GLOBALS['LANG']->getLL('endText') . ')</em></p>';
 
-		// Printing the description of the modules available
-		$this->content .= $menuObj->topMenu($this->loadModules->modules, 0, '', 1);
-		$this->content .= '<br />';
+		$content[] = '<br />';
+		$content[] = '</div>';
 
-		// end text: 'Features may vary depending on your website and permissions'
-		$this->content .= '<p class="c-features"><em>(' . $GLOBALS['LANG']->getLL('endText') . ')</em></p>';
-		$this->content .= '<br /></div>';
-
-		// Renders the module page
-		$this->content = $GLOBALS['TBE_TEMPLATE']->render(
+		echo $GLOBALS['TBE_TEMPLATE']->render(
 			'About modules',
-			$this->content,
+			implode(LF, $content),
 			TRUE
 		);
 	}
 
 	/**
-	 * Outputting the accumulated content to screen
+	 * Render an overview of modules and its sub modules
 	 *
-	 * @return	void
+	 * @param array $modules is the output from load_modules class
+	 * @return string Module list HTML
 	 */
-	function printContent() {
-		echo $this->content;
+	protected function renderModules(array $modules) {
+		$moduleHtml = array();
+
+			// Traverse array with modules
+		foreach ($modules as $moduleName => $moduleInfo) {
+			$moduleKey = $moduleName . '_tab';
+
+				// Create image icon
+			$icon = @getimagesize($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey]);
+			$iconHtml = '';
+			if ($icon) {
+				$iconPath = '../' . substr($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey], strlen(PATH_site));
+				$iconHtml = '<img src="' . $iconPath . '" ' . $icon[3] . ' alt="" />';
+			}
+
+			$label = htmlspecialchars($GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey]);
+				// Creating main module link, if there are no sub modules
+			if (!is_array($moduleInfo['sub'])) {
+				$label = '<a href="#" onclick="top.goToModule(\'' . $moduleName . '\');return false;">' . $label . '</a>';
+			}
+			$label = '&nbsp;<strong>' . $label . '</strong>&nbsp;';
+
+			$moduleHtml[] = '<tr class="c-mainitem"><td colspan="3">' . $iconHtml . $label . '</td></tr>';
+
+				// Traverse sub modules
+			$subHtml = array();
+			if (is_array($moduleInfo['sub'])) {
+				$subCount = 0;
+				foreach ($moduleInfo['sub'] as $subName => $subInfo) {
+					$subCount ++;
+					if ($subCount === 1) {
+						$subHtml[] = '
+							<tr class="c-first">
+								<td colspan="3"></td>
+							</tr>
+						';
+					}
+
+					$subKey = $moduleName . '_' . $subName . '_tab';
+
+						// Create image icon
+					$icon = @getimagesize($GLOBALS['LANG']->moduleLabels['tabs_images'][$subKey]);
+					$iconHtml = '';
+					if ($icon) {
+						$iconPath = '../' . substr($GLOBALS['LANG']->moduleLabels['tabs_images'][$subKey], strlen(PATH_site));
+						$iconHtml = '<img src="' . $iconPath . '" ' . $icon[3] . ' title="' . htmlspecialchars($GLOBALS['LANG']->moduleLabels['labels'][$subKey . 'label']) . '" alt="" />';
+					}
+
+						// Label for sub module
+					$label = $GLOBALS['LANG']->moduleLabels['tabs'][$subKey];
+					$labelDescription = ' title="' . htmlspecialchars($GLOBALS['LANG']->moduleLabels['labels'][$subKey . 'label']) . '"';
+					$onClickString = htmlspecialchars('top.goToModule(\'' . $moduleName . '_' . $subName . '\');return false;');
+					$linkedLabel = '<a href="#" onclick="' . $onClickString . '"' . $labelDescription . '>' . htmlspecialchars($label) . '</a>';
+
+					$moduleLabel = htmlspecialchars($GLOBALS['LANG']->moduleLabels['labels'][$subKey . 'label']);
+					$moduleLabelHtml = !empty($moduleLabel) ? '<strong>' . $moduleLabel . '</strong><br />' : '';
+					$moduleDescription = $GLOBALS['LANG']->moduleLabels['labels'][$subKey . 'descr'];
+
+					$subHtml[] = '<tr class="c-subitem-row">';
+					$subHtml[] = '<td align="center">' . $iconHtml . '</td>';
+					$subHtml[] = '<td>' . $linkedLabel . '&nbsp;&nbsp;</td>';
+
+					if (!empty($moduleLabel) || !empty($moduleDescription)) {
+						$subHtml[] = '<td class="module-description">' . $moduleLabelHtml . $moduleDescription . '</td>';
+					} else {
+						$subHtml[] = '<td>&nbsp;</td>';
+					}
+
+					$subHtml[] = '</tr>';
+				}
+			}
+
+			if (count($subHtml) > 0) {
+				$moduleHtml[] = implode(LF, $subHtml);
+				$moduleHtml[] = '<tr class="c-endrow"><td colspan="3"></td></tr>';
+			}
+		}
+
+		return '
+			<table border="0" cellpadding="0" cellspacing="0" id="typo3-about-modules">
+				' . implode(LF, $moduleHtml) . '
+			</table>
+		';
 	}
 }
 
@@ -115,10 +179,5 @@ if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLA
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/aboutmodules/mod/index.php']);
 }
 
-
-	// Make instance:
-$SOBE = t3lib_div::makeInstance('SC_mod_help_aboutmodules_index');
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+t3lib_div::makeInstance('SC_mod_help_aboutmodules_index')->render();
 ?>

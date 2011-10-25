@@ -26,21 +26,30 @@
  ***************************************************************/
 
 /**
+ * This class is deprecated and unmaintained. It was once used to render the main
+ * menus of the backend for alt_main.php and friends, but is unused now.
+ *
  * Class for generation of the module menu.
  * Will make the vertical, horizontal, selectorbox based menus AND the "about modules" display.
  * Basically it traverses the module structure and generates output based on that.
  *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
- * XHTML compliant content
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
+ * @deprecated since 4.7, will be removed in 4.9
  */
 class tx_aboutmodules_Functions {
 
 	// Internal
 	var $fsMod = array();
+
+	/**
+	 * Default constructor throws deprecation warning
+	 */
+	public function __construct() {
+		t3lib_div::deprecationLog('class tx_aboutmodules_Functions is deprecated, unused in core since 4.3 and unmaintained. It will be removed in 4.9.');
+	}
 
 	/**
 	 * Creates the menu of modules.
