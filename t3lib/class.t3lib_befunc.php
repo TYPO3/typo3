@@ -1510,7 +1510,12 @@ final class t3lib_BEfunc {
 		t3lib_div::loadTCA($table);
 
 			// Find uploaddir automatically
-		$uploaddir = (is_null($uploaddir)) ? $GLOBALS['TCA'][$table]['columns'][$field]['config']['uploadfolder'] : $uploaddir;
+		if ($GLOBALS['TCA'][$table]['columns'][$field]['config']['internal_type'] == 'file_reference') {
+			$uploaddir = '';
+		} else {
+			$uploaddir = (is_null($uploaddir)) ? $GLOBALS['TCA'][$table]['columns'][$field]['config']['uploadfolder'] : $uploaddir;
+			$uploaddir = preg_replace('#/$#', '', $uploaddir);
+		}
 		$uploaddir = preg_replace('#/$#', '', $uploaddir);
 
 			// Set thumbs-script:
