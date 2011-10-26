@@ -225,7 +225,12 @@ final class t3lib_utility_Debug {
 
 		$path = array();
 		foreach ($trail as $dat) {
-			$path[] = $dat['class'] . $dat['type'] . $dat['function'] . '#' . $dat['line'];
+			$pathFragment = $dat['class'] . $dat['type'] . $dat['function'];
+				// add the path of the included file
+			if (in_array($dat['function'], array('require', 'include', 'require_once', 'include_once'))) {
+				$pathFragment .= '(' . substr($dat['args'][0], strlen(PATH_site)) . '),' . substr($dat['file'], strlen(PATH_site));
+			}
+			$path[] = $pathFragment . '#' . $dat['line'];
 		}
 
 		return implode(' // ', $path);
