@@ -225,7 +225,11 @@ final class t3lib_utility_Debug {
 
 		$path = array();
 		foreach ($trail as $dat) {
-			$path[] = $dat['class'] . $dat['type'] . $dat['function'] . '#' . $dat['line'];
+			$tmp_path = $dat['class'] . $dat['type'] . $dat['function'];
+			if (t3lib_div::inList('require,include,require_once,include_once', $dat['function'])) {
+				$tmp_path .= '(' . substr($dat['args'][0], strlen(PATH_site)) . '),' . substr($dat['file'], strlen(PATH_site));
+			}
+			$path[] = $tmp_path . '#' . $dat['line'];;
 		}
 
 		return implode(' // ', $path);
