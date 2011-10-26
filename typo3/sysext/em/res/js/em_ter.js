@@ -105,7 +105,8 @@ TYPO3.EM.TerUpload = Ext.extend(Ext.form.FormPanel, {
 							}
 							if (action.failureType === Ext.form.Action.SERVER_INVALID){
 								// server responded with success = false
-								TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.l10n.localize('msg_invalid'), action.result.errormsg, 5);
+								TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.l10n.localize('msg_invalid'),
+										action.result.error, 5);
 							}
 						}
 					});
