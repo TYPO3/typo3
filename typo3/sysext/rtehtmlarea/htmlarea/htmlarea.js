@@ -136,7 +136,19 @@ HTMLArea.Config = function (editorId) {
 		// Custom tags (must be a regular expression)
 	this.customTags = /none/i;
 		// BaseURL to be included in the iframe document
-	this.baseURL = document.baseURI || document.URL;
+	this.baseURL = document.baseURI;
+		// fix for ie baseurl handling
+		// ie does not support document.baseURI
+		// since document.URL is incorrect when using realurl
+		// get first base tag and extract href
+	if (!this.baseURL) {
+		var baseTags = document.getElementsByTagName ("base");
+		if (baseTags.length > 0) {
+			this.baseURL = baseTags[0].href;
+		} else {
+			this.baseURL = document.URL;
+		}
+	}
 	if (this.baseURL && this.baseURL.match(/(.*\:\/\/.*\/)[^\/]*/)) {
 		this.baseURL = RegExp.$1;
 	}
