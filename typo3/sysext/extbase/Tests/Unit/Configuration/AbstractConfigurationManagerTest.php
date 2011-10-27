@@ -166,14 +166,6 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_Configuration_Exception
-	 */
-	public function getConfigurationThrowsExceptionIfOnlyExtensionNameIsSpecified() {
-		$this->abstractConfigurationManager->getConfiguration('SomeExtensionName');
-	}
-
-	/**
-	 * @test
 	 */
 	public function getConfigurationReturnsCachedResultOfCurrentPlugin() {
 		$this->abstractConfigurationManager->_set('extensionName', 'CurrentExtensionName');

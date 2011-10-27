@@ -218,7 +218,7 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 				'foo' => 'bar'
 			)
 		);
-		$actualResult = $this->backendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName', 'SomePluginName');
+		$actualResult = $this->backendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName');
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 

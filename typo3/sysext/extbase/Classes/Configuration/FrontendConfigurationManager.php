@@ -64,16 +64,20 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	 * @param string $pluginName
 	 * @return array
 	 */
-	protected function getPluginConfiguration($extensionName, $pluginName) {
+	protected function getPluginConfiguration($extensionName, $pluginName = NULL) {
 		$setup = $this->getTypoScriptSetup();
 		$pluginConfiguration = array();
 		if (is_array($setup['plugin.']['tx_' . strtolower($extensionName) . '.'])) {
 			$pluginConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . strtolower($extensionName) . '.']);
 		}
-		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
-		if (is_array($setup['plugin.']['tx_' . $pluginSignature . '.'])) {
-			$pluginConfiguration = t3lib_div::array_merge_recursive_overrule($pluginConfiguration, $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . $pluginSignature . '.']));
+
+		if ($pluginName !== NULL) {
+			$pluginSignature = strtolower($extensionName . '_' . $pluginName);
+			if (is_array($setup['plugin.']['tx_' . $pluginSignature . '.'])) {
+				$pluginConfiguration = t3lib_div::array_merge_recursive_overrule($pluginConfiguration, $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . $pluginSignature . '.']));
+			}
 		}
+
 		return $pluginConfiguration;
 	}
 

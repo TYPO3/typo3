@@ -117,7 +117,7 @@ class Tx_Extbase_Tests_Unit_Configuration_FrontendConfigurationManagerTest exten
 				'foo' => 'bar'
 			)
 		);
-		$actualResult = $this->frontendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName', 'SomePluginName');
+		$actualResult = $this->frontendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName');
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
