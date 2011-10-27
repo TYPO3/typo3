@@ -40,7 +40,7 @@
 class Tx_Fluid_ViewHelpers_Form_TextboxViewHelper extends Tx_Fluid_ViewHelpers_Form_TextfieldViewHelper {
 	public function render() {
 		t3lib_div::logDeprecatedFunction('<f:form.textbox> is deprecated. Please use <f:form.textfield> instead.');
-		parent::render();
+		return parent::render();
 	}
 }
 
