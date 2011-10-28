@@ -4563,6 +4563,11 @@ if (version == "n3") {
 	 * @return	string		Label value, if any.
 	 */
 	function sL($input)	{
+		if (substr($input, 0, 4) !== 'LLL:') {
+				// Not a label, return the key as this
+			return $input;
+		}
+
 			// If cached label
 		if (!isset($this->LL_labels_cache[$this->lang][$input])) {
 			$restStr = trim(substr($input,4));
