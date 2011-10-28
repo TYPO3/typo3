@@ -2133,6 +2133,40 @@ final class t3lib_BEfunc {
 	}
 
 	/**
+	 * Splits the given key with commas and returns the list of all the localized items labels, separated by a comma.
+	 * NOTE: this does not take itemsProcFunc into account
+	 *
+	 * @static
+	 * @param string $table Table name, present in TCA
+	 * @param string $column Field name
+	 * @param string $key Key or comma-separated list of keys.
+	 * @return string Comma-separated list of localized labels
+	*/
+	public static function getLabelsFromItemsList($table, $column, $key) {
+		$labels = array();
+		$values = t3lib_div::trimExplode(',', $key, TRUE);
+		if (count($values) > 0) {
+				// Load full TCA for $table
+			t3lib_div::loadTCA($table);
+				// Check, if there is an "items" array:
+			if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$column]) && is_array($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'])) {
+					// Loop on all selected values
+				foreach ($values as $aValue) {
+					foreach ($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'] as $itemConfiguration) {
+							// Loop on all available items
+							// Keep matches and move on to next value
+						if ($aValue == $itemConfiguration[1]) {
+							$labels[] = $GLOBALS['LANG']->sL($itemConfiguration[0]);
+							break;
+						}
+					}
+				}
+			}
+		}
+		return implode(', ', $labels);
+	}
+
+	/**
 	 * Returns the label-value for fieldname $col in table, $table
 	 * If $printAllWrap is set (to a "wrap") then it's wrapped around the $col value IF THE COLUMN $col DID NOT EXIST in TCA!, eg. $printAllWrap = '<strong>|</strong>' and the fieldname was 'not_found_field' then the return value would be '<strong>not_found_field</strong>'
 	 * Usage: 17
@@ -2347,8 +2381,8 @@ final class t3lib_BEfunc {
 							$l = 'N/A';
 						}
 					} else {
-						$l = self::getLabelFromItemlist($table, $col, $value);
-						$l = $GLOBALS['LANG']->sL($l);
+						$l = self::getLabelsFromItemsList($table, $col, $value);
+
 						if ($theColConf['foreign_table'] && !$l && $TCA[$theColConf['foreign_table']]) {
 							if ($noRecordLookup) {
 								$l = $value;
