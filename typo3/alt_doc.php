@@ -1202,7 +1202,7 @@ class SC_alt_doc {
 
 
 	/**
-	 * Returns sys_language records.
+	 * Returns sys_language records available for record translations on given page.
 	 *
 	 * @param	integer		Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
 	 * @return	array		Language records including faked record for default language
@@ -1232,7 +1232,7 @@ class SC_alt_doc {
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 							'sys_language.*',
 							'pages_language_overlay,sys_language',
-							'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid='.intval($id).$exQ,
+							'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . intval($id) . t3lib_BEfunc::deleteClause('pages_language_overlay') . $exQ,
 							'pages_language_overlay.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.static_lang_isocode,sys_language.flag',
 							'sys_language.title'
 						);
