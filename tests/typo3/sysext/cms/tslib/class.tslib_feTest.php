@@ -89,6 +89,19 @@ class tslib_feTest extends tx_phpunit_testcase {
 	}
 
 
+	//////////////////////
+	// Tests concerning sL
+	//////////////////////
+
+	/**
+	 * @test
+	 */
+	public function localizationReturnsUnchangedStringIfNotLocallangLabel() {
+		$string = uniqid();
+		$this->assertEquals($string, $this->fixture->sL($string));
+	}
+
+
 	//////////////////////////////////////////
 	// Tests concerning roundTripCryptString
 	//////////////////////////////////////////
