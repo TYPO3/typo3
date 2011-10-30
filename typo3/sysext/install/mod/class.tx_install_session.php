@@ -118,7 +118,7 @@ class tx_install_session {
 		if (version_compare(phpversion(), '5.2', '<')) {
 			ini_set('session.cookie_httponly', TRUE);
 		}
-		if (ini_get('session.auto_start')) {
+		if (t3lib_utility_PhpOptions::isSessionAutoStartEnabled()) {
 			$sessionCreationError = 'Error: session.auto-start is enabled.<br />';
 			$sessionCreationError .= 'The PHP option session.auto-start is enabled. Disable this option in php.ini or .htaccess:<br />';
 			$sessionCreationError .= '<pre>php_value session.auto_start Off</pre>';
