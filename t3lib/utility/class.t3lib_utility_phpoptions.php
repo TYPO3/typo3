@@ -67,6 +67,15 @@ final class t3lib_utility_PhpOptions {
 	}
 
 	/**
+	 * Check if php session.auto_start is enabled
+	 *
+	 * @return boolean TRUE if session.auto_start is enabled, FALSE if disabled
+	 */
+	public static function isSessionAutoStartEnabled() {
+		return self::getIniValueBoolean('session.auto_start');
+	}
+
+	/**
 	 * Cast a on/off php ini value to boolean
 	 *
 	 * @return boolean TRUE if the given option is enabled, FALSE if disabled
