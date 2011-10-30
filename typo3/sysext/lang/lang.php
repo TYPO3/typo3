@@ -548,7 +548,7 @@ class language {
 			if (!isset($localLanguage[$this->lang])) {
 				$localLanguage[$this->lang] = $localLanguage['default'];
 			}
-			if ($this->lang !== 'default') {
+			if ($this->lang !== 'default' && isset($tempLL[$language])) {
 					// Merge current language labels onto labels from previous language
 					// This way we have a labels with fall back applied
 				$localLanguage[$this->lang] = t3lib_div::array_merge_recursive_overrule($localLanguage[$this->lang], $tempLL[$language], FALSE, FALSE);
