@@ -313,7 +313,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 		$source = $query->getSource();
 
-		$this->parseSource($source, $sql, $parameters);
+		$this->parseSource($source, $sql);
 		$this->parseConstraint($query->getConstraint(), $source, $sql, $parameters);
 		$this->parseOrderings($query->getOrderings(), $source, $sql);
 		$this->parseLimitAndOffset($query->getLimit(), $query->getOffset(), $sql);
@@ -403,7 +403,6 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 *
 	 * @param Tx_Extbase_Persistence_QOM_SourceInterface $source The source
 	 * @param array &$sql
-	 * @param array &$parameters
 	 * @return void
 	 */
 	protected function parseSource(Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql) {
