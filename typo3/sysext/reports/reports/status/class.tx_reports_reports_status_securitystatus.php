@@ -65,7 +65,6 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 		$severity = tx_reports_reports_status_Status::OK;
 
 		$whereClause = 'username = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('admin', 'be_users')
-			. ' AND password = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('5f4dcc3b5aa765d61d8327deb882cf99', 'be_users')
 			. t3lib_BEfunc::deleteClause('be_users');
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'uid, username, password',
@@ -73,15 +72,38 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 			$whereClause
 		);
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$value    = $GLOBALS['LANG']->getLL('status_insecure');
-			$severity = tx_reports_reports_status_Status::ERROR;
+			$secure = TRUE;
 
-			$editUserAccountUrl = 'alt_doc.php?returnUrl=mod.php?M=tools_txreportsM1&edit[be_users][' . $row['uid'] . ']=edit';
-			$message = sprintf(
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_admin'),
-				'<a href="' . $editUserAccountUrl . '">',
-				'</a>'
-			);
+				// Check against salted password
+			if (t3lib_extMgm::isLoaded('saltedpasswords')) {
+
+				if (tx_saltedpasswords_div::isUsageEnabled('BE')) {
+						/** @var $saltingObject tx_saltedpasswords_salts */
+					$saltingObject = tx_saltedpasswords_salts_factory::getSaltingInstance($row['password']);
+					if (is_object($saltingObject)) {
+						if ($saltingObject->checkPassword('password', $row['password'])) {
+							$secure = FALSE;
+						}
+					}
+				}
+			}
+
+				// Check against plain MD5
+			if ($row['password'] === '5f4dcc3b5aa765d61d8327deb882cf99') {
+				$secure = FALSE;
+			}
+
+			if (!$secure) {
+				$value    = $GLOBALS['LANG']->getLL('status_insecure');
+				$severity = tx_reports_reports_status_Status::ERROR;
+
+				$editUserAccountUrl = 'alt_doc.php?returnUrl=mod.php?M=tools_txreportsM1&edit[be_users][' . $row['uid'] . ']=edit';
+				$message = sprintf(
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_admin'),
+					'<a href="' . $editUserAccountUrl . '">',
+					'</a>'
+				);
+			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
