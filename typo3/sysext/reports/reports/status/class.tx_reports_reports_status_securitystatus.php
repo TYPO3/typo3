@@ -65,7 +65,6 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 		$severity = tx_reports_reports_status_Status::OK;
 
 		$whereClause = 'username = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('admin', 'be_users')
-			. ' AND password = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('5f4dcc3b5aa765d61d8327deb882cf99', 'be_users')
 			. t3lib_BEfunc::deleteClause('be_users');
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'uid, username, password',
@@ -73,15 +72,34 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 			$whereClause
 		);
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$value    = $GLOBALS['LANG']->getLL('status_insecure');
-			$severity = tx_reports_reports_status_Status::ERROR;
+			$secure = TRUE;
+			// check against plain MD5
+			if('5f4dcc3b5aa765d61d8327deb882cf99' === $row['password']) {
+				$secure = FALSE;
+			}
+			// check against salted password
+			if(t3lib_extMgm::isLoaded('saltedpasswords')) {
+				if(tx_saltedpasswords_div::isUsageEnabled('BE')) {
+					$objSalt = tx_saltedpasswords_salts_factory::getSaltingInstance($row['password']);
+					if(is_object($objSalt)) {
+						if($objSalt->checkPassword('password', $row['password'])) {
+							$secure = FALSE;
+						}
+					}
+				}
+			}
 
-			$editUserAccountUrl = 'alt_doc.php?returnUrl=mod.php?M=tools_txreportsM1&edit[be_users][' . $row['uid'] . ']=edit';
-			$message = sprintf(
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_admin'),
-				'<a href="' . $editUserAccountUrl . '">',
-				'</a>'
-			);
+			if(!$secure) {
+				$value    = $GLOBALS['LANG']->getLL('status_insecure');
+				$severity = tx_reports_reports_status_Status::ERROR;
+
+				$editUserAccountUrl = 'alt_doc.php?returnUrl=mod.php?M=tools_txreportsM1&edit[be_users][' . $row['uid'] . ']=edit';
+				$message = sprintf(
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_admin'),
+					'<a href="' . $editUserAccountUrl . '">',
+					'</a>'
+				);
+			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
