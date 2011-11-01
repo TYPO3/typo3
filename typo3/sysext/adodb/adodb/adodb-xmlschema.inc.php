@@ -1871,7 +1871,7 @@ class adoSchema {
 					   . '<table>' . "\n";
 
 		foreach( $msg as $label => $details ) {
-			$error_details .= '<tr><td><strong>' . $label . ': </strong></td><td>' . htmlentities( $details ) . '</td></tr>' . "\n";
+			$error_details .= '<tr><td><b>' . $label . ': </b></td><td>' . htmlentities( $details ) . '</td></tr>' . "\n";
 		}
 
 		$error_details .= '</table>';

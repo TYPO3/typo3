@@ -1,6 +1,6 @@
 <?php
 /*
-V5.11 5 May 2010   (c) 2000-2010 John Lim (jlim#natsoft.com). All rights reserved.
+V5.14 8 Sept 2011   (c) 2000-2011 John Lim (jlim#natsoft.com). All rights reserved.
   Released under both BSD license and Lesser GPL library license.
   Whenever there is any discrepancy between the two licenses,
   the BSD license will take precedence. See License.txt.
@@ -188,7 +188,7 @@ function adodb_log_sql(&$connx,$sql,$inputarr)
 				timer decimal(16,6))");
 			}
 			if (!$ok) {
-				ADOConnection::outp( "<p><strong>LOGSQL Insert Failed</strong>: $isql<br />$err2</p>");
+				ADOConnection::outp( "<p><b>LOGSQL Insert Failed</b>: $isql<br>$err2</p>");
 				$conn->_logsql = false;
 			}
 		}
@@ -217,8 +217,8 @@ Each database parameter element in the array is itself an array consisting of:
 class adodb_perf {
 	var $conn;
 	var $color = '#F0F0F0';
-	var $table = '<table border="1" bgcolor="white">';
-	var $titles = '<tr><td><strong>Parameter</strong></td><td><strong>Value</strong></td><td><strong>Description</strong></td></tr>';
+	var $table = '<table border=1 bgcolor=white>';
+	var $titles = '<tr><td><b>Parameter</b></td><td><b>Value</b></td><td><b>Description</b></td></tr>';
 	var $warnRatio = 90;
 	var $tablesSQL = false;
 	var $cliFormat = "%32s => %s \r\n";
@@ -476,7 +476,7 @@ Committed_AS:   348732 kB
 			if (!$rs) return "<p>$this->helpurl. ".$this->conn->ErrorMsg()."</p>";
 			$s = "<h3>Suspicious SQL</h3>
 <font size=1>The following SQL have high average execution times</font><br>
-<table border=1 bgcolor=white><tr><td><strong>Avg Time</strong><td><strong>Count</strong><td><strong>SQL</strong><td><strong>Max</strong><td><strong>Min</strong></tr>\n";
+<table border=1 bgcolor=white><tr><td><b>Avg Time</b><td><b>Count</b><td><b>SQL</b><td><b>Max</b><td><b>Min</b></tr>\n";
 			$max = $this->maxLength;
 			while (!$rs->EOF) {
 				$sql = $rs->fields[1];
@@ -554,8 +554,8 @@ Committed_AS:   348732 kB
 			$ADODB_FETCH_MODE = $save;
 			if (!$rs) return "<p>$this->helpurl. ".$this->conn->ErrorMsg()."</p>";
 			$s = "<h3>Expensive SQL</h3>
-<font size=\"1\">Tuning the following SQL could reduce the server load substantially</font><br>
-<table border=\"1\" bgcolor=\"white\"><tr><td><strong>Load</strong><td><strong>Count</strong><td><strong>SQL</strong><td><strong>Max</strong><td><strong>Min</strong></tr>\n";
+<font size=1>Tuning the following SQL could reduce the server load substantially</font><br>
+<table border=1 bgcolor=white><tr><td><b>Load</b><td><b>Count</b><td><b>SQL</b><td><b>Max</b><td><b>Min</b></tr>\n";
 			$max = $this->maxLength;
 			while (!$rs->EOF) {
 				$sql = $rs->fields[1];
@@ -656,7 +656,7 @@ Committed_AS:   348732 kB
 	function WarnCacheRatio($val)
 	{
 		if ($val < $this->warnRatio)
-			 return '<font color="red"><strong>Cache ratio should be at least '.$this->warnRatio.'%</strong></font>';
+			 return '<font color=red><b>Cache ratio should be at least '.$this->warnRatio.'%</b></font>';
 		else return '';
 	}
 
@@ -719,10 +719,10 @@ Committed_AS:   348732 kB
 
 	if  (empty($_GET['hidem']))
 	echo "<table border=1 width=100% bgcolor=lightyellow><tr><td colspan=2>
-	<strong><a href=http://adodb.sourceforge.net/?perf=1>ADOdb</a> Performance Monitor</strong> <font size=1>for $app</font></tr><tr><td>
-	<a href=?do=stats><strong>Performance Stats</strong></a> &nbsp; <a href=?do=viewsql><strong>View SQL</strong></a>
-	 &nbsp; <a href=?do=tables><strong>View Tables</strong></a> &nbsp; <a href=?do=poll><strong>Poll Stats</strong></a>",
-	 $allowsql ? ' &nbsp; <a href=?do=dosql><strong>Run SQL</strong></a>' : '',
+	<b><a href=http://adodb.sourceforge.net/?perf=1>ADOdb</a> Performance Monitor</b> <font size=1>for $app</font></tr><tr><td>
+	<a href=?do=stats><b>Performance Stats</b></a> &nbsp; <a href=?do=viewsql><b>View SQL</b></a>
+	 &nbsp; <a href=?do=tables><b>View Tables</b></a> &nbsp; <a href=?do=poll><b>Poll Stats</b></a>",
+	 $allowsql ? ' &nbsp; <a href=?do=dosql><b>Run SQL</b></a>' : '',
 	 "$form",
 	 "</tr></table>";
 
