@@ -2,7 +2,7 @@
 
 
 /*
-V5.11 5 May 2010   (c) 2000-2010 John Lim (jlim#natsoft.com). All rights reserved.
+V5.14 8 Sept 2011  (c) 2000-2011 John Lim (jlim#natsoft.com). All rights reserved.
          Contributed by Ross Smith (adodb@netebb.com). 
   Released under both BSD license and Lesser GPL library license.
   Whenever there is any discrepancy between the two licenses,
@@ -727,7 +727,7 @@ class ADODB_Session {
 			if ($rs) $rs->Close();
 					
 			if ($rs && reset($rs->fields) > 0) {
-				$sql = "UPDATE $table SET expiry=$expiry, sessdata=".$conn->Param(0).", expireref= ".$conn->Param(1).",modified=$sysTimeStamp WHERE sesskey = ".$conn->Param('2');
+				$sql = "UPDATE $table SET expiry=$expiry, sessdata=".$conn->Param(0).", expireref= ".$conn->Param(1).",modified=$sysTimeStamp WHERE sesskey = ".$conn->Param(2);
 				
 			} else {
 				$sql = "INSERT INTO $table (expiry, sessdata, expireref, sesskey, created, modified) 
@@ -882,8 +882,8 @@ class ADODB_Session {
 		$savem = $conn->SetFetchMode(ADODB_FETCH_NUM);
 		$sql = "SELECT expireref, sesskey FROM $table WHERE expiry < $time ORDER BY 2"; # add order by to prevent deadlock
 		$rs = $conn->SelectLimit($sql,1000);
-		ADODB_Session::_dumprs($rs);
-		if ($debug) $conn->SetFetchMode($savem);
+		if ($debug) ADODB_Session::_dumprs($rs);
+		$conn->SetFetchMode($savem);
 		if ($rs) {
 			$tr = $conn->hasTransactions;
 			if ($tr) $conn->BeginTrans();
