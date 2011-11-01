@@ -242,6 +242,12 @@ b. Implement daylight savings, which looks awfully complicated, see
 
 CHANGELOG
 
+- 7 Feb 2011 0.35
+Changed adodb_date to be symmetric with adodb_mktime. See $jan1_71. fix for bc.
+
+- 13 July 2010 0.34
+Changed adodb_get_gm_diff to use DateTimeZone().
+
 - 11 Feb 2008 0.33
 * Bug in 0.32 fix for hour handling. Fixed.
 
@@ -386,7 +392,7 @@ First implementation.
 /*
 	Version Number
 */
-define('ADODB_DATE_VERSION',0.33);
+define('ADODB_DATE_VERSION',0.35);
 
 $ADODB_DATETIME_CLASS = (PHP_VERSION >= 5.2);
 
@@ -413,7 +419,7 @@ function adodb_date_test_date($y1,$m,$d=13)
 	if ($h == 0) $h = '00';
 	else if ($h < 10) $h = '0'.$h;
 	if ("$y1-$m-$d $h:00:00" != $rez) {
-		print "<strong>$y1 error, expected=$y1-$m-$d $h:00:00, adodb=$rez</strong><br />";
+		print "<b>$y1 error, expected=$y1-$m-$d $h:00:00, adodb=$rez</b><br>";
 		return false;
 	}
 	return true;
@@ -484,10 +490,10 @@ function adodb_date_test()
 	print  adodb_mktime(0,0,0,10,4,1582).' ';
 	print adodb_mktime(0,0,0,10,15,1582);
 	$diff = (adodb_mktime(0,0,0,10,15,1582) - adodb_mktime(0,0,0,10,4,1582));
-	if ($diff != 3600*24) print " <strong>Error in gregorian correction = ".($diff/3600/24)." days </strong><br />";
+	if ($diff != 3600*24) print " <b>Error in gregorian correction = ".($diff/3600/24)." days </b><br>";
 
-	print " 15 Oct 1582, Fri=".(adodb_dow(1582,10,15) == 5 ? 'Fri' : '<strong>Error</strong>')."<br>";
-	print " 4 Oct 1582, Thu=".(adodb_dow(1582,10,4) == 4 ? 'Thu' : '<strong>Error</strong>')."<br>";
+	print " 15 Oct 1582, Fri=".(adodb_dow(1582,10,15) == 5 ? 'Fri' : '<b>Error</b>')."<br>";
+	print " 4 Oct 1582, Thu=".(adodb_dow(1582,10,4) == 4 ? 'Thu' : '<b>Error</b>')."<br>";
 
 	print "<p>Testing overflow<p>";
 
@@ -538,9 +544,9 @@ function adodb_date_test()
 					break;
 				}
 			}
-			print "<strong>Error date(): $ts<br /><pre>
+			print "<b>Error date(): $ts<br><pre>
 &nbsp; \"$s1\" (date len=".strlen($s1).")
-&nbsp; \"$s2\" (adodb_date len=".strlen($s2).")</strong></pre><br />";
+&nbsp; \"$s2\" (adodb_date len=".strlen($s2).")</b></pre><br>";
 			$fail = true;
 		}
 
@@ -548,9 +554,9 @@ function adodb_date_test()
 		$a2 = adodb_getdate($ts);
 		$rez = array_diff($a1,$a2);
 		if (sizeof($rez)>0) {
-			print "<strong>Error getdate() $ts</strong><br />";
+			print "<b>Error getdate() $ts</b><br>";
 				print_r($a1);
-			print "<br />";
+			print "<br>";
 				print_r($a2);
 			print "<p>";
 			$fail = true;
@@ -598,7 +604,7 @@ function adodb_date_test()
 	}
 	echo "Tested $cnt dates<br>";
 	if (!$fail) print "<p>Passed !</p>";
-	else print "<p><strong>Failed</strong> :-(</p>";
+	else print "<p><b>Failed</b> :-(</p>";
 }
 
 /**
@@ -729,9 +735,17 @@ global $ADODB_DATETIME_CLASS;
 	} else {
 		if (isset($TZ)) return $TZ;
 		$y = date('Y');
-		$TZ = mktime(0,0,0,12,2,$y,0) - gmmktime(0,0,0,12,2,$y,0);
+		/*
+		if (function_exists('date_default_timezone_get') && function_exists('timezone_offset_get')) {
+			$tzonename = date_default_timezone_get();
+			if ($tzonename) {
+				$tobj = new DateTimeZone($tzonename);
+				$TZ = -timezone_offset_get($tobj,new DateTime("now",$tzo));
+			}
+		}
+		*/
+		if (empty($TZ)) $TZ = mktime(0,0,0,12,2,$y) - gmmktime(0,0,0,12,2,$y);
 	}
-
 	return $TZ;
 }
 
@@ -1040,11 +1054,19 @@ function adodb_date($fmt,$d=false,$is_gmt=false)
 {
 static $daylight;
 global $ADODB_DATETIME_CLASS;
+static $jan1_1971;
+
+
+	if (!isset($daylight)) {
+		$daylight = function_exists('adodb_daylight_sv');
+		if (empty($jan1_1971)) $jan1_1971 = mktime(0,0,0,1,1,1971); // we only use date() when > 1970 as adodb_mktime() only uses mktime() when > 1970
+	}
 
 	if ($d === false) return ($is_gmt)? @gmdate($fmt): @date($fmt);
 	if (!defined('ADODB_TEST_DATES')) {
 		if ((abs($d) <= 0x7FFFFFFF)) { // check if number in 32-bit signed range
-			if (!defined('ADODB_NO_NEGATIVE_TS') || $d >= 0) // if windows, must be +ve integer
+
+			if (!defined('ADODB_NO_NEGATIVE_TS') || $d >= $jan1_1971) // if windows, must be +ve integer
 				return ($is_gmt)? @gmdate($fmt,$d): @date($fmt,$d);
 
 		}
@@ -1053,7 +1075,6 @@ global $ADODB_DATETIME_CLASS;
 
 	$arr = _adodb_getdate($d,true,$is_gmt);
 
-	if (!isset($daylight)) $daylight = function_exists('adodb_daylight_sv');
 	if ($daylight) adodb_daylight_sv($arr, $is_gmt);
 
 	$year = $arr['year'];
