@@ -4181,14 +4181,14 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 ***********************************************
 	 * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.6 *
 	 ***********************************************
-	 * Invove the base class constructor
+	 * Invoke the base class constructor
 	 *
 	 * Defined for backward compatibility only
 	 * Note: this.base will exclusively refer to the HTMLArea.Plugin class constructor
 	 */
 	base: function (editor, pluginName) {
-		HTMLArea.appendToLog(this.editor.editorId, 'HTMLArea.' + this.name, 'base', 'Deprecated use of base function. Use Ext superclass reference instead.', 'warn');
-		HTMLArea.Plugin.prototype.constructor.call(this, this.editor, this.name);
+		HTMLArea.appendToLog(editor.editorId, 'HTMLArea.' + pluginName, 'base', 'Deprecated use of base function. Use Ext superclass reference instead.', 'warn');
+		HTMLArea.Plugin.prototype.constructor.call(this, editor, pluginName);
 	},
 	/**
 	 * Registers the plugin "About" information
