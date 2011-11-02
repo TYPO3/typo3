@@ -402,7 +402,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 		$_GET = array(
 			'tx_myextension_pi1' => array(
-				'controller' => 'SomeIllegalController',
+				'controller' => 'SomeInvalidController',
 			)
 		);
 		$this->requestBuilder->build();
@@ -422,12 +422,29 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 		$_GET = array(
 			'tx_myextension_pi1' => array(
-				'controller' => 'SomeIllegalController',
+				'controller' => 'SomeInvalidController',
 			)
 		);
 		$this->requestBuilder->build();
 	}
 
+	/**
+	 * @test
+	 */
+	public function buildSetsDefaultControllerNameIfSpecifiedControllerIsNotAllowedAndCallDefaultActionIfActionCantBeResolvedIsSet() {
+		$this->configuration['mvc']['callDefaultActionIfActionCantBeResolved'] = 1;
+		$this->injectDependencies();
+
+		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
+
+		$_GET = array(
+			'tx_myextension_pi1' => array(
+				'controller' => 'SomeInvalidController',
+			)
+		);
+		$this->mockRequest->expects($this->once())->method('setControllerName')->with('TheFirstController');
+		$this->requestBuilder->build();
+	}
 
 	/**
 	 * @test
@@ -501,7 +518,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 		$_GET = array(
 			'tx_myextension_pi1' => array(
-				'action' => 'someIllegalAction',
+				'action' => 'someInvalidAction',
 			)
 		);
 		$this->requestBuilder->build();
@@ -521,9 +538,29 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 		$_GET = array(
 			'tx_myextension_pi1' => array(
-				'action' => 'someIllegalAction',
+				'action' => 'someInvalidAction',
 			)
 		);
+		$this->requestBuilder->build();
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildSetsDefaultActionNameIfSpecifiedActionIsNotAllowedAndCallDefaultActionIfActionCantBeResolvedIsSet() {
+		$this->configuration['mvc']['callDefaultActionIfActionCantBeResolved'] = 1;
+		$this->injectDependencies();
+
+		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
+
+		$_GET = array(
+			'tx_myextension_pi1' => array(
+				'controller' => 'TheThirdController',
+				'action' => 'someInvalidAction',
+			)
+		);
+		$this->mockRequest->expects($this->once())->method('setControllerName')->with('TheThirdController');
+		$this->mockRequest->expects($this->once())->method('setControllerActionName')->with('delete');
 		$this->requestBuilder->build();
 	}
 
