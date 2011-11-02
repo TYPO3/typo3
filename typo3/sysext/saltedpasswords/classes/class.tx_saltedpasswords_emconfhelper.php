@@ -282,10 +282,9 @@ EOT;
 	protected function isRsaAuthBackendAvailable() {
 		/**
 		 * Try to instantiate an RSAauth backend. If this does not work, it means that OpenSSL is not usable
-		 * @var $rsaauthBackendFactory tx_rsaauth_backendfactory
 		 */
-		$rsaauthBackendFactory = t3lib_div::makeInstance('tx_rsaauth_backendfactory');
-		$backend = $rsaauthBackendFactory->getBackend();
+		require_once(t3lib_extMgm::extPath('rsaauth') . 'sv1/backends/class.tx_rsaauth_backendfactory.php');
+		$backend = tx_rsaauth_backendfactory::getBackend();
 		return $backend !== NULL;
 	}
 
