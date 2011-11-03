@@ -57,7 +57,7 @@ class tx_form_View_Form_Element_Container extends tx_form_View_Form_Element_Abst
 				$childNode = $child->render();
 			} else {
 				$childNode = $child->render('elementWrap');
-				$childNode->setAttribute('class', $child->getElementWrapId());
+				$childNode->setAttribute('class', $child->getElementWraps());
 			}
 			$importedNode = $dom->importNode($childNode, TRUE);
 			$documentFragment->appendChild($importedNode);
@@ -69,7 +69,7 @@ class tx_form_View_Form_Element_Container extends tx_form_View_Form_Element_Abst
 	 * Create child object from the classname of the model
 	 *
 	 * @param object $modelChild The childs model
-	 * @return object
+	 * @return tx_form_View_Form_Element_Abstract
 	 */
 	public function createChildElementFromModel($modelChild) {
 		$childElement = NULL;
