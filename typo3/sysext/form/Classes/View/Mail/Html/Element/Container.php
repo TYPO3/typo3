@@ -70,6 +70,9 @@ class tx_form_View_Mail_Html_Element_Container extends tx_form_View_Mail_Html_El
 					$childNode = $child->render();
 				} else {
 					$childNode = $child->render('elementWrap');
+					if ($childNode) {
+						$childNode->setAttribute('class', $child->getElementWraps());
+					}
 				}
 				if ($childNode) {
 					$importedNode = $dom->importNode($childNode, TRUE);
@@ -87,7 +90,7 @@ class tx_form_View_Mail_Html_Element_Container extends tx_form_View_Mail_Html_El
 	 * Create child object from the classname of the model
 	 *
 	 * @param object $modelChild The childs model
-	 * @return object
+	 * @return tx_form_View_Mail_Html_Element_Abstract
 	 */
 	public function createChildElementFromModel($modelChild) {
 		$childElement = NULL;

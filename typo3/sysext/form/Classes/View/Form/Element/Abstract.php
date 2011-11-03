@@ -400,6 +400,35 @@ abstract class tx_form_View_Form_Element_Abstract {
 	}
 
 	/**
+	 * Returns the type for the element wraps,
+	 * like <li class="csc-form-element csc-form-element-abstract">...</li>
+	 *
+	 * @return string
+	 */
+	public function getElementWrapType() {
+		$elementType = strtolower(
+			tx_form_Common::getInstance()->getLastPartOfClassName($this)
+		);
+		$wrapType = 'csc-form-element csc-form-element-' . $elementType;
+
+		return $wrapType;
+	}
+
+	/**
+	 * Returns all element wraps.
+	 *
+	 * @return string
+	 */
+	public function getElementWraps() {
+		$wraps = array(
+			$this->getElementWrapId(),
+			$this->getElementWrapType(),
+		);
+
+		return implode(' ', $wraps);
+	}
+
+	/**
 	 * Read the noWrap value of an element
 	 * if TRUE the element does not need a element wrap
 	 * like <li>element</li>

@@ -34,7 +34,7 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 	/**
 	 * The model for the current object
 	 *
-	 * @var object
+	 * @var tx_form_Domain_Model_Element_Abstract
 	 */
 	protected $model;
 
@@ -350,6 +350,35 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 		$wrapId = 'csc-form-' . $elementId;
 
 		return $wrapId;
+	}
+
+	/**
+	 * Returns the type for the element wraps,
+	 * like <li class="csc-form-element csc-form-element-abstract">...</li>
+	 *
+	 * @return string
+	 */
+	public function getElementWrapType() {
+		$elementType = strtolower(
+			tx_form_Common::getInstance()->getLastPartOfClassName($this->model)
+		);
+		$wrapType = 'csc-form-element csc-form-element-' . $elementType;
+
+		return $wrapType;
+	}
+
+	/**
+	 * Returns all element wraps.
+	 *
+	 * @return string
+	 */
+	public function getElementWraps() {
+		$wraps = array(
+			$this->getElementWrapId(),
+			$this->getElementWrapType(),
+		);
+
+		return implode(' ', $wraps);
 	}
 
 	/**
