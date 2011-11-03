@@ -71,7 +71,7 @@ class tx_form_View_Confirmation_Element_Container extends tx_form_View_Confirmat
 				} else {
 					$childNode = $child->render('elementWrap');
 					if ($childNode) {
-						$childNode->setAttribute('class', $child->getElementWrapId());
+						$childNode->setAttribute('class', $child->getElementWraps());
 					}
 				}
 				if ($childNode) {
@@ -90,7 +90,7 @@ class tx_form_View_Confirmation_Element_Container extends tx_form_View_Confirmat
 	 * Create child object from the classname of the model
 	 *
 	 * @param object $modelChild The childs model
-	 * @return object
+	 * @return tx_form_View_Confirmation_Element_Abstract
 	 */
 	public function createChildElementFromModel($modelChild) {
 		$childElement = NULL;
