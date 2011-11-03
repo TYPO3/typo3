@@ -151,12 +151,12 @@ class tx_form_View_Confirmation extends tx_form_View_Confirmation_Element_Contai
 						<li class="csc-form-confirmation-false">
 							<input type="submit" value="' .
 								$this->localizationHandler->getLocalLanguageLabel('tx_form_view_confirmation.donotconfirm') .
-								'" name="' . $prefix . '[confirmation]" />
+								'" name="' . $prefix . '[confirmation-false]" />
 						</li>
-						<li class="csc-form-confirmation-false">
+						<li class="csc-form-confirmation-true">
 							<input type="submit" value="' .
 								$this->localizationHandler->getLocalLanguageLabel('tx_form_view_confirmation.confirm') .
-								'" name="' . $prefix . '[confirmation]" />
+								'" name="' . $prefix . '[confirmation-true]" />
 						</li>
 					</ol>
 				</fieldset>

@@ -196,7 +196,7 @@ class tx_form_Controller_Form {
 			(
 				!empty($submittedByPrefix) &&
 				$this->validate->isValid() &&
-				$this->requestHandler->getPost('confirmation') === $this->localizationHandler->getLocalLanguageLabel('tx_form_view_confirmation.donotconfirm')
+				$this->requestHandler->getPost('confirmation-false', NULL) !== NULL
 			)
 		) {
 			$show = TRUE;
@@ -237,7 +237,7 @@ class tx_form_Controller_Form {
 		if (
 			isset($this->typoscript['confirmation']) &&
 			$this->typoscript['confirmation'] == 1 &&
-			$this->requestHandler->getPost('confirmation') === NULL
+			$this->requestHandler->getPost('confirmation-true', NULL) === NULL
 		) {
 			$show = TRUE;
 		}
