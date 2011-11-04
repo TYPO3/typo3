@@ -123,7 +123,7 @@ class tx_form_Controller_Form {
 
 			$newTypoScript = array(
 				'10' => 'FORM_INT',
-				'10.' => $mergedTypoScript,
+				'10.' => is_array($mergedTypoScript) ? $mergedTypoScript : $typoScript,
 			);
 
 			$content = $contentObject->COBJ_ARRAY($newTypoScript, 'INT');
