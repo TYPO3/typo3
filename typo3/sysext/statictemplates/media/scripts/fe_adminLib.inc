@@ -622,7 +622,7 @@ class user_feAdmin	{
 							}
 						break;
 						case 'email':
-							if (!$this->cObj->checkEmail($this->dataArr[$theField]))	{
+							if (!t3lib_div::validEmail($this->dataArr[$theField]))	{
 								$tempArr[]=$theField;
 								$this->failureMsg[$theField][] = $this->getFailure($theField, $theCmd, 'You must enter a valid email address');
 							}
@@ -1300,7 +1300,7 @@ class user_feAdmin	{
 				if (is_array($DBrows))	{
 					$recipient = $DBrows[0][$this->conf['email.']['field']];
 					$this->compileMail($config['label'], $DBrows, $recipient, $this->conf['setfixed.']);
-				} elseif ($this->cObj->checkEmail($fetch)) {
+				} elseif (t3lib_div::validEmail($fetch)) {
 					$this->sendMail($fetch, '', trim($this->cObj->getSubpart($this->templateCode, '###'.$this->emailMarkPrefix.'NORECORD###')));
 				}
 
