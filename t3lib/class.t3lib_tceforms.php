@@ -4578,19 +4578,22 @@ class t3lib_TCEforms {
 					$descr = '';
 
 					foreach ($theTypes as $theTypeArrays) {
-						list($theTable, $theField) = explode(':', $theTypeArrays[1]);
+						list($theTable, $theFullField) = explode(':', $theTypeArrays[1]);
+							// If the field comes from a FlexForm, the syntax is more complex
+						$theFieldParts = explode(';', $theFullField);
+						$theField = array_pop($theFieldParts);
 
 							// Add help text
 						$helpText = array();
 						$GLOBALS['LANG']->loadSingleTableDescription($theTable);
-						$helpTextArray = $GLOBALS['TCA_DESCR'][$theTable]['columns'][$theField];
+						$helpTextArray = $GLOBALS['TCA_DESCR'][$theTable]['columns'][$theFullField];
 						if (!empty($helpTextArray['description'])) {
 							$helpText['description'] = $helpTextArray['description'];
 						}
 
 							// Item configuration:
 						$items[] = array(
-							rtrim($theTypeArrays[0], ':'),
+							rtrim($theTypeArrays[0], ':') . ' (' . $theField . ')',
 							$theTypeArrays[1],
 							'empty-empty',
 							$helpText
