@@ -828,16 +828,23 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					<td colspan="2">'.$LANG->getLL('makeconfig_exportTablesFromPages',1).'</td>
 				</tr>';
 
+				// Display information about pages from which the export takes place
 			$tblList = '';
-			foreach($inData['list'] as $ref)	{
-				$rParts = explode(':', $ref);
-				$tName = $rParts[0];
+			foreach ($inData['list'] as $reference) {
+				$referenceParts = explode(':', $reference);
+				$tableName = $referenceParts[0];
 
-				if ($GLOBALS['BE_USER']->check('tables_select',$tName))	{
-					$rec = t3lib_BEfunc::getRecordWSOL('pages', $rParts[1]);
-					$tblList .= 'Table "' . $tName . '" from ' . t3lib_iconworks::getSpriteIconForRecord('pages', $rec) .
-					t3lib_BEfunc::getRecordTitle('pages', $rec, TRUE).
-					'<input type="hidden" name="tx_impexp[list][]" value="'.htmlspecialchars($ref).'" /><br/>';
+				if ($GLOBALS['BE_USER']->check('tables_select', $tableName)) {
+						// If the page is actually the root, handle it differently
+						// NOTE: we don't compare integers, because the number actually comes from the split string above
+					if ($referenceParts[1] === '0') {
+						$iconAndTitle = t3lib_iconWorks::getSpriteIcon('apps-pagetree-root') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+					} else {
+						$record = t3lib_BEfunc::getRecordWSOL('pages', $referenceParts[1]);
+						$iconAndTitle = t3lib_iconworks::getSpriteIconForRecord('pages', $record) . t3lib_BEfunc::getRecordTitle('pages', $record, TRUE);
+					}
+					$tblList .= 'Table "' . $tableName . '" from ' . $iconAndTitle .
+					'<input type="hidden" name="tx_impexp[list][]" value="' . htmlspecialchars($reference) . '" /><br/>';
 				}
 			}
 			$row[] = '
