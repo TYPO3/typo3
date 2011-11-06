@@ -1225,7 +1225,10 @@ class tslib_menu {
 		if (preg_match('/([0-9]+[\s])?(([0-9]+)x([0-9]+))?(:.+)?/s', $LD['target'], $matches) || $targetIsType) {
 				// has type?
 			if(intval($matches[1]) || $targetIsType) {
-				$LD['totalURL'] .= '&type=' . ($targetIsType ?  $targetIsType : intval($matches[1]));
+				$LD['totalURL'] = $this->parent_cObj->URLqMark(
+					$LD['totalURL'],
+					'&type=' . ($targetIsType ? $targetIsType : intval($matches[1]))
+				);
 				$LD['target'] = $targetIsType ?  '' : trim(substr($LD['target'], strlen($matches[1]) + 1));
 			}
 				// open in popup window?
