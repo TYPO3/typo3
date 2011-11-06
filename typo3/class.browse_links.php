@@ -902,6 +902,7 @@ class browse_links {
 			$P2['fieldChangeFuncHash'] = t3lib_div::hmac(serialize($this->P['fieldChangeFunc']));
 			$P2['params']['allowedExtensions']=$this->P['params']['allowedExtensions'];
 			$P2['params']['blindLinkOptions']=$this->P['params']['blindLinkOptions'];
+			$P2['params']['blindLinkFields'] = $this->P['params']['blindLinkFields'];
 			$addPassOnParams.=t3lib_div::implodeArrayForUrl('P',$P2);
 
 			$JScode.='
@@ -1208,6 +1209,13 @@ class browse_links {
 			$allowedItems = $hookObject->addAllowedItems($allowedItems);
 		}
 
+			// Removing link fields if configured
+		$allowedFields = array_diff(
+			array('target', 'title', 'class', 'params'),
+			t3lib_div::trimExplode(',', $this->thisConfig['blindLinkFields'], TRUE),
+			t3lib_div::trimExplode(',', $this->P['params']['blindLinkFields'], TRUE)
+		);
+
 			// if $this->act is not allowed, default to first allowed
 		if (!in_array($this->act, $allowedItems)) {
 			$this->act = reset($allowedItems);
@@ -1443,10 +1451,11 @@ class browse_links {
 			break;
 		}
 
-		$content .= '
-			<!--
-				Selecting params for link:
-			-->
+		if (in_array('params', $allowedFields, TRUE)) {
+			$content .= '
+				<!--
+					Selecting params for link:
+				-->
 				<form action="" name="lparamsform" id="lparamsform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkParams">
 						<tr>
@@ -1455,10 +1464,14 @@ class browse_links {
 						</tr>
 					</table>
 				</form>
+			';
+		}
 
-			<!--
-				Selecting class for link:
-			-->
+		if (in_array('class', $allowedFields, TRUE)) {
+			$content .= '
+				<!--
+					Selecting class for link:
+				-->
 				<form action="" name="lclassform" id="lclassform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkClass">
 						<tr>
@@ -1467,10 +1480,14 @@ class browse_links {
 						</tr>
 					</table>
 				</form>
+			';
+		}
 
-			<!--
-				Selecting title for link:
-			-->
+		if (in_array('title', $allowedFields, TRUE)) {
+			$content .= '
+				<!--
+					Selecting title for link:
+				-->
 				<form action="" name="ltitleform" id="ltitleform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTitle">
 						<tr>
@@ -1479,10 +1496,11 @@ class browse_links {
 						</tr>
 					</table>
 				</form>
-';
+			';
+		}
 
 			// Target:
-		if ($this->act!='mail')	{
+		if ($this->act != 'mail' && in_array('target', $allowedFields, TRUE)) {
 			$ltarget='
 
 

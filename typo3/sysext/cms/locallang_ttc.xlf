@@ -627,6 +627,12 @@
 			<trans-unit id="filelink_size_formlabel" xml:space="preserve">
 				<source>Display File Size Information</source>
 			</trans-unit>
+			<trans-unit id="target" xml:space="preserve">
+				<source>Target:</source>
+			</trans-unit>
+			<trans-unit id="target.I.1" xml:space="preserve">
+				<source>New window</source>
+			</trans-unit>
 			<trans-unit id="records" xml:space="preserve">
 				<source>Items:</source>
 			</trans-unit>
@@ -720,6 +726,15 @@
 			<trans-unit id="pi_flexform" xml:space="preserve">
 				<source>Plugin Options</source>
 			</trans-unit>
+			<trans-unit id="accessibility_title" xml:space="preserve">
+				<source>Block title</source>
+			</trans-unit>
+			<trans-unit id="accessibility_bypass" xml:space="preserve">
+				<source>Add link to bypass block</source>
+			</trans-unit>
+			<trans-unit id="accessibility_bypass_text" xml:space="preserve">
+				<source>Link text to bypass block</source>
+			</trans-unit>
 			<trans-unit id="ALT.imgOptions" xml:space="preserve">
 				<source>Image Options</source>
 			</trans-unit>
@@ -788,6 +803,15 @@
 			</trans-unit>
 			<trans-unit id="bodytext.ALT.html" xml:space="preserve">
 				<source>HTML:</source>
+			</trans-unit>
+			<trans-unit id="menu.ALT.accessibility_title_formlabel" xml:space="preserve">
+				<source>Menu block title</source>
+			</trans-unit>
+			<trans-unit id="menu.ALT.accessibility_bypass_formlabel" xml:space="preserve">
+				<source>Add link to bypass navigation block</source>
+			</trans-unit>
+			<trans-unit id="menu.ALT.accessibility_bypass_text_formlabel" xml:space="preserve">
+				<source>Link text to bypass navigation block</source>
 			</trans-unit>
 			<trans-unit id="tabs.text" xml:space="preserve">
 				<source>Text</source>
@@ -1010,6 +1034,9 @@
 			</trans-unit>
 			<trans-unit id="palette.menu" xml:space="preserve">
 				<source>Menu and Sitemap</source>
+			</trans-unit>
+			<trans-unit id="palette.menu_accessibility" xml:space="preserve">
+				<source>Accessibility</source>
 			</trans-unit>
 			<trans-unit id="palette.uploads_layout" xml:space="preserve">
 				<source>Filelinks Layout</source>

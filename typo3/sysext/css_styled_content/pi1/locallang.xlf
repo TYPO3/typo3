@@ -6,6 +6,9 @@
 			<trans-unit id="label.toTop" xml:space="preserve">
 				<source>To top</source>
 			</trans-unit>
+			<trans-unit id="uploads.icon" xml:space="preserve">
+				<source>File link icon for %s</source>
+			</trans-unit>
 			<trans-unit id="login.username" xml:space="preserve">
 				<source>Username:</source>
 			</trans-unit>
@@ -44,6 +47,9 @@
 			</trans-unit>
 			<trans-unit id="search.searchButton" xml:space="preserve">
 				<source>Search now!</source>
+			</trans-unit>
+			<trans-unit id="menu.bypassNavigation" xml:space="preserve">
+				<source>Skip navigation block</source>
 			</trans-unit>
 			<trans-unit id="eIcon.html" xml:space="preserve">
 				<source>Edit pure HTML content</source>
