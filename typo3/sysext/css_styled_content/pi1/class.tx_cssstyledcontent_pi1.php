@@ -127,7 +127,6 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 				// get flexform values
 			$caption = trim(htmlspecialchars($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'acctables_caption')));
-			$summary = trim(htmlspecialchars($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'acctables_summary')));
 			$useTfoot = trim($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'acctables_tfoot'));
 			$headerPos = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'acctables_headerpos');
 			$noStyles = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'acctables_nostyles');
@@ -225,7 +224,8 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				// Table tag params.
 			$tableTagParams = $this->getTableAttributes($conf,$type);
 			if (!$noStyles)	{
-				$tableTagParams['class'] = 'contenttable contenttable-'.$type.($tableClass?' '.$tableClass:'');
+				$tableTagParams['class'] = 'contenttable contenttable-' . $type .
+					($tableClass ? ' ' . $tableClass : '') . $tableTagParams['class'];
 			} elseif ($tableClass) {
 				$tableTagParams['class'] = $tableClass;
 			}
@@ -233,8 +233,8 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 				// Compile table output:
 			$out = '
-				<table '.t3lib_div::implodeAttributes($tableTagParams).($summary?' summary="'.$summary.'"':'').'>'.	// Omitted xhtmlSafe argument TRUE - none of the values will be needed to be converted anyways, no need to spend processing time on that.
-				$tableContents.'
+				<table ' . t3lib_div::implodeAttributes($tableTagParams) . '>' .
+				$tableContents . '
 				</table>';
 
 				// Calling stdWrap:
@@ -261,6 +261,8 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		if ($hookObj = $this->hookRequest('render_uploads')) {
 			return $hookObj->render_uploads($content,$conf);
 		} else {
+				// Loading language-labels
+			$this->pi_loadLL();
 
 			$out = '';
 
@@ -294,12 +296,29 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 					// Get the descriptions for the files (if any):
 				$descriptions = t3lib_div::trimExplode(LF,$this->cObj->data['imagecaption']);
 
+					// Get the titles for the files (if any)
+				$titles = t3lib_div::trimExplode(LF, $this->cObj->data['titleText']);
+
+					// Get the alternative text for icons/thumbnails
+				$altTexts = t3lib_div::trimExplode(LF, $this->cObj->data['altText']);
+
+					// Add the target to linkProc when explicitly set
+				if ($this->cObj->data['target']) {
+					$conf['linkProc.']['target'] = $this->cObj->data['target'];
+					unset($conf['linkProc.']['target.']);
+				}
+
 					// Adding hardcoded TS to linkProc configuration:
 				$conf['linkProc.']['path.']['current'] = 1;
-				$conf['linkProc.']['icon'] = 1;	// Always render icon - is inserted by PHP if needed.
-				$conf['linkProc.']['icon.']['wrap'] = ' | //**//';	// Temporary, internal split-token!
-				$conf['linkProc.']['icon_link'] = 1;	// ALways link the icon
+				if ($conf['linkProc.']['combinedLink']) {
+					$conf['linkProc.']['icon'] = $type > 0 ? 1 : 0;
+				} else {
+					$conf['linkProc.']['icon'] = 1;	// Always render icon - is inserted by PHP if needed.
+					$conf['linkProc.']['icon.']['wrap'] = ' | //**//';	// Temporary, internal split-token!
+					$conf['linkProc.']['icon_link'] = 1;	// ALways link the icon
+				}
 				$conf['linkProc.']['icon_image_ext_list'] = ($type==2 || $type==3) ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] : '';	// If the layout is type 2 or 3 we will render an image based icon if possible.
+
 				if ($conf['labelStdWrap.']) {
 					$conf['linkProc.']['labelStdWrap.'] = $conf['labelStdWrap.'];
 				}
@@ -321,6 +340,15 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 						$filesData[$key]['fileextension'] = strtolower($fI['extension']);
 						$filesData[$key]['description'] = trim($descriptions[$key]);
 
+						$conf['linkProc.']['title'] = trim($titles[$key]);
+
+						if (isset($altTexts[$key]) && !empty($altTexts[$key])) {
+							$altText = trim($altTexts[$key]);
+						} else {
+							$altText = sprintf($this->pi_getLL('uploads.icon'), $fileName);
+						}
+						$conf['linkProc.']['altText'] = $conf['linkProc.']['iconCObject.']['altText'] = $altText;
+
 						$this->cObj->setCurrentVal($path);
 						$GLOBALS['TSFE']->register['ICON_REL_PATH'] = $path.$fileName;
 						$GLOBALS['TSFE']->register['filename'] = $filesData[$key]['filename'];
@@ -328,6 +356,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 						$GLOBALS['TSFE']->register['fileSize'] = $filesData[$key]['filesize'];
 						$GLOBALS['TSFE']->register['fileExtension'] = $filesData[$key]['fileextension'];
 						$GLOBALS['TSFE']->register['description'] = $filesData[$key]['description'];
+
 						$filesData[$key]['linkedFilenameParts']
 							= $this->beautifyFileLink(
 								explode(
@@ -348,7 +377,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 					// Now, lets render the list!
 				$outputEntries = array();
-				foreach($filesData as $key => $fileData)	{
+				foreach ($filesData as $key => $fileData) {
 					$GLOBALS['TSFE']->register['linkedIcon'] = $fileData['linkedFilenameParts'][0];
 					$GLOBALS['TSFE']->register['linkedLabel'] = $fileData['linkedFilenameParts'][1];
 					$GLOBALS['TSFE']->register['filename'] = $fileData['filename'];
@@ -361,7 +390,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 				if (isset($conf['outerWrap']))	{
 						// Wrap around the whole content
-					$outerWrap = $conf['outerWrap'];
+					$outerWrap = $this->cObj->stdWrap($conf['outerWrap'], $conf['outerWrap.']);
 				} else	{
 						// Table tag params
 					$tableTagParams = $this->getTableAttributes($conf,$type);
@@ -462,6 +491,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * @return	string		HTML output.
 	 * @access private
 	 * @coauthor	Ernesto Baschny <ernst@cron-it.de>
+	 * @coauthor Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	 function render_textpic($content, $conf)	{
 			// Look for hook before running default code for function
@@ -521,6 +551,12 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			$conf = $this->cObj->joinTSarrays($conf, $conf['rendering.'][$fallbackRenderMethod . '.']);
 		}
 
+			// Set the accessibility mode which uses a different type of markup, used 4.7+
+		$accessibilityMode = FALSE;
+		if (strpos(strtolower($renderMethod), 'caption') || strpos(strtolower($fallbackRenderMethod), 'caption')) {
+			$accessibilityMode = TRUE;
+		}
+
 			// Global caption
 		$globalCaption = '';
 		if ($renderGlobalCaption)	{
@@ -565,15 +601,32 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 			// Max Width
 		$maxW = intval($this->cObj->stdWrap($conf['maxW'], $conf['maxW.']));
+		$maxWInText = intval($this->cObj->stdWrap($conf['maxWInText'], $conf['maxWInText.']));
+		$fiftyPercentWidthInText = round($maxW / 100 * 50);
 
 		if ($contentPosition>=16)	{	// in Text
-			$maxWInText = intval($this->cObj->stdWrap($conf['maxWInText'],$conf['maxWInText.']));
 			if (!$maxWInText)	{
 					// If maxWInText is not set, it's calculated to the 50% of the max
-				$maxW = round($maxW/100*50);
+				$maxW = $fiftyPercentWidthInText;
 			} else {
 				$maxW = $maxWInText;
 			}
+		}
+
+			// Set the margin for image + text, no wrap always to avoid multiple stylesheets
+		if ($accessibilityMode) {
+			$noWrapMargin = (integer) (($maxWInText ? $maxWInText : $fiftyPercentWidthInText) +
+				intval($this->cObj->stdWrap($conf['textMargin'],$conf['textMargin.'])));
+
+			$this->addPageStyle(
+				'.csc-textpic-intext-right-nowrap .csc-textpic-text',
+				'margin-right: ' . $noWrapMargin . 'px;'
+			);
+
+			$this->addPageStyle(
+				'.csc-textpic-intext-left-nowrap .csc-textpic-text',
+				'margin-left: ' . $noWrapMargin . 'px;'
+			);
 		}
 
 			// max usuable width for images (without spacers and borders)
@@ -764,143 +817,327 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		if ($noRows)	{ $separateRows = 0; }
 		if ($rowCount == 1)	{ $separateRows = 0; }
 
-			// Apply optionSplit to the list of classes that we want to add to each image
-		$addClassesImage = $conf['addClassesImage'];
-		if ($conf['addClassesImage.'])	{
-			$addClassesImage = $this->cObj->stdWrap($addClassesImage, $conf['addClassesImage.']);
-		}
-		$addClassesImageConf = $GLOBALS['TSFE']->tmpl->splitConfArray(array('addClassesImage' => $addClassesImage), $colCount);
+		if ($accessibilityMode) {
+			$imagesInColumns = round(($imgCount / ($rowCount * $colCount)), 0 , PHP_ROUND_HALF_UP);
 
-			// Render the images
-		$images = '';
-		for ($c = 0; $c < $imageWrapCols; $c++)	{
-			$tmpColspacing = $colspacing;
-			if (($c==$imageWrapCols-1 && $imagePosition==2) || ($c==0 && ($imagePosition==1||$imagePosition==0))) {
-					// Do not add spacing after column if we are first column (left) or last column (center/right)
-				$tmpColspacing = 0;
+				// Apply optionSplit to the list of classes that we want to add to each column
+			$addClassesCol = $conf['addClassesCol'];
+			if (isset($conf['addClassesCol.'])) {
+				$addClassesCol = $this->cObj->stdWrap($addClassesCol, $conf['addClassesCol.']);
 			}
+			$addClassesColConf = $GLOBALS['TSFE']->tmpl->splitConfArray(array('addClassesCol' => $addClassesCol), $colCount);
 
-			$thisImages = '';
-			$allRows = '';
-			$maxImageSpace = 0;
-			for ($i = $c; $i<count($imgsTag); $i=$i+$imageWrapCols)	{
-				$imgKey = $i+$imgStart;
-				$colPos = $i%$colCount;
-				if ($separateRows && $colPos == 0) {
-					$thisRow = '';
+				// Apply optionSplit to the list of classes that we want to add to each image
+			$addClassesImage = $conf['addClassesImage'];
+			if (isset($conf['addClassesImage.'])) {
+				$addClassesImage = $this->cObj->stdWrap($addClassesImage, $conf['addClassesImage.']);
+			}
+			$addClassesImageConf = $GLOBALS['TSFE']->tmpl->splitConfArray(array('addClassesImage' => $addClassesImage), $imagesInColumns);
+
+			$rows = array();
+			$currentImage = 0;
+
+				// Set the class for the caption (split or global)
+			$classCaptionAlign = array(
+				'center' => 'csc-textpic-caption-c',
+				'right' => 'csc-textpic-caption-r',
+				'left' => 'csc-textpic-caption-l',
+			);
+
+			$captionAlign = $this->cObj->stdWrap($conf['captionAlign'], $conf['captionAlign.']);
+
+				// Iterate over the rows
+			for ($rowCounter = 1; $rowCounter <= $rowCount; $rowCounter++) {
+				$rowColumns = array();
+					// Iterate over the columns
+				for ($columnCounter = 1; $columnCounter <= $colCount; $columnCounter++) {
+					$columnImages = array();
+						// Iterate over the amount of images allowed in a column
+					for ($imagesCounter = 1; $imagesCounter <= $imagesInColumns; $imagesCounter++) {
+						$image = NULL;
+						$splitCaption = NULL;
+						$imageMarkers = $captionMarkers = array();
+						$single = '&nbsp;';
+
+							// Set the key of the current image
+						$imageKey = $currentImage + $imgStart;
+
+							// Register IMAGE_NUM_CURRENT for the caption
+						$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imageKey;
+
+							// Get the image if not an empty cell
+						if (isset($imgsTag[$imageKey])) {
+							$image = $this->cObj->stdWrap($imgsTag[$imageKey], $conf['imgTagStdWrap.']);
+
+								// Add the edit icons
+							if ($editIconsHTML) {
+								$image .= $this->cObj->stdWrap($editIconsHTML, $conf['editIconsStdWrap.']);
+							}
+
+								// Wrap the single image
+							$single = $this->cObj->stdWrap($image, $conf['singleStdWrap.']);
+
+								// Get the caption
+							if (!$renderGlobalCaption) {
+								$imageMarkers['caption'] = $this->cObj->stdWrap(
+									$this->cObj->cObjGet($conf['caption.'], 'caption.'), $conf['caption.']
+								);
+								if ($captionAlign) {
+									$captionMarkers['classes'] = ' ' . $classCaptionAlign[$captionAlign];
+								}
+
+								$imageMarkers['caption'] = $this->cObj->substituteMarkerArray(
+									$imageMarkers['caption'],
+									$captionMarkers,
+									'###|###',
+									1,
+									1
+								);
+							}
+
+							if ($addClassesImageConf[$imagesCounter - 1]['addClassesImage']) {
+								$imageMarkers['classes'] = ' ' . $addClassesImageConf[$imagesCounter - 1]['addClassesImage'];
+							}
+						}
+
+						$columnImages[] = $this->cObj->substituteMarkerArray(
+							$single,
+							$imageMarkers,
+							'###|###',
+							1,
+							1
+						);
+
+						$currentImage++;
+					}
+
+					$rowColumn = $this->cObj->stdWrap(
+						implode(LF, $columnImages),
+						$conf['columnStdWrap.']
+					);
+
+						// Start filling the markers for columnStdWrap
+					$columnMarkers = array();
+
+					if ($addClassesColConf[$columnCounter - 1]['addClassesCol']) {
+						$columnMarkers['classes'] = ' ' . $addClassesColConf[$columnCounter - 1]['addClassesCol'];
+					}
+
+					$rowColumns[] = $this->cObj->substituteMarkerArray(
+						$rowColumn,
+						$columnMarkers,
+						'###|###',
+						1,
+						1
+					);
 				}
-
-					// Render one image
-				if($origImages[$imgKey][0]==0) {
-					$imageSpace=$this->cObj->data['imagewidth'] + $border*($borderSpace+$borderThickness)*2;
+				if ($noRows) {
+					$rowConfiguration = $conf['noRowsStdWrap.'];
+				} elseif ($rowCounter == $rowCount) {
+					$rowConfiguration = $conf['lastRowStdWrap.'];
 				} else {
-					$imageSpace = $origImages[$imgKey][0] + $border*($borderSpace+$borderThickness)*2;
+					$rowConfiguration = $conf['rowStdWrap.'];
 				}
 
-				$GLOBALS['TSFE']->register['IMAGE_NUM'] = $imgKey;
-				$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imgKey;
-				$GLOBALS['TSFE']->register['ORIG_FILENAME'] = $origImages[$imgKey]['origFile'];
-				$GLOBALS['TSFE']->register['imagewidth'] = $origImages[$imgKey][0];
-				$GLOBALS['TSFE']->register['imagespace'] = $imageSpace;
-				$GLOBALS['TSFE']->register['imageheight'] = $origImages[$imgKey][1];
-				if ($imageSpace > $maxImageSpace)	{
-					$maxImageSpace = $imageSpace;
-				}
-				$thisImage = '';
-				$thisImage .= $this->cObj->stdWrap($imgsTag[$imgKey], $conf['imgTagStdWrap.']);
+				$row = $this->cObj->stdWrap(
+					implode(LF, $rowColumns),
+					$rowConfiguration
+				);
 
-				if (!$renderGlobalCaption)	{
-					$thisImage .= $this->cObj->stdWrap($this->cObj->cObjGet($conf['caption.'], 'caption.'), $conf['caption.']);
-				}
-				if ($editIconsHTML)	{
-					$thisImage .= $this->cObj->stdWrap($editIconsHTML, $conf['editIconsStdWrap.']);
-				}
-				$thisImage = $this->cObj->stdWrap($thisImage, $conf['oneImageStdWrap.']);
-				$classes = '';
-				if ($addClassesImageConf[$colPos]['addClassesImage'])	{
-					$classes = ' ' . $addClassesImageConf[$colPos]['addClassesImage'];
-				}
-				$thisImage = str_replace('###CLASSES###', $classes, $thisImage);
+					// Start filling the markers for columnStdWrap
+				$rowMarkers = array();
 
-				if ($separateRows)	{
-					$thisRow .= $thisImage;
-				} else {
-					$allRows .= $thisImage;
-				}
-				$GLOBALS['TSFE']->register['columnwidth'] = $maxImageSpace + $tmpColspacing;
+				$rows[] = $this->cObj->substituteMarkerArray(
+					$row,
+					$rowMarkers,
+					'###|###',
+					1,
+					1
+				);
+			}
 
+			$images = $this->cObj->stdWrap(
+				implode(LF, $rows),
+				$conf['allStdWrap.']
+			);
+				// Start filling the markers for allStdWrap
+			$allMarkers = array();
+			$classes = array();
 
-					// Close this row at the end (colCount), or the last row at the final end
-				if ($separateRows && ($i+1 == count($imgsTag)))	{
-						// Close the very last row with either normal configuration or lastRow stdWrap
-					$allRows .= $this->cObj->stdWrap($thisRow, (is_array($conf['imageLastRowStdWrap.']) ? $conf['imageLastRowStdWrap.'] : $conf['imageRowStdWrap.']));
-				} elseif ($separateRows && $colPos == $colCount-1)	{
-					$allRows .= $this->cObj->stdWrap($thisRow, $conf['imageRowStdWrap.']);
+				// Add the global caption to the allStdWrap marker array if set
+			if ($globalCaption) {
+				$allMarkers['caption'] = $globalCaption;
+				if ($captionAlign) {
+					$classes[] = $classCaptionAlign[$captionAlign];
 				}
 			}
-			if ($separateRows)	{
-				$thisImages .= $allRows;
-			} else {
-				$thisImages .= $this->cObj->stdWrap($allRows, $conf['noRowsStdWrap.']);
+
+				// Add the border class if needed
+			if ($border){
+				$classes[] = $conf['borderClass'] ? $conf['borderClass'] : 'csc-textpic-border';
 			}
-			if ($noRows)	{
-					// Only needed to make columns, rather than rows:
-				$images .= $this->cObj->stdWrap($thisImages, $conf['imageColumnStdWrap.']);
-			} else {
-				$images .= $thisImages;
+
+				// Add the class for equal height if needed
+			if ($equalHeight) {
+				$classes[] = 'csc-textpic-equalheight';
 			}
-		}
 
-			// Add the global caption, if not split
-		if ($globalCaption)	{
-			$images .= $globalCaption;
-		}
+			$addClasses = $this->cObj->stdWrap($conf['addClasses'], $conf['addClasses.']);
+			if ($addClasses) {
+				$classes[] = $addClasses;
+			}
 
-			// CSS-classes
-		$captionClass = '';
-		$classCaptionAlign = array(
-			'center' => 'csc-textpic-caption-c',
-			'right' => 'csc-textpic-caption-r',
-			'left' => 'csc-textpic-caption-l',
-		);
-		$captionAlign = $this->cObj->stdWrap($conf['captionAlign'], $conf['captionAlign.']);
-		if ($captionAlign)	{
-			$captionClass = $classCaptionAlign[$captionAlign];
-		}
-		$borderClass = '';
-		if ($border)	{
-			$borderClass = $conf['borderClass'] ? $conf['borderClass'] : 'csc-textpic-border';
-		}
+			if ($classes) {
+				$class = ' ' . implode(' ', $classes);
+			}
 
-			// Multiple classes with all properties, to be styled in CSS
-		$class = '';
-		$class .= ($borderClass? ' '.$borderClass:'');
-		$class .= ($captionClass? ' '.$captionClass:'');
-		$class .= ($equalHeight? ' csc-textpic-equalheight':'');
-		$addClasses = $this->cObj->stdWrap($conf['addClasses'], $conf['addClasses.']);
-		$class .= ($addClasses ? ' '.$addClasses:'');
-
-			// Do we need a width in our wrap around images?
-		$imgWrapWidth = '';
-		if ($position == 0 || $position == 8)	{
-				// For 'center' we always need a width: without one, the margin:auto trick won't work
-			$imgWrapWidth = $imageBlockWidth;
-		}
-		if ($rowCount > 1)	{
-				// For multiple rows we also need a width, so that the images will wrap
-			$imgWrapWidth = $imageBlockWidth;
-		}
-		if ($caption)	{
-				// If we have a global caption, we need the width so that the caption will wrap
-			$imgWrapWidth = $imageBlockWidth;
-		}
-
-			// Wrap around the whole image block
-		$GLOBALS['TSFE']->register['totalwidth'] = $imgWrapWidth;
-		if ($imgWrapWidth)	{
-			$images = $this->cObj->stdWrap($images, $conf['imageStdWrap.']);
+				// Fill the markers for the allStdWrap
+			$images = $this->cObj->substituteMarkerArray(
+				$images,
+				$allMarkers,
+				'###|###',
+				1,
+				1
+			);
 		} else {
-			$images = $this->cObj->stdWrap($images, $conf['imageStdWrapNoWidth.']);
+				// Apply optionSplit to the list of classes that we want to add to each image
+			$addClassesImage = $conf['addClassesImage'];
+			if (isset($conf['addClassesImage.'])) {
+				$addClassesImage = $this->cObj->stdWrap($addClassesImage, $conf['addClassesImage.']);
+			}
+			$addClassesImageConf = $GLOBALS['TSFE']->tmpl->splitConfArray(array('addClassesImage' => $addClassesImage), $colCount);
+
+				// Render the images
+			$images = '';
+			for ($c = 0; $c < $imageWrapCols; $c++) {
+				$tmpColspacing = $colspacing;
+				if (($c == $imageWrapCols - 1 && $imagePosition == 2) || ($c == 0 && ($imagePosition == 1 || $imagePosition == 0))) {
+						// Do not add spacing after column if we are first column (left) or last column (center/right)
+					$tmpColspacing = 0;
+				}
+
+				$thisImages = '';
+				$allRows = '';
+				$maxImageSpace = 0;
+				for ($i = $c; $i < count($imgsTag); $i = $i + $imageWrapCols) {
+					$imgKey = $i + $imgStart;
+					$colPos = $i % $colCount;
+					if ($separateRows && $colPos == 0) {
+						$thisRow = '';
+					}
+
+						// Render one image
+					if($origImages[$imgKey][0]==0) {
+						$imageSpace = $this->cObj->data['imagewidth'] + $border * ($borderSpace + $borderThickness) * 2;
+					} else {
+						$imageSpace = $origImages[$imgKey][0] + $border * ($borderSpace + $borderThickness) * 2;
+					}
+
+					$GLOBALS['TSFE']->register['IMAGE_NUM'] = $imgKey;
+					$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imgKey;
+					$GLOBALS['TSFE']->register['ORIG_FILENAME'] = $origImages[$imgKey]['origFile'];
+					$GLOBALS['TSFE']->register['imagewidth'] = $origImages[$imgKey][0];
+					$GLOBALS['TSFE']->register['imagespace'] = $imageSpace;
+					$GLOBALS['TSFE']->register['imageheight'] = $origImages[$imgKey][1];
+					if ($imageSpace > $maxImageSpace) {
+						$maxImageSpace = $imageSpace;
+					}
+					$thisImage = '';
+					$thisImage .= $this->cObj->stdWrap($imgsTag[$imgKey], $conf['imgTagStdWrap.']);
+
+					if (!$renderGlobalCaption) {
+						$thisImage .= $this->cObj->stdWrap($this->cObj->cObjGet($conf['caption.'], 'caption.'), $conf['caption.']);
+					}
+					if ($editIconsHTML) {
+						$thisImage .= $this->cObj->stdWrap($editIconsHTML, $conf['editIconsStdWrap.']);
+					}
+					$thisImage = $this->cObj->stdWrap($thisImage, $conf['oneImageStdWrap.']);
+					$classes = '';
+					if ($addClassesImageConf[$colPos]['addClassesImage']) {
+						$classes = ' ' . $addClassesImageConf[$colPos]['addClassesImage'];
+					}
+					$thisImage = str_replace('###CLASSES###', $classes, $thisImage);
+
+					if ($separateRows) {
+						$thisRow .= $thisImage;
+					} else {
+						$allRows .= $thisImage;
+					}
+					$GLOBALS['TSFE']->register['columnwidth'] = $maxImageSpace + $tmpColspacing;
+
+
+						// Close this row at the end (colCount), or the last row at the final end
+					if ($separateRows && ($i + 1 == count($imgsTag))) {
+							// Close the very last row with either normal configuration or lastRow stdWrap
+						$allRows .= $this->cObj->stdWrap($thisRow, (is_array($conf['imageLastRowStdWrap.']) ? $conf['imageLastRowStdWrap.'] : $conf['imageRowStdWrap.']));
+					} elseif ($separateRows && $colPos == $colCount - 1) {
+						$allRows .= $this->cObj->stdWrap($thisRow, $conf['imageRowStdWrap.']);
+					}
+				}
+				if ($separateRows) {
+					$thisImages .= $allRows;
+				} else {
+					$thisImages .= $this->cObj->stdWrap($allRows, $conf['noRowsStdWrap.']);
+				}
+				if ($noRows) {
+						// Only needed to make columns, rather than rows:
+					$images .= $this->cObj->stdWrap($thisImages, $conf['imageColumnStdWrap.']);
+				} else {
+					$images .= $thisImages;
+				}
+			}
+
+				// Add the global caption, if not split
+			if ($globalCaption) {
+				$images .= $globalCaption;
+			}
+
+				// CSS-classes
+			$captionClass = '';
+			$classCaptionAlign = array(
+				'center' => 'csc-textpic-caption-c',
+				'right' => 'csc-textpic-caption-r',
+				'left' => 'csc-textpic-caption-l',
+			);
+			$captionAlign = $this->cObj->stdWrap($conf['captionAlign'], $conf['captionAlign.']);
+			if ($captionAlign) {
+				$captionClass = $classCaptionAlign[$captionAlign];
+			}
+			$borderClass = '';
+			if ($border) {
+				$borderClass = $conf['borderClass'] ? $conf['borderClass'] : 'csc-textpic-border';
+			}
+
+				// Multiple classes with all properties, to be styled in CSS
+			$class = '';
+			$class .= ($borderClass ? ' ' . $borderClass : '');
+			$class .= ($captionClass ? ' ' . $captionClass : '');
+			$class .= ($equalHeight ? ' csc-textpic-equalheight' : '');
+			$addClasses = $this->cObj->stdWrap($conf['addClasses'], $conf['addClasses.']);
+			$class .= ($addClasses ? ' ' . $addClasses : '');
+
+				// Do we need a width in our wrap around images?
+			$imgWrapWidth = '';
+			if ($position == 0 || $position == 8) {
+					// For 'center' we always need a width: without one, the margin:auto trick won't work
+				$imgWrapWidth = $imageBlockWidth;
+			}
+			if ($rowCount > 1) {
+					// For multiple rows we also need a width, so that the images will wrap
+				$imgWrapWidth = $imageBlockWidth;
+			}
+			if ($globalCaption) {
+					// If we have a global caption, we need the width so that the caption will wrap
+				$imgWrapWidth = $imageBlockWidth;
+			}
+
+				// Wrap around the whole image block
+			$GLOBALS['TSFE']->register['totalwidth'] = $imgWrapWidth;
+			if ($imgWrapWidth) {
+				$images = $this->cObj->stdWrap($images, $conf['imageStdWrap.']);
+			} else {
+				$images = $this->cObj->stdWrap($images, $conf['imageStdWrapNoWidth.']);
+			}
 		}
 
 		$output = $this->cObj->cObjGetSingle($conf['layout'], $conf['layout.']);
@@ -915,9 +1152,54 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		return $output;
 	}
 
+	/***********************************
+	 *
+	 * Rendering of Content Element properties:
+	 *
+	 ***********************************/
 
+	/**
+	 * Add top or bottom margin to the content element
+	 *
+	 * Constructs and adds a class to the content element. This class selector
+	 * and its declaration are added to the specific page styles.
+	 *
+	 * @param string $content Content input. Not used, ignore.
+	 * @param array $configuration TypoScript configuration
+	 * @return string The class name
+	 */
+	public function renderSpace($content, array $configuration) {
+			// Look for hook before running default code for function
+		if (method_exists($this, 'hookRequest') && $hookObject = $this->hookRequest('renderSpace')) {
+			return $hookObject->renderSpace($content, $configuration);
+		}
 
+		if (isset($configuration['space']) && in_array($configuration['space'], array('before', 'after'))) {
+			$constant = (int) $configuration['constant'];
 
+			if ($configuration['space'] === 'before') {
+				$value = $constant + $this->cObj->data['spaceBefore'];
+				$declaration = 'margin-top: ' . $value .'px;';
+			} else {
+				$value = $constant + $this->cObj->data['spaceAfter'];
+				$declaration = 'margin-bottom: ' . $value . 'px;';
+			}
+
+			if (!empty($value)) {
+				if ($configuration['stdWrap.']) {
+					$className = $this->cObj->stdWrap($value, $configuration['stdWrap.']);
+				} else {
+					$className = $value;
+				}
+
+				$selector = '.' . trim($className);
+
+				$this->addPageStyle($selector, $declaration);
+
+				return $className;
+			}
+		}
+	}
 
 
 
@@ -973,27 +1255,97 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * @param	integer		The "layout" type
 	 * @return	array		Array with attributes inside.
 	 */
-	function getTableAttributes($conf,$type)	{
+	function getTableAttributes($conf, $type) {
 
 			// Initializing:
 		$tableTagParams_conf = $conf['tableParams_'.$type.'.'];
 
-		$conf['color.'][200] = '';
-		$conf['color.'][240] = 'black';
-		$conf['color.'][241] = 'white';
-		$conf['color.'][242] = '#333333';
-		$conf['color.'][243] = 'gray';
-		$conf['color.'][244] = 'silver';
+		$border = $this->cObj->data['table_border'] ? intval($this->cObj->data['table_border']) : $tableTagParams_conf['border'];
+		$cellSpacing = $this->cObj->data['table_cellspacing'] ? intval($this->cObj->data['table_cellspacing']) : $tableTagParams_conf['cellspacing'];
+		$cellPadding = $this->cObj->data['table_cellpadding'] ? intval($this->cObj->data['table_cellpadding']) : $tableTagParams_conf['cellpadding'];
+		$summary = trim(htmlspecialchars($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'acctables_summary')));
 
-			// Create table attributes array:
-		$tableTagParams = array();
-		$tableTagParams['border'] =  $this->cObj->data['table_border'] ? intval($this->cObj->data['table_border']) : $tableTagParams_conf['border'];
-		$tableTagParams['cellspacing'] =  $this->cObj->data['table_cellspacing'] ? intval($this->cObj->data['table_cellspacing']) : $tableTagParams_conf['cellspacing'];
-		$tableTagParams['cellpadding'] =  $this->cObj->data['table_cellpadding'] ? intval($this->cObj->data['table_cellpadding']) : $tableTagParams_conf['cellpadding'];
-		$tableTagParams['bgcolor'] =  isset($conf['color.'][$this->cObj->data['table_bgColor']]) ? $conf['color.'][$this->cObj->data['table_bgColor']] : $conf['color.']['default'];
+			// Create table attributes and classes array:
+		$tableTagParams = $classes = array();
+
+			// Table attributes for all doctypes except HTML5
+		if ($GLOBALS['TSFE']->config['config']['doctype'] !== 'html5') {
+			$tableTagParams['border'] = $border;
+			$tableTagParams['cellspacing'] = $cellSpacing;
+			$tableTagParams['cellpadding'] = $cellPadding;
+			if ($summary) {
+				$tableTagParams['summary'] = $summary;
+			}
+
+			// Some attributes are obsolete or have been changed in HTML5
+		} else {
+			if ($border) {
+					// Border property has changed, now with class
+				$borderClass = 'contenttable-border-' . $border;
+				$borderDeclaration = 'border-width: ' . $border . 'px; border-style: solid;';
+
+				$this->addPageStyle('.' . $borderClass, $borderDeclaration);
+
+				$classes[] = $borderClass;
+			}
+			if ($cellSpacing) {
+					// Border attribute for HTML5 is 1 when there is cell spacing
+				$tableTagParams['border'] = 1;
+					// Use CSS3 border-spacing in class to have cell spacing
+				$cellSpacingClass = 'contenttable-cellspacing-' . $cellSpacing;
+				$cellSpacingDeclaration = 'border-spacing: ' . $cellSpacing . 'px;';
+
+				$this->addPageStyle('.' . $cellSpacingClass, $cellSpacingDeclaration);
+
+				$classes[] = $cellSpacingClass;
+			}
+			if ($cellPadding) {
+					// Cell padding property has changed, now with class
+				$cellPaddingClass = 'contenttable-cellpadding-' . $cellPadding;
+				$cellSpacingSelector = '.' . $cellPaddingClass . ' td, .' . $cellPaddingClass . ' th';
+				$cellPaddingDeclaration = 'padding: ' . $cellPadding . 'px;';
+
+				$this->addPageStyle($cellSpacingSelector, $cellPaddingDeclaration);
+
+				$classes[] = $cellPaddingClass;
+			}
+		}
+			// Background color is class
+		if (
+			isset($conf['color.'][$this->cObj->data['table_bgColor']]) &&
+			!empty($conf['color.'][$this->cObj->data['table_bgColor']])
+		) {
+			$classes[] = 'contenttable-color-' . $this->cObj->data['table_bgColor'];
+		}
+
+		if (!empty($classes)) {
+			$tableTagParams['class'] = ' ' . implode(' ', $classes);
+		}
 
 			// Return result:
 		return $tableTagParams;
+	}
+
+	/**
+	 * Add a style to the page, specific for this page
+	 *
+	 * The selector can be a contextual selector, like '#id .class p'
+	 * The presence of the selector is checked to avoid multiple entries of the
+	 * same selector.
+	 *
+	 * @param string $selector The selector
+	 * @param string $declaration The declaration
+	 * @return void
+	 */
+	protected function addPageStyle($selector, $declaration) {
+		if (!isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_cssstyledcontent.']['_CSS_PAGE_STYLE'])) {
+			$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_cssstyledcontent.']['_CSS_PAGE_STYLE'] = array();
+		}
+
+		if (!isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_cssstyledcontent.']['_CSS_PAGE_STYLE'][$selector])) {
+			$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_cssstyledcontent.']['_CSS_PAGE_STYLE'][$selector] = TAB . $selector .
+				' { ' . $declaration . ' }';
+		}
 	}
 
 	/**
