@@ -383,6 +383,18 @@ if (TYPO3_extTableDef_script)	{
 	include (PATH_typo3conf.TYPO3_extTableDef_script);
 }
 
+	// Hook for postprocessing values set in extTables.php
+if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'])) {
+	foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'] as $_classRef) {
+		$hookObject = &t3lib_div::getUserObj($_classRef);
+		if (!$hookObject instanceof t3lib_extTables_PostProcessingHook) {
+			throw new UnexpectedValueException('$hookObject must implement interface t3lib_extTables_PostProcessingHook', 1320585902);
+		}
+		$hookObject->postProcessData();
+	}
+}
+
+
 	// load TYPO3 SpriteGenerating API
 $spriteManager = t3lib_div::makeInstance('t3lib_SpriteManager', TRUE);
 $spriteManager->loadCacheFile();
