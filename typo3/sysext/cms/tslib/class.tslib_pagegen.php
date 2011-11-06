@@ -177,6 +177,19 @@ class TSpagegen {
 			$GLOBALS['TSFE']->linkVars='';
 		}
 
+			// dtdAllowsFrames indicates whether to use the target attribute in links
+		$GLOBALS['TSFE']->dtdAllowsFrames = FALSE;
+		if ($GLOBALS['TSFE']->config['config']['doctype']) {
+			if (in_array(
+				(string) $GLOBALS['TSFE']->config['config']['doctype'],
+				array('xhtml_frames', 'html5')
+			)) {
+				$GLOBALS['TSFE']->dtdAllowsFrames = TRUE;
+			}
+		} else {
+			$GLOBALS['TSFE']->dtdAllowsFrames = TRUE;
+		}
+
 			// Setting XHTML-doctype from doctype
 		if (!$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
 			$GLOBALS['TSFE']->config['config']['xhtmlDoctype'] = $GLOBALS['TSFE']->config['config']['doctype'];
@@ -441,7 +454,15 @@ class TSpagegen {
 		} else {
 			$_attr = '';
 		}
-		$pageRenderer->setHtmlTag('<html' . ($_attr ? ' ' . $_attr : '') . '>');
+
+		$htmlTag = '<html' . ($_attr ? ' ' . $_attr : '') . '>';
+		if (isset($GLOBALS['TSFE']->config['config']['htmlTag_stdWrap.'])) {
+			   $htmlTag = $GLOBALS['TSFE']->cObj->stdWrap(
+					   $htmlTag,
+					   $GLOBALS['TSFE']->config['config']['htmlTag_stdWrap.']
+			   );
+		}
+		$pageRenderer->setHtmlTag($htmlTag);
 
 			// Head tag:
 		$headTag = $GLOBALS['TSFE']->pSetup['headTag'] ? $GLOBALS['TSFE']->pSetup['headTag'] : '<head>';
@@ -475,11 +496,17 @@ class TSpagegen {
 		}
 
 			// Including CSS files
-		if (is_array($GLOBALS['TSFE']->tmpl->setup['plugin.']) && empty($GLOBALS['TSFE']->config['config']['removeDefaultCss'])) {
+		if (is_array($GLOBALS['TSFE']->tmpl->setup['plugin.'])) {
 			$temp_styleLines = array ();
 			foreach ($GLOBALS['TSFE']->tmpl->setup['plugin.'] as $key => $iCSScode) {
-				if (is_array($iCSScode) && $iCSScode['_CSS_DEFAULT_STYLE']) {
-					$temp_styleLines[] = '/* default styles for extension "' . substr($key, 0, - 1) . '" */' . LF . $iCSScode['_CSS_DEFAULT_STYLE'];
+				if (is_array($iCSScode)) {
+					if ($iCSScode['_CSS_DEFAULT_STYLE'] && empty($GLOBALS['TSFE']->config['config']['removeDefaultCss'])) {
+						$temp_styleLines[] = '/* default styles for extension "' . substr($key, 0, - 1) . '" */' . LF . $iCSScode['_CSS_DEFAULT_STYLE'];
+					}
+					if ($iCSScode['_CSS_PAGE_STYLE']) {
+						$temp_styleLines[] = '/* specific page styles for extension "' . substr($key, 0, - 1) . '" */' .
+							LF . implode(LF, $iCSScode['_CSS_PAGE_STYLE']);
+					}
 				}
 			}
 			if (count($temp_styleLines)) {
