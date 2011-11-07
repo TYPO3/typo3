@@ -33,7 +33,7 @@
  * </code>
  *
  * <code title="full configuration">
- * <f:widget.paginate objects="{blogs}" as="paginatedBlogs" configuration="{itemsPerPage: 5, insertAbove: 1, insertBelow: 0}">
+ * <f:widget.paginate objects="{blogs}" as="paginatedBlogs" configuration="{itemsPerPage: 5, insertAbove: 1, insertBelow: 0, maximumNumberOfLinks: 10}">
  *   // use {paginatedBlogs} as you used {blogs} before, most certainly inside
  *   // a <f:for> loop.
  * </f:widget.paginate>
@@ -73,7 +73,7 @@ class Tx_Fluid_ViewHelpers_Widget_PaginateViewHelper extends Tx_Fluid_Core_Widge
 	 * @param array $configuration
 	 * @return string
 	 */
-	public function render(Tx_Extbase_Persistence_QueryResultInterface $objects, $as, array $configuration = array('itemsPerPage' => 10, 'insertAbove' => FALSE, 'insertBelow' => TRUE)) {
+	public function render(Tx_Extbase_Persistence_QueryResultInterface $objects, $as, array $configuration = array('itemsPerPage' => 10, 'insertAbove' => FALSE, 'insertBelow' => TRUE, 'maximumNumberOfLinks' => 99)) {
 		return $this->initiateSubRequest();
 	}
 }
