@@ -43,6 +43,19 @@ $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'] = array(
 	'tif' => 'EXT:indexed_search/class.external_parser.php:&tx_indexed_search_extparse',
 );
 
+$TYPO3_CONF_VARS['EXTCONF']['indexed_search']['use_tables'] = 'index_phash,index_fulltext,index_rel,index_words,index_section,index_grlist,index_stat_search,index_stat_word,index_debug,index_config';
+
+  // unserializing the configuration so we can use it here:
+$_EXTCONF = unserialize($_EXTCONF);
+
+	// Use the advanced doubleMetaphone parser instead of the internal one (usage of metaphone parsers is generally disabled by default)
+if (isset($_EXTCONF['enableMetaphoneSearch']) && intval($_EXTCONF['enableMetaphoneSearch'])==2) {
+	$TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone'] = 'EXT:indexed_search/class.doublemetaphone.php:&user_DoubleMetaPhone';
+}
+
+
+
+
 
 	// EXAMPLE configuration of hooks:
 /*
