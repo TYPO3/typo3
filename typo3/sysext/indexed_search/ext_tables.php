@@ -6,6 +6,10 @@ t3lib_extMgm::addPlugin(Array('LLL:EXT:indexed_search/locallang.php:mod_indexed_
 t3lib_div::loadTCA('tt_content');
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY] = 'layout,select_key,pages';
 
+// adds TypoScript for the Extbase plugin
+t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript/', 'Indexed Search');
+
+
 if (TYPO3_MODE=='BE')    {
 	t3lib_extMgm::addModule('tools','isearch','after:log',t3lib_extMgm::extPath($_EXTKEY).'mod/');
 

@@ -28,6 +28,9 @@ fullTextDataLength = 0
   # cat=basic; type=boolean; label=Disable Indexing in Frontend: By default pages are indexed during viewing of pages in the frontend. You can disable this features so indexing of pages is only initiated through the backend page crawler.
 disableFrontendIndexing = 0
 
+  # cat=basic; type=int; label=Enable metaphone search (sounds like). 0=disabled, 1=use internal metaphone parser, 2=use advanced doubleMetaphone parser.
+enableMetaphoneSearch = 1
+
   # cat=basic; type=int; label=Min TTL (hours) for indexed page: The time in hours that must pass before an indexed page can be indexed again regardless of changes on the page.
 minAge = 24
 
@@ -40,7 +43,7 @@ maxExternalFiles = 5
   # cat=basic; type=boolean; label=Use "crawler" extension to index external files: When external files are found on a page they are added to the "crawler" extensions queue and indexed via the cronscript running the crawler. This eliminates problems with for example many PDF files on a page. Requires a proper configuration of the "crawler" extension.
 useCrawlerForExternalFiles = 0
 
-  # cat=basic; type=int; label=Bitmask for Flags (Advanced): By this value (0-255) you can filter the importance of <title> (128), <keywords> (64) and <description> (32) content from HTML documents. By default none of these will have any importance over the other. Setting the value to eg. 192 means that title-tag content and meta-keywords will be flagged (and rate higher in search results)
+  # cat=basic; type=int; label=Bitmask for Flags (Advanced): By this value (0-255) you can filter the importance of <title> (128), <keywords> (64) and <description> (32) content from HTML documents. By setting this to 0, none of these fields will have any importance over the other. The default value 192 means that title-tag content and meta-keywords will be flagged (and rated higher in search results)
 flagBitMask = 192
 
   # cat=basic; type=string; label=Ignore Extensions: List of file extensions that the external parser will ignore (despite having support for them). Comma list.
