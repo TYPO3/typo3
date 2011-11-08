@@ -70,7 +70,6 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$this->pi_initPIflexForm();
 		$this->mergeflexFormValuesIntoConf();
 
-
 			// Get storage PIDs:
 		if ($this->conf['storagePid']) {
 			if (intval($this->conf['recursive'])) {
@@ -160,7 +159,6 @@ class tx_felogin_pi1 extends tslib_pibase {
 		}
 
 		return $this->conf['wrapContentInBaseClass'] ? $this->pi_wrapInBaseClass($content) : $content;
-
 	}
 
 	 /**
@@ -179,7 +177,6 @@ class tx_felogin_pi1 extends tslib_pibase {
 			$postedHash = $postData['forgot_hash'];
 			$hashData = $GLOBALS['TSFE']->fe_user->getKey('ses', 'forgot_hash');
 
-
 			if ($postedHash === $hashData['forgot_hash']) {
 				$row = FALSE;
 
@@ -196,8 +193,8 @@ class tx_felogin_pi1 extends tslib_pibase {
 				}
 
 				if ($row) {
-							// generate an email with the hashed link
-						$error = $this->generateAndSendHash($row);
+						// generate an email with the hashed link
+					$error = $this->generateAndSendHash($row);
 				}
 					// generate message
 				if ($error) {
@@ -206,8 +203,6 @@ class tx_felogin_pi1 extends tslib_pibase {
 					$markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap($this->pi_getLL('ll_forgot_reset_message_emailSent', '', 1), $this->conf['forgotMessage_stdWrap.']);
 				}
 				$subpartArray['###FORGOT_FORM###'] = '';
-
-
 			} else {
 					//wrong email
 				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('forgot_reset_message', $this->conf['forgotMessage_stdWrap.']);
@@ -220,17 +215,13 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 		$markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink($this->pi_getLL('ll_forgot_header_backToLogin', '', 1), array());
 		$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('forgot_header', $this->conf['forgotHeader_stdWrap.']);
-
 		$markerArray['###LEGEND###'] = $this->pi_getLL('reset_password', '', 1);
 		$markerArray['###ACTION_URI###'] = $this->getPageLink('', array($this->prefixId . '[forgot]'=>1), TRUE);
 		$markerArray['###EMAIL_LABEL###'] = $this->pi_getLL('your_email', '', 1);
 		$markerArray['###FORGOT_PASSWORD_ENTEREMAIL###'] = $this->pi_getLL('forgot_password_enterEmail', '', 1);
 		$markerArray['###FORGOT_EMAIL###'] = $this->prefixId.'[forgot_email]';
 		$markerArray['###SEND_PASSWORD###'] = $this->pi_getLL('reset_password', '', 1);
-
 		$markerArray['###DATA_LABEL###'] = $this->pi_getLL('ll_enter_your_data', '', 1);
-
-
 
 		$markerArray = array_merge($markerArray, $this->getUserFieldMarkers());
 
@@ -239,7 +230,6 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$markerArray['###FORGOTHASH###'] = $hash;
 			// set hash in feuser session
 		$GLOBALS['TSFE']->fe_user->setKey('ses', 'forgot_hash', array('forgot_hash' => $hash));
-
 
 		return $this->cObj->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);
 	}
@@ -468,6 +458,15 @@ class tx_felogin_pi1 extends tslib_pibase {
 					return $this->showLogout();
 				}
 			} else {
+					// Hook for general actions on login error
+				if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_error']) {
+					$params = array();
+					foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_error'] as $funcRef) {
+						if ($funcRef) {
+							t3lib_div::callUserFunction($funcRef, $params, $this);
+						}
+					}
+				}
 					// login error
 				$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('error_header',$this->conf['errorHeader_stdWrap.']);
 				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('error_message',$this->conf['errorMessage_stdWrap.']);
@@ -484,7 +483,6 @@ class tx_felogin_pi1 extends tslib_pibase {
 				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('welcome_message',$this->conf['welcomeMessage_stdWrap.']);
 			}
 		}
-
 
 			// Hook (used by kb_md5fepw extension by Kraft Bernhard <kraftb@gmx.net>)
 			// This hook allows to call User JS functions.
@@ -541,7 +539,6 @@ class tx_felogin_pi1 extends tslib_pibase {
 		} else {
 			$subpartArray['###FORGOTP_VALID###'] = '';
 		}
-
 
 			// The permanent login checkbox should only be shown if permalogin is not deactivated (-1), not forced to be always active (2) and lifetime is greater than 0
 		if ($this->conf['showPermaLogin'] && t3lib_div::inList('0,1', $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin']) && $GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] > 0) {
@@ -631,7 +628,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 									// Avoid forced logout, when trying to login immediatly after a logout
 								if ($url) {
 									$redirect_url[] = preg_replace('/[&?]logintype=[a-z]+/', '', $url);
-							}
+								}
 							}
 						break;
 					}
@@ -683,14 +680,13 @@ class tx_felogin_pi1 extends tslib_pibase {
 						break;
 					}
 				}
-
-				}
 			}
-				// remove empty values
-			if (count($redirect_url)) {
-				return t3lib_div::trimExplode(',', implode(',', $redirect_url), TRUE);
-			} else {
-				return array();
+		}
+			// remove empty values
+		if (count($redirect_url)) {
+			return t3lib_div::trimExplode(',', implode(',', $redirect_url), TRUE);
+		} else {
+			return array();
 		}
 	}
 
