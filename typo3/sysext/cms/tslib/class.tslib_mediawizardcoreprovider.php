@@ -173,8 +173,7 @@ class tslib_mediaWizardCoreProvider implements tslib_mediaWizardProvider {
 	protected function process_vimeo($url) {
 		if (preg_match('/[\/#](\d+)$/', $url, $matches)) {
 			$videoId = $matches[1];
-			$url = 'http://vimeo.com/moogaloop.swf?&server=vimeo.com&show_title=1&show_byline=1&show_portrait=0&fullscreen=1&clip_id=' .
-				$videoId;
+			$url = 'http://vimeo.com/moogaloop.swf?clip_id=' . $videoId . '&server=vimeo.com&show_title=1&show_byline=1&show_portrait=0&fullscreen=1';
 		}
 		return $url;
 	}
