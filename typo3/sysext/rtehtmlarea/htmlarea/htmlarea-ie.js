@@ -189,7 +189,12 @@ HTMLArea.Editor.prototype._selectionEmpty = function(selection) {
  * Get a bookmark
  */
 HTMLArea.Editor.prototype.getBookmark = function (range) {
-	return range.getBookmark();
+		// Bookmarking will not work on control ranges
+	try {
+		return range.getBookmark();
+	} catch (e) {
+		return null;
+	}
 };
 
 /*
@@ -197,7 +202,9 @@ HTMLArea.Editor.prototype.getBookmark = function (range) {
  */
 HTMLArea.Editor.prototype.moveToBookmark = function (bookmark) {
 	var range = this._createRange();
-	range.moveToBookmark(bookmark);
+	if (bookmark) {
+		range.moveToBookmark(bookmark);
+	}
 	return range;
 };
 
