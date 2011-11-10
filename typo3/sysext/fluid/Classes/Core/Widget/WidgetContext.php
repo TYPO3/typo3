@@ -1,12 +1,12 @@
 <?php
 
 /*
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
+ *                                                                        *
  *                                                                        *
  * This script is distributed in the hope that it will be useful, but     *
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
@@ -31,7 +31,6 @@
  *
  * It is a purely internal class which should not be used outside of Fluid.
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Widget_WidgetContext {
 
@@ -104,7 +103,6 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 
 	/**
 	 * @return string
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getWidgetIdentifier() {
 		return $this->widgetIdentifier;
@@ -113,7 +111,6 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 	/**
 	 * @param string $widgetIdentifier
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setWidgetIdentifier($widgetIdentifier) {
 		$this->widgetIdentifier = $widgetIdentifier;
@@ -121,7 +118,6 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 
 	/**
 	 * @return string
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getAjaxWidgetIdentifier() {
 		return $this->ajaxWidgetIdentifier;
@@ -130,7 +126,6 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 	/**
 	 * @param string $ajaxWidgetIdentifier
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setAjaxWidgetIdentifier($ajaxWidgetIdentifier) {
 		$this->ajaxWidgetIdentifier = $ajaxWidgetIdentifier;
@@ -214,7 +209,6 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 
 	/**
 	 * @return array
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getWidgetConfiguration() {
 		return $this->widgetConfiguration;
@@ -223,7 +217,6 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 	/**
 	 * @param array $widgetConfiguration
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setWidgetConfiguration($widgetConfiguration) {
 		$this->widgetConfiguration = $widgetConfiguration;
@@ -231,7 +224,6 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 
 	/**
 	 * @return string
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getControllerObjectName() {
 		return $this->controllerObjectName;
@@ -240,7 +232,6 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 	/**
 	 * @param string $controllerObjectName
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setControllerObjectName($controllerObjectName) {
 		$this->controllerObjectName = $controllerObjectName;
@@ -250,7 +241,6 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_RootNode $viewHelperChildNodes
 	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $viewHelperChildNodeRenderingContext
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setViewHelperChildNodes(Tx_Fluid_Core_Parser_SyntaxTree_RootNode $viewHelperChildNodes, Tx_Fluid_Core_Rendering_RenderingContextInterface $viewHelperChildNodeRenderingContext) {
 		$this->viewHelperChildNodes = $viewHelperChildNodes;
@@ -259,7 +249,6 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 
 	/**
 	 * @return Tx_Fluid_Core_Parser_SyntaxTree_RootNode
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getViewHelperChildNodes() {
 		return $this->viewHelperChildNodes;
@@ -267,7 +256,6 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 
 	/**
 	 * @return Tx_Fluid_Core_Rendering_RenderingContextInterface
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getViewHelperChildNodeRenderingContext() {
 		return $this->viewHelperChildNodeRenderingContext;

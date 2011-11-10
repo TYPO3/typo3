@@ -1,12 +1,12 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
+ *                                                                        *
  *                                                                        *
  * This script is distributed in the hope that it will be useful, but     *
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
@@ -23,7 +23,6 @@
 /**
  * Testcase for AbstractWidgetViewHelper
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -63,7 +62,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 	protected $mockExtensionService;
 
 	/**
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setUp() {
 		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_Widget_AbstractWidgetViewHelper', array('validateArguments', 'initialize', 'callRenderMethod', 'getWidgetConfiguration', 'getRenderingContext'));
@@ -88,7 +86,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function initializeArgumentsAndRenderCallsTheRightSequenceOfMethods() {
 		$this->callViewHelper();
@@ -96,7 +93,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function initializeArgumentsAndRenderStoresTheWidgetContextIfInAjaxMode() {
 		$this->viewHelper->_set('ajaxWidget', TRUE);
@@ -109,7 +105,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 	 * Calls the ViewHelper, and emulates a rendering.
 	 *
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function callViewHelper() {
 		$mockViewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
@@ -134,7 +129,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setChildNodesAddsChildNodesToWidgetContext() {
 		$node1 = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode');
@@ -158,7 +152,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 	/**
 	 * @test
 	 * @expectedException Tx_Fluid_Core_Widget_Exception_MissingControllerException
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function initiateSubRequestThrowsExceptionIfControllerIsNoWidgetController() {
 		$controller = $this->getMock('Tx_Fluid_MVC_Controller_ControllerInterface');
@@ -169,7 +162,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetViewHelperTest extends Tx_Ex
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function initiateSubRequestBuildsRequestProperly() {
 		$controller = $this->getMock('Tx_Fluid_Core_Widget_AbstractWidgetController', array(), array(), '', FALSE);

@@ -1,12 +1,12 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
+ *                                                                        *
  *                                                                        *
  * This script is distributed in the hope that it will be useful, but     *
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
@@ -23,7 +23,6 @@
 /**
  * Testcase for the StandaloneView
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -169,7 +168,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function constructorSetsSpecifiedContentObject() {
 		$mockContentObject = $this->getMock('tslib_cObj');
@@ -181,7 +179,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function constructorCreatesContentObjectIfItIsNotSpecified() {
 		// FIXME should be compared with identicalTo() - but that does not seem to work
@@ -192,7 +189,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function constructorSetsRequestUri() {
 		$expectedRequestUri = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
@@ -202,7 +198,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function constructorSetsBaseUri() {
 		$expectedBaseUri = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
@@ -212,7 +207,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function constructorInjectsRequestToUriBuilder() {
 		$this->mockUriBuilder->expects($this->once())->method('setRequest')->with($this->mockRequest);
@@ -221,7 +215,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function constructorInjectsRequestToControllerContext() {
 		$this->mockControllerContext->expects($this->once())->method('setRequest')->with($this->mockRequest);
@@ -230,7 +223,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function constructorInjectsUriBuilderToControllerContext() {
 		$this->mockControllerContext->expects($this->once())->method('setUriBuilder')->with($this->mockUriBuilder);
@@ -239,7 +231,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function constructorInjectsFlashMessageContainerToControllerContext() {
 		$this->mockControllerContext->expects($this->once())->method('setFlashMessageContainer')->with($this->mockFlashMessages);
@@ -249,7 +240,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 	/**
 	 * @test
 	 * @expectedException Tx_Fluid_View_Exception_InvalidTemplateResourceException
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function renderThrowsExceptionIfTemplateIsNotSpecified() {
 		$this->view->render();
@@ -257,7 +247,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function renderPassesSpecifiedTemplateSourceToTemplateParser() {
 		$this->view->setTemplateSource('The Template Source');
@@ -267,7 +256,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function renderLoadsSpecifiedTemplateFileAndPassesSourceToTemplateParser() {
 		$templatePathAndFilename = dirname(__FILE__) . '/Fixtures/StandaloneViewFixture.html';
@@ -280,7 +268,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 	/**
 	 * @test
 	 * @expectedException Tx_Fluid_View_Exception_InvalidTemplateResourceException
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function renderThrowsExceptionIfSpecifiedTemplateFileDoesNotExist() {
 		$this->view->setTemplatePathAndFilename('NonExistingTemplatePath');
@@ -289,7 +276,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function setFormatSetsRequestFormat() {
 		$this->mockRequest->expects($this->once())->method('setFormat')->with('xml');
@@ -299,7 +285,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 	/**
 	 * @test
 	 * @expectedException Tx_Fluid_View_Exception_InvalidTemplateResourceException
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getLayoutRootPathThrowsExceptionIfLayoutRootPathAndTemplatePathAreNotSpecified() {
 		$this->view->getLayoutRootPath();
@@ -307,7 +292,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getLayoutRootPathReturnsSpecifiedLayoutRootPathByDefault() {
 		$templatePathAndFilename = 'some/template/RootPath/SomeTemplate.html';
@@ -320,7 +304,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getLayoutRootPathReturnsDefaultPathIfNoLayoutRootPathIsSpecified() {
 		$templatePathAndFilename = 'some/template/RootPath/SomeTemplate.html';
@@ -333,7 +316,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 	/**
 	 * @test
 	 * @expectedException Tx_Fluid_View_Exception_InvalidTemplateResourceException
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getLayoutSourceThrowsExceptionIfLayoutRootPathDoesNotExist() {
 		$this->view->setLayoutRootPath('some/non/existing/Path');
@@ -343,7 +325,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 	/**
 	 * @test
 	 * @expectedException Tx_Fluid_View_Exception_InvalidTemplateResourceException
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getLayoutSourceThrowsExceptionIfLayoutFileDoesNotExist() {
 		$layoutRootPath = dirname(__FILE__) . '/Fixtures';
@@ -353,7 +334,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getLayoutSourceReturnsContentOfLayoutFileForTheDefaultFormat() {
 		$layoutRootPath = dirname(__FILE__) . '/Fixtures';
@@ -366,7 +346,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getLayoutSourceReturnsContentOfLayoutFileForTheSpecifiedFormat() {
 		$layoutRootPath = dirname(__FILE__) . '/Fixtures';
@@ -379,7 +358,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getLayoutSourceReturnsContentOfDefaultLayoutFileIfNoLayoutExistsForTheSpecifiedFormat() {
 		$layoutRootPath = dirname(__FILE__) . '/Fixtures';
@@ -393,7 +371,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 	/**
 	 * @test
 	 * @expectedException Tx_Fluid_View_Exception_InvalidTemplateResourceException
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getPartialRootPathThrowsExceptionIfPartialRootPathAndTemplatePathAreNotSpecified() {
 		$this->view->getPartialRootPath();
@@ -401,7 +378,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getPartialRootPathReturnsSpecifiedPartialRootPathByDefault() {
 		$templatePathAndFilename = 'some/template/RootPath/SomeTemplate.html';
@@ -414,7 +390,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getPartialRootPathReturnsDefaultPathIfNoPartialRootPathIsSpecified() {
 		$templatePathAndFilename = 'some/template/RootPath/SomeTemplate.html';
@@ -427,7 +402,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 	/**
 	 * @test
 	 * @expectedException Tx_Fluid_View_Exception_InvalidTemplateResourceException
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getPartialSourceThrowsExceptionIfPartialRootPathDoesNotExist() {
 		$this->view->setPartialRootPath('some/non/existing/Path');
@@ -437,7 +411,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 	/**
 	 * @test
 	 * @expectedException Tx_Fluid_View_Exception_InvalidTemplateResourceException
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getPartialSourceThrowsExceptionIfPartialFileDoesNotExist() {
 		$partialRootPath = dirname(__FILE__) . '/Fixtures';
@@ -447,7 +420,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getPartialSourceReturnsContentOfPartialFileForTheDefaultFormat() {
 		$partialRootPath = dirname(__FILE__) . '/Fixtures';
@@ -460,7 +432,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getPartialSourceReturnsContentOfPartialFileForTheSpecifiedFormat() {
 		$partialRootPath = dirname(__FILE__) . '/Fixtures';
@@ -473,7 +444,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getPartialSourceReturnsContentOfDefaultPartialFileIfNoPartialExistsForTheSpecifiedFormat() {
 		$partialRootPath = dirname(__FILE__) . '/Fixtures';

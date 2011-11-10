@@ -2,12 +2,12 @@
 declare(ENCODING = 'utf-8') ;
 
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
+ *                                                                        *
  *                                                                        *
  * This script is distributed in the hope that it will be useful, but     *
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
@@ -22,7 +22,6 @@ declare(ENCODING = 'utf-8') ;
  *                                                                        */
 
 /**
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
 abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
@@ -68,7 +67,6 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	/**
 	 * @param Tx_Fluid_Core_Widget_AjaxWidgetContextHolder $ajaxWidgetContextHolder
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function injectAjaxWidgetContextHolder(Tx_Fluid_Core_Widget_AjaxWidgetContextHolder $ajaxWidgetContextHolder) {
 		$this->ajaxWidgetContextHolder = $ajaxWidgetContextHolder;
@@ -77,7 +75,6 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	/**
 	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
@@ -96,7 +93,6 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	 * Initialize the arguments of the ViewHelper, and call the render() method of the ViewHelper.
 	 *
 	 * @return string the rendered ViewHelper.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function initializeArgumentsAndRender() {
 		$this->validateArguments();
@@ -110,7 +106,6 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	 * Initialize the Widget Context, before the Render method is called.
 	 *
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	private function initializeWidgetContext() {
 		$this->widgetContext->setWidgetConfiguration($this->getWidgetConfiguration());
@@ -138,7 +133,6 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	 *
 	 * @param array $childNodes The SyntaxTree Child nodes of this ViewHelper.
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setChildNodes(array $childNodes) {
 		$rootNode = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_RootNode');
@@ -153,7 +147,6 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	 *
 	 * @return array
 	 * @api
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function getWidgetConfiguration() {
 		return $this->arguments;
@@ -165,7 +158,6 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	 *
 	 * @return Tx_Extbase_MVC_ResponseInterface the response of this request.
 	 * @api
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function initiateSubRequest() {
 		if (!($this->controller instanceof Tx_Fluid_Core_Widget_AbstractWidgetController)) {
@@ -189,7 +181,6 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	 *
 	 * @param Tx_Fluid_Core_Widget_WidgetRequest $subRequest
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	private function passArgumentsToSubRequest(Tx_Fluid_Core_Widget_WidgetRequest $subRequest) {
 		$arguments = $this->controllerContext->getRequest()->getArguments();
@@ -208,7 +199,6 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	 * in the URI as a namespace for the widget's arguments.
 	 *
 	 * @return string the widget identifier for this widget
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @return void
 	 * @todo clean up, and make it somehow more routing compatible.
 	 */

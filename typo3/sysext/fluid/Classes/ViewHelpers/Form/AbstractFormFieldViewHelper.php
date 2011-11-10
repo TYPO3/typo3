@@ -1,12 +1,12 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
+ *                                                                        *
  *                                                                        *
  * This script is distributed in the hope that it will be useful, but     *
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
@@ -26,7 +26,6 @@
  * If you set the "property" attribute to the name of the property to resolve from the object, this class will
  * automatically set the name and value of a form element.
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
 abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper {
@@ -48,7 +47,6 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Initialize arguments.
 	 *
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function initializeArguments() {
@@ -65,10 +63,6 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * In case property is something like bla.blubb (hierarchical), then [bla][blubb] is generated.
 	 *
 	 * @return string Name
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getName() {
 		$name = $this->getNameWithoutPrefix();
@@ -79,10 +73,6 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Get the name of this form element, without prefix.
 	 *
 	 * @return string name
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getNameWithoutPrefix() {
 		if ($this->isObjectAccessorMode()) {
@@ -115,9 +105,6 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Either returns arguments['value'], or the correct value for Object Access.
 	 *
 	 * @return mixed Value
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getValue() {
 		$value = NULL;
@@ -163,7 +150,6 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Add additional identity properties in case the current property is hierarchical (of the form "bla.blubb").
 	 * Then, [bla][__identity] has to be generated as well.
 	 *
-	 * @author Sebastian Kurfuerst <sebastian@typo3.org>
 	 * @return void
 	 */
 	protected function addAdditionalIdentityPropertiesIfNeeded() {
@@ -191,7 +177,6 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Get the current property of the object bound to this form.
 	 *
 	 * @return mixed Value
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getPropertyValue() {
 
@@ -208,7 +193,6 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Internal method which checks if we should evaluate a domain object or just output arguments['name'] and arguments['value']
 	 *
 	 * @return boolean TRUE if we should evaluate the domain object, FALSE otherwise.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function isObjectAccessorMode() {
 		return $this->hasArgument('property')
@@ -219,8 +203,6 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Add an CSS class if this view helper has errors
 	 *
 	 * @return void
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function setErrorClassAttribute() {
 		if ($this->hasArgument('class')) {
@@ -257,9 +239,6 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Get errors for the property and form name of this view helper
 	 *
 	 * @return array<Tx_Extbase_Error_Result> Array of errors
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function getMappingResultsForProperty() {
 		if (!$this->isObjectAccessorMode()) {
@@ -275,8 +254,6 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Get errors for the property and form name of this view helper
 	 *
 	 * @return array An array of Tx_Fluid_Error_Error objects
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
 	 */
 	protected function getErrorsForProperty() {
@@ -305,8 +282,6 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * in case nothing is selected. This is needed for checkbox and multiple select fields
 	 *
 	 * @return string the hidden field.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function renderHiddenFieldForEmptyValue() {
 		$hiddenFieldNames = array();

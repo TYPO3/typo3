@@ -1,21 +1,11 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
@@ -24,7 +14,6 @@
  * XML Schema (XSD) Generator. Will generate an XML schema which can be used for autocompletion
  * in schema-aware editors like Eclipse XML editor.
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Service_DocbookGenerator extends Tx_Fluid_Service_AbstractGenerator {
 
@@ -33,7 +22,6 @@ class Tx_Fluid_Service_DocbookGenerator extends Tx_Fluid_Service_AbstractGenerat
 	 *
 	 * @param string $namespace Namespace identifier to generate the XSD for, without leading Backslash.
 	 * @return string XML Schema definition
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function generateDocbook($namespace) {
 		if (substr($namespace, -1) !== Tx_Fluid_Fluid::NAMESPACE_SEPARATOR) {
@@ -70,7 +58,6 @@ class Tx_Fluid_Service_DocbookGenerator extends Tx_Fluid_Service_AbstractGenerat
 	 * @param string $namespace Namespace prefix. Used to split off the first parts of the class name.
 	 * @param SimpleXMLElement $xmlRootNode XML root node where the xsd:element is appended.
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function generateXmlForClassName($className, $namespace, SimpleXMLElement $xmlRootNode) {
 		$reflectionClass = new Tx_Extbase_Reflection_ClassReflection($className);
@@ -100,7 +87,6 @@ class Tx_Fluid_Service_DocbookGenerator extends Tx_Fluid_Service_AbstractGenerat
 	 * @param string $className Class name where to add the attribute descriptions
 	 * @param SimpleXMLElement $docbookSection DocBook section to add the attributes to.
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function addArguments($className, SimpleXMLElement $docbookSection) {
 		$viewHelper = $this->instanciateViewHelper($className);
@@ -163,7 +149,6 @@ class Tx_Fluid_Service_DocbookGenerator extends Tx_Fluid_Service_AbstractGenerat
 	 * @param string $documentation Documentation string to add.
 	 * @param SimpleXMLElement $docbookSection Node to add the documentation to
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function addDocumentation($documentation, SimpleXMLElement $docbookSection) {
 		$splitRegex = '/^\s*(=[^=]+=)$/m';

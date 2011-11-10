@@ -1,29 +1,19 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+
 /**
  * Tag builder. Can be easily accessed in AbstractTagBasedViewHelper
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
 class Tx_Fluid_Core_ViewHelper_TagBuilder {
@@ -62,7 +52,6 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 *
 	 * @param string $tagName name of the tag to be rendered
 	 * @param string $tagContent content of the tag to be rendered
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function __construct($tagName = '', $tagContent = '') {
@@ -75,7 +64,6 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 *
 	 * @param string $tagName name of the tag to be rendered
 	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function setTagName($tagName) {
@@ -86,7 +74,6 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 * Gets the tag name
 	 *
 	 * @return string tag name of the tag to be rendered
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function getTagName() {
@@ -98,7 +85,6 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 *
 	 * @param string $tagContent content of the tag to be rendered
 	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function setContent($tagContent) {
@@ -109,7 +95,6 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 * Gets the content of the tag
 	 *
 	 * @return string content of the tag to be rendered
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function getContent() {
@@ -120,7 +105,6 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 * Returns TRUE if tag contains content, otherwise FALSE
 	 *
 	 * @return boolean TRUE if tag contains text, otherwise FALSE
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function hasContent() {
@@ -135,7 +119,6 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 * E.g. <textarea> cant be self-closing even if its empty
 	 *
 	 * @param boolean $forceClosingTag
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function forceClosingTag($forceClosingTag) {
@@ -149,7 +132,6 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 * @param string $attributeValue attribute value
 	 * @param boolean $escapeSpecialCharacters apply htmlspecialchars to attribute value
 	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function addAttribute($attributeName, $attributeValue, $escapeSpecialCharacters = TRUE) {
@@ -165,7 +147,6 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 * @param array $attributes collection of attributes to add. key = attribute name, value = attribute value
 	 * @param boolean $escapeSpecialCharacters apply htmlspecialchars to attribute values#
 	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function addAttributes(array $attributes, $escapeSpecialCharacters = TRUE) {
@@ -179,7 +160,6 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 *
 	 * @param string $attributeName name of the attribute to be removed from the tag
 	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function removeAttribute($attributeName) {
@@ -190,7 +170,6 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 * Resets the TagBuilder by setting all members to their default value
 	 *
 	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function reset() {
@@ -204,7 +183,6 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 * Renders and returns the tag
 	 *
 	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function render() {

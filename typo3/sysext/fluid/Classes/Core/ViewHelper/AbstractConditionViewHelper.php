@@ -1,24 +1,15 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 
 /**
  * This view helper is an abstract ViewHelper which implements an if/else condition.
@@ -38,7 +29,6 @@
  * @see Tx_Fluid_ViewHelpers_IfViewHelper for a more detailed explanation and a simple usage example.
  * Make sure to NOT OVERRIDE the constructor.
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
 abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface, Tx_Fluid_Core_ViewHelper_Facets_CompilableInterface {
@@ -54,7 +44,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_F
 	 *
 	 * @param array $childNodes Child nodes of this syntax tree node
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setChildNodes(array $childNodes) {
 		$this->childNodes = $childNodes;
@@ -63,7 +52,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_F
 	/**
 	 * Initializes the "then" and "else" arguments
 	 *
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function __construct() {
 		$this->registerArgument('then', 'mixed', 'Value to be returned if the condition if met.', FALSE);
@@ -76,8 +64,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_F
 	 * If then attribute is not set and no ThenViewHelper and no ElseViewHelper is found, all child nodes are rendered
 	 *
 	 * @return string rendered ThenViewHelper or contents of <f:if> if no ThenViewHelper was found
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	protected function renderThenChild() {
@@ -117,8 +103,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_F
 	 * If else attribute is not set and no ElseViewHelper is found, an empty string will be returned.
 	 *
 	 * @return string rendered ElseViewHelper or an empty string if no ThenViewHelper was found
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	protected function renderElseChild() {

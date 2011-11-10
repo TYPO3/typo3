@@ -1,29 +1,19 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+
 /**
  * A node which is used inside boolean arguments
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 
@@ -92,7 +82,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_S
 	 * $this->comparator and $this->syntaxTreeNode.
 	 *
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function __construct(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode) {
 		$childNodes = $syntaxTreeNode->getChildNodes();
@@ -175,8 +164,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_S
 	/**
 	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return boolean the boolean value
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
 		if ($this->comparator !== NULL) {
@@ -204,7 +191,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_S
 	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return boolean TRUE if comparison of left and right side using the comparator emit TRUE, false otherwise
 	 * @throws Tx_Fluid_Core_Parser_Exception
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	static public function evaluateComparator($comparator, $evaluatedLeftSide, $evaluatedRightSide) {
 		switch ($comparator) {
@@ -268,8 +254,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_S
 	 *
 	 * @param string $string string to check for a comparator inside
 	 * @return string The comparator or NULL if none found.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getComparatorFromString($string) {
 		foreach (self::$comparators as $comparator) {
@@ -288,7 +272,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_S
 	 *
 	 * @param mixed $value Value to be converted to boolean
 	 * @return boolean
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	static public function convertToBoolean($value) {
 		if (is_bool($value)) {

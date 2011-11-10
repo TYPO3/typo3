@@ -1,47 +1,37 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+
 /**
  * The main template view. Should be used as view if you want Fluid Templating
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
 class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 
 	/**
-	 * Pattern to be resolved for @templateRoot in the other patterns.
+	 * Pattern to be resolved for "@templateRoot" in the other patterns.
 	 * @var string
 	 */
 	protected $templateRootPathPattern = '@packageResourcesPath/Private/Templates';
 
 	/**
-	 * Pattern to be resolved for @partialRoot in the other patterns.
+	 * Pattern to be resolved for "@partialRoot" in the other patterns.
 	 * @var string
 	 */
 	protected $partialRootPathPattern = '@packageResourcesPath/Private/Partials';
 
 	/**
-	 * Pattern to be resolved for @layoutRoot in the other patterns.
+	 * Pattern to be resolved for "@layoutRoot" in the other patterns.
 	 * @var string
 	 */
 	protected $layoutRootPathPattern = '@packageResourcesPath/Private/Layouts';
@@ -111,7 +101,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 *
 	 * @param string $templatePathAndFilename Template file path
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function setTemplatePathAndFilename($templatePathAndFilename) {
@@ -123,7 +112,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 *
 	 * @param string $layoutPathAndFilename Path and filename of the layout file
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function setLayoutPathAndFilename($layoutPathAndFilename) {
@@ -135,8 +123,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 *
 	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext Controller context which is available inside the view
 	 * @return boolean
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function canRender(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
@@ -155,7 +141,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 *
 	 * @param string $templateRootPath Root path to the templates. If set, overrides the one determined from $this->templateRootPathPattern
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function setTemplateRootPath($templateRootPath) {
@@ -168,7 +153,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 *
 	 * @param string $actionName Name of the action. If NULL, will be taken from request.
 	 * @return string template identifier
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getTemplateIdentifier($actionName = NULL) {
 		$templatePathAndFilename = $this->getTemplatePathAndFilename($actionName);
@@ -186,8 +170,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * @param string $actionName Name of the action. If NULL, will be taken from request.
 	 * @return string Full path to template
 	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getTemplateSource($actionName = NULL) {
 		$templatePathAndFilename = $this->getTemplatePathAndFilename($actionName);
@@ -205,8 +187,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * @param string $actionName Name of the action. If NULL, will be taken from request.
 	 * @return string Full path to template
 	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getTemplatePathAndFilename($actionName = NULL) {
 		if ($this->templatePathAndFilename !== NULL) {
@@ -262,8 +242,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * @param string $layoutName Name of the layout to use. If none given, use "Default"
 	 * @return string contents of the layout template
 	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getLayoutSource($layoutName = 'Default') {
 		$layoutPathAndFilename = $this->getLayoutPathAndFilename($layoutName);
@@ -285,8 +263,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * @param string $layoutName Name of the layout to use. If none given, use "Default"
 	 * @return string Path and filename of layout files
 	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getLayoutPathAndFilename($layoutName = 'Default') {
 		if ($this->layoutPathAndFilename !== NULL) {
@@ -327,8 +303,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * @param string $partialName The name of the partial
 	 * @return string contents of the partial template
 	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getPartialSource($partialName) {
 		$partialPathAndFilename = $this->getPartialPathAndFilename($partialName);
@@ -345,8 +319,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * @param string $partialName The name of the partial
 	 * @return string the full path which should be used. The path definitely exists.
 	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getPartialPathAndFilename($partialName) {
 		$paths = $this->expandGenericPathPattern($this->partialPathAndFilenamePattern, TRUE, TRUE);
@@ -363,7 +335,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * Resolves the template root to be used inside other paths.
 	 *
 	 * @return string Path to template root directory
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function getTemplateRootPath() {
 		if ($this->templateRootPath !== NULL) {
@@ -379,7 +350,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 *
 	 * @param string $partialRootPath Root path to the partials. If set, overrides the one determined from $this->partialRootPathPattern
 	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function setPartialRootPath($partialRootPath) {
@@ -390,7 +360,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * Resolves the partial root to be used inside other paths.
 	 *
 	 * @return string Path to partial root directory
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getPartialRootPath() {
 		if ($this->partialRootPath !== NULL) {
@@ -406,7 +375,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 *
 	 * @param string $layoutRootPath Root path to the layouts. If set, overrides the one determined from $this->layoutRootPathPattern
 	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function setLayoutRootPath($layoutRootPath) {
@@ -417,7 +385,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * Resolves the layout root to be used inside other paths.
 	 *
 	 * @return string Path to layout root directory
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getLayoutRootPath() {
 		if ($this->layoutRootPath !== NULL) {
@@ -428,34 +395,32 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	}
 
 	/**
-	 * Processes @templateRoot, @subpackage, @controller, and @format placeholders inside $pattern.
+	 * Processes "@templateRoot", "@subpackage", "@controller", and "@format" placeholders inside $pattern.
 	 * This method is used to generate "fallback chains" for file system locations where a certain Partial can reside.
 	 *
 	 * If $bubbleControllerAndSubpackage is FALSE and $formatIsOptional is FALSE, then the resulting array will only have one element
 	 * with all the above placeholders replaced.
 	 *
 	 * If you set $bubbleControllerAndSubpackage to TRUE, then you will get an array with potentially many elements:
-	 * The first element of the array is like above. The second element has the @controller part set to "" (the empty string)
-	 * The third element now has the @controller part again stripped off, and has the last subpackage part stripped off as well.
-	 * This continues until both @subpackage and @controller are empty.
+	 * The first element of the array is like above. The second element has the @ controller part set to "" (the empty string)
+	 * The third element now has the @ controller part again stripped off, and has the last subpackage part stripped off as well.
+	 * This continues until both "@subpackage" and "@controller" are empty.
 	 *
 	 * Example for $bubbleControllerAndSubpackage is TRUE, we have the Tx_MyExtension_MySubPackage_Controller_MyController
 	 * as Controller Object Name and the current format is "html"
 	 *
-	 * If pattern is @templateRoot/@subpackage/@controller/@action.@format, then the resulting array is:
-	 *  - Resources/Private/Templates/MySubPackage/My/@action.html
-	 *  - Resources/Private/Templates/MySubPackage/@action.html
-	 *  - Resources/Private/Templates/@action.html
+	 * If pattern is "@templateRoot/@subpackage/@controller/@action.@format", then the resulting array is:
+	 *  - "Resources/Private/Templates/MySubPackage/My/@action.html"
+	 *  - "Resources/Private/Templates/MySubPackage/@action.html"
+	 *  - "Resources/Private/Templates/@action.html"
 	 *
-	 * If you set $formatIsOptional to TRUE, then for any of the above arrays, every element will be duplicated  - once with @format
-	 * replaced by the current request format, and once with .@format stripped off.
+	 * If you set $formatIsOptional to TRUE, then for any of the above arrays, every element will be duplicated  - once with "@format"
+	 * replaced by the current request format, and once with ."@format" stripped off.
 	 *
 	 * @param string $pattern Pattern to be resolved
-	 * @param boolean $bubbleControllerAndSubpackage if TRUE, then we successively split off parts from @controller and @subpackage until both are empty.
-	 * @param boolean $formatIsOptional if TRUE, then half of the resulting strings will have .@format stripped off, and the other half will have it.
+	 * @param boolean $bubbleControllerAndSubpackage if TRUE, then we successively split off parts from "@controller" and "@subpackage" until both are empty.
+	 * @param boolean $formatIsOptional if TRUE, then half of the resulting strings will have ."@format" stripped off, and the other half will have it.
 	 * @return array unix style path
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function expandGenericPathPattern($pattern, $bubbleControllerAndSubpackage, $formatIsOptional) {
 		$pattern = str_replace('@templateRoot', $this->getTemplateRootPath(), $pattern);

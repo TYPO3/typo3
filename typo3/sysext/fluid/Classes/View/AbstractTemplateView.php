@@ -1,21 +1,11 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
@@ -25,7 +15,6 @@
  *
  * Contains the fundamental methods which any Fluid based template view needs.
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View_ViewInterface {
 
@@ -86,7 +75,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 *
 	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
@@ -97,7 +85,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 *
 	 * @param Tx_Fluid_Core_Parser_TemplateParser $templateParser The template parser
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function injectTemplateParser(Tx_Fluid_Core_Parser_TemplateParser $templateParser) {
 		$this->templateParser = $templateParser;
@@ -117,7 +104,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 *
 	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setRenderingContext(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
 		$this->baseRenderingContext = $renderingContext;
@@ -130,7 +116,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 *
 	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext Controller context which is available inside the view
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
@@ -147,7 +132,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 * @param string $key The key of a view variable to set
 	 * @param mixed $value The value of the view variable
 	 * @return Tx_Fluid_View_AbstractTemplateView the instance of this view to allow chaining
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function assign($key, $value) {
@@ -165,7 +149,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 *
 	 * @param array $values Keys and values - only a value with key "value" is considered
 	 * @return Tx_Fluid_View_AbstractTemplateView the instance of this view to allow chaining
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function assignMultiple(array $values) {
@@ -185,8 +168,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 *
 	 * @param string $actionName If set, the view of the specified action will be rendered instead. Default is the action specified in the Request object
 	 * @return string Rendered Template
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function render($actionName = NULL) {
@@ -234,8 +215,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 * @param boolean $ignoreUnknown Ignore an unknown section and just return an empty string
 	 * @return string rendered template for the section
 	 * @throws Tx_Fluid_View_Exception_InvalidSectionException
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function renderSection($sectionName, array $variables, $ignoreUnknown = FALSE) {
 		$renderingContext = $this->getCurrentRenderingContext();
@@ -289,9 +268,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 * @param array $variables
 	 * @param Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer the View Helper Variable container to use.
 	 * @return string
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function renderPartial($partialName, $sectionName, array $variables) {
 		if (!isset($this->partialIdentifierCache[$partialName])) {
@@ -387,7 +363,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 * Build parser configuration
 	 *
 	 * @return Tx_Fluid_Core_Parser_Configuration
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	protected function buildParserConfiguration() {
 		$parserConfiguration = $this->objectManager->create('Tx_Fluid_Core_Parser_Configuration');
@@ -405,7 +380,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 * @param Tx_Fluid_Core_Parser_ParsedTemplateInterface $parsedTemplate
 	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function startRendering($type, Tx_Fluid_Core_Parser_ParsedTemplateInterface $parsedTemplate, Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
 		array_push($this->renderingStack, array('type' => $type, 'parsedTemplate' => $parsedTemplate, 'renderingContext' => $renderingContext));
@@ -416,7 +390,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 * method pair-wise with startRendering().
 	 *
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function stopRendering() {
 		array_pop($this->renderingStack);
@@ -426,7 +399,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 * Get the current rendering type.
 	 *
 	 * @return one of RENDERING_* constants
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function getCurrentRenderingType() {
 		$currentRendering = end($this->renderingStack);
@@ -437,7 +409,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 * Get the parsed template which is currently being rendered.
 	 *
 	 * @return Tx_Fluid_Core_Parser_ParsedTemplateInterface
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function getCurrentParsedTemplate() {
 		$currentRendering = end($this->renderingStack);
@@ -448,7 +419,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 * Get the rendering context which is currently used.
 	 *
 	 * @return Tx_Fluid_Core_Rendering_RenderingContextInterface
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function getCurrentRenderingContext() {
 		$currentRendering = end($this->renderingStack);

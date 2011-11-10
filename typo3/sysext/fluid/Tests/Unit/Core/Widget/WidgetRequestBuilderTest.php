@@ -1,12 +1,12 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
+ *                                                                        *
  *                                                                        *
  * This script is distributed in the hope that it will be useful, but     *
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
@@ -23,7 +23,6 @@
 /**
  * Testcase for WidgetRequestBuilder
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -68,8 +67,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 	protected $postBackup;
 
 	/**
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function setUp() {
 		$this->serverBackup = $_SERVER;
@@ -102,7 +99,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function buildSetsRequestUri() {
 		$requestUri = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
@@ -113,7 +109,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function buildSetsBaseUri() {
 		$baseUri = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
@@ -124,8 +119,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function buildSetsRequestMethod() {
 		$_SERVER['REQUEST_METHOD'] = 'POST';
@@ -136,7 +129,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function buildSetsPostArgumentsFromRequest() {
 		$_SERVER['REQUEST_METHOD'] = 'POST';
@@ -149,7 +141,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function buildSetsGetArgumentsFromRequest() {
 		$_SERVER['REQUEST_METHOD'] = 'GET';
@@ -162,8 +153,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function buildSetsControllerActionNameFromGetArguments() {
 		$_GET = array('action' => 'myAction');
@@ -174,8 +163,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function buildSetsWidgetContext() {
 		$_GET = array('fluid-widget-id' => '123');
@@ -187,7 +174,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function buildReturnsRequest() {
 		$expected = $this->mockWidgetRequest;

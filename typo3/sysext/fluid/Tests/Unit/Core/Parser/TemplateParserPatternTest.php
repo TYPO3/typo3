@@ -1,21 +1,11 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
@@ -23,13 +13,11 @@
 /**
  * Testcase for Regular expressions in parser
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function testSCAN_PATTERN_NAMESPACEDECLARATION() {
 		$pattern = str_replace('FLUID_NAMESPACE_SEPARATOR', preg_quote(Tx_Fluid_Fluid::NAMESPACE_SEPARATOR), Tx_Fluid_Core_Parser_TemplateParser::$SCAN_PATTERN_NAMESPACEDECLARATION);
@@ -42,7 +30,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function testSPLIT_PATTERN_DYNAMICTAGS() {
 		$pattern = $this->insertNamespaceIntoRegularExpression(Tx_Fluid_Core_Parser_TemplateParser::$SPLIT_PATTERN_TEMPLATE_DYNAMICTAGS, array('typo3', 't3', 'f'));
@@ -80,7 +67,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function testSCAN_PATTERN_DYNAMICTAG() {
 		$pattern = $this->insertNamespaceIntoRegularExpression(Tx_Fluid_Core_Parser_TemplateParser::$SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG, array('f'));
@@ -147,7 +133,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function testSCAN_PATTERN_CLOSINGDYNAMICTAG() {
 		$pattern = $this->insertNamespaceIntoRegularExpression(Tx_Fluid_Core_Parser_TemplateParser::$SCAN_PATTERN_TEMPLATE_CLOSINGVIEWHELPERTAG, array('f'));
@@ -158,7 +143,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function testSPLIT_PATTERN_TAGARGUMENTS() {
 		$pattern = Tx_Fluid_Core_Parser_TemplateParser::$SPLIT_PATTERN_TAGARGUMENTS;
@@ -168,7 +152,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function testSPLIT_PATTERN_SHORTHANDSYNTAX() {
 		$pattern = $this->insertNamespaceIntoRegularExpression(Tx_Fluid_Core_Parser_TemplateParser::$SPLIT_PATTERN_SHORTHANDSYNTAX, array('f'));
@@ -205,7 +188,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function testSPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER() {
 		$pattern = Tx_Fluid_Core_Parser_TemplateParser::$SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER;
@@ -252,7 +234,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function testSCAN_PATTERN_SHORTHANDSYNTAX_OBJECTACCESSORS() {
 		$pattern = Tx_Fluid_Core_Parser_TemplateParser::$SCAN_PATTERN_SHORTHANDSYNTAX_OBJECTACCESSORS;
@@ -271,7 +252,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function testSCAN_PATTERN_SHORTHANDSYNTAX_ARRAYS() {
 		$pattern = Tx_Fluid_Core_Parser_TemplateParser::$SCAN_PATTERN_SHORTHANDSYNTAX_ARRAYS;
@@ -292,7 +272,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function testSPLIT_PATTERN_SHORTHANDSYNTAX_ARRAY_PARTS() {
 		$pattern = Tx_Fluid_Core_Parser_TemplateParser::$SPLIT_PATTERN_SHORTHANDSYNTAX_ARRAY_PARTS;
@@ -335,7 +314,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 	 * Test the SCAN_PATTERN_CDATA which should detect <![CDATA[...]]> (with no leading or trailing spaces!)
 	 *
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function testSCAN_PATTERN_CDATA() {
 		$pattern = Tx_Fluid_Core_Parser_TemplateParser::$SCAN_PATTERN_CDATA;
@@ -350,7 +328,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 	 * @param string $regularExpression The regular expression in which to replace NAMESPACE
 	 * @param array $namespace List of namespace identifiers.
 	 * @return string working regular expression with NAMESPACE replaced.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function insertNamespaceIntoRegularExpression($regularExpression, $namespace) {
 		return str_replace('NAMESPACE', implode('|', $namespace), $regularExpression);
