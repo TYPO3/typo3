@@ -48,8 +48,14 @@ class t3lib_TCEforms_ValueSlider {
 		$field = $params['field'];
 		$value = $params['row'][$field];
 		$itemName = $params['itemName'];
-		$min = intval($params['fieldConfig']['min']);
-		$max = intval($params['fieldConfig']['max']);
+			// Set default values (which correspond to those of the JS component)
+		$min = 0;
+		$max = 10000;
+			// Use the range property, if defined, to set min and max values
+		if (isset($params['fieldConfig']['range'])) {
+			$min = isset($params['fieldConfig']['range']['lower']) ? intval($params['fieldConfig']['range']['lower']) : 0;
+			$max = isset($params['fieldConfig']['range']['upper']) ? intval($params['fieldConfig']['range']['upper']) : 10000;
+		}
 		$elementType = $params['fieldConfig']['type'];
 		$step =  $params['wConf']['step'] ? $params['wConf']['step'] : 1;
 		$width = intval($params['wConf']['width']) ? intval($params['wConf']['width']) : 400;
