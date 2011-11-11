@@ -392,6 +392,7 @@ class t3lib_search_livesearch {
 	 */
 	protected function extractSearchableFieldsFromTable($tableName) {
 		$fieldListArray = array();
+		t3lib_div::loadTCA($tableName);
 
 			// Traverse configured columns and add them to field array, if available for user.
 		foreach ((array) $GLOBALS['TCA'][$tableName]['columns'] as $fieldName => $fieldValue) {
