@@ -61,6 +61,16 @@ class tx_form_System_Validate implements t3lib_Singleton {
 	}
 
 	/**
+	 * Returns the current prefix of the form
+	 * The RequestHandler is asked
+	 *
+	 * @return String
+	 */
+	protected function getPrefix() {
+		return t3lib_div::makeInstance('tx_form_System_Request')->getPrefix();
+	}
+
+	/**
 	 * Create a rule object according to class
 	 * and sent some arguments
 	 *
@@ -87,25 +97,27 @@ class tx_form_System_Validate implements t3lib_Singleton {
 	 * @return tx_form_Validate
 	 */
 	public function addRule($rule, $fieldName, $breakOnError = FALSE) {
-		$this->rules[] = array(
+		$prefix = $this->getPrefix();
+		$this->rules[$prefix][] = array(
 			'instance' => (object) $rule,
 			'fieldName' => (string) $fieldName,
 			'breakOnError' => (boolean) $breakOnError
 		);
 
 		if ($rule->messageMustBeDisplayed()) {
-			if (!isset($this->messages[$fieldName])) {
-				$this->messages[$fieldName] = array();
+			if (!isset($this->messages[$prefix][$fieldName])) {
+				$this->messages[$prefix][$fieldName] = array();
 			}
-			end($this->rules);
-			$key = key($this->rules);
+			end($this->rules[$prefix]);
+			$key = key($this->rules[$prefix]);
 			$message = $rule->getMessage();
-			$this->messages[$fieldName][$key][$key + 1] = $message['cObj'];
-			$this->messages[$fieldName][$key][($key + 1) . '.'] = $message['cObj.'];
+			$this->messages[$prefix][$fieldName][$key][$key + 1] = $message['cObj'];
+			$this->messages[$prefix][$fieldName][$key][($key + 1) . '.'] = $message['cObj.'];
 		}
 
 		return $this;
 	}
+
 
 	/**
 	 * Returns TRUE when each rule in the chain returns valid
@@ -115,10 +127,11 @@ class tx_form_System_Validate implements t3lib_Singleton {
 	 * @return boolean True if all rules validate
 	 */
 	public function isValid() {
-		$this->errors = array();
+		$prefix = $this->getPrefix();
+		$this->errors[$prefix] = array();
 		$result = TRUE;
 
-		foreach ($this->rules as $key => $element) {
+		foreach ($this->rules[$prefix] as $key => $element) {
 			$rule = $element['instance'];
 			$fieldName = $element['fieldName'];
 
@@ -126,12 +139,12 @@ class tx_form_System_Validate implements t3lib_Singleton {
 				continue;
 			}
 			$result = FALSE;
-			if (!isset($this->errors[$fieldName])) {
-				$this->errors[$fieldName] = array();
+			if (!isset($this->errors[$prefix][$fieldName])) {
+				$this->errors[$prefix][$fieldName] = array();
 			}
 			$error = $rule->getError();
-			$this->errors[$fieldName][$key][$key + 1] = $error['cObj'];
-			$this->errors[$fieldName][$key][($key + 1) . '.'] = $error['cObj.'];
+			$this->errors[$prefix][$fieldName][$key][$key + 1] = $error['cObj'];
+			$this->errors[$prefix][$fieldName][$key][($key + 1) . '.'] = $error['cObj.'];
 			if ($element['breakOnError']) {
 				break;
 			}
@@ -145,7 +158,7 @@ class tx_form_System_Validate implements t3lib_Singleton {
 	 * @return array
 	 */
 	public function getMessages() {
-		return $this->messages;
+		return $this->messages[$this->getPrefix()];
 	}
 
 	/**
@@ -155,7 +168,7 @@ class tx_form_System_Validate implements t3lib_Singleton {
 	 * @return array
 	 */
 	public function getMessagesByName($name) {
-		return $this->messages[$name];
+		return $this->messages[$this->getPrefix()][$name];
 	}
 
 	/**
@@ -165,7 +178,7 @@ class tx_form_System_Validate implements t3lib_Singleton {
 	 * @return boolean
 	 */
 	public function hasMessage($name) {
-		if (isset($this->messages[$name])) {
+		if (isset($this->messages[$this->getPrefix()][$name])) {
 			return TRUE;
 		}
 		return FALSE;
@@ -177,7 +190,7 @@ class tx_form_System_Validate implements t3lib_Singleton {
 	 * @return array
 	 */
 	public function getErrors() {
-		return $this->errors;
+		return $this->errors[$this->getPrefix()];
 	}
 
 	/**
@@ -187,7 +200,7 @@ class tx_form_System_Validate implements t3lib_Singleton {
 	 * @return array
 	 */
 	public function getErrorsByName($name) {
-		return $this->errors[$name];
+		return $this->errors[$this->getPrefix()][$name];
 	}
 
 	/**
@@ -197,7 +210,7 @@ class tx_form_System_Validate implements t3lib_Singleton {
 	 * @return boolean
 	 */
 	public function hasErrors($name) {
-		if (isset($this->errors[$name])) {
+		if (isset($this->errors[$this->getPrefix()][$name])) {
 			return TRUE;
 		}
 		return FALSE;
