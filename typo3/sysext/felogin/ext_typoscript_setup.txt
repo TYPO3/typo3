@@ -108,6 +108,9 @@ plugin.tx_felogin_pi1 {
 	showLogoutFormAfterLogin =
 	
 	dateFormat = Y-m-d H:i
+
+	# If enabled, the forgot password form will display a different status message depending on wether the an email was sent (label: ll_forgot_message_emailSent), or the account was not found (label: ll_forgot_reset_message_error)
+	detailedForgotPasswordErrorMessage = 0
 }
 
 plugin.tx_felogin_pi1._CSS_DEFAULT_STYLE (
