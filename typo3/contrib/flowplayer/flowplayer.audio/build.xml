@@ -1,0 +1,28 @@
+<project name="Audio plugin for flowplayer" default="deploy">
+    <property file="build.generated.properties"/>
+	<property file="${user.home}/plugin.properties" />
+	<property file="build.properties" />
+	
+	<property file="${devkit-dir}/plugin-build.properties" />
+	<import file="${devkit-dir}/plugin-build.xml"/>
+	<property name="flowplayer_lib" value="${devkit-dir}/flowplayer.swc" />
+	
+	<property name="basename" value="flowplayer.audio" />
+    <property name="releasedir" value="flowplayer.audio" />
+	<property name="plugin-binary" value="${basename}.swf" />
+	<property name="plugin-binary-versioned" value="${basename}-${version}.swf" />
+	<property name="plugin-swc" value="${basename}.swc" />
+	
+	<property name="plugin-main-class" value="org/flowplayer/audio/AudioProviderFactory.as" />
+
+	<target name="release" description="makes a release" depends="build">
+		<copyrelease targetdir="flowplayer.audio">
+			<releasefiles>
+				<fileset dir="${build-dir}">
+				    <include name="${plugin-binary-versioned}"/>
+				</fileset>
+			</releasefiles>
+		</copyrelease>
+	</target>
+
+</project>
