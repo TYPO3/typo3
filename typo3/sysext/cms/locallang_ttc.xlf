@@ -804,6 +804,18 @@
 			<trans-unit id="media.url" xml:space="preserve">
 				<source>Path or URL</source>
 			</trans-unit>
+			<trans-unit id="media.fallbackUrl" xml:space="preserve">
+				<source>Path or URL to fallback source (Flash or QuickTime)</source>
+			</trans-unit>
+			<trans-unit id="media.sources" xml:space="preserve">
+				<source>Media sources</source>
+			</trans-unit>
+			<trans-unit id="media.captionUrl" xml:space="preserve">
+				<source>Path or URL to subtitles file</source>
+			</trans-unit>
+			<trans-unit id="media.synchronizedAudioUrl" xml:space="preserve">
+				<source>Path or URL to synchronized audio file</source>
+			</trans-unit>
 			<trans-unit id="media.browseUrlTitle" xml:space="preserve">
 				<source>Select File or URL</source>
 			</trans-unit>
@@ -829,10 +841,13 @@
 				<source>Render Type</source>
 			</trans-unit>
 			<trans-unit id="media.renderType.auto" xml:space="preserve">
-				<source>Auto</source>
+				<source>HTML5 video tag with fallback to Flash</source>
 			</trans-unit>
 			<trans-unit id="media.renderType.swf" xml:space="preserve">
 				<source>Flash Browser Plugin</source>
+			</trans-unit>
+			<trans-unit id="media.renderType.preferFlashOverVideoTag" xml:space="preserve">
+				<source>Flash with fallback to HTML5 video tag</source>
 			</trans-unit>
 			<trans-unit id="media.renderType.qt" xml:space="preserve">
 				<source>QuickTime Browser Plugin</source>

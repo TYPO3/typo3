@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<componentPackage>
+    <component id="Flowplayer" class="org.flowplayer.view.Flowplayer"/>
+    <component id="PropertyBinder" class="org.flowplayer.util.PropertyBinder" />
+    <component id="Arrange" class="org.flowplayer.util.Arrange" />
+    <component id="Assert" class="org.flowplayer.util.Assert" />
+    <component id="PluginEvent" class="org.flowplayer.model.PluginEvent" />
+    <component id="TextUtil" class="org.flowplayer.util.TextUtil" />
+    <component id="AbstractSprite" class="org.flowplayer.view.AbstractSprite" />
+    <component id="StyleableSprite" class="org.flowplayer.view.StyleableSprite" />
+    <component id="AutomationEngine" class="org.flowplayer.view.AnimationEngine" />
+    <component id="NetStreamControllingStreamProvider" class="org.flowplayer.controller.NetStreamControllingStreamProvider" />
+    <component id="Plugin" class="org.flowplayer.model.Plugin" />
+    <component id="PluginModel" class="org.flowplayer.model.PluginModel" />
+    <component id="DisplayPluginModel" class="org.flowplayer.model.DisplayPluginModel" />
+    <component id="ProviderPlugin" class="org.flowplayer.model.ProviderModel" />
+    <component id="GraphicsUtil" class="org.flowplayer.util.GraphicsUtil" />
+    <component id="URLUtil" class="org.flowplayer.util.URLUtil" />
+    <component id="Animation" class="org.flowplayer.view.AnimationEngine" />
+    <component id="Log" class="org.flowplayer.util.Log" />
+    <component id="JSON" class="com.adobe.serialization.json.JSON" />
+    <!--<component id="Log" class="org.flowplayer.view.FlowplayerComponent" />-->
+</componentPackage>
+

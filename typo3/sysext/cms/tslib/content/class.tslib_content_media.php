@@ -76,6 +76,60 @@ class tslib_content_Media extends tslib_content_Abstract {
 				'parameter' => $url
 			));
 		}
+			// Caption file
+		$captionUrl = isset($conf['caption.'])
+			? $this->cObj->stdWrap($conf['caption'], $conf['caption.'])
+			: $conf['caption'];
+		$mmCaptionUrl = isset($conf['parameter.']['mmCaption.'])
+			? $this->cObj->stdWrap($conf['parameter.']['mmCaption'], $conf['parameter.']['mmCaption.'])
+			: $conf['parameter.']['mmCaption'];
+		$captionUrl = $mmCaptionUrl ? $mmCaptionUrl : $captionUrl;
+		if (is_file(PATH_site . $captionUrl)) {
+			$filename = $GLOBALS['TSFE']->tmpl->getFileName($captionUrl);
+			$fileinfo = t3lib_div::split_fileref($filename);
+			$conf['caption'] = $filename;
+		} else {
+				// use media wizard to extract file from URL
+			$mediaWizard = tslib_mediaWizardManager::getValidMediaWizardProvider($captionUrl);
+			if ($mediaWizard !== NULL) {
+				$captionUrl = $mediaWizard->rewriteUrl($captionUrl);
+			}
+			$conf['caption'] = $this->cObj->typoLink_URL(array(
+				'parameter' => $captionUrl
+			));
+		}
+			// Synchonized audio file
+		$synchronizedAudioUrl = isset($conf['synchronizedAudio.'])
+			? $this->cObj->stdWrap($conf['synchronizedAudio'], $conf['synchronizedAudio.'])
+			: $conf['synchronizedAudio'];
+		$mmSynchronizedAudioUrl = isset($conf['parameter.']['mmSynchronizedAudio.'])
+			? $this->cObj->stdWrap($conf['parameter.']['mmSynchronizedAudio'], $conf['parameter.']['mmSynchronizedAudio.'])
+			: $conf['parameter.']['mmSynchronizedAudio'];
+		$synchronizedAudioUrl = $mmSynchronizedAudioUrl ? $mmSynchronizedAudioUrl : $synchronizedAudioUrl;
+		if (is_file(PATH_site . $synchronizedAudioUrl)) {
+			$filename = $GLOBALS['TSFE']->tmpl->getFileName($synchronizedAudioUrl);
+			$fileinfo = t3lib_div::split_fileref($filename);
+			$conf['synchronizedAudio'] = $filename;
+		} else {
+				// use media wizard to extract file from URL
+			$mediaWizard = tslib_mediaWizardManager::getValidMediaWizardProvider($synchronizedAudioUrl);
+			if ($mediaWizard !== NULL) {
+				$synchronizedAudioUrl = $mediaWizard->rewriteUrl($synchronizedAudioUrl);
+			}
+			$conf['synchronizedAudio'] = $this->cObj->typoLink_URL(array(
+				'parameter' => $synchronizedAudioUrl
+			));
+		}
+			// Type is video or audio
+		$mmType = isset($conf['parameter.']['mmType.'])
+			? $this->cObj->stdWrap($conf['parameter.']['mmType'], $conf['parameter.']['mmType.'])
+			: $conf['parameter.']['mmType'];
+
+		$type = isset($conf['type.'])
+			? $this->cObj->stdWrap($conf['type'], $conf['type.'])
+			: $conf['type'];
+
+		$conf['type'] = $mmType ? $mmType : $type;
 
 		$renderType = isset($conf['renderType.'])
 			? $this->cObj->stdWrap($conf['renderType'], $conf['renderType.'])
@@ -85,6 +139,10 @@ class tslib_content_Media extends tslib_content_Abstract {
 			: $conf['parameter.']['mmRenderType'];
 		if ($mmRenderType) {
 			$renderType = $mmRenderType;
+		}
+		if ($renderType === 'preferFlashOverVideoTag') {
+			$conf['preferFlashOverVideoTag'] = 1;
+			$renderType = 'auto';
 		}
 		if ($renderType === 'auto') {
 				// default renderType is swf
