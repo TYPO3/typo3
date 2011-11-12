@@ -738,51 +738,19 @@ class tslib_menu {
 						}
 					break;
 				}
+				if ($this->mconf['sectionIndex']) {
+					$sectionIndexes = array();
+
+					foreach ($temp as $page) {
+						$sectionIndexes = $sectionIndexes + $this->sectionIndex($altSortField, $page['uid']);
+					}
+
+					$temp = $sectionIndexes;
+				}
 			} elseif (is_array($this->alternativeMenuTempArray))	{	// Setting $temp array if not level 1.
 				$temp = $this->alternativeMenuTempArray;
 			} elseif ($this->mconf['sectionIndex']) {
-				if ($GLOBALS['TSFE']->sys_language_uid && count($this->sys_page->getPageOverlay($this->id)))	{
-					$sys_language_uid = intval($GLOBALS['TSFE']->sys_language_uid);
-				} else $sys_language_uid=0;
-
-				$selectSetup = Array(
-					'pidInList'=>$this->id,
-					'orderBy'=>$altSortField,
-					'where' => 'colPos=0 AND sys_language_uid='.$sys_language_uid,
-					'andWhere' => 'sectionIndex!=0'
-					);
-				switch($this->mconf['sectionIndex.']['type'])	{
-					case 'all':
-						unset($selectSetup['andWhere']);
-					break;
-					case 'header':
-						$selectSetup['andWhere'] .= ' AND header_layout!=100 AND header!=""';
-					break;
-				}
-				$basePageRow=$this->sys_page->getPage($this->id);
-				if (is_array($basePageRow))	{
-					$res = $this->parent_cObj->exec_getQuery('tt_content',	$selectSetup);
-					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-						$GLOBALS['TSFE']->sys_page->versionOL('tt_content',$row);
-
-						if (is_array($row))	{
-							$temp[$row['uid']] = $basePageRow;
-							$temp[$row['uid']]['title'] = $row['header'];
-							$temp[$row['uid']]['nav_title'] = $row['header'];
-							$temp[$row['uid']]['subtitle'] = $row['subheader'];
-							$temp[$row['uid']]['starttime'] = $row['starttime'];
-							$temp[$row['uid']]['endtime'] = $row['endtime'];
-							$temp[$row['uid']]['fe_group'] = $row['fe_group'];
-							$temp[$row['uid']]['media'] = $row['media'];
-
-							$temp[$row['uid']]['header_layout'] = $row['header_layout'];
-							$temp[$row['uid']]['bodytext'] = $row['bodytext'];
-							$temp[$row['uid']]['image'] = $row['image'];
-
-							$temp[$row['uid']]['sectionIndex_uid'] = $row['uid'];
-						}
-					}
-				}
+				$temp = $this->sectionIndex($altSortField);
 			} else {	// Default:
 				$temp = $this->sys_page->getMenu($this->id,'*',$altSortField);		// gets the menu
 			}
@@ -1154,7 +1122,13 @@ class tslib_menu {
 		}
 
 			// Setting main target:
-		$mainTarget = $altTarget ? $altTarget : $this->mconf['target'];
+		if ($altTarget) {
+			$mainTarget = $altTarget;
+		} elseif ($this->mconf['target.']) {
+			$mainTarget = $this->parent_cObj->stdWrap($this->mconf['target'], $this->mconf['target.']);
+		} else {
+			$mainTarget = $this->mconf['target'];
+		}
 
 			// Creating link:
 		if ($this->mconf['collapse'] && $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key)))	{
@@ -1596,6 +1570,70 @@ class tslib_menu {
 		$LD = $this->parent_cObj->lastTypoLinkLD;
 		$LD['totalURL'] = $this->parent_cObj->lastTypoLinkUrl;
 		return $LD;
+	}
+
+	/**
+	 * Generates a list of content objects with sectionIndex enabled
+	 * available on a specific page
+	 *
+	 * Used for menu's with sectionIndex enabled
+	 *
+	 * @param string $altSortField Alternative sorting field
+	 * @param integer $pid The page id to search for sections
+	 */
+	protected function sectionIndex($altSortField, $pid = NULL) {
+		$where = 'colPos=0';
+
+		if (!$pid) {
+			$pid = $this->id;
+			if ($GLOBALS['TSFE']->sys_language_uid && count($this->sys_page->getPageOverlay($pid))) {
+				$where .= ' AND sys_language_uid=' . intval($GLOBALS['TSFE']->sys_language_uid);
+			} else {
+				$where .= ' AND sys_language_uid=0';
+			}
+		}
+
+		$selectSetup = array(
+			'pidInList' => $pid,
+			'orderBy' => $altSortField,
+			'where' => $where,
+			'andWhere' => 'sectionIndex!=0'
+		);
+		switch ($this->mconf['sectionIndex.']['type']) {
+			case 'all':
+				unset($selectSetup['andWhere']);
+			break;
+			case 'header':
+				$selectSetup['andWhere'] .= ' AND header_layout!=100 AND header!=""';
+			break;
+		}
+		$basePageRow = $this->sys_page->getPage($pid);
+		$temp = array();
+		if (is_array($basePageRow)) {
+			$res = $this->parent_cObj->exec_getQuery('tt_content', $selectSetup);
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				$GLOBALS['TSFE']->sys_page->versionOL('tt_content', $row);
+
+				if (is_array($row)) {
+					$temp[$row['uid']] = $basePageRow;
+					$temp[$row['uid']]['title'] = $row['header'];
+					$temp[$row['uid']]['nav_title'] = $row['header'];
+					$temp[$row['uid']]['subtitle'] = $row['subheader'];
+					$temp[$row['uid']]['starttime'] = $row['starttime'];
+					$temp[$row['uid']]['endtime'] = $row['endtime'];
+					$temp[$row['uid']]['fe_group'] = $row['fe_group'];
+					$temp[$row['uid']]['media'] = $row['media'];
+
+					$temp[$row['uid']]['header_layout'] = $row['header_layout'];
+					$temp[$row['uid']]['bodytext'] = $row['bodytext'];
+					$temp[$row['uid']]['image'] = $row['image'];
+
+					$temp[$row['uid']]['sectionIndex_uid'] = $row['uid'];
+				}
+			}
+		}
+
+		return $temp;
 	}
 
 }
