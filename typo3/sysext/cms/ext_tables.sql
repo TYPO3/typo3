@@ -329,6 +329,7 @@ CREATE TABLE tt_content (
   sectionIndex tinyint(3) unsigned DEFAULT '0' NOT NULL,
   linkToTop tinyint(3) unsigned DEFAULT '0' NOT NULL,
   filelink_size tinyint(3) unsigned DEFAULT '0' NOT NULL,
+  target varchar(30) DEFAULT '' NOT NULL,
   section_frame tinyint(3) unsigned DEFAULT '0' NOT NULL,
   date int(10) unsigned DEFAULT '0' NOT NULL,
   splash_layout varchar(30) DEFAULT '0' NOT NULL,
@@ -340,6 +341,9 @@ CREATE TABLE tt_content (
   sys_language_uid int(11) DEFAULT '0' NOT NULL,
   tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
   pi_flexform mediumtext,
+  accessibility_title varchar(30) DEFAULT '' NOT NULL,
+  accessibility_bypass tinyint(3) unsigned DEFAULT '0' NOT NULL,
+  accessibility_bypass_text varchar(30) DEFAULT '' NOT NULL,
   l18n_parent int(11) DEFAULT '0' NOT NULL,
   l18n_diffsource mediumblob,
 
