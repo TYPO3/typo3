@@ -1,0 +1,23 @@
+Return-Path: <anssip@gmail.com>
+Message-ID: <4EB24F4B.9010707@gmail.com>
+Date: Thu, 03 Nov 2011 10:22:35 +0200
+From: Anssi Piirainen <anssip@gmail.com>
+To: Oliver Hader <oliver.hader@typo3.org>
+CC: info@flowplayer.org
+Subject: Re: Flowplayer: Question on GPLv3/GPLv2 FLOSS Exception
+References: <4EB12708.8030406@typo3.org>
+In-Reply-To: <4EB12708.8030406@typo3.org>
+
+
+Hi Oliver,
+
+You can use our Free version that is under our GPL 2 based license. You 
+have my blessing for this and you can archive this email for any future 
+needs.
+
+Let me know if you need something more from us. I think it would make 
+sense for us to include this kind of exception in our website, just like 
+Sencha does.
+
+Regards,
+Anssi
