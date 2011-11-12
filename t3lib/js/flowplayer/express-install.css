@@ -1,0 +1,7 @@
+/* Selector for Flash express install div section*/
+
+.flash-install-info div {
+	padding-top: 105px;
+	background-image: url("flashplayerlogo.jpg");
+	background-repeat: no-repeat;
+}
