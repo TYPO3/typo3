@@ -1165,7 +1165,9 @@ class tslib_cObj {
 				t3lib_div::rawUrlEncodeFP($info[3])) . '" width="' . $info[0] . '" height="' . $info[1] . '"' .
 				$this->getBorderAttr(' border="' . intval($conf['border']) . '"') .
 				$params .
-				($altParam) . ' />';
+				($altParam) .
+				(!empty($GLOBALS['TSFE']->xhtmlDoctype) ? ' /' : '') .
+				'>';
 			$linkWrap = isset($conf['linkWrap.'])
 				? $this->stdWrap($conf['linkWrap'], $conf['linkWrap.'])
 				: $conf['linkWrap'];
@@ -1253,7 +1255,7 @@ class tslib_cObj {
 
 				$params = '&md5=' . $md5_value;
 				foreach (str_split($parametersEncoded, 64) as $index => $chunk) {
-					$params .= '&parameters[' . $index . ']=' . rawurlencode($chunk);
+					$params .= '&parameters' . rawurlencode('[') . $index . rawurlencode(']') . '=' . rawurlencode($chunk);
 				}
 
 				$url = $GLOBALS['TSFE']->absRefPrefix . 'index.php?eID=tx_cms_showpic&file=' . rawurlencode($imageFile) . $params;
@@ -1412,9 +1414,11 @@ class tslib_cObj {
 		$titleText = isset($conf['titleText.'])
 			? trim($this->stdWrap($conf['titleText'], $conf['titleText.']))
 			: trim($conf['titleText']);
-		$longDesc = isset($conf['longdescURL.'])
-			? trim($this->stdWrap($conf['longdescURL'], $conf['longdescURL.']))
-			: trim($conf['longdescURL']);
+		if (isset($conf['longdescURL.']) && $GLOBALS['TSFE']->config['config']['doctype'] != 'html5') {
+			$longDesc = $this->typoLink_URL($conf['longdescURL.']);
+		} else {
+			$longDesc = trim($conf['longdescURL']);
+		}
 
 			// "alt":
 		$altParam = ' alt="' . htmlspecialchars($altText) . '"';
@@ -1770,7 +1774,8 @@ class tslib_cObj {
 		if ($fieldList) {
 			$fArr = t3lib_div::trimExplode(',', $fieldList, 1);
 			foreach ($fArr as $field) {
-				$markContentArray['###' . $prefix . $field . '###'] = $nl2br ? nl2br($row[$field]) : $row[$field];
+				$markContentArray['###' . $prefix . $field . '###'] =
+					$nl2br ? nl2br($row[$field], !empty($GLOBALS['TSFE']->xhtmlDoctype)) : $row[$field];
 			}
 		} else {
 			if (is_array($row)) {
@@ -1780,7 +1785,8 @@ class tslib_cObj {
 							$value = htmlspecialchars($value);
 						}
 
-						$markContentArray['###' . $prefix . $field . '###'] = $nl2br ? nl2br($value) : $value;
+						$markContentArray['###' . $prefix . $field . '###'] =
+							$nl2br ? nl2br($value, !empty($GLOBALS['TSFE']->xhtmlDoctype)) : $value;
 					}
 				}
 			}
@@ -2595,14 +2601,15 @@ class tslib_cObj {
 
 	/**
 	 * br
-	 * Searches for single line breaks and replaces them with a <br /> tag
+	 * Searches for single line breaks and replaces them with a <br />/<br> tag
+	 * according to the doctype
 	 *
 	 * @param	string		Input value undergoing processing in this function.
 	 * @param	array		stdWrap properties for br.
 	 * @return	string		The processed input value
 	 */
 	public function stdWrap_br($content = '', $conf = array()) {
-		$content = nl2br($content);
+		$content = nl2br($content, !empty($GLOBALS['TSFE']->xhtmlDoctype));
 		return $content;
 	}
 
@@ -3916,6 +3923,15 @@ class tslib_cObj {
 		if (@is_file($theFile)) {
 			$theFileEnc = str_replace('%2F', '/', rawurlencode($theFile));
 
+			$title = $conf['title'];
+			if (isset($conf['title.'])) {
+				$title = $this->stdWrap($title, $conf['title.']);
+			}
+
+			$target = $conf['target'];
+			if (isset($conf['target.'])) {
+				$target = $this->stdWrap($target, $conf['target.']);
+			}
 				// the jumpURL feature will be taken care of by typoLink, only "jumpurl.secure = 1" is applyable needed for special link creation
 			if ($conf['jumpurl.']['secure']) {
 				$alternativeJumpUrlParameter = isset($conf['jumpurl.']['parameter.'])
@@ -3923,14 +3939,16 @@ class tslib_cObj {
 					: $conf['jumpurl.']['parameter'];
 				$typoLinkConf = array(
 					'parameter' => ($alternativeJumpUrlParameter ? $alternativeJumpUrlParameter : ($GLOBALS['TSFE']->id . ',' . $GLOBALS['TSFE']->type)),
-					'fileTarget' => $conf['target'],
+					'fileTarget' => $target,
+					'title' => $title,
 					'ATagParams' => $this->getATagParams($conf),
 					'additionalParams' => '&jumpurl=' . rawurlencode($theFileEnc) . $this->locDataJU($theFileEnc, $conf['jumpurl.']['secure.']) . $GLOBALS['TSFE']->getMethodUrlIdToken
 				);
 			} else {
 				$typoLinkConf = array(
 					'parameter' => $theFileEnc,
-					'fileTarget' => $conf['target'],
+					'fileTarget' => $target,
+					'title' => $title,
 					'ATagParams' => $this->getATagParams($conf)
 				);
 			}
@@ -3985,7 +4003,7 @@ class tslib_cObj {
 						'" width="18" height="16"' . $this->getBorderAttr(' border="0"') .
 						$this->getAltParam($conf) . ' />';
 				}
-				if ($conf['icon_link']) {
+				if ($conf['icon_link'] && !$conf['combinedLink']) {
 					$icon = $this->wrap($icon, $theLinkWrap);
 				}
 				$icon = isset($conf['icon.'])
@@ -4010,16 +4028,30 @@ class tslib_cObj {
 			$wrap = isset($conf['wrap.'])
 				? $this->stdWrap($conf['wrap'], $conf['wrap.'])
 				: $conf['wrap'];
-			if ($conf['ATagBeforeWrap']) {
-				$theValue = $this->wrap($this->wrap($theValue, $wrap), $theLinkWrap);
+			if ($conf['combinedLink']) {
+				$theValue = $icon . $theValue;
+				if ($conf['ATagBeforeWrap']) {
+					$theValue = $this->wrap($this->wrap($theValue, $wrap), $theLinkWrap);
+				} else {
+					$theValue = $this->wrap($this->wrap($theValue, $theLinkWrap), $wrap);
+				}
+				$file = isset($conf['file.'])
+					? $this->stdWrap($theValue, $conf['file.'])
+					: $theValue;
+					// output
+				$output = $file . $size;
 			} else {
-				$theValue = $this->wrap($this->wrap($theValue, $theLinkWrap), $wrap);
+				if ($conf['ATagBeforeWrap']) {
+					$theValue = $this->wrap($this->wrap($theValue, $wrap), $theLinkWrap);
+				} else {
+					$theValue = $this->wrap($this->wrap($theValue, $theLinkWrap), $wrap);
+				}
+				$file = isset($conf['file.'])
+					? $this->stdWrap($theValue, $conf['file.'])
+					: $theValue;
+					// output
+				$output = $icon . $file . $size;
 			}
-			$file = isset($conf['file.'])
-				? $this->stdWrap($theValue, $conf['file.'])
-				: $theValue;
-				// output
-			$output = $icon . $file . $size;
 			if(isset($conf['stdWrap.'])) {
 				$output = $this->stdWrap($output, $conf['stdWrap.']);
 			}
@@ -4811,7 +4843,17 @@ class tslib_cObj {
 						$linktxt = substr($linktxt, 0, -1);
 					}
 				}
-				$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
+
+				if (isset($conf['extTarget'])) {
+					if (isset($conf['extTarget.'])) {
+						$target = $this->stdWrap($conf['extTarget'], $conf['extTarget.']);
+					} else {
+						$target = $conf['extTarget'];
+					}
+				} else {
+					$target = $GLOBALS['TSFE']->extTarget;
+				}
+
 				if ($GLOBALS['TSFE']->config['config']['jumpurl_enable']) {
 					$res = '<a' . ' href="' . htmlspecialchars($GLOBALS['TSFE']->absRefPrefix .
 						$GLOBALS['TSFE']->config['mainScript'] . $initP .
@@ -5512,7 +5554,11 @@ class tslib_cObj {
 			}
 
 				// Internal target:
-			$target = isset($conf['target']) ? $conf['target'] : $GLOBALS['TSFE']->intTarget;
+			if ($GLOBALS['TSFE']->dtdAllowsFrames) {
+				$target = isset($conf['target']) ? $conf['target'] : $GLOBALS['TSFE']->intTarget;
+			} else {
+				$target = isset($conf['target']) ? $conf['target'] : '';
+			}
 			if ($conf['target.']) {
 				$target = $this->stdWrap($target, $conf['target.']);
 			}
@@ -5551,7 +5597,11 @@ class tslib_cObj {
 				}
 
 				if ($pU['scheme'] || ($isLocalFile != 1 && $urlChar && (!$containsSlash || $urlChar < $fileChar))) { // url (external): If doubleSlash or if a '.' comes before a '/'.
-					$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
+					if ($GLOBALS['TSFE']->dtdAllowsFrames) {
+						$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
+					} else {
+						$target = isset($conf['extTarget']) ? $conf['extTarget'] : '';
+					}
 					if ($conf['extTarget.']) {
 						$target = $this->stdWrap($target, $conf['extTarget.']);
 					}
