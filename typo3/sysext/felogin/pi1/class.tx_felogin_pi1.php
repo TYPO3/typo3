@@ -195,10 +195,14 @@ class tx_felogin_pi1 extends tslib_pibase {
 					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				}
 
+				$error = NULL;
 				if ($row) {
-							// generate an email with the hashed link
-						$error = $this->generateAndSendHash($row);
+						// generate an email with the hashed link
+					$error = $this->generateAndSendHash($row);
+				} elseif ($this->conf['exposeNonexistentUserInForgotPasswordDialog']) {
+					$error = $this->pi_getLL('ll_forgot_reset_message_error');
 				}
+
 					// generate message
 				if ($error) {
 					$markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap($error, $this->conf['forgotErrorMessage_stdWrap.']);

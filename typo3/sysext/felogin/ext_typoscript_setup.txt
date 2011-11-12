@@ -127,6 +127,9 @@ plugin.tx_felogin_pi1 {
 	showLogoutFormAfterLogin =
 	
 	dateFormat = Y-m-d H:i
+
+	# Expose the information on whether or not the account for which a new password was requested exists. By default, that information is not disclosed for privacy reasons.
+	exposeNonexistentUserInForgotPasswordDialog = 0
 }
 
 plugin.tx_felogin_pi1._CSS_DEFAULT_STYLE (
