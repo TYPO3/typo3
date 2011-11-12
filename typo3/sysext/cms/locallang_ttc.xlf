@@ -828,6 +828,21 @@
 			<trans-unit id="media.url" xml:space="preserve">
 				<source>Path or URL</source>
 			</trans-unit>
+			<trans-unit id="media.fallbackUrl" xml:space="preserve">
+				<source>Path or URL to fallback video source (Flash or QuickTime)</source>
+			</trans-unit>
+			<trans-unit id="media.sources" xml:space="preserve">
+				<source>Video sources</source>
+			</trans-unit>
+			<trans-unit id="media.captionUrl" xml:space="preserve">
+				<source>Path or URL to captions file</source>
+			</trans-unit>
+			<trans-unit id="media.audioSources" xml:space="preserve">
+				<source>Audio sources</source>
+			</trans-unit>
+			<trans-unit id="media.audioFallbackUrl" xml:space="preserve">
+				<source>Path or URL to fallback audio source (Flash or QuickTime)</source>
+			</trans-unit>
 			<trans-unit id="media.browseUrlTitle" xml:space="preserve">
 				<source>Select File or URL</source>
 			</trans-unit>
@@ -857,6 +872,12 @@
 			</trans-unit>
 			<trans-unit id="media.renderType.swf" xml:space="preserve">
 				<source>Flash Browser Plugin</source>
+			</trans-unit>
+			<trans-unit id="media.renderType.preferHtml5OverFlash" xml:space="preserve">
+				<source>HTML5 video/audio tag with fallback to Flash</source>
+			</trans-unit>
+			<trans-unit id="media.renderType.preferFlashOverHtml5" xml:space="preserve">
+				<source>Flash with fallback to HTML5 video/audio tag</source>
 			</trans-unit>
 			<trans-unit id="media.renderType.qt" xml:space="preserve">
 				<source>QuickTime Browser Plugin</source>
@@ -909,6 +930,21 @@
 			<trans-unit id="media.params.allowFullScreen" xml:space="preserve">
 				<source>Allow Fullscreen</source>
 			</trans-unit>
+			<trans-unit id="media.params.preload" xml:space="preserve">
+				<source>Preload media</source>
+			</trans-unit>
+			<trans-unit id="media.params.controlsBelow" xml:space="preserve">
+				<source>Display controls below video</source>
+			</trans-unit>
+			<trans-unit id="media.params.controlsAtStart" xml:space="preserve">
+				<source>Make controls visible when page loads</source>
+			</trans-unit>
+			<trans-unit id="media.params.controlsHiding" xml:space="preserve">
+				<source>Hide controls when not over the video</source>
+			</trans-unit>
+			<trans-unit id="media.params.defaultVolume" xml:space="preserve">
+				<source>Default volume</source>
+			</trans-unit>
 			<trans-unit id="media.alternativeContent" xml:space="preserve">
 				<source>Alternative Content</source>
 			</trans-unit>
@@ -920,6 +956,12 @@
 			</trans-unit>
 			<trans-unit id="media.noFile" xml:space="preserve">
 				<source>ERROR: Missing URL or File!</source>
+			</trans-unit>
+			<trans-unit id="media.needFlashPlugin" xml:space="preserve">
+				<source>You need a Flash plugin to view this content.</source>
+			</trans-unit>
+			<trans-unit id="media.downloadFlash" xml:space="preserve">
+				<source>Click here to download the latest version.</source>
 			</trans-unit>
 			<trans-unit id="sys_language_uid_formlabel" xml:space="preserve">
 				<source>Language</source>

@@ -1,0 +1,1056 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- 
+	Flowplayer website, forums & jQuery Tools by Tero Piirainen 
+	
+	Prefer web standards over Flash. Video is the only exception.	
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+
+		<title>Flowplayer - Flash Video Player for the Web</title>
+		<meta name="Description" content="Embed video streams to your website. Superior alternative to YouTube. Open Sourced under the GPL license. No other software makes this smoother." />	
+		<meta name="Keywords" content="video player for the web, flash video player,web media player,free video player,free flv player,mp4 flash player,mp4 player,open source video player,flash 9 video,flash video,web video,flv player,flv video" />		
+	
+
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<meta name="Distribution" content="Global" />
+	<meta name="Author" content="Tero Piirainen" />
+	<meta name="Robots" content="index,follow" /> 
+ 
+		
+	<link rel="stylesheet" type="text/css" href="http://static.flowplayer.org/css/global-0.25.css" />
+	
+	
+	<script type="text/javascript" src="http://static.flowplayer.org/js/flowplayer-3.2.2.min.js"></script>	
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+	<script type="text/javascript"  src="http://cdn.jquerytools.org/1.2.3/jquery.tools.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://static.flowplayer.org/tools/css/overlay-apple.css"/>
+	<script type="text/javascript"  src="http://flowplayer.org/tools/download/1.2.3/overlay/overlay.apple.min.js"></script>		
+	
+	<script type="text/javascript" src="flowplayer.captions.js"></script>
+
+	
+
+	<style type="text/css">
+		div.overlay {
+		width:1024px; 
+		height:432px;
+
+		}
+		
+		#cuethumbs {
+			height:115px;
+			background:#f5fbfb url(/img/global/gradient/h150.png) repeat-x;
+			padding:5px;
+			border:1px solid #ddd;
+			width: 780px;
+		}
+		
+		#cuethumbs div.items {
+			height:115px;
+			width: 700px;
+			float:left;
+		}
+		
+		#cuethumbs div.items img:hover {
+			border:3px solid #000000;
+		}
+		
+		active {
+			border:3px solid #CCCCCC;
+		}
+		
+		#cuethumbs div.items img.active {
+			border:3px solid #CCCCCC;
+		}
+		
+		#cuethumbs div.items img {
+			border:1px solid #000000;
+			float:left;
+			height:113px;
+			cursor:pointer;
+			margin-right:7px;
+			width:150px;
+		}
+		
+		#cuethumbs div.items a:hover {
+			background-position:-140px 0;
+			color:#000;
+		}
+		
+		#cuethumbs div.items a.playing {
+			background-position:-280px 0;		
+			color:#000;
+		}
+		
+		#cuethumbs div.items a.paused {
+			background-position:-420px 0;		
+			color:#000;
+		}
+		
+		#cuethumbs div.items a.progress {
+			opacity:0.8;
+		}
+		
+		#cuethumbs div.items em {	
+			float:right;
+			margin-top:15px;
+			color:red;
+			font-style:normal;
+		}
+		
+		#cuethumbs a.nextPage, #cuethumbs a.prevPage {
+			display:block;
+			width:18px;
+			height:18px;
+			background:url(images/left.png) no-repeat;
+			margin:30px 10px;
+			cursor:pointer;
+			float:left;
+		}
+		
+		#cuethumbs a.nextPage:hover, #cuethumbs a.prevPage:hover {
+			background-position:0px -18px;		
+		}
+		
+		#cuethumbs a.nextPage {
+			background-image:url(images/right.png);	
+		}
+		
+	</style>
+	
+
+	<!--[if lt IE 7]>
+		<style type="text/css">
+			@import "http://static.flowplayer.org/css/ie6.css?v=0.2";
+		</style>
+	<![endif]-->
+	
+	<!--[if lt IE 8]>
+		<style>
+			html { overflow-x:hidden; }
+			#content ol, #content ul  {margin-left: 50px; }
+		</style>
+	<![endif]-->	
+
+</head>
+
+<body id="plugins_captions">
+
+<div id="wrap">	
+
+		<div id="content"> 
+
+<h1>
+	Flash plugin: <strong>Captions</strong>
+	<em>Subtitles for your videos</em>
+</h1>
+
+
+<h2>Introduction</h2>
+
+<p>
+	The Captions plugin is used to show Closed Captions (CC) for videos. You can supply the Captions information as an external text file. Closed Captioning is a term describing several systems developed to display text on a video screen to provide additional or interpretive information to viewers who wish to access it. The most common use is to provide subtitles for movies. See <a href="http://en.wikipedia.org/wiki/Closed_captioning" class="external">here for more info</a>.
+</p>
+
+
+<h2>Features</h2>
+
+<ul>
+ <li>Loading subtitles from the Timed Text or Subrip format files.</li>
+ <li>Styling text from styles set in the Time Text format files.</li>
+ <li>Loading of subtitles from embedded FLV cuepoints.</li>
+ <li>Controls an external Content plugin to show the cuepoints.</li>
+</ul>
+
+<p>
+	<strong>Timed Text</strong> is a W3C specification for delivering captioning and video description for the web. You can find
+	the spec <a href="http://www.w3.org/AudioVideo/TT/">here in the W3C site</a>.
+	<strong>SubRip</strong> is a common format for distributing Captions for DVD rips. It is the
+	native subtitle format of the <a href="http://zuggy.wz.cz/">SubRip program</a>.
+</p>
+
+
+<h2>SubRip example</h2>
+
+<p>
+	The following shows Captions from a SubRib file. You will need a recent version of Flash installed to view the video that is a H.264 encoded mp4 file. The first subtitle comes after 13 seconds.
+</p>
+
+<!-- player container-->
+<a 
+	href="http://vod01.netdna.com/vod/demo.flowplayer/flowplayer-700.flv" 
+	style="display:block;width:500px;height:330px;" 
+	id="player">
+	 
+	<!-- splash image inside the container -->
+	<img src="http://www.flowplayer.org/img/home/flow_eye.jpg" alt="Search engine friendly content" />
+	
+</a>
+
+<!-- Flowplayer installation and configuration -->
+<script language="JavaScript">
+
+$f("player", "@PLAYER_SWF@", {
+	clip: { 
+		
+		// here is our high quality movie
+		//url: 'mp4:buffalo_soldiers.mp4',
+		url: 'http://video.flowplayer.org/flowplayer.flv',
+		// this is the SubRib file with captions info
+		captionUrl: 'http://releases.flowplayer.org/data/buffalo.srt',
+		
+		// we want to use RTMP since this is a 1,5 hour long movie.
+		//provider: 'rtmp'
+	},
+	log: {
+		level: 'error',
+		filter: 'org.flowplayer.captions.*'
+	},
+	plugins:  {
+		
+		// the captions plugin
+		captions: {
+			url: '@MAIN_PLAYER_SWF@',
+			
+			// pointer to a content plugin (see below)
+			captionTarget: 'content'
+		},
+		
+		/*
+			configure a content plugin so that it 
+			looks good for showing subtitles
+		*/
+		content: {
+			url:'../flowplayer.content.swf',
+			bottom: 25,
+			height:40,
+			backgroundColor: 'transparent',
+			backgroundGradient: 'none',
+			border: 0,
+            textDecoration: 'outline',
+			style: { 
+				body: { 
+					fontSize: 14, 
+					fontFamily: 'Arial',
+					textAlign: 'center',
+					color: '#ffffff'
+				} 
+			} 
+		},
+		
+		// streaming plugin configuration
+		rtmp: { 
+			url: '../flowplayer.rtmp.swf', 
+			netConnectionUrl: 'rtmp://flashy.flowplayer.org:1935/fastplay'
+		},
+		
+		// change default skin to "tube"
+		controls: {
+			url: '../flowplayer.controls.swf'
+		}
+		
+	}
+});
+</script>	
+
+
+
+
+<div class="box code">
+<pre><code class="javascript">$f("player", "@PLAYER_SWF@", {
+	clip: { 
+		
+		// here is our high quality movie
+		url: 'mp4:buffalo_soldiers.mp4',
+			
+		// this is the SubRib file with captions info
+		captionUrl: 'http://releases.flowplayer.org/data/buffalo.srt',
+		
+		// we want to use RTMP since this is a 1,5 hour long movie.
+		provider: 'rtmp'
+	},
+	plugins:  {
+		
+		// the captions plugin
+		captions: {
+			url: '@MAIN_PLAYER_SWF@',
+			
+			// pointer to a content plugin (see below)
+			captionTarget: 'content'
+		},
+		
+		/*
+			configure a content plugin so that it 
+			looks good for showing subtitles
+		*/
+		content: {
+			url:'../flowplayer.content.swf',
+			bottom: 25,
+			height:40,
+			backgroundColor: 'transparent',
+			backgroundGradient: 'none',
+			border: 0,
+            textDecoration: 'outline',
+			style: { 
+				body: { 
+					fontSize: 14, 
+					fontFamily: 'Arial',
+					textAlign: 'center',
+					color: '#ffffff'
+				} 
+			} 
+		},
+		
+		// streaming plugin configuration
+		rtmp: { 
+			url: '../flowplayer.rtmp.swf', 
+			netConnectionUrl: 'rtmp://flashy.flowplayer.org:1935/fastplay'
+		},
+		
+		// change default skin to "tube"
+		controls: {
+			url: '../flowplayer.controls.swf'
+		}
+		
+	}
+});</code></pre>
+</div>
+
+
+<h2>Configuration</h2>
+
+<p>
+	Here is a list of all Captions specific clip properties. These go under the <samp>clip</samp> node in the player configuration:
+</p>
+
+<table class="listing">
+	<tr>
+		<th>property</th>
+		<th>datatype</th>
+
+		<th>default</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code>captionUrl</code></td>
+		<td>String</td>
+		<td></td>
+
+		<td>
+			Path to a Timed Text or SubRip Captions file.
+		</td>
+	</tr>
+	<tr>
+		<td><code>captions</code></td>
+		<td>array</td>
+		<td></td>
+
+		<td>
+			A json array of cuepoint objects ie 
+					{
+						time: 0,
+						name: 'cue1',
+						parameters: {
+							begin: 0,
+							end: 4000,
+							text: 'First caption with default style coming from the Content plugin config'
+							}
+						}
+		</td>
+	</tr>
+	<tr>
+		<td><code>showCaptions</code></td>
+		<td>boolean</td>
+
+		<td>true</td>
+		<td>
+			Show Captions for this clip. You can set this to false if you have embedded Captions in the video and you don't want to show them.
+		</td>
+	</tr>
+</table>
+
+<p>
+	Here is a list of configuration options for the Captions plugin. These go under the Captions <samp>plugin</samp> node in the player configuration:
+</p>
+
+<table class="listing">
+	<tr>
+		<th>property</th>
+
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code>captionTarget</code></td>
+		<td>
+			The name of a Content plugin configured to show the Captions. The plugin needs to be specified in the player's initial configuration.
+		</td>
+
+	</tr>
+
+    <tr>
+        <td><code>template</code></td>
+        <td>
+            Used with embedded cuepoints. A template string that specifies tokens for names of cuepoint parameters. The tokens are replaced by values that are looked up from the cuepoint parameters. If you embed cuepoints where the subtitles are in the cuepoint parameter called <samp>subtitle</samp>, you should set the use of a template with the value '&#36;{subtitle}'.
+        </td>
+    </tr>
+
+    <tr>
+        <td><code>button</code></td>
+        <td>
+            <a href="/documentation/configuration/plugins.html#display-properties">Display properties</a> for the CC-button. The default
+            properties are: <samp>{ width: 20, height: 15, right: 5, bottom: 30, label: 'CC' }</samp>. Specify <samp>null</samp> and the button
+            is not shown at all. The <samp>label</samp> property in this object specifies the label text for the button. If you want to make the captions initially hidden, specify <samp>display: 'none'</samp> in the Content plugin that is used to show the captions. Once the CC button is clicked, the captions become visible.
+        </td>
+    </tr>
+
+</table>
+
+<a name="scripting"></a>
+<h2>Scripting</h2>
+
+<p>
+	The captions plugin has the following custom methods that can be used at runtime:
+</p>
+
+<table class="listing">
+	<thead>
+		<tr>
+			<th>method</th>
+			<th>example</th>
+			<th>description</th>
+		</tr>
+	</thead>
+
+	<tr>
+		<td class="code">loadCaptionsFromFile(clipIndex, captionURL, fileExtension)</td>
+		<td class="code" nowrap>loadCaptions(0, 'captions.xml')</td>
+		<td>
+			Loads captions for the specified clip. The <samp>fileExtension</samp> is an optional parameter
+			and you should specify it if the <samp>captionURL</samp> does not contain a file extension that
+			can be used to recognize the caption file format. The supported <samp>fileExtension</samp> values
+			are 'txt' and 'srt'.
+		</td>
+	</tr>
+	<tr>
+		<td class="code">loadCaptions(clipIndex, captions)</td>
+		<td class="code" nowrap>loadCaptions(0, captions)</td>
+		<td>
+			Loads a json array of captions for the specified clip. 
+		</td>
+	</tr>
+</table>
+
+
+<h2>Timed text example</h2>
+
+<a class="player" id="timedtext">
+	<img src="http://static.flowplayer.org/img/player/btn/showme.png"  />
+</a><div class="box code">
+<pre><code class="html">&lt;a class="player" id="timedtext"&gt;
+	&lt;img src="http://static.flowplayer.org/img/player/btn/showme.png"  /&gt;
+&lt;/a&gt;</code></pre>
+</div>
+
+
+<script language='javascript'>
+$f("timedtext", "@PLAYER_SWF@", {
+	log: { level: 'debug', filter: 'org.flowplayer.captions.*'},
+	clip: {
+		url: 'http://video.flowplayer.org/flowplayer.flv',
+
+		// this is the Timed Text file with captions info
+		captionUrl: 'http://releases.flowplayer.org/data/timedtext.xml'
+	},
+	plugins:  {
+
+		captions: {
+			url: '@MAIN_PLAYER_SWF@',
+
+			// pointer to a content plugin (see below)
+			captionTarget: 'content'
+		},
+
+		// configure a content plugin to look good for our purpose
+		content: {
+			url:'../flowplayer.content.swf',
+			bottom: 25,
+			width: '80%',
+			height:40,
+			backgroundColor: 'transparent',
+			backgroundGradient: 'low',
+			borderRadius: 4,
+			border: 0,
+
+			style: {
+			    'body': {
+				fontSize: '14',
+				fontFamily: 'Arial',
+				textAlign: 'center',
+				color: '#000000'
+			    }
+		    }
+		}
+	}
+});
+</script><div class="box code">
+<pre><code class="javascript">$f("timedtext", "@PLAYER_SWF@", {
+	log: { level: 'debug', filter: 'org.flowplayer.captions.*'},
+	clip: {
+		url: 'http://video.flowplayer.org/flowplayer.flv',
+
+		// this is the Timed Text file with captions info
+		captionUrl: 'http://releases.flowplayer.org/data/timedtext.xml'
+	},
+	plugins:  {
+
+		captions: {
+			url: '@MAIN_PLAYER_SWF@',
+
+			// pointer to a content plugin (see below)
+			captionTarget: 'content'
+		},
+
+		// configure a content plugin to look good for our purpose
+		content: {
+			url:'../flowplayer.content.swf',
+			bottom: 25,
+			width: '80%',
+			height:40,
+			backgroundColor: 'transparent',
+			backgroundGradient: 'low',
+			borderRadius: 4,
+			border: 0,
+
+			style: {
+			    'body': {
+				fontSize: '14',
+				fontFamily: 'Arial',
+				textAlign: 'center',
+				color: '#000000'
+			    }
+		    }
+		}
+	}
+});</code></pre>
+</div>
+
+
+<p>
+	The timed text XML file used in this example is shown below. The style definitions are in the first part of the file inside the <samp>head</samp> element and below that we have the Captions inside the <samp>body</samp> element.
+</p>
+
+<p>
+	The first caption does not include the <samp>style</samp> attribute and therefore the style used to render it comes from the styling settings used to configure our Content plugin. The second caption uses the style with id 1 that defines a white font and left text alignment. The third caption has a small font coming from the 2nd style referenced by its id 2.
+</p>
+
+<div class="box code">
+<pre><code class="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;tt xml:lang="en" xmlns="http://www.w3.org/2006/10/ttaf1"
+	xmlns:tts="http://www.w3.org/2006/10/ttaf1#styling"&gt;
+	&lt;head&gt;
+		 &lt;styling&gt;
+			  &lt;style id="1" tts:fontFamily="Arial" tts:fontSize="14" tts:color="#FFFFFF"
+			tts:textAlign="left" tts:fontStyle="Bold" /&gt;
+			  &lt;style id="2" tts:fontSize="10" tts:color="#000000" /&gt;
+		 &lt;/styling&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		  &lt;div xml:lang="en" &gt;
+			  &lt;p begin = "00:00:00.01" dur="04.00"&gt;
+			First caption with default style coming from the Content plugin config
+		&lt;/p&gt;
+
+			  &lt;p begin = "00:00:04.19" dur="04.00" style="1"&gt;
+		  2nd caption with timed text styling to make the text white
+		&lt;/p&gt;
+
+			  &lt;p begin = "8s" dur="04.00" style="2"&gt;
+		  3rd caption using a small black font
+		&lt;/p&gt;
+		 &lt;/div&gt;
+	&lt;/body&gt;
+&lt;/tt&gt;</code></pre>
+</div>
+
+
+
+
+<h2>Embedded Captions example</h2>
+
+<p>
+	This example show Captions based on data included in cuepoints that are embedded in the video file. The cuepoints were embedded into the video using <a href="http://www.richapps.de/?p=169" class="external">RichFLV</a>. The first caption is at 6 seconds.
+</p>
+
+<a class="player" id="embedded">
+	<img src="http://static.flowplayer.org/img/player/btn/showme.png"  />
+</a>
+
+<div class="box code">
+<pre><code class="html">&lt;a class="player" id="embedded"&gt;
+	&lt;img src="http://static.flowplayer.org/img/player/btn/showme.png"  /&gt;
+&lt;/a&gt;</code></pre>
+</div>
+
+
+<script language='javascript'>
+$f("embedded", "@PLAYER_SWF@", {
+	clip: {
+		url: 'http://video.flowplayer.org/flowplayer_cues.flv',
+		// cuepoint timing is in milliseconds in the file, so override
+		// the default multiplier value of 1000 that converts seconds
+		// to milliseconds
+		cuepointMultiplier: 1
+	},
+	log: {
+		level: 'debug',
+		filter: 'org.flowplayer.captions.*'
+	},
+	plugins:  {
+
+		captions: {
+			url: '@MAIN_PLAYER_SWF@',
+
+			// the content plugin we use to show the captions
+			captionTarget: 'content'
+		},
+
+		// configure a content plugin to look good for our purpose
+		content: {
+			url:'../flowplayer.content.swf',
+			top: 10,
+			width: '80%',
+			height:40,
+			backgroundColor: 'transparent',
+			backgroundGradient: 'none',
+			border: 0,
+
+            // an outline is useful so that the subtitles are more visible
+            textDecoration: 'outline',
+			style: {
+			    'body': {
+				fontSize: '14',
+				fontFamily: 'Arial',
+				textAlign: 'center',
+				color: '#ffffff'
+			    }
+		    }
+		}
+	}
+});
+</script>
+
+<p>
+	The file used in the example above has cuepoints at the following points of the timeline: 6000, 13500, 16000, and at 20000 milliseconds. Using the RichFLV application it's easy to add them. Each of these cuepoints has one parameter called <samp>text</samp> that contins the text displayed as the caption text.
+</p>
+
+<div class="box code">
+<pre><code class="javascript">$f("embedded", "@PLAYER_SWF@", {
+	clip: {
+		url: 'http://video.flowplayer.org/flowplayer_cues.flv',
+		// cuepoint timing is in milliseconds in the file, so override
+		// the default multiplier value of 1000 that converts seconds
+		// to milliseconds
+		cuepointMultiplier: 1
+	},
+	plugins:  {
+
+		captions: {
+			url: '@MAIN_PLAYER_SWF@',
+
+			// the content plugin we use to show the captions
+			captionTarget: 'content'
+		},
+
+		// configure a content plugin to look good for our purpose
+		content: {
+			url:'../flowplayer.content.swf',
+			top: 10,
+			width: '80%',
+			height:40,
+			backgroundColor: 'transparent',
+			backgroundGradient: 'none',
+			border: 0,
+
+            // an outline is useful so that the subtitles are more visible
+            textDecoration: 'outline',
+			style: {
+			    'body': {
+				fontSize: '14',
+				fontFamily: 'Arial',
+				textAlign: 'center',
+				color: '#ffffff'
+			    }
+		    }
+		}
+	}
+});</code></pre>
+</div>
+
+
+
+<h2>Json Config Captions Example</h2>
+
+<p>
+	This example is Captions based on a Json config. 
+</p>
+
+<a class="player" id="json">
+	<img src="http://static.flowplayer.org/img/player/btn/showme.png"  />
+</a>
+
+
+<script language='javascript'>
+$f("json", "@PLAYER_SWF@", {
+	clip: {
+		url: 'http://video.flowplayer.org/flowplayer.flv',
+		cuepointMultiplier: 1,
+		captions: [
+						{
+						time: 0,
+						name: 'cue1',
+						parameters: {
+							begin: 0,
+							end: 4000,
+							text: 'First caption with default style coming from the Content plugin config'
+							}
+						},
+						{
+						time: 4000,
+						name: 'cue2',
+						parameters: {
+							begin: 4000,
+							end: 8000,
+							text: '2nd caption with timed text styling to make the text white'
+							}
+						},
+						{
+						time: 8000,
+						name: 'cue3',
+						parameters: {
+							begin: 8000,
+							end: 12000,
+							text: '3rd caption using a small black font'
+							}
+						},
+						
+					]
+	},
+	log: {
+		level: 'debug',
+		filter: 'org.flowplayer.captions.*'
+	},
+	plugins:  {
+
+		captions: {
+			url: '@MAIN_PLAYER_SWF@',
+
+			// the content plugin we use to show the captions
+			captionTarget: 'content',
+		},
+
+		content: {
+			url:'../flowplayer.content.swf',
+			bottom: 25,
+			height:40,
+			backgroundColor: 'transparent',
+			backgroundGradient: 'none',
+			border: 0,
+            textDecoration: 'outline',
+			style: { 
+				body: { 
+					fontSize: 14, 
+					fontFamily: 'Arial',
+					textAlign: 'center',
+					color: '#ffffff'
+				} 
+			} 
+		},
+	}
+});
+</script>
+
+<div class="box code">
+<pre><code class="javascript">
+$f("json", "@PLAYER_SWF@", {
+	clip: {
+		url: 'http://video.flowplayer.org/flowplayer.flv',
+		captions: [
+						{
+						time: 0,
+						name: 'cue1',
+						parameters: {
+							begin: 0,
+							end: 4000,
+							text: 'First caption with default style coming from the Content plugin config'
+							}
+						},
+						{
+						time: 4000,
+						name: 'cue2',
+						parameters: {
+							begin: 4000,
+							end: 8000,
+							text: '2nd caption with timed text styling to make the text white'
+							}
+						},
+						{
+						time: 8000,
+						name: 'cue3',
+						parameters: {
+							begin: 8000,
+							end: 12000,
+							text: '3rd caption using a small black font'
+							}
+						},
+						
+					]
+	},
+	plugins:  {
+
+		captions: {
+			url: '@MAIN_PLAYER_SWF@',
+
+			// the content plugin we use to show the captions
+			captionTarget: 'content'
+		},
+
+		// configure a content plugin to look good for our purpose
+		content: {
+			url:'../flowplayer.content.swf',
+			top: 10,
+			width: '80%',
+			height:40,
+			backgroundColor: 'transparent',
+			backgroundGradient: 'none',
+			border: 0,
+
+            // an outline is useful so that the subtitles are more visible
+            textDecoration: 'outline',
+			style: {
+			    'body': {
+				fontSize: '14',
+				fontFamily: 'Arial',
+				textAlign: 'center',
+				color: '#ffffff'
+			    }
+		    }
+		}
+	}
+});
+</code></pre>
+</div>
+
+<a name="javascript_plugin"></a>
+<h2>Javascript Plugin</h2>
+
+<p>
+	Available is the captions javascript plugin which provides a means to dynamically produce a scrollable playlist of the cuepoints.
+</p>
+
+<p>
+	The captions setup is similar to the javascript playlist plugin, where the template can be provided by the html or config.
+</p>
+
+<a class="player" id="javascript-plugin">
+	<img src="http://static.flowplayer.org/img/player/btn/showme.png"  />
+</a>
+
+
+<script language='javascript'>
+$f("javascript-plugin", "@PLAYER_SWF@", {
+	clip: {
+		url: 'http://video.flowplayer.org/flowplayer.flv',
+		cuepointMultiplier: 1,
+		captions: [
+						{
+						time: 0,
+						name: 'cue1',
+						parameters: {
+							begin: 0,
+							end: 4000,
+							thumb: 'images/frame01.jpg',
+							text: 'First caption with default style coming from the Content plugin config'
+							}
+						},
+						{
+						time: 4000,
+						name: 'cue2',
+						parameters: {
+							begin: 4000,
+							end: 8000,
+							thumb: 'images/frame06.jpg',
+							text: '2nd caption with timed text styling to make the text white'
+							}
+						},
+						{
+						time: 8000,
+						name: 'cue3',
+						parameters: {
+							begin: 8000,
+							end: 12000,
+							thumb: 'images/frame08.jpg',
+							text: '3rd caption using a small black font'
+							}
+						},
+						
+					]
+	},
+	log: {
+		level: 'debug',
+		filter: 'org.flowplayer.captions.*'
+	},
+	plugins:  {
+
+		captions: {
+			url: '@MAIN_PLAYER_SWF@',
+
+			// the content plugin we use to show the captions
+			captionTarget: 'content',
+		},
+
+		content: {
+			url:'../flowplayer.content.swf',
+			bottom: 25,
+			height:40,
+			backgroundColor: 'transparent',
+			backgroundGradient: 'none',
+			border: 0,
+            textDecoration: 'outline',
+			style: { 
+				body: { 
+					fontSize: 14, 
+					fontFamily: 'Arial',
+					textAlign: 'center',
+					color: '#ffffff'
+				} 
+			} 
+		},
+	}
+}).captions("div.items", {}); 
+</script>
+
+<div id="cuethumbs" style="display:none;">
+	<a class="prevPage"></a>
+	<div class="items" style="display:none;">
+		<img src="images/thumbs/frame${time}.jpg"/>
+	</div>
+	<a class="nextPage"></a>
+</div>
+
+<div class="box code">
+<pre><code class="javascript">
+$f("javascript-plugin", "@PLAYER_SWF@", {
+	clip: {
+		url: 'http://video.flowplayer.org/flowplayer.flv',
+		captions: [
+						{
+						time: 0,
+						name: 'cue1',
+						parameters: {
+							begin: 0,
+							end: 4000,
+							text: 'First caption with default style coming from the Content plugin config'
+							}
+						},
+						{
+						time: 4000,
+						name: 'cue2',
+						parameters: {
+							begin: 4000,
+							end: 8000,
+							text: '2nd caption with timed text styling to make the text white'
+							}
+						},
+						{
+						time: 8000,
+						name: 'cue3',
+						parameters: {
+							begin: 8000,
+							end: 12000,
+							text: '3rd caption using a small black font'
+							}
+						},
+						
+					]
+	},
+	plugins:  {
+
+		captions: {
+			url: '@MAIN_PLAYER_SWF@',
+
+			// the content plugin we use to show the captions
+			captionTarget: 'content'
+		},
+
+		// configure a content plugin to look good for our purpose
+		content: {
+			url:'../flowplayer.content.swf',
+			top: 10,
+			width: '80%',
+			height:40,
+			backgroundColor: 'transparent',
+			backgroundGradient: 'none',
+			border: 0,
+
+            // an outline is useful so that the subtitles are more visible
+            textDecoration: 'outline',
+			style: {
+			    'body': {
+				fontSize: '14',
+				fontFamily: 'Arial',
+				textAlign: 'center',
+				color: '#ffffff'
+			    }
+		    }
+		}
+	}
+}).captions("div.items", {}); 
+</code></pre>
+</div>
+
+
+<br/><br/><b>Configuration:</b>
+<table class="listing">
+	<thead>
+		<tr>
+			<th nowrap="nowrap">property / datatype</th>
+			<th>default</th>
+			<th>description</th>
+		</tr>
+	</thead>
+
+    <tr>
+        <td class="code">activeClass <div class="type">string</div></td>
+        <td class="code default"></td>
+        <td class="description">
+            The active selected item class.
+        </td>
+    </tr>
+    <tr>
+        <td class="code">template <div class="type">string</div></td>
+        <td class="code default"><img src="images/${time}.jpg"/></td>
+        <td class="description">
+        	The template config to be used for generating the thumbnails. The fields of the cuepoints are used for the template like ${time}.
+        	If the wrapper has the template set, it will be used instead of the template config.
+        </td>
+    </tr>
+    <tr>
+        <td class="code">fadeTime <div class="type">int</div></td>
+        <td class="code default">100</td>
+        <td class="description">
+				The interval time for fading the wrapper in and out. Useful for hiding the wrapper if a template is set in it. 
+        </td>
+    </tr>
+</table>
+
+		</div>  
+	</div>
+</body>
+</html>

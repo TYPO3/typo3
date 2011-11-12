@@ -11,46 +11,6 @@
 				</TCEforms>
 				<type>array</type>
 				<el>
-					<mmFile>
-						<TCEforms>
-							<label>LLL:EXT:cms/locallang_ttc.xml:media.url</label>
-							<config>
-								<type>input</type>
-								<size>60</size>
-								<eval>trim</eval>
-								<default></default>
-								<wizards type="array">
-									<_PADDING>2</_PADDING>
-									<link type="array">
-										<type>popup</type>
-										<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
-										<icon>link_popup.gif</icon>
-										<script>browse_links.php?mode=wizard&amp;act=file|url</script>
-										<params type="array">
-											<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
-											<allowedExtensions>class,swf,swa,dcr,wav,avi,au,mov,asf,mpg,wmv,mp3,mp4,m4v,m4a,flv</allowedExtensions>
-										</params>
-										<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
-									</link>
-								</wizards>
-							</config>
-						</TCEforms>
-					</mmFile>
-					<mmforcePlayer>
-						<TCEforms>
-							<label>LLL:EXT:cms/locallang_ttc.xml:media.forcePlayer</label>
-							<config>
-								<type>check</type>
-								<default>1</default>
-								<items type="array">
-									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:lang/locallang_core.xml:labels.enabled</numIndex>
-										<numIndex index="1">1</numIndex>
-									</numIndex>
-								</items>
-							</config>
-						</TCEforms>
-					</mmforcePlayer>
 					<mmType>
 						<TCEforms>
 							<label>LLL:EXT:cms/locallang_ttc.xml:media.type</label>
@@ -69,6 +29,165 @@
 							</config>
 						</TCEforms>
 					</mmType>
+					<mmSources>
+					<tx_templavoila>
+						<title>LLL:EXT:cms/locallang_ttc.xml:media.sources</title>
+					</tx_templavoila>
+						<type>array</type>
+						<section>1</section>
+						<el>
+							<mmSourcesContainer>
+								<type>array</type>
+								<tx_templavoila>
+									<title>LLL:EXT:cms/locallang_ttc.xml:media.media.url</title>
+								</tx_templavoila>
+								<el>
+									<mmSource>
+										<TCEforms>
+											<label>LLL:EXT:cms/locallang_ttc.xml:media.url</label>
+											<config>
+												<type>input</type>
+												<size>60</size>
+												<eval>trim,required</eval>
+												<default></default>
+												<wizards type="array">
+													<_PADDING>2</_PADDING>
+													<link type="array">
+														<type>popup</type>
+														<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
+														<icon>link_popup.gif</icon>
+														<script>browse_links.php?mode=wizard&amp;act=file|url</script>
+														<params type="array">
+															<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
+															<allowedExtensions>asf,avi,class,dcr,flv,mov,mpg,mp4,m4a,m4v,ogg,ogv,swf,webm</allowedExtensions>
+														</params>
+														<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+													</link>
+												</wizards>
+											</config>
+										</TCEforms>
+									</mmSource>
+								</el>
+							</mmSourcesContainer>
+						</el>
+					</mmSources>
+					<mmFile>
+						<TCEforms>
+							<label>LLL:EXT:cms/locallang_ttc.xml:media.fallbackUrl</label>
+							<config>
+								<type>input</type>
+								<size>60</size>
+								<eval>trim,required</eval>
+								<default></default>
+								<wizards type="array">
+									<_PADDING>2</_PADDING>
+									<link type="array">
+										<type>popup</type>
+										<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
+										<icon>link_popup.gif</icon>
+										<script>browse_links.php?mode=wizard&amp;act=file|url</script>
+										<params type="array">
+											<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
+											<allowedExtensions>class,swa,dcr,wav,avi,au,mov,asf,mpg,wmv,mp3,mp4,m4v,m4a,flv,ogg,ogv,swf,webm</allowedExtensions>
+										</params>
+										<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+									</link>
+								</wizards>
+							</config>
+						</TCEforms>
+					</mmFile>
+					<mmCaption>
+						<TCEforms>
+							<label>LLL:EXT:cms/locallang_ttc.xml:media.captionUrl</label>
+							<config>
+								<type>input</type>
+								<size>60</size>
+								<eval>trim</eval>
+								<default></default>
+								<wizards type="array">
+									<_PADDING>2</_PADDING>
+									<link type="array">
+										<type>popup</type>
+										<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
+										<icon>link_popup.gif</icon>
+										<script>browse_links.php?mode=wizard&amp;act=file|url</script>
+										<params type="array">
+											<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
+											<allowedExtensions>srt</allowedExtensions>
+										</params>
+										<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+									</link>
+								</wizards>
+							</config>
+						</TCEforms>
+					</mmCaption>
+					<mmAudioSources>
+					<tx_templavoila>
+						<title>LLL:EXT:cms/locallang_ttc.xml:media.audioSources</title>
+					</tx_templavoila>
+						<type>array</type>
+						<section>1</section>
+						<el>
+							<mmAudioSourcesContainer>
+								<type>array</type>
+								<tx_templavoila>
+									<title>LLL:EXT:cms/locallang_ttc.xml:media.media.url</title>
+								</tx_templavoila>
+								<el>
+									<mmAudioSource>
+										<TCEforms>
+											<label>LLL:EXT:cms/locallang_ttc.xml:media.url</label>
+											<config>
+												<type>input</type>
+												<size>60</size>
+												<eval>trim,required</eval>
+												<default></default>
+												<wizards type="array">
+													<_PADDING>2</_PADDING>
+													<link type="array">
+														<type>popup</type>
+														<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
+														<icon>link_popup.gif</icon>
+														<script>browse_links.php?mode=wizard&amp;act=file|url</script>
+														<params type="array">
+															<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
+															<allowedExtensions>au,asf,mp3,m4a,oga,ogg, wav,webm,wmv</allowedExtensions>
+														</params>
+														<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+													</link>
+												</wizards>
+											</config>
+										</TCEforms>
+									</mmAudioSource>
+								</el>
+							</mmAudioSourcesContainer>
+						</el>
+					</mmAudioSources>
+					<mmAudioFallback>
+						<TCEforms>
+							<label>LLL:EXT:cms/locallang_ttc.xml:media.audioFallbackUrl</label>
+							<config>
+								<type>input</type>
+								<size>60</size>
+								<eval>trim</eval>
+								<default></default>
+								<wizards type="array">
+									<_PADDING>2</_PADDING>
+									<link type="array">
+										<type>popup</type>
+										<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
+										<icon>link_popup.gif</icon>
+										<script>browse_links.php?mode=wizard&amp;act=file|url</script>
+										<params type="array">
+											<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
+											<allowedExtensions>au,asf,mp3,m4a,oga,swa,wav,webm,wmv</allowedExtensions>
+										</params>
+										<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+									</link>
+								</wizards>
+							</config>
+						</TCEforms>
+					</mmAudioFallback>
 					<mmWidth>
 						<TCEforms>
 							<label>LLL:EXT:cms/locallang_ttc.xml:media.width</label>
@@ -98,12 +217,12 @@
 								<type>select</type>
 								<items>
 									<numIndex index="0">
-										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.renderType.auto</numIndex>
+										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.renderType.preferHtml5OverFlash</numIndex>
 										<numIndex index="1">auto</numIndex>
 									</numIndex>
 									<numIndex index="1">
-										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.renderType.swf</numIndex>
-										<numIndex index="1">swf</numIndex>
+										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.renderType.preferFlashOverHtml5</numIndex>
+										<numIndex index="1">preferFlashOverHtml5</numIndex>
 									</numIndex>
 									<numIndex index="2">
 										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.renderType.qt</numIndex>
@@ -160,6 +279,26 @@
 												<numIndex index="5">
 													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.allowFullScreen</numIndex>
 													<numIndex index="1">allowFullScreen</numIndex>
+												</numIndex>
+												<numIndex index="6">
+													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.preload</numIndex>
+													<numIndex index="1">preload</numIndex>
+												</numIndex>
+												<numIndex index="7">
+													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.controlsBelow</numIndex>
+													<numIndex index="1">controlsBelow</numIndex>
+												</numIndex>
+												<numIndex index="8">
+													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.controlsAtStart</numIndex>
+													<numIndex index="1">controlsAtStart</numIndex>
+												</numIndex>
+												<numIndex index="9">
+													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.controlsHiding</numIndex>
+													<numIndex index="1">controlsHiding</numIndex>
+												</numIndex>
+												<numIndex index="10">
+													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.defaultVolume</numIndex>
+													<numIndex index="1">defaultVolume</numIndex>
 												</numIndex>
 											</items>
 											<itemsProcFunc>tx_cms_mediaItems->customMediaParams</itemsProcFunc>

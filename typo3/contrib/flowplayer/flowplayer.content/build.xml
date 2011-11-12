@@ -1,0 +1,29 @@
+<project name="Flowplayer content" default="deploy">
+    <property file="build.generated.properties"/>
+
+	<property file="${user.home}/plugin.properties" />
+	<property file="build.properties" />
+	
+	<property file="${devkit-dir}/plugin-build.properties" />
+	<import file="${devkit-dir}/plugin-build.xml"/>
+	<property name="flowplayer_lib" value="${devkit-dir}/flowplayer.swc" />
+	
+
+	<property name="basename" value="flowplayer.content" />
+    <property name="releasedir" value="${basename}" />
+	<property name="plugin-binary" value="${basename}.swf" />
+	<property name="plugin-binary-versioned" value="${basename}-${version}.swf" />
+	<property name="plugin-main-class" value="org/flowplayer/content/Content.as" />
+	<property name="library-path" value="src/flash" />
+
+	<target name="release" description="makes a release" depends="build">
+		<copyrelease targetdir="flowplayer.content">
+			<releasefiles>
+				<fileset dir="${build-dir}">
+				    <include name="${plugin-binary-versioned}"/>
+				</fileset>
+			</releasefiles>
+		</copyrelease>
+	</target>
+
+</project>
