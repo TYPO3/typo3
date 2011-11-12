@@ -1,0 +1,27 @@
+/* Placement of Control Items 
+   - Left side of pogress bar, use left & width
+   - Rigth side of progress bar, use right & width
+   - Expand with the video (like progress bar) use left & right */
+.vjs-controls > div.vjs-play-control       { left: 5px;   width: 25px;  }
+.vjs-controls > div.vjs-progress-control   { left: 35px;  right: 221px; } /* Using left & right so it expands with the width of the video */
+.vjs-controls > div.vjs-time-control       { width: 75px; right: 156px;  } /* Time control and progress bar are combined to look like one */
+.vjs-controls > div.vjs-volume-control     { width: 50px; right: 101px;  }
+.vjs-controls > div.vjs-captions-control  { width: 31px; right: 65px;   }
+.vjs-controls > div.vjs-audio-description-control  { width: 25px; right: 35px;   }
+.vjs-controls > div.vjs-fullscreen-control { width: 25px; right: 5px;   }
+	/* Sub titles toggle*/
+.vjs-captions-control div { cursor: pointer !important; }
+.vjs-captions-control div {
+  padding: 0; text-align: left; vertical-align: top; cursor: pointer !important; 
+  margin: 5px 0 0 5px; /* Placement within the fullscreen control item */
+  width: 20px; height: 20px;
+}
+.vjs-captions-control div { background-image: url("captions.png"); background-repeat:no-repeat; background-position: center center;}
+	/* Audio description toggle*/
+.vjs-audio-description-control div { cursor: pointer !important; }
+.vjs-audio-description-control div {
+  padding: 0; text-align: left; vertical-align: top; cursor: pointer !important; 
+  margin: 5px 0 0 5px; /* Placement within the fullscreen control item */
+  width: 20px; height: 20px;
+}
+.vjs-audio-description-control div { background-image: url("audio-description.png"); background-repeat:no-repeat; }
