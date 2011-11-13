@@ -433,14 +433,30 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	void
 	 */
 	protected function addPageStyle() {
-			// Get stylesheet file name from Page TSConfig if any
-		$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/res/contentcss/default.css';
 		$this->addStyleSheet(
 			'rtehtmlarea-page-style',
-			$this->getFullFileName($filename),
+			$this->getContentCssFileName(),
 			'htmlArea RTE Content CSS',
 			'alternate stylesheet'
-			);
+		);
+	}
+
+	/**
+	 * Get the name of the contentCSS file to use
+	 *
+	 * @return	the full file name of the content css file to use
+	 */
+	protected function getContentCssFileName() {
+			// Get stylesheet file name from Page TSConfig if any
+		$fileName = trim($this->thisConfig['contentCSS']);
+		if ($fileName) {
+			$filename = $this->getFullFileName($fileName);
+		}
+			// Fallback to default content css file if configured file does not exists or is of zero size
+		if (!$fileName || !file_exists(PATH_site . $fileName) || !filesize(PATH_site . $fileName)) {
+			$fileName = $this->getFullFileName('EXT:' . $this->ID . '/res/contentcss/default.css');
+		}
+		return $fileName;
 	}
 
 	/**
@@ -910,9 +926,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$configureRTEInJavascriptString .= '
 			RTEarea[editornumber].defaultPageStyle = "' . $this->writeTemporaryFile('', 'defaultPageStyle', 'css', $this->buildStyleSheet()) . '";';
 			// Setting the pageStyle
-		$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/res/contentcss/default.css';
 		$configureRTEInJavascriptString .= '
-			RTEarea[editornumber].pageStyle = "' . t3lib_div::createVersionNumberedFilename($this->getFullFileName($filename)) .'";';
+			RTEarea[editornumber].pageStyle = "' . t3lib_div::createVersionNumberedFilename($this->getContentCssFileName()) .'";';
 			// Process classes configuration
 		$classesConfigurationRequired = FALSE;
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {
