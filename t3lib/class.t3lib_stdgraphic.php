@@ -2655,7 +2655,7 @@ class t3lib_stdGraphic {
 				$frame = '';
 			}
 
-			$cmd = t3lib_div::imageMagickCommand('convert', $params . ' ' . $this->wrapFileName($input) . $frame . ' ' . $this->wrapFileName($output));
+			$cmd = t3lib_div::imageMagickCommand('convert', $params . ' ' . $this->wrapFileName($input) . escapeshellarg($frame) . ' ' . $this->wrapFileName($output));
 			$this->IM_commands[] = array($output, $cmd);
 
 			$ret = t3lib_utility_Command::exec($cmd);
