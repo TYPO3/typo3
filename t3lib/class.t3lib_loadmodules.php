@@ -133,6 +133,8 @@ class t3lib_loadModules {
 			//
 		$this->absPathArray = $modulesArray['_PATHS'];
 		unset($modulesArray['_PATHS']);
+			// unset the array for calling external backend module dispatchers in typo3/mod.php
+		unset($modulesArray['_dispatcher']);
 
 			/*
 				With the above data for modules the result of this function call will be:
