@@ -49,6 +49,9 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 	 * @return void
 	 */
 	public function __construct($errorHandlerErrors) {
+			// reduces error types to those a custom error handler can process
+		$errorHandlerErrors = $errorHandlerErrors ^ E_COMPILE_WARNING ^ E_COMPILE_ERROR ^ E_CORE_WARNING  ^ E_CORE_ERROR ^ E_PARSE ^ E_ERROR;
+
 		set_error_handler(array($this, 'handleError'), $errorHandlerErrors);
 	}
 
