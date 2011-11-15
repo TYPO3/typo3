@@ -864,6 +864,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 							// Register IMAGE_NUM_CURRENT for the caption
 						$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imageKey;
+						$this->cObj->data[$this->cObj->currentValKey] = $origImages[$imageKey]['origFile'];
 
 							// Get the image if not an empty cell
 						if (isset($imgsTag[$imageKey])) {
