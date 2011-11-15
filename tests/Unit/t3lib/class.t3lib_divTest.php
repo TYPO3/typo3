@@ -2739,6 +2739,138 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		);
 	}
 
+	///////////////////////////
+	// Tests concerning minifyJavaScript
+	///////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function minifyJavaScriptReturnsInputStringIfNoHookIsRegistered() {
+		unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript']);
+		$testString = uniqid('string');
+		$this->assertSame($testString, t3lib_div::minifyJavaScript($testString));
+	}
+
+	/**
+	 * Create an own hook callback class, register as hook, and check
+	 * if given string to compress is given to hook method
+	 *
+	 * @test
+	 */
+	public function minifyJavaScriptCallsRegisteredHookWithInputString() {
+		$hookClassName = uniqid('tx_coretest');
+		$minifyHookMock = $this->getMock(
+			'stdClass',
+			array('minify'),
+			array(),
+			$hookClassName
+		);
+
+		$functionName = '&' . $hookClassName . '->minify';
+		$GLOBALS['T3_VAR']['callUserFunction'][$functionName] = array();
+		$GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
+		$GLOBALS['T3_VAR']['callUserFunction'][$functionName]['method'] = 'minify';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'][] = $functionName;
+
+		$minifyHookMock->expects($this->once())->method('minify')
+			->will($this->returnCallback(array($this, 'isMinifyJavaScriptHookCalledCallback')));
+
+		t3lib_div::minifyJavaScript('foo');
+	}
+
+	/**
+	 * Callback function used in minifyJavaScriptCallsRegisteredHookWithInputString test
+	 *
+	 * @param array $params
+	 */
+	public function isMinifyJavaScriptHookCalledCallback(array $params) {
+			// We can not throw an exception here, because that would be caught by the
+			// minifyJavaScript method under test itself. Thus, we just die if the
+			// input string is not ok.
+		if ($params['script'] !== 'foo') {
+			die('broken');
+		}
+	}
+
+	/**
+	 * Create a hook callback, use callback to throw an exception and check
+	 * if the exception is given as error parameter to the calling method.
+	 *
+	 * @test
+	 */
+	public function minifyJavaScriptReturnsErrorStringOfHookException() {
+		$hookClassName = uniqid('tx_coretest');
+		$minifyHookMock = $this->getMock(
+			'stdClass',
+			array('minify'),
+			array(),
+			$hookClassName
+		);
+
+		$functionName = '&' . $hookClassName . '->minify';
+		$GLOBALS['T3_VAR']['callUserFunction'][$functionName] = array();
+		$GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
+		$GLOBALS['T3_VAR']['callUserFunction'][$functionName]['method'] = 'minify';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'][] = $functionName;
+
+		$minifyHookMock->expects($this->any())->method('minify')
+			->will($this->returnCallback(array($this, 'minifyJavaScriptErroneousCallback')));
+
+		$error = '';
+		t3lib_div::minifyJavaScript('string to compress', $error);
+		$this->assertSame('Error minifying java script: foo', $error);
+	}
+
+	/**
+	 * Check if the error message that is returned by the hook callback
+	 * is logged to t3lib_div::devLog.
+	 *
+	 * @test
+	 */
+	public function minifyJavaScriptWritesExceptionMessageToDevLog() {
+		$t3libDivMock = uniqid('t3lib_div');
+		eval(
+			'class ' . $t3libDivMock . ' extends t3lib_div {' .
+			'  public static function devLog($errorMessage) {' .
+			'    if (!($errorMessage === \'Error minifying java script: foo\')) {' .
+			'      throw new UnexpectedValue(\'broken\');' .
+			'    }' .
+			'    throw new RuntimeException();' .
+			'  }' .
+			'}'
+		);
+		$hookClassName = uniqid('tx_coretest');
+		$minifyHookMock = $this->getMock(
+			'stdClass',
+			array('minify'),
+			array(),
+			$hookClassName
+		);
+
+		$functionName = '&' . $hookClassName . '->minify';
+		$GLOBALS['T3_VAR']['callUserFunction'][$functionName] = array();
+		$GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
+		$GLOBALS['T3_VAR']['callUserFunction'][$functionName]['method'] = 'minify';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'][] = $functionName;
+
+		$minifyHookMock->expects($this->any())->method('minify')
+			->will($this->returnCallback(array($this, 'minifyJavaScriptErroneousCallback')));
+
+		$this->setExpectedException('RuntimeException');
+		$t3libDivMock::minifyJavaScript('string to compress');
+	}
+
+	/**
+	 * Callback function used in
+	 * 	minifyJavaScriptReturnsErrorStringOfHookException and
+	 * 	minifyJavaScriptWritesExceptionMessageToDevLog
+	 *
+	 * @throws RuntimeException
+	 */
+	public function minifyJavaScriptErroneousCallback() {
+		throw new RuntimeException('foo', 1344888548);
+	}
 
 	///////////////////////////
 	// Tests concerning getUrl

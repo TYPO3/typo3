@@ -134,6 +134,14 @@ There are tons of solutions on the net and on server basis that can do a
 better job than the core implementation ever did. Therefor the complete
 code was dropped and all TypoScript config.stat* options are obsolete.
 
+* Removed compression of javascript files with jsmin
+
+The default compression of certain javascript files in frontend and backend
+with the jsmin library was removed from the core due to license issues. The
+code segment was substituted with a hook, so extensions can now deliver
+compression solutions if needed. In general, it is a good idea to configure
+a webserver to compress javascript and css files on the webserver with gzip.
+
 ===============================================================================
 Changes and Improvements
 ===============================================================================
