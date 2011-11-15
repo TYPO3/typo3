@@ -2562,16 +2562,12 @@ final class t3lib_div {
 	 * @return string Minified script or source string if error happened
 	 */
 	public static function minifyJavaScript($script, &$error = '') {
-		require_once(PATH_typo3 . 'contrib/jsmin/jsmin.php');
-		try {
-			$error = '';
-			$script = trim(JSMin::minify(str_replace(CR, '', $script)));
-		}
-		catch (JSMinException $e) {
-			$error = 'Error while minifying JavaScript: ' . $e->getMessage();
-			self::devLog($error, 't3lib_div', 2,
-				array('JavaScript' => $script, 'Stack trace' => $e->getTrace()));
-		}
+		require_once(PATH_typo3 . 'contrib/packer/class.JavaScriptPacker.php');
+
+		$error  = '';
+		$packer = new JavaScriptPacker(str_replace(CR, '', $script));
+		$script = trim($packer->pack());
+
 		return $script;
 	}
 
