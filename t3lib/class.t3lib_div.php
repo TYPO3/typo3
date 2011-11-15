@@ -41,7 +41,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-final class t3lib_div {
+class t3lib_div {
 
 		// Severity constants used by t3lib_div::sysLog()
 	const SYSLOG_SEVERITY_INFO = 0;
@@ -2415,15 +2415,27 @@ final class t3lib_div {
 	 * @return string Minified script or source string if error happened
 	 */
 	public static function minifyJavaScript($script, &$error = '') {
-		require_once(PATH_typo3 . 'contrib/jsmin/jsmin.php');
-		try {
-			$error = '';
-			$script = trim(JSMin::minify(str_replace(CR, '', $script)));
-		}
-		catch (JSMinException $e) {
-			$error = 'Error while minifying JavaScript: ' . $e->getMessage();
-			self::devLog($error, 't3lib_div', 2,
-				array('JavaScript' => $script, 'Stack trace' => $e->getTrace()));
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'])) {
+			$fakeThis = FALSE;
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'] as $hookMethod) {
+				try {
+					$parameters = array('script' => $script);
+					$script = static::callUserFunction($hookMethod, $parameters, $fakeThis);
+				} catch (Exception $e) {
+					$errorMessage = 'Error minifying java script: ' . $e->getMessage();
+					$error .= $errorMessage;
+					static::devLog(
+						$errorMessage,
+						't3lib_div',
+						2,
+						array(
+							'JavaScript' => $script,
+							'Stack trace' => $e->getTrace(),
+							'hook' => $hookMethod
+						)
+					);
+				}
+			}
 		}
 		return $script;
 	}
