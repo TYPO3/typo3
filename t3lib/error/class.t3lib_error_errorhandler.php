@@ -49,6 +49,9 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 	 * @return void
 	 */
 	public function __construct($errorHandlerErrors) {
+			// work only with error types a custom error handler can process
+		$errorHandlerErrors = $errorHandlerErrors ^ E_COMPILE_WARNING ^ E_COMPILE_ERROR ^ E_CORE_WARNING  ^ E_CORE_ERROR ^ E_PARSE ^ E_ERROR;
+
 		set_error_handler(array($this, 'handleError'), $errorHandlerErrors);
 	}
 
@@ -97,6 +100,11 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 		$message = 'PHP ' . $errorLevels[$errorLevel] . ': ' . $errorMessage . ' in ' . $errorFile . ' line ' . $errorLine;
 
 		if ($errorLevel & $this->exceptionalErrors) {
+				// handle error raised at compile time
+				// autoloader not available & built-in classes not resolvable
+			if (!class_exists('stdClass', FALSE)) {
+				die($message);
+			}
 			if (!class_exists('t3lib_error_Exception', FALSE)) {
 				require_once(PATH_t3lib . 'class.t3lib_exception.php');
 				require_once(PATH_t3lib . 'error/class.t3lib_error_exception.php');
