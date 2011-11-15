@@ -803,6 +803,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				$GLOBALS['TSFE']->register['imagewidth'] = $origImages[$imgKey][0];
 				$GLOBALS['TSFE']->register['imagespace'] = $imageSpace;
 				$GLOBALS['TSFE']->register['imageheight'] = $origImages[$imgKey][1];
+				$this->cObj->data[$this->cObj->currentValKey] = $origImages[$imgKey]['origFile'];
 				if ($imageSpace > $maxImageSpace)	{
 					$maxImageSpace = $imageSpace;
 				}
