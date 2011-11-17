@@ -4837,7 +4837,7 @@ final class t3lib_div {
 	 */
 	protected static function getClassName($className) {
 		if (class_exists($className)) {
-			while (class_exists('ux_' . $className, FALSE)) {
+			while (t3lib_autoloader::getClassPathByRegistryLookup('ux_' . $className) !== NULL) {
 				$className = 'ux_' . $className;
 			}
 		}
