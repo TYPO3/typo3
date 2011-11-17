@@ -4943,7 +4943,7 @@ final class t3lib_div {
 	 */
 	protected static function getClassName($className) {
 		if (class_exists($className)) {
-			while (class_exists('ux_' . $className, FALSE)) {
+			while (class_exists('ux_' . $className)) {
 				$className = 'ux_' . $className;
 			}
 		}

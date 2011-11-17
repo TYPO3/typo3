@@ -94,7 +94,29 @@ class t3lib_autoloader {
 		$classPath = self::getClassPathByRegistryLookup($className);
 
 		if ($classPath) {
+				// include the required file that holds the class
 			t3lib_div::requireFile($classPath);
+
+				// backwards-compatibility layer to include old XCLASS statements
+				// that are set via TYPO3_CONF_VARS[TYPO3_MODE][relativePathToFile] = extPath
+			if (isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'])) {
+
+					// throw deprecation warning, as the ext_autoload.php
+					// way is the preferred way now
+				t3lib_div::deprecationLog('This installation runs with extensions that use XCLASSing by setting the XCLASS path in ext_localconf.php. The preferred way of these extensions should be done by ext_autoload.php of the extension. This XCLASS statement will not work with TYPO3 4.9 anymore.');
+
+					// check if the XCLASS for the reqeusted path is set
+					// a transformation for some paths needs to be done
+				$relativeClassPath = substr($classPath, strlen(PATH_site));
+				$relativeClassPath = str_replace('typo3/sysext/cms/tslib', 'tslib', $relativeClassPath);
+				$relativeClassPath = str_replace('typo3conf/ext', 'ext', $relativeClassPath);
+				$relativeClassPath = str_replace('typo3/sysext', 'ext', $relativeClassPath);
+				if (isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'][$relativeClassPath])) {
+					$additionalFile = $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'][$relativeClassPath];
+					t3lib_div::requireFile($additionalFile);
+				}
+			}
+
 		} else {
 			try {
 					// Regular expression for a valid classname taken from
