@@ -3716,7 +3716,19 @@ class t3lib_TCEmain {
 											}
 										}
 									} else {
-										$this->newlog('Localization failed; There already was a localization for this language of the record!', 1);
+										$newId = $this->adjustExistingTranslation($table, $uid, $langRec['uid'], $row);
+										if ($newId !== FALSE) {
+											$this->newlog(
+												'Localization failed for record (uid=' . $uid . ') in table "' . $table . '": '.
+												'There is already an existing localization for this language (L=' . $langRec['uid'] . ')', 1
+											);
+										} else {
+											$this->newlog(
+												'Note on localization of record (uid=' . $uid . ') in table "' . $table . '": ' .
+												'There is already an existing localization for this language (L=' . $langRec['uid'] . ') ' .
+												'Inline references were adjusted for NewID=' . $newId . ' (ID of existing translated record)', 0
+											);
+										}
 									}
 								} else {
 									$this->newlog('Localization failed; Source record contained a reference to an original default record (which is strange)!', 1);
@@ -7079,6 +7091,28 @@ class t3lib_TCEmain {
 		}
 
 		return $elements;
+	}
+
+	/**
+	 * Search for already translated record in case children were translated before the parent in IRRE.
+	 *
+	 * @param string $table Table name
+	 * @param integer $origUid Record uid (to be localized, but was already localized)
+	 * @param integer $languageUid Language uid (from sys_language table)
+	 * @param array $origRow Complete record in default language
+	 * @return mixed The uid (integer) of the newly translated record or FALSE (boolean) if something went wrong
+	 */
+	protected function adjustExistingTranslation($table, $origUid, $languageUid, array $origRow) {
+		$newId = FALSE;
+
+		if ($table !== 'pages') {
+			$existingTranslations = t3lib_BEfunc::getRecordLocalization($table, $origUid, $languageUid, 'AND pid=' . intval($origRow['pid']));
+			if ($existingTranslations !== FALSE && count($existingTranslations) == 1) {
+				$newId = $existingTranslations[0]['uid'];
+			}
+		}
+
+		return $newId;
 	}
 }
 
