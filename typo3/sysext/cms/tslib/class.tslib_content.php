@@ -5805,17 +5805,17 @@ class tslib_cObj {
 							if (isset($conf['forceAbsoluteUrl.']['scheme']) && $conf['forceAbsoluteUrl.']['scheme']) {
 								$absoluteUrlScheme = $conf['forceAbsoluteUrl.']['scheme'];
 							} elseif ($page['url_scheme'] > 0) {
-								$absoluteUrlScheme = ((int) $page['url_scheme'] === t3lib_utility_http::SCHEME_HTTP) ? 'http' : 'https';
+								$absoluteUrlScheme = ((int)$page['url_scheme'] === t3lib_utility_http::SCHEME_HTTP) ? 'http' : 'https';
 							}
 
 								// If no domain records are defined, use current domain:
-							if ($targetDomain === '' && $conf['forceAbsoluteUrl'] ||
-									$absoluteUrlScheme !== parse_url(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'), PHP_URL_SCHEME)) {
+							$currentUrlScheme = parse_url(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'), PHP_URL_SCHEME);
+							if ($targetDomain === '' && ($conf['forceAbsoluteUrl'] || $absoluteUrlScheme !== $currentUrlScheme)) {
 								$targetDomain = $currentDomain;
 							}
 
-								// If go for an absolute link, add site_path if it's not taken care about by absRefPrefix
-							if (!$GLOBALS['TSFE']->config['config']['absRefPrefix'] && $targetDomain !== '') {
+								// If go for an absolute link, add site path if it's not taken care about by absRefPrefix
+							if (!$GLOBALS['TSFE']->config['config']['absRefPrefix'] && $targetDomain == $currentDomain) {
 								$targetDomain = $currentDomain . rtrim(t3lib_div::getIndpEnv('TYPO3_SITE_PATH'), '/');
 							}
 						}
