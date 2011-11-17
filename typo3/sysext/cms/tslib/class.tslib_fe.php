@@ -1184,7 +1184,7 @@
 
 			// If the actual page has no fe_group, check the rootline for
 			// inherited fe_group due to extendToSubpage-property
-		if (intval($row['fe_group']) === 0) {
+		if (isset($row['uid']) && intval($row['fe_group']) === 0) {
 			$rootLine = $this->sys_page->getRootLine($row['uid']);
 			foreach ($rootLine as $pageConf) {
 				if ($pageConf['fe_group'] != '' && $pageConf['extendToSubpages'] == 1) {
