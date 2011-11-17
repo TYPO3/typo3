@@ -794,13 +794,17 @@ function initializeCachingFramework() {
 	t3lib_cache::initializeCachingFramework();
 }
 
+	// The autoloader must be required BEFORE the initialization of the caching framework,
+	// because we need one method from the autoloader in t3lib_div::getClassName
+	// which will be used during the caching framework startup
+require_once(PATH_t3lib . 'class.t3lib_autoloader.php');
+
 initializeCachingFramework();
 
 
 // *********************
 // Autoloader
 // *********************
-require_once(PATH_t3lib . 'class.t3lib_autoloader.php');
 t3lib_autoloader::registerAutoloader();
 
 /**
@@ -1072,6 +1076,19 @@ if ($TYPO3_LOADED_EXT['_CACHEFILE'])	{
 			require($temp_lEDat['ext_localconf.php']);
 		}
 	}
+}
+
+	// Here we check if this TYPO3 installation uses XCLASSes via the deprecated way
+	// If is this the case throw deprecation warning, as the ext_autoload.php way is the preferred way now
+	// This deprecation warning must be thrown here, because of two points
+	// 1. Only one warning will be called per page impression. If you throw this warning in
+	// 	  t3lib_autoloader::getClassPathByRegistryLookup, it will be thrown for EVERY requested class
+	// 2. It is not possible to throw this warning in t3lib_autoloader::getClassPathByRegistryLookup
+	//	  because t3lib_div::deprecationLog use t3lib_div::makeInstance again and will be call
+	//	  t3lib_autoloader::getClassPathByRegistryLookup again. This will be end in an endlessloop.
+	// So, after loading all ext_localconf.php`s it will be clear if XCLASSes are used by the old way.
+if(isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']) === TRUE) {
+	t3lib_div::deprecationLog('This installation runs with extensions that use XCLASSing by setting the XCLASS path in ext_localconf.php. This backwards compatibility will be removed in TYPO3 6.2 and later. It is preferred to define XCLASSes in ext_autoload.php instead.');
 }
 
 	// Extensions may register new caches, so we set the

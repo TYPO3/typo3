@@ -4472,8 +4472,7 @@ final class t3lib_div {
 	 * 		t3lib_div::makeInstance('myClass', $arg1, $arg2, ..., $argN)
 	 *
 	 * @throws InvalidArgumentException if classname is an empty string
-	 * @param string $className
-	 * 			name of the class to instantiate, must not be empty
+	 * @param string $className name of the class to instantiate, must not be empty
 	 * @return object the created instance
 	 */
 	public static function makeInstance($className) {
@@ -4484,7 +4483,7 @@ final class t3lib_div {
 			// Determine final class name which must be instantiated, this takes XCLASS handling
 			// into account. Cache in a local array to save some cycles for consecutive calls.
 		if (!isset(self::$finalClassNameRegister[$className])) {
-			self::$finalClassNameRegister[$className] = self::getClassName($className);
+			self::addClassNameToMakeInstanceCache($className, self::getClassName($className));
 		}
 		$finalClassName = self::$finalClassNameRegister[$className];
 
@@ -4528,7 +4527,7 @@ final class t3lib_div {
 	 */
 	protected static function getClassName($className) {
 		if (class_exists($className)) {
-			while (class_exists('ux_' . $className, FALSE)) {
+			while (t3lib_autoloader::getClassPathByRegistryLookup('ux_' . $className) !== NULL) {
 				$className = 'ux_' . $className;
 			}
 		}
@@ -4542,8 +4541,6 @@ final class t3lib_div {
 	 * If this function is called multiple times for the same $className,
 	 * makeInstance will return the last set instance.
 	 *
-	 * Warning: This is a helper method for unit tests. Do not call this directly in production code!
-	 *
 	 * @see makeInstance
 	 * @param string $className
 	 *        the name of the class to set, must not be empty
@@ -4554,6 +4551,20 @@ final class t3lib_div {
 	public static function setSingletonInstance($className, t3lib_Singleton $instance) {
 		self::checkInstanceClassName($className, $instance);
 		self::$singletonInstances[$className] = $instance;
+	}
+
+	/**
+	 * Adds a $className / $finalClassName to the cache register.
+	 * This register is used to determine the final class name only once instead of multiple times.
+	 *
+	 * @static
+	 * @see makeInstance
+	 * @param string $className the name of the class to set, must not be empty
+	 * @param string $finalClassName the name of the final class which will be loaded in case of $className
+	 * @return void
+	 */
+	public static function addClassNameToMakeInstanceCache($className, $finalClassName) {
+		self::$finalClassNameRegister[$className] = $finalClassName;
 	}
 
 	/**
