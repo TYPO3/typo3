@@ -814,7 +814,7 @@ class TSpagegen {
 					$key = $theKey;
 					if (trim($val)) {
 						$a = 'name';
-						if (strtolower($key) == 'refresh') {
+						if (strtolower($key) === 'refresh' || !empty($conf[$theKey . '.']['httpEquivalent'])) {
 							$a = 'http-equiv';
 						}
 						$pageRenderer->addMetaTag('<meta ' . $a . '="' . $key . '" content="' . htmlspecialchars(trim($val)) . '"' . $endingSlash . '>');
