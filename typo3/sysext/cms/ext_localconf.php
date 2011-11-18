@@ -88,11 +88,11 @@ mod.wizards.newContentElement.wizardItems {
 		}
 		menu {
 			icon = gfx/c_wiz/sitemap2.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_sitemap_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_sitemap_description
+			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_menus_title
+			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_menus_description
 			tt_content_defValues {
 				CType = menu
-				menu_type = 2
+				menu_type = 0
 			}
 		}
 		html {
