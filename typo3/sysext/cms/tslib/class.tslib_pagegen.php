@@ -808,7 +808,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 					$key = $theKey;
 					if (trim($val)) {
 						$a = 'name';
-						if (strtolower($key) == 'refresh') {
+						if (strtolower($key) == 'refresh' || !empty($conf['httpEquivalent'])) {
 							$a = 'http-equiv';
 						}
 						$pageRenderer->addMetaTag('<meta ' . $a . '="' . $key . '" content="' . htmlspecialchars(trim($val)) . '"' . $endingSlash . '>');
