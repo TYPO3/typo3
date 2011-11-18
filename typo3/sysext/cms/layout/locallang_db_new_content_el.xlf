@@ -84,8 +84,11 @@
 			<trans-unit id="special_sitemap_title" xml:space="preserve">
 				<source>Sitemap</source>
 			</trans-unit>
-			<trans-unit id="special_sitemap_description" xml:space="preserve">
-				<source>Creates a sitemap of the website.</source>
+			<trans-unit id="special_menus_title" xml:space="preserve">
+				<source>Special Menus</source>
+			</trans-unit>
+			<trans-unit id="special_menus_description" xml:space="preserve">
+				<source>Creates a menu of pages, sitemap or other special menus.</source>
 			</trans-unit>
 			<trans-unit id="special_plainHTML_title" xml:space="preserve">
 				<source>Plain HTML</source>
