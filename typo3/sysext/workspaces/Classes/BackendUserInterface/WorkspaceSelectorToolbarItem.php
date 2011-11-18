@@ -62,7 +62,7 @@ class WorkspaceSelectorToolbarItem implements backend_toolbarItem {
 		$this->changeWorkspacePreview = t3lib_div::_GP('changeWorkspacePreview');
 
 		$pageRenderer = t3lib_div::makeInstance('t3lib_pageRenderer');
-		$this->backendReference->addJavaScript("TYPO3.Workspaces = { workspaceTitle : '" . htmlspecialchars(tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace)) . "'};\n");
+		$this->backendReference->addJavaScript("TYPO3.Workspaces = { workspaceTitle : '" . htmlspecialchars(addslashes(tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace))) . "'};\n");
 	}
 
 	/**
