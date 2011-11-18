@@ -1157,7 +1157,7 @@ class tx_indexedsearch_indexer {
 	 * @return	array		Standard content array (title, description, keywords, body keys)
 	 */
 	function readFileContent($fileExtension, $absoluteFileName, $sectionPointer) {
-		$contentArray = null;
+		$contentArray = NULL;
 
 			// Consult relevant external document parser:
 		if (is_object($this->external_parsers[$fileExtension]))	{
