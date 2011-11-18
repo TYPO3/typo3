@@ -62,7 +62,7 @@ class Tx_Workspaces_ExtDirect_WorkspaceSelectorToolbarItem implements backend_to
 		$this->changeWorkspacePreview = t3lib_div::_GP('changeWorkspacePreview');
 
 		$pageRenderer = t3lib_div::makeInstance('t3lib_pageRenderer');
-		$this->backendReference->addJavaScript("TYPO3.Workspaces = { workspaceTitle : '" . htmlspecialchars(Tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace)) . "'};\n");
+		$this->backendReference->addJavaScript("TYPO3.Workspaces = { workspaceTitle : '" . htmlspecialchars(addslashes(Tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace))) . "'};\n");
 	}
 
 	/**
