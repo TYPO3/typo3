@@ -62,3 +62,4 @@ final class tx_indexedsearch_util {
 	}
 
 }
+?>
