@@ -96,6 +96,9 @@ class t3lib_formmail {
 		} elseif ($GLOBALS['TSFE']->metaCharset != $GLOBALS['TSFE']->renderCharset) {
 				// Use metaCharset for mail if different from renderCharset
 			$this->characterSet = $GLOBALS['TSFE']->metaCharset;
+		} else {
+				// Otherwise use renderCharset as default
+			$this->characterSet = $GLOBALS['TSFE']->renderCharset;
 		}
 
 		if ($base64 || $valueList['use_base64']) {
@@ -177,10 +180,10 @@ class t3lib_formmail {
 			$this->plainContent = $plainTextContent;
 
 			if ($valueList['html_enabled']) {
-				$this->mailMessage->setBody($htmlContent, 'text/html');
-				$this->mailMessage->addPart($plainTextContent, 'text/plain');
+				$this->mailMessage->setBody($htmlContent, 'text/html', $this->characterSet);
+				$this->mailMessage->addPart($plainTextContent, 'text/plain', $this->characterSet);
 			} else {
-				$this->mailMessage->setBody($plainTextContent, 'text/plain');
+				$this->mailMessage->setBody($plainTextContent, 'text/plain', $this->characterSet);
 			}
 
 			for ($a = 0; $a < 10; $a++) {
@@ -220,9 +223,8 @@ class t3lib_formmail {
 			if ($valueList['recipient_copy']) {
 				$this->mailMessage->setCc($this->parseAddresses($valueList['recipient_copy']));
 			}
-			if ($this->characterSet) {
-				$this->mailMessage->setCharset($this->characterSet);
-			}
+			$this->mailMessage->setCharset($this->characterSet);
+
 				// Ignore target encoding. This is handled automatically by Swift Mailer and overriding the defaults
 				// is not worth the trouble
 
