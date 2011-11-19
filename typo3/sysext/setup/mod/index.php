@@ -737,7 +737,9 @@ class SC_mod_user_setup_index {
 
 			// compile the languages dropdown
 		$langDefault = $GLOBALS['LANG']->getLL('lang_default', 1);
-		$languageOptions[$langDefault] = '<option value="">' . $langDefault . '</option>';
+		$languageOptions[$langDefault] = '<option value=""' .
+			($GLOBALS['BE_USER']->uc['lang'] === '' ? ' selected="selected"' : '') .
+			'>' . $langDefault . '</option>';
 
 			// traverse the number of languages
 		/** @var $locales t3lib_l10n_Locales */
