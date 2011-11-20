@@ -71,7 +71,7 @@ TYPO3.Workspaces.SelectionModel = new Ext.grid.CheckboxSelectionModel({
 	hidden: true,
 	listeners: {
 		beforerowselect : function (selection, rowIndex, keep, rec) {
-			if (rec.json.allowedAction_nextStage || rec.json.allowedAction_prevStage) {
+			if (rec.json.allowedAction_nextStage || rec.json.allowedAction_prevStage || rec.json.allowedAction_swap) {
 				return true;
 			} else {
 				return false;

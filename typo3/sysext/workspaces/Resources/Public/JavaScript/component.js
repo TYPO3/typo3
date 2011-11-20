@@ -192,7 +192,7 @@ TYPO3.Workspaces.RowExpander = new Ext.grid.RowExpander({
 	hideable: false,
 	getRowClass : function(record, rowIndex, p, ds) {
 		cssClass = '';
-		if (!record.json.allowedAction_nextStage && !record.json.allowedAction_prevStage) {
+		if (!record.json.allowedAction_nextStage && !record.json.allowedAction_prevStage && !record.json.allowedAction_swap) {
 			cssClass = 'typo3-workspaces-row-disabled ';
 		}
 		if(this.state[record.id]) {
