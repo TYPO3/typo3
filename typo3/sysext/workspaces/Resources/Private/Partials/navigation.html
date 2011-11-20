@@ -4,14 +4,14 @@
 			<f:then>
 				<li class="x-tab-strip-active x-tab-strip-closable">
 					<span class="x-tab-right">
-						<em class="x-tab-left"><span class="x-tab-strip-inner"><span class="x-tab-strip-text">{workspace}</span></span></em>
+						<em class="x-tab-left"><span class="x-tab-strip-inner"><span class="x-tab-strip-text"><f:format.html parseFuncTSPath="">{workspace}</f:format.html></span></span></em>
 					</span>
 				</li>
 			</f:then>
 			<f:else>
 				<li class="x-tab-strip-closable">
 					<f:link.action controller="Review" action="index" additionalParams="{workspace:uid}" class="x-tab-right">
-						<em class="x-tab-left"><span class="x-tab-strip-inner"><span class="x-tab-strip-text">{workspace}</span></span></em>
+						<em class="x-tab-left"><span class="x-tab-strip-inner"><span class="x-tab-strip-text"><f:format.html parseFuncTSPath="">{workspace}</f:format.html></span></span></em>
 					</f:link.action>
 				</li>
 			</f:else>
