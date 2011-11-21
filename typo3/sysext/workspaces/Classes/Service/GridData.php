@@ -359,8 +359,8 @@ class tx_Workspaces_Service_GridData {
 	 * @return boolean
 	 */
 	protected function isFilterTextInVisibleColumns($filterText, array $versionArray) {
-		if (is_array($GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['columns'])) {
-			foreach ($GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['columns'] as $column => $value) {
+		if (is_array($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'])) {
+			foreach ($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'] as $column => $value) {
 				if (isset($value['hidden']) && isset($column) && isset($versionArray[$column])) {
 					if ($value['hidden'] == 0) {
 						switch ($column) {
