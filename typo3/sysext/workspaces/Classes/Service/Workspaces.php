@@ -536,7 +536,8 @@ class tx_Workspaces_Service_Workspaces {
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'])) {
 				$_params = array('table' => $table, 'uid' => $uid, 'record' => $record);
 				$_funcRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'];
-				$viewUrl = t3lib_div::callUserFunction($_funcRef, $_params, null);
+				$null = NULL;
+				$viewUrl = t3lib_div::callUserFunction($_funcRef, $_params, $null);
 			}
 		}
 		return $viewUrl;
