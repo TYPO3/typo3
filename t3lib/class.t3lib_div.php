@@ -5531,14 +5531,17 @@ final class t3lib_div {
 
 				// write message to a file
 			if ($type == 'file') {
+				$lockObject = t3lib_div::makeInstance('t3lib_lock', $destination, $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
+				/** @var t3lib_lock $lockObject */
+				$lockObject->setEnableLogging(FALSE);
+				$lockObject->acquire();
 				$file = fopen($destination, 'a');
 				if ($file) {
-					flock($file, LOCK_EX); // try locking, but ignore if not available (eg. on NFS and FAT)
 					fwrite($file, date($dateFormat . ' ' . $timeFormat) . $msgLine . LF);
-					flock($file, LOCK_UN); // release the lock
 					fclose($file);
 					self::fixPermissions($destination);
 				}
+				$lockObject->release();
 			}
 				// send message per mail
 			elseif ($type == 'mail') {
@@ -5616,14 +5619,17 @@ final class t3lib_div {
 		if (stripos($log, 'file') !== FALSE) {
 				// write a longer message to the deprecation log
 			$destination = self::getDeprecationLogFileName();
+			$lockObject = t3lib_div::makeInstance('t3lib_lock', $destination, $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
+			/** @var t3lib_lock $lockObject */
+			$lockObject->setEnableLogging(FALSE);
+			$lockObject->acquire();
 			$file = @fopen($destination, 'a');
 			if ($file) {
-				flock($file, LOCK_EX); // try locking, but ignore if not available (eg. on NFS and FAT)
 				@fwrite($file, $date . $msg . LF);
-				flock($file, LOCK_UN); // release the lock
 				@fclose($file);
 				self::fixPermissions($destination);
 			}
+			$lockObject->release();
 		}
 
 		if (stripos($log, 'devlog') !== FALSE) {
