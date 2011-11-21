@@ -2730,8 +2730,14 @@
 			$this->calculateLinkVars();
 
 				// instantiate tslib_content to generate the correct target URL
+			/** @var $cObj tslib_cObj */
 			$cObj = t3lib_div::makeInstance('tslib_cObj');
-			$redirectUrl = $cObj->typoLink_URL(array('parameter' => $this->page['uid']));
+			$parameter = $this->page['uid'];
+			$type = t3lib_div::_GET('type');
+			if ($type) {
+				$parameter .= ',' . $type;
+			}
+			$redirectUrl = $cObj->typoLink_URL(array('parameter' => $parameter));
 
 				// HTTP Status code header - dependent on shortcut type
 			$redirectStatus = t3lib_utility_Http::HTTP_STATUS_301;
