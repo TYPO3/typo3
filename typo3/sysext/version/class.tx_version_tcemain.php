@@ -1323,6 +1323,16 @@ class tx_version_tcemain {
 	protected function moveRecord_wsPlaceholders($table, $uid, $destPid, $wsUid, t3lib_TCEmain $tcemainObj) {
 		global $TCA;
 
+			// If a record gets moved after a record that already has a placeholder record
+			// then the new placeholder record needs to be after the existing one:
+		if ($destPid < 0) {
+			$movePlaceHolder = t3lib_BEfunc::getMovePlaceholder($table, abs($destPid), 'uid');
+
+			if ($movePlaceHolder !== FALSE) {
+				$destPid = -$movePlaceHolder['uid'];
+			}
+		}
+
 		if ($plh = t3lib_BEfunc::getMovePlaceholder($table, $uid, 'uid')) {
 				// If already a placeholder exists, move it:
 			$tcemainObj->moveRecord_raw($table, $plh['uid'], $destPid);
