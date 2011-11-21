@@ -450,7 +450,11 @@ class ux_t3lib_DB extends t3lib_DB {
 								$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table), $field, $content, $where);
 							} else {
 								$this->handlerInstance[$this->lastHandlerKey]->CompleteTrans(FALSE);
-								die('Could not update BLOB >>>> no WHERE clause found!'); // should never ever happen
+									// Should never ever happen
+								throw new RuntimeException(
+									'Could not update BLOB >>>> no WHERE clause found!',
+									1321860519
+								);
 							}
 						}
 					}
@@ -471,8 +475,9 @@ class ux_t3lib_DB extends t3lib_DB {
 								$this->handlerInstance[$this->lastHandlerKey]->UpdateClob($this->quoteFromTables($table), $field, $content, $where);
 							} else {
 								$this->handlerInstance[$this->lastHandlerKey]->CompleteTrans(FALSE);
+									// Should never ever happen
 								throw new RuntimeException(
-									'Could not update CLOB >>>> no WHERE clause found!', // should never ever happen
+									'Could not update CLOB >>>> no WHERE clause found!',
 									1310027337
 								);
 							}
@@ -1443,7 +1448,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		$queryComponents['SELECT'] = $this->SQLparser->parseFieldList($select_fields);
 		if ($this->SQLparser->parse_error) {
 			throw new InvalidArgumentException(
-				$this->SQLparser->parse_error . ' in ' . __FILE__ . ' : ' . __LINE__,
+				$this->SQLparser->parse_error,
 				1310027408
 			);
 		}
@@ -1453,7 +1458,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		$queryComponents['WHERE'] = $this->SQLparser->parseWhereClause($where_clause, '', $queryComponents['parameters']);
 		if (!is_array($queryComponents['WHERE'])) {
 			throw new InvalidArgumentException(
-				'Could not parse where clause in ' . __FILE__ . ' : ' . __LINE__,
+				'Could not parse where clause',
 				1310027427
 			);
 		}
@@ -1649,7 +1654,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		$select_fields = $this->SQLparser->parseFieldList($select_fields);
 		if ($this->SQLparser->parse_error) {
 			throw new InvalidArgumentException(
-				$this->SQLparser->parse_error . ' in ' . __FILE__ . ' : ' . __LINE__,
+				$this->SQLparser->parse_error,
 				1310027490
 			);
 		}
@@ -1762,7 +1767,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			$where_clause = $this->SQLparser->compileWhereClause($where_clause);
 		} else {
 			throw new InvalidArgumentException(
-				'Could not parse where clause in ' . __FILE__ . ' : ' . __LINE__,
+				'Could not parse where clause',
 				1310027511
 			);
 		}
