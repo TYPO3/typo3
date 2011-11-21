@@ -110,12 +110,13 @@ class tx_em_Connection_Ter {
 		$l10n = $this->fetchTranslation($extKey, $lang, $mirrorURL);
 		if (is_array($l10n)) {
 			$file = PATH_site . 'typo3temp/' . $extKey . '-l10n-' . $lang . '.zip';
-			$path = 'l10n/' . $lang . '/';
+			$path = 'l10n/' . $lang;
 			if (!is_dir(PATH_typo3conf . $path)) {
 				t3lib_div::mkdir_deep(PATH_typo3conf, $path);
 			}
 			t3lib_div::writeFile($file, $l10n[0]);
 			if (tx_em_Tools::unzip($file, PATH_typo3conf . $path)) {
+				t3lib_div::fixPermissions(PATH_typo3conf . $path, TRUE);
 				return TRUE;
 			}
 		}
