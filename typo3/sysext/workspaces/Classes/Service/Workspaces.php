@@ -233,6 +233,9 @@ class tx_Workspaces_Service_Workspaces {
 	protected function selectAllVersionsFromPages($table, $pageList, $wsid, $filter, $stage) {
 
 		$fields = 'A.uid, A.t3ver_oid,' . ($table==='pages' ? ' A.t3ver_swapmode,' : '') . 'B.pid AS wspid, B.pid AS livepid';
+		if (t3lib_BEfunc::isTableLocalizable($table)) {
+			$fields .= ', A.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+		}
 		$from = $table . ' A,' . $table . ' B';
 
 			// Table A is the offline version and pid=-1 defines offline
@@ -459,6 +462,8 @@ class tx_Workspaces_Service_Workspaces {
 
 		if (t3lib_BEfunc::isTableLocalizable($table)) {
 			$languageUid = $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
+		} else {
+			return TRUE;
 		}
 
 		return $GLOBALS['BE_USER']->checkLanguageAccess($languageUid);
