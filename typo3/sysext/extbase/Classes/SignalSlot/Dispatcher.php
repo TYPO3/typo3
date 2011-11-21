@@ -30,11 +30,9 @@
  * and passing them the method arguments which were originally passed to the
  * signal method.
  *
- * @package Extbase
- * @subpackage SignalSlot
  * @api
  */
-class Tx_Extbase_SignalSlot_Dispatcher {
+class Tx_Extbase_SignalSlot_Dispatcher implements t3lib_Singleton {
 
 	/**
 	 * @var Tx_Extbase_Object_ObjectManagerInterface
@@ -54,7 +52,6 @@ class Tx_Extbase_SignalSlot_Dispatcher {
 	 *
 	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
@@ -70,7 +67,6 @@ class Tx_Extbase_SignalSlot_Dispatcher {
 	 * @param string $slotMethodName Name of the method to be used as a slot. If $slotClassNameOrObject is a Closure object, this parameter is ignored
 	 * @param boolean $omitSignalInformation If set to TRUE, the first argument passed to the slot will be the first argument of the signal instead of some information about the signal.
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function connect($signalClassName, $signalName, $slotClassNameOrObject, $slotMethodName = '', $omitSignalInformation = FALSE) {
@@ -106,7 +102,6 @@ class Tx_Extbase_SignalSlot_Dispatcher {
 	 * @param array $signalArguments arguments passed to the signal method
 	 * @return void
 	 * @throws Tx_Extbase_SignalSlot_Exception_InvalidSlotException if the slot is not valid
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function dispatch($signalClassName, $signalName, array $signalArguments = array()) {
@@ -140,7 +135,6 @@ class Tx_Extbase_SignalSlot_Dispatcher {
 	 * @param string $signalClassName Name of the class containing the signal
 	 * @param string $signalName Name of the signal
 	 * @return array An array of arrays with slot information
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function getSlots($signalClassName, $signalName) {
