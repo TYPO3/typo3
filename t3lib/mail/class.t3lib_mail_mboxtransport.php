@@ -89,21 +89,26 @@ class t3lib_mail_MboxTransport implements Swift_Transport {
 		$messageStr .= $message->toString();
 		$messageStr .= LF . LF;
 
+		$lockObject = t3lib_div::makeInstance('t3lib_lock', $this->debugFile, $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
+		/** @var t3lib_lock $lockObject */
+		$lockObject->acquire();
+
 			// Write the mbox file
 		$file = @fopen($this->debugFile, 'a');
 		if (!$file) {
+			$lockObject->release();
 			throw new RuntimeException(
 				sprintf('Could not write to file "%s" when sending an email to debug transport', $this->debugFile),
 				1291064151
 			);
 		}
 
-		flock($file, LOCK_EX);
 		@fwrite($file, $messageStr);
-		flock($file, LOCK_UN);
 		@fclose($file);
 
 		t3lib_div::fixPermissions($this->debugFile);
+
+		$lockObject->release();
 
 			// Return every receipient as "delivered"
 		$count = (
