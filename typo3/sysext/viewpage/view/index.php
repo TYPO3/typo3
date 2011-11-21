@@ -115,6 +115,7 @@ class SC_mod_web_view_index {
 						'';
 
 			// preview of mount pages
+		/** @var t3lib_pageSelect $sys_page */
 		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 		$sys_page->init(FALSE);
 		$mountPointInfo = $sys_page->getMountPointInfo($this->id);
@@ -123,7 +124,17 @@ class SC_mod_web_view_index {
 			$addCmd .= '&MP=' . $mountPointInfo['MPvar'];
 		}
 
-		$this->url.= ($dName?(t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').$dName:$BACK_PATH.'..').'/index.php?id='.$this->id.($this->type?'&type='.$this->type:'').$addCmd;
+		$page = (array)$sys_page->getPage($this->id);
+
+		$urlScheme = 'http';
+		if ($page['url_scheme'] == 2 || $page['url_scheme'] == 0 && t3lib_div::getIndpEnv('TYPO3_SSL')) {
+			$urlScheme = 'https';
+		}
+
+		$this->url .= ($dName
+				? $urlScheme . '://' . $dName
+				: $BACK_PATH . '..') . '/index.php?id=' . $this->id .
+					($this->type ? '&type=' . $this->type : '') . $addCmd;
 	}
 
 	/**
