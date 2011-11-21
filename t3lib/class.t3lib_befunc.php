@@ -2612,8 +2612,16 @@ final class t3lib_BEfunc {
 		if (count($rootLine) > 0) {
 			$urlParts = parse_url($domain);
 			if (self::getDomainStartPage($urlParts['host'], $urlParts['path'])) {
-				$protocol = t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
-				$domain = $protocol . self::firstDomainRecord($rootLine);
+				/** @var t3lib_pageSelect $sysPage */
+				$sysPage = t3lib_div::makeInstance('t3lib_pageSelect');
+
+				$page = (array)$sysPage->getPage($pageId);
+				$protocol = 'http';
+				if ($page['url_scheme'] == t3lib_utility_Http::SCHEME_HTTPS || ($page['url_scheme'] == 0 && t3lib_div::getIndpEnv('TYPO3_SSL'))) {
+					$protocol = 'https';
+				}
+
+				$domain = $protocol . '://' . self::firstDomainRecord($rootLine);
 			}
 		}
 
