@@ -494,7 +494,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 			if ($this->PHPFileFunctions) {
 				copy($theFile, $theDestFile);
 			} else {
-				$cmd = 'cp "' . $theFile . '" "' . $theDestFile . '"';
+				$cmd = 'cp ' . escapeshellarg($theFile) . ' ' . escapeshellarg($theDestFile);
 				t3lib_utility_Command::exec($cmd);
 			}
 			t3lib_div::fixPermissions($theDestFile);
@@ -543,7 +543,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 				return FALSE;
 			}
 				// No way to do this under windows!
-			$cmd = 'cp -R "' . $theFile . '" "' . $theDestFile . '"';
+			$cmd = 'cp -R ' . escapeshellarg($theFile) . ' ' . escapeshellarg($theDestFile);
 			t3lib_utility_Command::exec($cmd);
 			clearstatcache();
 			if (@is_dir($theDestFile)) {
@@ -616,7 +616,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 			if ($this->PHPFileFunctions) {
 				@rename($theFile, $theDestFile);
 			} else {
-				$cmd = 'mv "' . $theFile . '" "' . $theDestFile . '"';
+				$cmd = 'mv ' . escapeshellarg($theFile) . ' ' . escapeshellarg($theDestFile);
 				t3lib_utility_Command::exec($cmd);
 			}
 			clearstatcache();
@@ -665,7 +665,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 			if ($this->PHPFileFunctions) {
 				@rename($theFile, $theDestFile);
 			} else {
-				$cmd = 'mv "' . $theFile . '" "' . $theDestFile . '"';
+				$cmd = 'mv ' . escapeshellarg($theFile) . ' ' . escapeshellarg($theDestFile);
 				$errArr = array();
 				t3lib_utility_Command::exec($cmd, $errArr);
 			}
@@ -1009,7 +1009,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 		}
 		if ($this->checkPathAgainstMounts($theFile) && $this->checkPathAgainstMounts($theDest . '/')) {
 				// No way to do this under windows.
-			$cmd = $this->unzipPath . 'unzip -qq "' . $theFile . '" -d "' . $theDest . '"';
+			$cmd = $this->unzipPath . 'unzip -qq ' . escapeshellarg($theFile) . ' -d ' . escapeshellarg($theDest);
 			t3lib_utility_Command::exec($cmd);
 			$this->writelog(7, 0, 1, 'Unzipping file "%s" in "%s"', array($theFile, $theDest));
 			return TRUE;
