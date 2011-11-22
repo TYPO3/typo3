@@ -2578,15 +2578,21 @@ final class t3lib_BEfunc {
 		}
 
 			// checks alternate domains
+		$protocol = t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
+			// checks alternate domains
 		if (count($rootLine) > 0) {
 			$urlParts = parse_url($domain);
-			if (self::getDomainStartPage($urlParts['host'], $urlParts['path'])) {
-				$protocol = t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
-				$domain = $protocol . self::firstDomainRecord($rootLine);
+			if (!self::getDomainStartPage($urlParts['host'], $urlParts['path'])) {
+				$domain = self::firstDomainRecord($rootLine);
+			} else {
+				$dRecord = self::getDomainStartPage($urlParts['host'], $urlParts['path']);
+				if (isset($dRecord['domainName'])) {
+					$domain = $dRecord['domainName'];
+				}
 			}
 		}
 
-		return $domain;
+		return $protocol . $domain;
 	}
 
 	/**
