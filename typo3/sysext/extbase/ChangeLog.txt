@@ -1,6 +1,44 @@
 ChangeLog for Extbase
 =====================
 
+Changes for 1.4.1:
+==================
+included in TYPO3 4.6.1.
+
+This is a bugfix release, especially in the following areas:
+
+- Made sure that Signal Slot Dispatcher does not flood the DevLog anymore
+- The old property mapper (again) maps DateTime Properties correctly
+- Make default action resolving more backwards compatible
+
+	With 1.4 Extbase throws an Exception if a requested controller
+    and/or action is not configured to be part of the current
+    plugin. If mvc.throwPageNotFoundExceptionIfActionCantBeResolved
+    is set, a 404 not-found page is shown (see #6235 and related).
+
+    That makes it easier for developers to track down typos in their
+    plugin configuration.
+    If, however, two plugins listen to the same "plugin namespace"
+    (e.g. because they are two instances of the same plugin) one
+    sometimes prefer the plugins to fall back to their default
+    controller/action pair, if the requested action is not supported
+
+    This change adds a new setting:
+    Add mvc.callDefaultActionIfActionCantBeResolved = 1 to your
+    extension/plugin configuration in order to get this behavior.
+
+    Note: This will resolve to the default action of the *current*
+    default controller. So this behavior is not exactly the same as
+    in Extbase 1.3 (see #7282).
+
+Full Changes for 1.4.0 - 1.4.1:
+===============================
+
+[TASK] Update version number to 1.4.1
+[BUGFIX] Make SignalSlot Dispatcher a singleton (#31950)
+[BUGFIX] DateTime properties are not mapped correctly (#31345)
+[BUGFIX] Make changed action resolving backwards compatible (#31322)
+
 Changes for 1.4.0:
 ==================
 included in TYPO3 4.6.0.
