@@ -197,6 +197,8 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 					'The requested resource was not found',
 					1313857897
 				);
+			} elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (boolean)$configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
+				return $this->defaultControllerName;
 			}
 			throw new Tx_Extbase_MVC_Exception_InvalidControllerName(
 				'The controller "' . $parameters['controller'] . '" is not allowed by this plugin. Please check for Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
@@ -217,8 +219,8 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	 * @throws t3lib_error_http_PageNotFoundException|Tx_Extbase_MVC_Exception|Tx_Extbase_MVC_Exception_InvalidActionName if the action could not be resolved
 	 */
 	protected function resolveActionName($controllerName, array $parameters) {
+		$defaultActionName = is_array($this->allowedControllerActions[$controllerName]) ? current($this->allowedControllerActions[$controllerName]) : '';
 		if (!isset($parameters['action']) || strlen($parameters['action']) === 0) {
-			$defaultActionName = is_array($this->allowedControllerActions[$controllerName]) ? current($this->allowedControllerActions[$controllerName]) : '';
 			if (strlen($defaultActionName) === 0) {
 				throw new Tx_Extbase_MVC_Exception(
 					'The default action can not be determined for controller "' . $controllerName . '". Please check Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
@@ -236,10 +238,12 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 					'The requested resource was not found',
 					1313857897
 				);
+			} elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (boolean)$configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
+				return $defaultActionName;
 			}
 			throw new Tx_Extbase_MVC_Exception_InvalidActionName(
 				'The action "' . $actionName . '" (controller "' . $controllerName . '") is not allowed by this plugin. Please check Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
-				1313855173
+				1313855175
 			);
 		}
 		return filter_var($actionName, FILTER_SANITIZE_STRING);
