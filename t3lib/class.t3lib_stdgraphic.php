@@ -44,7 +44,7 @@
  *  366:	 function maskImageOntoImage(&$im,$conf,$workArea)
  *  436:	 function copyImageOntoImage(&$im,$conf,$workArea)
  *  458:	 function copyGifOntoGif(&$im,$cpImg,$conf,$workArea)
- *  537:	 function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)
+ *  537:	 function imagecopyresized(&$dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight)
  *
  *			  SECTION: Text / "TEXT" GIFBUILDER object
  *  587:	 function makeText(&$im,$conf,$workArea)
@@ -497,33 +497,35 @@ class t3lib_stdGraphic {
 	 * It works, but the resulting images is now a true-color PNG which may be very large.
 	 * So, why not use 'imagetruecolortopalette ($im, TRUE, 256)' - well because it does NOT WORK! So simple is that.
 	 *
-	 * For parameters, see PHP function "imagecopyresized()"
-	 *
-	 * @param	pointer		see PHP function "imagecopyresized()"
-	 * @param	pointer		see PHP function "imagecopyresized()"
-	 * @param	integer		see PHP function "imagecopyresized()"
-	 * @param	integer		see PHP function "imagecopyresized()"
-	 * @param	integer		see PHP function "imagecopyresized()"
-	 * @param	integer		see PHP function "imagecopyresized()"
-	 * @param	integer		see PHP function "imagecopyresized()"
-	 * @param	integer		see PHP function "imagecopyresized()"
-	 * @param	integer		see PHP function "imagecopyresized()"
-	 * @param	integer		see PHP function "imagecopyresized()"
-	 * @return	void
+	 * @param resource $dstImg destination image
+	 * @param resource $srcImg source image
+	 * @param integer $dstX destination x-coordinate
+	 * @param integer $dstY destination y-coordinate
+	 * @param integer $srcX source x-coordinate
+	 * @param integer $srcY source y-coordinate
+	 * @param integer $dstWidth destination width
+	 * @param integer $dstHeight destination height
+	 * @param integer $srcWidth source width
+	 * @param integer $srcHeight source height
+	 * @return void
 	 * @access private
 	 * @see t3lib_iconWorks::imagecopyresized()
 	 */
-	function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h) {
+	function imagecopyresized(&$dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight) {
 		if ($this->imagecopyresized_fix) {
-			$im_base = imagecreatetruecolor(imagesx($im), imagesy($im)); // Make true color image
-			imagecopyresized($im_base, $im, 0, 0, 0, 0, imagesx($im), imagesy($im), imagesx($im), imagesy($im)); // Copy the source image onto that
-			imagecopyresized($im_base, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h); // Then copy the $cpImg onto that (the actual operation!)
-			$im = $im_base; // Set pointer
+				// Make true color image
+			$tmpImg = imagecreatetruecolor(imagesx($dstImg), imagesy($dstImg));
+				// Copy the source image onto that
+			imagecopyresized($tmpImg, $dstImg, 0, 0, 0, 0, imagesx($dstImg), imagesy($dstImg), imagesx($dstImg), imagesy($dstImg));
+				// Then copy the source image onto that (the actual operation!)
+			imagecopyresized($tmpImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight);
+				// Set the destination image
+			$dstImg = $tmpImg;
 			if (!$this->truecolor) {
-				$this->makeEffect($im, array('value' => 'colors=' . t3lib_div::intInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256))); // Reduce to "reduceColors" colors - make SURE that IM is working then!
+				$this->makeEffect($dstImg, array('value' => 'colors=' . t3lib_div::intInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256))); // Reduce to "reduceColors" colors - make SURE that IM is working then!
 			}
 		} else {
-			imagecopyresized($im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h);
+			imagecopyresized($dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight);
 		}
 	}
 

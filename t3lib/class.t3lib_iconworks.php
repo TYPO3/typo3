@@ -45,7 +45,7 @@
  *
  *			  SECTION: Other functions
  *  353:	 function makeIcon($iconfile,$mode, $user, $protectSection,$absFile,$iconFileName_stateTagged)
- *  475:	 function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)
+ *  475:	 function imagecopyresized(&$dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight)
  *  505:	 function imagecreatefrom($file)
  *  522:	 function imagemake($im, $path)
  *
@@ -555,23 +555,22 @@ final class t3lib_iconWorks {
 	 * Of course it works only if ImageMagick is able to create valid png-images - which you cannot be sure of with older versions (still 5+)
 	 * The only drawback is (apparently) that IM creates true-color png's. The transparency of these will not be shown by MSIE on windows at this time (although it's straight 0%/100% transparency!) and the file size may be larger.
 	 *
-	 * For parameters, see PHP function "imagecopyresized()"
-	 *
-	 * @param	pointer		see PHP function "imagecopyresized()"
-	 * @param	pointer		see PHP function "imagecopyresized()"
-	 * @param	integer		see PHP function "imagecopyresized()"
-	 * @param	integer		see PHP function "imagecopyresized()"
-	 * @param	integer		see PHP function "imagecopyresized()"
-	 * @param	integer		see PHP function "imagecopyresized()"
-	 * @param	integer		see PHP function "imagecopyresized()"
-	 * @param	integer		see PHP function "imagecopyresized()"
-	 * @param	integer		see PHP function "imagecopyresized()"
-	 * @param	integer		see PHP function "imagecopyresized()"
+	 * @param resource $dstImg destination image
+	 * @param resource $srcImg source image
+	 * @param integer $dstX destination x-coordinate
+	 * @param integer $dstY destination y-coordinate
+	 * @param integer $srcX source x-coordinate
+	 * @param integer $srcY source y-coordinate
+	 * @param integer $dstWidth destination width
+	 * @param integer $dstHeight destination height
+	 * @param integer $srcWidth source width
+	 * @param integer $srcHeight source height
 	 * @return	void
 	 * @access private
+	 * @see t3lib_stdGraphic::imagecopyresized()
 	 */
-	public static function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h) {
-		imagecopyresized($im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h);
+	public static function imagecopyresized(&$dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight) {
+		imagecopyresized($dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight);
 	}
 
 	/**
