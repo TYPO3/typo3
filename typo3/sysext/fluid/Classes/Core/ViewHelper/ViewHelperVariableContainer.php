@@ -1,27 +1,17 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+
 /**
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
 class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
@@ -50,7 +40,6 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	 * @param object $value The value to store
 	 * @return void
 	 * @throws Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException if there was no key with the specified name
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function add($viewHelperName, $key, $value) {
@@ -67,7 +56,6 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	 * @param string $key Key of the data
 	 * @param object $value The value to store
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function addOrUpdate($viewHelperName, $key, $value) {
 		if (!isset($this->objects[$viewHelperName])) {
@@ -83,7 +71,6 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	 * @param string $key Key of the data
 	 * @return object The object stored
 	 * @throws Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException if there was no key with the specified name
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function get($viewHelperName, $key) {
@@ -97,7 +84,6 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	 * @param string $viewHelperName The ViewHelper Class name (Fully qualified, like Tx_Fluid_ViewHelpers_ForViewHelper)
 	 * @param string $key Key of the data
 	 * @return boolean TRUE if a value for the given ViewHelperName / Key is stored, FALSE otherwise.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function exists($viewHelperName, $key) {
@@ -111,7 +97,6 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	 * @param string $key Key of the data to remove
 	 * @return void
 	 * @throws Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException if there was no key with the specified name
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function remove($viewHelperName, $key) {
@@ -124,7 +109,6 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	 *
 	 * @param Tx_Fluid_View_AbstractTemplateView $view View to set
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setView(Tx_Fluid_View_AbstractTemplateView $view) {
 		$this->view = $view;
@@ -136,7 +120,6 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	 * !!! This is NOT a public API and might still change!!!
 	 *
 	 * @return Tx_Fluid_View_AbstractTemplateView The View
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getView() {
 		return $this->view;
@@ -146,7 +129,6 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	 * Clean up for serializing.
 	 *
 	 * @return array
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function __sleep() {
 		return array('objects');

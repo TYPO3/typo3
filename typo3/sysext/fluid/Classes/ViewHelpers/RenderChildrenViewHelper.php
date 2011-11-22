@@ -1,12 +1,12 @@
 <?php
 
 /*
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
+ *                                                                        *
  *                                                                        *
  * This script is distributed in the hope that it will be useful, but     *
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
@@ -27,7 +27,6 @@
  * It renders everything inside the Widget ViewHelper, and you can pass additional
  * arguments.
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
 class Tx_Fluid_ViewHelpers_RenderChildrenViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
@@ -35,7 +34,6 @@ class Tx_Fluid_ViewHelpers_RenderChildrenViewHelper extends Tx_Fluid_Core_ViewHe
 	/**
 	 * @param array $arguments
 	 * @return string
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function render(array $arguments = array()) {
 		$renderingContext = $this->getWidgetRenderingContext();
@@ -52,7 +50,6 @@ class Tx_Fluid_ViewHelpers_RenderChildrenViewHelper extends Tx_Fluid_Core_ViewHe
 	 * Get the widget rendering context, or throw an exception if it cannot be found.
 	 *
 	 * @return Tx_Fluid_Core_Rendering_RenderingContextInterface
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function getWidgetRenderingContext() {
 		$renderingContext = $this->getWidgetContext()->getViewHelperChildNodeRenderingContext();
@@ -64,7 +61,6 @@ class Tx_Fluid_ViewHelpers_RenderChildrenViewHelper extends Tx_Fluid_Core_ViewHe
 
 	/**
 	 * @return Tx_Fluid_Core_Parser_SyntaxTree_RootNode
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function getWidgetChildNodes() {
 		return $this->getWidgetContext()->getViewHelperChildNodes();
@@ -72,7 +68,6 @@ class Tx_Fluid_ViewHelpers_RenderChildrenViewHelper extends Tx_Fluid_Core_ViewHe
 
 	/**
 	 * @return Tx_Fluid_Core_Widget_WidgetContext
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function getWidgetContext() {
 		$request = $this->controllerContext->getRequest();
@@ -88,7 +83,6 @@ class Tx_Fluid_ViewHelpers_RenderChildrenViewHelper extends Tx_Fluid_Core_ViewHe
 	 *
 	 * @param array $arguments
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function addArgumentsToTemplateVariableContainer(array $arguments) {
 		$templateVariableContainer = $this->getWidgetRenderingContext()->getTemplateVariableContainer();
@@ -102,7 +96,6 @@ class Tx_Fluid_ViewHelpers_RenderChildrenViewHelper extends Tx_Fluid_Core_ViewHe
 	 *
 	 * @param array $arguments
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function removeArgumentsFromTemplateVariableContainer(array $arguments) {
 		$templateVariableContainer = $this->getWidgetRenderingContext()->getTemplateVariableContainer();

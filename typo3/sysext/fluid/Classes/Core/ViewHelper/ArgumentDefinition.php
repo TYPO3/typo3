@@ -1,21 +1,11 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
@@ -23,7 +13,6 @@
 /**
  * Argument definition of each view helper argument
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 
@@ -72,7 +61,6 @@ class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 	 * @param boolean $required TRUE if argument is required
 	 * @param mixed $defaultValue Default value
 	 * @param boolean $isMethodParameter TRUE if this argument is a method parameter
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function __construct($name, $type, $description, $required, $defaultValue = NULL, $isMethodParameter = FALSE) {
 		$this->name = $name;
@@ -87,7 +75,6 @@ class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 	 * Get the name of the argument
 	 *
 	 * @return string Name of argument
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getName() {
 		return $this->name;
@@ -97,7 +84,6 @@ class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 	 * Get the type of the argument
 	 *
 	 * @return string Type of argument
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getType() {
 		return $this->type;
@@ -107,7 +93,6 @@ class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 	 * Get the description of the argument
 	 *
 	 * @return string Description of argument
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getDescription() {
 		return $this->description;
@@ -117,7 +102,6 @@ class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 	 * Get the optionality of the argument
 	 *
 	 * @return boolean TRUE if argument is optional
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function isRequired() {
 		return $this->required;
@@ -127,7 +111,6 @@ class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 	 * Get the default value, if set
 	 *
 	 * @return mixed Default value
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getDefaultValue() {
 		return $this->defaultValue;
@@ -137,7 +120,6 @@ class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 	 * TRUE if it is a method parameter
 	 *
 	 * @return boolean TRUE if it's a method parameter
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function isMethodParameter() {
 		return $this->isMethodParameter;

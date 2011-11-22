@@ -1,11 +1,11 @@
 <?php
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
+ *                                                                        *
  *                                                                        *
  * This script is distributed in the hope that it will be useful, but     *
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
@@ -43,8 +43,6 @@
  * Clicking on a username will open the TYPO3 info popup for the respective record
  * </output>
  *
- * @author Bastian Waidelich <bastian@typo3.org>
- * @license http://www.gnu.org/copyleft/gpl.html
  */
 require_once (PATH_typo3 . 'class.db_list.inc');
 require_once (PATH_typo3 . 'class.db_list_extra.inc');

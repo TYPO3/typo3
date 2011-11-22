@@ -1,21 +1,11 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
@@ -26,7 +16,6 @@ require_once(dirname(__FILE__) . '/../../Fixtures/TestViewHelper.php');
 /**
  * Testcase for [insert classname here]
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -61,7 +50,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_E
 
 	/**
 	 * Setup fixture
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setUp() {
 		$this->renderingContext = new Tx_Fluid_Core_Rendering_RenderingContext();
@@ -81,7 +69,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_E
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function constructorSetsViewHelperAndArguments() {
 		$viewHelper = $this->getMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper');
@@ -94,8 +81,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_E
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function childNodeAccessFacetWorksAsExpected() {
 		$childNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_TextNode', array(), array('foo'));
@@ -112,8 +97,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_E
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function initializeArgumentsAndRenderIsCalledByViewHelperNode() {
 		$mockViewHelper = $this->getMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('initializeArgumentsAndRender', 'prepareArguments'));
@@ -126,8 +109,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_E
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function initializeArgumentsAndRenderIsCalledWithCorrectArguments() {
 		$arguments = array(
@@ -150,7 +131,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_E
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function evaluateMethodPassesRenderingContextToViewHelper() {
 		$mockViewHelper = $this->getMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'validateArguments', 'prepareArguments', 'setRenderingContext'));
@@ -163,7 +143,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_E
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function multipleEvaluateCallsShareTheSameViewHelperInstance() {
 		$mockViewHelper = $this->getMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'validateArguments', 'prepareArguments', 'setViewHelperVariableContainer'));

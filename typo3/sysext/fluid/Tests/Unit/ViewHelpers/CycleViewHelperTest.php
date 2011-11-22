@@ -1,21 +1,11 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
@@ -25,7 +15,6 @@ require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 /**
  * Testcase for CycleViewHelper
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_CycleViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
@@ -43,7 +32,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_CycleViewHelperTest extends Tx_Fluid_ViewH
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function renderAddsCurrentValueToTemplateVariableContainerAndRemovesItAfterRendering() {
 		$this->templateVariableContainer->expects($this->at(0))->method('add')->with('innerVariable', 'bar');
@@ -55,7 +43,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_CycleViewHelperTest extends Tx_Fluid_ViewH
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function renderAddsFirstValueToTemplateVariableContainerAfterLastValue() {
 		$this->templateVariableContainer->expects($this->at(0))->method('add')->with('innerVariable', 'bar');
@@ -73,7 +60,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_CycleViewHelperTest extends Tx_Fluid_ViewH
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function viewHelperSupportsAssociativeArrays() {
 		$this->templateVariableContainer->expects($this->at(0))->method('add')->with('innerVariable', 'FLOW3');
@@ -92,7 +78,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_CycleViewHelperTest extends Tx_Fluid_ViewH
 	/**
 	 * @test
 	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function renderThrowsExceptionWhenPassingObjectsToValuesThatAreNotTraversable() {
 		$object = new stdClass();
@@ -102,7 +87,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_CycleViewHelperTest extends Tx_Fluid_ViewH
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function renderReturnsChildNodesIfValuesIsNull() {
 		$this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('Child nodes'));
@@ -112,7 +96,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_CycleViewHelperTest extends Tx_Fluid_ViewH
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function renderReturnsChildNodesIfValuesIsAnEmptyArray() {
 		$this->templateVariableContainer->expects($this->at(0))->method('add')->with('foo', NULL);
@@ -125,7 +108,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_CycleViewHelperTest extends Tx_Fluid_ViewH
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function renderIteratesThroughElementsOfTraversableObjects() {
 		$this->templateVariableContainer->expects($this->at(0))->method('add')->with('innerVariable', 'value1');

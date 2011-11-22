@@ -33,7 +33,6 @@ class Tx_Fluid_ViewHelpers_Uri_EmailViewHelper extends Tx_Fluid_Core_ViewHelper_
 	/**
 	 * @param string $email The email address to be turned into a URI
 	 * @return string Rendered email link
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function render($email) {
 		if (TYPO3_MODE === 'FE') {

@@ -1,29 +1,19 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the FLOW3 package "Fluid".                      *
+ * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+
 /**
  * The abstract base class for all view helpers.
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
 abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
@@ -112,7 +102,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	/**
 	 * @param array $arguments
 	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function setArguments(array $arguments) {
 		$this->arguments = $arguments;
@@ -121,7 +110,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	/**
 	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setRenderingContext(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
 		$this->renderingContext = $renderingContext;
@@ -135,7 +123,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	/**
 	 * Inject a Reflection service
 	 * @param Tx_Extbase_Reflection_Service $reflectionService Reflection service
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
@@ -163,7 +150,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * @param boolean $required If TRUE, argument is required. Defaults to FALSE.
 	 * @param mixed $defaultValue Default value of argument
 	 * @return Tx_Fluid_Core_ViewHelper_AbstractViewHelper $this, to allow chaining.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	protected function registerArgument($name, $type, $description, $required = FALSE, $defaultValue = NULL) {
@@ -185,7 +171,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * @param boolean $required If TRUE, argument is required. Defaults to FALSE.
 	 * @param mixed $defaultValue Default value of argument
 	 * @return Tx_Fluid_Core_ViewHelper_AbstractViewHelper $this, to allow chaining.
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	protected function overrideArgument($name, $type, $description, $required = FALSE, $defaultValue = NULL) {
@@ -203,7 +188,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 *
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $node View Helper node to be set.
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setViewHelperNode(Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $node) {
 		$this->viewHelperNode = $node;
@@ -224,7 +208,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * Initialize the arguments of the ViewHelper, and call the render() method of the ViewHelper.
 	 *
 	 * @return string the rendered ViewHelper.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function initializeArgumentsAndRender() {
 		$this->validateArguments();
@@ -237,7 +220,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * Call the render() method and handle errors.
 	 *
 	 * @return string the rendered ViewHelper
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function callRenderMethod() {
 		$renderMethodParameters = array();
@@ -261,7 +243,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * Override this method to solve tasks before the view helper content is rendered.
 	 *
 	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function initialize() {
@@ -272,8 +253,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * opening and the closing tag.
 	 *
 	 * @return mixed The finally rendered child nodes.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function renderChildren() {
@@ -302,7 +281,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * Initialize all arguments and return them
 	 *
 	 * @return array Array of Tx_Fluid_Core_ViewHelper_ArgumentDefinition instances.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function prepareArguments() {
 		if (!$this->argumentsInitialized) {
@@ -323,8 +301,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * Register method arguments for "render" by analysing the doc comment above.
 	 *
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	private function registerRenderMethodArguments() {
 		$methodParameters = $this->reflectionService->getMethodParameters(get_class($this), 'render');
@@ -373,8 +349,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * Validate arguments, and throw exception if arguments do not validate.
 	 *
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function validateArguments() {
 		$argumentDefinitions = $this->prepareArguments();
@@ -411,7 +385,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * $this->registerArgument(...) inside this method, to register all your arguments.
 	 *
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function initializeArguments() {
@@ -424,7 +397,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * Besides, you often need $this->renderChildren().
 	 *
 	 * @return string rendered string, view helper specific
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	//abstract public function render();
@@ -433,8 +405,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * Get the rendering context interface.
 	 *
 	 * @return Tx_Fluid_Core_Rendering_RenderingContextInterface
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0. use $this->renderingContext instead
 	 */
 	public function getRenderingContext() {
