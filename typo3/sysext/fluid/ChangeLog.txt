@@ -1,6 +1,19 @@
 ChangeLog for Fluid
 ===================
 
+Changes for 1.4.1:
+==================
+included in TYPO3 4.6.1
+
+This is a bugfix release.
+
+Full Changes for 1.4.1:
+=======================
+[TASK] Update version number to 1.4.1
+[BUGFIX] TextboxViewHelper does not return anything (Resolves #31331)
+[BUGFIX] Fix version dependency for extbase
+[BUGFIX] Fix PHP Warnings in Unit Tests
+
 Changes for 1.4.0:
 ==================
 included in TYPO3 4.6.0
