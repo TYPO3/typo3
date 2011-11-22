@@ -3297,7 +3297,7 @@ final class t3lib_div {
 							if ($filepath == $dirName . $fI['basename']) {
 								self::writeFile($filepath, $content);
 								if (!@is_file($filepath)) {
-									return 'File not written to disk! Write permission error in filesystem?';
+									return 'The file was not written to the disk. Please, check that you have write permissions to the typo3temp/ directory.';
 								}
 							} else {
 								return 'Calculated filelocation didn\'t match input $filepath!';
