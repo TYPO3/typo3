@@ -38,7 +38,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'depends' => array(
 			'adodb' => '5.14.0-',
 			'php' => '5.3.0-0.0.0',
-			'typo3' => '4.6.1-0.0.0',
+			'typo3' => '4.6.1-4.6.99',
 		),
 		'conflicts' => array(
 		),
