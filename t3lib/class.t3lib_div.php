@@ -2948,12 +2948,15 @@ final class t3lib_div {
 
 		$fullPath = $directory . $deepDirectory;
 		if (!is_dir($fullPath) && strlen($fullPath) > 0) {
-			@mkdir(
+			$previousUmask = umask(0);
+			$result = @mkdir(
 				$fullPath,
 				octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']),
 				TRUE
 			);
-			if (!is_dir($fullPath)) {
+			umask($previousUmask);
+
+			if ($result === FALSE) {
 				throw new \RuntimeException(
 					'Could not create directory!',
 					1170251400
