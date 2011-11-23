@@ -151,8 +151,9 @@ class SC_t3lib_thumbs {
 		if ($mtime) {
 				// Always use the absolute path for this check!
 			$check = basename($file).':'.$mtime.':'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-			$md5_real = t3lib_div::shortMD5($check);
-			if (!strcmp($md5_real,$md5sum)) {
+			$md5pre47 = t3lib_div::shortMD5($check);
+			$md5from47 = md5($check);
+			if (!strcmp($md5pre47, $md5sum) || !strcmp($md5from47, $md5sum)) {
 				$OK = TRUE;
 			}
 		}
@@ -231,8 +232,13 @@ class SC_t3lib_thumbs {
 					}
 				}
 					// The thumbnail is read and output to the browser
-				if($fd = @fopen($this->output,'rb')) {
+				if (($fd = @fopen($this->output, 'rb'))) {
+					$fileModificationTime = filemtime($this->output);
 					header('Content-type: image/' . $outext);
+					header('Last-Modified: '. date('r', $fileModificationTime));
+					header('Etag: ' . md5($this->output) . '-' . $fileModificationTime);
+						// Expiration time is choosen arbitrary to 1 month
+					header('Expires: ' . date('r', $fileModificationTime + 30*24*60*60));
 					fpassthru($fd);
 					fclose($fd);
 				} else {

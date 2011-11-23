@@ -4080,8 +4080,8 @@ class tslib_cObj {
 									: $conf['icon_thumbSize']);
 							}
 							$check = basename($theFile) . ':' . filemtime($theFile) . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-							$md5sum = '&md5sum=' . t3lib_div::shortMD5($check);
-							$icon = 't3lib/thumbs.php?dummy=' . $GLOBALS['EXEC_TIME'] . '&file=' .
+							$md5sum = '&md5sum=' . md5($check);
+							$icon = 't3lib/thumbs.php?file=' .
 								rawurlencode('../' . $theFile) . $thumbSize . $md5sum;
 						} else {
 							$icon = t3lib_extMgm::siteRelPath('cms') . 'tslib/media/miscicons/notfound_thumb.gif';
