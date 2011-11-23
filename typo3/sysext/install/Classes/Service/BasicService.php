@@ -51,7 +51,10 @@ class Tx_Install_Service_BasicService {
 	 * @return bool
 	 */
 	public static function createInstallToolEnableFile() {
-		return touch(self::getInstallToolEnableFilePath());
+		$installEnableFilePath = self::getInstallToolEnableFilePath();
+		$result = touch($installEnableFilePath);
+		t3lib_div::fixPermissions($installEnableFilePath);
+		return $result;
 	}
 
 	/**
