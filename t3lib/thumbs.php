@@ -151,8 +151,9 @@ class SC_t3lib_thumbs {
 		if ($mtime) {
 				// Always use the absolute path for this check!
 			$check = basename($file).':'.$mtime.':'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-			$md5_real = t3lib_div::shortMD5($check);
-			if (!strcmp($md5_real,$md5sum)) {
+			$md5pre47 = t3lib_div::shortMD5($check);
+			$md5from47 = md5($check);
+			if (!strcmp($md5pre47, $md5sum) || !strcmp($md5from47, $md5sum)) {
 				$OK = TRUE;
 			}
 		}
