@@ -22,7 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-t3lib_div::requireOnce(PATH_typo3 . 'contrib/pear/HTTP/Request2.php');
+t3lib_div::requireOnce('HTTP/Request2.php');
 
 /**
  * HTTP Request Utility class
