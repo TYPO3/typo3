@@ -487,8 +487,8 @@ class fileList extends t3lib_recordList {
 									$theFile_abs = $theFile['path'].$theFile['file'];
 									$check = basename($theFile_abs).':'.filemtime($theFile_abs).':'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 									$params = '&file='.$theFile_R;
-									$params.= '&md5sum='.t3lib_div::shortMD5($check);
-									$href = $this->backPath.$this->thumbScript.'?&dummy='.$GLOBALS['EXEC_TIME'].$params;
+									$params.= '&md5sum='.md5($check);
+									$href = $this->backPath.$this->thumbScript.'?' . $params;
 
 									$theData[$field] .= '<br /><img src="'.htmlspecialchars($href).'" hspace="2" title="'.htmlspecialchars(trim($theFile['file'])).'" alt="'.htmlspecialchars(trim($theFile['file'])).'" />';
 								}
