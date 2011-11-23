@@ -628,8 +628,10 @@ class SC_mod_tools_dbint_index {
 		$files = t3lib_div::getFilesInDir($basedir,'',1);
 		if (is_array($files))	{
 			$files_searched+=count($files);
+			// Escape the regexp. Note: we cannot use preg_quote here because it will escape more than we need!
+			$regExpPattern = str_replace('/', '\\/', $pattern);
 			foreach ($files as $value) {
-				if (preg_match('/'.$pattern.'/i',basename($value)))	$matching_files[]=substr($value,strlen(PATH_site));
+				if (preg_match('/'.$regExpPattern.'/i',basename($value)))	$matching_files[]=substr($value,strlen(PATH_site));
 			}
 		}
 
