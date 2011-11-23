@@ -61,12 +61,12 @@
 
 
 unset($MCONF);
-require ('conf.php');
-require ($BACK_PATH.'init.php');
-require ($BACK_PATH.'template.php');
+require('conf.php');
+require($BACK_PATH . 'init.php');
+require($BACK_PATH . 'template.php');
 
 $GLOBALS['LANG']->includeLLFile('EXT:lowlevel/dbint/locallang.xml');
-$BE_USER->modAccess($MCONF,1);
+$BE_USER->modAccess($MCONF, 1);
 
 
 
@@ -642,49 +642,53 @@ class SC_mod_tools_dbint_index {
 	/**
 	 * Searching for filename pattern recursively in the specified dir.
 	 *
-	 * @param	string		Base directory
-	 * @param	string		Match pattern
-	 * @param	array		Array of matching files, passed by reference
-	 * @param	integer		Depth to recurse
-	 * @return	array		Array with various information about the search result
+	 * @param string $basedir: Base directory
+	 * @param string $pattern: Match pattern
+	 * @param array $matching_files: Array of matching files, passed by reference
+	 * @param integer $depth: Depth to recurse
+	 * @return array Array with various information about the search result
 	 * @see func_filesearch()
 	 */
-	function findFile($basedir,$pattern,&$matching_files,$depth)	{
-		$files_searched=0;
-		$dirs_searched=0;
-		$dirs_error=0;
+	function findFile($basedir, $pattern, &$matching_files, $depth) {
+		$files_searched = 0;
+		$dirs_searched = 0;
+		$dirs_error = 0;
 
 			// Traverse files:
-		$files = t3lib_div::getFilesInDir($basedir,'',1);
-		if (is_array($files))	{
-			$files_searched+=count($files);
+		$files = t3lib_div::getFilesInDir($basedir, '', 1);
+		if (is_array($files)) {
+			$files_searched += count($files);
+				// Escape the regexp. Note: we cannot use preg_quote here because it will escape more than we need!
+			$regExpPattern = str_replace('/', '\\/', $pattern);
 			foreach ($files as $value) {
-				if (preg_match('/'.$pattern.'/i',basename($value)))	$matching_files[]=substr($value,strlen(PATH_site));
+				if (preg_match('/' . $regExpPattern . '/i', basename($value))) {
+					$matching_files[] = substr($value, strlen(PATH_site));
+				}
 			}
 		}
 
-
 			// Traverse subdirs
-		if ($depth>0)	{
+		if ($depth > 0) {
 			$dirs = t3lib_div::get_dirs($basedir);
-			if (is_array($dirs))	{
-				$dirs_searched+=count($dirs);
+			if (is_array($dirs)) {
+				$dirs_searched += count($dirs);
 
 				foreach ($dirs as $value) {
-					$inf= $this->findFile($basedir.$value.'/',$pattern,$matching_files,$depth-1);
-					$dirs_searched+=$inf[0];
-					$files_searched+=$inf[1];
-					$dirs_error=$inf[2];
+					$inf = $this->findFile($basedir . $value . '/', $pattern, $matching_files, $depth-1);
+					$dirs_searched += $inf[0];
+					$files_searched += $inf[1];
+					$dirs_error = $inf[2];
 				}
 			}
 		} else {
 			$dirs = t3lib_div::get_dirs($basedir);
-			if (is_array($dirs) && count($dirs))	{
-				$dirs_error=1;	// Means error - there were further subdirs!
+			if (is_array($dirs) && count($dirs)) {
+					// Means error - there were further subdirs!
+				$dirs_error = 1;
 			}
 		}
 
-		return array($dirs_searched,$files_searched,$dirs_error);
+		return array($dirs_searched, $files_searched, $dirs_error);
 	}
 }
 
