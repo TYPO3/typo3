@@ -346,7 +346,26 @@ class localRecordList extends recordList {
 			);
 		}
 		$selectFields = array_unique($selectFields);		// Unique list!
-		$selectFields = array_intersect($selectFields,$this->makeFieldList($table,1));		// Making sure that the fields in the field-list ARE in the field-list from TCA!
+		$fieldListFields = $this->makeFieldList($table,1);
+		if (!count($fieldListFields) && $GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
+
+			$msg = sprintf(
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.php:missingTcaColumnsMessage', 1),
+				$table,
+				$table
+			);
+			$msgTitle = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.php:missingTcaColumnsMessageTitle', 1);
+
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$msg,
+				$msgTitle,
+				t3lib_FlashMessage::WARNING,
+				TRUE
+			);
+			t3lib_FlashMessageQueue::addMessage($flashMessage);
+		}
+		$selectFields = array_intersect($selectFields,$fieldListFields);	// Making sure that the fields in the field-list ARE in the field-list from TCA!
 		$selFieldList = implode(',',$selectFields);		// implode it into a list of fields for the SQL-statement.
 		$this->selFieldList = $selFieldList;
 
@@ -420,12 +439,16 @@ class localRecordList extends recordList {
 				$out.=$this->addelement(0,'',$theData,'class="c-table-row-spacer"',$this->leftMargin);
 			}
 
+			$theTitle = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'],1);
+			if ($theTitle == '') {
+				$theTitle = $table;
+			}
 				// Header line is drawn
-			$theData = Array();
+			$theData = array();
 			if ($this->disableSingleTableView)	{
-				$theData[$titleCol] = '<span class="c-table">' . t3lib_BEfunc::wrapInHelp($table, '', $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'], TRUE)) . '</span> ('.$this->totalItems.')';
+				$theData[$titleCol] = '<span class="c-table">' . $theTitle . '</span> (' . $this->totalItems . ')';
 			} else {
-				$theData[$titleCol] = $this->linkWrapTable($table, '<span class="c-table">' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'], TRUE) . '</span> (' . $this->totalItems . ') ' .
+				$theData[$titleCol] = $this->linkWrapTable($table, '<span class="c-table">' . $theTitle . '</span> (' . $this->totalItems . ') ' .
 						($this->table ? t3lib_iconWorks::getSpriteIcon('actions-view-table-collapse', array('title' => $GLOBALS['LANG']->getLL('contractView', TRUE))) : t3lib_iconWorks::getSpriteIcon('actions-view-table-expand', array('title' => $GLOBALS['LANG']->getLL('expandView', TRUE))))
 					);
 			}
