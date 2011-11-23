@@ -472,9 +472,6 @@ class t3lib_TSparser {
 				} else {
 					$lnRegisDone = 0;
 					if ($wipeOut && $this->strict) {
-						if ((isset($setup[$string]) && !isset($value[0])) || (isset($setup[$string . '.']) && !isset($value[1]))) {
-							$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object copied in this line "' . trim($this->raw[($this->rawP - 1)]) . '" would leave either the value or properties untouched in TypoScript Version 1. Please check that this is not a problem for you.', 1);
-						}
 						unset($setup[$string]);
 						unset($setup[$string . '.']);
 						if ($this->regLinenumbers) {
