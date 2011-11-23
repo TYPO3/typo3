@@ -1050,7 +1050,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 		if (count($workspaces))	{
 			foreach ($workspaces as $rec)	{
 				if ($this->checkWorkspace($rec))	{
-					$options[$rec['uid']] = $rec['uid'].': '.$rec['title'];
+					$options[$rec['uid']] = $rec['uid'].': '.htmlspecialchars($rec['title']);
 
 						// Check if all mount points are accessible, otherwise show error:
 					if (trim($rec['db_mountpoints'])!=='')	{
