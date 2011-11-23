@@ -1614,27 +1614,19 @@ final class t3lib_BEfunc {
 					$check = basename($theFile_abs) . ':' . filemtime($theFile_abs) . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 					$params = '&file=' . rawurlencode($theFile);
 					$params .= $size ? '&size=' . $size : '';
-					$params .= '&md5sum=' . t3lib_div::shortMD5($check);
+					$params .= '&md5sum=' . md5($check);
 
-					$url = $thumbScript . '?&dummy=' . $GLOBALS['EXEC_TIME'] . $params;
+					$url = $thumbScript . '?' . $params;
 					$onClick = 'top.launchView(\'' . $theFile . '\',\'\',\'' . $backPath . '\');return false;';
 					$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '"><img src="' . htmlspecialchars($backPath . $url) . '" hspace="2" border="0" title="' . trim($theFile) . '"' . $tparams . ' alt="" /></a> ';
 				} else {
 						// Icon
-					$theFile_abs = PATH_site . ($uploaddir ? $uploaddir . '/' : '') . trim($theFile);
 					$theFile = ($abs ? '' : '../') . ($uploaddir ? $uploaddir . '/' : '') . trim($theFile);
-
 					$fileIcon = t3lib_iconWorks::getSpriteIconForFile(
 						strtolower($ext),
 						array('title' => htmlspecialchars(trim($theFile)))
 					);
 
-					$check = basename($theFile_abs) . ':' . filemtime($theFile_abs) . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-					$params = '&file=' . rawurlencode($theFile);
-					$params .= $size ? '&size=' . $size : '';
-					$params .= '&md5sum=' . t3lib_div::shortMD5($check);
-
-					$url = $thumbScript . '?&dummy=' . $GLOBALS['EXEC_TIME'] . $params;
 					$onClick = 'top.launchView(\'' . $theFile . '\',\'\',\'' . $backPath . '\');return false;';
 					$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $fileIcon . '</a> ';
 				}
@@ -1656,9 +1648,9 @@ final class t3lib_BEfunc {
 		$check = basename($theFile) . ':' . filemtime($theFile) . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 		$params = '&file=' . rawurlencode($theFile);
 		$params .= trim($size) ? '&size=' . trim($size) : '';
-		$params .= '&md5sum=' . t3lib_div::shortMD5($check);
+		$params .= '&md5sum=' . md5($check);
 
-		$url = $thumbScript . '?&dummy=' . $GLOBALS['EXEC_TIME'] . $params;
+		$url = $thumbScript . '?' . $params;
 		$th = '<img src="' . htmlspecialchars($url) . '" title="' . trim(basename($theFile)) . '"' . ($tparams ? " " . $tparams : "") . ' alt="" />';
 		return $th;
 	}
