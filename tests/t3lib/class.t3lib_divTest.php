@@ -742,6 +742,8 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			// 'dot in local part' => array('firstname.lastname@employee.2something.com'),
 				// Fix / change if TYPO3 php requirement changed: Address ok with 5.2.6, but not ok with 5.3.2
 			// 'dash as local part' => array('-@foo.com'),
+			'umlauts in local part' => array('äöüfoo@bar.com'),
+			'umlauts in domain part' => array('foo@äöüfoo.com'),
 		);
 	}
 
@@ -1321,6 +1323,11 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			'news' => array('news:news.php.net'),
 			'telnet'=> array('telnet://192.0.2.16:80/'),
 			'ldap' => array('ldap://[2001:db8::7]/c=GB?objectClass?one'),
+			'http punycode domain name' => array('http://www.xn--bb-eka.at'),
+			'http punicode subdomain' => array('http://xn--h-zfa.oebb.at'),
+			'http domain-name umlauts' => array('http://www.öbb.at'),
+			'http subdomain umlauts' => array('http://äh.oebb.at'),
+			'http directory umlauts' => array('http://www.oebb.at/äöü/'),
 		);
 	}
 
