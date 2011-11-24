@@ -8,8 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/Events/EventObject.php';
-//@require 'Swift/Transport.php';
 
 /**
  * Generated when a command is sent over an SMTP connection.
@@ -19,19 +17,19 @@
  */
 class Swift_Events_CommandEvent extends Swift_Events_EventObject
 {
-
+  
   /**
    * The command sent to the server.
    * @var string
    */
   private $_command;
-
+  
   /**
    * An array of codes which a successful response will contain.
    * @var int[]
    */
   private $_successCodes = array();
-
+  
   /**
    * Create a new CommandEvent for $source with $command.
    * @param Swift_Transport $source
@@ -45,7 +43,7 @@ class Swift_Events_CommandEvent extends Swift_Events_EventObject
     $this->_command = $command;
     $this->_successCodes = $successCodes;
   }
-
+  
   /**
    * Get the command which was sent to the server.
    * @return string
@@ -54,7 +52,7 @@ class Swift_Events_CommandEvent extends Swift_Events_EventObject
   {
     return $this->_command;
   }
-
+  
   /**
    * Get the numeric response codes which indicate success for this command.
    * @return int[]
@@ -63,5 +61,5 @@ class Swift_Events_CommandEvent extends Swift_Events_EventObject
   {
     return $this->_successCodes;
   }
-
+  
 }

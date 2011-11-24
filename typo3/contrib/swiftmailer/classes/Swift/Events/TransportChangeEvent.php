@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/Events/EventObject.php';
 
 /**
  * Generated when the state of a Transport is changed (i.e. stopped/started).
@@ -18,7 +17,7 @@
  */
 class Swift_Events_TransportChangeEvent extends Swift_Events_EventObject
 {
-
+  
   /**
    * Get the Transport.
    * @return Swift_Transport
@@ -27,5 +26,5 @@ class Swift_Events_TransportChangeEvent extends Swift_Events_EventObject
   {
     return $this->getSource();
   }
-
+  
 }

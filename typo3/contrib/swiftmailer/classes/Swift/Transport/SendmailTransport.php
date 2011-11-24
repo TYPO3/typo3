@@ -8,18 +8,14 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/Transport/EsmtpTransport.php';
-//@require 'Swift/Transport/IoBuffer.php';
-//@require 'Swift/Transport/Log.php';
-//@require 'Swift/Events/EventDispatcher.php';
 
 /**
  * SendmailTransport for sending mail through a sendmail/postfix (etc..) binary.
- *
+ * 
  * Supported modes are -bs and -t, with any additional flags desired.
  * It is advised to use -bs mode since error reporting with -t mode is not
  * possible.
- *
+ * 
  * @package Swift
  * @subpackage Transport
  * @author Chris Corbyn
@@ -27,7 +23,7 @@
 class Swift_Transport_SendmailTransport
   extends Swift_Transport_AbstractSmtpTransport
 {
-
+  
   /**
    * Connection buffer parameters.
    * @var array
@@ -39,7 +35,7 @@ class Swift_Transport_SendmailTransport
     'command' => '/usr/sbin/sendmail -bs',
     'type' => Swift_Transport_IoBuffer::TYPE_PROCESS
     );
-
+  
   /**
    * Create a new SendmailTransport with $buf for I/O.
    * @param Swift_Transport_IoBuffer $buf
@@ -50,7 +46,7 @@ class Swift_Transport_SendmailTransport
   {
     parent::__construct($buf, $dispatcher);
   }
-
+  
   /**
    * Start the standalone SMTP session if running in -bs mode.
    */
@@ -61,7 +57,7 @@ class Swift_Transport_SendmailTransport
       parent::start();
     }
   }
-
+  
   /**
    * Set the command to invoke.
    * If using -t mode you are strongly advised to include -oi or -i in the
@@ -70,13 +66,14 @@ class Swift_Transport_SendmailTransport
    * The recommended mode is "-bs" since it is interactive and failure notifications
    * are hence possible.
    * @param string $command
+   * @return Swift_Transport_SendmailTransport
    */
   public function setCommand($command)
   {
     $this->_params['command'] = $command;
     return $this;
   }
-
+  
   /**
    * Get the sendmail command which will be invoked.
    * @return string
@@ -85,10 +82,10 @@ class Swift_Transport_SendmailTransport
   {
     return $this->_params['command'];
   }
-
+  
   /**
    * Send the given Message.
-   * Recipient/sender data will be retreived from the Message API.
+   * Recipient/sender data will be retrieved from the Message API.
    * The return value is the number of recipients who were accepted for delivery.
    * NOTE: If using 'sendmail -t' you will not be aware of any failures until
    * they bounce (i.e. send() will always return 100% success).
@@ -101,7 +98,7 @@ class Swift_Transport_SendmailTransport
     $failedRecipients = (array) $failedRecipients;
     $command = $this->getCommand();
     $buffer = $this->getBuffer();
-
+    
     if (false !== strpos($command, ' -t'))
     {
       if ($evt = $this->_eventDispatcher->createSendEvent($this, $message))
@@ -112,14 +109,14 @@ class Swift_Transport_SendmailTransport
           return 0;
         }
       }
-
+      
       if (false === strpos($command, ' -f'))
       {
         $command .= ' -f' . $this->_getReversePath($message);
       }
-
+      
       $buffer->initialize(array_merge($this->_params, array('command' => $command)));
-
+      
       if (false === strpos($command, ' -i') && false === strpos($command, ' -oi'))
       {
         $buffer->setWriteTranslations(array("\r\n" => "\n", "\n." => "\n.."));
@@ -128,7 +125,7 @@ class Swift_Transport_SendmailTransport
       {
         $buffer->setWriteTranslations(array("\r\n"=>"\n"));
       }
-
+      
       $count = count((array) $message->getTo())
         + count((array) $message->getCc())
         + count((array) $message->getBcc())
@@ -137,14 +134,14 @@ class Swift_Transport_SendmailTransport
       $buffer->flushBuffers();
       $buffer->setWriteTranslations(array());
       $buffer->terminate();
-
+      
       if ($evt)
       {
         $evt->setResult(Swift_Events_SendEvent::RESULT_SUCCESS);
         $evt->setFailedRecipients($failedRecipients);
         $this->_eventDispatcher->dispatchEvent($evt, 'sendPerformed');
       }
-
+      
       $message->generateId();
     }
     elseif (false !== strpos($command, ' -bs'))
@@ -158,16 +155,16 @@ class Swift_Transport_SendmailTransport
         'Must be one of "-bs" or "-t" but can include additional flags.'
         ));
     }
-
+    
     return $count;
   }
-
+  
   // -- Protected methods
-
+  
   /** Get the params to initialize the buffer */
   protected function _getBufferParams()
   {
     return $this->_params;
   }
-
+  
 }

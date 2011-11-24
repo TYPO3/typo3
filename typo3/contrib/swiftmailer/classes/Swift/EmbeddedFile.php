@@ -8,9 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/Mime/Attachment.php';
-//@require 'Swift/DependencyContainer.php';
-//@require 'Swift/ByteStream/FileByteStream.php';
 
 /**
  * An embedded file, in a multipart message.
@@ -20,7 +17,7 @@
  */
 class Swift_EmbeddedFile extends Swift_Mime_EmbeddedFile
 {
-
+  
   /**
    * Create a new EmbeddedFile.
    * Details may be optionally provided to the constructor.
@@ -36,7 +33,7 @@ class Swift_EmbeddedFile extends Swift_Mime_EmbeddedFile
       Swift_DependencyContainer::getInstance()
         ->createDependenciesFor('mime.embeddedfile')
       );
-
+    
     $this->setBody($data);
     $this->setFilename($filename);
     if ($contentType)
@@ -44,7 +41,7 @@ class Swift_EmbeddedFile extends Swift_Mime_EmbeddedFile
       $this->setContentType($contentType);
     }
   }
-
+  
   /**
    * Create a new EmbeddedFile.
    * @param string|Swift_OutputByteStream $data
@@ -57,7 +54,7 @@ class Swift_EmbeddedFile extends Swift_Mime_EmbeddedFile
   {
     return new self($data, $filename, $contentType);
   }
-
+  
   /**
    * Create a new EmbeddedFile from a filesystem path.
    * @param string $path
@@ -69,5 +66,5 @@ class Swift_EmbeddedFile extends Swift_Mime_EmbeddedFile
       new Swift_ByteStream_FileByteStream($path)
       );
   }
-
+  
 }

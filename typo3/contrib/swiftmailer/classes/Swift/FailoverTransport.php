@@ -8,8 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/Transport/FailoverTransport.php';
-//@require 'Swift/DependencyContainer.php';
 
 /**
  * Contains a list of redundant Transports so when one fails, the next is used.
@@ -19,7 +17,7 @@
  */
 class Swift_FailoverTransport extends Swift_Transport_FailoverTransport
 {
-
+  
   /**
    * Creates a new FailoverTransport with $transports.
    * @param array $transports
@@ -31,10 +29,10 @@ class Swift_FailoverTransport extends Swift_Transport_FailoverTransport
       Swift_DependencyContainer::getInstance()
         ->createDependenciesFor('transport.failover')
       );
-
+    
     $this->setTransports($transports);
   }
-
+  
   /**
    * Create a new FailoverTransport instance.
    * @param string $transports
@@ -44,5 +42,5 @@ class Swift_FailoverTransport extends Swift_Transport_FailoverTransport
   {
     return new self($transports);
   }
-
+  
 }

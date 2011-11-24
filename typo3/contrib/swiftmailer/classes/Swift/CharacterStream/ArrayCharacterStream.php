@@ -8,8 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/CharacterStream.php';
-//@require 'Swift/OutputByteStream.php';
 
 
 /**
@@ -21,13 +19,13 @@
 class Swift_CharacterStream_ArrayCharacterStream
   implements Swift_CharacterStream
 {
-
+  
   /** A map of byte values and their respective characters */
   private static $_charMap;
-
+  
   /** A map of characters and their derivative byte values */
   private static $_byteMap;
-
+  
   /** The char reader (lazy-loaded) for the current charset */
   private $_charReader;
 
@@ -242,7 +240,7 @@ class Swift_CharacterStream_ArrayCharacterStream
           if ($buf_len - $buf_pos < $need)
           {
             $new = $this->_reloadBuffer($fp, $need);
-
+            
             if ($new)
             {
               $buffer = array_merge($buffer, $new);
@@ -259,7 +257,7 @@ class Swift_CharacterStream_ArrayCharacterStream
       }
     }
     while ($has_datas);
-
+    
     fclose($fp);
   }
 
@@ -289,7 +287,7 @@ class Swift_CharacterStream_ArrayCharacterStream
     $this->_array = array();
     $this->_array_size = 0;
   }
-
+  
   private function _reloadBuffer($fp, $len)
   {
     if (!feof($fp) && ($bytes = fread($fp, $len)) !== false)
@@ -303,7 +301,7 @@ class Swift_CharacterStream_ArrayCharacterStream
     }
     return false;
   }
-
+  
   private static function _initializeMaps()
   {
     if (!isset(self::$_charMap))

@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/Mime/Header.php';
 
 /**
  * A MIME Header with parameters.
@@ -18,18 +17,18 @@
  */
 interface Swift_Mime_ParameterizedHeader extends Swift_Mime_Header
 {
-
+  
   /**
    * Set the value of $parameter.
    * @param string $parameter
    * @param string $value
    */
   public function setParameter($parameter, $value);
-
+  
   /**
    * Get the value of $parameter.
    * @return string
    */
   public function getParameter($parameter);
-
+  
 }
