@@ -17,6 +17,7 @@ plugin.tx_felogin_pi1 {
 		#parameter and additionalParams are set by extension
 	linkConfig {
 		target = 
+		ATagParams = rel="nofollow"
 	}
 	
 		#preserve GET vars - define "all" or commaseperated list of GET-vars that should be included by link generation
