@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/IoException.php';
 
 /**
  * TransportException thrown when an error occurs in the Transport subsystem.
@@ -18,7 +17,7 @@
  */
 class Swift_TransportException extends Swift_IoException
 {
-
+  
   /**
    * Create a new TransportException with $message.
    * @param string $message
@@ -27,5 +26,5 @@ class Swift_TransportException extends Swift_IoException
   {
     parent::__construct($message);
   }
-
+  
 }

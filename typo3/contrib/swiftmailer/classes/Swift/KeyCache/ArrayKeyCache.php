@@ -8,11 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/KeyCache.php';
-//@require 'Swift/KeyCacheInputStream.php';
-//@require 'Swift/InputByteStream.php';
-//@require 'Swift/OutputByteStrean.php';
-//@require 'Swift/SwiftException.php';
 
 /**
  * A basic KeyCache backed by an array.
@@ -22,21 +17,21 @@
  */
 class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
 {
-
+  
   /**
    * Cache contents.
    * @var array
    * @access private
    */
   private $_contents = array();
-
+  
   /**
    * An InputStream for cloning.
    * @var Swift_KeyCache_KeyCacheInputStream
    * @access private
    */
   private $_stream;
-
+  
   /**
    * Create a new ArrayKeyCache with the given $stream for cloning to make
    * InputByteStreams.
@@ -46,7 +41,7 @@ class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
   {
     $this->_stream = $stream;
   }
-
+  
   /**
    * Set a string into the cache under $itemKey for the namespace $nsKey.
    * @param string $nsKey
@@ -77,7 +72,7 @@ class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
           );
     }
   }
-
+  
   /**
    * Set a ByteStream into the cache under $itemKey for the namespace $nsKey.
    * @param string $nsKey
@@ -111,7 +106,7 @@ class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
           );
     }
   }
-
+  
   /**
    * Provides a ByteStream which when written to, writes data to $itemKey.
    * NOTE: The stream will always write in append mode.
@@ -132,7 +127,7 @@ class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
     }
     return $is;
   }
-
+  
   /**
    * Get data back out of the cache as a string.
    * @param string $nsKey
@@ -147,7 +142,7 @@ class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
       return $this->_contents[$nsKey][$itemKey];
     }
   }
-
+  
   /**
    * Get data back out of the cache as a ByteStream.
    * @param string $nsKey
@@ -159,7 +154,7 @@ class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
     $this->_prepareCache($nsKey);
     $is->write($this->getString($nsKey, $itemKey));
   }
-
+  
   /**
    * Check if the given $itemKey exists in the namespace $nsKey.
    * @param string $nsKey
@@ -171,7 +166,7 @@ class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
     $this->_prepareCache($nsKey);
     return array_key_exists($itemKey, $this->_contents[$nsKey]);
   }
-
+  
   /**
    * Clear data for $itemKey in the namespace $nsKey if it exists.
    * @param string $nsKey
@@ -181,7 +176,7 @@ class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
   {
     unset($this->_contents[$nsKey][$itemKey]);
   }
-
+  
   /**
    * Clear all data in the namespace $nsKey if it exists.
    * @param string $nsKey
@@ -190,9 +185,9 @@ class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
   {
     unset($this->_contents[$nsKey]);
   }
-
+  
   // -- Private methods
-
+  
   /**
    * Initialize the namespace of $nsKey if needed.
    * @param string $nsKey
@@ -205,5 +200,5 @@ class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
       $this->_contents[$nsKey] = array();
     }
   }
-
+  
 }

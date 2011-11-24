@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/Encoder.php';
 
 /**
  * Interface for all Header Encoding schemes.
@@ -18,11 +17,11 @@
  */
 interface Swift_Mime_HeaderEncoder extends Swift_Encoder
 {
-
+  
   /**
    * Get the MIME name of this content encoding scheme.
    * @return string
    */
   public function getName();
-
+  
 }

@@ -8,10 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/ByteStream/AbstractFilterableInputStream.php';
-//@require 'Swift/ReplacementFilterFactory.php';
-//@require 'Swift/Transport/IoBuffer.php';
-//@require 'Swift/TransportException.php';
 
 /**
  * A generic IoBuffer implementation supporting remote sockets and local processes.
@@ -23,25 +19,25 @@ class Swift_Transport_StreamBuffer
   extends Swift_ByteStream_AbstractFilterableInputStream
   implements Swift_Transport_IoBuffer
 {
-
+  
   /** A primary socket */
   private $_stream;
-
+  
   /** The input stream */
   private $_in;
-
+  
   /** The output stream */
   private $_out;
-
+  
   /** Buffer initialization parameters */
   private $_params = array();
-
+  
   /** The ReplacementFilterFactory */
   private $_replacementFactory;
-
+  
   /** Translations performed on data being streamed into the buffer */
   private $_translations = array();
-
+  
   /**
    * Create a new StreamBuffer using $replacementFactory for transformations.
    * @param Swift_ReplacementFilterFactory $replacementFactory
@@ -51,7 +47,7 @@ class Swift_Transport_StreamBuffer
   {
     $this->_replacementFactory = $replacementFactory;
   }
-
+  
   /**
    * Perform any initialization needed, using the given $params.
    * Parameters will vary depending upon the type of IoBuffer used.
@@ -71,7 +67,7 @@ class Swift_Transport_StreamBuffer
         break;
     }
   }
-
+  
   /**
    * Set an individual param on the buffer (e.g. switching to SSL).
    * @param string $param
@@ -83,23 +79,29 @@ class Swift_Transport_StreamBuffer
     {
       switch ($param)
       {
-        case 'protocol':
-          if (!array_key_exists('protocol', $this->_params)
-            || $value != $this->_params['protocol'])
+        case 'timeout':
+          if ($this->_stream)
           {
-            if ('tls' == $value)
-            {
-              stream_socket_enable_crypto(
-                $this->_stream, true, STREAM_CRYPTO_METHOD_TLS_CLIENT
-                );
-            }
+            stream_set_timeout($this->_stream, $value);
           }
           break;
+          
+        case 'blocking':
+          if ($this->_stream)
+          {
+            stream_set_blocking($this->_stream, 1);
+          }
+          
       }
     }
     $this->_params[$param] = $value;
   }
-
+  
+  public function startTLS()
+  {
+    return stream_socket_enable_crypto($this->_stream, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
+  }
+  
   /**
    * Perform any shutdown logic needed.
    */
@@ -124,7 +126,7 @@ class Swift_Transport_StreamBuffer
     $this->_out = null;
     $this->_in = null;
   }
-
+  
   /**
    * Set an array of string replacements which should be made on data written
    * to the buffer.  This could replace LF with CRLF for example.
@@ -140,7 +142,7 @@ class Swift_Transport_StreamBuffer
         unset($this->_translations[$search]);
       }
     }
-
+    
     foreach ($replacements as $search => $replace)
     {
       if (!isset($this->_translations[$search]))
@@ -152,7 +154,7 @@ class Swift_Transport_StreamBuffer
       }
     }
   }
-
+  
   /**
    * Get a line of output (including any CRLF).
    * The $sequence number comes from any writes and may or may not be used
@@ -165,10 +167,21 @@ class Swift_Transport_StreamBuffer
     if (isset($this->_out) && !feof($this->_out))
     {
       $line = fgets($this->_out);
+      if (strlen($line)==0) 
+      {
+        $metas = stream_get_meta_data($this->_out);
+        if ($metas['timed_out']) {
+          throw new Swift_IoException(
+            'Connection to ' . 
+              $this->_getReadConnectionDescription() . 
+            ' Timed Out'
+          );
+        }
+      }
       return $line;
     }
   }
-
+  
   /**
    * Reads $length bytes from the stream into a string and moves the pointer
    * through the stream by $length. If less bytes exist than are requested the
@@ -182,17 +195,29 @@ class Swift_Transport_StreamBuffer
     if (isset($this->_out) && !feof($this->_out))
     {
       $ret = fread($this->_out, $length);
+      if (strlen($ret)==0) 
+      {
+        $metas = stream_get_meta_data($this->_out);
+        if ($metas['timed_out']) 
+        {
+          throw new Swift_IoException(
+            'Connection to ' . 
+              $this->_getReadConnectionDescription() . 
+            ' Timed Out'
+          );
+        }
+      }
       return $ret;
     }
   }
-
+  
   /** Not implemented */
   public function setReadPointer($byteOffset)
   {
   }
-
+  
   // -- Protected methods
-
+  
   /** Flush the stream contents */
   protected function _flush()
   {
@@ -201,7 +226,7 @@ class Swift_Transport_StreamBuffer
       fflush($this->_in);
     }
   }
-
+  
   /** Write this bytes to the stream */
   protected function _commit($bytes)
   {
@@ -211,9 +236,9 @@ class Swift_Transport_StreamBuffer
       return ++$this->_sequence;
     }
   }
-
+  
   // -- Private methods
-
+  
   /**
    * Establishes a connection to a remote server.
    * @access private
@@ -230,7 +255,12 @@ class Swift_Transport_StreamBuffer
     {
       $timeout = $this->_params['timeout'];
     }
-    if (!$this->_stream = fsockopen($host, $this->_params['port'], $errno, $errstr, $timeout))
+    $options = array();
+    if (!empty($this->_params['sourceIp']))
+    {
+    	$options['socket']['bindto']=$this->_params['sourceIp'].':0';
+    }
+    if (!$this->_stream = stream_socket_client($host.':'.$this->_params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, stream_context_create($options)))
     {
       throw new Swift_TransportException(
         'Connection could not be established with host ' . $this->_params['host'] .
@@ -245,10 +275,11 @@ class Swift_Transport_StreamBuffer
     {
       stream_set_blocking($this->_stream, 0);
     }
+    stream_set_timeout($this->_stream, $timeout);
     $this->_in =& $this->_stream;
     $this->_out =& $this->_stream;
   }
-
+  
   /**
    * Opens a process for input/output.
    * @access private
@@ -272,5 +303,26 @@ class Swift_Transport_StreamBuffer
     $this->_in =& $pipes[0];
     $this->_out =& $pipes[1];
   }
-
+  
+  
+  private function _getReadConnectionDescription()
+  {
+    switch ($this->_params['type'])
+    {
+      case self::TYPE_PROCESS:
+        return 'Process '.$this->_params['command'];
+        break;
+        
+      case self::TYPE_SOCKET:
+      default:
+        $host = $this->_params['host'];
+        if (!empty($this->_params['protocol']))
+        {
+          $host = $this->_params['protocol'] . '://' . $host;
+        }
+        $host.=':'.$this->_params['port'];
+        return $host;
+        break;
+    }
+  }
 }

@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/CharacterReaderFactory.php';
 
 /**
  * Standard factory for creating CharacterReaders.
@@ -26,42 +25,42 @@ class Swift_CharacterReaderFactory_SimpleCharacterReaderFactory
    * @access private
    */
   private $_map = array();
-
+  
   /**
    * Factories which have already been loaded.
    * @var Swift_CharacterReaderFactory[]
    * @access private
    */
   private $_loaded = array();
-
+  
   /**
    * Creates a new CharacterReaderFactory.
    */
   public function __construct()
   {
     $prefix = 'Swift_CharacterReader_';
-
+    
     $singleByte = array(
       'class' => $prefix . 'GenericFixedWidthReader',
       'constructor' => array(1)
       );
-
+    
     $doubleByte = array(
       'class' => $prefix . 'GenericFixedWidthReader',
       'constructor' => array(2)
       );
-
+      
     $fourBytes = array(
       'class' => $prefix . 'GenericFixedWidthReader',
       'constructor' => array(4)
       );
-
+    
     //Utf-8
     $this->_map['utf-?8'] = array(
       'class' => $prefix . 'Utf8Reader',
       'constructor' => array()
       );
-
+    
     //7-8 bit charsets
     $this->_map['(us-)?ascii'] = $singleByte;
     $this->_map['(iso|iec)-?8859-?[0-9]+'] = $singleByte;
@@ -74,17 +73,17 @@ class Swift_CharacterReaderFactory_SimpleCharacterReaderFactory
     $this->_map['mik'] = $singleByte;
     $this->_map['(cork|t1)'] = $singleByte;
     $this->_map['v?iscii'] = $singleByte;
-
+    
     //16 bits
     $this->_map['(ucs-?2|utf-?16)'] = $doubleByte;
-
+    
     //32 bits
     $this->_map['(ucs-?4|utf-?32)'] = $fourBytes;
-
+    
     //Fallback
     $this->_map['.*'] = $singleByte;
   }
-
+  
   /**
    * Returns a CharacterReader suitable for the charset applied.
    * @param string $charset
@@ -115,5 +114,5 @@ class Swift_CharacterReaderFactory_SimpleCharacterReaderFactory
       }
     }
   }
-
+  
 }

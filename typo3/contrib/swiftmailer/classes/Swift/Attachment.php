@@ -8,9 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/Mime/Attachment.php';
-//@require 'Swift/ByteStream/FileByteStream.php';
-//@require 'Swift/DependencyContainer.php';
 
 /**
  * Attachment class for attaching files to a {@link Swift_Mime_Message}.
@@ -20,7 +17,7 @@
  */
 class Swift_Attachment extends Swift_Mime_Attachment
 {
-
+  
   /**
    * Create a new Attachment.
    * Details may be optionally provided to the constructor.
@@ -36,7 +33,7 @@ class Swift_Attachment extends Swift_Mime_Attachment
       Swift_DependencyContainer::getInstance()
         ->createDependenciesFor('mime.attachment')
       );
-
+    
     $this->setBody($data);
     $this->setFilename($filename);
     if ($contentType)
@@ -44,7 +41,7 @@ class Swift_Attachment extends Swift_Mime_Attachment
       $this->setContentType($contentType);
     }
   }
-
+  
   /**
    * Create a new Attachment.
    * @param string|Swift_OutputByteStream $data
@@ -57,7 +54,7 @@ class Swift_Attachment extends Swift_Mime_Attachment
   {
     return new self($data, $filename, $contentType);
   }
-
+  
   /**
    * Create a new Attachment from a filesystem path.
    * @param string $path
@@ -71,5 +68,5 @@ class Swift_Attachment extends Swift_Mime_Attachment
       $contentType
       );
   }
-
+  
 }

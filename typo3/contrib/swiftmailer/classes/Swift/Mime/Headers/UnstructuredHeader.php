@@ -8,8 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/Mime/Headers/AbstractHeader.php';
-//@require 'Swift/Mime/HeaderEncoder.php';
 
 /**
  * A Simple MIME Header.
@@ -20,24 +18,27 @@
 class Swift_Mime_Headers_UnstructuredHeader
   extends Swift_Mime_Headers_AbstractHeader
 {
-
+  
   /**
    * The value of this Header.
    * @var string
    * @access private
    */
   private $_value;
-
+  
   /**
    * Creates a new SimpleHeader with $name.
    * @param string $name
    * @param Swift_Mime_HeaderEncoder $encoder
+   * @param Swift_Mime_Grammar $grammar
    */
-  public function __construct($name, Swift_Mime_HeaderEncoder $encoder)
+  public function __construct($name, Swift_Mime_HeaderEncoder $encoder, Swift_Mime_Grammar $grammar)
   {
     $this->setFieldName($name);
     $this->setEncoder($encoder);
+    parent::__construct($grammar);
   }
+  
   /**
    * Get the type of Header that this instance represents.
    * @return int
@@ -48,7 +49,7 @@ class Swift_Mime_Headers_UnstructuredHeader
   {
     return self::TYPE_TEXT;
   }
-
+  
   /**
    * Set the model for the field body.
    * This method takes a string for the field value.
@@ -58,7 +59,7 @@ class Swift_Mime_Headers_UnstructuredHeader
   {
     $this->setValue($model);
   }
-
+  
   /**
    * Get the model for the field body.
    * This method returns a string.
@@ -68,7 +69,7 @@ class Swift_Mime_Headers_UnstructuredHeader
   {
     return $this->getValue();
   }
-
+  
   /**
    * Get the (unencoded) value of this header.
    * @return string
@@ -77,7 +78,7 @@ class Swift_Mime_Headers_UnstructuredHeader
   {
     return $this->_value;
   }
-
+  
   /**
    * Set the (unencoded) value of this header.
    * @param string $value
@@ -87,7 +88,7 @@ class Swift_Mime_Headers_UnstructuredHeader
     $this->clearCachedValueIf($this->_value != $value);
     $this->_value = $value;
   }
-
+  
   /**
    * Get the value of this header prepared for rendering.
    * @return string
@@ -97,12 +98,10 @@ class Swift_Mime_Headers_UnstructuredHeader
     if (!$this->getCachedValue())
     {
       $this->setCachedValue(
-        str_replace('\\', '\\\\', $this->encodeWords(
-          $this, $this->_value, -1, $this->getCharset(), $this->getEncoder()
-          ))
+        $this->encodeWords($this, $this->_value)
         );
     }
     return $this->getCachedValue();
   }
-
+  
 }

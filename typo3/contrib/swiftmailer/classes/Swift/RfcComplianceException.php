@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/SwiftException.php';
 
 /**
  * RFC Compliance Exception class.
@@ -17,7 +16,7 @@
  */
 class Swift_RfcComplianceException extends Swift_SwiftException
 {
-
+  
   /**
    * Create a new RfcComplianceException with $message.
    * @param string $message
@@ -26,5 +25,5 @@ class Swift_RfcComplianceException extends Swift_SwiftException
   {
     parent::__construct($message);
   }
-
+  
 }
