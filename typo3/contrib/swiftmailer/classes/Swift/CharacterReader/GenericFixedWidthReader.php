@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/CharacterReader.php';
 
 /**
  * Provides fixed-width byte sizes for reading fixed-width character sets.
@@ -20,14 +19,14 @@
 class Swift_CharacterReader_GenericFixedWidthReader
   implements Swift_CharacterReader
 {
-
+   
   /**
    * The number of bytes in a single character.
    * @var int
    * @access private
    */
   private $_width;
-
+	
   /**
    * Creates a new GenericFixedWidthReader using $width bytes per character.
    * @param int $width
@@ -54,9 +53,9 @@ class Swift_CharacterReader_GenericFixedWidthReader
   	$ignoredChars = substr($string, - $ignored);
   	$currentMap = $this->_width;
   	return ($strlen - $ignored)/$this->_width;
-
+  	
   }
-
+  
   /**
    * Returns mapType
    * @int mapType

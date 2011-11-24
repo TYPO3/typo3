@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/DependencyContainer.php';
 
 /**
  * Changes some global preference settings in Swift Mailer.
@@ -17,13 +16,13 @@
  */
 class Swift_Preferences
 {
-
+  
   /** Singleton instance */
   private static $_instance = null;
-
+  
   /** Constructor not to be used */
   private function __construct() { }
-
+  
   /**
    * Get a new instance of Preferences.
    * @return Swift_Preferences
@@ -36,7 +35,7 @@ class Swift_Preferences
     }
     return self::$_instance;
   }
-
+  
   /**
    * Set the default charset used.
    * @param string
@@ -48,7 +47,7 @@ class Swift_Preferences
       ->register('properties.charset')->asValue($charset);
     return $this;
   }
-
+  
   /**
    * Set the directory where temporary files can be saved.
    * @param string $dir
@@ -60,7 +59,7 @@ class Swift_Preferences
       ->register('tempdir')->asValue($dir);
     return $this;
   }
-
+  
   /**
    * Set the type of cache to use (i.e. "disk" or "array").
    * @param string $type
@@ -72,5 +71,21 @@ class Swift_Preferences
       ->register('cache')->asAliasOf(sprintf('cache.%s', $type));
     return $this;
   }
-
+  
+  /**
+   * Add the
+   * @param boolean $dotEscape
+   * @return Swift_Preferences
+   */
+  public function setQPDotEscape($dotEscape)
+  {
+    $dotEscape=!empty($dotEscape);
+    Swift_DependencyContainer::getInstance()
+      -> register('mime.qpcontentencoder')
+      -> asNewInstanceOf('Swift_Mime_ContentEncoder_QpContentEncoder')
+      -> withDependencies(array('mime.charstream', 'mime.bytecanonicalizer'))
+      -> addConstructorValue($dotEscape);
+    return $this;
+  }
+  
 }

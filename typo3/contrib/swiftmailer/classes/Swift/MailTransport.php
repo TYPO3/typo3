@@ -8,8 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/Transport/MailTransport.php';
-//@require 'Swift/DependencyContainer.php';
 
 /**
  * Sends Messages using the mail() function.
@@ -19,7 +17,7 @@
  */
 class Swift_MailTransport extends Swift_Transport_MailTransport
 {
-
+  
   /**
    * Create a new MailTransport, optionally specifying $extraParams.
    * @param string $extraParams
@@ -31,10 +29,10 @@ class Swift_MailTransport extends Swift_Transport_MailTransport
       Swift_DependencyContainer::getInstance()
         ->createDependenciesFor('transport.mail')
       );
-
+    
     $this->setExtraParams($extraParams);
   }
-
+  
   /**
    * Create a new MailTransport instance.
    * @param string $extraParams To be passed to mail()
@@ -44,5 +42,5 @@ class Swift_MailTransport extends Swift_Transport_MailTransport
   {
     return new self($extraParams);
   }
-
+  
 }

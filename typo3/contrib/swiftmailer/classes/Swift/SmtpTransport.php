@@ -8,8 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/Transport/EsmtpTransport.php';
-//@require 'Swift/DependencyContainer.php';
 
 /**
  * Sends Messages over SMTP with ESMTP support.
@@ -19,7 +17,7 @@
  */
 class Swift_SmtpTransport extends Swift_Transport_EsmtpTransport
 {
-
+  
   /**
    * Create a new SmtpTransport, optionally with $host, $port and $security.
    * @param string $host
@@ -34,12 +32,12 @@ class Swift_SmtpTransport extends Swift_Transport_EsmtpTransport
       Swift_DependencyContainer::getInstance()
         ->createDependenciesFor('transport.smtp')
       );
-
+    
     $this->setHost($host);
     $this->setPort($port);
     $this->setEncryption($security);
   }
-
+  
   /**
    * Create a new SmtpTransport instance.
    * @param string $host
@@ -52,5 +50,5 @@ class Swift_SmtpTransport extends Swift_Transport_EsmtpTransport
   {
     return new self($host, $port, $security);
   }
-
+  
 }

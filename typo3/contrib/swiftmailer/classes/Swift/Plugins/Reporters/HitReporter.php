@@ -8,8 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/Plugins/Reporter.php';
-//@require 'Swift/Mime/Message.php';
 
 /**
  * A reporter which "collects" failures for the Reporter plugin.
@@ -19,7 +17,7 @@
  */
 class Swift_Plugins_Reporters_HitReporter implements Swift_Plugins_Reporter
 {
-
+  
   /**
    * The list of failures.
    * @var array
@@ -27,7 +25,7 @@ class Swift_Plugins_Reporters_HitReporter implements Swift_Plugins_Reporter
    */
   private $_failures = array();
   private $_failures_cache = array();
-
+  
   /**
    * Notifies this ReportNotifier that $address failed or succeeded.
    * @param Swift_Mime_Message $message
@@ -42,7 +40,7 @@ class Swift_Plugins_Reporters_HitReporter implements Swift_Plugins_Reporter
       $this->_failures_cache[$address] = true;
     }
   }
-
+  
   /**
    * Get an array of addresses for which delivery failed.
    * @return array
@@ -51,7 +49,7 @@ class Swift_Plugins_Reporters_HitReporter implements Swift_Plugins_Reporter
   {
     return $this->_failures;
   }
-
+  
   /**
    * Clear the buffer (empty the list).
    */
@@ -59,5 +57,5 @@ class Swift_Plugins_Reporters_HitReporter implements Swift_Plugins_Reporter
   {
     $this->_failures = $this->_failures_cache = array();
   }
-
+  
 }

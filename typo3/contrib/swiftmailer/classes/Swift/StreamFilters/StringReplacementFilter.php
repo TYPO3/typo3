@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/StreamFilter.php';
 
 /**
  * Processes bytes as they pass through a buffer and replaces sequences in it.
@@ -17,13 +16,13 @@
  */
 class Swift_StreamFilters_StringReplacementFilter implements Swift_StreamFilter
 {
-
+  
   /** The needle(s) to search for */
   private $_search;
-
+  
   /** The replacement(s) to make */
   private $_replace;
-
+  
   /**
    * Create a new StringReplacementFilter with $search and $replace.
    * @param string|array $search
@@ -34,7 +33,7 @@ class Swift_StreamFilters_StringReplacementFilter implements Swift_StreamFilter
     $this->_search = $search;
     $this->_replace = $replace;
   }
-
+  
   /**
    * Returns true if based on the buffer passed more bytes should be buffered.
    * @param string $buffer
@@ -52,7 +51,7 @@ class Swift_StreamFilters_StringReplacementFilter implements Swift_StreamFilter
     }
     return false;
   }
-
+  
   /**
    * Perform the actual replacements on $buffer and return the result.
    * @param string $buffer
@@ -62,5 +61,5 @@ class Swift_StreamFilters_StringReplacementFilter implements Swift_StreamFilter
   {
     return str_replace($this->_search, $this->_replace, $buffer);
   }
-
+  
 }
