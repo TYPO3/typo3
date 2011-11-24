@@ -50,6 +50,29 @@ class tx_sv_auth extends tx_sv_authbase 	{
 	function getUser()	{
 		$user = FALSE;
 
+		// Check if the login attempt has an empty password
+		if ($this->login['uident'] == '') {
+			$this->writelog(255,3,3,2,
+				'Login-attempt from %s (%s) for username "%s" with an empty password!',
+				array(
+					$this->authInfo['REMOTE_ADDR'],
+					$this->authInfo['REMOTE_HOST'],
+					$this->login['uname']
+				)
+			);
+			t3lib_div::sysLog(
+				sprintf(
+					'Login-attempt from %s (%s), for username "%s" not found!',
+					$this->authInfo['REMOTE_ADDR'],
+					$this->authInfo['REMOTE_HOST'],
+					$this->login['uname']
+				),
+				'Core',
+				0
+			);
+			return $user;
+		}
+
 		if ($this->login['status']=='login' && $this->login['uident'])	{
 
 			$user = $this->fetchUserRecord($this->login['uname']);
