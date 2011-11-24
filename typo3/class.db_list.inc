@@ -830,47 +830,55 @@ class recordList extends t3lib_recordList {
 		if (is_array($GLOBALS['TCA'][$table])) {
 			t3lib_div::loadTCA($table);
 
-				// Traverse configured columns and add them to field array, if available for user.
-			foreach($GLOBALS['TCA'][$table]['columns'] as $fN => $fieldValue) {
-				if ($dontCheckUser ||
-					((!$fieldValue['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $table . ':' . $fN))
-					&& $fieldValue['config']['type']!='passthrough')) {
-					$fieldListArr[]=$fN;
-				}
-			}
-
-				// Add special fields:
-			if ($dontCheckUser || $GLOBALS['BE_USER']->isAdmin()) {
-				$fieldListArr[]='uid';
-				$fieldListArr[]='pid';
-			}
-
-				// Add date fields
-			if ($dontCheckUser || $GLOBALS['BE_USER']->isAdmin() || $addDateFields) {
-				if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
-					$fieldListArr[]=$GLOBALS['TCA'][$table]['ctrl']['tstamp'];
-				}
-				if ($GLOBALS['TCA'][$table]['ctrl']['crdate']) {
-					$fieldListArr[]=$GLOBALS['TCA'][$table]['ctrl']['crdate'];
-				}
-			}
-
-				// Add more special fields:
-			if ($dontCheckUser || $GLOBALS['BE_USER']->isAdmin()) {
-				if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id']) {
-					$fieldListArr[]=$GLOBALS['TCA'][$table]['ctrl']['cruser_id'];
-				}
-				if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
-					$fieldListArr[]=$GLOBALS['TCA'][$table]['ctrl']['sortby'];
-				}
-				if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-					$fieldListArr[]='t3ver_id';
-					$fieldListArr[]='t3ver_state';
-					$fieldListArr[]='t3ver_wsid';
-					if ($table==='pages')	{
-						$fieldListArr[]='t3ver_swapmode';
+			if (isset($GLOBALS['TCA'][$table]['columns']) && is_array($GLOBALS['TCA'][$table]['columns'])) {
+					// Traverse configured columns and add them to field array, if available for user.
+				foreach($GLOBALS['TCA'][$table]['columns'] as $fN => $fieldValue) {
+					if ($dontCheckUser ||
+							((!$fieldValue['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $table . ':' . $fN))
+									&& $fieldValue['config']['type']!='passthrough')) {
+						$fieldListArr[]=$fN;
 					}
 				}
+
+				// Add special fields:
+				if ($dontCheckUser || $GLOBALS['BE_USER']->isAdmin()) {
+					$fieldListArr[]='uid';
+					$fieldListArr[]='pid';
+				}
+
+				// Add date fields
+				if ($dontCheckUser || $GLOBALS['BE_USER']->isAdmin() || $addDateFields) {
+					if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
+						$fieldListArr[]=$GLOBALS['TCA'][$table]['ctrl']['tstamp'];
+					}
+					if ($GLOBALS['TCA'][$table]['ctrl']['crdate']) {
+						$fieldListArr[]=$GLOBALS['TCA'][$table]['ctrl']['crdate'];
+					}
+				}
+
+				// Add more special fields:
+				if ($dontCheckUser || $GLOBALS['BE_USER']->isAdmin()) {
+					if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id']) {
+						$fieldListArr[]=$GLOBALS['TCA'][$table]['ctrl']['cruser_id'];
+					}
+					if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
+						$fieldListArr[]=$GLOBALS['TCA'][$table]['ctrl']['sortby'];
+					}
+					if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+						$fieldListArr[]='t3ver_id';
+						$fieldListArr[]='t3ver_state';
+						$fieldListArr[]='t3ver_wsid';
+						if ($table==='pages')	{
+							$fieldListArr[]='t3ver_swapmode';
+						}
+					}
+				}
+			} else {
+				t3lib_div::sysLog(
+					sprintf('$TCA is broken for the table "%s": no required "columns" entry in $TCA.', $table),
+					'core',
+					t3lib_div::SYSLOG_SEVERITY_ERROR
+				);
 			}
 		}
 		return $fieldListArr;
