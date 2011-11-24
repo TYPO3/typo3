@@ -8,22 +8,18 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/Transport.php';
-//@require 'Swift/Transport/MailInvoker.php';
-//@require 'Swift/Mime/Message.php';
-//@require 'Swift/Events/EventListener.php';
 
 /**
  * Sends Messages using the mail() function.
- *
+ * 
  * It is advised that users do not use this transport if at all possible
  * since a number of plugin features cannot be used in conjunction with this
  * transport due to the internal interface in PHP itself.
- *
+ * 
  * The level of error reporting with this transport is incredibly weak, again
  * due to limitations of PHP's internal mail() function.  You'll get an
  * all-or-nothing result from sending.
- *
+ * 
  * @package Swift
  * @subpackage Transport
  * @author Chris Corbyn
@@ -33,13 +29,13 @@ class Swift_Transport_MailTransport implements Swift_Transport
 
   /** Addtional parameters to pass to mail() */
   private $_extraParams = '-f%s';
-
+  
   /** The event dispatcher from the plugin API */
   private $_eventDispatcher;
-
+  
   /** An invoker that calls the mail() function */
   private $_invoker;
-
+  
   /**
    * Create a new MailTransport with the $log.
    * @param Swift_Transport_Log $log
@@ -50,7 +46,7 @@ class Swift_Transport_MailTransport implements Swift_Transport
     $this->_invoker = $invoker;
     $this->_eventDispatcher = $eventDispatcher;
   }
-
+  
   /**
    * Not used.
    */
@@ -58,52 +54,53 @@ class Swift_Transport_MailTransport implements Swift_Transport
   {
     return false;
   }
-
+  
   /**
    * Not used.
    */
   public function start()
   {
   }
-
+  
   /**
    * Not used.
    */
   public function stop()
   {
   }
-
+  
   /**
    * Set the additional parameters used on the mail() function.
-   *
+   * 
    * This string is formatted for sprintf() where %s is the sender address.
-   *
+   * 
    * @param string $params
+   * @return Swift_Transport_MailTransport
    */
   public function setExtraParams($params)
   {
     $this->_extraParams = $params;
     return $this;
   }
-
+  
   /**
    * Get the additional parameters used on the mail() function.
-   *
+   * 
    * This string is formatted for sprintf() where %s is the sender address.
-   *
+   * 
    * @return string
    */
   public function getExtraParams()
   {
     return $this->_extraParams;
   }
-
+  
   /**
    * Send the given Message.
-   *
-   * Recipient/sender data will be retreived from the Message API.
+   * 
+   * Recipient/sender data will be retrieved from the Message API.
    * The return value is the number of recipients who were accepted for delivery.
-   *
+   * 
    * @param Swift_Mime_Message $message
    * @param string[] &$failedRecipients to collect failures by-reference
    * @return int
@@ -111,7 +108,7 @@ class Swift_Transport_MailTransport implements Swift_Transport
   public function send(Swift_Mime_Message $message, &$failedRecipients = null)
   {
     $failedRecipients = (array) $failedRecipients;
-
+    
     if ($evt = $this->_eventDispatcher->createSendEvent($this, $message))
     {
       $this->_eventDispatcher->dispatchEvent($evt, 'beforeSendPerformed');
@@ -120,30 +117,36 @@ class Swift_Transport_MailTransport implements Swift_Transport
         return 0;
       }
     }
-
+    
     $count = (
       count((array) $message->getTo())
       + count((array) $message->getCc())
       + count((array) $message->getBcc())
       );
-
+    
     $toHeader = $message->getHeaders()->get('To');
     $subjectHeader = $message->getHeaders()->get('Subject');
-
+    
+    if (!$toHeader)
+    {
+      throw new Swift_TransportException(
+        'Cannot send message without a recipient'
+        );
+    }
     $to = $toHeader->getFieldBody();
-    $subject = $subjectHeader->getFieldBody();
-
+    $subject = $subjectHeader ? $subjectHeader->getFieldBody() : '';
+    
     $reversePath = $this->_getReversePath($message);
-
+    
     //Remove headers that would otherwise be duplicated
     $message->getHeaders()->remove('To');
     $message->getHeaders()->remove('Subject');
-
+    
     $messageStr = $message->toString();
-
+    
     $message->getHeaders()->set($toHeader);
     $message->getHeaders()->set($subjectHeader);
-
+    
     //Separate headers from body
     if (false !== $endHeaders = strpos($messageStr, "\r\n\r\n"))
     {
@@ -155,9 +158,9 @@ class Swift_Transport_MailTransport implements Swift_Transport
       $headers = $messageStr . "\r\n";
       $body = '';
     }
-
+    
     unset($messageStr);
-
+    
     if ("\r\n" != PHP_EOL) //Non-windows (not using SMTP)
     {
       $headers = str_replace("\r\n", PHP_EOL, $headers);
@@ -168,7 +171,7 @@ class Swift_Transport_MailTransport implements Swift_Transport
       $headers = str_replace("\r\n.", "\r\n..", $headers);
       $body = str_replace("\r\n.", "\r\n..", $body);
     }
-
+    
     if ($this->_invoker->mail($to, $subject, $body, $headers,
       sprintf($this->_extraParams, $reversePath)))
     {
@@ -187,34 +190,34 @@ class Swift_Transport_MailTransport implements Swift_Transport
         array_keys((array) $message->getCc()),
         array_keys((array) $message->getBcc())
         );
-
+      
       if ($evt)
       {
         $evt->setResult(Swift_Events_SendEvent::RESULT_FAILED);
         $evt->setFailedRecipients($failedRecipients);
         $this->_eventDispatcher->dispatchEvent($evt, 'sendPerformed');
       }
-
+      
       $message->generateId();
-
+      
       $count = 0;
     }
-
+    
     return $count;
   }
-
+  
   /**
    * Register a plugin.
-   *
+   * 
    * @param Swift_Events_EventListener $plugin
    */
   public function registerPlugin(Swift_Events_EventListener $plugin)
   {
     $this->_eventDispatcher->bindEventListener($plugin);
   }
-
+  
   // -- Private methods
-
+  
   /** Determine the best-use reverse path for this message */
   private function _getReversePath(Swift_Mime_Message $message)
   {
@@ -238,5 +241,5 @@ class Swift_Transport_MailTransport implements Swift_Transport
     }
     return $path;
   }
-
+  
 }

@@ -8,8 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/Transport/LoadBalancedTransport.php';
-//@require 'Swift/Mime/Message.php';
 
 /**
  * Contains a list of redundant Transports so when one fails, the next is used.
@@ -20,14 +18,14 @@
 class Swift_Transport_FailoverTransport
   extends Swift_Transport_LoadBalancedTransport
 {
-
+  
   /**
    * Registered transport curently used.
    * @var Swift_Transport
    * @access private
    */
   private $_currentTransport;
-
+  
   /**
    * Creates a new FailoverTransport.
    */
@@ -35,10 +33,10 @@ class Swift_Transport_FailoverTransport
   {
     parent::__construct();
   }
-
+  
   /**
    * Send the given Message.
-   * Recipient/sender data will be retreived from the Message API.
+   * Recipient/sender data will be retrieved from the Message API.
    * The return value is the number of recipients who were accepted for delivery.
    * @param Swift_Mime_Message $message
    * @param string[] &$failedRecipients to collect failures by-reference
@@ -48,7 +46,7 @@ class Swift_Transport_FailoverTransport
   {
     $maxTransports = count($this->_transports);
     $sent = 0;
-
+    
     for ($i = 0; $i < $maxTransports
       && $transport = $this->_getNextTransport(); ++$i)
     {
@@ -58,7 +56,7 @@ class Swift_Transport_FailoverTransport
         {
           $transport->start();
         }
-
+        
         return $transport->send($message, $failedRecipients);
       }
       catch (Swift_TransportException $e)
@@ -66,19 +64,19 @@ class Swift_Transport_FailoverTransport
         $this->_killCurrentTransport();
       }
     }
-
+    
     if (count($this->_transports) == 0)
     {
       throw new Swift_TransportException(
         'All Transports in FailoverTransport failed, or no Transports available'
         );
     }
-
+    
     return $sent;
   }
-
+  
   // -- Protected methods
-
+  
   protected function _getNextTransport()
   {
     if (!isset($this->_currentTransport))
@@ -87,11 +85,11 @@ class Swift_Transport_FailoverTransport
     }
     return $this->_currentTransport;
   }
-
+  
   protected function _killCurrentTransport()
   {
     $this->_currentTransport = null;
     parent::_killCurrentTransport();
   }
-
+  
 }

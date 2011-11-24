@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//@require 'Swift/DependencyException.php';
 
 /**
  * Dependency Injection container.
@@ -17,34 +16,34 @@
  */
 class Swift_DependencyContainer
 {
-
+  
   /** Constant for literal value types */
   const TYPE_VALUE = 0x0001;
-
+  
   /** Constant for new instance types */
   const TYPE_INSTANCE = 0x0010;
-
+  
   /** Constant for shared instance types */
   const TYPE_SHARED = 0x0100;
-
+  
   /** Constant for aliases */
   const TYPE_ALIAS = 0x1000;
-
+  
   /** Singleton instance */
   private static $_instance = null;
-
+  
   /** The data container */
   private $_store = array();
-
+  
   /** The current endpoint in the data container */
   private $_endPoint;
-
+  
   /**
    * Constructor should not be used.
    * Use {@link getInstance()} instead.
    */
   public function __construct() { }
-
+  
   /**
    * Returns a singleton of the DependencyContainer.
    * @return Swift_DependencyContainer
@@ -57,7 +56,7 @@ class Swift_DependencyContainer
     }
     return self::$_instance;
   }
-
+  
   /**
    * List the names of all items stored in the Container.
    * @return array
@@ -66,7 +65,7 @@ class Swift_DependencyContainer
   {
     return array_keys($this->_store);
   }
-
+  
   /**
    * Test if an item is registered in this container with the given name.
    * @param string $itemName
@@ -78,7 +77,7 @@ class Swift_DependencyContainer
     return array_key_exists($itemName, $this->_store)
       && isset($this->_store[$itemName]['lookupType']);
   }
-
+  
   /**
    * Lookup the item with the given $itemName.
    * @param string $itemName
@@ -94,7 +93,7 @@ class Swift_DependencyContainer
         'Cannot lookup dependency "' . $itemName . '" since it is not registered.'
         );
     }
-
+    
     switch ($this->_store[$itemName]['lookupType'])
     {
       case self::TYPE_ALIAS:
@@ -107,7 +106,7 @@ class Swift_DependencyContainer
         return $this->_createSharedInstance($itemName);
     }
   }
-
+  
   /**
    * Create an array of arguments passed to the constructor of $itemName.
    * @param string $itemName
@@ -122,7 +121,7 @@ class Swift_DependencyContainer
     }
     return $args;
   }
-
+  
   /**
    * Register a new dependency with $itemName.
    * This method returns the current DependencyContainer instance because it
@@ -139,7 +138,7 @@ class Swift_DependencyContainer
     $this->_endPoint =& $this->_store[$itemName];
     return $this;
   }
-
+  
   /**
    * Specify the previously registered item as a literal value.
    * {@link register()} must be called before this will work.
@@ -154,7 +153,7 @@ class Swift_DependencyContainer
     $endPoint['value'] = $value;
     return $this;
   }
-
+  
   /**
    * Specify the previously registered item as an alias of another item.
    * @param string $lookup
@@ -167,7 +166,7 @@ class Swift_DependencyContainer
     $endPoint['ref'] = $lookup;
     return $this;
   }
-
+  
   /**
    * Specify the previously registered item as a new instance of $className.
    * {@link register()} must be called before this will work.
@@ -185,7 +184,7 @@ class Swift_DependencyContainer
     $endPoint['className'] = $className;
     return $this;
   }
-
+  
   /**
    * Specify the previously registered item as a shared instance of $className.
    * {@link register()} must be called before this will work.
@@ -199,11 +198,11 @@ class Swift_DependencyContainer
     $endPoint['className'] = $className;
     return $this;
   }
-
+  
   /**
    * Specify a list of injected dependencies for the previously registered item.
    * This method takes an array of lookup names.
-   *
+   * 
    * @param array $lookups
    * @return Swift_DependencyContainer
    * @see addConstructorValue(), addConstructorLookup()
@@ -218,11 +217,11 @@ class Swift_DependencyContainer
     }
     return $this;
   }
-
+  
   /**
    * Specify a literal (non looked up) value for the constructor of the
    * previously registered item.
-   *
+   * 
    * @param mixed $value
    * @return Swift_DependencyContainer
    * @see withDependencies(), addConstructorLookup()
@@ -237,11 +236,11 @@ class Swift_DependencyContainer
     $endPoint['args'][] = array('type' => 'value', 'item' => $value);
     return $this;
   }
-
+  
   /**
    * Specify a dependency lookup for the constructor of the previously
    * registered item.
-   *
+   * 
    * @param string $lookup
    * @return Swift_DependencyContainer
    * @see withDependencies(), addConstructorValue()
@@ -256,21 +255,21 @@ class Swift_DependencyContainer
     $endPoint['args'][] = array('type' => 'lookup', 'item' => $lookup);
     return $this;
   }
-
+  
   // -- Private methods
-
+  
   /** Get the literal value with $itemName */
   private function _getValue($itemName)
   {
     return $this->_store[$itemName]['value'];
   }
-
+  
   /** Resolve an alias to another item */
   private function _createAlias($itemName)
   {
     return $this->lookup($this->_store[$itemName]['ref']);
   }
-
+  
   /** Create a fresh instance of $itemName */
   private function _createNewInstance($itemName)
   {
@@ -286,7 +285,7 @@ class Swift_DependencyContainer
       return $reflector->newInstance();
     }
   }
-
+  
   /** Create and register a shared instance of $itemName */
   private function _createSharedInstance($itemName)
   {
@@ -296,7 +295,7 @@ class Swift_DependencyContainer
     }
     return $this->_store[$itemName]['instance'];
   }
-
+  
   /** Get the current endpoint in the store */
   private function &_getEndPoint()
   {
@@ -308,7 +307,7 @@ class Swift_DependencyContainer
     }
     return $this->_endPoint;
   }
-
+  
   /** Get an argument list with dependencies resolved */
   private function _resolveArgs(array $args)
   {
@@ -327,7 +326,7 @@ class Swift_DependencyContainer
     }
     return $resolved;
   }
-
+  
   /** Resolve a single dependency with an collections */
   private function _lookupRecursive($item)
   {
@@ -345,5 +344,5 @@ class Swift_DependencyContainer
       return $this->lookup($item);
     }
   }
-
+  
 }
