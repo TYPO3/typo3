@@ -39,11 +39,24 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 	var $t3lib_TCEforms;
 
 	/**
+	 * All hook objects get registered here for later use
+	 *
+	 * @var array
+	 */
+	protected $hookObjects = array();
+
+	/**
 	 * Constructor
 	 */
 	public function __construct(SC_mod_user_task_index $taskObject) {
 		$this->taskObject = $taskObject;
 		$GLOBALS['LANG']->includeLLFile('EXT:sys_action/locallang.xml');
+
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sys_action']['tx_sysaction_task'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sys_action']['tx_sysaction_task'] as $classRef) {
+				$this->hookObjects[] = t3lib_div::getUserObj($classRef);
+			}
+		}
 	}
 
 
@@ -55,6 +68,12 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 	public function getTask() {
 		$content = '';
 		$show = intval(t3lib_div::_GP('show'));
+
+		foreach ($this->hookObjects as $hookObject) {
+			if (method_exists($hookObject, 'getTask')) {
+				$show = $hookObject->getTask($show, $this);
+			}
+		}
 
 			// if no task selected, render the menu
 		if ($show == 0) {
@@ -282,6 +301,12 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 			}
 			if ($vars['key'] !== 'NEW' && !$this->isCreatedByUser($vars['key'], $record)) {
 				$errors[] = $GLOBALS['LANG']->getLL('error-wrong-user');
+			}
+
+			foreach ($this->hookObjects as $hookObject) {
+				if (method_exists($hookObject, 'viewNewBackendUser_Error')) {
+					$errors = $hookObject->viewNewBackendUser_Error($vars, $errors, $this);
+				}
 			}
 
 				// show errors if there are any
