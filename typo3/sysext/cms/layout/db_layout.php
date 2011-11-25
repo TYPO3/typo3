@@ -264,7 +264,6 @@ class SC_db_layout {
 				0 => $GLOBALS['LANG']->getLL('m_function_0'),
 				1 => $GLOBALS['LANG']->getLL('m_function_1'),
 				2 => $GLOBALS['LANG']->getLL('m_function_2'),
-				3 => $GLOBALS['LANG']->getLL('pageInformation'),
 			),
 			'language' => array(
 				0 => $GLOBALS['LANG']->getLL('m_default')
@@ -314,6 +313,10 @@ class SC_db_layout {
 		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,'mod.'.$this->MCONF['name']);
 		if ($this->modTSconfig['properties']['QEisDefault'])	ksort($this->MOD_MENU['function']);
 		$this->MOD_MENU['function'] = t3lib_BEfunc::unsetMenuItems($this->modTSconfig['properties'],$this->MOD_MENU['function'],'menu.function');
+
+		if (!$this->modTSconfig['properties']['disablePageInformation']) {
+			$this->MOD_MENU['function'][3] = $GLOBALS['LANG']->getLL('pageInformation');
+		}
 
 			// Remove QuickEdit as option if page type is not...
 		if (!t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'] . ',6', $this->pageinfo['doktype'])) {
