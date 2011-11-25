@@ -205,6 +205,15 @@ table.typo3-TCEforms .class-main52 td {
 	border-top: 1px solid #c0c0c0;
 }
 
+table.typo3-TCEforms .class-main1 .typo3-TCEforms-checkboxArray td,
+table.typo3-TCEforms .class-main11 .typo3-TCEforms-checkboxArray td,
+table.typo3-TCEforms .class-main21 .typo3-TCEforms-checkboxArray td,
+table.typo3-TCEforms .class-main31 .typo3-TCEforms-checkboxArray td,
+table.typo3-TCEforms .class-main41 .typo3-TCEforms-checkboxArray td,
+table.typo3-TCEforms .class-main51 .typo3-TCEforms-checkboxArray td {
+	padding-right: 5px;
+}
+
 table.typo3-TCEforms tr.class-main2:first-child td,
 table.typo3-TCEforms tr.class-main12:first-child td,
 table.typo3-TCEforms tr.class-main22:first-child td,
