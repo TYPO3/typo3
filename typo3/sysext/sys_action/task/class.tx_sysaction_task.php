@@ -56,6 +56,13 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 		$content = '';
 		$show = intval(t3lib_div::_GP('show'));
 
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sys_action']['tx_sysaction_task']['getTask'])) {
+                        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sys_action']['tx_sysaction_task']['getTask'] as $userObjectReference) {
+                                $hookObj =& t3lib_div::getUserObj($userObjectReference);
+                                $show = $hookObj->getTask($show, $this);
+                        }
+                }
+
 			// if no task selected, render the menu
 		if ($show == 0) {
 			$content .= $this->taskObject->description(
@@ -283,6 +290,13 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 			if ($vars['key'] !== 'NEW' && !$this->isCreatedByUser($vars['key'], $record)) {
 				$errors[] = $GLOBALS['LANG']->getLL('error-wrong-user');
 			}
+
+                        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sys_action']['tx_sysaction_task']['viewNewBackendUser_Error'])) {
+                                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sys_action']['tx_sysaction_task']['viewNewBackendUser_Error'] as $userObjectReference) {
+                                        $hookObj =& t3lib_div::getUserObj($userObjectReference);
+                                        $errors = $hookObj->viewNewBackendUser_Error($vars, $errors, $this);
+                                }
+                        }
 
 				// show errors if there are any
 			if (count($errors) > 0) {
