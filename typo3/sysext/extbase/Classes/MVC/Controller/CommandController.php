@@ -96,10 +96,10 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 	/**
 	 * Processes a command line request.
 	 *
-	 * @param \TYPO3\FLOW3\MVC\RequestInterface $request The request object
-	 * @param \TYPO3\FLOW3\MVC\ResponseInterface $response The response, modified by this controller
+	 * @param Tx_Extbase_MVC_RequestInterface $request The request object
+	 * @param Tx_Extbase_MVC_ResponseInterface $response The response, modified by this controller
 	 * @return void
-	 * @throws \TYPO3\FLOW3\MVC\Exception\UnsupportedRequestTypeException if the controller doesn't support the current request type
+	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestTypeException if the controller doesn't support the current request type
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
@@ -171,7 +171,7 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 				$argument->setValue($this->request->getArgument($argumentName));
 			} elseif ($argument->isRequired()) {
 				$exception = new Tx_Extbase_MVC_Exception_Command('Required argument "' . $argumentName  . '" is not set.', 1306755520);
-				$this->forward('error', 'TYPO3\FLOW3\Command\HelpCommandController', array('exception' => $exception));
+				$this->forward('error', 'Tx_Extbase_Command_HelpCommandController', array('exception' => $exception));
 			}
 		}
 	}

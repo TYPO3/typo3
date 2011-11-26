@@ -56,4 +56,11 @@ if (!isset($TCA['fe_groups']['ctrl']['type'])) {
 }
 $TCA['fe_groups']['types']['Tx_Extbase_Domain_Model_FrontendUserGroup'] = $TCA['fe_groups']['types']['0'];
 
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Tx_Extbase_Scheduler_Task'] = array(
+	'extension'        => $_EXTKEY,
+	'title'            => 'LLL:EXT:extbase/Resources/Private/Language/locallang_db.xml:task.name',
+	'description'      => 'LLL:EXT:extbase/Resources/Private/Language/locallang_db.xml:task.description',
+	'additionalFields' => 'Tx_Extbase_Scheduler_FieldProvider'
+);
+
 ?>
