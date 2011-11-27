@@ -65,8 +65,8 @@ class Tx_Workspaces_Reports_StatusProvider implements tx_reports_StatusProvider 
 		$value    = 'Element Versioning is in use.';
 		$message  = 'All Configuration options have been set correctly';
 
-		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['elementVersioningOnly'] || $GLOBALS['TYPO3_CONF_VARS']['BE']['newPagesVersioningType'] != -1) {
-			$severity = tx_reports_reports_status_Status::WARNING;
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['elementVersioningOnly']) || isset($GLOBALS['TYPO3_CONF_VARS']['BE']['newPagesVersioningType'])) {
+			$severity = tx_reports_reports_status_Status::ERROR;
 			$value    = 'System not configured correctly.';
 			$message  = 'This TYPO3 installation is configured to use Element versioning. Page and Branch versioning are deprecated since TYPO3 4.4.<br />If you are sure that you don\'t use the Workspaces functionality right now (or if you don\'t have any versionized records right now), you can safely change these options in the Install Tool by setting ["BE"]["newPagesVersioningType"] = -1 and ["BE"]["elementVersioningOnly"] = 1 under "All Configuration".';
 		}

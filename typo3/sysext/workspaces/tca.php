@@ -367,26 +367,5 @@ $TCA['sys_workspace_stage'] = array(
 		)
 	)
 );
-// if other versioning options than element versions are active,
-// the TCA column needs to be added as well
-if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['elementVersioningOnly'])
-	&& !$GLOBALS['TYPO3_CONF_VARS']['BE']['elementVersioningOnly']) {
-	$additionalWorkspaceTcaColumn = array(
-		'vtypes' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.vtypes',
-			'config' => array(
-				'type' => 'check',
-				'items' => array(
-					array('Element', 0),
-					array('Page',    0),
-					array('Branch',  0)
-				)
-			)
-		)
-	);
-	t3lib_extMgm::addTCAcolumns('sys_workspace', $additionalWorkspaceTcaColumn, FALSE);
-	t3lib_extMgm::addToAllTCAtypes('sys_workspace', 'vtypes', '', 'after:swap_modes');
-}
-
 
 ?>
