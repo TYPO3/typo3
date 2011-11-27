@@ -522,11 +522,6 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 			<form action="'.$this->doc->backPath.'tce_db.php" method="post">
 			' . $GLOBALS['LANG']->getLL('tblHeader_t3ver_label') . ': <input type="text" name="cmd[' . $this->table . '][' . $this->uid . '][version][label]" /><br />
-			'.(($this->table == 'pages' && $GLOBALS['TYPO3_CONF_VARS']['BE']['elementVersioningOnly'] == FALSE)? '<select name="cmd['.$this->table.']['.$this->uid.'][version][treeLevels]">
-				'.($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(0) ? '<option value="0">' . $GLOBALS['LANG']->getLL('cmdPid0') . '</option>' : '').'
-				'.($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(1) ? '<option value="100">' . $GLOBALS['LANG']->getLL('cmdPid100') . '</option>' : '').'
-				'.($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(-1) ? '<option value="-1">' . $GLOBALS['LANG']->getLL('cmdPid1') . '</option>' : '').'
-			</select>' : '').'
 			<br /><input type="hidden" name="cmd[' . $this->table . '][' . $this->uid . '][version][action]" value="new" />
 			<input type="hidden" name="prErr" value="1" />
 			<input type="hidden" name="redirect" value="'.htmlspecialchars($this->REQUEST_URI).'" />

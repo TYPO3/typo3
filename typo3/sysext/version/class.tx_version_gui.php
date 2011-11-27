@@ -177,21 +177,6 @@ class tx_version_gui {
 								</table>
 							';
 						}
-					} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['elementVersioningOnly'] == FALSE && $GLOBALS['TYPO3_CONF_VARS']['BE']['newPagesVersioningType'] == 0) {
-							// only add this info if old/deprecated newPagesVersioning is allowed
-						return '
-
-							<!--
-								Version selector:
-							-->
-							<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
-								<tr>
-									<td>' . $selectorLabel . '</td>
-									<td>' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:workspace', TRUE) . ': "' . htmlspecialchars($wsTitle) . '"</td>
-									<td><em>' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:versionSelect.versionsFound', TRUE) . '</em></td>
-								</tr>
-							</table>
-						';
 					}
 				} elseif ($verPage['t3ver_swapmode']==0) {
 					$onClick = $GLOBALS['TBE_TEMPLATE']->issueCommand('&cmd[pages][' . $onlineId . '][version][action]=swap&cmd[pages][' .
