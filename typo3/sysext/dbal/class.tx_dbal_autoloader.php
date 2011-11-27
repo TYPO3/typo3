@@ -149,10 +149,7 @@ class tx_dbal_autoloader {
 			$GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] = str_replace('temp_CACHED_FE', 'temp_CACHED', $cacheFilePrefix);
 			t3lib_extMgm::removeCacheFiles();
 		} catch (Exception $e) {
-			$header = 'Error';
-			$message = $e->getMessage();
-			t3lib_timeTrack::debug_typo3PrintError($header, $message, FALSE, t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-			exit;
+			throw new RuntimeException($e->getMessage(), 1322415256);
 		}
 	}
 

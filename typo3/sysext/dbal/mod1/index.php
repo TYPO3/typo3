@@ -428,7 +428,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 				}
 
 				// Printing direct joins:
-				$outStr .= '<h4>Direct joins:</h4>' . t3lib_div::view_array($tableIndex);
+				$outStr .= '<h4>Direct joins:</h4>' . t3lib_utility_Debug::viewArray($tableIndex);
 
 
 				// Printing total dependencies:
@@ -441,7 +441,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 						}
 					}
 				}
-				$outStr .= '<h4>Total dependencies:</h4>' . t3lib_div::view_array($tableIndex);
+				$outStr .= '<h4>Total dependencies:</h4>' . t3lib_utility_Debug::viewArray($tableIndex);
 
 				// Printing data rows:
 				$outStr .= '
@@ -467,7 +467,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 					$tRows[] = '
 						<tr>
 							<td>' . htmlspecialchars($row['exec_time']) . '</td>
-							<td>' . t3lib_div::view_array(unserialize($row['serdata'])) . '</td>
+							<td>' . t3lib_utility_Debug::viewArray(unserialize($row['serdata'])) . '</td>
 							<td>' . htmlspecialchars($row['script']) . '</td>
 							<td>' . htmlspecialchars($row['query']) . '</td>
 						</tr>';
@@ -540,7 +540,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 								<td>' . htmlspecialchars($row['exec_time']) . '</td>
 								<td>' . ($row['errorFlag'] ? 1 : 0) . '</td>
 								<td>' . htmlspecialchars($row['table_join']) . '</td>
-								<td>' . t3lib_div::view_array(unserialize($row['serdata'])) . '</td>
+								<td>' . t3lib_utility_Debug::viewArray(unserialize($row['serdata'])) . '</td>
 								<td>' . str_replace(array('\'\'', '""', 'IS NULL', 'IS NOT NULL'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'), htmlspecialchars($row['query'])) . '</td>
 							</tr>';
 					}
