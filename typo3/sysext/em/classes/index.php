@@ -382,22 +382,14 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			$globalSettings['displayMyExtensions'] = 0;
 		}
 
-		// @deprecated Old Extension Manager is officially not supported anymore and may be removed anytime
-		$globalSettings['showOldModules'] = isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['showOldModules']) ? (bool)$GLOBALS['TYPO3_CONF_VARS']['EXT']['showOldModules'] : FALSE;
-		if ($globalSettings['showOldModules']) {
-			t3lib_div::deprecationLog(
-				'Use of the old Extension Manager is obsolete since TYPO3 4.6 and is as such no longer supported.'
-			);
-		} else {
-			unset(
-				$this->MOD_MENU['function']['loaded_list'],
-				$this->MOD_MENU['function']['installed_list'],
-				$this->MOD_MENU['function']['import'],
-				$this->MOD_MENU['function']['translations'],
-				$this->MOD_MENU['function']['settings'],
-				$this->MOD_MENU['function']['updates']
-			);
-		}
+		unset(
+			$this->MOD_MENU['function']['loaded_list'],
+			$this->MOD_MENU['function']['installed_list'],
+			$this->MOD_MENU['function']['import'],
+			$this->MOD_MENU['function']['translations'],
+			$this->MOD_MENU['function']['settings'],
+			$this->MOD_MENU['function']['updates']
+		);
 		$this->MOD_MENU['singleDetails'] = $this->mergeExternalItems($this->MCONF['name'], 'singleDetails', $this->MOD_MENU['singleDetails']);
 		$this->MOD_MENU['extensionInfo'] = $this->mergeExternalItems($this->MCONF['name'], 'singleDetails', array());
 

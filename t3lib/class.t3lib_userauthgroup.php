@@ -650,12 +650,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	boolean
 	 */
 	function mayMakeShortcut() {
-			// "Shortcuts" have been renamed to "Bookmarks"
-			// @deprecated remove shortcuts code in TYPO3 4.7
-		return ($this->getTSConfigVal('options.enableShortcuts')
-				|| $this->getTSConfigVal('options.enableBookmarks'))
-			   && (!$this->getTSConfigVal('options.mayNotCreateEditShortcuts')
-				   && !$this->getTSConfigVal('options.mayNotCreateEditBookmarks'));
+		return $this->getTSConfigVal('options.enableBookmarks') && !$this->getTSConfigVal('options.mayNotCreateEditBookmarks');
 	}
 
 	/**
@@ -913,7 +908,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		$type = t3lib_utility_Math::forceIntegerInRange($type, -1);
 
 			// Check if only element versioning is allowed:
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['elementVersioningOnly'] && $type != -1) {
+		if ($type != -1) {
 			return FALSE;
 		}
 

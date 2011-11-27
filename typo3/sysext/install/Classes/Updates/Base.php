@@ -65,20 +65,6 @@ abstract class Tx_Install_Updates_Base {
 	 **/
 
 	/**
-	 * The first function in the update wizard steps
-	 *
-	 * it works like this:
-	 * @param	$explanation	string	HTML that is outputted on the first
-	 * @param	$showUpdate		int	that informs you whether to show this update wizard or not. Possible values that checkForUpdate() should set:
-	 * 			0 = don't show this update wizard at all (because it's not needed)
-	 * 			1 = show the update wizard (explanation + next step button)
-	 * 			2 = show the update wizard (explanation but not the "next step" button), useful for showing a status of a wizard
-	 * @return	deprecated since TYPO3 4.5, in previous versions it was used to determine whether the update wizards should be shown, now, the $showUpdate parameter is used for that
-	 */
-	// public abstract function checkForUpdate(&$explanation, &$showUpdate);
-
-
-	/**
 	 * second step: get user input if needed
 	 *
 	 * @param	string	input prefix, all names of form fields have to start with this. Append custom name in [ ... ]

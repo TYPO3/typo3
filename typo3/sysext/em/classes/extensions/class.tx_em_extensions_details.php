@@ -753,28 +753,6 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 		}
 	}
 
-
-	/**
-	 * Returns help text if applicable.
-	 *
-	 * @param	string		Help text key
-	 * @return	string		HTML table cell
-	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7
-	 */
-	function helpCol($key) {
-		if ($GLOBALS['BE_USER']->uc['edit_showFieldHelp']) {
-			if (empty($key)) {
-				return '<td>&nbsp;</td>';
-			}
-			else {
-				return t3lib_BEfunc::cshItem($this->descrTable, 'emconf_' . $key, $GLOBALS['BACK_PATH'], '<td>|</td>');
-			}
-		}
-		else {
-			return '';
-		}
-	}
-
 	/**
 	 * Returns the header column (for the extension details item), and applies help text if available
 	 *

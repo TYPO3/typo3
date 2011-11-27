@@ -107,7 +107,7 @@ class tx_coreupdates_t3skin extends Tx_Install_Updates_Base {
 
 			// Implode unique list of extensions to load and return:
 		return implode(',', array_unique($listArr));
-		}
+	}
 
 
 	/**

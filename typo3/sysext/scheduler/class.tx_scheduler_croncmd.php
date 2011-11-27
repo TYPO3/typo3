@@ -87,14 +87,9 @@ class tx_scheduler_CronCmd {
 	 * Calculates the date of the next execution.
 	 *
 	 * @api
-	 * @param integer $level (Deprecated) Number of the current level, e.g. 2 is the day level
 	 * @return void
 	 */
-	public function calculateNextValue($level = NULL) {
-		if (!is_null($level)) {
-			t3lib_div::deprecationLog('The parameter $level is deprecated since TYPO3 version 4.5.');
-		}
-
+	public function calculateNextValue() {
 		$newTimestamp = $this->getTimestamp();
 
 			// Calculate next minute and hour field
@@ -269,42 +264,6 @@ class tx_scheduler_CronCmd {
 	 */
 	protected function roundTimestamp($timestamp) {
 		return mktime(date('H', $timestamp), date('i', $timestamp), 0, date('n', $timestamp), date('j', $timestamp), date('Y', $timestamp));
-	}
-
-	/**
-	 * Returns the first value that is higher than the current value
-	 * from a list of possible values.
-	 *
-	 * @deprecated since 4.5
-	 * @param	mixed	$currentValue: the value to be searched in the list
-	 * @param	array	$listArray: the list of values
-	 * @return	mixed	The value from the list right after the current value
-	 */
-	public function getNextValue($currentValue, array $listArray) {
-		t3lib_div::deprecationLog('The method is deprecated since TYPO3 version 4.5.');
-
-		$next_value = FALSE;
-
-		$numValues = count($listArray);
-		for ($i = 0; $i < $numValues; $i++) {
-			if ($listArray[$i] > $currentValue) {
-				$next_value = $listArray[$i];
-				break;
-			}
-		}
-
-		return $next_value;
-	}
-
-	/**
-	 * Returns the timestamp for the value parts in $this->values.
-	 *
-	 * @deprecated since 4.5
-	 * @return integer unix timestamp
-	 */
-	public function getTstamp() {
-		t3lib_div::deprecationLog('The method is deprecated since TYPO3 version 4.5.');
-		return $this->getTimestamp();
 	}
 }
 

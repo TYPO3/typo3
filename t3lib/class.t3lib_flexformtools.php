@@ -332,7 +332,6 @@ class t3lib_flexformtools {
 	 * @return	void
 	 */
 	function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, $pObj) {
-		#debug(array($dsArr, $data, $PA),$path);
 			// Just setting value in our own result array, basically replicating the structure:
 		$pObj->setArrayValueByPath($path, $this->cleanFlexFormXML, $data);
 

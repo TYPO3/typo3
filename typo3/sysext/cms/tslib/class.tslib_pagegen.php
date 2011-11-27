@@ -93,20 +93,9 @@ class TSpagegen {
 		$GLOBALS['TSFE']->debug = ''.$GLOBALS['TSFE']->config['config']['debug'];
 
 			// Base url:
-		if ($GLOBALS['TSFE']->config['config']['baseURL'])	{
-			if ($GLOBALS['TSFE']->config['config']['baseURL']==='1')	{
-					// @deprecated: Deprecated property, going to be dropped in TYPO3 4.7.
-				$error = 'Unsupported TypoScript property was found in this template: "config.baseURL="1"
-
-This setting has been deprecated in TYPO 3.8.1 due to security concerns.
-You need to change this value to the URL of your website root, otherwise TYPO3 will not work!
-
-See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.typo3.org/index.php/TYPO3_3.8.1</a> for more information.';
-				throw new RuntimeException(nl2br($error), 1294587219);
-			} else {
-				$GLOBALS['TSFE']->baseUrl = $GLOBALS['TSFE']->config['config']['baseURL'];
-			}
-			$GLOBALS['TSFE']->anchorPrefix = substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
+		if (isset($GLOBALS['TSFE']->config['config']['baseURL'])) {
+			$GLOBALS['TSFE']->baseUrl = $GLOBALS['TSFE']->config['config']['baseURL'];
+			$GLOBALS['TSFE']->anchorPrefix = substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'), strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
 		}
 
 			// Internal and External target defaults
@@ -188,11 +177,6 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			$GLOBALS['TSFE']->linkVars='';
 		}
 
-		if($GLOBALS['TSFE']->config['config']['doctype'] == 'html_5') {
-			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.doctype = html_5', 'It will be removed in TYPO3 4.7. Use html5 instead.');
-			$GLOBALS['TSFE']->config['config']['doctype'] = 'html5';
-		}
-
 			// Setting XHTML-doctype from doctype
 		if (!$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
 			$GLOBALS['TSFE']->config['config']['xhtmlDoctype'] = $GLOBALS['TSFE']->config['config']['doctype'];
@@ -259,11 +243,6 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 					$incFilesArray[] = $incFile;
 				}
 			}
-		}
-			// Include HTML mail library?
-		if ($GLOBALS['TSFE']->config['config']['incT3Lib_htmlmail'])	{
-			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.incT3Lib_htmlmail');
-			$incFilesArray[] = 't3lib/class.t3lib_htmlmail.php';
 		}
 		return $incFilesArray;
 	}

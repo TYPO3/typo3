@@ -587,7 +587,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			// If found, display:
 		if (is_array($phashRecord))	{
 			$content.= '<h4>phash row content:</h4>'.
-						$this->utf8_to_currentCharset(t3lib_div::view_array($phashRecord));
+						$this->utf8_to_currentCharset(t3lib_utility_Debug::viewArray($phashRecord));
 
 				// Getting debug information if any:
 			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -601,7 +601,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				unset($debugInfo['lexer']);
 
 				$content.= '<h3>Debug information:</h3>'.
-						$this->utf8_to_currentCharset(t3lib_div::view_array($debugInfo));
+						$this->utf8_to_currentCharset(t3lib_utility_Debug::viewArray($debugInfo));
 
 				$content.= '<h4>Debug information / lexer splitting:</h4>'.
 						'<hr/><strong>'.
@@ -674,7 +674,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 						'',
 						''
 					);
-			$content.= t3lib_div::view_array($ftrows);
+			$content .= t3lib_utility_Debug::viewArray($ftrows);
 
 				// Add go-back link:
 			$content = $this->linkList().$content.$this->linkList();
@@ -1159,13 +1159,13 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				}
 
 				$content.='<h4>Log for re-indexing of "'.htmlspecialchars($resultRow['data_filename']).'":</h4>';
-				$content.=t3lib_div::view_array($indexerObj->internal_log);
+				$content.=t3lib_utility_Debug::viewArray($indexerObj->internal_log);
 
 				$content.='<h4>Hash-array, page:</h4>';
-				$content.=t3lib_div::view_array($indexerObj->hash);
+				$content.=t3lib_utility_Debug::viewArray($indexerObj->hash);
 
 				$content.='<h4>Hash-array, file:</h4>';
-				$content.=t3lib_div::view_array($indexerObj->file_phash_arr);
+				$content.=t3lib_utility_Debug::viewArray($indexerObj->file_phash_arr);
 			}
 		}
 

@@ -112,6 +112,7 @@ require_once(PATH_t3lib.'class.t3lib_stdgraphic.php');
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
+ * @deprecated will be removed in 4.5 
  */
 class SC_tslib_showpic {
 	var $content;		// Page content accumulated here.

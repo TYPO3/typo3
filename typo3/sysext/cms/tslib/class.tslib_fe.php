@@ -2011,7 +2011,6 @@
 
 			if ($this->tmpl->loaded)	{
 				$GLOBALS['TT']->push('Setting the config-array','');
-			//	t3lib_div::print_array($this->tmpl->setup);
 				$this->sPre = $this->tmpl->setup['types.'][$this->type];	// toplevel - objArrayName
 				$this->pSetup = $this->tmpl->setup[$this->sPre.'.'];
 
@@ -4070,22 +4069,6 @@ if (version == "n3") {
 			}
 		}
 		return $url;
-	}
-
-	/**
-	 * Prints error msg/header.
-	 * Echoes out the HTML content
-	 *
-	 * @param	string		Message string
-	 * @param	string		Header string
-	 * @return	void
-	 * @see t3lib_timeTrack::debug_typo3PrintError()
-	 * @see	t3lib_message_ErrorPageMessage
-	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7
-	 */
-	function printError($label,$header='Error!') {
-		t3lib_div::logDeprecatedFunction();
-		t3lib_timeTrack::debug_typo3PrintError($header, $label, 0, t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
 	}
 
 	/**

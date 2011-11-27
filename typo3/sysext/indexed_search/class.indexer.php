@@ -2141,7 +2141,7 @@ class tx_indexedsearch_indexer {
 	 *
 	 * @param string $stringToHash String to hash
 	 * @return int Integer intepretation of the md5 hash of input string.
-	 * @deprecated
+	 * @deprecated will be removed in 4.8.
 	 */
 	function md5inthash($stringToHash) {
 		t3lib_div::logDeprecatedFunction();
