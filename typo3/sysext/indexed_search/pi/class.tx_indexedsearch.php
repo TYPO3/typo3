@@ -1315,7 +1315,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 *
 	 * @param string $stringToHash
 	 * @return int Integer intepretation of the md5 hash of input string.
-	 * @deprecated
+	 * @deprecated will be removed in 4.8
 	 * @see tx_indexedsearch_util::md5inthash
 	 */
 	function md5inthash($stringToHash) {

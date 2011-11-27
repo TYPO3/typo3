@@ -1067,19 +1067,6 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Removes comma (if present) in the end of string
-	 *
-	 * @param string $string String from which the comma in the end (if any) will be removed.
-	 * @return string
-	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7 - Use rtrim() directly
-	 */
-	public static function rm_endcomma($string) {
-		self::logDeprecatedFunction();
-
-		return rtrim($string, ',');
-	}
-
-	/**
 	 * Tests if the input can be interpreted as integer.
 	 *
 	 * @param mixed $var Any input variable to test
@@ -3325,99 +3312,6 @@ final class t3lib_div {
 
 		return $fullName;
 	}
-
-
-	/*************************
-	 *
-	 * DEBUG helper FUNCTIONS
-	 *
-	 *************************/
-
-	/* Deprecated since 4.5, use t3lib_utility_Debug */
-
-
-	/**
-	 * Returns a string with a list of ascii-values for the first $characters characters in $string
-	 *
-	 * @param string $string String to show ASCII value for
-	 * @param integer $characters Number of characters to show
-	 * @return string The string with ASCII values in separated by a space char.
-	 * @deprecated since TYPO3 4.5 - Use t3lib_utility_Debug::ordinalValue instead
-	 */
-	public static function debug_ordvalue($string, $characters = 100) {
-		self::logDeprecatedFunction();
-		return t3lib_utility_Debug::ordinalValue($string, $characters);
-	}
-
-	/**
-	 * Returns HTML-code, which is a visual representation of a multidimensional array
-	 * use t3lib_div::print_array() in order to print an array
-	 * Returns FALSE if $array_in is not an array
-	 *
-	 * @param mixed $array_in Array to view
-	 * @return string HTML output
-	 * @deprecated since TYPO3 4.5 - Use t3lib_utility_Debug::viewArray instead
-	 */
-	public static function view_array($array_in) {
-		self::logDeprecatedFunction();
-		return t3lib_utility_Debug::viewArray($array_in);
-	}
-
-	/**
-	 * Prints an array
-	 *
-	 * @param mixed $array_in Array to print visually (in a table).
-	 * @return void
-	 * @see view_array()
-	 * @deprecated since TYPO3 4.5 - Use t3lib_utility_Debug::printArray instead
-	 */
-	public static function print_array($array_in) {
-		self::logDeprecatedFunction();
-		t3lib_utility_Debug::printArray($array_in);
-	}
-
-	/**
-	 * Makes debug output
-	 * Prints $var in bold between two vertical lines
-	 * If not $var the word 'debug' is printed
-	 * If $var is an array, the array is printed by t3lib_div::print_array()
-	 *
-	 * @param mixed $var Variable to print
-	 * @param string $header The header.
-	 * @param string $group Group for the debug console
-	 * @return void
-	 * @deprecated since TYPO3 4.5 - Use t3lib_utility_Debug::debug instead
-	 */
-	public static function debug($var = '', $header = '', $group = 'Debug') {
-		self::logDeprecatedFunction();
-		t3lib_utility_Debug::debug($var, $header, $group);
-	}
-
-	/**
-	 * Displays the "path" of the function call stack in a string, using debug_backtrace
-	 *
-	 * @return string
-	 * @deprecated since TYPO3 4.5 - Use t3lib_utility_Debug::debugTrail instead
-	 */
-	public static function debug_trail() {
-		self::logDeprecatedFunction();
-		return t3lib_utility_Debug::debugTrail();
-	}
-
-	/**
-	 * Displays an array as rows in a table. Useful to debug output like an array of database records.
-	 *
-	 * @param mixed $rows Array of arrays with similar keys
-	 * @param string $header Table header
-	 * @param boolean $returnHTML If TRUE, will return content instead of echo'ing out.
-	 * @return mixed Outputs to browser or returns an HTML string if $returnHTML is TRUE
-	 * @deprecated since TYPO3 4.5 - Use t3lib_utility_Debug::debugRows instead
-	 */
-	public static function debugRows($rows, $header = '', $returnHTML = FALSE) {
-		self::logDeprecatedFunction();
-		return t3lib_utility_Debug::debugRows($rows, $header, $returnHTML);
-	}
-
 
 	/*************************
 	 *

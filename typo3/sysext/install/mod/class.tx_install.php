@@ -482,7 +482,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$this->setupGeneral();
 		$this->generateConfigForm();
 		if (count($this->messages)) {
-			t3lib_div::debug($this->messages);
+			t3lib_utility_Debug::debug($this->messages);
 		}
 
 		if ($this->step) {

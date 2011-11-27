@@ -711,8 +711,7 @@ class t3lib_TCEmain {
 								if ($status == 'new') {
 									if ($createNewVersion) { // This creates a new version of the record with online placeholder and offline version
 										$versioningType = ($table === 'pages'
-											? $this->BE_USER->workspaceVersioningTypeGetClosest(
-												t3lib_utility_Math::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['BE']['newPagesVersioningType'], -1, 1))
+											? $this->BE_USER->workspaceVersioningTypeGetClosest(-1)
 											: -1);
 										if ($this->BE_USER->workspaceVersioningTypeAccess($versioningType)) {
 											$newVersion_placeholderFieldArray['t3ver_label'] = 'INITIAL PLACEHOLDER';

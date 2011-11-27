@@ -77,7 +77,6 @@ class tx_form_System_Postprocessor_Mail {
 	 * @return string HTML message from this processor
 	 */
 	public function process() {
-		$this->setReturnPath();
 		$this->setSubject();
 		$this->setFrom();
 		$this->setTo();
@@ -93,18 +92,6 @@ class tx_form_System_Postprocessor_Mail {
 		$this->send();
 
 		return $this->render();
-	}
-
-	/**
-	 * Set the return-path (the bounce address) of the mail message
-	 *
-	 * @return void
-	 */
-	protected function setReturnPath() {
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['forceReturnPath']) {
-			$returnPath = $GLOBALS['TYPO3_CONF_VARS']['SYS']['forceReturnPath'];
-			$this->mailMessage->setReturnPath($returnPath);
-		}
 	}
 
 	/**

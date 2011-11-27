@@ -78,12 +78,10 @@ final class t3lib_utility_Mail {
 				$hookSubscriberContainsArrow = strpos($hookSubscriber, '->');
 
 				if ($hookSubscriberContainsArrow !== FALSE) {
-						// @deprecated: remove in TYPO3 4.7
-					t3lib_div::deprecationLog(
-						'The usage of user function notation for the substituteMailDelivery hook is deprecated,
-						use the t3lib_mail_MailerAdapter interface instead.'
+					throw new RuntimeException(
+						$hookSubscriber . ' is an invalid hook implementation. Please consider using an implementation of t3lib_mail_MailerAdapter.',
+						1322287600
 					);
-					$success = $success && t3lib_div::callUserFunction($hookSubscriber, $parameters, $fakeThis);
 				} else {
 					$mailerAdapter = t3lib_div::makeInstance($hookSubscriber);
 					if ($mailerAdapter instanceof t3lib_mail_MailerAdapter) {
