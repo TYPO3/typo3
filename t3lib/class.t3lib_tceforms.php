@@ -4404,7 +4404,7 @@ class t3lib_TCEforms {
 	function getDynTabMenu($parts, $idString, $dividersToTabsBehaviour = 1) {
 		if (is_object($GLOBALS['TBE_TEMPLATE'])) {
 			$GLOBALS['TBE_TEMPLATE']->backPath = $this->backPath;
-			return $GLOBALS['TBE_TEMPLATE']->getDynTabMenu($parts, $idString, 0, FALSE, 0, 1, FALSE, 1, $dividersToTabsBehaviour);
+			return $GLOBALS['TBE_TEMPLATE']->getDynTabMenu($parts, $idString, 0, FALSE, 1, FALSE, 1, $dividersToTabsBehaviour);
 		} else {
 			$output = '';
 			foreach ($parts as $singlePad) {
@@ -5109,124 +5109,6 @@ class t3lib_TCEforms {
 		$out .= '</fieldset>';
 		return $out;
 	}
-
-
-	/**
-	 * Returns help-text ICON if configured for.
-	 *
-	 * @param	string		The table name
-	 * @param	string		The field name
-	 * @param	boolean		Force the return of the help-text icon.
-	 * @return	string		HTML, <a>-tag with
-	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7
-	 */
-	function helpTextIcon($table, $field, $force = 0) {
-		t3lib_div::logDeprecatedFunction();
-		if ($this->globalShowHelp && $GLOBALS['TCA_DESCR'][$table]['columns'][$field] && (($this->edit_showFieldHelp == 'icon' && !$this->doLoadTableDescr($table)) || $force)) {
-			return t3lib_BEfunc::helpTextIcon($table, $field, $this->backPath, $force);
-		} else {
-				// Detects fields with no CSH and outputs dummy line to insert into CSH locallang file:
-			return '<span class="nbsp">&nbsp;</span>';
-		}
-	}
-
-	/**
-	 * Returns help text DESCRIPTION, if configured for.
-	 *
-	 * @param	string		The table name
-	 * @param	string		The field name
-	 * @return	string
-	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7
-	 */
-	function helpText($table, $field) {
-		t3lib_div::logDeprecatedFunction();
-		if ($this->globalShowHelp && $GLOBALS['TCA_DESCR'][$table]['columns'][$field] && ($this->edit_showFieldHelp == 'text' || $this->doLoadTableDescr($table))) {
-			$fDat = $GLOBALS['TCA_DESCR'][$table]['columns'][$field];
-			return '<table border="0" cellpadding="2" cellspacing="0" width="90%"><tr><td valign="top" width="14">' .
-				   $this->helpTextIcon(
-					   $table,
-					   $field,
-					   $fDat['details'] || $fDat['syntax'] || $fDat['image_descr'] || $fDat['image'] || $fDat['seeAlso']
-				   ) .
-				   '</td><td valign="top"><span class="typo3-TCEforms-helpText">' .
-				   htmlspecialchars(strip_tags($fDat['description'])) .
-				   '</span></td></tr></table>';
-		}
-	}
-
-	/**
-	 * Returns help-text ICON if configured for.
-	 *
-	 * @param	string		Field name
-	 * @param	string		Field title
-	 * @param	string		File name with CSH labels
-	 * @return	string		HTML, <a>-tag with
-	 * @deprecated since TYPO3 4.5, this function will be removed in TYPO3 4.7. Use t3lib_BEfunc::wrapInHelp() instead.
-	 */
-	function helpTextIcon_typeFlex($field, $fieldTitle, $cshFile) {
-		t3lib_div::logDeprecatedFunction();
-		if ($this->globalShowHelp && $cshFile) {
-			$value = $GLOBALS['LANG']->sL($cshFile . ':' . $field . '.description');
-			if (trim($value)) {
-				if (substr($fieldTitle, -1, 1) == ':') {
-					$fieldTitle = substr($fieldTitle, 0, strlen($fieldTitle) - 1);
-				}
-
-					// Hover popup textbox with alttitle and description
-				if ($this->edit_showFieldHelp == 'icon') {
-					$arrow = t3lib_iconWorks::getSpriteIcon('actions-view-go-forward');
-						// add description text
-					$hoverText = '<span class="paragraph">' . nl2br(htmlspecialchars($value)) . $arrow . '</span>';
-						// put header before the rest of the text
-					$alttitle = $GLOBALS['LANG']->sL($cshFile . ':' . $field . '.alttitle');
-					if ($alttitle) {
-						$hoverText = '<span class="header">' . $alttitle . '</span><br />' . $hoverText;
-					}
-					$hoverText = '<span class="typo3-csh-inline">' . $hoverText . '</span>';
-				}
-
-					// CSH exists
-				$params = base64_encode(serialize(array(
-													   'cshFile' => $cshFile,
-													   'field' => $field,
-													   'title' => $fieldTitle
-												  )));
-				$aOnClick = 'vHWin=window.open(\'' . $this->backPath . 'view_help.php?ffID=' . $params . '\',\'viewFieldHelp\',\'height=400,width=600,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
-				return '<a href="#" class="typo3-csh-link" onclick="' . htmlspecialchars($aOnClick) . '">' .
-					   t3lib_iconWorks::getSpriteIcon('actions-system-help-open') . $hoverText .
-					   '</a>';
-			}
-		}
-		return '';
-	}
-
-	/**
-	 * Returns help text DESCRIPTION, if configured for.
-	 *
-	 * @param	string		Field name
-	 * @param	string		CSH file name
-	 * @return	string		Description for the field with cion or empty string
-	 * @deprecated since TYPO3 4.5, this function will be removed in TYPO3 4.7. Use t3lib_BEfunc::wrapInHelp() instead.
-	 */
-	function helpText_typeFlex($field, $fieldTitle, $cshFile) {
-		t3lib_div::logDeprecatedFunction();
-		if ($this->globalShowHelp && $cshFile && $this->edit_showFieldHelp == 'text') {
-			$value = $GLOBALS['LANG']->sL($cshFile . ':' . $field . '.description');
-			if (trim($value)) {
-				return '<table border="0" cellpadding="2" cellspacing="0" width="90%"><tr><td valign="top" width="14">' .
-					   $this->helpTextIcon_typeFlex(
-						   $field,
-						   $fieldTitle,
-						   $cshFile
-					   ) .
-					   '</td><td valign="top"><span class="typo3-TCEforms-helpText-flexform">' .
-					   htmlspecialchars(strip_tags($value)) .
-					   '</span></td></tr></table>';
-			}
-		}
-		return '';
-	}
-
 
 	/**
 	 * Setting the current color scheme ($this->colorScheme) based on $this->defColorScheme plus input string.

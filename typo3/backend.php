@@ -656,27 +656,12 @@ class TYPO3backend {
 	window.setTimeout("top.loadEditId('.intval($editRecord['uid']).');", 500);
 			';
 
-					// "Shortcuts" have been renamed to "Bookmarks"
-					// @deprecated remove shortcuts code in TYPO3 4.7
-				$shortcutSetPageTree = $GLOBALS['BE_USER']->getTSConfigVal('options.shortcut_onEditId_dontSetPageTree');
-				$bookmarkSetPageTree = $GLOBALS['BE_USER']->getTSConfigVal('options.bookmark_onEditId_dontSetPageTree');
-				if (!is_null($shortcutSetPageTree) && $shortcutSetPageTree !== '') {
-					t3lib_div::deprecationLog('options.shortcut_onEditId_dontSetPageTree - since TYPO3 4.5, will be removed in TYPO3 4.7 - use options.bookmark_onEditId_dontSetPageTree instead');
-				}
-
 					// Checking page edit parameter:
-				if (!$shortcutSetPageTree && !$bookmarkSetPageTree) {
-
-					$shortcutKeepExpanded = $GLOBALS['BE_USER']->getTSConfigVal('options.shortcut_onEditId_keepExistingExpanded');
+				if (!$GLOBALS['BE_USER']->getTSConfigVal('options.bookmark_onEditId_dontSetPageTree')) {
 					$bookmarkKeepExpanded = $GLOBALS['BE_USER']->getTSConfigVal('options.bookmark_onEditId_keepExistingExpanded');
-					$keepExpanded = ($shortcutKeepExpanded || $bookmarkKeepExpanded);
 
 						// Expanding page tree:
-					t3lib_BEfunc::openPageTree(intval($editRecord['pid']), !$keepExpanded);
-
-					if ($shortcutKeepExpanded) {
-						t3lib_div::deprecationLog('options.shortcut_onEditId_keepExistingExpanded - since TYPO3 4.5, will be removed in TYPO3 4.7 - use options.bookmark_onEditId_keepExistingExpanded instead');
-					}
+					t3lib_BEfunc::openPageTree(intval($editRecord['pid']), !$bookmarkKeepExpanded);
 				}
 			} else {
 				$this->js .= '

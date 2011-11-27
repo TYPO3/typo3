@@ -94,17 +94,9 @@ class ShortcutMenu implements backend_toolbarItem {
 	/**
 	 * checks whether the user has access to this toolbar item
 	 *
-	 * @return  boolean  TRUE if user has access, FALSE if not
+	 * @return boolean TRUE if user has access, FALSE if not
 	 */
 	public function checkAccess() {
-			// "Shortcuts" have been renamed to "Bookmarks"
-			// @deprecated remove shortcuts code in TYPO3 4.7
-		$useShortcuts = $GLOBALS['BE_USER']->getTSConfigVal('options.enableShortcuts');
-		if ($useShortcuts !== NULL) {
-			t3lib_div::deprecationLog('options.enableShortcuts - since TYPO3 4.5, will be removed in TYPO3 4.7 - use options.enableBookmarks instead');
-			return (bool) $useShortcuts;
-		}
-
 		return (bool) $GLOBALS['BE_USER']->getTSConfigVal('options.enableBookmarks');
 	}
 
@@ -386,19 +378,10 @@ class ShortcutMenu implements backend_toolbarItem {
 	 */
 	protected function initShortcutGroups($params = array(), TYPO3AJAX &$ajaxObj = NULL) {
 			// groups from TSConfig
-			// "Shortcuts" have been renamed to "Bookmarks"
-			// @deprecated remove shortcuts code in TYPO3 4.7
-		$userShortcutGroups = $GLOBALS['BE_USER']->getTSConfigProp('options.shortcutGroups');
-		if ($userShortcutGroups) {
-			t3lib_div::deprecationLog('options.shortcutGroups - since TYPO3 4.5, will be removed in TYPO3 4.7 - use options.bookmarkGroups instead');
-		}
 		$bookmarkGroups = $GLOBALS['BE_USER']->getTSConfigProp('options.bookmarkGroups');
-		if ($bookmarkGroups !== NULL) {
-			$userShortcutGroups = $bookmarkGroups;
-		}
 
-		if(is_array($userShortcutGroups) && count($userShortcutGroups)) {
-			foreach($userShortcutGroups as $groupId => $label) {
+		if(is_array($bookmarkGroups) && count($bookmarkGroups)) {
+			foreach($bookmarkGroups as $groupId => $label) {
 				if(strcmp('', $label) && strcmp('0', $label)) {
 					$this->shortcutGroups[$groupId] = (string) $label;
 				} elseif($GLOBALS['BE_USER']->isAdmin()) {

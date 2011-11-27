@@ -109,7 +109,6 @@ $TYPO3_CONF_VARS = array(
 		'setDBinit' => '-1',						// String (textarea): Commands to send to database right after connecting, separated by newline. Ignored by the DBAL extension except for the 'native' type!
 		'dbClientCompress' => FALSE,			// Boolean: if TRUE, data exchange between TYPO3 and database server will be compressed. This may improve performance if (1) database serever is on the different server and (2) network connection speed to database server is 100mbps or less. CPU usage will be higher if this option is used but database operations will be executed faster due to much less (up to 3 times) database network traffic. This option has no effect if MySQL server is localhost.
 		'setMemoryLimit' => 0,					// Integer: memory_limit in MB: If more than 16, TYPO3 will try to use ini_set() to set the memory limit of PHP to the value. This works only if the function ini_set() is not disabled by your sysadmin.
-		'forceReturnPath' => FALSE,				// Boolean: <em>Note: This option is deprecated as of TYPO3 4.5 together with t3lib_htmlmail. This behaviour is the default using the new t3lib_mail methods.</em> Force return path to be applied in mail() calls. If this is set, all calls to mail() done by t3lib_htmlmail will be called with '-f&lt;return_path&gt; as the 5th parameter. This will make the return path correct on almost all Unix systems. There is a known problem with Postfix below version 2: Mails are not sent if this option is set and Postfix is used. On Windows platforms, the return path is set via a call to ini_set.
 		'serverTimeZone' => 1,					// Integer: GMT offset of servers time (from time()). Default is "1" which is "GMT+1" (central european time). This value can be used in extensions that are GMT aware and wants to convert times to/from other timezones.
 		'phpTimeZone' => '',					// String: timezone to force for all date() and mktime() functions. A list of supported values can be found at <a href="http://php.net/manual/en/timezones.php" target="_blank">php.net</a>. If this is not set, a valid fallback will be searched for by PHP (php.ini's <a href="http://www.php.net/manual/en/datetime.configuration.php#ini.date.timezone" target="_blank">date.timezone</a> setting, server defaults, etc); and if no fallback is found, the value of "UTC" is used instead.
 		'systemLog' => '',						// <p>String: semi-colon separated list. Defines one or more logging methods. Possible methods:</p><dl><dt>file,&lt;abs-path-to-file&gt;[,&lt;level&gt;]</dt><dd>logs to a file</dd><dt>mail,&lt;to&gt;[/&lt;from&gt;][,&lt;level&gt;]</dt><dd>sends the log entries via mail</dd><dt>syslog,&lt;facility&gt;,[,&lt;level&gt;]</dt><dd>uses the operating system's log. Facility may be one of LOCAL0..LOCAL7, USER (on Windows USER is the only valid type).</dd><dt>error_log[,,&lt;level&gt;]</dt><dd>uses the PHP error log</dd></dl><p>The &lt;level&gt; is the individual logging level (see <a href="#SYS-systemLogLevel">[SYS][systemLogLevel]</a>).</p>
@@ -468,7 +467,6 @@ $TYPO3_CONF_VARS = array(
 //			'group' => '',						// default in tce_main is 'show,edit,new,editcontent'. If this is set (uncomment), this value is used instead.
 //			'everybody' => ''					// default in tce_main is ''. If this is set (uncomment), this value is used instead.
 		),
-		'newPagesVersioningType' => -1,			// Integer: Default versioning type for new pages create as versions. -1 means "element", 0 means "page", 1 means "branch". If using enything else than -1 ("element") here you also have to set "elementVersioningOnly=FALSE" . Please note that "page" and "branch" types are deprecated since TYPO3 4.2 and will be unsupported in TYPO3 4.6. Thus, this option will be removed in TYPO3 4.6.
 		'defaultUC' => array (					// Override default settings for BE-users. See class.t3lib_beuserauth.php, array $uc_default
 		),
 			// The control of fileextensions goes in two catagories. Webspace and Ftpspace. Webspace is folders accessible from a webbrowser (below TYPO3_DOCUMENT_ROOT) and ftpspace is everything else.
@@ -494,7 +492,6 @@ $TYPO3_CONF_VARS = array(
 		'compactFlexFormXML' => 0,				// If set, the flexform XML will not contain indentation spaces making XML more compact
 		'flexformForceCDATA' => 0,				// Boolean:  If set, will add CDATA to Flexform XML. Some versions of libxml have a bug that causes HTML entities to be stripped from any XML content and this setting will avoid the bug by adding CDATA.
 		'explicitConfirmationOfTranslation' => FALSE,	// If set, then the diff-data of localized records is not saved automatically when updated but requires that a translator clicks the special finish_translation/save/close button that becomes available.
-		'elementVersioningOnly' => TRUE,		// If TRUE, only element versioning is allowed in the backend (see option newPagesVersioningType). Setting this flag is recommended for new installations of TYPO3 4.2+ since "page" and "branch" versioning types are known for the drawbacks of loosing ids and "element" type versions supports moving now. Please note that "page" and "branch" types are deprecated since TYPO3 4.2 and will be unsupported in TYPO3 4.6. Thus, this option will be removed in TYPO3 4.6.
 		'versionNumberInFilename' => FALSE,	// <p>Boolean: If TRUE, included CSS and JS files will have the timestamp embedded in the filename, ie. filename.1269312081.js. This will make browsers and proxies reload the files if they change (thus avoiding caching issues). IMPORTANT: this feature requires extra .htaccess rules to work (please refer to _.htaccess or the _.htaccess file from the dummy package)</p><p>If FALSE the filemtime will be appended as a query-string.</p>
 		'spriteIconGenerator_handler' => '',	// String: Used to register own/other spriteGenerating Handler, they have to implement the interface t3lib_spritemanager_SpriteIconGenerator. If set to "t3lib_spritemanager_SpriteBuildingHandler" icons from extensions will automatically merged into sprites.
 		'debug' => FALSE,			// Boolean: If set, the loginrefresh is disabled and pageRenderer is set to debug mode. Use this to debug the backend only!
@@ -588,7 +585,6 @@ $TYPO3_CONF_VARS = array(
 		'transport_smtp_password' => '',		// String: <em>only with transport=smtp</em>: If your SMTP server requires authentication, enter your password here.
 		'transport_sendmail_command' => '/usr/sbin/sendmail -bs',	// String: <em>only with transport=sendmail</em>: The command to call to send a mail locally. The default works on most modern UNIX based mail server (sendmail, postfix, exim)
 		'transport_mbox_file' => '',	// String: <em>only with transport=mbox</em>: The file where to write the mails into. This file will be conforming the mbox format described in RFC 4155. It is a simple text file with a concatenation of all mails. Path must be absolute.
-		'substituteOldMailAPI' => 1,	// Boolean: If this is set, old calls to t3lib_utility_mail::Mail() will be translated to new t3lib_mail calls. This should work on most cases and thus respect the above transport settings. If you get garbled emails (or no attachments), consider setting this off. Ask the extension author to upgrade their code to make use of t3lib_mail (instead of the deprecated t3lib_htmlmail).
 		'defaultMailFromAddress' => '',			// String: This default email address is used when no other "from" address is set for a TYPO3-generated email. You can specify an email address only (ex. info@example.org).
 		'defaultMailFromName' => '',			// String: This default name is used when no other "from" name is set for a TYPO3-generated email.
 	),
@@ -1005,9 +1001,7 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] = $TYPO3_CONF_VARS[
 $TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionalErrors'] = $TYPO3_CONF_VARS['SYS']['exceptionalErrors'];
 
 	// Mail sending via Swift Mailer
-if ($TYPO3_CONF_VARS['MAIL']['substituteOldMailAPI']) {
-	$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'][] = 't3lib_mail_SwiftMailerAdapter';
-}
+$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'][] = 't3lib_mail_SwiftMailerAdapter';
 
 	// Turn error logging on/off.
 if (($displayErrors = intval($TYPO3_CONF_VARS['SYS']['displayErrors'])) != '-1')	{
@@ -1089,7 +1083,6 @@ define('TYPO3_EXCEPTION_DLOG', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_except
 	// Unsetting other reserved global variables:
 	// Those which are/can be set in "stddb/tables.php" files:
 unset($PAGES_TYPES);
-unset($ICON_TYPES);
 unset($TCA);
 unset($TBE_MODULES);
 unset($TBE_STYLES);
