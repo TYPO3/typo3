@@ -213,11 +213,6 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 			'win7',
 			$infoArray['all_systems']
 		);
-			// Check for backwards compatibility (deprecated since 4.5)
-		$this->assertEquals(
-			'winNT',
-			$infoArray['system']
-		);
 	}
 
 	/**
@@ -230,11 +225,6 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$this->assertContains(
 			'winVista',
 			$infoArray['all_systems']
-		);
-			// Check for backwards compatibility (deprecated since 4.5)
-		$this->assertSame(
-			'winNT',
-			$infoArray['system']
 		);
 	}
 
@@ -249,11 +239,6 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 			'winXP',
 			$infoArray['all_systems']
 		);
-			// Check for backwards compatibility (deprecated since 4.5)
-		$this->assertSame(
-			'winNT',
-			$infoArray['system']
-		);
 	}
 
 	/**
@@ -267,11 +252,6 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 			'win2k',
 			$infoArray['all_systems']
 		);
-			// Check for backwards compatibility (deprecated since 4.5)
-		$this->assertSame(
-			'winNT',
-			$infoArray['system']
-		);
 	}
 
 	/**
@@ -284,11 +264,6 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$this->assertContains(
 			'win2k',
 			$infoArray['all_systems']
-		);
-			// Check for backwards compatibility (deprecated since 4.5)
-		$this->assertSame(
-			'winNT',
-			$infoArray['system']
 		);
 	}
 
@@ -329,11 +304,6 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 			'iOS',
 			$infoArray['all_systems']
 		);
-			// Check for backwards compatibility (deprecated since 4.5)
-		$this->assertSame(
-			'mac',
-			$infoArray['system']
-		);
 	}
 
 	/**
@@ -347,11 +317,6 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 			'iOS',
 			$infoArray['all_systems']
 		);
-			// Check for backwards compatibility (deprecated since 4.5)
-		$this->assertSame(
-			'mac',
-			$infoArray['system']
-		);
 	}
 
 	/**
@@ -364,11 +329,6 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$this->assertContains(
 			'iOS',
 			$infoArray['all_systems']
-		);
-			// Check for backwards compatibility (deprecated since 4.5)
-		$this->assertSame(
-			'mac',
-			$infoArray['system']
 		);
 	}
 
@@ -439,11 +399,6 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$this->assertContains(
 			'android',
 			$infoArray['all_systems']
-		);
-			// Check for backwards compatibility (deprecated since 4.5)
-		$this->assertSame(
-			'linux',
-			$infoArray['system']
 		);
 	}
 

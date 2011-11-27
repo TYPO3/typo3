@@ -493,43 +493,6 @@ class t3lib_timeTrack {
 			$arr[] = $uniqueId;
 		}
 	}
-
-	/**
-	 * This prints out a TYPO3 error message.
-	 *
-	 * @param	string		Header string
-	 * @param	string		Message string
-	 * @param	boolean		If set, then this will produce a alert() line for inclusion in JavaScript.
-	 * @param	string		URL for the <base> tag (if you want it)
-	 * @return	string
-	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7 - use RuntimeException from now on
-	 */
-	public function debug_typo3PrintError($header, $text, $js, $baseUrl = '') {
-		if ($js) {
-			$errorMessage = 'alert(\'' . t3lib_div::slashJS($header . '\n' . $text) . '\');';
-		} else {
-			t3lib_div::logDeprecatedFunction();
-			$messageObj = t3lib_div::makeInstance('t3lib_message_ErrorPageMessage', $text, $header);
-			$errorMessage = $messageObj->render();
-		}
-
-			// Hook to modify error message
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_timetrack.php']['debug_typo3PrintError'])) {
-			$params = array(
-				'header' => $header,
-				'text' => $text,
-				'js' => $js,
-				'baseUrl' => $baseUrl,
-				'errorMessage' => &$errorMessage
-			);
-			$null = NULL;
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_timetrack.php']['debug_typo3PrintError'] as $hookMethod) {
-				t3lib_div::callUserFunction($hookMethod, $params, $null);
-			}
-		}
-
-		echo $errorMessage;
-	}
 }
 
 // XCLASSing is not possible for this class

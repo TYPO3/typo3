@@ -27,7 +27,7 @@
 /**
  * Contains the initialization of global TYPO3 variables among which $TCA is the most significant.
  *
- * The list in order of appearance is: $PAGES_TYPES, $ICON_TYPES, $TCA, $TBE_MODULES, $TBE_STYLES, $FILEICONS
+ * The list in order of appearance is: $PAGES_TYPES, $TCA, $TBE_MODULES, $TBE_STYLES, $FILEICONS
  * These variables are first of all used in the backend but to some degree in the frontend as well. (See references)
  * See the document "Inside TYPO3" for a description of each variable in addition to the comment associated with each.
  *
@@ -81,17 +81,6 @@ $PAGES_TYPES = array(
 		'onlyAllowedTables' => '0'
 	)
 );
-
-
-/**
- * With $ICON_TYPES you can assign alternative icons to pages records based on another field than 'doktype'
- * Each key is a value from the "module" field of page records and the value is an array with a key/value pair, eg. "icon" => "modules_shop.gif"
- *
- * @see t3lib_iconWorks::getIcon(), typo3/sysext/cms/ext_tables.php
- * @deprecated since TYPO3 4.4, use t3lib_SpriteManager::addTcaTypeIcon instead, will be removed in TYPO3 4.7
- */
-$ICON_TYPES = array();
-
 
 /**
  * $TCA:

@@ -182,7 +182,7 @@ class SC_view_help {
 			$this->content .= $this->render_Single($this->mainKey, $this->field);
 
 		} elseif (is_array($this->ffID)) {
-			$this->content .= $this->render_SingleFlex();
+			$this->content .= $this->render_Single($this->mainKey, $this->field);
 
 		} else {
 				// Render Table Of Contents if nothing else:
@@ -494,27 +494,6 @@ class SC_view_help {
 		return $output;
 	}
 
-
-	/**
-	 * Renders CSH for a single field.
-	 *
-	 * @param	string		CSH key / table name
-	 * @param	string		Sub key / field name
-	 * @return	string		HTML output
-	 * @deprecated since TYPO3 4.5, this function will be removed in TYPO3 4.7. Use render_Single() instead.
-	 */
-	function render_SingleFlex() {
-		t3lib_div::logDeprecatedFunction();
-		$output = '';
-
-			// Render
-		$output.= $this->printItemFlex();
-
-			// Substitute glossary words:
-		return $this->substituteGlossaryWords($output);
-	}
-
-
 	/************************************
 	 *
 	 * Rendering CSH items
@@ -666,37 +645,6 @@ class SC_view_help {
 					($this->back ? '<br /><p><a href="' . htmlspecialchars('view_help.php?tfID=' . rawurlencode($this->back)) . '" class="typo3-goBack">' . htmlspecialchars($GLOBALS['LANG']->getLL('goBack')) . '</a></p>' : '') .
 					'<br />';
 		}
-		return $out;
-	}
-
-	/**
-	 * Prints a single $table/$field information piece
-	 * If $anchors is set, then seeAlso references to the same table will be page-anchors, not links.
-	 *
-	 * @param	string		Table name
-	 * @param	string		Field name
-	 * @param	boolean		If anchors is to be shown.
-	 * @return	string		HTML content
-	 * @deprecated since TYPO3 4.5, this function will be removed in TYPO3 4.7. Use printItem() instead.
-	 */
-	function printItemFlex() {
-		t3lib_div::logDeprecatedFunction();
-		// Get all texts
-		foreach (explode(',', 'description,details,syntax,image,image_descr,seeAlso') as $var) {
-			// Double $ below is not a error!
-			$$var = $GLOBALS['LANG']->sL($this->ffID['cshFile'] . ':' . $this->ffID['field'] . '.' . $var);
-		}
-		// Make seeAlso references.
-		$seeAlsoRes = $this->make_seeAlso($seeAlso);
-
-			// Making item:
-		$out= $this->headerLine($this->ffID['title'], 1) .
-				$this->prepareContent($description) .
-				($details ? $this->headerLine($GLOBALS['LANG']->getLL('details').':') . $this->prepareContent($details) : '') .
-				($syntax ? $this->headerLine($GLOBALS['LANG']->getLL('syntax').':') . $this->prepareContent($syntax) : '') .
-				($image ? $this->printImage($image, $image_descr) : '') .
-				($seeAlso && $seeAlsoRes ? $this->headerLine($GLOBALS['LANG']->getLL('seeAlso').':').'<p>'.$seeAlsoRes.'</p>' : '') .
-		'<br />';
 		return $out;
 	}
 

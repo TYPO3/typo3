@@ -2296,7 +2296,6 @@ final class t3lib_BEfunc {
 
 	/**
 	 * Returns CSH help text (description), if configured for, as an array (title, description)
-	 * Will automatically call t3lib_BEfunc::helpTextIcon() to get the icon for the text.
 	 *
 	 * @param	string	Table name
 	 * @param	string	Field name
@@ -2335,16 +2334,13 @@ final class t3lib_BEfunc {
 	/**
 	 * Returns CSH help text (description), if configured for.
 	 * $GLOBALS['TCA_DESCR'] must be loaded prior to this function and $GLOBALS['BE_USER'] must have "edit_showFieldHelp" set to "text",
-	 * otherwise nothing is returned
-	 * Will automatically call t3lib_BEfunc::helpTextIcon() to get the icon for the text.
+	 * otherwise nothing is returned.
 	 *
 	 * @param	string		Table name
 	 * @param	string		Field name
-	 * @param	string		Back path, deprecated since TYPO3 4.5, will be removed in TYPO3 4.7, because not used at all
-	 * @param	string		DEPRECATED: Additional style-attribute content for wrapping table (now: only in function cshItem needed)
 	 * @return	string		HTML content for help text
 	 */
-	public static function helpText($table, $field, $BACK_PATH = '', $styleAttrib = '') {
+	public static function helpText($table, $field) {
 		$helpTextArray = self::helpTextArray($table, $field);
 
 		$output = '';
@@ -2439,7 +2435,7 @@ final class t3lib_BEfunc {
 
 			if (is_array($GLOBALS['TCA_DESCR'][$table])) {
 					// Creating CSH icon and short description:
-				$fullText = self::helpText($table, $field, $BACK_PATH, '');
+				$fullText = self::helpText($table, $field);
 				$icon = self::helpTextIcon($table, $field, $BACK_PATH);
 
 				if ($fullText && !$onlyIconMode && $GLOBALS['BE_USER']->uc['edit_showFieldHelp'] == 'text') {
@@ -4011,28 +4007,6 @@ final class t3lib_BEfunc {
 	 * Miscellaneous
 	 *
 	 *******************************************/
-
-	/**
-	 * Print error message with header, text etc.
-	 *
-	 * @param	string		Header string
-	 * @param	string		Content string
-	 * @param	boolean		Will return an alert() with the content of header and text.
-	 * @param	boolean		Print header.
-	 * @return	void
-	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7 - use RuntimeException from now on
-	 */
-	public static function typo3PrintError($header, $text, $js = '', $head = 1) {
-			// This prints out a TYPO3 error message.
-			// If $js is set the message will be output in JavaScript
-		if ($js) {
-			echo "alert('" . t3lib_div::slashJS($header . '\n' . $text) . "');";
-		} else {
-			t3lib_div::logDeprecatedFunction();
-			$messageObj = t3lib_div::makeInstance('t3lib_message_ErrorPageMessage', $text, $header);
-			$messageObj->output();
-		}
-	}
 
 	/**
 	 * Prints TYPO3 Copyright notice for About Modules etc. modules.
