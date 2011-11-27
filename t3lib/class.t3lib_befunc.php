@@ -944,9 +944,13 @@ final class t3lib_BEfunc {
 						if ($WSOL) {
 							self::workspaceOL($tName, $dataStructRec);
 						}
-						if (is_file(PATH_site . $dataStructRec[$fName])) {
-								// The value is a pointer to a file
-							$dataStructArray = t3lib_div::xml2array(t3lib_div::getUrl(PATH_site . $dataStructRec[$fName]));
+						if (strpos($dataStructRec[$fName], '<') === FALSE) {
+							if (is_file(PATH_site . $dataStructRec[$fName])) {
+									// The value is a pointer to a file
+								$dataStructArray = t3lib_div::xml2array(t3lib_div::getUrl(PATH_site . $dataStructRec[$fName]));
+							} else {
+								$dataStructArray = sprintf('File \'%s\' was not found', $dataStructRec[$fName]);
+							}
 						} else {
 								// No file pointer, handle as being XML (default behaviour)
 							$dataStructArray = t3lib_div::xml2array($dataStructRec[$fName]);
