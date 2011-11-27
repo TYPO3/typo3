@@ -944,7 +944,7 @@ final class t3lib_BEfunc {
 						if ($WSOL) {
 							self::workspaceOL($tName, $dataStructRec);
 						}
-						if (is_file(PATH_site . $dataStructRec[$fName])) {
+						if (@is_file(PATH_site . $dataStructRec[$fName])) {
 								// The value is a pointer to a file
 							$dataStructArray = t3lib_div::xml2array(t3lib_div::getUrl(PATH_site . $dataStructRec[$fName]));
 						} else {
