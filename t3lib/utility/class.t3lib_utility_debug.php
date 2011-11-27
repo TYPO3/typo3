@@ -372,7 +372,7 @@ final class t3lib_utility_Debug {
 	 *
 	 * @param	mixed		Array to print visually (in a table).
 	 * @return	void
-	 * @see view_array()
+	 * @see viewArray()
 	 */
 	public static function printArray($array_in) {
 		echo self::viewArray($array_in);

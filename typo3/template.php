@@ -354,30 +354,6 @@ class template {
 	}
 
 	/**
-	 * Returns 'this.blur();' if the client supports CSS styles
-	 * Use this in links to remove the underlining after being clicked
-	 *
-	 * @return	string
-	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7
-	 */
-	function thisBlur()	{
-		t3lib_div::logDeprecatedFunction();
-		return ($GLOBALS['CLIENT']['FORMSTYLE']?'this.blur();':'');
-	}
-
-	/**
-	 * Returns ' style='cursor:help;'' if the client supports CSS styles
-	 * Use for <a>-links to help texts
-	 *
-	 * @return	string
-	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7
-	 */
-	function helpStyle()	{
-		t3lib_div::logDeprecatedFunction();
-		return $GLOBALS['CLIENT']['FORMSTYLE'] ? ' style="cursor:help;"':'';
-	}
-
-	/**
 	 * Makes the header (icon+title) for a page (or other record). Used in most modules under Web>*
 	 * $table and $row must be a tablename/record from that table
 	 * $path will be shown as alt-text for the icon.
@@ -1638,14 +1614,13 @@ $str.=$this->docBodyTagBegin().
 	 * @param	string		Identification string. This should be unique for every instance of a dynamic menu!
 	 * @param	integer		If "1", then enabling one tab does not hide the others - they simply toggles each sheet on/off. This makes most sense together with the $foldout option. If "-1" then it acts normally where only one tab can be active at a time BUT you can click a tab and it will close so you have no active tabs.
 	 * @param	boolean		If set, the tabs are rendered as headers instead over each sheet. Effectively this means there is no tab menu, but rather a foldout/foldin menu. Make sure to set $toggle as well for this option.
-	 * @param	integer		Character limit for a new row, 0 by default, because this parameter is deprecated since TYPO3 4.5
 	 * @param	boolean		If set, tab table cells are not allowed to wrap their content
 	 * @param	boolean		If set, the tabs will span the full width of their position
 	 * @param	integer		Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1 (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing) will result in no default tab open.
 	 * @param	integer		If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled
 	 * @return	string		JavaScript section for the HTML header.
 	 */
-	public function getDynTabMenu($menuItems, $identString, $toggle = 0, $foldout = FALSE, $newRowCharLimit = 0, $noWrap = 1, $fullWidth = FALSE, $defaultTabIndex = 1, $dividers2tabs = 2) {
+	public function getDynTabMenu($menuItems, $identString, $toggle = 0, $foldout = FALSE, $noWrap = 1, $fullWidth = FALSE, $defaultTabIndex = 1, $dividers2tabs = 2) {
 			// load the static code, if not already done with the function below
 		$this->loadJavascriptLib('js/tabmenu.js');
 
@@ -1670,7 +1645,7 @@ $str.=$this->docBodyTagBegin().
 				$index += 1;
 
 					// Switch to next tab row if needed
-				if (!$foldout && (($newRowCharLimit > 0 && $titleLenCount > $newRowCharLimit) | ($def['newline'] === TRUE && $titleLenCount > 0))) {
+				if (!$foldout && ($def['newline'] === TRUE && $titleLenCount > 0)) {
 					$titleLenCount=0;
 					$tabRows++;
 					$options[$tabRows] = array();
@@ -1786,20 +1761,6 @@ $str.=$this->docBodyTagBegin().
 	function getDynTabMenuId($identString) {
 		$id = 'DTM-'.t3lib_div::shortMD5($identString);
 		return $id;
-	}
-
-	/**
-	 * Returns dynamic tab menu header JS code.
-	 * This is now incorporated automatically when the function template::getDynTabMenu is called
-	 * (as long as it is called before $this->startPage())
-	 * The return value is not needed anymore
-	 *
-	 * @deprecated since TYPO3 4.5, as the getDynTabMenu() function includes the function automatically since TYPO3 4.3
-	 * @return	void
-	 */
-	function getDynTabMenuJScode() {
-		t3lib_div::logDeprecatedFunction();
-		$this->loadJavascriptLib('js/tabmenu.js');
 	}
 
 	/**

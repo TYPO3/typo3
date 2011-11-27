@@ -265,18 +265,10 @@ class SC_alt_shortcut {
 			5 => 1,
 		);
 
-			// "Shortcuts" have been renamed to "Bookmarks"
-			// @deprecated remove shortcuts code in TYPO3 4.7
-		$shortCutGroups = $GLOBALS['BE_USER']->getTSConfigProp('options.shortcutGroups');
-		if ($shortCutGroups !== NULL) {
-			t3lib_div::deprecationLog('options.shortcutGroups - since TYPO3 4.5, will be removed in TYPO3 4.7 - use options.bookmarkGroups instead');
-		}
+
 		$bookmarkGroups = $GLOBALS['BE_USER']->getTSConfigProp('options.bookmarkGroups');
-		if ($bookmarkGroups !== NULL) {
-			$shortCutGroups = $bookmarkGroups;
-		}
-		if (is_array($shortCutGroups) && count($shortCutGroups)) {
-			foreach ($shortCutGroups as $k=>$v)	{
+		if (is_array($bookmarkGroups) && count($bookmarkGroups)) {
+			foreach ($bookmarkGroups as $k=>$v)	{
 				if (strcmp('',$v) && strcmp('0',$v))	{
 					$this->groupLabels[$k] = (string)$v;
 				} elseif ($GLOBALS['BE_USER']->isAdmin()) {
@@ -404,17 +396,9 @@ class SC_alt_shortcut {
 						<table border="0" cellpadding="0" cellspacing="2" id="typo3-shortcuts">
 							<tr>
 							';
-								// "Shortcuts" have been renamed to "Bookmarks"
-								// @deprecated remove shortcuts code in TYPO3 4.7
-							$useShortcuts = $GLOBALS['BE_USER']->getTSConfigVal('options.enableShortcuts');
-							$useBookmarks = $GLOBALS['BE_USER']->getTSConfigVal('options.enableBookmarks');
-							if ($useShortcuts || $useBookmarks) {
+							if ($GLOBALS['BE_USER']->getTSConfigVal('options.enableBookmarks')) {
 								$this->content .= implode('
 								', $this->lines);
-
-								if ($useShortcuts) {
-									t3lib_div::deprecationLog('options.enableShortcuts - since TYPO3 4.5, will be removed in TYPO3 4.7 - use options.enableBookmarks instead');
-								}
 							}
 							$this->content .= $editIdCode . '
 							</tr>
@@ -524,20 +508,14 @@ class SC_alt_shortcut {
 		$this->lines = array_merge($this->linesPre,$this->lines);
 
 		if (count($this->lines)) {
-				// "Shortcuts" have been renamed to "Bookmarks"
-				// @deprecated remove shortcuts code in TYPO3 4.7
-			$createShortcuts = !$GLOBALS['BE_USER']->getTSConfigVal('options.mayNotCreateEditShortcuts');
-			$createBookmarks = !$GLOBALS['BE_USER']->getTSConfigVal('options.mayNotCreateEditBookmarks');
-
-			if ($createShortcuts || $createBookmarks) {
-				$this->lines=array_merge(array('<td><input type="checkbox" id="editShortcut_check" name="editShortcut_check" value="1"'.($this->editSC?' checked="checked"':'').' /> <label for="editShortcut_check">'.$GLOBALS['LANG']->getLL('bookmark_edit',1).'</label>&nbsp;</td>'),$this->lines);
-				$this->lines[]='<td>'.$manageForm.'</td>';
-
-				if ($createShortcuts) {
-					t3lib_div::deprecationLog('options.mayNotCreateEditShortcuts - since TYPO3 4.5, will be removed in TYPO3 4.7 - use options.mayNotCreateEditBookmarks instead');
-				}
+			if (!$GLOBALS['BE_USER']->getTSConfigVal('options.mayNotCreateEditBookmarks')) {
+				$this->lines = array_merge(array(
+						'<td><input type="checkbox" id="editShortcut_check" name="editShortcut_check" value="1"' . ($this->editSC ? ' checked="checked"' : '') . ' />'
+						. ' <label for="editShortcut_check">' . $GLOBALS['LANG']->getLL('bookmark_edit', 1) . '</label>&nbsp;</td>'
+					), $this->lines);
+				$this->lines[] = '<td>' . $manageForm . '</td>';
 			}
-			$this->lines[]='<td><img src="clear.gif" width="10" height="1" alt="" /></td>';
+			$this->lines[] = '<td><img src="clear.gif" width="10" height="1" alt="" /></td>';
 		}
 	}
 
@@ -583,25 +561,11 @@ class SC_alt_shortcut {
 					$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 					$this->editPath = t3lib_BEfunc::getRecordPath($this->theEditRec['pid'], $perms_clause, 30);
 
-						// "Shortcuts" have been renamed to "Bookmarks"
-						// @deprecated remove shortcuts code in TYPO3 4.7
-					$shortcutSetPageTree = !$GLOBALS['BE_USER']->getTSConfigVal('options.shortcut_onEditId_dontSetPageTree');
-					$bookmarkSetPageTree = !$GLOBALS['BE_USER']->getTSConfigVal('options.bookmark_onEditId_dontSetPageTree');
-
-					if ($shortcutSetPageTree && $bookmarkSetPageTree) {
-						$shortcutKeepExpanded = $GLOBALS['BE_USER']->getTSConfigVal('options.shortcut_onEditId_keepExistingExpanded');
+					if (!$GLOBALS['BE_USER']->getTSConfigVal('options.bookmark_onEditId_dontSetPageTree')) {
 						$bookmarkKeepExpanded = $GLOBALS['BE_USER']->getTSConfigVal('options.bookmark_onEditId_keepExistingExpanded');
-						$keepNotExpanded = (!$shortcutKeepExpanded || !$bookmarkKeepExpanded);
 
 							// Expanding page tree:
-						t3lib_BEfunc::openPageTree($this->theEditRec['pid'], $keepNotExpanded);
-
-						if ($shortcutSetPageTree) {
-							t3lib_div::deprecationLog('options.shortcut_onEditId_dontSetPageTree - since TYPO3 4.5, will be removed in TYPO3 4.7 - use options.bookmark_onEditId_dontSetPageTree instead');
-						}
-						if ($shortcutKeepExpanded) {
-							t3lib_div::deprecationLog('options.shortcut_onEditId_keepExistingExpanded - since TYPO3 4.5, will be removed in TYPO3 4.7 - use options.bookmark_onEditId_keepExistingExpanded instead');
-						}
+						t3lib_BEfunc::openPageTree($this->theEditRec['pid'], !$bookmarkKeepExpanded);
 					}
 				}
 			}

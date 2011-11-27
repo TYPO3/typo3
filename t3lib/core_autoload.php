@@ -34,7 +34,6 @@ $t3libClasses = array(
 	't3lib_formmail' => PATH_t3lib . 'class.t3lib_formmail.php',
 	't3lib_frontendedit' => PATH_t3lib . 'class.t3lib_frontendedit.php',
 	't3lib_fullsearch' => PATH_t3lib . 'class.t3lib_fullsearch.php',
-	't3lib_htmlmail' => PATH_t3lib . 'class.t3lib_htmlmail.php',
 	't3lib_iconworks' => PATH_t3lib . 'class.t3lib_iconworks.php',
 	't3lib_install' => PATH_t3lib . 'class.t3lib_install.php',
 	't3lib_install_sql' => PATH_t3lib . 'class.t3lib_install_sql.php',

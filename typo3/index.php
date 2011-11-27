@@ -536,27 +536,16 @@ class SC_index {
 	 * Make login news - renders the HTML content for a list of news shown under
 	 * the login form. News data is added through $GLOBALS['TYPO3_CONF_VARS']
 	 *
-	 * @return	string		HTML content
-	 * @credits			Idea by Jan-Hendrik Heuing
-	 * @deprecated $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'] is deprecated since 4.5. Use system news records instead.
+	 * @return string HTML content
+	 * @credits Idea by Jan-Hendrik Heuing
 	 */
 	function makeLoginNews() {
 		$newsContent = '';
 
 		$systemNews = $this->getSystemNews();
-		if (count($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'])) {
-			t3lib_div::logDeprecatedFunction();
-
-			$GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'] = array_merge(
-				$systemNews,
-				$GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']
-			);
-		} else {
-			$GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'] = $systemNews;
-		}
 
 			// Traverse news array IF there are records in it:
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']) && count($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']) && !t3lib_div::_GP('loginRefresh')) {
+		if (is_array($systemNews) && count($systemNews) && !t3lib_div::_GP('loginRefresh')) {
 			$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml_proc');
 				// get the main news template, and replace the subpart after looped through
 			$newsContent      = t3lib_parsehtml::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGIN_NEWS###');
@@ -564,11 +553,11 @@ class SC_index {
 
 			$newsItem = '';
 			$count = 1;
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'] as $newsItemData) {
+			foreach ($systemNews as $newsItemData) {
 				$additionalClass = '';
 				if ($count == 1) {
 					$additionalClass = ' first-item';
-				} elseif($count == count($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'])) {
+				} elseif($count == count($systemNews)) {
 					$additionalClass = ' last-item';
 				}
 

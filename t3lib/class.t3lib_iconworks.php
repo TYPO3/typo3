@@ -169,11 +169,9 @@ final class t3lib_iconWorks {
 
 			// First, find the icon file name. This can depend on configuration in TCA, field values and more:
 		if ($table == 'pages') {
-			if (!$iconfile = $GLOBALS['PAGES_TYPES'][$row['doktype']]['icon']) {
+			$iconfile = $GLOBALS['PAGES_TYPES'][$row['doktype']]['icon'];
+			if (!$iconfile) {
 				$iconfile = $GLOBALS['PAGES_TYPES']['default']['icon'];
-			}
-			if ($row['module'] && $GLOBALS['ICON_TYPES'][$row['module']]['icon']) {
-				$iconfile = $GLOBALS['ICON_TYPES'][$row['module']]['icon'];
 			}
 		} else {
 			if (!$iconfile = $GLOBALS['TCA'][$table]['ctrl']['typeicons'][$row[$GLOBALS['TCA'][$table]['ctrl']['typeicon_column']]]) {
