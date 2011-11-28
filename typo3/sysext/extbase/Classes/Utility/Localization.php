@@ -190,7 +190,7 @@ class Tx_Extbase_Utility_Localization {
 			return;
 		}
 		foreach ($frameworkConfiguration['_LOCAL_LANG'] as $languageKey => $labels) {
-			if (!is_array($labels)) {
+			if (!(is_array($labels) && isset(self::$LOCAL_LANG[$extensionName][$languageKey]))) {
 				continue;
 			}
 			foreach($labels as $labelKey => $labelValue) {
