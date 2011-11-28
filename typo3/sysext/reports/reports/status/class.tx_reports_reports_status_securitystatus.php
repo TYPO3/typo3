@@ -267,12 +267,7 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 				$messageDetail .= $flashMessage;
 			}
 
-			$unsecureUserCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
-				'*',
-				'be_users',
-				'password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('$%', 'be_users')
-					. ' AND password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('M$%', 'be_users')
-			);
+			$unsecureUserCount = tx_saltedpasswords_div::getNumberOfBackendUsersWithInsecurePassword();
 			if ($unsecureUserCount > 0) {
 				$value    = $GLOBALS['LANG']->getLL('status_insecure');
 				$severity = tx_reports_reports_status_Status::ERROR;

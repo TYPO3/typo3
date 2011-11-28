@@ -48,6 +48,22 @@ class tx_saltedpasswords_div {
 		 */
 		const EXTKEY = 'saltedpasswords';
 
+		/**
+		 * Calculates number of backend users, who have no saltedpasswords
+		 * protection.
+		 *
+		 * @static
+		 * @return int
+		 */
+		public static function getNumberOfBackendUsersWithInsecurePassword() {
+			$userCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+				'*',
+				'be_users',
+				'password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('$%', 'be_users')
+					. ' AND password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('M$%', 'be_users')
+			);
+			return $userCount;
+		}
 
 		/**
 		 * Returns extension configuration data from $TYPO3_CONF_VARS (configurable in Extension Manager)
