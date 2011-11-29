@@ -6532,8 +6532,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	 * @return string The encryption key
 	 */
 	public function createEncryptionKey($keyLength = 96) {
-		$bytes = \TYPO3\CMS\Core\Utility\GeneralUtility::generateRandomBytes($keyLength);
-		return substr(bin2hex($bytes), -96);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::getRandomHexString($keyLength);
 	}
 
 	/**
