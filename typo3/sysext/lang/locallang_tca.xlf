@@ -282,6 +282,30 @@
 			<trans-unit id="sys_filemounts" xml:space="preserve">
 				<source>Filemount</source>
 			</trans-unit>
+			<trans-unit id="sys_collection" xml:space="preserve">
+				<source>Record Collection</source>
+			</trans-unit>
+			<trans-unit id="sys_collection.title" xml:space="preserve">
+				<source>Collection-Name</source>
+			</trans-unit>
+			<trans-unit id="sys_collection.description" xml:space="preserve">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="sys_collection.table_name" xml:space="preserve">
+				<source>Record Type of Collection</source>
+			</trans-unit>
+			<trans-unit id="sys_collection.items" xml:space="preserve">
+				<source>Items</source>
+			</trans-unit>
+			<trans-unit id="sys_collection.type" xml:space="preserve">
+				<source>Type of collection</source>
+			</trans-unit>
+			<trans-unit id="sys_collection.type.static" xml:space="preserve">
+				<source>static record composition</source>
+			</trans-unit>
+			<trans-unit id="sys_collection.type.filter" xml:space="preserve">
+				<source>dynamic record filter</source>
+			</trans-unit>
 			<trans-unit id="sys_language" xml:space="preserve">
 				<source>Website Language</source>
 			</trans-unit>
