@@ -10,7 +10,6 @@ CREATE TABLE static_template (
   include_static tinyblob NOT NULL,
   constants blob NOT NULL,
   config blob NOT NULL,
-  editorcfg blob NOT NULL,
   description text NOT NULL,
   PRIMARY KEY (uid),
   KEY parent (pid)
