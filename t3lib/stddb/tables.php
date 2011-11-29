@@ -275,6 +275,41 @@ $TCA['sys_filemounts'] = array(
 	)
 );
 
+/**
+ * Table "sys_collection":
+ */
+$TCA['sys_collection'] = array(
+	'ctrl' => array(
+		'title'     => 'LLL:EXT:lang/locallang_tca.xlf:sys_collection',
+		'label'     => 'title',
+		'tstamp'    => 'tstamp',
+		'crdate'    => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'versioningWS' => TRUE,
+		'origUid' => 't3_origuid',
+		'languageField'            => 'sys_language_uid',
+		'transOrigPointerField'    => 'l10n_parent',
+		'transOrigDiffSourceField' => 'l10n_diffsource',
+		'default_sortby' => 'ORDER BY crdate',
+		'delete' => 'deleted',
+		'type' => 'type',
+		'rootLevel' => -1,
+		'searchFields' => 'title,description',
+		'typeicon_column' => 'type',
+		'typeicon_classes' => array(
+			'default' => 'apps-clipboard-list',
+			'static' => 'apps-clipboard-list',
+			'filter' => 'actions-system-tree-search-open'
+		),
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime',
+			'fe_group' => 'fe_group',
+		),
+		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
+	),
+);
 
 /**
  * Table "sys_languages":
