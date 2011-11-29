@@ -2552,7 +2552,10 @@ final class t3lib_BEfunc {
 	public static function getCommonSelectFields($table, $prefix = '', $fields = array()) {
 		global $TCA;
 		$fields[] = $prefix . 'uid';
-		$fields[] = $prefix . $TCA[$table]['ctrl']['label'];
+
+		if (isset($TCA[$table]['ctrl']['label']) && $TCA[$table]['ctrl']['label'] != '') {
+			$fields[] = $prefix . $TCA[$table]['ctrl']['label'];
+		}
 
 		if ($TCA[$table]['ctrl']['label_alt']) {
 			$secondFields = t3lib_div::trimExplode(',', $TCA[$table]['ctrl']['label_alt'], 1);
