@@ -99,7 +99,7 @@ class tx_scheduler implements t3lib_Singleton {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'uid, classname, serialized_executions',
 			'tx_scheduler_task',
-			'serialized_executions != \'\''
+			'serialized_executions <> \'\''
 		);
 
 		$maxDuration = $this->extConf['maxLifetime'] * 60;

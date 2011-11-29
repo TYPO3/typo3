@@ -282,7 +282,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 			'sys_log',
 				'type = 2 AND userid = ' . intval($GLOBALS['BE_USER']->user['uid'])
 						. ' AND tstamp=' . intval($GLOBALS['EXEC_TIME'])
-						. ' AND error != 0'
+						. ' AND error<>0'
 		);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$logData = unserialize($row['log_data']);

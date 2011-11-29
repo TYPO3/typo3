@@ -484,13 +484,13 @@ class t3lib_admin {
 						$cl_fl = ($GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'I'
 									|| $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'N'
 									|| $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'R')
-								? $field . '!=0'
+								? $field . '<>0'
 								: $field . '!=\'\'';
 						foreach ($fieldArr as $field) {
 							$cl_fl .= ($GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'I'
 										|| $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'N'
 										|| $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'R')
-									? ' OR ' . $field . '!=0'
+									? ' OR ' . $field . '<>0'
 									: ' OR ' . $field . '!=\'\'';
 						}
 						unset($fields);
