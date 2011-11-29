@@ -5,6 +5,7 @@
  * typo3/sysext/install/Classes/EidHandler.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/EidHandler.php';
+
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\EidHandler');
 $SOBE->init();
