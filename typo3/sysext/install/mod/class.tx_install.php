@@ -942,7 +942,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$step2SubPartMarkers = array(
 						'step' => $this->step + 1,
 						'action' => htmlspecialchars($this->action),
-						'encryptionKey' => $this->createEncryptionKey(),
+						'encryptionKey' => t3lib_div::getRandomHexString(96),
 						'branch' => TYPO3_branch,
 						'labelUsername' => 'Username',
 						'username' => htmlspecialchars(TYPO3_db_username),
@@ -8387,10 +8387,12 @@ $out="
 	 *
 	 * @param integer $keyLength Desired key length
 	 * @return string The encryption key
+	 * @deprecated since TYPO3 6.0, will be removed in TYPO3 6.2 - use t3lib_div::getRandomHexString(96) from now on
 	 */
 	public function createEncryptionKey($keyLength = 96) {
-		$bytes = t3lib_div::generateRandomBytes($keyLength);
-		return substr(bin2hex($bytes), -96);
+		t3lib_div::logDeprecatedFunction();
+
+		return t3lib_div::getRandomHexString($keyLength);
 	}
 
 	/**

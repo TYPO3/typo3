@@ -68,7 +68,7 @@ class tx_install_ajax {
 		switch ($this->cmd) {
 			case 'encryptionKey':
 			default:
-				$this->content = $this->createEncryptionKey();
+				$this->content = t3lib_div::getRandomHexString(96);
 				$this->addTempContentHttpHeaders();
 				break;
 		}
@@ -91,8 +91,11 @@ class tx_install_ajax {
 	 *
 	 * @param  integer  $keyLength  desired key length
 	 * @return string
+	 * @deprecated since TYPO3 6.0, will be removed in TYPO3 6.2 - use t3lib_div::getRandomHexString(96) from now on
 	 */
 	function createEncryptionKey($keyLength = 96) {
+		t3lib_div::logDeprecatedFunction();
+
 		if (!headers_sent()) {
 			header('Content-type: text/plain');
 		}
