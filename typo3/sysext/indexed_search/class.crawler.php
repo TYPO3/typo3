@@ -565,11 +565,17 @@ class tx_indexedsearch_crawler {
 	 *
 	 * @param	string		URL string to check
 	 * @param	array		Array of already indexed URLs (input url is looked up here and must not exist already)
-	 * @param	string		Base URL of the indexing process (input URL must be "inside" the base URL!)
+	 * @param	string		Base URL of the indexing process (input URL must be "inside" the base URL!). If the base URL is pointing to a file, the path to the file is stripped off for checking.
 	 * @return	string		Returls the URL if OK, otherwise FALSE
 	 */
 	function checkUrl($url,$urlLog,$baseUrl)	{
 		$url = preg_replace('/\/\/$/','/',$url);
+
+		// just get the root of the URL like http://www.domain.tld/
+		$baseUrlArray = parse_url($baseUrl);
+		$baseUrl = $baseUrlArray['scheme'] . '://'. $baseUrlArray['host'] .
+			($baseUrlArray['port'] ? ':' . $baseUrlArray['port'] : '') . '/';
+
 		list($url) = explode('#',$url);
 
 		if (!strstr($url,'../'))	{
