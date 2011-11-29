@@ -101,7 +101,7 @@ class tx_install_ajax {
 		switch ($this->cmd) {
 			case 'encryptionKey':
 			default:
-				$this->content = $this->createEncryptionKey();
+				$this->content = t3lib_div::getRandomHexString(96);
 				$this->addTempContentHttpHeaders();
 				break;
 		}
@@ -117,20 +117,6 @@ class tx_install_ajax {
 			header('Content-Length: ' . strlen($this->content));
 		}
 		echo $this->content;
-	}
-
-	/**
-	 * Returns a newly created TYPO3 encryption key with a given length.
-	 *
-	 * @param  integer  $keyLength  desired key length
-	 * @return string
-	 */
-	function createEncryptionKey($keyLength = 96) {
-		if (!headers_sent()) {
-			header("Content-type: text/plain");
-		}
-
-		return t3lib_div::getRandomHexString($keyLength);
 	}
 
 	/**

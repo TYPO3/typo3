@@ -954,7 +954,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$step2SubPartMarkers = array(
 						'step' => $this->step + 1,
 						'action' => htmlspecialchars($this->action),
-						'encryptionKey' => $this->createEncryptionKey(),
+						'encryptionKey' => t3lib_div::getRandomHexString(96),
 						'branch' => TYPO3_branch,
 						'labelUsername' => 'Username',
 						'username' => htmlspecialchars(TYPO3_db_username),
@@ -8381,17 +8381,6 @@ $out="
 			);
 		}
 		return $content;
-	}
-
-	/**
-	 * Returns a newly created TYPO3 encryption key with a given length.
-	 *
-	 * @param integer $keyLength Desired key length
-	 * @return string The encryption key
-	 */
-	public function createEncryptionKey($keyLength = 96) {
-		$bytes = t3lib_div::generateRandomBytes($keyLength);
-		return substr(bin2hex($bytes), -96);
 	}
 
 	/**
