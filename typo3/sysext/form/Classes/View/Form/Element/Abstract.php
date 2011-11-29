@@ -385,17 +385,14 @@ abstract class tx_form_View_Form_Element_Abstract {
 
 	/**
 	 * Return the id for the element wraps,
-	 * like <li class="csc-form-2 tx_form-hidden"> ... </li>
+	 * like <li id="csc-form-"> ... </li>
 	 *
 	 * @return string
 	 */
 	public function getElementWrapId() {
 		$elementId = (integer) $this->model->getElementId();
-		$fieldType = $this->model->getAttributes();
 		$wrapId = 'csc-form-' . $elementId;
-		if (gettype($fieldType['type']) === 'object') {
-			$wrapId .= ' tx_form-' . htmlspecialchars($fieldType['type']->getValue());
-		}
+
 		return $wrapId;
 	}
 
