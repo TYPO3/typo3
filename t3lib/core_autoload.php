@@ -234,6 +234,7 @@ $t3libClasses = array(
 	't3lib_tree_pagetree_interfaces_collectionprocessor' => PATH_t3lib . 'tree/pagetree/interfaces/interface.t3lib_tree_pagetree_interfaces_collectionprocessor.php',
 	't3lib_http_request' => PATH_t3lib . 'http/class.t3lib_http_request.php',
 	't3lib_exttables_postprocessinghook'=> PATH_t3lib . 'interfaces/interface.t3lib_exttables_postprocessinghook.php',
+	't3lib_tcarelationservice' => PATH_t3lib . 'class.t3lib_tcarelationservice.php',
 );
 
 $tslibClasses = require(PATH_typo3 . 'sysext/cms/ext_autoload.php');
