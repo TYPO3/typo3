@@ -784,12 +784,9 @@
 
 			if ($this->id)	{
 
-					// Now it's investigated if the raw page-id points to a hidden page and if so, the flag is set.
-					// This does not require the preview flag to be set in the admin panel
-				$idQ = t3lib_div::testInt($this->id) ? 'uid='.intval($this->id) : 'alias='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'pages').' AND pid>=0';	// pid>=0 added for the sake of versioning...
-				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'pages', $idQ . ' AND hidden!=0 AND deleted=0');
-				if ($count) {
-					$this->fePreview = 1;	// The preview flag is set only if the current page turns out to actually be hidden!
+				if ($this->determineIdIsHiddenPage()) {
+						// The preview flag is set only if the current page turns out to actually be hidden!
+					$this->fePreview = 1;
 					$this->showHiddenPage = 1;
 				}
 
@@ -876,6 +873,23 @@
 				t3lib_div::callUserFunction($_funcRef,$_params,$this);
 			}
 		}
+	}
+
+	/**
+	 * Checks if the page is hidden. If it is hidden, preview flags will be set.
+	 *
+	 * @return bool
+	 */
+	protected function determineIdIsHiddenPage() {
+		$field = t3lib_div::testInt($this->id) ? 'uid' : 'alias';
+		$pageSelectCondition = $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'pages');
+		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid,hidden,starttime,endtime', 'pages',
+			$pageSelectCondition . ' AND pid>=0 AND deleted=0');
+		$result = is_array($page) && (
+			$page['hidden'] || $page['starttime'] > $GLOBALS['SIM_EXEC_TIME'] ||
+				($page['endtime'] != 0 && $page['endtime'] <= $GLOBALS['SIM_EXEC_TIME'])
+		);
+		return $result;
 	}
 
 	/**
