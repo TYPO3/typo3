@@ -508,7 +508,7 @@ class tx_indexedsearch_crawler {
 		$runningIndexingConfigurations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'uid,set_id',
 			'index_config',
-			'set_id!=0'.t3lib_BEfunc::deleteClause('index_config')
+			'set_id<>0'.t3lib_BEfunc::deleteClause('index_config')
 		);
 
 			// For each running configuration, look up how many log entries there are which are scheduled for execution and if none, clear the "set_id" (means; Processing was DONE)
@@ -527,7 +527,7 @@ class tx_indexedsearch_crawler {
 				$oldPhashRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'phash',
 					'index_phash',
-					'freeIndexUid='.intval($cfgRec['uid']).' AND freeIndexSetId!='.$cfgRec['set_id']
+					'freeIndexUid='.intval($cfgRec['uid']).' AND freeIndexSetId<>'.$cfgRec['set_id']
 				);
 
 				foreach($oldPhashRows as $pHashRow)	{

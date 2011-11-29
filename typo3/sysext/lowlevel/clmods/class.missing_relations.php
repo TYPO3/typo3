@@ -123,7 +123,7 @@ Reports missing relations';
 		$recs = $TYPO3_DB->exec_SELECTgetRows(
 			'*',
 			'sys_refindex',
-			'ref_table!='.$TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex').	// Assuming that any other key will be a table name!
+			'ref_table<>'.$TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex').	// Assuming that any other key will be a table name!
 			' AND ref_uid>0'.
 			$filterClause,
 			'',

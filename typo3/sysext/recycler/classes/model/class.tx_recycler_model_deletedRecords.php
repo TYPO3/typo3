@@ -166,7 +166,7 @@ class tx_recycler_model_deletedRecords {
 				$deletedCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 					'uid',
 					$table,
-					$deletedField . '!=0 AND pid = ' . $id . $filterWhere
+					$deletedField . '<>0 AND pid = ' . $id . $filterWhere
 				);
 
 					// split the limit

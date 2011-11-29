@@ -341,7 +341,7 @@ class tx_em_Connection_ExtDirectSoap {
 			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 				'extkey, count(version) as uploads',
 				'cache_extensions',
-				'extkey="' . $extkey['extensionkey'] . '" AND repository=1',
+				'extkey=\'' . $GLOBALS['TYPO3_DB']->fullQuoteStr($extkey['extensionkey'], 'cache_extensions') . '\' AND repository=1',
 				'extkey'
 			);
 			$data[$key]['uploads'] = intval($row['uploads']);

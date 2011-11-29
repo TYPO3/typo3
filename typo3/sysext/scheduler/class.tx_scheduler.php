@@ -99,7 +99,7 @@ class tx_scheduler implements t3lib_Singleton {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'uid, classname, serialized_executions',
 			'tx_scheduler_task',
-			'serialized_executions != \'\''
+			'serialized_executions <> \'\''
 		);
 
 		$maxDuration = $this->extConf['maxLifetime'] * 60;
@@ -258,7 +258,7 @@ class tx_scheduler implements t3lib_Singleton {
 				'disable' => $task->isDisabled(),
 				'serialized_task_object' => serialize($task)
 			);
-			return $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', "uid = '" . $taskUid . "'", $fields);
+			return $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $taskUid, $fields);
 		} else {
 			return FALSE;
 		}
@@ -308,7 +308,7 @@ class tx_scheduler implements t3lib_Singleton {
 				// Forcibly set the disable flag to 1 in the database,
 				// so that the task does not come up again and again for execution
 
-				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', "uid = '" . $row['uid'] . "'", array('disable' => 1));
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $row['uid'], array('disable' => 1));
 					// Throw an exception to raise the problem
 				throw new UnexpectedValueException('Could not unserialize task', 1255083671);
 			}
@@ -326,7 +326,7 @@ class tx_scheduler implements t3lib_Singleton {
 	  * @see tx_scheduler::fetchTask()
 	  */
 	 public function fetchTaskRecord($uid) {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_scheduler_task', "uid = '" . intval($uid) . "'");
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_scheduler_task', 'uid = ' . intval($uid));
 
 			// If the task is not found, throw an exception
 		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) == 0) {

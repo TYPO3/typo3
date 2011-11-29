@@ -484,19 +484,19 @@ class t3lib_admin {
 						$cl_fl = ($GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'I'
 									|| $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'N'
 									|| $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'R')
-								? $field . '!=0'
-								: $field . '!=\'\'';
+								? $field . '<>0'
+								: $field . '<>\'\'';
 						foreach ($fieldArr as $field) {
 							$cl_fl .= ($GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'I'
 										|| $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'N'
 										|| $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'R')
-									? ' OR ' . $field . '!=0'
-									: ' OR ' . $field . '!=\'\'';
+									? ' OR ' . $field . '<>0'
+									: ' OR ' . $field . '<>\'\'';
 						}
 						unset($fields);
 					}
 					else {
-						$cl_fl = implode('!=\'\' OR ', $fieldArr) . '!=\'\'';
+						$cl_fl = implode('<>\'\' OR ', $fieldArr) . '<>\'\'';
 					}
 
 					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,' . $field_list, $table, $cl_fl);

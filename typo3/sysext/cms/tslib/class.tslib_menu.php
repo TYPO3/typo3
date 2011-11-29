@@ -555,7 +555,7 @@ class tslib_menu {
 							$depth=20;
 						}
 						$limit = t3lib_utility_Math::forceIntegerInRange($this->conf['special.']['limit'],0,100);	// max number of items
-						$extraWhere = ' AND pages.uid!='.$value.($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0').$this->getDoktypeExcludeWhere();
+						$extraWhere = ' AND pages.uid<>'.$value.($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0').$this->getDoktypeExcludeWhere();
 						if ($this->conf['special.']['excludeNoSearchPages']) {
 							$extraWhere.= ' AND pages.no_search=0';
 						}
@@ -749,14 +749,14 @@ class tslib_menu {
 					'pidInList'=>$this->id,
 					'orderBy'=>$altSortField,
 					'where' => 'colPos=0 AND sys_language_uid='.$sys_language_uid,
-					'andWhere' => 'sectionIndex!=0'
+					'andWhere' => 'sectionIndex<>0'
 					);
 				switch($this->mconf['sectionIndex.']['type'])	{
 					case 'all':
 						unset($selectSetup['andWhere']);
 					break;
 					case 'header':
-						$selectSetup['andWhere'] .= ' AND header_layout!=100 AND header!=""';
+						$selectSetup['andWhere'] .= ' AND header_layout<>100 AND header<>""';
 					break;
 				}
 				$basePageRow=$this->sys_page->getPage($this->id);
