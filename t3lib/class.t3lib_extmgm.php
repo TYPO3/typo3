@@ -1387,7 +1387,7 @@ tt_content.' . $key . $prefix . ' {
 	 * FOR USE IN ext_localconf.php FILES
 	 *
 	 * @param	string		$extKey is of course the extension key
-	 * @param	string		$path is the path where the template files (fixed names) include_static.txt (integer list of uids from the table "static_templates"), constants.txt, setup.txt, editorcfg.txt, and include_static_file.txt is found (relative to extPath, eg. 'static/'). The file include_static_file.txt, allows you to include other static templates defined in files, from your static template, and thus corresponds to the field 'include_static_file' in the sys_template table. The syntax for this is a commaseperated list of static templates to include, like:  EXT:css_styled_content/static/,EXT:da_newsletter_subscription/static/,EXT:cc_random_image/pi2/static/
+	 * @param	string		$path is the path where the template files (fixed names) include_static.txt (integer list of uids from the table "static_templates"), constants.txt, setup.txt, and include_static_file.txt is found (relative to extPath, eg. 'static/'). The file include_static_file.txt, allows you to include other static templates defined in files, from your static template, and thus corresponds to the field 'include_static_file' in the sys_template table. The syntax for this is a commaseperated list of static templates to include, like:  EXT:css_styled_content/static/,EXT:da_newsletter_subscription/static/,EXT:cc_random_image/pi2/static/
 	 * @param	string		$title is the title in the selector box.
 	 * @return	void
 	 * @see addTypoScript()
@@ -1426,18 +1426,18 @@ tt_content.' . $key . $prefix . ' {
 	}
 
 	/**
-	 * Adds $content to the default TypoScript code for either setup, constants or editorcfg as set in $GLOBALS['TYPO3_CONF_VARS'][FE]['defaultTypoScript_*']
+	 * Adds $content to the default TypoScript code for either setup or constants as set in $GLOBALS['TYPO3_CONF_VARS'][FE]['defaultTypoScript_*']
 	 * (Basically this function can do the same as addTypoScriptSetup and addTypoScriptConstants - just with a little more hazzle, but also with some more options!)
 	 * FOR USE IN ext_localconf.php FILES
 	 *
 	 * @param	string		$key is the extension key (informative only).
-	 * @param	string		$type is either "setup", "constants" or "editorcfg" and obviously determines which kind of TypoScript code we are adding.
+	 * @param	string		$type is either "setup" or "constants" and obviously determines which kind of TypoScript code we are adding.
 	 * @param	string		$content is the TS content, prefixed with a [GLOBAL] line and a comment-header.
 	 * @param	string		$afterStaticUid is either an integer pointing to a uid of a static_template or a string pointing to the "key" of a static_file template ([reduced extension_key]/[local path]). The points is that the TypoScript you add is included only IF that static template is included (and in that case, right after). So effectively the TypoScript you set can specifically overrule settings from those static templates.
 	 * @return	void
 	 */
 	public static function addTypoScript($key, $type, $content, $afterStaticUid = 0) {
-		if ($type == 'setup' || $type == 'editorcfg' || $type == 'constants') {
+		if ($type == 'setup' || $type == 'constants') {
 			$content = '
 
 [GLOBAL]
@@ -1505,7 +1505,7 @@ tt_content.' . $key . $prefix . ' {
 			} else { // ... but if not, configure...
 
 					// Prepare reserved filenames:
-				$files = array('ext_localconf.php', 'ext_tables.php', 'ext_tables.sql', 'ext_tables_static+adt.sql', 'ext_typoscript_constants.txt', 'ext_typoscript_editorcfg.txt', 'ext_typoscript_setup.txt');
+				$files = array('ext_localconf.php', 'ext_tables.php', 'ext_tables.sql', 'ext_tables_static+adt.sql', 'ext_typoscript_constants.txt', 'ext_typoscript_setup.txt');
 					// Traverse extensions and check their existence:
 				clearstatcache(); // Clear file state cache to make sure we get good results from is_dir()
 				$temp_extensions = array_unique(t3lib_div::trimExplode(',', $rawExtList, 1));
