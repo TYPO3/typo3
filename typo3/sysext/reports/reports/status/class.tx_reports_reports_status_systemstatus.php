@@ -34,7 +34,7 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 
 		// PHP modules which are required. Can be changed by hook in getMissingPhpModules()
 	protected $requiredPhpModules = array(
-		'filter', 'gd', 'json', 'mysql', 'pcre', 'session', 'SPL', 'standard', 'openssl', 'xml', 'zlib'
+		'filter', 'gd', 'json', 'mysql', 'pcre', 'session', 'SPL', 'standard', 'openssl', 'xml', 'zlib', 'soap'
 	);
 
 	/**
