@@ -436,7 +436,7 @@ class t3lib_clipboard {
 		if ($table != 'pages' && t3lib_BEfunc::isTableLocalizable($table) && !$tcaCtrl['transOrigPointerTable']) {
 			$where = array();
 			$where[] = $tcaCtrl['transOrigPointerField'] . '=' . intval($parentRec['uid']);
-			$where[] = $tcaCtrl['languageField'] . '!=0';
+			$where[] = $tcaCtrl['languageField'] . '<>0';
 
 			if (isset($tcaCtrl['delete']) && $tcaCtrl['delete']) {
 				$where[] = $tcaCtrl['delete'] . '=0';
