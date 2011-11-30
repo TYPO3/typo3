@@ -277,7 +277,12 @@ class t3lib_extMgm {
 	public static function addToAllTCAtypes($table, $str, $specificTypesList = '', $position = '') {
 		t3lib_div::loadTCA($table);
 		$str = trim($str);
-		$palettesChanged = array();
+		$fields = t3lib_div::trimExplode(',', $str);
+		foreach($fields as $field) {
+			$fieldSetup = t3lib_div::trimExplode(';', $field);
+			$fieldNames[] = $fieldSetup[0];
+		}
+		$fieldName = implode('|', $fieldNames);
 		if ($str && is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['types'])) {
 			foreach ($GLOBALS['TCA'][$table]['types'] as $type => &$typeDetails) {
 				if ($specificTypesList === '' || t3lib_div::inList($specificTypesList, $type)) {
@@ -287,34 +292,34 @@ class t3lib_extMgm {
 						if ($positionArray[0] == 'replace') {
 							foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
 								if (preg_match('/\b' . $palette . '\b/', $typeDetails['showitem']) > 0
-										&& preg_match('/\b' . $positionArray[1] . '\b/', $paletteDetails['showitem']) > 0) {
+										&& preg_match('/\b' . $positionArray[1] . '\b/', $paletteDetails['showitem']) > 0
+										&& preg_match('/\b' . $fieldName . '\b/', $paletteDetails['showitem']) == 0) {
 									self::addFieldsToPalette($table, $palette, $str, $position);
-										// Save that palette in case other types use it
-									$palettesChanged[] = $palette;
-									$fieldExists = TRUE;
-								} elseif (in_array($palette, $palettesChanged)) {
-									$fieldExists = TRUE;
 								}
 							}
 						} else {
-							if (strpos($typeDetails['showitem'], $str) !== FALSE) {
+							if (preg_match('/\b' . $fieldName . '\b/', $typeDetails['showitem']) > 0) {
 								$fieldExists = TRUE;
 							} else {
 								foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
-									if (preg_match('/\b' . $palette . '\b/', $typeDetails['showitem']) > 0
-									&& preg_match('/\b' . $positionArray[1] . '\b/', $paletteDetails['showitem']) > 0) {
-										$position = $positionArray[0] . ':--palette--;;' . $palette;
+									if(preg_match('/\b' . $palette . '\b/', $typeDetails['showitem']) > 0
+										    && preg_match('/\b' . $positionArray[1] . '\b/', $paletteDetails['showitem']) > 0) {
+										if (preg_match('/\b' . $fieldName . '\b/', $paletteDetails['showitem']) > 0) {
+											$fieldExists = TRUE;
+										} else {
+											$position = $positionArray[0] . ':--palette--;;' . $palette;
+										}
 									}
 								}
 							}
 						}
 					} else {
-						if (strpos($typeDetails['showitem'], $str) !== FALSE) {
+						if (preg_match('/\b' . $fieldName . '\b/', $typeDetails['showitem']) > 0) {
 							$fieldExists = TRUE;
 						} elseif (is_array($GLOBALS['TCA'][$table]['palettes'])) {
 							foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
 								if (preg_match('/\b' . $palette . '\b/', $typeDetails['showitem']) > 0
-								&& strpos($paletteDetails['showitem'], $str) !== FALSE) {
+								&& preg_match('/\b' . $fieldName . '\b/', $paletteDetails['showitem']) > 0) {
 									$fieldExists = TRUE;
 								}
 							}
