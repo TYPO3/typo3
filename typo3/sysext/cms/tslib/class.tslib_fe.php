@@ -2659,6 +2659,50 @@
 	}
 
 	/**
+	 * Calculates and sets the internal linkVars based upon the current
+	 * $_GET parameters and the setting "config.linkVars".
+	 *
+	 * @return void
+	 */
+	public function calculateLinkVars() {
+		$this->linkVars = '';
+		$linkVars = t3lib_div::trimExplode(',', (string) $this->config['config']['linkVars']);
+		if (empty($linkVars)) {
+			return;
+		}
+
+		$getData = t3lib_div::_GET();
+		foreach ($linkVars as $linkVar) {
+			$test = $value = '';
+			if (preg_match('/^(.*)\((.+)\)$/', $linkVar, $match)) {
+				$linkVar = trim($match[1]);
+				$test = trim($match[2]);
+			}
+
+			if ($linkVar === '' || !isset($getData[$linkVar])) {
+				continue;
+			}
+
+			if (!is_array($getData[$linkVar])) {
+				$temp = rawurlencode($getData[$linkVar]);
+
+				if ($test !== '' && !TSpagegen::isAllowedLinkVarValue($temp, $test)) {
+					continue; // Error: This value was not allowed for this key
+				}
+
+				$value = '&' . $linkVar . '=' . $temp;
+			} else {
+				if ($test !== '' && strcmp('array', $test)) {
+					continue; // Error: This key must not be an array!
+				}
+				$value = t3lib_div::implodeArrayForUrl($linkVar, $getData[$linkVar]);
+			}
+
+			$this->linkVars .= $value;
+		}
+	}
+
+	/**
 	 * Redirect to target page, if the current page is a Shortcut.
 	 *
 	 * If the current page is of type shortcut and accessed directly via its URL, this function redirects to the
@@ -2667,20 +2711,8 @@
 	 * @return void If page is not a Shortcut, redirects and exits otherwise
 	 */
 	public function checkPageForShortcutRedirect() {
-
 		if (!empty($this->originalShortcutPage) && $this->originalShortcutPage['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT) {
-			$linkVars = t3lib_div::trimExplode(',', (string) $this->config['config']['linkVars']);
-			if (!empty($linkVars)) {
-				$getData = t3lib_div::_GET();
-				foreach ($linkVars as $key) {
-					if (isset($getData[$key])) {
-						$value = rawurlencode($getData[$key]);
-						if (!empty($value)) {
-							$this->linkVars .= '&' . $key . '=' . $value;
-						}
-					}
-				}
-			}
+			$this->calculateLinkVars();
 
 				// instantiate tslib_content to generate the correct target URL
 			$cObj = t3lib_div::makeInstance('tslib_cObj');
