@@ -149,44 +149,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		}
 
 			// linkVars
-		$linkVars = (string)$GLOBALS['TSFE']->config['config']['linkVars'];
-		if ($linkVars)	{
-			$linkVarArr = explode(',',$linkVars);
-
-			$GLOBALS['TSFE']->linkVars='';
-			$GET = t3lib_div::_GET();
-
-			foreach ($linkVarArr as $val)	{
-				$val = trim($val);
-
-				if (preg_match('/^(.*)\((.+)\)$/',$val,$match))	{
-					$val = trim($match[1]);
-					$test = trim($match[2]);
-				} else unset($test);
-
-				if ($val && isset($GET[$val]))	{
-					if (!is_array($GET[$val]))	{
-						$tmpVal = rawurlencode($GET[$val]);
-
-						if ($test && !TSpagegen::isAllowedLinkVarValue($tmpVal,$test))	{
-							continue;	// Error: This value was not allowed for this key
-						}
-
-						$value = '&'.$val.'='.$tmpVal;
-					} else {
-						if ($test && strcmp('array',$test))	{
-							continue;	// Error: This key must not be an array!
-						}
-						$value = t3lib_div::implodeArrayForUrl($val,$GET[$val]);
-					}
-				} else continue;
-
-				$GLOBALS['TSFE']->linkVars.= $value;
-			}
-			unset($GET);
-		} else {
-			$GLOBALS['TSFE']->linkVars='';
-		}
+		$GLOBALS['TSFE']->calculateLinkVars();
 
 		if($GLOBALS['TSFE']->config['config']['doctype'] == 'html_5') {
 			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.doctype = html_5', 'It will be removed in TYPO3 4.7. Use html5 instead.');
