@@ -2961,18 +2961,41 @@ final class t3lib_div {
 
 		$fullPath = $directory . $deepDirectory;
 		if (!is_dir($fullPath) && strlen($fullPath) > 0) {
-			@mkdir(
-				$fullPath,
-				octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']),
-				TRUE
-			);
-			if (!is_dir($fullPath)) {
-				throw new \RuntimeException(
-					'Could not create directory!',
-					1170251400
-				);
+			$firstCreatedPath = self::createDirectoryPath($fullPath);
+			if ($firstCreatedPath !== '') {
+				self::fixPermissions($firstCreatedPath, TRUE);
 			}
 		}
+	}
+
+	/**
+	 * Creates directories for the specified paths if they do not exist. This
+	 * functions sets proper permission mask but does not set proper user and
+	 * group.
+	 *
+	 * @static
+	 * @param string $fullDirectoryPath
+	 * @return string Path to the the first created directory in the hierarchy
+	 * @see t3lib_div::mkdir_deep
+	 * @throws \RuntimeException If directory could not be created
+	 */
+	protected static function createDirectoryPath($fullDirectoryPath) {
+		$currentPath = $fullDirectoryPath;
+		$firstCreatedPath = '';
+		$permissionMask = octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']);
+		if (!@is_dir($currentPath)) {
+			do {
+				$firstCreatedPath = $currentPath;
+				$separatorPosition = strrpos($currentPath, DIRECTORY_SEPARATOR);
+				$currentPath = substr($currentPath, 0, $separatorPosition);
+			} while (!is_dir($currentPath) && $separatorPosition !== FALSE);
+
+			$result = @mkdir($fullDirectoryPath, $permissionMask, TRUE);
+			if (!$result) {
+				throw new \RuntimeException('Could not create directory!', 1170251400);
+			}
+		}
+		return $firstCreatedPath;
 	}
 
 	/**
