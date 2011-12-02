@@ -79,29 +79,36 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 	 */
 	protected function getPhpMemoryLimitStatus() {
 		$memoryLimit = ini_get('memory_limit');
+		$memoryLimitBytes = t3lib_div::getBytesFromSizeMeasurement($memoryLimit);
 		$message     = '';
 		$severity    = tx_reports_reports_status_Status::OK;
 
-		if ($memoryLimit && t3lib_div::getBytesFromSizeMeasurement($memoryLimit) < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_RECOMMENDED_PHP_MEMORY_LIMIT)) {
-			$message = sprintf($GLOBALS['LANG']->getLL('status_phpMemoryRecommendation'), $memoryLimit, TYPO3_REQUIREMENTS_RECOMMENDED_PHP_MEMORY_LIMIT);
-			$severity = tx_reports_reports_status_Status::WARNING;
-		}
+		if ($memoryLimitBytes > 0) {
+			if ($memoryLimitBytes < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_RECOMMENDED_PHP_MEMORY_LIMIT)) {
+				$message = sprintf($GLOBALS['LANG']->getLL('status_phpMemoryRecommendation'), $memoryLimit, TYPO3_REQUIREMENTS_RECOMMENDED_PHP_MEMORY_LIMIT);
+				$severity = tx_reports_reports_status_Status::WARNING;
+			}
 
-		if ($memoryLimit && t3lib_div::getBytesFromSizeMeasurement($memoryLimit) < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT)) {
-			$message = sprintf($GLOBALS['LANG']->getLL('status_phpMemoryRequirement'), $memoryLimit, TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT);
-			$severity = tx_reports_reports_status_Status::ERROR;
-		}
+			if ($memoryLimitBytes < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT)) {
+				$message = sprintf($GLOBALS['LANG']->getLL('status_phpMemoryRequirement'), $memoryLimit, TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT);
+				$severity = tx_reports_reports_status_Status::ERROR;
+			}
 
-		if ($severity > tx_reports_reports_status_Status::OK) {
-			if ($php_ini_path = get_cfg_var('cfg_file_path')) {
-				$message .= ' ' . sprintf($GLOBALS['LANG']->getLL('status_phpMemoryEditLimit'), $php_ini_path);
-			} else {
-				$message .= ' ' . $GLOBALS['LANG']->getLL('status_phpMemoryContactAdmin');
+			if ($severity > tx_reports_reports_status_Status::OK) {
+				if ($php_ini_path = get_cfg_var('cfg_file_path')) {
+					$message .= ' ' . sprintf($GLOBALS['LANG']->getLL('status_phpMemoryEditLimit'), $php_ini_path);
+				} else {
+					$message .= ' ' . $GLOBALS['LANG']->getLL('status_phpMemoryContactAdmin');
+				}
 			}
 		}
 
-		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			$GLOBALS['LANG']->getLL('status_phpMemory'), $memoryLimit, $message, $severity
+		return t3lib_div::makeInstance(
+			'tx_reports_reports_status_Status',
+			$GLOBALS['LANG']->getLL('status_phpMemory'),
+			($memoryLimitBytes > 0 ? $memoryLimit : $GLOBALS['LANG']->getLL('status_phpMemoryUnlimited')),
+			$message,
+			$severity
 		);
 	}
 
