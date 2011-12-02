@@ -1190,19 +1190,25 @@ class t3lib_TStemplate {
 	 * @return	string		The page title on the form "[sitetitle]: [input-title]". Not htmlspecialchar()'ed.
 	 * @see tslib_fe::tempPageCacheContent(), TSpagegen::renderContentWithHeader()
 	 */
-	function printTitle($title, $no_title = 0, $titleFirst = 0) {
-		$st = trim($this->setup['sitetitle']) ? $this->setup['sitetitle'] : '';
-		$title = $no_title ? '' : $title;
-		if ($titleFirst) {
-			$temp = $st;
-			$st = $title;
-			$title = $temp;
+	function printTitle($pageTitle, $noTitle = FALSE, $showTitleFirst = FALSE) {
+		$siteTitle = trim($this->setup['sitetitle']) ? $this->setup['sitetitle'] : '';
+		$pageTitle = $noTitle ? '' : $pageTitle;
+		$pageTitleSeparator = '';
+
+		if ($showTitleFirst) {
+			$temp = $siteTitle;
+			$siteTitle = $pageTitle;
+			$pageTitle = $temp;
 		}
-		if ($title && $st) {
-			return $st . ': ' . $title;
-		} else {
-			return $st . $title;
+
+		if ($pageTitle != '' && $siteTitle != '') {
+			$pageTitleSeparator = ': ';
+			if (isset($this->setup['config.']['pageTitleSeparator']) && $this->setup['config.']['pageTitleSeparator']) {
+				$pageTitleSeparator = $this->setup['config.']['pageTitleSeparator'] . ' ';
+			}
 		}
+
+		return $siteTitle . $pageTitleSeparator . $pageTitle;
 	}
 
 	/**
