@@ -3339,22 +3339,68 @@ final class t3lib_div {
 	/**
 	 * Creates a directory - including parent directories if necessary - in the file system
 	 *
-	 * @param	string		Base folder. This must exist! Must have trailing slash! Example "/root/typo3site/"
-	 * @param	string		Deep directory to create, eg. "xx/yy/" which creates "/root/typo3site/xx/yy/" if $destination is "/root/typo3site/"
-	 * @return	string		If error, returns error string.
+	 * @param string $directory Target directory to create. Must a have trailing slash
+	 * 		if second parameter is given!
+	 * 		Example: "/root/typo3site/typo3temp/foo/"
+	 * @param string $deepDirectory Directory to create. This second parameter
+	 * 		is kept for backwards compatibility since 4.6 where this method
+	 * 		was split into a base directory and a deep directory to be created.
+	 * 		Example: "xx/yy/" which creates "/root/typo3site/xx/yy/" if $directory is "/root/typo3site/"
+	 * @return void
+	 * @throws \InvalidArgumentException If $directory or $deepDirectory are not strings
+	 * @throws \RuntimeException If directory could not be created
 	 */
-	public static function mkdir_deep($destination, $deepDir) {
-		$allParts = self::trimExplode('/', $deepDir, 1);
-		$root = '';
-		foreach ($allParts as $part) {
-			$root .= $part . '/';
-			if (!is_dir($destination . $root)) {
-				self::mkdir($destination . $root);
-				if (!@is_dir($destination . $root)) {
-					return 'Error: The directory "' . $destination . $root . '" could not be created...';
-				}
+	public static function mkdir_deep($directory, $deepDirectory = '') {
+		if (!is_string($directory)) {
+			throw new \InvalidArgumentException(
+				'The specified directory is of type "' . gettype($directory) . '" but a string is expected.',
+				1303662955
+			);
+		}
+		if (!is_string($deepDirectory)) {
+			throw new \InvalidArgumentException(
+				'The specified directory is of type "' . gettype($deepDirectory) . '" but a string is expected.',
+				1303662956
+			);
+		}
+
+		$fullPath = $directory . $deepDirectory;
+		if (!is_dir($fullPath) && strlen($fullPath) > 0) {
+			$firstCreatedPath = self::createDirectoryPath($fullPath);
+			if ($firstCreatedPath !== '') {
+				self::fixPermissions($firstCreatedPath, TRUE);
 			}
 		}
+	}
+
+	/**
+	 * Creates directories for the specified paths if they do not exist. This
+	 * functions sets proper permission mask but does not set proper user and
+	 * group.
+	 *
+	 * @static
+	 * @param string $fullDirectoryPath
+	 * @return string Path to the the first created directory in the hierarchy
+	 * @see t3lib_div::mkdir_deep
+	 * @throws \RuntimeException If directory could not be created
+	 */
+	protected static function createDirectoryPath($fullDirectoryPath) {
+		$currentPath = $fullDirectoryPath;
+		$firstCreatedPath = '';
+		$permissionMask = octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']);
+		if (!@is_dir($currentPath)) {
+			do {
+				$firstCreatedPath = $currentPath;
+				$separatorPosition = strrpos($currentPath, DIRECTORY_SEPARATOR);
+				$currentPath = substr($currentPath, 0, $separatorPosition);
+			} while (!is_dir($currentPath) && $separatorPosition !== FALSE);
+
+			$result = @mkdir($fullDirectoryPath, $permissionMask, TRUE);
+			if (!$result) {
+				throw new \RuntimeException('Could not create directory!', 1170251400);
+			}
+		}
+		return $firstCreatedPath;
 	}
 
 	/**
