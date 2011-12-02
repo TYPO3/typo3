@@ -2930,7 +2930,7 @@ final class t3lib_div {
 	 * 		Example: "xx/yy/" which creates "/root/typo3site/xx/yy/" if $directory is "/root/typo3site/"
 	 * @return void
 	 * @throws \InvalidArgumentException If $directory or $deepDirectory are not strings
-	 * @throws \RuntimeException If directory could not be created
+	 * @throws \RuntimeException if the path cannot be created
 	 */
 	public static function mkdir_deep($directory, $deepDirectory = '') {
 		if (!is_string($directory)) {
@@ -2948,18 +2948,43 @@ final class t3lib_div {
 
 		$fullPath = $directory . $deepDirectory;
 		if (!is_dir($fullPath) && strlen($fullPath) > 0) {
-			@mkdir(
-				$fullPath,
-				octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']),
-				TRUE
-			);
-			if (!is_dir($fullPath)) {
-				throw new \RuntimeException(
-					'Could not create directory!',
-					1170251400
-				);
+			$firstCreatedPath = self::createDirectoryPath($fullPath);
+			if ($firstCreatedPath != '') {
+				self::fixPermissions($firstCreatedPath, TRUE);
 			}
 		}
+	}
+
+	/**
+	 * Creates directories for the specified paths if they do not exist. This
+	 * functions sets proper permission mask but does not set proper user and
+	 * group.
+	 *
+	 * @static
+	 * @param string $fullDirectoryPath
+	 * @return string Path to the the first created directory in the hierarchy
+	 * @see t3lib_div::mkdir_deep
+	 * @throws \RuntimeException if the path cannot be created
+	 */
+	protected static function createDirectoryPath($fullDirectoryPath) {
+		$currentPath = '';
+		$firstCreatedPath = '';
+		$permissionMask = octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']);
+		$pathParts = explode(DIRECTORY_SEPARATOR, $fullDirectoryPath);
+		array_shift($pathParts);
+		foreach ($pathParts as $pathSegment) {
+			$currentPath .= DIRECTORY_SEPARATOR . $pathSegment;
+			if (!is_dir($currentPath)) {
+				$result = @mkdir($currentPath, $permissionMask);
+				if (!$result) {
+					throw new \RuntimeException('Could not create directory!', 1170251400);
+				}
+				if ($firstCreatedPath === '') {
+					$firstCreatedPath = $currentPath;
+				}
+			}
+		}
+		return $firstCreatedPath;
 	}
 
 	/**
