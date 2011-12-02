@@ -159,8 +159,12 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 				if ($this->hasArgument('optionValueField')) {
 					$key = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($value, $this->arguments['optionValueField']);
 					if (is_object($key)) {
-						if (method_exists($key, '__toString')) {
-							$key = (string) $key;
+						$identifier = $this->persistenceManager->getBackend()->getIdentifierByObject($key);
+						if ($identifier !== NULL) {
+							$key = $identifier;
+						} elseif (method_exists($key, '__toString')) {
+							$key = (string)$key;
+
 						} else {
 							throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Identifying value for object of class "' . get_class($value) . '" was an object.', 1247827428);
 						}
