@@ -2790,6 +2790,15 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * Tests whether Unicode characters are recognized as valid file name characters.
+	 *
+	 * @test
+	 */
+	public function validPathStrWorksWithUnicodeFileNames() {
+		$this->assertTrue(t3lib_div::validPathStr('fileadmin/templates/Ссылка (fce).xml'));
+	}
+ 
+	/**
 	 * Tests whether verifyFilenameAgainstDenyPattern detects the null character.
 	 *
 	 * @test
