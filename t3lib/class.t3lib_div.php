@@ -2907,9 +2907,17 @@ final class t3lib_div {
 	 * and group ownership according to $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']
 	 *
 	 * @param string $newFolder Absolute path to folder, see PHP mkdir() function. Removes trailing slash internally.
+	 * @param boolean $createParents If set, also non-existent parent folders will be created with correct permissions
 	 * @return boolean TRUE if @mkdir went well!
 	 */
-	public static function mkdir($newFolder) {
+	public static function mkdir($newFolder, $createParents = FALSE) {
+		if ($createParents) {
+			$pos = strrpos(rtrim($newFolder, '/'), '/');
+			if ($pos) {
+				$parentDir = substr($newFolder, 0, $pos);
+				if (!@is_dir($parentDir)) self::mkdir($parentDir, TRUE);
+			}
+		}
 		$result = @mkdir($newFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']));
 		if ($result) {
 			self::fixPermissions($newFolder);
@@ -2948,11 +2956,7 @@ final class t3lib_div {
 
 		$fullPath = $directory . $deepDirectory;
 		if (!is_dir($fullPath) && strlen($fullPath) > 0) {
-			@mkdir(
-				$fullPath,
-				octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']),
-				TRUE
-			);
+			self::mkdir($fullPath, TRUE);
 			if (!is_dir($fullPath)) {
 				throw new \RuntimeException(
 					'Could not create directory!',
