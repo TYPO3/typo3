@@ -120,6 +120,9 @@
 			<trans-unit id="status_phpMemoryContactAdmin" xml:space="preserve">
 				<source>Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.</source>
 			</trans-unit>
+			<trans-unit id="status_phpMemoryUnlimited" xml:space="preserve">
+				<source>unlimited</source>
+			</trans-unit>
 			<trans-unit id="status_phpPeakMemory" xml:space="preserve">
 				<source>PHP peak memory usage</source>
 			</trans-unit>
