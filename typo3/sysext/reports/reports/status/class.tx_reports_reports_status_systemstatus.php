@@ -91,12 +91,12 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 		$message     = '';
 		$severity    = tx_reports_reports_status_Status::OK;
 
-		if ($memoryLimit && t3lib_div::getBytesFromSizeMeasurement($memoryLimit) < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_RECOMMENDED_PHP_MEMORY_LIMIT)) {
+		if ($memoryLimit && $memoryLimit != '-1' && t3lib_div::getBytesFromSizeMeasurement($memoryLimit) < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_RECOMMENDED_PHP_MEMORY_LIMIT)) {
 			$message = sprintf($GLOBALS['LANG']->getLL('status_phpMemoryRecommendation'), $memoryLimit, TYPO3_REQUIREMENTS_RECOMMENDED_PHP_MEMORY_LIMIT);
 			$severity = tx_reports_reports_status_Status::WARNING;
 		}
 
-		if ($memoryLimit && t3lib_div::getBytesFromSizeMeasurement($memoryLimit) < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT)) {
+		if ($memoryLimit && $memoryLimit != '-1' && t3lib_div::getBytesFromSizeMeasurement($memoryLimit) < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT)) {
 			$message = sprintf($GLOBALS['LANG']->getLL('status_phpMemoryRequirement'), $memoryLimit, TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT);
 			$severity = tx_reports_reports_status_Status::ERROR;
 		}
@@ -109,8 +109,12 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 			}
 		}
 
-		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			$GLOBALS['LANG']->getLL('status_phpMemory'), $memoryLimit, $message, $severity
+		return t3lib_div::makeInstance(
+			'tx_reports_reports_status_Status',
+			$GLOBALS['LANG']->getLL('status_phpMemory'),
+			($memoryLimit == '-1' ? $GLOBALS['LANG']->getLL('status_phpMemoryUnlimited') : $memoryLimit),
+			$message,
+			$severity
 		);
 	}
 
