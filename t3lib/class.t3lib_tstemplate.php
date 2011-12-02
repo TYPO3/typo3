@@ -1198,11 +1198,15 @@ class t3lib_TStemplate {
 			$st = $title;
 			$title = $temp;
 		}
+
 		if ($title && $st) {
-			return $st . ': ' . $title;
+			$pageTitleSeparator = (isset($this->setup['config.']['pageTitleSeparator']) ? $this->setup['config.']['pageTitleSeparator'] : '');
+			$result = $st . ($pageTitleSeparator != '' ? $pageTitleSeparator : ': ') . $title;
 		} else {
-			return $st . $title;
+			$result = $st . $title;
 		}
+
+		return $result;
 	}
 
 	/**
