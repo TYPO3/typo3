@@ -159,6 +159,9 @@ class tslib_content_Content extends tslib_content_Abstract {
 						$slide--;
 					}
 					$conf['select.']['pidInList'] = $this->cObj->getSlidePids($conf['select.']['pidInList'], $conf['select.']['pidInList.']);
+					if (isset($conf['select.']['pidInList.'])) {
+						unset($conf['select.']['pidInList.']);
+					}
 					$again = strlen($conf['select.']['pidInList']) ? TRUE : FALSE;
 				}
 			} while ($again && (($slide && !strlen($tmpValue) && $slideCollectFuzzy) || ($slide && $slideCollect)));
