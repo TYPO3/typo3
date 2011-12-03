@@ -207,7 +207,7 @@ class t3lib_lock {
 		switch ($this->method) {
 			case 'simple':
 				if (t3lib_div::isAllowedAbsPath($this->resource) && t3lib_div::isFirstPartOfStr($this->resource, PATH_site . 'typo3temp/locks/')) {
-					if (unlink($this->resource) == FALSE) {
+					if (@unlink($this->resource) == FALSE) {
 						$success = FALSE;
 					}
 				}
@@ -218,7 +218,7 @@ class t3lib_lock {
 				}
 				fclose($this->filepointer);
 				if (t3lib_div::isAllowedAbsPath($this->resource) && t3lib_div::isFirstPartOfStr($this->resource, PATH_site . 'typo3temp/locks/')) {
-					unlink($this->resource);
+					@unlink($this->resource);
 				}
 			break;
 			case 'semaphore':
