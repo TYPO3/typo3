@@ -3229,39 +3229,46 @@
 	/**
 	 * Loads the JavaScript code for INTincScript
 	 *
-	 * @return	void
+	 * @return void
 	 * @access private
 	 */
-	function INTincScript_loadJSCode()	{
-		if ($this->JSImgCode)	{	// If any images added, then add them to the javascript section
-			$this->additionalHeaderData['JSImgCode']='
+	function INTincScript_loadJSCode() {
+			// If any images added, then add them to the javascript section
+		$JSImgCode = trim($this->JSImgCode);
+		if ($JSImgCode !== '') {
+			$this->additionalHeaderData['JSImgCode'] = '
 <script type="text/javascript">
 	/*<![CDATA[*/
 <!--
 if (version == "n3") {
-'.trim($this->JSImgCode).'
+' . $JSImgCode . '
 }
 // -->
 	/*]]>*/
 </script>';
 		}
-		if ($this->JSCode || count($this->additionalJavaScript)) { // Add javascript
+			// Add javascript
+		$JSCode = trim($this->JSCode);
+		$additionalJavaScript = trim(is_array($this->additionalJavaScript) ? implode(LF, $this->additionalJavaScript) : $this->additionalJavaScript);
+		if ($JSCode !== '' || $additionalJavaScript !== '') {
 			$this->additionalHeaderData['JSCode'] = '
 <script type="text/javascript">
 	/*<![CDATA[*/
 <!--
-' . implode(LF, $this->additionalJavaScript) . '
-' . trim($this->JSCode) . '
+' . $additionalJavaScript . '
+' . $JSCode . '
 // -->
 	/*]]>*/
 </script>';
 		}
-		if (count($this->additionalCSS))	{	// Add javascript
-			$this->additionalHeaderData['_CSS']='
+			// Add CSS
+		$additionalCSS = trim(is_array($this->additionalCSS) ? implode(LF, $this->additionalCSS) : $this->additionalCSS);
+		if ($additionalCSS !== '')	{
+			$this->additionalHeaderData['_CSS'] = '
 <style type="text/css">
 	/*<![CDATA[*/
 <!--
-'.implode(LF,$this->additionalCSS).'
+' . $additionalCSS . '
 // -->
 	/*]]>*/
 </style>';
