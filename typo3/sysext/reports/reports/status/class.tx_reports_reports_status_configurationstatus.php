@@ -51,6 +51,8 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 	 * @see typo3/sysext/reports/interfaces/tx_reports_StatusProvider::getStatus()
 	 */
 	public function getStatus() {
+		$this->executeAdminCommand();
+
 		$statuses = array(
 			'emptyReferenceIndex'   => $this->getReferenceIndexStatus(),
 			'deprecationLog'        => $this->getDeprecationLogStatus(),
@@ -254,13 +256,20 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 			$logFile     = t3lib_div::getDeprecationLogFileName();
 			$logFileSize = 0;
 
-			if (file_exists($logFile)) {
+			if (@file_exists($logFile)) {
 				$logFileSize = filesize($logFile);
 
-				$message .= '<p> ' . sprintf(
+				$message .= '<p>' . sprintf(
 						$GLOBALS['LANG']->getLL('status_configuration_DeprecationLogFile'),
 						$this->getDeprecationLogFileLink()
 					) . '</p>';
+
+				$removeDeprecationLogFileUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL') . '&amp;adminCmd=removeDeprecationLogFile';
+				$message .= '<p>' . sprintf(
+						$GLOBALS['LANG']->getLL('status_configuration_DeprecationLogSize'),
+						t3lib_div::formatSize($logFileSize)
+					)
+					. ' <a href="' . $removeDeprecationLogFileUrl . '">' . $GLOBALS['LANG']->getLL('status_configuration_DeprecationLogDeleteLink') . '</a></p>';
 			}
 
 			if ($logFileSize > $this->deprecationLogFileSizeWarningThreshold) {
@@ -269,13 +278,6 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 
 			if ($logFileSize > $this->deprecationLogFileSizeErrorThreshold) {
 				$severity = tx_reports_reports_status_Status::ERROR;
-			}
-
-			if ($severity > tx_reports_reports_status_Status::OK) {
-				$message .= '<p> ' . sprintf(
-					$GLOBALS['LANG']->getLL('status_configuration_DeprecationLogSize'),
-					t3lib_div::formatSize($logFileSize)
-				) . '</p>';
 			}
 		}
 
@@ -299,8 +301,50 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 
 		return $link;
 	}
-}
 
+	/**
+	 * Executes admin commands.
+	 *
+	 * Currently implemented commands are:
+	 *  - Remove deprecation log file
+	 *
+	 * @return void
+	 */
+	protected function executeAdminCommand() {
+		$command = t3lib_div::_GET('adminCmd');
+
+		switch ($command) {
+			case 'removeDeprecationLogFile':
+				self::removeDeprecationLogFile();
+				break;
+			default:
+					// intentionally left blank
+				break;
+		}
+	}
+
+	/**
+	 * Remove deprecation log file.
+	 *
+	 * @return void
+	 */
+	protected static function removeDeprecationLogFile() {
+		if (@unlink(t3lib_div::getDeprecationLogFileName())) {
+			$message = $GLOBALS['LANG']->getLL('status_configuration_DeprecationLogDeletedSuccessful');
+			$severity =  t3lib_FlashMessage::OK;
+		} else {
+			$message = $GLOBALS['LANG']->getLL('status_configuration_DeprecationLogDeletionFailed');
+			$severity =  t3lib_FlashMessage::ERROR;
+		}
+		t3lib_FlashMessageQueue::addMessage(t3lib_div::makeInstance(
+			't3lib_FlashMessage',
+			$message,
+			'',
+			$severity,
+			TRUE
+		));
+	}
+}
 
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/reports/reports/status/class.tx_reports_reports_status_configurationstatus.php'])) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/reports/reports/status/class.tx_reports_reports_status_configurationstatus.php']);
