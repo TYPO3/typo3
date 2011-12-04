@@ -50,7 +50,7 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	 * @var integer Number of records
 	 * @TODO: This could be set with an additional field later on
 	 */
-	protected $numberOfRecords = 42; // 23 is too low ;)
+	protected $numberOfRecords = 250;
 
 	/**
 	 * @var integer Pointer to last handled frontend and backend user row
