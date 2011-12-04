@@ -3960,7 +3960,17 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
 			$dbArr = $GLOBALS['TYPO3_DB']->admin_get_dbs();
 		}
-		return $dbArr;
+
+			// remove some database names that MySQL uses internally from the list of choosable DB names
+		$forbiddenDatabaseNames = array('mysql', 'information_schema');
+		$databaseList = array();
+		foreach ($dbArr as $databaseName) {
+			if (!in_array($databaseName, $forbiddenDatabaseNames)) {
+				$databaseList[] = $databaseName;
+			}
+		}
+
+		return $databaseList;
 	}
 
 	/**
