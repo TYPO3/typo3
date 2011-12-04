@@ -2328,7 +2328,18 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// *****************
 		$memory_limit_value = t3lib_div::getBytesFromSizeMeasurement(ini_get('memory_limit'));
 
-		if ($memory_limit_value && $memory_limit_value < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT)) {
+		if ($memory_limit_value <= 0) {
+			$this->message(
+				$ext,
+				'Unlimited memory limit!',
+				'<p>Your webserver is configured to not limit PHP memory usage at all. This is a risk
+				and should be avoided in production setup. In general it\'s best practice to limit this
+				in the configuration of your webserver. To be safe, ask the system administrator of the
+				webserver to raise the limit to something over ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT .
+				'.</p>',
+				2
+			);
+		} elseif ($memory_limit_value < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT)) {
 			$this->message($ext, 'Memory limit below ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT, '
 				<p>
 					<em>memory_limit=' . ini_get('memory_limit') . '</em>
@@ -2342,15 +2353,10 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT . '.
 				</p>
 			', 3);
-		} elseif(!$memory_limit_value) {
-			$this->message($ext, 'Memory limit', '
-				<p>
-					<em>No memory limit in effect.</em>
-				</p>
-			', -1);
 		} else {
 			$this->message($ext, 'Memory limit: ' . ini_get('memory_limit'), '', -1);
 		}
+
 		if (ini_get('max_execution_time')<30) {
 			$this->message($ext, 'Maximum execution time below 30 seconds', '
 				<p>
