@@ -180,6 +180,9 @@
 			<trans-unit id="status_configuration_DeprecationLogSize" xml:space="preserve">
 				<source>Your deprecation log file currently takes up %s.</source>
 			</trans-unit>
+			<trans-unit id="status_configuration_DeprecationLogDeleteLink" xml:space="preserve">
+				<source>Click here to delete the file.</source>
+			</trans-unit>
 			<trans-unit id="status_configuration_PhpSafeModeEnabled" xml:space="preserve">
 				<source>PHP INI setting safe_mode "On" is deprecated since PHP 5.3 and is not supported by TYPO3 anymore.</source>
 			</trans-unit>

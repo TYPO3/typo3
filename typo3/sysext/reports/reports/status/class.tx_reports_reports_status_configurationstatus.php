@@ -51,6 +51,8 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 	 * @see typo3/sysext/reports/interfaces/tx_reports_StatusProvider::getStatus()
 	 */
 	public function getStatus() {
+		$this->executeAdminCommand();
+
 		$statuses = array(
 			'emptyReferenceIndex'   => $this->getReferenceIndexStatus(),
 			'deprecationLog'        => $this->getDeprecationLogStatus(),
@@ -261,6 +263,16 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 						$GLOBALS['LANG']->getLL('status_configuration_DeprecationLogFile'),
 						$this->getDeprecationLogFileLink()
 					) . '</p>';
+
+				$removeDeprecationLogFileUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL') .
+					'&amp;adminCmd=removeDeprecationLogFile';
+				$message .= '<p> ' . sprintf(
+					$GLOBALS['LANG']->getLL('status_configuration_DeprecationLogSize'),
+					t3lib_div::formatSize($logFileSize)
+					) .
+					' <a href="' . $removeDeprecationLogFileUrl . ' ">' .
+					$GLOBALS['LANG']->getLL('status_configuration_DeprecationLogDeleteLink') .
+					'</a></p>';
 			}
 
 			if ($logFileSize > $this->deprecationLogFileSizeWarningThreshold) {
@@ -269,13 +281,6 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 
 			if ($logFileSize > $this->deprecationLogFileSizeErrorThreshold) {
 				$severity = tx_reports_reports_status_Status::ERROR;
-			}
-
-			if ($severity > tx_reports_reports_status_Status::OK) {
-				$message .= '<p> ' . sprintf(
-					$GLOBALS['LANG']->getLL('status_configuration_DeprecationLogSize'),
-					t3lib_div::formatSize($logFileSize)
-				) . '</p>';
 			}
 		}
 
@@ -298,6 +303,21 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 		$link = '<a href="' . $relativePath . '">' . $logFile . '</a>';
 
 		return $link;
+	}
+
+	/**
+	 * Executes commands like removing the deprecation log file.
+	 *
+	 * @return	void
+	 */
+	protected function executeAdminCommand() {
+		$command = t3lib_div::_GET('adminCmd');
+
+		switch ($command) {
+			case 'removeDeprecationLogFile':
+				unlink(t3lib_div::getDeprecationLogFileName());
+			break;
+		}
 	}
 }
 
