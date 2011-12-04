@@ -135,10 +135,21 @@ class t3lib_mail_Mailer extends Swift_Mailer {
 				break;
 
 			case 'mail':
-			default:
 					// Create the transport, no configuration required
 				$this->transport = Swift_MailTransport::newInstance();
 				break;
+			default:
+					// Custom mail transport
+				$customTransport = t3lib_div::makeInstance($mailSettings['transport'], $mailSettings);
+				if ($this->transport instanceof Swift_Transport) {
+					$this->transport = $customTransport;
+				} else {
+					throw new RuntimeException(
+						$mailSettings['transport'] . ' is not an implementation of Swift_Transport,
+						but must implement that interface to be used as a mail transport.',
+						1323006478
+					);
+				}
 		}
 		return;
 	}
