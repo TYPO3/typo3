@@ -770,7 +770,7 @@ abstract class t3lib_userAuth {
 
 		if ($statement && $user) {
 				// A user was found
-			if (is_string($this->auth_timeout_field)) {
+			if (t3lib_Utility_Math::canBeInterpretedAsInteger($this->auth_timeout_field)) {
 				$timeout = intval($user[$this->auth_timeout_field]); // Get timeout-time from usertable
 			} else {
 				$timeout = intval($this->auth_timeout_field); // Get timeout from object
