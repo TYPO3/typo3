@@ -770,10 +770,10 @@ abstract class t3lib_userAuth {
 
 		if ($statement && $user) {
 				// A user was found
-			if (is_string($this->auth_timeout_field)) {
-				$timeout = intval($user[$this->auth_timeout_field]); // Get timeout-time from usertable
-			} else {
+			if (t3lib_Utility_Math::canBeInterpretedAsInteger($this->auth_timeout_field)) {
 				$timeout = intval($this->auth_timeout_field); // Get timeout from object
+			} else {
+				$timeout = intval($user[$this->auth_timeout_field]); // Get timeout-time from usertable
 			}
 				// If timeout > 0 (TRUE) and currenttime has not exceeded the latest sessions-time plus the timeout in seconds then accept user
 				// Option later on: We could check that last update was at least x seconds ago in order not to update twice in a row if one script redirects to another...
