@@ -96,6 +96,7 @@ class TSpagegen {
 		if ($GLOBALS['TSFE']->page['content_from_pid']>0)	{
 			$temp_copy_TSFE = clone($GLOBALS['TSFE']);	// make REAL copy of TSFE object - not reference!
 			$temp_copy_TSFE->id = $GLOBALS['TSFE']->page['content_from_pid'];	// Set ->id to the content_from_pid value - we are going to evaluate this pid as was it a given id for a page-display!
+			$temp_copy_TSFE->MP = '';
 			$temp_copy_TSFE->getPageAndRootlineWithDomain($GLOBALS['TSFE']->config['config']['content_from_pid_allowOutsideDomain']?0:$GLOBALS['TSFE']->domainStartPage);
 			$GLOBALS['TSFE']->contentPid = intval($temp_copy_TSFE->id);
 			unset($temp_copy_TSFE);
