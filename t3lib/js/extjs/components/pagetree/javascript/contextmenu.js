@@ -23,8 +23,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-Ext.namespace('TYPO3.Components.PageTree');
-
 /**
  * @class TYPO3.Components.PageTree.ContextMenu
  *
@@ -34,11 +32,12 @@ Ext.namespace('TYPO3.Components.PageTree');
  * @extends Ext.menu.Menu
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
-TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
+Ext.define('TYPO3.Components.PageTree.ContextMenu', {
+	extend: 'Ext.menu.Menu',
 	/**
 	 * Context menu node
 	 *
-	 * @cfg {Ext.tree.TreeNode}
+	 * @cfg {TYPO3.Components.PageTree.Model}
 	 */
 	node: null,
 
@@ -66,15 +65,15 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 	/**
 	 * Listeners
 	 *
-	 * The itemclick event triggers the configured single click action
+	 * The click event triggers the configured single click action
 	 */
 	listeners: {
-		itemclick: {
-			fn: function (item) {
-				if (this.pageTree.commandProvider[item.callbackAction]) {
+		click: {
+			fn: function (menu, item) {
+				if (item && this.pageTree.commandProvider[item.callbackAction]) {
 					if (item.parentMenu.pageTree.stateHash) {
-						fsMod.recentIds['web'] = item.parentMenu.node.attributes.nodeData.id;
-						item.parentMenu.pageTree.stateHash['lastSelectedNode'] = item.parentMenu.node.id;
+						fsMod.recentIds['web'] = item.parentMenu.node.getNodeData('id');
+						item.parentMenu.pageTree.stateHash['lastSelectedNode'] = item.parentMenu.node.getId();
 					}
 
 					this.pageTree.commandProvider[item.callbackAction](
@@ -90,12 +89,12 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 	/**
 	 * Fills the menu with the actions
 	 *
-	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Model} node
 	 * @param {TYPO3.Components.PageTree.Tree} pageTree
 	 * @param {Object} contextMenuConfiguration
 	 * @return {void}
 	 */
-	fill: function(node, pageTree, contextMenuConfiguration) {
+	fill: function (node, pageTree, contextMenuConfiguration) {
 		this.node = node;
 		this.pageTree = pageTree;
 
@@ -103,9 +102,11 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 		if (components.length) {
 			for (var component in components) {
 				if (components[component] === '-') {
-					this.addSeparator();
+					this.add({
+						xtype: 'menuseparator'
+					});
 				} else if (typeof components[component] === 'object') {
-					this.addItem(components[component]);
+					this.add(components[component]);
 				}
 			}
 		}
@@ -119,7 +120,7 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 	 * @param {int} level
 	 * @return {Object}
 	 */
-	preProcessContextMenuConfiguration: function(contextMenuConfiguration, level) {
+	preProcessContextMenuConfiguration: function (contextMenuConfiguration, level) {
 		level = level || 0;
 		if (level > 5) {
 			return [];
@@ -138,7 +139,7 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 				);
 
 				if (subMenuComponents.length) {
-					var subMenu = new TYPO3.Components.PageTree.ContextMenu({
+					var subMenu = Ext.create('TYPO3.Components.PageTree.ContextMenu', {
 						id: this.id + '-sub' + ++subMenus,
 						items: subMenuComponents,
 						node: this.node,
@@ -150,7 +151,8 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 						cls: 'contextMenu-subMenu',
 						menu: subMenu,
 						icon: contextMenuConfiguration[singleAction]['icon'],
-						iconCls: contextMenuConfiguration[singleAction]['class']
+						iconCls: contextMenuConfiguration[singleAction]['class'],
+						xtype: 'menuitem'
 					};
 				}
 			} else if (contextMenuConfiguration[singleAction]['type'] === 'divider') {
@@ -163,21 +165,13 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 
 				if (typeof contextMenuConfiguration[singleAction] === 'object') {
 					var component = {
-						'text': contextMenuConfiguration[singleAction]['label'],
-						'icon': contextMenuConfiguration[singleAction]['icon'],
-						'iconCls': contextMenuConfiguration[singleAction]['class'],
-						'callbackAction': contextMenuConfiguration[singleAction]['callbackAction'],
-						'customAttributes': contextMenuConfiguration[singleAction]['customAttributes']
+						text: contextMenuConfiguration[singleAction]['label'],
+						icon: contextMenuConfiguration[singleAction]['icon'],
+						iconCls: contextMenuConfiguration[singleAction]['class'],
+						callbackAction: contextMenuConfiguration[singleAction]['callbackAction'],
+						customAttributes: contextMenuConfiguration[singleAction]['customAttributes'],
+						xtype: 'menuitem'
 					};
-
-					component.itemTpl = Ext.menu.Item.prototype.itemTpl = new Ext.XTemplate(
-						'<a id="{id}" class="{cls}" hidefocus="true" unselectable="on" href="{href}">',
-							'<span class="{hrefTarget}">',
-								'<img src="{icon}" class="x-menu-item-icon {iconCls}" unselectable="on" />',
-							'</span>',
-							'<span class="x-menu-item-text">{text}</span>',
-						'</a>'
-					);
 
 					components[index++] = component;
 				}
@@ -192,6 +186,3 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 		return components;
 	}
 });
-
-// XTYPE Registration
-Ext.reg('TYPO3.Components.PageTree.ContextMenu', TYPO3.Components.PageTree.ContextMenu);

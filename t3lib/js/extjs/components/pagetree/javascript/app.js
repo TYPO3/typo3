@@ -23,18 +23,18 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-Ext.namespace('TYPO3.Components.PageTree');
-
 /**
  * @class TYPO3.Components.PageTree.App
  *
  * Page tree main application that controls setups the components
  *
  * @namespace TYPO3.Components.PageTree
- * @extends Ext.Panel
+ * @extends Ext.panel.Panel
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
-TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
+Ext.define('TYPO3.Components.PageTree.App', {
+	extend: 'Ext.panel.Panel',
+
 	/**
 	 * Panel id
 	 *
@@ -45,7 +45,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	/**
 	 * Border
 	 *
-	 * @type {Boolean}
+	 * @type {String}
 	 */
 	border: false,
 
@@ -54,14 +54,38 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	 *
 	 * @type {String}
 	 */
-	layout:'fit',
+	layout: 'border',
 
 	/**
-	 * Active tree
+	 * Components defaults
 	 *
-	 * @type {TYPO3.Components.PageTree.Tree}
+	 * @type {Object}
 	 */
-	activeTree: null,
+	 defaults: {
+	 	 border: false,
+	 },
+	
+	/**
+	 * Tree containe
+	 *
+	 * @type {String}
+	 */
+	 items: [{
+			itemId: 'topPanelItems',
+			height: 49,
+			region: 'north',
+			cls: 'typo3-pageTree-topPanelItems'
+	 	},{
+			itemId: 'treeContainer',
+			autoScroll: false,
+			layout: 'card',
+			region: 'center'
+		},{
+			xtype: 'container',
+			itemId: 'deletionDropZoneContainer',
+			cls: 'typo3-pageTree-deletionDropZoneContainer',
+			region: 'south'
+	 }],
 
 	/**
 	 * Initializes the application
@@ -72,112 +96,89 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	 * @return {void}
 	 */
 	initComponent: function() {
-		TYPO3.Components.PageTree.DataProvider.loadResources(function(response) {
-			TYPO3.Components.PageTree.LLL = response['LLL'];
-			TYPO3.Components.PageTree.Configuration = response['Configuration'];
-			TYPO3.Components.PageTree.Sprites = response['Sprites'];
+		this.addListener('render', function () {
+			TYPO3.Components.PageTree.DataProvider.loadResources(function(response) {
+				TYPO3.Components.PageTree.LLL = response['LLL'];
+				TYPO3.Components.PageTree.Configuration = response['Configuration'];
+				TYPO3.Components.PageTree.Sprites = response['Sprites'];
+	
+				var tree = Ext.create('TYPO3.Components.PageTree.Tree', {
+					id: this.getId() + '-tree',
+					deletionDropZoneId: this.getId() + '-deletionDropZone',
+					ddGroup: this.getId(),
+					stateful: true,
+					stateId: 'Pagetree' + TYPO3.Components.PageTree.Configuration.temporaryMountPoint,
+					commandProvider: TYPO3.Components.PageTree.Actions,
+					contextMenuProvider: TYPO3.Components.PageTree.ContextMenuDataProvider,
+					treeDataProvider: TYPO3.Components.PageTree.DataProvider,
+					app: this
+				});
+	
+				var filteringTree = Ext.create('TYPO3.Components.PageTree.FilteringTree', {
+					id: this.getId() + '-filteringTree',
+					deletionDropZoneId: this.getId() + '-deletionDropZone',
+					ddGroup: this.getId(),
+					commandProvider: TYPO3.Components.PageTree.Actions,
+					contextMenuProvider: TYPO3.Components.PageTree.ContextMenuDataProvider,
+					stateful: false,
+					treeDataProvider: TYPO3.Components.PageTree.DataProvider,
+					app: this
+				});
+	
+				var topPanelItems = this.getComponent('topPanelItems');
+				topPanelItems.add([
+						Ext.create('TYPO3.Components.PageTree.TopPanel', {
+							border: false,
+							dataProvider: TYPO3.Components.PageTree.DataProvider,
+							filteringTree: filteringTree,
+							ddGroup: this.getId(),
+							height: 49,
+							itemId: 'topPanel',
+							tree: tree,
+							app: this
+						}),
+						{
+							xtype: 'container',
+							border: false,
+							defaultType: 'component',
+							id: this.getId() + '-indicatorBar',
+							itemId: 'indicatorBar'
+						}
+				]);
+	
+				var treeContainer = this.getComponent('treeContainer');
+				treeContainer.add([tree, filteringTree]);
+				treeContainer.addListener(
+					'render',
+					function (panel) { panel.getLayout().setActiveItem(0); }
+				);
+	
+				var deletionDropZoneContainer = this.getComponent('deletionDropZoneContainer');
+				deletionDropZoneContainer.add({
+					xtype: 'typo3deletiondropzone',
+					height: 35,
+					id: this.getId() + '-deletionDropZone',
+					commandProvider: TYPO3.Components.PageTree.Actions,
+					ddGroup: this.getId(),
+					layout: 'anchor',
+					app: this
+				});
 
-			var tree = this.activeTree = new TYPO3.Components.PageTree.Tree({
-				id: this.id + '-tree',
-				deletionDropZoneId: this.id + '-deletionDropZone',
-				ddGroup: this.id,
-				stateful: true,
-				stateId: 'Pagetree' + TYPO3.Components.PageTree.Configuration.temporaryMountPoint,
-				stateEvents: [],
-				autoScroll: true,
-				autoHeight: false,
-				plugins: new Ext.ux.state.TreePanel(),
-				commandProvider: TYPO3.Components.PageTree.Actions,
-				contextMenuProvider: TYPO3.Components.PageTree.ContextMenuDataProvider,
-				treeDataProvider: TYPO3.Components.PageTree.DataProvider,
-				app: this,
-				listeners: {
-					resize: {
-						fn: function() {
-							var treeContainer = Ext.getCmp(this.id + '-treeContainer');
-							Ext.getCmp(this.id + '-filteringTree').setSize(treeContainer.getSize());
-							treeContainer.doLayout();
-						},
-						scope: this,
-						buffer: 250
-					}
-				}
-			});
-
-			var filteringTree = new TYPO3.Components.PageTree.FilteringTree({
-				id: this.id + '-filteringTree',
-				deletionDropZoneId: this.id + '-deletionDropZone',
-				ddGroup: this.id,
-				autoScroll: true,
-				autoHeight: false,
-				commandProvider: TYPO3.Components.PageTree.Actions,
-				contextMenuProvider: TYPO3.Components.PageTree.ContextMenuDataProvider,
-				treeDataProvider: TYPO3.Components.PageTree.DataProvider,
-				app: this
-			}).hide();
-
-			var topPanel = new TYPO3.Components.PageTree.TopPanel({
-				dataProvider: TYPO3.Components.PageTree.DataProvider,
-				filteringTree: filteringTree,
-				ddGroup: this.id,
-				tree: tree,
-				app: this
-			});
-
-			var deletionDropZone = new TYPO3.Components.PageTree.DeletionDropZone({
-				id: this.id + '-deletionDropZone',
-				commandProvider: TYPO3.Components.PageTree.Actions,
-				ddGroup: this.id,
-				app: this,
-				region: 'south',
-				height: 35
-			});
-
-			var topPanelItems = new Ext.Panel({
-				id: this.id + '-topPanelItems',
-				border: false,
-				region: 'north',
-				height: 49,
-				items: [
-					topPanel, {
-						border: false,
-						id: this.id + '-indicatorBar'
-					}
-				]
-			});
-
-			this.add({
-				layout: 'border',
-				items: [
-					topPanelItems,
-					{
-						border: false,
-						id: this.id + '-treeContainer',
-						region: 'center',
-						layout: 'fit',
-						items: [tree, filteringTree]
-					},
-					deletionDropZone
-				]
-			});
-
-			if (TYPO3.Components.PageTree.Configuration.temporaryMountPoint) {
-				topPanelItems.on('afterrender', function() {
+				if (TYPO3.Components.PageTree.Configuration.temporaryMountPoint) {
 					this.addTemporaryMountPointIndicator();
-				}, this);
-			}
-
-			if (TYPO3.Components.PageTree.Configuration.indicator !== '') {
-				this.addIndicatorItems();
-			}
-			this.doLayout();
-
-			this.ownerCt.on('resize', function() {
+				}
+	
+				if (TYPO3.Components.PageTree.Configuration.indicator !== '') {
+					this.addIndicatorItems();
+				}
 				this.doLayout();
-			});
+	
+				this.ownerCt.on('resize', function() {
+					this.doLayout();
+				}, this);
+			}, this);
 		}, this);
-
-		TYPO3.Components.PageTree.App.superclass.initComponent.apply(this, arguments);
+		this.callParent();
 	},
 
 	/**
@@ -187,9 +188,8 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	 */
 	addIndicatorItems: function() {
 		this.addIndicator({
-			border: false,
-			id: this.id + '-indicatorBar-indicatorTitle',
-			cls: this.id + '-indicatorBar-item',
+			id: this.getId() + '-indicatorBar-indicatorTitle',
+			cls: this.getId() + '-indicatorBar-item',
 			html: TYPO3.Components.PageTree.Configuration.indicator
 		});
 	},
@@ -201,14 +201,13 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	 */
 	addTemporaryMountPointIndicator: function() {
 		this.temporaryMountPointInfoIndicator = this.addIndicator({
-			border: false,
-			id: this.id + '-indicatorBar-temporaryMountPoint',
-			cls: this.id + '-indicatorBar-item',
+			id: this.getId() + '-indicatorBar-temporaryMountPoint',
+			cls: this.getId() + '-indicatorBar-item',
 
 			listeners: {
 				afterrender: {
 					fn: function() {
-						var element = Ext.fly(this.id + '-indicatorBar-temporaryMountPoint-clear');
+						var element = Ext.get(this.getId() + '-indicatorBar-temporaryMountPoint-clear');
 						element.on('click', function() {
 							TYPO3.BackendUserSettings.ExtDirect.unsetKey(
 								'pageTree_temporaryMountPoint',
@@ -225,18 +224,21 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 					scope: this
 				}
 			},
-
-			html: '<p>' +
-					'<span id="' + this.id + '-indicatorBar-temporaryMountPoint-info' + '" ' +
-						'class="' + this.id + '-indicatorBar-item-leftIcon ' +
-							TYPO3.Components.PageTree.Sprites.Info + '">&nbsp;' +
-					'</span>' +
-					'<span id="' + this.id + '-indicatorBar-temporaryMountPoint-clear' + '" ' +
-						'class="' + this.id + '-indicatorBar-item-rightIcon ' + '">X' +
-					'</span>' +
-					TYPO3.Components.PageTree.LLL.temporaryMountPointIndicatorInfo + '<br />' +
-						TYPO3.Components.PageTree.Configuration.temporaryMountPoint +
+			renderData: {
+				appId: this.getId(),
+				spriteIconCls: TYPO3.Components.PageTree.Sprites.Info,
+				label: TYPO3.Components.PageTree.LLL.temporaryMountPointIndicatorInfo,
+				mountPoint: TYPO3.Components.PageTree.Configuration.temporaryMountPoint
+			},
+			renderTpl: Ext.create('Ext.XTemplate',
+				'<p>',
+				'<span id="{appId}-indicatorBar-temporaryMountPoint-info" class="{appId}-indicatorBar-item-leftIcon {spriteIconCls}">&nbsp;</span>',
+				'{label}',
+				'<span id="{appId}-indicatorBar-temporaryMountPoint-clear" class="{appId}-indicatorBar-item-rightIcon t3-icon t3-icon-actions t3-icon-actions-input t3-icon-input-clear t3-tceforms-input-clearer">&nbsp;</span>',
+				'</p>',
+				'<p>{mountPoint}',
 				'</p>'
+			)
 		});
 	},
 
@@ -248,23 +250,18 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	 */
 	addIndicator: function(component) {
 		if (component.listeners && component.listeners.afterrender) {
-			component.listeners.afterrender.fn = component.listeners.afterrender.fn.createSequence(
-				this.afterTopPanelItemAdded, this
-			);
+			component.listeners.afterrender.fn = Ext.Function.createSequence(component.listeners.afterrender.fn, this.afterTopPanelItemAdded, this);
 		} else {
-			if (component.listeners) {
-				component.listeners = {}
+			if (!component.listeners) {
+				component.listeners = {};
 			}
-
 			component.listeners.afterrender = {
 				scope: this,
 				fn: this.afterTopPanelItemAdded
 			}
 		}
-
-		var indicator = Ext.getCmp(this.id + '-indicatorBar').add(component);
-		this.doLayout();
-
+		var indicatorBar = this.down('component[itemId=indicatorBar]');
+		var indicator = indicatorBar.add(component);
 		return indicator;
 	},
 
@@ -275,8 +272,15 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	 * @return {void}
 	 */
 	afterTopPanelItemAdded: function(component) {
-		var topPanelItems = Ext.getCmp(this.id + '-topPanelItems');
-		topPanelItems.setHeight(topPanelItems.getHeight() + component.getHeight() + 3);
+		var topPanel = this.down('component[itemId=topPanel]');
+		var indicatorBar = this.down('component[itemId=indicatorBar]');
+		var height = 0;
+		indicatorBar.items.each(function (item) {
+			height += item.getHeight() + 3;
+		});
+		indicatorBar.setHeight(height);
+		topPanelItems = this.down('component[itemId=topPanelItems]');
+		topPanelItems.setHeight(topPanel.getHeight() + indicatorBar.getHeight());
 		this.doLayout();
 	},
 
@@ -287,9 +291,9 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	 * @return {void}
 	 */
 	removeIndicator: function(component) {
-		var topPanelItems = Ext.getCmp(this.id + '-topPanelItems');
+		var topPanelItems = this.down('component[itemId=topPanelItems]');
 		topPanelItems.setHeight(topPanelItems.getHeight() - component.getHeight() - 3);
-		Ext.getCmp(this.id + '-indicatorBar').remove(component);
+		Ext.getCmp(this.getId() + '-indicatorBar').remove(component);
 		this.doLayout();
 	},
 
@@ -318,11 +322,11 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	 */
 	refreshTree: function() {
 		if (!isNaN(fsMod.recentIds['web']) && fsMod.recentIds['web'] !== '') {
-			this.select(fsMod.recentIds['web'], true);
+			this.select(fsMod.recentIds['web']);
 		}
 
 		TYPO3.Components.PageTree.DataProvider.getIndicators(function(response) {
-			var indicators = Ext.getCmp(this.id + '-indicatorBar-indicatorTitle');
+			var indicators = Ext.getCmp(this.getId() + '-indicatorBar-indicatorTitle');
 			if (indicators) {
 				this.removeIndicator(indicators);
 			}
@@ -333,7 +337,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 			}
 		}, this);
 
-		this.activeTree.refreshTree();
+		this.getTree().refreshTree();
 	},
 
 	/**
@@ -342,43 +346,44 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	 * @return {TYPO3.Components.PageTree.Tree}
 	 */
 	getTree: function() {
-		return this.activeTree;
+		return this.down('component[itemId=treeContainer]').getLayout().getActiveItem();
 	},
 
 	/**
-	 * Selects a node defined by the page id. If the second parameter is set, we
-	 * store the new location into the state hash.
+	 * Sets the current active tree
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @return {TYPO3.Components.PageTree.Tree}
+	 */
+	setTree: function(tree) {
+		var layout = this.down('component[itemId=treeContainer]').getLayout();
+		layout.setActiveItem(tree);
+		return layout.getActiveItem(tree);
+	},
+
+	/**
+	 * Selects a node defined by the page id.
 	 *
 	 * @param {int} pageId
-	 * @param {Boolean} saveState
 	 * @return {Boolean}
 	 */
-	select: function(pageId, saveState) {
-		if (saveState !== false) {
-			saveState = true;
-		}
-
+	select: function(pageId) {
 		var tree = this.getTree();
 		var succeeded = false;
 		var node = tree.getRootNode().findChild('realId', pageId, true);
 		if (node) {
 			succeeded = true;
 			tree.selectPath(node.getPath());
-			if (!!saveState && tree.stateHash) {
-				tree.stateHash.lastSelectedNode = node.id;
-			}
 		}
-
 		return succeeded;
 	},
 
 	/**
 	 * Returns the currently selected node
 	 *
-	 * @return {Ext.tree.TreeNode}
+	 * @return {Ext.data.NodeInterface}
 	 */
 	getSelected: function() {
-		var node = this.getTree().getSelectionModel().getSelectedNode();
+		var node = this.getTree().getSelectionModel().getLastSelected();
 		return node ? node : null;
 	}
 });
@@ -389,15 +394,12 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
  * @return {TYPO3.Components.PageTree.App}
  */
 TYPO3.ModuleMenu.App.registerNavigationComponent('typo3-pagetree', function() {
-	TYPO3.Backend.NavigationContainer.PageTree = new TYPO3.Components.PageTree.App();
+	TYPO3.Backend.NavigationContainer.PageTree = Ext.create('TYPO3.Components.PageTree.App');
 
 		// compatibility code
-    top.nav = TYPO3.Backend.NavigationContainer.PageTree;
-    top.nav_frame = TYPO3.Backend.NavigationContainer.PageTree;
-    top.content.nav_frame = TYPO3.Backend.NavigationContainer.PageTree;
+	top.nav = TYPO3.Backend.NavigationContainer.PageTree;
+	top.nav_frame = TYPO3.Backend.NavigationContainer.PageTree;
+	top.content.nav_frame = TYPO3.Backend.NavigationContainer.PageTree;
 
 	return TYPO3.Backend.NavigationContainer.PageTree;
 });
-
-// XTYPE Registration
-Ext.reg('TYPO3.Components.PageTree.App', TYPO3.Components.PageTree.App);

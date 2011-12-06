@@ -32,7 +32,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_tree_pagetree_extdirect_Tree extends t3lib_tree_ExtDirect_AbstractExtJsTree {
+class t3lib_tree_pagetree_extdirect_Tree extends t3lib_tree_ExtJs_AbstractStatefulExtJsTree {
 	/**
 	 * Data Provider
 	 *
@@ -180,7 +180,7 @@ class t3lib_tree_pagetree_extdirect_Tree extends t3lib_tree_ExtDirect_AbstractEx
 	/**
 	 * Returns the language labels, sprites and configuration options for the pagetree
 	 *
-	 * @return void
+	 * @return array
 	 */
 	public function loadResources() {
 		$file = 'LLL:EXT:lang/locallang_core.xml:';

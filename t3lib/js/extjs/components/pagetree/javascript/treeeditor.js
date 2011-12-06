@@ -23,8 +23,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-Ext.namespace('TYPO3.Components.PageTree');
-
 /**
  * @class TYPO3.Components.PageTree.TreeEditor
  *
@@ -32,30 +30,46 @@ Ext.namespace('TYPO3.Components.PageTree');
  * editable label.
  *
  * @namespace TYPO3.Components.PageTree
- * @extends Ext.tree.TreeEditor
+ * @extends Ext.ux.tree.TreeEditing
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
-TYPO3.Components.PageTree.TreeEditor = Ext.extend(Ext.tree.TreeEditor, {
-	/**
-	 * Don't send any save events if the value wasn't changed
-	 *
-	 * @type {Boolean}
-	 */
-	ignoreNoChange: false,
+Ext.define('TYPO3.Components.PageTree.TreeEditor', {
+	extend: 'Ext.grid.plugin.CellEditing',
+	alias: 'plugin.pagetreeeditor',
 
 	/**
-	 * Edit delay
-	 *
-	 * @type {int}
+	 * @override
+	 * @private Collects all information necessary for any subclasses to perform their editing functions.
+	 * @param record
+	 * @param columnHeader
+	 * @returns {Object} The editing context based upon the passed record and column
 	 */
-	editDelay: 250,
+	getEditingContext: function (record, columnHeader) {
+	 	var me = this,
+	 		grid = me.grid,
+	 		store = grid.store,
+	 		colIdx,
+	 		editor,
+	 		originalValue,
+	 		value;
 
-	/**
-	 * Indicates if an underlying shadow should be shown
-	 *
-	 * @type {Boolean}
-	 */
-	shadow: false,
+		if (Ext.isNumber(columnHeader)) {
+			colIdx = columnHeader;
+			columnHeader = grid.headerCt.getHeaderAtIndex(colIdx);
+		} else {
+			colIdx = columnHeader.getIndex();
+		}
+
+		return {
+			column: columnHeader,
+			colIdx: colIdx,
+			field: columnHeader.dataIndex,
+			grid: grid,
+			originalValue: record.getNodeData('editableText'),
+			record: record,
+			tree: grid
+		};
+	},
 
 	/**
 	 * Listeners
@@ -63,80 +77,66 @@ TYPO3.Components.PageTree.TreeEditor = Ext.extend(Ext.tree.TreeEditor, {
 	 * Handles the synchronization between the edited label and the shown label.
 	 */
 	listeners: {
-		beforecomplete: function(node) {
-			this.updatedValue = this.getValue();
-			if (this.updatedValue === '') {
-				this.cancelEdit();
-				return false;
-			}
-			this.setValue(this.editNode.attributes.prefix + Ext.util.Format.htmlEncode(this.updatedValue) + this.editNode.attributes.suffix);
-		},
-
-		complete: {
-			fn: function(node, newValue, oldValue) {
-				if (newValue === oldValue) {
-					this.fireEvent('canceledit', this);
+		beforeedit: {
+			fn: function (editEvent) {
+				var tree = editEvent.tree;
+					// Prevent editing the currently selected node
+					// Prevent editing if the node is not editable
+				if (editEvent.record == tree.currentSelectedNode || !editEvent.record.getNodeData('editable')) {
+					if (tree.currentSelectedNode) {
+						tree.getView().select(tree.currentSelectedNode);
+					}
 					return false;
 				}
-
-				this.editNode.getOwnerTree().commandProvider.saveTitle(node, this.updatedValue, oldValue, this);
+					// Inhibit clicks on the tree while editing
+				tree.inhibitClicks = 2;
 			}
 		},
-
-		startEdit: {
-			fn: function(element, value) {
-				this.field.selectText();
+		validateedit: {
+			fn: function (treeEditor, editEvent) {
+				var editorField = treeEditor.getEditor(editEvent.record, editEvent.column);
+				this.newValue = editorField.getValue();
+				if (this.newValue === '' || this.newValue === editEvent.originalValue) {
+					var tree = editEvent.tree;
+					if (tree.currentSelectedNode) {
+						tree.getView().select(tree.currentSelectedNode);
+					}
+					return false;
+				} else {
+					editorField.setValue(editEvent.record.getNodeData('prefix') + Ext.util.Format.htmlEncode(this.newValue) + editEvent.record.getNodeData('suffix'));
+				}
+				
 			}
 		},
-
-		canceledit: function() {
-			var tree = this.editNode.getOwnerTree();
-			if (tree.currentSelectedNode) {
-				tree.currentSelectedNode.select();
+		edit: {
+			fn: function (treeEditor, editEvent) {
+				var tree = editEvent.tree;
+				tree.commandProvider.saveTitle(editEvent.record, this.newValue, editEvent.originalValue, treeEditor, tree, editEvent.field);
 			}
 		}
 	},
+	cancelEdit: function () {
+		var tree = this.grid;
+		if (tree.currentSelectedNode) {
+			tree.getView().select(tree.currentSelectedNode);
+		}
+		this.callParent(arguments);
+	},
 
 	/**
-	 * Updates the edit node
+	 * Updates the text field
 	 *
-	 * @param {Ext.tree.TreeNode} node
+	 * @param {TYPO3.Components.PageTree.Model} node
 	 * @param {String} editableText
-	 * @param {String} updatedNode
+	 * @param {String} updatedText
+	 * @param {String} dataIndex
+	 * @param {TYPO3.Components.PageTree.Tree} tree
 	 * @return {void}
 	 */
-	updateNodeText: function(node, editableText, updatedNode) {
-		this.editNode.setText(this.editNode.attributes.prefix + updatedNode + this.editNode.attributes.suffix);
-		this.editNode.attributes.editableText = editableText;
-	},
-
-	/**
-	 * Overridden method to set another editable text than the node text attribute
-	 *
-	 * @param {Ext.tree.TreeNode} node
-	 * @return {Boolean}
-	 */
-	triggerEdit: function(node) {
-		this.completeEdit();
-		if (node.attributes.editable !== false) {
-			this.editNode = node;
-			if (this.tree.autoScroll) {
-				Ext.fly(node.ui.getEl()).scrollIntoView(this.tree.body);
-			}
-
-			var value = node.text || '';
-			if (!Ext.isGecko && Ext.isEmpty(node.text)) {
-				node.setText(' ');
-			}
-
-				// TYPO3 MODIFICATION to use another attribute
-			value = node.attributes.editableText;
-
-			this.autoEditTimer = this.startEdit.defer(this.editDelay, this, [node.ui.textNode, value]);
-			return false;
-		}
+	updateNodeText: function (record, editableText, updatedText, dataIndex, tree) {
+		record.set(dataIndex, record.getNodeData('prefix') + updatedText + record.getNodeData('suffix'));
+		record.setNodeData('editableText', editableText);
+		record.commit();
+		tree.getView().refresh(record.getId());
 	}
 });
-
-// XTYPE Registration
-Ext.reg('TYPO3.Components.PageTree.TreeEditor', TYPO3.Components.PageTree.TreeEditor);

@@ -39,6 +39,9 @@ class t3lib_tree_Tca_DataProviderFactory {
 	 *
 	 * @static
 	 * @param array $tcaConfiguration
+	 * @param string $table
+	 * @param string $field
+	 * @param mixed $currentValue
 	 * @return t3lib_tree_Tca_DatabaseTreeDataProvider
 	 * @throws InvalidArgumentException
 	 */

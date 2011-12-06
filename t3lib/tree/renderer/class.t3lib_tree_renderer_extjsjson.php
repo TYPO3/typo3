@@ -28,7 +28,7 @@
 
 
 /**
- * Renderer for unordered lists
+ * Renderer for json used in ExtJS
  *
  * @author Steffen Kamper <steffen@typo3.org>
  * @author Steffen Ritter <info@steffen-ritter.net>
@@ -46,12 +46,12 @@ class t3lib_tree_Renderer_ExtJsJson extends t3lib_tree_Renderer_Abstract {
 	/**
 	 * Renders a node recursive or just a single instance
 	 *
-	 * @param t3lib_tree_RepresentationNode $node
+	 * @param t3lib_tree_RenderableNode $node
 	 * @param bool $recursive
-	 * @return mixed
+	 * @return array
 	 */
-	public function renderNode(t3lib_tree_RepresentationNode $node, $recursive = TRUE) {
-		$nodeArray = $this->getNodeArray($node);
+	public function renderNode(t3lib_tree_RenderableNode $node, $recursive = TRUE) {
+		$nodeArray = $node->toArray(FALSE);
 
 		if ($recursive && $node->hasChildNodes()) {
 			$this->recursionLevel++;
@@ -64,26 +64,11 @@ class t3lib_tree_Renderer_ExtJsJson extends t3lib_tree_Renderer_Abstract {
 	}
 
 	/**
-	 *
-	 */
-	protected function getNodeArray(t3lib_tree_RepresentationNode $node) {
-		$nodeArray = array(
-			'iconCls' => $node->getIcon(),
-			'text' => $node->getLabel(),
-			'leaf' => !$node->hasChildNodes(),
-			'id' => $node->getId(),
-			'uid' => $node->getId()
-		);
-
-		return $nodeArray;
-	}
-
-	/**
 	 * Renders a node collection recursive or just a single instance
 	 *
-	 * @param t3lib_tree_NodeCollection $node
+	 * @param t3lib_tree_AbstractTree $tree
 	 * @param bool $recursive
-	 * @return mixed
+	 * @return string
 	 */
 	public function renderTree(t3lib_tree_AbstractTree $tree, $recursive = TRUE) {
 		$this->recursionLevel = 0;
@@ -95,11 +80,12 @@ class t3lib_tree_Renderer_ExtJsJson extends t3lib_tree_Renderer_Abstract {
 	/**
 	 * Renders an tree recursive or just a single instance
 	 *
-	 * @param t3lib_tree_AbstractTree $node
+	 * @param t3lib_tree_NodeCollection $collection
 	 * @param bool $recursive
-	 * @return mixed
+	 * @return array
 	 */
 	public function renderNodeCollection(t3lib_tree_NodeCollection $collection, $recursive = TRUE) {
+		$treeItems = array();
 		foreach ($collection as $node) {
 			$treeItems[] = $this->renderNode($node, $recursive);
 		}

@@ -33,27 +33,8 @@
  * @subpackage t3lib_tree
  */
 
-class t3lib_tree_Tca_DatabaseNode extends t3lib_tree_RepresentationNode {
+class t3lib_tree_Tca_DatabaseNode extends t3lib_tree_ExtJs_Node implements t3lib_tree_RecordBasedNode, t3lib_tree_ComparableNode {
 
-	/**
-	 * @var boolean
-	 */
-	protected $selectable;
-
-	/**
-	 * @var boolean
-	 */
-	protected $selected = FALSE;
-
-	/**
-	 * @var boolean
-	 */
-	protected $expanded = TRUE;
-
-	/**
-	 * @var boolean
-	 */
-	protected $hasChildren = FALSE;
 
 	/**
 	 * @var mixed
@@ -61,79 +42,60 @@ class t3lib_tree_Tca_DatabaseNode extends t3lib_tree_RepresentationNode {
 	private $sortValue;
 
 	/**
-	 * Sets the expand state
+	 * Returns the source field of the label
 	 *
-	 * @param  $expanded
+	 * @return string
+	 */
+	public function getTextSourceField() {
+		// TODO: Implement getTextSourceField() method.
+	}
+
+	/**
+	 * set the source field of the label
+	 *
+	 * @param string $field
 	 * @return void
 	 */
-	public function setExpanded($expanded) {
-		$this->expanded = $expanded;
+	public function setTextSourceField($field) {
+		// TODO: Implement setTextSourceField() method.
 	}
 
 	/**
-	 * Gets the expand state
+	 * Sets the database record array
 	 *
-	 * @return bool
-	 */
-	public function getExpanded() {
-		return $this->expanded;
-	}
-
-	/**
-	 * Sets the selectable property
-	 *
-	 * @param  $selectable
+	 * @param array $record
 	 * @return void
 	 */
-	public function setSelectable($selectable) {
-		$this->selectable = $selectable;
+	public function setRecord($record) {
+		// TODO: Implement setRecord() method.
 	}
 
 	/**
-	 * Gets the selectable property
+	 * Returns the database record array
 	 *
-	 * @return bool
+	 * @return array
 	 */
-	public function getSelectable() {
-		return $this->selectable;
+	public function getRecord() {
+		// TODO: Implement getRecord() method.
 	}
 
 	/**
-	 * Sets the select state
+	 * Returns the table of the record data
 	 *
-	 * @param  $selected
+	 * @return string
+	 */
+	public function getSourceTable() {
+		// TODO: Implement getSourceTable() method.
+	}
+
+	/**
+	 * sets the Table of record source data
+	 *
+	 * @param string $table
 	 * @return void
 	 */
-	public function setSelected($selected) {
-		$this->selected = $selected;
-	}
-
-	/**
-	 * Gets the select state
-	 *
-	 * @return bool
-	 */
-	public function getSelected() {
-		return $this->selected;
-	}
-
-	/**
-	 * Gets the hasChildren property
-	 *
-	 * @return bool
-	 */
-	public function hasChildren() {
-		return $this->hasChildren;
-	}
-
-	/**
-	 * Sets the hasChildren property
-	 *
-	 * @param  $value
-	 * @return void
-	 */
-	public function setHasChildren($value) {
-		$this->hasChildren = (boolean) $value;
+	public function setSourceTable($table) {
+		// TODO: Implement setSourceTable() method.
 	}
 
 	/**

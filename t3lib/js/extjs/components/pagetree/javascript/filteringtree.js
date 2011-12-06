@@ -23,8 +23,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-Ext.namespace('TYPO3.Components.PageTree');
-
 /**
  * @class TYPO3.Components.PageTree.FilteringTree
  *
@@ -34,7 +32,9 @@ Ext.namespace('TYPO3.Components.PageTree');
  * @extends TYPO3.Components.PageTree.Tree
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
-TYPO3.Components.PageTree.FilteringTree = Ext.extend(TYPO3.Components.PageTree.Tree, {
+Ext.define('TYPO3.Components.PageTree.FilteringTree', {
+	extend: 'TYPO3.Components.PageTree.Tree',
+
 	/**
 	 * Search word
 	 *
@@ -47,29 +47,45 @@ TYPO3.Components.PageTree.FilteringTree = Ext.extend(TYPO3.Components.PageTree.T
 	 *
 	 * @return {void}
 	 */
-	addTreeLoader: function() {
-		this.loader = new Ext.tree.TreeLoader({
-			directFn: this.treeDataProvider.getFilteredTree,
-			paramOrder: 'nodeId,attributes,searchWord',
-			nodeParameter: 'nodeId',
-			baseAttrs: {
-				uiProvider: this.uiProvider
-			},
-
-			listeners: {
-				beforeload: function(treeLoader, node) {
-					if (!node.ownerTree.searchWord || node.ownerTree.searchWord === '') {
-						return false;
+	addStore: function (store) {
+		this.store = Ext.data.StoreManager.lookup(this.getId() + 'FilteredPageTreeStore');
+		if (!this.store) {
+			this.store = Ext.create('Ext.data.TreeStore', {
+				clearOnLoad: false,
+				listeners: {
+					beforeload: {
+						fn: function (store, operation) {
+							if (!this.searchWord || this.searchWord === '') {
+								return false;
+							}
+							if (operation.node) {
+								var node = operation.node;
+								node.removeAll();
+								node.commit();
+								operation.params = {
+									nodeId: node.getNodeData('id'),
+									nodeData: node.get('nodeData'),
+									searchWord: this.searchWord
+									
+								};
+							}
+						},
+						scope: this
 					}
-
-					treeLoader.baseParams.nodeId = node.id;
-					treeLoader.baseParams.searchWord = node.ownerTree.searchWord;
-					treeLoader.baseParams.attributes = node.attributes.nodeData;
-				}
-			}
-		});
+				},
+				model: 'TYPO3.Components.PageTree.Model',
+				nodeParam: 'nodeId',
+				proxy: {
+					type: 'direct',
+					paramOrder: ['nodeId', 'nodeData', 'searchWord'],
+					directFn: this.treeDataProvider.getFilteredTree,
+					reader: {
+					    type: 'json'
+					}
+				},
+				root: this.rootNodeConfig,
+				storeId: this.getId() + 'FilteredPageTreeStore'
+			});
+		}
 	}
 });
-
-// XTYPE Registration
-Ext.reg('TYPO3.Components.PageTree.FilteringTree', TYPO3.Components.PageTree.FilteringTree);

@@ -44,9 +44,14 @@ abstract class t3lib_tree_Tca_AbstractTcaTreeDataProvider extends t3lib_tree_Abs
 	protected $levelMaximum = 2;
 
 	/**
-	 * @var t3lib_tree_AbstractNode
+	 * @var t3lib_tree_Node
 	 */
 	protected $treeData = NULL;
+
+	/**
+	 * @var string
+	 */
+	protected $treeId;
 
 	/**
 	 * @var string
@@ -136,7 +141,7 @@ abstract class t3lib_tree_Tca_AbstractTcaTreeDataProvider extends t3lib_tree_Abs
 	/**
 	 * Gets the expanded state of a given node
 	 *
-	 * @param t3lib_tree_AbstractNode $node
+	 * @param t3lib_tree_Node $node
 	 * @return bool
 	 */
 	protected function isExpanded(t3lib_tree_Node $node) {
