@@ -38,7 +38,7 @@ TYPO3.ContextHelp = function() {
 	 * Cache for CSH
 	 * @type {Ext.util.MixedCollection}
 	 */
-	var cshHelp = new Ext.util.MixedCollection(true),
+	var cshHelp = Ext.create('Ext.util.MixedCollection', true),
 	tip;
 
 	/**
@@ -53,7 +53,7 @@ TYPO3.ContextHelp = function() {
 		var table = link.getAttribute('data-table');
 		var field = link.getAttribute('data-field');
 		var key = table + '.' + field;
-		var response = cshHelp.key(key);
+		var response = cshHelp.getByKey(key);
 		tip.target = tip.triggerElement;
 		if (response) {
 			updateTip(response);
@@ -97,14 +97,14 @@ TYPO3.ContextHelp = function() {
 	 * @param {Object} response
 	 */
 	function updateTip(response) {
-		tip.body.dom.innerHTML = response.description;
+		tip.getComponent('description').update(response.description);
 		tip.cshLink = response.id;
 		tip.moreInfo = response.moreInfo;
 		if (tip.moreInfo) {
-			tip.addClass('tipIsLinked');
+			tip.addCls('tipIsLinked');
 		}
 		tip.setTitle(response.title);
-		tip.doAutoWidth();
+		tip.doLayout();
 	}
 
 
@@ -113,11 +113,12 @@ TYPO3.ContextHelp = function() {
 		 * Constructor
 		 */
 		init: function() {
-			tip = new Ext.ToolTip({
-				title: 'CSH', // needs a title for init because of the markup
-				html: '',
+			tip = Ext.create('Ext.tip.ToolTip', {
 					// The tooltip will appear above the label, if viewport allows
 				anchor: 'bottom',
+					// When anchor position is 'top' or 'bottom', the anchor is pushed slightly to the left in order to align with the help icon, if any
+				anchorOffset: -10,
+				layout: 'anchor',
 				minWidth: 160,
 				maxWidth: 240,
 				target: Ext.getBody(),
@@ -131,6 +132,15 @@ TYPO3.ContextHelp = function() {
 				hideDelay: 300, // hide after 0.3 seconds
 				closable: true,
 				isMouseOver: false,
+				items: [
+					{
+						xtype: 'component',
+						itemId: 'description',
+						autoEl: {
+							tag: 'span'
+						}
+					}
+				],
 				listeners: {
 					beforeshow: showToolTipHelp,
 					render: function(tip) {
@@ -149,7 +159,7 @@ TYPO3.ContextHelp = function() {
 								}
 							}
 						});
-						tip.el.on({
+						tip.getEl().on({
 							'mouseover': {
 								fn: function() {
 									if (tip.moreInfo) {
@@ -161,7 +171,7 @@ TYPO3.ContextHelp = function() {
 								fn: function() {
 									if (tip.moreInfo) {
 										tip.isMouseOver = false;
-										tip.hide.defer(tip.hideDelay, tip, []);
+										Ext.Function.defer(tip.hide, tip.hideDelay, tip, []);
 									}
 								}
 							}
@@ -169,7 +179,7 @@ TYPO3.ContextHelp = function() {
 					},
 					hide: function(tip) {
 						tip.setTitle('');
-						tip.body.dom.innerHTML = '';
+						tip.getComponent('description').update('');
 					},
 					beforehide: function(tip) {
 						return !tip.isMouseOver;
@@ -194,22 +204,15 @@ TYPO3.ContextHelp = function() {
 			/**
 			 * Adds a sequence to Ext.TooltTip::showAt so as to increase vertical offset when anchor position is 'botton'
 			 * This positions the tip box closer to the target element when the anchor is on the bottom side of the box
-			 * When anchor position is 'top' or 'bottom', the anchor is pushed slightly to the left in order to align with the help icon, if any
 			 *
 			 */
-			Ext.ToolTip.prototype.showAt = Ext.ToolTip.prototype.showAt.createSequence(
+			Ext.tip.ToolTip.prototype.showAt = Ext.Function.createSequence(
+				Ext.tip.ToolTip.prototype.showAt,
 				function() {
-					var ap = this.getAnchorPosition().charAt(0);
 					if (this.anchorToTarget && !this.trackMouse) {
-						switch (ap) {
-							case 'b':
-								var xy = this.getPosition();
-								this.setPagePosition(xy[0]-10, xy[1]+5);
-								break;
-							case 't':
-								var xy = this.getPosition();
-								this.setPagePosition(xy[0]-10, xy[1]);
-								break;
+						if (this.getAnchorPosition().charAt(0) == 'b') {
+							var xy = this.getPosition();
+							this.setPagePosition(xy[0], xy[1]+5);
 						}
 					}
 				}

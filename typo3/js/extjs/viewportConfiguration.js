@@ -23,14 +23,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-Ext.ns('TYPO3');
-
 /**
  * The backend viewport configuration
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
+Ext.ns('TYPO3.Viewport');
 TYPO3.Viewport.configuration = {
 	layout: 'border',
 	id: 'typo3-viewport',
@@ -41,7 +39,7 @@ TYPO3.Viewport.configuration = {
 			layout: 'absolute',
 			region: 'north',
 			id: 'typo3-topbar',
-			height: 42,
+			height: TYPO3.configuration.topBarHeight,
 			contentEl: 'typo3-top-container',
 			border: false
 		},
@@ -49,16 +47,18 @@ TYPO3.Viewport.configuration = {
 			layout: 'fit',
 			region: 'west',
 			id: 'typo3-module-menu',
-			collapsible: false,
-			collapseMode: null,
+			animCollapse: false,
+			autoScroll: true,
+			border: false,
+			collapsible: true,
 			floatable: true,
 			hideCollapseTool: true,
+			name: 'modulePanel',
 			split: true,
 			useSplitTips: true,
 			splitTip: top.TYPO3.LLL.viewPort.tooltipModuleMenuSplit,
 			enableChildSplit: true,
-			border: false,
-			autoScroll: true
+			width: TYPO3.configuration.moduleMenuWidth
 		},
 		{
 			region: 'center',
@@ -69,6 +69,7 @@ TYPO3.Viewport.configuration = {
 					region: 'west',
 					layout: 'fit',
 					id: 'typo3-navigationContainer',
+					autoScroll: true,
 					width: 300,
 					minWidth: 20,
 					floatable: true,
@@ -83,12 +84,15 @@ TYPO3.Viewport.configuration = {
 					hidden: true,
 					border: false,
 					name: 'navigation',
-					autoScroll: true,
 					items: [
 						{
 							id: 'typo3-navigationIframe',
 							border: false,
 							hidden: true,
+							layout: {
+								type: 'vbox',
+								align: 'stretch'
+							},
 							xtype: 'iframePanel',
 							name: 'navigation'
 						}
@@ -105,16 +109,16 @@ TYPO3.Viewport.configuration = {
 							border: false,
 							hidden: true,
 							floatable: true,
-							xtime: 'iframePanel',
-							width: 5
+							xtype: 'iframePanel',
+							width: 0
 						},
 						{
 							id: 'typo3-contentContainer',
-							region: 'center',
-							anchor: '100% 100%',
 							border: false,
-							xtype: 'iframePanel',
-							name: 'content'
+							layout: 'fit',
+							name: 'content',
+							region: 'center',
+							xtype: 'iframePanel'
 						}
 					]
 				},
