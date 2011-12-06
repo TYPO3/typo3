@@ -112,6 +112,7 @@ $t3libClasses = array(
 	't3lib_frontendedit' => PATH_t3lib . 'class.t3lib_frontendedit.php',
 	't3lib_fullsearch' => PATH_t3lib . 'class.t3lib_fullsearch.php',
 	't3lib_http_request' => PATH_t3lib . 'http/class.t3lib_http_request.php',
+	't3lib_http_observer_download' => PATH_t3lib . 'http/observer/class.t3lib_http_observer_download.php',
 	't3lib_iconworks' => PATH_t3lib . 'class.t3lib_iconworks.php',
 	't3lib_install' => PATH_t3lib . 'class.t3lib_install.php',
 	't3lib_install_sql' => PATH_t3lib . 'class.t3lib_install_sql.php',
