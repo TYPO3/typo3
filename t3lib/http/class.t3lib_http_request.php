@@ -100,5 +100,38 @@ class t3lib_http_Request extends HTTP_Request2 {
 
 	}
 
+	/**
+	 * Downloads chunk by chunk to file instead of saving the whole response into memory.
+	 * $response->getBody() will be empty.
+	 * An existing file will be overridden.
+	 *
+	 * @param string $directory The absolute path to the directory in which the file is saved.
+	 * @param string $filename The filename - if not set, it is determined automatically.
+	 * @return HTTP_Request2_Response The response with empty body.
+	 */
+	public function download($directory, $filename = '') {
+		$isAttached = FALSE;
+
+			// Do not store the body in memory
+		$this->setConfig('store_body', FALSE);
+
+			// Check if we already attached an instance of download. If so, just reuse it.
+		foreach ($this->observers as $observer) {
+			if ($observer instanceof t3lib_http_observer_Download) {
+				/** @var t3lib_http_observer_Download $attached */
+				$observer->setDirectory($directory);
+				$observer->setFilename($filename);
+				$isAttached = TRUE;
+			}
+		}
+
+		if (!$isAttached) {
+			/** @var t3lib_http_observer_Download $observer */
+			$observer = t3lib_div::makeInstance('t3lib_http_observer_Download', $directory, $filename);
+			$this->attach($observer);
+		}
+
+		return $this->send();
+	}
 }
 ?>
