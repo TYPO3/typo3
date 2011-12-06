@@ -1,3 +1,4 @@
+
 2011-11-29  d14659d                  [RELEASE] Release of TYPO3 4.7.0alpha1 (TYPO3 v4 Release Team)
 2011-11-29  dff653b  #31560          [BUGFIX] Form: Confirmation value relies on label value (Oliver Hader)
 2011-11-29  82603bb  #31561          [BUGFIX] Form: Add more more semantic classes for elements (Oliver Hader)
