@@ -26,72 +26,23 @@
  ***************************************************************/
 
 /**
- * Abstract Tree
+ * Abstract ExtJS tree based on ExtDirect
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  * @package TYPO3
  * @subpackage t3lib
  */
-abstract class t3lib_tree_AbstractTree {
+abstract class t3lib_tree_ExtJs_AbstractExtJsTree extends t3lib_tree_AbstractTree {
+
 	/**
-	 * Data Provider
+	 * Fetches the next tree level
 	 *
-	 * @var t3lib_tree_AbstractDataProvider
+	 * @abstract
+	 * @param int $nodeId
+	 * @param stdClass $nodeData
+	 * @return array
 	 */
-	protected $dataProvider = NULL;
-
-	/**
-	 * Tree Node Decorator
-	 *
-	 * @var t3lib_tree_renderer_Abstract
-	 */
-	protected $nodeRenderer = NULL;
-
-	/**
-	 * @param t3lib_tree_AbstractDataProvider $dataProvider
-	 * @return void
-	 */
-	public function setDataProvider(t3lib_tree_AbstractDataProvider $dataProvider) {
-		$this->dataProvider = $dataProvider;
-	}
-
-	/**
-	 * @return t3lib_tree_AbstractDataProvider
-	 */
-	public function getDataProvider() {
-		return $this->dataProvider;
-	}
-
-	/**
-	 * @param t3lib_tree_renderer_Abstract $nodeRenderer
-	 * @return void
-	 */
-	public function setNodeRenderer(t3lib_tree_renderer_Abstract $nodeRenderer) {
-		$this->nodeRenderer = $nodeRenderer;
-	}
-
-	/**
-	 * @return t3lib_tree_renderer_Abstract
-	 */
-	public function getNodeRenderer() {
-		return $this->nodeRenderer;
-	}
-
-	/**
-	 * Returns the root node
-	 *
-	 * @return t3lib_tree_Node
-	 */
-	abstract public function getRoot();
-
-	/**
-	 * @param mixed $search
-	 * @return t3lib_tree_Node
-	 */
-	public function find($search) {
-		return $this->getRoot()->find($search);
-	}
-
+	abstract public function getNextTreeLevel($nodeId, $nodeData);
 }
 
 ?>

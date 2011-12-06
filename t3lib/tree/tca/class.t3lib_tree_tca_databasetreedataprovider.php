@@ -75,6 +75,16 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	protected $rootUid = 0;
 
 	/**
+	 * @var t3lib_tree_Node
+	 */
+	protected $rootNode;
+
+	/**
+	 * @var int $rootLevel
+	 */
+	protected $rootLevel = 0;
+	
+	/**
 	 * @var array
 	 */
 	protected $idCache = array();
@@ -183,16 +193,39 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	 * @return t3lib_tree_NodeCollection
 	 */
 	public function getNodes(t3lib_tree_Node $node) {
+	}
 
+	/**
+	 *
+	 * @return t3lib_tree_Node
+	 */
+	public function getRoot() {
+		if ($this->rootNode == null) {
+			$this->rootNode = $this->treeData->find($this->getRootUid());
+			$this->rootLevel = $this->rootNode->getLevel();
+		}
+		return $this->rootNode;
 	}
 
 	/**
 	 * Gets the root node
 	 *
+	 * @param int $levelMaximum
 	 * @return t3lib_tree_tca_DatabaseNode
 	 */
-	public function getRoot() {
-		return $this->buildRepresentationForNode($this->treeData);
+	public function renderComplete($levelMaximum = 999) {
+		return $this->buildRepresentationForNode($this->getRoot(), $levelMaximum, NULL, $this->getRoot()->getLevel());
+	}
+
+
+	/**
+	 * @param $nodeId
+	 * @param int $levelMaximum
+	 * @return t3lib_tree_tca_DatabaseNode
+	 */
+	public function renderNode($nodeId, $levelMaximum = 999) {
+		$startingPoint = $this->getRoot()->find($nodeId);
+		return $this->buildRepresentationForNode($startingPoint, $levelMaximum, NULL, $startingPoint->getLevel());
 	}
 
 	/**
@@ -203,6 +236,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	 */
 	public function setRootUid($rootUid) {
 		$this->rootUid = $rootUid;
+		$this->rootNode = null;
 	}
 
 	/**
@@ -237,45 +271,68 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	 * Builds a complete node including childs
 	 *
 	 * @param t3lib_tree_Node $basicNode
-	 * @param NULL|t3lib_tree_tca_DatabaseNode $parent
+	 * @param int $levelMaximum
+	 * @param t3lib_tree_tca_DatabaseNode $parent (optional)
 	 * @param int $level
-	 * @return A|object
+	 * @return t3lib_tree_tca_DatabaseNode
 	 */
-	protected function buildRepresentationForNode(t3lib_tree_Node $basicNode, t3lib_tree_tca_DatabaseNode $parent = NULL, $level = 0) {
+	protected function buildRepresentationForNode(t3lib_tree_Node $basicNode, $levelMaximum = 999, t3lib_tree_tca_DatabaseNode $parent = NULL, $level = 0) {
+		/** @var $node t3lib_tree_tca_DatabaseNode */
 		$node = t3lib_div::makeInstance('t3lib_tree_tca_DatabaseNode');
+		$node->setExpandable($basicNode->hasChildNodes());
+
 		$row = array();
 		if ($basicNode->getId() == 0) {
-			$node->setSelected(FALSE);
+			$node->setChecked(NULL);
 			$node->setExpanded(TRUE);
-			$node->setLabel($GLOBALS['LANG']->sL($GLOBALS['TCA'][$this->tableName]['ctrl']['title']));
+			$node->setText($GLOBALS['LANG']->sL($GLOBALS['TCA'][$this->tableName]['ctrl']['title']));
+			$node->setLeaf(FALSE);
 		} else {
 			$row = t3lib_BEfunc::getRecordWSOL($this->tableName, $basicNode->getId(), '*', '', FALSE);
+			$node->setRecord($row);
+			$node->setSourceTable($this->tableName);
 			if ($this->getLabelField() !== '') {
-				$node->setLabel($row[$this->getLabelField()]);
+				$node->setText($row[$this->getLabelField()]);
+				$node->setTextSourceField($this->getLabelField());
 			} else {
-				$node->setLabel($basicNode->getId());
+				$node->setText($basicNode->getId());
 			}
-			$node->setSelected(t3lib_div::inList($this->getSelectedList(), $basicNode->getId()));
-			$node->setExpanded($this->isExpanded($basicNode));
+
+			$node->setChecked(t3lib_div::inList($this->getSelectedList(), $basicNode->getId()));
+			$node->setExpanded($this->isExpanded($basicNode) && $basicNode->hasChildNodes());
 		}
+
+		$node->setDepth($basicNode->getLevel() - $this->rootLevel);
 		$node->setId($basicNode->getId());
 
-		$node->setSelectable(
-			!t3lib_div::inList($this->getNonSelectableLevelList(), $level)
-			&& !in_array($basicNode->getId(), $this->getItemUnselectableList())
-		);
-		$node->setSortValue($this->nodeSortValues[$basicNode->getId()]);
+		if (t3lib_div::inList($this->getNonSelectableLevelList(), $level) || t3lib_div::inList($this->getNonSelectableLevelList(), '*') || in_array($basicNode->getId(), $this->getItemUnselectableList())) {
+			$node->setChecked(null);
+		}
 
-		$node->setIcon(t3lib_iconWorks::mapRecordTypeToSpriteIconClass($this->tableName, $row));
+		if (count($this->nodeSortValues)) {
+			$node->setSortValue($this->nodeSortValues[$basicNode->getId()]);
+		} elseif (isset($GLOBALS['TCA'][$this->getTableName()]['ctrl']['sortby'])) {
+			$node->setSortValue($row[$GLOBALS['TCA'][$this->getTableName()]['ctrl']['sortby']]);
+		}
+
+		$node->setIconCls(t3lib_iconWorks::mapRecordTypeToSpriteIconClass($this->tableName, $row));
 		$node->setParentNode($parent);
 		if ($basicNode->hasChildNodes()) {
-			$node->setHasChildren(TRUE);
+			$node->setLeaf(FALSE);
 
+			/**
+			 * @var t3lib_tree_SortedNodeCollection $childNodes
+			 */
 			$childNodes = t3lib_div::makeInstance('t3lib_tree_SortedNodeCollection');
-			foreach ($basicNode->getChildNodes() as $child) {
-				$childNodes->append($this->buildRepresentationForNode($child, $node, $level + 1));
+			if ($level - 1 - $this->rootLevel < $levelMaximum) {
+				foreach ($basicNode->getChildNodes() as $child) {
+					$childNodes->append($this->buildRepresentationForNode($child, $levelMaximum, $node, $level + 1));
+				}
+				$node->setChildNodes($childNodes);
 			}
-			$node->setChildNodes($childNodes);
+
+		} else {
+			$node->setLeaf(TRUE);
 		}
 
 		return $node;
@@ -298,8 +355,9 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 			);
 		}
 
+		/** @var $treeData t3lib_tree_Node */
 		$this->treeData = t3lib_div::makeInstance('t3lib_tree_Node');
-		$this->treeData->setId($this->getRootUid());
+		$this->treeData->setId(0);
 		$this->treeData->setParentNode(NULL);
 		$childNodes = $this->getChildrenOf($this->treeData, 0);
 		if ($childNodes !== NULL) {
@@ -310,17 +368,17 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	/**
 	 * Gets node children
 	 *
-	 * @param t3lib_tree_Node $node
+	 * @param t3lib_tree_Node $parentNode
 	 * @param  $level
-	 * @return A|NULL|object
+	 * @return t3lib_tree_NodeCollection
 	 */
-	protected function getChildrenOf(t3lib_tree_Node $node, $level) {
+	protected function getChildrenOf(t3lib_tree_Node $parentNode, $level) {
 		$nodeData = NULL;
-		if ($node->getId() !== 0) {
+		if ($parentNode->getId() !== 0) {
 			$nodeData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 				'*',
 				$this->tableName,
-				'uid=' . $node->getId()
+				'uid=' . $parentNode->getId()
 			);
 		}
 		if ($nodeData == NULL) {
@@ -329,13 +387,17 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 				$this->getLookupField() => '',
 			);
 		}
-		$storage = NULL;
+
+		/** @var $storage t3lib_tree_NodeCollection */
+		$storage = t3lib_div::makeInstance('t3lib_tree_NodeCollection');
+
 		$children = $this->getRelatedRecords($nodeData);
 		if (count($children)) {
-			$storage = t3lib_div::makeInstance('t3lib_tree_NodeCollection');
 			foreach ($children as $child) {
+				/** @var $node t3lib_tree_Node */
 				$node = t3lib_div::makeInstance('t3lib_tree_Node');
-				;
+				$node->setParentNode($parentNode);
+
 				$node->setId($child);
 				if ($level <= $this->levelMaximum) {
 					$children = $this->getChildrenOf($node, $level + 1);
@@ -353,19 +415,21 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	/**
 	 * Gets related records depending on TCA configuration
 	 *
-	 * @param  $row
+	 * @param array $row
 	 * @return array
 	 */
 	protected function getRelatedRecords(array $row) {
+		/** @var t3lib_TcaRelationService $relationService */
+		$relationService = t3lib_div::makeInstance('t3lib_TcaRelationService', $this->tableName, null, $this->tableName, $this->lookupField);
 		if ($this->getLookupMode() == t3lib_tree_tca_DatabaseTreeDataProvider::MODE_PARENT) {
-			$children = $this->getChildrenUidsFromParentRelation($row);
+			$children = $relationService->getRecordUidsWithRelationToCurrentRecord($row);
 		} else {
-			$children = $this->getChildrenUidsFromChildrenRelation($row);
+			$children = $relationService->getRecordUidsWithRelationFromCurrentRecord($row);
 		}
-
+		
 		$allowedArray = array();
 		foreach ($children as $child) {
-			if (!in_array($child, $this->idCache) && in_array($child, $this->itemWhiteList)) {
+			if (!in_array($child, $this->idCache) && (count($this->itemWhiteList) == 0 || in_array($child, $this->itemWhiteList))) {
 				$allowedArray[] = $child;
 			}
 		}
@@ -378,87 +442,29 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	/**
 	 * Gets related records depending on TCA configuration
 	 *
-	 * @param  $row
+	 * @param array $row
+	 * @deprecated since 4.7, will be removed as of 4.9
 	 * @return array
 	 */
 	protected function getChildrenUidsFromParentRelation(array $row) {
-		$uid = $row['uid'];
-
-		switch ((string) $this->columnConfiguration['type']) {
-			case 'inline':
-			case 'select':
-				if ($this->columnConfiguration['MM']) {
-					$dbGroup = t3lib_div::makeInstance('t3lib_loadDBGroup');
-						// dummy field for setting "look from other site"
-					$this->columnConfiguration['MM_oppositeField'] = 'children';
-
-					$dbGroup->start(
-						$row[$this->getLookupField()],
-						$this->getTableName(),
-						$this->columnConfiguration['MM'],
-						$uid,
-						$this->getTableName(),
-						$this->columnConfiguration
-					);
-
-					$relatedUids = $dbGroup->tableArray[$this->getTableName()];
-				} elseif ($this->columnConfiguration['foreign_field']) {
-					$relatedUids = $this->listFieldQuery($this->columnConfiguration['foreign_field'], $uid);
-				} else {
-					$relatedUids = $this->listFieldQuery($this->getLookupField(), $uid);
-				}
-			break;
-			default:
-				$relatedUids = $this->listFieldQuery($this->getLookupField(), $uid);
-		}
-
-		return $relatedUids;
+		t3lib_div::logDeprecatedFunction();
+		/** @var t3lib_TcaRelationService $relationService */
+		$relationService = t3lib_div::makeInstance('t3lib_TcaRelationService', $this->tableName, $this->lookupField, $this->tableName);
+		return $relationService->getRecordUidsWithRelationToCurrentRecord($row);
 	}
 
 	/**
 	 * Gets related children records depending on TCA configuration
 	 *
-	 * @param  $row
+	 * @param array $row
+	 * @deprecated
 	 * @return array
 	 */
 	protected function getChildrenUidsFromChildrenRelation(array $row) {
-		$relatedUids = array();
-		$uid = $row['uid'];
-		$value = $row[$this->getLookupField()];
-
-		switch ((string) $this->columnConfiguration['type']) {
-			case 'inline':
-			case 'select':
-				if ($this->columnConfiguration['MM']) {
-					$dbGroup = t3lib_div::makeInstance('t3lib_loadDBGroup');
-					$dbGroup->start(
-						$value,
-						$this->getTableName(),
-						$this->columnConfiguration['MM'],
-						$uid,
-						$this->getTableName(),
-						$this->columnConfiguration
-					);
-
-					$relatedUids = $dbGroup->tableArray[$this->getTableName()];
-				} elseif ($this->columnConfiguration['foreign_field']) {
-					$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-						'uid',
-						$this->getTableName(),
-						$this->columnConfiguration['foreign_field'] . '=' . intval($uid)
-					);
-					foreach ($records as $record) {
-						$relatedUids[] = $record['uid'];
-					}
-				} else {
-					$relatedUids = t3lib_div::intExplode(',', $value, TRUE);
-				}
-			break;
-			default:
-				$relatedUids = t3lib_div::intExplode(',', $value, TRUE);
-		}
-
-		return $relatedUids;
+		t3lib_div::logDeprecatedFunction();
+		/** @var t3lib_TcaRelationService $relationService */
+		$relationService = t3lib_div::makeInstance('t3lib_TcaRelationService', $this->tableName, $this->lookupField, $this->tableName);
+		return $relationService->getRecordUidsWithRelationFromCurrentRecord($row);
 	}
 
 	/**
@@ -468,8 +474,10 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	 * @param int $queryId the uid to search for
 	 *
 	 * @return int[] all uids found
+	 * @deprecated Deprecated as of TYPO3 4.7, will be removed with v. 4.9
 	 */
 	protected function listFieldQuery($fieldName, $queryId) {
+		t3lib_div::logDeprecatedFunction();
 		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'uid',
 			$this->getTableName(),

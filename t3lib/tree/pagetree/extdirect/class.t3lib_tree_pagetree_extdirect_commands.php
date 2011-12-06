@@ -225,7 +225,7 @@ class t3lib_tree_pagetree_extdirect_Commands {
 	 *
 	 * @param stdClass $nodeData
 	 * @param int $destination
-	 * @return void
+	 * @return array
 	 */
 	public function moveNodeAfterDestination($nodeData, $destination) {
 		/** @var $node t3lib_tree_pagetree_Node */

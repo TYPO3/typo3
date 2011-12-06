@@ -6,48 +6,30 @@ Pagetree
 #typo3-pagetree,
 #typo3-pagetree .x-panel-bwrap,
 #typo3-pagetree .x-panel-body {
+	border: none;
 	height: 100%;
 }
 
-#typo3-pagetree .x-panel-tbar {
-	padding: 0;
-	margin: 0;
-}
-
-.x-tree-node .x-tree-node-el {
-	margin-right: 0;
+.typo3-pagetree .x-grid-table {
+	padding-left: 5px;
 }
 
 .x-tree-node-readableRootline {
 	padding: 10px 0 3px 10px;
 }
 
-.x-tree-lines .typo3-pagetree-node-notExpandable .x-tree-ec-icon {
-	visibility: hidden;
-}
-
-.x-tree-lines .typo3-pagetree-node-notExpandable ul .x-tree-ec-icon {
-	visibility: visible;
-}
-
-#typo3-pagetree span.t3-icon {
+.typo3-pagetree span.t3-icon {
 	margin-bottom: 2px;
 }
 
-#typo3-pagetree .x-toolbar,
-.typo3-pagetree-topPanel-item .x-toolbar {
-	padding-bottom: 0;
-}
-
-#typo3-pagetree ul.x-tree-root-ct {
-	padding-left: 5px;
-	padding-top: 15px;
-}
-
-.x-tree-node a .typo3-pagetree-status,
+.typo3-pagetree .x-grid-row .x-grid-cell a .typo3-pagetree-status,
 .x-dd-drag-ghost a .typo3-pagetree-status {
 	padding: 0;
 	margin: 0 3px 0 0;
+}
+
+.typo3-pagetree .x-form-field {
+	height: 19px;
 }
 
 /**
@@ -86,62 +68,62 @@ Pagetree
  * @section Top Panel
  *
  */
-#typo3-pagetree-topPanel .x-toolbar-left {
-	height: 20px;
+#typo3-pagetree .x-docked-top {
+	padding: 0;
 }
 
-.typo3-pagetree-topPanel-button {
-	margin: 0 5px 0 0;
-	padding: 1px 2px;
-	height: 18px;
+.typo3-pagetree-topPanel {
+	height: 49px;
 }
 
-.typo3-pagetree-topPanel-button button {
-	height: 16px;
-	width: 16px;
-}
-
-.typo3-pagetree-topPanel-item {
-	padding: 5px 3px 0 3px;
+#typo3-pagetree-topPanel .x-docked-top .x-box-inner {
 	height: 22px;
-}
-
-#typo3-pagetree-topPanel-filterWrap {
-	padding-top: 3px;
-	height: 24px;
-}
-
-#typo3-pagetree-topPanel-filter {
-	height: 16px;
-	width: 98% !important;
-	padding: 1px 0 1px 2px;
-}
-
-#typo3-pagetree-topPanel-filterWrap .t3-icon-input-clear {
-	right: 2%;
+	margin: 0;
 }
 
 #typo3-pagetree .typo3-pagetree-topPanel-button {
+	height: 21px;
 	margin-right: 1px;
-	margin-top: -2px;
-	padding: 2px 3px;
+	margin-top: 0px !important;
+	padding: 1px 3px 0 3px;
 }
 
-#typo3-pagetree-topPanel-defaultPanel {
-	padding-left: 6px;
+.typo3-pagetree-topPanel-item {
+	padding: 2px 0 0 0;
+	height: 22px;
 }
 
-#typo3-pagetree-topPanel-filterWrap .x-form-field-trigger-wrap {
-	width: 100% !important;
-	margin: 0 20px 0 0;
+#typo3-pagetree-topPanel-item-newNode {
+	padding: 0;
+}
+
+.typo3-pagetree-topPanel-item .x-form-item {
+	border: none !important;
+	margin: 3px;
+	width: 100%;
+}
+
+.typo3-pagetree-topPanel-item .x-form-field {
+	height: 18px;
+	line-height: 16px;
+}
+
+.typo3-pagetree-topPanel-filter .t3-icon-input-clear {
+}
+
+.typo3-pagetree-topPanel-item .x-form-trigger-wrap {
+	margin: 0;
 }
 
 .typo3-pagetree-topPanel-item .x-form-trigger {
-	margin: 4px 0 0;
+	background-image: none;
+	border-bottom: none !important;
 	display: none;
+	margin-right: 0;
+	margin-top: 1px;
 }
 
-.typo3-pagetree-topPanel-item .x-form-field-trigger-wrap:hover .x-form-trigger {
+.typo3-pagetree-topPanel-item .x-form-trigger-wrap-focus:hover .x-form-trigger {
 	display: block;
 }
 
@@ -154,25 +136,31 @@ Pagetree
  * @section Indicator Bar
  *
  */
-.typo3-pagetree-indicatorBar-item p {
-	padding: 5px 10px;
+#typo3-pagetree-indicatorBar {
+	width: 100%;
+}
+
+#typo3-pagetree-indicatorBar-filter,
+#typo3-pagetree-indicatorBar-temporaryMountPoint {
+	padding: 10px 20px;	
 }
 
 #typo3-pagetree-indicatorBar-filter p,
 #typo3-pagetree-indicatorBar-temporaryMountPoint p {
-	padding: 10px 35px;
+	padding-left: 5px;
+	width: 100%;
 }
 
 .typo3-pagetree-indicatorBar-item .typo3-pagetree-indicatorBar-item-leftIcon {
-	left: 10px;
-	top: 9px;
-	position: absolute;
+	position: relative;
+	left: -10px;
+	top: 0px;
 }
 
 .typo3-pagetree-indicatorBar-item .typo3-pagetree-indicatorBar-item-rightIcon {
-	right: 10px;
-	top: 5px;
-	position: absolute;
+	position: relative;
+	right: -10px;
+	vertical-align: top;
 }
 
 #typo3-pagetree-indicatorBar-indicatorTitle span {

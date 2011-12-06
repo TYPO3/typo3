@@ -62,7 +62,6 @@ class t3lib_tree_Node implements t3lib_tree_ComparableNode, Serializable {
 	 * This is useful for the deserialization.
 	 *
 	 * @param array $data
-	 * @return void
 	 */
 	public function __construct(array $data = array()) {
 		if (count($data)) {
@@ -107,7 +106,7 @@ class t3lib_tree_Node implements t3lib_tree_ComparableNode, Serializable {
 	 * @return boolean
 	 */
 	public function hasChildNodes() {
-		if ($this->childNodes !== NULL) {
+		if ($this->childNodes != null && $this->childNodes->count() > 0) {
 			return TRUE;
 		}
 
@@ -214,7 +213,7 @@ class t3lib_tree_Node implements t3lib_tree_ComparableNode, Serializable {
 	 * @param array $data
 	 * @return void
 	 */
-	public function dataFromArray($data) {
+	public function dataFromArray(array $data) {
 		$this->setId($data['id']);
 
 		if (isset($data['parentNode']) && $data['parentNode'] !== '') {
@@ -254,6 +253,43 @@ class t3lib_tree_Node implements t3lib_tree_ComparableNode, Serializable {
 			throw new t3lib_exception('Deserialized object type is not identical!', 1294586646);
 		}
 		$this->dataFromArray($arrayRepresentation);
+	}
+
+	/**
+	 * searches the tree to find an node
+	 *
+	 * @param mixed $search
+	 * @return t3lib_tree_Node
+	 */
+	public function find($search) {
+		$result = null;
+
+		if($this->getId() == $search) {
+			$result = $this;
+		} elseif($this->hasChildNodes() && $this->getChildNodes() != null) {
+			foreach ($this->getChildNodes() AS $childNode) {
+				$result = $childNode->find($search);
+				if ($result != null) {
+					break;
+				}
+			}
+		}
+
+		return $result;
+	}
+
+	public function getLevel() {
+		if ($this->getParentNode() == null) {
+			return 0;
+		} else {
+			$i = 1;
+			$node = $this->getParentNode();
+			while ($node != null) {
+				$node = $node->getParentNode();
+				$i++;
+			}
+			return $i;
+		}
 	}
 }
 

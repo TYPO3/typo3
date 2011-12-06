@@ -26,45 +26,50 @@
  ***************************************************************/
 
 /**
- * Abstract ExtJS tree based on ExtDirect
+ * Describes necessary methods if the nodes are allowDrag and dropable
+ * within the tree.
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
+ * @author Steffen Ritter <info@steffen-ritter.net>
  * @package TYPO3
  * @subpackage t3lib
  */
-abstract class t3lib_tree_ExtDirect_AbstractExtJsTree extends t3lib_tree_AbstractTree {
-
+interface t3lib_tree_DraggableAndDropable {
 	/**
-	 * State Provider
+	 * Moves given node inside a destination node
 	 *
-	 * @var t3lib_tree_AbstractStateProvider
-	 */
-	protected $stateProvider = NULL;
-
-	/**
-	 * @param t3lib_tree_AbstractStateProvider $stateProvider
+	 * @param t3lib_tree_Node $node
+	 * @param t3lib_tree_Node $destination
 	 * @return void
 	 */
-	public function setStateProvider(t3lib_tree_AbstractStateProvider $stateProvider) {
-		$this->stateProvider = $stateProvider;
-	}
+	public function moveNodeInDestinationNode($node, $destination);
 
 	/**
-	 * @return t3lib_tree_AbstractStateProvider
-	 */
-	public function getStateProvider() {
-		return $this->stateProvider;
-	}
-
-	/**
-	 * Fetches the next tree level
+	 * Moves given node after a destination node
 	 *
-	 * @abstract
-	 * @param int $nodeId
-	 * @param stdClass $nodeData
-	 * @return array
+	 * @param t3lib_tree_Node $node
+	 * @param t3lib_tree_Node $destination
+	 * @return void
 	 */
-	abstract public function getNextTreeLevel($nodeId, $nodeData);
-}
+	public function moveNodeAfterDestinationNode($node, $destination);
 
+	/**
+	 * Copies given node inside a destination node
+	 *
+	 * @param t3lib_tree_Node $node
+	 * @param t3lib_tree_Node $destination
+	 * @return void
+	 */
+	public function copyNodeInDestinationNode($node, $destination);
+
+	/**
+	 * Copies given node after a destination node
+	 *
+	 * @param t3lib_tree_Node $node
+	 * @param t3lib_tree_Node $destination
+	 * @return void
+	 */
+	public function copyNodeAfterDestinationNode($node, $destination);
+
+}
 ?>

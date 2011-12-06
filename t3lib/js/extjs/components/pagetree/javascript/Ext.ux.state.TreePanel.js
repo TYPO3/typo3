@@ -23,126 +23,117 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-Ext.ns('Ext.ux.state');
-
-// dummy constructor
-Ext.ux.state.TreePanel = function() {};
-
 /**
  * State Provider for a tree panel
  */
-Ext.override(Ext.ux.state.TreePanel, {
+Ext.define('Ext.ux.state.TreePanel', {
+	extend: 'Ext.state.Stateful',
+
 	/**
-	 * Initializes the plugin
-	 * @param {Ext.tree.TreePanel} tree
-	 * @private
+	 * Mixin constructor
+	 * @param {Object} config
+	 *
 	 */
-	init:function(tree) {
-		tree.lastSelectedNode = null;
-		tree.isRestoringState = false;
-		tree.stateHash = {};
-
-		// install event handlers on TreePanel
-		tree.on({
-			// add path of expanded node to stateHash
-			 beforeexpandnode:function(n) {
-				if (this.isRestoringState) {
-					return;
-				}
-				var saveID = n.id;
-				this.stateHash[saveID.substr(1)] = 1;
-			},
-
-			// delete path and all subpaths of collapsed node from stateHash
-			beforecollapsenode:function(n) {
-				if (this.isRestoringState) {
-					return;
-				}
-
-				var deleteID = n.id;
-				delete this.stateHash[deleteID.substr(1)];
-			},
-
-			beforeclick: function(node) {
-				if (this.isRestoringState) {
-					return;
-				}
-				this.stateHash['lastSelectedNode'] = node.id;
-			}
-		});
-
-			// update state on node expand or collapse
-		tree.stateEvents = tree.stateEvents || [];
-		tree.stateEvents.push('expandnode', 'collapsenode', 'click');
-
-		// add state related props to the tree
-		Ext.apply(tree, {
-			// keeps expanded nodes paths keyed by node.ids
-			stateHash:{},
-
-			restoreState: function() {
-				this.isRestoringState = true;
-					// get last selected node
-				for (var pageID in this.stateHash) {
-					var pageNode = this.getNodeById('p' + pageID);
-					if (pageNode) {
-						pageNode.on({
-							expand: {
-								single:true,
-								scope:this,
-								fn: this.restoreState
+	constructor: function (config) {
+		if (config.stateful) {
+				// Install event handlers on TreePanel
+			this.on({
+					// Add path of expanded node to stateHash
+				beforeitemexpand: function (node) {
+						if (this.isRestoringState) {
+							return;
+						}
+						this.stateHash[String(node.getNodeData('id'))] = node.getId();
+					},
+					// Delete collapsed node from stateHash
+				beforeitemcollapse: function (node) {
+						if (this.isRestoringState) {
+							return;
+						}
+						delete this.stateHash[String(node.getNodeData('id'))];
+					},
+					// Update last selected node in stateHash
+				selectionchange: function (view, node) {
+					this.onStateChange();
+						if (this.isRestoringState) {
+							return;
+						}
+						if (this.getSelectionModel().getLastSelected()) {
+							this.stateHash['lastSelectedNode'] = this.getSelectionModel().getLastSelected().getId();
+						}
+					},
+				scope: this
+			});
+				// Add/override state properties
+			Ext.apply(this, {
+					// Update state on node expand, collapse or selection change
+				stateEvents: ['itemexpand', 'itemcollapse', 'selectionchange'],
+					// Avoid updating state while restoring
+				isRestoringState: false,
+					// State object
+				stateHash: {},
+				/**
+				 * Restore tree state into the saved state
+				 *
+				 */
+				restoreState: function() {
+					if (this.stateful) {
+						this.isRestoringState = true;
+							// Expand paths according to stateHash
+						for (var pageID in this.stateHash) {
+							var pageNode = this.getStore().getNodeById(this.stateHash[pageID]);
+							if (pageNode && !pageNode.isLeaf() && !pageNode.isExpanded()) {
+								pageNode.on({
+									expand: {
+										single: true,
+										scope: this,
+										fn: this.restoreState
+									}
+								});
+								pageNode.set('expanded', true);
+								pageNode.commit();
+								this.refreshNode(pageNode);
+								pageNode.fireEvent('expand', pageNode);
 							}
-						});
-						if (pageNode.expanded === false && pageNode.rendered == true) {
-							pageNode.expand();
 						}
+							// Get last selected node
+						if (this.stateHash['lastSelectedNode']) {
+							var node = this.getStore().getNodeById(this.stateHash['lastSelectedNode']);
+							if (node) {
+								this.selectPath(node.getPath());
+				
+								var contentId = TYPO3.Backend.ContentContainer.getIdFromUrl() ||
+									String(fsMod.recentIds['web']) || '-1';
+				
+								var isCurrentSelectedNode = (
+									String(node.getNodeData('id')) === contentId ||
+									contentId.indexOf('pages' + node.getNodeData('id')) !== -1
+								);
+				
+								if (contentId !== '-1' 
+									&& !isCurrentSelectedNode
+									&& this == this.app.getTree()
+									&& this.commandProvider
+									&& this.commandProvider.singleClick
+								) {
+									this.commandProvider.singleClick(node, this);
+								}
+							}
+						}
+						this.isRestoringState = false;
 					}
+				},
+				/**
+				 * Return stateHash for save by state manager
+				 *
+				 */
+				getState: function() {
+					return {
+						stateHash: this.stateHash
+					};
 				}
-				if (this.stateHash['lastSelectedNode']) {
-					var node = this.getNodeById(this.stateHash['lastSelectedNode']);
-					if (node) {
-						this.selectPath(node.getPath());
-
-						var contentId = TYPO3.Backend.ContentContainer.getIdFromUrl() ||
-							String(fsMod.recentIds['web']) || '-1';
-
-						var isCurrentSelectedNode = (
-							String(node.attributes.nodeData.id) === contentId ||
-							contentId.indexOf('pages' + String(node.attributes.nodeData.id)) !== -1
-						);
-
-						if (contentId !== '-1' && !isCurrentSelectedNode && this.app.isVisible() &&
-							this.commandProvider && this.commandProvider.singleClick
-						) {
-							this.commandProvider.singleClick(node, this);
-						}
-					}
-				}
-
-				this.isRestoringState = false;
-			},
-
-			// apply state on tree initialization
-			applyState:function(state) {
-				if(state) {
-					Ext.apply(this, state);
-
-					// it is too early to expand paths here
-					// so do it once on root load
-					this.root.on({
-						load: {
-							single:true,
-							scope:this,
-							fn: this.restoreState
-						}
-					});
-				}
-			},
-
-			// returns stateHash for save by state manager
-			getState:function() {
-				return {stateHash:this.stateHash};
-			}
-		});
+			});
+			this.callParent(arguments);
+		}
 	}
 });

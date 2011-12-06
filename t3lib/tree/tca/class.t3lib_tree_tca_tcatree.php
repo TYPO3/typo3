@@ -38,7 +38,7 @@ class t3lib_tree_Tca_TcaTree extends t3lib_tree_AbstractTree {
 	/**
 	 * Returns the root node
 	 *
-	 * @return t3lib_tree_Node
+	 * @return t3lib_tree_ExtJs_Node
 	 */
 	public function getRoot() {
 		return $this->dataProvider->getRoot();
@@ -52,6 +52,8 @@ class t3lib_tree_Tca_TcaTree extends t3lib_tree_AbstractTree {
 	public function render() {
 		return $this->nodeRenderer->renderTree($this);
 	}
+
+	
 }
 
 ?>

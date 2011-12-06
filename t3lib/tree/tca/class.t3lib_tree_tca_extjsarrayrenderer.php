@@ -31,9 +31,14 @@
  * @author	Steffen Ritter <info@steffen-ritter.net>
  * @package TYPO3
  * @subpackage t3lib_tree
+ * @deprecated Not needed anymore, will be removed with 4.9
  */
 
 class t3lib_tree_Tca_ExtJsArrayRenderer extends t3lib_tree_Renderer_ExtJsJson {
+
+	public function __construct() {
+		t3lib_div::deprecationLog("The Class t3lib_tree_Tca_ExtJsArrayRenderer is deprecated as of TYPO3 4.7, will be removed in 4.9");
+	}
 
 	/**
 	 * Gets the node array. If the TCA configuration has defined items,
@@ -62,8 +67,8 @@ class t3lib_tree_Tca_ExtJsArrayRenderer extends t3lib_tree_Renderer_ExtJsJson {
 	/**
 	 * Renders a node collection recursive or just a single instance
 	 *
-	 * @param t3lib_tree_NodeCollection $node
-	 * @param bool $recursive
+	 * @param t3lib_tree_AbstractTree $tree
+	 * @param bool $recursive (optional)
 	 * @return array
 	 */
 	public function renderTree(t3lib_tree_AbstractTree $tree, $recursive = TRUE) {
