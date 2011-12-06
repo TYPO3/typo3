@@ -24,305 +24,377 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-Ext.namespace('TYPO3');
-
-TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
-	autoSelect: false,
-	ctCls: 'live-search-results',
+Ext.define('TYPO3.BackendLiveSearch.Model', {
+	extend: 'Ext.data.Model',
+	fields: [{
+		name: 'id',
+		type: 'string'
+	},{
+		name: 'type',
+		type: 'string'
+	},{
+		name: 'recordTitle',
+		type: 'string'
+	},{
+		name: 'iconHTML',
+		type: 'string'
+	},{
+		name: 'title',
+		type: 'string'
+	},{
+		name: 'editLink',
+		type: 'string'
+	},{
+		name: 'pageJump',
+		type: 'string'
+	}]
+});
+/**
+ * Extend Boundlist layout (ExtJS 4.0.7)
+ * Make space for live search toolbar
+ * Should be reviewed on ExtJS upgrade
+ */
+Ext.define('TYPO3.BackendLiveSearch.BoundList.Layout', {
+	extend: 'Ext.layout.component.BoundList',
+	alias: 'layout.livesearchboundlist',
+	setTargetSize: function (width, height) {
+		var me = this,
+			owner = me.owner,
+			listHeight = null,
+			toolbar;
+		me.callParent(arguments);
+			// Size the listEl
+		if (Ext.isNumber(height)) {
+			listHeight = height - owner.el.getFrameWidth('tb');
+				// Make space for live search toolbar
+			toolbar = owner.liveSearchToolbar;
+			if (toolbar) {
+				listHeight -= toolbar.getHeight();
+			}
+		}
+		me.setElementSize(owner.listEl, null, listHeight);
+	}
+});
+/**
+ * Extend Boundlist (ExtJS 4.0.7)
+ * Add live search toolbar instead of paging toolbar
+ * Should be reviewed on ExtJS upgrade
+ */
+Ext.define('TYPO3.BackendLiveSearch.BoundList', {
+	extend: 'Ext.view.BoundList',
+	/**
+	 * Use extended boundlist layout
+	 */
+	componentLayout: 'livesearchboundlist',
+	/**
+	 * Create live search toolbar when the boundlist is initialized
+	 */
+	initComponent: function() {
+		this.liveSearchToolbar = this.createLiveSearchToolbar();
+		this.callParent();
+	},
+	/**
+	 * Render the live search toolbar when the boundlist is rendered
+	 */
+	onRender: function() {
+		var me = this,
+			toolbar = me.liveSearchToolbar;
+		me.callParent(arguments);
+		if (toolbar) {
+			toolbar.render(me.el);
+		}
+	},
+	/**
+	 * Create the live search toolbar
+	 *
+	 * @return	Object{Ext.toolbar.Toolbar}
+	 */
+	createLiveSearchToolbar: function () {
+		return Ext.create('Ext.toolbar.Toolbar', {
+			height: 30,
+			items: [{
+				xtype: 'tbfill',
+				flex: 1
+			},{
+				xtype: 'button',
+				text: TYPO3.LLL.liveSearch.showAllResults,
+				arrowAlign: 'right',
+				shadow: false,
+				icon: '../typo3/sysext/t3skin/icons/module_web_list.gif',
+				listeners: {
+					click: {
+						fn: function () {
+								// go to db_list.php and search for given search value
+								// @todo the current selected page ID from the page tree is required, also we need the
+								// values of $GLOBALS['BE_USER']->returnWebmounts() to search only during the allowed pages
+							TYPO3.ModuleMenu.App.showModule('web_list', this.pickerField.getSearchResultsUrl(this.pickerField.getValue()));
+							this.pickerField.collapse();
+						},
+						scope: this
+						
+					}
+				}
+			}]
+		});	
+	}
+});
+/**
+ * Extend Ext.form.field.ComboBox (ExtJS 4.0.7)
+ * Review createPicker method on ExtJS upgrade
+ */
+Ext.define('TYPO3.BackendLiveSearch.ComboBox', {
+	extend: 'Ext.form.field.ComboBox',
 	dataProvider: null,
-	searchResultsPid : 0,
+	searchResultsPid: 0,
+	autoSelect: false,
 	displayField: 'title',
-	emptyText: null,
+	emptyText: '',
 	enableKeyEvents: true,
 	helpTitle: null,
 	hideTrigger: true,
-	itemSelector: 'div.search-item-title',
-	listAlign : 'tr-br',
-	listClass: 'live-search-list',
-	listEmptyText: null,
-	listWidth: 315,
-	listHovered: false,
-	loadingText: null,
-	minChars: 1,
-	resizable: false,
-	title: null,
-	width: 205,
-	triggerClass : 'x-form-clear-trigger',
-	triggerConfig: '<span tag="a" class="t3-icon t3-icon-actions t3-icon-actions-input t3-icon-input-clear t3-tceforms-input-clearer">&nbsp;</span>',
-	onTriggerClick: function() {
-		// Empty the form field, give it focus, and collapse the results
-		this.reset(this);
-		this.focus();
-		this.collapse();
+	listConfig: {
+		cls: 'live-search-list',
+		itemCls: 'search-item-title',
+		tpl: Ext.create('Ext.XTemplate',
+			'<table>',
+				'<tr><th colspan="2" class="live-search-list-title">' + TYPO3.LLL.liveSearch.title + '<th><tr>',
+				'<tpl for=".">',
+					'<tr class="search-item">',
+						'<td class="search-item-type">{recordTitle}</td>',
+						'<td class="search-item-content">',
+							'<div class="search-item-title">{iconHTML} {title}</div>',
+						'</td>',
+					'</tr>',
+				'</tpl>',
+			'</table>'
+		),
+		loadingHeight: '200',
+		loadingText: '',
+		overCls: 'live-search-list-over',
+		resizable: false,
+		width: 315,
+		listeners: {
+				// Keep the focus on the input field so that the blur event is triggered when another iframe is clicked
+			containermouseout: {
+				fn: function (list) {
+					list.pickerField.focus();
+				}
+			}
+		}
 	},
-	tpl: new Ext.XTemplate(
-		'<table border="0" cellspacing="0">',
-			'<tpl for=".">',
-				'<tr class="search-item">',
-					'<td class="search-item-type" width="105" align="right">{recordTitle}</td>',
-					'<td class="search-item-content" width="195">',
-						'<div class="search-item-title">{iconHTML} {title}</div>',
-					'</td>',
-				'</tr>',
-			'</tpl>',
-		'</table>'
-	),
-
-	dataReader : new Ext.data.JsonReader({
-		idProperty : 'type',
-		root : 'searchItems',
-		fields : [
-			{name: 'recordTitle'},
-			{name: 'id'},
-			{name: 'iconHTML'},
-			{name: 'title'},
-			{name: 'editLink'}
-		]
-	}),
+	minChars: 1,
+	pickerAlign: 'tr-br',
+	title: null,
+	triggerBaseCls: 'x-form-trigger t3-icon t3-icon-actions t3-icon-actions-input t3-icon-input-clear t3-tceforms-input-clearer',
+	width: 205,
 	listeners: {
-		select : {
-			scope: this,
-			fn: function (combo, record, index) {
-				jump(record.data.editLink, 'web_list', 'web');
+		select: {
+			fn: function (combo, records) {
+					// We do not wish to have the value selected in the results list
+					// to be displayed in the search field.
+				combo.setRawValue(combo.lastQuery);
+				jump(records[0].get('editLink'), 'web_list', 'web');
 			}
 		},
-		focus : {
-			fn: function() {
-				if (this.getValue() == this.emptyText) {
-					this.reset(this);
-				}
-			}
-		},
-		specialkey : function (field, e) {
-			if (e.getKey() == e.RETURN || e.getKey() == e.ENTER) {
-				if (this.dataReader.jsonData.pageJump != '') {
-					jump(this.dataReader.jsonData.pageJump, 'web_list', 'web');
+			// If the search field is null, blank or emptyText, show the help on focus.
+			// Otherwise, show last results
+		focus: {
+			fn: function (combo) {
+				if (!combo.getValue() || combo.getValue() == combo.emptyText) {
+					combo.initHelp();
 				} else {
-					TYPO3.ModuleMenu.App.showModule('web_list', this.getSearchResultsUrl(this.getValue()));
+					combo.expand();
+				}
+
+			}
+		},
+		blur: {
+			fn: function (combo) {
+				combo.collapse();
+				combo.removeHelp();
+			}
+		},
+		keyup: {
+			fn: function (combo, event) {
+				if (!combo.getValue() || combo.getValue() == combo.emptyText) {
+					combo.setHideTrigger(true);
+				} else {
+					combo.setHideTrigger(false);
 				}
 			}
 		},
-		keyup : function() {
-			if ((this.getValue() == this.emptyText) || (this.getValue() == '')) {
-				this.setHideTrigger(true);
-			} else {
-				this.setHideTrigger(false);
+		specialkey: {
+			fn: function (combo, event) {
+				if (event.getKey() == event.RETURN || event.getKey() == event.ENTER) {
+					var rawData = combo.getStore().getProxy().getReader().rawData;
+					if (rawData && rawData.pageJump != '') {
+						jump(rawData.pageJump, 'web_list', 'web');
+					} else {
+						TYPO3.ModuleMenu.App.showModule('web_list', this.getSearchResultsUrl(combo.getValue()));
+					}
+				}
 			}
+		},
+		beforequery: {
+			fn: function (queryEvent) {
+				queryEvent.combo.removeHelp();
+			}	
 		}
 	},
 
 	/**
-	 * Initializes the component.
+	 * Create the store and initialize the component.
 	 */
 	initComponent: function() {
-		this.store = new Ext.data.DirectStore({
-			directFn: this.dataProvider.find,
-			reader: this.dataReader
-		});
-		TYPO3.BackendLiveSearch.superclass.initComponent.apply(this, arguments);
-	},
-
-	restrictHeight : function(){
-		this.innerList.dom.style.height = '';
-		var inner = this.innerList.dom;
-		var pad = this.list.getFrameWidth('tb')+(this.resizable?this.handleHeight:0)+this.assetHeight + 30; // @todo Remove hardcoded 30
-		var h = Math.max(inner.clientHeight, inner.offsetHeight, inner.scrollHeight);
-		var ha = this.getPosition()[1]-Ext.getBody().getScroll().top;
-		var hb = Ext.lib.Dom.getViewHeight()-ha-this.getSize().height;
-		var space = Math.max(ha, hb, this.minHeight || 0)-pad-2;
-		/** BUG FIX **/
-		if (this.shadow === true) { space-=this.list.shadow.offset; }
-
-		h = Math.min(h, space, this.maxHeight);
-
-		/**
-		 * @internal The calcated height of "h" in the line before seems not working as expected.
-		 *			 If i define a min height, the box shold at least use this height also if only one entry is in there
-		 */
-		//h = this.maxHeight;
-
-		this.innerList.setHeight(h);
-		this.list.beginUpdate();
-		this.list.setHeight(h+pad);
-		this.list.alignTo(this.el, this.listAlign);
-		this.list.endUpdate();
-	},
-
-	initList : function () {
-		TYPO3.BackendLiveSearch.superclass.initList.apply(this, arguments);
-		var cls = 'x-combo-list';
-
-			// Track whether the hovering over the results list or not, to aid in detecting iframe clicks.
-		this.mon(this.list, 'mouseover', function() {this.listHovered = true;}, this);
-		this.mon(this.list, 'mouseout', function() {this.listHovered = false; }, this);
-
-		/**
-		 * Create bottom Toolbar to the result layer
-		 */
-		this.footer = this.list.createChild({cls:cls+'-ft'});
-
-		this.pageTb = new Ext.Toolbar({
-			renderTo:this.footer,
-			height: 30,
-			items: [{
-				xtype: 'tbfill',
-				autoWidth : true
-			},{
-				xtype: 'button',
-				text: TYPO3.LLL.liveSearch.showAllResults,
-				arrowAlign : 'right',
-				shadow: false,
-				icon : '../typo3/sysext/t3skin/icons/module_web_list.gif',
-				listeners : {
-					scope : this,
-					click : function () {
-							// go to db_list.php and search for given search value
-							// @todo the current selected page ID from the page tree is required, also we need the
-							// values of $GLOBALS['BE_USER']->returnWebmounts() to search only during the allowed pages
-						TYPO3.ModuleMenu.App.showModule('web_list', this.getSearchResultsUrl(this.getValue()));
-						this.collapse();
+		this.store = Ext.data.StoreManager.lookup(this.getId() + 'BackendLiveSearchStore');
+		if (!this.store) {
+			this.store = Ext.create('Ext.data.Store', {
+				model: 'TYPO3.BackendLiveSearch.Model',
+				proxy: {
+					type: 'direct',
+					directFn: this.dataProvider.find,
+					reader: {
+						type: 'json',
+						idProperty: 'type',
+						root: 'searchItems'
 					}
-				}
-			}]
+				},
+				storeId: this.getId() + 'BackendLiveSearchStore'
+			});
+		}
+		this.listConfig.loadingText = this.loadingText;
+		this.callParent();
+	},
+	/**
+	 * Create the list of search results
+	 *
+	 * @return Object{TYPO3.BackendLiveSearch.BoundList}
+	 */
+	createPicker: function() {
+		var me = this,
+			picker,
+			menuCls = Ext.baseCSSPrefix + 'menu',
+			opts = Ext.apply({
+				pickerField: me,
+				selModel: {
+					mode: me.multiSelect ? 'SIMPLE' : 'SINGLE'
+				},
+				floating: true,
+				hidden: true,
+				ownerCt: me.ownerCt,
+				cls: me.el.up('.' + menuCls) ? menuCls : '',
+				store: me.store,
+				displayField: me.displayField,
+				focusOnToFront: false,
+				pageSize: 0,
+				tpl: me.tpl
+			}, me.listConfig, me.defaultListConfig);
+
+		picker = me.picker = Ext.create('TYPO3.BackendLiveSearch.BoundList', opts);
+
+		me.mon(picker, {
+			itemclick: me.onItemClick,
+			refresh: me.onListRefresh,
+			scope: me
 		});
-		this.assetHeight += this.footer.getHeight();
-	},
 
-	initQuery : function(){
-		TYPO3.BackendLiveSearch.superclass.initQuery.apply(this, arguments);
-		this.removeHelp();
+		me.mon(picker.getSelectionModel(), {
+			'beforeselect': me.onBeforeSelect,
+			'beforedeselect': me.onBeforeDeselect,
+			'selectionchange': me.onListSelectionChange,
+			scope: me
+		});
+
+		return picker;
 	},
-	initHelp : function () {
-		if(!this.helpList){
+	/**
+	 * Empty the search field, give it focus and collapse the results list when the trigger is clicked
+	 */
+	onTriggerClick: function () {
+		this.reset();
+		this.focus();
+		this.collapse();
+	},
+	/**
+	 * Add a help layer when the field is focused while empty
+	 */
+	initHelp: function () {
+		if (!this.helpList){
 			var cls = 'search-list-help';
-
-			this.helpList = new Ext.Layer({
-				parentEl: this.getListParent(),
+			this.helpList = Ext.create('Ext.Layer', {
+				parentEl: this.getEl(),
 				shadow: this.shadow,
-				cls: [cls, this.listClass].join(' '),
-				constrain:false
+				cls: [this.listConfig.cls, cls].join(' '),
+				constrain: false
 			});
-
-				// Track whether the hovering over the help list or not, to aid in detecting iframe clicks.
-			this.mon(this.helpList, 'mouseover', function() {this.listHovered = true;}, this);
-			this.mon(this.helpList, 'mouseout', function() {this.listHovered = false; }, this);
-
-			var lw = this.listWidth || Math.max(this.wrap.getWidth(), this.minListWidth);
-			this.helpList.setSize(lw);
+			var helpListWidth = this.listConfig.width;
+			this.helpList.setSize(helpListWidth);
+				// Keep the focus on the input field so that the blur event is triggered when another iframe is clicked
+			this.helpList.on('mouseout', function () { this.focus(); }, this);
 			this.helpList.swallowEvent('mousewheel');
-			if(this.syncFont !== false){
-				this.helpList.setStyle('font-size', this.el.getStyle('font-size'));
-			}
-
-			this.innerHelpList = this.helpList.createChild({cls:cls+'-inner'});
-			this.mon(this.innerHelpList, 'mouseover', this.onViewOver, this);
-			this.mon(this.innerHelpList, 'mousemove', this.onViewMove, this);
-			this.innerHelpList.setWidth(lw - this.helpList.getFrameWidth('lr'));
-
-			if(!this.helpTpl){
-				this.helpTpl = '<tpl for="."><div class="'+cls+'-item">{' + this.displayField + '}</div></tpl>';
-			 }
-
-			/**
-			* The {@link Ext.DataView DataView} used to display the ComboBox's options.
-			* @type Ext.DataView
-			*/
-			this.helpView = new Ext.DataView({
-				applyTo: this.innerHelpList,
-				tpl: this.helpTpl,
-				singleSelect: true,
-				selectedClass: this.selectedClass,
-				itemSelector: this.itemSelector || '.' + cls + '-item',
-				emptyText: this.listEmptyText
-			});
-
+			this.helpList.setStyle('font-size', this.getEl().getStyle('font-size'));
 			this.helpList.createChild({
 				cls: cls + '-content',
 				// @todo Can we grab this content via ExtDirect?
 				html: '<strong>' + this.helpTitle + '</strong><p>' + TYPO3.LLL.liveSearch.helpDescription + '<br /> ' + TYPO3.LLL.liveSearch.helpDescriptionPages + '</p>'
 			});
-
-			this.helpList.alignTo(this.wrap, this.listAlign);
+			this.helpList.alignTo(this.getEl(), this.pickerAlign);
 			this.helpList.show();
 		}
 	},
-
-	removeHelp : function() {
+	/**
+	 * Remove the help layer when a query search is being submitted
+	 */
+	removeHelp: function () {
 		if (this.helpList) {
 			this.helpList.destroy();
 			delete this.helpList;
 		}
 	},
-
-	onFocus : function() {
-		TYPO3.BackendLiveSearch.superclass.onFocus.apply(this, arguments);
-
-		// If search is blank, show the help on focus. Otherwise, show last results
-		if (this.getValue() == '') {
-			this.initHelp();
-		} else {
-			this.expand();
-		}
-	},
-
 	/**
-	 * Fired when search results are clicked. We do not want the search result
-	 * appear so we always set doFocus = false
+	 * Hide the trigger and clear the search field
 	 */
-	onViewClick : function(doFocus){
-		doFocus = false;
-		TYPO3.BackendLiveSearch.superclass.onViewClick.apply(this, arguments);
-	},
-
-	postBlur : function() {
-		TYPO3.BackendLiveSearch.superclass.postBlur.apply(this, arguments);
-		this.removeHelp();
-	},
-
-	getTriggerWidth : function() {
-		// Trigger is inset, so width used in calculations is 0
-		return 0;
-	},
-
-	reset : function() {
-	    this.originalValue = this.emptyText;
+	reset: function () {
 		this.setHideTrigger(true);
-		TYPO3.BackendLiveSearch.superclass.reset.apply(this, arguments);
+		this.callParent();
 	},
-
-	getSearchResultsUrl : function(searchTerm) {
+	/**
+	 * Build the url params of the search results
+	 *
+	 * @return	String
+	 */
+	getSearchResultsUrl: function (searchTerm) {
 		return 'id=' + this.searchResultsPid + '&search_levels=4&search_field=' + searchTerm;
 	},
-
-	handleBlur : function(e) {
-
-		if (!this.listHovered) {
-			this.hasFocus = false;
-			if (this.getValue() == '') {
-				this.reset();
-			}
-			this.postBlur();
+	/**
+	 * If the mouse is not over the list and the field lost focus to another iframe
+	 */
+	handleBlur: function (event) {
+		if (this.destroying) {
+			return;
 		}
-
+		if ((this.getPicker().el && !this.getPicker().el.hasCls('live-search-list-over')) || this.helpList) {
+			if (!this.getValue()) {
+				this.reset();
+			};
+			this.inputEl.removeCls(this.focusCls);
+			this.hasFocus = false;
+			this.fireEvent('blur', this);
+		}
 	}
 });
-
-var TYPO3LiveSearch;
-
+/**
+ * Create the live search box when Ext is ready
+ */
 Ext.onReady(function() {
-	TYPO3LiveSearch = new TYPO3.BackendLiveSearch({
+	TYPO3.BackendLiveSearch.Box = Ext.create('TYPO3.BackendLiveSearch.ComboBox', {
 		dataProvider: TYPO3.LiveSearchActions.ExtDirect,
-		title: TYPO3.LLL.liveSearch.title,
 		helpTitle: TYPO3.LLL.liveSearch.helpTitle,
 		emptyText: TYPO3.LLL.liveSearch.emptyText,
 		loadingText: TYPO3.LLL.liveSearch.loadingText,
-		listEmptyText: TYPO3.LLL.liveSearch.listEmptyText,
+		renderTo: Ext.get('live-search-box'),
 		searchResultsPid: TYPO3.configuration.firstWebmountPid
 	});
-
-	TYPO3LiveSearch.applyToMarkup(Ext.get('live-search-box'));
-
 		// Add a blur event listener outside the ExtJS widget to handle clicks in iframes also.
-	Ext.get('live-search-box').on('blur', TYPO3LiveSearch.handleBlur, TYPO3LiveSearch);
+	Ext.get('live-search-box').down('input').on('blur', TYPO3.BackendLiveSearch.Box.handleBlur, TYPO3.BackendLiveSearch.Box);
 });

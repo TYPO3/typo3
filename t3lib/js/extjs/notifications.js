@@ -24,15 +24,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-Ext.ns('TYPO3', 'TYPO3.Components');
-
 /**
  * TYPO3window - General TYPO3 window component
  */
-TYPO3.Components.Window = Ext.extend(Ext.Window, {
+Ext.define('TYPO3.Components.Window', {
+	extend: 'Ext.window.Window',
+	alias: ['widget.TYPO3window'],
+
 	width: 450,
-	autoHeight: true,
 	closable: true,
 	resizable: false,
 	plain: true,
@@ -40,16 +39,8 @@ TYPO3.Components.Window = Ext.extend(Ext.Window, {
 	modal: true,
 	draggable: true,
 	closeAction: 'hide',
-	cls: 't3-window',
-
-	constructor: function(config) {
-		config = config || {};
-		Ext.apply(this, config);
-		TYPO3.Components.Window.superclass.constructor.call(this, config);
-	}
+	cls: 't3-window'
 });
-Ext.reg('TYPO3window', TYPO3.Components.Window);
-
 
 /**
  * Helper class for managing windows.
@@ -66,7 +57,7 @@ Ext.reg('TYPO3window', TYPO3.Components.Window);
  */
 TYPO3.Windows = function() {
 	/** @private */
-	var windowCollection = new Ext.util.MixedCollection(true);
+	var windowCollection = Ext.create('Ext.util.MixedCollection', true);
 
 	return {
 		/** @public */
@@ -86,7 +77,7 @@ TYPO3.Windows = function() {
 			if (window) {
 				return window;
 			} else {
-				window = new TYPO3.Components.Window(configuration);
+				window = Ext.create('TYPO3.Components.Window', configuration);
 				windowCollection.add(window);
 				return window;
 			}
@@ -126,7 +117,7 @@ TYPO3.Windows = function() {
 		 * @return {Object} window or false if not found
 		 */
 		getById: function(id) {
-			return windowCollection.key(id);
+			return windowCollection.getByKey(id);
 		},
 
 		/**
@@ -144,7 +135,7 @@ TYPO3.Windows = function() {
 		 * @return {Int} count
 		 */
 		getCount: function() {
-			return windowCollection.length;
+			return windowCollection.getCount();
 		},
 
 		/**
@@ -154,7 +145,7 @@ TYPO3.Windows = function() {
 		 * @param {Object} scope
 		 * @return void
 		 */
-		each : function(fn, scope) {
+		each: function(fn, scope) {
 			windowCollection.each(fn, scope);
 		},
 
@@ -231,7 +222,7 @@ TYPO3.Dialog = function() {
 					informationDialogConfiguration,
 					configuration
 					);
-			Ext.Msg.show(configuration);
+			Ext.MessageBox.show(configuration);
 		},
 
 		QuestionDialog: function(configuration) {
@@ -240,7 +231,7 @@ TYPO3.Dialog = function() {
 					questionDialogConfiguration,
 					configuration
 					);
-			Ext.Msg.show(configuration);
+			Ext.MessageBox.show(configuration);
 		},
 
 		WarningDialog: function(configuration) {
@@ -249,7 +240,7 @@ TYPO3.Dialog = function() {
 					warningDialogConfiguration,
 					configuration
 					);
-			Ext.Msg.show(configuration);
+			Ext.MessageBox.show(configuration);
 		},
 
 		ErrorDialog: function(configuration) {
@@ -258,7 +249,7 @@ TYPO3.Dialog = function() {
 					errorDialogConfiguration,
 					configuration
 					);
-			Ext.Msg.show(configuration);
+			Ext.MessageBox.show(configuration);
 		}
 	}
 }();

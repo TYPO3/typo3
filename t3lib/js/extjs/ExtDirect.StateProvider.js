@@ -23,9 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-Ext.ns('TYPO3.state');
-
 /**
  * Creates new ExtDirectProvider
  * @constructor
@@ -33,72 +30,72 @@ Ext.ns('TYPO3.state');
  * @author Jozef Sakalos
  * @author Steffen Kamper
  */
-
-TYPO3.state.ExtDirectProvider = function(config) {
-
-	this.addEvents(
-		/**
-		 * @event readsuccess
-		 * Fires after state has been successfully received from server and restored
-		 * @param {HttpProvider} this
-		 */
-			'readsuccess',
-		/**
-		 * @event readfailure
-		 * Fires in the case of an error when attempting to read state from server
-		 * @param {HttpProvider} this
-		 */
-			'readfailure',
-		/**
-		 * @event savesuccess
-		 * Fires after the state has been successfully saved to server
-		 * @param {HttpProvider} this
-		 */
-			'savesuccess',
-		/**
-		 * @event savefailure
-		 * Fires in the case of an error when attempting to save state to the server
-		 * @param {HttpProvider} this
-		 */
-			'savefailure'
-			);
-
-		// call parent
-	TYPO3.state.ExtDirectProvider.superclass.constructor.call(this);
-
-	Ext.apply(this, config, {
-		// defaults
-		delay: 750, // buffer changes for 750 ms
-		dirty: false,
-		started: false,
-		autoStart: true,
-		autoRead: true,
-		key: 'States.General',
-		logFailure: false,
-		logSuccess: false,
-		queue: [],
-		saveBaseParams: {},
-		readBaseParams: {},
-		paramNames:{
-			key: 'key',
-			name: 'name',
-			value: 'value',
-			data: 'data'
+Ext.define('TYPO3.state.ExtDirectProvider', {
+	extend: 'Ext.state.Provider',
+	
+	constructor: function(config) {
+		this.addEvents(
+			/**
+			 * @event readsuccess
+			 * Fires after state has been successfully received from server and restored
+			 * @param {HttpProvider} this
+			 */
+				'readsuccess',
+			/**
+			 * @event readfailure
+			 * Fires in the case of an error when attempting to read state from server
+			 * @param {HttpProvider} this
+			 */
+				'readfailure',
+			/**
+			 * @event savesuccess
+			 * Fires after the state has been successfully saved to server
+			 * @param {HttpProvider} this
+			 */
+				'savesuccess',
+			/**
+			 * @event savefailure
+			 * Fires in the case of an error when attempting to save state to the server
+			 * @param {HttpProvider} this
+			 */
+				'savefailure'
+		);
+	
+			// call parent
+		this.callParent(arguments);
+	
+		Ext.apply(this, config, {
+			// defaults
+			delay: 750, // buffer changes for 750 ms
+			dirty: false,
+			started: false,
+			autoStart: true,
+			autoRead: true,
+			key: 'States.General',
+			logFailure: false,
+			logSuccess: false,
+			queue: [],
+			saveBaseParams: {},
+			readBaseParams: {},
+			paramNames:{
+				key: 'key',
+				name: 'name',
+				value: 'value',
+				data: 'data'
+			}
+		});
+	
+		if (this.autoRead) {
+			this.readState();
 		}
-	});
-
-	if (this.autoRead) {
-		this.readState();
-	}
-
-	this.dt = new Ext.util.DelayedTask(this.submitState, this);
-	if (this.autoStart) {
-		this.start();
-	}
-};
-
-
-Ext.extend(TYPO3.state.ExtDirectProvider, Ext.state.Provider, {
+	
+		this.dt = Ext.create('Ext.util.DelayedTask', this.submitState, this);
+		if (this.autoStart) {
+			this.start();
+		}
+		
+		return this;
+	},
 
 		// localizable texts
 	saveSuccessText: 'Save Success',
@@ -106,8 +103,6 @@ Ext.extend(TYPO3.state.ExtDirectProvider, Ext.state.Provider, {
 	readSuccessText: 'Read Success',
 	readFailureText: 'Read Failure',
 	dataErrorText: 'Data Error',
-
-
 
 	/**
 	 * Initializes state from the passed state object or array.

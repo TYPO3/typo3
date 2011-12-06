@@ -27,9 +27,8 @@
 /**
  * AJAX login refresh box
  */
-Ext.namespace('Ext.ux.TYPO3');
-
-Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
+Ext.define('Ext.ux.TYPO3.loginRefresh', {
+	extend: 'Ext.util.Observable',
 	locked: 0,
 	interval: 60,
 
@@ -48,7 +47,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 					},
 					method: "GET",
 					success: function(response, options) {
-						var result = Ext.util.JSON.decode(response.responseText);
+						var result = Ext.JSON.decode(response.responseText);
 						if (result.login.locked) {
 							this.locked = 1;
 							Ext.MessageBox.show({
@@ -84,11 +83,11 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 			scope: this
 		};
 		this.startTimer();
-		Ext.ux.TYPO3.loginRefresh.superclass.constructor.call(this, config);
+		this.callParent([config]);
 	},
 
 	initComponents: function() {
-		var loginPanel = new Ext.FormPanel({
+		var loginPanel = Ext.create('Ext.form.Panel', {
 			url: "ajax.php",
 			id: "loginform",
 			title: TYPO3.LLL.core.refresh_login_title,
@@ -141,7 +140,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 				}
 			}]
 		});
-		this.loginRefreshWindow = new Ext.Window({
+		this.loginRefreshWindow = Ext.create('Ext.window.Window', {
 			id: "loginformWindow",
 			width: 450,
 			autoHeight: true,
@@ -159,13 +158,13 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 			}
 		});
 
-		var progressControl = new Ext.ProgressBar({
+		var progressControl = Ext.create('Ext.ProgressBar', {
 			autoWidth: true,
 			autoHeight: true,
 			value: 30
 		});
 
-		this.progressWindow = new Ext.Window({
+		this.progressWindow = Ext.create('Ext.window.Window', {
 			closable: false,
 			resizable: false,
 			draggable: false,
@@ -262,18 +261,18 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 	},
 
 	startTimer: function() {
-		Ext.TaskMgr.start(this.loadingTask);
+		Ext.TaskManager.start(this.loadingTask);
 	},
 
 	stopTimer: function() {
-		Ext.TaskMgr.stop(this.loadingTask);
+		Ext.TaskManager.stop(this.loadingTask);
 	},
 
 	submitForm: function(challenge) {
 		var form = Ext.getCmp("loginform").getForm();
 		var fields = form.getValues();
 		if (fields.p_field === "") {
-			Ext.Msg.alert(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_emptyPassword);
+			Ext.MessageBox.alert(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_emptyPassword);
 		} else {
 			if (TS.securityLevel === "superchallenged") {
 				fields.p_field = MD5(fields.p_field);
@@ -301,14 +300,14 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 					TYPO3.loginRefresh.startTimer();
 				},
 				failure: function(form, action) {
-					var result = Ext.util.JSON.decode(action.response.responseText).login;
+					var result = Ext.JSON.decode(action.response.responseText).login;
 					if (result.success) {
 						// User is logged in
 						Ext.getCmp("loginformWindow").hide();
 						TYPO3.loginRefresh.startTimer();
 					} else {
 						// TODO: add failure to notification system instead of alert
-						Ext.Msg.alert(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_failed_message);
+						Ext.MessageBox.alert(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_failed_message);
 					}
 				}
 			});
@@ -325,7 +324,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 				},
 				method: 'GET',
 				success: function(response) {
-					var result = Ext.util.JSON.decode(response.responseText);
+					var result = Ext.JSON.decode(response.responseText);
 					if (result.challenge) {
 						Ext.getCmp('challenge').value = result.challenge;
 						TYPO3.loginRefresh.submitForm(result.challenge);
@@ -340,10 +339,9 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 });
 
 
-
 /**
  * Initialize login expiration warning object
  */
 Ext.onReady(function() {
-	TYPO3.loginRefresh = new Ext.ux.TYPO3.loginRefresh();
+	TYPO3.loginRefresh = Ext.create('Ext.ux.TYPO3.loginRefresh');
 });

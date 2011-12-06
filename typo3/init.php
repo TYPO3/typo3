@@ -231,14 +231,14 @@ $PARSETIME_START = t3lib_div::milliseconds();		// Is set to the system time in m
 // *************************
 // CLI dispatch processing
 // *************************
-if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) && basename(PATH_thisScript) == 'cli_dispatch.phpsh') {
+if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) && basename(PATH_thisScript) == 'cli_dispatch.phpsh' && !$TYPO3_dontExecuteCli) {
 		// First, take out the first argument (cli-key)
 	$temp_cliScriptPath = array_shift($_SERVER['argv']);
 	$temp_cliKey = array_shift($_SERVER['argv']);
 	array_unshift($_SERVER['argv'],$temp_cliScriptPath);
 
 		// If cli_key was found in configuration, then set up the cliInclude path and module name:
-	if ($temp_cliKey)	{
+	if ($temp_cliKey || TYPO3_cliKey) {
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$temp_cliKey]))	{
 			define('TYPO3_cliInclude', t3lib_div::getFileAbsFileName($TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$temp_cliKey][0]));
 			$MCONF['name'] = $TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$temp_cliKey][1];
