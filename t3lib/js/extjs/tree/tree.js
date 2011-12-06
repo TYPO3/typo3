@@ -23,60 +23,64 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-Ext.ns('TYPO3.Components', 'TYPO3.Components.Tree');
-
 /**
  * TYPO3window - General TYPO3 tree component
  */
+Ext.ns('TYPO3.Components.Tree');
 
 TYPO3.Components.Tree = {};
 TYPO3.Components.Tree.StandardTreeItemData = [];
 
-TYPO3.Components.Tree.StandardTree = function(config) {
-	var conf = Ext.apply({
-		header: false,
-		width: 280,
-		rootVisible: false,
-		useArrows: false,
-		lines: true,
-		autoScroll: true,
-		containerScroll: true,
-		exclusiveSelectedKey: null,
-		stateful: true,
-		filterOptionStartsWith: true,
-		countSelectedNodes: 0,
-		loader: new Ext.tree.TreeLoader({
-			preloadChildren: true,
-			clearOnLoad: false
-		}),
-		root: new Ext.tree.AsyncTreeNode({
-			text: TYPO3.l10n.localize('tcatree'),
-			id: 'root',
-			expanded: true,
-			children: TYPO3.Components.Tree.StandardTreeItemData[config.id]
-		}),
-		collapseFirst: false,
-		listeners: {
-			'checkchange': function(checkedNode, checked) {
-				if (Ext.isFunction(this.checkChangeHandler)) {
-					this.checkChangeHandler.call(this, checkedNode, checked);
-				}
-			},
-			scope: this
-		}
-	}, config);
-	TYPO3.Components.Tree.StandardTree.superclass.constructor.call(this, conf);
-};
-
-
-Ext.extend(TYPO3.Components.Tree.StandardTree, Ext.tree.TreePanel, {
-
+Ext.define('TYPO3.Components.Tree.StandardTree', {
+	extend: 'Ext.tree.Panel',
+	
+	constructor: function(config) {
+		var conf = Ext.apply({
+			header: false,
+			width: 280,
+			rootVisible: false,
+			useArrows: false,
+			lines: true,
+			autoScroll: true,
+			containerScroll: true,
+			exclusiveSelectedKey: null,
+			stateful: true,
+			filterOptionStartsWith: true,
+			countSelectedNodes: 0,
+				// Needs to be migrated to ExtJS 4
+			loader: new Ext.tree.TreeLoader({
+				preloadChildren: true,
+				clearOnLoad: false
+			}),
+			root: new Ext.tree.AsyncTreeNode({
+				text: TYPO3.l10n.localize('tcatree'),
+				id: 'root',
+				expanded: true,
+				children: TYPO3.Components.Tree.StandardTreeItemData[config.id]
+			}),
+			collapseFirst: false,
+			listeners: {
+				'checkchange': function(checkedNode, checked) {
+					if (Ext.isFunction(this.checkChangeHandler)) {
+						this.checkChangeHandler.call(this, checkedNode, checked);
+					}
+				},
+				scope: this
+			}
+		}, config);
+		this.callParent([conf]);
+	},
 	initComponent: function() {
-		Ext.apply(this, {
-			tbar: this.initialConfig.showHeader ? TYPO3.Components.Tree.Toolbar([], this) : null
-		});
-		TYPO3.Components.Tree.StandardTree.superclass.initComponent.call(this);
+		if (this.initialConfig.showHeader) {
+			Ext.apply(this, {
+				dockedItems: [{
+					xtype: 'toolbar',
+					dock: 'top',
+					items: TYPO3.Components.Tree.Toolbar([], this)
+				}]
+			});
+		}
+		this.callParent(arguments);
 	},
 	filterTree: function(filterText) {
 		var text = filterText.getValue();
@@ -139,7 +143,7 @@ TYPO3.Components.Tree.Toolbar = function(items, scope) {
 				]
 			}
 		},
-		new Ext.form.TextField({
+		Ext.create('Ext.form.field.Text', {
 			width: 150,
 			emptyText: TYPO3.l10n.localize('tcatree.findItem'),
 			enableKeyEvents: true,

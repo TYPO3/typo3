@@ -672,6 +672,11 @@ if (TYPO3_MODE === 'BE') {
 	);
 
 	t3lib_extMgm::registerExtDirectComponent(
+		'TYPO3.Components.VfsTree.DataProvider',
+		PATH_t3lib . 'tree/vfs/extdirect/class.t3lib_tree_vfs_extdirect_tree.php:t3lib_tree_vfs_extdirect_Tree'
+	);
+
+	t3lib_extMgm::registerExtDirectComponent(
 		'TYPO3.Components.PageTree.Commands',
 		PATH_t3lib . 'tree/pagetree/extdirect/class.t3lib_tree_pagetree_extdirect_tree.php:t3lib_tree_pagetree_extdirect_Commands',
 		'web',

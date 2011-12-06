@@ -26,70 +26,35 @@
  ***************************************************************/
 
 /**
- * Abstract Tree
+ * Abstract ExtJS tree based on ExtDirect
+ * extends with StateProvider
  *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
+ * @author Steffen Ritter
  * @package TYPO3
  * @subpackage t3lib
  */
-abstract class t3lib_tree_AbstractTree {
-	/**
-	 * Data Provider
-	 *
-	 * @var t3lib_tree_AbstractDataProvider
-	 */
-	protected $dataProvider = NULL;
+abstract class t3lib_tree_ExtJs_AbstractStatefulExtJsTree extends t3lib_tree_ExtJs_AbstractExtJsTree {
 
 	/**
-	 * Tree Node Decorator
+	 * State Provider
 	 *
-	 * @var t3lib_tree_renderer_Abstract
+	 * @var t3lib_tree_AbstractStateProvider
 	 */
-	protected $nodeRenderer = NULL;
+	protected $stateProvider = NULL;
 
 	/**
-	 * @param t3lib_tree_AbstractDataProvider $dataProvider
+	 * @param t3lib_tree_AbstractStateProvider $stateProvider
 	 * @return void
 	 */
-	public function setDataProvider(t3lib_tree_AbstractDataProvider $dataProvider) {
-		$this->dataProvider = $dataProvider;
+	public function setStateProvider(t3lib_tree_AbstractStateProvider $stateProvider) {
+		$this->stateProvider = $stateProvider;
 	}
 
 	/**
-	 * @return t3lib_tree_AbstractDataProvider
+	 * @return t3lib_tree_AbstractStateProvider
 	 */
-	public function getDataProvider() {
-		return $this->dataProvider;
-	}
-
-	/**
-	 * @param t3lib_tree_renderer_Abstract $nodeRenderer
-	 * @return void
-	 */
-	public function setNodeRenderer(t3lib_tree_renderer_Abstract $nodeRenderer) {
-		$this->nodeRenderer = $nodeRenderer;
-	}
-
-	/**
-	 * @return t3lib_tree_renderer_Abstract
-	 */
-	public function getNodeRenderer() {
-		return $this->nodeRenderer;
-	}
-
-	/**
-	 * Returns the root node
-	 *
-	 * @return t3lib_tree_Node
-	 */
-	abstract public function getRoot();
-
-	/**
-	 * @param mixed $search
-	 * @return t3lib_tree_Node
-	 */
-	public function find($search) {
-		return $this->getRoot()->find($search);
+	public function getStateProvider() {
+		return $this->stateProvider;
 	}
 
 }

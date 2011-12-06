@@ -36,7 +36,7 @@ final class t3lib_tree_pagetree_Commands {
 	/**
 	 * Visibly the page
 	 *
-	 * @param t3lib_tree_pagetree_Node $nodeData
+	 * @param t3lib_tree_pagetree_Node $node
 	 * @return void
 	 */
 	public static function visiblyNode(t3lib_tree_pagetree_Node $node) {
@@ -47,7 +47,7 @@ final class t3lib_tree_pagetree_Commands {
 	/**
 	 * Hide the page
 	 *
-	 * @param t3lib_tree_pagetree_Node $nodeData
+	 * @param t3lib_tree_pagetree_Node $node
 	 * @return void
 	 */
 	public static function disableNode(t3lib_tree_pagetree_Node $node) {
@@ -58,7 +58,7 @@ final class t3lib_tree_pagetree_Commands {
 	/**
 	 * Delete the page
 	 *
-	 * @param t3lib_tree_pagetree_Node $nodeData
+	 * @param t3lib_tree_pagetree_Node $node
 	 * @return void
 	 */
 	public static function deleteNode(t3lib_tree_pagetree_Node $node) {
@@ -69,7 +69,7 @@ final class t3lib_tree_pagetree_Commands {
 	/**
 	 * Restore the page
 	 *
-	 * @param t3lib_tree_pagetree_Node $nodeData
+	 * @param t3lib_tree_pagetree_Node $node
 	 * @param int $targetId
 	 * @return void
 	 */
@@ -85,7 +85,7 @@ final class t3lib_tree_pagetree_Commands {
 	/**
 	 * Updates the node label
 	 *
-	 * @param t3lib_tree_pagetree_Node $nodeData
+	 * @param t3lib_tree_pagetree_Node $node
 	 * @param string $updatedLabel
 	 * @return void
 	 */
@@ -276,6 +276,7 @@ final class t3lib_tree_pagetree_Commands {
 	 * Creates a node with the given record information's
 	 *
 	 * @param array $record
+	 * @param int $mountPoint
 	 * @return t3lib_tree_pagetree_Node
 	 */
 	public static function getNewNode($record, $mountPoint = 0) {
@@ -335,7 +336,7 @@ final class t3lib_tree_pagetree_Commands {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
 			$_params = array('pages', $record['uid']);
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
-				$stat .= t3lib_div::callUserFunction($_funcRef, $_params, $this);
+				$stat .= t3lib_div::callUserFunction($_funcRef, $_params, NULL);
 			}
 		}
 
@@ -358,11 +359,11 @@ final class t3lib_tree_pagetree_Commands {
 		$subNode->setSpriteIconCode($spriteIconCode);
 
 		if (!$subNode->canCreateNewPages() || intval($record['t3ver_state']) === 2) {
-			$subNode->setIsDropTarget(FALSE);
+			$subNode->setAllowDrop(FALSE);
 		}
 
 		if (!$subNode->canBeEdited() || !$subNode->canBeRemoved() || intval($record['t3ver_state']) === 2) {
-			$subNode->setDraggable(FALSE);
+			$subNode->setAllowDrag(FALSE);
 		}
 
 		return $subNode;

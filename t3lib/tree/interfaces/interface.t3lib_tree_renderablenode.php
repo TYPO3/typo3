@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2011 Steffen Ritter <info@steffen-ritter.net>
+ *  (c) 2010-2011 TYPO3 Tree Team <http://forge.typo3.org/projects/typo3v4-extjstrees>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,32 +26,25 @@
  ***************************************************************/
 
 /**
- * Class for tca tree
+ * Interface that defines the to be rendered
  *
- * @author	Steffen Ritter <info@steffen-ritter.net>
+ * @author Steffen Ritter <info@steffen-ritter.net>
  * @package TYPO3
- * @subpackage t3lib_tree
+ * @subpackage t3lib
  */
-
-class t3lib_tree_Tca_TcaTree extends t3lib_tree_AbstractTree {
+interface t3lib_tree_RenderableNode {
+	/**
+	 * returns a string representation
+	 *
+	 * @return string
+	 */
+	public function toString();
 
 	/**
-	 * Returns the root node
+	 * returns an array representation of an node
 	 *
-	 * @return t3lib_tree_Node
+	 * @return array
 	 */
-	public function getRoot() {
-		return $this->dataProvider->getRoot();
-	}
-
-	/**
-	 * Renders a tree
-	 *
-	 * @return mixed
-	 */
-	public function render() {
-		return $this->nodeRenderer->renderTree($this);
-	}
+	public function toArray();
 }
-
 ?>

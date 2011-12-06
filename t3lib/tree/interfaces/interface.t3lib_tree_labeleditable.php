@@ -26,39 +26,21 @@
  ***************************************************************/
 
 /**
- * Abstract Renderer
+ * Describes necessary methods if the node label should be editable
+ * within the tree.
  *
+ * @author Stefan Galinski <stefan.galinski@gmail.com>
  * @author Steffen Ritter <info@steffen-ritter.net>
  * @package TYPO3
  * @subpackage t3lib
  */
-abstract class t3lib_tree_Renderer_Abstract {
+interface t3lib_tree_LabelEditable {
 	/**
-	 * Renders a node recursive or just a single instance
+	 * Sets the new label
 	 *
-	 * @param t3lib_tree_RepresentationNode $node
-	 * @param bool $recursive
-	 * @return mixed
+	 * @param string $label
+	 * @return void
 	 */
-	abstract public function renderNode(t3lib_tree_RepresentationNode $node, $recursive = TRUE);
-
-	/**
-	 * Renders a node collection recursive or just a single instance
-	 *
-	 * @param t3lib_tree_NodeCollection $node
-	 * @param bool $recursive
-	 * @return mixed
-	 */
-	abstract public function renderNodeCollection(t3lib_tree_NodeCollection $collection, $recursive = TRUE);
-
-	/**
-	 * Renders an tree recursive or just a single instance
-	 *
-	 * @param t3lib_tree_AbstractTree $node
-	 * @param bool $recursive
-	 * @return mixed
-	 */
-	abstract public function renderTree(t3lib_tree_AbstractTree $tree, $recursive = TRUE);
+	public function setLabel($label);
 }
-
 ?>

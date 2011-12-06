@@ -23,18 +23,19 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-Ext.namespace('TYPO3.Components.PageTree');
-
 /**
  * @class TYPO3.Components.PageTree.DeletionDropZone
  *
  * Deletion Drop Zone
  *
  * @namespace TYPO3.Components.PageTree
- * @extends Ext.Panel
+ * @extends Ext.panel.Panel
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
-TYPO3.Components.PageTree.DeletionDropZone = Ext.extend(Ext.Panel, {
+Ext.define('TYPO3.Components.PageTree.DeletionDropZone', {
+	extend: 'Ext.panel.Panel',
+	alias: 'widget.typo3deletiondropzone',
+
 	/**
 	 * Border
 	 *
@@ -110,10 +111,7 @@ TYPO3.Components.PageTree.DeletionDropZone = Ext.extend(Ext.Panel, {
 
 				this.getEl().on('mouseout', function(e) {
 					if (!e.within(this.getEl(), true)) {
-						this.removeClass(this.id + '-activateProxyOver');
-						if (!this.app.activeTree.shouldCopyNode) {
-							this.app.activeTree.copyHint.show();
-						}
+						this.removeCls(this.id + '-activateProxyOver');
 					}
 				}, this);
 			}
@@ -139,7 +137,7 @@ TYPO3.Components.PageTree.DeletionDropZone = Ext.extend(Ext.Panel, {
 			'">&nbsp;</span><span id="' + this.id + '-text">' +
 			TYPO3.Components.PageTree.LLL.dropToRemove + '</span></p>';
 
-		TYPO3.Components.PageTree.DeletionDropZone.superclass.initComponent.apply(this, arguments);
+		this.callParent(arguments);
 	},
 
 
@@ -149,44 +147,49 @@ TYPO3.Components.PageTree.DeletionDropZone = Ext.extend(Ext.Panel, {
 	 * @return {void}
 	 */
 	createDropZone: function() {
-		(new Ext.dd.DropZone(this.getEl(), {
+		Ext.create('Ext.dd.DropZone', this.getEl(), {
 			ddGroup: this.ddGroup,
 
-			notifyOver: function(ddProxy, e) {
-				ddProxy.setDragElPos(e.xy[0], e.xy[1] - 60);
-				return this.id + '-proxyOver';
-			}.createDelegate(this),
+			notifyOver: Ext.Function.bind(
+				function(ddProxy, e) {
+					ddProxy.setDragElPos(e.xy[0], e.xy[1] - 60);
+					return this.id + '-proxyOver';
+				},
+				this
+			),
 
-			notifyEnter: function() {
-				this.addClass(this.id + '-activateProxyOver');
-				if (!this.app.activeTree.shouldCopyNode) {
-					this.app.activeTree.copyHint.hide();
-				}
+			notifyEnter: Ext.Function.bind(
+				function() {
+					this.addCls(this.id + '-activateProxyOver');
+					return this.id + '-proxyOver';
+				},
+				this
+			),
 
-				return this.id + '-proxyOver';
-			}.createDelegate(this),
-
-			notifyDrop: function(ddProxy, e, n) {
-				var node = n.node;
-				if (!node) {
-					return;
-				}
-
-				var tree = node.ownerTree;
-				var nodeHasChildNodes = (node.hasChildNodes() || node.isExpandable());
-
-				var callback = null;
-				if (!top.TYPO3.configuration.inWorkspace && !nodeHasChildNodes) {
-					callback = this.setRecoverState.createDelegate(this);
-				}
-
-				if (nodeHasChildNodes) {
-					node.ownerTree.commandProvider.confirmDelete(node, tree, callback, true);
-				} else {
-					node.ownerTree.commandProvider.deleteNode(node, tree, callback);
-				}
-			}.createDelegate(this)
-		}));
+			notifyDrop: Ext.Function.bind(
+				function (ddProxy, e, dragData) {
+					var view = dragData.view,
+						tree = view.panel,
+						node = view.getRecord(dragData.item);
+					if (!node) {
+						return;
+					}
+					var nodeHasChildNodes = (node.hasChildNodes() || node.isExpandable());
+	
+					var callback = null;
+					if (!top.TYPO3.configuration.inWorkspace && !nodeHasChildNodes) {
+						callback = Ext.Function.bind(this.setRecoverState, this);
+					}
+	
+					if (nodeHasChildNodes) {
+						tree.commandProvider.confirmDelete(node, tree, callback, true);
+					} else {
+						tree.commandProvider.deleteNode(node, tree, callback);
+					}
+				},
+				this
+			)
+		});
 	},
 
 	/**
@@ -207,7 +210,7 @@ TYPO3.Components.PageTree.DeletionDropZone = Ext.extend(Ext.Panel, {
 		this.setHeight(50);
 		this.updateIcon(TYPO3.Components.PageTree.Sprites.TrashCanRestore);
 		this.updateText(
-			node.text + '<br />' +
+			node.get('text') + '<br />' +
 			'<span class="' + this.id + '-restore">' +
 				'<span class="' + this.id + '-restoreText">' +
 				TYPO3.Components.PageTree.LLL.dropZoneElementRemoved +
@@ -218,13 +221,17 @@ TYPO3.Components.PageTree.DeletionDropZone = Ext.extend(Ext.Panel, {
 		this.app.doLayout();
 
 		++this.amountOfDrops;
-		(function() {
-			if (!--this.amountOfDrops) {
-				this.toOriginState();
-			}
-		}).defer(10000, this);
+		Ext.Function.defer(
+			function() {
+				if (!--this.amountOfDrops) {
+					this.toOriginState();
+				}
+			},
+			10000,
+			this
+		);
 
-		this.textClickHandler = this.restoreNode.createDelegate(this, [node, tree]);
+		this.textClickHandler = Ext.Function.bind(this.restoreNode, this, [node, tree]);
 		Ext.get(this.id + '-text').on('click', this.textClickHandler);
 
 		this.isPreviousSibling = false;
@@ -283,7 +290,7 @@ TYPO3.Components.PageTree.DeletionDropZone = Ext.extend(Ext.Panel, {
 		this.previousNode = this.textClickHandler = null;
 		this.isPreviousSibling = false;
 
-		if (hide && !this.app.activeTree.dragZone.dragging) {
+		if (hide && !this.app.getTree().getView().getPlugin('treeViewDragDrop').dragZone.dragging) {
 			this.hide();
 		}
 
@@ -310,13 +317,14 @@ TYPO3.Components.PageTree.DeletionDropZone = Ext.extend(Ext.Panel, {
 		this.updateText(TYPO3.Components.PageTree.LLL.dropZoneElementRestored);
 		this.app.doLayout();
 
-		(function() {
-			if (this.textClickHandler) {
-				this.toOriginState();
-			}
-		}).defer(3000, this);
+		Ext.Function.defer(
+			function() {
+				if (this.textClickHandler) {
+					this.toOriginState();
+				}
+			},
+			3000,
+			this
+		);
 	}
 });
-
-// XTYPE Registration
-Ext.reg('TYPO3.Components.PageTree.DeletionDropZone', TYPO3.Components.PageTree.DeletionDropZone);

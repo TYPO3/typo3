@@ -26,72 +26,44 @@
  ***************************************************************/
 
 /**
- * Abstract Tree
+ * Interface that defines the comparison of nodes
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  * @package TYPO3
  * @subpackage t3lib
  */
-abstract class t3lib_tree_AbstractTree {
+interface t3lib_tree_ComparableNode {
 	/**
-	 * Data Provider
+	 * Compare Node against another one
 	 *
-	 * @var t3lib_tree_AbstractDataProvider
-	 */
-	protected $dataProvider = NULL;
-
-	/**
-	 * Tree Node Decorator
+	 * Returns:
+	 * 1 if the current node is greater than the $other,
+	 * -1 if $other is greater than the current node and
+	 * 0 if the nodes are equal
 	 *
-	 * @var t3lib_tree_renderer_Abstract
-	 */
-	protected $nodeRenderer = NULL;
-
-	/**
-	 * @param t3lib_tree_AbstractDataProvider $dataProvider
-	 * @return void
-	 */
-	public function setDataProvider(t3lib_tree_AbstractDataProvider $dataProvider) {
-		$this->dataProvider = $dataProvider;
-	}
-
-	/**
-	 * @return t3lib_tree_AbstractDataProvider
-	 */
-	public function getDataProvider() {
-		return $this->dataProvider;
-	}
-
-	/**
-	 * @param t3lib_tree_renderer_Abstract $nodeRenderer
-	 * @return void
-	 */
-	public function setNodeRenderer(t3lib_tree_renderer_Abstract $nodeRenderer) {
-		$this->nodeRenderer = $nodeRenderer;
-	}
-
-	/**
-	 * @return t3lib_tree_renderer_Abstract
-	 */
-	public function getNodeRenderer() {
-		return $this->nodeRenderer;
-	}
-
-	/**
-	 * Returns the root node
+	 * <strong>Example</strong>
+	 * <pre>
+	 *	 if ($this->sortValue > $other->sortValue) {
+	 *		return 1;
+	 *	} elseif ($this->sortValue < $other->sortValue) {
+	 *		return -1;
+	 *	} else {
+	 *		return 0;
+	 *	}
+	 * </pre>
 	 *
-	 * @return t3lib_tree_Node
+	 * @param t3lib_tree_Node $other
+	 * @return integer see description
 	 */
-	abstract public function getRoot();
+	public function compareTo($other);
 
 	/**
-	 * @param mixed $search
-	 * @return t3lib_tree_Node
+	 * Compares a node if it's identical to another node by the id property.
+	 *
+	 * @param t3lib_tree_Node $other
+	 * @return boolean
 	 */
-	public function find($search) {
-		return $this->getRoot()->find($search);
-	}
+	public function equals(t3lib_tree_Node $other);
 
 }
-
 ?>
