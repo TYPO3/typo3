@@ -1,293 +1,312 @@
-/*!
- * Ext JS Library 3.3.1
- * Copyright(c) 2006-2010 Sencha Inc.
- * licensing@sencha.com
- * http://www.sencha.com/license
- */
+/*
+
+This file is part of Ext JS 4
+
+Copyright (c) 2011 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+GNU General Public License Usage
+This file may be used under the terms of the GNU General Public License version 3.0 as published by the Free Software Foundation and appearing in the file LICENSE included in the packaging of this file.  Please review the following information to ensure the GNU General Public License version 3.0 requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+
+If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
+
+*/
 /**
  * Hebrew Translations
  * By spartacus (from forums) 06-12-2007
  */
-
-Ext.UpdateManager.defaults.indicatorText = '<div class="loading-indicator">...пїЅпїЅпїЅпїЅ</div>';
-
-if(Ext.View){
-  Ext.View.prototype.emptyText = "";
-}
-
-if(Ext.grid.GridPanel){
-  Ext.grid.GridPanel.prototype.ddText = "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ {0}";
-}
-
-if(Ext.TabPanelItem){
-  Ext.TabPanelItem.prototype.closeText = "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ";
-}
-
-if(Ext.form.Field){
-  Ext.form.Field.prototype.invalidText = "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ";
-}
-
-if(Ext.LoadMask){
-  Ext.LoadMask.prototype.msg = "...пїЅпїЅпїЅпїЅ";
-}
-
-Date.monthNames = [
-  "пїЅпїЅпїЅпїЅпїЅ",
-  "пїЅпїЅпїЅпїЅпїЅпїЅ",
-  "пїЅпїЅпїЅ",
-  "пїЅпїЅпїЅпїЅпїЅ",
-  "пїЅпїЅпїЅ",
-  "пїЅпїЅпїЅпїЅ",
-  "пїЅпїЅпїЅпїЅ",
-  "пїЅпїЅпїЅпїЅпїЅпїЅ",
-  "пїЅпїЅпїЅпїЅпїЅпїЅ",
-  "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
-  "пїЅпїЅпїЅпїЅпїЅпїЅ",
-  "пїЅпїЅпїЅпїЅпїЅ"
-];
-
-Date.getShortMonthName = function(month) {
-  return Date.monthNames[month].substring(0, 3);
-};
-
-Date.monthNumbers = {
-  Jan : 0,
-  Feb : 1,
-  Mar : 2,
-  Apr : 3,
-  May : 4,
-  Jun : 5,
-  Jul : 6,
-  Aug : 7,
-  Sep : 8,
-  Oct : 9,
-  Nov : 10,
-  Dec : 11
-};
-
-Date.getMonthNumber = function(name) {
-  return Date.monthNumbers[name.substring(0, 1).toUpperCase() + name.substring(1, 3).toLowerCase()];
-};
-
-Date.dayNames = [
-  "пїЅ",
-  "пїЅ",
-  "пїЅ",
-  "пїЅ",
-  "пїЅ",
-  "пїЅ",
-  "пїЅ"
-];
-
-Date.getShortDayName = function(day) {
-  return Date.dayNames[day].substring(0, 3);
-};
-
-if(Ext.MessageBox){
-  Ext.MessageBox.buttonText = {
-    ok     : "пїЅпїЅпїЅпїЅпїЅ",
-    cancel : "пїЅпїЅпїЅпїЅпїЅ",
-    yes    : "пїЅпїЅ",
-    no     : "пїЅпїЅ"
-  };
-}
-
-if(Ext.util.Format){
-  Ext.util.Format.date = function(v, format){
-    if(!v) return "";
-    if(!(v instanceof Date)) v = new Date(Date.parse(v));
-    return v.dateFormat(format || "d/m/Y");
-  };
-}
-
-if(Ext.DatePicker){
-  Ext.apply(Ext.DatePicker.prototype, {
-    todayText         : "пїЅпїЅпїЅпїЅ",
-    minText           : ".пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ",
-    maxText           : ".пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ",
-    disabledDaysText  : "",
-    disabledDatesText : "",
-    monthNames        : Date.monthNames,
-    dayNames          : Date.dayNames,
-    nextText          : '(Control+Right) пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ',
-    prevText          : '(Control+Left) пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ',
-    monthYearText     : '(пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ Control+Up/Down) пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ',
-    todayTip          : "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ) {0})",
-    format            : "d/m/Y",
-    okText            : "&#160;пїЅпїЅпїЅпїЅпїЅ&#160;",
-    cancelText        : "пїЅпїЅпїЅпїЅпїЅ",
-    startDay          : 0
-  });
-}
-
-if(Ext.PagingToolbar){
-  Ext.apply(Ext.PagingToolbar.prototype, {
-    beforePageText : "пїЅпїЅпїЅпїЅ",
-    afterPageText  : "{0} пїЅпїЅпїЅпїЅ",
-    firstText      : "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ",
-    prevText       : "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ",
-    nextText       : "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ",
-    lastText       : "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ",
-    refreshText    : "пїЅпїЅпїЅпїЅ",
-    displayMsg     : "пїЅпїЅпїЅпїЅ {0} - {1} пїЅпїЅпїЅпїЅ {2}",
-    emptyMsg       : 'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ'
-  });
-}
-
-if(Ext.form.TextField){
-  Ext.apply(Ext.form.TextField.prototype, {
-    minLengthText : "{0} пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ",
-    maxLengthText : "{0} пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ",
-    blankText     : "пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ",
-    regexText     : "",
-    emptyText     : null
-  });
-}
-
-if(Ext.form.NumberField){
-  Ext.apply(Ext.form.NumberField.prototype, {
-    minText : "{0} пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ",
-    maxText : "{0} пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ",
-    nanText : "пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ {0}"
-  });
-}
-
-if(Ext.form.DateField){
-  Ext.apply(Ext.form.DateField.prototype, {
-    disabledDaysText  : "пїЅпїЅпїЅпїЅпїЅпїЅ",
-    disabledDatesText : "пїЅпїЅпїЅпїЅпїЅпїЅ",
-    minText           : "{0} пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ",
-    maxText           : "{0} пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ",
-    invalidText       : "{1} пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ {0}",
-    format            : "m/d/y",
-    altFormats        : "m/d/Y|m-d-y|m-d-Y|m/d|m-d|md|mdy|mdY|d|Y-m-d",
-    startDay          : 0
-  });
-}
-
-if(Ext.form.ComboBox){
-  Ext.apply(Ext.form.ComboBox.prototype, {
-    loadingText       : "...пїЅпїЅпїЅпїЅ",
-    valueNotFoundText : undefined
-  });
-}
-
-if(Ext.form.VTypes){
-  Ext.apply(Ext.form.VTypes, {
-    emailText    : '"user@example.com" пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ',
-    urlText      : '"http:/'+'/www.example.com" пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ',
-    alphaText    : '_пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ',
-    alphanumText : '_пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ'
-  });
-}
-
-if(Ext.form.HtmlEditor){
-  Ext.apply(Ext.form.HtmlEditor.prototype, {
-    createLinkText : ':пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ',
-    buttonTips : {
-      bold : {
-        title: '(Ctrl+B) пїЅпїЅпїЅпїЅпїЅ',
-        text: '.пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ',
-        cls: 'x-html-editor-tip'
-      },
-      italic : {
-        title: '(Ctrl+I) пїЅпїЅпїЅпїЅ',
-        text: '.пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ',
-        cls: 'x-html-editor-tip'
-      },
-      underline : {
-        title: '(Ctrl+U) пїЅпїЅ пїЅпїЅпїЅпїЅ',
-        text: '.пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ',
-        cls: 'x-html-editor-tip'
-      },
-      increasefontsize : {
-        title: 'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ',
-        text: '.пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ',
-        cls: 'x-html-editor-tip'
-      },
-      decreasefontsize : {
-        title: 'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ',
-        text: '.пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ',
-        cls: 'x-html-editor-tip'
-      },
-      backcolor : {
-        title: 'пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ',
-        text: '.пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ',
-        cls: 'x-html-editor-tip'
-      },
-      forecolor : {
-        title: 'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ',
-        text: '.пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ',
-        cls: 'x-html-editor-tip'
-      },
-      justifyleft : {
-        title: 'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ',
-        text: '.пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ',
-        cls: 'x-html-editor-tip'
-      },
-      justifycenter : {
-        title: 'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ',
-        text: '.пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ',
-        cls: 'x-html-editor-tip'
-      },
-      justifyright : {
-        title: 'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ',
-        text: '.пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ',
-        cls: 'x-html-editor-tip'
-      },
-      insertunorderedlist : {
-        title: 'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ',
-        text: '.пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ',
-        cls: 'x-html-editor-tip'
-      },
-      insertorderedlist : {
-        title: 'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ',
-        text: '.пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ',
-        cls: 'x-html-editor-tip'
-      },
-      createlink : {
-        title: 'пїЅпїЅпїЅпїЅпїЅ',
-        text: '.пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ',
-        cls: 'x-html-editor-tip'
-      },
-      sourceedit : {
-        title: 'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ',
-        text: '.пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ',
-        cls: 'x-html-editor-tip'
-      }
+Ext.onReady(function() {
+    if(Ext.Updater) {
+        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">...иетп</div>';
     }
-  });
-}
+    if(Ext.view.View){
+        Ext.view.View.prototype.emptyText = "";
+    }
 
-if(Ext.grid.GridView){
-  Ext.apply(Ext.grid.GridView.prototype, {
-    sortAscText  : "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ",
-    sortDescText : "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ",
-    lockText     : "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ",
-    unlockText   : "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ",
-    columnsText  : "пїЅпїЅпїЅпїЅпїЅпїЅ"
-  });
-}
+    if(Ext.grid.Panel){
+        Ext.grid.Panel.prototype.ddText = "щешеъ рбзшеъ {0}";
+    }
 
-if(Ext.grid.GroupingView){
-  Ext.apply(Ext.grid.GroupingView.prototype, {
-    emptyGroupText : '(пїЅпїЅпїЅ)',
-    groupByText    : 'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ',
-    showGroupsText : 'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ'
-  });
-}
+    if(Ext.TabPanelItem){
+        Ext.TabPanelItem.prototype.closeText = "свеш мщерйъ";
+    }
 
-if(Ext.grid.PropertyColumnModel){
-  Ext.apply(Ext.grid.PropertyColumnModel.prototype, {
-    nameText   : "пїЅпїЅ",
-    valueText  : "пїЅпїЅпїЅ",
-    dateFormat : "m/j/Y"
-  });
-}
+    if(Ext.form.field.Base){
+        Ext.form.field.Base.prototype.invalidText = "дтшк бщгд жд щвей";
+    }
 
-if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
-  Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
-    splitTip            : ".пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ",
-    collapsibleSplitTip : ".пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"
-  });
-}
+    if(Ext.LoadMask){
+        Ext.LoadMask.prototype.msg = "...иетп";
+    }
+
+    if(Ext.Date) {
+        Ext.Date.monthNames = [
+        "йреаш",
+        "фбшеаш",
+        "ошх",
+        "афшйм",
+        "оай",
+        "йерй",
+        "йемй",
+        "аевеси",
+        "сфиобш",
+        "аечиебш",
+        "ребобш",
+        "гцобш"
+        ];
+
+        Ext.Date.getShortMonthName = function(month) {
+            return Ext.Date.monthNames[month].substring(0, 3);
+        };
+
+        Ext.Date.monthNumbers = {
+            Jan : 0,
+            Feb : 1,
+            Mar : 2,
+            Apr : 3,
+            May : 4,
+            Jun : 5,
+            Jul : 6,
+            Aug : 7,
+            Sep : 8,
+            Oct : 9,
+            Nov : 10,
+            Dec : 11
+        };
+
+        Ext.Date.getMonthNumber = function(name) {
+            return Ext.Date.monthNumbers[name.substring(0, 1).toUpperCase() + name.substring(1, 3).toLowerCase()];
+        };
+
+        Ext.Date.dayNames = [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д",
+        "е",
+        "щ"
+        ];
+
+        Ext.Date.getShortDayName = function(day) {
+            return Ext.Date.dayNames[day].substring(0, 3);
+        };
+    }
+
+    if(Ext.MessageBox){
+        Ext.MessageBox.buttonText = {
+            ok     : "айщеш",
+            cancel : "бйием",
+            yes    : "лп",
+            no     : "ма"
+        };
+    }
+
+    if(Ext.util.Format){
+        Ext.apply(Ext.util.Format, {
+            thousandSeparator: '.',
+            decimalSeparator: ',',
+            currencySign: '\u20aa',  // Iraeli Shekel
+            dateFormat: 'd/m/Y'
+        });
+    }
+
+    if(Ext.picker.Date){
+        Ext.apply(Ext.picker.Date.prototype, {
+            todayText         : "дйен",
+            minText           : ".ъашйк жд зм чегн мъашйк ддъзмъй щрчбт",
+            maxText           : ".ъашйк жд зм мазш дъашйк дсефй щрчбт",
+            disabledDaysText  : "",
+            disabledDatesText : "",
+            monthNames        : Ext.Date.monthNames,
+            dayNames          : Ext.Date.dayNames,
+            nextText          : '(Control+Right) дзегщ дба',
+            prevText          : '(Control+Left) дзегщ дчегн',
+            monthYearText     : '(мбзйшъ щрд Control+Up/Down) бзш зегщ',
+            todayTip          : "очщ шеез) {0})",
+            format            : "d/m/Y",
+            startDay          : 0
+        });
+    }
+
+    if(Ext.picker.Month) {
+        Ext.apply(Ext.picker.Month.prototype, {
+            okText            : "&#160;айщеш&#160;",
+            cancelText        : "бйием"
+        });
+    }
+
+    if(Ext.toolbar.Paging){
+        Ext.apply(Ext.PagingToolbar.prototype, {
+            beforePageText : "тоег",
+            afterPageText  : "{0} оъек",
+            firstText      : "тоег шащеп",
+            prevText       : "тоег чегн",
+            nextText       : "тоег дба",
+            lastText       : "тоег азшеп",
+            refreshText    : "штрп",
+            displayMsg     : "оцйв {0} - {1} оъек {2}",
+            emptyMsg       : 'айп ойгт мдцвд'
+        });
+    }
+
+    if(Ext.form.field.Text){
+        Ext.apply(Ext.form.field.Text.prototype, {
+            minLengthText : "{0} даешк дойрйоамй мщгд жд деа",
+            maxLengthText : "{0} даешк дойшбй мщгд жд деа",
+            blankText     : "щгд жд длшзй",
+            regexText     : "",
+            emptyText     : null
+        });
+    }
+
+    if(Ext.form.field.Number){
+        Ext.apply(Ext.form.field.Number.prototype, {
+            minText : "{0} дтшк дойрйоамй мщгд жд деа",
+            maxText : "{0} дтшк дойшбй мщгд жд деа",
+            nanText : "деа ма осфш {0}"
+        });
+    }
+
+    if(Ext.form.field.Date){
+        Ext.apply(Ext.form.field.Date.prototype, {
+            disabledDaysText  : "ореишм",
+            disabledDatesText : "ореишм",
+            minText           : "{0} дъашйк бщгд жд зййб мдйеъ мазш",
+            maxText           : "{0} дъашйк бщгд жд зййб мдйеъ мфрй",
+            invalidText       : "{1} деа ма ъашйк ъчрй - зййб мдйеъ бфешои {0}",
+            format            : "m/d/y",
+            altFormats        : "m/d/Y|m-d-y|m-d-Y|m/d|m-d|md|mdy|mdY|d|Y-m-d"
+        });
+    }
+
+    if(Ext.form.field.ComboBox){
+        Ext.apply(Ext.form.field.ComboBox.prototype, {
+            valueNotFoundText : undefined
+        });
+        Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
+            loadingText       : "...иетп"
+        });
+    }
+
+    if(Ext.form.field.VTypes){
+        Ext.apply(Ext.form.field.VTypes, {
+            emailText    : '"user@example.com" щгд жд цшйк мдйеъ лъебъ геаш амчишерй бфешои',
+            urlText      : '"http:/'+'/www.example.com" щгд жд цшйк мдйеъ лъебъ айришри бфешои',
+            alphaText    : '_щгд жд йлем мдлйм шч аеъйеъ е',
+            alphanumText : '_щгд жд йлем мдлйм шч аеъйеъ, осфшйн е'
+        });
+    }
+
+    if(Ext.form.field.HtmlEditor){
+        Ext.apply(Ext.form.field.HtmlEditor.prototype, {
+            createLinkText : ':ара дчмг аъ лъебъ дайришри тбеш дчйщеш',
+            buttonTips : {
+                bold : {
+                    title: '(Ctrl+B) оегвщ',
+                    text: '.дгвщ аъ дичси дрбзш',
+                    cls: Ext.baseCSSPrefix + 'html-editor-tip'
+                },
+                italic : {
+                    title: '(Ctrl+I) рией',
+                    text: '.дид аъ дичси дрбзш',
+                    cls: Ext.baseCSSPrefix + 'html-editor-tip'
+                },
+                underline : {
+                    title: '(Ctrl+U) че ъзъй',
+                    text: '.десу чп ъзъй тбеш дичси дрбзш',
+                    cls: Ext.baseCSSPrefix + 'html-editor-tip'
+                },
+                increasefontsize : {
+                    title: 'двгм ичси',
+                    text: '.двгм вефп тбеш дичси дрбзш',
+                    cls: Ext.baseCSSPrefix + 'html-editor-tip'
+                },
+                decreasefontsize : {
+                    title: 'дчип ичси',
+                    text: '.дчип вефп тбеш дичси дрбзш',
+                    cls: Ext.baseCSSPrefix + 'html-editor-tip'
+                },
+                backcolor : {
+                    title: 'цбт шчт мичси',
+                    text: '.щрд аъ цбт дшчт тбеш дичси дрбзш',
+                    cls: Ext.baseCSSPrefix + 'html-editor-tip'
+                },
+                forecolor : {
+                    title: 'цбт вефп',
+                    text: '.щрд аъ цбт двефп тбеш дичси дрбзш',
+                    cls: Ext.baseCSSPrefix + 'html-editor-tip'
+                },
+                justifyleft : {
+                    title: 'йщеш мщоам',
+                    text: '.йщш щоамд аъ дичси дрбзш',
+                    cls: Ext.baseCSSPrefix + 'html-editor-tip'
+                },
+                justifycenter : {
+                    title: 'йщеш мошлж',
+                    text: '.йщш мошлж аъ дичси дрбзш',
+                    cls: Ext.baseCSSPrefix + 'html-editor-tip'
+                },
+                justifyright : {
+                    title: 'йщеш мйойп',
+                    text: '.йщш йойрд аъ дичси дрбзш',
+                    cls: Ext.baseCSSPrefix + 'html-editor-tip'
+                },
+                insertunorderedlist : {
+                    title: 'шщйоъ рчегеъ',
+                    text: '.дъзм шщйоъ рчегеъ',
+                    cls: Ext.baseCSSPrefix + 'html-editor-tip'
+                },
+                insertorderedlist : {
+                    title: 'шщйод ооесфшъ',
+                    text: '.дъзм шщйод ооесфшъ',
+                    cls: Ext.baseCSSPrefix + 'html-editor-tip'
+                },
+                createlink : {
+                    title: 'чйщеш',
+                    text: '.дфек аъ дичси дрбзш мчйщеш',
+                    cls: Ext.baseCSSPrefix + 'html-editor-tip'
+                },
+                sourceedit : {
+                    title: 'тшйлъ чег очеш',
+                    text: '.дцв чег очеш',
+                    cls: Ext.baseCSSPrefix + 'html-editor-tip'
+                }
+            }
+        });
+    }
+
+    if(Ext.grid.header.Container){
+        Ext.apply(Ext.grid.header.Container.prototype, {
+            sortAscText  : "оййп бсгш темд",
+            sortDescText : "оййп бсгш йешг",
+            lockText     : "ртм тоегд",
+            unlockText   : "щзшш тоегд",
+            columnsText  : "тоегеъ"
+        });
+    }
+
+    if(Ext.grid.GroupingFeature){
+        Ext.apply(Ext.grid.GroupingFeature.prototype, {
+            emptyGroupText : '(шйч)',
+            groupByText    : 'дцв бчбецеъ мфй щгд жд',
+            showGroupsText : 'дцв бчбецеъ'
+        });
+    }
+
+    if(Ext.grid.PropertyColumnModel){
+        Ext.apply(Ext.grid.PropertyColumnModel.prototype, {
+            nameText   : "щн",
+            valueText  : "тшк",
+            dateFormat : "m/j/Y"
+        });
+    }
+
+    if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
+        Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
+            splitTip            : ".ощек мщйрей вегм",
+            collapsibleSplitTip : ".ощек мщйрей вегм. мзйцд лфемд мдсъшд"
+        });
+    }
+});
