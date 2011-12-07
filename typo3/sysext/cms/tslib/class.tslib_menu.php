@@ -1615,6 +1615,7 @@ class tslib_menu {
 		$result = array();
 		if (is_array($basePageRow)) {
 			$res = $this->parent_cObj->exec_getQuery('tt_content', $selectSetup);
+
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$GLOBALS['TSFE']->sys_page->versionOL('tt_content', $row);
 
@@ -1635,7 +1636,10 @@ class tslib_menu {
 					$result[$row['uid']]['sectionIndex_uid'] = $row['uid'];
 				}
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result();
+
+			if (is_resource($res)) {
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			}
 		}
 
 		return $result;
