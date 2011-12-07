@@ -26,72 +26,58 @@
  ***************************************************************/
 
 /**
- * Abstract Tree
+ * Interface that defines the nodes based on records
  *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
+ * @author Steffen Ritter <info@steffen-ritter.net>
  * @package TYPO3
  * @subpackage t3lib
  */
-abstract class t3lib_tree_AbstractTree {
-	/**
-	 * Data Provider
-	 *
-	 * @var t3lib_tree_AbstractDataProvider
-	 */
-	protected $dataProvider = NULL;
+interface t3lib_tree_RecordBasedNode {
 
 	/**
-	 * Tree Node Decorator
+	 * Returns the source field of the label
 	 *
-	 * @var t3lib_tree_renderer_Abstract
+	 * @return string
 	 */
-	protected $nodeRenderer = NULL;
+	public function getTextSourceField();
 
 	/**
-	 * @param t3lib_tree_AbstractDataProvider $dataProvider
+	 * set the source field of the label
+	 *
+	 * @param string $field
 	 * @return void
 	 */
-	public function setDataProvider(t3lib_tree_AbstractDataProvider $dataProvider) {
-		$this->dataProvider = $dataProvider;
-	}
+	public function setTextSourceField($field);
 
 	/**
-	 * @return t3lib_tree_AbstractDataProvider
-	 */
-	public function getDataProvider() {
-		return $this->dataProvider;
-	}
-
-	/**
-	 * @param t3lib_tree_renderer_Abstract $nodeRenderer
+	 * Sets the database record array
+	 *
+	 * @param array $record
 	 * @return void
 	 */
-	public function setNodeRenderer(t3lib_tree_renderer_Abstract $nodeRenderer) {
-		$this->nodeRenderer = $nodeRenderer;
-	}
+	public function setRecord($record);
 
 	/**
-	 * @return t3lib_tree_renderer_Abstract
-	 */
-	public function getNodeRenderer() {
-		return $this->nodeRenderer;
-	}
-
-	/**
-	 * Returns the root node
+	 * Returns the database record array
 	 *
-	 * @return t3lib_tree_Node
+	 * @return array
 	 */
-	abstract public function getRoot();
+	public function getRecord();
 
 	/**
-	 * @param mixed $search
-	 * @return t3lib_tree_Node
+	 * Returns the table of the record data
+	 *
+	 * @return string
 	 */
-	public function find($search) {
-		return $this->getRoot()->find($search);
-	}
+	public function getSourceTable();
+
+	/**
+	 * sets the Table of record source data
+	 *
+	 * @param string $table
+	 * @return void
+	 */
+	public function setSourceTable($table);
 
 }
-
 ?>
