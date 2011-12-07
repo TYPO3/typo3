@@ -97,6 +97,7 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 		$this->parentObject = $parentObject;
 		$this->propertyName = $propertyName;
 		$this->fieldValue = $fieldValue;
+		reset($this->storage);
 	}
 
 	/**
