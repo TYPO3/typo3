@@ -5,9 +5,10 @@
  *
  * http://extjs.com/license
  */
+Ext.define('Ext.app.SearchField', {
+	extend: 'Ext.form.TwinTriggerField',
 
-Ext.app.SearchField = Ext.extend(Ext.form.TwinTriggerField, {
-	initComponent : function() {
+	initComponent: function() {
 		Ext.app.SearchField.superclass.initComponent.call(this);
 		this.on('specialkey', function(f, e) {
 			if (e.getKey() == e.ENTER) {

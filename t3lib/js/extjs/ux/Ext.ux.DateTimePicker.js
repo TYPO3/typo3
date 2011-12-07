@@ -1,15 +1,65 @@
-Ext.ns('Ext.ux', 'Ext.ux.menu', 'Ext.ux.form');
-
-Ext.ux.DateTimePicker = Ext.extend(Ext.DatePicker, {
+Ext.define('Ext.ux.DateTimePicker', {
+	extend: 'Ext.picker.Date',
+	alias:['widget.datetimepicker'],
 
 	timeFormat: 'H:i',
+	showToday: true,
+	ariaTitle: '',
+	cls: 'typo3-datetime-picker',
+	/**
+	 * ExtJS 4.0.7
+	 * Remove title that overlays qtips
+	 */
+	renderTpl: [
+		'<div class="{cls}" id="{id}" role="grid">',
+		    '<div role="presentation" class="{baseCls}-header">',
+			'<div class="{baseCls}-prev"><a id="{id}-prevEl" href="#" role="button" title="{prevText}"></a></div>',
+			'<div class="{baseCls}-month" id="{id}-middleBtnEl"></div>',
+			'<div class="{baseCls}-next"><a id="{id}-nextEl" href="#" role="button" title="{nextText}"></a></div>',
+		    '</div>',
+		    '<table id="{id}-eventEl" class="{baseCls}-inner" cellspacing="0" role="presentation" title="{ariaTitle} {value:this.longDay}">',
+			'<thead role="presentation"><tr role="presentation">',
+			    '<tpl for="dayNames">',
+				'<th role="columnheader" title="{.}"><span>{.:this.firstInitial}</span></th>',
+			    '</tpl>',
+			'</tr></thead>',
+			'<tbody role="presentation"><tr role="presentation">',
+			    '<tpl for="days">',
+				'{#:this.isEndOfWeek}',
+				'<td role="gridcell" id="{[Ext.id()]}">',
+				    '<a role="presentation" href="#" hidefocus="on" class="{parent.baseCls}-date" tabIndex="1">',
+					'<em role="presentation"><span role="presentation"></span></em>',
+				    '</a>',
+				'</td>',
+			    '</tpl>',
+			'</tr></tbody>',
+		    '</table>',
+		    '<tpl if="showToday">',
+			'<div id="{id}-footerEl" role="presentation" class="{baseCls}-footer"></div>',
+		    '</tpl>',
+		'</div>',
+		{
+		    firstInitial: function(value) {
+			return value.substr(0,1);
+		    },
+		    isEndOfWeek: function(value) {
+			// convert from 1 based index to 0 based
+			// by decrementing value once.
+			value--;
+			var end = value % 7 === 0 && value !== 0;
+			return end ? '</tr><tr role="row">' : '';
+		    },
+		    longDay: function(value){
+			return Ext.Date.format(value, this.longDayFormat);
+		    }
+		}
+	],
 
 	initComponent: function() {
 		var t = this.timeFormat.split(':');
 		this.hourFormat = t[0];
 		this.minuteFormat = t[1];
-
-		Ext.ux.DateTimePicker.superclass.initComponent.call(this);
+		this.callParent(arguments);
 	},
 
 	/**
@@ -43,12 +93,12 @@ Ext.ux.DateTimePicker = Ext.extend(Ext.DatePicker, {
 	 */
 	setValue: function(value) {
 		var old = this.value;
-		this.value = value.clearTime(true);
+		this.value = Ext.Date.clearTime(value,true);
 		if (this.el) {
 			this.update(this.value);
 		}
-		this.hourField.setValue(value.format(this.hourFormat));
-		this.minuteField.setValue(value.format(this.minuteFormat));
+		this.hourField.setValue(Ext.Date.format(value, this.hourFormat));
+		this.minuteField.setValue(Ext.Date.format(value, this.minuteFormat));
 	},
 
 	/**
@@ -56,8 +106,8 @@ Ext.ux.DateTimePicker = Ext.extend(Ext.DatePicker, {
 	 * @param {Date} value The date to set
 	 */
 	setTime: function(value) {
-		this.hourField.setValue(value.format(this.hourFormat));
-		this.minuteField.setValue(value.format(this.minuteFormat));
+		this.hourField.setValue(Ext.Date.format(value, this.hourFormat));
+		this.minuteField.setValue(Ext.Date.format(value, this.minuteFormat));
 	},
 
 	/**
@@ -65,192 +115,62 @@ Ext.ux.DateTimePicker = Ext.extend(Ext.DatePicker, {
 	 * @param {Date} value The date to which time should be added
 	 */
 	addTimeToValue: function(date) {
-		return date.clearTime().add(Date.HOUR, this.hourField.getValue()).add(Date.MINUTE, this.minuteField.getValue());
+		var localDate = Ext.Date.clearTime(date);
+		return Ext.Date.add(Ext.Date.add(localDate, Ext.Date.HOUR, this.hourField.inputEl.getValue()), Ext.Date.MINUTE, this.minuteField.inputEl.getValue());
 	},
 
-	onRender: function(container, position) {
-		var m = [
-			'<table cellspacing="0">',
-			'<tr><td class="x-date-left"><a href="#" title="',
-			this.prevText ,
-			'">&#160;</a></td><td class="x-date-middle" align="center"></td><td class="x-date-right"><a href="#" title="',
-			this.nextText ,
-			'">&#160;</a></td></tr>',
-			'<tr><td colspan="3"><table class="x-date-inner" cellspacing="0"><thead><tr>'
-		];
-		var dn = this.dayNames;
-		for (var i = 0; i < 7; i++) {
-			var d = this.startDay + i;
-			if (d > 6) {
-				d = d - 7;
-			}
-			m.push('<th><span>', dn[d].substr(0, 1), '</span></th>');
-		}
-		m[m.length] = "</tr></thead><tbody><tr>";
-		for (var i = 0; i < 42; i++) {
-			if (i % 7 == 0 && i != 0) {
-				m[m.length] = "</tr><tr>";
-			}
-			m[m.length] = '<td><a href="#" hidefocus="on" class="x-date-date" tabIndex="1"><em><span></span></em></a></td>';
-		}
-		m.push('</tr></tbody></table></td></tr>',
-			this.showToday ? '<tr><td colspan="3" class="x-date-bottom" align="center"></td></tr>' : '',
-			'</table><div class="x-date-mp"></div>'
-		);
+	onRender: function (container, position) {
+		var me = this,
+			days = new Array(me.numDays),
+			today = Ext.Date.format(new Date(), me.format);
 
-		var el = document.createElement("div");
-		el.className = "x-date-picker";
-		el.innerHTML = m.join("");
+		me.callParent(arguments);
+			// Destroying today button created by the parent class
+		me.todayBtn.destroy();
 
-		container.dom.insertBefore(el, position);
-
-		this.el = Ext.get(el);
-		this.eventEl = Ext.get(el.firstChild);
-
-		new Ext.util.ClickRepeater(this.el.child("td.x-date-left a"), {
-			handler: this.showPrevMonth,
-			scope: this,
-			preventDefault:true,
-			stopDefault:true
-		});
-
-		new Ext.util.ClickRepeater(this.el.child("td.x-date-right a"), {
-			handler: this.showNextMonth,
-			scope: this,
-			preventDefault:true,
-			stopDefault:true
-		});
-
-		this.mon(this.eventEl, "mousewheel", this.handleMouseWheel, this);
-
-		this.monthPicker = this.el.down('div.x-date-mp');
-		this.monthPicker.enableDisplayMode('block');
-
-		var kn = new Ext.KeyNav(this.eventEl, {
-			"left": function(e) {
-				e.ctrlKey ?
-					this.showPrevMonth() :
-					this.update(this.activeDate.add("d", -1));
-			},
-
-			"right": function(e) {
-				e.ctrlKey ?
-					this.showNextMonth() :
-					this.update(this.activeDate.add("d", 1));
-			},
-
-			"up": function(e) {
-				e.ctrlKey ?
-					this.showNextYear() :
-					this.update(this.activeDate.add("d", -7));
-			},
-
-			"down": function(e) {
-				e.ctrlKey ?
-					this.showPrevYear() :
-					this.update(this.activeDate.add("d", 7));
-			},
-
-			"pageUp": function(e) {
-				this.showNextMonth();
-			},
-
-			"pageDown": function(e) {
-				this.showPrevMonth();
-			},
-
-			"enter": function(e) {
-				e.stopPropagation();
-				this.fireEvent("select", this, this.value);
-				return true;
-			},
-
-			scope : this
-		});
-
-		this.mon(this.eventEl, "click", this.handleDateClick, this, {delegate: "a.x-date-date"});
-
-		this.el.select("table.x-date-inner").unselectable();
-		this.cells = this.el.select("table.x-date-inner tbody td");
-		this.textNodes = this.el.query("table.x-date-inner tbody span");
-
-		this.mbtn = new Ext.Button({
-			text: "&#160;",
-			tooltip: this.monthYearText,
-			renderTo: this.el.child("td.x-date-middle", true)
-		});
-
-		this.mon(this.mbtn, 'click', this.showMonthPicker, this);
-		this.mbtn.el.child('em').addClass("x-btn-arrow");
-
-		if (this.showToday) {
-			this.todayKeyListener = this.eventEl.addKeyListener(Ext.EventObject.SPACE, this.selectToday, this);
-			var today = (new Date()).dateFormat(this.format);
-			this.todayBtn = new Ext.Button({
-				text: String.format(this.todayText, today),
-				tooltip: String.format(this.todayTip, today),
-				handler: this.selectToday,
-				scope: this
-			});
-		}
-
-		this.formPanel = new Ext.form.FormPanel({
+		me.formPanel = Ext.create('Ext.form.Panel', {
+			cls: 'typo3-datetime-picker-footer',
 			layout: 'column',
-			renderTo: this.el.child("td.x-date-bottom", true),
-			baseCls: 'x-plain',
-			hideBorders: true,
-			labelAlign: 'left',
-			labelWidth: 10,
-			forceLayout: true,
-			items: [
-				{
+			renderTo: me.footerEl,
+			defaults: {
+				labelAlign: 'left',
+				labelSeparator: ''
+			},
+			items: [{
+					columnWidth: .3,
+					xtype: 'textfield',
+					cls: 'typo3-datetime-picker-hour',
+					id: this.getId() + '_hour',
+					maxLength: 2,
+					fieldLabel: ' ',
+					labelWidth: 16,
+					width: 20,
+					minValue: 0,
+					maxValue: 24,
+					allowBlank: false,
+					tabIndex: 1,
+					maskRe: /[0-9]/
+				},{
+					columnWidth: .3,
+					xtype: 'textfield',
+					cls: 'typo3-datetime-picker-minute',
+					id: this.getId() + '_minute',
+					maxLength: 2,
+					fieldLabel: ' :',
+					labelWidth: 5,
+					width: 20,
+					minValue: 0,
+					maxValue: 59,
+					allowBlank: false,
+					tabIndex: 2,
+					maskRe: /[0-9]/
+				}, Ext.create('Ext.button.Button', {
 					columnWidth: .4,
-					layout: 'form',
-					baseCls: 'x-plain',
-					items: [
-						{
-							xtype: 'textfield',
-							id: this.getId() + '_hour',
-							maxLength: 2,
-							fieldLabel: '',
-							labelWidth: 30,
-							width: 30,
-							minValue: 0,
-							maxValue: 24,
-							allowBlank: false,
-							labelSeparator: '',
-							tabIndex: 1,
-							maskRe: /[0-9]/
-						}
-					]
-				},
-				{
-					columnWidth: .3,
-					layout: 'form',
-					baseCls: 'x-plain',
-					items: [
-						{
-							xtype: 'textfield',
-							id:	this.getId() + '_minute',
-							maxLength: 2,
-							fieldLabel: ':',
-							labelWidth: 10,
-							width: 30,
-							minValue: 0,
-							maxValue: 59,
-							allowBlank: false,
-							labelSeparator: '',
-							tabIndex: 2,
-							maskRe: /[0-9]/
-						}
-					]
-				},
-				{
-					columnWidth: .3,
-					layout: 'form',
-					baseCls: 'x-plain',
-					items: [this.todayBtn]
-				}
+					text: Ext.String.format(me.todayText, today),
+					tooltip: Ext.String.format(me.todayTip, today),
+					handler: me.selectToday,
+					scope: me
+				})
 			]
 		});
 
@@ -276,63 +196,60 @@ Ext.ux.DateTimePicker = Ext.extend(Ext.DatePicker, {
 		if (Ext.isIE) {
 			this.el.repaint();
 		}
-		this.update(this.value);
 	},
 
-	// private
-	handleDateClick : function(e, t) {
+		// private
+	handleDateClick: function (e, t) {
 		e.stopEvent();
-		if (t.dateValue && !Ext.fly(t.parentNode).hasClass("x-date-disabled")) {
+		if (t.dateValue && !Ext.fly(t.parentNode).hasCls("x-date-disabled")) {
 			this.setValue(this.addTimeToValue(new Date(t.dateValue)));
 			this.fireEvent("select", this, this.value);
 		}
 	},
 
-	selectToday : function() {
+	selectToday: function() {
 		if (this.todayBtn && !this.todayBtn.disabled) {
 			this.setValue(new Date());
 			this.fireEvent("select", this, this.value);
 		}
 	},
 
-	update : function(date, forceRefresh) {
-		Ext.ux.DateTimePicker.superclass.update.call(this, date, forceRefresh);
-
+	update: function(date, forceRefresh) {
+		this.callParent(arguments);
 		if (this.showToday) {
 			this.setTime(new Date());
 		}
 	}
 });
-Ext.reg('datetimepicker', Ext.ux.DateTimePicker);
 
-
-Ext.ux.menu.DateTimeMenu = Ext.extend(Ext.menu.Menu, {
-	enableScrolling : false,
-	hideOnClick : true,
+Ext.define('Ext.ux.menu.DateTimeMenu', {
+	extend: 'Ext.menu.Menu',
+	alias: ['widget.datetimemenu'],
+	floating: true,
+	enableScrolling: false,
+	hideOnClick: true,
 	cls: 'x-date-menu x-datetime-menu',
-	initComponent : function() {
-
+	initComponent: function () {
 		Ext.apply(this, {
 			plain: true,
 			showSeparator: false,
-			items: this.picker = new Ext.ux.DateTimePicker(Ext.apply({
+			items: this.picker = Ext.create('Ext.ux.DateTimePicker', Ext.apply({
 				internalRender: this.strict || !Ext.isIE,
 				ctCls: 'x-menu-datetime-item x-menu-date-item'
 			}, this.initialConfig))
 		});
-		this.picker.purgeListeners();
+		this.picker.clearListeners();
 
-		Ext.ux.menu.DateTimeMenu.superclass.initComponent.call(this);
+		this.callParent(arguments);
 		this.relayEvents(this.picker, ['select']);
 		this.on('select', this.menuHide, this);
 		if (this.handler) {
-			this.on('select', this.handler, this.scope || this)
+			this.on('select', this.handler, this.scope || this);
 		}
 	},
 	menuHide: function() {
 		if (this.hideOnClick) {
-			this.hide(true);
+			this.hide();
 		}
 	}
 });
-Ext.reg('datetimemenu', Ext.ux.menu.DateTimeMenu);
