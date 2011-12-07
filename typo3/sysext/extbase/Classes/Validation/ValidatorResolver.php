@@ -40,7 +40,7 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 	 */
 	const PATTERN_MATCH_VALIDATORS = '/
 			(?:^|,\s*)
-			(?P<validatorName>[a-z0-9_]+)
+			(?P<validatorName>[a-z0-9_:]+)
 			\s*
 			(?:\(
 				(?P<validatorOptions>(?:\s*[a-z0-9]+\s*=\s*(?:
@@ -310,10 +310,15 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 	 */
 	protected function resolveValidatorObjectName($validatorName) {
 		if (strpos($validatorName, '_') !== FALSE && class_exists($validatorName)) return $validatorName;
-
-		$possibleClassName = 'Tx_Extbase_Validation_Validator_' . $this->unifyDataType($validatorName) . 'Validator';
-		if (class_exists($possibleClassName)) return $possibleClassName;
-
+		list($extensionName, $extensionValidatorName) = explode(':', $validatorName);
+		if (!$extensionValidatorName) {
+			$possibleClassName = 'Tx_Extbase_Validation_Validator_' . $this->unifyDataType($validatorName) . 'Validator';
+		} else {
+			$possibleClassName = 'Tx_' . $extensionName . '_Validation_Validator_' . $extensionValidatorName . 'Validator';
+		}
+		if (class_exists($possibleClassName)) {
+			return $possibleClassName;
+		}
 		return FALSE;
 	}
 
