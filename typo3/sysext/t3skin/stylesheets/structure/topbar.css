@@ -5,6 +5,7 @@ Topbar (whole upper area), containts Logo and toolbar
 
 #typo3-topbar {
 	z-index: 200;
+	overflow: visible !important;
 }
 
 #typo3-topbar div {

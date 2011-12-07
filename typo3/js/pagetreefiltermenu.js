@@ -49,7 +49,7 @@ var PagetreeFilterMenu = Class.create({
 
 		toolbarItem.blur();
 
-		if (toolbarItem.hasClass('active')) {
+		if (toolbarItem.hasCls('active')) {
 			treeFilterBox.fadeOut();
 			TYPO3PageTreeFilter.resetSearchField();
 		} else {
@@ -57,7 +57,7 @@ var PagetreeFilterMenu = Class.create({
 			treeFilterItem.focus();
 		}
 
-		toolbarItem.toggleClass('active');
+		toolbarItem.toggleCls('active');
 
 	}
 });

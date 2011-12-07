@@ -23,51 +23,52 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
-
 /**
  * iFrame panel
  *
  * @author	Steffen Kamper
  */
+Ext.define('TYPO3.iframePanel', {
+	extend: 'Ext.panel.Panel',
+	alias: ['widget.iframePanel'],
 
-Ext.ns('TYPO3');
-
-TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 	name: 'iframe',
 	iframe: null,
 	src: Ext.isIE && Ext.isSecure ? Ext.SSL_SECURE_URL : 'about:blank',
 	maskMessage: ' ',
 	doMask: true,
-
-		// component build
+	border: false,
+		// Build the iframePanel component
 	initComponent: function() {
-		this.bodyCfg = {
-			tag: 'iframe',
-			frameborder: '0',
-			src: this.src,
-			name: this.name,
-			style: 'float:left;' // this is needed to prevent offset of 2.5 pixel, see #15771
-		}
-		Ext.apply(this, {
-
+		this.callParent(arguments);
+			// Add the iframe element as item
+		this.add({
+			xtype: 'component',
+			itemId: 'iframe',
+			autoEl: {
+				tag: 'iframe',
+				name: this.name,
+				frameborder: '0',
+				src: this.src
+			},
+			listeners: {
+				afterrender: {
+					fn: this.onAfterRender,
+					scope: this,
+					single: true
+				}
+			}
 		});
-		TYPO3.iframePanel.superclass.initComponent.apply(this, arguments);
-
-		// apply the addListener patch for 'message:tagging'
-		this.addListener = this.on;
-
 	},
-
-	onRender : function() {
-		TYPO3.iframePanel.superclass.onRender.apply(this, arguments);
+	onAfterRender: function() {
 		this.maskMessage = ' ';
-		this.iframe = Ext.isIE ? this.body.dom.contentWindow : window.frames[this.name];
-		this.body.dom[Ext.isIE ? 'onreadystatechange' : 'onload'] = this.loadHandler.createDelegate(this);
+		this.iframeEl = this.getComponent('iframe').getEl();
+		this.iframe = Ext.isIE ? this.iframeEl.dom.contentWindow : window.frames[this.name];
+		this.iframeEl.dom[Ext.isIE ? 'onreadystatechange' : 'onload'] = Ext.Function.bind(this.loadHandler, this);
 	},
 
 	loadHandler: function() {
-		this.src = this.body.dom.src;
+		this.src = this.iframeEl.dom.src;
 		this.removeMask();
 	},
 
@@ -75,43 +76,46 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 		return this.iframe;
 	},
 	getUrl: function() {
-		return this.body.dom.src;
+		return this.iframeEl.dom.src;
 	},
 
 	setUrl: function(source) {
 		this.setMask();
-		this.body.dom.src = source;
+		this.iframeEl.dom.src = source;
 	},
 
 	resetUrl: function() {
 		this.setMask();
-		this.body.dom.src = this.src;
+		this.iframeEl.dom.src = this.src;
 	},
 
 	getIdFromUrl: function() {
-		var url = Ext.urlDecode(this.getUrl().split('?')[1]);
-		return url.id;
+		var queryString = this.getUrl().split('?')[1];
+		if (queryString) {
+			var url = Ext.urlDecode(queryString);
+		}
+		return url ? url.id : null;
 	},
 
 	refresh: function() {
 		if (!this.isVisible()) {
-            return;
-        }
-        this.setMask();
-		this.body.dom.src = this.body.dom.src;
+		    return;
+		}
+		this.setMask();
+		this.iframeEl.dom.src = this.iframeEl.dom.src;
 	},
 
 	/** @private */
 	setMask: function() {
 		if (this.doMask) {
-			this.el.mask(this.maskMessage, 'x-mask-loading-message');
-			this.el.addClass('t3-mask-loading');
-				// add an onClick handler to remove the mask while clicking on the loading message
+			this.getEl().mask(this.maskMessage, 'x-mask-loading-message');
+			this.getEl().addCls('t3-mask-loading');
+				// Add an onClick handler to remove the mask while clicking on the loading message
 				// useful if user cancels loading and wants to access the content again
-			this.el.child('.x-mask-loading-message').on(
+			this.getEl().child('.x-mask-loading-message').on(
 				'click',
 				function() {
-					this.el.unmask();
+					this.getEl().unmask();
 				},
 				this
 			);
@@ -120,8 +124,7 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 
 	removeMask: function() {
 		if (this.doMask) {
-			this.el.unmask();
+			this.getEl().unmask();
 		}
 	}
 });
-Ext.reg('iframePanel', TYPO3.iframePanel);

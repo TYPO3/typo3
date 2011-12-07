@@ -23,8 +23,10 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+Ext.define('TYPO3.modulePanel', {
+	extend: 'Ext.panel.Panel',
+	alias: ['widget.modulePanel'],
 
-TYPO3.modulePanel = Ext.extend(Ext.Panel, {
 	name: 'modulePanel',
 	maskMessage: ' ',
 	doMask: true,
@@ -39,7 +41,6 @@ TYPO3.modulePanel = Ext.extend(Ext.Panel, {
 				cls: 't3skin-typo3-module-panel-toolbar'
 			}
 		});
-		TYPO3.modulePanel.superclass.initComponent.apply(this, arguments);
+		this.callParent(arguments);
 	}
 });
-Ext.reg('modulePanel', TYPO3.modulePanel);
