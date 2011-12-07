@@ -26,72 +26,21 @@
  ***************************************************************/
 
 /**
- * Abstract Tree
+ * Describes necessary methods if the node label should be editable
+ * within the tree.
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
+ * @author Steffen Ritter <info@steffen-ritter.net>
  * @package TYPO3
  * @subpackage t3lib
  */
-abstract class t3lib_tree_AbstractTree {
+interface t3lib_tree_LabelEditable {
 	/**
-	 * Data Provider
+	 * Sets the new label
 	 *
-	 * @var t3lib_tree_AbstractDataProvider
-	 */
-	protected $dataProvider = NULL;
-
-	/**
-	 * Tree Node Decorator
-	 *
-	 * @var t3lib_tree_renderer_Abstract
-	 */
-	protected $nodeRenderer = NULL;
-
-	/**
-	 * @param t3lib_tree_AbstractDataProvider $dataProvider
+	 * @param string $label
 	 * @return void
 	 */
-	public function setDataProvider(t3lib_tree_AbstractDataProvider $dataProvider) {
-		$this->dataProvider = $dataProvider;
-	}
-
-	/**
-	 * @return t3lib_tree_AbstractDataProvider
-	 */
-	public function getDataProvider() {
-		return $this->dataProvider;
-	}
-
-	/**
-	 * @param t3lib_tree_renderer_Abstract $nodeRenderer
-	 * @return void
-	 */
-	public function setNodeRenderer(t3lib_tree_renderer_Abstract $nodeRenderer) {
-		$this->nodeRenderer = $nodeRenderer;
-	}
-
-	/**
-	 * @return t3lib_tree_renderer_Abstract
-	 */
-	public function getNodeRenderer() {
-		return $this->nodeRenderer;
-	}
-
-	/**
-	 * Returns the root node
-	 *
-	 * @return t3lib_tree_Node
-	 */
-	abstract public function getRoot();
-
-	/**
-	 * @param mixed $search
-	 * @return t3lib_tree_Node
-	 */
-	public function find($search) {
-		return $this->getRoot()->find($search);
-	}
-
+	public function setLabel($label);
 }
-
 ?>

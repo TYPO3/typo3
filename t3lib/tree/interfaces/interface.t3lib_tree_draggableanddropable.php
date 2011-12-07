@@ -26,72 +26,50 @@
  ***************************************************************/
 
 /**
- * Abstract Tree
+ * Describes necessary methods if the nodes are allowDrag and dropable
+ * within the tree.
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
+ * @author Steffen Ritter <info@steffen-ritter.net>
  * @package TYPO3
  * @subpackage t3lib
  */
-abstract class t3lib_tree_AbstractTree {
+interface t3lib_tree_DraggableAndDropable {
 	/**
-	 * Data Provider
+	 * Moves given node inside a destination node
 	 *
-	 * @var t3lib_tree_AbstractDataProvider
-	 */
-	protected $dataProvider = NULL;
-
-	/**
-	 * Tree Node Decorator
-	 *
-	 * @var t3lib_tree_renderer_Abstract
-	 */
-	protected $nodeRenderer = NULL;
-
-	/**
-	 * @param t3lib_tree_AbstractDataProvider $dataProvider
+	 * @param t3lib_tree_Node $node
+	 * @param t3lib_tree_Node $destination
 	 * @return void
 	 */
-	public function setDataProvider(t3lib_tree_AbstractDataProvider $dataProvider) {
-		$this->dataProvider = $dataProvider;
-	}
+	public function moveNodeInDestinationNode($node, $destination);
 
 	/**
-	 * @return t3lib_tree_AbstractDataProvider
-	 */
-	public function getDataProvider() {
-		return $this->dataProvider;
-	}
-
-	/**
-	 * @param t3lib_tree_renderer_Abstract $nodeRenderer
+	 * Moves given node after a destination node
+	 *
+	 * @param t3lib_tree_Node $node
+	 * @param t3lib_tree_Node $destination
 	 * @return void
 	 */
-	public function setNodeRenderer(t3lib_tree_renderer_Abstract $nodeRenderer) {
-		$this->nodeRenderer = $nodeRenderer;
-	}
+	public function moveNodeAfterDestinationNode($node, $destination);
 
 	/**
-	 * @return t3lib_tree_renderer_Abstract
-	 */
-	public function getNodeRenderer() {
-		return $this->nodeRenderer;
-	}
-
-	/**
-	 * Returns the root node
+	 * Copies given node inside a destination node
 	 *
-	 * @return t3lib_tree_Node
+	 * @param t3lib_tree_Node $node
+	 * @param t3lib_tree_Node $destination
+	 * @return void
 	 */
-	abstract public function getRoot();
+	public function copyNodeInDestinationNode($node, $destination);
 
 	/**
-	 * @param mixed $search
-	 * @return t3lib_tree_Node
+	 * Copies given node after a destination node
+	 *
+	 * @param t3lib_tree_Node $node
+	 * @param t3lib_tree_Node $destination
+	 * @return void
 	 */
-	public function find($search) {
-		return $this->getRoot()->find($search);
-	}
+	public function copyNodeAfterDestinationNode($node, $destination);
 
 }
-
 ?>
