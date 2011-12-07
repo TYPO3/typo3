@@ -30,8 +30,8 @@
 /*
  * Insert Smiley Plugin for TYPO3 htmlArea RTE
  */
-
-HTMLArea.InsertSmiley = Ext.extend(HTMLArea.Plugin, {
+Ext.define('HTMLArea.InsertSmiley', {
+ 	extend: 'HTMLArea.Plugin',
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -60,7 +60,7 @@ HTMLArea.InsertSmiley = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.1',
+			version		: '3.0',
 			developer	: 'Ki Master George & Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Ki Master George & Stanislas Rolland',
@@ -96,15 +96,20 @@ HTMLArea.InsertSmiley = Ext.extend(HTMLArea.Plugin, {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		var dimensions = this.getWindowDimensions({width:216, height:230}, buttonId);
-		this.dialog = new Ext.Window({
+		var dimensions = this.getWindowDimensions(
+			{
+				width: 220,
+				height: 230
+			},
+			buttonId
+		);
+		this.dialog = Ext.create('Ext.window.Window', {
 			title: this.localize('Insert Smiley'),
 			cls: 'htmlarea-window',
 			border: false,
 			width: dimensions.width,
-			height: 'auto',
-				// As of ExtJS 3.1, JS error with IE when the window is resizable
-			resizable: !Ext.isIE,
+			layout: 'anchor',
+			resizable: true,
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				close: {
@@ -113,10 +118,10 @@ HTMLArea.InsertSmiley = Ext.extend(HTMLArea.Plugin, {
 				}
 			},
 			items: {
-				xtype: 'box',
-				cls: 'emoticon-array',
-				tpl: new Ext.XTemplate(
-					'<tpl for="."><a href="#" class="emoticon" hidefocus="on" ext:qtitle="{alt}" ext:qtip="{title}"><img src="{file}" /></a></tpl>'
+				xtype: 'component',
+				cls: 'htmlarea-emoticon-array',
+				tpl: Ext.create('Ext.XTemplate',
+					'<tpl for="."><a href="#" class="htmlarea-emoticon" hidefocus="on" data-qtitle="{alt}" data-qtip="{title}"><img src="{file}" /></a></tpl>'
 				),
 				listeners: {
 					render: {
@@ -155,8 +160,8 @@ HTMLArea.InsertSmiley = Ext.extend(HTMLArea.Plugin, {
 		var icon = Ext.get(target).first();
 		var imgTag = this.editor.document.createElement('img');
 		imgTag.setAttribute('src', icon.getAttribute('src'));
-		imgTag.setAttribute('alt', target.getAttribute('ext:qtitle'));
-		imgTag.setAttribute('title', target.getAttribute('ext:qtip'));
+		imgTag.setAttribute('alt', target.getAttribute('data-qtitle'));
+		imgTag.setAttribute('title', target.getAttribute('data-qtip'));
 		this.editor.insertNodeAtSelection(imgTag);
 		if (!Ext.isIE) {
 			this.editor.selectNode(imgTag, false);

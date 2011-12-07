@@ -29,7 +29,27 @@
 /*
  * About Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.AboutEditor = Ext.extend(HTMLArea.Plugin, {
+/*
+ * Define data model for editor plugins data
+ */
+Ext.define('HTMLArea.model.AboutEditor', {
+	extend: 'Ext.data.Model',
+	fields: [{ 
+			name: 'name',
+			type: 'string'
+		},{
+			name: 'developer',
+			type: 'string'
+		},{
+			name: 'sponsor',
+			type: 'string'
+	}]
+});
+/*
+ * Define AboutEditor plugin
+ */
+Ext.define('HTMLArea.AboutEditor', {
+ 	extend: 'HTMLArea.Plugin',
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -38,7 +58,7 @@ HTMLArea.AboutEditor = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.1',
+			version		: '3.0',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -88,7 +108,13 @@ HTMLArea.AboutEditor = Ext.extend(HTMLArea.Plugin, {
 		this.openDialogue(
 			buttonId,
 			'About HTMLArea',
-			this.getWindowDimensions({width:450, height:350}, buttonId),
+			this.getWindowDimensions(
+				{
+					width: 480,
+					height: 350
+				},
+				buttonId
+			),
 			this.buildTabItems()
 		);
 		return false;
@@ -104,14 +130,13 @@ HTMLArea.AboutEditor = Ext.extend(HTMLArea.Plugin, {
 	 * @return	void
 	 */
 	openDialogue: function (buttonId, title, dimensions, tabItems) {
-		this.dialog = new Ext.Window({
+		this.dialog = Ext.create('Ext.window.Window', {
 			title: this.localize(title),
 			cls: 'htmlarea-window',
 			border: false,
 			width: dimensions.width,
-			height: 'auto',
-				// As of ExtJS 3.1, JS error with IE when the window is resizable
-			resizable: !Ext.isIE,
+			layout: 'anchor',
+			resizable: true,
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				close: {
@@ -125,10 +150,6 @@ HTMLArea.AboutEditor = Ext.extend(HTMLArea.Plugin, {
 				listeners: {
 					activate: {
 						fn: this.resetFocus,
-						scope: this
-					},
-					tabchange: {
-						fn: this.syncHeight,
 						scope: this
 					}
 				},
@@ -150,7 +171,7 @@ HTMLArea.AboutEditor = Ext.extend(HTMLArea.Plugin, {
 			// About tab
 		tabItems.push({
 			xtype: 'panel',
-			cls: 'about',
+			bodyCls: 'htmlarea-about',
 			title: this.localize('About'),
 			html: '<h1 id="version">htmlArea RTE ' +  RTEarea[0].version + '</h1>'
 				+ '<p>' + this.localize('free_editor').replace('<', '&lt;').replace('>', '&gt;') + '</p>'
@@ -160,44 +181,47 @@ HTMLArea.AboutEditor = Ext.extend(HTMLArea.Plugin, {
 					+ '<br />'
 					+ '&copy; 2002-2004 <a href="http://interactivetools.com" target="_blank">interactivetools.com, inc.</a><br />'
 					+ '&copy; 2003-2004 <a href="http://dynarch.com" target="_blank">dynarch.com LLC.</a><br />'
-					+ '&copy; 2004-2010 <a href="http://www.sjbr.ca" target="_blank">Stanislas Rolland</a><br />'
+					+ '&copy; 2004-2011 <a href="http://www.sjbr.ca" target="_blank">Stanislas Rolland</a><br />'
 					+ this.localize('All rights reserved.')
 				+ '</p>'
 		});
-			// Plugins tab
-		if (!this.store) {
-			this.store = new Ext.data.ArrayStore({
-				fields: [{ name: 'name'}, { name: 'developer'},  { name: 'sponsor'}],
-				sortInfo: {
-					field: 'name',
-					direction: 'ASC'
-				},
-				data: this.getPluginsInfo()
+			// Create pluginInfo global store
+		var pluginInfoStore = Ext.data.StoreManager.lookup('HTMLArea' + '-store-' + this.name + 'pluginInfo');
+		if (!pluginInfoStore) {
+			pluginInfoStore = Ext.create('Ext.data.ArrayStore', {
+				model: 'HTMLArea.model.AboutEditor',
+				sorters: [{
+					    property: 'name',
+					    direction: 'ASC'
+				}],
+				storeId: 'HTMLArea' + '-store-' + this.name + 'pluginInfo'
 			});
+			pluginInfoStore.loadData(this.getPluginsInfo());
 		}
 		tabItems.push({
-			xtype: 'panel',
-			cls: 'about-plugins',
-			height: 200,
+			xtype: 'grid',
+			cls: 'htmlarea-about-plugins',
+			height: 300,
 			title: this.localize('Plugins'),
+			store: pluginInfoStore,
 			autoScroll: true,
-			items: {
-				xtype: 'listview',
-				store: this.store,
-				reserveScrollOffset: true,
-				columns: [{
+			columns: [{
 					header: this.localize('Name'),
 					dataIndex: 'name',
-					width: .33
+					hideable: false,
+					width: 150
 				    },{
 					header: this.localize('Developer'),
 					dataIndex: 'developer',
-					width: .33
+					hideable: false,
+					width: 150
 				    },{
 					header: this.localize('Sponsored by'),
-					dataIndex: 'sponsor'
-				}]
-			}
+					dataIndex: 'sponsor',
+					hideable: false,
+					width: 150
+				    }
+			]
 		});
 		return tabItems;
 	},
@@ -209,11 +233,11 @@ HTMLArea.AboutEditor = Ext.extend(HTMLArea.Plugin, {
 	getPluginsInfo: function () {
 		var pluginsInfo = [];
 		Ext.iterate(this.editor.plugins, function (pluginId, plugin) {
-			pluginsInfo.push([
-				plugin.name + ' ' + plugin.version,
-				'<a href="' + plugin.developerUrl + '" target="_blank">' + plugin.developer + '</a>',
-				'<a href="' + plugin.sponsorUrl + '" target="_blank">' + plugin.sponsor + '</a>'
-			]);
+			pluginsInfo.push({
+				name: plugin.name + ' ' + plugin.version,
+				developer: '<a href="' + plugin.developerUrl + '" target="_blank">' + plugin.developer + '</a>',
+				sponsor: '<a href="' + plugin.sponsorUrl + '" target="_blank">' + plugin.sponsor + '</a>'
+			});
 		}, this);
 		return pluginsInfo;
 	}

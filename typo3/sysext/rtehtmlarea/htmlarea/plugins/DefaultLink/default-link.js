@@ -29,7 +29,8 @@
 /*
  * Default Link Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.DefaultLink = Ext.extend(HTMLArea.Plugin, {
+Ext.define('HTMLArea.DefaultLink', {
+ 	extend: 'HTMLArea.Plugin',
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -83,17 +84,24 @@ HTMLArea.DefaultLink = Ext.extend(HTMLArea.Plugin, {
 	 * Sets of default configuration values for dialogue form fields
 	 */
 	configDefaults: {
-		combo: {
-			editable: true,
-			selectOnFocus: true,
-			typeAhead: true,
-			triggerAction: 'all',
-			forceSelection: true,
-			mode: 'local',
-			valueField: 'value',
+		combobox: {
+			cls: 'htmlarea-combo',
 			displayField: 'text',
+			listConfig: {
+				cls: 'htmlarea-combo-list',
+				getInnerTpl: function () {
+					return '<div data-qtip="{value}" class="htmlarea-combo-list-item">{text}</div>';
+				}
+			},
+			editable: true,
+			forceSelection: true,
 			helpIcon: true,
-			tpl: '<tpl for="."><div ext:qtip="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
+			queryMode: 'local',
+			selectOnFocus: true,
+			triggerAction: 'all',
+			typeAhead: true,
+			valueField: 'value',
+			xtype: 'combobox'
 		}
 	},
 	/*
@@ -135,7 +143,7 @@ HTMLArea.DefaultLink = Ext.extend(HTMLArea.Plugin, {
 					var selection = this.editor._getSelection();
 					if (this.editor._selectionEmpty(selection)) {
 						TYPO3.Dialog.InformationDialog({
-							title: this.getButton(buttonId).tooltip.title,
+							title: this.getButton(buttonId).tooltip.text,
 							msg: this.localize('Select some text')
 						});
 						break;
@@ -155,7 +163,7 @@ HTMLArea.DefaultLink = Ext.extend(HTMLArea.Plugin, {
 					// Open dialogue window
 				this.openDialogue(
 					buttonId,
-					this.getButton(buttonId).tooltip.title,
+					this.getButton(buttonId).tooltip.text,
 					this.getWindowDimensions(
 						{
 							width: 470,
@@ -178,14 +186,39 @@ HTMLArea.DefaultLink = Ext.extend(HTMLArea.Plugin, {
 	 * @return	void
 	 */
 	openDialogue: function (buttonId, title, dimensions) {
-		this.dialog = new Ext.Window({
+			// Create target options global store
+		var targetStore = Ext.data.StoreManager.lookup('HTMLArea' + '-store-' + this.name + '-target');
+		if (!targetStore) {
+			targetStore = Ext.create('Ext.data.ArrayStore', {
+				model: 'HTMLArea.model.Default',
+				storeId: 'HTMLArea' + '-store-' + this.name + '-target'
+			});
+			targetStore.loadData([
+				{
+					text: this.localize('target_none'),
+					value: ''
+				},{
+					text: this.localize('target_blank'),
+					value: '_blank'
+				},{
+					text: this.localize('target_self'),
+					value: '_self'
+				},{
+					text: this.localize('target_top'),
+					value: '_top'
+				},{
+					text: this.localize('target_other'),
+					value: '_other'
+				}
+			]);
+		}
+		this.dialog = Ext.create('Ext.window.Window', {
 			title: this.localize(title) || title,
 			cls: 'htmlarea-window',
 			border: false,
 			width: dimensions.width,
-			height: 'auto',
-				// As of ExtJS 3.1, JS error with IE when the window is resizable
-			resizable: !Ext.isIE,
+			layout: 'anchor',
+			resizable: true,
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				afterrender: {
@@ -218,35 +251,24 @@ HTMLArea.DefaultLink = Ext.extend(HTMLArea.Plugin, {
 							fieldLabel: this.localize('Title (tooltip):'),
 							value: this.parameters.title,
 							helpTitle: this.localize('link_title_tooltip')
-						}, Ext.apply({
-							xtype: 'combo',
-							fieldLabel: this.localize('Target:'),
-							itemId: 'target',
-							helpTitle: this.localize('link_target_tooltip'),
-							store: new Ext.data.ArrayStore({
-								autoDestroy:  true,
-								fields: [ { name: 'text'}, { name: 'value'}],
-								data: [
-									[this.localize('target_none'), ''],
-									[this.localize('target_blank'), '_blank'],
-									[this.localize('target_self'), '_self'],
-									[this.localize('target_top'), '_top'],
-									[this.localize('target_other'), '_other']
-								]
-							}),
-							listeners: {
-								select: {
-									fn: this.onTargetSelect
-								}
+						}, Ext.applyIf({
+								fieldLabel: this.localize('Target:'),
+								helpTitle: this.localize('link_target_tooltip'),
+								hidden: !this.showTarget,
+								itemId: 'target',
+								listeners: {
+									select: {
+										fn: this.onTargetSelect
+									}
+								},
+								store: targetStore
 							},
-							hidden: !this.showTarget
-							}, this.configDefaults['combo'])
-						,{
-							itemId: 'frame',
-							name: 'frame',
+							this.configDefaults['combobox']
+						),{
+							itemId: 'framename',
+							name: 'framename',
 							fieldLabel: this.localize('frame'),
 							helpTitle: this.localize('frame_help'),
-							hideLabel: true,
 							hidden: true
 						}
 					]
@@ -264,16 +286,21 @@ HTMLArea.DefaultLink = Ext.extend(HTMLArea.Plugin, {
 	 * If the current target is not in the available options, show frame field
 	 */
 	onAfterRender: function (dialog) {
-		var targetCombo = dialog.find('itemId', 'target')[0];
-		if (!targetCombo.hidden && this.parameters.target) {
-			var frameField = dialog.find('itemId', 'frame')[0];
+		var targetCombo = dialog.down('component[itemId=target]');
+			// Somehow getStore method got lost...
+		if (!Ext.isFunction(targetCombo.getStore)) {
+			targetCombo.getStore = function () {
+				return targetCombo.store;
+			};
+		}
+		if (!targetCombo.isHidden() && this.parameters.target) {
+			var frameField = dialog.down('component[itemId=framename]');
 			var index = targetCombo.getStore().find('value', this.parameters.target);
 			if (index == -1) {
 					// The target is a specific frame name
 				targetCombo.setValue('_other');
 				frameField.setValue(this.parameters.target);
 				frameField.show();
-				frameField.label.show();
 			} else {
 				targetCombo.setValue(this.parameters.target);
 			}
@@ -282,28 +309,26 @@ HTMLArea.DefaultLink = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * Handler invoked when a target is selected
 	 */
-	onTargetSelect: function (combo, record) {
-		var frameField = combo.ownerCt.getComponent('frame');
-		if (record.get('value') == '_other') {
+	onTargetSelect: function (combo, records) {
+		var frameField = combo.ownerCt.getComponent('framename');
+		if (records[0].get('value') == '_other') {
 			frameField.show();
-			frameField.label.show();
 			frameField.focus();
-		} else if (!frameField.hidden) {
+		} else if (!frameField.isHidden()) {
 			frameField.hide();
-			frameField.label.hide();
 		}
 	},
 	/*
 	 * Handler invoked when the OK button is clicked
 	 */
 	onOK: function () {
-		var hrefField = this.dialog.find('itemId', 'href')[0];
+		var hrefField = this.dialog.down('component[itemId=href]');
 		var href = hrefField.getValue().trim();
 		if (href && href != 'http://') {
-			var title = this.dialog.find('itemId', 'title')[0].getValue();
-			var target = this.dialog.find('itemId', 'target')[0].getValue();
+			var title = this.dialog.down('component[itemId=title]').getValue();
+			var target = this.dialog.down('component[itemId=target]').getValue();
 			if (target == '_other') {
-				target = this.dialog.find('itemId', 'frame')[0].getValue().trim();
+				target = this.dialog.down('component[itemId=framename]').getValue().trim();
 			}
 			this.createLink(href, title, target);
 			this.close();
@@ -402,9 +427,9 @@ HTMLArea.DefaultLink = Ext.extend(HTMLArea.Plugin, {
 							node = el;
 						}
 						if (node != null && /^a$/i.test(node.nodeName)) {
-							button.setTooltip({ title: this.localize('Modify link') });
+							button.setTooltip({ text: this.localize('Modify link') });
 						} else {
-							button.setTooltip({ title: this.localize('Insert link') });
+							button.setTooltip({ text: this.localize('Insert link') });
 						}
 					}
 					break;

@@ -29,7 +29,27 @@
 /*
  * Block Style Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
+/*
+ * Define data model for blockstyle selector box
+ */
+Ext.define('HTMLArea.model.BlockStyle', {
+	extend: 'Ext.data.Model',
+	fields: [{ 
+			name: 'text',
+			type: 'string'
+		},{
+			name: 'value',
+			type: 'string'
+		},{
+			name: 'style',
+			type: 'string'
+	}]
+});
+/*
+ * Define BlockStyle plugin
+ */
+Ext.define('HTMLArea.BlockStyle', {
+	extend: 'HTMLArea.Plugin',
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -105,23 +125,28 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 			fieldLabel = this.localize('Block style label');
 		}
 		var dropDownConfiguration = {
+			action: 'onChange',
 			id: dropDownId,
 			tooltip: this.localize(dropDownId + '-Tooltip'),
 			fieldLabel: fieldLabel,
-			options: [[this.localize('No style'), 'none']],
-			action: 'onChange',
-			storeFields: [ { name: 'text'}, { name: 'value'}, { name: 'style'} ],
-			tpl: '<tpl for="."><div ext:qtip="{value}" style="{style}text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
+			options: [{
+				text: this.localize('No style'),
+				value: 'none',
+				style: ''
+			}],
+			model: 'HTMLArea.model.BlockStyle',
+			template: '<div data-qtip="{value}" style="{style}" class="htmlarea-combo-list-item">{text}</div>'
 		};
 		if (this.pageTSconfiguration) {
 			if (this.pageTSconfiguration.width) {
 				dropDownConfiguration.width = parseInt(this.pageTSconfiguration.width, 10);
 			}
+			dropDownConfiguration.listConfig = {};
 			if (this.pageTSconfiguration.listWidth) {
-				dropDownConfiguration.listWidth = parseInt(this.pageTSconfiguration.listWidth, 10);
+				dropDownConfiguration.listConfig.width = parseInt(this.pageTSconfiguration.listWidth, 10);
 			}
 			if (this.pageTSconfiguration.maxHeight) {
-				dropDownConfiguration.maxHeight = parseInt(this.pageTSconfiguration.maxHeight, 10);
+				dropDownConfiguration.listConfig.maxHeight = parseInt(this.pageTSconfiguration.maxHeight, 10);
 			}
 		}
 		this.registerDropDown(dropDownConfiguration);
@@ -209,7 +234,7 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 			// Monitor editor changing mode
 		this.editor.iframe.mon(this.editor, 'HTMLAreaEventModeChange', this.onModeChange, this);
 			// Create CSS Parser object
-		this.blockStyles = new HTMLArea.CSS.Parser({
+		this.blockStyles = Ext.create('HTMLArea.CSS.Parser', {
 			prefixLabelWithClassName: this.prefixLabelWithClassName,
 			postfixLabelWithClassName: this.postfixLabelWithClassName,
 			showTagFreeClasses: this.showTagFreeClasses,
@@ -284,10 +309,10 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 	initializeDropDown: function (dropDown) {
 		var store = dropDown.getStore();
 		store.removeAll(false);
-		store.insert(0, new store.recordType({
+		store.insert(0, {
 			text: this.localize('No style'),
 			value: 'none'
-		}));
+		});
 		dropDown.setValue('none');
 	},
 	/*
@@ -313,11 +338,11 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 						style = HTMLArea.classesValues[RegExp.leftContext + '-'];
 					}
 				}
-				store.add(new store.recordType({
+				store.add({
 					text: value,
 					value: cssClass,
 					style: style
-				}));
+				});
 			}, this);
 		}
 	},
@@ -336,10 +361,10 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 			if (index == -1 && !noUnknown) {
-				store.add(new store.recordType({
+				store.add({
 					text: this.localize('Unknown style'),
 					value: classNames[classNames.length-1]
-				}));
+				});
 				index = store.getCount()-1;
 				dropDown.setValue(classNames[classNames.length-1]);
 				if (!defaultClass) {

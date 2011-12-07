@@ -30,7 +30,8 @@
 /*
  * Context Menu Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
+Ext.define('HTMLArea.ContextMenu', {
+ 	extend: 'HTMLArea.Plugin',
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -49,7 +50,7 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '3.2',
+			version		: '4.0',
 			developer	: 'Mihai Bazon & Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'dynarch.com & Stanislas Rolland',
@@ -64,30 +65,51 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 	 * This function gets called when the editor gets generated
 	 */
 	onGenerate: function() {
-			// Build the context menu
-		this.menu = new Ext.menu.Menu(Ext.applyIf({
-			cls: 'htmlarea-context-menu',
-			defaultType: 'menuitem',
-			listeners: {
-				itemClick: {
-					fn: this.onItemClick,
-					scope: this
-				},
-				show: {
-					fn: this.onShow,
-					scope: this
-				},
-				hide: {
-					fn: this.onHide,
-					scope: this
-				}
-			},
-			items: this.buildItemsConfig()
-		}, this.pageTSConfiguration));
 			// Monitor contextmenu clicks on the iframe
-		this.menu.mon(Ext.get(this.editor.document.documentElement), 'contextmenu', this.show, this);
+		this.editor.iframe.mon(Ext.get(this.editor.document.documentElement), 'contextmenu', this.show, this, {stopEvent: true, single: true});
+	},
+	/*
+	 * Handler to show the context menu
+	 */
+	show: function (event, target) {
+			// Build the context menu on first use
+		if (!this.menu) {
+			this.menu = Ext.create(Ext.menu.Menu, Ext.apply({
+				bodyCls: 'htmlarea-context-menu',
+				defaultType: 'menuitem',
+				floating: true,
+				items: this.buildItemsConfig(),
+				listeners: {
+					afterrender: {
+						fn: this.afterRenderMenu,
+						scope: this,
+						single: true
+					},
+					click: {
+						fn: this.onItemClick,
+						scope: this
+					},
+					hide: {
+						fn: this.onMenuHide,
+						scope: this
+					},
+					show: {
+						fn: this.onMenuShow,
+						scope: this
+					}
+				},
+				maxHeight: 500
+			}, this.pageTSConfiguration));
+		}
+			// Need to wait a while for the toolbar state to be updated
+		Ext.Function.defer(this.showMenu, 150, this, [target]);
+	},
+	/*
+	 * Handler afterrender
+	 */
+	afterRenderMenu: function (menu) {
 			// Monitor editor being destroyed
-		this.menu.mon(this.editor, 'beforedestroy', this.onBeforeDestroy, this, {single: true});
+		menu.mon(this.editor.iframe, 'beforedestroy', this.onBeforeDestroy, this, {single: true});
 	},
 	/*
 	 * Create the menu items config
@@ -101,10 +123,10 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 			firstInGroup = true;
 			Ext.each(row, function (group) {
 				if (!firstInGroup) {
-					// If a visible item was added to the line
+						// If a visible item was added to the line
 					itemsConfig.push({
 							xtype: 'menuseparator',
-							cls: 'separator'
+							cls: 'htmlarea-context-menu-separator'
 					});
 				}
 				firstInGroup = true;
@@ -118,12 +140,23 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 							var itemId = button.getItemId();
 							itemsConfig.push({
 								itemId: itemId,
-								cls: 'button',
-								overCls: 'hover',
-								text: (button.contextMenuTitle ? button.contextMenuTitle : button.tooltip.title),
+								cls: 'htmlarea-context-menu-item',
+								overCls: 'htmlarea-context-menu-hover',
+								text: (button.contextMenuTitle ? button.contextMenuTitle : button.tooltip.text),
 								iconCls: button.iconCls,
 								helpText: (button.helpText ? button.helpText : this.localize(itemId + '-tooltip')),
-								hidden: true
+								listeners: {
+									afterrender: {
+										fn: function (menuitem) {
+											if (menuitem.helpText) {
+												Ext.tip.QuickTipManager.register({
+													target: menuitem,
+													text: menuitem.helpText
+												});
+											}
+										}
+									}
+								}
 							});
 							firstInGroup = false;
 						}
@@ -138,7 +171,7 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 		if (!firstInGroup) {
 			itemsConfig.push({
 					xtype: 'menuseparator',
-					cls: 'separator'
+					cls: 'htmlarea-context-menu-separator'
 			});
 		}
 		 	// Add special target delete item
@@ -153,24 +186,10 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 		return itemsConfig;
 	},
 	/*
-	 * Handler when the menu gets shown
+	 * Handler when the mouse goes down in the editor iframe
 	 */
-	onShow: function () {
-		this.menu.mon(Ext.get(this.editor.document.documentElement), 'mousedown', this.menu.hide, this.menu, {single: true});
-	},
-	/*
-	 * Handler when the menu gets hidden
-	 */
-	onHide: function () {
-		this.menu.mun(Ext.get(this.editor.document.documentElement), 'mousedown', this.menu.hide, this.menu);
-	},
-	/*
-	 * Handler to show the context menu
-	 */
-	show: function (event, target) {
-		event.stopEvent();
-			// Need to wait a while for the toolbar state to be updated
-		this.showMenu.defer(150, this, [target]);
+	hideMenu: function () {
+		this.menu.hide();
 	},
 	/*
 	 * Show the context menu
@@ -180,48 +199,54 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 		if (!Ext.isIE) {
 			this.ranges = this.editor.getSelectionRanges();
 		}
-		var iframeEl = this.editor.iframe.getEl();
-			// Show the context menu
-		this.menu.showAt([Ext.fly(target).getX() + iframeEl.getX(), Ext.fly(target).getY() + iframeEl.getY()]);
+			// There is nothing to understand here...
+		this.menu.showBy(this.editor.iframe, 'tl-tr?');
+		this.menu.showBy(this.editor.iframe, 'tl-tr?');
 	},
 	/*
 	 * Show items depending on context
 	 */
 	showContextItems: function (target) {
-		var lastIsSeparator = false, lastIsButton = false, xtype, lastVisible;
-		this.menu.cascade(function (menuItem) {
+		var lastIsSeparator = false,
+			lastIsButton = false,
+			xtype,
+			lastVisible;
+		this.menu.items.each(function (menuItem) {
 			xtype = menuItem.getXType();
-			if (xtype === 'menuseparator') {
-				menuItem.setVisible(lastIsButton);
-				lastIsButton = false;
-			} else if (xtype === 'menuitem') {
-				var button = this.getButton(menuItem.getItemId());
-				if (button) {
-					var text = button.contextMenuTitle ? button.contextMenuTitle : button.tooltip.title;
-					if (menuItem.text != text) {
-						menuItem.setText(text);
-					}
-					menuItem.helpText = button.helpText ? button.helpText : menuItem.helpText;
-					menuItem.setVisible(!button.disabled);
-					lastIsButton = lastIsButton || !button.disabled;
-				} else {
-						// Special target delete item
-					this.deleteTarget = target;
-					if (/^(html|body)$/i.test(target.nodeName)) {
-						this.deleteTarget = null;
-					} else if (/^(table|thead|tbody|tr|td|th|tfoot)$/i.test(target.nodeName)) {
-						this.deleteTarget = Ext.fly(target).findParent('table');
-					} else if (/^(ul|ol|dl|li|dd|dt)$/i.test(target.nodeName)) {
-						this.deleteTarget = Ext.fly(target).findParent('ul') || Ext.fly(target).findParent('ol') || Ext.fly(target).findParent('dl');
-					}
-					if (this.deleteTarget) {
-						menuItem.setVisible(true);
-						menuItem.setText(this.localize('Remove the') + ' &lt;' + this.deleteTarget.nodeName.toLowerCase() + '&gt; ');
-						lastIsButton = true;
+			switch (xtype) {
+				case 'menuseparator':
+					menuItem.setVisible(lastIsButton);
+					lastIsButton = false;
+					break;
+				case 'menuitem':
+					var button = this.getButton(menuItem.getItemId());
+					if (button) {
+						var text = button.contextMenuTitle ? button.contextMenuTitle : button.tooltip.text;
+						if (menuItem.text != text) {
+							menuItem.setText(text);
+						}
+						menuItem.helpText = button.helpText ? button.helpText : menuItem.helpText;
+						menuItem.setVisible(!button.disabled);
+						lastIsButton = lastIsButton || !button.disabled;
 					} else {
-						menuItem.setVisible(false);
+							// Special target delete item
+						this.deleteTarget = target;
+						if (/^(html|body)$/i.test(target.nodeName)) {
+							this.deleteTarget = null;
+						} else if (/^(table|thead|tbody|tr|td|th|tfoot)$/i.test(target.nodeName)) {
+							this.deleteTarget = Ext.fly(target).findParent('table');
+						} else if (/^(ul|ol|dl|li|dd|dt)$/i.test(target.nodeName)) {
+							this.deleteTarget = Ext.fly(target).findParent('ul') || Ext.fly(target).findParent('ol') || Ext.fly(target).findParent('dl');
+						}
+						if (this.deleteTarget) {
+							menuItem.setVisible(true);
+							menuItem.setText(this.localize('Remove the') + ' &lt;' + this.deleteTarget.nodeName.toLowerCase() + '&gt; ');
+							lastIsButton = true;
+						} else {
+							menuItem.setVisible(false);
+						}
 					}
-				}
+					break;
 			}
 			if (!menuItem.hidden) {
 				lastVisible = menuItem;
@@ -233,34 +258,52 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 		}
 	},
 	/*
-	 * Handler invoked when a menu item is clicked on
+	 * Handler invoked when a menu is clicked on
 	 */
-	onItemClick: function (item, event) {
-		if (!Ext.isIE) {
-			this.editor.setSelectionRanges(this.ranges);
-		}
-		var button = this.getButton(item.getItemId());
-		if (button) {
-			button.fireEvent('HTMLAreaEventContextMenu', button, event);
-		} else if (item.getItemId() === 'DeleteTarget') {
-				// Do not leave a non-ie table cell empty
-			var parent = this.deleteTarget.parentNode;
-			parent.normalize();
-			if (!Ext.isIE && /^(td|th)$/i.test(parent.nodeName) && parent.childNodes.length == 1) {
+	onItemClick: function (menu, item, event) {
+		if (item) {
+			if (!Ext.isIE) {
+				this.editor.setSelectionRanges(this.ranges);
+			}
+			var button = this.getButton(item.getItemId());
+			if (button) {
+				button.fireEvent('HTMLAreaEventContextMenu', button, event, null);
+			} else if (item.getItemId() === 'DeleteTarget') {
 					// Do not leave a non-ie table cell empty
-				parent.appendChild(this.editor.document.createElement('br'));
+				var parent = this.deleteTarget.parentNode;
+				parent.normalize();
+				if (!Ext.isIE && /^(td|th)$/i.test(parent.nodeName) && parent.childNodes.length == 1) {
+						// Do not leave a non-ie table cell empty
+					parent.appendChild(this.editor.document.createElement('br'));
+				}
+					// Try to find a reasonable replacement selection
+				var nextSibling = this.deleteTarget.nextSibling;
+				var previousSibling = this.deleteTarget.previousSibling;
+				if (nextSibling) {
+					this.editor.selectNode(nextSibling, true);
+				} else if (previousSibling) {
+					this.editor.selectNode(previousSibling, false);
+				}
+				HTMLArea.removeFromParent(this.deleteTarget);
+				this.editor.updateToolbar();
 			}
-				// Try to find a reasonable replacement selection
-			var nextSibling = this.deleteTarget.nextSibling;
-			var previousSibling = this.deleteTarget.previousSibling;
-			if (nextSibling) {
-				this.editor.selectNode(nextSibling, true);
-			} else if (previousSibling) {
-				this.editor.selectNode(previousSibling, false);
-			}
-			HTMLArea.removeFromParent(this.deleteTarget);
-			this.editor.updateToolbar();
 		}
+	},
+	/*
+	 * Handler when the menu gets hidden
+	 */
+	onMenuHide: function (menu) {
+			// Stop listening to mousedown
+		menu.mun(Ext.get(this.editor.document.documentElement), 'mousedown', this.hideMenu, this);
+			// Resume listening to contextmenu
+		menu.mon(Ext.get(this.editor.document.documentElement), 'contextmenu', this.show, this, {stopEvent: true, single: true});
+	},
+	/*
+	 * Handler when the menu gets shown
+	 */
+	onMenuShow: function (menu) {
+			// Hide the menu when the mouse goes down in the editor iframe
+		menu.mon(Ext.get(this.editor.document.documentElement), 'mousedown', this.hideMenu, this, { single: true });
 	},
 	/*
 	 * Handler invoked when the editor is about to be destroyed
@@ -269,7 +312,7 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 		this.menu.items.each(function (menuItem) {
 			Ext.QuickTips.unregister(menuItem);
 		});
-	 	this.menu.removeAll(true);
-	 	this.menu.destroy();
+		this.menu.removeAll(true);
+		this.menu.destroy();
 	}
 });

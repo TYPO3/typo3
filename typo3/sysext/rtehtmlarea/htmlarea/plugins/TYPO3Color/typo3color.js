@@ -27,7 +27,8 @@
 /*
  * TYPO3 Color Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
+Ext.define('HTMLArea.TYPO3Color', {
+ 	extend: 'HTMLArea.Plugin',
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -135,7 +136,7 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 			this.getWindowDimensions(
 				{
 					width: 350,
-					height: 350
+					height: 330
 				},
 				buttonId
 			),
@@ -153,8 +154,9 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 		if (!this.disableColorPicker) {
 			paletteItems.push({
 				xtype: 'container',
+				layout: 'fit',
 				items: {
-					xtype: 'colorpalette',
+					xtype: 'colorpicker',
 					itemId: 'color-palette',
 					colors: this.colors,
 					cls: 'color-palette',
@@ -173,13 +175,14 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 		if (this.colorsConfiguration) {
 			paletteItems.push({
 				xtype: 'container',
+				layout: 'fit',
 				items: {
-					xtype: 'colorpalette',
+					xtype: 'colorpicker',
 					itemId: 'custom-colors',
 					cls: 'htmlarea-custom-colors',
-					colors: this.colorsConfiguration,
+					data: this.colorsConfiguration,
 					value: (element && element.style[this.styleProperty[buttonId]]) ? HTMLArea.util.Color.colorToHex(element.style[this.styleProperty[buttonId]]).substr(1, 6) : '',
-					tpl: new Ext.XTemplate(
+					tpl: Ext.create('Ext.XTemplate',
 						'<tpl for="."><a href="#" class="color-{1}" hidefocus="on"><em><span style="background:#{1}" unselectable="on">&#160;</span></em><span unselectable="on">{0}<span></a></tpl>'
 					),
 					allowReselect: true,
@@ -201,26 +204,33 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 			xtype: 'displayfield',
 			itemId: 'show-color',
 			cls: 'show-color',
-			width: 60,
+			fieldLabel: '&nbsp;',
+			width: 180,
 			height: 22,
-			helpTitle: this.localize(buttonId)
+			labelSeparator: '',
+			helpTitle: this.localize(buttonId),
+			listeners: {
+				afterrender: {
+					fn: this.onAfterRender,
+					scope: this
+				}
+			}
 		});
 		itemsConfig.push({
 			itemId: 'color',
 			cls: 'color',
-			width: 60,
-			minValue: 0,
+			width: 180,
 			value: (element && element.style[this.styleProperty[buttonId]]) ? HTMLArea.util.Color.colorToHex(element.style[this.styleProperty[buttonId]]).substr(1, 6) : '',
 			enableKeyEvents: true,
 			fieldLabel: this.localize(buttonId),
 			helpTitle: this.localize(buttonId),
 			listeners: {
-				change: {
-					fn: this.onChange,
-					scope: this
-				},
 				afterrender: {
 					fn: this.onAfterRender,
+					scope: this
+				},
+				change: {
+					fn: this.onChange,
 					scope: this
 				}
 			}
@@ -229,9 +239,9 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 			xtype: 'fieldset',
 			title: this.localize('color_title'),
 			defaultType: 'textfield',
-			labelWidth: 175,
 			defaults: {
-				helpIcon: false
+				helpIcon: false,
+				labelWidth: 120
 			},
 			items: itemsConfig
 		};
@@ -240,15 +250,15 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 	 * On select handler: set the value of the color field, display the new color and update the other palette
 	 */
 	onSelect: function (palette, color) {
-		this.dialog.find('itemId', 'color')[0].setValue(color);
+		this.dialog.down('component[itemId=color]').setValue(color);
 		this.showColor(color);
-		if (palette.getItemId() == 'color-palette') {
-			var customPalette = this.dialog.find('itemId', 'custom-colors')[0];
+		if (palette.getItemId() === 'color-palette') {
+			var customPalette = this.dialog.down('component[itemId=custom-colors]');
 			if (customPalette) {
 				customPalette.deSelect();
 			}
 		} else {
-			var standardPalette = this.dialog.find('itemId', 'color-palette')[0];
+			var standardPalette = this.dialog.down('component[itemId=color-palette]');
 			if (standardPalette) {
 				standardPalette.deSelect();
 			}
@@ -257,27 +267,32 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * Display the selected color
 	 */
-	showColor: function (color) {
-		if (color) {
+	showColor: function (color, showField) {
+		if (!showField) {
+			var showField = this.dialog.down('component[itemId=show-color]');
+		}
+		if (color.length) {
 			var newColor = color;
 			if (newColor.indexOf('#') == 0) {
 				newColor = newColor.substr(1);
 			}
-			this.dialog.find('itemId', 'show-color')[0].el.setStyle('backgroundColor', HTMLArea.util.Color.colorToHex(parseInt(newColor, 16)));
+			Ext.fly(showField.getEl().query('.x-form-item-body')[0]).setStyle('backgroundColor', HTMLArea.util.Color.colorToHex(parseInt(newColor, 16)));
+		} else {
+			Ext.fly(showField.getEl().query('.x-form-item-body')[0]).setStyle('backgroundColor', '');
 		}
 	},
 	/*
 	 * On change handler: display the new color and select it in the palettes, if it exists
 	 */
 	onChange: function (field, value) {
-		if (value) {
+		if (value != null) {
 			var color = value.toUpperCase();
 			this.showColor(color);
-			var standardPalette = this.dialog.find('itemId', 'color-palette')[0];
+			var standardPalette = this.dialog.down('component[itemId=color-palette]');
 			if (standardPalette) {
 				standardPalette.select(color);
 			}
-			var customPalette = this.dialog.find('itemId', 'custom-colors')[0];
+			var customPalette = this.dialog.down('component[itemId=custom-colors]');
 			if (customPalette) {
 				customPalette.select(color);
 			}
@@ -286,9 +301,10 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * On after render handler: display the color
 	 */
-	onAfterRender: function (field) {
+	onAfterRender: function (showField) {
+		var field = showField.ownerCt.getComponent('color');
 		if (!Ext.isEmpty(field.getValue())) {
-			this.showColor(field.getValue());
+			this.showColor(field.getValue(), showField);
 		}
 	},
 	/*
@@ -306,16 +322,15 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 		if (this.dialog) {
 			this.dialog.close();
 		}
-		this.dialog = new Ext.Window({
+		this.dialog = Ext.create('Ext.window.Window', {
 			title: this.localize(title),
 			arguments: arguments,
 			cls: 'htmlarea-window',
 			border: false,
 			width: dimensions.width,
 			height: dimensions.height,
-			autoScroll: true,
-				// As of ExtJS 3.1, JS error with IE when the window is resizable
-			resizable: !Ext.isIE,
+			layout: 'anchor',
+			resizable: true,
 			iconCls: this.getButton(arguments.buttonId).iconCls,
 			listeners: {
 				close: {
@@ -323,17 +338,7 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 					scope: this
 				}
 			},
-			items: {
-				xtype: 'container',
-				layout: 'form',
-				style: {
-					width: '95%'
-				},
-				defaults: {
-					labelWidth: 150
-				},
-				items: items
-			},
+			items: items,
 			buttons: [
 				this.buildButtonConfig('OK', handler),
 				this.buildButtonConfig('Cancel', this.onCancel)
@@ -347,7 +352,7 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 	setColor: function(button, event) {
 		this.restoreSelection();
 		var buttonId = this.dialog.arguments.buttonId;
-		var color = this.dialog.find('itemId', 'color')[0].getValue();
+		var color = this.dialog.down('component[itemId=color]').getValue();
 		if (color) {
 			if (color.indexOf('#') == 0) {
 				color = color.substr(1);
@@ -355,7 +360,7 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 			color = HTMLArea.util.Color.colorToHex(parseInt(color, 16));
 		}
 		this.editor.focus();
-		var 	element,
+		var element,
 			fullNodeSelected = false;
 		var selection = this.editor._getSelection();
 		var range = this.editor._createRange(selection);
@@ -391,9 +396,9 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 				// Set the color in the style attribute
 			element.style[this.styleProperty[buttonId]] = color;
 			this.editor.wrapWithInlineElement(element, selection, range);
-		}
-		if (!Ext.isIE) {
-			range.detach();
+			if (!Ext.isIE) {
+				range.detach();
+			}
 		}
 		this.close();
 		event.stopEvent();

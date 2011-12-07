@@ -29,7 +29,8 @@
 /*
  * Image Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
+Ext.define('HTMLArea.DefaultImage', {
+ 	extend: 'HTMLArea.Plugin',
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -63,7 +64,7 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.2',
+			version		: '3.0',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -91,17 +92,24 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 	 * Sets of default configuration values for dialogue form fields
 	 */
 	configDefaults: {
-		combo: {
-			editable: true,
-			selectOnFocus: true,
-			typeAhead: true,
-			triggerAction: 'all',
-			forceSelection: true,
-			mode: 'local',
-			valueField: 'value',
+		combobox: {
+			cls: 'htmlarea-combo',
 			displayField: 'text',
+			listConfig: {
+				cls: 'htmlarea-combo-list',
+				getInnerTpl: function () {
+					return '<div data-qtip="{value}" class="htmlarea-combo-list-item">{text}</div>';
+				}
+			},
+			editable: true,
+			forceSelection: true,
 			helpIcon: true,
-			tpl: '<tpl for="."><div ext:qtip="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
+			queryMode: 'local',
+			selectOnFocus: true,
+			triggerAction: 'all',
+			typeAhead: true,
+			valueField: 'value',
+			xtype: 'combobox'
 		}
 	},
 	/*
@@ -151,11 +159,11 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 			// Open dialogue window
 		this.openDialogue(
 			buttonId,
-			this.getButton(buttonId).tooltip.title,
+			this.getButton(buttonId).tooltip.text,
 			this.getWindowDimensions(
 				{
 					width: 460,
-					height:300
+					height: 300
 				},
 				buttonId
 			),
@@ -174,14 +182,13 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 	 * @return	void
 	 */
 	openDialogue: function (buttonId, title, dimensions, tabItems) {
-		this.dialog = new Ext.Window({
+		this.dialog = Ext.create('Ext.window.Window', {
 			title: this.localize(title) || title,
 			cls: 'htmlarea-window',
 			border: false,
 			width: dimensions.width,
-			height: 'auto',
-				// As of ExtJS 3.1, JS error with IE when the window is resizable
-			resizable: !Ext.isIE,
+			layout: 'anchor',
+			resizable: true,
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				close: {
@@ -195,15 +202,9 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 				activeTab: 0,
 				defaults: {
 					xtype: 'container',
-					layout: 'form',
+					layout: 'anchor',
 					defaults: {
 						labelWidth: 100
-					}
-				},
-				listeners: {
-					tabchange: {
-						fn: this.syncHeight,
-						scope: this
 					}
 				},
 				items: tabItems
@@ -234,10 +235,10 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 						labelSeparator: ''
 					},
 					items: [{
-							itemId: 'url',
 							fieldLabel: this.localize('Image URL:'),
-							value: this.parameters.url,
-							helpTitle: this.localize('Enter the image URL here')
+							helpTitle: this.localize('Enter the image URL here'),
+							itemId: 'url',
+							value: this.parameters.url
 						},{
 							itemId: 'alt',
 							fieldLabel: this.localize('Alternate text:'),
@@ -280,6 +281,52 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 		});
 			// Layout tab
 		if (!this.removeItems.test('layout')) {
+				// Create image align options global store
+			var imageAlignStore = Ext.data.StoreManager.lookup('HTMLArea' + '-store-' + this.name + 'imageAlign');
+			if (!imageAlignStore) {
+				imageAlignStore = Ext.create('Ext.data.ArrayStore', {
+					model: 'HTMLArea.model.Default',
+					storeId: 'HTMLArea' + '-store-' + this.name + 'imageAlign'
+				});
+				imageAlignStore.loadData([
+					{
+						text: this.localize('Not set'),
+						value: ''
+					},{
+						text: this.localize('Bottom'),
+						value: 'bottom'
+					},{
+						text: this.localize('Middle'),
+						value: 'middle'
+					},{
+						text: this.localize('Top'),
+						value: 'top'
+					}
+				]);
+			}
+				// Create cssFloat options global store
+			var cssFloatStore = Ext.data.StoreManager.lookup('HTMLArea' + '-store-' + this.name + 'cssFloat');
+			if (!cssFloatStore) {
+				cssFloatStore = Ext.create('Ext.data.ArrayStore', {
+					model: 'HTMLArea.model.Default',
+					storeId: 'HTMLArea' + '-store-' + this.name + 'cssFloat'
+				});
+				cssFloatStore.loadData([
+					{
+						text: this.localize('Not set'),
+						value: ''
+					},{
+						text: this.localize('Non-floating'),
+						value: 'none'
+					},{
+						text: this.localize('Left'),
+						value: 'left'
+					},{
+						text: this.localize('Right'),
+						value: 'right'
+					}
+				]);
+			}
 			tabItems.push({
 				title: this.localize('Layout'),
 				items: [{
@@ -287,57 +334,43 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 						defaultType: 'textfield',
 						defaults: {
 							helpIcon: true,
-							width: 250,
+							width: 300,
 							labelSeparator: ''
 						},
 						items: [
-							Ext.apply({
-								xtype: 'combo',
-								fieldLabel: this.localize('Image alignment:'),
-								itemId: 'align',
-								value: this.parameters.align,
-								helpTitle: this.localize('Positioning of this image'),
-								store: new Ext.data.ArrayStore({
-									autoDestroy:  true,
-									fields: [ { name: 'text'}, { name: 'value'}],
-									data: [
-										[this.localize('Not set'), ''],
-										[this.localize('Bottom'), 'bottom'],
-										[this.localize('Middle'), 'middle'],
-										[this.localize('Top'), 'top']
-									]
-								}),
-								hidden: this.removeItems.test('align'),
-								hideLabel: this.removeItems.test('align')
-								}, this.configDefaults['combo'])
-							,{
-								itemId: 'border',
+							Ext.applyIf(
+								{
+									fieldLabel: this.localize('Image alignment:'),
+									helpTitle: this.localize('Positioning of this image'),
+									hidden: this.removeItems.test('align'),
+									hideLabel: this.removeItems.test('align'),
+									itemId: 'align',
+									store: imageAlignStore,
+									value: this.parameters.align
+								},
+								this.configDefaults['combobox']
+							),
+							{
 								fieldLabel: this.localize('Border thickness:'),
-								width: 100,
-								value: this.parameters.border,
 								helpTitle: this.localize('Leave empty for no border'),
 								hidden: this.removeItems.test('border'),
-								hideLabel: this.removeItems.test('border')
+								hideLabel: this.removeItems.test('border'),
+								itemId: 'border',
+								value: this.parameters.border,
+								width: 200
 							},
-							Ext.apply({
-								xtype: 'combo',
-								fieldLabel: this.localize('Float:'),
-								itemId: 'cssFloat',
-								value: this.parameters.cssFloat,
-								helpTitle: this.localize('Where the image should float'),
-								store: new Ext.data.ArrayStore({
-									autoDestroy:  true,
-									fields: [ { name: 'text'}, { name: 'value'}],
-									data: [
-										[this.localize('Not set'), ''],
-										[this.localize('Non-floating'), 'none'],
-										[this.localize('Left'), 'left'],
-										[this.localize('Right'), 'right']
-									]
-								}),
-								hidden: this.removeItems.test('float'),
-								hideLabel: this.removeItems.test('float')
-								}, this.configDefaults['combo'])
+							Ext.applyIf(
+								{
+									fieldLabel: this.localize('Float:'),
+									helpTitle: this.localize('Where the image should float'),
+									hidden: this.removeItems.test('float'),
+									hideLabel: this.removeItems.test('float'),
+									itemId: 'cssFloat',
+									store: cssFloatStore,
+									value: this.parameters.cssFloat
+								},
+								this.configDefaults['combobox']
+							)
 						]
 				}]
 			});
@@ -351,7 +384,7 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 						defaultType: 'textfield',
 						defaults: {
 							helpIcon: true,
-							width: 100,
+							width: 200,
 							labelSeparator: ''
 						},
 						items: [{
@@ -393,8 +426,8 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 	 * Handler invoked when the Preview button is clicked
 	 */
 	onPreviewClick: function () {
-		var tabPanel = this.dialog.find('itemId', 'tabpanel')[0];
-		var urlField = this.dialog.find('itemId', 'url')[0];
+		var tabPanel = this.dialog.down('component[itemId=tabpanel]');
+		var urlField = this.dialog.down('component[itemId=url]');
 		var url = urlField.getValue().trim();
 		if (url) {
 			try {
@@ -419,12 +452,12 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 	 * Handler invoked when the OK button is clicked
 	 */
 	onOK: function () {
-		var urlField = this.dialog.find('itemId', 'url')[0];
+		var urlField = this.dialog.down('component[itemId=url]');
 		var url = urlField.getValue().trim();
 		if (url) {
 			var fieldNames = ['url', 'alt', 'align', 'border', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'cssFloat'];
 			Ext.each(fieldNames, function (fieldName) {
-				var field = this.dialog.find('itemId', fieldName)[0];
+				var field = this.dialog.down('component[itemId=' + fieldName + ']');
 				if (field && !field.hidden) {
 					this.parameters[fieldName] = field.getValue();
 				}
@@ -432,7 +465,7 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 			this.insertImage();
 			this.close();
 		} else {
-			var tabPanel = this.dialog.find('itemId', 'tabpanel')[0];
+			var tabPanel = this.dialog.down('component[itemId=tabpanel]');
 			TYPO3.Dialog.InformationDialog({
 				title: this.localize('image_url'),
 				msg: this.localize('image_url_required'),
@@ -522,9 +555,9 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 				image = null;
 			}
 			if (image) {
-				button.setTooltip({ title: this.localize('Modify image') });
+				button.setTooltip({ text: this.localize('Modify image') });
 			} else {
-				button.setTooltip({ title: this.localize('Insert image') });
+				button.setTooltip({ text: this.localize('Insert image') });
 			}
 		}
 	}

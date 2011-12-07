@@ -27,7 +27,8 @@
 /*
  * TextIndicator Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.TextIndicator = Ext.extend(HTMLArea.Plugin, {
+Ext.define('HTMLArea.TextIndicator', {
+ 	extend: 'HTMLArea.Plugin',
 	/*
 	 * This function gets called by the class constructor
 	 */
