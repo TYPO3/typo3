@@ -76,13 +76,13 @@ TYPO3.Flashmessage = function() {
 		display : function(severity, title, message, duration) {
 			duration = duration || 5;
 			if (!messageContainer) {
-				messageContainer = Ext.DomHelper.insertFirst(document.body, {
+				messageContainer = Ext.core.DomHelper.insertFirst(document.body, {
 					id   : 'msg-div',
 					style: 'position:absolute;z-index:10000'
 				}, true);
 			}
 
-			var box = Ext.DomHelper.append(messageContainer, {
+			var box = Ext.core.DomHelper.append(messageContainer, {
 				html: createBox(severities[severity], title, message)
 			}, true);
 			messageContainer.alignTo(document, 't-t');
