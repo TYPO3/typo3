@@ -29,7 +29,8 @@
 /*
  * Undo Redo Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.UndoRedo = Ext.extend(HTMLArea.Plugin, {
+Ext.define('HTMLArea.UndoRedo', {
+	extend: 'HTMLArea.Plugin',
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -100,7 +101,7 @@ HTMLArea.UndoRedo = Ext.extend(HTMLArea.Plugin, {
 	 */
 	start: function () {
 		if (this.customUndo) {
-			Ext.TaskMgr.start(this.task);
+			Ext.TaskManager.start(this.task);
 		}
 	},
 	/*
@@ -108,7 +109,7 @@ HTMLArea.UndoRedo = Ext.extend(HTMLArea.Plugin, {
 	 */
 	stop: function () {
 		if (this.customUndo) {
-			Ext.TaskMgr.stop(this.task);
+			Ext.TaskManager.stop(this.task);
 		}
 	},
 	/*

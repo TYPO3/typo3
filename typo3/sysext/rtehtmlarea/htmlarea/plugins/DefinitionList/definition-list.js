@@ -27,7 +27,8 @@
 /*
  * DefinitionList Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.DefinitionList = Ext.extend(HTMLArea.BlockElements, {
+Ext.define('HTMLArea.DefinitionList', {
+	extend: 'HTMLArea.BlockElements',
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -123,14 +124,14 @@ HTMLArea.DefinitionList = Ext.extend(HTMLArea.BlockElements, {
 				if (/^(dd|dt)$/i.test(parentElement.nodeName) && this.indentDefinitionList(parentElement, range)) {
 					break;
 				} else {
-					HTMLArea.DefinitionList.superclass.onButtonPress.call(this, editor, id, target, className);
+					this.callParent(arguments);
 				}
 				break;
 			case "Outdent" :
 				if (/^(dt)$/i.test(parentElement.nodeName) && this.outdentDefinitionList(selection, range)) {
 					break;
 				} else {
-					HTMLArea.DefinitionList.superclass.onButtonPress.call(this, editor, id, target, className);
+					this.callParent(arguments);
 				}
 				break;
 			case "DefinitionList":
@@ -144,7 +145,7 @@ HTMLArea.DefinitionList = Ext.extend(HTMLArea.BlockElements, {
 				this.editor.selectRange(this.editor.moveToBookmark(bookmark));
 				break;
 			default:
-				HTMLArea.DefinitionList.superclass.onButtonPress.call(this, editor, id, target, className);
+				this.callParent(arguments);
 		}
 		return false;
 	},
@@ -320,7 +321,7 @@ HTMLArea.DefinitionList = Ext.extend(HTMLArea.BlockElements, {
 								&& !endBlocks.end.nextSibling) {
 							button.setDisabled(false);
 						} else {
-							HTMLArea.DefinitionList.superclass.onUpdateToolbar.call(this, button, mode, selectionEmpty, ancestors);
+							this.callParent(arguments);
 						}
 						break;
 					case 'DefinitionList':
@@ -331,7 +332,7 @@ HTMLArea.DefinitionList = Ext.extend(HTMLArea.BlockElements, {
 			} else {
 				switch (button.itemId) {
 					case 'Outdent':
-						HTMLArea.DefinitionList.superclass.onUpdateToolbar.call(this, button, mode, selectionEmpty, ancestors);
+						this.callParent(arguments);
 						break;
 				}
 			}

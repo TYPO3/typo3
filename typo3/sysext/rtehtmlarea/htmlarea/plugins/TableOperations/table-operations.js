@@ -31,7 +31,8 @@
 /*
  * Table Operations Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
+Ext.define('HTMLArea.TableOperations', {
+	extend: 'HTMLArea.Plugin',
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -128,17 +129,24 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 * Sets of default configuration values for dialogue form fields
 	 */
 	configDefaults: {
-		combo: {
-			editable: true,
-			selectOnFocus: true,
-			typeAhead: true,
-			triggerAction: 'all',
-			forceSelection: true,
-			mode: 'local',
-			valueField: 'value',
+		combobox: {
+			cls: 'htmlarea-combo',
 			displayField: 'text',
+			editable: true,
+			forceSelection: true,
 			helpIcon: true,
-			tpl: '<tpl for="."><div ext:qtip="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
+			listConfig: {
+				cls: 'htmlarea-combo-list',
+				getInnerTpl: function () {
+					return '<div data-qtip="{value}" class="htmlarea-combo-list-item">{text}</div>';
+				}
+			},
+			queryMode: 'local',
+			selectOnFocus: true,
+			triggerAction: 'all',
+			typeAhead: true,
+			valueField: 'value',
+			xtype: 'combobox'
 		}
 	},
 	/*
@@ -214,7 +222,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				column: type == 'column',
 				buttonId: buttonId
 			},
-			type == 'table' ? this.getWindowDimensions({ width: 600}, buttonId) : this.getWindowDimensions({ width: 600}, buttonId),
+			type == 'table' ? this.getWindowDimensions({ width: 500}, buttonId) : this.getWindowDimensions({ width: 500}, buttonId),
 			this.buildTabItemsConfig(element, type, buttonId),
 			type == 'table' ? this.tablePropertiesUpdate : this.rowCellPropertiesUpdate
 		);
@@ -328,15 +336,14 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		if (this.dialog) {
 			this.dialog.close();
 		}
-		this.dialog = new Ext.Window({
+		this.dialog = Ext.create('Ext.window.Window', {
 			title: this.localize(title),
 			arguments: arguments,
 			cls: 'htmlarea-window',
-				// As of ExtJS 3.1, JS error with IE when the window is resizable
-			resizable: !Ext.isIE,
 			border: false,
 			width: dimensions.width,
-			height: 'auto',
+			layout: 'anchor',
+			resizable: true,
 			iconCls: this.getButton(arguments.buttonId).iconCls,
 			listeners: {
 				close: {
@@ -349,15 +356,9 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				activeTab: 0,
 				defaults: {
 					xtype: 'container',
-					layout: 'form',
+					layout: 'anchor',
 					defaults: {
 						labelWidth: 150
-					}
-				},
-				listeners: {
-					tabchange: {
-						fn: this.syncHeight,
-						scope: this
 					}
 				},
 				items: tabItems
@@ -375,13 +376,8 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	tablePropertiesUpdate: function () {
 		this.restoreSelection()
 		var params = {};
-		var fieldTypes = ['combo', 'textfield', 'numberfield', 'checkbox', 'colorpalettefield'];
-		this.dialog.findBy(function (item) {
-			if (fieldTypes.indexOf(item.getXType()) !== -1) {
-				params[item.getItemId()] = item.getValue();
-				return true;
-			}
-			return false;
+		Ext.each(this.dialog.query('combobox, textfield, numberfield, checkbox, colorpalettefield'), function (field) {
+			params[field.getItemId()] = field.getValue();
 		});
 		var errorFlag = false;
 		if (this.properties.required) {
@@ -391,7 +387,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 						title: this.getButton(this.dialog.arguments.buttonId).tooltip.title,
 						msg: this.localize('captionOrSummary' + '-required')
 					});
-					var field = this.dialog.find('itemId', 'f_caption')[0];
+					var field = this.dialog.down('component[itemId=f_caption]');
 					var tab = field.findParentByType('container');
 					tab.ownerCt.activate(tab);
 					field.focus();
@@ -408,7 +404,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 							title: this.getButton(this.dialog.arguments.buttonId).tooltip.title,
 							msg: this.localize(required[item] + '-required')
 						});
-						var field = this.dialog.find('itemId', item)[0];
+						var field = this.dialog.down('component[itemId=' + item + ']');
 						var tab = field.findParentByType('container');
 						tab.ownerCt.activate(tab);
 						field.focus();
@@ -433,7 +429,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 						title: this.getButton(this.dialog.arguments.buttonId).tooltip.title,
 						msg: this.localize(required[item])
 					});
-					var field = this.dialog.find('itemId', item)[0];
+					var field = this.dialog.down('component[itemId=' + item + ']');
 					var tab = field.findParentByType('container');
 					tab.ownerCt.activate(tab);
 					field.focus();
@@ -576,13 +572,8 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		this.restoreSelection()
 			// Collect values from each form field
 		var params = {};
-		var fieldTypes = ['combo', 'textfield', 'numberfield', 'checkbox', 'colorpalettefield'];
-		this.dialog.findBy(function (item) {
-			if (fieldTypes.indexOf(item.getXType()) !== -1) {
-				params[item.getItemId()] = item.getValue();
-				return true;
-			}
-			return false;
+		Ext.each(this.dialog.query('combobox, textfield, numberfield, checkbox, colorpalettefield'), function (field) {
+			params[field.getItemId()] = field.getValue();
 		});
 		var cell = this.dialog.arguments.cell;
 		var column = this.dialog.arguments.column;
@@ -1155,7 +1146,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	array		the array of cells of the column
 	 */
-	getColumnCells : function (cell) {
+	getColumnCells: function (cell) {
 		var cells = new Array();
 		var index = cell.cellIndex;
 		var table = cell.parentNode.parentNode.parentNode;
@@ -1179,7 +1170,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	void
 	 */
-	toggleBorders : function (forceBorders) {
+	toggleBorders: function (forceBorders) {
 		var body = this.editor._doc.body;
 		if (!HTMLArea.DOM.hasClass(body, 'htmlarea-showtableborders')) {
 			HTMLArea.DOM.addClass(body,'htmlarea-showtableborders');
@@ -1283,7 +1274,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	void
 	 */
-	alternateRows : function (table, classConfiguration, remove) {
+	alternateRows: function (table, classConfiguration, remove) {
 		var oddClass = { tbody : classConfiguration.rows.oddClass, thead : classConfiguration.rows.oddHeaderClass };
 		var evenClass = { tbody : classConfiguration.rows.evenClass, thead : classConfiguration.rows.evenHeaderClass };
 		var startAt = parseInt(classConfiguration.rows.startAt);
@@ -1323,7 +1314,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	void
 	 */
-	alternateColumns : function (table, classConfiguration, remove) {
+	alternateColumns: function (table, classConfiguration, remove) {
 		var oddClass = { td : classConfiguration.columns.oddClass, th : classConfiguration.columns.oddHeaderClass };
 		var evenClass = { td : classConfiguration.columns.evenClass, th : classConfiguration.columns.evenHeaderClass };
 		var startAt = parseInt(classConfiguration.columns.startAt);
@@ -1403,7 +1394,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	void
 	 */
-	countRows : function (table, classConfiguration, remove) {
+	countRows: function (table, classConfiguration, remove) {
 		var rowClass = { tbody : classConfiguration.rows.rowClass, thead : classConfiguration.rows.rowHeaderClass };
 		var rowLastClass = { tbody : classConfiguration.rows.rowLastClass, thead : classConfiguration.rows.rowHeaderLastClass };
 		var startAt = parseInt(classConfiguration.rows.startAt);
@@ -1449,7 +1440,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	void
 	 */
-	countColumns : function (table, classConfiguration, remove) {
+	countColumns: function (table, classConfiguration, remove) {
 		var columnClass = { td : classConfiguration.columns.columnClass, th : classConfiguration.columns.columnHeaderClass };
 		var columnLastClass = { td : classConfiguration.columns.columnLastClass, th : classConfiguration.columns.columnHeaderLastClass };
 		var startAt = parseInt(classConfiguration.columns.startAt);
@@ -1573,7 +1564,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function remaps the given cell to the specified node name
 	 */
-	remapCell : function(element, nodeName) {
+	remapCell: function(element, nodeName) {
 		var newCell = this.editor.convertNode(element, nodeName);
 		var attributes = element.attributes, attributeName, attributeValue;
 		for (var i = attributes.length; --i >= 0;) {
@@ -1617,7 +1608,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		return newCell;
 	},
 	
-	remapRowCells : function (row, toType) {
+	remapRowCells: function (row, toType) {
 		var cells = row.cells;
 		if (toType === "th") {
 			for (var i = cells.length; --i >= 0 ;) {
@@ -1778,7 +1769,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				labelSeparator: '',
 				itemId: 'f_rows',
 				value: (this.properties.numberOfRows && this.properties.numberOfRows.defaultValue) ? this.properties.numberOfRows.defaultValue : '2',
-				width: 30,
+				width: 200,
 				minValue: 1,
 				helpTitle: this.localize('Number of rows')
 			});
@@ -1787,24 +1778,36 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				labelSeparator: '',
 				itemId: 'f_cols',
 				value: (this.properties.numberOfColumns && this.properties.numberOfColumns.defaultValue) ? this.properties.numberOfColumns.defaultValue : '4',
-				width: 30,
+				width: 200,
 				minValue: 1,
 				helpTitle: this.localize('Number of columns')
 			});
 		}
 		if (this.removedProperties.indexOf('headers') == -1) {
 				// Create combo store
-			var store = new Ext.data.ArrayStore({
-				autoDestroy:  true,
-				fields: [ { name: 'text'}, { name: 'value'}],
-				data: [
-					[this.localize('No header cells'), 'none'],
-					[this.localize('Header cells on top'), 'top'],
-					[this.localize('Header cells on left'), 'left'],
-					[this.localize('Header cells on top and left'), 'both']
-				]
-			});
-			this.removeOptions(store, 'headers');
+			var headersStore = Ext.data.StoreManager.lookup(this.editorId + '-store-' + this.name + '-headers');
+			if (!headersStore) {
+				headersStore = Ext.create('Ext.data.ArrayStore', {
+					model: 'HTMLArea.model.Default',
+					storeId: this.editorId + '-store-' + this.name + '-headers'
+				});
+				headersStore.loadData([
+					{
+						text: this.localize('No header cells'),
+						value: 'none'
+					},{
+						text: this.localize('Header cells on top'),
+						value: 'top'
+					},{
+						text: this.localize('Header cells on left'),
+						value: 'left'
+					},{
+						text: this.localize('Header cells on top and left'),
+						value: 'both'
+					}
+				]);
+				this.removeOptions(headersStore, 'headers');
+			}
 			if (Ext.isEmpty(table)) {
 				var selected = (this.properties.headers && this.properties.headers.defaultValue) ? this.properties.headers.defaultValue : 'top';
 			} else {
@@ -1821,16 +1824,15 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 					}
 				}
 			}
-			itemsConfig.push(Ext.apply({
-				xtype: 'combo',
+			itemsConfig.push(Ext.applyIf({
 				fieldLabel: this.localize('Headers:'),
 				labelSeparator: '',
 				itemId: 'f_headers',
 				helpTitle: this.localize('Table headers'),
-				store: store,
-				width: (this.properties['headers'] && this.properties['headers'].width) ? this.properties['headers'].width : 200,
+				store: headersStore,
+				width: (this.properties['headers'] && this.properties['headers'].width) ? this.properties['headers'].width : 300,
 				value: selected
-			}, this.configDefaults['combo']));
+			}, this.configDefaults['combobox']));
 		}
 		return {
 			xtype: 'fieldset',
@@ -1854,26 +1856,50 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		var itemsConfig = [];
 		var nodeName = element ? element.nodeName.toLowerCase() : 'table';
 		var table = (nodeName == 'table');
-		var select = this.buildStylingFieldConfig('f_class', (table ? 'Table class:' : 'Class:'), (table ? 'Table class selector' : 'Class selector'));
-		this.setStyleOptions(select, element, nodeName, (buttonId === 'InsertTable') ? this.defaultClass : null);
+		var select = this.buildStylingFieldConfig(
+			'f_class',
+			(table ? 'Table class:' : 'Class:'),
+			(table ? 'Table class selector' : 'Class selector'),
+			function (combo) {
+				this.setStyleOptions(combo, element, nodeName, (buttonId === 'InsertTable') ? this.defaultClass : null)
+			}
+		);
 		itemsConfig.push(select);
 		if (element && table) {
 			var tbody = element.getElementsByTagName('tbody')[0];
 			if (tbody) {
-				var tbodyStyleSelect = this.buildStylingFieldConfig('f_class_tbody', 'Table body class:', 'Table body class selector');
-				this.setStyleOptions(tbodyStyleSelect, tbody, 'tbody');
+				var tbodyStyleSelect = this.buildStylingFieldConfig(
+					'f_class_tbody',
+					'Table body class:',
+					'Table body class selector',
+					function (combo) {
+						this.setStyleOptions(combo,  tbody, 'tbody')
+					}
+				);
 				itemsConfig.push(tbodyStyleSelect);
 			}
 			var thead = element.getElementsByTagName('thead')[0];
 			if (thead) {
-				var theadStyleSelect = this.buildStylingFieldConfig('f_class_thead', 'Table header class:', 'Table header class selector');
-				this.setStyleOptions(theadStyleSelect, thead, 'thead');
+				var theadStyleSelect = this.buildStylingFieldConfig(
+					'f_class_thead',
+					'Table header class:',
+					'Table header class selector',
+					function (combo) {
+						this.setStyleOptions(combo,  thead, 'thead')
+					}
+				);
 				itemsConfig.push(theadStyleSelect);
 			}
 			var tfoot = element.getElementsByTagName('tfoot')[0];
 			if (tfoot) {
-				var tfootStyleSelect = this.buildStylingFieldConfig('f_class_tfoot', 'Table footer class:', 'Table footer class selector');
-				this.setStyleOptions(tfootStyleSelect, tfoot, 'tfoot');
+				var tfootStyleSelect = this.buildStylingFieldConfig(
+					'f_class_tfoot',
+					'Table footer class:',
+					'Table footer class selector',
+					function (combo) {
+						this.setStyleOptions(combo,  tfoot, 'tfoot')
+					}
+				);
 				itemsConfig.push(tfootStyleSelect);
 			}
 		}
@@ -1895,22 +1921,37 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	object		the style selection field object
 	 */
-	buildStylingFieldConfig: function(fieldName, fieldLabel, fieldTitle) {
-		return new Ext.form.ComboBox(Ext.apply({
-			xtype: 'combo',
-			itemId: fieldName,
-			fieldLabel: this.localize(fieldLabel),
-			helpTitle: this.localize(fieldTitle),
-			width: (this.properties['style'] && this.properties['style'].width) ? this.properties['style'].width : 300,
-			store: new Ext.data.ArrayStore({
-				autoDestroy:  true,
-				fields: [ { name: 'text'}, { name: 'value'}, { name: 'style'} ],
-				data: [[this.localize('No block style'), 'none']]
-			})
-			}, {
-			tpl: '<tpl for="."><div ext:qtip="{value}" style="{style}text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
-			}, this.configDefaults['combo']
-		));
+	buildStylingFieldConfig: function(fieldName, fieldLabel, fieldTitle, afterRenderHandler) {
+			// Create global style store if it does not exist already
+		var styleStore = Ext.data.StoreManager.lookup(this.editorId + '-store-' + 'BlockStyle');
+		if (!styleStore) {
+			styleStore = Ext.create('Ext.data.ArrayStore', {
+				model: 'HTMLArea.model.' + this.stylePlugin.name,
+				storeId: this.editorId + '-store-' + this.stylePlugin.name
+			});
+		}
+		return Ext.applyIf(
+			{
+				itemId: fieldName,
+				fieldLabel: this.localize(fieldLabel),
+				helpTitle: this.localize(fieldTitle),
+				width: (this.properties['style'] && this.properties['style'].width) ? this.properties['style'].width : 300,
+				store: styleStore,
+				listeners: {
+					afterrender: {
+						fn: afterRenderHandler,
+						scope: this
+					}
+				},
+				listConfig: {
+					cls: 'htmlarea-combo-list',
+					getInnerTpl: function () {
+						return '<div data-qtip="{value}" style="{style}" class="htmlarea-combo-list-item">{text}</div>';
+					}
+				}
+			},
+			this.configDefaults['combobox']
+		);
 	},
 	/*
 	 * This function populates the style store and sets the selected option
@@ -1931,6 +1972,12 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			} else {
 				var classNames = HTMLArea.DOM.getClassNames(element);
 			}
+				// Somehow getStore method got lost...
+			if (!Ext.isFunction(dropDown.getStore)) {
+				dropDown.getStore = function () {
+					return dropDown.store;
+				};
+			}
 			blockStyle.buildDropDownOptions(dropDown, nodeName);
 			blockStyle.setSelectedOption(dropDown, classNames, 'noUnknown', defaultClass);
 		}
@@ -1944,56 +1991,78 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 */
 	buildLanguageFieldsetConfig: function (element) {
 		var itemsConfig = [];
-		var languageObject = this.getPluginInstance('Language');
-		if (this.removedProperties.indexOf('language') == -1 && this.getButton('Language')) {
-			var selectedLanguage = !Ext.isEmpty(element) ? languageObject.getLanguageAttribute(element) : 'none';
+		var languagePlugin = this.getPluginInstance('Language');
+		if (this.removedProperties.indexOf('language') == -1 && languagePlugin && this.getButton('Language')) {
+			var selectedLanguage = !Ext.isEmpty(element) ? languagePlugin.getLanguageAttribute(element) : 'none';
 			function initLanguageStore (store) {
 				if (selectedLanguage !== 'none') {
 					store.removeAt(0);
-					store.insert(0, new store.recordType({
-						text: languageObject.localize('Remove language mark'),
+					store.insert(0, {
+						text: languagePlugin.localize('Remove language mark'),
 						value: 'none'
-					}));
+					});
 				}
 			}
-			var languageStore = new Ext.data.JsonStore({
-				autoDestroy:  true,
-				autoLoad: true,
-				root: 'options',
-				fields: [ { name: 'text'}, { name: 'value'} ],
-				url: this.getDropDownConfiguration('Language').dataUrl,
-				listeners: {
-					load: initLanguageStore
-				}
-			});
-			itemsConfig.push(Ext.apply({
-				xtype: 'combo',
+				// Create global language store if it does not exist already
+			var languageStore = Ext.data.StoreManager.lookup(this.editorId + '-store-' + languagePlugin.name);
+			if (languageStore) {
+				initLanguageStore(languageStore);
+			} else {
+				languageStore = Ext.create('Ext.data.Store', {
+					autoLoad: true,
+					model: 'HTMLArea.model.default',
+					listeners: {
+						load: initLanguageStore
+					},
+					proxy: {
+						type: 'ajax',
+						url: this.getDropDownConfiguration('Language').dataUrl,
+						reader: {
+							type: 'json',
+							root: 'options'
+						}
+					},
+					storeId: this.editorId + '-store-' + languagePlugin.name
+				});
+			}
+			itemsConfig.push(Ext.applyIf({
 				fieldLabel: this.localize('Language'),
 				itemId: 'f_lang',
 				helpTitle: this.localize('Language'),
 				store: languageStore,
-				width: (this.properties['language'] && this.properties['language'].width) ? this.properties['language'].width : 200,
+				width: (this.properties['language'] && this.properties['language'].width) ? this.properties['language'].width : 300,
 				value: selectedLanguage
-			}, this.configDefaults['combo']));
+			}, this.configDefaults['combobox']));
 		}
-		if (this.removedProperties.indexOf('direction') == -1 && (this.getButton('LeftToRight') || this.getButton('RightToLeft'))) {
-			itemsConfig.push(Ext.apply({
-				xtype: 'combo',
+		if (this.removedProperties.indexOf('direction') == -1 && languagePlugin && (this.getButton('LeftToRight') || this.getButton('RightToLeft'))) {
+				// Create direction options global store
+			var directionStore = Ext.data.StoreManager.lookup('HTMLArea' + '-store-' + languagePlugin.name + '-direction');
+			if (!directionStore) {
+				directionStore = Ext.create('Ext.data.ArrayStore', {
+					model: 'HTMLArea.model.Default',
+					storeId: 'HTMLArea' + '-store-' + languagePlugin.name + '-direction'
+				});
+				directionStore.loadData([
+					{
+						text: languagePlugin.localize('Not set'),
+						value: 'not set'
+					},{
+						text: languagePlugin.localize('RightToLeft'),
+						value: 'rtl'
+					},{
+						text: languagePlugin.localize('LeftToRight'),
+						value: 'ltr'
+					}
+				]);
+			}
+			itemsConfig.push(Ext.applyIf({
 				fieldLabel: this.localize('Text direction'),
 				itemId: 'f_dir',
 				helpTitle: this.localize('Text direction'),
-				store: new Ext.data.ArrayStore({
-					autoDestroy:  true,
-					fields: [ { name: 'text'}, { name: 'value'}],
-					data: [
-						[this.localize('Not set'), 'not set'],
-						[this.localize('RightToLeft'), 'rtl'],
-						[this.localize('LeftToRight'), 'ltr']
-					]
-				}),
-				width: (this.properties['direction'] && this.properties['dirrection'].width) ? this.properties['direction'].width : 200,
+				store: directionStore,
+				width: (this.properties['direction'] && this.properties['dirrection'].width) ? this.properties['direction'].width : 300,
 				value: !Ext.isEmpty(element) && element.dir ? element.dir : 'not set'
-			}, this.configDefaults['combo']));
+			}, this.configDefaults['combobox']));
 		}
 		return {
 			xtype: 'fieldset',
@@ -2021,14 +2090,14 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				fieldLabel: this.localize('Cell spacing:'),
 				itemId: 'f_spacing',
 				value: !Ext.isEmpty(table) ? table.cellSpacing : '',
-				width: 30,
+				width: 200,
 				minValue: 0,
 				helpTitle: this.localize('Space between adjacent cells')
 				},{
 				fieldLabel: this.localize('Cell padding:'),
 				itemId: 'f_padding',
 				value: !Ext.isEmpty(table) ? table.cellPadding : '',
-				width: 30,
+				width: 200,
 				minValue: 0,
 				helpTitle: this.localize('Space between content and border in cell')
 			}]
@@ -2059,84 +2128,113 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				var heightTitle = 'Cell height';
 		}
 		if (this.removedProperties.indexOf('width') === -1) {
-			var widthUnitStore = new Ext.data.ArrayStore({
-				autoDestroy:  true,
-				fields: [ { name: 'text'}, { name: 'value'}],
-				data: [
-					[this.localize('percent'), '%'],
-					[this.localize('pixels'), 'px'],
-					[this.localize('em'), 'em']
-				]
-			});
-			this.removeOptions(widthUnitStore, 'widthUnit');
+			var widthUnitStore = Ext.data.StoreManager.lookup(this.editorId + '-store-' + this.name + '-widthUnit');
+			if (!widthUnitStore) {
+				widthUnitStore = Ext.create('Ext.data.ArrayStore', {
+					model: 'HTMLArea.model.Default',
+					storeId: this.editorId + '-store-' + this.name + '-widthUnit'
+				});
+				widthUnitStore.loadData([
+					{
+						text: this.localize('percent'),
+						value: '%'
+					},{
+						text: this.localize('pixels'),
+						value: 'px'
+					},{
+						text: this.localize('em'),
+						value: 'em'
+					}
+				]);
+				this.removeOptions(widthUnitStore, 'widthUnit');
+			}
 			itemsConfig.push({
 				fieldLabel: this.localize('Width:'),
 				labelSeparator: '',
+				minValue: 0,
 				itemId: 'f_st_width',
 				value: element ? this.getLength(element.style.width) : ((this.properties.width && this.properties.width.defaultValue) ? this.properties.width.defaultValue : ''),
-				width: 30,
+				width: 200,
 				helpTitle: this.localize(widthTitle)
 			});
-			itemsConfig.push(Ext.apply({
-				xtype: 'combo',
+			itemsConfig.push(Ext.applyIf({
 				fieldLabel: this.localize('Width unit'),
 				itemId: 'f_st_widthUnit',
 				helpTitle: this.localize('Width unit'),
 				store: widthUnitStore,
-				width: (this.properties['widthUnit'] && this.properties['widthUnit'].width) ? this.properties['widthUnit'].width : 60,
+				width: (this.properties['widthUnit'] && this.properties['widthUnit'].width) ? this.properties['widthUnit'].width : 200,
 				value: element ? (/%/.test(element.style.width) ? '%' : (/px/.test(element.style.width) ? 'px' : 'em')) : ((this.properties.widthUnit && this.properties.widthUnit.defaultValue) ? this.properties.widthUnit.defaultValue : '%')
-			}, this.configDefaults['combo']));
+			}, this.configDefaults['combobox']));
 		}
 		if (this.removedProperties.indexOf('height') === -1) {
-			var heightUnitStore = new Ext.data.ArrayStore({
-				autoDestroy:  true,
-				fields: [ { name: 'text'}, { name: 'value'}],
-				data: [
-					[this.localize('percent'), '%'],
-					[this.localize('pixels'), 'px'],
-					[this.localize('em'), 'em']
-				]
-			});
-			this.removeOptions(heightUnitStore, 'heightUnit');
+			var heightUnitStore = Ext.data.StoreManager.lookup(this.editorId + '-store-' + this.name + '-heightUnit');
+			if (!heightUnitStore) {
+				heightUnitStore = Ext.create('Ext.data.ArrayStore', {
+					model: 'HTMLArea.model.Default',
+					storeId: this.editorId + '-store-' + this.name + '-heightUnit'
+				});
+				heightUnitStore.loadData([
+					{
+						text: this.localize('percent'),
+						value: '%'
+					},{
+						text: this.localize('pixels'),
+						value: 'px'
+					},{
+						text: this.localize('em'),
+						value: 'em'
+					}
+				]);
+				this.removeOptions(heightUnitStore, 'heightUnit');
+			}
 			itemsConfig.push({
 				fieldLabel: this.localize('Height:'),
 				labelSeparator: '',
+				minValue: 0,
 				itemId: 'f_st_height',
 				value: element ? this.getLength(element.style.height) : ((this.properties.height && this.properties.height.defaultValue) ? this.properties.height.defaultValue : ''),
-				width: 30,
+				width: 200,
 				helpTitle: this.localize(heightTitle)
 			});
-			itemsConfig.push(Ext.apply({
-				xtype: 'combo',
+			itemsConfig.push(Ext.applyIf({
 				fieldLabel: this.localize('Height unit'),
 				itemId: 'f_st_heightUnit',
 				helpTitle: this.localize('Height unit'),
 				store: heightUnitStore,
-				width: (this.properties['heightUnit'] && this.properties['heightUnit'].width) ? this.properties['heightUnit'].width : 60,
+				width: (this.properties['heightUnit'] && this.properties['heightUnit'].width) ? this.properties['heightUnit'].width : 200,
 				value: element ? (/%/.test(element.style.height) ? '%' : (/px/.test(element.style.height) ? 'px' : 'em')) : ((this.properties.heightUnit && this.properties.heightUnit.defaultValue) ? this.properties.heightUnit.defaultValue : '%')
-			}, this.configDefaults['combo']));
+			}, this.configDefaults['combobox']));
 		}
 		if (nodeName == 'table' && this.removedProperties.indexOf('float') === -1) {
-			var floatStore = new Ext.data.ArrayStore({
-				autoDestroy:  true,
-				fields: [ { name: 'text'}, { name: 'value'}],
-				data: [
-					[this.localize('Not set'), 'not set'],
-					[this.localize('Left'), 'left'],
-					[this.localize('Right'), 'right']
-				]
-			});
-			this.removeOptions(floatStore, 'float');
-			itemsConfig.push(Ext.apply({
-				xtype: 'combo',
+			var floatStore = Ext.data.StoreManager.lookup(this.editorId + '-store-' + this.name + '-float');
+			if (!floatStore) {
+				floatStore = Ext.create('Ext.data.ArrayStore', {
+					model: 'HTMLArea.model.Default',
+					storeId: this.editorId + '-store-' + this.name + '-float'
+				});
+				floatStore.loadData([
+					{
+						text: this.localize('Not set'),
+						value: 'not set'
+					},{
+						text: this.localize('Left'),
+						value: 'left'
+					},{
+						text: this.localize('Right'),
+						value: 'right'
+					}
+				]);
+				this.removeOptions(floatStore, 'float');
+			}
+			itemsConfig.push(Ext.applyIf({
 				fieldLabel: this.localize('Float:'),
 				labelSeparator: '',
 				itemId: 'f_st_float',
 				helpTitle: this.localize('Specifies where the table should float'),
 				store: floatStore,
-				width: (this.properties['float'] && this.properties['float'].width) ? this.properties['float'].width : 120,
-				value: element ? (Ext.get(element).hasClass(this.floatLeft) ? 'left' : (Ext.get(element).hasClass(this.floatRight) ? 'right' : 'not set')) : this.floatDefault
-			}, this.configDefaults['combo']));
+				width: (this.properties['float'] && this.properties['float'].width) ? this.properties['float'].width : 200,
+				value: element ? (Ext.fly(element).hasCls(this.floatLeft) ? 'left' : (Ext.fly(element).hasCls(this.floatRight) ? 'right' : 'not set')) : this.floatDefault
+			}, this.configDefaults['combobox']));
 		}
 		return {
 			xtype: 'fieldset',
@@ -2162,7 +2260,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		var blockElements = this.getPluginInstance('BlockElements');
 		if (element && blockElements) {
 			Ext.iterate(this.convertAlignment, function (value) {
-				if (Ext.get(element).hasClass(blockElements.useClass[this.convertAlignment[value]])) {
+				if (Ext.fly(element).hasCls(blockElements.useClass[this.convertAlignment[value]])) {
 					selectedTextAlign = value;
 					return false;
 				}
@@ -2171,45 +2269,75 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		} else {
 			selectedTextAlign = (element && element.style.textAlign) ? element.style.textAlign : 'not set';
 		}
-		itemsConfig.push(Ext.apply({
-			xtype: 'combo',
+		var textAlignStore = Ext.data.StoreManager.lookup(this.editorId + '-store-' + this.name + '-textAlign');
+		if (!textAlignStore) {
+			textAlignStore = Ext.create('Ext.data.ArrayStore', {
+				model: 'HTMLArea.model.Default',
+				storeId: this.editorId + '-store-' + this.name + '-textAlign'
+			});
+			textAlignStore.loadData([
+				{
+					text: this.localize('Not set'),
+					value: 'not set'
+				},{
+					text: this.localize('Left'),
+					value: 'left'
+				},{
+					text: this.localize('Center'),
+					value: 'center'
+				},{
+					text: this.localize('Right'),
+					value: 'right'
+				},{
+					text: this.localize('Justify'),
+					value: 'justify'
+				}
+			]);
+			this.removeOptions(textAlignStore, 'textAlign');
+		}
+		itemsConfig.push(Ext.applyIf({
 			fieldLabel: this.localize('Text alignment:'),
 			itemId: 'f_st_textAlign',
 			helpTitle: this.localize('Horizontal alignment of text within cell'),
-			store: new Ext.data.ArrayStore({
-				autoDestroy:  true,
-				fields: [ { name: 'text'}, { name: 'value'}],
-				data: [
-					[this.localize('Not set'), 'not set'],
-					[this.localize('Left'), 'left'],
-					[this.localize('Center'), 'center'],
-					[this.localize('Right'), 'right'],
-					[this.localize('Justify'), 'justify']
-				]
-			}),
-			width: (this.properties['textAlign'] && this.properties['textAlign'].width) ? this.properties['textAlign'].width : 100,
+			store: textAlignStore,
+			width: (this.properties['textAlign'] && this.properties['textAlign'].width) ? this.properties['textAlign'].width : 250,
 			value: selectedTextAlign
-		}, this.configDefaults['combo']));
+		}, this.configDefaults['combobox']));
 			// Vertical alignment
-		itemsConfig.push(Ext.apply({
-			xtype: 'combo',
+		var verticalAlignStore = Ext.data.StoreManager.lookup(this.editorId + '-store-' + this.name + '-verticalAlign');
+		if (!verticalAlignStore) {
+			verticalAlignStore = Ext.create('Ext.data.ArrayStore', {
+				model: 'HTMLArea.model.Default',
+				storeId: this.editorId + '-store-' + this.name + '-verticalAlign'
+			});
+			verticalAlignStore.loadData([
+				{
+					text: this.localize('Not set'),
+					value: 'not set'
+				},{
+					text: this.localize('Top'),
+					value: 'top'
+				},{
+					text: this.localize('Middle'),
+					value: 'middle'
+				},{
+					text: this.localize('Bottom'),
+					value: 'bottom'
+				},{
+					text: this.localize('Baseline'),
+					value: 'baseline'
+				}
+			]);
+			this.removeOptions(verticalAlignStore, 'verticalAlign');
+		}
+		itemsConfig.push(Ext.applyIf({
 			fieldLabel: this.localize('Vertical alignment:'),
 			itemId: 'f_st_vertAlign',
 			helpTitle: this.localize('Vertical alignment of content within cell'),
-			store: new Ext.data.ArrayStore({
-				autoDestroy:  true,
-				fields: [ { name: 'text'}, { name: 'value'}],
-				data: [
-					[this.localize('Not set'), 'not set'],
-					[this.localize('Top'), 'top'],
-					[this.localize('Middle'), 'middle'],
-					[this.localize('Bottom'), 'bottom'],
-					[this.localize('Baseline'), 'baseline']
-				]
-			}),
-			width: (this.properties['verticalAlign'] && this.properties['verticalAlign'].width) ? this.properties['verticalAlign'].width : 100,
+			store: verticalAlignStore,
+			width: (this.properties['verticalAlign'] && this.properties['verticalAlign'].width) ? this.properties['verticalAlign'].width : 250,
 			value: (element && element.style.verticalAlign) ? element.style.verticalAlign : 'not set'
-		}, this.configDefaults['combo']));
+		}, this.configDefaults['combobox']));
 		return {
 			xtype: 'fieldset',
 			title: this.localize('Alignment'),
@@ -2230,46 +2358,69 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		var itemsConfig = [];
 		var nodeName = element ? element.nodeName.toLowerCase() : 'table';
 			// Border style
-		var borderStyleStore = new Ext.data.ArrayStore({
-			autoDestroy:  true,
-			fields: [ { name: 'text'}, { name: 'value'}],
-			data: [
-				[this.localize('Not set'), 'not set'],
-				[this.localize('No border'), 'none'],
-				[this.localize('Dotted'), 'dotted'],
-				[this.localize('Dashed'), 'dashed'],
-				[this.localize('Solid'), 'solid'],
-				[this.localize('Double'), 'double'],
-				[this.localize('Groove'), 'groove'],
-				[this.localize('Ridge'), 'ridge'],
-				[this.localize('Inset'), 'inset'],
-				[this.localize('Outset'), 'outset']
-			]
-		});
-		this.removeOptions(borderStyleStore, 'borderStyle');
+		var borderStyleStore = Ext.data.StoreManager.lookup(this.editorId + '-store-' + this.name + '-borderStyle');
+		if (!borderStyleStore) {
+			borderStyleStore = Ext.create('Ext.data.ArrayStore', {
+				model: 'HTMLArea.model.Default',
+				storeId: this.editorId + '-store-' + this.name + '-borderStyle'
+			});
+			borderStyleStore.loadData([
+				{
+					text: this.localize('Not set'),
+					value: 'not set'
+				},{
+					text: this.localize('No border'),
+					value: 'none'
+				},{
+					text: this.localize('Dotted'),
+					value: 'dotted'
+				},{
+					text: this.localize('Dashed'),
+					value: 'dashed'
+				},{
+					text: this.localize('Solid'),
+					value: 'solid'
+				},{
+					text: this.localize('Double'),
+					value: 'double'
+				},{
+					text: this.localize('Groove'),
+					value: 'groove'
+				},{
+					text: this.localize('Ridge'),
+					value: 'ridge'
+				},{
+					text: this.localize('Inset'),
+					value: 'inset'
+				},{
+					text: this.localize('Outset'),
+					value: 'outset'
+				}
+			]);
+			this.removeOptions(borderStyleStore, 'borderStyle');
+		}
 			// Gecko reports "solid solid solid solid" for "border-style: solid".
 			// That is, "top right bottom left" -- we only consider the first value.
 		var selectedBorderStyle = element && element.style.borderStyle ? element.style.borderStyle : ((this.properties.borderWidth) ? ((this.properties.borderStyle && this.properties.borderStyle.defaultValue) ? this.properties.borderStyle.defaultValue : 'solid') : 'not set');
-		itemsConfig.push(Ext.apply({
-			xtype: 'combo',
+		itemsConfig.push(Ext.applyIf({
 			fieldLabel: this.localize('Border style:'),
 			itemId: 'f_st_borderStyle',
 			helpTitle: this.localize('Border style'),
 			store: borderStyleStore,
-			width: (this.properties.borderStyle && this.properties.borderStyle.width) ? this.properties.borderStyle.width : 150,
+			width: (this.properties.borderStyle && this.properties.borderStyle.width) ? this.properties.borderStyle.width : 250,
 			value: selectedBorderStyle,
 			listeners: {
 				change: {
 					fn: this.setBorderFieldsDisabled
 				}
 			}
-		}, this.configDefaults['combo']));
+		}, this.configDefaults['combobox']));
 			// Border width
 		itemsConfig.push({
 			fieldLabel: this.localize('Border width:'),
 			itemId: 'f_st_borderWidth',
 			value: element ? this.getLength(element.style.borderWidth) : ((this.properties.borderWidth && this.properties.borderWidth.defaultValue) ? this.properties.borderWidth.defaultValue : ''),
-			width: 30,
+			width: 200,
 			minValue: 0,
 			helpTitle: this.localize('Border width'),
 			helpText: this.localize('pixels'),
@@ -2288,70 +2439,119 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		});
 		if (nodeName === 'table') {
 				// Collapsed borders
-			itemsConfig.push(Ext.apply({
-				xtype: 'combo',
+			var borderCollapseStore = Ext.data.StoreManager.lookup(this.editorId + '-store-' + this.name + '-borderCollapse');
+			if (!borderCollapseStore) {
+				borderCollapseStore = Ext.create('Ext.data.ArrayStore', {
+					model: 'HTMLArea.model.Default',
+					storeId: this.editorId + '-store-' + this.name + '-borderCollapse'
+				});
+				borderCollapseStore.loadData([
+					{
+						text: this.localize('Not set'),
+						value: 'not set'
+					},{
+						text: this.localize('Collapsed borders'),
+						value: 'collapse'
+					},{
+						text: this.localize('Detached borders'),
+						value: 'separate'
+					}
+				]);
+				this.removeOptions(borderCollapseStore, 'borderCollapse');
+			}
+			itemsConfig.push(Ext.applyIf({
 				fieldLabel: this.localize('Collapsed borders'),
 				labelSeparator: ':',
 				itemId: 'f_st_borderCollapse',
 				helpTitle: this.localize('Collapsed borders'),
-				store: new Ext.data.ArrayStore({
-					autoDestroy:  true,
-					fields: [ { name: 'text'}, { name: 'value'}],
-					data: [
-						[this.localize('Not set'), 'not set'],
-						[this.localize('Collapsed borders'), 'collapse'],
-						[this.localize('Detached borders'), 'separate']
-					]
-				}),
-				width: (this.properties.borderCollapse && this.properties.borderCollapse.width) ? this.properties.borderCollapse.width : 150,
+				store: borderCollapseStore,
+				width: (this.properties.borderCollapse && this.properties.borderCollapse.width) ? this.properties.borderCollapse.width : 300,
 				value: element && element.style.borderCollapse ? element.style.borderCollapse : 'not set',
 				disabled: (selectedBorderStyle === 'none')
-			}, this.configDefaults['combo']));
+			}, this.configDefaults['combobox']));
 				// Frame
-			itemsConfig.push(Ext.apply({
-				xtype: 'combo',
+			var frameStore = Ext.data.StoreManager.lookup(this.editorId + '-store-' + this.name + '-frame');
+			if (!frameStore) {
+				frameStore = Ext.create('Ext.data.ArrayStore', {
+					model: 'HTMLArea.model.Default',
+					storeId: this.editorId + '-store-' + this.name + '-frame'
+				});
+				frameStore.loadData([
+					{
+						text: this.localize('Not set'),
+						value: 'not set'
+					},{
+						text: this.localize('No sides'),
+						value: 'void'
+					},{
+						text: this.localize('The top side only'),
+						value: 'above'
+					},{
+						text: this.localize('The bottom side only'),
+						value: 'below'
+					},{
+						text: this.localize('The top and bottom sides only'),
+						value: 'hsides'
+					},{
+						text: this.localize('The right and left sides only'),
+						value: 'vsides'
+					},{
+						text: this.localize('The left-hand side only'),
+						value: 'lhs'
+					},{
+						text: this.localize('The right-hand side only'),
+						value: 'rhs'
+					},{
+						text: this.localize('All four sides'),
+						value: 'box'
+					}
+				]);
+				this.removeOptions(frameStore, 'frame');
+			}
+			itemsConfig.push(Ext.applyIf({
 				fieldLabel: this.localize('Frames:'),
 				itemId: 'f_frames',
 				helpTitle: this.localize('Specifies which sides should have a border'),
-				store: new Ext.data.ArrayStore({
-					autoDestroy:  true,
-					fields: [ { name: 'text'}, { name: 'value'}],
-					data: [
-						[this.localize('Not set'), 'not set'],
-						[this.localize('No sides'), 'void'],
-						[this.localize('The top side only'), 'above'],
-						[this.localize('The bottom side only'), 'below'],
-						[this.localize('The top and bottom sides only'), 'hsides'],
-						[this.localize('The right and left sides only'), 'vsides'],
-						[this.localize('The left-hand side only'), 'lhs'],
-						[this.localize('The right-hand side only'), 'rhs'],
-						[this.localize('All four sides'), 'box']
-					]
-				}),
-				width: (this.properties.frame && this.properties.frame.width) ? this.properties.frame.width : 250,
+				store: frameStore,
+				width: (this.properties.frame && this.properties.frame.width) ? this.properties.frame.width : 400,
 				value: (element && element.frame) ? element.frame : 'not set',
 				disabled: (selectedBorderStyle === 'none')
-			}, this.configDefaults['combo']));
+			}, this.configDefaults['combobox']));
 				// Rules
-			itemsConfig.push(Ext.apply({
-				xtype: 'combo',
+			var rulesStore = Ext.data.StoreManager.lookup(this.editorId + '-store-' + this.name + '-rules');
+			if (!rulesStore) {
+				rulesStore = Ext.create('Ext.data.ArrayStore', {
+					model: 'HTMLArea.model.Default',
+					storeId: this.editorId + '-store-' + this.name + '-rules'
+				});
+				rulesStore.loadData([
+					{
+						text: this.localize('Not set'),
+						value: 'not set'
+					},{
+						text: this.localize('No rules'),
+						value: 'none'
+					},{
+						text: this.localize('Rules will appear between rows only'),
+						value: 'rows'
+					},{
+						text: this.localize('Rules will appear between columns only'),
+						value: 'cols'
+					},{
+						text: this.localize('Rules will appear between all rows and columns'),
+						value: 'all'
+					}
+				]);
+				this.removeOptions(rulesStore, 'rules');
+			}
+			itemsConfig.push(Ext.applyIf({
 				fieldLabel: this.localize('Rules:'),
 				itemId: 'f_rules',
 				helpTitle: this.localize('Specifies where rules should be displayed'),
-				store: new Ext.data.ArrayStore({
-					autoDestroy:  true,
-					fields: [ { name: 'text'}, { name: 'value'}],
-					data: [
-						[this.localize('Not set'), 'not set'],
-						[this.localize('No rules'), 'none'],
-						[this.localize('Rules will appear between rows only'), 'rows'],
-						[this.localize('Rules will appear between columns only'), 'cols'],
-						[this.localize('Rules will appear between all rows and columns'), 'all']
-					]
-				}),
-				width: (this.properties.rules && this.properties.rules.width) ? this.properties.rules.width : 360,
+				store: rulesStore,
+				width: (this.properties.rules && this.properties.rules.width) ? this.properties.rules.width : 400,
 				value: (element && element.rules) ? element.rules : 'not set'
-			}, this.configDefaults['combo']));
+			}, this.configDefaults['combobox']));
 		}
 		return {
 			xtype: 'fieldset',
@@ -2368,10 +2568,10 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 * onChange handler: enable/disable other fields of the same fieldset
 	 */
 	setBorderFieldsDisabled: function (field, value) {
-		field.ownerCt.findBy(function (item) {
+		Ext.each(field.ownerCt.query('combobox, textfield, numberfield, colorpalettefield'), function (item) {
 			var itemId = item.getItemId();
 			if (itemId == 'f_st_borderStyle' || itemId == 'f_rules') {
-				return false;
+				return true;
 			} else if (value === 'none') {
 				switch (item.getXType()) {
 					case 'numberfield':
@@ -2380,8 +2580,10 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 					case 'colorpalettefield':
 						item.setValue('');
 						break;
-					default:
+					case 'combobox':
 						item.setValue('not set');
+						break;
+					default:
 						break;
 				}
 				item.setDisabled(true);
@@ -2449,48 +2651,63 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		var itemsConfig = [];
 		if (column) {
 			var data = [
-				[this.localize('Data cells'), 'td'],
-				[this.localize('Headers for rows'), 'throw'],
-				[this.localize('Headers for row groups'), 'throwgroup']
+				{
+					text: this.localize('Data cells'),
+					value: 'td'
+				},{
+					text: this.localize('Headers for rows'),
+					value: 'throw'
+				},{
+					text: this.localize('Headers for row groups'),
+					value: 'throwgroup'
+				}
 			];
 		} else {
 			var data = [
-				[this.localize('Normal'), 'td'],
-				[this.localize('Header for column'), 'thcol'],
-				[this.localize('Header for row'), 'throw'],
-				[this.localize('Header for row group'), 'throwgroup']
+				{
+					text: this.localize('Normal'),
+					value: 'td'
+				},{
+					text: this.localize('Header for column'),
+					value: 'thcol'
+				},{
+					text: this.localize('Header for row'),
+					value: 'throw'
+				},{
+					text: this.localize('Header for row group'),
+					value: 'throwgroup'
+				}
 			];
 		}
 			// onChange handler: reset the CSS class dropdown and show/hide abbr field when the cell type changes
 			// @param	object		cellTypeField: the combo object
-			// @param	object		record: the selected record
+			// @param	object		records: the selected records
 			// @return	void
 		var self = this;
-		function cellTypeChange(cellTypeField, record) {
+		function cellTypeChange(cellTypeField, records) {
+			var record = records[0];
 			var value = record.get('value');
-			var styleCombo = self.dialog.find('itemId', 'f_class')[0];
+			var styleCombo = self.dialog.down('combobox[itemId=f_class]');
 			if (styleCombo) {
 				self.setStyleOptions(styleCombo, element, value.substring(0,2));
 			}
 				// abbr field present only for single cell, not for column
-			var abbrField = self.dialog.find('itemId', 'f_cell_abbr')[0];
+			var abbrField = self.dialog.down('textfield[itemId=f_cell_abbr]');
 			if (abbrField) {
 				abbrField.setVisible(value != 'td');
-				abbrField.label.setVisible(value != 'td');
 			}
 		}
 		var selected = element.nodeName.toLowerCase() + element.scope.toLowerCase();
-		itemsConfig.push(Ext.apply({
-			xtype: 'combo',
+		var store = Ext.create('Ext.data.ArrayStore', {
+			model: 'HTMLArea.model.Default'
+		});
+		store.loadData(data);
+		itemsConfig.push(Ext.applyIf({
 			fieldLabel: this.localize(column ? 'Type of cells of the column' : 'Type of cell'),
 			itemId: 'f_cell_type',
 			helpTitle: this.localize(column ? 'Specifies the type of cells' : 'Specifies the type of cell'),
-			store: new Ext.data.ArrayStore({
-				autoDestroy:  true,
-				fields: [ { name: 'text'}, { name: 'value'}],
-				data: data
-			}),
-			width: (this.properties.cellType && this.properties.cellType.width) ? this.properties.cellType.width : 250,
+			store: store,
+			width: (this.properties.cellType && this.properties.cellType.width) ? this.properties.cellType.width : 300,
 			value: (column && selected == 'thcol') ? 'td' : selected,
 			listeners: {
 				select: {
@@ -2498,7 +2715,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 					scope: this
 				}
 			}
-		}, this.configDefaults['combo']));
+		}, this.configDefaults['combobox']));
 		if (!column) {
 			itemsConfig.push({
 				xtype: 'textfield',
@@ -2509,8 +2726,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				width: 300,
 				value: element.abbr,
 				hideMode: 'visibility',
-				hidden: (selected == 'td'),
-				hideLabel: (selected == 'td')
+				hidden: (selected == 'td')
 			});
 		}
 		return {
@@ -2535,37 +2751,46 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		var current = element.parentNode.nodeName.toLowerCase();
 			// onChange handler: show/hide cell conversion checkbox with appropriate label
 			// @param	object		field: the combo object
-			// @param	object		record: the selected record
+			// @param	object		record: the selected records
 			// @return	void
-		function displayCheckbox(field, record, index) {
+		function displayCheckbox(field, records) {
 			var checkBox = field.ownerCt.getComponent('f_convertCells');
+			var record = records[0];
 			var value = record.get('value');
 			if (current !== value && (current === 'thead' || value === 'thead')) {
-				checkBox.label.dom.innerHTML = (value === 'thead') ? this.localize('Make cells header cells') : this.localize('Make cells data cells');
+				checkBox.labelEl.update((value === 'thead') ? this.localize('Make cells header cells') : this.localize('Make cells data cells'));
 				checkBox.show();
-				checkBox.label.show();
 				checkBox.setValue(true);
 			} else {
 				checkBox.setValue(false);
 				checkBox.hide();
-				checkBox.label.hide();
 			}
 		}
-		itemsConfig.push(Ext.apply({
-			xtype: 'combo',
+		var tableSectionStore = Ext.data.StoreManager.lookup('HTMLArea' + '-store-' + this.name + '-tableSection');
+		if (!tableSectionStore) {
+			tableSectionStore = Ext.create('Ext.data.ArrayStore', {
+				model: 'HTMLArea.model.Default',
+				storeId: 'HTMLArea' + '-store-' + this.name + '-tableSection'
+			});
+			tableSectionStore.loadData([
+				{
+					text: this.localize('Table body'),
+					value: 'tbody'
+				},{
+					text: this.localize('Table header'),
+					value: 'thead'
+				},{
+					text: this.localize('Table footer'),
+					value: 'tfoot'
+				}
+			]);
+		}
+		itemsConfig.push(Ext.applyIf({
 			fieldLabel: this.localize('Row group:'),
 			itemId: 'f_rowgroup',
 			helpTitle: this.localize('Table section'),
-			store: new Ext.data.ArrayStore({
-				autoDestroy:  true,
-				fields: [ { name: 'text'}, { name: 'value'}],
-				data: [
-					[this.localize('Table body'), 'tbody'],
-					[this.localize('Table header'), 'thead'],
-					[this.localize('Table footer'), 'tfoot']
-				]
-			}),
-			width: (this.properties.rowGroup && this.properties.rowGroup.width) ? this.properties.rowGroup.width : 150,
+			store: tableSectionStore,
+			width: (this.properties.rowGroup && this.properties.rowGroup.width) ? this.properties.rowGroup.width : 200,
 			value: current,
 			labelSeparator: '',
 			listeners: {
@@ -2574,7 +2799,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 					scope: this
 				}
 			}
-		}, this.configDefaults['combo']));
+		}, this.configDefaults['combobox']));
 			// Cell conversion checkbox
 		itemsConfig.push({
 			xtype: 'checkbox',
@@ -2584,8 +2809,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			helpTitle: this.localize('Make cells header cells'),
 			value: false,
 			hideMode: 'visibility',
-			hidden: true,
-			hideLabel: true
+			hidden: true
 		});
 		return {
 			xtype: 'fieldset',

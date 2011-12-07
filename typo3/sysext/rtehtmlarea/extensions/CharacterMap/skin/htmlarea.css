@@ -3,3 +3,7 @@
 	background-image: url('images/insertCharacter.gif') !important;
 	background-position: 0 0 !important;
 }
+.htmlarea-action-soft-hyphen-insert {
+	background-image: url('images/insertSoftHyphen.gif') !important;
+	background-position: 0 0 !important;
+}

@@ -26,7 +26,8 @@
 /*
  * User Elements Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.UserElements = Ext.extend(HTMLArea.Plugin, {
+Ext.define('HTMLArea.UserElements', {
+	extend: 'HTMLArea.Plugin',
 	/*
 	 * This function gets called by the class constructor
 	 */
