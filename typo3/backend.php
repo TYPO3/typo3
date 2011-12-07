@@ -135,7 +135,7 @@ class TYPO3backend {
 			'iframepanel'           => 'js/extjs/iframepanel.js',
 			'modulepanel'           => 'js/extjs/modulepanel.js',
 			'viewportConfiguration' => 'js/extjs/viewportConfiguration.js',
-			'util'					=> '../t3lib/js/extjs/util.js',
+			'util'			=> '../t3lib/js/extjs/util.js',
 		);
 
 		if ($this->debug) {
@@ -242,7 +242,7 @@ class TYPO3backend {
 		$states = $GLOBALS['BE_USER']->uc['BackendComponents']['States'];
 			//save states in BE_USER->uc
 		$extOnReadyCode = '
-			Ext.state.Manager.setProvider(new TYPO3.state.ExtDirectProvider({
+			Ext.state.Manager.setProvider(Ext.create("TYPO3.state.ExtDirectProvider", {
 				key: "BackendComponents.States",
 				autoRead: false
 			}));
@@ -251,7 +251,7 @@ class TYPO3backend {
 			$extOnReadyCode .= 'Ext.state.Manager.getProvider().initState(' . json_encode($states) . ');';
 		}
 		$extOnReadyCode .= '
-			TYPO3.Backend = new TYPO3.Viewport(TYPO3.Viewport.configuration);
+			TYPO3.Backend = Ext.create("TYPO3.Viewport", TYPO3.Viewport.configuration);
 			if (typeof console === "undefined") {
 				console = TYPO3.Backend.DebugConsole;
 			}

@@ -230,7 +230,7 @@ Ext.onReady(function() {
 			// add a placeholder div next to the button itself, so it can be detected and replaced by the flash plugin
 			if (!Ext.fly(swfConfig.button_placeholder_id)) {
 				var button = Ext.DomQuery.selectNode('#t3-file-upload-window-button-selectfiles button');
-				Ext.DomHelper.insertBefore(button, '<div id="' + swfConfig.button_placeholder_id + '"></div>');
+				Ext.core.DomHelper.insertBefore(button, '<div id="' + swfConfig.button_placeholder_id + '"></div>');
 				// set the width of the swf-button in background according to the user-visible button
 				swfConfig.button_width = button.clientWidth;
 			}
