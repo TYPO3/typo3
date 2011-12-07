@@ -496,8 +496,8 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @return void
 	 */
 	protected function loadFromCache() {
-		if ($this->dataCache->has($this->cacheIdentifier)) {
-			$data = $this->dataCache->get($this->cacheIdentifier);
+		$data = $this->dataCache->get($this->cacheIdentifier);
+		if ($data !== FALSE) {
 			foreach ($data as $propertyName => $propertyValue) {
 				$this->$propertyName = $propertyValue;
 			}
