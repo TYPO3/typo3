@@ -5285,7 +5285,7 @@ class t3lib_TCEforms {
 				// make textareas resizable and flexible
 			if (!($GLOBALS['BE_USER']->uc['resizeTextareas'] == '0' && $GLOBALS['BE_USER']->uc['resizeTextareas_Flexible'] == '0')) {
 				$pageRenderer->addCssFile($this->backPath . '../t3lib/js/extjs/ux/resize.css');
-				$this->loadJavascriptLib('../t3lib/js/extjs/ux/ext.resizable.js');
+				$this->loadJavascriptLib('../t3lib/js/extjs/ux/Ext.ux.elasticTextArea.js');
 			}
 			$resizableSettings = array(
 				'textareaMaxHeight' => $GLOBALS['BE_USER']->uc['resizeTextareas_MaxHeight'] > 0 ? $GLOBALS['BE_USER']->uc['resizeTextareas_MaxHeight'] : '600',
