@@ -571,7 +571,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
 				$dataMap = $this->dataMapper->getDataMap($className);
 				$columnMap = $dataMap->getColumnMap($propertyName);
-				$typeOfRelation = $columnMap->getTypeOfRelation();
+				$typeOfRelation = ($columnMap instanceof Tx_Extbase_Persistence_Mapper_ColumnMap ? $columnMap->getTypeOfRelation() : NULL);
 				if ($typeOfRelation === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 					$relationTableName = $columnMap->getRelationTableName();
 					$sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=' . $this->getPlainValue($operand2) . ')';
@@ -585,7 +585,10 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 						$sql['where'][] = $statement;
 					}
 				} else {
-					throw new Tx_Extbase_Persistence_Exception_RepositoryException('Unsupported relation for contains().', 1267832524);
+					throw new Tx_Extbase_Persistence_Exception_RepositoryException(
+						'Unsupported or non-existing property name "' . $propertyName . '" used in relation matching.',
+						1327065745
+					);
 				}
 			}
 		} else {
