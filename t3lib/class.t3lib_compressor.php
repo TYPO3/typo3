@@ -290,6 +290,7 @@ class t3lib_Compressor {
 		foreach ($filesToInclude as $key => $filename) {
 			if (t3lib_div::isValidUrl($filename)) {
 				$filesToInclude[$key] = $this->retrieveExternalFile($filename);
+				$filename = $filesToInclude[$key];
 			}
 			$filepath = t3lib_div::resolveBackPath($this->rootPath . $filename);
 			$unique .= $filename . filemtime($filepath) . filesize($filepath);
