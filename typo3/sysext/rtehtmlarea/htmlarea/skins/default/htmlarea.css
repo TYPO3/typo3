@@ -1,7 +1,7 @@
 /* Selectors for the htmlArea RTE editor */
 .htmlarea {
- 	margin: 2px;
- 	padding: 0;
+	margin: 0 2px 0 0;
+	padding: 0;
 }
 .pleasewait {
  	position: relative;
@@ -19,11 +19,9 @@
  	padding: 0;
 }
 .editorWrap textarea {
-	border-style: solid;
-	border-color: #C7C7C7;
-	border-width: 0px 1px 1px 1px;
-	padding: 0px 1px;
-	margin: 0;
+	border-style: none !important;
+	padding:0px 1px;
+	margin:0;
 }
 .editorWrap .resizable {
 	background-image: url("images/status/resizable.gif");
@@ -36,75 +34,57 @@
 }
 /* Selectors for the editor toolbar */
 .htmlarea .toolbar {
-	background-color: #f3f3f3;
 	cursor: default;
-	border: 1px solid #c7c7c7;
-	border-bottom: 0;
+	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
 	margin: 0;
 	padding: 2px;
-	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
 }
 .htmlarea .toolbar .tb-group {
-	clear:none;
-	float:left;
-	margin:1px 2px 0px 0px;
-	padding:0;
-}
-.htmlarea .toolbar .x-form-item {
+	clear: none;
 	float: left;
-	margin:0;
-}
-.htmlarea .toolbar .x-form-item-label {
-	vertical-align:middle;
-	background-color:transparent;
-	border-style:none;
-	margin:0;padding:3px 3px 0px 3px;
-}
-/* Fix combo box left loat in IE6 */
-body.ext-ie6 .htmlarea .toolbar .x-form-item {
-	width: 1%;
+	margin: 1px 2px 0px 0px;
+	padding: 0;
 }
 .htmlarea .toolbar .button {
-	background-color: transparent;
-	color: ButtonText;
 	border-style: solid;
-	border-width: 1px;
 	border-color: transparent;
 	border-collapse: separate;
-	margin: 0 0 4px 0;
-	padding: 0;
+	border-width: 1px;
 	float: left;
+	height: 20px;
+	margin: 0 1px 4px 1px;
+}
+.htmlarea .toolbar .x-btn-default-medium {
+	padding: 1px 1px 0 1px;
+}
+.htmlarea .toolbar .x-btn-default-medium-icon button {
+	height: 19px;
+	padding: 0;
+	width: 19px !important;
+}
+.htmlarea .toolbar .x-btn-default-medium-icon button,
+.htmlarea .toolbar .x-btn-default-medium-icon .x-btn-inner,
+.htmlarea .toolbar .x-btn-default-medium-noicon button,
+.htmlarea .toolbar .x-btn-default-medium-noicon .x-btn-inner {
+	height: 19px;
+	line-height: 19px;
+}
+.htmlarea .toolbar .x-btn-default-medium .x-btn-inner {
+	padding: 0;
+}
+.htmlarea .toolbar div.x-btn-icon {
+	background-color: transparent;
+	background-image: none;
 }
 /* fixing button border-color in IE6 */
 body.ext-ie6 .htmlarea .toolbar .button {
 	border-color: #f3f3f3;
 }
-.htmlarea .toolbar .x-btn-mc {
-	background-color: transparent;
-	background-image: none;
-	border-style: none;
-	margin: 0;
-	padding: 0;
-}
-.htmlarea .toolbar .x-btn-tl,
-.htmlarea .toolbar .x-btn-tc,
-.htmlarea .toolbar .x-btn-tr,
-.htmlarea .toolbar .x-btn-ml,
-.htmlarea .toolbar .x-btn-mr,
-.htmlarea .toolbar .x-btn-bl,
-.htmlarea .toolbar .x-btn-bc,
-.htmlarea .toolbar .x-btn-br {
-	display: none;
-}
-.htmlarea .toolbar .x-btn-text {
+.htmlarea .toolbar span.x-btn-icon {
 	background-image: url("images/sprites/actions.png");
 	background-repeat: no-repeat;
-	width: 20px;
-	height: 18px;
-	padding: 0;
-	margin: 1px 0 1px 2px;
 }
-body.ext-ie6 .htmlarea .toolbar .x-btn-text {
+body.ext-ie6 .htmlarea .toolbar span.x-btn-icon {
 	background-image: url("images/sprites/actions.gif");
 }
 /* fixing button background-color and border-color in IE6 */
@@ -112,21 +92,19 @@ body.ext-ie6 .htmlarea .toolbar .buttonHover,
 .htmlarea .toolbar .buttonHover {
 	border-style: solid;
 	border-width: 1px;
-	border-color: #e4e0db #999999 #999999 #e4e0db;
+	border-color: white #C5C5D5 #C5C5D5 white;
 	background-color: #E0E0E9;
 	opacity: 1.00;
 }
 /* fixing button background-color and border-color in IE6 */
 body.ext-ie6 .htmlarea .toolbar .buttonActive,
 body.ext-ie6 .htmlarea .toolbar .buttonPressed,
-body.ext-ie6 .htmlarea-context-menu .buttonActive,
 .htmlarea .toolbar .buttonActive,
-.htmlarea .toolbar .buttonPressed,
-.htmlarea-context-menu .buttonActive {
+.htmlarea .toolbar .buttonPressed {
 	border-style: solid;
 	border-width: 1px;
-	border-color: ButtonShadow ButtonHighlight ButtonHighlight ButtonShadow;
-	background-color: ButtonHighlight;
+	border-color: #C5C5D5 #C5C5D5 #C5C5D5 #C5C5D5;
+	background-color: ButtonHighlight !important;
 	text-decoration: none;
 	opacity: 1.00;
 }
@@ -138,64 +116,63 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 	overflow: hidden;
 	text-align: center;
 	border: 1px solid ButtonShadow;
-	margin: 3px 1px 5px 1px;
+	margin: 3px 2px 3px 2px;
 	padding: 0 3px;
 	float: left;
 }
-.htmlarea .toolbar .buttonDisabled {
-	filter: alpha(opacity=25);
-	opacity: 0.25;
-	-moz-opacity: 0.25;
-}
-.htmlarea .toolbar .separator {
-	border:1px solid #999;
-	width: 7px;
-	height: 23px;
-	margin-bottom: 1px;
+.htmlarea .toolbar .htmlarea-toolbar-separator {
+	border-color: ButtonShadow;
+	border-style: solid;
+	border-width: 0 0 0 1px;
 	float: left;
+	height: 14px;
+	margin: 5px 2px 5px 2px;
+	width: 1px;
 }
-.htmlarea .toolbar .space {
-	height:22px;
-	border-style:none;
-	margin:0;padding:0 1px;
-	float:left;
+.htmlarea .toolbar .htmlarea-toolbar-spacer {
+	float: left;
+	height: 24px;
 }
-.htmlarea .toolbar .select {
-	color: WindowText;
-	margin: 0 0 4px 0;
+.htmlarea .toolbar .htmlarea-clear-left {
+	clear: left;
+	height: 1px;
 }
-.htmlarea .toolbar .x-form-item label.x-form-item-label{
-	padding-right: 0;
+.htmlarea .toolbar .x-form-item {
+	float: left;
+	margin: 0 1px 2px 1px !important;
 }
-.htmlarea .toolbar .x-form-field-wrap .x-form-trigger {
-	right: 0;
+/* Fix combo box left loat in IE6 */
+body.ext-ie6 .htmlarea .toolbar .x-form-item {
+	width: 1%;
 }
-.htmlarea .toolbar .select, .htmlarea .toolbar .select:hover, .htmlarea .toolbar .select:active {
-	background-color:#fff;color:ButtonText;
-}
-.htmlarea .toolbar .buttonDisabled {
-	background-color:#e4e0db;
+.htmlarea .toolbar .x-form-item-label {
+	background-color: transparent;
+	border-style: none;
+	color: ButtonText;
+	font-size: .9em;
+	margin: 0;
+	padding: 3px 0 0 3px;
+	vertical-align: middle;
 }
 .htmlarea .editorIframe {
+	border-style: none;
 	clear: both;
-	width: 100%;
-	border: 1px solid #c7c7c7;
-	border-bottom: none;
 	margin: 0;
 	padding: 0;
+	width: 100%;
 }
 .htmlarea .noStatusBar {
-	border-bottom:1px solid #000;
+	border-bottom:1px solid #A2AAB8;
 }
 .htmlarea .statusBar {
-        background-color: #5b5b5b;
-        background-image: url('images/backgrounds/row-header.png');
-        background-image: linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
-        background-image: -moz-linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
-        background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #7f7f7f), color-stop(1, #5b5b5b));
-        background-repeat: repeat-x;
+	background-color: #5b5b5b;
+	background-image: url('../images/backgrounds/row-header.png');
+	background-image: linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
+	background-image: -moz-linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #7f7f7f), color-stop(1, #5b5b5b));
+	background-repeat: repeat-x;
 	color: #FFFFFF;
-	font-size: 10px;
+	font-size: .9em;
 	border: 1px solid #c7c7c7;
 	margin: 0;
 	padding: 0 3px;
@@ -203,13 +180,13 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
 }
 .htmlarea .statusBar .statusBarTree a {
-	color:ButtonText;
+	color:#FFFFFF;
 	text-decoration:none;
 	font-weight:bold;
  	padding:0px 5px;
 }
 .htmlarea .statusBar .statusBarTree a:visited {
-	color:#00f;
+	color:#FFFFFF;
 }
 .htmlarea .statusBar .statusBarTree a:hover {
 	text-decoration: underline;
@@ -217,24 +194,36 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 .htmlarea .statusBar .statusBarWordCount {
 	float: right;
 }
+/* Selectors for combo list */
+.htmlarea-combo-list ul {
+	margin-left: 0;
+	padding-left: 5px;
+}
+.htmlarea-combo-list ul li {
+	margin-left: 0;
+	padding-left: 0;
+}
+.htmlarea-combo-list-item {
+	font-size: .9em;
+	text-align: left;
+}
 /* Selectors for dialogue windows */
-.htmlarea-window .x-panel-icon {
+.htmlarea-window .x-window-header-icon {
 	background-image: url("images/sprites/actions.png");
 	background-repeat: no-repeat;
-	margin-top: 2px;
-	height: 22px;
+	height: 18px;
+	width: 18px;
 }
-body.ext-ie6 .htmlarea-window .x-panel-icon {
+body.ext-ie6 .htmlarea-window .x-window-header-icon {
 	background-image: url("images/sprites/actions.gif");
 }
 .htmlarea-window .x-window-header .t3-help-link {
-	color: #fff;
 }
 .htmlarea-window ul.x-tab-strip {
 	list-style: none;
 }
-.htmlarea-window .x-tab-panel-body {
-	background-color: #EFEFF4;
+.htmlarea-window .x-panel-body {
+	background-color: #efeff4;
 }
 .htmlarea-window .x-fieldset {
 	margin: 3px;
@@ -250,7 +239,7 @@ body.ext-ie6 .htmlarea-window .x-panel-icon {
 	clear: left;
 }
 .htmlarea-window .x-form-item-label {
-	font-size: 10px;
+	font-size: .9em;
 	text-align: right;
 	margin: 0;
 	padding: 3px 5px 0 5px;
@@ -264,26 +253,36 @@ body.ext-ie6 .htmlarea-window .x-panel-icon {
 }
 .htmlarea-window iframe {
 	background-color: #FFF;
-	color: #000;
 	border: 1px solid #A2AAB8;
+	color: #000;
+	padding-left: 7px;
 }
 .htmlarea-window iframe.content-iframe {
-	background-color: #E4E0DB;
+	background-color: #EFEFF4;
 }
-.htmlarea-window .show-color {
+.htmlarea-window .show-color .x-form-item-body {
+	margin-bottom: 5px;
 	margin-top: 10px;
 	border-style: solid;
 	border-width: 1px;
 	border-color: white;
 }
+.htmlarea-color-menu .htmlarea-custom-colors {
+	height: 170px;
+	overflow: auto;
+}
+.htmlarea-window .htmlarea-custom-colors {
+	height: auto;
+	margin-left: 10px;
+	overflow: inherit;
+}
 .htmlarea-custom-colors a {
 	border-color: transparent;
-	float: none;
 	display: block;
 	width: 100%;
 }
-.htmlarea-custom-colors {
-	height: auto;
+.htmlarea-window .htmlarea-custom-colors a {
+	width: 100%;
 }
 .htmlarea-custom-colors em {
 	display: block;
@@ -295,101 +294,99 @@ body.ext-ie6 .htmlarea-window .x-panel-icon {
 	width: 100%;
 }
 /* Selectors for the About dialogue */
-.htmlarea-window .about-plugins .x-list-body dt {
-    overflow: auto;
-    white-space: normal;
+.htmlarea-window .htmlarea-about {
+	padding: 5px;
+}
+.htmlarea-window .htmlarea-about-plugins .x-grid-cell-inner,
+.htmlarea-window .htmlarea-about-plugins .x-grid-hd-inner {
+	white-space: normal;
 }
 /* Selectors for the default image dialogue */
 .htmlarea-window .image-preview {
-    height: 300px;
-    width: 99%;
-    float: right;
+	float: right;
+	height: 300px;
+	width: 99%;
 }
 /* Selectors for the InsertSmiley plugin */
-.htmlarea-window .emoticon-array {
-	padding: 10px;
+.htmlarea-window .htmlarea-emoticon-array {
+	padding: 5px;
 }
-.htmlarea-window .emoticon {
+.htmlarea-window .htmlarea-emoticon {
 	display: block;
 	float: left;
-	padding: 5px;
-	width: 20px;
-	height: 20px;
+	height: 32px;
+	text-align: center;
+	text-decoration: none;
 	vertical-align: middle;
+	width: 32px;
+}
+.htmlarea-window .htmlarea-emoticon img {
+	margin: 6px 0 0 0 ;
+}
+.htmlarea-window .htmlarea-emoticon:hover {
+	background-color: #ffffff;
+	border: 1px solid #a2aab8;
 }
 /* Selectors for the CharacterMap dialogue */
-.htmlarea-window .character-map .character {
+.htmlarea-window .htmlarea-character-map .htmlarea-character-map-character {
+	border: 1px solid transparent;
 	display: block;
 	float: left;
-	height: 20px;
-	width: 20px;
 	font-size: 14px;
 	font-weight: bold;
+	height: 26px;
+	line-height: 20px;
 	text-align: center;
-	padding: 3px;
-	border: 1px solid transparent;
+	text-decoration: none;
+	vertical-align: middle !important;
+	width: 26px;
 }
-.htmlarea-window .character-map .character:hover {
-	background-color: #FFFFFF;
-	border: 1px solid #A2AAB8;
+.htmlarea-window .htmlarea-character-map .htmlarea-character-map-character:hover {
+	background-color: #ffffff;
+	border: 1px solid #a2aab8;
 }
 /* Selectors for the SpellChecker dialogue */
-.htmlarea-window .spell-check .controls {
-	text-align: center;
-	width: 175px;
-	margin: 3px;
+.htmlarea-window .spell-check {
+	margin-right: 3px;
 }
 .htmlarea-window .spell-check .controls .x-btn {
 	margin-top: 3px;
-	margin-left: 8px;
-}
-.htmlarea-window .spell-check .contentframe {
-	float: right;
-	height: 450px;
-	margin: 9px 0px;
 }
 /* Selectors for the ContextMenu plugin */
 .htmlarea-context-menu {
-	background-color:#EFEFF4;
-	color:#212424;
+	background-color: #EFEFF4;
+	color: #212424;
 	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
-	font-size:10px;
-}
-.htmlarea-context-menu ul {
-	list-style: none;
-	margin: 0;
-}
-.htmlarea-context-menu li {
-	margin: 0;
-	padding: 0;
-	border-width: 0;
+	font-size: .9em;
 }
 .htmlarea-context-menu a {
 	font-weight: normal;
 }
-.htmlarea-context-menu .button {
-	background-color: transparent;
-	margin: 0 2px 0 0;
-	padding-top: 1px;
+.htmlarea-context-menu .htmlarea-context-menu-item {
+	height: 22px;
+	margin-bottom: 0;
+	margin-top: 0;
+	padding-bottom: 0;
+	padding-top: 0;
 }
-.htmlarea-context-menu .separator {
+.htmlarea-context-menu .htmlarea-context-menu-separator {
 	border-top: 1px solid #A2AAB8;
 }
-.htmlarea-context-menu .hover {
+.htmlarea-context-menu .htmlarea-context-menu-hover {
 	background-image: url("images/alt_menu_mainitem_bg.gif");
 	background-repeat: repeat-x;
-	color: #FFF;
-	margin: 0 2px 0 0;
-	padding-top: 1px;
 	border-color: #A2AAB8;
+	color: #FFF;
 }
 .htmlarea-context-menu .x-menu-item-icon {
 	background-image: url("images/sprites/actions.png");
 	background-repeat: no-repeat;
-	margin-top: -2px;
-	margin-left: -2px;
-	width: 18px;
 	height: 18px;
+	margin-bottom: 0;
+	margin-top: 1px;
+	padding-bottom: 0;
+	padding-top: 0;
+	width: 18px;
 }
 body.ext-ie6 .htmlarea-context-menu .x-menu-item-icon {
 	background-image: url("images/sprites/actions.gif");
@@ -398,54 +395,29 @@ body.ext-ie6 .htmlarea-context-menu .x-menu-item-icon {
 .htmlarea-window .status-ready {
 	padding-left: 21px !important;
 	background-repeat: no-repeat;
-	background-image: url("images/dialog-ok.png");
+	background-image: url("images/status/dialog-ok.png");
 	background-position: 0px 2px;
+	height: 20px;
 }
 .htmlarea-window .status-info {
 	padding-left: 21px !important;
 	background-repeat: no-repeat;
-	background-image: url("images/dialog-information.png");
+	background-image: url("images/status/dialog-information.png");
 	background-position: 0px 2px;
+	height: 20px;
 }
 .htmlarea-window .status-wait {
 	padding-left: 45px !important;
 	background-repeat: no-repeat;
-	background-image:url("images/loading-balls.gif");
+	background-image: url("images/status/loading-balls.gif");
 	background-position: 0px 6px;
+	height: 20px;
 }
 .htmlarea-window .x-toolbar .x-btn {
 	margin-left: 5px;
 }
 .htmlarea-window .x-toolbar .xtb-text {
 	cursor: default;
-}
-/* Button background positioning in window status bar*/
-.htmlarea-window .x-toolbar .x-btn-tl{
-	background-position: 0 0;
-}
-.htmlarea-window .x-toolbar .x-btn-tr{
-	background-position: -3px 0;
-}
-.htmlarea-window .x-toolbar .x-btn-tc{
-	background-position: 0 -6px;
-}
-.htmlarea-window .x-toolbar .x-btn-ml{
-	background-position: 0 -24px;
-}
-.htmlarea-window .x-toolbar .x-btn-mr{
-	background-position: -3px -24px;
-}
-.htmlarea-window .x-toolbar .x-btn-mc{
-	background-position: 0 -1096px;
-}
-.htmlarea-window .x-toolbar .x-btn-bl{
-	background-position: 0 -3px;
-}
-.htmlarea-window .x-toolbar .x-btn-br{
-	background-position: -3px -3px;
-}
-.htmlarea-window .x-toolbar .x-btn-bc{
-	background-position: 0 -15px;
 }
 /* Action icon selectors for toolbar, context menu and window headers */
 .htmlarea-action-abbreviation-edit{ background-position: 0 0 !important; }

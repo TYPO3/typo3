@@ -27,7 +27,8 @@
 /*
  * Copy Paste for TYPO3 htmlArea RTE
  */
-HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
+Ext.define('HTMLArea.CopyPaste', {
+	extend: 'HTMLArea.Plugin',
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -144,7 +145,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 					if (Ext.isOpera || Ext.isGecko2) {
 						var cleaner = this.getButton('CleanWord');
 						if (cleaner) {
-							cleaner.fireEvent.defer(250, cleaner, ['click', cleaner]);
+							Ext.Function.defer(cleaner.fireEvent, 250, cleaner, ['click', cleaner]);
 						}
 					}
 					break;
@@ -162,7 +163,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 				this.editor.inhibitKeyboardInput = true;
 				var bookmark = this.editor.getBookmark(this.editor._createRange(this.editor._getSelection()));
 				var html = this.editor.getInnerHTML();
-				this.revertPaste.defer(200, this, [html, bookmark]);
+				Ext.Function.defer(this.revertPaste, 200, this, [html, bookmark]);
 			}
 			return false;
 		}
@@ -202,7 +203,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 	 * This function removes any link left over by the cut operation
 	 */
 	cutHandler: function (event) {
-		this.removeEmptyLink.defer(50, this);
+		Ext.Function.defer(this.removeEmptyLink, 50, this);
 	},
 	/*
 	 * This function unlinks any empty link left over by the cut operation

@@ -9,6 +9,9 @@
 			<trans-unit id="InsertCharacter-Tooltip" xml:space="preserve">
 				<source>Insert special character</source>
 			</trans-unit>
+			<trans-unit id="InsertSoftHyphen-Tooltip" xml:space="preserve">
+				<source>Insert soft hyphen</source>
+			</trans-unit>
 			<trans-unit id="Insert special character" xml:space="preserve">
 				<source>Insert special character</source>
 			</trans-unit>

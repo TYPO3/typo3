@@ -30,7 +30,8 @@
 /*
  * Find and Replace Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
+Ext.define('HTMLArea.FindReplace', {
+	extend: 'HTMLArea.Plugin',
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -116,14 +117,13 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 	 * @return	void
 	 */
 	openDialogue: function (buttonId, title, dimensions) {
-		this.dialog = new Ext.Window({
+		this.dialog = Ext.create('Ext.window.Window', {
 			title: this.localize(title),
 			cls: 'htmlarea-window',
 			border: false,
 			width: dimensions.width,
-			height: 'auto',
-				// As of ExtJS 3.1, JS error with IE when the window is resizable
-			resizable: !Ext.isIE,
+			layout: 'anchor',
+			resizable: true,
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				close: {
@@ -266,11 +266,11 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 	 * Handler invoked when the replace all checkbox is checked
 	 */
 	requestReplacement: function () {
-		if (!this.dialog.find('itemId', 'replacement')[0].getValue() && this.dialog.find('itemId', 'replaceAll')[0].getValue()) {
+		if (!this.dialog.down('component[itemId=replacement]').getValue() && this.dialog.down('component[itemId=replaceAll]').getValue()) {
 			TYPO3.Dialog.InformationDialog({
 				title: this.getButton('FindReplace').tooltip.title,
 				msg: this.localize('Inform a replacement word'),
-				fn: function () { this.dialog.find('itemId', 'replacement')[0].focus(); },
+				fn: function () { this.dialog.down('component[itemId=replacement]').focus(); },
 				scope: this
 			});
 		}
@@ -280,11 +280,11 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 	 * Handler invoked when the 'Next' button is pressed
 	 */
 	onNext: function () {
-		if (!this.dialog.find('itemId', 'pattern')[0].getValue()) {
+		if (!this.dialog.down('component[itemId=pattern]').getValue()) {
 			TYPO3.Dialog.InformationDialog({
 				title: this.getButton('FindReplace').tooltip.title,
 				msg: this.localize('Enter the text you want to find'),
-				fn: function () { this.dialog.find('itemId', 'pattern')[0].focus(); },
+				fn: function () { this.dialog.down('component[itemId=pattern]').focus(); },
 				scope: this
 			});
 			return false;
@@ -298,7 +298,7 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 		];
 		var params = {};
 		Ext.each(fields, function (field) {
-			params[field] = this.dialog.find('itemId', field)[0].getValue();
+			params[field] = this.dialog.down('component[itemId=' + field + ']').getValue();
 		}, this);
 		this.search(params);
 		return false;
@@ -458,6 +458,8 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 		if (this.buffer != null) {
 			var transp = this.editor.getInnerHTML();
 			this.editor.setHTML(this.buffer);
+				// Initialize a collapsed selection at the beginning of content
+			this.editor.selectNode(this.editor.document.body, true);
 			this.buffer = transp;
 			this.disableActions('clear', true);
 		}
@@ -470,7 +472,7 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 	 */
 	disableActions: function (actions, disabled) {
 		Ext.each(actions.split(/[,; ]+/), function (action) {
-				this.dialog.find('itemId', action)[0].setDisabled(disabled);
+			this.dialog.down('component[itemId=' + action + ']').setDisabled(disabled);
 		}, this);
 	},
 	/*
@@ -486,21 +488,25 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 	 */
 	onCancel: function () {
 		this.clearDoc();
+			// Initialize a collapsed selection at the beginning of content
+		this.editor.selectNode(this.editor.document.body, true);
 		var plugin = this.getPluginInstance('UndoRedo');
 		if (plugin) {
 			plugin.start();
 		}
-		HTMLArea.FindReplace.superclass.onCancel.call(this);
+		this.callParent(arguments);
 	},
 	/*
 	 * Clear the document before leaving on window close handle
 	 */
 	onClose: function () {
 		this.clearDoc();
+			// Initialize a collapsed selection at the beginning of content
+		this.editor.selectNode(this.editor.document.body, true);
 		var plugin = this.getPluginInstance('UndoRedo');
 		if (plugin) {
 			plugin.start();
 		}
-		HTMLArea.FindReplace.superclass.onClose.call(this);
+		this.callParent(arguments);
 	}
 });

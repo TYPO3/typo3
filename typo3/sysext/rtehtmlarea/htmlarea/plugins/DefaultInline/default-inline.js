@@ -27,7 +27,8 @@
 /*
  * Default Inline Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.DefaultInline = Ext.extend(HTMLArea.Plugin, {
+Ext.define('HTMLArea.DefaultInline', {
+	extend: 'HTMLArea.Plugin',
 	/*
 	 * This function gets called by the class constructor
 	 */
