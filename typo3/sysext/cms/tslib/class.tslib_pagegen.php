@@ -1138,11 +1138,9 @@ class TSpagegen {
 		switch ($ext) {
 			case 'js' :
 				$script = 'typo3temp/javascript_' . substr(md5($str), 0, 10) . '.js';
-				$output = $GLOBALS['TSFE']->absRefPrefix . $script;
 			break;
 			case 'css' :
 				$script = 'typo3temp/stylesheet_' . substr(md5($str), 0, 10) . '.css';
-				$output = $GLOBALS['TSFE']->absRefPrefix . $script;
 			break;
 		}
 
@@ -1153,7 +1151,7 @@ class TSpagegen {
 			}
 		}
 
-		return $output;
+		return $script;
 	}
 
 	/**
