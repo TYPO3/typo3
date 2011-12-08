@@ -2207,6 +2207,229 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * @test
+	 */
+	public function mkdirSetsPermissionsOfCreatedDirectory() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('mkdirSetsPermissionsOfCreatedDirectory() test not available on Windows');
+		}
+
+		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
+		$oldUmask = umask(023);
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0772';
+		t3lib_div::mkdir($directory);
+		clearstatcache();
+		$resultDirectoryPermissions = substr(decoct(fileperms($directory)), 1);
+		umask($oldUmask);
+		rmdir($directory);
+		$this->assertEquals($resultDirectoryPermissions, '0772');
+	}
+
+	/**
+	 * @test
+	 */
+	public function mkdirSetsGroupOwnershipOfCreatedDirectory() {
+		$swapGroup = $this->checkGroups(__FUNCTION__);
+		if ($swapGroup !== FALSE) {
+			$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = $swapGroup;
+			$directory = uniqid('mkdirtest_');
+			t3lib_div::mkdir(PATH_site . 'typo3temp/' . $directory);
+			clearstatcache();
+			$resultDirectoryGroupInfo = posix_getgrgid((filegroup(PATH_site . 'typo3temp/' . $directory)));
+			$resultDirectoryGroup = $resultDirectoryGroupInfo['name'];
+			@rmdir(PATH_site . 'typo3temp/' . $directory);
+			$this->assertEquals($resultDirectoryGroup, $swapGroup);
+		}
+	}
+
+	///////////////////////////////
+	// Helper function for filesystem ownership tests
+	///////////////////////////////
+
+	/**
+	 * Check if test on filesystem group ownership can be done in this environment
+	 * If so, return second group of webserver user
+	 * @param string calling method name
+	 * @return mixed FALSE if test cannot be run, string name of the second group of webserver user
+	 */
+	private function checkGroups($methodName) {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped($methodName . '() test not available on Windows.');
+			return FALSE;
+		}
+
+		$groups = posix_getgroups();
+		if (count($groups) <= 1) {
+			$this->markTestSkipped($methodName . '() test cannot be done when the web server user is only member of 1 group.');
+			return FALSE;
+		}
+		$groupInfo = posix_getgrgid($groups[1]);
+		return $groupInfo['name'];
+	}
+
+	///////////////////////////////
+	// Tests concerning mkdir_deep
+	///////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function mkdirDeepCreatesDirectory() {
+		$directory = 'typo3temp/' . uniqid('test_');
+		t3lib_div::mkdir_deep(PATH_site, $directory);
+		$isDirectoryCreated = is_dir(PATH_site . $directory);
+		rmdir(PATH_site . $directory);
+		$this->assertTrue($isDirectoryCreated);
+	}
+
+	/**
+	 * @test
+	 */
+	public function mkdirDeepCreatesSubdirectoriesRecursive() {
+		$directory = 'typo3temp/' . uniqid('test_');
+		$subDirectory = $directory . '/foo';
+		t3lib_div::mkdir_deep(PATH_site, $subDirectory);
+		$isDirectoryCreated = is_dir(PATH_site . $subDirectory);
+		rmdir(PATH_site . $subDirectory);
+		rmdir(PATH_site . $directory);
+		$this->assertTrue($isDirectoryCreated);
+	}
+
+	/**
+	 * @test
+	 */
+	public function mkdirDeepFixesPermissionsOfCreatedDirectory() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('mkdirDeepFixesPermissionsOfCreatedDirectory() test not available on Windows.');
+		}
+
+		$directory = uniqid('mkdirdeeptest_');
+		$oldUmask = umask(023);
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0777';
+		t3lib_div::mkdir_deep(PATH_site . 'typo3temp/', $directory);
+		clearstatcache();
+		$resultDirectoryPermissions = substr(decoct(fileperms(PATH_site . 'typo3temp/' . $directory)), -3, 3);
+		@rmdir(PATH_site . 'typo3temp/' . $directory);
+		umask($oldUmask);
+		$this->assertEquals($resultDirectoryPermissions, '777');
+	}
+
+	/**
+	 * @test
+	 */
+	public function mkdirDeepFixesPermissionsOnNewParentDirectory() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('mkdirDeepFixesPermissionsOnNewParentDirectory() test not available on Windows.');
+		}
+
+		$directory = uniqid('mkdirdeeptest_');
+		$subDirectory = $directory . '/bar';
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0777';
+		$oldUmask = umask(023);
+		t3lib_div::mkdir_deep(PATH_site . 'typo3temp/', $subDirectory);
+		clearstatcache();
+		$resultDirectoryPermissions = substr(decoct(fileperms(PATH_site . 'typo3temp/' . $directory)), -3, 3);
+		@rmdir(PATH_site . 'typo3temp/' . $subDirectory);
+		@rmdir(PATH_site . 'typo3temp/' . $directory);
+		umask($oldUmask);
+		$this->assertEquals($resultDirectoryPermissions, '777');
+	}
+
+	/**
+	 * @test
+	 */
+	public function mkdirDeepDoesNotChangePermissionsOfExistingSubDirectories() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('mkdirDeepDoesNotChangePermissionsOfExistingSubDirectories() test not available on Windows.');
+		}
+
+		$baseDirectory = PATH_site . 'typo3temp/';
+		$existingDirectory = uniqid('test_existing_') . '/';
+		$newSubDirectory = uniqid('test_new_');
+		@mkdir($baseDirectory . $existingDirectory);
+		chmod($baseDirectory . $existingDirectory, 0742);
+		t3lib_div::mkdir_deep($baseDirectory, $existingDirectory . $newSubDirectory);
+		$resultExistingDirectoryPermissions = substr(decoct(fileperms($baseDirectory . $existingDirectory)), 2);
+		@rmdir($baseDirectory, $existingDirectory . $newSubDirectory);
+		@rmdir($baseDirectory, $existingDirectory);
+		$this->assertEquals($resultExistingDirectoryPermissions, '0742');
+	}
+
+	/**
+	 * @test
+	 */
+	public function mkdirDeepSetsGroupOwnershipOfCreatedDirectory() {
+		$swapGroup = $this->checkGroups(__FUNCTION__);
+		if ($swapGroup!==FALSE) {
+			$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = $swapGroup;
+			$directory = uniqid('mkdirdeeptest_');
+			t3lib_div::mkdir_deep(PATH_site . 'typo3temp/', $directory);
+			clearstatcache();
+			$resultDirectoryGroupInfo = posix_getgrgid((filegroup(PATH_site . 'typo3temp/' . $directory)));
+			$resultDirectoryGroup = $resultDirectoryGroupInfo['name'];
+			@rmdir(PATH_site . 'typo3temp/' . $directory);
+			$this->assertEquals($resultDirectoryGroup, $swapGroup);
+		}
+	}
+
+	/**
+	 * @test
+	 */
+	public function mkdirDeepSetsGroupOwnershipOfCreatedParentDirectory() {
+		$swapGroup = $this->checkGroups(__FUNCTION__);
+		if ($swapGroup!==FALSE) {
+			$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = $swapGroup;
+			$directory = uniqid('mkdirdeeptest_');
+			$subDirectory = $directory . '/bar';
+			t3lib_div::mkdir_deep(PATH_site . 'typo3temp/', $subDirectory);
+			clearstatcache();
+			$resultDirectoryGroupInfo = posix_getgrgid((filegroup(PATH_site . 'typo3temp/' . $directory)));
+			$resultDirectoryGroup = $resultDirectoryGroupInfo['name'];
+			@rmdir(PATH_site . 'typo3temp/' . $subDirectory);
+			@rmdir(PATH_site . 'typo3temp/' . $directory);
+			$this->assertEquals($resultDirectoryGroup, $swapGroup);
+		}
+	}
+
+	/**
+	 * @test
+	 */
+	public function mkdirDeepSetsGroupOwnershipOnNewSubDirectory() {
+		$swapGroup = $this->checkGroups(__FUNCTION__);
+		if ($swapGroup!==FALSE) {
+			$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = $swapGroup;
+			$directory = uniqid('mkdirdeeptest_');
+			$subDirectory = $directory . '/bar';
+			t3lib_div::mkdir_deep(PATH_site . 'typo3temp/', $subDirectory);
+			clearstatcache();
+			$resultDirectoryGroupInfo = posix_getgrgid((filegroup(PATH_site . 'typo3temp/' . $subDirectory)));
+			$resultDirectoryGroup = $resultDirectoryGroupInfo['name'];
+			@rmdir(PATH_site . 'typo3temp/' . $subDirectory);
+			@rmdir(PATH_site . 'typo3temp/' . $directory);
+			$this->assertEquals($resultDirectoryGroup, $swapGroup);
+		}
+	}
+
+	/**
+	 * @test
+	 */
+	public function mkdirDeepCreatesDirectoryInVfsStream() {
+		if (!class_exists('\vfsStreamWrapper')) {
+			$this->markTestSkipped('mkdirDeepCreatesDirectoryInVfsStream() test not available with this phpunit version.');
+		}
+
+		\vfsStreamWrapper::register();
+		$baseDirectory = uniqid('test_');
+		\vfsStreamWrapper::setRoot(new \vfsStreamDirectory($baseDirectory));
+		t3lib_div::mkdir_deep('vfs://' . $baseDirectory . '/', 'sub');
+		$this->assertTrue(is_dir('vfs://' . $baseDirectory . '/sub'));
+	}
+
+	///////////////////////////////
+	// Tests concerning unQuoteFilenames
+	///////////////////////////////
+
+	/**
 	 * Data provider for ImageMagick shell commands
 	 * @see	explodeAndUnquoteImageMagickCommands
 	 */
@@ -2462,7 +2685,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 	/**
 	 * @see resolveBackPathWithDataProvider
-	 * 
+	 *
 	 * @return array<array>
 	 */
 	public function resolveBackPathDataProvider() {
