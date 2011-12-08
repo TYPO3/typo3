@@ -359,7 +359,12 @@ class t3lib_Compressor {
 		$targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.css';
 			// only create it, if it doesn't exist, yet
 		if (!file_exists(PATH_site . $targetFile) || ($this->createGzipped && !file_exists(PATH_site . $targetFile . '.gzip'))) {
-			$contents = t3lib_div::getUrl($filenameAbsolute);
+			if (is_file($filenameAbsolute)) {
+				$contents = file_get_contents($filenameAbsolute);
+			}
+			else {
+				$contents = t3lib_div::getUrl($filenameAbsolute);
+			}
 				// Perform some safe CSS optimizations.
 			$contents = str_replace("\r", '', $contents); // Strip any and all carriage returns.
 				// Match and process strings, comments and everything else, one chunk at a time.
