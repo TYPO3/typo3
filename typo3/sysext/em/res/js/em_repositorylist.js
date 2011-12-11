@@ -416,8 +416,9 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 			new Ext.Window({
 				title: TYPO3.EM.Tools.renderExtensionTitle(record),
 				layout: 'fit',
-				width: 600,
-				height: 350,
+				width: 750,
+				height: 400,
+				maximizable: true,
 				items : this.expander.createExpandingRowPanelItems(record,index),
 				id: id
 			}).show();
