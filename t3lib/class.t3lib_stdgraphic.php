@@ -145,7 +145,10 @@ class t3lib_stdGraphic {
 		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['png_truecolor']) {
 			$this->png_truecolor = TRUE;
 		}
-		if (!$gfxConf['im_version_5'] || $gfxConf['im_version_5'] === 'im4' || $gfxConf['im_version_5'] === 'im5') {
+		if (!$gfxConf['im']) {
+			$this->NO_IMAGE_MAGICK = 1;
+		}
+		if (!$this->NO_IMAGE_MAGICK && (!$gfxConf['im_version_5'] || $gfxConf['im_version_5'] === 'im4' || $gfxConf['im_version_5'] === 'im5')) {
 			throw new RuntimeException(
 				'Your TYPO3 installation is configured to use an old version of ImageMagick, which is not supported anymore. ' .
 				'Please upgrade to ImageMagick version 6 or GraphicksMagick and set $TYPO3_CONF_VARS[\'GFX\'][\'im_version_5\'] appropriately.',
@@ -209,9 +212,6 @@ class t3lib_stdGraphic {
 			}
 		}
 
-		if (!$gfxConf['im']) {
-			$this->NO_IMAGE_MAGICK = 1;
-		}
 			// Secures that images are not scaled up.
 		if ($gfxConf['im_noScaleUp']) {
 			$this->mayScaleUp = 0;
