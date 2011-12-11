@@ -58,6 +58,7 @@ $Id$
 	display: block;
 	margin-bottom: 1px;
 	padding: 3px 0 3px 15px;
+	white-space: nowrap;
 }
 
 #typo3-menu li ul li a:hover,
