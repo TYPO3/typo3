@@ -108,7 +108,6 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 			';
 
 			$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
-			$this->content .= $this->doc->spacer(5);
 
 			// Render content:
 			$this->moduleContent();

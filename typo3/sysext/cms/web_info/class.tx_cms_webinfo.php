@@ -118,7 +118,8 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 			$dblist->generateList();
 
 
-			$theOutput.= $this->pObj->doc->section($LANG->getLL('hits_title'),
+			$theOutput .= $this->pObj->doc->header($LANG->getLL('hits_title'));
+			$theOutput .= $this->pObj->doc->section('',
 				t3lib_BEfunc::cshItem($dblist->descrTable, 'stat', $GLOBALS['BACK_PATH'], '|<br />') . // CSH
 					$h_func.
 					$header.
@@ -132,7 +133,8 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 			$dblist->generateList();
 
 				// CSH
-			$theOutput.=$this->pObj->doc->section($LANG->getLL('page_title'),
+			$theOutput .= $this->pObj->doc->header($LANG->getLL('page_title'));
+			$theOutput .=$this->pObj->doc->section('',
 				t3lib_BEfunc::cshItem($dblist->descrTable, 'pagetree_overview', $GLOBALS['BACK_PATH'], '|<br />') . // CSH
 					$h_func.
 					$dblist->HTMLcode,
