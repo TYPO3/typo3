@@ -66,7 +66,7 @@ class t3lib_stdGraphic {
 		'gif' => '',
 		'png' => '-colors 64'
 	);
-	var $NO_IMAGE_MAGICK = '';
+	var $imageMagickAvailable = TRUE;
 	var $V5_EFFECTS = 0;
 	var $mayScaleUp = 1;
 
@@ -145,7 +145,12 @@ class t3lib_stdGraphic {
 		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['png_truecolor']) {
 			$this->png_truecolor = TRUE;
 		}
-		if (!$gfxConf['im_version_5'] || $gfxConf['im_version_5'] === 'im4' || $gfxConf['im_version_5'] === 'im5') {
+
+		if (!$gfxConf['im']) {
+			$this->imageMagickAvailable = FALSE;
+		}
+
+		if ($this->imageMagickAvailable && (!$gfxConf['im_version_5'] || $gfxConf['im_version_5'] === 'im4' || $gfxConf['im_version_5'] === 'im5')) {
 			throw new RuntimeException(
 				'Your TYPO3 installation is configured to use an old version of ImageMagick, which is not supported anymore. ' .
 				'Please upgrade to ImageMagick version 6 or GraphicksMagick and set $TYPO3_CONF_VARS[\'GFX\'][\'im_version_5\'] appropriately.',
@@ -209,9 +214,6 @@ class t3lib_stdGraphic {
 			}
 		}
 
-		if (!$gfxConf['im']) {
-			$this->NO_IMAGE_MAGICK = 1;
-		}
 			// Secures that images are not scaled up.
 		if ($gfxConf['im_noScaleUp']) {
 			$this->mayScaleUp = 0;
@@ -2114,7 +2116,7 @@ class t3lib_stdGraphic {
 	 * @see getImageScale(), typo3/show_item.php, fileList_ext::renderImage(), tslib_cObj::getImgResource(), SC_tslib_showpic::show(), maskImageOntoImage(), copyImageOntoImage(), scale()
 	 */
 	function imageMagickConvert($imagefile, $newExt = '', $w = '', $h = '', $params = '', $frame = '', $options = '', $mustCreate = 0) {
-		if ($this->NO_IMAGE_MAGICK) {
+		if (!$this->imageMagickAvailable) {
 				// Returning file info right away
 			return $this->getImageDimensions($imagefile);
 		}
@@ -2506,7 +2508,7 @@ class t3lib_stdGraphic {
 	 * @return	array
 	 */
 	function imageMagickIdentify($imagefile) {
-		if (!$this->NO_IMAGE_MAGICK) {
+		if ($this->imageMagickAvailable) {
 			$frame = $this->noFramePrepended ? '' : '[0]';
 			$cmd = t3lib_div::imageMagickCommand('identify', $this->wrapFileName($imagefile) . $frame);
 			$returnVal = array();
@@ -2545,7 +2547,7 @@ class t3lib_stdGraphic {
 	 * @return	string		The result of a call to PHP function "exec()"
 	 */
 	function imageMagickExec($input, $output, $params, $frame = 0) {
-		if (!$this->NO_IMAGE_MAGICK) {
+		if ($this->imageMagickAvailable) {
 
 				// Unless noFramePrepended is set in the Install Tool, a frame number is added to
 				// select a specific page of the image (by default this will be the first page)
@@ -2577,7 +2579,7 @@ class t3lib_stdGraphic {
 	 * @return	void
 	 */
 	function combineExec($input, $overlay, $mask, $output, $handleNegation = FALSE) {
-		if (!$this->NO_IMAGE_MAGICK) {
+		if ($this->imageMagickAvailable) {
 			$params = '-colorspace GRAY +matte';
 			if ($handleNegation) {
 				if ($this->maskNegate) {
