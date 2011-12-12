@@ -8,15 +8,14 @@ Username inside the toolbar
 	font-weight: bold;
 }
 
-#username.su-user {
-	color: #eb6e5a;
-	font-weight: bold;
-}
-
 #username a {
 	color: #ffffff;
 	font-weight: bold;
 	font-size: 11px;
 	line-height: 16px;
 	text-decoration: none;
+}
+
+#username.su-user a {
+	color: #eb6e5a;
 }
