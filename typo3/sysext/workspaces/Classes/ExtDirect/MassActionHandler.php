@@ -52,9 +52,9 @@ class Tx_Workspaces_ExtDirect_MassActionHandler extends Tx_Workspaces_ExtDirect_
 	public function getMassStageActions($parameter) {
 		$actions = array();
 		$currentWorkspace = $this->getCurrentWorkspace();
-
+		$massActionsEnabled = $GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.enableMassActions') !== '0';
 			// in case we're working within "All Workspaces" we can't provide Mass Actions
-		if ($currentWorkspace != Tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES) {
+		if (($currentWorkspace != Tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES) && $massActionsEnabled) {
 			$publishAccess = $GLOBALS['BE_USER']->workspacePublishAccess($currentWorkspace);
 			if ($publishAccess && !($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1)) {
 				$actions[] = array('action' => 'publish', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_publish')
