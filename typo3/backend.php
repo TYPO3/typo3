@@ -366,29 +366,31 @@ class TYPO3backend {
 	 * @return	string		html code snippet displaying the currently logged in user
 	 */
 	protected function getLoggedInUserLabel() {
+		$css = 'toolbar-item no-separator';
 		$icon = t3lib_iconWorks::getSpriteIcon('status-user-' . ($GLOBALS['BE_USER']->isAdmin() ? 'admin' : 'backend'));
+		$realName = $GLOBALS['BE_USER']->user['realName'];
+		$username = $GLOBALS['BE_USER']->user['username'];
 
-		$label = $GLOBALS['BE_USER']->user['realName'] ?
-			$GLOBALS['BE_USER']->user['realName'] . ' (' . $GLOBALS['BE_USER']->user['username'] . ')' :
-			$GLOBALS['BE_USER']->user['username'];
+		$label = $realName ? $realName : $username;
+		$title = $username;
 
 			// Link to user setup if it's loaded and user has access
 		$link = '';
-		if (t3lib_extMgm::isLoaded('setup') && $GLOBALS['BE_USER']->check('modules','user_setup')) {
-			$link = '<a href="#" onclick="top.goToModule(\'user_setup\');this.blur();return false;">';
+		if (t3lib_extMgm::isLoaded('setup') && $GLOBALS['BE_USER']->check('modules', 'user_setup')) {
+			$link = '<a href="#" onclick="top.goToModule(\'user_setup\'); this.blur(); return false;">';
 		}
-
-		$username = '">'.$link.$icon.'<span>'.htmlspecialchars($label).'</span>'.($link?'</a>':'');
 
 			// superuser mode
 		if ($GLOBALS['BE_USER']->user['ses_backuserid']) {
-			$username   = ' su-user">'.$icon.
-			'<span title="' . $GLOBALS['LANG']->getLL('switchtouser') . '">' .
-			$GLOBALS['LANG']->getLL('switchtousershort') . ' </span>' .
-			'<span>' . htmlspecialchars($label) . '</span>';
+			$css .= ' su-user';
+			$title = $GLOBALS['LANG']->getLL('switchtouser') . ': ' . $username;
+			$label = $GLOBALS['LANG']->getLL('switchtousershort') . ' ' .
+				($realName ? $realName . ' (' . $username . ')' : $username);
 		}
 
-		return '<div id="username" class="toolbar-item no-separator'.$username.'</div>';
+		return '<div id="username" class="' . $css . '">' . $link . $icon .
+				'<span title="' . htmlspecialchars($title) . '">' . htmlspecialchars($label) . '</span>' .
+				($link ? '</a>' : '') . '</div>';
 	}
 
 	/**
