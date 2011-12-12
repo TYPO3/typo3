@@ -320,7 +320,7 @@ CREATE TABLE tt_content (
   text_color tinyint(3) unsigned DEFAULT '0' NOT NULL,
   text_properties tinyint(3) unsigned DEFAULT '0' NOT NULL,
   menu_type varchar(30) DEFAULT '0' NOT NULL,
-  list_type varchar(36) DEFAULT '0' NOT NULL,
+  list_type varchar(255) DEFAULT '0' NOT NULL,
   table_border tinyint(3) unsigned DEFAULT '0' NOT NULL,
   table_cellspacing tinyint(3) unsigned DEFAULT '0' NOT NULL,
   table_cellpadding tinyint(3) unsigned DEFAULT '0' NOT NULL,
