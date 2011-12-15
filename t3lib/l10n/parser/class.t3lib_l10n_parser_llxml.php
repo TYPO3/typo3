@@ -83,12 +83,22 @@ class t3lib_l10n_parser_Llxml extends t3lib_l10n_parser_AbstractXml {
 	protected function doParsingFromRootForElement(SimpleXMLElement $root, $element) {
 		$bodyOfFileTag = $root->data->languageKey;
 
-		$parsedData = $this->getParsedDataForElement($bodyOfFileTag, $element);
-
 			// Check if the source llxml file contains localized records
 		$localizedBodyOfFileTag = $root->data->xpath("languageKey[@index='" . $this->languageKey . "']");
+		if ($element === 'target' && count($localizedBodyOfFileTag) == 0) {
+			return array();
+		}
+
+		$parsedData = $this->getParsedDataForElement($bodyOfFileTag, $element);
 		if ($element === 'target' && isset($localizedBodyOfFileTag[0]) && $localizedBodyOfFileTag[0] instanceof SimpleXMLElement) {
-			$parsedData = array_merge($parsedData, $this->getParsedDataForElement($localizedBodyOfFileTag[0], $element));
+			$parsedDataTarget = $this->getParsedDataForElement($localizedBodyOfFileTag[0], $element);
+			$mergedData = array_merge($parsedData, $parsedDataTarget);
+
+			if ($this->languageKey === 'default') {
+				$parsedData = array_intersect_key($mergedData, $parsedData);
+			} else {
+				$parsedData = array_intersect_key($mergedData, $parsedDataTarget);
+			}
 		}
 
 		return $parsedData;
