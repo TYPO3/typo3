@@ -77,10 +77,11 @@ class t3lib_l10n_Factory implements t3lib_Singleton {
 	 * @param string $fileReference Input is a file-reference (see t3lib_div::getFileAbsFileName). That file is expected to be a supported locallang file format
 	 * @param string $languageKey Language key
 	 * @param string $charset Character set (option); if not set, determined by the language key
-	 * @param int $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
+	 * @param int $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception$
+	 * @param bool $isLocalizationOverride TRUE if $fileReference is a localization override
 	 * @return array|bool
 	 */
-	public function getParsedData($fileReference, $languageKey, $charset, $errorMode) {
+	public function getParsedData($fileReference, $languageKey, $charset, $errorMode, $isLocalizationOverride = FALSE) {
 		try {
 			$hash = md5($fileReference . $languageKey . $charset);
 			$this->errorMode = $errorMode;
@@ -119,7 +120,7 @@ class t3lib_l10n_Factory implements t3lib_Singleton {
 			);
 
 				// Override localization
-			if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'])) {
+			if (!$isLocalizationOverride && isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'])) {
 				$this->localizationOverride($fileReference, $languageKey, $charset, $errorMode, $LOCAL_LANG);
 			}
 
@@ -170,7 +171,7 @@ class t3lib_l10n_Factory implements t3lib_Singleton {
 				$languageOverrideFileName = t3lib_div::getFileAbsFileName($overrideFile);
 				$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule(
 					$LOCAL_LANG,
-					$this->getParsedData($languageOverrideFileName, $languageKey, $charset, $errorMode)
+					$this->getParsedData($languageOverrideFileName, $languageKey, $charset, $errorMode, TRUE)
 				);
 			}
 		}

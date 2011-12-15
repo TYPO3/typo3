@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-12-21T11:57:33Z" product-name="tests" target-language="fr">
+		<header/>
+		<body>
+			<trans-unit id="label1" xml:space="preserve">
+				<source>This is label #1</source>
+				<target>Ceci est le libellé no. 1</target>
+			</trans-unit>
+			<trans-unit id="label2" xml:space="preserve">
+				<source>This is label #2</source>
+				<target>Ceci est le libellé no. 2</target>
+			</trans-unit>
+			<trans-unit id="label3" xml:space="preserve">
+				<source>This is label #3</source>
+				<target>Ceci est le libellé no. 3</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
