@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Fixture labels for unit tests.</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="label1">This is my 1st label</label>
+			<label index="label2">This is my 2nd label</label>
+		</languageKey>
+
+		<languageKey index="fr" type="array">
+			<label index="label1">Ceci est mon 1er libellé</label>
+			<label index="label3">Ceci est mon 3e libellé</label>
+		</languageKey>
+	</data>
+</T3locallang>

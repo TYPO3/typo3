@@ -4425,6 +4425,9 @@ final class t3lib_div {
 			$validatedPrefix = PATH_typo3 . 'ext/';
 		} elseif (self::isFirstPartOfStr($fileRef, PATH_typo3conf . 'ext/')) { // Is local:
 			$validatedPrefix = PATH_typo3conf . 'ext/';
+		} elseif (self::isFirstPartOfStr($fileRef, PATH_site . 'typo3_src/tests/')) { // Is test:
+			$validatedPrefix = PATH_site . 'typo3_src/tests/';
+			$location = $validatedPrefix;
 		} else {
 			$validatedPrefix = '';
 		}
@@ -4438,6 +4441,11 @@ final class t3lib_div {
 				array_unshift($temp, '');
 			} // Add empty first-entry if not there.
 			list($file_extPath, $file_fileName) = $temp;
+
+				// If $fileRef is already prefix with "[language key]" then we should return it as this
+			if (substr($file_fileName, 0, strlen($language) + 1) === $language . '.') {
+				return $fileRef;
+			}
 
 				// The filename is prefixed with "[language key]." because it prevents the llxmltranslate tool from detecting it.
 			return $location .
