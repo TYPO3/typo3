@@ -274,7 +274,6 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 		} else {
 			/** @var tx_saltedpasswords_emconfhelper $configCheck */
 			$configCheck = t3lib_div::makeInstance('tx_saltedpasswords_emconfhelper');
-			$message .= '<p>' . $GLOBALS['LANG']->getLL('status_saltedPasswords_infoText') . '</p>';
 			$flashMessage = $configCheck->checkConfigurationBackend(array(), new t3lib_tsStyleConfig());
 
 			if (strpos($flashMessage, 'message-error') !== FALSE ||
@@ -295,8 +294,9 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 			if ($unsecureUserCount > 0) {
 				$value    = $GLOBALS['LANG']->getLL('status_insecure');
 				$severity = tx_reports_reports_status_Status::ERROR;
-				$message .= '<div class="typo3-message message-warning">' .
-						$GLOBALS['LANG']->getLL('status_saltedPasswords_notAllPasswordsHashed') .'</div>';
+				$message .= '<p>' . $GLOBALS['LANG']->getLL('status_saltedPasswords_infoText') . '</p>'
+					. '<div class="typo3-message message-warning">'
+					. $GLOBALS['LANG']->getLL('status_saltedPasswords_notAllPasswordsHashed') .'</div>';
 			}
 		}
 
