@@ -1192,7 +1192,7 @@ class t3lib_sqlparser {
 
 						// Find "comparator":
 					$comparatorPatterns = array(
-						'<=', '>=', '<', '>', '=', '!=',
+						'<=', '>=', '<>', '<', '>', '=', '!=',
 						'NOT[[:space:]]+IN', 'IN',
 						'NOT[[:space:]]+LIKE[[:space:]]+BINARY', 'LIKE[[:space:]]+BINARY', 'NOT[[:space:]]+LIKE', 'LIKE',
 						'IS[[:space:]]+NOT', 'IS',
