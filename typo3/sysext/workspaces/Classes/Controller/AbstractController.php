@@ -25,7 +25,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once($GLOBALS['BACK_PATH'] . 'template.php');
+require_once(PATH_site . TYPO3_mainDir . 'template.php');
 
 /**
  * Abstract action controller.
