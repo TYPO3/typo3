@@ -450,10 +450,19 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			// Get stylesheet file name from Page TSConfig if any
 		$fileName = trim($this->thisConfig['contentCSS']);
 		if ($fileName) {
-			$filename = $this->getFullFileName($fileName);
+			$fileName = $this->getFullFileName($fileName);
+
+				// paths are relative to typo3/
+				// But if that path is a symlink, going ../ won't work as expected.
+				// sysext-paths however are correct below typo3/
+			if (substr($fileName, 0, 3) == '../') {
+				$absolutePath = PATH_site . substr($fileName, 3);
+			} else {
+				$absolutePath = PATH_site . 'typo3' . $fileName;
+			}
 		}
 			// Fallback to default content css file if configured file does not exists or is of zero size
-		if (!$fileName || !file_exists(PATH_site . $fileName) || !filesize(PATH_site . $fileName)) {
+		if (!$fileName || !file_exists($absolutePath) || !filesize($absolutePath)) {
 			$fileName = $this->getFullFileName('EXT:' . $this->ID . '/res/contentcss/default.css');
 		}
 		return $fileName;
