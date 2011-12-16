@@ -27,6 +27,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'createDirs' => '',
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
+	'doNotLoadInFE' => 1,
 	'lockType' => '',
 	'author_company' => 'Connecta AG / cab services ag / Infoglobe',
 	'version' => '1.5.0',
