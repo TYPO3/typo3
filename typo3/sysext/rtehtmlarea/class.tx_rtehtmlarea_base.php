@@ -450,10 +450,13 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			// Get stylesheet file name from Page TSConfig if any
 		$fileName = trim($this->thisConfig['contentCSS']);
 		if ($fileName) {
-			$filename = $this->getFullFileName($fileName);
+			$fileName = $this->getFullFileName($fileName);
 		}
+		$absolutePath = $fileName
+			? t3lib_div::resolveBackPath(PATH_site . (($this->is_FE() || $this->isFrontendEditActive()) ? '' : TYPO3_mainDir) . $fileName)
+			: '';
 			// Fallback to default content css file if configured file does not exists or is of zero size
-		if (!$fileName || !file_exists(PATH_site . $fileName) || !filesize(PATH_site . $fileName)) {
+		if (!$fileName || !file_exists($absolutePath) || !filesize($absolutePath)) {
 			$fileName = $this->getFullFileName('EXT:' . $this->ID . '/res/contentcss/default.css');
 		}
 		return $fileName;
