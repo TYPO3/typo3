@@ -100,7 +100,6 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		'edit_RTE' => '1',
 		'edit_docModuleUpload' => '1',
 		'enableFlashUploader' => '1',
-		'disableCMlayers' => 0,
 		'navFrameWidth' => '', // Default is 245 pixels
 		'navFrameResizable' => 0,
 		'resizeTextareas' => 1,

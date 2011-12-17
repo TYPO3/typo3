@@ -951,7 +951,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 			$dblist->counter++;
 			$dblist->MOD_MENU = array('bigControlPanel' => '', 'clipBoard' => '', 'localization' => '');
 			$dblist->modTSconfig = $this->taskObject->modTSconfig;
-			$dblist->dontShowClipControlPanels = $CLIENT['FORMSTYLE'] && !$this->taskObject->MOD_SETTINGS['bigControlPanel'] && $dblist->clipObj->current=='normal' && !$GLOBALS['BE_USER']->uc['disableCMlayers'] && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
+			$dblist->dontShowClipControlPanels = $CLIENT['FORMSTYLE'] && !$this->taskObject->MOD_SETTINGS['bigControlPanel'] && $dblist->clipObj->current=='normal' && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
 
 				// Initialize the listing object, dblist, for rendering the list:
 			$this->pointer = t3lib_utility_Math::forceIntegerInRange(t3lib_div::_GP('pointer'), 0, 100000);
