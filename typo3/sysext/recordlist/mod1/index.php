@@ -248,7 +248,7 @@ class SC_db_list {
 			// This flag will prevent the clipboard panel in being shown.
 			// It is set, if the clickmenu-layer is active AND the extended view is not enabled.
 		$dblist->dontShowClipControlPanels = $GLOBALS['CLIENT']['FORMSTYLE'] && !$this->MOD_SETTINGS['bigControlPanel']
-			&& $dblist->clipObj->current=='normal' && !$GLOBALS['BE_USER']->uc['disableCMlayers']
+			&& $dblist->clipObj->current=='normal'
 			&& !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
 
 

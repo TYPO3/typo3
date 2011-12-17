@@ -354,8 +354,10 @@ class template {
 	 * Use this to test if click-menus (context sensitive menus) can and should be displayed in the backend.
 	 *
 	 * @return	boolean
+	 * @deprecated since TYPO3 4.7, will be removed in TYPO3 4.9 - This function makes no sense anymore
 	 */
 	function isCMlayers()	{
+		t3lib_div::logDeprecatedFunction();
 		return !$GLOBALS['BE_USER']->uc['disableCMlayers'] && $GLOBALS['CLIENT']['FORMSTYLE'] && !($GLOBALS['CLIENT']['SYSTEM']=='mac' && $GLOBALS['CLIENT']['BROWSER']=='Opera');
 	}
 
