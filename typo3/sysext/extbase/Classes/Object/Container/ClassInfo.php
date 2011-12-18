@@ -27,7 +27,7 @@
 /**
  * Value object containing the relevant informations for a class,
  * this object is build by the classInfoFactory - or could also be restored from a cache
- * 
+ *
  * @author Daniel Pötzinger
  */
 class Tx_Extbase_Object_Container_ClassInfo {
@@ -48,7 +48,7 @@ class Tx_Extbase_Object_Container_ClassInfo {
 	 *     ),
 	 *     1 => ...
 	 *   )
-	 * 
+	 *
 	 * @var array
 	 */
 	private $constructorArguments;
@@ -56,7 +56,7 @@ class Tx_Extbase_Object_Container_ClassInfo {
 	/**
 	 * All setter injections in the format
 	 * 	array (<nameOfMethod> => <classNameToInject> )
-	 * 
+	 *
 	 * @var array
 	 */
 	private $injectMethods;
@@ -66,24 +66,24 @@ class Tx_Extbase_Object_Container_ClassInfo {
 	 *
 	 * @var boolean
 	 */
-	private $isSingleton = false;
+	private $isSingleton = FALSE;
 
 	/**
 	 * Indicates if the class has the method initializeObject
 	 *
 	 * @var boolean
 	 */
-	private $isInitializeable = false;
+	private $isInitializeable = FALSE;
 
 	/**
-	 * 
+	 *
 	 * @param string $className
 	 * @param array $constructorArguments
 	 * @param array $injectMethods
 	 * @param boolean $isSingleton
 	 * @param boolean $isInitializeable
 	 */
-	public function __construct($className, array $constructorArguments, array $injectMethods, $isSingleton = false, $isInitializeable = false) {
+	public function __construct($className, array $constructorArguments, array $injectMethods, $isSingleton = FALSE, $isInitializeable = FALSE) {
 		$this->className = $className;
 		$this->constructorArguments = $constructorArguments;
 		$this->injectMethods = $injectMethods;
@@ -92,14 +92,18 @@ class Tx_Extbase_Object_Container_ClassInfo {
 	}
 
 	/**
-	 * @return the $className
+	 * Gets the class name passed to constructor
+	 *
+	 * @return string
 	 */
 	public function getClassName() {
 		return $this->className;
 	}
 
 	/**
-	 * @return the $constructorArguments
+	 * Get arguments passed to constructor
+	 *
+	 * @return array
 	 */
 	public function getConstructorArguments() {
 		return $this->constructorArguments;
@@ -108,14 +112,14 @@ class Tx_Extbase_Object_Container_ClassInfo {
 	/**
 	 * Returns an array with the inject methods.
 	 *
-	 * @return the $injectMethods
+	 * @return array
 	 */
 	public function getInjectMethods() {
 		return $this->injectMethods;
 	}
 
 	/**
-	 * Returns if the class is a singleton or not.
+	 * Asserts if the class is a singleton or not.
 	 *
 	 * @return boolean
 	 */
@@ -124,7 +128,7 @@ class Tx_Extbase_Object_Container_ClassInfo {
 	}
 
 	/**
-	 * Returns if the class is initializeable with initializeObject.
+	 * Asserts if the class is initializeable with initializeObject.
 	 *
 	 * @return boolean
 	 */
@@ -133,7 +137,9 @@ class Tx_Extbase_Object_Container_ClassInfo {
 	}
 
 	/**
-	 * @return the $injectMethods
+	 * Asserts if the class has Dependency Injection methods
+	 *
+	 * @return boolean
 	 */
 	public function hasInjectMethods() {
 		return (count($this->injectMethods) > 0);
