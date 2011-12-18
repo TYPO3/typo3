@@ -17,7 +17,7 @@ if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['cache']['clear_menu']) && 
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions']['clearLangCache'] = 'EXT:lang/hooks/clearcache/class.tx_lang_clearcachemenu.php:&tx_lang_clearcachemenu';
 } else {
 		// Clear l10n cache when the user clears all caches
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['clearLangCache'] = 'EXT:lang/hooks/clearcache/class.tx_lang_clearallcache.php:tx_lang_clearcache->clearCache';
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['clearLangCache'] = 'EXT:lang/hooks/clearcache/class.tx_lang_clearcache.php:tx_lang_clearcache->clearCache';
 }
 
 	// Register Ajax call
