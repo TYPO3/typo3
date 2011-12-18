@@ -235,7 +235,7 @@ EOT;
 			}
 				// forceSalted is set
 			if ($extConf['forceSalted'] && !$extConf['onlyAuthService']) {
-				$this->setErrorLevel('warning');
+				$this->setErrorLevel('info');
 				$problems[] = <<< EOT
 SaltedPasswords has been configured to enforce salted passwords (forceSalted).
 <br />
@@ -265,7 +265,7 @@ EOT;
 
 		} else {
 			// not enabled warning
-			$this->setErrorLevel('info');
+			$this->setErrorLevel('error');
 			$problems[] = 'SaltedPasswords has been disabled for backend users.';
 		}
 
