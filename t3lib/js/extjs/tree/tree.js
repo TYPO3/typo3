@@ -86,7 +86,7 @@ Ext.define('TYPO3.Components.Tree.StandardTree', {
 		var text = filterText.getValue();
 		Ext.each(this.hiddenNodes, function(node) {
 			node.ui.show();
-			node.ui.removeClass('bgColor6');
+			node.ui.removeCls('bgColor6');
 		});
 		if (!text) {
 			this.filter.clear();
@@ -105,7 +105,7 @@ Ext.define('TYPO3.Components.Tree.StandardTree', {
 					node.ui.hide();
 					me.hiddenNodes.push(node);
 				} else {
-					node.ui.addClass('bgColor6');
+					node.ui.addCls('bgColor6');
 				}
 			}
 		}, this);
@@ -222,9 +222,9 @@ TYPO3.Components.Tree.TcaCheckChangeHandler = function(checkedNode, checked) {
 		return false;
 	}
 	if (checked) {
-		checkedNode.getUI().addClass('complete');
+		checkedNode.getUI().addCls('complete');
 	} else {
-		checkedNode.getUI().removeClass('complete');
+		checkedNode.getUI().removeCls('complete');
 	}
 	var selected = [];
 	this.root.cascade(function(node) {
