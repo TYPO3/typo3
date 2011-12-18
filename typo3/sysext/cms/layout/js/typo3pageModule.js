@@ -35,7 +35,7 @@ TYPO3.Components.PageModule = {
 	},
 
 	/**
-	 * This method is used to bind the higlighting function "setActive"
+	 * This method is used to bind the highlighting function "setActive"
 	 * to the mouseenter event and the "setInactive" to the mouseleave event.
 	 */
 	enableHighlighting: function() {
@@ -45,7 +45,7 @@ TYPO3.Components.PageModule = {
 	},
 
 	/**
-	 * This method is used to unbind the higlighting function "setActive"
+	 * This method is used to unbind the highlighting function "setActive"
 	 * from the mouseenter event and the "setInactive" from the mouseleave event.
 	 */
 	disableHighlighting: function() {
@@ -59,7 +59,7 @@ TYPO3.Components.PageModule = {
 	 * user hovers the a content element.
 	 */
 	setActive: function(event, target) {
-		Ext.get(target).findParent('div.t3-page-ce', null, true).addClass('active');
+		Ext.get(target).up('div.t3-page-ce').addCls('active');
 	},
 
 	/**
@@ -68,8 +68,7 @@ TYPO3.Components.PageModule = {
 	 * content element.
 	 */
 	setInactive: function(event, target) {
-		Ext.get(target).findParent('div.t3-page-ce', null, true).removeClass('active');
-
+		Ext.get(target).up('div.t3-page-ce').removeCls('active');
 	}
 }
 
