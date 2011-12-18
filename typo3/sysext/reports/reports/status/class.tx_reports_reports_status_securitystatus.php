@@ -271,13 +271,15 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 			$messageDetail = '';
 			$flashMessage = $configCheck->checkConfigurationBackend(array(), new t3lib_tsStyleConfig());
 
-			if (strpos($flashMessage, 'message-error') !== FALSE ||
-				strpos($flashMessage, 'message-warning') !== FALSE ||
-				strpos($flashMessage, 'message-information') !== FALSE
-			) {
+			if (strpos($flashMessage, 'message-error') !== FALSE) {
 				$value = $GLOBALS['LANG']->getLL('status_insecure');
 				$severity = tx_reports_reports_status_Status::ERROR;
 				$messageDetail .= $flashMessage;
+			}
+			if (strpos($flashMessage, 'message-warning') !== FALSE ||
+				strpos($flashMessage, 'message-information') !== FALSE) {
+				$severity = tx_reports_reports_status_Status::WARNING;
+				$message .= $flashMessage;
 			}
 
 			$unsecureUserCount = tx_saltedpasswords_div::getNumberOfBackendUsersWithInsecurePassword();
