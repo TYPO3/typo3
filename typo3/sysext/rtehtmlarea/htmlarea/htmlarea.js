@@ -2942,7 +2942,7 @@ HTMLArea._removeClass = function(el, className, substring) {
  ***********************************************
  */
 HTMLArea._addClass = function(el, className) {
-	HTMLArea.DOM.addClass(el, className);
+	HTMLArea.DOM.addCls(el, className);
 };
 /*
  * Check if a class name is in the class attribute of an element

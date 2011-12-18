@@ -218,7 +218,7 @@ Ext.define('HTMLArea.TextStyle', {
 		if (node && !HTMLArea.isBlockElement(node)) {
 			if (className === 'none' && node.className && /\S/.test(node.className)) {
 				classNames = node.className.trim().split(' ');
-				HTMLArea.DOM.removeClass(node, classNames[classNames.length-1]);
+				HTMLArea.DOM.removeCls(node, classNames[classNames.length-1]);
 			}
 			if (className !== 'none') {
 				HTMLArea.DOM.addClass(node, className);

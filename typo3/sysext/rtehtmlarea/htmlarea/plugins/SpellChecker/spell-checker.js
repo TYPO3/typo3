@@ -726,7 +726,7 @@ Ext.define('HTMLArea.SpellChecker', {
 	 * Handler invoked when the mouse moves out of a misspelled word
 	 */
 	onWordMouseOut: function (event, element) {
-		HTMLArea.DOM.removeClass(element, 'htmlarea-spellcheck-hover');
+		HTMLArea.DOM.removeCls(element, 'htmlarea-spellcheck-hover');
 	},
 	/*
 	 * Handler invoked when a suggestion is selected
@@ -746,7 +746,7 @@ Ext.define('HTMLArea.SpellChecker', {
 	onRevertClick: function () {
 		this.dialog.down('component[itemId=replacement]').setValue(this.currentElement.htmlareaOriginalWord);
 		this.replaceWord(this.currentElement);
-		HTMLArea.DOM.removeClass(this.currentElement, 'htmlarea-spellcheck-fixed');
+		HTMLArea.DOM.removeCls(this.currentElement, 'htmlarea-spellcheck-fixed');
 		HTMLArea.DOM.addClass(this.currentElement, 'htmlarea-spellcheck-error');
 		HTMLArea.DOM.addClass(this.currentElement, 'htmlarea-spellcheck-current');
 		return false;
@@ -755,7 +755,7 @@ Ext.define('HTMLArea.SpellChecker', {
 	 * Replace the word contained in the element
 	 */
 	replaceWord: function (element) {
-		HTMLArea.DOM.removeClass(element, 'htmlarea-spellcheck-hover');
+		HTMLArea.DOM.removeCls(element, 'htmlarea-spellcheck-hover');
 		HTMLArea.DOM.addClass(element, 'htmlarea-spellcheck-fixed');
 		element.htmlareaFixed = true;
 		var replacement = this.dialog.down('component[itemId=replacement]').getValue();

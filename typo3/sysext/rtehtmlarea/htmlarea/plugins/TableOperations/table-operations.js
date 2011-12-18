@@ -510,15 +510,15 @@ Ext.define('HTMLArea.TableOperations', {
 			    case "f_st_float":
 				switch (val) {
 				    case "not set":
-					HTMLArea.DOM.removeClass(table, this.floatRight);
-					HTMLArea.DOM.removeClass(table, this.floatLeft);
+					HTMLArea.DOM.removeCls(table, this.floatRight);
+					HTMLArea.DOM.removeCls(table, this.floatLeft);
 					break;
 				    case "right":
-					HTMLArea.DOM.removeClass(table, this.floatLeft);
+					HTMLArea.DOM.removeCls(table, this.floatLeft);
 					HTMLArea.DOM.addClass(table, this.floatRight);
 					break;
 				    case "left":
-					HTMLArea.DOM.removeClass(table, this.floatRight);
+					HTMLArea.DOM.removeCls(table, this.floatRight);
 					HTMLArea.DOM.addClass(table, this.floatLeft);
 					break;
 				}
@@ -1175,7 +1175,7 @@ Ext.define('HTMLArea.TableOperations', {
 		if (!HTMLArea.DOM.hasClass(body, 'htmlarea-showtableborders')) {
 			HTMLArea.DOM.addClass(body,'htmlarea-showtableborders');
 		} else if (!forceBorders) {
-			HTMLArea.DOM.removeClass(body,'htmlarea-showtableborders');
+			HTMLArea.DOM.removeCls(body,'htmlarea-showtableborders');
 		}
 	},
 	/*
@@ -1287,18 +1287,18 @@ Ext.define('HTMLArea.TableOperations', {
 			odd = oddClass[type];
 			even = evenClass[type];
 			if (remove) {
-				HTMLArea.DOM.removeClass(row, odd);
-				HTMLArea.DOM.removeClass(row, even);
+				HTMLArea.DOM.removeCls(row, odd);
+				HTMLArea.DOM.removeCls(row, even);
 				// Check if i is even, and apply classes for both possible results
 			} else if (odd && even) {
 				if ((i % 2) == 0) {
 					if (HTMLArea.DOM.hasClass(row, even)) {
-						HTMLArea.DOM.removeClass(row, even);
+						HTMLArea.DOM.removeCls(row, even);
 					}
 					HTMLArea.DOM.addClass(row, odd);
 				} else {
 					if (HTMLArea.DOM.hasClass(row, odd)) {
-						HTMLArea.DOM.removeClass(row, odd);
+						HTMLArea.DOM.removeCls(row, odd);
 					}
 					HTMLArea.DOM.addClass(row, even);
 				}
@@ -1330,18 +1330,18 @@ Ext.define('HTMLArea.TableOperations', {
 				odd = oddClass[type];
 				even = evenClass[type];
 				if (remove) {
-					if (odd) HTMLArea.DOM.removeClass(cell, odd);
-					if (even) HTMLArea.DOM.removeClass(cell, even);
+					if (odd) HTMLArea.DOM.removeCls(cell, odd);
+					if (even) HTMLArea.DOM.removeCls(cell, even);
 				} else if (odd && even) {
 						// Check if j+startAt is even, and apply classes for both possible results
 					if ((j % 2) == 0) {
 						if (HTMLArea.DOM.hasClass(cell, even)) {
-							HTMLArea.DOM.removeClass(cell, even);
+							HTMLArea.DOM.removeCls(cell, even);
 						}
 						HTMLArea.DOM.addClass(cell, odd);
 					} else{
 						if (HTMLArea.DOM.hasClass(cell, odd)) {
-							HTMLArea.DOM.removeClass(cell, odd);
+							HTMLArea.DOM.removeCls(cell, odd);
 						}
 						HTMLArea.DOM.addClass(cell, even);
 					}
@@ -1409,15 +1409,15 @@ Ext.define('HTMLArea.TableOperations', {
 			lastRowClassName = rowLastClass[type];
 			if (remove) {
 				if (baseClassName) {
-					HTMLArea.DOM.removeClass(row, rowClassName);
+					HTMLArea.DOM.removeCls(row, rowClassName);
 				}
 				if (lastRowClassName && i == n-1) {
-					HTMLArea.DOM.removeClass(row, lastRowClassName);
+					HTMLArea.DOM.removeCls(row, lastRowClassName);
 				}
 			} else {
 				if (baseClassName) {
 					if (HTMLArea.DOM.hasClass(row, baseClassName, true)) {
-						HTMLArea.DOM.removeClass(row, baseClassName, true);
+						HTMLArea.DOM.removeCls(row, baseClassName, true);
 					}
 					HTMLArea.DOM.addClass(row, rowClassName);
 				}
@@ -1425,7 +1425,7 @@ Ext.define('HTMLArea.TableOperations', {
 					if (i == n-1) {
 						HTMLArea.DOM.addClass(row, lastRowClassName);
 					} else if (HTMLArea.DOM.hasClass(row, lastRowClassName)) {
-						HTMLArea.DOM.removeClass(row, lastRowClassName);
+						HTMLArea.DOM.removeCls(row, lastRowClassName);
 					}
 				}
 			}
@@ -1458,15 +1458,15 @@ Ext.define('HTMLArea.TableOperations', {
 				lastColumnClassName = columnLastClass[type];
 				if (remove) {
 					if (baseClassName) {
-						HTMLArea.DOM.removeClass(cell, columnClassName);
+						HTMLArea.DOM.removeCls(cell, columnClassName);
 					}
 					if (lastColumnClassName && j == n-1) {
-							HTMLArea.DOM.removeClass(cell, lastColumnClassName);
+							HTMLArea.DOM.removeCls(cell, lastColumnClassName);
 					}
 				} else {
 					if (baseClassName) {
 						if (HTMLArea.DOM.hasClass(cell, baseClassName, true)) {
-							HTMLArea.DOM.removeClass(cell, baseClassName, true);
+							HTMLArea.DOM.removeCls(cell, baseClassName, true);
 						}
 						HTMLArea.DOM.addClass(cell, columnClassName);
 					}
@@ -1474,7 +1474,7 @@ Ext.define('HTMLArea.TableOperations', {
 						if (j == n-1) {
 							HTMLArea.DOM.addClass(cell, lastColumnClassName);
 						} else if (HTMLArea.DOM.hasClass(cell, lastColumnClassName)) {
-							HTMLArea.DOM.removeClass(cell, lastColumnClassName);
+							HTMLArea.DOM.removeCls(cell, lastColumnClassName);
 						}
 					}
 				}
@@ -1508,7 +1508,7 @@ Ext.define('HTMLArea.TableOperations', {
 			} else {
 				var firstRow = thead.rows[0];
 			}
-			HTMLArea.DOM.removeClass(firstRow, this.useHeaderClass);
+			HTMLArea.DOM.removeCls(firstRow, this.useHeaderClass);
 		} else {
 			if (thead) {
 				var rows = thead.rows;
@@ -1530,7 +1530,7 @@ Ext.define('HTMLArea.TableOperations', {
 			HTMLArea.DOM.addClass(firstRow, this.useHeaderClass);
 		} else if (headers != "top") {
 			var firstRow = tbody.rows[0];
-			HTMLArea.DOM.removeClass(firstRow, this.useHeaderClass);
+			HTMLArea.DOM.removeCls(firstRow, this.useHeaderClass);
 			this.remapRowCells(firstRow, "td");
 		}
 		if (headers == "top" || headers == "both") {
@@ -1600,7 +1600,7 @@ Ext.define('HTMLArea.TableOperations', {
 				var classNames = newCell.className.trim().split(" ");
 				for (var i = classNames.length; --i >= 0;) {
 					if (!allowedClasses.test(classNames[i])) {
-						HTMLArea.DOM.removeClass(newCell, classNames[i]);
+						HTMLArea.DOM.removeCls(newCell, classNames[i]);
 					}
 				}
 			}
