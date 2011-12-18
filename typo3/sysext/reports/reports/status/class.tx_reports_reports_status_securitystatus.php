@@ -277,12 +277,14 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 			$message .= '<p>' . $GLOBALS['LANG']->getLL('status_saltedPasswords_infoText') . '</p>';
 			$flashMessage = $configCheck->checkConfigurationBackend(array(), new t3lib_tsStyleConfig());
 
-			if (strpos($flashMessage, 'message-error') !== FALSE ||
-				strpos($flashMessage, 'message-warning') !== FALSE ||
-				strpos($flashMessage, 'message-information') !== FALSE
-			) {
+			if (strpos($flashMessage, 'message-error') !== FALSE) {
 				$value    = $GLOBALS['LANG']->getLL('status_insecure');
 				$severity = tx_reports_reports_status_Status::ERROR;
+				$message .= $flashMessage;
+			}
+			if (strpos($flashMessage, 'message-warning') !== FALSE ||
+				strpos($flashMessage, 'message-information') !== FALSE) {
+				$severity = tx_reports_reports_status_Status::WARNING;
 				$message .= $flashMessage;
 			}
 
