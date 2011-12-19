@@ -1085,7 +1085,7 @@ tt_content.menu {
 		3 < styles.content.get
 		3 {
 			wrap = <ul class="csc-menu csc-menu-3">|</ul>
-			select.andWhere = sectionIndex!=0
+			select.andWhere = sectionIndex<>0
 			select.pidInList.override.field = pages
 			renderObj = TEXT
 			renderObj {

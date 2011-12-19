@@ -175,7 +175,7 @@ Automatic Repair:
 		$resultArray['versions_move_id_check'] = array();
 		foreach($GLOBALS['TCA'] as $table => $cfg)	{
 			if ((int)$cfg['ctrl']['versioningWS']>=2)	{
-				$placeHolders = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pid,t3ver_move_id,t3ver_wsid,t3ver_state',$table,'t3ver_move_id!=0'.t3lib_BEfunc::deleteClause($table));
+				$placeHolders = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pid,t3ver_move_id,t3ver_wsid,t3ver_state',$table,'t3ver_move_id<>0'.t3lib_BEfunc::deleteClause($table));
 				foreach($placeHolders as $phrec)	{
 					if ((int)$phrec['t3ver_state']==3)	{
 						if ($phrec['pid']!=-1)	{

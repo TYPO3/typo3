@@ -592,7 +592,7 @@ class t3lib_pageSelect {
 		$theRowArray = Array();
 
 		while ($uid != 0 && $loopCheck < 99) { // Max 99 levels in the page tree.
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selFields, 'pages', 'uid=' . intval($uid) . ' AND pages.deleted=0 AND pages.doktype!=255');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selFields, 'pages', 'uid=' . intval($uid) . ' AND pages.deleted=0 AND pages.doktype<>255');
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			if ($row) {
@@ -616,7 +616,7 @@ class t3lib_pageSelect {
 						if (!strcmp($row['uid'], $curMP[0])) {
 
 							array_pop($MPA);
-							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selFields, 'pages', 'uid=' . intval($curMP[1]) . ' AND pages.deleted=0 AND pages.doktype!=255');
+							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selFields, 'pages', 'uid=' . intval($curMP[1]) . ' AND pages.deleted=0 AND pages.doktype<>255');
 							$mp_row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 							$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
@@ -752,7 +752,7 @@ class t3lib_pageSelect {
 
 				// Get pageRec if not supplied:
 			if (!is_array($pageRec)) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol,t3ver_state', 'pages', 'uid=' . intval($pageId) . ' AND pages.deleted=0 AND pages.doktype!=255');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol,t3ver_state', 'pages', 'uid=' . intval($pageId) . ' AND pages.deleted=0 AND pages.doktype<>255');
 				$pageRec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				$this->versionOL('pages', $pageRec); // Only look for version overlay if page record is not supplied; This assumes that the input record is overlaid with preview version, if any!
@@ -768,7 +768,7 @@ class t3lib_pageSelect {
 			if (is_array($pageRec) && $pageRec['doktype'] == t3lib_pageSelect::DOKTYPE_MOUNTPOINT && $mount_pid > 0 && !in_array($mount_pid, $prevMountPids)) {
 
 					// Get the mount point record (to verify its general existence):
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol,t3ver_state', 'pages', 'uid=' . $mount_pid . ' AND pages.deleted=0 AND pages.doktype!=255');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol,t3ver_state', 'pages', 'uid=' . $mount_pid . ' AND pages.deleted=0 AND pages.doktype<>255');
 				$mountRec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				$this->versionOL('pages', $mountRec);
@@ -1007,7 +1007,7 @@ class t3lib_pageSelect {
 
 				// Filter out new place-holder records in case we are NOT in a versioning preview (that means we are online!)
 			if ($ctrl['versioningWS'] && !$this->versioningPreview) {
-				$query .= ' AND ' . $table . '.t3ver_state<=0 AND ' . $table . '.pid!=-1'; // Shadow state for new items MUST be ignored!
+				$query .= ' AND ' . $table . '.t3ver_state<=0 AND ' . $table . '.pid<>-1'; // Shadow state for new items MUST be ignored!
 			}
 
 				// Enable fields:
@@ -1249,7 +1249,7 @@ class t3lib_pageSelect {
 				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 					$fields,
 					$table,
-					'pid!=-1 AND
+					'pid<>-1 AND
 					 t3ver_state=3 AND
 					 t3ver_move_id=' . intval($uid) . ' AND
 					 t3ver_wsid=' . intval($workspace) .
