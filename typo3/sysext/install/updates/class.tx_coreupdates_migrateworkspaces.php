@@ -361,7 +361,7 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 			);
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 				'sys_workspace',
-				'uid = "' . $workspace['uid'] . '"',
+				'uid = ' . $workspace['uid'],
 				$updateArray
 			);
 			$this->sqlQueries[] =  $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
@@ -425,7 +425,7 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 	 * @return array
 	 */
 	protected function getWorkspacesWithoutStages() {
-		$stages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('parentid', 'sys_workspace_stage', 'parenttable="sys_workspace"');
+		$stages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('parentid', 'sys_workspace_stage', 'parenttable=\'sys_workspace\'');
 		$wsWhitelist = array();
 		foreach ($stages as $stage) {
 			$wsWhitelist[] = $stage['parentid'];
