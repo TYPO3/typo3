@@ -44,10 +44,10 @@ var WorkspaceMenu = Class.create({
 				function() { TYPO3BackendToolbarManager.positionMenu('workspace-selector-menu'); }
 			);
 			if (top.TYPO3.configuration.inWorkspace == 1) {
-				Ext.getBody().addClass('typo3-in-workspace');
+				Ext.getBody().addCls('typo3-in-workspace');
 				this.updateTopBar(top.TYPO3.Workspaces.workspaceTitle);
 			} else {
-				Ext.getBody().removeClass('typo3-in-workspace');
+				Ext.getBody().removeCls('typo3-in-workspace');
 			}
 			TYPO3BackendToolbarManager.refreshAll();
 			Event.observe('workspace-selector-menu', 'click', this.toggleMenu);
@@ -148,10 +148,10 @@ var WorkspaceMenu = Class.create({
 		top.TYPO3.Workspaces.workspaceTitle = title;
 		top.TYPO3.configuration.inWorkspace = id === 0 ? 0 : 1;
 		if (top.TYPO3.configuration.inWorkspace == 1) {
-			Ext.getBody().addClass('typo3-in-workspace');
+			Ext.getBody().addCls('typo3-in-workspace');
 			this.updateTopBar(top.TYPO3.Workspaces.workspaceTitle);
 		} else {
-			Ext.getBody().removeClass('typo3-in-workspace');
+			Ext.getBody().removeCls('typo3-in-workspace');
 			this.updateTopBar();
 		}
 
@@ -189,4 +189,3 @@ var WorkspaceMenu = Class.create({
 });
 
 var TYPO3BackendWorkspaceMenu = new WorkspaceMenu();
-//TYPO3BackendWorkspaceMenu.initialize();
