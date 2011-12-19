@@ -79,13 +79,12 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 	},
 
 	setUrl: function(source) {
-		this.setMask();
 		this.body.dom.src = source;
+		this.setMask();
 	},
 
 	resetUrl: function() {
-		this.setMask();
-		this.body.dom.src = this.src;
+		this.setUrl(this.src);
 	},
 
 	getIdFromUrl: function() {
