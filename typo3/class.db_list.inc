@@ -498,7 +498,8 @@ class recordList extends t3lib_recordList {
 
 			// Filter out records that are translated, if TSconfig mod.web_list.hideTranslations is set
 		if ((in_array($table, t3lib_div::trimExplode(',', $this->hideTranslations)) || $this->hideTranslations === '*')
-			&& !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])) {
+			&& !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
+			&& strcmp($table, 'pages_language_overlay')) {
 			$queryParts['WHERE'] .= ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=0 ';
 		}
 
