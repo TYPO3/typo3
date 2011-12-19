@@ -133,6 +133,7 @@ class TYPO3backend {
 			'debugPanel'            => 'js/extjs/debugPanel.js',
 			'viewport'              => 'js/extjs/viewport.js',
 			'iframepanel'           => 'js/extjs/iframepanel.js',
+			'backendcontentiframe'  => 'js/extjs/backendcontentiframe.js',
 			'modulepanel'           => 'js/extjs/modulepanel.js',
 			'viewportConfiguration' => 'js/extjs/viewportConfiguration.js',
 			'util'			=> '../t3lib/js/extjs/util.js',
@@ -825,6 +826,25 @@ if(is_array($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendI
 		include_once($additionalBackendItem);
 	}
 }
+	// process ExtJS module js and css
+if(is_array($GLOBALS['TBE_MODULES']['_configuration'])) {
+	foreach($GLOBALS['TBE_MODULES']['_configuration'] as $moduleConfig) {
+		if(is_array($moduleConfig['cssFiles'])) {
+			foreach($moduleConfig['cssFiles'] as $cssFileName => $cssFile) {
+				$TYPO3backend->addCssFile($name, t3lib_div::getFileAbsFileName($cssFile));
+			}
+		}
+		if(is_array($moduleConfig['jsFiles'])) {
+			foreach($moduleConfig['jsFiles'] as $jsFile) {
+				$files = array(t3lib_div::getFileAbsFileName($jsFile));
+				$files = t3lib_div::removePrefixPathFromList($files, PATH_site);
+				$TYPO3backend->addJavascriptFile('../' . $files[0]);
+			}
+		}
+		#print_r($moduleConfig);
+	}
+}
+#die();
 
 $TYPO3backend->render();
 
