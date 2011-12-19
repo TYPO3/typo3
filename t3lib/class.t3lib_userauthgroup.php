@@ -1892,7 +1892,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*',
 				'sys_log',
-				'type=255 AND action=3 AND error!=0 AND tstamp>' . intval($theTimeBack),
+				'type=255 AND action=3 AND error<>0 AND tstamp>' . intval($theTimeBack),
 				'',
 				'tstamp'
 			);

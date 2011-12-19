@@ -50,7 +50,7 @@ class tx_coreupdates_imagelink extends Tx_Install_Updates_Base {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'uid',
 				'tt_content',
-				'image_link!="" AND image_link LIKE "%,%" AND image_link NOT LIKE "%\\n%"',
+				'image_link<>\'\' AND image_link LIKE \'%,%\' AND image_link NOT LIKE \'%\\n%\'',
 				'',
 				'',
 				'1'
@@ -77,7 +77,7 @@ class tx_coreupdates_imagelink extends Tx_Install_Updates_Base {
 			$affectedRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'uid, image_link',
 				'tt_content',
-				'image_link!="" AND image_link LIKE "%,%" AND image_link NOT LIKE "%\\n%"'
+				'image_link<>\'\' AND image_link LIKE \'%,%\' AND image_link NOT LIKE \'%\\n%\''
 			);
 
 			foreach ($affectedRows as $row) {
