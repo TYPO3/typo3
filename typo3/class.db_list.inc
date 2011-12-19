@@ -827,7 +827,10 @@ class recordList extends t3lib_recordList {
 		$fieldListArr = array();
 
 			// Check table:
-		if (is_array($GLOBALS['TCA'][$table])) {
+		if (is_array($GLOBALS['TCA'][$table])
+			&& isset($GLOBALS['TCA'][$table]['columns'])
+			&& is_array($GLOBALS['TCA'][$table]['columns'])
+		) {
 			t3lib_div::loadTCA($table);
 
 				// Traverse configured columns and add them to field array, if available for user.
