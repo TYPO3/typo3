@@ -749,7 +749,57 @@ final class t3lib_extMgm {
 	public static function allowTableOnStandardPages($table) {
 		$GLOBALS['PAGES_TYPES']['default']['allowedTables'] .= ',' . $table;
 	}
+	/**
+	 * Adds a ExtJS module (main or sub) to the backend interface
+	 * FOR USE IN ext_tables.php FILES
+	 *
+	 * @author Kay Strobach    <typo3@kay-strobach.de>
+	 *
+	 * @static
+	 * @param $extensionName
+	 * @param $mainModuleName
+	 * @param string $subModuleName
+	 * @param string $position
+	 * @param array $moduleConfiguration
+	 * @throws InvalidArgumentException
+	 */
+	public static function addExtJSModule($extensionName, $mainModuleName, $subModuleName = '', $position = '', array $moduleConfiguration = array()) {
+		if (empty($extensionName)) {
+			throw new InvalidArgumentException('The extension name must not be empty', 1325938973);
+		}
 
+		$extensionKey = t3lib_div::camelCaseToLowerCaseUnderscored($extensionName);
+		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
+
+		$defaultModuleConfiguration = array(
+			'access' => 'admin',
+			'icon' => 'gfx/typo3.png',
+			'labels' => '',
+			'extRelPath' => t3lib_extMgm::extRelPath($extensionKey) . 'Classes/'
+		);
+
+			// add mandatory parameter to use new pagetree
+		if ($mainModuleName === 'web') {
+			$defaultModuleConfiguration['navigationComponentId'] = 'typo3-pagetree';
+		}
+
+		$moduleConfiguration = t3lib_div::array_merge_recursive_overrule($defaultModuleConfiguration, $moduleConfiguration);
+
+		if ((strlen($subModuleName) > 0)) {
+			$moduleSignature = $mainModuleName . '_' . $subModuleName;
+		} else {
+			$moduleSignature = $mainModuleName;
+		}
+
+		$moduleConfiguration['name'] = $moduleSignature;
+		$moduleConfiguration['script'] = 'extjspaneldummy.html';
+		$moduleConfiguration['extensionName'] = $extensionName;
+		$moduleConfiguration['configureModuleFunction'] = array('Tx_Extbase_Utility_Extension', 'configureModule');
+
+		$GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
+
+		t3lib_extMgm::addModule($mainModuleName, $subModuleName, $position);
+	}
 	/**
 	 * Adds a module (main or sub) to the backend interface
 	 * FOR USE IN ext_tables.php FILES

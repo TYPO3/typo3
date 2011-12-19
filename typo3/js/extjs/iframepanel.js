@@ -80,13 +80,12 @@ Ext.define('TYPO3.iframePanel', {
 	},
 
 	setUrl: function(source) {
-		this.setMask();
 		this.iframeEl.dom.src = source;
+		this.setMask();
 	},
 
 	resetUrl: function() {
-		this.setMask();
-		this.iframeEl.dom.src = this.src;
+		this.setUrl(this.src);
 	},
 
 	getIdFromUrl: function() {
