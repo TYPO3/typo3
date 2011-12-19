@@ -1475,7 +1475,7 @@ class tx_cms_layout extends recordList {
 												$this->stat_select_field . '=' . intval($row['uid']) . '
 															AND tstamp>=' . intval($timespan) . '
 															AND tstamp<' . intval($timespan + 3600 * 24) . '
-															AND surecookie!=""',
+															AND surecookie<>\'\'',
 											'surecookie'
 										);
 										$scnumber = $GLOBALS['TYPO3_DB']->sql_num_rows($res);

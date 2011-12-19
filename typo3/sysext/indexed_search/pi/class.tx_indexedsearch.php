@@ -1012,7 +1012,7 @@ class tx_indexedsearch extends tslib_pibase {
 				$out = ' AND IP.item_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');
 				break;
 			case '-2':		// All external documents
-				$out = ' AND IP.item_type!=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');
+				$out = ' AND IP.item_type<>' . $GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');
 				break;
 			case '-1':	// All content
 				$out = '';

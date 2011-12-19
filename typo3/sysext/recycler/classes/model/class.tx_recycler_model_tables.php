@@ -52,7 +52,7 @@ class tx_recycler_model_tables {
 				$deletedCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 					'uid',
 					$tableName,
-					$deletedField . '!=0'
+					$deletedField . '<>0'
 				);
 				if ($deletedCount) {
 					$deletedDataObject = t3lib_div::makeInstance('tx_recycler_model_deletedRecords');
