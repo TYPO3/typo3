@@ -810,7 +810,25 @@ initializeCachingFramework();
 // *********************
 // Autoloader
 // *********************
-t3lib_autoloader::registerAutoloader();
+try{
+	t3lib_autoloader::registerAutoloader();
+} catch(Exception $e) {
+	echo $e->getMessage();
+	// check the write permissions of the following directories first
+	// this jumps in as the first message during installation process to force the user to fix this at first
+	$writeDirectories = array('fileadmin', 'typo3conf', 'typo3temp', 'uploads');
+	// saves all directories with insufficient permissions
+	$missingWritePermissions = array();
+	foreach ($writeDirectories as $directory) {
+		if (!is_writable(PATH_site . '/' . $directory . '/')) {
+			$missingWritePermissions[] = $directory;
+		}
+	}
+	if($missingWritePermissions) {
+		echo "\r\n" . '<br />Please check write permissions for the following directories: ' . implode(', ', $missingWritePermissions);
+	}
+	exit();
+}
 
 /**
  * Add typo3/contrib/pear/ as first include folder in

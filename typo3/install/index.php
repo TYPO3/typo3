@@ -86,38 +86,80 @@ if (1==2 || !is_file($enableInstallToolFile) || $removeInstallToolFileFailed) {
 		'../contrib/prototype/prototype.js"></script>' . LF;
 	$javascript .= '<script type="text/javascript" src="' .
 		'../sysext/install/Resources/Public/Javascript/install.js"></script>';
-
 		// Get the template file
 	$template = @file_get_contents($PATH_site . '/typo3/templates/install.html');
+
+		// check the write permissions of the following directories first
+		// this jumps in as the first message during installation process to force the user to fix this at first
+	$writeDirectories = array('fileadmin', 'typo3conf', 'typo3temp', 'uploads');
+		// saves all directories with insufficient permissions
+	$missingWritePermissions = array();
+	foreach ($writeDirectories as $directory) {
+		if (!is_writable($PATH_site . '/' . $directory . '/')) {
+			$missingWritePermissions[] = $directory;
+		}
+	}
+
 		// Define the markers content
-	$markers = array(
-		'styleSheet' => $stylesheet,
-		'javascript' => $javascript,
-		'title' => 'The Install Tool is locked',
-		'content' => '
-			<p>
-				To enable the Install Tool, the file ENABLE_INSTALL_TOOL must be created.
-			</p>
-			<ul>
-				<li>
-					In the typo3conf/ folder, create a file named ENABLE_INSTALL_TOOL. The file name is
-					case sensitive, but the file itself can simply be an empty file.
-				</li>
-				<li class="t3-install-locked-user-settings">
-					Alternatively, in the Backend, go to <a href="javascript:top.goToModule(\'tools_install\',1);">Admin tools &gt; Install</a>
-					and let TYPO3 create this file for you.<br />
-					You are recommended to log out from the Install Tool after finishing your work.
-					The file will then automatically be deleted.
-				</li>
-			</ul>
-			<p>
-				For security reasons, it is highly recommended that you either rename or delete the file after the operation is finished.
-			</p>
-			<p>
-				As an additional security measure, if the file is older than one hour, TYPO3 will automatically delete it. The file must be writable by the web server user.
-			</p>
-		'
-	);
+	if (count($missingWritePermissions) > 0) {
+		$markers = array(
+			'styleSheet' => $stylesheet,
+			'javascript' => $javascript,
+			'title' => 'Insufficient directory permissions',
+			'content' => '
+				<p>
+					To work properly, the following directories and their contents must be writable for the user,
+					which is used to execute the web server:
+				</p>
+				<ul>
+					<li>
+					' . implode('/</li><li>', $missingWritePermissions) . '
+					</li>
+				</ul>
+				<p>
+					On most systems, this can be achieved by executing the following commands:
+				</p>
+				<pre>' .
+					implode(array_map(
+						function($directory) use ($PATH_site) {
+							return 'chown -R 777 ' . $PATH_site . '/' . $directory . '/<br />';
+						},
+						$missingWritePermissions
+					)) .
+				'</pre>
+			',
+		);
+	} else {
+		$markers = array(
+			'styleSheet' => $stylesheet,
+			'javascript' => $javascript,
+			'title' => 'The Install Tool is locked',
+			'content' => '
+				<p>
+					To enable the Install Tool, the file ENABLE_INSTALL_TOOL must be created.
+				</p>
+				<ul>
+					<li>
+						In the typo3conf/ folder, create a file named ENABLE_INSTALL_TOOL. The file name is
+						case sensitive, but the file itself can simply be an empty file.
+					</li>
+					<li class="t3-install-locked-user-settings">
+						Alternatively, in the Backend, go to <a href="javascript:top.goToModule(\'tools_install\',1);">Admin tools &gt; Install</a>
+						and let TYPO3 create this file for you.<br />
+						You are recommended to log out from the Install Tool after finishing your work.
+						The file will then automatically be deleted.
+					</li>
+				</ul>
+				<p>
+					For security reasons, it is highly recommended that you either rename or delete the file after the operation is finished.
+				</p>
+				<p>
+					As an additional security measure, if the file is older than one hour, TYPO3 will automatically delete it. The file must be writable by the web server user.
+				</p>
+			'
+		);
+	}
+
 		// Fill the markers
 	$content = t3lib_parsehtml::substituteMarkerArray(
 		$template,
