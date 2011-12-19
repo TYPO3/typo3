@@ -577,7 +577,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 								'felogin_redirectPid',
 								$GLOBALS['TSFE']->fe_user->usergroup_table,
-								'felogin_redirectPid!="" AND uid IN (' . implode(',', $groupData['uid']) . ')'
+								'felogin_redirectPid<>\'\' AND uid IN (' . implode(',', $groupData['uid']) . ')'
 							);
 							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))	{
 								$redirect_url[] = $this->pi_getPageLink($row[0]); // take the first group with a redirect page
@@ -587,7 +587,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 								'felogin_redirectPid',
 								$GLOBALS['TSFE']->fe_user->user_table,
-								$GLOBALS['TSFE']->fe_user->userid_column . '=' . $GLOBALS['TSFE']->fe_user->user['uid'] . ' AND felogin_redirectPid!=""'
+								$GLOBALS['TSFE']->fe_user->userid_column . '=' . $GLOBALS['TSFE']->fe_user->user['uid'] . ' AND felogin_redirectPid<>\'\''
 							);
 							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))	{
 								$redirect_url[] = $this->pi_getPageLink($row[0]);
