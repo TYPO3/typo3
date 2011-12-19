@@ -749,6 +749,92 @@ final class t3lib_extMgm {
 	public static function allowTableOnStandardPages($table) {
 		$GLOBALS['PAGES_TYPES']['default']['allowedTables'] .= ',' . $table;
 	}
+	/**
+	 * Adds a ExtJS module (main or sub) to the backend interface
+	 * FOR USE IN ext_tables.php FILES
+	 *
+	 * @static
+	 * @param string $extensionName
+	 * @param string $mainModuleName is the main module key
+	 * @param string $subModuleName is the submodule key, if blank a plain main module is generated
+	 * @param string $position passed to t3lib_extMgm::addModule, see reference there
+	 * @param array $moduleConfiguration icon with array keys: access, icon, labels to configure the module
+	 * @throws InvalidArgumentException
+	 */
+	public static function addExtJSModule($extensionName, $mainModuleName, $subModuleName = '', $position = '', array $moduleConfiguration = array()) {
+		if (empty($extensionName)) {
+			throw new InvalidArgumentException('The extension name must not be empty', 1325938973);
+		}
+
+		$extensionKey = t3lib_div::camelCaseToLowerCaseUnderscored($extensionName);
+		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
+
+		$defaultModuleConfiguration = array(
+			'access' => 'admin',
+			'icon' => 'gfx/typo3.png',
+			'labels' => '',
+			'extRelPath' => t3lib_extMgm::extRelPath($extensionKey) . 'Classes/'
+		);
+
+			// add mandatory parameter to use new pagetree
+		if ($mainModuleName === 'web') {
+			$defaultModuleConfiguration['navigationComponentId'] = 'typo3-pagetree';
+		}
+
+		$moduleConfiguration = t3lib_div::array_merge_recursive_overrule($defaultModuleConfiguration, $moduleConfiguration);
+
+		if ((strlen($subModuleName) > 0)) {
+			$moduleSignature = $mainModuleName . '_' . $subModuleName;
+		} else {
+			$moduleSignature = $mainModuleName;
+		}
+
+		$moduleConfiguration['name'] = $moduleSignature;
+		$moduleConfiguration['script'] = 'extjspaneldummy.html';
+		$moduleConfiguration['extensionName'] = $extensionName;
+		$moduleConfiguration['configureModuleFunction'] = array('t3lib_extMgm', 'configureModule');
+
+		$GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
+
+		t3lib_extMgm::addModule($mainModuleName, $subModuleName, $position);
+	}
+
+	/**
+	 * This method is called from t3lib_loadModules::checkMod and it replaces old conf.php.
+	 *
+	 * The original function for is called
+	 * Tx_Extbase_Utility_Extension::configureModule, the refered function can
+	 * be deprecated now
+	 *
+	 * @param string $moduleSignature The module name
+	 * @param string $modulePath Absolute path to module (not used by Extbase currently)
+	 * @return array Configuration of the module
+	 */
+	public static function configureModule($moduleSignature, $modulePath) {
+		$moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature];
+		$iconPathAndFilename = $moduleConfiguration['icon'];
+		if (substr($iconPathAndFilename, 0, 4) === 'EXT:') {
+			list($extensionKey, $relativePath) = explode('/', substr($iconPathAndFilename, 4), 2);
+			$iconPathAndFilename = t3lib_extMgm::extPath($extensionKey) . $relativePath;
+		}
+		// TODO: skin support
+
+		$moduleLabels = array(
+			'tabs_images' => array(
+				'tab' => $iconPathAndFilename,
+			),
+			'labels' => array(
+				'tablabel' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_labels_tablabel'),
+				'tabdescr' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_labels_tabdescr'),
+			),
+			'tabs' => array(
+				'tab' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_tabs_tab')
+			)
+		);
+		$GLOBALS['LANG']->addModuleLabels($moduleLabels, $moduleSignature . '_');
+
+		return $moduleConfiguration;
+	}
 
 	/**
 	 * Adds a module (main or sub) to the backend interface
