@@ -718,14 +718,27 @@ class fileList extends t3lib_recordList {
 		);
 
 			// Compile information for title tag:
-		$infoData=array();
+		$infoData = array();
+
+			// Edit link to every referenced content
+		$refData = "";
+		$returnURL = '\'+top.rawurlencode(top.content.list_frame.document.location.pathname+top.content.list_frame.document.location.search)+\'';
+
 		if (is_array($rows)) {
-			foreach($rows as $row)	{
-				$infoData[]=$row['tablename'].':'.$row['recuid'].':'.$row['field'];
+			foreach ($rows as $row)	{
+				$infoData[] = $row['tablename'] . ':' . $row['recuid'] . ':' . $row['field'];
+
+				$params = '&edit[' . $row['tablename'] . '][' . $row['recuid'] . ']=edit';
+
+				$refData .= '<br /><a href="#" onclick="window.location.href=\'' . $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . $returnURL . $params . '\'; return false;" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.edit') . '">' .
+					$row['tablename'] . ':' . $row['recuid'] . t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a>';
 			}
 		}
 
-		return count($infoData) ? '<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$theData['path'].$theData['file'].'\', \'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd_cs(implode(' / ',$infoData),100)).'">'.count($infoData).'</a>' : '';
+		$refLink = '<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$theData['path'].$theData['file'].'\', \'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd_cs(implode(' / ',$infoData),100)).'">'.count($infoData).'</a>';
+		$refLink .= $refData;
+
+		return count($infoData) ? $refLink : '';
 	}
 }
 
