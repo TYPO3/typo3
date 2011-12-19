@@ -257,9 +257,10 @@ TYPO3.ModuleMenu.App = {
 				TYPO3.Backend.NavigationContainer.hide();
 				TYPO3.Backend.NavigationDummy.show();
 			}
-			this.openInContentFrame(record.originalLink, params);
-			this.loadedModule = mod;
+
 			this.highlightModuleMenuItem(mod);
+			this.loadedModule = mod;
+			this.openInContentFrame(record.originalLink, params);
 
 				// compatibility
 			top.currentSubScript = record.originalLink;
@@ -324,11 +325,14 @@ TYPO3.ModuleMenu.App = {
 	},
 
 	openInContentFrame: function(url, params) {
+		var urlToLoad;
 		if (top.nextLoadModuleUrl) {
 			TYPO3.Backend.ContentContainer.setUrl(top.nextLoadModuleUrl);
 			top.nextLoadModuleUrl = '';
 		} else {
-			TYPO3.Backend.ContentContainer.setUrl(url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : ''));
+			urlToLoad = url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : '')
+			TYPO3.Backend.ContentContainer.setUrl(urlToLoad);
+			return;
 		}
 	},
 
