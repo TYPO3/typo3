@@ -3196,7 +3196,7 @@
 	 *
 	 * @return	void
 	 */
-	function INTincScript()	{
+	protected function INTincScript()	{
 			// Deprecated stuff:
 			// @deprecated: annotation added TYPO3 4.6
 		$this->additionalHeaderData = is_array($this->config['INTincScript_ext']['additionalHeaderData']) ? $this->config['INTincScript_ext']['additionalHeaderData'] : array();
@@ -3296,39 +3296,45 @@
 	/**
 	 * Loads the JavaScript code for INTincScript
 	 *
-	 * @return	void
-	 * @access private
+	 * @return void
 	 */
-	function INTincScript_loadJSCode()	{
-		if ($this->JSImgCode)	{	// If any images added, then add them to the javascript section
-			$this->additionalHeaderData['JSImgCode']='
+	public function INTincScript_loadJSCode() {
+			// If any images added, then add them to the javascript section
+		$jsImgCode = trim($this->JSImgCode);
+		if ($jsImgCode !== '') {
+			$this->additionalHeaderData['JSImgCode'] = '
 <script type="text/javascript">
 	/*<![CDATA[*/
 <!--
 if (version == "n3") {
-'.trim($this->JSImgCode).'
+' . $jsImgCode . '
 }
 // -->
 	/*]]>*/
 </script>';
 		}
-		if ($this->JSCode || count($this->additionalJavaScript)) { // Add javascript
+			// Add javascript
+		$jsCode = trim($this->JSCode);
+		$additionalJavaScript = trim(is_array($this->additionalJavaScript) ? implode(LF, $this->additionalJavaScript) : $this->additionalJavaScript);
+		if ($jsCode !== '' || $additionalJavaScript !== '') {
 			$this->additionalHeaderData['JSCode'] = '
 <script type="text/javascript">
 	/*<![CDATA[*/
 <!--
-' . implode(LF, $this->additionalJavaScript) . '
-' . trim($this->JSCode) . '
+' . $additionalJavaScript . '
+' . $jsCode . '
 // -->
 	/*]]>*/
 </script>';
 		}
-		if (count($this->additionalCSS))	{	// Add javascript
-			$this->additionalHeaderData['_CSS']='
+			// Add CSS
+		$additionalCss = trim(is_array($this->additionalCSS) ? implode(LF, $this->additionalCSS) : $this->additionalCSS);
+		if ($additionalCss !== '') {
+			$this->additionalHeaderData['_CSS'] = '
 <style type="text/css">
 	/*<![CDATA[*/
 <!--
-'.implode(LF,$this->additionalCSS).'
+' . $additionalCss . '
 // -->
 	/*]]>*/
 </style>';
