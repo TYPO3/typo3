@@ -27,6 +27,38 @@
 Ext.ns('TYPO3');
 
 /**
+ * The Cards Configuration for the BE Module Cards
+ *
+ * New items need to be appended here
+ * cards id needs to be prepended with typo3-card- the rest of the id is the
+ * be module name as passed it is normally in TYPO3
+ * Cards shouldn't be simple iframes for performance reasons
+ *
+ * @author Kay Strobach    <typo3@kay-strobach.de>
+ */
+
+TYPO3.Viewport.ContentCards = {
+		// Add a card to either the config or if already rendered to the wrapper
+	addContentCard: function(name,config) {
+		config.id = 'typo3-card-' + name;
+		if (Ext.ready) {
+			Ext.getCmp('typo3-contentContainerWrapper').add(config);
+		} else {
+			this.cards.push(config);
+		}
+	},
+	cards: [
+			// add the old card to be compatible
+		{
+			id: 'typo3-contentContainer',
+			border: false,
+			xtype: 'backendContentIframePanel',
+			name: 'content'
+		}
+	]
+};
+
+/**
  * The backend viewport configuration
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
@@ -109,12 +141,15 @@ TYPO3.Viewport.configuration = {
 							width: 5
 						},
 						{
-							id: 'typo3-contentContainer',
-							region: 'center',
-							anchor: '100% 100%',
+							id: 'typo3-contentContainerWrapper',
 							border: false,
-							xtype: 'iframePanel',
-							name: 'content'
+							layout: 'fit',
+							name: 'content',
+							region: 'center',
+							xtype: 'panel',
+							layout: 'card',
+							activeItem: 0,
+							items: TYPO3.Viewport.ContentCards.cards
 						}
 					]
 				},
