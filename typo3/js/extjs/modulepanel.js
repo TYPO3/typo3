@@ -42,5 +42,17 @@ Ext.define('TYPO3.modulePanel', {
 			}
 		});
 		this.callParent(arguments);
+		this.addEvents('uriChanged');
+	},
+	setUrl: function(url) {
+		var paramsString;
+		var params;
+		this.url = url;
+		paramsString = url.split("?");
+		params = Ext.urlDecode(paramsString[paramsString.length - 1]);
+		this.fireEvent('uriChanged', params.id, url, params, this);
+	},
+	getUrl: function getUrl() {
+		return this.url;
 	}
 });

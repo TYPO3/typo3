@@ -413,11 +413,16 @@ TYPO3.ModuleMenu.App = {
 	},
 
 	openInContentFrame: function(url, params) {
+		var relatedCard, urlToLoad;
 		if (top.nextLoadModuleUrl) {
 			TYPO3.Backend.ContentContainer.setUrl(top.nextLoadModuleUrl);
 			top.nextLoadModuleUrl = '';
 		} else {
-			TYPO3.Backend.ContentContainer.setUrl(url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : ''));
+
+			relatedCard = Ext.getCmp('typo3-contentContainerWrapper').getComponent('typo3-card-' + this.loadedModule);
+			urlToLoad   = url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : '')
+			TYPO3.Backend.ContentContainer.setUrl(urlToLoad);
+			return;
 		}
 	},
 
