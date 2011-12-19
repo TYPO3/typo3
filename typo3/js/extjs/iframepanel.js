@@ -79,9 +79,29 @@ Ext.define('TYPO3.iframePanel', {
 		return this.iframeEl.dom.src;
 	},
 
+	getModuleWrapper: function() {
+		return this.findParentBy(
+			function(container, component) {
+				if(container.id === 'typo3-contentContainerWrapper') {
+					return true;
+				}
+			}
+		);
+	},
+
 	setUrl: function(source) {
-		this.setMask();
-		this.iframeEl.dom.src = source;
+		var wrapper;
+		wrapper = this.getModuleWrapper();
+		if(wrapper) {
+			if(wrapper.getComponent('typo3-card-' + TYPO3.ModuleMenu.App.loadedModule)) {
+				wrapper.getLayout().setActiveItem('typo3-card-' + TYPO3.ModuleMenu.App.loadedModule);
+				TYPO3.ModuleMenu.App.openInContentFrame(source);
+			} else {
+				wrapper.getLayout().setActiveItem(this.id);
+				this.iframeEl.dom.src = source;
+				this.setMask();
+			}
+		}
 	},
 
 	resetUrl: function() {
