@@ -413,11 +413,14 @@ TYPO3.ModuleMenu.App = {
 	},
 
 	openInContentFrame: function(url, params) {
+		var urlToLoad;
 		if (top.nextLoadModuleUrl) {
 			TYPO3.Backend.ContentContainer.setUrl(top.nextLoadModuleUrl);
 			top.nextLoadModuleUrl = '';
 		} else {
-			TYPO3.Backend.ContentContainer.setUrl(url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : ''));
+			urlToLoad   = url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : '')
+			TYPO3.Backend.ContentContainer.setUrl(urlToLoad);
+			return;
 		}
 	},
 
