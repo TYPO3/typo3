@@ -24,6 +24,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+Ext.ns('TYPO3');
+
 TYPO3.modulePanel = Ext.extend(Ext.Panel, {
 	name: 'modulePanel',
 	maskMessage: ' ',
@@ -40,6 +42,18 @@ TYPO3.modulePanel = Ext.extend(Ext.Panel, {
 			}
 		});
 		TYPO3.modulePanel.superclass.initComponent.apply(this, arguments);
+		this.addEvents('uriChanged');
+	},
+	setUrl: function(url) {
+		var paramsString;
+		var params;
+		this.url = url;
+		paramsString = url.split("?");
+		params = Ext.urlDecode(paramsString[paramsString.length - 1]);
+		this.fireEvent('uriChanged', params.id, url, params, this);
+	},
+	getUrl: function getUrl() {
+		return this.url;
 	}
 });
 Ext.reg('modulePanel', TYPO3.modulePanel);
