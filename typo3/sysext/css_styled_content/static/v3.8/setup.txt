@@ -974,7 +974,7 @@ tt_content.menu {
 		# "Section index (pagecontent w/Index checked)"
 		3 < styles.content.get
 		3.wrap = <div class="csc-menu csc-menu-3">|</div>
-		3.select.andWhere = sectionIndex!=0
+		3.select.andWhere = sectionIndex<>0
 		3.select.pidInList.override.field = pages
 		3.renderObj = TEXT
 		3.renderObj {

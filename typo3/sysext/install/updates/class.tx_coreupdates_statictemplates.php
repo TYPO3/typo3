@@ -48,7 +48,7 @@ class tx_coreupdates_statictemplates extends Tx_Install_Updates_Base {
 			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 				'*',
 				'sys_refindex',
-				'ref_table = "static_template" AND tablename != "static_template" AND deleted=0'
+				'ref_table = \'static_template\' AND tablename <> \'static_template\' AND deleted=0'
 			);
 			if ($count) {
 				$description .= '<strong style="color:#f00">Dependencies found! You MUST install the extenion "statictemplates"!</strong>';
