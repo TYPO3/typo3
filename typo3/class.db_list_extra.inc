@@ -94,6 +94,8 @@ class localRecordList extends recordList {
 	var $translations;						// Translations of the current record
 	var $selFieldList;						// select fields for the query which fetches the translations of the current record
 
+	public $disableSingleTableView = FALSE;
+
 	public function __construct() {
 		parent::__construct();
 	}
@@ -346,8 +348,28 @@ class localRecordList extends recordList {
 			);
 		}
 		$selectFields = array_unique($selectFields);		// Unique list!
-		$selectFields = array_intersect($selectFields,$this->makeFieldList($table,1));		// Making sure that the fields in the field-list ARE in the field-list from TCA!
-		$selFieldList = implode(',',$selectFields);		// implode it into a list of fields for the SQL-statement.
+		$fieldListFields = $this->makeFieldList($table, 1);
+		if (empty($fieldListFields) && $GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
+
+			$message = sprintf(
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.php:missingTcaColumnsMessage', TRUE),
+				$table,
+				$table
+			);
+			$messageTitle = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.php:missingTcaColumnsMessageTitle', TRUE);
+
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$message,
+				$messageTitle,
+				t3lib_FlashMessage::WARNING,
+				TRUE
+			);
+			/** @var t3lib_FlashMessage $flashMessage */
+			t3lib_FlashMessageQueue::addMessage($flashMessage);
+		}
+		$selectFields = array_intersect($selectFields, $fieldListFields);	// Making sure that the fields in the field-list ARE in the field-list from TCA!
+		$selFieldList = implode(',', $selectFields);		// implode it into a list of fields for the SQL-statement.
 		$this->selFieldList = $selFieldList;
 
 		/**
@@ -420,12 +442,18 @@ class localRecordList extends recordList {
 				$out.=$this->addelement(0,'',$theData,'class="c-table-row-spacer"',$this->leftMargin);
 			}
 
+			$tableTitle = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'], TRUE);
+			if ($tableTitle === '') {
+				$tableTitle = $table;
+			}
 				// Header line is drawn
-			$theData = Array();
+			$theData = array();
 			if ($this->disableSingleTableView)	{
-				$theData[$titleCol] = '<span class="c-table">' . t3lib_BEfunc::wrapInHelp($table, '', $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'], TRUE)) . '</span> ('.$this->totalItems.')';
+				$theData[$titleCol] = '<span class="c-table">' .
+						t3lib_BEfunc::wrapInHelp($table, '', $tableTitle) .
+						'</span> (' . $this->totalItems . ')';
 			} else {
-				$theData[$titleCol] = $this->linkWrapTable($table, '<span class="c-table">' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'], TRUE) . '</span> (' . $this->totalItems . ') ' .
+				$theData[$titleCol] = $this->linkWrapTable($table, '<span class="c-table">' . $tableTitle . '</span> (' . $this->totalItems . ') ' .
 						($this->table ? t3lib_iconWorks::getSpriteIcon('actions-view-table-collapse', array('title' => $GLOBALS['LANG']->getLL('contractView', TRUE))) : t3lib_iconWorks::getSpriteIcon('actions-view-table-expand', array('title' => $GLOBALS['LANG']->getLL('expandView', TRUE))))
 					);
 			}
