@@ -3307,35 +3307,46 @@
 	 * @access private
 	 */
 	function INTincScript_loadJSCode()	{
-		if ($this->JSImgCode)	{	// If any images added, then add them to the javascript section
-			$this->additionalHeaderData['JSImgCode']='
+		// If any images added, then add them to the javascript section
+		$jsImgCode = trim($this->JSImgCode);
+		if ($jsImgCode !== '') {
+			$this->additionalHeaderData['JSImgCode'] = '
 <script type="text/javascript">
 	/*<![CDATA[*/
 <!--
 if (version == "n3") {
-'.trim($this->JSImgCode).'
+' . $jsImgCode . '
 }
 // -->
 	/*]]>*/
 </script>';
 		}
-		if ($this->JSCode || count($this->additionalJavaScript))	{	// Add javascript
-			$this->additionalHeaderData['JSCode']='
+		// Add javascript
+		$jsCode = trim($this->JSCode);
+		$additionalJavaScript = is_array($this->additionalJavaScript)
+			? implode(LF, $this->additionalJavaScript)
+			: $this->additionalJavaScript;
+		$additionalJavaScript = trim($additionalJavaScript);
+		if ($jsCode !== '' || $additionalJavaScript !== '') {
+			$this->additionalHeaderData['JSCode'] = '
 <script type="text/javascript">
 	/*<![CDATA[*/
 <!--
-'.implode(LF,$this->additionalJavaScript).'
-'.trim($this->JSCode).'
+' . $additionalJavaScript . '
+' . $jsCode . '
 // -->
 	/*]]>*/
 </script>';
 		}
-		if (count($this->additionalCSS))	{	// Add javascript
-			$this->additionalHeaderData['_CSS']='
+		// Add CSS
+		$additionalCss = is_array($this->additionalCSS) ? implode(LF, $this->additionalCSS) : $this->additionalCSS;
+		$additionalCss = trim($additionalCss);
+		if ($additionalCss !== '') {
+			$this->additionalHeaderData['_CSS'] = '
 <style type="text/css">
 	/*<![CDATA[*/
 <!--
-'.implode(LF,$this->additionalCSS).'
+' . $additionalCss . '
 // -->
 	/*]]>*/
 </style>';
