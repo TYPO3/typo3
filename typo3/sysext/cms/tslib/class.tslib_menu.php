@@ -633,7 +633,7 @@ class tslib_menu {
 							$depth=20;
 						}
 						$limit = t3lib_div::intInRange($this->conf['special.']['limit'],0,100);	// max number of items
-						$extraWhere = ' AND pages.uid!='.$value.($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0').$this->getDoktypeExcludeWhere();
+						$extraWhere = ' AND pages.uid<>'.$value.($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0').$this->getDoktypeExcludeWhere();
 						if ($this->conf['special.']['excludeNoSearchPages']) {
 							$extraWhere.= ' AND pages.no_search=0';
 						}

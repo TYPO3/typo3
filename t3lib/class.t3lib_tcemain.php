@@ -2067,13 +2067,13 @@ class t3lib_TCEmain {
 		if (is_array($TCA[$table]) && is_array($TCA[$table]['columns'][$field])) {
 
 				// Look for a record which might already have the value:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table) . ' AND uid!=' . intval($id) . $whereAdd);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table) . ' AND uid<>' . intval($id) . $whereAdd);
 			$counter = 0;
 
 				// For as long as records with the test-value existing, try again (with incremented numbers appended).
 			while ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 				$newValue = $value . $counter;
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($newValue, $table) . ' AND uid!=' . intval($id) . $whereAdd);
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($newValue, $table) . ' AND uid<>' . intval($id) . $whereAdd);
 				$counter++;
 				if ($counter > 100) {
 					break;
@@ -7092,7 +7092,7 @@ class t3lib_TCEmain {
 		$res_log = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'sys_log',
-			'type=1 AND userid=' . intval($this->BE_USER->user['uid']) . ' AND tstamp=' . intval($GLOBALS['EXEC_TIME']) . '	AND error!=0'
+			'type=1 AND userid=' . intval($this->BE_USER->user['uid']) . ' AND tstamp=' . intval($GLOBALS['EXEC_TIME']) . '	AND error<>0'
 		);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_log)) {
 			$log_data = unserialize($row['log_data']);
