@@ -228,6 +228,20 @@ class dbPostgresqlTest extends BaseTestCase {
 		$expected = 'SELECT * FROM "tt_content" WHERE "bodytext" NOT ILIKE \'test\'';
 		$this->assertEquals($expected, $query);
 	}
+
+	/**
+	 * @test
+	 * @see http://forge.typo3.org/issues/32626
+	 */
+	public function notEqualAnsiOperatorCanBeParsed() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'pages',
+			'pid<>3'
+		));
+		$expected = 'SELECT * FROM "pages" WHERE "pid" <> 3';
+		$this->assertEquals($expected, $query);
+	}
 }
 
 ?>
