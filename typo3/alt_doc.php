@@ -420,6 +420,7 @@ class SC_alt_doc {
 			function typoSetup	()	{	//
 				this.uniqueID = "";
 				this.passwordDummy = "********";
+				this.PATH_typo3 = " ";
 				this.decimalSign = ".";
 			}
 			var TS = new typoSetup();
