@@ -148,6 +148,7 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 			// Load Ext JS:
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->enableExtJSQuickTips();
+		Tx_extjs3compat_Loader::loadExtJS3();
 
 			// Integrate dynamic JavaScript such as configuration or lables:
 		$this->pageRenderer->addInlineSettingArray(
