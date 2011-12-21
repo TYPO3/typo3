@@ -1799,6 +1799,68 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
+	 * Render the page but not the JavaScript and CSS Files
+	 *
+	 * @param string $substituteHash The hash that is used for the placehoder markers
+	 * @access private
+	 * @return string Content of rendered section
+	 */
+	public function renderPageWithUncachedObjects($substituteHash) {
+		$this->prepareRendering();
+
+		$markerArray = $this->getPreparedMarkerArrayForPageWithUncachedObjects($substituteHash);
+		$template = $this->getTemplateForPart(self::PART_COMPLETE);
+
+		return trim(t3lib_parsehtml::substituteMarkerArray($template, $markerArray, '###|###'));
+	}
+
+	/**
+	 * Renders the JavaScript and CSS files that have been added during processing
+	 * of uncached content objects (USER_INT, COA_INT)
+	 *
+	 * @param string $cachedPageContent
+	 * @param string $substituteHash The hash that is used for the placehoder markers
+	 * @access private
+	 * @return string
+	 */
+	public function renderJavaScriptAndCssForProcessingOfUncachedContentObjects($cachedPageContent, $substituteHash) {
+		$this->prepareRendering();
+
+		list(
+				$jsLibs,
+				$jsFiles,
+				$jsFooterFiles,
+				$cssFiles,
+				$jsInline,
+				$cssInline,
+				$jsFooterInline,
+				$jsFooterLibs
+			) = $this->renderJavaScriptAndCss();
+
+		$markerArray = array(
+			'<!-- ###CSS_INCLUDE' . $substituteHash . '### -->' => $cssFiles,
+			'<!-- ###CSS_INLINE' . $substituteHash . '### -->' => $cssInline,
+			'<!-- ###JS_INLINE' . $substituteHash . '### -->' => $jsInline,
+			'<!-- ###JS_INCLUDE' . $substituteHash . '### -->' => $jsFiles,
+			'<!-- ###JS_LIBS' . $substituteHash . '### -->' => $jsLibs,
+			'<!-- ###HEADERDATA' . $substituteHash . '### -->' => implode(LF, $this->headerData),
+			'<!-- ###FOOTERDATA' . $substituteHash . '### -->' => implode(LF, $this->footerData),
+			'<!-- ###JS_LIBS_FOOTER' . $substituteHash . '### -->' => $jsFooterLibs,
+			'<!-- ###JS_INCLUDE_FOOTER' . $substituteHash . '### -->' => $jsFooterFiles,
+			'<!-- ###JS_INLINE_FOOTER' . $substituteHash . '### -->' => $jsFooterInline,
+		);
+
+		foreach ($markerArray as $placeHolder => $content) {
+			$cachedPageContent = str_replace($placeHolder, $content, $cachedPageContent);
+		}
+
+
+		$this->reset();
+
+		return $cachedPageContent;
+	}
+
+	/**
 	 * Remove ending slashes from static header block
 	 * if the page is beeing rendered as html (not xhtml)
 	 * and define property $this->endingSlash for further use
@@ -1896,6 +1958,40 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			'JS_INCLUDE_FOOTER' => $jsFooterFiles,
 			'JS_INLINE_FOOTER' => $jsFooterInline,
 			'BODY' => $this->bodyContent,
+		);
+		$markerArray = array_map('trim', $markerArray);
+
+		return $markerArray;
+	}
+
+	/**
+	 * Fills the marker array with the given strings and trims each value
+	 *
+	 * @param string $substituteHash The hash that is used for the placehoder markers
+	 * @return array Marker array
+	 */
+	protected function getPreparedMarkerArrayForPageWithUncachedObjects($substituteHash) {
+		$markerArray = array(
+			'XMLPROLOG_DOCTYPE' => $this->xmlPrologAndDocType,
+			'HTMLTAG' => $this->htmlTag,
+			'HEADTAG' => $this->headTag,
+			'METACHARSET' => $this->charSet ? str_replace('|', htmlspecialchars($this->charSet), $this->metaCharsetTag) : '',
+			'INLINECOMMENT' => $this->inlineComments ? LF . LF . '<!-- ' . LF . implode(LF, $this->inlineComments) . '-->' . LF . LF : '',
+			'BASEURL' => $this->baseUrl ? str_replace('|', $this->baseUrl, $this->baseUrlTag) : '',
+			'SHORTCUT' => $this->favIcon ? sprintf($this->shortcutTag, htmlspecialchars($this->favIcon), $this->iconMimeType) : '',
+			'TITLE' => $this->title ? str_replace('|', htmlspecialchars($this->title), $this->titleTag) : '',
+			'META' => implode(LF, $this->metaTags),
+			'BODY' => $this->bodyContent,
+			'CSS_INCLUDE' => '<!-- ###CSS_INCLUDE' . $substituteHash . '### -->',
+			'CSS_INLINE' => '<!-- ###CSS_INLINE' . $substituteHash . '### -->',
+			'JS_INLINE' => '<!-- ###JS_INLINE' . $substituteHash . '### -->',
+			'JS_INCLUDE' => '<!-- ###JS_INCLUDE' . $substituteHash . '### -->',
+			'JS_LIBS' => '<!-- ###JS_LIBS' . $substituteHash . '### -->',
+			'HEADERDATA' => '<!-- ###HEADERDATA' . $substituteHash . '### -->',
+			'FOOTERDATA' => '<!-- ###FOOTERDATA' . $substituteHash . '### -->',
+			'JS_LIBS_FOOTER' => '<!-- ###JS_LIBS_FOOTER' . $substituteHash . '### -->',
+			'JS_INCLUDE_FOOTER' => '<!-- ###JS_INCLUDE_FOOTER' . $substituteHash . '### -->',
+			'JS_INLINE_FOOTER' => '<!-- ###JS_INLINE_FOOTER' . $substituteHash . '### -->',
 		);
 		$markerArray = array_map('trim', $markerArray);
 
