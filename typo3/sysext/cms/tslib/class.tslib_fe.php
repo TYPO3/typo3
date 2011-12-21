@@ -495,6 +495,15 @@ class tslib_fe {
 		return $this->pageRenderer;
 	}
 
+	/**
+	 * This is needed for USER_INT processing
+	 *
+	 * @param t3lib_PageRenderer $pageRenderer
+	 */
+	protected function setPageRenderer(t3lib_PageRenderer $pageRenderer) {
+		$this->pageRenderer = $pageRenderer;
+	}
+
 	/********************************************
 	 *
 	 * Initializing, resolving page id
@@ -3109,6 +3118,12 @@ class tslib_fe {
 		$this->JSImgCode = $this->additionalHeaderData['JSImgCode'];
 		$this->divSection='';
 
+		if (isset($this->config['INTincScript_ext']['pageRenderer'])) {
+			/** @var $pageRenderer t3lib_PageRenderer */
+			$pageRenderer = unserialize($this->config['INTincScript_ext']['pageRenderer']);
+			$this->setPageRenderer($pageRenderer);
+		}
+
 		do {
 			$INTiS_config = $this->config['INTincScript'];
 			$this->INTincScript_includeLibs($INTiS_config);
@@ -3123,6 +3138,11 @@ class tslib_fe {
 		$this->content = str_replace('<!--HD_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset(implode(LF, $this->additionalHeaderData), 'HD'), $this->content);
 		$this->content = str_replace('<!--FD_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset(implode(LF, $this->additionalFooterData), 'FD'), $this->content);
 		$this->content = str_replace('<!--TDS_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset($this->divSection, 'TDS'), $this->content);
+
+		if (isset($this->config['INTincScript_ext']['pageRenderer'])) {
+			$this->content = $pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey']);
+		}
+
 		$this->setAbsRefPrefix();
 		$GLOBALS['TT']->pull();
 	}

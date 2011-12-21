@@ -277,8 +277,6 @@ class TSpagegen {
 		/** @var $pageRenderer t3lib_PageRenderer */
 		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 
-		$pageRenderer->backPath = TYPO3_mainDir;
-
 		if ($GLOBALS['TSFE']->config['config']['moveJsFromHeaderToFooter']) {
 			$pageRenderer->enableMoveJsFromHeaderToFooter();
 		}
@@ -1057,8 +1055,13 @@ class TSpagegen {
 			// Page content
 		$pageRenderer->addBodyContent(LF . $pageContent);
 
-			// Render complete page
-		$GLOBALS['TSFE']->content = $pageRenderer->render();
+		if (!empty($GLOBALS['TSFE']->config['INTincScript']['usePageRenderer'])) {
+			$GLOBALS['TSFE']->config['INTincScript_ext']['pageRenderer'] = serialize($pageRenderer); // Storing the pageRenderer
+				// Render complete page, keep placeholders for JavaScript and CSS
+			$GLOBALS['TSFE']->content = $pageRenderer->renderPageWithUncachedObjects($GLOBALS['TSFE']->config['INTincScript_ext']['divKey']);
+		} else {
+			$GLOBALS['TSFE']->content = $pageRenderer->render();
+		}
 
 			// Ending page
 		if ($GLOBALS['TSFE']->pSetup['frameSet.']) {

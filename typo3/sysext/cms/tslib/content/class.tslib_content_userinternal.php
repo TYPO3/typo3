@@ -55,6 +55,11 @@ class tslib_content_UserInternal extends tslib_content_Abstract {
 			'cObj' => serialize($this->cObj),
 			'type' => 'FUNC'
 		);
+
+		if ($conf['usePageRenderer']) {
+			$GLOBALS['TSFE']->config['INTincScript']['usePageRenderer'] = TRUE;
+		}
+
 		$this->cObj->setUserObjectType(FALSE);
 		return $content;
 	}
