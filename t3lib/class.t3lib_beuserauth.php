@@ -393,6 +393,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 *	+ backend user is a regular user and adminOnly is not defined
 	 *	+ backend user is an admin user
 	 *	+ backend user is used in CLI context and adminOnly is explicitely set to "2"
+	 *	+ backend user is being controlled by an admin user
 	 *
 	 * @return	boolean		Whether a backend user is allowed to access the backend
 	 */
@@ -406,6 +407,13 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 			// Backend user is allowed if adminOnly is set to 2 (CLI) and a CLI process is running:
 		} elseif ($adminOnlyMode == 2 && (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
 			$isUserAllowedToLogin = TRUE;
+			// Backend user is allowed if an admin has switched to that user
+		} elseif ($this->user['ses_backuserid']) {
+			$backendUserId = intval($this->user['ses_backuserid']);
+			$whereAdmin = 'uid=' . $backendUserId . ' AND admin=1' . t3lib_BEfunc::BEenableFields('be_users');
+			if ($GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'be_users', $whereAdmin) > 0) {
+				$isUserAllowedToLogin = TRUE;
+			}
 		}
 
 		return $isUserAllowedToLogin;
