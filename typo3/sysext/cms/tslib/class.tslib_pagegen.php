@@ -277,8 +277,6 @@ class TSpagegen {
 		/** @var $pageRenderer t3lib_PageRenderer */
 		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 
-		$pageRenderer->backPath = TYPO3_mainDir;
-
 		if ($GLOBALS['TSFE']->config['config']['moveJsFromHeaderToFooter']) {
 			$pageRenderer->enableMoveJsFromHeaderToFooter();
 		}
@@ -800,6 +798,8 @@ class TSpagegen {
 			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalFooterData'] = $GLOBALS['TSFE']->additionalFooterData; // Storing the footer-data array
 			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalJavaScript'] = $GLOBALS['TSFE']->additionalJavaScript; // Storing the JS-data array
 			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalCSS'] = $GLOBALS['TSFE']->additionalCSS; // Storing the Style-data array
+			$GLOBALS['TSFE']->config['INTincScript_ext']['pageRenderer'] = serialize($pageRenderer); // Storing the pageRenderer
+			$pageRenderer->resetForProcessingOfUncachedContentObjects();
 
 			$GLOBALS['TSFE']->additionalHeaderData = array ('<!--HD_' . $GLOBALS['TSFE']->config['INTincScript_ext']['divKey'] . '-->'); // Clearing the array
 			$GLOBALS['TSFE']->additionalFooterData = array ('<!--FD_' . $GLOBALS['TSFE']->config['INTincScript_ext']['divKey'] . '-->'); // Clearing the array
