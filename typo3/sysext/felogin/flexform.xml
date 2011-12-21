@@ -66,6 +66,11 @@
 								<maxitems>22</maxitems>
 								<minitems>0</minitems>
 								<show_thumbs>1</show_thumbs>
+								<wizards>
+									<suggest>
+										<type>suggest</type>
+									</suggest>
+								</wizards>
 							</config>
 						</TCEforms>
 					</pages>
@@ -203,6 +208,11 @@
 								<maxitems>1</maxitems>
 								<minitems>0</minitems>
 								<show_thumbs>1</show_thumbs>
+								<wizards>
+									<suggest>
+										<type>suggest</type>
+									</suggest>
+								</wizards>
 							</config>
 						</TCEforms>
 					</redirectPageLogin>
@@ -217,6 +227,11 @@
 								<maxitems>1</maxitems>
 								<minitems>0</minitems>
 								<show_thumbs>1</show_thumbs>
+								<wizards>
+									<suggest>
+										<type>suggest</type>
+									</suggest>
+								</wizards>
 							</config>
 						</TCEforms>
 					</redirectPageLoginError>
@@ -231,6 +246,11 @@
 								<maxitems>1</maxitems>
 								<minitems>0</minitems>
 								<show_thumbs>1</show_thumbs>
+								<wizards>
+									<suggest>
+										<type>suggest</type>
+									</suggest>
+								</wizards>
 							</config>
 						</TCEforms>
 					</redirectPageLogout>
