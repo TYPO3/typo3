@@ -277,8 +277,6 @@ class TSpagegen {
 		/** @var $pageRenderer t3lib_PageRenderer */
 		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 
-		$pageRenderer->backPath = TYPO3_mainDir;
-
 		if ($GLOBALS['TSFE']->config['config']['moveJsFromHeaderToFooter']) {
 			$pageRenderer->enableMoveJsFromHeaderToFooter();
 		}
@@ -792,6 +790,23 @@ class TSpagegen {
 		unset($GLOBALS['TSFE']->additionalHeaderData['JSImgCode']);
 
 		if (is_array($GLOBALS['TSFE']->config['INTincScript'])) {
+
+			$javaScriptAndCssForUserIntProcessing = $pageRenderer->renderJavaScriptAndCssForUserIntProcessing();
+
+				// Include JS files
+			$GLOBALS['TSFE']->additionalHeaderData['pagerenderer_cssFiles'] = $javaScriptAndCssForUserIntProcessing['cssFiles'];
+			$GLOBALS['TSFE']->additionalHeaderData['pagerenderer_cssInline'] = $javaScriptAndCssForUserIntProcessing['cssInline'];
+
+				// Include CSS files
+			$GLOBALS['TSFE']->additionalHeaderData['pagerenderer_jsLibs'] = $javaScriptAndCssForUserIntProcessing['jsLibs'];
+			$GLOBALS['TSFE']->additionalHeaderData['pagerenderer_jsFiles'] = $javaScriptAndCssForUserIntProcessing['jsFiles'];
+			$GLOBALS['TSFE']->additionalHeaderData['pagerenderer_jsInline'] = $javaScriptAndCssForUserIntProcessing['jsInline'];
+
+				// Include JS footer files
+			$GLOBALS['TSFE']->additionalFooterData['pagerenderer_jsFooterLibs'] = $javaScriptAndCssForUserIntProcessing['jsFooterLibs'];
+			$GLOBALS['TSFE']->additionalFooterData['pagerenderer_jsFooterFiles'] = $javaScriptAndCssForUserIntProcessing['jsFooterFiles'];
+			$GLOBALS['TSFE']->additionalFooterData['pagerenderer_jsFooterInline'] = $javaScriptAndCssForUserIntProcessing['jsFooterInline'];
+
 				// Storing the JSCode and JSImgCode vars...
 			$GLOBALS['TSFE']->additionalHeaderData['JSCode'] = $GLOBALS['TSFE']->JSCode;
 			$GLOBALS['TSFE']->additionalHeaderData['JSImgCode'] = $GLOBALS['TSFE']->JSImgCode;
