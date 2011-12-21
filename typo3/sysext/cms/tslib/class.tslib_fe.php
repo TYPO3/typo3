@@ -3107,6 +3107,23 @@ class tslib_fe {
 			$reprocess = (count($INTiS_config) ? TRUE : FALSE);
 		} while ($reprocess);
 
+			// TODO: Handle duplicate inclusion of libraries and files
+		$javaScriptAndCssForUserIntProcessing = $this->pageRenderer->renderJavaScriptAndCssForUserIntProcessing();
+
+			// Include JS files
+		$this->additionalHeaderData[] = $javaScriptAndCssForUserIntProcessing['cssFiles'];
+		$this->additionalHeaderData[] = $javaScriptAndCssForUserIntProcessing['cssInline'];
+
+			// Include CSS files
+		$this->additionalHeaderData[] = $javaScriptAndCssForUserIntProcessing['jsLibs'];
+		$this->additionalHeaderData[] = $javaScriptAndCssForUserIntProcessing['jsFiles'];
+		$this->additionalHeaderData[] = $javaScriptAndCssForUserIntProcessing['jsInline'];
+
+			// Include JS footer files
+		$this->additionalFooterData[] = $javaScriptAndCssForUserIntProcessing['jsFooterLibs'];
+		$this->additionalFooterData[] = $javaScriptAndCssForUserIntProcessing['jsFooterFiles'];
+		$this->additionalFooterData[] = $javaScriptAndCssForUserIntProcessing['jsFooterInline'];
+
 		$GLOBALS['TT']->push('Substitute header section');
 		$this->INTincScript_loadJSCode();
 		$this->content = str_replace('<!--HD_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset(implode(LF, $this->additionalHeaderData), 'HD'), $this->content);

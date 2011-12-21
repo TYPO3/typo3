@@ -1704,6 +1704,42 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
+	 * Renders the JavaScript and CSS files that have been added during USER_INT processing
+	 *
+	 * @TODO:
+	 * Currently all files or libraries are included twice, if a USER plugin includes the same.
+	 * To avoid that, we would need some kind of render registry, which stores already renderd
+	 * files and thus does not include them a second time.
+	 *
+	 * @return array
+	 */
+	public function renderJavaScriptAndCssForUserIntProcessing() {
+		$this->prepareRendering();
+
+		list(
+				$jsLibs,
+				$jsFiles,
+				$jsFooterFiles,
+				$cssFiles,
+				$jsInline,
+				$cssInline,
+				$jsFooterInline,
+				$jsFooterLibs
+			) = $this->renderJavaScriptAndCss();
+
+		return array(
+			'jsLibs' => $jsLibs,
+			'jsFiles' => $jsFiles,
+			'jsFooterFiles' => $jsFooterFiles,
+			'cssFiles' => $cssFiles,
+			'jsInline' => $jsInline,
+			'cssInline' => $cssInline,
+			'jsFooterInline' => $jsFooterInline,
+			'jsFooterLibs' => $jsFooterLibs,
+		);
+	}
+
+	/**
 	 * Remove ending slashes from static header block
 	 * if the page is beeing rendered as html (not xhtml)
 	 * and define property $this->endingSlash for further use
