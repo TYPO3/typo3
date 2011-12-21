@@ -1184,14 +1184,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			$content .= '<input type="submit" class="button" name="go" id="scheduler_executeselected" value="' . $GLOBALS['LANG']->getLL('label.executeSelected') . '" />';
 		}
 
-		if (count($registeredClasses) > 0) {
-				// Display add new task link
-			$link = $GLOBALS['MCONF']['_'] . '&CMD=add';
-			$content .= '<p><a href="' . htmlspecialchars($link) .'"><img '
-				. t3lib_iconWorks::skinImg($this->backPath, 'gfx/new_el.gif')
-				. ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:new', TRUE)
-				. '" /> ' . $GLOBALS['LANG']->getLL('action.add') . '</a></p>';
-		} else {
+		if (!count($registeredClasses) > 0) {
 				/** @var t3lib_FlashMessage $flashMessage */
 			$flashMessage = t3lib_div::makeInstance('t3lib_FlashMessage',
 				$GLOBALS['LANG']->getLL('msg.noTasksDefined'),
@@ -1566,14 +1559,22 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 */
 	protected function getDocHeaderButtons() {
 		$buttons = array(
+			'addtask'  => '',
 			'reload'   => '',
 			'shortcut' => $this->getShortcutButton(),
 		);
 
 		if (empty($this->CMD) || $this->CMD == 'list') {
 			$buttons['reload'] = '<a href="' . $GLOBALS['MCONF']['_'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.reload', TRUE) . '">' .
-			  t3lib_iconWorks::getSpriteIcon('actions-system-refresh') .
-		  '</a>';
+				t3lib_iconWorks::getSpriteIcon('actions-system-refresh') .
+				'</a>';
+			if ($this->MOD_SETTINGS['function'] === 'scheduler' && count(self::getRegisteredClasses())) {
+				$link = $GLOBALS['MCONF']['_'] . '&CMD=add';
+				$image = '<img ' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/new_el.gif') .
+					' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:new', TRUE) . '" />';
+				$buttons['addtask'] = '<a href="' . htmlspecialchars($link) . '" ' .
+					'title="' . $GLOBALS['LANG']->getLL('action.add') . '">' . $image . '</a>';
+			}
 		}
 
 		return $buttons;
