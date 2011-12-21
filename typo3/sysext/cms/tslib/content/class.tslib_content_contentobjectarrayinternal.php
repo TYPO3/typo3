@@ -54,6 +54,11 @@ class tslib_content_ContentObjectArrayInternal extends tslib_content_Abstract {
 				'cObj' => serialize($this->cObj),
 				'type' => 'COA'
 			);
+
+			if ($conf['usePageRenderer']) {
+				$GLOBALS['TSFE']->config['INTincScript']['usePageRenderer'] = TRUE;
+			}
+
 			return $content;
 		} else {
 			$GLOBALS['TT']->setTSlogMessage('No elements in this content object array (COA_INT).', 2);
