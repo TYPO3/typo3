@@ -198,6 +198,8 @@ class tslib_cObj {
 		'append.' => 'array',
 		'wrap3' => 'wrap',
 		'wrap3.' => 'array',
+		'orderedStdWrap' => 'boolean',
+		'orderedStdWrap.' => 'array',
 		'outerWrap' => 'wrap',
 		'outerWrap.' => 'array',
 		'insertData' => 'boolean',
@@ -1847,7 +1849,7 @@ class tslib_cObj {
 			$this->stdWrapRecursionLevel++;
 			$this->stopRendering[$this->stdWrapRecursionLevel] = FALSE;
 
-			// execute each funtion in the predefined order
+			// execute each function in the predefined order
 			foreach ($sortedConf as $stdWrapName => $functionType) {
 				// eliminate the second key of a pair 'key'|'key.' to make sure functions get called only once and check if rendering has been stopped
 				if (!$isExecuted[$stdWrapName] &&
@@ -2967,6 +2969,21 @@ class tslib_cObj {
 	}
 
 	/**
+	 * orderedStdWrap
+	 * Calls stdWrap for each entry in the provided array
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for orderedStdWrap.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_orderedStdWrap($content = '', $conf = array()) {
+		$sortedKeysArray = t3lib_TStemplate::sortedKeyList($conf['orderedStdWrap.'], TRUE);
+		foreach ($sortedKeysArray as $key) {
+			$content = $this->stdWrap($content, $conf['orderedStdWrap.'][$key . '.']);
+		}
+		return $content;
+	}
+	/**
 	 * outerWrap
 	 * Eighth of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
 	 *
@@ -2980,7 +2997,7 @@ class tslib_cObj {
 	}
 
 	/**
-	 * inserData
+	 * insertData
 	 * Can fetch additional content the same way data does and replaces any occurence of {field:whatever} with this content
 	 *
 	 * @param	string		Input value undergoing processing in this function.
