@@ -1703,6 +1703,32 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		return trim(t3lib_parsehtml::substituteMarkerArray($template, $markerArray, '###|###'));
 	}
 
+	public function renderJavaScriptAndCssForUserIntProcessing() {
+		$this->prepareRendering();
+
+		list(
+				$jsLibs,
+				$jsFiles,
+				$jsFooterFiles,
+				$cssFiles,
+				$jsInline,
+				$cssInline,
+				$jsFooterInline,
+				$jsFooterLibs
+			) = $this->renderJavaScriptAndCss();
+
+		return array(
+			'jsLibs' => $jsLibs,
+			'jsFiles' => $jsFiles,
+			'jsFooterFiles' => $jsFooterFiles,
+			'cssFiles' => $cssFiles,
+			'jsInline' => $jsInline,
+			'cssInline' => $cssInline,
+			'jsFooterInline' => $jsFooterInline,
+			'jsFooterLibs' => $jsFooterLibs,
+		);
+	}
+
 	/**
 	 * Remove ending slashes from static header block
 	 * if the page is beeing rendered as html (not xhtml)

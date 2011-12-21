@@ -175,6 +175,9 @@ class TSpagegen {
 		} else {
 			$GLOBALS['TSFE']->getPageRenderer()->setRenderXhtml(FALSE);
 		}
+		if ($GLOBALS['TSFE']->config['config']['moveJsFromHeaderToFooter']) {
+			$GLOBALS['TSFE']->getPageRenderer()->enableMoveJsFromHeaderToFooter();
+		}
 	}
 
 	/**
@@ -276,12 +279,6 @@ class TSpagegen {
 			// get instance of t3lib_PageRenderer
 		/** @var $pageRenderer t3lib_PageRenderer */
 		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
-
-		$pageRenderer->backPath = TYPO3_mainDir;
-
-		if ($GLOBALS['TSFE']->config['config']['moveJsFromHeaderToFooter']) {
-			$pageRenderer->enableMoveJsFromHeaderToFooter();
-		}
 
 		if ($GLOBALS['TSFE']->config['config']['pageRendererTemplateFile']) {
 			$file = $GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->config['config']['pageRendererTemplateFile']);
