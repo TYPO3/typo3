@@ -411,6 +411,9 @@
 			$this->pageRenderer = t3lib_div::makeInstance('t3lib_PageRenderer');
 			$this->pageRenderer->setTemplateFile(PATH_tslib . 'templates/tslib_page_frontend.html');
 			$this->pageRenderer->setBackPath(TYPO3_mainDir);
+            if ($GLOBALS['TSFE']->config['config']['moveJsFromHeaderToFooter']) {
+                $this->pageRenderer->enableMoveJsFromHeaderToFooter();
+            }
 		}
 		return $this->pageRenderer;
 	}
@@ -3172,11 +3175,22 @@
 			$reprocess = (count($INTiS_config) ? TRUE : FALSE);
 		} while($reprocess);
 
+		$additionalHeaderDataForUserIntPlugin = $this->pageRenderer->additionalHeaderDataForUserIntPlugin();
+
+			// Include CSS files
+		$this->additionalHeaderData[] = $additionalHeaderDataForUserIntPlugin['jsFiles'];
+		$this->additionalHeaderData[] = $additionalHeaderDataForUserIntPlugin['jsInline'];
+
+			// Include JS files
+		$this->additionalHeaderData[] = $additionalHeaderDataForUserIntPlugin['cssFiles'];
+		$this->additionalHeaderData[] = $additionalHeaderDataForUserIntPlugin['cssInline'];
+
 		$GLOBALS['TT']->push('Substitute header section');
 		$this->INTincScript_loadJSCode();
 		$this->content = str_replace('<!--HD_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset(implode(LF,$this->additionalHeaderData),'HD'), $this->content);
 		$this->content = str_replace('<!--TDS_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset($this->divSection,'TDS'), $this->content);
-		$this->setAbsRefPrefix();
+        $this->content = str_replace('</body>', $additionalHeaderDataForUserIntPlugin['jsFooterFiles'] . $additionalHeaderDataForUserIntPlugin['jsFooterInline'] . '</body>', $this->content);
+        $this->setAbsRefPrefix();
 		$GLOBALS['TT']->pull();
 	}
 
