@@ -1566,14 +1566,22 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 */
 	protected function getDocHeaderButtons() {
 		$buttons = array(
+			'addtask'  => '',
 			'reload'   => '',
 			'shortcut' => $this->getShortcutButton(),
 		);
 
 		if (empty($this->CMD) || $this->CMD == 'list') {
 			$buttons['reload'] = '<a href="' . $GLOBALS['MCONF']['_'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.reload', TRUE) . '">' .
-			  t3lib_iconWorks::getSpriteIcon('actions-system-refresh') .
-		  '</a>';
+				t3lib_iconWorks::getSpriteIcon('actions-system-refresh') .
+				'</a>';
+			if (count(self::getRegisteredClasses())) {
+				$link = $GLOBALS['MCONF']['_'] . '&CMD=add';
+				$image = '<img ' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/new_el.gif') .
+					' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:new', TRUE) . '" />';
+				$buttons['addtask'] = '<a href="' . htmlspecialchars($link) . '" ' .
+					'title="' . $GLOBALS['LANG']->getLL('action.add') .	'">' . $image . '</a>';
+			}
 		}
 
 		return $buttons;
