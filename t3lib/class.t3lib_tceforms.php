@@ -2684,7 +2684,7 @@ class t3lib_TCEforms {
 								$replace = 'replace(/' . $idTagPrefix . '-/g,"' . $idTagPrefix . '-"+' . $var . '+"-")';
 								$onClickInsert = 'var ' . $var . ' = "' . 'idx"+(new Date()).getTime();';
 									// Do not replace $isTagPrefix in setActionStatus() because it needs section id!
-								$onClickInsert .= 'new Insertion.Bottom($("' . $idTagPrefix . '"), unescape(decodeURIComponent("' . rawurlencode($newElementTemplate) . '")).' . $replace . '); setActionStatus("' . $idTagPrefix . '");';
+								$onClickInsert .= 'new Insertion.Bottom($("' . $idTagPrefix . '"), decodeURIComponent("' . rawurlencode($newElementTemplate) . '").' . $replace . '); setActionStatus("' . $idTagPrefix . '");';
 								$onClickInsert .= 'eval(unescape("' . rawurlencode(implode(';', $this->additionalJS_post)) . '").' . $replace . ');';
 								$onClickInsert .= 'TBE_EDITOR.addActionChecks("submit", unescape("' . rawurlencode(implode(';', $this->additionalJS_submit)) . '").' . $replace . ');';
 								$onClickInsert .= 'return false;';
