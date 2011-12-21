@@ -495,6 +495,15 @@ class tslib_fe {
 		return $this->pageRenderer;
 	}
 
+	/**
+	 * This is needed for USER_INT processing
+	 *
+	 * @param t3lib_PageRenderer $pageRenderer
+	 */
+	protected function setPageRenderer(t3lib_PageRenderer $pageRenderer) {
+		$this->pageRenderer = $pageRenderer;
+	}
+
 	/********************************************
 	 *
 	 * Initializing, resolving page id
@@ -3093,6 +3102,8 @@ class tslib_fe {
 			// @deprecated: annotation added TYPO3 4.6
 		$this->additionalHeaderData = is_array($this->config['INTincScript_ext']['additionalHeaderData']) ? $this->config['INTincScript_ext']['additionalHeaderData'] : array();
 		$this->additionalFooterData = is_array($this->config['INTincScript_ext']['additionalFooterData']) ? $this->config['INTincScript_ext']['additionalFooterData'] : array();
+		$pageRenderer = isset($this->config['INTincScript_ext']['pageRenderer']) ? unserialize($this->config['INTincScript_ext']['pageRenderer']) : $this->getPageRenderer();
+		$this->setPageRenderer($pageRenderer);
 		$this->additionalJavaScript = $this->config['INTincScript_ext']['additionalJavaScript'];
 		$this->additionalCSS = $this->config['INTincScript_ext']['additionalCSS'];
 		$this->JSImgCode = $this->additionalHeaderData['JSImgCode'];
@@ -3106,6 +3117,8 @@ class tslib_fe {
 			$INTiS_config = array_diff_assoc($this->config['INTincScript'], $INTiS_config);
 			$reprocess = (count($INTiS_config) ? TRUE : FALSE);
 		} while ($reprocess);
+
+		$this->content = $pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content);
 
 		$GLOBALS['TT']->push('Substitute header section');
 		$this->INTincScript_loadJSCode();
