@@ -1704,6 +1704,49 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
+	 * Renders the JavaScript and CSS files that have been added during processing
+	 * of uncached content objects (USER_INT, COA_INT)
+	 *
+	 * @access private
+	 * @return array
+	 */
+	public function renderJavaScriptAndCssForProcessingOfUncachedContentObjects() {
+		$this->prepareRendering();
+
+		list(
+				$jsLibs,
+				$jsFiles,
+				$jsFooterFiles,
+				$cssFiles,
+				$jsInline,
+				$cssInline,
+				$jsFooterInline,
+				$jsFooterLibs
+			) = $this->renderJavaScriptAndCss();
+
+
+			// Reset the files that are already rendered to avoid duplicate inclusion
+		$this->jsFiles = array();
+		$this->jsFooterFiles = array();
+		$this->jsInline = array();
+		$this->jsFooterInline = array();
+		$this->jsLibs = array();
+		$this->cssFiles = array();
+		$this->cssInline = array();
+
+		return array(
+			'jsLibs' => $jsLibs,
+			'jsFiles' => $jsFiles,
+			'jsFooterFiles' => $jsFooterFiles,
+			'cssFiles' => $cssFiles,
+			'jsInline' => $jsInline,
+			'cssInline' => $cssInline,
+			'jsFooterInline' => $jsFooterInline,
+			'jsFooterLibs' => $jsFooterLibs,
+		);
+	}
+
+	/**
 	 * Remove ending slashes from static header block
 	 * if the page is beeing rendered as html (not xhtml)
 	 * and define property $this->endingSlash for further use

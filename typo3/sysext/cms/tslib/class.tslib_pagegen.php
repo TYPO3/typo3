@@ -175,6 +175,10 @@ class TSpagegen {
 		} else {
 			$GLOBALS['TSFE']->getPageRenderer()->setRenderXhtml(FALSE);
 		}
+
+		if ($GLOBALS['TSFE']->config['config']['moveJsFromHeaderToFooter']) {
+			$GLOBALS['TSFE']->getPageRenderer()->enableMoveJsFromHeaderToFooter();
+		}
 	}
 
 	/**
@@ -276,12 +280,6 @@ class TSpagegen {
 			// get instance of t3lib_PageRenderer
 		/** @var $pageRenderer t3lib_PageRenderer */
 		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
-
-		$pageRenderer->backPath = TYPO3_mainDir;
-
-		if ($GLOBALS['TSFE']->config['config']['moveJsFromHeaderToFooter']) {
-			$pageRenderer->enableMoveJsFromHeaderToFooter();
-		}
 
 		if ($GLOBALS['TSFE']->config['config']['pageRendererTemplateFile']) {
 			$file = $GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->config['config']['pageRendererTemplateFile']);
@@ -800,6 +798,7 @@ class TSpagegen {
 			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalFooterData'] = $GLOBALS['TSFE']->additionalFooterData; // Storing the footer-data array
 			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalJavaScript'] = $GLOBALS['TSFE']->additionalJavaScript; // Storing the JS-data array
 			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalCSS'] = $GLOBALS['TSFE']->additionalCSS; // Storing the Style-data array
+			$GLOBALS['TSFE']->config['INTincScript_ext']['pageRendererFiles'] = $pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects(); // Storing pageRenderer files
 
 			$GLOBALS['TSFE']->additionalHeaderData = array ('<!--HD_' . $GLOBALS['TSFE']->config['INTincScript_ext']['divKey'] . '-->'); // Clearing the array
 			$GLOBALS['TSFE']->additionalFooterData = array ('<!--FD_' . $GLOBALS['TSFE']->config['INTincScript_ext']['divKey'] . '-->'); // Clearing the array

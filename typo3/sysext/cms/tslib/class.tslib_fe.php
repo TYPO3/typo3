@@ -3093,6 +3093,7 @@ class tslib_fe {
 			// @deprecated: annotation added TYPO3 4.6
 		$this->additionalHeaderData = is_array($this->config['INTincScript_ext']['additionalHeaderData']) ? $this->config['INTincScript_ext']['additionalHeaderData'] : array();
 		$this->additionalFooterData = is_array($this->config['INTincScript_ext']['additionalFooterData']) ? $this->config['INTincScript_ext']['additionalFooterData'] : array();
+		$pageRendererFiles = is_array($this->config['INTincScript_ext']['pageRendererFiles']) ? $this->config['INTincScript_ext']['pageRendererFiles'] : array();
 		$this->additionalJavaScript = $this->config['INTincScript_ext']['additionalJavaScript'];
 		$this->additionalCSS = $this->config['INTincScript_ext']['additionalCSS'];
 		$this->JSImgCode = $this->additionalHeaderData['JSImgCode'];
@@ -3106,6 +3107,22 @@ class tslib_fe {
 			$INTiS_config = array_diff_assoc($this->config['INTincScript'], $INTiS_config);
 			$reprocess = (count($INTiS_config) ? TRUE : FALSE);
 		} while ($reprocess);
+
+		$pageRendererFiles = array_merge($pageRendererFiles, $this->getPageRenderer()->renderJavaScriptAndCssForProcessingOfUncachedContentObjects());
+
+			// Include JS files
+		$this->additionalHeaderData[] = $pageRendererFiles['cssFiles'];
+		$this->additionalHeaderData[] = $pageRendererFiles['cssInline'];
+
+			// Include CSS files
+		$this->additionalHeaderData[] = $pageRendererFiles['jsLibs'];
+		$this->additionalHeaderData[] = $pageRendererFiles['jsFiles'];
+		$this->additionalHeaderData[] = $pageRendererFiles['jsInline'];
+
+			// Include JS footer files
+		$this->additionalFooterData[] = $pageRendererFiles['jsFooterLibs'];
+		$this->additionalFooterData[] = $pageRendererFiles['jsFooterFiles'];
+		$this->additionalFooterData[] = $pageRendererFiles['jsFooterInline'];
 
 		$GLOBALS['TT']->push('Substitute header section');
 		$this->INTincScript_loadJSCode();
