@@ -3172,6 +3172,16 @@
 			$reprocess = (count($INTiS_config) ? TRUE : FALSE);
 		} while($reprocess);
 
+		$additionalHeaderDataForUserIntPlugin = $this->pageRenderer->additionalHeaderDataForUserIntPlugin();
+
+			// Include CSS files
+		$this->additionalHeaderData[] = $additionalHeaderDataForUserIntPlugin['jsFiles'];
+		$this->additionalHeaderData[] = $additionalHeaderDataForUserIntPlugin['jsInline'];
+
+			// Include JS files
+		$this->additionalHeaderData[] = $additionalHeaderDataForUserIntPlugin['cssFiles'];
+		$this->additionalHeaderData[] = $additionalHeaderDataForUserIntPlugin['cssInline'];
+
 		$GLOBALS['TT']->push('Substitute header section');
 		$this->INTincScript_loadJSCode();
 		$this->content = str_replace('<!--HD_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset(implode(LF,$this->additionalHeaderData),'HD'), $this->content);

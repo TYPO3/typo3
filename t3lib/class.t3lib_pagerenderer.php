@@ -131,6 +131,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	protected $inlineJavascriptWrap = array();
 
+	protected $endingSlash = '';
+
 		// saves error messages generated during compression
 	protected $compressError = '';
 
@@ -1496,119 +1498,20 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			// if the page is beeing rendered as html (not xhtml)
 			// and define variable $endingSlash for further use
 		if ($this->getRenderXhtml()) {
-			$endingSlash = ' /';
+			$this->endingSlash = ' /';
 		} else {
 			$this->metaCharsetTag = str_replace(' />', '>', $this->metaCharsetTag);
 			$this->baseUrlTag = str_replace(' />', '>', $this->baseUrlTag);
 			$this->shortcutTag = str_replace(' />', '>', $this->shortcutTag);
-			$endingSlash = '';
+
+			$this->endingSlash = '';
 		}
 
-		if (count($this->cssFiles)) {
-			foreach ($this->cssFiles as $name => $properties) {
-				$properties['file'] = t3lib_div::resolveBackPath($properties['file']);
-				$properties['file'] = t3lib_div::createVersionNumberedFilename($properties['file']);
-				$tag = '<link rel="' . htmlspecialchars($properties['rel']) . '" type="text/css" href="' .
-					   htmlspecialchars($properties['file']) . '" media="' . htmlspecialchars($properties['media']) . '"' .
-					   ($properties['title'] ? ' title="' . htmlspecialchars($properties['title']) . '"' : '') .
-					   $endingSlash . '>';
-				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
-					$tag = str_replace('|', $tag, $properties['allWrap']);
-				}
-				if ($properties['forceOnTop']) {
-					$cssFiles = $tag . LF . $cssFiles;
-				} else {
-					$cssFiles .= LF . $tag;
-				}
-			}
-		}
-
-		if (count($this->cssInline)) {
-			foreach ($this->cssInline as $name => $properties) {
-				if ($properties['forceOnTop']) {
-					$cssInline = '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF . $cssInline;
-				} else {
-					$cssInline .= '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF;
-				}
-			}
-			$cssInline = $this->inlineCssWrap[0] . $cssInline . $this->inlineCssWrap[1];
-		}
-
-		if (count($this->jsLibs)) {
-			foreach ($this->jsLibs as $name => $properties) {
-				$properties['file'] = t3lib_div::resolveBackPath($properties['file']);
-				$properties['file'] = t3lib_div::createVersionNumberedFilename($properties['file']);
-				$tag = '<script src="' . htmlspecialchars($properties['file']) . '" type="' . htmlspecialchars($properties['type']) . '"></script>';
-				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
-					$tag = str_replace('|', $tag, $properties['allWrap']);
-				}
-				if ($properties['forceOnTop']) {
-					if ($properties['section'] === self::PART_HEADER) {
-						$jsLibs = $tag . LF . $jsLibs;
-					} else {
-						$jsFooterLibs = $tag . LF . $jsFooterLibs;
-					}
-				} else {
-					if ($properties['section'] === self::PART_HEADER) {
-						$jsLibs .= LF . $tag;
-					} else {
-						$jsFooterLibs .= LF . $tag;
-					}
-				}
-			}
-		}
-
-		if (count($this->jsFiles)) {
-			foreach ($this->jsFiles as $name => $properties) {
-				$properties['file'] = t3lib_div::resolveBackPath($properties['file']);
-				$properties['file'] = t3lib_div::createVersionNumberedFilename($properties['file']);
-				$tag = '<script src="' . htmlspecialchars($properties['file']) . '" type="' . htmlspecialchars($properties['type']) . '"></script>';
-				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
-					$tag = str_replace('|', $tag, $properties['allWrap']);
-				}
-				if ($properties['forceOnTop']) {
-					if ($properties['section'] === self::PART_HEADER) {
-						$jsFiles = $tag . LF . $jsFiles;
-					} else {
-						$jsFooterFiles = $tag . LF . $jsFooterFiles;
-					}
-				} else {
-					if ($properties['section'] === self::PART_HEADER) {
-						$jsFiles .= LF . $tag;
-					} else {
-						$jsFooterFiles .= LF . $tag;
-					}
-				}
-			}
-		}
-
-		if (count($this->jsInline)) {
-			foreach ($this->jsInline as $name => $properties) {
-				if ($properties['forceOnTop']) {
-					if ($properties['section'] === self::PART_HEADER) {
-						$jsInline = '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF . $jsInline;
-					} else {
-						$jsFooterInline = '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF . $jsFooterInline;
-					}
-				} else {
-					if ($properties['section'] === self::PART_HEADER) {
-						$jsInline .= '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF;
-					} else {
-						$jsFooterInline .= '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF;
-					}
-				}
-			}
-		}
-
-
-		if ($jsInline) {
-			$jsInline = $this->inlineJavascriptWrap[0] . $jsInline . $this->inlineJavascriptWrap[1];
-		}
-
-		if ($jsFooterInline) {
-			$jsFooterInline = $this->inlineJavascriptWrap[0] . $jsFooterInline . $this->inlineJavascriptWrap[1];
-		}
-
+		$this->renderCssFiles($cssFiles);
+		$this->renderCssInline($cssInline);
+		$this->renderJsLibs($jsLibs, $jsFooterLibs);
+		$this->renderJsFiles($jsFiles, $jsFooterFiles);
+		$this->renderJsInline($jsInline, $jsFooterInline);
 
 			// get template
 		$templateFile = t3lib_div::getFileAbsFileName($this->templateFile, TRUE);
@@ -2058,6 +1961,261 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			break;
 		}
 		return $filename;
+	}
+
+	/**
+	 * Render CSS Files
+	 *
+	 * @param   string  $cssFiles An Already Setuped/Rendered $cssFiles Variable.
+	 * @return  void
+	 */
+	protected function renderCssFiles(&$cssFiles) {
+		if (count($this->cssFiles)) {
+			foreach ($this->cssFiles as $file => $properties) {
+				$file = t3lib_div::resolveBackPath($file);
+				$file = t3lib_div::createVersionNumberedFilename($file);
+				$tag  = '<link rel="' . htmlspecialchars($properties['rel']) .
+					'" type="text/css" href="' . htmlspecialchars($file) .
+					'" media="' . htmlspecialchars($properties['media']) .
+					'"' . ($properties['title'] ? ' title="' . htmlspecialchars($properties['title']) . '"' : '') . $this->endingSlash . '>';
+				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
+					$tag = str_replace('|', $tag, $properties['allWrap']);
+				}
+				if ($properties['forceOnTop']) {
+					$cssFiles = $tag . LF . $cssFiles;
+				} else {
+					$cssFiles .= LF . $tag;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Render Inline CSS
+	 *
+	 * @param   string  $cssInline An Already Setuped/Rendered $cssInline Variable.
+	 * @return  void
+	 */
+	protected function renderCssInline(&$cssInline) {
+		if (count($this->cssInline)) {
+			foreach ($this->cssInline as $name => $properties) {
+				if ($properties['forceOnTop']) {
+					$cssInline = '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF . $cssInline;
+				} else {
+					$cssInline .= '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF;
+				}
+			}
+			$cssInline = $this->inlineCssWrap[0] . $cssInline . $this->inlineCssWrap[1];
+		}
+	}
+
+	/**
+	 * Render JS Library
+	 *
+	 * @param   string  $jsFooterLibs An Already Setuped/Rendered $jsFooterLibs Variable.
+	 * @param   string  $jsLibs An Already Setuped/Rendered $jsLibs Variable.
+	 * @return  void
+	 */
+	protected function renderJsLibs(&$jsFooterLibs, &$jsLibs) {
+		if (count($this->jsLibs)) {
+			foreach ($this->jsLibs as $name => $properties) {
+				$properties['file'] = t3lib_div::resolveBackPath($properties['file']);
+				$properties['file'] = t3lib_div::createVersionNumberedFilename($properties['file']);
+				$tag                = '<script src="' . htmlspecialchars($properties['file']) . '" type="' . htmlspecialchars($properties['type']) . '"></script>';
+				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
+					$tag = str_replace('|', $tag, $properties['allWrap']);
+				}
+				if ($properties['forceOnTop']) {
+					if ($properties['section'] === self::PART_HEADER) {
+						$jsLibs = $tag . LF . $jsLibs;
+					} else {
+						$jsFooterLibs = $tag . LF . $jsFooterLibs;
+					}
+				} else {
+					if ($properties['section'] === self::PART_HEADER) {
+						$jsLibs .= LF . $tag;
+					} else {
+						$jsFooterLibs .= LF . $tag;
+					}
+				}
+			}
+		}
+		if ($this->moveJsFromHeaderToFooter) {
+			$jsFooterLibs = $jsLibs . LF . $jsFooterLibs;
+			$jsLibs       = '';
+		}
+	}
+
+	/**
+	 * Render JS files
+	 *
+	 * @param   String  $jsFiles An Already Setuped/Rendered $jsFiles Variable.
+	 * @param   String  $jsFooterFiles An Already Setuped/Rendered $jsFooterFiles Variable.
+	 * @return  void
+	 */
+	protected function renderJsFiles(&$jsFiles, &$jsFooterFiles) {
+		if (count($this->jsFiles)) {
+			foreach ($this->jsFiles as $file => $properties) {
+				$file = t3lib_div::resolveBackPath($file);
+				$file = t3lib_div::createVersionNumberedFilename($file);
+				$tag  = '<script src="' . htmlspecialchars($file) . '" type="' . htmlspecialchars($properties['type']) . '"></script>';
+				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
+					$tag = str_replace('|', $tag, $properties['allWrap']);
+				}
+				if ($properties['forceOnTop']) {
+					if ($properties['section'] === self::PART_HEADER) {
+						$jsFiles = $tag . LF . $jsFiles;
+					} else {
+						$jsFooterFiles = $tag . LF . $jsFooterFiles;
+					}
+				} else {
+					if ($properties['section'] === self::PART_HEADER) {
+						$jsFiles .= LF . $tag;
+					} else {
+						$jsFooterFiles .= LF . $tag;
+					}
+				}
+			}
+		}
+		if ($this->moveJsFromHeaderToFooter) {
+			$jsFooterFiles = $jsFiles . LF . $jsFooterFiles;
+			$jsFiles       = '';
+		}
+	}
+
+	/**
+	 * Render inline JS
+	 *
+	 * @param   String  $jsInline An Already Setuped/Rendered $jsInline Variable.
+	 * @param   String  $jsFooterInline An Already Setuped/Rendered $jsFooterInline Variable.
+	 * @return  void
+	 */
+	protected function renderJsInline(&$jsInline, &$jsFooterInline) {
+
+		if (count($this->jsInline)) {
+			foreach ($this->jsInline as $name => $properties) {
+				if ($properties['forceOnTop']) {
+					if ($properties['section'] === self::PART_HEADER) {
+						$jsInline = '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF . $jsInline;
+					} else {
+						$jsFooterInline = '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF . $jsFooterInline;
+					}
+				} else {
+					if ($properties['section'] === self::PART_HEADER) {
+						$jsInline .= '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF;
+					} else {
+						$jsFooterInline .= '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF;
+					}
+				}
+			}
+		}
+		if ($jsInline) {
+			$jsInline = $this->inlineJavascriptWrap[0] . $jsInline . $this->inlineJavascriptWrap[1];
+		}
+
+		if ($jsFooterInline) {
+			$jsFooterInline = $this->inlineJavascriptWrap[0] . $jsFooterInline . $this->inlineJavascriptWrap[1];
+		}
+		if ($this->moveJsFromHeaderToFooter) {
+			$jsFooterInline = $jsInline . LF . $jsFooterInline;
+			$jsInline       = '';
+		}
+	}
+
+	/**
+	 * Return the additional header data used by USER_INT script
+	 *
+	 * @return array
+	 */
+	public function additionalHeaderDataForUserIntPlugin() {
+		$jsFiles        = '';
+		$cssFiles       = '';
+		$cssInline      = '';
+		$jsInline       = '';
+		$jsFooterInline = '';
+		$jsFooterLibs   = '';
+		$jsFooterFiles  = '';
+
+		// preRenderHook for possible manuipulation
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'])) {
+			$params = array(
+				'jsLibs' => &$this->jsLibs,
+				'jsFooterLibs' => &$this->jsFooterLibs,
+				'jsFiles' => &$this->jsFiles,
+				'jsFooterFiles' => &$this->jsFooterFiles,
+				'cssFiles' => &$this->cssFiles,
+				'headerData' => &$this->headerData,
+				'footerData' => &$this->footerData,
+				'jsInline' => &$this->jsInline,
+				'jsFooterInline' => &$this->jsFooterInline,
+				'cssInline' => &$this->cssInline,
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'] as $hook) {
+				t3lib_div::callUserFunction($hook, $params, $this);
+			}
+		}
+
+		$jsLibs = $this->renderJsLibraries();
+
+		if ($this->concatenateFiles) {
+			// do the file concatenation
+			$this->doConcatenate();
+		}
+		if ($this->compressCss || $this->compressJavascript) {
+			// do the file compression
+			$this->doCompress();
+		}
+
+		$this->renderCssFiles($cssFiles);
+		$this->renderCssInline($cssInline);
+		$this->renderJsLibs($jsFooterLibs, $jsLibs);
+		$this->renderJsFiles($jsFiles, $jsFooterFiles);
+		$this->renderJsInline($jsInline, $jsFooterInline);
+
+		// postRenderHook for possible manipulation
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postProcess'])) {
+			$params = array(
+				'jsLibs' => &$jsLibs,
+				'jsFiles' => &$jsFiles,
+				'jsFooterFiles' => &$jsFooterFiles,
+				'cssFiles' => &$cssFiles,
+				'headerData' => &$this->headerData,
+				'footerData' => &$this->footerData,
+				'jsInline' => &$jsInline,
+				'cssInline' => &$cssInline,
+				'xmlPrologAndDocType' => &$this->xmlPrologAndDocType,
+				'htmlTag' => &$this->htmlTag,
+				'headTag' => &$this->headTag,
+				'charSet' => &$this->charSet,
+				'metaCharsetTag' => &$this->metaCharsetTag,
+				'shortcutTag' => &$this->shortcutTag,
+				'inlineComments' => &$this->inlineComments,
+				'baseUrl' => &$this->baseUrl,
+				'baseUrlTag' => &$this->baseUrlTag,
+				'favIcon' => &$this->favIcon,
+				'iconMimeType' => &$this->iconMimeType,
+				'titleTag' => &$this->titleTag,
+				'title' => &$this->title,
+				'metaTags' => &$this->metaTags,
+				'jsFooterInline' => &$jsFooterInline,
+				'jsFooterLibs' => &$jsFooterLibs,
+				'bodyContent' => &$this->bodyContent
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postProcess'] as $hook) {
+				t3lib_div::callUserFunction($hook, $params, $this);
+			}
+		}
+
+		return array(
+			'jsLibs' => &$jsLibs,
+			'jsFiles' => &$jsFiles,
+			'cssFiles' => &$cssFiles,
+			'jsFooterFiles' => &$jsFooterFiles,
+			'jsInline' => &$jsInline,
+			'cssInline' => &$cssInline,
+			'jsFooterInline' => &$jsFooterInline,
+			'jsFooterLibs' => &$jsFooterLibs
+		);
 	}
 
 }
