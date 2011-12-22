@@ -399,13 +399,31 @@ class tx_cms_layout extends recordList {
 	 */
 	function getSelectedBackendLayoutUid($id) {
 		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('backend_layout', 'pages', 'uid=' . $id);
+		$backendLayoutUid = $this->getSelectedBackendLayoutForPageRecord($page);
+
+			// required to make backend layouts work in Draft workspace
+		if ($backendLayoutUid < 1) {
+			$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('backend_layout', 'pages', 't3ver_oid=' . $id);
+			$backendLayoutUid = $this->getSelectedBackendLayoutForPageRecord($page);
+		}
+
+		return $backendLayoutUid;
+	}
+
+	/**
+	 * Returns the backend layout which should be used for this page.
+	 *
+	 * @param array $page: database row of the current page
+	 * @return mixed Uid of the backend layout record or NULL if no layout should be used
+	 */
+	protected function getSelectedBackendLayoutForPageRecord(array $page) {
 		$backendLayoutUid = intval($page['backend_layout']);
 		if ($backendLayoutUid == -1) {
 				// if it is set to "none" - don't use any
 			$backendLayoutUid = NULL;
 		} else if ($backendLayoutUid == 0) {
 				// if it not set check the rootline for a layout on next level and use this
-			$rootline = t3lib_BEfunc::BEgetRootLine($id);
+			$rootline = t3lib_BEfunc::BEgetRootLine($page['uid']);
 			for ($i = count($rootline) - 2; $i > 0; $i--) {
 				$backendLayoutUid = intval($rootline[$i]['backend_layout_next_level']);
 				if ($backendLayoutUid > 0) {
@@ -418,7 +436,7 @@ class tx_cms_layout extends recordList {
 				}
 			}
 		}
-			// if it is set to a positive value use this
+
 		return $backendLayoutUid;
 	}
 
