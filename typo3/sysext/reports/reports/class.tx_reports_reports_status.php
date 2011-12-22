@@ -53,14 +53,6 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	public function getReport() {
 		$content = '';
 
-		foreach ($this->statusProviders as $statusProviderId => $statusProvidersList) {
-			$status[$statusProviderId] = array();
-			foreach ($statusProvidersList as $statusProvider) {
-				$statuses = $statusProvider->getStatus();
-				$status[$statusProviderId] = array_merge($status[$statusProviderId], $statuses);
-			}
-		}
-
 		$status = $this->getSystemStatus();
 		$highestSeverity = $this->getHighestSeverity($status);
 
