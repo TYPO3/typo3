@@ -418,6 +418,32 @@ class tx_cms_layout extends recordList {
 				}
 			}
 		}
+
+		/***** BEGIN BUGFIX - THIS IS TO FIX BACKEND LAYOUT DID NOT WORK IN THE DRAFT WORKSPACE *************/
+		if($backendLayoutUid < 1){
+		    $page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('backend_layout', 'pages', 't3ver_oid=' . $id);
+		    $backendLayoutUid = intval($page['backend_layout']);
+		    if ($backendLayoutUid == -1) {
+		        // if it is set to "none" - don't use any
+		        $backendLayoutUid = NULL;
+		    } else if ($backendLayoutUid == 0) {
+		        // if it not set check the rootline for a layout on next level and use this
+		        $rootline = t3lib_BEfunc::BEgetRootLine($id);
+		        for ($i = count($rootline) - 2; $i > 0; $i--) {
+		            $backendLayoutUid = intval($rootline[$i]['backend_layout_next_level']);
+		            if ($backendLayoutUid > 0) {
+		                // stop searching if a layout for "next level" is set
+		                break;
+		            } else if ($backendLayoutUid == -1){
+		                // if layout for "next level" is set to "none" - don't use any and stop searching
+		                $backendLayoutUid = NULL;
+		                break;
+		            }
+		        }
+		    }
+		}
+		/***** END BUGFIX - THIS IS TO FIX BACKEND LAYOUT DID NOT WORK IN THE DRAFT WORKSPACE *************/
+
 			// if it is set to a positive value use this
 		return $backendLayoutUid;
 	}
