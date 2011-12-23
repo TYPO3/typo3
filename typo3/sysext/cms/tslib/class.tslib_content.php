@@ -1478,6 +1478,19 @@ class tslib_cObj {
 		if ($addGlobal) {
 			$aTagParams = ' ' . trim($GLOBALS['TSFE']->ATagParams . $aTagParams);
 		}
+
+			// extend params
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getATagParamsPostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getATagParamsPostProc'])) {
+			$_params = array(
+				'conf' => &$conf,
+				'aTagParams' => &$aTagParams
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getATagParamsPostProc'] as $objRef) {
+				$processor = &t3lib_div::getUserObj($objRef);
+				$aTagParams = $processor->process( $_params, $this);
+			}
+		}
+
 		return $aTagParams;
 	}
 

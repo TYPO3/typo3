@@ -572,6 +572,19 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					unset($attribArray_copy['style']);
 					unset($attribArray_copy['rteerror']);
 				}
+
+					// Remove additional parameters
+				if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['removeParams_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['removeParams_PostProc'])) {
+					$parameters = array(
+						'conf' => &$conf,
+						'aTagParams' => &$attribArray_copy
+					);
+					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['removeParams_PostProc'] as $objRef) {
+						$processor = t3lib_div::getUserObj($objRef);
+						$attribArray_copy = $processor->removeParams( $parameters, $this);
+					}
+				}
+
 				if (!count($attribArray_copy)) { // Only if href, target and class are the only attributes, we can alter the link!
 						// Quoting class and title attributes if they contain spaces
 					$attribArray['class'] = preg_match('/ /', $attribArray['class']) ? '"' . $attribArray['class'] . '"' : $attribArray['class'];
@@ -581,7 +594,22 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					$href = $attribArray['external'] ? $attribArray['href'] : $info['url'] . ($info['query'] ? ',0,' . $info['query'] : '');
 					$bTag = '<link ' . $href . ($attribArray['target'] ? ' ' . $attribArray['target'] : (($attribArray['class'] || $attribArray['title']) ? ' -' : '')) . ($attribArray['class'] ? ' ' . $attribArray['class'] : ($attribArray['title'] ? ' -' : '')) . ($attribArray['title'] ? ' ' . $attribArray['title'] : '') . '>';
 					$eTag = '</link>';
-					$blockSplit[$k] = $bTag . $this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])) . $eTag;
+
+						// Modify parameters
+					if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'])) {
+						$parameters = array(
+							'conf' => &$conf,
+							'currentBlock' => $v,
+							'url' => $href,
+							'attributes' => $attribArray
+						);
+						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksDb_PostProc'] as $objRef) {
+							$processor = t3lib_div::getUserObj($objRef);
+							$blockSplit[$k] = $processor->modifyParamsLinksDb( $parameters, $this);
+						}
+					} else {
+						$blockSplit[$k] = $bTag . $this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])) . $eTag;
+					}
 				} else { // ... otherwise store the link as a-tag.
 						// Unsetting 'rtekeep' attribute if that had been set.
 					unset($attribArray['rtekeep']);
@@ -618,7 +646,6 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		$siteUrl = $this->siteUrl();
 		foreach ($blockSplit as $k => $v) {
 			$error = '';
-			$external = FALSE;
 			if ($k % 2) { // block:
 				$tagCode = t3lib_div::unQuoteFilenames(trim(substr($this->getFirstTag($v), 0, -1)), TRUE);
 				$link_param = $tagCode[1];
@@ -631,6 +658,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				} else {
 					$fileChar = intval(strpos($link_param, '/'));
 					$urlChar = intval(strpos($link_param, '.'));
+					$external = FALSE;
 						// Parse URL:
 					$pU = parse_url($link_param);
 						// Detects if a file is found in site-root OR is a simulateStaticDocument.
@@ -685,7 +713,24 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						($error ? ' rteerror="' . htmlspecialchars($error) . '" style="background-color: yellow; border:2px red solid; color: black;"' : '') . // Should be OK to add the style; the transformation back to databsae will remove it...
 						'>';
 				$eTag = '</a>';
-				$blockSplit[$k] = $bTag . $this->TS_links_rte($this->removeFirstAndLastTag($blockSplit[$k])) . $eTag;
+
+					// Modify parameters
+				if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'])) {
+					$parameters = array(
+						'conf' => &$conf,
+						'currentBlock' => $v,
+						'url' => $href,
+						'tagCode' => $tagCode,
+						'external' => $external,
+						'error' => $error
+					);
+					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'] as $objRef) {
+						$processor = t3lib_div::getUserObj($objRef);
+						$blockSplit[$k] = $processor->modifyParamsLinksRte( $parameters, $this);
+					}
+				} else {
+					$blockSplit[$k] = $bTag . $this->TS_links_rte($this->removeFirstAndLastTag($blockSplit[$k])) . $eTag;
+				}
 			}
 		}
 
