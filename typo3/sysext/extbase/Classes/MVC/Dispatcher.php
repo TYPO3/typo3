@@ -97,7 +97,7 @@ class Tx_Extbase_MVC_Dispatcher implements t3lib_Singleton {
 			} catch (Tx_Extbase_MVC_Exception_StopAction $ignoredException) {
 			}
 		}
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterRequestDispatch', array($request, $response));
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterRequestDispatch', array('request' => $request, 'response' => $response));
 	}
 
 	/**
