@@ -596,6 +596,18 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				}
 			}
 		';
+
+			// Hook to overwrite or extend javascript functions
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['extendJScode']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['extendJScode'])) {
+			$_params = array(
+				'conf' => &$conf
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['extendJScode'] as $objRef) {
+				$processor = &t3lib_div::getUserObj($objRef);
+				$JScode .= $processor->extendJScode( $_params, &$this);
+			}
+		}
+
 		return $JScode;
 	}
 
@@ -890,8 +902,20 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		$lclass = $this->addClassSelector();
 		$ltitle = $this->addTitleSelector();
 		$rel = $this->addRelField();
+
+			// additional fields for page links
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['addAttributeFields']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['addAttributeFields'])) {
+			$_params = array(
+				'conf' => &$conf
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['addAttributeFields'] as $objRef) {
+				$processor = &t3lib_div::getUserObj($objRef);
+				$additionalAttributeFields .= $processor->getAttributefields( $_params, $this);
+			}
+		}
+
 		if ($lpageId || $queryParameters || $ltarget || $lclass || $ltitle || $rel) {
-			$ltargetForm = $this->wrapInForm($lpageId.$queryParameters.$ltarget.$lclass.$ltitle.$rel);
+			$ltargetForm = $this->wrapInForm($lpageId . $queryParameters . $ltarget . $lclass . $ltitle . $rel . $additionalAttributeFields);
 		}
 		return $ltargetForm;
 	}
