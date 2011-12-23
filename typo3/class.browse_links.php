@@ -782,9 +782,23 @@ class browse_links {
 				'title'  => $currentLinkParts[3],
 				'params'  => $currentLinkParts[4]
 			);
+
 			$this->curUrlArray = (is_array(t3lib_div::_GP('curUrl'))) ?
 				array_merge($initialCurUrlArray, t3lib_div::_GP('curUrl')) :
 				$initialCurUrlArray;
+
+				// additional fields for page links
+			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['extendUrlArray']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['extendUrlArray'])) {
+				$_params = array(
+					'conf' => &$conf,
+					'linkParts' => $currentLinkParts
+				);
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['extendUrlArray'] as $objRef) {
+					$processor = &t3lib_div::getUserObj($objRef);
+					$processor->extendUrlArray( $_params, $this);
+				}
+			}
+
 			$this->curUrlInfo = $this->parseCurUrl($this->siteURL.'?id='.$this->curUrlArray['href'], $this->siteURL);
 			if ($this->curUrlInfo['pageid'] == 0 && $this->curUrlArray['href']) { // pageid == 0 means that this is not an internal (page) link
 				if (file_exists(PATH_site.rawurldecode($this->curUrlArray['href'])))	{ // check if this is a link to a file
@@ -1118,10 +1132,24 @@ class browse_links {
 				BrowseLinks.focusOpenerAndClose(close);
 			}
 		';
+		
+			// extends JavaScript code
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['extendJScode']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['extendJScode'])) {
+			$_params = array(
+				'conf' => &$conf,
+				'wizardUpdate' => $update,
+				'addPassOnParams' => $addPassOnParams
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['extendJScode'] as $objRef) {
+				$processor = &t3lib_div::getUserObj($objRef);
+				$JScode .= $processor->extendJScode( $_params, $this);
+			}
+		}	
 
 			// Finally, add the accumulated JavaScript to the template object:
 		$this->doc->JScode.= $this->doc->wrapScriptTags($JScode);
 
+		
 			// Debugging:
 		if (FALSE) debug(array(
 			'pointer' => $this->pointer,
@@ -1498,6 +1526,18 @@ class browse_links {
 				</form>
 			';
 		}
+
+			// additional fields for page links
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['addFields_PageLink']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['addFields_PageLink'])) {
+			$_params = array(
+				'conf' => &$conf,
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['addFields_PageLink'] as $objRef) {
+				$processor = &t3lib_div::getUserObj($objRef);
+				$content .= $processor->addFields( $_params, $this);
+			}
+		}
+
 
 			// Target:
 		if ($this->act != 'mail' && in_array('target', $allowedFields, TRUE)) {
