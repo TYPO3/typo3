@@ -393,6 +393,21 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 		$msg = sprintf($this->pi_getLL('ll_forgot_validate_reset_password', '', 0), $user['username'], $link, $validEndString);
 
+			// Add hook for extra processing of mail message
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['forgotPasswordMail']) &&
+				is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['forgotPasswordMail'])
+		) {
+			$params = array(
+				'message' => $msg,
+				'user' => $user,
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['forgotPasswordMail'] as $reference) {
+				if ($reference) {
+					t3lib_div::callUserFunction($reference, $params, $this);
+				}
+			}
+		}
+
 			// no RDCT - Links for security reasons
 		$oldSetting = $GLOBALS['TSFE']->config['config']['notification_email_urlmode'];
 		$GLOBALS['TSFE']->config['config']['notification_email_urlmode'] = 0;
