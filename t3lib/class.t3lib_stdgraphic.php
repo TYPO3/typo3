@@ -274,7 +274,6 @@ class t3lib_stdGraphic {
 
 					// preserve alpha transparency
 				if ($this->saveAlphaLayer) {
-					imagealphablending($destImg, FALSE);
 					imagesavealpha($destImg, TRUE);
 					$Bcolor = imagecolorallocatealpha($destImg, 0, 0, 0, 127);
 					imagefill($destImg, 0, 0, $Bcolor);
@@ -292,7 +291,6 @@ class t3lib_stdGraphic {
 				$cpImg = $this->imageCreateFromFile($BBmask[3]);
 				$destImg = imagecreatetruecolor($w, $h);
 				if ($this->saveAlphaLayer) {
-					imagealphablending($destImg, FALSE);
 					imagesavealpha($destImg, TRUE);
 					$Bcolor = imagecolorallocatealpha($destImg, 0, 0, 0, 127);
 					imagefill($destImg, 0, 0, $Bcolor);
@@ -437,7 +435,7 @@ class t3lib_stdGraphic {
 	 * @see t3lib_iconWorks::imagecopyresized()
 	 */
 	function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h) {
-		if ($this->imagecopyresized_fix) {
+		if ($this->imagecopyresized_fix && !$this->saveAlphaLayer) {
 			$im_base = imagecreatetruecolor(imagesx($im), imagesy($im)); // Make true color image
 			imagecopyresized($im_base, $im, 0, 0, 0, 0, imagesx($im), imagesy($im), imagesx($im), imagesy($im)); // Copy the source image onto that
 			imagecopyresized($im_base, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h); // Then copy the $cpImg onto that (the actual operation!)
@@ -2829,7 +2827,6 @@ class t3lib_stdGraphic {
 				if (function_exists('imagecreatefrompng')) {
 					$imageHandle = imageCreateFromPng($sourceImg);
 					if ($this->saveAlphaLayer) {
-						imagealphablending($imageHandle, FALSE);
 						imagesavealpha($imageHandle, TRUE);
 					}
 					return $imageHandle;
