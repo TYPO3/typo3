@@ -1174,12 +1174,19 @@ class SC_mod_tools_be_user_index {
 	protected function getButtons()	{
 
 		$buttons = array(
+			'add' => '',
 			'csh' => '',
 			'shortcut' => '',
 			'save' => ''
 		);
 			// CSH
 		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
+
+			// Add user
+		if ($this->MOD_SETTINGS['function'] === 'compare') {
+			$buttons['add'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[be_users][0]=new' , $this->doc->backPath, -1)) .
+				'" title="' . $GLOBALS['LANG']->getLL('newUser', TRUE) . '">' . t3lib_iconWorks::getSpriteIcon('actions-document-new') . '</a>';
+		}
 
 			// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
@@ -1336,11 +1343,7 @@ class SC_mod_tools_be_user_index {
 				// Header:
 			$allCells = array();
 
-			$link_createNewUser='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[be_users][0]=new',$this->doc->backPath,-1)).'" title="' . $GLOBALS['LANG']->getLL('newUser', TRUE) . '">'.
-					t3lib_iconWorks::getSpriteIcon('actions-document-new') .
-				'</a>';
-
-			$allCells['USERS'] = '<table border="0" cellspacing="0" cellpadding="0" width="100%"><tr><td><strong>' . $GLOBALS['LANG']->getLL('usernames', TRUE) . '</strong></td><td width="12">' . $link_createNewUser . '</td></tr></table>';
+			$allCells['USERS'] = '<table border="0" cellspacing="0" cellpadding="0" width="100%"><tr><td><strong>' . $GLOBALS['LANG']->getLL('usernames', TRUE) . '</strong></td></table>';
 
 			foreach ($options as $kk => $vv) {
 				if ($compareFlags[$kk])	{
