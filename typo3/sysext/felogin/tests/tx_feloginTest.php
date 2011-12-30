@@ -77,6 +77,9 @@ class tx_feloginTest extends tx_phpunit_testcase {
 				public function validateRedirectUrl($url) {
 					return parent::validateRedirectUrl($url);
 				}
+				public function getPreserveGetVars() {
+					return parent::getPreserveGetVars();
+				}
 			}
 		');
 
@@ -312,6 +315,117 @@ class tx_feloginTest extends tx_phpunit_testcase {
 	}
 
 
+	/*************************
+	 * Test concerning getPreverveGetVars
+	 *************************/
 
+	/**
+	 * @return array
+	 */
+	public function getPreserveGetVarsReturnsCorrectResultDataProvider() {
+		return array(
+			'special get var id is not preserved' => array(
+				array(
+					'id' => 42,
+				),
+				'',
+				'',
+			),
+			'simple additional parameter is not preserved if not specified in preservedGETvars' => array(
+				array(
+					'id' => 42,
+					'special' => 23,
+				),
+				'',
+				'',
+			),
+			'all params except ignored ones are preserved if preservedGETvars is set to "all"' => array(
+				array(
+					'id' => 42,
+					'special1' => 23,
+					'special2' => array(
+						'foo' => 'bar',
+					),
+				),
+				'all',
+				'&special1=23&special2[foo]=bar',
+			),
+			'preserve single parameter' => array(
+				array(
+					'L' => 42,
+				),
+				'L',
+				'&L=42'
+			),
+			'preserve whole parameter array' => array(
+				array(
+					'L' => 3,
+					'tx_someext' => array(
+						'foo' => 'simple',
+						'bar' => array(
+							'baz' => 'simple',
+						),
+					),
+				),
+				'L,tx_someext',
+				'&L=3&tx_someext[foo]=simple&tx_someext[bar][baz]=simple',
+			),
+			'preserve part of sub array' => array(
+				array(
+					'L' => 3,
+					'tx_someext' => array(
+						'foo' => 'simple',
+						'bar' => array(
+							'baz' => 'simple',
+						),
+					),
+				),
+				'L,tx_someext[bar]',
+				'&L=3&tx_someext[bar][baz]=simple',
+			),
+			'preserve keys on different levels' => array(
+				array(
+					'L' => 3,
+					'no-preserve' => 'whatever',
+					'tx_ext2' => array(
+						'foo' => 'simple',
+					),
+					'tx_ext3' => array(
+						'bar' => array(
+							'baz' => 'simple',
+						),
+						'go-away' => '',
+					),
+				),
+				'L,tx_ext2,tx_ext3[bar]',
+				'&L=3&tx_ext2[foo]=simple&tx_ext3[bar][baz]=simple',
+			),
+			'preserved value that does not exist in get' => array(
+				array(),
+				'L,foo[bar]',
+				''
+			),
+			'url params are encoded' => array(
+				array('tx_ext1' => 'param with spaces and \\ %<>& /'),
+				'L,tx_ext1',
+				'&tx_ext1=param%20with%20spaces%20and%20%20%25%3C%3E%26%20%2F'
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getPreserveGetVarsReturnsCorrectResultDataProvider
+	 * @param array $getArray
+	 * @param string $preserveVars
+	 * @param string $expected
+	 * @return void
+	 */
+	public function getPreserveGetVarsReturnsCorrectResult(array $getArray, $preserveVars, $expected) {
+		$_GET = $getArray;
+		$this->txFelogin->conf['preserveGETvars'] = $preserveVars;
+		$this->assertSame($expected, $this->txFelogin->getPreserveGetVars());
+	}
 }
+
 ?>
