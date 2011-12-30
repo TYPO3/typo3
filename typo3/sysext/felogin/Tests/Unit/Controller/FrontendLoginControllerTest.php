@@ -37,13 +37,6 @@ namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
 class FrontendLoginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	protected $typo3DbBackup;
@@ -293,6 +286,134 @@ class FrontendLoginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($url, $this->accessibleFixture->_call('validateRedirectUrl', $url));
 	}
 
+
+	/*************************
+	 * Test concerning getPreverveGetVars
+	 *************************/
+
+	/**
+	 * @return array
+	 */
+	public function getPreserveGetVarsReturnsCorrectResultDataProvider() {
+		$getArray = array(
+			'id' => '10',
+			'L' => '3',
+			'tx_ext2' => 'ext2value',
+			'tx_ext3' => array('ext3key' => 44),
+			'tx_someext' => array(
+				'@widget_0' => array('currentPage' => '3', 'perPage' => '8'),
+				'controller' => 'controller1',
+				'action' => 'action1'
+			),
+			'no_cache' => 1,
+			'logintype' => 'login',
+			'redirect_url' => 'someurl',
+			'cHash' => '1c9b08081c416bada560b4cac62ec64d',
+		);
+
+		return array(
+			'special get var id is not preserved' => array(
+				array(
+					'id' => 42,
+				),
+				'',
+				'',
+			),
+			'simple additional parameter is not preserved if not specified in preservedGETvars' => array(
+				array(
+					'id' => 42,
+					'special' => 23,
+				),
+				'',
+				'',
+			),
+			'all params except ignored ones are preserved if preservedGETvars is set to "all"' => array(
+				array(
+					'id' => 42,
+					'special1' => 23,
+					'special2' => array(
+						'foo' => 'bar',
+					),
+				),
+				'all',
+				'&special1=23&special2[foo]=bar',
+			),
+			'preserve single parameter' => array(
+				array(
+					'L' => 42,
+				),
+				'L',
+				'&L=42'
+			),
+			'preserve whole parameter array' => array(
+				array(
+					'L' => 3,
+					'tx_someext' => array(
+						'foo' => 'simple',
+						'bar' => array(
+							'baz' => 'simple',
+						),
+					),
+				),
+				'L,tx_someext',
+				'&L=3&tx_someext[foo]=simple&tx_someext[bar][baz]=simple',
+			),
+			'preserve part of sub array' => array(
+				array(
+					'L' => 3,
+					'tx_someext' => array(
+						'foo' => 'simple',
+						'bar' => array(
+							'baz' => 'simple',
+						),
+					),
+				),
+				'L,tx_someext[bar]',
+				'&L=3&tx_someext[bar][baz]=simple',
+			),
+			'preserve keys on different levels' => array(
+				array(
+					'L' => 3,
+					'no-preserve' => 'whatever',
+					'tx_ext2' => array(
+						'foo' => 'simple',
+					),
+					'tx_ext3' => array(
+						'bar' => array(
+							'baz' => 'simple',
+						),
+						'go-away' => '',
+					),
+				),
+				'L,tx_ext2,tx_ext3[bar]',
+				'&L=3&tx_ext2[foo]=simple&tx_ext3[bar][baz]=simple',
+			),
+			'preserved value that does not exist in get' => array(
+				array(),
+				'L,foo[bar]',
+				''
+			),
+			'url params are encoded' => array(
+				array('tx_ext1' => 'param with spaces and \\ %<>& /'),
+				'L,tx_ext1',
+				'&tx_ext1=param%20with%20spaces%20and%20%20%25%3C%3E%26%20%2F'
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getPreserveGetVarsReturnsCorrectResultDataProvider
+	 * @param array $getArray
+	 * @param string $preserveVars
+	 * @param string $expected
+	 * @return void
+	 */
+	public function getPreserveGetVarsReturnsCorrectResult(array $getArray, $preserveVars, $expected) {
+		$_GET = $getArray;
+		$this->accessibleFixture->conf['preserveGETvars'] = $preserveVars;
+		$this->assertSame($expected, $this->accessibleFixture->_call('getPreserveGetVars'));
+	}
 }
 
 ?>
