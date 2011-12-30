@@ -293,6 +293,87 @@ class FrontendLoginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($url, $this->accessibleFixture->_call('validateRedirectUrl', $url));
 	}
 
+	/**
+	 * Test for getPreserveGetVars method
+	 *
+	 * @param string $preserveGETvars
+	 * @param array $get
+	 * @param string $expected
+	 * @return void
+	 * @test
+	 * @dataProvider preserveGetVarsProvider
+	 * @backupGlobals enabled
+	 */
+	public function getPreserveGetVarsTest($preserveGETvars, array $get, $expected) {
+		$_GET = $get;
+		$this->txFelogin->conf['preserveGETvars'] = $preserveGETvars;
+		$actual = $this->txFelogin->getPreserveGetVars();
+		$this->assertSame($expected, $actual);
+	}
+
+	/**
+	 * Data provider for getPreserveGetVarsTest
+	 * @return array
+	 */
+	public function preserveGetVarsProvider() {
+		$getStringWithoutIgnoredParams = '&L=3&tx_ext2=ext2value&tx_ext3[ext3key]=44&tx_someext[@widget_0][currentPage]=3'
+									. '&tx_someext[@widget_0][perPage]=8&tx_someext[controller]=controller1'
+									. '&tx_someext[action]=action1';
+		$fullGetString = '?id=10' . $getStringWithoutIgnoredParams . '&no_cache=1&logintype=login&redirect_url=someurl'
+							. '&cHash=1c9b08081c416bada560b4cac62ec64d';
+
+		$getArray = array(
+			'id' => '10',
+			'L' => '3',
+			'tx_ext2' => 'ext2value',
+			'tx_ext3' => array('ext3key' => 44),
+			'tx_someext' => array(
+				'@widget_0' => array('currentPage' => '3', 'perPage' => '8'),
+				'controller' => 'controller1',
+				'action' => 'action1'
+			),
+			'no_cache' => 1,
+			'logintype' => 'login',
+			'redirect_url' => 'someurl',
+			'cHash' => '1c9b08081c416bada560b4cac62ec64d',
+		);
+
+		return array(
+			'if "preserveGETvars" is not set, then no additional params will be preserved' =>
+				array('', $getArray, ''),
+
+			'all params (except ignored like chash) will be preserved' =>
+				array('all', $getArray, $getStringWithoutIgnoredParams),
+
+			'preserve single parameter' =>
+				array('L', $getArray, '&L=3'),
+
+			'preserve whole parameter array' =>
+				array('L,tx_someext', $getArray, '&L=3&tx_someext[@widget_0][currentPage]=3&tx_someext[@widget_0][perPage]=8&tx_someext[controller]=controller1&tx_someext[action]=action1'),
+
+			'preserve subarray' =>
+				array('L,tx_someext[@widget_0]', $getArray, '&L=3&tx_someext[@widget_0][currentPage]=3&tx_someext[@widget_0][perPage]=8'),
+
+			'preserve just one key from 2nd level' =>
+				array('tx_someext[action]', $getArray, '&tx_someext[action]=action1'),
+
+			'preserve just one key form nested array on 3rd level' =>
+				array('L,tx_someext[@widget_0][currentPage]', $getArray, '&L=3&tx_someext[@widget_0][currentPage]=3'),
+
+			'preserve keys on different levels' =>
+				array('tx_ext2,tx_ext3[ext3key],tx_someext[@widget_0][currentPage],tx_someext[@widget_0][perPage]', $getArray,
+					'&tx_ext2=ext2value&tx_ext3[ext3key]=44&tx_someext[@widget_0][currentPage]=3&tx_someext[@widget_0][perPage]=8'),
+
+			'test edge case with empty get array' =>
+				array('L,tx_someext[@widget_0]', array(), ''),
+
+			'params without value are skipped' =>
+				array('L,tx_someext[@widget_0]', array('tx_someext[@widget_0]' => ''), ''),
+
+			'make sure url params are url encoded' =>
+				array('L,tx_ext1', array('tx_ext1' => 'param with spaces and \\ %<>& /'), '&tx_ext1=param%20with%20spaces%20and%20%20%25%3C%3E%26%20%2F'),
+		);
+	}
 }
 
 ?>
