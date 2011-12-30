@@ -312,6 +312,32 @@ class ArrayUtility {
 		return $flatArray;
 	}
 
+	/**
+	 * Determine the intersections between two arrays, recursively comparing keys
+	 * A complete subarray of $source will be preserved, if the key exists in $mask.
+	 *
+	 * @param array $source Source array
+	 * @param array $mask Array that has the keys which should be kept in the source array
+	 * @return array Keys which are present in both arrays with values of the source array
+	 */
+	public static function intersectRecursive(array $source, array $mask) {
+		$intersection = array();
+		$sourceArrayKeys = array_keys($source);
+		foreach ($sourceArrayKeys as $key) {
+			if (!isset($mask[$key])) {
+				continue;
+			}
+			if (is_array($source[$key]) && is_array($mask[$key])) {
+				$value = self::intersectRecursive($source[$key], $mask[$key]);
+				if (!empty($value)) {
+					$intersection[$key] = $value;
+				}
+			} else {
+				$intersection[$key] = $source[$key];
+			}
+		}
+		return $intersection;
+	}
 }
 
 
