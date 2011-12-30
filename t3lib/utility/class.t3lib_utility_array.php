@@ -92,6 +92,25 @@ final class t3lib_utility_Array {
 			// Pointers to result array are reset internally
 		return $resultArray;
 	}
+
+	/**
+	 * Determine the intersections between two arrays, recursively comparing them
+	 *
+	 * @static
+	 * @param array $first
+	 * @param array $second
+	 * @return array Elements which are present in both arrays
+	 */
+	public static function intersectRecursive(array $first, array $second) {
+		foreach ($first as $key => $_) {
+			if (!isset($second[$key])) {
+				unset($first[$key]);
+			} elseif (is_array($second[$key])) {
+				$first[$key] = self::intersectRecursive($first[$key], $second[$key]);
+			}
+		}
+		return $first;
+	}
 }
 
 ?>
