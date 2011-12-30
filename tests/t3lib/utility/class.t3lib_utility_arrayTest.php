@@ -183,6 +183,218 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	public function filterByValueRecursiveDoesNotMatchDifferentInstancesOfSameClass() {
 		$this->assertEquals(array(), t3lib_utility_Array::filterByValueRecursive(new stdClass(), array(new stdClass())));
 	}
+
+
+	///////////////////////
+	// Tests concerning intersectRecursive
+	///////////////////////
+
+	/**
+	 * @return array
+	 */
+	public function intersectRecursiveCalculatesExpectedResultDataProvider() {
+		$sameObject = new \stdClass();
+		return array(
+			// array($source, $mask, $expected)
+			'empty array is returned if source is empty array' => array(
+				array(),
+				array(
+					'foo' => 'bar',
+				),
+				array(),
+			),
+			'empty array is returned if mask is empty' => array(
+				array(
+					'foo' => 'bar',
+				),
+				array(),
+				array(),
+			),
+			'key is kept on first level if exists in mask' => array(
+				array(
+					'foo' => 42,
+				),
+				array(
+					'foo' => 42,
+				),
+				array(
+					'foo' => 42,
+				),
+			),
+			'value of key in source is kept if mask has different value' => array(
+				array(
+					'foo' => 42,
+				),
+				array(
+					'foo' => new \stdClass(),
+				),
+				array(
+					'foo' => 42,
+				),
+			),
+			'key is kept on first level if according mask value is NULL' => array(
+				array(
+					'foo' => 42,
+				),
+				array(
+					'foo' => NULL,
+				),
+				array(
+					'foo' => 42,
+				),
+			),
+			'null in source value is kept' => array(
+				array(
+					'foo' => NULL,
+				),
+				array(
+					'foo' => 'bar',
+				),
+				array(
+					'foo' => NULL,
+				)
+			),
+			'mask does not add new keys' => array(
+				array(
+					'foo' => 42,
+				),
+				array(
+					'foo' => 23,
+					'bar' => array(
+						4711
+					),
+				),
+				array(
+					'foo' => 42,
+				),
+			),
+			'mask does not overwrite simple values with arrays' => array(
+				array(
+					'foo' => 42,
+				),
+				array(
+					'foo' => array(
+						'bar' => 23,
+					),
+				),
+				array(
+					'foo' => 42,
+				),
+			),
+			'key is kept on first level if according mask value is array' => array(
+				array(
+					'foo' => 42,
+				),
+				array(
+					'foo' => array(
+						'bar' => 23
+					),
+				),
+				array(
+					'foo' => 42,
+				),
+			),
+			'full array is kept if value is array and mask value is simple type' => array(
+				array(
+					'foo' => array(
+						'bar' => 23
+					),
+				),
+				array(
+					'foo' => 42,
+				),
+				array(
+					'foo' => array(
+						'bar' => 23
+					),
+				),
+			),
+			'key handling is type agnostic' => array(
+				array(
+					42 => 'foo',
+				),
+				array(
+					'42' => 'bar',
+				),
+				array(
+					42 => 'foo',
+				),
+			),
+			'value is same if value is object' => array(
+				array(
+					'foo' => $sameObject,
+				),
+				array(
+					'foo' => 'something',
+				),
+				array(
+					'foo' => $sameObject,
+				),
+			),
+			'mask does not add simple value to result if key does not exist in source' => array(
+				array(
+					'foo' => '42',
+				),
+				array(
+					'foo' => '42',
+					'bar' => 23
+				),
+				array(
+					'foo' => '42',
+				),
+			),
+			'array of source is kept if value of mask key exists but is no array' => array(
+				array(
+					'foo' => '42',
+					'bar' => array(
+						'baz' => 23
+					),
+				),
+				array(
+					'foo' => 'value is not significant',
+					'bar' => NULL,
+				),
+				array(
+					'foo' => '42',
+					'bar' => array(
+						'baz' => 23
+					),
+				),
+			),
+			'sub arrays are kept if mask has according sub array key and is similar array' => array(
+				array(
+					'first1' => 42,
+					'first2' => array(
+						'second1' => 23,
+						'second2' => 4711,
+					),
+				),
+				array(
+					'first1' => 42,
+					'first2' => array(
+						'second1' => 'exists but different',
+					),
+				),
+				array(
+					'first1' => 42,
+					'first2' => array(
+						'second1' => 23,
+					),
+				),
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @param array $source
+	 * @param array $mask
+	 * @param array $expected
+	 * @dataProvider intersectRecursiveCalculatesExpectedResultDataProvider
+	 */
+	public function intersectRecursiveCalculatesExpectedResult(array $source, array $mask, array $expected) {
+		$this->assertSame($expected, t3lib_utility_Array::intersectRecursive($source, $mask));
+	}
 }
 
 ?>

@@ -92,6 +92,61 @@ final class t3lib_utility_Array {
 			// Pointers to result array are reset internally
 		return $resultArray;
 	}
+
+	/**
+	 * Determine the intersections between two arrays, recursively comparing keys
+	 * A complete sub array of $source will be preserved, if the key exists in $mask.
+	 *
+	 * See unit tests for more examples and edge cases.
+	 *
+	 * Example:
+	 * - source:
+	 * array(
+	 *   'key1' => 'bar',
+	 *   'key2' => array(
+	 *     'subkey1' => 'sub1',
+	 *     'subkey2' => 'sub2',
+	 *   ),
+	 *   'key3' => 'baz',
+	 * )
+	 * - mask:
+	 * array(
+	 *   'key1' => NULL,
+	 *   'key2' => array(
+	 *     'subkey1' => exists',
+	 *   ),
+	 * )
+	 * - return:
+	 * array(
+	 *   'key1' => 'bar',
+	 *   'key2' => array(
+	 *     'subkey1' => 'sub1',
+	 *   ),
+	 * )
+	 *
+	 * @param array $source Source array
+	 * @param array $mask Array that has the keys which should be kept in the source array
+	 * @return array Keys which are present in both arrays with values of the source array
+	 */
+	public static function intersectRecursive(array $source, array $mask = array()) {
+		$intersection = array();
+		$sourceArrayKeys = array_keys($source);
+		foreach ($sourceArrayKeys as $key) {
+			if (!array_key_exists($key, $mask)) {
+				continue;
+			}
+			if (is_array($source[$key]) && is_array($mask[$key])) {
+				$value = self::intersectRecursive($source[$key], $mask[$key]);
+				if (!empty($value)) {
+					$intersection[$key] = $value;
+				}
+			} else {
+				$intersection[$key] = $source[$key];
+			}
+		}
+		return $intersection;
+	}
 }
+
 
 ?>
