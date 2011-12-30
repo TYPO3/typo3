@@ -48,18 +48,18 @@ class ArrayUtility {
 	 * - Needle: 'findMe'
 	 * - Given array:
 	 * array(
-	 * 'foo' => 'noMatch',
-	 * 'bar' => 'findMe',
-	 * 'foobar => array(
-	 * 'foo' => 'findMe',
-	 * ),
+	 *   'foo' => 'noMatch',
+	 *   'bar' => 'findMe',
+	 *   'foobar => array(
+	 *     'foo' => 'findMe',
+	 *   ),
 	 * );
 	 * - Result:
 	 * array(
-	 * 'bar' => 'findMe',
-	 * 'foobar' => array(
-	 * 'foo' => findMe',
-	 * ),
+	 *   'bar' => 'findMe',
+	 *   'foobar' => array(
+	 *     'foo' => findMe',
+	 *   ),
 	 * );
 	 *
 	 * See the unit tests for more examples and expected behaviour
@@ -92,14 +92,15 @@ class ArrayUtility {
 	/**
 	 * Checks if a given path exists in array
 	 *
-	 * array:
+	 * Example:
+	 * - array:
 	 * array(
-	 * 'foo' => array(
-	 * 'bar' = 'test',
-	 * )
+	 *   'foo' => array(
+	 *     'bar' = 'test',
+	 *   )
 	 * );
-	 * path: 'foo/bar'
-	 * return: TRUE
+	 * - path: 'foo/bar'
+	 * - return: TRUE
 	 *
 	 * @param array $array Given array
 	 * @param string $path Path to test, 'foo/bar/foobar'
@@ -120,24 +121,24 @@ class ArrayUtility {
 	/**
 	 * Returns a value by given path
 	 *
-	 * Simple example
-	 * Input array:
+	 * Example
+	 * - array:
 	 * array(
-	 * 'foo' => array(
-	 * 'bar' => array(
-	 * 'baz' => 42
-	 * )
-	 * )
+	 *   'foo' => array(
+	 *     'bar' => array(
+	 *       'baz' => 42
+	 *     )
+	 *   )
 	 * );
-	 * Path to get: foo/bar/baz
-	 * Will return: 42
+	 * - path: foo/bar/baz
+	 * - return: 42
 	 *
-	 * If a path segments contains a delimeter character, the path segment
+	 * If a path segments contains a delimiter character, the path segment
 	 * must be enclosed by " (double quote), see unit tests for details
 	 *
 	 * @param array $array Input array
 	 * @param string $path Path within the array
-	 * @param string $delimiter Defined path delimeter, default /
+	 * @param string $delimiter Defined path delimiter, default /
 	 * @return mixed
 	 * @throws \RuntimeException
 	 */
@@ -164,25 +165,26 @@ class ArrayUtility {
 	/**
 	 * Modifies or sets a new value in an array by given path
 	 *
-	 * Input array:
+	 * Example:
+	 * - array:
 	 * array(
-	 * 'foo' => array(
-	 * 'bar' => 42,
-	 * ),
+	 *   'foo' => array(
+	 *     'bar' => 42,
+	 *   ),
 	 * );
-	 * Path to get: foo/bar
-	 * Value to set: 23
-	 * Will return:
+	 * - path: foo/bar
+	 * - value: 23
+	 * - return:
 	 * array(
-	 * 'foo' => array(
-	 * 'bar' => 23,
-	 * ),
+	 *   'foo' => array(
+	 *     'bar' => 23,
+	 *   ),
 	 * );
 	 *
 	 * @param array $array Input array to manipulate
 	 * @param string $path Path in array to search for
 	 * @param mixed $value Value to set at path location in array
-	 * @param string $delimiter Path delimeter
+	 * @param string $delimiter Path delimiter
 	 * @return array Modified array
 	 * @throws \RuntimeException
 	 */
@@ -235,9 +237,12 @@ class ArrayUtility {
 	 * Exports an array as string.
 	 * Similar to var_export(), but representation follows the TYPO3 core CGL.
 	 *
+	 * See unit tests for detailed examples
+	 *
 	 * @param array $array Array to export
 	 * @param integer $level Internal level used for recursion, do *not* set from outside!
 	 * @return string String representation of array
+	 * @throws \RuntimeException
 	 */
 	static public function arrayExport(array $array = array(), $level = 0) {
 		$lines = 'array(' . LF;
@@ -290,9 +295,31 @@ class ArrayUtility {
 	/**
 	 * Converts a multidimensional array to a flat representation.
 	 *
-	 * array('first.' => array('second' => 1)) and array('first' => array('second' => 1))
-	 * will become
-	 * array('first.second' => 1)
+	 * See unit tests for more details
+	 *
+	 * Example:
+	 * - array:
+	 * array(
+	 *   'first.' => array(
+	 *     'second' => 1
+	 *   )
+	 * )
+	 * - result:
+	 * array(
+	 *   'first.second' => 1
+	 * )
+	 *
+	 * Example:
+	 * - array:
+	 * array(
+	 *   'first' => array(
+	 *     'second' => 1
+	 *   )
+	 * )
+	 * - result:
+	 * array(
+	 *   'first.second' => 1
+	 * )
 	 *
 	 * @param array $array The (relative) array to be converted
 	 * @param string $prefix The (relative) prefix to be used (e.g. 'section.')
@@ -312,6 +339,59 @@ class ArrayUtility {
 		return $flatArray;
 	}
 
+	/**
+	 * Determine the intersections between two arrays, recursively comparing keys
+	 * A complete sub array of $source will be preserved, if the key exists in $mask.
+	 *
+	 * See unit tests for more examples and edge cases.
+	 *
+	 * Example:
+	 * - source:
+	 * array(
+	 *   'key1' => 'bar',
+	 *   'key2' => array(
+	 *     'subkey1' => 'sub1',
+	 *     'subkey2' => 'sub2',
+	 *   ),
+	 *   'key3' => 'baz',
+	 * )
+	 * - mask:
+	 * array(
+	 *   'key1' => NULL,
+	 *   'key2' => array(
+	 *     'subkey1' => exists',
+	 *   ),
+	 * )
+	 * - return:
+	 * array(
+	 *   'key1' => 'bar',
+	 *   'key2' => array(
+	 *     'subkey1' => 'sub1',
+	 *   ),
+	 * )
+	 *
+	 * @param array $source Source array
+	 * @param array $mask Array that has the keys which should be kept in the source array
+	 * @return array Keys which are present in both arrays with values of the source array
+	 */
+	public static function intersectRecursive(array $source, array $mask = array()) {
+		$intersection = array();
+		$sourceArrayKeys = array_keys($source);
+		foreach ($sourceArrayKeys as $key) {
+			if (!array_key_exists($key, $mask)) {
+				continue;
+			}
+			if (is_array($source[$key]) && is_array($mask[$key])) {
+				$value = self::intersectRecursive($source[$key], $mask[$key]);
+				if (!empty($value)) {
+					$intersection[$key] = $value;
+				}
+			} else {
+				$intersection[$key] = $source[$key];
+			}
+		}
+		return $intersection;
+	}
 }
 
 
