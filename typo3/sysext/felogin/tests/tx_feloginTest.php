@@ -76,6 +76,9 @@ class tx_feloginTest extends tx_phpunit_testcase {
 				public function validateRedirectUrl($url) {
 					return parent::validateRedirectUrl($url);
 				}
+				public function getPreserveGetVars() {
+					return parent::getPreserveGetVars();
+				}
 			}
 		');
 
@@ -308,6 +311,67 @@ class tx_feloginTest extends tx_phpunit_testcase {
 
 		$this->setUpDatabaseMock();
 		$this->assertEquals($url, $this->txFelogin->validateRedirectUrl($url));
+	}
+
+	/**
+	 * @test
+	 * @dataProvider preserveGetVarsProvider
+	 */
+	public function getPreserveGetVarsTest($preserveGETvars, $get, $expected) {
+		$backup = $_GET;
+
+		$_GET = $get;
+		$this->txFelogin->conf['preserveGETvars'] = $preserveGETvars;
+		$actual = $this->txFelogin->getPreserveGetVars();
+		$this->assertEquals($expected, $actual);
+		$_GET = $backup;
+	}
+
+	public function preserveGetVarsProvider() {
+		$getStringWithoutIgnoredParams = '&L=3&tx_ext2=ext2value&tx_ext3[ext3key]=44&tx_someext[@widget_0][currentPage]=3'
+									.'&tx_someext[@widget_0][perPage]=8&tx_someext[controller]=controller1'
+									.'&tx_someext[action]=action1';
+		$fullGetString = '?id=10'.$getStringWithoutIgnoredParams.'&no_cache=1&logintype=login&redirect_url=someurl'
+							.'&cHash=1c9b08081c416bada560b4cac62ec64d';
+
+		$getArray = array( 'id' => '10',
+							'L' => '3',
+							'tx_ext2' => 'ext2value',
+							'tx_ext3' => array('ext3key' => 44),
+							'tx_someext' => array(
+								'@widget_0' => array('currentPage' => '3', 'perPage' => '8'),
+								'controller' => 'controller1',
+								'action' => 'action1'
+							),
+							'no_cache' => 1,
+							'logintype' => 'login',
+							'redirect_url' => 'someurl',
+							'cHash' => '1c9b08081c416bada560b4cac62ec64d'
+					);
+
+		return array(
+			//if 'preserveGETvars' is not set, then no additional params will be preserved
+/*0*/		array( '', $getArray, ''),
+
+			// all params (except ignored like chash) will be preserved
+/*1*/		array( 'all', $getArray, $getStringWithoutIgnoredParams),
+/*2*/		array( 'L', $getArray,  '&L=3'),
+/*3*/		array( 'L,tx_someext', $getArray,  '&L=3&tx_someext[@widget_0][currentPage]=3&tx_someext[@widget_0][perPage]=8&tx_someext[controller]=controller1&tx_someext[action]=action1'),
+/*4*/		array( 'L,tx_someext[@widget_0]', $getArray, '&L=3&tx_someext[@widget_0][currentPage]=3&tx_someext[@widget_0][perPage]=8'),
+/*5*/		array( 'L,tx_someext[@widget_0][currentPage]', $getArray, '&L=3&tx_someext[@widget_0][currentPage]=3'),
+/*6*/		array( 'tx_someext[action]',  $getArray,  '&tx_someext[action]=action1'),
+/*7*/		array( 'tx_ext2,tx_ext3[ext3key],tx_someext[@widget_0][currentPage],tx_someext[@widget_0][perPage]', $getArray,
+				'&tx_ext2=ext2value&tx_ext3[ext3key]=44&tx_someext[@widget_0][currentPage]=3&tx_someext[@widget_0][perPage]=8'),
+
+			//test edge case with empty get array
+/*8*/		array( 'L,tx_someext[@widget_0]', array(), ''),
+
+			//params without value are skipped
+/*9*/		array( 'L,tx_someext[@widget_0]', array('tx_someext[@widget_0]' =>''), ''),
+
+			//make sure url params are url encoded
+/*10*/		array( 'L,tx_ext1', array('tx_ext1'=> 'param with spaces and \\ %<>& /'), '&tx_ext1=param%20with%20spaces%20and%20%20%25%3C%3E%26%20%2F'),
+		);
 	}
 }
 ?>

@@ -33,9 +33,9 @@
  */
 class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 
-	#######################
-	# Tests concerning filterByValueRecursive
-	#######################
+	/*
+	 * Tests concerning filterByValueRecursive
+	 */
 
 	/**
 	 * Data provider for filterByValueRecursiveCorrectlyFiltersArray
@@ -189,9 +189,9 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 		$this->assertEquals(array(), t3lib_utility_Array::filterByValueRecursive(new stdClass(), array(new stdClass())));
 	}
 
-	#######################
-	# Tests concerning  isValidPath
-	#######################
+	/*
+	 * Tests concerning  isValidPath
+	 */
 
 	/**
 	 * Mock the class under test, isValidPath() (method under test), calls
@@ -228,9 +228,9 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 		$this->assertFalse($className::isValidPath(array('foo'), 'foo'));
 	}
 
-	#######################
-	# Tests concerning getValueByPath
-	#######################
+	/*
+	 * Tests concerning getValueByPath
+	 */
 
 	/**
 	 * @test
@@ -422,9 +422,9 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 		$this->assertEquals($expected, t3lib_utility_Array::getValueByPath($input, $searchPath, $delimeter));
 	}
 
-	#######################
-	# Tests concerning setValueByPath
-	#######################
+	/*
+	 * Tests concerning setValueByPath
+	 */
 
 	/**
 	 * @test
@@ -625,9 +625,9 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 		);
 	}
 
-	#######################
-	# Tests concerning sortByKeyRecursive
-	#######################
+	/*
+	 * Tests concerning sortByKeyRecursive
+	 */
 
 	/**
 	 * @test
@@ -656,9 +656,9 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 		$this->assertSame($expectedResult, t3lib_utility_Array::sortByKeyRecursive($unsortedArray));
 	}
 
-	#######################
-	# Tests concerning arrayExport
-	#######################
+	/*
+	 * Tests concerning arrayExport
+	 */
 
 	/**
 	 * @test
@@ -705,6 +705,71 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 			),
 		);
 		t3lib_utility_Array::arrayExport($array);
+	}
+
+	/**
+	 * Test for intersectRecursive method
+	 *
+	 * @param $source
+	 * @param $mask
+	 * @param $expected
+	 * @test
+	 * @dataProvider intersectRecursiveProvider
+	 */
+	public function intersectRecursiveTest($source, $mask, $expected) {
+		$actual = t3lib_utility_Array::intersectRecursive($source, $mask);
+		$this->assertEquals($expected, $actual);
+	}
+
+
+	/**
+	 * Data provider for intersectRecursiveTest
+	 */
+	public function intersectRecursiveProvider() {
+		$source = array( 'id' => '10',
+							'L' => '3',
+							'tx_ext2' => 'ext2value',
+							'tx_ext3' => array('ext3key' => 44),
+							'tx_someext' => array(
+								'@widget_0' => array('currentPage' => '3', 'perPage' => '8'),
+								'controller' => 'controller1',
+								'action' => 'action1'
+							),
+							'no_cache' => 1,
+							'logintype' => 'login',
+							'redirect_url' => 'someurl',
+							'cHash' => '1c9b08081c416bada560b4cac62ec64d'
+					);
+
+		return array(
+			array($source, array('L'=>'', 'no_cache' => 1), array('L' => '3', 'no_cache' => 1)),
+
+			//the whole array 'tx_someext' is preserved
+			array($source, array('L'=>'', 'no_cache' => 1, 'tx_someext' => ''),
+				array('L' => '3',
+					'tx_someext' => array(
+								'@widget_0' => array('currentPage' => '3', 'perPage' => '8'),
+								'controller' => 'controller1',
+								'action' => 'action1',
+					),
+					'no_cache' => 1)
+			),
+
+			// preserving whole array on 2nd level
+			array($source, array('L'=>'', 'no_cache' => 1, 'tx_someext' => array('@widget_0' => '')),
+				array('L' => '3', 'no_cache' => 1, 'tx_someext' => array('@widget_0' => array('currentPage' => '3', 'perPage' => '8')))
+			),
+
+			//only the 'controller' key from 'tx_someext' array is preserved
+			array($source, array('L'=>'', 'no_cache' => 1, 'tx_someext' => array('controller' => '')),
+				array('L' => '3', 'no_cache' => 1, 'tx_someext' => array('controller' => 'controller1'))
+			),
+
+			//only 'currentPage' key will be preserved from '@widget_0' array
+			array($source, array('L'=>'', 'no_cache' => 1, 'tx_someext' => array('@widget_0' => array('currentPage' => ''))),
+				array('L' => '3', 'no_cache' => 1, 'tx_someext' => array('@widget_0' => array('currentPage' => '3')))
+			),
+		);
 	}
 }
 
