@@ -761,32 +761,24 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	}
 
 	/**
-	 * Is used by TS-setting preserveGETvars
-	 * possible values are "all" or a commaseperated list of GET-vars
-	 * they are used as additionalParams for link generation
+	 * Generates additional parameters for links according to TS-setting preserveGETvars.
+	 * Possible values are "all" or a comma separated list of GET-vars. Supports multi-dimensional GET-vars.
 	 *
 	 * @return string additionalParams-string
 	 */
 	protected function getPreserveGetVars() {
-		$params = '';
-		$preserveVars = !($this->conf['preserveGETvars'] || $this->conf['preserveGETvars'] == 'all' ? array() : implode(',', (array) $this->conf['preserveGETvars']));
+
 		$getVars = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
-		foreach ($getVars as $key => $val) {
-			if (stristr($key, $this->prefixId) === FALSE) {
-				if (is_array($val)) {
-					foreach ($val as $key1 => $val1) {
-						if ($this->conf['preserveGETvars'] == 'all' || in_array((($key . '[') . $key1) . ']', $preserveVars)) {
-							$params .= (((('&' . $key) . '[') . $key1) . ']=') . $val1;
-						}
-					}
-				} else {
-					if (!in_array($key, array('id', 'no_cache', 'logintype', 'redirect_url', 'cHash'))) {
-						$params .= (('&' . $key) . '=') . $val;
-					}
-				}
-			}
+		unset($getVars['id'], $getVars['no_cache'], $getVars['logintype'], $getVars['redirect_url'], $getVars['cHash']);
+		if ($this->conf['preserveGETvars'] === 'all') {
+			$preserveQueryParts = $getVars;
+		} else {
+			$preserveQueryParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->conf['preserveGETvars']);
+			$preserveQueryParts = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array(implode('=1&', $preserveQueryParts) . '=1', TRUE);
+			$preserveQueryParts = \TYPO3\CMS\Core\Utility\ArrayUtility::intersectRecursive($getVars, $preserveQueryParts);
 		}
-		return $params;
+		$parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $preserveQueryParts);
+		return $parameters;
 	}
 
 	/**
