@@ -301,6 +301,25 @@ class t3lib_utility_Array {
 		$lines .= str_repeat(TAB, $level - 1) . ')' . ($level - 1 == 0 ? '' : ',' . LF);
 		return $lines;
 	}
+
+	/**
+	 * Determine the intersections between two arrays, recursively comparing keys
+	 *
+	 * @param array $source source array
+	 * @param array $mask array that has the keys which should be kept in the source array
+	 * @return array Elements which are present in both arrays
+	 */
+	public static function intersectRecursive(array $source, array $mask) {
+		$intersection = $source;
+		foreach ($source as $key => $value) {
+			if (!isset($mask[$key])) {
+				unset($intersection[$key]);
+			} elseif (is_array($mask[$key])) {
+				$intersection[$key] = self::intersectRecursive($intersection[$key], $mask[$key]);
+			}
+		}
+		return $intersection;
+	}
 }
 
 ?>
