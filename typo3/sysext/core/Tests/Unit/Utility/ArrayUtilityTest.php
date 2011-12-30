@@ -873,6 +873,100 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 	}
 
+	/**
+	 * Test for intersectRecursive method
+	 *
+	 * @param array $source
+	 * @param array $mask
+	 * @param array $expected
+	 * @test
+	 * @dataProvider intersectRecursiveProvider
+	 */
+	public function intersectRecursiveTest(array $source, array $mask, array $expected) {
+		$actual = \TYPO3\CMS\Core\Utility\ArrayUtility::intersectRecursive($source, $mask);
+		$this->assertSame($expected, $actual);
+	}
+
+
+	/**
+	 * Data provider for intersectRecursiveTest
+	 * @return array
+	 */
+
+	public function intersectRecursiveProvider() {
+		$source = array(
+			'id' => '10',
+			'L' => '3',
+			'tx_ext2' => 'ext2value',
+			'tx_ext3' => array('ext3key' => 44),
+			'tx_someext' => array(
+				'@widget_0' => array('currentPage' => '3', 'perPage' => '8'),
+				'controller' => 'controller1',
+				'action' => 'action1',
+			),
+			'no_cache' => 1,
+			'logintype' => 'login',
+			'redirect_url' => 'someurl',
+			'cHash' => '1c9b08081c416bada560b4cac62ec64d',
+		);
+
+		return array(
+			'test mask for 1st level keys' =>
+				array(
+					$source,
+					array('L' => '', 'no_cache' => 1),
+					array('L' => '3', 'no_cache' => 1),
+				),
+
+			'the whole array "tx_someext" is preserved' =>
+				array(
+					$source,
+					array('L' => '', 'no_cache' => 1, 'tx_someext' => ''),
+					array('L' => '3',
+						'tx_someext' => array(
+									'@widget_0' => array('currentPage' => '3', 'perPage' => '8'),
+									'controller' => 'controller1',
+									'action' => 'action1',
+						),
+						'no_cache' => 1),
+				),
+
+			'preserving whole array on 2nd level' =>
+				array(
+					$source,
+					array('L' => '', 'no_cache' => 1, 'tx_someext' => array('@widget_0' => '')),
+					array('L' => '3', 'tx_someext' => array('@widget_0' => array('currentPage' => '3', 'perPage' => '8')), 'no_cache' => 1),
+				),
+
+			'only the "controller" key from "tx_someext" array is preserved' =>
+				array(
+					$source,
+					array('L' => '', 'no_cache' => 1, 'tx_someext' => array('controller' => '')),
+					array('L' => '3', 'tx_someext' => array('controller' => 'controller1'), 'no_cache' => 1),
+				),
+
+			'only "currentPage" key will be preserved from "@widget_0" array' =>
+				array(
+					$source,
+					array('L' => '', 'no_cache' => 1, 'tx_someext' => array('@widget_0' => array('currentPage' => ''))),
+					array('L' => '3', 'tx_someext' => array('@widget_0' => array('currentPage' => '3')), 'no_cache' => 1),
+				),
+
+			'mask for not existing keys' =>
+				array(
+					$source,
+					array('L' => '', 'not_exist' => 1, 'tx_someext' => array('wrongKey' => array('currentPage' => ''))),
+					array('L' => '3'),
+				),
+
+			'array mask for simple value' =>
+				array(
+					$source,
+					array('L' => '', 'no_cache' => array('@widget_0' => array('currentPage' => ''))),
+					array('L' => '3'),
+				),
+		);
+	}
 }
 
 ?>
