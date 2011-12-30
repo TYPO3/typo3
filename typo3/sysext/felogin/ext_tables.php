@@ -4,10 +4,11 @@ $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['felogin']
 
 t3lib_div::loadTCA('tt_content');
 
-if(t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 4002000)
-	t3lib_extMgm::addPiFlexFormValue('*','FILE:EXT:'.$_EXTKEY.'/flexform.xml','login');
-else
-	t3lib_extMgm::addPiFlexFormValue('default','FILE:EXT:'.$_EXTKEY.'/flexform.xml');
+if(t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 4002000) {
+	t3lib_extMgm::addPiFlexFormValue('*', 'FILE:EXT:' . $_EXTKEY . '/flexform.xml', 'login');
+} else {
+	t3lib_extMgm::addPiFlexFormValue('default', 'FILE:EXT:' . $_EXTKEY . '/flexform.xml');
+}
 
 t3lib_extMgm::addTcaSelectItem(
 	'tt_content',
@@ -56,20 +57,20 @@ $tempColumns = array(
 
 t3lib_div::loadTCA('fe_groups');
 t3lib_extMgm::addTCAcolumns('fe_groups', $tempColumns, 1);
-t3lib_extMgm::addToAllTCAtypes('fe_groups', 'felogin_redirectPid;;;;1-1-1');
+t3lib_extMgm::addToAllTCAtypes('fe_groups', 'felogin_redirectPid;;;;1-1-1', '', 'after:TSconfig');
 
 	// Adds the redirect field and the forgotHash field to the fe_users-table
-$tempColumns = array (
-	"felogin_redirectPid" => array (
-		"exclude" => 1,
-		"label" => "LLL:EXT:felogin/locallang_db.xml:felogin_redirectPid",
-		"config" => array (
-			"type" => "group",
-			"internal_type" => "db",
-			"allowed" => "pages",
-			"size" => 1,
-			"minitems" => 0,
-			"maxitems" => 1,
+$tempColumns = array(
+	'felogin_redirectPid' => array(
+		'exclude' => 1,
+		'label' => 'LLL:EXT:felogin/locallang_db.xml:felogin_redirectPid',
+		'config' => array(
+			'type' => 'group',
+			'internal_type' => 'db',
+			'allowed' => 'pages',
+			'size' => 1,
+			'minitems' => 0,
+			'maxitems' => 1,
 			'wizards' => array(
 				'suggest' => array(
 					'type' => 'suggest',
@@ -77,17 +78,17 @@ $tempColumns = array (
 			),
 		)
 	),
-	'felogin_forgotHash' => array (
+	'felogin_forgotHash' => array(
 		'exclude' => 1,
 		'label' => 'LLL:EXT:felogin/locallang_db.xml:felogin_forgotHash',
-		'config' => array (
+		'config' => array(
 			'type' => 'passthrough',
 		)
 	),
 );
 
-t3lib_div::loadTCA("fe_users");
-t3lib_extMgm::addTCAcolumns("fe_users",$tempColumns,1);
-t3lib_extMgm::addToAllTCAtypes("fe_users","felogin_redirectPid;;;;1-1-1");
+t3lib_div::loadTCA('fe_users');
+t3lib_extMgm::addTCAcolumns('fe_users', $tempColumns,1);
+t3lib_extMgm::addToAllTCAtypes('fe_users', 'felogin_redirectPid;;;;1-1-1', '', 'after:TSconfig');
 
 ?>
