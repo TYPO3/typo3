@@ -840,32 +840,23 @@ class tx_felogin_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * Is used by TS-setting preserveGETvars
-	 * possible values are "all" or a commaseperated list of GET-vars
-	 * they are used as additionalParams for link generation
+	 * Generate additional parameters for links according to TS-setting preserveGETvars.
 	 *
-	 * @return string additionalParams-string
+	 * Possible values are "all" or a comma seperated list of GET-vars. Supports multi-dimensional GET-vars.
+	 *
+	 * @return	string		additionalParams-string
 	 */
 	protected function getPreserveGetVars() {
 
-		$params = '';
-		$preserveVars =! ($this->conf['preserveGETvars'] || $this->conf['preserveGETvars']=='all' ? array() : implode(',', (array)$this->conf['preserveGETvars']));
 		$getVars = t3lib_div::_GET();
-
-		foreach ($getVars as $key => $val) {
-			if (stristr($key, $this->prefixId) === FALSE) {
-				if (is_array($val)) {
-					foreach ($val as $key1 => $val1) {
-						if ($this->conf['preserveGETvars'] == 'all' || in_array($key . '[' . $key1 .']', $preserveVars)) {
-							$params .= '&' . $key . '[' . $key1 . ']=' . $val1;
-						}
-					}
-				} else {
-					if (!in_array($key, array('id', 'no_cache', 'logintype', 'redirect_url', 'cHash'))) {
-						$params .= '&' . $key . '=' . $val;
-					}
-				}
-			}
+		unset($getVars['id'], $getVars['no_cache'], $getVars['logintype'], $getVars['redirect_url'], $getVars['cHash']);
+		if ($this->conf['preserveGETvars'] == 'all') {
+			$params = t3lib_div::implodeArrayForUrl('', $getVars);
+		} else {
+			$preserveQueryParts = t3lib_div::trimExplode(',', $this->conf['preserveGETvars']);
+			$preserveQueryParts = t3lib_div::explodeUrl2Array(implode('=1&', $preserveQueryParts) . '=1', TRUE);
+			$preserveQueryParts = t3lib_utility_Array::intersectRecursive($getVars, $preserveQueryParts);
+			$params = t3lib_div::implodeArrayForUrl('', $preserveQueryParts);
 		}
 		return $params;
 	}
