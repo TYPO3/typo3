@@ -402,6 +402,18 @@ class SC_mod_user_setup_index {
 			);
 			$this->content .= $flashMessage->render();
 		}
+
+			// Notice
+		if ($this->setupIsUpdated || $this->settingsAreResetToDefault) {
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$LANG->getLL('activateChanges'),
+				'',
+				t3lib_FlashMessage::INFO
+			);
+			$this->content .= $flashMessage->render();
+		}
+
 			// If password is updated, output whether it failed or was OK.
 		if ($this->passwordIsSubmitted) {
 			if ($this->passwordIsUpdated) {
@@ -444,15 +456,6 @@ class SC_mod_user_setup_index {
 			<input type="hidden" name="data[clearSessionVars]" value="0" id="clearSessionVars" />'
 		);
 
-			// Notice
-		$this->content .= $this->doc->spacer(30);
-		$flashMessage = t3lib_div::makeInstance(
-			't3lib_FlashMessage',
-			$LANG->getLL('activateChanges'),
-			'',
-			t3lib_FlashMessage::INFO
-		);
-		$this->content .= $flashMessage->render();
 			// end of wrapper div
 		$this->content .= '</div>';
 
