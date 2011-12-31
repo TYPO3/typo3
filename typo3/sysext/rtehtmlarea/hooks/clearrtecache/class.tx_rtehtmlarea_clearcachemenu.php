@@ -45,11 +45,10 @@ class tx_rtehtmlarea_clearcachemenu implements backend_cacheActionsHook {
 				// Add new cache menu item
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:rtehtmlarea/hooks/clearrtecache/locallang.xml:title');
 			$cacheActions[] = array(
-				'id'    => 'clearRTECache',
+				'id' => 'clearRTECache',
 				'title' => $title,
-				'href'  => $GLOBALS['BACK_PATH'] . 'ajax.php?ajaxID=rtehtmlarea::clearTempDir',
-				'icon'  => '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'sysext/rtehtmlarea/hooks/clearrtecache/clearrtecache.png', 'width="16" height="16"').' title="'.$title.'" alt="'.$title.'" />'
-				//'icon'  => '<img src="' . t3lib_extMgm::extRelPath('rtehtmlarea') . 'hooks/clearrtecache/clearrtecache.png" width="16" height="16" title="'.htmlspecialchars($title).'" alt="" />'
+				'href' => $GLOBALS['BACK_PATH'] . 'ajax.php?ajaxID=rtehtmlarea::clearTempDir',
+				'icon' => t3lib_iconWorks::getSpriteIcon('extensions-rtehtmlarea-clearcachemenu', array('title' => $title))
 			);
 			$optionValues[] = 'clearRTECache';
 		}
