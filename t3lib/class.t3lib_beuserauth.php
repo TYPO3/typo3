@@ -87,7 +87,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	var $uc_default = Array(
 		'interfaceSetup' => '', // serialized content that is used to store interface pane and menu positions. Set by the logout.php-script
 		'moduleData' => Array(), // user-data for the modules
-		'thumbnailsByDefault' => 0,
+		'thumbnailsByDefault' => 1,
 		'emailMeAtLogin' => 0,
 		'condensedMode' => 0,
 		'noMenuMode' => 0,
