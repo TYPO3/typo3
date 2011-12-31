@@ -76,5 +76,10 @@ if (TYPO3_MODE === 'BE' && t3lib_extMgm::isLoaded('setup') && is_array($GLOBALS[
 		)
 	);
 	$GLOBALS['TYPO3_USER_SETTINGS']['showitem'] .= ',--div--;LLL:EXT:rtehtmlarea/locallang.xml:rteSettings,rteWidth,rteHeight,rteResize,rteMaxHeight,rteCleanPasteBehaviour';
+
+	$icons = array(
+		'clearcachemenu' => t3lib_extMgm::extRelPath('rtehtmlarea') . 'hooks/clearrtecache/clearrtecache.png'
+	);
+	t3lib_SpriteManager::addSingleIcons($icons, 'rtehtmlarea');
 }
 ?>
