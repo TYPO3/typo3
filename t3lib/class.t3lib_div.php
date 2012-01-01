@@ -432,7 +432,7 @@ final class t3lib_div {
 					$listIP=gethostbynamel($test);
 					foreach ($listIP as $singleIP){
 						if (self::cmpIPv4($baseIP, $singleIP)) {
-							return true;
+							return TRUE;
 						}
 					}
 				}
