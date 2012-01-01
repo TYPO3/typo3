@@ -428,6 +428,14 @@ final class t3lib_div {
 			$values = self::trimExplode(',', $list, 1);
 
 			foreach ($values as $test) {
+				if(!self::validIP($test)) {
+					$listIP=gethostbynamel($test);
+					foreach ($listIP as $singleIP){
+						if (self::cmpIPv4($baseIP, $singleIP)) {
+							return true;
+						}
+					}
+				}
 				$testList = explode('/', $test);
 				if (count($testList) == 2) {
 					list($test, $mask) = $testList;
