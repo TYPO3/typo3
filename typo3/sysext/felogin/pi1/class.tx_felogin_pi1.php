@@ -300,7 +300,10 @@ class tx_felogin_pi1 extends tslib_pibase {
 						$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('change_password_done_message', $this->conf['changePasswordMessage_stdWrap.']);
 						$done = true;
 						$subpartArray['###CHANGEPASSWORD_FORM###'] = '';
-						$markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink($this->pi_getLL('ll_forgot_header_backToLogin', '', 1), array());
+						$markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink(
+							$this->pi_getLL('ll_forgot_header_backToLogin', '', 1),
+							array($this->prefixId . '[redirectReferrer]' => 'off')
+						);
 					}
 				}
 
@@ -486,6 +489,9 @@ class tx_felogin_pi1 extends tslib_pibase {
 			$referer = $this->referer ? $this->referer : t3lib_div::getIndpEnv('HTTP_REFERER');
 			if ($referer) {
 				$extraHiddenAr[] = '<input type="hidden" name="referer" value="' . htmlspecialchars($referer) . '" />';
+				if ($this->piVars['redirectReferrer'] === 'off') {
+					$extraHiddenAr[] = '<input type="hidden" name="' . $this->prefixId . '[redirectReferrer]" value="off" />';
+				}
 			}
 		}
 
@@ -589,15 +595,19 @@ class tx_felogin_pi1 extends tslib_pibase {
 							$redirect_url[] = $this->redirectUrl;
 						break;
 						case 'referer':
-								// avoid forced logout, when trying to login immediatly after a logout
-							$redirect_url[] = preg_replace('/[&?]logintype=[a-z]+/', '', $this->referer);
+								// avoid redirect when logging in after changing password
+							if ($this->piVars['redirectReferrer'] !== 'off') {
+									// avoid forced logout, when trying to login immediatly after a logout
+								$redirect_url[] = preg_replace('/[&?]logintype=[a-z]+/', '', $this->referer);
+							}
 						break;
 						case 'refererDomains':
 								// Auto redirect.
 								// Feature to redirect to the page where the user came from (HTTP_REFERER).
 								// Allowed domains to redirect to, can be configured with plugin.tx_felogin_pi1.domains
 								// Thanks to plan2.net / Martin Kutschker for implementing this feature.
-							if ($this->conf['domains']) {
+								// also avoid redirect when logging in after changing password
+							if ($this->conf['domains'] && $this->piVars['redirectReferrer'] !== 'off') {
 								$url = $this->referer;
 									// is referring url allowed to redirect?
 								$match = array();
@@ -618,7 +628,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 									// Avoid forced logout, when trying to login immediatly after a logout
 								if ($url) {
 									$redirect_url[] = preg_replace('/[&?]logintype=[a-z]+/', '', $url);
-							}
+								}
 							}
 						break;
 					}
