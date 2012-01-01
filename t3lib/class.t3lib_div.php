@@ -416,6 +416,23 @@ final class t3lib_div {
 	}
 
 	/**
+	 * Match IPv4 number per DNS
+	 * if the first character of the given IP is a '=' resolve the given Domainname and check ech element of the List against the $baseIP
+	 * @param	string		$baseIP is the current remote IP address for instance, typ. REMOTE_ADDR
+	 * @param	string		$domainName
+	 * @return	boolean		TRUE if resolved $DomainName matches  $baseIP
+	 */
+	public static function cmpDomain($baseIP, $domainName) {
+		if(!substr($domainName,0,1) === '=') return false;
+		$domainName=substr($domainName,1);
+		$listIP=gethostbynamel($domainName);
+		foreach ($listIP as $singleIP) {
+		  if (self::cmpIPv4($baseIP,$singleIP)) return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Match IPv4 number with list of numbers with wildcard
 	 *
 	 * @param	string		$baseIP is the current remote IP address for instance, typ. REMOTE_ADDR
@@ -428,6 +445,7 @@ final class t3lib_div {
 			$values = self::trimExplode(',', $list, 1);
 
 			foreach ($values as $test) {
+				if(self::cmpDomain($baseIP,$test)) return true;
 				$testList = explode('/', $test);
 				if (count($testList) == 2) {
 					list($test, $mask) = $testList;
