@@ -2608,7 +2608,24 @@ class t3lib_TCEforms {
 						// Making the row:
 						// ********************
 						// Title of field:
-					$theTitle = htmlspecialchars(t3lib_div::fixed_lgd_cs($this->sL($value['tx_templavoila']['title']), 30));
+
+						// in previous versions (< 4.7), the flexform looked like this:
+						// <tx_templavoila>
+						//     <title>LLL:EXT:cms/locallang_ttc.xml:media.sources</title>
+						// </tx_templavoila>
+						// for whatever reason,
+						// now, only using <title> in an unnested way is fine.
+					$theTitle = $value['title'];
+						// old syntax is deprecated and will be removed in TYPO3 4.9
+					if (!$theTitle && isset($value['tx_templavoila']['title'])) {
+						t3lib_div::deprecationLog('The flexform XML, used in ' . htmlspecialchars($table) . ':' . htmlspecialchars($field) . ' is using legacy syntax, the <title> is wrapped in <tx_templavoila>, however should be moved outside of that XML tag container. This functionality will be removed in TYPO3 4.9.');
+						$theTitle = $value['tx_templavoila']['title'];
+					}
+
+						// if there is a title, check for LLL label
+					if (strlen($theTitle) > 0) {
+						$theTitle = htmlspecialchars(t3lib_div::fixed_lgd_cs($this->sL($theTitle), 30));
+					}
 
 						// If it's a "section" or "container":
 					if ($value['type'] == 'array') {
