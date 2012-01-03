@@ -89,15 +89,15 @@ body#typo3-index-php .t3-login-field .t3-login-alert-capslock {
 
 body#typo3-index-php .t3-login-field label {
 	float: left;
-	padding-right: 10px;
+	margin-right: 10px;
 	width: 90px;
 }
 
 body#typo3-index-php .t3-login-field input {
-	height: 18px;
+	height: 20px;
 	margin: 0;
 	padding: 2px 23px 0 5px;
-	width: 168px;
+	width: 196px;
 }
 
 body#typo3-index-php #t3-login-form-fields {
