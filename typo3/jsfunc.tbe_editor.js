@@ -220,7 +220,7 @@ var TBE_EDITOR = {
 				if (!form) {
 						// special treatment for IRRE fields:
 					var tempObj = document[TBE_EDITOR.formname][elementName];
-					if (tempObj && Element.hasClassName(tempObj, 'inlineRecord')) {
+					if (tempObj && (Element.hasClassName(tempObj, 'inlineRecord') || Element.hasClassName(tempObj, 'treeRecord'))) {
 						form = tempObj.value ? tempObj.value.split(',') : [];
 						numberOfElements = form.length;
 					}

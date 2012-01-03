@@ -1566,6 +1566,10 @@ class t3lib_TCEforms {
 		} elseif (!strcmp($config['renderMode'], 'tree')) { // Tree renderMode
 			$treeClass = t3lib_div::makeInstance('t3lib_TCEforms_Tree', $this);
 			$item = $treeClass->renderField($table, $field, $row, $PA, $config, $selItems, $nMV_label);
+
+				// Register the required number of elements
+			$minitems = max(intval($config['minitems']), 0);
+			$this->registerRequiredProperty('range', $PA['itemFormElName'], array($minitems, $maxitems, 'imgName' => $table . '_' . $row['uid'] . '_' . $field));
 		} else { // Traditional multiple selector box:
 			$item = $this->getSingleField_typeSelect_multiple($table, $field, $row, $PA, $config, $selItems, $nMV_label);
 		}
