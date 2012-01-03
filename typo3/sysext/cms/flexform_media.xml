@@ -30,17 +30,13 @@
 						</TCEforms>
 					</mmType>
 					<mmSources>
-					<tx_templavoila>
 						<title>LLL:EXT:cms/locallang_ttc.xml:media.sources</title>
-					</tx_templavoila>
 						<type>array</type>
 						<section>1</section>
 						<el>
 							<mmSourcesContainer>
 								<type>array</type>
-								<tx_templavoila>
-									<title>LLL:EXT:cms/locallang_ttc.xml:media.media.url</title>
-								</tx_templavoila>
+								<title>LLL:EXT:cms/locallang_ttc.xml:media.media.url</title>
 								<el>
 									<mmSource>
 										<TCEforms>
@@ -122,17 +118,13 @@
 						</TCEforms>
 					</mmCaption>
 					<mmAudioSources>
-					<tx_templavoila>
 						<title>LLL:EXT:cms/locallang_ttc.xml:media.audioSources</title>
-					</tx_templavoila>
 						<type>array</type>
 						<section>1</section>
 						<el>
 							<mmAudioSourcesContainer>
 								<type>array</type>
-								<tx_templavoila>
-									<title>LLL:EXT:cms/locallang_ttc.xml:media.media.url</title>
-								</tx_templavoila>
+								<title>LLL:EXT:cms/locallang_ttc.xml:media.media.url</title>
 								<el>
 									<mmAudioSource>
 										<TCEforms>
@@ -238,17 +230,13 @@
 						</TCEforms>
 					</mmRenderType>
 					<mmMediaOptions>
-					<tx_templavoila>
 						<title>LLL:EXT:cms/locallang_ttc.xml:media.additionalOptions</title>
-					</tx_templavoila>
 						<type>array</type>
 						<section>1</section>
 						<el>
 							<mmMediaOptionsContainer>
 							<type>array</type>
-							<tx_templavoila>
-								<title>LLL:EXT:cms/locallang_ttc.xml:media.params</title>
-							</tx_templavoila>
+							<title>LLL:EXT:cms/locallang_ttc.xml:media.params</title>
 							<el>
 								<mmParamName>
 									<TCEforms>
@@ -342,9 +330,7 @@
 							</mmMediaOptionsContainer>
 							<mmMediaCustomParameterContainer>
 								<type>array</type>
-								<tx_templavoila>
-									<title>LLL:EXT:cms/locallang_ttc.xml:media.params.customEntry</title>
-								</tx_templavoila>
+								<title>LLL:EXT:cms/locallang_ttc.xml:media.params.customEntry</title>
 								<el>
 									<mmParamCustomEntry>
 										<TCEforms>
