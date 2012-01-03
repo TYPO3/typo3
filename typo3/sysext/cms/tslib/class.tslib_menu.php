@@ -1192,7 +1192,10 @@ class tslib_menu {
 			}
 
 				// Only setting url, not target
-			$LD['totalURL'] = $this->parent_cObj->typoLink_URL(array('parameter' => $shortcut['uid']));
+			$LD['totalURL'] = $this->parent_cObj->typoLink_URL(array(
+				'parameter' => $shortcut['uid'],
+				'additionalParams' => $this->mconf['addParams'] . $MP_params . $this->I['val']['additionalParams'] . $this->menuArr[$key]['_ADD_GETVARS'],
+			));
 		}
 
 			// Manipulation in case of access restricted pages:
