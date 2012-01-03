@@ -213,7 +213,7 @@ class t3lib_TCEforms_Tree {
 
 		$formField = '
 			<div class="typo3-tceforms-tree">
-				<input type="hidden" name="' . htmlspecialchars($PA['itemFormElName']) . '" id="treeinput' . $id . '" value="' . htmlspecialchars($PA['itemFormElValue']) . '" />
+				<input class="treeRecord" type="hidden" name="' . htmlspecialchars($PA['itemFormElName']) . '" id="treeinput' . $id . '" value="' . htmlspecialchars($PA['itemFormElValue']) . '" />
 			</div>
 			<div id="tree_' . $id . '">
 
