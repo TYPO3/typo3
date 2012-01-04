@@ -409,14 +409,14 @@ class tx_install extends t3lib_install {
 	function checkPassword() {
 		$p = t3lib_div::_GP('password');
 
-		if ($p && md5($p)==$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']) {
+		if ($p && md5($p) === $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']) {
 			$this->session->setAuthorized();
 
 				// Sending warning email
 			$wEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
 			if ($wEmail) {
-				$subject="Install Tool Login at '".$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']."'";
-				$email_body="There has been a Install Tool login at TYPO3 site '".$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']."' (".t3lib_div::getIndpEnv('HTTP_HOST').") from remote address '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndpEnv('REMOTE_HOST').')';
+				$subject = 'Install Tool Login at "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '"';
+				$email_body = 'There has been an Install Tool login at TYPO3 site "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '" (' . t3lib_div::getIndpEnv('HTTP_HOST') . ') from remote address "' . t3lib_div::getIndpEnv('REMOTE_ADDR') . '" (' . t3lib_div::getIndpEnv('REMOTE_HOST') . ')';
 				mail($wEmail,
 					$subject,
 					$email_body,
