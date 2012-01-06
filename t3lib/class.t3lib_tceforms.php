@@ -3051,12 +3051,36 @@ class t3lib_TCEforms {
 	function getRTypeNum($table, $row) {
 			// If there is a "type" field configured...
 		if ($GLOBALS['TCA'][$table]['ctrl']['type']) {
-			$typeFieldName = $GLOBALS['TCA'][$table]['ctrl']['type'];
-			$typeFieldConfig = $GLOBALS['TCA'][$table]['columns'][$typeFieldName];
-			$typeNum = $this->getLanguageOverlayRawValue($table, $row, $typeFieldName, $typeFieldConfig);
-			if (!strcmp($typeNum, '')) {
-				$typeNum = 0;
-			} // If that value is an empty string, set it to "0" (zero)
+			if(strstr($GLOBALS['TCA'][$table]['ctrl']['type'], ':') !== FALSE) {
+				list($foreignPointerField, $foreignTableTypeField) = explode(':', $GLOBALS['TCA'][$table]['ctrl']['type']);
+
+				$values = $this->extractValuesOnlyFromValueLabelList($row[$foreignPointerField]);
+
+				list(,$foreignUid) = t3lib_div::revExplode('_', $values[0], 2);
+
+				$fieldConfig = $GLOBALS['TCA'][$table]['columns'][$foreignPointerField]['config'];
+				$relationType = $fieldConfig['type'];
+				if($relationType === 'group') {
+					$foreignTable = $fieldConfig['allowed'];
+				} elseif($relationType === 'select') {
+					$foreignTable = $fieldConfig['foreign_table'];
+				} else{
+					throw new RuntimeException('TCA Foreign field pointer fields are only allowed to be used with group or select field types.', 1325861239);
+				}
+
+				$foreignRow = t3lib_BEfunc::getRecord($foreignTable, $foreignUid, $foreignTableTypeField);
+
+				if($foreignRow[$foreignTableTypeField]) {
+					$typeNum = $foreignRow[$foreignTableTypeField];
+				}
+			} else {
+				$typeFieldName = $GLOBALS['TCA'][$table]['ctrl']['type'];
+				$typeFieldConfig = $GLOBALS['TCA'][$table]['columns'][$typeFieldName];
+				$typeNum = $this->getLanguageOverlayRawValue($table, $row, $typeFieldName, $typeFieldConfig);
+				if (!strcmp($typeNum, '')) {
+					$typeNum = 0;
+				} // If that value is an empty string, set it to "0" (zero)
+			}
 		} else {
 			$typeNum = 0; // If no "type" field, then set to "0" (zero)
 		}
