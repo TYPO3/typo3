@@ -3052,23 +3052,54 @@ class t3lib_TCEforms {
 	 * @return	string		Return the "type" value for this record, ready to pick a "types" configuration from the $GLOBALS['TCA'] array.
 	 */
 	function getRTypeNum($table, $row) {
-			// If there is a "type" field configured...
-		if ($GLOBALS['TCA'][$table]['ctrl']['type']) {
-			$typeFieldName = $GLOBALS['TCA'][$table]['ctrl']['type'];
-			$typeFieldConfig = $GLOBALS['TCA'][$table]['columns'][$typeFieldName];
-			$typeNum = $this->getLanguageOverlayRawValue($table, $row, $typeFieldName, $typeFieldConfig);
-			if (!strcmp($typeNum, '')) {
-				$typeNum = 0;
-			} // If that value is an empty string, set it to "0" (zero)
-		} else {
-			$typeNum = 0; // If no "type" field, then set to "0" (zero)
+
+		$typeNum = 0;
+
+		$field = $GLOBALS['TCA'][$table]['ctrl']['type'];
+		if ($field) {
+			if (strstr($field, ':') !== FALSE) {
+				list($pointerField, $foreignTypeField) = explode(':', $field);
+
+				$values = $this->extractValuesOnlyFromValueLabelList($row[$pointerField]);
+				list(,$foreignUid) = t3lib_div::revExplode('_', $values[0], 2);
+
+				if($foreignUid) {
+					$fieldConfig = $GLOBALS['TCA'][$table]['columns'][$pointerField]['config'];
+					$relationType = $fieldConfig['type'];
+					if ($relationType === 'group') {
+						$foreignTable = $fieldConfig['allowed'];
+					} elseif ($relationType === 'select') {
+						$foreignTable = $fieldConfig['foreign_table'];
+					} else {
+						throw new RuntimeException('TCA Foreign field pointer fields are only allowed to be used with group or select field types.', 1325861239);
+					}
+
+					$foreignRow = t3lib_BEfunc::getRecord($foreignTable, $foreignUid, $foreignTypeField);
+
+					t3lib_div::loadTCA($foreignTable);
+					$this->registerDefaultLanguageData($foreignTable, $foreignRow);
+
+					if($foreignRow[$foreignTypeField]) {
+						$foreignTypeFieldConfig = $GLOBALS['TCA'][$table]['columns'][$field];
+						$typeNum = $this->getLanguageOverlayRawValue($foreignTable, $foreignRow, $foreignTypeField, $foreignTypeFieldConfig);
+					}
+				}
+			} else {
+				$typeFieldConfig = $GLOBALS['TCA'][$table]['columns'][$field];
+				$typeNum = $this->getLanguageOverlayRawValue($table, $row, $field, $typeFieldConfig);
+			}
 		}
 
-		$typeNum = (string) $typeNum; // Force to string. Necessary for eg '-1' to be recognized as a type value.
-		if (!$GLOBALS['TCA'][$table]['types'][$typeNum]) {
-				// However, if the type "0" is not found in the "types" array, then default to "1" (for historical reasons)
-			$typeNum = 1;
+		if (!strcmp($typeNum, '')) {  // If that value is an empty string, set it to "0" (zero)
+			$typeNum = 0;
 		}
+
+		// If current typeNum doesn't exist, set it to 0 (or to 1 for historical reasons, if 0 doesn't exist)
+		if (!$GLOBALS['TCA'][$table]['types'][$typeNum]) {
+			$typeNum = $GLOBALS['TCA'][$table]['types']["0"] ? 0 : 1;
+		}
+
+		$typeNum = (string)$typeNum; // Force to string. Necessary for eg '-1' to be recognized as a type value.
 
 		return $typeNum;
 	}
