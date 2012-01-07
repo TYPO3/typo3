@@ -621,8 +621,11 @@ class t3lib_TCEforms {
 
 				$collapsed = $this->isPalettesCollapsed($table, $palette);
 
+					// check if the palette is a hidden palette
+				$isHiddenPalette = !empty($GLOBALS['TCA'][$table]['palettes'][$palette]['isHiddenPalette']);
+
 				$thePalIcon = '';
-				if ($collapsed && $collapsedHeader !== NULL) {
+				if ($collapsed && $collapsedHeader !== NULL && !$isHiddenPalette) {
 					list($thePalIcon,) = $this->wrapOpenPalette(
 						t3lib_iconWorks::getSpriteIcon(
 							'actions-system-options-view',
@@ -5926,16 +5929,19 @@ class t3lib_TCEforms {
 	/**
 	 * Returns TRUE, if the palette, $palette, is collapsed (not shown, but found in top-frame) for the table.
 	 *
-	 * @param	string		The table name
-	 * @param	integer		The palette pointer/number
-	 * @return	boolean
+	 * @param string The table name
+	 * @param integer The palette pointer/number
+	 * @return boolean
 	 */
 	function isPalettesCollapsed($table, $palette) {
+		if (is_array($GLOBALS['TCA'][$table]['palettes'][$palette]) && $GLOBALS['TCA'][$table]['palettes'][$palette]['isHiddenPalette']) {
+			return TRUE;
+		}
 		if ($GLOBALS['TCA'][$table]['ctrl']['canNotCollapse']) {
-			return 0;
+			return FALSE;
 		}
 		if (is_array($GLOBALS['TCA'][$table]['palettes'][$palette]) && $GLOBALS['TCA'][$table]['palettes'][$palette]['canNotCollapse']) {
-			return 0;
+			return FALSE;
 		}
 		return $this->palettesCollapsed;
 	}
