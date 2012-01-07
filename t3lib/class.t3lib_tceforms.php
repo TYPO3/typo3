@@ -621,8 +621,15 @@ class t3lib_TCEforms {
 
 				$collapsed = $this->isPalettesCollapsed($table, $palette);
 
+
+				// check if the palette is a hidden palette
+				$isHiddenPalette = false;
+				if(is_array($GLOBALS['TCA'][$table]['palettes'][$palette]) && $GLOBALS['TCA'][$table]['palettes'][$palette]['isHiddenPalette']) {
+					$isHiddenPalette = true;
+				}
+
 				$thePalIcon = '';
-				if ($collapsed && $collapsedHeader !== NULL) {
+				if ($collapsed && $collapsedHeader !== NULL && !$isHiddenPalette) {
 					list($thePalIcon,) = $this->wrapOpenPalette(
 						t3lib_iconWorks::getSpriteIcon(
 							'actions-system-options-view',
