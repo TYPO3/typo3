@@ -749,51 +749,49 @@ final class t3lib_BEfunc {
 	 * @return	array		Array of arrays with excludeFields (fieldname, table:fieldname) from all TCA entries and from FlexForms (fieldname, table:extkey;sheetname;fieldname)
 	 */
 	public static function getExcludeFields() {
-		global $TCA;
-			// All TCA keys:
-		$theExcludeArray = Array();
-		$tc_keys = array_keys($TCA);
+			// All TCA keys
+		$theExcludeArray = array();
+		$tc_keys = array_keys($GLOBALS['TCA']);
 		foreach ($tc_keys as $table) {
 				// Load table
 			t3lib_div::loadTCA($table);
-				// All field names configured:
-			if (is_array($TCA[$table]['columns'])) {
-				$f_keys = array_keys($TCA[$table]['columns']);
+				// All field names configured
+			if (is_array($GLOBALS['TCA'][$table]['columns'])) {
+				$f_keys = array_keys($GLOBALS['TCA'][$table]['columns']);
 				foreach ($f_keys as $field) {
-					if ($TCA[$table]['columns'][$field]['exclude']) {
-							// Get Human Readable names of fields and table:
-						$Fname = $GLOBALS['LANG']->sl($TCA[$table]['ctrl']['title']) . ': ' . $GLOBALS['LANG']->sl($TCA[$table]['columns'][$field]['label']);
-							// add entry:
-						$theExcludeArray[] = Array($Fname, $table . ':' . $field);
+					if ($GLOBALS['TCA'][$table]['columns'][$field]['exclude']) {
+							// Get human readable names of fields and table
+						$Fname = $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['ctrl']['title']) . ': ' . $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['columns'][$field]['label']);
+							// Add entry
+						$theExcludeArray[] = array($Fname, $table . ':' . $field);
 					}
 				}
 			}
-		}
 			// All FlexForm fields
-		$table = (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']) ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'] : 'tt_content');
-		$flexFormArray = self::getRegisteredFlexForms($table);
-		foreach ($flexFormArray as $tableField => $flexForms) {
-				// Prefix for field label, e.g. "Plugin Options:"
-			$labelPrefix = '';
-			if (!empty($GLOBALS['TCA'][$table]['columns'][$tableField]['label'])) {
-				$labelPrefix = $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['columns'][$tableField]['label']);
-			}
-				// Get all sheets and title
-			foreach ($flexForms as $extIdent => $extConf) {
-				$extTitle = $GLOBALS['LANG']->sl($extConf['title']);
-					// Get all fields in sheet
-				foreach ($extConf['ds']['sheets'] as $sheetName => $sheet) {
-					if (empty($sheet['ROOT']['el']) || !is_array($sheet['ROOT']['el'])) {
-						continue;
-					}
-					foreach ($sheet['ROOT']['el'] as $fieldName => $field) {
-							// Use only excludeable fields
-						if (empty($field['TCEforms']['exclude'])) {
+			$flexFormArray = self::getRegisteredFlexForms($table);
+			foreach ($flexFormArray as $tableField => $flexForms) {
+					// Prefix for field label, e.g. "Plugin Options:"
+				$labelPrefix = '';
+				if (!empty($GLOBALS['TCA'][$table]['columns'][$tableField]['label'])) {
+					$labelPrefix = $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['columns'][$tableField]['label']);
+				}
+					// Get all sheets and title
+				foreach ($flexForms as $extIdent => $extConf) {
+					$extTitle = $GLOBALS['LANG']->sl($extConf['title']);
+						// Get all fields in sheet
+					foreach ($extConf['ds']['sheets'] as $sheetName => $sheet) {
+						if (empty($sheet['ROOT']['el']) || !is_array($sheet['ROOT']['el'])) {
 							continue;
 						}
-						$fieldLabel = (!empty($field['TCEforms']['label']) ? $GLOBALS['LANG']->sl($field['TCEforms']['label']) : $fieldName);
-						$fieldIdent = $table . ':' . $tableField . ';' . $extIdent . ';' . $sheetName . ';' . $fieldName;
-						$theExcludeArray[] = array(trim($labelPrefix . ' ' . $extTitle, ': ') . ': ' . $fieldLabel, $fieldIdent);
+						foreach ($sheet['ROOT']['el'] as $fieldName => $field) {
+								// Use only excludeable fields
+							if (empty($field['TCEforms']['exclude'])) {
+								continue;
+							}
+							$fieldLabel = (!empty($field['TCEforms']['label']) ? $GLOBALS['LANG']->sl($field['TCEforms']['label']) : $fieldName);
+							$fieldIdent = $table . ':' . $tableField . ';' . $extIdent . ';' . $sheetName . ';' . $fieldName;
+							$theExcludeArray[] = array(trim($labelPrefix . ' ' . $extTitle, ': ') . ': ' . $fieldLabel, $fieldIdent);
+						}
 					}
 				}
 			}
