@@ -167,15 +167,15 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 				continue;
 			}
 			// Stop here if no TSConfig was found for this field
-			if (empty($sheetConf[$fieldName]) || !is_array($sheetConf[$fieldName])) {
+			$fieldConf = $this->getFlexFormFieldConfiguration($sheetConf, $fieldName);
+			if (empty($fieldConf)) {
 				continue;
 			}
 			// Remove disabled fields
-			if (!empty($sheetConf[$fieldName]['disabled'])) {
+			if (!empty($fieldConf['disabled'])) {
 				unset($sheet[$fieldName]);
 				continue;
 			}
-			$fieldConf = $sheetConf[$fieldName];
 			$removeItems = !empty($fieldConf['removeItems']) ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldConf['removeItems'], TRUE) : array();
 			$keepItems = !empty($fieldConf['keepItems']) ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldConf['keepItems'], TRUE) : array();
 			$renameItems = !empty($fieldConf['altLabels']) && is_array($fieldConf['altLabels']) ? $fieldConf['altLabels'] : array();
@@ -185,7 +185,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 			unset($fieldConf['altLabels']);
 			unset($fieldConf['addItems']);
 			// Manipulate field
-			if (!empty($field['TCEforms']) && is_array($field['TCEforms'])) {
+			if (!empty($field['TCEforms']) && is_array($field['TCEforms']) && is_array($fieldConf)) {
 				$sheet[$fieldName]['TCEforms'] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($field['TCEforms'], $fieldConf);
 			}
 			// Manipulate only select fields, other field types will stop here
@@ -259,6 +259,34 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 			}
 		}
 		return $nonExcludeFields;
+	}
+
+	/**
+	 * Get configuration for one FlexForm field
+	 *
+	 * @param array $sheetConf Sheet configuration
+	 * @param string $fieldName The field name
+	 * @return array Configuration array for given field
+	 */
+	protected function getFlexFormFieldConfiguration(array $sheetConf, $fieldName) {
+		if (empty($sheetConf) || empty($fieldName)) {
+			return array();
+		}
+		// No dots found in fieldname
+		if (strpos($fieldName, '.') === FALSE) {
+			if (!empty($sheetConf[$fieldName])) {
+				return $sheetConf[$fieldName];
+			}
+			return array();
+		}
+		// Reduce configuration array using the fieldname level count
+		$fieldNameParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $fieldName);
+		foreach ($fieldNameParts as $key) {
+			if (!empty($sheetConf[$key]) && is_array($sheetConf[$key])) {
+				$sheetConf = $sheetConf[$key];
+			}
+		}
+		return $sheetConf;
 	}
 
 	/**
