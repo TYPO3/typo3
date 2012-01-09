@@ -377,5 +377,132 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 	}
 
+	/**
+	 * @param string $typoScript
+	 * @param array $expected
+	 * @dataProvider typoScriptWithQuotedKeysIsParsedToArrayDataProvider
+	 * @test
+	 */
+	public function typoScriptWithQuotedKeysIsParsedToArray($typoScript, array $expected) {
+		$this->typoScriptParser->parse($typoScript);
+		$this->assertEquals($expected, $this->typoScriptParser->setup);
+	}
+
+	/**
+	 * @param string $typoScript
+	 * @param array $expected
+	 * @dataProvider typoScriptWithQuotedKeysIsParsedToArrayDataProvider
+	 * @test
+	 */
+	public function typoScriptWithQuotedKeysIsStrictlyParsedToArray($typoScript, array $expected) {
+		$this->typoScriptParser->strict = TRUE;
+		$this->typoScriptParser->parse($typoScript);
+		$this->assertEquals($expected, $this->typoScriptParser->setup);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function typoScriptWithQuotedKeysIsParsedToArrayDataProvider() {
+		return array(
+			'quoted key with regular characters' => array(
+				'"key" = value',
+				array(
+					'key' => 'value',
+				),
+			),
+			'nested quoted key with regular characters' => array(
+				'lib."key" = value',
+				array(
+					'lib.' => array(
+						'key' => 'value',
+					),
+				),
+			),
+			'nested structured quoted key with regular characters' => array(
+				'lib {' . LF .
+					'"key" = value' . LF .
+				'}',
+				array(
+					'lib.' => array(
+						'key' => 'value',
+					),
+				),
+			),
+			'quoted key containing dash' => array(
+				'"the-key" = value',
+				array(
+					'the-key' => 'value',
+				),
+			),
+			'nested quoted key containing dash' => array(
+				'lib."the-key" = value',
+				array(
+					'lib.' => array(
+						'the-key' => 'value',
+					),
+				),
+			),
+			'nested structured quoted key containing dash' => array(
+				'lib {' . LF .
+					'"the-key" = value' . LF .
+				'}',
+				array(
+					'lib.' => array(
+						'the-key' => 'value',
+					),
+				),
+			),
+			'quoted key containing dot' => array(
+				'"the.key" = value',
+				array(
+					'the.key' => 'value',
+				),
+			),
+			'nested quoted key containing dot' => array(
+				'lib."the.key" = value',
+				array(
+					'lib.' => array(
+						'the.key' => 'value',
+					),
+				),
+			),
+			'nested structured quoted key containing dot' => array(
+				'lib {' . LF .
+					'"the.key" = value' . LF .
+				'}',
+				array(
+					'lib.' => array(
+						'the.key' => 'value',
+					),
+				),
+			),
+			'quoted key containing equal operator' => array(
+				'"the=key" = value',
+				array(
+					'the=key' => 'value',
+				),
+			),
+			'nested quoted key containing equal operator' => array(
+				'lib."the=key" = value',
+				array(
+					'lib.' => array(
+						'the=key' => 'value',
+					),
+				),
+			),
+			'nested structured quoted key containing equal operator' => array(
+				'lib {' . LF .
+					'"the=key" = value' . LF .
+				'}',
+				array(
+					'lib.' => array(
+						'the=key' => 'value',
+					),
+				),
+			),
+		);
+	}
+
 }
 ?>
