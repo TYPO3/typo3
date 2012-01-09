@@ -41,7 +41,7 @@ namespace TYPO3\CMS\Core\TypoScript\Parser;
  */
 class TypoScriptParser {
 
-	// If set, then key names cannot contain characters other than [:alnum:]_\.-
+	// If set, then key names cannot contain characters other than [:alnum:]_\.\"-
 	/**
 	 * @todo Define visibility
 	 */
@@ -353,15 +353,20 @@ class TypoScriptParser {
 					} elseif (strcspn($line, '}#/') != 0) {
 						// If not brace-end or comment
 						// Find object name string until we meet an operator
-						$varL = strcspn($line, ' {=<>:(');
+						$operatorMask = ' {=<>:(';
+						$varL = strcspn($line, $operatorMask);
+						if (preg_match('/[^"]*"[^"]*"[^\s\{=<>:\(]*/', $line, $matches)) {
+							$matchLength = strlen($matches[0]);
+							$varL = $matchLength + strcspn($line, $operatorMask, $matchLength);
+						}
 						$objStrName = trim(substr($line, 0, $varL));
 						if ($this->syntaxHighLight) {
 							$this->regHighLight('objstr', $lineP, strlen(substr($line, $varL)));
 						}
 						if (strlen($objStrName)) {
 							$r = array();
-							if ($this->strict && preg_match('/[^[:alnum:]_\\\\\\.-]/i', $objStrName, $r)) {
-								$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" contains invalid character "' . $r[0] . '". Must be alphanumeric or one of: "_-\\."');
+							if ($this->strict && preg_match('/[^[:alnum:]_\\\\\\.\"=-]/i', $objStrName, $r)) {
+								$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" contains invalid character "' . $r[0] . '". Must be alphanumeric or one of: "_-\\.\"="');
 							} else {
 								$line = ltrim(substr($line, $varL));
 								if ($this->syntaxHighLight) {
@@ -393,6 +398,7 @@ class TypoScriptParser {
 										$value[0] = trim(substr($line, 1));
 										$this->setVal($objStrName, $setup, $value);
 									} else {
+										$objStrName = trim($objStrName, '"');
 										$setup[$objStrName] = trim(substr($line, 1));
 										if ($this->lastComment && $this->regComments) {
 											// Setting comment..
@@ -631,17 +637,19 @@ class TypoScriptParser {
 	 * @param array $setup The local setup array from the function calling this function.
 	 * @param array $value The value/property pair array to set. If only one of them is set, then the other is not touched (unless $wipeOut is set, which it is when copies are made which must include both value and property)
 	 * @param boolean $wipeOut If set, then both value and property is wiped out when a copy is made of another value.
+	 * @param boolean $forceValue If set, the value will be set even if the key string contains dots
 	 * @return void
 	 * @todo Define visibility
 	 */
-	public function setVal($string, &$setup, $value, $wipeOut = 0) {
+	public function setVal($string, &$setup, $value, $wipeOut = 0, $forceValue = FALSE) {
 		if ((string) $string != '') {
 			$keyLen = strcspn($string, '.');
-			if ($keyLen == strlen($string)) {
+			if ($forceValue || $keyLen == strlen($string)) {
 				if ($value == 'UNSET') {
 					unset($setup[$string]);
 					unset($setup[$string . '.']);
 					if ($this->regLinenumbers) {
+						$string = trim($string, '"');
 						$setup[$string . '.ln..'][] = ($this->lineNumberOffset + $this->rawP - 1) . '>';
 					}
 				} else {
@@ -650,10 +658,12 @@ class TypoScriptParser {
 						unset($setup[$string]);
 						unset($setup[$string . '.']);
 						if ($this->regLinenumbers) {
+							$string = trim($string, '"');
 							$setup[$string . '.ln..'][] = ($this->lineNumberOffset + $this->rawP - 1) . '<';
 							$lnRegisDone = 1;
 						}
 					}
+					$string = trim($string, '"');
 					if (isset($value[0])) {
 						$setup[$string] = $value[0];
 					}
@@ -666,6 +676,20 @@ class TypoScriptParser {
 					if ($this->regLinenumbers && !$lnRegisDone) {
 						$setup[$string . '.ln..'][] = $this->lineNumberOffset + $this->rawP - 1;
 					}
+				}
+			} elseif (substr($string, 0, 1) === '"' && substr_count($string, '"') > 1 && substr_count($string, '.')) {
+				// Key string contains quoted part, e.g.: myext."settings.myfield".config
+				$key = substr($string, 1, strpos($string, '"', 1) - 1);
+				if (trim($string, '".') === $key) {
+					// Key ends with quotes, so ignore dots in key and set value
+					$this->setVal($key, $setup, $value, $wipeOut, TRUE);
+				} else {
+					// Continue with next key part
+					$key .= '.';
+					if (!isset($setup[$key])) {
+						$setup[$key] = array();
+					}
+					$this->setVal(substr($string, strlen($key) + 2), $setup[$key], $value);
 				}
 			} else {
 				$key = substr($string, 0, $keyLen) . '.';
