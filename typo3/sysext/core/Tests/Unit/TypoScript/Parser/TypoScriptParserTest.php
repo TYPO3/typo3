@@ -377,5 +377,190 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 	}
 
+	/**
+	 * @param string $typoScript
+	 * @param array $expected
+	 * @dataProvider typoScriptWithQuotedKeysIsParsedToArrayDataProvider
+	 * @test
+	 */
+	public function typoScriptWithQuotedKeysIsParsedToArray($typoScript, array $expected) {
+		$this->typoScriptParser->parse($typoScript);
+		$this->assertEquals($expected, $this->typoScriptParser->setup);
+	}
+
+	/**
+	 * @test
+	 */
+	public function typoScriptWithQuotedKeysIsSet() {
+		$this->typoScriptParser->setVal(
+			'lib."the.key"',
+			$this->typoScriptParser->setup,
+			array('TEXT', array('data' => 'value'))
+		);
+
+		$expectedConfiguration = array(
+			'lib.' => array(
+				'the.key' => 'TEXT',
+				'the.key.' => array(
+					'data' => 'value',
+				),
+			),
+		);
+
+		$this->assertEquals($expectedConfiguration, $this->typoScriptParser->setup);
+	}
+
+	/**
+	 * @test
+	 */
+	public function typoScriptWithQuotedKeysIsResolved() {
+		$typoScript =
+			'lib."the.key" = TEXT' . LF .
+			'lib."the.key".data = value';
+		$this->typoScriptParser->parse($typoScript);
+
+		list($name, $configuration) = $this->typoScriptParser->getVal(
+			'lib."the.key"',
+			$this->typoScriptParser->setup
+		);
+
+		$expectedConfiguration = array(
+			'data' => 'value',
+		);
+
+		$this->assertEquals('TEXT', $name);
+		$this->assertEquals($expectedConfiguration, $configuration);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function typoScriptWithQuotedKeysIsParsedToArrayDataProvider() {
+		return array(
+			'quoted key with regular characters' => array(
+				'"key" = value',
+				array(
+					'key' => 'value',
+				),
+			),
+			'nested quoted key with regular characters' => array(
+				'lib."key" = value',
+				array(
+					'lib.' => array(
+						'key' => 'value',
+					),
+				),
+			),
+			'nested structured quoted key with regular characters' => array(
+				'lib {' . LF .
+					'"key" = value' . LF .
+				'}',
+				array(
+					'lib.' => array(
+						'key' => 'value',
+					),
+				),
+			),
+			'quoted key containing dash' => array(
+				'"the-key" = value',
+				array(
+					'the-key' => 'value',
+				),
+			),
+			'nested quoted key containing dash' => array(
+				'lib."the-key" = value',
+				array(
+					'lib.' => array(
+						'the-key' => 'value',
+					),
+				),
+			),
+			'nested structured quoted key containing dash' => array(
+				'lib {' . LF .
+					'"the-key" = value' . LF .
+				'}',
+				array(
+					'lib.' => array(
+						'the-key' => 'value',
+					),
+				),
+			),
+			'quoted key containing dot' => array(
+				'"the.key" = value',
+				array(
+					'the.key' => 'value',
+				),
+			),
+			'nested quoted key containing dot' => array(
+				'lib."the.key" = value',
+				array(
+					'lib.' => array(
+						'the.key' => 'value',
+					),
+				),
+			),
+			'nested structured quoted key containing dot' => array(
+				'lib {' . LF .
+					'"the.key" = value' . LF .
+				'}',
+				array(
+					'lib.' => array(
+						'the.key' => 'value',
+					),
+				),
+			),
+			'copying values' => array(
+				'lib."the.key" = value' . LF .
+				'lib."new.key" < lib."the.key"',
+				array(
+					'lib.' => array(
+						'the.key' => 'value',
+						'new.key' => 'value',
+					),
+				)
+			),
+			'referencing values' => array(
+				'lib."the.key" = value' . LF .
+				'lib."new.key" =< lib."the.key"',
+				array(
+					'lib.' => array(
+						'the.key' => 'value',
+						'new.key' => '< lib."the.key"',
+					),
+				)
+			),
+			'referencing values extended' => array(
+				'lib."the.key" = value' . LF .
+				'lib."new.key" =< lib."the.key"' . LF .
+				'lib."new.key".local = value',
+				array(
+					'lib.' => array(
+						'the.key' => 'value',
+						'new.key' => '< lib."the.key"',
+						'new.key.' => array(
+							'local' => 'value',
+						),
+					),
+				)
+			),
+			'quoted key containing equal operator' => array(
+				'"the=key" = value',
+				array(), // not allowed in default (strict mode)
+			),
+			'nested quoted key containing equal operator' => array(
+				'lib."the=key" = value',
+				array(), // not allowed in default (strict mode)
+			),
+			'nested structured quoted key containing equal operator' => array(
+				'lib {' . LF .
+					'"the=key" = value' . LF .
+				'}',
+				array(
+					'lib.' => array(), // not allowed in default (strict mode)
+				),
+			),
+		);
+	}
+
 }
 ?>

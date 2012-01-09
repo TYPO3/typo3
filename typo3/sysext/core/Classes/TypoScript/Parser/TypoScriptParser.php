@@ -41,6 +41,8 @@ namespace TYPO3\CMS\Core\TypoScript\Parser;
  */
 class TypoScriptParser {
 
+	const PATTERN_ValidQuotedPartCharacters = '[:alnum:]_\\\\.-';
+
 	// If set, then key names cannot contain characters other than [:alnum:]_\.-
 	/**
 	 * @todo Define visibility
@@ -218,6 +220,13 @@ class TypoScriptParser {
 	public $parentObject;
 
 	/**
+	 * Substitutes for handling quoted keys.
+	 *
+	 * @var array
+	 */
+	protected $substitutes = array();
+
+	/**
 	 * Start parsing the input TypoScript text piece. The result is stored in $this->setup
 	 *
 	 * @param string $string The TypoScript text
@@ -359,10 +368,7 @@ class TypoScriptParser {
 							$this->regHighLight('objstr', $lineP, strlen(substr($line, $varL)));
 						}
 						if (strlen($objStrName)) {
-							$r = array();
-							if ($this->strict && preg_match('/[^[:alnum:]_\\\\\\.-]/i', $objStrName, $r)) {
-								$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" contains invalid character "' . $r[0] . '". Must be alphanumeric or one of: "_-\\."');
-							} else {
+							if ($this->isValidObjectName($objStrName)) {
 								$line = ltrim(substr($line, $varL));
 								if ($this->syntaxHighLight) {
 									$this->regHighLight('objstr_postspace', $lineP, strlen($line));
@@ -388,36 +394,14 @@ class TypoScriptParser {
 									if ($this->syntaxHighLight) {
 										$this->regHighLight('value', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
 									}
-									if (strstr($objStrName, '.')) {
-										$value = array();
-										$value[0] = trim(substr($line, 1));
-										$this->setVal($objStrName, $setup, $value);
-									} else {
-										$setup[$objStrName] = trim(substr($line, 1));
-										if ($this->lastComment && $this->regComments) {
-											// Setting comment..
-											$setup[$objStrName . '..'] .= $this->lastComment;
-										}
-										if ($this->regLinenumbers) {
-											$setup[$objStrName . '.ln..'][] = $this->lineNumberOffset + $this->rawP - 1;
-										}
-									}
+									$value = array(trim(substr($line, 1)));
+									$this->setVal($objStrName, $setup, $value);
 									break;
 								case '{':
 									$this->inBrace++;
-									if (strstr($objStrName, '.')) {
-										$exitSig = $this->rollParseSub($objStrName, $setup);
-										if ($exitSig) {
-											return $exitSig;
-										}
-									} else {
-										if (!isset($setup[($objStrName . '.')])) {
-											$setup[$objStrName . '.'] = array();
-										}
-										$exitSig = $this->parseSub($setup[$objStrName . '.']);
-										if ($exitSig) {
-											return $exitSig;
-										}
+									$exitSig = $this->rollParseSub($objStrName, $setup);
+									if ($exitSig) {
+										return $exitSig;
 									}
 									break;
 								case '(':
@@ -571,9 +555,11 @@ class TypoScriptParser {
 	 */
 	public function rollParseSub($string, &$setup) {
 		if ((string) $string != '') {
-			$keyLen = strcspn($string, '.');
-			if ($keyLen == strlen($string)) {
-				$key = $string . '.';
+			$keyNameParts = $this->explodeKeyName($string);
+			$firstKeyName = array_shift($keyNameParts);
+
+			if (count($keyNameParts) === 0) {
+				$key = $firstKeyName . '.';
 				if (!isset($setup[$key])) {
 					$setup[$key] = array();
 				}
@@ -582,11 +568,11 @@ class TypoScriptParser {
 					return $exitSig;
 				}
 			} else {
-				$key = substr($string, 0, $keyLen) . '.';
+				$key = $firstKeyName . '.';
 				if (!isset($setup[$key])) {
 					$setup[$key] = array();
 				}
-				$exitSig = $this->rollParseSub(substr($string, $keyLen + 1), $setup[$key]);
+				$exitSig = $this->rollParseSub(implode('.', $keyNameParts), $setup[$key]);
 				if ($exitSig) {
 					return $exitSig;
 				}
@@ -604,21 +590,23 @@ class TypoScriptParser {
 	 */
 	public function getVal($string, $setup) {
 		if ((string) $string != '') {
-			$keyLen = strcspn($string, '.');
-			if ($keyLen == strlen($string)) {
+			$keyNameParts = $this->explodeKeyName($string);
+			$firstKeyName = trim(array_shift($keyNameParts), '"');
+
+			if (count($keyNameParts) === 0) {
 				// Added 6/6/03. Shouldn't hurt
 				$retArr = array();
-				if (isset($setup[$string])) {
-					$retArr[0] = $setup[$string];
+				if (isset($setup[$firstKeyName])) {
+					$retArr[0] = $setup[$firstKeyName];
 				}
-				if (isset($setup[$string . '.'])) {
-					$retArr[1] = $setup[$string . '.'];
+				if (isset($setup[$firstKeyName . '.'])) {
+					$retArr[1] = $setup[$firstKeyName . '.'];
 				}
 				return $retArr;
 			} else {
-				$key = substr($string, 0, $keyLen) . '.';
+				$key = $firstKeyName . '.';
 				if ($setup[$key]) {
-					return $this->getVal(substr($string, $keyLen + 1), $setup[$key]);
+					return $this->getVal(implode('.', $keyNameParts), $setup[$key]);
 				}
 			}
 		}
@@ -636,43 +624,45 @@ class TypoScriptParser {
 	 */
 	public function setVal($string, &$setup, $value, $wipeOut = 0) {
 		if ((string) $string != '') {
-			$keyLen = strcspn($string, '.');
-			if ($keyLen == strlen($string)) {
+			$keyNameParts = $this->explodeKeyName($string);
+			$firstKeyName = trim(array_shift($keyNameParts), '"');
+
+			if (count($keyNameParts) === 0) {
 				if ($value == 'UNSET') {
-					unset($setup[$string]);
-					unset($setup[$string . '.']);
+					unset($setup[$firstKeyName]);
+					unset($setup[$firstKeyName . '.']);
 					if ($this->regLinenumbers) {
-						$setup[$string . '.ln..'][] = ($this->lineNumberOffset + $this->rawP - 1) . '>';
+						$setup[$firstKeyName . '.ln..'][] = ($this->lineNumberOffset + $this->rawP - 1) . '>';
 					}
 				} else {
 					$lnRegisDone = 0;
 					if ($wipeOut && $this->strict) {
-						unset($setup[$string]);
-						unset($setup[$string . '.']);
+						unset($setup[$firstKeyName]);
+						unset($setup[$firstKeyName . '.']);
 						if ($this->regLinenumbers) {
-							$setup[$string . '.ln..'][] = ($this->lineNumberOffset + $this->rawP - 1) . '<';
+							$setup[$firstKeyName . '.ln..'][] = ($this->lineNumberOffset + $this->rawP - 1) . '<';
 							$lnRegisDone = 1;
 						}
 					}
 					if (isset($value[0])) {
-						$setup[$string] = $value[0];
+						$setup[$firstKeyName] = $value[0];
 					}
 					if (isset($value[1])) {
-						$setup[$string . '.'] = $value[1];
+						$setup[$firstKeyName . '.'] = $value[1];
 					}
 					if ($this->lastComment && $this->regComments) {
-						$setup[$string . '..'] .= $this->lastComment;
+						$setup[$firstKeyName . '..'] .= $this->lastComment;
 					}
 					if ($this->regLinenumbers && !$lnRegisDone) {
-						$setup[$string . '.ln..'][] = $this->lineNumberOffset + $this->rawP - 1;
+						$setup[$firstKeyName . '.ln..'][] = $this->lineNumberOffset + $this->rawP - 1;
 					}
 				}
 			} else {
-				$key = substr($string, 0, $keyLen) . '.';
+				$key = $firstKeyName . '.';
 				if (!isset($setup[$key])) {
 					$setup[$key] = array();
 				}
-				$this->setVal(substr($string, $keyLen + 1), $setup[$key], $value);
+				$this->setVal(implode('.', $keyNameParts), $setup[$key], $value);
 			}
 		}
 	}
@@ -1032,6 +1022,110 @@ class TypoScriptParser {
 			$lines[] = $lineC;
 		}
 		return '<pre class="ts-hl">' . implode(LF, $lines) . '</pre>';
+	}
+
+	/**
+	 * Explodes a key name into accordant parts.
+	 *
+	 * @param string $keyName
+	 * @return array
+	 */
+	protected function explodeKeyName($keyName) {
+		$substitutes = array();
+		$maskedKeyName = $this->maskKeyNames($keyName, $substitutes);
+
+		$keyNameParts = explode('.', $maskedKeyName);
+
+		if (count($substitutes) > 0) {
+			$replace = array();
+			$search = array();
+
+			foreach ($substitutes as $substitute) {
+				$replace[] = $substitute['replace'];
+				$search[] = $substitute['search'];
+			}
+
+			foreach ($keyNameParts as &$keyNamePart) {
+				$keyNamePart = str_replace($replace, $search, $keyNamePart);
+			}
+		}
+
+		return $keyNameParts;
+	}
+
+	/**
+	 * Masks quoted keys by a substitute.
+	 *
+	 * @param string $string Data to be worked to for masking the key names
+	 * @param NULL|array $substitutes (optional) Substitutes actually performed
+	 * @return string
+	 */
+	protected function maskKeyNames($string, array &$substitutes = NULL) {
+		if (strpos($string, '"') !== FALSE) {
+			if (preg_match_all('#"([' . self::PATTERN_ValidQuotedPartCharacters . ']+)"#', $string, $matches)) {
+				$search = array();
+				$replace = array();
+
+				foreach ($matches[1] as $index => $content) {
+					$needle = $matches[0][$index];
+					$substitute = $this->getSubstitute($needle, $content);
+
+					if ($substitutes !== NULL) {
+						$substitutes[$needle] = $substitute;
+					}
+
+					$search[] = $substitute['search'];
+					$replace[] = $substitute['replace'];
+				}
+
+				$string = str_replace($search, $replace, $string);
+			}
+		}
+
+		return $string;
+	}
+
+	/**
+	 * Gets a substitute or creates a new one.
+	 *
+	 * @param string $search
+	 * @param string $content
+	 * @return array
+	 */
+	protected function getSubstitute($search, $content) {
+		if (empty($this->substitutes[$search])) {
+			$this->substitutes[$search] = array(
+				'search' => $search,
+				'replace' => uniqid('substitute'),
+				'content' => $content,
+			);
+		}
+
+		return $this->substitutes[$search];
+	}
+
+	/**
+	 * Determines whether object name contains only valid characters.
+	 *
+	 * @param string $objectName
+	 * @return boolean
+	 */
+	protected function isValidObjectName($objectName) {
+		$result = TRUE;
+
+		$maskedObjectName = $this->maskKeyNames($objectName);
+		$matches = array();
+
+		if ($this->strict && preg_match('#[^' . self::PATTERN_ValidQuotedPartCharacters . ']#', $maskedObjectName, $matches)) {
+			$this->error(
+				'Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' .
+				htmlspecialchars($objectName) . '" contains invalid character "' . $matches[0] .
+				'". Must be alphanumeric or one of: "_-\\."'
+			);
+			$result = FALSE;
+		}
+
+		return $result;
 	}
 
 }
