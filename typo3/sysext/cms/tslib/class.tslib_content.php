@@ -5942,7 +5942,8 @@ class tslib_cObj {
 							// If link is to a access restricted page which should be redirected, then find new URL:
 						if ($GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages']
 							&& $GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] !== 'NONE'
-							&& !$GLOBALS['TSFE']->checkPageGroupAccess($page)) {
+							&& !$GLOBALS['TSFE']->checkPageGroupAccess($page)
+							&& !$conf['linkAccessRestrictedPages']) {
 
 							$thePage = $GLOBALS['TSFE']->sys_page->getPage($GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages']);
 
