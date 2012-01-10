@@ -1321,7 +1321,7 @@ class tslib_cObj {
 						($dims[0] + $offset[0]) . ',height=' . ($dims[1] + $offset[1]) .
 						',status=0,menubar=0\'); return false;') . '"' .
 						$target . $GLOBALS['TSFE']->ATagParams . '>';
-					$a2 = '</a>';
+					$a2 = $conf['imageLinkText'] . '</a>';
 					$GLOBALS['TSFE']->setJS('openPic');
 				} else {
 					$conf['linkParams.']['parameter'] = $url;
