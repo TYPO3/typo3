@@ -59,6 +59,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 		if (is_bool($result)) {
 			return $result;
 		} else {
+			$value = $this->getVariable(trim($value));
 			switch ($key) {
 				case 'usergroup':
 					$groupList = $this->getGroupList();
