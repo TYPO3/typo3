@@ -60,6 +60,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 			return $result;
 		} else {
 			switch ($key) {
+				$value = $this->getVariable(trim($value));
 				case 'usergroup':
 					$groupList = $this->getGroupList();
 					$values = t3lib_div::trimExplode(',', $value, TRUE);
