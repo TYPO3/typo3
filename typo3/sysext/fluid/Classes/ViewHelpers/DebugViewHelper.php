@@ -14,7 +14,7 @@
  *                                                                        */
 
 /**
- * Wrapper for TYPO3s famous debug() function
+ * This ViewHelper generates a HTML dump of the tagged variable.
  *
  * = Examples =
  *
@@ -24,23 +24,31 @@
  * <output>
  * foobarbazfoo
  * </output>
+ *
+ * <code title="All Features">
+ * <f:debug title="My Title" maxDepth="5" blacklistedClassNames="{0:'Tx_BlogExample_Domain_Model_Administrator'}" plainText="TRUE" ansiColors="FALSE" inline="TRUE" blacklistedPropertyNames="{0:'posts'}">{blogs}</f:debug>
+ * </code>
+ * <output>
+ * [A HTML view of the var_dump]
+ * </output>
  */
 class Tx_Fluid_ViewHelpers_DebugViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * Wrapper for TYPO3s famous debug() function
+	 * A wrapper for Tx_Extbase_Utility_Debugger::var_dump().
 	 *
-	 * @param string $title
-	 * @return string the altered string.
+	 * @param string $title optional custom title for the debug output
+	 * @param integer $maxDepth Sets the max recursion depth of the dump (defaults to 8). De- or increase the number according to your needs and memory limit.
+	 * @param boolean $plainText If TRUE, the dump is in plain text, if FALSE the debug output is in HTML format.
+	 * @param boolean $ansiColors If TRUE, ANSI color codes is added to the plaintext output, if FALSE (default) the plaintext debug output not colored.
+	 * @param boolean $inline if TRUE, the dump is rendered at the position of the <f:debug> tag. If FALSE (default), the dump is displayed at the top of the page.
+	 * @param array $blacklistedClassNames An array of class names (RegEx) to be filtered. Default is an array of some common class names.
+	 * @param array $blacklistedPropertyNames An array of property names and/or array keys (RegEx) to be filtered. Default is an array of some common property names.
+	 * @return string
 	 */
-	public function render($title = NULL) {
-		ob_start();
-		t3lib_utility_Debug::debug($this->renderChildren(), $title);
-		$output = ob_get_contents();
-		ob_end_clean();
-		return $output;
+	public function render($title = NULL, $maxDepth = 8, $plainText = FALSE, $ansiColors = FALSE, $inline = FALSE, $blacklistedClassNames = NULL, $blacklistedPropertyNames = NULL) {
+		return Tx_Extbase_Utility_Debugger::var_dump($this->renderChildren(), $title, $maxDepth , (bool)$plainText, (bool)$ansiColors, (bool)$inline, $blacklistedClassNames, $blacklistedPropertyNames);
 	}
 }
-
 
 ?>
