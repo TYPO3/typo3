@@ -137,6 +137,32 @@ class tx_version_tcemain {
 	}
 
 	/**
+	 * Hook that is called after tcemain made most of its decisions.
+	 *
+	 * NOTE: This fixes an issue related to moving/creating initial-placeholders - if such a new page
+	 * is intended to be place behind a move-placeholder tcemain handles the movement/creation,
+	 * but does not respect the wsPlaceholder, which leads the new page to be located at the old location of the
+	 * page where it was intended to be placed behind.
+	 *
+	 * @param string $command
+	 * @param string $table
+	 * @param int $id
+	 * @param mixed $value
+	 * @param t3lib_TCEmain $tcemain
+	 */
+	public function processCmdmap_postProcess($command, $table, $id, $value, t3lib_TCEmain $tcemain) {
+		if ($command === 'move') {
+			if ($value < 0) {
+				$movePlaceHolder = t3lib_BEfunc::getMovePlaceholder($table, abs($value), 'uid');
+				if ($movePlaceHolder !== FALSE) {
+					$destPid = -$movePlaceHolder['uid'];
+					$tcemain->moveRecord_raw($table, $id, $destPid);
+				}
+			}
+		}
+	}
+
+	/**
 	 * hook that is called AFTER all commands of the commandmap was
 	 * executed
 	 *
