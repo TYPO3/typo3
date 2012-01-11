@@ -87,6 +87,18 @@ class tx_cms_layout extends recordList {
 	var $CType_labels = array(); // Used to store labels for CTypes for tt_content elements
 	var $itemLabels = array(); // Used to store labels for the various fields in tt_content elements
 
+	/**
+	 * @var tx_cms_BackendLayout
+	 */
+	var $backendLayout;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->backendLayout = t3lib_div::makeInstance('tx_cms_BackendLayout');
+	}
+
 
 	/*****************************************
 	 *
@@ -299,37 +311,6 @@ class tx_cms_layout extends recordList {
 	}
 
 	/**
-	 * Returns the backend layout which should be used for this page.
-	 *
-	 * @param integer $id: Uid of the current page
-	 * @return mixed Uid of the backend layout record or NULL if no layout should be used
-	 */
-	function getSelectedBackendLayoutUid($id) {
-		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('backend_layout', 'pages', 'uid=' . $id);
-		$backendLayoutUid = intval($page['backend_layout']);
-		if ($backendLayoutUid == -1) {
-				// if it is set to "none" - don't use any
-			$backendLayoutUid = NULL;
-		} elseif ($backendLayoutUid == 0) {
-				// if it not set check the rootline for a layout on next level and use this
-			$rootline = t3lib_BEfunc::BEgetRootLine($id);
-			for ($i = count($rootline) - 2; $i > 0; $i--) {
-				$backendLayoutUid = intval($rootline[$i]['backend_layout_next_level']);
-				if ($backendLayoutUid > 0) {
-						// stop searching if a layout for "next level" is set
-					break;
-				} elseif ($backendLayoutUid == -1){
-						// if layout for "next level" is set to "none" - don't use any and stop searching
-					$backendLayoutUid = NULL;
-					break;
-				}
-			}
-		}
-			// if it is set to a positive value use this
-		return $backendLayoutUid;
-	}
-
-	/**
 	 * Renders Content Elements from the tt_content table from page id
 	 *
 	 * @param	integer		Page id
@@ -449,8 +430,7 @@ class tx_cms_layout extends recordList {
 				// For EACH column, fit the rendered content into a table cell:
 				$out = '';
 
-				$backendLayoutUid = $this->getSelectedBackendLayoutUid($id);
-				$backendLayoutRecord = t3lib_BEfunc::getRecord('backend_layout', intval($backendLayoutUid));
+				$backendLayoutRecord = $this->backendLayout->getSelectedBackendLayout($id);
 				$this->tt_contentConfig['showAsGrid'] = !empty($backendLayoutRecord['config']) && !$this->tt_contentConfig['languageMode'];
 
 				if (!$this->tt_contentConfig['showAsGrid']) {
@@ -486,44 +466,19 @@ class tx_cms_layout extends recordList {
 
 				} else {
 					// GRID VIEW:
-
-					// initialize TS parser to parse config to array
-					$parser = t3lib_div::makeInstance('t3lib_TSparser');
-					$parser->parse($backendLayoutRecord['config']);
-
 					$grid .= '<div class="t3-gridContainer"><table border="0" cellspacing="1" cellpadding="4" width="100%" height="100%" class="t3-page-columns t3-gridTable">';
-
-					// add colgroups
 					$colCount = intval($parser->setup['backend_layout.']['colCount']);
 					$rowCount = intval($parser->setup['backend_layout.']['rowCount']);
 
-					$grid .= '<colgroup>';
-					for ($i = 0; $i < $colCount; $i++) {
-						$grid .= '<col style="width:' . (100 / $colCount) . '%"></col>';
-					}
-					$grid .= '</colgroup>';
-
 					// cycle through rows
-					for ($row = 1; $row <= $rowCount; $row++) {
-						$rowConfig = $parser->setup['backend_layout.']['rows.'][$row . '.'];
-						if (!isset($rowConfig)) {
-							continue;
-						}
-
+					foreach ($backendLayoutRecord['__config']['backend_layout.']['rows.'] as $rowConfig) {
 						$grid .= '<tr>';
-
-						for ($col = 1; $col <= $colCount; $col++) {
-							$columnConfig = $rowConfig['columns.'][$col . '.'];
-
-							if (!isset($columnConfig)) {
-								continue;
-							}
-
+						foreach ($rowConfig['columns.'] as $columnConfig) {
 							// which tt_content colPos should be displayed inside this cell
 							$columnKey = intval($columnConfig['colPos']);
 
 							// render the grid cell
-							$grid .= '<td valign="top"' .
+							$grid .= '<td style="width:' . (100 / count($rowConfig['columns.'])) . '%" valign="top"' .
 									(isset($columnConfig['colspan']) ? ' colspan="' . $columnConfig['colspan'] . '"' : '') .
 									(isset($columnConfig['rowspan']) ? ' rowspan="' . $columnConfig['rowspan'] . '"' : '') .
 									' class="t3-gridCell t3-page-column t3-page-column-' . $columnKey .
