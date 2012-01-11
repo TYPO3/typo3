@@ -44,6 +44,16 @@ class tx_cms_BackendLayout {
 				$params['items'] = $this->addColPosListLayoutItems($existingElement['pid'], $params['items']);
 			}
 		}
+		$hooks =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/classes/class.tx_cms_backendlayout.php']['tx_cms_BackendLayout'];
+		if (is_array($hooks)) {
+			foreach ($hooks as $hookClass) {
+				$hookObject = t3lib_div::getUserObj($hookClass);
+				if (!($hookObject instanceof tx_cms_BackendLayoutHook)) {
+					throw new UnexpectedValueException('$hookObject must implement interface tx_cms_BackendLayoutHook', 1326311344);
+				}
+				$hookObject->postProcessColPosProcFuncItems($params);
+			}
+		}
 	}
 
 	/**
@@ -91,6 +101,16 @@ class tx_cms_BackendLayout {
 			}
 		}
 
+		$hooks =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/classes/class.tx_cms_backendlayout.php']['tx_cms_BackendLayout'];
+		if (is_array($hooks)) {
+			foreach ($hooks as $hookClass) {
+				$hookObject = t3lib_div::getUserObj($hookClass);
+				if (!($hookObject instanceof tx_cms_BackendLayoutHook)) {
+					throw new UnexpectedValueException('$hookObject must implement interface tx_cms_BackendLayoutHook', 1326311344);
+				}
+				$hookObject->postProcessColPosListItemsParsed($id, $tcaItems, $tceForms);
+			}
+		}
 		return $tcaItems;
 	}
 
@@ -103,6 +123,17 @@ class tx_cms_BackendLayout {
 	public function getSelectedBackendLayout($id) {
 		$rootline = t3lib_BEfunc::BEgetRootLine($id);
 		$backendLayoutUid = NULL;
+		$hooks =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/classes/class.tx_cms_backendlayout.php']['tx_cms_BackendLayout'];
+
+		if (is_array($hooks)) {
+			foreach ($hooks as $hookClass) {
+				$hookObject = t3lib_div::getUserObj($hookClass);
+				if (!($hookObject instanceof tx_cms_BackendLayoutHook)) {
+					throw new UnexpectedValueException('$hookObject must implement interface tx_cms_BackendLayoutHook', 1326311344);
+				}
+				$hookObject->preProcessBackendLayoutPageUid($id);
+			}
+		}
 
 		for ($i = count($rootline); $i > 0; $i--) {
 			$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
@@ -160,6 +191,16 @@ class tx_cms_BackendLayout {
 						}
 					}
 				}
+			}
+		}
+
+		if (is_array($hooks)) {
+			foreach ($hooks as $hookClass) {
+				$hookObject = t3lib_div::getUserObj($hookClass);
+				if (!($hookObject instanceof tx_cms_BackendLayoutHook)) {
+					throw new UnexpectedValueException('$hookObject must implement interface tx_cms_BackendLayoutHook', 1326311344);
+				}
+				$hookObject->postProcessBackendLayout($id, $backendLayout);
 			}
 		}
 
