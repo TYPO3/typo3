@@ -75,6 +75,7 @@ class t3lib_autoloader {
 	static public function registerAutoloader() {
 		self::loadCoreRegistry();
 		self::$extensionHasAutoloadConfiguration = array();
+		@ini_set('unserialize_callback_func', 'spl_autoload_call');
 		return spl_autoload_register('t3lib_autoloader::autoload');
 	}
 
