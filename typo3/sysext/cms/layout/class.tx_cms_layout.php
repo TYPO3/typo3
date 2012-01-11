@@ -101,10 +101,20 @@ class tx_cms_layout extends recordList {
 		'prev' => array(),
 		'next' => array()
 	);
-		// Used to store labels for CTypes for tt_content elements
-	var $CType_labels = array();
-		// Used to store labels for the various fields in tt_content elements
-	var $itemLabels = array();
+	var $CType_labels = array(); // Used to store labels for CTypes for tt_content elements
+	var $itemLabels = array(); // Used to store labels for the various fields in tt_content elements
+
+	/**
+	 * @var tx_cms_BackendLayout
+	 */
+	var $backendLayout;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->backendLayout = t3lib_div::makeInstance('tx_cms_BackendLayout');
+	}
 
 	/*****************************************
 	 *
@@ -318,6 +328,7 @@ class tx_cms_layout extends recordList {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Returns the backend layout which should be used for this page.
 	 *
 	 * @param integer $id Uid of the current page
@@ -352,6 +363,8 @@ class tx_cms_layout extends recordList {
 	}
 
 	/**
+=======
+>>>>>>> [FEATURE] EXT:cms Add hooks to BackendLayout class
 	 * Renders Content Elements from the tt_content table from page id
 	 *
 	 * @param integer $id Page id
@@ -492,8 +505,7 @@ class tx_cms_layout extends recordList {
 					// For each column, fit the rendered content into a table cell:
 				$out = '';
 
-				$backendLayoutUid = $this->getSelectedBackendLayoutUid($id);
-				$backendLayoutRecord = t3lib_BEfunc::getRecord('backend_layout', intval($backendLayoutUid));
+				$backendLayoutRecord = $this->backendLayout->getSelectedBackendLayout($id);
 				$this->tt_contentConfig['showAsGrid'] = !empty($backendLayoutRecord['config']) && !$this->tt_contentConfig['languageMode'];
 
 				if (!$this->tt_contentConfig['showAsGrid']) {
