@@ -27,6 +27,7 @@ return array(
 	'tx_cms_mediaitems' => PATH_tslib . 'hooks/class.tx_cms_mediaitems.php',
 	'tx_cms_treelistcacheupdate' => PATH_tslib . 'hooks/class.tx_cms_treelistcacheupdate.php',
 	'tx_cms_backendlayout' => PATH_tslib . 'classes/class.tx_cms_backendlayout.php',
+	'tx_cms_backendlayouthook' => PATH_tslib . 'interfaces/interface.tx_cms_backendlayouthook.php',
 	'tslib_content_cobjgetsinglehook' => PATH_tslib . 'interfaces/interface.tslib_content_cobjgetsinglehook.php',
 	'tslib_menu_filterMenuPagesHook' => PATH_tslib . 'interfaces/interface.tslib_menu_filterMenuPagesHook.php',
 	'tslib_content_getdatahook' => PATH_tslib . 'interfaces/interface.tslib_content_getdatahook.php',
