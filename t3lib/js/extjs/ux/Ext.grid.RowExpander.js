@@ -10,39 +10,38 @@
  * including getter and setter functions, and minor mods
  * to the beforeExpand and expandRow functions
  */
-Ext.define('Ext.grid.RowExpander', {
-	extend: 'Ext.util.Observable',
 
+Ext.grid.RowExpander = function(config) {
+	Ext.apply(this, config);
+	Ext.grid.RowExpander.superclass.constructor.call(this);
+
+	if (this.tpl) {
+		if (typeof this.tpl == 'string') {
+			this.tpl = new Ext.Template(this.tpl);
+		}
+		this.tpl.compile();
+	}
+
+	this.state = {};
+	this.bodyContent = {};
+
+	this.addEvents({
+		beforeexpand : true,
+		expand: true,
+		beforecollapse: true,
+		collapse: true
+	});
+};
+
+Ext.extend(Ext.grid.RowExpander, Ext.util.Observable, {
 	header: "",
 	width: 20,
 	sortable: false,
 	fixed:true,
 	dataIndex: '',
 	id: 'expander',
-	lazyRender: true,
+	lazyRender : true,
 	enableCaching: true,
-
-	constructor: function(config) {
-		Ext.apply(this, config);
-		Ext.grid.RowExpander.superclass.constructor.call(this);
-
-		if (this.tpl) {
-			if (typeof this.tpl == 'string') {
-				this.tpl = Ext.create('Ext.Template', this.tpl);
-			}
-			this.tpl.compile();
-		}
-
-		this.state = {};
-		this.bodyContent = {};
-
-		this.addEvents({
-			beforeexpand : true,
-			expand: true,
-			beforecollapse: true,
-			collapse: true
-		});
-	},
 
 	getRowClass : function(record, rowIndex, p, ds) {
 		p.cols = p.cols-1;
@@ -60,7 +59,7 @@ Ext.define('Ext.grid.RowExpander', {
 		this.grid = grid;
 
 		var view = grid.getView();
-		view.getRowClass = Ext.Function.bind(this.getRowClass, this);
+		view.getRowClass = this.getRowClass.createDelegate(this);
 
 		view.enableRowBody = true;
 
@@ -141,7 +140,7 @@ Ext.define('Ext.grid.RowExpander', {
 			// If remoteDataMethod is defined then we'll need a div, with a unique ID,
 			//  to place the content
 			if (this.remoteDataMethod) {
-				this.tpl = Ext.create('Ext.Template', "<div id=\"remData" + rowIndex + "\" class=\"rem-data-expand\"><\div>");
+				this.tpl = new Ext.Template("<div id=\"remData" + rowIndex + "\" class=\"rem-data-expand\"><\div>");
 			}
 			if (this.tpl && this.lazyRender) {
 				body.innerHTML = this.getBodyContent(record, rowIndex);

@@ -23,9 +23,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-Ext.define('TYPO3.Components.TcaValueSlider', {
-	extend: 'Ext.slider.Single',
 
+Ext.ns('TYPO3.Components');
+
+TYPO3.Components.TcaValueSlider = Ext.extend(Ext.slider.SingleSlider, {
 	itemName: null,
 	getField: null,
 	changeCallback: null,
@@ -49,7 +50,7 @@ Ext.define('TYPO3.Components.TcaValueSlider', {
 			keyIncrement: step,
 			increment: step,
 			type: this.type,
-			plugins: Ext.create('Ext.slider.Tip', {
+			plugins: new Ext.slider.Tip({
 				getText: function(thumb) {
 					return thumb.slider.renderValue(thumb.value);
 				}
@@ -141,3 +142,5 @@ Ext.define('TYPO3.Components.TcaValueSlider', {
 	}
 
 });
+
+Ext.reg('TYPO3.Components.TcaValueSlider', TYPO3.Components.TcaValueSlider);
