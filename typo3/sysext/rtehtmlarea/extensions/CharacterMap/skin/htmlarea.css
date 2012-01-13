@@ -1,5 +1,10 @@
 /* Selectors for the InsertCharacter plugin of htmlArea RTE */
 .htmlarea-action-character-insert-from-map {
-	background-image: url('images/insertCharacter.gif') !important;
+	background-image: url('images/character-insert-from-map.gif') !important;
 	background-position: 0 0 !important;
 }
+.htmlarea-action-soft-hyphen-insert {
+	background-image: url('images/soft-hyphen-insert.gif') !important;
+	background-position: 0 0 !important;
+}
+
