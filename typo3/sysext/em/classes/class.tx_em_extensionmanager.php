@@ -194,9 +194,7 @@ class tx_em_ExtensionManager {
 
 		// Add JS
 		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath . '../t3lib/js/extjs/ux/flashmessages.js');
-		// @todo Migrate to Ext JS 4 as well
-		// $this->pageRenderer->addJsFile($this->parentObject->doc->backPath . 'js/extjs/iframepanel.js');
-		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath . 'sysext/extjs3_compat/typo3_extjs/iframepanel.js');
+		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath . 'js/extjs/iframepanel.js');
 		$this->pageRenderer->addJsFile($this->parentObject->doc->backPath . 'contrib/codemirror/js/codemirror.js');
 
 		//Plugins
