@@ -27,8 +27,7 @@
 /*
  * TYPO3Image plugin for htmlArea RTE
  */
-Ext.define('HTMLArea.TYPO3Image', {
-	extend: 'HTMLArea.Plugin',
+HTMLArea.TYPO3Image = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -85,7 +84,7 @@ Ext.define('HTMLArea.TYPO3Image', {
 		}
 		this.openContainerWindow(
 			buttonId,
-			this.getButton(buttonId).tooltip.text,
+			this.getButton(buttonId).tooltip.title,
 			this.getWindowDimensions(
 				{
 					width:	610,
@@ -127,9 +126,9 @@ Ext.define('HTMLArea.TYPO3Image', {
 				image = null;
 			}
 			if (image) {
-				button.setTooltip({ text: this.localize('Modify image') });
+				button.setTooltip({ title: this.localize('Modify image') });
 			} else {
-				button.setTooltip({ text: this.localize('Insert image') });
+				button.setTooltip({ title: this.localize('Insert image') });
 			}
 		}
 	}

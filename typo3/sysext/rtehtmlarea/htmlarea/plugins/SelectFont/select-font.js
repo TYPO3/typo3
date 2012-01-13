@@ -27,8 +27,7 @@
 /*
  * SelectFont Plugin for TYPO3 htmlArea RTE
  */
-Ext.define('HTMLArea.SelectFont', {
-	extend: 'HTMLArea.Plugin',
+HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -79,18 +78,17 @@ Ext.define('HTMLArea.SelectFont', {
 					tooltip: this.localize(buttonId.toLowerCase()),
 					storeUrl: this.buttonsConfiguration[dropDown[2]].dataUrl,
 					action: 'onChange',
-					template: '<div data-qtip="{value}"' + (this.disablePCexamples ? '' : 'style="' + dropDown[3] + '"') + ' class="htmlarea-combo-list-item">{text}</div>'
+					tpl: this.disablePCexamples ? '' : '<tpl for="."><div ext:qtip="{value}" style="' + dropDown[3] + '" class="x-combo-list-item">{text}</div></tpl>'
 				};
 				if (this.buttonsConfiguration[dropDown[2]]) {
 					if (this.editorConfiguration.buttons[dropDown[2]].width) {
 						dropDownConfiguration.width = parseInt(this.editorConfiguration.buttons[dropDown[2]].width, 10);
 					}
-					dropDownConfiguration.listConfig = {};
 					if (this.editorConfiguration.buttons[dropDown[2]].listWidth) {
-						dropDownConfiguration.listConfig.width = parseInt(this.editorConfiguration.buttons[dropDown[2]].listWidth, 10);
+						dropDownConfiguration.listWidth = parseInt(this.editorConfiguration.buttons[dropDown[2]].listWidth, 10);
 					}
 					if (this.editorConfiguration.buttons[dropDown[2]].maxHeight) {
-						dropDownConfiguration.listConfig.maxHeight = parseInt(this.editorConfiguration.buttons[dropDown[2]].maxHeight, 10);
+						dropDownConfiguration.maxHeight = parseInt(this.editorConfiguration.buttons[dropDown[2]].maxHeight, 10);
 					}
 				}
 				this.registerDropDown(dropDownConfiguration);
@@ -103,8 +101,8 @@ Ext.define('HTMLArea.SelectFont', {
 	 * The list of buttons added by this plugin
 	 */
 	dropDownList: [
-		['FontName', null, 'fontstyle', 'font-family:{value};'],
-		['FontSize', null, 'fontsize', 'font-size:{value};']
+		['FontName', null, 'fontstyle', 'font-family:{value};text-align:left;font-size:11px;'],
+		['FontSize', null, 'fontsize', 'text-align:left;font-size:{value};']
 	],
 	/*
 	 * Conversion object: button name to corresponding style property name

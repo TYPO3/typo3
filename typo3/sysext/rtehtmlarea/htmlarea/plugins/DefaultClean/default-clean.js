@@ -26,8 +26,7 @@
 /**
  * Default Clean Plugin for TYPO3 htmlArea RTE
  */
-Ext.define('HTMLArea.DefaultClean', {
-	extend: 'HTMLArea.Plugin',
+HTMLArea.DefaultClean = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -167,6 +166,6 @@ Ext.define('HTMLArea.DefaultClean', {
 	 * Handler for paste, dragdrop and drop events
 	 */
 	wordCleanHandler: function (event) {
-		Ext.Function.defer(this.clean, 250, this);
+		this.clean.defer(250, this);
 	}
 });

@@ -27,8 +27,7 @@
 /*
  * TYPO3Link plugin for htmlArea RTE
  */
-Ext.define('HTMLArea.TYPO3Link', {
-	extend: 'HTMLArea.Plugin',
+HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -160,7 +159,7 @@ Ext.define('HTMLArea.TYPO3Link', {
 			}
 			this.openContainerWindow(
 				buttonId,
-				this.getButton(buttonId).tooltip.text,
+				this.getButton(buttonId).tooltip.title,
 				this.getWindowDimensions(
 					{
 						width:	550,
@@ -451,9 +450,9 @@ Ext.define('HTMLArea.TYPO3Link', {
 							node = el;
 						}
 						if (node != null && /^a$/i.test(node.nodeName)) {
-							button.setTooltip({ text: this.localize('Modify link') });
+							button.setTooltip({ title: this.localize('Modify link') });
 						} else {
-							button.setTooltip({ text: this.localize('Insert link') });
+							button.setTooltip({ title: this.localize('Insert link') });
 						}
 					}
 					break;

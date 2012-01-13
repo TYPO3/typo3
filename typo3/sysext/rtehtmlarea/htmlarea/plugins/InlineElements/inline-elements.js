@@ -30,8 +30,7 @@
 /*
  * Creation of the class of InlineElements plugins
  */
-Ext.define('HTMLArea.InlineElements', {
-	extend: 'HTMLArea.Plugin',
+HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the base constructor
 	 */
@@ -77,12 +76,11 @@ Ext.define('HTMLArea.InlineElements', {
 			if (this.editorConfiguration.buttons.formattext.width) {
 				dropDownConfiguration.listWidth = parseInt(this.editorConfiguration.buttons.formattext.width, 10);
 			}
-			dropDownConfiguration.listConfig = {};
 			if (this.editorConfiguration.buttons.formattext.listWidth) {
-				dropDownConfiguration.listConfig.width = parseInt(this.editorConfiguration.buttons.formattext.listWidth, 10);
+				dropDownConfiguration.listWidth = parseInt(this.editorConfiguration.buttons.formattext.listWidth, 10);
 			}
 			if (this.editorConfiguration.buttons.formattext.maxHeight) {
-				dropDownConfiguration.listConfig.maxHeight = parseInt(this.editorConfiguration.buttons.formattext.maxHeight, 10);
+				dropDownConfiguration.maxHeight = parseInt(this.editorConfiguration.buttons.formattext.maxHeight, 10);
 			}
 		}
 		this.registerDropDown(dropDownConfiguration);
@@ -408,15 +406,15 @@ Ext.define('HTMLArea.InlineElements', {
 		store.removeAt(0);
 		if ((store.findExact('value', tagName) != -1) && (selectionEmpty || fullNodeSelected)) {
 			select.setValue(tagName);
-			store.insert(0, {
+			store.insert(0, new store.recordType({
 				text: this.localize('Remove markup'),
 				value: 'none'
-			});
+			}));
 		} else {
-			store.insert(0, {
+			store.insert(0, new store.recordType({
 				text: this.localize('No markup'),
 				value: 'none'
-			});
+			}));
 			select.setValue('none');
 		}
 		select.setDisabled(!(store.getCount()>1) || disabled);

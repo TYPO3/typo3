@@ -30,8 +30,7 @@
 /*
  * Spell Checker Plugin for TYPO3 htmlArea RTE
  */
-Ext.define('HTMLArea.SpellChecker', {
-	extend: 'HTMLArea.Plugin',
+HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -74,26 +73,17 @@ Ext.define('HTMLArea.SpellChecker', {
 	 * Sets of default configuration values for dialogue form fields
 	 */
 	configDefaults: {
-		combobox: {
-			cls: 'htmlarea-combo',
-			displayField: 'text',
+		combo: {
 			editable: true,
-			forceSelection: true,
-			helpIcon: true,
-			listConfig: {
-				cls: 'htmlarea-combo-list',
-				getInnerTpl: function () {
-					return '<div data-qtip="{value}" class="htmlarea-combo-list-item">{text}</div>';
-				}
-			},
-			model: 'HTMLArea.model.Default',
-			queryMode: 'local',
 			selectOnFocus: true,
 			typeAhead: true,
 			triggerAction: 'all',
+			forceSelection: true,
+			mode: 'local',
 			valueField: 'value',
-			width: 160,
-			xtype: 'combobox'
+			displayField: 'text',
+			helpIcon: true,
+			tpl: '<tpl for="."><div ext:qtip="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
 		}
 	},
 	/*
@@ -115,7 +105,7 @@ Ext.define('HTMLArea.SpellChecker', {
 			this.getWindowDimensions(
 				{
 					width: 740,
-					height: 500
+					height: 600
 				},
 				buttonId
 			)
@@ -132,15 +122,15 @@ Ext.define('HTMLArea.SpellChecker', {
 	 * @return	void
 	 */
 	openDialogue: function (buttonId, title, dimensions) {
-		this.dialog = Ext.create('Ext.window.Window', {
+		this.dialog = new Ext.Window({
 			title: this.localize(title),
 			cls: 'htmlarea-window',
-			bodyCls: 'spell-check',
+			bodyCssClass: 'spell-check',
 			border: false,
-			layout: 'fit',
 			width: dimensions.width,
-			height: dimensions.height,
-			resizable: true,
+			height: Ext.isIE ? dimensions.height - 50 : 'auto',
+				// As of ExtJS 3.1, JS error with IE when the window is resizable
+			resizable: !Ext.isIE,
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				afterrender: {
@@ -155,11 +145,9 @@ Ext.define('HTMLArea.SpellChecker', {
 					scope: this
 				}
 			},
-			items: [
-				{
+			items: [{
 						// The hidden form
 					xtype: 'form',
-					layout: 'auto',
 					method: 'POST',
 					itemId: 'spell-check-form',
 					url: this.pageTSconfiguration.path,
@@ -193,219 +181,195 @@ Ext.define('HTMLArea.SpellChecker', {
 							value: this.userUid
 						},{
 							xtype: 'hidden',
-							name: 'enablePersonalDicts',
+							name:'enablePersonalDicts',
 							value: this.enablePersonalDicts
 						},{
 							xtype: 'hidden',
-							name: 'restrictToDictionaries',
+							name:'restrictToDictionaries',
 							value: this.restrictToDictionaries
-						},{
-							xtype: 'hidden',
-							name: 'accept-charset',
-							value: this.contentCharset.toUpperCase()
-						},{
-							xtype: 'hidden',
-							name: 'target',
-							value: 'contentframe'
 						}
 					]
 				},{
 						// The iframe
-					xtype: 'component',
+					xtype: 'box',
 					itemId: 'spell-check-iframe',
+					width: dimensions.width - 225,
 					autoEl: {
 						name: 'contentframe',
 						tag: 'iframe',
 						cls: 'contentframe',
-						src: Ext.isIE && Ext.isSecure ? HTMLArea.editorUrl + 'popups/blank.html' : 'about:blank'
+						src: Ext.isGecko ? 'javascript:void(0);' : HTMLArea.editorUrl + 'popups/blank.html'
 					}
-				}
-			],
-			dockedItems: [
-				{
-					xtype: 'panel',
-					border: 0,
-					bodyCls: 'spell-check',
-					dock: 'left',
-					itemId: 'controls',
-					layout:'anchor',
-					weight: 10,
-					width: 200,
-					items: [
-						{
-								// The original word
-							xtype: 'fieldset',
-							title: this.localize('Original word'),
-							cls: 'controls',
-							labelWidth: 0,
-							defaults: {
-								hideLabel: true,
-								disabled: true,
-								minWidth: 160
-							},
-							items: [{
-									xtype: 'textfield',
-									itemId: 'word',
-									disabled: false,
-									hideLabel: true,
-									width: 160
-								},
-								this.buildButtonConfig('Revert', this.onRevertClick)
-							]
+				},{
+						// The original word
+					xtype: 'fieldset',
+					title: this.localize('Original word'),
+					cls: 'controls',
+					labelWidth: 0,
+					defaults: {
+						hideLabel: true,
+						disabled: true,
+						minWidth: 160
+					},
+					items: [{
+							xtype: 'textfield',
+							itemId: 'word',
+							disabled: false
+						},
+						this.buildButtonConfig('Revert', this.onRevertClick)
+					]
+				},{
+						// The replacement word and actions
+					xtype: 'fieldset',
+					title: this.localize('Replacement'),
+					cls: 'controls',
+					defaultType: 'button',
+					labelWidth: 0,
+					defaults: {
+						hideLabel: true,
+						disabled: true,
+						minWidth: 160
+					},
+					items: [{
+							xtype: 'textfield',
+							disabled: false,
+							width: 160,
+							itemId: 'replacement'
 						},{
-								// The replacement word and actions
-							xtype: 'fieldset',
-							title: this.localize('Replacement'),
-							cls: 'controls',
-							defaultType: 'button',
-							labelWidth: 0,
-							defaults: {
-								hideLabel: true,
-								disabled: true,
-								minWidth: 160
-							},
-							items: [{
-									xtype: 'textfield',
-									disabled: false,
-									itemId: 'replacement',
-									width: 160
-								},{
-									itemId: 'replace',
-									text: this.localize('Replace'),
-									listeners: {
-										click: {
-											fn: this.onReplaceClick,
-											scope: this
-										}
-									}
-								},{
-									itemId: 'replaceAll',
-									text: this.localize('Replace all'),
-									listeners: {
-										click: {
-											fn: this.onReplaceAllClick,
-											scope: this
-										}
-									}
-								},{
-									itemId: 'ignore',
-									text: this.localize('Ignore'),
-									listeners: {
-										click: {
-											fn: this.onIgnoreClick,
-											scope: this
-										}
-									}
-								},{
-									itemId: 'ignoreAll',
-									text: this.localize('Ignore all'),
-									listeners: {
-										click: {
-											fn: this.onIgnoreAllClick,
-											scope: this
-										}
-									}
-								},{
-									itemId: 'learn',
-									text: this.localize('Learn'),
-									hidden: !this.enablePersonalDicts,
-									listeners: {
-										click: {
-											fn: this.onLearnClick,
-											scope: this
-										}
-									}
+							itemId: 'replace',
+							text: this.localize('Replace'),
+							listeners: {
+								click: {
+									fn: this.onReplaceClick,
+									scope: this
 								}
-							]
+							}
 						},{
-								// The suggestions
-							xtype: 'fieldset',
-							title: this.localize('Suggestions'),
-							cls: 'controls',
-							labelWidth: 0,
-							defaults: {
-								hideLabel: true,
-								minWidth: 160
-							},
-							items: [
-								Ext.applyIf({
-									itemId: 'suggestions',
-									store: new Ext.data.ArrayStore({
-										model: this.configDefaults['combobox']['model'],
-										storeId: 'HTMLArea' + '-store-' + this.name + '-suggestions'
-									}),
-									listeners: {
-										select: {
-											fn: this.onSuggestionSelect,
-											scope: this
-										}
-									}
-								}, this.configDefaults['combobox'])
-							]
-						},{
-								// The dictionaries
-							xtype: 'fieldset',
-							title: this.localize('Dictionary'),
-							cls: 'controls',
-							defaultType: 'button',
-							labelWidth: 0,
-							defaults: {
-								hideLabel: true,
-								disabled: true,
-								minWidth: 160
-							},
-							items: [
-								Ext.applyIf({
-									itemId: 'dictionaries',
-									disabled: false,
-									store: new Ext.data.ArrayStore({
-										model: this.configDefaults['combobox']['model'],
-										storeId: 'HTMLArea' + '-store-' + this.name + '-dictionaries'
-									}),
-									listeners: {
-										select: {
-											fn: this.onDictionarySelect,
-											scope: this
-										}
-									}
-								}, this.configDefaults['combobox']),
-								{
-									itemId: 'recheck',
-									text: this.localize('Re-check'),
-									listeners: {
-										click: {
-											fn: this.onRecheckClick,
-											scope: this
-										}
-									}
+							itemId: 'replaceAll',
+							text: this.localize('Replace all'),
+							listeners: {
+								click: {
+									fn: this.onReplaceAllClick,
+									scope: this
 								}
-							]
+							}
+						},{
+							itemId: 'ignore',
+							text: this.localize('Ignore'),
+							listeners: {
+								click: {
+									fn: this.onIgnoreClick,
+									scope: this
+								}
+							}
+						},{
+							itemId: 'ignoreAll',
+							text: this.localize('Ignore all'),
+							listeners: {
+								click: {
+									fn: this.onIgnoreAllClick,
+									scope: this
+								}
+							}
+						},{
+							itemId: 'learn',
+							text: this.localize('Learn'),
+							hidden: !this.enablePersonalDicts,
+							listeners: {
+								click: {
+									fn: this.onLearnClick,
+									scope: this
+								}
+							}
 						}
 					]
 				},{
-					xtype: 'toolbar',
-					itemId: 'bottomToolbar',
-					dock: 'bottom',
-					ui: 'footer',
+						// The suggestions
+					xtype: 'fieldset',
+					title: this.localize('Suggestions'),
+					cls: 'controls',
+					labelWidth: 0,
 					defaults: {
-						disabled: true,
-						minWidth: 75
+						hideLabel: true,
+						minWidth: 160
 					},
 					items: [
+						Ext.apply({
+							xtype: 'combo',
+							itemId: 'suggestions',
+							store: new Ext.data.ArrayStore({
+								autoDestroy:  true,
+								fields: [{name: 'text'}, {name: 'value'}],
+								data: []
+							}),
+							listeners: {
+								select: {
+									fn: this.onSuggestionSelect,
+									scope: this
+								}
+							}
+						}, this.configDefaults['combo'])
+					]
+				},{
+						// The dictionaries
+					xtype: 'fieldset',
+					title: this.localize('Dictionary'),
+					cls: 'controls',
+					defaultType: 'button',
+					labelWidth: 0,
+					defaults: {
+						hideLabel: true,
+						disabled: true,
+						minWidth: 160
+					},
+					items: [
+						Ext.apply({
+							xtype: 'combo',
+							itemId: 'dictionaries',
+							disabled: false,
+							store: new Ext.data.ArrayStore({
+								autoDestroy:  true,
+								fields: [{name: 'text'}, {name: 'value'}],
+								data: []
+							}),
+							listeners: {
+								select: {
+									fn: this.onDictionarySelect,
+									scope: this
+								}
+							}
+						}, this.configDefaults['combo']),
 						{
-							xtype: 'tbtext',
-							itemId: 'spell-check-status',
-							text: this.localize('Please wait. Calling spell checker.'),
-							cls: 'status-wait',
-							disabled: false
-						},
-						'->',
-						this.buildButtonConfig('OK', this.onOK),
-						this.buildButtonConfig('Info', this.onInfoClick),
-						this.buildButtonConfig('Cancel', this.onCancel)
+							itemId: 'recheck',
+							text: this.localize('Re-check'),
+							listeners: {
+								click: {
+									fn: this.onRecheckClick,
+									scope: this
+								}
+							}
+						}
 					]
 				}
-			]
+			],
+			bbar: {
+				defaults: {
+					disabled: true
+				},
+				items: [
+					{
+						xtype: 'tbtext',
+						itemId: 'spell-check-status',
+						text: this.localize('Please wait. Calling spell checker.'),
+						cls: 'status-wait',
+						disabled: false
+					},
+					'->',
+					this.buildButtonConfig('OK', this.onOK),
+					this.buildButtonConfig('Info', this.onInfoClick),
+					this.buildButtonConfig('Cancel', this.onCancel)
+				]
+			}
 		});
 		this.show();
 	},
@@ -413,16 +377,6 @@ Ext.define('HTMLArea.SpellChecker', {
 	 * Handler invoked after the window has been rendered
 	 */
 	onWindowAfterRender: function () {
-		var combos = this.dialog.query('combobox');
-		Ext.each(combos, function (combo) {
-				// Somehow getStore method got lost...
-			if (!Ext.isFunction(combo.getStore)) {
-				combo.getStore = function () {
-					return combo.store;
-				};
-			}
-		});
-		this.onWindowResize(this.dialog, this.dialog.getWidth(), this.dialog.getHeight());
 			// True when some word has been modified
 		this.modified = false;
 			// Array of words to add to the personal dictionary
@@ -430,11 +384,12 @@ Ext.define('HTMLArea.SpellChecker', {
 			// List of word pairs to add to replacement list of the personal dictionary
 		this.addToReplacementList = [];
 			// Initial submit
-		this.dialog.getComponent('spell-check-form').submit({
+		this.dialog.getComponent('spell-check-form').getForm().getEl().set({
 			target: 'contentframe',
 			'accept-charset': this.contentCharset.toUpperCase()
 		});
-		this.status = this.dialog.getDockedComponent('bottomToolbar').getComponent('spell-check-status');
+		this.dialog.getComponent('spell-check-form').getForm().submit();
+		this.status = this.dialog.getBottomToolbar().getComponent('spell-check-status');
 		this.statusIconClass = 'status-wait';
 	},
 	/*
@@ -443,7 +398,7 @@ Ext.define('HTMLArea.SpellChecker', {
 	onWindowResize: function (window, width, height) {
 		var frame = window.getComponent('spell-check-iframe').getEl();
 		if (frame) {
-			frame.setSize(width - window.getDockedComponent('controls').getWidth() - 12, window.getDockedComponent('controls').getHeight());
+			frame.setSize(width - 225, height - 75);
 		}
 	},
 	/*
@@ -492,7 +447,7 @@ Ext.define('HTMLArea.SpellChecker', {
 			});
 			return false;
 		} else {
-			return this.callParent(arguments);
+			return HTMLArea.SpellChecker.superclass.onCancel.call(this);
 		}
 	},
 	/*
@@ -503,9 +458,9 @@ Ext.define('HTMLArea.SpellChecker', {
 	 * @return	void
 	 */
 	setStatusIconClass: function (iconCls) {
-		this.status.removeCls(this.statusIconClass);
+		this.status.removeClass(this.statusIconClass);
 		this.statusIconClass = iconCls;
-		this.status.addCls(this.statusIconClass);
+		this.status.addClass(this.statusIconClass);
 	},
 	/*
 	 * Clean away span elements from the text before leaving or re-submitting
@@ -577,10 +532,10 @@ Ext.define('HTMLArea.SpellChecker', {
 			link.onclick = function (event) { return false; };
 		}, this);
 			// Enable buttons
-		Ext.each(this.dialog.query('button'), function (button) {
+		Ext.each(this.dialog.findByType('button'), function (button) {
 			button.setDisabled(false);
 		});
-		Ext.each(this.dialog.getDockedComponent('bottomToolbar').query('button'), function (button) {
+		Ext.each(this.dialog.getBottomToolbar().findByType('button'), function (button) {
 			button.setDisabled(false);
 		});
 		if (this.misspelledWords.length) {
@@ -590,14 +545,14 @@ Ext.define('HTMLArea.SpellChecker', {
 				// Populate the dictionaries combo
 			var dictionaries = contentWindow.dictionaries.split(/,/);
 			if (dictionaries.length) {
-				var select = this.dialog.down('component[itemId=dictionaries]');
+				var select = this.dialog.find('itemId', 'dictionaries')[0];
 				var store = select.getStore();
 				store.removeAll();
 				Ext.each(dictionaries, function (dictionary) {
-					store.add({
+					store.add(new store.recordType({
 						text: dictionary,
 						value: dictionary
-					});
+					}));
 				});
 				select.setValue(contentWindow.selectedDictionary);
 				var selectedIndex = store.find('value', contentWindow.selectedDictionary);
@@ -673,8 +628,8 @@ Ext.define('HTMLArea.SpellChecker', {
 				HTMLArea.DOM.addClass(word, 'htmlarea-spellcheck-same');
 			}
 		}, this);
-		this.dialog.down('component[itemId=replaceAll]').setDisabled(occurrences.length <= 1);
-		this.dialog.down('component[itemId=ignoreAll]').setDisabled(occurrences.length <= 1);
+		this.dialog.find('itemId', 'replaceAll')[0].setDisabled(occurrences.length <= 1);
+		this.dialog.find('itemId', 'ignoreAll')[0].setDisabled(occurrences.length <= 1);
 			// Display status
 		var txt;
 		var txt2;
@@ -697,22 +652,22 @@ Ext.define('HTMLArea.SpellChecker', {
 		} else {
 			suggestions = [];
 		}
-		var select = this.dialog.down('component[itemId=suggestions]');
+		var select = this.dialog.find('itemId', 'suggestions')[0];
 		var store = select.getStore();
 		store.removeAll();
 		Ext.each(suggestions, function (suggestion) {
-			store.add({
+			store.add(new store.recordType({
 				text: suggestion,
 				value: suggestion
-			});
+			}));
 		});
 			// Update the current word
-		this.dialog.down('component[itemId=word]').setValue(this.currentElement.htmlareaOriginalWord);
+		this.dialog.find('itemId', 'word')[0].setValue(this.currentElement.htmlareaOriginalWord);
 		if (suggestions.length > 0) {
 			select.setValue(store.getAt(0).get('value'));
 			select.fireEvent('select', select, store.getAt(0), 0);
 		} else {
-			this.dialog.down('component[itemId=replacement]').setValue(this.currentElement.innerHTML);
+			this.dialog.find('itemId', 'replacement')[0].setValue(this.currentElement.innerHTML);
 		}
 		return false;
 	},
@@ -732,19 +687,19 @@ Ext.define('HTMLArea.SpellChecker', {
 	 * Handler invoked when a suggestion is selected
 	 */
 	onSuggestionSelect: function (select, record, index) {
-		this.dialog.down('component[itemId=replacement]').setValue(record.get('value'));
+		this.dialog.find('itemId', 'replacement')[0].setValue(record.get('value'));
 	},
 	/*
 	 * Handler invoked when a dictionary is selected
 	 */
 	onDictionarySelect: function (select, record, index) {
-		this.dialog.down('component[itemId=dictionary]').setValue(record.get('value'));
+		this.dialog.find('itemId', 'dictionary')[0].setValue(record.get('value'));
 	},
 	/*
 	 * Handler invoked when the Revert button is clicked
 	 */
 	onRevertClick: function () {
-		this.dialog.down('component[itemId=replacement]').setValue(this.currentElement.htmlareaOriginalWord);
+		this.dialog.find('itemId', 'replacement')[0].setValue(this.currentElement.htmlareaOriginalWord);
 		this.replaceWord(this.currentElement);
 		HTMLArea.DOM.removeClass(this.currentElement, 'htmlarea-spellcheck-fixed');
 		HTMLArea.DOM.addClass(this.currentElement, 'htmlarea-spellcheck-error');
@@ -758,7 +713,7 @@ Ext.define('HTMLArea.SpellChecker', {
 		HTMLArea.DOM.removeClass(element, 'htmlarea-spellcheck-hover');
 		HTMLArea.DOM.addClass(element, 'htmlarea-spellcheck-fixed');
 		element.htmlareaFixed = true;
-		var replacement = this.dialog.down('component[itemId=replacement]').getValue();
+		var replacement = this.dialog.find('itemId', 'replacement')[0].getValue();
 		if (element.innerHTML != replacement) {
 			this.addToReplacementList.push([element.innerHTML, replacement]);
 			element.innerHTML = replacement;
@@ -804,14 +759,14 @@ Ext.define('HTMLArea.SpellChecker', {
 	 * Handler invoked when the Ignore button is clicked
 	 */
 	onIgnoreClick: function () {
-		this.dialog.down('component[itemId=replacement]').setValue(this.currentElement.htmlareaOriginalWord);
+		this.dialog.find('itemId', 'replacement')[0].setValue(this.currentElement.htmlareaOriginalWord);
 		return this.onReplaceClick();
 	},
 	/*
 	 * Handler invoked when the Ignore all button is clicked
 	 */
 	onIgnoreAllClick: function () {
-		this.dialog.down('component[itemId=replacement]').setValue(this.currentElement.htmlareaOriginalWord);
+		this.dialog.find('itemId', 'replacement')[0].setValue(this.currentElement.htmlareaOriginalWord);
 		return this.onReplaceAllClick();
 	},
 	/*
@@ -826,19 +781,16 @@ Ext.define('HTMLArea.SpellChecker', {
 	 */
 	onRecheckClick: function () {
 			// Disable buttons
-		Ext.each(this.dialog.query('button'), function (button) {
+		Ext.each(this.dialog.findByType('button'), function (button) {
 			button.setDisabled(true);
 		});
-		Ext.each(this.dialog.getDockedComponent('bottomToolbar').query('button'), function (button) {
+		Ext.each(this.dialog.getBottomToolbar().findByType('button'), function (button) {
 			button.setDisabled(true);
 		});
-		this.status.setText(this.localize('Please wait: changing dictionary to') + ': "' + this.dialog.down('component[itemId=dictionary]').getValue() + '".');
+		this.status.setText(this.localize('Please wait: changing dictionary to') + ': "' + this.dialog.find('itemId', 'dictionary')[0].getValue() + '".');
 		this.setStatusIconClass('status-wait');
-		this.dialog.down('component[itemId=content]').setValue(this.cleanDocument(true));
-		this.dialog.getComponent('spell-check-form').submit({
-			target: 'contentframe',
-			'accept-charset': this.contentCharset.toUpperCase()
-		});
+		this.dialog.find('itemId', 'content')[0].setValue(this.cleanDocument(true));
+		this.dialog.getComponent('spell-check-form').getForm().submit();
 	},
 	/*
 	 * Handler invoked when the Info button is clicked

@@ -30,8 +30,7 @@
 /*
  * Find and Replace Plugin for TYPO3 htmlArea RTE
  */
-Ext.define('HTMLArea.FindReplace', {
-	extend: 'HTMLArea.Plugin',
+HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -117,13 +116,14 @@ Ext.define('HTMLArea.FindReplace', {
 	 * @return	void
 	 */
 	openDialogue: function (buttonId, title, dimensions) {
-		this.dialog = Ext.create('Ext.window.Window', {
+		this.dialog = new Ext.Window({
 			title: this.localize(title),
 			cls: 'htmlarea-window',
 			border: false,
 			width: dimensions.width,
-			layout: 'anchor',
-			resizable: true,
+			height: 'auto',
+				// As of ExtJS 3.1, JS error with IE when the window is resizable
+			resizable: !Ext.isIE,
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				close: {
@@ -266,11 +266,11 @@ Ext.define('HTMLArea.FindReplace', {
 	 * Handler invoked when the replace all checkbox is checked
 	 */
 	requestReplacement: function () {
-		if (!this.dialog.down('component[itemId=replacement]').getValue() && this.dialog.down('component[itemId=replaceAll]').getValue()) {
+		if (!this.dialog.find('itemId', 'replacement')[0].getValue() && this.dialog.find('itemId', 'replaceAll')[0].getValue()) {
 			TYPO3.Dialog.InformationDialog({
 				title: this.getButton('FindReplace').tooltip.title,
 				msg: this.localize('Inform a replacement word'),
-				fn: function () { this.dialog.down('component[itemId=replacement]').focus(); },
+				fn: function () { this.dialog.find('itemId', 'replacement')[0].focus(); },
 				scope: this
 			});
 		}
@@ -280,11 +280,11 @@ Ext.define('HTMLArea.FindReplace', {
 	 * Handler invoked when the 'Next' button is pressed
 	 */
 	onNext: function () {
-		if (!this.dialog.down('component[itemId=pattern]').getValue()) {
+		if (!this.dialog.find('itemId', 'pattern')[0].getValue()) {
 			TYPO3.Dialog.InformationDialog({
 				title: this.getButton('FindReplace').tooltip.title,
 				msg: this.localize('Enter the text you want to find'),
-				fn: function () { this.dialog.down('component[itemId=pattern]').focus(); },
+				fn: function () { this.dialog.find('itemId', 'pattern')[0].focus(); },
 				scope: this
 			});
 			return false;
@@ -298,7 +298,7 @@ Ext.define('HTMLArea.FindReplace', {
 		];
 		var params = {};
 		Ext.each(fields, function (field) {
-			params[field] = this.dialog.down('component[itemId=' + field + ']').getValue();
+			params[field] = this.dialog.find('itemId', field)[0].getValue();
 		}, this);
 		this.search(params);
 		return false;
@@ -458,8 +458,6 @@ Ext.define('HTMLArea.FindReplace', {
 		if (this.buffer != null) {
 			var transp = this.editor.getInnerHTML();
 			this.editor.setHTML(this.buffer);
-				// Initialize a collapsed selection at the beginning of content
-			this.editor.selectNode(this.editor.document.body, true);
 			this.buffer = transp;
 			this.disableActions('clear', true);
 		}
@@ -472,7 +470,7 @@ Ext.define('HTMLArea.FindReplace', {
 	 */
 	disableActions: function (actions, disabled) {
 		Ext.each(actions.split(/[,; ]+/), function (action) {
-			this.dialog.down('component[itemId=' + action + ']').setDisabled(disabled);
+				this.dialog.find('itemId', action)[0].setDisabled(disabled);
 		}, this);
 	},
 	/*
@@ -488,25 +486,21 @@ Ext.define('HTMLArea.FindReplace', {
 	 */
 	onCancel: function () {
 		this.clearDoc();
-			// Initialize a collapsed selection at the beginning of content
-		this.editor.selectNode(this.editor.document.body, true);
 		var plugin = this.getPluginInstance('UndoRedo');
 		if (plugin) {
 			plugin.start();
 		}
-		this.callParent(arguments);
+		HTMLArea.FindReplace.superclass.onCancel.call(this);
 	},
 	/*
 	 * Clear the document before leaving on window close handle
 	 */
 	onClose: function () {
 		this.clearDoc();
-			// Initialize a collapsed selection at the beginning of content
-		this.editor.selectNode(this.editor.document.body, true);
 		var plugin = this.getPluginInstance('UndoRedo');
 		if (plugin) {
 			plugin.start();
 		}
-		this.callParent(arguments);
+		HTMLArea.FindReplace.superclass.onClose.call(this);
 	}
 });
