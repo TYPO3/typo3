@@ -38,10 +38,9 @@ class tx_rtehtmlarea_charactermap extends tx_rtehtmlarea_api {
 	protected $toolbar;				// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 				// Frontend language array
 
-	protected $pluginButtons = 'insertcharacter,insertsofthyphen';
+	protected $pluginButtons = 'insertcharacter';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'insertcharacter'	=> 'InsertCharacter',
-		'insertsofthyphen'	=> 'InsertSoftHyphen',
 		);
 
 	/**

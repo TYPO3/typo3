@@ -27,8 +27,7 @@
 /*
  * Language Plugin for TYPO3 htmlArea RTE
  */
-Ext.define('HTMLArea.Language', {
-	extend: 'HTMLArea.Plugin',
+HTMLArea.Language = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -102,12 +101,11 @@ Ext.define('HTMLArea.Language', {
 			};
 			if (this.buttonsConfiguration.language) {
 				dropDownConfiguration.width = this.buttonsConfiguration.language.width ? parseInt(this.buttonsConfiguration.language.width, 10) : 200;
-				dropDownConfiguration.listConfig = {};
 				if (this.buttonsConfiguration.language.listWidth) {
-					dropDownConfiguration.listConfig.width = parseInt(this.buttonsConfiguration.language.listWidth, 10);
+					dropDownConfiguration.listWidth = parseInt(this.buttonsConfiguration.language.listWidth, 10);
 				}
 				if (this.buttonsConfiguration.language.maxHeight) {
-					dropDownConfiguration.listConfig.maxHeight = parseInt(this.buttonsConfiguration.language.maxHeight, 10);
+					dropDownConfiguration.maxHeight = parseInt(this.buttonsConfiguration.language.maxHeight, 10);
 				}
 			}
 			this.registerDropDown(dropDownConfiguration);
@@ -441,15 +439,15 @@ Ext.define('HTMLArea.Language', {
 		store.removeAt(0);
 		if ((store.findExact('value', language) != -1) && (selectionEmpty || fullNodeSelected || !endPointsInSameBlock)) {
 			select.setValue(language);
-			store.insert(0, {
+			store.insert(0, new store.recordType({
 				text: this.localize('Remove language mark'),
 				value: 'none'
-			});
+			}));
 		} else {
-			store.insert(0, {
+			store.insert(0, new store.recordType({
 				text: this.localize('No language mark'),
 				value: 'none'
-			});
+			}));
 			select.setValue('none');
 		}
 		select.setDisabled(!(store.getCount()>1) || (selectionEmpty && this.editor.getParentElement().nodeName.toLowerCase() === 'body'));

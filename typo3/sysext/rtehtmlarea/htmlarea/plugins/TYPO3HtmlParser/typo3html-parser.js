@@ -26,8 +26,7 @@
 /**
  * TYPO3HtmlParser Plugin for TYPO3 htmlArea RTE
  */
-Ext.define('HTMLArea.TYPO3HtmlParser', {
-	extend: 'HTMLArea.Plugin',
+HTMLArea.TYPO3HtmlParser = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -111,6 +110,6 @@ Ext.define('HTMLArea.TYPO3HtmlParser', {
 	 * Handler for paste, dragdrop and drop events
 	 */
 	wordCleanHandler: function (event) {
-		Ext.Function.defer(this.clean, 50, this);
+		this.clean.defer(50, this);
 	}
 });

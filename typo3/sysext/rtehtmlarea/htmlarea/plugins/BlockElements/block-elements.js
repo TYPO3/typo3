@@ -27,8 +27,7 @@
 /*
  * BlockElements Plugin for TYPO3 htmlArea RTE
  */
-Ext.define('HTMLArea.BlockElements', {
-	extend: 'HTMLArea.Plugin',
+HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -120,12 +119,11 @@ Ext.define('HTMLArea.BlockElements', {
 		};
 		if (this.buttonsConfiguration.formatblock) {
 			dropDownConfiguration.width = this.buttonsConfiguration.formatblock.width ? parseInt(this.buttonsConfiguration.formatblock.width, 10) : 200;
-			dropDownConfiguration.listConfig = {};
 			if (this.buttonsConfiguration.formatblock.listWidth) {
-				dropDownConfiguration.listConfig.width = parseInt(this.buttonsConfiguration.formatblock.listWidth, 10);
+				dropDownConfiguration.listWidth = parseInt(this.buttonsConfiguration.formatblock.listWidth, 10);
 			}
 			if (this.buttonsConfiguration.formatblock.maxHeight) {
-				dropDownConfiguration.listConfig.maxHeight = parseInt(this.buttonsConfiguration.formatblock.maxHeight, 10);
+				dropDownConfiguration.maxHeight = parseInt(this.buttonsConfiguration.formatblock.maxHeight, 10);
 			}
 		}
 		this.registerDropDown(dropDownConfiguration);
@@ -1207,16 +1205,16 @@ Ext.define('HTMLArea.BlockElements', {
 			}
 		}
 		if (index == -1) {
-			store.insert(0, {
+			store.insert(0, new store.recordType({
 				text: this.localize('No block'),
 				value: 'none'
-			});
+			}));
 			select.setValue('none');
 		} else {
-			store.insert(0, {
+			store.insert(0, new store.recordType({
 				text: this.localize('Remove block'),
 				value: 'none'
-			});
+			}));
 			select.setValue(store.getAt(index+1).get('value'));
 		}
 	},

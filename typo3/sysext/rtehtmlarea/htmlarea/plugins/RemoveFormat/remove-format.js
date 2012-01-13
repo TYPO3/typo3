@@ -27,8 +27,7 @@
 /*
  * Remove Format Plugin for TYPO3 htmlArea RTE
  */
-Ext.define('HTMLArea.RemoveFormat', {
-	extend: 'HTMLArea.Plugin',
+HTMLArea.RemoveFormat = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -97,13 +96,14 @@ Ext.define('HTMLArea.RemoveFormat', {
 	 * @return	void
 	 */
 	openDialogue: function (buttonId, title, dimensions) {
-		this.dialog = Ext.create('Ext.window.Window', {
+		this.dialog = new Ext.Window({
 			title: this.getHelpTip('', title),
 			cls: 'htmlarea-window',
 			border: false,
 			width: dimensions.width,
-			layout: 'anchor',
-			resizable: true,
+			height: 'auto',
+				// As of ExtJS 3.1, JS error with IE when the window is resizable
+			resizable: !Ext.isIE,
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				close: {
@@ -184,7 +184,7 @@ Ext.define('HTMLArea.RemoveFormat', {
 		];
 		var params = {};
 		Ext.each(fields, function (field) {
-			params[field] = this.dialog.down('component[itemId=' + field + ']').getValue();
+			params[field] = this.dialog.find('itemId', field)[0].getValue();
 		}, this);
 		if (params['allHtml'] || params['formatting'] || params['spaces'] || params['images'] || params['msWordFormatting'] || params['typographical']) {
 			this.applyRequest(params);
@@ -293,8 +293,6 @@ Ext.define('HTMLArea.RemoveFormat', {
 			}
 			if (params['allContent']) {
 				editor.setHTML(html);
-					// Initialize a collapsed selection at the beginning of content
-				this.editor.selectNode(this.editor.document.body, true);
 			} else {
 				editor.insertHTML(html);
 			}

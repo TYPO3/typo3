@@ -27,8 +27,7 @@
 /*
  * Paste as Plain Text Plugin for TYPO3 htmlArea RTE
  */
-Ext.define('HTMLArea.PlainText', {
-	extend: 'HTMLArea.Plugin',
+HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -154,7 +153,7 @@ Ext.define('HTMLArea.PlainText', {
 					this.getWindowDimensions(
 						{
 							width: 260,
-							height: 260
+							height:260
 						},
 						buttonId
 					)
@@ -177,13 +176,14 @@ Ext.define('HTMLArea.PlainText', {
 	 * @return	void
 	 */
 	openDialogue: function (buttonId, title, dimensions) {
-		this.dialog = Ext.create('Ext.window.Window', {
+		this.dialog = new Ext.Window({
 			title: this.localize(title),
 			cls: 'htmlarea-window',
 			border: false,
 			width: dimensions.width,
-			layout: 'anchor',
-			resizable: true,
+			height: 'auto',
+				// As of ExtJS 3.1, JS error with IE when the window is resizable
+			resizable: !Ext.isIE,
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				close: {
@@ -232,7 +232,7 @@ Ext.define('HTMLArea.PlainText', {
 			'pasteFormat'
 		];
 		Ext.each(fields, function (field) {
-				if (this.dialog.down('component[itemId=' + field +']').getValue()) {
+			if (this.dialog.find('itemId', field)[0].getValue()) {
 				this.currentBehaviour = field;
 				return false;
 			}
@@ -283,7 +283,7 @@ Ext.define('HTMLArea.PlainText', {
 						this.redirectPaste();
 							// Process the content of the hidden section after the paste operation is completed
 							// WebKit seems to be pondering a very long time over what is happenning here...
-						Ext.Function.defer(this.processPastedContent, Ext.isWebKit ? 500 : 50, this);
+						this.processPastedContent.defer(Ext.isWebKit ? 500 : 50, this);
 					}
 					break;
 				default:
@@ -397,7 +397,7 @@ Ext.define('HTMLArea.PlainText', {
 			listeners: {
 				afterrender: {
 						// The document will not be immediately ready
-					fn: function (event) { Ext.Function.defer(this.onPastingPadAfterRender, 100, this, [event]); },
+					fn: function (event) { this.onPastingPadAfterRender.defer(100, this, [event]); },
 					scope: this
 				},
 				close: {
@@ -447,7 +447,7 @@ Ext.define('HTMLArea.PlainText', {
 	 */
 	onPastingPadPaste: function (event) {
 			// Let the paste operation complete before cleaning
-		Ext.Function.defer(this.cleanPastingPadContents, 50, this);
+		this.cleanPastingPadContents.defer(50, this);
 	},
 	/*
 	 * Clean the contents of the pasting pad
@@ -476,7 +476,7 @@ Ext.define('HTMLArea.PlainText', {
 			switch (button.itemId) {
 				case 'PasteToggle':
 					button.setTooltip({
-							text: this.localize((button.inactive ? 'enable' : 'disable') + this.currentBehaviour)
+							title: this.localize((button.inactive ? 'enable' : 'disable') + this.currentBehaviour)
 					});
 					break;
 			}

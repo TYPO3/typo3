@@ -21,9 +21,6 @@
 			<trans-unit id="Right:" xml:space="preserve">
 				<source>Right:</source>
 			</trans-unit>
-			<trans-unit id="Left:" xml:space="preserve">
-				<source>Left:</source>
-			</trans-unit>
 			<trans-unit id="Bottom:" xml:space="preserve">
 				<source>Bottom:</source>
 			</trans-unit>

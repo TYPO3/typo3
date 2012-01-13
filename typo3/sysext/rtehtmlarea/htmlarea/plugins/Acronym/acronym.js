@@ -27,27 +27,7 @@
 /*
  * Acronym plugin for htmlArea RTE
  */
-/*
- * Define data model for abbreviation data
- */
-Ext.define('HTMLArea.model.Abbreviation', {
-	extend: 'Ext.data.Model',
-	fields: [{
-			name: 'term',
-			type: 'string'
-		},{
-			name: 'abbr',
-			type: 'string'
-		},{
-			name: 'language',
-			type: 'string'
-	}]
-});
-/*
- * Define Acronym plugin
- */
-Ext.define('HTMLArea.Acronym', {
-	extend: 'HTMLArea.Plugin',
+HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -57,7 +37,7 @@ Ext.define('HTMLArea.Acronym', {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '3.0',
+			version		: '2.4',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -86,15 +66,13 @@ Ext.define('HTMLArea.Acronym', {
 	 * Sets of default configuration values for dialogue form fields
 	 */
 	configDefaults: {
-		combobox: {
-			cls: 'htmlarea-combo',
+		combo: {
 			editable: true,
-			forceSelection: true,
-			queryMode: 'local',
 			selectOnFocus: true,
-			triggerAction: 'all',
 			typeAhead: true,
-			xtype: 'combobox'
+			triggerAction: 'all',
+			forceSelection: true,
+			mode: 'local'
 		}
 	},
 	/*
@@ -126,7 +104,7 @@ Ext.define('HTMLArea.Acronym', {
 		};
 			// Open the dialogue window
 		this.openDialogue(
-			this.getButton(buttonId).tooltip.text,
+			this.getButton(buttonId).tooltip.title,
 			buttonId,
 			this.getWindowDimensions({ width: 580}, buttonId),
 			this.buildTabItemsConfig(abbr),
@@ -148,13 +126,14 @@ Ext.define('HTMLArea.Acronym', {
 	 * @return	void
 	 */
 	openDialogue: function (title, buttonId, dimensions, tabItems, buttonsConfig, activeTab) {
-		this.dialog = Ext.create('Ext.window.Window', {
+		this.dialog = new Ext.Window({
 			title: this.getHelpTip('', title),
 			cls: 'htmlarea-window',
+				// As of ExtJS 3.1, JS error with IE when the window is resizable
+			resizable: !Ext.isIE,
 			border: false,
 			width: dimensions.width,
-			layout: 'anchor',
-			resizable: true,
+			height: 'auto',
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				close: {
@@ -162,18 +141,24 @@ Ext.define('HTMLArea.Acronym', {
 					scope: this
 				}
 			},
-			items: [{
+			items: {
 				xtype: 'tabpanel',
 				activeTab: activeTab ? activeTab : 0,
 				defaults: {
 					xtype: 'container',
-					layout: 'anchor',
+					layout: 'form',
 					defaults: {
 						labelWidth: 150
 					}
 				},
+				listeners: {
+					tabchange: {
+						fn: this.syncHeight,
+						scope: this
+					}
+				},
 				items: tabItems
-			}],
+			},
 			buttons: buttonsConfig
 		});
 		this.show();
@@ -245,132 +230,125 @@ Ext.define('HTMLArea.Acronym', {
 	 * @return	object		the fieldset configuration object
 	 */
 	buildDefinedTermFieldsetConfig: function (element, type) {
-			// Create global abbreviation store if it does not exist already
-		var abbreviationStore = Ext.data.StoreManager.lookup(this.editorId + '-store-' + this.name);
-		if (!abbreviationStore) {
-			this.abbreviationStore = Ext.create('Ext.data.Store', {
-				autoLoad: true,
-				model: 'HTMLArea.model.Abbreviation',
-				proxy: {
-					type: 'ajax',
-					url: this.pageTSConfiguration.acronymUrl,
-					reader: {
-						type: 'json',
-						root: type
-					}
-				},
-				storeId: this.editorId + '-store-' + this.name
-			});
-		}
 		var itemsConfig = [];
-		itemsConfig.push(Ext.applyIf({
+		itemsConfig.push(Ext.apply({
+			xtype: 'combo',
 			displayField: 'term',
+			valueField: 'term',
 			fieldLabel: this.getHelpTip('unabridgedTerm', 'Unabridged_term'),
-			listConfig: {
-				cls: 'htmlarea-combo-list',
-				getInnerTpl: function () {
-					return '<div data-qtip="{abbr}" class="htmlarea-combo-list-item">{term}</div>';
-				},
-			},
 			itemId: 'termSelector',
+			tpl: '<tpl for="."><div ext:qtip="{abbr}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{term}</div></tpl>',
+			store: new Ext.data.JsonStore({
+				autoDestroy:  true,
+				autoLoad: true,
+				root: type,
+				fields: [ { name: 'term'}, { name: 'abbr'},  { name: 'language'}],
+				url: this.pageTSConfiguration.acronymUrl
+			}),
+			width: 350,
 			listeners: {
+				beforerender: {
+					fn: function (combo) {
+							// Ensure the store is loaded
+						combo.getStore().load({
+							callback: function () { this.onSelectorRender(combo); },
+							scope: this
+						});
+					},
+					scope: this
+				},
 				select: {
 					fn: this.onTermSelect,
 					scope: this
 				}
-			},
-			store: this.abbreviationStore,
-			valueField: 'term',
-			width: 350
-		}, this.configDefaults['combobox']));
-		itemsConfig.push(Ext.applyIf({
+			}
+		}, this.configDefaults['combo']));
+		itemsConfig.push(Ext.apply({
+			xtype: 'combo',
 			displayField: 'abbr',
+			valueField: 'abbr',
+			tpl: '<tpl for="."><div ext:qtip="{language}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{abbr}</div></tpl>',
 			fieldLabel: this.getHelpTip('abridgedTerm', 'Abridged_term'),
-			listConfig: {
-				cls: 'htmlarea-combo-list',
-				getInnerTpl: function () {
-					return '<div data-qtip="{language}" class="htmlarea-combo-list-item">{abbr}</div>';
-				}
-			},
 			itemId: 'abbrSelector',
+			store: new Ext.data.JsonStore({
+				autoDestroy:  true,
+				autoLoad: true,
+				root: type,
+				fields: [ { name: 'term'}, { name: 'abbr'},  { name: 'language'}],
+				url: this.pageTSConfiguration.acronymUrl
+			}),
+			width: 100,
 			listeners: {
+				beforerender: {
+					fn: function (combo) {
+							// Ensure the store is loaded
+						combo.getStore().load({
+							callback: function () { this.onSelectorRender(combo); },
+							scope: this
+						});
+					},
+					scope: this
+				},
 				select: {
 					fn: this.onAbbrSelect,
 					scope: this
 				}
-			},
-			store: this.abbreviationStore,
-			valueField: 'abbr',
-			width: 200
-		}, this.configDefaults['combobox']));
-		var languagePlugin = this.getPluginInstance('Language');
-		if (this.getButton('Language') && languagePlugin) {
-			var selectedLanguage = !Ext.isEmpty(element) ? languagePlugin.getLanguageAttribute(element) : 'none';
-				// Create global language store if it does not exist already
-			var languageStore = Ext.data.StoreManager.lookup(this.editorId + '-store-' + languagePlugin.name);
-			if (!languageStore) {
-				languageStore = Ext.create('Ext.data.Store', {
-					autoLoad: true,
-					model: 'HTMLArea.model.default',
-					proxy: {
-						type: 'ajax',
-						url: this.getDropDownConfiguration('Language').dataUrl,
-						reader: {
-							type: 'json',
-							root: 'options',
-						}
-					},
-					storeId: this.editorId + '-store-' + languagePlugin.name
-				});
 			}
-			itemsConfig.push(Ext.apply({
-				displayField: 'text',
-				fieldLabel: this.getHelpTip('language', 'Language'),
-				itemId: 'language',
-				listConfig: {
-					cls: 'htmlarea-combo-list',
-					getInnerTpl: function () {
-						return '<div data-qtip="{value}" class="htmlarea-combo-list-item">{text}</div>';
-					}
-				},
+		}, this.configDefaults['combo']));
+		var languageObject = this.getPluginInstance('Language');
+		if (this.getButton('Language')) {
+			var selectedLanguage = !Ext.isEmpty(element) ? languageObject.getLanguageAttribute(element) : 'none';
+			function initLanguageStore (store) {
+				if (selectedLanguage !== 'none') {
+					store.removeAt(0);
+					store.insert(0, new store.recordType({
+						text: languageObject.localize('Remove language mark'),
+						value: 'none'
+					}));
+				}
+				this.getButton('Language').setValue('none');
+			}
+			var languageStore = new Ext.data.JsonStore({
+				autoDestroy:  true,
+				autoLoad: true,
+				root: 'options',
+				fields: [ { name: 'text'}, { name: 'value'} ],
+				url: this.getDropDownConfiguration('Language').dataUrl,
 				listeners: {
-					afterrender: {
-						fn: function (combo) {
-								// Somehow getStore method got lost...
-							if (!Ext.isFunction(combo.getStore)) {
-								combo.getStore = function () {
-									return combo.store;
-								};
-							}
-							var store = combo.getStore();
-							store.removeAt(0);
-							if (selectedLanguage !== 'none') {
-								store.insert(0, {
-									text: languagePlugin.localize('Remove language mark'),
-									value: 'none'
-								});
-							} else {
-								store.insert(0, {
-									text: languagePlugin.localize('No language mark'),
-									value: 'none'
-								});
-							}
-							combo.setValue(selectedLanguage);
-						},
+					load: {
+						fn: initLanguageStore,
 						scope: this
 					}
-				},
-				store: languageStore,
+				}
+			});
+			itemsConfig.push(Ext.apply({
+				xtype: 'combo',
+				fieldLabel: this.getHelpTip('language', 'Language'),
+				itemId: 'language',
 				valueField: 'value',
-				width: 350
-			}, this.configDefaults['combobox']));
+				displayField: 'text',
+				tpl: '<tpl for="."><div ext:qtip="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>',
+				store: languageStore,
+				width: 200,
+				value: selectedLanguage,
+				listeners: {
+					render: {
+						fn: function (combo) {
+								// Load the language dropdown
+							combo.getStore().load({
+								callback: function () { combo.setValue(selectedLanguage); }
+							});
+						}
+					}
+				}
+			}, this.configDefaults['combo']));
 		}
 		return {
 			xtype: 'fieldset',
 			title: this.getHelpTip('preDefined' + ((type == 'abbr') ? 'Abbreviation' : 'Acronym'), 'Defined_' + type),
 			items: itemsConfig,
 			listeners: {
-				afterrender: {
+				render: {
 					fn: this.onDefinedTermFieldsetRender,
 					scope: this
 				}
@@ -379,34 +357,15 @@ Ext.define('HTMLArea.Acronym', {
 	},
 	/*
 	 * Handler on rendering the defined abbreviation fieldset
-	 */
-	onDefinedTermFieldsetRender: function (fieldset) {
-			// Make sure the store is loaded
-		if (!this.abbreviationStore.getCount()) {
-			this.abbreviationStore.load({
-				callback: function (records) {
-					this.abbreviationStore.savedSnapshot = this.abbreviationStore.data.clone();
-					this.initializeFieldset(fieldset);
-				},
-				scope: this
-			});
-		} else {
-				// Refresh the store
-			this.abbreviationStore.snapshot = this.abbreviationStore.savedSnapshot.clone();
-			this.initializeFieldset(fieldset);
-		}
-	},
-	/*
-	 * Initialize fieldset
 	 * If an abbr is selected but no term is selected, select any corresponding term with the correct language value, if any
 	 */
-	initializeFieldset: function (fieldset) {
-		var termSelector = fieldset.getComponent('termSelector');
+	onDefinedTermFieldsetRender: function (fieldset) {
+		var termSelector = fieldset.find('itemId', 'termSelector')[0];
 		var term = termSelector.getValue();
-		var abbrSelector = fieldset.getComponent('abbrSelector');
+		var abbrSelector = fieldset.find('itemId', 'abbrSelector')[0];
 		var abbr = abbrSelector.getValue();
 		var language = '';
-		var languageSelector = fieldset.down('combobox[itemId=language]');
+		var languageSelector = fieldset.find('itemId', 'language')[0];
 		if (languageSelector) {
 			var language = languageSelector.getValue();
 			if (language == 'none') {
@@ -421,34 +380,23 @@ Ext.define('HTMLArea.Acronym', {
 			if (index !== -1) {
 				term = abbrStore.getAt(index).get('term');
 				termSelector.setValue(term);
-				fieldset.ownerCt.down('component[itemId=useTerm]').setValue(term);
+				fieldset.ownerCt.find('itemId', 'useTerm')[0].setValue(term);
 			}
-		}
-			// Filter the abbreviation store
-		this.abbreviationStore.filterBy(function (record) {
-			return !this.params.text
-				|| !this.params.title
-				|| this.params.text == record.get('term')
-				|| this.params.text == record.get('abbr')
-				|| this.params.title == record.get('term')
-				|| this.params.title == record.get('abbr');
-		}, this);
-			// Make sure the combo lists are filtered
-		this.abbreviationStore.snapshot = this.abbreviationStore.data;
-		if (this.abbreviationStore.getCount()) {
-				// Initialize combos
-			this.initializeCombo(termSelector);
-			this.initializeCombo(abbrSelector);
-		} else {
-			fieldset.hide();
 		}
 	},
 	/*
+	 * Filter the term and abbr selector lists
 	 * Set initial values
 	 * If there is already an abbr and the filtered list has only one or no element, hide the fieldset
 	 */
-	initializeCombo: function (combo) {
-		var store = this.abbreviationStore;
+	onSelectorRender: function (combo) {
+		var store = combo.getStore();
+		store.filterBy(function (record) {
+			return !this.params.text || !this.params.title || this.params.text == record.get('term') || this.params.title == record.get('term') || this.params.title == record.get('abbr');
+		}, this);
+			// Make sure the combo list is filtered
+		store.snapshot = store.data;
+		var store = combo.getStore();
 			// Initialize the term and abbr combos
 		if (combo.getItemId() == 'termSelector') {
 			if (this.params.title) {
@@ -456,14 +404,14 @@ Ext.define('HTMLArea.Acronym', {
 				if (index !== -1) {
 					var record = store.getAt(index);
 					combo.setValue(record.get('term'));
-					this.onTermSelect(combo, [record], false);
+					this.onTermSelect(combo, record, index);
 				}
 			} else if (this.params.text) {
 				var index = store.findExact('term', this.params.text);
 				if (index !== -1) {
 					var record = store.getAt(index);
 					combo.setValue(record.get('term'));
-					this.onTermSelect(combo, [record], false);
+					this.onTermSelect(combo, record, index);
 				}
 			}
 		} else if (combo.getItemId() == 'abbrSelector' && this.params.text) {
@@ -471,52 +419,56 @@ Ext.define('HTMLArea.Acronym', {
 			if (index !== -1) {
 				var record = store.getAt(index);
 				combo.setValue(record.get('abbr'));
-				this.onAbbrSelect(combo, [record], false);
+				this.onAbbrSelect(combo, record, index);
 			}
 		}
 	},
 	/*
 	 * Handler when a term is selected
 	 */
-	onTermSelect: function (combo, records, options) {
-		var record = records[0];
+	onTermSelect: function (combo, record, index) {
 		var fieldset = combo.findParentByType('fieldset');
 		var tab = fieldset.findParentByType('container');
 		var term = record.get('term');
 		var abbr = record.get('abbr');
 		var language = record.get('language');
 			// Update the abbreviation selector
-		tab.down('component[itemId=abbrSelector]').setValue(abbr);
+		var abbrSelector = tab.find('itemId', 'abbrSelector')[0];
+		abbrSelector.setValue(abbr);
 			// Update the language selector
-		var languageSelector = tab.down('combobox[itemId=language]');
-		if (!Ext.isEmpty(languageSelector) && !Ext.isBoolean(options)) {
-			languageSelector.setValue(language ? language : 'none');
+		var languageSelector = tab.find('itemId', 'language');
+		if (!Ext.isEmpty(languageSelector)) {
+			if (language) {
+				languageSelector[0].setValue(language);
+			} else {
+				languageSelector[0].setValue('none');
+			}
 		}
 			// Update the term to use
-		if (!Ext.isBoolean(options)) {
-			tab.down('component[itemId=useTerm]').setValue(term);
-		}
+		tab.find('itemId', 'useTerm')[0].setValue(term);
 	},
 	/*
 	 * Handler when an abbreviation or acronym is selected
 	 */
-	onAbbrSelect: function (combo, records, options) {
-		var record = records[0];
+	onAbbrSelect: function (combo, record, index) {
 		var fieldset = combo.findParentByType('fieldset');
 		var tab = fieldset.findParentByType('container');
 		var term = record.get('term');
 		var language = record.get('language');
 			// Update the term selector
-		tab.down('component[itemId=termSelector]').setValue(term);
+		var termSelector = tab.find('itemId', 'termSelector')[0];
+		termSelector.setValue(term);
 			// Update the language selector
-		var languageSelector = tab.down('combobox[itemId=language]');
-		if (!Ext.isEmpty(languageSelector) && !Ext.isBoolean(options)) {
-			languageSelector.setValue(language ? language : 'none');
+		var languageSelector = tab.find('itemId', 'language');
+		if (!Ext.isEmpty(languageSelector)) {
+			if (language) {
+				languageSelector[0].setValue(language);
+			} else {
+				languageSelector[0].setValue('none');
+			}
 		}
 			// Update the term to use
-		if (!Ext.isBoolean(options)) {
-			tab.down('component[itemId=useTerm]').setValue(term);
-		}
+		tab.find('itemId', 'useTerm')[0].setValue(term);
 	},
 	/*
 	 * This function builds the configuration object for the Abbreviation or Acronym to use fieldset
@@ -546,16 +498,16 @@ Ext.define('HTMLArea.Acronym', {
 	 */
 	okHandler: function (button, event) {
 		this.restoreSelection();
-		var tab = this.dialog.down('tabpanel').getActiveTab();
+		var tab = this.dialog.findByType('tabpanel')[0].getActiveTab();
 		var type = tab.getItemId();
-		var languageSelector = tab.down('component[itemId=language]');
-		var language = !Ext.isEmpty(languageSelector) ? languageSelector.getValue() : '';
-		var term = tab.down('component[itemId=termSelector]').getValue();
+		var languageSelector = tab.find('itemId', 'language');
+		var language = !Ext.isEmpty(languageSelector) ? languageSelector[0].getValue() : '';
+		var term = tab.find('itemId', 'termSelector')[0].getValue();
 		if (!this.params.abbr) {
 			var abbr = this.editor.document.createElement(type);
-			abbr.title = tab.down('component[itemId=useTerm]').getValue();
+			abbr.title = tab.find('itemId', 'useTerm')[0].getValue();
 			if (term == abbr.title) {
-				abbr.innerHTML = tab.down('component[itemId=abbrSelector]').getValue();
+				abbr.innerHTML = tab.find('itemId', 'abbrSelector')[0].getValue();
 			} else {
 				abbr.innerHTML = this.params.text;
 			}
@@ -565,12 +517,12 @@ Ext.define('HTMLArea.Acronym', {
 			this.editor.insertNodeAtSelection(abbr);
 		} else {
 			var abbr = this.params.abbr;
-			abbr.title = tab.down('component[itemId=useTerm]').getValue();
+			abbr.title = tab.find('itemId', 'useTerm')[0].getValue();
 			if (language) {
 				this.getPluginInstance('Language').setLanguageAttributes(abbr, language);
 			}
 			if (term == abbr.title) {
-				abbr.innerHTML = tab.down('component[itemId=abbrSelector]').getValue();
+				abbr.innerHTML = tab.find('itemId', 'abbrSelector')[0].getValue();
 			}
 		}
 		this.close();
@@ -599,7 +551,7 @@ Ext.define('HTMLArea.Acronym', {
 				button.setInactive(!(el.nodeName.toLowerCase() == 'acronym' && !this.pageTSConfiguration.noAcronym) && !(el.nodeName.toLowerCase() == 'abbr' && !this.pageTSConfiguration.noAbbr));
 			}
 			button.setTooltip({
-				text: this.localize((button.disabled || button.inactive) ? 'Insert abbreviation' : 'Edit abbreviation')
+				title: this.localize((button.disabled || button.inactive) ? 'Insert abbreviation' : 'Edit abbreviation')
 			});
 			button.contextMenuTitle = '';
 			if (this.dialog) {

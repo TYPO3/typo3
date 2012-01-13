@@ -27,8 +27,7 @@
 /*
  * EditorMode Plugin for TYPO3 htmlArea RTE
  */
-Ext.define('HTMLArea.EditorMode', {
-	extend: 'HTMLArea.Plugin',
+HTMLArea.EditorMode = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */

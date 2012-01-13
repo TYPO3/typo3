@@ -31,8 +31,7 @@
 /*
  * Character Map Plugin for TYPO3 htmlArea RTE
  */
-Ext.define('HTMLArea.CharacterMap', {
-	extend: 'HTMLArea.Plugin',
+HTMLArea.CharacterMap = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -51,24 +50,17 @@ Ext.define('HTMLArea.CharacterMap', {
 		};
 		this.registerPluginInformation(pluginInformation);
 		/*
-		 * Registering the buttons
+		 * Registering the button
 		 */
-		for (var i = 0, n = this.buttons.length; i < n; ++i) {
-			var button = this.buttons[i];
-			buttonId = button[0];
-			var buttonConfiguration = {
-				id: buttonId,
-				tooltip: this.localize(buttonId + '-Tooltip'),
-				action: 'onButtonPress',
-				context: button[1],
-				dialog: false,
-				iconCls: 'htmlarea-action-' + button[2]
-			};
-			this.registerButton(buttonConfiguration);
-		}
-		/*
-		 * Localizing the maps
-		 */
+		var buttonId = 'InsertCharacter';
+		var buttonConfiguration = {
+			id		: buttonId,
+			tooltip		: this.localize(buttonId + '-Tooltip'),
+			action		: 'onButtonPress',
+			dialog		: true,
+			iconCls		: 'htmlarea-action-character-insert-from-map'
+		};
+		this.registerButton(buttonConfiguration);
 		Ext.iterate(this.maps, function (key, map, maps) {
 			for (var i = map.length; --i >= 0;) {
 				maps[key][i].push(this.localize(map[i][1]));
@@ -76,13 +68,6 @@ Ext.define('HTMLArea.CharacterMap', {
 		}, this);
 		return true;
 	 },
-	/*
-	 * The list of buttons added by this plugin
-	 */
-	buttons: [
-		['InsertCharacter', null, 'character-insert-from-map'],
-		['InsertSoftHyphen', null, 'soft-hyphen-insert']
-	],
 	/*
 	 * Character maps
 	 */
@@ -349,25 +334,12 @@ Ext.define('HTMLArea.CharacterMap', {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		switch (buttonId) {
-			case 'InsertCharacter':
-				this.openDialogue(
-					buttonId,
-					'Insert special character',
-					this.getWindowDimensions(
-						{
-							width: 402,
-							height: 360
-						},
-						buttonId
-					),
-					this.buildTabItems()
-				);
-				break;
-			case 'InsertSoftHyphen':
-				this.insertEntity('\xAD');
-				break;
-		}
+		this.openDialogue(
+			buttonId,
+			'Insert special character',
+			this.getWindowDimensions({width:434, height:360}, buttonId),
+			this.buildTabItems()
+		);
 		return false;
 	},
 	/*
@@ -382,13 +354,14 @@ Ext.define('HTMLArea.CharacterMap', {
 	 * @return	void
 	 */
 	openDialogue: function (buttonId, title, dimensions, tabItems, handler) {
-		this.dialog = Ext.create('Ext.window.Window', {
+		this.dialog = new Ext.Window({
 			title: this.localize(title),
 			cls: 'htmlarea-window',
 			border: false,
 			width: dimensions.width,
-			layout: 'anchor',
-			resizable: true,
+			height: 'auto',
+				// As of ExtJS 3.1, JS error with IE when the window is resizable
+			resizable: !Ext.isIE,
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				close: {
@@ -402,6 +375,10 @@ Ext.define('HTMLArea.CharacterMap', {
 				listeners: {
 					activate: {
 						fn: this.resetFocus,
+						scope: this
+					},
+					tabchange: {
+						fn: this.syncHeight,
 						scope: this
 					}
 				},
@@ -422,12 +399,12 @@ Ext.define('HTMLArea.CharacterMap', {
 		var tabItems = [];
 		Ext.iterate(this.maps, function (id, map) {
 			tabItems.push({
-				xtype: 'component',
-				cls: 'htmlarea-character-map',
+				xtype: 'box',
+				cls: 'character-map',
 				title: this.localize(id),
 				itemId: id,
-				tpl: Ext.create('Ext.XTemplate',
-					'<tpl for="."><a href="#" class="htmlarea-character-map-character" hidefocus="on" data-qtitle="<span>&</span>{1};" data-qtip="{2}">{0}</a></tpl>'
+				tpl: new Ext.XTemplate(
+					'<tpl for="."><a href="#" class="character" hidefocus="on" ext:qtitle="<span>&</span>{1};" ext:qtip="{2}">{0}</a></tpl>'
 				),
 				listeners: {
 					render: {
@@ -451,43 +428,26 @@ Ext.define('HTMLArea.CharacterMap', {
 		component.mon(component.el, 'click', this.insertCharacter, this, {delegate: 'a'});
 	},
 	/*
-	 * Handle the click on an item of the map
+	 * Insert the selected entity
 	 *
 	 * @param	object		event: the Ext event
 	 * @param	HTMLelement	target: the html element target
 	 *
-	 * @return	boolean
+	 * @return	void
 	 */
 	insertCharacter: function (event, target) {
 		event.stopEvent();
 		this.editor.focus();
 		this.restoreSelection();
 		var entity = Ext.get(target).dom.innerHTML;
-		this.insertEntity(entity);
-		if (Ext.isIE) {
-			this.saveSelection();
-		}
-		return false;
-	},
-	/*
-	 * Insert the selected entity
-	 *
-	 * @param	string		entity: the entity to insert at the current selection
-	 *
-	 * @return	void
-	 */
-	insertEntity: function (entity) {
-		this.editor.focus();
 		if (Ext.isIE) {
 			this.editor.insertHTML(entity);
+			this.saveSelection();
 		} else {
 				// Firefox and WebKit convert '&nbsp;' to '&amp;nbsp;'
-			var node = this.editor.document.createTextNode(((Ext.isGecko || Ext.isWebKit) && entity == '&nbsp;') ? '\xA0' : entity);
-			this.editor.insertNodeAtSelection(node);
-			if (!Ext.isIE) {
-				this.editor.selectNode(node, false);
-			}
+			this.editor.insertNodeAtSelection(this.editor.document.createTextNode(((Ext.isGecko || Ext.isWebKit) && entity == '&nbsp;') ? '\xA0' : entity));
 		}
+		return false;
 	},
 	/*
 	 * Reset focus on the the current selection, if at all possible

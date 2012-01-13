@@ -27,8 +27,7 @@
 /*
  * EditElement plugin for htmlArea RTE
  */
-Ext.define('HTMLArea.EditElement', {
-	extend: 'HTMLArea.Plugin',
+HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -41,7 +40,7 @@ Ext.define('HTMLArea.EditElement', {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.0',
+			version		: '1.1',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -68,24 +67,17 @@ Ext.define('HTMLArea.EditElement', {
 	 * Sets of default configuration values for dialogue form fields
 	 */
 	configDefaults: {
-		combobox: {
-			cls: 'htmlarea-combo',
-			displayField: 'text',
-			listConfig: {
-				cls: 'htmlarea-combo-list',
-				getInnerTpl: function () {
-					return '<div data-qtip="{value}" class="htmlarea-combo-list-item">{text}</div>';
-				}
-			},
+		combo: {
 			editable: true,
-			forceSelection: true,
-			helpIcon: true,
-			queryMode: 'local',
 			selectOnFocus: true,
-			triggerAction: 'all',
 			typeAhead: true,
+			triggerAction: 'all',
+			forceSelection: true,
+			mode: 'local',
 			valueField: 'value',
-			xtype: 'combobox'
+			displayField: 'text',
+			helpIcon: true,
+			tpl: '<tpl for="."><div ext:qtip="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
 		}
 	},
 	/*
@@ -131,13 +123,14 @@ Ext.define('HTMLArea.EditElement', {
 	 * @return	void
 	 */
 	openDialogue: function (buttonId, title, dimensions, tabItems, buttonsConfig) {
-		this.dialog = Ext.create('Ext.window.Window', {
+		this.dialog = new Ext.Window({
 			title: this.getHelpTip('', title),
 			cls: 'htmlarea-window',
 			border: false,
 			width: dimensions.width,
-			layout: 'anchor',
-			resizable: true,
+			height: 'auto',
+				// As of ExtJS 3.1, JS error with IE when the window is resizable
+			resizable: !Ext.isIE,
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				close: {
@@ -150,9 +143,15 @@ Ext.define('HTMLArea.EditElement', {
 				activeTab: 0,
 				defaults: {
 					xtype: 'container',
-					layout: 'anchor',
+					layout: 'form',
 					defaults: {
 						labelWidth: 150
+					}
+				},
+				listeners: {
+					tabchange: {
+						fn: this.syncHeight,
+						scope: this
 					}
 				},
 				items: tabItems
@@ -172,13 +171,10 @@ Ext.define('HTMLArea.EditElement', {
 		var tabItems = [];
 		var generalTabItemConfig = [];
 		if (this.removedFieldsets.indexOf('identification') == -1) {
-				this.addConfigElement(this.buildIdentificationFieldsetConfig(element), generalTabItemConfig);
+			this.addConfigElement(this.buildIdentificationFieldsetConfig(element), generalTabItemConfig);
 		}
 		if (this.removedFieldsets.indexOf('style') == -1 && this.removedProperties.indexOf('className') == -1) {
-			this.stylePlugin = this.getPluginInstance(HTMLArea.isBlockElement(element) ? 'BlockStyle' : 'TextStyle');
-			if (this.stylePlugin) {
-				this.addConfigElement(this.buildClassFieldsetConfig(element), generalTabItemConfig);
-			}
+			this.addConfigElement(this.buildClassFieldsetConfig(element), generalTabItemConfig);
 		}
 		tabItems.push({
 			title: this.localize('general'),
@@ -250,48 +246,9 @@ Ext.define('HTMLArea.EditElement', {
 	 */
 	buildClassFieldsetConfig: function (element) {
 		var itemsConfig = [];
-			// Create global style store if it does not exist already
-		var styleStore = Ext.data.StoreManager.lookup(this.editorId + '-store-' + this.stylePlugin.name);
-		if (!styleStore) {
-			styleStore = Ext.create('Ext.data.ArrayStore', {
-				model: 'HTMLArea.model.' + this.stylePlugin.name,
-				storeId: this.editorId + '-store-' + this.stylePlugin.name,
-				data: []
-			});
-		}
-		function initStyleCombo (combo) {
-			var nodeName = element.nodeName.toLowerCase();
-			var classNames = HTMLArea.DOM.getClassNames(element);
-				// Somehow getStore method got lost...
-			if (!Ext.isFunction(combo.getStore)) {
-				combo.getStore = function () {
-					return combo.store;
-				};
-			}
-			this.stylePlugin.buildDropDownOptions(combo, nodeName);
-			this.stylePlugin.setSelectedOption(combo, classNames, 'noUnknown');
-		}
-		itemsConfig.push(Ext.applyIf(
-			{
-				fieldLabel: this.getHelpTip('className', 'className'),
-				listConfig: {
-					cls: 'htmlarea-combo-list',
-					getInnerTpl: function () {
-						return '<div data-qtip="{value}" class="htmlarea-combo-list-item">{text}</div>';
-					}
-				},
-				itemId: 'className',
-				store: styleStore,
-				width: ((this.properties['className'] && this.properties['className'].width) ? this.properties['className'].width : 300),
-				listeners: {
-					afterrender: {
-						fn: initStyleCombo,
-						scope: this
-					}
-				}
-			},
-			this.configDefaults['combobox']
-		));
+		var stylingCombo = this.buildStylingField('className', 'className', 'className');
+		this.setStyleOptions(stylingCombo, element);
+		itemsConfig.push(stylingCombo);
 		return {
 			xtype: 'fieldset',
 			title: this.localize('className'),
@@ -301,6 +258,48 @@ Ext.define('HTMLArea.EditElement', {
 			},
 			items: itemsConfig
 		};
+	},
+	/*
+	 * This function builds a style selection field
+	 *
+	 * @param	string		fieldName: the name of the field
+	 * @param	string		fieldLabel: the label for the field
+	 * @param	string		cshKey: the csh key
+	 *
+	 * @return	object		the style selection field object
+	 */
+	buildStylingField: function (fieldName, fieldLabel, cshKey) {
+		return new Ext.form.ComboBox(Ext.apply({
+			xtype: 'combo',
+			itemId: fieldName,
+			fieldLabel: this.getHelpTip(fieldLabel, cshKey),
+			width: ((this.properties['className'] && this.properties['className'].width) ? this.properties['className'].width : 300),
+			store: new Ext.data.ArrayStore({
+				autoDestroy:  true,
+				fields: [ { name: 'text'}, { name: 'value'}, { name: 'style'} ],
+				data: [[this.localize('No style'), 'none']]
+			})
+			}, {
+			tpl: '<tpl for="."><div ext:qtip="{value}" style="{style}text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
+			}, this.configDefaults['combo']
+		));
+	},
+	/*
+	 * This function populates the class store and sets the selected option
+	 *
+	 * @param	object:		comboBox: the combobox object
+	 * @param	object		element: the element being edited, if any
+	 *
+	 * @return	object		the fieldset configuration object
+	 */
+	setStyleOptions: function (comboBox, element) {
+		var nodeName = element.nodeName.toLowerCase();
+		this.stylePlugin = this.getPluginInstance(HTMLArea.isBlockElement(element) ? 'BlockStyle' : 'TextStyle');
+		if (comboBox && this.stylePlugin) {
+			var classNames = HTMLArea.DOM.getClassNames(element);
+			this.stylePlugin.buildDropDownOptions(comboBox, nodeName);
+			this.stylePlugin.setSelectedOption(comboBox, classNames, 'noUnknown');
+		}
 	},
 	/*
 	 * This function builds the configuration object for the Language fieldset
@@ -321,76 +320,48 @@ Ext.define('HTMLArea.EditElement', {
 			function initLanguageStore (store) {
 				if (selectedLanguage !== 'none') {
 					store.removeAt(0);
-					store.insert(0, {
+					store.insert(0, new store.recordType({
 						text: languagePlugin.localize('Remove language mark'),
 						value: 'none'
-					});
+					}));
 				}
 			}
-				// Create global language store if it does not exist already
-			var languageStore = Ext.data.StoreManager.lookup(this.editorId + '-store-' + languagePlugin.name);
-			if (languageStore) {
-				initLanguageStore(languageStore);
-			} else {
-				languageStore = Ext.create('Ext.data.Store', {
-					autoLoad: true,
-					model: 'HTMLArea.model.default',
-					listeners: {
-						load: initLanguageStore
-					},
-					proxy: {
-						type: 'ajax',
-						url: languageConfigurationUrl,
-						reader: {
-							type: 'json',
-							root: 'options'
-						}
-					},
-					storeId: this.editorId + '-store-' + languagePlugin.name
-				});
-			}
-			itemsConfig.push(Ext.applyIf(
-				{
-					fieldLabel: languagePlugin.getHelpTip('languageCombo', 'Language'),
-					itemId: 'lang',
-					store: languageStore,
-					width: ((this.properties['language'] && this.properties['language'].width) ? this.properties['language'].width : 300),
-					value: selectedLanguage
-				},
-				this.configDefaults['combobox']
-			));
+			var languageStore = new Ext.data.JsonStore({
+				autoDestroy:  true,
+				autoLoad: true,
+				root: 'options',
+				fields: [ { name: 'text'}, { name: 'value'} ],
+				url: languageConfigurationUrl,
+				listeners: {
+					load: initLanguageStore
+				}
+			});
+			itemsConfig.push(Ext.apply({
+				xtype: 'combo',
+				fieldLabel: languagePlugin.getHelpTip('languageCombo', 'Language'),
+				itemId: 'lang',
+				store: languageStore,
+				width: ((this.properties['language'] && this.properties['language'].width) ? this.properties['language'].width : 200),
+				value: selectedLanguage
+			}, this.configDefaults['combo']));
 		}
 		if (this.removedProperties.indexOf('direction') == -1) {
-				// Create direction options global store
-			var directionStore = Ext.data.StoreManager.lookup('HTMLArea' + '-store-' + languagePlugin.name + '-direction');
-			if (!directionStore) {
-				directionStore = Ext.create('Ext.data.ArrayStore', {
-					model: 'HTMLArea.model.Default',
-					storeId: 'HTMLArea' + '-store-' + languagePlugin.name + '-direction'
-				});
-				directionStore.loadData([
-					{
-						text: languagePlugin.localize('Not set'),
-						value: 'not set'
-					},{
-						text: languagePlugin.localize('RightToLeft'),
-						value: 'rtl'
-					},{
-						text: languagePlugin.localize('LeftToRight'),
-						value: 'ltr'
-					}
-				]);
-			}
-			itemsConfig.push(Ext.applyIf(
-				{
-					fieldLabel: languagePlugin.getHelpTip('directionCombo', 'Text direction'),
-					itemId: 'dir',
-					store: directionStore,
-					value: !Ext.isEmpty(element) && element.dir ? element.dir : 'not set',
-					width: ((this.properties['direction'] && this.properties['dirrection'].width) ? this.properties['direction'].width : 300)
-				},
-				this.configDefaults['combobox']
-			));
+			itemsConfig.push(Ext.apply({
+				xtype: 'combo',
+				fieldLabel: languagePlugin.getHelpTip('directionCombo', 'Text direction'),
+				itemId: 'dir',
+				store: new Ext.data.ArrayStore({
+					autoDestroy:  true,
+					fields: [ { name: 'text'}, { name: 'value'}],
+					data: [
+						[languagePlugin.localize('Not set'), 'not set'],
+						[languagePlugin.localize('RightToLeft'), 'rtl'],
+						[languagePlugin.localize('LeftToRight'), 'ltr']
+					]
+				}),
+				width: ((this.properties['direction'] && this.properties['dirrection'].width) ? this.properties['direction'].width : 200),
+				value: !Ext.isEmpty(element) && element.dir ? element.dir : 'not set'
+			}, this.configDefaults['combo']));
 		}
 		return {
 			xtype: 'fieldset',
@@ -457,11 +428,11 @@ Ext.define('HTMLArea.EditElement', {
 	 */
 	okHandler: function (button, event) {
 		this.restoreSelection();
-		var textFields = this.dialog.query('textfield');
+		var textFields = this.dialog.findByType('textfield');
 		Ext.each(textFields, function (field) {
 			this.element.setAttribute(field.getItemId(), field.getValue());
 		}, this);
-		var comboFields = this.dialog.query('combobox');
+		var comboFields = this.dialog.findByType('combo');
 		Ext.each(comboFields, function (field) {
 			var itemId = field.getItemId();
 			var value = field.getValue();

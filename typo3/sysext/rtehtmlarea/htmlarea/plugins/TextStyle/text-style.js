@@ -28,26 +28,9 @@
  * Text Style Plugin for TYPO3 htmlArea RTE
  */
 /*
- * Define data model for blockstyle selector box
+ * Creation of the class of TextStyle plugins
  */
-Ext.define('HTMLArea.model.TextStyle', {
-	extend: 'Ext.data.Model',
-	fields: [{
-			name: 'text',
-			type: 'string'
-		},{
-			name: 'value',
-			type: 'string'
-		},{
-			name: 'style',
-			type: 'string'
-	}]
-});
-/*
- * Define TextStyle plugin
- */
-Ext.define('HTMLArea.TextStyle', {
-	extend: 'HTMLArea.Plugin',
+HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -117,28 +100,23 @@ Ext.define('HTMLArea.TextStyle', {
 			fieldLabel = this.localize('text_style');
 		}
 		var dropDownConfiguration = {
-			action: 'onChange',
 			id: buttonId,
 			tooltip: this.localize(buttonId + '-Tooltip'),
 			fieldLabel: fieldLabel,
-			options: [{
-				text: this.localize('No style'),
-				value: 'none',
-				style: ''
-			}],
-			model: 'HTMLArea.model.TextStyle',
-			template: '<div data-qtip="{value}" style="{style}" class="htmlarea-combo-list-item">{text}</div>'
+			options: [[this.localize('No style'), 'none']],
+			action: 'onChange',
+			storeFields: [ { name: 'text'}, { name: 'value'}, { name: 'style'} ],
+			tpl: '<tpl for="."><div ext:qtip="{value}" style="{style}text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
 		};
 		if (this.pageTSconfiguration) {
 			if (this.pageTSconfiguration.width) {
 				dropDownConfiguration.width = parseInt(this.pageTSconfiguration.width, 10);
 			}
-			dropDownConfiguration.listConfig = {};
 			if (this.pageTSconfiguration.listWidth) {
-				dropDownConfiguration.listConfig.width = parseInt(this.pageTSconfiguration.listWidth, 10);
+				dropDownConfiguration.listWidth = parseInt(this.pageTSconfiguration.listWidth, 10);
 			}
 			if (this.pageTSconfiguration.maxHeight) {
-				dropDownConfiguration.listConfig.maxHeight = parseInt(this.pageTSconfiguration.maxHeight, 10);
+				dropDownConfiguration.maxHeight = parseInt(this.pageTSconfiguration.maxHeight, 10);
 			}
 		}
 		this.registerDropDown(dropDownConfiguration);
@@ -237,7 +215,7 @@ Ext.define('HTMLArea.TextStyle', {
 			// Monitor editor changing mode
 		this.editor.iframe.mon(this.editor, 'HTMLAreaEventModeChange', this.onModeChange, this);
 			// Create CSS Parser object
-		this.textStyles = Ext.create('HTMLArea.CSS.Parser', {
+		this.textStyles = new HTMLArea.CSS.Parser({
 			prefixLabelWithClassName: this.prefixLabelWithClassName,
 			postfixLabelWithClassName: this.postfixLabelWithClassName,
 			showTagFreeClasses: this.showTagFreeClasses,
@@ -322,7 +300,7 @@ Ext.define('HTMLArea.TextStyle', {
 					}
 				}
 			}
-			var selectionInInlineElement = (tagName !== false) && this.REInlineTags.test(tagName);
+			var selectionInInlineElement = tagName && this.REInlineTags.test(tagName);
 			var disabled = !editor.endPointsInSameBlock() || (fullNodeSelected && !tagName) || (selectionEmpty && !selectionInInlineElement);
 			if (!disabled && !tagName) {
 				tagName = "span";
@@ -341,10 +319,10 @@ Ext.define('HTMLArea.TextStyle', {
 	initializeDropDown: function (dropDown) {
 		var store = dropDown.getStore();
 		store.removeAll(false);
-		store.insert(0, {
+		store.insert(0, new store.recordType({
 			text: this.localize('No style'),
 			value: 'none'
-		});
+		}));
 		dropDown.setValue('none');
 	},
 	/*
@@ -363,20 +341,12 @@ Ext.define('HTMLArea.TextStyle', {
 				}
 			}
 			Ext.iterate(allowedClasses, function (cssClass, value) {
-				var style = null;
-					// this.editor.config.disablePCexamples is deprecated as of TYPO3 4.6 and will be removed in TYPO 4.8
-				if (!this.pageTSconfiguration.disableStyleOnOptionLabel && !this.editor.config.disablePCexamples) {
-					if (HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) {
-						style = HTMLArea.classesValues[cssClass];
-					} else if (/-[0-9]+$/.test(cssClass) && HTMLArea.classesValues[RegExp.leftContext + '-'])  {
-						style = HTMLArea.classesValues[RegExp.leftContext + '-'];
-					}
-				}
-				store.add({
+				store.add(new store.recordType({
 					text: value,
 					value: cssClass,
-					style: style
-				});
+						// this.editor.config.disablePCexamples is deprecated as of TYPO3 4.6 and will be removed in TYPO 4.8
+					style: (!(this.pageTSconfiguration && this.pageTSconfiguration.disableStyleOnOptionLabel) && !this.editor.config.disablePCexamples && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) ? HTMLArea.classesValues[cssClass] : null
+				}));
 			}, this);
 		}
 	},
@@ -395,10 +365,10 @@ Ext.define('HTMLArea.TextStyle', {
 				}
 			}
 			if (index == -1 && !noUnknown) {
-				store.add({
+				store.add(new store.recordType({
 					text: this.localize('Unknown style'),
 					value: classNames[classNames.length-1]
-				});
+				}));
 				index = store.getCount()-1;
 				dropDown.setValue(classNames[classNames.length-1]);
 				if (!defaultClass) {
