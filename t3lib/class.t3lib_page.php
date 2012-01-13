@@ -703,7 +703,7 @@ class t3lib_pageSelect {
 					// Add row to rootline with language overlaid:
 				$theRowArray[] = $this->getPageOverlay($row);
 			} else {
-				$this->error_getRootLine = 'Broken rootline';
+				$this->error_getRootLine = 'Broken rootline (failed on page with uid ' . $uid . ')';
 				$this->error_getRootLine_failPid = $uid;
 				return array(); // broken rootline.
 			}
