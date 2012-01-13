@@ -1,12 +1,10 @@
 treeeditor.js
-pagetreecolumn.js
-contextmenu.js
-Ext.ux.state.TreePanel.js
-treedropzone.js
-treeviewdragdrop.js
 tree.js
 filteringtree.js
-toppanel.js
+nodeui.js
 deletiondropzone.js
+toppanel.js
+contextmenu.js
 actions.js
+Ext.ux.state.TreePanel.js
 app.js

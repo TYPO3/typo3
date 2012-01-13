@@ -123,7 +123,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 		if (!is_array($subpages) || !count($subpages)) {
 			return $nodeCollection;
 		}
-		$index = -1;
+
 		foreach ($subpages as $subpage) {
 			if (in_array($subpage['uid'], $this->hiddenRecords)) {
 				continue;
@@ -135,20 +135,14 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 			}
 
 			$subNode = t3lib_tree_pagetree_Commands::getNewNode($subpage, $mountPoint);
-			$subNode->setParentNode($node);
-			$subNode->setDepth($node->getDepth() + 1);
-			$subNode->setIndex(++$index);
-			$subNode->setIsFirst($index === 0);
-			$subNode->setIsLast($index === (count($subpages)-1));
 			if ($this->nodeCounter < $this->nodeLimit) {
 				$childNodes = $this->getNodes($subNode, $mountPoint, $level + 1);
 				$subNode->setChildNodes($childNodes);
-				$subNode->setLeaf(!$subNode->hasChildNodes());
 				$this->nodeCounter += $childNodes->count();
 			} else {
 				$subNode->setLeaf(!$this->hasNodeSubPages($subNode->getId()));
 			}
-			$subNode->setExpandable(!$subNode->isLeafNode());
+
 			$nodeCollection->append($subNode);
 		}
 
@@ -166,7 +160,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	 * @param t3lib_tree_Node $node
 	 * @param string $searchFilter
 	 * @param int $mountPoint
-	 * @return t3lib_tree_pagetree_NodeCollection
+	 * @return void
 	 */
 	public function getFilteredNodes(t3lib_tree_Node $node, $searchFilter, $mountPoint = 0) {
 		/** @var $nodeCollection t3lib_tree_pagetree_NodeCollection */
@@ -211,10 +205,13 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 				if ($reference && $reference->offsetExists($ident)) {
 					/** @var $refNode t3lib_tree_pagetree_Node */
 					$refNode = $reference->offsetGet($ident);
-					if ($refNode->hasChildNodes()) {
-						$refNode->setExpanded(TRUE);
-						$refNode->setLeaf(FALSE);
-						$reference = $refNode->getChildNodes();
+					$refNode->setExpanded(TRUE);
+					$refNode->setLeaf(FALSE);
+
+					$reference = $refNode->getChildNodes();
+					if ($reference == NULL) {
+						$reference = t3lib_div::makeInstance('t3lib_tree_pagetree_NodeCollection');
+						$refNode->setChildNodes($reference);
 					}
 				} else {
 					$refNode = t3lib_tree_pagetree_Commands::getNewNode($rootlineElement, $mountPoint);
@@ -290,7 +287,6 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 		}
 
 		$showRootlineAboveMounts = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPathAboveMounts');
-		$index = -1;
 		foreach ($mountPoints as $mountPoint) {
 			if ($mountPoint === 0) {
 				$sitename = 'TYPO3';
@@ -326,13 +322,10 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 				$subNode->setExpanded(TRUE);
 				$subNode->setCls('typo3-pagetree-node-notExpandable');
 			}
-			$subNode->setDepth(1);
-			$subNode->setIndex(++$index);
-			$subNode->setIsFirst($index === 0);
-			$subNode->setIsLast($index === (count($mountPoints)-1));
+
 			$subNode->setIsMountPoint(TRUE);
-			$subNode->setAllowDrag(FALSE);
-			$subNode->setAllowDrop(FALSE);
+			$subNode->setDraggable(FALSE);
+			$subNode->setIsDropTarget(FALSE);
 
 			if ($searchFilter === '') {
 				$childNodes = $this->getNodes($subNode, $mountPoint);
@@ -370,22 +363,21 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 		}
 
 		if ($searchFilter !== '') {
-			$searchWhere = '';
 			if (is_numeric($searchFilter) && $searchFilter > 0) {
-				$searchWhere .= 'uid = ' . intval($searchFilter) . ' OR ';
+				$seachWhere .= 'uid = ' . intval($searchFilter) . ' OR ';
 			}
 
 			$searchFilter = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . $searchFilter . '%', 'pages');
 			$useNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
 
 			if ($useNavTitle) {
-				$searchWhere .= '(nav_title LIKE ' . $searchFilter .
+				$seachWhere .= '(nav_title LIKE ' . $searchFilter .
 					' OR (nav_title = "" && title LIKE ' . $searchFilter . '))';
 			} else {
-				$searchWhere .= 'title LIKE ' . $searchFilter;
+				$seachWhere .= 'title LIKE ' . $searchFilter;
 			}
 
-			$where .= ' AND (' . $searchWhere . ')';
+			$where .= ' AND (' . $seachWhere . ')';
 		}
 
 		return $where;

@@ -26,25 +26,45 @@
  ***************************************************************/
 
 /**
- * Interface that defines the to be rendered
+ * Abstract ExtJS tree based on ExtDirect
  *
- * @author Steffen Ritter <info@steffen-ritter.net>
+ * @author Stefan Galinski <stefan.galinski@gmail.com>
  * @package TYPO3
  * @subpackage t3lib
  */
-interface t3lib_tree_RenderableNode {
-	/**
-	 * returns a string representation
-	 *
-	 * @return string
-	 */
-	public function toString();
+abstract class t3lib_tree_ExtDirect_AbstractExtJsTree extends t3lib_tree_AbstractTree {
 
 	/**
-	 * returns an array representation of an node
+	 * State Provider
 	 *
+	 * @var t3lib_tree_AbstractStateProvider
+	 */
+	protected $stateProvider = NULL;
+
+	/**
+	 * @param t3lib_tree_AbstractStateProvider $stateProvider
+	 * @return void
+	 */
+	public function setStateProvider(t3lib_tree_AbstractStateProvider $stateProvider) {
+		$this->stateProvider = $stateProvider;
+	}
+
+	/**
+	 * @return t3lib_tree_AbstractStateProvider
+	 */
+	public function getStateProvider() {
+		return $this->stateProvider;
+	}
+
+	/**
+	 * Fetches the next tree level
+	 *
+	 * @abstract
+	 * @param int $nodeId
+	 * @param stdClass $nodeData
 	 * @return array
 	 */
-	public function toArray();
+	abstract public function getNextTreeLevel($nodeId, $nodeData);
 }
+
 ?>

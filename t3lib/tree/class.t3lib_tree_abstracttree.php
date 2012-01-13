@@ -63,7 +63,7 @@ abstract class t3lib_tree_AbstractTree {
 	}
 
 	/**
-	 * @param t3lib_tree_renderer_Abstract $nodeRenderer
+	 * @param t3lib_tree_renderer_Abstract $dataProvider
 	 * @return void
 	 */
 	public function setNodeRenderer(t3lib_tree_renderer_Abstract $nodeRenderer) {
@@ -83,15 +83,6 @@ abstract class t3lib_tree_AbstractTree {
 	 * @return t3lib_tree_Node
 	 */
 	abstract public function getRoot();
-
-	/**
-	 * @param mixed $search
-	 * @return t3lib_tree_Node
-	 */
-	public function find($search) {
-		return $this->getRoot()->find($search);
-	}
-
 }
 
 ?>

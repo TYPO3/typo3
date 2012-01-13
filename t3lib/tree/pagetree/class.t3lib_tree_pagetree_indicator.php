@@ -53,7 +53,7 @@ class t3lib_tree_pagetree_Indicator {
 	 */
 	protected function getIndicatorProviders() {
 		$providers = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['pagetree']['t3lib_tree_pagetree']['indicator']['providers'];
-		if (!is_array($providers) || count($this->indicatorProviders) > 0) {
+		if (!is_array($providers)) {
 			return;
 		}
 
@@ -69,13 +69,13 @@ class t3lib_tree_pagetree_Indicator {
 	/**
 	 * Runs through all indicator providers and returns all indicators collected.
 	 *
-	 * @return	array	An array of indicator objects
+	 * @return	array	An array of
 	 */
 	public function getAllIndicators() {
 		$indicators = array();
 		foreach ($this->indicatorProviders as $indicatorProvider) {
 			$indicator = $indicatorProvider->getIndicator();
-			if ($indicator) {
+			if($indicator) {
 				$indicators[] = $indicator;
 			}
 		}

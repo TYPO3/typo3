@@ -32,7 +32,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_tree_pagetree_Node extends t3lib_tree_NavigationTree_Node implements t3lib_tree_RecordBasedNode {
+class t3lib_tree_pagetree_Node extends t3lib_tree_extdirect_Node {
 	/**
 	 * Cached access rights to save some performance
 	 *
@@ -297,19 +297,6 @@ class t3lib_tree_pagetree_Node extends t3lib_tree_NavigationTree_Node implements
 	public function canBeTemporaryMountPoint() {
 		return TRUE;
 	}
-	
-	/**
-	 * Returns a special id for a page tree node
-	 *
-	 * @return string
-	 */
-	public function getPageTreeNodeId() {
-		if ($this->getId() === 'root') {
-			return 'root';
-		} else {
-			return 'p' . dechex($this->getId()) . ($this->getMountPoint() ? '-' . dechex($this->getMountPoint()) : '');
-		}
-	}
 
 	/**
 	 * Returns the node in an array representation that can be used for serialization
@@ -320,34 +307,17 @@ class t3lib_tree_pagetree_Node extends t3lib_tree_NavigationTree_Node implements
 	public function toArray($addChildNodes = TRUE) {
 		$arrayRepresentation = parent::toArray();
 
-		$arrayRepresentation2['id'] = $this->getPageTreeNodeId();
-		$arrayRepresentation2['realId'] = $this->getId();
-		$arrayRepresentation2['serializeClassName'] = get_class($this);
-		$arrayRepresentation2['parentId'] = (!$this->getRoot() && $this->getParentNode()) ? $this->getParentNode()->getPageTreeNodeId() : 'root';
-		$arrayRepresentation2['readableRootline'] = $this->getReadableRootline();
-		$arrayRepresentation2['mountPoint'] = $this->getMountPoint();
-		$arrayRepresentation2['workspaceId'] = $this->getWorkspaceId();
-		$arrayRepresentation2['isMountPoint'] = $this->isMountPoint();
+		$arrayRepresentation['id'] = 'p' . dechex($this->getId()) . ($this->getMountPoint() ? '-' . dechex($this->getMountPoint()) : '');
+		$arrayRepresentation['realId'] = $this->getId();
+		$arrayRepresentation['nodeData']['id'] = $this->getId();
 
-			// only set the leaf attribute if the node has children's,
-			// otherwise you cannot add child's to real leaf nodes
-		if (!$this->isLeafNode()) {
-			$arrayRepresentation2['leaf'] = FALSE;
-		}
-			// Do not nest nodeData and children arrays
-		unset($arrayRepresentation['nodeData']);
-		unset($arrayRepresentation['children']);
-		$arrayRepresentation = array_merge($arrayRepresentation, $arrayRepresentation2);
+		$arrayRepresentation['readableRootline'] = $this->getReadableRootline();
+		$arrayRepresentation['nodeData']['readableRootline'] = $this->getReadableRootline();
 
-			// Suhosin(?) or some other strange environment thingy prevents
-			// the direct copy of an array into an index of the same array
-		$copy = $arrayRepresentation;
-		$arrayRepresentation['nodeData'] = $copy;
-		$arrayRepresentation['nodeData']['id'] = $arrayRepresentation['realId'];
-
-		if ($this->hasChildNodes() && $addChildNodes) {
-			$arrayRepresentation['children'] = $this->childNodes->toArray();
-		}
+		$arrayRepresentation['nodeData']['mountPoint'] = $this->getMountPoint();
+		$arrayRepresentation['nodeData']['workspaceId'] = $this->getWorkspaceId();
+		$arrayRepresentation['nodeData']['isMountPoint'] = $this->isMountPoint();
+		$arrayRepresentation['nodeData']['serializeClassName'] = get_class($this);
 
 		return $arrayRepresentation;
 	}
@@ -364,35 +334,6 @@ class t3lib_tree_pagetree_Node extends t3lib_tree_NavigationTree_Node implements
 		$this->setMountPoint($data['mountPoint']);
 		$this->setReadableRootline($data['readableRootline']);
 		$this->setIsMountPoint($data['isMountPoint']);
-	}
-
-	/**
-	 * set the source field of the label
-	 *
-	 * @param string $field
-	 * @return void
-	 */
-	public function setTextSourceField($field) {
-		$this->t3TextSourceField = $field;
-	}
-
-	/**
-	 * Returns the table of the record data
-	 *
-	 * @return string
-	 */
-	public function getSourceTable() {
-		return 'pages';
-	}
-
-	/**
-	 * sets the Table of record source data
-	 *
-	 * @param string $table
-	 * @return void
-	 */
-	public function setSourceTable($table) {
-		// not needed, pagetree always is 'pages'
 	}
 }
 

@@ -23,133 +23,24 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+Ext.namespace('TYPO3.Components.PageTree');
+
 /**
  * @class TYPO3.Components.PageTree.Tree
  *
  * Generic Tree Panel
  *
  * @namespace TYPO3.Components.PageTree
- * @extends Ext.tree.Panel
+ * @extends Ext.tree.TreePanel
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
-Ext.define('TYPO3.Components.PageTree.Model', {
-	extend: 'Ext.data.Model',
-	fields: [{
-		name: 'id',
-		type: 'string',
-		defaultValue: 'root'
-	},{
-		name: 'realId',
-		type: 'string'
-	},{
-		name: 'text',
-		type: 'string'
-	},{
-		name: 'depth',
-		type: 'int'
-	},{
-		name: 'root',
-		type: 'boolean'
-	},{
-		name: 'leaf',
-		type: 'boolean'
-	},{
-		name: 'parentId',
-		type: 'string'
-	},{
-		name: 'isFirst',
-		type: 'boolean'
-	},{
-		name: 'index',
-		type: 'int'
-	},{
-		name: 'isLast',
-		type: 'boolean'
-	},{
-		name: 'isExpandable',
-		type: 'boolean'
-	},{
-		name: 'isInsertedNode',
-		type: 'boolean'
-	},{
-		name: 'nodeData',
-		type: 'object'
-	}],
-	hasMany: {
-		name: 'children',
-		associationKey: 'children',
-		model: 'TYPO3.Components.PageTree.Model'
-	},
-		// Set method for nodeData fields
-	setNodeData: function (field, value) {
-		var nodeData = this.get('nodeData');
-		nodeData[field] = value;
-		this.set('nodeData', Ext.merge(this.get('nodeData'), nodeData));
-	},
-		// Get method for nodeData fields
-	getNodeData: function (field) {
-		return this.get('nodeData')[field];
-	}
-});
-Ext.define('TYPO3.Components.PageTree.Tree', {
-	extend: 'Ext.tree.Panel',
-	/**
-	 * Use extended stateful mixin
-	 *
-	 * @type {Object}
-	 */
-	mixins: {
-		state: 'Ext.ux.state.TreePanel'
-	},
-
-	/**
-	 * View configuration
-	 *
-	 * @type {Object}
-	 */
-	viewConfig: {
-		autoScroll: false,
-		border: false,
-		toggleOnDblClick: false
-	},
-
-	/**
-	 * Columns
-	 *
-	 * @type {TYPO3.Components.PageTree.Column}[]
-	 */
-	columns: [{
-	 		xtype: 'pagetreecolumn',
-	 	 	dataIndex: 'text',
-	 	 	flex: 1,
-	 	 	editor: {
-	 	 		xtype: 'textfield',
-	 	 	 	allowBlank: false
-	 	 	}
-	}],
-
-	/**
-	 * Header
-	 *
-	 * @type {Boolean}
-	 */
-	hideHeaders: true,
-	preventHeader: true,
-
+TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	/**
 	 * Border
 	 *
 	 * @type {Boolean}
 	 */
-	autoScroll: false,
 	border: false,
-
-	/**
-	 * Body css
-	 *
-	 * @type {String}
-	 */
-	bodyCls: 'typo3-pagetree',
 
 	/**
 	 * Indicates if the root node is visible
@@ -159,9 +50,16 @@ Ext.define('TYPO3.Components.PageTree.Tree', {
 	rootVisible: false,
 
 	/**
+	 * Tree Editor Instance (Inline Edit)
+	 *
+	 * @type {TYPO3.Components.PageTree.TreeEditor}
+	 */
+	treeEditor: null,
+
+	/**
 	 * Currently Selected Node
 	 *
-	 * @type {TYPO3.Components.PageTree.Model}
+	 * @type {Ext.tree.TreeNode}
 	 */
 	currentSelectedNode: null,
 
@@ -180,18 +78,18 @@ Ext.define('TYPO3.Components.PageTree.Tree', {
 	ddGroup: '',
 
 	/**
-	 * Id of deletionDropZone
-	 *
-	 * @cfg {String}
-	 */
-	deletionDropZoneId: '',
-
-	/**
 	 * Indicates if the label should be editable
 	 *
 	 * @cfg {Boolean}
 	 */
 	labelEdit: true,
+
+	/**
+	 * User Interface Provider
+	 *
+	 * @cfg {Ext.tree.TreeNodeUI}
+	 */
+	uiProvider: null,
 
 	/**
 	 * Data Provider
@@ -205,7 +103,7 @@ Ext.define('TYPO3.Components.PageTree.Tree', {
 	 *
 	 * @cfg {Object}
 	 */
-	commandProvider: null,
+	commandProvider : null,
 
 	/**
 	 * Context menu provider
@@ -215,18 +113,18 @@ Ext.define('TYPO3.Components.PageTree.Tree', {
 	contextMenuProvider: null,
 
 	/**
+	 * Id of the deletion drop zone if any
+	 *
+	 * @cfg {String}
+	 */
+	deletionDropZoneId: '',
+
+	/**
 	 * Main applicaton
 	 *
 	 * @cfg {TYPO3.Components.PageTree.App}
 	 */
 	app: null,
-
-	/**
-	 * Page Tree Store
-	 *
-	 * @type {Object}
-	 */
-	store: null,
 
 	/**
 	 * Root Node Configuration
@@ -242,9 +140,16 @@ Ext.define('TYPO3.Components.PageTree.Tree', {
 	},
 
 	/**
+	 * Indicator if the control key is pressed
+	 *
+	 * @type {Boolean}
+	 */
+	isControlPressed: false,
+
+	/**
 	 * Context Node
 	 *
-	 * @type {TYPO3.Components.PageTree.Model}
+	 * @type {Ext.tree.TreeNode}
 	 */
 	t3ContextNode: null,
 
@@ -253,52 +158,68 @@ Ext.define('TYPO3.Components.PageTree.Tree', {
 	 *
 	 * @type {Object}
 	 */
-	 t3ContextInfo: {
+	t3ContextInfo: {
 		inCopyMode: false,
 		inCutMode: false
 	},
 
 	/**
-	 * Number of clicks to ignore for the label edit on dblclick feature
-	 * Will be set to 2 by the tree editor
+	 * Registered clicks for the double click feature
 	 *
 	 * @type {int}
 	 */
-	inhibitClicks: 0,
+	clicksRegistered: 0,
 
 	/**
-	 * Constructor
-	 * Plugins are built by the parent constructor
+	 * Indicator if the control key was pressed
 	 *
-	 * @param {Object} config
-	 * @return {void}
+	 * @type {Boolean}
 	 */
-	constructor: function (config) {
-			// Inline label editing feature
-		this.labelEdit = config.labelEdit || this.labelEdit;
-		if (this.labelEdit ) {
-			var plugins = config.plugins || [];
-			config.plugins = plugins.concat(
-				Ext.create('TYPO3.Components.PageTree.TreeEditor', {
-					clicksToEdit: 2,
-					pluginId: 'treeEditor'
-				})
-			);
+	controlKeyPressed: false,
+
+	/**
+	 * Listeners
+	 *
+	 * Event handlers that handle click events and synchronizes the label edit,
+	 * double click and single click events in a useful way.
+	 */
+	listeners: {
+			// single click handler that only triggers after a delay to let the double click event
+			// a possibility to be executed (needed for label edit)
+		click: {
+			fn: function(node, event) {
+				if (this.clicksRegistered === 2) {
+					this.clicksRegistered = 0;
+					event.stopEvent();
+					return false;
+				}
+
+				this.clicksRegistered = 0;
+				if (this.commandProvider.singleClick) {
+					this.commandProvider.singleClick(node, this);
+				}
+			},
+			delay: 400
+		},
+
+			// prevent the expanding / collapsing on double click
+		beforedblclick: {
+			fn: function() {
+				return false;
+			}
+		},
+
+			// prevents label edit on a selected node
+		beforeclick: {
+			fn: function(node, event) {
+				if (!this.clicksRegistered && this.getSelectionModel().isSelected(node)) {
+					node.fireEvent('click', node, event);
+					++this.clicksRegistered;
+					return false;
+				}
+				++this.clicksRegistered;
+			}
 		}
-			// Drag & drop feature
-		if (this.enableDD) {
-			config.viewConfig = Ext.applyIf(config.viewConfig || {}, this.viewConfig);
-			var plugins = config.viewConfig.plugins || [];
-			config.viewConfig.plugins = plugins.concat(
-				Ext.create('TYPO3.Components.PageTree.plugin.TreeViewDragDrop', {
-					ddGroup: config.ddGroup,
-					pluginId: 'treeViewDragDrop'
-				})
-			);
-			config.viewConfig.allowCopy = true;
-		}
-			// Call parent constructor
-		this.callParent([config]);
 	},
 
 	/**
@@ -306,74 +227,28 @@ Ext.define('TYPO3.Components.PageTree.Tree', {
 	 *
 	 * @return {void}
 	 */
-	initComponent: function () {
-			// Add the tree store
-		this.addStore();
-			// Add single click handler that only triggers after a delay to let the double click event
-			// a possibility to be executed (needed for label edit)
-		this.addListener('itemclick', this.onItemSingleClick, null, { delay: 400 });
-			// Init component
-		this.callParent();
-			// Drag & drop feature
-		if (this.enableDD) {
-			this.getView().addListener('afterrender', this.enableDragAndDrop, this);
+	initComponent: function() {
+		if (!this.uiProvider) {
+			this.uiProvider = TYPO3.Components.PageTree.PageTreeNodeUI;
 		}
-			// Context menu feature
+		Ext.dd.DragDropMgr.useCache = false;
+		this.root = new Ext.tree.AsyncTreeNode(this.rootNodeConfig);
+		this.addTreeLoader();
+
+		if (this.labelEdit) {
+			this.enableInlineEditor();
+		}
+
+		if (this.enableDD) {
+			this.dragConfig = {ddGroup: this.ddGroup};
+			this.enableDragAndDrop();
+		}
+
 		if (this.contextMenuProvider) {
 			this.enableContextMenu();
 		}
-	},
-	 
-	/**
-	 * Adds the store to the tree
-	 *
-	 * @return {void}
-	 */
-	addStore: function () {
-		this.store = Ext.data.StoreManager.lookup(this.getId() + 'PageTreeStore');
-		if (!this.store) {
-			this.store = Ext.create('Ext.data.TreeStore', {
-				clearOnLoad: false,
-				listeners: {
-						// Remove nodes and add params to read operation
-					beforeload: {
-						fn: function (store, operation, options) {
-							if (operation.node) {
-								var node = operation.node;
-								node.removeAll();
-								node.commit();
-								operation.params = {
-									nodeId: node.getNodeData('id'),
-									nodeData: node.get('nodeData')
-									
-								};
-							}
-						}
-					},
-						// Restore state on initial load
-					load: {
-						fn: function (store, node, records, successful) {
-							if (successful) {
-								this.restoreState();
-							}
-						},
-						scope: this
-					}
-				},
-				model: 'TYPO3.Components.PageTree.Model',
-				nodeParam: 'nodeId',
-				proxy: {
-					type: 'direct',
-					directFn: this.treeDataProvider.getNextTreeLevel,
-					paramOrder: ['nodeId', 'nodeData'],
-					reader: {
-					    type: 'json'
-					}
-				},
-				root: this.rootNodeConfig,
-				storeId: this.getId() + 'PageTreeStore'
-			});
-		}
+
+		TYPO3.Components.PageTree.Tree.superclass.initComponent.apply(this, arguments);
 	},
 
 	/**
@@ -383,9 +258,9 @@ Ext.define('TYPO3.Components.PageTree.Tree', {
 	 * @param {Object} scope
 	 * return {void}
 	 */
-	refreshTree: function (callback, scope) {
-			// Remove readable rootline elements while refreshing
-		if (!this.store.isLoading()) {
+	refreshTree: function(callback, scope) {
+			// remove readable rootline elements while refreshing
+		if (!this.inRefreshingMode) {
 			var rootlineElements = Ext.select('.x-tree-node-readableRootline');
 			if (rootlineElements) {
 				rootlineElements.each(function(element) {
@@ -393,54 +268,70 @@ Ext.define('TYPO3.Components.PageTree.Tree', {
 				});
 			}
 		}
-		this.refreshNode(this.getRootNode(), callback, scope);
+
+		this.refreshNode(this.root, callback, scope);
 	},
 
 	/**
 	 * Refreshes a given node
 	 *
-	 * @param {TYPO3.Components.PageTree.Model} node
+	 * @param {Ext.tree.TreeNode} node
 	 * @param {Function} callback
 	 * @param {Object} scope
 	 * return {void}
 	 */
-	refreshNode: function (node, callback, scope) {
-		this.store.load({
-			node: node,
-			callback: callback || Ext.emptyFn,
-			scope: scope || this
-		});
+	refreshNode: function(node, callback, scope) {
+		if (this.inRefreshingMode) {
+			return;
+		}
+
+		scope = scope || node;
+		this.inRefreshingMode = true;
+		var loadCallback = function(node) {
+			node.ownerTree.inRefreshingMode = false;
+			if (node.ownerTree.restoreState) {
+				node.ownerTree.restoreState(node.getPath());
+			}
+		};
+
+		if (callback) {
+			loadCallback = callback.createSequence(loadCallback);
+		}
+
+		this.getLoader().load(node, loadCallback, scope);
 	},
 
 	/**
-	 * Handles singe click on tree item
+	 * Adds a tree loader implementation that uses the directFn feature
 	 *
-	 * return {Boolean}
+	 * return {void}
 	 */
-	onItemSingleClick: function (view, node, item, index, event) {
-		var tree = view.panel;
-			// Check if the tree editor was triggered by dblclick
-			// If so, stop the next two clicks
-		if (tree.inhibitClicks) {
-			--tree.inhibitClicks;
-			event.stopEvent();
-			return false;
-		}
+	addTreeLoader: function() {
+		this.loader = new Ext.tree.TreeLoader({
+			directFn: this.treeDataProvider.getNextTreeLevel,
+			paramOrder: 'nodeId,attributes',
+			nodeParameter: 'nodeId',
+			baseAttrs: {
+				uiProvider: this.uiProvider
+			},
 
-		if (tree.commandProvider.singleClick) {
-			tree.commandProvider.singleClick(node, tree);
-		}
-			// Fire the context menu on a single click on the node icon (Beware of drag&drop!)
-		if (!TYPO3.Components.PageTree.Configuration.disableIconLinkToContextmenu
-			|| TYPO3.Components.PageTree.Configuration.disableIconLinkToContextmenu === '0'
-		) {
-			var target = event.getTarget('span.t3-icon-apps-pagetree');
-			if (target) {
-				view.fireEvent('itemcontextmenu', view, node, item, index, event);
-				event.stopEvent();
+				// an id can never be zero in ExtJS, but this is needed
+				// for the root line feature or it will never be working!
+			createNode: function(attr) {
+				if (attr.id == 0) {
+					attr.id = 'siteRootNode';
+				}
+
+				return Ext.tree.TreeLoader.prototype.createNode.call(this, attr);
+			},
+
+			listeners: {
+				beforeload: function(treeLoader, node) {
+					treeLoader.baseParams.nodeId = node.id;
+					treeLoader.baseParams.attributes = node.attributes.nodeData;
+				}
 			}
-		}
-		return true;
+		});
 	},
 
 	/**
@@ -449,33 +340,58 @@ Ext.define('TYPO3.Components.PageTree.Tree', {
 	 * return {void}
 	 */
 	enableContextMenu: function() {
-		this.contextMenu = Ext.create('TYPO3.Components.PageTree.ContextMenu', { pageTree: this });
-		this.getView().on('itemcontextmenu', function (view, node, item, index, event) {
-			view.panel.openContextMenu(view, node, item, index, event);
+		this.contextMenu = new TYPO3.Components.PageTree.ContextMenu();
+
+		this.on('contextmenu', function(node, event) {
+			this.openContextMenu(node, event);
 		});
 	},
 
 	/**
 	 * Open a context menu for the given node
 	 *
-	 * @param {TYPO3.Components.PageTree.Model} node
+	 * @param {Ext.tree.TreeNode} node
 	 * @param {Ext.EventObject} event
 	 * return {void}
 	 */
-	openContextMenu: function(view, node, item, index, event) {
-		var tree = view.panel;
-		node.setNodeData('t3ContextInfo', tree.t3ContextInfo);
-		tree.contextMenuProvider.getActionsForNodeArray(
-			node.get('nodeData'),
-			function (configuration) {
-				tree.contextMenu.removeAll();
-				tree.contextMenu.fill(node, tree, configuration);
-				if (tree.contextMenu.items.length) {
-					tree.contextMenu.showAt(event.getXY());
+	openContextMenu: function(node, event) {
+		var attributes = Ext.apply(node.attributes.nodeData, {
+			t3ContextInfo: node.ownerTree.t3ContextInfo
+		});
+
+		this.contextMenuProvider.getActionsForNodeArray(
+			attributes,
+			function(configuration) {
+				this.contextMenu.removeAll();
+				this.contextMenu.fill(node, this, configuration);
+				if (this.contextMenu.items.length) {
+					this.contextMenu.showAt(event.getXY());
+
 				}
-			}
+			},
+			this
 		);
-		event.stopEvent();
+	},
+
+	/**
+	 * Initialize the inline editor for the given tree.
+	 *
+	 * @return {void}
+	 */
+	enableInlineEditor: function() {
+		this.treeEditor = new TYPO3.Components.PageTree.TreeEditor(this);
+	},
+
+	/**
+	 * Triggers the editing of the node if the tree editor is available
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
+	triggerEdit: function(node) {
+		if (this.treeEditor) {
+			this.treeEditor.triggerEdit(node);
+		}
 	},
 
 	/**
@@ -484,41 +400,57 @@ Ext.define('TYPO3.Components.PageTree.Tree', {
 	 * return {void}
 	 */
 	enableDragAndDrop: function() {
-		var view = this.getView();
-		var dragZone = view.getPlugin('treeViewDragDrop').dragZone;
+			// init proxy element
+		this.on('startdrag', this.initDd, this);
+		this.on('enddrag', this.stopDd, this);
 
-			// Show drop zone before drag, otherwise the proxy is never notified
-		dragZone.onBeforeDrag = Ext.Function.bind(this.startDeletionDropZone, view);
-			// Hide the drop zone after the drag completes
-		dragZone.onMouseUp = Ext.Function.bind(this.stopDeletionDropZone, view);
-		dragZone.endDrag = Ext.Function.bind(this.stopDeletionDropZone, view);
-		dragZone.afterInvalidDrop = Ext.Function.bind(this.stopDeletionDropZone, view, [true]);
+			// node is moved
+		this.on('movenode', this.moveNode, this);
 
-			// Node is moved
-		this.on('itemmove', this.moveNode, this);
+			// new node is created/copied
+		this.on('beforenodedrop', this.beforeDropNode, this);
+		this.on('nodedrop', this.dropNode, this);
 
-			// New node is created/copied
-		view.on('beforedrop', this.beforeDropNode, this);
-		view.on('drop', this.dropNode, this);
-	},
+			// listens on the ctrl key to toggle the copy mode
+		(new Ext.KeyMap(document, {
+			key: Ext.EventObject.CONTROL,
+			scope: this,
+			buffer: 250,
+			fn: function() {
+				if (!this.controlKeyPressed && this.dragZone.dragging && this.copyHint) {
+					if (this.shouldCopyNode) {
+						this.copyHint.show();
+					} else {
+						this.copyHint.hide();
+					}
 
-	/**
-	 * Enables the deletion drop zone if configured
-	 *
-	 * @return {void}
-	 */
-	startDeletionDropZone: function (dragData, event) {
-		var view = dragData.view,
-			tree = view.panel,
-			node = view.getRecord(dragData.item),
-			nodeHasChildNodes = (node.hasChildNodes() || node.isExpandable());
-		var tree = this.panel;
-		if (tree.deletionDropZoneId &&
-			(!nodeHasChildNodes ||
-			(nodeHasChildNodes && TYPO3.Components.PageTree.Configuration.canDeleteRecursivly)
-		)) {
-			Ext.getCmp(tree.deletionDropZoneId).show();
-		}
+					this.shouldCopyNode = !this.shouldCopyNode;
+					this.dragZone.proxy.el.toggleClass('typo3-pagetree-copy');
+				}
+				this.controlKeyPressed = true;
+			}
+		}, 'keydown'));
+
+		(new Ext.KeyMap(document, {
+			key: Ext.EventObject.CONTROL,
+			scope: this,
+			fn: function() {
+				this.controlKeyPressed = false;
+			}
+		}, 'keyup'));
+
+			// listens on the escape key to stop the dragging
+		(new Ext.KeyMap(document, {
+			key: Ext.EventObject.ESC,
+			scope: this,
+			buffer: 250,
+			fn: function(event) {
+				if (this.dragZone.dragging) {
+					Ext.dd.DragDropMgr.stopDrag(event);
+					this.dragZone.onInvalidDrop(event);
+				}
+			}
+		}, 'keydown'));
 	},
 
 	/**
@@ -526,102 +458,150 @@ Ext.define('TYPO3.Components.PageTree.Tree', {
 	 *
 	 * @return {void}
 	 */
-	stopDeletionDropZone: function (forceStop) {
-		var tree = this.panel;
-		if (tree.deletionDropZoneId && (!this.getPlugin('treeViewDragDrop').dragZone.dragging || forceStop)) {
-			Ext.getCmp(tree.deletionDropZoneId).hide();
+	stopDd: function() {
+		if (this.deletionDropZoneId) {
+			Ext.getCmp(this.deletionDropZoneId).hide();
+			this.app.doLayout();
 		}
 	},
 
 	/**
-	 * Creates a place holder node when a new node is about to be dropped
+	 * Enables the deletion drop zone if configured. Also it creates the
+	 * shown dd proxy element.
 	 *
-	 * @param {HTMLElement node} node
-	 * @param {object} dragData
-	 * @param {TYPO3.Components.PageTree.Model} overNode
-	 * @param {string} dropPosition
-	 * @return {boolean}
+	 * @param {TYPO3.Components.PageTree.Tree} treePanel
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
 	 */
-	beforeDropNode: function (node, dragData, overNode, dropPosition) {
-		if (dragData && dragData.item && dragData.item.shouldCreateNewNode) {
-				// Inserting a new node of the type that was selected in the top panel
-			this.t3ContextInfo.serverNodeType = dragData.item.nodeType;
-			dragData.dropNode = Ext.create('TYPO3.Components.PageTree.Model', {
+	initDd: function(treePanel, node) {
+		var nodeHasChildNodes = (node.hasChildNodes() || node.isExpandable());
+		if (this.deletionDropZoneId &&
+			(!nodeHasChildNodes ||
+			(nodeHasChildNodes && TYPO3.Components.PageTree.Configuration.canDeleteRecursivly)
+		)) {
+			Ext.getCmp(this.deletionDropZoneId).show();
+			this.app.doLayout();
+		}
+		this.initDDProxyElement();
+	},
+
+	/**
+	 * Adds the copy hint to the proxy element
+	 *
+	 * @return {void}
+	 */
+	initDDProxyElement: function() {
+		this.shouldCopyNode = false;
+		this.copyHint = new Ext.Element(document.createElement('div')).addClass(this.id + '-copy');
+		this.copyHint.dom.appendChild(document.createTextNode(TYPO3.Components.PageTree.LLL.copyHint));
+		this.copyHint.setVisibilityMode(Ext.Element.DISPLAY);
+		this.dragZone.proxy.el.shadow = false;
+		this.dragZone.proxy.ghost.dom.appendChild(this.copyHint.dom);
+	},
+
+	/**
+	 * Creates a Fake Node
+	 *
+	 * This must be done to prevent the calling of the moveNode event.
+	 *
+	 * @param {object} dragElement
+	 */
+	beforeDropNode: function(dragElement) {
+		if (dragElement.data && dragElement.data.item && dragElement.data.item.shouldCreateNewNode) {
+			this.t3ContextInfo.serverNodeType = dragElement.data.item.nodeType;
+			dragElement.dropNode = new Ext.tree.TreeNode({
 				text: TYPO3.Components.PageTree.LLL.fakeNodeHint,
 				leaf: true,
 				isInsertedNode: true
 			});
-			dragData.records = [dragData.dropNode];
+
+				// fix incorrect cancel value
+			dragElement.cancel = false;
+
+		} else if (this.shouldCopyNode) {
+			dragElement.dropNode.ui.onOut();
+			var attributes = dragElement.dropNode.attributes;
+			attributes.isCopiedNode = true;
+			attributes.id = 'fakeNode';
+			dragElement.dropNode = new Ext.tree.TreeNode(attributes);
 		}
+
 		return true;
 	},
 
 	/**
-	 * Handle the copy and insert events
+	 * Differentiate between the copy and insert event
 	 *
-	 * @param {HTMLElement node} node
-	 * @param {object} dragData
-	 * @param {TYPO3.Components.PageTree.Model} overNode
-	 * @param {string} dropPosition
+	 * @param {Ext.tree.TreeDropZone} dragElement
 	 * return {void}
 	 */
-	dropNode: function (node, dragData, overNode, dropPosition) {
-		if (dragData.dropNode) {
-			if (dragData.dropNode.get('isInsertedNode')) {
-				dragData.dropNode.set('isInsertedNode', false);
-				this.insertNode(dragData.dropNode);
-			}
-		} else if (dragData.copy) {
-			this.copyNode(dragData.records[0]);
+	dropNode: function(dragElement) {
+		this.controlKeyPressed = false;
+		if (dragElement.dropNode.attributes.isInsertedNode) {
+			dragElement.dropNode.attributes.isInsertedNode = false;
+			this.insertNode(dragElement.dropNode);
+		} else if (dragElement.dropNode.attributes.isCopiedNode) {
+			dragElement.dropNode.attributes.isCopiedNode = false;
+			this.copyNode(dragElement.dropNode)
 		}
 	},
 
 	/**
 	 * Moves a node
 	 *
-	 * @param {TYPO3.Components.PageTree.Model} movedNode
-	 * @param {TYPO3.Components.PageTree.Model} oldParent
-	 * @param {TYPO3.Components.PageTree.Model} newParent
+	 * @param {TYPO3.Components.PageTree.Tree} tree
+	 * @param {Ext.tree.TreeNode} movedNode
+	 * @param {Ext.tree.TreeNode} oldParent
+	 * @param {Ext.tree.TreeNode} newParent
 	 * @param {int} position
 	 * return {void}
 	 */
-	moveNode: function (movedNode, oldParent, newParent, position) {
-		this.t3ContextNode = movedNode;
+	moveNode: function(tree, movedNode, oldParent, newParent, position) {
+		this.controlKeyPressed = false;
+		tree.t3ContextNode = movedNode;
+
 		if (position === 0) {
-			this.commandProvider.moveNodeToFirstChildOfDestination(newParent, this);
+			this.commandProvider.moveNodeToFirstChildOfDestination(newParent, tree);
 		} else {
 			var previousSiblingNode = newParent.childNodes[position - 1];
-			this.commandProvider.moveNodeAfterDestination(previousSiblingNode, this);
+			this.commandProvider.moveNodeAfterDestination(previousSiblingNode, tree);
 		}
 	},
 
 	/**
 	 * Inserts a node
 	 *
-	 * @param {TYPO3.Components.PageTree.Model} node
+	 * @param {Ext.tree.TreeNode} movedNode
 	 * return {void}
 	 */
-	insertNode: function (node) {
-		this.t3ContextNode = node.parentNode;
-		if (node.previousSibling) {
-			this.commandProvider.insertNodeAfterDestination(node, this);
+	insertNode: function(movedNode) {
+		this.t3ContextNode = movedNode.parentNode;
+
+		movedNode.disable();
+		if (movedNode.previousSibling) {
+			this.commandProvider.insertNodeAfterDestination(movedNode, this);
 		} else {
-			this.commandProvider.insertNodeToFirstChildOfDestination(node, this);
+			this.commandProvider.insertNodeToFirstChildOfDestination(movedNode, this);
 		}
 	},
 
 	/**
 	 * Copies a node
 	 *
-	 * @param {TYPO3.Components.PageTree.Model} movedNode
+	 * @param {Ext.tree.TreeNode} movedNode
 	 * return {void}
 	 */
-	copyNode: function (node) {
-		this.t3ContextNode = node;
-		if (node.previousSibling) {
-			this.commandProvider.copyNodeAfterDestination(node, this);
+	copyNode: function(movedNode) {
+		this.t3ContextNode = movedNode;
+
+		movedNode.disable();
+		if (movedNode.previousSibling) {
+			this.commandProvider.copyNodeAfterDestination(movedNode, this);
 		} else {
-			this.commandProvider.copyNodeToFirstChildOfDestination(node, this);
+			this.commandProvider.copyNodeToFirstChildOfDestination(movedNode, this);
 		}
 	}
 });
+
+// XTYPE Registration
+Ext.reg('TYPO3.Components.PageTree.Tree', TYPO3.Components.PageTree.Tree);
