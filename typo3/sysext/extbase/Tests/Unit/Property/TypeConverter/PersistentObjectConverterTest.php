@@ -200,7 +200,7 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function convertFromShouldNotCloneTheFetchedObjectIfObjectNeedsToBeModified() {
+	public function convertFromShouldCloneTheFetchedObjectIfObjectNeedsToBeModified() {
 		$identifier = '12345';
 		$object = new Tx_Extbase_Fixtures_ClassWithSetters();
 		$object->someProperty = 'asdf';
@@ -217,7 +217,7 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 		$configuration = $this->buildConfiguration(array(Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED => TRUE));
 		$actual = $this->converter->convertFrom($source, 'MySpecialType', $convertedChildProperties, $configuration);
 
-		$this->assertSame($object, $actual, 'The object has been cloned.');
+		$this->assertNotSame($object, $actual, 'The object has not been cloned.');
 		$this->assertEquals('asdf', $actual->someProperty, 'The object somehow lost its current state.');
 		$this->assertEquals('someConvertedValue', $actual->property1, 'The sub properties have not been set.');
 	}

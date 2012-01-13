@@ -195,6 +195,8 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 				if ($configuration === NULL || $configuration->getConfigurationValue('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', self::CONFIGURATION_MODIFICATION_ALLOWED) !== TRUE) {
 					throw new Tx_Extbase_Property_Exception_InvalidPropertyMappingConfigurationException('Modification of persistent objects not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_MODIFICATION_ALLOWED" to TRUE.', 1297932028);
 				}
+
+				$object = clone $object;
 			}
 
 			return $object;
