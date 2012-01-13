@@ -41,7 +41,7 @@ var typo3pageModule = {
 	 */
 	showSpinner: function(){
 		typo3pageModule.spinner = new Element('div');
-		Ext.get(typo3pageModule.spinner).addCls('loadingSpinner').fadeIn({ endOpacity: .75, duration: 1});
+		Ext.get(typo3pageModule.spinner).addClass('loadingSpinner').fadeIn({ endOpacity: .75, duration: 1});
 
 		Ext.select('body').appendChild(typo3pageModule.spinner);
 	},
@@ -58,7 +58,7 @@ var typo3pageModule = {
 	enableContentHeader: function(e,t){
 		var parent = Ext.get(t).findParent('div.contentElement',null,true);
 		parent.child('div.ttContentHeader').show();
-		parent.addCls('active')
+		parent.addClass('active')
 	},
 
 	/**
@@ -69,7 +69,7 @@ var typo3pageModule = {
 	disableContentHeader: function(e,t){
 		var parent = Ext.get(t).findParent('div.contentElement',null,true);
 		parent.child('div.ttContentHeader').hide();
-		parent.removeCls('active');
+		parent.removeClass('active');
 
 	},
 
@@ -130,7 +130,7 @@ var typo3pageModule = {
 	 */
 	highlightLanguageDropZones: function(languageId){
 		Ext.select('div.dropZone.language_'+languageId).each(function(el){
-			el.addCls('active');
+			el.addClass('active');
 		});
 
 		Ext.select('table.typo3-page-ceFooter').each(
@@ -143,7 +143,7 @@ var typo3pageModule = {
 	 */
 	unhighlightAllDropZones: function(){
 		Ext.select('div.dropZone').each(function(el){
-			el.removeCls('active');
+			el.removeClass('active');
 		});
 		Ext.select('table.typo3-page-ceFooter').each(
 			function(el){	el.show(); }
@@ -158,22 +158,22 @@ var typo3pageModule = {
 	 * @param Ext.Element element
 	 */
 	reduceDraggedElement: function(element){
-		element.select('table.typo3-page-ceHeader').addCls('displayNone');
-		element.select('span.exampleContent').addCls('displayNone');
-		element.select('div.contentElementDropZoneAfter').addCls('displayNone');
-		element.addCls('onDrag');
+		element.select('table.typo3-page-ceHeader').addClass('displayNone');
+	    element.select('span.exampleContent').addClass('displayNone');
+	    element.select('div.contentElementDropZoneAfter').addClass('displayNone');
+	    element.addClass('onDrag');
 
-		var footerTable = element.select('table.typo3-page-ceFooter');
-		if(footerTable != null){
-			footerTable.addCls('displayNone');
-		}
+	    var footerTable = element.select('table.typo3-page-ceFooter');
+	    if(footerTable != null){
+	    	footerTable.addClass('displayNone');
+	    }
 
-		var colSubHeader = element.select('tr.colSubHeader td');
-		if(colSubHeader != null){
-			colSubHeader.addCls('displayNone');
-		}
+	    var colSubHeader = element.select('tr.colSubHeader td');
+	    if(colSubHeader != null){
+	    	colSubHeader.addClass('displayNone');
+	    }
 
-		element.setStyle('z-index',999);
+	    element.setStyle('z-index',999);
 	},
 
 	/**
@@ -185,13 +185,13 @@ var typo3pageModule = {
 	enrichDraggedElement: function(element){
 		Ext.get(typo3pageModule.placeholder).remove();
 
-		element.select('table.typo3-page-ceHeader').removeCls('displayNone');
-	    element.select('span.exampleContent').removeCls('displayNone');
-	    element.select('div.contentElementDropZoneAfter').removeCls('displayNone');
+		element.select('table.typo3-page-ceHeader').removeClass('displayNone');
+	    element.select('span.exampleContent').removeClass('displayNone');
+	    element.select('div.contentElementDropZoneAfter').removeClass('displayNone');
 	    element.setStyle('z-index',null);
-	    element.removeCls('onDrag');
+	    element.removeClass('onDrag');
 	    var footerTable = element.select('table.typo3-page-ceFooter');
-	    if(footerTable != null){ footerTable.removeCls('displayNone'); }
+	    if(footerTable != null){ footerTable.removeClass('displayNone'); }
 	},
 
 
@@ -334,7 +334,7 @@ var typo3pageModule = {
 	enableDropZone: function(evtObj, targetElId) {
 		if (targetElId != this.el.dom.parentNode.id) {
 			var dropEl = Ext.get(targetElId);
-			dropEl.addCls('validDrop');
+			dropEl.addClass('validDrop');
 		}
 	},
 	/**
@@ -347,7 +347,7 @@ var typo3pageModule = {
 		if (targetElId != this.el.dom.parentNode.id) {
 
 			var dropEl = Ext.get(targetElId);
-			dropEl.removeCls('validDrop');
+			dropEl.removeClass('validDrop');
 		}
 	}
 }
@@ -398,7 +398,7 @@ var typo3pageModule = {
 	 */
 	showSpinner: function(){
 		typo3pageModule.spinner = new Element('div');
-		Ext.get(typo3pageModule.spinner).addCls('loadingSpinner').fadeIn({ endOpacity: .75, duration: 1});
+		Ext.get(typo3pageModule.spinner).addClass('loadingSpinner').fadeIn({ endOpacity: .75, duration: 1});
 
 		Ext.select('body').appendChild(typo3pageModule.spinner);
 	},
@@ -415,7 +415,7 @@ var typo3pageModule = {
 	enableContentHeader: function(e,t){
 		var parent = Ext.get(t).findParent('div.contentElement',null,true);
 		parent.child('div.ttContentHeader').show();
-		parent.addCls('active')
+		parent.addClass('active')
 	},
 
 	/**
@@ -426,7 +426,7 @@ var typo3pageModule = {
 	disableContentHeader: function(e,t){
 		var parent = Ext.get(t).findParent('div.contentElement',null,true);
 		parent.child('div.ttContentHeader').hide();
-		parent.removeCls('active');
+		parent.removeClass('active');
 
 	},
 
@@ -487,7 +487,7 @@ var typo3pageModule = {
 	 */
 	highlightLanguageDropZones: function(languageId){
 		Ext.select('div.dropZone.language_'+languageId).each(function(el){
-			el.addCls('active');
+			el.addClass('active');
 		});
 
 		Ext.select('table.typo3-page-ceFooter').each(
@@ -500,7 +500,7 @@ var typo3pageModule = {
 	 */
 	unhighlightAllDropZones: function(){
 		Ext.select('div.dropZone').each(function(el){
-			el.removeCls('active');
+			el.removeClass('active');
 		});
 		Ext.select('table.typo3-page-ceFooter').each(
 			function(el){	el.show(); }
@@ -515,19 +515,19 @@ var typo3pageModule = {
 	 * @param Ext.Element element
 	 */
 	reduceDraggedElement: function(element){
-		element.select('table.typo3-page-ceHeader').addCls('displayNone');
-	    element.select('span.exampleContent').addCls('displayNone');
-	    element.select('div.contentElementDropZoneAfter').addCls('displayNone');
-	    element.addCls('onDrag');
+		element.select('table.typo3-page-ceHeader').addClass('displayNone');
+	    element.select('span.exampleContent').addClass('displayNone');
+	    element.select('div.contentElementDropZoneAfter').addClass('displayNone');
+	    element.addClass('onDrag');
 
 	    var footerTable = element.select('table.typo3-page-ceFooter');
 	    if(footerTable != null){
-	    	footerTable.addCls('displayNone');
+	    	footerTable.addClass('displayNone');
 	    }
 
 	    var colSubHeader = element.select('tr.colSubHeader td');
 	    if(colSubHeader != null){
-	    	colSubHeader.addCls('displayNone');
+	    	colSubHeader.addClass('displayNone');
 	    }
 
 	    element.setStyle('z-index',999);
@@ -542,13 +542,13 @@ var typo3pageModule = {
 	enrichDraggedElement: function(element){
 		Ext.get(typo3pageModule.placeholder).remove();
 
-		element.select('table.typo3-page-ceHeader').removeCls('displayNone');
-	    element.select('span.exampleContent').removeCls('displayNone');
-	    element.select('div.contentElementDropZoneAfter').removeCls('displayNone');
+		element.select('table.typo3-page-ceHeader').removeClass('displayNone');
+	    element.select('span.exampleContent').removeClass('displayNone');
+	    element.select('div.contentElementDropZoneAfter').removeClass('displayNone');
 	    element.setStyle('z-index',null);
-	    element.removeCls('onDrag');
+	    element.removeClass('onDrag');
 	    var footerTable = element.select('table.typo3-page-ceFooter');
-	    if(footerTable != null){ footerTable.removeCls('displayNone'); }
+	    if(footerTable != null){ footerTable.removeClass('displayNone'); }
 	},
 
 
@@ -565,38 +565,38 @@ var typo3pageModule = {
 	 */
 	b4StartDrag: function(x,y) {
 		//disable the menubar highlighting during dragging
-		typo3pageModule.disableHighlighting();
+	    typo3pageModule.disableHighlighting();
 
-		// Cache the drag element
-		if (!this.el) { this.el = Ext.get(this.getEl()); }
+	    // Cache the drag element
+	    if (!this.el) { this.el = Ext.get(this.getEl()); }
 
-		//Cache the original XY Coordinates of the element, we'll use this later.
-		this.originalXY = this.el.getXY();
+	    //Cache the original XY Coordinates of the element, we'll use this later.
+	    this.originalXY = this.el.getXY();
 
-		//move the draggable item to the mouse position
-		this.setDelta(0,0);
+	    //move the draggable item to the mouse position
+	    this.setDelta(0,0);
 
-		//highlight dropable targets
-		var parsedId = typo3pageModule._parseIdString('ttContent_',this.el.id);
-		typo3pageModule.highlightLanguageDropZones(parsedId.language);
+	    //highlight dropable targets
+    	var parsedId = typo3pageModule._parseIdString('ttContent_',this.el.id);
+	    typo3pageModule.highlightLanguageDropZones(parsedId.language);
 
-		//calculate width and height before reducing
-		var heightBefore = this.el.getHeight();
-		var widthBefore  = this.el.getWidth();
+	    //calculate width and height before reducing
+	    var heightBefore = this.el.getHeight();
+	    var widthBefore  = this.el.getWidth();
 
-		//make some layers of the draggable element invisible
-		typo3pageModule.reduceDraggedElement(this.el);
+	    //make some layers of the draggable element invisible
+	    typo3pageModule.reduceDraggedElement(this.el);
 
-		//caluclate height after reducing
-		var heightAfter = this.el.getHeight();
-		var widthAfter 	= this.el.getWidth();
+	    //caluclate height after reducing
+	    var heightAfter = this.el.getHeight();
+	    var widthAfter 	= this.el.getWidth();
 
-		//create a placeholder for the dragged element
-		typo3pageModule.placeholder = new Element('div');
-		typo3pageModule.placeholder.setStyle({position: 'relative', height: heightBefore - heightAfter+ 'px', width: widthBefore - widthAfter+ 'px'});
+	    //create a placeholder for the dragged element
+	    typo3pageModule.placeholder = new Element('div');
+	    typo3pageModule.placeholder.setStyle({position: 'relative', height: heightBefore - heightAfter+ 'px', width: widthBefore - widthAfter+ 'px'});
 
-		//insert placeholder before the dragged element
-		Ext.get(typo3pageModule.placeholder).insertAfter(this.el.prev());
+	    //insert placeholder before the dragged element
+	    Ext.get(typo3pageModule.placeholder).insertAfter(this.el.prev());
 	 },
 	 /**
 	  * Handler method for "endDrag" event.
@@ -604,81 +604,81 @@ var typo3pageModule = {
 	  * the element has been droppen on an invalid location.
 	  */
 	moveToDropTargetAndEnrich: function() {
-		// Invoke the animation if the invalidDrop flag is set to true
+	    // Invoke the animation if the invalidDrop flag is set to true
 
 		 if (this.invalidDrop === true) {
-			var animCfgObj = {
-					easing   : null,
-					duration : 0,
-					scope    : this,
-					callback : function() {
-						// Remove the position attribute
-						this.el.dom.style.position = '';
-						this.el.dom.style.left = 0;
-						this.el.dom.style.top = 0;
-					}
-			   };
+	        var animCfgObj = {
+	        		easing   : null,
+	        		duration : 0,
+	                scope    : this,
+	        		callback : function() {
+	                    // Remove the position attribute
+	                    this.el.dom.style.position = '';
+	                    this.el.dom.style.left = 0;
+	                    this.el.dom.style.top = 0;
+	                }
+	           };
 
-			// Apply the repair animation
-			this.el.moveTo(this.originalXY[0], this.originalXY[1],animCfgObj);
-			typo3pageModule.enrichDraggedElement(this.el);
-			delete this.invalidDrop;
-		}
-		typo3pageModule.unhighlightAllDropZones();
-		typo3pageModule.enableHighlighting();
+	        // Apply the repair animation
+	        this.el.moveTo(this.originalXY[0], this.originalXY[1],animCfgObj);
+	    	typo3pageModule.enrichDraggedElement(this.el);
+	        delete this.invalidDrop;
+	    }
+	    typo3pageModule.unhighlightAllDropZones();
+	    typo3pageModule.enableHighlighting();
 	},
 
 	/**
 	 * Event handler to process a valid drop.
 	 */
 	handleElementDrop: function(evtObj, targetElId) {
-		// Wrap the drop target element with Ext.Element
-		var dropEl = Ext.get(targetElId);
+	    // Wrap the drop target element with Ext.Element
+	    var dropEl = Ext.get(targetElId);
 
-		// Perform the node move only if the drag element's
-		// parent is not the same as the drop target
-		if (this.el.dom.parentNode.id != targetElId) {
-			// Move the element
-			typo3pageModule.enrichDraggedElement(this.el);
+	    // Perform the node move only if the drag element's
+	    // parent is not the same as the drop target
+	    if (this.el.dom.parentNode.id != targetElId) {
+	        // Move the element
+	    	typo3pageModule.enrichDraggedElement(this.el);
 
-			var ttContentParsedId = typo3pageModule._parseIdString('ttContent_',this.el.id);
-			var rowParsedId = typo3pageModule._parseIdString('contentElementGroup_',dropEl.findParent('div.contentElementGroup').id);
+	    	var ttContentParsedId = typo3pageModule._parseIdString('ttContent_',this.el.id);
+    		var rowParsedId = typo3pageModule._parseIdString('contentElementGroup_',dropEl.findParent('div.contentElementGroup').id);
 
-			if(dropEl.hasClass('contentElementDropZoneAfter')){
-				 var dropZoneAfterParsedId = typo3pageModule._parseIdString('contentElementDropZoneAfter_',dropEl.id);
-				 var idBehind = dropZoneAfterParsedId.id;
-				 this.el.insertAfter(dropEl.parent());
-			}
-			if(dropEl.hasClass('columnDropZone')){
-				var idBehind  = pageId;
-				this.el.insertAfter(dropEl);
-			}
+	    	if(dropEl.hasClass('contentElementDropZoneAfter')){
+    			 var dropZoneAfterParsedId = typo3pageModule._parseIdString('contentElementDropZoneAfter_',dropEl.id);
+    			 var idBehind = dropZoneAfterParsedId.id;
+	    		 this.el.insertAfter(dropEl.parent());
+	    	}
+	    	if(dropEl.hasClass('columnDropZone')){
+			 	var idBehind  = pageId;
+	    		this.el.insertAfter(dropEl);
+	    	}
 
-			var url = pageModuleMoveUrl.replace(/###MOVE_AFTER###/,idBehind).replace(/###MOVE_ITEM###/, ttContentParsedId.id ).replace(/###COL_POS###/,rowParsedId.id);
+	    	var url = pageModuleMoveUrl.replace(/###MOVE_AFTER###/,idBehind).replace(/###MOVE_ITEM###/, ttContentParsedId.id ).replace(/###COL_POS###/,rowParsedId.id);
 
-			typo3pageModule.showSpinner();
+	    	typo3pageModule.showSpinner();
 
-			Ext.Ajax.request({
-			   url: url,
-			   success: function(response, opts) {
-					typo3pageModule.hideSpinner();
-					window.location.reload();
-				},
-			   failure: function(response, opts) { alert('server-side failure with status code ' + response.status); }
-			});
+	    	Ext.Ajax.request({
+	    	   url: url,
+	    	   success: function(response, opts) {
+	    			typo3pageModule.hideSpinner();
+	    			window.location.reload();
+	    		},
+	    	   failure: function(response, opts) { alert('server-side failure with status code ' + response.status); }
+	    	});
 
-			// Remove the drag invitation
-			this.onDragOut(evtObj, targetElId);
+	    	// Remove the drag invitation
+	        this.onDragOut(evtObj, targetElId);
 
-			// Clear the styles
-			this.el.dom.style.position ='';
-			this.el.dom.style.top = '';
-			this.el.dom.style.left = '';
-		}
-		else {
-			// This was an invalid drop, initiate a repair
-			this.onInvalidDrop();
-		}
+	        // Clear the styles
+	        this.el.dom.style.position ='';
+	        this.el.dom.style.top = '';
+	        this.el.dom.style.left = '';
+	    }
+	    else {
+	        // This was an invalid drop, initiate a repair
+	        this.onInvalidDrop();
+	    }
 	},
 
 	/**
@@ -691,7 +691,7 @@ var typo3pageModule = {
 	enableDropZone: function(evtObj, targetElId) {
 		if (targetElId != this.el.dom.parentNode.id) {
 			var dropEl = Ext.get(targetElId);
-			dropEl.addCls('validDrop');
+			dropEl.addClass('validDrop');
 		}
 	},
 	/**
@@ -704,7 +704,7 @@ var typo3pageModule = {
 		if (targetElId != this.el.dom.parentNode.id) {
 
 			var dropEl = Ext.get(targetElId);
-			dropEl.removeCls('validDrop');
+			dropEl.removeClass('validDrop');
 		}
 	}
 }
