@@ -59,8 +59,8 @@ class tx_recycler_view_deletedRecords {
 						'uid'	=> $row['uid'],
 						'pid'	=> $row['pid'],
 						'table'	=> $table,
-						'crdate' => date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),
-						'tstamp' => date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
+						'crdate' => t3lib_BEfunc::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),
+						'tstamp' => t3lib_BEfunc::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
 						'owner' => htmlspecialchars($backendUser['username']),
 						'owner_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']],
 						'tableTitle' => tx_recycler_helper::getUtf8String(
