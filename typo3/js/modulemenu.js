@@ -41,7 +41,7 @@ Ext.define('TYPO3.model.ModuleMenu', {
 	idProperty: 'index',
 	fields: [{
 			name: 'index',
-			type: 'int'
+			type: 'int',
 		},{
 			name: 'key',
 			type: 'string'
@@ -391,7 +391,7 @@ TYPO3.ModuleMenu.App = {
 			TYPO3.Backend.NavigationContainer.add(component);
 		}
 
-		component.show();
+		component.show()
 
 			// backwards compatibility
 		top.nav = component;
@@ -437,6 +437,7 @@ TYPO3.ModuleMenu.App = {
 		TYPO3.ModuleMenu.Store.load({
 			scope: this,
 			callback: function(records, operation, success) {
+				this.renderMenu(records);
 				if (this.loadedModule) {
 					this.highlightModuleMenuItem(this.loadedModule);
 				}
@@ -473,7 +474,7 @@ Ext.onReady(function() {
 
 /*******************************************************************************
 *
-* Backwards compatibility handling down here
+* Backwards compatability handling down here
 *
 ******************************************************************************/
 
@@ -484,5 +485,5 @@ var currentlyHighLightedId = '';
 var currentlyHighLighted_restoreValue = '';
 var currentlyHighLightedMain = '';
 function highlightModuleMenuItem(trId, mainModule) {
-	TYPO3.ModuleMenu.App.highlightModuleMenuItem(trId, mainModule);
+	TYPO3.ModuleMenu.App.highlightModule(trId, mainModule);
 }
