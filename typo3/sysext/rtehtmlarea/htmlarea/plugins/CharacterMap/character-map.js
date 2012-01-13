@@ -3,7 +3,7 @@
 *
 *  (c) 2004 Bernhard Pfeifer novocaine@gmx.net
 *  (c) 2004 systemconcept.de. Authored by Holger Hees based on HTMLArea XTD 1.5 (http://mosforge.net/projects/htmlarea3xtd/).
-*  (c) 2005-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -40,27 +40,34 @@ HTMLArea.CharacterMap = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.1',
+			version		: '3.0',
 			developer	: 'Holger Hees, Bernhard Pfeifer, Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Holger Hees, Bernhard Pfeifer, Stanislas Rolland',
-			sponsor		: 'System Concept GmbH, Bernhard Pfeifer, SJBR',
+			sponsor		: 'System Concept GmbH, Bernhard Pfeifer, SJBR, BLE',
 			sponsorUrl	: 'http://www.sjbr.ca/',
 			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
 		/*
-		 * Registering the button
+		 * Registering the buttons
 		 */
-		var buttonId = 'InsertCharacter';
-		var buttonConfiguration = {
-			id		: buttonId,
-			tooltip		: this.localize(buttonId + '-Tooltip'),
-			action		: 'onButtonPress',
-			dialog		: true,
-			iconCls		: 'htmlarea-action-character-insert-from-map'
-		};
-		this.registerButton(buttonConfiguration);
+		for (var i = 0, n = this.buttons.length; i < n; ++i) {
+			var button = this.buttons[i];
+			buttonId = button[0];
+			var buttonConfiguration = {
+				id: buttonId,
+				tooltip: this.localize(buttonId + '-Tooltip'),
+				action: 'onButtonPress',
+				context: button[1],
+				dialog: false,
+				iconCls: 'htmlarea-action-' + button[2]
+			};
+			this.registerButton(buttonConfiguration);
+		}
+		/*
+		 * Localizing the maps
+		 */
 		Ext.iterate(this.maps, function (key, map, maps) {
 			for (var i = map.length; --i >= 0;) {
 				maps[key][i].push(this.localize(map[i][1]));
@@ -68,6 +75,13 @@ HTMLArea.CharacterMap = Ext.extend(HTMLArea.Plugin, {
 		}, this);
 		return true;
 	 },
+	/*
+	 * The list of buttons added by this plugin
+	 */
+	buttons: [
+		['InsertCharacter', null, 'character-insert-from-map'],
+		['InsertSoftHyphen', null, 'soft-hyphen-insert']
+	],
 	/*
 	 * Character maps
 	 */
@@ -334,12 +348,25 @@ HTMLArea.CharacterMap = Ext.extend(HTMLArea.Plugin, {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		this.openDialogue(
-			buttonId,
-			'Insert special character',
-			this.getWindowDimensions({width:434, height:360}, buttonId),
-			this.buildTabItems()
-		);
+		switch (buttonId) {
+			case 'InsertCharacter':
+				this.openDialogue(
+					buttonId,
+					'Insert special character',
+					this.getWindowDimensions(
+						{
+							width: 434,
+							height: 360
+						},
+						buttonId
+					),
+					this.buildTabItems()
+				);
+				break;
+			case 'InsertSoftHyphen':
+				this.insertEntity('\xAD');
+				break;
+		}
 		return false;
 	},
 	/*
@@ -428,26 +455,41 @@ HTMLArea.CharacterMap = Ext.extend(HTMLArea.Plugin, {
 		component.mon(component.el, 'click', this.insertCharacter, this, {delegate: 'a'});
 	},
 	/*
-	 * Insert the selected entity
+	 * Handle the click on an item of the map
 	 *
 	 * @param	object		event: the Ext event
 	 * @param	HTMLelement	target: the html element target
 	 *
-	 * @return	void
+	 * @return	boolean
 	 */
 	insertCharacter: function (event, target) {
 		event.stopEvent();
 		this.editor.focus();
 		this.restoreSelection();
 		var entity = Ext.get(target).dom.innerHTML;
+		this.insertEntity(entity);
 		if (Ext.isIE) {
-			this.editor.insertHTML(entity);
 			this.saveSelection();
-		} else {
-				// Firefox and WebKit convert '&nbsp;' to '&amp;nbsp;'
-			this.editor.insertNodeAtSelection(this.editor.document.createTextNode(((Ext.isGecko || Ext.isWebKit) && entity == '&nbsp;') ? '\xA0' : entity));
 		}
 		return false;
+	},
+	/*
+	 * Insert the selected entity
+	 *
+	 * @param	string		entity: the entity to insert at the current selection
+	 *
+	 * @return	void
+	 */
+	insertEntity: function (entity) {
+		this.editor.focus();
+		if (Ext.isIE) {
+			this.editor.insertHTML(entity);
+		} else {
+				// Firefox and WebKit convert '&nbsp;' to '&amp;nbsp;'
+			var node = this.editor.document.createTextNode(((Ext.isGecko || Ext.isWebKit) && entity == '&nbsp;') ? '\xA0' : entity);
+			this.editor.insertNodeAtSelection(node);
+			this.editor.selectNode(node, false);
+		}
 	},
 	/*
 	 * Reset focus on the the current selection, if at all possible
