@@ -3,29 +3,28 @@ Pagetree
 
 - - - - - - - - - - - - - - - - - - - - - */
 #typo3-pagetree-treeContainer,
-.typo3-pageTree-topPanelItems {
+#typo3-pagetree-topPanelItems {
 	background-color: #ebebeb;
 }
 
-.typo3-pagetree .x-panel-body {
+#typo3-pagetree .x-tree .x-panel-body {
 	background: none;
 }
 
-.typo3-pagetree .x-grid-row .x-grid-cell {
+#typo3-pagetree .x-tree-node .x-tree-node-el {
 	border-top: 1px solid transparent;
 	border-bottom: 1px solid transparent;
 	border-left: 1px solid transparent;
-	font-size: 12px;
 }
 
-.typo3-pagetree .x-grid-row.x-grid-row-over .x-grid-cell,
-.typo3-pagetree .x-grid-row.x-grid-row-selected .x-grid-cell {
+#typo3-pagetree .x-tree-node .x-tree-node-over,
+#typo3-pagetree .x-tree-node .x-tree-selected {
 	border-bottom: 1px solid #d7d7d7;
 	border-top: 1px solid #d7d7d7;
 	border-left: 1px solid #d7d7d7;
 }
 
-.typo3-pagetree .x-grid-row.x-grid-row-over .x-grid-cell {
+#typo3-pagetree .x-tree-node .x-tree-node-over {
 	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAYAAAAb4BS0AAAAGElEQVR42gENAPL/AMjIyEzIyMizyMjI/zhvCQelaHPPAAAAAElFTkSuQmCC");
 	/* star-hack targets IE7 */
 	*background-image: url("../../images/shadows/navigation-container.png");
@@ -40,34 +39,20 @@ Pagetree
 	border-bottom-right-radius: 3px;
 }
 
-.typo3-pagetree .x-grid-row-selected .x-grid-cell {
+#typo3-pagetree .x-tree-node .x-tree-selected {
 	background-color: #f8f8f8;
 }
 
-.typo3-pagetree .x-grid-row-selected.x-grid-row-over .x-grid-cell {
+#typo3-pagetree .x-tree-node .x-tree-selected.x-tree-node-over {
 	background-image: none;
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
 	border-radius: 0;
 }
 
-.typo3-pagetree .x-tree-elbow-plus,
-.typo3-pagetree .x-tree-elbow-end-plus {
-	background-image:url('../../images/icons/apps/pagetree-collapse.png');
-}
-
-.typo3-pagetree .x-tree-elbow-minus,
-.typo3-pagetree .x-tree-elbow-end-minus,
-.typo3-pagetree .x-grid-tree-node-expanded .x-tree-elbow-plus,
-.typo3-pagetree .x-grid-tree-node-expanded .x-tree-elbow-end-plus {
-	background-image:url('../../images/icons/apps/pagetree-expand.png');
-}
-
-.typo3-pagetree .x-form-field {
-	color: black;
-	font-family: Verdana,Arial,Helvetica,sans-serif;
-	font-size: 11px;
-	line-height: 14px;
+#typo3-pagetree .x-panel-tbar {
+	background-color: #585858;
+	border: none;
 }
 
 /**
@@ -77,8 +62,6 @@ Pagetree
  */
 .typo3-pagetree-tree-copy {
 	color: #666;
-	font-size: 11px;
-	text-align: center;
 }
 
 .x-dd-drag-ghost {
@@ -166,13 +149,7 @@ Pagetree
  * @section Top Panel
  *
  */
-#typo3-pagetree-topPanel .x-docked-top,
-#typo3-pagetree-topPanel .x-docked-top .x-box-inner {
-	background-color: #585858;
-	border: none;
-}
-
-#typo3-pagetree .x-panel-body .x-toolbar {
+#typo3-pagetree .x-toolbar {
 	background: none;
 	border: none;
 }
@@ -180,10 +157,6 @@ Pagetree
 .typo3-pagetree-topPanel-button {
 	background: none;
 	border: none;
-}
-
-#typo3-pagetree-topPanel-body {
-	background-color: #dadada;
 }
 
 #typo3-pagetree-topPanel .x-btn-click,
@@ -220,6 +193,19 @@ Pagetree
 
 #typo3-pagetree .typo3-pagetree-topPanel-item {
 	background-color: #dadada;
+	line-height: normal;
+}
+
+#typo3-pagetree-topPanel-filter {
+	border: 1px solid #aeaeae;
+	-moz-box-shadow: inset 0 1px 1px #aeaeae;
+	-ms-box-shadow: inset 0 1px 1px #aeaeae;
+	-webkit-box-shadow: inset 0 1px 1px #aeaeae;
+	box-shadow: inset 0 2px 1px #aeaeae;
+}
+
+.typo3-pagetree-topPanel-filter-defaultText {
+	color: gray;
 }
 
 #typo3-pagetree .typo3-pagetree-topPanel-button {
@@ -233,10 +219,7 @@ Pagetree
 
 #typo3-pagetree-topPanel-defaultPanel {
 	color: #a2aab8;
-}
-
-.typo3-pagetree-topPanel-filter-defaultText {
-	color: gray;
+	line-height: 18px;
 }
 
 #typo3-pagetree-topPanel-item-newNode .x-btn-over {
@@ -288,8 +271,7 @@ Pagetree
  *
  */
 
-#typo3-pagetree-indicatorBar-temporaryMountPoint p,
-#typo3-pagetree-indicatorBar-filter p {
+#typo3-pagetree-indicatorBar-temporaryMountPoint p {
 	line-height: 13px;
 }
 
@@ -314,7 +296,8 @@ Pagetree
  * @section Deletion Drop Zone
  *
  */
-#typo3-pagetree-deletionDropZone .x-panel-body {
+
+#typo3-pagetree-deletionDropZone {
 	color: #FFF;
 	background-color: #585858;
 	-moz-box-shadow: inset 0 2px 5px #414141;

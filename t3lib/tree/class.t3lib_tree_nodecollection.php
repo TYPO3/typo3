@@ -62,9 +62,7 @@ class t3lib_tree_NodeCollection extends ArrayObject {
 	 *
 	 * @noapi
 	 * @see t3lib_tree_Node::compareTo
-	 * @param t3lib_tree_Node $node
-	 * @param t3lib_tree_Node $otherNode
-	 * @return int
+	 * @return void
 	 */
 	public function nodeCompare(t3lib_tree_Node $node, t3lib_tree_Node $otherNode) {
 		return $node->compareTo($otherNode);
