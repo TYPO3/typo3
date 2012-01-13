@@ -970,10 +970,13 @@ class tslib_pibase {
 	}
 
 	/**
-	 * Loads local-language values by looking for a "locallang.php" file in the plugin class directory ($this->scriptRelPath) and if found includes it.
-	 * Also locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.php" file.
+	 * Loads local-language values by looking for a "locallang" file in the
+	 * plugin class directory ($this->scriptRelPath) and if found includes it.
+	 * Also locallang values set in the TypoScript property "_LOCAL_LANG" are
+	 * merged onto the values found in the "locallang" file.
+	 * Supported file extensions xml, php
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function pi_loadLL()	{
 		if (!$this->LOCAL_LANG_loaded && $this->scriptRelPath)	{
