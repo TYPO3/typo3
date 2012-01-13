@@ -36,71 +36,20 @@ Ext.ns('TYPO3', 'ModuleMenu');
 
 TYPO3.ModuleMenu = {};
 
-Ext.define('TYPO3.model.ModuleMenu', {
-	extend: 'Ext.data.Model',
-	idProperty: 'index',
-	fields: [{
-			name: 'index',
-			type: 'int',
-		},{
-			name: 'key',
-			type: 'string'
-		},{
-			name: 'name',
-			type: 'string'
-		},{
-			name: 'label',
-			type: 'string'
-		},{
-			name: 'description',
-			type: 'string'
-		},{
-			name: 'icon',
-			type: 'string'
-		},{
-			name: 'menuState',
-			type: 'int'
-		},{
-			name: 'navigationComponentId',
-			type: 'string'
-		},{
-			name: 'navigationFrameScript',
-			type: 'string'
-		},{
-			name: 'navframe',
-			type: 'string'
-		},{
-			name: 'navigationFrameScriptParam',
-			type: 'string'
-		},{
-			name: 'link',
-			type: 'string'
-		},{
-			name: 'originalLink',
-			type: 'string'
-		},{
-			name: 'subitems',
-			type: 'int'
-	}],
-	associations: [{
-			name: 'sub',
-			type: 'hasMany',
-			model: 'TYPO3.model.ModuleMenu'
-	}]
-});
-TYPO3.ModuleMenu.Store = Ext.create('Ext.data.Store', {
-	storeId: 'moduleMenuStore',
-	model: 'TYPO3.model.ModuleMenu',
-	proxy: {
-		type: 'ajax',
-		url: 'ajax.php?ajaxID=ModuleMenu::getData',
-		extraParams: {
-			'action': 'getModules'
-		},
-		reader: {
-		    type: 'json',
-		    root: 'root'
-		}
+TYPO3.ModuleMenu.Store = new Ext.data.JsonStore({
+	storeId: 'ModuleMenuStore',
+	root: 'root',
+	fields: [
+		{name: 'index', type: 'int', mapping: 'sub.index'},
+		{name: 'key', type: 'string'},
+		{name: 'label', type: 'string'},
+		{name: 'menuState', type: 'int'},
+		{name: 'subitems', type: 'int'},
+		'sub'
+	],
+	url: 'ajax.php?ajaxID=ModuleMenu::getData',
+	baseParams: {
+		'action': 'getModules'
 	},
 	listeners: {
 		beforeload: function(store) {
@@ -115,9 +64,16 @@ TYPO3.ModuleMenu.Store = Ext.create('Ext.data.Store', {
 	isLoaded: function() {
 		return this.loaded;
 	}
+
 });
 
-TYPO3.ModuleMenu.Template = Ext.create('Ext.XTemplate',
+TYPO3.ModuleMenu.Template = new Ext.XTemplate(
+		'<div id="typo3-docheader">',
+		'	<div id="typo3-docheader-row1">',
+		'		<div class="buttonsleft"></div>',
+		'		<div class="buttonsright"></div>',
+		'	</div>',
+		'</div>',
 		'<ul id="typo3-menu">',
 		'<tpl for=".">',
 		'	<li class="menuSection" id="{key}">',
@@ -155,144 +111,99 @@ TYPO3.ModuleMenu.App = {
 	init: function() {
 		TYPO3.ModuleMenu.Store.load({
 			scope: this,
-			callback: function(records, operation, success) {
+			callback: function(records, options) {
 				this.renderMenu(records);
+				if (top.startInModule) {
+					this.showModule(top.startInModule[0], top.startInModule[1]);
+				} else {
+					this.loadFirstAvailableModule();
+				}
 			}
 		});
 	},
 
 	renderMenu: function(records) {
 		TYPO3.Backend.ModuleMenuContainer.removeAll();
-		TYPO3.Backend.ModuleMenuContainer.addDocked({
-			cls: 'typo3-module-panel-toolbar',
-			height: 22,
-			html: '<div id="typo3-docheader">' +
-				'	<div id="typo3-docheader-row1">' +
-				'		<div class="buttonsleft"></div>' +
-				'		<div class="buttonsright"></div>' +
-				'	</div>' +
-				'</div>',
-			xtype: 'component'
-		});
 		TYPO3.Backend.ModuleMenuContainer.add({
 			xtype: 'dataview',
+			animCollapse: true,
 			store: TYPO3.ModuleMenu.Store,
 			tpl: TYPO3.ModuleMenu.Template,
 			singleSelect: true,
 			itemSelector: 'li.submodule',
-			overItemCls: 'x-view-over',
-			trackOver: true,
-			selectedItemCls: 'highlighted',
+			overClass: 'x-view-over',
+			selectedClass: 'highlighted',
+			autoHeight: true,
 			itemId: 'modDataView',
-				// ExtJS is not really ready to handle nested template...
-			updateIndexes: function(startIndex, endIndex) {
-				var ns = this.all.elements,
-					records = this.store.getRange(),
-					index = 0, i, j, m, n, record, items;
-				startIndex = startIndex || 0;
-				endIndex = endIndex || ((endIndex === 0) ? 0 : (ns.length - 1));
-				for (i = 0, n = records.length -1; i < n; i++) {
-					items = records[i].getAssociatedData().sub;
-					if (items.length) {
-						for (j = 0, m = items.length - 1; j < m; j++) {
-							if (startIndex <= index && index <= endIndex) {
-								ns[index].viewIndex = index;
-								ns[index].viewRecordId = records[i].internalId;
-								if (!ns[index].boundView) {
-									ns[index].boundView = this.id;
-								}
-							}
-							index++;
-						}
-					}
-				}
-			},
+			tbar: [{text: 'test'}],
 			listeners: {
-				viewready: {
-					fn: function () {
-						if (top.startInModule) {
-							this.showModule(top.startInModule[0], top.startInModule[1]);
+				click: function(view, index, node, event) {
+					var el = Ext.fly(node);
+					if (el.hasClass('submodule')) {
+						TYPO3.ModuleMenu.App.showModule(el.getAttribute('id'));
+					}
+				},
+				containerclick: function(view, event) {
+					var item = event.getTarget('li.menuSection', view.getEl());
+					if (item) {
+						var el = Ext.fly(item);
+						var id = el.getAttribute('id');
+						var section = el.first('div'), state;
+						if (section.hasClass('expanded')) {
+							state = true;
+							section.removeClass('expanded').addClass('collapsed');
+							el.first('ul').slideOut('t', {
+								easing: 'easeOut',
+								duration: .2,
+								remove: false,
+								useDisplay: true
+							});
+
 						} else {
-							this.loadFirstAvailableModule();
-						}
-					},
-					scope: this
-				},
-					// The selection of this view is on the main module. We don't need this
-				beforeselect: {
-					fn: function (view) {
-						return false;
-					}
-				},
-				itemclick: {
-					fn: function(view, record, node, index, event) {
-						var moduleName = node.getAttribute('id');
-						if (moduleName) {
-							TYPO3.ModuleMenu.App.showModule(moduleName);
-						}
-					}
-				},
-				containerclick: {
-					fn: function(view, event) {
-						var item = event.getTarget('li.menuSection', view.getEl());
-						if (item) {
-							var el = Ext.get(item);
-							var id = el.getAttribute('id');
-							var section = el.first('div'), state;
-							if (section.hasCls('expanded')) {
-								state = true;
-								section.removeCls('expanded').addCls('collapsed');
-								el.first('ul').slideOut('t', {
-									easing: 'easeOut',
-									duration: .2,
-									remove: false,
-									useDisplay: true
-								});
-							} else {
-								state = false;
-								section.removeCls('collapsed').addCls('expanded');
-								el.first('ul').slideIn('t', {
-									easing: 'easeIn',
-									duration: .2,
-									remove: false,
-									useDisplay: true
-								});
-							}
-							// save menu state
-							Ext.Ajax.request({
-								url: 'ajax.php?ajaxID=ModuleMenu::saveMenuState',
-								params: {
-									'menuid': 'modmenu_' + id,
-									'state': state
-								}
+							state = false;
+							section.removeClass('collapsed').addClass('expanded');
+							el.first('ul').slideIn('t', {
+								easing: 'easeIn',
+								duration: .2,
+								remove: false,
+								useDisplay: true
 							});
 						}
-						return false;
+						// save menu state
+						Ext.Ajax.request({
+							url: 'ajax.php?ajaxID=ModuleMenu::saveMenuState',
+							params: {
+								'menuid': 'modmenu_' + id,
+								'state': state
+							}
+						});
 					}
-				}
+					return false;
+				},
+				scope: this
 			}
 		});
+		TYPO3.Backend.ModuleMenuContainer.doLayout();
 	},
+
 	getRecordFromIndex: function(index) {
-		var i, record, items;
+		var i, record;
 		for (i = 0; i < TYPO3.ModuleMenu.Store.getCount(); i++) {
 			record = TYPO3.ModuleMenu.Store.getAt(i);
-			items = record.getAssociatedData().sub;
-			if (index < record.get('subitems')) {
-				return items[index];
+			if (index < record.data.subitems) {
+				return record.data.sub[index];
 			}
-			index -= record.get('subitems');
+			index -= record.data.subitems;
 		}
 	},
 
 	getRecordFromName: function(name) {
-		var i, j, recordsCount, itemsCount, record, items;
-		for (i = 0, recordsCount = TYPO3.ModuleMenu.Store.getCount(); i < recordsCount; i++) {
+		var i, j, record;
+		for (i = 0; i < TYPO3.ModuleMenu.Store.getCount(); i++) {
 			record = TYPO3.ModuleMenu.Store.getAt(i);
-			items = record.getAssociatedData().sub;
-			for (j = 0, itemsCount = record.get('subitems'); j < itemsCount; j++) {
-				if (items[j].name === name) {
-					return items[j];
+			for (j = 0; j < record.data.subitems; j++) {
+				if (record.data.sub[j].name === name) {
+					return record.data.sub[j];
 				}
 			}
 		}
@@ -304,6 +215,7 @@ TYPO3.ModuleMenu.App = {
 
 		params = this.includeId(mod, params);
 		var record = this.getRecordFromName(mod);
+
 		if (record) {
 			this.loadModuleComponents(record, params);
 		} else {
@@ -324,7 +236,7 @@ TYPO3.ModuleMenu.App = {
 				// Store is empty, something went wrong
 			TYPO3.Flashmessage.display(TYPO3.Severity.error, 'Module loader', 'No module found. If this is a temporary error, please reload the Backend!', 50000);
 		} else {
-			mod = TYPO3.ModuleMenu.Store.getAt(0).getAssociatedData().sub[0];
+			mod = TYPO3.ModuleMenu.Store.getAt(0).data.sub[0];
 			this.loadModuleComponents(mod, params);
 		}
 	},
@@ -332,29 +244,28 @@ TYPO3.ModuleMenu.App = {
 	loadModuleComponents: function(record, params) {
 		var mod = record.name;
 		if (record.navigationComponentId) {
-			this.loadNavigationComponent(record.navigationComponentId);
-			TYPO3.Backend.NavigationDummy.hide();
-			TYPO3.Backend.NavigationIframe.getEl().parent().setStyle('overflow', 'auto');
-		} else if (record.navframe || record.navigationFrameScript) {
-			TYPO3.Backend.NavigationDummy.hide();
-			TYPO3.Backend.NavigationContainer.show();
-			this.loadNavigationComponent('typo3-navigationIframe');
-			this.openInNavFrame(record.navigationFrameScript || record.navframe, record.navigationFrameScriptParam);
-			TYPO3.Backend.NavigationIframe.getEl().parent().setStyle('overflow', 'hidden');
-		} else {
-			TYPO3.Backend.NavigationContainer.hide();
-			TYPO3.Backend.NavigationDummy.show();
-		}
-			// Set internal state
-		this.loadedModule = mod;
-		this.highlightModuleMenuItem(mod);
-		this.openInContentFrame(record.originalLink, params);
+				this.loadNavigationComponent(record.navigationComponentId);
+				TYPO3.Backend.NavigationDummy.hide();
+				TYPO3.Backend.NavigationIframe.getEl().parent().setStyle('overflow', 'auto');
+			} else if (record.navframe || record.navigationFrameScript) {
+				TYPO3.Backend.NavigationDummy.hide();
+				TYPO3.Backend.NavigationContainer.show();
+				this.loadNavigationComponent('typo3-navigationIframe');
+				this.openInNavFrame(record.navigationFrameScript || record.navframe, record.navigationFrameScriptParam);
+				TYPO3.Backend.NavigationIframe.getEl().parent().setStyle('overflow', 'hidden');
+			} else {
+				TYPO3.Backend.NavigationContainer.hide();
+				TYPO3.Backend.NavigationDummy.show();
+			}
+			this.openInContentFrame(record.originalLink, params);
+			this.loadedModule = mod;
+			this.highlightModuleMenuItem(mod);
 
-			// compatibility
-		top.currentSubScript = record.originalLink;
-		top.currentModuleLoaded = mod;
+				// compatibility
+			top.currentSubScript = record.originalLink;
+			top.currentModuleLoaded = mod;
 
-		TYPO3.Backend.doLayout();
+			TYPO3.Backend.doLayout();
 	},
 
 	includeId: function(mod, params) {
@@ -422,11 +333,7 @@ TYPO3.ModuleMenu.App = {
 	},
 
 	highlightModuleMenuItem: function(module, mainModule) {
-		var highlighted = Ext.fly('typo3-menu').query('li.highlighted');
-		Ext.Array.each(highlighted, function(el) {
-			Ext.fly(el).removeCls('highlighted');
-		});
-		Ext.fly(module).addCls('highlighted');
+		TYPO3.Backend.ModuleMenuContainer.getComponent('modDataView').select(module, false, false);
 	},
 
 	relativeUrl: function(url) {
@@ -436,7 +343,7 @@ TYPO3.ModuleMenu.App = {
 	refreshMenu: function() {
 		TYPO3.ModuleMenu.Store.load({
 			scope: this,
-			callback: function(records, operation, success) {
+			callback: function(records, options) {
 				this.renderMenu(records);
 				if (this.loadedModule) {
 					this.highlightModuleMenuItem(this.loadedModule);
