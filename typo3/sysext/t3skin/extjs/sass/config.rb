@@ -1,7 +1,7 @@
 # $ext_path: This should be the path of where the ExtJS SDK is installed
 # Generally this will be in a lib/extjs folder in your applications root
 # <root>/lib/extjs
-$ext_path = "../../../../contrib/extjs"
+$ext_path = "../../../../contrib/ext4"
 
 # sass_path: the directory your Sass files are in. THIS file should also be in the Sass folder
 # Generally this will be in a resources/sass folder
@@ -20,6 +20,3 @@ output_style = :compressed
 
 # We need to load in the Ext4 themes folder, which includes all it's default styling, images, variables and mixins
 load File.join(File.dirname(__FILE__), $ext_path, 'resources', 'themes')
-
-#load File.join(File.dirname(__FILE__), '..', '')
-
