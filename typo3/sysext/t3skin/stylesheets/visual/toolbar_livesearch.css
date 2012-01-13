@@ -2,14 +2,24 @@
 Backend  Live Search
 - - - - - - - - - - - - - - - - - - - - - */
 
-.live-search-results .x-form-field {
-	border: none;
-	line-height: 18px;
-	padding-left: 20px;
+.live-search-results .t3-icon-toolbar-menu-search {
+	position: absolute;
+	z-index: 3000;
+	top: 0;
+	margin: 3px;
 }
 
-.live-search-results .x-form-trigger {
-	border-bottom: none;
+.t3-icon-input-clear {
+	cursor: pointer;
+	position: absolute;
+	top: 0px;
+	right: 20px;
+}
+
+#live-search-box {
+	padding-left: 20px;
+	width: 180px;
+	border: none;
 }
 
 .live-search-list {
@@ -17,24 +27,37 @@ Backend  Live Search
 	border: none;
 }
 
-.live-search-list .live-search-list-title {
-	text-align: center;
+.live-search-list .x-combo-list {
+	background-color: white;
 }
 
-.live-search-list .search-list-help-content {
-	background-color: #ddeef9;
-	background-position: 0.5em 0.7em;
-	background-repeat: no-repeat;
-	border: 1px solid;
-	border-color: #8aafc4;
-	color: #000000;
+.live-search-list .x-combo-list-inner {
+	padding-bottom: 5px;
+}
+
+.live-search-list .x-combo-list-hd {
+	background: none;
+	border: none;
+	margin-left: 110px;
+	color: #ddd;
+}
+
+.search-list-help-content {
+	margin: 5px;
+	height: 100%;
 	padding: 0.6em 0.6em 0.6em 2.6em;
+	background-repeat: no-repeat;
+	background-position: 0.5em 0.7em;
+	border: 1px solid;
+	color: #000000;
+
+	background-color: #ddeef9;
+	border-color: #8aafc4;
 }
 
 .live-search-list .search-item-type {
 	border-right: 1px solid #ddd;
 	padding: 2px 5px 2px 0;
-	text-align: right;
 }
 
 .live-search-list .search-item-content {

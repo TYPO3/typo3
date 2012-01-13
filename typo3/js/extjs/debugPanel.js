@@ -23,6 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+Ext.ns('TYPO3');
+
 /**
  * Debug panel based upon the widget tab panel
  *
@@ -41,16 +44,13 @@
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
-Ext.define('TYPO3.DebugPanel', {
-	extend: 'Ext.tab.Panel',
-	alias: ['widget.typo3DebugPanel'],
-
+TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 	/**
 	 * Tab Groups
 	 *
 	 * @var Ext.util.MixedCollection
 	 */
-	tabGroups: Ext.create('Ext.util.MixedCollection'),
+	tabGroups: new Ext.util.MixedCollection(),
 
 	/**
 	 * Indicator if the debug panel is wrapped inside a debug panel
@@ -69,16 +69,14 @@ Ext.define('TYPO3.DebugPanel', {
 	initComponent: function(config) {
 		config = config || {};
 		Ext.apply(this, config, {
-				// Activate general tab navigation with mouse wheel support
-			tabBar: {
-				autoScroll: true
-			},
+				// activate general tab navigation with mouse wheel support
+			enableTabScroll: true,
 			defaults: {
 				autoScroll: true
 			},
 
 				// add the context menu actions
-			plugins: Ext.create('Ext.ux.TabCloseMenu', {
+			plugins: new Ext.ux.TabCloseMenu({
 				closeTabText: TYPO3.LLL.core.tabs_close,
 				closeOtherTabsText: TYPO3.LLL.core.tabs_closeOther,
 				closeAllTabsText: TYPO3.LLL.core.tabs_closeAll,
@@ -92,7 +90,7 @@ Ext.define('TYPO3.DebugPanel', {
 							var tab = this.plugins.active;
 							var group = '', content = '';
 
-							if (tab.ownerCt.ownerCt instanceof Ext.tab.Panel) {
+							if (tab.ownerCt.ownerCt instanceof Ext.TabPanel) {
 								group = tab.ownerCt.title;
 								content = tab.body.dom.innerHTML;
 							} else {
@@ -114,7 +112,7 @@ Ext.define('TYPO3.DebugPanel', {
 		});
 
 
-		this.callParent([config]);
+		TYPO3.DebugPanel.superclass.initComponent.call(this);
 	},
 
 	/**
@@ -124,14 +122,14 @@ Ext.define('TYPO3.DebugPanel', {
 	 * @return void
 	 */
 	onRender: function() {
-		this.arrow = Ext.core.DomHelper.append(
+		this.arrow = Ext.DomHelper.append(
 			Ext.getBody(),
 			'<div class="typo3-debugPanel-dragDropArrowDown">&nbsp;</div>',
 			true
 		);
 		this.arrow.hide();
 
-		this.callParent(arguments);
+		TYPO3.DebugPanel.superclass.onRender.apply(this, arguments);
 	},
 
 	/**
@@ -140,7 +138,7 @@ Ext.define('TYPO3.DebugPanel', {
 	 * @return void
 	 */
 	onCollapse: function() {
-		this.callParent(arguments);
+		TYPO3.DebugPanel.superclass.onCollapse.apply(this, arguments);
 	},
 
 	/**
@@ -149,7 +147,7 @@ Ext.define('TYPO3.DebugPanel', {
 	 * @return void
 	 */
 	onExpand: function() {
-		this.callParent(arguments);
+		TYPO3.DebugPanel.superclass.onExpand.apply(this, arguments);
 	},
 
 	/**
@@ -159,7 +157,7 @@ Ext.define('TYPO3.DebugPanel', {
 	 */
 	onDestroy: function() {
 		Ext.destroy(this.arrow);
-		this.callParent(arguments);
+		TYPO3.DebugPanel.superclass.onDestroy.call(this);
 	},
 
 	/**
@@ -179,7 +177,7 @@ Ext.define('TYPO3.DebugPanel', {
 		if (TYPO3.configuration.debugInWindow) {
 			this.openBrowserWindow(header, tabContent, group);
 		} else {
-			var tabWidget = Ext.create('Ext.panel.Panel', {
+			var tabWidget = new Ext.Panel({
 				title: header,
 				html: tabContent,
 				border: false,
@@ -215,7 +213,7 @@ Ext.define('TYPO3.DebugPanel', {
 		var tabGroup = this;
 		if (typeof group !== 'undefined' && group !== '' && !this.isTabChildren) {
 			if (this.tabGroups.indexOfKey(group) === -1) {
-				tabGroup = Ext.create('TYPO3.DebugPanel', {
+				tabGroup = new TYPO3.DebugPanel({
 					border: false,
 					title: group,
 					autoScroll: true,
@@ -284,7 +282,7 @@ Ext.define('TYPO3.DebugPanel', {
 	 * @return void
 	 */
 	initDragAndDropForTab: function(item) {
-		item.tabDragZone = Ext.create('Ext.dd.DragZone', this.id + '__' + item.id, {
+		item.tabDragZone = new Ext.dd.DragZone(this.id + '__' + item.id, {
 			ddGroup: this.id,
 
 			/**
@@ -294,7 +292,7 @@ Ext.define('TYPO3.DebugPanel', {
 			 */
 			b4MouseDown : function() {
 				item.show();
-				this.callParent(arguments);
+				Ext.dd.DragZone.superclass.b4MouseDown.apply(this, arguments);
 			},
 
 			/**
@@ -333,7 +331,7 @@ Ext.define('TYPO3.DebugPanel', {
 			}
 		});
 
-		item.tabDropZone = Ext.create('Ext.dd.DropZone', this.id + '__' + item.id, {
+		item.tabDropZone = new Ext.dd.DropZone(this.id + '__' + item.id, {
 			debugPanel: this,
 			ddGroup: this.id,
 
@@ -361,7 +359,7 @@ Ext.define('TYPO3.DebugPanel', {
 			 * @return void
 			 */
 			onNodeEnter : function(target) {
-				Ext.get(target).addCls('typo3-debugPanel-dragDropOver');
+				Ext.get(target).addClass('typo3-debugPanel-dragDropOver');
 			},
 
 			/**
@@ -371,7 +369,7 @@ Ext.define('TYPO3.DebugPanel', {
 			 * @return void
 			 */
 			onNodeOut : function(target) {
-				Ext.get(target).removeCls('typo3-debugPanel-dragDropOver');
+				Ext.get(target).removeClass('typo3-debugPanel-dragDropOver');
 				this.debugPanel.arrow.hide();
 			},
 
@@ -468,7 +466,7 @@ Ext.define('TYPO3.DebugPanel', {
 			'width=600,height=400,menubar=0,toolbar=1,status=0,scrollbars=1,resizable=1'
 		);
 		if (newWindow.document.body.innerHTML) {
-			Ext.core.DomHelper.insertHtml('beforeEnd', newWindow.document.body, '<hr>' + content);
+			Ext.DomHelper.insertHtml('beforeEnd', newWindow.document.body, '<hr>' + content);
 		} else {
 			newWindow.document.writeln(
 				'<html><head><title>Debug: ' + title + '(' + group + ')</title></head>'
@@ -588,7 +586,7 @@ Ext.define('TYPO3.DebugPanel', {
 	},
 
 	/**
-	 * Debug attached events of a given element (e.g. an Ext.panel.Panel component)
+	 * Debug attached events of a given element (e.g. an Ext.Panel component)
 	 *
 	 * Note: This functionality should be used with an activated debug console like firebug!
 	 *
@@ -610,10 +608,12 @@ Ext.define('TYPO3.DebugPanel', {
 		} else {
 				// debug all events
 			Ext.util.Observable.prototype.fireEvent =
-				Ext.Function.createInterceptor('Ext.util.Observable.prototype.fireEvent', function() {
+				Ext.util.Observable.prototype.fireEvent.createInterceptor(function() {
 					console.log(arguments);
 					return true;
 				});
 		}
 	}
 });
+
+Ext.reg('typo3DebugPanel', TYPO3.DebugPanel);

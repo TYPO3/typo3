@@ -23,6 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+Ext.ns('TYPO3.state');
+
 /**
  * Creates new ExtDirectProvider
  * @constructor
@@ -30,72 +33,72 @@
  * @author Jozef Sakalos
  * @author Steffen Kamper
  */
-Ext.define('TYPO3.state.ExtDirectProvider', {
-	extend: 'Ext.state.Provider',
 
-	constructor: function(config) {
-		this.addEvents(
-			/**
-			 * @event readsuccess
-			 * Fires after state has been successfully received from server and restored
-			 * @param {HttpProvider} this
-			 */
-				'readsuccess',
-			/**
-			 * @event readfailure
-			 * Fires in the case of an error when attempting to read state from server
-			 * @param {HttpProvider} this
-			 */
-				'readfailure',
-			/**
-			 * @event savesuccess
-			 * Fires after the state has been successfully saved to server
-			 * @param {HttpProvider} this
-			 */
-				'savesuccess',
-			/**
-			 * @event savefailure
-			 * Fires in the case of an error when attempting to save state to the server
-			 * @param {HttpProvider} this
-			 */
-				'savefailure'
-		);
+TYPO3.state.ExtDirectProvider = function(config) {
 
-			// call parent
-		this.callParent(arguments);
+	this.addEvents(
+		/**
+		 * @event readsuccess
+		 * Fires after state has been successfully received from server and restored
+		 * @param {HttpProvider} this
+		 */
+			'readsuccess',
+		/**
+		 * @event readfailure
+		 * Fires in the case of an error when attempting to read state from server
+		 * @param {HttpProvider} this
+		 */
+			'readfailure',
+		/**
+		 * @event savesuccess
+		 * Fires after the state has been successfully saved to server
+		 * @param {HttpProvider} this
+		 */
+			'savesuccess',
+		/**
+		 * @event savefailure
+		 * Fires in the case of an error when attempting to save state to the server
+		 * @param {HttpProvider} this
+		 */
+			'savefailure'
+			);
 
-		Ext.apply(this, config, {
-			// defaults
-			delay: 750, // buffer changes for 750 ms
-			dirty: false,
-			started: false,
-			autoStart: true,
-			autoRead: true,
-			key: 'States.General',
-			logFailure: false,
-			logSuccess: false,
-			queue: [],
-			saveBaseParams: {},
-			readBaseParams: {},
-			paramNames:{
-				key: 'key',
-				name: 'name',
-				value: 'value',
-				data: 'data'
-			}
-		});
+		// call parent
+	TYPO3.state.ExtDirectProvider.superclass.constructor.call(this);
 
-		if (this.autoRead) {
-			this.readState();
+	Ext.apply(this, config, {
+		// defaults
+		delay: 750, // buffer changes for 750 ms
+		dirty: false,
+		started: false,
+		autoStart: true,
+		autoRead: true,
+		key: 'States.General',
+		logFailure: false,
+		logSuccess: false,
+		queue: [],
+		saveBaseParams: {},
+		readBaseParams: {},
+		paramNames:{
+			key: 'key',
+			name: 'name',
+			value: 'value',
+			data: 'data'
 		}
+	});
 
-		this.dt = Ext.create('Ext.util.DelayedTask', this.submitState, this);
-		if (this.autoStart) {
-			this.start();
-		}
+	if (this.autoRead) {
+		this.readState();
+	}
 
-		return this;
-	},
+	this.dt = new Ext.util.DelayedTask(this.submitState, this);
+	if (this.autoStart) {
+		this.start();
+	}
+};
+
+
+Ext.extend(TYPO3.state.ExtDirectProvider, Ext.state.Provider, {
 
 		// localizable texts
 	saveSuccessText: 'Save Success',
@@ -103,6 +106,8 @@ Ext.define('TYPO3.state.ExtDirectProvider', {
 	readSuccessText: 'Read Success',
 	readFailureText: 'Read Failure',
 	dataErrorText: 'Data Error',
+
+
 
 	/**
 	 * Initializes state from the passed state object or array.
@@ -136,6 +141,7 @@ Ext.define('TYPO3.state.ExtDirectProvider', {
 		this.queueChange(name, value);
 	},
 
+
 	/**
 	 * Starts submitting state changes to server
 	 */
@@ -144,6 +150,7 @@ Ext.define('TYPO3.state.ExtDirectProvider', {
 		this.started = true;
 	},
 
+
 	/**
 	 * Stops submitting state changes
 	 */
@@ -151,6 +158,7 @@ Ext.define('TYPO3.state.ExtDirectProvider', {
 		this.dt.cancel();
 		this.started = false;
 	},
+
 
 	/**
 	 * private, queues the state change if state has changed
@@ -189,6 +197,7 @@ Ext.define('TYPO3.state.ExtDirectProvider', {
 		return changed;
 	},
 
+
 	/**
 	 * private, submits state to server by asynchronous Ajax request
 	 */
@@ -225,6 +234,7 @@ Ext.define('TYPO3.state.ExtDirectProvider', {
 	   }, this);
 	},
 
+
 	/**
 	 * Clears the state variable
 	 * @param {String} name Name of the variable to clear
@@ -232,6 +242,7 @@ Ext.define('TYPO3.state.ExtDirectProvider', {
 	clear: function(name) {
 		this.set(name, undefined);
 	},
+
 
 	/**
 	 * private, save success callback
@@ -282,6 +293,7 @@ Ext.define('TYPO3.state.ExtDirectProvider', {
 		}
 	},
 
+
 	/**
 	 * private, save failure callback
 	 */
@@ -293,6 +305,7 @@ Ext.define('TYPO3.state.ExtDirectProvider', {
 		this.fireEvent('savefailure', this);
 	},
 
+
 	/**
 	 * private, read state callback
 	 */
@@ -303,6 +316,7 @@ Ext.define('TYPO3.state.ExtDirectProvider', {
 		this.fireEvent('readfailure', this);
 
 	},
+
 
 	/**
 	 * private, read success callback
@@ -327,6 +341,7 @@ Ext.define('TYPO3.state.ExtDirectProvider', {
 		}
 	},
 
+
 	/**
 	 * Reads saved state from server by sending asynchronous Ajax request and processing the response
 	 */
@@ -348,6 +363,7 @@ Ext.define('TYPO3.state.ExtDirectProvider', {
 		   }
 	   }, this);
 	},
+
 
 	/**
 	 * private, logs errors or successes
