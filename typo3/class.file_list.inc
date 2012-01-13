@@ -317,13 +317,13 @@ class fileList extends t3lib_recordList {
 								$theData[$field] = (($theFile['readable']) ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('read', TRUE) . '</strong></span>') . (($theFile['writable']) ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('write', TRUE) . '</strong></span>');
 							break;
 							case 'fileext':
-								$theData[$field]=strtoupper($theFile['fileext']);
+								$theData[$field] = strtoupper($theFile['fileext']);
 							break;
 							case 'tstamp':
-								$theData[$field]=Date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $theFile['tstamp']);
+								$theData[$field] = t3lib_BEfunc::date($theFile['tstamp']);
 							break;
 							case 'file':
-								$theData[$field]= $this->linkWrapDir($title,$path);
+								$theData[$field] = $this->linkWrapDir($title,$path);
 							break;
 							case '_CLIPBOARD_':
 								$temp = '';
@@ -460,10 +460,10 @@ class fileList extends t3lib_recordList {
 								$theData[$field] = (($theFile['readable']) ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('read', TRUE) . '</strong></span>') . (($theFile['writable']) ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('write', TRUE) . '</strong></span>');
 							break;
 							case 'fileext':
-								$theData[$field]=strtoupper($theFile[$field]);
+								$theData[$field] = strtoupper($theFile[$field]);
 							break;
 							case 'tstamp':
-								$theData[$field]=Date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $theFile[$field]);
+								$theData[$field] = t3lib_BEfunc::date($theFile[$field]);
 							break;
 							case '_CLIPBOARD_':
 								$temp = '';

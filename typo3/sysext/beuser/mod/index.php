@@ -1561,7 +1561,7 @@ class SC_mod_tools_be_user_index {
 				$outTable .= '
 					<tr class="bgColor4" height="17" valign="top">' .
 						'<td nowrap="nowrap">' .
-							date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'].' '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $session['ses_tstamp']) .
+							t3lib_BEfunc::datetime($session['ses_tstamp']) .
 						'</td>' .
 						'<td nowrap="nowrap">' .
 							'<span'.$hostName.'>'.$ip.'</span>' .

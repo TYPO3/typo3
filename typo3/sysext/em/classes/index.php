@@ -818,13 +818,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					<input type="submit" value="' . $GLOBALS['LANG']->getLL('retrieve_update') .
 						'" onclick="' . htmlspecialchars($onCLick) . '" />';
 				if (is_file(PATH_site . 'typo3temp/extensions.xml.gz')) {
-					$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
-					$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
 					$content .= ' ' . sprintf($GLOBALS['LANG']->getLL('ext_list_last_updated') . ' ',
-						date(
-							$dateFormat . ', ' . $timeFormat,
-							filemtime(PATH_site . 'typo3temp/extensions.xml.gz')
-						),
+						t3lib_BEfunc::datetime(filemtime(PATH_site . 'typo3temp/extensions.xml.gz')),
 						tx_em_Database::getExtensionCountFromRepository()
 					);
 				}
@@ -2464,13 +2459,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 					. '&nbsp;<label for="checkDisplayFiles">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:display_files') . '</label>';
 			$this->content .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:header_upd_ext'), $content, 0, 1);
 
-			$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
-			$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
 			$content = sprintf($GLOBALS['LANG']->getLL('note_last_update_new'),
-				date(
-					$dateFormat . ', ' . $timeFormat,
-					filemtime(PATH_site . 'typo3temp/extensions.xml.gz')
-				)
+				t3lib_BEfunc::datetime(filemtime(PATH_site . 'typo3temp/extensions.xml.gz'))
 			) . '<br />';
 		}
 
@@ -2507,16 +2497,10 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			<input type="button" value="' . $GLOBALS['LANG']->getLL('retrieve_update') .
 				'" onclick="' . htmlspecialchars($onCLick) . '" />';
 		if (is_file($repoUtility->getLocalExtListFile())) {
-			$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
-			$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
-
 			$count = tx_em_Database::getExtensionCountFromRepository($repoUtility->getRepositoryUID());
 			$content .= '<span style="margin-left:10px;padding-right: 50px;" class="typo3-message message-notice">' .
 					sprintf($GLOBALS['LANG']->getLL('ext_list_last_updated'),
-						date(
-							$dateFormat . ', ' . $timeFormat,
-							filemtime($repoUtility->getLocalExtListFile())
-						), $count) . '</span>';
+						t3lib_BEfunc::datetime(filemtime($repoUtility->getLocalExtListFile())), $count) . '</span>';
 		} else {
 			$content .= '<span style="margin-left:10px;padding-right: 50px;" class="typo3-message message-error">There are no extensions available, please update!</span>';
 		}
