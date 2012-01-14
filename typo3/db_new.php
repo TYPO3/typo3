@@ -349,12 +349,22 @@ class SC_db_new {
 	 */
 	function pagesOnly()	{
 		global $LANG;
-
-		$posMap = t3lib_div::makeInstance('t3lib_positionMap');
-		$this->code.='
-			<h3>'.htmlspecialchars($LANG->getLL('selectPosition')).':</h3>
-		';
-		$this->code.= $posMap->positionTree($this->id,$this->pageinfo,$this->perms_clause,$this->R_URI);
+		$numberOfPages = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'pages', '1=1' . t3lib_BEfunc::deleteClause('pages'));
+		if ($numberOfPages > 0) {
+			$posMap = t3lib_div::makeInstance('t3lib_positionMap');
+			$this->code.='
+				<h3>'.htmlspecialchars($LANG->getLL('selectPosition')).':</h3>
+			';
+			$this->code.= $posMap->positionTree($this->id,$this->pageinfo,$this->perms_clause,$this->R_URI);
+		} else {
+			// No pages yet, no need to prompt for position, redirect to page creation.
+			$javascript = t3lib_BEfunc::editOnClick('returnUrl=%2Ftypo3%2Fdb_new.php%3Fid%3D0%26pagesOnly%3D1&edit[pages][0]=new&returnNewPageId=1');
+			$startPos = strpos($javascript, 'href=\'') + 6;
+			$endPos = strpos($javascript, '\';');
+			$url = substr($javascript, $startPos, $endPos - $startPos);
+			@ob_end_clean();
+			t3lib_utility_Http::redirect($url);
+		}
 	}
 
 	/**
