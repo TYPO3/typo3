@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004 interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -66,19 +66,21 @@ Ext.apply(HTMLArea, {
 	 * INITIALIZATION                                  *
 	 ***************************************************/
 	init: function () {
-			// Apply global configuration settings
-		Ext.apply(HTMLArea, RTEarea[0]);
-		Ext.applyIf(HTMLArea, {
-			editorSkin	: HTMLArea.editorUrl + 'skins/default/',
-			editorCSS	: HTMLArea.editorUrl + 'skins/default/htmlarea.css'
-		});
-		if (!Ext.isString(HTMLArea.editedContentCSS)) {
-			HTMLArea.editedContentCSS = HTMLArea.editorSkin + 'htmlarea-edited-content.css';
+		if (!HTMLArea.isReady) {
+				// Apply global configuration settings
+			Ext.apply(HTMLArea, RTEarea[0]);
+			Ext.applyIf(HTMLArea, {
+				editorSkin	: HTMLArea.editorUrl + 'skins/default/',
+				editorCSS	: HTMLArea.editorUrl + 'skins/default/htmlarea.css'
+			});
+			if (!Ext.isString(HTMLArea.editedContentCSS)) {
+				HTMLArea.editedContentCSS = HTMLArea.editorSkin + 'htmlarea-edited-content.css';
+			}
+			HTMLArea.isReady = true;
+			HTMLArea.appendToLog('', 'HTMLArea', 'init', 'Editor url set to: ' + HTMLArea.editorUrl, 'info');
+			HTMLArea.appendToLog('', 'HTMLArea', 'init', 'Editor skin CSS set to: ' + HTMLArea.editorCSS, 'info');
+			HTMLArea.appendToLog('', 'HTMLArea', 'init', 'Editor content skin CSS set to: ' + HTMLArea.editedContentCSS, 'info');
 		}
-		HTMLArea.isReady = true;
-		HTMLArea.appendToLog('', 'HTMLArea', 'init', 'Editor url set to: ' + HTMLArea.editorUrl, 'info');
-		HTMLArea.appendToLog('', 'HTMLArea', 'init', 'Editor skin CSS set to: ' + HTMLArea.editorCSS, 'info');
-		HTMLArea.appendToLog('', 'HTMLArea', 'init', 'Editor content skin CSS set to: ' + HTMLArea.editedContentCSS, 'info');
 	},
 	/*
 	 * Write message to JavaScript console

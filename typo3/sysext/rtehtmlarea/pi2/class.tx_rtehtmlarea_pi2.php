@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -207,35 +207,31 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		 * LOAD JS, CSS and more
 		 * =======================================
 		 */
-		$pageRenderer = $this->getPageRenderer();
+		$this->pageRenderer = $this->getPageRenderer();
 			// Preloading the pageStyle and including RTE skin stylesheets
 		$this->addPageStyle();
 		$this->addSkin();
-			// Re-initialize the scripts array so that only the cumulative set of plugins of the last RTE on the page is used
-		$this->cumulativeScripts[$this->TCEform->RTEcounter] = array();
-		$this->includeScriptFiles($this->TCEform->RTEcounter);
-		$this->buildJSMainLangFile($this->TCEform->RTEcounter);
-			// Register RTE in JS:
+			// Register RTE in JS
 		$this->TCEform->additionalJS_post[] = $this->wrapCDATA($this->registerRTEinJS($this->TCEform->RTEcounter, '', '', '',$textAreaId));
 			// Set the save option for the RTE:
 		$this->TCEform->additionalJS_submit[] = $this->setSaveRTE($this->TCEform->RTEcounter, $this->TCEform->formName, $textAreaId);
 			// Loading ExtJs JavaScript files and inline code, if not configured in TS setup
 		if (!$GLOBALS['TSFE']->isINTincScript() || !is_array($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.'])) {
-			$pageRenderer->loadExtJs();
-			$pageRenderer->enableExtJSQuickTips();
+			$this->pageRenderer->loadExtJs();
+			$this->pageRenderer->enableExtJSQuickTips();
 			if (!$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableCompressedScripts']) {
-				$pageRenderer->enableExtJsDebug();
+				$this->pageRenderer->enableExtJsDebug();
 			}
 		}
-		$pageRenderer->addCssFile('t3lib/js/extjs/ux/resize.css');
-		$pageRenderer->addJsFile('t3lib/js/extjs/ux/ext.resizable.js');
-		$pageRenderer->addJsFile('t3lib/js/extjs/notifications.js');
-		if ($this->TCEform->RTEcounter == 1) {
-			$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->wrapCDATA($this->loadJScode($this->TCEform->RTEcounter));
-		}
-		$this->TCEform->additionalJS_initial = $this->loadJSfiles($this->TCEform->RTEcounter);
+		$this->pageRenderer->addCssFile($this->siteURL . 't3lib/js/extjs/ux/resize.css');
+		$this->pageRenderer->addJsFile($this->siteURL . $this->getFullFileName('t3lib/js/extjs/ux/ext.resizable.js'));
+		$this->pageRenderer->addJsFile($this->siteURL . $this->getFullFileName('t3lib/js/extjs/notifications.js'));
+			// Add RTE JavaScript
+		$this->addRteJsFiles($this->TCEform->RTEcounter);
+		$this->pageRenderer->addJsFile($this->buildJSMainLangFile($this->TCEform->RTEcounter));
+		$this->pageRenderer->addJsInlineCode('HTMLArea-init', $this->getRteInitJsCode(), TRUE);
 		if ($GLOBALS['TSFE']->isINTincScript()) {
-			$GLOBALS['TSFE']->additionalHeaderData['rtehtmlarea'] = $pageRenderer->render();
+			$GLOBALS['TSFE']->additionalHeaderData['rtehtmlarea'] = $this->pageRenderer->render();
 		}
 		/* =======================================
 		 * DRAW THE EDITOR

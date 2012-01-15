@@ -138,9 +138,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	var $toolbarOrderArray = array();
 	protected $pluginEnabledArray = array();		// Array of plugin id's enabled in the current RTE editing area
 	protected $pluginEnabledCumulativeArray = array();	// Cumulative array of plugin id's enabled so far in any of the RTE editing areas of the form
-	protected $cumulativeScripts = array();
 	public $registeredPlugins = array();			// Array of registered plugins indexed by their plugin Id's
 	protected $fullScreen = FALSE;
+	protected $pageRenderer;
 
 	/**
 	 * Returns TRUE if the RTE is available. Here you check if the browser requirements are met.
@@ -290,8 +290,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 				// Languages: interface and content
 			$this->language = $LANG->lang;
-			if ($this->language=='default' || !$this->language)	{
-				$this->language='en';
+			if ($this->language == 'default' || !$this->language)	{
+				$this->language = 'en';
 			}
 			$this->contentTypo3Language = ($this->language == 'en') ? 'default' : $this->language;
 			$this->contentISOLanguage = 'en';
@@ -377,29 +377,26 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			 * LOAD CSS AND JAVASCRIPT
 			 * =======================================
 			 */
+			$this->pageRenderer = $GLOBALS['SOBE']->doc->getPageRenderer();
 				// Preloading the pageStyle and including RTE skin stylesheets
 			$this->addPageStyle();
 			$this->addSkin();
-				// Re-initialize the scripts array so that only the cumulative set of plugins of the last RTE on the page is used
-			$this->cumulativeScripts[$this->TCEform->RTEcounter] = array();
-			$this->includeScriptFiles($this->TCEform->RTEcounter);
-			$this->buildJSMainLangFile($this->TCEform->RTEcounter);
-				// Register RTE in JS:
+				// Register RTE in JS
 			$this->TCEform->additionalJS_post[] = $this->registerRTEinJS($this->TCEform->RTEcounter, $table, $row['uid'], $field, $textAreaId);
-				// Set the save option for the RTE:
+				// Set the save option for the RTE
 			$this->TCEform->additionalJS_submit[] = $this->setSaveRTE($this->TCEform->RTEcounter, $this->TCEform->formName, $textAreaId, $PA['itemFormElName']);
 			$this->TCEform->additionalJS_delete[] = $this->setDeleteRTE($this->TCEform->RTEcounter, $this->TCEform->formName, $textAreaId);
-				// Loading JavaScript files and code
-			if ($this->TCEform->RTEcounter == 1) {
-				$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
-			}
-			$this->TCEform->additionalCode_pre['rtehtmlarea-loadJSfiles'] = $this->loadJSfiles($this->TCEform->RTEcounter);
-			$pageRenderer = $GLOBALS['SOBE']->doc->getPageRenderer();
-			$pageRenderer->enableExtJSQuickTips();
+				// Loading ExtJs inline code
+			$this->pageRenderer->enableExtJSQuickTips();
 			if (!$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableCompressedScripts']) {
-				$pageRenderer->enableExtJsDebug();
+				$this->pageRenderer->enableExtJsDebug();
 			}
-			$pageRenderer->addJsFile('../t3lib/js/extjs/notifications.js');
+				// Add TYPO3 notifications JavaScript
+			$this->pageRenderer->addJsFile('../t3lib/js/extjs/notifications.js');
+				// Add RTE JavaScript
+			$this->addRteJsFiles($this->TCEform->RTEcounter);
+			$this->pageRenderer->addJsFile($this->buildJSMainLangFile($this->TCEform->RTEcounter));
+			$this->pageRenderer->addJsInlineCode('HTMLArea-init', $this->getRteInitJsCode(), TRUE);
 			/* =======================================
 			 * DRAW THE EDITOR
 			 * =======================================
@@ -513,8 +510,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if (is_object($this->TCEform->inline) && $this->TCEform->inline->isAjaxCall) {
 			$this->TCEform->additionalCode_pre[$key] = '<link rel="' . $relation . '" type="text/css" href="' . $href . '" title="' . $title. '" />';
 		} else {
-			$pageRenderer = $GLOBALS['SOBE']->doc->getPageRenderer();
-			$pageRenderer->addCssFile($href, $relation, 'screen', $title);
+			$this->pageRenderer->addCssFile($href, $relation, 'screen', $title);
 		}
 	}
 
@@ -733,46 +729,42 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 		}
 	}
-
 	/**
 	 * Convert the TYPO3 names of buttons into the names for htmlArea RTE
 	 *
 	 * @param	string	buttonname (typo3-name)
+	 *
 	 * @return	string	buttonname (htmlarea-name)
 	 */
-
-	 function convertToolbarForHTMLArea($button) {
+	function convertToolbarForHTMLArea($button) {
  		return $this->convertToolbarForHtmlAreaArray[$button];
-	 }
+	}
 	/**
-	 * Return the HTML code for loading the Javascript files
+	 * Add RTE main scripts and plugin scripts
 	 *
-	 * @param	integer		$RTEcounter: The index number of the current RTE editing area within the form.
+	 * @param string $RTEcounter:  The index number of the current RTE editing area within the form.
 	 *
-	 * @return	void
- 	 */
-	protected function includeScriptFiles($RTEcounter) {
-		$this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea.js', 'htmlarea', 'js', '', TRUE);
+	 * @return void
+	 */
+	protected function addRteJsFiles($RTEcounter) {
+		$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $this->ID . '/htmlarea/htmlarea.js'));
 		if ($this->client['browser'] == 'msie') {
-			$this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea-ie.js', 'htmlarea-ie', 'js', '', TRUE);
+			$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $this->ID . '/htmlarea/htmlarea-ie.js'));
 		} else {
-			$this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea-gecko.js', 'htmlarea-gecko', 'js', '', TRUE);
+			$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $this->ID . '/htmlarea/htmlarea-gecko.js'));
 		}
 		foreach ($this->pluginEnabledCumulativeArray[$RTEcounter] as $pluginId) {
 			$extensionKey = is_object($this->registeredPlugins[$pluginId]) ? $this->registeredPlugins[$pluginId]->getExtensionKey() : $this->ID;
-			$this->writeTemporaryFile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $pluginId . '/' . strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', "$1".'-'."$2"."$3", $pluginId)) . '.js', $pluginId, 'js', '', TRUE);
+			$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $extensionKey . '/htmlarea/plugins/' . $pluginId . '/' . strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', "$1".'-'."$2"."$3", $pluginId)) . '.js'));
 		}
 	}
 	/**
-	 * Return the HTML code for loading the Javascript files
+	 * Return RTE initialization inline JavaScript code
 	 *
-	 * @param	integer		$RTEcounter: The index number of the current RTE editing area within the form.
-	 *
-	 * @return	string		the html code for loading the Javascript Files
+	 * @return string RTE initialization inline JavaScript code
  	 */
-	protected function loadJSfiles($RTEcounter) {
-		$loadJavascriptCode = '<script type="text/javascript" src="' . $this->doConcatenate($RTEcounter) . '"></script>' . LF;
-		$loadJavascriptCode .= t3lib_div::wrapJS('
+	protected function getRteInitJsCode() {
+		return '
 			if (typeof(RTEarea) == "undefined") {
 				RTEarea = new Object();
 				RTEarea[0] = new Object();
@@ -784,35 +776,22 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				RTEarea[0].hostUrl = "' . $this->hostURL . '";
 				RTEarea.init = function() {
 					if (typeof(HTMLArea) == "undefined" || !Ext.isReady) {
-						window.setTimeout("RTEarea.init();", 40);
+						window.setTimeout("RTEarea.init();", 10);
 					} else {
 						Ext.QuickTips.init();
 						HTMLArea.init();
 					}
 				};
 				RTEarea.initEditor = function(editorNumber) {
-					if (typeof(HTMLArea) == "undefined") {
+					if (typeof(HTMLArea) == "undefined" || !HTMLArea.isReady) {
 						RTEarea.initEditor.defer(40, null, [editorNumber]);
 					} else {
 						HTMLArea.initEditor(editorNumber);
 					}
 				};
-			}'
-		);
-		return $loadJavascriptCode;
+			}
+			RTEarea.init();';
 	}
-
-	/**
-	 * Return the Javascript code for initializing the RTE
-	 *
-	 * @param	integer		$RTEcounter: The index number of the current RTE editing area within the form.
-	 *
-	 * @return 	string		the Javascript code for initializing the RTE
-	 */
-	function loadJScode($RTEcounter) {
-		return TAB . 'RTEarea.init();';
-	}
-
 	/**
 	 * Return the Javascript code for configuring the RTE
 	 *
@@ -1182,13 +1161,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				throw new RuntimeException($failure, 1294585668);
 			}
 		}
-		if ($concatenate && $fileExtension == 'js') {
-			$this->cumulativeScripts[$this->TCEform->RTEcounter][] = $destination;
-		}
 		if ($this->is_FE()) {
-			$filename =  ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . t3lib_div::createVersionNumberedFilename($relativeFilename);
+			$filename =  ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $relativeFilename;
 		} else {
-			$filename = t3lib_div::createVersionNumberedFilename(($this->isFrontendEditActive() ? '' : ($this->backPath . '../')) . $relativeFilename);
+			$filename = ($this->isFrontendEditActive() ? '' : ($this->backPath . '../')) . $relativeFilename;
 		}
 		return t3lib_div::resolveBackPath($filename);
 	}
