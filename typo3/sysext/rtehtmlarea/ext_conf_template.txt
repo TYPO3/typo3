@@ -25,6 +25,3 @@ enableAccessibilityIcons = 0
 
   # cat=basic/enable/170; type=boolean; label=Force Aspell command mode: If set, the spellchecker will use the Aspell command interface. Presumably. PHP is compiled with pspell, but with an old version of Aspell.
 forceCommandMode = 0
-
-  # cat=basic/enable/180; type=boolean; label=Enable compressed scripts: If set, the compressed version of the editor scripts will be used.
-enableCompressedScripts = 1

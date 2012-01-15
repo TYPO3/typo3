@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -115,38 +115,37 @@ class tx_rtehtmlarea_typo3link extends tx_rtehtmlarea_api {
 	 * @return 	string		classesAnchor array definition
 	 */
 	public function buildJSClassesAnchorArray() {
-		global $LANG, $TYPO3_CONF_VARS;
+		global $LANG;
 
-		$linebreak = $TYPO3_CONF_VARS['EXTCONF'][$this->htmlAreaRTE->ID]['enableCompressedScripts'] ? '' : LF;
-		$JSClassesAnchorArray .= 'HTMLArea.classesAnchorSetup = [ ' . $linebreak;
+		$JSClassesAnchorArray .= 'HTMLArea.classesAnchorSetup = [ ' . LF;
 		$classesAnchorIndex = 0;
 		foreach ($this->htmlAreaRTE->RTEsetup['properties']['classesAnchor.'] as $label => $conf) {
 			if (is_array($conf) && $conf['class']) {
-				$JSClassesAnchorArray .= (($classesAnchorIndex++)?',':'') . ' { ' . $linebreak;
+				$JSClassesAnchorArray .= (($classesAnchorIndex++)?',':'') . ' { ' . LF;
 				$index = 0;
-				$JSClassesAnchorArray .= (($index++)?',':'') . 'name : "' . str_replace('"', '', str_replace('\'', '', $conf['class'])) . '"' . $linebreak;
+				$JSClassesAnchorArray .= (($index++)?',':'') . 'name : "' . str_replace('"', '', str_replace('\'', '', $conf['class'])) . '"' . LF;
 				if ($conf['type']) {
-					$JSClassesAnchorArray .= (($index++)?',':'') . 'type : "' . str_replace('"', '', str_replace('\'', '', $conf['type'])) . '"' . $linebreak;
+					$JSClassesAnchorArray .= (($index++)?',':'') . 'type : "' . str_replace('"', '', str_replace('\'', '', $conf['type'])) . '"' . LF;
 				}
 				if (trim(str_replace('\'', '', str_replace('"', '', $conf['image'])))) {
-					$JSClassesAnchorArray .= (($index++)?',':'') . 'image : "' . $this->htmlAreaRTE->siteURL . t3lib_div::resolveBackPath(TYPO3_mainDir . $this->htmlAreaRTE->getFullFileName(trim(str_replace('\'', '', str_replace('"', '', $conf['image']))))) . '"' . $linebreak;
+					$JSClassesAnchorArray .= (($index++)?',':'') . 'image : "' . $this->htmlAreaRTE->siteURL . t3lib_div::resolveBackPath(TYPO3_mainDir . $this->htmlAreaRTE->getFullFileName(trim(str_replace('\'', '', str_replace('"', '', $conf['image']))))) . '"' . LF;
 				}
-				$JSClassesAnchorArray .= (($index++)?',':'') . 'addIconAfterLink : ' . ($conf['addIconAfterLink']?'true':'false') . $linebreak;
+				$JSClassesAnchorArray .= (($index++)?',':'') . 'addIconAfterLink : ' . ($conf['addIconAfterLink']?'true':'false') . LF;
 				if (trim($conf['altText'])) {
 					$string = $this->htmlAreaRTE->getLLContent(trim($conf['altText']));
-					$JSClassesAnchorArray .= (($index++)?',':'') . 'altText : ' . str_replace('"', '\"', str_replace('\\\'', '\'', $string)) . $linebreak;
+					$JSClassesAnchorArray .= (($index++)?',':'') . 'altText : ' . str_replace('"', '\"', str_replace('\\\'', '\'', $string)) . LF;
 				}
 				if (trim($conf['titleText'])) {
 					$string = $this->htmlAreaRTE->getLLContent(trim($conf['titleText']));
-					$JSClassesAnchorArray .= (($index++)?',':'') . 'titleText : ' . str_replace('"', '\"', str_replace('\\\'', '\'', $string)) . $linebreak;
+					$JSClassesAnchorArray .= (($index++)?',':'') . 'titleText : ' . str_replace('"', '\"', str_replace('\\\'', '\'', $string)) . LF;
 				}
 				if (trim($conf['target'])) {
-					$JSClassesAnchorArray .= (($index++)?',':'') . 'target : "' . trim($conf['target']) . '"' . $linebreak;
+					$JSClassesAnchorArray .= (($index++)?',':'') . 'target : "' . trim($conf['target']) . '"' . LF;
 				}
-				$JSClassesAnchorArray .= '}' . $linebreak;
+				$JSClassesAnchorArray .= '}' . LF;
 			}
 		}
-		$JSClassesAnchorArray .= '];' . $linebreak;
+		$JSClassesAnchorArray .= '];' . LF;
 		return $JSClassesAnchorArray;
 	}
 

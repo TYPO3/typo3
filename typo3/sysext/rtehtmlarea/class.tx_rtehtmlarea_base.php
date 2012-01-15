@@ -388,9 +388,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$this->TCEform->additionalJS_delete[] = $this->setDeleteRTE($this->TCEform->RTEcounter, $this->TCEform->formName, $textAreaId);
 				// Loading ExtJs inline code
 			$this->pageRenderer->enableExtJSQuickTips();
-			if (!$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableCompressedScripts']) {
-				$this->pageRenderer->enableExtJsDebug();
-			}
 				// Add TYPO3 notifications JavaScript
 			$this->pageRenderer->addJsFile('../t3lib/js/extjs/notifications.js');
 				// Add RTE JavaScript
@@ -1139,8 +1136,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	string		The name of the file writtten to typo3temp/rtehtmlarea
 	 */
 	public function writeTemporaryFile($sourceFileName='', $label, $fileExtension='js', $contents='', $concatenate = FALSE) {
-		global $TYPO3_CONF_VARS;
-
 		if ($sourceFileName) {
 			$output = '';
 			$source = t3lib_div::getFileAbsFileName($sourceFileName);
@@ -1148,15 +1143,14 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		} else {
 			$output = $contents;
 		}
-		$compress = $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableCompressedScripts'] && ($fileExtension == 'js') && ($output != '');
-		$relativeFilename = 'typo3temp/' . $this->ID . '/' . str_replace('-','_',$label) . '_' . t3lib_div::shortMD5((TYPO3_version . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . ($sourceFileName ? $sourceFileName : $output)), 20) . ($compress ? '_compressed' : '') . '.' . $fileExtension;
+		$relativeFilename = 'typo3temp/' . $this->ID . '_' . str_replace('-','_',$label) . '_' . t3lib_div::shortMD5((TYPO3_version . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . ($sourceFileName ? $sourceFileName : $output)), 20) . '.' . $fileExtension;
 		$destination = PATH_site . $relativeFilename;
-		if(!file_exists($destination)) {
-			$compressedJavaScript = '';
-			if ($compress && $fileExtension == 'js') {
-				$compressedJavaScript = t3lib_div::minifyJavaScript($output);
+		if (!file_exists($destination)) {
+			$minifiedJavaScript = '';
+			if ($fileExtension == 'js' && $output != '') {
+				$minifiedJavaScript = t3lib_div::minifyJavaScript($output);
 			}
-			$failure = t3lib_div::writeFileToTypo3tempDir($destination, $compressedJavaScript ? $compressedJavaScript : $output);
+			$failure = t3lib_div::writeFileToTypo3tempDir($destination, $minifiedJavaScript ? $minifiedJavaScript : $output);
 			if ($failure)  {
 				throw new RuntimeException($failure, 1294585668);
 			}
@@ -1168,51 +1162,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		}
 		return t3lib_div::resolveBackPath($filename);
 	}
-	/**
-	 * Concatenates all accumulated scripts in a file in typo3temp/rtehtmlarea directory and returns the file name
-	 *
-	 * @param	integer		$RTEcounter: The index number of the current RTE editing area within the form.
-	 *
-	 * @return	string		The name of the file writtten to typo3temp/rtehtmlarea
-	 */
-	protected function doConcatenate($RTEcounter) {
-		$fileExtension = 'js';
-		$compress = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableCompressedScripts'];
-		$token = implode('|', $this->cumulativeScripts[$RTEcounter]);
-		$relativeFilename = 'typo3temp/' . $this->ID . '/' . 'htmlarea_cumulative' . '_' . t3lib_div::shortMD5((TYPO3_version . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . $token ), 20) . ($compress ? '_compressed' : '') . '.' . $fileExtension;
-		$destination = PATH_site . $relativeFilename;
-		if (!file_exists($destination)) {
-			foreach ($this->cumulativeScripts[$RTEcounter] as $fileName) {
-				$contents = file_get_contents($fileName);
-				if (!file_exists($destination)) {
-					$failure = t3lib_div::writeFileToTypo3tempDir($destination, $contents);
-					if ($failure)  {
-						throw new RuntimeException($failure, 1294585669);
-					}
-				} else {
-					$success = file_put_contents($destination, $contents, FILE_APPEND);
-					if (!$success)  {
-						throw new RuntimeException('Could not append script: ' . $fileName, 1294585670);
-					}
-				}
-			}
-		}
-		if ($this->is_FE()) {
-			$filename = ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . t3lib_div::createVersionNumberedFilename($relativeFilename);
-		} else {
-			if ($compress) {
-				$compressor = t3lib_div::makeInstance('t3lib_Compressor');
-				$filename = $compressor->compressJsFile(($this->isFrontendEditActive() ? '' : $this->backPath) . '../' . $relativeFilename);
-				if ($this->isFrontendEditActive()) {
-					$filename = preg_replace('/^..\//', '', $filename);
-				}
-			} else {
-				$filename = t3lib_div::createVersionNumberedFilename(($this->isFrontendEditActive() ? '' : ($this->backPath . '../')) . $relativeFilename);
-			}
-		}
-		return t3lib_div::resolveBackPath($filename);
-	}
-
 	/**
 	 * Return a file name containing the main JS language array for HTMLArea
 	 *
@@ -1235,13 +1184,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 *
 	 * @return	string		Javascript localization array
 	 */
-
 	function buildJSLangArray($plugin) {
 		$LOCAL_LANG = FALSE;
 		$extensionKey = is_object($this->registeredPlugins[$plugin]) ? $this->registeredPlugins[$plugin]->getExtensionKey() : $this->ID;
 		$LOCAL_LANG = t3lib_div::readLLfile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $plugin . '/locallang.xml', $this->language, 'utf-8', 1);
-		$linebreak = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableCompressedScripts'] ? '' : LF;
-		$JSLanguageArray = 'HTMLArea.I18N["' . $plugin . '"] = new Object();' . $linebreak;
+		$JSLanguageArray = 'HTMLArea.I18N["' . $plugin . '"] = new Object();' . LF;
 		if (is_array($LOCAL_LANG)) {
 			if (!empty($LOCAL_LANG[$this->language])) {
 				$LOCAL_LANG[$this->language] = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG['default'],$LOCAL_LANG[$this->language]);
