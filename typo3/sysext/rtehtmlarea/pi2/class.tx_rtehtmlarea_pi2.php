@@ -219,9 +219,6 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		if (!$GLOBALS['TSFE']->isINTincScript() || !is_array($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.'])) {
 			$this->pageRenderer->loadExtJs();
 			$this->pageRenderer->enableExtJSQuickTips();
-			if (!$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableCompressedScripts']) {
-				$this->pageRenderer->enableExtJsDebug();
-			}
 		}
 		$this->pageRenderer->addCssFile($this->siteURL . 't3lib/js/extjs/ux/resize.css');
 		$this->pageRenderer->addJsFile($this->siteURL . $this->getFullFileName('t3lib/js/extjs/ux/ext.resizable.js'));
