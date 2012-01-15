@@ -321,7 +321,7 @@ class Tx_Workspaces_ExtDirect_ActionHandler extends Tx_Workspaces_ExtDirect_Abst
 		if (t3lib_utility_Math::canBeInterpretedAsInteger($stageId) === FALSE) {
 			throw new InvalidArgumentException('Missing "stageId" in $parameters array.', 1319488194);
 		}
-		if (!is_array($parameters->affects) || count($parameters->affects) == 0) {
+		if (!is_object($parameters->affects) || count($parameters->affects) == 0) {
 			throw new InvalidArgumentException('Missing "affected items" in $parameters array.', 1319488195);
 		}
 
