@@ -797,8 +797,12 @@ class tslib_content_Form extends tslib_content_Abstract {
 			if ($location == 'HTTP_POST_VARS' && isset($_POST['locationData'])) {
 				$locationData = t3lib_div::_POST('locationData');
 			} else {
-					// locationData is [hte page id]:[tablename]:[uid of record]. Indicates on which page the record (from tablename with uid) is shown. Used to check access.
-				$locationData = $GLOBALS['TSFE']->id . ':' . $this->cObj->currentRecord;
+					// locationData is [the page id]:[tablename]:[uid of record]. Indicates on which page the record (from tablename with uid) is shown. Used to check access.
+				if (isset($this->data['_LOCALIZED_UID'])) {
+					$locationData = $GLOBALS['TSFE']->id . ':' . str_replace($this->data['uid'], $this->data['_LOCALIZED_UID'], $this->cObj->currentRecord);
+				} else {
+					$locationData = $GLOBALS['TSFE']->id . ':' . $this->cObj->currentRecord;
+				}
 			}
 			$hiddenfields .= '<input type="hidden" name="locationData" value="' . htmlspecialchars($locationData) . '" />';
 		}
