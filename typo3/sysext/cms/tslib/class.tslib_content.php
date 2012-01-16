@@ -5756,7 +5756,16 @@ class tslib_cObj {
 							$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 								// Set targetDomain to first found domain record if the target page cannot be reached within the current domain
-							if (count($foundDomains) > 0 && (!in_array($currentDomain, $foundDomains) || count($firstFoundForcedDomains) > 0)) {
+							if(
+								count($foundDomains) > 0 &&
+								(
+									(
+										!in_array($currentDomain, $foundDomains) &&
+										!in_array($currentDomain . trim(preg_replace('/\/[^\/]*$/', '', t3lib_div::getIndpEnv('SCRIPT_NAME'))), $foundDomains)
+									) ||
+									count($firstFoundForcedDomains) > 0
+								)
+							) {
 								foreach ($targetPageRootlinePids as $pid) {
 										// Always use the 'forced' domain if we found one
 									if (isset($firstFoundForcedDomains[$pid])) {
