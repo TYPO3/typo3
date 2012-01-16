@@ -984,7 +984,8 @@ class t3lib_TCEforms {
 
 		} elseif (isset($config['wizards']['color'])) {
 			$inputId = uniqid('tceforms-colorfield-');
-			$cssClasses[] = 'tceforms-textfield tceforms-colorfield';
+			$cssClasses[] = 'tceforms-
+			textfield tceforms-colorfield';
 		}
 
 		if ($this->renderReadonly || $config['readOnly']) {
@@ -1051,10 +1052,18 @@ class t3lib_TCEforms {
 		$mLgd = ($config['max'] ? $config['max'] : 256);
 		$iOnChange = implode('', $PA['fieldChangeFunc']);
 
-		$item .= '<input type="text" id="' . $inputId .
-				 '" class="' . implode(' ', $cssClasses) . '" name="' . $PA['itemFormElName'] .
-				 '_hr" value="" style="' . $cssStyle . '" maxlength="' . $mLgd . '" onchange="' .
-				 htmlspecialchars($iOnChange) . '"' . $PA['onFocus'] . ' />'; // This is the EDITABLE form field.
+		$cssClasses[] = 'hasDefaultValue';
+		$item .= '<input type="text" ' .
+				 $this->getPlaceholderAttribute($table, $field, $config, $row) .
+				 'id="' . $inputId . '" ' .
+				 'class="' . implode(' ', $cssClasses) . '" ' .
+				 'name="' . $PA['itemFormElName'] . '_hr" ' .
+				 'value=""' .
+				 'style="' . $cssStyle . '" ' .
+				 'maxlength="' . $mLgd . '" ' .
+				 'onchange="' . htmlspecialchars($iOnChange) . '"' .
+				 $PA['onFocus'] .
+				 ' />'; // This is the EDITABLE form field.
 		$item .= '<input type="hidden" name="' . $PA['itemFormElName'] . '" value="' .
 				 htmlspecialchars($PA['itemFormElValue']) . '" />'; // This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
 		$item .= $fieldAppendix . '</span><div style="clear:both;"></div>';
@@ -1233,7 +1242,16 @@ class t3lib_TCEforms {
 
 				$iOnChange = implode('', $PA['fieldChangeFunc']);
 				$item .= '
-							<textarea id="' . uniqid('tceforms-textarea-') . '" name="' . $PA['itemFormElName'] . '"' . $formWidthText . $class . ' rows="' . $rows . '" wrap="' . $wrap . '" onchange="' . htmlspecialchars($iOnChange) . '"' . $PA['onFocus'] . '>' .
+							<textarea ' .
+						 'id="' . uniqid('tceforms-textarea-') . '" ' .
+						 'name="' . $PA['itemFormElName'] . '"' .
+						 $formWidthText .
+						 $class . ' ' .
+						 'rows="' . $rows . '" ' .
+						 'wrap="' . $wrap . '" ' .
+						 'onchange="' . htmlspecialchars($iOnChange) . '"' .
+						$this->getPlaceholderAttribute($table, $field, $config, $row) .
+						 $PA['onFocus'] . '>' .
 						 t3lib_div::formatForTextarea($PA['itemFormElValue']) .
 						 '</textarea>';
 				$item = $this->renderWizards(array($item, $altItem), $config['wizards'], $table, $row, $field, $PA, $PA['itemFormElName'], $specConf, $RTEwouldHaveBeenLoaded);
@@ -5313,6 +5331,7 @@ class t3lib_TCEforms {
 
 			$this->loadJavascriptLib('../t3lib/jsfunc.evalfield.js');
 			$this->loadJavascriptLib('jsfunc.tbe_editor.js');
+			$this->loadJavascriptLib('jsfunc.placeholder.js');
 
 				// needed for tceform manipulation (date picker)
 			$typo3Settings = array(
@@ -6382,6 +6401,48 @@ class t3lib_TCEforms {
 				'level' => $dynNestedStack,
 			);
 		}
+	}
+
+	/**
+	 * Determine and get the value for the placeholder.
+	 */
+	protected function getPlaceholderAttribute($table, $field, $config, $row) {
+		$key = trim($config['placeholder']);
+		if (!$key) return '';
+
+		$value = $key;
+
+			// check if we have a reference to another field value from the current record
+		if (substr($key, 0, 6) === '__row|') {
+			$keySegments = t3lib_div::trimExplode('|', substr($key, 6));
+
+			if (isset($row[$keySegments[0]])) {
+				// first segment (fieldname) exists in the current row
+				$value = $row[$keySegments[0]];
+
+				$fieldConf = $GLOBALS['TCA'][$table]['columns'][$keySegments[0]];
+				if ($fieldConf['config']['type'] == 'group' && $fieldConf['config']['internal_type'] == 'db') { // TODO select
+					// the field is an relation to another record
+					list($foreignIdentifier, $foreignTitle) = t3lib_div::trimExplode('|', $value);
+
+					// use the foreign title
+					$value = $foreignTitle;
+
+					if (!empty($keySegments[1])) {
+						// use any field in the foreign record
+						list($foreignTable, $foreignUid) = t3lib_BEfunc::splitTable_Uid($foreignIdentifier);
+						$foreignRecord = t3lib_befunc::getRecord($foreignTable, $foreignUid);
+						if (isset($foreignRecord[$keySegments[1]])) {
+							$value = $foreignRecord[$keySegments[1]];
+						}
+					}
+				}
+			}
+		}
+
+			// cleanup the string and support 'LLL:'
+		$value = htmlspecialchars(trim($this->sL($value)));
+		return empty($value) ? '' : (' placeholder="' . $value . '" ');
 	}
 
 	/**

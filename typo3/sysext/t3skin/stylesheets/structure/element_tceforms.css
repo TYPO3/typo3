@@ -447,3 +447,7 @@ TCEforms Sections
 .t3-form-field-record-flexsection > div {
 	margin:0 10px;
 }
+
+.placeholder {
+	color: #a9a9a9;
+}
