@@ -349,18 +349,33 @@ class SC_mod_web_perm_ajax {
 	 * @return	string		HTML marked up x/* indications.
 	 */
 	public static function renderPermissions($int, $pageId = 0, $who = 'user') {
-		global $LANG;
 		$str = '';
 
-		$permissions = array(1,16,2,4,8);
+		$permissions = array(1, 16, 2, 4, 8);
 		foreach ($permissions as $permission) {
 			if ($int&$permission) {
-				$str .= t3lib_iconWorks::getSpriteIcon('status-status-permission-granted',array('tag'=>'a','title'=>$LANG->getLL($permission,1), 'onclick'=> 'WebPermissions.setPermissions('.$pageId.', '.$permission.', \'delete\', \''.$who.'\', '.$int.');'));
+				$str .= t3lib_iconWorks::getSpriteIcon(
+							'status-status-permission-granted',
+							array(
+								'tag' => 'a',
+								'title' => $GLOBALS['LANG']->getLL($permission, TRUE),
+								'onclick'=> 'WebPermissions.setPermissions(' . $pageId . ', ' . $permission . ', \'delete\', \'' . $who . '\', ' . $int . ');',
+								'style' => 'cursor:pointer'
+							)
+						);
 			} else {
-				$str .= t3lib_iconWorks::getSpriteIcon('status-status-permission-denied',array('tag'=>'a','title'=>$LANG->getLL($permission,1),'onclick'=>'WebPermissions.setPermissions('.$pageId.', '.$permission.', \'add\', \''.$who.'\', '.$int.');'));
+				$str .= t3lib_iconWorks::getSpriteIcon(
+							'status-status-permission-denied',
+							array(
+								'tag' => 'a',
+								'title' => $GLOBALS['LANG']->getLL($permission, TRUE),
+								'onclick' => 'WebPermissions.setPermissions(' . $pageId . ', ' . $permission . ', \'add\', \'' . $who . '\', ' . $int . ');',
+								'style' => 'cursor:pointer'
+							)
+						);
 			}
 		}
-		return '<span id="'.$pageId.'_'.$who.'">'.$str.'</span>';
+		return '<span id="' . $pageId . '_' . $who . '">' . $str . '</span>';
 	}
 
 }
