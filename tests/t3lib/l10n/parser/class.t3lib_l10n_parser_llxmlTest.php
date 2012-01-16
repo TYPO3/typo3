@@ -62,6 +62,7 @@ class t3lib_l10n_parser_llxmlTest extends tx_phpunit_testcase {
 		$this->llxmlFileNames = array(
 			'locallang' => PATH_site . 'typo3_src/tests/t3lib/l10n/parser/fixtures/locallang.xml',
 			'locallang_override' => PATH_site . 'typo3_src/tests/t3lib/l10n/parser/fixtures/locallang_override.xml',
+			'locallangOnlyDefaultLanguage' =>  PATH_site . 'typo3_src/tests/t3lib/l10n/parser/fixtures/locallangOnlyDefaultLanguage.xml',
 		);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xml';
 		t3lib_div::makeInstance('t3lib_l10n_Store')->initialize();
@@ -113,6 +114,23 @@ class t3lib_l10n_parser_llxmlTest extends tx_phpunit_testcase {
 			'label1' => 'Ceci est le libellé no. 1',
 			'label2' => 'Ceci est le libellé no. 2',
 			'label3' => 'Ceci est le libellé no. 3',
+		);
+
+		foreach ($expectedLabels as $key => $expectedLabel) {
+			$this->assertEquals($expectedLabel, $LOCAL_LANG['fr'][$key][0]['target']);
+		}
+	}
+
+	/**
+	 * @test
+	 */
+	public function canParseLlxmlInFrenchAndReturnsDefaultLabelsIfNoTranslationIsFound() {
+		$LOCAL_LANG = $this->parser->getParsedData($this->llxmlFileNames['locallangOnlyDefaultLanguage'], 'fr');
+
+		$expectedLabels = array(
+			'label1' => 'This is label #1',
+			'label2' => 'This is label #2',
+			'label3' => 'This is label #3',
 		);
 
 		foreach ($expectedLabels as $key => $expectedLabel) {
