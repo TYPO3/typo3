@@ -2881,43 +2881,6 @@ HTMLArea.Editor.prototype.scrollToCaret = function() {
 HTMLArea.checkSupportedBrowser = function() {
 	return Ext.isGecko || Ext.isWebKit || Ext.isOpera || Ext.isIE;
 };
-/*
- * Remove a class name from the class attribute of an element
- *
- * @param	object		el: the element
- * @param	string		className: the class name to remove
- * @param	boolean		substring: if true, remove the first class name starting with the given string
- * @return	void
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.5 *
- ***********************************************
- */
-HTMLArea._removeClass = function(el, className, substring) {
-	HTMLArea.DOM.removeClass(el, className, substring);
-};
-/*
- * Add a class name to the class attribute
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.5 *
- ***********************************************
- */
-HTMLArea._addClass = function(el, className) {
-	HTMLArea.DOM.addClass(el, className);
-};
-/*
- * Check if a class name is in the class attribute of an element
- *
- * @param	object		el: the element
- * @param	string		className: the class name to look for
- * @param	boolean		substring: if true, look for a class name starting with the given string
- * @return	boolean		true if the class name was found
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.5 *
- ***********************************************
- */
-HTMLArea._hasClass = function(el, className, substring) {
-	return HTMLArea.DOM.hasClass(el, className, substring);
-};
 
 HTMLArea.isBlockElement = function(el) { return el && el.nodeType == 1 && HTMLArea.RE_blockTags.test(el.nodeName.toLowerCase()); };
 HTMLArea.needsClosingTag = function(el) { return el && el.nodeType == 1 && !HTMLArea.RE_noClosingTag.test(el.tagName.toLowerCase()); };
@@ -2941,26 +2904,6 @@ HTMLArea.htmlEncode = function(str) {
 	str = str.replace(/\xA0/g, "&nbsp;"); // Decimal 160, non-breaking-space
 	str = str.replace(/\x22/g, "&quot;"); // \x22 means '"'
 	return str;
-};
-/*
- * Retrieve the HTML code from the given node.
- * This is a replacement for getting innerHTML, using standard DOM calls.
- * Wrapper catches a Mozilla-Exception with non well-formed html source code.
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.5 *
- ***********************************************
- */
-HTMLArea.getHTML = function(root, outputRoot, editor){
-	try {
-		return editor.iframe.htmlRenderer.render(root, outputRoot);
-	} catch(e) {
-		editor.appendToLog('HTMLArea', 'getHTML', 'The HTML document is not well-formed.', 'warn');
-		TYPO3.Dialog.ErrorDialog({
-			title: 'htmlArea RTE',
-			msg: HTMLArea.localize('HTML-document-not-well-formed')
-		});
-		return editor.document.body.innerHTML;
-	}
 };
 HTMLArea.getPrevNode = function(node) {
 	if(!node)                return null;
