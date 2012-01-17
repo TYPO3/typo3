@@ -43,6 +43,7 @@ class tslib_mediaWizardCoreProvider implements tslib_mediaWizardProvider {
 	 */
 	protected $providers = array(
 		'youtube',
+		'youtu',
 		'dailymotion',
 		'sevenload',
 		'vimeo',
@@ -121,14 +122,24 @@ class tslib_mediaWizardCoreProvider implements tslib_mediaWizardProvider {
 				// it's a channel
 			$parts = explode('/', $url);
 			$videoId = $parts[count($parts) - 1];
-		} else if (preg_match('/v=([^(\&|$)]*)/', $url, $matches)) {
-			$videoId = $matches[1];
+		} elseif (preg_match('/(v=|v\/|.be\/)([^(\&|$)]*)/', $url, $matches)) {
+			$videoId = $matches[2];
 		}
 
 		if ($videoId) {
 			$url = 'http://www.youtube.com/v/' . $videoId . '?fs=1';
 		}
 		return $url;
+	}
+
+	/**
+	 * Parse youtube short url
+	 *
+	 * @param string $url
+	 * @return string processed url
+	 */
+	protected function process_youtu($url) {
+	    return $this->process_youtube($url);
 	}
 
 	/**
