@@ -65,17 +65,18 @@ Authentication Services
 
 With this version the authentication chain has been cleaned up so that third
 party authentication services can benefit from RSA encrypted login without the
-need of decrypting the submitted password in their own code. The extension
-rsaauth will now decrypt the password and provide the decrypted version for
-other services.
-So external authentication services can access the clear text password always
-through $this->loginData['uident_text'], no matter if the password has been
-transmitted as plain text during the login or rsaauth has decrypted it.
+need of decrypting the submitted password in their own code.
+
+The system extension rsaauth will now decrypt the password and provide the
+decrypted version for other services. So external authentication services can
+access the clear text password always through $this->loginData['uident_text'],
+no matter if the password has been transmitted as plain text during the login
+or rsaauth has decrypted it.
 
 Due to major changes in the login service of rsaauth, all extensions which
 use XCLASS to extend that class, most likely will fail, whereas other extension
-which make proper use of the public API of the rsaauth extensions will continue
-working without any problem.
+which make proper use of the public API of the system extension rsaauth will
+continue working without any problem.
 In any case, it is recommended to adjust external authentication services to
 benefit from the changes.
 
