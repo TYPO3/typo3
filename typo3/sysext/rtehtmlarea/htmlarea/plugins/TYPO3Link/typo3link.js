@@ -237,11 +237,17 @@ HTMLArea.TYPO3Link = HTMLArea.Plugin.extend({
 				// Create new link
 			selection = this.editor._getSelection();
 			range = this.editor._createRange(selection);
-				// Clean existing anchors otherwise Mozilla may create nested anchors while IE may update exisitng link
-				// Selection may be lost when cleaning links
-			var bookmark = this.editor.getBookmark(range);
-			this.cleanAllLinks(node, range);
-			this.editor.selectRange(this.editor.moveToBookmark(bookmark));
+				// Clean existing anchors otherwise Mozilla may create nested anchors while IE may update existing link
+			if (Ext.isIE) {
+				this.cleanAllLinks(node, range);
+			} else {
+					// Selection may be lost when cleaning links
+					// Note: In IE, the following procedure breaks the selection used by the execCommand
+				var bookmark = this.editor.getBookmark(range);
+				this.cleanAllLinks(node, range);
+				var range = this.editor.moveToBookmark(bookmark);
+				this.editor.selectRange(range);
+			}
 			if (Ext.isGecko) {
 				this.editor.document.execCommand('CreateLink', false, encodeURI(theLink));
 			} else {
