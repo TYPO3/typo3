@@ -7445,7 +7445,7 @@ class tslib_cObj {
 			$conf[$property] = isset($conf[$property . '.'])
 					? trim($this->stdWrap($conf[$property], $conf[$property . '.']))
 					: trim($conf[$property]);
-			if (!$conf[$property]) {
+			if ($conf[$property] === '') {
 				unset($conf[$property]);
 			}
 			if (isset($conf[$property . '.'])) {
