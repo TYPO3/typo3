@@ -21,6 +21,15 @@
 			<trans-unit id="fe_groups.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUserGroup" xml:space="preserve">
 				<source>Tx_Extbase_Domain_Model_FrontendUserGroup</source>
 			</trans-unit>
+			<trans-unit id="task.action" xml:space="preserve">
+				<source>CommandController Command</source>
+			</trans-unit>
+			<trans-unit id="task.name" xml:space="preserve">
+				<source>Extbase CommandController Task</source>
+			</trans-unit>
+			<trans-unit id="task.description" xml:space="preserve">
+				<source>Allows Extbase CommandController commands to be configured and executed through the scheduler framework.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
