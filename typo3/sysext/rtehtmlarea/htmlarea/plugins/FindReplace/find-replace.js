@@ -34,12 +34,12 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin: function(editor) {
+	configurePlugin: function (editor) {
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.1',
+			version		: '2.2',
 			developer	: 'Cau Guanabara & Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca',
 			copyrightOwner	: 'Cau Guanabara & Stanislas Rolland',
@@ -250,7 +250,7 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 	 * @return	void
 	 */
 	initPattern: function (fieldset) {
-		var selection = this.editor.getSelectedHTML();
+		var selection = this.editor.getSelection().getHtml();
 		if (/\S/.test(selection)) {
 			selection = selection.replace(/<[^>]*>/g, '');
 			selection = selection.replace(/&nbsp;/g, '');

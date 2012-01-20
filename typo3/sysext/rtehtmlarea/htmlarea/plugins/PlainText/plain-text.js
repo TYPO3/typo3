@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,13 +31,13 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin: function(editor) {
+	configurePlugin: function (editor) {
 		this.buttonsConfiguration = this.editorConfiguration.buttons;
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '1.2',
+			version		: '1.3',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -255,7 +255,7 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 					if (Ext.isIE || Ext.isWebKit) {
 						var clipboardText = this.grabClipboardText(event);
 						if (clipboardText) {
-							this.editor.insertHTML(clipboardText);
+							this.editor.getSelection().insertHtml(clipboardText);
 						}
 						return !this.clipboardText;
 					}
@@ -263,8 +263,7 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 				case 'pasteFormat':
 					if (Ext.isIE) {
 							// Save the current selection
-						this.editor.focus();
-						this.bookmark = this.editor.getBookmark(this.editor._createRange(this.editor._getSelection()));
+						this.bookmark = this.editor.getBookMark().get(this.editor.getSelection().createRange());
 							// Show the pasting pad
 						this.openPastingPad(
 							'PasteToggle',
@@ -324,9 +323,8 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 	 * @return	void
 	 */
 	redirectPaste: function () {
-		this.editor.focus();
 			// Save the current selection
-		this.bookmark = this.editor.getBookmark(this.editor._createRange(this.editor._getSelection()));
+		this.bookmark = this.editor.getBookMark().get(this.editor.getSelection().createRange());
 			// Create and append hidden section
 		var hiddenSection = this.editor.document.createElement('div');
 		HTMLArea.DOM.addClass(hiddenSection, 'htmlarea-paste-hidden-section');
@@ -336,7 +334,7 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 			hiddenSection.innerHTML = '&nbsp;';
 		}
 			// Move the selection to the hidden section and let the browser paste into the hidden section
-		this.editor.selectNodeContents(hiddenSection);
+		this.editor.getSelection().selectNodeContents(hiddenSection);
 	},
 	/*
 	 * Process the pasted content that was redirected towards a hidden section
@@ -351,7 +349,7 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 		var hiddenSection = divs[0];
 			// Delete any other hidden sections
 		for (var i = divs.length; --i >= 1;) {
-			HTMLArea.removeFromParent(divs[i]);
+			HTMLArea.DOM.removeFromParent(divs[i]);
 		}
 		var content = '';
 		switch (this.currentBehaviour) {
@@ -366,12 +364,12 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 				break;
 		}
 			// Remove the hidden section from the document
-		HTMLArea.removeFromParent(hiddenSection);
+		HTMLArea.DOM.removeFromParent(hiddenSection);
 			// Restore the selection
-		this.editor.selectRange(this.editor.moveToBookmark(this.bookmark));
+		this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(this.bookmark));
 			// Insert the cleaned content
 		if (content) {
-			this.editor.execCommand('insertHTML', false, content);
+			this.editor.getSelection().execCommand('insertHTML', false, content);
 		}
 	},
 	/*
@@ -461,10 +459,9 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 	 */
 	onPastingPadOK: function () {
 	 	 	// Restore the selection
-	 	this.editor.focus();
 		this.restoreSelection();
 			// Insert the cleaned pasting pad content
-		this.editor.insertHTML(this.pastingPadBody.innerHTML);
+		this.editor.getSelection().insertHtml(this.pastingPadBody.innerHTML);
 		this.close();
 		return false;
 	},

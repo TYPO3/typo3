@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,12 +31,12 @@ HTMLArea.RemoveFormat = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin: function(editor) {
+	configurePlugin: function (editor) {
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.3',
+			version		: '2.4',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -203,14 +203,13 @@ HTMLArea.RemoveFormat = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	void
 	 */
-	applyRequest: function(params) {
+	applyRequest: function (params) {
 		var editor = this.editor;
-		editor.focus();
 		this.restoreSelection();
 		if (params['allContent']) {
 			var html = editor.getInnerHTML();
 		} else {
-			var html = editor.getSelectedHTML();
+			var html = editor.getSelection().getHtml();
 		}
 		if (html) {
 			if (params['allHtml']) {
@@ -294,7 +293,7 @@ HTMLArea.RemoveFormat = Ext.extend(HTMLArea.Plugin, {
 			if (params['allContent']) {
 				editor.setHTML(html);
 			} else {
-				editor.insertHTML(html);
+				editor.getSelection().insertHtml(html);
 			}
 		}
 	}

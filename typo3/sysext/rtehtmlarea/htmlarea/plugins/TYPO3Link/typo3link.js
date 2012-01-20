@@ -123,37 +123,39 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 				}
 			});
 		} else {
-			if (buttonId === "UnLink") {
+			if (buttonId === 'UnLink') {
 				this.unLink(true);
 				return false;
 			}
 			var additionalParameter;
-			var node = this.editor.getParentElement();
-			var el = HTMLArea.getElementObject(node, "a");
-			if (el != null && /^a$/i.test(el.nodeName)) node = el;
+			var node = this.editor.getSelection().getParentElement();
+			var el = this.editor.getSelection().getFirstAncestorOfType('a');
+			if (el != null) {
+				node = el;
+			}
 			if (node != null && /^a$/i.test(node.nodeName)) {
-				additionalParameter = "&curUrl[href]=" + encodeURIComponent(node.getAttribute("href"));
-				if (node.target) additionalParameter += "&curUrl[target]=" + encodeURIComponent(node.target);
-				if (node.className) additionalParameter += "&curUrl[class]=" + encodeURIComponent(node.className);
-				if (node.title) additionalParameter += "&curUrl[title]=" + encodeURIComponent(node.title);
+				additionalParameter = '&curUrl[href]=' + encodeURIComponent(node.getAttribute('href'));
+				if (node.target) additionalParameter += '&curUrl[target]=' + encodeURIComponent(node.target);
+				if (node.className) additionalParameter += '&curUrl[class]=' + encodeURIComponent(node.className);
+				if (node.title) additionalParameter += '&curUrl[title]=' + encodeURIComponent(node.title);
 				if (this.pageTSConfiguration && this.pageTSConfiguration.additionalAttributes) {
-					var additionalAttributes = this.pageTSConfiguration.additionalAttributes.split(",");
+					var additionalAttributes = this.pageTSConfiguration.additionalAttributes.split(',');
 					for (var i = additionalAttributes.length; --i >= 0;) {
 							// hasAttribute() not available in IE < 8
 						if ((node.hasAttribute && node.hasAttribute(additionalAttributes[i])) || node.getAttribute(additionalAttributes[i]) != null) {
-							additionalParameter += "&curUrl[" + additionalAttributes[i] + "]=" + encodeURIComponent(node.getAttribute(additionalAttributes[i]));
+							additionalParameter += '&curUrl[' + additionalAttributes[i] + ']=' + encodeURIComponent(node.getAttribute(additionalAttributes[i]));
 						}
 					}
 				}
-			} else if (this.editor.hasSelectedText()) {
-				var text = this.editor.getSelectedHTML();
+			} else if (!this.editor.getSelection().isEmpty()) {
+				var text = this.editor.getSelection().getHtml();
 				if (text && text != null) {
-					var offset = text.toLowerCase().indexOf("<a");
-					if (offset!=-1) {
+					var offset = text.toLowerCase().indexOf('<a');
+					if (offset != -1) {
 						var ATagContent = text.substring(offset+2);
-						offset = ATagContent.toUpperCase().indexOf(">");
-						ATagContent = ATagContent.substring(0,offset);
-						additionalParameter = "&curUrl[all]=" + encodeURIComponent(ATagContent);
+						offset = ATagContent.toUpperCase().indexOf('>');
+						ATagContent = ATagContent.substring(0, offset);
+						additionalParameter = '&curUrl[all]=' + encodeURIComponent(ATagContent);
 					}
 				}
 			}
@@ -184,15 +186,12 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return void
 	 */
-	createLink : function(theLink,cur_target,cur_class,cur_title,additionalValues) {
-		var selection, range, anchorClass, imageNode = null, addIconAfterLink;
-		this.editor.focus();
+	createLink: function(theLink,cur_target,cur_class,cur_title,additionalValues) {
+		var range, anchorClass, imageNode = null, addIconAfterLink;
 		this.restoreSelection();
-		var node = this.editor.getParentElement();
-			// Looking at parent
-		var el = HTMLArea.getElementObject(node, 'a');
-		if (el != null && /^a$/i.test(el.nodeName)) {
-			node = el;
+		var node = this.editor.getSelection().getFirstAncestorOfType('a');
+		if (!node) {
+			node = this.editor.getSelection().getParentElement();
 		}
 		if (HTMLArea.classesAnchorSetup && cur_class) {
 			for (var i = HTMLArea.classesAnchorSetup.length; --i >= 0;) {
@@ -208,9 +207,8 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 		}
 		if (node != null && /^a$/i.test(node.nodeName)) {
 				// Update existing link
-			this.editor.selectNode(node);
-			selection = this.editor._getSelection();
-			range = this.editor._createRange(selection);
+			this.editor.getSelection().selectNode(node);
+			range = this.editor.getSelection().createRange();
 				// Clean images, keep links
 			if (HTMLArea.classesAnchorSetup) {
 				this.cleanAllLinks(node, range, true);
@@ -228,38 +226,32 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 			this.setLinkAttributes(node, range, cur_target, cur_class, cur_title, imageNode, addIconAfterLink, additionalValues);
 		} else {
 				// Create new link
-			selection = this.editor._getSelection();
-			range = this.editor._createRange(selection);
+				// Cleanup selected range
+			range = this.editor.getSelection().createRange();
 				// Clean existing anchors otherwise Mozilla may create nested anchors while IE may update existing link
-			if (Ext.isIE) {
-				this.cleanAllLinks(node, range);
+			if (Ext.isIE8 || Ext.isIE7 || Ext.isIE6) {
+				this.cleanAllLinks(node, range, true);
+				this.editor.getSelection().execCommand('UnLink', false, null);
 			} else {
 					// Selection may be lost when cleaning links
-					// Note: In IE, the following procedure breaks the selection used by the execCommand
-				var bookmark = this.editor.getBookmark(range);
+					// Note: In IE6-8, the following procedure breaks the selection used by the execCommand
+				var bookMark = this.editor.getBookMark().get(range);
 				this.cleanAllLinks(node, range);
-				var range = this.editor.moveToBookmark(bookmark);
-				this.editor.selectRange(range);
+				range = this.editor.getBookMark().moveTo(bookMark);
+				this.editor.getSelection().selectRange(range);
 			}
 			if (Ext.isGecko) {
-				this.editor.document.execCommand('CreateLink', false, encodeURI(theLink));
+				this.editor.getSelection().execCommand('CreateLink', false, encodeURI(theLink));
 			} else {
-				this.editor.document.execCommand('CreateLink', false, theLink);
+				this.editor.getSelection().execCommand('CreateLink', false, theLink);
 			}
-				// Get the created link
-			selection = this.editor._getSelection();
-			range = this.editor._createRange(selection);
-			node = this.editor.getParentElement();
-				// Looking at parent
-			var el = HTMLArea.getElementObject(node, 'a');
-			if (el != null && /^a$/i.test(el.nodeName)) {
-				node = el;
-			}
+				// Get the created link or parent
+			node = this.editor.getSelection().getParentElement();
 			if (node) {
 					// Export trailing br that IE may include in the link
 				if (Ext.isIE) {
 					if (node.lastChild && /^br$/i.test(node.lastChild.nodeName)) {
-						HTMLArea.removeFromParent(node.lastChild);
+						HTMLArea.DOM.removeFromParent(node.lastChild);
 						node.parentNode.insertBefore(this.editor.document.createElement('br'), node.nextSibling);
 					}
 				}
@@ -279,26 +271,28 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 	 * @return void
 	 */
 	unLink: function (buttonPressed) {
-		this.editor.focus();
 			// If no dialogue window was opened, the selection should not be restored
 		if (!buttonPressed) {
 			this.restoreSelection();
 		}
-		var node = this.editor.getParentElement();
-		var el = HTMLArea.getElementObject(node, "a");
-		if (el != null && /^a$/i.test(el.nodeName)) node = el;
-		if (node != null && /^a$/i.test(node.nodeName)) this.editor.selectNode(node);
+		var node = this.editor.getSelection().getParentElement();
+		var el = this.editor.getSelection().getFirstAncestorOfType('a');
+		if (el != null) {
+			node = el;
+		}
+		if (node != null && /^a$/i.test(node.nodeName)) {
+			this.editor.getSelection().selectNode(node);
+		}
 		if (HTMLArea.classesAnchorSetup) {
-			var selection = this.editor._getSelection();
-			var range = this.editor._createRange(selection);
+			var range = this.editor.getSelection().createRange();
 			if (!Ext.isIE) {
 				this.cleanAllLinks(node, range, false);
 			} else {
 				this.cleanAllLinks(node, range, true);
-				this.editor._doc.execCommand("Unlink", false, "");
+				this.editor.getSelection().execCommand('Unlink', false, '');
 			}
 		} else {
-			this.editor._doc.execCommand("Unlink", false, "");
+			this.editor.getSelection().execCommand('Unlink', false, '');
 		}
 		if (this.dialog) {
 			this.close();
@@ -319,19 +313,20 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 	*
 	* @return	void
 	*/
-	setLinkAttributes : function(node, range, cur_target, cur_class, cur_title, imageNode, addIconAfterLink, additionalValues) {
+	setLinkAttributes: function(node, range, cur_target, cur_class, cur_title, imageNode, addIconAfterLink, additionalValues) {
 		if (/^a$/i.test(node.nodeName)) {
 			var nodeInRange = false;
 			if (!Ext.isIE) {
-				nodeInRange = this.editor.rangeIntersectsNode(range, node);
+				this.editor.focus();
+				nodeInRange = HTMLArea.DOM.rangeIntersectsNode(range, node);
 			} else {
-				if (this.editor._getSelection().type.toLowerCase() == "control") {
+				if (this.editor.getSelection().getType() === 'Control') {
 						// we assume an image is selected
 					nodeInRange = true;
 				} else {
-					var nodeRange = this.editor._doc.body.createTextRange();
+					var nodeRange = this.editor.document.body.createTextRange();
 					nodeRange.moveToElementText(node);
-					nodeInRange = nodeRange.inRange(range) || range.inRange(nodeRange) || (range.compareEndPoints("StartToStart", nodeRange) == 0) || (range.compareEndPoints("EndToEnd", nodeRange) == 0);
+					nodeInRange = nodeRange.inRange(range) || range.inRange(nodeRange) || (range.compareEndPoints('StartToStart', nodeRange) == 0) || (range.compareEndPoints('EndToEnd', nodeRange) == 0);
 				}
 			}
 			if (nodeInRange) {
@@ -346,7 +341,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 					node.href = decodeURI(node.href);
 				}
 				if (cur_target.trim()) node.target = cur_target.trim();
-					else node.removeAttribute("target");
+					else node.removeAttribute('target');
 				if (cur_class.trim()) {
 					node.className = cur_class.trim();
 				} else {
@@ -362,10 +357,10 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 				if (cur_title.trim()) {
 					node.title = cur_title.trim();
 				} else {
-					node.removeAttribute("title");
-					node.removeAttribute("rtekeep");
+					node.removeAttribute('title');
+					node.removeAttribute('rtekeep');
 				}
-				if (this.pageTSConfiguration && this.pageTSConfiguration.additionalAttributes && typeof(additionalValues) == "object") {
+				if (this.pageTSConfiguration && this.pageTSConfiguration.additionalAttributes && typeof(additionalValues) == 'object') {
 					for (additionalAttribute in additionalValues) {
 						if (additionalValues.hasOwnProperty(additionalAttribute)) {
 							if (additionalValues[additionalAttribute].toString().trim()) {
@@ -378,8 +373,8 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 		} else {
-			for (var i = node.firstChild;i;i = i.nextSibling) {
-				if (i.nodeType == 1 || i.nodeType == 11) {
+			for (var i = node.firstChild; i; i = i.nextSibling) {
+				if (i.nodeType === HTMLArea.DOM.ELEMENT_NODE || i.nodeType === HTMLArea.DOM.DOCUMENT_FRAGMENT_NODE) {
 					this.setLinkAttributes(i, range, cur_target, cur_class, cur_title, imageNode, addIconAfterLink, additionalValues);
 				}
 			}
@@ -389,14 +384,14 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * Clean up images in special anchor classes
 	 */
-	cleanClassesAnchorImages : function(node) {
+	cleanClassesAnchorImages: function(node) {
 		var nodeArray = [], splitArray1 = [], splitArray2 = [];
 		for (var childNode = node.firstChild; childNode; childNode = childNode.nextSibling) {
 			if (/^img$/i.test(childNode.nodeName)) {
-				splitArray1 = childNode.src.split("/");
+				splitArray1 = childNode.src.split('/');
 				for (var i = HTMLArea.classesAnchorSetup.length; --i >= 0;) {
-					if (HTMLArea.classesAnchorSetup[i]["image"]) {
-						splitArray2 = HTMLArea.classesAnchorSetup[i]["image"].split("/");
+					if (HTMLArea.classesAnchorSetup[i]['image']) {
+						splitArray2 = HTMLArea.classesAnchorSetup[i]['image'].split('/');
 						if (splitArray1[splitArray1.length-1] == splitArray2[splitArray2.length-1]) {
 							nodeArray.push(childNode);
 							break;
@@ -413,31 +408,41 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * Clean up all anchors intesecting with the range in the given node
 	 */
-	cleanAllLinks : function(node, range, keepLinks) {
+	cleanAllLinks: function(node, range, keepLinks) {
 		if (/^a$/i.test(node.nodeName)) {
 			var intersection = false;
 			if (!Ext.isIE) {
-				intersection = this.editor.rangeIntersectsNode(range, node);
+				this.editor.focus();
+				intersection = HTMLArea.DOM.rangeIntersectsNode(range, node);
 			} else {
-				if (this.editor._getSelection().type.toLowerCase() == "control") {
+				if (this.editor.getSelection().getType() === 'Control') {
 						// we assume an image is selected
 					intersection = true;
 				} else {
-					var nodeRange = this.editor._doc.body.createTextRange();
+					var nodeRange = this.editor.document.body.createTextRange();
 					nodeRange.moveToElementText(node);
-					intersection = range.inRange(nodeRange) || ((range.compareEndPoints("StartToStart", nodeRange) > 0) && (range.compareEndPoints("StartToEnd", nodeRange) < 0)) || ((range.compareEndPoints("EndToStart", nodeRange) > 0) && (range.compareEndPoints("EndToEnd", nodeRange) < 0));
+					intersection = range.inRange(nodeRange) || ((range.compareEndPoints('StartToStart', nodeRange) > 0) && (range.compareEndPoints('StartToEnd', nodeRange) < 0)) || ((range.compareEndPoints('EndToStart', nodeRange) > 0) && (range.compareEndPoints('EndToEnd', nodeRange) < 0));
 				}
 			}
 			if (intersection) {
 				this.cleanClassesAnchorImages(node);
 				if (!keepLinks) {
-					while(node.firstChild) node.parentNode.insertBefore(node.firstChild, node);
+					while (node.firstChild) {
+						node.parentNode.insertBefore(node.firstChild, node);
+					}
 					node.parentNode.removeChild(node);
 				}
 			}
 		} else {
-			for (var i = node.firstChild;i;i = i.nextSibling) {
-				if (i.nodeType == 1 || i.nodeType == 11) this.cleanAllLinks(i, range, keepLinks);
+			var child = node.firstChild,
+				nextSibling;
+			while (child) {
+					// Save next sibling as child may be removed
+				nextSibling = child.nextSibling;
+				if (child.nodeType === HTMLArea.DOM.ELEMENT_NODE || child.nodeType === HTMLArea.DOM.DOCUMENT_FRAGMENT_NODE) {
+					this.cleanAllLinks(child, range, keepLinks);
+				}
+				child = nextSibling;
 			}
 		}
 	},
@@ -450,9 +455,9 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 				case 'CreateLink':
 					button.setDisabled(selectionEmpty && !button.isInContext(mode, selectionEmpty, ancestors));
 					if (!button.disabled) {
-						var node = this.editor.getParentElement();
-						var el = HTMLArea.getElementObject(node, 'a');
-						if (el != null && /^a$/i.test(el.nodeName)) {
+						var node = this.editor.getSelection().getParentElement();
+						var el = this.editor.getSelection().getFirstAncestorOfType('a');
+						if (el != null) {
 							node = el;
 						}
 						if (node != null && /^a$/i.test(node.nodeName)) {
@@ -466,8 +471,8 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 					var link = false;
 						// Let's see if a link was double-clicked in Firefox
 					if (Ext.isGecko && !selectionEmpty) {
-						var range = this.editor._createRange(this.editor._getSelection());
-						if (range.startContainer.nodeType == 1 && range.startContainer == range.endContainer && (range.endOffset - range.startOffset == 1)) {
+						var range = this.editor.getSelection().createRange();
+						if (range.startContainer.nodeType === HTMLArea.DOM.ELEMENT_NODE && range.startContainer == range.endContainer && (range.endOffset - range.startOffset == 1)) {
 							var node = range.startContainer.childNodes[range.startOffset];
 							if (node && /^a$/i.test(node.nodeName) && node.textContent == range.toString()) {
 								link = true;

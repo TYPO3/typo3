@@ -40,7 +40,7 @@ HTMLArea.CharacterMap = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '3.0',
+			version		: '4.0',
 			developer	: 'Holger Hees, Bernhard Pfeifer, Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Holger Hees, Bernhard Pfeifer, Stanislas Rolland',
@@ -464,7 +464,6 @@ HTMLArea.CharacterMap = Ext.extend(HTMLArea.Plugin, {
 	 */
 	insertCharacter: function (event, target) {
 		event.stopEvent();
-		this.editor.focus();
 		this.restoreSelection();
 		var entity = Ext.get(target).dom.innerHTML;
 		this.insertEntity(entity);
@@ -481,14 +480,13 @@ HTMLArea.CharacterMap = Ext.extend(HTMLArea.Plugin, {
 	 * @return	void
 	 */
 	insertEntity: function (entity) {
-		this.editor.focus();
 		if (Ext.isIE) {
-			this.editor.insertHTML(entity);
+			this.editor.getSelection().insertHtml(entity);
 		} else {
 				// Firefox and WebKit convert '&nbsp;' to '&amp;nbsp;'
 			var node = this.editor.document.createTextNode(((Ext.isGecko || Ext.isWebKit) && entity == '&nbsp;') ? '\xA0' : entity);
-			this.editor.insertNodeAtSelection(node);
-			this.editor.selectNode(node, false);
+			this.editor.getSelection().insertNode(node);
+			this.editor.getSelection().selectNode(node, false);
 		}
 	},
 	/*
@@ -496,7 +494,6 @@ HTMLArea.CharacterMap = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 */
 	resetFocus: function () {
-		this.editor.focus();
 		this.restoreSelection();
 	}
 });

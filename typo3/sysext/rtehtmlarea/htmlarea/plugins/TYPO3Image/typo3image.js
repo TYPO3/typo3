@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -38,7 +38,7 @@ HTMLArea.TYPO3Image = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.2',
+			version		: '2.3',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -70,12 +70,12 @@ HTMLArea.TYPO3Image = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	boolean		false if action is completed
 	 */
-	onButtonPress: function(editor, id) {
+	onButtonPress: function (editor, id) {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
 		var additionalParameter;
-		this.image = this.editor.getParentElement();
+		this.image = this.editor.getSelection().getParentElement();
 		if (this.image && !/^img$/i.test(this.image.nodeName)) {
 			this.image = null;
 		}
@@ -102,9 +102,8 @@ HTMLArea.TYPO3Image = Ext.extend(HTMLArea.Plugin, {
 	 * This function is called from the TYPO3 image script
 	 */
  	insertImage: function(image) {
-		this.editor.focus();
 		this.restoreSelection();
-		this.editor.insertHTML(image);
+		this.editor.getSelection().insertHtml(image);
 		this.close();
 	},
 	/*
@@ -121,7 +120,7 @@ HTMLArea.TYPO3Image = Ext.extend(HTMLArea.Plugin, {
 	 */
 	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
 		if (mode === 'wysiwyg' && this.editor.isEditable() && button.itemId === 'InsertImage' && !button.disabled) {
-			var image = this.editor.getParentElement();
+			var image = this.editor.getSelection().getParentElement();
 			if (image && !/^img$/i.test(image.nodeName)) {
 				image = null;
 			}

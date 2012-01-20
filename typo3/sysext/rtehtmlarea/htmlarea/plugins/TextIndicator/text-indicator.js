@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2010-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,12 +31,12 @@ HTMLArea.TextIndicator = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin : function (editor) {
+	configurePlugin: function (editor) {
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '1.1',
+			version		: '1.2',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -79,7 +79,7 @@ HTMLArea.TextIndicator = Ext.extend(HTMLArea.Plugin, {
 			} catch (e) { }
 				// queryCommandValue does not work in Gecko
 			if (Ext.isGecko) {
-				var computedStyle = editor._iframe.contentWindow.getComputedStyle(editor.getParentElement(), null);
+				var computedStyle = editor.iframe.getEl().dom.contentWindow.getComputedStyle(editor.getSelection().getParentElement(), null);
 				style.color = computedStyle.getPropertyValue('color');
 				style.backgroundColor = computedStyle.getPropertyValue('background-color');
 				style.fontFamily = computedStyle.getPropertyValue('font-family');

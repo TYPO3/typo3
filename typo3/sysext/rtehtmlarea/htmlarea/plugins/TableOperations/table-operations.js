@@ -3,7 +3,7 @@
 *
 *  (c) 2002 interactivetools.com, inc. Authored by Mihai Bazon, sponsored by http://www.bloki.com.
 *  (c) 2005 Xinha, http://xinha.gogo.co.nz/ for the original toggle borders function.
-*  (c) 2004-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -68,7 +68,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '5.2',
+			version		: '5.3',
 			developer	: 'Mihai Bazon & Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Mihai Bazon & Stanislas Rolland',
@@ -142,21 +142,6 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		}
 	},
 	/*
-	 * Retrieve the closest element having the specified nodeName in the list of
-	 * ancestors of the current selection/caret.
-	 */
-	getClosest: function (nodeName) {
-		var ancestors = this.editor.getAllAncestors();
-		var element = null;
-		Ext.each(ancestors, function (ancestor) {
-			if (ancestor.nodeName.toLowerCase() === nodeName) {
-				element = ancestor;
-				return false;
-			}
-		});
-		return element;
-	},
-	/*
 	 * Get the integer value of a string or '' if the string is not a number
 	 *
 	 * @param	string		string: the input value
@@ -183,21 +168,18 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		switch (type) {
 			case 'cell':
 			case 'column':
-				var element = this.getClosest('td');
-				if (!element) {
-					var element = this.getClosest('th');
-				}
+				var element = this.editor.getSelection().getFirstAncestorOfType(['td', 'th']);
 				this.properties = (this.buttonsConfiguration.cellproperties && this.buttonsConfiguration.cellproperties.properties) ? this.buttonsConfiguration.cellproperties.properties : {};
 				var title = (type == 'column') ? 'Column Properties' : 'Cell Properties';
 				break;
 			case 'row':
-				var element = this.getClosest('tr');
+				var element = this.editor.getSelection().getFirstAncestorOfType('tr');
 				this.properties = (this.buttonsConfiguration.rowproperties && this.buttonsConfiguration.rowproperties.properties) ? this.buttonsConfiguration.rowproperties.properties : {};
 				var title = 'Row Properties';
 				break;
 			case 'table':
 				var insert = (buttonId === 'InsertTable');
-				var element = insert ? null : this.getClosest('table');
+				var element = insert ? null : this.editor.getSelection().getFirstAncestorOfType('table');
 				this.properties = (this.buttonsConfiguration.table && this.buttonsConfiguration.table.properties) ? this.buttonsConfiguration.table.properties : {};
 				var title = insert ? 'Insert Table' : 'Table Properties';
 				break;
@@ -421,7 +403,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 		}
-		var doc = this.editor._doc;
+		var doc = this.editor.document;
 		if (this.dialog.arguments.buttonId === 'InsertTable') {
 			var required = {
 				f_rows: 'You must enter a number of rows',
@@ -555,14 +537,14 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		}, this);
 		if (this.dialog.arguments.buttonId === "InsertTable") {
 			if (!Ext.isIE) {
-				this.editor.insertNodeAtSelection(table);
+				this.editor.getSelection().insertNode(table);
 			} else {
 				table.id = "htmlarea_table_insert";
-				this.editor.insertNodeAtSelection(table);
-				table = this.editor._doc.getElementById(table.id);
+				this.editor.getSelection().insertNode(table);
+				table = this.editor.document.getElementById(table.id);
 				table.removeAttribute("id");
 			}
-			this.editor.selectNodeContents(table.rows[0].cells[0], true);
+			this.editor.getSelection().selectNodeContents(table.rows[0].cells[0], true);
 			if (this.buttonsConfiguration.toggleborders && this.buttonsConfiguration.toggleborders.setOnTableCreation) {
 				this.toggleBorders(true);
 			}
@@ -602,7 +584,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				    case "f_cell_type":
 					if (val.substring(0,2) != element.nodeName.toLowerCase()) {
 						element = this.remapCell(element, val.substring(0,2));
-						this.editor.selectNodeContents(element, true);
+						this.editor.getSelection().selectNodeContents(element, true);
 					}
 					if (val.substring(2,10) != element.scope) {
 						element.scope = val.substring(2,10);
@@ -617,7 +599,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 					var nodeName = section.nodeName.toLowerCase();
 					if (val != nodeName) {
 						var newSection = table.getElementsByTagName(val)[0];
-						if (!newSection) var newSection = table.insertBefore(this.editor._doc.createElement(val), table.getElementsByTagName("tbody")[0]);
+						if (!newSection) var newSection = table.insertBefore(this.editor.document.createElement(val), table.getElementsByTagName("tbody")[0]);
 						if (nodeName == "thead" && val == "tbody") var newElement = newSection.insertBefore(element, newSection.firstChild);
 							else var newElement = newSection.appendChild(element);
 						if (!section.hasChildNodes()) table.removeChild(section);
@@ -680,7 +662,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 					break;
 				case 'TO-cell-merge':
 					if (Ext.isGecko) {
-						var selection = this.editor._getSelection();
+						var selection = this.editor.getSelection().get().selection;
 						button.setDisabled(button.disabled || selection.rangeCount < 2);
 					}
 					break;
@@ -732,8 +714,8 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			while (--n > 0) {
 				tr = rows[++sectionRowIndex];
 					// Last row
-				if (!tr) tr = td.parentNode.parentNode.appendChild(editor._doc.createElement("tr"));
-				var otd = editor._doc.createElement(nodeName);
+				if (!tr) tr = td.parentNode.parentNode.appendChild(editor.document.createElement("tr"));
+				var otd = editor.document.createElement(nodeName);
 				otd.colSpan = colSpan;
 				otd.innerHTML = mozbr;
 				tr.insertBefore(otd, tr.cells[index]);
@@ -747,7 +729,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			var tr = td.parentNode;
 			var ref = td.nextSibling;
 			while (--nc > 0) {
-				var otd = editor._doc.createElement(nodeName);
+				var otd = editor.document.createElement(nodeName);
 				otd.rowSpan = td.rowSpan;
 				otd.innerHTML = mozbr;
 				tr.insertBefore(otd, ref);
@@ -776,7 +758,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 			if (!node) node = el.parentNode;
-			editor.selectNodeContents(node);
+			editor.getSelection().selectNodeContents(node);
 		};
 		
 		function getSelectedCells(sel) {
@@ -852,16 +834,16 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			// ROWS
 		    case "TO-row-insert-above":
 		    case "TO-row-insert-under":
-			var tr = this.getClosest("tr");
+			var tr = this.editor.getSelection().getFirstAncestorOfType("tr");
 			if (!tr) break;
 			var otr = tr.cloneNode(true);
 			clearRow(otr);
 			otr = tr.parentNode.insertBefore(otr, (/under/.test(buttonId) ? tr.nextSibling : tr));
-			this.editor.selectNodeContents(otr.firstChild, true);
+			this.editor.getSelection().selectNodeContents(otr.firstChild, true);
 			this.reStyleTable(tr.parentNode.parentNode);
 			break;
 		    case "TO-row-delete":
-			var tr = this.getClosest("tr");
+			var tr = this.editor.getSelection().getFirstAncestorOfType("tr");
 			if (!tr) break;
 			var part = tr.parentNode;
 			var table = part.parentNode;
@@ -877,13 +859,14 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			this.reStyleTable(table);
 			break;
 		    case "TO-row-split":
-			var cell = this.getClosest("td");
-			if (!cell) var cell = this.getClosest("th");
+			var cell = this.editor.getSelection().getFirstAncestorOfType(['td', 'th']);
 			if (!cell) break;
-			var sel = editor._getSelection();
+			var sel = editor.getSelection().get().selection;
 			if (Ext.isGecko && !sel.isCollapsed) {
 				var cells = getSelectedCells(sel);
-				for (i = 0; i < cells.length; ++i) splitRow(cells[i]);
+				for (i = 0; i < cells.length; ++i) {
+					splitRow(cells[i]);
+				}
 			} else {
 				splitRow(cell);
 			}
@@ -892,8 +875,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			// COLUMNS
 		    case "TO-col-insert-before":
 		    case "TO-col-insert-after":
-			var cell = this.getClosest("td");
-			if (!cell) var cell = this.getClosest("th");
+			var cell = this.editor.getSelection().getFirstAncestorOfType(['td', 'th']);
 			if (!cell) break;
 			var index = cell.cellIndex;
 			var table = cell.parentNode.parentNode.parentNode;
@@ -905,11 +887,11 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 						var tr = rows[i];
 						var ref = tr.cells[index + (/after/.test(buttonId) ? 1 : 0)];
 						if (!ref) {
-							var otd = editor._doc.createElement(tr.lastChild.nodeName.toLowerCase());
+							var otd = editor.document.createElement(tr.lastChild.nodeName.toLowerCase());
 							otd.innerHTML = mozbr;
 							tr.appendChild(otd);
 						} else {
-							var otd = editor._doc.createElement(ref.nodeName.toLowerCase());
+							var otd = editor.document.createElement(ref.nodeName.toLowerCase());
 							otd.innerHTML = mozbr;
 							tr.insertBefore(otd, ref);
 						}
@@ -919,21 +901,21 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			this.reStyleTable(table);
 			break;
 		    case "TO-col-split":
-			var cell = this.getClosest("td");
-			if (!cell) var cell = this.getClosest("th");
+		    	var cell = this.editor.getSelection().getFirstAncestorOfType(['td', 'th']);
 			if (!cell) break;
-			var sel = editor._getSelection();
+			var sel = this.editor.getSelection().get().selection;
 			if (Ext.isGecko && !sel.isCollapsed) {
 				var cells = getSelectedCells(sel);
-				for (i = 0; i < cells.length; ++i) splitCol(cells[i]);
+				for (i = 0; i < cells.length; ++i) {
+					splitCol(cells[i]);
+				}
 			} else {
 				splitCol(cell);
 			}
 			this.reStyleTable(table);
 			break;
 		    case "TO-col-delete":
-			var cell = this.getClosest("td");
-			if (!cell) var cell = this.getClosest("th");
+			var cell = this.editor.getSelection().getFirstAncestorOfType(['td', 'th']);
 			if (!cell) break;
 			var index = cell.cellIndex;
 			var part = cell.parentNode.parentNode;
@@ -973,13 +955,14 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	
 			// CELLS
 		    case "TO-cell-split":
-			var cell = this.getClosest("td");
-			if (!cell) var cell = this.getClosest("th");
+			var cell = this.editor.getSelection().getFirstAncestorOfType(['td', 'th']);
 			if (!cell) break;
-			var sel = editor._getSelection();
+			var sel = this.editor.getSelection().get().selection;
 			if (Ext.isGecko && !sel.isCollapsed) {
 				var cells = getSelectedCells(sel);
-				for (i = 0; i < cells.length; ++i) splitCell(cells[i]);
+				for (i = 0; i < cells.length; ++i) {
+					splitCell(cells[i]);
+				}
 			} else {
 				splitCell(cell);
 			}
@@ -987,18 +970,16 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			break;
 		    case "TO-cell-insert-before":
 		    case "TO-cell-insert-after":
-			var cell = this.getClosest("td");
-			if (!cell) var cell = this.getClosest("th");
+			var cell = this.editor.getSelection().getFirstAncestorOfType(['td', 'th']);
 			if (!cell) break;
 			var tr = cell.parentNode;
-			var otd = editor._doc.createElement(cell.nodeName.toLowerCase());
+			var otd = editor.document.createElement(cell.nodeName.toLowerCase());
 			otd.innerHTML = mozbr;
 			tr.insertBefore(otd, (/after/.test(buttonId) ? cell.nextSibling : cell));
 			this.reStyleTable(tr.parentNode.parentNode);
 			break;
 		    case "TO-cell-delete":
-			var cell = this.getClosest("td");
-			if (!cell) var cell = this.getClosest("th");
+			var cell = this.editor.getSelection().getFirstAncestorOfType(['td', 'th']);
 			if (!cell) break;
 			var row = cell.parentNode;
 			if(row.cells.length == 1) {  // this is the only cell in the row, delete the row
@@ -1020,7 +1001,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			this.reStyleTable(table);
 			break;
 		    case "TO-cell-merge":
-			var sel = editor._getSelection();
+			var sel = this.editor.getSelection().get().selection;
 			var range, i = 0;
 			var rows = new Array();
 			for (var k = tableParts.length; --k >= 0;) rows[k] = [];
@@ -1042,9 +1023,8 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				}
 				try { rows[tablePartsIndex[row.parentNode.nodeName.toLowerCase()]].push(cells); } catch(e) { }
 			} else {
-				// Internet Explorer, Safari and Opera
-				var cell = this.getClosest("td");
-				if (!cell) var cell = this.getClosest("th");
+				// Internet Explorer, WebKit and Opera
+				var cell = this.editor.getSelection().getFirstAncestorOfType(['td', 'th']);
 				if (!cell) {
 					TYPO3.Dialog.InformationDialog({
 						title: this.getButton('TO-cell-merge').tooltip.title,
@@ -1118,7 +1098,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 					td.innerHTML = cellHTML;
 					td.rowSpan = cellRowSpan;
 					td.colSpan = maxCellColSpan;
-					editor.selectNodeContents(td);
+					editor.getSelection().selectNodeContents(td);
 				}
 			}
 			this.reStyleTable(table);
@@ -1130,7 +1110,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		    	this.openPropertiesDialogue('table', buttonId);
 			break;
 		    case "TO-table-restyle":
-			this.reStyleTable(this.getClosest('table'));
+			this.reStyleTable(this.editor.getSelection().getFirstAncestorOfType('table'));
 			break;
 		    case "TO-row-prop":
 		    	this.openPropertiesDialogue('row', buttonId);
@@ -1180,7 +1160,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 * @return	void
 	 */
 	toggleBorders : function (forceBorders) {
-		var body = this.editor._doc.body;
+		var body = this.editor.document.body;
 		if (!HTMLArea.DOM.hasClass(body, 'htmlarea-showtableborders')) {
 			HTMLArea.DOM.addClass(body,'htmlarea-showtableborders');
 		} else if (!forceBorders) {
@@ -1500,7 +1480,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 */
 	setHeaders: function (table, params) {
 		var headers = params.f_headers;
-		var doc = this.editor._doc;
+		var doc = this.editor.document;
 		var tbody = table.tBodies[0];
 		var thead = table.tHead;
 		if (thead && !thead.rows.length && !tbody.rows.length) {
@@ -1574,7 +1554,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 * This function remaps the given cell to the specified node name
 	 */
 	remapCell : function(element, nodeName) {
-		var newCell = this.editor.convertNode(element, nodeName);
+		var newCell = HTMLArea.DOM.convertNode(element, nodeName);
 		var attributes = element.attributes, attributeName, attributeValue;
 		for (var i = attributes.length; --i >= 0;) {
 			attributeName = attributes.item(i).nodeName;
@@ -2623,10 +2603,9 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 * @return	boolean		false, if the event was taken care of
 	 */
 	onKey: function (key, event) {
-		var selection = this.editor._getSelection();
-		var range = this.editor._createRange(selection);
-		var parentElement = this.editor.getParentElement(selection, range);
-		while (parentElement && !HTMLArea.isBlockElement(parentElement)) {
+		var range = this.editor.getSelection().createRange();
+		var parentElement = this.editor.getSelection().getParentElement();
+		while (parentElement && !HTMLArea.DOM.isBlockElement(parentElement)) {
 			parentElement = parentElement.parentNode;
 		}
 		if (/^(td|th)$/i.test(parentElement.nodeName)) {
@@ -2634,12 +2613,12 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				range.pasteHTML('<br />');
 				range.select();
 			} else {
-				var brNode = this.editor._doc.createElement('br');
-				this.editor.insertNodeAtSelection(brNode);
+				var brNode = this.editor.document.createElement('br');
+				this.editor.getSelection().insertNode(brNode);
 				if (brNode.nextSibling) {
-					this.editor.selectNodeContents(brNode.nextSibling, true);
+					this.editor.getSelection().selectNodeContents(brNode.nextSibling, true);
 				} else {
-					this.editor.selectNodeContents(brNode, false);
+					this.editor.getSelection().selectNodeContents(brNode, false);
 				}
 			}
 			event.stopEvent();

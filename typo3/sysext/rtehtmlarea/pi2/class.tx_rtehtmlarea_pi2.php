@@ -221,8 +221,8 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			$this->pageRenderer->enableExtJSQuickTips();
 		}
 		$this->pageRenderer->addCssFile($this->siteURL . 't3lib/js/extjs/ux/resize.css');
-		$this->pageRenderer->addJsFile($this->siteURL . $this->getFullFileName('t3lib/js/extjs/ux/ext.resizable.js'));
-		$this->pageRenderer->addJsFile($this->siteURL . $this->getFullFileName('t3lib/js/extjs/notifications.js'));
+		$this->pageRenderer->addJsFile($this->getFullFileName('t3lib/js/extjs/ux/ext.resizable.js'));
+		$this->pageRenderer->addJsFile($this->getFullFileName('t3lib/js/extjs/notifications.js'));
 			// Add RTE JavaScript
 		$this->addRteJsFiles($this->TCEform->RTEcounter);
 		$this->pageRenderer->addJsFile($this->buildJSMainLangFile($this->TCEform->RTEcounter));
