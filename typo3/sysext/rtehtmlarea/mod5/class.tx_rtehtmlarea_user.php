@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 1999-2011 Kasper Skårhøj (kasper@typo3.com)
-*  (c) 2005-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -71,13 +71,13 @@ class tx_rtehtmlarea_user {
 			};
 			function insertHTML(content,noHide) {
 				plugin.restoreSelection();
-				editor.insertHTML(content);
+				editor.getSelection().insertHtml(content);
 				if(!noHide) plugin.close();
 			};
 			function wrapHTML(wrap1,wrap2,noHide) {
 				plugin.restoreSelection();
-				if(editor.hasSelectedText()) {
-					editor.surroundHTML(wrap1,wrap2);
+				if(!editor.getSelection().isEmpty()) {
+					editor.getSelection().surroundHtml(wrap1,wrap2);
 				} else {
 					alert(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('noTextSelection')) . ');
 				}
@@ -86,7 +86,7 @@ class tx_rtehtmlarea_user {
 			function processSelection(script) {
 				plugin.restoreSelection();
 				document.process.action = script;
-				document.process.processContent.value = editor.getSelectedHTML();
+				document.process.processContent.value = editor.getSelection().getHtml();
 				document.process.submit();
 			};
 			function jumpToUrl(URL)	{

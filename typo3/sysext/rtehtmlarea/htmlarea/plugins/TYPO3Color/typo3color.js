@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,23 +31,23 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin: function(editor) {
+	configurePlugin: function (editor) {
 		this.buttonsConfiguration = this.editorConfiguration.buttons;
 		this.colorsConfiguration = this.editorConfiguration.colors;
 		this.disableColorPicker = this.editorConfiguration.disableColorPicker;
 			// Coloring will use the style attribute
-		if (this.editor.plugins.TextStyle && this.editor.plugins.TextStyle.instance) {
-			this.editor.plugins.TextStyle.instance.addAllowedAttribute('style');
-			this.allowedAttributes = this.editor.plugins.TextStyle.instance.allowedAttributes;
+		if (this.getPluginInstance('TextStyle')) {
+			this.getPluginInstance('TextStyle').addAllowedAttribute('style');
+			this.allowedAttributes = this.getPluginInstance('TextStyle').allowedAttributes;
 		}
-		if (this.editor.plugins.InlineElements && this.editor.plugins.InlineElements.instance) {
-			this.editor.plugins.InlineElements.instance.addAllowedAttribute('style');
+		if (this.getPluginInstance('InlineElements')) {
+			this.getPluginInstance('InlineElements').addAllowedAttribute('style');
 			if (!this.allowedAllowedAttributes) {
-				this.allowedAttributes = this.editor.plugins.InlineElements.instance.allowedAttributes;
+				this.allowedAttributes = this.getPluginInstance('InlineElements').allowedAttributes;
 			}
 		}
-		if (this.editor.plugins.BlockElements && this.editor.plugins.BlockElements.instance) {
-			this.editor.plugins.BlockElements.instance.addAllowedAttribute('style');
+		if (this.getPluginInstance('BlockElements')) {
+			this.getPluginInstance('BlockElements').addAllowedAttribute('style');
 		}
 		if (!this.allowedAttributes) {
 			this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'style');
@@ -59,7 +59,7 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '4.2',
+			version		: '4.3',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -125,7 +125,7 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		var element = this.editor.getParentElement();
+		var element = this.editor.getSelection().getParentElement();
 		this.openDialogue(
 			buttonId + '_title',
 			{
@@ -354,17 +354,14 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 			}
 			color = HTMLArea.util.Color.colorToHex(parseInt(color, 16));
 		}
-		this.editor.focus();
 		var 	element,
 			fullNodeSelected = false;
-		var selection = this.editor._getSelection();
-		var range = this.editor._createRange(selection);
-		var parent = this.editor.getParentElement(selection, range);
-		var selectionEmpty = this.editor._selectionEmpty(selection);
+		var range = this.editor.getSelection().createRange();
+		var parent = this.editor.getSelection().getParentElement();
+		var selectionEmpty = this.editor.getSelection().isEmpty();
 		var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
 		if (!selectionEmpty) {
-			var ancestors = this.editor.getAllAncestors();
-			var fullySelectedNode = this.editor.getFullySelectedNode(selection, range, ancestors);
+			var fullySelectedNode = this.editor.getSelection().getFullySelectedNode();
 			if (fullySelectedNode) {
 				fullNodeSelected = true;
 				parent = fullySelectedNode;
@@ -375,22 +372,22 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 				// Set the color in the style attribute
 			element.style[this.styleProperty[buttonId]] = color;
 				// Remove the span tag if it has no more attribute
-			if ((element.nodeName.toLowerCase() === 'span') && !HTMLArea.hasAllowedAttributes(element, this.allowedAttributes)) {
-				this.editor.removeMarkup(element);
+			if (/^span$/i.test(element.nodeName) && !HTMLArea.DOM.hasAllowedAttributes(element, this.allowedAttributes)) {
+				this.editor.getDomNode().removeMarkup(element);
 			}
 		} else if (statusBarSelection) {
 			var element = statusBarSelection;
 				// Set the color in the style attribute
 			element.style[this.styleProperty[buttonId]] = color;
 				// Remove the span tag if it has no more attribute
-			if ((element.nodeName.toLowerCase() === 'span') && !HTMLArea.hasAllowedAttributes(element, this.allowedAttributes)) {
-				this.editor.removeMarkup(element);
+			if (/^span$/i.test(element.nodeName) && !HTMLArea.DOM.hasAllowedAttributes(element, this.allowedAttributes)) {
+				this.editor.getDomNode().removeMarkup(element);
 			}
-		} else if (color && this.editor.endPointsInSameBlock()) {
-			var element = this.editor._doc.createElement('span');
+		} else if (color && this.editor.getSelection().endPointsInSameBlock()) {
+			var element = this.editor.document.createElement('span');
 				// Set the color in the style attribute
 			element.style[this.styleProperty[buttonId]] = color;
-			this.editor.wrapWithInlineElement(element, selection, range);
+			this.editor.getDomNode().wrapWithInlineElement(element, range);
 		}
 		if (!Ext.isIE) {
 			range.detach();
@@ -404,7 +401,7 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors, endPointsInSameBlock) {
 		if (mode === 'wysiwyg' && this.editor.isEditable()) {
 			var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null,
-				parentElement = statusBarSelection ? statusBarSelection : this.editor.getParentElement(),
+				parentElement = statusBarSelection ? statusBarSelection : this.editor.getSelection().getParentElement(),
 				disabled = !endPointsInSameBlock || (selectionEmpty && /^body$/i.test(parentElement.nodeName));
 			button.setInactive(!parentElement.style[this.styleProperty[button.itemId]]);
 			button.setDisabled(disabled);

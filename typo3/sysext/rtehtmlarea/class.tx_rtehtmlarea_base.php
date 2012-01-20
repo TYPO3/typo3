@@ -745,11 +745,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 */
 	protected function addRteJsFiles($RTEcounter) {
 		$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $this->ID . '/htmlarea/htmlarea.js'));
-		if ($this->client['browser'] == 'msie') {
-			$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $this->ID . '/htmlarea/htmlarea-ie.js'));
-		} else {
-			$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $this->ID . '/htmlarea/htmlarea-gecko.js'));
-		}
 		foreach ($this->pluginEnabledCumulativeArray[$RTEcounter] as $pluginId) {
 			$extensionKey = is_object($this->registeredPlugins[$pluginId]) ? $this->registeredPlugins[$pluginId]->getExtensionKey() : $this->ID;
 			$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $extensionKey . '/htmlarea/plugins/' . $pluginId . '/' . strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', "$1".'-'."$2"."$3", $pluginId)) . '.js'));
@@ -1034,7 +1029,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		}
 			// Include JS arrays of configured classes
 		$configureRTEInJavascriptString .= '
-			RTEarea[editornumber].classesUrl = "' . $this->writeTemporaryFile('', 'classes_' . $this->language, 'js', $this->buildJSClassesArray(), TRUE) . '";';
+			RTEarea[editornumber].classesUrl = "' . (($this->is_FE() && $GLOBALS['TSFE']->absRefPrefix) ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->writeTemporaryFile('', 'classes_' . $this->language, 'js', $this->buildJSClassesArray(), TRUE) . '";';
 		return $configureRTEInJavascriptString;
 	}
 
@@ -1156,7 +1151,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 		}
 		if ($this->is_FE()) {
-			$filename =  ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $relativeFilename;
+			$filename = $relativeFilename;
 		} else {
 			$filename = ($this->isFrontendEditActive() ? '' : ($this->backPath . '../')) . $relativeFilename;
 		}

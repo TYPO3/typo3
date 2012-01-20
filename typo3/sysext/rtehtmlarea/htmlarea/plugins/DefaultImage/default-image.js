@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,7 +33,7 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin: function(editor) {
+	configurePlugin: function (editor) {
 		this.baseURL = this.editorConfiguration.baseURL;
 		this.pageTSConfiguration = this.editorConfiguration.buttons.image;
 		if (this.pageTSConfiguration && this.pageTSConfiguration.properties && this.pageTSConfiguration.properties.removeItems) {
@@ -63,7 +63,7 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.2',
+			version		: '2.3',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -116,8 +116,7 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		this.editor.focus();
-		this.image = this.editor.getParentElement();
+		this.image = this.editor.getSelection().getParentElement();
 		if (this.image && !/^img$/i.test(this.image.nodeName)) {
 			this.image = null;
 		}
@@ -445,25 +444,22 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 	 * Insert the image
 	 */
 	insertImage: function() {
-		this.editor.focus();
 		this.restoreSelection();
 		var image = this.image;
 		if (!image) {
-			var selection = this.editor._getSelection();
-			var range = this.editor._createRange(selection);
-			this.editor.document.execCommand('InsertImage', false, this.parameters.url);
+			var range = this.editor.getSelection().createRange();
+			this.editor.getSelection().execCommand('InsertImage', false, this.parameters.url);
 			if (Ext.isWebKit) {
-				this.editor.cleanAppleStyleSpans(this.editor.document.body);
+				this.editor.getDomNode().cleanAppleStyleSpans(this.editor.document.body);
 			}
 			if (Ext.isIE) {
 				image = range.parentElement();
 				if (!/^img$/i.test(image.nodeName)) {
 					image = image.previousSibling;
 				}
-				this.editor.selectNode(image);
+				this.editor.getSelection().selectNode(image);
 			} else {
-				var selection = this.editor._getSelection();
-				var range = this.editor._createRange(selection);
+				var range = this.editor.getSelection().createRange();
 				image = range.startContainer;
 				image = image.lastChild;
 				while (image && !/^img$/i.test(image.nodeName)) {
@@ -517,7 +513,7 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 	 */
 	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
 		if (mode === 'wysiwyg' && this.editor.isEditable() && button.itemId === 'InsertImage' && !button.disabled) {
-			var image = this.editor.getParentElement();
+			var image = this.editor.getSelection().getParentElement();
 			if (image && !/^img$/i.test(image.nodeName)) {
 				image = null;
 			}

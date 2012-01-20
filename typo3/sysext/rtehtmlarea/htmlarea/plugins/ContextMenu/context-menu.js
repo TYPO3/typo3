@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  Copyright (c) 2003 dynarch.com. Authored by Mihai Bazon. Sponsored by www.americanbible.org.
-*  Copyright (c) 2004-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  Copyright (c) 2004-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -178,7 +178,7 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 	showMenu: function (target) {
 		this.showContextItems(target);
 		if (!Ext.isIE) {
-			this.ranges = this.editor.getSelectionRanges();
+			this.ranges = this.editor.getSelection().getRanges();
 		}
 		var iframeEl = this.editor.iframe.getEl();
 			// Show the context menu
@@ -237,7 +237,7 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 	 */
 	onItemClick: function (item, event) {
 		if (!Ext.isIE) {
-			this.editor.setSelectionRanges(this.ranges);
+			this.editor.getSelection().setRanges(this.ranges);
 		}
 		var button = this.getButton(item.getItemId());
 		if (button) {
@@ -254,11 +254,11 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 			var nextSibling = this.deleteTarget.nextSibling;
 			var previousSibling = this.deleteTarget.previousSibling;
 			if (nextSibling) {
-				this.editor.selectNode(nextSibling, true);
+				this.editor.getSelection().selectNode(nextSibling, true);
 			} else if (previousSibling) {
-				this.editor.selectNode(previousSibling, false);
+				this.editor.getSelection().selectNode(previousSibling, false);
 			}
-			HTMLArea.removeFromParent(this.deleteTarget);
+			HTMLArea.DOM.removeFromParent(this.deleteTarget);
 			this.editor.updateToolbar();
 		}
 	},

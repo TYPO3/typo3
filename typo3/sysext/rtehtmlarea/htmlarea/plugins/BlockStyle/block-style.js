@@ -87,7 +87,7 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.1',
+			version		: '3.0',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -133,10 +133,10 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 	onChange: function (editor, combo, record, index) {
 		var className = combo.getValue();
 		this.editor.focus();
-		var blocks = this.getSelectedBlocks();
+		var blocks = this.editor.getSelection().getElements();
 		for (var k = 0; k < blocks.length; ++k) {
 			var parent = blocks[k];
-			while (parent && !HTMLArea.isBlockElement(parent) && parent.nodeName.toLowerCase() != "img") {
+			while (parent && !HTMLArea.DOM.isBlockElement(parent) && !/^(img)$/i.test(parent.nodeName)) {
 				parent = parent.parentNode;
 			}
 			if (!k) {
@@ -180,27 +180,6 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 				this.getPluginInstance('TableOperations').reStyleTable(node);
 			}
 		}
-	},
-	/*
-	 * This function gets the list of selected blocks
-	 */
-	getSelectedBlocks: function () {
-		var block, range, i = 0, blocks = [];
-		var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
-		if (Ext.isGecko) {
-			var selection = this.editor._getSelection();
-			try {
-				while ((range = selection.getRangeAt(i++))) {
-					block = this.editor.getParentElement(selection, range);
-					blocks.push(statusBarSelection ? statusBarSelection : block);
-				}
-			} catch(e) {
-				/* finished walking through selection */
-			}
-		} else {
-			blocks.push(statusBarSelection ? statusBarSelection : this.editor.getParentElement());
-		}
-		return blocks;
 	},
 	/*
 	 * This handler gets called when the editor is generated
@@ -261,8 +240,8 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 			var classNames = new Array();
 			var tagName = null;
 			var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
-			var parent = statusBarSelection ? statusBarSelection : this.editor.getParentElement();
-			while (parent && !HTMLArea.isBlockElement(parent) && parent.nodeName.toLowerCase() != "img") {
+			var parent = statusBarSelection ? statusBarSelection : this.editor.getSelection().getParentElement();
+			while (parent && !HTMLArea.DOM.isBlockElement(parent) && !/^(img)$/i.test(parent.nodeName)) {
 				parent = parent.parentNode;
 			}
 			if (parent) {

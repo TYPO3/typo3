@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -36,7 +36,7 @@ HTMLArea.DefinitionList = Ext.extend(HTMLArea.BlockElements, {
 		 * Setting up some properties from PageTSConfig
 		 */
 		this.buttonsConfiguration = this.editorConfiguration.buttons;
-		var parentPlugin = this.editor.plugins.BlockElements.instance;
+		var parentPlugin = this.getPluginInstance('BlockElements');
 		this.tags = parentPlugin.tags;
 		this.useClass = parentPlugin.useClass;
 		this.useBlockquote = parentPlugin.useBlockquote;
@@ -49,7 +49,7 @@ HTMLArea.DefinitionList = Ext.extend(HTMLArea.BlockElements, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '1.1',
+			version		: '2.0',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -106,54 +106,50 @@ HTMLArea.DefinitionList = Ext.extend(HTMLArea.BlockElements, {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		this.editor.focus();
-		var selection = editor._getSelection();
-		var range = editor._createRange(selection);
+		var range = this.editor.getSelection().createRange();
 		var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
-		var parentElement = statusBarSelection ? statusBarSelection : this.editor.getParentElement(selection, range);
+		var parentElement = statusBarSelection ? statusBarSelection : this.editor.getSelection().getParentElement();
 		if (target) {
 			parentElement = target;
 		}
-		while (parentElement && (!HTMLArea.isBlockElement(parentElement) || /^(li)$/i.test(parentElement.nodeName))) {
+		while (parentElement && (!HTMLArea.DOM.isBlockElement(parentElement) || /^(li)$/i.test(parentElement.nodeName))) {
 			parentElement = parentElement.parentNode;
 		}
-		
 		switch (buttonId) {
-			case "Indent" :
-				if (/^(dd|dt)$/i.test(parentElement.nodeName) && this.indentDefinitionList(parentElement, range)) {
+			case 'Indent' :
+				if (/^(dd|dt)$/i.test(parentElement.nodeName) && this.indentDefinitionList(parentElement)) {
 					break;
 				} else {
 					HTMLArea.DefinitionList.superclass.onButtonPress.call(this, editor, id, target, className);
 				}
 				break;
-			case "Outdent" :
-				if (/^(dt)$/i.test(parentElement.nodeName) && this.outdentDefinitionList(selection, range)) {
+			case 'Outdent' :
+				if (/^(dt)$/i.test(parentElement.nodeName) && this.outdentDefinitionList()) {
 					break;
 				} else {
 					HTMLArea.DefinitionList.superclass.onButtonPress.call(this, editor, id, target, className);
 				}
 				break;
-			case "DefinitionList":
-				var bookmark = this.editor.getBookmark(range);
+			case 'DefinitionList':
+				var bookmark = this.editor.getBookMark().get(range);
 				this.insertDefinitionList();
-				this.editor.selectRange(this.editor.moveToBookmark(bookmark));
+				this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(bookmark));
 				break;
-			case "DefinitionItem":
-				var bookmark = this.editor.getBookmark(range);
-				this.remapNode(parentElement, (parentElement.nodeName.toLowerCase() === "dt") ? "dd" : "dt");
-				this.editor.selectRange(this.editor.moveToBookmark(bookmark));
+			case 'DefinitionItem':
+				var bookmark = this.editor.getBookMark().get(range);
+				this.remapNode(parentElement, (parentElement.nodeName.toLowerCase() === 'dt') ? 'dd' : 'dt');
+				this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(bookmark));
 				break;
 			default:
 				HTMLArea.DefinitionList.superclass.onButtonPress.call(this, editor, id, target, className);
 		}
 		return false;
 	},
-	
 	/*
 	 * This function remaps a node to the specified node name
 	 */
-	remapNode : function(node, nodeName) {
-		var newNode = this.editor.convertNode(node, nodeName);
+	remapNode: function (node, nodeName) {
+		var newNode = HTMLArea.DOM.convertNode(node, nodeName);
 		var attributes = node.attributes, attributeName, attributeValue;
 		for (var i = attributes.length; --i >= 0;) {
 			attributeName = attributes.item(i).nodeName;
@@ -166,124 +162,120 @@ HTMLArea.DefinitionList = Ext.extend(HTMLArea.BlockElements, {
 				newNode.style.cssText = node.style.cssText;
 			}
 			if (node.className) {
-				newNode.setAttribute("class", node.className);
+				newNode.setAttribute('class', node.className);
 				if (!newNode.className) {
 						// IE before IE8
-					newNode.setAttribute("className", node.className);
+					newNode.setAttribute('className', node.className);
 				}
 			} else {
-				newNode.removeAttribute("class");
-				newNode.removeAttribute("className");
+				newNode.removeAttribute('class');
+				newNode.removeAttribute('className');
 			}
 		}
 		
 		if (this.tags && this.tags[nodeName] && this.tags[nodeName].allowedClasses) {
 			if (newNode.className && /\S/.test(newNode.className)) {
 				var allowedClasses = this.tags[nodeName].allowedClasses;
-				var classNames = newNode.className.trim().split(" ");
+				var classNames = newNode.className.trim().split(' ');
 				for (var i = classNames.length; --i >= 0;) {
 					if (!allowedClasses.test(classNames[i])) {
-						HTMLArea._removeClass(newNode, classNames[i]);
+						HTMLArea.DOM.removeClass(newNode, classNames[i]);
 					}
 				}
 			}
 		}
 		return newNode;
 	},
-	
 	/*
 	 * Insert a definition list
 	 */
-	insertDefinitionList : function () {
-		var selection = this.editor._getSelection();
-		var endBlocks = this.editor.getEndBlocks(selection);
+	insertDefinitionList: function () {
+		var endBlocks = this.editor.getSelection().getEndBlocks();
 		var list = null;
-		if (this.editor._selectionEmpty(selection)) {
+		if (this.editor.getSelection().isEmpty()) {
 			if (/^(body|div|address|pre|blockquote|li|td|dd)$/i.test(endBlocks.start.nodeName)) {
-				list = this.editor._doc.createElement("dl");
-				var term = list.appendChild(this.editor._doc.createElement("dt"));
+				list = this.editor.document.createElement('dl');
+				var term = list.appendChild(this.editor.document.createElement('dt'));
 				while (endBlocks.start.firstChild) {
 					term.appendChild(endBlocks.start.firstChild);
 				}
 				list = endBlocks.start.appendChild(list);
 			} else if (/^(p|h[1-6])$/i.test(endBlocks.start.nodeName)) {
-				var list = endBlocks.start.parentNode.insertBefore(this.editor._doc.createElement("dl"), endBlocks.start);
+				var list = endBlocks.start.parentNode.insertBefore(this.editor.document.createElement('dl'), endBlocks.start);
 				endBlocks.start = list.appendChild(endBlocks.start);
-				endBlocks.start = this.remapNode(endBlocks.start, "dt");
+				endBlocks.start = this.remapNode(endBlocks.start, 'dt');
 			}
 		} else if (endBlocks.start != endBlocks.end && /^(p|h[1-6])$/i.test(endBlocks.start.nodeName)) {
 				// We wrap the selected elements in a dl element
-			var paragraphs = endBlocks.start.nodeName.toLowerCase() === "p";
-			list = this.wrapSelectionInBlockElement("dl");
+			var paragraphs = endBlocks.start.nodeName.toLowerCase() === 'p';
+			list = this.wrapSelectionInBlockElement('dl');
 			var items = list.childNodes;
 			for (var i = 0, n = items.length; i < n; ++i) {
-				var paragraphItem = items[i].nodeName.toLowerCase() === "p";
-				this.remapNode(items[i],  paragraphs ? ((i % 2) ? "dd" : "dt") : (paragraphItem ? "dd" : "dt"));
+				var paragraphItem = items[i].nodeName.toLowerCase() === 'p';
+				this.remapNode(items[i],  paragraphs ? ((i % 2) ? 'dd' : 'dt') : (paragraphItem ? 'dd' : 'dt'));
 			}
 		}
 		return list;
 	},
-	
 	/*
 	 * Indent a definition list
 	 */
-	indentDefinitionList : function (parentElement, range) {
-		var selection = this.editor._getSelection();
-		var endBlocks = this.editor.getEndBlocks(selection);
-		if (this.editor._selectionEmpty(selection) && /^dd$/i.test(parentElement.nodeName)) {
-			var list = parentElement.appendChild(this.editor._doc.createElement("dl"));
-			var term = list.appendChild(this.editor._doc.createElement("dt"));
+	indentDefinitionList: function (parentElement) {
+		var range = this.editor.getSelection().createRange();
+		var endBlocks = this.editor.getSelection().getEndBlocks();
+		if (this.editor.getSelection().isEmpty() && /^dd$/i.test(parentElement.nodeName)) {
+			var list = parentElement.appendChild(this.editor.document.createElement('dl'));
+			var term = list.appendChild(this.editor.document.createElement('dt'));
 			if (!Ext.isIE) {
 				if (Ext.isWebKit) {
-					term.innerHTML = "<br />";
+					term.innerHTML = '<br />';
 				} else {
-					term.appendChild(this.editor._doc.createTextNode(""));
+					term.appendChild(this.editor.document.createTextNode(''));
 				}
 			} else {
-				term.innerHTML = "\x20";
+				term.innerHTML = '\x20';
 			}
-			this.editor.selectNodeContents(term, false);
+			this.editor.getSelection().selectNodeContents(term, false);
 			return true;
 		} else if (endBlocks.start && /^dt$/i.test(endBlocks.start.nodeName) && endBlocks.start.previousSibling) {
 			var sibling = endBlocks.start.previousSibling;
-			var bookmark = this.editor.getBookmark(range);
+			var bookmark = this.editor.getBookMark().get(range);
 			if (/^dd$/i.test(sibling.nodeName)) {
-				var list = this.wrapSelectionInBlockElement("dl");
+				var list = this.wrapSelectionInBlockElement('dl');
 				list = sibling.appendChild(list);
 					// May need to merge the list if it has a previous sibling
 				if (list.previousSibling && /^dl$/i.test(list.previousSibling.nodeName)) {
 					while (list.firstChild) {
 						list.previousSibling.appendChild(list.firstChild);
 					}
-					HTMLArea.removeFromParent(list);
+					HTMLArea.DOM.removeFromParent(list);
 				}
 			} else if (/^dt$/i.test(sibling.nodeName)) {
-				var definition = this.editor._doc.createElement("dd");
-				definition.appendChild(this.wrapSelectionInBlockElement("dl"));
+				var definition = this.editor.document.createElement('dd');
+				definition.appendChild(this.wrapSelectionInBlockElement('dl'));
 				sibling.parentNode.insertBefore(definition, sibling.nextSibling);
 			}
-			this.editor.selectRange(this.editor.moveToBookmark(bookmark));
+			this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(bookmark));
 			return true;
 		}
 		return false;
 	},
-	
 	/*
 	 * Outdent a definition list
 	 */
-	outdentDefinitionList : function (selection, range) {
-		var endBlocks = this.editor.getEndBlocks(selection);
+	outdentDefinitionList: function () {
+		var endBlocks = this.editor.getSelection().getEndBlocks();
 		if (/^dt$/i.test(endBlocks.start.nodeName)
 				&& /^dl$/i.test(endBlocks.start.parentNode.nodeName)
 				&& /^dd$/i.test(endBlocks.start.parentNode.parentNode.nodeName)
 				&& !endBlocks.end.nextSibling) {
-			var bookmark = this.editor.getBookmark(range);
+			var bookmark = this.editor.getBookMark().get(this.editor.getSelection().createRange());
 			var dl = endBlocks.start.parentNode;
 			var dd = dl.parentNode;
-			if (this.editor._selectionEmpty(selection)) {
+			if (this.editor.getSelection().isEmpty()) {
 				dd.parentNode.insertBefore(endBlocks.start, dd.nextSibling);
 			} else {
-				var selected = this.wrapSelectionInBlockElement("dl");
+				var selected = this.wrapSelectionInBlockElement('dl');
 				while (selected.lastChild) {
 					dd.parentNode.insertBefore(selected.lastChild, dd.nextSibling);
 				}
@@ -296,7 +288,7 @@ HTMLArea.DefinitionList = Ext.extend(HTMLArea.BlockElements, {
 					dd.parentNode.removeChild(dd);
 				}
 			}
-			this.editor.selectRange(this.editor.moveToBookmark(bookmark));
+			this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(bookmark));
 			return true;
 		}
 		return false;
@@ -308,10 +300,10 @@ HTMLArea.DefinitionList = Ext.extend(HTMLArea.BlockElements, {
 	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
 		var editor = this.editor;
 		if (mode === 'wysiwyg' && this.editor.isEditable()) {
-			var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
-			var parentElement = statusBarSelection ? statusBarSelection : editor.getParentElement();
+			var statusBarSelection = editor.statusBar ? editor.statusBar.getSelection() : null;
+			var parentElement = statusBarSelection ? statusBarSelection : editor.getSelection().getParentElement();
 			if (!/^(body)$/i.test(parentElement.nodeName)) {
-				var endBlocks = editor.getEndBlocks(editor._getSelection());
+				var endBlocks = editor.getSelection().getEndBlocks();
 				switch (button.itemId) {
 					case 'Outdent':
 						if (/^(dt)$/i.test(endBlocks.start.nodeName)
