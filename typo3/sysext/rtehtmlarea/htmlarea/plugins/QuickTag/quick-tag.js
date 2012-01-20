@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  (c) 2004 Cau guanabara <caugb@ibest.com.br>
-*  (c) 2005-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -34,7 +34,7 @@ HTMLArea.QuickTag = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin : function(editor) {
+	configurePlugin: function (editor) {
 		this.pageTSConfiguration = this.editorConfiguration.buttons.inserttag;
 		this.allowedTags = (this.pageTSConfiguration && this.pageTSConfiguration.tags) ? this.pageTSConfiguration.tags : null;
 		this.denyTags = (this.pageTSConfiguration && this.pageTSConfiguration.denyTags) ? this.pageTSConfiguration.denyTags : null;
@@ -44,7 +44,7 @@ HTMLArea.QuickTag = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.2',
+			version		: '2.3',
 			developer	: 'Cau Guanabara & Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca',
 			copyrightOwner	: 'Cau Guanabara & Stanislas Rolland',
@@ -92,7 +92,7 @@ HTMLArea.QuickTag = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	boolean		false if action is completed
 	 */
-	onButtonPress: function(editor, id, target) {
+	onButtonPress: function (editor, id, target) {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
@@ -425,8 +425,7 @@ HTMLArea.QuickTag = Ext.extend(HTMLArea.Plugin, {
 			tagOpen = tagOpen + this.subTags.open;
 			tagClose = this.subTags.close + tagClose;
 		}
-		this.editor.focus();
-		this.editor.surroundHTML(tagOpen, tagClose);
+		this.editor.getSelection().surroundHtml(tagOpen, tagClose);
 		this.close();
 		event.stopEvent();
 	},

@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2010-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,7 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin: function(editor) {
+	configurePlugin: function (editor) {
 		this.pageTSConfiguration = this.editorConfiguration.buttons.editelement;
 		this.removedFieldsets = (this.pageTSConfiguration && this.pageTSConfiguration.removeFieldsets) ? this.pageTSConfiguration.removeFieldsets : '';
 		this.properties = (this.pageTSConfiguration && this.pageTSConfiguration.properties) ? this.pageTSConfiguration.properties : '';
@@ -40,7 +40,7 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '1.1',
+			version		: '1.2',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -93,7 +93,7 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
 			// Get the parent element of the current selection
-		this.element = this.editor.getParentElement();
+		this.element = this.editor.getSelection().getParentElement();
 		if (this.element && !/^body$/i.test(this.element.nodeName)) {
 				// Open the dialogue window
 			this.openDialogue(
@@ -294,7 +294,7 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 	 */
 	setStyleOptions: function (comboBox, element) {
 		var nodeName = element.nodeName.toLowerCase();
-		this.stylePlugin = this.getPluginInstance(HTMLArea.isBlockElement(element) ? 'BlockStyle' : 'TextStyle');
+		this.stylePlugin = this.getPluginInstance(HTMLArea.DOM.isBlockElement(element) ? 'BlockStyle' : 'TextStyle');
 		if (comboBox && this.stylePlugin) {
 			var classNames = HTMLArea.DOM.getClassNames(element);
 			this.stylePlugin.buildDropDownOptions(comboBox, nodeName);
@@ -458,7 +458,7 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 		this.restoreSelection();
 		if (this.element) {
 				// Delete the element
-			HTMLArea.removeFromParent(this.element);
+			HTMLArea.DOM.removeFromParent(this.element);
 		}
 		this.close();
 		event.stopEvent();

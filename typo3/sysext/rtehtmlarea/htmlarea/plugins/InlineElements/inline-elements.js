@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2007-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -36,8 +36,8 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 	 */
 	configurePlugin: function (editor) {
 			// Setting the array of allowed attributes on inline elements
-		if (this.editor.plugins.TextStyle && this.editor.plugins.TextStyle.instance) {
-			this.allowedAttributes = this.editor.plugins.TextStyle.instance.allowedAttributes;
+		if (this.getPluginInstance('TextStyle')) {
+			this.allowedAttributes = this.getPluginInstance('TextStyle').allowedAttributes;
 		} else {
 			this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class");
 			if (Ext.isIE) {
@@ -52,7 +52,7 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.1',
+			version		: '2.2',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -162,19 +162,16 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 		Underline	: 'u',
 		Variable	: 'var'
 	 },
-	
 	/*
 	 * Regular expression to check if an element is an inline elment
 	 */
-	REInlineElements : /^(b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|span|strike|strong|sub|sup|tt|u|var)$/,
-	
+	REInlineElements: /^(b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|span|strike|strong|sub|sup|tt|u|var)$/,
 	/*
 	 * Function to check if an element is an inline elment
 	 */
-	isInlineElement : function (el) {
-		return el && (el.nodeType === 1) && this.REInlineElements.test(el.nodeName.toLowerCase());
+	isInlineElement: function (el) {
+		return el && (el.nodeType === HTMLArea.DOM.ELEMENT_NODE) && this.REInlineElements.test(el.nodeName.toLowerCase());
 	},
-	
 	/*
 	 * This function adds an attribute to the array of allowed attributes on inline elements
 	 *
@@ -182,14 +179,13 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	void
 	 */
-	addAllowedAttribute : function (attribute) {
+	addAllowedAttribute: function (attribute) {
 		this.allowedAttributes.push(attribute);
 	},
-	
 	/*
 	 * This function gets called when some inline element button was pressed.
 	 */
-	onButtonPress : function (editor, id) {
+	onButtonPress: function (editor, id) {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
@@ -201,39 +197,35 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 			this.appendToLog('onButtonPress', 'No element corresponding to button: ' + buttonId, 'warn');
 		}
 	},
-	
 	/*
 	 * This function gets called when some inline element was selected in the drop-down list
 	 */
-	onChange : function (editor, combo, record, index) {
+	onChange: function (editor, combo, record, index) {
 		var element = combo.getValue();
 		this.applyInlineElement(editor, element, false);
 	},
-	
 	/*
 	 * This function applies to the selection the markup chosen in the drop-down list or corresponding to the button pressed
 	 */
-	applyInlineElement : function (editor, element) {
-		editor.focus();
-		var selection = editor._getSelection();
-		var range = editor._createRange(selection);
-		var parent = editor.getParentElement(selection, range);
-		var ancestors = editor.getAllAncestors();
+	applyInlineElement: function (editor, element) {
+		var range = editor.getSelection().createRange();
+		var parent = editor.getSelection().getParentElement();
+		var ancestors = editor.getSelection().getAllAncestors();
 		var elementIsAncestor = false;
 		var fullNodeSelected = false;
 		if (Ext.isIE) {
-			var bookmark = editor.getBookmark(range);
+			var bookmark = editor.getBookMark().get(range);
 		}
 			// Check if the chosen element is among the ancestors
 		for (var i = 0; i < ancestors.length; ++i) {
-			if ((ancestors[i].nodeType == 1) && (ancestors[i].nodeName.toLowerCase() == element)) {
+			if ((ancestors[i].nodeType === HTMLArea.DOM.ELEMENT_NODE) && (ancestors[i].nodeName.toLowerCase() == element)) {
 				elementIsAncestor = true;
 				var elementAncestorIndex = i;
 				break;
 			}
 		}
-		if (!editor._selectionEmpty(selection)) {
-			var fullySelectedNode = editor.getFullySelectedNode(selection, range, ancestors);
+		if (!editor.getSelection().isEmpty()) {
+			var fullySelectedNode = editor.getSelection().getFullySelectedNode();
 			fullNodeSelected = this.isInlineElement(fullySelectedNode);
 			if (fullNodeSelected) {
 				parent = fullySelectedNode;
@@ -241,7 +233,7 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 			var statusBarSelection = (editor.statusBar ? editor.statusBar.getSelection() : null);
 			if (element !== "none" && !(fullNodeSelected && elementIsAncestor)) {
 					// Add markup
-				var newElement = editor._doc.createElement(element);
+				var newElement = editor.document.createElement(element);
 				if (element === "bdo") {
 					newElement.setAttribute("dir", "rtl");
 				}
@@ -253,11 +245,11 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 							newElement.normalize();
 						} else {
 							range.selectNode(parent);
-							editor.wrapWithInlineElement(newElement, selection, range);
+							editor.getDomNode().wrapWithInlineElement(newElement, range);
 						}
-						editor.selectNodeContents(newElement.lastChild, false);
+						editor.getSelection().selectNodeContents(newElement.lastChild, false);
 					} else {
-						editor.wrapWithInlineElement(newElement, selection, range);
+						editor.getDomNode().wrapWithInlineElement(newElement, range);
 					}
 					range.detach();
 				} else {
@@ -269,15 +261,15 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 							if (element === "bdo") {
 								parent.firstChild.setAttribute("dir", "rtl");
 							}
-							editor.selectNodeContents(parent, false);
+							editor.getSelection().selectNodeContents(parent, false);
 						} else {
 							var content = parent.outerHTML;
 							var newElement = this.remapMarkup(parent, element);
 							newElement.innerHTML = content;
-							editor.selectNodeContents(newElement, false);
+							editor.getSelection().selectNodeContents(newElement, false);
 						}
 					} else {
-						editor.wrapWithInlineElement(newElement, selection, range);
+						editor.getDomNode().wrapWithInlineElement(newElement, selection, range);
 					}
 				}
 			} else {
@@ -287,37 +279,36 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 						parent = ancestors[elementAncestorIndex];
 					}
 					var parentElement = parent.parentNode;
-					editor.removeMarkup(parent);
+					editor.getDomNode().removeMarkup(parent);
 					if (Ext.isWebKit && this.isInlineElement(parentElement)) {
-						editor.selectNodeContents(parentElement, false);
+						editor.getSelection().selectNodeContents(parentElement, false);
 					}
 				}
 			}
 		} else {
 				// Remove or remap markup when the selection is collapsed
-			if (parent && !HTMLArea.isBlockElement(parent)) {
-				if ((element === "none") || elementIsAncestor) {
+			if (parent && !HTMLArea.DOM.isBlockElement(parent)) {
+				if ((element === 'none') || elementIsAncestor) {
 					if (elementIsAncestor) {
 						parent = ancestors[elementAncestorIndex];
 					}
-					editor.removeMarkup(parent);
+					editor.getDomNode().removeMarkup(parent);
 				} else {
-					var bookmark = this.editor.getBookmark(range);
+					var bookmark = this.editor.getBookMark().get(range);
 					var newElement = this.remapMarkup(parent, element);
-					this.editor.selectRange(this.editor.moveToBookmark(bookmark));
+					this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(bookmark));
 				}
 			}
 		}
 	},
-	
 	/*
 	 * This function remaps the given element to the specified tagname
 	 */
-	remapMarkup : function(element, tagName) {
+	remapMarkup: function (element, tagName) {
 		var attributeValue;
-		var newElement = this.editor.convertNode(element, tagName);
-		if (tagName === "bdo") {
-			newElement.setAttribute("dir", "ltr");
+		var newElement = HTMLArea.DOM.convertNode(element, tagName);
+		if (tagName === 'bdo') {
+			newElement.setAttribute('dir', 'ltr');
 		}
 		for (var i = 0; i < this.allowedAttributes.length; ++i) {
 			if (attributeValue = element.getAttribute(this.allowedAttributes[i])) {
@@ -358,19 +349,18 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 	/*
 	* This function gets called when the toolbar is updated
 	*/
-	onUpdateToolbar : function (button, mode, selectionEmpty, ancestors, endPointsInSameBlock) {
+	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors, endPointsInSameBlock) {
 		var editor = this.editor;
-		if (mode === "wysiwyg" && editor.isEditable()) {
+		if (mode === 'wysiwyg' && editor.isEditable()) {
 			var 	tagName = false,
 				fullNodeSelected = false;
-			var selection = editor._getSelection();
-			var range = editor._createRange(selection);
-			var parent = editor.getParentElement(selection);
-			if (parent && !HTMLArea.isBlockElement(parent)) {
+			var range = editor.getSelection().createRange();
+			var parent = editor.getSelection().getParentElement();
+			if (parent && !HTMLArea.DOM.isBlockElement(parent)) {
 				tagName = parent.nodeName.toLowerCase();
 			}
 			if (!selectionEmpty) {
-				var fullySelectedNode = editor.getFullySelectedNode(selection, range, ancestors);
+				var fullySelectedNode = editor.getSelection().getFullySelectedNode();
 				fullNodeSelected = this.isInlineElement(fullySelectedNode);
 				if (fullNodeSelected) {
 					tagName = fullySelectedNode.nodeName.toLowerCase();

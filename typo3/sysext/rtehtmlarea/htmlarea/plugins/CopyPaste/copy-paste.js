@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -40,7 +40,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.3',
+			version		: '2.4',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -160,7 +160,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 				// Revert Opera's operation as it produces invalid html anyways
 			if (Ext.isOpera) {
 				this.editor.inhibitKeyboardInput = true;
-				var bookmark = this.editor.getBookmark(this.editor._createRange(this.editor._getSelection()));
+				var bookmark = this.editor.getBookMark().get(this.editor.getSelection().createRange());
 				var html = this.editor.getInnerHTML();
 				this.revertPaste.defer(200, this, [html, bookmark]);
 			}
@@ -172,7 +172,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 	 */
 	revertPaste: function (html, bookmark) {
 		this.editor.setHTML(html);
-		this.editor.selectRange(this.editor.moveToBookmark(bookmark));
+		this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(bookmark));
 		this.editor.inhibitKeyboardInput = false;
 	},
 	/*
@@ -181,7 +181,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 	 */
 	applyBrowserCommand: function (buttonId) {
 		try {
-			this.editor.document.execCommand(buttonId, false, null);
+			this.editor.getSelection().execCommand(buttonId, false, null);
 		} catch (e) {
 			if (Ext.isGecko) {
 				this.mozillaClipboardAccessException();
@@ -208,9 +208,8 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 	 * This function unlinks any empty link left over by the cut operation
 	 */
 	removeEmptyLink: function() {
-		var selection = this.editor._getSelection();
-		var range = this.editor._createRange(selection);
-		var parent = this.editor.getParentElement(selection, range);
+		var range = this.editor.getSelection().createRange();
+		var parent = this.editor.getSelection().getParentElement();
 		if (parent.firstChild && /^(a)$/i.test(parent.firstChild.nodeName)) {
 			parent = parent.firstChild;
 		}
@@ -219,23 +218,23 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 			if (!parent.innerHTML || (parent.childNodes.length == 1 && /^(br)$/i.test(parent.firstChild.nodeName))) {
 				if (!Ext.isIE) {
 					var container = parent.parentNode;
-					this.editor.removeMarkup(parent);
+					this.editor.getDomNode().removeMarkup(parent);
 						// Opera does not render empty list items
 					if (Ext.isOpera && /^(li)$/i.test(container.nodeName) && !container.firstChild) {
 						container.innerHTML = '<br />';
-						this.editor.selectNodeContents(container, true);
+						this.editor.getSelection().selectNodeContents(container, true);
 					}
 				} else {
-					HTMLArea.removeFromParent(parent);
+					HTMLArea.DOM.removeFromParent(parent);
 				}
 			}
 		}
 		if (Ext.isWebKit) {
 				// Remove Apple's span and font tags
-			this.editor.cleanAppleStyleSpans(this.editor.document.body);
+			this.editor.getDomNode().cleanAppleStyleSpans(this.editor.document.body);
 				// Reset Safari selection in order to prevent insertion of span and/or font tags on next text input
-			var bookmark = this.editor.getBookmark(this.editor._createRange(this.editor._getSelection()));
-			this.editor.selectRange(this.editor.moveToBookmark(bookmark));
+			var bookmark = this.editor.getBookMark().get(this.editor.getSelection().createRange());
+			this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(bookmark));
 		}
 		this.editor.updateToolbar();
 	},
@@ -244,22 +243,20 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 	 * This feature allows to paste a region of table cells
 	 */
 	applyToTable: function (buttonId) {
-		var selection = this.editor._getSelection();
-		var range = this.editor._createRange(selection);
-		var parent = this.editor.getParentElement(selection, range);
-		var endBlocks = this.editor.getEndBlocks(selection);
+		var range = this.editor.getSelection().createRange();
+		var parent = this.editor.getSelection().getParentElement();
+		var endBlocks = this.editor.getSelection().getEndBlocks();
 		switch (buttonId) {
 			case 'Copy':
 			case 'Cut' :
 				HTMLArea.copiedCells = null;
-				var endBlocks = this.editor.getEndBlocks(selection);
 				if ((/^(tr)$/i.test(parent.nodeName) && !Ext.isIE) || (/^(td|th)$/i.test(endBlocks.start.nodeName) && /^(td|th)$/i.test(endBlocks.end.nodeName) && !Ext.isGecko && endBlocks.start != endBlocks.end)) {
-					HTMLArea.copiedCells = this.collectCells(buttonId, selection, endBlocks);
+					HTMLArea.copiedCells = this.collectCells(buttonId, endBlocks);
 				}
 				break;
 			case 'Paste':
 				if (/^(tr|td|th)$/i.test(parent.nodeName) && HTMLArea.copiedCells) {
-					return this.pasteCells(selection, endBlocks);
+					return this.pasteCells(endBlocks);
 				}
 				break;
 			default:
@@ -270,12 +267,12 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function handles pasting of a collection of table cells
 	 */
-	pasteCells: function (selection, endBlocks) {
+	pasteCells: function (endBlocks) {
 		var cell = null;
 		if (Ext.isGecko) {
-			range = selection.getRangeAt(0);
+			var range = this.editor.getSelection().createRange();
 			cell = range.startContainer.childNodes[range.startOffset];
-			while (cell && !HTMLArea.isBlockElement(cell)) {
+			while (cell && !HTMLArea.DOM.isBlockElement(cell)) {
 				cell = cell.parentNode;
 			}
 		}
@@ -321,10 +318,10 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function collects the selected table cells for copy/cut operations
 	 */
-	collectCells: function (operation, selection, endBlocks) {
+	collectCells: function (operation, endBlocks) {
 		var tableParts = ['thead', 'tbody', 'tfoot'];
 		var tablePartsIndex = { thead : 0, tbody : 1, tfoot : 2 };
-		var selection = this.editor._getSelection();
+		var selection = this.editor.getSelection().get().selection;
 		var range, i = 0, cell, cells = null;
 		var rows = new Array();
 		for (var k = tableParts.length; --k >= 0;) {
@@ -418,9 +415,9 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 				var next = cutRows[i].nextSibling;
 				cutRows[i].parentNode.removeChild(cutRows[i]);
 				if (next) {
-					this.editor.selectNodeContents(next.cells[0], true);
+					this.editor.getSelection().selectNodeContents(next.cells[0], true);
 				} else if (tablePart.parentNode.rows.length) {
-					this.editor.selectNodeContents(tablePart.parentNode.rows[0].cells[0], true);
+					this.editor.getSelection().selectNodeContents(tablePart.parentNode.rows[0].cells[0], true);
 				}
 			} else {
 				cutRows[i].parentNode.removeChild(cutRows[i]);

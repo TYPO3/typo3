@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -37,7 +37,7 @@ HTMLArea.TYPO3HtmlParser = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '1.9',
+			version		: '1.10',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -84,9 +84,9 @@ HTMLArea.TYPO3HtmlParser = Ext.extend(HTMLArea.Plugin, {
 		this.editor.inhibitKeyboardInput = true;
 		var editor = this.editor;
 		if (Ext.isWebKit) {
-			editor.cleanAppleStyleSpans(editor._doc.body);
+			editor.getDomNode().cleanAppleStyleSpans(editor.document.body);
 		}
-		var bookmark = editor.getBookmark(editor._createRange(editor._getSelection()));
+		var bookmark = editor.getBookMark().get(editor.getSelection().createRange());
 		var url = this.parseHtmlModulePath;
 		var content = {
 			editorNo : this.editorId,
@@ -98,7 +98,7 @@ HTMLArea.TYPO3HtmlParser = Ext.extend(HTMLArea.Plugin, {
 				function (options, success, response) {
 					if (success) {
 						editor.setHTML(response.responseText);
-						editor.selectRange(editor.moveToBookmark(bookmark));
+						editor.getSelection().selectRange(editor.getBookMark().moveTo(bookmark));
 					} else {
 						this.appendToLog('clean', 'Post request to ' + url + ' failed. Server reported ' + response.status, 'error');
 					}

@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  (c) 2004 Ki Master George <kimastergeorge@gmail.com>
-*  (c) 2005-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,12 +30,11 @@
 /*
  * Insert Smiley Plugin for TYPO3 htmlArea RTE
  */
-
 HTMLArea.InsertSmiley = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin : function(editor) {
+	configurePlugin: function (editor) {
 		this.pageTSConfiguration = this.editorConfiguration.buttons.emoticon;
 			// Default set of imoticons from Mozilla Thunderbird
 		this.icons = [
@@ -60,7 +59,7 @@ HTMLArea.InsertSmiley = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.1',
+			version		: '2.2',
 			developer	: 'Ki Master George & Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Ki Master George & Stanislas Rolland',
@@ -150,16 +149,15 @@ HTMLArea.InsertSmiley = Ext.extend(HTMLArea.Plugin, {
 	 */
 	insertImageTag: function (event, target) {
 		event.stopEvent();
-		this.editor.focus();
 		this.restoreSelection();
 		var icon = Ext.get(target).first();
 		var imgTag = this.editor.document.createElement('img');
 		imgTag.setAttribute('src', icon.getAttribute('src'));
 		imgTag.setAttribute('alt', target.getAttribute('ext:qtitle'));
 		imgTag.setAttribute('title', target.getAttribute('ext:qtip'));
-		this.editor.insertNodeAtSelection(imgTag);
+		this.editor.getSelection().insertNode(imgTag);
 		if (!Ext.isIE) {
-			this.editor.selectNode(imgTag, false);
+			this.editor.getSelection().selectNode(imgTag, false);
 		}
 		this.close();
 		return false;

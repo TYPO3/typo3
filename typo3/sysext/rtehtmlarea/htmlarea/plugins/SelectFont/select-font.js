@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -35,30 +35,30 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 		this.buttonsConfiguration = this.editorConfiguration.buttons;
 		this.disablePCexamples = this.editorConfiguration.disablePCexamples;
 			// Font formating will use the style attribute
-		if (this.getPluginInstance("TextStyle")) {
-			this.getPluginInstance("TextStyle").addAllowedAttribute("style");
-			this.allowedAttributes = this.getPluginInstance("TextStyle").allowedAttributes;
+		if (this.getPluginInstance('TextStyle')) {
+			this.getPluginInstance('TextStyle').addAllowedAttribute('style');
+			this.allowedAttributes = this.getPluginInstance('TextStyle').allowedAttributes;
 		}
-		if (this.getPluginInstance("InlineElements")) {
-			this.getPluginInstance("InlineElements").addAllowedAttribute("style");
+		if (this.getPluginInstance('InlineElements')) {
+			this.getPluginInstance('InlineElements').addAllowedAttribute('style');
 			if (!this.allowedAllowedAttributes) {
-				this.allowedAttributes = this.getPluginInstance("InlineElements").allowedAttributes;
+				this.allowedAttributes = this.getPluginInstance('InlineElements').allowedAttributes;
 			}
 		}
-		if (this.getPluginInstance("BlockElements")) {
-			this.getPluginInstance("BlockElements").addAllowedAttribute("style");
+		if (this.getPluginInstance('BlockElements')) {
+			this.getPluginInstance('BlockElements').addAllowedAttribute('style');
 		}
 		if (!this.allowedAttributes) {
-			this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class", "style");
+			this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'style');
 			if (Ext.isIE) {
-				this.allowedAttributes.push("className");
+				this.allowedAttributes.push('className');
 			}
 		}
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.1',
+			version		: '2.2',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -108,15 +108,15 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 	 * Conversion object: button name to corresponding style property name
 	 */
 	styleProperty: {
-		FontName	: "fontFamily",
-		FontSize	: "fontSize"
+		FontName: 'fontFamily',
+		FontSize: 'fontSize'
 	},
 	/*
 	 * Conversion object: button name to corresponding css property name
 	 */
 	cssProperty: {
-		FontName	: "font-family",
-		FontSize	: "font-size"
+		FontName: 'font-family',
+		FontSize: 'font-size'
 	},
 	/*
 	 * This funcion is invoked by the editor when it is being generated
@@ -135,17 +135,14 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 	 */
 	onChange: function (editor, combo, record, index) {
 		var param = combo.getValue();
-		editor.focus();
 		var 	element,
 			fullNodeSelected = false;
-		var selection = editor._getSelection();
-		var range = editor._createRange(selection);
-		var parent = editor.getParentElement(selection, range);
-		var selectionEmpty = editor._selectionEmpty(selection);
+		var range = editor.getSelection().createRange();
+		var parent = editor.getSelection().getParentElement();
+		var selectionEmpty = editor.getSelection().isEmpty();
 		var statusBarSelection = editor.statusBar ? editor.statusBar.getSelection() : null;
 		if (!selectionEmpty) {
-			var ancestors = editor.getAllAncestors();
-			var fullySelectedNode = editor.getFullySelectedNode(selection, range, ancestors);
+			var fullySelectedNode = editor.getSelection().getFullySelectedNode();
 			if (fullySelectedNode) {
 				fullNodeSelected = true;
 				parent = fullySelectedNode;
@@ -156,23 +153,23 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 				// Set the style attribute
 			this.setStyle(element, combo.itemId, param);
 				// Remove the span tag if it has no more attribute
-			if ((element.nodeName.toLowerCase() === "span") && !HTMLArea.hasAllowedAttributes(element, this.allowedAttributes)) {
-				editor.removeMarkup(element);
+			if (/^span$/i.test(element.nodeName) && !HTMLArea.DOM.hasAllowedAttributes(element, this.allowedAttributes)) {
+				editor.getDomNode().removeMarkup(element);
 			}
 		} else if (statusBarSelection) {
 			element = statusBarSelection;
 				// Set the style attribute
 			this.setStyle(element, combo.itemId, param);
 				// Remove the span tag if it has no more attribute
-			if ((element.nodeName.toLowerCase() === "span") && !HTMLArea.hasAllowedAttributes(element, this.allowedAttributes)) {
-				editor.removeMarkup(element);
+			if (/^span$/i.test(element.nodeName) && !HTMLArea.DOM.hasAllowedAttributes(element, this.allowedAttributes)) {
+				editor.getDomNode().removeMarkup(element);
 			}
-		} else if (editor.endPointsInSameBlock()) {
-			element = editor._doc.createElement("span");
+		} else if (editor.getSelection().endPointsInSameBlock()) {
+			element = editor.document.createElement('span');
 				// Set the style attribute
 			this.setStyle(element, combo.itemId, param);
 				// Wrap the selection with span tag with the style attribute
-			editor.wrapWithInlineElement(element, selection, range);
+			editor.getDomNode().wrapWithInlineElement(element, range);
 			if (!Ext.isIE) {
 				range.detach();
 			}
@@ -201,7 +198,7 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 				// If the fontFamily property becomes empty, it is broken and cannot be reset/unset
 				// We remove it using cssText
 			if (!/\S/.test(element.style[this.styleProperty[buttonId]])) {
-				element.style.cssText = element.style.cssText.replace(/font-family: /gi, "");
+				element.style.cssText = element.style.cssText.replace(/font-family: /gi, '');
 			}
 		}
 	},
@@ -212,7 +209,7 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 		var editor = this.editor;
 		if (mode === 'wysiwyg' && editor.isEditable()) {
 			var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
-			var parentElement = statusBarSelection ? statusBarSelection : editor.getParentElement();
+			var parentElement = statusBarSelection ? statusBarSelection : editor.getSelection().getParentElement();
 			var value = parentElement.style[this.styleProperty[select.itemId]];
 			if (!value) {
 				if (!Ext.isIE) {
@@ -228,7 +225,7 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 			if (value) {
 				index = store.findBy(
 					function (record, id) {
-						return record.get('value').replace(/[\"\']/g, "") == value.replace(/, /g, ",").replace(/[\"\']/g, "");
+						return record.get('value').replace(/[\"\']/g, '') == value.replace(/, /g, ',').replace(/[\"\']/g, '');
 					}
 				);
 			}
