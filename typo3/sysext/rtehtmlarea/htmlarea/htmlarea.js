@@ -139,6 +139,7 @@ HTMLArea.Config = function (editorId) {
 	this.documentType = '<!DOCTYPE html\r'
 			+ '    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"\r'
 			+ '    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r';
+	this.blankDocument = '<html><head></head><body></body></html>';
 		// Hold the configuration of buttons and hot keys registered by plugins
 	this.buttonsConfig = {};
 	this.hotKeyList = {};
@@ -1003,7 +1004,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 					errorText = e;
 				}
 			} else {
-				try { 
+				try {
 					this.document.styleSheets && this.document.styleSheets[0] && this.document.styleSheets[0].rules;
 				} catch(e) {
 					stylesAreLoaded = false;
@@ -2191,7 +2192,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 						id: this.editorId + '-iframe',
 						tag: 'iframe',
 						cls: 'editorIframe',
-						src: (Ext.isGecko || Ext.isWebKit) ? 'javascript:void(0);' : HTMLArea.editorUrl + 'popups/blank.html'
+						src: Ext.isGecko ? 'javascript:void(0);' : (Ext.isWebKit ? 'javascript: \'' + HTMLArea.htmlEncode(this.config.documentType + this.config.blankDocument) + '\'' : HTMLArea.editorUrl + 'popups/blank.html')
 					},
 					isNested: this.isNested,
 					nestedParentElements: this.nestedParentElements,
