@@ -100,7 +100,7 @@ class tx_version_tcemain {
 						// or if "element" version can be used
 					$versionizeTree = -1;
 					if (isset($value['treeLevels'])) {
-						$versionizeTree = t3lib_div::intInRange($value['treeLevels'], -1, 100);
+						$versionizeTree = t3lib_utility_Math::forceIntegerInRange($value['treeLevels'], -1, 100);
 					}
 					if ($table == 'pages' && $versionizeTree >= 0) {
 						$this->versionizePages($id, $value['label'], $versionizeTree, $tcemainObj);
