@@ -33,8 +33,9 @@
 class Tx_Workspaces_Service_Fehooks {
 
 	/**
+	 * @param array $params
 	 * @param tslib_fe $pObj
-	 * @return void
+	 * @return mixed
 	 */
 	public function hook_eofe($params, $pObj) {
 		if ($pObj->fePreview != 2) {

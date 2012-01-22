@@ -37,7 +37,7 @@ class Tx_Workspaces_Service_AutoPublishTask extends tx_scheduler_Task {
 	 * Call on the workspace logic to publish workspaces whose publication date
 	 * is in the past
 	 *
-	 * @return	void
+	 * @return	boolean
 	 */
 	public function execute() {
 		$autopubObj = t3lib_div::makeInstance('Tx_Workspaces_Service_AutoPublish');

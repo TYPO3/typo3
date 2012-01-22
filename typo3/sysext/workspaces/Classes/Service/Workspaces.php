@@ -304,6 +304,8 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	 * @param string $table
 	 * @param string $pageList
 	 * @param integer $wsid
+	 * @param integer $filter
+	 * @param integer $stage
 	 * @return array
 	 */
 	protected function getMoveToPlaceHolderFromPages($table, $pageList, $wsid, $filter, $stage) {
@@ -567,7 +569,7 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	 *
 	 * @param  $pageUid
 	 * @param  $workspaceUid
-	 * @return void
+	 * @return boolean
 	 */
 	public function canCreatePreviewLink($pageUid, $workspaceUid) {
 		$result = TRUE;

@@ -42,6 +42,7 @@ class Tx_Workspaces_Service_GridData {
 	 *
 	 * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid, t3ver_oid and t3ver_swapmode fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid"
 	 * @param object $parameter
+	 * @param integer $currentWorkspace
 	 * @return array
 	 * @throws InvalidArgumentException
 	 */
@@ -235,6 +236,7 @@ class Tx_Workspaces_Service_GridData {
 	 *
 	 * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid, t3ver_oid and t3ver_swapmode fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid"
 	 * @param string $filterTxt The given filter text from the grid.
+	 * @return string
 	 */
 	protected function calculateHash (array $versions, $filterTxt) {
 		$hashArray = array(

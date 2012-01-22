@@ -180,7 +180,8 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 	 * Gets an array with all sys_log entries and their comments for the given record uid and table
 	 *
 	 * @param integer $uid uid of changed element to search for in log
-	 * @return string $table table name
+	 * @param string $table table name
+	 * @return array
 	 */
 	public function getCommentsForRecord($uid, $table) {
 		$stagesService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');

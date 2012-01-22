@@ -96,7 +96,7 @@ class Tx_Workspaces_ExtDirect_ActionHandler extends Tx_Workspaces_ExtDirect_Abst
 	 *
 	 * @param string $table
 	 * @param string $uid
-	 * @return void
+	 * @return string
 	 */
 	public function viewSingleRecord($table, $uid) {
 		return Tx_Workspaces_Service_Workspaces::viewSingleRecord($table, $uid);
@@ -378,7 +378,7 @@ class Tx_Workspaces_ExtDirect_ActionHandler extends Tx_Workspaces_ExtDirect_Abst
 	 *	additional: string
 	 *	comments: string
 	 *
-	 * @param stdObject $parameters
+	 * @param stdClass $parameters
 	 * @return array
 	 */
 	public function sendToNextStageExecute(stdClass $parameters) {
@@ -424,7 +424,7 @@ class Tx_Workspaces_ExtDirect_ActionHandler extends Tx_Workspaces_ExtDirect_Abst
 	 *	additional: string
 	 *	comments: string
 	 *
-	 * @param stdObject $parameters
+	 * @param stdClass $parameters
 	 * @return array
 	 */
 	public function sendToPrevStageExecute(stdClass $parameters) {
@@ -469,7 +469,7 @@ class Tx_Workspaces_ExtDirect_ActionHandler extends Tx_Workspaces_ExtDirect_Abst
 	 *	additional: string
 	 *	comments: string
 	 *
-	 * @param stdObject $parameters
+	 * @param stdClass $parameters
 	 * @return array
 	 */
 	public function sendToSpecificStageExecute(stdClass $parameters) {

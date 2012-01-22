@@ -45,7 +45,7 @@ class Tx_Workspaces_ExtDirect_ToolbarMenu {
 
 	/**
 	 * @param $parameter
-	 * @return
+	 * @return array
 	 */
 	public function setWorkspace($parameter) {
 		$workspaceId = intval($parameter->workSpaceId);

@@ -215,7 +215,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 	 * and since we're loading a backend module outside of the actual backend
 	 * this copies parts of the backend.php
 	 *
-	 * @return	void
+	 * @return	string
 	 */
 	protected function generateJavascript() {
 		$pathTYPO3 = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')) . '/';
