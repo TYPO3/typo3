@@ -77,16 +77,6 @@ TYPO3.Workspaces.Helpers = {
 		});
 	},
 
-	getPropertyOfElementsArray: function(elements, property) {
-		var result = [];
-
-		Ext.each(elements, function(element) {
-			result.push(element[property]);
-		});
-
-		return result;
-	},
-
 	getElementsArrayOfSelection: function(selection) {
 		var elements = [];
 
