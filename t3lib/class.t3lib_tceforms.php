@@ -2154,7 +2154,12 @@ class t3lib_TCEforms {
 				if (!$disabled && !(isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'upload'))) {
 						// Adding the upload field:
 					if ($this->edit_docModuleUpload && $config['uploadfolder']) {
-						$item .= '<div id="' . $PA['itemFormElID_file'] . '"><input type="file" name="' . $PA['itemFormElName_file'] . '" size="35" onchange="' . implode('', $PA['fieldChangeFunc']) . '" /></div>';
+						
+						// Insert the multiple attribute to enable HTML5 multiple file upload
+						$multipleAttr = (isset($config['maxitems']) && $config['maxitems'] > 1) ? 'multiple="multiple"' : '';
+									
+						$item .= '<div id="' . $PA['itemFormElID_file'] . '"><input type="file" '. $multipleAttr .' name="' . $PA['itemFormElName_file'] . '" size="35" onchange="' . implode('', $PA['fieldChangeFunc']) . '" /></div>';
+					
 					}
 				}
 			break;
