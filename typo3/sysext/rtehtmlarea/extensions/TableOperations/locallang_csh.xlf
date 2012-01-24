@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id=".alttitle" xml:space="preserve">
+				<source>htmlArea RTE &gt; Table Operations</source>
+			</trans-unit>
+			<trans-unit id=".description" xml:space="preserve">
+				<source>This feature offers multiple tools for creating and editing tables in the RTE editing area.</source>
+			</trans-unit>
+			<trans-unit id=".details" xml:space="preserve">
+				<source>When this feature is enabled, an "Insert table" button is shown in the editor toolbar.
+A number of buttons may also appear, usually as the last line of the toolbar. The editor may also be configured so that table operations options appear only in the context menu.
+All buttons that may be configured are shown below.</source>
+			</trans-unit>
+			<trans-unit id=".image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/insert_table.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/table-prop.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/table-restyle.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/toggle-borders.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-prop.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-insert-above.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-insert-under.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-delete.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-split.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-prop.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-insert-before.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-insert-after.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-delete.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-split.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-prop.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-insert-before.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-insert-after.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-delete.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-split.gif,
+EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-merge.gif
+</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id=".image_descr" xml:space="preserve">
+				<source>"Insert table" icon. Clicking it opens a dialogue that allows to insert a table at the current cursor position.
+"Table properties" icon. When the cursor is inside a table, clicking it opens a dialogue that allows to edit the properties of the table.
+"Re-apply table styles" icon. When the cursor is inside a table, clicking it re-calculates the odd/even and counting styles of the table.
+"Toggle borders" icon. Clicking it shows or hides the borders of all tables in the editing area.
+"Row properties" icon. When the cursor is inside a table row, clicking it opens a dialogue that allows to edit the properties of the row.
+"Insert row before" icon. When the cursor is inside a table row, clicking it inserts a new row above this row.
+"Insert row after" icon. When the cursor is inside a table row, clicking it inserts a new row below this row.
+"Delete row" icon. When the cursor is inside a table row, clicking it deletes the row from table.
+"Split row" icon. When the cursor is inside a table cell that was merged over two or more rows, clicking it splits the cell into as many rows as were merged.
+"Column cells properties" icon. When the cursor is inside a table column, clicking it opens a dialogue that allows to edit the properties of the cells of the column.
+"Insert column before" icon. When the cursor is inside a table column, clicking it inserts a new column to the left of this column.
+"Insert column after" icon. When the cursor is inside a table column, clicking it inserts a new column to the right of this column.
+"Delete column" icon. When the cursor is inside a table column, clicking it deletes the column from the table.
+"Split column" icon. When the cursor is inside a table cell that was merged over two or more columns, clicking it splits the cell into as many columns as were merged.
+"Cell properties" icon. When the cursor is inside a table cell, clicking it opens a dialogue that allows to edit the properties of the cell.
+"Insert cell before" icon. When the cursor is inside a table cell, clicking it inserts a new column to the left of this cell.
+"Insert cell after" icon. When the cursor is inside a table cell, clicking it inserts a new column to the right of this cell.
+"Delete cell" icon. When the cursor is inside a table cell, clicking it deletes the cell from the table.
+"Split cell" icon. When the cursor is inside a table cell that was merged over columns and rows, clicking it splits the cell into as many rows and columns as were merged.
+"Merge cells" icon. When some table cells are selected, clicking it merges the cells into one cell.</source>
+			</trans-unit>
+			<trans-unit id=".seeAlso" xml:space="preserve">
+				<source>xEXT_rtehtmlarea_TableOperations:InsertTable,
+xEXT_rtehtmlarea_TableOperations:TO_table_prop,
+xEXT_rtehtmlarea_TableOperations:TO_table_restyle,
+xEXT_rtehtmlarea_TableOperations:TO_toggle_borders,
+xEXT_rtehtmlarea_TableOperations:TO_row_prop,
+xEXT_rtehtmlarea_TableOperations:TO_row_insert_above,
+xEXT_rtehtmlarea_TableOperations:TO_row_insert_under,
+xEXT_rtehtmlarea_TableOperations:TO_row_delete,
+xEXT_rtehtmlarea_TableOperations:TO_row_split,
+xEXT_rtehtmlarea_TableOperations:TO_col_prop,
+xEXT_rtehtmlarea_TableOperations:TO_column_insert_before,
+xEXT_rtehtmlarea_TableOperations:TO_column_insert_after,
+xEXT_rtehtmlarea_TableOperations:TO_column_delete,
+xEXT_rtehtmlarea_TableOperations:TO_column_split,
+xEXT_rtehtmlarea_TableOperations:TO_cell_prop,
+xEXT_rtehtmlarea_TableOperations:TO_cell_insert_before,
+xEXT_rtehtmlarea_TableOperations:TO_cell_insert_after,
+xEXT_rtehtmlarea_TableOperations:TO_cell_delete,
+xEXT_rtehtmlarea_TableOperations:TO_cell_split,
+xEXT_rtehtmlarea_TableOperations:TO_cell_merge</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="InsertTable.alttitle" xml:space="preserve">
+				<source>Insert table</source>
+			</trans-unit>
+			<trans-unit id="InsertTable.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/insert_table.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="InsertTable.image_descr" xml:space="preserve">
+				<source>"Insert table" icon.</source>
+			</trans-unit>
+			<trans-unit id="InsertTable.description" xml:space="preserve">
+				<source>Create a new table and insert it into the editing area.</source>
+			</trans-unit>
+			<trans-unit id="InsertTable.details" xml:space="preserve">
+				<source>Clicking the "Table properties" button opens a dialogue window that allows to create a new table and insert it into the editing area at the current cursor position.</source>
+			</trans-unit>
+			<trans-unit id="InsertTable.seeAlso" xml:space="preserve">
+				<source>xEXT_rtehtmlarea_TableOperations:caption,xEXT_rtehtmlarea_TableOperations:summary,
+xEXT_rtehtmlarea_TableOperations:numberOfRows,xEXT_rtehtmlarea_TableOperations:numberOfColumns,xEXT_rtehtmlarea_TableOperations:tableHeaders,
+xEXT_rtehtmlarea_TableOperations:tableStyle,xEXT_rtehtmlarea_TableOperations:Table_class_selector,xEXT_rtehtmlarea_TableOperations:Table_header_class_selector,xEXT_rtehtmlarea_TableOperations:Table_body_class_selector,
+xEXT_rtehtmlarea_TableOperations:cellSpacing,xEXT_rtehtmlarea_TableOperations:cellPadding,
+xEXT_rtehtmlarea_Language:languageCombo,xEXT_rtehtmlarea_Language:directionCombo,
+xEXT_rtehtmlarea_TableOperations:Table_width,xEXT_rtehtmlarea_TableOperations:Width_unit,xEXT_rtehtmlarea_TableOperations:Table_height,xEXT_rtehtmlarea_TableOperations:Height_unit,xEXT_rtehtmlarea_TableOperations:tableFloat,
+xEXT_rtehtmlarea_TableOperations:textAlignment,xEXT_rtehtmlarea_TableOperations:verticalAlignment,
+xEXT_rtehtmlarea_TableOperations:borderStyle,xEXT_rtehtmlarea_TableOperations:borderWidth,xEXT_rtehtmlarea_TableOperations:borderColor,
+xEXT_rtehtmlarea_TableOperations:collapsedBorders,xEXT_rtehtmlarea_TableOperations:frames,xEXT_rtehtmlarea_TableOperations:rules,
+xEXT_rtehtmlarea_TableOperations:textColor,xEXT_rtehtmlarea_TableOperations:backgroundColor,xEXT_rtehtmlarea_TableOperations:backgroundImage</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_table_prop.alttitle" xml:space="preserve">
+				<source>Table properties</source>
+			</trans-unit>
+			<trans-unit id="TO_table_prop.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/table-prop.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_table_prop.image_descr" xml:space="preserve">
+				<source>"Table properties" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_table_prop.description" xml:space="preserve">
+				<source>Edit the properties of the table in which the cursor is currently positioned.</source>
+			</trans-unit>
+			<trans-unit id="TO_table_prop.details" xml:space="preserve">
+				<source>Clicking the "Table properties" button opens a dialogue that allows to edit the properties of the table in which the cursor is currently positioned.</source>
+			</trans-unit>
+			<trans-unit id="TO_table_prop.seeAlso" xml:space="preserve">
+				<source>xEXT_rtehtmlarea_TableOperations:caption,xEXT_rtehtmlarea_TableOperations:summary,
+xEXT_rtehtmlarea_TableOperations:tableHeaders,
+xEXT_rtehtmlarea_TableOperations:tableStyle,xEXT_rtehtmlarea_TableOperations:Table_class_selector,xEXT_rtehtmlarea_TableOperations:Table_header_class_selector,xEXT_rtehtmlarea_TableOperations:Table_body_class_selector,xEXT_rtehtmlarea_TableOperations:Table_footer_class_selector,
+xEXT_rtehtmlarea_TableOperations:cellSpacing,xEXT_rtehtmlarea_TableOperations:cellPadding,
+xEXT_rtehtmlarea_Language:languageCombo,xEXT_rtehtmlarea_Language:directionCombo,
+xEXT_rtehtmlarea_TableOperations:Table_width,xEXT_rtehtmlarea_TableOperations:Width_unit,xEXT_rtehtmlarea_TableOperations:Table_height,xEXT_rtehtmlarea_TableOperations:Height_unit,xEXT_rtehtmlarea_TableOperations:tableFloat,
+xEXT_rtehtmlarea_TableOperations:textAlignment,xEXT_rtehtmlarea_TableOperations:verticalAlignment,
+xEXT_rtehtmlarea_TableOperations:borderStyle,xEXT_rtehtmlarea_TableOperations:borderWidth,xEXT_rtehtmlarea_TableOperations:borderColor,
+xEXT_rtehtmlarea_TableOperations:collapsedBorders,xEXT_rtehtmlarea_TableOperations:frames,xEXT_rtehtmlarea_TableOperations:rules,
+xEXT_rtehtmlarea_TableOperations:textColor,xEXT_rtehtmlarea_TableOperations:backgroundColor,xEXT_rtehtmlarea_TableOperations:backgroundImage</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="caption.alttitle" xml:space="preserve">
+				<source>Table caption</source>
+			</trans-unit>
+			<trans-unit id="caption.description" xml:space="preserve">
+				<source>Enter the description of the nature of the table.</source>
+			</trans-unit>
+			<trans-unit id="caption.details" xml:space="preserve">
+				<source>The description entered in this field becomes the content of the table caption. By default, the table caption is center-aligned above a table.</source>
+			</trans-unit>
+			<trans-unit id="summary.alttitle" xml:space="preserve">
+				<source>Table summary</source>
+			</trans-unit>
+			<trans-unit id="summary.description" xml:space="preserve">
+				<source>Enter a summary of the table purpose and structure.</source>
+			</trans-unit>
+			<trans-unit id="summary.details" xml:space="preserve">
+				<source>The text entered in this field becomes the summary attribute of the table.
+				
+Note that this attribute is not supported in HTML5.</source>
+			</trans-unit>
+			<trans-unit id="numberOfRows.alttitle" xml:space="preserve">
+				<source>Number of rows</source>
+			</trans-unit>
+			<trans-unit id="numberOfRows.description" xml:space="preserve">
+				<source>Enter the number of rows of the table to be created.</source>
+			</trans-unit>
+			<trans-unit id="numberOfRows.details" xml:space="preserve">
+				<source>Enter in this field the number of rows that the table should have when it is created.</source>
+			</trans-unit>
+			<trans-unit id="numberOfColumns.alttitle" xml:space="preserve">
+				<source>Number of columns</source>
+			</trans-unit>
+			<trans-unit id="numberOfColumns.description" xml:space="preserve">
+				<source>Enter the number of columns of the table to be created.</source>
+			</trans-unit>
+			<trans-unit id="numberOfColumns.details" xml:space="preserve">
+				<source>Enter in this field the number of columns that the table should have when it is created.</source>
+			</trans-unit>
+			<trans-unit id="tableHeaders.alttitle" xml:space="preserve">
+				<source>Header cells</source>
+			</trans-unit>
+			<trans-unit id="tableHeaders.description" xml:space="preserve">
+				<source>Select the location of table header cells.</source>
+			</trans-unit>
+			<trans-unit id="tableHeaders.details" xml:space="preserve">
+				<source>By selecting an option from the list, specify whether the table should have header cells and where they should be located. The options are:
+1. No header cells: the table will not have any header cells
+2. Header cells on top: only the cells of the topmost row will be header cells and this row will belong to the header part of the table
+3. Header cells on left: only the cells of the leftmost column will be header cells
+4. Header cells on top and left: the second and third option will both apply.</source>
+			</trans-unit>
+			<trans-unit id="tableStyle.alttitle" xml:space="preserve">
+				<source>Table styles</source>
+			</trans-unit>
+			<trans-unit id="tableStyle.description" xml:space="preserve">
+				<source>Apply stlyles to the table and to its parts.</source>
+			</trans-unit>
+			<trans-unit id="tableStyle.details" xml:space="preserve">
+				<source>The "Style" fieldset allows to apply styles to the table and to each of the table parts, i.e. header, body and footer. A selector is displayed for each part that exists in the current table.</source>
+			</trans-unit>
+			<trans-unit id="Table_class_selector.alttitle" xml:space="preserve">
+				<source>Table style selector</source>
+			</trans-unit>
+			<trans-unit id="Table_class_selector.description" xml:space="preserve">
+				<source>Apply a style to the table or remove the style that was last applied.</source>
+			</trans-unit>
+			<trans-unit id="Table_body_class_selector.alttitle" xml:space="preserve">
+				<source>Table body style selector</source>
+			</trans-unit>
+			<trans-unit id="Table_body_class_selector.description" xml:space="preserve">
+				<source>Apply a style to the body part of the table or remove the style that was last applied.</source>
+			</trans-unit>
+			<trans-unit id="Table_header_class_selector.alttitle" xml:space="preserve">
+				<source>Table header style selector</source>
+			</trans-unit>
+			<trans-unit id="Table_header_class_selector.description" xml:space="preserve">
+				<source>Apply a style to the header part of the table or remove the style that was last applied.</source>
+			</trans-unit>
+			<trans-unit id="Table_footer_class_selector.alttitle" xml:space="preserve">
+				<source>Table footer style selector</source>
+			</trans-unit>
+			<trans-unit id="Table_footer_class_selector.description" xml:space="preserve">
+				<source>Apply a style to the footer part of the table or remove the style that was last applied.</source>
+			</trans-unit>
+			<trans-unit id="Class_selector.alttitle" xml:space="preserve">
+				<source>Style selector</source>
+			</trans-unit>
+			<trans-unit id="Class_selector.description" xml:space="preserve">
+				<source>Apply a style to the current element or remove the style that was last applied.</source>
+			</trans-unit>
+			<trans-unit id="cellSpacing.alttitle" xml:space="preserve">
+				<source>Cell spacing</source>
+			</trans-unit>
+			<trans-unit id="cellSpacing.description" xml:space="preserve">
+				<source>Enter the numer of pixels of space between adjacent cells.</source>
+			</trans-unit>
+			<trans-unit id="cellPadding.alttitle" xml:space="preserve">
+				<source>Cell padding</source>
+			</trans-unit>
+			<trans-unit id="cellPadding.description" xml:space="preserve">
+				<source>Enter the numer of pixels of space between content and border in cells.</source>
+			</trans-unit>
+			<trans-unit id="Table_width.alttitle" xml:space="preserve">
+				<source>Table width</source>
+			</trans-unit>
+			<trans-unit id="Table_width.description" xml:space="preserve">
+				<source>Enter the table width using the selected width unit.</source>
+			</trans-unit>
+			<trans-unit id="Table_height.alttitle" xml:space="preserve">
+				<source>Table height</source>
+			</trans-unit>
+			<trans-unit id="Table_height.description" xml:space="preserve">
+				<source>Enter the table height using the selected height unit.</source>
+			</trans-unit>
+			<trans-unit id="Width_unit.alttitle" xml:space="preserve">
+				<source>Width unit</source>
+			</trans-unit>
+			<trans-unit id="Width_unit.description" xml:space="preserve">
+				<source>Select the width unit.</source>
+			</trans-unit>
+			<trans-unit id="Height_unit.alttitle" xml:space="preserve">
+				<source>Height unit</source>
+			</trans-unit>
+			<trans-unit id="Height_unit.description" xml:space="preserve">
+				<source>Select the height unit.</source>
+			</trans-unit>
+			<trans-unit id="tableFloat.alttitle" xml:space="preserve">
+				<source>Table float</source>
+			</trans-unit>
+			<trans-unit id="tableFloat.description" xml:space="preserve">
+				<source>Select whether and how the table should float.</source>
+			</trans-unit>
+			<trans-unit id="textAlignment.alttitle" xml:space="preserve">
+				<source>Text alignment</source>
+			</trans-unit>
+			<trans-unit id="textAlignment.description" xml:space="preserve">
+				<source>Select the vertical alignment of text within a cell.</source>
+			</trans-unit>
+			<trans-unit id="verticalAlignment.alttitle" xml:space="preserve">
+				<source>Vertical alignment</source>
+			</trans-unit>
+			<trans-unit id="verticalAlignment.description" xml:space="preserve">
+				<source>Select the vertical alignment of content within a cell.</source>
+			</trans-unit>
+			<trans-unit id="borderStyle.alttitle" xml:space="preserve">
+				<source>Border style</source>
+			</trans-unit>
+			<trans-unit id="borderStyle.description" xml:space="preserve">
+				<source>Select the border style.</source>
+			</trans-unit>
+			<trans-unit id="borderWidth.alttitle" xml:space="preserve">
+				<source>Border width</source>
+			</trans-unit>
+			<trans-unit id="borderWidth.description" xml:space="preserve">
+				<source>Enter the border width in pixels.</source>
+			</trans-unit>
+			<trans-unit id="borderColor.alttitle" xml:space="preserve">
+				<source>Border color</source>
+			</trans-unit>
+			<trans-unit id="borderColor.description" xml:space="preserve">
+				<source>Select the border color.</source>
+			</trans-unit>
+			<trans-unit id="collapsedBorders.alttitle" xml:space="preserve">
+				<source>Collapsed borders</source>
+			</trans-unit>
+			<trans-unit id="collapsedBorders.description" xml:space="preserve">
+				<source>Select whether table borders should be collapsed, detached or default.</source>
+			</trans-unit>
+			<trans-unit id="frames.alttitle" xml:space="preserve">
+				<source>Frames</source>
+			</trans-unit>
+			<trans-unit id="frames.description" xml:space="preserve">
+				<source>Select which sides should have a border.</source>
+			</trans-unit>
+			<trans-unit id="rules.alttitle" xml:space="preserve">
+				<source>Rules</source>
+			</trans-unit>
+			<trans-unit id="rules.description" xml:space="preserve">
+				<source>Select where rules should be displayed.</source>
+			</trans-unit>
+			<trans-unit id="textColor.alttitle" xml:space="preserve">
+				<source>Text color</source>
+			</trans-unit>
+			<trans-unit id="textColor.description" xml:space="preserve">
+				<source>Select the color of the text.</source>
+			</trans-unit>
+			<trans-unit id="backgroundColor.alttitle" xml:space="preserve">
+				<source>Background color</source>
+			</trans-unit>
+			<trans-unit id="backgroundColor.description" xml:space="preserve">
+				<source>Select the color of the background.</source>
+			</trans-unit>
+			<trans-unit id="backgroundImage.alttitle" xml:space="preserve">
+				<source>URL of background image</source>
+			</trans-unit>
+			<trans-unit id="backgroundImage.description" xml:space="preserve">
+				<source>Enter the URL of the background image.</source>
+			</trans-unit>
+			<trans-unit id="TO_table_restyle.alttitle" xml:space="preserve">
+				<source>Re-apply table styles</source>
+			</trans-unit>
+			<trans-unit id="TO_table_restyle.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/table-restyle.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_table_restyle.image_descr" xml:space="preserve">
+				<source>"Re-apply table styles" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_table_restyle.description" xml:space="preserve">
+				<source>Re-apply odd/even and/or counting styles to the table in which the cursor is currently positioned.</source>
+			</trans-unit>
+			<trans-unit id="TO_table_restyle.details" xml:space="preserve">
+				<source>If odd/even and/or counting styles have been applied to the table in which the cursor is currently positioned, some table operations may have broken the layout of the table.
+Clicking the "Re-apply table styles" button will re-calculate the odd/even and the counting styles, and re-apply the styles to the rows and/or columns of the table.</source>
+			</trans-unit>
+			<trans-unit id="TO_toggle_borders.alttitle" xml:space="preserve">
+				<source>Toggle borders</source>
+			</trans-unit>
+			<trans-unit id="TO_toggle_borders.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/toggle-borders.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_toggle_borders.image_descr" xml:space="preserve">
+				<source>"Toggle borders" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_toggle_borders.description" xml:space="preserve">
+				<source>Show/hide the borders of all tables in the editing area.</source>
+			</trans-unit>
+			<trans-unit id="TO_toggle_borders.details" xml:space="preserve">
+				<source>Clicking the "Toggle borders" button makes the boundaries of all tables in the editing area visible or, if they are currently visible, the button being highlighted as active, hides these boundaries.
+This applies only when editing content and has no effect when the element is rendered in the frontend.
+This button may be configured so that it is activated when the element is opened for editing.</source>
+			</trans-unit>
+			<trans-unit id="TO_row_prop.alttitle" xml:space="preserve">
+				<source>Row properties</source>
+			</trans-unit>
+			<trans-unit id="TO_row_prop.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-prop.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_row_prop.image_descr" xml:space="preserve">
+				<source>"Row properties" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_row_prop.description" xml:space="preserve">
+				<source>Edit the properties of the table row in which the cursor is currently positioned.</source>
+			</trans-unit>
+			<trans-unit id="TO_row_prop.details" xml:space="preserve">
+				<source>Clicking the "Row properties" button opens a dialogue window that allows to edit the properties of the table row in which the cursor is currently positioned.</source>
+			</trans-unit>
+			<trans-unit id="TO_row_prop.seeAlso" xml:space="preserve">
+				<source>xEXT_rtehtmlarea_TableOperations:rowGroup,xEXT_rtehtmlarea_TableOperations:Class_selector,
+xEXT_rtehtmlarea_Language:languageCombo,xEXT_rtehtmlarea_Language:directionCombo,
+xEXT_rtehtmlarea_TableOperations:Row_width,xEXT_rtehtmlarea_TableOperations:Width_unit,xEXT_rtehtmlarea_TableOperations:Row_height,xEXT_rtehtmlarea_TableOperations:Height_unit,
+xEXT_rtehtmlarea_TableOperations:textAlignment,xEXT_rtehtmlarea_TableOperations:verticalAlignment,
+xEXT_rtehtmlarea_TableOperations:borderStyle,xEXT_rtehtmlarea_TableOperations:borderWidth,xEXT_rtehtmlarea_TableOperations:borderColor,
+xEXT_rtehtmlarea_TableOperations:textColor,xEXT_rtehtmlarea_TableOperations:backgroundColor,xEXT_rtehtmlarea_TableOperations:backgroundImage</source>
+			</trans-unit>
+			<trans-unit id="rowGroup.alttitle" xml:space="preserve">
+				<source>Row group</source>
+			</trans-unit>
+			<trans-unit id="rowGroup.description" xml:space="preserve">
+				<source>Select to which table part this row should belong.</source>
+			</trans-unit>
+			<trans-unit id="rowGroup.details" xml:space="preserve">
+				<source>The row may belong either to the header, body or footer of the table.</source>
+			</trans-unit>
+			<trans-unit id="Row_width.alttitle" xml:space="preserve">
+				<source>Row width</source>
+			</trans-unit>
+			<trans-unit id="Row_width.description" xml:space="preserve">
+				<source>Enter the row width using the selected width unit.</source>
+			</trans-unit>
+			<trans-unit id="Row_height.alttitle" xml:space="preserve">
+				<source>Row height</source>
+			</trans-unit>
+			<trans-unit id="Row_height.description" xml:space="preserve">
+				<source>Enter the row height using the selected height unit.</source>
+			</trans-unit>
+			<trans-unit id="TO_row_insert_above.alttitle" xml:space="preserve">
+				<source>Insert row before</source>
+			</trans-unit>
+			<trans-unit id="TO_row_insert_above.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-insert-above.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_row_insert_above.image_descr" xml:space="preserve">
+				<source>"Insert row before" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_row_insert_above.description" xml:space="preserve">
+				<source>Insert a new row above the current table row.</source>
+			</trans-unit>
+			<trans-unit id="TO_row_insert_above.details" xml:space="preserve">
+				<source>Clicking the "Insert row before" button inserts a new row above the table row in which the cursor is currently positioned.
+The new row is of the same type, i.e. header or data, as the row in which the cursor is currently positioned, belongs to the same part of the table, i.e. header, body or footer, and has the same properties.
+The cells of the new row also have the same properties as the corresponding cells of the row in which the cursor is currently positioned.</source>
+			</trans-unit>
+			<trans-unit id="TO_row_insert_under.alttitle" xml:space="preserve">
+				<source>Insert row after</source>
+			</trans-unit>
+			<trans-unit id="TO_row_insert_under.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-insert-under.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_row_insert_under.image_descr" xml:space="preserve">
+				<source>"Insert row after" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_row_insert_under.description" xml:space="preserve">
+				<source>Insert a new row after, or below, the current table row.</source>
+			</trans-unit>
+			<trans-unit id="TO_row_insert_under.details" xml:space="preserve">
+				<source>Clicking the "Insert row after" button inserts a new row after, or below, the table row in which the cursor is currently positioned.
+The new row is of the same type, i.e. header or data, as the row in which the cursor is currently positioned, belongs to the same part of the table, i.e. header, body or footer, and has the same properties.
+The cells of the new row also have the same properties as the corresponding cells of the row in which the cursor is currently positioned.</source>
+			</trans-unit>
+			<trans-unit id="TO_row_delete.alttitle" xml:space="preserve">
+				<source>Delete row</source>
+			</trans-unit>
+			<trans-unit id="TO_row_delete.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-delete.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_row_delete.image_descr" xml:space="preserve">
+				<source>"Delete row" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_row_delete.description" xml:space="preserve">
+				<source>Delete the current table row.</source>
+			</trans-unit>
+			<trans-unit id="TO_row_delete.details" xml:space="preserve">
+				<source>Clicking the "Delete row" button deletes the table row in which the cursor is currently positioned.
+If the deleted row was the last row of a part of the table, i.e. header, body or footer, then this part of the table is also deleted.
+If the deleted row was the last row of the table, then the table is deleted.</source>
+			</trans-unit>
+			<trans-unit id="TO_row_split.alttitle" xml:space="preserve">
+				<source>Split row</source>
+			</trans-unit>
+			<trans-unit id="TO_row_split.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-split.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_row_split.image_descr" xml:space="preserve">
+				<source>"Split row" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_row_split.description" xml:space="preserve">
+				<source>Split a table cell that was merged over two or more rows.</source>
+			</trans-unit>
+			<trans-unit id="TO_row_split.details" xml:space="preserve">
+				<source>When the cursor is inside a table cell that was merged over two or more rows, clicking the "Split row" button splits the cell into as many rows as were merged.</source>
+			</trans-unit>
+			<trans-unit id="TO_row_split.seeAlso" xml:space="preserve">
+				<source>xEXT_rtehtmlarea_TableOperations:TO_cell_merge,xEXT_rtehtmlarea_TableOperations:TO_column_split,xEXT_rtehtmlarea_TableOperations:TO_cell_split</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_col_prop.alttitle" xml:space="preserve">
+				<source>Column cells properties</source>
+			</trans-unit>
+			<trans-unit id="TO_col_prop.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-prop.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_col_prop.image_descr" xml:space="preserve">
+				<source>"Column cells properties" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_col_prop.description" xml:space="preserve">
+				<source>Edit the properties of the cells of the table column in which the cursor is currently positioned.</source>
+			</trans-unit>
+			<trans-unit id="TO_col_prop.details" xml:space="preserve">
+				<source>Clicking the "Column cells properties" button opens a dialogue window that allows to edit the properties of the cells of the table column in which the cursor is currently positioned. The values of the properties will be applied to all the cells of the column.</source>
+			</trans-unit>
+			<trans-unit id="TO_col_prop.seeAlso" xml:space="preserve">
+				<source>xEXT_rtehtmlarea_TableOperations:columnCellsType,
+xEXT_rtehtmlarea_Language:languageCombo,xEXT_rtehtmlarea_Language:directionCombo,
+xEXT_rtehtmlarea_TableOperations:Cell_width,xEXT_rtehtmlarea_TableOperations:Width_unit,xEXT_rtehtmlarea_TableOperations:Cell_height,xEXT_rtehtmlarea_TableOperations:Height_unit,
+xEXT_rtehtmlarea_TableOperations:textAlignment,xEXT_rtehtmlarea_TableOperations:verticalAlignment,
+xEXT_rtehtmlarea_TableOperations:borderStyle,xEXT_rtehtmlarea_TableOperations:borderWidth,xEXT_rtehtmlarea_TableOperations:borderColor,
+xEXT_rtehtmlarea_TableOperations:textColor,xEXT_rtehtmlarea_TableOperations:backgroundColor,xEXT_rtehtmlarea_TableOperations:backgroundImage</source>
+			</trans-unit>
+			<trans-unit id="columnCellsType.alttitle" xml:space="preserve">
+				<source>Type of cells</source>
+			</trans-unit>
+			<trans-unit id="columnCellsType.description" xml:space="preserve">
+				<source>Select the type of the cells of this column.</source>
+			</trans-unit>
+			<trans-unit id="TO_column_insert_before.alttitle" xml:space="preserve">
+				<source>Insert column before</source>
+			</trans-unit>
+			<trans-unit id="TO_column_insert_before.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-insert-before.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_column_insert_before.image_descr" xml:space="preserve">
+				<source>"Insert column before" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_column_insert_before.description" xml:space="preserve">
+				<source>Insert a new column to the left the current table column.</source>
+			</trans-unit>
+			<trans-unit id="TO_column_insert_before.details" xml:space="preserve">
+				<source>Clicking the "Insert column before" button inserts a new column to the left of the table column in which the cursor is currently positioned.
+The cells of the new column are of the same type, i.e. header for row/row group or data, belong to the same part of the table, i.e. header, body or footer, and have the same properties as the corresponding cells of the column in which the cursor is currently positioned.</source>
+			</trans-unit>
+			<trans-unit id="TO_column_insert_after.alttitle" xml:space="preserve">
+				<source>Insert column after</source>
+			</trans-unit>
+			<trans-unit id="TO_column_insert_after.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-insert-after.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_column_insert_after.image_descr" xml:space="preserve">
+				<source>"Insert column after" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_column_insert_after.description" xml:space="preserve">
+				<source>Insert a new column to the right of the current table column.</source>
+			</trans-unit>
+			<trans-unit id="TO_column_insert_after.details" xml:space="preserve">
+				<source>Clicking the "Insert column after" button inserts a new column to the right of the table column in which the cursor is currently positioned.
+The cells of the new column are of the same type, i.e. header for row/row group or data, belong to the same part of the table, i.e. header, body or footer, and have the same properties as the corresponding cells of the column in which the cursor is currently positioned.</source>
+			</trans-unit>
+			<trans-unit id="TO_column_delete.alttitle" xml:space="preserve">
+				<source>Delete column</source>
+			</trans-unit>
+			<trans-unit id="TO_column_delete.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-delete.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_column_delete.image_descr" xml:space="preserve">
+				<source>"Delete column" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_column_delete.description" xml:space="preserve">
+				<source>Delete the current table column.</source>
+			</trans-unit>
+			<trans-unit id="TO_column_delete.details" xml:space="preserve">
+				<source>Clicking the "Delete column" button deletes the table column in which the cursor is currently positioned.
+If the deleted column was the last column of the table, then the table is deleted.</source>
+			</trans-unit>
+			<trans-unit id="TO_column_split.alttitle" xml:space="preserve">
+				<source>Split column</source>
+			</trans-unit>
+			<trans-unit id="TO_column_split.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-split.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_column_split.image_descr" xml:space="preserve">
+				<source>"Split column" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_column_split.description" xml:space="preserve">
+				<source>Split a table cell that was merged over two or more columns.</source>
+			</trans-unit>
+			<trans-unit id="TO_column_split.details" xml:space="preserve">
+				<source>When the cursor is inside a table cell that was merged over two or more columns, clicking the "Split column" button splits the cell into as many columns as were merged.</source>
+			</trans-unit>
+			<trans-unit id="TO_column_split.seeAlso" xml:space="preserve">
+				<source>xEXT_rtehtmlarea_TableOperations:TO_cell_merge,xEXT_rtehtmlarea_TableOperations:TO_row_split,xEXT_rtehtmlarea_TableOperations:TO_cell_split</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_cell_prop.alttitle" xml:space="preserve">
+				<source>Cell properties</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_prop.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-prop.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_cell_prop.image_descr" xml:space="preserve">
+				<source>"Cell properties" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_prop.description" xml:space="preserve">
+				<source>Edit the properties of the table cell in which the cursor is currently positioned.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_prop.details" xml:space="preserve">
+				<source>Clicking the "Cell properties" button opens a dialogue window that allows to edit the properties of the table cell in which the cursor is currently positioned.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_prop.seeAlso" xml:space="preserve">
+				<source>xEXT_rtehtmlarea_TableOperations:cellType,xEXT_rtehtmlarea_TableOperations:cellAbbreviation,
+xEXT_rtehtmlarea_Language:languageCombo,xEXT_rtehtmlarea_Language:directionCombo,
+xEXT_rtehtmlarea_TableOperations:Cell_width,xEXT_rtehtmlarea_TableOperations:Width_unit,xEXT_rtehtmlarea_TableOperations:Cell_height,xEXT_rtehtmlarea_TableOperations:Height_unit,
+xEXT_rtehtmlarea_TableOperations:textAlignment,xEXT_rtehtmlarea_TableOperations:verticalAlignment,
+xEXT_rtehtmlarea_TableOperations:borderStyle,xEXT_rtehtmlarea_TableOperations:borderWidth,xEXT_rtehtmlarea_TableOperations:borderColor,
+xEXT_rtehtmlarea_TableOperations:textColor,xEXT_rtehtmlarea_TableOperations:backgroundColor,xEXT_rtehtmlarea_TableOperations:backgroundImage</source>
+			</trans-unit>
+			<trans-unit id="cellType.alttitle" xml:space="preserve">
+				<source>Type of cell</source>
+			</trans-unit>
+			<trans-unit id="cellType.description" xml:space="preserve">
+				<source>Select the type of the cell.</source>
+			</trans-unit>
+			<trans-unit id="cellAbbreviation.alttitle" xml:space="preserve">
+				<source>Header cell abbreviation</source>
+			</trans-unit>
+			<trans-unit id="cellAbbreviation.description" xml:space="preserve">
+				<source>Enter the abbreviation of the header cell.</source>
+			</trans-unit>
+			<trans-unit id="Cell_width.alttitle" xml:space="preserve">
+				<source>Cell width</source>
+			</trans-unit>
+			<trans-unit id="Cell_width.description" xml:space="preserve">
+				<source>Enter the cell width using the selected width unit.</source>
+			</trans-unit>
+			<trans-unit id="Cell_height.alttitle" xml:space="preserve">
+				<source>Cell height</source>
+			</trans-unit>
+			<trans-unit id="Cell_height.description" xml:space="preserve">
+				<source>Enter the cell height using the selected height unit.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_insert_before.alttitle" xml:space="preserve">
+				<source>Insert cell before</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_insert_before.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-insert-before.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_cell_insert_before.image_descr" xml:space="preserve">
+				<source>"Insert cell before" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_insert_before.description" xml:space="preserve">
+				<source>Insert a new cell to the left the current table cell.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_insert_before.details" xml:space="preserve">
+				<source>Clicking the "Insert cell before" button inserts a new cell to the left of the table cell in which the cursor is currently positioned.
+The new cell is of the same type, i.e. header or data, belongs to the same row, and has the same properties as the cell in which the cursor is currently positioned.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_insert_after.alttitle" xml:space="preserve">
+				<source>Insert cell after</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_insert_after.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-insert-after.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_cell_insert_after.image_descr" xml:space="preserve">
+				<source>"Insert cell after" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_insert_after.description" xml:space="preserve">
+				<source>Insert a new cell to the right of the current table cell.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_insert_after.details" xml:space="preserve">
+				<source>Clicking the "Insert cell after" button inserts a new cell to the right of the table cell in which the cursor is currently positioned.
+The new cell is of the same type, i.e. header or data, belongs to the same row, and has the same properties as the cell in which the cursor is currently positioned.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_delete.alttitle" xml:space="preserve">
+				<source>Delete cell</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_delete.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-delete.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_cell_delete.image_descr" xml:space="preserve">
+				<source>"Delete cell" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_delete.description" xml:space="preserve">
+				<source>Delete the current table cell.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_delete.details" xml:space="preserve">
+				<source>Clicking the "Delete cell" button deletes the table cell in which the cursor is currently positioned.
+If the deleted cell was the last cell of the table, then the table is deleted.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_split.alttitle" xml:space="preserve">
+				<source>Split cell</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_split.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-split.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_cell_split.image_descr" xml:space="preserve">
+				<source>"Split cell" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_split.description" xml:space="preserve">
+				<source>Split a table cell that was merged over two or more rows and columns.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_split.details" xml:space="preserve">
+				<source>When the cursor is inside a table cell that was merged over two or more rows AND columns, clicking the "Split cell" button splits the cell into as many cells as were merged.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_split.seeAlso" xml:space="preserve">
+				<source>xEXT_rtehtmlarea_TableOperations:TO_cell_merge,xEXT_rtehtmlarea_TableOperations:TO_row_split,xEXT_rtehtmlarea_TableOperations:TO_column_split</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_cell_merge.alttitle" xml:space="preserve">
+				<source>Merge cells</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_merge.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-merge.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="TO_cell_merge.image_descr" xml:space="preserve">
+				<source>"Merge cells" icon.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_merge.description" xml:space="preserve">
+				<source>Merge a set of contiguous table cells.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_merge.details" xml:space="preserve">
+				<source>In Firefox, when a set of contiguous table cells have been selected with a mouse movement or through the keyboard, clicking the "Merge cells" button merges the selected cells into a single cell.
+
+In other browsers, when the cursor is positioned in a cell, clicking the "Merge cells" button prompts the user for the number of rows to the right and the number of columns down over which the cells should be merged. The set of contiguous cells so defined are then merged.</source>
+			</trans-unit>
+			<trans-unit id="TO_cell_merge.seeAlso" xml:space="preserve">
+				<source>xEXT_rtehtmlarea_TableOperations:TO_row_split,xEXT_rtehtmlarea_TableOperations:TO_column_split,xEXT_rtehtmlarea_TableOperations:TO_cell_split</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

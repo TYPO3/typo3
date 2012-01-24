@@ -29,7 +29,7 @@ EXT:rtehtmlarea/extensions/Language/skin/images/show-language-marks.gif</source>
 			</trans-unit>
 			<trans-unit id=".seeAlso" xml:space="preserve">
 				<source>xEXT_rtehtmlarea_Language:languageCombo,
-xEXT_rtehtmlarea_Language:directionCombo,</source>
+xEXT_rtehtmlarea_Language:directionCombo</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="languageCombo.alttitle" xml:space="preserve">

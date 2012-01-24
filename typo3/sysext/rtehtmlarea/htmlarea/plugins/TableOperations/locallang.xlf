@@ -25,7 +25,7 @@
 				<source>Classes</source>
 			</trans-unit>
 			<trans-unit id="Table class:" xml:space="preserve">
-				<source>Table classes:</source>
+				<source>Table:</source>
 			</trans-unit>
 			<trans-unit id="Table class selector" xml:space="preserve">
 				<source>Classes of the table</source>
@@ -109,7 +109,7 @@
 				<source>Bottom</source>
 			</trans-unit>
 			<trans-unit id="Border width" xml:space="preserve">
-				<source>Border width</source>
+				<source>Border width in pixels</source>
 			</trans-unit>
 			<trans-unit id="Border width:" xml:space="preserve">
 				<source>Border width:</source>
@@ -202,7 +202,7 @@
 				<source>Description</source>
 			</trans-unit>
 			<trans-unit id="FG Color:" xml:space="preserve">
-				<source>FG Color:</source>
+				<source>Text:</source>
 			</trans-unit>
 			<trans-unit id="Float:" xml:space="preserve">
 				<source>Float:</source>
@@ -454,7 +454,7 @@
 				<source>em</source>
 			</trans-unit>
 			<trans-unit id="Headers:" xml:space="preserve">
-				<source>Headers:</source>
+				<source>Header cells</source>
 			</trans-unit>
 			<trans-unit id="Table headers" xml:space="preserve">
 				<source>Table headers</source>
