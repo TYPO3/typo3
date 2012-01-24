@@ -2472,6 +2472,40 @@ class t3lib_TCEforms {
 				$tabParts = array();
 				foreach ($tabsToTraverse as $sheet) {
 					list ($dataStruct, $sheet) = t3lib_div::resolveSheetDefInDS($dataStructArray, $sheet);
+					
+					// if sheet has displayCond
+					if ($dataStruct['ROOT']['TCEforms']['displayCond']) {
+						$splittedCondition = t3lib_div::trimExplode(':', $dataStruct['ROOT']['TCEforms']['displayCond']);
+						#debug($splittedCondition, 'sheets displayCond');
+						$skipCondition = FALSE;
+						switch ($splittedCondition[0]) {
+							case 'FIELD':
+								list($sheetName, $fieldName) = t3lib_div::trimExplode('.', $splittedCondition[1]);
+								$fieldValue = $editData['data'][$sheetName][$lang][$fieldName];
+								$splittedCondition[1] = $fieldName;
+								$dataStruct['ROOT']['TCEforms']['displayCond'] = join(':', $splittedCondition);
+								$fakeRow = array($fieldName => $fieldValue);
+								break;
+							case 'HIDE_FOR_NON_ADMINS':
+							case 'VERSION':
+							case 'HIDE_L10N_SIBLINGS':
+							case 'EXT':
+								break;
+							case 'REC':
+								$fakeRow = array('uid' => $row['uid']);
+								break;
+							default:
+								$skipCondition = TRUE;
+								#debug($splittedCondition, 'skipCondition');
+								break;
+						}
+						// if sheets displayCond leads to false
+						if (!$skipCondition && !$this->isDisplayCondition($dataStruct['ROOT']['TCEforms']['displayCond'], $fakeRow, 'vDEF')) {
+							#debug($dataStruct['ROOT']['TCEforms']['displayCond'], 'don\'t create ' . $dataStruct['ROOT']['TCEforms']['sheetTitle']);
+							// don't create this sheet
+							continue;
+						}
+					}
 
 						// Render sheet:
 					if (is_array($dataStruct['ROOT']) && is_array($dataStruct['ROOT']['el'])) {
