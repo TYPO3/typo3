@@ -2473,6 +2473,38 @@ class t3lib_TCEforms {
 				foreach ($tabsToTraverse as $sheet) {
 					list ($dataStruct, $sheet) = t3lib_div::resolveSheetDefInDS($dataStructArray, $sheet);
 
+						// If sheet has displayCond
+					if ($dataStruct['ROOT']['TCEforms']['displayCond']) {
+						$splittedCondition = t3lib_div::trimExplode(':', $dataStruct['ROOT']['TCEforms']['displayCond']);
+						$skipCondition = FALSE;
+						switch ($splittedCondition[0]) {
+							case 'FIELD':
+								list($sheetName, $fieldName) = t3lib_div::trimExplode('.', $splittedCondition[1]);
+								$fieldValue = $editData['data'][$sheetName][$lang][$fieldName];
+								$splittedCondition[1] = $fieldName;
+								$dataStruct['ROOT']['TCEforms']['displayCond'] = join(':', $splittedCondition);
+								$fakeRow = array($fieldName => $fieldValue);
+								break;
+							case 'HIDE_FOR_NON_ADMINS':
+							case 'VERSION':
+							case 'HIDE_L10N_SIBLINGS':
+							case 'EXT':
+								break;
+							case 'REC':
+								$fakeRow = array('uid' => $row['uid']);
+								break;
+							default:
+								$skipCondition = TRUE;
+								break;
+						}
+
+							// If sheets displayCond leads to false
+						if (!$skipCondition && !$this->isDisplayCondition($dataStruct['ROOT']['TCEforms']['displayCond'], $fakeRow, 'vDEF')) {
+								// don't create this sheet
+							continue;
+						}
+					}
+
 						// Render sheet:
 					if (is_array($dataStruct['ROOT']) && is_array($dataStruct['ROOT']['el'])) {
 						$lang = 'l' . $lKey; // Default language, other options are "lUK" or whatever country code (independant of system!!!)
