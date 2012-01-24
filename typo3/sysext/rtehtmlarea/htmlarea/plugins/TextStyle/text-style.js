@@ -74,9 +74,9 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 		this.REInlineTags = /^(a|abbr|acronym|b|bdo|big|cite|code|del|dfn|em|i|img|ins|kbd|q|samp|small|span|strike|strong|sub|sup|tt|u|var)$/;
 		
 			// Allowed attributes on inline elements
-		this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class");
+		this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'itemscope', 'itemtype', 'itemprop');
 		if (Ext.isIE) {
-			this.addAllowedAttribute("className");
+			this.addAllowedAttribute('className');
 		}
 		/*
 		 * Registering plugin "About" information

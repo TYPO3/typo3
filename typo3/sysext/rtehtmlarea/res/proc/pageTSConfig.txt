@@ -51,7 +51,7 @@ RTE.default.proc {
 		## Attributes class and align are always preserved
 		## Align attribute will be unset on entry (see below)
 		## This is a list of additional attributes to keep
-	keepPDIVattribs = id, title, dir, lang, xml:lang
+	keepPDIVattribs = id, title, dir, lang, xml:lang, itemscope, itemtype, itemprop
 
 		## REMAP BOLD AND ITALIC TO STRONG AND EMPHASIS AND VICE VERSA
 	transformBoldAndItalicTags = 1
@@ -83,35 +83,37 @@ RTE.default.proc {
 
 				## CLEAN ATTRIBUTES ON THE FOLLOWING TAGS
 			span.fixAttrib.style.unset = 1
+			span.allowedAttribs = id, title, dir, lang, xml:lang, class, itemscope, itemtype, itemprop
+			span.rmTagIfNoAttrib = 1
 			p {
-				allowedAttribs = id, title, dir, lang, xml:lang, class
+				allowedAttribs = id, title, dir, lang, xml:lang, class, itemscope, itemtype, itemprop
 				fixAttrib.align.unset = 1
 			}
 			div < .p
 			hr.allowedAttribs = class
-			b.allowedAttribs = id, title, dir, lang, xml:lang, class
-			bdo.allowedAttribs = id, title, dir, lang, xml:lang, class
-			big.allowedAttribs = id, title, dir, lang, xml:lang, class
-			blockquote.allowedAttribs = id, title, dir, lang, xml:lang, class
-			cite.allowedAttribs = id, title, dir, lang, xml:lang, class
-			code.allowedAttribs = id, title, dir, lang, xml:lang, class
-			del.allowedAttribs = id, title, dir, lang, xml:lang, class
-			dfn.allowedAttribs = id, title, dir, lang, xml:lang, class
-			em.allowedAttribs = id, title, dir, lang, xml:lang, class
-			i.allowedAttribs = id, title, dir, lang, xml:lang, class
-			ins.allowedAttribs = id, title, dir, lang, xml:lang, class
-			kbd.allowedAttribs = id, title, dir, lang, xml:lang, class
-			label.allowedAttribs = id, title, dir, lang, xml:lang, class
-			q.allowedAttribs = id, title, dir, lang, xml:lang, class
-			samp.allowedAttribs = id, title, dir, lang, xml:lang, class
-			small.allowedAttribs = id, title, dir, lang, xml:lang, class
-			strike.allowedAttribs = id, title, dir, lang, xml:lang, class
-			strong.allowedAttribs = id, title, dir, lang, xml:lang, class
-			sub.allowedAttribs = id, title, dir, lang, xml:lang, class
-			sup.allowedAttribs = id, title, dir, lang, xml:lang, class
-			tt.allowedAttribs = id, title, dir, lang, xml:lang, class
-			u.allowedAttribs = id, title, dir, lang, xml:lang, class
-			var.allowedAttribs = id, title, dir, lang, xml:lang, class
+			b.allowedAttribs < .span.allowedAttribs
+			bdo.allowedAttribs < .span.allowedAttribs
+			big.allowedAttribs < .span.allowedAttribs
+			blockquote.allowedAttribs < .span.allowedAttribs
+			cite.allowedAttribs < .span.allowedAttribs
+			code.allowedAttribs < .span.allowedAttribs
+			del.allowedAttribs < .span.allowedAttribs
+			dfn.allowedAttribs < .span.allowedAttribs
+			em.allowedAttribs < .span.allowedAttribs
+			i.allowedAttribs < .span.allowedAttribs
+			ins.allowedAttribs < .span.allowedAttribs
+			kbd.allowedAttribs < .span.allowedAttribs
+			label.allowedAttribs < .span.allowedAttribs
+			q.allowedAttribs < .span.allowedAttribs
+			samp.allowedAttribs < .span.allowedAttribs
+			small.allowedAttribs < .span.allowedAttribs
+			strike.allowedAttribs < .span.allowedAttribs
+			strong.allowedAttribs < .span.allowedAttribs
+			sub.allowedAttribs < .span.allowedAttribs
+			sup.allowedAttribs < .span.allowedAttribs
+			tt.allowedAttribs < .span.allowedAttribs
+			u.allowedAttribs < .span.allowedAttribs
+			var.allowedAttribs < .span.allowedAttribs
 		}
 
 			## REMOVE OPEN OFFICE META DATA TAGS, WORD 2003 TAGS, LINK, META, STYLE AND TITLE TAGS, AND DEPRECATED HTML TAGS

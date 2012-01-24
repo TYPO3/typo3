@@ -61,9 +61,9 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 		}
-		this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class");
+		this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'itemscope', 'itemtype', 'itemprop');
 		if (Ext.isIE) {
-			this.addAllowedAttribute("className");
+			this.addAllowedAttribute('className');
 		}
 		this.indentedList = null;
 			// Standard block formating items
