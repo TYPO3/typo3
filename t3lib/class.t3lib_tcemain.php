@@ -1378,27 +1378,36 @@ class t3lib_TCEmain {
 	/**
 	 * Handling files for group/select function
 	 *
-	 * @param	array		Array of incoming file references. Keys are numeric, values are files (basically, this is the exploded list of incoming files)
-	 * @param	array		Configuration array from TCA of the field
-	 * @param	string		Current value of the field
-	 * @param	array		Array of uploaded files, if any
-	 * @param	string		Status ("update" or ?)
-	 * @param	string		tablename of record
-	 * @param	integer		UID of record
-	 * @param	string		Field identifier ([table:uid:field:....more for flexforms?]
-	 * @return	array		Modified value array
+	 * @param $valueArray array Array of incoming file references. Keys are numeric, values are files (basically, this is the exploded list of incoming files)
+	 * @param $tcaFieldConf array Configuration array from TCA of the field
+	 * @param $curValue string Current value of the field
+	 * @param $uploadedFileArray array Array of uploaded files, if any
+	 * @param $status string Status ("update" or ?)
+	 * @param $table string tablename of record
+	 * @param $id integer UID of record
+	 * @param $recFID string Field identifier ([table:uid:field:....more for flexforms?]
+	 * @return array Modified value array
 	 * @see checkValue_group_select()
 	 */
 	function checkValue_group_select_file($valueArray, $tcaFieldConf, $curValue, $uploadedFileArray, $status, $table, $id, $recFID) {
 
-		if (!$this->bypassFileHandling) { // If filehandling should NOT be bypassed, do processing:
+			// If file handling should NOT be bypassed, do processing:
+		if (!$this->bypassFileHandling) {
 
 				// If any files are uploaded, add them to value array
-			if (is_array($uploadedFileArray) &&
-				$uploadedFileArray['name'] &&
-				strcmp($uploadedFileArray['tmp_name'], 'none')) {
-				$valueArray[] = $uploadedFileArray['tmp_name'];
-				$this->alternativeFileName[$uploadedFileArray['tmp_name']] = $uploadedFileArray['name'];
+
+				// Numeric index means that there are multiple files
+			if (isset($uploadedFileArray[0])) {
+				$uploadedFiles = $uploadedFileArray;
+			} else {
+					// There is only one file
+				$uploadedFiles = array($uploadedFileArray);
+			}
+			foreach ($uploadedFiles as $uploadedFileArray) {
+				if (!empty($uploadedFileArray['name']) && $uploadedFileArray['tmp_name'] !== 'none') {
+					$valueArray[] = $uploadedFileArray['tmp_name'];
+					$this->alternativeFileName[$uploadedFileArray['tmp_name']] = $uploadedFileArray['name'];
+				}
 			}
 
 				// Creating fileFunc object.
