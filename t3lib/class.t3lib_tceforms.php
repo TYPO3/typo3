@@ -2702,11 +2702,13 @@ class t3lib_TCEforms {
 									// Makes a "Add new" link:
 								$var = uniqid('idvar');
 								$replace = 'replace(/' . $idTagPrefix . '-/g,"' . $idTagPrefix . '-"+' . $var . '+"-")';
+								$replace .= '.replace(/(tceforms-(datetime|date)field-)/g,"$1" + (new Date()).getTime())';
 								$onClickInsert = 'var ' . $var . ' = "' . 'idx"+(new Date()).getTime();';
 									// Do not replace $isTagPrefix in setActionStatus() because it needs section id!
 								$onClickInsert .= 'new Insertion.Bottom($("' . $idTagPrefix . '"), unescape(decodeURIComponent("' . rawurlencode($newElementTemplate) . '")).' . $replace . '); setActionStatus("' . $idTagPrefix . '");';
 								$onClickInsert .= 'eval(unescape("' . rawurlencode(implode(';', $this->additionalJS_post)) . '").' . $replace . ');';
 								$onClickInsert .= 'TBE_EDITOR.addActionChecks("submit", unescape("' . rawurlencode(implode(';', $this->additionalJS_submit)) . '").' . $replace . ');';
+								$onClickInsert .= 'TYPO3.TCEFORMS.update();';
 								$onClickInsert .= 'return false;';
 									// Kasper's comment (kept for history): Maybe there is a better way to do this than store the HTML for the new element in rawurlencoded format - maybe it even breaks with certain charsets? But for now this works...
 								$this->additionalJS_post = $additionalJS_post_saved;
