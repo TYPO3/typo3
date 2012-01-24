@@ -39,9 +39,9 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 		if (this.getPluginInstance('TextStyle')) {
 			this.allowedAttributes = this.getPluginInstance('TextStyle').allowedAttributes;
 		} else {
-			this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class");
+			this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'itemscope', 'itemtype', 'itemprop');
 			if (Ext.isIE) {
-				this.addAllowedAttribute("className");
+				this.addAllowedAttribute('className');
 			}
 		}
 			// Getting tags configuration for inline elements
