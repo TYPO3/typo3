@@ -1412,14 +1412,26 @@ class t3lib_TCEmain {
 	 */
 	function checkValue_group_select_file($valueArray, $tcaFieldConf, $curValue, $uploadedFileArray, $status, $table, $id, $recFID) {
 
-		if (!$this->bypassFileHandling) { // If filehandling should NOT be bypassed, do processing:
+		if (!$this->bypassFileHandling) { // If file handling should NOT be bypassed, do processing:
 
 				// If any files are uploaded, add them to value array
-			if (is_array($uploadedFileArray) &&
-				$uploadedFileArray['name'] &&
-				strcmp($uploadedFileArray['tmp_name'], 'none')) {
-				$valueArray[] = $uploadedFileArray['tmp_name'];
-				$this->alternativeFileName[$uploadedFileArray['tmp_name']] = $uploadedFileArray['name'];
+			if(isset($uploadedFileArray[0])) {
+					// Numeric index means that there are multiple files
+				$uploadedFilesArray = $uploadedFileArray;
+			} else {
+					// There is only one file
+				$uploadedFilesArray = array($uploadedFileArray);
+			}
+
+
+			foreach($uploadedFilesArray as $uploadedFileArray) {
+				if (is_array($uploadedFileArray) &&
+					$uploadedFileArray['name'] &&
+					strcmp($uploadedFileArray['tmp_name'], 'none')) {
+
+					$valueArray[] = $uploadedFileArray['tmp_name'];
+					$this->alternativeFileName[$uploadedFileArray['tmp_name']] = $uploadedFileArray['name'];
+				}
 			}
 
 				// Creating fileFunc object.
