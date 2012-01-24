@@ -33,6 +33,10 @@ TYPO3.TCEFORMS = {
 	init: function() {
 		Ext.QuickTips.init();
 
+		this.update();
+	},
+
+	update: function() {
 		this.convertDateFieldsToDatePicker();
 		this.convertTextareasResizable();
 	},
@@ -80,6 +84,7 @@ TYPO3.TCEFORMS = {
 				}
 			});
 
+			datepicker.removeAllListeners();
 			datepicker.on('click', function(){
 				menu.show(datepicker);
 			});
