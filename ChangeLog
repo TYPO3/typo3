@@ -1,3 +1,17 @@
+2012-01-24  775ae0d                  [RELEASE] Release of TYPO3 4.4.13 (TYPO3 v4 Release Team)
+2012-01-18  cb73697  #22328          [BUGFIX] md5.js fails with non-ascii-characters (Stefan Neufeind)
+2012-01-14  765ca57  #31379          [BUGFIX] alt_doc.php uses deleted alternative page languages for translations (Marcus Krause)
+2011-12-20  4f53d36  #32626          [BUGFIX] Add SQL-comparator <> to SQL parser (Xavier Perseguers)
+2011-12-19  1f4e1fc  #31622          [BUGFIX] Invalid query part on menu rendering (Oliver Hader)
+2011-12-18  5e7a860  #32163          [BUGFIX] @charset must be lowercase in CSS (Markus Klein)
+2011-12-16  ee28ebc  #21054          [BUGFIX] Random miscalculations in ImageTTFBBox (Albrecht Koehnlein)
+2011-12-07  48a8cab  #28012          [BUGFIX] Localization: Editing in TCEforms shows unstyled original value (Benjamin Mack)
+2011-12-07  c96adc1  #28916          [BUGFIX] Use trimExplode() for pageOverlayFields (Georg Ringer)
+2011-11-29  e13b2b9  #32040          [BUGFIX][SECURITY] XSS vulnerability in BE-User Admin module (Marco Bresch)
+2011-11-22  f60971a                  [TASK] Set TYPO3 version to 4.4.13-dev (TYPO3 v4 Release Team)
+2011-11-22  83da6ac                  [RELEASE] Release of TYPO3 4.4.12 (TYPO3 v4 Release Team)
+
+
 2011-11-22  1c2faca                  [RELEASE] Release of TYPO3 4.4.12 (TYPO3 v4 Release Team)
 2011-11-22  14d08b9                  [TASK] Raise submodule pointer (TYPO3 v4 Release Team)
 2011-11-18  6c161c5  #31450          [BUGFIX] Log date picker broken (Francois Suter)
