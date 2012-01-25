@@ -75,11 +75,14 @@ final class t3lib_utility_Math {
 	/**
 	 * Tests if the input can be interpreted as integer.
 	 *
+	 * Note: Integer casting from objects or arrays is considered undefined and thus will return false.
+	 * @see http://php.net/manual/en/language.types.integer.php#language.types.integer.casting.from-other
+	 *
 	 * @param $var mixed Any input variable to test
 	 * @return boolean Returns TRUE if string is an integer
 	 */
 	public static function canBeInterpretedAsInteger($var) {
-		if ($var === '') {
+		if ($var === '' || is_object($var) || is_array($var)) {
 			return FALSE;
 		}
 		return (string) intval($var) === (string) $var;

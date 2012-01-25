@@ -22,6 +22,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+require_once('fixture/t3lib_utility_math_fixture_classWithStringRepresentation.php');
+
 /**
  * Testcase for class t3lib_utility_Math
  *
@@ -118,6 +120,12 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 	 * @return array Data sets
 	 */
 	public function functionCanBeInterpretedAsIntegerInvalidDataProvider() {
+		$objectWithNumericalStringRepresentation = new t3lib_utility_math_fixture_classWithStringRepresentation();
+		$objectWithNumericalStringRepresentation->setString('1234');
+		$objectWithNonNumericalStringRepresentation = new t3lib_utility_math_fixture_classWithStringRepresentation();
+		$objectWithNonNumericalStringRepresentation->setString('foo');
+		$objectWithEmptyStringRepresentation = new t3lib_utility_math_fixture_classWithStringRepresentation();
+		$objectWithEmptyStringRepresentation->setString('');
 		return array(
 			'int as string with leading zero' => array('01234'),
 			'positive int as string with plus modifier' => array('+1234'),
@@ -138,6 +146,10 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 			'empty array' => array(array()),
 			'int in array' => array(array(32425)),
 			'int as string in array' => array(array('32425')),
+			'object without string representation' => array(new stdClass()),
+			'object with numerical string representation' => array($objectWithNumericalStringRepresentation),
+			'object without numerical string representation' => array($objectWithNonNumericalStringRepresentation),
+			'object with empty string representation' => array($objectWithEmptyStringRepresentation),
 		);
 	}
 
