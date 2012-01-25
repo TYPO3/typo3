@@ -133,7 +133,7 @@ class t3lib_arrayBrowser {
 	 */
 	function wrapValue($theValue, $depth) {
 		$wrappedValue = '';
-		if (strlen($theValue) > 0) {
+		if (!is_object($theValue) && strlen($theValue) > 0) {
 			$wrappedValue = '<strong>' . htmlspecialchars($theValue) . '</strong>';
 		}
 		return $wrappedValue;
@@ -153,7 +153,7 @@ class t3lib_arrayBrowser {
 		$label = htmlspecialchars($label);
 
 			// If varname is set:
-		if ($this->varName && !$this->dontLinkVar) {
+		if ($this->varName && !$this->dontLinkVar && !is_object($theValue)) {
 			$variableName = $this->varName . '[\'' . str_replace('.', '\'][\'', $depth) . '\'] = ' .
 				(!t3lib_utility_Math::canBeInterpretedAsInteger($theValue) ? '\'' . addslashes($theValue) . '\'' : $theValue) . '; ';
 			$label = '<a href="index.php?varname=' . urlencode($variableName) . '#varname">' . $label . '</a>';
