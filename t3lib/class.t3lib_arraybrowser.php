@@ -76,12 +76,15 @@ class t3lib_arrayBrowser {
 			$a++;
 			$depth = $depth_in . $key;
 			$goto = 'a' . substr(md5($depth), 0, 6);
-
-			$deeper = (is_array($arr[$key]) && ($this->depthKeys[$depth] || $this->expAll)) ? 1 : 0;
+			if (is_object($arr[$key])) {
+				$arr[$key] = (array)$arr[$key];
+			}
+			$isArray = is_array($arr[$key]);
+			$deeper = ($isArray && ($this->depthKeys[$depth] || $this->expAll));
 			$PM = 'join';
 			$LN = ($a == $c) ? 'blank' : 'line';
 			$BTM = ($a == $c) ? 'bottom' : '';
-			$PM = is_array($arr[$key]) ? ($deeper ? 'minus' : 'plus') : 'join';
+			$PM = $isArray ? ($deeper ? 'minus' : 'plus') : 'join';
 
 
 			$HTML .= $depthData;
@@ -98,9 +101,9 @@ class t3lib_arrayBrowser {
 			}
 
 			$label = $key;
-			$HTML .= $this->wrapArrayKey($label, $depth, !is_array($arr[$key]) ? $arr[$key] : '');
+			$HTML .= $this->wrapArrayKey($label, $depth, !$isArray ? $arr[$key] : '');
 
-			if (!is_array($arr[$key])) {
+			if (!$isArray) {
 				$theValue = $arr[$key];
 				if ($this->fixedLgd) {
 					$imgBlocks = ceil(1 + strlen($depthData) / 77);
