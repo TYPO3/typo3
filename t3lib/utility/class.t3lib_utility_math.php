@@ -79,7 +79,7 @@ final class t3lib_utility_Math {
 	 * @return boolean Returns TRUE if string is an integer
 	 */
 	public static function canBeInterpretedAsInteger($var) {
-		if ($var === '') {
+		if ($var === '' || is_object($var)) {
 			return FALSE;
 		}
 		return (string) intval($var) === (string) $var;
