@@ -190,8 +190,14 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 	},
 	/*
 	 * This function applies the class change to the node
+	 *
+	 * @param	object	node: the node on which to apply the class change
+	 * @param	string	className: the class to add, 'none' to remove the last class added to the class attribute
+	 * @param	boolean	noRemove: true not to remove a span element with no more attribute
+	 *
+	 * @return	void
 	 */
-	applyClassChange: function (node, className) {
+	applyClassChange: function (node, className, noRemove) {
 			// Add or remove class
 		if (node && !HTMLArea.isBlockElement(node)) {
 			if (className === 'none' && node.className && /\S/.test(node.className)) {
@@ -202,7 +208,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 				HTMLArea.DOM.addClass(node, className);
 			}
 				// Remove the span tag if it has no more attribute
-			if (/^span$/i.test(node.nodeName) && !HTMLArea.hasAllowedAttributes(node, this.allowedAttributes)) {
+			if (/^span$/i.test(node.nodeName) && !HTMLArea.hasAllowedAttributes(node, this.allowedAttributes) && !noRemove) {
 				this.editor.removeMarkup(node);
 			}
 		}

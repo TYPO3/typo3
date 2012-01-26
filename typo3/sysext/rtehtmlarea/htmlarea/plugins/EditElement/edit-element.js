@@ -430,24 +430,32 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 		this.restoreSelection();
 		var textFields = this.dialog.findByType('textfield');
 		Ext.each(textFields, function (field) {
-			this.element.setAttribute(field.getItemId(), field.getValue());
+			if (field.getXType() !== 'combo') {
+				this.element.setAttribute(field.getItemId(), field.getValue());
+			}
 		}, this);
 		var comboFields = this.dialog.findByType('combo');
+		var languageCombo = this.dialog.find('itemId', 'lang')[0];
 		Ext.each(comboFields, function (field) {
 			var itemId = field.getItemId();
 			var value = field.getValue();
 			switch (itemId) {
 				case 'className':
-					this.stylePlugin.applyClassChange(this.element, value);
-					break;
-				case 'lang':
-					this.getPluginInstance('Language').setLanguageAttributes(this.element, value);
+					if (HTMLArea.isBlockElement(this.element)) {
+						this.stylePlugin.applyClassChange(this.element, value);
+					} else {
+							// Do not remove the span element if the language attribute is to be removed
+						this.stylePlugin.applyClassChange(this.element, value, languageCombo && (languageCombo.getValue() === 'none'));
+					}
 					break;
 				case 'dir':
 					this.element.setAttribute(itemId, (value == 'not set') ? '' : value);
 					break;
 			}
 		}, this);
+		if (languageCombo) {
+			this.getPluginInstance('Language').setLanguageAttributes(this.element, languageCombo.getValue());
+		}
 		this.close();
 		event.stopEvent();
 	},
