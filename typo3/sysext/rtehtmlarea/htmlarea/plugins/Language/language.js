@@ -289,26 +289,28 @@ HTMLArea.Language = Ext.extend(HTMLArea.Plugin, {
 	 * @return	void
 	 */
 	setLanguageAttributes: function (element, language) {
-		if (language == 'none') {
-				// Remove language mark, if any
-			element.removeAttribute('lang');
-			try {
-					// Do not let IE7 complain
-				element.removeAttribute('xml:lang');
-			} catch(e) { }
-				// Remove the span tag if it has no more attribute
-			if (/^span$/i.test(element.nodeName) && !HTMLArea.DOM.hasAllowedAttributes(element, this.allowedAttributes)) {
-				this.editor.getDomNode().removeMarkup(element);
-			}
-		} else {
-			if (this.useAttribute.lang) {
-				element.setAttribute('lang', language);
-			}
-			if (this.useAttribute.xmlLang) {
+		if (element) {
+			if (language == 'none') {
+					// Remove language mark, if any
+				element.removeAttribute('lang');
 				try {
 						// Do not let IE7 complain
-					element.setAttribute('xml:lang', language);
+					element.removeAttribute('xml:lang');
 				} catch(e) { }
+					// Remove the span tag if it has no more attribute
+				if (/^span$/i.test(element.nodeName) && !HTMLArea.DOM.hasAllowedAttributes(element, this.allowedAttributes)) {
+					this.editor.getDomNode().removeMarkup(element);
+				}
+			} else {
+				if (this.useAttribute.lang) {
+					element.setAttribute('lang', language);
+				}
+				if (this.useAttribute.xmlLang) {
+					try {
+							// Do not let IE7 complain
+						element.setAttribute('xml:lang', language);
+					} catch(e) { }
+				}
 			}
 		}
 	},
