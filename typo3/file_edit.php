@@ -184,6 +184,8 @@ class SC_file_edit {
 			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 				$this->MCONF['name']='xMOD_file_edit.php';
 				$docHeaderButtons['shortcut'] = $this->doc->makeShortcutIcon('target','',$this->MCONF['name'],1);
+			} else {
+				$docHeaderButtons['shortcut'] = '';
 			}
 		} else {
 			$code .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.coundNot'), $extList);
