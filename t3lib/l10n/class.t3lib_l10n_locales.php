@@ -47,6 +47,7 @@ class t3lib_l10n_Locales implements t3lib_Singleton {
 	 */
 	protected $languages = array(
 		'default' => 'English',
+		'af' => 'Afrikaans',
 		'ar' => 'Arabic',
 		'bs' => 'Bosnian',
 		'bg' => 'Bulgarian',

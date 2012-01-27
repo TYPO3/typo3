@@ -12,6 +12,9 @@
 			<trans-unit id="lang_default" xml:space="preserve">
 				<source>English</source>
 			</trans-unit>
+			<trans-unit id="lang_af" xml:space="preserve">
+				<source>Afrikaans</source>
+			</trans-unit>
 			<trans-unit id="lang_ar" xml:space="preserve">
 				<source>Arabic</source>
 			</trans-unit>

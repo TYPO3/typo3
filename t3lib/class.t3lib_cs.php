@@ -194,6 +194,7 @@ class t3lib_cs {
 		// mapping of iso-639-1 language codes to script names
 	var $lang_to_script = array(
 			// iso-639-1 language codes, see http://www.loc.gov/standards/iso639-2/php/code_list.php
+		'af' => 'west_european', //Afrikaans
 		'ar' => 'arabic',
 		'bg' => 'cyrillic', // Bulgarian
 		'bs' => 'east_european', // Bosnian
@@ -244,6 +245,7 @@ class t3lib_cs {
 		'zh' => 'chinese',
 			// MS language codes, see http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vclib/html/_crt_language_strings.asp
 			// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/wceinternational5/html/wce50conLanguageIdentifiersandLocales.asp
+		'afk'=> 'west_european', // Afrikaans
 		'ara' => 'arabic',
 		'bgr' => 'cyrillic', // Bulgarian
 		'cat' => 'west_european', // Catalan
@@ -304,6 +306,7 @@ class t3lib_cs {
 		'trk' => 'turkish',
 		'ukr' => 'cyrillic', // Ukrainian
 			// English language names
+		'afrikaans' => 'west_european',
 		'albanian' => 'albanian',
 		'arabic' => 'arabic',
 		'basque' => 'west_european',
@@ -412,6 +415,7 @@ class t3lib_cs {
 		// TYPO3 specific: Array with the system charsets used for each system language in TYPO3:
 		// Empty values means "iso-8859-1"
 	var $charSetArray = array(
+		'af' => '',
 		'ar' => 'iso-8859-6',
 		'ba' => 'iso-8859-2',
 		'bg' => 'windows-1251',
