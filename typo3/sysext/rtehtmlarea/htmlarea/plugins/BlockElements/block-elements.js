@@ -67,8 +67,8 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 		}
 		this.indentedList = null;
 			// Standard block formating items
-		var standardElements = new Array("address", "blockquote", "div", "h1", "h2", "h3", "h4", "h5", "h6", "p", "pre");
-		this.standardBlockElements = new RegExp( "^(" + standardElements.join("|") + ")$", "i");
+		var standardElements = new Array('address', 'article', 'aside', 'blockquote', 'div', 'footer', 'header', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'nav', 'p', 'pre', 'section');
+		this.standardBlockElements = new RegExp( '^(' + standardElements.join('|') + ')$', 'i');
 			// Process block formating customization configuration
 		this.formatBlockItems = {};
 		if (this.buttonsConfiguration
@@ -245,23 +245,29 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 		}
 		if (this.standardBlockElements.test(tagName) || tagName == "none") {
 			switch (tagName) {
-				case "blockquote" :
-					this.onButtonPress(this.editor, "Blockquote", null, className);
+				case 'blockquote':
+					this.onButtonPress(this.editor, 'Blockquote', null, className);
 					break;
-				case "div"     :
-				case "address" :
-				case "none"    :
+				case 'address':
+				case 'article':
+				case 'aside':
+				case 'div':
+				case 'footer':
+				case 'header':
+				case 'nav':
+				case 'section':
+				case 'none':
 					this.onButtonPress(this.editor, tagName, null, className);
 					break;
 				default	:
 					var element = tagName;
 					if (Ext.isIE) {
-						element = "<" + element + ">";
+						element = '<' + element + '>';
 					}
 					this.editor.focus();
 					if (Ext.isWebKit) {
 						if (!this.editor.document.body.hasChildNodes()) {
-							this.editor.document.body.appendChild((this.editor.document.createElement("br")));
+							this.editor.document.body.appendChild((this.editor.document.createElement('br')));
 						}
 							// WebKit sometimes leaves empty block at the end of the selection
 						this.editor.document.body.normalize();
@@ -508,8 +514,14 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 					this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(bookmark));
 				}
 				break;
-			case "address" :
-			case "div"     :
+			case 'address':
+			case 'article':
+			case 'aside':
+			case 'div':
+			case 'footer':
+			case 'header':
+			case 'nav':
+			case 'section':
 				var bookmark = this.editor.getBookMark().get(range);
 				var newBlock = this.wrapSelectionInBlockElement(buttonId, className, null, true);
 				this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(bookmark));
