@@ -385,11 +385,10 @@ class tslib_menu {
 							}
 
 								// Get sub-pages:
-							$res = $this->parent_cObj->exec_getQuery('pages', Array('pidInList'=>$id, 'orderBy'=>$altSortField));
-							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-								$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
-
-								if (is_array($row)) {
+							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . intval($id) . $this->sys_page->where_hid_del, '', $altSortField);
+							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+								$row = $this->sys_page->getPage($row['uid']);
+								if (!empty($row)) {
 										// Keep mount point?
 									$mount_info = $this->sys_page->getMountPointInfo($row['uid'], $row);
 									if (is_array($mount_info) && $mount_info['overlay'])	{	// There is a valid mount point.
@@ -401,9 +400,9 @@ class tslib_menu {
 									}
 
 										// Add external MP params, then the row:
-									if (is_array($row)) {
+									if (!empty($row)) {
 										if ($MP)	$row['_MP_PARAM'] = $MP.($row['_MP_PARAM'] ? ','.$row['_MP_PARAM'] : '');
-										$temp[$row['uid']] = $this->sys_page->getPageOverlay($row);
+										$temp[$row['uid']] = $row;
 									}
 								}
 							}
@@ -467,9 +466,9 @@ class tslib_menu {
 							// Get id's
 						$id_list_arr = Array();
 
-						foreach($items as $id) {
-							$bA = t3lib_utility_Math::forceIntegerInRange($this->conf['special.']['beginAtLevel'], 0,100);
-							$id_list_arr[] = tslib_cObj::getTreeList(-1*$id, $depth-1+$bA, $bA-1);
+						foreach ($items as $id) {
+							$bA = t3lib_utility_Math::forceIntegerInRange($this->conf['special.']['beginAtLevel'], 0, 100);
+							$id_list_arr[] = tslib_cObj::getTreeList(-1 * $id, $depth-1+$bA, $bA-1);
 						}
 						$id_list = implode(',', $id_list_arr);
 							// Get sortField (mode)
@@ -501,7 +500,7 @@ class tslib_menu {
 							$extraWhere.=' AND '.$sortField.'>'.($GLOBALS['SIM_ACCESS_TIME']-$maxAge);
 						}
 
-						$res = $this->parent_cObj->exec_getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>$sortField.'>=0'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));
+						$res = $this->parent_cObj->exec_getQuery('pages', array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>$sortField.'>=0'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 							$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
 							if (is_array($row)) {
@@ -1262,7 +1261,7 @@ class tslib_menu {
 			$addParams = $this->mconf['showAccessRestrictedPages.']['addParams'];
 			$addParams = str_replace('###RETURN_URL###', rawurlencode($LD['totalURL']), $addParams);
 			$addParams = str_replace('###PAGE_ID###', $page['uid'], $addParams);
-			$LD = $this->menuTypoLink($thePage,$mainTarget, '', '', '', $addParams, $typeOverride);
+			$LD = $this->menuTypoLink($thePage, $mainTarget, '', '', '', $addParams, $typeOverride);
 		}
 	}
 
@@ -3033,7 +3032,7 @@ class tslib_jsmenu extends tslib_menu {
 
 			$spacer = (t3lib_div::inList($this->spacerIDList, $data['doktype'])?1:0);		// if item is a spacer, $spacer is set
 			if ($this->mconf['SPC'] || !$spacer)	{	// If the spacer-function is not enabled, spacers will not enter the $menuArr
-				if (!t3lib_div::inList($this->doktypeExcludeList,$data['doktype']) && (!$data['nav_hide'] || $this->conf['includeNotInMenu']) && !t3lib_div::inArray($banUidArray, $uid))	{		// Page may not be 'not_in_menu' or 'Backend User Section' + not in banned uid's
+				if (!t3lib_div::inList($this->doktypeExcludeList, $data['doktype']) && (!$data['nav_hide'] || $this->conf['includeNotInMenu']) && !t3lib_div::inArray($banUidArray, $uid))	{		// Page may not be 'not_in_menu' or 'Backend User Section' + not in banned uid's
 					if ($count<$levels) {
 						$addLines = $this->generate_level($levels, $count+1, $data['uid'], '', $MP_array_sub);
 					} else {
