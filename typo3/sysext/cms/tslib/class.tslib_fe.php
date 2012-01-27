@@ -825,10 +825,20 @@
 		$pageSelectCondition = $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'pages');
 		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid,hidden,starttime,endtime', 'pages',
 			$pageSelectCondition . ' AND pid>=0 AND deleted=0');
-		$result = is_array($page) && (
-			$page['hidden'] || $page['starttime'] > $GLOBALS['SIM_EXEC_TIME'] ||
-				($page['endtime'] != 0 && $page['endtime'] <= $GLOBALS['SIM_EXEC_TIME'])
-		);
+		if($this->whichWorkspace() !== 0){
+				// $temp_sys_page->getWorkspaceVersionOfRecord() will correctly tell us if the page is hidden in the active workspace
+			$temp_sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
+			$temp_sys_page->versioningPreview = TRUE;
+			$temp_sys_page->init(FALSE);
+			$targetPage = $temp_sys_page->getWorkspaceVersionOfRecord($this->whichWorkspace(), 'pages', $page['uid']);
+			unset($temp_sys_page);
+			$result = ($targetPage === -1 || $targetPage === -2);
+		} else {
+			$result = is_array($page) && (
+				$page['hidden'] || $page['starttime'] > $GLOBALS['SIM_EXEC_TIME'] ||
+					($page['endtime'] != 0 && $page['endtime'] <= $GLOBALS['SIM_EXEC_TIME'])
+			);
+		}
 		return $result;
 	}
 
