@@ -816,19 +816,33 @@
 	}
 
 	/**
-	 * Checks if the page is hidden. If it is hidden, preview flags will be set.
+	 * Checks if the page is hidden in the active workspace.
+	 * If it is hidden, preview flags will be set.
 	 *
 	 * @return bool
 	 */
 	protected function determineIdIsHiddenPage() {
 		$field = t3lib_utility_Math::canBeInterpretedAsInteger($this->id) ? 'uid' : 'alias';
 		$pageSelectCondition = $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'pages');
-		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid,hidden,starttime,endtime', 'pages',
-			$pageSelectCondition . ' AND pid>=0 AND deleted=0');
-		$result = is_array($page) && (
-			$page['hidden'] || $page['starttime'] > $GLOBALS['SIM_EXEC_TIME'] ||
-				($page['endtime'] != 0 && $page['endtime'] <= $GLOBALS['SIM_EXEC_TIME'])
+		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			'uid,hidden,starttime,endtime',
+			'pages',
+			$pageSelectCondition . ' AND pid>=0 AND deleted=0'
 		);
+		$workspace = $this->whichWorkspace();
+		if ($workspace !== 0 && $workspace !== FALSE) {
+				// Fetch overlay of page if in workspace and check if it is hidden
+			$pageSelectObject = t3lib_div::makeInstance('t3lib_pageSelect');
+			$pageSelectObject->versioningPreview = TRUE;
+			$pageSelectObject->init(FALSE);
+			$targetPage = $pageSelectObject->getWorkspaceVersionOfRecord($this->whichWorkspace(), 'pages', $page['uid']);
+			$result = ($targetPage === -1 || $targetPage === -2);
+		} else {
+			$result = is_array($page) && (
+				$page['hidden'] || $page['starttime'] > $GLOBALS['SIM_EXEC_TIME'] ||
+					($page['endtime'] != 0 && $page['endtime'] <= $GLOBALS['SIM_EXEC_TIME'])
+			);
+		}
 		return $result;
 	}
 
