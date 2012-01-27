@@ -445,10 +445,11 @@ class AbstractMenuContentObject {
 								$id = $mount_info['mount_pid'];
 							}
 							// Get sub-pages:
-							$res = $this->parent_cObj->exec_getQuery('pages', array('pidInList' => $id, 'orderBy' => $altSortField));
+							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . (int)$id . $this->sys_page->where_hid_del, '', $altSortField);
 							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+								$row = $this->sys_page->getPage($row['uid']);
 								$GLOBALS['TSFE']->sys_page->versionOL('pages', $row, TRUE);
-								if (is_array($row)) {
+								if (!empty($row)) {
 									// Keep mount point?
 									$mount_info = $this->sys_page->getMountPointInfo($row['uid'], $row);
 									// There is a valid mount point.
@@ -466,14 +467,15 @@ class AbstractMenuContentObject {
 										}
 									}
 									// Add external MP params, then the row:
-									if (is_array($row)) {
+									if (!empty($row)) {
 										if ($MP) {
 											$row['_MP_PARAM'] = $MP . ($row['_MP_PARAM'] ? ',' . $row['_MP_PARAM'] : '');
 										}
-										$temp[$row['uid']] = $this->sys_page->getPageOverlay($row);
+										$temp[$row['uid']] = $row;
 									}
 								}
 							}
+							$GLOBALS['TYPO3_DB']->sql_free_result($res);
 						}
 						break;
 					case 'list':
