@@ -597,9 +597,14 @@ class t3lib_TCEmain {
 									} elseif (!$this->bypassWorkspaceRestrictions && $errorCode = $this->BE_USER->workspaceCannotEditRecord($table, $tempdata)) {
 										$recordAccess = FALSE; // Versioning is required and it must be offline version!
 
+											// Check if there already is a workspace version
+										$WSversion = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid,t3ver_oid');
+										if ($WSversion) {
+											$id = $WSversion['uid'];
+											$recordAccess = TRUE;
+
 											// Auto-creation of version: In offline workspace, test if versioning is enabled and look for workspace version of input record. If there is no versionized record found we will create one and save to that.
-										if ($this->BE_USER->workspaceAllowAutoCreation($table, $id, $theRealPid)) {
-											/** @var $tce t3lib_TCEmain */
+										} elseif ($this->BE_USER->workspaceAllowAutoCreation($table, $id, $theRealPid)) {
 											$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 											/* @var $tce t3lib_TCEmain  */
 											$tce->stripslashes_values = 0;
