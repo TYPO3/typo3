@@ -215,6 +215,17 @@ class PageRepository {
 		if (is_array($this->cache_getPage[$uid][$cacheKey])) {
 			return $this->cache_getPage[$uid][$cacheKey];
 		}
+		$workspaceVersion = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, 'pages', $uid);
+		if (is_array($workspaceVersion)) {
+			$workspaceVersionAccess = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+				'uid',
+				'pages',
+				'uid=' . intval($workspaceVersion['uid']) . $this->where_hid_del . $accessCheck
+			);
+			if (is_array($workspaceVersionAccess)) {
+				$accessCheck = '';
+			}
+		}
 		$result = array();
 		$res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'pages', 'uid=' . (int)$uid . $this->where_hid_del . $accessCheck);
 		$row = $this->getDatabaseConnection()->sql_fetch_assoc($res);
@@ -532,14 +543,36 @@ class PageRepository {
 	 */
 	public function getMenu($uid, $fields = '*', $sortField = 'sorting', $addWhere = '', $checkShortcuts = TRUE) {
 		$output = array();
-		$res = $this->getDatabaseConnection()->exec_SELECTquery(
-			$fields,
-			'pages',
-			'pid IN (' . implode(',', $this->getDatabaseConnection()->cleanIntArray((array)$uid)) . ')' . $this->where_hid_del
-				. $this->where_groupAccess . ' ' . $addWhere,
-			'',
-			$sortField
-		);
+		$query = 'pid IN (' . implode(',', $this->getDatabaseConnection()->cleanIntArray((array)$uid)) .
+			')' . $this->where_hid_del . $this->where_groupAccess . ' ' . $addWhere;
+		if ($this->versioningWorkspaceId != 0) {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'uid',
+				'pages',
+				'pid IN (' . implode(',', $this->getDatabaseConnection()->cleanIntArray((array)$uid)) .
+				')' . $this->where_hid_del . ' ' . $addWhere,
+				'',
+				$sortField
+			);
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			$workspaceRow = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, 'pages', $row['uid']);
+			$realUid = is_array($workspaceRow) ? $workspaceRow['uid'] : $row['uid'];
+				$result = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+					'uid',
+					'pages',
+					'uid=' . intval($realUid) . $this->where_hid_del . $this->where_groupAccess . ' ' . $addWhere,
+					'',
+					$sortField
+				);
+				if (is_array($result)) {
+					$recordArray[] = $row['uid'];
+				}
+			}
+			if (is_array($recordArray)) {
+				$query = 'uid IN (' . implode(',', $recordArray) . ')';
+			}
+		};
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'pages', $query, '', $sortField);
 		while (($row = $this->getDatabaseConnection()->sql_fetch_assoc($res))) {
 			$this->versionOL('pages', $row, TRUE);
 			if (is_array($row)) {
