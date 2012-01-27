@@ -778,7 +778,7 @@ class tslib_fe {
 	}
 
 	/**
-	 * Checks if the page is hidden. If it is hidden, preview flags will be set.
+	 * Checks if the page is hidden in the active workspace. If it is hidden, preview flags will be set.
 	 *
 	 * @return bool
 	 */
@@ -787,10 +787,19 @@ class tslib_fe {
 		$pageSelectCondition = $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'pages');
 		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid,hidden,starttime,endtime', 'pages',
 			$pageSelectCondition . ' AND pid>=0 AND deleted=0');
-		$result = is_array($page) && (
-			$page['hidden'] || $page['starttime'] > $GLOBALS['SIM_EXEC_TIME'] ||
-				($page['endtime'] != 0 && $page['endtime'] <= $GLOBALS['SIM_EXEC_TIME'])
-		);
+		if ($this->whichWorkspace() !== 0) {
+			$pageSelectObject = t3lib_div::makeInstance('t3lib_pageSelect');
+			$pageSelectObject->versioningPreview = TRUE;
+			$pageSelectObject->init(FALSE);
+			$targetPage = $pageSelectObject->getWorkspaceVersionOfRecord($this->whichWorkspace(), 'pages', $page['uid']);
+			unset($pageSelectObject);
+			$result = ($targetPage === -1 || $targetPage === -2);
+		} else {
+			$result = is_array($page) && (
+				$page['hidden'] || $page['starttime'] > $GLOBALS['SIM_EXEC_TIME'] ||
+					($page['endtime'] != 0 && $page['endtime'] <= $GLOBALS['SIM_EXEC_TIME'])
+			);
+		}
 		return $result;
 	}
 
