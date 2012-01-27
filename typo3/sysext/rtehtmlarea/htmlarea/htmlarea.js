@@ -43,13 +43,17 @@ Ext.apply(HTMLArea, {
 	RE_tagName		: /(<\/|<)\s*([^ \t\n>]+)/ig,
 	RE_head			: /<head>((.|\n)*?)<\/head>/i,
 	RE_body			: /<body>((.|\n)*?)<\/body>/i,
+		// This expression is deprecated as of TYPO3 4.7
 	Reg_body		: new RegExp('<\/?(body)[^>]*>', 'gi'),
 	reservedClassNames	: /htmlarea/,
 	RE_email		: /([0-9a-z]+([a-z0-9_-]*[0-9a-z])*){1}(\.[0-9a-z]+([a-z0-9_-]*[0-9a-z])*)*@([0-9a-z]+([a-z0-9_-]*[0-9a-z])*\.)+[a-z]{2,9}/i,
 	RE_url			: /(([^:/?#]+):\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\.[a-z0-9_-]{2,})+\.[a-z]{2,5}(:[0-9]+)?(\/\S+)*\/?)/i,
-	RE_blockTags		: /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|dt|dd|div|noscript|blockquote|form|hr|table|caption|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe)$/i,
+		// This expression is deprecated as of TYPO3 4.6
+	RE_blockTags		: /^(address|article|aside|body|blockquote|caption|dd|div|dl|dt|fieldset|footer|form|header|hr|h1|h2|h3|h4|h5|h6|iframe|li|ol|p|pre|nav|noscript|section|table|tbody|td|tfoot|th|thead|tr|ul)$/i,
+		// This expression is deprecated as of TYPO3 4.6
 	RE_closingTags		: /^(p|blockquote|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|colgroup|table|div|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|span|strike|strong|sub|sup|tt|u|var|abbr|acronym|font|center|object|embed|style|script|title|head)$/i,
-	RE_noClosingTag		: /^(img|br|hr|col|input|area|base|link|meta|param)$/i,
+		// This expression is deprecated as of TYPO3 4.6
+	RE_noClosingTag		: /^(area|base|br|col|command|embed|hr|img|input|keygen|meta|param|source|track|wbr)$/i,
 	RE_numberOrPunctuation	: /[0-9.(),;:!¡?¿%#$'"_+=\\\/-]*/g,
 	/***************************************************
 	 * LOCALIZATION                                    *
@@ -2885,9 +2889,8 @@ HTMLArea.DOM = function () {
 		/***************************************************
 		*  DOM-RELATED REGULAR EXPRESSIONS
 		***************************************************/
-		RE_blockTags: /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|dt|dd|div|noscript|blockquote|form|hr|table|caption|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe)$/i,
-		RE_closingTags: /^(p|blockquote|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|colgroup|table|div|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|span|strike|strong|sub|sup|tt|u|var|abbr|acronym|font|center|object|embed|style|script|title|head)$/i,
-		RE_noClosingTag: /^(img|br|hr|col|input|area|base|link|meta|param)$/i,
+		RE_blockTags: /^(address|article|aside|body|blockquote|caption|dd|div|dl|dt|fieldset|footer|form|header|hr|h1|h2|h3|h4|h5|h6|iframe|li|ol|p|pre|nav|noscript|section|table|tbody|td|tfoot|th|thead|tr|ul)$/i,
+		RE_noClosingTag: /^(area|base|br|col|command|embed|hr|img|input|keygen|link|meta|param|source|track|wbr)$/i,
 		RE_bodyTag: new RegExp('<\/?(body)[^>]*>', 'gi'),
 		/***************************************************
 		*  STATIC METHODS ON DOM NODE
@@ -3441,7 +3444,7 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 		for (var i = 0, n = attributes.length; i < n; i++) {
 			html +=  ' ' + attributes[i]['attributeName'] + '="' + HTMLArea.util.htmlEncode(attributes[i]['attributeValue']) + '"';
 		}
-		html = '<' + node.nodeName.toLowerCase() + html + (HTMLArea.RE_noClosingTag.test(node.nodeName) ? ' />' : '>');
+		html = '<' + node.nodeName.toLowerCase() + html + (HTMLArea.DOM.RE_noClosingTag.test(node.nodeName) ? ' />' : '>');
 			// Fix orphan list elements
 		if (/^li$/i.test(node.nodeName) && !/^[ou]l$/i.test(node.parentNode.nodeName)) {
 			html = '<ul>' + html;
@@ -3455,7 +3458,7 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 	 * @return	object		closing tag, if required
 	 */
 	setClosingTag: function (node) {
-		var html = HTMLArea.RE_noClosingTag.test(node.nodeName) ? '' : '</' + node.nodeName.toLowerCase() + '>';
+		var html = HTMLArea.DOM.RE_noClosingTag.test(node.nodeName) ? '' : '</' + node.nodeName.toLowerCase() + '>';
 			// Fix orphan list elements
 		if (/^li$/i.test(node.nodeName) && !/^[ou]l$/i.test(node.parentNode.nodeName)) {
 			html += '</ul>';
@@ -4340,7 +4343,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			range.deleteContents();
 		}
 		this.empty();
-		if (!block || /^(td|div)$/i.test(block.nodeName)) {
+		if (!block || /^(td|div|article|aside|footer|header|nav|section)$/i.test(block.nodeName)) {
 			if (!block) {
 				block = doc.body;
 			}

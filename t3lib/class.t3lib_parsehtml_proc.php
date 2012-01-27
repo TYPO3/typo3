@@ -44,7 +44,7 @@
 class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 		// Static:
-	var $blockElementList = 'PRE,UL,OL,H1,H2,H3,H4,H5,H6,ADDRESS,DL,DD'; // List of tags for these elements
+	var $blockElementList = 'PRE,UL,OL,H1,H2,H3,H4,H5,H6,ADDRESS,DL,DD,HEADER,SECTION,FOOTER,NAV,ARTICLE,ASIDE'; // List of tags for these elements
 
 		// Internal, static:
 	var $recPid = 0; // Set this to the pid of the record manipulated by the class.
@@ -784,6 +784,12 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					case 'blockquote': // Keep blockquotes, but clean the inside recursively in the same manner as the main code
 					case 'dd' : // Do the same on dd elements
 					case 'div': // Do the same on div sections, if they were splitted
+					case 'header':
+					case 'section':
+					case 'footer':
+					case 'nav':
+					case 'article':
+					case 'aside':
 						$blockSplit[$k] = $tag . $this->TS_transform_db($this->removeFirstAndLastTag($blockSplit[$k]), $css) . '</' . $tagName . '>' . $lastBR;
 					break;
 					case 'ol':
@@ -925,6 +931,12 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					case 'blockquote': // Keep blockquotes
 					case 'dd': // Keep definitions
 					case 'div': // Keep div sections, if they were splitted
+					case 'header':
+					case 'section':
+					case 'footer':
+					case 'nav':
+					case 'article':
+					case 'aside':
 						$blockSplit[$k] = $tag .
 										  $this->TS_transform_rte($this->removeFirstAndLastTag($blockSplit[$k]), $css) .
 										  '</' . $tagName . '>';

@@ -36,8 +36,26 @@
 			<trans-unit id="Address" xml:space="preserve">
 				<source>Address</source>
 			</trans-unit>
-			<trans-unit id="Section" xml:space="preserve">
+			<trans-unit id="Article" xml:space="preserve">
+				<source>Article</source>
+			</trans-unit>
+			<trans-unit id="Aside" xml:space="preserve">
+				<source>Aside</source>
+			</trans-unit>
+			<trans-unit id="Container" xml:space="preserve">
 				<source>Container</source>
+			</trans-unit>
+			<trans-unit id="Footer" xml:space="preserve">
+				<source>Footer</source>
+			</trans-unit>
+			<trans-unit id="Header" xml:space="preserve">
+				<source>Header</source>
+			</trans-unit>
+			<trans-unit id="Navigation" xml:space="preserve">
+				<source>Navigation</source>
+			</trans-unit>
+			<trans-unit id="Section" xml:space="preserve">
+				<source>Section</source>
 			</trans-unit>
 		</body>
 	</file>

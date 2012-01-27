@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2007-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -66,11 +66,17 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlarea_api {
 		'h6'		=> 'Heading 6',
 		'pre'		=> 'Preformatted',
 		'address'	=> 'Address',
+		'article'	=> 'Article',
+		'aside'		=> 'Aside',
 		'blockquote'	=> 'Long quotation',
-		'div'		=> 'Section',
+		'div'		=> 'Container',
+		'footer'	=> 'Footer',
+		'header'	=> 'Header',
+		'nav'		=> 'Navigation',
+		'section'	=> 'Section'
 	);
 
-	protected $defaultBlockElementsOrder = 'none, p, h1, h2, h3, h4, h5, h6, pre, address, blockquote, div';
+	protected $defaultBlockElementsOrder = 'none, p, h1, h2, h3, h4, h5, h6, pre, address, article, aside, blockquote, div, footer, header, nav, section';
 
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
