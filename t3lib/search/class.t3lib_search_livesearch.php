@@ -337,32 +337,64 @@ class t3lib_search_livesearch {
 	 * @return string
 	 */
 	protected function makeQuerySearchByTable($tableName, array $fieldsToSearchWithin) {
-			// free text search
-		$queryLikeStatement = ' LIKE \'%' . $this->getQueryString($tableName) . '%\'';
-		$integerFieldsToSearchWithin = array();
-		$queryEqualStatement = '';
+		$queryPart = '';
+		$whereParts = array();
+			// Load the full TCA for the table, as we need to access column configuration
+		t3lib_div::loadTCA($tableName);
 
-		if (is_numeric($this->getQueryString($tableName))) {
-			$queryEqualStatement = ' = \'' . $this->getQueryString($tableName) . '\'';
-		}
-		$uidPos = array_search('uid', $fieldsToSearchWithin);
-		if ($uidPos) {
-			$integerFieldsToSearchWithin[] = 'uid';
-			unset($fieldsToSearchWithin[$uidPos]);
-		}
-		$pidPos = array_search('pid', $fieldsToSearchWithin);
-		if ($pidPos) {
-			$integerFieldsToSearchWithin[] = 'pid';
-			unset($fieldsToSearchWithin[$pidPos]);
+			// If the search string is a simple integer, assemble an equality comparison
+		if (t3lib_utility_Math::canBeInterpretedAsInteger($this->queryString)) {
+			foreach ($fieldsToSearchWithin as $fieldName) {
+				if (($fieldName == 'uid' || $fieldName == 'pid') || isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
+					$fieldConfig = &$GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
+						// Assemble the search condition only if the field is an integer, or is uid or pid
+					if (($fieldName == 'uid' || $fieldName == 'pid') ||
+						($fieldConfig['type'] == 'input' && $fieldConfig['eval'] && t3lib_div::inList($fieldConfig['eval'], 'int'))) {
+						$whereParts[] = $fieldName . '=' . $this->queryString;
+					}
+				}
+			}
+
+			// If the search string is not an integer, assemble a LIKE query
+		} else {
+			$like = '\'%' .
+				$GLOBALS['TYPO3_DB']->escapeStrForLike($GLOBALS['TYPO3_DB']->quoteStr($this->queryString, $tableName), $tableName) .
+				'%\'';
+			foreach ($fieldsToSearchWithin as $fieldName) {
+				if (isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
+					$fieldConfig = &$GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
+						// Check whether search should be case-sensitive or not
+					$format = 'LCASE(%s) LIKE LCASE(%s)';
+					if (is_array($fieldConfig['search'])) {
+						if (in_array('case', $fieldConfig['search'])) {
+							$format = '%s LIKE %s';
+						}
+							// Apply additional condition, if any
+						if ($fieldConfig['search']['andWhere']) {
+							$format = '((' . $fieldConfig['search']['andWhere'] . ') AND (' . $format . '))';
+						}
+					}
+						// Assemble the search condition only if the field makes sense to be searched
+					if ($fieldConfig['type'] == 'text' ||
+							$fieldConfig['type'] == 'flex' ||
+							($fieldConfig['type'] == 'input' && (!$fieldConfig['eval'] || !preg_match('/date|time|int/', $fieldConfig['eval'])))) {
+						$whereParts[] = sprintf($format, $fieldName, $like);
+					}
+				}
+			}
 		}
 
-		$queryPart = ' AND (';
-		if (count($integerFieldsToSearchWithin) && $queryEqualStatement !== '') {
-			$queryPart .= implode($queryEqualStatement . ' OR ', $integerFieldsToSearchWithin) . $queryEqualStatement . ' OR ';
+			// If at least one condition was defined, create the search query
+		if (count($whereParts) > 0) {
+			$queryPart = ' AND (' . implode(' OR ', $whereParts) . ')';
+				// And the relevant conditions for deleted and versioned records
+			$queryPart .= t3lib_BEfunc::deleteClause($tableName);
+			$queryPart .= t3lib_BEfunc::versioningPlaceholderClause($tableName);
+
+			// If there were no conditions, make sure that the query will fail for the given table
+		} else {
+			$queryPart = ' AND 0 = 1';
 		}
-		$queryPart .= implode($queryLikeStatement . ' OR ', $fieldsToSearchWithin) . $queryLikeStatement . ')';
-		$queryPart .= t3lib_BEfunc::deleteClause($tableName);
-		$queryPart .= t3lib_BEfunc::versioningPlaceholderClause($tableName);
 
 		return $queryPart;
 	}
@@ -390,33 +422,19 @@ class t3lib_search_livesearch {
 	/**
 	 * Get all fields from given table where we can search for.
 	 *
-	 * @param string $tableName
+	 * @param string $tableName Name of the table for which to get the searchable fields
 	 * @return array
 	 */
 	protected function extractSearchableFieldsFromTable($tableName) {
-		$fieldListArray = array();
 
-			// Traverse configured columns and add them to field array, if available for user.
-		foreach ((array) $GLOBALS['TCA'][$tableName]['columns'] as $fieldName => $fieldValue) {
-				// @todo Reformat
-			if (
-				(!$fieldValue['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $tableName . ':' . $fieldName)) // does current user have access to the field
-				&&
-				($fieldValue['config']['type'] != 'passthrough') // field type is not searchable
-				&&
-				(!preg_match('/date|time|int/', $fieldValue['config']['eval'])) // field can't be of type date, time, int
-				&&
-				(
-						($fieldValue['config']['type'] == 'text')
-						||
-						($fieldValue['config']['type'] == 'input')
-				)
-			) {
-				$fieldListArray[] = $fieldName;
-			}
+			// Get the list of fields to search in from the TCA, if any
+		if (isset($GLOBALS['TCA'][$tableName]['ctrl']['searchFields'])) {
+			$fieldListArray = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$tableName]['ctrl']['searchFields'], TRUE);
+		} else {
+			$fieldListArray = array();
 		}
 
-			// Add special fields:
+			// Add special fields
 		if ($GLOBALS['BE_USER']->isAdmin()) {
 			$fieldListArray[] = 'uid';
 			$fieldListArray[] = 'pid';
