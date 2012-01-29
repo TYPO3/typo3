@@ -208,6 +208,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 				// Check if the user identifier looks like OpenID user identifier first.
 				// Prevent PHP warning in case if identifiers is not an OpenID identifier
 				// (not an URL).
+				$this->loginData['uname'] = $userRecord['tx_openid_openid'];
 				$urlParts = @parse_url($this->loginData['uname']);
 				if (is_array($urlParts) && $urlParts['scheme'] != '' && $urlParts['host']) {
 					// Yes, this looks like a good OpenID. Ask OpenID server (should not return)
@@ -282,11 +283,25 @@ class tx_openid_sv1 extends t3lib_svbase {
 	protected function getUserRecord($openIDIdentifier) {
 		$record = NULL;
 		if ($openIDIdentifier) {
+			$table = $this->authenticationInformation['db_user']['table'];
+			if (preg_match('#^https?://#', $openIDIdentifier)) {
+				$whereClause = 'tx_openid_openid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($openIDIdentifier, $table);
+			} else {
+				$identifier = rtrim($openIDIdentifier, '/');
+				$conditions = array(
+					'tx_openid_openid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('http://' . $identifier, $table),
+					'tx_openid_openid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('http://' . $identifier . '/', $table),
+					'tx_openid_openid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('https://' . $identifier, $table),
+					'tx_openid_openid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('https://' . $identifier . '/', $table),
+				);
+				$whereClause = '(' . implode(' OR ', $conditions) . ')';
+			}
 			$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*',
 				$this->authenticationInformation['db_user']['table'],
-				'tx_openid_openid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($openIDIdentifier, $this->authenticationInformation['db_user']['table']) .
+				$whereClause .
 					$this->authenticationInformation['db_user']['check_pid_clause'] .
-					$this->authenticationInformation['db_user']['enable_clause']);
+					$this->authenticationInformation['db_user']['enable_clause']
+			);
 		} else {
 			// This should never happen and generally means hack attempt.
 			// We just log it and do not return any records.
