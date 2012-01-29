@@ -1134,7 +1134,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 							/** @var $exception Exception */
 						$exception = unserialize($schedulerRecord['lastexecution_failure']);
 							// If the exception could not be unserialized, issue a default error message
-						if ($exception === FALSE) {
+						if ($exception === FALSE || ($exception instanceof __PHP_Incomplete_Class)) {
 							$failureDetail = $GLOBALS['LANG']->getLL('msg.executionFailureDefault');
 						} else {
 							$failureDetail = sprintf($GLOBALS['LANG']->getLL('msg.executionFailureReport'), $exception->getCode(), $exception->getMessage());
