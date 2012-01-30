@@ -383,7 +383,8 @@ CREATE TABLE sys_log (
   NEWid varchar(20) DEFAULT '' NOT NULL,
   PRIMARY KEY (uid),
   KEY event (userid,event_pid),
-  KEY recuidIdx (recuid,uid)
+  KEY recuidIdx (recuid,uid),
+  KEY user_auth (type,action,tstamp)
 ) ENGINE=InnoDB;
 
 #
