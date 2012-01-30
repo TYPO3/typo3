@@ -35,8 +35,8 @@ class Tx_Extbase_Tests_Unit_Persistence_Storage_Typo3DbBackendTest extends Tx_Ex
 	protected $backupGlobals = true;
 
 	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
+	 * Excludes TYPO3_DB from backup/restore of $GLOBALS because
+	 * resource types cannot be handled during serializing.
 	 *
 	 * @var array
 	 */
@@ -231,8 +231,8 @@ class Tx_Extbase_Tests_Unit_Persistence_Storage_Typo3DbBackendTest extends Tx_Ex
 		$mockTypo3DbBackend->_set('dataMapper', $mockDataMapper);
 		$mockTypo3DbBackend->_callRef('parseOrderings', $orderings, $mockSource, $sql);
 
-		$expecedSql = array('orderings' => array('tx_myext_tablename.converted_fieldname ASC'));
-		$this->assertSame($expecedSql, $sql);
+		$expectedSql = array('orderings' => array('tx_myext_tablename.converted_fieldname ASC'));
+		$this->assertSame($expectedSql, $sql);
 	}
 
 	/**
@@ -274,8 +274,175 @@ class Tx_Extbase_Tests_Unit_Persistence_Storage_Typo3DbBackendTest extends Tx_Ex
 		$mockTypo3DbBackend->_set('dataMapper', $mockDataMapper);
 		$mockTypo3DbBackend->_callRef('parseOrderings', $orderings, $mockSource, $sql);
 
-		$expecedSql = array('orderings' => array('tx_myext_tablename.converted_fieldname ASC', 'tx_myext_tablename.converted_fieldname DESC'));
-		$this->assertSame($expecedSql, $sql);
+		$expectedSql = array('orderings' => array('tx_myext_tablename.converted_fieldname ASC', 'tx_myext_tablename.converted_fieldname DESC'));
+		$this->assertSame($expectedSql, $sql);
+	}
+
+	public function providerForVisibilityConstraintStatement() {
+		return array(
+			'in be: include all' => array('BE', TRUE, array(), TRUE, NULL),
+			'in be: ignore enable fields but do not include deleted' => array('BE', TRUE, array(), FALSE, array('tx_foo_table.deleted_column=0')),
+			'in be: respect enable fields but include deleted' => array('BE', FALSE, array(), TRUE, array('tx_foo_table.disabled_column=0 AND (tx_foo_table.starttime_column<=123456789)')),
+			'in be: respect enable fields and do not include deleted' => array('BE', FALSE, array(), FALSE, array('tx_foo_table.disabled_column=0 AND (tx_foo_table.starttime_column<=123456789) AND tx_foo_table.deleted_column=0')),
+			'in fe: include all' => array('FE', TRUE, array(), TRUE, NULL),
+			'in fe: ignore enable fields but do not include deleted' => array('FE', TRUE, array(), FALSE, array('tx_foo_table.deleted_column=0')),
+			'in fe: ignore only starttime and do not include deleted' => array('FE', TRUE, array('starttime'), FALSE, array('tx_foo_table.deleted_column=0 AND tx_foo_table.disabled_column=0')),
+			'in fe: respect enable fields and do not include deleted' => array('FE', FALSE, array(), FALSE, array('tx_foo_table.deleted_column=0 AND tx_foo_table.disabled_column=0 AND tx_foo_table.starttime_column<=123456789')),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider providerForVisibilityConstraintStatement
+	 */
+	public function visibilityConstraintStatementIsGeneratedAccordingToTheQuerySettings($mode, $ignoreEnableFields, $enableFieldsToBeIgnored, $deletedValue, $expectedSql) {
+		$tableName = 'tx_foo_table';
+		$GLOBALS['TCA'][$tableName]['ctrl'] = array(
+			'enablecolumns' => array(
+				'disabled' => 'disabled_column',
+				'starttime' => 'starttime_column'
+			),
+			'delete' => 'deleted_column'
+		);
+		$GLOBALS['TSFE']->sys_page = new t3lib_pageSelect();
+		$GLOBALS['SIM_ACCESS_TIME'] = 123456789;
+
+		$mockQuerySettings = $this->getMock('Tx_Extbase_Persistence_Typo3QuerySettings', array('getIgnoreEnableFields', 'getEnableFieldsToBeIgnored', 'getIncludeDeleted'), array(), '', FALSE);
+		$mockQuerySettings->expects($this->once())->method('getIgnoreEnableFields')->will($this->returnValue($ignoreEnableFields));
+		$mockQuerySettings->expects($this->once())->method('getEnableFieldsToBeIgnored')->will($this->returnValue($enableFieldsToBeIgnored));
+		$mockQuerySettings->expects($this->once())->method('getIncludeDeleted')->will($this->returnValue($deletedValue));
+
+		$sql = array();
+		$mockTypo3DbBackend = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Storage_Typo3DbBackend'), array('getTypo3Mode'), array(), '', FALSE);
+		$mockTypo3DbBackend->expects($this->any())->method('getTypo3Mode')->will($this->returnValue($mode));
+		$mockTypo3DbBackend->_callRef('addVisibilityConstraintStatement', $mockQuerySettings, $tableName, $sql);
+
+		$this->assertSame($expectedSql, $sql['additionalWhereClause']);
+
+		unset($GLOBALS['TCA'][$tableName]);
+	}
+
+	public function providerForRespectEnableFields() {
+		return array(
+			'in be: respectEnableFields=false' => array('BE', FALSE, NULL),
+			'in be: respectEnableFields=true' => array('BE', TRUE, array('tx_foo_table.disabled_column=0 AND (tx_foo_table.starttime_column<=123456789) AND tx_foo_table.deleted_column=0')),
+			'in be: respectEnableFields=false' => array('FE', FALSE, NULL),
+			'in be: respectEnableFields=true' => array('FE', TRUE, array('tx_foo_table.deleted_column=0 AND tx_foo_table.disabled_column=0 AND tx_foo_table.starttime_column<=123456789'))
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider providerForRespectEnableFields
+	 */
+	public function respectEnableFieldsSettingGeneratesCorrectStatement($mode, $respectEnableFields, $expectedSql) {
+		$tableName = 'tx_foo_table';
+		$GLOBALS['TCA'][$tableName]['ctrl'] = array(
+			'enablecolumns' => array(
+				'disabled' => 'disabled_column',
+				'starttime' => 'starttime_column'
+			),
+			'delete' => 'deleted_column'
+		);
+		$GLOBALS['TSFE']->sys_page = new t3lib_pageSelect();
+		$GLOBALS['SIM_ACCESS_TIME'] = 123456789;
+
+		$mockQuerySettings = $this->getMock('Tx_Extbase_Persistence_Typo3QuerySettings', array('dummy'), array(), '', FALSE);
+		$mockQuerySettings->setRespectEnableFields($respectEnableFields);
+
+		$sql = array();
+		$mockTypo3DbBackend = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Storage_Typo3DbBackend'), array('getTypo3Mode'), array(), '', FALSE);
+		$mockTypo3DbBackend->expects($this->any())->method('getTypo3Mode')->will($this->returnValue($mode));
+		$mockTypo3DbBackend->_callRef('addVisibilityConstraintStatement', $mockQuerySettings, $tableName, $sql);
+
+		$this->assertSame($expectedSql, $sql['additionalWhereClause']);
+
+		unset($GLOBALS['TCA'][$tableName]);
+	}
+
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_Persistence_Generic_Exception_InconsistentQuerySettings
+	 */
+	public function visibilityConstraintStatementGenerationThrowsExceptionIfTheQuerySettingsAreInconsistent() {
+		$tableName = 'tx_foo_table';
+		$GLOBALS['TCA'][$tableName]['ctrl'] = array(
+			'enablecolumns' => array(
+				'disabled' => 'disabled_column'
+			),
+			'delete' => 'deleted_column'
+		);
+
+		$mockQuerySettings = $this->getMock('Tx_Extbase_Persistence_Typo3QuerySettings', array('getIgnoreEnableFields', 'getEnableFieldsToBeIgnored', 'getIncludeDeleted'), array(), '', FALSE);
+		$mockQuerySettings->expects($this->once())->method('getIgnoreEnableFields')->will($this->returnValue(FALSE));
+		$mockQuerySettings->expects($this->once())->method('getEnableFieldsToBeIgnored')->will($this->returnValue(array()));
+		$mockQuerySettings->expects($this->once())->method('getIncludeDeleted')->will($this->returnValue(TRUE));
+
+		$sql = array();
+		$mockTypo3DbBackend = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Storage_Typo3DbBackend'), array('getTypo3Mode'), array(), '', FALSE);
+		$mockTypo3DbBackend->expects($this->any())->method('getTypo3Mode')->will($this->returnValue('FE'));
+		$mockTypo3DbBackend->_callRef('addVisibilityConstraintStatement', $mockQuerySettings, $tableName, $sql);
+
+		unset($GLOBALS['TCA'][$tableName]);
+	}
+
+	/**
+	 * @test
+	 */
+	public function uidOfAlreadyPersistedValueObjectIsDeterminedCorrectly() {
+		$mockValueObject = $this->getMockForAbstractClass(
+			'Tx_Extbase_DomainObject_AbstractValueObject',
+			array('_getProperties'), '', FALSE
+		);
+		$mockValueObject->expects($this->any())
+			->method('_getProperties')
+			->will($this->returnValue(array('propertyName' => 'propertyValue')));
+
+		$mockColumnMap = $this->getMock(
+			'Tx_Extbase_Persistence_Mapper_DataMap',
+			array('isPersistableProperty', 'getColumnName'), array(), '', FALSE
+		);
+		$mockColumnMap->expects($this->any())->method('getColumnName')->will($this->returnValue('column_name'));
+
+		$tableName = 'tx_foo_table';
+
+		$mockDataMap = $this->getMock(
+			'Tx_Extbase_Persistence_Mapper_DataMap',
+			array('isPersistableProperty', 'getColumnMap', 'getTableName'), array(), '', FALSE);
+		$mockDataMap->expects($this->any())->method('isPersistableProperty')->will($this->returnValue(TRUE));
+		$mockDataMap->expects($this->any())->method('getColumnMap')->will($this->returnValue($mockColumnMap));
+		$mockDataMap->expects($this->any())->method('getTableName')->will($this->returnValue($tableName));
+
+		$mockDataMapper = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMapper', array('getDataMap'), array(), '', FALSE);
+		$mockDataMapper->expects($this->any())->method('getDataMap')->will($this->returnValue($mockDataMap));
+
+		$expectedStatement = "SELECT * FROM tx_foo_table WHERE column_name=?";
+		$expectedParameters = array('plainPropertyValue');
+		$expectedUid = 52;
+
+		$mockDataBaseHandle = $this->getMock('t3lib_db', array('sql_query', 'sql_fetch_assoc'), array(), '', FALSE);
+		$mockDataBaseHandle->expects($this->once())->method('sql_query')->will($this->returnValue('resource'));
+		$mockDataBaseHandle->expects($this->any())
+			->method('sql_fetch_assoc')->with('resource')
+			->will($this->returnValue(array('uid' => $expectedUid)));
+
+		$mockTypo3DbBackend = $this->getMock(
+			$this->buildAccessibleProxy('Tx_Extbase_Persistence_Storage_Typo3DbBackend'),
+			array('getPlainValue', 'checkSqlErrors', 'replacePlaceholders', 'addVisibilityConstraintStatement'), array(), '', FALSE
+		);
+		$mockTypo3DbBackend->expects($this->once())->method('getPlainValue')->will($this->returnValue('plainPropertyValue'));
+		$mockTypo3DbBackend->expects($this->once())
+			->method('addVisibilityConstraintStatement')
+			->with($this->isInstanceOf('Tx_Extbase_Persistence_QuerySettingsInterface'), $tableName, $this->isType('array'));
+		$mockTypo3DbBackend->expects($this->once())
+			->method('replacePlaceholders')
+			->with($expectedStatement, $expectedParameters)
+			->will($this->returnValue('plainPropertyValue'));
+		$mockTypo3DbBackend->_set('dataMapper', $mockDataMapper);
+		$mockTypo3DbBackend->_set('databaseHandle', $mockDataBaseHandle);
+		$result = $mockTypo3DbBackend->_callRef('getUidOfAlreadyPersistedValueObject', $mockValueObject);
+
+		$this->assertSame($expectedUid, $result);
 	}
 
 	/**

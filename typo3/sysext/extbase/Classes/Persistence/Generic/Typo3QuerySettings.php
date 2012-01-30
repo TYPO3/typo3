@@ -49,10 +49,25 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	protected $storagePageIds = array();
 
 	/**
-	 * Flag if the visibility settings for the frontend should be respected.
+	 * A flag indicating whether all or some enable fields should be ignored. If TRUE, all enable fields are ignored.
+	 * If--in addition to this--enableFieldsToBeIgnored is set, only fields specified there are ignored. If FALSE, all
+	 * enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
 	 * @var boolean
 	 */
-	protected $respectEnableFields = TRUE;
+	protected $ignoreEnableFields = FALSE;
+
+	/**
+	 * An array of column names in the enable columns array (array keys in $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']),
+	 * to be ignored while building the query statement
+	 * @var array
+	 */
+	protected $enableFieldsToBeIgnored = array();
+
+	/**
+	 * Flag whether deleted records should be included in the result set.
+	 * @var boolean
+	 */
+	protected $includeDeleted = FALSE;
 
 	/**
 	 * Flag if the sys_language_uid should be respected (default is TRUE).
@@ -67,10 +82,24 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	protected $returnRawQueryResult = FALSE;
 
 	/**
+	 * As long as we use a feature flag ignoreAllEnableFieldsInBe to determine the default behavior, the
+	 * initializeObject is responsible for handling that.
+	 */
+	public function initializeObject() {
+		/** @var $objectManager Tx_Extbase_Object_ObjectManager */
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		/** @var $configurationManager Tx_Extbase_Configuration_ConfigurationManagerInterface */
+		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		if (TYPO3_MODE === 'BE' && $configurationManager->isFeatureEnabled('ignoreAllEnableFieldsInBe')) {
+			$this->setIgnoreEnableFields(TRUE);
+		}
+	}
+
+	/**
 	 * Sets the flag if the storage page should be respected for the query.
 	 *
-	 * @param $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
-	 * @return $this (fluent interface)
+	 * @param boolean $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
+	 * @return Tx_Extbase_Persistence_QuerySettingsInterface (fluent interface)
 	 * @api
 	 */
 	public function setRespectStoragePage($respectStoragePage) {
@@ -110,8 +139,8 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	/**
 	 * Sets the flag if a  and language overlay should be performed.
 	 *
-	 * @param $respectEnableFields TRUE if a  and language overlay should be performed.
-	 * @return $this (fluent interface)
+	 * @param boolean $respectEnableFields TRUE if a  and language overlay should be performed.
+	 * @return Tx_Extbase_Persistence_QuerySettingsInterface (fluent interface)
 	 * @api
 	 */
 	public function setRespectSysLanguage($respectSysLanguage) {
@@ -131,12 +160,17 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	/**
 	 * Sets the flag if the visibility in the frontend should be respected.
 	 *
-	 * @param $respectEnableFields TRUE if the visibility in the frontend should be respected. If TRUE, the "enable fields" of TYPO3 will be added to the query statement.
-	 * @return $this (fluent interface)
+	 * @param boolean $respectEnableFields TRUE if the visibility in the frontend should be respected. If TRUE, the "enable fields" of TYPO3 will be added to the query statement.
+	 * @return Tx_Extbase_Persistence_QuerySettingsInterface (fluent interface)
+	 * @deprecated since Extbase 6.0, will be removed in Extbase 6.2. Use setIgnoreEnableFields() and setEnableFieldsToBeIgnored() instead.
+	 * @see setIgnoreEnableFields()
+	 * @see setEnableFieldsToBeIgnored()
 	 * @api
 	 */
 	public function setRespectEnableFields($respectEnableFields) {
-		$this->respectEnableFields = $respectEnableFields;
+		t3lib_div::logDeprecatedFunction();
+		$this->setIgnoreEnableFields(!$respectEnableFields);
+		$this->setIncludeDeleted(!$respectEnableFields);
 		return $this;
 	}
 
@@ -144,9 +178,84 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	 * Returns the state, if the visibility settings for the frontend should be respected for the query.
 	 *
 	 * @return boolean TRUE, if the visibility settings for the frontend should should be respected; otherwise FALSE.
+	 * @deprecated since Extbase 6.0, will be removed in Extbase 6.2. Use getIgnoreEnableFields() and getEnableFieldsToBeIgnored() instead.
+	 * @see getIgnoreEnableFields()
+	 * @see getEnableFieldsToBeIgnored()
 	 */
 	public function getRespectEnableFields() {
-		return $this->respectEnableFields;
+		t3lib_div::logDeprecatedFunction();
+		return !($this->getIgnoreEnableFields() && $this->getIncludeDeleted());
+	}
+
+	/**
+	 * Sets a flag indicating whether all or some enable fields should be ignored. If TRUE, all enable fields are ignored.
+	 * If--in addition to this--enableFieldsToBeIgnored is set, only fields specified there are ignored. If FALSE, all
+	 * enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
+	 *
+	 * @param boolean $ignoreEnableFields
+	 * @see setEnableFieldsToBeIgnored()
+	 * @api
+	 */
+	public function setIgnoreEnableFields($ignoreEnableFields) {
+		$this->ignoreEnableFields = $ignoreEnableFields;
+	}
+
+	/**
+	 * The returned value indicates whether all or some enable fields should be ignored.
+	 *
+	 * If TRUE, all enable fields are ignored. If--in addition to this--enableFieldsToBeIgnored is set, only fields specified there are ignored.
+	 * If FALSE, all enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
+	 *
+	 * @return boolean
+	 * @see getEnableFieldsToBeIgnored()
+	 */
+	public function getIgnoreEnableFields() {
+		return $this->ignoreEnableFields;
+	}
+
+	/**
+	 * An array of column names in the enable columns array (array keys in $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']),
+	 * to be ignored while building the query statement. Adding a column name here effectively switches off filtering
+	 * by this column. This setting is only taken into account if $this->ignoreEnableFields = TRUE.
+	 *
+	 * @param array $enableFieldsToBeIgnored
+	 * @return void
+	 * @see setIgnoreEnableFields()
+	 * @api
+	 */
+	public function setEnableFieldsToBeIgnored($enableFieldsToBeIgnored) {
+		$this->enableFieldsToBeIgnored = $enableFieldsToBeIgnored;
+	}
+
+	/**
+	 * An array of column names in the enable columns array (array keys in $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']),
+	 * to be ignored while building the query statement.
+	 *
+	 * @return array
+	 * @see getIgnoreEnableFields()
+	 */
+	public function getEnableFieldsToBeIgnored() {
+		return $this->enableFieldsToBeIgnored;
+	}
+
+	/**
+	 * Sets the flag if the query should return objects that are deleted.
+	 *
+	 * @param boolean $includeDeleted
+	 * @return void
+	 * @api
+	 */
+	public function setIncludeDeleted($includeDeleted) {
+		$this->includeDeleted = $includeDeleted;
+	}
+
+	/**
+	 * Returns if the query should return objects that are deleted.
+	 *
+	 * @return boolean
+	 */
+	public function getIncludeDeleted() {
+		return $this->includeDeleted;
 	}
 
 	/**

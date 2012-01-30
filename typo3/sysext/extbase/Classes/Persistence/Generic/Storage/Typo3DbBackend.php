@@ -398,7 +398,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$sql['additionalWhereClause'] = array();
 
 		$tableName = $dataMap->getTableName();
-		$this->addEnableFieldsStatement($tableName, $sql);
+		$this->addVisibilityConstraintStatement(new Tx_Extbase_Persistence_Typo3QuerySettings(), $tableName, $sql);
 
 		$statement = 'SELECT * FROM ' . $tableName;
 		$statement .= ' WHERE ' . implode(' AND ', $fields);
@@ -804,9 +804,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @return void
 	 */
 	protected function addAdditionalWhereClause(Tx_Extbase_Persistence_QuerySettingsInterface $querySettings, $tableName, &$sql) {
-		if ($querySettings->getRespectEnableFields()) {
-			$this->addEnableFieldsStatement($tableName, $sql);
-		}
+		$this->addVisibilityConstraintStatement($querySettings, $tableName, $sql);
+
 		if ($querySettings->getRespectSysLanguage()) {
 			$this->addSysLanguageStatement($tableName, $sql);
 		}
@@ -821,10 +820,12 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @param string $tableName The database table name
 	 * @param array &$sql The query parts
 	 * @return void
+	 * @deprecated since Extbase 6.0, will be removed in Extbase 6.2.
 	 */
 	protected function addEnableFieldsStatement($tableName, array &$sql) {
+		t3lib_div::logDeprecatedFunction();
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
-			if (TYPO3_MODE === 'FE') {
+			if ($this->getTypo3Mode() === 'FE') {
 				$statement = $GLOBALS['TSFE']->sys_page->enableFields($tableName);
 			} else { // TYPO3_MODE === 'BE'
 				$statement = t3lib_BEfunc::deleteClause($tableName);
@@ -835,6 +836,83 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				$sql['additionalWhereClause'][] = $statement;
 			}
 		}
+	}
+
+	/**
+	 * Adds enableFields and deletedClause to the query if necessary
+	 *
+	 * @param Tx_Extbase_Persistence_QuerySettingsInterface $querySettings
+	 * @param string $tableName The database table name
+	 * @param array &$sql The query parts
+	 * @return void
+	 */
+	protected function addVisibilityConstraintStatement(Tx_Extbase_Persistence_QuerySettingsInterface $querySettings, $tableName, array &$sql) {
+		$statement = '';
+		if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
+			$ignoreEnableFields = $querySettings->getIgnoreEnableFields();
+			$enableFieldsToBeIgnored = $querySettings->getEnableFieldsToBeIgnored();
+			$includeDeleted = $querySettings->getIncludeDeleted();
+
+			if ($this->getTypo3Mode() === 'FE') {
+				$statement .= $this->getFrontendConstraintStatement($tableName, $ignoreEnableFields, $enableFieldsToBeIgnored, $includeDeleted);
+			} else { // TYPO3_MODE === 'BE'
+				$statement .= $this->getBackendConstraintStatement($tableName, $ignoreEnableFields, $includeDeleted);
+			}
+
+			if(!empty($statement)) {
+				$statement = (strtolower(substr($statement, 1, 3)) === 'and' ? substr($statement, 5) : $statement);
+				$sql['additionalWhereClause'][] = $statement;
+			}
+		}
+	}
+
+	/**
+	 * Returns constraint statement for frontend context
+	 *
+	 * @param string $tableName
+	 * @param boolean $ignoreEnableFields A flag indicating whether the enable fields should be ignored
+	 * @param array $enableFieldsToBeIgnored If $ignoreEnableFields is true, this array specifies enable fields to be ignored. If it is NULL or an empty array (default) all enable fields are ignored.
+	 * @param boolean $includeDeleted A flag indicating whether deleted records should be included
+	 * @return string
+	 * @throws Tx_Extbase_Persistence_Generic_Exception_InconsistentQuerySettings
+	 */
+	protected function getFrontendConstraintStatement($tableName, $ignoreEnableFields, $enableFieldsToBeIgnored = array(), $includeDeleted) {
+		$statement = '';
+		if ($ignoreEnableFields && !$includeDeleted) {
+			if(count($enableFieldsToBeIgnored)) {
+					// array_combine() is necessary because of the way t3lib_pageSelect::enableFields() is implemented
+				$statement .= $GLOBALS['TSFE']->sys_page->enableFields($tableName, -1, array_combine($enableFieldsToBeIgnored, $enableFieldsToBeIgnored));
+			} else {
+				$statement .= $GLOBALS['TSFE']->sys_page->deleteClause($tableName);
+			}
+		} elseif (!$ignoreEnableFields && !$includeDeleted) {
+			$statement .= $GLOBALS['TSFE']->sys_page->enableFields($tableName);
+		} elseif (!$ignoreEnableFields && $includeDeleted) {
+			throw new Tx_Extbase_Persistence_Generic_Exception_InconsistentQuerySettings(
+				'Query setting "ignoreEnableFields=FALSE" can not be used together with "includeDeleted=TRUE" in frontend context.',
+				1327678173
+			);
+		}
+		return $statement;
+	}
+
+	/**
+	 * Returns constraint statement for backend context
+	 *
+	 * @param string $tableName
+	 * @param boolean $ignoreEnableFields A flag indicating whether the enable fields should be ignored
+	 * @param boolean $includeDeleted A flag indicating whether deleted records should be included
+	 * @return string
+	 */
+	protected function getBackendConstraintStatement($tableName, $ignoreEnableFields, $includeDeleted) {
+		$statement = '';
+		if (!$ignoreEnableFields) {
+			$statement .= t3lib_BEfunc::BEenableFields($tableName);
+		}
+		if (!$includeDeleted) {
+			$statement .= t3lib_BEfunc::deleteClause($tableName);
+		}
+		return $statement;
 	}
 
 	/**
@@ -986,7 +1064,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$overlayedRows = array();
 		foreach ($rows as $row) {
 			if (!($this->pageSelectObject instanceof t3lib_pageSelect)) {
-				if (TYPO3_MODE == 'FE') {
+				if ($this->getTypo3Mode() === 'FE') {
 					if (is_object($GLOBALS['TSFE'])) {
 						$this->pageSelectObject = $GLOBALS['TSFE']->sys_page;
 					} else {
@@ -1123,6 +1201,15 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 		// TODO check if we can hand this over to the Dispatcher to clear the page only once, this will save around 10% time while inserting and updating
 		$this->cacheService->clearPageCache($pageIdsToClear);
+	}
+
+	/**
+	 * Returns the TYPO3 Mode ("FE" for front-end or "BE" for back-end). This method is necessary to enable unit tests to
+	 * mock this constant.
+	 * @return string
+	 */
+	protected function getTypo3Mode() {
+		return TYPO3_MODE;
 	}
 }
 
