@@ -74,7 +74,7 @@ TYPO3.Form.Wizard.Elements.Basic.Select = Ext.extend(TYPO3.Form.Wizard.Elements,
 		Ext.apply(this, {
 			configuration: {
 				attributes: {
-					class: '',
+					"class": '',
 					disabled: '',
 					id: '',
 					lang: '',

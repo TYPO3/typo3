@@ -61,7 +61,7 @@ TYPO3.Form.Wizard.Elements.Predefined.CheckboxGroup = Ext.extend(TYPO3.Form.Wiza
 			},
 			configuration: {
 				attributes: {
-					class: 'fieldset-subgroup',
+					"class": 'fieldset-subgroup',
 					dir: '',
 					id: '',
 					lang: '',

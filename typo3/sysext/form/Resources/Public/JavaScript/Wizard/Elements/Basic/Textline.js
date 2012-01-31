@@ -72,7 +72,7 @@ TYPO3.Form.Wizard.Elements.Basic.Textline = Ext.extend(TYPO3.Form.Wizard.Element
 				attributes: {
 					accesskey: '',
 					alt: '',
-					class: '',
+					"class": '',
 					dir: '',
 					disabled: '',
 					id: '',

@@ -72,7 +72,7 @@ TYPO3.Form.Wizard.Elements.Basic.Reset = Ext.extend(TYPO3.Form.Wizard.Elements, 
 				attributes: {
 					accesskey: '',
 					alt: '',
-					class: '',
+					"class": '',
 					dir: '',
 					disabled: '',
 					id: '',

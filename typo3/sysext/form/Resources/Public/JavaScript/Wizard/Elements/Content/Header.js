@@ -51,7 +51,7 @@ TYPO3.Form.Wizard.Elements.Content.Header = Ext.extend(TYPO3.Form.Wizard.Element
 		Ext.apply(this, {
 			configuration: {
 				attributes: {
-					class: 'content-header',
+					"class": 'content-header',
 					dir: '',
 					id: '',
 					lang: '',
