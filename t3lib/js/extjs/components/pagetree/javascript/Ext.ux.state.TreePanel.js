@@ -98,22 +98,26 @@ Ext.override(Ext.ux.state.TreePanel, {
 						}
 					}
 				}
+
 				if (this.stateHash['lastSelectedNode']) {
 					var node = this.getNodeById(this.stateHash['lastSelectedNode']);
 					if (node) {
-						this.selectPath(node.getPath());
-
 						var contentId = TYPO3.Backend.ContentContainer.getIdFromUrl() ||
 							String(fsMod.recentIds['web']) || '-1';
 
+						var hasContentFrameValidPageId = (contentId !== '-1' && contentId !== '0');
 						var isCurrentSelectedNode = (
 							String(node.attributes.nodeData.id) === contentId ||
 							contentId.indexOf('pages' + String(node.attributes.nodeData.id)) !== -1
 						);
 
-						if (contentId !== '-1' && !isCurrentSelectedNode && this.app.isVisible() &&
-							this.commandProvider && this.commandProvider.singleClick
-						) {
+						if (isCurrentSelectedNode) {
+							this.selectPath(node.getPath());
+						}
+
+						var isSingleClickPossible = (this.app.isVisible() && this.commandProvider && this.commandProvider.singleClick);
+						if (!hasContentFrameValidPageId && !isCurrentSelectedNode && isSingleClickPossible) {
+							this.selectPath(node.getPath());
 							this.commandProvider.singleClick(node, this);
 						}
 					}
