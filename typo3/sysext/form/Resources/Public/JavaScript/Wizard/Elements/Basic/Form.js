@@ -74,7 +74,7 @@ TYPO3.Form.Wizard.Elements.Basic.Form = Ext.extend(TYPO3.Form.Wizard.Elements, {
 					accept: '',
 					acceptcharset: '',
 					action: '',
-					class: '',
+					"class": '',
 					dir: '',
 					enctype: 'application/x-www-form-urlencoded',
 					id: '',
