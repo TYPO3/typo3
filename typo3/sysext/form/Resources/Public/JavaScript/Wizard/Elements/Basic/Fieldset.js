@@ -62,7 +62,7 @@ TYPO3.Form.Wizard.Elements.Basic.Fieldset = Ext.extend(TYPO3.Form.Wizard.Element
 		Ext.apply(this, {
 			configuration: {
 				attributes: {
-					class: '',
+					"class": '',
 					dir: '',
 					id: '',
 					lang: '',

@@ -14,7 +14,7 @@ TYPO3.Form.Wizard.Elements.Predefined.Name = Ext.extend(TYPO3.Form.Wizard.Elemen
 		var config = {
 			configuration: {
 				attributes: {
-					class: 'predefined-name fieldset-subgroup fieldset-horizontal label-below',
+					"class": 'predefined-name fieldset-subgroup fieldset-horizontal label-below',
 					dir: '',
 					id: '',
 					lang: '',
