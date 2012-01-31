@@ -71,7 +71,7 @@ TYPO3.Form.Wizard.Elements.Basic.Textarea = Ext.extend(TYPO3.Form.Wizard.Element
 			configuration: {
 				attributes: {
 					accesskey: '',
-					class: '',
+					"class": '',
 					cols: '40',
 					dir: '',
 					disabled: '',

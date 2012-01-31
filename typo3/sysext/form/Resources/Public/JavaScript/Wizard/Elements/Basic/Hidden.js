@@ -47,7 +47,7 @@ TYPO3.Form.Wizard.Elements.Basic.Hidden = Ext.extend(TYPO3.Form.Wizard.Elements,
 		Ext.apply(this, {
 			configuration: {
 				attributes: {
-					class: '',
+					"class": '',
 					id: '',
 					lang: '',
 					name: '',

@@ -61,7 +61,7 @@ TYPO3.Form.Wizard.Elements.Predefined.RadioGroup = Ext.extend(TYPO3.Form.Wizard.
 			},
 			configuration: {
 				attributes: {
-					class: 'fieldset-subgroup',
+					"class": 'fieldset-subgroup',
 					dir: '',
 					id: '',
 					lang: '',

@@ -51,7 +51,7 @@ TYPO3.Form.Wizard.Elements.Content.Textblock = Ext.extend(TYPO3.Form.Wizard.Elem
 		Ext.apply(this, {
 			configuration: {
 				attributes: {
-					class: 'content-textblock',
+					"class": 'content-textblock',
 					dir: '',
 					id: '',
 					lang: '',

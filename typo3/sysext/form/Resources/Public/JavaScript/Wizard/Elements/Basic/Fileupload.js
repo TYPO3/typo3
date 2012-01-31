@@ -72,7 +72,7 @@ TYPO3.Form.Wizard.Elements.Basic.Fileupload = Ext.extend(TYPO3.Form.Wizard.Eleme
 				attributes: {
 					accesskey: '',
 					alt: '',
-					class: '',
+					"class": '',
 					dir: '',
 					disabled: '',
 					id: '',
