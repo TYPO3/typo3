@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id=".alttitle" xml:space="preserve">
+				<source>htmlArea RTE &gt; Microdata</source>
+			</trans-unit>
+			<trans-unit id=".description" xml:space="preserve">
+				<source>The Microdata feature allows to edit microdata attributes of elements in the RTE editing area.</source>
+			</trans-unit>
+			<trans-unit id=".details" xml:space="preserve">
+				<source>When this feature is enabled, the dialogue opened when clicking the "Edit element" button in the editor toolbar allows to edit the microdata attributes of the current element in the RTE editing area.
+Another button allows to make visible all microdata in the editing area.
+
+By default, this features uses the microdata dictionary defined by schema.org (http://schema.org). However, it may be configured to use other dictionaries.</source>
+			</trans-unit>
+			<trans-unit id=".image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/EditElement/skin/images/element-edit.png,
+EXT:rtehtmlarea/extensions/MicrodataSchema/skin/images/microdata-show.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id=".image_descr" xml:space="preserve">
+				<source>"Edit element" icon. When the cursor is inside an element, clicking it opens a dialogue that allows to edit the microdata attributes of the element.
+"Show microdata" icon. Clicking it shows or hides all microdata items in the editing area.</source>
+			</trans-unit>
+			<trans-unit id=".seeAlso" xml:space="preserve">
+				<source>xEXT_rtehtmlarea_EditElement,
+xEXT_rtehtmlarea_MicrodataSchema:Show_microdata,
+xEXT_rtehtmlarea_MicrodataSchema:currentItemType,
+xEXT_rtehtmlarea_MicrodataSchema:itemscope,
+xEXT_rtehtmlarea_MicrodataSchema:itemtype,
+xEXT_rtehtmlarea_MicrodataSchema:itemprop</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="Show_microdata.alttitle" xml:space="preserve">
+				<source>Show microdata</source>
+			</trans-unit>
+			<trans-unit id="Show_microdata.image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/extensions/MicrodataSchema/skin/images/microdata-show.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="Show_microdata.image_descr" xml:space="preserve">
+				<source>"Show microdata" icon.</source>
+			</trans-unit>
+			<trans-unit id="Show_microdata.description" xml:space="preserve">
+				<source>Show/hide all microdata items in the editing area..</source>
+			</trans-unit>
+			<trans-unit id="Show_microdata.details" xml:space="preserve">
+				<source>Clicking the "Show microdata" button makes all microdata items in the editing area visible or, if they are currently visible, the button being highlighted as active, hides these items.
+The type or the property of each item is shown in small capital letters in front of the element providing the microdata value.
+This applies only when editing content and has no effect when the element is rendered in the frontend.</source>
+			</trans-unit>
+			<trans-unit id="currentItemType.alttitle" xml:space="preserve">
+				<source>Type of current containing item</source>
+			</trans-unit>
+			<trans-unit id="currentItemType.description" xml:space="preserve">
+				<source>This field displays the type of the item within the scope of which the current element resides, if any.</source>
+			</trans-unit>
+			<trans-unit id="currentItemType.details" xml:space="preserve">
+				<source>If a type of item is displayed, then the current element may be assigned a property of that type of item.</source>
+			</trans-unit>
+			<trans-unit id="itemprop.description" xml:space="preserve">
+				<source>Select the item property associated to the current element.</source>
+			</trans-unit>
+			<trans-unit id="itemprop.details" xml:space="preserve">
+				<source>The properties displayed in this selector box are those of the type of the current containing item.</source>
+			</trans-unit>
+			<trans-unit id="itemscope.alttitle" xml:space="preserve">
+				<source>Item scope</source>
+			</trans-unit>
+			<trans-unit id="itemscope.description" xml:space="preserve">
+				<source>Check/uncheck this checkbox in order to set or unset this element as an item.</source>
+			</trans-unit>
+			<trans-unit id="itemscope.details" xml:space="preserve">
+				<source>If the checkbox is checked, then the current element is identified as an item and should be assigned a type.</source>
+			</trans-unit>
+			<trans-unit id="itemtype.alttitle" xml:space="preserve">
+				<source>Item type</source>
+			</trans-unit>
+			<trans-unit id="itemtype.description" xml:space="preserve">
+				<source>Select the type of item to be assigned to the current element.</source>
+			</trans-unit>
+			<trans-unit id="itemprop.alttitle" xml:space="preserve">
+				<source>Item property</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

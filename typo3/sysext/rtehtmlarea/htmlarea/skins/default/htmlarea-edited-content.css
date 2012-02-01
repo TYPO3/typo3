@@ -22,12 +22,15 @@
 body.htmlarea-showtableborders table, body.htmlarea-showtableborders td, body.htmlarea-showtableborders th {
 	padding: 3px; border:1px dashed #316ac5 ! important;
 }
-
 /* Make language marks visible */
 body.htmlarea-show-language-marks *[lang] {
 	background: url("images/language-marker.gif") left top no-repeat; padding-left: 14px; text-decoration: underline;
 }
-
+/* Make microdata visible */
+body.htmlarea-show-microdata *[itemtype],
+body.htmlarea-show-microdata *[itemprop] {
+	background: url("images/microdata.gif") left top no-repeat; padding-left: 14px; text-decoration: underline;
+}
 /* Selectors for the Abbreviation plugin */
 body.htmlarea-content-body abbr, body.htmlarea-content-body acronym {
 	border-bottom:1px dashed #000;

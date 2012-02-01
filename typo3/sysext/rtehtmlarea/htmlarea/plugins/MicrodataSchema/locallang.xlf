@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id="ShowMicrodata-Tooltip" xml:space="preserve">
+				<source>Show microdata</source>
+			</trans-unit>
+			<trans-unit id="microdata" xml:space="preserve">
+				<source>Microdata</source>
+			</trans-unit>
+			<trans-unit id="itemscope" xml:space="preserve">
+				<source>Item scope</source>
+			</trans-unit>
+			<trans-unit id="itemtype" xml:space="preserve">
+				<source>Item type</source>
+			</trans-unit>
+			<trans-unit id="currentItemType" xml:space="preserve">
+				<source>Current item type</source>
+			</trans-unit>
+			<trans-unit id="itemprop" xml:space="preserve">
+				<source>Item property</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

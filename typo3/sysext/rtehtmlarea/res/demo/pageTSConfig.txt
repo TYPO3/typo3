@@ -192,6 +192,13 @@ RTE.default {
 		## Configuration specific to the spellcheck button or SpellCheck feature
 		## Enable the use of personal dictionaries
 	buttons.spellcheck.enablePersonalDictionaries = 1
+
+		## Configuration of microdata schema
+	schema {
+		sources {
+			schemaOrg = EXT:rtehtmlarea/extensions/MicrodataSchema/res/schemaOrgAll.rdf
+		}
+	}
 }
 
 	## Use same processing as on entry to database to clean content pasted into the editor
