@@ -172,6 +172,13 @@ RTE.default {
 		## Add hotkeys associated with bold and italic buttons
 	buttons.bold.hotKey = b
 	buttons.italic.hotKey = i
+
+		## Configuration of microdata schema
+	schema {
+		sources {
+			schemaOrg = EXT:rtehtmlarea/extensions/MicrodataSchema/res/schemaOrgAll.rdf
+		}
+	}
 }
 
 	## front end RTE configuration for the general public

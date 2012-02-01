@@ -11,7 +11,7 @@
 			</trans-unit>
 			<trans-unit id=".details" xml:space="preserve">
 				<source>Clicking the "Edit element" icon in the RTE tool bar opens a dialogue that allows to edit the general attributes of an element.
-The dialogue allows to edit the id, title, class, lang and dir attributes of the element. It also allows to specify handlers for keyboard and mouse events.</source>
+The dialogue allows to edit the id, title, class, lang and dir attributes, as well as the microdata attributes of the element. It also allows to specify handlers for keyboard and mouse events.</source>
 			</trans-unit>
 			<trans-unit id=".image" xml:space="preserve">
 				<source>EXT:rtehtmlarea/extensions/EditElement/skin/images/element-edit.png</source>
@@ -26,6 +26,7 @@ xEXT_rtehtmlarea_EditElement:title,
 xEXT_rtehtmlarea_EditElement:className,
 xEXT_rtehtmlarea_Language:languageCombo,
 xEXT_rtehtmlarea_Language:directionCombo,
+xEXT_rtehtmlarea_MicrodataSchema,
 xEXT_rtehtmlarea_EditElement:events</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>

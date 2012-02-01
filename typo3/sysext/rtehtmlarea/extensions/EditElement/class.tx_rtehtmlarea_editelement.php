@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2010-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -38,13 +38,12 @@ class tx_rtehtmlarea_editelement extends tx_rtehtmlarea_api {
 	protected $toolbar;					// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 					// Frontend language array
 		// The comma-separated list of names of prerequisite plugins
-	protected $requiredPlugins = 'BlockStyle,TextStyle,Language';
+	protected $requiredPlugins = 'BlockStyle,TextStyle,Language,MicrodataSchema';
 	protected $pluginButtons = 'editelement';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'editelement'	=> 'EditElement',
 		);
-	protected $acronymIndex = 0;
-	protected $abbreviationIndex = 0;
+
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *

@@ -40,7 +40,7 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '1.2',
+			version		: '2.0',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -188,6 +188,15 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 				title: this.localize('Language'),
 				itemId: 'language',
 				items: languageTabItemConfig
+			});
+		}
+		if (this.removedFieldsets.indexOf('microdata') == -1 && this.getPluginInstance('MicrodataSchema')) {
+			var microdataTabItemConfig = [];
+			this.addConfigElement(this.getPluginInstance('MicrodataSchema').buildMicrodataFieldsetConfig(element, this.properties), microdataTabItemConfig);
+			tabItems.push({
+				title: this.getPluginInstance('MicrodataSchema').localize('microdata'),
+				itemId: 'microdata',
+				items: microdataTabItemConfig
 			});
 		}
 		if (this.removedFieldsets.indexOf('events') == -1) {
@@ -449,10 +458,14 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 					}
 					break;
 				case 'dir':
-					this.element.setAttribute(itemId, (value == 'not set') ? '' : value);
+					this.element.setAttribute(itemId, (value === 'not set') ? '' : value);
 					break;
 			}
 		}, this);
+		var microdataTab = this.dialog.find('itemId', 'microdata')[0];
+		if (microdataTab) {
+			this.getPluginInstance('MicrodataSchema').setMicrodataAttributes(this.element);
+		}
 		if (languageCombo) {
 			this.getPluginInstance('Language').setLanguageAttributes(this.element, languageCombo.getValue());
 		}
