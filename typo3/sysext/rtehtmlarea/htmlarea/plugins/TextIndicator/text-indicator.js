@@ -59,7 +59,35 @@ HTMLArea.TextIndicator = Ext.extend(HTMLArea.Plugin, {
 		this.registerText(textConfiguration);
 		return true;
 	 },
-
+	/*
+	 * This handler gets called when the editor is generated
+	 */
+	onGenerate: function () {
+			// Ensure text indicator is updated AFTER style sheets are loaded
+		var blockStylePlugin = this.getPluginInstance('BlockStyle');
+		if (blockStylePlugin && blockStylePlugin.blockStyles) {
+				// Monitor css parsing being completed
+			this.editor.iframe.mon(blockStylePlugin.blockStyles, 'HTMLAreaEventCssParsingComplete', this.onCssParsingComplete, this);
+		}
+		var textStylePlugin = this.getPluginInstance('TextStyle');
+		if (textStylePlugin && textStylePlugin.textStyles) {
+				// Monitor css parsing being completed
+			this.editor.iframe.mon(textStylePlugin.textStyles, 'HTMLAreaEventCssParsingComplete', this.onCssParsingComplete, this);
+		}
+	},
+	/*
+	 * This handler gets called when parsing of css classes is completed
+	 */
+	onCssParsingComplete: function () {
+		var button = this.getButton('TextIndicator'),
+			selection = this.editor.getSelection(),
+			selectionEmpty = selection.isEmpty(),
+			ancestors = selection.getAllAncestors(),
+			endPointsInSameBlock = selection.endPointsInSameBlock();
+		if (button) {
+			this.onUpdateToolbar(button, this.getEditorMode(), selectionEmpty, ancestors, endPointsInSameBlock);
+		}
+	},
 	/*
 	 * This function gets called when the toolbar is updated
 	 */
