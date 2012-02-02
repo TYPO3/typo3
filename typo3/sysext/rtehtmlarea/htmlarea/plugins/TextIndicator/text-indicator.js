@@ -74,7 +74,7 @@ HTMLArea.TextIndicator = HTMLArea.Plugin.extend({
 		var editor = this.editor;
 		if (mode === 'wysiwyg' && editor.isEditable()) {
 			var doc = editor._doc;
-			try {
+			//try {
 				var style = {
 					backgroundColor: HTMLArea._makeColor(doc.queryCommandValue((Ext.isIE || Ext.isWebKit) ? 'BackColor' : 'HiliteColor')),
 					color: HTMLArea._makeColor(doc.queryCommandValue('ForeColor')),
@@ -97,7 +97,7 @@ HTMLArea.TextIndicator = HTMLArea.Plugin.extend({
 					style.fontStyle = 'normal';
 				}
 				button.getEl().setStyle(style);
-			} catch (e) { }
+			//} catch (e) { }
 		}
 	}
 });
