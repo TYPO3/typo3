@@ -83,7 +83,7 @@ class Tx_Extbase_Tests_Unit_MVC_DispatcherTest extends Tx_Extbase_Tests_Unit_Bas
 		$mockResponse = $this->getMock('Tx_Extbase_MVC_ResponseInterface');
 
 		$mockSignalSlotDispatcher = $this->getMock('Tx_Extbase_SignalSlot_Dispatcher', array('dispatch'));
-		$mockSignalSlotDispatcher->expects($this->exactly(1))->method('dispatch')->with('Tx_Extbase_MVC_Dispatcher', 'afterRequestDispatch', array($mockRequest, $mockResponse));
+		$mockSignalSlotDispatcher->expects($this->exactly(1))->method('dispatch')->with('Tx_Extbase_MVC_Dispatcher', 'afterRequestDispatch', array('request' => $mockRequest, 'response' => $mockResponse));
 
 		$dispatcher = $this->getMock('Tx_Extbase_MVC_Dispatcher', array('resolveController'), array(), '', FALSE);
 		$dispatcher->injectSignalSlotDispatcher($mockSignalSlotDispatcher);

@@ -44,7 +44,6 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function connectAllowsForConnectingASlotWithASignal() {
 		$mockSignal = $this->getMock('ClassA', array('emitSomeSignal'));
@@ -53,14 +52,13 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 		$this->signalSlotDispatcher->connect(get_class($mockSignal), 'emitSomeSignal', get_class($mockSlot), 'someSlotMethod', TRUE);
 
 		$expectedSlots = array(
-			array('class' => get_class($mockSlot), 'method' => 'someSlotMethod', 'object' => NULL, 'omitSignalInformation' => TRUE)
+			array('class' => get_class($mockSlot), 'method' => 'someSlotMethod', 'object' => NULL, 'passSignalInformation' => TRUE)
 		);
 		$this->assertSame($expectedSlots, $this->signalSlotDispatcher->getSlots(get_class($mockSignal), 'emitSomeSignal'));
 	}
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function connectAlsoAcceptsObjectsInPlaceOfTheClassName() {
 		$mockSignal = $this->getMock('ClassA', array('emitSomeSignal'));
@@ -69,14 +67,13 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 		$this->signalSlotDispatcher->connect(get_class($mockSignal), 'emitSomeSignal', $mockSlot, 'someSlotMethod', TRUE);
 
 		$expectedSlots = array(
-			array('class' => NULL, 'method' => 'someSlotMethod', 'object' => $mockSlot, 'omitSignalInformation' => TRUE)
+			array('class' => NULL, 'method' => 'someSlotMethod', 'object' => $mockSlot, 'passSignalInformation' => TRUE)
 		);
 		$this->assertSame($expectedSlots, $this->signalSlotDispatcher->getSlots(get_class($mockSignal), 'emitSomeSignal'));
 	}
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function connectAlsoAcceptsClosuresActingAsASlot() {
 		$mockSignal = $this->getMock('ClassA', array('emitSomeSignal'));
@@ -85,14 +82,13 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 		$this->signalSlotDispatcher->connect(get_class($mockSignal), 'emitSomeSignal', $mockSlot, 'foo', TRUE);
 
 		$expectedSlots = array(
-			array('class' => NULL, 'method' => '__invoke', 'object' => $mockSlot, 'omitSignalInformation' => TRUE)
+			array('class' => NULL, 'method' => '__invoke', 'object' => $mockSlot, 'passSignalInformation' => TRUE)
 		);
 		$this->assertSame($expectedSlots, $this->signalSlotDispatcher->getSlots(get_class($mockSignal), 'emitSomeSignal'));
 	}
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function dispatchPassesTheSignalArgumentsToTheSlotMethod() {
 		$arguments = array();
@@ -100,7 +96,7 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 
-		$this->signalSlotDispatcher->connect('Foo', 'bar', $mockSlot, NULL, TRUE);
+		$this->signalSlotDispatcher->connect('Foo', 'bar', $mockSlot, NULL, FALSE);
 		$this->signalSlotDispatcher->injectObjectManager($mockObjectManager);
 
 		$this->signalSlotDispatcher->dispatch('Foo', 'bar', array('foo' => 'bar', 'baz' => 'quux'));
@@ -109,7 +105,6 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function dispatchRetrievesSlotInstanceFromTheObjectManagerIfOnlyAClassNameWasSpecified() {
 		$slotClassName = uniqid('Mock_');
@@ -121,7 +116,7 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 		$mockObjectManager->expects($this->once())->method('get')->with($slotClassName)->will($this->returnValue($mockSlot));
 
 		$this->signalSlotDispatcher->injectObjectManager($mockObjectManager);
-		$this->signalSlotDispatcher->connect('Foo', 'emitBar', $slotClassName, 'slot', TRUE);
+		$this->signalSlotDispatcher->connect('Foo', 'emitBar', $slotClassName, 'slot', FALSE);
 
 		$this->signalSlotDispatcher->dispatch('Foo', 'emitBar', array('foo' => 'bar', 'baz' => 'quux'));
 		$this->assertSame($mockSlot->arguments, array('bar', 'quux'));
@@ -130,7 +125,6 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 	/**
 	 * @test
 	 * @expectedException Tx_Extbase_SignalSlot_Exception_InvalidSlotException
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function dispatchThrowsAnExceptionIfTheSpecifiedClassOfASlotIsUnknown() {
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
@@ -144,7 +138,6 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 	/**
 	 * @test
 	 * @expectedException Tx_Extbase_SignalSlot_Exception_InvalidSlotException
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function dispatchThrowsAnExceptionIfTheSpecifiedSlotMethodDoesNotExist() {
 		$slotClassName = uniqid('Mock_');
@@ -164,7 +157,6 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function dispatchPassesFirstArgumentContainingSlotInformationIfTheConnectionStatesSo() {
 		$arguments = array();
@@ -172,7 +164,7 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 
-		$this->signalSlotDispatcher->connect('SignalClassName', 'methodName', $mockSlot, NULL, FALSE);
+		$this->signalSlotDispatcher->connect('SignalClassName', 'methodName', $mockSlot, NULL, TRUE);
 		$this->signalSlotDispatcher->injectObjectManager($mockObjectManager);
 
 		$this->signalSlotDispatcher->dispatch('SignalClassName', 'methodName', array('foo' => 'bar', 'baz' => 'quux'));
