@@ -389,9 +389,6 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 			element.style[this.styleProperty[buttonId]] = color;
 			this.editor.getDomNode().wrapWithInlineElement(element, range);
 		}
-		if (!Ext.isIE) {
-			range.detach();
-		}
 		this.close();
 		event.stopEvent();
 	},
