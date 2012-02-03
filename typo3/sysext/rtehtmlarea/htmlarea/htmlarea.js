@@ -5550,7 +5550,7 @@ HTMLArea.util.Color = function () {
 		 * Returns hexadecimal color representation from a number or a rgb-style color.
 		 */
 		colorToHex: function(v) {
-			if (!v) {
+			if (typeof(v) === 'undefined' || v == null) {
 				return '';
 			}
 			function hex(d) {
