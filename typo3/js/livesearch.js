@@ -257,6 +257,7 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 
 	onFocus : function() {
 		TYPO3.BackendLiveSearch.superclass.onFocus.apply(this, arguments);
+		TYPO3BackendToolbarManager.hideAll();
 
 		// If search is blank, show the help on focus. Otherwise, show last results
 		if (this.getValue() == '') {
