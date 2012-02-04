@@ -146,7 +146,9 @@ class t3lib_mail_SwiftMailerAdapter implements t3lib_mail_MailerAdapter {
 					$header->setValue($headerValue);
 					break;
 				case Swift_Mime_Header::TYPE_PARAMETERIZED:
-					$header->setValue(rtrim($headerValue, ';'));
+					list($value, $parameters) = $this->decomposeParametrizedHeader($headerValue);
+					$header->setValue($value);
+					$header->setParameters($parameters);
 					break;
 				case Swift_Mime_Header::TYPE_MAILBOX:
 					$addressList = $this->parseAddresses($headerValue);
@@ -195,7 +197,8 @@ class t3lib_mail_SwiftMailerAdapter implements t3lib_mail_MailerAdapter {
 					// parameterized headers
 				case 'Content-Type':
 				case 'Content-Disposition':
-					$this->messageHeaders->addParameterizedHeader($headerName, rtrim($headerValue, ';'));
+					list($value, $parameters) = $this->decomposeParametrizedHeader($headerValue);
+					$this->messageHeaders->addParameterizedHeader($headerName, $value, $parameters);
 					break;
 					// text headers
 				default:
@@ -333,6 +336,25 @@ class t3lib_mail_SwiftMailerAdapter implements t3lib_mail_MailerAdapter {
 			$fromName = 'TYPO3 CMS';
 		}
 		$this->message->setFrom(array($fromAddress => $fromName));
+	}
+
+	/**
+	 * Decomposes a parameterized header into its value and parameters
+	 *
+	 * @param string header The raw parameterized header
+	 * @return array An array containing the header value and its parameters
+	 */
+	protected function decomposeParametrizedHeader($header) {
+		$parts = t3lib_div::trimExplode(';', $header);
+		$value = array_shift($parts);
+
+		$parameters = array();
+		foreach ($parts as $part) {
+			list($k, $v) = t3lib_div::trimExplode('=', $part);
+			$parameters[$k] = $v;
+		}
+
+		return array($value, $parameters);
 	}
 }
 ?>
