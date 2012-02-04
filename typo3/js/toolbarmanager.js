@@ -35,15 +35,20 @@ var ToolbarManager = Class.create({
 
 			// check whether it is a toolbar item with menu
 		if (sibling.hasClassName('toolbar-item-menu')) {
-				// hide all
-			$$('#typo3-toolbar a.toolbar-item + .toolbar-item-menu').invoke('hide');
-			$$('#typo3-toolbar a.toolbar-item').each(function(element) {
-				element.removeClassName('toolbar-item-active');
-			});
-
+			this.hideAll();
 				// show toolbarItem
 			toolbarItem.addClassName('toolbar-item-active');
 		}
+	},
+
+	/**
+	 * Hide all expanded toolbar menus
+	 */
+	hideAll: function() {
+		$$('#typo3-toolbar a.toolbar-item + .toolbar-item-menu').invoke('hide');
+		$$('#typo3-toolbar a.toolbar-item').each(function(element) {
+			element.removeClassName('toolbar-item-active');
+		});
 	},
 
 	/**
