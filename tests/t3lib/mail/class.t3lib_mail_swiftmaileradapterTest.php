@@ -93,6 +93,16 @@ class t3lib_mail_SwiftMailerAdapterTest extends tx_phpunit_testcase {
 		);
 	}
 
+	public static function contentEncodingProvider() {
+		return array(
+			'7bit' => array('7bit', '7bit'),
+			'8bit' => array('8bit', '8bit'),
+			'quoted-printable' => array('quoted-printable', 'quoted-printable'),
+			'base64' => array('base64', 'base64'),
+			'case-insensitivity' => array('BaSe64', 'base64'),
+		);
+	}
+
 	/**
 	 * @test
 	 * @dataProvider parseAddressesProvider
@@ -119,6 +129,15 @@ class t3lib_mail_SwiftMailerAdapterTest extends tx_phpunit_testcase {
 	public function updateParameterizedHeaderTest($raw, $value, $params) {
 		$this->fixture->setHeaderExposed('Content-Disposition', 'dummy; pname=dummy');
 		$this->setAndValidateParameterizedHeader('Content-Disposition', $raw, $value, $params);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider contentEncodingProvider
+	 */
+	public function contentTransferEncodingTest($headerValue, $encoding) {
+		$this->fixture->setHeaderExposed('Content-Transfer-Encoding', $headerValue);
+		$this->assertEquals($encoding, $this->fixture->getMessage()->getEncoder()->getName());
 	}
 
 	private function setAndValidateParameterizedHeader($name, $raw, $value, $params) {
