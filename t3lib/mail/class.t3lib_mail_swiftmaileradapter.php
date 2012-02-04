@@ -143,6 +143,9 @@ class t3lib_mail_SwiftMailerAdapter implements t3lib_mail_MailerAdapter {
 			$headerType = $header->getFieldType();
 			switch ($headerType) {
 				case Swift_Mime_Header::TYPE_TEXT:
+					if ($headerName === 'Content-Transfer-Encoding') {
+						$this->setContentEncoder($headerValue);
+					}
 					$header->setValue($headerValue);
 					break;
 				case Swift_Mime_Header::TYPE_PARAMETERIZED:
@@ -198,6 +201,9 @@ class t3lib_mail_SwiftMailerAdapter implements t3lib_mail_MailerAdapter {
 					$this->messageHeaders->addParameterizedHeader($headerName, rtrim($headerValue, ';'));
 					break;
 					// text headers
+				case 'Content-Transfer-Encoding':
+					$this->setContentEncoder($headerValue);
+						// Fall through to default case
 				default:
 					$this->messageHeaders->addTextheader($headerName, $headerValue);
 					break;
@@ -333,6 +339,36 @@ class t3lib_mail_SwiftMailerAdapter implements t3lib_mail_MailerAdapter {
 			$fromName = 'TYPO3 CMS';
 		}
 		$this->message->setFrom(array($fromAddress => $fromName));
+	}
+
+	/**
+	 * Sets the content encoder for the message
+	 *
+	 * @param string $encoding The requested encoding
+	 */
+	protected function setContentEncoder($encoding) {
+		switch (strtolower($encoding)) {
+			case '7bit':
+				$encoder = Swift_Encoding::get7BitEncoding();
+				break;
+			case '8bit':
+				$encoder = Swift_Encoding::get8BitEncoding();
+				break;
+			case 'quoted-printable':
+				$encoder = Swift_Encoding::getQpEncoding();
+				break;
+			case 'base64':
+				$encoder = Swift_Encoding::getBase64Encoding();
+				break;
+			default:
+					// Not much we can do but choose one of the "non-encoding" encoders, at
+					// least that won't mess with the incoming content that is encoded in
+					// an unknown format
+				$encoder = Swift_Encoding::get7BitEncoding();
+				break;
+		}
+
+		$this->message->setEncoder($encoder);
 	}
 }
 ?>
