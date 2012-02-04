@@ -56,6 +56,7 @@ class t3lib_mail_SwiftMailerAdapter implements t3lib_mail_MailerAdapter {
 		$this->mailer = t3lib_div::makeInstance('t3lib_mail_Mailer');
 			// create message object
 		$this->message = Swift_Message::newInstance();
+		$this->messageHeaders = $this->message->getHeaders();
 	}
 
 	/**
@@ -82,7 +83,6 @@ class t3lib_mail_SwiftMailerAdapter implements t3lib_mail_MailerAdapter {
 		$this->message->setTo($toAddresses);
 			// handle additional headers
 		$headers = t3lib_div::trimExplode(LF, $additionalHeaders, TRUE);
-		$this->messageHeaders = $this->message->getHeaders();
 		foreach ($headers as $header) {
 			list($headerName, $headerValue) = t3lib_div::trimExplode(':', $header, FALSE, 2);
 			$this->setHeader($headerName, $headerValue);
@@ -146,7 +146,9 @@ class t3lib_mail_SwiftMailerAdapter implements t3lib_mail_MailerAdapter {
 					$header->setValue($headerValue);
 					break;
 				case Swift_Mime_Header::TYPE_PARAMETERIZED:
-					$header->setValue(rtrim($headerValue, ';'));
+					list($value, $parameters) = $this->parseParametrizedHeader($headerValue);
+					$header->setValue($value);
+					$header->setParameters($parameters);
 					break;
 				case Swift_Mime_Header::TYPE_MAILBOX:
 					$addressList = $this->parseAddresses($headerValue);
@@ -195,7 +197,8 @@ class t3lib_mail_SwiftMailerAdapter implements t3lib_mail_MailerAdapter {
 					// parameterized headers
 				case 'Content-Type':
 				case 'Content-Disposition':
-					$this->messageHeaders->addParameterizedHeader($headerName, rtrim($headerValue, ';'));
+					list($value, $parameters) = $this->parseParametrizedHeader($headerValue);
+					$this->messageHeaders->addParameterizedHeader($headerName, $value, $parameters);
 					break;
 					// text headers
 				default:
@@ -333,6 +336,37 @@ class t3lib_mail_SwiftMailerAdapter implements t3lib_mail_MailerAdapter {
 			$fromName = 'TYPO3 CMS';
 		}
 		$this->message->setFrom(array($fromAddress => $fromName));
+	}
+
+	/**
+	 * Parses a parameterized header returning its value and parameters
+	 *
+	 * A parameterized header roughly looks like this:
+	 *   value [; key=value]*
+	 *
+	 * i.e. a value and zero or more parameters denoted as key-value pairs,
+	 * delimited by semicolons. Parameter values may be enclosed in double quotes.
+	 *
+	 * See RFC 2231 for details
+	 *
+	 * Note that this method only does very basic parsing and, for example, fails
+	 * to handle comments
+	 *
+	 * @param string $header The raw parameterized header
+	 * @return array An array containing the header value and its parameters
+	 */
+	protected function parseParametrizedHeader($header) {
+		$parts = t3lib_div::trimExplode(';', $header);
+		$value = array_shift($parts);
+
+		$parameters = array();
+		foreach ($parts as $part) {
+			list($k, $v) = t3lib_div::trimExplode('=', $part);
+			// values may be enclosed in quotes, we need the raw value
+			$parameters[$k] = trim($v, '"');
+		}
+
+		return array($value, $parameters);
 	}
 }
 ?>
