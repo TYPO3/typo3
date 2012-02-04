@@ -3277,7 +3277,7 @@ class t3lib_TCEmain {
 		}
 
 		$where = '';
-		if (isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
+		if (isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 			$where = ' AND t3ver_oid=0';
 		}
 
@@ -3623,7 +3623,7 @@ class t3lib_TCEmain {
 		}
 
 		$where = '';
-		if (isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
+		if (isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 			$where = ' AND t3ver_oid=0';
 		}
 		$l10nRecords = t3lib_BEfunc::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
@@ -4367,7 +4367,7 @@ class t3lib_TCEmain {
 		}
 
 		$where = '';
-		if (isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
+		if (isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 			$where = ' AND t3ver_oid=0';
 		}
 
