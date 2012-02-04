@@ -39,6 +39,14 @@ class t3lib_mail_SwiftMailerAdapterTest extends tx_phpunit_testcase {
 				public function parseAddressesExposed($args) {
 					return $this->parseAddresses($args);
 				}
+
+				public function setHeaderExposed($headerName, $headerValue) {
+					return $this->setHeader($headerName, $headerValue);
+				}
+
+				public function getMessage() {
+					return $this->message;
+				}
 			}');
 		}
 		$this->fixture = new t3lib_mail_SwiftMailerAdapterExposed();
@@ -76,6 +84,15 @@ class t3lib_mail_SwiftMailerAdapterTest extends tx_phpunit_testcase {
 		);
 	}
 
+	public static function parameterizedHeaderProvider() {
+		return array(
+			'noparams' => array('foo', 'foo', array()),
+			'oneparam' => array('bar; pname=pvalue', 'bar', array('pname' => 'pvalue')),
+			'twoparams' => array('baz; pname1=pvalue1; pname2=pvalue2', 'baz', array('pname1' => 'pvalue1', 'pname2' => 'pvalue2')),
+			'quoted' => array('baz; pname1="quoted"', 'baz', array('pname1' => 'quoted')),
+		);
+	}
+
 	/**
 	 * @test
 	 * @dataProvider parseAddressesProvider
@@ -85,6 +102,31 @@ class t3lib_mail_SwiftMailerAdapterTest extends tx_phpunit_testcase {
 			$addressList,
 			$this->fixture->parseAddressesExposed($source)
 		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider parameterizedHeaderProvider
+	 */
+	public function addParameterizedHeaderTest($raw, $value, $params) {
+		$this->setAndValidateParameterizedHeader('Content-Disposition', $raw, $value, $params);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider parameterizedHeaderProvider
+	 */
+	public function updateParameterizedHeaderTest($raw, $value, $params) {
+		$this->fixture->setHeaderExposed('Content-Disposition', 'dummy; pname=dummy');
+		$this->setAndValidateParameterizedHeader('Content-Disposition', $raw, $value, $params);
+	}
+
+	private function setAndValidateParameterizedHeader($name, $raw, $value, $params) {
+		$this->fixture->setHeaderExposed($name, $raw);
+		$header = $this->fixture->getMessage()->getHeaders()->get($name);
+		$this->assertEquals(
+			array($value, $params),
+			array($header->getValue(), $header->getParameters()));
 	}
 }
 ?>
