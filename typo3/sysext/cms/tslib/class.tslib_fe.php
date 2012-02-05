@@ -4149,7 +4149,6 @@ if (version == "n3") {
 	 */
 	function checkFileInclude($incFile)	{
 		return !$this->TYPO3_CONF_VARS['FE']['noPHPscriptInclude']
-			|| substr($incFile,0,14)=='media/scripts/'
 			|| substr($incFile,0,4+strlen(TYPO3_mainDir))==TYPO3_mainDir.'ext/'
 			|| substr($incFile,0,7+strlen(TYPO3_mainDir))==TYPO3_mainDir.'sysext/'
 			|| substr($incFile,0,14)=='typo3conf/ext/';
