@@ -126,8 +126,7 @@ class tx_reports_Module extends t3lib_SCbase {
 		}
 
 			// compile document
-		$markers['FUNC_MENU'] = $GLOBALS['LANG']->getLL('choose_report')
-			. t3lib_BEfunc::getFuncMenu(
+		$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu(
 				0,
 				'SET[function]',
 				$this->MOD_SETTINGS['function'],
@@ -135,11 +134,13 @@ class tx_reports_Module extends t3lib_SCbase {
 			);
 		$markers['CONTENT'] = $this->content;
 
-				// Build the <body> for the module
+			// Build the <body> for the module
+
 		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+
 			// Renders the module page
 		$this->content = $this->doc->render(
-			$GLOBALS['LANG']->getLL('title'),
+			'',
 			$this->content
 		);
 	}
@@ -159,31 +160,31 @@ class tx_reports_Module extends t3lib_SCbase {
 	 * @return	void
 	 */
 	protected function renderModuleContent() {
+		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
+
 		$action  = (string) $this->MOD_SETTINGS['function'];
 		$title   = '';
 		$content = '';
 
 		if ($action == 'index') {
-			$content = $this->indexAction();
-			$title   = $GLOBALS['LANG']->getLL('reports_overview');
+			$content .= $this->indexAction();
+			$title = $GLOBALS['LANG']->getLL('reports_overview');
 		} else {
-			$content = '';
 			list($extensionKey, $reportName) = explode('.', $action, 2);
 
 			$reportClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extensionKey][$reportName]['report'];
-			$title       = $GLOBALS['LANG']->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extensionKey][$reportName]['title']);
+			$title = $GLOBALS['LANG']->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extensionKey][$reportName]['title']);
 
 			$reportInstance = t3lib_div::makeInstance($reportClass, $this);
 
 			if ($reportInstance instanceof tx_reports_Report) {
-				$content = $reportInstance->getReport();
+				$content .= $reportInstance->getReport();
 			} else {
-				$content = $reportClass . ' does not implement the Report Interface which is necessary to be displayed here.';
+				$content .= $reportClass . ' does not implement the Report Interface which is necessary to be displayed here.';
 			}
 		}
 
-		$this->content .= $this->doc->header($title);
-		$this->content .= $this->doc->section('', $content, FALSE, TRUE);
+		$this->content .= $this->doc->section($title, $content, FALSE, TRUE);
 	}
 
 	/**
