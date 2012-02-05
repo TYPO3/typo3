@@ -335,19 +335,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @return string The SQL statement
 	 */
 	public function buildQuery(array $sql) {
-		$statement = 'SELECT ' . implode(' ', $sql['keywords']) . ' '. implode(',', $sql['fields']);
-
-			// @todo rename unions to joins to allow real unions.
-		foreach ($sql['unions'] as $tableName => $joinStatement) {
-			$sources[] = $joinStatement;
-		}
-
-		foreach ($sql['tables'] as $tableName => $tableAlias) {
-			$sources[] = $tableName . ($tableName !== $tableAlias ? ' AS ' . $tableAlias : '');
-		}
-
-		$statement .= ' FROM ' . implode(', ', $sources);
-
+		$statement = 'SELECT ' . implode(' ', $sql['keywords']) . ' '. implode(',', $sql['fields']) . ' FROM ' . implode(' ', $sql['tables']) . ' '. implode(' ', $sql['unions']);
 		if (!empty($sql['where'])) {
 			$statement .= ' WHERE ' . implode('', $sql['where']);
 			if (!empty($sql['additionalWhereClause'])) {
