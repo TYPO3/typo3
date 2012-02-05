@@ -242,9 +242,8 @@ class SC_move_el {
 		$this->doc->JScode='';
 
 			// Starting document content (header):
-		$this->content='';
-		$this->content.=$this->doc->header($GLOBALS['LANG']->getLL('movingElement'));
-		$this->content.=$this->doc->spacer(5);
+		$this->content = '';
+		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('movingElement'));
 	}
 
 	/**
@@ -263,6 +262,7 @@ class SC_move_el {
 			$hline.= t3lib_BEfunc::getRecordTitle($this->table,$elRow,TRUE);
 
 				// Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
+			$hline .= $this->doc->spacer(5);
 			$onClick = 'window.location.href=\''.t3lib_div::linkThisScript(array('makeCopy'=>!$this->makeCopy)).'\';';
 			$hline .= $this->doc->spacer(5);
 			$hline .= '<input type="hidden" name="makeCopy" value="0" />' .
@@ -272,7 +272,7 @@ class SC_move_el {
 				$GLOBALS['LANG']->getLL('makeCopy', 1) . '</label>';
 
 				// Add the header-content to the module content:
-			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('moveElement') . ':', $hline, 0, 1);
+			$this->content.=$this->doc->section('', $hline, FALSE, TRUE);
 			$this->content.=$this->doc->spacer(20);
 
 				// Reset variable to pick up the module content in:
@@ -372,7 +372,7 @@ class SC_move_el {
 			}
 
 				// Add the $code content as a new section to the module:
-			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('selectPositionOfElement') . ':', $code, 0, 1);
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('selectPositionOfElement'), $code, FALSE, TRUE);
 		}
 
 			// Setting up the buttons and markers for docheader
