@@ -126,8 +126,7 @@ class tx_reports_Module extends t3lib_SCbase {
 		}
 
 			// compile document
-		$markers['FUNC_MENU'] = $GLOBALS['LANG']->getLL('choose_report')
-			. t3lib_BEfunc::getFuncMenu(
+		$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu(
 				0,
 				'SET[function]',
 				$this->MOD_SETTINGS['function'],

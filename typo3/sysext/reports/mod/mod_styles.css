@@ -4,7 +4,6 @@ body#ext-reports-mod-index-php {
 }
 
 #typo3-inner-docbody p.help {
-	font-size: 12px;
 	margin-bottom: 10px;
 }
 
@@ -13,10 +12,9 @@ body#ext-reports-mod-index-php {
 /* status report */
 
 #ext-reports-mod-index-php h2.section-header {
-	margin: 15px 0;
+	margin: 15px 0 10px 0;
 	padding: 2px 0 0 20px;
 	cursor: pointer;
-	height: 20px;
 	clear: left;
 }
 #ext-reports-mod-index-php h2.collapsed {
