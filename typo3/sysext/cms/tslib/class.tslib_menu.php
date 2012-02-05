@@ -314,9 +314,6 @@ class tslib_menu {
 					: $this->conf['special.']['value'];
 
 				switch($this->conf['special'])	{
-					case 'userdefined':
-						$temp = $this->includeMakeMenu($this->conf['special.'],$altSortField);
-					break;
 					case 'userfunction':
 						$temp = $this->parent_cObj->callUserFunction(
 							$this->conf['special.']['userFunc'],
