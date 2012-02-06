@@ -15,6 +15,7 @@ return array(
 	'tx_workspaces_reports_statusprovider' => $extensionPath . 'Classes/Reports/StatusProvider.php',
 	'tx_workspaces_service_autopublish' => $extensionPath . 'Classes/Service/AutoPublish.php',
 	'tx_workspaces_service_autopublishtask' => $extensionPath . 'Classes/Service/AutoPublishTask.php',
+	'tx_workspaces_service_cleanuppreviewlinktask' => $extensionPath . 'Classes/Service/CleanupPreviewLinkTask.php',
 	'tx_workspaces_service_befunc' => $extensionPath . 'Classes/Service/Befunc.php',
 	'tx_workspaces_service_griddata' => $extensionPath . 'Classes/Service/GridData.php',
 	'tx_workspaces_service_stages' => $extensionPath . 'Classes/Service/Stages.php',

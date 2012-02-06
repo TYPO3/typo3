@@ -15,6 +15,12 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Tx_Workspaces_S
 	'title'            => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml:autopublishTask.name',
 	'description'      => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml:autopublishTask.description'
 );
+	// Register the cleanup preview links task
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Tx_Workspaces_Service_CleanupPreviewLinkTask'] = array(
+	'extension'        => $_EXTKEY,
+	'title'            => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml:cleanupPreviewLinkTask.name',
+	'description'      => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml:cleanupPreviewLinkTask.description'
+);
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['workspaces'] = 'EXT:workspaces/Classes/Service/Tcemain.php:Tx_Workspaces_Service_Tcemain';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass']['workspaces'] = 'EXT:workspaces/Classes/Service/Befunc.php:Tx_Workspaces_Service_Befunc';

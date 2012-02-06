@@ -18,6 +18,12 @@
 			<trans-unit id="autopublishTask.description" xml:space="preserve">
 				<source>This tasks checks any workspace that has a publication date set in the past and automatically publishes it.</source>
 			</trans-unit>
+			<trans-unit id="cleanupPreviewLinkTask.name" xml:space="preserve">
+				<source>Workspaces cleanup preview links</source>
+			</trans-unit>
+			<trans-unit id="cleanupPreviewLinkTask.description" xml:space="preserve">
+				<source>This task delete old preview links</source>
+			</trans-unit>
 			<trans-unit id="stage_ready_to_publish" xml:space="preserve">
 				<source>Ready to publish</source>
 			</trans-unit>
