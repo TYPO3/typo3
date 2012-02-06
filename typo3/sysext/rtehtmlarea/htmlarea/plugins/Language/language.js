@@ -133,18 +133,20 @@ HTMLArea.Language = HTMLArea.Plugin.extend({
 	 */
 	onGenerate: function () {
 		var select = this.getButton('Language');
-		if (select.getStore().getCount() > 1) {
-			this.addLanguageMarkingRules();
-		} else {
-				// Monitor the language combo's store being loaded
-			select.mon(select.getStore(), 'load', function () {
+		if (select) {
+			if (select.getStore().getCount() > 1) {
 				this.addLanguageMarkingRules();
-				var selection = this.editor._getSelection(),
-					selectionEmpty = this.editor._selectionEmpty(selection),
-					ancestors = this.editor.getAllAncestors(),
-					endPointsInSameBlock = this.editor.endPointsInSameBlock();
-				this.onUpdateToolbar(select, this.getEditorMode(), selectionEmpty, ancestors, endPointsInSameBlock);
-			}, this);
+			} else {
+					// Monitor the language combo's store being loaded
+				select.mon(select.getStore(), 'load', function () {
+					this.addLanguageMarkingRules();
+					var selection = this.editor._getSelection(),
+						selectionEmpty = this.editor._selectionEmpty(selection),
+						ancestors = this.editor.getAllAncestors(),
+						endPointsInSameBlock = this.editor.endPointsInSameBlock();
+					this.onUpdateToolbar(select, this.getEditorMode(), selectionEmpty, ancestors, endPointsInSameBlock);
+				}, this);
+			}
 		}
 	},
 	/*
