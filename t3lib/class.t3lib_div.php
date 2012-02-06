@@ -4912,30 +4912,32 @@ final class t3lib_div {
 	 * @see makeRedirectUrl()
 	 */
 	public static function substUrlsInPlainText($message, $urlmode = '76', $index_script_url = '') {
-			// Substitute URLs with shorter links:
-		foreach (array('http', 'https') as $protocol) {
-			$urlSplit = explode($protocol . '://', $message);
-			foreach ($urlSplit as $c => &$v) {
-				if ($c) {
-					$newParts = preg_split('/\s|[<>"{}|\\\^`()\']/', $v, 2);
-					$newURL = $protocol . '://' . $newParts[0];
+		$lengthLimit = FALSE;
 
-					switch ((string) $urlmode) {
-						case 'all':
-							$newURL = self::makeRedirectUrl($newURL, 0, $index_script_url);
-							break;
-						case '76':
-							$newURL = self::makeRedirectUrl($newURL, 76, $index_script_url);
-							break;
-					}
-					$v = $newURL . substr($v, strlen($newParts[0]));
-				}
-			}
-			unset($v);
-			$message = implode('', $urlSplit);
+		switch ((string) $urlmode) {
+			case '':
+				$lengthLimit = FALSE;
+				break;
+			case 'all':
+				$lengthLimit = 0;
+				break;
+			case '76':
+			default:
+				$lengthLimit = (int) $urlmode;
 		}
 
-		return $message;
+		if ($lengthLimit === FALSE) {
+				// no processing
+			$messageSubstituted = $message;
+		} else {
+			$messageSubstituted = preg_replace(
+				'/(http|https):\/\/.+(?=[\]\.\?]*([\! \'"()<>]+|$))/eiU',
+				'self::makeRedirectUrl("\\0",' . $lengthLimit . ',"' . $index_script_url . '")',
+				$message
+			);
+		}
+
+		return $messageSubstituted;
 	}
 
 	/**
