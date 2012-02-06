@@ -26,7 +26,7 @@ styles.content.links {
     # cat=content/links; type=small; label= Target for external links
   extTarget = _blank
   target = {$PAGE_TARGET}
-  allowTags = b,i,u,a,img,br,div,center,pre,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote,strike,del,ins,span,h1,h2,h3,h4,h5,h6,address
+  allowTags = b,i,u,a,img,br,div,center,pre,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote,strike,del,ins,span,h1,h2,h3,h4,h5,h6,address,dl,dt,dd
 }
 
 styles.content.imgtext {
