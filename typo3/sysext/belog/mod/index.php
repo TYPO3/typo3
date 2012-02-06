@@ -468,10 +468,10 @@ class SC_mod_tools_log_index {
 				}
 
 				$i++;
+				$codeArr[$i][] = $row['error'] ? $this->displayLogInstance->getErrorIcon($row['error']) : '';
 				$codeArr[$i][] = $this->displayLogInstance->getTimeLabel($row['tstamp']);
 				$codeArr[$i][] = $this->displayLogInstance->getUserLabel($row['userid'], $row['workspace']);
 				$codeArr[$i][] = $this->displayLogInstance->getTypeLabel($row['type']);
-				$codeArr[$i][] = $row['error'] ? $this->displayLogInstance->getErrorIcon($row['error']) : '';
 				$codeArr[$i][] = $this->displayLogInstance->getActionLabel($row['type'] . '_' . $row['action']);
 				$codeArr[$i][] = $this->displayLogInstance->formatDetailsForList($row);
 			}
