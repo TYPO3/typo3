@@ -237,7 +237,7 @@ final class tx_em_Database {
 			foreach ($groupedRows as $row) {
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 					'cache_extensions',
-					'extkey=\'' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row['extkey'], 'cache_extensions') . '\' AND intversion=\'' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row['maxintversion'], 'cache_extensions') . '\' AND repository=' . intval($repositoryUid),
+					'extkey=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row['extkey'], 'cache_extensions') . ' AND intversion=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row['maxintversion'], 'cache_extensions') . ' AND repository=' . intval($repositoryUid),
 					array('lastversion' => 1)
 				);
 			}
