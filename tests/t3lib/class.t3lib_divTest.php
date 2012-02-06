@@ -2536,6 +2536,14 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function mkdirSetsGroupOwnershipOfCreatedDirectory() {
+		if (!function_exists('posix_getegid')) {
+			$this->markTestSkipped('Function posix_getegid() not available, mkdirSetsGroupOwnershipOfCreatedDirectory() tests skipped');
+		}
+		if (posix_getegid() === -1) {
+			$this->markTestSkipped(
+				'The mkdirSetsGroupOwnershipOfCreatedDirectory() is not available on Mac OS because posix_getegid() always returns -1 on Mac OS.'
+			);
+		}
 		$swapGroup = $this->checkGroups(__FUNCTION__);
 		if ($swapGroup !== FALSE) {
 			$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = $swapGroup;
@@ -2563,6 +2571,9 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped($methodName . '() test not available on Windows.');
 			return FALSE;
+		}
+		if (!function_exists('posix_getgroups')) {
+			$this->markTestSkipped('Function posix_getgroups() not available, ' . $methodName . '() tests skipped');
 		}
 
 		$groups = posix_getgroups();
