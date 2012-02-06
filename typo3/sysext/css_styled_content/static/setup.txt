@@ -106,7 +106,7 @@ lib.parseFunc_RTE < lib.parseFunc
 lib.parseFunc_RTE {
 	//  makelinks >
 	# Processing <table> and <blockquote> blocks separately
-	externalBlocks = article, aside, blockquote, div, footer, header, nav, ol, section, table, ul
+	externalBlocks = article, aside, blockquote, div, dd, dl, footer, header, nav, ol, section, table, ul
 	externalBlocks {
 		# The blockquote content is passed into parseFunc again...
 		blockquote.stripNL=1
@@ -146,9 +146,13 @@ lib.parseFunc_RTE {
 		header < .div
 		nav < .div
 		section < .div
+
+		# Definition list processing
+		dl < .div
+		dd < .div
 	}
 	nonTypoTagStdWrap.encapsLines {
-		encapsTagList = p,pre,h1,h2,h3,h4,h5,h6,hr
+		encapsTagList = p,pre,h1,h2,h3,h4,h5,h6,hr,dt
 		remapTag.DIV = P
 		nonWrappedTag = P
 		innerStdWrap_all.ifBlank = &nbsp;
