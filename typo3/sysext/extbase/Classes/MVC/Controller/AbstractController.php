@@ -34,6 +34,7 @@
  * @api
  */
 abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbase_MVC_Controller_ControllerInterface {
+
 	/**
 	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
@@ -309,6 +310,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 		$uri = $this->uriBuilder
 			->reset()
 			->setTargetPageUid($pageUid)
+			->setCreateAbsoluteUri(TRUE)
 			->uriFor($actionName, $arguments, $controllerName, $extensionName);
 		$this->redirectToUri($uri, $delay, $statusCode);
 	}
@@ -343,11 +345,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @return string
 	 */
 	protected function addBaseUriIfNecessary($uri) {
-		$baseUri = $this->request->getBaseUri();
-		if (stripos($uri, 'http://') !== 0 && stripos($uri, 'https://') !== 0) {
-			$uri = $baseUri . (string)$uri;
-		}
-		return $uri;
+		return t3lib_div::locationHeaderUrl((string)$uri);
 	}
 
 	/**
