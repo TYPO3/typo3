@@ -221,7 +221,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink($this->pi_getLL('ll_forgot_header_backToLogin', '', 1), array());
 		$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('forgot_header', $this->conf['forgotHeader_stdWrap.']);
 
-		$markerArray['###LEGEND###'] = $this->pi_getLL('reset_password', '', 1);
+		$markerArray['###LEGEND###'] = $this->pi_getLL('legend', $this->pi_getLL('reset_password', '', 1), 1);
 		$markerArray['###ACTION_URI###'] = $this->getPageLink('', array($this->prefixId . '[forgot]'=>1), TRUE);
 		$markerArray['###EMAIL_LABEL###'] = $this->pi_getLL('your_email', '', 1);
 		$markerArray['###FORGOT_PASSWORD_ENTEREMAIL###'] = $this->pi_getLL('forgot_password_enterEmail', '', 1);
