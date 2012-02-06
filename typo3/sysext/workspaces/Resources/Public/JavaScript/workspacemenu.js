@@ -162,7 +162,7 @@ var WorkspaceMenu = Class.create({
 			} else {
 				userItem = Ext.select ('#username');
 			}
-			userItem.insertHtml('beforeEnd', '<span id="typo3-topbar-workspaces-title">@' + workspaceTitle + '</span>')
+			userItem.insertHtml('beforeEnd', '<span id="typo3-topbar-workspaces-title">@' + Ext.util.Format.htmlEncode(workspaceTitle) + '</span>')
 		}
 	}
 

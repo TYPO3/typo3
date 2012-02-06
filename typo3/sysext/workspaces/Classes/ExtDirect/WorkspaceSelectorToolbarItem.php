@@ -62,7 +62,7 @@ class Tx_Workspaces_ExtDirect_WorkspaceSelectorToolbarItem implements backend_to
 		$this->changeWorkspacePreview = t3lib_div::_GP('changeWorkspacePreview');
 
 		$pageRenderer = t3lib_div::makeInstance('t3lib_pageRenderer');
-		$this->backendReference->addJavaScript("TYPO3.Workspaces = { workspaceTitle : '" . htmlspecialchars(addslashes(Tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace))) . "'};\n");
+		$this->backendReference->addJavaScript("TYPO3.Workspaces = { workspaceTitle : '" . addslashes(Tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace)) . "'};\n");
 	}
 
 	/**
@@ -120,7 +120,7 @@ class Tx_Workspaces_ExtDirect_WorkspaceSelectorToolbarItem implements backend_to
 				$workspaceMenu[] = '<li' . $selected . '>' . $icon .
 					' <a href="backend.php?changeWorkspace=' .
 					intval($workspaceId) . '" id="ws-' . intval($workspaceId) .
-					'" class="ws">' . $label . '</a></li>';
+					'" class="ws">' . htmlspecialchars($label) . '</a></li>';
 			}
 		} else {
 			$workspaceMenu[] = '<li>' . $stateUncheckedIcon . ' ' .

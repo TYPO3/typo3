@@ -59,7 +59,7 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 		if (count($customWorkspaces)) {
 			foreach ($customWorkspaces as $workspace) {
 				if ($GLOBALS['BE_USER']->checkWorkspace($workspace)) {
-					$availableWorkspaces[$workspace['uid']] = htmlspecialchars($workspace['title']);
+					$availableWorkspaces[$workspace['uid']] = $workspace['title'];
 				}
 			}
 		}
