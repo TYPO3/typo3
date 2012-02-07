@@ -210,17 +210,16 @@ final class t3lib_utility_Mail {
 		$lines = array();
 		$substrStart = 0;
 		while (strlen($str) > $substrStart) {
-			$substr = substr($str, $substrStart, $lineWidth);
+			$substr = trim(substr($str, $substrStart, $lineWidth));
 
 				// has line exceeded (reached) the maximum width?
 			if (strlen($substr) == $lineWidth) {
 					// find last space-char
-				$count = count(explode(' ', trim(strrev($substr))));
+				$spacePos = strrpos($substr, ' ');
 					// space-char found?
-				if ($count > 1) {
+				if ($spacePos !== FALSE) {
 						// take everything up to last space-char
-					$parts = explode(' ', strrev($substr), 2);
-					$theLine = strrev($parts[1]);
+					$theLine = substr($substr, 0, $spacePos);
 				} else {
 						// search for space-char in remaining text
 						// makes this line longer than $lineWidth!
