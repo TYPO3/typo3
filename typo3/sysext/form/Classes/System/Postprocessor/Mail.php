@@ -104,6 +104,8 @@ class tx_form_System_Postprocessor_Mail {
 	protected function setSubject() {
 		if (isset($this->typoScript['subject'])) {
 			$subject = $this->typoScript['subject'];
+		} elseif ($this->requestHandler->has($this->typoScript['subjectField'])) {
+			$subject = $this->requestHandler->get($this->typoScript['subjectField']);
 		} else {
 			$subject = 'Formmail on ' . t3lib_div::getIndpEnv('HTTP_HOST');
 		}
