@@ -158,5 +158,20 @@ class t3lib_utility_MailTest extends tx_phpunit_testcase {
             count(explode($newlineChar, $returnString))
         );
     }
+
+    /**
+     * @test
+     */
+    public function breakLinesForEmailBreaksTextWithNoSpaceFoundBeforeLimit() {
+        $newlineChar = LF;
+        $lineWidth = 10;
+		// first space after 20 chars (more than $lineWidth)
+        $str = 'abcdefghijklmnopqrst uvwxyz 123456';
+        $returnString = t3lib_utility_Mail::breakLinesForEmail($str, $newlineChar, $lineWidth);
+        $this->assertEquals(
+            $returnString,
+            'abcdefghijklmnopqrst' . LF . 'uvwxyz' . LF . '123456'
+        );
+    }
 }
 ?>
