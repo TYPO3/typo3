@@ -2796,8 +2796,9 @@ class t3lib_TCEforms {
 								$replace = 'replace(/' . $idTagPrefix . '-/g,"' . $idTagPrefix . '-"+' . $var . '+"-")';
 								$replace .= '.replace(/(tceforms-(datetime|date)field-)/g,"$1" + (new Date()).getTime())';
 								$onClickInsert = 'var ' . $var . ' = "' . 'idx"+(new Date()).getTime();';
+								$uriDecodeFunction = (strtolower($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) === 'utf-8') ? 'decodeURIComponent' : 'unescape';
 									// Do not replace $isTagPrefix in setActionStatus() because it needs section id!
-								$onClickInsert .= 'new Insertion.Bottom($("' . $idTagPrefix . '"), unescape(decodeURIComponent("' . rawurlencode($newElementTemplate) . '")).' . $replace . '); setActionStatus("' . $idTagPrefix . '");';
+								$onClickInsert .= 'new Insertion.Bottom($("' . $idTagPrefix . '"), ' . $uriDecodeFunction . '("' . rawurlencode($newElementTemplate) . '").' . $replace . '); setActionStatus("' . $idTagPrefix . '");';
 								$onClickInsert .= 'eval(unescape("' . rawurlencode(implode(';', $this->additionalJS_post)) . '").' . $replace . ');';
 								$onClickInsert .= 'TBE_EDITOR.addActionChecks("submit", unescape("' . rawurlencode(implode(';', $this->additionalJS_submit)) . '").' . $replace . ');';
 								$onClickInsert .= 'TYPO3.TCEFORMS.update();';
