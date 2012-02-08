@@ -54,6 +54,7 @@ $t3libClasses = array(
 	't3lib_collection_nameable' => PATH_t3lib . 'collection/interfaces/interface.t3lib_collection_nameable.php',
 	't3lib_collection_persistable' => PATH_t3lib . 'collection/interfaces/interface.t3lib_collection_persistable.php',
 	't3lib_collection_recordcollection' => PATH_t3lib . 'collection/interfaces/interface.t3lib_collection_recordcollection.php',
+	't3lib_collection_recordcollectionrepository' => PATH_t3lib . 'collection/RecordCollectionRepository.php',
 	't3lib_collection_sortable' => PATH_t3lib . 'collection/interfaces/interface.t3lib_collection_sortable.php',
 	't3lib_collection_staticrecordcollection' => PATH_t3lib . 'collection/StaticRecordCollection.php',
 	't3lib_compressor' => PATH_t3lib . 'class.t3lib_compressor.php',

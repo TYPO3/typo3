@@ -27,14 +27,13 @@
 
 
 /**
- * implementation of a RecordCollection for static TCA-Records
+ * Implementation of a RecordCollection for static TCA-Records
  *
  * @author Steffen Ritter <typo3@steffen-ritter.net>
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_collection_StaticRecordCollection extends t3lib_collection_AbstractRecordCollection implements t3lib_collection_Editable {
-
 	/**
 	 * Populates the content-entries of the storage
 	 *
@@ -128,8 +127,5 @@ class t3lib_collection_StaticRecordCollection extends t3lib_collection_AbstractR
 	public function removeAll() {
 		$this->storage = new SplDoublyLinkedList();
 	}
-
-
 }
-
 ?>

@@ -705,7 +705,7 @@ $TCA['sys_filemounts'] = array(
  */
 $TCA['sys_collection'] = array(
 	'ctrl' => $TCA['sys_collection']['ctrl'],
-	'interface' => array (
+	'interface' => array(
 		'showRecordFieldList' => 'title, description, table_name, items'
 	),
 	'feInterface' => $TCA['sys_collection']['feInterface'],
@@ -731,7 +731,7 @@ $TCA['sys_collection'] = array(
 				)
 			)
 		),
-		'l10n_parent' => array (
+		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
 			'exclude'     => 1,
 			'label'       => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
@@ -745,14 +745,14 @@ $TCA['sys_collection'] = array(
 			)
 		),
 		'l10n_diffsource' => array(
-			'config' => array (
+			'config' => array(
 				'type' => 'passthrough'
 			)
 		),
 		'hidden' => array(
 			'exclude' => 1,
 			'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
-			'config'  => array (
+			'config'  => array(
 				'type'    => 'check',
 				'default' => '0'
 			)
@@ -760,7 +760,7 @@ $TCA['sys_collection'] = array(
 		'starttime' => array(
 			'exclude' => 1,
 			'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.starttime',
-			'config'  => array (
+			'config'  => array(
 				'type'     => 'input',
 				'size'     => '8',
 				'max'      => '20',
@@ -772,7 +772,7 @@ $TCA['sys_collection'] = array(
 		'endtime' => array(
 			'exclude' => 1,
 			'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.endtime',
-			'config'  => array (
+			'config'  => array(
 				'type'     => 'input',
 				'size'     => '8',
 				'max'      => '20',
@@ -802,7 +802,7 @@ $TCA['sys_collection'] = array(
 		'table_name' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_collection.table_name',
-			'config' => array (
+			'config' => array(
 				'type' => 'select',
 				'special' => 'tables'
 			)
@@ -818,7 +818,6 @@ $TCA['sys_collection'] = array(
 				'MM' => 'sys_collection_entries',
 				'MM_hasUidField' => TRUE,
 				'multiple' => TRUE,
-
 			)
 		),
 		'title' => array(
@@ -846,7 +845,6 @@ $TCA['sys_collection'] = array(
 				'type' => 'select',
 				'items' => array(
 					array('LLL:EXT:lang/locallang_tca.xlf:sys_collection.type.static', 'static'),
-					array('LLL:EXT:lang/locallang_tca.xlf:sys_collection.type.filter', 'filter')
 				),
 				'default' => 'static'
 			)
@@ -859,11 +857,11 @@ $TCA['sys_collection'] = array(
 			)
 		)
 	),
-	'types' => array (
+	'types' => array(
 		'static' => array('showitem' => 'title;;1,type, description,table_name, items'),
 		'filter' => array('showitem' => 'title;;1,type, description,table_name')
 	),
-	'palettes' => array (
+	'palettes' => array(
 		'1' => array('showitem' => 'starttime, endtime, fe_group, sys_language_uid, l10n_parent, l10n_diffsource, hidden')
 	)
 );
