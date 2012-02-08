@@ -316,35 +316,70 @@ var inline = {
 		// alert(objectId+'/'+table+'/'+uid+'/'+recordUid);
 		this.setUnique(objectId, recordUid, uid);
 	},
-
+		// Remove all select items already used
+		// from a newly retrieved/expanded record
+	removeUsed: function(objectId, recordUid) {
+		if (this.data.unique && this.data.unique[objectId]) {
+			var unique = this.data.unique[objectId];
+			if (unique.type == 'select') {
+				var formName = this.prependFormFieldNames+this.parseObjectId('parts', objectId, 3, 1, true);
+				var formObj = document.getElementsByName(formName);
+				var recordObj = document.getElementsByName(this.prependFormFieldNames+'['+unique.table+']['+recordUid+']['+unique.field+']');
+				var values = $H(unique.used).values();
+				if (recordObj.length) {
+					var selectedValue = recordObj[0].options[recordObj[0].selectedIndex].value;
+					for (var i=0; i<values.length; i++) {
+						if (values[i] != selectedValue) {
+							this.removeSelectOption(recordObj[0], values[i]);
+						}
+					}
+				}
+			}
+		}
+	},
 		// this function is applied to a newly inserted record by AJAX
 		// it removes the used select items, that should be unique
 	setUnique: function(objectId, recordUid, selectedValue) {
 		if (this.data.unique && this.data.unique[objectId]) {
 			var unique = this.data.unique[objectId];
-
 			if (unique.type == 'select') {
-					// remove used items from each select-field of the child records
 				if (!(unique.selector && unique.max == -1)) {
 					var formName = this.prependFormFieldNames+this.parseObjectId('parts', objectId, 3, 1, true);
-
-					var fieldObj = document.getElementsByName(elName);
+					var formObj = document.getElementsByName(formName);
+					var recordObj = document.getElementsByName(this.prependFormFieldNames+'['+unique.table+']['+recordUid+']['+unique.field+']');
 					var values = $H(unique.used).values();
-
-					if (fieldObj.length) {
+					var selector = $(objectId+'_selector');
+					if (selector.length) {
 							// remove all items from the new select-item which are already used in other children
-						for (var i=0; i<values.length; i++) this.removeSelectOption(fieldObj[0], values[i]);
-							// set the selected item automatically to the first of the remaining items if no selector is used
-						if (!unique.selector) {
-							selectedValue = fieldObj[0].options[0].value;
-							fieldObj[0].options[0].selected = true;
-							this.updateUnique(fieldObj[0], objectId, formName, recordUid);
-							this.handleChangedField(fieldObj[0], objectId+'['+recordUid+']');
+						if (recordObj.length) {
+							for (var i=0; i<values.length; i++) {
+								this.removeSelectOption(recordObj[0], values[i]);
+							}
+								// set the selected item automatically to the first of the remaining items if no selector is used
+							if (!unique.selector) {
+								selectedValue = recordObj[0].options[0].value;
+								recordObj[0].options[0].selected = true;
+								this.updateUnique(recordObj[0], objectId, formName, recordUid);
+								this.handleChangedField(recordObj[0], objectId+'['+recordUid+']');
+							}
+						}
+						for (var i=0; i<values.length; i++) {
+							this.removeSelectOption(selector, values[i]);
 						}
 						if (typeof this.data.unique[objectId].used.length != 'undefined') {
 							this.data.unique[objectId].used = {};
 						}
 						this.data.unique[objectId].used[recordUid] = selectedValue;
+					}
+						// remove the newly used item from each select-field of the child records
+					if (formObj.length && selectedValue) {
+						var records = formObj[0].value.split(',');
+						for (var i=0; i<records.length; i++) {
+							recordObj = document.getElementsByName(this.prependFormFieldNames+'['+unique.table+']['+records[i]+']['+unique.field+']');
+							if (recordObj.length && records[i] != recordUid) {
+								this.removeSelectOption(recordObj[0], selectedValue);
+							}
+						}
 					}
 				}
 			} else if (unique.type == 'groupdb') {

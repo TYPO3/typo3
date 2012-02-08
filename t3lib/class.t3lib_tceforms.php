@@ -1497,8 +1497,8 @@ class t3lib_TCEforms {
 		$inlineParent = $this->inline->getStructureLevel(-1);
 		if (is_array($inlineParent) && $inlineParent['uid']) {
 			if ($inlineParent['config']['foreign_table'] == $table && $inlineParent['config']['foreign_unique'] == $field) {
-				$uniqueIds = $this->inline->inlineData['unique'][$this->inline->inlineNames['object'] . '[' . $table . ']']['used'];
-				$PA['fieldChangeFunc']['inlineUnique'] = "inline.updateUnique(this,'" . $this->inline->inlineNames['object'] . '[' . $table . "]','" . $this->inline->inlineNames['form'] . "','" . $row['uid'] . "');";
+				$uniqueIds = $this->inline->inlineData['unique'][$this->inline->inlineNames['object'] . t3lib_TCEforms_inline::Structure_Separator . $table]['used'];
+				$PA['fieldChangeFunc']['inlineUnique'] = "inline.updateUnique(this,'" . $this->inline->inlineNames['object'] . t3lib_TCEforms_inline::Structure_Separator . $table . "','" . $this->inline->inlineNames['form'] . "','" . $row['uid'] . "');";
 			}
 				// hide uid of parent record for symmetric relations
 			if ($inlineParent['config']['foreign_table'] == $table && ($inlineParent['config']['foreign_field'] == $field || $inlineParent['config']['symmetric_field'] == $field)) {
@@ -3696,7 +3696,7 @@ class t3lib_TCEforms {
 				$inlineParent = $this->inline->getStructureLevel(-1);
 				if (is_array($inlineParent) && $inlineParent['uid']) {
 					if ($inlineParent['config']['foreign_table'] == $table && $inlineParent['config']['foreign_unique'] == $field) {
-						$objectPrefix = $this->inline->inlineNames['object'] . '[' . $table . ']';
+						$objectPrefix = $this->inline->inlineNames['object'] . t3lib_TCEforms_inline::Structure_Separator . $table;
 						$aOnClickInline = $objectPrefix . '|inline.checkUniqueElement|inline.setUniqueElement';
 						$rOnClickInline = 'inline.revertUnique(\'' . $objectPrefix . '\',null,\'' . $uid . '\');';
 					}
