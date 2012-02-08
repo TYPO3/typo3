@@ -1231,7 +1231,9 @@ class t3lib_TCEforms_inline {
 				'inline.domAddRecordDetails(\'' . $domObjectId . '\',\'' . $objectPrefix . '\',' . ($expandSingle ? '1' : '0') . ',json.data);',
 			)
 		);
-
+		if ($config['foreign_unique']) {
+			$jsonArray['scriptCall'][] = 'inline.removeUsed(\'' . $objectPrefix . '\',\'' . $record['uid'] . '\');';
+		}
 		$this->getCommonScriptCalls($jsonArray, $config);
 			// Collapse all other records if requested:
 		if (!$collapseAll && $expandSingle) {
