@@ -97,6 +97,20 @@ class t3lib_utility_Http {
 
 		exit;
 	}
+
+	/**
+	 * Builds a URL string from an array with the URL parts, as e.g. output by parse_url().
+	 *
+	 * @param array $urlParts
+	 * @return string
+	 * @see http://www.php.net/parse_url
+	 */
+	public static function buildUrl(array $urlParts) {
+		return (isset($urlParts['scheme']) ? $urlParts['scheme'] . '://' : '')
+			. (isset($urlParts['user']) ? $urlParts['user'] . (isset($urlParts['pass']) ? ':' . $urlParts['pass'] : '') . '@' : '')
+			. (isset($urlParts['host']) ? $urlParts['host'] : '') . (isset($urlParts['path']) ? $urlParts['path'] : '')
+			. (isset($urlParts['query']) ? '?' . $urlParts['query'] : '') . (isset($urlParts['fragment']) ? '#' . $urlParts['fragment'] : '');
+	}
 }
 
 ?>
