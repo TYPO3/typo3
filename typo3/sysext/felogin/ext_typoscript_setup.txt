@@ -67,6 +67,21 @@ plugin.tx_felogin_pi1 {
 	forgotMessage_stdWrap {
 		wrap = <div>|</div>
 	}
+	forgotErrorMessage_stdWrap {
+		wrap = <div>|</div>
+	}
+	forgotResetMessageEmailSentMessage_stdWrap {
+		wrap = <div>|</div>
+	}
+	changePasswordNotValidMessage_stdWrap {
+		wrap = <div>|</div>
+	}
+	changePasswordTooShortMessage_stdWrap {
+		wrap = <div>|</div>
+	}
+	changePasswordNotEqualMessage_stdWrap {
+		wrap = <div>|</div>
+	}
 	
 	changePasswordHeader_stdWrap {
 		wrap = <h3>|</h3>
@@ -74,6 +89,9 @@ plugin.tx_felogin_pi1 {
 	changePasswordMessage_stdWrap {
 		wrap = <div>|</div>
 	}
+	changePasswordDoneMessage_stdWrap {
+		wrap = <div>|</div>
+    }
 
 	cookieWarning_stdWrap {
 		wrap = <p style="color:red; font-weight:bold;">|</p>
