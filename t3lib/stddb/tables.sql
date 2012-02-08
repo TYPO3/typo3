@@ -277,7 +277,7 @@ CREATE TABLE sys_collection (
 
 	title tinytext,
 	description text,
-	type varchar(6) DEFAULT 'static' NOT NULL,
+	type varchar(32) DEFAULT 'static' NOT NULL,
 	table_name tinytext,
 	items int(11) DEFAULT '0' NOT NULL,
 	criteria text NOT NULL,
@@ -288,10 +288,9 @@ CREATE TABLE sys_collection (
 );
 
 #
-# mm-table for entries of sys_collection
+# Table structure for table 'sys_collection_entries'
 #
 CREATE TABLE sys_collection_entries (
-
 	uid int(11) NOT NULL auto_increment,
 	uid_local int(11) DEFAULT '0' NOT NULL,
 	uid_foreign int(11) DEFAULT '0' NOT NULL,
@@ -300,7 +299,7 @@ CREATE TABLE sys_collection_entries (
 
 	KEY uid_local (uid_local),
 	KEY uid_foreign (uid_foreign),
-	PRIMARY KEY (uid),
+	PRIMARY KEY (uid)
 );
 
 #

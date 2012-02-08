@@ -44,7 +44,6 @@
  * @subpackage t3lib
  */
 abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collection_RecordCollection, t3lib_collection_Persistable, t3lib_collection_Sortable {
-
 	/**
 	 * The table name collections are stored to
 	 *
@@ -87,7 +86,6 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	 */
 	protected $itemTableName;
 
-
 	/**
 	 * The local storage
 	 *
@@ -95,6 +93,9 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	 */
 	protected $storage;
 
+	/**
+	 * Creates this object.
+	 */
 	public function __construct() {
 		$this->storage = new SplDoublyLinkedList();
 	}
@@ -237,7 +238,6 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	public function setDescription($desc) {
 		$this->description = $desc;
 	}
-
 
 	/**
 	 * Setter for the name of the data-source table
@@ -423,7 +423,5 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 		$this->description	= $array['description'];
 		$this->itemTableName= $array['table_name'];
 	}
-
 }
-
 ?>
