@@ -201,9 +201,9 @@ class tx_felogin_pi1 extends tslib_pibase {
 				}
 					// generate message
 				if ($error) {
-					$markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap($error, $this->conf['forgotMessage_stdWrap.']);
+					$markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap($error, $this->conf['forgotErrorMessage_stdWrap.']);
 				} else {
-					$markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap($this->pi_getLL('ll_forgot_reset_message_emailSent', '', 1), $this->conf['forgotMessage_stdWrap.']);
+					$markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap($this->pi_getLL('ll_forgot_reset_message_emailSent', '', 1), $this->conf['forgotResetMessageEmailSentMessage_stdWrap.']);
 				}
 				$subpartArray['###FORGOT_FORM###'] = '';
 
@@ -268,7 +268,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 		$hash = explode('|', $piHash);
 		if (intval($uid) == 0) {
-			$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('change_password_notvalid_message', $this->conf['changePasswordMessage_stdWrap.']);
+			$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('change_password_notvalid_message', $this->conf['changePasswordNotValidMessage_stdWrap.']);
 			$subpartArray['###CHANGEPASSWORD_FORM###'] = '';
 		} else {
 			$user = $this->pi_getRecord('fe_users', intval($uid));
@@ -276,7 +276,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 			$compareHash = explode('|', $userHash);
 
 			if (!$compareHash || !$compareHash[1] || $compareHash[0] < time() ||  $hash[0] != $compareHash[0] ||  md5($hash[1]) != $compareHash[1]) {
-				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('change_password_notvalid_message',$this->conf['changePasswordMessage_stdWrap.']);
+				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('change_password_notvalid_message',$this->conf['changePasswordNotValidMessage_stdWrap.']);
 				$subpartArray['###CHANGEPASSWORD_FORM###'] = '';
 			} else {
 					// all is fine, continue with new password
@@ -284,9 +284,9 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 				if (isset($postData['changepasswordsubmit'])) {
 					if (strlen($postData['password1']) < $minLength) {
-			 			$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_tooshort_message', $this->conf['changePasswordMessage_stdWrap.']), $minLength);
+						$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_tooshort_message', $this->conf['changePasswordTooShortMessage_stdWrap.']), $minLength);
 					} elseif ($postData['password1'] != $postData['password2']) {
-						$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_notequal_message', $this->conf['changePasswordMessage_stdWrap.']), $minLength);
+						$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_notequal_message', $this->conf['changePasswordNotEqualMessage_stdWrap.']), $minLength);
 					} else {
 						$newPass = $postData['password1'];
 
@@ -309,7 +309,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 								'uid=' . $user['uid'],
 								array('password' => $newPass, 'felogin_forgotHash' => '')
 							);
-						$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('change_password_done_message', $this->conf['changePasswordMessage_stdWrap.']);
+						$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('change_password_done_message', $this->conf['changePasswordDoneMessage_stdWrap.']);
 						$done = TRUE;
 						$subpartArray['###CHANGEPASSWORD_FORM###'] = '';
 						$markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink($this->pi_getLL('ll_forgot_header_backToLogin', '', 1), array());
