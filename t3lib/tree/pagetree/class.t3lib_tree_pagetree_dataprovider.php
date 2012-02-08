@@ -120,31 +120,31 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 		}
 
 		$subpages = $this->getSubpages($node->getId());
-		if (!is_array($subpages) || !count($subpages)) {
-			return $nodeCollection;
+		if (is_array($subpages) && count($subpages) > 0) {
+
+			foreach ($subpages as $subpage) {
+				if (in_array($subpage['uid'], $this->hiddenRecords)) {
+					continue;
+				}
+
+				$subpage = t3lib_befunc::getRecordWSOL('pages', $subpage['uid'], '*', '', TRUE, TRUE);
+				if (!$subpage) {
+					continue;
+				}
+
+				$subNode = t3lib_tree_pagetree_Commands::getNewNode($subpage, $mountPoint);
+				if ($this->nodeCounter < $this->nodeLimit) {
+					$childNodes = $this->getNodes($subNode, $mountPoint, $level + 1);
+					$subNode->setChildNodes($childNodes);
+					$this->nodeCounter += $childNodes->count();
+				} else {
+					$subNode->setLeaf(!$this->hasNodeSubPages($subNode->getId()));
+				}
+
+				$nodeCollection->append($subNode);
+			}
 		}
 
-		foreach ($subpages as $subpage) {
-			if (in_array($subpage['uid'], $this->hiddenRecords)) {
-				continue;
-			}
-
-			$subpage = t3lib_befunc::getRecordWSOL('pages', $subpage['uid'], '*', '', TRUE, TRUE);
-			if (!$subpage) {
-				continue;
-			}
-
-			$subNode = t3lib_tree_pagetree_Commands::getNewNode($subpage, $mountPoint);
-			if ($this->nodeCounter < $this->nodeLimit) {
-				$childNodes = $this->getNodes($subNode, $mountPoint, $level + 1);
-				$subNode->setChildNodes($childNodes);
-				$this->nodeCounter += $childNodes->count();
-			} else {
-				$subNode->setLeaf(!$this->hasNodeSubPages($subNode->getId()));
-			}
-
-			$nodeCollection->append($subNode);
-		}
 
 		foreach ($this->processCollectionHookObjects as $hookObject) {
 			/** @var $hookObject t3lib_tree_pagetree_interfaces_collectionprocessor */
