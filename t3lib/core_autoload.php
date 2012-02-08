@@ -242,6 +242,7 @@ $t3libClasses = array(
 	't3lib_utility_mail' => PATH_t3lib . 'utility/class.t3lib_utility_mail.php',
 	't3lib_utility_math' => PATH_t3lib . 'utility/class.t3lib_utility_math.php',
 	't3lib_utility_monitor' => PATH_t3lib . 'utility/class.t3lib_utility_monitor.php',
+	't3lib_utility_path' => PATH_t3lib . 'utility/class.t3lib_utility_path.php',
 	't3lib_utility_phpoptions' => PATH_t3lib . 'utility/class.t3lib_utility_phpoptions.php',
 	't3lib_utility_versionnumber' => PATH_t3lib . 'utility/class.t3lib_utility_versionnumber.php',
 	't3lib_xml' => PATH_t3lib . 'class.t3lib_xml.php',
