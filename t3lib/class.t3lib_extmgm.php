@@ -1281,7 +1281,13 @@ tt_content.' . $key . $prefix . ' {
 				$addLine = 'lib.stdheader.10.' . $key . $prefix . ' = < plugin.' . $cN . $prefix;
 			break;
 			case 'includeLib':
-				$addLine = 'page.1000 = < plugin.' . $cN . $prefix;
+				$pageObjKey = 1000;
+				while(!$addLine) { 
+					if(!eregi("page." . $pageObjKey, $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['cssstyledcontent/static/'])) { 
+						$addLine = 'page.' . $pageObjKey . ' = < plugin.' . $cN . $prefix;
+					}
+					$pageObjKey++;
+				}
 			break;
 			default:
 				$addLine = '';
