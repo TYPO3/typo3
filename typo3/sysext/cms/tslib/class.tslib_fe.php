@@ -1587,34 +1587,6 @@
 		}
 	}
 
-	/**
-	 * Analyzes the second part of a id-string (after the "+"), looking for B6 or M5 encoding and if found it will resolve it and restore the variables in global $_GET
-	 * If values for ->cHash, ->no_cache, ->jumpurl and ->MP is found, they are also loaded into the internal vars of this class.
-	 *
-	 * @param	string		String to analyze
-	 * @return	void
-	 * @access private
-	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
-	 * @todo	Deprecated but still used in the Core!
-	 */
-	function idPartsAnalyze($str)	{
-		$GET_VARS = '';
-		switch(substr($str,0,2))	{
-			case 'B6':
-				$addParams = base64_decode(str_replace('_','=',str_replace('-','/',substr($str,2))));
-				parse_str($addParams,$GET_VARS);
-			break;
-			case 'M5':
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('params', 'cache_md5params', 'md5hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr(substr($str,2), 'cache_md5params'));
-				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-
-				$this->updateMD5paramsRecord(substr($str,2));
-				parse_str($row['params'],$GET_VARS);
-			break;
-		}
-
-		$this->mergingWithGetVars($GET_VARS);
-	}
 
 	/**
 	 * Merging values into the global $_GET
