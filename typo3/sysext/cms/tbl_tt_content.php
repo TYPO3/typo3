@@ -467,7 +467,6 @@ $TCA['tt_content'] = array(
 						'notNewRecords' => 1,
 						'enableByTypeConfig' => 1,
 						'type' => 'script',
-#						'hideParent' => array('rows' => 4),
 						'title' => 'LLL:EXT:cms/locallang_ttc.xml:bodytext.W.forms',
 						'icon' => 'wizard_forms.gif',
 						'script' => 'wizard_forms.php?special=formtype_mail',
@@ -1915,7 +1914,7 @@ $TCA['tt_content'] = array(
 			'showitem' =>
 					'--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
 					header;LLL:EXT:cms/locallang_ttc.xml:header.ALT.html_formlabel,
-					bodytext;LLL:EXT:cms/locallang_ttc.xml:bodytext.ALT.html_formlabel;;nowrap,
+					bodytext,
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.appearance,
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.frames;frames,
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
