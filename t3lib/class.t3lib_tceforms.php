@@ -4028,7 +4028,7 @@ class t3lib_TCEforms {
 											$params['iTitle'] = $iTitle;
 											$params['wConf'] = $wConf;
 											$params['row'] = $row;
-											$outArr[] = t3lib_div::callUserFunction($wConf['userFunc'], $params, $this);
+											$outArr[] = t3lib_div::callUserFunction($wConf['userFunc'], $params, $this, 'user_', 1);
 										break;
 										case 'slider':
 											$params['item'] = &$item; // Reference set!
