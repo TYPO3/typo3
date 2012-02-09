@@ -470,23 +470,11 @@ $TCA['tt_content'] = array(
 						'notNewRecords' => 1,
 						'enableByTypeConfig' => 1,
 						'type' => 'script',
-#						'hideParent' => array('rows' => 4),
 						'title' => 'LLL:EXT:cms/locallang_ttc.xml:bodytext.W.forms',
 						'icon' => 'wizard_forms.gif',
 						'script' => 'wizard_forms.php?special=formtype_mail',
 						'params' => array(
 							'xmlOutput' => 0,
-						),
-					),
-					't3editor' => array(
-						'enableByTypeConfig' => 1,
-						'type' => 'userFunc',
-						'userFunc' => 'EXT:t3editor/classes/class.tx_t3editor_tceforms_wizard.php:tx_t3editor_tceforms_wizard->main',
-						'title' => 't3editor',
-						'icon' => 'wizard_table.gif',
-						'script' => 'wizard_table.php',
-						'params' => array(
-							'format' => 'html',
 						),
 					),
 				),
@@ -1923,7 +1911,7 @@ $TCA['tt_content'] = array(
 			'showitem' =>
 					'--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
 					header;LLL:EXT:cms/locallang_ttc.xml:header.ALT.html_formlabel,
-					bodytext;LLL:EXT:cms/locallang_ttc.xml:bodytext.ALT.html_formlabel;;nowrap:wizards[t3editor],
+					bodytext,
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.appearance,
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.frames;frames,
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
