@@ -139,11 +139,6 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlarea_api {
 			}
 				// Adding custom items
 			$blockElementsOrder = array_merge(t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($blockElementsOrder), 1), $addItems);
-				// Applying User TSConfig restriction
-			$blockElementsOrder = array_diff($blockElementsOrder, $hideItems);
-			if (!in_array('*', $restrictTo)) {
-				$blockElementsOrder = array_intersect($blockElementsOrder, $restrictTo);
-			}
 				// Add div element if indent is configured in the toolbar
 			if (in_array('indent', $this->toolbar) || in_array('outdent', $this->toolbar)) {
 				$blockElementsOrder = array_merge($blockElementsOrder, array('div'));
@@ -151,6 +146,12 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlarea_api {
 				// Add blockquote element if blockquote is configured in the toolbar
 			if (in_array('blockquote', $this->toolbar)) {
 				$blockElementsOrder = array_merge($blockElementsOrder, array('blockquote'));
+			}
+				// Remove items
+			$blockElementsOrder = array_diff($blockElementsOrder, $hideItems);
+				// Applying User TSConfig restriction
+			if (!in_array('*', $restrictTo)) {
+				$blockElementsOrder = array_intersect($blockElementsOrder, $restrictTo);
 			}
 				// Localizing the options
 			$blockElementsOptions = array();
