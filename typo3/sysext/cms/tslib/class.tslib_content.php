@@ -1395,6 +1395,9 @@ class tslib_cObj {
 						$slide--;
 					}
 					$conf['select.']['pidInList'] = $this->getSlidePids($conf['select.']['pidInList'], $conf['select.']['pidInList.']);
+					if (isset($conf['select.']['pidInList.'])) {
+						unset($conf['select.']['pidInList.']);
+					}
 					$again = strlen($conf['select.']['pidInList'])?true:false;
 				}
 			} while ($again&&(($slide&&!strlen($tmpValue)&&$slideCollectFuzzy)||($slide&&$slideCollect)));
