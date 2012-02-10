@@ -215,7 +215,7 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 	 * @return void
 	 */
 	protected function injectDependencies($instance, Tx_Extbase_Object_Container_ClassInfo $classInfo) {
-		if (!$classInfo->hasInjectMethods()) return;
+		if (!$classInfo->hasInjectMethods() && !$classInfo->hasInjectProperties()) return;
 
 		foreach ($classInfo->getInjectMethods() as $injectMethodName => $classNameToInject) {
 
@@ -225,6 +225,22 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 			}
 
 			$instance->$injectMethodName($instanceToInject);
+		}
+
+		foreach ($classInfo->getInjectProperties() as $injectPropertyName => $classNameToInject) {
+
+			$instanceToInject = $this->getInstanceInternal($classNameToInject);
+			if ($classInfo->getIsSingleton() && !($instanceToInject instanceof t3lib_Singleton)) {
+				$this->log('The singleton "' . $classInfo->getClassName() . '" needs a prototype in "' . $injectPropertyName . '". This is often a bad code smell; often you rather want to inject a singleton.', 1320177676);
+			}
+
+			$propertyReflection = t3lib_div::makeInstance(
+				'Tx_Extbase_Reflection_PropertyReflection',
+				$instance,
+				$injectPropertyName
+			);
+			$propertyReflection->setAccessible(TRUE);
+			$propertyReflection->setValue($instance, $instanceToInject);
 		}
 	}
 

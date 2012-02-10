@@ -23,6 +23,10 @@
 ***************************************************************/
 
 require_once(t3lib_extMgm::extPath('extbase') . 'Tests/Unit/Object/Container/Fixtures/Testclasses.php');
+require_once(t3lib_extMgm::extPath('extbase') . 'Tests/Unit/Fixtures/ClassWithInjectProperties.php');
+require_once(t3lib_extMgm::extPath('extbase') . 'Tests/Unit/Fixtures/DummyClass.php');
+require_once(t3lib_extMgm::extPath('extbase') . 'Tests/Unit/Fixtures/SecondDummyClass.php');
+
 
 /**
  * Testcase for class t3lib_object_ClassInfoFactory.
@@ -60,6 +64,14 @@ class Tx_Extbase_Tests_Unit_Object_Container_ClassInfoFactoryTest extends Tx_Ext
 	public function buildClassInfoDoesNotIncludeInjectSettingsMethodInListOfInjectMethods() {
 		$classInfo = $this->classInfoFactory->buildClassInfoFromClassName('t3lib_object_tests_class_with_injectsettings');
 		$this->assertEquals(array('injectFoo' => 't3lib_object_tests_resolveablecyclic1'), $classInfo->getInjectMethods());
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildClassInfoDetectsPropertiesToInjectByAnnotation() {
+		$classInfo = $this->classInfoFactory->buildClassInfoFromClassName('Tx_Extbase_Fixture_ClassWithInjectProperties');
+		$this->assertEquals(array('secondDummyClass' => 'Tx_Extbase_Fixture_SecondDummyClass'), $classInfo->getInjectProperties());
 	}
 
 	/**

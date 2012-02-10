@@ -62,6 +62,14 @@ class Tx_Extbase_Object_Container_ClassInfo {
 	private $injectMethods;
 
 	/**
+	 * All setter injections in the format
+	 * 	array (<nameOfProperty> => <classNameToInject> )
+	 *
+	 * @var array
+	 */
+	private $injectProperties;
+
+	/**
 	 * Indicates if the class is a singleton or not.
 	 *
 	 * @var boolean
@@ -83,10 +91,11 @@ class Tx_Extbase_Object_Container_ClassInfo {
 	 * @param boolean $isSingleton
 	 * @param boolean $isInitializeable
 	 */
-	public function __construct($className, array $constructorArguments, array $injectMethods, $isSingleton = FALSE, $isInitializeable = FALSE) {
+	public function __construct($className, array $constructorArguments, array $injectMethods, $isSingleton = FALSE, $isInitializeable = FALSE, array $injectProperties = array()) {
 		$this->className = $className;
 		$this->constructorArguments = $constructorArguments;
 		$this->injectMethods = $injectMethods;
+		$this->injectProperties = $injectProperties;
 		$this->isSingleton = $isSingleton;
 		$this->isInitializeable = $isInitializeable;
 	}
@@ -119,6 +128,15 @@ class Tx_Extbase_Object_Container_ClassInfo {
 	}
 
 	/**
+	 * Returns an array with the inject properties
+	 *
+	 * @return array
+	 */
+	public function getInjectProperties() {
+		return $this->injectProperties;
+	}
+
+	/**
 	 * Asserts if the class is a singleton or not.
 	 *
 	 * @return boolean
@@ -143,5 +161,12 @@ class Tx_Extbase_Object_Container_ClassInfo {
 	 */
 	public function hasInjectMethods() {
 		return (count($this->injectMethods) > 0);
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function hasInjectProperties() {
+		return (count($this->injectProperties) > 0);
 	}
 }

@@ -46,9 +46,10 @@ class Tx_Extbase_Object_Container_ClassInfoFactory {
 		}
 		$constructorArguments = $this->getConstructorArguments($reflectedClass);
 		$injectMethods = $this->getInjectMethods($reflectedClass);
+		$injectProperties = $this->getInjectProperties($reflectedClass);
 		$isSingleton = $this->getIsSingleton($className);
 		$isInitializeable = $this->getIsInitializeable($className);
-		return new Tx_Extbase_Object_Container_ClassInfo($className, $constructorArguments, $injectMethods, $isSingleton, $isInitializeable);
+		return new Tx_Extbase_Object_Container_ClassInfo($className, $constructorArguments, $injectMethods, $isSingleton, $isInitializeable, $injectProperties);
 	}
 
 	/**
@@ -103,6 +104,37 @@ class Tx_Extbase_Object_Container_ClassInfoFactory {
 							throw new Exception('Method "' . $reflectionMethod->getName(). '" of class "' . $reflectedClass->getName() . '" is marked as setter for Dependency Injection, but does not have a type annotation');
 						}
 						$result[$reflectionMethod->getName()] = $reflectionParameter[0]->getClass()->getName();
+					}
+				}
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Build a list of properties to be injected for the given class.
+	 *
+	 * @param ReflectionClass $reflectedClass
+	 * @return array (nameOfInjectProperty => nameOfClassToBeInjected)
+	 */
+	private function getInjectProperties(ReflectionClass $reflectedClass) {
+		$result = array();
+		$reflectionProperties = $reflectedClass->getProperties();
+
+		if (is_array($reflectionProperties)) {
+			foreach ($reflectionProperties as $reflectionProperty) {
+				$reflectedProperty = t3lib_div::makeInstance(
+					'Tx_Extbase_Reflection_PropertyReflection',
+					$reflectedClass->getName(),
+					$reflectionProperty->getName()
+				);
+
+				if ($reflectedProperty->isTaggedWith('inject')
+					&& $reflectedProperty->getName() !== 'settings') {
+
+					$varValues = $reflectedProperty->getTagValues('var');
+					if (count($varValues) == 1) {
+						$result[$reflectedProperty->getName()] = $varValues[0];
 					}
 				}
 			}
