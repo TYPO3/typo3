@@ -93,7 +93,7 @@ class t3lib_TCEforms {
 	var $charsPerRow = 40; // The number of chars expected per row when the height of a text area field is automatically calculated based on the number of characters found in the field content.
 	var $maxTextareaWidth = 48; // The maximum abstract value for textareas
 	var $maxInputWidth = 48; // The maximum abstract value for input fields
-	var $defaultMultipleSelectorStyle = 'width:250px;'; // Default style for the selector boxes used for multiple items in "select" and "group" types.
+	var $defaultMultipleSelectorStyle = 'width:310px;'; // Default style for the selector boxes used for multiple items in "select" and "group" types.
 
 
 		// INTERNAL, static
@@ -1983,7 +1983,7 @@ class t3lib_TCEforms {
 				}
 				$opt[] = '<option value="' . htmlspecialchars($p[1]) . '"' .
 						 ($styleAttrValue ? ' style="' . htmlspecialchars($styleAttrValue) . '"' : '') .
-						 '>' . $p[0] . '</option>';
+						 ' title="' . $p[0] . '">' . $p[0] . '</option>';
 			}
 
 				// Put together the selector box:
@@ -1991,9 +1991,12 @@ class t3lib_TCEforms {
 			$size = intval($config['size']);
 			$size = $config['autoSizeMax'] ? t3lib_utility_Math::forceIntegerInRange(count($itemArray) + 1, t3lib_utility_Math::forceIntegerInRange($size, 1), $config['autoSizeMax']) : $size;
 			if ($config['exclusiveKeys']) {
-				$sOnChange = 'setFormValueFromBrowseWin(\'' . $PA['itemFormElName'] . '\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,\'' . $config['exclusiveKeys'] . '\'); ';
+				$sOnChange = 'setFormValueFromBrowseWin(\'' . $PA['itemFormElName']
+						. '\',this.options[this.selectedIndex].value, this.options[this.selectedIndex].text, this.options[this.selectedIndex].title,\''
+						. $config['exclusiveKeys'] . '\'); ';
 			} else {
-				$sOnChange = 'setFormValueFromBrowseWin(\'' . $PA['itemFormElName'] . '\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text); ';
+				$sOnChange = 'setFormValueFromBrowseWin(\'' . $PA['itemFormElName']
+						. '\',this.options[this.selectedIndex].value, this.options[this.selectedIndex].text, this.options[this.selectedIndex].title); ';
 			}
 			$sOnChange .= implode('', $PA['fieldChangeFunc']);
 			$itemsToSelect = '
@@ -3516,7 +3519,7 @@ class t3lib_TCEforms {
 	 */
 	function dbFileIcons($fName, $mode, $allowed, $itemArray, $selector = '', $params = array(), $onFocus = '', $table = '', $field = '', $uid = '') {
 
-
+		$title = '';
 		$disabled = '';
 		if ($this->renderReadonly || $params['readOnly']) {
 			$disabled = ' disabled="disabled"';
@@ -3541,7 +3544,9 @@ class t3lib_TCEforms {
 							$pTitle = t3lib_BEfunc::getRecordTitle($pp['table'], $pRec, FALSE, TRUE);
 							$pUid = $pp['table'] . '_' . $pp['id'];
 							$uidList[] = $pUid;
-							$opt[] = '<option value="' . htmlspecialchars($pUid) . '">' . htmlspecialchars($pTitle) . '</option>';
+							$title = htmlspecialchars($pTitle);
+							$opt[] = '<option value="' . htmlspecialchars($pUid)
+									. '" title="' . $title . '">' . $title . '</option>';
 						}
 					}
 				break;
@@ -3550,14 +3555,18 @@ class t3lib_TCEforms {
 					foreach ($itemArray as $item) {
 						$itemParts = explode('|', $item);
 						$uidList[] = $pUid = $pTitle = $itemParts[0];
-						$opt[] = '<option value="' . htmlspecialchars(rawurldecode($itemParts[0])) . '">' . htmlspecialchars(basename(rawurldecode($itemParts[0]))) . '</option>';
+						$title = htmlspecialchars(basename(rawurldecode($itemParts[0])));
+						$opt[] = '<option value="' . htmlspecialchars(rawurldecode($itemParts[0]))
+								. '" title="' . $title . '">' . $title . '</option>';
 					}
 				break;
 				case 'folder':
 					foreach ($itemArray as $pp) {
 						$pParts = explode('|', $pp);
 						$uidList[] = $pUid = $pTitle = $pParts[0];
-						$opt[] = '<option value="' . htmlspecialchars(rawurldecode($pParts[0])) . '">' . htmlspecialchars(rawurldecode($pParts[0])) . '</option>';
+						$title = htmlspecialchars(rawurldecode($pParts[0]));
+						$opt[] = '<option value="' . htmlspecialchars(rawurldecode($pParts[0]))
+								. '" title="' . $title . '">' . $title . '</option>';
 					}
 				break;
 				default:
@@ -3565,7 +3574,9 @@ class t3lib_TCEforms {
 						$pParts = explode('|', $pp, 2);
 						$uidList[] = $pUid = $pParts[0];
 						$pTitle = $pParts[1];
-						$opt[] = '<option value="' . htmlspecialchars(rawurldecode($pUid)) . '">' . htmlspecialchars(rawurldecode($pTitle)) . '</option>';
+						$title =  htmlspecialchars(rawurldecode($pTitle));
+						$opt[] = '<option value="' . htmlspecialchars(rawurldecode($pUid))
+								. '" title="' . $title . '">' . $title . '</option>';
 					}
 				break;
 			}
@@ -3630,7 +3641,9 @@ class t3lib_TCEforms {
 							// 'file', 'file_reference' and 'folder' mode
 						$itemTitle = 'unescape(\'' . rawurlencode(basename($elValue)) . '\')';
 					}
-					$aOnClick .= 'setFormValueFromBrowseWin(\'' . $fName . '\',unescape(\'' . rawurlencode(str_replace('%20', ' ', $elValue)) . '\'),' . $itemTitle . ');';
+					$aOnClick .= 'setFormValueFromBrowseWin(\'' . $fName . '\',unescape(\''
+							. rawurlencode(str_replace('%20', ' ', $elValue)) . '\'),'
+							. $itemTitle . ',' . $itemTitle . ');';
 				}
 				$aOnClick .= 'return false;';
 				$icons['R'][] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' .
@@ -5601,7 +5614,7 @@ class t3lib_TCEforms {
 				browserWin = window.open(url,"Typo3WinBrowser","height=650,width="+(mode=="db"?650:600)+",status=0,menubar=0,resizable=1,scrollbars=1");
 				browserWin.focus();
 			}
-			function setFormValueFromBrowseWin(fName,value,label,exclusiveValues) {
+			function setFormValueFromBrowseWin(fName,value,label,title,exclusiveValues) {
 				var formObj = setFormValue_getFObj(fName), fObj, isMultiple = false, isList = false, len;
 				if (formObj && value !== "--div--") {
 						// Check if the form object has a "_list" element or not
@@ -5668,6 +5681,7 @@ class t3lib_TCEforms {
 							fObj.length++;
 							fObj.options[len].value = value;
 							fObj.options[len].text = unescape(label);
+							fObj.options[len].title = title;
 
 								// Traversing list and set the hidden-field
 							setHiddenFromList(fObj,formObj[fName]);
