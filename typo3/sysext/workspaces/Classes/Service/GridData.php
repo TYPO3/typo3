@@ -121,6 +121,10 @@ class Tx_Workspaces_Service_GridData {
 					$versionArray['label_Workspace'] = htmlspecialchars(t3lib_befunc::getRecordTitle($table, $versionRecord));
 					$versionArray['label_Live'] = htmlspecialchars(t3lib_befunc::getRecordTitle($table, $origRecord));
 					$versionArray['label_Stage'] = htmlspecialchars($stagesObj->getStageTitle($versionRecord['t3ver_stage']));
+					$tempStage = $stagesObj->getNextStage($versionRecord['t3ver_stage']);
+					$versionArray['label_nextStage'] = htmlspecialchars($stagesObj->getStageTitle($tempStage['uid']));
+					$tempStage = $stagesObj->getPrevStage($versionRecord['t3ver_stage']);
+					$versionArray['label_prevStage'] = htmlspecialchars($stagesObj->getStageTitle($tempStage['uid']));
 					$versionArray['change'] = $pctChange;
 					$versionArray['path_Live'] = htmlspecialchars(t3lib_BEfunc::getRecordPath($record['livepid'], '', 999));
 					$versionArray['path_Workspace'] = htmlspecialchars(t3lib_BEfunc::getRecordPath($record['wspid'], '', 999));

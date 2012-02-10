@@ -192,15 +192,21 @@ TYPO3.Workspaces.Configuration.Stage = {
 	renderer: function(value, metaData, record, rowIndex, colIndex, store) {
 		var returnCode = '';
 		if (record.json.allowedAction_prevStage && TYPO3.settings.Workspaces.allView !== '1') {
+			var tempTooltip = TYPO3.Workspaces.Configuration.SendToPrevStageButton.items[0].tooltip;
+			TYPO3.Workspaces.Configuration.SendToPrevStageButton.items[0].tooltip += ' &quot;'+ record.json.label_prevStage + '&quot;';
 			var prevButton = new Ext.grid.ActionColumn(TYPO3.Workspaces.Configuration.SendToPrevStageButton);
 			returnCode += prevButton.renderer(1, metaData, record, rowIndex, 1, store);
+			TYPO3.Workspaces.Configuration.SendToPrevStageButton.items[0].tooltip = tempTooltip;
 		} else {
 			returnCode += "<span class=\"t3-icon t3-icon-empty t3-icon-empty-empty\">&nbsp;</span>";
 		}
 		returnCode += record.json.label_Stage;
 		if (record.json.allowedAction_nextStage && TYPO3.settings.Workspaces.allView !== '1') {
+			var tempTooltip = TYPO3.Workspaces.Configuration.SendToNextStageButton.items[1].tooltip;
+			TYPO3.Workspaces.Configuration.SendToNextStageButton.items[1].tooltip += ' &quot;'+ record.json.label_nextStage + '&quot;';
 			var nextButton = new Ext.grid.ActionColumn(TYPO3.Workspaces.Configuration.SendToNextStageButton);
 			returnCode += nextButton.renderer(2, metaData, record, rowIndex, 2, store);
+			TYPO3.Workspaces.Configuration.SendToNextStageButton.items[1].tooltip = tempTooltip;
 		} else {
 			returnCode += "<span class=\"t3-icon t3-icon-empty t3-icon-empty-empty\">&nbsp;</span>";
 		}

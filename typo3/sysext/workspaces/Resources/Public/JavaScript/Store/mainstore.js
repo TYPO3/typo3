@@ -10,6 +10,8 @@ TYPO3.Workspaces.Configuration.StoreFieldArray = [
 	{name : 'label_Live'},
 	{name : 'label_Workspace'},
 	{name : 'label_Stage'},
+	{name : 'label_nextStage'},
+	{name : 'label_prevStage'},
 	{name : 'workspace_Title'},
 	{name : 'actions'},
 	{name : 'icon_Workspace'},
