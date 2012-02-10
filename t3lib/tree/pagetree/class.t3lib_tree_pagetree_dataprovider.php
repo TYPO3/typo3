@@ -372,9 +372,9 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 
 			if ($useNavTitle) {
 				$seachWhere .= '(nav_title LIKE ' . $searchFilter .
-					' OR (nav_title = "" && title LIKE ' . $searchFilter . '))';
+					' OR (nav_title = "" && title LIKE ' . $searchFilter . ') OR alias LIKE ' . $searchFilter . ')';
 			} else {
-				$seachWhere .= 'title LIKE ' . $searchFilter;
+				$seachWhere .= 'title LIKE ' . $searchFilter . ' OR alias LIKE ' . $searchFilter;
 			}
 
 			$where .= ' AND (' . $seachWhere . ')';
