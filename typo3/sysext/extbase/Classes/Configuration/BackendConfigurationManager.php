@@ -128,6 +128,15 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 	}
 
 	/**
+	 * Returns the default backend storage pid
+	 *
+	 * @return string
+	 */
+	public function getDefaultBackendStoragePid() {
+		return $this->getCurrentPageId();
+	}
+
+	/**
 	 * We need to set some default request handler if the framework configuration
 	 * could not be loaded; to make sure Extbase also works in Backend modules
 	 * in all contexts.

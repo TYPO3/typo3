@@ -151,7 +151,7 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 
 		$frameworkConfiguration = $this->getExtbaseConfiguration();
 		if (!isset($frameworkConfiguration['persistence']['storagePid'])) {
-			$frameworkConfiguration['persistence']['storagePid'] = self::DEFAULT_BACKEND_STORAGE_PID;
+			$frameworkConfiguration['persistence']['storagePid'] = $this->getDefaultBackendStoragePid();
 		}
 
 		// only merge $this->configuration and override switchableControllerActions when retrieving configuration of the current plugin
@@ -207,6 +207,15 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 			$extbaseConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['config.']['tx_extbase.']);
 		}
 		return $extbaseConfiguration;
+	}
+
+	/**
+	 * Returns the default backend storage pid
+	 *
+	 * @return string
+	 */
+	public function getDefaultBackendStoragePid() {
+		return self::DEFAULT_BACKEND_STORAGE_PID;
 	}
 
 	/**
