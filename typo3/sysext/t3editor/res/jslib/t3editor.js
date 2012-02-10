@@ -279,9 +279,7 @@ T3editor.prototype = {
  * toggle between enhanced editor (t3editor) and simple textarea
  */
 T3editor.toggleEditor = function(checkbox, index) {
-	if (!Prototype.Browser.MobileSafari
-		&& !Prototype.Browser.WebKit) {
-
+	if (!Prototype.Browser.MobileSafari) {
 		if (index == undefined) {
 			if (top.TYPO3.BackendUserSettings) {
 				top.TYPO3.BackendUserSettings.ExtDirect.set(
