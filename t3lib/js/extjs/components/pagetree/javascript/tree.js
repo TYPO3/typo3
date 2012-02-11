@@ -595,6 +595,10 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 		this.t3ContextNode = movedNode;
 
 		movedNode.disable();
+
+			// This is hard stuff to do. So increase the timeout for the AJAX request
+		Ext.Ajax.timeout = 3600000;
+
 		if (movedNode.previousSibling) {
 			this.commandProvider.copyNodeAfterDestination(movedNode, this);
 		} else {
