@@ -45,6 +45,10 @@ if (TYPO3_MODE == 'BE')	{
 		// context menu user default configuration
 	$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= '
 		options.contextMenu.table {
+			virtual_root.items {
+				' . $importExportActions . '
+			}
+
 			pages_root.items {
 				' . $importExportActions . '
 			}

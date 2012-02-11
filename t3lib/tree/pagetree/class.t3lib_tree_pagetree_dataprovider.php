@@ -287,6 +287,10 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 		}
 
 		$showRootlineAboveMounts = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPathAboveMounts');
+		$virtualRootCollection = FALSE;
+		if (!in_array(0, $mountPoints)) {
+				$virtualRootCollection = t3lib_div::makeInstance('t3lib_tree_pagetree_NodeCollection');
+		}
 		foreach ($mountPoints as $mountPoint) {
 			if ($mountPoint === 0) {
 				$sitename = 'TYPO3';
@@ -335,7 +339,27 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 			}
 
 			$subNode->setChildNodes($childNodes);
-			$nodeCollection->append($subNode);
+			if($virtualRootCollection !== FALSE) {
+				$virtualRootCollection->append($subNode);
+			} else {
+				$nodeCollection->append($subNode);
+			}
+		}
+
+		if($virtualRootCollection !== FALSE) {
+			$record = array(
+				'uid' => 0,
+				'title' => 'Mountpoints',
+			);
+			$virtualRootNode = t3lib_tree_pagetree_Commands::getNewNode($record);
+			$virtualRootNode->setLabelIsEditable(FALSE);
+			$virtualRootNode->setType('virtual_root');
+			$virtualRootNode->setChildNodes($virtualRootCollection);
+			if (count($virtualRootCollection) <= 1) {
+				$virtualRootNode->setExpanded(TRUE);
+				$virtualRootNode->setCls('typo3-pagetree-node-notExpandable');
+			}
+			$nodeCollection->append($virtualRootNode);
 		}
 
 		foreach ($this->processCollectionHookObjects as $hookObject) {
