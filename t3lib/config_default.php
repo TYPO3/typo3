@@ -242,6 +242,21 @@ $TYPO3_CONF_VARS = array(
 			options.contextMenu.options.leftIcons = 1
 			options.contextMenu {
 				table {
+					virtual_root {
+						disableItems =
+
+						items {
+							100 = ITEM
+							100 {
+								name = history
+								label = LLL:EXT:lang/locallang_misc.xml:CM_history
+								spriteIcon = actions-document-history-open
+								displayCondition = canShowHistory != 0
+								callbackAction = openHistoryPopUp
+							}
+						}
+					}
+
 					pages_root {
 						disableItems =
 
