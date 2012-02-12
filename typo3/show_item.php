@@ -498,8 +498,10 @@ class SC_show_item {
 		foreach($rows as $row) {
 			$record = t3lib_BEfunc::getRecord($row['tablename'], $row['recuid']);
 			$infoData[] = '<tr class="bgColor4">' .
-				'<td>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'], TRUE) . '</td>' .
-				'<td>' . t3lib_BEfunc::getRecordTitle($row['tablename'], $record, TRUE) . '</td>' .
+				'<td> <span title="id=' . $record['uid'] . ', pid=' . $record['pid'] . '">' .
+					$GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'], TRUE) . '</td>' .
+				'<td> <span title="id=' . $record['uid'] . ', pid=' . $record['pid'] . '">' .
+					t3lib_BEfunc::getRecordTitle($row['tablename'], $record, TRUE) . '</span> </td>' .
 				'<td>' . htmlspecialchars($this->getFieldName($row['tablename'], $row['field'])) . '</td>'.
 				'<td>' . $row['flexpointer'] . '</td>' .
 				'<td>' . $row['softref_key'] . '</td>' .
