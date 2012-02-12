@@ -23,7 +23,7 @@ Description : styles the Open Documents toolbar item
 	height: 12px;
 	width: 14px;
 	text-align: right;
-	border: 1px dashed #999;
+	border: 1px solid #999;
 	padding: 1px 2px;
 }
 

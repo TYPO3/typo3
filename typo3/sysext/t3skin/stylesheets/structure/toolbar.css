@@ -16,14 +16,22 @@ Toolbar inside the Topbar
 	padding: 0px;
 }
 
+#typo3-toolbar li {
+	position: relative;
+}
+
 #typo3-toolbar>li {
 	display: inline;
 	float: left;
-	margin-right: -1px; /* necessary for overlaying the separators with the active state background */
 }
 
 #typo3-toolbar * li {
 	display: list-item;
+}
+
+#typo3-toolbar .separator {
+	padding-right: 10px;
+	margin-right: 10px;
 }
 
 #typo3-toolbar div {
@@ -44,6 +52,19 @@ Toolbar inside the Topbar
 	position: absolute;
 	top: 25px;
 	z-index: 100;
+	right: 0;
+}
+
+.separator .toolbar-item-menu {
+	right: 10px;
+}
+
+
+ul.toolbar-item-menu {
+	margin: 0;
+	padding: 2px 0 0;
+	position: absolute;
+	width: 180px;
 }
 
 ul.toolbar-item-menu li a {
@@ -59,11 +80,4 @@ ul.toolbar-item-menu li a {
 	padding-bottom: 2px;
 	padding-left: 3px;
 	vertical-align: middle;
-}
-
-ul.toolbar-item-menu {
-	margin: 0;
-	padding: 2px 0 0;
-	position: absolute;
-	width: 180px;
 }
