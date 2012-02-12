@@ -3459,7 +3459,7 @@ class t3lib_TCEmain {
 					// Create query for update:
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($uid), $updateFields);
 					// check for the localizations of that element
-				$this->moveL10nOverlayRecords($table, $uid, $destPid, 0);
+				$this->moveL10nOverlayRecords($table, $uid, $destPid, $destPid);
 
 					// Call post processing hooks:
 				foreach ($hookObjectsArr as $hookObj) {
