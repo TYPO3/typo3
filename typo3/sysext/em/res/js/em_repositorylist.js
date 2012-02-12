@@ -263,17 +263,6 @@ TYPO3.EM.RepositoryList = Ext.extend(Ext.grid.GridPanel, {
 					scope: this,
 					hidden: true
 				},
-				'-',
-				{
-					iconCls: 't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-upload',
-					tooltip: TYPO3.l10n.localize('upload_ext_directly'),
-					ref: '../uploadButton',
-					handler: function() {
-						TYPO3.EM.Tools.uploadExtension();
-					},
-					scope: this
-				},
-				'-',
 				'->',
 				{
 					xtype: 'tbtext',
