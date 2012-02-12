@@ -582,18 +582,22 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return	array	all available buttons as an assoc. array
 	 */
 	public function getButtons() {
+		$uploadButton = '<a href="#" onclick="TYPO3.EM.Tools.uploadExtension(); return false;" title="' . $GLOBALS['LANG']->getLL('upload_ext_directly') . '">' .
+				t3lib_iconWorks::getSpriteIcon('actions-edit-upload') . '</a>';
 
 		$buttons = array(
 			'csh' => '',
 			'back' => '',
-			'shortcut' => ''
+			'shortcut' => '',
+			'upload' => $uploadButton
 		);
 
-		// Shortcut
+			// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('CMD', 'function', $this->MCONF['name']);
 		}
-		// Back
+
+			// Back
 		if (($this->CMD['showExt'] && (!$this->CMD['standAlone'] && !t3lib_div::_GP('standAlone'))) || ($this->CMD['importExt'] || $this->CMD['uploadExt'] && (!$this->CMD['standAlone'])) || $this->CMD['importExtInfo']) {
 			$buttons['back'] = '<a href="' . t3lib_div::linkThisScript(array(
 				'CMD' => ''
