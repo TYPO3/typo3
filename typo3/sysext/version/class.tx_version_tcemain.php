@@ -1374,7 +1374,8 @@ class tx_version_tcemain {
 	 */
 	protected function moveRecord_wsPlaceholders($table, $uid, $destPid, $wsUid, t3lib_TCEmain $tcemainObj) {
 			// If a record gets moved after a record that already has a placeholder record
-			// then the new placeholder record needs to be after the existing one:
+			// then the new placeholder record needs to be after the existing one
+		$originalRecordDestinationPid = $destPid;
 		if ($destPid < 0) {
 			$movePlaceHolder = t3lib_BEfunc::getMovePlaceholder($table, abs($destPid), 'uid');
 
@@ -1428,7 +1429,6 @@ class tx_version_tcemain {
 				$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = $l10nParentRec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
 				unset($l10nParentRec);
 			}
-
 				// Initially, create at root level.
 			$newVersion_placeholderFieldArray['pid'] = 0;
 			$id = 'NEW_MOVE_PLH';
@@ -1447,7 +1447,7 @@ class tx_version_tcemain {
 		}
 
 			// Check for the localizations of that element and move them as well
-		$tcemainObj->moveL10nOverlayRecords($table, $uid, $destPid);
+		$tcemainObj->moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid);
 	}
 
 	/**
