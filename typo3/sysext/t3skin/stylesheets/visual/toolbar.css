@@ -11,8 +11,9 @@ Toolbar inside the Topbar
 	text-align: center;
 }
 
-#typo3-toolbar .no-separator {
-	background-image: none;
+#typo3-toolbar .separator {
+	border-right: 1px solid #000;
+	box-shadow: 1px 0 #585858;
 }
 
 .toolbar-item-active {
@@ -30,5 +31,5 @@ Toolbar inside the Topbar
 tr.shortcut:hover,
 tr.recentdoc:hover,
 tr.opendoc:hover {
-	background:#eee;
+	background: #eee;
 }
