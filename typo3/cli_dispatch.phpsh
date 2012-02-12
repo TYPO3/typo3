@@ -93,10 +93,12 @@ if ($relativePath) {
 		$temp_PATH_thisScript =
 			$workingDirectory.'/'.preg_replace('/\.\//','',$temp_PATH_thisScript);
 		if (!@is_file($temp_PATH_thisScript)) {
-			die('Relative path found, but an error occurred while resolving the absolute path: ' . $temp_PATH_thisScript . chr(10));
+			fwrite(STDERR, 'Relative path found, but an error occurred while resolving the absolute path: ' . $temp_PATH_thisScript . chr(10));
+			exit(1);
 		}
 	} else {
-		die ('Relative path found, but resolving absolute path is not supported on this platform.'.chr(10));
+		fwrite(STDERR, 'Relative path found, but resolving absolute path is not supported on this platform.' . chr(10));
+		exit(1);
 	}
 }
 
@@ -104,7 +106,8 @@ if ($relativePath) {
 define('PATH_thisScript',$temp_PATH_thisScript);
 
 if (!isset($_SERVER['argv'][1]))	{
-	die ('The first argument must be a valid key.'.chr(10));
+	fwrite(STDERR, 'The first argument must be a valid key.' . chr(10));
+	exit(1);
 }
 
 	// First argument is a key that points to the script configuration
@@ -118,9 +121,15 @@ require(dirname(PATH_thisScript).'/init.php');
 t3lib_div::flushOutputBuffers();
 
 if (defined('TYPO3_cliInclude')) {
-	include(TYPO3_cliInclude);
+	try {
+		include(TYPO3_cliInclude);
+	} catch (Exception $e) {
+		fwrite(STDERR, $e->getMessage() . LF);
+		exit(99);
+	}
 } else {
-	die('No include file configured for key "'.TYPO3_cliKey.'".'.chr(10));
+	fwrite(STDERR,  'No include file configured for key "'.TYPO3_cliKey.'".' . LF);
+	exit(1);
 }
 
 ?>

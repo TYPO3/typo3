@@ -215,16 +215,20 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 						if (!$this->isAdmin()) {
 							return TRUE;
 						} else {
-							die('ERROR: CLI backend user "' . $userName . '" was ADMIN which is not allowed!' . LF . LF);
+							fwrite(STDERR, 'ERROR: CLI backend user "' . $userName . '" was ADMIN which is not allowed!' . LF . LF);
+							exit(3);
 						}
 					} else {
-						die('ERROR: No backend user named "' . $userName . '" was found! [Database: ' . TYPO3_db . ']' . LF . LF);
+						fwrite(STDERR, 'ERROR: No backend user named "' . $userName . '" was found! [Database: ' . TYPO3_db . ']' . LF . LF);
+						exit(3);
 					}
 				} else {
-					die('ERROR: Module name, "' . $GLOBALS['MCONF']['name'] . '", was not prefixed with "_CLI_"' . LF . LF);
+					fwrite(STDERR, 'ERROR: Module name, "' . $GLOBALS['MCONF']['name'] . '", was not prefixed with "_CLI_"' . LF . LF);
+					exit(3);
 				}
 			} else {
-				die('ERROR: Another user was already loaded which is impossible in CLI mode!' . LF . LF);
+				fwrite(STDERR, 'ERROR: Another user was already loaded which is impossible in CLI mode!' . LF . LF);
+				exit(3);
 			}
 		}
 	}
