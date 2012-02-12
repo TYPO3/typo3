@@ -243,16 +243,16 @@ if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) && basename(PATH_thisScript) == 
 			define('TYPO3_cliInclude', t3lib_div::getFileAbsFileName($TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$temp_cliKey][0]));
 			$MCONF['name'] = $TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$temp_cliKey][1];
 		} else {
-			echo "The supplied 'cliKey' was not valid. Please use one of the available from this list:\n\n";
-			print_r(array_keys($TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys']));
-			echo LF;
-			exit;
+			$message = "The supplied 'cliKey' was not valid. Please use one of the available from this list:\n\n";
+			$message .= var_export(array_keys($TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys']), TRUE);
+			fwrite(STDERR, $message . LF);
+			exit(2);
 		}
 	} else {
-		echo "Please supply a 'cliKey' as first argument. The following are available:\n\n";
-		print_r($TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys']);
-		echo LF;
-		exit;
+		$message = "Please supply a 'cliKey' as first argument. The following are available:\n\n";
+		$message .= var_export(array_keys($TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys']), TRUE);
+		fwrite(STDERR, $message . LF);
+		exit(2);
 	}
 }
 
@@ -438,12 +438,12 @@ $GLOBALS['LANG']->init($BE_USER->uc['lang']);
 if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
 		// Status output:
 	if (!strcmp($_SERVER['argv'][1],'status'))	{
-		echo "Status of TYPO3 CLI script:\n\n";
-		echo "Username [uid]: ".$BE_USER->user['username']." [".$BE_USER->user['uid']."]\n";
-		echo "Database: ".TYPO3_db.LF;
-		echo "PATH_site: ".PATH_site.LF;
-		echo LF;
-		exit;
+		$message = "Status of TYPO3 CLI script:\n\n";
+		$message .= "Username [uid]: " . $BE_USER->user['username'] . " [" . $BE_USER->user['uid'] . "]\n";
+		$message .= "Database: " . TYPO3_db . LF;
+		$message .= "PATH_site: " . PATH_site . LF;
+		fwrite(STDOUT, $message . LF);
+		exit(0);
 	}
 }
 
