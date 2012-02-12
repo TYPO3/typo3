@@ -489,6 +489,7 @@ class SC_show_item {
 			$infoData[] = '<tr class="t3-row-header">' .
 				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.table') . '</td>' .
 				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.title') . '</td>' .
+				'<td>[uid]</td>' .
 				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.field') . '</td>' .
 				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.flexpointer') . '</td>' .
 				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.softrefKey') . '</td>' .
@@ -500,7 +501,10 @@ class SC_show_item {
 			$infoData[] = '<tr class="bgColor4">' .
 				'<td>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'], TRUE) . '</td>' .
 				'<td>' . t3lib_BEfunc::getRecordTitle($row['tablename'], $record, TRUE) . '</td>' .
-				'<td>' . htmlspecialchars($this->getFieldName($row['tablename'], $row['field'])) . '</td>'.
+				'<td><span title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:page') . ': ' .
+				htmlspecialchars(t3lib_BEfunc::getRecordTitle('pages', t3lib_BEfunc::getRecord('pages', $record['pid']))) .
+				" (uid=" . $record['pid'] . ')">' . $record['uid'] . '</span></td>' .
+				'<td>' . htmlspecialchars($this->getFieldName($row['tablename'], $row['field'])) . '</td>' .
 				'<td>' . $row['flexpointer'] . '</td>' .
 				'<td>' . $row['softref_key'] . '</td>' .
 				'<td>' . $row['sorting'] . '</td>' .
