@@ -136,6 +136,13 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 
 		this.getTopToolbar().addItem({xtype: 'tbfill'});
 		this.addRefreshTreeFeature();
+
+			// Init new page buttons toolbar by default
+		this.currentlyShownPanel.hide();
+		this.currentlyClickedButton = this.getTopToolbar().get(this.id + '-button-newNode');
+		this.currentlyClickedButton.toggle(true);
+		this.currentlyShownPanel = this.get(this.id + '-item-newNode');
+		this.currentlyShownPanel.show();
 	},
 
 	/**
