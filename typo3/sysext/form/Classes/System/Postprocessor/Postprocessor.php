@@ -60,16 +60,24 @@ class tx_form_System_Postprocessor {
 					continue;
 				}
 
-				$className = 'tx_form_System_Postprocessor_' . ucfirst(strtolower($this->typoScript[$key]));
+				$className = FALSE;
+				$classNameExpanded = 'tx_form_System_Postprocessor_' . ucfirst(strtolower($this->typoScript[$key]));
 				$processorArguments = array();
 
 				if (isset($this->typoScript[$key . '.'])) {
 					$processorArguments = $this->typoScript[$key . '.'];
 				}
 
-				if (class_exists($className, TRUE)) {
+				if (class_exists($this->typoScript[$key], TRUE)) {
+					$className = $this->typoScript[$key];
+				} elseif (class_exists($classNameExpanded, TRUE)) {
+					$className = $classNameExpanded;
+				}
+				if ($className !== FALSE ) {
 					$processor = t3lib_div::makeInstance($className, $this->form, $processorArguments);
-					$html .= $processor->process();
+					if($processor instanceof tx_form_System_Postprocessor_Interface) {
+						$html .= $processor->process();
+					}
 				}
 			}
 		}

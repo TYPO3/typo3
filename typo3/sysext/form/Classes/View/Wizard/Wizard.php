@@ -248,6 +248,18 @@ class tx_form_View_Wizard_Wizard extends tx_form_View_Wizard_Abstract {
 				FALSE
 			);
 		}
+		
+		/*
+		 * Maybe this would be a goog place for a hook to allow an extension
+		 * that extends form functionality to load custom javascript.
+		 *
+		 * e.g. a postprocessor that wants to insert a configuration interface
+		 * needs to alter PageTS to allow the wizard to show its own config form
+		 * (mod.wizards.form.defaults.tabs.form.accordions.postProcessor) and 
+		 * have their javascript class loaded. That class should extend
+		 * TYPO3.Form.Wizard.Viewport.Left.Form.PostProcessors.PostProcessor.
+		 */
+		
 	}
 
 	/**
