@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_System_Postprocessor_Mail {
+class tx_form_System_Postprocessor_Mail implements tx_form_System_Postprocessor_Interface {
 	/**
 	 * @var tx_form_Domain_Model_Form
 	 */
@@ -58,9 +58,8 @@ class tx_form_System_Postprocessor_Mail {
 	/**
 	 * Constructor
 	 *
-	 * @param $form tx_form_Domain_Model_Form Form domain model
-	 * @param $typoscript array Post processor TypoScript settings
-	 * @return void
+	 * @param tx_form_Domain_Model_Form $form Form domain model
+	 * @param array $typoScript Post processor TypoScript settings
 	 */
 	public function __construct(tx_form_Domain_Model_Form $form, array $typoScript) {
 		$this->form = $form;
@@ -300,7 +299,7 @@ class tx_form_System_Postprocessor_Mail {
 	/**
 	 * Checks string for suspicious characters
 	 *
-	 * @param string String to check
+	 * @param string $string String to check
 	 * @return string Valid or empty string
 	 */
 	protected function sanitizeHeaderString($string) {
