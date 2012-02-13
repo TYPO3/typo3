@@ -14,7 +14,10 @@ namespace TYPO3\CMS\Scheduler;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\CommandUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * TYPO3 Scheduler. This class handles scheduling and execution of tasks.
@@ -51,10 +54,10 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Adds a task to the pool
 	 *
-	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task The object representing the task to add
+	 * @param Task\AbstractTask $task The object representing the task to add
 	 * @return bool TRUE if the task was successfully added, FALSE otherwise
 	 */
-	public function addTask(\TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
+	public function addTask(Task\AbstractTask $task) {
 		$taskUid = $task->getTaskUid();
 		if (empty($taskUid)) {
 			$fields = array(
@@ -64,9 +67,9 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 				'task_group' => $task->getTaskGroup(),
 				'serialized_task_object' => 'RESERVED'
 			);
-			$result = $GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_scheduler_task', $fields);
+			$result = $this->getDatabaseConnection()->exec_INSERTquery('tx_scheduler_task', $fields);
 			if ($result) {
-				$task->setTaskUid($GLOBALS['TYPO3_DB']->sql_insert_id());
+				$task->setTaskUid($this->getDatabaseConnection()->sql_insert_id());
 				$task->save();
 				$result = TRUE;
 			} else {
@@ -86,12 +89,13 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function cleanExecutionArrays() {
 		$tstamp = $GLOBALS['EXEC_TIME'];
+		$db = $this->getDatabaseConnection();
 		// Select all tasks with executions
 		// NOTE: this cleanup is done for disabled tasks too,
 		// to avoid leaving old executions lying around
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, serialized_executions, serialized_task_object', 'tx_scheduler_task', 'serialized_executions <> \'\'');
+		$res = $db->exec_SELECTquery('uid, serialized_executions, serialized_task_object', 'tx_scheduler_task', 'serialized_executions <> \'\'');
 		$maxDuration = $this->extConf['maxLifetime'] * 60;
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		while ($row = $db->sql_fetch_assoc($res)) {
 			$executions = array();
 			if ($serialized_executions = unserialize($row['serialized_executions'])) {
 				foreach ($serialized_executions as $task) {
@@ -110,20 +114,22 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 				} else {
 					$value = serialize($executions);
 				}
-				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . (int)$row['uid'], array('serialized_executions' => $value));
+				$db->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . (int)$row['uid'], array('serialized_executions' => $value));
 			}
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		$db->sql_free_result($res);
 	}
 
 	/**
 	 * This method executes the given task and properly marks and records that execution
 	 * It is expected to return FALSE if the task was barred from running or if it was not saved properly
 	 *
-	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task The task to execute
+	 * @param Task\AbstractTask $task The task to execute
 	 * @return bool Whether the task was saved successfully to the database or not
+	 * @throws FailedExecutionException
+	 * @throws \Exception
 	 */
-	public function executeTask(\TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
+	public function executeTask(Task\AbstractTask $task) {
 		// Trigger the saving of the task, as this will calculate its next execution time
 		// This should be calculated all the time, even if the execution is skipped
 		// (in case it is skipped, this pushes back execution to the next possible date)
@@ -149,7 +155,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 				// Execute task
 				$successfullyExecuted = $task->execute();
 				if (!$successfullyExecuted) {
-					throw new \TYPO3\CMS\Scheduler\FailedExecutionException('Task failed to execute successfully. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid(), 1250596541);
+					throw new FailedExecutionException('Task failed to execute successfully. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid(), 1250596541);
 				}
 			} catch (\Exception $e) {
 				// Store exception, so that it can be saved to database
@@ -180,23 +186,24 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($type !== 'manual' && $type !== 'cli-by-id') {
 			$type = 'cron';
 		}
-		/** @var $registry \TYPO3\CMS\Core\Registry */
-		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
+		/** @var Registry $registry */
+		$registry = GeneralUtility::makeInstance(Registry::class);
 		$runInformation = array('start' => $GLOBALS['EXEC_TIME'], 'end' => time(), 'type' => $type);
 		$registry->set('tx_scheduler', 'lastRun', $runInformation);
 	}
 
 	/**
 	 * Removes a task completely from the system.
+	 *
 	 * @todo find a way to actually kill the existing jobs
 	 *
-	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task The object representing the task to delete
+	 * @param Task\AbstractTask $task The object representing the task to delete
 	 * @return bool TRUE if task was successfully deleted, FALSE otherwise
 	 */
-	public function removeTask(\TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
+	public function removeTask(Task\AbstractTask $task) {
 		$taskUid = $task->getTaskUid();
 		if (!empty($taskUid)) {
-			$result = $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_scheduler_task', 'uid = ' . $taskUid);
+			$result = $this->getDatabaseConnection()->exec_DELETEquery('tx_scheduler_task', 'uid = ' . $taskUid);
 		} else {
 			$result = FALSE;
 		}
@@ -209,10 +216,10 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Updates a task in the pool
 	 *
-	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Scheduler task object
+	 * @param Task\AbstractTask $task Scheduler task object
 	 * @return bool False if submitted task was not of proper class
 	 */
-	public function saveTask(\TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
+	public function saveTask(Task\AbstractTask $task) {
 		$taskUid = $task->getTaskUid();
 		if (!empty($taskUid)) {
 			try {
@@ -230,7 +237,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 				'task_group' => $task->getTaskGroup(),
 				'serialized_task_object' => serialize($task)
 			);
-			$result = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $taskUid, $fields);
+			$result = $this->getDatabaseConnection()->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $taskUid, $fields);
 		} else {
 			$result = FALSE;
 		}
@@ -246,7 +253,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * If there are no due tasks the method throws an exception.
 	 *
 	 * @param int $uid Primary key of a task
-	 * @return \TYPO3\CMS\Scheduler\Task\AbstractTask The fetched task object
+	 * @return Task\AbstractTask The fetched task object
 	 * @throws \OutOfBoundsException
 	 * @throws \UnexpectedValueException
 	 */
@@ -269,16 +276,17 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 			);
 		}
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryArray);
+		$db = $this->getDatabaseConnection();
+		$res = $db->exec_SELECT_queryArray($queryArray);
 		if ($res === FALSE) {
 			throw new \UnexpectedValueException('Query could not be executed. Possible defect in tables tx_scheduler_task or tx_scheduler_task_group', 1422044826);
 		}
 		// If there are no available tasks, thrown an exception
-		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) == 0) {
+		if ($db->sql_num_rows($res) == 0) {
 			throw new \OutOfBoundsException('No task', 1247827244);
 		} else {
-			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-			/** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask */
+			$row = $db->sql_fetch_assoc($res);
+			/** @var $task Task\AbstractTask */
 			$task = unserialize($row['serialized_task_object']);
 			if ($this->isValidTaskObject($task)) {
 				// The task is valid, return it
@@ -286,11 +294,11 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 			} else {
 				// Forcibly set the disable flag to 1 in the database,
 				// so that the task does not come up again and again for execution
-				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $row['uid'], array('disable' => 1));
+				$db->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $row['uid'], array('disable' => 1));
 				// Throw an exception to raise the problem
 				throw new \UnexpectedValueException('Could not unserialize task', 1255083671);
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			$db->sql_free_result($res);
 		}
 		return $task;
 	}
@@ -305,13 +313,14 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \OutOfBoundsException
 	 */
 	public function fetchTaskRecord($uid) {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_scheduler_task', 'uid = ' . (int)$uid);
+		$db = $this->getDatabaseConnection();
+		$res = $db->exec_SELECTquery('*', 'tx_scheduler_task', 'uid = ' . (int)$uid);
 		// If the task is not found, throw an exception
-		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) == 0) {
+		if ($db->sql_num_rows($res) == 0) {
 			throw new \OutOfBoundsException('No task', 1247827245);
 		} else {
-			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			$row = $db->sql_fetch_assoc($res);
+			$db->sql_free_result($res);
 		}
 		return $row;
 	}
@@ -336,10 +345,11 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 			$whereClause .= 'disable = 0';
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('serialized_task_object', 'tx_scheduler_task', $whereClause);
+		$db = $this->getDatabaseConnection();
+		$res = $db->exec_SELECTquery('serialized_task_object', 'tx_scheduler_task', $whereClause);
 		if ($res) {
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				/** @var $task Task */
+			while ($row = $db->sql_fetch_assoc($res)) {
+				/** @var Task\AbstractTask $task */
 				$task = unserialize($row['serialized_task_object']);
 				// Add the task to the list only if it is valid
 				if ($this->isValidTaskObject($task)) {
@@ -347,7 +357,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 					$tasks[] = $task;
 				}
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			$db->sql_free_result($res);
 		}
 		return $tasks;
 	}
@@ -365,7 +375,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return bool TRUE if object is a task, FALSE otherwise
 	 */
 	public function isValidTaskObject($task) {
-		return $task instanceof \TYPO3\CMS\Scheduler\Task\AbstractTask;
+		return $task instanceof Task\AbstractTask;
 	}
 
 	/**
@@ -395,11 +405,11 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		if ((int)$this->extConf['useAtdaemon'] !== 1) {
 			return FALSE;
 		}
-		/** @var $registry \TYPO3\CMS\Core\Registry */
-		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
+		/** @var $registry Registry */
+		$registry = GeneralUtility::makeInstance(Registry::class);
 		// Get at job id from registry and remove at job
 		$atJobId = $registry->get('tx_scheduler', 'atJobId');
-		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($atJobId)) {
+		if (MathUtility::canBeInterpretedAsInteger($atJobId)) {
 			shell_exec('atrm ' . (int)$atJobId . ' 2>&1');
 		}
 		// Can not use fetchTask() here because if tasks have just executed
@@ -408,7 +418,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		$nextExecution = FALSE;
 		foreach ($tasks as $task) {
 			try {
-				/** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask */
+				/** @var $task Task\AbstractTask */
 				$tempNextExecution = $task->getNextDueExecution();
 				if ($nextExecution === FALSE || $tempNextExecution < $nextExecution) {
 					$nextExecution = $tempNextExecution;
@@ -431,12 +441,12 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 			$output = shell_exec($cmd);
 			$outputParts = '';
 			foreach (explode(LF, $output) as $outputLine) {
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($outputLine, 'job')) {
+				if (GeneralUtility::isFirstPartOfStr($outputLine, 'job')) {
 					$outputParts = explode(' ', $outputLine, 3);
 					break;
 				}
 			}
-			if ($outputParts[0] === 'job' && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($outputParts[1])) {
+			if ($outputParts[0] === 'job' && MathUtility::canBeInterpretedAsInteger($outputParts[1])) {
 				$atJobId = (int)$outputParts[1];
 				$registry->set('tx_scheduler', 'atJobId', $atJobId);
 			}
@@ -444,4 +454,10 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		return TRUE;
 	}
 
+	/**
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
 }
