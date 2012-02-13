@@ -36,7 +36,7 @@
 }
 /* Selectors for the editor toolbar */
 .htmlarea .toolbar {
-	background-color: #f3f3f3;
+	background-color: #ccd9e8;
 	cursor: default;
 	border: 1px solid #c7c7c7;
 	border-bottom: 0;
@@ -55,10 +55,12 @@
 	margin:0;
 }
 .htmlarea .toolbar .x-form-item-label {
-	vertical-align:middle;
-	background-color:transparent;
-	border-style:none;
-	margin:0;padding:3px 3px 0px 3px;
+	border-style: none;
+	color: #416aa3;
+	background-color: transparent;
+	margin: 0;
+	padding: 3px 3px 0px 3px;
+	vertical-align: middle;
 }
 /* Fix combo box left loat in IE6 */
 body.ext-ie6 .htmlarea .toolbar .x-form-item {
@@ -66,14 +68,14 @@ body.ext-ie6 .htmlarea .toolbar .x-form-item {
 }
 .htmlarea .toolbar .button {
 	background-color: transparent;
-	color: ButtonText;
+	border-collapse: separate;
+	border-color: transparent;
 	border-style: solid;
 	border-width: 1px;
-	border-color: transparent;
-	border-collapse: separate;
+	color: #416aa3;
+	float: left;
 	margin: 0 0 4px 0;
 	padding: 0;
-	float: left;
 }
 /* fixing button border-color in IE6 */
 body.ext-ie6 .htmlarea .toolbar .button {
@@ -110,10 +112,10 @@ body.ext-ie6 .htmlarea .toolbar .x-btn-text {
 /* fixing button background-color and border-color in IE6 */
 body.ext-ie6 .htmlarea .toolbar .buttonHover,
 .htmlarea .toolbar .buttonHover {
+	background-color: #deecfd;
+	border-color: #e4e0db #999999 #999999 #e4e0db;
 	border-style: solid;
 	border-width: 1px;
-	border-color: #e4e0db #999999 #999999 #e4e0db;
-	background-color: #E0E0E9;
 	opacity: 1.00;
 }
 /* fixing button background-color and border-color in IE6 */
@@ -148,11 +150,11 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 	-moz-opacity: 0.25;
 }
 .htmlarea .toolbar .separator {
-	border:1px solid #999;
-	width: 7px;
-	height: 23px;
-	margin-bottom: 1px;
+	background-color: #b5b8c8;
 	float: left;
+	height: 18px;
+	margin: 3px 2px;
+	width: 1px;
 }
 .htmlarea .toolbar .space {
 	height:22px;
@@ -173,9 +175,6 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 .htmlarea .toolbar .select, .htmlarea .toolbar .select:hover, .htmlarea .toolbar .select:active {
 	background-color:#fff;color:ButtonText;
 }
-.htmlarea .toolbar .buttonDisabled {
-	background-color:#e4e0db;
-}
 .htmlarea .editorIframe {
 	clear: both;
 	width: 100%;
@@ -188,25 +187,20 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 	border-bottom:1px solid #000;
 }
 .htmlarea .statusBar {
-        background-color: #5b5b5b;
-        background-image: url('images/backgrounds/row-header.png');
-        background-image: linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
-        background-image: -moz-linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
-        background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #7f7f7f), color-stop(1, #5b5b5b));
-        background-repeat: repeat-x;
-	color: #FFFFFF;
-	font-size: 10px;
+	background-color: #ccd9e8;
 	border: 1px solid #c7c7c7;
+	color: #416aa3;
+	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
+	font-size: 10px;
+	line-height: 20px;
 	margin: 0;
 	padding: 0 3px;
-	line-height: 20px;
-	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
 }
 .htmlarea .statusBar .statusBarTree a {
-	color:ButtonText;
-	text-decoration:none;
-	font-weight:bold;
- 	padding:0px 5px;
+	color: #15428b;
+	font-weight: bold;
+	padding: 0px 5px;
+	text-decoration: none;
 }
 .htmlarea .statusBar .statusBarTree a:visited {
 	color:#00f;
@@ -230,11 +224,17 @@ body.ext-ie6 .htmlarea-window .x-panel-icon {
 .htmlarea-window .x-window-header .t3-help-link {
 	color: #fff;
 }
+.htmlarea-window .x-panel-body {
+	background-color: #efeff4;
+}
 .htmlarea-window ul.x-tab-strip {
 	list-style: none;
 }
 .htmlarea-window .x-tab-panel-body {
-	background-color: #EFEFF4;
+	background-color: #efeff4;
+}
+.htmlarea-window .x-tab-panel-body h1 {
+	padding-left: 3px;
 }
 .htmlarea-window .x-fieldset {
 	margin: 3px;
