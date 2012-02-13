@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_System_Postprocessor_Mail {
+class tx_form_System_Postprocessor_Mail implements tx_form_System_Postprocessor_Interface {
 	/**
 	 * @var tx_form_Domain_Model_Form
 	 */
