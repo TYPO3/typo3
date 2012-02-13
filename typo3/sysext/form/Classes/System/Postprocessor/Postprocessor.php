@@ -67,9 +67,14 @@ class tx_form_System_Postprocessor {
 					$processorArguments = $this->typoScript[$key . '.'];
 				}
 
-				if (class_exists($className, TRUE)) {
-					$processor = t3lib_div::makeInstance($className, $this->form, $processorArguments);
+				if(class_exists($this->typoScript[$key], TRUE)) {
+					$processor = t3lib_div::makeInstance($this->typoScript[$key], $this->form, $processorArguments);
 					$html .= $processor->process();
+				} else {
+					if (class_exists($className, TRUE)) {
+						$processor = t3lib_div::makeInstance($className, $this->form, $processorArguments);
+						$html .= $processor->process();
+					}
 				}
 			}
 		}
