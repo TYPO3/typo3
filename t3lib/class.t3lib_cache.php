@@ -45,8 +45,10 @@ class t3lib_cache {
 	public static function initializeCachingFramework() {
 		if (!self::isCachingFrameworkInitialized()) {
 			$GLOBALS['typo3CacheManager'] = t3lib_div::makeInstance('t3lib_cache_Manager');
+			$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
 			$GLOBALS['typo3CacheFactory'] = t3lib_div::makeInstance('t3lib_cache_Factory');
 			$GLOBALS['typo3CacheFactory']->setCacheManager($GLOBALS['typo3CacheManager']);
+			$GLOBALS['typo3CacheManager']->setCacheFactory($GLOBALS['typo3CacheFactory']);
 			self::$isCachingFrameworkInitialized = TRUE;
 		}
 	}
