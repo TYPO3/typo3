@@ -41,6 +41,11 @@ class tslib_content_User extends tslib_content_Abstract {
 	 * @return	string		Output
 	 */
 	public function render($conf = array()) {
+		if (!is_array($conf) || empty($conf)) {
+			$GLOBALS['TT']->setTSlogMessage('USER_INT without configuration.', 2);
+			return '';
+		}
+
 		$content = '';
 		if ($this->cObj->getUserObjectType() === FALSE) {
 				// Come here only if we are not called from $TSFE->INTincScript_process()!
