@@ -76,6 +76,14 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	}
 
 	/**
+	 * @param t3lib_cache_Factory $cacheFactory
+	 * @return void
+	 */
+	public function injectCacheFactory(t3lib_cache_Factory $cacheFactory) {
+		$this->cacheFactory = $cacheFactory;
+	}
+
+	/**
 	 * Injects the cache factory
 	 *
 	 * @param	t3lib_cache_Factory	The cache factory
@@ -137,11 +145,15 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getCache($identifier) {
-		if (!isset($this->caches[$identifier])) {
+		if ($this->hasCache($identifier) === FALSE) {
 			throw new t3lib_cache_exception_NoSuchCache(
 				'A cache with identifier "' . $identifier . '" does not exist.',
 				1203699034
 			);
+		}
+
+		if (!isset($this->caches[$identifier])) {
+			$this->createCache($identifier);
 		}
 
 		return $this->caches[$identifier];
@@ -150,12 +162,12 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	/**
 	 * Checks if the specified cache has been registered.
 	 *
-	 * @param string The identifier of the cache
+	 * @param string $identifier The identifier of the cache
 	 * @return boolean TRUE if a cache with the given identifier exists, otherwise FALSE
-	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
 	 */
 	public function hasCache($identifier) {
-		return isset($this->caches[$identifier]);
+		return isset($this->caches[$identifier]) || isset($this->cacheConfigurations[$identifier]);
 	}
 
 	/**
@@ -182,6 +194,34 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 		foreach ($this->caches as $cache) {
 			$cache->flushByTag($tag);
 		}
+	}
+
+	/**
+	 * Instantiates the cache for $identifier.
+	 *
+	 * @param string $identifier
+	 * @return void
+	 */
+	protected function createCache($identifier) {
+		if (isset($this->cacheConfigurations[$identifier]['frontend'])) {
+			$frontend = $this->cacheConfigurations[$identifier]['frontend'];
+		} else {
+			$frontend = $this->defaultCacheConfiguration['frontend'];
+		}
+
+		if (isset($this->cacheConfigurations[$identifier]['backend'])) {
+			$backend = $this->cacheConfigurations[$identifier]['backend'];
+		} else {
+			$backend = $this->defaultCacheConfiguration['backend'];
+		}
+
+		if (isset($this->cacheConfigurations[$identifier]['options'])) {
+			$backendOptions = $this->cacheConfigurations[$identifier]['options'];
+		} else {
+			$backendOptions = $this->defaultCacheConfiguration['options'];
+		}
+
+		$this->cacheFactory->create($identifier, $frontend, $backend, $backendOptions);
 	}
 }
 
