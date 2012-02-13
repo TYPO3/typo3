@@ -54,27 +54,47 @@ class tx_form_System_Postprocessor {
 		$html = '';
 
 		if (is_array($this->typoScript)) {
-			$keys = t3lib_TStemplate::sortedKeyList($this->typoScript);
+			$keys = $this->sortTypoScriptKeyList();
 			foreach ($keys as $key) {
 				if (!intval($key) || strpos($key, '.') !== FALSE) {
 					continue;
 				}
 
-				$className = 'tx_form_System_Postprocessor_' . ucfirst(strtolower($this->typoScript[$key]));
+				$className = FALSE;
 				$processorArguments = array();
 
 				if (isset($this->typoScript[$key . '.'])) {
 					$processorArguments = $this->typoScript[$key . '.'];
 				}
 
-				if (class_exists($className, TRUE)) {
+				if (class_exists($this->typoScript[$key], TRUE)) {
+					$className = $this->typoScript[$key];
+				} else {
+					$classNameExpanded = 'tx_form_System_Postprocessor_' . ucfirst(strtolower($this->typoScript[$key]));
+					if (class_exists($classNameExpanded, TRUE)) {
+						$className = $classNameExpanded;
+					}
+				}
+				if ($className !== FALSE ) {
 					$processor = t3lib_div::makeInstance($className, $this->form, $processorArguments);
-					$html .= $processor->process();
+					if($processor instanceof tx_form_System_Postprocessor_Interface) {
+						$html .= $processor->process();
+					}
 				}
 			}
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Wrapper method for t3lib_TStemplate::sortedKeyList
+	 * (makes unit testing possible)
+	 *
+	 * @return array
+	 */
+	public function sortTypoScriptKeyList() {
+		return t3lib_TStemplate::sortedKeyList($this->typoScript);
 	}
 }
 ?>
