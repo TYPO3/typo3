@@ -52,7 +52,7 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
 	 * processing all records
 	 *
 	 * @param array $taskInfo Reference to the array containing the info used in the add/edit form
-	 * @param \TYPO3\CMS\Saltedpasswords\Task\BulkUpdateTask $task When editing, reference to the current task object. Null when adding.
+	 * @param TYPO3\CMS\Recycler\Task\CleanerTask $task When editing, reference to the current task object. Null when adding.
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
 	 * @return array Array containing all the information pertaining to the additional fields
 	 */
