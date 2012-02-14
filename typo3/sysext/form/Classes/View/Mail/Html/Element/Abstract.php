@@ -331,12 +331,14 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 
 	public function getInputValue() {
 		if (method_exists($this->model, 'getData')) {
-			$inputValue = nl2br($this->model->getData(), TRUE);
+			$inputValue = $this->model->getData();
 		} else {
 			$inputValue = $this->model->getAttributeValue('value');
 		}
 
-		return htmlspecialchars($inputValue, ENT_QUOTES);
+		$inputValue = htmlspecialchars($inputValue, ENT_QUOTES);
+		$inputValue = nl2br($inputValue, TRUE);
+		return $inputValue;
 	}
 
 	/**
