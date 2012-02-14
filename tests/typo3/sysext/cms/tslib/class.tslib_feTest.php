@@ -39,27 +39,107 @@ class tslib_feTest extends tx_phpunit_testcase {
 	public function setUp() {
 			// This creates an instance of the class without calling the
 			// original constructor.
-		$className = uniqid('tslib_fe');
+		$tslib_feClassName = uniqid('tslib_fe');
+		$t3lib_pageSelectClassName = uniqid('t3lib_pageSelect');
 		eval(
-			'class ' . $className . ' extends tslib_fe {' .
-			'public function ' . $className . '() {}' .
+			'class ' . $tslib_feClassName . ' extends tslib_fe {' .
+				'public function ' . $tslib_feClassName . '() {}' .
 
-			'public function roundTripCryptString($string) {' .
-			'return parent::roundTripCryptString($string);' .
+				'public function roundTripCryptString($string) {' .
+					'return parent::roundTripCryptString($string);' .
+				'}' .
+
+				'public function stripIPv4($strIP) {' .
+					'return parent::stripIPv4($strIP);' .
+				'}' .
+
+				'public function stripIPv6($strIP) {' .
+					'return parent::stripIPv6($strIP);' .
+				'}' .
+
+				'protected function getSysDomainCache() {' .
+					'return array(' .
+						'1 => array(' .
+							'"pid" => 1,' .
+							'"domainName" => "localhost",' .
+							'"forced" => 0' .
+						')' .
+					');' .
+				'}' .
+
+				'public function getDomainDataForPid($targetPid) {' .
+					'return array(' .
+						'"pid" => 1,' .
+						'"domainName" => "localhost",' .
+						'"forced" => 0' .
+					');' .
+				'}' .
 			'}' .
 
-			'public function stripIPv4($strIP) {' .
-			'return parent::stripIPv4($strIP);' .
-			'}' .
+			'class ' . $t3lib_pageSelectClassName . ' extends t3lib_pageSelect {' .
+				'public function ' . $t3lib_pageSelectClassName . '() {}' .
 
-			'public function stripIPv6($strIP) {' .
-			'return parent::stripIPv6($strIP);' .
-			'}' .
-
+				'public function getRootLine($uid, $MP = "", $ignoreMPerrors = FALSE) {' .
+					'return array(' .
+						'1 => array(' .
+							'"pid" => 1,' .
+							'"uid" => 2,' .
+							'"t3ver_oid" => 0,' .
+							'"t3ver_wsid" => 0,' .
+							'"t3ver_state" => 0,' .
+							'"t3ver_swapmode" => 0,' .
+							'"title" => "Index",' .
+							'"alias" => "",' .
+							'"nav_title" => "",' .
+							'"media" => "",' .
+							'"layout" => 0,' .
+							'"hidden" => 0,' .
+							'"starttime" => 0,' .
+							'"endtime" => 0,' .
+							'"fe_group" => 0,' .
+							'"extendToSubpages" => 0,' .
+							'"doktype" => 1,' .
+							'"TSconfig" => "",' .
+							'"storage_pid" => 0,' .
+							'"is_siteroot" => 0,' .
+							'"mount_pid" => 0,' .
+							'"mount_pid_ol" => 0,' .
+							'"fe_login_mode" => 0,' .
+							'"backend_layout_next_level" => 0' .
+						'),' .
+						'0 => array(' .
+							'"pid" => 0,' .
+							'"uid" => 1,' .
+							'"t3ver_oid" => 0,' .
+							'"t3ver_wsid" => 0,' .
+							'"t3ver_state" => 0,' .
+							'"t3ver_swapmode" => 0,' .
+							'"title" => "Root",' .
+							'"alias" => "",' .
+							'"nav_title" => "",' .
+							'"media" => "",' .
+							'"layout" => 0,' .
+							'"hidden" => 0,' .
+							'"starttime" => 0,' .
+							'"endtime" => 0,' .
+							'"fe_group" => "",' .
+							'"extendToSubpages" => 0,' .
+							'"doktype" => 1,' .
+							'"TSconfig" => "",' .
+							'"storage_pid" => 2,' .
+							'"is_siteroot" => 1,' .
+							'"mount_pid" => 0,' .
+							'"mount_pid_ol" => 0,' .
+							'"fe_login_mode" => 0,' .
+							'"backend_layout_next_level" => 0' .
+						')' .
+					');' .
+				'}' .
 			'}'
 		);
 
-		$this->fixture = new $className();
+		$this->fixture = new $tslib_feClassName();
+		$this->fixture->sys_page = new $t3lib_pageSelectClassName();
 		$this->fixture->TYPO3_CONF_VARS = $GLOBALS['TYPO3_CONF_VARS'];
 		$this->fixture->TYPO3_CONF_VARS['SYS']['encryptionKey']
 			= '170928423746123078941623042360abceb12341234231';
@@ -234,6 +314,30 @@ class tslib_feTest extends tx_phpunit_testcase {
 			$anonymized
 		);
 		$this->fixture->config = $oldConfig;
+	}
+
+	/**
+	 * @test
+	 */
+	public function getDomainDataForPageId() {
+		$this->assertEquals(
+			$this->fixture->getDomainDataForPid(1),
+			array(
+				'pid' => 1,
+				'domainName' => 'localhost',
+				'forced' => 0
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getDomainNameForPageId() {
+		$this->assertEquals(
+			$this->fixture->getDomainNameForPid(1),
+			'localhost'
+		);
 	}
 }
 ?>
