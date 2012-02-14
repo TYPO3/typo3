@@ -180,6 +180,20 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		$this->assertSame($expectedId, $this->fixture->id);
 	}
 
+	/**
+	 * @test
+	 * @todo Implement me!
+	 */
+	public function getDomainDataForPageId() {
+	}
+
+	/**
+	 * @test
+	 * @todo Implement me!
+	 */
+	public function getDomainNameForPageId() {
+	}
+
 }
 
 ?>
