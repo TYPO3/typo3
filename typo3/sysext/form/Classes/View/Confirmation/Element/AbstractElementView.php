@@ -236,7 +236,7 @@ abstract class AbstractElementView {
 		foreach ($attributes as $key => $attribute) {
 			if (!empty($attribute)) {
 				$value = $attribute->getValue();
-				if (!empty($value)) {
+				if ($value !== '') {
 					$domElement->setAttribute($key, $value);
 				}
 			}
