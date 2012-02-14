@@ -236,7 +236,7 @@ abstract class AbstractElementView {
 		foreach ($attributes as $key => $attribute) {
 			if (!empty($attribute)) {
 				$value = htmlspecialchars($attribute->getValue(), ENT_QUOTES);
-				if (!empty($value)) {
+				if ($value !== '') {
 					$domElement->setAttribute($key, $value);
 				}
 			}
@@ -252,7 +252,7 @@ abstract class AbstractElementView {
 	 */
 	public function setAttribute(\DOMElement $domElement, $key) {
 		$value = htmlspecialchars($this->model->getAttributeValue((string)$key), ENT_QUOTES);
-		if (!empty($value)) {
+		if ($value !== '') {
 			$domElement->setAttribute($key, $value);
 		}
 	}
@@ -268,7 +268,7 @@ abstract class AbstractElementView {
 	 */
 	public function setAttributeWithValueofOtherAttribute(\DOMElement $domElement, $key, $other) {
 		$value = htmlspecialchars($this->model->getAttributeValue((string)$other), ENT_QUOTES);
-		if (!empty($value)) {
+		if ($value !== '') {
 			$domElement->setAttribute($key, $value);
 		}
 	}

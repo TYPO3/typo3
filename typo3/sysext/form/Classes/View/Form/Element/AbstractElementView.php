@@ -292,7 +292,7 @@ abstract class AbstractElementView {
 		foreach ($attributes as $key => $attribute) {
 			if (!empty($attribute)) {
 				$value = htmlspecialchars($attribute->getValue(), ENT_QUOTES);
-				if (!empty($value)) {
+				if ($value !== '') {
 					$domElement->setAttribute($key, $value);
 				}
 			}
@@ -308,7 +308,7 @@ abstract class AbstractElementView {
 	 */
 	public function setAttribute(\DOMElement $domElement, $key) {
 		$value = htmlspecialchars($this->model->getAttributeValue((string)$key), ENT_QUOTES);
-		if (!empty($value)) {
+		if ($value !== '') {
 			$domElement->setAttribute($key, $value);
 		}
 	}
@@ -320,10 +320,11 @@ abstract class AbstractElementView {
 	 * @param \DOMElement $domElement DOM element of the specific HTML tag
 	 * @param string $key Key of the attribute which needs to be changed
 	 * @param string $other Key of the attribute to take the value from
+	 * @return void
 	 */
 	public function setAttributeWithValueofOtherAttribute(\DOMElement $domElement, $key, $other) {
 		$value = htmlspecialchars($this->model->getAttributeValue((string)$other), ENT_QUOTES);
-		if (!empty($value)) {
+		if ($value !== '') {
 			$domElement->setAttribute($key, $value);
 		}
 	}
