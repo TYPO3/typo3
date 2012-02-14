@@ -266,7 +266,7 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 		foreach ($attributes as $key => $attribute) {
 			if (!empty($attribute)) {
 				$value = htmlspecialchars($attribute->getValue(), ENT_QUOTES);
-				if (!empty($value)) {
+				if ($value !== '') {
 					$domElement->setAttribute($key, $value);
 				}
 			}
@@ -283,7 +283,7 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 	public function setAttribute(DOMElement $domElement, $key) {
 		$value = htmlspecialchars($this->model->getAttributeValue((string) $key), ENT_QUOTES);
 
-		if (!empty($value)) {
+		if ($value !== '') {
 			$domElement->setAttribute($key, $value);
 		}
 	}
@@ -300,7 +300,7 @@ abstract class tx_form_View_Mail_Html_Element_Abstract {
 	public function setAttributeWithValueofOtherAttribute(DOMElement $domElement, $key, $other) {
 		$value = htmlspecialchars($this->model->getAttributeValue((string) $other), ENT_QUOTES);
 
-		if (!empty($value)) {
+		if ($value !== '') {
 			$domElement->setAttribute($key, $value);
 		}
 	}
