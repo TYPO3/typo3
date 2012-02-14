@@ -4723,6 +4723,91 @@ if (version == "n3") {
 		return $result;
 	}
 
+
+	/**
+	 * Fetches/returns the cached contents of the sys_domain database table.
+	 *
+	 * @return array Domain data
+	 */
+	protected function getSysDomainCache() {
+		$entryIdentifier = 'core-database-sys_domain-complete';
+		/** @var $runtimeCache t3lib_cache_frontend_AbstractFrontend */
+		$runtimeCache = $GLOBALS['typo3CacheManager']->getCache('cache_runtime');
+
+		$sysDomainData = array();
+		if ($runtimeCache->has($entryIdentifier)) {
+			$sysDomainData = $runtimeCache->get($entryIdentifier);
+		} else {
+			$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'pid, domainName, forced',
+				'sys_domain',
+				'redirectTo=\'\' ' . $GLOBALS['TSFE']->sys_page->enableFields('sys_domain'),
+				'',
+				'sorting ASC'
+			);
+
+			while (FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))) {
+				// if there is already an entry for this pid, check if we should overwrite it
+				if (isset($sysDomainData[$row['pid']])) {
+					// there is already a "forced" entry, which must not be overwritten
+					if ($sysDomainData[$row['pid']]['forced']) {
+						continue;
+					}
+
+					// there is alread a NOT-forced entry and the current one is also NOT-forced, thus keep the old
+					if (!$sysDomainData[$row['pid']]['forced'] && !$row['forced']) {
+						continue;
+					}
+				}
+
+				// as we passed all previous checks, we save this domain for the current pid
+				$sysDomainData[$row['pid']] = array(
+					'pid' => $row['pid'],
+					'domainName' => rtrim($row['domainName'], '/'),
+					'forced' => $row['forced'],
+				);
+			}
+			$runtimeCache->set($entryIdentifier, $sysDomainData);
+			$GLOBALS['TYPO3_DB']->sql_free_result($result);
+		}
+		return $sysDomainData;
+	}
+
+	/**
+	 * Obtains domain data for the target pid. Domain data is an array with
+	 * 'pid', 'domainName' and 'forced' members (see sys_domain table for
+	 * meaning of these fields.
+	 *
+	 * @param int $targetPid Target page id
+	 * @return mixed Return domain data or NULL
+	*/
+	public function getDomainDataForPid($targetPid) {
+		$result = NULL;
+
+		$sysDomainData = $this->getSysDomainCache();
+		$rootline = $this->sys_page->getRootLine($targetPid);
+		// walk the rootline downwards from the target page to the root, until a domain record is found
+		foreach ($rootline as $pageInRootline) {
+			$pidInRootline = $pageInRootline['uid'];
+			if (isset($sysDomainData[$pidInRootline])) {
+				$result = $sysDomainData[$pidInRootline];
+				break;
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Obtains the domain name for the target pid. If there are several domains,
+	 * the first is returned.
+	 *
+	 * @param int $targetPid Target page id
+	 * @return mixed Return domain name or NULL if not found
+	 */
+	public function getDomainNameForPid($targetPid) {
+		$domainData = $this->getDomainDataForPid($targetPid);
+		return $domainData ? $domainData['domainName'] : NULL;
+	}
 }
 
 ?>
