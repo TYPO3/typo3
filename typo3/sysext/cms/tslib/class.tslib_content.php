@@ -5822,51 +5822,10 @@ class tslib_cObj {
 								}
 							}
 
-								// Find all domain records in the rootline of the target page
-							$targetPageRootline = $GLOBALS['TSFE']->sys_page->getRootLine($page['uid']);
-							$foundDomains = array();
-							$firstFoundDomains = array();
-							$firstFoundForcedDomains = array();
-							$targetPageRootlinePids = array();
-							foreach ($targetPageRootline as $data) {
-								$targetPageRootlinePids[] = intval($data['uid']);
-							}
-							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-								'pid, domainName, forced',
-								'sys_domain',
-								'pid IN (' . implode(',', $targetPageRootlinePids) . ') ' . ' AND redirectTo=\'\' ' . $this->enableFields('sys_domain'),
-								'',
-								'sorting ASC'
-							);
-								// TODO maybe it makes sense to hold all sys_domain records in a cache to save additional DB querys on each typolink
-							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-								$foundDomains[] = preg_replace('/\/$/', '', $row['domainName']);
-								if (!isset($firstFoundDomains[$row['pid']])) {
-									$firstFoundDomains[$row['pid']] = preg_replace('/\/$/', '', $row['domainName']);
-								}
-								if ($row['forced'] && !isset($firstFoundForcedDomains[$row['pid']])) {
-									$firstFoundForcedDomains[$row['pid']] = preg_replace('/\/$/', '', $row['domainName']);
-								}
-							}
-							$GLOBALS['TYPO3_DB']->sql_free_result($res);
-
-								// Set targetDomain to first found domain record if the target page cannot be reached within the current domain
-							if (count($foundDomains) > 0 && (!in_array($currentDomain, $foundDomains) || count($firstFoundForcedDomains) > 0)) {
-								foreach ($targetPageRootlinePids as $pid) {
-										// Always use the 'forced' domain if we found one
-									if (isset($firstFoundForcedDomains[$pid])) {
-										$targetDomain = $firstFoundForcedDomains[$pid];
-										break;
-									}
-										// Use the first found domain record
-									if ($targetDomain === '' && isset($firstFoundDomains[$pid])) {
-										$targetDomain = $firstFoundDomains[$pid];
-									}
-								}
-									// Do not prepend the domain if its the current hostname
-								if ($targetDomain === $currentDomain) {
-									$targetDomain = '';
-								}
+							$targetDomain = $GLOBALS['TSFE']->getDomainNameForPid($page['uid']);
+								// Do not prepend the domain if its the current hostname
+							if ($targetDomain === FALSE || $targetDomain === $currentDomain) {
+								$targetDomain = '';
 							}
 						}
 
