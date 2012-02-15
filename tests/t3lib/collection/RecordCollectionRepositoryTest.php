@@ -34,15 +34,28 @@
  */
 class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCase {
 	/**
-	 * @var t3lib_collection_RecordCollectionRepository
+	 * @var PHPUnit_Framework_MockObject_MockObject|t3lib_collection_RecordCollectionRepository
 	 */
 	protected $fixture;
 
 	/**
-	 * @var t3lib_DB
+	 * @var PHPUnit_Framework_MockObject_MockObject|t3lib_DB
 	 */
 	protected $databaseMock;
 
+	/**
+	 * @var NULL|array
+	 */
+	protected $getSingleRowCallbackReturnValue;
+
+	/**
+	 * @var NULL|array
+	 */
+	protected $getRowsCallbackReturnValue;
+
+	/**
+	 * Sets up this test case.
+	 */
 	protected function setUp() {
 		$this->databaseMock = $this->getMock(
 			't3lib_DB',
@@ -59,9 +72,14 @@ class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCas
 			->will($this->returnValue($this->databaseMock));
 	}
 
+	/**
+	 * Cleans up this test case.
+	 */
 	protected function tearDown() {
 		unset($this->databaseMock);
 		unset($this->fixture);
+		unset($this->getSingleRowCallbackReturnValue);
+		unset($this->getRowsCallbackReturnValue);
 	}
 
 	/**
@@ -73,7 +91,8 @@ class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCas
 		$this->databaseMock
 			->expects($this->once())
 			->method('exec_SELECTgetSingleRow')
-			->will($this->returnValue(NULL));
+			->will($this->returnCallback(array($this, 'getSingleRowCallback')));
+		$this->getSingleRowCallbackReturnValue = NULL;
 
 		$object = $this->fixture->findByUid($testUid);
 		$this->assertNull($object);
@@ -88,9 +107,11 @@ class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCas
 		$this->databaseMock
 			->expects($this->once())
 			->method('exec_SELECTgetSingleRow')
-			->will($this->returnValue(
-				array('uid' => $testUid, 'type' => t3lib_collection_RecordCollectionRepository::TYPE_Static)
-			));
+			->will($this->returnCallback(array($this, 'getSingleRowCallback')));
+		$this->getSingleRowCallbackReturnValue = array(
+			'uid' => $testUid,
+			'type' => t3lib_collection_RecordCollectionRepository::TYPE_Static,
+		);
 
 		$object = $this->fixture->findByUid($testUid);
 		$this->assertInstanceOf('t3lib_collection_StaticRecordCollection', $object);
@@ -106,9 +127,11 @@ class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCas
 		$this->databaseMock
 			->expects($this->once())
 			->method('exec_SELECTgetSingleRow')
-			->will($this->returnValue(
-				array('uid' => $testUid, 'type' => uniqid('unknown'))
-			));
+			->will($this->returnCallback(array($this, 'getSingleRowCallback')));
+		$this->getSingleRowCallbackReturnValue = array(
+			'uid' => $testUid,
+			'type' => uniqid('unknown'),
+		);
 
 		$object = $this->fixture->findByUid($testUid);
 	}
@@ -122,7 +145,8 @@ class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCas
 		$this->databaseMock
 			->expects($this->once())
 			->method('exec_SELECTgetRows')
-			->will($this->returnValue(NULL));
+			->will($this->returnCallback(array($this, 'getRowsCallback')));
+		$this->getRowsCallbackReturnValue = NULL;
 
 		$objects = $this->fixture->findByType($type);
 
@@ -139,12 +163,11 @@ class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCas
 		$this->databaseMock
 			->expects($this->once())
 			->method('exec_SELECTgetRows')
-			->will($this->returnValue(
-				array(
-					array('uid' => $testUid, 'type' => $type),
-					array('uid' => $testUid, 'type' => $type),
-				)
-			));
+			->will($this->returnCallback(array($this, 'getRowsCallback')));
+		$this->getRowsCallbackReturnValue =	array(
+			array('uid' => $testUid, 'type' => $type),
+			array('uid' => $testUid, 'type' => $type),
+		);
 
 		$objects = $this->fixture->findByType($type);
 
@@ -162,7 +185,8 @@ class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCas
 		$this->databaseMock
 			->expects($this->once())
 			->method('exec_SELECTgetRows')
-			->will($this->returnValue(NULL));
+			->will($this->returnCallback(array($this, 'getRowsCallback')));
+		$this->getRowsCallbackReturnValue = NULL;
 
 		$objects = $this->fixture->findByTableName($testTable);
 
@@ -180,12 +204,11 @@ class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCas
 		$this->databaseMock
 			->expects($this->once())
 			->method('exec_SELECTgetRows')
-			->will($this->returnValue(
-				array(
-					array('uid' => $testUid, 'type' => $type),
-					array('uid' => $testUid, 'type' => $type),
-				)
-			));
+			->will($this->returnCallback(array($this, 'getRowsCallback')));
+		$this->getRowsCallbackReturnValue = array(
+			array('uid' => $testUid, 'type' => $type),
+			array('uid' => $testUid, 'type' => $type),
+		);
 
 		$objects = $this->fixture->findByTableName($testTable);
 
@@ -204,7 +227,8 @@ class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCas
 		$this->databaseMock
 			->expects($this->once())
 			->method('exec_SELECTgetRows')
-			->will($this->returnValue(NULL));
+			->will($this->returnCallback(array($this, 'getRowsCallback')));
+		$this->getRowsCallbackReturnValue = NULL;
 
 		$objects = $this->fixture->findByTypeAndTableName($type, $testTable);
 
@@ -222,18 +246,77 @@ class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCas
 		$this->databaseMock
 			->expects($this->once())
 			->method('exec_SELECTgetRows')
-			->will($this->returnValue(
-				array(
-					array('uid' => $testUid, 'type' => $type),
-					array('uid' => $testUid, 'type' => $type),
-				)
-			));
+			->will($this->returnCallback(array($this, 'getRowsCallback')));
+		$this->getRowsCallbackReturnValue = array(
+			array('uid' => $testUid, 'type' => $type),
+			array('uid' => $testUid, 'type' => $type),
+		);
 
 		$objects = $this->fixture->findByTypeAndTableName($type, $testTable);
 
 		$this->assertEquals(2, count($objects));
 		$this->assertInstanceOf('t3lib_collection_StaticRecordCollection', $objects[0]);
 		$this->assertInstanceOf('t3lib_collection_StaticRecordCollection', $objects[1]);
+	}
+
+	/**
+	 * Callback for exec_SELECTgetSingleRow
+	 *
+	 * @param string $fields
+	 * @param string $table
+	 * @return NULL|array
+	 */
+	public function getSingleRowCallback($fields, $table) {
+		if (!is_array($this->getSingleRowCallbackReturnValue) || $fields === '*') {
+			$returnValue = $this->getSingleRowCallbackReturnValue;
+		} else {
+			$returnValue = $this->limitRecordFields(
+				$fields,
+				$this->getSingleRowCallbackReturnValue
+			);
+		}
+
+		return $returnValue;
+	}
+
+	/**
+	 * Callback for exec_SELECTgetRows
+	 *
+	 * @param string $fields
+	 * @param string $table
+	 * @return NULL|array
+	 */
+	public function getRowsCallback($fields, $table) {
+		if (!is_array($this->getRowsCallbackReturnValue) || $fields === '*') {
+			$returnValue = $this->getRowsCallbackReturnValue;
+		} else {
+			$returnValue = array();
+
+			foreach ($this->getRowsCallbackReturnValue as $record) {
+				$returnValue[] = $this->limitRecordFields($fields, $record);
+			}
+		}
+
+		return $returnValue;
+	}
+
+	/**
+	 * Limits record fields to a given field list.
+	 *
+	 * @param string $fields List of fields
+	 * @param array $record The database record (or the simulated one)
+	 * @return array
+	 */
+	protected function limitRecordFields($fields, array $record) {
+		$result = array();
+
+		foreach ($record as $field => $value) {
+			if (t3lib_div::inList($fields, $field)) {
+				$result[$field] = $value;
+			}
+		}
+
+		return $result;
 	}
 }
 ?>
