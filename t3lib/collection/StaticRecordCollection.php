@@ -35,6 +35,16 @@
  */
 class t3lib_collection_StaticRecordCollection extends t3lib_collection_AbstractRecordCollection implements t3lib_collection_Editable {
 	/**
+	 * Creates this object.
+	 *
+	 * @param string $tableName
+	 */
+	public function __construct($tableName = NULL) {
+		parent::__construct();
+		$this->setItemTableName($tableName);
+	}
+
+	/**
 	 * Populates the content-entries of the storage
 	 *
 	 * Queries the underlying storage for entries of the collection
@@ -47,11 +57,9 @@ class t3lib_collection_StaticRecordCollection extends t3lib_collection_AbstractR
 	 * @return void
 	 */
 	public function loadContents() {
-		/** @var t3lib_TcaRelationService $relationService */
-		$relationService = t3lib_div::makeInstance('t3lib_TcaRelationService', self::$storageTableName, self::$storageItemsField, $this->itemTableName);
-
-		$entries = $relationService->getRecordsWithRelationFromCurrentRecord($this->toArray());
+		$entries = $this->getCollectedRecords();
 		$this->removeAll();
+
 		foreach ($entries as $entry) {
 			$this->add($entry);
 		}
@@ -126,6 +134,41 @@ class t3lib_collection_StaticRecordCollection extends t3lib_collection_AbstractR
 	 */
 	public function removeAll() {
 		$this->storage = new SplDoublyLinkedList();
+	}
+
+	/**
+	 * Gets the collected records in this collection, by
+	 * looking up the MM relations of this record to the
+	 * table name defined in the local field 'table_name'.
+	 *
+	 * @return array
+	 */
+	protected function getCollectedRecords() {
+		if (empty($this->itemTableName)) {
+			throw new RuntimeException(
+				'Cannot fetch records without having the table name defined.',
+				1330293778
+			);
+		}
+
+		$relatedRecords = array();
+
+		$resource = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query(
+			$this->getItemTableName() . '.*',
+			self::$storageTableName,
+			'sys_collection_entries',
+			$this->getItemTableName(),
+			'AND ' . self::$storageTableName . '.uid=' . intval($this->getIdentifier())
+		);
+
+		if ($resource) {
+			while ($record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resource)) {
+				$relatedRecords[] = $record;
+			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($resource);
+		}
+
+		return $relatedRecords;
 	}
 }
 ?>
