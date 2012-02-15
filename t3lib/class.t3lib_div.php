@@ -1849,28 +1849,30 @@ final class t3lib_div {
 	 * @param array $arr1 Second array, overruling the first array
 	 * @param boolean $notAddKeys If set, keys that are NOT found in $arr0 (first array) will not be set. Thus only existing value can/will be overruled from second array.
 	 * @param boolean $includeEmptyValues If set, values from $arr1 will overrule if they are empty or zero. Default: TRUE
+	 * @param boolean $enableUnsetFeature If set, special values "__UNSET" can be used in the second array in order to unset array keys in the resulting array.
 	 * @return array Resulting array where $arr1 values has overruled $arr0 values
 	 */
-	public static function array_merge_recursive_overrule(array $arr0, array $arr1, $notAddKeys = FALSE, $includeEmptyValues = TRUE) {
+	public static function array_merge_recursive_overrule(array $arr0, array $arr1, $notAddKeys = FALSE, $includeEmptyValues = TRUE, $enableUnsetFeature = TRUE) {
 		foreach ($arr1 as $key => $val) {
 			if (is_array($arr0[$key])) {
 				if (is_array($arr1[$key])) {
-					$arr0[$key] = self::array_merge_recursive_overrule($arr0[$key], $arr1[$key], $notAddKeys, $includeEmptyValues);
+					$arr0[$key] = self::array_merge_recursive_overrule(
+						$arr0[$key],
+						$arr1[$key],
+						$notAddKeys,
+						$includeEmptyValues,
+						$enableUnsetFeature
+					);
 				}
-			} else {
-				if ($notAddKeys) {
-					if (isset($arr0[$key])) {
-						if ($includeEmptyValues || $val) {
-							$arr0[$key] = $val;
-						}
-					}
-				} else {
-					if ($includeEmptyValues || $val) {
-						$arr0[$key] = $val;
-					}
+			} elseif (!$notAddKeys || isset($arr0[$key])) {
+				if ($enableUnsetFeature && $val === '__UNSET') {
+					unset($arr0[$key]);
+				} elseif ($includeEmptyValues || $val) {
+					$arr0[$key] = $val;
 				}
 			}
 		}
+
 		reset($arr0);
 		return $arr0;
 	}

@@ -3630,5 +3630,33 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		);
 	}
 
+
+	/**
+	 * @test
+	 */
+	public function arrayMergeRecursiveOverruleDoesConsiderUnsetValues() {
+		$array1 = array(
+			'first' => array(
+				'second' => 'second',
+				'third' => 'third',
+			),
+		);
+		$array2 = array(
+			'first' => array(
+				'second' => 'overrule',
+				'third' => '__UNSET',
+				'fourth' => 'overrile',
+			),
+		);
+		$expected = array(
+			'first' => array(
+				'second' => 'overrule',
+				'fourth' => 'overrile',
+			),
+		);
+
+		$result = t3lib_div::array_merge_recursive_overrule($array1, $array2);
+		$this->assertEquals($expected, $result);
+	}
 }
 ?>
