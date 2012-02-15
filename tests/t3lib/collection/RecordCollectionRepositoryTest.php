@@ -54,6 +54,11 @@ class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCas
 	protected $getRowsCallbackReturnValue;
 
 	/**
+	 * @var string
+	 */
+	protected $testTableName;
+
+	/**
 	 * Sets up this test case.
 	 */
 	protected function setUp() {
@@ -70,6 +75,8 @@ class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCas
 			->expects($this->any())
 			->method('getDatabase')
 			->will($this->returnValue($this->databaseMock));
+
+		$this->testTableName = uniqid('tx_testtable');
 	}
 
 	/**
@@ -80,6 +87,7 @@ class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCas
 		unset($this->fixture);
 		unset($this->getSingleRowCallbackReturnValue);
 		unset($this->getRowsCallbackReturnValue);
+		unset($this->testTableName);
 	}
 
 	/**
@@ -111,6 +119,7 @@ class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCas
 		$this->getSingleRowCallbackReturnValue = array(
 			'uid' => $testUid,
 			'type' => t3lib_collection_RecordCollectionRepository::TYPE_Static,
+			'table_name' => $this->testTableName,
 		);
 
 		$object = $this->fixture->findByUid($testUid);
@@ -165,8 +174,8 @@ class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCas
 			->method('exec_SELECTgetRows')
 			->will($this->returnCallback(array($this, 'getRowsCallback')));
 		$this->getRowsCallbackReturnValue =	array(
-			array('uid' => $testUid, 'type' => $type),
-			array('uid' => $testUid, 'type' => $type),
+			array('uid' => $testUid, 'type' => $type, 'table_name' => $this->testTableName),
+			array('uid' => $testUid, 'type' => $type, 'table_name' => $this->testTableName),
 		);
 
 		$objects = $this->fixture->findByType($type);
@@ -206,8 +215,8 @@ class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCas
 			->method('exec_SELECTgetRows')
 			->will($this->returnCallback(array($this, 'getRowsCallback')));
 		$this->getRowsCallbackReturnValue = array(
-			array('uid' => $testUid, 'type' => $type),
-			array('uid' => $testUid, 'type' => $type),
+			array('uid' => $testUid, 'type' => $type, 'table_name' => $this->testTableName),
+			array('uid' => $testUid, 'type' => $type, 'table_name' => $this->testTableName),
 		);
 
 		$objects = $this->fixture->findByTableName($testTable);
@@ -248,8 +257,8 @@ class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCas
 			->method('exec_SELECTgetRows')
 			->will($this->returnCallback(array($this, 'getRowsCallback')));
 		$this->getRowsCallbackReturnValue = array(
-			array('uid' => $testUid, 'type' => $type),
-			array('uid' => $testUid, 'type' => $type),
+			array('uid' => $testUid, 'type' => $type, 'table_name' => $this->testTableName),
+			array('uid' => $testUid, 'type' => $type, 'table_name' => $this->testTableName),
 		);
 
 		$objects = $this->fixture->findByTypeAndTableName($type, $testTable);
