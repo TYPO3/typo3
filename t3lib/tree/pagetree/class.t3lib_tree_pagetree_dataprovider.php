@@ -369,12 +369,18 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 
 			$searchFilter = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . $searchFilter . '%', 'pages');
 			$useNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
+			$useAlias = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.searchInAlias');
+
+			$searchWhereAlias = '';
+			if ($useAlias) {
+				$searchWhereAlias = ' OR alias LIKE ' . $searchFilter;
+			}
 
 			if ($useNavTitle) {
 				$seachWhere .= '(nav_title LIKE ' . $searchFilter .
-					' OR (nav_title = "" && title LIKE ' . $searchFilter . '))';
+					' OR (nav_title = "" && title LIKE ' . $searchFilter . ')' . $searchWhereAlias . ')';
 			} else {
-				$seachWhere .= 'title LIKE ' . $searchFilter;
+				$seachWhere .= 'title LIKE ' . $searchFilter . $searchWhereAlias;
 			}
 
 			$where .= ' AND (' . $seachWhere . ')';
