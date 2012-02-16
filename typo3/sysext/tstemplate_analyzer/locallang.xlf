@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="currentTemplate" xml:space="preserve">
-				<source>Current template:</source>
+				<source>Current template</source>
 			</trans-unit>
 			<trans-unit id="title" xml:space="preserve">
 				<source>Title</source>
@@ -28,7 +28,7 @@
 				<source>Next Level</source>
 			</trans-unit>
 			<trans-unit id="templateHierarchy" xml:space="preserve">
-				<source>Template hierarchy:</source>
+				<source>Template hierarchy</source>
 			</trans-unit>
 			<trans-unit id="displayOptions" xml:space="preserve">
 				<source>Display Options</source>
@@ -49,16 +49,16 @@
 				<source>Block mode</source>
 			</trans-unit>
 			<trans-unit id="constants" xml:space="preserve">
-				<source>Constants:</source>
+				<source>Constants</source>
 			</trans-unit>
 			<trans-unit id="setup" xml:space="preserve">
-				<source>Setup:</source>
+				<source>Setup</source>
 			</trans-unit>
 			<trans-unit id="viewCompleteTS" xml:space="preserve">
 				<source>View the complete TS Listing</source>
 			</trans-unit>
 			<trans-unit id="completeTS" xml:space="preserve">
-				<source>Complete TS:</source>
+				<source>Complete TS</source>
 			</trans-unit>
 		</body>
 	</file>

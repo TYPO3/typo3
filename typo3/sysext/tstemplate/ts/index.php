@@ -132,13 +132,15 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		';
 
 			$this->doc->inDocStylesArray[] = '
+				TABLE#typo3-objectBrowser { width: 100%; }
 				TABLE#typo3-objectBrowser A { text-decoration: none; }
 				TABLE#typo3-objectBrowser .comment { color: maroon; font-weight: bold; }
-				TABLE#ts-analyzer { border: 1px solid #a2aab8; }
+				TABLE#ts-analyzer { width: 100% }
 				TABLE#ts-analyzer tr.t3-row-header { background-color: #A2AAB8; }
 				TABLE#ts-analyzer tr td {padding: 0 4px;}
 				TABLE#ts-analyzer tr.t3-row-header td { padding: 2px 4px; font-weight:bold; color: #fff; }
-				.tsob-menu label, .tsob-menu-row2 label, .tsob-conditions label {padding: 0 5px; vertical-align: text-top;}
+				.ts-typoscript { width: 100%; }
+				.tsob-menu label, .tsob-menu-row2 label, .tsob-conditions label { padding: 0 5px 0 0; vertical-align: text-top;}
 				.tsob-menu-row2 {margin-top: 10px;}
 				.tsob-conditions {padding: 1px 2px;}
 				.tsob-search-submit {margin-left: 3px; margin-right: 3px;}
