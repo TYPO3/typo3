@@ -1104,7 +1104,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 						$subcat = $params['subcat_name'];
 						$subcat_name = $params['subcat_name'] ? $this->subCategories[$params['subcat_name']][0] : 'Others';
 
-						$output .= '<h2 class="typo3-tstemplate-ceditor-subcat">' . $subcat_name . '</h2>';
+						$output .= '<h3 class="typo3-tstemplate-ceditor-subcat">' . $subcat_name . '</h3>';
 					}
 
 					$label = $GLOBALS['LANG']->sL($params['label']);

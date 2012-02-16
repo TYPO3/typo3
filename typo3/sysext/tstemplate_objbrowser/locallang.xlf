@@ -22,7 +22,7 @@
 				<source>UN-substituted constants in green</source>
 			</trans-unit>
 			<trans-unit id="currentTemplate" xml:space="preserve">
-				<source>Current template:</source>
+				<source>Current template</source>
 			</trans-unit>
 			<trans-unit id="badProperty" xml:space="preserve">
 				<source>Bad property!</source>
@@ -115,10 +115,10 @@
 				<source>Display constants:</source>
 			</trans-unit>
 			<trans-unit id="displayOptions" xml:space="preserve">
-				<source>Display options:</source>
+				<source>Display options</source>
 			</trans-unit>
 			<trans-unit id="conditions" xml:space="preserve">
-				<source>Conditions:</source>
+				<source>Conditions</source>
 			</trans-unit>
 			<trans-unit id="setConditions" xml:space="preserve">
 				<source>Set conditions</source>

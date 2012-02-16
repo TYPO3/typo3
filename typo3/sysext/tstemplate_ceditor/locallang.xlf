@@ -4,10 +4,10 @@
 		<header/>
 		<body>
 			<trans-unit id="editConstants" xml:space="preserve">
-				<source>Edit constants for template:</source>
+				<source>Edit constants for template</source>
 			</trans-unit>
 			<trans-unit id="category" xml:space="preserve">
-				<source>Category:</source>
+				<source>Category</source>
 			</trans-unit>
 			<trans-unit id="noConstants" xml:space="preserve">
 				<source>No constants available</source>
