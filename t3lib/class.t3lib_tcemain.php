@@ -5357,9 +5357,16 @@ class t3lib_TCEmain {
 		$list = array();
 		foreach (array_keys($GLOBALS['TCA']) as $table) {
 			t3lib_div::loadTCA($table);
-			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $config) {
-				if ($config['exclude'] && !t3lib_div::inList($this->BE_USER->groupData['non_exclude_fields'], $table . ':' . $field)) {
-					$list[] = $table . '-' . $field;
+			if (isset($GLOBALS['TCA'][$table]['columns'])) {
+				foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $config) {
+					if ($config['exclude']
+						&& !t3lib_div::inList(
+							$this->BE_USER->groupData['non_exclude_fields'],
+							$table . ':' . $field
+						)
+					) {
+						$list[] = $table . '-' . $field;
+					}
 				}
 			}
 		}
