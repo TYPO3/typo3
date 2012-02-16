@@ -16,16 +16,16 @@
 				<source>Resource '%s' has been updated.</source>
 			</trans-unit>
 			<trans-unit id="templateInformation" xml:space="preserve">
-				<source>Template information:</source>
+				<source>Template information</source>
 			</trans-unit>
 			<trans-unit id="title" xml:space="preserve">
-				<source>Title:</source>
+				<source>Title</source>
 			</trans-unit>
 			<trans-unit id="sitetitle" xml:space="preserve">
-				<source>Sitetitle:</source>
+				<source>Sitetitle</source>
 			</trans-unit>
 			<trans-unit id="description" xml:space="preserve">
-				<source>Description:</source>
+				<source>Description</source>
 			</trans-unit>
 			<trans-unit id="allowedExtensions" xml:space="preserve">
 				<source>Allowed extensions:</source>
@@ -34,19 +34,19 @@
 				<source>Max filesize:</source>
 			</trans-unit>
 			<trans-unit id="uploadResource" xml:space="preserve">
-				<source>Upload resource:</source>
+				<source>Upload resource</source>
 			</trans-unit>
 			<trans-unit id="newTextResource" xml:space="preserve">
-				<source>New text resource (enter name):</source>
+				<source>New text resource (enter name)</source>
 			</trans-unit>
 			<trans-unit id="copyResource" xml:space="preserve">
 				<source>Make a copy of resource:</source>
 			</trans-unit>
 			<trans-unit id="updateResourceList" xml:space="preserve">
-				<source>Update resource list:</source>
+				<source>Update resource list</source>
 			</trans-unit>
 			<trans-unit id="constants" xml:space="preserve">
-				<source>Constants:</source>
+				<source>Constants</source>
 			</trans-unit>
 			<trans-unit id="file" xml:space="preserve">
 				<source>File:</source>
@@ -61,10 +61,10 @@
 				<source>Files larger than %s KBytes are not allowed to be edited.</source>
 			</trans-unit>
 			<trans-unit id="setup" xml:space="preserve">
-				<source>Setup:</source>
+				<source>Setup</source>
 			</trans-unit>
 			<trans-unit id="resources" xml:space="preserve">
-				<source>Resources:</source>
+				<source>Resources</source>
 			</trans-unit>
 			<trans-unit id="editToView" xml:space="preserve">
 				<source>(edit to view, %s lines)</source>

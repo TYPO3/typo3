@@ -77,8 +77,9 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 
 	function main()	{
 		global $TYPO3_CONF_VARS;
-		global $tmpl,$tplRow,$theConstants;
+		global $tmpl, $tplRow, $theConstants;
 
+		$theOutput = '';
 
 		// **************************
 		// Create extension template
@@ -104,15 +105,15 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 		// **************************
 
 		// BUGBUG: Should we check if the uset may at all read and write template-records???
-		$existTemplate = $this->initialize_editor($this->pObj->id,$template_uid);		// initialize
+		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid); // initialize
 
 		if ($existTemplate)	{
 			$saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
 
 				// Update template ?
 			if (t3lib_div::_POST('submit') || (t3lib_utility_Math::canBeInterpretedAsInteger(t3lib_div::_POST('submit_x')) && t3lib_utility_Math::canBeInterpretedAsInteger(t3lib_div::_POST('submit_y')))) {
-				$tmpl->changed=0;
-				$tmpl->ext_procesInput(t3lib_div::_POST(),$_FILES,$theConstants,$tplRow);
+				$tmpl->changed = 0;
+				$tmpl->ext_procesInput(t3lib_div::_POST(), $_FILES, $theConstants, $tplRow);
 		//		debug($tmpl->changed);
 		//		debug($tmpl->raw);
 		//		$tmpl->changed=0;
@@ -122,16 +123,16 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 					$recData["sys_template"][$saveId]["constants"] = implode($tmpl->raw,LF);
 						// Create new  tce-object
 					$tce = t3lib_div::makeInstance("t3lib_TCEmain");
-					$tce->stripslashes_values=0;
+					$tce->stripslashes_values = 0;
 						// Initialize
-					$tce->start($recData,Array());
+					$tce->start($recData, Array());
 						// Saved the stuff
 					$tce->process_datamap();
 						// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
 					$tce->clear_cacheCmd("all");
 
 						// re-read the template ...
-					$this->initialize_editor($this->pObj->id,$template_uid);
+					$this->initialize_editor($this->pObj->id, $template_uid);
 				}
 			}
 
@@ -145,21 +146,23 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 			$this->pObj->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->pObj->MOD_MENU, t3lib_div::_GP("SET"), $this->pObj->MCONF["name"]);
 				// Resetting the menu (stop)
 
-			$theOutput.=$this->pObj->doc->spacer(5);
-			$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('editConstants', TRUE),t3lib_iconWorks::getSpriteIconForRecord('sys_template', $tplRow).'<strong>'.$this->pObj->linkWrapTemplateTitle($tplRow["title"],"constants").'</strong>'.htmlspecialchars(trim($tplRow["sitetitle"])?' - ('.$tplRow["sitetitle"].')':''),0,1);
+			$content = t3lib_iconWorks::getSpriteIconForRecord('sys_template', $tplRow) . '<strong>' . $this->pObj->linkWrapTemplateTitle($tplRow["title"], "constants") . '</strong>' .
+					htmlspecialchars(trim($tplRow["sitetitle"]) ? ' (' . $tplRow["sitetitle"] . ')' : '');
+			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('editConstants', TRUE), $content, FALSE, TRUE);
 
 			if ($manyTemplatesMenu)	{
-				$theOutput.=$this->pObj->doc->section("",$manyTemplatesMenu);
-				$theOutput.=$this->pObj->doc->divider(5);
+				$theOutput .= $this->pObj->doc->section("", $manyTemplatesMenu);
 			}
 
-			$theOutput.=$this->pObj->doc->spacer(5);
-			if (count($this->pObj->MOD_MENU["constant_editor_cat"]))	{
-				$menu = $GLOBALS['LANG']->getLL('category', TRUE)." ".t3lib_BEfunc::getFuncMenu($this->pObj->id,"SET[constant_editor_cat]",$this->pObj->MOD_SETTINGS["constant_editor_cat"],$this->pObj->MOD_MENU["constant_editor_cat"]);
-				$theOutput.=$this->pObj->doc->section("",'<NOBR>'.$menu.'</NOBR>');
+			$theOutput .= $this->pObj->doc->spacer(10);
+
+			if (count($this->pObj->MOD_MENU["constant_editor_cat"])) {
+				$menu = t3lib_BEfunc::getFuncMenu($this->pObj->id, "SET[constant_editor_cat]", $this->pObj->MOD_SETTINGS["constant_editor_cat"], $this->pObj->MOD_MENU["constant_editor_cat"]);
+				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('category', TRUE), '<NOBR>' . $menu . '</NOBR>', FALSE);
 			} else {
-				$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('noConstants', TRUE),$GLOBALS['LANG']->getLL('noConstantsDescription', TRUE),1,0,1);
+				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('noConstants', TRUE), $GLOBALS['LANG']->getLL('noConstantsDescription', TRUE), FALSE, FALSE, 1);
 			}
+			$theOutput .= $this->pObj->doc->spacer(15);
 
 
 					// Category and constant editor config:
@@ -180,8 +183,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 			}
 
 			$printFields = trim($tmpl->ext_printFields($theConstants,$category));
-			if ($printFields)	{
-				$theOutput.=$this->pObj->doc->spacer(20);
+			if ($printFields) {
 				$theOutput.=$this->pObj->doc->section("",$printFields);
 			}
 
@@ -189,7 +191,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 				$theOutput=$this->displayExample($theOutput);
 			}
 		} else {
-			$theOutput.=$this->pObj->noTemplate(1);
+			$theOutput .= $this->pObj->noTemplate(1);
 		}
 		return $theOutput;
 	}

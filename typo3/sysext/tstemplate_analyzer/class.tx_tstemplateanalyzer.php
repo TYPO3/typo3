@@ -89,13 +89,13 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		// BUGBUG: Should we check if the uset may at all read and write template-records???
 		$existTemplate = $this->initialize_editor($this->pObj->id,$template_uid);		// initialize
 		if ($existTemplate)	{
-			$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('currentTemplate', TRUE) ,
+			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('currentTemplate', TRUE) ,
 				t3lib_iconWorks::getSpriteIconForRecord('sys_template', $GLOBALS['tplRow']) . '<strong>' .
 				$this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']["title"]) . '</strong>' .
-				htmlspecialchars(trim($GLOBALS['tplRow']["sitetitle"]) ? ' - (' . $GLOBALS['tplRow']["sitetitle"] . ')' : ''));
+				htmlspecialchars(trim($GLOBALS['tplRow']["sitetitle"]) ? ' (' . $GLOBALS['tplRow']["sitetitle"] . ')' : ''));
 		}
 		if ($manyTemplatesMenu)	{
-			$theOutput.=$this->pObj->doc->section("",$manyTemplatesMenu);
+			$theOutput .= $this->pObj->doc->section("",$manyTemplatesMenu);
 		}
 
 		//	debug($GLOBALS['tmpl']->hierarchyInfo);
@@ -118,7 +118,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		$head.= '<td>' . $GLOBALS['LANG']->getLL('nextLevel', TRUE) . '</td>';
 		$head.= '</tr>';
 		$hierar = implode(array_reverse($GLOBALS['tmpl']->ext_getTemplateHierarchyArr($GLOBALS['tmpl']->hierarchyInfoArr, "", array(), 1)), "");
-		$hierar= '<table id="ts-analyzer" border="0" cellpadding="0" cellspacing="0">' . $head . $hierar . '</table>';
+		$hierar= '<table id="ts-analyzer" cellpadding="0" cellspacing="0">' . $head . $hierar . '</table>';
 
 		$theOutput.=$this->pObj->doc->spacer(5);
 		$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('templateHierarchy', TRUE), $hierar, 0, 1);
@@ -126,12 +126,11 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		$completeLink = '<p><a href="index.php?id=' . $GLOBALS['SOBE']->id . '&amp;template=all">' . $GLOBALS['LANG']->getLL('viewCompleteTS', TRUE) . '</a></p>';
 		$theOutput .= $this->pObj->doc->spacer(5);
 		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('completeTS', TRUE), $completeLink, 0, 1);
+		$theOutput.=$this->pObj->doc->spacer(15);
 
 
 			// Output options
-		$theOutput.=$this->pObj->doc->spacer(25);
-		$theOutput.=$this->pObj->doc->divider(0);
-		$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('displayOptions', TRUE), '', 1, 1);
+		$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('displayOptions', TRUE), '', FALSE, TRUE);
 		$addParams = t3lib_div::_GET('template') ? '&template=' . t3lib_div::_GET('template') : '';
 		$theOutput .= '<div class="tst-analyzer-options">' .
 			t3lib_BEfunc::getFuncCheck($this->pObj->id, "SET[ts_analyzer_checkLinenum]", $this->pObj->MOD_SETTINGS["ts_analyzer_checkLinenum"], '', $addParams, 'id="checkTs_analyzer_checkLinenum"') .
@@ -146,6 +145,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 				:
 				''
 			) . '</div>';
+		$theOutput.=$this->pObj->doc->spacer(25);
 
 
 
@@ -154,7 +154,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('constants', TRUE), "", 0, 1);
 				$theOutput .= $this->pObj->doc->sectionEnd();
 				$theOutput .= '
-					<table border="0" cellpadding="1" cellspacing="0">
+					<table class="ts-typoscript" border="0" cellpadding="1" cellspacing="0">
 				';
 					// Don't know why -2 and not 0... :-) But works.
 				$GLOBALS['tmpl']->ext_lineNumberOffset = -2;
@@ -167,9 +167,8 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 					if ($cVal == t3lib_div::_GET('template') || t3lib_div::_GET('template') == 'all') {
 						$theOutput .= '
 							<tr>
-								<td><img src="clear.gif" width="3" height="1" alt="" /></td><td class="bgColor2"><strong>' . htmlspecialchars($GLOBALS['tmpl']->templateTitles[$cVal]) . '</strong></td></tr>
+								</td><td class="bgColor2"><strong>' . htmlspecialchars($GLOBALS['tmpl']->templateTitles[$cVal]) . '</strong></td></tr>
 							<tr>
-								<td><img src="clear.gif" width="3" height="1" alt="" /></td>
 								<td class="bgColor2"><table border="0" cellpadding="0" cellspacing="0" class="bgColor0" width="100%"><tr><td nowrap="nowrap">' .
 								$GLOBALS['tmpl']->ext_outputTS(array($val), $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], 0) .
 								'</td></tr></table>
@@ -194,7 +193,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('setup', TRUE), "", 0, 1);
 				$theOutput .= $this->pObj->doc->sectionEnd();
 				$theOutput .= '
-					<table border="0" cellpadding="1" cellspacing="0">
+					<table class="ts-typoscript" border="0" cellpadding="1" cellspacing="0">
 				';
 				$GLOBALS['tmpl']->ext_lineNumberOffset = 0;
 				$GLOBALS['tmpl']->ext_lineNumberOffset_mode = "setup";
@@ -205,9 +204,8 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 					if (current($GLOBALS['tmpl']->clearList_setup) == t3lib_div::_GET('template') || t3lib_div::_GET('template') == 'all') {
 						$theOutput .= '
 							<tr>
-								<td><img src="clear.gif" width="3" height="1" alt="" /></td><td class="bgColor2"><strong>' . htmlspecialchars($GLOBALS['tmpl']->templateTitles[current($GLOBALS['tmpl']->clearList_setup)]) . '</strong></td></tr>
+								<td class="bgColor2"><strong>' . htmlspecialchars($GLOBALS['tmpl']->templateTitles[current($GLOBALS['tmpl']->clearList_setup)]) . '</strong></td></tr>
 							<tr>
-								<td><img src="clear.gif" width="3" height="1" alt="" /></td>
 								<td class="bgColor2"><table border="0" cellpadding="0" cellspacing="0" class="bgColor0" width="100%"><tr><td nowrap="nowrap">' .
 									  $GLOBALS['tmpl']->ext_outputTS(
 										array($val),
