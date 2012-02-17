@@ -168,7 +168,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 
 		$this->allowedItems = $this->getAllowedItems('magic,plain,image', $this->buttonConfig);
 		reset($this->allowedItems);
-		if (!in_array($this->act,$this->allowedItems))	{
+		if (($this->act === FALSE) || !in_array($this->act, $this->allowedItems)) {
 			$this->act = current($this->allowedItems);
 		}
 
@@ -229,7 +229,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			// Get "act"
 		$this->act = t3lib_div::_GP('act');
 		if (!$this->act) {
-			$this->act = 'magic';
+			$this->act = FALSE;
 		}
 	}
 
