@@ -166,7 +166,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$this->fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 
-		$this->allowedItems = $this->getAllowedItems('magic,plain,image', $this->buttonConfig);
+		$this->allowedItems = $this->getAllowedItems('magic,plain,image,dragdrop', $this->buttonConfig);
 		reset($this->allowedItems);
 		if (!in_array($this->act,$this->allowedItems))	{
 			$this->act = current($this->allowedItems);
@@ -1160,11 +1160,17 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 * @return	array		the allowed items
 	 */
 	public function getAllowedItems($items)	{
-		$allowedItems = explode(',', $items);
-		$clientInfo = t3lib_div::clientInfo();
-		if ($clientInfo['BROWSER'] !== 'opera') {
-			$allowedItems[] = 'dragdrop';
+		$allowedItems = t3lib_div::trimExplode(',', $items, TRUE);
+		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['allowedItems']) {
+			$allowedItems = t3lib_div::trimExplode(',', $this->buttonConfig['options.']['allowedItems'], TRUE);
 		}
+
+		$clientInfo = t3lib_div::clientInfo();
+		if ($clientInfo['BROWSER'] === 'opera') {
+				// don't offer dragdrop to opera
+			$allowedItems = array_diff($allowedItems, array('dragdrop'));
+		}
+
 			// Call hook for extra options
 		foreach ($this->hookObjects as $hookObject) {
 			$allowedItems = $hookObject->addAllowedItems($allowedItems);
@@ -1175,10 +1181,10 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		}
 			// Remove options according to RTE configuration
 		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['removeItems']) {
-			$allowedItems = array_diff($allowedItems, t3lib_div::trimExplode(',', $this->buttonConfig['options.']['removeItems'], 1));
+			$allowedItems = array_diff($allowedItems, t3lib_div::trimExplode(',', $this->buttonConfig['options.']['removeItems'], TRUE));
 		} else {
 				// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
-			$allowedItems = array_diff($allowedItems, t3lib_div::trimExplode(',', $this->thisConfig['blindImageOptions'], 1));
+			$allowedItems = array_diff($allowedItems, t3lib_div::trimExplode(',', $this->thisConfig['blindImageOptions'], TRUE));
 		}
 		return $allowedItems;
 	}
