@@ -262,6 +262,8 @@ class tx_em_Install {
 												if (t3lib_extMgm::removeCacheFiles()) {
 													$messageContent .= $GLOBALS['LANG']->getLL('ext_import_cache_files_removed') . '<br />';
 												}
+													// Flush autoloader cache
+												$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->flushByTag('t3lib_autoloader');
 
 												list($new_list) = $this->parentObject->extensionList->getInstalledExtensions();
 												$updateContent = $this->updatesForm($extKey, $new_list[$extKey], 1, t3lib_div::linkThisScript(array(
