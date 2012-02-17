@@ -378,7 +378,6 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			&& (empty($this->setup['format']) || $this->setup['format'] === 'png')) {
 
 				// Set transparency properties
-			imagealphablending($this->im, FALSE);
 			imagesavealpha($this->im, TRUE);
 
 				// Fill with a transparent background
