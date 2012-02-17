@@ -167,10 +167,6 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 
 		$this->allowedItems = $this->getAllowedItems('magic,plain,image');
-		reset($this->allowedItems);
-		if (!in_array($this->act,$this->allowedItems))	{
-			$this->act = current($this->allowedItems);
-		}
 
 		$this->insertImage();
 
@@ -192,7 +188,11 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 * @return	void
 	 */
 	public function initVariables() {
-
+			// Get "act"
+		$this->act = t3lib_div::_GP('act');
+		if (!$this->act) {
+			$this->act = FALSE;
+		}
 			// Process bparams
 		$this->bparams = t3lib_div::_GP('bparams');
 		$pArr = explode('|', $this->bparams);
@@ -225,12 +225,6 @@ class tx_rtehtmlarea_select_image extends browse_links {
 
 			// the script to link to
 		$this->thisScript = t3lib_div::getIndpEnv('SCRIPT_NAME');
-
-			// Get "act"
-		$this->act = t3lib_div::_GP('act');
-		if (!$this->act) {
-			$this->act = 'magic';
-		}
 	}
 
 	/**
@@ -795,25 +789,25 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			// Making menu in top:
 		$menuDef = array();
 		if (in_array('image', $this->allowedItems) && (($this->act === 'image') || t3lib_div::_GP('cWidth'))) {
-			$menuDef['image']['isActive'] = ($this->act === 'image');
+			$menuDef['image']['isActive'] = FALSE;
 			$menuDef['image']['label'] = $GLOBALS['LANG']->getLL('currentImage', 1);
 			$menuDef['image']['url'] = '#';
 			$menuDef['image']['addParams'] = 'onClick="jumpToUrl(\'?act=image&bparams=' . $this->bparams . '\');return false;"';
 		}
 		if (in_array('magic', $this->allowedItems)){
-			$menuDef['magic']['isActive'] = ($this->act === 'magic');
+			$menuDef['magic']['isActive'] = FALSE;
 			$menuDef['magic']['label'] = $GLOBALS['LANG']->getLL('magicImage', 1);
 			$menuDef['magic']['url'] = '#';
 			$menuDef['magic']['addParams'] = 'onClick="jumpToUrl(\'?act=magic&bparams=' . $this->bparams . '\');return false;"';
 		}
 		if (in_array('plain', $this->allowedItems)) {
-			$menuDef['plain']['isActive'] = ($this->act === 'plain');
+			$menuDef['plain']['isActive'] = FALSE;
 			$menuDef['plain']['label'] = $GLOBALS['LANG']->getLL('plainImage', 1);
 			$menuDef['plain']['url'] = '#';
 			$menuDef['plain']['addParams'] = 'onClick="jumpToUrl(\'?act=plain&bparams=' . $this->bparams . '\');return false;"';
 		}
 		if (in_array('dragdrop', $this->allowedItems)) {
-			$menuDef['dragdrop']['isActive'] = ($this->act === 'dragdrop');
+			$menuDef['dragdrop']['isActive'] = FALSE;
 			$menuDef['dragdrop']['label'] = $GLOBALS['LANG']->getLL('dragDropImage', 1);
 			$menuDef['dragdrop']['url'] = '#';
 			$menuDef['dragdrop']['addParams'] = 'onClick="jumpToUrl(\'?act=dragdrop&bparams=' . $this->bparams . '\');return false;"';
@@ -826,6 +820,13 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		
 			// Order the menu items as specified in Page TSconfig
 		$menuDef = $this->orderMenuDefinition($menuDef);
+
+			// Set active menu item
+		reset($menuDef);
+		if (($this->act === FALSE) || !in_array($this->act, $this->allowedItems)) {
+			$this->act = key($menuDef);
+		}
+		$menuDef[$this->act]['isActive'] = TRUE;
 
 		$this->content .= $this->doc->getTabMenuRaw($menuDef);
 
