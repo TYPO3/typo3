@@ -820,6 +820,15 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			$menuDef['mail']['addParams'] = 'onClick="jumpToUrl(\'?act=dragdrop&bparams='.$this->bparams.'\');return false;"';
 		}
 
+			// adjust order of menu-items
+		$orderedMenuDef = array();
+		foreach ($this->allowedItems as $allowedItem) {
+			if (isset($menuDef[$allowedItem])) {
+				$orderedMenuDef[$allowedItem] = $menuDef[$allowedItem];
+			}
+		}
+		$menuDef = $orderedMenuDef;
+
 			// Call hook for extra options
 		foreach ($this->hookObjects as $hookObject) {
 			$menuDef = $hookObject->modifyMenuDefinition($menuDef);
