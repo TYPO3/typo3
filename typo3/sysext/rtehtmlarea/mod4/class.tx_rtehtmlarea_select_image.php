@@ -788,36 +788,34 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 * @return	[type]		...
 	 */
 	function main_rte()	{
-		global $LANG;
-
 			// Starting content:
-		$this->content = $this->doc->startPage($LANG->getLL('Insert Image',1));
+		$this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('Insert Image',1));
 
 			// Making menu in top:
 		$menuDef = array();
-		if (in_array('image',$this->allowedItems) && ($this->act=='image' || t3lib_div::_GP('cWidth'))) {
-			$menuDef['page']['isActive'] = $this->act=='image';
-			$menuDef['page']['label'] = $LANG->getLL('currentImage',1);
-			$menuDef['page']['url'] = '#';
-			$menuDef['page']['addParams'] = 'onClick="jumpToUrl(\'?act=image&bparams='.$this->bparams.'\');return false;"';
+		if (in_array('image', $this->allowedItems) && (($this->act === 'image') || t3lib_div::_GP('cWidth'))) {
+			$menuDef['image']['isActive'] = ($this->act === 'image');
+			$menuDef['image']['label'] = $GLOBALS['LANG']->getLL('currentImage', 1);
+			$menuDef['image']['url'] = '#';
+			$menuDef['image']['addParams'] = 'onClick="jumpToUrl(\'?act=image&bparams=' . $this->bparams . '\');return false;"';
 		}
-		if (in_array('magic',$this->allowedItems)){
-			$menuDef['file']['isActive'] = $this->act=='magic';
-			$menuDef['file']['label'] = $LANG->getLL('magicImage',1);
-			$menuDef['file']['url'] = '#';
-			$menuDef['file']['addParams'] = 'onClick="jumpToUrl(\'?act=magic&bparams='.$this->bparams.'\');return false;"';
+		if (in_array('magic', $this->allowedItems)){
+			$menuDef['magic']['isActive'] = ($this->act === 'magic');
+			$menuDef['magic']['label'] = $GLOBALS['LANG']->getLL('magicImage', 1);
+			$menuDef['magic']['url'] = '#';
+			$menuDef['magic']['addParams'] = 'onClick="jumpToUrl(\'?act=magic&bparams=' . $this->bparams . '\');return false;"';
 		}
-		if (in_array('plain',$this->allowedItems)) {
-			$menuDef['url']['isActive'] = $this->act=='plain';
-			$menuDef['url']['label'] = $LANG->getLL('plainImage',1);
-			$menuDef['url']['url'] = '#';
-			$menuDef['url']['addParams'] = 'onClick="jumpToUrl(\'?act=plain&bparams='.$this->bparams.'\');return false;"';
+		if (in_array('plain', $this->allowedItems)) {
+			$menuDef['plain']['isActive'] = ($this->act === 'plain');
+			$menuDef['plain']['label'] = $GLOBALS['LANG']->getLL('plainImage', 1);
+			$menuDef['plain']['url'] = '#';
+			$menuDef['plain']['addParams'] = 'onClick="jumpToUrl(\'?act=plain&bparams=' . $this->bparams . '\');return false;"';
 		}
-		if (in_array('dragdrop',$this->allowedItems)) {
-			$menuDef['mail']['isActive'] = $this->act=='dragdrop';
-			$menuDef['mail']['label'] = $LANG->getLL('dragDropImage',1);
-			$menuDef['mail']['url'] = '#';
-			$menuDef['mail']['addParams'] = 'onClick="jumpToUrl(\'?act=dragdrop&bparams='.$this->bparams.'\');return false;"';
+		if (in_array('dragdrop', $this->allowedItems)) {
+			$menuDef['dragdrop']['isActive'] = ($this->act === 'dragdrop');
+			$menuDef['dragdrop']['label'] = $GLOBALS['LANG']->getLL('dragDropImage', 1);
+			$menuDef['dragdrop']['url'] = '#';
+			$menuDef['dragdrop']['addParams'] = 'onClick="jumpToUrl(\'?act=dragdrop&bparams=' . $this->bparams . '\');return false;"';
 		}
 
 			// Call hook for extra options
@@ -857,7 +855,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				$files = $this->expandFolder($foldertree->specUIDmap[$specUid],$this->act=='plain',$noThumbs?$noThumbs:!$_MOD_SETTINGS['displayThumbs']);
 				$this->content.= '<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td style="vertical-align: top;">'.$this->barheader($LANG->getLL('folderTree').':').$tree.'</td>
+					<td style="vertical-align: top;">'.$this->barheader($GLOBALS['LANG']->getLL('folderTree').':').$tree.'</td>
 					<td>&nbsp;</td>
 					<td style="vertical-align: top;">'.$files.'</td>
 				</tr>
@@ -878,7 +876,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				$files = $this->TBE_dragNDrop($foldertree->specUIDmap[$specUid], implode(',', $this->allowedFileTypes));
 				$this->content.= '<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td style="vertical-align: top;">'.$this->barheader($LANG->getLL('folderTree').':').$tree.'</td>
+					<td style="vertical-align: top;">'.$this->barheader($GLOBALS['LANG']->getLL('folderTree').':').$tree.'</td>
 					<td>&nbsp;</td>
 					<td style="vertical-align: top;">'.$files.'</td>
 				</tr>
