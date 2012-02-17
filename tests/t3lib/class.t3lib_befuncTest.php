@@ -62,5 +62,129 @@ class t3lib_befuncTest extends tx_phpunit_testcase {
 			)
 		);
 	}
+
+
+	////////////////////////////////////////////
+	// Tests concerning getCommenSelectFields
+	////////////////////////////////////////////
+
+	/**
+	 * Data provider for getCommonSelectFieldsReturnsCorrectFields
+	 *
+	 * @return array The test data with $table, $prefix, $presetFields, $tca, $expectedFields
+	 */
+	public function getCommonSelectFieldsReturnsCorrectFieldsDataProvider() {
+
+		return array(
+			'only uid' => array(
+				'table' => 'test_table',
+				'prefix' => '',
+				'presetFields' => array(),
+				'tca' => array(),
+				'expectedFields' => 'uid',
+			),
+			'label set' => array(
+				'table' => 'test_table',
+				'prefix' => '',
+				'presetFields' => array(),
+				'tca' => array(
+					'ctrl' => array(
+						'label'=> 'label',
+					)
+				),
+				'expectedFields' => 'uid,label',
+			),
+			'label_alt set' => array(
+				'table' => 'test_table',
+				'prefix' => '',
+				'presetFields' => array(),
+				'tca' => array(
+					'ctrl' => array(
+						'label_alt'=> 'label,label2',
+					)
+				),
+				'expectedFields' => 'uid,label,label2',
+			),
+			'versioningWS set' => array(
+				'table' => 'test_table',
+				'prefix' => '',
+				'presetFields' => array(),
+				'tca' => array(
+					'ctrl' => array(
+						'versioningWS'=> '2',
+					)
+				),
+				'expectedFields' => 'uid,t3ver_id,t3ver_state,t3ver_wsid,t3ver_count',
+			),
+			'selicon_field set' => array(
+				'table' => 'test_table',
+				'prefix' => '',
+				'presetFields' => array(),
+				'tca' => array(
+					'ctrl' => array(
+						'selicon_field'=> 'field',
+					)
+				),
+				'expectedFields' => 'uid,field',
+			),
+			'typeicon_column set' => array(
+				'table' => 'test_table',
+				'prefix' => '',
+				'presetFields' => array(),
+				'tca' => array(
+					'ctrl' => array(
+						'typeicon_column'=> 'field',
+					)
+				),
+				'expectedFields' => 'uid,field',
+			),
+			'enablecolumns set' => array(
+				'table' => 'test_table',
+				'prefix' => '',
+				'presetFields' => array(),
+				'tca' => array(
+					'ctrl' => array(
+						'enablecolumns'=> array(
+							'disabled' => 'hidden',
+							'starttime' => 'start',
+							'endtime' => 'stop',
+							'fe_group' => 'groups',
+						),
+					)
+				),
+				'expectedFields' => 'uid,hidden,start,stop,groups',
+			),
+			'label set to uid' => array(
+				'table' => 'test_table',
+				'prefix' => '',
+				'presetFields' => array(),
+				'tca' => array(
+					'ctrl' => array(
+						'label'=> 'uid',
+					)
+				),
+				'expectedFields' => 'uid',
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getCommonSelectFieldsReturnsCorrectFieldsDataProvider
+	 */
+	public function getCommonSelectFieldsReturnsCorrectFields($table, $prefix = '', array $presetFields, array $tca, $expectedFields = '') {
+
+		t3lib_div::loadTCA($table);
+		$tcaBackup = $GLOBALS['TCA'][$table];
+		unset($GLOBALS['TCA'][$table]);
+		$GLOBALS['TCA'][$table] = $tca;
+
+		$selectFields = $this->fixture->getCommonSelectFields($table, $prefix, $presetFields);
+
+		$this->assertEquals($selectFields, $expectedFields);
+
+		unset($GLOBALS['TCA'][$table]);
+		$GLOBALS['TCA'][$table] = $tcaBackup;
+	}
 }
 ?>
