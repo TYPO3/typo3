@@ -297,7 +297,6 @@ class t3lib_stdGraphic {
 
 					// Preserve alpha transparency
 				if ($this->saveAlphaLayer) {
-					imagealphablending($destImg, FALSE);
 					imagesavealpha($destImg, TRUE);
 					$Bcolor = imagecolorallocatealpha($destImg, 0, 0, 0, 127);
 					imagefill($destImg, 0, 0, $Bcolor);
@@ -315,7 +314,6 @@ class t3lib_stdGraphic {
 				$cpImg = $this->imageCreateFromFile($BBmask[3]);
 				$destImg = imagecreatetruecolor($w, $h);
 				if ($this->saveAlphaLayer) {
-					imagealphablending($destImg, FALSE);
 					imagesavealpha($destImg, TRUE);
 					$Bcolor = imagecolorallocatealpha($destImg, 0, 0, 0, 127);
 					imagefill($destImg, 0, 0, $Bcolor);
@@ -465,7 +463,7 @@ class t3lib_stdGraphic {
 	 * @see t3lib_iconWorks::imagecopyresized()
 	 */
 	function imagecopyresized(&$dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight) {
-		if ($this->imagecopyresized_fix) {
+		if ($this->imagecopyresized_fix && !$this->saveAlphaLayer) {
 				// Make true color image
 			$tmpImg = imagecreatetruecolor(imagesx($dstImg), imagesy($dstImg));
 				// Copy the source image onto that
@@ -2899,7 +2897,6 @@ class t3lib_stdGraphic {
 				if (function_exists('imagecreatefrompng')) {
 					$imageHandle = imageCreateFromPng($sourceImg);
 					if ($this->saveAlphaLayer) {
-						imagealphablending($imageHandle, FALSE);
 						imagesavealpha($imageHandle, TRUE);
 					}
 					return $imageHandle;
