@@ -168,7 +168,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$this->fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 
-		$this->allowedItems = $this->getAllowedItems('magic,plain,image', $this->buttonConfig);
+		$this->allowedItems = $this->getAllowedItems('magic,plain,image');
 		reset($this->allowedItems);
 		if (!in_array($this->act,$this->allowedItems))	{
 			$this->act = current($this->allowedItems);
