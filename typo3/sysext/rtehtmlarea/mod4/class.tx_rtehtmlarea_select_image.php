@@ -1165,6 +1165,11 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		if ($clientInfo['BROWSER'] !== 'opera') {
 			$allowedItems[] = 'dragdrop';
 		}
+
+		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['allowedItems']) {
+			$allowedItems = $this->buttonConfig['options.']['allowedItems'];
+		}
+
 			// Call hook for extra options
 		foreach ($this->hookObjects as $hookObject) {
 			$allowedItems = $hookObject->addAllowedItems($allowedItems);
