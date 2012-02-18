@@ -4,15 +4,29 @@ Username inside the toolbar
 - - - - - - - - - - - - - - - - - - - - - */
 
 #username {
-	margin-right: 10px;
-	padding-top: 2px;
+	margin-right: 12px;
 }
 
 #username span {
-	vertical-align: bottom;
 }
 
 #username img {
 	padding-right: 4px;
-	vertical-align: bottom;
+}
+
+#username a {
+	line-height: 18px;
+}
+
+#username a span.t3-icon {
+	vertical-align: top;
+	margin-top: 1px;
+}
+
+#typo3-toolbar #logout-button {
+	padding-top: 0px;
+}
+
+#typo3-toolbar #logout-button input {
+	padding-top: 1px;
 }
