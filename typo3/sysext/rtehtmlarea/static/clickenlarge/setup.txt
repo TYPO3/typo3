@@ -17,6 +17,8 @@ lib.parseFunc_RTE {
 		}
 	}
 	nonTypoTagStdWrap.HTMLparser.tags.img.fixAttrib {
+		datahtmlareaclickenlarge.unset = 1
+		## Backward compatibility
 		clickenlarge.unset = 1
 		clickenlargesrc.unset = 1
 	}

@@ -544,7 +544,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				if (plugin.getButton("Language")) {
 					sz+=\'<tr><td\'+bgColor+\'><label for="iLang">\' + plugin.editor.getPlugin("Language").localize(\'Language-Tooltip\') + \': </label></td><td>\' + languageSelector + \'</td></tr>\';
 				}')
-				.(in_array('clickenlarge', $removedProperties)?'':'
+				.((in_array('clickenlarge', $removedProperties) || in_array('data-htmlarea-clickenlarge', $removedProperties)) ?'':'
 				sz+=\'<tr><td\'+bgColor+\'><label for="iClickEnlarge">'.$LANG->sL('LLL:EXT:cms/locallang_ttc.php:image_zoom',1).' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="0" /></td></tr>\';').'
 				sz+=\'<tr><td><input type="submit" value="'.$LANG->getLL('update').'" onClick="return setImageProperties();"></td></tr>\';
 				sz+=\'</form></table>\';
@@ -644,8 +644,9 @@ class tx_rtehtmlarea_select_image extends browse_links {
 					}
 					if (document.imageData.iClickEnlarge) {
 						if (document.imageData.iClickEnlarge.checked) {
-							selectedImageRef.setAttribute("clickenlarge","1");
+							selectedImageRef.setAttribute("data-htmlarea-clickenlarge","1");
 						} else {
+							selectedImageRef.removeAttribute("data-htmlarea-clickenlarge");
 							selectedImageRef.removeAttribute("clickenlarge");
 						}
 					}
@@ -739,7 +740,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 						}
 					}
 					if (document.imageData.iClickEnlarge) {
-						if (selectedImageRef.getAttribute("clickenlarge") == "1") {
+						if (selectedImageRef.getAttribute("data-htmlarea-clickenlarge") == "1" || selectedImageRef.getAttribute("clickenlarge") == "1") {
 							document.imageData.iClickEnlarge.checked = 1;
 						} else {
 							document.imageData.iClickEnlarge.checked = 0;
