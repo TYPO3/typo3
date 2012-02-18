@@ -25,7 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * Render custom attribute clickenlarge
+ * Render custom attribute data-clickenlarge
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
@@ -45,7 +45,7 @@ class tx_rtehtmlarea_pi3 extends tslib_pibase {
 	var $cObj;
 
 	/**
-	 * Rendering the "clickenlarge" custom attribute, called from TypoScript
+	 * Rendering the "data-clickenlarge" custom attribute, called from TypoScript
 	 *
 	 * @param	string		Content input. Not used, ignore.
 	 * @param	array		TypoScript configuration
@@ -54,7 +54,11 @@ class tx_rtehtmlarea_pi3 extends tslib_pibase {
 	 */
 	function render_clickenlarge($content,$conf) {
 
-		$clickenlarge = isset($this->cObj->parameters['clickenlarge']) ? $this->cObj->parameters['clickenlarge'] : 0;
+		$clickenlarge = isset($this->cObj->parameters['datahtmlareaclickenlarge']) ? $this->cObj->parameters['datahtmlareaclickenlarge'] : 0;
+		if (!$clickenlarge) {
+				// Backward compatibility
+			$clickenlarge = isset($this->cObj->parameters['clickenlarge']) ? $this->cObj->parameters['clickenlarge'] : 0;
+		}
 		$path = $this->cObj->parameters['src'];
 		$pathPre = $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'] . 'RTEmagicC_';
 		if (t3lib_div::isFirstPartOfStr($path,$pathPre)) {
@@ -66,6 +70,8 @@ class tx_rtehtmlarea_pi3 extends tslib_pibase {
 			$file = $this->cObj->parameters['src'];
 		}
 
+		unset($this->cObj->parameters['datahtmlareaclickenlarge']);
+			// Backward compatibility
 		unset($this->cObj->parameters['clickenlarge']);
 		unset($this->cObj->parameters['allParams']);
 		$content = '<img '. t3lib_div::implodeAttributes($this->cObj->parameters, TRUE, TRUE) . ' />';
@@ -87,9 +93,7 @@ class tx_rtehtmlarea_pi3 extends tslib_pibase {
 		return $content;
 	}
 }
-
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/pi3/class.tx_rtehtmlarea_pi3.php'])) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/pi3/class.tx_rtehtmlarea_pi3.php']);
 }
-
 ?>
