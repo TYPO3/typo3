@@ -1,0 +1,84 @@
+<f:layout name="Default" />
+
+<f:section name="Content">
+	<h1>TYPO3 {TYPO3Version}<br />
+		<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:introtext" />
+	</h1>
+
+	<p>{copyRightNotice -> f:format.raw()}</p>
+
+	{warningMessages -> f:format.raw()}
+
+	<h3>
+		<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:introtext2" />
+	</h3>
+
+	<table border="0" cellpadding="0" cellspacing="0" id="typo3-about-modules">
+		<tbody>
+			<f:for each="{modules}" as="mainModule">
+				<tr class="c-mainitem">
+					<td colspan="3">
+						<f:image src="{mainModule.icon}" alt="" />
+						&nbsp;
+						<f:if condition="{mainModules.subModules -> f:count()} > 0">
+							<f:then>
+								<strong>{mainModule.label}</strong>
+							</f:then>
+							<f:else>
+								<a
+									href="#"
+									onclick="top.goToModule('{mainModule.name}'); return false;"
+								>
+									<strong>{mainModule.label}</strong>
+								</a>
+							</f:else>
+						</f:if>
+					</td>
+				</tr>
+
+				<f:for each="{mainModule.subModules}" as="subModule" iteration="subModuleIterator">
+					<f:if condition="{subModuleIterator.isFirst}">
+						<tr class="c-first"><td colspan="3"></td></tr>
+					</f:if>
+
+					<tr class="c-subitem-row">
+						<td align="center">
+							<f:image src="{subModule.icon}" alt="" />
+						</td>
+						<td>
+							<a
+								href="#"
+								onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
+								title="{subModule.shortDescription}"
+							>
+								{subModule.label}
+							</a>
+						</td>
+						<td class="module-description">
+							<strong>
+								{subModule.shortDescription}
+							</strong>
+							<br />
+							{subModule.longDescription -> f:format.raw()}
+						</td>
+					</tr>
+				</f:for>
+
+				<f:if condition="{mainModule.subModules -> f:count()} > 0">
+					<tr class="c-endrow"><td colspan="3"></td></tr>
+				</f:if>
+			</f:for>
+		</tbody>
+	</table>
+
+	<br />
+
+	<p class="c-features">
+		<em>
+			(<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:endText" />)
+		</em>
+	</p>
+
+	<br />
+
+</f:section>
