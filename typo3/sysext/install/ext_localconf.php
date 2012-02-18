@@ -50,4 +50,7 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['addFlexformsToAcl'] = '
 
 	// Version 4.5: Split tt_content image_link to newline by comma
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['imagelink'] = 'tx_coreupdates_imagelink';
+
+	// Version 4.7: Load fluid and extbase if extensions with new dependency to them are installed
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['installFluidExtbase'] = 'tx_coreupdates_installFluidExtbase';
 ?>
