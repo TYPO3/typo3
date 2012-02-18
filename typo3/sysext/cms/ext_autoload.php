@@ -5,9 +5,9 @@
 return array(
 	'tslib_adminpanel' => PATH_tslib . 'class.tslib_adminpanel.php',
 	'tslib_cobj' => PATH_tslib . 'class.tslib_content.php',
-	'tslib_frameset' => PATH_tslib . 'class.tslib_content.php',
-	'tslib_tableoffset' => PATH_tslib . 'class.tslib_content.php',
-	'tslib_controltable' => PATH_tslib . 'class.tslib_content.php',
+	'tslib_frameset' => PATH_tslib . 'class.tslib_frameset.php',
+	'tslib_tableoffset' => PATH_tslib . 'class.tslib_tableoffset.php',
+	'tslib_controltable' => PATH_tslib . 'class.tslib_controltable.php',
 	'tslib_eidtools' => PATH_tslib . 'class.tslib_eidtools.php',
 	'tslib_fe' => PATH_tslib . 'class.tslib_fe.php',
 	'tslib_fecompression' => PATH_tslib . 'class.tslib_fecompression.php',
