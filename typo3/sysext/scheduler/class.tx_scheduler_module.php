@@ -532,6 +532,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.maynotDeleteRunningTask'), t3lib_FlashMessage::ERROR);
 			} else {
 				if ($this->scheduler->removeTask($task)) {
+					$GLOBALS['BE_USER']->writeLog(3, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was deleted', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
 					$this->addMessage($GLOBALS['LANG']->getLL('msg.deleteSuccess'));
 				} else {
 					$this->addMessage($GLOBALS['LANG']->getLL('msg.deleteError'), t3lib_FlashMessage::ERROR);
@@ -1273,6 +1274,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				// Save to database
 			$result = $this->scheduler->saveTask($task);
 			if ($result) {
+				$GLOBALS['BE_USER']->writeLog(3, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was updated', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.updateSuccess'));
 			} else {
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.updateError'), t3lib_FlashMessage::ERROR);
@@ -1306,6 +1308,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				// Add to database
 			$result = $this->scheduler->addTask($task);
 			if ($result) {
+				$GLOBALS['BE_USER']->writeLog(3, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was added', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.addSuccess'));
 			} else {
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.addError'), t3lib_FlashMessage::ERROR);
