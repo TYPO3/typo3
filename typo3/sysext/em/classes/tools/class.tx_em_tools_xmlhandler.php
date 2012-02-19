@@ -570,7 +570,7 @@ class tx_em_Tools_XmlHandler {
 
 		$preg_result = array();
 		preg_match('/^[[:space:]]*<\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"/', substr($string, 0, 200), $preg_result);
-		$theCharset = $preg_result[1] ? $preg_result[1] : ($TYPO3_CONF_VARS['BE']['forceCharset'] ? $TYPO3_CONF_VARS['BE']['forceCharset'] : 'iso-8859-1');
+		$theCharset = $preg_result[1] ? $preg_result[1] : 'utf-8';
 		xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset); // us-ascii / utf-8 / iso-8859-1
 
 		// Parse content:

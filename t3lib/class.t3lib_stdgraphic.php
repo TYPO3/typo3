@@ -224,7 +224,7 @@ class t3lib_stdGraphic {
 		} else { // The object may not exist yet, so we need to create it now. Happens in the Install Tool for example.
 			$this->csConvObj = t3lib_div::makeInstance('t3lib_cs');
 		}
-		$this->nativeCharset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
+		$this->nativeCharset = 'utf-8';
 	}
 
 
