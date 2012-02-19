@@ -226,7 +226,6 @@ $TYPO3_CONF_VARS = array(
 		'usePHPFileFunctions' => TRUE,			// Boolean: If set, all fileoperations are done by the default PHP-functions. Default on Unix is using the system commands by exec().
 		'compressionLevel' => 0,				// Determines output compression of BE output. Makes output smaller but slows down the page generation depending on the compression level. Requires a) zlib in your PHP installation and b) special rewrite rules for .css.gzip and .js.gzip (please see _.htacces for an example). Range 1-9, where 1 is least compression and 9 is greatest compression. 'true' as value will set the compression based on the PHP default settings (usually 5). Suggested and most optimal value is 5.
 		'maxFileSize' => '10240',				// Integer: If set this is the max filesize in KB's for file operations in the backend. Can be overridden through $TCA per table field separately.
-		'forceCharset' => '-1',					// String: Normally the charset of the backend users language selection is used. If you set this value to a charset found in t3lib/csconvtbl/ (or "utf-8") the backend (and database) will ALWAYS use this charset. Always use a lowercase value. NOTICE: This option is deprecated since TYPO3 4.5, and will be removed in 4.7. Please use proper tools to set your installation to native UTF-8.
 		'installToolPassword' => '',			// String: This is the md5-hashed password for the Install Tool. Set this to '' and access will be totally denied. PLEASE consider to externally password protect the typo3/install/ folder, eg. with a .htaccess file.
 		'pageTree' => array(
 			'preloadLimit' => 50,				// Integer: Count of pages that will be preloaded in pagetree. Big amount makes collapsing new branches faster but requires more SQL queries.
@@ -795,49 +794,24 @@ t3lib_autoloader::registerAutoloader();
  * and both settings need to be adjusted for UTF-8 in order to work properly
  */
 	// If this value is -1 then the setting has not been modified in localconf.php
-if ($TYPO3_CONF_VARS['BE']['forceCharset'] == '-1' && $typo_db) {
-	if (t3lib_div::compat_version('4.5')) {
-			// 1) no option was set in localconf.php but the Update Wizard
-			//    was already used, so the admin is knowing what he's doing,
-			// 2) a new installation with the new default value
-		$TYPO3_CONF_VARS['BE']['forceCharset'] = 'utf-8';
-	} elseif (TYPO3_enterInstallScript !== '1') {
-			// The value needs to be set in localconf.php
-		die('This installation was just upgraded to TYPO3 ' . TYPO3_branch . '. In this version, some default settings have changed.<br />' .
-			'You can continue to use your settings by specifying the former default values in localconf.php.<br />' .
+if (isset($TYPO3_CONF_VARS['BE']['forceCharset']) && $TYPO3_CONF_VARS['BE']['forceCharset'] != '-1' &&  $TYPO3_CONF_VARS['BE']['forceCharset'] != 'utf-8') {
+	die('This installation was just upgraded to TYPO3 ' . TYPO3_branch . '. In this version, utf-8 is enforced.<br />' .
+			'$TYPO3_CONF_VARS[BE][forceCharset] is not read anymore and core behaves as it would have been set to utf-8.<br />' .
+			'You have a setting other than utf-8 which is not supported anymore.<br />' .
 			'Please proceed to the Update Wizard in the TYPO3 Install Tool to update your configuration.');
 	}
+$TYPO3_CONF_VARS['BE']['forceCharset'] = 'utf-8';
 
-} elseif ($TYPO3_CONF_VARS['BE']['forceCharset'] !== 'utf-8' && $typo_db) {
-	t3lib_div::deprecationLog('This TYPO3 installation does not enforce the UTF-8 character set.' . chr(10) .
-		'Everything other than UTF-8 is deprecated since TYPO3 4.5.' . chr(10) .
-		'The DB, its connection and TYPO3 should be migrated to UTF-8 therefore. Please check your setup.');
-}
-
-
-	// If this value is -1 then the setting has not been modified in localconf.php
-if ($TYPO3_CONF_VARS['SYS']['setDBinit'] == '-1' && $typo_db) {
-	if (t3lib_div::compat_version('4.5')) {
-			// 1) no option was set in localconf.php but the Update Wizard
-			//    was already used, so the admin is knowing what he's doing,
-			// 2) a new installation with the new default value
-		$TYPO3_CONF_VARS['SYS']['setDBinit'] = 'SET NAMES utf8';
-	} elseif (TYPO3_enterInstallScript !== '1' && $typo_db) {
-			// The value needs to be set in localconf.php
-		die('This installation was just upgraded to TYPO3 ' . TYPO3_branch . '. In this version, some default settings have changed.<br />' .
-			'You can continue to use your settings by specifying the former default values in localconf.php.<br />' .
-			'Please proceed to the Update Wizard in the TYPO3 Install Tool to update your configuration.');
-	}
-
-	// Only accept "SET NAMES utf8" for this setting. Otherwise, a deprecation warning will be issued.
-} elseif (!preg_match('/SET NAMES utf8/', $TYPO3_CONF_VARS['SYS']['setDBinit']) && $typo_db) {
-		// TODO: Add a link to a website with more information here
-	t3lib_div::deprecationLog('This TYPO3 installation is using the $TYPO3_CONF_VARS[\'SYS\'][\'setDBinit\'] property with the following value:' . chr(10) .
+if (isset($TYPO3_CONF_VARS['SYS']['setDBinit']) && !preg_match('/SET NAMES utf8/', $TYPO3_CONF_VARS['SYS']['setDBinit'])) {
+	die('This TYPO3 installation is using the $TYPO3_CONF_VARS[\'SYS\'][\'setDBinit\'] property with the following value:' . chr(10) .
 		$TYPO3_CONF_VARS['SYS']['setDBinit'] . chr(10) . chr(10) .
 		'It looks like UTF-8 is not used for this connection.' . chr(10) . chr(10) .
-		'Everything other than UTF-8 is deprecated since TYPO3 4.5.' . chr(10) .
+		'Everything other than UTF-8 is unsupported since TYPO3 4.7.' . chr(10) .
 		'The DB, its connection and TYPO3 should be migrated to UTF-8 therefore. Please check your setup.');
+} elseif (!isset($TYPO3_CONF_VARS['SYS']['setDBinit'])) {
+	$TYPO3_CONF_VARS['SYS']['setDBinit'] = 'SET NAMES utf8;';
 }
+
 
 
 	// If this value is not -1, then the setting has been modified in localconf.php

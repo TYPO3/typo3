@@ -2189,9 +2189,7 @@ final class t3lib_div {
 
 			// Figure out charset if not given explicitly:
 		if (!$charset) {
-			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) { // First priority: forceCharset! If set, this will be authoritative!
-				$charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
-			} elseif (is_object($GLOBALS['LANG'])) {
+			if (is_object($GLOBALS['LANG'])) {
 				$charset = $GLOBALS['LANG']->charSet; // If "LANG" is around, that will hold the current charset
 			} else {
 				$charset = 'iso-8859-1'; // THIS is just a hopeful guess!
@@ -2395,7 +2393,7 @@ final class t3lib_div {
 			// default output charset is UTF-8, only ASCII, ISO-8859-1 and UTF-8 are supported!!!
 		$match = array();
 		preg_match('/^[[:space:]]*<\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"/', substr($string, 0, 200), $match);
-		$theCharset = $match[1] ? $match[1] : ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'iso-8859-1');
+		$theCharset = $match[1] ? $match[1] : 'iso-8859-1';
 		xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset); // us-ascii / utf-8 / iso-8859-1
 
 			// Parse content:
@@ -4200,11 +4198,8 @@ final class t3lib_div {
 			$sourceCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'iso-8859-1');
 			if ($charset) {
 				$targetCharset = $csConvObj->parse_charset($charset);
-			} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) {
-					// when forceCharset is set, we store ALL labels in this charset!!!
-				$targetCharset = $csConvObj->parse_charset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']);
 			} else {
-				$targetCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'iso-8859-1');
+				$targetCharset = 'utf-8';
 			}
 
 				// Cache file name:
@@ -4287,11 +4282,8 @@ final class t3lib_div {
 				// Set charset:
 			if ($charset) {
 				$targetCharset = $csConvObj->parse_charset($charset);
-			} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) {
-					// when forceCharset is set, we store ALL labels in this charset!!!
-				$targetCharset = $csConvObj->parse_charset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']);
 			} else {
-				$targetCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'iso-8859-1');
+				$targetCharset = 'utf-8';
 			}
 
 				// Cache file name:
@@ -5089,7 +5081,7 @@ final class t3lib_div {
 	 */
 	public static function plainMailEncoded($email, $subject, $message, $headers = '', $encoding = 'quoted-printable', $charset = '', $dontEncodeHeader = FALSE) {
 		if (!$charset) {
-			$charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'ISO-8859-1';
+			$charset = 'ISO-8859-1';
 		}
 
 		$email = self::normalizeMailAddress($email);

@@ -170,13 +170,9 @@ class language {
 		}
 
 			// If a forced charset is used and different from the charset otherwise used:
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] && $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] != $this->charSet) {
+		if ('utf-8' != $this->charSet) {
 				// Set the forced charset:
-			$this->charSet = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
-
-			if ($this->charSet != 'utf-8' && !$this->csConvObj->initCharset($this->charSet)) {
-				throw new RuntimeException('Forced charset not found: The forced character set "'. $this->charSet . '" was not found in t3lib/csconvtbl/', 1294587487);
-			}
+			$this->charSet = 'utf-8';
 		}
 	}
 
