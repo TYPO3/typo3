@@ -51,9 +51,9 @@ class TYPO3AJAX {
 
 	/**
 	 * sets the charset and the ID for the AJAX call
-	 * due some charset limitations in Javascript (prototype uses encodeURIcomponent, which converts
+	 * due to some charset limitations in Javascript (prototype uses encodeURIcomponent, which converts
 	 * all data to utf-8), we need to detect if the encoding of the request differs from the
-	 * backend encoding (e.g. forceCharset), and then convert all incoming data (_GET and _POST)
+	 * backend encoding, and then convert all incoming data (_GET and _POST)
 	 * in the expected backend encoding.
 	 *
 	 * @param	string		the AJAX id
@@ -72,8 +72,8 @@ class TYPO3AJAX {
 			$this->requestCharset = $charset;
 		}
 
-				// if the AJAX request does not have the same encoding like the backend
-				// we need to convert the POST and GET parameters in the right charset
+			// if the AJAX request does not have the same encoding like the backend
+			// we need to convert the POST and GET parameters in the right charset
 		if ($this->charset != $this->requestCharset) {
 			$GLOBALS['LANG']->csConvObj->convArray($_POST, $this->requestCharset, $this->charset);
 			$GLOBALS['LANG']->csConvObj->convArray($_GET,  $this->requestCharset, $this->charset);
