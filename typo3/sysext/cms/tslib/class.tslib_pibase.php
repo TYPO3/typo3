@@ -951,14 +951,7 @@ class tslib_pibase {
 						foreach ($languageArray as $labelKey => $labelValue) {
 							if (!is_array($labelValue))	{
 								$this->LOCAL_LANG[$languageKey][$labelKey][0]['target'] = $labelValue;
-
-									// For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset"
-									// and if that is not set, assumed to be that of the individual system languages
-								if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) {
-									$this->LOCAL_LANG_charset[$languageKey][$labelKey] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
-								} else {
-									$this->LOCAL_LANG_charset[$languageKey][$labelKey] = $GLOBALS['TSFE']->csConvObj->charSetArray[$languageKey];
-								}
+								$this->LOCAL_LANG_charset[$languageKey][$labelKey] = 'utf-8';
 							}
 						}
 					}
