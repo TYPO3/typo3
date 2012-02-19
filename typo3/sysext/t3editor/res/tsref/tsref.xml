@@ -774,7 +774,7 @@ If this property is set, images are not allowed to be scaled up in size. This pa
 		</property>
 		<property name="notification_email_charset" type="string">
 			<description><![CDATA[Alternative charset for the notification mails.]]></description>
-			<default><![CDATA[ISO-8859-1]]></default>
+			<default><![CDATA[utf-8]]></default>
 		</property>
 		<property name="notification_email_encoding" type="string">
 			<description><![CDATA[This sets the encoding of plaintext emails (notification messages). The default encoding is "quoted-printable". But setting this to eg. "base64" will encode the content with base64 encoding.

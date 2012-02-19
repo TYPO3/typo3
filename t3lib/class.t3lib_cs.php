@@ -572,7 +572,7 @@ class t3lib_cs {
 		if (TYPO3_OS == 'WIN') {
 			$cs = $this->script_to_charset_windows[$script] ? $this->script_to_charset_windows[$script] : 'windows-1252';
 		} else {
-			$cs = $this->script_to_charset_unix[$script] ? $this->script_to_charset_unix[$script] : 'iso-8859-1';
+			$cs = $this->script_to_charset_unix[$script] ? $this->script_to_charset_unix[$script] : 'utf-8';
 		}
 
 		return $cs;
@@ -830,7 +830,7 @@ class t3lib_cs {
 						$parts[$k] = $this->UnumberToChar(substr($v, 1));
 					}
 				} elseif ($alsoStdHtmlEnt && $trans_tbl['&' . $v . ';']) { // Other entities:
-					$parts[$k] = $this->utf8_encode($trans_tbl['&' . $v . ';'], 'iso-8859-1');
+					$parts[$k] = $this->utf8_encode($trans_tbl['&' . $v . ';'], 'utf-8');
 				} else { // No conversion:
 					$parts[$k] = '&' . $v . ';';
 				}
