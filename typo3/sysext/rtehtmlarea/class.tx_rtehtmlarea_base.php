@@ -328,7 +328,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$this->OutputCharset = $this->charset;
 
 			$this->contentCharset = $LANG->csConvObj->charSetArray[$this->contentTypo3Language];
-			$this->contentCharset = $this->contentCharset ? $this->contentCharset : 'iso-8859-1';
+			$this->contentCharset = $this->contentCharset ? $this->contentCharset : 'utf-8';
 			$this->origContentCharSet = $this->contentCharset;
 			$this->contentCharset = $this->contentCharset;
 
@@ -1092,7 +1092,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	function buildNestedJSArray($conf) {
 		$convertedConf = t3lib_div::removeDotsFromTS($conf);
 		if ($this->is_FE()) {
-			$GLOBALS['TSFE']->csConvObj->convArray($convertedConf, 'iso-8859-1', 'utf-8');
+			$GLOBALS['TSFE']->csConvObj->convArray($convertedConf, 'utf-8', 'utf-8');
 		} else {
 			$GLOBALS['LANG']->csConvObj->convArray($convertedConf, $GLOBALS['LANG']->charSet, 'utf-8');
 		}

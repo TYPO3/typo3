@@ -375,7 +375,7 @@ final class t3lib_div {
 		} else {
 				// this case should not happen
 			$csConvObj = self::makeInstance('t3lib_cs');
-			return $csConvObj->crop('iso-8859-1', $string, $chars, $appendString);
+			return $csConvObj->crop('utf-8', $string, $chars, $appendString);
 		}
 	}
 
@@ -2192,7 +2192,7 @@ final class t3lib_div {
 			if (is_object($GLOBALS['LANG'])) {
 				$charset = $GLOBALS['LANG']->charSet; // If "LANG" is around, that will hold the current charset
 			} else {
-				$charset = 'iso-8859-1'; // THIS is just a hopeful guess!
+				$charset = 'utf-8'; // THIS is just a hopeful guess!
 			}
 		}
 
@@ -2393,7 +2393,7 @@ final class t3lib_div {
 			// default output charset is UTF-8, only ASCII, ISO-8859-1 and UTF-8 are supported!!!
 		$match = array();
 		preg_match('/^[[:space:]]*<\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"/', substr($string, 0, 200), $match);
-		$theCharset = $match[1] ? $match[1] : 'iso-8859-1';
+		$theCharset = $match[1] ? $match[1] : 'utf-8';
 		xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset); // us-ascii / utf-8 / iso-8859-1
 
 			// Parse content:
@@ -4195,7 +4195,7 @@ final class t3lib_div {
 		if (@is_file($fileRef) && $langKey) {
 
 				// Set charsets:
-			$sourceCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'iso-8859-1');
+			$sourceCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'utf-8');
 			if ($charset) {
 				$targetCharset = $csConvObj->parse_charset($charset);
 			} else {
@@ -4222,9 +4222,9 @@ final class t3lib_div {
 
 					// converting the default language (English)
 					// this needs to be done for a few accented loan words and extension names
-				if (is_array($LOCAL_LANG['default']) && $targetCharset != 'iso-8859-1') {
+				if (is_array($LOCAL_LANG['default']) && $targetCharset != 'utf-8') {
 					foreach ($LOCAL_LANG['default'] as &$labelValue) {
-						$labelValue = $csConvObj->conv($labelValue, 'iso-8859-1', $targetCharset);
+						$labelValue = $csConvObj->conv($labelValue, 'utf-8', $targetCharset);
 					}
 					unset($labelValue);
 				}
@@ -5068,7 +5068,7 @@ final class t3lib_div {
 	/**
 	 * Simple substitute for the PHP function mail() which allows you to specify encoding and character set
 	 * The fifth parameter ($encoding) will allow you to specify 'base64' encryption for the output (set $encoding=base64)
-	 * Further the output has the charset set to ISO-8859-1 by default.
+	 * Further the output has the charset set to utf-8 by default.
 	 *
 	 * @param string $email Email address to send to. (see PHP function mail())
 	 * @param string $subject Subject line, non-encoded. (see PHP function mail())
@@ -5081,7 +5081,7 @@ final class t3lib_div {
 	 */
 	public static function plainMailEncoded($email, $subject, $message, $headers = '', $encoding = 'quoted-printable', $charset = '', $dontEncodeHeader = FALSE) {
 		if (!$charset) {
-			$charset = 'ISO-8859-1';
+			$charset = 'utf-8';
 		}
 
 		$email = self::normalizeMailAddress($email);
@@ -5196,7 +5196,7 @@ final class t3lib_div {
 	 * @param string $charset Charset used for encoding
 	 * @return string The encoded string
 	 */
-	public static function encodeHeader($line, $enc = 'quoted-printable', $charset = 'iso-8859-1') {
+	public static function encodeHeader($line, $enc = 'quoted-printable', $charset = 'utf-8') {
 			// Avoid problems if "###" is found in $line (would conflict with the placeholder which is used below)
 		if (strpos($line, '###') !== FALSE) {
 			return $line;

@@ -213,7 +213,7 @@
 	 * @var t3lib_cs
 	 */
 	var $csConvObj;
-	var $defaultCharSet = 'iso-8859-1';	// The default charset used in the frontend if nothing else is set.
+	var $defaultCharSet = 'utf-8';	// The default charset used in the frontend if nothing else is set.
 	var $renderCharset='';				// Internal charset of the frontend during rendering: Defaults to "forceCharset" and if that is not set, to ->defaultCharSet
 	var $metaCharset='';				// Output charset of the websites content. This is the charset found in the header, meta tag etc. If different from $renderCharset a conversion happens before output to browser. Defaults to ->renderCharset if not set.
 	var $localeCharset='';				// Assumed charset of locale strings.
@@ -4788,7 +4788,7 @@ if (version == "n3") {
 
 	/**
 	 * Converts the charset of the input string if applicable.
-	 * The "to" charset is determined by the currently used charset for the page which is "iso-8859-1" by default or set by $GLOBALS['TSFE']->config['config']['renderCharset']
+	 * The "to" charset is determined by the currently used charset for the page which is "utf-8" by default or set by $GLOBALS['TSFE']->config['config']['renderCharset']
 	 * Only if there is a difference between the two charsets will a conversion be made
 	 * The conversion is done real-time - no caching for performance at this point!
 	 *

@@ -110,7 +110,7 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlarea_api {
 	 */
 	function buildJSAcronymArray($languageUid) {
 
-		$charset = 'iso-8859-1';
+		$charset = 'utf-8';
 		$button = 'acronym';
 		$acronymArray = array();
 		$abbrArray = array();
