@@ -1804,9 +1804,13 @@ class t3lib_TCEforms {
 			foreach ($selItems as $p) {
 					// Non-selectable element:
 				if (!strcmp($p[1], '--div--')) {
+					$selIcon = '';
+					if (isset($p[2]) && $p[2] != 'empty-emtpy') {
+						$selIcon = $this->getIconHtml($p[2]) ;
+					}
 					$tRows[] = '
 						<tr class="c-header">
-							<td colspan="3">' . htmlspecialchars($p[0]) . '</td>
+							<td colspan="3">' . $selIcon . htmlspecialchars($p[0]) . '</td>
 						</tr>';
 				} else {
 						// Selected or not by default:
@@ -1821,7 +1825,7 @@ class t3lib_TCEforms {
 						$selIcon = $p[2];
 					} else {
 						$selIcon = t3lib_iconWorks::getSpriteIcon('empty-empty');
- 					}
+					}
 
 						// Compile row:
 					$rowId = uniqid('select_checkbox_row_');
@@ -4659,8 +4663,7 @@ class t3lib_TCEforms {
 		if ($fieldValue['config']['special']) {
 			switch ($fieldValue['config']['special']) {
 				case 'tables':
-					$temp_tc = array_keys($TCA);
-					$descr = '';
+					$temp_tc = array_keys($GLOBALS['TCA']);
 
 					foreach ($temp_tc as $theTableNames) {
 						if (!$TCA[$theTableNames]['ctrl']['adminOnly']) {
@@ -4690,8 +4693,15 @@ class t3lib_TCEforms {
 					$theTypes = $TCA['pages']['columns']['doktype']['config']['items'];
 
 					foreach ($theTypes as $theTypeArrays) {
+
 							// Icon:
-						$icon = t3lib_iconWorks::mapRecordTypeToSpriteIconName('pages', array('doktype' => $theTypeArrays[1]));
+						$icon = 'empty-emtpy';
+						if ($theTypeArrays[1] != '--div--') {
+							$icon = t3lib_iconWorks::mapRecordTypeToSpriteIconName(
+								'pages',
+								array('doktype' => $theTypeArrays[1])
+							);
+						}
 
 							// Item configuration:
 						$items[] = array(
@@ -4703,13 +4713,22 @@ class t3lib_TCEforms {
 				break;
 				case 'exclude':
 					$theTypes = t3lib_BEfunc::getExcludeFields();
-					$descr = '';
 
 					foreach ($theTypes as $theTypeArrays) {
 						list($theTable, $theFullField) = explode(':', $theTypeArrays[1]);
 							// If the field comes from a FlexForm, the syntax is more complex
 						$theFieldParts = explode(';', $theFullField);
 						$theField = array_pop($theFieldParts);
+
+							// Add header if not yet set for table:
+						if (!array_key_exists($theTable, $items)){
+							$icon = t3lib_iconWorks::mapRecordTypeToSpriteIconName($theTable, array());
+							$items[$theTable] = array(
+								$this->sL($GLOBALS['TCA'][$theTable]['ctrl']['title']),
+								'--div--',
+								$icon,
+							);
+						}
 
 							// Add help text
 						$helpText = array();
@@ -4721,7 +4740,8 @@ class t3lib_TCEforms {
 
 							// Item configuration:
 						$items[] = array(
-							rtrim($theTypeArrays[0], ':') . ' (' . $theField . ')',
+							rtrim($GLOBALS['LANG']->sl($GLOBALS['TCA'][$theTable]['columns'][$theField]['label']), ':') .
+									' (' . $theField . ')',
 							$theTypeArrays[1],
 							'empty-empty',
 							$helpText
@@ -4808,7 +4828,6 @@ class t3lib_TCEforms {
 
 					$modList = $fieldValue['config']['special'] == 'modListUser' ? $loadModules->modListUser : $loadModules->modListGroup;
 					if (is_array($modList)) {
-						$descr = '';
 
 						foreach ($modList as $theMod) {
 
