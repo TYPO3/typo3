@@ -1,0 +1,30 @@
+<div class="typo3-mod-help-about-index-php-inner">
+	<h2>
+		<f:translate key="LLL:EXT:lang/locallang_mod_help_about.xml:extension_authors" />
+	</h2>
+	<p>
+		<f:translate key="LLL:EXT:lang/locallang_mod_help_about.xml:extension_list_info" />
+	</p>
+	<br/>
+	<table border="0" cellspacing="2" cellpadding="1">
+		<tr>
+			<th><f:translate key="LLL:EXT:lang/locallang_mod_help_about.xml:extension" /></th>
+			<th><f:translate key="LLL:EXT:lang/locallang_mod_help_about.xml:extension_author" /></th>
+		</tr>
+
+		<f:for each="{loadedExtensions}" as="loadedExtension">
+			<tr>
+				<td width="280">
+					{loadedExtension.title} ({loadedExtension.key})
+				</td>
+				<td>
+					<f:link.email
+						email="{loadedExtension.authorEmail}?subject={f:format.urlencode(value:'Thanks for your {loadedExtension.title} extension')}"
+					>
+						{loadedExtension.author}
+					</f:link.email>
+				</td>
+			</tr>
+		</f:for>
+	</table>
+</div>

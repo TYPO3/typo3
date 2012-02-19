@@ -42,6 +42,7 @@ class tx_coreupdates_installFluidExtbase extends Tx_Install_Updates_Base {
 	 * @var array Extensions keys that depend on fluid / extbase
 	 */
 	protected $extensionsDependingOnFluidExtbase = array(
+		'about',
 		'aboutmodules',
 		'workspaces'
 	);
