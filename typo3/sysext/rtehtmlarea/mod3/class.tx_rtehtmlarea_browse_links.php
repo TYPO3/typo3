@@ -1139,7 +1139,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 		$LANG->lang = $this->contentTypo3Language;
 		$LANG->origCharSet = $LANG->csConvObj->charSetArray[$this->contentTypo3Language];
-		$LANG->origCharSet = $LANG->origCharSet ? $LANG->origCharSet : 'iso-8859-1';
+		$LANG->origCharSet = $LANG->origCharSet ? $LANG->origCharSet : 'utf-8';
 		$LANG->charSet = $this->contentTypo3Charset;
 		$LLString = $LANG->sL($string);
 
