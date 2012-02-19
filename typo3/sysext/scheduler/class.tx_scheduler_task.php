@@ -122,6 +122,33 @@ abstract class tx_scheduler_Task {
 	}
 
 	/**
+	 * This method returns the title of the scheduler task
+	 *
+	 * @return string
+	 */
+	public function getTaskTitle() {
+		return $GLOBALS['LANG']->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][get_class($this)]['title']);
+	}
+
+	/**
+	 * This method returns the description of the scheduler task
+	 *
+	 * @return string
+	 */
+	public function getTaskDescription() {
+		return $GLOBALS['LANG']->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][get_class($this)]['description']);
+	}
+
+	/**
+	 * This method returns the class name of the scheduler task
+	 *
+	 * @return string
+	 */
+	public function getTaskClassName() {
+		return get_class($this);
+	}
+
+	/**
 	 * This method returns the disable status of the task
 	 *
 	 * @return boolean TRUE if task is disabled, FALSE otherwise
