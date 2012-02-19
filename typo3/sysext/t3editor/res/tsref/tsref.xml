@@ -913,7 +913,7 @@ All strings from locallang files and locale strings are (and should be) converte
 
 If you need another output charset than the render charset, see "metaCharset" below.
 
-If you set TYPO3_CONF_VARS['BE']['forceCharset'] that value is used by default for "renderCharset". It is highly recommended to use TYPO3_CONF_VARS['BE']['forceCharset'] for multilingual websites in TYPO3. If you set that you don't have to worry about renderCharset and metaCharset - the same charset is used in the whole system.]]></description>
+]]></description>
 			<default><![CDATA[TYPO3_CONF_VARS[BE][forceCharset] if found, otherwise
 "iso-8859-1"]]></default>
 		</property>
