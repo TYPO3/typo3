@@ -328,7 +328,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$this->OutputCharset = $this->charset;
 
 			$this->contentCharset = $LANG->csConvObj->charSetArray[$this->contentTypo3Language];
-			$this->contentCharset = $this->contentCharset ? $this->contentCharset : 'iso-8859-1';
+			$this->contentCharset = $this->contentCharset ? $this->contentCharset : 'utf-8';
 			$this->origContentCharSet = $this->contentCharset;
 			$this->contentCharset = 'utf-8';
 
