@@ -93,6 +93,9 @@
 			<trans-unit id="errorsWarnings" xml:space="preserve">
 				<source>Errors and warnings</source>
 			</trans-unit>
+			<trans-unit id="errorShowDetails" xml:space="preserve">
+				<source>Show details</source>
+			</trans-unit>
 			<trans-unit id="removeKey" xml:space="preserve">
 				<source>Remove key from OL</source>
 			</trans-unit>

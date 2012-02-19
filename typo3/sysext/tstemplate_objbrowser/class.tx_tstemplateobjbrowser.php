@@ -458,8 +458,17 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			$pEkey = ($bType=="setup"?"config":"constants");
 			if (count($tmpl->parserErrors[$pEkey]))	{
 				$errMsg=array();
+				$templateAnalyzerInstalled = t3lib_extMgm::isLoaded('tstemplate_analyzer');
+
 				foreach ($tmpl->parserErrors[$pEkey] as $inf) {
-					$errMsg[]=($inf[1]).": &nbsp; &nbsp;".$inf[0];
+					$errorLink = '';
+					if ($templateAnalyzerInstalled) {
+						$errorLink = ' <a href="index.php?id=' . $this->pObj->id . '&SET[function]=tx_tstemplateanalyzer&template=all&SET[ts_analyzer_checkLinenum]=1#line-' . $inf[2] . '">'
+							. $GLOBALS['LANG']->getLL('errorShowDetails')
+							. '</a>';
+					}
+
+					$errMsg[] = ($inf[1]) . ": &nbsp; &nbsp;" . $inf[0] . $errorLink;
 				}
 				$theOutput .= $this->pObj->doc->spacer(10);
 
