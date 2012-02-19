@@ -493,8 +493,9 @@ class tx_indexed_search_extparse {
 			case 'txt':
 			case 'csv':		// Raw text
 				$content = t3lib_div::getUrl($absFile);
-					// TODO: Auto-registration of charset???? -> utf-8 (Current assuming western europe...)
-				$content = $this->pObj->convertHTMLToUtf8($content, 'iso-8859-1');
+					// TODO: Implement auto detection of charset (currently assuming utf-8)
+				$contentCharset = 'utf-8';
+				$content = $this->pObj->convertHTMLToUtf8($content, $contentCharset);
 				$contentArr = $this->pObj->splitRegularContent($content);
 				$contentArr['title'] = basename($absFile);	// Make sure the title doesn't expose the absolute path!
 			break;

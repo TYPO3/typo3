@@ -375,7 +375,7 @@ final class t3lib_div {
 		} else {
 				// this case should not happen
 			$csConvObj = self::makeInstance('t3lib_cs');
-			return $csConvObj->crop('iso-8859-1', $string, $chars, $appendString);
+			return $csConvObj->crop('utf-8', $string, $chars, $appendString);
 		}
 	}
 
@@ -4189,7 +4189,7 @@ final class t3lib_div {
 		if (@is_file($fileRef) && $langKey) {
 
 				// Set charsets:
-			$sourceCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'iso-8859-1');
+			$sourceCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'utf-8');
 			if ($charset) {
 				$targetCharset = $csConvObj->parse_charset($charset);
 			} else {
@@ -4216,9 +4216,9 @@ final class t3lib_div {
 
 					// converting the default language (English)
 					// this needs to be done for a few accented loan words and extension names
-				if (is_array($LOCAL_LANG['default']) && $targetCharset != 'iso-8859-1') {
+				if (is_array($LOCAL_LANG['default']) && $targetCharset != 'utf-8') {
 					foreach ($LOCAL_LANG['default'] as &$labelValue) {
-						$labelValue = $csConvObj->conv($labelValue, 'iso-8859-1', $targetCharset);
+						$labelValue = $csConvObj->conv($labelValue, 'utf-8', $targetCharset);
 					}
 					unset($labelValue);
 				}
@@ -5190,7 +5190,7 @@ final class t3lib_div {
 	 * @param string $charset Charset used for encoding
 	 * @return string The encoded string
 	 */
-	public static function encodeHeader($line, $enc = 'quoted-printable', $charset = 'iso-8859-1') {
+	public static function encodeHeader($line, $enc = 'quoted-printable', $charset = 'utf-8') {
 			// Avoid problems if "###" is found in $line (would conflict with the placeholder which is used below)
 		if (strpos($line, '###') !== FALSE) {
 			return $line;

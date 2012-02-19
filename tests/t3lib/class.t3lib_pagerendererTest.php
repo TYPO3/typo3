@@ -766,7 +766,7 @@ class t3lib_PageRendererTest extends tx_phpunit_testcase {
 	public function isInlineLanguageLabelDeliveredWithNonUTF8() {
 		$testPrefix = uniqid('test');
 		$this->fixture->loadExtCore();
-		$this->fixture->setCharSet('iso-8859-1');
+		$this->fixture->setCharSet('utf-8');
 		$this->fixture->addInlineLanguageLabel($testPrefix, $testPrefix . "_\xd8");
 
 		$out = $this->fixture->render();
