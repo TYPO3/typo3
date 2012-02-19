@@ -330,7 +330,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$this->contentCharset = $LANG->csConvObj->charSetArray[$this->contentTypo3Language];
 			$this->contentCharset = $this->contentCharset ? $this->contentCharset : 'iso-8859-1';
 			$this->origContentCharSet = $this->contentCharset;
-			$this->contentCharset = (trim($TYPO3_CONF_VARS['BE']['forceCharset']) ? trim($TYPO3_CONF_VARS['BE']['forceCharset']) : $this->contentCharset);
+			$this->contentCharset = 'utf-8';
 
 			/* =======================================
 			 * TOOLBAR CONFIGURATION
@@ -1091,9 +1091,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 */
 	function buildNestedJSArray($conf) {
 		$convertedConf = t3lib_div::removeDotsFromTS($conf);
-		if ($this->is_FE()) {
-			$GLOBALS['TSFE']->csConvObj->convArray($convertedConf, ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'iso-8859-1'), 'utf-8');
-		} else {
+		if (!$this->is_FE()) {
 			$GLOBALS['LANG']->csConvObj->convArray($convertedConf, $GLOBALS['LANG']->charSet, 'utf-8');
 		}
 		return str_replace(array(':"0"', ':"\/^(', ')$\/i"', ':"\/^(', ')$\/"', '[]'), array(':false', ':/^(', ')$/i', ':/^(', ')$/', '{}'), json_encode($convertedConf));
@@ -1271,9 +1269,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		global $LANG, $TSFE, $TYPO3_CONF_VARS;
 
 		if ($this->is_FE()) {
-			if (strcmp(substr($string,0,4),'LLL:') && $TYPO3_CONF_VARS['BE']['forceCharset'])	{
+			if (strcmp(substr($string,0,4),'LLL:')) {
 					// A pure string coming from Page TSConfig must be in forceCharset, otherwise we just don't know..
-				$label = $TSFE->csConvObj->conv($TSFE->sL(trim($string)), $TYPO3_CONF_VARS['BE']['forceCharset'], $this->OutputCharset);
+				$label = $TSFE->csConvObj->conv($TSFE->sL(trim($string)), 'utf-8', $this->OutputCharset);
 			} else {
 				$label = $TSFE->csConvObj->conv($TSFE->sL(trim($string)), $this->charset, $this->OutputCharset);
 			}

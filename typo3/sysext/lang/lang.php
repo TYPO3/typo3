@@ -154,10 +154,6 @@ class language {
 		if (in_array($lang, $locales->getLocales())) {
 				// The current language key
 			$this->lang = $lang;
-			if ($this->charSetArray[$this->lang]) {
-					// The charset if different from the default.
-				$this->charSet = $this->charSetArray[$this->lang];
-			}
 
 			$this->languageDependencies[] = $this->lang;
 			foreach ($locales->getLocaleDependencies($this->lang) as $language) {
@@ -167,16 +163,6 @@ class language {
 
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['lang']['debug']) {
 			$this->debugKey = TRUE;
-		}
-
-			// If a forced charset is used and different from the charset otherwise used:
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] && $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] != $this->charSet) {
-				// Set the forced charset:
-			$this->charSet = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
-
-			if ($this->charSet != 'utf-8' && !$this->csConvObj->initCharset($this->charSet)) {
-				throw new RuntimeException('Forced charset not found: The forced character set "'. $this->charSet . '" was not found in t3lib/csconvtbl/', 1294587487);
-			}
 		}
 	}
 
@@ -238,7 +224,7 @@ class language {
 
 	/**
 	 * Will convert the input strings special chars (all above 127) to entities.
-	 * The string is expected to be encoded in the charset, $this->charSet
+	 * The string is expected to be encoded in UTF-8
 	 * This function is used to create strings that can be used in the Click Menu
 	 * (Context Sensitive Menus). The reason is that the values that are dynamically
 	 * written into the <div> layer is decoded as iso-8859-1 no matter what charset
@@ -250,11 +236,6 @@ class language {
 	 * @access	public
 	 */
 	public function makeEntities($str) {
-			// Convert string to UTF-8:
-		if ($this->charSet != 'utf-8') {
-			$str = $this->csConvObj->utf8_encode($str, $this->charSet);
-		}
-
 			// Convert string back again, but using the full entity conversion:
 		return $this->csConvObj->utf8_to_entities($str);
 	}
@@ -267,17 +248,11 @@ class language {
 	 * rawurlencode() in order to pass strings in a safe way. This could still be done
 	 * for iso-8859-1 charsets but now I have applied the same method here for all charsets.
 	 *
-	 * @param	string $str		Input string, encoded with $this->charSet
+	 * @param	string $str		Input string, encoded with UTF-8
 	 * @return	string			Output string, a JavaScript function: "String.fromCharCode(......)"
 	 * @access	public
 	 */
 	public function JScharCode($str) {
-
-			// Convert string to UTF-8:
-		if ($this->charSet != 'utf-8') {
-			$str = $this->csConvObj->utf8_encode($str, $this->charSet);
-		}
-
 			// Convert the UTF-8 string into a array of char numbers:
 		$nArr = $this->csConvObj->utf8_to_numberarray($str);
 
