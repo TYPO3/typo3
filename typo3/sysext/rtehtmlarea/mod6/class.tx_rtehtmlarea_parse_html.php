@@ -78,7 +78,7 @@ class tx_rtehtmlarea_parse_html {
 
 		$clientInfo = t3lib_div::clientInfo();
 			// the charset of the content element, possibly overidden by forceCharset
-		$toCharSet = t3lib_div::_GP('charset')?t3lib_div::_GP('charset'):'iso-8859-1';
+		$toCharSet = t3lib_div::_GP('charset')?t3lib_div::_GP('charset'):'utf-8';
 			// IE wants it back in utf-8
 		if ( $clientInfo['BROWSER']= 'msie') {
 			$toCharSet = 'utf-8';

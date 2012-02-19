@@ -140,9 +140,9 @@ class t3lib_l10n_parser_Llphp implements t3lib_l10n_parser {
 
 			// Converting the default language (English)
 			// This needs to be done for a few accented loan words and extension names
-		if (is_array($LOCAL_LANG['default']) && $this->targetCharset !== 'iso-8859-1') {
+		if (is_array($LOCAL_LANG['default']) && $this->targetCharset !== 'utf-8') {
 			foreach ($LOCAL_LANG['default'] as &$labelValue) {
-				$labelValue = $this->csConvObj->conv($labelValue, 'iso-8859-1', $this->targetCharset);
+				$labelValue = $this->csConvObj->conv($labelValue, 'utf-8', $this->targetCharset);
 			}
 			unset($labelValue);
 		}
@@ -211,7 +211,7 @@ class t3lib_l10n_parser_Llphp implements t3lib_l10n_parser {
 	 */
 	protected function setCharsets($languageKey, $charset) {
 		$this->sourceCharset = $this->csConvObj->parse_charset($this->csConvObj->charSetArray[$languageKey]
-			? $this->csConvObj->charSetArray[$languageKey] : 'iso-8859-1');
+			? $this->csConvObj->charSetArray[$languageKey] : 'utf-8');
 		if ($charset) {
 			$this->targetCharset = $this->csConvObj->parse_charset($charset);
 		} else {

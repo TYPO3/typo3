@@ -169,7 +169,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 
 			// Set the charset of the content
 		$this->contentCharset = $TSFE->csConvObj->charSetArray[$this->contentTypo3Language];
-		$this->contentCharset = $this->contentCharset ? $this->contentCharset : 'iso-8859-1';
+		$this->contentCharset = $this->contentCharset ? $this->contentCharset : 'utf-8';
 		$this->contentCharset = trim($TSFE->config['config']['metaCharset']) ? trim($TSFE->config['config']['metaCharset']) : $this->contentCharset;
 
 		/* =======================================
