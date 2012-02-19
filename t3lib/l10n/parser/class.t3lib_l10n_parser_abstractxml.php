@@ -107,11 +107,8 @@ abstract class t3lib_l10n_parser_AbstractXml implements t3lib_l10n_parser {
 
 		if ($charset !== '') {
 			$targetCharset = $csConvObj->parse_charset($charset);
-		} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) {
-				// When forceCharset is set, we store ALL labels in this charset!!!
-			$targetCharset = $csConvObj->parse_charset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']);
 		} else {
-			$targetCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$languageKey] ? $csConvObj->charSetArray[$languageKey] : 'iso-8859-1');
+			$targetCharset = 'utf-8';
 		}
 
 		return $targetCharset;

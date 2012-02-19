@@ -214,7 +214,7 @@
 	 */
 	var $csConvObj;
 	var $defaultCharSet = 'iso-8859-1';	// The default charset used in the frontend if nothing else is set.
-	var $renderCharset='';				// Internal charset of the frontend during rendering: Defaults to "forceCharset" and if that is not set, to ->defaultCharSet
+	var $renderCharset='';				// Internal charset of the frontend during rendering. (Default: UTF-8)
 	var $metaCharset='';				// Output charset of the websites content. This is the charset found in the header, meta tag etc. If different from $renderCharset a conversion happens before output to browser. Defaults to ->renderCharset if not set.
 	var $localeCharset='';				// Assumed charset of locale strings.
 
@@ -4782,7 +4782,7 @@ if (version == "n3") {
 		$this->getPageRenderer()->setLanguage($this->lang);
 
 			// Setting charsets:
-		$this->renderCharset = $this->csConvObj->parse_charset($this->config['config']['renderCharset'] ? $this->config['config']['renderCharset'] : ($this->TYPO3_CONF_VARS['BE']['forceCharset'] ? $this->TYPO3_CONF_VARS['BE']['forceCharset'] : $this->defaultCharSet));	// Rendering charset of HTML page.
+		$this->renderCharset = $this->csConvObj->parse_charset($this->config['config']['renderCharset'] ? $this->config['config']['renderCharset'] : 'utf-8');	// Rendering charset of HTML page.
 		$this->metaCharset = $this->csConvObj->parse_charset($this->config['config']['metaCharset'] ? $this->config['config']['metaCharset'] : $this->renderCharset);	// Output charset of HTML page.
 	}
 

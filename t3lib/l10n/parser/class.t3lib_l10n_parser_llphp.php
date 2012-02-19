@@ -214,12 +214,8 @@ class t3lib_l10n_parser_Llphp implements t3lib_l10n_parser {
 			? $this->csConvObj->charSetArray[$languageKey] : 'iso-8859-1');
 		if ($charset) {
 			$this->targetCharset = $this->csConvObj->parse_charset($charset);
-		} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) {
-				// When forceCharset is set, we store ALL labels in this charset!!!
-			$this->targetCharset = $this->csConvObj->parse_charset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']);
 		} else {
-			$this->targetCharset = $this->csConvObj->parse_charset($this->csConvObj->charSetArray[$languageKey]
-				? $this->csConvObj->charSetArray[$languageKey] : 'iso-8859-1');
+			$this->targetCharset = 'utf-8';
 		}
 	}
 
