@@ -7758,18 +7758,14 @@ $out="
 		$this->markers['stylesheets'] = implode(LF, $this->stylesheets);
 		$this->markers['llErrors'] = 'The following errors occured';
 		$this->markers['copyright'] = $this->copyright();
-		$this->markers['charset'] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'iso-8859-1';
+		$this->markers['charset'] = 'utf-8';
 		$this->markers['backendUrl'] = '../index.php';
 		$this->markers['backend'] = 'Backend admin';
 		$this->markers['frontendUrl'] = '../../index.php';
 		$this->markers['frontend'] = 'Frontend website';
 
 		$this->markers['metaCharset'] = 'Content-Type" content="text/html; charset=';
-		if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'])) {
-			$this->markers['metaCharset'] .= $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
-		} else {
-			$this->markers['metaCharset'] .= 'iso-8859-1';
-		}
+		$this->markers['metaCharset'] .= 'utf-8';
 
 			// Add the error messages
 		if (!empty($this->errorMessages)) {
@@ -7900,8 +7896,7 @@ $out="
 	 * @return void
 	 */
 	function output($content) {
-		header ('Content-Type: text/html; charset=' .
-			($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']?$GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']:'iso-8859-1'));
+		header ('Content-Type: text/html; charset=utf-8');
 		echo $content;
 	}
 
