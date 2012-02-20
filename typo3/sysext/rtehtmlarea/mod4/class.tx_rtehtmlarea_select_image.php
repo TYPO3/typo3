@@ -823,6 +823,9 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		foreach ($this->hookObjects as $hookObject) {
 			$menuDef = $hookObject->modifyMenuDefinition($menuDef);
 		}
+		
+			// Order the menu items as specified in Page TSconfig
+		$menuDef = $this->orderMenuDefinition($menuDef);
 
 		$this->content .= $this->doc->getTabMenuRaw($menuDef);
 
@@ -1180,6 +1183,26 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			$allowedItems = array_diff($allowedItems, t3lib_div::trimExplode(',', $this->thisConfig['blindImageOptions'], 1));
 		}
 		return $allowedItems;
+	}
+
+	/**
+	 * Order the definition of menu items according to configured order
+	 *
+	 * @param array $menuDefinition: definition of menu items
+	 * @return array ordered menu definition
+	 */
+	public function orderMenuDefinition($menuDefinition) {
+		$orderedMenuDefinition = array();
+		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['orderItems']) {
+			$orderItems = t3lib_div::trimExplode(',', $this->buttonConfig['options.']['orderItems'], TRUE);
+			$orderItems = array_intersect($orderItems, $this->allowedItems);
+			foreach ($orderItems as $item) {
+				$orderedMenuDefinition[$item] = $menuDefinition[$item];
+			}
+		} else {
+			$orderedMenuDefinition = $menuDefinition;
+		}
+		return $orderedMenuDefinition;
 	}
 
 	/**
