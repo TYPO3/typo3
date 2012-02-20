@@ -249,7 +249,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		}
 			// Note: parseCurUrl will invoke the hooks
 		$this->curUrlInfo = $this->parseCurUrl($this->curUrlArray['href'],$this->siteURL);
-		if (isset($this->curUrlArray['external']) && $this->curUrlInfo['act'] != 'mail') {
+		if (isset($this->curUrlArray['data-htmlarea-external']) && $this->curUrlInfo['act'] != 'mail') {
 			$this->curUrlInfo['act'] = 'url';
 			$this->curUrlInfo['info'] = $this->curUrlArray['href'];
 		}
@@ -533,7 +533,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				if (document.ltargetform.anchor_class) browse_links_setClass(document.ltargetform.anchor_class.value);
 				if (document.ltargetform.ltarget) browse_links_setTarget(document.ltargetform.ltarget.value);
 				if (document.ltargetform.lrel) browse_links_setAdditionalValue("rel", document.ltargetform.lrel.value);
-				browse_links_setAdditionalValue("external", "");
+				browse_links_setAdditionalValue("data-htmlarea-external", "");
 				plugin.createLink(theLink,cur_target,cur_class,cur_title,additionalValues);
 				return false;
 			}
@@ -543,7 +543,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				if (document.ltargetform.anchor_class) browse_links_setClass(document.ltargetform.anchor_class.value);
 				if (document.ltargetform.ltarget) browse_links_setTarget(document.ltargetform.ltarget.value);
 				if (document.ltargetform.lrel) browse_links_setAdditionalValue("rel", document.ltargetform.lrel.value);
-				browse_links_setAdditionalValue("external", "");
+				browse_links_setAdditionalValue("data-htmlarea-external", "");
 				plugin.createLink(theLink,cur_target,cur_class,cur_title,additionalValues);
 				return false;
 			}
@@ -551,7 +551,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				if (document.ltargetform.anchor_title) browse_links_setTitle(document.ltargetform.anchor_title.value);
 				if (document.ltargetform.anchor_class) browse_links_setClass(document.ltargetform.anchor_class.value);
 				if (document.ltargetform.ltarget) browse_links_setTarget(document.ltargetform.ltarget.value);
-				browse_links_setAdditionalValue("external", "");
+				browse_links_setAdditionalValue("data-htmlarea-external", "");
 				plugin.createLink(theLink,cur_target,cur_class,cur_title,additionalValues);
 				return false;
 			}
@@ -710,7 +710,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							<tr>
 								<td>'.$LANG->getLL('emailAddress',1).':</td>
 								<td><input type="text" name="lemail"'.$this->doc->formWidth(20).' value="'.htmlspecialchars($this->curUrlInfo['act']=='mail'?$this->curUrlInfo['info']:'').'" /> '.
-									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="browse_links_setTarget(\'\');browse_links_setHref(\'mailto:\'+document.lurlform.lemail.value);browse_links_setAdditionalValue(\'external\', \'\');return link_current();" /></td>
+									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="browse_links_setTarget(\'\');browse_links_setHref(\'mailto:\'+document.lurlform.lemail.value);browse_links_setAdditionalValue(\'data-htmlarea-external\', \'\');return link_current();" /></td>
 							</tr>
 						</table>
 					</form>';
@@ -727,7 +727,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							<tr>
 								<td>URL:</td>
 								<td><input type="text" name="lurl"'.$this->doc->formWidth(20).' value="'.htmlspecialchars($this->curUrlInfo['act']=='url'?$this->curUrlInfo['info']:'http://').'" /> '.
-									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="if (/^[A-Za-z0-9_+]{1,8}:/.test(document.lurlform.lurl.value)) { browse_links_setHref(document.lurlform.lurl.value); } else { browse_links_setHref(\'http://\'+document.lurlform.lurl.value); }; browse_links_setAdditionalValue(\'external\', \'1\'); return link_current();" /></td>
+									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="if (/^[A-Za-z0-9_+]{1,8}:/.test(document.lurlform.lurl.value)) { browse_links_setHref(document.lurlform.lurl.value); } else { browse_links_setHref(\'http://\'+document.lurlform.lurl.value); }; browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\'); return link_current();" /></td>
 							</tr>
 						</table>
 					</form>';
@@ -935,7 +935,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							<td>
 							</td>
 							<td colspan="3">
-								<input type="submit" value="'.$LANG->getLL('update',1).'" onclick="' . (($this->act == 'url') ? 'browse_links_setAdditionalValue(\'external\', \'1\'); ' : '') .'return link_current();" />
+								<input type="submit" value="'.$LANG->getLL('update',1).'" onclick="' . (($this->act == 'url') ? 'browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\'); ' : '') .'return link_current();" />
 							</td>
 						</tr>';
 		}

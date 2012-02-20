@@ -567,7 +567,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				unset($attribArray_copy['target']);
 				unset($attribArray_copy['class']);
 				unset($attribArray_copy['title']);
-				unset($attribArray_copy['external']);
+				unset($attribArray_copy['data-htmlarea-external']);
 				if ($attribArray_copy['rteerror']) { // Unset "rteerror" and "style" attributes if "rteerror" is set!
 					unset($attribArray_copy['style']);
 					unset($attribArray_copy['rteerror']);
@@ -590,8 +590,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					$attribArray['class'] = preg_match('/ /', $attribArray['class']) ? '"' . $attribArray['class'] . '"' : $attribArray['class'];
 					$attribArray['title'] = preg_match('/ /', $attribArray['title']) ? '"' . $attribArray['title'] . '"' : $attribArray['title'];
 						// Creating the TYPO3 pseudo-tag "<LINK>" for the link (includes href/url, target and class attributes):
-						// If external attribute is set, keep the href unchanged
-					$href = $attribArray['external'] ? $attribArray['href'] : $info['url'] . ($info['query'] ? ',0,' . $info['query'] : '');
+						// If data-htmlarea-external attribute is set, keep the href unchanged
+					$href = $attribArray['data-htmlarea-external'] ? $attribArray['href'] : $info['url'] . ($info['query'] ? ',0,' . $info['query'] : '');
 					$bTag = '<link ' . $href . ($attribArray['target'] ? ' ' . $attribArray['target'] : (($attribArray['class'] || $attribArray['title']) ? ' -' : '')) . ($attribArray['class'] ? ' ' . $attribArray['class'] : ($attribArray['title'] ? ' -' : '')) . ($attribArray['title'] ? ' ' . $attribArray['title'] : '') . '>';
 					$eTag = '</link>';
 
@@ -613,14 +613,14 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				} else { // ... otherwise store the link as a-tag.
 						// Unsetting 'rtekeep' attribute if that had been set.
 					unset($attribArray['rtekeep']);
-					if (!$attribArray['external']) {
+					if (!$attribArray['data-htmlarea-external']) {
 							// If the url is local, remove url-prefix
 						$siteURL = $this->siteUrl();
 						if ($siteURL && substr($attribArray['href'], 0, strlen($siteURL)) == $siteURL) {
 							$attribArray['href'] = $this->relBackPath . substr($attribArray['href'], strlen($siteURL));
 						}
 					}
-					unset($attribArray['external']);
+					unset($attribArray['data-htmlarea-external']);
 					$bTag = '<a ' . t3lib_div::implodeAttributes($attribArray, 1) . '>';
 					$eTag = '</a>';
 					$blockSplit[$k] = $bTag . $this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])) . $eTag;
@@ -709,7 +709,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						($tagCode[2] && $tagCode[2] != '-' ? ' target="' . htmlspecialchars($tagCode[2]) . '"' : '') .
 						($tagCode[3] && $tagCode[3] != '-' ? ' class="' . htmlspecialchars($tagCode[3]) . '"' : '') .
 						($tagCode[4] ? ' title="' . htmlspecialchars($tagCode[4]) . '"' : '') .
-						($external ? ' external="1"' : '') .
+						($external ? ' data-htmlarea-external="1"' : '') .
 						($error ? ' rteerror="' . htmlspecialchars($error) . '" style="background-color: yellow; border:2px red solid; color: black;"' : '') . // Should be OK to add the style; the transformation back to databsae will remove it...
 						'>';
 				$eTag = '</a>';
@@ -1632,7 +1632,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					if (!$uP['scheme']) {
 						$attribArray['href'] = $this->siteUrl() . substr($attribArray['href'], strlen($this->relBackPath));
 					} elseif ($uP['scheme'] != 'mailto') {
-						$attribArray['external'] = 1;
+						$attribArray['data-htmlarea-external'] = 1;
 					}
 				} else {
 					$attribArray['rtekeep'] = 1;
