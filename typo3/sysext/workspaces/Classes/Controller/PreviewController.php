@@ -295,12 +295,6 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 			'donateWindow_button_postpone' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:donateWindow.button_postpone'),
 		);
 
-			// Convert labels/settings back to UTF-8 since json_encode() only works with UTF-8:
-		if ($GLOBALS['LANG']->charSet !== 'utf-8') {
-			$t3Configuration['username'] = $GLOBALS['LANG']->csConvObj->conv($t3Configuration['username'], $GLOBALS['LANG']->charSet, 'utf-8');
-			$GLOBALS['LANG']->csConvObj->convArray($t3LLLcore, $GLOBALS['LANG']->charSet, 'utf-8');
-		}
-
 		$js = '
 		TYPO3.configuration = ' . json_encode($t3Configuration) . ';
 		TYPO3.LLL = {
