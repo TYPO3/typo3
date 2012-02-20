@@ -5587,8 +5587,9 @@ class tslib_cObj {
 					if ($forceTarget) {
 						$target = $forceTarget;
 					}
-					if ($linktxt == '')
-						$linktxt = $link_param;
+					if ($linktxt == '') {
+						$linktxt = htmlspecialchars($link_param);
+					}
 					if (!$pU['scheme']) {
 						$scheme = 'http://';
 					} else {
@@ -5610,8 +5611,9 @@ class tslib_cObj {
 				} elseif ($containsSlash || $isLocalFile) { // file (internal)
 					$splitLinkParam = explode('?', $link_param);
 					if (file_exists(rawurldecode($splitLinkParam[0])) || $isLocalFile) {
-						if ($linktxt == '')
-							$linktxt = rawurldecode($link_param);
+						if ($linktxt == '') {
+							$linktxt = htmlspecialchars(rawurldecode($link_param));
+						}
 						if ($GLOBALS['TSFE']->config['config']['jumpurl_enable'] || $conf['jumpurl']) {
 							$theFileEnc = str_replace('%2F', '/', rawurlencode(rawurldecode($link_param)));
 							$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix .
@@ -5701,8 +5703,9 @@ class tslib_cObj {
 						}
 
 							// Setting title if blank value to link:
-						if ($linktxt == '')
-							$linktxt = $page['title'];
+						if ($linktxt == '') {
+							$linktxt = htmlspecialchars($page['title']);
+						}
 
 							// Query Params:
 						$addQueryParams = $conf['addQueryString'] ? $this->getQueryArguments($conf['addQueryString.']) : '';
@@ -6197,8 +6200,8 @@ class tslib_cObj {
 	 * @return	string		Returns a numerical array with two elements: 1) $mailToUrl, string ready to be inserted into the href attribute of the <a> tag, b) $linktxt: The string between starting and ending <a> tag.
 	 */
 	function getMailTo($mailAddress, $linktxt, $initP = '?') {
-		if (!strcmp($linktxt, '')) {
-			$linktxt = $mailAddress;
+		if ($linktxt == '') {
+			$linktxt = htmlspecialchars($mailAddress);
 		}
 
 		$mailToUrl = 'mailto:' . $mailAddress;
