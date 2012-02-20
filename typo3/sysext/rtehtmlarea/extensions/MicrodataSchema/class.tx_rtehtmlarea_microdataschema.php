@@ -99,8 +99,6 @@ class tx_rtehtmlarea_microdataschema extends tx_rtehtmlarea_api {
 			// Convert character set
 		if ($this->htmlAreaRTE->is_FE()) {
 			$GLOBALS['TSFE']->csConvObj->convArray($schema, $this->htmlAreaRTE->outputCharset, 'utf-8');
-		} else {
-			$GLOBALS['LANG']->csConvObj->convArray($schema, $GLOBALS['LANG']->charSet, 'utf-8');
 		}
 			// Store json encoded array in temporary file
 		$registerRTEinJavascriptString = LF. TAB . 'RTEarea[editornumber].schemaUrl = "' . (($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix) ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile('', 'schema_' . $this->htmlAreaRTE->language, 'js', json_encode($schema), TRUE) . '";';

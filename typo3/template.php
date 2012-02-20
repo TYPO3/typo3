@@ -128,7 +128,7 @@ class template {
 	var $parseTimeFlag = 0;			// Will output the parsetime of the scripts in milliseconds (for admin-users). Set this to FALSE when releasing TYPO3. Only for dev.
 
 		// INTERNAL
-	var $charset = 'iso-8859-1';	// Default charset. see function initCharset()
+	var $charset = 'utf-8';			// Default charset. see function initCharset()
 
 	var $sectionFlag=0;				// Internal: Indicates if a <div>-output section is open
 	var $divClass = '';				// (Default) Class for wrapping <DIV>-tag of page. Is set in class extensions.
