@@ -830,7 +830,7 @@ class t3lib_cs {
 						$parts[$k] = $this->UnumberToChar(substr($v, 1));
 					}
 				} elseif ($alsoStdHtmlEnt && $trans_tbl['&' . $v . ';']) { // Other entities:
-					$parts[$k] = $this->utf8_encode($trans_tbl['&' . $v . ';'], 'utf-8');
+					$parts[$k] = $trans_tbl['&' . $v . ';'];
 				} else { // No conversion:
 					$parts[$k] = '&' . $v . ';';
 				}

@@ -103,8 +103,6 @@ class tx_rtehtmlarea_typo3color extends tx_rtehtmlarea_api {
 			}
 			if ($this->htmlAreaRTE->is_FE()) {
 				$GLOBALS['TSFE']->csConvObj->convArray($HTMLAreaJSColors, $this->htmlAreaRTE->OutputCharset, 'utf-8');
-			} else {
-				$GLOBALS['LANG']->csConvObj->convArray($HTMLAreaJSColors, $GLOBALS['LANG']->charSet, 'utf-8');
 			}
 			$configureRTEInJavascriptString .= '
 			RTEarea['.$RTEcounter.'].colors = ' . json_encode($HTMLAreaJSColors) . ';';
