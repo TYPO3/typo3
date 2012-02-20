@@ -752,14 +752,8 @@ $query . '<table class="typo3-adminPanel">' .
 	 */
 	public function extGetLL($key) {
 		$labelStr = htmlspecialchars($GLOBALS['LANG']->getLL($key));	// Label string in the default backend output charset.
-
-			// Convert to utf-8, then to entities:
-		if ($GLOBALS['LANG']->charSet != 'utf-8') {
-			$labelStr = $GLOBALS['LANG']->csConvObj->utf8_encode($labelStr,$GLOBALS['LANG']->charSet);
-		}
 		$labelStr = $GLOBALS['LANG']->csConvObj->utf8_to_entities($labelStr);
 
-			// Return the result:
 		return $labelStr;
 	}
 }

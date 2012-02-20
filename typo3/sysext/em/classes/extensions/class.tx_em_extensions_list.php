@@ -819,7 +819,6 @@ EXTENSION KEYS:
 		$filepath = $this->parentObject->getMirrorURL();
 
 		foreach ($this->parentObject->xmlHandler->extensionsXML as $extKey => $data) {
-			$GLOBALS['LANG']->csConvObj->convarray($data, 'utf-8', $GLOBALS['LANG']->charSet); // is there a better place for conversion?
 			$list[$extKey]['type'] = '_';
 			$version = array_keys($data['versions']);
 			$extPath = t3lib_div::strtolower($extKey);

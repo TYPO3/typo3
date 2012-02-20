@@ -61,10 +61,6 @@ class TYPO3AJAX {
 	 */
 	public function __construct($ajaxId) {
 
-		if ($GLOBALS['LANG']->charSet != $this->charset) {
-			$this->charset = $GLOBALS['LANG']->charSet;
-		}
-
 			// get charset from current AJAX request (which is expected to be utf-8)
 		preg_match('/;\s*charset\s*=\s*([a-zA-Z0-9_-]*)/i', $_SERVER['CONTENT_TYPE'], $contenttype);
 		$charset = $GLOBALS['LANG']->csConvObj->parse_charset($contenttype[1]);
