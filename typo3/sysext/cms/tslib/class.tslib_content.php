@@ -5701,8 +5701,9 @@ class tslib_cObj {
 						}
 
 							// Setting title if blank value to link:
-						if ($linktxt == '')
-							$linktxt = $page['title'];
+						if ($linktxt == '') {
+							$linktxt = htmlspecialchars($page['title']);
+						}
 
 							// Query Params:
 						$addQueryParams = $conf['addQueryString'] ? $this->getQueryArguments($conf['addQueryString.']) : '';
