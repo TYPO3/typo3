@@ -86,8 +86,6 @@ class tx_rtehtmlarea_language extends tx_rtehtmlarea_api {
 		}
 		if ($this->htmlAreaRTE->is_FE()) {
 			$GLOBALS['TSFE']->csConvObj->convArray($languagesJSArray, $this->htmlAreaRTE->OutputCharset, 'utf-8');
-		} else {
-			$GLOBALS['LANG']->csConvObj->convArray($languagesJSArray, $GLOBALS['LANG']->charSet, 'utf-8');
 		}
 		$languagesJSArray = json_encode(array('options' => $languagesJSArray));
 		$registerRTEinJavascriptString .= '

@@ -1091,9 +1091,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 */
 	function buildNestedJSArray($conf) {
 		$convertedConf = t3lib_div::removeDotsFromTS($conf);
-		if (!$this->is_FE()) {
-			$GLOBALS['LANG']->csConvObj->convArray($convertedConf, $GLOBALS['LANG']->charSet, 'utf-8');
-		}
 		return str_replace(array(':"0"', ':"\/^(', ')$\/i"', ':"\/^(', ')$\/"', '[]'), array(':false', ':/^(', ')$/i', ':/^(', ')$/', '{}'), json_encode($convertedConf));
 	}
 
