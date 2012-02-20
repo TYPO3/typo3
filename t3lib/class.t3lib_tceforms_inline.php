@@ -1292,7 +1292,6 @@ class t3lib_TCEforms_inline {
 			}
 		}
 		if ($data) {
-			$data = $GLOBALS['LANG']->csConvObj->utf8_encode($data, $GLOBALS['LANG']->charSet);
 			$jsonArray['data'] = $data;
 			array_unshift(
 				$jsonArrayScriptCall,

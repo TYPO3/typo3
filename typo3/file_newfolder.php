@@ -113,7 +113,6 @@ class SC_file_newfolder {
 		$this->charsetConversion = t3lib_div::makeInstance('t3lib_cs');
 
 			// Cleaning and checking target
-		$this->target = $this->charsetConversion->conv($this->target, 'utf-8', $GLOBALS['LANG']->charSet);
 		$this->target = $this->basicff->is_directory($this->target);
 		$key=$this->basicff->checkPathAgainstMounts($this->target.'/');
 		if (!$this->target || !$key) {
@@ -151,9 +150,7 @@ class SC_file_newfolder {
 
 			function reload(a)	{	//
 				if (!changed || (changed && confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.redraw')) . '))) {
-					var params = "&target="+encodeURIComponent(path)+"&number="+a+"&returnUrl='
-							. urlencode($this->charsetConversion->conv($this->returnUrl, $GLOBALS['LANG']->charSet, 'utf-8'))
-							. '";
+					var params = "&target="+encodeURIComponent(path)+"&number="+a+"&returnUrl=' . rawurlencode($this->returnUrl) . '";
 					window.location.href = "file_newfolder.php?"+params;
 				}
 			}

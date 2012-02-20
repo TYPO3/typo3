@@ -517,11 +517,6 @@ class TYPO3backend {
 			}
 		}
 
-			// Convert labels/settings back to UTF-8 since json_encode() only works with UTF-8:
-		if ($GLOBALS['LANG']->charSet !== 'utf-8') {
-			$GLOBALS['LANG']->csConvObj->convArray($generatedLabels, $GLOBALS['LANG']->charSet, 'utf-8');
-		}
-
 		return 'TYPO3.LLL = ' . json_encode($generatedLabels) . ';';
 	}
 
@@ -578,9 +573,6 @@ class TYPO3backend {
 			),
 			'firstWebmountPid' => intval($GLOBALS['WEBMOUNTS'][0]),
 		);
-		if ($GLOBALS['LANG']->charSet !== 'utf-8') {
-			$t3Configuration['username'] = $GLOBALS['LANG']->csConvObj->conv($t3Configuration['username'], $GLOBALS['LANG']->charSet, 'utf-8');
-		}
 
 		$this->js .= '
 	TYPO3.configuration = ' . json_encode($t3Configuration) . ';

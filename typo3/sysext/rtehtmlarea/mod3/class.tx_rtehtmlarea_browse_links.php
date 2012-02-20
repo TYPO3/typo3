@@ -369,7 +369,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	protected function initLinkAttributes() {
 
 			// Initializing the title value
-		$this->setTitle = $GLOBALS['LANG']->csConvObj->conv($this->curUrlArray['title'], 'utf-8', $GLOBALS['LANG']->charSet);
+		$this->setTitle = $this->curUrlArray['title'];
 
 			// Processing the classes configuration
 		$classSelected = array();

@@ -182,8 +182,6 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlarea_api {
 		}
 		if ($this->htmlAreaRTE->is_FE()) {
 			$GLOBALS['TSFE']->csConvObj->convArray($itemsJSArray, $this->htmlAreaRTE->OutputCharset, 'utf-8');
-		} else {
-			$GLOBALS['LANG']->csConvObj->convArray($itemsJSArray, $GLOBALS['LANG']->charSet, 'utf-8');
 		}
 		$itemsJSArray = json_encode(array('options' => $itemsJSArray));
 			// Adding to button JS configuration

@@ -187,8 +187,6 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlarea_api {
 			}
 			if ($this->htmlAreaRTE->is_FE()) {
 				$GLOBALS['TSFE']->csConvObj->convArray($JSBlockElements, $this->htmlAreaRTE->OutputCharset, 'utf-8');
-			} else {
-				$GLOBALS['LANG']->csConvObj->convArray($JSBlockElements, $GLOBALS['LANG']->charSet, 'utf-8');
 			}
 			$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.formatblock.options = ' . json_encode($JSBlockElements) . ';';
