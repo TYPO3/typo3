@@ -32,6 +32,7 @@
 			<label index="tooltip.swapAll">Really swap entire workspace?</label>
 			<label index="tooltip.discardAll">Do you really want to discard changes from the whole workspace?</label>
 			<label index="tooltip.affectWholeWorkspace">Please note that this will affect all changes in the current workspace, which may be more than you are currently seeing on your screen.</label>
+			<label index="tooltip.generatePagePreview">Generate page preview</label>
 			<label index="previewLink">Preview Link</label>
 			<label index="error.noResponse">The server did not send any response whether the action was successful.</label>
 			<label index="rowDetails">Row details...</label>
@@ -83,6 +84,7 @@
 			<label index="label_doaction_publish">Publish</label>
 			<label index="label_doaction_swap">Swap</label>
 			<label index="label_doaction_discard">Discard</label>
+			<label index="label_doaction_generatePreviewLink">Generate Workspace Preview Link</label>
 		</languageKey>
 	</data>
 </T3locallang>
