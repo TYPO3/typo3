@@ -227,16 +227,15 @@ class tx_simulatestatic {
 		}
 	}
 
-
 	/**
 	 * Analyzes the second part of a id-string (after the "+"), looking for B6 or M5 encoding
-	 * and if found it will resolve it and restore the variables in global $_GET.
+	 * If found it will resolve it and restore the variables in global $_GET.
 	 * If values for ->cHash, ->no_cache, ->jumpurl and ->MP is found,
 	 * they are also loaded into the internal vars of this class.
 	 * => Not yet used, could be ported from tslib_fe as well
 	 *
-	 * @param	string		String to analyze
-	 * @return	void
+	 * @param string $string: String to analyze
+	 * @return void
 	 */
 	protected function idPartsAnalyze($string) {
 		$getVars = '';
@@ -248,15 +247,36 @@ class tx_simulatestatic {
 			case 'M5':
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('params', 'cache_md5params', 'md5hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(substr($string, 2), 'cache_md5params'));
 				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
-				$GLOBALS['TSFE']->updateMD5paramsRecord(substr($string, 2));
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+					'cache_md5params',
+					'md5hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(substr($string, 2), 'cache_md5params'), array('tstamp' => $GLOBALS['EXEC_TIME'])
+				);
 				parse_str($row['params'], $getVars);
 			break;
 		}
 		$GLOBALS['TSFE']->mergingWithGetVars($getVars);
 	}
 
-
+	/**
+	 * Hook for modifying the page id in tslib_fe.
+	 *
+	 * TSFE->idParts[0] is searched for '+' sign.
+	 * If the sign is present, all successive data is analysed.
+	 *
+	 * @param array $parameters: Empty array; unused
+	 * @param tslib_fe $parentObject: A reference to the global TSFE
+	 * @return void
+	 */
+	public function hookModifyPageId(array &$parameters, tslib_fe &$parentObject) {
+			// Splitting the Id by a '+' sign
+		$idParts = explode('+', $parentObject->idParts[0], 2);
+		if (isset($idParts[1])) {
+			$this->idPartsAnalyze($idParts[1]);
+		}
+		$parentObject->id = $idParts[0];
+	}
 
 
 	/********************************************
