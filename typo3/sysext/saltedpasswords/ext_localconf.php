@@ -45,7 +45,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_saltedpasswo
 	'extension' => $_EXTKEY,
 	'title' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.name',
 	'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.description',
-	'additionalFields' => '',
+	'additionalFields' => 'tx_saltedpasswords_Tasks_BulkUpdate_AdditionalFieldProvider',
 );
 
 ?>
