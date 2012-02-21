@@ -18,6 +18,21 @@
 			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.description" xml:space="preserve">
 				<source>Update all frontend and backend user passwords to salted hashes. This task deactivates itself when completed.</source>
 			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.label.numberOfRecords" xml:space="preserve">
+				<source>The number of records to process on each run</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.invalidNumberOfRecords" xml:space="preserve">
+				<source>The number of records to process on each run must be greater than zero and numeric.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.label.canDeactivateSelf" xml:space="preserve">
+				<source>Deactivate if all records are converted</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.deactivateself" xml:space="preserve">
+				<source>Deactivate=</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.numberofrecords" xml:space="preserve">
+				<source>Number of records=</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
