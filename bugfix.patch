@@ -1,0 +1,230 @@
+From 0066ad5fcd704c416fb1c255c4cb56f5d360701b Mon Sep 17 00:00:00 2001
+From: Florian Scholz <florian.scholz@hmmh.de>
+Date: Tue, 21 Feb 2012 13:49:42 +0100
+Subject: [PATCH] [FEATURE] Checkbox for confirmation in FormWizard
+
+Adds an extra BEHAVIOUR section to form tab with a
+checkbox to control whether the confirmation page
+should be shown.
+
+Fixes: #28628
+---
+ typo3/sysext/form/Classes/View/Wizard/Wizard.php   |    1 +
+ .../sysext/form/Configuration/PageTS/modWizards.ts |    2 +-
+ .../Private/Language/locallang_wizard.xlf          |    6 +
+ .../Public/JavaScript/Wizard/Viewport/Left/Form.js |   13 ++
+ .../Wizard/Viewport/Left/Form/Behaviour.js         |  128 ++++++++++++++++++++
+ 5 files changed, 149 insertions(+), 1 deletions(-)
+ create mode 100644 typo3/sysext/form/Resources/Public/JavaScript/Wizard/Viewport/Left/Form/Behaviour.js
+
+diff --git a/typo3/sysext/form/Classes/View/Wizard/Wizard.php b/typo3/sysext/form/Classes/View/Wizard/Wizard.php
+index 52cb256..1ab8ace 100644
+--- a/typo3/sysext/form/Classes/View/Wizard/Wizard.php
++++ b/typo3/sysext/form/Classes/View/Wizard/Wizard.php
+@@ -228,6 +228,7 @@ class tx_form_View_Wizard_Wizard extends tx_form_View_Wizard_Abstract {
+ 			'Viewport/Left/Options/Forms/Validation/Required.js',
+ 			'Viewport/Left/Options/Forms/Validation/Uri.js',
+ 			'Viewport/Left/Form.js',
++			'Viewport/Left/Form/Behaviour.js',
+ 			'Viewport/Left/Form/Attributes.js',
+ 			'Viewport/Left/Form/Prefix.js',
+ 			'Viewport/Left/Form/PostProcessor.js',
+diff --git a/typo3/sysext/form/Configuration/PageTS/modWizards.ts b/typo3/sysext/form/Configuration/PageTS/modWizards.ts
+index 131eab1..d06422b 100644
+--- a/typo3/sysext/form/Configuration/PageTS/modWizards.ts
++++ b/typo3/sysext/form/Configuration/PageTS/modWizards.ts
+@@ -148,7 +148,7 @@ prefix = tx_form
+ 					}
+ 				}
+ 				form {
+-					showAccordions = prefix, attributes, postProcessor
++					showAccordions = behaviour, prefix, attributes, postProcessor
+ 					accordions {
+ 						attributes {
+ 							showProperties = accept, acceptcharset, action, class, dir, enctype, id, lang, method, name, style, title
+diff --git a/typo3/sysext/form/Resources/Private/Language/locallang_wizard.xlf b/typo3/sysext/form/Resources/Private/Language/locallang_wizard.xlf
+index 4160585..c7934a1 100644
+--- a/typo3/sysext/form/Resources/Private/Language/locallang_wizard.xlf
++++ b/typo3/sysext/form/Resources/Private/Language/locallang_wizard.xlf
+@@ -522,6 +522,12 @@
+ 			<trans-unit id="form_prefix" xml:space="preserve">
+ 				<source>Prefix</source>
+ 			</trans-unit>
++			<trans-unit id="form_behaviour" xml:space="preserve">
++				<source>Behaviour</source>
++			</trans-unit>
++			<trans-unit id="behaviour_confirmation_page" xml:space="preserve">
++				<source>Confirmation page</source>
++			</trans-unit>
+ 			<trans-unit id="form_postprocessor" xml:space="preserve">
+ 				<source>Post Processors</source>
+ 			</trans-unit>
+diff --git a/typo3/sysext/form/Resources/Public/JavaScript/Wizard/Viewport/Left/Form.js b/typo3/sysext/form/Resources/Public/JavaScript/Wizard/Viewport/Left/Form.js
+index 13a8888..5b884b5 100644
+--- a/typo3/sysext/form/Resources/Public/JavaScript/Wizard/Viewport/Left/Form.js
++++ b/typo3/sysext/form/Resources/Public/JavaScript/Wizard/Viewport/Left/Form.js
+@@ -64,6 +64,7 @@ TYPO3.Form.Wizard.Viewport.Left.Form = Ext.extend(Ext.Panel, {
+ 	 * values
+ 	 */
+ 	validAccordions: {
++		behaviour: true,
+ 		prefix: true,
+ 		attributes: true,
+ 		postProcessor: true
+@@ -109,6 +110,18 @@ TYPO3.Form.Wizard.Viewport.Left.Form = Ext.extend(Ext.Panel, {
+ 		if (form) {
+ 			allowedAccordions.each(function(option, index, length) {
+ 				switch (option) {
++					case 'behaviour':
++						this.accordion.add({
++							xtype: 'typo3-form-wizard-viewport-left-form-behaviour',
++							element: form,
++							listeners: {
++								'validation': {
++									fn: this.validation,
++									scope: this
++								}
++							}
++						});
++						break;
+ 					case 'prefix':
+ 						this.accordion.add({
+ 							xtype: 'typo3-form-wizard-viewport-left-form-prefix',
+diff --git a/typo3/sysext/form/Resources/Public/JavaScript/Wizard/Viewport/Left/Form/Behaviour.js b/typo3/sysext/form/Resources/Public/JavaScript/Wizard/Viewport/Left/Form/Behaviour.js
+new file mode 100644
+index 0000000..997c69d
+--- /dev/null
++++ b/typo3/sysext/form/Resources/Public/JavaScript/Wizard/Viewport/Left/Form/Behaviour.js
+@@ -0,0 +1,128 @@
++Ext.namespace('TYPO3.Form.Wizard.Viewport.Left.Form');
++
++/**
++ * The behaviour panel in the accordion of the form tab on the left side
++ *
++ * @class TYPO3.Form.Wizard.Viewport.Left.Form.Behaviour
++ * @extends Ext.Panel
++ */
++TYPO3.Form.Wizard.Viewport.Left.Form.Behaviour = Ext.extend(Ext.FormPanel, {
++	/**
++	 * @cfg {String} id
++	 * The unique id of this component (defaults to an auto-assigned id).
++	 * You should assign an id if you need to be able to access the component
++	 * later and you do not have an object reference available
++	 * (e.g., using Ext.getCmp).
++	 *
++	 * Note that this id will also be used as the element id for the containing
++	 * HTML element that is rendered to the page for this component.
++	 * This allows you to write id-based CSS rules to style the specific
++	 * instance of this component uniquely, and also to select sub-elements
++	 * using this component's id as the parent.
++	 */
++	id: 'formwizard-left-form-behaviour',
++
++	/**
++	 * @cfg {String} title
++	 * The title text to be used as innerHTML (html tags are accepted) to
++	 * display in the panel header (defaults to '').
++	 */
++	title: TYPO3.l10n.localize('form_behaviour'),
++
++	/** @cfg {String} defaultType
++	 *
++	 * The default xtype of child Components to create in this Container when
++	 * a child item is specified as a raw configuration object,
++	 * rather than as an instantiated Component.
++	 *
++	 * Defaults to 'panel', except Ext.menu.Menu which defaults to 'menuitem',
++	 * and Ext.Toolbar and Ext.ButtonGroup which default to 'button'.
++	 */
++	defaultType: 'textfield',
++
++	/**
++	 * @cfg {Object} element
++	 * The form component
++	 */
++	element: null,
++
++	/**
++	 * Constructor
++	 *
++	 * @param config
++	 */
++	constructor: function(config){
++			// Call our superclass constructor to complete construction process.
++		TYPO3.Form.Wizard.Viewport.Left.Form.Behaviour.superclass.constructor.call(this, config);
++	},
++
++	/**
++	 * Constructor
++	 *
++	 * Add the form elements to the tab
++	 */
++	initComponent: function() {
++		var config = {
++			items: [{
++				xtype: 'fieldset',
++				title: '',
++				ref: 'fieldset',
++				autoHeight: true,
++				border: false,
++				defaults: {
++					width: 150,
++					msgTarget: 'side'
++				},
++				defaultType: 'checkbox',
++				items: [
++					{
++						fieldLabel: TYPO3.l10n.localize('behaviour_confirmation_page'),
++						name: 'confirmation',
++						listeners: {
++							'check': {
++								scope: this,
++								fn: this.storeValue
++							}
++						}
++					}
++				]
++			}]
++		};
++
++			// apply config
++		Ext.apply(this, Ext.apply(this.initialConfig, config));
++
++			// call parent
++		TYPO3.Form.Wizard.Viewport.Left.Form.Behaviour.superclass.initComponent.apply(this, arguments);
++
++			// Fill the form with the configuration values
++		this.fillForm();
++	},
++
++
++	/**
++	 * Store a changed value from the form in the element
++	 *
++	 * @param {Object} field The field which has changed
++	 */
++	storeValue: function(field) {
++		var fieldName = field.getName();
++
++		var formConfiguration = {};
++		formConfiguration[fieldName] = field.getValue();
++
++		this.element.setConfigurationValue(formConfiguration);
++	},
++
++	/**
++	 * Fill the form with the configuration of the element
++	 *
++	 * @param record The current question
++	 * @return void
++	 */
++	fillForm: function() {
++		this.getForm().setValues(this.element.configuration);
++	}
++});
++
++Ext.reg('typo3-form-wizard-viewport-left-form-behaviour', TYPO3.Form.Wizard.Viewport.Left.Form.Behaviour);
+\ No newline at end of file
+-- 
+1.7.8.msysgit.0
+
