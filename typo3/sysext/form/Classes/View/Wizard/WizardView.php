@@ -208,6 +208,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 			'Viewport/Left/Options/Forms/Validation/Required.js',
 			'Viewport/Left/Options/Forms/Validation/Uri.js',
 			'Viewport/Left/Form.js',
+			'Viewport/Left/Form/Behaviour.js',
 			'Viewport/Left/Form/Attributes.js',
 			'Viewport/Left/Form/Prefix.js',
 			'Viewport/Left/Form/PostProcessor.js',
