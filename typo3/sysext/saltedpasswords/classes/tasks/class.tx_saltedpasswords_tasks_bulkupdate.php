@@ -35,9 +35,6 @@
 class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	/**
 	 * @var boolean Whether or not the task is allowed to deactivate itself after processing all existing user records.
-	 * @TODO: This could be set with an additional field later on.
-	 *		The idea is to not disable the task after all initial users where handled.
-	 *		This could be handy for example if new users are imported regularily from some external source.
 	 */
 	protected $canDeactivateSelf = TRUE;
 
@@ -48,7 +45,6 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	 * If saltedpasswords is enabled for both frontend and backend 2 * numberOfRecords will be handled.
 	 *
 	 * @var integer Number of records
-	 * @TODO: This could be set with an additional field later on
 	 */
 	protected $numberOfRecords = 250;
 
@@ -72,7 +68,7 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	/**
 	 * Execute task
 	 *
-	 * @return void
+	 * @return boolean
 	 */
 	public function execute() {
 		$processedAllRecords = TRUE;
@@ -91,20 +87,45 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 			}
 		}
 
-			// Determine if task should disable itself
-		if ($this->canDeactivateSelf && $processedAllRecords) {
-			$this->deactivateSelf();
+		if ($processedAllRecords) {
+				// Reset the user record pointer
+			$this->userRecordPointer = array(
+				'FE' => 0,
+				'BE' => 0,
+			);
+				// Determine if task should disable itself
+			if ($this->canDeactivateSelf) {
+				$this->deactivateSelf();
+			}
 		}
 
-			// Use save() of parent class tx_scheduler_Task to persist
-			// changed task variables: $this->userRecordPointer and $this->disabled
+			// Use save() of parent class tx_scheduler_Task to persist changed task variables
 		$this->save();
 
-		return(TRUE);
+		return TRUE;
 	}
 
 	/**
-	 * Find next set of frontend or backend users to update.
+	 * Get additional information
+	 *
+	 * @return string Additional information
+	 */
+	public function getAdditionalInformation() {
+		$information =
+			$GLOBALS['LANG']->sL(
+				'LLL:EXT:saltedpasswords/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.deactivateself'
+			) .
+			$this->getCanDeactivateSelf() . '; ' .
+			$GLOBALS['LANG']->sL(
+				'LLL:EXT:saltedpasswords/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.numberofrecords'
+			) .
+			$this->getNumberOfRecords();
+
+		return $information;
+	}
+
+	/**
+	 * Finds next set of frontend or backend users to update.
 	 *
 	 * @param string $mode 'FE' for frontend, 'BE' for backend user records
 	 * @return array Rows with uid and password
@@ -113,7 +134,7 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 		$usersToUpdate = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'uid, password',
 			strtolower($mode) . '_users',
-				// retrieve and update all records (also disabled/deleted) for security reasons
+				// Retrieve and update all records (also disabled/deleted) for security reasons
 			'1 = 1',
 			'',
 			'uid ASC',
@@ -124,13 +145,13 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	}
 
 	/**
-	 * Iterate over given user records and update password if needed.
+	 * Iterates over given user records and update password if needed.
 	 *
 	 * @param string $mode 'FE' for frontend, 'BE' for backend user records
 	 * @param array $users With user uids and passwords
 	 * @return void
 	 */
-	protected function convertPasswords($mode, $users) {
+	protected function convertPasswords($mode, array $users) {
 		$updateUsers = array();
 		foreach ($users as $user) {
 				// If a password is already a salted hash it must not be updated
@@ -147,21 +168,21 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	}
 
 	/**
-	 * Update password and persist salted hash.
+	 * Updates password and persist salted hash.
 	 *
 	 * @param string $mode 'FE' for frontend, 'BE' for backend user records
 	 * @param array $users With user uids and passwords
 	 * @return void
 	 */
-	protected function updatePasswords($mode, $users) {
-			// Get a default saltedpasswords instance
+	protected function updatePasswords($mode, array $users) {
+		/** @var $saltedpasswordsInstance tx_saltedpasswords_salts */
 		$saltedpasswordsInstance = tx_saltedpasswords_salts_factory::getSaltingInstance(NULL, $mode);
 
 		foreach ($users as $user) {
 			$newPassword = $saltedpasswordsInstance->getHashedPassword($user['password']);
 
 				// If a given password is a md5 hash (usually default be_users without saltedpasswords activated),
-				// result of getHasedPassword() is a salted hashed md5 hash.
+				// result of getHashedPassword() is a salted hashed md5 hash.
 				// We prefix those with 'M', saltedpasswords will then update this password
 				// to a usual salted hash upon first login of the user.
 			if ($this->isMd5Password($user['password'])) {
@@ -206,9 +227,9 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	}
 
 	/**
-	 * Check if a given password is a md5 hash, the default for be_user records before saltedpasswords.
+	 * Checks if a given password is a md5 hash, the default for be_user records before saltedpasswords.
 	 *
-	 * @param string $password
+	 * @param string $password The password to test
 	 * @return boolean TRUE if password is md5
 	 */
 	protected function isMd5Password($password) {
@@ -216,7 +237,7 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	}
 
 	/**
-	 * Increment current user record counter by number of handled rows.
+	 * Increments current user record counter by number of handled rows.
 	 *
 	 * @param string $mode 'FE' for frontend, 'BE' for backend user records
 	 * @param integer $number Number of handled rows
@@ -227,7 +248,7 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	}
 
 	/**
-	 * Deactivate this task instance.
+	 * Deactivates this task instance.
 	 * Uses setDisabled() method of parent class tx_scheduler_Task.
 	 *
 	 * @return void
@@ -235,5 +256,44 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	protected function deactivateSelf() {
 		$this->setDisabled(TRUE);
 	}
+
+	/**
+	 * Set if it can deactivate self
+	 *
+	 * @param boolean $canDeactivateSelf
+	 * @return void
+	 */
+	public function setCanDeactivateSelf($canDeactivateSelf) {
+		$this->canDeactivateSelf = $canDeactivateSelf;
+	}
+
+	/**
+	 * Get if it can deactivate self
+	 *
+	 * @return boolean TRUE if task shall deactivate itself, FALSE otherwise
+	 */
+	public function getCanDeactivateSelf() {
+		return $this->canDeactivateSelf;
+	}
+
+	/**
+	 * Set number of records
+	 *
+	 * @param integer $numberOfRecords
+	 * @return void
+	 */
+	public function setNumberOfRecords($numberOfRecords) {
+		$this->numberOfRecords = $numberOfRecords;
+	}
+
+	/**
+	 * Get number of records
+	 *
+	 * @return integer The number of records
+	 */
+	public function getNumberOfRecords() {
+		return $this->numberOfRecords;
+	}
 }
+
 ?>

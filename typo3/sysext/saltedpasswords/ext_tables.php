@@ -46,4 +46,6 @@ if (tx_saltedpasswords_div::isUsageEnabled('BE')) {
 	$GLOBALS['TYPO3_USER_SETTINGS']['columns']['password2']['eval'] = '';
 }
 
+		// Add context sensitive help (csh) for scheduler task
+	t3lib_extMgm::addLLrefForTCAdescr('_txsaltedpasswords', 'EXT:' . $_EXTKEY . '/locallang_csh_saltedpasswords.xml');
 ?>
