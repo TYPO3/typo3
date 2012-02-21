@@ -817,18 +817,19 @@
 			// Sets sys_page where-clause
 		$this->setSysPageWhereClause();
 
-			// Splitting $this->id by a period (.). First part is 'id' and second part - if exists - will overrule the &type param if given
-		$pParts = explode('.',$this->id);
-		$this->id = $pParts[0];	// Set it.
-		if (isset($pParts[1]))	{$this->type=$pParts[1];}
+			// Splitting $this->id by a period (.).
+			// First part is 'id' and second part (if exists) will overrule the &type param
+		$idParts = explode('.', $this->id, 2);
+		$this->id = $idParts[0];
+		if (isset($idParts[1])) {
+			$this->type = $idParts[1];
+		}
 
-			// Splitting $this->id by a comma (,). First part is 'id' and other parts are just stored for use in scripts.
-		$this->idParts = explode(',',$this->id);
-
-			// Splitting by a '+' sign - used for base64/md5 methods of parameter encryption for simulate static documents.
-		list($pgID,$SSD_p)=explode('+',$this->idParts[0],2);
-		if ($SSD_p)	{	$this->idPartsAnalyze($SSD_p);	}
-		$this->id = $pgID;	// Set id
+			// Splitting $this->id by a comma (,).
+			// First part is 'id' and other parts are just stored for use in scripts.
+			// Still used in the old wapversion.lib files.
+		$this->idParts = explode(',', $this->id);
+		$this->id = $this->idParts[0];
 
 			// If $this->id is a string, it's an alias
 		$this->checkAndSetAlias();
@@ -1534,35 +1535,6 @@
 				$this->pageNotFound = 4;
 			}
 		}
-	}
-
-	/**
-	 * Analyzes the second part of a id-string (after the "+"), looking for B6 or M5 encoding and if found it will resolve it and restore the variables in global $_GET
-	 * If values for ->cHash, ->no_cache, ->jumpurl and ->MP is found, they are also loaded into the internal vars of this class.
-	 *
-	 * @param	string		String to analyze
-	 * @return	void
-	 * @access private
-	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
-	 * @todo	Deprecated but still used in the Core!
-	 */
-	function idPartsAnalyze($str)	{
-		$GET_VARS = '';
-		switch(substr($str,0,2))	{
-			case 'B6':
-				$addParams = base64_decode(str_replace('_','=',str_replace('-','/',substr($str,2))));
-				parse_str($addParams,$GET_VARS);
-			break;
-			case 'M5':
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('params', 'cache_md5params', 'md5hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr(substr($str,2), 'cache_md5params'));
-				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-
-				$this->updateMD5paramsRecord(substr($str,2));
-				parse_str($row['params'],$GET_VARS);
-			break;
-		}
-
-		$this->mergingWithGetVars($GET_VARS);
 	}
 
 	/**
@@ -4138,8 +4110,11 @@ if (version == "n3") {
 	 * @param	string		The hash string identifying the cache_md5params record for which to update the "tstamp" field to the current time.
 	 * @return	void
 	 * @access private
+	 * @deprecated since TYPO3 4.7, will be removed in 6.0
 	 */
-	function updateMD5paramsRecord($hash)	{
+	function updateMD5paramsRecord($hash) {
+		t3lib_div::logDeprecatedFunction();
+
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 			'cache_md5params',
 			'md5hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_md5params'), array('tstamp' => $GLOBALS['EXEC_TIME'])
