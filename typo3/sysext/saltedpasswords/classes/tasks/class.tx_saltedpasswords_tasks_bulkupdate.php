@@ -35,9 +35,6 @@
 class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	/**
 	 * @var boolean Whether or not the task is allowed to deactivate itself after processing all existing user records.
-	 * @TODO: This could be set with an additional field later on.
-	 *		The idea is to not disable the task after all initial users where handled.
-	 *		This could be handy for example if new users are imported regularily from some external source.
 	 */
 	protected $canDeactivateSelf = TRUE;
 
@@ -48,7 +45,6 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	 * If saltedpasswords is enabled for both frontend and backend 2 * numberOfRecords will be handled.
 	 *
 	 * @var integer Number of records
-	 * @TODO: This could be set with an additional field later on
 	 */
 	protected $numberOfRecords = 250;
 
@@ -74,7 +70,7 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	/**
 	 * Execute task
 	 *
-	 * @return void
+	 * @return boolean
 	 */
 	public function execute() {
 		$processedAllRecords = TRUE;
@@ -93,16 +89,37 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 			}
 		}
 
-			// Determine if task should disable itself
-		if ($this->canDeactivateSelf && $processedAllRecords) {
-			$this->deactivateSelf();
+		if ($processedAllRecords) {
+				// reset the user record pointer
+			$this->userRecordPointer = array(
+				'FE' => 0,
+				'BE' => 0,
+			);
+				// Determine if task should disable itself
+			if ($this->canDeactivateSelf) {
+				$this->deactivateSelf();
+			}
 		}
 
-			// Use save() of parent class tx_scheduler_Task to persist
-			// changed task variables: $this->userRecordPointer and $this->disabled
+			// Use save() of parent class tx_scheduler_Task to persist changed task variables
 		$this->save();
 
-		return(TRUE);
+		return TRUE;
+	}
+
+	/**
+	 * @return string The title of the task
+	 */
+	public function getAdditionalInformation() {
+		$information = $GLOBALS['LANG']->sL('LLL:EXT:saltedpasswords/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.deactivateself')
+		. $this->getCanDeactivateSelf()
+		. '; '
+		. $GLOBALS['LANG']->sL('LLL:EXT:saltedpasswords/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.numberofrecords')
+		. $this->getNumberOfRecords()
+		;
+
+
+		return $information;
 	}
 
 	/**
@@ -234,6 +251,34 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	 */
 	protected function deactivateSelf() {
 		$this->setDisabled(TRUE);
+	}
+
+	/**
+	 * @param boolean $canDeactivateSelf
+	 */
+	public function setCanDeactivateSelf($canDeactivateSelf) {
+		$this->canDeactivateSelf = $canDeactivateSelf;
+	}
+
+	/**
+	 * @return boolean TRUE if task shall deactivate itself, FALSE otherwise
+	 */
+	public function getCanDeactivateSelf() {
+		return $this->canDeactivateSelf;
+	}
+
+	/**
+	 * @param int $numberOfRecords
+	 */
+	public function setNumberOfRecords($numberOfRecords) {
+		$this->numberOfRecords = $numberOfRecords;
+	}
+
+	/**
+	 * @return int The number of records
+	 */
+	public function getNumberOfRecords() {
+		return $this->numberOfRecords;
 	}
 } // End of class
 
