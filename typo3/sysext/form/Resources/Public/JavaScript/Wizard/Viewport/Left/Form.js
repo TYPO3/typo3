@@ -64,6 +64,7 @@ TYPO3.Form.Wizard.Viewport.Left.Form = Ext.extend(Ext.Panel, {
 	 * values
 	 */
 	validAccordions: {
+		behaviour: true,
 		prefix: true,
 		attributes: true,
 		postProcessor: true
@@ -109,6 +110,18 @@ TYPO3.Form.Wizard.Viewport.Left.Form = Ext.extend(Ext.Panel, {
 		if (form) {
 			allowedAccordions.each(function(option, index, length) {
 				switch (option) {
+					case 'behaviour':
+						this.accordion.add({
+							xtype: 'typo3-form-wizard-viewport-left-form-behaviour',
+							element: form,
+							listeners: {
+								'validation': {
+									fn: this.validation,
+									scope: this
+								}
+							}
+						});
+						break;
 					case 'prefix':
 						this.accordion.add({
 							xtype: 'typo3-form-wizard-viewport-left-form-prefix',

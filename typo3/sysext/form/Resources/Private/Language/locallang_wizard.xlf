@@ -522,6 +522,12 @@
 			<trans-unit id="form_prefix" xml:space="preserve">
 				<source>Prefix</source>
 			</trans-unit>
+			<trans-unit id="form_behaviour" xml:space="preserve">
+				<source>Behaviour</source>
+			</trans-unit>
+			<trans-unit id="behaviour_confirmation_page" xml:space="preserve">
+				<source>Confirmation page</source>
+			</trans-unit>
 			<trans-unit id="form_postprocessor" xml:space="preserve">
 				<source>Post Processors</source>
 			</trans-unit>

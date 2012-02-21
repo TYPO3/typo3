@@ -148,7 +148,7 @@ prefix = tx_form
 					}
 				}
 				form {
-					showAccordions = prefix, attributes, postProcessor
+					showAccordions = behaviour, prefix, attributes, postProcessor
 					accordions {
 						attributes {
 							showProperties = accept, acceptcharset, action, class, dir, enctype, id, lang, method, name, style, title
