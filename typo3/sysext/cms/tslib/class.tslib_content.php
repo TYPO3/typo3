@@ -7849,21 +7849,22 @@ class tslib_cObj {
 	 * This functions checks if the necessary fields are part of the select
 	 * and adds them if necessary.
 	 *
-	 * @param string 	select part
-	 * @param string	table to select from
-	 * @return string	sanitized select part
+	 * @param string $selectPart select part
+	 * @param string $table table to select from
+	 * @return string sanitized select part
 	 * @access private
 	 * @see getQuery
 	 */
 	protected function sanitizeSelectPart($selectPart, $table) {
-		// pattern matching parts
+			// pattern matching parts
 		$matchStart = '/(^\s*|,\s*|' . $table . '\.)';
 		$matchEnd = '(\s*,|\s*$)/';
 
 		$necessaryFields = array('uid', 'pid');
 		$wsFields = array('t3ver_state');
 
-		if (isset($GLOBALS['TCA'][$table]) && strpos($selectPart, '*')!== FALSE) {
+		if (isset($GLOBALS['TCA'][$table]) && strpos($selectPart, '*') !== FALSE &&
+			!preg_match('/count\([^\)]+\)/i', $selectPart)) {
 			foreach ($necessaryFields as $field) {
 				$match = $matchStart . $field . $matchEnd;
 				if (!preg_match($match, $selectPart)) {
