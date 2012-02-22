@@ -7812,7 +7812,7 @@ class tslib_cObj {
 		$necessaryFields = array('uid', 'pid');
 		$wsFields = array('t3ver_state');
 
-		if (isset($GLOBALS['TCA'][$table]) && strpos($selectPart, '*')!== FALSE) {
+		if (isset($GLOBALS['TCA'][$table]) && strpos($selectPart, '*')!== FALSE && strtolower($selectPart) !== 'count(*)') {
 			foreach ($necessaryFields as $field) {
 				$match = $matchStart . $field . $matchEnd;
 				if (!preg_match($match, $selectPart)) {
