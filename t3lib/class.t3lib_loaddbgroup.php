@@ -108,7 +108,7 @@ class t3lib_loadDBGroup {
 
 			if ($this->MM_oppositeFieldConf['allowed']) {
 				$oppositeFieldConf_allowed = explode(',', $this->MM_oppositeFieldConf['allowed']);
-				if (count($oppositeFieldConf_allowed) > 1) {
+				if (count($oppositeFieldConf_allowed) > 1 || $this->MM_oppositeFieldConf['allowed'] === '*') {
 					$this->MM_isMultiTableRelationship = $oppositeFieldConf_allowed[0];
 				}
 			}
