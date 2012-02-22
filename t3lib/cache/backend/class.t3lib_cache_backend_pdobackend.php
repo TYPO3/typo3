@@ -129,9 +129,7 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 			);
 		}
 
-		if ($this->has($entryIdentifier)) {
-			$this->remove($entryIdentifier);
-		}
+		$this->remove($entryIdentifier);
 
 		$lifetime = ($lifetime === NULL) ? $this->defaultLifetime : $lifetime;
 
