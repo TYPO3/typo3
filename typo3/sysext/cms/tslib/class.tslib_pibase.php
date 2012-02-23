@@ -731,34 +731,76 @@ class tslib_pibase {
 	}
 
 	/**
-	 * Wraps the input string in a <div> tag with the class attribute set to the prefixId.
-	 * All content returned from your plugins should be returned through this function so all content from your plugin is encapsulated in a <div>-tag nicely identifying the content of your plugin.
+	 * Wraps the input string, using the pluginWrap TypoScript property.
 	 *
-	 * @param	string		HTML content to wrap in the div-tags with the "main class" of the plugin
+	 * pluginWrap is wrap / stdWrap enabled, so you can freely configure what
+	 * to use as wrapping text.
+	 * By default, the wrap is enabled and uses a <div> tag with the class
+	 * attribute set to the extension's prefixId to wrap a plugin's content.
+	 *
+	 * The wrap can be disabled for all plugins using:
+	 * config.pluginWrap = 0
+	 *
+	 * The wrap can be disabled for all plugins with empty content using:
+	 * config.pluginWrap = ifEmpty
+	 *
+	 * The wrap can be disabled for a specific plugin using:
+	 * plugin.tx_example_pi1.pluginWrap = 0
+	 *
+	 * The wrap can be disabled for a specific plugin with empty content using:
+	 * plugin.tx_example_pi1.pluginWrap = ifEmpty
+	 *
+	 * The wrap helps to identify a plugin's content in the HTML page, f.e.
+	 * allowing to apply different styles depending of the plugin's position /
+	 * columnwithin the page.
+	 *
+	 * @param	string		HTML content to wrap
 	 * @return	string		HTML content wrapped, ready to return to the parent object.
 	 */
-	function pi_wrapInBaseClass($str)	{
-		$content = '<div class="'.str_replace('_','-',$this->prefixId).'">
-		'.$str.'
-	</div>
-	';
+	public function pi_wrapInBaseClass($pluginContent) {
+		$wrappedPluginContent = $pluginContent;
+		$pluginContentEmpty   = (boolean) strlen(trim($pluginContent));
 
-		if(!$GLOBALS['TSFE']->config['config']['disablePrefixComment'])	{
-			$content = '
-
-
-	<!--
-
-		BEGIN: Content of extension "'.$this->extKey.'", plugin "'.$this->prefixId.'"
-
-	-->
-	'.$content.'
-	<!-- END: Content of extension "'.$this->extKey.'", plugin "'.$this->prefixId.'" -->
-
-	';
+		$wrapEnabledGlobally = TRUE;
+		if ($GLOBALS['TSFE']->config['config.']['pluginWrap'] === '0'
+		|| ($GLOBALS['TSFE']->config['config.']['pluginWrap'] === 'ifEmpty' && $pluginContentEmpty)) {
+			$wrapEnabledGlobally = FALSE;
 		}
 
-		return $content;
+		$wrapEnabledForCurrentPlugin = TRUE;
+		if ($this->conf['pluginWrap'] === '0'
+		|| ($this->conf['pluginWrap'] === 'ifEmpty' && $pluginContentEmpty)) {
+			$wrapEnabledForCurrentPlugin = FALSE;
+		}
+
+			// default wrap
+		$pluginWrap  = array (
+			'wrap' => '<div class="' . str_replace('_', '-', $this->prefixId) . '">|</div>'
+		);
+
+			// global wrap overriding default wrap
+		if (!empty($GLOBALS['TSFE']->config['config']['pluginWrap.'])) {
+			$pluginWrap = $GLOBALS['TSFE']->config['config']['pluginWrap.'];
+		}
+
+			// plugin specific wrap overriding default wrap and global wrap
+		if (!empty($this->conf['pluginWrap.'])) {
+			$pluginWrap = $this->conf['pluginWrap.'];
+		}
+
+		if ($wrapEnabledGlobally && $wrapEnabledForCurrentPlugin) {
+			$wrappedPluginContent = $this->cObj->stdWrap($pluginContent, $pluginWrap);
+		}
+
+			// prefix comment
+		if (!$GLOBALS['TSFE']->config['config']['disablePrefixComment']) {
+			$wrappedPluginContent =
+				'<!-- BEGIN: Content of extension "' . $this->extKey . '", plugin "' . $this->prefixId . '" -->' .
+				$wrappedPluginContent .
+				'<!-- END: Content of extension "' . $this->extKey . '", plugin "' . $this->prefixId . '" -->';
+		}
+
+		return $wrappedPluginContent;
 	}
 
 
