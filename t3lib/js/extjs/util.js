@@ -45,5 +45,33 @@ TYPO3.Utility = {
 	 */
 	isNumber: function(number) {
 		return !isNaN(parseFloat(number)) && isFinite(number);
+	},
+
+	/**
+	 * Gets a parameter from a given url
+	 *
+	 * @param {string} url
+	 * @param {string} parameter
+	 * @return {string}
+	 */
+	getParameterFromUrl: function(url, parameter) {
+	  var parts = url.split('?'),
+		  value = '';
+
+	  if (parts.length >= 2) {
+		  var urlBase = parts.shift();
+		  var queryString = parts.join('?');
+
+		  var prefix = encodeURIComponent(parameter) + '=';
+		  var parameters = queryString.split(/[&;]/g);
+		  for (var i = parameters.length; i-- > 0;) {
+			  if (parameters[i].lastIndexOf(prefix, 0) !== -1) {
+				  value = parameters[i].split('=')[1];
+				  break;
+			  }
+		  }
+	  }
+
+	  return value;
 	}
 };
