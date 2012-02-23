@@ -328,7 +328,8 @@ TYPO3.Components.PageTree.Actions = {
 	editPageProperties: function(node) {
 		node.select();
 		TYPO3.Backend.ContentContainer.setUrl(
-			'alt_doc.php?edit[pages][' + node.attributes.nodeData.id + ']=edit'
+			'alt_doc.php?edit[pages][' + node.attributes.nodeData.id + ']=edit&returnUrl=' +
+				TYPO3.Backend.ContentContainer.url
 		);
 	},
 
