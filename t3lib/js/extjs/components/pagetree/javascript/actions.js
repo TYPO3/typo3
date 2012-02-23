@@ -327,8 +327,15 @@ TYPO3.Components.PageTree.Actions = {
 	 */
 	editPageProperties: function(node) {
 		node.select();
+		var returnUrl = TYPO3.Backend.ContentContainer.src;
+		if (returnUrl.indexOf('returnUrl') !== -1) {
+			returnUrl = TYPO3.Utility.getParameterFromUrl(returnUrl, 'returnUrl');
+		} else {
+			returnUrl = encodeURIComponent(returnUrl);
+		}
+
 		TYPO3.Backend.ContentContainer.setUrl(
-			'alt_doc.php?edit[pages][' + node.attributes.nodeData.id + ']=edit'
+			'alt_doc.php?edit[pages][' + node.attributes.nodeData.id + ']=edit&returnUrl=' + returnUrl
 		);
 	},
 
