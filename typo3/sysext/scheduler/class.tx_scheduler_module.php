@@ -927,6 +927,11 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 * @return void
 	 */
 	protected function executeTasks() {
+			// Make sure next automatic scheduler-run is scheduled
+		if (t3lib_div::_POST('go') !== NULL) {
+			$this->scheduler->scheduleNextSchedulerRunUsingAtDaemon();
+		}
+
 			// Continue if some elements have been chosen for execution
 		if (isset($this->submittedData['execute']) && count($this->submittedData['execute']) > 0) {
 
@@ -1648,4 +1653,5 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		return $result;
 	}
 }
+
 ?>
