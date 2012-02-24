@@ -49,6 +49,9 @@ class tx_scheduler implements t3lib_Singleton {
 		if (empty($this->extConf['maxLifetime'])) {
 			$this->extConf['maxLifetime'] = 1440;
 		}
+		if (empty($this->extConf['useAtdaemon'])) {
+			$this->extConf['useAtdaemon'] = 0;
+		}
 
 			// Clean up the serialized execution arrays
 		$this->cleanExecutionArrays();
@@ -227,10 +230,15 @@ class tx_scheduler implements t3lib_Singleton {
 	public function removeTask(tx_scheduler_Task $task) {
 		$taskUid = $task->getTaskUid();
 		if (!empty($taskUid)) {
-			return $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_scheduler_task', 'uid = ' . $taskUid);
+			$result = $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_scheduler_task', 'uid = ' . $taskUid);
 		} else {
-			return FALSE;
+			$result = FALSE;
 		}
+
+		if ($result) {
+			$this->scheduleNextSchedulerRunUsingAtDaemon();
+		}
+		return $result;
 	}
 
 	/**
@@ -257,10 +265,15 @@ class tx_scheduler implements t3lib_Singleton {
 				'disable' => $task->isDisabled(),
 				'serialized_task_object' => serialize($task)
 			);
-			return $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $taskUid, $fields);
+			$result = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $taskUid, $fields);
 		} else {
-			return FALSE;
+			$result = FALSE;
 		}
+
+		if ($result) {
+			$this->scheduleNextSchedulerRunUsingAtDaemon();
+		}
+		return $result;
 	}
 
 	/**
@@ -411,5 +424,73 @@ class tx_scheduler implements t3lib_Singleton {
 			);
 		}
 	}
+
+	/**
+	 * Schedule the next run of scheduler
+	 * For the moment only the "at"-daemon is used, and only if it is enabled
+	 *
+	 * @return boolean Successfully scheduled next execution using "at"-daemon
+	 * @see tx_scheduler::fetchTask()
+	 */
+	public function scheduleNextSchedulerRunUsingAtDaemon() {
+		if ((int)$this->extConf['useAtdaemon'] !== 1) {
+			return FALSE;
+		}
+
+		/** @var $registry t3lib_Registry */
+		$registry = t3lib_div::makeInstance('t3lib_Registry');
+			// Get at job id from registry and remove at job
+		$atJobId = $registry->get('tx_scheduler', 'atJobId');
+		if (t3lib_utility_Math::canBeInterpretedAsInteger($atJobId)) {
+			shell_exec('atrm ' . (int) $atJobId . ' 2>&1');
+		}
+
+			// Can not use fetchTask() here because if tasks have just executed
+			// they are not in the list of next executions
+		$tasks = $this->fetchTasksWithCondition('');
+		$nextExecution = FALSE;
+		foreach ($tasks as $task) {
+			/** @var $task tx_scheduler_Task */
+			$tempNextExecution = $task->getNextDueExecution();
+			if (($nextExecution === FALSE) || ($tempNextExecution < $nextExecution)) {
+				$nextExecution = $tempNextExecution;
+			}
+		}
+
+		if ($nextExecution !== FALSE) {
+			if ($nextExecution > $GLOBALS['EXEC_TIME']) {
+				$startTime = strftime('%H:%M %F', $nextExecution);
+			} else {
+				$startTime = 'now+1minute';
+			}
+			$cliDispatchPath = PATH_site . 'typo3/cli_dispatch.phpsh';
+
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+				$currentLocale = setlocale(LC_CTYPE, 0);
+				setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+			}
+			$cmd = 'echo ' . escapeshellarg($cliDispatchPath) . ' scheduler | at ' . escapeshellarg($startTime) . ' 2>&1';
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+				setlocale(LC_CTYPE, $currentLocale);
+			}
+
+			$output = shell_exec($cmd);
+			$outputParts = '';
+			foreach (explode(LF, $output) as $outputLine) {
+				if (t3lib_div::isFirstPartOfStr($outputLine, 'job')) {
+					$outputParts = explode(' ', $outputLine, 3);
+					break;
+				}
+			}
+
+			if (($outputParts[0] === 'job') && t3lib_utility_Math::canBeInterpretedAsInteger($outputParts[1])) {
+				$atJobId = (int)$outputParts[1];
+				$registry->set('tx_scheduler', 'atJobId', $atJobId);
+			}
+		}
+
+		return TRUE;
+	}
 }
+
 ?>

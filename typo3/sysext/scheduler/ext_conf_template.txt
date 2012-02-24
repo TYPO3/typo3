@@ -6,3 +6,6 @@ enableBELog = 1
 
 # cat=basic//; type=boolean; label=Enable sample tasks: When turned on, you can use the sample, test tasks provided by the scheduler. Before turning this off, make sure you don't have any of those sample tasks currently scheduled. You will also need to clear the configuration cache.
 showSampleTasks = 1
+
+# cat=basic//; type=boolean; label=Use "at"-daemon: This allows automatic scheduling of the next execution of the scheduler. Your system must have the at daemon installed and configured for the user PHP runs with.
+useAtdaemon = 0
