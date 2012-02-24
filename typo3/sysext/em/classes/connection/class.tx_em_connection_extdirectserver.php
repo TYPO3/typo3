@@ -1049,7 +1049,7 @@ class tx_em_Connection_ExtDirectServer {
 						'path' => $mirror['path'],
 						'sponsor' => $mirror['sponsorname'],
 						'link' => $mirror['sponsorlink'],
-						'logo' => $mirror['sponsorlogo'],
+						'logo' => (t3lib_div::getIndpEnv('TYPO3_SSL') ? str_replace('http://', 'https://', $mirror['sponsorlogo']) : $mirror['sponsorlogo']),
 					);
 				}
 			}
