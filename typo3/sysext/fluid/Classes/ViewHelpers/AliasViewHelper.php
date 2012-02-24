@@ -43,7 +43,7 @@ class Tx_Fluid_ViewHelpers_AliasViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 
 	/**
 	 *
-	 * @param array $map 
+	 * @param array $map array that specifies which variables should be mapped to which alias
 	 * @return string Rendered string
 	 * @api
 	 */

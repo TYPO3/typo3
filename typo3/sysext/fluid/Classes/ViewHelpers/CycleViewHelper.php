@@ -14,6 +14,7 @@
 /**
  * This ViewHelper cycles through the specified values.
  * This can be often used to specify CSS classes for example.
+ * **Note:** To achieve the "zebra class" effect in a loop you can also use the "iteration" argument of the **for** ViewHelper.
  *
  * = Examples =
  *
@@ -59,7 +60,7 @@ class Tx_Fluid_ViewHelpers_CycleViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	protected $currentCycleIndex = NULL;
 
 	/**
-	 * @param array $values The array or Tx_Extbase_Persistence_ObjectStorage to iterated over
+	 * @param array $values The array or object implementing ArrayAccess (for example Tx_Extbase_Persistence_ObjectStorage) to iterated over
 	 * @param string $as The name of the iteration variable
 	 * @return string Rendered result
 	 * @api
