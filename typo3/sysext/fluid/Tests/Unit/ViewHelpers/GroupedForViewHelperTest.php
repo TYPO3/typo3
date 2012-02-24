@@ -10,7 +10,6 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-
 require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 
 /**
@@ -162,6 +161,53 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_GroupedForViewHelperTest extends Tx_Fluid_
 		$this->templateVariableContainer->expects($this->at(7))->method('remove')->with('invoices');
 
 		$this->viewHelper->render($invoices, 'invoices', 'customer', 'myGroupKey');
+	}
+
+	/**
+	 * @test
+	 */
+	public function renderGroupsMultidimensionalArrayByPropertyPath() {
+		$customer1 = new stdClass();
+		$customer1->name = 'Anton Abel';
+
+		$customer2 = new stdClass();
+		$customer2->name = 'Balthasar Bux';
+
+		$invoice1 = new stdClass();
+		$invoice1->customer = $customer1;
+
+		$invoice2 = new stdClass();
+		$invoice2->customer = $customer1;
+
+		$invoice3 = new stdClass();
+		$invoice3->customer = $customer2;
+
+		$invoices = array('invoice1' => $invoice1, 'invoice2' => $invoice2, 'invoice3' => $invoice3);
+		$groupBy = 'customer.name';
+
+		/** @var Tx_Phpunit_Interface_AccessibleObject|Tx_Fluid_ViewHelpers_GroupedForViewHelper $accessibleMock */
+		$accessibleMock = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_GroupedForViewHelper', array('dummy'));
+
+		$expectedResult = array(
+			'keys' => array(
+				'Anton Abel' => 'Anton Abel',
+				'Balthasar Bux' => 'Balthasar Bux'
+			),
+			'values' => array(
+				'Anton Abel' => array(
+					'invoice1' => $invoice1,
+					'invoice2' => $invoice2
+				),
+				'Balthasar Bux' => array(
+					'invoice3' => $invoice3
+				)
+			)
+		);
+
+		$this->assertSame(
+			$expectedResult,
+			$accessibleMock->_callRef('groupElements', $invoices, $groupBy)
+		);
 	}
 
 	/**

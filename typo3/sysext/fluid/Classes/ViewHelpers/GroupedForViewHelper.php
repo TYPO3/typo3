@@ -13,7 +13,9 @@
 
 /**
  * Grouped loop view helper.
- * Loops through the specified values
+ * Loops through the specified values.
+ *
+ * The groupBy argument also supports property paths.
  *
  * = Examples =
  *
@@ -116,7 +118,7 @@ class Tx_Fluid_ViewHelpers_GroupedForViewHelper extends Tx_Fluid_Core_ViewHelper
 			if (is_array($value)) {
 				$currentGroupIndex = isset($value[$groupBy]) ? $value[$groupBy] : NULL;
 			} elseif (is_object($value)) {
-				$currentGroupIndex = Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $groupBy);
+				$currentGroupIndex = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($value, $groupBy);
 			} else {
 				throw new Tx_Fluid_Core_ViewHelper_Exception('GroupedForViewHelper only supports multi-dimensional arrays and objects' , 1253120365);
 			}
