@@ -38,10 +38,6 @@ require('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 
 
-
-
-
-
 /**
  * Script Class for display up to 10 upload fields
  *
