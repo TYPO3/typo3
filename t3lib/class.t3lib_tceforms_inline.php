@@ -214,7 +214,7 @@ class t3lib_TCEforms_inline {
 		}
 
 			// if it's required to select from possible child records (reusable children), add a selector box
-		if ($config['foreign_selector']) {
+		if ($config['foreign_selector'] && $config['appearance']['showPossibleRecordsSelector'] !== FALSE) {
 				// if not already set by the foreign_unique, set the possibleRecords here and the uniqueIds to an empty array
 			if (!$config['foreign_unique']) {
 				$possibleRecords = $this->getPossibleRecords($table, $field, $row, $config);
