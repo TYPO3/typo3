@@ -169,6 +169,16 @@ $TYPO3_CONF_VARS = array(
 		'belogErrorReporting' => E_ALL ^ E_NOTICE,	// Integer: Configures which PHP errors should be logged to the "syslog" table (extension: belog). If set to "0" no PHP errors are logged to the sys_log table. Default is "E_ALL ^ E_NOTICE" (6135).
 		'locallangXMLOverride' => array(),				// For extension/overriding of the arrays in 'locallang' files in frontend and backend. See 'Inside TYPO3' for more information.
 		'generateApacheHtaccess' => 1,			// Boolean: TYPO3 can create <em>.htaccess</em> files which are used by Apache Webserver. They are useful for access protection or performance improvements. Currently <em>.htaccess</em> files in the following directories are created, if they do not exist: <ul><li>typo3temp/compressor/</li></ul>You want to disable this feature, if you are not running Apache or want to use own rulesets.
+		'fal' => array(
+			'registeredDrivers' => array(
+				'Local' => array(
+					'class' => 't3lib_file_Driver_LocalDriver',
+					'shortName' => 'Local',
+					'flexFormDS' => 'FILE:t3lib/file/Driver/Configuration/LocalDriverFlexForm.xml',
+					'label' => 'Local filesystem'
+				)
+			)
+		)
 	),
 	'EXT' => array (	// Options related to the Extension Management
 		'noEdit' => TRUE,						// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
@@ -493,7 +503,7 @@ $TYPO3_CONF_VARS = array(
 			// This configuration below accepts everything in ftpspace and everything in webspace except php3,php4,php5 or php files
 		'fileExtensions' => array (
 			'webspace' => array('allow'=>'', 'deny'=> PHP_EXTENSIONS_DEFAULT),
-			'ftpspace' => array('allow'=>'*', 'deny'=>'')
+			'ftpspace' => array('allow'=>'*', 'deny'=>'')	// @todo: remove this option in the future
 		),
 		'customPermOptions' => array(),			// Array with sets of custom permission options. Syntax is; 'key' => array('header' => 'header string, language splitted', 'items' => array('key' => array('label, language splitted', 'icon reference', 'Description text, language splitted'))). Keys cannot contain ":|," characters.
 		'fileDenyPattern' => FILE_DENY_PATTERN_DEFAULT ,	// A perl-compatible regular expression (without delimiters!) that - if it matches a filename - will deny the file upload/rename or whatever in the webspace. For security reasons, files with multiple extensions have to be denied on an Apache environment with mod_alias, if the filename contains a valid php handler in an arbitary position. Also, ".htaccess" files have to be denied. Matching is done case-insensitive. Default value is stored in constant FILE_DENY_PATTERN_DEFAULT
