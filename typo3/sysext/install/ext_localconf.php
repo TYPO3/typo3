@@ -53,4 +53,11 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['imagelink'] = 'tx_coreu
 
 	// Version 4.7: Load fluid and extbase if extensions with new dependency to them are installed
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['installFluidExtbase'] = 'tx_coreupdates_installFluidExtbase';
+
+	// Version 4.7: Migrate files content elements to use File Abstraction Layer
+	// Migrations of tt_content.image DB fields and captions, alt texts, etc. into sys_file_reference records.
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['sysext_file_init'] = 'Tx_Install_Updates_File_InitUpdateWizard';
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['sysext_file_images'] = 'Tx_Install_Updates_File_TceformsUpdateWizard';
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['sysext_file_uploads'] = 'Tx_Install_Updates_File_TtContentUploadsUpdateWizard';
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['sysext_file_filemounts'] = 'Tx_Install_Updates_File_FilemountUpdateWizard';
 ?>

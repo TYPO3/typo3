@@ -210,9 +210,10 @@ abstract class Tx_Install_Updates_Base {
 	 *
 	 * Writes the info in localconf.php
 	 *
+	 * @param $confValue the configuration is set to this value
 	 * @return void
 	 */
-	protected function markWizardAsDone() {
+	protected function markWizardAsDone($confValue = 1) {
 		/** @var t3lib_install $install */
 		$install = t3lib_div::makeInstance('t3lib_install');
 		$install->allowUpdateLocalConf = 1;
@@ -220,7 +221,7 @@ abstract class Tx_Install_Updates_Base {
 		// Get lines from localconf file
 		$lines = $install->writeToLocalconf_control();
 		$wizardClassName = get_class($this);
-		$install->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'INSTALL\'][\'wizardDone\'][\'' . $wizardClassName . '\']', 1);
+		$install->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'INSTALL\'][\'wizardDone\'][\'' . $wizardClassName . '\']', $confValue);
 		$install->writeToLocalconf_control($lines);
 	}
 
