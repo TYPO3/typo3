@@ -370,7 +370,9 @@ class t3lib_TCEforms_inline {
 				// Render full content ONLY IF this is a AJAX-request, a new record, the record is not collapsed or AJAX-loading is explicitly turned off
 			if ($isNewRecord || $isExpanded || !$ajaxLoad) {
 				$combination = $this->renderCombinationTable($rec, $appendFormFieldNames, $config);
-				$fields = $this->renderMainFields($foreign_table, $rec);
+
+				$overruleTypesArray = isset($config['foreign_types']) ? $config['foreign_types'] : array();
+				$fields = $this->renderMainFields($foreign_table, $rec, $overruleTypesArray);
 				$fields = $this->wrapFormsSection($fields);
 					// Replace returnUrl in Wizard-Code, if this is an AJAX call
 				$ajaxArguments = t3lib_div::_GP('ajax');
@@ -421,11 +423,12 @@ class t3lib_TCEforms_inline {
 	/**
 	 * Wrapper for TCEforms::getMainFields().
 	 *
-	 * @param	string		$table: The table name
-	 * @param	array		$row: The record to be rendered
-	 * @return	string		The rendered form
+	 * @param string $table: The table name
+	 * @param array $row: The record to be rendered
+	 * @param array $overruleTypesArray: Overrule TCA [types] array, e.g to overrride [showitem] configuration of a particular type
+	 * @return string The rendered form
 	 */
-	protected function renderMainFields($table, $row) {
+	protected function renderMainFields($table, array $row, array $overruleTypesArray = array()) {
 			// The current render depth of t3lib_TCEforms:
 		$depth = $this->fObj->renderDepth;
 			// If there is some information about already rendered palettes of our parent, store this info:
@@ -433,7 +436,7 @@ class t3lib_TCEforms_inline {
 			$palettesRendered = $this->fObj->palettesRendered[$depth][$table];
 		}
 			// Render the form:
-		$content = $this->fObj->getMainFields($table, $row, $depth);
+		$content = $this->fObj->getMainFields($table, $row, $depth, $overruleTypesArray);
 			// If there was some info about rendered palettes stored, write it back for our parent:
 		if (isset($palettesRendered)) {
 			$this->fObj->palettesRendered[$depth][$table] = $palettesRendered;

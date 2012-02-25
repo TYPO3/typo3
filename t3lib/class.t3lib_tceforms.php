@@ -309,13 +309,14 @@ class t3lib_TCEforms {
 	 * Based on the $table and $row of content, this displays the complete TCEform for the record.
 	 * The input-$row is required to be preprocessed if necessary by eg. the t3lib_transferdata class. For instance the RTE content should be transformed through this class first.
 	 *
-	 * @param	string		The table name
-	 * @param	array		The record from the table for which to render a field.
-	 * @param	integer		Depth level
-	 * @return	string		HTML output
+	 * @param string $table The table name
+	 * @param array $row The record from the table for which to render a field.
+	 * @param integer $depth Depth level
+	 * @param array $overruleTypesArray Overrule types array. Can be used to override the showitem etc. configuration for the TCA types of the table. Can contain all settings which are possible in the TCA 'types' section. See e.g. $TCA['tt_content']['types'].
+	 * @return string HTML output
 	 * @see getSoloField()
 	 */
-	function getMainFields($table, $row, $depth = 0) {
+	function getMainFields($table, array $row, $depth = 0, array $overruleTypesArray = array()) {
 		$this->renderDepth = $depth;
 
 			// Init vars:
@@ -354,6 +355,9 @@ class t3lib_TCEforms {
 				// Find the list of fields to display:
 			if ($GLOBALS['TCA'][$table]['types'][$typeNum]) {
 				$itemList = $GLOBALS['TCA'][$table]['types'][$typeNum]['showitem'];
+				if (is_array($overruleTypesArray) && isset($overruleTypesArray[$typeNum]['showitem'])) {
+					$itemList = $overruleTypesArray[$typeNum]['showitem'];
+				}
 				if ($itemList) { // If such a list existed...
 						// Explode the field list and possibly rearrange the order of the fields, if configured for
 					$fields = t3lib_div::trimExplode(',', $itemList, 1);
