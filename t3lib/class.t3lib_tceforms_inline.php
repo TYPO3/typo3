@@ -407,9 +407,10 @@ class t3lib_TCEforms_inline {
 	 *
 	 * @param	string		$table: The table name
 	 * @param	array		$row: The record to be rendered
+	 * @param	array		$overruleTypesArray: Overrule TCA [types] array, e.g to overrride [showitem] configuration of a particular type
 	 * @return	string		The rendered form
 	 */
-	protected function renderMainFields($table, $row) {
+	protected function renderMainFields($table, $row, array $overruleTypesArray = array()) {
 			// The current render depth of t3lib_TCEforms:
 		$depth = $this->fObj->renderDepth;
 			// If there is some information about already rendered palettes of our parent, store this info:
@@ -417,7 +418,7 @@ class t3lib_TCEforms_inline {
 			$palettesRendered = $this->fObj->palettesRendered[$depth][$table];
 		}
 			// Render the form:
-		$content = $this->fObj->getMainFields($table, $row, $depth);
+		$content = $this->fObj->getMainFields($table, $row, $depth, $overruleTypesArray);
 			// If there was some info about rendered palettes stored, write it back for our parent:
 		if (isset($palettesRendered)) {
 			$this->fObj->palettesRendered[$depth][$table] = $palettesRendered;
