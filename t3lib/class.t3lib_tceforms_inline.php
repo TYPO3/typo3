@@ -269,6 +269,23 @@ class t3lib_TCEforms_inline {
 			$item .= $levelLinks;
 		}
 
+		if (is_array($config['customControls'])) {
+			$item .= '<div id="' . $nameObject . '_customControls">';
+			foreach ($config['customControls'] as $customControlConfig) {
+				$parameters = array(
+					'table' => $table,
+					'field' => $field,
+					'row' => $row,
+					'nameObject' => $nameObject,
+					'nameForm' => $nameForm,
+					'config' => $config,
+					'customControlConfig' => $customControlConfig,
+				);
+				$item .= t3lib_div::callUserFunction($customControlConfig['userFunc'], $parameters, $this);
+			}
+			$item .= '</div>';
+		}
+
 			// add Drag&Drop functions for sorting to TCEforms::$additionalJS_post
 		if (count($relationList) > 1 && $config['appearance']['useSortable']) {
 			$this->addJavaScriptSortable($nameObject . '_records');
