@@ -66,30 +66,30 @@ class tslib_content_Media extends tslib_content_Abstract {
 		$mmSources = isset($conf['parameter.']['mmSources.']['mmSourcesContainer.'])
 			? $this->cObj->stdWrap($conf['parameter.']['mmSources.']['mmSourcesContainer'], $conf['parameter.']['mmSources.']['mmSourcesContainer.'])
 			: $conf['parameter.']['mmSources']['mmSourcesContainer'];
+
 		$sources = $mmSources ? $mmSources : $sources;
 		if (is_array($sources) && count($sources)) {
 			$conf['sources'] = array();
 			foreach ($sources as $key => $source) {
 				if (isset($source['mmSource'])) {
-					$source = $source['mmSource'];
-					if (is_file(PATH_site . $source)) {
-						$conf['sources'][$key] = $GLOBALS['TSFE']->tmpl->getFileName($source);
-					} else {
-							// Use media wizard to extract file from URL
-						$mediaWizard = tslib_mediaWizardManager::getValidMediaWizardProvider($source);
-						if ($mediaWizard !== NULL) {
-							$source = $mediaWizard->rewriteUrl($source);
-						}
-						$conf['sources'][$key] = $this->cObj->typoLink_URL(array(
-							'parameter' => $source
-						));
-					}
+					$conf['sources'][$key] = $this->retrieveMediaUrl($source['mmSource']);
 				}
 			}
-
 		} else {
 			unset($conf['sources']);
 		}
+
+		$previewImage = isset($conf['previewImage.'])
+			? $this->cObj->stdWrap($conf['previewImage'], $conf['previewImage.'])
+			: $conf['previewImage'];
+		$mmPreviewImage = isset($conf['parameter.']['mmPreviewImage.'])
+			? $this->cObj->stdWrap($conf['parameter.']['mmPreviewImage'], $conf['parameter.']['mmPreviewImage.'])
+			: $conf['parameter.']['mmPreviewImage'];
+		$previewImage = $mmPreviewImage ? $mmPreviewImage : $previewImage;
+		if ($previewImage) {
+			$conf['attributes.']['poster'] = $this->retrieveMediaUrl($previewImage);
+		}
+
 			// Video fallback and backward compatibility file
 		$videoFallback = isset($conf['file.'])
 			? $this->cObj->stdWrap($conf['file'], $conf['file.'])
@@ -101,18 +101,7 @@ class tslib_content_Media extends tslib_content_Abstract {
 			// Backward compatibility file
 		$url = $videoFallback;
 		if ($videoFallback) {
-			if (is_file(PATH_site . $videoFallback)) {
-				$conf['file'] = $GLOBALS['TSFE']->tmpl->getFileName($videoFallback);
-			} else {
-					// Use media wizard to extract file from URL
-				$mediaWizard = tslib_mediaWizardManager::getValidMediaWizardProvider($videoFallback);
-				if ($mediaWizard !== NULL) {
-					$videoFallback = $mediaWizard->rewriteUrl($videoFallback);
-				}
-				$conf['file'] = $this->cObj->typoLink_URL(array(
-					'parameter' => $videoFallback
-				));
-			}
+			$conf['file'] = $this->retrieveMediaUrl($videoFallback);
 		} else {
 			unset($conf['file']);
 		}
@@ -129,22 +118,9 @@ class tslib_content_Media extends tslib_content_Abstract {
 			$conf['audioSources'] = array();
 			foreach ($audioSources as $key => $source) {
 				if (isset($source['mmAudioSource'])) {
-					$source = $source['mmAudioSource'];
-					if (is_file(PATH_site . $source)) {
-						$conf['audioSources'][$key] = $GLOBALS['TSFE']->tmpl->getFileName($source);
-					} else {
-							// Use media wizard to extract file from URL
-						$mediaWizard = tslib_mediaWizardManager::getValidMediaWizardProvider($source);
-						if ($mediaWizard !== NULL) {
-							$source = $mediaWizard->rewriteUrl($source);
-						}
-						$conf['audioSources'][$key] = $this->cObj->typoLink_URL(array(
-							'parameter' => $source
-						));
-					}
+					$conf['audioSources'][$key] = $this->retrieveMediaUrl($source['mmAudioSource']);
 				}
 			}
-
 		} else {
 			unset($conf['audioSources']);
 		}
@@ -158,18 +134,7 @@ class tslib_content_Media extends tslib_content_Abstract {
 			: $conf['parameter.']['mmAudioFallback'];
 		$audioFallback = $mmAudioFallback ? $mmAudioFallback : $audioFallback;
 		if ($audioFallback) {
-			if (is_file(PATH_site . $audioFallback)) {
-				$conf['audioFallback'] = $GLOBALS['TSFE']->tmpl->getFileName($audioFallback);
-			} else {
-					// Use media wizard to extract file from URL
-				$mediaWizard = tslib_mediaWizardManager::getValidMediaWizardProvider($audioFallback);
-				if ($mediaWizard !== NULL) {
-					$audioFallback = $mediaWizard->rewriteUrl($audioFallback);
-				}
-				$conf['audioFallback'] = $this->cObj->typoLink_URL(array(
-					'parameter' => $audioFallback
-				));
-			}
+			$conf['audioFallback'] = $this->retrieveMediaUrl($audioFallback);
 		} else {
 			unset($conf['audioFallback']);
 		}
@@ -187,21 +152,26 @@ class tslib_content_Media extends tslib_content_Abstract {
 			: $conf['parameter.']['mmCaption'];
 		$caption = $mmCaption ? $mmCaption : $caption;
 		if ($caption) {
-			if (is_file(PATH_site . $caption)) {
-				$conf['caption'] = $GLOBALS['TSFE']->tmpl->getFileName($caption);
-			} else {
-					// Use media wizard to extract file from URL
-				$mediaWizard = tslib_mediaWizardManager::getValidMediaWizardProvider($caption);
-				if ($mediaWizard !== NULL) {
-					$caption = $mediaWizard->rewriteUrl($caption);
-				}
-				$conf['caption'] = $this->cObj->typoLink_URL(array(
-					'parameter' => $caption
-				));
-			}
+			$conf['caption'] = $this->retrieveMediaUrl($caption);
 		} else {
 			unset($conf['caption']);
 		}
+
+			// Data-* attributes for HTML5
+		$dataAttributes = isset($conf['dataAttributes.'])
+			? $this->cObj->stdWrap($conf['dataAttributes'], $conf['dataAttributes.'])
+			: $conf['dataAttributes'];
+		$mmDataAttributes = isset($conf['parameter.']['mmDataAttributes.']['mmDataAttributesContainer.'])
+			? $this->cObj->stdWrap($conf['parameter.']['mmDataAttributes.']['mmDataAttributesContainer'], $conf['parameter.']['mmDataAttributes.']['mmDataAttributesContainer.'])
+			: $conf['parameter.']['mmDataAttributes']['mmDataAttributesContainer'];
+
+		$dataAttributes = $mmDataAttributes ? $mmDataAttributes : $dataAttributes;
+		if (is_array($dataAttributes) && count($dataAttributes)) {
+			foreach ($dataAttributes as $key => $value) {
+				$conf['attributes.']['data-' . trim($value['mmParamName'])] = trim($value['mmParamValue']);
+			}
+		}
+
 			// Establish render type
 		$renderType = isset($conf['renderType.'])
 			? $this->cObj->stdWrap($conf['renderType'], $conf['renderType.'])
@@ -324,7 +294,7 @@ class tslib_content_Media extends tslib_content_Abstract {
 					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRender'] as $classRef) {
 						$hookObj = t3lib_div::getUserObj($classRef);
 						$conf['file'] = $url;
-						$conf['mode'] = is_file(PATH_site . $url) ? 'file' : 'url';
+						$conf['mode'] = $this->fileFactory->getFileObjectFromCombinedIdentifier($url) !== 0 ? 'file' : 'url';
 						$content = $hookObj->customMediaRender($renderType, $conf, $this);
 					}
 				}
@@ -336,6 +306,41 @@ class tslib_content_Media extends tslib_content_Abstract {
 		return $content;
 	}
 
+	/**
+	 * Retrieves an File-Identifier or URL and returns the public URL of the
+	 * Media-Element in Charge
+	 *
+	 * @param string $identifier
+	 * @return string
+	 */
+	protected function retrieveMediaUrl($identifier) {
+		$returnValue = NULL;
+
+			// check if the URL is a "FAL" url
+		if (t3lib_div::isFirstPartOfStr($identifier, 'file:')) {
+			$combinedIdentifier = substr($identifier, 5);
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($combinedIdentifier)) {
+				$fileObject = $this->fileFactory->getFileObject($combinedIdentifier);
+			} else {
+				$fileObject = $this->fileFactory->getFileObjectFromCombinedIdentifier($combinedIdentifier);
+			}
+		}
+
+		if ($fileObject !== NULL) {
+			$returnValue = $this->cObj->getPublicUrlForFile($fileObject);
+		} else {
+				// Use media wizard to extract file from URL
+			$mediaWizard = tslib_mediaWizardManager::getValidMediaWizardProvider($identifier);
+			if ($mediaWizard !== NULL) {
+				$returnValue = $mediaWizard->rewriteUrl($identifier);
+				$returnValue = $this->cObj->typoLink_URL(array(
+					'parameter' => $returnValue
+				));
+			}
+		}
+
+		return $returnValue;
+	}
 }
 
 

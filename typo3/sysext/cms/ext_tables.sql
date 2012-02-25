@@ -283,7 +283,10 @@ CREATE TABLE tt_content (
   header varchar(255) DEFAULT '' NOT NULL,
   header_position varchar(6) DEFAULT '' NOT NULL,
   bodytext mediumtext,
+
+  # Even though we're using FAL and an IRRE field for images now, it needs to stay "text" for the migration to work
   image text,
+
   imagewidth mediumint(11) unsigned DEFAULT '0' NOT NULL,
   imageorient tinyint(4) unsigned DEFAULT '0' NOT NULL,
   imagecaption text,
@@ -327,7 +330,9 @@ CREATE TABLE tt_content (
   select_key varchar(80) DEFAULT '' NOT NULL,
   sectionIndex tinyint(3) unsigned DEFAULT '0' NOT NULL,
   linkToTop tinyint(3) unsigned DEFAULT '0' NOT NULL,
+  file_collections text,
   filelink_size tinyint(3) unsigned DEFAULT '0' NOT NULL,
+  filelink_sorting tinytext NOT NULL,
   target varchar(30) DEFAULT '' NOT NULL,
   section_frame tinyint(3) unsigned DEFAULT '0' NOT NULL,
   date int(10) unsigned DEFAULT '0' NOT NULL,
