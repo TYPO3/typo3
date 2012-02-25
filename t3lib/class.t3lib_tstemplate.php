@@ -1067,6 +1067,10 @@ class t3lib_TStemplate {
 			}
 		}
 
+		if (parse_url($file) !== FALSE) {
+			return $file;
+		}
+
 			// find
 		if (strpos($file, '/') !== FALSE) {
 				// if the file is in the media/ folder but it doesn't exist,

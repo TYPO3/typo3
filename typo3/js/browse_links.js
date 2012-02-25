@@ -40,15 +40,26 @@ var BrowseLinks = {
 	}
 };
 
+	// when selecting one or multiple files, this action is called
 BrowseLinks.File = {
 	insertElement: function(index, close) {
 		var result = false;
 		if (typeof BrowseLinks.elements[index] !== undefined) {
 			var element = BrowseLinks.elements[index];
+
+			// insertElement takes the following parameters
+			// table, uid, type, filename,fp,filetype,imagefile,action, close
 			result = insertElement(
-				'', element.md5, element.type,
-				element.fileName, element.filePath, element.fileExt,
-				element.fileIcon, '', close);
+					element.table,
+					element.uid,
+					element.type,
+					element.fileName,
+					element.filePath,
+					element.fileExt,
+					element.fileIcon,
+					'',
+					close
+			);
 		}
 		return result;
 	}

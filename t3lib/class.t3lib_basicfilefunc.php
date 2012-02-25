@@ -91,8 +91,11 @@ class t3lib_basicFileFunctions {
 	 * @param	array		Array with information about allowed and denied file extensions. Typically passed: $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']
 	 * @return	void
 	 * @see typo3/init.php, t3lib_userAuthGroup::returnFilemounts()
+	 * @deprecated since TYPO3 4.7 see corresponding t3lib_file_Storage (fetched via BE_USERS->getFileStorages()), as all functions should be found there (in a cleaner manner)
 	 */
 	function init($mounts, $f_ext) {
+		t3lib_div::logDeprecatedFunction();
+
 		$this->f_ext['webspace']['allow'] = t3lib_div::uniqueList(strtolower($f_ext['webspace']['allow']));
 		$this->f_ext['webspace']['deny'] = t3lib_div::uniqueList(strtolower($f_ext['webspace']['deny']));
 		$this->f_ext['ftpspace']['allow'] = t3lib_div::uniqueList(strtolower($f_ext['ftpspace']['allow']));

@@ -39,14 +39,6 @@ require('init.php');
 require('template.php');
 
 
-
-
-
-
-
-
-
-
 /**
  * Script Class for the create-new script; Displays a form for creating up to 10 folders or one new text file
  *
@@ -87,6 +79,8 @@ class SC_file_newfolder {
 		// Internal, static (GPVar):
 	var $number;
 	var $target;		// Set with the target path inputted in &target
+	/* @var t3lib_file_Folder $folderObject */
+	protected $folderObject;
 	var $returnUrl;		// Return URL of list module.
 
 		// Internal, dynamic:
@@ -102,27 +96,36 @@ class SC_file_newfolder {
 	function init()	{
 			// Initialize GPvars:
 		$this->number = t3lib_div::_GP('number');
-		$this->target = t3lib_div::_GP('target');
+		$this->target = $combinedIdentifier = t3lib_div::_GP('target');
 		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 
 			// Init basic-file-functions object:
+			// @todo: remove basicff
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 		$this->basicff->init($GLOBALS['FILEMOUNTS'],$GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 
 			// Init basic-charset-functions object:
 		$this->charsetConversion = t3lib_div::makeInstance('t3lib_cs');
 
-			// Cleaning and checking target
+			// create the folder object
+		if ($combinedIdentifier) {
+			/** @var $fileFactory t3lib_file_Factory */
+			$fileFactory = t3lib_div::makeInstance('t3lib_file_Factory');
+			$this->folderObject = $fileFactory->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
+		}
+
+			// @todo: Cleaning and checking target
 		$this->target = $this->charsetConversion->conv($this->target, 'utf-8', $GLOBALS['LANG']->charSet);
-		$this->target = $this->basicff->is_directory($this->target);
+		//$this->target = $this->basicff->is_directory($this->target);
 		$key=$this->basicff->checkPathAgainstMounts($this->target.'/');
-		if (!$this->target || !$key) {
+		if (!$this->folderObject) {
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:paramError', TRUE);
 			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:targetNoDir', TRUE);
 			throw new RuntimeException($title . ': ' . $message, 1294586843);
 		}
 
 			// Finding the icon
+			// @todo: fix the icons
 		switch($GLOBALS['FILEMOUNTS'][$key]['type']) {
 			case 'user':
 				$this->icon = 'gfx/i/_icon_ftp_user.gif';
