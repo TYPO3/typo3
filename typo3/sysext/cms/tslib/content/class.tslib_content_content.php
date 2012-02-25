@@ -104,6 +104,7 @@ class tslib_content_Content extends tslib_content_Abstract {
 				} else {
 					$this->cObj->currentRecordTotal = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 					$GLOBALS['TT']->setTSlogMessage('NUMROWS: ' . $GLOBALS['TYPO3_DB']->sql_num_rows($res));
+					/** @var $cObj tslib_cObj */
 					$cObj = t3lib_div::makeInstance('tslib_cObj');
 					$cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
 					$this->cObj->currentRecordNumber = 0;
@@ -130,6 +131,8 @@ class tslib_content_Content extends tslib_content_Abstract {
 									$_procObj->modifyDBRow($row, $conf['table']);
 								}
 							}
+
+							t3lib_file_Service_BackwardsCompatibility_TslibContentAdapterService::modifyDBRow($row, $conf['table']);
 
 							if (!$GLOBALS['TSFE']->recordRegister[$conf['table'] . ':' . $row['uid']]) {
 								$this->cObj->currentRecordNumber++;
