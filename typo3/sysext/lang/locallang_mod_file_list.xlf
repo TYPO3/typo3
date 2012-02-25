@@ -78,6 +78,18 @@
 			<trans-unit id="targetNoDir" xml:space="preserve">
 				<source>Target was not a directory!</source>
 			</trans-unit>
+			<trans-unit id="localDriverFlexform_basePath" xml:space="preserve">
+				<source>Base path:</source>
+			</trans-unit>
+			<trans-unit id="localDriverFlexform_pathType" xml:space="preserve">
+				<source>Path type:</source>
+			</trans-unit>
+			<trans-unit id="localDriverFlexform_pathType_relative" xml:space="preserve">
+				<source>absolute</source>
+			</trans-unit>
+			<trans-unit id="localDriverFlexform_pathType_absolute" xml:space="preserve">
+				<source>absolute</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
