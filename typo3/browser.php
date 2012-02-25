@@ -66,6 +66,15 @@ class SC_browser {
 		$mode =t3lib_div::_GP('mode');
 		$bparams = t3lib_div::_GP('bparams');
 
+		// workaround for FAL: previously, we had file as a mode, now we have sys_file db records
+		// check if we need to "translate" sys_file queries to mode=file queries
+		// @todo: handle this the right way in the TYPO3 core
+		$bParamElements = explode('|', $bparams);
+		if ($mode == 'db' && $bParamElements[3] == 'sys_file') {
+			$mode = 'file';
+		}
+
+
 
 			// Set doktype:
 		$GLOBALS['TBE_TEMPLATE']->docType='xhtml_frames';
