@@ -80,6 +80,8 @@ class SC_file_list {
 
 		// Internal, static: GPvars:
 	var $id;		// "id" -> the path to list.
+	/* @var t3lib_file_Folder $folderObject */
+	protected $folderObject;
 	var $pointer;	// Pointer to listing
 	var $table;		// "Table"
 	var $imagemode;	// Thumbnail mode.
@@ -93,11 +95,11 @@ class SC_file_list {
 	 *
 	 * @return	void
 	 */
-	function init()	{
-		global $TYPO3_CONF_VARS,$FILEMOUNTS;
+	function init() {
 
 			// Setting GPvars:
-		$this->id = t3lib_div::_GP('id');
+		$this->id = $combinedIdentifier = t3lib_div::_GP('id');
+
 		$this->pointer = t3lib_div::_GP('pointer');
 		$this->table = t3lib_div::_GP('table');
 		$this->imagemode = t3lib_div::_GP('imagemode');
@@ -109,7 +111,21 @@ class SC_file_list {
 
 			// File operation object:
 		$this->basicFF = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-		$this->basicFF->init($FILEMOUNTS,$TYPO3_CONF_VARS['BE']['fileExtensions']);
+		$this->basicFF->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+
+			// create the folder object
+		if ($combinedIdentifier) {
+			$fileFactory = t3lib_div::makeInstance('t3lib_file_Factory');
+			$this->folderObject = $fileFactory->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
+		} else {
+			// take the first object of the first storage
+			$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
+			$fileStorage = reset($fileStorages);
+				// Validating the input "id" (the path, directory!) and
+				// checking it against the mounts of the user. - now done in the controller
+			$this->folderObject = $fileStorage->getRootLevelFolder();
+		}
+
 
 			// Configure the "menu" - which is used internally to save the values of sorting, displayThumbs etc.
 		$this->menuConfig();
@@ -149,12 +165,8 @@ class SC_file_list {
 		$this->doc->setModuleTemplate('templates/file_list.html');
 		$this->doc->getPageRenderer()->loadPrototype();
 
-			// Validating the input "id" (the path, directory!) and checking it against the mounts of the user.
-		$this->id = $this->basicFF->is_directory($this->id);
-		$access = $this->id && $this->basicFF->checkPathAgainstMounts($this->id.'/');
-
 			// There there was access to this file path, continue, make the list
-		if ($access)	{
+		if ($this->folderObject) {
 				// include the initialization for the flash uploader
 			if ($GLOBALS['BE_USER']->uc['enableFlashUploader']) {
 
@@ -175,7 +187,7 @@ class SC_file_list {
 									},
 									uploadFilePostName:  "upload_1",
 									uploadPostParams: {
-										"file[upload][1][target]": "' . $this->id . '",
+										"file[upload][1][target]": "' . ($this->folderObject ? $this->folderObject->getCombinedIdentifier() : ''). '",
 										"file[upload][1][data]": 1,
 										"file[upload][1][charset]": "utf-8",
 										"ajaxID": "TYPO3_tcefile::process"
@@ -290,7 +302,7 @@ class SC_file_list {
 
 				// Start up filelisting object, include settings.
 			$this->pointer = t3lib_utility_Math::forceIntegerInRange($this->pointer,0,100000);
-			$this->filelist->start($this->id, $this->pointer, $this->MOD_SETTINGS['sort'], $this->MOD_SETTINGS['reverse'], $this->MOD_SETTINGS['clipBoard'], $this->MOD_SETTINGS['bigControlPanel']);
+			$this->filelist->start($this->folderObject, $this->pointer, $this->MOD_SETTINGS['sort'], $this->MOD_SETTINGS['reverse'], $this->MOD_SETTINGS['clipBoard'], $this->MOD_SETTINGS['bigControlPanel']);
 
 				// Generate the list
 			$this->filelist->generateList();
@@ -313,7 +325,7 @@ class SC_file_list {
 			$this->doc->getContextMenuCode();
 
 				// Setting up the buttons and markers for docheader
-			list($buttons, $otherMarkers) = $this->filelist->getButtonsAndOtherMarkers($this->id);
+			list($buttons, $otherMarkers) = $this->filelist->getButtonsAndOtherMarkers($this->folderObject);
 
 				// add the folder info to the marker array
 			$otherMarkers['FOLDER_INFO'] = $this->filelist->getFolderInfo();
@@ -441,18 +453,23 @@ class SC_file_list {
 			// FileList Module CSH:
 		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_module', $GLOBALS['BACK_PATH'], '', TRUE);
 
-			// upload button
-		$buttons['upload'] = '<a href="' . $GLOBALS['BACK_PATH'] . 'file_upload.php?target=' . rawurlencode($this->id) .
-			'&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" id="button-upload" title="' .
-			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.upload', 1)) . '">' .
-			t3lib_iconWorks::getSpriteIcon('actions-edit-upload') .
-		'</a>';
+			// Upload button (only if upload to this directory is allowed)
+		if ($this->folderObject && $this->folderObject->getStorage()->checkUserActionPermission('upload', 'File') && $this->folderObject->checkActionPermission('write')) {
+			$buttons['upload'] = '<a href="' . $GLOBALS['BACK_PATH'] . 'file_upload.php?target=' . rawurlencode($this->folderObject->getCombinedIdentifier()) .
+				'&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" id="button-upload" title="' .
+				$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.upload', 1)) . '">' .
+				t3lib_iconWorks::getSpriteIcon('actions-edit-upload') .
+			'</a>';
+		}
 
-		$buttons['new'] = '<a href="' . $GLOBALS['BACK_PATH'] . 'file_newfolder.php?target=' . rawurlencode($this->id) .
-			'&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" title="' .
-			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.new', 1)) . '">' .
-			t3lib_iconWorks::getSpriteIcon('actions-document-new') .
-		'</a>';
+			// new folder button
+		if ($this->folderObject && $this->folderObject->checkActionPermission('add')) {
+			$buttons['new'] = '<a href="' . $GLOBALS['BACK_PATH'] . 'file_newfolder.php?target=' . rawurlencode($this->folderObject->getCombinedIdentifier()) .
+				'&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" title="' .
+				$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.new', 1)) . '">' .
+				t3lib_iconWorks::getSpriteIcon('actions-document-new') .
+			'</a>';
+		}
 
 		return $buttons;
 	}

@@ -1550,15 +1550,13 @@ final class t3lib_BEfunc {
 	 * @param	boolean		If set, uploaddir is NOT prepended with "../"
 	 * @param	string		Optional: $tparams is additional attributes for the image tags
 	 * @param	integer		Optional: $size is [w]x[h] of the thumbnail. 56 is default.
-	 * @return	string		Thumbnail image tag.
+	 * @param boolean $linkInfoPopup Whether to wrap with a link opening the info popup
+	 * @return string Thumbnail image tag.
 	 */
-	public static function thumbCode($row, $table, $field, $backPath, $thumbScript = '', $uploaddir = NULL, $abs = 0, $tparams = '', $size = '') {
+	public static function thumbCode($row, $table, $field, $backPath, $thumbScript = '', $uploaddir = NULL, $abs = 0, $tparams = '', $size = '', $linkInfoPopup = TRUE) {
 			// Load table.
 		t3lib_div::loadTCA($table);
-
-			// Find uploaddir automatically
-		$uploaddir = (is_null($uploaddir)) ? $GLOBALS['TCA'][$table]['columns'][$field]['config']['uploadfolder'] : $uploaddir;
-		$uploaddir = preg_replace('#/$#', '', $uploaddir);
+		$tcaConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 
 			// Set thumbs-script:
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails']) {
@@ -1566,8 +1564,9 @@ final class t3lib_BEfunc {
 		} elseif (!$thumbScript) {
 			$thumbScript = 'thumbs.php';
 		}
+
 			// Check and parse the size parameter
-		$sizeParts = array();
+		$sizeParts = array(64, 64);
 		if ($size = trim($size)) {
 			$sizeParts = explode('x', $size . 'x' . $size);
 			if (!intval($sizeParts[0])) {
@@ -1575,35 +1574,79 @@ final class t3lib_BEfunc {
 			}
 		}
 
-			// Traverse files:
-		$thumbs = explode(',', $row[$field]);
 		$thumbData = '';
-		foreach ($thumbs as $theFile) {
-			if (trim($theFile)) {
-				$fI = t3lib_div::split_fileref($theFile);
-				$ext = $fI['fileext'];
-					// New 190201 start
-				$max = 0;
-				if (t3lib_div::inList('gif,jpg,png', $ext)) {
-					$imgInfo = @getimagesize(PATH_site . $uploaddir . '/' . $theFile);
-					if (is_array($imgInfo)) {
-						$max = max($imgInfo[0], $imgInfo[1]);
-					}
-				}
-					// use the original image if it's size fits to the thumbnail size
-				if ($max && $max <= (count($sizeParts) && max($sizeParts) ? max($sizeParts) : 56)) {
-					$theFile = $url = ($abs ? '' : '../') . ($uploaddir ? $uploaddir . '/' : '') . trim($theFile);
-					$onClick = 'top.launchView(\'' . $theFile . '\',\'\',\'' . $backPath . '\');return false;';
-					$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '"><img src="' . $backPath . $url . '" ' . $imgInfo[3] . ' hspace="2" border="0" title="' . trim($url) . '"' . $tparams . ' alt="" /></a> ';
-					// New 190201 stop
-				} elseif ($ext == 'ttf' || t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $ext)) {
-					$theFile_abs = PATH_site . ($uploaddir ? $uploaddir . '/' : '') . trim($theFile);
-					$theFile = ($abs ? '' : '../') . ($uploaddir ? $uploaddir . '/' : '') . trim($theFile);
 
-					if (!is_readable($theFile_abs)) {
+		/** @var $fileFactory t3lib_file_Factory */
+		$fileFactory = t3lib_div::makeInstance('t3lib_file_Factory');
+
+
+			// FAL references
+		if ($tcaConfig['type'] === 'inline') {
+
+			$referenceUids = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'uid',
+				'sys_file_reference',
+					'tablenames = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_file_reference')
+						. ' AND fieldname = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($field, 'sys_file_reference')
+						. ' AND uid_foreign = ' . $row['uid'] . ' AND deleted = 0');
+
+			foreach ($referenceUids as $referenceUid) {
+				$fileReferenceObject = $fileFactory->getFileReferenceObject($referenceUid['uid']);
+				$fileObject = $fileReferenceObject->getOriginalFile();
+
+					// web image
+				if (t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileReferenceObject->getExtension())) {
+					$imageUrl = $fileObject->process(t3lib_file_ProcessedFile::CONTEXT_IMAGEPREVIEW, array(
+						'width'  => $sizeParts[0],
+						'height' => $sizeParts[1],
+					))->getPublicUrl(TRUE);
+					$imgTag = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($fileReferenceObject->getName()) . '" />';
+
+				} else {
+						// Icon
+					$imgTag = t3lib_iconWorks::getSpriteIconForFile(
+						strtolower($fileObject->getExtension()),
+						array('title' => $fileObject->getName())
+					);
+				}
+
+				if ($linkInfoPopup) {
+					$onClick = 'top.launchView(\'_FILE\',\'' . $fileObject->getUid() . '\',\'' . $backPath . '\');return false;';
+					$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $imgTag . '</a> ';
+				} else {
+					$thumbData .= $imgTag;
+				}
+
+
+			}
+
+			// Regular file references
+		} else {
+			// As it only uses old syntax for thumbcode
+
+				// Find uploaddir automatically
+			$uploaddir = (is_null($uploaddir)) ? $GLOBALS['TCA'][$table]['columns'][$field]['config']['uploadfolder'] : $uploaddir;
+			$uploaddir = preg_replace('#/$#', '', $uploaddir);
+
+				// Traverse files:
+			$thumbs = t3lib_div::trimExplode(',', $row[$field], TRUE);
+			$thumbData = '';
+			foreach ($thumbs as $theFile) {
+				$fileName = trim($uploaddir . '/' . $theFile, '/');
+				$fileObject = $fileFactory->retrieveFileOrFolderObject($fileName);
+
+				$fileExtension = $fileObject->getExtension();
+
+				if ($fileExtension == 'ttf' || t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
+					$imageUrl = $fileObject->process(t3lib_file_ProcessedFile::CONTEXT_IMAGEPREVIEW, array(
+						'width'  => $sizeParts[0],
+						'height' => $sizeParts[1],
+					))->getPublicUrl(TRUE);
+
+					if (!$fileObject->checkActionPermission('read')) {
 						$flashMessage = t3lib_div::makeInstance(
 							't3lib_FlashMessage',
-								$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.file_missing_text') . ' <abbr title="' . $theFile_abs . '">' . $theFile . '</abbr>',
+								$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.file_missing_text') . ' <abbr title="' . $fileObject->getName() . '">' . $fileObject->getName() . '</abbr>',
 							$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.file_missing'),
 							t3lib_FlashMessage::ERROR
 						);
@@ -1611,32 +1654,27 @@ final class t3lib_BEfunc {
 						continue;
 					}
 
-					$check = basename($theFile_abs) . ':' . filemtime($theFile_abs) . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-					$params = '&file=' . rawurlencode($theFile);
-					$params .= $size ? '&size=' . $size : '';
-					$params .= '&md5sum=' . t3lib_div::shortMD5($check);
 
-					$url = $thumbScript . '?&dummy=' . $GLOBALS['EXEC_TIME'] . $params;
-					$onClick = 'top.launchView(\'' . $theFile . '\',\'\',\'' . $backPath . '\');return false;';
-					$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '"><img src="' . htmlspecialchars($backPath . $url) . '" hspace="2" border="0" title="' . trim($theFile) . '"' . $tparams . ' alt="" /></a> ';
+					$image = '<img src="' . htmlspecialchars($imageUrl) . '" hspace="2" title="' . htmlspecialchars($fileObject->getName()) . '"' . $tparams . ' alt="" />';
+					if ($linkInfoPopup) {
+						$onClick = 'top.launchView(\'_FILE\', \'' . $fileName . '\',\'\',\'' . $backPath . '\');return false;';
+						$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $image . '</a> ';
+					} else {
+						$thumbData .= $image;
+					}
 				} else {
 						// Icon
-					$theFile_abs = PATH_site . ($uploaddir ? $uploaddir . '/' : '') . trim($theFile);
-					$theFile = ($abs ? '' : '../') . ($uploaddir ? $uploaddir . '/' : '') . trim($theFile);
-
 					$fileIcon = t3lib_iconWorks::getSpriteIconForFile(
-						strtolower($ext),
-						array('title' => htmlspecialchars(trim($theFile)))
+						$fileExtension,
+						array('title' => $fileObject->getName())
 					);
 
-					$check = basename($theFile_abs) . ':' . filemtime($theFile_abs) . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-					$params = '&file=' . rawurlencode($theFile);
-					$params .= $size ? '&size=' . $size : '';
-					$params .= '&md5sum=' . t3lib_div::shortMD5($check);
-
-					$url = $thumbScript . '?&dummy=' . $GLOBALS['EXEC_TIME'] . $params;
-					$onClick = 'top.launchView(\'' . $theFile . '\',\'\',\'' . $backPath . '\');return false;';
-					$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $fileIcon . '</a> ';
+					if ($linkInfoPopup) {
+						$onClick = 'top.launchView(\'_FILE\', \'' . $fileName . '\',\'\',\'' . $backPath . '\');return false;';
+						$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $fileIcon . '</a> ';
+					} else {
+						$thumbData .= $fileIcon;
+					}
 				}
 			}
 		}
