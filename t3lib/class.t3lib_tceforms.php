@@ -6565,6 +6565,8 @@ class t3lib_TCEforms {
 							$value = $foreignRecord[$keySegments[1]];
 						}
 					}
+				} else if (!empty($keySegments[1]) && isset($row[$keySegments[0]][$keySegments[1]])) {
+					$value = $row[$keySegments[0]][$keySegments[1]];
 				}
 			}
 		}
