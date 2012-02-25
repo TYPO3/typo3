@@ -139,6 +139,7 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 		'controls',
 		'loop',
 		'preload',
+		'poster'
 	);
 
 	/**
@@ -287,14 +288,10 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 			: $conf['file'];
 
 		if ($filename) {
-			if (strpos($filename, '://') !== FALSE) {
+			if (strpos($filename, '://') !== FALSE || !$prefix) {
 				$conf['flashvars.']['url'] = $filename;
 			} else {
-				if ($prefix) {
-					$conf['flashvars.']['url'] = $prefix . $filename;
-				} else {
-					$conf['flashvars.']['url'] = str_repeat('../', substr_count($player, '/')) . $filename;
-				}
+				$conf['flashvars.']['url'] = $prefix . $filename;
 			}
 		}
 		if (is_array($conf['sources'])) {
@@ -430,11 +427,24 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 		if (is_array($conf['attributes.'])) {
 			t3lib_div::remapArrayKeys($conf['attributes.'], $typeConf['attributes.']['params.']);
 		}
+
+			// check properties for HTML5
 		foreach ($this->html5TagAttributes as $attribute) {
-			if ($conf['attributes.'][$attribute] === 'true' || $conf['attributes.'][$attribute] === strToLower($attribute) || $conf['attributes.'][$attribute] === $attribute) {
-				$attributes .= strToLower($attribute) . '="' . strToLower($attribute) . '" ';
+			if (isset($conf['attributes.'][$attribute])) {
+				if ($conf['attributes.'][$attribute] === 'true' || $conf['attributes.'][$attribute] === strToLower($attribute) || $conf['attributes.'][$attribute] === $attribute) {
+					$attributes .= strToLower($attribute) . '="' . strToLower($attribute) . '" ';
+				} else {
+					$attributes .= strToLower($attribute) . '="' . strToLower(trim($conf['attributes.'][$attribute])) . '" ';
+				}
 			}
 		}
+			// data-* properties are Allowed in HTML5
+		foreach ($conf['attributes.'] as $attribute => $attributeContent) {
+			if (strpos($attribute, 'data-', 0) !== FALSE) {
+				$attributes .= strToLower($attribute) . '="' . strToLower(trim($attributeContent)) . '" ';
+			}
+		}
+		
 
 			// Media dimensions
 		$width = isset($conf['width.'])
@@ -527,8 +537,7 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 				$divContent = ($conf['type'] === 'video' ? '' : '<div id="' . $replaceElementIdString . '_flash_install_info" class="flash-install-info"></div>' . LF) .
 				'<audio id="' . $replaceElementIdString . '_audio_element" class="audio-element"' . $attributes . ($conf['type'] === 'video' ? ' mediagroup="' . $replaceElementIdString . '" style="position:absolute;left:-10000px;"' : ' controls="controls"') . '>' . LF .
 						$audioTagContent .
-					'</audio>' . LF .
-					$audioSourcesEmbeddingJsScript;
+					'</audio>';
 				$audioContent = '<div id="' . $replaceElementIdString . '_audio_box" class="audio-box" style="width:' . ($conf['type'] === 'video' ? 0 : $width) . 'px; height:' . ($conf['type'] === 'video' ? 0 : $height) . 'px;">' . LF . $divContent . '</div>';
 			}
 			if ($conf['type'] === 'audio') {

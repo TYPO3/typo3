@@ -55,6 +55,7 @@
 														<script>browse_links.php?mode=wizard&amp;act=file|url</script>
 														<params type="array">
 															<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
+															<blindLinkFields>class,target,title,params</blindLinkFields>
 															<allowedExtensions>asf,avi,class,dcr,flv,mov,mpg,mp4,m4a,m4v,ogg,ogv,swf,webm</allowedExtensions>
 														</params>
 														<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
@@ -84,6 +85,7 @@
 										<script>browse_links.php?mode=wizard&amp;act=file|url</script>
 										<params type="array">
 											<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
+											<blindLinkFields>class,target,title,params</blindLinkFields>
 											<allowedExtensions>class,swa,dcr,wav,avi,au,mov,asf,mpg,wmv,mp3,mp4,m4v,m4a,flv,ogg,ogv,swf,webm</allowedExtensions>
 										</params>
 										<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
@@ -92,6 +94,32 @@
 							</config>
 						</TCEforms>
 					</mmFile>
+					<mmPreviewImage>
+						<TCEforms>
+							<label>LLL:EXT:cms/locallang_ttc.xml:media.previewImage</label>
+							<config>
+								<type>input</type>
+								<size>60</size>
+								<eval>trim</eval>
+								<default></default>
+								<wizards type="array">
+									<_PADDING>2</_PADDING>
+									<link type="array">
+										<type>popup</type>
+										<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
+										<icon>link_popup.gif</icon>
+										<script>browse_links.php?mode=wizard&amp;act=file|url</script>
+										<params type="array">
+											<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
+											<blindLinkFields>class,target,title,params</blindLinkFields>
+											<allowedExtensions>jpg,jpeg,gif,png</allowedExtensions>
+										</params>
+										<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+									</link>
+								</wizards>
+							</config>
+						</TCEforms>
+					</mmPreviewImage>
 					<mmCaption>
 						<TCEforms>
 							<label>LLL:EXT:cms/locallang_ttc.xml:media.captionUrl</label>
@@ -109,6 +137,7 @@
 										<script>browse_links.php?mode=wizard&amp;act=file|url</script>
 										<params type="array">
 											<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
+											<blindLinkFields>class,target,title,params</blindLinkFields>
 											<allowedExtensions>srt</allowedExtensions>
 										</params>
 										<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
@@ -346,6 +375,41 @@
 							</mmMediaCustomParameterContainer>
 						</el>
 					</mmMediaOptions>
+					<mmDataAttributes>
+					<tx_templavoila>
+						<title>LLL:EXT:cms/locallang_ttc.xml:media.dataAttributes</title>
+					</tx_templavoila>
+						<type>array</type>
+						<section>1</section>
+						<el>
+							<mmDataAttributesContainer>
+							<type>array</type>
+							<el>
+								<mmParamName>
+									<TCEforms>
+										<label>LLL:EXT:cms/locallang_ttc.xml:media.dataAttributes.attributeName</label>
+										<config>
+											<type>input</type>
+											<eval>required,trim,alphanum</eval>
+										</config>
+									</TCEforms>
+								</mmParamName>
+								<mmParamValue>
+									<TCEforms>
+										<label>LLL:EXT:cms/locallang_ttc.xml:media.dataAttributes.content</label>
+										<config>
+											<type>input</type>
+											<size>16</size>
+											<eval>trim</eval>
+											<default></default>
+										</config>
+									</TCEforms>
+								</mmParamValue>
+							</el>
+
+							</mmDataAttributesContainer>
+						</el>
+					</mmDataAttributes>
 				</el>
 			</ROOT>
 		</sDEF>
