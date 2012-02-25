@@ -667,16 +667,6 @@ $TCA['sys_filemounts'] = array(
 				'eval' => 'required,trim'
 			)
 		),
-		'path' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_filemounts.path',
-			'config' => array(
-				'type' => 'input',
-				'size' => '40',
-				'max' => '120',
-				'eval' => 'required,trim',
-				'softref' => 'substitute'
-			)
-		),
 		'hidden' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.disable',
 			'config' => array(
@@ -684,19 +674,28 @@ $TCA['sys_filemounts'] = array(
 			)
 		),
 		'base' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_filemounts.base',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.baseStorage',
 			'config' => array(
-				'type' => 'radio',
-				'items' => array(
-					array('LLL:EXT:lang/locallang_tca.xml:sys_filemounts.base_absolute', 0),
-					array('LLL:EXT:lang/locallang_tca.xml:sys_filemounts.base_relative', 1)
-				),
-				'default' => 0
+				'type' => 'select',
+				'foreign_table' => 'sys_file_storage',
+				'size' => 1,
+				'maxitems' => 1,
 			)
-		)
+		),
+		'path' => array(
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.folder',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(),
+				'itemsProcFunc' => 't3lib/file/Service/UserfilemountService.php:t3lib_file_Service_UserfilemountService->renderTceformsSelectDropdown'
+			)
+		),
 	),
 	'types' => array(
-		'0' => array('showitem' => 'hidden;;;;1-1-1,title;;;;3-3-3,path,base')
+		'0' => array('showitem' => '--palette--;;mount, base, path'),
+	),
+	'palettes' => array(
+		'mount' => array('showitem' => 'title,hidden', 'canNotCollapse' => 1)
 	)
 );
 
@@ -849,17 +848,9 @@ $TCA['sys_collection'] = array(
 				'default' => 'static'
 			)
 		),
-		'criteria' => array(
-			'exclude' => 0,
-			'label' => '[filter]',
-			'config' => array(
-				'type' => 'passthrough'
-			)
-		)
 	),
 	'types' => array(
 		'static' => array('showitem' => 'title;;1,type, description,table_name, items'),
-		'filter' => array('showitem' => 'title;;1,type, description,table_name')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => 'starttime, endtime, fe_group, sys_language_uid, l10n_parent, l10n_diffsource, hidden')

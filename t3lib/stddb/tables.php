@@ -267,6 +267,7 @@ $TCA['sys_filemounts'] = array(
 		'enablecolumns' => array(
 			'disabled' => 'hidden'
 		),
+		'requestUpdate' => 'base',
 		'iconfile' => '_icon_ftp.gif',
 		'useColumnsForDefaultValues' => 'path,base',
 		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
@@ -299,7 +300,6 @@ $TCA['sys_collection'] = array(
 		'typeicon_classes' => array(
 			'default' => 'apps-clipboard-list',
 			'static' => 'apps-clipboard-list',
-			'filter' => 'actions-system-tree-search-open'
 		),
 		'enablecolumns' => array(
 			'disabled' => 'hidden',
@@ -310,6 +310,128 @@ $TCA['sys_collection'] = array(
 		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
 	),
 );
+
+/**
+ * Table "sys_file_storage":
+ * defines a root-point of a file storage, that is like a mount point.
+ * each storage is attached to a driver (local, webdav, amazons3) and thus is the entry-point
+ * for all files
+ */
+$TCA['sys_file_storage'] = array(
+	'ctrl' => array(
+		'title'     => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage',
+		'label'     => 'name',
+		'tstamp'    => 'tstamp',
+		'crdate'    => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'default_sortby' => 'ORDER BY name',
+		'delete' => 'deleted',
+		'rootLevel' => TRUE,
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+		),
+		'dividers2tabs'     => TRUE,
+		'iconfile' => '_icon_ftp.gif',
+		'dynamicConfigFile' => 'T3LIB:tca_sys_file_storage.php',
+	),
+);
+
+/**
+ * Table "sys_file":
+ * Represents all files that are tracked by TYPO3
+ * which are assets, single entries of files with additional metadata
+ */
+$TCA['sys_file'] = array(
+	'ctrl' => array(
+		'title'     => 'LLL:EXT:lang/locallang_tca.xlf:sys_file',
+		'label'     => 'name',
+		'tstamp'    => 'tstamp',
+		'crdate'    => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'type'		=> 'type',
+		'hideTable' => TRUE,
+		'rootLevel' => TRUE,
+		'versioningWS'             => TRUE,
+		'origUid'                  => 't3_origuid',
+		'default_sortby' => 'ORDER BY crdate DESC',
+		'delete' => 'deleted',
+		'dividers2tabs' => TRUE,
+		'typeicon_column' => 'type',
+		'typeicon_classes' => array(
+			'1' => 'mimetypes-text-text',
+			'2' => 'mimetypes-media-image',
+			'3' => 'mimetypes-media-audio',
+			'4' => 'mimetypes-media-video',
+			'5' => 'mimetypes-application',
+			'default' => 'mimetypes-other-other',
+		),
+		'dynamicConfigFile' => 'T3LIB:tca_sys_file.php',
+		// @todo add icon file
+	),
+);
+
+/**
+ * Table "sys_file_reference":
+ * Is a single usage of a sys_file record somewhere in the installation
+ * Is kind of like a MM-table between sys_file and e.g. tt_content:image that is shown up
+ * in TCA so additional metadata can be added for this specific kind of usage
+ */
+$TCA['sys_file_reference'] = array(
+	'ctrl' => array(
+		'title'     => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference',
+		'label'     => 'uid',
+		'tstamp'    => 'tstamp',
+		'crdate'    => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'type' => 'uid_local:type',
+		'hideTable' => TRUE,
+		'rootLevel' => TRUE,
+		'sortby' => 'sorting',
+		'delete' => 'deleted',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+		),
+		'dynamicConfigFile' => 'T3LIB:tca_sys_file_reference.php',
+		// @todo add icon file
+	),
+);
+
+/**
+ * Table "sys_file_collection":
+ * Represents a list of sys_file records
+ */
+$TCA['sys_file_collection'] = array(
+	'ctrl' => array(
+		'title'     => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection',
+		'label'     => 'title',
+		'tstamp'    => 'tstamp',
+		'crdate'    => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'versioningWS' => TRUE,
+		'origUid' => 't3_origuid',
+		'languageField'            => 'sys_language_uid',
+		'transOrigPointerField'    => 'l10n_parent',
+		'transOrigDiffSourceField' => 'l10n_diffsource',
+		'default_sortby' => 'ORDER BY crdate',
+		'delete' => 'deleted',
+		'rootlevel' => -1,
+		'type' => 'type',
+		'typeicon_column' => 'type',
+		'typeicon_classes' => array(
+			'default' => 'apps-filetree-folder-media',
+			'static'  => 'apps-clipboard-images',
+			'folder'  => 'apps-filetree-folder-media'
+		),
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime',
+		),
+		'dynamicConfigFile' => 'T3LIB:tca_sys_file_collection.php',
+		// @todo add icon file
+	),
+);
+t3lib_extMgm::allowTableOnStandardPages('sys_file_collection');
 
 /**
  * Table "sys_languages":
