@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+	</meta>
+	<ROOT>
+		<type>array</type>
+		<el>
+			<basePath>
+				<TCEforms>
+					<label>Base path:</label>
+					<config>
+						<type>input</type>
+						<default>fileadmin/</default>
+						<size>30</size>
+					</config>
+				</TCEforms>
+			</basePath>
+			<pathType>
+				<TCEforms>
+					<label>Path type:</label>
+					<config>
+						<type>radio</type>
+						<items type="array">
+							<numIndex index="0" type="array">
+								<numIndex index="0">relative</numIndex>
+								<numIndex index="1">relative</numIndex>
+							</numIndex>
+							<numIndex index="1" type="array">
+								<numIndex index="0">absolute</numIndex>
+								<numIndex index="1">absolute</numIndex>
+							</numIndex>
+						</items>
+						<default>relative</default>
+					</config>
+				</TCEforms>
+			</pathType>
+		</el>
+	</ROOT>
+</T3DataStructure>
