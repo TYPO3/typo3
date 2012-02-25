@@ -1700,9 +1700,9 @@ class t3lib_cs {
 	/**
 	 * Converts special chars (like æøåÆØÅ, umlauts etc) to ascii equivalents (usually double-bytes, like æ => ae etc.)
 	 *
-	 * @param	string		Character set of string
-	 * @param	string		Input string to convert
-	 * @return	string		The converted string
+	 * @param string $charset Character set of string
+	 * @param string $string Input string to convert
+	 * @return string The converted string
 	 */
 	function specCharsToASCII($charset, $string) {
 		if ($charset == 'utf-8') {

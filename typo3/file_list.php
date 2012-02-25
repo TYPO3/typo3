@@ -33,7 +33,6 @@
  *
  */
 
-
 require ('init.php');
 
 $query = t3lib_div::getIndpEnv('QUERY_STRING');

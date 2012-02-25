@@ -40,13 +40,6 @@ require('template.php');
 
 
 
-
-
-
-
-
-
-
 /**
  * Script Class for the rename-file form.
  *
