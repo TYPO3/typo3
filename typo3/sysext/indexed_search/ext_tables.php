@@ -3,6 +3,11 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 t3lib_extMgm::addPlugin(Array('LLL:EXT:indexed_search/locallang.php:mod_indexed_search', $_EXTKEY));
 
+if (TYPO3_MODE=="BE")    {
+	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_indexed_search_pi_wizicon"] =
+	t3lib_extMgm::extPath($_EXTKEY)."pi/class.tx_indexed_search_pi_wizicon.php";
+}
+
 t3lib_div::loadTCA('tt_content');
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY] = 'layout,select_key,pages';
 
