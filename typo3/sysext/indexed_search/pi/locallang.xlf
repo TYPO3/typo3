@@ -251,6 +251,12 @@ All search words are converted to lowercase.</source>
 			<trans-unit id="maketitle_matches" xml:space="preserve">
 				<source>matches</source>
 			</trans-unit>
+			<trans-unit id="pi_wizard_title" xml:space="preserve">
+				<source>Indexed Search</source>
+			</trans-unit>
+			<trans-unit id="pi_wizard_description" xml:space="preserve">
+				<source>Search based on an database stored index.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
