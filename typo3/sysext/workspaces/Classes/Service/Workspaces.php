@@ -206,6 +206,17 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 			$pageList = $pageId;
 		} else {
 			$pageList = '';
+
+				// check if person may only see a "virtual" page-root
+			$mountPoints = array_map('intval', $GLOBALS['BE_USER']->returnWebmounts());
+			$mountPoints = array_unique($mountPoints);
+			if (!in_array(0, $mountPoints)) {
+				$tempPageIds = array();
+				foreach ($mountPoints as $mountPoint) {
+					$tempPageIds[] = $this->getTreeUids($mountPoint, $wsid, $recursionLevel);
+				}
+				$pageList = implode(',', $tempPageIds);
+			}
 		}
 
 			// Traversing all tables supporting versioning:
