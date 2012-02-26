@@ -53,6 +53,7 @@ class tslib_cObj {
 	 */
 	var $stdWrapOrder = array(
 		'stdWrapPreProcess' => 'hook', // this is a placeholder for the first Hook
+		'cacheRead' => 'hook', // this is a placeholder for checking if the content is available in cache
 		'setContentToCurrent' => 'boolean',
 		'setContentToCurrent.' => 'array',
 		'setCurrent' => 'string',
@@ -199,6 +200,7 @@ class tslib_cObj {
 		'editIcons.' => 'array',
 		'editPanel' => 'boolean',
 		'editPanel.' => 'array',
+		'cacheStore' => 'hook', // this is a placeholder for storing the content in cache
 		'stdWrapPostProcess' => 'hook', // this is a placeholder for the last Hook
 		'debug' => 'boolean',
 		'debug.' => 'array',
@@ -1833,7 +1835,19 @@ class tslib_cObj {
 				;
 			}
 		}
+
 		if (is_array($conf) && count($conf)) {
+
+			// cache handling
+			if (is_array($conf['cache.'])) {
+				$conf['cache.']['key'] = $this->stdWrap($conf['cache.']['key'], $conf['cache.']['key.']);
+				$conf['cache.']['tags'] = $this->stdWrap($conf['cache.']['tags'], $conf['cache.']['tags.']);
+				$conf['cache.']['lifetime'] = $this->stdWrap($conf['cache.']['lifetime'], $conf['cache.']['lifetime.']);
+
+				$conf['cacheRead'] = 1;
+				$conf['cacheStore'] = 1;
+			}
+
 			// check, which of the available stdWrap functions is needed for the current conf Array
 			// and keep only those but still in the same order
 			$sortedConf = array_intersect_key($this->stdWrapOrder, $conf);
@@ -1918,6 +1932,26 @@ class tslib_cObj {
 	public function stdWrap_stdWrapPreProcess($content = '', $conf = array()) {
 		foreach ($this->stdWrapHookObjects as $hookObject) {
 			$content = $hookObject->stdWrapPreProcess($content, $conf, $this);
+		}
+		return $content;
+	}
+
+	/**
+	 * Check if content was cached before (depending on the given cache key)
+	 *
+	 * @param	string		Input value undergoing processing in these functions.
+	 * @param	array		All stdWrap properties, not just the ones for a particular function.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_cacheRead($content = '', $conf = array()) {
+		if (!empty($conf['cache.']['key'])) {
+			if (defined('TYPO3_UseCachingFramework') && TYPO3_UseCachingFramework) {
+				$cacheFrontend = $GLOBALS['typo3CacheManager']->getCache('cache_hash'); /* @var $cacheFrontend t3lib_cache_frontend_VariableFrontend */
+				if ($cacheFrontend && $cacheFrontend->has($conf['cache.']['key'])) {
+					$content = $cacheFrontend->get($conf['cache.']['key']);
+					$this->stopRendering[$this->stdWrapRecursionLevel] = TRUE;
+				}
+			}
 		}
 		return $content;
 	}
@@ -3110,6 +3144,43 @@ class tslib_cObj {
 	public function stdWrap_editPanel($content = '', $conf = array()) {
 		if ($GLOBALS['TSFE']->beUserLogin) {
 			$content = $this->editPanel($content, $conf['editPanel.']);
+		}
+		return $content;
+	}
+
+	/**
+	 * Store content into cache
+	 *
+	 * @param	string		Input value undergoing processing in these functions.
+	 * @param	array		All stdWrap properties, not just the ones for a particular function.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_cacheStore($content = '', $conf = array()) {
+		if (!empty($conf['cache.']['key'])) {
+			if (defined('TYPO3_UseCachingFramework') && TYPO3_UseCachingFramework) {
+				$cacheFrontend = $GLOBALS['typo3CacheManager']->getCache('cache_hash'); /* @var $cacheFrontend t3lib_cache_frontend_VariableFrontend */
+				if ($cacheFrontend) {
+
+					$tags = !empty($conf['cache.']['tags']) ? t3lib_div::trimExplode(',', $conf['cache.']['tags']) : array();
+
+					if (strtolower($conf['cache.']['lifetime']) == 'unlimited') {
+						$lifetime = 0; // unlimited
+					} elseif (strtolower($conf['cache.']['lifetime']) == 'default') {
+						$lifetime = NULL; // default lifetime
+					} elseif (intval($conf['cache.']['lifetime']) > 0) {
+						$lifetime = intval($conf['cache.']['lifetime']); // lifetime in seconds
+					} else {
+						$lifetime = NULL; // default lifetime
+					}
+
+					$cacheFrontend->set(
+						$conf['cache.']['key'],
+						$content,
+						$tags,
+						$lifetime
+					);
+				}
+			}
 		}
 		return $content;
 	}
