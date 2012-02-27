@@ -3171,6 +3171,18 @@ class tslib_cObj {
 						$lifetime = NULL; // default lifetime
 					}
 
+					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore'])) {
+						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore'] as $_funcRef) {
+							$params = array(
+								'key' => $conf['cache.']['key'],
+								'content' => $content,
+								'lifetime' => $lifetime,
+								'tags' => $tags
+							);
+							t3lib_div::callUserFunction($_funcRef, $params, $this);
+						}
+					}
+
 					$cacheFrontend->set(
 						$conf['cache.']['key'],
 						$content,
