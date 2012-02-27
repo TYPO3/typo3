@@ -1212,7 +1212,7 @@ class t3lib_pageSelect {
 
 				// Find pointed-to record.
 			if ($moveID) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', array_keys($row)), $table, 'uid=' . intval($moveID) . $this->enableFields($table));
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', array_keys($row)), $table, 'uid=' . intval($moveID));
 				$origRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				if ($origRow) {
