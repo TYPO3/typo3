@@ -183,7 +183,7 @@ $TCA['sys_domain'] = array (
 			'default' => 'mimetypes-x-content-domain',
 		),
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php',
-		'searchFields' => 'domainName,redirectTo',
+		'searchFields' => 'domainName,redirectTo,domainNameExtended',
 	)
 );
 

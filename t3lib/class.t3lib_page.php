@@ -543,6 +543,31 @@ class t3lib_pageSelect {
 		);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
+		if ($row === FALSE) {
+			if (strpos($domain, '/')) {
+				$domain = substr($domain, 0, strpos($domain, '/'));
+			}
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'pages.uid,sys_domain.redirectTo,sys_domain.redirectHttpStatusCode,sys_domain.prepend_params,sys_domain.domainNameExtended',
+				'pages,sys_domain',
+				'pages.uid=sys_domain.pid
+					AND (sys_domain.domainNameExtended <> \'\') ' .
+					$this->enableFields('sys_domain'),
+				'',
+				'',
+				1
+			);
+			$matched = FALSE;
+			while ((!$matched) && ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
+				$fqdnSearchList = str_replace("\n", ',', $row['domainNameExtended']);
+				if (t3lib_div::cmpFQDN($domain, $fqdnSearchList)) {
+					$matched = TRUE;
+				}
+			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		}
+
 		if ($row) {
 			if ($row['redirectTo']) {
 				$redirectUrl = $row['redirectTo'];
