@@ -424,7 +424,7 @@ $TCA['fe_groups'] = array(
 $TCA['sys_domain'] = array(
 	'ctrl' => $TCA['sys_domain']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'hidden,domainName,redirectTo'
+		'showRecordFieldList' => 'hidden,domainName,domainNameExtended,redirectTo'
 	),
 	'columns' => array(
 		'domainName' => array(
@@ -434,6 +434,16 @@ $TCA['sys_domain'] = array(
 				'size' => '35',
 				'max' => '80',
 				'eval' => 'required,unique,lower,trim,domainname',
+				'softref' => 'substitute'
+			),
+		),
+		'domainNameExtended' => array(
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_domain.domainNameExtended',
+			'config' => array(
+				'type' => 'text',
+				'rows' => '10',
+				'cols' => '35',
+				'eval' => 'lower,trim',
 				'softref' => 'substitute'
 			),
 		),
@@ -489,7 +499,7 @@ $TCA['sys_domain'] = array(
 		)
 	),
 	'types' => array(
-		'1' => array('showitem' => 'hidden;;;;1-1-1,domainName;;1;;3-3-3,prepend_params,forced;;;;4-4-4')
+		'1' => array('showitem' => 'hidden;;;;1-1-1,domainName;;1;;1-1-1,domainNameExtended;;1;;3-3-3,prepend_params,forced;;;;4-4-4')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => 'redirectTo, redirectHttpStatusCode')

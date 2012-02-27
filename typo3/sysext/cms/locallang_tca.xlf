@@ -498,6 +498,9 @@
 			<trans-unit id="sys_domain.domainName" xml:space="preserve">
 				<source>Domain:</source>
 			</trans-unit>
+			<trans-unit id="sys_domain.domainNameExtended" xml:space="preserve">
+				<source>Domain (Extended list):</source>
+			</trans-unit>
 			<trans-unit id="sys_domain.redirectTo" xml:space="preserve">
 				<source>Redirect to:</source>
 			</trans-unit>
