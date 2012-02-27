@@ -149,5 +149,46 @@ class t3lib_pageselectTest extends tx_phpunit_testcase {
 			)
 		);
 	}
+
+	/**
+	 * @return array
+	 */
+	public function findMatchingDomainFuzzyDataProvider() {
+		return array(
+			'main domain wildcard' => array(
+				'www.example.com',
+				array(
+					'domain' => 'www.success.loc',
+					'domainNameExtended' => 'www.*.com'
+				)
+			),
+			'subdomain wildcard' => array(
+				'www.example.com',
+				array(
+					'domain' => 'www.success1.loc',
+					'domainNameExtended' => '*.example.com'
+				),
+			),
+			'multiline' => array(
+				'www.example.com',
+				array(
+					'domain' => 'www.success1.loc',
+					'domainNameExtended' => 'www.test.loc
+						www.example.*
+						super.loc'
+				)
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider findMatchingDomainDataProvider
+	 */
+	public function findMatchingDomainFuzzyFindsDomain($domain, array $records) {
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->will($this->returnValue($records));
+		$row = $this->pageSelectObject->findMatchingDomainFuzzy($domain);
+		$this->assertEquals($records, $row);
+	}
 }
 ?>

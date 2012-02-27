@@ -543,6 +543,11 @@ class t3lib_pageSelect {
 		);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
+		if ($row === FALSE) {
+			$row = $this->findMatchingDomainFuzzy($domain);
+		}
+
 		if ($row) {
 			if ($row['redirectTo']) {
 				$redirectUrl = $row['redirectTo'];
@@ -563,6 +568,39 @@ class t3lib_pageSelect {
 				return $row['uid'];
 			}
 		}
+	}
+
+	/**
+	 * Finds a domain record that matches any entry in the
+	 * domainNameExtended field therefore also supporting wildcards
+	 *
+	 * @param string $domain
+	 * @return array
+	 */
+	protected function findMatchingDomainFuzzy($domain) {
+		$row = array();
+		if (strpos($domain, '/')) {
+			$domain = substr($domain, 0, strpos($domain, '/'));
+		}
+			// The TCA array is not loaded yet, therefore we can not use enableFields() here
+			// but must exclude hidden entries by hand
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'pages.uid,sys_domain.redirectTo,sys_domain.redirectHttpStatusCode,sys_domain.prepend_params,sys_domain.domainNameExtended',
+			'pages,sys_domain',
+			'pages.uid=sys_domain.pid
+							AND sys_domain.hidden=0
+							AND (sys_domain.domainNameExtended <> \'\') ' .
+				$this->where_hid_del . $this->where_groupAccess
+		);
+		$matched = FALSE;
+		while ((!$matched) && ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
+			$fqdnSearchList = str_replace("\n", ',', $row['domainNameExtended']);
+			if (t3lib_div::cmpFQDN($domain, $fqdnSearchList)) {
+				$matched = TRUE;
+			}
+		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		return $row;
 	}
 
 	/**
