@@ -156,6 +156,7 @@ CREATE TABLE pages (
   lastUpdated int(10) unsigned DEFAULT '0' NOT NULL,
   keywords text,
   cache_timeout int(10) unsigned DEFAULT '0' NOT NULL,
+  cache_tags varchar(255) DEFAULT '' NOT NULL,
   newUntil int(10) unsigned DEFAULT '0' NOT NULL,
   description text,
   no_search tinyint(3) unsigned DEFAULT '0' NOT NULL,
