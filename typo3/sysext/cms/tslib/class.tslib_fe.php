@@ -2904,6 +2904,11 @@
 			$this->pageCacheTags[] = 'reg1_' . $reg1;
 		}
 
+		if (!empty($this->page['cache_tags'])) {
+			$tags = t3lib_div::trimExplode(',', $this->page['cache_tags'], TRUE);
+			$this->pageCacheTags = array_merge($this->pageCacheTags, $tags);
+		}
+
 		$this->pageCache->set(
 			$this->newHash,
 			$cacheData,
