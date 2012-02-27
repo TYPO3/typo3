@@ -72,7 +72,7 @@ class tx_rtehtmlarea_pageTree extends rtePageTree {
 				$arrCol='<td></td>';
 			}
 
-			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->browser->act.'&editorNo='.$GLOBALS['SOBE']->browser->editorNo.'&contentTypo3Language='.$GLOBALS['SOBE']->browser->contentTypo3Language.'&contentTypo3Charset='.$GLOBALS['SOBE']->browser->contentTypo3Charset.'&mode='.$GLOBALS['SOBE']->browser->mode.'&expandPage='.$v['row']['uid'].'\');';
+			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->browser->act.'&editorNo='.$GLOBALS['SOBE']->browser->editorNo.'&contentTypo3Language='.$GLOBALS['SOBE']->browser->contentTypo3Language.'&mode='.$GLOBALS['SOBE']->browser->mode.'&expandPage='.$v['row']['uid'].'\');';
 			$cEbullet = $this->ext_isLinkable($v['row']['doktype'],$v['row']['uid']) ?
 						'<a href="#" onclick="'.htmlspecialchars($aOnClick).'"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/arrowbullet.gif','width="18" height="16"').' alt="" /></a>' :
 						'';
@@ -120,7 +120,7 @@ class tx_rtehtmlarea_folderTree extends rteFolderTree {
 		$title = htmlspecialchars($title);
 
 		if ($this->ext_isLinkable($v))	{
-			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->browser->act.'&editorNo='.$GLOBALS['SOBE']->browser->editorNo.'&contentTypo3Language='.$GLOBALS['SOBE']->browser->contentTypo3Language.'&contentTypo3Charset='.$GLOBALS['SOBE']->browser->contentTypo3Charset.'&mode='.$GLOBALS['SOBE']->browser->mode.'&expandFolder='.rawurlencode($v['path']).'\');';
+			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->browser->act.'&editorNo='.$GLOBALS['SOBE']->browser->editorNo.'&contentTypo3Language='.$GLOBALS['SOBE']->browser->contentTypo3Language.'&mode='.$GLOBALS['SOBE']->browser->mode.'&expandFolder='.rawurlencode($v['path']).'\');';
 			return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$title.'</a>';
 		} else {
 			return '<span class="typo3-dimmed">'.$title.'</span>';
@@ -164,7 +164,7 @@ class tx_rtehtmlarea_folderTree extends rteFolderTree {
 				$arrCol='<td></td>';
 			}
 				// Create arrow-bullet for file listing (if folder path is linkable):
-			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->browser->act.'&editorNo='.$GLOBALS['SOBE']->browser->editorNo.'&contentTypo3Language='.$GLOBALS['SOBE']->browser->contentTypo3Language.'&contentTypo3Charset='.$GLOBALS['SOBE']->browser->contentTypo3Charset.'&mode='.$GLOBALS['SOBE']->browser->mode.'&expandFolder='.rawurlencode($v['row']['path']).'\');';
+			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->browser->act.'&editorNo='.$GLOBALS['SOBE']->browser->editorNo.'&contentTypo3Language='.$GLOBALS['SOBE']->browser->contentTypo3Language.'&mode='.$GLOBALS['SOBE']->browser->mode.'&expandFolder='.rawurlencode($v['row']['path']).'\');';
 			$cEbullet = $this->ext_isLinkable($v['row']) ? '<a href="#" onclick="'.htmlspecialchars($aOnClick).'"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/arrowbullet.gif','width="18" height="16"').' alt="" /></a>' : '';
 
 				// Put table row with folder together:
@@ -200,7 +200,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 	var $editorNo;
 	var $contentTypo3Language;
-	var $contentTypo3Charset;
+	var $contentTypo3Charset = 'utf-8';
 	public $additionalAttributes = array();
 	public $buttonConfig = array();
 	public $RTEProperties = array();
@@ -280,12 +280,10 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		$pRteArr = explode(':', $pArr[1]);
 		$this->editorNo = $pRteArr[0];
 		$this->contentTypo3Language = $pRteArr[1];
-		$this->contentTypo3Charset = $pRteArr[2];
 		$this->RTEtsConfigParams = $pArr[2];
 		if (!$this->editorNo) {
 			$this->editorNo = t3lib_div::_GP('editorNo');
 			$this->contentTypo3Language = t3lib_div::_GP('contentTypo3Language');
-			$this->contentTypo3Charset = t3lib_div::_GP('contentTypo3Charset');
 			$this->RTEtsConfigParams = t3lib_div::_GP('RTEtsConfigParams');
 		}
 		$this->pointer = t3lib_div::_GP('pointer');
@@ -572,7 +570,6 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			function jumpToUrl(URL,anchor) {
 				var add_editorNo = URL.indexOf("editorNo=")==-1 ? "&editorNo='.$this->editorNo.'" : "";
 				var add_contentTypo3Language = URL.indexOf("contentTypo3Language=")==-1 ? "&contentTypo3Language='.$this->contentTypo3Language.'" : "";
-				var add_contentTypo3Charset = URL.indexOf("contentTypo3Charset=")==-1 ? "&contentTypo3Charset='.$this->contentTypo3Charset.'" : "";
 				var add_act = URL.indexOf("act=")==-1 ? "&act='.$this->act.'" : "";
 				var add_mode = URL.indexOf("mode=")==-1 ? "&mode='.$this->mode.'" : "";
 				var add_additionalValues = "";
@@ -584,7 +581,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 						}
 					}
 				}
-				var theLocation = URL+add_act+add_editorNo+add_contentTypo3Language+add_contentTypo3Charset+add_mode+add_href+add_target+add_class+add_title+add_additionalValues+add_params+(anchor?anchor:"");
+				var theLocation = URL+add_act+add_editorNo+add_contentTypo3Language+add_mode+add_href+add_target+add_class+add_title+add_additionalValues+add_params+(anchor?anchor:"");
 				window.location.href = theLocation;
 				return false;
 			}
@@ -1131,21 +1128,12 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 * @return	string		Localized string.
 	 */
 	public function getLLContent($string) {
-		global $LANG;
+		$BE_lang = $GLOBALS['LANG']->lang;
 
-		$BE_lang = $LANG->lang;
-		$BE_origCharSet = $LANG->origCharSet;
-		$BE_charSet = $LANG->charSet;
+		$GLOBALS['LANG']->lang = $this->contentTypo3Language;
+		$LLString = $GLOBALS['LANG']->sL($string);
 
-		$LANG->lang = $this->contentTypo3Language;
-		$LANG->origCharSet = $LANG->csConvObj->charSetArray[$this->contentTypo3Language];
-		$LANG->origCharSet = $LANG->origCharSet ? $LANG->origCharSet : 'utf-8';
-		$LANG->charSet = $this->contentTypo3Charset;
-		$LLString = $LANG->sL($string);
-
-		$LANG->lang = $BE_lang;
-		$LANG->origCharSet = $BE_origCharSet;
-		$LANG->charSet = $BE_charSet;
+		$GLOBALS['LANG']->lang = $BE_lang;
 		return $LLString;
 	}
 

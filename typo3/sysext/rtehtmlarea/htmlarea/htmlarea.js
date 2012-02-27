@@ -6332,7 +6332,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 * @return	string		the url
 	 */
 	makeUrlFromModulePath: function(modulePath, parameters) {
-		return modulePath + '?' + this.editorConfiguration.RTEtsConfigParams + '&editorNo=' + this.editor.editorId + '&sys_language_content=' + this.editorConfiguration.sys_language_content + '&contentTypo3Language=' + this.editorConfiguration.typo3ContentLanguage + '&contentTypo3Charset=' + encodeURIComponent(this.editorConfiguration.typo3ContentCharset) + (parameters?parameters:'');
+		return modulePath + '?' + this.editorConfiguration.RTEtsConfigParams + '&editorNo=' + this.editor.editorId + '&sys_language_content=' + this.editorConfiguration.sys_language_content + '&contentTypo3Language=' + this.editorConfiguration.typo3ContentLanguage + (parameters?parameters:'');
 	},
 	/**
 	 * Append an entry at the end of the troubleshooting log
