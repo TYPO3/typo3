@@ -237,6 +237,9 @@
 			<trans-unit id="pages.cache_timeout.I.10" xml:space="preserve">
 				<source>1 month</source>
 			</trans-unit>
+			<trans-unit id="pages.cache_tags" xml:space="preserve">
+				<source>Cache Tags:</source>
+			</trans-unit>
 			<trans-unit id="pages.editlock_formlabel" xml:space="preserve">
 				<source>Editable for Admins Only</source>
 			</trans-unit>
