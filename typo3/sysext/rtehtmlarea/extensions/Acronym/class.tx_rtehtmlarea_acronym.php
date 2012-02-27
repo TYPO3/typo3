@@ -110,7 +110,6 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlarea_api {
 	 */
 	function buildJSAcronymArray($languageUid) {
 
-		$charset = 'utf-8';
 		$button = 'acronym';
 		$acronymArray = array();
 		$abbrArray = array();
@@ -172,7 +171,7 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlarea_api {
 		$whereClause .= t3lib_BEfunc::deleteClause($tableB);
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $tableAB, $whereClause);
 		while ($acronymRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$item = array('term' => $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['term'], $charset), 'abbr' => $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['acronym'], $charset), 'language' => $GLOBALS['LANG']->csConvObj->utf8_encode(strtolower($acronymRow['lg_iso_2']), $charset) . ($acronymRow['lg_country_iso_2'] ? ('-' . $acronymRow['lg_country_iso_2']) : ''));
+			$item = array('term' => $acronymRow['term'], 'abbr' => $acronymRow['acronym'], 'language' => strtolower($acronymRow['lg_iso_2']) . ($acronymRow['lg_country_iso_2'] ? ('-' . $acronymRow['lg_country_iso_2']) : ''));
 			if ($acronymRow['type'] == 1) {
 				$acronymArray[] = $item;
 			} elseif ($acronymRow['type'] == 2) {

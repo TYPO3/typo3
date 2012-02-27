@@ -130,8 +130,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	public $language;
 	public $contentTypo3Language;
 	public $contentISOLanguage;
-	public $contentCharset;
-	public $OutputCharset;
+	public $charset = 'utf-8';
+	public $contentCharset = 'utf-8';
+	public $OutputCharset = 'utf-8';
 	var $editorCSS;
 	var $specConf;
 	var $toolbar = array();					// Save the buttons for the toolbar
@@ -322,15 +323,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					}
 				}
 			}
-
-				// Character sets: interface and content
-			$this->charset = $LANG->charSet;
-			$this->OutputCharset = $this->charset;
-
-			$this->contentCharset = $LANG->csConvObj->charSetArray[$this->contentTypo3Language];
-			$this->contentCharset = $this->contentCharset ? $this->contentCharset : 'utf-8';
-			$this->origContentCharSet = $this->contentCharset;
-			$this->contentCharset = 'utf-8';
 
 			/* =======================================
 			 * TOOLBAR CONFIGURATION
@@ -1249,16 +1241,19 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		return json_encode($toolbar);
 	}
 
+	/**
+	 * Localize a string using the language of the content element rather than the language of the BE interface
+	 *
+	 * @param	string		string: the label to be localized
+	 * @return	string		Localized string.
+	 */
 	public function getLLContent($string) {
-		global $LANG;
+		$BE_lang = $GLOBALS['LANG']->lang;
 
-		$BE_lang = $LANG->lang;
-		$BE_charSet = $LANG->charSet;
-		$LANG->lang = $this->contentTypo3Language;
-		$LANG->charSet = $this->contentCharset;
-		$LLString = $LANG->JScharCode($LANG->sL($string));
-		$LANG->lang = $BE_lang;
-		$LANG->charSet = $BE_charSet;
+		$GLOBALS['LANG']->lang = $this->contentTypo3Language;
+		$LLString = $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL($string));
+
+		$GLOBALS['LANG']->lang = $BE_lang;
 		return $LLString;
 	}
 
@@ -1267,7 +1262,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 		if ($this->is_FE()) {
 			if (strcmp(substr($string,0,4),'LLL:')) {
-					// A pure string coming from Page TSConfig must be in forceCharset, otherwise we just don't know..
+					// A pure string coming from Page TSConfig must be in utf-8
 				$label = $TSFE->csConvObj->conv($TSFE->sL(trim($string)), 'utf-8', $this->OutputCharset);
 			} else {
 				$label = $TSFE->csConvObj->conv($TSFE->sL(trim($string)), $this->charset, $this->OutputCharset);
@@ -1287,12 +1282,13 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	}
 
 	function feJScharCode($str) {
-		global $TSFE;
 			// Convert string to UTF-8:
-		if ($this->OutputCharset != 'utf-8') $str = $TSFE->csConvObj->utf8_encode($str,$this->OutputCharset);
+		if ($this->OutputCharset != 'utf-8') {
+			$str = $GLOBALS['TSFE']->csConvObj->utf8_encode($str, $this->OutputCharset);
+		}
 			// Convert the UTF-8 string into a array of char numbers:
-		$nArr = $TSFE->csConvObj->utf8_to_numberarray($str);
-		return 'String.fromCharCode('.implode(',',$nArr).')';
+		$nArr = $GLOBALS['TSFE']->csConvObj->utf8_to_numberarray($str);
+		return 'String.fromCharCode('.implode(',', $nArr).')';
 	}
 
 	public function getFullFileName($filename) {

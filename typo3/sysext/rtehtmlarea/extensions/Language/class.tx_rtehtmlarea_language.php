@@ -84,9 +84,6 @@ class tx_rtehtmlarea_language extends tx_rtehtmlarea_api {
 		foreach ($languages as $key => $value) {
 			$languagesJSArray[] = array('text' => $key, 'value' => $value);
 		}
-		if ($this->htmlAreaRTE->is_FE()) {
-			$GLOBALS['TSFE']->csConvObj->convArray($languagesJSArray, $this->htmlAreaRTE->OutputCharset, 'utf-8');
-		}
 		$languagesJSArray = json_encode(array('options' => $languagesJSArray));
 		$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.dataUrl = "' . (($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix) ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile('', $button . '_' . $this->htmlAreaRTE->contentLanguageUid, 'js', $languagesJSArray) . '";';
@@ -135,11 +132,6 @@ class tx_rtehtmlarea_language extends tx_rtehtmlarea_api {
 				}
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-			if ($this->htmlAreaRTE->is_FE()) {
-				$GLOBALS['TSFE']->csConvObj->convArray($nameArray, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['static_info_tables']['charset'], $this->htmlAreaRTE->OutputCharset);
-			} else {
-				$GLOBALS['LANG']->csConvObj->convArray($nameArray, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['static_info_tables']['charset'], $GLOBALS['LANG']->charSet);
-			}
 			uasort($nameArray, 'strcoll');
 		}
 		return $nameArray;
