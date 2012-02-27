@@ -6658,7 +6658,7 @@ class t3lib_TCEmain {
 
 				// Clear cache for pages entered in TSconfig:
 			if ($TSConfig['clearCacheCmd']) {
-				$Commands = t3lib_div::trimExplode(',', strtolower($TSConfig['clearCacheCmd']), 1);
+				$Commands = t3lib_div::trimExplode(',', $TSConfig['clearCacheCmd'], 1);
 				$Commands = array_unique($Commands);
 				foreach ($Commands as $cmdPart) {
 					$this->clear_cacheCmd($cmdPart);
@@ -6687,6 +6687,10 @@ class t3lib_TCEmain {
 	 * $cacheCmd=[integer]:	Clears cache for the page pointed to by $cacheCmd
 	 * (an integer).
 	 *
+	 * $cacheCmd='cacheTag:[string]':  Flush page and pagesection cache by given tag
+	 *
+	 * $cacheCmd='cacheId:[string]':  Removes cache identifier from page and page section cache
+	 *
 	 * Can call a list of post processing functions as defined in
 	 * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']
 	 * (numeric array with values being the function references, called by
@@ -6713,7 +6717,7 @@ class t3lib_TCEmain {
 		}
 
 			// Clear cache for either ALL pages or ALL tables!
-		switch ($cacheCmd) {
+		switch (strtolower($cacheCmd)) {
 			case 'pages':
 				if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.pages')) {
 					$this->internal_clearPageCache();
@@ -6753,6 +6757,9 @@ class t3lib_TCEmain {
 			break;
 		}
 
+		$idsToRemove = array();
+		$tagsToFlush = array();
+
 			// Clear cache for a page ID!
 		if (t3lib_utility_Math::canBeInterpretedAsInteger($cacheCmd)) {
 			if (t3lib_extMgm::isLoaded('cms')) {
@@ -6770,25 +6777,44 @@ class t3lib_TCEmain {
 
 					// Delete cache for selected pages:
 				if (is_array($list_cache)) {
-
-					$pageCache = $GLOBALS['typo3CacheManager']->getCache(
-						'cache_pages'
-					);
-					$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache(
-						'cache_pagesection'
-					);
-
 					foreach ($list_cache as $pageId) {
-						$pageCache->flushByTag('pageId_' . (int)$pageId);
-						$pageSectionCache->flushByTag('pageId_' . (int)$pageId);
+						$tagsToFlush[] = 'pageId_' . (int)$pageId;
 					}
 				}
 			}
 		}
 
+			// flush cache by tag
+		if (t3lib_div::isFirstPartOfStr(strtolower($cacheCmd), 'cachetag:')) {
+			$cacheTag = substr($cacheCmd, 9);
+			$tagsToFlush[] = $cacheTag;
+		}
+
+			// remove cache entry by identifier
+		if (t3lib_div::isFirstPartOfStr(strtolower($cacheCmd), 'cacheid:')) {
+			$cacheId = substr($cacheCmd, 8);
+			$idsToRemove[] = $cacheId;
+		}
+
+			// process caching framwork operations
+		if (count($idsToRemove) > 0 || count($tagsToFlush) > 0) {
+			$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages'); /* @var $pageCache t3lib_cache_frontend_AbstractFrontend */
+			$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection'); /* @var $pageSectionCache t3lib_cache_frontend_AbstractFrontend */
+
+			foreach ($idsToRemove as $id) {
+				$pageCache->remove($id);
+				$pageSectionCache->remove($id);
+			}
+
+			foreach ($tagsToFlush as $tag) {
+				$pageCache->flushByTag($tag);
+				$pageSectionCache->flushByTag($tag);
+			}
+		}
+
 			// Call post processing function for clear-cache:
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'])) {
-			$_params = array('cacheCmd' => $cacheCmd);
+			$_params = array('cacheCmd' => strtolower($cacheCmd));
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] as $_funcRef) {
 				t3lib_div::callUserFunction($_funcRef, $_params, $this);
 			}
