@@ -6,7 +6,7 @@ if (!defined('TYPO3_MODE')) {
 $TCA['pages'] = array(
 	'ctrl' => $TCA['pages']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'doktype,title,alias,hidden,starttime,endtime,fe_group,url,target,no_cache,shortcut,keywords,description,abstract,newUntil,lastUpdated,cache_timeout,backend_layout,backend_layout_next_level',
+		'showRecordFieldList' => 'doktype,title,alias,hidden,starttime,endtime,fe_group,url,target,no_cache,shortcut,keywords,description,abstract,newUntil,lastUpdated,cache_timeout,cache_tags,backend_layout,backend_layout_next_level',
 		'maxDBListItems' => 30,
 		'maxSingleDBListItems' => 50,
 	),
@@ -446,6 +446,16 @@ $TCA['pages'] = array(
 					),
 				),
 				'default' => '0',
+			),
+		),
+		'cache_tags' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.cache_tags',
+			'config' => array(
+				'type' => 'input',
+				'size' => '30',
+				'max' => '255',
+				'eval' => '',
 			),
 		),
 		'no_cache' => array(
@@ -907,7 +917,7 @@ $TCA['pages'] = array(
 			'showitem' => 'layout, lastUpdated, newUntil, no_search',
 		),
 		'3' => array(
-			'showitem' => 'alias, target, no_cache, cache_timeout, url_scheme',
+			'showitem' => 'alias, target, no_cache, cache_timeout, cache_tags, url_scheme',
 		),
 		'5' => array(
 			'showitem' => 'author, author_email', 'canNotCollapse' => 1,
@@ -994,7 +1004,7 @@ $TCA['pages'] = array(
 			'canNotCollapse' => 1,
 		),
 		'caching' => array(
-			'showitem' => 'cache_timeout;LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout_formlabel, no_cache;LLL:EXT:cms/locallang_tca.xml:pages.no_cache_formlabel',
+			'showitem' => 'cache_timeout;LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout_formlabel, cache_tags, no_cache;LLL:EXT:cms/locallang_tca.xml:pages.no_cache_formlabel',
 			'canNotCollapse' => 1,
 		),
 		'language' => array(
