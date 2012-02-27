@@ -106,7 +106,6 @@ $TYPO3_CONF_VARS = array(
 		't3lib_cs_utils' => '',					// String (values: "iconv", "mbstring", default is homemade PHP-code). Defines which of these PHP-features to use for various charset processing functions in t3lib_cs. Will speed up charset functions radically.
 		'no_pconnect' => TRUE,					// Boolean: If TRUE, "connect" is used to connect to the database. If FALSE, a persistent connection using "pconnect" will be established!
 		'multiplyDBfieldSize' => 1,				// Double: 1-5: Amount used to multiply the DB field size when the install tool is evaluating the database size (eg. "2.5"). This is only useful e.g. if your database is ISO-8859-1 encoded but you want to use UTF-8 for your site. For Western European sites using UTF-8 the need should not be for more than twice the normal single-byte size (2) and for Chinese / Asian languages 3 should suffice. NOTICE: It is recommended to change the native database charset instead! (see <a href="http://wiki.typo3.org/index.php/UTF-8_support" target="_blank">TYPO3 wiki: UTF-8 support</a> for more information). NOTICE: This option is deprecated since TYPO3 4.5, and will not be used anymore in 4.7+. Please use proper tools to set your installation to native UTF-8.
-		'setDBinit' => '-1',						// String (textarea): Commands to send to database right after connecting, separated by newline. Ignored by the DBAL extension except for the 'native' type!
 		'dbClientCompress' => FALSE,			// Boolean: if TRUE, data exchange between TYPO3 and database server will be compressed. This may improve performance if (1) database serever is on the different server and (2) network connection speed to database server is 100mbps or less. CPU usage will be higher if this option is used but database operations will be executed faster due to much less (up to 3 times) database network traffic. This option has no effect if MySQL server is localhost.
 		'setMemoryLimit' => 0,					// Integer: memory_limit in MB: If more than 16, TYPO3 will try to use ini_set() to set the memory limit of PHP to the value. This works only if the function ini_set() is not disabled by your sysadmin.
 		'serverTimeZone' => 1,					// Integer: GMT offset of servers time (from time()). Default is "1" which is "GMT+1" (central european time). This value can be used in extensions that are GMT aware and wants to convert times to/from other timezones.
@@ -823,13 +822,18 @@ if (isset($TYPO3_CONF_VARS['BE']['forceCharset'])) {
 	}
 }
 
-if (isset($TYPO3_CONF_VARS['SYS']['setDBinit']) && !preg_match('/SET NAMES utf8/', $TYPO3_CONF_VARS['SYS']['setDBinit'])) {
+if (isset($TYPO3_CONF_VARS['SYS']['setDBinit']) &&
+	$TYPO3_CONF_VARS['SYS']['setDBinit'] !== '-1' &&
+	preg_match('/SET NAMES utf8/', $TYPO3_CONF_VARS['SYS']['setDBinit']) === FALSE &&
+	TYPO3_enterInstallScript !== '1'
+) {
+		// Only accept "SET NAMES utf8" for this setting, otherwise die with a nice error
 	die('This TYPO3 installation is using the $TYPO3_CONF_VARS[\'SYS\'][\'setDBinit\'] property with the following value:' . chr(10) .
 		$TYPO3_CONF_VARS['SYS']['setDBinit'] . chr(10) . chr(10) .
 		'It looks like UTF-8 is not used for this connection.' . chr(10) . chr(10) .
 		'Everything other than UTF-8 is unsupported since TYPO3 4.7.' . chr(10) .
 		'The DB, its connection and TYPO3 should be migrated to UTF-8 therefore. Please check your setup.');
-} elseif (empty($TYPO3_CONF_VARS['SYS']['setDBinit'])) {
+} else {
 	$TYPO3_CONF_VARS['SYS']['setDBinit'] = 'SET NAMES utf8;';
 }
 
