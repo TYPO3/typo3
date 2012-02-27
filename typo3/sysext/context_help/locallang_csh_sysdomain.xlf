@@ -54,6 +54,15 @@ If you're using TYPO3 on a unix computer you can make 'virtual subdirectories' t
 			<trans-unit id="prepend_params.description" xml:space="preserve">
 				<source>If set, any GET parameters in the calling URL will be transferred to the redirect URL.</source>
 			</trans-unit>
+			<trans-unit id="domainNameExtended.description" xml:space="preserve">
+				<source>Additional domains to match. Accepts wildcard (*) for domain parts, e.g *.example.com. Enter one domain per line.
+				</source>
+			</trans-unit>
+			<trans-unit id="domainNameExtended.details" xml:space="preserve">
+				<source>Technically t3lib_div::cmpFQDN is used to compare the current domain with any line in any domain record. The first domain record with a matching pattern is chosen as current domain record.
+
+Only subparts of the domain can have a wildcard. So test.*.example.org is valid, while test*.example.org is not.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
