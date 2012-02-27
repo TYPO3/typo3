@@ -4656,6 +4656,14 @@ if (version == "n3") {
 				$calculatedCacheTimeout = $this->calculatePageCacheTimeout();
 				$cacheTimeout = ($calculatedCacheTimeout < $cacheTimeout) ? $calculatedCacheTimeout : $cacheTimeout;
 			}
+
+			if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['get_cache_timeout'])) {
+				foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['get_cache_timeout'] as $_funcRef) {
+					$params = array('cacheTimeout' => $cacheTimeout);
+					$cacheTimeout = t3lib_div::callUserFunction($_funcRef, $params, $this);
+				}
+			}
+
 			$runtimeCache->set($cachedCacheLifetimeIdentifier, $cacheTimeout);
 			$cachedCacheLifetime = $cacheTimeout;
 		}
