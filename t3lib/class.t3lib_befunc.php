@@ -2675,7 +2675,12 @@ final class t3lib_BEfunc {
 			} else {
 				$domain = self::firstDomainRecord($rootLine);
 			}
-			$domain = $protocol . '://' . $domain;
+
+			if ($domain) {
+				$domain = $protocol . '://' . $domain;
+			} else {
+				$domain = rtrim(t3lib_div::getIndpEnv('TYPO3_SITE_URL'), '/');
+			}
 		}
 
 		return $domain;
