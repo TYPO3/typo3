@@ -1,5 +1,18 @@
 <?php
 namespace TYPO3\CMS\Frontend\ContentObject;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+/**
+ * This class contains all main TypoScript features.
+ * This includes the rendering of TypoScript content objects (cObjects).
+ * Is the backbone of TypoScript Template rendering.
+ *
+ * There are lots of functions you can use from your include-scripts.
+ * The class "tslib_cObj" is normally instantiated and referred to as "cObj".
+ * When you call your own PHP-code typically through a USER or USER_INT cObject then it is this class that instantiates the object and calls the main method. Before it does so it will set (if you are using classes) a reference to itself in the internal variable "cObj" of the object. Thus you can access all functions and data from this class by $this->cObj->... from within you classes written to be USER or USER_INT content objects.
+ *
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ */
 
 /***************************************************************
  * Copyright notice
@@ -26,17 +39,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * This class contains all main TypoScript features.
- * This includes the rendering of TypoScript content objects (cObjects).
- * Is the backbone of TypoScript Template rendering.
- *
- * There are lots of functions you can use from your include-scripts.
- * The class "tslib_cObj" is normally instantiated and referred to as "cObj".
- * When you call your own PHP-code typically through a USER or USER_INT cObject then it is this class that instantiates the object and calls the main method. Before it does so it will set (if you are using classes) a reference to itself in the internal variable "cObj" of the object. Thus you can access all functions and data from this class by $this->cObj->... from within you classes written to be USER or USER_INT content objects.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
 class ContentObjectRenderer {
 
 	/**
@@ -61,6 +63,8 @@ class ContentObjectRenderer {
 		// this is a placeholder for checking if the content is available in cache
 		'setContentToCurrent' => 'boolean',
 		'setContentToCurrent.' => 'array',
+		'addPageCacheTags' => 'string',
+		'addPageCacheTags.' => 'array',
 		'setCurrent' => 'string',
 		'setCurrent.' => 'array',
 		'lang.' => 'array',
@@ -2053,6 +2057,24 @@ class ContentObjectRenderer {
 				$content = $cacheFrontend->get($conf['cache.']['key']);
 				$this->stopRendering[$this->stdWrapRecursionLevel] = TRUE;
 			}
+		}
+		return $content;
+	}
+
+	/**
+	 * Add tags to page cache (comma-separated list)
+	 *
+	 * @param string $content Input value undergoing processing in these functions.
+	 * @param array $conf All stdWrap properties, not just the ones for a particular function.
+	 * @return string The processed input value
+	 */
+	public function stdWrap_addPageCacheTags($content = '', $conf = array()) {
+		$tags = isset($conf['addPageCacheTags.'])
+			? $this->stdWrap($conf['addPageCacheTags'], $conf['addPageCacheTags.'])
+			: $conf['addPageCacheTags'];
+		if (!empty($tags)) {
+			$cacheTags = GeneralUtility::trimExplode(',', $tags, TRUE);
+			$GLOBALS['TSFE']->addCacheTags($cacheTags);
 		}
 		return $content;
 	}
