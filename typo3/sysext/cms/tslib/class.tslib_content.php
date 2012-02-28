@@ -54,6 +54,8 @@ class tslib_cObj {
 	var $stdWrapOrder = array(
 		'stdWrapPreProcess' => 'hook', // this is a placeholder for the first Hook
 		'cacheRead' => 'hook', // this is a placeholder for checking if the content is available in cache
+		'addPageCacheTags' => 'string',
+		'addPageCacheTags.' => 'array',
 		'setContentToCurrent' => 'boolean',
 		'setContentToCurrent.' => 'array',
 		'setCurrent' => 'string',
@@ -1950,6 +1952,21 @@ class tslib_cObj {
 				$content = $cacheFrontend->get($conf['cache.']['key']);
 				$this->stopRendering[$this->stdWrapRecursionLevel] = TRUE;
 			}
+		}
+		return $content;
+	}
+
+	/**
+	 * Add tags to page cache (comma-separated list)
+	 *
+	 * @param	string		Input value undergoing processing in these functions.
+	 * @param	array		All stdWrap properties, not just the ones for a particular function.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_addPageCacheTags($content = '', $conf = array()) {
+		if (!empty($conf['addPageCacheTags'])) {
+			$tags = t3lib_div::trimExplode(',', $conf['addPageCacheTags'], TRUE);
+			$GLOBALS['TSFE']->addCacheTags($tags);
 		}
 		return $content;
 	}
