@@ -37,7 +37,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $cObj = NULL;
 
 	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $tsfe = NULL;
 
@@ -51,7 +51,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setUp() {
 		$this->template = $this->getMock('TYPO3\\CMS\\Core\\TypoScript\\TemplateService', array('getFileName', 'linkData'));
-		$this->tsfe = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
+		$this->tsfe = $this->getAccessibleMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array('dummy'), array(), '', FALSE);
 		$this->tsfe->tmpl = $this->template;
 		$this->tsfe->config = array();
 		$this->tsfe->page = array();
@@ -1177,7 +1177,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function stdWrap_strftimeReturnsFormattedString($content, $conf) {
 			// Set exec_time to a hard timestamp
 		$GLOBALS['EXEC_TIME'] = 1346500800;
-			// Save current timezone and set to UTC to make the system unter test behave
+			// Save current timezone and set to UTC to make the system under test behave
 			// the same in all server timezone settings
 		$timezoneBackup = date_default_timezone_get();
 		date_default_timezone_set('UTC');
@@ -1295,6 +1295,40 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					),
 				),
 				' left middle right '
+			),
+		);
+	}
+
+	/**
+	 * @param array $expectedTags
+	 * @param array $configuration
+	 * @test
+	 * @dataProvider stdWrap_addPageCacheTagsAddsPageTagsDataProvider
+	 */
+	public function stdWrap_addPageCacheTagsAddsPageTags(array $expectedTags, array $configuration) {
+		$this->cObj->stdWrap_addPageCacheTags('', $configuration);
+		$this->assertEquals($expectedTags, $this->tsfe->_get('pageCacheTags'));
+	}
+
+	/**
+	 * @return array
+	 */
+	public function stdWrap_addPageCacheTagsAddsPageTagsDataProvider() {
+		return array(
+			'No Tag' => array(
+				array(),
+				array('addPageCacheTags' => ''),
+			),
+			'Two expectedTags' => array(
+				array('tag1', 'tag2'),
+				array('addPageCacheTags' => 'tag1,tag2'),
+			),
+			'Two expectedTags plus one with stdWrap' => array(
+				array('tag1', 'tag2', 'tag3'),
+				array(
+					'addPageCacheTags' => 'tag1,tag2',
+					'addPageCacheTags.' => array('wrap' => '|,tag3')
+				),
 			),
 		);
 	}
