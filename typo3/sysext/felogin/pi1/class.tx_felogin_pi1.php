@@ -577,15 +577,23 @@ class tx_felogin_pi1 extends tslib_pibase {
 						// logintype is needed because the login-page wouldn't be accessible anymore after a login (would always redirect)
 					switch ($redirMethod) {
 						case 'groupLogin': // taken from dkd_redirect_at_login written by Ingmar Schlecht; database-field changed
-							$groupData = $GLOBALS['TSFE']->fe_user->groupData;
-							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-								'felogin_redirectPid',
-								$GLOBALS['TSFE']->fe_user->usergroup_table,
-								'felogin_redirectPid<>\'\' AND uid IN (' . implode(',', $groupData['uid']) . ')'
+							$groupData = t3lib_div::intExplode(',', $GLOBALS['TSFE']->fe_user->user['usergroup']);
+							$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,felogin_redirectPid', 'fe_groups',
+								'felogin_redirectPid<>\'\' AND uid IN (' . implode(',', $groupData) . ')',
+								'', '', '', 'uid'
 							);
-							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))	{
-								$redirect_url[] = $this->pi_getPageLink($row[0]); // take the first group with a redirect page
+								// We need to get the first row in the right order. If not DBAL,
+								// we could just use MySQL's FIND_IN_SET in the ORDER BY clause,
+								// select a single row and avoid the loop below. But with DBAL
+								// we have to go with this complex way.
+							if (count($rows) > 0) {
+								foreach ($groupData as $uid) {
+									if (isset($rows[$uid])) {
+										$redirect_url[] = $this->pi_getPageLink($rows[$uid]['felogin_redirectPid']);
+									}
+								}
 							}
+							unset($rows);
 						break;
 						case 'userLogin':
 							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
