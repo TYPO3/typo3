@@ -61,6 +61,8 @@ class ContentObjectRenderer {
 		// this is a placeholder for checking if the content is available in cache
 		'setContentToCurrent' => 'boolean',
 		'setContentToCurrent.' => 'array',
+		'addPageCacheTags' => 'string',
+		'addPageCacheTags.' => 'array',
 		'setCurrent' => 'string',
 		'setCurrent.' => 'array',
 		'lang.' => 'array',
@@ -2053,6 +2055,24 @@ class ContentObjectRenderer {
 				$content = $cacheFrontend->get($conf['cache.']['key']);
 				$this->stopRendering[$this->stdWrapRecursionLevel] = TRUE;
 			}
+		}
+		return $content;
+	}
+
+	/**
+	 * Add tags to page cache (comma-separated list)
+	 *
+	 * @param string $content Input value undergoing processing in these functions.
+	 * @param array $conf All stdWrap properties, not just the ones for a particular function.
+	 * @return string The processed input value
+	 */
+	public function stdWrap_addPageCacheTags($content = '', $conf = array()) {
+		$tags = isset($conf['addPageCacheTags.'])
+			? $this->stdWrap($conf['addPageCacheTags'], $conf['addPageCacheTags.'])
+			: $conf['addPageCacheTags'];
+		if (!empty($tags)) {
+			$cacheTags = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tags, TRUE);
+			$GLOBALS['TSFE']->addCacheTags($cacheTags);
 		}
 		return $content;
 	}
