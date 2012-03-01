@@ -6757,7 +6757,6 @@ class t3lib_TCEmain {
 				break;
 		}
 
-		$idsToRemove = array();
 		$tagsToFlush = array();
 
 			// Clear cache for a page ID!
@@ -6790,23 +6789,12 @@ class t3lib_TCEmain {
 			$tagsToFlush[] = $cacheTag;
 		}
 
-			// remove cache entry by identifier
-		if (t3lib_div::isFirstPartOfStr(strtolower($cacheCmd), 'cacheid:')) {
-			$cacheId = substr($cacheCmd, 8);
-			$idsToRemove[] = $cacheId;
-		}
-
 			// process caching framwork operations
-		if (count($idsToRemove) > 0 || count($tagsToFlush) > 0) {
+		if (count($tagsToFlush) > 0) {
 				/* @var $pageCache t3lib_cache_frontend_AbstractFrontend */
 			$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
 				/* @var $pageSectionCache t3lib_cache_frontend_AbstractFrontend */
 			$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
-
-			foreach ($idsToRemove as $id) {
-				$pageCache->remove($id);
-				$pageSectionCache->remove($id);
-			}
 
 			foreach ($tagsToFlush as $tag) {
 				$pageCache->flushByTag($tag);
