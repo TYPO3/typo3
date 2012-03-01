@@ -261,7 +261,7 @@ class Tx_Extbase_Tests_Unit_Service_ExtensionServiceTest extends Tx_Extbase_Test
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_SELECTgetRows')->with(
 			'pid',
 			'tt_content',
-			'list_type="pluginSignature" AND CType="list" AND enable_fields',
+			'list_type="pluginSignature" AND CType="list" AND enable_fields AND sys_language_uid=',
 			'',
 			''
 		)->will($this->returnValue(array(array('pid' => '321'))));
