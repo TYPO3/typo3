@@ -82,6 +82,18 @@ class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_Abstrac
 			}
 		}
 
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_variablefrontend.php']['set'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_variablefrontend.php']['set'] as $_funcRef) {
+				$params = array(
+					'entryIdentifier' => &$entryIdentifier,
+					'variable' => &$variable,
+					'tags' => &$tags,
+					'lifetime' => &$lifetime
+				);
+				t3lib_div::callUserFunction($_funcRef, $params, $this);
+			}
+		}
+
 		if ($this->useIgBinary === TRUE) {
 			$this->backend->set($entryIdentifier, igbinary_serialize($variable), $tags, $lifetime);
 		} else {
