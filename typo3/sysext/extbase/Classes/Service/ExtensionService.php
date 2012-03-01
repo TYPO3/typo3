@@ -164,7 +164,7 @@ class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
 			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'pid',
 				'tt_content',
-				'list_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($pluginSignature, 'tt_content') . ' AND CType="list"' . $GLOBALS['TSFE']->sys_page->enableFields('tt_content'),
+				'list_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($pluginSignature, 'tt_content') . ' AND CType="list"' . $GLOBALS['TSFE']->sys_page->enableFields('tt_content') . ' AND sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid,
 				'',
 				'',
 				2
