@@ -61,19 +61,6 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 			return 1;
 		}
 	}
-	function displayExample($theOutput)	{
-		global $tmpl;
-		if ($tmpl->helpConfig["imagetag"] || $tmpl->helpConfig["description"] || $tmpl->helpConfig["header"])	{
-	//		$theOutput.=$this->pObj->doc->divider(20);
-			$theOutput.=$this->pObj->doc->spacer(30);
-			$theOutput.=$this->pObj->doc->section($tmpl->helpConfig["header"],
-				'<div align="center">'.$tmpl->helpConfig["imagetag"].'</div><BR>'.
-				($tmpl->helpConfig["description"] ? implode(explode("//",$tmpl->helpConfig["description"]),"<BR>")."<BR>" : "").
-				($tmpl->helpConfig["bulletlist"] ? "<ul><li>".implode(explode("//",$tmpl->helpConfig["bulletlist"]),"<li>")."</ul>" : "<BR>")
-				);
-		}
-		return $theOutput;
-	}
 
 	function main()	{
 		global $TYPO3_CONF_VARS;
@@ -113,7 +100,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 				// Update template ?
 			if (t3lib_div::_POST('submit') || (t3lib_utility_Math::canBeInterpretedAsInteger(t3lib_div::_POST('submit_x')) && t3lib_utility_Math::canBeInterpretedAsInteger(t3lib_div::_POST('submit_y')))) {
 				$tmpl->changed = 0;
-				$tmpl->ext_procesInput(t3lib_div::_POST(), $_FILES, $theConstants, $tplRow);
+				$tmpl->ext_procesInput(t3lib_div::_POST(), array(), $theConstants, $tplRow);
 		//		debug($tmpl->changed);
 		//		debug($tmpl->raw);
 		//		$tmpl->changed=0;
@@ -124,21 +111,14 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 						// Create new  tce-object
 					$tce = t3lib_div::makeInstance("t3lib_TCEmain");
 					$tce->stripslashes_values = 0;
-						// Initialize
 					$tce->start($recData, Array());
-						// Saved the stuff
 					$tce->process_datamap();
-						// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
-					$tce->clear_cacheCmd("all");
+					$tce->clear_cacheCmd('all');
 
 						// re-read the template ...
 					$this->initialize_editor($this->pObj->id, $template_uid);
 				}
 			}
-
-			// Output edit form
-			$tmpl->ext_readDirResources($TYPO3_CONF_VARS["MODS"]["web_ts"]["onlineResourceDir"]);
-			$tmpl->ext_resourceDims();
 
 				// Resetting the menu (start). I wonder if this in any way is a violation of the menu-system. Haven't checked. But need to do it here, because the menu is dependent on the categories available.
 			$this->pObj->MOD_MENU["constant_editor_cat"] = $tmpl->ext_getCategoryLabelArray();
@@ -167,29 +147,14 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 
 					// Category and constant editor config:
 			$category = $this->pObj->MOD_SETTINGS["constant_editor_cat"];
-		/*	$TSCE_tmpl = t3lib_div::makeInstance("t3lib_tsparser_ext");	// Defined global here!
-			$TSCE_tmpl->tt_track = 0;	// Do not log time-performance information
-			$TSCE_tmpl->init();
-			$TSCE_tmpl->constants=array($tplRow["constants"]);
-			debug($tplRow);
-			$TSCE_tmpl->generateConfig_constants();
-			debug($TSCE_tmpl->setup);
-			*/
-			$tmpl->ext_getTSCE_config($category);
 
-# NOT WORKING:
-			if ($BE_USER_modOptions["properties"]["constantEditor."]["example"]=="top")	{
-				$theOutput=$this->displayExample($theOutput);
-			}
+			$tmpl->ext_getTSCE_config($category);
 
 			$printFields = trim($tmpl->ext_printFields($theConstants,$category));
 			if ($printFields) {
 				$theOutput.=$this->pObj->doc->section("",$printFields);
 			}
 
-			if ($BE_USER_modOptions["properties"]["constantEditor."]["example"]!="top")	{
-				$theOutput=$this->displayExample($theOutput);
-			}
 		} else {
 			$theOutput .= $this->pObj->noTemplate(1);
 		}

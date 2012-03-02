@@ -244,7 +244,6 @@ CREATE TABLE sys_template (
   include_static_file text,
   constants text,
   config text,
-  resources text,
   nextLevel varchar(5) DEFAULT '' NOT NULL,
   description text,
   basedOn tinytext,
