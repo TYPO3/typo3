@@ -124,7 +124,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 				// Update template ?
 			if (t3lib_div::_POST('submit') || (t3lib_utility_Math::canBeInterpretedAsInteger(t3lib_div::_POST('submit_x')) && t3lib_utility_Math::canBeInterpretedAsInteger(t3lib_div::_POST('submit_y')))) {
 				$tmpl->changed = 0;
-				$tmpl->ext_procesInput(t3lib_div::_POST(), $_FILES, $theConstants, $tplRow);
+				$tmpl->ext_procesInput(t3lib_div::_POST(), array(), $theConstants, $tplRow);
 				if ($tmpl->changed) {
 						// Set the data to be saved
 					$recData = array();
@@ -132,9 +132,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 						// Create new  tce-object
 					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 					$tce->stripslashes_values = 0;
-						// Initialize
 					$tce->start($recData, Array());
-						// Saved the stuff
 					$tce->process_datamap();
 						// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
 					$tce->clear_cacheCmd('all');
@@ -143,10 +141,6 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 					$this->initialize_editor($this->pObj->id, $template_uid);
 				}
 			}
-
-				// Output edit form
-			$tmpl->ext_readDirResources($TYPO3_CONF_VARS['MODS']['web_ts']['onlineResourceDir']);
-			$tmpl->ext_resourceDims();
 
 				// Resetting the menu (start). I wonder if this in any way is a violation of the menu-system. Haven't checked. But need to do it here, because the menu is dependent on the categories available.
 			$this->pObj->MOD_MENU['constant_editor_cat'] = $tmpl->ext_getCategoryLabelArray();
@@ -176,11 +170,6 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 					// Category and constant editor config:
 			$category = $this->pObj->MOD_SETTINGS['constant_editor_cat'];
 			$tmpl->ext_getTSCE_config($category);
-
-				// NOT WORKING:
-			if ($BE_USER_modOptions['properties']['constantEditor.']['example'] == 'top') {
-				$theOutput = $this->displayExample($theOutput);
-			}
 
 			$printFields = trim($tmpl->ext_printFields($theConstants, $category));
 			if ($printFields) {

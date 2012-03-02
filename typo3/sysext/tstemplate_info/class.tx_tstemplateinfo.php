@@ -237,7 +237,6 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 					// Set the data to be saved
 				$recData = array();
 				$alternativeFileName = array();
-				$resList = $tplRow['resources'];
 
 				$tmp_upload_name = '';
 					// Set this to blank
@@ -253,59 +252,10 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 							case 'description':
 								$recData['sys_template'][$saveId][$field] = $val;
 								break;
-							case 'resources':
-									// If there is an uploaded file, move it.
-								$tmp_upload_name = t3lib_div::upload_to_tempfile($_FILES['resources']['tmp_name']);
-								if ($tmp_upload_name) {
-									if ($tmp_upload_name!='none' && $_FILES['resources']['name']) {
-										$alternativeFileName[$tmp_upload_name] = trim($_FILES['resources']['name']);
-										$resList = $tmp_upload_name.','.$resList;
-									}
-								}
-								break;
-							case 'new_resource':
-								$newName = trim(t3lib_div::_GP('new_resource'));
-								if ($newName) {
-									$newName.= '.'.t3lib_div::_GP('new_resource_ext');
-									$tmp_newresource_name = t3lib_div::tempnam('new_resource_');
-									$alternativeFileName[$tmp_newresource_name] = $newName;
-									$resList = $tmp_newresource_name.','.$resList;
-								}
-								break;
-							case 'makecopy_resource':
-								if (is_array($val)) {
-									$resList = ','.$resList.',';
-									foreach ($val as $k => $file) {
-										$tmp_name = PATH_site . $GLOBALS['TCA']['sys_template']['columns']['resources']['config']['uploadfolder'] . '/' . $file;
-										$resList = $tmp_name.','.$resList;
-									}
-								}
-								break;
-							case 'remove_resource':
-								if (is_array($val)) {
-									$resList = ','.$resList.',';
-									foreach ($val as $k => $file) {
-										$resList = str_replace(','.$file.',', ',', $resList);
-									}
-								}
-								break;
-							case 'totop_resource':
-								if (is_array($val)) {
-									$resList = ','.$resList.',';
-									foreach ($val as $k => $file) {
-										$resList = str_replace(','.$file.',', ',', $resList);
-										$resList = ','.$file.$resList;
-									}
-								}
-								break;
 						}
 					}
 				}
-				$resList=implode(',', t3lib_div::trimExplode(',', $resList, 1));
-				if (strcmp($resList, $tplRow['resources'])) {
-					$recData['sys_template'][$saveId]['resources'] = $resList;
-				}
-				if (count($recData)) {
+				if (count($recData))	{
 
 					$recData['sys_template'][$saveId] = $this->processTemplateRowBeforeSaving($recData['sys_template'][$saveId]);
 
@@ -326,10 +276,6 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 						// re-read the template ...
 					$this->initialize_editor($this->pObj->id, $template_uid);
 				}
-
-					// Unlink any uploaded/new temp files there was:
-				t3lib_div::unlink_tempfile($tmp_upload_name);
-				t3lib_div::unlink_tempfile($tmp_newresource_name);
 
 					// If files has been edited:
 				if (is_array($edit))		{
@@ -409,42 +355,6 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				$outCode.= '<input type="Hidden" name="e[description]" value="1">';
 				$theOutput.= $this->pObj->doc->spacer(15);
 				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('description'), $outCode, TRUE);
-			}
-			if ($e['resources']) {
-					// Upload
-				$outCode = '<input type="File" name="resources"'.$this->pObj->doc->formWidth().' size="50">';
-				$outCode.= '<input type="Hidden" name="data[resources]" value="1">';
-				$outCode.= '<input type="Hidden" name="e[resources]" value="1">';
-				$outCode.= '<BR>' . $GLOBALS['LANG']->getLL('allowedExtensions') . ' <strong>' . $GLOBALS['TCA']['sys_template']['columns']['resources']['config']['allowed'] . '</strong>';
-				$outCode.= '<BR>' . $GLOBALS['LANG']->getLL('maxFilesize') . ' <strong>' . t3lib_div::formatSize($GLOBALS['TCA']['sys_template']['columns']['resources']['config']['max_size']*1024) . '</strong>';
-				$theOutput.= $this->pObj->doc->spacer(15);
-				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('uploadResource'), $outCode, TRUE);
-
-					// New
-				$opt = explode(',', $this->pObj->textExtensions);
-				$optTags = '';
-				foreach ($opt as $extVal) {
-					$optTags.= '<option value="'.$extVal.'">.'.$extVal.'</option>';
-				}
-				$outCode = '<input type="text" name="new_resource"'.$this->pObj->doc->formWidth(20).'>
-					<select name="new_resource_ext">'.$optTags.'</select>';
-				$outCode.= '<input type="Hidden" name="data[new_resource]" value="1">';
-				$theOutput.= $this->pObj->doc->spacer(15);
-				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('newTextResource'), $outCode, TRUE);
-
-					// Make copy
-				$rL = $this->resourceListForCopy($this->pObj->id, $template_uid);
-				if ($rL) {
-					$theOutput.= $this->pObj->doc->spacer(20);
-					$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('copyResource'), $rL);
-				}
-
-					// Update resource list
-				$rL = $this->procesResources($tplRow['resources'], 1);
-				if ($rL) {
-					$theOutput.= $this->pObj->doc->spacer(20);
-					$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('updateResourceList'), $rL, TRUE);
-				}
 			}
 			if ($e['constants']) {
 				$outCode = '<textarea name="data[constants]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off').' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow['constants']).'</textarea>';
@@ -537,11 +447,6 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				$GLOBALS['LANG']->getLL('description'),
 				nl2br(htmlspecialchars($tplRow['description'])),
 				'description'
-			);
-			$outCode.= $this->tableRow(
-				$GLOBALS['LANG']->getLL('resources'),
-				$this->procesResources($tplRow['resources']),
-				'resources'
 			);
 			$outCode.= $this->tableRow(
 				$GLOBALS['LANG']->getLL('constants'),
