@@ -95,6 +95,17 @@ TYPO3 will not clean the history (table "sys_history") on its own anymore.
 This can lead to a large amount of data in this table. Please consider using
 the garbage collection scheduler task to remove old entries.
 
+* Removed TypoScript resources
+
+The ancient feature to add images and other resources directly to TypoScript
+records is dropped and the handling removed. This old feature - accessible
+from the 'Info/modify' tab in the Template module - was hardly ever used
+and was partly broken.
+If this feature was still in use, it is recommended to not drop the
+resource field from table sys_template during upgrading, fix the using
+TypoScript to refer to resources located in fileadmin or similar directly,
+and afterwards to finally delete the resource field in the install tool.
+
 ===============================================================================
 Changes and Improvements
 ===============================================================================

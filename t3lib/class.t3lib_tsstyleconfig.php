@@ -24,11 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Provides a simplified layer for making Constant Editor style configuration forms
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
 
 /**
  * Provides a simplified layer for making Constant Editor style configuration forms
@@ -42,9 +37,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext {
 	var $categories = array();
 	var $ext_dontCheckIssetValues = 1;
 	var $ext_CEformName = 'tsStyleConfigForm';
-	var $ext_noCEUploadAndCopying = 1;
 	var $ext_printAll = 1;
-	var $ext_defaultOnlineResourceFlag = 1;
 
 	var $ext_incomingValues = array();
 
@@ -216,21 +209,6 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext {
 		$fV = htmlspecialchars($fV);
 
 		return array($fN, $fV, $params);
-	}
-
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$absPath: ...
-	 * @return	[type]		...
-	 */
-	function ext_loadResources($absPath) {
-		$this->ext_readDirResources($GLOBALS['TYPO3_CONF_VARS']['MODS']['web_ts']['onlineResourceDir']);
-		if (is_dir($absPath)) {
-			$absPath = rtrim($absPath, '/');
-			$this->readDirectory($absPath);
-		}
-		$this->ext_resourceDims();
 	}
 
 	/**

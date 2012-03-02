@@ -849,7 +849,7 @@ if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Upd
 $TCA['sys_template'] = array(
 	'ctrl' => $TCA['sys_template']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'title,clear,root,basedOn,nextLevel,resources,sitetitle,description,hidden,starttime,endtime'
+		'showRecordFieldList' => 'title,clear,root,basedOn,nextLevel,sitetitle,description,hidden,starttime,endtime'
 	),
 	'columns' => array(
 		'title' => array(
@@ -929,20 +929,6 @@ $TCA['sys_template'] = array(
 				'softref' => 'TStemplate,email[subst],url[subst]'
 			),
 			'defaultExtras' => 'fixed-font : enable-tab',
-		),
-		'resources' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.resources',
-			'config' => array(
-				'type' => 'group',
-				'internal_type' => 'file',
-				'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'].',html,htm,ttf,pfb,pfm,txt,css,tmpl,inc,ico,js,xml',
-				'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
-				'uploadfolder' => 'uploads/tf',
-				'show_thumbs' => '1',
-				'size' => '7',
-				'maxitems' => '100',
-				'minitems' => '0'
-			)
 		),
 		'nextLevel' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.nextLevel',

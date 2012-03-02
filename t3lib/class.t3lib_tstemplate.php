@@ -64,7 +64,6 @@ class t3lib_TStemplate {
 	var $ext_regComments = FALSE;
 
 		// Constants:
-	var $uplPath = 'uploads/tf/';
 	var $tempPath = 'typo3temp/';
 	var $menuclasses = 'gmenu,tmenu,imgmenu,jsmenu';
 
@@ -133,8 +132,6 @@ class t3lib_TStemplate {
 	var $outermostRootlineIndexWithTemplate = 0;
 		// Array of arrays with title/uid of templates in hierarchy
 	var $rowSum;
-		// Resources for the template hierarchy in a comma list
-	var $resources = '';
 		// The current site title field.
 	var $sitetitle = '';
 		// Tracking all conditions found during parsing of TypoScript. Used for the "all" key in currentPageData
@@ -544,10 +541,6 @@ class t3lib_TStemplate {
 		$this->clearList_const[] = $templateID;
 		$this->clearList_setup[] = $templateID;
 
-			// Add resources and sitetitle if found:
-		if (trim($row['resources'])) {
-			$this->resources = $row['resources'] . ',' . $this->resources;
-		}
 		if (trim($row['sitetitle'])) {
 			$this->sitetitle = $row['sitetitle'];
 		}
@@ -734,7 +727,6 @@ class t3lib_TStemplate {
 		$this->processIncludes();
 
 			// These vars are also set lateron...
-		$this->setup['resources'] = $this->resources;
 		$this->setup['sitetitle'] = $this->sitetitle;
 
 			// ****************************
@@ -833,10 +825,6 @@ class t3lib_TStemplate {
 			// ****************************************************************
 
 			// These vars are allready set after 'processTemplate', but because $config->setup overrides them (in the line above!), we set them again. They are not changed compared to the value they had in the top of the page!
-		unset($this->setup['resources']);
-		unset($this->setup['resources.']);
-		$this->setup['resources'] = implode(',', t3lib_div::trimExplode(',', $this->resources, 1));
-
 		unset($this->setup['sitetitle']);
 		unset($this->setup['sitetitle.']);
 		$this->setup['sitetitle'] = $this->sitetitle;
@@ -1142,45 +1130,7 @@ class t3lib_TStemplate {
 			} elseif ($this->tt_track) {
 				$GLOBALS['TT']->setTSlogMessage('"' . $this->getFileName_backPath . $file . '" is not a file (non-uploads/.. resource, did not exist).', 3);
 			}
-		} else { // Here it is uploaded media:
-			$outFile = $this->extractFromResources($this->setup['resources'], $file);
-			if ($outFile) {
-				if (@is_file($this->uplPath . $outFile)) {
-					$this->fileCache[$hash] = $this->uplPath . $outFile;
-					return $this->uplPath . $outFile;
-				} elseif ($this->tt_track) {
-					$GLOBALS['TT']->setTSlogMessage('"' . $this->uplPath . $outFile . '" is not a file (did not exist).', 3);
-				}
-			} elseif ($this->tt_track) {
-				$GLOBALS['TT']->setTSlogMessage('"' . $file . '" is not a file (uploads/.. resource).', 3);
-			}
 		}
-	}
-
-	/**
-	 * Searches for the TypoScript resource filename in the list of resource filenames.
-	 *
-	 * @param string $res The resource file name list (from $this->setup['resources'])
-	 * @param string $file The resource value to match
-	 * @return string If found, this will be the resource filename that matched. Typically this file is found in "uploads/tf/"
-	 * @access private
-	 * @see getFileName()
-	 */
-	function extractFromResources($res, $file) {
-		if (t3lib_div::inList($res, $file)) {
-			$outFile = $file;
-		} elseif (strstr($file, '*')) {
-			$fileparts = explode('*', $file);
-			$c = count($fileparts);
-			$files = t3lib_div::trimExplode(',', $res);
-			foreach ($files as $file) {
-				if (preg_match('/^' . quotemeta($fileparts[0]) . '.*' . quotemeta($fileparts[$c - 1]) . '$/', $file)) {
-					$outFile = $file;
-					break;
-				}
-			}
-		}
-		return $outFile;
 	}
 
 	/**

@@ -123,7 +123,6 @@ class tx_t3editor_codecompletion {
 		$tsParser->ext_regLinenumbers = FALSE;
 		$tsParser->bType = $bType;
 		$tsParser->resourceCheck = 1;
-		$tsParser->uplPath = PATH_site . $tsParser->uplPath;
 		$tsParser->removeFromGetFilePath = PATH_site;
 		$tsParser->generateConfig();
 

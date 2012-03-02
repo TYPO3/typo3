@@ -1352,9 +1352,6 @@ class tx_em_Install {
 				$GLOBALS['BACK_PATH']
 			);
 
-				// Load the list of resources.
-			$tsStyleConfig->ext_loadResources($absPath . 'res/');
-
 				// Load current value:
 			$arr = unserialize($TYPO3_CONF_VARS['EXT']['extConf'][$extKey]);
 			$arr = is_array($arr) ? $arr : array();
