@@ -26,14 +26,15 @@
  ***************************************************************/
 
 /**
- * A collection containing a static set of files. This collection is persisted to the database with references to all
- * files it contains.
+ * A collection containing a static set of files. This collection is persisted
+ * to the database with references to all files it contains.
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_file_Collection_StaticFileCollection extends t3lib_file_Collection_AbstractFileCollection {
+
 	/**
 	 * @var string
 	 */

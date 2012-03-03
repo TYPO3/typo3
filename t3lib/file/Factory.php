@@ -35,8 +35,10 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-// TODO implement constructor-level caching
+
+	// TODO implement constructor-level caching
 class t3lib_file_Factory implements t3lib_Singleton {
+
 	/**
 	 * Gets a singleton instance of this class.
 	 *
@@ -85,7 +87,8 @@ class t3lib_file_Factory implements t3lib_Singleton {
 	}
 
 	/**
-	 * Creates an instance of the storage from given UID. The $recordData can be supplied to increase performance.
+	 * Creates an instance of the storage from given UID. The $recordData can
+	 * be supplied to increase performance.
 	 *
 	 * @param integer $uid The uid of the storage to instantiate.
 	 * @param array $recordData The record row from database.
@@ -120,10 +123,11 @@ class t3lib_file_Factory implements t3lib_Singleton {
 				);
 
 				// If any other (real) storage is requested:
-			} elseif (count($recordData) === 0 || $recordData['uid'] !== $uid) { 	// Get storage data if not already supplied as argument to this function
+				// Get storage data if not already supplied as argument to this function
+			} elseif (count($recordData) === 0 || $recordData['uid'] !== $uid) {
 				/** @var $GLOBALS['TYPO3_DB'] t3lib_DB */
 				$recordData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_storage', 'uid=' . intval($uid) . ' AND deleted=0');
-				if (!is_array($recordData) || count($recordData) === 0) {
+				if (!is_array($recordData)) {
 					throw new InvalidArgumentException('No storage found for given UID.', 1314085992);
 				}
 			}
@@ -180,7 +184,7 @@ class t3lib_file_Factory implements t3lib_Singleton {
 						'uid=' . intval($uid) . ' AND deleted=0'
 				);
 
-				if (!is_array($recordData) || count($recordData) === 0) {
+				if (!is_array($recordData)) {
 					throw new InvalidArgumentException('No collection found for given UID.', 1314085992);
 				}
 			}
@@ -258,7 +262,8 @@ class t3lib_file_Factory implements t3lib_Singleton {
 	}
 
 	/**
-	 * Creates an instance of the file given UID. The $fileData can be supplied to increase performance.
+	 * Creates an instance of the file given UID. The $fileData can be supplied
+	 * to increase performance.
 	 *
 	 * @param integer $uid The uid of the file to instantiate.
 	 * @param array $fileData The record row from database.
@@ -274,7 +279,7 @@ class t3lib_file_Factory implements t3lib_Singleton {
 			if (empty($fileData)) {
 				/** @var $GLOBALS['TYPO3_DB'] t3lib_DB */
 				$fileData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file', 'uid=' . intval($uid) . ' AND deleted=0');
-				if (!is_array($fileData) || count($fileData) === 0) {
+				if (!is_array($fileData)) {
 					throw new InvalidArgumentException('No file found for given UID.', 1317178604);
 				}
 			}
@@ -298,7 +303,8 @@ class t3lib_file_Factory implements t3lib_Singleton {
 			$storageUid = $parts[0];
 			$fileIdentifier = $parts[1];
 		} else {
-			// We only got a path: Go into backwards compatibility mode and use virtual Storage (uid=0)
+				// We only got a path: Go into backwards compatibility mode and
+				// use virtual Storage (uid=0)
 			$storageUid = 0;
 			$fileIdentifier = $parts[0];
 		}
@@ -307,13 +313,13 @@ class t3lib_file_Factory implements t3lib_Singleton {
 	}
 
 	/**
-	 * bulk function, can be used for anything to get a file or folder
+	 * Bulk function, can be used for anything to get a file or folder
 	 *
-	 * 1. it's a UID
-	 * 2. it's a combined identifier
-	 * 3. it's just a path/filename (coming from the oldstyle/backwards compatibility)
+	 * 1. It's a UID
+	 * 2. It's a combined identifier
+	 * 3. It's just a path/filename (coming from the oldstyle/backwards compatibility)
 	 *
-	 * files, previously laid on fileadmin/ or something, will be "mapped" to the storage the file is
+	 * Files, previously laid on fileadmin/ or something, will be "mapped" to the storage the file is
 	 * in now. Files like typo3temp/ or typo3conf/ will be moved to the first writable storage
 	 * in its processing folder
 	 *
@@ -326,13 +332,12 @@ class t3lib_file_Factory implements t3lib_Singleton {
 	 * @return t3lib_file_FileInterface|t3lib_file_Folder
 	 */
 	public function retrieveFileOrFolderObject($input) {
-			// easy function to deal with that, could be dropped in the future
+			// Easy function to deal with that, could be dropped in the future
 			// if we know where to use this function
 		if (t3lib_div::isFirstPartOfStr($input, 'file:')) {
 			$input = substr($input, 5);
 			return $this->retrieveFileOrFolderObject($input);
 		} elseif (t3lib_utility_Math::canBeInterpretedAsInteger($input)) {
-				//
 			return $this->getFileObject($input);
 		} elseif (strpos($input, ':')) {
 				// path or folder
@@ -358,7 +363,8 @@ class t3lib_file_Factory implements t3lib_Singleton {
 			$storageUid = $parts[0];
 			$folderIdentifier = $parts[1];
 		} else {
-			// We only got a path: Go into backwards compatibility mode and use virtual Storage (uid=0)
+				// We only got a path: Go into backwards compatibility mode and
+				// use virtual Storage (uid=0)
 			$storageUid = 0;
 			$folderIdentifier = $parts[0];
 		}
@@ -389,7 +395,8 @@ class t3lib_file_Factory implements t3lib_Singleton {
 	}
 
 	/**
-	 * Creates a file object from an array of file data. Requires a database row to be fetched.
+	 * Creates a file object from an array of file data. Requires a database
+	 * row to be fetched.
 	 *
 	 * @param array $fileData
 	 * @return t3lib_file_File
@@ -407,7 +414,8 @@ class t3lib_file_Factory implements t3lib_Singleton {
 	}
 
 	/**
-	 * Creates an instance of a FileReference object. The $fileReferenceData can be supplied to increase performance.
+	 * Creates an instance of a FileReference object. The $fileReferenceData can
+	 * be supplied to increase performance.
 	 *
 	 * @param integer $uid The uid of the file usage (sys_file_reference) to instantiate.
 	 * @param array $fileReferenceData The record row from database.
@@ -419,11 +427,11 @@ class t3lib_file_Factory implements t3lib_Singleton {
 		}
 
 		if (!$this->fileReferenceInstances[$uid]) {
-			// Fetches data in case $fileData is empty
+				// Fetches data in case $fileData is empty
 			if (empty($fileReferenceData)) {
 				/** @var $GLOBALS['TYPO3_DB'] t3lib_DB */
 				$fileReferenceData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_reference', 'uid=' . intval($uid) . ' AND deleted=0');
-				if (!is_array($fileReferenceData) || count($fileReferenceData) === 0) {
+				if (!is_array($fileReferenceData)) {
 					throw new InvalidArgumentException('No fileusage (sys_file_reference) found for given UID.', 1317178794);
 				}
 			}
@@ -435,7 +443,8 @@ class t3lib_file_Factory implements t3lib_Singleton {
 	}
 
 	/**
-	 * Creates a file usage object from an array of fileReference data (from sys_file_reference table).
+	 * Creates a file usage object from an array of fileReference data
+	 * from sys_file_reference table.
 	 * Requires a database row to be already fetched and present.
 	 *
 	 * @param array $fileReferenceData
@@ -467,7 +476,7 @@ class t3lib_file_Factory implements t3lib_Singleton {
 		/* @var t3lib_file_Repository_ProcessedFileRepository $repository */
 		$repository = t3lib_div::makeInstance('t3lib_file_Repository_ProcessedFileRepository');
 
-			// check if this file already exists in the DB
+			// Check if this file already exists in the DB
 		$repository->populateDataOfProcessedFileObject($processedFileObject);
 
 		return $processedFileObject;

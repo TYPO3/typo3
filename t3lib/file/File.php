@@ -36,7 +36,8 @@
 class t3lib_file_File extends t3lib_file_AbstractFile {
 
 	/**
-	 * File indexing status. True, if the file is indexed in the database; NULL is the default value, this means that the index status is unknown
+	 * File indexing status. True, if the file is indexed in the database;
+	 * NULL is the default value, this means that the index status is unknown
 	 *
 	 * @var bool
 	 */
@@ -50,7 +51,8 @@ class t3lib_file_File extends t3lib_file_AbstractFile {
 	protected $indexingInProgress = FALSE;
 
 	/**
-	 * Contains the names of all properties that have been update since the instantiation of this object
+	 * Contains the names of all properties that have been update since the
+	 * instantiation of this object
 	 *
 	 * @var array
 	 */
@@ -63,9 +65,9 @@ class t3lib_file_File extends t3lib_file_AbstractFile {
 	 * don't mix it up with mime types
 	 *********************************************/
 
-
 	/**
-	 * Constructor for a file object. Should normally not be used directly, use the corresponding factory methods instead.
+	 * Constructor for a file object. Should normally not be used directly, use
+	 * the corresponding factory methods instead.
 	 *
 	 * @param array $fileData
 	 * @param t3lib_file_Storage $storage
@@ -90,7 +92,6 @@ class t3lib_file_File extends t3lib_file_AbstractFile {
 	/*******************************
 	 * VARIOUS FILE PROPERTY GETTERS
 	 *******************************/
-
 
 	/**
 	 * Returns a property value
@@ -119,11 +120,6 @@ class t3lib_file_File extends t3lib_file_AbstractFile {
 		return parent::getProperties();
 	}
 
-
-
-
-
-
 	/******************
 	 * CONTENTS RELATED
 	 ******************/
@@ -147,11 +143,6 @@ class t3lib_file_File extends t3lib_file_AbstractFile {
 		$this->getStorage()->setFileContents($this, $contents);
 		return $this;
 	}
-
-
-
-
-
 
 
 	/***********************
@@ -193,7 +184,7 @@ class t3lib_file_File extends t3lib_file_AbstractFile {
 			$this->mergeIndexRecord($indexRecord);
 			$this->indexed = TRUE;
 		} else {
-			throw new RuntimeException('Could not load index record for ' . $this->getIdentifier(), 1321288316);
+			throw new RuntimeException('Could not load index record for "' . $this->getIdentifier() . '"', 1321288316);
 		}
 	}
 
@@ -205,17 +196,19 @@ class t3lib_file_File extends t3lib_file_AbstractFile {
 	 */
 	protected function mergeIndexRecord(array $recordData) {
 		if ($this->properties['uid'] != 0) {
-			throw new InvalidArgumentException("uid property is already set. Cannot merge index record.", 1321023156);
+			throw new InvalidArgumentException('uid property is already set. Cannot merge index record.', 1321023156);
 		}
 
 		$this->properties = array_merge($this->properties, $recordData);
-		// TODO check for any properties that come from the driver and would change -- these might have to be updated in the index record
+		// TODO check for any properties that come from the driver and would
+		// change -- these might have to be updated in the index record
 	}
 
 	/**
 	 * Updates the properties of this file, e.g. after re-indexing or moving it.
-	 * By default, only properties that exist as a key in the $properties array are overwritten. If you want to
-	 * explicitly unset a property, set the corresponding key to NULL in the array.
+	 * By default, only properties that exist as a key in the $properties array
+	 * are overwritten. If you want to explicitly unset a property, set the
+	 * corresponding key to NULL in the array.
 	 *
 	 * NOTE: This method should not be called from outside the File Abstraction Layer (FAL)!
 	 *
@@ -224,8 +217,9 @@ class t3lib_file_File extends t3lib_file_AbstractFile {
 	 * @internal
 	 */
 	public function updateProperties(array $properties) {
-			// setting identifier and name to update values; we have to do this here because we might need a new identifier
-			// when loading (and thus possibly indexing) a file.
+			// Setting identifier and name to update values; we have to do this
+			// here because we might need a new identifier when loading
+			// (and thus possibly indexing) a file.
 		if (isset($properties['identifier'])) {
 			$this->identifier = $properties['identifier'];
 		}
@@ -246,12 +240,13 @@ class t3lib_file_File extends t3lib_file_AbstractFile {
 				if (!in_array($key, $this->updatedProperties)) {
 					$this->updatedProperties[] = $key;
 				}
-				// TODO check if we should completely remove properties that are set to NULL
+					// TODO check if we should completely remove properties that
+					// are set to NULL
 				$this->properties[$key] = $value;
 			}
 		}
 
-			// updating indexing status
+			// Updating indexing status
 		if (isset($properties['uid']) && intval($properties['uid']) > 0) {
 			$this->indexed = TRUE;
 		}
@@ -273,10 +268,6 @@ class t3lib_file_File extends t3lib_file_AbstractFile {
 		return $this->updatedProperties;
 	}
 
-
-
-
-
 	/****************************************
 	 * STORAGE AND MANAGEMENT RELATED METHODS
 	 ****************************************/
@@ -292,18 +283,16 @@ class t3lib_file_File extends t3lib_file_AbstractFile {
 	}
 
 
-
-
 	/*****************
 	 * SPECIAL METHODS
 	 *****************/
 
 	/**
-	 * creates a MD5 hash checksum based on the combined identifier of the file,
+	 * Creates a MD5 hash checksum based on the combined identifier of the file,
 	 * the files' mimetype and the systems' encryption key.
 	 * used to generate a thumbnail, and this hash is checked if valid
 	 *
-	 * @static
+	 * @todo maybe t3lib_div::hmac() could be used?
 	 * @param t3lib_file_File $file the file to create the checksum from
 	 * @return string the MD5 hash
 	 */
@@ -348,11 +337,11 @@ class t3lib_file_File extends t3lib_file_AbstractFile {
 			),
 			'checksum' => $this->calculateChecksum()
 		);
-		foreach ($this->properties AS $key => $value) {
+		foreach ($this->properties as $key => $value) {
 			$array[$key] = $value;
 		}
 		$stat = $this->storage->getFileInfo($this);
-		foreach ($stat AS $key => $value) {
+		foreach ($stat as $key => $value) {
 			$array[$key] = $value;
 		}
 		return $array;

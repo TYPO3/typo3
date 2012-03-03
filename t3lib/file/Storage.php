@@ -130,14 +130,16 @@ class t3lib_file_Storage {
 	protected $fileMounts = array();
 
 	/**
-	 * The file permissions of the user (and their group) merged together and available as an array
+	 * The file permissions of the user (and their group) merged together and
+	 * available as an array
 	 *
 	 * @var array
 	 */
 	protected $userPermissions = array();
 
 	/**
-	 * The capabilities of this storage as defined in the storage record. Also see the CAPABILITY_* constants below
+	 * The capabilities of this storage as defined in the storage record.
+	 * Also see the CAPABILITY_* constants below
 	 *
 	 * @var integer
 	 */
@@ -159,7 +161,8 @@ class t3lib_file_Storage {
 	const CAPABILITY_PUBLIC = 2;
 
 	/**
-	 * Capability for writable storages. This only signifies writability in general - this might also be further limited by configuration.
+	 * Capability for writable storages. This only signifies writability in
+	 * general - this might also be further limited by configuration.
 	 */
 	const CAPABILITY_WRITABLE = 4;
 
@@ -240,7 +243,8 @@ class t3lib_file_Storage {
 	}
 
 	/**
-	 * Returns the base URI of this storage; all files are reachable via URLs beginning with this string.
+	 * Returns the base URI of this storage; all files are reachable via URLs
+	 * beginning with this string.
 	 *
 	 * @return string
 	 */
@@ -301,7 +305,7 @@ class t3lib_file_Storage {
 	 * @return integer
 	 */
 	public function getUid() {
-		return $this->storageRecord['uid'];
+		return (int)$this->storageRecord['uid'];
 	}
 
 	/**
@@ -321,11 +325,11 @@ class t3lib_file_Storage {
 	/**
 	 * Returns the capabilities of this storage.
 	 *
-	 * @return int
+	 * @return integer
 	 * @see CAPABILITY_* constants
 	 */
 	public function getCapabilities() {
-		return $this->capabilities;
+		return (int)$this->capabilities;
 	}
 
 	/**
@@ -339,9 +343,10 @@ class t3lib_file_Storage {
 	}
 
 	/**
-	 * Returns TRUE if this storage is publicly available. This is just a configuration option and does not mean that it
-	 * really *is* public. OTOH a storage that is marked as not publicly available will trigger the file publishing mechanisms
-	 * of TYPO3.
+	 * Returns TRUE if this storage is publicly available. This is just a
+	 * configuration option and does not mean that it really *is* public. OTOH
+	 * a storage that is marked as not publicly available will trigger the file
+	 * publishing mechanisms of TYPO3.
 	 *
 	 * @return boolean
 	 */
@@ -350,8 +355,8 @@ class t3lib_file_Storage {
 	}
 
 	/**
-	 * Returns TRUE if this storage is writable. This is determined by the driver and the storage configuration; user
-	 * permissions are not taken into account.
+	 * Returns TRUE if this storage is writable. This is determined by the
+	 * driver and the storage configuration; user permissions are not taken into account.
 	 *
 	 * @return boolean
 	 */
@@ -374,7 +379,8 @@ class t3lib_file_Storage {
 	 ********************************/
 
 	/**
-	 * Adds a filemount as a "filter" for users to only work on a subset of a storage object
+	 * Adds a filemount as a "filter" for users to only work on a subset of a
+	 * storage object
 	 *
 	 * @param string $folderIdentifier
 	 * @param array $additionalData
@@ -406,8 +412,8 @@ class t3lib_file_Storage {
 	}
 
 	/**
-	 * Checks if the given subject is within one of the registered user filemounts. If not, working with the file
-	 * is not permitted for the user.
+	 * Checks if the given subject is within one of the registered user
+	 * filemounts. If not, working with the file is not permitted for the user.
 	 *
 	 * @param $subject
 	 * @return boolean
@@ -422,7 +428,7 @@ class t3lib_file_Storage {
 			}
 			$identifier = $subject->getIdentifier();
 
-				// check if the identifier of the subject is within at
+				// Check if the identifier of the subject is within at
 				// least one of the file mounts
 			foreach ($this->fileMounts as $fileMount) {
 				if ($this->driver->isWithin($fileMount['folder'], $identifier)) {
@@ -448,12 +454,12 @@ class t3lib_file_Storage {
 	 * Check if the ACL settings allow for a certain action
 	 * (is a user allowed to read a file or copy a folder)
 	 *
-	 * @param	string	$action
-	 * @param	string	$type	either File or Folder
+	 * @param string $action
+	 * @param string $type either File or Folder
 	 * @return	bool
 	 */
 	public function checkUserActionPermission($action, $type) {
-		// TODO decide if we should return TRUE if no permissions are set
+			// TODO decide if we should return TRUE if no permissions are set
 		if (!empty($this->userPermissions)) {
 			$action = strtolower($action);
 			$type = ucfirst(strtolower($type));
@@ -462,30 +468,33 @@ class t3lib_file_Storage {
 			} else {
 				return TRUE;
 			}
-		} else {
-			return TRUE;
 		}
+
+			// TODO should the default be really TRUE?
+		return TRUE;
 	}
 
 	/**
-	 * Check if a file operation (= action) is allowed on a File/Folder/Storage (= subject).
+	 * Check if a file operation (= action) is allowed on a
+	 * File/Folder/Storage (= subject).
 	 *
 	 * This method, by design, does not throw exceptions or do logging.
-	 * Besides the usage from other methods in this class, it is also used by the File List UI to check whether
-	 * an action is allowed and whether action related UI elements should thus be shown (move icon, edit icon, etc.)
+	 * Besides the usage from other methods in this class, it is also used by
+	 * the File List UI to check whether an action is allowed and whether action
+	 * related UI elements should thus be shown (move icon, edit icon, etc.)
 	 *
 	 * @param string $action, can be read, write, delete
 	 * @param t3lib_file_FileInterface $file
 	 * @return boolean
 	 */
 	public function checkFileActionPermission($action, t3lib_file_FileInterface $file) {
-			// check 1: Does the user have permission to perform the action? e.g. "readFile"
+			// Check 1: Does the user have permission to perform the action? e.g. "readFile"
 		if ($this->checkUserActionPermission($action, 'File') === FALSE) {
 			return FALSE;
 		}
 
-			// check 2: Does the user have the right to perform the action?
-			// (= is he/she within the file mount borders)
+			// Check 2: Does the user has the right to perform the action?
+			// (= is he within the file mount borders)
 		if (is_array($this->fileMounts) && count($this->fileMounts) && !$this->isWithinFileMountBoundaries($file)) {
 			return FALSE;
 		}
@@ -501,7 +510,7 @@ class t3lib_file_Storage {
 			$isWriteCheck = TRUE;
 		}
 
-			// check 3: Check the capabilities of the storage (and the driver)
+			// Check 3: Check the capabilities of the storage (and the driver)
 		if ($isReadCheck && !$this->isBrowsable()) {
 			return FALSE;
 		}
@@ -509,17 +518,13 @@ class t3lib_file_Storage {
 			return FALSE;
 		}
 
-			// check 4: "File permissions" of the driver
+			// Check 4: "File permissions" of the driver
 		$filePermissions = $this->driver->getFilePermissions($file);
 		if ($isReadCheck && !$filePermissions['r']) {
 			return FALSE;
-			# we can't thrown an exception here, as this function is just for asking whether the user has the permission. It's also used by the UI. Therefore, the following exception is commented out.
-			#throw new t3lib_file_exception_InsufficientFileReadPermissionsException("TYPO3 has no permission to read file " . $file->getIdentifier());
 		}
 		if ($isWriteCheck && !$filePermissions['w']) {
 			return FALSE;
-			# see comment above.
-			#throw new t3lib_file_exception_InsufficientFileWritePermissionsException("TYPO3 has no permission to write to file " . $file->getIdentifier());
 		}
 
 		return TRUE;
@@ -536,17 +541,16 @@ class t3lib_file_Storage {
 	 * @return boolean
 	 */
 	public function checkFolderActionPermission($action, t3lib_file_Folder $folder = NULL) {
-			// check 1: Does the user have permission to perform the action? e.g. "writeFolder"
+			// Check 1: Does the user have permission to perform the action? e.g. "writeFolder"
 		if ($this->checkUserActionPermission($action, 'Folder') === FALSE) {
 			return FALSE;
 		}
 
-			// check 2: Does the user have the right to perform the action?
-			// (= is he/she within the file mount borders)
+			// Check 2: Does the user has the right to perform the action?
+			// (= is he within the file mount borders)
 		if (is_array($this->fileMounts) && count($this->fileMounts) && !$this->isWithinFileMountBoundaries($folder)) {
 			return FALSE;
 		}
-
 
 		$isReadCheck = FALSE;
 		if (in_array($action, array('read'))) {
@@ -558,7 +562,7 @@ class t3lib_file_Storage {
 			$isWriteCheck = TRUE;
 		}
 
-			// check 3: Check the capabilities of the storage (and the driver)
+			// Check 3: Check the capabilities of the storage (and the driver)
 		if ($isReadCheck && !$this->isBrowsable()) {
 			return FALSE;
 		}
@@ -566,31 +570,24 @@ class t3lib_file_Storage {
 			return FALSE;
 		}
 
-			// check 4: "Folder permissions" of the driver
+			// Check 4: "Folder permissions" of the driver
 		$folderPermissions = $this->driver->getFolderPermissions($folder);
 		if ($isReadCheck && !$folderPermissions['r']) {
 			return FALSE;
-			# we can't thrown an exception here, as this function is just for asking whether the user has the permission. It's also used by the UI. Therefore, the following exception is commented out.
-			# throw new t3lib_file_exception_InsufficientFolderReadPermissionsException("TYPO3 has no permission to read from folder " . $folder->getIdentifier());
 		}
 		if ($isWriteCheck && !$folderPermissions['w']) {
 			return FALSE;
-			# see comment above
-			# throw new t3lib_file_exception_InsufficientFolderWritePermissionsException("TYPO3 has no permission to write to folder " . $folder->getIdentifier());
 		}
 
 		return TRUE;
 	}
 
 	/**
-	 * If the fileName is given, check it against the TYPO3_CONF_VARS[BE][fileDenyPattern] +
-	 * and if the file extension is allowed
+	 * If the fileName is given, check it against the
+	 * TYPO3_CONF_VARS[BE][fileDenyPattern] + and if the file extension is allowed
 	 *
 	 * @param string $fileName Full filename
 	 * @return boolean TRUE if extension/filename is allowed
-	 *
-	 * if (!$this->checkIfAllowed($fI['fileext'], $theDest, $fI['file'])) {
-	 * @formallyknownas t3lib_basicfilefunc::checkIfAllowed(), and is_allowed()
 	 */
 	protected function checkFileExtensionPermission($fileName) {
 		$isAllowed = t3lib_div::verifyFilenameAgainstDenyPattern($fileName);
@@ -598,7 +595,7 @@ class t3lib_file_Storage {
 		if ($isAllowed) {
 			$fileInfo = t3lib_div::split_fileref($fileName);
 
-				// set up the permissions for the file extension
+				// Set up the permissions for the file extension
 			$fileExtensionPermissions = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace'];
 			$fileExtensionPermissions['allow'] = t3lib_div::uniqueList(strtolower($fileExtensionPermissions['allow']));
 			$fileExtensionPermissions['deny'] = t3lib_div::uniqueList(strtolower($fileExtensionPermissions['deny']));
@@ -616,7 +613,7 @@ class t3lib_file_Storage {
 					// If no match we return TRUE
 				return TRUE;
 
-				// no file extension
+				// No file extension
 			} else {
 				if ($fileExtensionPermissions['allow'] === '*') {
 					return TRUE;
@@ -630,13 +627,9 @@ class t3lib_file_Storage {
 		return FALSE;
 	}
 
-
-
-
 	/********************
 	 * FILE ACTIONS
 	 ********************/
-
 
 	/**
 	 * Moves a file from the local filesystem to this storage.
@@ -651,18 +644,20 @@ class t3lib_file_Storage {
 		// TODO check permissions (write on target, upload, ...)
 
 		if (!file_exists($localFilePath)) {
-			throw new InvalidArgumentException("File $localFilePath does not exist.", 1319552745);
+			throw new InvalidArgumentException('File "' . $localFilePath .'" does not exist.', 1319552745);
 		}
 
 		$targetFolder = $targetFolder ? $targetFolder : $this->getDefaultFolder();
 		$fileName = $fileName ? $fileName : basename($localFilePath);
 
-		if ($conflictMode == 'cancel' && $this->driver->fileExistsInFolder($fileName, $targetFolder)) {
-			throw new t3lib_file_exception_ExistingTargetFileNameException("File $fileName already exists in folder "
+		if ($conflictMode === 'cancel' && $this->driver->fileExistsInFolder($fileName, $targetFolder)) {
+			throw new t3lib_file_exception_ExistingTargetFileNameException('File "' . $fileName . '" already exists in folder '
 				. $targetFolder->getIdentifier(), 1322121068);
-		} elseif ($conflictMode == 'changeName') {
+		} elseif ($conflictMode === 'changeName') {
 			$fileName = $this->getUniqueName($targetFolder, $fileName);
-		} // we do not care whether the file exists if $conflictMode is "replace", so just use the name as is in that case
+		}
+		// We do not care whether the file exists if $conflictMode is "replace",
+		// so just use the name as is in that case
 
 		return $this->driver->addFile($localFilePath, $targetFolder, $fileName);
 	}
@@ -681,11 +676,11 @@ class t3lib_file_Storage {
 	/**
 	 * Returns a publicly accessible URL for a file.
 	 *
-	 * WARNING: Access to the file may be restricted by further means, e.g. some web-based authentication. You have to take care of this
-	 * yourself.
+	 * WARNING: Access to the file may be restricted by further means, e.g.
+	 * some web-based authentication. You have to take care of this yourself.
 	 *
 	 * @param t3lib_file_FileInterface $fileObject The file object
-	 * @param bool  $relativeToCurrentScript   Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
+	 * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
 	 * @return string
 	 */
 	public function getPublicUrlForFile(t3lib_file_FileInterface $fileObject, $relativeToCurrentScript = FALSE) {
@@ -710,7 +705,7 @@ class t3lib_file_Storage {
 			// Pre-process the file by an accordant slot
 		$this->emitPreFileProcess($processedFile, $fileObject, $context, $configuration);
 
-			// only do something if the file is not processed yet
+			// Only handle the file is not processed yet
 			// (maybe modified or already processed by a signal)
 			// or (in case of preview images) already in the DB/in the processing folder
 		if (!$processedFile->isProcessed()) {
@@ -829,14 +824,14 @@ class t3lib_file_Storage {
 	/**
 	 * Get contents of a file object
 	 *
-	 * @param	t3lib_file_FileInterface	$file
-	 * @return	string
+	 * @param t3lib_file_FileInterface $file
+	 * @return string
 	 */
 	public function getFileContents($file) {
-			// check if $file is readable
+			// Check if $file is readable
 		if (!$this->checkFileActionPermission('read', $file)) {
-			throw new t3lib_file_exception_InsufficientFileReadPermissionsException('Reading file '
-				. $file->getIdentifier() . ' is not allowed.', 1330121089);
+			throw new t3lib_file_exception_InsufficientFileReadPermissionsException('Reading file "'
+				. $file->getIdentifier() . '" is not allowed.', 1330121089);
 		}
 
 		return $this->driver->getFileContents($file);
@@ -851,19 +846,19 @@ class t3lib_file_Storage {
 	 */
 	public function setFileContents(t3lib_file_AbstractFile $file, $contents) {
 			// TODO does setting file contents require update permission?
-			// check if user is allowed to update
+			// Check if user is allowed to update
 		if (!$this->checkUserActionPermission('update', 'File')) {
-			throw new t3lib_file_exception_InsufficientUserPermissionsException('Updating file '
-				. $file->getIdentifier() . ' not allowed for user.', 1330121117);
+			throw new t3lib_file_exception_InsufficientUserPermissionsException('Updating file "'
+				. $file->getIdentifier() . '" not allowed for user.', 1330121117);
 		}
 
-			// check if $file is writable
+			// Check if $file is writable
 		if (!$this->checkFileActionPermission('write', $file)) {
-			throw new t3lib_file_exception_InsufficientFileWritePermissionsException('Writing to file '
-				. $file->getIdentifier() . ' is not allowed.', 1330121088);
+			throw new t3lib_file_exception_InsufficientFileWritePermissionsException('Writing to file "'
+				. $file->getIdentifier() . '" is not allowed.', 1330121088);
 		}
 
-			// call driver method to update the file and update file properties afterwards
+			// Call driver method to update the file and update file properties afterwards
 		try {
 			$result = $this->driver->setFileContents($file, $contents);
 
@@ -911,7 +906,7 @@ class t3lib_file_Storage {
 			throw new t3lib_file_exception_FileOperationErrorException('Deleting the file "' . $fileObject->getIdentifier() . "' failed.", 1329831691);
 		}
 
-			// mark the file object as deleted
+			// Mark the file object as deleted
 		$fileObject->setDeleted();
 
 		return TRUE;
@@ -937,18 +932,18 @@ class t3lib_file_Storage {
 			$targetFileName = $file->getName();
 		}
 
-			// file exists and we should abort, let's abort
+			// File exists and we should abort, let's abort
 		if ($conflictMode === 'cancel' && $targetFolder->hasFile($targetFileName)) {
 			throw new t3lib_file_exception_ExistingTargetFileNameException('The target file already exists.', 1320291063);
 		}
 
-			// file exists and we should find another name, let's find another one
+			// File exists and we should find another name, let's find another one
 		if ($conflictMode === 'renameNewFile' && $targetFolder->hasFile($targetFileName)) {
 			$targetFileName = $this->getUniqueName($targetFolder, $targetFileName);
 		}
 
 		$sourceStorage = $file->getStorage();
-			// call driver method to create a new file from an existing file object,
+			// Call driver method to create a new file from an existing file object,
 			// and return the new file object
 		try {
 			if ($sourceStorage == $this) {
@@ -978,7 +973,6 @@ class t3lib_file_Storage {
 	 * @return void
 	 */
 	protected function checkFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $uploadedFileSize) {
-
 			// Makes sure the user is allowed to upload
 		if (!$this->checkUserActionPermission('upload', 'File')) {
 			throw new t3lib_file_exception_InsufficientUserPermissionsException('You are not allowed to upload files to this storage "' . $this->getUid() . '"', 1322112430);
@@ -989,18 +983,18 @@ class t3lib_file_Storage {
 			throw new t3lib_file_exception_UploadException("The upload has failed, no uploaded file found!", 1322110455);
 		}
 
-			// max upload size (kb) for files. Remember that PHP has an inner limit often set to 2 MB
+			// Max upload size (kb) for files.
 		$maxUploadFileSize = t3lib_div::getMaxUploadFileSize() * 1024;
 		if ($uploadedFileSize >= $maxUploadFileSize) {
 			throw new t3lib_file_exception_UploadSizeException("The uploaded file exceeds the size-limit of $maxUploadFileSize bytes", 1322110041);
 		}
 
-			// check if targetFolder is writable
+			// Check if targetFolder is writable
 		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
 			throw new t3lib_file_exception_InsufficientFolderWritePermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1322120356);
 		}
 
-			// check for a valid file extension
+			// Check for a valid file extension
 		if (!$this->checkFileExtensionPermission($targetFileName)) {
 			throw new t3lib_file_exception_IllegalFileExtensionException("Extension of file name is not allowed in \"$targetFileName\"!", 1322120271);
 		}
@@ -1016,27 +1010,27 @@ class t3lib_file_Storage {
 	 * @return void
 	 */
 	protected function checkFileCopyPermissions(t3lib_file_FileInterface $file, t3lib_file_Folder $targetFolder, $targetFileName) {
-			// check if targetFolder is within this storage, this should never happen
+			// Check if targetFolder is within this storage, this should never happen
 		if ($this->getUid() != $targetFolder->getStorage()->getUid()) {
 			throw new t3lib_file_exception_AbstractFileException('The operation of the folder cannot be called by this storage "' . $this->getUid() . '"', 1319550405);
 		}
 
-			// check if user is allowed to copy
+			// Check if user is allowed to copy
 		if (!$this->checkUserActionPermission('copy', 'File')) {
 			throw new t3lib_file_exception_InsufficientUserPermissionsException('You are not allowed to copy files to this storage "' . $this->getUid() . '"', 1319550415);
 		}
 
-			// check if $file is readable
+			// Check if $file is readable
 		if (!$this->checkFileActionPermission('read', $file)) {
 			throw new t3lib_file_exception_InsufficientFileReadPermissionsException('You are not allowed to read the file "' . $file->getIdentifier() . "'", 1319550425);
 		}
 
-			// check if targetFolder is writable
+			// Check if targetFolder is writable
 		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
 			throw new t3lib_file_exception_InsufficientFolderWritePermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1319550435);
 		}
 
-			// check for a valid file extension
+			// Check for a valid file extension
 		if (!$this->checkFileExtensionPermission($targetFileName)) {
 			throw new t3lib_file_exception_IllegalFileExtensionException('You are not allowed to copy a file of that type.', 1319553317);
 		}
@@ -1047,10 +1041,10 @@ class t3lib_file_Storage {
 	 * the target folder has to be part of this storage
 	 *
 	 * previously in t3lib_extFileFunc::func_move()
-	 * @param	t3lib_file_FileInterface	$file
-	 * @param	t3lib_file_Folder $targetFolder
-	 * @param	string	$conflictMode	"overrideExistingFile", "renameNewFile", "cancel"
-	 * @param	string	$targetFileName	an optional destination fileName
+	 * @param t3lib_file_FileInterface $file
+	 * @param t3lib_file_Folder $targetFolder
+	 * @param string $conflictMode "overrideExistingFile", "renameNewFile", "cancel"
+	 * @param string $targetFileName an optional destination fileName
 	 * @return t3lib_file_FileInterface
 	 */
 	public function moveFile($file, $targetFolder, $targetFileName = NULL, $conflictMode = 'renameNewFile') {
@@ -1061,22 +1055,23 @@ class t3lib_file_Storage {
 		}
 
 		if ($targetFolder->hasFile($targetFileName)) {
-				// file exists and we should abort, let's abort
+				// File exists and we should abort, let's abort
 			if ($conflictMode === 'renameNewFile') {
 				$targetFileName = $this->getUniqueName($targetFolder, $targetFileName);
 
-				// cancel if requested so
-			} elseif ($conflictMode == 'cancel') {
+				// Cancel if requested so
+			} elseif ($conflictMode === 'cancel') {
 				throw new t3lib_file_exception_ExistingTargetFileNameException('The target file already exists', 1329850997);
-			} // when $conflictMode is "overrideExistingFile", just ignore the naming conflict
+			}
+				// When $conflictMode is "overrideExistingFile", just ignore the naming conflict
 			// TODO check what to do with an existing index record for the target file then
 		}
 
 		$this->emitPreFileMoveSignal($file, $targetFolder);
 
 		$sourceStorage = $file->getStorage();
-			// call driver method to move the file
-			// that also updates the file object properties
+			// Call driver method to move the file that also updates the file
+			// object properties
 		try {
 			if ($sourceStorage == $this) {
 				$newIdentifier = $this->driver->moveFileWithinStorage($file, $targetFolder, $targetFileName);
@@ -1091,6 +1086,7 @@ class t3lib_file_Storage {
 			}
 		} catch (t3lib_exception $e) {
 			echo $e->getMessage();
+			// TODO echo should be changed to something useful
 			// TODO rollback things that have happened
 			// TODO emit FileMoveFailedSignal?
 		}
@@ -1101,7 +1097,8 @@ class t3lib_file_Storage {
 	}
 
 	/**
-	 * Updates the properties of a file object with some that are freshly fetched from the driver.
+	 * Updates the properties of a file object with some that are freshly
+	 * fetched from the driver.
 	 *
 	 * @param t3lib_file_AbstractFile $file
 	 * @param string $identifier The identifier of the file. If set, this will overwrite the file object's identifier (use e.g. after moving a file)
@@ -1109,7 +1106,7 @@ class t3lib_file_Storage {
 	 * @return void
 	 */
 	protected function updateFile(t3lib_file_AbstractFile $file, $identifier = '', $storage = NULL) {
-		if ($identifier == '') {
+		if ($identifier === '') {
 			$identifier = $file->getIdentifier();
 		}
 		$fileInfo = $this->driver->getFileInfoByIdentifier($identifier);
@@ -1137,33 +1134,37 @@ class t3lib_file_Storage {
 	/**
 	 * Checks for permissions to move a file.
 	 *
-	 * @throws RuntimeException|t3lib_file_exception_InsufficientFileReadPermissionsException|t3lib_file_exception_InsufficientFileWritePermissionsException|t3lib_file_exception_InsufficientFolderAccessPermissionsException|t3lib_file_exception_InsufficientUserPermissionsException
+	 * @throws RuntimeException
+	 * @throws t3lib_file_exception_InsufficientFileReadPermissionsException
+	 * @throws t3lib_file_exception_InsufficientFileWritePermissionsException
+	 * @throws t3lib_file_exception_InsufficientFolderAccessPermissionsException
+	 * @throws t3lib_file_exception_InsufficientUserPermissionsException
 	 * @param t3lib_file_FileInterface $file
 	 * @param t3lib_file_Folder $targetFolder
 	 * @return void
 	 */
 	protected function checkFileMovePermissions(t3lib_file_FileInterface $file, t3lib_file_Folder $targetFolder) {
-			// check if targetFolder is within this storage
+			// Check if targetFolder is within this storage
 		if ($this->getUid() != $targetFolder->getStorage()->getUid()) {
 			throw new RuntimeException();
 		}
 
-			// check if user is allowed to move
+			// Check if user is allowed to move
 		if (!$this->checkUserActionPermission('move', 'File')) {
 			throw new t3lib_file_exception_InsufficientUserPermissionsException('You are not allowed to move files to storage "' . $this->getUid() . '"', 1319219349);
 		}
 
-			// check if $file is readable
+			// Check if $file is readable
 		if (!$this->checkFileActionPermission('read', $file)) {
 			throw new t3lib_file_exception_InsufficientFileReadPermissionsException('You are not allowed to read the file "' . $file->getIdentifier() . "'", 1319219349);
 		}
 
-			// check if $file is writable
+			// Check if $file is writable
 		if (!$this->checkFileActionPermission('write', $file)) {
 			throw new t3lib_file_exception_InsufficientFileWritePermissionsException('You are not allowed to move the file "' . $file->getIdentifier() . "'", 1319219349);
 		}
 
-			// check if targetFolder is writable
+			// Check if targetFolder is writable
 		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
 			throw new t3lib_file_exception_InsufficientFolderAccessPermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1319219349);
 		}
@@ -1184,23 +1185,23 @@ class t3lib_file_Storage {
 			return $file;
 		}
 
-			// check if user is allowed to rename
+			// Check if user is allowed to rename
 		if (!$this->checkUserActionPermission('rename', 'File')) {
 			throw new t3lib_file_exception_InsufficientUserPermissionsException('You are not allowed to rename files."', 1319219349);
 		}
 
-			// check if $file is readable
+			// Check if $file is readable
 		if (!$this->checkFileActionPermission('read', $file)) {
 			throw new t3lib_file_exception_InsufficientFileReadPermissionsException('You are not allowed to read the file "' . $file->getIdentifier() . "'", 1319219349);
 		}
 
-			// check if $file is writable
+			// Check if $file is writable
 		if (!$this->checkFileActionPermission('write', $file)) {
 			throw new t3lib_file_exception_InsufficientFileWritePermissionsException('You are not allowed to rename the file "' . $file->getIdentifier() . "'", 1319219349);
 		}
 
-			// call driver method to rename the file
-			// that also updates the file object properties
+			// Call driver method to rename the file that also updates the file
+			// object properties
 		try {
 			$newIdentifier = $this->driver->renameFile($file, $targetFileName);
 
@@ -1225,7 +1226,7 @@ class t3lib_file_Storage {
 	 */
 	public function replaceFile(t3lib_file_FileInterface $file, $localFilePath) {
 		if (!file_exists($localFilePath)) {
-			throw new InvalidArgumentException("File '$localFilePath' does not exist.", 1325842622);
+			throw new InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1325842622);
 		}
 
 		// TODO check permissions
@@ -1249,7 +1250,6 @@ class t3lib_file_Storage {
 	 * @return t3lib_file_FileInterface The file object
 	 */
 	public function addUploadedFile(array $uploadedFileData, t3lib_file_Folder $targetFolder = NULL, $targetFileName = NULL, $conflictMode = 'cancel') {
-
 		$localFilePath = $uploadedFileData['tmp_name'];
 		if ($targetFolder === NULL) {
 			$targetFolder = $this->getDefaultFolder();
@@ -1259,8 +1259,7 @@ class t3lib_file_Storage {
 			$targetFileName = $uploadedFileData['name'];
 		}
 
-			// handling $conflictMode is delegated to addFile()
-
+			// Handling $conflictMode is delegated to addFile()
 		$this->checkFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $uploadedFileData['size']);
 
 		$resultObject = $this->addFile($localFilePath, $targetFolder, $targetFileName, $conflictMode);
@@ -1296,8 +1295,8 @@ class t3lib_file_Storage {
 	}
 
 	/**
-	 * Moves a folder. If you want to move a folder from this storage to another one, call this method on the target storage,
-	 * otherwise you will get an exception.
+	 * Moves a folder. If you want to move a folder from this storage to another
+	 * one, call this method on the target storage, otherwise you will get an exception.
 	 *
 	 * @param t3lib_file_Folder $folderToMove The folder to move.
 	 * @param t3lib_file_Folder $targetParentFolder The target parent folder
@@ -1319,7 +1318,7 @@ class t3lib_file_Storage {
 
 		$this->emitPreFolderMoveSignal($folderToMove, $targetParentFolder, $newFolderName);
 
-			// get all file objects now so we are able to update them after moving the folder
+			// Get all file objects now so we are able to update them after moving the folder
 		$fileObjects = $this->getAllFileObjectsInFolder($folderToMove);
 		try {
 			if ($sourceStorage == $this) {
@@ -1329,7 +1328,7 @@ class t3lib_file_Storage {
 				$fileMappings = $this->moveFolderBetweenStorages($folderToMove, $targetParentFolder, $newFolderName);
 			}
 
-				// update the identifier and storage of all file objects
+				// Update the identifier and storage of all file objects
 			foreach ($fileObjects as $oldIdentifier => $fileObject) {
 				$newIdentifier = $fileMappings[$oldIdentifier];
 				$fileObject->updateProperties(array('storage' => $this, 'identifier' => $newIdentifier));
@@ -1408,16 +1407,16 @@ class t3lib_file_Storage {
 		 *   - get a local copy
 		 *   - put it into the other storage
 		 */
-		
+
 	}
 
 	/**
 	 * Previously in t3lib_extFileFunc::folder_move()
 	 *
+	 * @throws RuntimeException if an error occurs during renaming
 	 * @param t3lib_file_Folder $folderObject
 	 * @param string $newName
 	 * @return bool TRUE if the operation succeeded
-	 * @throws RuntimeException if an error occurs during renaming
 	 */
 	public function renameFolder($folderObject, $newName) {
 		// TODO unit tests
@@ -1433,7 +1432,7 @@ class t3lib_file_Storage {
 		try {
 			$fileMappings = $this->driver->renameFolder($folderObject, $newName);
 
-			// update the identifier of all file objects
+				// Update the identifier of all file objects
 			foreach ($fileObjects as $oldIdentifier => $fileObject) {
 				$newIdentifier = $fileMappings[$oldIdentifier];
 				$fileObject->updateProperties(array('identifier' => $newIdentifier));
@@ -1459,9 +1458,8 @@ class t3lib_file_Storage {
 		}
 
 		if ($this->driver->isFolderEmpty($folderObject) && !$deleteRecursively) {
-			throw new RuntimeException("Could not delete folder " . $folderObject->getIdentifier() . " because it is not empty.", 1325952534);
+			throw new RuntimeException('Could not delete folder "' . $folderObject->getIdentifier() . '" because it is not empty.', 1325952534);
 		}
-
 
 		$this->emitPreFolderDeleteSignal($folderObject);
 
@@ -1482,7 +1480,8 @@ class t3lib_file_Storage {
 	 */
 	public function getFolderList($path, $pattern = '', $start = 0, $numberOfItems = 0, $excludeHiddenFolders = TRUE) {
 		$items = $this->driver->getFolderList($path, $pattern, $start, $numberOfItems, $excludeHiddenFolders);
-			// exclude the _processed_ folder, so it won't get indexed etc
+
+			// Exclude the _processed_ folder, so it won't get indexed etc
 		$processingFolder = $this->getProcessingFolder();
 		if ($processingFolder && $path == '/') {
 			$processedFolderIdentifier = $this->processingFolder->getIdentifier();
@@ -1921,32 +1920,44 @@ class t3lib_file_Storage {
 	protected function getUniqueName(t3lib_file_Folder $folder, $theFile, $dontCheckForUnique = FALSE) {
 		static $maxNumber = 99, $uniqueNamePrefix = '';
 
-		$origFileInfo = t3lib_div::split_fileref($theFile); // Fetches info about path, name, extention of $theFile
-		if ($uniqueNamePrefix) { // Adds prefix
+			// Fetches info about path, name, extention of $theFile
+		$origFileInfo = t3lib_div::split_fileref($theFile);
+			// Adds prefix
+		if ($uniqueNamePrefix) {
 			$origFileInfo['file'] = $uniqueNamePrefix . $origFileInfo['file'];
 			$origFileInfo['filebody'] = $uniqueNamePrefix . $origFileInfo['filebody'];
 		}
 
 			// Check if the file exists and if not - return the fileName...
 		$fileInfo = $origFileInfo;
-		$theDestFile = $fileInfo['file']; // The destinations file
-		if (!$this->driver->fileExistsInFolder($theDestFile, $folder) || $dontCheckForUnique) { // If the file does NOT exist we return this fileName
+			// The destinations file
+		$theDestFile = $fileInfo['file'];
+			// If the file does NOT exist we return this fileName
+		if (!$this->driver->fileExistsInFolder($theDestFile, $folder) || $dontCheckForUnique) {
 			return $theDestFile;
 		}
 
-			// Well the fileName in its pure form existed. Now we try to append numbers / unique-strings and see if we can find an available fileName...
-		$theTempFileBody = preg_replace('/_[0-9][0-9]$/', '', $origFileInfo['filebody']); // This removes _xx if appended to the file
+			// Well the fileName in its pure form existed. Now we try to append
+			// numbers / unique-strings and see if we can find an available fileName
+
+			// This removes _xx if appended to the file
+		$theTempFileBody = preg_replace('/_[0-9][0-9]$/', '', $origFileInfo['filebody']);
 		$theOrigExt = $origFileInfo['realFileext'] ? '.' . $origFileInfo['realFileext'] : '';
 
 		for ($a = 1; $a <= ($maxNumber + 1); $a++) {
-			if ($a <= $maxNumber) { // First we try to append numbers
+				// First we try to append numbers
+			if ($a <= $maxNumber) {
 				$insert = '_' . sprintf('%02d', $a);
-			} else { // .. then we try unique-strings...
-				$insert = '_' . substr(md5(uniqId('')), 0, 6); // TODO remove constant 6
+				// .. then we try unique-strings...
+			} else {
+					// TODO remove constant 6
+				$insert = '_' . substr(md5(uniqId('')), 0, 6);
 			}
 			$theTestFile = $theTempFileBody . $insert . $theOrigExt;
-			$theDestFile = $theTestFile; // The destinations file
-			if (!$this->driver->fileExistsInFolder($theDestFile, $folder)) { // If the file does NOT exist we return this fileName
+				// The destinations file
+			$theDestFile = $theTestFile;
+				// If the file does NOT exist we return this fileName
+			if (!$this->driver->fileExistsInFolder($theDestFile, $folder)) {
 				return $theDestFile;
 			}
 		}

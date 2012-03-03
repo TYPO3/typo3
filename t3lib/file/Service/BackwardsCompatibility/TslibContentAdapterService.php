@@ -59,18 +59,17 @@ class t3lib_file_Service_BackwardsCompatibility_TslibContentAdapterService {
 	);
 
 	/**
-	 * Modifies the DB row in the CONTENT cObj of tslib_content for supplying backwards compatibility
-	 * for some file fields which have switched to using the new File API instead of the old uploads/
-	 * folder for storing files.
+	 * Modifies the DB row in the CONTENT cObj of tslib_content for supplying
+	 * backwards compatibility for some file fields which have switched to using
+	 * the new File API instead of the old uploads/ folder for storing files.
 	 *
 	 * This method is called by the render() method of tslib_content_Content.
 	 *
 	 * @param $row
 	 * @param $table
-	 *
 	 * @return	void
 	 */
-	public static function modifyDBRow(&$row, $table) {
+	public static function modifyDBRow(array &$row, $table) {
 		if (array_key_exists($table, static::$migrateFields)) {
 			foreach (static::$migrateFields[$table] as $migrateFieldName => $oldFieldNames) {
 				if (isset($row[$migrateFieldName])) {
@@ -106,9 +105,10 @@ class t3lib_file_Service_BackwardsCompatibility_TslibContentAdapterService {
 							$row[$oldFieldName] = $fieldContents;
 						}
 					}
-					if (count($files)>0) {
+					if (count($files) > 0) {
+
 					} elseif ($row['image'] > 0) {
-						throw new Exception('inconsistent count field in '.$table.'.'.$migrateFieldName);
+						throw new Exception('inconsistent count field in "' . $table . '".'.$migrateFieldName);
 					}
 				}
 			}

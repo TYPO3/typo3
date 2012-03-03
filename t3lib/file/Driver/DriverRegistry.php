@@ -33,8 +33,9 @@
  * @subpackage t3lib
  */
 class t3lib_file_Driver_DriverRegistry implements t3lib_Singleton {
+
 	/**
-	 * @var string[]
+	 * @var array
 	 */
 	protected $drivers = array();
 
@@ -105,7 +106,7 @@ class t3lib_file_Driver_DriverRegistry implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function addDriversToTCA() {
-		// Add driver to TCA of sys_file_storage
+			// Add driver to TCA of sys_file_storage
 		if (TYPO3_MODE !== 'BE') {
 			return;
 		}

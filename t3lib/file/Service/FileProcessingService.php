@@ -71,7 +71,7 @@ class t3lib_file_Service_FileProcessingService {
 				$this->processImagePreview($processedFile, $file, $configuration);
 				break;
 			default:
-				throw new RuntimeException('Unknown processing context ' . $context);
+				throw new RuntimeException('Unknown processing context "' . $context . '"');
 		}
 		return $processedFile;
 	}
@@ -91,8 +91,7 @@ class t3lib_file_Service_FileProcessingService {
 	 * @return string
 	 */
 	protected function processImagePreview(t3lib_file_ProcessedFile $processedFile, t3lib_file_FileInterface $file, array $configuration) {
-
-			// merge custom configuration with default configuration
+			// Merge custom configuration with default configuration
 		$configuration = array_merge(
 			array('width' => 64, 'height' => 64),
 			$configuration
@@ -103,8 +102,8 @@ class t3lib_file_Service_FileProcessingService {
 
 		$originalFileName = $file->getForLocalProcessing(FALSE);
 
-			// create a temporary file in typo3temp/
-		if ($file->getExtension() == 'jpg') {
+			// Create a temporary file in typo3temp/
+		if ($file->getExtension() === 'jpg') {
 			$targetFileExtension = '.jpg';
 		} else {
 			$targetFileExtension = '.png';
@@ -113,34 +112,34 @@ class t3lib_file_Service_FileProcessingService {
 		$targetFolder = $this->storage->getProcessingFolder();
 		$targetFileName = 'preview_' . $processedFile->calculateChecksum() . $targetFileExtension;
 
-			// do the actual processing
+			// Do the actual processing
 		if (!$targetFolder->hasFile($targetFileName)) {
-				// create the thumb filename in typo3temp/preview_....jpg
+				// Create the thumb filename in typo3temp/preview_....jpg
 			$temporaryFileName = t3lib_div::tempnam('preview_') . $targetFileExtension;
 
 				// Check file extension
 			if ($file->getType() != $file::FILETYPE_IMAGE && !t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $file->getExtension())) {
-				// create a default image
+				// Create a default image
 				$this->getTemporaryImageWithText($temporaryFileName, 'Not imagefile!', 'No ext!', $file->getName());
 			} else {
-					// create the temporary file
+					// Create the temporary file
 				if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
 					$parameters = '-sample ' . $configuration['width'] . 'x' . $configuration['height'] .  ' ' . $this->wrapFileName($originalFileName) . '[0] ' . $this->wrapFileName($temporaryFileName);
 					$cmd = t3lib_div::imageMagickCommand('convert', $parameters);
 					t3lib_utility_Command::exec($cmd);
 					if (!file_exists($temporaryFileName)) {
-							// create a error gif
+							// Create a error gif
 						$this->getTemporaryImageWithText($temporaryFileName, 'No thumb','generated!', $file->getName());
 					}
 				}
 
 			}
 
-				// everything worked out fine
+				// Temporary image could have been created
 			if (file_exists($temporaryFileName)) {
 				t3lib_div::fixPermissions($temporaryFileName);
 
-					// copy the temporary file to the processedFolder
+					// Copy the temporary file to the processedFolder
 					// this is done here, as the driver can do this without worrying
 					// about existing ProcessedFile objects
 					// or permissions in the storage
@@ -150,12 +149,11 @@ class t3lib_file_Service_FileProcessingService {
 				$this->driver->addFile($temporaryFileName, $targetFolder, $targetFileName, $processedFile);
 				$processedFile->setProcessed(TRUE);
 
-					// remove the temporary file as it's not needed anymore
+					// Remove the temporary file as it's not needed anymore
 				t3lib_div::unlink_tempfile($temporaryFileName);
 			}
 		}
 	}
-
 
 	protected function processFilePreview() {
 		// if jpg => image preview
@@ -187,13 +185,13 @@ class t3lib_file_Service_FileProcessingService {
 
 	/**
 	 * Creates error image based on gfx/notfound_thumb.png
-	 * Requires GD lib enabled, otherwise it will exit with the three textstrings outputted as text.
-	 * Outputs the image stream to browser and exits!
+	 * Requires GD lib enabled, otherwise it will exit with the three
+	 * textstrings outputted as text. Outputs the image stream to browser and exits!
 	 *
-	 * @param	string		Text line 1
-	 * @param	string		Text line 2
-	 * @param	string		Text line 3
-	 * @return	void
+	 * @param string Text line 1
+	 * @param string Text line 2
+	 * @param string Text line 3
+	 * @return void
 	 */
 	protected function getTemporaryImageWithText($filename, $textline1, $textline2, $textline3) {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
@@ -215,8 +213,8 @@ class t3lib_file_Service_FileProcessingService {
 		$black = imageColorAllocate($im, 0, 0, 0);
 
 			// Prints the text strings with the build-in font functions of GD
-		$x=0;
-		$font=0;
+		$x = 0;
+		$font = 0;
 		if ($textline1) {
 			imagefilledrectangle($im, $x, 9, 56, 16, $white);
 			imageString($im, $font, $x, 9, $textline1, $black);
@@ -234,7 +232,7 @@ class t3lib_file_Service_FileProcessingService {
 		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) {
 			imagePng($im, $filename);
 		} else {
-			imageGif ($im, $filename);
+			imageGif($im, $filename);
 		}
 	}
 

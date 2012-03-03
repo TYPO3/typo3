@@ -146,6 +146,7 @@ abstract class t3lib_file_Repository_AbstractRepository implements Tx_Extbase_Pe
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$itemList[] = $this->createDomainObject($row);
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 		return $itemList;
 	}
@@ -184,7 +185,7 @@ abstract class t3lib_file_Repository_AbstractRepository implements Tx_Extbase_Pe
 	 * Finds an object matching the given identifier.
 	 *
 	 * @param int $uid The identifier of the object to find
-	 * @return object The matching object if found, otherwise NULL
+	 * @return object The matching object
 	 * @api
 	 */
 	public function findByUid($uid) {
@@ -194,8 +195,8 @@ abstract class t3lib_file_Repository_AbstractRepository implements Tx_Extbase_Pe
 
 		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->table, 'uid=' . intval($uid) . ' AND deleted=0');
 
-		if (count($row) == 0) {
-			throw new RuntimeException("Could not find row with uid $uid in table $this->table.", 1314354065);
+		if (count($row) === 0) {
+			throw new RuntimeException('Could not find row with uid "' . $uid .'" in table $this->table.', 1314354065);
 		}
 
 		return $this->createDomainObject($row);

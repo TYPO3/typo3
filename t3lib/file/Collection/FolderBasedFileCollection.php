@@ -34,6 +34,7 @@
  * @subpackage t3lib
  */
 class t3lib_file_Collection_FolderBasedFileCollection extends t3lib_file_Collection_AbstractFileCollection {
+
 	/**
 	 * @var string
 	 */

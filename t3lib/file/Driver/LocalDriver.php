@@ -34,6 +34,7 @@
  * @subpackage	t3lib
  */
 class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
+
 	/**
 	 * The absolute base path. It always contains a trailing slash.
 	 *
@@ -49,8 +50,8 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	protected $supportedHashAlgorithms = array('sha1', 'md5');
 
 	/**
-	 * The base URL that points to this driver's storage. As long is this is not set, it is assumed that this folder
-	 * is not publicly available
+	 * The base URL that points to this driver's storage. As long is this
+	 * is not set, it is assumed that this folder 	 * is not publicly available
 	 *
 	 * @var string
 	 */
@@ -82,7 +83,8 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	}
 
 	/**
-	 * Initializes this object. This is called by the storage after the driver has been attached.
+	 * Initializes this object. This is called by the storage after the driver
+	 * has been attached.
 	 *
 	 * @return void
 	 */
@@ -94,18 +96,19 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	}
 
 	/**
-	 * Determines the base URL for this driver, from the configuration or the TypoScript frontend object
+	 * Determines the base URL for this driver, from the configuration or
+	 * the TypoScript frontend object
 	 *
 	 * @return void
 	 */
 	protected function determineBaseUrl() {
 		if (t3lib_div::isFirstPartOfStr($this->absoluteBasePath, PATH_site)) {
-			// TODO use site URL (where to get it from e.g. on CLI?)
+				// TODO use site URL (where to get it from e.g. on CLI?)
 			if (is_object($GLOBALS['TSFE'])) {
 				$this->baseUri = $GLOBALS['TSFE']->absRefPrefix;
 			} else {
-				// use site-relative URLs
-				// TODO add unit test
+					// use site-relative URLs
+					// TODO add unit test
 				$this->baseUri = substr($this->absoluteBasePath, strlen(PATH_site));
 			}
 		} elseif (isset($this->configuration['baseUri']) && t3lib_div::isValidUrl($this->configuration['baseUri'])) {
@@ -140,10 +143,11 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	}
 
 	/**
-	 * Returns the public URL to a file. For the local driver, this will always return a path relative to PATH_site.
+	 * Returns the public URL to a file. For the local driver, this will always
+	 * return a path relative to PATH_site.
 	 *
 	 * @param t3lib_file_FileInterface $file
-	 * @param bool  $relativeToCurrentScript    Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
+	 * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
 	 * @return string
 	 */
 	public function getPublicUrl(t3lib_file_FileInterface $file, $relativeToCurrentScript = FALSE) {
@@ -159,14 +163,13 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 			);
 		}
 
-			// if requested, make the path relative to the current script in order to make it possible
+			// If requested, make the path relative to the current script in order to make it possible
 			// to use the relative file
 		if ($relativeToCurrentScript) {
 			$publicUrl = t3lib_utility_Path::getRelativePathTo(dirname(PATH_site . $publicUrl)) . basename($publicUrl);
 		}
 
 		return $publicUrl;
-
 	}
 
 	/**
@@ -271,7 +274,8 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	}
 
 	/**
-	 * Returns a string where any character not matching [.a-zA-Z0-9_-] is substituted by '_'
+	 * Returns a string where any character not matching [.a-zA-Z0-9_-] is
+	 * substituted by '_'
 	 * Trailing dots are removed
 	 *
 	 * previously in t3lib_basicFileFunctions::cleanFileName()
@@ -283,7 +287,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	protected function sanitizeFileName($fileName, $charset = '') {
 			// Handle UTF-8 characters
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
-				// allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)
+				// Allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)
 			$cleanFileName = preg_replace('/[\x00-\x2C\/\x3A-\x3F\x5B-\x60\x7B-\xBF]/u', '_', trim($fileName));
 
 			// Handle other character sets
@@ -318,7 +322,8 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	}
 
 	/**
-	 * Generic wrapper for extracting a list of items from a path. The extraction itself is done by the given handler method
+	 * Generic wrapper for extracting a list of items from a path. The
+	 * extraction itself is done by the given handler method
 	 *
 	 * @param string $path
 	 * @param integer $start The position to start the listing; if not set, start from the beginning
@@ -339,8 +344,9 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 			$start--;
 		}
 
-			// Fetch the files and folders and sort them by name; we have to do this here because the directory iterator
-			// does return them in an arbitrary order
+			// Fetch the files and folders and sort them by name; we have to do
+			// this here because the directory iterator does return them in
+			// an arbitrary order
 		$items = $this->getFileAndFoldernamesInPath($realPath);
 		natcasesort($items);
 		$iterator = new ArrayIterator($items);
@@ -564,7 +570,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	 */
 	public function hash(t3lib_file_FileInterface $file, $hashAlgorithm) {
 		if (!in_array($hashAlgorithm, $this->getSupportedHashAlgorithms())) {
-			throw new InvalidArgumentException("Hash algorithm $hashAlgorithm is not supported.", 1304964032);
+			throw new InvalidArgumentException('Hash algorithm "' . $hashAlgorithm . '" is not supported.', 1304964032);
 		}
 
 		switch ($hashAlgorithm) {
@@ -609,8 +615,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 
 		if (is_uploaded_file($localFilePath)) {
 			$moveResult = move_uploaded_file($localFilePath, $targetPath);
-		}
-		else {
+		} else {
 			$moveResult = rename($localFilePath, $targetPath);
 		}
 
@@ -619,7 +624,8 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 		}
 
 		clearstatcache();
-		t3lib_div::fixPermissions($targetPath); // Change the permissions of the file
+			// Change the permissions of the file
+		t3lib_div::fixPermissions($targetPath);
 
 		$fileInfo = $this->getFileInfoByIdentifier($relativeTargetPath);
 
@@ -805,8 +811,8 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	}
 
 	/**
-	 * Creates a map of old and new file/folder identifiers after renaming or moving a folder. The old identifier is used
-	 * as the key, the new one as the value.
+	 * Creates a map of old and new file/folder identifiers after renaming or
+	 * moving a folder. The old identifier is used as the key, the new one as the value.
 	 *
 	 * @param array $filesAndFolders
 	 * @param string $relativeSourcePath
@@ -1025,7 +1031,8 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	}
 
 	/**
-	 * Returns a (local copy of) a file for processing it. This makes a copy first when in writable mode, so if you change the file,
+	 * Returns a (local copy of) a file for processing it. This makes a copy
+	 * first when in writable mode, so if you change the file,
 	 * you have to update it yourself afterwards.
 	 *
 	 * @param t3lib_file_FileInterface $file
@@ -1089,7 +1096,8 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	}
 
 	/**
-	 * Checks if a given object or identifier is within a container, e.g. if a file or folder is within another folder.
+	 * Checks if a given object or identifier is within a container, e.g. if
+	 * a file or folder is within another folder.
 	 * This can e.g. be used to check for webmounts.
 	 *
 	 * @param t3lib_file_Folder $container
@@ -1119,10 +1127,10 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	 */
 	public function createFile($fileName, t3lib_file_Folder $parentFolder) {
 		if (!$this->isValidFilename($fileName)) {
-			throw new t3lib_file_exception_InvalidFileNameException("Invalid characters in fileName '$fileName'.", 1320572272);
+			throw new t3lib_file_exception_InvalidFileNameException('Invalid characters in fileName "' . $fileName . '"', 1320572272);
 		}
 		$filePath = $parentFolder->getIdentifier() . ltrim($fileName, '/');
-		// TODO set permissions of new file
+			// TODO set permissions of new file
 		$result = touch($this->absoluteBasePath . $filePath);
 		clearstatcache();
 		if ($result !== TRUE) {
@@ -1134,8 +1142,9 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	}
 
 	/**
-	 * Returns the contents of a file. Beware that this requires to load the complete file into memory and also may
-	 * require fetching the file from an external location. So this might be an expensive operation (both in terms of
+	 * Returns the contents of a file. Beware that this requires to load the
+	 * complete file into memory and also may require fetching the file from an
+	 * external location. So this might be an expensive operation (both in terms of
 	 * processing resources and money) for large files.
 	 *
 	 * @param t3lib_file_FileInterface $file
@@ -1161,7 +1170,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 		$result = file_put_contents($filePath, $contents);
 
 		if ($result === FALSE) {
-			throw new RuntimeException('Setting contents of file ' . $file->getIdentifier() . ' failed.', 1325419305);
+			throw new RuntimeException('Setting contents of file "' . $file->getIdentifier() . '" failed.', 1325419305);
 		}
 
 		return $result;

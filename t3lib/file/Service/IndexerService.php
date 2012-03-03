@@ -87,18 +87,19 @@ class t3lib_file_Service_IndexerService implements t3lib_Singleton {
 	 * @return t3lib_file_File|array the indexed $fileObject or an array of indexed properties.
 	 */
 	public function indexFile(t3lib_file_File $fileObject, $updateObject = TRUE) {
-			// get the file information of this object
+			// Get the file information of this object
 		$fileInfo = $this->gatherFileInformation($fileObject);
 
-			// signal slot BEFORE the file was indexed
+			// Signal slot BEFORE the file was indexed
 		$this->emitPreFileIndexSignal($fileObject, $fileInfo);
 
-			// if the file is already indexed, then the file information will be updated on the existing record
+			// If the file is already indexed, then the file information will
+			// be updated on the existing record
 		if ($fileObject->isIndexed()) {
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_file', sprintf('uid = %d', $fileObject->getUid()), $fileInfo);
 		} else {
-				// check if a file has been moved outside of FAL -- we have some orphaned index record in this case
-				// we could update
+				// Check if a file has been moved outside of FAL -- we have some
+				// orphaned index record in this case we could update
 			$otherFiles = $this->getRepository()->findBySha1Hash($fileInfo['sha1']);
 			$movedFile = FALSE;
 			/** @var $otherFile t3lib_file_File */
@@ -110,17 +111,17 @@ class t3lib_file_Service_IndexerService implements t3lib_Singleton {
 					$this->getRepository()->update($otherFile);
 					$fileInfo['uid'] = $otherFile->getUid();
 					$fileObject = $otherFile;
-						// skip the rest of the files here as we might have more files that are missing, but we can only
+						// Skip the rest of the files here as we might have more files that are missing, but we can only
 						// have one entry. The optimal solution would be to merge these records then, but this requires
 						// some more advanced logic that we currently have not implemented.
 					break;
 				}
 			}
 
-				// file was not moved, so it is a new index record
+				// File was not moved, so it is a new index record
 			if ($movedFile === FALSE) {
-					// crdate and tstamp should not be present when updating the file object, as they only relate to the
-					// index record
+					// Crdate and tstamp should not be present when updating
+					// the file object, as they only relate to the index record
 				$indexRecord = array_merge($fileInfo,
 					array(
 						'crdate' => $GLOBALS['EXEC_TIME'],
@@ -132,13 +133,13 @@ class t3lib_file_Service_IndexerService implements t3lib_Singleton {
 			}
 		}
 
-			// check for an error during the execution and throw an exception
+			// Check for an error during the execution and throw an exception
 		$error = $GLOBALS['TYPO3_DB']->sql_error();
 		if ($error) {
-			throw new RuntimeException('Error during file indexing: ' . $error, 1314455642);
+			throw new RuntimeException('Error during file indexing: "' . $error . '"', 1314455642);
 		}
 
-			// signal slot AFTER the file was indexed
+			// Signal slot AFTER the file was indexed
 		$this->emitPostFileIndexSignal($fileObject, $fileInfo);
 
 		if ($updateObject) {
@@ -172,14 +173,14 @@ class t3lib_file_Service_IndexerService implements t3lib_Singleton {
 	public function indexFilesInFolder(t3lib_file_Folder $folder) {
 		$numberOfIndexedFiles = 0;
 
-			// index all files in this folder
+			// Index all files in this folder
 		$fileObjects = $folder->getFiles();
 		foreach ($fileObjects as $fileObject) {
 			$this->indexFile($fileObject);
 			$numberOfIndexedFiles++;
 		}
 
-			// call this function recursively for each subfolder
+			// Call this function recursively for each subfolder
 		$subFolders = $folder->getSubfolders();
 		foreach ($subFolders as $subFolder) {
 			$numberOfIndexedFiles += $this->indexFilesInFolder($subFolder);
@@ -201,7 +202,8 @@ class t3lib_file_Service_IndexerService implements t3lib_Singleton {
 	protected function gatherFileInformation(t3lib_file_File $file) {
 		$storage = $file->getStorage();
 
-		// TODO: See if we can't just return info, as it contains most of the stuff we put together in array form again later here.
+		// TODO: See if we can't just return info, as it contains most of the
+		// stuff we put together in array form again later here.
 		$info = $storage->getFileInfo($file);
 
 		$fileInfo = array(
