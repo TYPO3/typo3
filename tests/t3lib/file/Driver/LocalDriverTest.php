@@ -869,23 +869,36 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 		$this->assertEquals(array('r' => FALSE, 'w' => FALSE), $fixture->getFolderPermissions($this->getSimpleFolderMock('/someForbiddenFolder')));
 	}
 
+	/**
+	 * Dataprovider for getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser test
+	 *
+	 * @return array group, filemode and expected result
+	 */
 	public function getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser_dataProvider() {
-		return array(
-			'current group, readable/writable' => array(
-				posix_getgid(),
-				0060,
-				array('r' => TRUE, 'w' => TRUE)
-			),
-			'current group, readable/not writable' => array(
-				posix_getgid(),
-				0040,
-				array('r' => TRUE, 'w' => FALSE)
-			),
-			'current group, not readable/not writable' => array(
-				posix_getgid(),
-				0000,
-				array('r' => FALSE, 'w' => FALSE)
-			),
+		$data = array();
+
+			// On some OS, the posix_* functions do not exits
+		if (function_exists('posix_getgid')) {
+			$data = array(
+				'current group, readable/writable' => array(
+					posix_getgid(),
+					0060,
+					array('r' => TRUE, 'w' => TRUE)
+				),
+				'current group, readable/not writable' => array(
+					posix_getgid(),
+					0040,
+					array('r' => TRUE, 'w' => FALSE)
+				),
+				'current group, not readable/not writable' => array(
+					posix_getgid(),
+					0000,
+					array('r' => FALSE, 'w' => FALSE)
+				),
+			);
+		}
+
+		$data = array_merge_recursive($data, array(
 			'arbitrary group, readable/writable' => array(
 				vfsStream::GROUP_USER_1,
 				0006,
@@ -900,8 +913,10 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 				vfsStream::GROUP_USER_1,
 				0660,
 				array('r' => FALSE, 'w' => FALSE)
-			)
-		);
+			),
+		));
+
+		return $data;
 	}
 
 	/**
