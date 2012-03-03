@@ -25,6 +25,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+require_once dirname(__FILE__) . '/../BaseTestCase.php';
+
 /**
  * Test case for the abstract driver.
  *
