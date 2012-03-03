@@ -870,6 +870,10 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 	}
 
 	public function getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser_dataProvider() {
+
+		if(!function_exists('posix_getgid')) {
+			$this->markTestSkipped('Skip test because of missing posix_getgid() function.');
+		}
 		return array(
 			'current group, readable/writable' => array(
 				posix_getgid(),
