@@ -109,9 +109,17 @@ mod.wizards.newContentElement.wizardItems {
 				CType = div
 			}
 		}
+		shortcut {
+		 	icon = gfx/c_wiz/shortcut.gif
+			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_shortcut_title
+			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_shortcut_description
+			tt_content_defValues {
+				CType = shortcut
+			}
+		}
 
 	}
-	special.show = uploads,media,menu,html,div
+	special.show = uploads,media,menu,html,div,shortcut
 
 	forms.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms
 	forms.elements {

@@ -99,6 +99,12 @@
 			<trans-unit id="special_divider_description" xml:space="preserve">
 				<source>This element inserts a visual divider, which is by default a horizontal line.</source>
 			</trans-unit>
+			<trans-unit id="special_shortcut_title" xml:space="preserve">
+				<source>Insert records</source>
+			</trans-unit>
+			<trans-unit id="special_shortcut_description" xml:space="preserve">
+				<source>With this element you can embed other content elements.</source>
+			</trans-unit>
 			<trans-unit id="forms" xml:space="preserve">
 				<source>Form elements</source>
 			</trans-unit>
