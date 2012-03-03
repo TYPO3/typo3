@@ -27,13 +27,15 @@
 
 
 /**
- * A folder that groups files in a storage. This may be a folder on the local disk, a bucket in Amazon S3
- * or a user or a tag in Flickr.
+ * A folder that groups files in a storage. This may be a folder on the local
+ * disk, a bucket in Amazon S3 or a user or a tag in Flickr.
  *
- * This object is not persisted in TYPO3 locally, but created on the fly by storage drivers for the folders they "offer".
+ * This object is not persisted in TYPO3 locally, but created on the fly by
+ * storage drivers for the folders they "offer".
  *
- * Some folders serve as a physical container for files (e.g. folders on the local disk, S3 buckets or Flickr users).
- * Other folders just group files by a certain criterion, e.g. a tag.
+ * Some folders serve as a physical container for files (e.g. folders on the
+ * local disk, S3 buckets or Flickr users). Other folders just group files by a
+ * certain criterion, e.g. a tag.
  * The way this is implemented depends on the storage driver.
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
@@ -110,8 +112,8 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 	}
 
 	/**
-	 * Returns the path of this folder inside the storage. It depends on the type of storage whether this is a real
-	 * path or just some unique identifier.
+	 * Returns the path of this folder inside the storage. It depends on the
+	 * type of storage whether this is a real path or just some unique identifier.
 	 *
 	 * @return string
 	 */
@@ -120,14 +122,13 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 	}
 
 	/**
-	 * Returns a combined identifier of this folder, i.e. the storage UID and the folder identifier
-	 * separated by a colon ":".
+	 * Returns a combined identifier of this folder, i.e. the storage UID and
+	 * the folder identifier separated by a colon ":".
 	 *
 	 * @return string Combined storage and folder identifier, e.g. StorageUID:folder/path/
 	 */
 	public function getCombinedIdentifier() {
-		// @todo $this->properties is never defined nor used here
-
+			// @todo $this->properties is never defined nor used here
 		if (is_array($this->properties) && t3lib_utility_Math::canBeInterpretedAsInteger($this->properties['storage'])) {
 			$combinedIdentifier = $this->properties['storage'].':'.$this->getIdentifier();
 		} else {
@@ -147,7 +148,7 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 	 * @return t3lib_file_File[]
 	 */
 	public function getFiles($pattern = '', $start = 0, $numberOfItems = 0) {
-		// TODO fetch
+			// TODO fetch
 		/** @var $factory t3lib_file_Factory */
 		$factory = t3lib_div::makeInstance('t3lib_file_Factory');
 		$fileArray = $this->storage->getFileList($this->identifier, $pattern, $start, $numberOfItems);
@@ -160,10 +161,11 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 	}
 
 	/**
-	 * Returns amount of all files within this folder, optionally filtered by the given pattern
+	 * Returns amount of all files within this folder, optionally filtered by
+	 * the given pattern
 	 *
 	 * @param string $pattern
-	 * @return int
+	 * @return integer
 	 */
 	public function getFileCount($pattern = '') {
 		return count($this->storage->getFileList($this->identifier, $pattern));
@@ -203,8 +205,9 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 			/** @var $factory t3lib_file_Factory */
 			$factory = t3lib_div::makeInstance('t3lib_file_Factory');
 
-				// TODO this will not work with non-hierarchical storages -> the identifier for subfolders is not composed of
-				// the current item's identifier for these
+				// TODO this will not work with non-hierarchical storages
+				// -> the identifier for subfolders is not composed of the
+				// current item's identifier for these
 			foreach ($folderArray as $folder) {
 				$folderObjects[] = $factory->createFolderObject($this->storage, $this->identifier . $folder['name'] . '/', $folder['name']);
 			}
@@ -214,7 +217,8 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 	}
 
 	/**
-	 * Adds a file from the local server disk. If the file already exists and overwriting is disabled,
+	 * Adds a file from the local server disk. If the file already exists and
+	 * overwriting is disabled,
 	 *
 	 * @param string $localFilePath
 	 * @param string $fileName
@@ -295,7 +299,7 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 	}
 
 	/**
-	 * Movies folder to a target folder
+	 * Moves folder to a target folder
 	 *
 	 * @param t3lib_file_Folder $targetFolder Target folder to move to.
 	 * @param string $targetFolderName an optional destination fileName
@@ -347,7 +351,7 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 	 * @internal
 	 */
 	public function updateProperties(array $properties) {
-			// setting identifier and name to update values
+			// Setting identifier and name to update values
 		if (isset($properties['identifier'])) {
 			$this->identifier = $properties['identifier'];
 		}

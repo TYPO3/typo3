@@ -83,19 +83,19 @@ class t3lib_file_Repository_StorageRepository extends t3lib_file_Repository_Abst
 	}
 
 	/**
-	 * Used to create the initial local storage base e.g. for the fileadmin/ directory.
+	 * Create the initial local storage base e.g. for the fileadmin/ directory.
 	 *
 	 * @param string $name
 	 * @param string $basePath
 	 * @param string $pathType
 	 * @param string $description
-	 * @return mixed
+	 * @return integer uid of the inserted record
 	 */
 	public function createLocalStorage($name, $basePath, $pathType, $description = '') {
 		$field_values = array(
 			'pid' => 0,
-			'tstamp' => time(),
-			'crdate' => time(),
+			'tstamp' => $GLOBALS['EXEC_TIME'],
+			'crdate' => $GLOBALS['EXEC_TIME'],
 			'name' => $name,
 			'description' => $description,
 			'driver' => 'Local',
@@ -120,7 +120,7 @@ class t3lib_file_Repository_StorageRepository extends t3lib_file_Repository_Abst
 		);
 
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_file_storage', $field_values);
-		return $GLOBALS['TYPO3_DB']->sql_insert_id();
+		return (int)$GLOBALS['TYPO3_DB']->sql_insert_id();
 	}
 
 	/**

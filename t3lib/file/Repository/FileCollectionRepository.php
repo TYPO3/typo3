@@ -35,6 +35,7 @@
  * @subpackage t3lib
  */
 class t3lib_file_Repository_FileCollectionRepository extends t3lib_collection_RecordCollectionRepository {
+
 	/**
 	 * @var string
 	 */
@@ -48,6 +49,7 @@ class t3lib_file_Repository_FileCollectionRepository extends t3lib_collection_Re
 	/**
 	 * Finds a record collection by uid.
 	 *
+	 * @todo the parent function throws already an exception if not found
 	 * @param integer $uid The uid to be looked up
 	 * @return NULL|t3lib_file_Collection_AbstractFileCollection
 	 */
@@ -56,7 +58,7 @@ class t3lib_file_Repository_FileCollectionRepository extends t3lib_collection_Re
 
 		if ($object === NULL) {
 			throw new RuntimeException(
-				'Could not find row with uid ' . $uid . ' in table ' . $this->table,
+				'Could not find row with uid "' . $uid . '" in table "' . $this->table . '"',
 				1314354065
 			);
 		}

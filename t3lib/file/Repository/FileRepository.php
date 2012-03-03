@@ -38,16 +38,17 @@
 class t3lib_file_Repository_FileRepository extends t3lib_file_Repository_AbstractRepository {
 
 	/**
-	 * The main object type of this class. In some cases (fileReference) this repository can also return
-	 * FileReference objects, implementing the common FileInterface.
+	 * The main object type of this class. In some cases (fileReference) this
+	 * repository can also return FileReference objects, implementing the
+	 * common FileInterface.
 	 *
 	 * @var string
 	 */
 	protected $objectType = 't3lib_file_File';
 
 	/**
-	 * Main File object storage table. Note that this repository also works on the sys_file_reference table
-	 * when returning FileReference objects.
+	 * Main File object storage table. Note that this repository also works on
+	 * the sys_file_reference table when returning FileReference objects.
 	 *
 	 * @var string
 	 */
@@ -95,10 +96,12 @@ class t3lib_file_Repository_FileRepository extends t3lib_file_Repository_Abstrac
 	}
 
 	/**
-	 * Checks the index status of a file and returns FALSE if the file is not indexed, the uid otherwise.
+	 * Checks the index status of a file and returns FALSE if the file is not
+	 * indexed, the uid otherwise.
+	 *
 	 * @TODO: Check if the indexing functions really belong into the repository and shouldn't be part of an
 	 * @TODO: indexing service, right now it's fine that way as this function will serve as the public API
-	 *
+	 * @TODO: throw an exception if nothing found, for consistent handling as in AbstractRepository?
 	 * @param t3lib_file_File $fileObject
 	 * @return bool|int
 	 */
@@ -110,7 +113,7 @@ class t3lib_file_Repository_FileRepository extends t3lib_file_Repository_Abstrac
 			sprintf('storage=%u AND identifier=%s', $mount, $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, $this->table))
 		);
 
-		if (!$row) {
+		if (!is_array($row)) {
 			return FALSE;
 		} else {
 			return $row['uid'];
@@ -120,6 +123,7 @@ class t3lib_file_Repository_FileRepository extends t3lib_file_Repository_Abstrac
 	/**
 	 * Returns an index record of a file, or FALSE if the file is not indexed.
 	 *
+	 * @TODO: throw an exception if nothing found, for consistent handling as in AbstractRepository?
 	 * @param t3lib_file_File $fileObject
 	 * @return bool|array
 	 */
@@ -131,7 +135,7 @@ class t3lib_file_Repository_FileRepository extends t3lib_file_Repository_Abstrac
 			sprintf('storage=%u AND identifier=%s', $mount, $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, $this->table))
 		);
 
-		if (!$row) {
+		if (!is_array($row)) {
 			return FALSE;
 		} else {
 			return $row;
@@ -161,8 +165,8 @@ class t3lib_file_Repository_FileRepository extends t3lib_file_Repository_Abstrac
 	}
 
 	/**
-	 * Returns all files with the corresponding SHA-1 hash. This is queried against the database, so only indexed files
-	 * will be found
+	 * Returns all files with the corresponding SHA-1 hash. This is queried
+	 * against the database, so only indexed files will be found
 	 *
 	 * @param string $hash A SHA1 hash of a file
 	 * @return array
@@ -177,13 +181,10 @@ class t3lib_file_Repository_FileRepository extends t3lib_file_Repository_Abstrac
 
 		$objects = array();
 
-		if ($res) {
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$objects[] = $this->createDomainObject($row);
-			}
-
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			$objects[] = $this->createDomainObject($row);
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 		return $objects;
 	}
@@ -202,7 +203,7 @@ class t3lib_file_Repository_FileRepository extends t3lib_file_Repository_Abstrac
 		$itemList = array();
 
 		if (!is_numeric($uid)) {
-			throw new InvalidArgumentException("uid of related record has to be numeric.", 1316789798);
+			throw new InvalidArgumentException('Uid of related record has to be numeric.', 1316789798);
 		}
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -217,13 +218,10 @@ class t3lib_file_Repository_FileRepository extends t3lib_file_Repository_Abstrac
 			'sorting_foreign'
 		);
 
-		if ($res) {
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$itemList[] = $this->createFileReferenceObject($row);
-			}
-
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			$itemList[] = $this->createFileReferenceObject($row);
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 		return $itemList;
 	}
@@ -250,7 +248,7 @@ class t3lib_file_Repository_FileRepository extends t3lib_file_Repository_Abstrac
 				' AND hidden=0'
 		);
 
-		if ($row !== NULL) {
+		if (is_array($row)) {
 			$fileReferenceObject = $this->createFileReferenceObject($row);
 		}
 
@@ -264,9 +262,8 @@ class t3lib_file_Repository_FileRepository extends t3lib_file_Repository_Abstrac
 	 * @return void
 	 */
 	public function update($modifiedObject) {
-		// TODO check if $modifiedObject is an instance of t3lib_file_File
-		// TODO check if $modifiedObject is indexed
-
+			// TODO check if $modifiedObject is an instance of t3lib_file_File
+			// TODO check if $modifiedObject is indexed
 		$changedProperties = $modifiedObject->getUpdatedProperties();
 		$properties = $modifiedObject->getProperties();
 
