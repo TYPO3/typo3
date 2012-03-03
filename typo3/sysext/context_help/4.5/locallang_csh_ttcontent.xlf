@@ -209,7 +209,7 @@ tt_content:date,</source>
 			<trans-unit id="header_link.syntax" xml:space="preserve">
 				<source>If you insert a Page ID (ex. 51), the link will point to the page with id=51 &lt;em&gt;inside&lt;/em&gt; TYPO3.
 If you insert an email address (ex. name@my-domain.test), the link will point to that email address.
-If you insert an URL or domain, (ex. www.typo3.com or http://www.my-domain.org), the link will point to that website.</source>
+If you insert an URL or domain, (ex. www.typo3.org or http://www.my-domain.org), the link will point to that website.</source>
 			</trans-unit>
 			<trans-unit id="_header_link.seeAlso" xml:space="preserve">
 				<source>tt_content:header</source>

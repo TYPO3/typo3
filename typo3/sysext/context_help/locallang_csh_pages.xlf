@@ -214,7 +214,7 @@ You may use this field as you like in your own templates.</source>
 				<source>Enter the URL to which this page is supposed to link.</source>
 			</trans-unit>
 			<trans-unit id="url.details" xml:space="preserve">
-				<source>Example: 'http://www.typo3.com' or just 'www.typo3.com' provided the 'Type' selector is set to 'http://'.
+				<source>Example: 'http://www.typo3.org' or just 'www.typo3.org' provided the 'Type' selector is set to 'http://'.
 Use the 'Type' selector to select a prefix for the URL.
 
 This option is used only if the page 'Type' is set to 'External URL'.</source>
