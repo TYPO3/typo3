@@ -1794,8 +1794,23 @@ class tx_cms_layout extends recordList {
 					}
 					break;
 				case 'shortcut':
-					if ($row['records']) {
-						$out .= $this->linkEditContent($row['shortcut'], $row) . '<br />';
+					if (!empty($row['records'])) {
+						$shortcutContent = array();
+
+						$uidList = t3lib_div::intExplode(',', $row['records'], TRUE);
+						foreach ($uidList as $shortcutRecordUid) {
+							$shortcutRecord = t3lib_BEfunc::getRecord('tt_content', $shortcutRecordUid);
+
+							if (is_array($shortcutRecord)) {
+								$icon = t3lib_iconWorks::getSpriteIconForRecord('tt_content', $shortcutRecord);
+								$onClick = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon(
+									$icon, 'tt_content', $shortcutRecord['uid'], 1, '', '+copy,info,edit,view', TRUE);
+
+								$shortcutContent[] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $icon . '</a>' .
+												htmlspecialchars(t3lib_BEfunc::getRecordTitle('tt_content', $shortcutRecord));
+							}
+						}
+						$out .= implode('<br />', $shortcutContent) . '<br />';
 					}
 					break;
 				case 'list':
