@@ -31,7 +31,7 @@
 				<source>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</source>
 			</trans-unit>
 			<trans-unit id="lockToDomain.syntax" xml:space="preserve">
-				<source>Either a domain name, "www.typo3.com" or an IP address, "10.34.222.83"</source>
+				<source>Either a domain name, "www.typo3.org" or an IP address, "10.34.222.83"</source>
 			</trans-unit>
 			<trans-unit id="_lockToDomain.seeAlso" xml:space="preserve">
 				<source>fe_groups:lockToDomain</source>
