@@ -869,39 +869,47 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 		$this->assertEquals(array('r' => FALSE, 'w' => FALSE), $fixture->getFolderPermissions($this->getSimpleFolderMock('/someForbiddenFolder')));
 	}
 
+	/**
+	 * Dataprovider for getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser test
+	 *
+	 * @return array group, filemode and expected result
+	 */
 	public function getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser_dataProvider() {
-		return array(
-			'current group, readable/writable' => array(
-				posix_getgid(),
-				0060,
-				array('r' => TRUE, 'w' => TRUE)
-			),
-			'current group, readable/not writable' => array(
-				posix_getgid(),
-				0040,
-				array('r' => TRUE, 'w' => FALSE)
-			),
-			'current group, not readable/not writable' => array(
-				posix_getgid(),
-				0000,
-				array('r' => FALSE, 'w' => FALSE)
-			),
-			'arbitrary group, readable/writable' => array(
-				vfsStream::GROUP_USER_1,
-				0006,
-				array('r' => TRUE, 'w' => TRUE)
-			),
-			'arbitrary group, readable/not writable' => array(
-				vfsStream::GROUP_USER_1,
-				0664,
-				array('r' => TRUE, 'w' => FALSE)
-			),
-			'arbitrary group, not readable/not writable' => array(
-				vfsStream::GROUP_USER_1,
-				0660,
-				array('r' => FALSE, 'w' => FALSE)
-			)
-		);
+
+		if(function_exists('posix_getgid')) {
+			return array(
+				'current group, readable/writable' => array(
+					posix_getgid(),
+					0060,
+					array('r' => TRUE, 'w' => TRUE)
+				),
+				'current group, readable/not writable' => array(
+					posix_getgid(),
+					0040,
+					array('r' => TRUE, 'w' => FALSE)
+				),
+				'current group, not readable/not writable' => array(
+					posix_getgid(),
+					0000,
+					array('r' => FALSE, 'w' => FALSE)
+				),
+				'arbitrary group, readable/writable' => array(
+					vfsStream::GROUP_USER_1,
+					0006,
+					array('r' => TRUE, 'w' => TRUE)
+				),
+				'arbitrary group, readable/not writable' => array(
+					vfsStream::GROUP_USER_1,
+					0664,
+					array('r' => TRUE, 'w' => FALSE)
+				),
+				'arbitrary group, not readable/not writable' => array(
+					vfsStream::GROUP_USER_1,
+					0660,
+					array('r' => FALSE, 'w' => FALSE)
+				)
+			);
+		}
 	}
 
 	/**
@@ -909,6 +917,11 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 	 * @dataProvider getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser_dataProvider
 	 */
 	public function getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser($group, $permissions, $expectedResult) {
+
+		if(!function_exists('posix_getgid')) {
+			$this->markTestSkipped('Skip test because of missing posix_getgid() function.');
+		}
+
 		$this->addToMount(array(
 			'testfile' => 'asdfg'
 		));
