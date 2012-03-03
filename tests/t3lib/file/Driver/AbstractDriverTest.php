@@ -32,6 +32,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
+require_once(PATH_site . 'tests/t3lib/file/BaseTestCase.php');
 class t3lib_file_Driver_AbstractDriverTest extends t3lib_file_BaseTestCase {
 
 	/**

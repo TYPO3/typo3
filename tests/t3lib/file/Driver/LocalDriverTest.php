@@ -870,38 +870,40 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 	}
 
 	public function getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser_dataProvider() {
-		return array(
-			'current group, readable/writable' => array(
-				posix_getgid(),
-				0060,
-				array('r' => TRUE, 'w' => TRUE)
-			),
-			'current group, readable/not writable' => array(
-				posix_getgid(),
-				0040,
-				array('r' => TRUE, 'w' => FALSE)
-			),
-			'current group, not readable/not writable' => array(
-				posix_getgid(),
-				0000,
-				array('r' => FALSE, 'w' => FALSE)
-			),
-			'arbitrary group, readable/writable' => array(
-				vfsStream::GROUP_USER_1,
-				0006,
-				array('r' => TRUE, 'w' => TRUE)
-			),
-			'arbitrary group, readable/not writable' => array(
-				vfsStream::GROUP_USER_1,
-				0664,
-				array('r' => TRUE, 'w' => FALSE)
-			),
-			'arbitrary group, not readable/not writable' => array(
-				vfsStream::GROUP_USER_1,
-				0660,
-				array('r' => FALSE, 'w' => FALSE)
-			)
-		);
+		if (TYPO3_OS !== 'WIN') {
+			return array(
+				'current group, readable/writable' => array(
+					posix_getgid(),
+					0060,
+					array('r' => TRUE, 'w' => TRUE)
+				),
+				'current group, readable/not writable' => array(
+					posix_getgid(),
+					0040,
+					array('r' => TRUE, 'w' => FALSE)
+				),
+				'current group, not readable/not writable' => array(
+					posix_getgid(),
+					0000,
+					array('r' => FALSE, 'w' => FALSE)
+				),
+				'arbitrary group, readable/writable' => array(
+					vfsStream::GROUP_USER_1,
+					0006,
+					array('r' => TRUE, 'w' => TRUE)
+				),
+				'arbitrary group, readable/not writable' => array(
+					vfsStream::GROUP_USER_1,
+					0664,
+					array('r' => TRUE, 'w' => FALSE)
+				),
+				'arbitrary group, not readable/not writable' => array(
+					vfsStream::GROUP_USER_1,
+					0660,
+					array('r' => FALSE, 'w' => FALSE)
+				)
+			);
+		}
 	}
 
 	/**
@@ -909,6 +911,9 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 	 * @dataProvider getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser_dataProvider
 	 */
 	public function getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser($group, $permissions, $expectedResult) {
+		if (TYPO3_OS === 'WIN') {
+			$this->markTestSkipped('getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser() test not available on Windows.');
+		}
 		$this->addToMount(array(
 			'testfile' => 'asdfg'
 		));
