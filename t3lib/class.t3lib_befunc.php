@@ -755,8 +755,11 @@ final class t3lib_BEfunc {
 		foreach ($tc_keys as $table) {
 				// Load table
 			t3lib_div::loadTCA($table);
-				// All field names configured
-			if (is_array($GLOBALS['TCA'][$table]['columns'])) {
+				// All field names configured and not restricted to admins
+			if (is_array($GLOBALS['TCA'][$table]['columns'])
+					&& $GLOBALS['TCA'][$table]['ctrl']['adminOnly'] != 1
+					&& $GLOBALS['TCA'][$table]['ctrl']['rootLevel'] != 1
+					) {
 				$f_keys = array_keys($GLOBALS['TCA'][$table]['columns']);
 				foreach ($f_keys as $field) {
 					if ($GLOBALS['TCA'][$table]['columns'][$field]['exclude']) {
