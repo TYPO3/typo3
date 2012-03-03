@@ -84,7 +84,8 @@ class t3lib_file_FileReference implements t3lib_file_FileInterface {
 	protected $originalFile;
 
 	/**
-	 * Constructor for a file in use object. Should normally not be used directly, use the corresponding factory methods instead.
+	 * Constructor for a file in use object. Should normally not be used
+	 * directly, use the corresponding factory methods instead.
 	 *
 	 * @param array $fileReferenceData
 	 * @param t3lib_file_Factory $factory
@@ -214,7 +215,7 @@ class t3lib_file_FileReference implements t3lib_file_FileInterface {
 	 * @return integer
 	 */
 	public function getUid() {
-		return $this->propertiesOfFileReference['uid'];
+		return (int)$this->propertiesOfFileReference['uid'];
 	}
 
 	/**
@@ -223,7 +224,7 @@ class t3lib_file_FileReference implements t3lib_file_FileInterface {
 	 * @return integer
 	 */
 	public function getSize() {
-		return $this->originalFile->getSize();
+		return (int)$this->originalFile->getSize();
 	}
 
 	/**
@@ -260,7 +261,7 @@ class t3lib_file_FileReference implements t3lib_file_FileInterface {
 	 * @return integer
 	 */
 	public function getModificationTime() {
-		$this->originalFile->getModificationTime();
+		return (int)$this->originalFile->getModificationTime();
 	}
 
 	/**
@@ -269,7 +270,7 @@ class t3lib_file_FileReference implements t3lib_file_FileInterface {
 	 * @return integer
 	 */
 	public function getCreationTime() {
-		$this->originalFile->getCreationTime();
+		return (int)$this->originalFile->getCreationTime();
 	}
 
 	/**
@@ -278,7 +279,7 @@ class t3lib_file_FileReference implements t3lib_file_FileInterface {
 	 * @return integer $fileType
 	 */
 	public function getType() {
-		return $this->originalFile->getType();
+		return (int)$this->originalFile->getType();
 	}
 
 
@@ -340,13 +341,14 @@ class t3lib_file_FileReference implements t3lib_file_FileInterface {
 	}
 
 	/**
-	 * Deletes only this particular FileReference from the persistence layer (database table sys_file_reference)
-	 * but leaves the original file untouched.
+	 * Deletes only this particular FileReference from the persistence layer
+	 * (database table sys_file_reference) but leaves the original file untouched.
 	 *
 	 * @return boolean TRUE if deletion succeeded
 	 */
 	public function delete() {
-		// TODO: Implement this function. This should only delete the FileReference (sys_file_reference) record, not the file itself.
+			// TODO: Implement this function. This should only delete the
+			// FileReference (sys_file_reference) record, not the file itself.
 		throw new Exception('Function not implemented FileReference::delete().');
 		return $this->fileRepository->removeUsageRecord($this);
 	}
@@ -358,7 +360,8 @@ class t3lib_file_FileReference implements t3lib_file_FileInterface {
 	 * @return t3lib_file_FileReference
 	 */
 	public function rename($newName) {
-		// TODO: Implement this function. This should only rename the FileReference (sys_file_reference) record, not the file itself.
+			// TODO: Implement this function. This should only rename the
+			// FileReference (sys_file_reference) record, not the file itself.
 		throw new Exception('Function not implemented FileReference::rename().');
 		return $this->fileRepository->renameUsageRecord($this, $newName);
 	}
@@ -371,8 +374,8 @@ class t3lib_file_FileReference implements t3lib_file_FileInterface {
 	/**
 	 * Returns a publicly accessible URL for this file
 	 *
-	 * WARNING: Access to the file may be restricted by further means, e.g. some web-based authentication. You have to take care of this
-	 * yourself.
+	 * WARNING: Access to the file may be restricted by further means, e.g.
+	 * some web-based authentication. You have to take care of this yourself.
 	 *
 	 * @param bool  $relativeToCurrentScript   Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
 	 *
@@ -384,8 +387,9 @@ class t3lib_file_FileReference implements t3lib_file_FileInterface {
 
 	/**
 	 * Returns TRUE if this file is indexed.
-	 * This is always true for FileReference objects, as they rely on a sys_file_reference record to be present,
-	 * which in turn can only exist if the original file is indexed.
+	 * This is always true for FileReference objects, as they rely on a
+	 * sys_file_reference record to be present, which in turn can only exist if
+	 * the original file is indexed.
 	 *
 	 * @return boolean
 	 */

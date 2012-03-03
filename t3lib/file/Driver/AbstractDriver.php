@@ -44,7 +44,8 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	protected $storage;
 
 	/**
-	 * A list of all supported hash algorithms, written all lower case and without any dashes etc. (e.g. sha1 instead of SHA-1)
+	 * A list of all supported hash algorithms, written all lower case and
+	 * without any dashes etc. (e.g. sha1 instead of SHA-1)
 	 * Be sure to set this in inherited classes!
 	 *
 	 * @var array
@@ -97,15 +98,16 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	}
 
 	/**
-	 * Initializes this object. This is called by the storage after the driver has been attached.
+	 * Initializes this object. This is called by the storage after the driver
+	 * has been attached.
 	 *
 	 * @return void
 	 */
 	abstract public function initialize();
 
 	/**
-	 * Checks a fileName for validity. This could be overriden in concrete drivers if they have different file naming
-	 * rules.
+	 * Checks a fileName for validity. This could be overriden in concrete
+	 * drivers if they have different file naming rules.
 	 *
 	 * @param string $fileName
 	 * @return boolean TRUE if file name is valid
@@ -156,7 +158,8 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	}
 
 	/**
-	 * Generic handler method for directory listings - gluing together the listing items is done
+	 * Generic handler method for directory listings - gluing together the
+	 * listing items is done
 	 *
 	 * @param string $path
 	 * @param integer $start
@@ -272,9 +275,10 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	abstract public function createFile($fileName, t3lib_file_Folder $parentFolder);
 
 	/**
-	 * Returns the contents of a file. Beware that this requires to load the complete file into memory and also may
-	 * require fetching the file from an external location. So this might be an expensive operation (both in terms of
-	 * processing resources and money) for large files.
+	 * Returns the contents of a file. Beware that this requires to load the
+	 * complete file into memory and also may require fetching the file from an
+	 * external location. So this might be an expensive operation (both in terms
+	 * of processing resources and money) for large files.
 	 *
 	 * @param t3lib_file_FileInterface $file
 	 * @return string The file contents
@@ -324,8 +328,8 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	abstract public function fileExistsInFolder($fileName, t3lib_file_Folder $folder);
 
 	/**
-	 * Returns a (local copy of) a file for processing it. When changing the file, you have to take care of replacing the
-	 * current version yourself!
+	 * Returns a (local copy of) a file for processing it. When changing the
+	 * file, you have to take care of replacing the current version yourself!
 	 *
 	 * @abstract
 	 * @param t3lib_file_FileInterface $file
@@ -430,7 +434,7 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	 */
 	public function getFolder($identifier) {
 		if (!$this->folderExists($identifier)) {
-			throw new t3lib_file_exception_FolderDoesNotExistException("Folder $identifier does not exist.", 1320575630);
+			throw new t3lib_file_exception_FolderDoesNotExistException('Folder "' . $identifier . '" does not exist.', 1320575630);
 		}
 
 		return t3lib_file_Factory::getInstance()->createFolderObject(
@@ -505,7 +509,6 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	 */
 	abstract public function copyFileWithinStorage(t3lib_file_FileInterface $file, t3lib_file_Folder $targetFolder, $fileName);
 
-
 	/**
 	 * Folder equivalent to moveFileWithinStorage().
 	 *
@@ -526,10 +529,10 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	 */
 	abstract public function copyFolderWithinStorage(t3lib_file_Folder $folderToMove, t3lib_file_Folder $targetFolder, $newFileName);
 
-
 	/**
-	 * Removes a file from this storage. This does not check if the file is still used or if it is a bad idea to delete
-	 * it for some other reason - this has to be taken care of in the upper layers (e.g. the Storage)!
+	 * Removes a file from this storage. This does not check if the file is
+	 * still used or if it is a bad idea to delete it for some other reason
+	 * this has to be taken care of in the upper layers (e.g. the Storage)!
 	 *
 	 * @abstract
 	 * @param t3lib_file_FileInterface $file
@@ -559,10 +562,12 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	abstract public function addFileRaw($localFilePath, t3lib_file_Folder $targetFolder, $targetFileName);
 
 	/**
-	 * Deletes a file without access and usage checks. This should only be used internally.
+	 * Deletes a file without access and usage checks.
+	 * This should only be used internally.
 	 *
-	 * This accepts an identifier instead of an object because we might want to delete files that have no object
-	 * associated with (or we don't want to create an object for) them - e.g. when moving a file to another storage.
+	 * This accepts an identifier instead of an object because we might want to
+	 * delete files that have no object associated with (or we don't want to
+	 * create an object for) them - e.g. when moving a file to another storage.
 	 *
 	 * @abstract
 	 * @param string $identifier
@@ -643,7 +648,8 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	abstract public function renameFolder(t3lib_file_Folder $folder, $newName);
 
 	/**
-	 * Checks if a given object or identifier is within a container, e.g. if a file or folder is within another folder.
+	 * Checks if a given object or identifier is within a container, e.g. if
+	 * a file or folder is within another folder.
 	 * This can e.g. be used to check for webmounts.
 	 *
 	 * @abstract

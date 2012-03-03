@@ -156,7 +156,8 @@ abstract class t3lib_file_AbstractFile implements t3lib_file_FileInterface {
 	 * @return string
 	 */
 	public function getName() {
-			// Do not check if file has been deleted because we might need the name for undeleting it.
+			// Do not check if file has been deleted because we might need the
+			// name for undeleting it.
 		return $this->name;
 	}
 
@@ -237,7 +238,7 @@ abstract class t3lib_file_AbstractFile implements t3lib_file_FileInterface {
 	 * @return array file information
 	 */
 	public function getMimeType() {
-		// TODO this will be slow - use the cached version if possible
+			// TODO this will be slow - use the cached version if possible
 		$stat = $this->getStorage()->getFileInfo($this);
 		return $stat['mimetype'];
 	}
@@ -256,8 +257,9 @@ abstract class t3lib_file_AbstractFile implements t3lib_file_FileInterface {
 	 * @return integer $fileType
 	 */
 	public function getType() {
-			// this basically extracts the mimetype and guess the filetype based on the first part of the mimetype
-			// works for 99% of all cases, and we don't need to make an SQL statement like EXT:media does currently
+			// this basically extracts the mimetype and guess the filetype based
+			// on the first part of the mimetype works for 99% of all cases, and
+			// we don't need to make an SQL statement like EXT:media does currently
 		if (!$this->properties['type']) {
 			$mimeType = $this->getMimeType();
 			list($fileType) = explode('/', $mimeType);
@@ -265,23 +267,22 @@ abstract class t3lib_file_AbstractFile implements t3lib_file_FileInterface {
 			switch (strtolower($fileType)) {
 				case 'text':
 					$this->properties['type'] = self::FILETYPE_TEXT;
-				break;
+					break;
 				case 'image':
 					$this->properties['type'] = self::FILETYPE_IMAGE;
-				break;
+					break;
 				case 'audio':
 					$this->properties['type'] = self::FILETYPE_AUDIO;
-				break;
+					break;
 				case 'video':
 					$this->properties['type'] = self::FILETYPE_VIDEO;
-				break;
+					break;
 				case 'application':
 				case 'software':
 					$this->properties['type'] = self::FILETYPE_SOFTWARE;
-				break;
+					break;
 				default:
 					$this->properties['type'] = self::FILETYPE_UNKNOWN;
-				break;
 			}
 		}
 
@@ -321,14 +322,9 @@ abstract class t3lib_file_AbstractFile implements t3lib_file_FileInterface {
 		return $this;
 	}
 
-
-
-
-
 	/****************************************
 	 * STORAGE AND MANAGEMENT RELATED METHDOS
 	 ****************************************/
-
 
 	/**
 	 * Get the storage this file is located in
@@ -343,7 +339,6 @@ abstract class t3lib_file_AbstractFile implements t3lib_file_FileInterface {
 		return $this->storage;
 	}
 
-
 	protected function loadStorage() {
 		$storageUid = $this->getProperty('storage');
 		if (t3lib_utility_Math::canBeInterpretedAsInteger($storageUid)) {
@@ -355,8 +350,9 @@ abstract class t3lib_file_AbstractFile implements t3lib_file_FileInterface {
 	}
 
 	/**
-	 * Checks if this file exists. This should normally always return TRUE; it might only return FALSE when
-	 * this object has been created from an index record without checking for.
+	 * Checks if this file exists. This should normally always return TRUE;
+	 * it might only return FALSE when this object has been created from an
+	 * index record without checking for.
 	 *
 	 * @return boolean TRUE if this file physically exists
 	 */
@@ -370,7 +366,8 @@ abstract class t3lib_file_AbstractFile implements t3lib_file_FileInterface {
 
 
 	/**
-	 * Sets the storage this file is located in. This is only meant for t3lib/file/-internal usage; don't use it to move files.
+	 * Sets the storage this file is located in. This is only meant for
+	 * t3lib/file/-internal usage; don't use it to move files.
 	 *
 	 * @internal Should only be used by other parts of the File API (e.g. drivers after moving a file)
 	 * @param integer|t3lib_file_Storage $storage
@@ -400,8 +397,8 @@ abstract class t3lib_file_AbstractFile implements t3lib_file_FileInterface {
 	}
 
 	/**
-	 * Returns a combined identifier of this file, i.e. the storage UID and the folder identifier
-	 * separated by a colon ":".
+	 * Returns a combined identifier of this file, i.e. the storage UID and the
+	 * folder identifier separated by a colon ":".
 	 *
 	 * @return string Combined storage and file identifier, e.g. StorageUID:path/and/fileName.png
 	 */
@@ -428,7 +425,8 @@ abstract class t3lib_file_AbstractFile implements t3lib_file_FileInterface {
 	}
 
 	/**
-	 * Marks this file as deleted. This should only be used inside the File Abstraction Layer, as it is a low-level API method.
+	 * Marks this file as deleted. This should only be used inside the
+	 * File Abstraction Layer, as it is a low-level API method.
 	 *
 	 * @return void
 	 */
@@ -501,8 +499,8 @@ abstract class t3lib_file_AbstractFile implements t3lib_file_FileInterface {
 	/**
 	 * Returns a publicly accessible URL for this file
 	 *
-	 * WARNING: Access to the file may be restricted by further means, e.g. some web-based authentication. You have to take care of this
-	 * yourself.
+	 * WARNING: Access to the file may be restricted by further means, e.g. some
+	 * web-based authentication. You have to take care of this yourself.
 	 *
 	 * @param bool  $relativeToCurrentScript   Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
 	 *

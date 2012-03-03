@@ -34,13 +34,14 @@
  * @subpackage t3lib
  */
 class t3lib_file_ProcessedFile extends t3lib_file_AbstractFile {
+
 	/*********************************************
 	 * FILE PROCESSING CONTEXTS
 	 *********************************************/
 
 	/**
-	 * basic processing context to get a processed
-	 * image with smaller width/height to render a preview
+	 * Basic processing context to get a processed image with smaller
+	 * width/height to render a preview
 	 */
 	const CONTEXT_IMAGEPREVIEW = 'image.preview';
 
@@ -72,10 +73,9 @@ class t3lib_file_ProcessedFile extends t3lib_file_AbstractFile {
 	 */
 	protected $originalFile;
 
-
-
 	/**
-	 * Constructor for a file processing object. Should normally not be used directly, use the corresponding factory methods instead.
+	 * Constructor for a file processing object. Should normally not be used
+	 * directly, use the corresponding factory methods instead.
 	 *
 	 * @param t3lib_file_File $originalFile
 	 * @param string $context
@@ -155,7 +155,7 @@ class t3lib_file_ProcessedFile extends t3lib_file_AbstractFile {
 	}
 
 	/**
-	 * @return \t3lib_file_File
+	 * @return t3lib_file_File
 	 */
 	public function getOriginalFile() {
 		return $this->originalFile;
@@ -186,7 +186,7 @@ class t3lib_file_ProcessedFile extends t3lib_file_AbstractFile {
 	 * @return array
 	 */
 	public function toArray() {
-		// @todo: define what we need here
+			// @todo: define what we need here
 		return array(
 			'storage' => $this->getStorage()->getUid(),
 			'identifier' => $this->getIdentifier(),

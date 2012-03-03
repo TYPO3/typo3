@@ -38,16 +38,17 @@
 class t3lib_file_Repository_ProcessedFileRepository extends t3lib_file_Repository_AbstractRepository {
 
 	/**
-	 * The main object type of this class. In some cases (fileReference) this repository can also return
-	 * FileReference objects, implementing the common FileInterface.
+	 * The main object type of this class. In some cases (fileReference) this
+	 * repository can also return FileReference objects, implementing the
+	 * common FileInterface.
 	 *
 	 * @var string
 	 */
 	protected $objectType = 't3lib_file_ProcessedFile';
 
 	/**
-	 * Main File object storage table. Note that this repository also works on the sys_file_reference table
-	 * when returning FileReference objects.
+	 * Main File object storage table. Note that this repository also works on
+	 * the sys_file_reference table when returning FileReference objects.
 	 *
 	 * @var string
 	 */
@@ -70,7 +71,6 @@ class t3lib_file_Repository_ProcessedFileRepository extends t3lib_file_Repositor
 	 * @return boolean
 	 */
 	public function populateDataOfProcessedFileObject(t3lib_file_ProcessedFile $processedFileObject) {
-
 		/** @var $GLOBALS['TYPO3_DB'] t3lib_DB */
 		$recordData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'*',
@@ -79,7 +79,7 @@ class t3lib_file_Repository_ProcessedFileRepository extends t3lib_file_Repositor
 				. ' AND checksum=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($processedFileObject->calculateChecksum(), $this->table)
 				. ' AND deleted=0');
 
-			// update the properties if the data was found
+			// Update the properties if the data was found
 		if (is_array($recordData)) {
 			$processedFileObject->updateProperties($recordData);
 			return TRUE;
@@ -98,7 +98,7 @@ class t3lib_file_Repository_ProcessedFileRepository extends t3lib_file_Repositor
 		$insertFields = $processedFile->toArray();
 		$insertFields['crdate'] = $insertFields['tstamp'] = time();
 
-		// @todo: make sure that the toArray method only contains fields that are in the table
+			// @todo: make sure that the toArray method only contains fields that are in the table
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery($this->table, $insertFields);
 	}
 }

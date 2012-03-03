@@ -47,9 +47,11 @@ class t3lib_file_Service_UserfilemountService {
 	 * @return string The HTML code for the TCEform field
 	 */
 	public function renderTceformsSelectDropdown(&$PA, &$tceformsObj) {
-		$storageUid = intval($PA['row']['base']); // if working for sys_filemounts table
+			// If working for sys_filemounts table
+		$storageUid = intval($PA['row']['base']);
 		if (!$storageUid) {
-			$storageUid = intval($PA['row']['storage']); // if working for sys_file_collection table
+				// If working for sys_file_collection table
+			$storageUid = intval($PA['row']['storage']);
 		}
 		if ($storageUid > 0) {
 			/** @var $storageRepository t3lib_file_Repository_StorageRepository */

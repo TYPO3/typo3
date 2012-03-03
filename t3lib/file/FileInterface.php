@@ -97,10 +97,6 @@ interface t3lib_file_FileInterface extends t3lib_file_ResourceInterface {
 	 */
 	public function getCreationTime();
 
-
-
-
-
 	/******************
 	 * CONTENTS RELATED
 	 ******************/
@@ -114,8 +110,12 @@ interface t3lib_file_FileInterface extends t3lib_file_ResourceInterface {
 
 	/**
 	 * Replace the current file contents with the given string.
-	 * @TODO: Consider to remove this function from the interface, as its implementation in FileInUse could cause unforseen side-effects by setting contents on the original file instead of just on the Usage of the file.
-	 * @TODO: At the same time, it could be considered whether to make the whole interface a read-only FileInterface, so that all file management and modification functions are removed...
+	 * @TODO: Consider to remove this function from the interface, as its
+	 * implementation in FileInUse could cause unforseen side-effects by setting
+	 * contents on the original file instead of just on the Usage of the file.
+	 * @TODO: At the same time, it could be considered whether to make the whole
+	 * interface a read-only FileInterface, so that all file management and
+	 * modification functions are removed...
 	 *
 	 * @param string $contents The contents to write to the file.
 	 * @return t3lib_file_File The file object (allows chaining).
@@ -150,10 +150,10 @@ interface t3lib_file_FileInterface extends t3lib_file_ResourceInterface {
 	/**
 	 * Returns a publicly accessible URL for this file
 	 *
-	 * WARNING: Access to the file may be restricted by further means, e.g. some web-based authentication. You have to take care of this
-	 * yourself.
+	 * WARNING: Access to the file may be restricted by further means, e.g.
+	 * some web-based authentication. You have to take care of this yourself.
 	 *
-	 * @param bool  $relativeToCurrentScript   Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
+	 * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
 	 *
 	 * @return string
 	 */
