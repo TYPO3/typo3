@@ -16,7 +16,7 @@
 				<source>TYPO3 Professional Web Content Management System</source>
 			</trans-unit>
 			<trans-unit id="minor" xml:space="preserve">
-				<source>TYPO3 is a flexible and professional Open Source Web-CMS based on PHP and MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="http://typo3.com/1316.0.html" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</source>
+				<source>TYPO3 is a flexible and professional Open Source Web-CMS based on PHP and MySQL.&lt;br /&gt;&lt;br /&gt;TYPO3 is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="http://typo3.org/license" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;%s %s&lt;br /&gt;</source>
 			</trans-unit>
 			<trans-unit id="community_credits" xml:space="preserve">
 				<source>Community Credits</source>
