@@ -528,6 +528,7 @@ class t3lib_TSparser {
 	 * @static
 	 */
 	public static function checkIncludeLines($string, $cycle_counter = 1, $returnFiles = FALSE) {
+	#	t3lib_div::devLog('checkIncludeLines input', 'tsparser', 0, array($string));
 		$includedFiles = array();
 		if ($cycle_counter > 100) {
 			t3lib_div::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'Core', 2);
@@ -539,62 +540,48 @@ class t3lib_TSparser {
 			}
 			return "\n###\n### ERROR: Recursion!\n###\n";
 		}
-		$splitStr = '<INCLUDE_TYPOSCRIPT:';
-		if (strstr($string, $splitStr)) {
-			$newString = '';
-			$allParts = explode($splitStr, LF . $string . LF); // adds line break char before/after
-			foreach ($allParts as $c => $v) {
-				if (!$c) { // first goes through
-					$newString .= $v;
-				} elseif (preg_match('/\r?\n\s*$/', $allParts[$c - 1])) { // There must be a line-break char before.
-					$subparts = explode('>', $v, 2);
-					if (preg_match('/^\s*\r?\n/', $subparts[1])) { // There must be a line-break char after
-							// SO, the include was positively recognized:
-						$newString .= '### ' . $splitStr . $subparts[0] . '> BEGIN:' . LF;
-						$params = t3lib_div::get_tag_attributes($subparts[0]);
-						if ($params['source']) {
-							$sourceParts = explode(':', $params['source'], 2);
-							switch (strtolower(trim($sourceParts[0]))) {
-								case 'file':
-									$filename = t3lib_div::getFileAbsFileName(trim($sourceParts[1]));
-									if (strcmp($filename, '')) { // Must exist and must not contain '..' and must be relative
-										if (t3lib_div::verifyFilenameAgainstDenyPattern($filename)) { // Check for allowed files
-											if (@is_file($filename)) {
-													// check for includes in included text
-												$includedFiles[] = $filename;
-												$included_text = self::checkIncludeLines(t3lib_div::getUrl($filename), $cycle_counter + 1, $returnFiles);
-													// If the method also has to return all included files, merge currently included
-													// files with files included by recursively calling itself
-												if ($returnFiles && is_array($included_text)) {
-													$includedFiles = array_merge($includedFiles, $included_text['files']);
-													$included_text = $included_text['typoscript'];
-												}
-												$newString .= $included_text . LF;
-											} else {
-												$newString .= "\n###\n### ERROR: File \"" . $filename . "\" was not was not found.\n###\n\n";
-												t3lib_div::sysLog('File "' . $filename . '" was not found.', 'Core', 2);
-											}
-										} else {
-											$newString .= "\n###\n### ERROR: File \"" . $filename . "\" was not included since it is not allowed due to fileDenyPattern\n###\n\n";
-											t3lib_div::sysLog('File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern', 'Core', 2);
-										}
-									}
-								break;
-							}
-						}
-						$newString .= '### ' . $splitStr . $subparts[0] . '> END:' . LF;
-						$newString .= $subparts[1];
-					} else {
-						$newString .= $splitStr . $v;
-					}
+		// This check is only here for performance: if no tags found, no need to do slower preg_split. TODO: check if it really matters
+		if (strstr($string, '<INCLUDE_TYPOSCRIPT:')) {
+
+			$splitRegEx = '/\r?\n\s*<INCLUDE_TYPOSCRIPT:\s*(?i)source\s*=\s*"((?i)file|dir):(.*?)"\s*>/';
+			$parts = preg_split($splitRegEx, LF . $string . LF, -1, PREG_SPLIT_DELIM_CAPTURE);
+
+			// First text part goes through
+			$newString = $parts[0] . LF;
+			$partCount = count($parts);
+			for ($i = 1; $i+2 < $partCount; $i+=3) {
+				// $parts[$i] contains 'FILE' or 'DIR'
+				// $parts[$i+1] contains relative file or directory path to be included
+				// $parts[$i+2] next part of the typoscript string (part in between include-tags)
+				$filename = $parts[$i+1];
+
+				// There must be a line-break char after - not sure why this check is necessary, kept it for being 100% backwards compatible
+				// An empty string is also ok (means that the next line is also a valid include_typoscript tag)
+				if (preg_match('/(^\s*\r?\n|^$)/', $parts[$i+2]) == FALSE) {
+					$newString .= self::typoscriptIncludeError('Invalid characters after <INCLUDE_TYPOSCRIPT: source="' . $parts[$i] . ':' . $filename . '">-tag (rest of line must be empty).');
+				} elseif (strstr('..', $filename) !== FALSE) {
+					$newString .= self::typoscriptIncludeError('Invalid filepath "' . $filename . '" (containing "..").');
 				} else {
-					$newString .= $splitStr . $v;
+					switch (strtolower($parts[$i])) {
+						case 'file':
+							self::includeFile($filename, $cycle_counter, $returnFiles, $newString, $includedFiles);
+						break;
+						case 'dir':
+							self::includeDirectory($filename, $cycle_counter, $returnFiles, $newString, $includedFiles);
+						break;
+						default:
+							$newString .= self::typoscriptIncludeError('No valid option for INCLUDE_TYPOSCRIPT source property (valid options are FILE or DIR)');
+						break;
+					}
 				}
+				// Prepend next normal (not file) part to output string
+				$newString .= $parts[$i+2] . LF;
 			}
+
 			$string = substr($newString, 1, -1); // not the first/last linebreak char.
 		}
-			// When all included files should get returned, simply return an compound array containing
-			// the TypoScript with all "includes" processed and the files which got included
+		// When all included files should get returned, simply return an compound array containing
+		// the TypoScript with all "includes" processed and the files which got included
 		if ($returnFiles) {
 			return array(
 				'typoscript' => $string,
@@ -602,6 +589,93 @@ class t3lib_TSparser {
 			);
 		}
 		return $string;
+	}
+
+	/**
+	 * Include file $filename. Contents of the file will be prepended to &$newstring, filename to &$includedFiles
+	 * Further include_typoscript tags in the contents are processed recursively
+	 *
+	 * @param string Relative path to the typoscript file to be included
+	 * @param integer Counter for detecting endless loops
+	 * @param boolean	 When set, filenames of included files will be prepended to the array &$includedFiles
+	 * @param string The output string to which the content of the file will be prepended (referenced)
+	 * @param array Array to which the filenames of included files will be prepended (referenced)
+	 * @static
+	 */
+	public static function includeFile($filename, $cycle_counter = 1, $returnFiles = FALSE, &$newString='', &$includedFiles=array()) {
+		$absfilename = t3lib_div::getFileAbsFileName($filename);
+		$newString .= LF . '### <INCLUDE_TYPOSCRIPT: source="FILE:' . $filename . '"> BEGIN:' . LF;
+		if (strcmp($filename, '')) { // Must exist and must not contain '..' and must be relative
+			if (!t3lib_div::verifyFilenameAgainstDenyPattern($absfilename)) { // Check for allowed files
+				$newString .= self::typoscriptIncludeError('File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern.');
+			} elseif (!@is_file($absfilename)) {
+				$newString .= self::typoscriptIncludeError('File "' . $filename . '" was not was not found.');
+			} else {
+					// check for includes in included text
+				$includedFiles[] = $absfilename;
+				$included_text = self::checkIncludeLines(t3lib_div::getUrl($absfilename), $cycle_counter + 1, $returnFiles);
+					// If the method also has to return all included files, merge currently included
+					// files with files included by recursively calling itself
+				if ($returnFiles && is_array($included_text)) {
+					$includedFiles = array_merge($includedFiles, $included_text['files']);
+					$included_text = $included_text['typoscript'];
+				}
+				$newString .= $included_text . LF;
+			}
+		}
+		$newString .= '### <INCLUDE_TYPOSCRIPT: source="FILE:' . $filename . '"> END:' . LF . LF;
+	}
+
+	/**
+	 * Include all files with matching Typoscript extensions in directory $dirPath. Contents of the files are
+	 * prepended to &$newstring, filename to &$includedFiles.
+	 * Order of the directory items to be processed: directories first, then files, both in alphabetical order.
+	 * Further include_typoscript tags in the contents of the files are processed recursively.
+	 *
+	 * @param string Relative path to the directory to be included
+	 * @param integer Counter for detecting endless loops
+	 * @param boolean	 When set, filenames of included files will be prepended to the array &$includedFiles
+	 * @param string The output string to which the content of the file will be prepended (referenced)
+	 * @param array Array to which the filenames of included files will be prepended (referenced)
+	 * @static
+	 */
+	public static function includeDirectory($dirPath, $cycle_counter = 1, $returnFiles = FALSE, &$newString='', &$includedFiles=array()) {
+		$absDirPath = rtrim(t3lib_div::getFileAbsFileName($dirPath), '/');
+		$newString .= LF . '### <INCLUDE_TYPOSCRIPT: source="DIR:' . $dirPath . '"> BEGIN:' . LF;
+		// Get alphabetically sorted directory index in array
+		if (($directoryIndex = @scandir($absDirPath)) == FALSE) {
+			$newString .= self::typoscriptIncludeError('Directory "' . $dirPath . '" was not was not found.');
+		} else {
+			// First include sub-directories
+			foreach ($directoryIndex as $key => $directoryItem) {
+				// Skip hidden items, as well as '.' and '..'
+				if (substr($directoryItem, 0, 1) == '.') {
+					unset($directoryIndex[$key]);
+				} elseif (@is_dir($absDirPath . '/' . $directoryItem)) {
+					self::includeDirectory($dirPath . '/' . $directoryItem, $cycle_counter, $returnFiles, $newString, $includedFiles);
+					unset($directoryIndex[$key]);
+				}
+			}
+			// Then include files
+			foreach ($directoryIndex as $key => $directoryItem) {
+				$allowedTyposcriptFileExtensions = explode(',', str_replace(' ' , '', $GLOBALS['TYPO3_CONF_VARS']['SYS']['tsfile_ext']));
+				if (in_array(pathinfo($directoryItem, PATHINFO_EXTENSION), $allowedTyposcriptFileExtensions)) {
+					self::includeFile($dirPath . '/' . $directoryItem, $cycle_counter, $returnFiles, $newString, $includedFiles);
+				}
+			}
+		}
+		$newString .= '### <INCLUDE_TYPOSCRIPT: source="DIR:' . $dirPath . '"> END:' . LF . LF;
+	}
+
+	/**
+	 * Process errors in INCLUDE_TYPOSCRIPT tags
+	 * Errors are logged in sysLog and printed in the concatenated Typoscript result (as can be seen in Template Analyzer)
+	 * @param type $error
+	 * @return type
+	 */
+	private static function typoscriptIncludeError($error) {
+		t3lib_div::sysLog($error, 'Core', 2);
+		return "\n###\n### ERROR: " . $error . "\n###\n\n";
 	}
 
 	/**
