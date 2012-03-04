@@ -294,11 +294,20 @@ class tx_openid_sv1 extends t3lib_svbase {
 	protected function getUserRecord($openIDIdentifier) {
 		$record = NULL;
 		if ($openIDIdentifier) {
+				// $openIDIdentifier always as a trailing slash because it got normalized
+				// but tx_openid_openid possibly not so check for both alternatives in database
 			$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*',
 				$this->authenticationInformation['db_user']['table'],
-				'tx_openid_openid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($openIDIdentifier, $this->authenticationInformation['db_user']['table']) .
+				'tx_openid_openid IN (' .
+					$GLOBALS['TYPO3_DB']->fullQuoteStr($openIDIdentifier, $this->authenticationInformation['db_user']['table']) .
+					',' . $GLOBALS['TYPO3_DB']->fullQuoteStr(rtrim($openIDIdentifier, '/'), $this->authenticationInformation['db_user']['table']) .
+					')' .
 					$this->authenticationInformation['db_user']['check_pid_clause'] .
 					$this->authenticationInformation['db_user']['enable_clause']);
+			if ($record) {
+					// Make sure to work only with normalized OpenID during the whole process
+				$record['tx_openid_openid'] = $this->normalizeOpenID($record['tx_openid_openid']);
+			}
 		} else {
 			// This should never happen and generally means hack attempt.
 			// We just log it and do not return any records.
@@ -481,7 +490,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 			// An empty path component is normalized to a slash
 			// (e.g. "http://domain.org" -> "http://domain.org/")
 		if (preg_match('#^https?://[^/]+$#', $openIDIdentifier)) {
-			$openIDIdentifier.= '/';
+			$openIDIdentifier .= '/';
 		}
 
 		return $openIDIdentifier;
