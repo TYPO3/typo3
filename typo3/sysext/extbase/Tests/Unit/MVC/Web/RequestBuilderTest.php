@@ -564,5 +564,199 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 		$this->requestBuilder->build();
 	}
 
+	/**
+	 * @test
+	 * @see TYPO3\FLOW3\Tests\Unit\Utility\EnvironmentTest
+	 */
+	public function untangleFilesArrayTransformsTheFilesSuperglobalIntoAManageableForm() {
+		$convolutedFiles = array (
+			'a0' => array (
+				'name' => array (
+					'a1' => 'a.txt',
+				),
+				'type' => array (
+					'a1' => 'text/plain',
+				),
+				'tmp_name' => array (
+					'a1' => '/private/var/tmp/phpbqXsYt',
+				),
+				'error' => array (
+					'a1' => 0,
+				),
+				'size' => array (
+					'a1' => 100,
+				),
+			),
+			'b0' => array (
+				'name' => array (
+					'b1' => 'b.txt',
+				),
+				'type' => array (
+					'b1' => 'text/plain',
+				),
+				'tmp_name' => array (
+					'b1' => '/private/var/tmp/phpvZ6oUD',
+				),
+				'error' => array (
+					'b1' => 0,
+				),
+				'size' => array (
+					'b1' => 200,
+				),
+			),
+			'c' => array (
+				'name' => 'c.txt',
+				'type' => 'text/plain',
+				'tmp_name' => '/private/var/tmp/phpS9KMNw',
+				'error' => 0,
+				'size' => 300,
+			),
+			'd0' => array (
+				'name' => array (
+					'd1' => array (
+						'd2' => array (
+							'd3' => 'd.txt',
+						),
+					),
+				),
+				'type' => array (
+					'd1' => array(
+						'd2' => array (
+							'd3' => 'text/plain',
+							),
+						),
+					),
+				'tmp_name' => array (
+					'd1' => array (
+						'd2' => array(
+							'd3' => '/private/var/tmp/phprR3fax',
+						),
+					),
+				),
+				'error' => array (
+					'd1' => array (
+						'd2' => array(
+							'd3' => 0,
+						),
+					),
+				),
+				'size' => array (
+					'd1' => array (
+						'd2' => array(
+							'd3' => 400,
+						),
+					),
+				),
+			),
+			'e0' => array (
+				'name' => array (
+					'e1' => array (
+						'e2' => array (
+							0 => 'e_one.txt',
+							1 => 'e_two.txt',
+						),
+					),
+				),
+				'type' => array (
+					'e1' => array (
+						'e2' => array (
+							0 => 'text/plain',
+							1 => 'text/plain',
+						),
+					),
+				),
+				'tmp_name' => array (
+					'e1' => array (
+						'e2' => array (
+							0 => '/private/var/tmp/php01fitB',
+							1 => '/private/var/tmp/phpUUB2cv',
+						),
+					),
+				),
+				'error' => array (
+					'e1' => array (
+						'e2' => array (
+							0 => 0,
+							1 => 0,
+						),
+					),
+				),
+				'size' => array (
+					'e1' => array (
+						'e2' => array (
+							0 => 510,
+							1 => 520,
+						)
+					)
+				)
+			)
+		);
+
+		$untangledFiles = array (
+			'a0' => array (
+				'a1' => array(
+					'name' => 'a.txt',
+					'type' => 'text/plain',
+					'tmp_name' => '/private/var/tmp/phpbqXsYt',
+					'error' => 0,
+					'size' => 100,
+				),
+			),
+			'b0' => array (
+				'b1' => array(
+					'name' => 'b.txt',
+					'type' => 'text/plain',
+					'tmp_name' => '/private/var/tmp/phpvZ6oUD',
+					'error' => 0,
+					'size' => 200,
+				)
+			),
+			'c' => array (
+				'name' => 'c.txt',
+				'type' => 'text/plain',
+				'tmp_name' => '/private/var/tmp/phpS9KMNw',
+				'error' => 0,
+				'size' => 300,
+			),
+			'd0' => array (
+				'd1' => array(
+					'd2' => array(
+						'd3' => array(
+							'name' => 'd.txt',
+							'type' => 'text/plain',
+							'tmp_name' => '/private/var/tmp/phprR3fax',
+							'error' => 0,
+							'size' => 400,
+						),
+					),
+				),
+			),
+			'e0' => array (
+				'e1' => array(
+					'e2' => array(
+						0 => array(
+							'name' => 'e_one.txt',
+							'type' => 'text/plain',
+							'tmp_name' => '/private/var/tmp/php01fitB',
+							'error' => 0,
+							'size' => 510,
+						),
+						1 => array(
+							'name' => 'e_two.txt',
+							'type' => 'text/plain',
+							'tmp_name' => '/private/var/tmp/phpUUB2cv',
+							'error' => 0,
+							'size' => 520,
+						)
+					)
+				)
+			)
+		);
+
+		$requestBuilder = $this->getAccessibleMock('Tx_Extbase_MVC_Web_RequestBuilder', array('dummy'), array(), '', FALSE);
+		$result = $requestBuilder->_call('untangleFilesArray', $convolutedFiles);
+
+		$this->assertSame($untangledFiles, $result);
+	}
 }
 ?>

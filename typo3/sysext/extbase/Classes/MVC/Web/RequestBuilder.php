@@ -30,7 +30,6 @@
  *
  * @package Extbase
  * @subpackage MVC\Web
- * @version $ID:$
  *
  * @scope prototype
  */
@@ -145,6 +144,12 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 		$pluginNamespace = $this->extensionService->getPluginNamespace($this->extensionName, $this->pluginName);
 		$parameters = t3lib_div::_GPmerged($pluginNamespace);
 
+		$files = $this->untangleFilesArray($_FILES);
+
+		if (isset($files[$pluginNamespace]) && is_array($files[$pluginNamespace])) {
+			$parameters = Tx_Extbase_Utility_Arrays::arrayMergeRecursiveOverrule($parameters, $files[$pluginNamespace]);
+		}
+
 		$controllerName = $this->resolveControllerName($parameters);
 		$actionName = $this->resolveActionName($controllerName, $parameters);
 
@@ -249,6 +254,68 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 		return filter_var($actionName, FILTER_SANITIZE_STRING);
 	}
 
+	/**
+	 * Transforms the convoluted _FILES superglobal into a manageable form.
+	 *
+	 * @param array $convolutedFiles The _FILES superglobal
+	 * @return array Untangled files
+	 * @see TYPO3\FLOW3\Utility\Environment
+	 */
+	protected function untangleFilesArray(array $convolutedFiles) {
+		$untangledFiles = array();
+
+		$fieldPaths = array();
+		foreach ($convolutedFiles as $firstLevelFieldName => $fieldInformation) {
+			if (!is_array($fieldInformation['error'])) {
+				$fieldPaths[] = array($firstLevelFieldName);
+			} else {
+				$newFieldPaths = $this->calculateFieldPaths($fieldInformation['error'], $firstLevelFieldName);
+				array_walk($newFieldPaths,
+					function(&$value, $key) {
+						$value = explode('/', $value);
+					}
+				);
+				$fieldPaths = array_merge($fieldPaths, $newFieldPaths);
+			}
+		}
+
+		foreach ($fieldPaths as $fieldPath) {
+			if (count($fieldPath) === 1) {
+				$fileInformation = $convolutedFiles[$fieldPath{0}];
+			} else {
+				$fileInformation = array();
+				foreach ($convolutedFiles[$fieldPath{0}] as $key => $subStructure) {
+					$fileInformation[$key] = Tx_Extbase_Utility_Arrays::getValueByPath($subStructure, array_slice($fieldPath, 1));
+				}
+			}
+			$untangledFiles = Tx_Extbase_Utility_Arrays::setValueByPath($untangledFiles, $fieldPath, $fileInformation);
+		}
+		return $untangledFiles;
+	}
+
+	/**
+	 * Returns an array of all possibles "field paths" for the given array.
+	 *
+	 * @param array $structure The array to walk through
+	 * @param string $firstLevelFieldName
+	 * @return array An array of paths (as strings) in the format "key1/key2/key3" ...
+	 */
+	protected function calculateFieldPaths(array $structure, $firstLevelFieldName = NULL) {
+		$fieldPaths = array();
+		if (is_array($structure)) {
+			foreach ($structure as $key => $subStructure) {
+				$fieldPath = ($firstLevelFieldName !== NULL ? $firstLevelFieldName . '/' : '') . $key;
+				if (is_array($subStructure)) {
+					foreach ($this->calculateFieldPaths($subStructure) as $subFieldPath) {
+						$fieldPaths[] = $fieldPath . '/' . $subFieldPath;
+					}
+				} else {
+					$fieldPaths[] = $fieldPath;
+				}
+			}
+		}
+		return $fieldPaths;
+	}
 
 }
 ?>
