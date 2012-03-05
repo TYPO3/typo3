@@ -34,7 +34,7 @@ TYPO3.Workspaces.RowDetail.rowDataStore = new Ext.data.DirectStore({
 	storeId : 'rowDetailService',
 	root : 'data',
 	totalProperty : 'total',
-	idProperty : 'uid',
+	idProperty : 'id',
 	fields : [
 		{name : 'uid'},
 		{name : 't3ver_oid'},
