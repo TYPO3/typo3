@@ -5210,6 +5210,8 @@ final class t3lib_div {
 		$matches = preg_split('/(.?###.+###.?|\(|\))/', $line, -1, PREG_SPLIT_NO_EMPTY);
 		foreach ($matches as $part) {
 			$oldPart = $part;
+			$partWasQuoted = ($part{0} == '"');
+			$part = trim($part, '"');
 			switch ((string) $enc) {
 				case 'base64':
 					$part = '=?' . $charset . '?B?' . base64_encode($part) . '?=';
@@ -5227,6 +5229,9 @@ final class t3lib_div {
 						$part = '=?' . $charset . '?Q?' . $qpValue . '?=';
 					}
 					break;
+			}
+			if ($partWasQuoted) {
+				$part = '"' . $part . '"';
 			}
 			$line = str_replace($oldPart, $part, $line);
 		}
