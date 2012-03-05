@@ -115,6 +115,7 @@ class tx_Workspaces_Service_GridData {
 					$viewUrl =  tx_Workspaces_Service_Workspaces::viewSingleRecord($table, $record['t3ver_oid'], $origRecord);
 
 					$pctChange = $this->calculateChangePercentage($table, $origRecord, $versionRecord);
+					$versionArray['id'] = $table . ':' . $record['uid'];
 					$versionArray['uid'] = $record['uid'];
 					$versionArray['workspace'] = $versionRecord['t3ver_id'];
 					$versionArray['label_Workspace'] = htmlspecialchars(t3lib_befunc::getRecordTitle($table, $versionRecord));

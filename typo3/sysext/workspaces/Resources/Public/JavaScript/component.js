@@ -34,7 +34,7 @@ TYPO3.Workspaces.RowDetail.rowDataStore = new Ext.data.DirectStore({
 	storeId : 'rowDetailService',
 	root : 'data',
 	totalProperty : 'total',
-	idProperty : 'uid',
+	idProperty : 'id',
 	fields : [
 		{name : 'uid'},
 		{name : 't3ver_oid'},
@@ -281,7 +281,7 @@ TYPO3.Workspaces.RowExpander = new Ext.grid.RowExpander({
 TYPO3.Workspaces.MainStore = new Ext.data.GroupingStore({
 	storeId : 'workspacesMainStore',
 	reader : new Ext.data.JsonReader({
-		idProperty : 'uid',
+		idProperty : 'id',
 		root : 'data',
 		totalProperty : 'total'
 	}, TYPO3.Workspaces.Configuration.StoreFieldArray),
