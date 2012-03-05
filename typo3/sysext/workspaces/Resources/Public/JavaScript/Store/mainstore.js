@@ -34,7 +34,7 @@ TYPO3.Workspaces.Configuration.StoreFieldArray = [
 TYPO3.Workspaces.MainStore = new Ext.data.GroupingStore({
 	storeId : 'workspacesMainStore',
 	reader : new Ext.data.JsonReader({
-		idProperty : 'uid',
+		idProperty : 'id',
 		root : 'data',
 		totalProperty : 'total'
 	}, TYPO3.Workspaces.Configuration.StoreFieldArray),
