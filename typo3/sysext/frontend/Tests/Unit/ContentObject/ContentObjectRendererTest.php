@@ -1223,6 +1223,65 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 		);
 	}
+
+	/**
+	 * @param $content
+	 * @param array $configuration
+	 * @param $expected
+	 * @dataProvider stdWrap_noTrimWrapAcceptsSplitCharDataProvider
+	 * @test
+	 */
+	public function stdWrap_noTrimWrapAcceptsSplitChar($content, array $configuration, $expected) {
+		$result = $this->cObj->stdWrap_noTrimWrap($content, $configuration);
+		$this->assertEquals($expected, $result);
+	}
+
+	public function stdWrap_noTrimWrapAcceptsSplitCharDataProvider() {
+		return array(
+			'No char given' => array(
+				'middle',
+				array(
+					'noTrimWrap' => '| left | right |',
+				),
+				' left middle right '
+			),
+			'Default char given' => array(
+				'middle',
+				array(
+					'noTrimWrap' => '| left | right |',
+					'noTrimWrap.' => array('splitChar' => '|'),
+				),
+				' left middle right '
+			),
+			'Split char is a' => array(
+				'middle',
+				array(
+					'noTrimWrap' => 'a left a right a',
+					'noTrimWrap.' => array('splitChar' => 'a'),
+				),
+				' left middle right '
+			),
+			'Split char is multi-char (ab)'  => array(
+				'middle',
+				array(
+					'noTrimWrap' => 'ab left ab right ab',
+					'noTrimWrap.' => array('splitChar' => 'ab'),
+				),
+				' left middle right '
+			),
+			'Split char accepts stdWrap'  => array(
+				'middle',
+				array(
+					'noTrimWrap' => 'abc left abc right abc',
+					'noTrimWrap.' => array(
+						'splitChar' => 'b',
+						'splitChar.' => array('wrap' => 'a|c'),
+					),
+				),
+				' left middle right '
+			),
+		);
+	}
 }
 
 ?>
