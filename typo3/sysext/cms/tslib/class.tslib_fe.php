@@ -254,7 +254,7 @@ class tslib_fe {
 		// 'Global' Storage for various applications. Keys should be 'tx_'.extKey for extensions.
 	var $applicationData = array();
 	var $register = array();
-		// Stack used for storing array and retrieving register arrays (see LOAD_REGISTER and CLEAR_REGISTER)
+		// Stack used for storing array and retrieving register arrays (see LOAD_REGISTER and RESTORE_REGISTER)
 	var $registerStack = array();
 		// Checking that the function is not called eternally. This is done by interrupting at a depth of 50
 	var $cObjectDepthCounter = 50;
