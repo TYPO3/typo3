@@ -39,7 +39,10 @@ final class t3lib_utility_PhpOptions {
 	 * @return boolean TRUE if safe_mode is enabled, FALSE if disabled
 	 */
 	public static function isSafeModeEnabled() {
-		return self::getIniValueBoolean('safe_mode');
+		if (version_compare(phpversion(), '5.4', '<')) {
+			return self::getIniValueBoolean('safe_mode');
+		}
+		return FALSE;
 	}
 
 	/**
@@ -48,13 +51,10 @@ final class t3lib_utility_PhpOptions {
 	 * @return boolean TRUE if magic_quotes_gpc is enabled, FALSE if disabled
 	 */
 	public static function isMagicQuotesGpcEnabled() {
-		// TODO: Once PHP 5.4.0 is out, check if magic_quotes_gpc was really removed
-		//if (version_compare(phpversion(), '5.4', '<')) {
-		//	return self::getIniValueBoolean('magic_quotes_gpc');
-		//} else {
-		//	return FALSE;
-		//}
-		return self::getIniValueBoolean('magic_quotes_gpc');
+		if (version_compare(phpversion(), '5.4', '<')) {
+			return self::getIniValueBoolean('magic_quotes_gpc');
+		}
+		return FALSE;
 	}
 
 	/**
