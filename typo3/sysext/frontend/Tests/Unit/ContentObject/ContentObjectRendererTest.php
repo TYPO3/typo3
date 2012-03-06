@@ -1203,6 +1203,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * Data provider for stdWrap_ifNullDeterminesNullValues test
+	 *
 	 * @return array
 	 */
 	public function stdWrap_ifNullDeterminesNullValuesDataProvider() {
@@ -1220,6 +1222,79 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'ifNull' => '1',
 				),
 				'0',
+			),
+		);
+	}
+
+	/**
+	 * @param $content
+	 * @param array $configuration
+	 * @param $expected
+	 * @dataProvider stdWrap_noTrimWrapAcceptsSplitCharDataProvider
+	 * @test
+	 */
+	public function stdWrap_noTrimWrapAcceptsSplitChar($content, array $configuration, $expected) {
+		$result = $this->cObj->stdWrap_noTrimWrap($content, $configuration);
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * Data provider for stdWrap_noTrimWrapAcceptsSplitChar test
+	 *
+	 * @return array
+	 */
+	public function stdWrap_noTrimWrapAcceptsSplitCharDataProvider() {
+		return array(
+			'No char given' => array(
+				'middle',
+				array(
+					'noTrimWrap' => '| left | right |',
+				),
+				' left middle right '
+			),
+			'Zero char given' => array(
+				'middle',
+				array(
+					'noTrimWrap' => '0 left 0 right 0',
+					'noTrimWrap.' => array('splitChar' => '0'),
+
+				),
+				' left middle right '
+			),
+			'Default char given' => array(
+				'middle',
+				array(
+					'noTrimWrap' => '| left | right |',
+					'noTrimWrap.' => array('splitChar' => '|'),
+				),
+				' left middle right '
+			),
+			'Split char is a' => array(
+				'middle',
+				array(
+					'noTrimWrap' => 'a left a right a',
+					'noTrimWrap.' => array('splitChar' => 'a'),
+				),
+				' left middle right '
+			),
+			'Split char is multi-char (ab)' => array(
+				'middle',
+				array(
+					'noTrimWrap' => 'ab left ab right ab',
+					'noTrimWrap.' => array('splitChar' => 'ab'),
+				),
+				' left middle right '
+			),
+			'Split char accepts stdWrap' => array(
+				'middle',
+				array(
+					'noTrimWrap' => 'abc left abc right abc',
+					'noTrimWrap.' => array(
+						'splitChar' => 'b',
+						'splitChar.' => array('wrap' => 'a|c'),
+					),
+				),
+				' left middle right '
 			),
 		);
 	}
