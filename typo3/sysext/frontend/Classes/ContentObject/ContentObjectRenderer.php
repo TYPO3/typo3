@@ -3083,7 +3083,11 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_noTrimWrap($content = '', $conf = array()) {
-		$content = $this->noTrimWrap($content, $conf['noTrimWrap']);
+		$content = $this->noTrimWrap(
+			$content,
+			$conf['noTrimWrap'],
+			($conf['noTrimWrap.']['splitChar'] ? $conf['noTrimWrap']['splitChar'] : '|')
+		);
 		return $content;
 	}
 
@@ -6364,13 +6368,14 @@ class ContentObjectRenderer {
 	 *
 	 * @param string $content The content to wrap, eg. "HELLO WORLD
 	 * @param string $wrap The wrap value, eg. " | <strong> | </strong>
+	 * @param string $char The char used to split the wrapping value, default is "|"
 	 * @return string Wrapped input string, eg. " <strong> HELLO WORD </strong>
 	 * @see wrap()
 	 * @todo Define visibility
 	 */
-	public function noTrimWrap($content, $wrap) {
+	public function noTrimWrap($content, $wrap, $char = '|') {
 		if ($wrap) {
-			$wrapArr = explode('|', $wrap);
+			$wrapArr = explode($char, $wrap);
 			return $wrapArr[1] . $content . $wrapArr[2];
 		} else {
 			return $content;
