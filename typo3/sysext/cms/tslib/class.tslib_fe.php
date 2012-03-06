@@ -176,7 +176,7 @@
 		// RENDERING data
 	var $applicationData=Array();		//	 'Global' Storage for various applications. Keys should be 'tx_'.extKey for extensions.
 	var $register=Array();
-	var $registerStack=Array();			// Stack used for storing array and retrieving register arrays (see LOAD_REGISTER and CLEAR_REGISTER)
+	var $registerStack = array();		// Stack used for storing array and retrieving register arrays (see LOAD_REGISTER and RESTORE_REGISTER)
 	var $cObjectDepthCounter = 50;		// Checking that the function is not called eternally. This is done by interrupting at a depth of 50
 	var $recordRegister = Array();		// used by cObj->RECORDS and cObj->CONTENT to ensure the a records is NOT rendered twice through it!
 	var $currentRecord = '';			// This is set to the [table]:[uid] of the latest record rendered. Note that class tslib_cObj has an equal value, but that is pointing to the record delivered in the $data-array of the tslib_cObj instance, if the cObjects CONTENT or RECORD created that instance
