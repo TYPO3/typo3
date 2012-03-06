@@ -216,6 +216,17 @@ class tx_version_tcemain {
 					if ($tcemainObj->BE_USER->workspace == 0 || (int) $record['t3ver_wsid'] == $tcemainObj->BE_USER->workspace) {
 						$liveRec = t3lib_BEfunc::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state');
 
+							// Processing can be skipped if a delete placeholder shall be swapped/published
+							// during the current request. Thus it will be deleted later on...
+						if ($record['t3ver_state'] == 2 && !empty($liveRec['uid'])
+							&& !empty($tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['action'])
+							&& !empty($tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['swapWith'])
+							&& $tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['action'] === 'swap'
+							&& $tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['swapWith'] == $id) {
+
+							return NULL;
+						}
+
 							// Delete those in WS 0 + if their live records state was not "Placeholder".
 						if ($record['t3ver_wsid']==0 || (int) $liveRec['t3ver_state'] <= 0) {
 							$tcemainObj->deleteEl($table, $id);
