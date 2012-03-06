@@ -2919,14 +2919,18 @@ class tslib_cObj {
 	/**
 	 * noTrimWrap
 	 * Fourth of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
-	 * The major difference to any other wrap is, that this one can make use of whitespace without trimming	 *
+	 * The major difference to any other wrap is, that this one can make use of whitespace without trimming
 	 *
-	 * @param	string		Input value undergoing processing in this function.
-	 * @param	array		stdWrap properties for noTrimWrap.
+	 * @param	string	$content	Input value undergoing processing in this function.
+	 * @param	array	$conf	stdWrap properties for noTrimWrap.
 	 * @return	string		The processed input value
 	 */
 	public function stdWrap_noTrimWrap($content = '', $conf = array()) {
-		$content = $this->noTrimWrap($content, $conf['noTrimWrap']);
+		$content = $this->noTrimWrap(
+			$content,
+			$conf['noTrimWrap'],
+			($conf['noTrimWrap.']['splitChar'] ? $conf['noTrimWrap']['splitChar'] : '|')
+		);
 		return $content;
 	}
 
@@ -6449,14 +6453,15 @@ class tslib_cObj {
 	 * Wrapping a string, preserving whitespace in wrap value.
 	 * Notice that the wrap value uses part 1/2 to wrap (and not 0/1 which wrap() does)
 	 *
-	 * @param	string		The content to wrap, eg. "HELLO WORLD"
-	 * @param	string		The wrap value, eg. " | <strong> | </strong>"
+	 * @param	string	$content	The content to wrap, eg. "HELLO WORLD"
+	 * @param	string	$wrap	The wrap value, eg. " | <strong> | </strong>"
+	 * @param	string	$char	The char used to split the wrapping value, default is "|"
 	 * @return	string		Wrapped input string, eg. " <strong> HELLO WORD </strong>"
 	 * @see wrap()
 	 */
-	function noTrimWrap($content, $wrap) {
+	function noTrimWrap($content, $wrap, $char = '|') {
 		if ($wrap) {
-			$wrapArr = explode('|', $wrap);
+			$wrapArr = explode($char, $wrap);
 			return $wrapArr[1] . $content . $wrapArr[2];
 		} else
 			return $content;
