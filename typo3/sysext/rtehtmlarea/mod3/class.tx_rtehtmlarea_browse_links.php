@@ -601,7 +601,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			);
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['extendJScode'] as $objRef) {
 				$processor = &t3lib_div::getUserObj($objRef);
-				$JScode .= $processor->extendJScode( $_params, &$this);
+				$JScode .= $processor->extendJScode( $_params, $this);
 			}
 		}
 
