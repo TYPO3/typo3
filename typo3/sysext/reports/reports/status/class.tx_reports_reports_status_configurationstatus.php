@@ -56,8 +56,12 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 		$statuses = array(
 			'emptyReferenceIndex' => $this->getReferenceIndexStatus(),
 			'deprecationLog'      => $this->getDeprecationLogStatus(),
-			'safeModeEnabled'     => $this->getPhpSafeModeStatus()
 		);
+
+			// Do not show status about non-existant features
+		if (version_compare(phpversion(), '5.4', '<')) {
+			$statuses['safeModeEnabled'] = $this->getPhpSafeModeStatus();
+		}
 
 		if ($this->isMemcachedUsed()) {
 			$statuses['memcachedConnection'] = $this->getMemcachedConnectionStatus();
