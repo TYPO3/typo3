@@ -2663,11 +2663,14 @@ final class t3lib_BEfunc {
 			if ($page['url_scheme'] == t3lib_utility_Http::SCHEME_HTTPS || ($page['url_scheme'] == 0 && t3lib_div::getIndpEnv('TYPO3_SSL'))) {
 				$protocol = 'https';
 			}
-			$domainRecord = self::getDomainStartPage($urlParts['host'], $urlParts['path']);
-			if ($domainRecord && isset($domainRecord['domainName'])) {
-				$domain = $domainRecord['domainName'];
+
+			$domainName = self::firstDomainRecord($rootLine);
+
+			if ($domainName) {
+				$domain = $domainName;
 			} else {
-				$domain = self::firstDomainRecord($rootLine);
+				$domainRecord = self::getDomainStartPage($urlParts['host'], $urlParts['path']);
+				$domain = $domainRecord['domainName'];
 			}
 
 			if ($domain) {
