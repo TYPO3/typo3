@@ -92,5 +92,64 @@ class Tx_Extbase_Tests_Unit_Security_Cryptography_HashServiceTest extends Tx_Ext
 		$hash = 'myhash';
 		$this->assertFalse($this->hashService->validateHash($string, $hash));
 	}
+
+	/**
+	 * @test
+	 * @expectedException TYPO3\FLOW3\Security\Exception\InvalidArgumentForHashGenerationException
+	 */
+	public function appendHmacThrowsExceptionIfNoStringGiven() {
+		$this->hashService->appendHmac(NULL);
+	}
+
+	/**
+	 * @test
+	 */
+	public function appendHmacAppendsHmacToGivenString() {
+		$string = 'This is some arbitrary string ';
+		$hashedString = $this->hashService->appendHmac($string);
+		$this->assertSame($string, substr($hashedString, 0, -40));
+	}
+
+	/**
+	 * @test
+	 * @expectedException TYPO3\FLOW3\Security\Exception\InvalidArgumentForHashGenerationException
+	 */
+	public function validateAndStripHmacThrowsExceptionIfNoStringGiven() {
+		$this->hashService->validateAndStripHmac(NULL);
+	}
+
+	/**
+	 * @test
+	 * @expectedException TYPO3\FLOW3\Security\Exception\InvalidArgumentForHashGenerationException
+	 */
+	public function validateAndStripHmacThrowsExceptionIfGivenStringIsTooShort() {
+		$this->hashService->validateAndStripHmac('string with less than 40 characters');
+	}
+
+	/**
+	 * @test
+	 * @expectedException TYPO3\FLOW3\Security\Exception\InvalidHashException
+	 */
+	public function validateAndStripHmacThrowsExceptionIfGivenStringHasNoHashAppended() {
+		$this->hashService->validateAndStripHmac('string with exactly a length 40 of chars');
+	}
+
+	/**
+	 * @test
+	 * @expectedException TYPO3\FLOW3\Security\Exception\InvalidHashException
+	 */
+	public function validateAndStripHmacThrowsExceptionIfTheAppendedHashIsInvalid() {
+		$this->hashService->validateAndStripHmac('some Stringac43682075d36592d4cb320e69ff0aa515886eab');
+	}
+
+	/**
+	 * @test
+	 */
+	public function validateAndStripHmacReturnsTheStringWithoutHmac() {
+		$string = ' Some arbitrary string with special characters: öäüß!"§$ ';
+		$hashedString = $this->hashService->appendHmac($string);
+		$actualResult = $this->hashService->validateAndStripHmac($hashedString);
+		$this->assertSame($string, $actualResult);
+	}
 }
 ?>

@@ -38,6 +38,11 @@
 class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 
 	/**
+	 * @var Tx_Extbase_Security_Cryptography_HashService
+	 */
+	protected $hashService;
+
+	/**
 	 * @var string The requested representation format
 	 */
 	protected $format = 'html';
@@ -72,6 +77,13 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
+
+	/**
+	 * @param Tx_Extbase_Security_Cryptography_HashService $hashService
+	 */
+	public function injectHashService(Tx_Extbase_Security_Cryptography_HashService $hashService) {
+		$this->hashService = $hashService;
+	}
 
 	/**
 	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
@@ -214,7 +226,9 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 
 			$arguments = array();
 			if (isset($referrerArray['arguments'])) {
-				$arguments = unserialize($referrerArray['arguments']);
+				$serializedArgumentsWithHmac = $referrerArray['arguments'];
+				$serializedArguments = $this->hashService->validateAndStripHmac($serializedArgumentsWithHmac);
+				$arguments = unserialize(base64_decode($serializedArguments));
 				unset($referrerArray['arguments']);
 			}
 
