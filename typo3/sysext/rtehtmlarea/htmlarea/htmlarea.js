@@ -3990,7 +3990,7 @@ HTMLArea.util.Color = function () {
 			if (v.substr(0, 1) === '#') {
 				return v;
 			}
-			return null;
+			return '';
 		},
 		/*
 		 * Select interceptor to ensure that the color exists in the palette before trying to select
