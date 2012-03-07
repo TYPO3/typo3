@@ -405,7 +405,7 @@ class tx_cms_layout extends recordList {
 						if (is_array($row) && (int) $row['t3ver_state'] != 2) {
 							$singleElementHTML = '';
 							if (!$lP) {
-								$defLanguageCount[$key][] = $row['uid'];
+								$defLanguageCount[$key][] = (isset($row['_ORIG_uid']) ? $row['_ORIG_uid'] : $row['uid']);
 							}
 
 							$editUidList .= $row['uid'] . ',';
@@ -1858,16 +1858,16 @@ class tx_cms_layout extends recordList {
 	function getNonTranslatedTTcontentUids($defLanguageCount, $id, $lP) {
 		if ($lP && count($defLanguageCount)) {
 
-			// Select all translations here:
-			$queryParts = $this->makeQueryArray('tt_content', $id, 'AND sys_language_uid=' . intval($lP) . ' AND l18n_parent IN (' . implode(',', $defLanguageCount) . ')');
-			$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
+				// Select all translations here:
+			$where = 'sys_language_uid=' . intval($lP) . ' AND l18n_parent IN (' . implode(',', $defLanguageCount) . ')' . t3lib_BEfunc::deleteClause('tt_content');
+			$rowArr = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $where);
 
-			// Flip uids:
+				// Flip uids:
 			$defLanguageCount = array_flip($defLanguageCount);
 
-			// Traverse any selected elements and unset original UID if any:
-			$rowArr = $this->getResult($result);
+				// Traverse any selected elements and unset original UID if any:
 			foreach ($rowArr as $row) {
+				t3lib_BEfunc::workspaceOL('tt_content', $row);
 				unset($defLanguageCount[$row['l18n_parent']]);
 			}
 
