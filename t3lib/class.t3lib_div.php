@@ -1259,7 +1259,7 @@ final class t3lib_div {
 		if (strlen($email) > 320) {
 			return FALSE;
 		}
-		require_once('../typo3/contrib/idna/idna_convert.class.php');
+		require_once(PATH_typo3 . 'contrib/idna/idna_convert.class.php');
 		$IDN = new idna_convert(array('idn_version' => 2008));
 
 		return (filter_var($IDN->encode($email), FILTER_VALIDATE_EMAIL) !== FALSE);
@@ -1512,7 +1512,7 @@ final class t3lib_div {
 	 * @return boolean Whether the given URL is valid
 	 */
 	public static function isValidUrl($url) {
-		require_once('../typo3/contrib/idna/idna_convert.class.php');
+		require_once(PATH_typo3 . 'contrib/idna/idna_convert.class.php');
 		$IDN = new idna_convert(array('idn_version' => 2008));
 
 		return (filter_var($IDN->encode($url), FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED) !== FALSE);
