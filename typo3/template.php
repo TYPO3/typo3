@@ -53,7 +53,7 @@ if (!defined('TYPO3_MODE'))	die("Can't include this file directly.");
  *
  * Please refer to Inside TYPO3 for a discussion of how to use this API.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -155,7 +155,7 @@ class template {
 	/**
 	 * Whether flashmessages should be rendered or not
 	 *
-	 * @var $showFlashMessages
+	 * @var boolean $showFlashMessages
 	 */
 	public $showFlashMessages = TRUE;
 
@@ -167,10 +167,8 @@ class template {
 	/**
 	 * Constructor
 	 * Imports relevant parts from global $GLOBALS['TBE_STYLES'] (colorscheme)
-	 *
-	 * @return	void
 	 */
-	function __construct()	{
+	public function __construct() {
 			// Initializes the page rendering object:
 		$this->getPageRenderer();
 
@@ -219,9 +217,9 @@ class template {
 	}
 
 	/**
-	 * Gets instance of PageRenderer
+	 * Gets instance of PageRenderer configured with the current language, file references and debug settings
 	 *
-	 * @return	t3lib_PageRenderer
+	 * @return t3lib_PageRenderer
 	 */
 	public function getPageRenderer() {
 		if (!isset($this->pageRenderer)) {
@@ -247,7 +245,7 @@ class template {
 
 
 
-   /**
+	/**
 	 * Sets inclusion of StateProvider
 	 *
 	 * @return void
@@ -276,18 +274,18 @@ class template {
 	 * Returns $str (possibly an <|img> tag/icon) wrapped in a link which will activate the context sensitive menu for the record ($table/$uid) or file ($table = file)
 	 * The link will load the top frame with the parameter "&item" which is the table,uid and listFr arguments imploded by "|": rawurlencode($table.'|'.$uid.'|'.$listFr)
 	 *
-	 * @param	string		String to be wrapped in link, typ. image tag.
-	 * @param	string		Table name/File path. If the icon is for a database record, enter the tablename from $GLOBALS['TCA']. If a file then enter the absolute filepath
-	 * @param	integer		If icon is for database record this is the UID for the record from $table
-	 * @param	boolean		Tells the top frame script that the link is coming from a "list" frame which means a frame from within the backend content frame.
-	 * @param	string		Additional GET parameters for the link to alt_clickmenu.php
-	 * @param	string		Enable / Disable click menu items. Example: "+new,view" will display ONLY these two items (and any spacers in between), "new,view" will display all BUT these two items.
-	 * @param	boolean		If set, will return only the onclick JavaScript, not the whole link.
-	 * @return	string		The link-wrapped input string.
+	 * @param string $str String to be wrapped in link, typ. image tag.
+	 * @param string $table Table name/File path. If the icon is for a database record, enter the tablename from $GLOBALS['TCA']. If a file then enter the absolute filepath
+	 * @param integer $uid If icon is for database record this is the UID for the record from $table
+	 * @param boolean $listFr Tells the top frame script that the link is coming from a "list" frame which means a frame from within the backend content frame.
+	 * @param string $addParams Additional GET parameters for the link to alt_clickmenu.php
+	 * @param string $enDisItems Enable / Disable click menu items. Example: "+new,view" will display ONLY these two items (and any spacers in between), "new,view" will display all BUT these two items.
+	 * @param boolean $returnOnClick If set, will return only the onclick JavaScript, not the whole link.
+	 * @return string The link-wrapped input string.
 	 */
-	function wrapClickMenuOnIcon($str,$table,$uid='',$listFr=1,$addParams='',$enDisItems='', $returnOnClick=FALSE)	{
+	function wrapClickMenuOnIcon($str, $table, $uid = 0, $listFr = TRUE, $addParams = '', $enDisItems = '', $returnOnClick = FALSE) {
 		$backPath = rawurlencode($this->backPath).'|'.t3lib_div::shortMD5($this->backPath.'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
-		$onClick = 'showClickmenu("'.$table.'","'.$uid.'","'.$listFr.'","'.str_replace('+','%2B',$enDisItems).'","'.str_replace('&','&amp;',addcslashes($backPath,'"')).'","'.str_replace('&','&amp;',addcslashes($addParams,'"')).'");return false;';
+		$onClick = 'showClickmenu("' . $table . '","' . ($uid !== 0) ? $uid : '' . '","' . strval($listFr) . '","' . str_replace('+', '%2B', $enDisItems) . '","' . str_replace('&', '&amp;', addcslashes($backPath, '"')) . '","' . str_replace('&', '&amp;', addcslashes($addParams, '"')) . '");return false;';
 		return $returnOnClick ? $onClick : '<a href="#" onclick="'.htmlspecialchars($onClick).'" oncontextmenu="'.htmlspecialchars($onClick).'">'.$str.'</a>';
 	}
 
@@ -297,12 +295,12 @@ class template {
 	 * $id must be a page-uid
 	 * If the BE_USER has access to Web>List then a link to that module is shown as well (with return-url)
 	 *
-	 * @param	integer		The page id
-	 * @param	string		The current "BACK_PATH" (the back relative to the typo3/ directory)
-	 * @param	string		Additional parameters for the image tag(s)
-	 * @return	string		HTML string with linked icon(s)
+	 * @param integer $id The page id
+	 * @param string $backPath The current "BACK_PATH" (the back relative to the typo3/ directory)
+	 * @param string $addParams Additional parameters for the image tag(s)
+	 * @return string HTML string with linked icon(s)
 	 */
-	function viewPageIcon($id,$backPath,$addParams='hspace="3"')	{
+	function viewPageIcon($id, $backPath, $addParams = 'hspace="3"') {
 
 			// If access to Web>List for user, then link to that module.
 		$str = t3lib_BEfunc::getListViewLink(
@@ -324,16 +322,16 @@ class template {
 	 * Returns a URL with a command to TYPO3 Core Engine (tce_db.php)
 	 * See description of the API elsewhere.
 	 *
-	 * @param	string		$params is a set of GET params to send to tce_db.php. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World"
-	 * @param	string		Redirect URL if any other that t3lib_div::getIndpEnv('REQUEST_URI') is wished
-	 * @return	string		URL to tce_db.php + parameters (backpath is taken from $this->backPath)
+	 * @param string $params is a set of GET params to send to tce_db.php. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World"
+	 * @param string $redirectUrl Redirect URL if any other that t3lib_div::getIndpEnv('REQUEST_URI') is wished
+	 * @return string URL to tce_db.php + parameters (backpath is taken from $this->backPath)
 	 * @see t3lib_BEfunc::editOnClick()
 	 */
-	function issueCommand($params,$rUrl='')	{
-		$rUrl = $rUrl ? $rUrl : t3lib_div::getIndpEnv('REQUEST_URI');
+	function issueCommand($params, $redirectUrl = '') {
+		$redirectUrl = $redirectUrl ? $redirectUrl : t3lib_div::getIndpEnv('REQUEST_URI');
 		$commandUrl = $this->backPath.'tce_db.php?' .
 				$params .
-				'&redirect=' . ($rUrl==-1 ? "'+T3_THIS_LOCATION+'" : rawurlencode($rUrl)) .
+				'&redirect=' . ($redirectUrl == -1 ? "'+T3_THIS_LOCATION+'" : rawurlencode($redirectUrl)) .
 				'&vC='.rawurlencode($GLOBALS['BE_USER']->veriCode()) .
 				t3lib_BEfunc::getUrlToken('tceAction') .
 				'&prErr=1&uPT=1';
@@ -345,10 +343,10 @@ class template {
 	 * Returns TRUE if click-menu layers can be displayed for the current user/browser
 	 * Use this to test if click-menus (context sensitive menus) can and should be displayed in the backend.
 	 *
-	 * @return	boolean
+	 * @return boolean
 	 * @deprecated since TYPO3 4.7, will be removed in TYPO3 4.9 - This function makes no sense anymore
 	 */
-	function isCMlayers()	{
+	function isCMlayers() {
 		t3lib_div::logDeprecatedFunction();
 		return !$GLOBALS['BE_USER']->uc['disableCMlayers'] && $GLOBALS['CLIENT']['FORMSTYLE'] && !($GLOBALS['CLIENT']['SYSTEM']=='mac' && $GLOBALS['CLIENT']['BROWSER']=='Opera');
 	}
@@ -359,14 +357,15 @@ class template {
 	 * $path will be shown as alt-text for the icon.
 	 * The title will be truncated to 45 chars.
 	 *
-	 * @param	string		Table name
-	 * @param	array		Record row
-	 * @param	string		Alt text
-	 * @param	boolean		Set $noViewPageIcon TRUE if you don't want a magnifier-icon for viewing the page in the frontend
-	 * @param	array		$tWrap is an array with indexes 0 and 1 each representing HTML-tags (start/end) which will wrap the title
-	 * @return	string		HTML content
+	 * @param string $table Table name
+	 * @param array $row Record row
+	 * @param string $path Alt text
+	 * @param boolean $noViewPageIcon Set $noViewPageIcon TRUE if you don't want a magnifier-icon for viewing the page in the frontend
+	 * @param array $tWrap is an array with indexes 0 and 1 each representing HTML-tags (start/end) which will wrap the title
+	 * @return string HTML content
 	 */
-	function getHeader($table,$row,$path,$noViewPageIcon=0,$tWrap=array('',''))	{
+	function getHeader($table, $row, $path, $noViewPageIcon = FALSE, $tWrap = array('', '')) {
+		$viewPage = '';
 		if (is_array($row) && $row['uid'])	{
 			$iconImgTag=t3lib_iconWorks::getSpriteIconForRecord($table, $row , array('title' => htmlspecialchars($path)));
 			$title = strip_tags(t3lib_BEfunc::getRecordTitle($table, $row));
@@ -386,12 +385,12 @@ class template {
 	 * Like ->getHeader() but for files in the File>* main module/submodules
 	 * Returns the file-icon with the path of the file set in the alt/title attribute. Shows the file-name after the icon.
 	 *
-	 * @param	string		Title string, expected to be the filepath
-	 * @param	string		Alt text
-	 * @param	string		The icon file (relative to TYPO3 dir)
-	 * @return	string		HTML content
+	 * @param string $title Title string, expected to be the filepath
+	 * @param string $path Alt text
+	 * @param string $iconfile The icon file (relative to TYPO3 dir)
+	 * @return string HTML content
 	 */
-	function getFileheader($title,$path,$iconfile)	{
+	function getFileheader($title, $path, $iconfile) {
 		$fileInfo = t3lib_div::split_fileref($title);
 		$title = htmlspecialchars(t3lib_div::fixed_lgd_cs($fileInfo['path'],-35)).'<strong>'.htmlspecialchars($fileInfo['file']).'</strong>';
 		return '<span class="typo3-moduleHeader"><img'.t3lib_iconWorks::skinImg($this->backPath,$iconfile,'width="18" height="16"').' title="'.htmlspecialchars($path).'" alt="" />'.$title.'</span>';
@@ -400,13 +399,13 @@ class template {
 	/**
 	 * Returns a linked shortcut-icon which will call the shortcut frame and set a shortcut there back to the calling page/module
 	 *
-	 * @param	string		Is the list of GET variables to store (if any)
-	 * @param	string		Is the list of SET[] variables to store (if any) - SET[] variables a stored in $GLOBALS["SOBE"]->MOD_SETTINGS for backend modules
-	 * @param	string		Module name string
-	 * @param	string		Is used to enter the "parent module name" if the module is a submodule under eg. Web>* or File>*. You can also set this value to "1" in which case the currentLoadedModule is sent to the shortcut script (so - not a fixed value!) - that is used in file_edit.php and wizard_rte.php scripts where those scripts are really running as a part of another module.
-	 * @return	string		HTML content
+	 * @param string $gvList Is the list of GET variables to store (if any)
+	 * @param string $setList Is the list of SET[] variables to store (if any) - SET[] variables a stored in $GLOBALS["SOBE"]->MOD_SETTINGS for backend modules
+	 * @param string $modName Module name string
+	 * @param string $motherModName Is used to enter the "parent module name" if the module is a submodule under eg. Web>* or File>*. You can also set this value to "1" in which case the currentLoadedModule is sent to the shortcut script (so - not a fixed value!) - that is used in file_edit.php and wizard_rte.php scripts where those scripts are really running as a part of another module.
+	 * @return string HTML content
 	 */
-	function makeShortcutIcon($gvList,$setList,$modName,$motherModName="")	{
+	function makeShortcutIcon($gvList, $setList, $modName, $motherModName = '') {
 		$backPath=$this->backPath;
 		$storeUrl=$this->makeShortcutUrl($gvList,$setList);
 		$pathInfo = parse_url(t3lib_div::getIndpEnv('REQUEST_URI'));
@@ -438,13 +437,13 @@ class template {
 	 * MAKE url for storing
 	 * Internal func
 	 *
-	 * @param	string		Is the list of GET variables to store (if any)
-	 * @param	string		Is the list of SET[] variables to store (if any) - SET[] variables a stored in $GLOBALS["SOBE"]->MOD_SETTINGS for backend modules
-	 * @return	string
+	 * @param string $gvList Is the list of GET variables to store (if any)
+	 * @param string $setList Is the list of SET[] variables to store (if any) - SET[] variables a stored in $GLOBALS["SOBE"]->MOD_SETTINGS for backend modules
+	 * @return string
 	 * @access private
 	 * @see makeShortcutIcon()
 	 */
-	function makeShortcutUrl($gvList,$setList)	{
+	function makeShortcutUrl($gvList, $setList) {
 		$GET = t3lib_div::_GET();
 		$storeArray = array_merge(
 			t3lib_div::compileSelectedGetVarsFromArray($gvList,$GET),
@@ -459,16 +458,15 @@ class template {
 	 * For client browsers with no CSS support the cols/size attribute is returned.
 	 * For CSS compliant browsers (recommended) a ' style="width: ...px;"' is returned.
 	 *
-	 * @param	integer		A relative number which multiplied with approx. 10 will lead to the width in pixels
-	 * @param	boolean		A flag you can set for textareas - DEPRECATED, use ->formWidthText() for textareas!!!
-	 * @param	string		A string which will be returned as attribute-value for style="" instead of the calculated width (if CSS is enabled)
-	 * @return	string		Tag attributes for an <input> tag (regarding width)
+	 * @param integer $size A relative number which multiplied with approx. 10 will lead to the width in pixels
+	 * @param boolean $textarea A flag you can set for textareas - DEPRECATED, use ->formWidthText() for textareas!!!
+	 * @param string $styleOverride A string which will be returned as attribute-value for style="" instead of the calculated width (if CSS is enabled)
+	 * @return string Tag attributes for an <input> tag (regarding width)
 	 * @see formWidthText()
 	 */
-	function formWidth($size=48,$textarea=0,$styleOverride='') {
+	function formWidth($size = 48, $textarea = FALSE, $styleOverride = '') {
 		$wAttrib = $textarea?'cols':'size';
 		if (!$GLOBALS['CLIENT']['FORMSTYLE'])	{	// If not setting the width by style-attribute
-			$size = $size;
 			$retVal = ' '.$wAttrib.'="'.$size.'"';
 		} else {	// Setting width by style-attribute. 'cols' MUST be avoided with NN6+
 			$pixels = ceil($size*$this->form_rowsToStylewidth);
@@ -484,13 +482,13 @@ class template {
 	 *   or
 	 * 		<textarea rows="10" wrap="virtual" '.$GLOBALS["TBE_TEMPLATE"]->formWidthText(48,"","virtual").'>
 	 *
-	 * @param	integer		A relative number which multiplied with approx. 10 will lead to the width in pixels
-	 * @param	string		A string which will be returned as attribute-value for style="" instead of the calculated width (if CSS is enabled)
-	 * @param	string		Pass on the wrap-attribute value you use in your <textarea>! This will be used to make sure that some browsers will detect wrapping alright.
-	 * @return	string		Tag attributes for an <input> tag (regarding width)
+	 * @param integer $size A relative number which multiplied with approx. 10 will lead to the width in pixels
+	 * @param string $styleOverride A string which will be returned as attribute-value for style="" instead of the calculated width (if CSS is enabled)
+	 * @param string $wrap Pass on the wrap-attribute value you use in your <textarea>! This will be used to make sure that some browsers will detect wrapping alright.
+	 * @return string Tag attributes for an <input> tag (regarding width)
 	 * @see formWidth()
 	 */
-	function formWidthText($size=48,$styleOverride='',$wrap='') {
+	function formWidthText($size = 48, $styleOverride = '', $wrap = '') {
 		$wTags = $this->formWidth($size,1,$styleOverride);
 			// Netscape 6+/Mozilla seems to have this ODD problem where there WILL ALWAYS be wrapping with the cols-attribute set and NEVER without the col-attribute...
 		if (strtolower(trim($wrap))!='off' && $GLOBALS['CLIENT']['BROWSER']=='net' && $GLOBALS['CLIENT']['VERSION']>=5)	{
@@ -503,11 +501,11 @@ class template {
 	 * Returns JavaScript variables setting the returnUrl and thisScript location for use by JavaScript on the page.
 	 * Used in fx. db_list.php (Web>List)
 	 *
-	 * @param	string		URL to "this location" / current script
-	 * @return	string
+	 * @param string $thisLocation URL to "this location" / current script
+	 * @return string Urls are returned as JavaScript variables T3_RETURN_URL and T3_THIS_LOCATION
 	 * @see typo3/db_list.php
 	 */
-	function redirectUrls($thisLocation='')	{
+	function redirectUrls($thisLocation = '') {
 		$thisLocation = $thisLocation?$thisLocation:t3lib_div::linkThisScript(
 		array(
 			'CB'=>'',
@@ -527,11 +525,11 @@ class template {
 	 * Returns a formatted string of $tstamp
 	 * Uses $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] and $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] to format date and time
 	 *
-	 * @param	integer		UNIX timestamp, seconds since 1970
-	 * @param	integer		How much data to show: $type = 1: hhmm, $type = 10:	ddmmmyy
-	 * @return	string		Formatted timestamp
+	 * @param integer $tstamp UNIX timestamp, seconds since 1970
+	 * @param integer $type How much data to show: $type = 1: hhmm, $type = 10:	ddmmmyy
+	 * @return string Formatted timestamp
 	 */
-	function formatTime($tstamp,$type)	{
+	function formatTime($tstamp, $type) {
 		$dateStr = '';
 		switch($type)	{
 			case 1: $dateStr = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],$tstamp);
@@ -546,9 +544,9 @@ class template {
 	 * Returns script parsetime IF ->parseTimeFlag is set and user is "admin"
 	 * Automatically outputted in page end
 	 *
-	 * @return	string
+	 * @return string HTML formated with <p>-tags
 	 */
-	function parseTime()	{
+	function parseTime() {
 		if ($this->parseTimeFlag && $GLOBALS['BE_USER']->isAdmin()) {
 			return '<p>(ParseTime: '.(t3lib_div::milliseconds()-$GLOBALS['PARSETIME_START']).' ms</p>
 					<p>REQUEST_URI-length: '.strlen(t3lib_div::getIndpEnv('REQUEST_URI')).')</p>';
@@ -587,13 +585,13 @@ class template {
 	 * Returns page start
 	 * This includes the proper header with charset, title, meta tag and beginning body-tag.
 	 *
-	 * @param	string		HTML Page title for the header
-	 * @param	boolean		flag for including CSH
-	 * @return	string		Returns the whole header section of a HTML-document based on settings in internal variables (like styles, javascript code, charset, generator and docType)
+	 * @param string $title HTML Page title for the header
+	 * @param boolean $includeCsh flag for including CSH
+	 * @return string Returns the whole header section of a HTML-document based on settings in internal variables (like styles, javascript code, charset, generator and docType)
 	 * @see endPage()
 	 */
 	function startPage($title, $includeCsh = TRUE) {
-			// hook	pre start page
+			// hook pre start page
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook']))	{
 			$preStartPageHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook'];
 			if (is_array($preStartPageHook)) {
@@ -707,7 +705,7 @@ class template {
 		// add docstyles
 		$this->docStyle();
 
-	   if ($this->extDirectStateProvider) {
+		if ($this->extDirectStateProvider) {
 			$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ExtDirect.StateProvider.js');
 		}
 
@@ -775,22 +773,24 @@ class template {
 		if ($this->docType=='xhtml_frames')	{
 			return $str;
 		} else
-$str.=$this->docBodyTagBegin().
-($this->divClass?'
+			$str.=$this->docBodyTagBegin().
+				($this->divClass ?
+'
 
 <!-- Wrapping DIV-section for whole page BEGIN -->
 <div class="' . $this->divClass . '">
-' : '' ) . trim($this->form);
+'
+					: '' ) . trim($this->form);
 		return $str;
 	}
 
 	/**
 	 * Returns page end; This includes finishing form, div, body and html tags.
 	 *
-	 * @return	string		The HTML end of a page
+	 * @return string The HTML end of a page
 	 * @see startPage()
 	 */
-	function endPage()	{
+	function endPage() {
 		$str = $this->sectionEnd().
 				$this->postCode.
 				$this->endPageJS().
@@ -824,12 +824,12 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Shortcut for render the complete page of a module
 	 *
-	 * @param  $title  page title
-	 * @param  $content  page content
-	 * @param bool $includeCsh  flag for including csh code
+	 * @param string $title page title
+	 * @param string $content page content
+	 * @param boolean $includeCsh flag for including csh code
 	 * @return string complete page
 	 */
-	public function render($title, $content, $includeCsh = TRUE)  {
+	public function render($title, $content, $includeCsh = TRUE) {
 		$pageContent = $this->startPage($title, $includeCsh);
 		$pageContent .= $content;
 		$pageContent .= $this->endPage();
@@ -841,10 +841,10 @@ $str.=$this->docBodyTagBegin().
 	 * Returns the header-bar in the top of most backend modules
 	 * Closes section if open.
 	 *
-	 * @param	string		The text string for the header
-	 * @return	string		HTML content
+	 * @param string $text The text string for the header
+	 * @return string HTML content
 	 */
-	function header($text)	{
+	function header($text) {
 		$str='
 
 	<!-- MAIN Header in page top -->
@@ -856,16 +856,16 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Begins an output section and sets header and content
 	 *
-	 * @param	string		The header
-	 * @param	string		The HTML-content
-	 * @param	boolean		A flag that will prevent the header from being converted to uppercase
-	 * @param	boolean		Defines the type of header (if set, "<h3>" rather than the default "h4")
-	 * @param	integer		The number of an icon to show with the header (see the icon-function). -1,1,2,3
-	 * @param	boolean		If set, HTML tags are allowed in $label (otherwise this value is by default htmlspecialchars()'ed)
-	 * @return	string		HTML content
+	 * @param string $label The header
+	 * @param string $text The HTML-content
+	 * @param boolean $nostrtoupper	A flag that will prevent the header from being converted to uppercase
+	 * @param boolean $sH Defines the type of header (if set, "<h3>" rather than the default "h4")
+	 * @param integer $type The number of an icon to show with the header (see the icon-function). -1,1,2,3
+	 * @param boolean $allowHTMLinHeader If set, HTML tags are allowed in $label (otherwise this value is by default htmlspecialchars()'ed)
+	 * @return string HTML content
 	 * @see icons(), sectionHeader()
 	 */
-	function section($label,$text,$nostrtoupper=FALSE,$sH=FALSE,$type=0,$allowHTMLinHeader=FALSE)	{
+	function section($label, $text, $nostrtoupper = FALSE, $sH = FALSE, $type=0, $allowHTMLinHeader = FALSE) {
 		$str='';
 
 			// Setting header
@@ -886,10 +886,10 @@ $str.=$this->docBodyTagBegin().
 	 * Inserts a divider image
 	 * Ends a section (if open) before inserting the image
 	 *
-	 * @param	integer		The margin-top/-bottom of the <hr> ruler.
-	 * @return	string		HTML content
+	 * @param integer $dist The margin-top/-bottom of the <hr> ruler.
+	 * @return string HTML content
 	 */
-	function divider($dist)	{
+	function divider($dist) {
 		$dist = intval($dist);
 		$str='
 
@@ -902,10 +902,10 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Returns a blank <div>-section with a height
 	 *
-	 * @param	integer		Padding-top for the div-section (should be margin-top but konqueror (3.1) doesn't like it :-(
-	 * @return	string		HTML content
+	 * @param integer $dist Padding-top for the div-section (should be margin-top but konqueror (3.1) doesn't like it :-(
+	 * @return string HTML content
 	 */
-	function spacer($dist)	{
+	function spacer($dist) {
 		if ($dist>0)	{
 			return '
 
@@ -919,12 +919,12 @@ $str.=$this->docBodyTagBegin().
 	 * Make a section header.
 	 * Begins a section if not already open.
 	 *
-	 * @param	string		The label between the <h3> or <h4> tags. (Allows HTML)
-	 * @param	boolean		If set, <h3> is used, otherwise <h4>
-	 * @param	string		Additional attributes to h-tag, eg. ' class=""'
-	 * @return	string		HTML content
+	 * @param string $label The label between the <h3> or <h4> tags. (Allows HTML)
+	 * @param boolean $sH If set, <h3> is used, otherwise <h4>
+	 * @param string $addAttrib Additional attributes to h-tag, eg. ' class=""'
+	 * @return string HTML content
 	 */
-	function sectionHeader($label, $sH=FALSE, $addAttrib='') {
+	function sectionHeader($label, $sH = FALSE, $addAttrib = '') {
 		$tag = ($sH ? 'h3' : 'h4');
 		if ($addAttrib && substr($addAttrib, 0, 1) !== ' ') {
 			$addAttrib = ' ' . $addAttrib;
@@ -942,9 +942,9 @@ $str.=$this->docBodyTagBegin().
 	 * Returns the <div>-begin tag AND sets the ->sectionFlag TRUE (if the ->sectionFlag is not already set!)
 	 * You can call this function even if a section is already begun since the function will only return something if the sectionFlag is not already set!
 	 *
-	 * @return	string		HTML content
+	 * @return string HTML content
 	 */
-	function sectionBegin()	{
+	function sectionBegin() {
 		if (!$this->sectionFlag)	{
 			$this->sectionFlag=1;
 			$str='
@@ -963,9 +963,9 @@ $str.=$this->docBodyTagBegin().
 	 * Returns the </div>-end tag AND clears the ->sectionFlag (but does so only IF the sectionFlag is set - that is a section is 'open')
 	 * See sectionBegin() also.
 	 *
-	 * @return	string		HTML content
+	 * @return string HTML content
 	 */
-	function sectionEnd()	{
+	function sectionEnd() {
 		if ($this->sectionFlag)	{
 			$this->sectionFlag=0;
 			return '
@@ -981,9 +981,9 @@ $str.=$this->docBodyTagBegin().
 	 * If a form-tag is defined in ->form then and end-tag for that <form> element is outputted
 	 * Further a JavaScript section is outputted which will update the top.busy session-expiry object (unless $this->endJS is set to FALSE)
 	 *
-	 * @return	string		HTML content (<script> tag section)
+	 * @return string HTML content (<script> tag section)
 	 */
-	function endPageJS()	{
+	function endPageJS() {
 		return ($this->endJS?'
 	<script type="text/javascript">
 		  /*<![CDATA[*/
@@ -998,9 +998,9 @@ $str.=$this->docBodyTagBegin().
 	 * Creates the bodyTag.
 	 * You can add to the bodyTag by $this->bodyTagAdditions
 	 *
-	 * @return	string		HTML body tag
+	 * @return string HTML body tag
 	 */
-	function docBodyTagBegin()	{
+	function docBodyTagBegin() {
 		$bodyContent = 'body onclick="if (top.menuReset) top.menuReset();" '.trim($this->bodyTagAdditions.($this->bodyTagId ? ' id="'.$this->bodyTagId.'"' : ''));
 		return '<'.trim($bodyContent).'>';
 	}
@@ -1008,9 +1008,9 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Outputting document style
 	 *
-	 * @return	string		HTML style section/link tags
+	 * @return string HTML style section/link tags
 	 */
-	function docStyle()	{
+	function docStyle() {
 
 			// Request background image:
 		if ($this->backGroundImage)	{
@@ -1041,13 +1041,13 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Insert additional style sheet link
 	 *
-	 * @param	string		$key: some key identifying the style sheet
-	 * @param	string		$href: uri to the style sheet file
-	 * @param	string		$title: value for the title attribute of the link element
-	 * @return	string		$relation: value for the rel attribute of the link element
-	 * @return	void
+	 * @param string $key some key identifying the style sheet
+	 * @param string $href uri to the style sheet file
+	 * @param string $title value for the title attribute of the link element
+	 * @param string $relation value for the rel attribute of the link element
+	 * @return void
 	 */
-	function addStyleSheet($key, $href, $title='', $relation='stylesheet') {
+	function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet') {
 		if (strpos($href, '://') !== FALSE || substr($href, 0, 1) === '/') {
 			$file = $href;
 		} else {
@@ -1059,8 +1059,8 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Add all *.css files of the directory $path to the stylesheets
 	 *
-	 * @param	string		directory to add
-	 * @return	void
+	 * @param string $path directory to add
+	 * @return void
 	 */
 	function addStyleSheetDirectory($path) {
 			// calculation needed, when TYPO3 source is used via a symlink
@@ -1079,10 +1079,10 @@ $str.=$this->docBodyTagBegin().
 	 * Insert post rendering document style into already rendered content
 	 * This is needed for extobjbase
 	 *
-	 * @param	string		style-content to insert.
-	 * @return	string		content with inserted styles
+	 * @param string $content style-content to insert.
+	 * @return string content with inserted styles
 	 */
-	function insertStylesAndJS($content)	{
+	function insertStylesAndJS($content) {
 			// insert accumulated CSS
 		$this->inDocStylesArray[] = $this->inDocStyles;
 		$styles = LF.implode(LF, $this->inDocStylesArray);
@@ -1098,7 +1098,7 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Returns an array of all stylesheet directories belonging to core and skins
 	 *
-	 * @return	array	Stylesheet directories
+	 * @return array Stylesheet directories
 	 */
 	public function getSkinStylesheetDirectories() {
 		$stylesheetDirectories = array();
@@ -1144,9 +1144,9 @@ $str.=$this->docBodyTagBegin().
 	 * Sets the internal $this->charset variable to the charset defined in $GLOBALS["LANG"] (or the default as set in this class)
 	 * Returns the meta-tag for the document header
 	 *
-	 * @return	string		<meta> tag with charset from $this->charset or $GLOBALS['LANG']->charSet
+	 * @return string <meta> tag with charset from $this->charset or $GLOBALS['LANG']->charSet
 	 */
-	function initCharset()	{
+	function initCharset() {
 			// Set charset to the charset provided by the current backend users language selection:
 		$this->charset = $GLOBALS['LANG']->charSet ? $GLOBALS['LANG']->charSet : $this->charset;
 			// Return meta tag:
@@ -1156,9 +1156,9 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Returns generator meta tag
 	 *
-	 * @return	string		<meta> tag with name "generator"
+	 * @return string <meta> tag with name "generator"
 	 */
-	function generator()	{
+	function generator() {
 		$str = 'TYPO3 '.TYPO3_branch.', ' . TYPO3_URL_GENERAL . ', &#169; Kasper Sk&#229;rh&#248;j ' . TYPO3_copyright_year . ', extensions are copyright of their respective owners.';
 		return '<meta name="generator" content="'.$str .'" />';
 	}
@@ -1166,8 +1166,8 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Returns X-UA-Compatible meta tag
 	 *
-	 * @param	string		$content Content of the compatible tag (default: IE-8)
-	 * @return	string		<meta http-equiv="X-UA-Compatible" content="???" />
+	 * @param string $content Content of the compatible tag (default: IE-8)
+	 * @return string <meta http-equiv="X-UA-Compatible" content="???" />
 	 */
 	public function xUaCompatible($content = 'IE=8') {
 		return '<meta http-equiv="X-UA-Compatible" content="' . $content . '" />';
@@ -1196,11 +1196,11 @@ $str.=$this->docBodyTagBegin().
 	 * 2:	Warning (Yellow triangle)
 	 * 3:	Fatal error (Red stop sign)
 	 *
-	 * @param	integer		See description
-	 * @param	string		Value for style attribute
-	 * @return	string		HTML image tag (if applicable)
+	 * @param integer $type See description
+	 * @param string $styleAttribValue Value for style attribute
+	 * @return string HTML image tag (if applicable)
 	 */
-	function icons($type, $styleAttribValue='')	{
+	function icons($type, $styleAttribValue = '') {
 		switch($type)	{
 			case self::STATUS_ICON_ERROR:
 				$icon = 'status-dialog-error';
@@ -1225,11 +1225,11 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Returns an <input> button with the $onClick action and $label
 	 *
-	 * @param	string		The value of the onclick attribute of the input tag (submit type)
-	 * @param	string		The label for the button (which will be htmlspecialchar'ed)
-	 * @return	string		A <input> tag of the type "submit"
+	 * @param string $onClick The value of the onclick attribute of the input tag (submit type)
+	 * @param string $label The label for the button (which will be htmlspecialchar'ed)
+	 * @return string A <input> tag of the type "submit"
 	 */
-	function t3Button($onClick,$label)	{
+	function t3Button($onClick, $label) {
 		$button = '<input type="submit" onclick="'.htmlspecialchars($onClick).'; return false;" value="'.htmlspecialchars($label).'" />';
 		return $button;
 	}
@@ -1237,30 +1237,30 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * dimmed-fontwrap. Returns the string wrapped in a <span>-tag defining the color to be gray/dimmed
 	 *
-	 * @param	string		Input string
-	 * @return	string		Output string
+	 * @param string $string Input string
+	 * @return string Output string
 	 */
-	function dfw($string)	{
+	function dfw($string) {
 		return '<span class="typo3-dimmed">'.$string.'</span>';
 	}
 
 	/**
 	 * red-fontwrap. Returns the string wrapped in a <span>-tag defining the color to be red
 	 *
-	 * @param	string		Input string
-	 * @return	string		Output string
+	 * @param string $string Input string
+	 * @return string Output string
 	 */
-	function rfw($string)	{
+	function rfw($string) {
 		return '<span class="typo3-red">'.$string.'</span>';
 	}
 
 	/**
 	 * Returns string wrapped in CDATA "tags" for XML / XHTML (wrap content of <script> and <style> sections in those!)
 	 *
-	 * @param	string		Input string
-	 * @return	string		Output string
+	 * @param string $string Input string
+	 * @return string Output string
 	 */
-	function wrapInCData($string)	{
+	function wrapInCData($string) {
 		$string = '/*<![CDATA[*/'.
 			$string.
 			'/*]]>*/';
@@ -1273,11 +1273,11 @@ $str.=$this->docBodyTagBegin().
 	 * Automatic re-identing of the JS code is done by using the first line as ident reference.
 	 * This is nice for identing JS code with PHP code on the same level.
 	 *
-	 * @param	string		Input string
-	 * @param	boolean		Wrap script element in linebreaks? Default is TRUE.
-	 * @return	string		Output string
+	 * @param string $string Input string
+	 * @param boolean $linebreak Wrap script element in linebreaks? Default is TRUE.
+	 * @return string Output string
 	 */
-	function wrapScriptTags($string, $linebreak=TRUE)	{
+	function wrapScriptTags($string, $linebreak = TRUE) {
 		if(trim($string)) {
 				// <script wrapped in nl?
 			$cr = $linebreak? LF : '';
@@ -1311,12 +1311,12 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Returns a table based on the input $data
 	 *
-	 * @param	array		Multidim array with first levels = rows, second levels = cells
-	 * @param	array		If set, then this provides an alternative layout array instead of $this->tableLayout
-	 * @return	string		The HTML table.
+	 * @param array $data Multidim array with first levels = rows, second levels = cells
+	 * @param array $layout If set, then this provides an alternative layout array instead of $this->tableLayout
+	 * @return string The HTML table.
 	 * @internal
 	 */
-	function table($data, $layout = '') {
+	function table($data, $layout = NULL) {
 		$result = '';
 		if (is_array($data)) {
 			$tableLayout = (is_array($layout) ? $layout : $this->tableLayout);
@@ -1355,12 +1355,12 @@ $str.=$this->docBodyTagBegin().
 	 * Constructs a table with content from the $arr1, $arr2 and $arr3.
 	 * Used in eg. ext/belog/mod/index.php - refer to that for examples
 	 *
-	 * @param	array		Menu elements on first level
-	 * @param	array		Secondary items
-	 * @param	array		Third-level items
-	 * @return	string		HTML content, <table>...</table>
+	 * @param array $arr1 Menu elements on first level
+	 * @param array $arr2 Secondary items
+	 * @param array $arr3 Third-level items
+	 * @return string HTML content, <table>...</table>
 	 */
-	function menuTable($arr1,$arr2=array(), $arr3=array())	{
+	function menuTable($arr1,$arr2 = array(), $arr3 = array()) {
 		$rows = max(array(count($arr1),count($arr2),count($arr3)));
 
 		$menu='
@@ -1389,11 +1389,11 @@ $str.=$this->docBodyTagBegin().
 	 * Returns a one-row/two-celled table with $content and $menu side by side.
 	 * The table is a 100% width table and each cell is aligned left / right
 	 *
-	 * @param	string		Content cell content (left)
-	 * @param	string		Menu cell content (right)
-	 * @return	string		HTML output
+	 * @param string $content Content cell content (left)
+	 * @param string $menu Menu cell content (right)
+	 * @return string HTML output
 	 */
-	function funcMenu($content,$menu)	{
+	function funcMenu($content, $menu) {
 		return '
 			<table border="0" cellpadding="0" cellspacing="0" width="100%" id="typo3-funcmenu">
 				<tr>
@@ -1408,11 +1408,10 @@ $str.=$this->docBodyTagBegin().
 	 * Includes a javascript library that exists in the core /typo3/ directory. The
 	 * backpath is automatically applied
 	 *
-	 * @param	string		$lib: Library name. Call it with the full path
-	 * 				like "contrib/prototype/prototype.js" to load it
-	 * @return	void
+	 * @param string $lib: Library name. Call it with the full path like "contrib/prototype/prototype.js" to load it
+	 * @return void
 	 */
-	function loadJavascriptLib($lib)	{
+	function loadJavascriptLib($lib) {
 		$this->pageRenderer->addJsFile($this->backPath . $lib);
 	}
 
@@ -1420,11 +1419,9 @@ $str.=$this->docBodyTagBegin().
 
 	/**
 	 * Includes the necessary Javascript function for the clickmenu (context sensitive menus) in the document
-	 *
-	 * @return	array	Deprecated: Includes the code already in the doc, so the return array is always empty.
-	 *			Please just call this function without expecting a return value for future calls
+	 * @return void
 	 */
-	function getContextMenuCode()   {
+	function getContextMenuCode() {
 	       $this->pageRenderer->loadPrototype();
 	       $this->loadJavascriptLib('js/clickmenu.js');
 
@@ -1437,10 +1434,10 @@ $str.=$this->docBodyTagBegin().
 	 * Includes the necessary javascript file (tree.js) for use on pages which have the
 	 * drag and drop functionality (usually pages and folder display trees)
 	 *
-	 * @param	string		indicator of which table the drag and drop function should work on (pages or folders)
-	 * @return	array		If values are present: [0] = A <script> section for the HTML page header, [1] = onmousemove/onload handler for HTML tag or alike, [2] = One empty <div> layer for the follow-mouse drag element
+	 * @param string $table indicator of which table the drag and drop function should work on (pages or folders)
+	 * @return void
 	 */
-	function getDragDropCode($table)	{
+	function getDragDropCode($table) {
 		$this->pageRenderer->loadPrototype();
 		$this->loadJavascriptLib('js/common.js');
 		$this->loadJavascriptLib('js/tree.js');
@@ -1470,16 +1467,15 @@ $str.=$this->docBodyTagBegin().
 	 * Returns a tab menu for a module
 	 * Requires the JS function jumpToUrl() to be available
 	 *
-	 * @param	mixed		$id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
-	 * @param	string		$elementName it the form elements name, probably something like "SET[...]"
-	 * @param	string		$currentValue is the value to be selected currently.
-	 * @param	array		$menuItems is an array with the menu items for the selector box
-	 * @param	string		$script is the script to send the &id to, if empty it's automatically found
-	 * @param	string		$addParams is additional parameters to pass to the script.
-	 * @return	string		HTML code for tab menu
-	 * @author	René Fritz <r.fritz@colorcube.de>
+	 * @param mixed $mainParams is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
+	 * @param string $elementName it the form elements name, probably something like "SET[...]"
+	 * @param string $currentValue is the value to be selected currently.
+	 * @param array $menuItems is an array with the menu items for the selector box
+	 * @param string $script is the script to send the &id to, if empty it's automatically found
+	 * @param string $addparams is additional parameters to pass to the script.
+	 * @return string HTML code for tab menu
 	 */
-	function getTabMenu($mainParams,$elementName,$currentValue,$menuItems,$script='',$addparams='')	{
+	function getTabMenu($mainParams, $elementName, $currentValue, $menuItems, $script = '', $addparams = '') {
 		$content='';
 
 		if (is_array($menuItems))	{
@@ -1505,11 +1501,11 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Creates the HTML content for the tab menu
 	 *
-	 * @param	array		Menu items for tabs
-	 * @return	string		Table HTML
+	 * @param array $menuItems Menu items for tabs
+	 * @return string Table HTML
 	 * @access private
 	 */
-	function getTabMenuRaw($menuItems)	{
+	function getTabMenuRaw($menuItems) {
 		$content='';
 
 		if (is_array($menuItems))	{
@@ -1560,17 +1556,17 @@ $str.=$this->docBodyTagBegin().
 	 * Creates a DYNAMIC tab-menu where the tabs are switched between with DHTML.
 	 * Should work in MSIE, Mozilla, Opera and Konqueror. On Konqueror I did find a serious problem: <textarea> fields loose their content when you switch tabs!
 	 *
-	 * @param	array		Numeric array where each entry is an array in itself with associative keys: "label" contains the label for the TAB, "content" contains the HTML content that goes into the div-layer of the tabs content. "description" contains description text to be shown in the layer. "linkTitle" is short text for the title attribute of the tab-menu link (mouse-over text of tab). "stateIcon" indicates a standard status icon (see ->icon(), values: -1, 1, 2, 3). "icon" is an image tag placed before the text.
-	 * @param	string		Identification string. This should be unique for every instance of a dynamic menu!
-	 * @param	integer		If "1", then enabling one tab does not hide the others - they simply toggles each sheet on/off. This makes most sense together with the $foldout option. If "-1" then it acts normally where only one tab can be active at a time BUT you can click a tab and it will close so you have no active tabs.
-	 * @param	boolean		If set, the tabs are rendered as headers instead over each sheet. Effectively this means there is no tab menu, but rather a foldout/foldin menu. Make sure to set $toggle as well for this option.
-	 * @param	boolean		If set, tab table cells are not allowed to wrap their content
-	 * @param	boolean		If set, the tabs will span the full width of their position
-	 * @param	integer		Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1 (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing) will result in no default tab open.
-	 * @param	integer		If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled
-	 * @return	string		JavaScript section for the HTML header.
+	 * @param array $menuItems Numeric array where each entry is an array in itself with associative keys: "label" contains the label for the TAB, "content" contains the HTML content that goes into the div-layer of the tabs content. "description" contains description text to be shown in the layer. "linkTitle" is short text for the title attribute of the tab-menu link (mouse-over text of tab). "stateIcon" indicates a standard status icon (see ->icon(), values: -1, 1, 2, 3). "icon" is an image tag placed before the text.
+	 * @param string $identString Identification string. This should be unique for every instance of a dynamic menu!
+	 * @param integer $toggle If "1", then enabling one tab does not hide the others - they simply toggles each sheet on/off. This makes most sense together with the $foldout option. If "-1" then it acts normally where only one tab can be active at a time BUT you can click a tab and it will close so you have no active tabs.
+	 * @param boolean $foldout If set, the tabs are rendered as headers instead over each sheet. Effectively this means there is no tab menu, but rather a foldout/foldin menu. Make sure to set $toggle as well for this option.
+	 * @param boolean $noWrap If set, tab table cells are not allowed to wrap their content
+	 * @param boolean $fullWidth If set, the tabs will span the full width of their position
+	 * @param integer $defaultTabIndex Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1 (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing) will result in no default tab open.
+	 * @param integer $dividers2tabs If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled
+	 * @return string JavaScript section for the HTML header.
 	 */
-	public function getDynTabMenu($menuItems, $identString, $toggle = 0, $foldout = FALSE, $noWrap = 1, $fullWidth = FALSE, $defaultTabIndex = 1, $dividers2tabs = 2) {
+	public function getDynTabMenu($menuItems, $identString, $toggle = 0, $foldout = FALSE, $noWrap = TRUE, $fullWidth = FALSE, $defaultTabIndex = 1, $dividers2tabs = 2) {
 			// load the static code, if not already done with the function below
 		$this->loadJavascriptLib('js/tabmenu.js');
 
@@ -1705,8 +1701,8 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Creates the id for dynTabMenus.
 	 *
-	 * @param	string		$identString: Identification string. This should be unique for every instance of a dynamic menu!
-	 * @return	string		The id with a short MD5 of $identString and prefixed "DTM-", like "DTM-2e8791854a"
+	 * @param string $identString Identification string. This should be unique for every instance of a dynamic menu!
+	 * @return string The id with a short MD5 of $identString and prefixed "DTM-", like "DTM-2e8791854a"
 	 */
 	function getDynTabMenuId($identString) {
 		$id = 'DTM-'.t3lib_div::shortMD5($identString);
@@ -1717,9 +1713,9 @@ $str.=$this->docBodyTagBegin().
 	 * Creates the version selector for the page id inputted.
 	 * Requires the core version management extension, "version" to be loaded.
 	 *
-	 * @param	integer		Page id to create selector for.
-	 * @param	boolean		If set, there will be no button for swapping page.
-	 * @return	void
+	 * @param integer $id Page id to create selector for.
+	 * @param boolean $noAction If set, there will be no button for swapping page.
+	 * @return string
 	 */
 	public function getVersionSelector($id, $noAction = FALSE) {
 		if (t3lib_extMgm::isLoaded('version')) {
@@ -1732,10 +1728,10 @@ $str.=$this->docBodyTagBegin().
 	 * Function to load a HTML template file with markers.
 	 * When calling from own extension, use  syntax getHtmlTemplate('EXT:extkey/template.html')
 	 *
-	 * @param	string		tmpl name, usually in the typo3/template/ directory
-	 * @return	string		HTML of template
+	 * @param string $filename tmpl name, usually in the typo3/template/ directory
+	 * @return string HTML of template
 	 */
-	function getHtmlTemplate($filename)	{
+	function getHtmlTemplate($filename) {
 			// setting the name of the original HTML template
 		$this->moduleTemplateFilename = $filename;
 
@@ -1759,7 +1755,8 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Define the template for the module
 	 *
-	 * @param	string		filename
+	 * @param string $filename filename
+	 * @return void
 	 */
 	public function setModuleTemplate($filename) {
 			// Load Prototype lib for IE event
@@ -1772,10 +1769,11 @@ $str.=$this->docBodyTagBegin().
 	 * Put together the various elements for the module <body> using a static HTML
 	 * template
 	 *
-	 * @param	array		Record of the current page, used for page path and info
-	 * @param	array		HTML for all buttons
-	 * @param	array		HTML for all other markers
-	 * @return	string		Composite HTML
+	 * @param array $pageRecord Record of the current page, used for page path and info
+	 * @param array $buttons HTML for all buttons
+	 * @param array $markerArray HTML for all other markers
+	 * @param array $subpartArray HTML for the subparts
+	 * @return string Composite HTML
 	 */
 	public function moduleBody($pageRecord = array(), $buttons = array(), $markerArray = array(), $subpartArray = array()) {
 			// Get the HTML template for the module
@@ -1836,8 +1834,8 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Fill the button lists with the defined HTML
 	 *
-	 * @param	array		HTML for all buttons
-	 * @return	array		Containing HTML for both buttonlists
+	 * @param array $buttons HTML for all buttons
+	 * @return array Containing HTML for both buttonlists
 	 */
 	protected function getDocHeaderButtons($buttons) {
 		$markers = array();
@@ -1883,8 +1881,8 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Generate the page path for docheader
 	 *
-	 * @param 	array	Current page
-	 * @return	string	Page path
+	 * @param array $pageRecord Current page
+	 * @return string Page path
 	 */
 	protected function getPagePath($pageRecord) {
 			// Is this a real page
@@ -1917,8 +1915,8 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Setting page icon with clickmenu + uid for docheader
 	 *
-	 * @param 	array	Current page
-	 * @return	string	Page info
+	 * @param array $pageRecord Current page
+	 * @return string Page info
 	 */
 	protected function getPageInfo($pageRecord) {
 
@@ -1950,10 +1948,10 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Makes a collapseable section. See reports module for an example
 	 *
-	 * @param  string  $title
-	 * @param  string  $html
-	 * @param  string  $id
-	 * @param  string $saveStatePointer
+	 * @param string $title
+	 * @param string $html
+	 * @param string $id
+	 * @param string $saveStatePointer
 	 * @return string
 	 */
 	public function collapseableSection($title, $html, $id, $saveStatePointer = '') {
@@ -2068,7 +2066,7 @@ class frontendDoc extends template {
 	/**
 	 * Gets instance of PageRenderer
 	 *
-	 * @return	t3lib_PageRenderer
+	 * @return t3lib_PageRenderer
 	 */
 	public function getPageRenderer() {
 		if (!isset($this->pageRenderer)) {
@@ -2081,7 +2079,7 @@ class frontendDoc extends template {
 	 * Used in the frontend context to insert header data via TSFE->additionalHeaderData.
 	 * Mimics header inclusion from template->startPage().
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function insertHeaderData() {
 
