@@ -34,6 +34,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser Public License, version 3 or later
  */
 class Tx_Extbase_Security_Cryptography_HashService implements t3lib_singleton {
+
 	/**
 	 * Generate a hash for a given string
 	 *
@@ -50,6 +51,19 @@ class Tx_Extbase_Security_Cryptography_HashService implements t3lib_singleton {
 	}
 
 	/**
+	 * Appends a hash (HMAC) to a given string and returns the result
+	 *
+	 * @param string $string The string for which a hash should be generated
+	 * @return string The original string with HMAC of the string appended
+	 * @see generateHmac()
+	 * @todo Mark as API once it is more stable
+	 */
+	public function appendHmac($string) {
+		$hmac = $this->generateHash($string);
+		return $string . $hmac;
+	}
+
+	/**
 	 * Test if a string $string has the hash given by $hash.
 	 *
 	 * @param string $string The string which should be validated
@@ -59,6 +73,33 @@ class Tx_Extbase_Security_Cryptography_HashService implements t3lib_singleton {
 	 */
 	public function validateHash($string, $hash) {
 		return ($this->generateHash($string) === $hash);
+	}
+
+	/**
+	 * Tests if the last 40 characters of a given string $string
+	 * matches the HMAC of the rest of the string and, if true,
+	 * returns the string without the HMAC. In case of a HMAC
+	 * validation error, an exception is thrown.
+	 *
+	 * @param string $string The string with the HMAC appended (in the format 'string<HMAC>')
+	 * @return string the original string without the HMAC, if validation was successful
+	 * @see validateHash()
+	 * @throws Tx_Extbase_Security_Exception_InvalidArgumentForHashGeneration if the given string is not well-formatted
+	 * @throws Tx_Extbase_Security_Exception_InvalidHash if the hash did not fit to the data.
+	 * @todo Mark as API once it is more stable
+	 */
+	public function validateAndStripHmac($string) {
+		if (!is_string($string)) {
+			throw new Tx_Extbase_Security_Exception_InvalidArgumentForHashGeneration('A hash can only be validated for a string, but "' . gettype($string) . '" was given.', 1320829762);
+		}
+		if (strlen($string) < 40) {
+			throw new Tx_Extbase_Security_Exception_InvalidArgumentForHashGeneration('A hashed string must contain at least 40 characters, the given string was only ' . strlen($string) . ' characters long.', 1320830276);
+		}
+		$stringWithoutHmac = substr($string, 0, -40);
+		if ($this->validateHash($stringWithoutHmac, substr($string, -40)) !== TRUE) {
+			throw new Tx_Extbase_Security_Exception_InvalidHash('The given string was not appended with a valid HMAC.', 1320830018);
+		}
+		return $stringWithoutHmac;
 	}
 }
 ?>
