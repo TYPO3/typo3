@@ -4450,6 +4450,8 @@ final class t3lib_div {
 		} elseif (self::isFirstPartOfStr($fileRef, PATH_site . 'typo3_src/tests/')) { // Is test:
 			$validatedPrefix = PATH_site . 'typo3_src/tests/';
 			$location = $validatedPrefix;
+		} elseif (self::isFirstPartOfStr($fileRef, PATH_typo3conf . 'l10n/')) {
+			$validatedPrefix = PATH_typo3conf . 'l10n/';
 		} else {
 			$validatedPrefix = '';
 		}
