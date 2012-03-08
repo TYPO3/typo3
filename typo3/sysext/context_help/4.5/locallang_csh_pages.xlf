@@ -213,7 +213,7 @@ As an example the template could be use this field to allow a logo to be attache
 				<source>Enter the URL this page redirects to.</source>
 			</trans-unit>
 			<trans-unit id="url.details" xml:space="preserve">
-				<source>For example, 'http://www.typo3.com' or just 'www.typo3.com' if the 'Protocol' selector is set to 'http://'.
+				<source>For example, 'http://www.typo3.org' or just 'www.typo3.org' if the 'Protocol' selector is set to 'http://'.
 Use the 'Protocol' selector to select a prefix for the URL.
 
 This option is used only if the page 'Type' is set to 'Link to External URL.'</source>

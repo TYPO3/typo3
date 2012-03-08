@@ -61,14 +61,14 @@ class TYPO3Logo {
 		$imgInfo = getimagesize(PATH_site . TYPO3_mainDir . $logoFile);
 
 
-		$logo = '<a href="http://www.typo3.com/" target="_blank">'.
-				'<img'.t3lib_iconWorks::skinImg('', $logoFile, $imgInfo[3]).' title="TYPO3 Content Management System" alt="" />'.
+		$logo = '<a href="http://www.typo3.org/" target="_blank">' .
+				'<img' . t3lib_iconWorks::skinImg('', $logoFile, $imgInfo[3]) . ' title="TYPO3 Content Management System" alt="" />' .
 				'</a>';
 
 			// overwrite with custom logo
 		if($GLOBALS['TBE_STYLES']['logo'])	{
 			$imgInfo = @getimagesize(t3lib_div::resolveBackPath(PATH_typo3 . $GLOBALS['TBE_STYLES']['logo'], 3));
-			$logo = '<a href="http://www.typo3.com/" target="_blank">' .
+			$logo = '<a href="http://www.typo3.org/" target="_blank">' .
 				'<img src="' . $GLOBALS['TBE_STYLES']['logo'] . '" ' . $imgInfo[3] . ' title="TYPO3 Content Management System" alt="" />' .
 				'</a>';
 		}
