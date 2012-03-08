@@ -316,7 +316,7 @@ This value has no default value and only if you specify a value for this token w
 			<description><![CDATA[If this value is set, then all relative links in TypoScript are prepended with this string. Used to convert relative paths to absolute paths.
 
 Note: This values is automatically set to the dirname of the index.php script in case simulateStaticDocuments is set to "PATH_INFO".
-If you're working on a server where you have both internal and external access, you might to yourself a favour and set the absRefPrefix to the url and path of you site, eg. http://www.typo3.com/. If you do not, you risk to render pages to cache from the internal network and thereby prefix image-references and links with a non-accessible path from outside.]]></description>
+If you're working on a server where you have both internal and external access, you might to yourself a favour and set the absRefPrefix to the url and path of you site, eg. http://www.typo3.org/. If you do not, you risk to render pages to cache from the internal network and thereby prefix image-references and links with a non-accessible path from outside.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -331,8 +331,8 @@ Content-type: text/vnd.wap.wml
 Content-type: image/gif | Expires: Mon, 26 Jul 1997 05:00:00 GMT
 (this will sent a content-header for a GIF-file and a Expires header)
 
-Location: www.typo3.com
-(This redirects the page to www.typo3.com)]]></description>
+Location: www.typo3.org
+(This redirects the page to www.typo3.org)]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -7395,10 +7395,10 @@ makelinks.mailto.keep = path]]></description>
 			<description><![CDATA[Like constants above, but local.
 
 Example:
-This substitutes all occurencies of "T3" with "TYPO3 CMS" and "T3web" with a link to typo3.com.
+This substitutes all occurencies of "T3" with "TYPO3 CMS" and "T3web" with a link to typo3.org.
 short {
   T3 = TYPO3 CMS
-  T3web = <a href="http://typo3.com">typo3</a>
+  T3web = <a href="http://typo3.org">typo3</a>
 }]]></description>
 			<default><![CDATA[
 ]]></default>

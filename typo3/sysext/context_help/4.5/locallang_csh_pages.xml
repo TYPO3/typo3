@@ -107,7 +107,7 @@ As an example the template could be use this field to allow a logo to be attache
 			<label index="subtitle.description">Enter a subtitle if needed.</label>
 			<label index="subtitle.details">Whether this field is used or not depends on the template. In most cases it's not used.</label>
 			<label index="url.description">Enter the URL this page redirects to.</label>
-			<label index="url.details">For example, 'http://www.typo3.com' or just 'www.typo3.com' if the 'Protocol' selector is set to 'http://'.
+			<label index="url.details">For example, 'http://www.typo3.org' or just 'www.typo3.org' if the 'Protocol' selector is set to 'http://'.
 Use the 'Protocol' selector to select a prefix for the URL.
 
 This option is used only if the page 'Type' is set to 'Link to External URL.'</label>

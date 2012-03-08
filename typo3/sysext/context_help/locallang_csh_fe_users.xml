@@ -16,7 +16,7 @@
 			<label index="usergroup.details">When a user logs in he is able to view all content which is access restricted to the user &lt;em&gt;group(s)&lt;/em&gt; the user is a member of. Therefore the user login primarily makes sense with regard to the member groups.</label>
 			<label index="lockToDomain.description">Enter the host name from which the user is forced to login.</label>
 			<label index="lockToDomain.details">A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</label>
-			<label index="lockToDomain.syntax">Either a domain name, &quot;www.typo3.com&quot; or an IP address, &quot;10.34.222.83&quot;</label>
+			<label index="lockToDomain.syntax">Either a domain name, &quot;www.typo3.org&quot; or an IP address, &quot;10.34.222.83&quot;</label>
 			<label index="_lockToDomain.seeAlso">fe_groups:lockToDomain</label>
 			<label index="name.description">Enter the regular name of the user, both first- and surname.</label>
 			<label index="address.description">Enter the street address of the user.</label>

@@ -108,7 +108,7 @@ As an example this field could be used from the template to allow you to attach 
 			<label index="subtitle.details">Whether this field is used or not depends on the template. In most cases it's not used.
 You may use this field as you like in your own templates.</label>
 			<label index="url.description">Enter the URL to which this page is supposed to link.</label>
-			<label index="url.details">Example: 'http://www.typo3.com' or just 'www.typo3.com' provided the 'Type' selector is set to 'http://'.
+			<label index="url.details">Example: 'http://www.typo3.org' or just 'www.typo3.org' provided the 'Type' selector is set to 'http://'.
 Use the 'Type' selector to select a prefix for the URL.
 
 This option is used only if the page 'Type' is set to 'External URL'.</label>

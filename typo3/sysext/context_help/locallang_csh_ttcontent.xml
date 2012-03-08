@@ -142,7 +142,7 @@ tt_content:date,</label>
 			<label index="header_link.description">Creates a link from the header. Insert a page id, email address or URL.</label>
 			<label index="header_link.syntax">If you insert an id-number, eg. &quot;51&quot;, the link will refer to page with id=51 &lt;em&gt;inside&lt;/em&gt; TYPO3.
 If you insert an email address, eg. &quot;name@my-domain.test&quot;, the link will point to that email address.
-If you insert an URL or domain, eg. &quot;www.typo3.com&quot; or &quot;http://www.my-domain.org&quot;, the link will point to that website.</label>
+If you insert an URL or domain, eg. &quot;www.typo3.org&quot; or &quot;http://www.my-domain.org&quot;, the link will point to that website.</label>
 			<label index="_header_link.seeAlso">tt_content:header</label>
 			<label index="header_layout.description">Select a visual design for the header.</label>
 			<label index="header_layout.details">If you select &quot;Default&quot; the standard design (which is one of the layouts 1-5) will be used.
