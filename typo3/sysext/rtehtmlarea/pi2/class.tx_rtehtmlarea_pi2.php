@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -210,6 +210,9 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		 * =======================================
 		 */
 		$pageRenderer = $this->getPageRenderer();
+			// Add metatag for IE9 to use IE8 standards mode
+			// ExtJS 3.3 does not support IE9 standards mode
+		$pageRenderer->addMetaTag('<meta http-equiv="X-UA-Compatible" content="IE=8" />');
 			// Preloading the pageStyle and including RTE skin stylesheets
 		$this->addPageStyle();
 		$this->addSkin();
