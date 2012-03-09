@@ -80,7 +80,7 @@ class Tx_Extbase_MVC_CLI_RequestBuilder {
 	 * @return Tx_Extbase_MVC_CLI_Request The CLI request as an object
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function build($commandLine) {
+	public function build($commandLine = '') {
 		$request = $this->objectManager->get('Tx_Extbase_MVC_CLI_Request');
 		$request->setControllerObjectName('Tx_Extbase_Command_HelpCommandController');
 
