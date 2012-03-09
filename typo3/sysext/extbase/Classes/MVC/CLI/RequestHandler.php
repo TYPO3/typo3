@@ -121,7 +121,7 @@ class Tx_Extbase_MVC_CLI_RequestHandler implements Tx_Extbase_MVC_RequestHandler
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getPriority() {
-		return 110;
+		return 90;
 	}
 }
 ?>
