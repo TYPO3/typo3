@@ -65,7 +65,7 @@ class Tx_Extbase_MVC_CLI_CommandManager implements t3lib_Singleton {
 		if ($this->availableCommands === NULL) {
 			$this->availableCommands = array();
 
-			$commandControllerClassNames = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'];
+			$commandControllerClassNames = (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']) ? $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'] : array());
 			foreach ($commandControllerClassNames as $className) {
 				if (!class_exists($className)) {
 					continue;
