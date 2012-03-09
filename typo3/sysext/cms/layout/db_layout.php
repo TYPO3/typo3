@@ -1186,7 +1186,7 @@ class SC_db_layout {
 		}
 
 			// Cache
-		if (!$this->modTSconfig['properties']['disableAdvanced'])	{
+		if (!$this->modTSconfig['properties']['disableAdvanced']) {
 			$buttons['cache'] = '<a href="' . htmlspecialchars('db_layout.php?id=' . $this->pageinfo['uid'] . '&clear_cache=1') . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.clear_cache', TRUE) . '">' .
 					t3lib_iconWorks::getSpriteIcon('actions-system-cache-clear') .
 				'</a>';
@@ -1201,30 +1201,30 @@ class SC_db_layout {
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList')
 		);
 
-		if (!$this->modTSconfig['properties']['disableIconToolbar'])	{
+		if (!$this->modTSconfig['properties']['disableIconToolbar']) {
 
 				// Page history
 			$buttons['history_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $GLOBALS['BACK_PATH'] . 'show_rechis.php?element=' . rawurlencode('pages:' . $this->id) . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . '#latest\');return false;') . '" title="' . $GLOBALS['LANG']->getLL('recordHistory', TRUE) . '">' .
 						t3lib_iconWorks::getSpriteIcon('actions-document-history-open') .
 					'</a>';
-				// New content element
-			$buttons['new_content'] = '<a href="' . htmlspecialchars('db_new_content_el.php?id=' . $this->id . '&sys_language_uid=' . $this->current_sys_language . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '" title="' . $GLOBALS['LANG']->getLL('newContentElement', TRUE) . '">' .
-						t3lib_iconWorks::getSpriteIcon('actions-document-new') .
-					'</a>';
+
 				// Move page
 			$buttons['move_page'] = '<a href="' . htmlspecialchars($GLOBALS['BACK_PATH'] . 'move_el.php?table=pages&uid=' . $this->id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '" title="' . $GLOBALS['LANG']->getLL('move_page', TRUE) . '">' .
 						t3lib_iconWorks::getSpriteIcon('actions-page-move') .
 					'</a>';
+
 				// Move record
 			if (t3lib_utility_Math::canBeInterpretedAsInteger($this->eRParts[1])) {
 				$buttons['move_record'] = '<a href="' . htmlspecialchars($GLOBALS['BACK_PATH'] . 'move_el.php?table=' . $this->eRParts[0] . '&uid=' . $this->eRParts[1] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '">' .
 						t3lib_iconWorks::getSpriteIcon('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move',array('class'=>'c-inputButton','title' => $GLOBALS['LANG']->getLL('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page'), 1))) .
 						'</a>';
 			}
+
 				// Create new page (wizard)
 			$buttons['new_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $GLOBALS['BACK_PATH'] . 'db_new.php?id=' . $this->id . '&pagesOnly=1&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . '\');return false;') . '" title="' . $GLOBALS['LANG']->getLL('newPage', TRUE) . '">' .
 						t3lib_iconWorks::getSpriteIcon('actions-page-new') .
 					'</a>';
+
 				// Edit page properties
 			if ($this->CALC_PERMS&2)	{
 				$params='&edit[pages][' . $this->id . ']=edit';
@@ -1234,13 +1234,13 @@ class SC_db_layout {
 			}
 
 				// Add CSH (Context Sensitive Help) icon to tool bar
-			if($function == 'quickEdit') {
+			if ($function == 'quickEdit') {
 				$buttons['csh'] = t3lib_BEfunc::cshItem($this->descrTable, 'quickEdit', $GLOBALS['BACK_PATH'], '', TRUE, 'margin-top: 0px; margin-bottom: 0px;');
 			} else {
 				$buttons['csh'] = t3lib_BEfunc::cshItem($this->descrTable, 'columns_' . $this->MOD_SETTINGS['function'], $GLOBALS['BACK_PATH'], '', TRUE, 'margin-top: 0px; margin-bottom: 0px;');
 			}
 
-			if($function == 'quickEdit') {
+			if ($function == 'quickEdit') {
 					// Save record
 				$buttons['savedok'] = '<input class="c-inputButton" type="image" name="savedok"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/savedok.gif','') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" alt="" />';
 
