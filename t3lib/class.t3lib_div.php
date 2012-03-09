@@ -2379,7 +2379,7 @@ final class t3lib_div {
 						$name = '';
 					}
 				} else {
-					if ($key = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $val))) {
+					if ($key = strtolower(preg_replace('/[^[:alnum:]_\:\-]/', '', $val))) {
 						$attributes[$key] = '';
 						$name = $key;
 					}
