@@ -81,12 +81,39 @@ final class t3lib_utility_Command {
 			// Compile the path & command
 		if ($im_version === 'gm') {
 			$switchCompositeParameters = TRUE;
-			$path = escapeshellarg($path . 'gm' . $isExt) . ' ' . $command;
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+				$currentLocale = setlocale(LC_CTYPE, 0);
+				setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+			}
+			$originalPath = $path . 'gm' . $isExt;
+			$path = escapeshellarg($originalPath);
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+				setlocale(LC_CTYPE, $currentLocale);
+			}
+				// if escapeshellarg didn't change anything and if there is no whitespace in the original string
+				// keep the original for (partial) safe_mode compatibility
+			if (trim($path, '"\'') === $originalPath && !preg_match('/[[:space:]]/', $originalPath)) {
+				$path = $originalPath;
+			}
+			$path .= ' ' . $command;
 		} else {
 			if ($im_version === 'im6') {
 				$switchCompositeParameters = TRUE;
 			}
-			$path = escapeshellarg($path . (($command == 'composite') ? $combineScript : $command) . $isExt);
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+				$currentLocale = setlocale(LC_CTYPE, 0);
+				setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+			}
+			$originalPath = $path . (($command == 'composite') ? $combineScript : $command) . $isExt;
+			$path = escapeshellarg($originalPath);
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+				setlocale(LC_CTYPE, $currentLocale);
+			}
+				// if escapeshellarg didn't change anything and if there is no whitespace in the original string
+				// keep the original for (partial) safe_mode compatibility
+			if (trim($path, '"\'') === $originalPath && !preg_match('/[[:space:]]/', $originalPath)) {
+				$path = $originalPath;
+			}
 		}
 
 			// strip profile information for thumbnails and reduce their size
