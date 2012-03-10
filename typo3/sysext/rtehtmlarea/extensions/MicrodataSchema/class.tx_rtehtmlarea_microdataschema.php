@@ -84,8 +84,8 @@ class tx_rtehtmlarea_microdataschema extends tx_rtehtmlarea_api {
 		function compareLabel($a, $b) {
 			return strcoll($a['label'], $b['label']);
 		}
-		uasort($schema['types'], 'compareLabel');
-		uasort($schema['properties'], 'compareLabel');
+		uasort($schema['types'], array($this, 'compareLabels'));
+		uasort($schema['properties'], array($this, 'compareLabels'));
 			// Insert no type and no property entries
 		if ($this->htmlAreaRTE->is_FE()) {
 			$noSchema = $GLOBALS['TSFE']->getLLL('No type', $this->LOCAL_LANG);
@@ -104,6 +104,18 @@ class tx_rtehtmlarea_microdataschema extends tx_rtehtmlarea_api {
 		$registerRTEinJavascriptString = LF. TAB . 'RTEarea[editornumber].schemaUrl = "' . (($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix) ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile('', 'schema_' . $this->htmlAreaRTE->language, 'js', json_encode($schema), TRUE) . '";';
 		return $registerRTEinJavascriptString;
 	}
+
+	/**
+	 * Compare the labels of two schema types or properties for localized sort purposes
+	 *
+	 * @param string $a: first string
+	 * @param array	$b: second string
+	 * @return int 
+	 */
+	protected function compareLabels($a, $b) {
+		return strcoll($a['label'], $b['label']);
+	}
+
 	/**
 	 * Convert the xml rdf schema into an array
 	 *
