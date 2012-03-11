@@ -108,6 +108,9 @@ class tx_form_View_Wizard_Wizard extends tx_form_View_Wizard_Abstract {
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
 			$markers['CSH'] = $docHeaderButtons['csh'];
+
+				// Hook
+			$this->callRenderHook();
 		}
 
 			// Getting the body content
@@ -330,6 +333,24 @@ class tx_form_View_Wizard_Wizard extends tx_form_View_Wizard_Abstract {
 		);
 
 		$this->pageRenderer->addInlineLanguageLabelArray($labels['default']);
+	}
+
+	/**
+	 * Hook to extend the wizard interface.
+	 *
+	 * The hook is called just before content rendering. Use it by adding your function to the array
+	 * $TYPO3_CONF_VARS['EXTCONF']['form']['hooks']['renderWizard']
+	 *
+	 * @return void
+	 */
+	protected function callRenderHook() {
+		$params = array();
+
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['form']['hooks']['renderWizard'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['form']['hooks']['renderWizard'] as $funcRef) {
+				t3lib_div::callUserFunction($funcRef, $params, $this);
+			}
+		}
 	}
 
 	/**
