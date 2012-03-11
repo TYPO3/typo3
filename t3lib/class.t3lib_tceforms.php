@@ -495,7 +495,7 @@ class t3lib_TCEforms {
 
 						// Get excluded fields, added fiels and put it together:
 					$excludeElements = $this->excludeElements = $this->getExcludeElements($table, $row, $typeNum);
-					$fields = $this->mergeFieldsWithAddedFields($fields, $this->getFieldsToAdd($table, $row, $typeNum));
+					$fields = $this->mergeFieldsWithAddedFields($fields, $this->getFieldsToAdd($table, $row, $typeNum), $table);
 
 						// If TCEforms will render a tab menu in the next step, push the name to the tab stack:
 					$tabIdentString = '';
@@ -3279,15 +3279,36 @@ class t3lib_TCEforms {
 	 *
 	 * @param	array		A [types][showitem] list of fields, exploded by ","
 	 * @param	array		The output from getFieldsToAdd()
+	 * @param	array		The table name, if we want to consider it's palettes when positioning the new elements
 	 * @return	array		Return the modified $fields array.
 	 * @see getMainFields(),getFieldsToAdd()
 	 */
-	function mergeFieldsWithAddedFields($fields, $fieldsToAdd) {
+	function mergeFieldsWithAddedFields($fields, $fieldsToAdd, $table = '') {
 		if (count($fieldsToAdd[0])) {
 			$c = 0;
+			$found = FALSE;
 			foreach ($fields as $fieldInfo) {
-				$parts = explode(';', $fieldInfo);
-				if (!strcmp(trim($parts[0]), $fieldsToAdd[1])) {
+				list($fieldName, $label, $paletteName) = t3lib_div::trimExplode(';', $fieldInfo);
+				if ($fieldName === $fieldsToAdd[1]) {
+					$found = TRUE;
+				} elseif ($fieldName === '--palette--' && $paletteName && $table !== '') {
+					// Look inside the palette
+					if (is_array($GLOBALS['TCA'][$table]['palettes'][$paletteName])) {
+						$itemList = $GLOBALS['TCA'][$table]['palettes'][$paletteName]['showitem'];
+						if ($itemList) {
+							$paletteFields = t3lib_div::trimExplode(',', $itemList, 1);
+							foreach ($paletteFields as $info) {
+								$fieldParts = t3lib_div::trimExplode(';', $info);
+								$theField = $fieldParts[0];
+								if ($theField === $fieldsToAdd[1]) {
+									$found = TRUE;
+									break 1;
+								}
+							}
+						}
+					}
+				}
+				if ($found) {
 					array_splice(
 						$fields,
 						$c + 1,
