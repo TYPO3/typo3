@@ -317,9 +317,12 @@ class TSpagegen {
 
 			// Setting document type:
 		$docTypeParts = array ();
+		$xmlDocument = TRUE;
 		// Part 1: XML prologue
 		switch ((string) $GLOBALS['TSFE']->config['config']['xmlprologue']) {
 			case 'none' :
+				$xmlDocument = FALSE;
+				$GLOBALS['TSFE']->config['config']['xhtml_cleaning'] = 'none';
 				break;
 			case 'xml_10' :
 				$docTypeParts[] = '<?xml version="1.0" encoding="' . $theCharset . '"?>';
@@ -375,7 +378,11 @@ class TSpagegen {
 					break;
 				case 'html5' :
 					$docTypeParts[] = '<!DOCTYPE html>';
-					$pageRenderer->setMetaCharsetTag('<meta charset="|" />');
+					if ($xmlDocument){
+						$pageRenderer->setMetaCharsetTag('<meta charset="|" />');
+					} else {
+						$pageRenderer->setMetaCharsetTag('<meta charset="|"q>');
+					}
 					break;
 				case 'none' :
 					break;
@@ -393,7 +400,8 @@ class TSpagegen {
 		if ($GLOBALS['TSFE']->xhtmlVersion < 110 || $doctype === 'html5') {
 			$htmlTagAttributes['lang'] = $htmlLang;
 		}
-		if ($GLOBALS['TSFE']->xhtmlVersion || $doctype === 'html5') {
+
+		if ($GLOBALS['TSFE']->xhtmlVersion || ($doctype === 'html5' && $xmlDocument)) {
 			$htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml'; // We add this to HTML5 to achieve a slightly better backwards compatibility
 			if (is_array($GLOBALS['TSFE']->config['config']['namespaces.'])) {
 				foreach ($GLOBALS['TSFE']->config['config']['namespaces.'] as $prefix => $uri) {
