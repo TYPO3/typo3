@@ -89,6 +89,26 @@ Backend
 
 ...
 
+htmlArea RTE
+-------------------------------------------------------------------------------
+
+A new toolbar button (insertsofthyphen) allows to insert a soft hyphen into the
+text without opening the «Insert special character» dialogue.
+
+The following HTML5 block elements are enabled in the RTE: article, aside,
+footer, header, nav, section.
+
+A new tab of the «Edit element» dialogue allows to edit microdata items using,
+by default, the voculary defined by schema.org; a new button «Show microdata»
+allows to highlight the microdata items in the RTE editing area.
+
+The click-enlarge feature now uses an HTML5-compliant custom attribute
+(data-htmlarea-clickenlarge).
+
+The order of tabs of the Insert/modify image dialogue may be configured
+in Page TSConfig.
+
+-------------------------------------------------------------------------------
 Other Improvements to the Backend
 -------------------------------------------------------------------------------
 
