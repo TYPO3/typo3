@@ -54,26 +54,27 @@ class tx_rtehtmlarea_pi3 extends tslib_pibase {
 	 */
 	function render_clickenlarge($content,$conf) {
 
-		$clickenlarge = isset($this->cObj->parameters['datahtmlareaclickenlarge']) ? $this->cObj->parameters['datahtmlareaclickenlarge'] : 0;
+		$clickenlarge = isset($this->cObj->parameters['data-htmlarea-clickenlarge']) ? $this->cObj->parameters['data-htmlarea-clickenlarge'] : 0;
 		if (!$clickenlarge) {
 				// Backward compatibility
 			$clickenlarge = isset($this->cObj->parameters['clickenlarge']) ? $this->cObj->parameters['clickenlarge'] : 0;
 		}
 		$path = $this->cObj->parameters['src'];
 		$pathPre = $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'] . 'RTEmagicC_';
-		if (t3lib_div::isFirstPartOfStr($path,$pathPre)) {
+		if (t3lib_div::isFirstPartOfStr($path, $pathPre)) {
 				// Find original file:
-			$pI = pathinfo(substr($path,strlen($pathPre)));
-			$filename = substr($pI['basename'],0,-strlen('.'.$pI['extension']));
+			$pI = pathinfo(substr($path, strlen($pathPre)));
+			$filename = substr($pI['basename'],0,-strlen('.' . $pI['extension']));
 			$file = $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'] . 'RTEmagicP_' . $filename;
 		} else {
 			$file = $this->cObj->parameters['src'];
 		}
-
-		unset($this->cObj->parameters['datahtmlareaclickenlarge']);
+			// Unset clickenlarge custom attribute
+		unset($this->cObj->parameters['data-htmlarea-clickenlarge']);
 			// Backward compatibility
 		unset($this->cObj->parameters['clickenlarge']);
 		unset($this->cObj->parameters['allParams']);
+
 		$content = '<img '. t3lib_div::implodeAttributes($this->cObj->parameters, TRUE, TRUE) . ' />';
 
 		if ($clickenlarge && is_array($conf['imageLinkWrap.'])) {
@@ -86,8 +87,8 @@ class tx_rtehtmlarea_pi3 extends tslib_pibase {
 				if ($this->cObj->parameters['alt']) {
 					$conf['imageLinkWrap.']['alt'] = $this->cObj->parameters['alt'];
 				}
-				$content = $this->cObj->imageLinkWrap($content,$theImage,$conf['imageLinkWrap.']);
-				$content = $this->cObj->stdWrap($content,$conf['stdWrap.']);
+				$content = $this->cObj->imageLinkWrap($content, $theImage, $conf['imageLinkWrap.']);
+				$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
 			}
 		}
 		return $content;
