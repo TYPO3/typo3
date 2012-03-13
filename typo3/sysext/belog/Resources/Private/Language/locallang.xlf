@@ -45,7 +45,7 @@
 			<trans-unit id="noLimit" xml:space="preserve">
 				<source>No limit</source>
 			</trans-unit>
-			<trans-unit id="userdefined" xml:space="preserve">
+			<trans-unit id="userDefined" xml:space="preserve">
 				<source>User defined</source>
 			</trans-unit>
 			<trans-unit id="set" xml:space="preserve">
@@ -271,7 +271,7 @@
 				<source>CACHE</source>
 			</trans-unit>
 			<trans-unit id="action_3_1" xml:space="preserve">
-				<source>Clear Cache</source>
+				<source><![CDATA[Clear&nbsp;Cache]]></source>
 			</trans-unit>
 			<trans-unit id="type_254" xml:space="preserve">
 				<source>SETTING</source>
@@ -290,6 +290,66 @@
 			</trans-unit>
 			<trans-unit id="action_255_3" xml:space="preserve">
 				<source>ATTEMPT</source>
+			</trans-unit>
+			<trans-unit id="chLog_title" xml:space="preserve">
+				<source>Admin Changelog</source>
+			</trans-unit>
+			<trans-unit id="chLog_users_0" xml:space="preserve">
+				<source>All users</source>
+			</trans-unit>
+			<trans-unit id="chLog_users_-1" xml:space="preserve">
+				<source>Self</source>
+			</trans-unit>
+			<trans-unit id="chLog_time_0" xml:space="preserve">
+				<source>This week</source>
+			</trans-unit>
+			<trans-unit id="chLog_time_1" xml:space="preserve">
+				<source>Last week</source>
+			</trans-unit>
+			<trans-unit id="chLog_time_2" xml:space="preserve">
+				<source>Last 7 days</source>
+			</trans-unit>
+			<trans-unit id="chLog_time_10" xml:space="preserve">
+				<source>This month</source>
+			</trans-unit>
+			<trans-unit id="chLog_time_11" xml:space="preserve">
+				<source>Last month</source>
+			</trans-unit>
+			<trans-unit id="chLog_time_12" xml:space="preserve">
+				<source>Last 31 days</source>
+			</trans-unit>
+			<trans-unit id="chLog_time_20" xml:space="preserve">
+				<source>No limit</source>
+			</trans-unit>
+			<trans-unit id="chLog_l_time" xml:space="preserve">
+				<source>Time</source>
+			</trans-unit>
+			<trans-unit id="chLog_l_user" xml:space="preserve">
+				<source>User</source>
+			</trans-unit>
+			<trans-unit id="chLog_l_error" xml:space="preserve">
+				<source>E</source>
+			</trans-unit>
+			<trans-unit id="chLog_l_action" xml:space="preserve">
+				<source>Action</source>
+			</trans-unit>
+			<trans-unit id="chLog_l_types" xml:space="preserve">
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="chLog_l_table" xml:space="preserve">
+				<source>Table</source>
+			</trans-unit>
+			<trans-unit id="chLog_l_details" xml:space="preserve">
+				<source>Details</source>
+			</trans-unit>
+			<trans-unit id="chLog_menuUsers" xml:space="preserve">
+				<source>Users</source>
+			</trans-unit>
+			<trans-unit id="chLog_menuDepth" xml:space="preserve">
+				<source>Depth:</source>
+			</trans-unit>
+			<trans-unit id="chLog_menuTime" xml:space="preserve">
+				<source>Time</source>
 			</trans-unit>
 		</body>
 	</file>

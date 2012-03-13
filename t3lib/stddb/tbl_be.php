@@ -867,6 +867,68 @@ $TCA['sys_collection'] = array(
 );
 
 /**
+ * System log history - keeps a trail of record edits
+ */
+$TCA['sys_history'] = array(
+	'ctrl' => $TCA['sys_history']['ctrl'],
+	'columns' => array(
+		'sys_log_uid' => array(
+			'label' => 'sys_log_uid',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'history_data' => array(
+			'label' => 'history_data',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'fieldlist' => array(
+			'label' => 'fieldlist',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'recuid' => array(
+			'label' => 'recuid',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'tablename' => array(
+			'label' => 'tablename',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'tstamp' => array(
+			'label' => 'tstamp',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'history_files' => array(
+			'label' => 'history_files',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'snapshot' => array(
+			'label' => 'snapshot',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+	),
+	'types' => array(
+		'1' => array(
+			'showitem' => 'sys_log_uid, history_data, fieldlist, recuid, tablename, tstamp, history_files, snapshot',
+		),
+	),
+);
+
+/**
  * System languages - Defines possible languages used for translation of records in the system
  */
 $TCA['sys_language'] = array(
@@ -927,6 +989,109 @@ $TCA['sys_language'] = array(
 	)
 );
 
+/**
+ * System log
+ */
+$TCA['sys_log'] = array(
+	'ctrl' => $TCA['sys_log']['ctrl'],
+	'columns' => array(
+		'tstamp' => array(
+			'label' => 'tstamp',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'userid' => array(
+			'label' => 'userid',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'action' => array(
+			'label' => 'action',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'recuid' => array(
+			'label' => 'recuid',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'tablename' => array(
+			'label' => 'tablename',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'recpid' => array(
+			'label' => 'recpid',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'error' => array(
+			'label' => 'error',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'details' => array(
+			'label' => 'details',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'type' => array(
+			'label' => 'type',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'detail_nr' => array(
+			'label' => 'detail_nr',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'IP' => array(
+			'label' => 'IP',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'log_data' => array(
+			'label' => 'log_data',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'event_pid' => array(
+			'label' => 'event_pid',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'workspace' => array(
+			'label' => 'workspace',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'NEWid' => array(
+			'label' => 'NEWid',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+	),
+	'types' => array(
+		'1' => array(
+			'showitem' => 'tstamp, userid, action, recuid, tablename, recpid, error, details, type, details_nr, IP, log_data, event_pid, workspace, NEWid',
+		),
+	),
+);
 
 /**
  * System News (displayed on Login screen)

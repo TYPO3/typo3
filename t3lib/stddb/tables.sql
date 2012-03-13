@@ -308,6 +308,7 @@ CREATE TABLE sys_collection_entries (
 #
 CREATE TABLE sys_history (
   uid int(11) unsigned NOT NULL auto_increment,
+  pid int(11) unsigned DEFAULT '0' NOT NULL,
   sys_log_uid int(11) DEFAULT '0' NOT NULL,
   history_data mediumtext,
   fieldlist text,
@@ -317,6 +318,7 @@ CREATE TABLE sys_history (
   history_files mediumtext,
   snapshot tinyint(4) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
+  KEY parent (pid),
   KEY recordident_1 (tablename,recuid),
   KEY recordident_2 (tablename,tstamp),
   KEY sys_log_uid (sys_log_uid)
@@ -366,6 +368,7 @@ CREATE TABLE sys_refindex (
 #
 CREATE TABLE sys_log (
   uid int(11) unsigned NOT NULL auto_increment,
+  pid int(11) unsigned DEFAULT '0' NOT NULL,
   userid int(11) unsigned DEFAULT '0' NOT NULL,
   action tinyint(4) unsigned DEFAULT '0' NOT NULL,
   recuid int(11) unsigned DEFAULT '0' NOT NULL,
@@ -382,6 +385,7 @@ CREATE TABLE sys_log (
   workspace int(11) DEFAULT '0' NOT NULL,
   NEWid varchar(20) DEFAULT '' NOT NULL,
   PRIMARY KEY (uid),
+  KEY parent (pid),
   KEY event (userid,event_pid),
   KEY recuidIdx (recuid,uid),
   KEY user_auth (type,action,tstamp)
