@@ -1,0 +1,179 @@
+{namespace belog=Tx_Belog_ViewHelpers}
+
+<belog:be.addJsFile file="../t3lib/js/extjs/tceforms.js" />
+<belog:be.addJsFile file="../t3lib/js/extjs/ux/Ext.ux.DateTimePicker.js" />
+
+<belog:be.inlineSettingsArray
+	settings="{
+		datePickerUSmode: 0,
+		dateFormat: {0:settings.dateFormat, 1:'{settings.dateFormat} {settings.timeFormat}'}
+	}"
+/>
+
+<f:comment>
+	This is an ugly workaround.
+	The function module in Web->Info already renders a form tag, and there is
+	no easy way to circumvent this. The page id is needed for the info module
+	that is not extbase based to figure the permissions. Thus, we have to add
+	the page Id manually to hint the info module about that.
+</f:comment>
+<f:if condition="{constraint.pageContext}">
+	<input type="hidden" name="id" value="{constraint.pageId}" />
+</f:if>
+
+<f:form object="{constraint}" action="index" name="constraint">
+
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tbody>
+
+			<tr>
+				<td>
+					<f:translate key="users" />
+				</td>
+				<td>
+					<f:form.select
+						property="user"
+						options="{userGroupList}"
+						additionalAttributes="{onchange : 'submit()'}"
+					/>
+				</td>
+
+				<td>
+					<f:translate key="max" />
+				</td>
+				<td>
+					<belog:form.translateLabelSelect
+						property="number"
+						options="{settings.selectableNumberOfLogEntries}"
+						optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
+						additionalAttributes="{onchange : 'submit()'}"
+					/>
+				</td>
+
+				<f:if condition="{belog:isExtensionLoaded(extension:'workspaces')}">
+					<f:then>
+						<f:if condition="{showWorkspaceSelector}">
+							<f:then>
+								<td>
+									<f:translate key="workspace" />
+								</td>
+								<td>
+									<f:form.select
+										property="workspace"
+										options="{workspaceList}"
+										additionalAttributes="{onchange : 'submit()'}"
+									/>
+								</td>
+							</f:then>
+							<f:else>
+								<td></td><td></td>
+							</f:else>
+						</f:if>
+					</f:then>
+					<f:else>
+						<td></td><td></td>
+					</f:else>
+				</f:if>
+
+				<f:if condition="{constraint.pageContext}">
+					<f:then>
+						<td>
+							<f:translate key="chLog_menuDepth" />
+						</td>
+						<td>
+							<f:form.select
+								property="depth"
+								options="{pageDepthList}"
+								additionalAttributes="{onchange : 'submit()'}"
+							/>
+						</td>
+					</f:then>
+					<f:else>
+						<td></td><td></td>
+					</f:else>
+				</f:if>
+			</tr>
+
+			<tr>
+				<td>
+					<f:translate key="time" />
+				</td>
+				<td>
+					<belog:form.translateLabelSelect
+						property="timeFrame"
+						options="{settings.selectableTimeFrames}"
+						optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
+						additionalAttributes="{onchange : 'submit()'}"
+					/>
+
+					<f:comment>
+						Date time fields for manual date selection
+					</f:comment>
+					<f:if condition="{constraint.timeFrame} == 30">
+						<br />
+
+						<f:translate key="LLL:EXT:lang/locallang_common.xml:from" />&nbsp;
+						<f:form.textfield
+							property="manualDateStart"
+							value="{constraint.manualDateStart -> f:format.date(format:'{settings.dateFormat} {settings.timeFormat}')}"
+							id="tceforms-datetimefield-manualDateStart"
+							style="margin:4px 2px; padding:1px; vertical-align:middle; width: 115px;"
+						/>
+						<span
+							style="cursor:pointer;"
+							id="picker-tceforms-datetimefield-manualDateStart"
+							class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date"
+						>
+							&nbsp;
+						</span>
+
+						<f:translate key="LLL:EXT:lang/locallang_common.xml:to" />&nbsp;
+						<f:form.textfield
+							property="manualDateStop"
+							value="{constraint.manualDateStop -> f:format.date(format:'{settings.dateFormat} {settings.timeFormat}')}"
+							id="tceforms-datetimefield-manualDateStop"
+							style="margin:4px 2px; padding:1px; vertical-align:middle; width: 115px;"
+						/>
+						<span
+							style="cursor:pointer;"
+							id="picker-tceforms-datetimefield-manualDateStop"
+							class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date"
+						>
+							&nbsp;
+						</span>
+
+						<f:form.submit value="{f:translate(key:'set')}" />
+					</f:if>
+				</td>
+
+				<td>
+					<f:translate key="action" />
+				</td>
+				<td>
+					<belog:form.translateLabelSelect
+						property="action"
+						options="{settings.selectableActions}"
+						optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
+						additionalAttributes="{onchange : 'submit()'}"
+					/>
+				</td>
+
+				<td>
+					<f:translate key="groupByPage" />
+				</td>
+				<td>
+					<f:form.checkbox
+						property="groupByPage"
+						value="1"
+						additionalAttributes="{onchange : 'submit()'}"
+					/>
+				</td>
+
+				<td></td><td></td>
+
+			</tr>
+
+		</tbody>
+	</table>
+
+</f:form>
