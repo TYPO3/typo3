@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "version".
 #
-# Auto generated 25-10-2011 10:11
+# Auto generated 13-03-2012 16:03
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -30,8 +30,8 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
 	'author_company' => '',
-	'version' => '4.6.0',
-	'_md5_values_when_last_written' => 'a:22:{s:9:"ChangeLog";s:4:"60ae";s:24:"class.tx_version_cm1.php";s:4:"67f8";s:24:"class.tx_version_gui.php";s:4:"deea";s:30:"class.tx_version_iconworks.php";s:4:"90ec";s:28:"class.tx_version_tcemain.php";s:4:"1b79";s:39:"class.tx_version_tcemain_commandmap.php";s:4:"4bcd";s:16:"ext_autoload.php";s:4:"d2f9";s:12:"ext_icon.gif";s:4:"3ca2";s:17:"ext_localconf.php";s:4:"e0f5";s:14:"ext_tables.php";s:4:"86c9";s:14:"ext_tables.sql";s:4:"f758";s:13:"locallang.xlf";s:4:"2769";s:7:"tca.php";s:4:"d41d";s:19:"Classes/Preview.php";s:4:"6a6d";s:47:"Resources/Private/Language/locallang_emails.xlf";s:4:"54a2";s:13:"cm1/clear.gif";s:4:"cc11";s:15:"cm1/cm_icon.gif";s:4:"3ca2";s:12:"cm1/conf.php";s:4:"6ed8";s:13:"cm1/index.php";s:4:"70b3";s:44:"tasks/class.tx_version_tasks_autopublish.php";s:4:"5b4c";s:18:"ws/class.wslib.php";s:4:"84bb";s:12:"ws/index.php";s:4:"fd11";}',
+	'version' => '4.7.0beta2',
+	'_md5_values_when_last_written' => 'a:22:{s:9:"ChangeLog";s:4:"60ae";s:24:"class.tx_version_cm1.php";s:4:"67f8";s:24:"class.tx_version_gui.php";s:4:"35d6";s:30:"class.tx_version_iconworks.php";s:4:"90ec";s:28:"class.tx_version_tcemain.php";s:4:"0b32";s:39:"class.tx_version_tcemain_commandmap.php";s:4:"4bcd";s:16:"ext_autoload.php";s:4:"d2f9";s:12:"ext_icon.gif";s:4:"3ca2";s:17:"ext_localconf.php";s:4:"4b8b";s:14:"ext_tables.php";s:4:"86c9";s:14:"ext_tables.sql";s:4:"f758";s:13:"locallang.xlf";s:4:"2769";s:7:"tca.php";s:4:"d41d";s:19:"Classes/Preview.php";s:4:"361e";s:47:"Resources/Private/Language/locallang_emails.xlf";s:4:"54a2";s:13:"cm1/clear.gif";s:4:"cc11";s:15:"cm1/cm_icon.gif";s:4:"3ca2";s:12:"cm1/conf.php";s:4:"6ed8";s:13:"cm1/index.php";s:4:"f7f3";s:44:"tasks/class.tx_version_tasks_autopublish.php";s:4:"5b4c";s:18:"ws/class.wslib.php";s:4:"fc9f";s:12:"ws/index.php";s:4:"fd11";}',
 	'constraints' => array(
 		'depends' => array(
 			'typo3' => '4.6.0-0.0.0',
