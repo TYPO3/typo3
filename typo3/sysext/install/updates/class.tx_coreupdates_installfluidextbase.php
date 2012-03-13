@@ -44,7 +44,8 @@ class tx_coreupdates_installFluidExtbase extends Tx_Install_Updates_Base {
 	protected $extensionsDependingOnFluidExtbase = array(
 		'about',
 		'aboutmodules',
-		'workspaces'
+		'workspaces',
+		'belog',
 	);
 
 	/**
