@@ -1,0 +1,17 @@
+<h2>
+	<f:translate key="adminLog" />
+</h2>
+
+<div>
+	<f:render
+		partial="Content/Filter"
+		arguments="{_all}"
+	/>
+</div>
+
+<div class="divider"></div>
+
+<f:render
+	partial="Content/LogEntries"
+	arguments="{_all}"
+/>

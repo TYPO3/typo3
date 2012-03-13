@@ -1,0 +1,68 @@
+module.tx_belog {
+	features.rewrittenPropertyMapper = 1
+
+	persistence.classes {
+		Tx_Belog_Domain_Model_SysLogEntry {
+			mapping {
+				tableName = sys_log
+				columns {
+					userid.mapOnProperty = backendUserUid
+					recuid.mapOnProperty = recordUid
+					tablename.mapOnProperty = tableName
+					recpid.mapOnProperty = recordPid
+					details_nr.mapOnProperty = detailsNumber
+					IP.mapOnProperty = ip
+					NEWid.mapOnProperty = newId
+				}
+			}
+		}
+		Tx_Belog_Domain_Model_Workspace {
+			mapping {
+				tableName = sys_workspace
+			}
+		}
+		Tx_Belog_Domain_Model_BackendUser {
+			mapping {
+				tableName = be_users
+			}
+		}
+		Tx_Belog_Domain_Model_SysHistoryEntry {
+			mapping {
+				tableName = sys_history
+			}
+		}
+	}
+
+	settings {
+		selectableNumberOfLogEntries {
+			20 = 20
+			50 = 50
+			100 = 100
+			200 = 200
+			500 = 500
+			1000 = 1000
+			1000000 = any
+		}
+
+		selectableTimeFrames {
+			0 = thisWeek
+			1 = lastWeek
+			2 = last7Days
+			10 = thisMonth
+			11 = lastMonth
+			12 = last31Days
+			20 = noLimit
+			30 = userDefined
+		}
+
+		selectableActions {
+			0 = any
+			1 = actionDatabase
+			2 = actionFile
+			3 = actionCache
+			254 = actionSettings
+			255 = actionLogin
+			-1 = actionErrors
+		}
+	}
+}
