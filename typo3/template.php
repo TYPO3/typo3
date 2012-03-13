@@ -159,6 +159,11 @@ class template {
 	 */
 	public $showFlashMessages = TRUE;
 
+	const STATUS_ICON_ERROR = 3;
+	const STATUS_ICON_WARNING = 2;
+	const STATUS_ICON_NOTIFICATION = 1;
+	const STATUS_ICON_OK = -1;
+
 	/**
 	 * Constructor
 	 * Imports relevant parts from global $GLOBALS['TBE_STYLES'] (colorscheme)
@@ -1210,16 +1215,16 @@ $str.=$this->docBodyTagBegin().
 	 */
 	function icons($type, $styleAttribValue='')	{
 		switch($type)	{
-			case '3':
+			case self::STATUS_ICON_ERROR:
 				$icon = 'status-dialog-error';
 			break;
-			case '2':
+			case self::STATUS_ICON_WARNING:
 				$icon = 'status-dialog-warning';
 			break;
-			case '1':
+			case self::STATUS_ICON_NOTIFICATION:
 				$icon = 'status-dialog-notification';
 			break;
-			case '-1':
+			case self::STATUS_ICON_OK:
 				$icon = 'status-dialog-ok';
 			break;
 			default:
