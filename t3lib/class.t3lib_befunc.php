@@ -1343,6 +1343,10 @@ final class t3lib_BEfunc {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'be_groups', 'pid=0 ' . $where . self::deleteClause('be_groups'), '', 'title');
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$be_group_Array[$row['uid']] = $row;
+			if(t3lib_div::inList($fields, 'title')){
+				$be_group_Array[$row['uid']]['title'] = self::getRecordTitle('be_groups',
+				self::getRecord('be_groups', $row['uid']), FALSE);
+			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
