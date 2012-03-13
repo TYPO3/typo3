@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => 'Displays backend log, both per page and systemwide. Available as the module Tools>Log (system wide overview) and Web>Info/Log (page relative overview).',
 	'category' => 'module',
 	'shy' => 1,
-	'dependencies' => '',
+	'dependencies' => 'extbase,fluid',
 	'conflicts' => '',
 	'priority' => '',
 	'loadOrder' => '',
@@ -33,12 +33,14 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => 'Curby Soft Multimedia',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '1.1.0',
+	'version' => '2.0.0',
 	'_md5_values_when_last_written' => 'a:11:{s:26:"class.tx_belog_webinfo.php";s:4:"19c3";s:12:"ext_icon.gif";s:4:"691d";s:14:"ext_tables.php";s:4:"694b";s:13:"locallang.xlf";s:4:"0d9a";s:12:"doc/TODO.txt";s:4:"1631";s:13:"mod/clear.gif";s:4:"cc11";s:12:"mod/conf.php";s:4:"0186";s:13:"mod/index.php";s:4:"85a8";s:17:"mod/locallang.xlf";s:4:"e5a8";s:21:"mod/locallang_mod.xlf";s:4:"ddba";s:11:"mod/log.gif";s:4:"70bb";}',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.3.0-0.0.0',
 			'typo3' => '4.6.0-0.0.0',
+			'extbase' => '1.4.0-0.0.0',
+			'fluid' => '1.5.0-0.0.0',
 		),
 		'conflicts' => array(
 		),

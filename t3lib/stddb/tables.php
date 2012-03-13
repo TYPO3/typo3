@@ -312,6 +312,23 @@ $TCA['sys_collection'] = array(
 );
 
 /**
+ * Table "sys_history":
+ * Holds history records, the config part is defined in t3lib/stddb/tbl_be.php
+ */
+$TCA['sys_history'] = array(
+	'ctrl' => array(
+		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_history',
+		'label' => 'tablename',
+		'tstamp' => 'tstamp',
+		'adminOnly' => TRUE,
+		'rootLevel' => TRUE,
+		'hideTable' => TRUE,
+		'default_sortby' => 'uid DESC',
+		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
+	),
+);
+
+/**
  * Table "sys_languages":
  * Defines possible languages used for translation of records in the system
  * This is only the 'header' part (ctrl). The full configuration is found in t3lib/stddb/tbl_be.php
@@ -335,6 +352,22 @@ $TCA['sys_language'] = array(
 	)
 );
 
+/**
+ * Table "sys_log":
+ * Holds log records, the config part is defined in t3lib/stddb/tbl_be.php
+ */
+$TCA['sys_log'] = array(
+	'ctrl' => array(
+		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_log',
+		'label' => 'details',
+		'tstamp' => 'tstamp',
+		'adminOnly' => TRUE,
+		'rootLevel' => TRUE,
+		'hideTable' => TRUE,
+		'default_sortby' => 'uid DESC',
+		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
+	),
+);
 
 /**
  * Table "sys_news":

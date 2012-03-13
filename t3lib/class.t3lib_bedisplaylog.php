@@ -42,6 +42,7 @@
  * @package TYPO3
  * @subpackage t3lib
  * @see tx_belog_webinfo, SC_mod_tools_log_index
+ * @deprecated and unused since TYPO3 4.8, will be removed two versions later
  */
 class t3lib_BEDisplayLog {
 	var $lastTimeLabel = '';
@@ -61,6 +62,15 @@ class t3lib_BEDisplayLog {
 	);
 
 	var $be_user_Array = array(); // Username array (set externally)
+
+	/**
+	 * Default constructor logs deprecation
+	 *
+	 * @deprecated since TYPO3 4.8 will be removed in two versions.
+	 */
+	public function __construct() {
+		t3lib_div::logDeprecatedFunction();
+	}
 
 	/**
 	 * Initialize the log table array with header labels.
