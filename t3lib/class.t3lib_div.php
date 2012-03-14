@@ -5622,6 +5622,10 @@ final class t3lib_div {
 		}
 
 		if (stripos($log, 'file') !== FALSE) {
+				// In case lock is acquired before autoloader was defined:
+			if (class_exists('t3lib_lock') === FALSE) {
+				require_once PATH_t3lib . 'class.t3lib_lock.php';
+			}
 				// write a longer message to the deprecation log
 			$destination = self::getDeprecationLogFileName();
 			$lockObject = t3lib_div::makeInstance('t3lib_lock', $destination, $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
