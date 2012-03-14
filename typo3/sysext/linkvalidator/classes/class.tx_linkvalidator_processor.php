@@ -237,6 +237,7 @@ class tx_linkvalidator_Processor {
 
 			// Put together content of all relevant fields
 		$haystack = '';
+			/** @var t3lib_parsehtml $htmlParser */
 		$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml');
 
 		$idRecord = $record['uid'];
@@ -292,9 +293,14 @@ class tx_linkvalidator_Processor {
 			$type = '';
 			$idRecord = $record['uid'];
 			if (!empty($r)) {
-					// Parse string for special TYPO3 <link> tag:
+					/** @var tx_linkvalidator_linktype_Abstract $hookObj */
 				foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
 					$type = $hookObj->fetchType($r, $type, $keyArr);
+						// Store the type that was found
+						// This prevents overriding by internal validator
+					if (!empty($type)) {
+						$r['type'] = $type;
+					}
 				}
 				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["substr"] = $r;
 				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["row"] = $record;
@@ -321,6 +327,8 @@ class tx_linkvalidator_Processor {
 		$currentR = array();
 		$linkTags = $htmlParser->splitIntoBlock('link', $resultArray['content']);
 		$idRecord = $record['uid'];
+		$type = '';
+		$title = '';
 		for ($i = 1; $i < count($linkTags); $i += 2) {
 			$referencedRecordType = '';
 			foreach ($resultArray['elements'] as $element) {
@@ -347,8 +355,14 @@ class tx_linkvalidator_Processor {
 					}
 				}
 			}
+				/** @var tx_linkvalidator_linktype_Abstract $hookObj */
 			foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
 				$type = $hookObj->fetchType($currentR, $type, $keyArr);
+					// Store the type that was found
+					// This prevents overriding by internal validator
+				if (!empty($type)) {
+					$currentR['type'] = $type;
+				}
 			}
 
 			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["substr"] = $currentR;
