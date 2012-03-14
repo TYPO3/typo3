@@ -434,14 +434,18 @@ class t3lib_stdGraphic {
 	 * @access private
 	 * @see t3lib_iconWorks::imagecopyresized()
 	 */
-	function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h) {
+	function imagecopyresized(&$dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight) {
 		if ($this->imagecopyresized_fix && !$this->saveAlphaLayer) {
-			$im_base = imagecreatetruecolor(imagesx($im), imagesy($im)); // Make true color image
-			imagecopyresized($im_base, $im, 0, 0, 0, 0, imagesx($im), imagesy($im), imagesx($im), imagesy($im)); // Copy the source image onto that
-			imagecopyresized($im_base, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h); // Then copy the $cpImg onto that (the actual operation!)
-			$im = $im_base; // Set pointer
+				// Make true color image
+			$tmpImg = imagecreatetruecolor(imagesx($dstImg), imagesy($dstImg));
+				// Copy the source image onto that
+			imagecopyresized($tmpImg, $dstImg, 0, 0, 0, 0, imagesx($dstImg), imagesy($dstImg), imagesx($dstImg), imagesy($dstImg));
+				// Then copy the source image onto that (the actual operation!)
+			imagecopyresized($tmpImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight);
+				// Set the destination image
+			$dstImg = $tmpImg;
 		} else {
-			imagecopyresized($im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h);
+			imagecopyresized($dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight);
 		}
 	}
 
