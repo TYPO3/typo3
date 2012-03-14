@@ -282,7 +282,7 @@ class tx_linkvalidator_Processor {
 	 * @param string $table The current table
 	 * @return	void
 	 */
-	private function analyseLinks(array $resultArray, array &$results, array $record, $field, $table) {
+	protected function analyseLinks(array $resultArray, array &$results, array $record, $field, $table) {
 		foreach ($resultArray['elements'] as $element) {
 			$r = $element['subst'];
 			$type = '';
@@ -313,7 +313,7 @@ class tx_linkvalidator_Processor {
 	 * @param string $table The current table
 	 * @return void
 	 */
-	private function analyseTypoLinks(array $resultArray, array &$results, $htmlParser, array $record, $field, $table) {
+	protected function analyseTypoLinks(array $resultArray, array &$results, $htmlParser, array $record, $field, $table) {
 		$currentR = array();
 		$linkTags = $htmlParser->splitIntoBlock('link', $resultArray['content']);
 		$idRecord = $record['uid'];
