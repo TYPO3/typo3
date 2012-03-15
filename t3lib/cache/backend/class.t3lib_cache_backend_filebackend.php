@@ -45,6 +45,11 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	const DATASIZE_DIGITS = 10;
 
 	/**
+	 * @var integer Timestamp of 2038-01-01)
+	 */
+	const FAKED_UNLIMITED_EXPIRE = 2145909600;
+
+	/**
 	 * Directory where the files are stored
 	 *
 	 * @var string
@@ -68,6 +73,11 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * @var string
 	 */
 	protected $cacheEntryFileExtension = '';
+
+	/**
+	 * @var integer Maximum lifetime to stay with expire field below FAKED_UNLIMITED_LIFETIME
+	 */
+	protected $maximumLifetime;
 
 
 	/**
@@ -102,6 +112,8 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 		$this->cacheDirectory = $finalCacheDirectory;
 
 		$this->cacheEntryFileExtension = ($cache instanceof t3lib_cache_frontend_PhpFrontend) ? '.php' : '';
+
+		$this->maximumLifetime = self::FAKED_UNLIMITED_EXPIRE - $GLOBALS['EXEC_TIME'];
 	}
 
 	/**
@@ -270,7 +282,14 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 			);
 		}
 
-		$expiryTime = ($lifetime === NULL) ? 0 : ($GLOBALS['EXEC_TIME'] + $lifetime);
+		if (is_null($lifetime)) {
+			$lifetime = $this->defaultLifetime;
+		}
+		if ($lifetime === 0 || $lifetime > $this->maximumLifetime) {
+			$lifetime = $this->maximumLifetime;
+		}
+		$expiryTime = $GLOBALS['EXEC_TIME'] + $lifetime;
+
 		$metaData = str_pad($expiryTime, self::EXPIRYTIME_LENGTH) . implode(' ', $tags) . str_pad(strlen($data), self::DATASIZE_DIGITS);
 		$result = file_put_contents($temporaryCacheEntryPathAndFilename, $data . $metaData);
 		t3lib_div::fixPermissions($temporaryCacheEntryPathAndFilename);
