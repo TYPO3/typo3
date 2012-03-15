@@ -35,7 +35,7 @@
 class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend {
 
 	/**
-	 * @var integer Timestamp of 2038-01-01)
+	 * @var integer Timestamp of 2038-01-01
 	 */
 	const FAKED_UNLIMITED_EXPIRE = 2145909600;
 
