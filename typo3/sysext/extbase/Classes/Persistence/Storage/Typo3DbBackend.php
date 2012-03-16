@@ -639,6 +639,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			}
 			$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
 			$operator = $this->resolveOperator($operator);
+
+			$constraintSQL = '';
 			if ($valueFunction === NULL) {
 				$constraintSQL .= (!empty($tableName) ? $tableName . '.' : '') . $columnName .  ' ' . $operator . ' ?';
 			} else {
