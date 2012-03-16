@@ -99,7 +99,7 @@ class Tx_Extbase_Tests_Unit_Persistence_Storage_Typo3DbBackendTest extends Tx_Ex
 		$mockDataMapper->expects($this->once())->method('convertPropertyNameToColumnName')->with('fooProperty', 'Tx_MyExt_ClassName')->will($this->returnValue('converted_fieldname'));
 
 		$sql = array();
-		$orderings = array('fooProperty' => Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING);
+		$orderings = array('fooProperty' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING);
 		$mockTypo3DbBackend = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Storage_Typo3DbBackend'), array('parserOrderings'), array(), '', FALSE);
 		$mockTypo3DbBackend->_set('dataMapper', $mockDataMapper);
 		$mockTypo3DbBackend->_callRef('parseOrderings', $orderings, $mockSource, $sql);
@@ -140,8 +140,8 @@ class Tx_Extbase_Tests_Unit_Persistence_Storage_Typo3DbBackendTest extends Tx_Ex
 
 		$sql = array();
 		$orderings = array(
-			'fooProperty' => Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING,
-			'barProperty' => Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING
+			'fooProperty' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
+			'barProperty' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
 			);
 		$mockTypo3DbBackend = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Storage_Typo3DbBackend'), array('parserOrderings'), array(), '', FALSE);
 		$mockTypo3DbBackend->_set('dataMapper', $mockDataMapper);
