@@ -30,8 +30,6 @@
  *
  * @package Extbase
  * @subpackage Utility
- * @version $Id$
- (robert) I'm not sure yet if we should use this library statically or as a singleton. The latter might be problematic if we use it from the Core classes.
  * @api
  */
 class Tx_Extbase_Utility_Arrays {
@@ -79,10 +77,10 @@ class Tx_Extbase_Utility_Arrays {
 	 * Merges two arrays recursively and "binary safe" (integer keys are overridden as well), overruling similar values in the first array ($firstArray) with the values of the second array ($secondArray)
 	 * In case of identical keys, ie. keeping the values of the second.
 	 *
-	 * @param array First array
-	 * @param array Second array, overruling the first array
-	 * @param boolean If set, keys that are NOT found in $firstArray (first array) will not be set. Thus only existing value can/will be overruled from second array.
-	 * @param boolean If set (which is the default), values from $secondArray will overrule if they are empty (according to PHP's empty() function)
+	 * @param array $firstArray First array
+	 * @param array $secondArray Second array, overruling the first array
+	 * @param boolean $dontAddNewKeys If set, keys that are NOT found in $firstArray (first array) will not be set. Thus only existing value can/will be overruled from second array.
+	 * @param boolean $emptyValuesOverride If set (which is the default), values from $secondArray will overrule if they are empty (according to PHP's empty() function)
 	 * @return array Resulting array where $secondArray values has overruled $firstArray values
 	 * @api
 	 */
@@ -91,6 +89,8 @@ class Tx_Extbase_Utility_Arrays {
 			if (array_key_exists($key, $firstArray) && is_array($firstArray[$key])) {
 				if (is_array($secondArray[$key])) {
 					$firstArray[$key] = self::arrayMergeRecursiveOverrule($firstArray[$key], $secondArray[$key], $dontAddNewKeys, $emptyValuesOverride);
+				} else {
+					$firstArray[$key] = $secondArray[$key];
 				}
 			} else {
 				if ($dontAddNewKeys) {
@@ -172,12 +172,17 @@ class Tx_Extbase_Utility_Arrays {
 	/**
 	 * Returns the value of a nested array by following the specifed path.
 	 *
-	 * @param array $array The array to traverse
-	 * @param array $path The path to follow, ie. a simple array of keys
+	 * @param array &$array The array to traverse as a reference
+	 * @param array|string $path The path to follow. Either a simple array of keys or a string in the format 'foo.bar.baz'
 	 * @return mixed The value found, NULL if the path didn't exist
 	 * @api
 	 */
-	static public function getValueByPath(array $array, array $path) {
+	static public function getValueByPath(array &$array, $path) {
+		if (is_string($path)) {
+			$path = explode('.', $path);
+		} elseif (!is_array($path)) {
+			throw new \InvalidArgumentException('getValueByPath() expects $path to be string or array, "' . gettype($path) . '" given.', 1304950007);
+		}
 		$key = array_shift($path);
 		if (isset($array[$key])) {
 			if (count($path) > 0) {
@@ -188,6 +193,60 @@ class Tx_Extbase_Utility_Arrays {
 		} else {
 			return NULL;
 		}
+	}
+
+	/**
+	 * Sets the given value in a nested array or object by following the specified path.
+	 *
+	 * @param array|\ArrayAccess $subject The array or ArrayAccess instance to work on
+	 * @param array|string $path The path to follow. Either a simple array of keys or a string in the format 'foo.bar.baz'
+	 * @param mixed $value The value to set
+	 * @return array The modified array or object
+	 */
+	static public function setValueByPath($subject, $path, $value) {
+		if (!is_array($subject) && !($subject instanceof \ArrayAccess)) {
+			throw new \InvalidArgumentException('setValueByPath() expects $subject to be array or an object implementing \ArrayAccess, "' . (is_object($subject) ? get_class($subject) : gettype($subject)) . '" given.', 1306424308);
+		}
+		if (is_string($path)) {
+			$path = explode('.', $path);
+		} elseif (!is_array($path)) {
+			throw new \InvalidArgumentException('setValueByPath() expects $path to be string or array, "' . gettype($path) . '" given.', 1305111499);
+		}
+		$key = array_shift($path);
+		if (count($path) === 0) {
+			$subject[$key] = $value;
+		} else {
+			if (!isset($subject[$key]) || !is_array($subject[$key])) {
+				$subject[$key] = array();
+			}
+			$subject[$key] = self::setValueByPath($subject[$key], $path, $value);
+		}
+		return $subject;
+	}
+
+	/**
+	 * Unsets an element/part of a nested array by following the specified path.
+	 *
+	 * @param array $array The array
+	 * @param array|string $path The path to follow. Either a simple array of keys or a string in the format 'foo.bar.baz'
+	 * @return array The modified array
+	 */
+	static public function unsetValueByPath(array $array, $path) {
+		if (is_string($path)) {
+			$path = explode('.', $path);
+		} elseif (!is_array($path)) {
+			throw new \InvalidArgumentException('unsetValueByPath() expects $path to be string or array, "' . gettype($path) . '" given.', 1305111513);
+		}
+		$key = array_shift($path);
+		if (count($path) === 0) {
+			unset($array[$key]);
+		} else {
+			if (!isset($array[$key]) || !is_array($array[$key])) {
+				return $array;
+			}
+			$array[$key] = self::unsetValueByPath($array[$key], $path);
+		}
+		return $array;
 	}
 
 	/**
@@ -210,5 +269,46 @@ class Tx_Extbase_Utility_Arrays {
 		return ksort($array, $sortFlags);
 	}
 
+	/**
+	 * Recursively convert an object hierarchy into an associative array.
+	 *
+	 * @param mixed $subject An object or array of objects
+	 * @return array The subject represented as an array
+	 */
+	static public function convertObjectToArray($subject) {
+		if (!is_object($subject) && !is_array($subject)) {
+			throw new \InvalidArgumentException('convertObjectToArray expects either array or object as input, ' . gettype($subject) . ' given.', 1287059709);
+		}
+		if (is_object($subject)) {
+			$subject = (array)$subject;
+		}
+		foreach ($subject as $key => $value) {
+			if (is_array($value) || is_object($value)) {
+				$subject[$key] = self::convertObjectToArray($value);
+			}
+		}
+		return $subject;
+	}
+
+	/**
+	 * Recursively removes empty array elements.
+	 *
+	 * @param array $array
+	 * @return array the modified array
+	 */
+	static public function removeEmptyElementsRecursively(array $array) {
+		$result = $array;
+		foreach ($result as $key => $value) {
+			if (is_array($value)) {
+				$result[$key] = self::removeEmptyElementsRecursively($value);
+				if ($result[$key] === array()) {
+					unset($result[$key]);
+				}
+			} elseif ($value === NULL) {
+				unset($result[$key]);
+			}
+		}
+		return $result;
+	}
 }
 ?>
