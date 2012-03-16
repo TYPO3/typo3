@@ -1,7 +1,7 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the Extbase framework.                            *
+ * This script belongs to the Extbase framework.                          *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License as published by the *
@@ -279,6 +279,32 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 		$configuration = $this->buildConfiguration(array(Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
 		$result = $this->converter->convertFrom($source, 'Tx_Extbase_Fixtures_ClassWithSetters', $convertedChildProperties, $configuration);
 		$this->assertSame($object, $result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertFromForModelWithoutConstructorCreatesObject() {
+		$className = 'Tx_Extbase_Fixtures_ClassWithSetters';
+
+		$source = array('propertyX' => 'bar');
+		$model = new $className();
+		$convertedChildProperties = array('property1' => 'bar');
+
+		$this->mockObjectManager->expects($this->once())->method('create')->with($className)->will($this->returnValue($model));
+		$configuration = $this->buildConfiguration(
+			array(Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE)
+		);
+		$reflectionException = new ReflectionException('Method ' . $className . '::__construct() does not exist');
+		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with($className, '__construct')
+			->will($this->throwException($reflectionException));
+
+		$result = $this->converter->convertFrom($source, $className, $convertedChildProperties, $configuration);
+
+		$this->assertSame(
+			$model,
+			$result
+		);
 	}
 
 	/**
