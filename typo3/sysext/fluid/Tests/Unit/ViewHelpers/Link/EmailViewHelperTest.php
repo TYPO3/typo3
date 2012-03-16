@@ -20,7 +20,7 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 class Tx_Fluid_Tests_Unit_ViewHelpers_Link_EmailViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
 	/**
-	 * var Tx_Fluid_ViewHelpers_Link_EmailViewHelper
+	 * @var Tx_Fluid_ViewHelpers_Link_EmailViewHelper
 	 */
 	protected $viewHelper;
 

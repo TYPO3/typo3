@@ -19,7 +19,7 @@ require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 class Tx_Fluid_Tests_Unit_ViewHelpers_CountViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
 	/**
-	 * var Tx_Fluid_ViewHelpers_CountViewHelper
+	 * @var Tx_Fluid_ViewHelpers_CountViewHelper
 	 */
 	protected $viewHelper;
 

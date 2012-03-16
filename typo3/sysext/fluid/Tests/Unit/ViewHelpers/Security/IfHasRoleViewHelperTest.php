@@ -29,7 +29,7 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 class Tx_Fluid_Tests_Unit_ViewHelpers_Security_IfHasRoleViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
 	/**
-	 * var Tx_Fluid_ViewHelpers_Security_IfHasRoleViewHelper
+	 * @var Tx_Fluid_ViewHelpers_Security_IfHasRoleViewHelper
 	 */
 	protected $viewHelper;
 

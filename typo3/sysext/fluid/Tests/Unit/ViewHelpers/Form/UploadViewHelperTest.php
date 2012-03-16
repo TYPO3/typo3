@@ -21,7 +21,7 @@ require_once(dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php');
 class Tx_Fluid_Tests_Unit_ViewHelpers_Form_UploadViewHelperTest extends Tx_Fluid_Tests_Unit_ViewHelpers_Form_FormFieldViewHelperBaseTestcase {
 
 	/**
-	 * var Tx_Fluid_ViewHelpers_Form_UploadViewHelper
+	 * @var Tx_Fluid_ViewHelpers_Form_UploadViewHelper
 	 */
 	protected $viewHelper;
 

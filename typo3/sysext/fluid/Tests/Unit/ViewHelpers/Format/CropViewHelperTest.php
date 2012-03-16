@@ -25,7 +25,7 @@
 class Tx_Fluid_Tests_Unit_ViewHelpers_Format_CropViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * var Tx_Fluid_ViewHelpers_Format_CropViewHelper
+	 * @var Tx_Fluid_ViewHelpers_Format_CropViewHelper
 	 */
 	protected $viewHelper;
 
