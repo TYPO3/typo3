@@ -243,7 +243,12 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	protected function buildObject(array &$possibleConstructorArgumentValues, $objectType) {
-		$constructorSignature = $this->reflectionService->getMethodParameters($objectType, '__construct');
+		try {
+			$constructorSignature = $this->reflectionService->getMethodParameters($objectType, '__construct');
+		} catch (ReflectionException $reflectionException) {
+			$constructorSignature = array();
+		}
+
 		$constructorArguments = array();
 		foreach ($constructorSignature as $constructorArgumentName => $constructorArgumentInformation) {
 			if (array_key_exists($constructorArgumentName, $possibleConstructorArgumentValues)) {
