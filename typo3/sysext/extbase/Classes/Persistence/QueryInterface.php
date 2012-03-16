@@ -111,6 +111,13 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	const JCR_JOIN_TYPE_RIGHT_OUTER = '{http://www.jcp.org/jcr/1.0}joinTypeRightOuter';
 
 	/**
+	 * Gets the node-tuple source for this query.
+	 *
+	 * @return Tx_Extbase_Persistence_QOM_SourceInterface the node-tuple source; non-NULL
+	 */
+	public function getSource();
+
+	/**
 	 * Executes the query against the backend and returns the result
 	 *
 	 * @return Tx_Extbase_Persistence_QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
