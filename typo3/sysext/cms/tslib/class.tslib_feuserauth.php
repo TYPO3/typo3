@@ -397,9 +397,14 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		if ($this->userData_change)	{
 			$this->writeUC('');
 		}
-		if ($this->sesData_change)	{
-			if ($this->id)	{
-				$insertFields = array (
+
+		if ($this->sesData_change && $this->id)	{
+			if (empty($this->sesData)) {
+				// Remove session-data
+				$this->removeSessionData();
+			} elseif ($this->sessionDataTimestamp === NULL) {
+					// Write new session-data
+				$insertFields = array(
 					'hash' => $this->id,
 					'content' => serialize($this->sesData),
 					'tstamp' => $GLOBALS['EXEC_TIME'],
@@ -473,12 +478,20 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			switch($type)	{
 				case 'user':
 					if ($this->user['uid'])	{
-						$this->uc[$key]=$data;
+						if ($data === NULL) {
+							unset($this->uc[$key]);
+						} else {
+							$this->uc[$key] = $data;
+						}
 						$this->userData_change=1;
 					}
 				break;
 				case 'ses':
-					$this->sesData[$key]=$data;
+					if ($data === NULL) {
+						unset($this->sesData[$key]);
+					} else {
+						$this->sesData[$key] = $data;
+					}
 					$this->sesData_change=1;
 				break;
 			}
