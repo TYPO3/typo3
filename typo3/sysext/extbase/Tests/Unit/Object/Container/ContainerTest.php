@@ -40,6 +40,11 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 	 */
 	private $container;
 
+	/**
+	 * @var Tx_Extbase_Object_Container_ClassInfo
+	 */
+	private $cachedClassInfo;
+
 	public function setUp() {
 			//our mocked cache will allways indicate that he has nothing in the cache to force that we get the real classinfo
 		$mockedCache = $this->getMock('Tx_Extbase_Object_Container_ClassInfoCache',array('has'));
@@ -181,14 +186,36 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 		$className = 'Tx\Extbase\Object\Container\Fixtures\NamespacedClass';
 		$classNameHash = sha1($className);
 
-		$mockedCache = $this->getMock('Tx_Extbase_Object_Container_ClassInfoCache',array('has', 'set'));
-		$this->container = $this->getMock('Tx_Extbase_Object_Container_Container', array('log','getClassInfoCache'));
-		$this->container->expects($this->any())->method('getClassInfoCache')->will($this->returnValue($mockedCache));
+		$mockedCache = $this->getMock('Tx_Extbase_Object_Container_ClassInfoCache', array('has', 'set', 'get'));
+		$container = $this->getMock('Tx_Extbase_Object_Container_Container', array('log', 'getClassInfoCache'));
+		$container->expects($this->any())->method('getClassInfoCache')->will($this->returnValue($mockedCache));
 
 		$mockedCache->expects($this->any())->method('has')->will($this->returnValue(FALSE));
-		$mockedCache->expects($this->once())->method('set')->with($classNameHash, $this->anything());
+		$mockedCache->expects($this->once())->method('set')->with($classNameHash, $this->anything())->will($this->returnCallback(array($this, 'setClassInfoCacheCallback')));
+		$mockedCache->expects($this->once())->method('get')->with($classNameHash)->will($this->returnCallback(array($this, 'getClassInfoCacheCallback')));
 
-		$this->container->getInstance($className);
+		$container->getInstance($className);
+	}
+
+	/**
+	 * Callback for getInstanceUsesClassNameSha1AsCacheKey
+	 *
+	 * @param string $id
+	 * @param Tx_Extbase_Object_Container_ClassInfo $value
+	 * @return void
+	 */
+	public function setClassInfoCacheCallback($id, Tx_Extbase_Object_Container_ClassInfo $value) {
+		$this->cachedClassInfo = $value;
+	}
+
+	/**
+	 * Callback for getInstanceUsesClassNameSha1AsCacheKey
+	 *
+	 * @param string $id
+	 * @return Tx_Extbase_Object_Container_ClassInfo
+	 */
+	public function getClassInfoCacheCallback($id) {
+		return $this->cachedClassInfo;
 	}
 
 	/**
