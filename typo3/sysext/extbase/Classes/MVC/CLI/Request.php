@@ -75,6 +75,11 @@ class Tx_Extbase_MVC_CLI_Request implements Tx_Extbase_MVC_RequestInterface {
 	protected $commandLineArguments;
 
 	/**
+	 * @var Tx_Extbase_MVC_CLI_Command | NULL
+	 */
+	protected $command = NULL;
+
+	/**
 	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager A reference to the object manager
 	 * @return void
 	 */
