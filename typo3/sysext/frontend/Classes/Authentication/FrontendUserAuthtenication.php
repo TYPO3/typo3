@@ -401,7 +401,10 @@ class FrontendUserAuthtenication extends \TYPO3\CMS\Core\Authentication\Abstract
 			$this->writeUC('');
 		}
 		if ($this->sesData_change && $this->id) {
-			if ($this->sessionDataTimestamp === NULL) {
+			if (empty($this->sesData)) {
+				// Remove session-data
+				$this->removeSessionData();
+			} elseif ($this->sessionDataTimestamp === NULL) {
 				// Write new session-data
 				$insertFields = array(
 					'hash' => $this->id,
@@ -483,12 +486,20 @@ class FrontendUserAuthtenication extends \TYPO3\CMS\Core\Authentication\Abstract
 			switch ($type) {
 			case 'user':
 				if ($this->user['uid']) {
-					$this->uc[$key] = $data;
+					if ($data === NULL) {
+						unset($this->uc[$key]);
+					} else {
+						$this->uc[$key] = $data;
+					}
 					$this->userData_change = 1;
 				}
 				break;
 			case 'ses':
-				$this->sesData[$key] = $data;
+				if ($data === NULL) {
+					unset($this->sesData[$key]);
+				} else {
+					$this->sesData[$key] = $data;
+				}
 				$this->sesData_change = 1;
 				break;
 			}
