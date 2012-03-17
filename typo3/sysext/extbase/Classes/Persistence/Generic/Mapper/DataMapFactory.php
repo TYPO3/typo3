@@ -283,6 +283,12 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		if (isset($controlSection['type'])) {
 			$dataMap->setRecordTypeColumnName($controlSection['type']);
 		}
+		if (isset($controlSection['rootLevel'])) {
+			$dataMap->setRootLevel($controlSection['rootLevel']);
+		}
+		if (isset($controlSection['is_static'])) {
+			$dataMap->setIsStatic($controlSection['is_static']);
+		}
 		if (isset($controlSection['enablecolumns']['disabled'])) {
 			$dataMap->setDisabledFlagColumnName($controlSection['enablecolumns']['disabled']);
 		}

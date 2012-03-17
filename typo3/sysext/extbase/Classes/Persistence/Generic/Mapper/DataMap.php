@@ -124,6 +124,16 @@ class DataMap {
 	protected $recordTypeColumnName;
 
 	/**
+	 * @var bool
+	 */
+	protected $isStatic = FALSE;
+
+	/**
+	 * @var bool
+	 */
+	protected $rootLevel = FALSE;
+
+	/**
 	 * Constructs this DataMap
 	 *
 	 * @param string $className The class name
@@ -472,6 +482,33 @@ class DataMap {
 		return $this->recordTypeColumnName;
 	}
 
+	/**
+	 * @param boolean $isStatic
+	 */
+	public function setIsStatic($isStatic) {
+		$this->isStatic = $isStatic;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getIsStatic() {
+		return $this->isStatic;
+	}
+
+	/**
+	 * @param boolean $rootLevel
+	 */
+	public function setRootLevel($rootLevel) {
+		$this->rootLevel = $rootLevel;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getRootLevel() {
+		return $this->rootLevel;
+	}
 }
 
 

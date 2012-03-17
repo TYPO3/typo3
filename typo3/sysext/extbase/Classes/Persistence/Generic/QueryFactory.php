@@ -39,6 +39,11 @@ class QueryFactory implements \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactor
 	protected $configurationManager;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
+	 */
+	protected $dataMapper;
+
+	/**
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -56,14 +61,28 @@ class QueryFactory implements \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactor
 	}
 
 	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
+	 */
+	public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper) {
+		$this->dataMapper = $dataMapper;
+	}
+
+	/**
 	 * Creates a query object working on the given class name
 	 *
 	 * @param string $className The class name
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
 	 */
 	public function create($className) {
 		$query = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface', $className);
 		$querySettings = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
+
+		$dataMap = $this->dataMapper->getDataMap($className);
+		if ($dataMap->getIsStatic() || $dataMap->getRootLevel()) {
+			$querySettings->setRespectStoragePage(FALSE);
+		}
+
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$querySettings->setStoragePageIds(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $frameworkConfiguration['persistence']['storagePid']));
 		$query->setQuerySettings($querySettings);
