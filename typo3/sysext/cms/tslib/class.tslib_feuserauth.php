@@ -399,7 +399,10 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		}
 
 		if ($this->sesData_change && $this->id)	{
-			if ($this->sessionDataTimestamp === NULL) {
+			if (empty($this->sesData)) {
+					// Remove session-data
+				$this->removeSessionData();
+			} elseif ($this->sessionDataTimestamp === NULL) {
 					// Write new session-data
 				$insertFields = array(
 					'hash' => $this->id,
@@ -478,18 +481,26 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * @return	void
 	 * @see setKey(), storeSessionData(), record_registration()
 	 */
-	function setKey($type,$key,$data)	{
-		if ($key)	{
-			switch($type)	{
+	function setKey($type, $key, $data) {
+		if ($key) {
+			switch($type) {
 				case 'user':
-					if ($this->user['uid'])	{
-						$this->uc[$key]=$data;
-						$this->userData_change=1;
+					if ($this->user['uid']) {
+						if ($data === NULL) {
+							unset($this->uc[$key]);
+						} else {
+							$this->uc[$key] = $data;
+							$this->userData_change = 1;
+						}
 					}
 				break;
 				case 'ses':
-					$this->sesData[$key]=$data;
-					$this->sesData_change=1;
+					if ($data === NULL) {
+						unset($this->sesData[$key]);
+					} else {
+						$this->sesData[$key] = $data;
+						$this->sesData_change = 1;
+					}
 				break;
 			}
 		}
