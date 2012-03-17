@@ -399,7 +399,10 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		}
 
 		if ($this->sesData_change && $this->id)	{
-			if ($this->sessionDataTimestamp === NULL) {
+			if (empty($this->sesData)) {
+					// Remove session-data
+				$this->removeSessionData();
+			} elseif ($this->sessionDataTimestamp === NULL) {
 					// Write new session-data
 				$insertFields = array(
 					'hash' => $this->id,
