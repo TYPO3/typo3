@@ -94,7 +94,7 @@ class Tx_Extbase_Property_TypeConverter_DateTimeConverter extends Tx_Extbase_Pro
 		if (is_array($source)) {
 			return TRUE;
 		}
-		return is_string($source) && $source !== '';
+		return is_string($source);
 	}
 
 	/**
@@ -120,9 +120,12 @@ class Tx_Extbase_Property_TypeConverter_DateTimeConverter extends Tx_Extbase_Pro
 				$dateFormat = $source['dateFormat'];
 			}
 		}
+		if ($dateAsString === '') {
+			return NULL;
+		}
 		$date = DateTime::createFromFormat($dateFormat, $dateAsString);
-		if ($date === FALSE || $dateAsString === '') {
-			throw new Tx_Extbase_Property_Exception_TypeConverterException('The string"' . $dateAsString . '" could not be converted to DateTime with format "' . $dateFormat . '"', 1307719788);
+		if ($date === FALSE) {
+			return new Tx_Extbase_Error_Error('The string"' . $dateAsString . '" could not be converted to DateTime with format "' . $dateFormat . '"', 1307719788);
 		}
 		if (is_array($source)) {
 			$this->overrideTimeIfSpecified($date, $source);
