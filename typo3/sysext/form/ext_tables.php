@@ -30,4 +30,8 @@ $TCA['tt_content']['types']['mailform']['showitem'] = '
 	endtime,
 	fe_group
 ';
+
+$TCA['tt_content']['types']['form_entry']['showitem'] = '
+	bodytext;Entry;;nowrap
+';
 ?>
