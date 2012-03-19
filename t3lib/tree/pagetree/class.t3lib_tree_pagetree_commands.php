@@ -134,11 +134,19 @@ final class t3lib_tree_pagetree_Commands {
 	 */
 	public static function createNode(t3lib_tree_pagetree_Node $parentNode, $targetId, $pageType) {
 		$placeholder = 'NEW12345';
-		$data['pages'][$placeholder] = array(
-			'pid' => $parentNode->getWorkspaceId(),
-			'doktype' => $pageType,
-			'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:tree.defaultPageTitle', TRUE),
-		);
+
+                // use page ts config as default page initialization
+		$pageTs = t3lib_BEfunc::getPagesTSconfig($parentNode->getWorkspaceId());
+		if (array_key_exists('TCAdefaults.', $pageTs) && array_key_exists('pages.', $pageTs['TCAdefaults.'])) {
+			$data['pages'][$placeholder] = $pageTs['TCAdefaults.']['pages.'];
+		} else {
+			$data['pages'][$placeholder] = array();
+		}
+
+		$data['pages'][$placeholder]['pid'] = $parentNode->getWorkspaceId();
+		$data['pages'][$placeholder]['doktype'] = $pageType;
+		$data['pages'][$placeholder]['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:tree.defaultPageTitle', TRUE);
+
 		$newPageId = self::processTceCmdAndDataMap(array(), $data);
 		$node = self::getNode($newPageId[$placeholder]);
 
