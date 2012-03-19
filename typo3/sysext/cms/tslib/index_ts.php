@@ -63,7 +63,6 @@ if(!defined('PATH_thisScript')) {
 		($_SERVER['ORIG_SCRIPT_FILENAME'] ? $_SERVER['ORIG_SCRIPT_FILENAME'] : $_SERVER['SCRIPT_FILENAME']))));
 }
 
-if (!defined('PATH_site')) 			define('PATH_site', dirname(PATH_thisScript).'/');
 if (!defined('PATH_t3lib')) 		define('PATH_t3lib', PATH_site.'t3lib/');
 
 define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend administration for the sites of this TYPO3 installation.
