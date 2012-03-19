@@ -70,14 +70,6 @@ define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend admi
 define('PATH_typo3', PATH_site.TYPO3_mainDir);
 define('PATH_typo3conf', PATH_site.'typo3conf/');
 
-if (!defined('PATH_tslib')) {
-	if (@is_dir(PATH_site.TYPO3_mainDir.'sysext/cms/tslib/')) {
-		define('PATH_tslib', PATH_site.TYPO3_mainDir.'sysext/cms/tslib/');
-	} elseif (@is_dir(PATH_site.'tslib/')) {
-		define('PATH_tslib', PATH_site.'tslib/');
-	}
-}
-
 if (!@is_dir(PATH_typo3conf))	die('Cannot find configuration. This file is probably executed from the wrong location.');
 
 // *********************
