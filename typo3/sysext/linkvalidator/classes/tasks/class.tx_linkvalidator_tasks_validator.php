@@ -423,7 +423,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 				if (is_array($newMarkers)) {
 					$markerArray = t3lib_div::array_merge($markerArray, $newMarkers);
 				}
-				reset($params);
+				unset($params);
 			}
 		}
 
@@ -511,7 +511,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 				if (is_array($newMarkers)) {
 					$markerArray = t3lib_div::array_merge($markerArray, $newMarkers);
 				}
-				reset($params);
+				unset($params);
 			}
 		}
 
