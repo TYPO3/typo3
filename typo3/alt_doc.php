@@ -1376,6 +1376,8 @@ class SC_alt_doc {
 				}
 				$this->editconf['tt_content'][implode(',',$ecUids)]='edit';
 			}
+
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 	}
 
