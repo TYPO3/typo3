@@ -887,6 +887,12 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$configureRTEInJavascriptString .= '
 			RTEarea[editornumber].htmlRemoveTagsAndContents = /^(' . implode('|', t3lib_div::trimExplode(',', $this->thisConfig['removeTagsAndContents'], 1)) . ')$/i;';
 		}
+
+			// Setting the list of custom tags if specified in the RTE config
+		if (trim($this->thisConfig['customTags']))  {
+			$configureRTEInJavascriptString .= '
+			RTEarea[editornumber].htmlCustomTags= ' . json_encode(t3lib_div::trimExplode(',', $this->thisConfig['customTags'], 1)) . ';';
+		}
 			// Process default style configuration
 			// This default configuration is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8.
 			// Use contentCSS instead.

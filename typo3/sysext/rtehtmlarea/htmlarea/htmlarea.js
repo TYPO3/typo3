@@ -976,6 +976,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			this.getEditor().document = this.document;
 			this.getEditor()._doc = this.document;
 			this.getEditor()._iframe = iframe;
+			this.setCustomTags();			
 			this.createHead();
 				// Style the document body
 			Ext.get(this.document.body).addClass('htmlarea-content-body');
@@ -989,6 +990,16 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				// Set iframe ready
 			this.ready = true;
 			this.fireEvent('HTMLAreaEventIframeReady');
+		}
+	},
+	/*
+	 * Create the custom tags so they are properly parsed by the walker later on
+	 */
+	setCustomTags: function () {
+		if (typeof(this.config.htmlCustomTags) !== 'undefined'){
+			this.config.htmlCustomTags.findAll(function(tag){
+				this.document.createElement(tag);
+			},this);
 		}
 	},
 	/*
