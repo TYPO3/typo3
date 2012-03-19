@@ -565,27 +565,10 @@ class t3lib_TStemplate {
 			// Static Template Files (Text files from extensions): include_static_file is a list of static files to include (from extensions)
 		if (trim($row['include_static_file'])) {
 			$include_static_fileArr = t3lib_div::trimExplode(',', $row['include_static_file'], TRUE);
-			foreach ($include_static_fileArr as $ISF_file) { // traversing list
-				if (substr($ISF_file, 0, 4) == 'EXT:') {
-					list($ISF_extKey, $ISF_localPath) = explode('/', substr($ISF_file, 4), 2);
-					if (strcmp($ISF_extKey, '') && t3lib_extMgm::isLoaded($ISF_extKey) && strcmp($ISF_localPath, '')) {
-						$ISF_localPath = rtrim($ISF_localPath, '/') . '/';
-						$ISF_filePath = t3lib_extMgm::extPath($ISF_extKey) . $ISF_localPath;
-						if (@is_dir($ISF_filePath)) {
-							$mExtKey = str_replace('_', '', $ISF_extKey . '/' . $ISF_localPath);
-							$subrow = array(
-								'constants' => @is_file($ISF_filePath . 'constants.txt') ? t3lib_div::getUrl($ISF_filePath . 'constants.txt') : '',
-								'config' => @is_file($ISF_filePath . 'setup.txt') ? t3lib_div::getUrl($ISF_filePath . 'setup.txt') : '',
-								'include_static' => @is_file($ISF_filePath . 'include_static.txt') ? implode(',', array_unique(t3lib_div::intExplode(',', t3lib_div::getUrl($ISF_filePath . 'include_static.txt')))) : '',
-								'include_static_file' => @is_file($ISF_filePath . 'include_static_file.txt') ? implode(',', array_unique(explode(',', t3lib_div::getUrl($ISF_filePath . 'include_static_file.txt')))) : '',
-								'title' => $ISF_file,
-								'uid' => $mExtKey
-							);
-							$subrow = $this->prependStaticExtra($subrow);
-
-							$this->processTemplate($subrow, $idList . ',ext_' . $mExtKey, $pid, 'ext_' . $mExtKey, $templateID);
-						}
-					}
+			foreach ($include_static_fileArr as $staticTemplateFolder) {
+				$subrow = $this->readFromStaticTemplateFolder($staticTemplateFolder);
+				if (!empty($subrow)) {
+					$this->processTemplate($subrow, $idList . ',ext_' . $subrow['uid'], $pid, 'ext_' . $subrow['uid'], $templateID);
 				}
 			}
 		}
@@ -608,6 +591,58 @@ class t3lib_TStemplate {
 				t3lib_div::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
+	}
+
+	/**
+	 * Reads the static TypoScript from a given folder and returns a virtual sys_template record containing the data
+	 *
+	 * @param string $staticTemplateFolder Folder to read the static TS from. Path has to start with "EXT:"
+	 * @return array
+	 */
+	protected function readFromStaticTemplateFolder($staticTemplateFolder) {
+		/* @var $row array Virtual sys_template record, ready to be parsed by $this->processTemplate() */
+		$row = array();
+		if (substr($staticTemplateFolder, 0, 4) === 'EXT:') {
+			list($extensionKey, $relativePath) = explode('/', substr($staticTemplateFolder, 4), 2);
+			$templateFolderPath = rtrim(t3lib_extMgm::extPath($extensionKey) . $relativePath, '/') . '/';
+			if (@is_dir($templateFolderPath)) {
+				$row = array(
+					'title' => $staticTemplateFolder,
+					'uid' => str_replace('_', '', $extensionKey . '/' . $templateFolderPath)
+				);
+
+					// .ts has higher priority than .txt
+				$allowedFileExtensions = array('ts', 'txt');
+				$allowedFilenamesToFieldname = array(
+					'constants' => 'constants',
+					'setup' => 'config',
+					'include_static' => 'include_static',
+					'include_static_file' => 'include_static_file'
+				);
+
+					// read files
+				foreach ($allowedFileExtensions as $fileExtension) {
+					foreach ($allowedFilenamesToFieldname as $filename => $fieldname) {
+						$file = $templateFolderPath . $filename . '.' . $fileExtension;
+						if (empty($row[$fieldname]) && @is_file($file)) {
+							switch ($filename) {
+								case 'constants':
+								case 'setup':
+									$row[$fieldname] = t3lib_div::getUrl($file);
+									break;
+								case 'include_static':
+									$row[$fieldname] = implode(',', array_unique(t3lib_div::intExplode(',', t3lib_div::getUrl($file))));
+									break;
+								case 'include_static_file':
+									$row[$fieldname] = implode(',', array_unique(explode(',', t3lib_div::getUrl($file))));
+							}
+						}
+					}
+				}
+				$row = $this->prependStaticExtra($row);
+			}
+		}
+		return $row;
 	}
 
 	/**
