@@ -174,8 +174,8 @@ HTMLArea.Config = function (editorId) {
 	this.htmlRemoveTagsAndContents = /none/i;
 		// Remove comments
 	this.htmlRemoveComments = false;
-		// Custom tags (must be a regular expression)
-	this.customTags = /none/i;
+		// Array of custom tags
+	this.customTags = [];
 		// BaseURL to be included in the iframe document
 	this.baseURL = document.baseURI;
 		// IE does not support document.baseURI
@@ -976,6 +976,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			this.getEditor().document = this.document;
 			this.getEditor()._doc = this.document;
 			this.getEditor()._iframe = iframe;
+			this.initializeCustomTags();
 			this.createHead();
 				// Style the document body
 			Ext.get(this.document.body).addClass('htmlarea-content-body');
@@ -989,6 +990,19 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				// Set iframe ready
 			this.ready = true;
 			this.fireEvent('HTMLAreaEventIframeReady');
+		}
+	},
+	/*
+	 * Create one of each of the configured custom tags so they are properly parsed by the walker when using IE
+	 * See: http://en.wikipedia.org/wiki/HTML5_Shiv
+	 * 
+	 * @return	void
+	 */
+	initializeCustomTags: function () {
+		if (Ext.isIE6 || Ext.isIE7 || Ext.isIE8 || (Ext.isIE && this.document.documentMode < 9)) {
+			Ext.each(this.config.customTags, function (tag) {
+				this.document.createElement(tag);
+			}, this);
 		}
 	},
 	/*
