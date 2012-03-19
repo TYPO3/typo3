@@ -277,7 +277,7 @@ class tx_linkvalidator_Processor {
 	 * @param	array		$results: array of broken links
 	 * @return	void
 	 */
-	private function analyseLinks($resultArray, &$results, $record, $field, $table) {
+	protected function analyseLinks($resultArray, &$results, $record, $field, $table) {
 		foreach ($resultArray['elements'] as $element) {
 			$r = $element['subst'];
 			$title = '';
@@ -307,7 +307,7 @@ class tx_linkvalidator_Processor {
 	 * @param	t3lib_parsehtml	$htmlParser: instance of htmlparser
 	 * @return	void
 	 */
-	private function analyseTypoLinks($resultArray, &$results, $htmlParser, $record, $field, $table) {
+	protected function analyseTypoLinks($resultArray, &$results, $htmlParser, $record, $field, $table) {
 		$linkTags = $htmlParser->splitIntoBlock('link', $resultArray['content']);
 		$idRecord = $record['uid'];
 		for ($i = 1; $i < count($linkTags); $i += 2) {
