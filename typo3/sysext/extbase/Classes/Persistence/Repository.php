@@ -254,9 +254,10 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	}
 
 	/**
-	 * Returns all objects of this repository
+	 * Returns all objects of this repository.
 	 *
-	 * @return array An array of objects, empty if no objects found
+	 * @return Tx_Extbase_Persistence_QueryResultInterface|array
+	 *         all objects, will be empty if no objects are found, will be an array if raw query results are enabled
 	 * @api
 	 */
 	public function findAll() {
