@@ -757,10 +757,23 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			$cell .= '<input type="hidden" name="tx_scheduler[class]" id="task_class" value="' . $taskInfo['class'] . '" />';
 		} else {
 			$cell = '<select name="tx_scheduler[class]" id="task_class" class="wide" onchange="actOnChangedTaskClass(this)">';
-				// Loop on all registered classes to display a selector
+
+				// Group registered classes by classname
+			$groupedClasses = array();
 			foreach ($registeredClasses as $class => $classInfo) {
-				$selected = ($class == $taskInfo['class']) ? ' selected="selected"' : '';
-				$cell .= '<option value="' . $class . '"' . $selected . '>' . $classInfo['title'] . ' (' . $classInfo['extension'] . ')' . '</option>';
+				$groupedClasses[$classInfo['extension']][$class] = $classInfo;
+			}
+			ksort($groupedClasses);
+				// Loop on all grouped classes to display a selector
+			foreach ($groupedClasses as $extension => $class) {
+				$cell .= '<optgroup label="' . $extension .'">';
+				foreach ($groupedClasses[$extension] as $class => $classInfo) {
+					$selected = ($class == $taskInfo['class']) ? ' selected="selected"' : '';
+					$cell .= '<option value="' . $class . '"'
+							. 'title="' . $classInfo['description'] . '"'
+							.  $selected . '>' . $classInfo['title'] . '</option>';
+				}
+				$cell .= '</optgroup>';
 			}
 			$cell .= '</select>';
 		}
