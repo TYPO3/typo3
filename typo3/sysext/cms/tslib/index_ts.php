@@ -42,11 +42,6 @@
 // *******************************
 if (version_compare(phpversion(), '5.3', '<'))	die ('TYPO3 requires PHP 5.3.0 or higher.');
 
-// *******************************
-// Set error reporting
-// *******************************
-error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
-
 
 // ******************
 // Constants defined
