@@ -73,7 +73,7 @@ class tx_linkvalidator_Processor {
 	/**
 	 * Array for hooks for own checks.
 	 *
-	 * @var array
+	 * @var tx_linkvalidator_linktype_Abstract[]
 	 */
 	protected $hookObjectsArr = array();
 
@@ -83,6 +83,21 @@ class tx_linkvalidator_Processor {
 	 * @var array
 	 */
 	protected $extPageInTreeInfo = array();
+
+
+	/**
+	* Reference to the current element with table:uid, e.g. pages:85
+	*
+	* @var string
+	*/
+	protected $recordReference = '';
+
+	/**
+	* Linked page together with a possible anchor, e.g. 85#c105
+	*
+	* @var string
+	*/
+	protected $pageWithAnchor = '';
 
 	/**
 	 * Fill hookObjectsArr with different link types and possible XClasses.
@@ -219,16 +234,6 @@ class tx_linkvalidator_Processor {
 	 */
 	public function analyzeRecord(&$results, $table, $fields, $record) {
 
-			// array to store urls from relevant field contents
-		$urls = array();
-
-		$referencedRecordType = '';
-			// last-parsed link element was a page.
-		$wasPage = TRUE;
-
-			// flag whether row contains a broken link in some field or not
-		$rowContainsBrokenLink = FALSE;
-
 			// put together content of all relevant fields
 		$haystack = '';
 		$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml');
@@ -248,7 +253,7 @@ class tx_linkvalidator_Processor {
 				$softRefs = t3lib_BEfunc::explodeSoftRefParserList($conf['softref']);
 					// Traverse soft references
 				foreach ($softRefs as $spKey => $spParams) {
-						// create / get object
+						/** @var t3lib_softrefproc $softRefObj Create or get the soft reference object */
 					$softRefObj = &t3lib_BEfunc::softRefParserObj($spKey);
 
 						// If there was an object returned...:
@@ -310,6 +315,7 @@ class tx_linkvalidator_Processor {
 	protected function analyseTypoLinks($resultArray, &$results, $htmlParser, $record, $field, $table) {
 		$linkTags = $htmlParser->splitIntoBlock('link', $resultArray['content']);
 		$idRecord = $record['uid'];
+		$wasPage = FALSE;
 		for ($i = 1; $i < count($linkTags); $i += 2) {
 			$referencedRecordType = '';
 			foreach($resultArray['elements'] as $element) {
@@ -412,6 +418,7 @@ class tx_linkvalidator_Processor {
 					$theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $permsClause, $considerHidden);
 				}
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 		return $theList;
 	}
