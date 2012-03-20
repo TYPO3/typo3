@@ -20,7 +20,7 @@ class tx_t3editor_tceforms_wizard {
 		$attributes = 'rows="' . $config['rows'] . '" ' .
 			'cols="' . $config['cols'] . '" ' .
 			'wrap="off" ' .
-			'style="width:98%; height: 200px;" ' .
+			'style="' . $config['wizards']['t3editor']['params']['style'] . '" ' .
 			'onchange="' . $parameters['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] . '" ';
 
 		$parameters['item'] = '';
