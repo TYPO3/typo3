@@ -303,6 +303,9 @@
 			<trans-unit id="setToStandard" xml:space="preserve">
 				<source>Reset all Values to default</source>
 			</trans-unit>
+			<trans-unit id="resetSectionHeader" xml:space="preserve">
+				<source>Reset Settings</source>
+			</trans-unit>
 			<trans-unit id="resetConfiguration" xml:space="preserve">
 				<source>Reset Configuration and Clear Temporary Data</source>
 			</trans-unit>
