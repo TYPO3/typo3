@@ -199,7 +199,6 @@ class Tx_Workspaces_Service_GridData {
 				&$this->dataArray, $versions
 			);
 
-			$this->sortDataArray();
 			$this->setDataArrayIntoCache($versions, $filterTxt);
 		}
 
