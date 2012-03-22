@@ -122,7 +122,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 	 * @param	array		Data of user.
 	 * @return	boolean
 	 */
-	function authUser($user)	{
+	public function authUser(array $user) {
 		$OK = 100;
 
 		if ($this->login['uident'] && $this->login['uname'])	{

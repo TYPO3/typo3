@@ -105,7 +105,7 @@ class tx_sv_authbase extends t3lib_svbase 	{
 	 * @param	string		security_level
 	 * @return	boolean		true if login data matched
 	 */
-	function compareUident($user, $loginData, $security_level='') {
+	function compareUident(array $user, array $loginData, $security_level = '') {
 		return $this->pObj->compareUident($user, $loginData, $security_level);
 	}
 
