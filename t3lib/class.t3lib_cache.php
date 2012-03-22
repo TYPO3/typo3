@@ -26,7 +26,7 @@
 /**
  * A cache handling helper class
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -112,9 +112,9 @@ class t3lib_cache {
 	 * Determines whether the caching framework is initialized.
 	 * The caching framework could be disabled for the core but used by an extension.
 	 *
-	 * @return	boolean
+	 * @return boolean True if caching framework is initialized
 	 */
-	public function isCachingFrameworkInitialized() {
+	public static function isCachingFrameworkInitialized() {
 		if (!self::$isCachingFrameworkInitialized
 				&& isset($GLOBALS['typo3CacheManager']) && $GLOBALS['typo3CacheManager'] instanceof t3lib_cache_Manager
 				&& isset($GLOBALS['typo3CacheFactory']) && $GLOBALS['typo3CacheFactory'] instanceof t3lib_cache_Factory
@@ -130,9 +130,9 @@ class t3lib_cache {
 	 * This method can be called by extensions in their ext_localconf.php. Calling it later would not work,
 	 * since rendering is already started using the defined caches.
 	 *
-	 * @return	void
+	 * @return void
 	 */
-	public function enableCachingFramework() {
+	public static function enableCachingFramework() {
 		if (!defined('TYPO3_UseCachingFramework')) {
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework'] = 1;
 		} elseif (!TYPO3_UseCachingFramework) {
