@@ -157,10 +157,10 @@ class Tx_Workspaces_Service_GridData {
 					}
 				}
 			}
-			$this->sortDataArray();
 
 			$this->setDataArrayIntoCache($versions, $filterTxt);
 		}
+
 		$this->sortDataArray();
 	}
 
