@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2011 Steffen Kamper (info@sk-typo3.de)
+ *  (c) 2009-2011 Steffen Kamper <info@sk-typo3.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,10 +29,9 @@
  * TYPO3 pageRender class (new in TYPO3 4.3.0)
  * This class render the HTML of a webpage, usable for BE and FE
  *
- * @author	Steffen Kamper <info@sk-typo3.de>
+ * @author Steffen Kamper <info@sk-typo3.de>
  * @package TYPO3
  * @subpackage t3lib
- * $Id$
  */
 class t3lib_PageRenderer implements t3lib_Singleton {
 
@@ -457,7 +456,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
-	 * Enables concatenation of js/css files
+	 * Enables concatenation of js and css files
 	 *
 	 * @param void
 	 * @return void
@@ -467,7 +466,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
-	 * Disables concatenation of js/css files
+	 * Disables concatenation of js and css files
 	 *
 	 * @param void
 	 * @return void
@@ -647,7 +646,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
-	 * Gets concatenate of files
+	 * Gets concatenate of js and css files
 	 *
 	 * @return boolean
 	 */
@@ -796,9 +795,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Adds JS Library. JS Library block is rendered on top of the JS files.
 	 *
-	 * @param string $name
-	 * @param string $file
-	 * @param string $type
+	 * @param string $name Arbitrary identifier
+	 * @param string $file File name
+	 * @param string $type Content Type
 	 * @param boolean $compress		flag if library should be compressed
 	 * @param boolean $forceOnTop	flag if added library should be inserted at begin of this block
 	 * @param string $allWrap
@@ -824,9 +823,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Adds JS Library to Footer. JS Library block is rendered on top of the Footer JS files.
 	 *
-	 * @param string $name
-	 * @param string $file
-	 * @param string $type
+	 * @param string $name Arbitrary identifier
+	 * @param string $file File name
+	 * @param string $type Content Type
 	 * @param boolean $compress	flag if library should be compressed
 	 * @param boolean $forceOnTop	flag if added library should be inserted at begin of this block
 	 * @param string $allWrap
@@ -852,8 +851,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Adds JS file
 	 *
-	 * @param string $file
-	 * @param string $type
+	 * @param string $file File name
+	 * @param string $type Content Type
 	 * @param boolean $compress
 	 * @param boolean $forceOnTop
 	 * @param string $allWrap
@@ -880,8 +879,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Adds JS file to footer
 	 *
-	 * @param string $file
-	 * @param string $type
+	 * @param string $file File name
+	 * @param string $type Content Type
 	 * @param boolean $compress
 	 * @param boolean $forceOnTop
 	 * @return void
@@ -1837,7 +1836,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/*****************************************************/
 
 	/**
-	 * concatenate files into one file
+	 * Concatenate files into one file
 	 * registered handler
 	 *
 	 * @return void
@@ -1867,7 +1866,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
-	 * compress inline code
+	 * Compresses inline code
 	 *
 	 * @return void
 	 */
@@ -1941,8 +1940,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 *
 	 * Adds the version number for Frontend, compresses the file for Backend
 	 *
-	 * @param	string	$filename		Filename
-	 * @return	string		new filename
+	 * @param string $filename Filename
+	 * @return string New filename
 	 */
 	protected function processJsFile($filename) {
 		switch (TYPO3_MODE) {
@@ -1963,4 +1962,5 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_pagerenderer.php'])) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_pagerenderer.php']);
 }
+
 ?>
