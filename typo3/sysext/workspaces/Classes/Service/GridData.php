@@ -31,6 +31,13 @@
  * @subpackage Service
  */
 class Tx_Workspaces_Service_GridData {
+	const SIGNAL_GenerateDataArray_BeforeCaching = 'generateDataArray.beforeCaching';
+	const SIGNAL_GenerateDataArray_PostProcesss = 'generateDataArray.postProcess';
+	const SIGNAL_GetDataArray_PostProcesss = 'getDataArray.postProcess';
+	const SIGNAL_SortDataArray_PostProcesss = 'sortDataArray.postProcess';
+	const SIGNAL_CalcChangePercentage_PreProcess = 'calcChangePercentage.preProcess';
+	const SIGNAL_CalcChangePercentage_PostProcess = 'calcChangePercentage.postProcess';
+
 	/**
 	 * Id of the current active workspace.
 	 *
@@ -185,9 +192,23 @@ class Tx_Workspaces_Service_GridData {
 				}
 			}
 
+				// Suggested slot method:
+				// methodName(Tx_Workspaces_Service_GridData $gridData, array &$dataArray, array $versions)
+			$this->emitSignal(
+				self::SIGNAL_GenerateDataArray_BeforeCaching,
+				&$this->dataArray, $versions
+			);
+
 			$this->sortDataArray();
 			$this->setDataArrayIntoCache($versions, $filterTxt);
 		}
+
+			// Suggested slot method:
+			// methodName(Tx_Workspaces_Service_GridData $gridData, array &$dataArray, array $versions)
+		$this->emitSignal(
+			self::SIGNAL_GenerateDataArray_PostProcesss,
+			&$this->dataArray, $versions
+		);
 
 		$this->sortDataArray();
 	}
@@ -206,6 +227,13 @@ class Tx_Workspaces_Service_GridData {
 		for ($i = $start; $i < $end; $i++) {
 			$dataArrayPart[] = $this->dataArray[$i];
 		}
+
+			// Suggested slot method:
+			// methodName(Tx_Workspaces_Service_GridData $gridData, array &$dataArray, $start, $limit)
+		$this->emitSignal(
+			self::SIGNAL_GetDataArray_PostProcesss,
+			&$this->dataArray, $start, $limit
+		);
 
 		return $dataArrayPart;
 	}
@@ -306,6 +334,13 @@ class Tx_Workspaces_Service_GridData {
 		} else {
 			t3lib_div::sysLog('Try to sort "' . $this->sort . '" in "Tx_Workspaces_Service_GridData::sortDataArray" but $this->dataArray is empty! This might be the Bug #26422 which could not reproduced yet.', 3);
 		}
+
+			// Suggested slot method:
+			// methodName(Tx_Workspaces_Service_GridData $gridData, array &$dataArray, $sortColumn, $sortDirection)
+		$this->emitSignal(
+			self::SIGNAL_SortDataArray_PostProcesss,
+			&$this->dataArray, $this->sort, $this->sortDir
+		);
 	}
 
 	/**
@@ -410,11 +445,19 @@ class Tx_Workspaces_Service_GridData {
 	public function calculateChangePercentage($table, array $diffRecordOne, array $diffRecordTwo) {
 
 			// Initialize:
+		$processed = FALSE;
 		$changePercentage = 0;
 		$changePercentageArray = array();
 
+			// Suggested slot method:
+			// methodName(Tx_Workspaces_Service_GridData $gridData, &$changePercentage, array $firstRecord, array $secondRecord, &$processed)
+		$this->emitSignal(
+			self::SIGNAL_CalcChangePercentage_PreProcess,
+			&$changePercentage, $diffRecordOne, $diffRecordTwo, &$processed
+		);
+
 			// Check that records are arrays:
-		if (is_array($diffRecordOne) && is_array($diffRecordTwo)) {
+		if ($processed === FALSE && is_array($diffRecordOne) && is_array($diffRecordTwo)) {
 
 				// Load full table description
 			t3lib_div::loadTCA($table);
@@ -469,7 +512,14 @@ class Tx_Workspaces_Service_GridData {
 				count($changePercentageArray) > 0 ? $changePercentage = round($sumPctChange / count($changePercentageArray)) : $changePercentage = 0;
 			}
 
+				// Suggested slot method:
+				// methodName(Tx_Workspaces_Service_GridData $gridData, &$changePercentage, array $firstRecord, array $secondRecord, array $changePercentageArray)
+			$this->emitSignal(
+				self::SIGNAL_CalcChangePercentage_PostProcess,
+				&$changePercentage, $diffRecordOne, $diffRecordTwo, $changePercentageArray
+			);
 		}
+
 		return $changePercentage;
 	}
 
@@ -504,6 +554,26 @@ class Tx_Workspaces_Service_GridData {
 		}
 
 		return $state;
+	}
+
+	/**
+	 * Emits a signal to be handled by any registered slots.
+	 *
+	 * @param string $signalName Name of the signal
+	 * @return void
+	 */
+	protected function emitSignal($signalName) {
+			// Arguments are always ($this, [method argument], [method argument], ...)
+		$signalArguments = array_merge(
+			array($this),
+			array_slice(func_get_args(), 1)
+		);
+
+		t3lib_SignalSlot_Dispatcher::getInstance()->dispatch(
+			'Tx_Workspaces_Service_GridData',
+			$signalName,
+			$signalArguments
+		);
 	}
 }
 
