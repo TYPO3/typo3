@@ -152,7 +152,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 *
 	 * @param string $templateFile	declare the used template file. Omit this parameter will use default template
 	 * @param string $backPath	relative path to typo3-folder. It varies for BE modules, in FE it will be typo3/
-	 * @return void
 	 */
 	public function __construct($templateFile = '', $backPath = NULL) {
 
@@ -276,9 +275,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
-	 * Sets head tag
+	 * Sets HTML head tag
 	 *
-	 * @param string $tag	head tag
+	 * @param string $headTag HTML head tag
 	 * @return void
 	 */
 	public function setHeadTag($headTag) {
@@ -306,9 +305,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
-	 * Sets base url
+	 * Sets HTML base URL
 	 *
-	 * @param string $url
+	 * @param string $baseUrl HTML base URL
 	 * @return void
 	 */
 	public function setBaseUrl($baseUrl) {
@@ -346,9 +345,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
-	 * Sets Path for prototype library (relative to typo3 directory)
+	 * Sets path to prototype library (relative to typo3 directory)
 	 *
-	 * @param string path
+	 * @param string $path Path to prototype library
 	 * @return void
 	 */
 	public function setPrototypePath($path) {
@@ -648,7 +647,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
-	 * Gets base url
+	 * Gets HTML base URL
 	 *
 	 * @return string $url
 	 */
@@ -659,9 +658,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Gets template file
 	 *
-	 * @return string $file
+	 * @return string
 	 */
-	public function getTemplateFile($file) {
+	public function getTemplateFile() {
 		return $this->templateFile;
 	}
 
@@ -1381,11 +1380,11 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Gets labels to be used in JavaScript fetched from a locallang file.
 	 *
-	 * @param	string		Input is a file-reference (see t3lib_div::getFileAbsFileName). That file is expected to be a 'locallang.xml' file containing a valid XML TYPO3 language structure.
-	 * @param	string		$selectionPrefix: Prefix to select the correct labels (default: '')
-	 * @param	string		$stripFromSelectionName: Sub-prefix to be removed from label names in the result (default: '')
-	 * @param	integer		Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
-	 * @return	void
+	 * @param string $fileRef Input is a file-reference (see t3lib_div::getFileAbsFileName). That file is expected to be a 'locallang.xml' file containing a valid XML TYPO3 language structure.
+	 * @param string $selectionPrefix: Prefix to select the correct labels (default: '')
+	 * @param string $stripFromSelectionName: Sub-prefix to be removed from label names in the result (default: '')
+	 * @param integer $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
+	 * @return void
 	 */
 	public function addInlineLanguageLabelFile($fileRef, $selectionPrefix = '', $stripFromSelectionName = '', $errorMode = 0) {
 		$index = md5($fileRef . $selectionPrefix . $stripFromSelectionName);
