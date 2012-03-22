@@ -131,7 +131,7 @@ class tx_em_Connection_ExtDirectServer {
 		);
 
 		foreach ($additionalData['results'] as $key => $value) {
-			$isUpdatable = ($localList[$value['extkey']]['intversion'] < $value['maxintversion']);
+			$isUpdatable = ($localList[$value['extkey']]['intversion'] < $value['maxintversion']) && ($localList[$value['extkey']]['stateCls'] != 'state-excludeFromUpdates');
 			$localList[$value['extkey']]['versionislower'] = $isUpdatable;
 			$localList[$value['extkey']]['maxversion'] = tx_em_Tools::versionFromInt($value['maxintversion']);
 		}
