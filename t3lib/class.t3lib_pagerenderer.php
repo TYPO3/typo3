@@ -51,12 +51,12 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/* @var t3lib_Compressor Instance of t3lib_Compressor */
 	protected $compressor;
 
-		// static array containing associative array for the included files
-	protected static $jsFiles = array();
-	protected static $jsFooterFiles = array();
-	protected static $jsLibs = array();
-	protected static $jsFooterLibs = array();
-	protected static $cssFiles = array();
+		// arrays containing associative array for the included files
+	protected $jsFiles = array();
+	protected $jsFooterFiles = array();
+	protected $jsLibs = array();
+	protected $jsFooterLibs = array();
+	protected $cssFiles = array();
 
 	protected $title;
 	protected $charSet;
