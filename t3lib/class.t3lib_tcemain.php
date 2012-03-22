@@ -426,7 +426,11 @@ class t3lib_TCEmain {
 		$hookObjectsArr = array();
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] as $classRef) {
-				$hookObjectsArr[] = t3lib_div::getUserObj($classRef);
+				$hookObject = t3lib_div::getUserObj($classRef);
+				if (method_exists($hookObject, 'processDatamap_beforeStart')) {
+					$hookObject->processDatamap_beforeStart($this);
+				}
+				$hookObjectsArr[] = $hookObject;
 			}
 		}
 
