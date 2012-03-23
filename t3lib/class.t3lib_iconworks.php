@@ -882,9 +882,11 @@ final class t3lib_iconWorks {
 			}
 		}
 		krsort($recordType);
-		foreach ($recordType as $iconName) {
-			if (in_array($iconName, $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
-				return $iconName;
+		if (is_array($GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
+			foreach ($recordType as $iconName) {
+				if (in_array($iconName, $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
+					return $iconName;
+				}
 			}
 		}
 		return 'status-status-icon-missing';
@@ -983,10 +985,12 @@ final class t3lib_iconWorks {
 		$priorities = $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'];
 
 		$iconName = '';
-		foreach ($priorities as $priority) {
-			if ($status[$priority]) {
-				$iconName = $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames'][$priority];
-				break;
+		if (is_array($priorities)) {
+			foreach ($priorities as $priority) {
+				if ($status[$priority]) {
+					$iconName = $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames'][$priority];
+					break;
+				}
 			}
 		}
 
