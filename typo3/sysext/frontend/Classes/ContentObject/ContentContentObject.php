@@ -148,6 +148,11 @@ class ContentContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 		if (isset($conf['stdWrap.'])) {
 			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
 		}
+
+		if ($originalRec) {
+			$GLOBALS['TSFE']->recordRegister[$originalRec]--;
+		}
+
 		// Restore
 		$GLOBALS['TSFE']->currentRecord = $originalRec;
 		return $theValue;
