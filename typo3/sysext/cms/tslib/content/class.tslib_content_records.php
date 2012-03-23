@@ -135,6 +135,10 @@ class tslib_content_Records extends tslib_content_Abstract {
 			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
 		}
 
+		if ($originalRec) {
+			$GLOBALS['TSFE']->recordRegister[$originalRec]--;
+		}
+
 		$GLOBALS['TSFE']->currentRecord = $originalRec; // Restore
 
 		return $theValue;
