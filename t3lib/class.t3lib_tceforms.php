@@ -5621,8 +5621,8 @@ class t3lib_TCEforms {
 	/**
 	 * Used to connect the db/file browser with this document and the formfields on it!
 	 *
-	 * @param	string		Form object reference (including "document.")
-	 * @return	string		JavaScript functions/code (NOT contained in a <script>-element)
+	 * @param string $formObj Form object reference (including "document.")
+	 * @return string JavaScript functions/code (NOT contained in a <script>-element)
 	 */
 	function dbFileCon($formObj = 'document.forms[0]') {
 			// @TODO: Export this to an own file, it is more static than dynamic JavaScript -- olly
@@ -5740,6 +5740,7 @@ class t3lib_TCEforms {
 					var localArray_V = new Array();
 					var localArray_L = new Array();
 					var localArray_S = new Array();
+					var localArray_T = new Array();
 					var fObjSel = formObj[fName+"_list"];
 					var l=fObjSel.length;
 					var c=0;
@@ -5751,6 +5752,7 @@ class t3lib_TCEforms {
 									localArray_V[c] = fObjSel.options[a].value;
 									localArray_L[c] = fObjSel.options[a].text;
 									localArray_S[c] = 0;
+									localArray_T[c] = fObjSel.options[a].title;
 									c++;
 								}
 							}
@@ -5766,6 +5768,7 @@ class t3lib_TCEforms {
 									localArray_V[c]=fObjSel.options[a].value;
 									localArray_L[c]=fObjSel.options[a].text;
 									localArray_S[c]=1;
+									localArray_T[c] = fObjSel.options[a].title;
 									c++;
 								}
 							}
@@ -5775,6 +5778,7 @@ class t3lib_TCEforms {
 								localArray_V[c]=fObjSel.options[a].value;
 								localArray_L[c]=fObjSel.options[a].text;
 								localArray_S[c]=0;
+								localArray_T[c] = fObjSel.options[a].title;
 								c++;
 							}
 						}
@@ -5784,6 +5788,7 @@ class t3lib_TCEforms {
 									localArray_V[c]=fObjSel.options[a].value;
 									localArray_L[c]=fObjSel.options[a].text;
 									localArray_S[c]=1;
+									localArray_T[c] = fObjSel.options[a].title;
 									c++;
 								}
 							}
@@ -5799,6 +5804,7 @@ class t3lib_TCEforms {
 								localArray_V[c]=fObjSel.options[a].value;
 								localArray_L[c]=fObjSel.options[a].text;
 								localArray_S[c]=0;
+								localArray_T[c] = fObjSel.options[a].title;
 								c++;
 
 									// Transfer any accumulated and reset:
@@ -5807,6 +5813,7 @@ class t3lib_TCEforms {
 										localArray_V[c]=fObjSel.options[tA[aa]].value;
 										localArray_L[c]=fObjSel.options[tA[aa]].text;
 										localArray_S[c]=1;
+										localArray_T[c] = fObjSel.options[tA[aa]].title;
 										c++;
 									}
 
@@ -5824,6 +5831,7 @@ class t3lib_TCEforms {
 								localArray_V[c]=fObjSel.options[tA[aa]].value;
 								localArray_L[c]=fObjSel.options[tA[aa]].text;
 								localArray_S[c]=1;
+								localArray_T[c] = fObjSel.options[tA[aa]].title;
 								c++;
 							}
 						}
@@ -5840,6 +5848,7 @@ class t3lib_TCEforms {
 								localArray_V[c]=fObjSel.options[a].value;
 								localArray_L[c]=fObjSel.options[a].text;
 								localArray_S[c]=0;
+								localArray_T[c] = fObjSel.options[a].title;
 								c--;
 
 									// Transfer any accumulated and reset:
@@ -5848,6 +5857,7 @@ class t3lib_TCEforms {
 										localArray_V[c]=fObjSel.options[tA[aa]].value;
 										localArray_L[c]=fObjSel.options[tA[aa]].text;
 										localArray_S[c]=1;
+										localArray_T[c] = fObjSel.options[tA[aa]].title;
 										c--;
 									}
 
@@ -5865,6 +5875,7 @@ class t3lib_TCEforms {
 								localArray_V[c]=fObjSel.options[tA[aa]].value;
 								localArray_L[c]=fObjSel.options[tA[aa]].text;
 								localArray_S[c]=1;
+								localArray_T[c] = fObjSel.options[tA[aa]].title;
 								c--;
 							}
 						}
@@ -5877,6 +5888,7 @@ class t3lib_TCEforms {
 						fObjSel.options[a].value = localArray_V[a];
 						fObjSel.options[a].text = localArray_L[a];
 						fObjSel.options[a].selected = localArray_S[a];
+						fObjSel.options[a].title = localArray_T[a];
 					}
 					setHiddenFromList(fObjSel,formObj[fName]);
 
