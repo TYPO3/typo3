@@ -118,7 +118,6 @@ Ext.override(Ext.ux.state.TreePanel, {
 						var isSingleClickPossible = (this.app.isVisible() && this.commandProvider && this.commandProvider.singleClick);
 						if (!hasContentFrameValidPageId && !isCurrentSelectedNode && isSingleClickPossible) {
 							this.selectPath(node.getPath());
-							this.commandProvider.singleClick(node, this);
 						}
 					}
 				}
