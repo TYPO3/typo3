@@ -100,7 +100,10 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 	 */
 	public function getPropertyTriesToCallABooleanGetterMethodIfItExists() {
 		$property = Tx_Extbase_Reflection_ObjectAccess::getProperty($this->dummyObject, 'booleanProperty');
-		$this->assertSame('method called 1', $property);
+
+		$this->assertTrue(
+			$property
+		);
 	}
 
 	/**
