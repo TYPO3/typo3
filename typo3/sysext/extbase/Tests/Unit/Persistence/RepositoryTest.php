@@ -414,7 +414,7 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 
 	/**
 	 * @test
-	 * @expectedException Exception
+	 * @expectedException Tx_Extbase_Persistence_Exception_UnsupportedMethod
 	 */
 	public function magicCallMethodTriggersAnErrorIfUnknownMethodsAreCalled() {
 		$this->repository->__call('foo', array());
