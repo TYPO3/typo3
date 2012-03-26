@@ -2581,6 +2581,7 @@ class t3lib_TCEforms_inline {
 		/** @var $pageRenderer t3lib_PageRenderer */
 		$pageRenderer = clone $GLOBALS['SOBE']->doc->getPageRenderer();
 
+		$pageRenderer->setCharSet($GLOBALS['LANG']->charSet);
 		$pageRenderer->setTemplateFile(TYPO3_mainDir . 'templates/helper_javascript_css.html');
 		$javaScriptAndStyleSheets = $pageRenderer->render();
 
