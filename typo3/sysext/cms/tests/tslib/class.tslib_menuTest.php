@@ -138,7 +138,7 @@ class tslib_menuTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 				$this->returnValue(FALSE))
 			);
 
-		$this->fixture->sys_page->expects($this->once())->method('getRecordOverlay')
+		$this->fixture->sys_page->expects($this->once())->method('getRecordOverlayWithFallback')
 			->will($this->returnValue(array('uid' => 0, 'header' => 'OVERLAID')));
 
 		$result = $this->fixture->_call('sectionIndex', 'field');
