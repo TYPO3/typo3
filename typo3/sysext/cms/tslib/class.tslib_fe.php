@@ -170,6 +170,7 @@
 	var $sys_language_uid=0;			// Site language, 0 (zero) is default, int+ is uid pointing to a sys_language record. Should reflect which language menus, templates etc is displayed in (master language) - but not necessarily the content which could be falling back to default (see sys_language_content)
 	var $sys_language_mode='';			// Site language mode for content fall back.
 	var $sys_language_content=0;		// Site content selection uid (can be different from sys_language_uid if content is to be selected from a fall-back language. Depends on sys_language_mode)
+	public $sys_language_fallback = 0;		// Almost the same as sys_language_content, but can differ if a content_fallback mode was requested
 	var $sys_language_contentOL=0;		// Site content overlay flag; If set - and sys_language_content is > 0 - , records selected will try to look for a translation pointing to their uid. (If configured in [ctrl][languageField] / [ctrl][transOrigP...]
 	var $sys_language_isocode = '';		// Is set to the iso code of the sys_language_content if that is properly defined by the sys_language record representing the sys_language_uid. (Requires the extension "static_info_tables")
 
@@ -2270,63 +2271,91 @@
 		}
 
 			// Get values from TypoScript:
-		$this->sys_language_uid = $this->sys_language_content = intval($this->config['config']['sys_language_uid']);
+		$this->sys_language_uid = $this->sys_language_content = $this->sys_language_fallback = intval($this->config['config']['sys_language_uid']);
 		list($this->sys_language_mode,$sys_language_content) = t3lib_div::trimExplode(';', $this->config['config']['sys_language_mode']);
 		$this->sys_language_contentOL = $this->config['config']['sys_language_overlay'];
 
-			// If sys_language_uid is set to another language than default:
-		if ($this->sys_language_uid>0)	{
+			// If sys_language_uid is set to another language than default
+		if ($this->sys_language_uid) {
 
 				// check whether a shortcut is overwritten by a translated page
 				// we can only do this now, as this is the place where we get
 				// to know about translations
 			$this->checkTranslatedShortcut();
 
-				// Request the overlay record for the sys_language_uid:
+				// Request the overlay record for the sys_language_uid
 			$olRec = $this->sys_page->getPageOverlay($this->id, $this->sys_language_uid);
 			if (!count($olRec))	{
-
 					// If no OL record exists and a foreign language is asked for...
-				if ($this->sys_language_uid)	{
+				if ($this->sys_language_uid) {
 
 						// If requested translation is not available:
-					if (t3lib_div::hideIfNotTranslated($this->page['l18n_cfg']))	{
+					if (t3lib_div::hideIfNotTranslated($this->page['l18n_cfg'])) {
 						$this->pageNotFoundAndExit('Page is not available in the requested language.');
 					} else {
-						switch((string)$this->sys_language_mode)	{
+						switch((string)$this->sys_language_mode) {
 							case 'strict':
 								$this->pageNotFoundAndExit('Page is not available in the requested language (strict).');
 							break;
 							case 'content_fallback':
-								$fallBackOrder = t3lib_div::intExplode(',', $sys_language_content);
-								foreach($fallBackOrder as $orderValue)	{
-									if (!strcmp($orderValue,'0') || count($this->sys_page->getPageOverlay($this->id, $orderValue)))	{
-										$this->sys_language_content = $orderValue;	// Setting content uid (but leaving the sys_language_uid)
+									// default is to fallback to default language
+								$this->sys_language_content = $this->sys_language_fallback = 0;
+
+								$fallbackOrder = t3lib_div::intExplode(',', $sys_language_content);
+								foreach($fallbackOrder as $languageId) {
+										// ignore default language
+									if (!$languageId || $this->sys_language_uid === $languageId) {
+										continue;
+									}
+									$pageOverlay = $this->sys_page->getPageOverlay($this->id, $languageId);
+									if (count($pageOverlay)) {
+											// Setting content uid (but leaving the sys_language_uid)
+										$this->sys_language_content = $this->sys_language_fallback = $languageId;
+										$this->page = $this->sys_page->getPageOverlay($this->page, $languageId);
 										break;
 									}
 								}
 							break;
 							case 'ignore':
-								$this->sys_language_content = $this->sys_language_uid;
+								$this->sys_language_content = $this->sys_language_fallback = $this->sys_language_uid;
 							break;
 							default:
 									// Default is that everything defaults to the default language...
-								$this->sys_language_uid = $this->sys_language_content = 0;
+								$this->sys_language_uid = $this->sys_language_fallback = $this->sys_language_content = 0;
 							break;
 						}
 					}
 				}
 			} else {
-					// Setting sys_language if an overlay record was found (which it is only if a language is used)
+					// overlay page with existing page overlay
 				$this->page = $this->sys_page->getPageOverlay($this->page, $this->sys_language_uid);
+
+					// content might not be in this language, do fallback to first available language
+				if ($this->sys_language_mode === 'content_fallback') {
+						// default is to fallback to default language
+					$this->sys_language_fallback = 0;
+
+					$fallbackOrder = t3lib_div::intExplode(',', $sys_language_content);
+					foreach ($fallbackOrder as $languageId) {
+							// ignore default language
+						if (!$languageId || $this->sys_language_uid === $languageId) {
+							continue;
+						}
+						$pageOverlay = $this->sys_page->getPageOverlay($this->id, $languageId);
+						if (count($pageOverlay)) {
+							$this->sys_language_fallback = $languageId;
+							break;
+						}
+					}
+				}
 			}
 		}
 
 			// Setting sys_language_uid inside sys-page:
 		$this->sys_page->sys_language_uid = $this->sys_language_uid;
 
-			// If default translation is not available:
-		if ((!$this->sys_language_uid || !$this->sys_language_content) && $this->page['l18n_cfg']&1)	{
+			// If default translation is not to be selected
+		if ($this->page['l18n_cfg']&1 && !($this->sys_language_uid && $this->sys_language_content)) {
 			$message = 'Page is not available in default language.';
 			t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
 			$this->pageNotFoundAndExit($message);
