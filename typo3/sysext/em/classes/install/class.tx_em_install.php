@@ -1430,7 +1430,7 @@ class tx_em_Install {
 	function writeTsStyleConfig($extKey, $arr) {
 
 		// Instance of install tool
-		$instObj = new t3lib_install;
+		$instObj = t3lib_div::makeInstance('t3lib_install');
 		$instObj->allowUpdateLocalConf = 1;
 		$instObj->updateIdentity = 'TYPO3 Extension Manager';
 
@@ -1534,7 +1534,7 @@ class tx_em_Install {
 		$strippedExtensionList = $this->stripNonFrontendExtensions($newExtList);
 
 		// Instance of install tool
-		$instObj = new t3lib_install;
+		$instObj = t3lib_div::makeInstance('t3lib_install');
 		$instObj->allowUpdateLocalConf = 1;
 		$instObj->updateIdentity = 'TYPO3 Extension Manager';
 
