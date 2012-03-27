@@ -119,7 +119,7 @@ class tx_coreupdates_t3skin extends Tx_Install_Updates_Base {
 	 */
 	protected function writeNewExtensionList($newExtList)	{
 			// Instance of install tool
-		$instObj = new t3lib_install;
+		$instObj = t3lib_div::makeInstance('t3lib_install');
 		$instObj->allowUpdateLocalConf = 1;
 		$instObj->updateIdentity = 'TYPO3 Core Update Manager';
 
