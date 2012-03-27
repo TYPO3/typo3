@@ -47,6 +47,17 @@ class t3lib_TCEforms_ValueSlider {
 
 		$field = $params['field'];
 		$value = $params['row'][$field];
+
+			// If Slider is used in a flexform
+		if (!empty($params['flexFormPath'])) {
+			$flexFormTools = t3lib_div::makeInstance('t3lib_flexformtools');
+			$flexFormValue = $flexFormTools->getArrayValueByPath($params['flexFormPath'], t3lib_div::xml2array($value));
+
+			if ($flexFormValue !== NULL) {
+				$value = $flexFormValue;
+			}
+		}
+
 		$itemName = $params['itemName'];
 			// Set default values (which correspond to those of the JS component)
 		$min = 0;
