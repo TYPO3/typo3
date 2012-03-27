@@ -1791,7 +1791,7 @@ class tslib_menu {
 			$this->sys_page->versionOL('tt_content', $row);
 
 			if ($GLOBALS['TSFE']->sys_language_contentOL && $basePageRow['_PAGES_OVERLAY_LANGUAGE']) {
-				$row = $this->sys_page->getRecordOverlay(
+				$row = $this->sys_page->getRecordOverlayWithFallback(
 					'tt_content',
 					$row,
 					$basePageRow['_PAGES_OVERLAY_LANGUAGE'],
