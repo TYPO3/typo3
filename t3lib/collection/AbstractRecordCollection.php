@@ -127,7 +127,7 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	 * Return the key of the current element
 	 *
 	 * @link http://php.net/manual/en/iterator.key.php
-	 * @return scalar scalar on success, integer
+	 * @return integer
 	 * 0 on failure.
 	 */
 	public function key() {
@@ -394,13 +394,13 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	 * also allow to add table name, if it might be needed by TCEmain for
 	 * storing the relation
 	 *
-	 * @param bool $includeTableName
+	 * @param boolean $includeTableName
 	 * @return string
 	 */
-	protected function getItemUidList($includeTableName = FALSE) {
+	protected function getItemUidList($includeTableName = TRUE) {
 		$list = array();
 		foreach($this->storage AS $entry) {
-			$list[] = $this->getItemTableName() . '_' . $entry['uid'];
+			$list[] = ($includeTableName ? $this->getItemTableName() . '_' : '') . $entry['uid'];
 		}
 		return implode(',', $list);
 	}
@@ -431,10 +431,10 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	 * @return void
 	 */
 	public function fromArray(array $array) {
-		$this->uid			= $array['uid'];
-		$this->title		= $array['title'];
-		$this->description	= $array['description'];
-		$this->itemTableName= $array['table_name'];
+		$this->uid = $array['uid'];
+		$this->title = $array['title'];
+		$this->description = $array['description'];
+		$this->itemTableName = $array['table_name'];
 	}
 }
 ?>
