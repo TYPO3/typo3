@@ -6075,6 +6075,10 @@ class t3lib_TCEmain {
 		$previousLocalizedRecordUid = $uid;
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
 			$sortRow = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
+				// For content elements, we also need the colPos
+			if ($table === 'tt_content') {
+				$sortRow .= ',colPos';
+			}
 				// Get the sort value of the default language record
 			$row = t3lib_BEfunc::getRecord($table, $uid, $sortRow . ',pid,uid');
 			if (is_array($row)) {
