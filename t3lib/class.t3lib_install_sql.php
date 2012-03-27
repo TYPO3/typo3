@@ -429,7 +429,7 @@ class t3lib_install_Sql {
 					if (is_array($info['fields'])) {
 						foreach ($info['fields'] as $fN => $fV) {
 							if ($info['whole_table']) {
-								$whole_table[] = $fN . ' ' . $fV;
+								$whole_table[] = '`' . $fN . '` ' . $fV;
 							} else {
 									// Special case to work around MySQL problems when adding auto_increment fields:
 								if (stristr($fV, 'auto_increment')) {
@@ -446,18 +446,18 @@ class t3lib_install_Sql {
 								if ($theKey == 'extra') {
 									if ($remove) {
 										if (substr($fN, 0, strlen($deletedPrefixKey)) != $deletedPrefixKey) {
-											$statement = 'ALTER TABLE ' . $table . ' CHANGE ' . $fN . ' ' . $deletedPrefixKey . $fN . ' ' . $fV . ';';
+											$statement = 'ALTER TABLE `' . $table . '` CHANGE `' . $fN . '` `' . $deletedPrefixKey . $fN . '` ' . $fV . ';';
 											$statements['change'][md5($statement)] = $statement;
 										} else {
-											$statement = 'ALTER TABLE ' . $table . ' DROP ' . $fN . ';';
+											$statement = 'ALTER TABLE `' . $table . '` DROP `' . $fN . '`;';
 											$statements['drop'][md5($statement)] = $statement;
 										}
 									} else {
-										$statement = 'ALTER TABLE ' . $table . ' ADD ' . $fN . ' ' . $fV . ';';
+										$statement = 'ALTER TABLE `' . $table . '` ADD `' . $fN . '` ' . $fV . ';';
 										$statements['add'][md5($statement)] = $statement;
 									}
 								} elseif ($theKey == 'diff') {
-									$statement = 'ALTER TABLE ' . $table . ' CHANGE ' . $fN . ' ' . $fN . ' ' . $fV . ';';
+									$statement = 'ALTER TABLE `' . $table . '` CHANGE `' . $fN . '` `' . $fN . '` ' . $fV . ';';
 									$statements['change'][md5($statement)] = $statement;
 									$statements['change_currentValue'][md5($statement)] = $diffArr['diff_currentValues'][$table]['fields'][$fN];
 								}
@@ -471,14 +471,14 @@ class t3lib_install_Sql {
 							} else {
 								if ($theKey == 'extra') {
 									if ($remove) {
-										$statement = 'ALTER TABLE ' . $table . ($fN == 'PRIMARY' ? ' DROP PRIMARY KEY' : ' DROP KEY ' . $fN) . ';';
+										$statement = 'ALTER TABLE `' . $table . '`' . ($fN == 'PRIMARY' ? ' DROP PRIMARY KEY' : ' DROP KEY `' . $fN . '`') . ';';
 										$statements['drop'][md5($statement)] = $statement;
 									} else {
-										$statement = 'ALTER TABLE ' . $table . ' ADD ' . $fV . ';';
+										$statement = 'ALTER TABLE `' . $table . '` ADD ' . $fV . ';';
 										$statements['add'][md5($statement)] = $statement;
 									}
 								} elseif ($theKey == 'diff') {
-									$statement = 'ALTER TABLE ' . $table . ($fN == 'PRIMARY' ? ' DROP PRIMARY KEY' : ' DROP KEY ' . $fN) . ';';
+									$statement = 'ALTER TABLE `' . $table . '`' . ($fN == 'PRIMARY' ? ' DROP PRIMARY KEY' : ' DROP KEY `' . $fN . '`') . ';';
 									$statements['change'][md5($statement)] = $statement;
 									$statement = 'ALTER TABLE ' . $table . ' ADD ' . $fV . ';';
 									$statements['change'][md5($statement)] = $statement;
@@ -511,11 +511,11 @@ class t3lib_install_Sql {
 							}
 						}
 						if ($clear_table) {
-							$statement = 'TRUNCATE TABLE ' . $table . ';';
+							$statement = 'TRUNCATE TABLE `' . $table . '`;';
 							$statements['clear_table'][md5($statement)] = $statement;
 						}
 						if (count($extras)) {
-							$statement = 'ALTER TABLE ' . $table . ' ' . implode(' ', $extras) . ';';
+							$statement = 'ALTER TABLE `' . $table . '` ' . implode(' ', $extras) . ';';
 							$statements['change'][md5($statement)] = $statement;
 							$statements['change_currentValue'][md5($statement)] = implode(' ', $extras_currentValue);
 						}
@@ -523,17 +523,17 @@ class t3lib_install_Sql {
 					if ($info['whole_table']) {
 						if ($remove) {
 							if (substr($table, 0, strlen($deletedPrefixKey)) != $deletedPrefixKey) {
-								$statement = 'ALTER TABLE ' . $table . ' RENAME ' . $deletedPrefixKey . $table . ';';
+								$statement = 'ALTER TABLE `' . $table . '` RENAME `' . $deletedPrefixKey . $table . '`;';
 								$statements['change_table'][md5($statement)] = $statement;
 							} else {
-								$statement = 'DROP TABLE ' . $table . ';';
+								$statement = 'DROP TABLE `' . $table . '`;';
 								$statements['drop_table'][md5($statement)] = $statement;
 							}
 								// count:
 							$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $table);
 							$statements['tables_count'][md5($statement)] = $count ? 'Records in table: ' . $count : '';
 						} else {
-							$statement = 'CREATE TABLE ' . $table . " (\n" . implode(",\n", $whole_table) . "\n)";
+							$statement = 'CREATE TABLE `' . $table . "` (\n" . implode(",\n", $whole_table) . "\n)";
 							if ($info['extra']) {
 								foreach ($info['extra'] as $k => $v) {
 									if ($k == 'COLLATE' || $k == 'CLEAR') {
