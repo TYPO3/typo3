@@ -170,6 +170,7 @@
 	var $sys_language_uid=0;			// Site language, 0 (zero) is default, int+ is uid pointing to a sys_language record. Should reflect which language menus, templates etc is displayed in (master language) - but not necessarily the content which could be falling back to default (see sys_language_content)
 	var $sys_language_mode='';			// Site language mode for content fall back.
 	var $sys_language_content=0;		// Site content selection uid (can be different from sys_language_uid if content is to be selected from a fall-back language. Depends on sys_language_mode)
+	public $sys_language_fallback = 0;		// Almost the same as sys_language_content, but can differ if a content_fallback mode was requested
 	var $sys_language_contentOL=0;		// Site content overlay flag; If set - and sys_language_content is > 0 - , records selected will try to look for a translation pointing to their uid. (If configured in [ctrl][languageField] / [ctrl][transOrigP...]
 	var $sys_language_isocode = '';		// Is set to the iso code of the sys_language_content if that is properly defined by the sys_language record representing the sys_language_uid. (Requires the extension "static_info_tables")
 
@@ -2270,7 +2271,7 @@
 		}
 
 			// Get values from TypoScript:
-		$this->sys_language_uid = $this->sys_language_content = intval($this->config['config']['sys_language_uid']);
+		$this->sys_language_uid = $this->sys_language_content = $this->sys_language_fallback = intval($this->config['config']['sys_language_uid']);
 		list($this->sys_language_mode,$sys_language_content) = t3lib_div::trimExplode(';', $this->config['config']['sys_language_mode']);
 		$this->sys_language_contentOL = $this->config['config']['sys_language_overlay'];
 
@@ -2301,7 +2302,9 @@
 								$fallBackOrder = t3lib_div::intExplode(',', $sys_language_content);
 								foreach($fallBackOrder as $orderValue)	{
 									if (!strcmp($orderValue,'0') || count($this->sys_page->getPageOverlay($this->id, $orderValue)))	{
-										$this->sys_language_content = $orderValue;	// Setting content uid (but leaving the sys_language_uid)
+											// Setting content uid (but leaving the sys_language_uid)
+										$this->sys_language_content = $this->sys_language_fallback = $orderValue;
+										$this->page = $this->sys_page->getPageOverlay($this->page, $orderValue);
 										break;
 									}
 								}
@@ -2311,7 +2314,7 @@
 							break;
 							default:
 									// Default is that everything defaults to the default language...
-								$this->sys_language_uid = $this->sys_language_content = 0;
+								$this->sys_language_uid = $this->sys_language_fallback = $this->sys_language_content = 0;
 							break;
 						}
 					}
@@ -2319,6 +2322,21 @@
 			} else {
 					// Setting sys_language if an overlay record was found (which it is only if a language is used)
 				$this->page = $this->sys_page->getPageOverlay($this->page, $this->sys_language_uid);
+
+				if ($this->sys_language_mode === 'content_fallback') {
+					$fallBackOrder = t3lib_div::intExplode(',', $sys_language_content);
+					foreach ($fallBackOrder as $languageId) {
+						if (!$languageId) {
+							continue;
+						}
+
+						$overlaidPage = $this->sys_page->getPageOverlay($this->id, $languageId);
+						if (count($overlaidPage)) {
+							$this->sys_language_fallback = $languageId;
+							break;
+						}
+					}
+				}
 			}
 		}
 
