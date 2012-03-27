@@ -87,12 +87,7 @@ class tslib_content_Records extends tslib_content_Abstract {
 
 					// Language overlay:
 				if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL) {
-					$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay(
-						$val['table'],
-						$row,
-						$GLOBALS['TSFE']->sys_language_content,
-						$GLOBALS['TSFE']->sys_language_contentOL
-					);
+					$row = $GLOBALS['TSFE']->sys_page->getRecordOverlayWithFallback($val['table'], $row);
 				}
 
 				if (is_array($row)) { // Might be unset in the content overlay things...
