@@ -87,6 +87,17 @@ Extension authors should remove the three line XCLASS statement at the bottom
 of class files now for any extension with a compatibility for 6.0 and above.
 More information can be found at http://wiki.typo3.org/Autoload
 
+* Support of custom language fallbacks
+
+Please be aware of the fact that the content_fallback setting respects the
+already documented customizable language fallback feature like
+"sys_language_mode = content_fallback; 1,2" much more completely now.
+In general this means that you can define e.g. German as used fallback language
+for a different region like e.g. Austria instead of the site-wide English
+default language. The setting is taken independently into account on page and
+content level. Latter only if related extensions are using the new API method
+"getRecordOverlayWithFallback" instead of the old "getRecordOverlay".
+
 Removed Functionality
 -------------------------------------------------------------------------------
 
