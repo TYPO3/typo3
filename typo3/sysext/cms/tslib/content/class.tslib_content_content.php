@@ -121,7 +121,7 @@ class tslib_content_Content extends tslib_content_Abstract {
 							if ($conf['table'] == 'pages') {
 								$row = $GLOBALS['TSFE']->sys_page->getPageOverlay($row);
 							} else {
-								$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'], $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
+								$row = $GLOBALS['TSFE']->sys_page->getRecordOverlayWithFallback($conf['table'], $row);
 							}
 						}
 
