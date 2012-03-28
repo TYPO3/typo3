@@ -53,6 +53,25 @@ class t3lib_transferData {
 	var $regTableItems_data = array(); // This stores the record data of the loaded records
 	var $loadModules = ''; // Contains loadModules object, if used. (for reuse internally)
 
+	/**
+	 * Internal hooks storage
+	 * @var array
+	 */
+	protected $processRecordHookObjects = array();
+
+	public function __construct() {
+
+		$hookElements = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_transferdata.php']['processRecord'];
+		if (is_array($hookElements)) {
+			foreach ($hookElements as $classRef) {
+				/** @var $hookObject t3lib_transferdata_processRecordHook */
+				$hookObject = t3lib_div::getUserObj($classRef);
+				if ($hookObject instanceof t3lib_transferdata_processRecordHook) {
+					$this->processRecordHookObjects[] = $hookObject;
+				}
+			}
+		}
+	}
 
 	/***********************************************
 	 *
@@ -181,7 +200,12 @@ class t3lib_transferData {
 	 */
 	function renderRecord($table, $id, $pid, $row) {
 
-			// Init:
+		foreach ($this->processRecordHookObjects as $hookObject) {
+			/** @var $hookObject t3lib_transferdata_processRecordHook */
+			$hookObject->preProcessRenderRecord($table, $id, $pid, $row);
+		}
+
+		// Init:
 		$uniqueItemRef = $table . '_' . $id;
 		t3lib_div::loadTCA($table);
 
@@ -224,6 +248,12 @@ class t3lib_transferData {
 	 * @see renderRecord()
 	 */
 	function renderRecordRaw($table, $id, $pid, $row, $TSconfig = '', $tscPID = 0) {
+
+		foreach ($this->processRecordHookObjects as $hookObject) {
+			/** @var $hookObject t3lib_transferdata_processRecordHook */
+			$hookObject->preProcessRenderRecordRaw($table, $id, $pid, $row, $TSconfig, $tscPID);
+		}
+
 		if (!is_array($TSconfig)) {
 			$TSconfig = array();
 		}
