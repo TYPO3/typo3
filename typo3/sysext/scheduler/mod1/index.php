@@ -180,6 +180,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 			// Get submitted data
 		$this->submittedData = t3lib_div::_GPmerged('tx_scheduler');
+		$this->submittedData['uid'] = intval($this->submittedData['uid']);
 
 			// If a save command was submitted, handle saving now
 		if ($this->CMD == 'save') {
@@ -846,7 +847,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		$cellContent  = t3lib_BEfunc::cshItem($this->cshKey, 'task_frequency', $this->backPath, '|', false, 'margin-bottom:0px;');
 		$cellContent .= '<label for="task_frequency">' . $GLOBALS['LANG']->getLL('label.frequency.long') . '</label>';
 		$table[$tr][] = $cellContent;
-		$cell = '<input type="text" name="tx_scheduler[frequency]" id="task_frequency" value="' . $taskInfo['frequency'] . '" />';
+		$cell = '<input type="text" name="tx_scheduler[frequency]" id="task_frequency" value="' . htmlspecialchars($taskInfo['frequency']) . '" />';
 		$table[$tr][] = $cell;
 		$tableLayout[$tr] = array (
 			'tr'     => array('<tr id="task_frequency_row"' . $style . '>', '</tr>'),
