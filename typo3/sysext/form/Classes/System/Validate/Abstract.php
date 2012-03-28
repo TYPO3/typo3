@@ -87,6 +87,16 @@ abstract class tx_form_System_Validate_Abstract implements tx_form_System_Valida
 	protected $localCobj;
 
 	/**
+	 * Inject the Request Handler
+	 *
+	 * @param tx_form_System_Request $requestHandler
+	 * @return void
+	 */
+	public function injectRequestHandler(tx_form_System_Request $requestHandler) {
+		$this->requestHandler = $requestHandler;
+	}
+
+	/**
 	 * Constructor
 	 *
 	 * @param array $arguments Typoscript configuration for the validation rule
@@ -94,7 +104,7 @@ abstract class tx_form_System_Validate_Abstract implements tx_form_System_Valida
 	 */
 	public function __construct($arguments) {
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
-		$this->requestHandler = t3lib_div::makeInstance('tx_form_System_Request');
+		$this->injectRequestHandler(t3lib_div::makeInstance('tx_form_System_Request'));
 		$this->localizationHandler = t3lib_div::makeInstance('tx_form_System_Localization');
 		$this->setFieldName($arguments['element']);
 		$this->setMessage($arguments['message.'], $arguments['message']);
