@@ -505,9 +505,9 @@ class SC_show_item {
 				htmlspecialchars(t3lib_BEfunc::getRecordTitle('pages', t3lib_BEfunc::getRecord('pages', $record['pid']))) .
 				" (uid=" . $record['pid'] . ')">' . $record['uid'] . '</span></td>' .
 				'<td>' . htmlspecialchars($this->getFieldName($row['tablename'], $row['field'])) . '</td>' .
-				'<td>' . $row['flexpointer'] . '</td>' .
-				'<td>' . $row['softref_key'] . '</td>' .
-				'<td>' . $row['sorting'] . '</td>' .
+				'<td>' . htmlspecialchars($row['flexpointer']) . '</td>' .
+				'<td>' . htmlspecialchars($row['softref_key']) . '</td>' .
+				'<td>' . htmlspecialchars($row['sorting']) . '</td>' .
 				'</tr>';
 		}
 
@@ -549,12 +549,12 @@ class SC_show_item {
 		foreach($rows as $row) {
 			$infoData[] = '<tr class="bgColor4">' .
 				'<td>' . htmlspecialchars($this->getFieldName($table, $row['field'])) . '</td>' .
-				'<td>' . $row['flexpointer'] . '</td>' .
-				'<td>' . $row['softref_key'] . '</td>' .
-				'<td>' . $row['sorting'] . '</td>' .
+				'<td>' . htmlspecialchars($row['flexpointer']) . '</td>' .
+				'<td>' . htmlspecialchars($row['softref_key']) . '</td>' .
+				'<td>' . htmlspecialchars($row['sorting']) . '</td>' .
 				'<td>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'], TRUE) . '</td>' .
-				'<td>' . $row['ref_uid'] . '</td>' .
-				'<td>' . $row['ref_string'] . '</td>' .
+				'<td>' . htmlspecialchars($row['ref_uid']) . '</td>' .
+				'<td>' . htmlspecialchars($row['ref_string']) . '</td>' .
 				'</tr>';
 		}
 
