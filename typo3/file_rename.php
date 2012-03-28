@@ -127,7 +127,7 @@ class SC_file_rename {
 		$this->shortPath = substr($this->target,strlen($GLOBALS['FILEMOUNTS'][$key]['path']));
 
 			// Setting title:
-		$this->title = $this->icon . htmlspecialchars($GLOBALS['FILEMOUNTS'][$key]['name']) . ': ' . $this->shortPath;
+		$this->title = $this->icon . htmlspecialchars($GLOBALS['FILEMOUNTS'][$key]['name']) . ': ' . htmlspecialchars($this->shortPath);
 
 			// Setting template object
 		$this->doc = t3lib_div::makeInstance('template');
