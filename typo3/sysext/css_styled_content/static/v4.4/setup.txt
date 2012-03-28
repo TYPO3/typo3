@@ -869,6 +869,7 @@ tt_content.uploads {
 				data = register:description
 				wrap = <p class="csc-uploads-description">|</p>
 				required = 1
+				htmlSpecialChars = 1
 			}
 
 			30 = TEXT
@@ -1768,4 +1769,3 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	/* Fix for unordered and ordered list with image "In text, left" */
 	.csc-textpic-intext-left ol, .csc-textpic-intext-left ul {padding-left: 40px; overflow: auto; }
 )
-
