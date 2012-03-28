@@ -59,6 +59,22 @@ class t3lib_transferData {
 	var $regTableItems_data = array();
 		// Contains loadModules object, if used. (for reuse internally)
 	var $loadModules = '';
+		// Internal hooks storage
+	protected $processRecordHookObjects = array();
+
+	public function __construct() {
+
+		$hookElements = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_transferdata.php']['processRecord'];
+		if (is_array($hookElements)) {
+			foreach ($hookElements as $classRef) {
+				/** @var $hookObject t3lib_transferdata_processRecordHook */
+				$hookObject = t3lib_div::getUserObj($classRef);
+				if ($hookObject instanceof t3lib_transferdata_processRecordHook) {
+					$this->processRecordHookObjects[] = $hookObject;
+				}
+			}
+		}
+	}
 
 	/***********************************************
 	 *
@@ -188,8 +204,12 @@ class t3lib_transferData {
 	 * @see fetchRecord()
 	 */
 	function renderRecord($table, $id, $pid, $row) {
+		foreach ($this->processRecordHookObjects as $hookObject) {
+			/** @var $hookObject t3lib_transferdata_processRecordHook */
+			$hookObject->preProcessRenderRecord($table, $id, $pid, $row);
+		}
 
-			// Init:
+		// Init:
 		$uniqueItemRef = $table . '_' . $id;
 		t3lib_div::loadTCA($table);
 
@@ -232,6 +252,11 @@ class t3lib_transferData {
 	 * @see renderRecord()
 	 */
 	function renderRecordRaw($table, $id, $pid, $row, $TSconfig = '', $tscPID = 0) {
+		foreach ($this->processRecordHookObjects as $hookObject) {
+			/** @var $hookObject t3lib_transferdata_processRecordHook */
+			$hookObject->preProcessRenderRecordRaw($table, $id, $pid, $row, $TSconfig, $tscPID);
+		}
+
 		if (!is_array($TSconfig)) {
 			$TSconfig = array();
 		}
@@ -288,6 +313,11 @@ class t3lib_transferData {
 	 * @return string Modified $value
 	 */
 	function renderRecord_SW($data, $fieldConfig, $TSconfig, $table, $row, $field) {
+		foreach ($this->processRecordHookObjects as $hookObject) {
+			/** @var $hookObject t3lib_transferdata_processRecordHook */
+			$hookObject->preProcessRenderRecord_SW($data, $fieldConfig, $TSconfig, $table, $row, $field);
+		}
+
 		switch ((string) $fieldConfig['config']['type']) {
 			case 'group':
 				$data = $this->renderRecord_groupProc($data, $fieldConfig, $TSconfig, $table, $row, $field);
