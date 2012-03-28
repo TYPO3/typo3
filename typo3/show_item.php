@@ -497,12 +497,12 @@ class SC_show_item {
 		}
 		foreach($rows as $row)	{
 			$infoData[] = '<tr class="bgColor4"">' .
-					'<td>'.$row['tablename'].'</td>' .
-					'<td>'.$row['recuid'].'</td>' .
-					'<td>'.$row['field'].'</td>'.
-					'<td>'.$row['flexpointer'].'</td>'.
-					'<td>'.$row['softref_key'].'</td>'.
-					'<td>'.$row['sorting'].'</td>'.
+					'<td>'.htmlspecialchars($row['tablename']).'</td>' .
+					'<td>'.htmlspecialchars($row['recuid']).'</td>' .
+					'<td>'.htmlspecialchars($row['field']).'</td>'.
+					'<td>'.htmlspecialchars($row['flexpointer']).'</td>'.
+					'<td>'.htmlspecialchars($row['softref_key']).'</td>'.
+					'<td>'.htmlspecialchars($row['sorting']).'</td>'.
 					'</tr>';
 		}
 
@@ -541,13 +541,13 @@ class SC_show_item {
 		}
 		foreach($rows as $row)	{
 			$infoData[] = '<tr class="bgColor4"">' .
-					'<td>'.$row['field'].'</td>'.
-					'<td>'.$row['flexpointer'].'</td>'.
-					'<td>'.$row['softref_key'].'</td>'.
-					'<td>'.$row['sorting'].'</td>'.
-					'<td>'.$row['ref_table'].'</td>' .
-					'<td>'.$row['ref_uid'].'</td>' .
-					'<td>'.$row['ref_string'].'</td>' .
+					'<td>'.htmlspecialchars($row['field']).'</td>'.
+					'<td>'.htmlspecialchars($row['flexpointer']).'</td>'.
+					'<td>'.htmlspecialchars($row['softref_key']).'</td>'.
+					'<td>'.htmlspecialchars($row['sorting']).'</td>'.
+					'<td>'.htmlspecialchars($row['ref_table']).'</td>' .
+					'<td>'.htmlspecialchars($row['ref_uid']).'</td>' .
+					'<td>'.htmlspecialchars($row['ref_string']).'</td>' .
 					'</tr>';
 		}
 
