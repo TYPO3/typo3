@@ -29,11 +29,12 @@ Ext.ns('TYPO3.Workspaces');
 TYPO3.Workspaces.App = {
 
 	init : function() {
+		TYPO3.Workspaces.WorkspaceGrid.initColModel();
+		TYPO3.Workspaces.WorkspaceGrid.render('workspacegrid');
+
 		TYPO3.Workspaces.MainStore.load();
 		TYPO3.Workspaces.Toolbar.selectActionStore.load();
 		TYPO3.Workspaces.Toolbar.selectMassActionStore.load();
-		TYPO3.Workspaces.WorkspaceGrid.initColModel();
-		TYPO3.Workspaces.WorkspaceGrid.render('workspacegrid');
 	}
 };
 
