@@ -68,7 +68,7 @@ class tx_form_System_Filter_Alphabetic implements tx_form_System_Filter_Interfac
 	public function filter($value) {
 		$whiteSpace = $this->allowWhiteSpace ? '\s' : '';
 
-		$pattern = '/[^a-zA-Z'  . $whiteSpace . ']/u';
+		$pattern = '/[^\pL' . $whiteSpace . ']/u';
 
 		return preg_replace($pattern, '', (string) $value);
 	}
