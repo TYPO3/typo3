@@ -65,6 +65,11 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	protected $requestHashService;
 
 	/**
+	 * @var Tx_Extbase_Security_Cryptography_HashService
+	 */
+	protected $hashService;
+
+	/**
 	 * @var Tx_Extbase_Service_ExtensionService
 	 */
 	protected $extensionService;
@@ -91,6 +96,13 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 */
 	public function injectRequestHashService(Tx_Extbase_Security_Channel_RequestHashService $requestHashService) {
 		$this->requestHashService = $requestHashService;
+	}
+
+	/**
+	 * @param Tx_Extbase_Security_Cryptography_HashService $hashService
+	 */
+	public function injectHashService(Tx_Extbase_Security_Cryptography_HashService $hashService) {
+		$this->hashService = $hashService;
 	}
 
 	/**
@@ -248,7 +260,8 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@extension]') . '" value="' . $extensionName . '" />' . chr(10);
 			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@controller]') . '" value="' . $controllerName . '" />' . chr(10);
 			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@action]') . '" value="' . $actionName . '" />' . chr(10);
-			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[arguments]') . '" value="' . htmlspecialchars(serialize($request->getArguments())) . '" />' . chr(10);
+			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[arguments]') . '" value="'
+				. htmlspecialchars($this->hashService->appendHmac(base64_encode(serialize($request->getArguments())))) . '" />' . chr(10);
 		} else {
 				// @deprecated since Extbase 1.4.0, will be removed with Extbase 1.6.0.
 			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[extensionName]') . '" value="' . $extensionName . '" />' . chr(10);
