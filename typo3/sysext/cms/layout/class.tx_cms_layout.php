@@ -870,7 +870,7 @@ class tx_cms_layout extends recordList {
 
 							$theData['__cmds__']= $this->getIcon('sys_note',$row);
 							$theData['info'] = $head.$cont;
-							$theData['note'] = nl2br($row['message']);
+							$theData['note'] = nl2br(htmlspecialchars($row['message']));
 
 							$out.=$this->addelement(1,'',$theData,$tdparams,20);
 
