@@ -1244,7 +1244,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			$linkText = substr($linkText, 0, $pos);
 		}
 		$links[1] = str_replace(
-			'>' . $fileName . '<', '>' . $linkText . '<', $links[1]
+			'>' . $fileName . '<', '>' . htmlspecialchars($linkText) . '<', $links[1]
 		);
 		return $links;
 	}
