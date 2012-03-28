@@ -875,6 +875,7 @@ tt_content.uploads {
 				data = register:description
 				wrap = <p class="csc-uploads-description">|</p>
 				required = 1
+				htmlSpecialChars = 1
 			}
 
 			30 = TEXT
