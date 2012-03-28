@@ -219,7 +219,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 							exit(3);
 						}
 					} else {
-						fwrite(STDERR, 'ERROR: No backend user named "' . $userName . '" was found! [Database: ' . TYPO3_db . ']' . LF . LF);
+						fwrite(STDERR, 'ERROR: No backend user named "' . $userName . '" was found!' . LF . LF);
 						exit(3);
 					}
 				} else {
