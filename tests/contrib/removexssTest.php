@@ -389,6 +389,14 @@ class RemoveXSSTest extends tx_phpunit_testcase {
 				'<a href="j&#6&#53;;vascript:alert(123);">click</a>',
 				'<a href="ja<x>vascript:alert(123);">click</a>',
 			),
+			'attack with null character' => array(
+				'<scr' . chr(0) . 'ipt></script>',
+				'<sc<x>ript></script>'
+			),
+			'attack with null character in attribute' => array(
+				'<a href="j' . chr(0) . 'avascript:alert(123);"></a>',
+				'<a href="ja<x>vascript:alert(123);"></a>'
+			),
 		);
 	}
 
@@ -403,6 +411,38 @@ class RemoveXSSTest extends tx_phpunit_testcase {
 	public function processWithDataProvider($input, $expected) {
 		$this->assertEquals(
 			$expected,
+			RemoveXSS::process($input)
+		);
+	}
+
+	/**
+	 * Allowed combinations
+	 */
+	public function processValidDataProvider() {
+		return array(
+			'multibyte characters' => array(
+				'<img®€ÜüÖöÄä></img>',
+			),
+			'tab' => array(
+				'<im' . chr(9) . 'g></img>',
+			),
+			'line feed' => array(
+				'<im' . chr(10) . 'g></img>',
+			),
+			'carriage return' => array(
+				'<im' . chr(13) . 'g></img>',
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @param string $input Value to test
+	 * @dataProvider processValidDataProvider
+	 */
+	public function proccessValidStrings($input) {
+		$this->assertEquals(
+			$input,
 			RemoveXSS::process($input)
 		);
 	}
