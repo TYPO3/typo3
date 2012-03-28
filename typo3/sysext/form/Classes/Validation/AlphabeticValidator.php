@@ -42,7 +42,7 @@ class AlphabeticValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	/**
 	 * Alphabetic filter used for validation
 	 *
-	 * @var tx_form_Filter_Alphabetic
+	 * @var \TYPO3\CMS\Form\Filter\AlphabeticFilter
 	 */
 	protected $filter;
 
