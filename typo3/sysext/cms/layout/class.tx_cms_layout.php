@@ -618,14 +618,17 @@ class tx_cms_layout extends recordList {
 							$columnKey = intval($columnConfig['colPos']);
 
 							// render the grid cell
+							$colSpan = intval($columnConfig['colspan']);
+							$rowSpan = intval($columnConfig['rowspan']);
+
 							$grid .= '<td valign="top"' .
-									(isset($columnConfig['colspan']) ? ' colspan="' . $columnConfig['colspan'] . '"' : '') .
-									(isset($columnConfig['rowspan']) ? ' rowspan="' . $columnConfig['rowspan'] . '"' : '') .
+									($colSpan > 0 ? ' colspan="' . $colSpan . '"' : '') .
+									($rowSpan > 0 ? ' rowspan="' . $rowSpan . '"' : '') .
 									' class="t3-gridCell t3-page-column t3-page-column-' . $columnKey .
 									(!isset($columnConfig['colPos']) ? ' t3-gridCell-unassigned' : '') .
 									((isset($columnConfig['colPos']) && ! $head[$columnKey]) ? ' t3-gridCell-restricted' : '') .
-									(isset($columnConfig['colspan']) ? ' t3-gridCell-width' . $columnConfig['colspan'] : '') .
-									(isset($columnConfig['rowspan']) ? ' t3-gridCell-height' . $columnConfig['rowspan'] : '') . '">';
+									($colSpan > 0 ? ' t3-gridCell-width' . $colSpan : '') .
+									($rowSpan > 0 ? ' t3-gridCell-height' . $rowSpan : '') . '">';
 
 							// Draw the pre-generated header with edit and new buttons if a colPos is assigned.
 							// If not, a new header without any buttons will be generated.
