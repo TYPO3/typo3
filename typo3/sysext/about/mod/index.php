@@ -168,8 +168,10 @@ class SC_mod_help_about_index {
 
 				$emconf = $EM_CONF['']; // ext key is not set when loading the ext_emconf.php directly
 
-				$content.= '<tr><td>'.$emconf['title'].' ('.$extensionKey.')</td>'.
-								'<td><a href="mailto:'.$emconf['author_email'].'?subject='.rawurlencode('Thanks for your '.$emconf['title'].' extension').'">'.$emconf['author'].'</a></td></tr>';
+				$content.= '<tr><td>' . htmlspecialchars($emconf['title']) . ' (' . htmlspecialchars($extensionKey) . ')</td>' .
+					'<td><a href="mailto:' . htmlspecialchars($emconf['author_email']) . '?subject=' .
+					htmlspecialchars(rawurlencode('Thanks for your ' . $emconf['title'] . ' extension')) . '">' .
+					htmlspecialchars($emconf['author']) . '</a></td></tr>';
 			}
 		}
 
