@@ -3683,6 +3683,10 @@ class t3lib_TCEmain {
 											// Set override values:
 										$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['languageField']] = $langRec['uid'];
 										$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']] = $uid;
+											// Copy the type (if defined in both tables) from the original record so that translation has same type as original record
+										if (isset($GLOBALS['TCA'][$table]['ctrl']['type']) && isset($GLOBALS['TCA'][$Ttable]['ctrl']['type'])) {
+											$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['type']] = $row[$GLOBALS['TCA'][$table]['ctrl']['type']];
+										}
 
 											// Set exclude Fields:
 										foreach ($GLOBALS['TCA'][$Ttable]['columns'] as $fN => $fCfg) {
