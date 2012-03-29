@@ -1491,7 +1491,7 @@ class user_feAdmin	{
 	 */
 	function sendHTMLMail($content,$recipient,$dummy,$fromEmail,$fromName,$replyTo='')	{
 		if (trim($recipient) && trim($content))	{
-			$parts = preg_spliti('<title>|</title>', $content, 3);
+			$parts = preg_split('<title>|</title>', $content, 3);
 			$subject = trim($parts[1]) ? trim($parts[1]) : 'TYPO3 FE Admin message';
 
 			$Typo3_htmlmail = t3lib_div::makeInstance('t3lib_htmlmail');
