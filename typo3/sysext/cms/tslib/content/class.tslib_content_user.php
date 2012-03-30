@@ -60,6 +60,9 @@ class tslib_content_User extends tslib_content_Abstract {
 		} else {
 			$content .= $tempContent;
 		}
+		if (isset($conf['stdWrap.'])) {
+			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+		}
 		$this->cObj->setUserObjectType(FALSE);
 		return $content;
 	}
