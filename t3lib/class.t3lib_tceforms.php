@@ -2516,6 +2516,7 @@ class t3lib_TCEforms {
 				if (!$langChildren && !$langDisabled) {
 					$item .= '<strong>' . $this->getLanguageIcon($table, $row, 'v' . $lKey) . $lKey . ':</strong>';
 				}
+				$lang = 'l' . $lKey; // Default language, other options are "lUK" or whatever country code (independant of system!!!)
 
 				$tabParts = array();
 				foreach ($tabsToTraverse as $sheet) {
@@ -2525,6 +2526,7 @@ class t3lib_TCEforms {
 					if ($dataStruct['ROOT']['TCEforms']['displayCond']) {
 						$splittedCondition = t3lib_div::trimExplode(':', $dataStruct['ROOT']['TCEforms']['displayCond']);
 						$skipCondition = FALSE;
+						$fakeRow = array();
 						switch ($splittedCondition[0]) {
 							case 'FIELD':
 								list($sheetName, $fieldName) = t3lib_div::trimExplode('.', $splittedCondition[1]);
@@ -2555,7 +2557,6 @@ class t3lib_TCEforms {
 
 						// Render sheet:
 					if (is_array($dataStruct['ROOT']) && is_array($dataStruct['ROOT']['el'])) {
-						$lang = 'l' . $lKey; // Default language, other options are "lUK" or whatever country code (independant of system!!!)
 						$PA['_valLang'] = $langChildren && !$langDisabled ? $editData['meta']['currentLangId'] : 'DEF'; // Default language, other options are "lUK" or whatever country code (independant of system!!!)
 						$PA['_lang'] = $lang;
 							// Assemble key for loading the correct CSH file
