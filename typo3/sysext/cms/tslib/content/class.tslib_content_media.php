@@ -185,6 +185,16 @@ class tslib_content_Media extends tslib_content_Abstract {
 			}
 		}
 
+			// Check for external video with own player
+		if (isset($conf['file']) && strpos($conf['file'], '.swf') !== FALSE) {
+			$renderType = 'swfStandalone';
+
+			$conf = array_merge((array) $conf['mimeConf.']['swfobject.'], $conf);
+			$conf[$conf['type'] . '.']['player'] = strpos($conf['file'], '://') === FALSE ? 'http://' . $conf['file'] : $conf['file'];
+			$conf['installUrl'] = 'null';
+			$conf['forcePlayer'] = 0;
+		}
+
 		switch ($renderType) {
 			case 'swf' :
 				$conf[$conf['type'] . '.'] = array_merge((array) $conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
@@ -193,6 +203,11 @@ class tslib_content_Media extends tslib_content_Abstract {
 				$conf['attributes.'] = array_merge((array) $conf['attributes.'], $conf['predefined']);
 				$conf['params.'] = array_merge((array) $conf['params.'], $conf['predefined']);
 				$conf['flashvars.'] = array_merge((array) $conf['flashvars.'], $conf['predefined']);
+				$content = $this->cObj->SWFOBJECT($conf);
+			break;
+			case 'swfStandalone':
+				unset($conf['mimeConf.']);
+		 		$conf['flashvars.'] = array_merge((array) $conf['flashvars.'], $conf['predefined']);
 				$content = $this->cObj->SWFOBJECT($conf);
 			break;
 			case 'qt' :
@@ -246,10 +261,10 @@ class tslib_content_Media extends tslib_content_Abstract {
 			$mediaWizard = tslib_mediaWizardManager::getValidMediaWizardProvider($file);
 			if ($mediaWizard !== NULL) {
 				$returnValue = $mediaWizard->rewriteUrl($file);
-				$returnValue = $this->cObj->typoLink_URL(array(
-					'parameter' => $returnValue
-				));
 			}
+			$returnValue = $this->cObj->typoLink_URL(array(
+				'parameter' => $returnValue
+			));
 		}
 
 		return $returnValue;
