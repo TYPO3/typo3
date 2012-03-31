@@ -2525,10 +2525,11 @@ class t3lib_TCEforms {
 					if ($dataStruct['ROOT']['TCEforms']['displayCond']) {
 						$splittedCondition = t3lib_div::trimExplode(':', $dataStruct['ROOT']['TCEforms']['displayCond']);
 						$skipCondition = FALSE;
+						$fakeRow = array();
 						switch ($splittedCondition[0]) {
 							case 'FIELD':
 								list($sheetName, $fieldName) = t3lib_div::trimExplode('.', $splittedCondition[1]);
-								$fieldValue = $editData['data'][$sheetName][$lang][$fieldName];
+								$fieldValue = $editData['data'][$sheetName]['l' . $lKey][$fieldName];
 								$splittedCondition[1] = $fieldName;
 								$dataStruct['ROOT']['TCEforms']['displayCond'] = join(':', $splittedCondition);
 								$fakeRow = array($fieldName => $fieldValue);
