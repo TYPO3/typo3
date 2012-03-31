@@ -825,6 +825,12 @@
 			<trans-unit id="media.options" xml:space="preserve">
 				<source>Media Options</source>
 			</trans-unit>
+			<trans-unit id="media.tabAudio" xml:space="preserve">
+				<source>Audio Element</source>
+			</trans-unit>
+			<trans-unit id="media.tabVideo" xml:space="preserve">
+				<source>Video Element</source>
+			</trans-unit>
 			<trans-unit id="media.url" xml:space="preserve">
 				<source>Path or URL</source>
 			</trans-unit>
@@ -832,13 +838,13 @@
 				<source>Path or URL to fallback video source (Flash or QuickTime)</source>
 			</trans-unit>
 			<trans-unit id="media.sources" xml:space="preserve">
-				<source>Video sources</source>
+				<source>Video sources for HTML5 &lt;video&gt; element</source>
 			</trans-unit>
 			<trans-unit id="media.captionUrl" xml:space="preserve">
 				<source>Path or URL to captions file</source>
 			</trans-unit>
 			<trans-unit id="media.audioSources" xml:space="preserve">
-				<source>Audio sources</source>
+				<source>Audio sources for HTML5 &lt;audio&gt; element</source>
 			</trans-unit>
 			<trans-unit id="media.audioFallbackUrl" xml:space="preserve">
 				<source>Path or URL to fallback audio source (Flash or QuickTime)</source>
