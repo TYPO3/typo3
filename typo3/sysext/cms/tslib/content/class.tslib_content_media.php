@@ -48,7 +48,10 @@ class tslib_content_Media extends tslib_content_Abstract {
 			: $conf['flexParams'];
 		if (substr($flexParams, 0, 1) === '<') {
 				// It is a content element rather a TS object
-			$this->cObj->readFlexformIntoConf($flexParams, $conf['parameter.']);
+			$flexParams = t3lib_div::xml2array($flexParams, 'T3');
+			foreach($flexParams['data'] as $sheetData) {
+				$this->cObj->readFlexformIntoConf($sheetData['lDEF'], $conf['parameter.'], TRUE);
+			}
 		}
 			// Type is video or audio
 		$mmType = isset($conf['parameter.']['mmType.'])

@@ -4,7 +4,7 @@
 		<langDisable>1</langDisable>
 	</meta>
 	<sheets>
-		<sDEF>
+		<sGeneral>
 			<ROOT>
 				<TCEforms>
 					<sheetTitle>LLL:EXT:cms/locallang_ttc.xml:media.options</sheetTitle>
@@ -13,6 +13,7 @@
 				<el>
 					<mmType>
 						<TCEforms>
+							<onChange>reload</onChange>
 							<label>LLL:EXT:cms/locallang_ttc.xml:media.type</label>
 							<config>
 								<type>select</type>
@@ -29,6 +30,207 @@
 							</config>
 						</TCEforms>
 					</mmType>
+					<mmWidth>
+						<TCEforms>
+							<label>LLL:EXT:cms/locallang_ttc.xml:media.width</label>
+							<config>
+								<type>input</type>
+								<size>8</size>
+								<max>5</max>
+								<eval>trim,num</eval>
+							</config>
+						</TCEforms>
+					</mmWidth>
+					<mmHeight>
+						<TCEforms>
+							<label>LLL:EXT:cms/locallang_ttc.xml:media.height</label>
+							<config>
+								<type>input</type>
+								<size>8</size>
+								<max>5</max>
+								<eval>trim,num</eval>
+							</config>
+						</TCEforms>
+					</mmHeight>
+					<mmRenderType>
+						<TCEforms>
+							<label>LLL:EXT:cms/locallang_ttc.xml:media.renderType</label>
+							<config>
+								<type>select</type>
+								<items>
+									<numIndex index="0">
+										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.renderType.preferHtml5OverFlash</numIndex>
+										<numIndex index="1">auto</numIndex>
+									</numIndex>
+									<numIndex index="1">
+										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.renderType.preferFlashOverHtml5</numIndex>
+										<numIndex index="1">preferFlashOverHtml5</numIndex>
+									</numIndex>
+									<numIndex index="2">
+										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.renderType.qt</numIndex>
+										<numIndex index="1">qt</numIndex>
+									</numIndex>
+									<numIndex index="3">
+										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.renderType.embed</numIndex>
+										<numIndex index="1">embed</numIndex>
+									</numIndex>
+								</items>
+								<itemsProcFunc>tx_cms_mediaItems->customMediaRenderTypes</itemsProcFunc>
+							</config>
+						</TCEforms>
+					</mmRenderType>
+					<mmMediaOptions>
+						<title>LLL:EXT:cms/locallang_ttc.xml:media.additionalOptions</title>
+						<type>array</type>
+						<section>1</section>
+						<el>
+							<mmMediaOptionsContainer>
+								<type>array</type>
+								<title>LLL:EXT:cms/locallang_ttc.xml:media.params</title>
+								<el>
+									<mmParamName>
+										<TCEforms>
+											<label>LLL:EXT:cms/locallang_ttc.xml:media.params.option</label>
+											<config>
+												<type>select</type>
+												<items>
+													<numIndex index="0">
+														<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.autoPlay</numIndex>
+														<numIndex index="1">autoPlay</numIndex>
+													</numIndex>
+													<numIndex index="1">
+														<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.loop</numIndex>
+														<numIndex index="1">loop</numIndex>
+													</numIndex>
+													<numIndex index="2">
+														<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.quality</numIndex>
+														<numIndex index="1">quality</numIndex>
+													</numIndex>
+													<numIndex index="3">
+														<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.preview</numIndex>
+														<numIndex index="1">preview</numIndex>
+													</numIndex>
+													<numIndex index="4">
+														<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.allowScriptAccess</numIndex>
+														<numIndex index="1">allowScriptAccess</numIndex>
+													</numIndex>
+													<numIndex index="5">
+														<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.allowFullScreen</numIndex>
+														<numIndex index="1">allowFullScreen</numIndex>
+													</numIndex>
+													<numIndex index="6">
+														<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.preload</numIndex>
+														<numIndex index="1">preload</numIndex>
+													</numIndex>
+													<numIndex index="7">
+														<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.controlsBelow</numIndex>
+														<numIndex index="1">controlsBelow</numIndex>
+													</numIndex>
+													<numIndex index="8">
+														<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.controlsAtStart</numIndex>
+														<numIndex index="1">controlsAtStart</numIndex>
+													</numIndex>
+													<numIndex index="9">
+														<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.controlsHiding</numIndex>
+														<numIndex index="1">controlsHiding</numIndex>
+													</numIndex>
+													<numIndex index="10">
+														<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.defaultVolume</numIndex>
+														<numIndex index="1">defaultVolume</numIndex>
+													</numIndex>
+												</items>
+												<itemsProcFunc>tx_cms_mediaItems->customMediaParams</itemsProcFunc>
+											</config>
+										</TCEforms>
+									</mmParamName>
+									<mmParamSet>
+										<TCEforms>
+											<label>LLL:EXT:cms/locallang_ttc.xml:media.params.setTo</label>
+											<config>
+												<type>select</type>
+												<items>
+													<numIndex index="0">
+														<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.on</numIndex>
+														<numIndex index="1">1</numIndex>
+													</numIndex>
+													<numIndex index="1">
+														<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.off</numIndex>
+														<numIndex index="1">0</numIndex>
+													</numIndex>
+													<numIndex index="2">
+														<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.valueEntry</numIndex>
+														<numIndex index="1">2</numIndex>
+													</numIndex>
+												</items>
+											</config>
+										</TCEforms>
+									</mmParamSet>
+									<mmParamValue>
+										<TCEforms>
+											<label>LLL:EXT:cms/locallang_ttc.xml:media.params.value</label>
+											<config>
+												<type>input</type>
+												<size>16</size>
+												<default></default>
+											</config>
+										</TCEforms>
+									</mmParamValue>
+								</el>
+							</mmMediaOptionsContainer>
+							<mmMediaCustomParameterContainer>
+								<type>array</type>
+								<title>LLL:EXT:cms/locallang_ttc.xml:media.params.customEntry</title>
+								<el>
+									<mmParamCustomEntry>
+										<TCEforms>
+											<label>LLL:EXT:cms/locallang_ttc.xml:media.params.customEntryLabel</label>
+											<config>
+												<type>text</type>
+												<rows>6</rows>
+												<cols>60</cols>
+											</config>
+										</TCEforms>
+									</mmParamCustomEntry>
+								</el>
+							</mmMediaCustomParameterContainer>
+						</el>
+					</mmMediaOptions>
+				</el>
+			</ROOT>
+		</sGeneral>
+		<sVideo>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:cms/locallang_ttc.xml:media.tabVideo</sheetTitle>
+					<displayCond>FIELD:sGeneral.mmType:=:video</displayCond>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<mmFile>
+						<TCEforms>
+							<label>LLL:EXT:cms/locallang_ttc.xml:media.fallbackUrl</label>
+							<config>
+								<type>input</type>
+								<size>60</size>
+								<eval>trim,required</eval>
+								<default></default>
+								<wizards type="array">
+									<_PADDING>2</_PADDING>
+									<link type="array">
+										<type>popup</type>
+										<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
+										<icon>link_popup.gif</icon>
+										<script>browse_links.php?mode=wizard&amp;act=file|url</script>
+										<params type="array">
+											<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
+											<allowedExtensions>class,swa,dcr,wav,avi,au,mov,asf,mpg,wmv,mp3,mp4,m4v,m4a,flv,ogg,ogv,swf,webm</allowedExtensions>
+										</params>
+										<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+									</link>
+								</wizards>
+							</config>
+						</TCEforms>
+					</mmFile>
 					<mmSources>
 						<title>LLL:EXT:cms/locallang_ttc.xml:media.sources</title>
 						<type>array</type>
@@ -41,6 +243,7 @@
 									<mmSource>
 										<TCEforms>
 											<label>LLL:EXT:cms/locallang_ttc.xml:media.url</label>
+											<displayCond>FIELD:mmType:=:video</displayCond>
 											<config>
 												<type>input</type>
 												<size>60</size>
@@ -67,31 +270,6 @@
 							</mmSourcesContainer>
 						</el>
 					</mmSources>
-					<mmFile>
-						<TCEforms>
-							<label>LLL:EXT:cms/locallang_ttc.xml:media.fallbackUrl</label>
-							<config>
-								<type>input</type>
-								<size>60</size>
-								<eval>trim,required</eval>
-								<default></default>
-								<wizards type="array">
-									<_PADDING>2</_PADDING>
-									<link type="array">
-										<type>popup</type>
-										<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
-										<icon>link_popup.gif</icon>
-										<script>browse_links.php?mode=wizard&amp;act=file|url</script>
-										<params type="array">
-											<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
-											<allowedExtensions>class,swa,dcr,wav,avi,au,mov,asf,mpg,wmv,mp3,mp4,m4v,m4a,flv,ogg,ogv,swf,webm</allowedExtensions>
-										</params>
-										<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
-									</link>
-								</wizards>
-							</config>
-						</TCEforms>
-					</mmFile>
 					<mmCaption>
 						<TCEforms>
 							<label>LLL:EXT:cms/locallang_ttc.xml:media.captionUrl</label>
@@ -117,6 +295,18 @@
 							</config>
 						</TCEforms>
 					</mmCaption>
+
+				</el>
+			</ROOT>
+		</sVideo>
+		<sAudio>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:cms/locallang_ttc.xml:media.tabAudio</sheetTitle>
+					<displayCond>FIELD:sGeneral.mmType:=:audio</displayCond>
+				</TCEforms>
+				<type>array</type>
+				<el>
 					<mmAudioSources>
 						<title>LLL:EXT:cms/locallang_ttc.xml:media.audioSources</title>
 						<type>array</type>
@@ -180,174 +370,9 @@
 							</config>
 						</TCEforms>
 					</mmAudioFallback>
-					<mmWidth>
-						<TCEforms>
-							<label>LLL:EXT:cms/locallang_ttc.xml:media.width</label>
-							<config>
-								<type>input</type>
-								<size>8</size>
-								<max>5</max>
-								<eval>trim</eval>
-							</config>
-						</TCEforms>
-					</mmWidth>
-					<mmHeight>
-						<TCEforms>
-							<label>LLL:EXT:cms/locallang_ttc.xml:media.height</label>
-							<config>
-								<type>input</type>
-								<size>8</size>
-								<max>5</max>
-								<eval>trim</eval>
-							</config>
-						</TCEforms>
-					</mmHeight>
-					<mmRenderType>
-						<TCEforms>
-							<label>LLL:EXT:cms/locallang_ttc.xml:media.renderType</label>
-							<config>
-								<type>select</type>
-								<items>
-									<numIndex index="0">
-										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.renderType.preferHtml5OverFlash</numIndex>
-										<numIndex index="1">auto</numIndex>
-									</numIndex>
-									<numIndex index="1">
-										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.renderType.preferFlashOverHtml5</numIndex>
-										<numIndex index="1">preferFlashOverHtml5</numIndex>
-									</numIndex>
-									<numIndex index="2">
-										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.renderType.qt</numIndex>
-										<numIndex index="1">qt</numIndex>
-									</numIndex>
-									<numIndex index="3">
-										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.renderType.embed</numIndex>
-										<numIndex index="1">embed</numIndex>
-									</numIndex>
-								</items>
-								<itemsProcFunc>tx_cms_mediaItems->customMediaRenderTypes</itemsProcFunc>
-							</config>
-						</TCEforms>
-					</mmRenderType>
-					<mmMediaOptions>
-						<title>LLL:EXT:cms/locallang_ttc.xml:media.additionalOptions</title>
-						<type>array</type>
-						<section>1</section>
-						<el>
-							<mmMediaOptionsContainer>
-							<type>array</type>
-							<title>LLL:EXT:cms/locallang_ttc.xml:media.params</title>
-							<el>
-								<mmParamName>
-									<TCEforms>
-										<label>LLL:EXT:cms/locallang_ttc.xml:media.params.option</label>
-										<config>
-											<type>select</type>
-											<items>
-												<numIndex index="0">
-													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.autoPlay</numIndex>
-													<numIndex index="1">autoPlay</numIndex>
-												</numIndex>
-												<numIndex index="1">
-													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.loop</numIndex>
-													<numIndex index="1">loop</numIndex>
-												</numIndex>
-												<numIndex index="2">
-													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.quality</numIndex>
-													<numIndex index="1">quality</numIndex>
-												</numIndex>
-												<numIndex index="3">
-													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.preview</numIndex>
-													<numIndex index="1">preview</numIndex>
-												</numIndex>
-												<numIndex index="4">
-													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.allowScriptAccess</numIndex>
-													<numIndex index="1">allowScriptAccess</numIndex>
-												</numIndex>
-												<numIndex index="5">
-													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.allowFullScreen</numIndex>
-													<numIndex index="1">allowFullScreen</numIndex>
-												</numIndex>
-												<numIndex index="6">
-													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.preload</numIndex>
-													<numIndex index="1">preload</numIndex>
-												</numIndex>
-												<numIndex index="7">
-													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.controlsBelow</numIndex>
-													<numIndex index="1">controlsBelow</numIndex>
-												</numIndex>
-												<numIndex index="8">
-													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.controlsAtStart</numIndex>
-													<numIndex index="1">controlsAtStart</numIndex>
-												</numIndex>
-												<numIndex index="9">
-													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.controlsHiding</numIndex>
-													<numIndex index="1">controlsHiding</numIndex>
-												</numIndex>
-												<numIndex index="10">
-													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.defaultVolume</numIndex>
-													<numIndex index="1">defaultVolume</numIndex>
-												</numIndex>
-											</items>
-											<itemsProcFunc>tx_cms_mediaItems->customMediaParams</itemsProcFunc>
-										</config>
-									</TCEforms>
-								</mmParamName>
-								<mmParamSet>
-									<TCEforms>
-										<label>LLL:EXT:cms/locallang_ttc.xml:media.params.setTo</label>
-										<config>
-											<type>select</type>
-											<items>
-												<numIndex index="0">
-													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.on</numIndex>
-													<numIndex index="1">1</numIndex>
-												</numIndex>
-												<numIndex index="1">
-													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.off</numIndex>
-													<numIndex index="1">0</numIndex>
-												</numIndex>
-												<numIndex index="2">
-													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.valueEntry</numIndex>
-													<numIndex index="1">2</numIndex>
-												</numIndex>
-											</items>
-										</config>
-									</TCEforms>
-								</mmParamSet>
-								<mmParamValue>
-									<TCEforms>
-										<label>LLL:EXT:cms/locallang_ttc.xml:media.params.value</label>
-										<config>
-											<type>input</type>
-											<size>16</size>
-											<default></default>
-										</config>
-									</TCEforms>
-								</mmParamValue>
-							</el>
 
-							</mmMediaOptionsContainer>
-							<mmMediaCustomParameterContainer>
-								<type>array</type>
-								<title>LLL:EXT:cms/locallang_ttc.xml:media.params.customEntry</title>
-								<el>
-									<mmParamCustomEntry>
-										<TCEforms>
-											<label>LLL:EXT:cms/locallang_ttc.xml:media.params.customEntryLabel</label>
-											<config>
-												<type>text</type>
-												<rows>6</rows>
-												<cols>60</cols>
-											</config>
-										</TCEforms>
-									</mmParamCustomEntry>
-								</el>
-							</mmMediaCustomParameterContainer>
-						</el>
-					</mmMediaOptions>
 				</el>
 			</ROOT>
-		</sDEF>
+		</sAudio>
 	</sheets>
 </T3DataStructure>
