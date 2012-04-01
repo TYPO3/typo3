@@ -892,10 +892,9 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			// Render the add/edit task form
 		$content .= '<div style="float: left;"><div class="typo3-dyntabmenu-divs">';
 		$content .= $this->doc->table($table, $tableLayout);
-		$content .= '</div></div>';
+		$content .= '</div>';
 
-		$content .= '<div style="padding-top: 20px; clear: both;"></div><div><input type="submit" name="save" class="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:save', TRUE) . '" /> '
-			. '<input type="button" name="cancel" class="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:cancel', TRUE) . '" onclick="document.location=\'' . $GLOBALS['MCONF']['_'] . '\'" /></div>';
+		$content .= '<div style="padding-top: 20px; clear: both;"></div>';
 
 			// Display information about server time usage
 		$content .= $this->displayServerTime();
@@ -1577,6 +1576,8 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	protected function getDocHeaderButtons() {
 		$buttons = array(
 			'addtask'  => '',
+			'close' => '',
+			'save' => '',
 			'reload'   => '',
 			'shortcut' => $this->getShortcutButton(),
 		);
@@ -1592,6 +1593,18 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				$buttons['addtask'] = '<a href="' . htmlspecialchars($link) . '" ' .
 					'title="' . $GLOBALS['LANG']->getLL('action.add') . '">' . $image . '</a>';
 			}
+		}
+
+		if ($this->CMD === 'add' || $this->CMD === 'edit') {
+			$buttons['close'] = t3lib_iconWorks::getSpriteIcon(
+				'actions-document-close',
+				array('html' => '<input type="image" name="cancel" class="c-inputButton" src="clear.gif" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:cancel', TRUE) . '" onclick="document.location=\'' . $GLOBALS['MCONF']['_'] . '\'" />')
+			);
+
+			$buttons['save'] = t3lib_iconWorks::getSpriteIcon(
+				'actions-document-save',
+				array('html' => '<input type="image" name="data[save]" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:save', TRUE) . '" />')
+			);
 		}
 
 		return $buttons;
