@@ -11,6 +11,7 @@ if (TYPO3_MODE === 'BE') {
 	$TYPO3_CONF_VARS['BE']['AJAX']['tx_t3editor_TSrefLoader::getDescription'] = 'EXT:t3editor/classes/ts_codecompletion/class.tx_t3editor_tsrefloader.php:tx_t3editor_TSrefLoader->processAjaxRequest';
 	$TYPO3_CONF_VARS['BE']['AJAX']['tx_t3editor_codecompletion::loadTemplates'] = 'EXT:t3editor/classes/ts_codecompletion/class.tx_t3editor_codecompletion.php:tx_t3editor_codecompletion->processAjaxRequest';
 
+	t3lib_div::loadTCA('tt_content');
 		// Add the t3editor wizard on the bodytext field of tt_content
 	$TCA['tt_content']['columns']['bodytext']['config']['wizards']['t3editor'] = array(
 		'enableByTypeConfig' => 1,
