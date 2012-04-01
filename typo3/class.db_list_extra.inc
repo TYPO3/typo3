@@ -165,32 +165,7 @@ class localRecordList extends recordList {
 				$buttons['edit'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('editPage', TRUE) . '">' .
 									t3lib_iconWorks::getSpriteIcon('actions-page-open') .
 								'</a>';
-					// Unhide
-				if ($this->pageRow['hidden'])	{
-					$params = '&data[pages][' . $this->pageRow['uid'] . '][hidden]=0';
-					$buttons['hide_unhide'] = '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '" title="' . $GLOBALS['LANG']->getLL('unHidePage', TRUE) . '">' .
-										t3lib_iconWorks::getSpriteIcon('actions-edit-unhide') .
-									'</a>';
-					// Hide
-				} else {
-					$params = '&data[pages][' . $this->pageRow['uid'] . '][hidden]=1';
-					$buttons['hide_unhide'] = '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '" title="' . $GLOBALS['LANG']->getLL('hidePage', TRUE) . '">'.
-										t3lib_iconWorks::getSpriteIcon('actions-edit-hide') .
-									'</a>';
-				}
-
-					// Move
-				$buttons['move'] = '<a href="#" onclick="' . htmlspecialchars('return jumpExt(\'' . $this->backPath . 'move_el.php?table=pages&uid=' . $this->pageRow['uid'] . '\');') . '" title="' . $GLOBALS['LANG']->getLL('move_page', TRUE) . '">' .
-									(($this->table == 'tt_content') ? t3lib_iconWorks::getSpriteIcon('actions-document-move') : t3lib_iconWorks::getSpriteIcon('actions-page-move')) .
-								'</a>';
-
-					// Up one level
-				$buttons['level_up'] = '<a href="' . htmlspecialchars($this->listURL($this->pageRow['pid'], '-1', 'firstElementNumber')) . '" onclick="setHighlight(' . $this->pageRow['pid'] . ')" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel', TRUE) . '">' .
-								t3lib_iconWorks::getSpriteIcon('actions-view-go-up') .
-							'</a>';
-
 			}
-
 
 				// Paste
 			if (($localCalcPerms&8) || ($localCalcPerms&16)) {
