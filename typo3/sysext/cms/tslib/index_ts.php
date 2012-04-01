@@ -503,7 +503,7 @@ if (is_object($BE_USER) && $BE_USER->isAdminPanelVisible() && $TSFE->isBackendUs
 }
 
 if ($sendTSFEContent) {
-	echo $TSFE->content;
+	echo htmlspecialchars($TSFE->content);
 }
 
 // *************
