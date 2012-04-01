@@ -46,6 +46,11 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 	protected $disableContentElement = FALSE;
 
 	/**
+	 * @var tx_form_System_Validate
+	 */
+	protected $validatorObject;
+
+	/**
 	 * Build model from Typoscript
 	 *
 	 * @param array $typoscript Typoscript containing all configuration
@@ -174,6 +179,7 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 
 		/** @var $object tx_form_Domain_Model_Element_Abstract */
 		$object = t3lib_div::makeInstance($className);
+		$object->attachToValidator($this->validatorObject);
 
 		if ($object->getElementType() === tx_form_Domain_Model_Element_Abstract::ELEMENT_TYPE_CONTENT) {
 			$object->setData($arguments['cObj'], $arguments['cObj.']);
@@ -357,24 +363,26 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 	 */
 	public function setRules(array $typoscript) {
 		$rulesTyposcript = isset($typoscript['rules.']) ? $typoscript['rules.'] : NULL;
-		/** @var $rulesClass tx_form_System_Validate */
-		$rulesClass = t3lib_div::makeInstance('tx_form_System_Validate', $rulesTyposcript); // singleton
+		/** @var $validatorObject tx_form_System_Validate */
+		$validatorObject = t3lib_div::makeInstance('tx_form_System_Validate', $rulesTyposcript); // singleton
 
 		if (is_array($rulesTyposcript)) {
 			$keys = t3lib_TStemplate::sortedKeyList($rulesTyposcript);
-			foreach ($keys as $key)	{
+			foreach ($keys as $key) {
 				$class = $rulesTyposcript[$key];
 				if (intval($key) && !strstr($key, '.')) {
 					$elementArguments = $rulesTyposcript[$key . '.'];
-					$rule = $rulesClass->createRule($class, $elementArguments);
+					$rule = $validatorObject->createRule($class, $elementArguments);
 					$rule->setFieldName($elementArguments['element']);
 					$breakOnError = isset($elementArguments['breakOnError']) ? $elementArguments['breakOnError'] : FALSE;
-					$rulesClass->addRule($rule, $elementArguments['element'], $breakOnError);
+					$validatorObject->addRule($rule, $elementArguments['element'], $breakOnError);
 				}
 			}
 		}
 
-		return $rulesClass;
+		$this->validatorObject = $validatorObject;
+
+		return $validatorObject;
 	}
 
 	/**

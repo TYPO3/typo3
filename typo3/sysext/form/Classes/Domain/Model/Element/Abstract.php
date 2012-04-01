@@ -139,7 +139,7 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	/**
 	 * @var tx_form_System_Validate
 	 */
-	protected $validateClass;
+	protected $validator;
 
 	/**
 	 * @var tx_form_System_Filter
@@ -156,12 +156,20 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	public function __construct() {
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
 		$this->requestHandler = t3lib_div::makeInstance('tx_form_System_Request');
-		$this->validateClass = t3lib_div::makeInstance('tx_form_System_Validate');
 		$this->elementCounter = t3lib_div::makeInstance('tx_form_System_Elementcounter');
 		$this->setElementId();
 		$this->createAttributes();
 		$this->createAdditional();
 		$this->createFilter();
+	}
+
+	/**
+	 * Sets the validation object this validator is attached to
+	 *
+	 * @param tx_form_System_Validate $validator
+	 */
+	public function attachToValidator(tx_form_System_Validate $validator){
+		$this->validator = $validator;
 	}
 
 	/**
@@ -411,11 +419,13 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	 * @return void
 	 */
 	public function setMessagesFromValidation() {
-		if ($this->validateClass->hasMessage($this->getName())) {
-			$messages = $this->validateClass->getMessagesByName($this->getName());
-
-			$this->setAdditional('mandatory', 'COA', $messages);
+		if (!$this->validator->hasMessage($this->getName())) {
+			return;
 		}
+
+		$messages = $this->validator->getMessagesByName($this->getName());
+
+		$this->setAdditional('mandatory', 'COA', $messages);
 	}
 
 	/**
@@ -424,11 +434,13 @@ abstract class tx_form_Domain_Model_Element_Abstract {
 	 * @return void
 	 */
 	public function setErrorsFromValidation() {
-		if ($this->validateClass->hasErrors($this->getName())) {
-			$errors = $this->validateClass->getErrorsByName($this->getName());
-
-			$this->setAdditional('error', 'COA', $errors);
+		if (!$this->validator->hasErrors($this->getName())) {
+			return;
 		}
+
+		$errors = $this->validator->getErrorsByName($this->getName());
+
+		$this->setAdditional('error', 'COA', $errors);
 	}
 
 	/**

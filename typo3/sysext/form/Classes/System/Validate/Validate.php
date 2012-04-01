@@ -29,7 +29,7 @@
  * @package TYPO3
  * @subpackage form
  */
-class tx_form_System_Validate implements t3lib_Singleton {
+class tx_form_System_Validate {
 
 	/**
 	 * Validation objects to use
@@ -94,7 +94,7 @@ class tx_form_System_Validate implements t3lib_Singleton {
 	 * @param object $rule Rule object
 	 * @param string $fieldName Field name the rule belongs to
 	 * @param boolean $breakOnError Break the rule chain when TRUE
-	 * @return tx_form_Validate
+	 * @return tx_form_System_Validate
 	 */
 	public function addRule($rule, $fieldName, $breakOnError = FALSE) {
 		$prefix = $this->getPrefix();
