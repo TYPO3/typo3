@@ -274,15 +274,16 @@ class t3lib_cache_backend_WincacheBackend extends t3lib_cache_backend_AbstractBa
 		foreach ($tags as $tag) {
 				// Update tag-to-identifier index
 			$identifiers = $this->findIdentifiersByTag($tag);
+
 			if (array_search($entryIdentifier, $identifiers) === FALSE) {
 				$identifiers[] = $entryIdentifier;
-				wincache_ucache_add($this->identifierPrefix . 'tag_' . $tag, $identifiers);
+				wincache_ucache_set($this->identifierPrefix . 'tag_' . $tag, $identifiers);
 			}
 
 				// Update identifier-to-tag index
 			$existingTags = $this->findTagsByIdentifier($entryIdentifier);
 			if (array_search($entryIdentifier, $existingTags) === false) {
-				wincache_ucache_add($this->identifierPrefix . 'ident_' . $entryIdentifier, array_merge($existingTags, $tags));
+				wincache_ucache_set($this->identifierPrefix . 'ident_' . $entryIdentifier, array_merge($existingTags, $tags));
 			}
 
 		}
@@ -311,7 +312,7 @@ class t3lib_cache_backend_WincacheBackend extends t3lib_cache_backend_AbstractBa
 			if (($key = array_search($entryIdentifier, $identifiers)) !== FALSE) {
 				unset($identifiers[$key]);
 				if (count($identifiers)) {
-					wincache_ucache_add($this->identifierPrefix . 'tag_' . $tag, $identifiers);
+					wincache_ucache_set($this->identifierPrefix . 'tag_' . $tag, $identifiers);
 				} else {
 					wincache_ucache_delete($this->identifierPrefix . 'tag_' . $tag);
 				}
