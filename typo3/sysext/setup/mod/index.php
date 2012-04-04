@@ -436,7 +436,7 @@ class SC_mod_user_setup_index {
 			// render the menu items
 		$menuItems = $this->renderUserSetup();
 
-		$this->content .= $this->doc->getDynTabMenu($menuItems, 'user-setup', FALSE, FALSE, 0, 1, FALSE, 1, $this->dividers2tabs);
+		$this->content .= $this->doc->getDynTabMenu($menuItems, 'user-setup', FALSE, FALSE, 1, FALSE, 1, $this->dividers2tabs);
 
 		$formToken = $this->formProtection->generateToken('BE user setup', 'edit');
 
