@@ -139,7 +139,9 @@ class tx_em_reports_ExtensionStatus  implements tx_reports_StatusProvider {
 
 		foreach ($extList as $extension) {
 			$extensionList[] = '"' . $extension['extkey'] . '"';
-			$extensionCompareList[] = $extension['extkey'] . '|' . $extension['version'];
+			if ($extension['stateCls'] != 'state-excludeFromUpdates') {
+				$extensionCompareList[] = $extension['extkey'] . '|' . $extension['version'];
+			}
 			if ($extension['installed']) {
 				$installedExtensionList[] = $extension['extkey'];
 			}
