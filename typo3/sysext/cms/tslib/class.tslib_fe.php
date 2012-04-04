@@ -4790,45 +4790,24 @@ if (version == "n3") {
 		$showHidden = ($tableName === 'pages' ? $this->showHiddenPage : $this->showHiddenRecords);
 		$enableFields = $this->sys_page->enableFields($tableName, $showHidden, array('starttime' => TRUE, 'endtime' => TRUE));
 
-			// saves the name of the starttime and endtime field in $tableName (if defined)
-		$timeFields = array();
-			// saves the SELECT parts of the SQL query
-		$selectFields = array();
-			// saves the WHERE parts of the SQL query
-		$whereConditions = array();
-
+			// For each start or end time field, get the minimum value
 		foreach (array('starttime', 'endtime') as $field) {
-				// there is no need to load TCA because we need only enable columns!
+				// Note: there is no need to load TCA because we need only enable columns!
 			if (isset($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field])) {
-				$timeFields[$field] = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field];
-				$selectFields[$field] = 'MIN(' . $timeFields[$field] . ') AS ' . $field;
-				$whereConditions[$field] = $timeFields[$field] . '>' . $now;
-			}
-		}
-
-			// if starttime or endtime are defined, evaluate them
-		if (count($timeFields)) {
-				// find the timestamp, when the current page's content changes the next time
-			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-					// MIN(starttime) AS starttime, MIN(endtime) AS endtime
-				implode(', ', $selectFields),
-				$tableName,
-					// pid=$pid AND starttime>$now AND $endtime>$now . $enablefields
-				'pid=' . intval($pid) . ' AND (' . implode(' OR ', $whereConditions) . ')' . $enableFields
-			);
-			if ($row) {
-				foreach ($timeFields as $timeField => $_) {
-						// if a MIN value is found, take it into account for the cache lifetime
-						// we have to filter out start/endtimes < $now, as the SQL query also returns
-						// rows with starttime < $now and endtime > $now (and using a starttime from the past
-						// would be wrong)
-					if (!is_null($row[$timeField]) && $row[$timeField] > $now) {
-						$result = min($result, $row[$timeField]);
-					}
+				$timeField = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field];
+				$selectField = 'MIN(' . $timeField . ') AS ' . $field;
+				$whereCondition = $timeField . ' > ' . $now;
+					// Find the smallest timestamp which could influence the cache duration (but is larger than 0)
+				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+					$selectField,
+					$tableName,
+					'pid = ' . intval($pid) . ' AND ' . $whereCondition . $enableFields
+				);
+				if ($row && !is_null($row[$timeField])) {
+					$result = min($result, $row[$timeField]);
 				}
 			}
 		}
-
 		return $result;
 	}
 }
