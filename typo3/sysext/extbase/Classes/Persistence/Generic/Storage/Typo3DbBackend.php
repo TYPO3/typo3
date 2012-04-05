@@ -846,8 +846,31 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	protected function addSysLanguageStatement($tableName, array &$sql) {
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
-			if (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== NULL) {
-				$sql['additionalWhereClause'][] = $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (0,-1)';
+			if(isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== NULL) {
+
+					// Select all entries for the current language
+				$additionalWhereClause = $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (' .
+					$GLOBALS['TSFE']->sys_language_uid . ',-1)';
+
+					// If any language is set -> get those entries which are not translated yet
+					// They will be removed by t3lib_page::getRecordOverlay if not matching overlay mode
+				if ($GLOBALS['TSFE']->sys_language_uid && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])) {
+					$additionalWhereClause .= ' OR (' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0 AND ' .
+						$tableName . '.uid NOT IN (' .
+							'SELECT ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] .
+							' FROM ' . $tableName .
+							' WHERE ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] . '>0 AND ' .
+								$tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '>0';
+
+						// Add delete clause to ensure all entries are loaded
+					if (isset($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
+						$additionalWhereClause .= ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . '=0';
+					}
+
+					$additionalWhereClause .= '))';
+				}
+
+				$sql['additionalWhereClause'][] = '(' . $additionalWhereClause . ')';
 			}
 		}
 	}
@@ -996,6 +1019,23 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
 				$tableName = $source->getRight()->getSelectorName();
 			}
+
+				// If current row is a translation select its parent
+			if (isset($GLOBALS['TCA'][$tableName]) && isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) &&
+				isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])) {
+
+				if (isset($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']]) &&
+					$row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0) {
+
+					$row = $this->databaseHandle->exec_SELECTgetSingleRow(
+						$tableName . '.*',
+						$tableName,
+						$tableName . '.uid=' . $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] . ' AND ' .
+							$tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0'
+					);
+				}
+			}
+
 			$this->pageSelectObject->versionOL($tableName, $row, TRUE);
 			if ($this->pageSelectObject->versioningPreview && isset($row['_ORIG_uid'])) {
 				$row['uid'] = $row['_ORIG_uid'];

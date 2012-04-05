@@ -28,6 +28,21 @@
 class Tx_Extbase_Tests_Unit_Persistence_Storage_Typo3DbBackendTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
+	 * Enable backup of global and system variables
+	 *
+	 * @var boolean
+	 */
+	protected $backupGlobals = true;
+
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
+	 *
+	 * @var array
+	 */
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
+
+	/**
 	 * This is the data provider for the statement generation with a basic comparison
 	 *
 	 * @return array An array of data
@@ -85,6 +100,118 @@ class Tx_Extbase_Tests_Unit_Persistence_Storage_Typo3DbBackendTest extends Tx_Ex
 	 */
 	public function joinStatementGenerationWorks() {
 		$this->markTestIncomplete();
+	}
+
+	/**
+	 * @test
+	 */
+	public function addSysLanguageStatementWorksForDefaultLanguage() {
+		$table = uniqid('tx_coretest_table');
+		$GLOBALS['TCA'][$table]['ctrl'] = array(
+			'languageField' => 'sys_language_uid'
+		);
+
+		$tsfe = $this->getMock('tslib_fe', array(), array(), '', false);
+		$tsfe->sys_language_uid = 0;
+		$GLOBALS['TSFE'] = $tsfe;
+
+		$sql = array();
+		$mockTypo3DbBackend = $this->getMock(
+			$this->buildAccessibleProxy('Tx_Extbase_Persistence_Storage_Typo3DbBackend'),
+			array('dummy'),
+			array(),
+			'',
+			false);
+		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql);
+
+		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.sys_language_uid IN (0,-1))'));
+
+		$this->assertSame($expectedSql, $sql);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addSysLanguageStatementWorksForDefaultLanguageWithoutDeleteStatementReturned() {
+		$table = uniqid('tx_coretest_table');
+		$GLOBALS['TCA'][$table]['ctrl'] = array(
+			'languageField' => 'sys_language_uid',
+			'delete' => 'deleted'
+		);
+
+		$tsfe = $this->getMock('tslib_fe', array(), array(), '', false);
+		$tsfe->sys_language_uid = 0;
+		$GLOBALS['TSFE'] = $tsfe;
+
+		$sql = array();
+		$mockTypo3DbBackend = $this->getMock(
+			$this->buildAccessibleProxy('Tx_Extbase_Persistence_Storage_Typo3DbBackend'),
+			array('dummy'),
+			array(),
+			'',
+			false);
+		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql);
+
+		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.sys_language_uid IN (0,-1))'));
+
+		$this->assertSame($expectedSql, $sql);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addSysLanguageStatementWorksForForeignLanguageWithoutSubselection() {
+		$table = uniqid('tx_coretest_table');
+		$GLOBALS['TCA'][$table]['ctrl'] = array(
+			'languageField' => 'sys_language_uid'
+		);
+
+		$tsfe = $this->getMock('tslib_fe', array(), array(), '', false);
+		$tsfe->sys_language_uid = 2;
+		$GLOBALS['TSFE'] = $tsfe;
+
+		$sql = array();
+		$mockTypo3DbBackend = $this->getMock(
+			$this->buildAccessibleProxy('Tx_Extbase_Persistence_Storage_Typo3DbBackend'),
+			array('dummy'),
+			array(),
+			'',
+			false);
+		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql);
+
+		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.sys_language_uid IN (2,-1))'));
+
+		$this->assertSame($expectedSql, $sql);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addSysLanguageStatementWorksForForeignLanguageWithSubselectionWithoutDeleteStatementReturned() {
+		$table = uniqid('tx_coretest_table');
+		$GLOBALS['TCA'][$table]['ctrl'] = array(
+			'languageField' => 'sys_language_uid',
+			'transOrigPointerField' => 'l18n_parent'
+		);
+
+		$tsfe = $this->getMock('tslib_fe', array(), array(), '', false);
+		$tsfe->sys_language_uid = 2;
+		$GLOBALS['TSFE'] = $tsfe;
+
+		$sql = array();
+		$mockTypo3DbBackend = $this->getMock(
+			$this->buildAccessibleProxy('Tx_Extbase_Persistence_Storage_Typo3DbBackend'),
+			array('dummy'),
+			array(),
+			'',
+			false);
+		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql);
+
+		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.sys_language_uid IN (2,-1) OR (' .
+			$table . '.sys_language_uid=0 AND ' . $table . '.uid NOT IN (SELECT ' . $table . '.l18n_parent FROM ' . $table .
+			' WHERE ' . $table . '.l18n_parent>0 AND ' . $table . '.sys_language_uid>0)))'));
+
+		$this->assertSame($expectedSql, $sql);
 	}
 
 	/**
