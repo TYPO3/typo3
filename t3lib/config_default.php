@@ -764,7 +764,7 @@ define('TYPO3_URL_DONATE', 'http://typo3.org/donate/');
 
 	// Include localconf.php. Use this file to configure TYPO3 for your needs and database
 if (!@is_file(PATH_typo3conf . 'localconf.php')) {
-	throw new Exception('localconf.php is not found!');
+	throw new RuntimeException('localconf.php is not found!', 1333754332);
 }
 require(PATH_typo3conf.'localconf.php');
 
