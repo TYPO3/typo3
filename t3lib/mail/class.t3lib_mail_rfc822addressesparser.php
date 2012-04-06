@@ -172,7 +172,7 @@ class t3lib_mail_Rfc822AddressesParser {
 		while ($this->address = $this->_splitAddresses($this->address));
 
 		if ($this->address === false || isset($this->error)) {
-			throw new Exception($this->error, 1294681466);
+			throw new InvalidArgumentException($this->error, 1294681466);
 		}
 
 		// Validate each address individually.  If we encounter an invalid
@@ -181,7 +181,7 @@ class t3lib_mail_Rfc822AddressesParser {
 			$valid = $this->_validateAddress($address);
 
 			if ($valid === false || isset($this->error)) {
-				throw new Exception($this->error, 1294681467);
+				throw new InvalidArgumentException($this->error, 1294681467);
 			}
 
 			$this->structure = array_merge($this->structure, $valid);
