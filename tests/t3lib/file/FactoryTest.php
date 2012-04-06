@@ -49,6 +49,10 @@ class t3lib_file_FactoryTest extends Tx_Phpunit_TestCase {
 		$this->fixture = new t3lib_file_Factory();
 	}
 
+	protected function tearDown() {
+		t3lib_div::purgeInstances();
+	}
+
 	/**********************************
 	 * Storage Collections
 	 **********************************/

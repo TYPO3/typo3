@@ -108,7 +108,7 @@ class t3lib_file_Service_BackwardsCompatibility_TslibContentAdapterService {
 					if (count($files) > 0) {
 
 					} elseif ($row['image'] > 0) {
-						throw new Exception('inconsistent count field in "' . $table . '".'.$migrateFieldName);
+						throw new RuntimeException('inconsistent count field in "' . $table . '".' . $migrateFieldName, 1333754565);
 					}
 				}
 			}

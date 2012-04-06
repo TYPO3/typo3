@@ -35,6 +35,9 @@ require_once 'vfsStream/vfsStream.php';
  * @todo Many, many, many tests are skipped in this test case...
  */
 class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
+	protected function tearDown() {
+		t3lib_div::purgeInstances();
+	}
 
 	/**
 	 * @return t3lib_file_File
@@ -181,7 +184,7 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 		$fixture = new t3lib_file_File(array('uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test', 'storage' => $mockedOldStorage));
 
 		$mockedRepository = $this->getMock('t3lib_file_Repository_StorageRepository');
-		$mockedRepository->expects($this->once())->method('findByUid')->with($this->equalTo(2))->will($this->returnValue($mockedNewStorage));
+		$mockedRepository->expects($this->once())->method('findByUid')->with(2)->will($this->returnValue($mockedNewStorage));
 		t3lib_div::setSingletonInstance('t3lib_file_Repository_StorageRepository', $mockedRepository);
 
 		$fixture->updateProperties(array('storage' => 2));
