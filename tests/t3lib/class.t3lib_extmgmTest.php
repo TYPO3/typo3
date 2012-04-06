@@ -107,7 +107,7 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function extPathSearchesForPathOfExtensionInRequiredExtensionList() {
-		$this->setExpectedException('Exception', '', 1294430951);
+		$this->setExpectedException('BadFunctionCallException', '', 1294430951);
 
 		unset($GLOBALS['TYPO3_LOADED_EXT']);
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = 'foo';
@@ -119,7 +119,7 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function extPathSearchesForPathOfExtensionInExtList() {
-		$this->setExpectedException('Exception', '', 1294430951);
+		$this->setExpectedException('BadFunctionCallException', '', 1294430951);
 
 		unset($GLOBALS['TYPO3_LOADED_EXT']);
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = '';

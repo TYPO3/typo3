@@ -126,7 +126,7 @@ class t3lib_lock {
 			case 'semaphore':
 				$this->id = abs(crc32($id));
 				if (($this->resource = sem_get($this->id, 1)) === FALSE) {
-					throw new Exception(
+					throw new RuntimeException(
 						'Unable to get semaphore',
 						1313828196
 					);
