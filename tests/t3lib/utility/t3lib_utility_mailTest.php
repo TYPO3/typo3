@@ -51,6 +51,7 @@ class t3lib_utility_mailTest extends tx_phpunit_testcase {
 	}
 
 	public function tearDown() {
+		t3lib_div::purgeInstances();
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] = $this->scOptionsBackup;
 		$GLOBALS['T3_VAR']['callUserFunction'] = $this->callUserFunctionBackup;
 	}

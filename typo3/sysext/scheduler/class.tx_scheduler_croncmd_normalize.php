@@ -309,7 +309,7 @@ final class tx_scheduler_CronCmd_Normalize {
 	 * 	1-5/2 -> 1,3,5
 	 * 	2-10/3 -> 2,5,8
 	 *
-	 * @throws Exception if step value is invalid or if resulting list is empty
+	 * @throws InvalidArgumentException if step value is invalid or if resulting list is empty
 	 * @param string #stepExpression stepvalue expression
 	 * @return string Comma separated list of valid values
 	 */

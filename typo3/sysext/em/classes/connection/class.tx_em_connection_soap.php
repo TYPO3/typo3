@@ -89,7 +89,7 @@ class tx_em_Connection_Soap {
 			$this->client = new SoapClient($options['wsdl'], (array) $options['soapoptions']);
 		} else {
 			$this->client = FALSE;
-			throw new Exception('PHP soap extension not available');
+			throw new RuntimeException('PHP soap extension not available', 1333754714);
 		}
 	}
 
