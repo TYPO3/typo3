@@ -162,7 +162,7 @@ final class t3lib_tree_pagetree_Commands {
 	 *
 	 * @param array $cmd
 	 * @param array $data
-	 * @throws Exception if an error happened while the TCE processing
+	 * @throws RuntimeException if an error happened while the TCE processing
 	 * @return array
 	 */
 	protected static function processTceCmdAndDataMap(array $cmd, array $data = array()) {
@@ -182,7 +182,7 @@ final class t3lib_tree_pagetree_Commands {
 
 			// check errors
 		if (count($tce->errorLog)) {
-			throw new Exception(implode(chr(10), $tce->errorLog));
+			throw new RuntimeException(implode(chr(10), $tce->errorLog), 1333754629);
 		}
 
 		return $returnValues;

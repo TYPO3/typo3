@@ -59,7 +59,7 @@ class tx_scheduler_RecyclerGarbageCollection extends tx_scheduler_Task {
 	public function execute() {
 			// There is no file ctime on windows, so this task disables itself if OS = win
 		if (TYPO3_OS == 'WIN') {
-			throw new Exception(
+			throw new BadMethodCallException(
 				'This task is not reliable for Windows OS',
 				1308270454
 			);

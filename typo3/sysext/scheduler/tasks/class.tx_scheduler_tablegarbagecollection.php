@@ -121,7 +121,7 @@ class tx_scheduler_TableGarbageCollection extends tx_scheduler_Task {
 
 		$error = $GLOBALS['TYPO3_DB']->sql_error();
 		if ($error) {
-			throw new Exception(
+			throw new RuntimeException(
 				'tx_scheduler_TableGarbageCollection failed for table ' . $this->table . ' with error: ' . $error,
 				1308255491
 			);

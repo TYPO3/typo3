@@ -280,7 +280,7 @@ class t3lib_Compressor {
 			// Get file type
 		$type = strtolower(trim($type, '. '));
 		if (empty($type)) {
-			throw new Exception('Error in t3lib_Compressor: No valid file type given for merged file', 1308957498);
+			throw new InvalidArgumentException('Error in t3lib_Compressor: No valid file type given for merged file', 1308957498);
 		}
 
 			// we add up the filenames, filemtimes and filsizes to later build a checksum over
