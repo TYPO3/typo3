@@ -79,7 +79,7 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 	 *
 	 * @param tx_form_Domain_Model_Element_Abstract $parentElement Parent model object
 	 * @param array $arguments Configuration array
-	 * @throws Exception
+	 * @throws InvalidArgumentException
 	 * @return void
 	 */
 	public function getChildElementsByIntegerKey(tx_form_Domain_Model_Element_Abstract $parentElement, array $typoscript) {
@@ -97,7 +97,10 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 				}
 			}
 		} else {
-			throw new Exception ('Container element with id=' . $parentElement->getElementId() . ' has no configuration which means no children');
+			throw new InvalidArgumentException(
+				'Container element with id=' . $parentElement->getElementId() . ' has no configuration which means no children.',
+				1333754854
+			);
 		}
 	}
 
@@ -183,7 +186,7 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 			$object->setData($arguments['data']);
 			$this->reconstituteElement($object, $arguments);
 		} else {
-			throw new Exception('Element type "' . $object->getElementType() . '" is not supported.');
+			throw new InvalidArgumentException('Element type "' . $object->getElementType() . '" is not supported.', 1333754878);
 		}
 
 		return $object;
@@ -242,12 +245,14 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 					try {
 						$element->setAttribute($attribute, $value);
 					} catch (Exception $exception) {
-						throw new Exception ('Cannot call user function for attribute ' . ucfirst($attribute));
+						throw new RuntimeException('Cannot call user function for attribute ' . ucfirst($attribute), 1333754904);
 					}
 				}
 			}
 		} else {
-			throw new Exception ('The element with id=' . $element->getElementId() . ' has no default attributes set');
+			throw new InvalidArgumentException(
+				'The element with id=' . $element->getElementId() . ' has no default attributes set.', 1333754925
+			);
 		}
 	}
 
@@ -278,7 +283,9 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 						try {
 							$element->setAdditional($additional, $type, $value);
 						} catch (Exception $exception) {
-							throw new Exception ('Cannot call user function for additional ' . ucfirst($additional));
+							throw new RuntimeException(
+								'Cannot call user function for additional ' . ucfirst($additional), 1333754941
+							);
 						}
 					}
 					if (isset($arguments['layout.'][$additional]) && $element->additionalIsSet($additional)) {
@@ -287,7 +294,10 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 					}
 				}
 			} else {
-				throw new Exception ('The element with id=' . $element->getElementId() . ' has no additionals set');
+				throw new InvalidArgumentException(
+					'The element with id=' . $element->getElementId() . ' has no additionals set.',
+					1333754962
+				);
 			}
 		}
 	}
