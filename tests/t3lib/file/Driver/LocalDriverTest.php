@@ -50,6 +50,11 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 		t3lib_div::setSingletonInstance('t3lib_file_Repository_FileRepository', $mockedRepository);
 	}
 
+	public function tearDown() {
+		t3lib_div::purgeInstances();
+		parent::tearDown();
+	}
+
 	public static function tearDownAfterClass() {
 		foreach (self::$testDirs as $dir) {
 			t3lib_div::rmdir($dir, TRUE);

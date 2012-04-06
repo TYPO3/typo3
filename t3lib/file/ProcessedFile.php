@@ -111,7 +111,7 @@ class t3lib_file_ProcessedFile extends t3lib_file_AbstractFile {
 	 * @return t3lib_file_File The file object (allows chaining).
 	 */
 	public function setContents($contents) {
-		throw new Exception('Setting contents not possible for processed file.', 1305438528);
+		throw new BadMethodCallException('Setting contents not possible for processed file.', 1305438528);
 	}
 
 	/****************************************
