@@ -66,7 +66,7 @@ class Tx_Extbase_Persistence_QueryFactory implements Tx_Extbase_Persistence_Quer
 	 */
 	public function create($className) {
 		$query = $this->objectManager->create('Tx_Extbase_Persistence_QueryInterface', $className);
-		$querySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
+		$querySettings = $this->objectManager->create('Tx_Extbase_Persistence_QuerySettingsInterface');
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$querySettings->setStoragePageIds(t3lib_div::intExplode(',', $frameworkConfiguration['persistence']['storagePid']));
 		$query->setQuerySettings($querySettings);
