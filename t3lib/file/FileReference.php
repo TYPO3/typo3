@@ -94,7 +94,7 @@ class t3lib_file_FileReference implements t3lib_file_FileInterface {
 		$this->propertiesOfFileReference = $fileReferenceData;
 
 		if (!$fileReferenceData['uid_local']) {
-			throw new Exception('Incorrect reference to original file given for FileReference.', 1300098528);
+			throw new InvalidArgumentException('Incorrect reference to original file given for FileReference.', 1300098528);
 		}
 
 		if (!$factory) {
@@ -107,7 +107,7 @@ class t3lib_file_FileReference implements t3lib_file_FileInterface {
 		$this->fileRepository = t3lib_div::makeInstance('t3lib_file_Repository_FileRepository');
 
 		if (!is_object($this->originalFile)) {
-			throw new Exception('Original File not found for FileReference.', 1300098529);
+			throw new RuntimeException('Original File not found for FileReference.', 1300098529);
 		}
 
 		$this->name = $fileReferenceData['name'] !== '' ? $fileReferenceData['name'] : $this->originalFile->getName();
@@ -349,7 +349,7 @@ class t3lib_file_FileReference implements t3lib_file_FileInterface {
 	public function delete() {
 			// TODO: Implement this function. This should only delete the
 			// FileReference (sys_file_reference) record, not the file itself.
-		throw new Exception('Function not implemented FileReference::delete().');
+		throw new BadMethodCallException('Function not implemented FileReference::delete().', 1333754461);
 		return $this->fileRepository->removeUsageRecord($this);
 	}
 
@@ -362,7 +362,7 @@ class t3lib_file_FileReference implements t3lib_file_FileInterface {
 	public function rename($newName) {
 			// TODO: Implement this function. This should only rename the
 			// FileReference (sys_file_reference) record, not the file itself.
-		throw new Exception('Function not implemented FileReference::rename().');
+		throw new BadMethodCallException('Function not implemented FileReference::rename().', 1333754473);
 		return $this->fileRepository->renameUsageRecord($this, $newName);
 	}
 

@@ -45,6 +45,10 @@ class t3lib_file_FolderTest extends Tx_Phpunit_TestCase {
 		vfsStream::setup($this->basedir);
 	}
 
+	protected function tearDown() {
+		t3lib_div::purgeInstances();
+	}
+
 	protected function createFolderFixture($path, $name, $mockedStorage = NULL) {
 		if ($mockedStorage === NULL) {
 			$mockedStorage = $this->getMock('t3lib_file_Storage', array(), array(), '', FALSE);

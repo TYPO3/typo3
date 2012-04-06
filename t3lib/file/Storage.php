@@ -278,7 +278,10 @@ class t3lib_file_Storage {
 	 * @param string $identifier
 	 */
 	public function getFolderByIdentifier($identifier) {
-		throw new Exception('Function t3lib_file_Storage::getFolderByIdentifier() has been renamed to just getFolder(). Please fix the metho call.');
+		throw new BadMethodCallException(
+			'Function t3lib_file_Storage::getFolderByIdentifier() has been renamed to just getFolder(). Please fix the method call.',
+			1333754514
+		);
 	}
 
 	/**
@@ -287,7 +290,11 @@ class t3lib_file_Storage {
 	 * @param string $identifier
 	 */
 	public function getFileByIdentifier($identifier) {
-		throw new Exception('Function t3lib_file_Storage::getFileByIdentifier() has been renamed to just getFileInfoByIdentifier().  Please fix the metho call.');
+		throw new BadMethodCallException(
+			'Function t3lib_file_Storage::getFileByIdentifier() has been renamed to just getFileInfoByIdentifier(). ' .
+				'Please fix the metho call.',
+			1333754533
+		);
 	}
 
 	/**
