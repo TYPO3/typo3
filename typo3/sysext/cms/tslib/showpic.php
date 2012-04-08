@@ -154,7 +154,7 @@ class SC_tslib_showpic {
 			throw new UnexpectedValueException('Parameter Error: No file or no parameters given.', 1299514081);
 		}
 
-		$this->parametersEncoded = implode($parametersArray);
+		$this->parametersEncoded = implode('', $parametersArray);
 
 			// Chech md5-checksum: If this md5-value does not match the one submitted, then we fail... (this is a kind of security that somebody don't just hit the script with a lot of different parameters
 		$md5_value = t3lib_div::hmac(

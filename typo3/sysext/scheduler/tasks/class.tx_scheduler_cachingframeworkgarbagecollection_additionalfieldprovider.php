@@ -130,7 +130,7 @@ class tx_scheduler_CachingFrameworkGarbageCollection_AdditionalFieldProvider imp
 				'</option>';
 		}
 
-		return implode($options);
+		return implode('', $options);
 	}
 
 	/**
