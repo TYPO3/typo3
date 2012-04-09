@@ -95,7 +95,7 @@ class Tx_Extbase_Tests_Unit_Security_Cryptography_HashServiceTest extends Tx_Ext
 
 	/**
 	 * @test
-	 * @expectedException TYPO3\FLOW3\Security\Exception\InvalidArgumentForHashGenerationException
+	 * @expectedException Tx_Extbase_Security_Exception_InvalidArgumentForHashGeneration
 	 */
 	public function appendHmacThrowsExceptionIfNoStringGiven() {
 		$this->hashService->appendHmac(NULL);
@@ -112,7 +112,7 @@ class Tx_Extbase_Tests_Unit_Security_Cryptography_HashServiceTest extends Tx_Ext
 
 	/**
 	 * @test
-	 * @expectedException TYPO3\FLOW3\Security\Exception\InvalidArgumentForHashGenerationException
+	 * @expectedException Tx_Extbase_Security_Exception_InvalidArgumentForHashGeneration
 	 */
 	public function validateAndStripHmacThrowsExceptionIfNoStringGiven() {
 		$this->hashService->validateAndStripHmac(NULL);
@@ -120,7 +120,7 @@ class Tx_Extbase_Tests_Unit_Security_Cryptography_HashServiceTest extends Tx_Ext
 
 	/**
 	 * @test
-	 * @expectedException TYPO3\FLOW3\Security\Exception\InvalidArgumentForHashGenerationException
+	 * @expectedException Tx_Extbase_Security_Exception_InvalidArgumentForHashGeneration
 	 */
 	public function validateAndStripHmacThrowsExceptionIfGivenStringIsTooShort() {
 		$this->hashService->validateAndStripHmac('string with less than 40 characters');
@@ -128,7 +128,7 @@ class Tx_Extbase_Tests_Unit_Security_Cryptography_HashServiceTest extends Tx_Ext
 
 	/**
 	 * @test
-	 * @expectedException TYPO3\FLOW3\Security\Exception\InvalidHashException
+	 * @expectedException Tx_Extbase_Security_Exception_InvalidHash
 	 */
 	public function validateAndStripHmacThrowsExceptionIfGivenStringHasNoHashAppended() {
 		$this->hashService->validateAndStripHmac('string with exactly a length 40 of chars');
@@ -136,7 +136,7 @@ class Tx_Extbase_Tests_Unit_Security_Cryptography_HashServiceTest extends Tx_Ext
 
 	/**
 	 * @test
-	 * @expectedException TYPO3\FLOW3\Security\Exception\InvalidHashException
+	 * @expectedException Tx_Extbase_Security_Exception_InvalidHash
 	 */
 	public function validateAndStripHmacThrowsExceptionIfTheAppendedHashIsInvalid() {
 		$this->hashService->validateAndStripHmac('some Stringac43682075d36592d4cb320e69ff0aa515886eab');
