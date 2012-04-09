@@ -43,6 +43,9 @@ class tx_rsaauth_php_backend extends tx_rsaauth_abstract_backend {
 	public function createNewKeyPair() {
 		$result = NULL;
 		$privateKey = @openssl_pkey_new();
+		if (!is_resource($privateKey)) {
+			throw new Exception('openssl is not correctly configured in your PHP installation.');
+		}
 		if ($privateKey) {
 			// Create private key as string
 			$privateKeyStr = '';
@@ -91,20 +94,13 @@ class tx_rsaauth_php_backend extends tx_rsaauth_abstract_backend {
 	 * Checks if this backend is available for calling. In particular checks if
 	 * PHP OpenSSl extension is installed and functional.
 	 *
-	 * @return void
+	 * @return boolean
 	 * @see tx_rsaauth_abstract_backend::isAvailable()
 	 */
 	public function isAvailable() {
 		$result = FALSE;
 		if (is_callable('openssl_pkey_new')) {
-				// PHP extension has to be configured properly. It
-				// can be installed and available but will not work unless
-				// properly configured. So we check if it works.
-			$testKey = @openssl_pkey_new();
-			if (is_resource($testKey)) {
-				openssl_free_key($testKey);
 				$result = TRUE;
-			}
 		}
 		return $result;
 	}
