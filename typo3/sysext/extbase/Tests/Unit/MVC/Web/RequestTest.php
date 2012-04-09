@@ -69,16 +69,16 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestTest extends Tx_Extbase_Tests_Unit_Ba
 
 	/**
 	 * @test
-	 * @expectedException \TYPO3\FLOW3\Security\Exception\InvalidHashException
+	 * @expectedException Tx_Extbase_Security_Exception_InvalidHash
 	 */
 	public function getReferringRequestThrowsAnExceptionIfTheHmacOfTheArgumentsCouldNotBeValidated() {
-		$request = $this->getAccessibleMock('TYPO3\FLOW3\MVC\Web\Request', array('dummy'));
+		$request = $this->getAccessibleMock('Tx_Extbase_MVC_Web_Request', array('dummy'));
 		$request->setArgument('__referrer', array(
 			'@controller' => 'Foo',
 			'@action' => 'bar',
 			'arguments' => base64_encode('some manipulated arguments string without valid HMAC')
 		));
-		$request->_set('hashService', new \TYPO3\FLOW3\Security\Cryptography\HashService());
+		$request->_set('hashService', new Tx_Extbase_Security_Cryptography_HashService());
 		$request->getReferringRequest();
 	}
 }
