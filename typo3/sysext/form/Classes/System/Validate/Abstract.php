@@ -95,7 +95,7 @@ abstract class tx_form_System_Validate_Abstract implements tx_form_System_Valida
 	public function __construct($arguments) {
 		$this->localCobj = t3lib_div::makeInstance('tslib_cObj');
 		$this->requestHandler = t3lib_div::makeInstance('tx_form_System_Request');
-		$this->localizationHandler = t3lib_div::makeInstance('tx_form_System_Localization');
+		$this->localizationHandler = t3lib_div::makeInstance('tx_form_System_Localization', '');
 		$this->setFieldName($arguments['element']);
 		$this->setMessage($arguments['message.'], $arguments['message']);
 		$this->setShowMessage($arguments['showMessage']);
