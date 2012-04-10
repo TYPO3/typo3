@@ -37,7 +37,7 @@ class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 	// Tests concerning int_from_ver
 	//////////////////////////////////
 	/**
-	 * Data Provider for convertVersionNumberToIntegerConvertsVersionNumbersToIntegersDataProvider
+	 * Data Provider for convertVersionNumberToIntegerConvertsVersionNumbersToIntegers
 	 *
 	 * return array
 	 */
@@ -52,6 +52,24 @@ class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * Data Provider for convertIntegerToVersionNumberConvertsOtherTypesAsIntegerToVersionNumber
+	 *
+	 * @see http://php.net/manual/en/language.types.php
+	 * return array
+	 */
+	public function convertIntegerToVersionNumberConvertsOtherTypesAsIntegerToVersionNumberDataProvider() {
+		return array(
+			array(TRUE),
+			array(5.4),
+			array(array()),
+			array('300ABCD'),
+			array((new stdClass())),
+			array(NULL),
+			array(function(){}),
+		);
+	}
+
+	/**
 	 * @test
 	 * @dataProvider convertVersionNumberToIntegerConvertsVersionNumbersToIntegersDataProvider
 	 */
@@ -59,6 +77,25 @@ class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 		$this->assertEquals($expected, t3lib_utility_VersionNumber::convertVersionNumberToInteger($version));
 	}
 
+	/**
+	 * @test
+	 * @dataProvider convertVersionNumberToIntegerConvertsVersionNumbersToIntegersDataProvider
+	 */
+	public function convertIntegerToVersionNumberConvertsIntegerToVersionNumber($versionNumber, $expected) {
+			// Cast this value to an integer, to reuse the available convertVersionNumberToIntegerConvertsVersionNumbersToIntegersDataProvider
+			// this is necessary, because the data provider stores the "integer" values as string
+		$versionNumber = (int) $versionNumber;
+		$this->assertEquals($expected, t3lib_utility_VersionNumber::convertIntegerToVersionNumber($versionNumber));
+	}
+
+	/**
+	 * @test
+	 * @dataProvider convertIntegerToVersionNumberConvertsOtherTypesAsIntegerToVersionNumberDataProvider
+	 */
+	public function convertIntegerToVersionNumberConvertsOtherTypesAsIntegerToVersionNumber($version) {
+		$this->setExpectedException('\InvalidArgumentException', '', 1334072223);
+		t3lib_utility_VersionNumber::convertIntegerToVersionNumber($version);
+	}
 }
 
 ?>

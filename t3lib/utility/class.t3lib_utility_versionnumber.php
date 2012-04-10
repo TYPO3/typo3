@@ -44,6 +44,30 @@ final class t3lib_utility_VersionNumber {
 		$versionParts = explode('.', $versionNumber);
 		return intval((int) $versionParts[0] . str_pad((int) $versionParts[1], 3, '0', STR_PAD_LEFT) . str_pad((int) $versionParts[2], 3, '0', STR_PAD_LEFT));
 	}
+
+	/**
+	 * Returns the three part version number (string) from an integer, eg 4012003 -> '4.12.3'
+	 *
+	 * @param $versionInteger integer Integer representation of version number
+	 * @return string Version number as format x.x.x
+	 * @throws \InvalidArgumentException If $versionInteger is not a integer
+	 */
+	public static function convertIntegerToVersionNumber($versionInteger) {
+		if(is_int($versionInteger) === FALSE) {
+			throw new \InvalidArgumentException(
+				't3lib_utility_VersionNumber::convertIntegerToVersionNumber() support a integer argument only!',
+				1334072223
+			);
+		}
+
+		$versionString = str_pad($versionInteger, 9, '0', STR_PAD_LEFT);
+		$parts = array(
+			substr($versionString, 0, 3),
+			substr($versionString, 3, 3),
+			substr($versionString, 6, 3)
+		);
+		return intval($parts[0]) . '.' . intval($parts[1]) . '.' . intval($parts[2]);
+	}
 }
 
 ?>
