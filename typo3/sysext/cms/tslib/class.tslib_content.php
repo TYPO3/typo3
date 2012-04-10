@@ -660,6 +660,7 @@ class tslib_cObj {
 			'MULTIMEDIA' => 'Multimedia',
 			'MEDIA' => 'Media',
 			'SWFOBJECT' => 'ShockwaveFlashObject',
+			'FLOWPLAYER' => 'FlowPlayer',
 			'QTOBJECT' => 'QuicktimeObject',
 			'SVG' => 'ScalableVectorGraphics',
 			'EDITPANEL' => 'EditPanel',
@@ -692,6 +693,17 @@ class tslib_cObj {
 	function HTML($conf) {
 		return $this->getContentObject('HTML')->render($conf);
 	}
+
+	/**
+	 * Rendering the cObject, FLOWPLAYER
+	 *
+	 * @param array $conf array of TypoScript properties
+	 * @return string Output
+	 */
+	function FLOWPLAYER($conf) {
+		return $this->getContentObject('FLOWPLAYER')->render($conf);
+	}
+
 
 	/**
 	 * Rendering the cObject, TEXT

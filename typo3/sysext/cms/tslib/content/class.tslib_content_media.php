@@ -193,7 +193,7 @@ class tslib_content_Media extends tslib_content_Abstract {
 				$conf['attributes.'] = array_merge((array) $conf['attributes.'], $conf['predefined']);
 				$conf['params.'] = array_merge((array) $conf['params.'], $conf['predefined']);
 				$conf['flashvars.'] = array_merge((array) $conf['flashvars.'], $conf['predefined']);
-				$content = $this->cObj->SWFOBJECT($conf);
+				$content = $this->cObj->FLOWPLAYER($conf);
 			break;
 			case 'qt' :
 				$conf[$conf['type'] . '.'] = array_merge($conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
