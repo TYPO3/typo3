@@ -26,22 +26,17 @@
  * Testcase for class t3lib_utility_VersionNumber
  *
  * @author Susanne Moog <typo3@susanne-moog.de>
- *
  * @package TYPO3
  * @subpackage t3lib
  */
-
 class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 
-	//////////////////////////////////
-	// Tests concerning int_from_ver
-	//////////////////////////////////
 	/**
-	 * Data Provider for convertVersionNumberToIntegerConvertsVersionNumbersToIntegersDataProvider
+	 * Data Provider for convertVersionNumberToIntegerConvertsVersionNumbersToIntegers
 	 *
 	 * return array
 	 */
-	public function convertVersionNumberToIntegerConvertsVersionNumbersToIntegersDataProvider() {
+	public function validVersionNumberDataProvider() {
 		return array(
 			array('4003003', '4.3.3'),
 			array('4012003', '4.12.3'),
@@ -52,13 +47,49 @@ class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * Data Provider for convertIntegerToVersionNumberConvertsOtherTypesAsIntegerToVersionNumber
+	 *
+	 * @see http://php.net/manual/en/language.types.php
+	 * return array
+	 */
+	public function invalidVersionNumberDataProvider() {
+		return array(
+			'boolean' => array(TRUE),
+			'float' => array(5.4),
+			'array' => array(array()),
+			'string' => array('300ABCD'),
+			'object' => array(new stdClass()),
+			'NULL' => array(NULL),
+			'function' => array(function(){}),
+		);
+	}
+
+	/**
 	 * @test
-	 * @dataProvider convertVersionNumberToIntegerConvertsVersionNumbersToIntegersDataProvider
+	 * @dataProvider validVersionNumberDataProvider
 	 */
 	public function convertVersionNumberToIntegerConvertsVersionNumbersToIntegers($expected, $version) {
 		$this->assertEquals($expected, t3lib_utility_VersionNumber::convertVersionNumberToInteger($version));
 	}
 
+	/**
+	 * @test
+	 * @dataProvider validVersionNumberDataProvider
+	 */
+	public function convertIntegerToVersionNumberConvertsIntegerToVersionNumber($versionNumber, $expected) {
+			// Make sure incoming value is an integer
+		$versionNumber = (int) $versionNumber;
+		$this->assertEquals($expected, t3lib_utility_VersionNumber::convertIntegerToVersionNumber($versionNumber));
+	}
+
+	/**
+	 * @test
+	 * @dataProvider invalidVersionNumberDataProvider
+	 */
+	public function convertIntegerToVersionNumberConvertsOtherTypesAsIntegerToVersionNumber($version) {
+		$this->setExpectedException('\InvalidArgumentException', '', 1334072223);
+		t3lib_utility_VersionNumber::convertIntegerToVersionNumber($version);
+	}
 }
 
 ?>
