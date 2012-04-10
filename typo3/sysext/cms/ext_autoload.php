@@ -73,6 +73,7 @@ return array(
 	'tslib_content_scalablevectorgraphics' => PATH_tslib . 'content/class.tslib_content_scalablevectorgraphics.php',
 	'tslib_content_searchresult' => PATH_tslib . 'content/class.tslib_content_searchresult.php',
 	'tslib_content_shockwaveflashobject' => PATH_tslib . 'content/class.tslib_content_shockwaveflashobject.php',
+	'tslib_content_flowplayer' => PATH_tslib . 'content/class.tslib_content_flowplayer.php',
 	'tslib_content_template' => PATH_tslib . 'content/class.tslib_content_template.php',
 	'tslib_content_text' => PATH_tslib . 'content/class.tslib_content_text.php',
 	'tslib_content_userinternal' => PATH_tslib . 'content/class.tslib_content_userinternal.php',
