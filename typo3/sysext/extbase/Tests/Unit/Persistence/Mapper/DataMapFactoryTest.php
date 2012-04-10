@@ -338,5 +338,53 @@ class Tx_Extbase_Tests_Unit_Persistence_Mapper_DataMapFactoryTest extends Tx_Ext
 		$mockDataMapFactory->buildDataMap('UnknownObject');
 	}
 
+	/**
+	 * @test
+	 */
+	public function buildDataMapFetchesSubclassesRecursively() {
+		$configuration = array(
+			'persistence' => array(
+				'classes' => array(
+					'Tx_Extbase_Domain_Model_FrontendUser' => array(
+						'subclasses' => array(
+							'Tx_SampleExt_Domain_Model_LevelOne1' => 'Tx_SampleExt_Domain_Model_LevelOne1',
+							'Tx_SampleExt_Domain_Model_LevelOne2' => 'Tx_SampleExt_Domain_Model_LevelOne2',
+						)
+					),
+					'Tx_SampleExt_Domain_Model_LevelOne1' => array(
+						'subclasses' => array(
+							'Tx_SampleExt_Domain_Model_LevelTwo1' => 'Tx_SampleExt_Domain_Model_LevelTwo1',
+							'Tx_SampleExt_Domain_Model_LevelTwo2' => 'Tx_SampleExt_Domain_Model_LevelTwo2',
+						)
+					),
+					'Tx_SampleExt_Domain_Model_LevelOne2' => array(
+						'subclasses' => array(),
+					),
+				),
+			),
+		);
+		$expectedSubclasses = array(
+			'Tx_SampleExt_Domain_Model_LevelOne1',
+			'Tx_SampleExt_Domain_Model_LevelTwo1',
+			'Tx_SampleExt_Domain_Model_LevelTwo2',
+			'Tx_SampleExt_Domain_Model_LevelOne2',
+		);
+
+		/** @var $configurationManager Tx_Extbase_Configuration_ConfigurationManager|PHPUnit_Framework_MockObject_MockObject  */
+		$configurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManager');
+		$configurationManager->expects($this->once())->method('getConfiguration')->with('Framework')
+			->will($this->returnValue($configuration));
+
+		$dataMapFactory = new Tx_Extbase_Persistence_Mapper_DataMapFactory();
+		$dataMapFactory->injectReflectionService(new Tx_Extbase_Reflection_Service());
+		$dataMapFactory->injectObjectManager(new Tx_Extbase_Object_ObjectManager());
+		$dataMapFactory->injectConfigurationManager($configurationManager);
+		$dataMap = $dataMapFactory->buildDataMap('Tx_Extbase_Domain_Model_FrontendUser');
+
+		$this->assertSame(
+			$dataMap->getSubclasses(),
+			$expectedSubclasses
+		);
+	}
 }
 ?>
