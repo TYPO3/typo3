@@ -164,7 +164,6 @@ $t3libClasses = array(
 	't3lib_scbase' => PATH_t3lib . 'class.t3lib_scbase.php',
 	't3lib_search_livesearch' => PATH_t3lib . 'search/class.t3lib_search_livesearch.php',
 	't3lib_search_livesearch_queryparser' => PATH_t3lib . 'search/class.t3lib_search_livesearch_queryParser.php',
-	't3lib_signalslot_dispatcher' => PATH_t3lib . 'signalslot/Dispatcher.php',
 	't3lib_signalslot_invalidslotexception' => PATH_t3lib . 'signalslot/InvalidSlotException.php',
 	't3lib_singleton' => PATH_t3lib . 'interfaces/interface.t3lib_singleton.php',
 	't3lib_softrefproc' => PATH_t3lib . 'class.t3lib_softrefproc.php',
