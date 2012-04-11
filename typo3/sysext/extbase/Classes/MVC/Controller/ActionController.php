@@ -138,6 +138,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 			throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes) , 1187701131);
 		}
 
+		$response->setRequest($request);
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
