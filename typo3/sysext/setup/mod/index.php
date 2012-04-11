@@ -59,6 +59,10 @@ require($BACK_PATH.'init.php');
  * @subpackage tx_setup
  */
 class SC_mod_user_setup_index {
+	const PASSWORD_NOT_UPDATED = 0;
+	const PASSWORD_UPDATED = 1;
+	const PASSWORD_NOT_THE_SAME = 2;
+	const PASSWORD_OLD_WRONG = 3;
 
 		// Internal variables:
 	var $MCONF = array();
@@ -90,7 +94,7 @@ class SC_mod_user_setup_index {
 	protected $tsFieldConf;
 
 	protected $saveData = FALSE;
-	protected $passwordIsUpdated = FALSE;
+	protected $passwordIsUpdated = self::PASSWORD_NOT_UPDATED;
 	protected $passwordIsSubmitted = FALSE;
 	protected $setupIsUpdated = FALSE;
 	protected $tempDataIsCleared = FALSE;
@@ -208,7 +212,6 @@ class SC_mod_user_setup_index {
 					// Personal data for the users be_user-record (email, name, password...)
 					// If email and name is changed, set it in the users record:
 				$be_user_data = $d['be_users'];
-
 					// Possibility to modify the transmitted values. Useful to do transformations, like RSA password decryption
 				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['modifyUserDataBeforeSave'])) {
 					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['modifyUserDataBeforeSave'] as $function) {
@@ -230,8 +233,14 @@ class SC_mod_user_setup_index {
 				}
 					// Update the password:
 				if ($passwordIsConfirmed) {
-					$storeRec['be_users'][$beUserId]['password'] = $be_user_data['password2'];
-					$this->passwordIsUpdated = TRUE;
+					if ($GLOBALS['BE_USER']->user['password'] === $be_user_data['passwordCurrent']) {
+						$storeRec['be_users'][$beUserId]['password'] = $be_user_data['password2'];
+						$this->passwordIsUpdated = self::PASSWORD_UPDATED;
+					} else {
+						$this->passwordIsUpdated = self::PASSWORD_OLD_WRONG;
+					}
+				} else {
+					$this->passwordIsUpdated = self::PASSWORD_NOT_THE_SAME;
 				}
 
 				$this->saveData = TRUE;
@@ -415,19 +424,29 @@ class SC_mod_user_setup_index {
 
 			// If password is updated, output whether it failed or was OK.
 		if ($this->passwordIsSubmitted) {
-			if ($this->passwordIsUpdated) {
-				$flashMessage = t3lib_div::makeInstance(
-					't3lib_FlashMessage',
-					$LANG->getLL('newPassword_ok'),
-					$LANG->getLL('newPassword')
-				);
-			} else {
-				$flashMessage = t3lib_div::makeInstance(
-					't3lib_FlashMessage',
-					$LANG->getLL('newPassword_failed'),
-					$LANG->getLL('newPassword'),
-					t3lib_FlashMessage::ERROR
-				);
+			switch ($this->passwordIsUpdated) {
+				case self::PASSWORD_OLD_WRONG:
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						$LANG->getLL('oldPassword_failed'),
+						$LANG->getLL('newPassword'),
+						t3lib_FlashMessage::ERROR
+					);
+					break;
+				case self::PASSWORD_NOT_THE_SAME:
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						$LANG->getLL('newPassword_failed'),
+						$LANG->getLL('newPassword'),
+						t3lib_FlashMessage::ERROR
+					);
+				case self::PASSWORD_UPDATED:
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						$LANG->getLL('newPassword_ok'),
+						$LANG->getLL('newPassword')
+					);
+					break;
 			}
 			$this->content .= $flashMessage->render();
 		}

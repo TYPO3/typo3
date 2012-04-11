@@ -50,12 +50,13 @@ class tx_rsaauth_usersetuphook {
 				/* @var $storage tx_rsaauth_abstract_storage */
 
 				$key = $storage->get();
-
 				$password = $backend->decrypt($key, substr($be_user_data['password'], 4));
 				$password2 = $backend->decrypt($key, substr($be_user_data['password2'], 4));
+				$passwordCurrent = $backend->decrypt($key, substr($be_user_data['passwordCurrent'], 4));
 
 				$be_user_data['password'] = $password ? $password : $be_user_data['password'];
 				$be_user_data['password2'] = $password2 ? $password2 : $be_user_data['password2'];
+				$be_user_data['passwordCurrent'] = $passwordCurrent ? $passwordCurrent : $be_user_data['passwordCurrent'];
 			}
 		}
 	}
