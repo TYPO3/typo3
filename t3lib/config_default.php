@@ -21,7 +21,7 @@ define('FILE_DENY_PATTERN_DEFAULT', '\.(php[3-6]?|phpsh|phtml)(\..*)?$|^\.htacce
 define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6,phpsh,inc,phtml');
 
 // Defines a list that are basically required by a TYPO3 system.
-define('REQUIRED_EXTENSIONS', 'cms,lang,sv,em,recordlist');
+define('REQUIRED_EXTENSIONS', 'cms,lang,sv,em,recordlist,extbase,fluid');
 
 $TYPO3_CONF_VARS = array(
 	'GFX' => array(		// Configuration of the image processing features in TYPO3. 'IM' and 'GD' are short for ImageMagick and GD library respectively.
