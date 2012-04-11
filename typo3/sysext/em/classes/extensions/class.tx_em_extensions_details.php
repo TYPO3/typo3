@@ -557,19 +557,6 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 				($emConf[$key] ? $emConf[$key] : '')
 			);
 
-			$key = 'doNotLoadInFE';
-			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_load_in_frontend');
-			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_doNotLoadInFE', $headerCol);
-			if (!$emConf['doNotLoadInFE']) {
-				$dataCol = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes');
-			} else {
-				$dataCol = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no');
-			}
-			$lines[] = array(
-				$headerCol,
-				$dataCol
-			);
-
 			$key = 'modify_tables';
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_modifies_tables');
 			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_modify_tables', $headerCol);
