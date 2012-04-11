@@ -54,6 +54,7 @@ require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_fl
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_addflexformstoacl.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_imagelink.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_installfluidextbase.php');
+require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_mediaflexform.php');
 
 /**
  * Install Tool module
