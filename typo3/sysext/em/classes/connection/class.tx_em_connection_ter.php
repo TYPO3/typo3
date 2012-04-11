@@ -322,7 +322,6 @@ class tx_em_Connection_Ter {
 				'priority' => utf8_encode($uArr['EM_CONF']['priority']),
 				'clearCacheOnLoad' => (boolean) intval($uArr['EM_CONF']['clearCacheOnLoad']),
 				'lockType' => utf8_encode($uArr['EM_CONF']['lockType']),
-				'doNotLoadInFEe' => utf8_encode($uArr['EM_CONF']['doNotLoadInFE']),
 				'docPath' => utf8_encode($uArr['EM_CONF']['docPath']),
 			),
 			'infoData' => array(

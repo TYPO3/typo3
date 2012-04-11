@@ -193,7 +193,7 @@ abstract class Tx_Install_Updates_Base {
 
 	/**
 	 * This method can be called to install extensions following all proper processes
-	 * (e.g. installing in both extList and extList_FE, respecting priority, etc.)
+	 * (e.g. installing in extList, respecting priority, etc.)
 	 *
 	 * @param array $extensionKeys List of keys of extensions to install
 	 * @return void

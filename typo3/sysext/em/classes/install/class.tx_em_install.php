@@ -1577,7 +1577,6 @@ class tx_em_Install {
 	 * @return	void
 	 */
 	function writeNewExtensionList($newExtList) {
-		$strippedExtensionList = $this->stripNonFrontendExtensions($newExtList);
 
 		// Instance of install tool
 		$instObj = t3lib_div::makeInstance('t3lib_install');
@@ -1587,11 +1586,9 @@ class tx_em_Install {
 		// Get lines from localconf file
 		$lines = $instObj->writeToLocalconf_control();
 		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $newExtList);
-		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList_FE\']', $strippedExtensionList);
 		$instObj->writeToLocalconf_control($lines);
 
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $newExtList;
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList_FE'] = $strippedExtensionList;
 		t3lib_extMgm::removeCacheFiles();
 		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->flushByTag('t3lib_autoloader');
 	}
@@ -1600,10 +1597,12 @@ class tx_em_Install {
 	 * Removes unneeded extensions from the frontend based on
 	 * EMCONF doNotLoadInFE = 1
 	 *
+	 * @deprecated since 6.0, will be removed two versions later
 	 * @param string $extList
 	 * @return string
 	 */
 	function stripNonFrontendExtensions($extList) {
+		t3lib_div::logDeprecatedFunction();
 		$fullExtList = $this->parentObject->extensionList->getInstalledExtensions();
 		$extListArray = t3lib_div::trimExplode(',', $extList);
 		foreach ($extListArray as $arrayKey => $extKey) {

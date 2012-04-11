@@ -48,7 +48,6 @@ TYPO3.EM.Layouts = {
 						'<label>' + TYPO3.l10n.localize('extInfoArray_state') + ':</label> {state}<br />',
 						'<label>' + TYPO3.l10n.localize('extInfoArray_shy') + ':</label> {shyword}<br />',
 						'<label>' + TYPO3.l10n.localize('extInfoArray_internal') + ':</label> {internal}<br />',
-						'<label>' + TYPO3.l10n.localize('ext_details_doNotLoadInFE') + ':</label> {[this.loadInFe(values)]}<br />',
 						'<label>' + TYPO3.l10n.localize('extInfoArray_depends_on') + ':</label> {depends}<br />',
 						'<label>' + TYPO3.l10n.localize('extInfoArray_conflicts_with') + ':</label> {conflicts}<br />',
 						'<label>' + TYPO3.l10n.localize('extInfoArray_suggests') + ':</label> {suggests}<br />',
@@ -65,12 +64,7 @@ TYPO3.EM.Layouts = {
 						'</tpl>',
 					'</div>',
 				'</div>',
-			'</div>',
-			{
-				loadInFe: function(values) {
-					return values.doNotLoadInFE ? TYPO3.l10n.localize('no') : TYPO3.l10n.localize('yes');
-				}
-			}
+			'</div>'
 		);
 	},
 
@@ -141,4 +135,3 @@ TYPO3.EM.Layouts = {
 		return this.getInfoTemplate().applyTemplate(data);
 	}
 };
-

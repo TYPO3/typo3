@@ -1738,11 +1738,8 @@ $GLOBALS[\'TYPO3_LOADED_EXT\'] = unserialize(stripslashes(\'' . addslashes(seria
 	public static function getCacheFilePrefix() {
 		$extensionCacheBehaviour = self::getExtensionCacheBehaviour(TRUE);
 
-		$cacheFileSuffix = (TYPO3_MODE == 'FE' ? '_FE' : '');
-		$cacheFilePrefix = 'temp_CACHED' . $cacheFileSuffix;
-
 		if ($extensionCacheBehaviour) {
-			$cacheFilePrefix .= '_ps' . substr(t3lib_div::shortMD5(PATH_site . '|' . $GLOBALS['TYPO_VERSION']), 0, 4);
+			$cacheFilePrefix = 'temp_CACHED_ps' . substr(t3lib_div::shortMD5(PATH_site . '|' . $GLOBALS['TYPO_VERSION']), 0, 4);
 		}
 
 		return $cacheFilePrefix;
@@ -1754,17 +1751,7 @@ $GLOBALS[\'TYPO3_LOADED_EXT\'] = unserialize(stripslashes(\'' . addslashes(seria
 	 * @return string
 	 */
 	public static function getEnabledExtensionList() {
-			// Select mode how to load extensions in order to speed up the FE
-		if (TYPO3_MODE == 'FE') {
-			if (!($extLoadInContext = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList_FE'])) {
-					// fall back to standard 'extList' if 'extList_FE' is not (yet) set
-				$extLoadInContext = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'];
-			}
-		} else {
-			$extLoadInContext = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'];
-		}
-
-		$extensionList = self::getRequiredExtensionList() . ',' . $extLoadInContext;
+		$extensionList = self::getRequiredExtensionList() . ',' . $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'];
 		$ignoredExtensionList = self::getIgnoredExtensionList();
 
 			// Remove the extensions to be ignored:

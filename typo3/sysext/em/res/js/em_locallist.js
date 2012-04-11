@@ -337,7 +337,6 @@ TYPO3.EM.LocalList = Ext.extend(Ext.grid.GridPanel, {
 							{name:'doubleInstall'},
 							{name:'doubleInstallShort'},
 							{name:'updateModule'},
-							{name:'doNotLoadInFE'},
 							{name:'depends'},
 							{name:'conflicts'},
 							{name:'suggests'},
