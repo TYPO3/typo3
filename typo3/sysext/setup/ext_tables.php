@@ -42,6 +42,13 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 			'csh' => 'newPasswordAgain',
 			'eval' => 'md5',
 		),
+		'passwordCurrent' => array(
+			'type' => 'password',
+			'label' => 'LLL:EXT:setup/mod/locallang.xml:passwordCurrent',
+			'table' => 'be_users',
+			'csh' => 'passwordCurrent',
+			'eval' => 'md5',
+		),
 		'lang' => array(
 			'type' => 'select',
 			'itemsProcFunc' => 'SC_mod_user_setup_index->renderLanguageSelect',
@@ -122,7 +129,8 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 			'access' => 'admin',
 		),
 	),
-	'showitem' => '--div--;LLL:EXT:setup/mod/locallang.xml:personal_data,realName,email,emailMeAtLogin,password,password2,lang,
+	'showitem' => '--div--;LLL:EXT:setup/mod/locallang.xml:personal_data,realName,email,emailMeAtLogin,lang,
+			--div--;LLL:EXT:setup/mod/locallang.xml:passwordHeader,password,password2,passwordCurrent,
 			--div--;LLL:EXT:setup/mod/locallang.xml:opening,startModule,thumbnailsByDefault,titleLen,
 			--div--;LLL:EXT:setup/mod/locallang.xml:editFunctionsTab,edit_RTE,edit_wideDocument,edit_docModuleUpload,enableFlashUploader,resizeTextareas,resizeTextareas_Flexible,resizeTextareas_MaxHeight,copyLevels,recursiveDelete,
 			--div--;LLL:EXT:setup/mod/locallang.xml:adminFunctions,simulate,debugInWindow'

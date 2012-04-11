@@ -303,9 +303,6 @@
 			<trans-unit id="setToStandard" xml:space="preserve">
 				<source>Reset all Values to default</source>
 			</trans-unit>
-			<trans-unit id="resetSectionHeader" xml:space="preserve">
-				<source>Reset Settings</source>
-			</trans-unit>
 			<trans-unit id="resetConfiguration" xml:space="preserve">
 				<source>Reset Configuration and Clear Temporary Data</source>
 			</trans-unit>
@@ -351,11 +348,20 @@
 			<trans-unit id="newPassword_ok" xml:space="preserve">
 				<source>Password was updated.</source>
 			</trans-unit>
+			<trans-unit id="passwordCurrent" xml:space="preserve">
+				<source>Current password</source>
+			</trans-unit>
+			<trans-unit id="passwordHeader" xml:space="preserve">
+				<source>Passwort</source>
+			</trans-unit>
 			<trans-unit id="setupWasUpdated" xml:space="preserve">
 				<source>User settings were updated.</source>
 			</trans-unit>
 			<trans-unit id="newPassword_failed" xml:space="preserve">
 				<source>Password was NOT updated because you didn't enter the same password twice.</source>
+			</trans-unit>
+			<trans-unit id="oldPassword_failed" xml:space="preserve">
+				<source>Password was NOT updated because you didn't enter the correct current password.</source>
 			</trans-unit>
 			<trans-unit id="adminFunctions" xml:space="preserve">
 				<source>Admin functions</source>
