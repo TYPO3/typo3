@@ -1496,11 +1496,11 @@ tt_content.media {
 			asf = MEDIA
 			class = MEDIA
 			wmv = MEDIA
-			mp3 = SWF
-			mp4 = SWF
-			m4v = SWF
-			swa = SWF
-			flv = SWF
+			mp3 = FLOWPLAYER
+			mp4 = FLOWPLAYER
+			m4v = FLOWPLAYER
+			swa = FLOWPLAYER
+			flv = FLOWPLAYER
 			swf = SWF
 			mov = QT
 			m4v = QT
@@ -1509,6 +1509,9 @@ tt_content.media {
 
 		mimeConf.swfobject < tt_content.swfobject.20
 		mimeConf.qtobject < tt_content.qtobject.20
+		mimeConf.flowplayer < tt_content.swfobject.20
+		mimeConf.flowplayer.audio.player = {$styles.content.media.flowPlayer}
+		mimeConf.flowplayer.video.player = {$styles.content.media.flowPlayer}
 
 	}
 	20.stdWrap {
