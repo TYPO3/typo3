@@ -568,11 +568,25 @@ class Tx_Workspaces_Service_GridData {
 			array_slice(func_get_args(), 1)
 		);
 
-		t3lib_SignalSlot_Dispatcher::getInstance()->dispatch(
+		$this->getSignalSlotDispatcher()->dispatch(
 			'Tx_Workspaces_Service_GridData',
 			$signalName,
 			$signalArguments
 		);
+	}
+
+	/**
+	 * @return Tx_Extbase_SignalSlot_Dispatcher
+	 */
+	protected function getSignalSlotDispatcher() {
+		return $this->getObjectManager()->get('Tx_Extbase_SignalSlot_Dispatcher');
+	}
+
+	/**
+	 * @return Tx_Extbase_Object_ObjectManager
+	 */
+	protected function getObjectManager() {
+		return t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 	}
 }
 
