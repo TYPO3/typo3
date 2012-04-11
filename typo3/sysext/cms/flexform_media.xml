@@ -243,7 +243,6 @@
 									<mmSource>
 										<TCEforms>
 											<label>LLL:EXT:cms/locallang_ttc.xml:media.url</label>
-											<displayCond>FIELD:mmType:=:video</displayCond>
 											<config>
 												<type>input</type>
 												<size>60</size>
