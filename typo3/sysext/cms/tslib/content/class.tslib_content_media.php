@@ -185,15 +185,38 @@ class tslib_content_Media extends tslib_content_Abstract {
 			}
 		}
 
-		switch ($renderType) {
-			case 'swf' :
-				$conf[$conf['type'] . '.'] = array_merge((array) $conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
+		if ($renderType !== 'qt' && $renderType !== 'embed') {
+			if (isset($conf['file']) && (
+					strpos($conf['file'], '.swf') !== FALSE ||
+					(strpos($conf['file'], '://') !== FALSE) && strpos(t3lib_div::getUrl($conf['file'], 2), 'application/x-shockwave-flash') !== false)
+			) {
 				$conf = array_merge((array) $conf['mimeConf.']['swfobject.'], $conf);
+				$conf[$conf['type'] . '.']['player'] = strpos($conf['file'], '://') === FALSE ? 'http://' . $conf['file'] : $conf['file'];
+				$conf['installUrl'] = 'null';
+				$conf['forcePlayer'] = 0;
+				$renderType = 'swf';
+			} elseif (isset($conf['file']) && !isset($conf['caption']) && !isset($conf['sources'])) {
+				$renderType = 'swf';
+				$conf['forcePlayer'] = 1;
+			}
+		}
+
+		switch ($renderType) {
+			case 'flowplayer':
+				$conf[$conf['type'] . '.'] = array_merge((array) $conf['mimeConf.']['flowplayer.'][$conf['type'] . '.'], $typeConf);
+				$conf = array_merge((array) $conf['mimeConf.']['flowplayer.'], $conf);
 				unset($conf['mimeConf.']);
 				$conf['attributes.'] = array_merge((array) $conf['attributes.'], $conf['predefined']);
 				$conf['params.'] = array_merge((array) $conf['params.'], $conf['predefined']);
 				$conf['flashvars.'] = array_merge((array) $conf['flashvars.'], $conf['predefined']);
 				$content = $this->cObj->FLOWPLAYER($conf);
+			break;
+			case 'swf':
+				$conf[$conf['type'] . '.'] = array_merge((array) $conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
+				$conf = array_merge((array) $conf['mimeConf.']['swfobject.'], $conf);
+				unset($conf['mimeConf.']);
+				$conf['flashvars.'] = array_merge((array) $conf['flashvars.'], $conf['predefined']);
+				$content = $this->cObj->SWFOBJECT($conf);
 			break;
 			case 'qt' :
 				$conf[$conf['type'] . '.'] = array_merge($conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
@@ -225,7 +248,6 @@ class tslib_content_Media extends tslib_content_Abstract {
 					$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
 				}
 		}
-
 		return $content;
 	}
 
