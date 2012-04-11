@@ -207,6 +207,5 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 			$this->session->unregisterReconstitutedObject($removedObject);
 		}
 	}
-
 }
 ?>

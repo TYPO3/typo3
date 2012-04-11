@@ -13,13 +13,28 @@
  *                                                                        */
 
 /**
- * A generic Persistence exception
+ * The Extbase Persistence Manager interface
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $ID:$
+ * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
  */
-class Tx_Extbase_Persistence_Exception extends Tx_Extbase_Exception {
-}
+interface Tx_Extbase_Persistence_ManagerInterface extends Tx_Extbase_Persistence_PersistenceManagerInterface {
 
+	/**
+	 * Returns the current persistence session
+	 *
+	 * @return Tx_Extbase_Persistence_Session
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 7.0
+	 */
+	public function getSession();
+
+	/**
+	 * Returns the persistence backend
+	 *
+	 * @return Tx_Extbase_Persistence_BackendInterface
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 7.0
+	 */
+	public function getBackend();
+}
 ?>
