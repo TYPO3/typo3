@@ -888,13 +888,17 @@
 		$GLOBALS['TT']->pull();
 
 		if ($this->pageNotFound && $this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
+			$header = t3lib_utility_Http::HTTP_STATUS_404;
+			if ($this->pageNotFound === 1 || $this->pageNotFound === 2) {
+				$header = t3lib_utility_Http::HTTP_STATUS_401;
+			}
 			$pNotFoundMsg = array(
 				1 => 'ID was not an accessible page',
 				2 => 'Subsection was found and not accessible',
 				3 => 'ID was outside the domain',
 				4 => 'The requested page alias does not exist'
 			);
-			$this->pageNotFoundAndExit($pNotFoundMsg[$this->pageNotFound]);
+			$this->pageNotFoundAndExit($pNotFoundMsg[$this->pageNotFound], $header);
 		}
 
 		if ($this->page['url_scheme'] > 0) {
