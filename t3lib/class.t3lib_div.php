@@ -2741,26 +2741,23 @@ final class t3lib_div {
 				)
 			)
 			);
-			$content = @file_get_contents($url, FALSE, $ctx);
+
+			$content = file_get_contents($url, FALSE, $ctx);
+
 			if ($content === FALSE && isset($report)) {
-				$phpError = error_get_last();
-				$report['error'] = $phpError['type'];
-				$report['message'] = $phpError['message'];
+				$report['error']   = -1;
+				$report['message'] = 'Couldn\'t get URL: ' . implode(LF, $http_response_header);
 			}
 		} else {
 			if (isset($report)) {
 				$report['lib'] = 'file';
 			}
-			$content = @file_get_contents($url);
+
+			$content = file_get_contents($url);
+
 			if ($content === FALSE && isset($report)) {
-				if (function_exists('error_get_last')) {
-					$phpError = error_get_last();
-					$report['error'] = $phpError['type'];
-					$report['message'] = $phpError['message'];
-				} else {
-					$report['error'] = -1;
-					$report['message'] = 'Couldn\'t get URL.';
-				}
+				$report['error']   = -1;
+				$report['message'] = 'Couldn\'t get URL: ' . implode(LF, $http_response_header);
 			}
 		}
 

@@ -2175,6 +2175,50 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	}
 
 
+	///////////////////////////
+	// Tests concerning getUrl
+	///////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function getUrlWithAdditionalRequestHeadersProvidesHttpHeaderOnError() {
+		$url = 'http://typo3.org/i-do-not-exist-' . time();
+
+		$report = array();
+		t3lib_div::getUrl(
+			$url,
+			0,
+			array(),
+			$report
+		);
+		$this->assertContains(
+			'404',
+			$report['message']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getUrlProvidesWithoutAdditionalRequestHeadersHttpHeaderOnError() {
+		$url = 'http://typo3.org/i-do-not-exist-' . time();
+
+		$report = array();
+		t3lib_div::getUrl(
+			$url,
+			0,
+			FALSE,
+			$report
+		);
+		$this->assertContains(
+			'404',
+			$report['message'],
+			'Did not provide the HTTP response header when requesting a failing URL.'
+		);
+	}
+
+
 	///////////////////////////////
 	// Tests concerning fixPermissions
 	///////////////////////////////
