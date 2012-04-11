@@ -951,7 +951,18 @@ tt_content.image.20 {
 					value = noCaption
 				}
 			}
-			allStdWrap.wrap = <div class="csc-textpic-imagewrap"> | </div>
+			allStdWrap {
+				wrap = <div class="csc-textpic-imagewrap"> | </div>
+				innerWrap.cObject = CASE
+				innerWrap.cObject {
+					key.field = imageorient
+					# above-center
+					0 = TEXT
+					0.value = <div class="csc-textpic-center-outer"><div class="csc-textpic-center-inner"> | </div></div>
+					# below-center
+					8 < .0
+				}
+			}
 			singleStdWrap {
 				wrap = <div class="csc-textpic-image###CLASSES###"> | </div>
 				wrap {
@@ -2137,7 +2148,9 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	/* Positioning of images: */
 
 	/* Center (above or below) */
-	DIV.csc-textpic-center .csc-textpic-imagewrap, DIV.csc-textpic-center FIGURE.csc-textpic-imagewrap { max-width: {$styles.content.imgtext.maxW}px; margin: 0 auto; }
+	DIV.csc-textpic-center .csc-textpic-imagewrap, DIV.csc-textpic-center FIGURE.csc-textpic-imagewrap { overflow: hidden; }
+	DIV.csc-textpic-center .csc-textpic-center-outer { position: relative; float: right; right: 50%; }
+	DIV.csc-textpic-center .csc-textpic-center-inner { position: relative; float: right; right: -50%; }
 
 	/* Right (above or below) */
 	DIV.csc-textpic-right .csc-textpic-imagewrap { float: right; }
