@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "linkvalidator".
 #
-# Auto generated 27-03-2012 14:28
+# Auto generated 12-04-2012 21:59
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -30,7 +30,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'doNotLoadInFE' => 1,
 	'lockType' => '',
 	'author_company' => 'Connecta AG / cab services ag / Infoglobe',
-	'version' => '4.7.0beta3',
+	'version' => '4.7.0rc1',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.3.0-0.0.0',
