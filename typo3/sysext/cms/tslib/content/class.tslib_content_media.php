@@ -46,6 +46,7 @@ class tslib_content_Media extends tslib_content_Abstract {
 		$flexParams = isset($conf['flexParams.'])
 			? $this->cObj->stdWrap($conf['flexParams'], $conf['flexParams.'])
 			: $conf['flexParams'];
+
 		if (substr($flexParams, 0, 1) === '<') {
 				// It is a content element rather a TS object
 			$flexParams = t3lib_div::xml2array($flexParams, 'T3');
@@ -53,6 +54,7 @@ class tslib_content_Media extends tslib_content_Abstract {
 				$this->cObj->readFlexformIntoConf($sheetData['lDEF'], $conf['parameter.'], TRUE);
 			}
 		}
+
 			// Type is video or audio
 		$conf['type'] = $this->doFlexFormOverlay($conf, 'type');
 
@@ -100,11 +102,6 @@ class tslib_content_Media extends tslib_content_Abstract {
 			unset($conf['audioFallback']);
 		}
 
-			// Backward compatibility
-		if ($conf['type'] === 'audio' && !isset($conf['audioFallback'])) {
-			$conf['audioFallback'] = $conf['file'];
-		}
-
 			// Caption file
 		$caption = $this->doFlexFormOverlay($conf, 'caption');
 		if ($caption) {
@@ -115,8 +112,8 @@ class tslib_content_Media extends tslib_content_Abstract {
 			// Establish render type
 		$renderType = $this->doFlexFormOverlay($conf, 'renderType');
 
+		$conf['preferFlashOverHtml5'] = 0;
 		if ($renderType === 'preferFlashOverHtml5') {
-			$conf['preferFlashOverHtml5'] = 1;
 			$renderType = 'auto';
 		}
 
@@ -133,7 +130,6 @@ class tslib_content_Media extends tslib_content_Abstract {
 				$renderType = strtolower($conf['fileExtHandler.'][$fileinfo['fileext']]);
 			}
 		}
-
 		$mime = $renderType . 'object';
 		$typeConf = $conf['mimeConf.'][$mime . '.'][$conf['type'] . '.'] ? $conf['mimeConf.'][$mime . '.'][$conf['type'] . '.'] : array();
 		$conf['predefined'] = array();
@@ -185,7 +181,15 @@ class tslib_content_Media extends tslib_content_Abstract {
 			}
 		}
 
-		if ($renderType !== 'qt' && $renderType !== 'embed') {
+		if ($renderType === 'swf' && $this->doFlexFormOverlay($conf, 'useHTML5')) {
+			$renderType = 'flowplayer';
+		}
+
+		if ($conf['type'] === 'audio' && !isset($conf['audioSources'])) {
+			$renderType = 'swf';
+		}
+
+		if ($renderType !== 'qt' && $renderType !== 'embed' && $conf['type'] == 'video') {
 			if (isset($conf['file']) && (
 					strpos($conf['file'], '.swf') !== FALSE ||
 					(strpos($conf['file'], '://') !== FALSE) && strpos(t3lib_div::getUrl($conf['file'], 2), 'application/x-shockwave-flash') !== FALSE)
