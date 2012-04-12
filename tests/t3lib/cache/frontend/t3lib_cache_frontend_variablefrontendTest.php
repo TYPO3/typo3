@@ -104,6 +104,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 		$backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(igbinary_serialize($theString)));
 
 		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache->initializeObject();
 		$cache->set('VariableCacheTest', $theString);
 	}
 
@@ -161,6 +162,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 		$backend->expects($this->once())->method('get')->will($this->returnValue(igbinary_serialize($theArray)));
 
 		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache->initializeObject();
 
 		$this->assertEquals($theArray, $cache->get('VariableCacheTest'), 'The returned value was not the expected unserialized array.');
 	}
@@ -243,6 +245,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 		$backend->expects($this->exactly(2))->method('get')->will($this->onConsecutiveCalls(igbinary_serialize('one value'), igbinary_serialize('two value')));
 
 		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache->initializeObject();
 		$this->assertEquals($entries, $cache->getByTag($tag), 'Did not receive the expected entries');
 	}
 }
