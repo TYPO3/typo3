@@ -437,17 +437,17 @@ class SC_db_list {
 
 				// Printing clipboard if enabled:
 			if ($this->MOD_SETTINGS['clipBoard'] && $dblist->showClipboard)	{
-				$this->body.= $dblist->clipObj->printClipboard();
+				$this->body .= '<div class="db_list-dashboard">' . $dblist->clipObj->printClipboard() . '</div>';
 			}
 
 				// Search box:
 			if (!$this->modTSconfig['properties']['disableSearchBox']) {
 				$sectionTitle = t3lib_BEfunc::wrapInHelp('xMOD_csh_corebe', 'list_searchbox', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.search', TRUE));
-				$this->body .= $this->doc->section(
+				$this->body .= '<div class="db_list-searchbox">' . $this->doc->section(
 					$sectionTitle,
 					$dblist->getSearchBox(),
 					FALSE, TRUE, FALSE, TRUE
-				);
+				) . '</div>';
 			}
 
 				// Display sys-notes, if any are found:
@@ -458,7 +458,8 @@ class SC_db_list {
 		$docHeaderButtons = $dblist->getButtons();
 		$markers = array(
 			'CSH' => $docHeaderButtons['csh'],
-			'CONTENT' => $this->body
+			'CONTENT' => $this->body,
+			'EXTRACONTAINERCLASS' => ($this->table ? 'singletable' : ''),
 		);
 
 			// Build the <body> for the module
