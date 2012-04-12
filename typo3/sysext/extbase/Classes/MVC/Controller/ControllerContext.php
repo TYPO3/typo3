@@ -54,7 +54,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 
 	/**
 	 * @var Tx_Extbase_Property_MappingResults
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	protected $argumentsMappingResults;
 
@@ -133,7 +133,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 *
 	 * @param Tx_Extbase_Property_MappingResults $argumentsMappingResults
 	 * @return void
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function setArgumentsMappingResults(Tx_Extbase_Property_MappingResults $argumentsMappingResults) {
 		$this->argumentsMappingResults = $argumentsMappingResults;
@@ -144,7 +144,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 *
 	 * @return Tx_Extbase_Property_MappingResults
 	 * @api
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function getArgumentsMappingResults() {
 		return $this->argumentsMappingResults;
@@ -180,7 +180,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 * Get the flash messages
 	 *
 	 * @return Tx_Extbase_MVC_Controller_FlashMessages
-	 * @deprecated since Extbase 1.1; will be removed in Extbase 1.6
+	 * @deprecated since Extbase 1.1; will be removed in Extbase 6.0
 	 */
 	public function getFlashMessages() {
 		t3lib_div::logDeprecatedFunction();

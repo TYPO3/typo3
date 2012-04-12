@@ -31,7 +31,7 @@
  * @package Extbase
  * @subpackage Validation\Validator
  * @version $Id$
- * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
+ * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
  */
 abstract class Tx_Extbase_Validation_Validator_AbstractObjectValidator extends Tx_Extbase_Validation_Validator_AbstractValidator implements Tx_Extbase_Validation_Validator_ObjectValidatorInterface {
 

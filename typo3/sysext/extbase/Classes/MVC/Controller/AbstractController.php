@@ -75,7 +75,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 
 	/**
 	 * @var Tx_Extbase_Property_Mapper
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	protected $deprecatedPropertyMapper;
 
@@ -93,7 +93,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * The results of the mapping of request arguments to controller arguments
 	 * @var Tx_Extbase_Property_MappingResults
 	 * @api
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	protected $argumentsMappingResults;
 
@@ -113,7 +113,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 
 	/**
 	 * @var Tx_Extbase_MVC_Controller_FlashMessages
-	 * @deprecated since Extbase 1.1; will be removed in Extbase 1.6
+	 * @deprecated since Extbase 1.1; will be removed in Extbase 6.0
 	 */
 	protected $flashMessages;
 
@@ -151,7 +151,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 *
 	 * @param Tx_Extbase_Property_Mapper $deprecatedPropertyMapper The property mapper
 	 * @return void
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function injectDeprecatedPropertyMapper(Tx_Extbase_Property_Mapper $deprecatedPropertyMapper) {
 		$this->deprecatedPropertyMapper = $deprecatedPropertyMapper;
@@ -186,7 +186,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 */
 	public function injectFlashMessageContainer(Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer) {
 		$this->flashMessageContainer = $flashMessageContainer;
-			// @deprecated since Extbase 1.1; will be removed in Extbase 1.6
+			// @deprecated since Extbase 1.1; will be removed in Extbase 6.0
 		$this->flashMessages = $flashMessageContainer;
 	}
 
@@ -400,7 +400,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 				}
 			}
 		} else {
-			// @deprecated since Extbase 1.4, will be removed in Extbase 1.6
+			// @deprecated since Extbase 1.4, will be removed in Extbase 6.0
 			$optionalPropertyNames = array();
 			$allPropertyNames = $this->arguments->getArgumentNames();
 			foreach ($allPropertyNames as $propertyName) {

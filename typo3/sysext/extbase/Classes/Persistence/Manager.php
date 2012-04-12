@@ -92,6 +92,7 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	 * Returns the current persistence session
 	 *
 	 * @return Tx_Extbase_Persistence_Session
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function getSession() {
 		return $this->session;
@@ -101,6 +102,7 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	 * Returns the persistence backend
 	 *
 	 * @return Tx_Extbase_Persistence_BackendInterface
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function getBackend() {
 		return $this->backend;

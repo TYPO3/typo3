@@ -28,7 +28,7 @@
 /**
  * This test checks the Argument behavior before Extbase 1.4, i.e. with the old property mapper.
  *
- * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
+ * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
  */
 class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentBehaviorBeforeExtbase14Test extends Tx_Extbase_Tests_Unit_BaseTestCase {
 

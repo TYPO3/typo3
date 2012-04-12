@@ -189,7 +189,7 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	 *
 	 * @param string $flexFormContent flexForm xml string
 	 * @return array the processed array
-	 * @deprecated since Extbase 1.4; will be removed in Extbase 1.6
+	 * @deprecated since Extbase 1.4; will be removed in Extbase 6.0
 	 */
 	protected function convertFlexformContentToArray($flexFormContent) {
 		t3lib_div::logDeprecatedFunction();
@@ -198,9 +198,10 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 
 	/**
 	 * Parses a flexForm node recursively and takes care of sections etc
+	 *
 	 * @param array $nodeArray The flexForm node to parse
 	 * @param string $valuePointer The valuePointer to use for value retrieval
-	 * @deprecated since Extbase 1.4; will be removed in Extbase 1.6
+	 * @deprecated since Extbase 1.4; will be removed in Extbase 6.0
 	 */
 	protected function walkFlexformNode($nodeArray, $valuePointer = 'vDEF') {
 		t3lib_div::logDeprecatedFunction();
