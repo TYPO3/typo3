@@ -49,7 +49,7 @@ class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_Abstrac
 	 *
 	 * @return void
 	 */
-	protected function initializeObject() {
+	public function initializeObject() {
 		$this->useIgBinary = extension_loaded('igbinary');
 	}
 
