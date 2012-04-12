@@ -286,6 +286,7 @@ class ShortcutMenu implements backend_toolbarItem {
 			}
 
 				// check for module access
+			$pageId = $this->getLinkedPageId($row['url']);
 			if(!$GLOBALS['BE_USER']->isAdmin()) {
 				if(!isset($GLOBALS['LANG']->moduleLabels['tabs_images'][implode('_', $moduleParts).'_tab'])) {
 						// nice hack to check if the user has access to this module
@@ -293,7 +294,6 @@ class ShortcutMenu implements backend_toolbarItem {
 					continue;
 				}
 
-				$pageId = $this->getLinkedPageId($row['url']);
 				if(t3lib_utility_Math::canBeInterpretedAsInteger($pageId)) {
 						// check for webmount access
 					if(!$GLOBALS['BE_USER']->isInWebMount($pageId)) {
@@ -322,7 +322,7 @@ class ShortcutMenu implements backend_toolbarItem {
 			$shortcut['group']     = $shortcutGroup;
 			$shortcut['icon']      = $this->getShortcutIcon($row, $shortcut);
 			$shortcut['iconTitle'] = $this->getShortcutIconTitle($shortcutLabel, $row['module_name'], $row['M_module_name']);
-			$shortcut['action']    = 'jump(unescape(\''.rawurlencode($row['url']).'\'),\''.implode('_',$moduleParts).'\',\''.$moduleParts[0].'\');';
+			$shortcut['action']    = 'jump(unescape(\''.rawurlencode($row['url']).'\'),\''.implode('_',$moduleParts).'\',\''.$moduleParts[0].'\', ' . intval($pageId) . ');';
 
 			$lastGroup   = $row['sc_group'];
 			$shortcuts[] = $shortcut;
