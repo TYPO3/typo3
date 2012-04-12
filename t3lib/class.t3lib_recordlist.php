@@ -345,13 +345,18 @@ class t3lib_recordList {
 	 * @param	integer		Sys language uid
 	 * @return	string		Language icon
 	 */
-	function languageFlag($sys_language_uid) {
+	function languageFlag($sys_language_uid, $addAsAdditionalText = TRUE) {
 		$out = '';
+		$title = htmlspecialchars($this->languageIconTitles[$sys_language_uid]['title']);
 		if ($this->languageIconTitles[$sys_language_uid]['flagIcon']) {
-			$out .= t3lib_iconWorks::getSpriteIcon($this->languageIconTitles[$sys_language_uid]['flagIcon']);
+			$out .= t3lib_iconWorks::getSpriteIcon($this->languageIconTitles[$sys_language_uid]['flagIcon'], array('title' => $title));
+
+			if (!$addAsAdditionalText) {
+				return $out;
+			}
 			$out .= '&nbsp;';
 		}
-		$out .= htmlspecialchars($this->languageIconTitles[$sys_language_uid]['title']);
+		$out .= $title;
 		return $out;
 	}
 
