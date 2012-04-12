@@ -1604,8 +1604,7 @@ class localRecordList extends recordList {
 				';
 
 			// Table with the field selector::
-		$content.= '
-			'.$formElements[0].'
+		$content.= $formElements[0].'
 
 				<!--
 					Field selector for extended table view:
@@ -1617,7 +1616,7 @@ class localRecordList extends recordList {
 					</tr>
 				</table>
 			'.$formElements[1];
-		return $content;
+		return '<div class="db_list-fieldSelect">'.$content.'</div>';
 	}
 
 

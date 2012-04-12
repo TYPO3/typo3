@@ -313,7 +313,7 @@ class recordList extends t3lib_recordList {
 		$lMenu = '<select name="search_levels">'.implode('',$opt).'</select>';
 
 			// Table with the search box:
-		$content.= '
+		$content.= '<div class="db_list-searchbox-form">
 			'.$formElements[0].'
 
 				<!--
@@ -321,15 +321,17 @@ class recordList extends t3lib_recordList {
 				-->
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-dblist-search">
 					<tr>
-						<td><label for="search_field">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.enterSearchString', 1) . '</label><input type="text" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' /></td>
+						<td><label for="search_field">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.enterSearchString', 1) . '</label></td>
+						<td><input type="text" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' /></td>
 						<td>' . $lMenu . '</td>
 						<td><input type="submit" name="search" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.search', 1) . '" /></td>
 					</tr>
 					<tr>
-						<td colspan="3"><label for="showLimit">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showRecords', 1) . '</label>:<input type="text" name="showLimit" id="showLimit" value="' . htmlspecialchars($this->showLimit ? $this->showLimit : '') . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td>
+						<td><label for="showLimit">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showRecords', 1) . ':</label></td>
+						<td colspan="3"><input type="text" name="showLimit" id="showLimit" value="' . htmlspecialchars($this->showLimit ? $this->showLimit : '') . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td>
 					</tr>
 				</table>
-			'.$formElements[1];
+			'.$formElements[1].'</div>';
 		return $content;
 	}
 
