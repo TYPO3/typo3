@@ -74,7 +74,7 @@ CREATE TABLE be_users (
   realName varchar(80) DEFAULT '' NOT NULL,
   userMods varchar(255) DEFAULT '' NOT NULL,
   allowed_languages varchar(255) DEFAULT '' NOT NULL,
-  uc text,
+  uc mediumtext,
   file_mountpoints varchar(255) DEFAULT '' NOT NULL,
   fileoper_perms tinyint(4) DEFAULT '0' NOT NULL,
   workspace_perms tinyint(3) DEFAULT '1' NOT NULL,

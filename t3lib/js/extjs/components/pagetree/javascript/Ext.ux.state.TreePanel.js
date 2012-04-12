@@ -49,8 +49,8 @@ Ext.override(Ext.ux.state.TreePanel, {
 				if (this.isRestoringState) {
 					return;
 				}
-
-				this.stateHash[n.id] = n.getPath();
+				var saveID = n.id;
+				this.stateHash[saveID.substr(1)] = 1;
 			},
 
 			// delete path and all subpaths of collapsed node from stateHash
@@ -59,15 +59,8 @@ Ext.override(Ext.ux.state.TreePanel, {
 					return;
 				}
 
-				delete this.stateHash[n.id];
-				var cPath = n.getPath();
-				for(var p in this.stateHash) {
-					if(this.stateHash.hasOwnProperty(p)) {
-						if(this.stateHash[p].indexOf(cPath) !== -1) {
-							delete this.stateHash[p];
-						}
-					}
-				}
+				var deleteID = n.id;
+				delete this.stateHash[deleteID.substr(1)];
 			},
 
 			beforeclick: function(node) {
@@ -85,16 +78,26 @@ Ext.override(Ext.ux.state.TreePanel, {
 		// add state related props to the tree
 		Ext.apply(tree, {
 			// keeps expanded nodes paths keyed by node.ids
-			 stateHash:{},
+			stateHash:{},
 
 			restoreState: function() {
 				this.isRestoringState = true;
-				for(var p in this.stateHash) {
-					if(this.stateHash.hasOwnProperty(p)) {
-						this.expandPath(this.stateHash[p]);
+					// get last selected node
+				for (var pageID in this.stateHash) {
+					var pageNode = this.getNodeById('p' + pageID);
+					if (pageNode) {
+						pageNode.on({
+							expand: {
+								single:true,
+								scope:this,
+								fn: this.restoreState
+							}
+						});
+						if (pageNode.expanded === false) {
+							pageNode.expand();
+						}
 					}
 				}
-					// get last selected node
 
 				if (this.stateHash['lastSelectedNode']) {
 					var node = this.getNodeById(this.stateHash['lastSelectedNode']);
