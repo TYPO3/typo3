@@ -145,6 +145,18 @@ table.t3-table-info {
 	height: 20px;
 }
 
+.t3-page-ce-icons-move {
+	display:block;
+	padding-left:3px;
+	margin-right:-4px;
+	padding-top:3px;
+	padding-bottom:3px;
+	background-image: linear-gradient(center top , #878788 10%, #707070 100%);
+	background-image: -moz-linear-gradient(center top , #878788 10%, #707070 100%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #878788), color-stop(1, #707070));
+	background-repeat: repeat-x;
+}
+
 .t3-row-header a {
 	color: #fff;
 	float: left;
