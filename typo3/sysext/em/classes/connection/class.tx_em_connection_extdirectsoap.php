@@ -68,42 +68,6 @@ class tx_em_Connection_ExtDirectSoap {
 	}
 
 	/**
-	 * Login test with user credentials
-	 *
-	 * @deprecated since 4.6, will be removed in 4.8
-	 * @return array
-	 */
-	public function testUserLogin() {
-
-			// There is a theory which states that if ever anybody discovers exactly what this method is for and why it is here,
-			// it will instantly disappear and be replaced by something even more bizarre and inexplicable.
-			// There is another theory which states that this has already happened.
-		t3lib_div::logDeprecatedFunction();
-
-		if (is_array($this->accountData)) {
-			$login = FALSE;
-			if ($login) {
-				$data = array(
-					'success' => TRUE,
-					'id' => $login
-				);
-			} else {
-				$data = array(
-					'success' => FALSE,
-					'error' => $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_loginFailed')
-				);
-			}
-		} else {
-			$data = array(
-				'success' => FALSE,
-				'error' => $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_noUserLoginData')
-			);
-		}
-
-		return $data;
-	}
-
-	/**
 	 * Show Info of extension record
 	 *
 	 * @param  array $record

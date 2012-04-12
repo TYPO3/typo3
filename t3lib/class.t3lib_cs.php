@@ -483,29 +483,6 @@ class t3lib_cs {
 		'zh' => 'big5',
 	);
 
-		// TYPO3 specific: Array with the iso names used for each system language in TYPO3:
-		// Missing keys means: same as TYPO3
-		// @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - use t3lib_l10n_Locales::getIsoMapping()
-	var $isoArray = array(
-		'ba' => 'bs',
-		'br' => 'pt_BR',
-		'ch' => 'zh_CN',
-		'cz' => 'cs',
-		'dk' => 'da',
-		'si' => 'sl',
-		'se' => 'sv',
-		'gl' => 'kl',
-		'gr' => 'el',
-		'hk' => 'zh_HK',
-		'kr' => 'ko',
-		'ua' => 'uk',
-		'jp' => 'ja',
-		'qc' => 'fr_CA',
-		'vn' => 'vi',
-		'ge' => 'ka',
-		'ga' => 'gl',
-	);
-
 	/**
 	 * Default constructor.
 	 */

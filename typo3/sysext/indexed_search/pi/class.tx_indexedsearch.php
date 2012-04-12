@@ -1310,19 +1310,6 @@ class tx_indexedsearch extends tslib_pibase {
 		}
 	}
 
-	/**
-	 * This function is deprecated.
-	 *
-	 * @param string $stringToHash
-	 * @return int Integer intepretation of the md5 hash of input string.
-	 * @deprecated will be removed in 4.8
-	 * @see tx_indexedsearch_util::md5inthash
-	 */
-	function md5inthash($stringToHash) {
-		t3lib_div::logDeprecatedFunction();
-		return tx_indexedsearch_util::md5inthash($stringToHash);
-	}
-
 	/***********************************
 	 *
 	 * HTML output functions

@@ -490,64 +490,6 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	}
 
 
-	///////////////////////////////
-	// Tests concerning testInt
-	///////////////////////////////
-
-	/**
-	 * Data provider for testIntReturnsTrue
-	 *
-	 * @return array Data sets
-	 */
-	public function functionTestIntValidDataProvider() {
-		return array(
-			'int' => array(32425),
-			'negative int' => array(-32425),
-			'largest int' => array(PHP_INT_MAX),
-			'int as string' => array('32425'),
-			'negative int as string' => array('-32425'),
-			'zero' => array(0),
-			'zero as string' => array('0'),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider functionTestIntValidDataProvider
-	 */
-	public function testIntReturnsTrue($int) {
-		$this->assertTrue(t3lib_utility_Math::canBeInterpretedAsInteger($int));
-	}
-
-	/**
-	 * Data provider for testIntReturnsFalse
-	 *
-	 * @return array Data sets
-	 */
-	public function functionTestIntInvalidDataProvider() {
-		return array(
-			'int as string with leading zero' => array('01234'),
-			'positive int as string with plus modifier' => array('+1234'),
-			'negative int as string with leading zero' => array('-01234'),
-			'largest int plus one' => array(PHP_INT_MAX + 1),
-			'string' => array('testInt'),
-			'empty string' => array(''),
-			'int in string' => array('5 times of testInt'),
-			'int as string with space after' => array('5 '),
-			'int as string with space before' => array(' 5'),
-			'int as string with many spaces before' => array('     5'),
-			'float' => array(3.14159),
-			'float as string' => array('3.14159'),
-			'float as string only a dot' => array('10.'),
-			'float as string trailing zero would evaluate to int 10' => array('10.0'),
-			'float as string trailing zeros	 would evaluate to int 10' => array('10.00'),
-			'null' => array(NULL),
-			'empty array' => array(array()),
-			'int in array' => array(array(32425)),
-			'int as string in array' => array(array('32425')),
-		);
-	}
-
 	/**
 	 * @test
 	 * @dataProvider functionTestIntInvalidDataProvider
@@ -655,69 +597,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 
 	//////////////////////////////////
-	// Tests concerning calcPriority
-	//////////////////////////////////
-
-	/**
-	 * Data provider for calcPriority
-	 *
-	 * @return array expected values, arithmetic expression
-	 */
-	public function calcPriorityDataProvider() {
-		return array(
-			'add' => array(9, '6 + 3'),
-			'substract with positive result' => array(3, '6 - 3'),
-			'substract with negative result' => array(-3, '3 - 6'),
-			'multiply' => array(6, '2 * 3'),
-			'divide' => array(2.5, '5 / 2'),
-			'modulus' => array(1, '5 % 2'),
-			'power' => array(8, '2 ^ 3'),
-			'three operands with non integer result' => array(6.5, '5 + 3 / 2'),
-			'three operands with power' => array(14, '5 + 3 ^ 2'),
-			'three operads with modulus' => array(4, '5 % 2 + 3'),
-			'four operands' => array(3, '2 + 6 / 2 - 2'),
-			'division by zero when dividing' => array('ERROR: dividing by zero', '2 / 0'),
-			'division by zero with modulus' => array('ERROR: dividing by zero', '2 % 0')
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider calcPriorityDataProvider
-	 */
-	public function calcPriorityCorrectlyCalculatesExpression($expected, $expression) {
-		$this->assertEquals($expected, t3lib_div::calcPriority($expression));
-	}
-
-	//////////////////////////////////
-	// Tests concerning calcParenthesis
-	//////////////////////////////////
-
-	/**
-	 * Data provider for calcParenthesis
-	 *
-	 * @return array expected values, arithmetic expression
-	 */
-	public function calcParenthesisDataProvider() {
-		return array(
-			'starts with parenthesis' => array(18, '(6 + 3) * 2'),
-			'ends with parenthesis' => array(6, '2 * (6 - 3)'),
-			'multiple parentheses' => array(-6, '(3 - 6) * (4 - 2)'),
-			'nested parentheses' => array(22, '2 * (3 + 2 + (3 * 2))'),
-			'parenthesis with division' => array(15, '5 / 2 * (3 * 2)'),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider calcParenthesisDataProvider
-	 */
-	public function calcParenthesisCorrectlyCalculatesExpression($expected, $expression) {
-		$this->assertEquals($expected, t3lib_div::calcParenthesis($expression));
-	}
-
-	//////////////////////////////////
-	// Tests concerning calcPriority
+	// Tests concerning validEmail
 	//////////////////////////////////
 
 	/**
@@ -843,23 +723,6 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	public function intInRangeSetsDefaultValueIfZeroValueIsGiven() {
 		$this->assertEquals(42, t3lib_div::intInRange('', 0, 2000000000, 42));
-	}
-
-	//////////////////////////////////
-	// Tests concerning intval_positive
-	//////////////////////////////////
-	/**
-	 * @test
-	 */
-	public function intvalPositiveReturnsZeroForNegativeValues() {
-		$this->assertEquals(0, t3lib_div::intval_positive(-123));
-	}
-
-	/**
-	 * @test
-	 */
-	public function intvalPositiveReturnsTheInputValueForPositiveValues() {
-		$this->assertEquals(123, t3lib_div::intval_positive(123));
 	}
 
 	//////////////////////////////////
