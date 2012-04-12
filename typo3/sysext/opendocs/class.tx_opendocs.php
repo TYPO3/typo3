@@ -166,6 +166,11 @@ class tx_opendocs implements backend_toolbarItem {
 		$icon   = t3lib_iconWorks::getSpriteIconForRecord($table, $record);
 		$link   = $GLOBALS['BACK_PATH'] . 'alt_doc.php?' . $document[2];
 
+		$pageId = intval($document[3]['uid']);
+		if ($document[3]['table'] !== 'pages') {
+			$pageId = intval($document[3]['pid']);
+		}
+
 		$firstRow = '';
 		if ($isFirstDoc) {
 			$firstRow = ' first-row';
@@ -180,7 +185,7 @@ class tx_opendocs implements backend_toolbarItem {
 			$entry = '
 				<tr class="opendoc' . $firstRow . '">
 					<td class="icon">' . $icon . '</td>
-					<td class="label"><a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\'); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $label . '</a></td>
+					<td class="label"><a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . '); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $label . '</a></td>
 					<td class="close" onclick="return TYPO3BackendOpenDocs.closeDocument(\'' . $md5sum . '\');">' . $closeIcon . '</td>
 				</tr>';
 		} else {
@@ -188,7 +193,7 @@ class tx_opendocs implements backend_toolbarItem {
 			$entry = '
 				<tr class="recentdoc' . $firstRow . '">
 					<td class="icon">' . $icon . '</td>
-					<td class="label" colspan="2"><a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\'); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $label . '</a></td>
+					<td class="label" colspan="2"><a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . '); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $label . '</a></td>
 				</tr>';
 		}
 
