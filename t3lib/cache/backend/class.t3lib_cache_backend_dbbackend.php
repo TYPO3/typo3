@@ -369,17 +369,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	}
 
 	/**
-	 * Sets the table where the cache entries are stored.
-	 *
-	 * @deprecated since TYPO3 4.6: The backend calculates the table name internally, this method does nothing anymore
-	 * @param string $cacheTable Table name
-	 * @return void
-	 */
-	public function setCacheTable($cacheTable) {
-		t3lib_div::logDeprecatedFunction();
-	}
-
-	/**
 	 * Returns the table where the cache entries are stored.
 	 *
 	 * @return	string	The cache table.
@@ -388,17 +377,6 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		$this->throwExceptionIfFrontendDoesNotExist();
 
 		return $this->cacheTable;
-	}
-
-	/**
-	 * Sets the table where cache tags are stored.
-	 *
-	 * @deprecated since TYPO3 4.6: The backend calculates the table name internally, this method does nothing anymore
-	 * @param string $tagsTable: Tags table name
-	 * @return void
-	 */
-	public function setTagsTable($tagsTable) {
-		t3lib_div::logDeprecatedFunction();
 	}
 
 	/**
