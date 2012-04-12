@@ -412,10 +412,16 @@ class tx_cms_layout extends recordList {
 							}
 
 							$editUidList .= $row['uid'] . ',';
-							$singleElementHTML .= $this->tt_content_drawHeader($row, $this->tt_contentConfig['showInfo'] ? 15 : 5, $this->defLangBinding && $lP > 0, TRUE);
+							$disableMoveAndNewButtons = ($this->defLangBinding && $lP > 0);
+							$singleElementHTML .= $this->tt_content_drawHeader($row, $this->tt_contentConfig['showInfo'] ? 15 : 5, $disableMoveAndNewButtons, TRUE);
 
 							$isRTE = $RTE && $this->isRTEforField('tt_content', $row, 'bodytext');
-							$singleElementHTML .= '<div ' . ($row['_ORIG_uid'] ? ' class="ver-element"' : '') . '>' . $this->tt_content_drawItem($row, $isRTE) . '</div>';
+							$innerContent = '<div ' . ($row['_ORIG_uid'] ? ' class="ver-element"' : '') . '>' . $this->tt_content_drawItem($row, $isRTE) . '</div>';
+
+							$singleElementHTML .= '<div class="t3-page-ce-body-inner">' .
+														$innerContent .
+													'</div>' .
+													$this->tt_content_drawFooter($row);
 
 							// NOTE: this is the end tag for <div class="t3-page-ce-body">
 							// because of bad (historic) conception, starting tag has to be placed inside tt_content_drawHeader()
@@ -424,6 +430,20 @@ class tx_cms_layout extends recordList {
 
 							$statusHidden = ($this->isDisabled('tt_content', $row) ? ' t3-page-ce-hidden' : '');
 							$singleElementHTML = '<div class="t3-page-ce' . $statusHidden . '">' . $singleElementHTML . '</div>';
+
+								// Add icon "new content element below"
+							if (!$disableMoveAndNewButtons) {
+								// New content element:
+								if ($this->option_newWizard) {
+									$onClick = "window.location.href='db_new_content_el.php?id=" . $row['pid'] . '&sys_language_uid=' . $row['sys_language_uid'] . '&colPos=' . $row['colPos'] . '&uid_pid=' . (-$row['uid']) . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . "';";
+								} else {
+									$params = '&edit[tt_content][' . (-$row['uid']) . ']=new';
+									$onClick = t3lib_BEfunc::editOnClick($params, $this->backPath);
+								}
+								$singleElementHTML .= '<div style="margin-bottom:7px;margin-left:5px;"><a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $GLOBALS['LANG']->getLL('newRecordHere', 1) . '">' .
+										t3lib_iconWorks::getSpriteIcon('actions-document-new') .
+										'</a></div>';
+							}
 
 							if ($this->defLangBinding && $this->tt_contentConfig['languageMode']) {
 								$defLangBinding[$key][$lP][$row[($lP ? 'l18n_parent' : 'uid')]] = $singleElementHTML;
@@ -1552,6 +1572,34 @@ class tx_cms_layout extends recordList {
 	}
 
 	/**
+	 * Draw the footer for a single tt_content element
+	 *
+	 * @param array Record array
+	 * @return string HTML of the footer
+	 */
+	protected function tt_content_drawFooter(array $row) {
+		$content = '';
+
+			// Get processed values:
+		$info = array();
+		$this->getProcessedValue('tt_content', 'hidden,starttime,endtime,fe_group,spaceBefore,spaceAfter', $row, $info);
+
+			// Display info from records fields:
+		if (count($info)) {
+			$content = '<div class="t3-page-ce-info">
+				' . implode('<br />', $info) . '
+				</div>';
+		}
+
+			// Wrap it
+		if (!empty($content)) {
+			$content = '<div class="t3-page-ce-footer">' . $content . '</div>';
+		}
+
+		return $content;
+	}
+
+	/**
 	 * Draw the header for a single tt_content element
 	 *
 	 * @param	array		Record array
@@ -1562,57 +1610,14 @@ class tx_cms_layout extends recordList {
 	 */
 	function tt_content_drawHeader($row, $space = 0, $disableMoveAndNewButtons = FALSE, $langMode = FALSE) {
 
-		// Load full table description:
+			// Load full table description:
 		t3lib_div::loadTCA('tt_content');
 
-		// Get record locking status:
-		if ($lockInfo = t3lib_BEfunc::isRecordLocked('tt_content', $row['uid'])) {
-			$lockIcon = '<a href="#" onclick="' . htmlspecialchars('alert(' . $GLOBALS['LANG']->JScharCode($lockInfo['msg']) . ');return false;') . '" title="' . htmlspecialchars($lockInfo['msg']) . '">' .
-					t3lib_iconWorks::getSpriteIcon('status-warning-in-use') .
-					'</a>';
-		} else {
-			$lockIcon = '';
-		}
-
-		// Call stats information hook
-		$stat = '';
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
-			$_params = array('tt_content', $row['uid'], &$row);
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
-				$stat .= t3lib_div::callUserFunction($_funcRef, $_params, $this);
-			}
-		}
-
-		// Create line with type of content element and icon/lock-icon/title:
-		$ceType = $this->getIcon('tt_content', $row) . ' ' .
-				$lockIcon . ' ' .
-				$stat . ' ' .
-				($langMode ? $this->languageFlag($row['sys_language_uid']) : '') . ' ' .
-				htmlspecialchars($this->CType_labels[$row['CType']]) .
-				' <strong>' . $GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content', 'list_type', $row['list_type']), 1) . '</strong><br />';
-
-		// If show info is set...;
+			// If show info is set...;
 		if ($this->tt_contentConfig['showInfo']) {
-
-			// Get processed values:
-			$info = Array();
-			$this->getProcessedValue('tt_content', 'hidden,starttime,endtime,fe_group,spaceBefore,spaceAfter', $row, $info);
 
 			// Render control panel for the element:
 			if ($this->tt_contentConfig['showCommands'] && $this->doEdit) {
-
-				if (!$disableMoveAndNewButtons) {
-					// New content element:
-					if ($this->option_newWizard) {
-						$onClick = "window.location.href='db_new_content_el.php?id=" . $row['pid'] . '&sys_language_uid=' . $row['sys_language_uid'] . '&colPos=' . $row['colPos'] . '&uid_pid=' . (-$row['uid']) . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . "';";
-					} else {
-						$params = '&edit[tt_content][' . (-$row['uid']) . ']=new';
-						$onClick = t3lib_BEfunc::editOnClick($params, $this->backPath);
-					}
-					$out .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $GLOBALS['LANG']->getLL('newAfter', 1) . '">' .
-							t3lib_iconWorks::getSpriteIcon('actions-document-new') .
-							'</a>';
-				}
 
 				// Edit content element:
 				$params = '&edit[tt_content][' . $this->tt_contentData['nextThree'][$row['uid']] . ']=edit';
@@ -1648,49 +1653,67 @@ class tx_cms_layout extends recordList {
 						'</a>';
 
 				if (!$disableMoveAndNewButtons) {
-					$out .= '<span class="t3-page-ce-icons-move">';
-					// Move element up:
+					$moveButtonContent = '';
+					$displayMoveButtons = FALSE;
+
+						// Move element up:
 					if ($this->tt_contentData['prev'][$row['uid']]) {
 						$params = '&cmd[tt_content][' . $row['uid'] . '][move]=' . $this->tt_contentData['prev'][$row['uid']];
-						$out .= '<a href="' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)) . '" title="' . $GLOBALS['LANG']->getLL('moveUp', TRUE) . '">' .
+						$moveButtonContent .= '<a href="' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)) . '" title="' . $GLOBALS['LANG']->getLL('moveUp', TRUE) . '">' .
 								t3lib_iconWorks::getSpriteIcon('actions-move-up') .
 								'</a>';
+						$displayMoveButtons = TRUE;
 					} else {
-						$out .= t3lib_iconWorks::getSpriteIcon('empty-empty');
+						$moveButtonContent .= t3lib_iconWorks::getSpriteIcon('empty-empty');
 					}
-					// Move element down:
+						// Move element down:
 					if ($this->tt_contentData['next'][$row['uid']]) {
 						$params = '&cmd[tt_content][' . $row['uid'] . '][move]= ' . $this->tt_contentData['next'][$row['uid']];
-						$out .= '<a href="' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)) . '" title="' . $GLOBALS['LANG']->getLL('moveDown', TRUE) . '">' .
+						$moveButtonContent .= '<a href="' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)) . '" title="' . $GLOBALS['LANG']->getLL('moveDown', TRUE) . '">' .
 								t3lib_iconWorks::getSpriteIcon('actions-move-down') .
 								'</a>';
+						$displayMoveButtons = TRUE;
 					} else {
-						$out .= t3lib_iconWorks::getSpriteIcon('empty-empty');
+						$moveButtonContent .= t3lib_iconWorks::getSpriteIcon('empty-empty');
 					}
-					$out .= '</span>';
+
+					if ($displayMoveButtons) {
+						$out .= '<span class="t3-page-ce-icons-move">' . $moveButtonContent . '</span>';
+					}
 				}
 			}
 
-			// Display info from records fields:
-			$infoOutput = '';
-			if (count($info)) {
-				$infoOutput = '<div class="t3-page-ce-info">
-					' . implode('<br />', $info) . '
-					</div>';
+		}
+
+		$additionalIcons = array();
+		$additionalIcons[] = $this->getIcon('tt_content', $row) . ' ';
+		$additionalIcons[] = ($langMode ? $this->languageFlag($row['sys_language_uid'], FALSE) : '');
+
+			// Get record locking status:
+		if ($lockInfo = t3lib_BEfunc::isRecordLocked('tt_content', $row['uid'])) {
+			$additionalIcons[] = '<a href="#" onclick="' . htmlspecialchars('alert(' . $GLOBALS['LANG']->JScharCode($lockInfo['msg']) . ');return false;') . '" title="' . htmlspecialchars($lockInfo['msg']) . '">' .
+					t3lib_iconWorks::getSpriteIcon('status-warning-in-use') .
+					'</a>';
+		}
+
+			// Call stats information hook
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
+			$_params = array('tt_content', $row['uid'], &$row);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
+				$additionalIcons[] = t3lib_div::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
+
 		// Wrap the whole header
 		// NOTE: end-tag for <div class="t3-page-ce-body"> is in getTable_tt_content()
 		return '<h4 class="t3-page-ce-header">
 					<div class="t3-row-header">
+					<span class="ce-icons-left">' . implode('', $additionalIcons) . '</span>
+					<span class="ce-icons">
 					' . $out . '
-					</div>
+					</span></div>
 				</h4>
-				<div class="t3-page-ce-body">
-					<div class="t3-page-ce-type">
-						' . $ceType . '
-					</div>
-					' . $infoOutput;
+				<div class="t3-page-ce-body">';
 	}
 
 	/**
@@ -2223,21 +2246,20 @@ class tx_cms_layout extends recordList {
 	 * Creates processed values for all fieldnames in $fieldList based on values from $row array.
 	 * The result is 'returned' through $info which is passed as a reference
 	 *
-	 * @param	string		Table name
-	 * @param	string		Commalist of fields.
-	 * @param	array		Record from which to take values for processing.
-	 * @param	array		Array to which the processed values are added.
-	 * @return	void
+	 * @param string Table name
+	 * @param string Commalist of fields.
+	 * @param array Record from which to take values for processing.
+	 * @param array Array to which the processed values are added.
+	 * @return void
 	 */
-	function getProcessedValue($table, $fieldList, $row, &$info) {
-
-		// Splitting values from $fieldList:
+	function getProcessedValue($table, $fieldList, array $row, array &$info) {
+			// Splitting values from $fieldList
 		$fieldArr = explode(',', $fieldList);
 
-		// Traverse fields from $fieldList:
+			// Traverse fields from $fieldList
 		foreach ($fieldArr as $field) {
 			if ($row[$field]) {
-				$info[] = htmlspecialchars($this->itemLabels[$field]) . ' ' . htmlspecialchars(t3lib_BEfunc::getProcessedValue($table, $field, $row[$field]));
+				$info[] = '<strong>' . htmlspecialchars($this->itemLabels[$field]) . '</strong> ' . htmlspecialchars(t3lib_BEfunc::getProcessedValue($table, $field, $row[$field]));
 			}
 		}
 	}

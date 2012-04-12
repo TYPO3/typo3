@@ -25,22 +25,35 @@ td.t3-page-column {
 }
 
 .t3-page-ce {
-	margin-bottom: 10px;
+	margin-bottom: 5px;
 }
 
 .t3-page-ce h4 {
 	margin: 0;
 }
 
-.t3-page-ce .t3-row-header {
+.t3-page-ce .t3-row-header .ce-icons{
 	visibility: hidden;
 }
 
-.t3-page-ce.active .t3-row-header {
+.t3-page-ce.active .t3-row-header .ce-icons {
 	visibility: visible;
 }
 
+.t3-row-header .ce-icons-left {
+	float: left;
+}
+
+.t3-row-header .ce-icons {
+	float: right;
+}
+
 .t3-page-ce-icons-move {
+	display: block;
+	padding-left: 3px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	margin-right: -4px;
 	float: right;
 }
 
@@ -53,16 +66,12 @@ td.t3-page-column {
 	float: left;
 }
 
-.t3-page-ce-body {
+.t3-page-ce-body-inner {
 	padding: 7px;
 }
 
-.t3-page-ce-type {
-	margin-bottom: 5px;
-}
-
-.t3-page-ce-type a {
-	vertical-align: text-bottom;
+.t3-page-ce-footer .t3-page-ce-info {
+	padding:4px;
 }
 
 table.typo3-page-columnsMode img.c-divider {
