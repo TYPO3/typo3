@@ -79,7 +79,7 @@ class t3lib_tree_pagetree_extdirect_Tree extends t3lib_tree_ExtDirect_AbstractEx
 		if ($nodeId === 'root') {
 			$nodeCollection = $this->dataProvider->getTreeMounts();
 		} else {
-			$nodeCollection = $this->dataProvider->getNodes($node);
+			$nodeCollection = $this->dataProvider->getNodes($node, $node->getMountPoint());
 		}
 
 		return $nodeCollection->toArray();
