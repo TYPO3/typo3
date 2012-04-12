@@ -310,27 +310,6 @@
 	}
 
 	/**
-	 * Compatibility constructor.
-	 *
-	 * @param array The global $TYPO3_CONF_VARS array. Will be set internally in ->TYPO3_CONF_VARS
-	 * @param mixed The value of t3lib_div::_GP('id')
-	 * @param integer The value of t3lib_div::_GP('type')
-	 * @param boolean The value of t3lib_div::_GP('no_cache'), evaluated to 1/0
-	 * @param string The value of t3lib_div::_GP('cHash')
-	 * @param string The value of t3lib_div::_GP('jumpurl')
-	 * @param string The value of t3lib_div::_GP('MP')
-	 * @param string The value of t3lib_div::_GP('RDCT')
-	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
-	 */
-	public function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache = '', $cHash = '', $jumpurl = '', $MP = '', $RDCT = '') {
-		t3lib_div::logDeprecatedFunction();
-			// Note: we cannot call $this->__construct() here because it would call the derived class constructor and cause recursion
-			// This code uses official PHP behavior (http://www.php.net/manual/en/language.oop5.basic.php) when $this in the
-			// statically called non-static method inherits $this from the caller's scope.
-		tslib_fe::__construct($TYPO3_CONF_VARS, $id, $type, $no_cache, $cHash, $jumpurl, $MP, $RDCT);
-	}
-
-	/**
 	 * Connect to SQL database. May exit after outputting an error message
 	 * or some JavaScript redirecting to the install tool.
 	 *
@@ -1613,102 +1592,6 @@
 		}
 	}
 
-	/**
-	 * Looking for a ADMCMD_prev code, looks it up if found and returns configuration data.
-	 * Background: From the backend a request to the frontend to show a page, possibly with workspace preview can be "recorded" and associated with a keyword. When the frontend is requested with this keyword the associated request parameters are restored from the database AND the backend user is loaded - only for that request.
-	 * The main point is that a special URL valid for a limited time, eg. http://localhost/typo3site/index.php?ADMCMD_prev=035d9bf938bd23cb657735f68a8cedbf will open up for a preview that doesn't require login. Thus it's useful for sending in an email to someone without backend account.
-	 * This can also be used to generate previews of hidden pages, start/endtimes, usergroups and those other settings from the Admin Panel - just not implemented yet.
-	 *
-	 * @return	array		Preview configuration array from sys_preview record.
-	 * @see t3lib_BEfunc::compilePreviewKeyword()
-	 * @deprecated since TYPO3 4.6, should be removed in TYPO3 4.8, this is now in Tx_Version
-	 */
-	function ADMCMD_preview() {
-		t3lib_div::logDeprecatedFunction();
-		$inputCode = t3lib_div::_GP('ADMCMD_prev');
-
-			// If no inputcode and a cookie is set, load input code from cookie:
-		if (!$inputCode && $_COOKIE['ADMCMD_prev'])	{
-			$inputCode = $_COOKIE['ADMCMD_prev'];
-		}
-
-			// If inputcode now, look up the settings:
-		if ($inputCode)	{
-
-			if ($inputCode=='LOGOUT') {	// "log out":
-				SetCookie('ADMCMD_prev', '', 0, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
-				if ($this->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate'])	{
-					if (@is_file(PATH_site.$this->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']))	{
-						$message = t3lib_div::getUrl(PATH_site.$this->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']);
-					} else {
-						$message = '<strong>ERROR!</strong><br>Template File "'.$this->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate'].'" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.';
-					}
-				} else {
-					$message = 'You logged out from Workspace preview mode. Click this link to <a href="%1$s">go back to the website</a>';
-				}
-
-				$returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GET('returnUrl'));
-				die(sprintf($message,
-					htmlspecialchars(preg_replace('/\&?ADMCMD_prev=[[:alnum:]]+/', '', $returnUrl))
-					));
-			}
-
-				// Look for keyword configuration record:
-			$previewData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-				'*',
-				'sys_preview',
-				'keyword='.$GLOBALS['TYPO3_DB']->fullQuoteStr($inputCode, 'sys_preview').
-					' AND endtime>' . $GLOBALS['EXEC_TIME']
-			);
-
-				// Get: Backend login status, Frontend login status
-				// - Make sure to remove fe/be cookies (temporarily); BE already done in ADMCMD_preview_postInit()
-			if (is_array($previewData))	{
-				if (!count(t3lib_div::_POST()))	{
-						// Unserialize configuration:
-					$previewConfig = unserialize($previewData['config']);
-
-					if ($previewConfig['fullWorkspace']) {	// For full workspace preview we only ADD a get variable to set the preview of the workspace - so all other Get vars are accepted. Hope this is not a security problem. Still posting is not allowed and even if a backend user get initialized it shouldn't lead to situations where users can use those credentials.
-
-							// Set the workspace preview value:
-						t3lib_div::_GETset($previewConfig['fullWorkspace'],'ADMCMD_previewWS');
-
-							// If ADMCMD_prev is set the $inputCode value cannot come from a cookie and we set that cookie here. Next time it will be found from the cookie if ADMCMD_prev is not set again...
-						if (t3lib_div::_GP('ADMCMD_prev'))	{
-							SetCookie('ADMCMD_prev', t3lib_div::_GP('ADMCMD_prev'), 0, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));	// Lifetime is 1 hour, does it matter much? Requires the user to click the link from their email again if it expires.
-						}
-						return $previewConfig;
-					} elseif (t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$inputCode === t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'))	{
-
-							// Set GET variables:
-						$GET_VARS = '';
-						parse_str($previewConfig['getVars'], $GET_VARS);
-						t3lib_div::_GETset($GET_VARS);
-
-							// Return preview keyword configuration:
-						return $previewConfig;
-					} else throw new Exception(htmlspecialchars('Request URL did not match "' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'index.php?ADMCMD_prev=' . $inputCode . '"', 1294585190));	// This check is to prevent people from setting additional GET vars via realurl or other URL path based ways of passing parameters.
-				} else throw new Exception('POST requests are incompatible with keyword preview.', 1294585191);
-			} else throw new Exception('ADMCMD command could not be executed! (No keyword configuration found)', 1294585192);
-		}
-	}
-
-	/**
-	 * Configuration after initialization of TSFE object.
-	 * Basically this unsets the BE cookie if any and forces the BE user set according to the preview configuration.
-	 *
-	 * @param	array		Preview configuration, see ADMCMD_preview()
-	 * @return	void
-	 * @see ADMCMD_preview(), index_ts.php
-	 * @deprecated since TYPO3 4.6, should be removed in TYPO3 4.8, this is now in Tx_Version
-	 */
-	function ADMCMD_preview_postInit(array $previewConfig){
-			// Clear cookies:
-		unset($_COOKIE[t3lib_beUserAuth::getCookieName()]);
-		$this->ADMCMD_preview_BEUSER_uid = $previewConfig['BEUSER_uid'];
-	}
-
-
 
 
 
@@ -2926,18 +2809,6 @@
 	 */
 	function clearPageCacheContent() {
 		$this->pageCache->remove($this->newHash);
-	}
-
- 	/**
-	 * Post processing page cache rows for both get and set.
-	 *
-	 * @param	array		Input "cache_pages" row, passed by reference!
-	 * @param	string		Type of operation, either "get" or "set"
-	 * @return	void
-	 * @deprecated since 4.6, will be removed in 4.8
-	 */
-	function pageCachePostProcess(&$row,$type)	{
-		t3lib_div::logDeprecatedFunction();
 	}
 
 	/**

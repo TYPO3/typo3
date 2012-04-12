@@ -234,22 +234,6 @@ class tslib_search {
 	}
 
 	/**
-	 * Local version of quotemeta. This is the same as the PHP function
-	 * but the vertical line, |, and minus, -, is also escaped with a slash.
-	 *
-	 * @deprecated This function is deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Please, use preg_quote() instead.
-	 * @param	string		String to pass through quotemeta()
-	 * @return	string		Return value
-	 */
-	function quotemeta($str) {
-		t3lib_div::logDeprecatedFunction();
-
-		$str = str_replace('|','\|',quotemeta($str));
-		#$str = str_replace('-','\-',$str);		// Breaks "-" which should NOT have a slash before it inside of [ ] in a regex.
-		return $str;
-	}
-
-	/**
 	 * This creates the search-query.
 	 * In TypoScript this is used for searching only records not hidden, start/endtimed and fe_grouped! (enable-fields, see tt_content)
 	 * Sets $this->queryParts

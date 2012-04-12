@@ -274,22 +274,9 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$userAgentString = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 4.0)';
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
-		$this->assertSame(
+		$this->assertContains(
 			'winNT',
-			$infoArray['system']
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function getBrowserInfoReturnsCorrectSystemValueForUserAgentStringContainingNtAsFallback() {
-		$userAgentString = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT)';
-		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
-
-		$this->assertSame(
-			'winNT',
-			$infoArray['system']
+			$infoArray['all_systems']
 		);
 	}
 
@@ -339,9 +326,9 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$userAgentString = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_5; en-us) AppleWebKit/534.15+ (KHTML, like Gecko) Version/5.0.3 Safari/533.19.4';
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
-		$this->assertSame(
+		$this->assertContains(
 			'mac',
-			$infoArray['system']
+			$infoArray['all_systems']
 		);
 	}
 
@@ -352,9 +339,9 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$userAgentString = 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.8) Gecko/20100723 Ubuntu/10.04 (lucid) Firefox/3.6.8';
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
-		$this->assertSame(
+		$this->assertContains(
 			'linux',
-			$infoArray['system']
+			$infoArray['all_systems']
 		);
 	}
 
@@ -365,9 +352,9 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$userAgentString = 'Mozilla/5.0 (X11; U; SunOS i86pc; en-US; rv:1.9.1.9) Gecko/20100525 Firefox/3.5.9';
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
-		$this->assertSame(
+		$this->assertContains(
 			'unix_sun',
-			$infoArray['system']
+			$infoArray['all_systems']
 		);
 	}
 

@@ -200,29 +200,6 @@ class language {
 	}
 
 	/**
-	 * Will htmlspecialchar() the input string and before that any charset conversion
-	 * will also have taken place if needed (see init())
-	 * Used to pipe language labels through just before they are returned.
-	 *
-	 * @param  string $lStr The string to process
-	 * @param  boolean $hsc	If set, then the string is htmlspecialchars()'ed
-	 * @return string		The processed string
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use htmlspecialchars() instead.
-	 * @see    init()
-	 * @access public
-	 */
-	public function hscAndCharConv($lStr, $hsc) {
-		t3lib_div::logDeprecatedFunction();
-			// labels returned from a locallang file used to be in the language of the charset.
-			// Since TYPO3 4.1 they are always in the charset of the BE.
-		if ($hsc) {
-			return htmlspecialchars($lStr);
-		} else {
-			return $lStr;
-		}
-	}
-
-	/**
 	 * Will convert the input strings special chars (all above 127) to entities.
 	 * The string is expected to be encoded in UTF-8
 	 * This function is used to create strings that can be used in the Click Menu
