@@ -328,7 +328,7 @@ tt_content.' . $pluginSignature . ' {
 	 * @param	string	$extensionPath	full path of the extension
 	 * @param   array   $additionalAutoloadClasses additional classes to be added to the autoloader. The key must be the classname all-lowercase, the value must be the entry to be inserted
 	 * @return	string	HTML string which should be outputted
-	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0
 	 */
 	static public function createAutoloadRegistryForExtension($extensionKey, $extensionPath, $additionalAutoloadClasses = array()) {
 		t3lib_div::logDeprecatedFunction();
@@ -363,7 +363,7 @@ tt_content.' . $pluginSignature . ' {
 	 * @param	array	$classNameToFileMapping class name to file mapping
 	 * @param	string	$globalPrefix	Global prefix which is prepended to all code.
 	 * @return	string	The full PHP string
-	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0
 	 */
 	protected function generateAutoloadPhpFileData($classNameToFileMapping, $globalPrefix = '') {
 		$output = '<?php' . PHP_EOL;
@@ -388,7 +388,7 @@ tt_content.' . $pluginSignature . ' {
 	 * @param	string	$excludeRegularExpression	Exclude regular expression, to exclude certain files from being processed
 	 * @param	string	$valueWrap	Wrap for the file name
 	 * @return void
-	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0
 	 */
 	static protected function buildAutoloadRegistryForSinglePath(&$classNameToFileMapping, $path, $excludeRegularExpression = '', $valueWrap = '\'|\'') {
 //		if (file_exists($path . 'Classes/')) {
@@ -410,7 +410,7 @@ tt_content.' . $pluginSignature . ' {
 	 *
 	 * @param	string	$filePath	File path (absolute)
 	 * @return	array	Class names
-	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0
 	 */
 	static protected function extractClassNames($filePath) {
 		$fileContent = php_strip_whitespace($filePath);
@@ -458,7 +458,7 @@ tt_content.' . $pluginSignature . ' {
 	 * @param	array	$wantedToken	the tokens to be found
 	 * @param	array	$intermediateTokens	optional: list of tokens that are allowed to skip when looking for the wanted token
 	 * @return	mixed
-	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0
 	 */
 	static protected function findToken(array &$tokenList, array $wantedTokens, array $intermediateTokens = array()) {
 		$skipAllTokens = count($intermediateTokens) ? false : true;
@@ -493,7 +493,7 @@ tt_content.' . $pluginSignature . ' {
 	 * @param string $extensionName name of the extension to retrieve the namespace for
 	 * @param string $pluginName name of the plugin to retrieve the namespace for
 	 * @return string plugin namespace
-	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0 - Use Tx_Extbase_Service_ExtensionService instead
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0 - Use Tx_Extbase_Service_ExtensionService instead
 	 */
 	static public function getPluginNamespace($extensionName, $pluginName) {
 		t3lib_div::logDeprecatedFunction();
@@ -512,7 +512,7 @@ tt_content.' . $pluginSignature . ' {
 	 * @param string $controllerName name of the target controller (UpperCamelCase)
 	 * @param string $actionName name of the target action (lowerCamelCase)
 	 * @return string name of the target plugin (UpperCamelCase) or NULL if no matching plugin configuration was found
-	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0 - Use Tx_Extbase_Service_ExtensionService instead
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0 - Use Tx_Extbase_Service_ExtensionService instead
 	 */
 	static public function getPluginNameByAction($extensionName, $controllerName, $actionName) {
 		t3lib_div::logDeprecatedFunction();
@@ -528,7 +528,7 @@ tt_content.' . $pluginSignature . ' {
 	 * @param string $controllerName Name of the target controller
 	 * @param string $actionName Name of the action to be called
 	 * @return boolean TRUE if the specified plugin action is cacheable, otherwise FALSE
-	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0 - Use Tx_Extbase_Service_ExtensionService instead
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0 - Use Tx_Extbase_Service_ExtensionService instead
 	 */
 	static public function isActionCacheable($extensionName, $pluginName, $controllerName, $actionName) {
 		t3lib_div::logDeprecatedFunction();
@@ -546,7 +546,7 @@ tt_content.' . $pluginSignature . ' {
 	 * @param string $extensionName name of the extension to retrieve the target PID for
 	 * @param string $pluginName name of the plugin to retrieve the target PID for
 	 * @return integer uid of the target page or NULL if target page could not be determined
-	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0 - Use Tx_Extbase_Service_ExtensionService instead
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0 - Use Tx_Extbase_Service_ExtensionService instead
 	 */
 	static public function getTargetPidByPlugin($extensionName, $pluginName) {
 		t3lib_div::logDeprecatedFunction();

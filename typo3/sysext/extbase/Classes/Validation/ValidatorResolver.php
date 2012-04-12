@@ -118,7 +118,7 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 			return NULL;
 		}
 		if (method_exists($validator, 'setOptions')) {
-				// @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
+				// @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 			$validator->setOptions($validatorOptions);
 		}
 		return $validator;

@@ -75,7 +75,7 @@ interface Tx_Extbase_Validation_Validator_ValidatorInterface {
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0. use validate() instead.
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0. use validate() instead.
 	 */
 	//public function isValid($value);
 
@@ -84,7 +84,7 @@ interface Tx_Extbase_Validation_Validator_ValidatorInterface {
 	 *
 	 * @param array $validationOptions The validation options
 	 * @return void
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0. Use constructor instead.
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0. Use constructor instead.
 	 */
 	//public function setOptions(array $validationOptions);
 
@@ -92,7 +92,7 @@ interface Tx_Extbase_Validation_Validator_ValidatorInterface {
 	 * Returns an array of errors which occurred during the last isValid() call.
 	 *
 	 * @return array An array of error messages or an empty array if no errors occurred.
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0. The errors are returned from validate() now.
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0. The errors are returned from validate() now.
 	 */
 	//public function getErrors();
 

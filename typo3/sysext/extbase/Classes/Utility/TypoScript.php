@@ -27,7 +27,7 @@
  *
  * @package Extbase
  * @subpackage Utility
- * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0. Please use Tx_Extbase_Service_TypoScriptService instead
+ * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0. Please use Tx_Extbase_Service_TypoScriptService instead
  */
 class Tx_Extbase_Utility_TypoScript {
 
@@ -56,7 +56,7 @@ class Tx_Extbase_Utility_TypoScript {
 	 *
 	 * @param array $settings The settings array
 	 * @return void
-	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0 - Use Tx_Extbase_Service_TypoScriptService instead
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0 - Use Tx_Extbase_Service_TypoScriptService instead
 	 */
 	static public function convertTypoScriptArrayToPlainArray(array $settings) {
 		t3lib_div::logDeprecatedFunction();
@@ -74,7 +74,7 @@ class Tx_Extbase_Utility_TypoScript {
 	 *
 	 * @param array $plainArray An Typoscript Array with Extbase Syntax (without dot but with _typoScriptNodeValue)
 	 * @return array array with Typoscript as usual (with dot)
-	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0 - Use Tx_Extbase_Service_TypoScriptService instead
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0 - Use Tx_Extbase_Service_TypoScriptService instead
 	 */
 	static public function convertPlainArrayToTypoScriptArray($plainArray) {
 		t3lib_div::logDeprecatedFunction();

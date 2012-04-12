@@ -39,7 +39,7 @@ interface Tx_Extbase_Persistence_ManagerInterface {
 	 * Returns the current persistence session
 	 *
 	 * @return Tx_Extbase_Persistence_Session
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function getSession();
 
@@ -47,7 +47,7 @@ interface Tx_Extbase_Persistence_ManagerInterface {
 	 * Returns the persistence backend
 	 *
 	 * @return Tx_Extbase_Persistence_BackendInterface
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function getBackend();
 

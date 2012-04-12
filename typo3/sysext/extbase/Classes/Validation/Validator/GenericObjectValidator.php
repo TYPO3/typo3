@@ -131,7 +131,7 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 * @param mixed $value The value that should be validated
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 * @api
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function isValid($value) {
 		if (!is_object($value)) {
@@ -168,7 +168,7 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 * @param string $propertyName Name of the property to validate
 	 * @return boolean TRUE if the property value is valid, FALSE if an error occured
 	 * @api
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function isPropertyValid($object, $propertyName) {
 		if (!is_object($object)) throw new InvalidArgumentException('Object expected, ' . gettype($object) . ' given.', 1241099149);
@@ -188,7 +188,7 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 * @param array $errors Array of Tx_Extbase_Validation_Error
 	 * @param string $propertyName Name of the property to add errors
 	 * @return void
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	protected function addErrorsForProperty($errors, $propertyName) {
 		if (!isset($this->errors[$propertyName])) {
