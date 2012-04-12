@@ -12,6 +12,7 @@ module.tx_belog {
 					recpid.mapOnProperty = recordPid
 					details_nr.mapOnProperty = detailsNumber
 					IP.mapOnProperty = ip
+					workspace.mapOnProperty = workspaceUid
 					NEWid.mapOnProperty = newId
 				}
 			}
