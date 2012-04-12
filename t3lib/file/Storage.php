@@ -146,7 +146,7 @@ class t3lib_file_Storage {
 	protected $capabilities;
 
 	/**
-	 * @var t3lib_SignalSlot_Dispatcher
+	 * @var Tx_Extbase_SignalSlot_Dispatcher
 	 */
 	protected $signalSlotDispatcher;
 
@@ -1880,7 +1880,7 @@ class t3lib_file_Storage {
 	 * @param array $configuration
 	 */
 	protected function emitPreFileProcess(t3lib_file_ProcessedFile $processedFile, t3lib_file_FileInterface $file, $context, array $configuration = array()) {
-		t3lib_SignalSlot_Dispatcher::getInstance()->dispatch(
+		$this->getSignalSlotDispatcher()->dispatch(
 			't3lib_file_Storage',
 			self::SIGNAL_PreFileProcess,
 			array($this, $this->driver, $processedFile, $file, $context, $configuration)
@@ -1896,7 +1896,7 @@ class t3lib_file_Storage {
 	 * @param array $configuration
 	 */
 	protected function emitPostFileProcess(t3lib_file_ProcessedFile $processedFile, t3lib_file_FileInterface $file, $context, array $configuration = array()) {
-		t3lib_SignalSlot_Dispatcher::getInstance()->dispatch(
+		$this->getSignalSlotDispatcher()->dispatch(
 			't3lib_file_Storage',
 			self::SIGNAL_PostFileProcess,
 			array($this, $this->driver, $processedFile, $file, $context, $configuration)
@@ -1966,13 +1966,20 @@ class t3lib_file_Storage {
 	}
 
 	/**
-	 * @return t3lib_SignalSlot_Dispatcher
+	 * @return Tx_Extbase_SignalSlot_Dispatcher
 	 */
 	protected function getSignalSlotDispatcher() {
 		if (!isset($this->signalSlotDispatcher)) {
-			$this->signalSlotDispatcher = t3lib_div::makeInstance('t3lib_SignalSlot_Dispatcher');
+			$this->signalSlotDispatcher = $this->getObjectManager()->get('Tx_Extbase_SignalSlot_Dispatcher');
 		}
 		return $this->signalSlotDispatcher;
+	}
+
+	/**
+	 * @return Tx_Extbase_Object_ObjectManager
+	 */
+	protected function getObjectManager() {
+		return t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 	}
 
 	/**
