@@ -1496,11 +1496,11 @@ tt_content.media {
 			asf = MEDIA
 			class = MEDIA
 			wmv = MEDIA
-			mp3 = FLOWPLAYER
-			mp4 = FLOWPLAYER
-			m4v = FLOWPLAYER
-			swa = FLOWPLAYER
-			flv = FLOWPLAYER
+			mp3 = SWF
+			mp4 = SWF
+			m4v = SWF
+			swa = SWF
+			flv = SWF
 			swf = SWF
 			mov = QT
 			m4v = QT
