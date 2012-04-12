@@ -219,19 +219,6 @@ class template {
 	}
 
 	/**
-	 * Compatibility constructor.
-	 *
-	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
-	 */
-	public function template() {
-		t3lib_div::logDeprecatedFunction();
-			// Note: we cannot call $this->__construct() here because it would call the derived class constructor and cause recursion
-			// This code uses official PHP behavior (http://www.php.net/manual/en/language.oop5.basic.php) when $this in the
-			// statically called non-static method inherits $this from the caller's scope.
-		template::__construct();
-	}
-
-	/**
 	 * Gets instance of PageRenderer
 	 *
 	 * @return	t3lib_PageRenderer
@@ -1416,58 +1403,8 @@ $str.=$this->docBodyTagBegin().
 			</table>';
 	}
 
+
 	/**
-	 * Creates a selector box with clear-cache items.
-	 * Rather specialized functions - at least don't use it with $addSaveOptions unless you know what you do...
-	 *
-	 * @param	integer		The page uid of the "current page" - the one that will be cleared as "clear cache for this page".
-	 * @param	boolean		If $addSaveOptions is set, then also the array of save-options for TCE_FORMS will appear.
-	 * @return	string		<select> tag with content - a selector box for clearing the cache
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
-	 */
-	function clearCacheMenu($id,$addSaveOptions=0)	{
-		t3lib_div::logDeprecatedFunction();
-		$opt=array();
-		if ($addSaveOptions)	{
-			$opt[]='<option value="">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.menu',1).'</option>';
-			$opt[]='<option value="TBE_EDITOR.checkAndDoSubmit(1);">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'</option>';
-			$opt[]='<option value="document.editform.closeDoc.value=-2; TBE_EDITOR.checkAndDoSubmit(1);">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'</option>';
-			if ($GLOBALS['BE_USER']->uc['allSaveFunctions']) {
-				$opt[] = '<option value="document.editform.closeDoc.value=-3; TBE_EDITOR.checkAndDoSubmit(1);">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseAllDocs', 1) . '</option>';
-			}
-			$opt[]='<option value="document.editform.closeDoc.value=2; document.editform.submit();">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc',1).'</option>';
-			$opt[]='<option value="document.editform.closeDoc.value=3; document.editform.submit();">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeAllDocs',1).'</option>';
-			$opt[]='<option value=""></option>';
-		}
-		$opt[]='<option value="">[ '.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_clearCache',1).' ]</option>';
-		if ($id) $opt[]='<option value="'.$id.'">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_thisPage',1).'</option>';
-		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.pages')) {
-			$opt[] = '<option value="pages">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_pages', 1) . '</option>';
-		}
-		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all')) {
-			$opt[] = '<option value="all">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_all', 1) . '</option>';
-		}
-
-		$onChange = 'if (!this.options[this.selectedIndex].value) {
-				this.selectedIndex=0;
-			} else if (this.options[this.selectedIndex].value.indexOf(\';\')!=-1) {
-				eval(this.options[this.selectedIndex].value);
-			} else {
-				window.location.href=\'' . $this->backPath .
-						'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() .
-						t3lib_BEfunc::getUrlToken('tceAction') .
-						'&redirect=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) .
-						'&cacheCmd=\'+this.options[this.selectedIndex].value;
-			}';
-		$af_content = '<select name="cacheCmd" onchange="'.htmlspecialchars($onChange).'">'.implode('',$opt).'</select>';
-
-		if (count($opt)>1)	{
-			return $af_content;
-		}
-	}
-
-
- 	/**
 	 * Includes a javascript library that exists in the core /typo3/ directory. The
 	 * backpath is automatically applied
 	 *

@@ -2135,19 +2135,6 @@ class tx_indexedsearch_indexer {
 		return $hash;
 	}
 
-	/**
-	 * Calculates md5 integer hash. This is kept for the compatibility with
-	 * previous versions. Delegates actual call to tx_indexedsearch_util.
-	 *
-	 * @param string $stringToHash String to hash
-	 * @return int Integer intepretation of the md5 hash of input string.
-	 * @deprecated will be removed in 4.8.
-	 */
-	function md5inthash($stringToHash) {
-		t3lib_div::logDeprecatedFunction();
-		return tx_indexedsearch_util::md5inthash($stringToHash);
-	}
-
 	/*********************************
 	 *
 	 * Internal logging functions

@@ -224,16 +224,6 @@ class tslib_AdminPanel {
 	}
 
 	/**
-	 * Returns the comma-separated list of page UIDs to be published.
-	 *
-	 * @return string
-	 * @deprecated since 4.6, will be removed in 4.8
-	 */
-	public function getExtPublishList() {
-		t3lib_div::logDeprecatedFunction();
-	}
-
-	/**
 	 * Returns TRUE if admin panel module is open
 	 *
 	 * @param	string		Module key

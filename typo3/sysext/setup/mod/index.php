@@ -97,18 +97,6 @@ class SC_mod_user_setup_index {
 	protected $settingsAreResetToDefault = FALSE;
 
 	/**
-	 * @var bool
-	 * @deprecated since TYPO3 4.6 - will be removed with TYPO3 4.8
-	 */
-	protected $installToolFileExists = FALSE;
-
-	/**
-	 * @var bool
-	 * @deprecated since TYPO3 4.6 - will be removed with TYPO3 4.8
-	 */
-	protected $installToolFileKeep = FALSE;
-
-	/**
 	 * Form protection instance
 	 *
 	 * @var t3lib_formprotection_BackendFormProtection
@@ -283,13 +271,6 @@ class SC_mod_user_setup_index {
 	 */
 	function init()	{
 		$this->MCONF = $GLOBALS['MCONF'];
-
-			// check Install Tool enable file
-			// @deprecated since TYPO3 4.6 - will be removed with TYPO3 4.8
-		$this->installToolFileExists = is_file(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
-		if ($this->installToolFileExists) {
-			$this->installToolFileKeep = (trim(file_get_contents(PATH_typo3conf . 'ENABLE_INSTALL_TOOL')) === 'KEEP_FILE');
-		}
 
 			// Returns the script user - that is the REAL logged in user! ($GLOBALS[BE_USER] might be another user due to simulation!)
 		$scriptUser = $this->getRealScriptUserObj();
@@ -476,50 +457,6 @@ class SC_mod_user_setup_index {
 			$this->content
 		);
 
-	}
-
-	/**
-	 * Sets existance of Install Tool file
-	 *
-	 * @return void
-	 * @deprecated since TYPO3 4.6 - will be removed with TYPO3 4.8 - use Tx_Install_Service_BasicService
-	 */
-	public function setInstallToolFileExists() {
-		t3lib_div::logDeprecatedFunction();
-		$this->installToolFileExists = is_file(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
-	}
-
-	/**
-	 * Sets property if Install Tool file contains "KEEP_FILE"
-	 * @deprecated since TYPO3 4.6 - will be removed with TYPO3 4.8 - use Tx_Install_Service_BasicService
-	 */
-	public function setInstallToolFileKeep() {
-		t3lib_div::logDeprecatedFunction();
-		if ($this->installToolFileExists) {
-			$this->installToolFileKeep = (trim(file_get_contents(PATH_typo3conf . 'ENABLE_INSTALL_TOOL')) === 'KEEP_FILE');
-		}
-	}
-
-	/**
-	 * Gets property installToolFileExists
-	 *
-	 * @return boolean $this->installToolFileExists
-	 * @deprecated since TYPO3 4.6 - will be removed with TYPO3 4.8 - use Tx_Install_Service_BasicService
-	 */
-	public function getInstallToolFileExists() {
-		t3lib_div::logDeprecatedFunction();
-		return $this->installToolFileExists;
-	}
-
-	/**
-	 * Gets property installToolFileKeep
-	 *
-	 * @return boolean $this->installToolFileKeep
-	 * @deprecated since TYPO3 4.6 - will be removed with TYPO3 4.8 - use Tx_Install_Service_BasicService
-	 */
-	public function getInstallToolFileKeep() {
-		t3lib_div::logDeprecatedFunction();
-		return $this->installToolFileKeep;
 	}
 
 	/**

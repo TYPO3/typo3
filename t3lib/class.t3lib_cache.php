@@ -52,39 +52,6 @@ class t3lib_cache {
 	}
 
 	/**
-	 * initializes the cache_pages cache
-	 *
-	 * @return	void
-	 * @author	Ingo Renner <ingo@typo3.org>
-	 * @deprecated since TYPO3 4.6, will be removed in 4.8 - cacheManager->getCache() now initializes caches automatically
-	 */
-	public static function initPageCache() {
-		t3lib_div::logDeprecatedFunction();
-	}
-
-	/**
-	 * initializes the cache_pagesection cache
-	 *
-	 * @return	void
-	 * @author	Ingo Renner <ingo@typo3.org>
-	 * @deprecated since TYPO3 4.6, will be removed in 4.8 - cacheManager->getCache() now initializes caches automatically
-	 */
-	public static function initPageSectionCache() {
-		t3lib_div::logDeprecatedFunction();
-	}
-
-	/**
-	 * initializes the cache_hash cache
-	 *
-	 * @return	void
-	 * @author	Ingo Renner <ingo@typo3.org>
-	 * @deprecated since TYPO3 4.6, will be removed in 4.8 - cacheManager->getCache() now initializes caches automatically
-	 */
-	public static function initContentHashCache() {
-		t3lib_div::logDeprecatedFunction();
-	}
-
-	/**
 	 * Determines whether the caching framework is initialized.
 	 * The caching framework could be disabled for the core but used by an extension.
 	 *
@@ -99,18 +66,6 @@ class t3lib_cache {
 		}
 
 		return self::$isCachingFrameworkInitialized;
-	}
-
-	/**
-	 * Enables the caching framework for the core caches like cache_pages, cache_pagesection and cache_hash.
-	 * This method can be called by extensions in their ext_localconf.php. Calling it later would not work,
-	 * since rendering is already started using the defined caches.
-	 *
-	 * @deprecated since 4.6, will be removed in 4.8: The caching framework is enabled by default
-	 * @return void
-	 */
-	public static function enableCachingFramework() {
-		t3lib_div::logDeprecatedFunction();
 	}
 
 	/**
