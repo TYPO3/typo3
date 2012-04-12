@@ -75,6 +75,10 @@ Web > Page
 	background-color: #e5e5e5;
 }
 
+.t3-page-ce-footer {
+	background: #eee
+}
+
 table.typo3-page-columnsMode tr td a {
 	text-decoration: none;
 }
