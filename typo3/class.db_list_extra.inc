@@ -1604,8 +1604,7 @@ class localRecordList extends recordList {
 				';
 
 			// Table with the field selector::
-		$content.= '
-			'.$formElements[0].'
+		$content = $formElements[0] . '
 
 				<!--
 					Field selector for extended table view:
@@ -1616,8 +1615,9 @@ class localRecordList extends recordList {
 						<td><input type="submit" name="search" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.setFields', 1) . '" /></td>
 					</tr>
 				</table>
-			'.$formElements[1];
-		return $content;
+			' . $formElements[1];
+
+		return '<div class="db_list-fieldSelect">' . $content . '</div>';
 	}
 
 
