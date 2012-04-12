@@ -1,7 +1,7 @@
 <?php
 if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
-require_once(t3lib_extMgm::extPath('extbase') . 'Classes/Dispatcher.php');
+require_once(t3lib_extMgm::extPath('extbase') . 'Classes/MVC/Dispatcher.php');
 require_once(t3lib_extMgm::extPath('extbase') . 'Classes/Utility/Extension.php');
 
 	// Register caches if not already done in localconf.php or a previously loaded extension.

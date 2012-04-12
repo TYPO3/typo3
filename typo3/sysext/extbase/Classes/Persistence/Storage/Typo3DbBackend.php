@@ -534,14 +534,6 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$operator = $comparison->getOperator();
 		$operand2 = $comparison->getOperand2();
 
-			/**
-			 * This if enables equals() to behave like in(). Use in() instead.
-			 * @deprecated since Extbase 1.3; will be removed in Extbase 1.5
-			 */
-		if (($operator === Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO) && (is_array($operand2) || ($operand2 instanceof ArrayAccess) || ($operand2 instanceof Traversable))) {
-			$operator = Tx_Extbase_Persistence_QueryInterface::OPERATOR_IN;
-		}
-
 		if ($operator === Tx_Extbase_Persistence_QueryInterface::OPERATOR_IN) {
 			$items = array();
 			$hasValue = FALSE;

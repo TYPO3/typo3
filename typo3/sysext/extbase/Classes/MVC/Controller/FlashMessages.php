@@ -69,22 +69,6 @@ class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 	/**
 	 * Get all flash messages currently available.
 	 *
-	 * @return array<string> An array of flash messages
-	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0. Use  Use getAllMessages() instead
-	 */
-	public function getAll() {
-		t3lib_div::logDeprecatedFunction();
-		$flashMessages = t3lib_FlashMessageQueue::getAllMessages();
-		$messages = array();
-		foreach ($flashMessages as $flashMessage) {
-			$messages[] = $flashMessage->getMessage();
-		}
-		return $messages;
-	}
-
-	/**
-	 * Get all flash messages currently available.
-	 *
 	 * @return array<t3lib_FlashMessage> An array of flash messages
 	 * @api
 	 * @see t3lib_FlashMessage
@@ -101,22 +85,6 @@ class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 	 */
 	public function flush() {
 		t3lib_FlashMessageQueue::getAllMessagesAndFlush();
-	}
-
-	/**
-	 * Get all flash messages currently available and delete them afterwards.
-	 *
-	 * @return array<string>
-	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0. Use getAllMessagesAndFlush() instead
-	 */
-	public function getAllAndFlush() {
-		t3lib_div::logDeprecatedFunction();
-		$flashMessages = t3lib_FlashMessageQueue::getAllMessagesAndFlush();
-		$messages = array();
-		foreach ($flashMessages as $flashMessage) {
-			$messages[] = $flashMessage->getMessage();
-		}
-		return $messages;
 	}
 
 	/**

@@ -98,7 +98,6 @@ class Tx_Extbase_Core_Bootstrap {
 		$this->initializeCache();
 		$this->initializeReflection();
 		$this->initializePersistence();
-		$this->initializeBackwardsCompatibility();
 	}
 
 	/**
@@ -178,19 +177,6 @@ class Tx_Extbase_Core_Bootstrap {
 	 */
 	public function initializePersistence() {
 		$this->persistenceManager = $this->objectManager->get('Tx_Extbase_Persistence_Manager'); // singleton
-	}
-
-	/**
-	 * Initializes the backwards compatibility. This is necessary because the
-	 * old Dispatcher provided several static methods.
-	 *
-	 * @return void
-	 * @see initialize()
-	 */
-	protected function initializeBackwardsCompatibility() {
-		$dispatcher = t3lib_div::makeInstance('Tx_Extbase_Dispatcher');
-		$dispatcher->injectConfigurationManager($this->configurationManager);
-		$dispatcher->injectPersistenceManager($this->persistenceManager);
 	}
 
 	/**

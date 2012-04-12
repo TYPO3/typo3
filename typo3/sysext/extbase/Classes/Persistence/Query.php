@@ -227,17 +227,6 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	}
 
 	/**
-	 * Executes the number of matching objects for the query
-	 *
-	 * @return integer The number of matching objects
-	 * @deprecated since Extbase 1.3.0; was removed in FLOW3; will be removed in Extbase 1.5.0; use Query::execute()::count() instead
-	 */
-	public function count() {
-		t3lib_div::logDeprecatedFunction();
-		return $this->persistenceManager->getObjectCountByQuery($this);
-	}
-
-	/**
 	 * Sets the property names to order the result by. Expected like this:
 	 * array(
 	 *  'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,

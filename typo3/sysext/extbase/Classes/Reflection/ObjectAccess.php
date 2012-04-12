@@ -199,22 +199,6 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	}
 
 	/**
-	 * Returns an array of properties which can be get/set with the getProperty
-	 * and setProperty methods.
-	 * Includes the following properties:
-	 * - which can be set through a public setter method.
-	 * - public properties which can be directly set.
-	 *
-	 * @param object $object Object to receive property names for
-	 * @return array Array of all declared property names
-	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0. Please use getGettablePropertyNames() instead
-	 */
-	static public function getAccessiblePropertyNames($object) {
-		t3lib_div::logDeprecatedFunction();
-		return self::getGettablePropertyNames($object);
-	}
-
-	/**
 	 * Returns an array of properties which can be get with the getProperty()
 	 * method.
 	 * Includes the following properties:
@@ -278,19 +262,6 @@ class Tx_Extbase_Reflection_ObjectAccess {
 		$propertyNames = array_unique($declaredPropertyNames);
 		sort($propertyNames);
 		return $propertyNames;
-	}
-
-	/**
-	 * Get all properties (names and their current values) of the current
-	 * $object that are accessible through this class.
-	 *
-	 * @param object $object Object to get all properties from.
-	 * @return array Associative array of all properties.
-	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0. Please use getGettableProperties() instead
-	 */
-	static public function getAccessibleProperties($object) {
-		t3lib_div::logDeprecatedFunction();
-		return self::getGettableProperties($object);
 	}
 
 	/**

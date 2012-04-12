@@ -280,48 +280,6 @@ tt_content.' . $pluginSignature . ' {
 	}
 
 	/**
-	 * Returns a given CamelCasedString as an lowercase string with underscores.
-	 * Example: Converts BlogExample to blog_example, and minimalValue to minimal_value
-	 *
-	 * @param string $string
-	 * @return mixed
-	 * @see t3lib_div::underscoredToLowerCamelCase()
-	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0
-	 */
-	static public function convertCamelCaseToLowerCaseUnderscored($string) {
-		t3lib_div::logDeprecatedFunction();
-		return t3lib_div::camelCaseToLowerCaseUnderscored($string);
-	}
-
-	/**
-	 * Returns a given string with underscores as lowerCamelCase.
-	 * Example: Converts minimal_value to minimalValue
-	 *
-	 * @param string $string
-	 * @return mixed
-	 * @see t3lib_div::underscoredToLowerCamelCase()
-	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0
-	 */
-	static public function convertUnderscoredToLowerCamelCase($string) {
-		t3lib_div::logDeprecatedFunction();
-		return t3lib_div::underscoredToLowerCamelCase($string);
-	}
-
-	/**
-	 * Returns a given string with underscores as UpperCamelCase.
-	 * Example: Converts blog_example to BlogExample
-	 *
-	 * @param string $string
-	 * @return string
-	 * @see t3lib_div::underscoredToUpperCamelCase()
-	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0
-	 */
-	static public function convertLowerUnderscoreToUpperCamelCase($string) {
-		t3lib_div::logDeprecatedFunction();
-		return t3lib_div::underscoredToUpperCamelCase($string);
-	}
-
-	/**
 	 * Build the autoload registry for a given extension and place it ext_autoload.php.
 	 *
 	 * @param	string	$extensionKey	Key of the extension

@@ -130,14 +130,6 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	public function execute();
 
 	/**
-	 * Executes the query against the database and returns the number of matching objects
-	 *
-	 * @return integer The number of matching objects
-	 * @deprecated since Extbase 1.3.0; was removed in FLOW3; will be removed in Extbase 1.5.0
-	 */
-	public function count();
-
-	/**
 	 * Sets the property names to order the result by. Expected like this:
 	 * array(
 	 *  'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,

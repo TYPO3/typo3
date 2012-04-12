@@ -2,7 +2,6 @@
 
 $extensionClassesPath = t3lib_extMgm::extPath('extbase') . 'Classes/';
 return array(
-	'tx_extbase_dispatcher' => $extensionClassesPath . 'Dispatcher.php',
 	'tx_extbase_exception' => $extensionClassesPath . 'Exception.php',
 	'tx_extbase_configuration_abstractconfigurationmanager' => $extensionClassesPath . 'Configuration/AbstractConfigurationManager.php',
 	'tx_extbase_configuration_backendconfigurationmanager' => $extensionClassesPath . 'Configuration/BackendConfigurationManager.php',
@@ -80,7 +79,6 @@ return array(
 	'tx_extbase_mvc_web_response' => $extensionClassesPath . 'MVC/Web/Response.php',
 	'tx_extbase_mvc_web_routing_uribuilder' => $extensionClassesPath . 'MVC/Web/Routing/UriBuilder.php',
 	'tx_extbase_object_exception' => $extensionClassesPath . 'Object/Exception.php',
-	'tx_extbase_object_manager' => $extensionClassesPath . 'Object/Manager.php',
 	'tx_extbase_object_objectmanager' => $extensionClassesPath . 'Object/ObjectManager.php',
 	'tx_extbase_object_objectmanagerinterface' => $extensionClassesPath . 'Object/ObjectManagerInterface.php',
 	'tx_extbase_object_container_classinfo' => $extensionClassesPath . 'Object/Container/ClassInfo.php',
@@ -277,7 +275,6 @@ return array(
 	'tx_extbase_validation_validator_stringvalidator' => $extensionClassesPath . 'Validation/Validator/StringValidator.php',
 	'tx_extbase_validation_validator_textvalidator' => $extensionClassesPath . 'Validation/Validator/TextValidator.php',
 	'tx_extbase_validation_validator_validatorinterface' => $extensionClassesPath . 'Validation/Validator/ValidatorInterface.php',
-	'tx_extbase_basetestcase' => $extensionClassesPath . '../Tests/BaseTestCase.php',
 	'tx_extbase_tests_unit_basetestcase' => $extensionClassesPath . '../Tests/Unit/BaseTestCase.php',
 );
 ?>

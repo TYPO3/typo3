@@ -183,19 +183,6 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	}
 
 	/**
-	 * Returns the data array of the current content object
-	 *
-	 * @return array data of the current cObj
-	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 1.5.0. Use the ConfigurationManager to retrieve the current ContentObject
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 */
-	public function getContentObjectData() {
-		t3lib_div::logDeprecatedFunction();
-		$contentObject = $this->configurationManager->getContentObject();
-		return $contentObject->data;
-	}
-
-	/**
 	 * Set if the current request is cached.
 	 *
 	 * @param boolean $isCached
