@@ -83,19 +83,6 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @author Christian Jul Jensen <julle@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
-	 * @expectedException t3lib_cache_Exception
-	 */
-	public function setThrowsExceptionIfConfiguredServersAreUnreachable() {
-		$backend = $this->setUpBackend(array('servers' => array('julle.did.this:1234')));
-		$data = 'Somedata';
-		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
-		$backend->set($identifier, $data);
-	}
-
-	/**
-	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function itIsPossibleToSetAndCheckExistenceInCache() {
 		$backend = $this->setUpBackend();
