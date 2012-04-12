@@ -831,6 +831,9 @@
 			<trans-unit id="media.tabVideo" xml:space="preserve">
 				<source>Video Element</source>
 			</trans-unit>
+			<trans-unit id="media.tabVideoAccessible" xml:space="preserve">
+				<source>HTML5 Additions</source>
+			</trans-unit>
 			<trans-unit id="media.url" xml:space="preserve">
 				<source>Path or URL</source>
 			</trans-unit>
@@ -845,6 +848,9 @@
 			</trans-unit>
 			<trans-unit id="media.audioSources" xml:space="preserve">
 				<source>Audio sources for HTML5 &lt;audio&gt; element</source>
+			</trans-unit>
+			<trans-unit id="media.audioDescription" xml:space="preserve">
+				<source>audio description for videos</source>
 			</trans-unit>
 			<trans-unit id="media.audioFallbackUrl" xml:space="preserve">
 				<source>Path or URL to fallback audio source (Flash or QuickTime)</source>
@@ -863,6 +869,9 @@
 			</trans-unit>
 			<trans-unit id="media.type" xml:space="preserve">
 				<source>Media Type</source>
+			</trans-unit>
+			<trans-unit id="media.useHTML5" xml:space="preserve">
+				<source>HTML5 / accessible rendering</source>
 			</trans-unit>
 			<trans-unit id="media.type.video" xml:space="preserve">
 				<source>Video</source>
