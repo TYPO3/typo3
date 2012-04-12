@@ -231,9 +231,11 @@ class t3lib_file_Service_IndexerService implements t3lib_Singleton {
 	 * @signal
 	 */
 	protected function emitPreFileIndexSignal(t3lib_file_File $fileObject, $fileInfo) {
-		/** @var t3lib_SignalSlot_Dispatcher $dispatcher */
-		$dispatcher = t3lib_div::makeInstance('t3lib_SignalSlot_Dispatcher');
-		$dispatcher->dispatch('t3lib_file_Storage', 'preFileIndex', array($fileObject, $fileInfo));
+		$this->getSignalSlotDispatcher()->dispatch(
+			't3lib_file_Storage',
+			'preFileIndex',
+			array($fileObject, $fileInfo)
+		);
 	}
 
 	/**
@@ -244,11 +246,26 @@ class t3lib_file_Service_IndexerService implements t3lib_Singleton {
 	 * @signal
 	 */
 	protected function emitPostFileIndexSignal(t3lib_file_File $fileObject, $fileInfo) {
-		/** @var t3lib_SignalSlot_Dispatcher $dispatcher */
-		$dispatcher = t3lib_div::makeInstance('t3lib_SignalSlot_Dispatcher');
-		$dispatcher->dispatch('t3lib_file_Storage', 'postFileIndex', array($fileObject, $fileInfo));
+		$this->getSignalSlotDispatcher()->dispatch(
+			't3lib_file_Storage',
+			'postFileIndex',
+			array($fileObject, $fileInfo)
+		);
 	}
 
+	/**
+	 * @return Tx_Extbase_SignalSlot_Dispatcher
+	 */
+	protected function getSignalSlotDispatcher() {
+		return $this->getObjectManager()->get('Tx_Extbase_SignalSlot_Dispatcher');
+	}
+
+	/**
+	 * @return Tx_Extbase_Object_ObjectManager
+	 */
+	protected function getObjectManager() {
+		return t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+	}
 }
 
 
