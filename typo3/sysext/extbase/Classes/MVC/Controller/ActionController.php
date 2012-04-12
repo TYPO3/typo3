@@ -293,7 +293,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 				}
 			}
 		} else {
-				// @deprecated since Extbase 1.4.0, will be removed with Extbase 1.6.0.
+				// @deprecated since Extbase 1.4.0, will be removed with Extbase 6.0
 			$argumentsAreValid = TRUE;
 			$preparedArguments = array();
 			foreach ($this->arguments as $argument) {
@@ -467,7 +467,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 
 			return $message;
 		} else {
-				// @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
+				// @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 			$this->request->setErrors($this->argumentsMappingResults->getErrors());
 
 			$errorFlashMessage = $this->getErrorFlashMessage();
@@ -511,7 +511,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @return void
 	 * @throws Tx_Extbase_MVC_Exception_InvalidOrNoRequestHash In case request hash checking failed
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	protected function checkRequestHash() {
 		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {

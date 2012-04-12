@@ -380,7 +380,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @param array Object names of the validators
 	 * @return Tx_Extbase_MVC_Controller_Argument Returns $this (used for fluent interface)
 	 * @api
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function setNewValidatorConjunction(array $objectNames) {
 		if ($this->validator === NULL) {
@@ -410,7 +410,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 *
 	 * @return integer one of the ORIGIN_* constants
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function getOrigin() {
 		return $this->origin;
@@ -461,7 +461,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 *
 	 * @param mixed $value The value of an argument
 	 * @return mixed
-	 * @deprecated since Extbase 1.4, will be removed in Extbase 1.6.
+	 * @deprecated since Extbase 1.4, will be removed in Extbase 6.0
 	 */
 	protected function transformValue($value) {
 		if (!class_exists($this->dataType)) {
@@ -532,7 +532,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * Checks if this argument has a value set.
 	 *
 	 * @return boolean TRUE if a value was set, otherwise FALSE
-	 * @deprecated since Extbase 1.4.0, will be removed with Extbase 1.6.0
+	 * @deprecated since Extbase 1.4.0, will be removed with Extbase 6.0
 	 */
 	public function isValue() {
 		return $this->value !== NULL;

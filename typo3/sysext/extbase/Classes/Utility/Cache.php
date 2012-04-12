@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Utility
- * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0. Please use Tx_Extbase_Service_CacheService instead
+ * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0. Please use Tx_Extbase_Service_CacheService instead
  */
 class Tx_Extbase_Utility_Cache {
 

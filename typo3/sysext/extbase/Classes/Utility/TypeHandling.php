@@ -29,7 +29,7 @@
  * @subpackage Utility
  * @version $ID:$
  * @api
- * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0. Please use Tx_Extbase_Service_TypeHandlingService instead
+ * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0. Please use Tx_Extbase_Service_TypeHandlingService instead
  */
 class Tx_Extbase_Utility_TypeHandling {
 
@@ -60,7 +60,7 @@ class Tx_Extbase_Utility_TypeHandling {
 	 *
 	 * @param string $type Type of the property (see PARSE_TYPE_PATTERN)
 	 * @return array An array with information about the type
-	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0 - Use Tx_Extbase_Service_TypoScriptService instead
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0 - Use Tx_Extbase_Service_TypoScriptService instead
 	 */
 	static public function parseType($type) {
 		t3lib_div::logDeprecatedFunction();
@@ -76,7 +76,7 @@ class Tx_Extbase_Utility_TypeHandling {
 	 *
 	 * @param string $type Data type to unify
 	 * @return string unified data type
-	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0 - Use Tx_Extbase_Service_TypoScriptService instead
+	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0 - Use Tx_Extbase_Service_TypoScriptService instead
 	 */
 	static public function normalizeType($type) {
 		t3lib_div::logDeprecatedFunction();

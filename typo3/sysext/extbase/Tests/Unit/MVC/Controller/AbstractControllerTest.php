@@ -221,7 +221,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_AbstractControllerTest extends Tx_Ext
 	/**
 	 * This test checks @deprecated behavior.
 	 * @test
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function mapRequestArgumentsToControllerArgumentsPreparesInformationAndValidatorsAndMapsAndValidates() {
 		$mockValidator = $this->getMock('Tx_Extbase_MVC_Controller_ArgumentsValidator');

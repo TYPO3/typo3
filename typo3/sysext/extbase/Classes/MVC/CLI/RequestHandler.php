@@ -47,7 +47,7 @@ class Tx_Extbase_MVC_CLI_RequestHandler implements Tx_Extbase_MVC_RequestHandler
 
 	/**
 	 * @var Tx_Extbase_MVC_Controller_FlashMessages
-	 * @deprecated since Extbase 1.1; will be removed in Extbase 1.6
+	 * @deprecated since Extbase 1.1; will be removed in Extbase 6.0
 	 */
 	protected $flashMessages;
 
@@ -70,7 +70,7 @@ class Tx_Extbase_MVC_CLI_RequestHandler implements Tx_Extbase_MVC_RequestHandler
 	 */
 	public function injectFlashMessageContainer(Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer) {
 		$this->flashMessageContainer = $flashMessageContainer;
-			// @deprecated since Extbase 1.1; will be removed in Extbase 1.6
+			// @deprecated since Extbase 1.1; will be removed in Extbase 6.0
 		$this->flashMessages = $flashMessageContainer;
 	}
 
