@@ -1271,6 +1271,10 @@ $TCA['tt_content'] = array(
 						'2',
 					),
 					array(
+						'LLL:EXT:cms/locallang_ttc.xml:menu_type.I.8',
+						'8',
+					),
+					array(
 						'LLL:EXT:cms/locallang_ttc.xml:menu_type.I.5',
 						'3',
 					),
