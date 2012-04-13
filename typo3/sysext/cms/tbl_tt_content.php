@@ -1809,6 +1809,10 @@ $TCA['tt_content'] = array(
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.visibility;visibility,
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.access;access,
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.extended',
+			'subtype_value_field' => 'menu_type',
+			'subtypes_excludelist' => array(
+				'2' => 'pages',
+			),
 		),
 		'mailform' => 	array(
 			'showitem' =>
