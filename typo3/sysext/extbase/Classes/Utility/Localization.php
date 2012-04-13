@@ -98,7 +98,7 @@ class Tx_Extbase_Utility_Localization {
 				$value = self::$LOCAL_LANG[$extensionName]['default'][$key]; // No charset conversion because default is english and thereby ASCII
 			}
 		}
-		if (is_array($arguments)) {
+		if (is_array($arguments) && $value !== NULL) {
 			return vsprintf($value, $arguments);
 		} else {
 			return $value;
