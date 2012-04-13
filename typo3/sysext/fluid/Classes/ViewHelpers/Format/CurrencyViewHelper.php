@@ -52,17 +52,25 @@ class Tx_Fluid_ViewHelpers_Format_CurrencyViewHelper extends Tx_Fluid_Core_ViewH
 	 * @api
 	 */
 	public function render($currencySign = '', $decimalSeparator = ',', $thousandsSeparator = '.', $prependCurrency = FALSE, $separateCurrency = TRUE) {
-		$stringToFormat = $this->renderChildren();
-		$output = number_format($stringToFormat, 2, $decimalSeparator, $thousandsSeparator);
+		$floatToFormat = $this->renderChildren();
 
-		if ($currencySign !== ''){
-			$currencySeparator = ($separateCurrency) ? ' ':'';
-			if ($prependCurrency === TRUE){
+		if (empty($floatToFormat)) {
+			$floatToFormat = 0.00;
+		} else {
+			$floatToFormat = floatval($floatToFormat);
+		}
+
+		$output = number_format($floatToFormat, 2, $decimalSeparator, $thousandsSeparator);
+
+		if ($currencySign !== '') {
+			$currencySeparator = ($separateCurrency) ? ' ' : '';
+			if ($prependCurrency === TRUE) {
 				$output = $currencySign . $currencySeparator . $output;
-			}else{
+			} else {
 				$output = $output . $currencySeparator . $currencySign;
 			}
 		}
+
 		return $output;
 	}
 }
