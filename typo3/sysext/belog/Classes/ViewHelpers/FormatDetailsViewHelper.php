@@ -41,8 +41,6 @@ class Tx_Belog_ViewHelpers_FormatDetailsViewHelper extends Tx_Fluid_Core_ViewHel
 	 * Furthermore, possible files in logData are stripped to their basename if
 	 * the action logged was a file action
 	 *
-	 * This method was crafted from getDetails() of class t3lib_bedisplaylog.
-	 *
 	 * @param Tx_Belog_Domain_Model_LogEntry $logEntry
 	 * @return string Formatted details
 	 */

@@ -15,7 +15,6 @@ $t3libClasses = array(
 	't3lib_arraybrowser' => PATH_t3lib . 'class.t3lib_arraybrowser.php',
 	't3lib_autoloader' => PATH_t3lib . 'class.t3lib_autoloader.php',
 	't3lib_basicfilefunctions' => PATH_t3lib . 'class.t3lib_basicfilefunc.php',
-	't3lib_bedisplaylog' => PATH_t3lib . 'class.t3lib_bedisplaylog.php',
 	't3lib_befunc' => PATH_t3lib . 'class.t3lib_befunc.php',
 	't3lib_beuserauth' => PATH_t3lib . 'class.t3lib_beuserauth.php',
 	't3lib_browselinkshook' => PATH_t3lib . 'interfaces/interface.t3lib_browselinkshook.php',

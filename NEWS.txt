@@ -20,6 +20,13 @@ Deprecated methods that were initially targeted to be removed in TYPO3 4.8/6.0
 have finally been removed. The deprecation log shows which functions were
 declared to be deprecated and will be removed in the next TYPO3 versions.
 
+* Removed classes prior to scheduled deprecation removal
+
+t3lib_BEDisplayLog: This class was used only by the old belog module, its
+functionality is now encapsulated in EXT:belog itself. Since it is very
+unlikely that the class was used by other external extensions, the file was
+removed instead of deprecating it.
+
 Removed Functionality
 -------------------------------------------------------------------------------
 
