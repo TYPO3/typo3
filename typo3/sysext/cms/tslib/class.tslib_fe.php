@@ -3101,9 +3101,6 @@
 						/* @var $INTiS_cObj tslib_cObj */
 					$INTiS_cObj->INT_include = 1;
 					switch($INTiS_config[$INTiS_key]['type']) {
-						case 'SCRIPT':
-							$incContent = $INTiS_cObj->PHP_SCRIPT($INTiS_config[$INTiS_key]['conf']);
-						break;
 						case 'COA':
 							$incContent = $INTiS_cObj->COBJ_ARRAY($INTiS_config[$INTiS_key]['conf']);
 						break;
@@ -3314,7 +3311,6 @@ if (version == "n3") {
 			// Send content-lenght header.
 			// Notice that all HTML content outside the length of the content-length header will be cut off! Therefore content of unknown length from included PHP-scripts and if admin users are logged in (admin panel might show...) or if debug mode is turned on, we disable it!
 		if (!empty($this->config['config']['enableContentLengthHeader']) &&
-			!$this->isEXTincScript() &&
 			!$this->beUserLogin  &&
 			!$this->TYPO3_CONF_VARS['FE']['debug'] &&
 			!$this->config['config']['debug'] &&
@@ -3376,7 +3372,6 @@ if (version == "n3") {
 					$reasonMsg = '';
 					$reasonMsg.= !$this->no_cache ? '' : 'Caching disabled (no_cache). ';
 					$reasonMsg.= !$this->isINTincScript() ? '' : '*_INT object(s) on page. ';
-					$reasonMsg.= !$this->isEXTincScript() ? '' : '*_EXT object(s) on page. ';
 					$reasonMsg.= !is_array($this->fe_user->user) ? '' : 'Frontend user logged in. ';
 					$GLOBALS['TT']->setTSlogMessage('Cache-headers would disable proxy caching! Reason(s): "'.$reasonMsg.'"',1);
 				}
@@ -3394,7 +3389,7 @@ if (version == "n3") {
 	 *
 	 * Rules are:
 	 * no_cache cannot be set: If it is, the page might contain dynamic content and should never be cached.
-	 * There can be no USER_INT objects on the page ("isINTincScript()" / "isEXTincScript()") because they implicitly indicate dynamic content
+	 * There can be no USER_INT objects on the page ("isINTincScript()") because they implicitly indicate dynamic content
 	 * There can be no logged in user because user sessions are based on a cookie and thereby does not offer client caching a chance to know if the user is logged in. Actually, there will be a reverse problem here; If a page will somehow change when a user is logged in he may not see it correctly if the non-login version sent a cache-header! So do NOT use cache headers in page sections where user logins change the page content. (unless using such as realurl to apply a prefix in case of login sections)
 	 *
 	 * @return	boolean
@@ -3402,7 +3397,6 @@ if (version == "n3") {
 	function isStaticCacheble()	{
 		$doCache = !$this->no_cache
 				&& !$this->isINTincScript()
-				&& !$this->isEXTincScript()
 				&& !$this->isUserOrGroupSet();
 		return $doCache;
 	}
@@ -3462,9 +3456,11 @@ if (version == "n3") {
 	 *
 	 * @return	boolean		TRUE, if external php scripts should be included (set by PHP_SCRIPT_EXT cObjects)
 	 * @see tslib_cObj::PHP_SCRIPT
+	 * @deprecated since 6.0, well be removed in two versions
 	 */
 	function isEXTincScript()	{
-		return (isset($this->config['EXTincScript']) && is_array($this->config['EXTincScript']));
+		t3lib_div::logDeprecatedFunction();
+		return FALSE;
 	}
 
 	/**
@@ -4018,7 +4014,7 @@ if (version == "n3") {
 	 *
 	 * @param	string		Relative path to php file
 	 * @return	boolean		Returns TRUE if $GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude'] is not set OR if the file requested for inclusion is found in one of the allowed paths.
-	 * @see tslib_cObj::PHP_SCRIPT(), tslib_feTCE::includeScripts(), tslib_menu::includeMakeMenu()
+	 * @see tslib_feTCE::includeScripts(), tslib_menu::includeMakeMenu()
 	 */
 	function checkFileInclude($incFile)	{
 		return !$this->TYPO3_CONF_VARS['FE']['noPHPscriptInclude']
