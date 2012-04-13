@@ -375,44 +375,7 @@ $sendTSFEContent = FALSE;
 if ($TSFE->isOutputting())	{
 	$TT->push('Print Content','');
 	$TSFE->processOutput();
-
-	// ***************************************
-	// Outputs content / Includes EXT scripts
-	// ***************************************
-	if ($TSFE->isEXTincScript())	{
-		$TT->push('External PHP-script','');
-				// Important global variables here are $EXTiS_*, they must not be overridden in include-scripts!!!
-			$EXTiS_config = $TSFE->config['EXTincScript'];
-			$EXTiS_splitC = explode('<!--EXT_SCRIPT.',$TSFE->content);	// Splits content with the key
-
-				// Special feature: Include libraries
-			foreach ($EXTiS_config as $EXTiS_cPart) {
-				if (isset($EXTiS_cPart['conf']['includeLibs']) && $EXTiS_cPart['conf']['includeLibs']) {
-					$EXTiS_resourceList = t3lib_div::trimExplode(',',$EXTiS_cPart['conf']['includeLibs'], TRUE);
-					$TSFE->includeLibraries($EXTiS_resourceList);
-				}
-			}
-
-			foreach ($EXTiS_splitC as $EXTiS_c => $EXTiS_cPart) {
-				if (substr($EXTiS_cPart,32,3)=='-->')	{	// If the split had a comment-end after 32 characters it's probably a split-string
-					$EXTiS_key = 'EXT_SCRIPT.'.substr($EXTiS_cPart,0,32);
-					if (is_array($EXTiS_config[$EXTiS_key]))	{
-						$REC = $EXTiS_config[$EXTiS_key]['data'];
-						$CONF = $EXTiS_config[$EXTiS_key]['conf'];
-						$content = '';
-						include($EXTiS_config[$EXTiS_key]['file']);
-						echo $content;	// The script MAY return content in $content or the script may just output the result directly!
-					}
-					echo substr($EXTiS_cPart,35);
-				} else {
-					echo ($c?'<!--EXT_SCRIPT.':'').$EXTiS_cPart;
-				}
-			}
-
-		$TT->pull();
-	} else {
-		$sendTSFEContent = TRUE;
-	}
+	$sendTSFEContent = TRUE;
 	$TT->pull();
 }
 

@@ -330,7 +330,7 @@ class tslib_cObj {
 
 
 		// internal
-	var $INT_include = 0; // Is set to 1 if the instance of this cObj is executed from a PHP_SCRIPT_INT -include script (see pagegen, bottom of document)
+	var $INT_include = 0; // Is set to 1 if the instance of this cObj is executed from a *_INT plugin (see pagegen, bottom of document)
 	var $checkPid_cache = array(); // This is used by checkPid, that checks if pages are accessible. The $checkPid_cache['page_uid'] is set TRUE or FALSE upon this check featuring a caching function for the next request.
 	var $checkPid_badDoktypeList = '255';
 	var $lastTypoLinkUrl = ''; // This will be set by typoLink() to the url of the most recent link created.
@@ -652,9 +652,6 @@ class tslib_cObj {
 			'RESTORE_REGISTER' => 'RestoreRegister',
 			'FORM' => 'Form',
 			'SEARCHRESULT' => 'SearchResult',
-			'PHP_SCRIPT' => 'PhpScript',
-			'PHP_SCRIPT_INT' => 'PhpScriptInternal',
-			'PHP_SCRIPT_EXT' => 'PhpScriptExternal',
 			'TEMPLATE' => 'Template',
 			'FLUIDTEMPLATE' => 'FluidTemplate',
 			'MULTIMEDIA' => 'Multimedia',
@@ -955,13 +952,11 @@ class tslib_cObj {
 	 * @param	array		array of TypoScript properties
 	 * @param	string		If "INT", then rendering "PHP_SCRIPT_INT"; If "EXT", then rendering "PHP_SCRIPT_EXT"; Default is rendering "PHP_SCRIPT" (cached)
 	 * @return	string		Output
+	 * @deprecated and unused since 6.0, will be removed two versions later
 	 */
 	function PHP_SCRIPT($conf, $ext = '') {
-		if ($ext === 'INT' || $ext === 'EXT') {
-			return $this->getContentObject('PHP_SCRIPT_INT')->render($conf);
-		} else {
-			return $this->getContentObject('PHP_SCRIPT')->render($conf);
-		}
+		t3lib_div::logDeprecatedFunction();
+		return '';
 	}
 
 	/**
