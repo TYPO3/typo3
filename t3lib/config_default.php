@@ -798,6 +798,19 @@ initializeCachingFramework();
 require_once(PATH_t3lib . 'class.t3lib_autoloader.php');
 t3lib_autoloader::registerAutoloader();
 
+/**
+ * Add typo3/contrib/pear/ as first include folder in
+ * include path, because the shipped PEAR packages use
+ * relative paths to include their files.
+ *
+ * This is required for t3lib_http_Request to work.
+ *
+ * Having the TYPO3 folder first will make sure that the
+ * shipped version is loaded before any local PEAR package,
+ * thus avoiding any incompatibilities with newer or older
+ * versions.
+ */
+set_include_path(PATH_typo3 . 'contrib/pear/' . PATH_SEPARATOR . get_include_path());
 
 /**
  * Checking for UTF-8 in the settings since TYPO3 4.5
