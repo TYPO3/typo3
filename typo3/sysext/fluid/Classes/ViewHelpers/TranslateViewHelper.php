@@ -110,6 +110,9 @@ class TranslateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
 		$value = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($id, $extensionName, $this->arguments['arguments']);
 		if ($value === NULL) {
 			$value = $this->arguments['default'] !== NULL ? $this->arguments['default'] : $this->renderChildren();
+			if (is_array($this->arguments['arguments'])) {
+				$value = vsprintf($value, $this->arguments['arguments']);
+			}
 		} elseif ($this->arguments['htmlEscape']) {
 			$value = htmlspecialchars($value);
 		}
