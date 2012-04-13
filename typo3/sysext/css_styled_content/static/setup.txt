@@ -1986,6 +1986,12 @@ tt_content.menu {
 				NO.wrapItemAndSub = <li class="csc-section">|</li>
 			}
 		}
+		# "Sitemaps of selected pages - liststyle"
+		8 < .2
+		8 {
+			special = directory
+			special.value.field = pages
+		}
 	}
 
 	20.stdWrap {

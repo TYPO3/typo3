@@ -558,6 +558,9 @@
 			<trans-unit id="menu_type.I.7" xml:space="preserve">
 				<source>Related pages (based on keywords)</source>
 			</trans-unit>
+			<trans-unit id="menu_type.I.8" xml:space="preserve">
+				<source>Sitemaps of selected pages</source>
+			</trans-unit>
 			<trans-unit id="list_type" xml:space="preserve">
 				<source>Plugin:</source>
 			</trans-unit>
