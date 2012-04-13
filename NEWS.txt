@@ -36,12 +36,16 @@ technical details see ChangeLog included in the typo3_src package.
 General
 -------------------------------------------------------------------------------
 
-...
+* Extbase and fluid always loaded
+
+The core extensions 'extbase' and 'fluid' are used in core classes like t3lib
+and in several important core extensions. Extbase and fluid are now required
+extensions and always loaded.
 
 Other General Improvements
 -------------------------------------------------------------------------------
 
-...
+* ...
 
 -------------------------------------------------------------------------------
 Security
