@@ -50,6 +50,10 @@ Pagetree
 	margin: 0 3px 0 0;
 }
 
+#typo3-pagetree .x-tree-root-ct {
+	margin-bottom: 50px;
+}
+
 /**
  *
  * section drag and drop
