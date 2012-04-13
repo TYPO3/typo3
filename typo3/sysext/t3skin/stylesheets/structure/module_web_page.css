@@ -26,6 +26,7 @@ td.t3-page-column {
 
 .t3-page-ce {
 	margin-bottom: 5px;
+	min-width: 150px;
 }
 
 .t3-page-ce h4 {
