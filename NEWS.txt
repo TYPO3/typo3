@@ -23,7 +23,13 @@ declared to be deprecated and will be removed in the next TYPO3 versions.
 Removed Functionality
 -------------------------------------------------------------------------------
 
-* ...
+* Removed doNotLoadInFE flag
+
+With TYPO3 4.3 the flag doNotLoadInFE flag was introduced in ext_emconf.php
+extension files to hint the core that an extension has no frontend
+functionality. The performance gain of this change in the frontend was minimal.
+The flag is now removed and the according extList_FE setting in localconf.php
+has no effect anymore.
 
 ===============================================================================
 Changes and Improvements
@@ -45,7 +51,7 @@ extensions and always loaded.
 Other General Improvements
 -------------------------------------------------------------------------------
 
-* ...
+...
 
 -------------------------------------------------------------------------------
 Security
