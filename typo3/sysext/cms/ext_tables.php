@@ -101,7 +101,7 @@ $TCA['tt_content'] = array (
 			'html' => 'tt_content_html.gif'
 		),
 		'thumbnail' => 'image',
-		'requestUpdate' => 'list_type,rte_enabled',
+		'requestUpdate' => 'list_type,rte_enabled,menu_type',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_tt_content.php',
 		'dividers2tabs' => 1,
 		'searchFields' => 'header,header_link,subheader,bodytext,pi_flexform',
