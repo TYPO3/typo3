@@ -68,18 +68,21 @@ class Tx_Fluid_ViewHelpers_Widget_Controller_PaginateController extends Tx_Fluid
 		$this->currentPage = (integer)$currentPage;
 		if ($this->currentPage < 1) {
 			$this->currentPage = 1;
-		} elseif ($this->currentPage > $this->numberOfPages) {
-			$this->currentPage = $this->numberOfPages;
 		}
 
-			// modify query
-		$itemsPerPage = (integer)$this->configuration['itemsPerPage'];
-		$query = $this->objects->getQuery();
-		$query->setLimit($itemsPerPage);
-		if ($this->currentPage > 1) {
-			$query->setOffset((integer)($itemsPerPage * ($this->currentPage - 1)));
+		if ($this->currentPage > $this->numberOfPages) {
+				// set $modifiedObjects to NULL if the page does not exist
+			$modifiedObjects = NULL;
+		} else {
+				// modify query
+			$itemsPerPage = (integer)$this->configuration['itemsPerPage'];
+			$query = $this->objects->getQuery();
+			$query->setLimit($itemsPerPage);
+			if ($this->currentPage > 1) {
+				$query->setOffset((integer)($itemsPerPage * ($this->currentPage - 1)));
+			}
+			$modifiedObjects = $query->execute();
 		}
-		$modifiedObjects = $query->execute();
 
 		$this->view->assign('contentArguments', array(
 			$this->widgetConfiguration['as'] => $modifiedObjects
