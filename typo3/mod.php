@@ -47,7 +47,8 @@ if ($temp_path = $TBE_MODULES['_PATHS'][$temp_M]) {
 } else {
 	if (is_array($TBE_MODULES['_dispatcher'])) {
 		foreach ($TBE_MODULES['_dispatcher'] as $dispatcherClassName) {
-			$dispatcher = t3lib_div::makeInstance($dispatcherClassName);
+			$dispatcher = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager')
+				->get($dispatcherClassName);
 			if ($dispatcher->callModule($temp_M) === TRUE) {
 				$isDispatched = TRUE;
 				break;
