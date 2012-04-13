@@ -117,7 +117,7 @@ class Tx_Extbase_Utility_Localization {
 				}
 			}
 		}
-		if (is_array($arguments)) {
+		if (is_array($arguments) && $value !== NULL) {
 			return vsprintf($value, $arguments);
 		} else {
 			return $value;

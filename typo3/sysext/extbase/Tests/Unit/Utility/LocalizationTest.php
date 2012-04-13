@@ -66,5 +66,23 @@ class Tx_Extbase_Tests_Unit_Utility_LocalizationTest extends Tx_Extbase_Tests_Un
 		));
 		$this->assertEquals($expected, $actual);
 	}
+
+	/**
+	 * @test
+	 */
+	public function translateForEmptyStringKeyReturnsNull() {
+		$this->assertNull(
+			Tx_Extbase_Utility_Localization::translate('', 'extbase')
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function translateForEmptyStringKeyWithArgumentsReturnsNull() {
+		$this->assertNull(
+			Tx_Extbase_Utility_Localization::translate('', 'extbase', array('argument'))
+		);
+	}
 }
 ?>
