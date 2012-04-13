@@ -66,6 +66,9 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_
 		$value = Tx_Extbase_Utility_Localization::translate($key, $extensionName, $arguments);
 		if ($value === NULL) {
 			$value = $default !== NULL ? $default : $this->renderChildren();
+			if (is_array($arguments)) {
+				$value = vsprintf($value, $arguments);
+			}
 		} elseif ($htmlEscape) {
 			$value = htmlspecialchars($value);
 		}
