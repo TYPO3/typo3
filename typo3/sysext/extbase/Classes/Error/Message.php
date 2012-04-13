@@ -44,22 +44,36 @@ class Tx_Extbase_Error_Message {
 	protected $code;
 
 	/**
+	 * The message arguments. Will be replaced in the message body.
+	 * @var array
+	 */
+	protected $arguments = array();
+
+	/**
+	 * An optional title for the message (used eg. in flashMessages).
+	 * @var string
+	 */
+	protected $title = '';
+
+	/**
 	 * Constructs this error
 	 *
 	 * @param string $message An english error message which is used if no other error message can be resolved
 	 * @param integer $code A unique error code
-	 * @author Robert Lemke <robert@typo3.org>
+	 * @param array $arguments Array of arguments to be replaced in message
+	 * @param string $title optional title for the message
 	 * @api
 	 */
-	public function __construct($message, $code) {
+	public function __construct($message, $code, array $arguments = array(), $title = '') {
 		$this->message = $message;
 		$this->code = $code;
+		$this->arguments = $arguments;
+		$this->title = $title;
 	}
 
 	/**
 	 * Returns the error message
 	 * @return string The error message
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 * @api
 	 */
 	public function getMessage() {
@@ -69,7 +83,6 @@ class Tx_Extbase_Error_Message {
 	/**
 	 * Returns the error code
 	 * @return string The error code
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 * @api
 	 */
 	public function getCode() {
@@ -77,14 +90,47 @@ class Tx_Extbase_Error_Message {
 	}
 
 	/**
+	 * Get arguments
+	 *
+	 * @return array
+	 * @api
+	 */
+	public function getArguments() {
+		return $this->arguments;
+	}
+
+	/**
+	 * Get title
+	 *
+	 * @return string
+	 * @api
+	 */
+	public function getTitle() {
+		return $this->title;
+	}
+
+	/**
+	 * Return the rendered message
+	 *
+	 * @return string
+	 * @api
+	 */
+	public function render() {
+		if (!empty($this->arguments)) {
+			 return vsprintf($this->message, $this->arguments);
+		} else {
+			return $this->message;
+		}
+	}
+
+	/**
 	 * Converts this error into a string
 	 *
 	 * @return string
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function __toString() {
-		return $this->message . ' (#' . $this->code . ')';
+		return $this->render();
 	}
 }
 

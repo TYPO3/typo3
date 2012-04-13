@@ -66,7 +66,7 @@ class Tx_Extbase_Validation_Validator_NumberRangeValidator extends Tx_Extbase_Va
 		}
 		if ($value >= $startRange && $value <= $endRange) return TRUE;
 
-		$this->addError('The given subject was not in the valid range (' . $startRange . ' - ' . $endRange . ').', 1221561046);
+		$this->addError('The given subject was not in the valid range (%1$d - %2$d).', 1221561046, array($startRange, $endRange));
 		return FALSE;
 	}
 }
