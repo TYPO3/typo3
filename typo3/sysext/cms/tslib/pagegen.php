@@ -68,7 +68,7 @@ $TT->pull();
 // Content generation
 // *******************
 
-// If this is an array, it's a sign that this script is included in order to include certain PHP_SCRIPT_INT-scripts
+// If this is an array, it's a sign that this script is included in order to include certain INT-scripts
 if (!$GLOBALS['TSFE']->isINTincScript())		{
 	$TT->push('pagegen.php, render');
 	TSpagegen::renderContent();
