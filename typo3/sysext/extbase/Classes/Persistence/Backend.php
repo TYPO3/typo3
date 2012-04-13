@@ -284,6 +284,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			return $this->identityMap->getObjectByIdentifier($identifier, $className);
 		} else {
 			$query = $this->queryFactory->create($className);
+			$query->getQuerySettings()->setRespectStoragePage(FALSE);
+
 			return $query->matching(
 				$query->equals('uid', $identifier))
 				->execute()
