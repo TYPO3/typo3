@@ -315,8 +315,7 @@ This value has no default value and only if you specify a value for this token w
 		<property name="absRefPrefix" type="string">
 			<description><![CDATA[If this value is set, then all relative links in TypoScript are prepended with this string. Used to convert relative paths to absolute paths.
 
-Note: This values is automatically set to the dirname of the index.php script in case simulateStaticDocuments is set to "PATH_INFO".
-If you're working on a server where you have both internal and external access, you might to yourself a favour and set the absRefPrefix to the url and path of you site, eg. http://www.typo3.org/. If you do not, you risk to render pages to cache from the internal network and thereby prefix image-references and links with a non-accessible path from outside.]]></description>
+Note: If you're working on a server where you have both internal and external access, you might to yourself a favour and set the absRefPrefix to the url and path of you site, eg. http://www.typo3.org/. If you do not, you risk to render pages to cache from the internal network and thereby prefix image-references and links with a non-accessible path from outside.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -535,7 +534,7 @@ Works only with type-values different from zero.]]></description>
 "&ftu=[hash]" is always inserted in the links on the first page a user hits. If it turns out in the next hit that the user has cookies enabled, this variable is not set anymore as the cookies does the job. If no cookies is accepted the "ftu" remains set for all links on the site and thereby we can still track the user.
 
 You should not set this feature if grabber-spiders like Teleport are going to grab your site!
-You should not set this feature if you want search-engines to index your site (in conjunction with the simulateStaticDocuments feature!)
+You should not set this feature if you want search-engines to index your site.
 
 You can also ignore this feature if you're certain, website users will use cookies.
  "ftu" means fe_typo_user ("fe" is "frontend").]]></description>
@@ -955,101 +954,6 @@ Another way to solve the problem is using this option in combination with disabl
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="simulateStaticDocuments" type="string">
-			<description><![CDATA[boolean/string
-			If set TYPO3 makes all links in another way than usual. This can be used with Apache compiled with mod_rewrite and configured in httpd.conf for use of this in the ".htaccess"-files.
-Include this in the .htaccess file
-RewriteEngine On
-RewriteRule   ^[^/]*\.html$  index.php
-
-This means that any "*.html"-documents should be handled by index.php.
-Now if is done, TYPO3 will interprete the url of the html-document like this:
-[title].[id].[type].html
-Title is optional and only usefull for the entries in the apache log-files. You may omit both [title] and [type] but if title is present, type must also be there!.
-
-Example:
-TYPO3 will interprete this as page with uid=23 and type=1 :
-Startpage.23.1.html
-
-TYPO3 will interprete this as the page with alias = "start" and the type is zero (default):
-start.html
-
-Alternative option (PATH_INFO):
-Instead of using the rewrite-module in apache (eg. if you're running Windows!) you can use the PATH_INFO variable from PHP.
-It's very simple. Just set simulateStaticDocuments to "PATH_INFO" and you're up and running!
-
-Also: See below, .absRefPrefix
-
-Example (put in Setup-field of your template):
-config.simulateStaticDocuments = PATH_INFO]]></description>
-			<default><![CDATA[default is defined by a configuration option in localconf.php. It's
-$TYPO3_CONF_VARS["FE"]["simulateStaticDocuments"] = 1;
-This affects all sites in the database.
-You can also set this value to the string  "PATH_INFO"]]></default>
-		</property>
-		<property name="simulateStaticDocuments_addTitle" type="int">
-			<description><![CDATA[If not zero, TYPO3 generates urls with the title in, limited to the first [simulateStaticDocuments_addTitle] number of chars.
-
-Example:
-Startpage.23.1.html
-instead of the default, "23.1.html", without the title.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="simulateStaticDocuments_dontRedirectPathInfoError" type="boolean">
-			<description><![CDATA[Regarding PATH_INFO mode:
-When a page is requested by "PATH_INFO" method it must be configured in order to work properly. If PATH_INFO is not configured, the index_ts.php script sends a location header to the correct page. However if you better like an error message outputted, just set this option.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="simulateStaticDocuments_noTypeIfNoTitle" type="boolean">
-			<description><![CDATA[If set, then the type-value will not be set in the simulated filename if the type value is zero anyways. However the filename must be without a title.
-
-Example:
-"Startpage.23.0.html" would still be "Startpage.23.0.html"
-"23.0.html" would be "23.html" (that is without the zero)
-"23.1.html" would still be "23.1.html" ]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="simulateStaticDocuments_pEnc" type="string">
-			<description><![CDATA[Allows you to also encode additional parameters into the simulated filename.
-
-Example:
-You have a news-plugin. The main page has the url "Page_1.228.0.html" but when one clicks on a news item the url will be "Page_1.228.0.html?&tx_mininews_pi1[showUid]=2&cHash=b8d239c224" instead.
-Now, this URL will not be indexed by external search-engines because of the query-string (everything after the "?" mark). This property avoids this problem by encoding the parameters. These are the options:
-
-Value set to "base64":
-This will transform the filename used to this value: "Page_1.228+B6JnR4X21pbmluZXdzX3BpMVtzaG93VWlkXT0yJmNIYXNoPWI4ZDIzOWMyMjQ_.0.html". The querystring has simply been base64-encoded (and some more...) and added to the HTML-filename (so now external search-engines will find this!). The really great thing about this that the filename is self-reliant because the filename contains the parameters. The downside to it is the very very long filename.
-
-Value set to "md5":
-This will transform the filename used to this value:
-"Page_1.228+M57867201f4a.0.html". Now, what a lovely, short filename! Now all the parameters has been hashed into a 10-char string inserted into the filename. At the same time an entry has been added to a cache table in the database so when a request for this filename reaches the frontend, then the REAL parameter string is found in the database! The really great thing about this is that the filename is very short (opposite to the base64-method). The downside to this is that IF you clear the database cache table at any time, the URL here does NOT work until a page with the link has been generated again (re-inserting the parameter list into the database).
-
-NOTICE: From TYPO3 3.6.0 the encoding will work only on parameters that are manually entered in the list set by .simulateStaticDocuments_pEnc_onlyP (see right below) or those parameters that various plugins might allow in addition. This is to limit the run-away risk when many parameters gets combined.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="simulateStaticDocuments_pEnc_onlyP" type="string">
-			<description><![CDATA[A list of variables that may be a part of the md5/base64 encoded part of a simulate_static_document virtual filename (see property in the row above).
-
-Example:
-simulateStaticDocuments_pEnc_onlyP = tx_maillisttofaq_pi1[pointer], L, print
-
--> this will allow the "pointer" parameter for the extension "maillisttofaq" to be included (in addition to whatever vars the extension sets itself) and further the parameter "L" (could be language selection) and "print" (could be print-version).]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="simulateStaticDocuments_replacementChar" type="string">
-			<description><![CDATA[Word separator for URLs generated by simulateStaticDocuments. If set to
-hyphen, this option allows search engines to index keywords in URLs. Before TYPO3 4.0 this character was hard-coded to underscore.
-
-Depends on the compatibility mode (see Tools>Install>Update wizard):
-compatibility mode < 4.0:   underscore "_"
-compatibility mode >= 4.0:   hyphen "-"]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="spamProtectEmailAddresses" type="string">
 			<description><![CDATA["ascii" / -10 to 10
 			If set, then all email addresses in typolinks will be encrypted so spam bots cannot detect them.
@@ -1256,27 +1160,9 @@ If found (another domain), then that domain is prepended the link, the external 
 
 If this option is not set, then all cross-domain links will be generated as
 
-"http://domain.tld/index.php?id=12345" (where 12345 is page id). If this option is set and current site uses, for example, simulateStatic, then links will be generated as "http://domain.tld/PageTitle.12345.html" (includes RTE links too). Setting this option requires that domains, where pages are linked, have the same configuration for:
+"http://domain.tld/index.php?id=12345" (where 12345 is page id). Setting this option requires that domains, where pages are linked, have the same configuration for:
 
-- linking scheme (i.e. all use simulateStatic or RealURL or CoolURI but not any mixture)
-
-- all domains have identical localization settings (config.sys_language_XXX directives)
-
-- all domains have the same set of languages defined
-
-This option implies "config.typolinkCheckRootline=1", which will be activated automatically. Setting value of "config. typolinkCheckRootline" inside TS template will have no effect.
-
-Disclaimer: it must be understood that while link is generated to another domain, it is still generated in the context of current domain. No side effects are known at the time of writing of this documentation but they may exist. If any side effects are found, this documentation will be updated to include them.]]></description>
-			<default><![CDATA[false]]></default>
-		</property>
-		<property name="typolinkEnableLinksAcrossDomains" type="boolean">
-			<description><![CDATA[This option enables to create links across domains using current domain's linking scheme.
-
-If this option is not set, then all cross-domain links will be generated as
-
-"http://domain.tld/index.php?id=12345" (where 12345 is page id). If this option is set and current site uses, for example, simulateStatic, then links will be generated as "http://domain.tld/PageTitle.12345.html" (includes RTE links too). Setting this option requires that domains, where pages are linked, have the same configuration for:
-
-- linking scheme (i.e. all use simulateStatic or RealURL or CoolURI but not any mixture)
+- linking scheme (i.e. all use RealURL or CoolURI but not any mixture)
 - all domains have identical localization settings (config.sys_language_XXX directives)
 - all domains have the same set of languages defined
 

@@ -1,35 +1,35 @@
 #####
-# 
+#
 # Example .htaccess file for TYPO3 CMS - for use with Apache Webserver
-# 
+#
 # This file includes settings for the following configuration options:
-# 
+#
 # - Compression via TYPO3
 # - Settings for mod_rewrite (URL-Rewriting)
 # - PHP optimisation
 # - Miscellaneous
-# 
+#
 # If you want to use it, you have to copy it to the root folder of your TYPO3 installation (if its
 # not there already) and rename it to '.htaccess'. To make .htaccess files work, you might need to
 # adjust the 'AllowOverride' directive in your Apache configuration file.
-# 
+#
 # IMPORTANT: You may need to change this file depending on your TYPO3 installation!
 #
 # Lines starting with a # are treated as comment and ignored by the web server.
-# 
+#
 # You should change every occurance of TYPO3root/ to the location where you have your website in.
 # For example:
 # If you have your website located at http://mysite.com/
 # then your TYPO3root/ is just empty (remove 'TYPO3root/')
 # If you have your website located at http://mysite.com/some/path/
 # then your TYPO3root/ is some/path/ (search and replace)
-# 
+#
 # You can also use this configuration in your httpd.conf, but then you have to modify some lines,
 # see the comments (search for 'httpd.conf')
-# 
+#
 # Questions about this file go to the matching Install mailing list, see
 # http://typo3.org/documentation/mailing-lists/
-# 
+#
 ####
 
 
@@ -73,7 +73,7 @@
 
 ### Begin: Settings for mod_rewrite ###
 
-# You need rewriting, if you use a URL-Rewriting extension (RealURL, CoolUri, SimulateStatic).
+# You need rewriting, if you use a URL-Rewriting extension (RealURL, CoolUri).
 
 <IfModule mod_rewrite.c>
 

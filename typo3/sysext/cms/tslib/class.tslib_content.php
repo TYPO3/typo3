@@ -5708,7 +5708,7 @@ class tslib_cObj {
 
 					// Firsts, test if $link_param is numeric and page with such id exists. If yes, do not attempt to link to file
 				if (!t3lib_utility_Math::canBeInterpretedAsInteger($link_param) || count($GLOBALS['TSFE']->sys_page->getPage_noCheck($link_param)) == 0) {
-						// Detects if a file is found in site-root (or is a 'virtual' simulateStaticDocument file!) and if so it will be treated like a normal file.
+						// Detects if a file is found in site-root and if so it will be treated like a normal file.
 					list ($rootFileDat) = explode('?', rawurldecode($link_param));
 					$containsSlash = strstr($rootFileDat, '/');
 					$rFD_fI = pathinfo($rootFileDat);
@@ -5978,7 +5978,7 @@ class tslib_cObj {
 							}
 						}
 
-							// If target page has a different domain and the current domain's linking scheme (e.g. simulateStaticDocuments/RealURL/...) should not be used
+							// If target page has a different domain and the current domain's linking scheme (e.g. RealURL/...) should not be used
 						if (strlen($targetDomain) && $targetDomain !== $currentDomain && !$enableLinksAcrossDomains) {
 							$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
 							if ($conf['extTarget.']) {

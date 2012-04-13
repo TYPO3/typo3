@@ -661,7 +661,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					$external = FALSE;
 						// Parse URL:
 					$pU = parse_url($link_param);
-						// Detects if a file is found in site-root OR is a simulateStaticDocument.
+						// Detects if a file is found in site-root.
 					list($rootFileDat) = explode('?', $link_param);
 					$rFD_fI = pathinfo($rootFileDat);
 					if (trim($rootFileDat) && !strstr($link_param, '/') && (@is_file(PATH_site . $rootFileDat) || t3lib_div::inList('php,html,htm', strtolower($rFD_fI['extension'])))) {

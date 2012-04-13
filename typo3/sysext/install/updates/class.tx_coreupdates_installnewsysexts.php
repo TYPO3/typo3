@@ -27,7 +27,7 @@
 ***************************************************************/
 
 /**
- * Contains the update class for adding the system extension "simulate static".
+ * Contains the update class for adding new system extensions.
  *
  * @author  Benjamin Mack <benni@typo3.org>
  * @author  Steffen Kamper <info@sk-typo3.de>
@@ -128,7 +128,7 @@ class tx_coreupdates_installnewsysexts extends Tx_Install_Updates_Base {
 	}
 
 	/**
-	 * Adds the extensions "about", "cshmanual" and "simulatestatic" to the extList in TYPO3_CONF_VARS
+	 * Adds the extensions "about" and "cshmanual" to the extList in TYPO3_CONF_VARS
 	 *
 	 * @param	array		&$dbQueries: queries done in this update
 	 * @param	mixed		&$customMessages: custom messages
