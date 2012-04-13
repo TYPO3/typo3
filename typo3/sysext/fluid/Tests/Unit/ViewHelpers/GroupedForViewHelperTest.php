@@ -216,6 +216,40 @@ class GroupedForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\V
 	/**
 	 * @test
 	 */
+	public function renderGroupsMultidimensionalObjectByDateTimeObject() {
+
+		$date1 = new \DateTime('2010-07-01');
+		$date2 = new \DateTime('2010-07-04');
+
+		$invoice1 = new \stdClass();
+		$invoice1->date = $date1;
+		$invoice1->id = 12340;
+
+		$invoice2 = new \stdClass();
+		$invoice2->date = $date1;
+		$invoice2->id = 12341;
+
+		$invoice3 = new \stdClass();
+		$invoice3->date = $date2;
+		$invoice3->id = 12342;
+
+		$invoices = array('invoice1' => $invoice1, 'invoice2' => $invoice2, 'invoice3' => $invoice3);
+
+		$this->templateVariableContainer->expects($this->at(0))->method('add')->with('myGroupKey', $date1);
+		$this->templateVariableContainer->expects($this->at(1))->method('add')->with('invoices', array('invoice1' => $invoice1, 'invoice2' => $invoice2));
+		$this->templateVariableContainer->expects($this->at(2))->method('remove')->with('myGroupKey');
+		$this->templateVariableContainer->expects($this->at(3))->method('remove')->with('invoices');
+		$this->templateVariableContainer->expects($this->at(4))->method('add')->with('myGroupKey', $date2);
+		$this->templateVariableContainer->expects($this->at(5))->method('add')->with('invoices', array('invoice3' => $invoice3));
+		$this->templateVariableContainer->expects($this->at(6))->method('remove')->with('myGroupKey');
+		$this->templateVariableContainer->expects($this->at(7))->method('remove')->with('invoices');
+
+		$this->viewHelper->render($invoices, 'invoices', 'date', 'myGroupKey');
+	}
+
+	/**
+	 * @test
+	 */
 	public function groupingByAKeyThatDoesNotExistCreatesASingleGroup() {
 		$photoshop = array('name' => 'Adobe Photoshop', 'license' => 'commercial');
 		$typo3 = array('name' => 'TYPO3', 'license' => 'GPL');
