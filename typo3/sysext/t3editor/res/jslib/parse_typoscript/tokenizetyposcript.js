@@ -83,7 +83,7 @@ var typoscriptWords = {
 	'TSFE': 'keyword',
 	'USER': 'keyword',
 	'USER_INT': 'keyword',
-	
+
 	'userFunc': 'keyword',
 
 	'_offset': 'reserved',
@@ -787,12 +787,6 @@ var typoscriptWords = {
 	'showPageIdWithTitle': 'reserved',
 	'showTagFreeClasses': 'reserved',
 	'simulateDate': 'reserved',
-	'simulateStaticDocuments': 'reserved',
-	'simulateStaticDocuments_addTitle': 'reserved',
-	'simulateStaticDocuments_dontRedirectPathInfoError': 'reserved',
-	'simulateStaticDocuments_noTypeIfNoTitle': 'reserved',
-	'simulateStaticDocuments_pEnc': 'reserved',
-	'simulateStaticDocuments_pEnc_onlyP': 'reserved',
 	'simulateUserGroup': 'reserved',
 	'singlePid': 'reserved',
 	'site_author': 'reserved',
@@ -1272,7 +1266,7 @@ var tokenizeTypoScript = function() {
 
 			} else if (!this.inValue && this.inComment) {
 				token = readMultilineComment.call(this, ch);
-			
+
 			/*
 			} else if (this.inValue) {
 				token = nextUntilUnescaped(null) || {
@@ -1290,10 +1284,10 @@ var tokenizeTypoScript = function() {
 				token = nextUntilUnescaped(ch) || result("string", "string");
 
 			} else if (
-			   ( ch == "<" || 
+			   ( ch == "<" ||
 				   ch == ">" ||
-  				 ( ch == "=" 
-  				   && source.peek() != "<" 
+  				 ( ch == "="
+  				   && source.peek() != "<"
   				 )
 			   )
 			   && source.peek() != "\n" ) { // there must be some value behind the operator!
@@ -1451,7 +1445,7 @@ var typoscriptWords = {
 	'TSFE': 'keyword',
 	'USER': 'keyword',
 	'USER_INT': 'keyword',
-	
+
 	'userFunc': 'keyword',
 
 	'_offset': 'reserved',
@@ -2155,12 +2149,6 @@ var typoscriptWords = {
 	'showPageIdWithTitle': 'reserved',
 	'showTagFreeClasses': 'reserved',
 	'simulateDate': 'reserved',
-	'simulateStaticDocuments': 'reserved',
-	'simulateStaticDocuments_addTitle': 'reserved',
-	'simulateStaticDocuments_dontRedirectPathInfoError': 'reserved',
-	'simulateStaticDocuments_noTypeIfNoTitle': 'reserved',
-	'simulateStaticDocuments_pEnc': 'reserved',
-	'simulateStaticDocuments_pEnc_onlyP': 'reserved',
 	'simulateUserGroup': 'reserved',
 	'singlePid': 'reserved',
 	'site_author': 'reserved',
@@ -2640,7 +2628,7 @@ var tokenizeTypoScript = function() {
 
 			} else if (!this.inValue && this.inComment) {
 				token = readMultilineComment.call(this, ch);
-			
+
 			/*
 			} else if (this.inValue) {
 				token = nextUntilUnescaped(null) || {
@@ -2658,10 +2646,10 @@ var tokenizeTypoScript = function() {
 				token = nextUntilUnescaped(ch) || result("string", "string");
 
 			} else if (
-			   ( ch == "<" || 
+			   ( ch == "<" ||
 				   ch == ">" ||
-  				 ( ch == "=" 
-  				   && source.peek() != "<" 
+  				 ( ch == "="
+  				   && source.peek() != "<"
   				 )
 			   )
 			   && source.peek() != "\n" ) { // there must be some value behind the operator!

@@ -34,7 +34,7 @@
  */
 class tx_coreupdates_installsysexts extends Tx_Install_Updates_Base {
 	protected $title = 'Install Outsourced System Extensions';
-	protected $outsourcedSystemExtensions = array('info', 'perm', 'func', 'filelist', 'about', 'cshmanual', 'feedit', 'opendocs', 'simulatestatic');
+	protected $outsourcedSystemExtensions = array('info', 'perm', 'func', 'filelist', 'about', 'cshmanual', 'feedit', 'opendocs');
 
 	/**
 	 * Checks if an update is needed

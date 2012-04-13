@@ -616,7 +616,7 @@ class t3lib_softrefproc {
 			$fileChar = intval(strpos($link_param, '/'));
 			$urlChar = intval(strpos($link_param, '.'));
 
-				// Detects if a file is found in site-root (or is a 'virtual' simulateStaticDocument file!) and if so it will be treated like a normal file.
+				// Detects if a file is found in site-root and if so it will be treated like a normal file.
 			list($rootFileDat) = explode('?', rawurldecode($link_param));
 			$containsSlash = strstr($rootFileDat, '/');
 			$rFD_fI = pathinfo($rootFileDat);
