@@ -41,6 +41,7 @@ Pagetree
 
 #typo3-pagetree ul.x-tree-root-ct {
 	padding-top: 15px;
+	margin-bottom: 50px;
 }
 
 .x-tree-node a .typo3-pagetree-status,
