@@ -140,7 +140,11 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 		$this->tag->addAttribute('src', $imageSource);
 		$this->tag->addAttribute('width', $imageInfo[0]);
 		$this->tag->addAttribute('height', $imageInfo[1]);
-		if ($this->arguments['title'] === '') {
+		//the alt-attribute is mandatory to have valid html-code, therefore add it even if it is empty
+		if (empty($this->arguments['alt'])) {
+			$this->tag->addAttribute('alt', '');
+		}
+		if (empty($this->arguments['title']) && !empty($this->arguments['alt'])) {
 			$this->tag->addAttribute('title', $this->arguments['alt']);
 		}
 
