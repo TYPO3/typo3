@@ -143,9 +143,15 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 		}
 
 		if (is_array($subpages) && count($subpages) > 0) {
+			$isMountPoint = FALSE;
 			foreach ($subpages as $subpage) {
 				if (in_array($subpage['uid'], $this->hiddenRecords)) {
 					continue;
+				}
+
+					// This was the real mountpoint below the virtual root node.
+				if ($subpage['isMountPoint']) {
+					$isMountPoint = TRUE;
 				}
 
 				$subpage = t3lib_befunc::getRecordWSOL('pages', $subpage['uid'], '*', '', TRUE, TRUE);
@@ -153,13 +159,8 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 					continue;
 				}
 
-					// This was the real mountpoint below the virtual root node.
-					// Use this as mountpoint for the subpages of this page.
-				if ($subpage['isMountPoint']) {
-					$mountPoint = $subpage['uid'];
-				}
-
 				$subNode = t3lib_tree_pagetree_Commands::getNewNode($subpage, $mountPoint);
+				$subNode->setIsMountPoint($isMountPoint);
 				if ($this->nodeCounter < $this->nodeLimit) {
 					$childNodes = $this->getNodes($subNode, $mountPoint, $level + 1);
 					$subNode->setChildNodes($childNodes);
@@ -362,8 +363,10 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 				$subNode->setLabelIsEditable(FALSE);
 				if ($rootNodeIsVirtual) {
 					$subNode->setType('virtual_root');
+					$subNode->setIsDropTarget(FALSE);
 				} else {
 					$subNode->setType('pages_root');
+					$subNode->setIsDropTarget(TRUE);
 				}
 			} else {
 				if (in_array($mountPoint, $this->hiddenRecords)) {
@@ -389,7 +392,6 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 
 			$subNode->setIsMountPoint(TRUE);
 			$subNode->setDraggable(FALSE);
-			$subNode->setIsDropTarget(FALSE);
 
 			if ($searchFilter === '') {
 				$childNodes = $this->getNodes($subNode, $mountPoint);
