@@ -54,10 +54,12 @@ abstract class tx_rsaauth_abstract_backend {
 	 */
 	protected	$error = '';
 
-	/**
-	 * Creates a new key pair for the encryption.
+ 	/**
+	 * Creates a new key pair for the encryption or get's an existing one.
 	 *
-	 * @return	tx_rsaauth_keypair	A new key pair or NULL in case of error
+	 * We should create only one key pare, because the second private key overwrites the first private key, so the form with the first public key will never work
+	 *
+	 * @return	tx_rsaauth_keypair	A key pair or NULL in case of error
 	 */
 	abstract public function createNewKeyPair();
 
