@@ -835,21 +835,6 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Forces the integer $theInt into the boundaries of $min and $max. If the $theInt is 'FALSE' then the $zeroValue is applied.
-	 *
-	 * @param integer $theInt Input value
-	 * @param integer $min Lower limit
-	 * @param integer $max Higher limit
-	 * @param integer $zeroValue Default value if input is FALSE.
-	 * @return integer The input value forced into the boundaries of $min and $max
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::forceIntegerInRange() instead
-	 */
-	public static function intInRange($theInt, $min, $max = 2000000000, $zeroValue = 0) {
-		self::logDeprecatedFunction();
-		return t3lib_utility_Math::forceIntegerInRange($theInt, $min, $max, $zeroValue);
-	}
-
-	/**
 	 * Returns an integer from a three part version number, eg '4.12.3' -> 4012003
 	 *
 	 * @param string $verNumberStr Version number on format x.x.x

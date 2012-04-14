@@ -48,7 +48,7 @@ class Tx_IndexedSearch_ViewHelpers_PageBrowsingViewHelper extends Tx_Fluid_Core_
 	 * @return the content
 	 */
 	public function render($maximumNumberOfResultPages, $numberOfResults, $resultsPerPage, $currentPage = 1) {
-		$maximumNumberOfResultPages = t3lib_div::intInRange($maximumNumberOfResultPages, 1, 100, 10);
+		$maximumNumberOfResultPages = t3lib_utility_Math::forceIntegerInRange($maximumNumberOfResultPages, 1, 100, 10);
 
 		$pageCount = ceil($numberOfResults / $resultsPerPage);
 
