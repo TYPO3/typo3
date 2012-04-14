@@ -1406,7 +1406,6 @@ tt_content.menu {
 				ACT.wrapItemAndSub = <li class="csc-menu-active">|</li>
 				CUR < .ACT
 				CUR.wrapItemAndSub = <li class="csc-menu-current">|</li>
-				noBlur = 1
 			}
 		}
 
@@ -1424,7 +1423,6 @@ tt_content.menu {
 			1 = TMENU
 			1 {
 				target = {$PAGE_TARGET}
-				noBlur = 1
 				expAll = 1
 				wrap = <ul>|</ul>
 				NO = 1
@@ -1458,7 +1456,6 @@ tt_content.menu {
 				trim = 1
 				field = header
 				htmlSpecialChars = 1
-				noBlur = 1
 				wrap = <li class="csc-section">|</li>
 				typolink.parameter.field = pid
 				typolink.section.field = uid

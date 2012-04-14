@@ -188,7 +188,7 @@ class tslib_content_Media extends tslib_content_Abstract {
 		if ($renderType !== 'qt' && $renderType !== 'embed') {
 			if (isset($conf['file']) && (
 					strpos($conf['file'], '.swf') !== FALSE ||
-					(strpos($conf['file'], '://') !== FALSE) && strpos(t3lib_div::getUrl($conf['file'], 2), 'application/x-shockwave-flash') !== false)
+					(strpos($conf['file'], '://') !== FALSE) && strpos(t3lib_div::getUrl($conf['file'], 2), 'application/x-shockwave-flash') !== FALSE)
 			) {
 				$conf = array_merge((array) $conf['mimeConf.']['swfobject.'], $conf);
 				$conf[$conf['type'] . '.']['player'] = strpos($conf['file'], '://') === FALSE ? 'http://' . $conf['file'] : $conf['file'];

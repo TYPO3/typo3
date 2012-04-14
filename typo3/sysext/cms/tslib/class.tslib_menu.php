@@ -1802,11 +1802,6 @@ class tslib_tmenu extends tslib_menu {
 					$this->I['linkHREF']['title'] = $titleAttrValue;
 				}
 
-					// Setting "blurlink()" function:
-				if (!$this->mconf['noBlur'])	{
-					$this->I['linkHREF']['onFocus']='blurLink(this);';
-				}
-
 					// Make link:
 				if ($this->I['val']['RO'])	{
 					$this->I['theName'] = $this->imgNamePrefix.$this->I['uid'].$this->I['INPfix'];
@@ -2487,10 +2482,6 @@ class tslib_gmenu extends tslib_menu {
 					if (strlen($titleAttrValue))	{
 						$this->I['linkHREF']['title'] = $titleAttrValue;
 					}
-						// Setting "blurlink()" function:
-					if (!$this->mconf['noBlur'])	{
-						$this->I['linkHREF']['onFocus']='blurLink(this);';
-					}
 
 						// Set rollover
 					if ($this->result['RO'][$key] && !$this->I['noLink'])	{
@@ -2763,9 +2754,6 @@ class tslib_imgmenu extends tslib_menu {
 									}
 									if ($theValArr['imgMap.']['target']=='')	{
 										$theValArr['imgMap.']['target'] = $LD['target'];
-									}
-									if ($theValArr['imgMap.']['noBlur']=='')	{
-										$theValArr['imgMap.']['noBlur'] = $this->mconf['noBlur'];
 									}
 									if (is_array($theValArr['imgMap.']['altText.']))	{
 										$cObj =t3lib_div::makeInstance('tslib_cObj');
