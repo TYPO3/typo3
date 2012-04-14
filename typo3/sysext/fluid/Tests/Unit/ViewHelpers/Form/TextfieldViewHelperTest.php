@@ -18,7 +18,7 @@ require_once(dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php');
  * Test for the "Textfield" Form view helper
  *
  */
-class Tx_Fluid_Tests_Unit_ViewHelpers_Form_TextboxViewHelperTest extends Tx_Fluid_Tests_Unit_ViewHelpers_Form_FormFieldViewHelperBaseTestcase {
+class Tx_Fluid_Tests_Unit_ViewHelpers_Form_TextfieldViewHelperTest extends Tx_Fluid_Tests_Unit_ViewHelpers_Form_FormFieldViewHelperBaseTestcase {
 
 	/**
 	 * @var Tx_Fluid_ViewHelpers_Form_TextfieldViewHelper
