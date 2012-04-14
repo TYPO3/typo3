@@ -95,7 +95,7 @@ class Tx_Extbase_Tests_Unit_Service_CacheServiceTest extends Tx_Extbase_Tests_Un
 	/**
 	 * @test
 	 */
-	public function flushPageCacheUsesCacheManagerToFlushCacheOfSpecifiedPagesIfCachingFrameworkIsEnabled() {
+	public function flushPageCacheUsesCacheManagerToFlushCacheOfSpecifiedPages() {
 		$mockCacheFrontend = $this->getMock('t3lib_cache_frontend_Frontend');
 		$mockCacheFrontend->expects($this->at(0))->method('flushByTag')->with('pageId_1');
 		$mockCacheFrontend->expects($this->at(1))->method('flushByTag')->with('pageId_2');
@@ -103,51 +103,25 @@ class Tx_Extbase_Tests_Unit_Service_CacheServiceTest extends Tx_Extbase_Tests_Un
 
 		$GLOBALS['typo3CacheManager']->expects($this->once())->method('getCache')->with('cache_pages')->will($this->returnValue($mockCacheFrontend));
 
-		$this->cacheService->_set('useCachingFramework', TRUE);
 		$this->cacheService->_call('flushPageCache', array(1,2,3));
 	}
 
 	/**
 	 * @test
 	 */
-	public function flushPageCacheUsesCacheManagerToFlushCacheOfAllPagesIfCachingFrameworkIsEnabledAndPageIdsIsNull() {
+	public function flushPageCacheUsesCacheManagerToFlushCacheOfAllPagesIfPageIdsIsNull() {
 		$mockCacheFrontend = $this->getMock('t3lib_cache_frontend_Frontend');
 		$mockCacheFrontend->expects($this->once())->method('flush');
 
 		$GLOBALS['typo3CacheManager']->expects($this->once())->method('getCache')->with('cache_pages')->will($this->returnValue($mockCacheFrontend));
 
-		$this->cacheService->_set('useCachingFramework', TRUE);
 		$this->cacheService->_call('flushPageCache');
 	}
 
 	/**
 	 * @test
 	 */
-	public function flushPageCacheFlushesCacheOfSpecifiedPagesDirectlyIfCachingFrameworkIsDisabled() {
-		$GLOBALS['TYPO3_DB']->expects($this->once())->method('cleanIntArray')->with(array(1,2,3))->will($this->returnValue(array(3,2,1)));
-		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_DELETEquery')->with(
-			'cache_pages',
-			'page_id IN (3,2,1)'
-		);
-
-		$this->cacheService->_set('useCachingFramework', FALSE);
-		$this->cacheService->_call('flushPageCache', array(1,2,3));
-	}
-
-	/**
-	 * test
-	 */
-	public function flushPageCacheFlushesCacheOfAllPagesDirectlyIfCachingFrameworkIsDisabled() {
-		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_TRUNCATEquery')->with('cache_pages');
-
-		$this->cacheService->_set('useCachingFramework', FALSE);
-		$this->cacheService->_call('flushPageCache');
-	}
-
-	/**
-	 * @test
-	 */
-	public function flushPageSectionCacheUsesCacheManagerToFlushCacheOfSpecifiedPageSectionsIfCachingFrameworkIsEnabled() {
+	public function flushPageSectionCacheUsesCacheManagerToFlushCacheOfSpecifiedPageSections() {
 		$mockCacheFrontend = $this->getMock('t3lib_cache_frontend_Frontend');
 		$mockCacheFrontend->expects($this->at(0))->method('flushByTag')->with('pageId_1');
 		$mockCacheFrontend->expects($this->at(1))->method('flushByTag')->with('pageId_2');
@@ -155,44 +129,18 @@ class Tx_Extbase_Tests_Unit_Service_CacheServiceTest extends Tx_Extbase_Tests_Un
 
 		$GLOBALS['typo3CacheManager']->expects($this->once())->method('getCache')->with('cache_pagesection')->will($this->returnValue($mockCacheFrontend));
 
-		$this->cacheService->_set('useCachingFramework', TRUE);
 		$this->cacheService->_call('flushPageSectionCache', array(1,2,3));
 	}
 
 	/**
 	 * @test
 	 */
-	public function flushPageSectionCacheUsesCacheManagerToFlushCacheOfAllPageSectionsIfCachingFrameworkIsEnabledAndPageIdsIsNull() {
+	public function flushPageSectionCacheUsesCacheManagerToFlushCacheOfAllPageSectionsIfPageIdsIsNull() {
 		$mockCacheFrontend = $this->getMock('t3lib_cache_frontend_Frontend');
 		$mockCacheFrontend->expects($this->once())->method('flush');
 
 		$GLOBALS['typo3CacheManager']->expects($this->once())->method('getCache')->with('cache_pagesection')->will($this->returnValue($mockCacheFrontend));
 
-		$this->cacheService->_set('useCachingFramework', TRUE);
-		$this->cacheService->_call('flushPageSectionCache');
-	}
-
-	/**
-	 * @test
-	 */
-	public function flushPageSectionCacheFlushesCacheOfSpecifiedPageSectionsDirectlyIfCachingFrameworkIsDisabled() {
-		$GLOBALS['TYPO3_DB']->expects($this->once())->method('cleanIntArray')->with(array(1,2,3))->will($this->returnValue(array(3,2,1)));
-		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_DELETEquery')->with(
-			'cache_pagesection',
-			'page_id IN (3,2,1)'
-		);
-
-		$this->cacheService->_set('useCachingFramework', FALSE);
-		$this->cacheService->_call('flushPageSectionCache', array(1,2,3));
-	}
-
-	/**
-	 * test
-	 */
-	public function flushPageSectionCacheCacheFlushesCacheOfAllPageSectionsDirectlyIfCachingFrameworkIsDisabled() {
-		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_TRUNCATEquery')->with('cache_pagesection');
-
-		$this->cacheService->_set('useCachingFramework', FALSE);
 		$this->cacheService->_call('flushPageSectionCache');
 	}
 
