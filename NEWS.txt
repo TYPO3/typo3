@@ -38,6 +38,12 @@ functionality. The performance gain of this change in the frontend was minimal.
 The flag is now removed and the according extList_FE setting in localconf.php
 has no effect anymore.
 
+* Removed system extension simulatestatic
+
+The system extension to simulate static documents was removed from the core.
+@TODO: Issue #36025 must be solved and this note here adapted, otherwise the
+removal will be reverted.
+
 ===============================================================================
 Changes and Improvements
 ===============================================================================
