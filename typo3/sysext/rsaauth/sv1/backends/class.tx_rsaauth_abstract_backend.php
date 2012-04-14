@@ -55,11 +55,22 @@ abstract class tx_rsaauth_abstract_backend {
 	protected	$error = '';
 
 	/**
-	 * Creates a new key pair for the encryption.
+	 * Creates a new key pair for the encryption (if necessary).
 	 *
 	 * @return	tx_rsaauth_keypair	A new key pair or NULL in case of error
+	 * @deprecated use getKeyPair instead! Reason1: there is no need to create more than one key pare. Reason2: the second private key overwrites the first private key, so the form with the first public key will never work
 	 */
-	abstract public function createNewKeyPair();
+	public function createNewKeyPair(){
+		t3lib_div::logDeprecatedFunction();
+		return $this->getKeyPair();
+	}
+
+ 	/**
+	 * Get a key pair for the encryption.
+	 *
+	 * @return	tx_rsaauth_keypair	A key pair or null in case of error
+	 */
+	abstract public function getKeyPair();
 
 	/**
 	 * Decripts the data using the private key.

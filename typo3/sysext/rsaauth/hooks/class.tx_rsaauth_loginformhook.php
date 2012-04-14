@@ -50,7 +50,7 @@ class tx_rsaauth_loginformhook {
 				$form = '<form action="index.php" method="post" name="loginform" onsubmit="tx_rsaauth_encrypt();">';
 
 				// Generate a new key pair
-				$keyPair = $backend->createNewKeyPair();
+				$keyPair = $backend->getKeyPair();
 
 				// Save private key
 				$storage = tx_rsaauth_storagefactory::getStorage();

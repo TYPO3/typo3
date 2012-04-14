@@ -91,7 +91,7 @@ class tx_rsaauth_usersetuphook {
 					$javascriptPath . $file . '"></script>';
 			}
 			// Generate a new key pair
-			$keyPair = $backend->createNewKeyPair();
+			$keyPair = $backend->getKeyPair();
 
 			// Save private key
 			$storage = tx_rsaauth_storagefactory::getStorage();
