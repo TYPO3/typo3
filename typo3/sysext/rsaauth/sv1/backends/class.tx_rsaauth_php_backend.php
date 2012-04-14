@@ -35,37 +35,38 @@
 class tx_rsaauth_php_backend extends tx_rsaauth_abstract_backend {
 
 	/**
-	 * Creates a new public/private key pair using PHP OpenSSL extension.
+	 * Creates a new or get an existing public/private key pair using PHP OpenSSL extension.
 	 *
 	 * @return tx_rsaauth_keypair	A new key pair or NULL in case of error
-	 * @see tx_rsaauth_abstract_backend::createNewKeyPair()
+	 * @see tx_rsaauth_abstract_backend::getKeyPair()
 	 */
 	public function createNewKeyPair() {
-		$result = NULL;
-		$privateKey = @openssl_pkey_new();
-		if ($privateKey) {
-			// Create private key as string
-			$privateKeyStr = '';
-			openssl_pkey_export($privateKey, $privateKeyStr);
+		// Create result object
+		$result = t3lib_div::makeInstance('tx_rsaauth_keypair');
+		if(!$result->isReady()){
+			$privateKey = @openssl_pkey_new();
+			if ($privateKey) {
+				// Create private key as string
+				$privateKeyStr = '';
+				openssl_pkey_export($privateKey, $privateKeyStr);
 
-			// Prepare public key information
-			$exportedData = '';
-			$csr = openssl_csr_new(array(), $privateKey);
-			openssl_csr_export($csr, $exportedData, FALSE);
+				// Prepare public key information
+				$exportedData = '';
+				$csr = openssl_csr_new(array(), $privateKey);
+				openssl_csr_export($csr, $exportedData, false);
 
-			// Get public key (in fact modulus) and exponent
-			$publicKey = $this->extractPublicKeyModulus($exportedData);
-			$exponent = $this->extractExponent($exportedData);
+				// Get public key (in fact modulus) and exponent
+				$publicKey = $this->extractPublicKeyModulus($exportedData);
+				$exponent = $this->extractExponent($exportedData);
 
-			// Create result object
-			$result = t3lib_div::makeInstance('tx_rsaauth_keypair');
-			/* @var $result tx_rsaauth_keypair */
-			$result->setExponent($exponent);
-			$result->setPrivateKey($privateKeyStr);
-			$result->setPublicKey($publicKey);
+				/* @var $result tx_rsaauth_keypair */
+				$result->setExponent($exponent);
+				$result->setPrivateKey($privateKeyStr);
+				$result->setPublicKey($publicKey);
 
-			// Clean up all resources
-			openssl_free_key($privateKey);
+				// Clean up all resources
+				openssl_free_key($privateKey);
+			}
 		}
 		return $result;
 	}

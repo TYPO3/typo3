@@ -31,7 +31,7 @@
  * @package	TYPO3
  * @subpackage	tx_rsaauth
  */
-final class tx_rsaauth_keypair {
+final class tx_rsaauth_keypair implements t3lib_Singleton {
 
 	/**
 	 * RSA public exponent (3 or 0x10001)
@@ -55,6 +55,15 @@ final class tx_rsaauth_keypair {
 	protected	$publicKeyModulus = '';
 
 	/**
+	 * Check, if there is already a key pair
+	 *
+	 * @return bool
+	 */
+	public function isReady(){
+		return (strlen($this->privateKey)>0 && strlen($this->publicKeyModulus)>0);
+	}
+
+	/**
 	 * Retrieves the exponent.
 	 *
 	 * @return	string	The exponent
@@ -64,13 +73,20 @@ final class tx_rsaauth_keypair {
 	}
 
 	/**
-	 * Sets the private key
+	 * Sets the exponent if not already set
 	 *
-	 * @param	string	$privateKey	The new private key
+	 * @param	string	$exponent	The new exponent
 	 * @return	void
 	 */
 	public function setExponent($exponent) {
-		$this->exponent = $exponent;
+		if(!$this->isReady()) {
+			$this->exponent = $exponent;
+		} else {
+			throw new Exception(
+				'TYPO3 Fatal Error: tx_rsaauth_keypair::setExponent() don\'t set the exponent two times!',
+				1296062830
+			);
+		}
 	}
 
 	/**
@@ -83,13 +99,20 @@ final class tx_rsaauth_keypair {
 	}
 
 	/**
-	 * Sets the private key
+	 * Sets the private key if not already set
 	 *
 	 * @param	string	$privateKey	The new private key
 	 * @return	void
 	 */
 	public function setPrivateKey($privateKey) {
-		$this->privateKey = $privateKey;
+		if(!$this->isReady()) {
+			$this->privateKey = $privateKey;
+		} else {
+			throw new Exception(
+				'TYPO3 Fatal Error: tx_rsaauth_keypair::setPrivateKey() don\'t set the private key two times!',
+				1296062831
+			);
+		}
 	}
 
 	/**
@@ -102,13 +125,20 @@ final class tx_rsaauth_keypair {
 	}
 
 	/**
-	 * Sets the public key modulus
+	 * Sets the public key modulus if not already set
 	 *
 	 * @param	string	$publicKeyModulus	The new public key modulus
 	 * @return	void
 	 */
 	public function setPublicKey($publicKeyModulus) {
-		$this->publicKeyModulus = $publicKeyModulus;
+		if(!$this->isReady()) {
+			$this->publicKeyModulus = $publicKeyModulus;
+		} else {
+			throw new Exception(
+				'TYPO3 Fatal Error: tx_rsaauth_keypair::setPublicKey() don\'t set the public key two times!',
+				1296062832
+			);
+		}
 	}
 }
 

@@ -73,43 +73,43 @@ class tx_rsaauth_cmdline_backend extends tx_rsaauth_abstract_backend {
 	/**
 	 *
 	 * @return tx_rsaauth_keypair	A new key pair or NULL in case of error
-	 * @see tx_rsaauth_abstract_backend::createNewKeyPair()
+	 * @see tx_rsaauth_abstract_backend::getKeyPair()
 	 */
 	public function createNewKeyPair() {
-		$result = NULL;
+		$result = t3lib_div::makeInstance('tx_rsaauth_keypair');
 
-		// Create a temporary file. Security: tempnam() sets permissions to 0600
-		$privateKeyFile = tempnam($this->temporaryDirectory, uniqid());
+		if(!$result->isReady()){
+			// Create a temporary file. Security: tempnam() sets permissions to 0600
+			$privateKeyFile = tempnam($this->temporaryDirectory, uniqid());
 
-		// Generate the private key.
-		//
-		// PHP generates 1024 bit key files. We force command line version
-		// to do the same and use the F4 (0x10001) exponent. This is the most
-		// secure.
-		$command = $this->opensslPath . ' genrsa -out ' .
-			escapeshellarg($privateKeyFile) . ' 1024';
-		t3lib_utility_Command::exec($command);
+			// Generate the private key.
+			//
+			// PHP generates 1024 bit key files. We force command line version
+			// to do the same and use the F4 (0x10001) exponent. This is the most
+			// secure.
+			$command = $this->opensslPath . ' genrsa -out ' .
+				escapeshellarg($privateKeyFile) . ' 1024';
+			t3lib_utility_Command::exec($command);
 
-		// Test that we got a private key
-		$privateKey = file_get_contents($privateKeyFile);
-		if (FALSE !== strpos($privateKey, 'BEGIN RSA PRIVATE KEY')) {
-			// Ok, we got the private key. Get the modulus.
-			$command = $this->opensslPath . ' rsa -noout -modulus -in ' .
-				escapeshellarg($privateKeyFile);
-			$value = t3lib_utility_Command::exec($command);
-			if (substr($value, 0, 8) === 'Modulus=') {
-				$publicKey = substr($value, 8);
+			// Test that we got a private key
+			$privateKey = file_get_contents($privateKeyFile);
+			if (false !== strpos($privateKey, 'BEGIN RSA PRIVATE KEY')) {
+				// Ok, we got the private key. Get the modulus.
+				$command = $this->opensslPath . ' rsa -noout -modulus -in ' .
+					escapeshellarg($privateKeyFile);
+				$value = t3lib_utility_Command::exec($command);
+				if (substr($value, 0, 8) === 'Modulus=') {
+					$publicKey = substr($value, 8);
 
-				// Create a result object
-				$result = t3lib_div::makeInstance('tx_rsaauth_keypair');
-				/* @var $result tx_rsa_keypair */
-				$result->setExponent(0x10001);
-				$result->setPrivateKey($privateKey);
-				$result->setPublicKey($publicKey);
+					/* @var $result tx_rsa_keypair */
+					$result->setExponent(0x10001);
+					$result->setPrivateKey($privateKey);
+					$result->setPublicKey($publicKey);
+				}
 			}
-		}
 
-		@unlink($privateKeyFile);
+			@unlink($privateKeyFile);
+		}
 
 		return $result;
 	}
