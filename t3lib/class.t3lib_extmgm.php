@@ -1739,7 +1739,7 @@ $GLOBALS[\'TYPO3_LOADED_EXT\'] = unserialize(stripslashes(\'' . addslashes(seria
 		$extensionCacheBehaviour = self::getExtensionCacheBehaviour(TRUE);
 
 		if ($extensionCacheBehaviour) {
-			$cacheFilePrefix = 'temp_CACHED_ps' . substr(t3lib_div::shortMD5(PATH_site . '|' . $GLOBALS['TYPO_VERSION']), 0, 4);
+			$cacheFilePrefix = 'temp_CACHED_ps' . substr(t3lib_div::shortMD5(PATH_site . '|' . TYPO3_version), 0, 4);
 		}
 
 		return $cacheFilePrefix;
