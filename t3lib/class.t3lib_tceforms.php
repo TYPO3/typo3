@@ -6406,7 +6406,7 @@ class t3lib_TCEforms {
 
 			return $thumbsnail;
 		} else {
-			return nl2br(htmlspecialchars($value));
+			return nl2br(htmlspecialchars(html_entity_decode($value,ENT_QUOTES,'UTF-8')));
 		}
 	}
 

@@ -97,16 +97,16 @@ class t3lib_diff {
 			for ($a = -1; $a < count($str1Lines); $a++) {
 				if (is_array($diffResArray[$a + 1])) {
 					if (strstr($diffResArray[$a + 1]['changeInfo'], 'a')) { // a=Add, c=change, d=delete: If a, then the content is Added after the entry and we must insert the line content as well.
-						$clearBuffer .= htmlspecialchars($str1Lines[$a]) . ' ';
+						$clearBuffer .= htmlspecialchars(html_entity_decode($str1Lines[$a],ENT_QUOTES,'UTF-8')) . ' ';
 					}
 
 					$outString .= $this->addClearBuffer($clearBuffer);
 					$clearBuffer = '';
 					if (is_array($diffResArray[$a + 1]['old'])) {
-						$outString .= '<' . $wrapTag . ' class="diff-r">' . htmlspecialchars(implode(' ', $diffResArray[$a + 1]['old'])) . '</' . $wrapTag . '> ';
+						$outString .= '<' . $wrapTag . ' class="diff-r">' . htmlspecialchars(html_entity_decode(implode(' ', $diffResArray[$a + 1]['old']),ENT_QUOTES,'UTF-8')) . '</' . $wrapTag . '> ';
 					}
 					if (is_array($diffResArray[$a + 1]['new'])) {
-						$outString .= '<' . $wrapTag . ' class="diff-g">' . htmlspecialchars(implode(' ', $diffResArray[$a + 1]['new'])) . '</' . $wrapTag . '> ';
+						$outString .= '<' . $wrapTag . ' class="diff-g">' . htmlspecialchars(html_entity_decode(implode(' ', $diffResArray[$a + 1]['new']),ENT_QUOTES,'UTF-8')) . '</' . $wrapTag . '> ';
 					}
 					$chInfParts = explode(',', $diffResArray[$a + 1]['changeInfo']);
 					if (!strcmp($chInfParts[0], $a + 1)) {
@@ -116,7 +116,7 @@ class t3lib_diff {
 						} // Security that $a is not set lower than current for some reason...
 					}
 				} else {
-					$clearBuffer .= htmlspecialchars($str1Lines[$a]) . ' ';
+					$clearBuffer .= htmlspecialchars(html_entity_decode($str1Lines[$a],ENT_QUOTES,'UTF-8')) . ' ';
 				}
 			}
 			$outString .= $this->addClearBuffer($clearBuffer, 1);
