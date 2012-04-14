@@ -59,6 +59,16 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	 */
 	protected $querySettings;
 
+	/**
+	 * @var Tx_Extbase_Persistence_BackendInterface
+	 */
+	protected $mockBackend;
+
+	/**
+	 * @var Tx_Extbase_Persistence_Session
+	 */
+	protected $mockSession;
+
 	public function setUp() {
 		$this->mockIdentityMap = $this->getMock('Tx_Extbase_Persistence_IdentityMap');
 		$this->mockQueryFactory = $this->getMock('Tx_Extbase_Persistence_QueryFactory');
@@ -67,11 +77,15 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 		$this->mockQuery->expects($this->any())->method('getQuerySettings')->will($this->returnValue($this->mockQuerySettings));
 		$this->mockQueryFactory->expects($this->any())->method('create')->will($this->returnValue($this->mockQuery));
 		$this->mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
+		$this->mockBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
+		$this->mockSession = $this->getMock('Tx_Extbase_Persistence_Session');
 		$this->mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		$this->repository = $this->getAccessibleMock('Tx_Extbase_Persistence_Repository', array('dummy'), array($this->mockObjectManager));
 		$this->repository->injectIdentityMap($this->mockIdentityMap);
 		$this->repository->injectQueryFactory($this->mockQueryFactory);
 		$this->repository->injectPersistenceManager($this->mockPersistenceManager);
+		$this->repository->injectBackend($this->mockBackend);
+		$this->repository->injectSession($this->mockSession);
 	}
 
 	/**
@@ -250,14 +264,8 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 		$existingObject = $this->getMock('Tx_Extbase_DomainObject_DomainObjectInterface');
 		$newObject = $this->getMock('Tx_Extbase_DomainObject_DomainObjectInterface');
 
-		$mockBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
-		$this->mockPersistenceManager->expects($this->once())->method('getBackend')->will($this->returnValue($mockBackend));
-		$mockBackend->expects($this->once())->method('getIdentifierByObject')->with($existingObject)->will($this->returnValue('123'));
-		$mockBackend->expects($this->once())->method('replaceObject')->with($existingObject, $newObject);
-
-		$mockSession = $this->getMock('Tx_Extbase_Persistence_Session');
-		$this->mockPersistenceManager->expects($this->once())->method('getSession')->will($this->returnValue($mockSession));
-
+		$this->mockPersistenceManager->expects($this->once())->method('getIdentifierByObject')->with($existingObject)->will($this->returnValue('123'));
+		$this->mockBackend->expects($this->once())->method('replaceObject')->with($existingObject, $newObject);
 		$this->repository->_set('objectType', get_class($newObject));
 		$this->repository->replace($existingObject, $newObject);
 	}
@@ -278,18 +286,11 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 		$removedObjects = new SplObjectStorage;
 		$removedObjects->attach($existingObject);
 
-		$mockBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
-		$this->mockPersistenceManager->expects($this->once())->method('getBackend')->will($this->returnValue($mockBackend));
-		$mockBackend->expects($this->once())->method('getIdentifierByObject')->with($existingObject)->will($this->returnValue('123'));
-		$mockBackend->expects($this->once())->method('replaceObject')->with($existingObject, $newObject);
-
-		$mockSession = $this->getMock('Tx_Extbase_Persistence_Session');
-		$this->mockPersistenceManager->expects($this->once())->method('getSession')->will($this->returnValue($mockSession));
-
+		$this->mockPersistenceManager->expects($this->once())->method('getIdentifierByObject')->with($existingObject)->will($this->returnValue('123'));
+		$this->mockBackend->expects($this->once())->method('replaceObject')->with($existingObject, $newObject);
 		$this->repository->_set('objectType', get_class($newObject));
 		$this->repository->_set('removedObjects', $removedObjects);
 		$this->repository->replace($existingObject, $newObject);
-
 		$this->assertFalse($removedObjects->contains($existingObject));
 		$this->assertTrue($removedObjects->contains($newObject));
 	}
@@ -309,18 +310,11 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 		$addedObjects = new SplObjectStorage;
 		$addedObjects->attach($existingObject);
 
-		$mockBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
-		$this->mockPersistenceManager->expects($this->once())->method('getBackend')->will($this->returnValue($mockBackend));
-		$mockBackend->expects($this->once())->method('getIdentifierByObject')->with($existingObject)->will($this->returnValue(NULL));
-		$mockBackend->expects($this->never())->method('replaceObject');
-
-		$mockSession = $this->getMock('Tx_Extbase_Persistence_Session');
-		$this->mockPersistenceManager->expects($this->once())->method('getSession')->will($this->returnValue($mockSession));
-
+		$this->mockPersistenceManager->expects($this->once())->method('getIdentifierByObject')->with($existingObject)->will($this->returnValue(NULL));
+		$this->mockBackend->expects($this->never())->method('replaceObject');
 		$this->repository->_set('objectType', get_class($newObject));
 		$this->repository->_set('addedObjects', $addedObjects);
 		$this->repository->replace($existingObject, $newObject);
-
 		$this->assertFalse($addedObjects->contains($existingObject));
 		$this->assertTrue($addedObjects->contains($newObject));
 	}
