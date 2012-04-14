@@ -33,15 +33,19 @@
  * @subpackage	tx_rsaauth
  */
 class tx_rsaauth_php_backend extends tx_rsaauth_abstract_backend {
-
 	/**
-	 * Creates a new public/private key pair using PHP OpenSSL extension.
+	 * Creates a new or gets an existing public/private key pair using PHP OpenSSL extension.
 	 *
-	 * @return tx_rsaauth_keypair	A new key pair or NULL in case of error
+	 * @return tx_rsaauth_keypair|NULL A new key pair or NULL in case of error
 	 * @see tx_rsaauth_abstract_backend::createNewKeyPair()
 	 */
 	public function createNewKeyPair() {
-		$result = NULL;
+		/** @var $keyPair tx_rsaauth_keypair */
+		$keyPair = t3lib_div::makeInstance('tx_rsaauth_keypair');
+		if ($keyPair->isReady()) {
+			return $keyPair;
+		}
+
 		$privateKey = @openssl_pkey_new();
 		if ($privateKey) {
 			// Create private key as string
@@ -57,17 +61,17 @@ class tx_rsaauth_php_backend extends tx_rsaauth_abstract_backend {
 			$publicKey = $this->extractPublicKeyModulus($exportedData);
 			$exponent = $this->extractExponent($exportedData);
 
-			// Create result object
-			$result = t3lib_div::makeInstance('tx_rsaauth_keypair');
-			/* @var $result tx_rsaauth_keypair */
-			$result->setExponent($exponent);
-			$result->setPrivateKey($privateKeyStr);
-			$result->setPublicKey($publicKey);
+			$keyPair->setExponent($exponent);
+			$keyPair->setPrivateKey($privateKeyStr);
+			$keyPair->setPublicKey($publicKey);
 
 			// Clean up all resources
 			openssl_free_key($privateKey);
+		} else {
+			$keyPair = NULL;
 		}
-		return $result;
+
+		return $keyPair;
 	}
 
 	/**

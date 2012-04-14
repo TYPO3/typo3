@@ -31,8 +31,7 @@
  * @package	TYPO3
  * @subpackage	tx_rsaauth
  */
-final class tx_rsaauth_keypair {
-
+final class tx_rsaauth_keypair implements t3lib_Singleton {
 	/**
 	 * RSA public exponent (3 or 0x10001)
 	 *
@@ -43,16 +42,25 @@ final class tx_rsaauth_keypair {
 	/**
 	 * The private key
 	 *
-	 * @var	string
+	 * @var string
 	 */
-	protected	$privateKey = '';
+	protected $privateKey = '';
 
 	/**
 	 * The public key modulus
 	 *
-	 * @var	string
+	 * @var string
 	 */
-	protected	$publicKeyModulus = '';
+	protected $publicKeyModulus = '';
+
+	/**
+	 * Checks if there is already a key pair.
+	 *
+	 * @return boolean
+	 */
+	public function isReady(){
+		return ($this->privateKey !== '' && $this->publicKeyModulus !== '');
+	}
 
 	/**
 	 * Retrieves the exponent.
@@ -64,12 +72,18 @@ final class tx_rsaauth_keypair {
 	}
 
 	/**
-	 * Sets the private key
+	 * Sets the exponent.
 	 *
-	 * @param	string	$privateKey	The new private key
-	 * @return	void
+	 * Note: This method must not be called more than one time.
+	 *
+	 * @param string $exponent the new exponent
+	 * @return void
 	 */
 	public function setExponent($exponent) {
+		if ($this->isReady()) {
+			throw new BadMethodCallException('setExponent() must not be called more than one time.', 1296062830);
+		}
+
 		$this->exponent = $exponent;
 	}
 
@@ -83,12 +97,18 @@ final class tx_rsaauth_keypair {
 	}
 
 	/**
-	 * Sets the private key
+	 * Sets the private key.
 	 *
-	 * @param	string	$privateKey	The new private key
-	 * @return	void
+	 * Note: This method must not be called more than one time.
+	 *
+	 * @param string $privateKey The new private key
+	 * @return void
 	 */
 	public function setPrivateKey($privateKey) {
+		if ($this->isReady()) {
+			throw new BadMethodCallException('setPrivateKey() must not be called more than one time.', 1296062831);
+		}
+
 		$this->privateKey = $privateKey;
 	}
 
@@ -102,12 +122,18 @@ final class tx_rsaauth_keypair {
 	}
 
 	/**
-	 * Sets the public key modulus
+	 * Sets the public key modulus.
 	 *
-	 * @param	string	$publicKeyModulus	The new public key modulus
+	 * Note: This method must not be called more than one time.
+	 *
+	 * @param string $publicKeyModulus The new public key modulus
 	 * @return	void
 	 */
 	public function setPublicKey($publicKeyModulus) {
+		if ($this->isReady()) {
+			throw new BadMethodCallException('setPublicKey() must not be called more than one time.', 1296062832);
+		}
+
 		$this->publicKeyModulus = $publicKeyModulus;
 	}
 }

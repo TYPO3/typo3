@@ -45,7 +45,6 @@
  * @subpackage	tx_rsaauth
  */
 abstract class tx_rsaauth_abstract_backend {
-
 	/**
 	 * Error message for the last operation. Derieved classes should always set
 	 * or clear this variable inside the createNewKeyPair() or decypt().
@@ -54,10 +53,13 @@ abstract class tx_rsaauth_abstract_backend {
 	 */
 	protected	$error = '';
 
-	/**
-	 * Creates a new key pair for the encryption.
+ 	/**
+	 * Creates a new key pair for the encryption or gets an existing one.
 	 *
-	 * @return	tx_rsaauth_keypair	A new key pair or NULL in case of error
+	 * We should create only one key pair because the second private key overwrites the first private key. So the form with the
+	 * first public key would never work.
+	 *
+	 * @return tx_rsaauth_keypair A key pair or NULL in case of error
 	 */
 	abstract public function createNewKeyPair();
 

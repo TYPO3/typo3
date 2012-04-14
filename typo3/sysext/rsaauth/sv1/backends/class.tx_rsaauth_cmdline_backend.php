@@ -22,7 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * This class contains a OpenSSL backend for the TYPO3 RSA authentication
  * service. It uses shell version of OpenSSL to perform tasks. See class
@@ -33,7 +32,6 @@
  * @subpackage	tx_rsaauth
  */
 class tx_rsaauth_cmdline_backend extends tx_rsaauth_abstract_backend {
-
 	/**
 	 * A path to the openssl binary or FALSE if the binary does not exist
 	 *
@@ -76,7 +74,11 @@ class tx_rsaauth_cmdline_backend extends tx_rsaauth_abstract_backend {
 	 * @see tx_rsaauth_abstract_backend::createNewKeyPair()
 	 */
 	public function createNewKeyPair() {
-		$result = NULL;
+		/** @var $keyPair tx_rsaauth_keypair */
+		$keyPair = t3lib_div::makeInstance('tx_rsaauth_keypair');
+		if ($keyPair->isReady()) {
+			return $keyPair;
+		}
 
 		// Create a temporary file. Security: tempnam() sets permissions to 0600
 		$privateKeyFile = tempnam($this->temporaryDirectory, uniqid());
@@ -100,18 +102,17 @@ class tx_rsaauth_cmdline_backend extends tx_rsaauth_abstract_backend {
 			if (substr($value, 0, 8) === 'Modulus=') {
 				$publicKey = substr($value, 8);
 
-				// Create a result object
-				$result = t3lib_div::makeInstance('tx_rsaauth_keypair');
-				/* @var $result tx_rsa_keypair */
-				$result->setExponent(0x10001);
-				$result->setPrivateKey($privateKey);
-				$result->setPublicKey($publicKey);
+				$keyPair->setExponent(0x10001);
+				$keyPair->setPrivateKey($privateKey);
+				$keyPair->setPublicKey($publicKey);
 			}
+		} else {
+			$keyPair = NULL;
 		}
 
 		@unlink($privateKeyFile);
 
-		return $result;
+		return $keyPair;
 	}
 
 	/**
