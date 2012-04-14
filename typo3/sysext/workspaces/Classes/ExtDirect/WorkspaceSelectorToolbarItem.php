@@ -117,10 +117,10 @@ class Tx_Workspaces_ExtDirect_WorkspaceSelectorToolbarItem implements backend_to
 					$icon = $stateCheckedIcon;
 				}
 
-				$workspaceMenu[] = '<li' . $selected . '>' . $icon .
-					' <a href="backend.php?changeWorkspace=' .
+				$workspaceMenu[] = '<li' . $selected . '>' .
+					'<a href="backend.php?changeWorkspace=' .
 					intval($workspaceId) . '" id="ws-' . intval($workspaceId) .
-					'" class="ws">' . $label . '</a></li>';
+					'" class="ws">' . $icon . ' ' . htmlspecialchars($label) . '</a></li>';
 			}
 		} else {
 			$workspaceMenu[] = '<li>' . $stateUncheckedIcon . ' ' .
