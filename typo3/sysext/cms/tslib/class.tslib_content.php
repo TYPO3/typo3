@@ -3167,41 +3167,39 @@ class tslib_cObj {
 	 */
 	public function stdWrap_cacheStore($content = '', $conf = array()) {
 		if (!empty($conf['cache.']['key'])) {
-			if (defined('TYPO3_UseCachingFramework') && TYPO3_UseCachingFramework) {
-				$cacheFrontend = $GLOBALS['typo3CacheManager']->getCache('cache_hash'); /* @var $cacheFrontend t3lib_cache_frontend_VariableFrontend */
-				if ($cacheFrontend) {
+			$cacheFrontend = $GLOBALS['typo3CacheManager']->getCache('cache_hash'); /* @var $cacheFrontend t3lib_cache_frontend_VariableFrontend */
+			if ($cacheFrontend) {
 
-					$tags = !empty($conf['cache.']['tags']) ? t3lib_div::trimExplode(',', $conf['cache.']['tags']) : array();
+				$tags = !empty($conf['cache.']['tags']) ? t3lib_div::trimExplode(',', $conf['cache.']['tags']) : array();
 
-					if (strtolower($conf['cache.']['lifetime']) == 'unlimited') {
-						$lifetime = 0; // unlimited
-					} elseif (strtolower($conf['cache.']['lifetime']) == 'default') {
-						$lifetime = NULL; // default lifetime
-					} elseif (intval($conf['cache.']['lifetime']) > 0) {
-						$lifetime = intval($conf['cache.']['lifetime']); // lifetime in seconds
-					} else {
-						$lifetime = NULL; // default lifetime
-					}
-
-					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore'])) {
-						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore'] as $_funcRef) {
-							$params = array(
-								'key' => $conf['cache.']['key'],
-								'content' => $content,
-								'lifetime' => $lifetime,
-								'tags' => $tags
-							);
-							t3lib_div::callUserFunction($_funcRef, $params, $this);
-						}
-					}
-
-					$cacheFrontend->set(
-						$conf['cache.']['key'],
-						$content,
-						$tags,
-						$lifetime
-					);
+				if (strtolower($conf['cache.']['lifetime']) == 'unlimited') {
+					$lifetime = 0; // unlimited
+				} elseif (strtolower($conf['cache.']['lifetime']) == 'default') {
+					$lifetime = NULL; // default lifetime
+				} elseif (intval($conf['cache.']['lifetime']) > 0) {
+					$lifetime = intval($conf['cache.']['lifetime']); // lifetime in seconds
+				} else {
+					$lifetime = NULL; // default lifetime
 				}
+
+				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore'])) {
+					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore'] as $_funcRef) {
+						$params = array(
+							'key' => $conf['cache.']['key'],
+							'content' => $content,
+							'lifetime' => $lifetime,
+							'tags' => $tags
+						);
+						t3lib_div::callUserFunction($_funcRef, $params, $this);
+					}
+				}
+
+				$cacheFrontend->set(
+					$conf['cache.']['key'],
+					$content,
+					$tags,
+					$lifetime
+				);
 			}
 		}
 		return $content;

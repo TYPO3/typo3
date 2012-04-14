@@ -154,7 +154,6 @@ $TYPO3_CONF_VARS = array(
 				),
 			),
 		),
-		'useCachingFramework' => -1,	// <i>Obsolete setting</i>. Please remove manually from <tt>localconf.php</tt>, if it is defined there. Caching Framework is now always enabled.
 		'additionalAllowedClassPrefixes' => NULL,	// Class names in TYPO3 must usually start with tx_, Tx, user_ or User_. This setting allows to register additional prefixes in a comma separated list.
 		'displayErrors' => -1,					// <p>Integer (-1, 0, 1, 2). Configures whether PHP errors should be displayed.</p><dl><dt>0</dt><dd>Do not display any PHP error messages. Overrides the value of "exceptionalErrors" and sets it to 0 (= no errors are turned into exceptions), the configured "productionExceptionHandler" is used as exception handler</dd><dt>1</dt><dd>Display error messages with the registered errorhandler. The configured "debugExceptionHandler" is used as exception handler</dd><dt>2</dt><dd>Display errors only if client matches <a href="#SYS-devIPmask">[SYS][devIPmask]</a>. If devIPmask matches the users IP address  the configured "debugExceptionHandler" is used  for exceptions, if not "productionExceptionHandler" will be used</dd><dt>-1</dt><dd>Default setting. With this option, you can override the PHP setting "display_errors". If devIPmask matches the users IP address  the configured "debugExceptionHandler" is used  for exceptions, if not "productionExceptionHandler" will be used.</dd></dl>
 		'productionExceptionHandler'  => 't3lib_error_ProductionExceptionHandler',	// String: Classname to handle exceptions that might happen in the TYPO3-code. Leave empty to disable exception handling. Default: "t3lib_error_ProductionExceptionHandler". This exception handler displays a nice error message when something went wrong. The error message is logged to the configured logs. Note: The configured "productionExceptionHandler" is used if displayErrors is set to "0" or to "-1" and devIPmask doesn't match the users IP.
@@ -843,19 +842,6 @@ if (isset($TYPO3_CONF_VARS['SYS']['setDBinit']) &&
 	$TYPO3_CONF_VARS['SYS']['setDBinit'] = 'SET NAMES utf8;';
 }
 
-
-
-	// If this value is not -1, then the setting has been modified in localconf.php
-if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework'] !== -1) {
-		// Deprecation log since 4.6, can be removed in 4.8. Checks if obsolete useCachingFramework is set
-	t3lib_div::deprecationLog('Setting $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'useCachingFramework\'] is obsolete since TYPO3 4.6 and should be removed from localconf.php.');
-}
-
-	// Force enabled caching framework
-	// @deprecated, constant can be removed in 4.8
-define('TYPO3_UseCachingFramework', TRUE);
-	// @deprecated, can be removed in 4.8
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework'] = TRUE;
 
 
 /**
