@@ -16,7 +16,7 @@
  */
 class Tx_Fluid_View_Fixture_TransparentSyntaxTreeNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 	public $variableContainer;
-	
+
 	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
 	}
 }
