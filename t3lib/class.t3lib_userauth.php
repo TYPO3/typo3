@@ -1156,7 +1156,10 @@ abstract class t3lib_userAuth {
 			$loginData['uident'] = t3lib_div::_POST($this->formfield_uident);
 			$loginData['chalvalue'] = t3lib_div::_POST($this->formfield_chalvalue);
 		}
-		$loginData = $this->processLoginData($loginData);
+			// Only process the login data if a login is requested
+		if ($loginData['status'] === 'login') {
+			$loginData = $this->processLoginData($loginData);
+		}
 
 		return $loginData;
 	}
@@ -1165,9 +1168,9 @@ abstract class t3lib_userAuth {
 	 * Processes Login data submitted by a form or params depending on the
 	 * passwordTransmissionStrategy
 	 *
-	 * @param	array		login data array
-	 * @param	string		Alternative passwordTransmissionStrategy. Used when authentication services wants to override the default.
-	 * @return	array		processed login data array
+	 * @param array $loginData login data array
+	 * @param string $passwordTransmissionStrategy Alternative passwordTransmissionStrategy. Used when authentication services wants to override the default.
+	 * @return array
 	 * @internal
 	 */
 	function processLoginData($loginData, $passwordTransmissionStrategy = '') {
