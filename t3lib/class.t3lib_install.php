@@ -46,7 +46,8 @@ class t3lib_install {
 
 	var $dbUpdateCheckboxPrefix = 'TYPO3_INSTALL[database_update]'; // Prefix for checkbox fields when updating database.
 	var $localconf_addLinesOnly = 0; // If this is set, modifications to localconf.php is done by adding new lines to the array only. If unset, existing values are recognized and changed.
-	var $localconf_editPointToken = 'INSTALL SCRIPT EDIT POINT TOKEN - all lines after this points may be changed by the install script!'; // If set and addLinesOnly is disabled, lines will be change only if they are after this token (on a single line!) in the file
+	protected $localconf_startEditPointToken = '## INSTALL SCRIPT EDIT POINT TOKEN - all lines after this points may be changed by the install script!'; // If set and addLinesOnly is disabled, lines will be change only if they are after this token (on a single line!) in the file
+	protected $localconf_endEditPointToken = '## INSTALL SCRIPT EDIT END POINT TOKEN - all lines before this points may be changed by the install script!';
 	var $allowUpdateLocalConf = 0; // If TRUE, this class will allow the user to update the localconf.php file. Is set TRUE in the init.php file.
 	var $backPath = '../'; // Backpath (used for icons etc.)
 
@@ -92,10 +93,11 @@ class t3lib_install {
 			// Initialize:
 		$found = 0;
 		$this->touchedLine = '';
-		$commentKey = '## ';
-		$inArray = in_array($commentKey . $this->localconf_editPointToken, $line_array);
-		$tokenSet = ($this->localconf_editPointToken && !$inArray); // Flag is set if the token should be set but is not yet...
-		$stopAtToken = ($this->localconf_editPointToken && $inArray);
+		$inArray = in_array($this->localconf_startEditPointToken, $line_array);
+		$tokenSet = ($this->localconf_startEditPointToken && !$inArray); // Flag is set if the token should be set but is not yet...
+		$stopAtToken = ($this->localconf_startEditPointToken && $inArray);
+		$hasEndToken = in_array($this->localconf_endEditPointToken, $line_array);
+		$respectEndToken = $hasEndToken;
 		$comment = ' Modified or inserted by ' . $this->updateIdentity . '.';
 		$replace = array('["', '"]');
 		$search = array('[\'', '\']');
@@ -106,7 +108,14 @@ class t3lib_install {
 			$line_array = array_reverse($line_array);
 			foreach ($line_array as $k => $v) {
 				$v2 = trim($v);
-				if ($stopAtToken && !strcmp($v2, $commentKey . $this->localconf_editPointToken)) {
+				if ($respectEndToken) {
+					if (strcmp($v2, $this->localconf_endEditPointToken)) {
+						$respectEndToken = FALSE;
+					} else {
+						continue;
+					}
+				}
+				if ($stopAtToken && !strcmp($v2, $this->localconf_startEditPointToken)) {
 					break;
 				} // If stopAtToken and token found, break out of the loop..
 				if (!strcmp(substr($v2, 0, strlen($variable . ' ')), $variable . ' ')) {
@@ -144,13 +153,17 @@ class t3lib_install {
 		}
 		if (!$found) {
 			if ($tokenSet) {
-				$line_array[] = $commentKey . $this->localconf_editPointToken;
+				$line_array[] = $this->localconf_startEditPointToken;
 				$line_array[] = '';
 			}
 			if ($quoteValue) {
 				$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
 			}
 			$line_array[] = $variable . " = " . $value . ";	// " . $comment;
+			if (!$hasEndToken) {
+				$line_array[] = '';
+				$line_array[] = $this->localconf_endEditPointToken;
+			}
 			$this->touchedLine = -1;
 		}
 		if ($variable == '$typo_db_password') {
@@ -172,9 +185,9 @@ class t3lib_install {
 	 */
 	public function setArrayValueInLocalconfFile(array &$lines, $variable, array $value) {
 		$commentKey = '## ';
-		$inArray = in_array($commentKey . $this->localconf_editPointToken, $lines);
-		$tokenSet = $this->localconf_editPointToken && !$inArray; // Flag is set if the token should be set but is not yet
-		$stopAtToken = $this->localconf_editPointToken && $inArray;
+		$inArray = in_array($commentKey . $this->localconf_startEditPointToken, $lines);
+		$tokenSet = $this->localconf_startEditPointToken && !$inArray; // Flag is set if the token should be set but is not yet
+		$stopAtToken = $this->localconf_startEditPointToken && $inArray;
 		$comment = 'Modified or inserted by ' . $this->updateIdentity . '.';
 		$format = "%s = %s;\t// " . $comment;
 
@@ -183,7 +196,7 @@ class t3lib_install {
 		if (!($this->localconf_addLinesOnly || $tokenSet)) {
 			for ($i = count($lines) - 1; $i > 0; $i--) {
 				$line = trim($lines[$i]);
-				if ($stopAtToken && t3lib_div::isFirstPartOfStr($line, $this->localconf_editPointToken)) {
+				if ($stopAtToken && t3lib_div::isFirstPartOfStr($line, $this->localconf_startEditPointToken)) {
 					break;
 				}
 				if (t3lib_div::isFirstPartOfStr($line, '?>')) {
