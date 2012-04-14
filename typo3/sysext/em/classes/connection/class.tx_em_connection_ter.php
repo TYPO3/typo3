@@ -109,12 +109,15 @@ class tx_em_Connection_Ter {
 	function updateTranslation($extKey, $lang, $mirrorURL) {
 		$l10n = $this->fetchTranslation($extKey, $lang, $mirrorURL);
 		if (is_array($l10n)) {
-			$file = PATH_site . 'typo3temp/' . $extKey . '-l10n-' . $lang . '.zip';
-			$path = 'l10n/' . $lang;
+			$file = PATH_site . 'typo3temp' . DIRECTORY_SEPARATOR . $extKey . '-l10n-' . $lang . '.zip';
+			$path = 'l10n' . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR;
 			if (!is_dir(PATH_typo3conf . $path)) {
 				t3lib_div::mkdir_deep(PATH_typo3conf, $path);
 			}
 			t3lib_div::writeFile($file, $l10n[0]);
+
+			t3lib_div::rmdir(PATH_typo3conf . $path . $extKey, TRUE);
+
 			if (tx_em_Tools::unzip($file, PATH_typo3conf . $path)) {
 				t3lib_div::fixPermissions(PATH_typo3conf . $path, TRUE);
 				return TRUE;
