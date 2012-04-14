@@ -162,11 +162,11 @@ var WorkspaceMenu = Class.create({
 		var stateInactiveClass = 't3-icon t3-icon-empty t3-icon-empty-empty t3-icon-empty';
 
 		// remove "selected" class and checkmark
-		$$('#workspace-selector-menu li.selected span.t3-icon-status-checked')[0].removeClassName(stateActiveClass).addClassName(stateInactiveClass);
+		$$('#workspace-selector-menu li.selected a span.t3-icon-status-checked')[0].removeClassName(stateActiveClass).addClassName(stateInactiveClass);
 		$$('#workspace-selector-menu li.selected')[0].removeClassName('selected');
 
 		// add "selected" class and checkmark
-		$$('#ws-' + id)[0].previous().removeClassName(stateInactiveClass).addClassName(stateActiveClass);
+		$$('#ws-' + id)[0].down().removeClassName(stateInactiveClass).addClassName(stateActiveClass);
 		$$('#ws-' + id)[0].up().addClassName('selected');
 	},
 
