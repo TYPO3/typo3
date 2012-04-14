@@ -474,7 +474,7 @@ class SC_index {
 			// Compile full copyright notice:
 		$copyrightNotice = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">'.
 					'<img src="' . $loginImageSmall . '" alt="' . $GLOBALS['LANG']->getLL('typo3.logo') . '" align="left" />' .
-					$GLOBALS['LANG']->getLL('typo3.cms') . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']?' ' . $GLOBALS['LANG']->getLL('version.short') . ' ' . htmlspecialchars($GLOBALS['TYPO_VERSION']):'') .
+					$GLOBALS['LANG']->getLL('typo3.cms') . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']?' ' . $GLOBALS['LANG']->getLL('version.short') . ' ' . htmlspecialchars(TYPO3_version):'') .
 					'</a>. ' .
 					$GLOBALS['LANG']->getLL('copyright') . ' &copy; ' . TYPO3_copyright_year . ' Kasper Sk&#229;rh&#248;j. ' . $GLOBALS['LANG']->getLL('extension.copyright') . ' ' .
 					sprintf($GLOBALS['LANG']->getLL('details.link'), '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . TYPO3_URL_GENERAL . '</a>') . '<br /> ' .
