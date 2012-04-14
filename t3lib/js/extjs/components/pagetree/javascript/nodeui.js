@@ -51,14 +51,19 @@ TYPO3.Components.PageTree.PageTreeNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
         var cb = Ext.isBoolean(a.checked),
             nel,
             href = this.getHref(a.href),
+			nodeStyles = '',
 			rootline = '';
 
 			// TYPO3 modification to show the readable rootline above the user mounts
 		if (a.readableRootline !== '') {
-			var rootline = '<li class="x-tree-node-readableRootline">' + a.readableRootline + '</li>';
+			rootline = '<li class="x-tree-node-readableRootline">' + a.readableRootline + '</li>';
 		}
 
-		var buf = [rootline,'<li class="x-tree-node"><div ext:tree-node-id="',n.id,'" class="x-tree-node-el x-tree-node-leaf x-unselectable ', a.cls,'" unselectable="on">',
+		if (a.nodeData.backgroundColor) {
+			nodeStyles = 'style="background-color: ' + a.nodeData.backgroundColor + '"';
+		}
+
+		var buf = [rootline,'<li class="x-tree-node" ' + nodeStyles + '><div ext:tree-node-id="',n.id,'" class="x-tree-node-el x-tree-node-leaf x-unselectable ', a.cls,'" unselectable="on">',
             '<span class="x-tree-node-indent">',this.indentMarkup,"</span>",
             '<img alt="" src="', this.emptyIcon, '" class="x-tree-ec-icon x-tree-elbow" />',
 //            '<img alt="" src="', a.icon || this.emptyIcon, '" class="x-tree-node-icon',(a.icon ? " x-tree-node-inline-icon" : ""),(a.iconCls ? " "+a.iconCls : ""),'" unselectable="on" />',
