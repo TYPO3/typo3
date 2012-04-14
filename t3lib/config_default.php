@@ -732,7 +732,7 @@ if (TYPO3_MODE === 'BE') {
 $T3_VAR = array();	// Initialize.
 
 	// TYPO3 version
-define('TYPO3_version', '4.7-dev');
+define('TYPO3_version', '6.0-dev');
 define('TYPO3_branch', '6.0');
 define('TYPO3_copyright_year', '1998-2012');
 
