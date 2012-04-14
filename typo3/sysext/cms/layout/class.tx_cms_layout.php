@@ -1749,7 +1749,7 @@ class tx_cms_layout extends recordList {
 	function renderText($input) {
 		$input = strip_tags($input);
 		$input = t3lib_div::fixed_lgd_cs($input, 1500);
-		return nl2br(htmlspecialchars(trim($this->wordWrapper($input))));
+		return nl2br(htmlspecialchars(html_entity_decode(trim($this->wordWrapper($input)),ENT_QUOTES,'UTF-8')));
 	}
 
 	/**
