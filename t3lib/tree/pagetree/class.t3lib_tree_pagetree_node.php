@@ -69,6 +69,32 @@ class t3lib_tree_pagetree_Node extends t3lib_tree_extdirect_Node {
 	protected $isMountPoint = FALSE;
 
 	/**
+	 * Background color for the node
+	 *
+	 * @var string
+	 */
+	protected $backgroundColor = '';
+
+	/**
+	 * Sets the background color
+	 *
+	 * @param string $backgroundColor
+	 * @return void
+	 */
+	public function setBackgroundColor($backgroundColor) {
+		$this->backgroundColor = $backgroundColor;
+	}
+
+	/**
+	 * Returns the background color
+	 *
+	 * @return string
+	 */
+	public function getBackgroundColor() {
+		return $this->backgroundColor;
+	}
+
+	/**
 	 * Set's the original id of the element
 	 *
 	 * @param int $workspaceId
@@ -327,6 +353,7 @@ class t3lib_tree_pagetree_Node extends t3lib_tree_extdirect_Node {
 		$arrayRepresentation['nodeData']['mountPoint'] = $this->getMountPoint();
 		$arrayRepresentation['nodeData']['workspaceId'] = $this->getWorkspaceId();
 		$arrayRepresentation['nodeData']['isMountPoint'] = $this->isMountPoint();
+		$arrayRepresentation['nodeData']['backgroundColor'] = htmlspecialchars($this->getBackgroundColor());
 		$arrayRepresentation['nodeData']['serializeClassName'] = get_class($this);
 
 		return $arrayRepresentation;
@@ -344,6 +371,7 @@ class t3lib_tree_pagetree_Node extends t3lib_tree_extdirect_Node {
 		$this->setMountPoint($data['mountPoint']);
 		$this->setReadableRootline($data['readableRootline']);
 		$this->setIsMountPoint($data['isMountPoint']);
+		$this->setBackgroundColor($data['backgroundColor']);
 	}
 }
 
