@@ -335,6 +335,10 @@ class Tx_Extbase_Tests_Unit_Persistence_Mapper_DataMapFactoryTest extends Tx_Ext
 	 */
 	public function buildDataMapThrowsExceptionIfClassNameIsNotKnown() {
 		$mockDataMapFactory = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMapFactory'), array('getControlSection'), array(), '', FALSE);
+		$cacheMock = $this->getMock('t3lib_cache_frontend_VariableFrontend', array('get'), array(), '', FALSE);
+		$cacheMock->expects($this->any())->method('get')->will($this->returnValue(FALSE));
+
+		$mockDataMapFactory->_set('dataMapCache', $cacheMock);
 		$mockDataMapFactory->buildDataMap('UnknownObject');
 	}
 
@@ -375,10 +379,15 @@ class Tx_Extbase_Tests_Unit_Persistence_Mapper_DataMapFactoryTest extends Tx_Ext
 		$configurationManager->expects($this->once())->method('getConfiguration')->with('Framework')
 			->will($this->returnValue($configuration));
 
-		$dataMapFactory = new Tx_Extbase_Persistence_Mapper_DataMapFactory();
+		$dataMapFactory = $this->getAccessibleMock('Tx_Extbase_Persistence_Mapper_DataMapFactory', array('test'));
 		$dataMapFactory->injectReflectionService(new Tx_Extbase_Reflection_Service());
 		$dataMapFactory->injectObjectManager(new Tx_Extbase_Object_ObjectManager());
 		$dataMapFactory->injectConfigurationManager($configurationManager);
+
+		$cacheMock = $this->getMock('t3lib_cache_frontend_VariableFrontend', array(), array(),'',false);
+		$cacheMock->expects($this->any())->method('get')->will($this->returnValue(FALSE));
+		$dataMapFactory->_set('dataMapCache',$cacheMock);
+
 		$dataMap = $dataMapFactory->buildDataMap('Tx_Extbase_Domain_Model_FrontendUser');
 
 		$this->assertSame(

@@ -147,6 +147,10 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 			return $this;
 		}
 
+		if ($className === 't3lib_cache_Manager') {
+			return $GLOBALS['typo3CacheManager'];
+		}
+
 		if (isset($this->singletonInstances[$className])) {
 			if (count($givenConstructorArguments) > 0) {
 				throw new Tx_Extbase_Object_Exception('Object "' . $className . '" fetched from singleton cache, thus, explicit constructor arguments are not allowed.', 1292857934);
