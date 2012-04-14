@@ -128,10 +128,6 @@ class SC_index {
 		}
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_login.xml');
 
-			// check if labels from $GLOBALS['TYPO3_CONF_VARS']['BE']['loginLabels'] were changed,
-			// and merge them to $GLOBALS['LOCAL_LANG'] if needed
-		$this->mergeOldLoginLabels();
-
 			// Setting the redirect URL to "backend.php" if no alternative input is given
 		$this->redirectToURL = ($this->redirect_url ? $this->redirect_url : 'backend.php');
 
@@ -740,51 +736,6 @@ class SC_index {
 			');
 
 		return $JSCode;
-	}
-
-
-	/**
-	 * Checks if labels from $GLOBALS['TYPO3_CONF_VARS']['BE']['loginLabels'] were changed, and merge them to $GLOBALS['LOCAL_LANG'] if needed
-	 *
-	 * This method keeps backwards compatibility, if you modified your
-	 * labels with the install tool, we recommend to transfer this labels to a locallang.xml file
-	 * using the llxml extension
-	 *
-	 * @return	void
-	 * @deprecated since TYPO3 4.6, remove in TYPO3 4.8
-	 */
-	protected function mergeOldLoginLabels() {
-			// Getting login labels
-		$oldLoginLabels = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginLabels']);
-		if ($oldLoginLabels != '') {
-			t3lib_div::deprecationLog('The use of $GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'loginLabels\'] has been deprecated as of TYPO3 4.3, please use the according locallang.xml file.');
-				// md5 hash of the default loginLabels string
-			$defaultOldLoginLabelsHash = 'bcf0d32e58c6454ea50c6c956f1f18f0';
-				// compare loginLabels from TYPO3_CONF_VARS to default value
-			if (md5($oldLoginLabels) != $defaultOldLoginLabelsHash) {
-				$lang = $GLOBALS['LANG']->lang;
-				$oldLoginLabelArray = explode('|',$oldLoginLabels);
-				$overrideLabelKeys = array(
-					'labels.username'     => $oldLoginLabelArray[0],
-					'labels.password'     => $oldLoginLabelArray[1],
-					'labels.interface'    => $oldLoginLabelArray[2],
-					'labels.submitLogin'  => $oldLoginLabelArray[3],
-					'labels.submitLogout' => $oldLoginLabelArray[4],
-					'availableInterfaces' => $oldLoginLabelArray[5],
-					'headline'            => $oldLoginLabelArray[6],
-					'info.jscookies'      => $oldLoginLabelArray[7],
-					'newsheadline'        => $oldLoginLabelArray[8],
-					'error.login'         => $oldLoginLabelArray[9],
-				);
-				if (!is_array($GLOBALS['LOCAL_LANG'][$lang])) {
-					$GLOBALS['LOCAL_LANG'][$lang] = array();
-				}
-					// now override the labels from the LOCAL_LANG with the TYPO3_CONF_VARS
-				foreach ($overrideLabelKeys as $labelKey => $label) {
-					$GLOBALS['LANG']->overrideLL($labelKey, $label);
-				}
-			}
-		}
 	}
 
 	/**
