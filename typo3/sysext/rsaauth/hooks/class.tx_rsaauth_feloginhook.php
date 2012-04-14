@@ -56,19 +56,21 @@ class tx_rsaauth_feloginhook {
 					'rsaauth_min.js'
 				);
 
+				$additionalHeader = '';
 				foreach ($files as $file) {
-					$result[1] .= '<script type="text/javascript" src="' .
+					$additionalHeader .= '<script type="text/javascript" src="' .
 						t3lib_div::getIndpEnv('TYPO3_SITE_URL') .
 						$javascriptPath . $file . '"></script>';
 				}
+				$GLOBALS['TSFE']->additionalHeaderData['rsaauth_js'] = $additionalHeader;
 
 				// Generate a new key pair
-				$keyPair = $backend->createNewKeyPair();
+				$keyPair = $backend->getKeyPair();
 
 				// Save private key
 				$storage = tx_rsaauth_storagefactory::getStorage();
 				/* @var $storage tx_rsaauth_abstract_storage */
-				$storage->put($keyPair->getPrivateKey());
+				$storage->put($keyPair->createNewKeyPair());
 
 				// Add RSA hidden fields
 				$result[1] .= '<input type="hidden" id="rsa_n" name="n" value="' . htmlspecialchars($keyPair->getPublicKeyModulus()) . '" />';
