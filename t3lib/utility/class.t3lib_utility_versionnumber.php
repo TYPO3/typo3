@@ -68,6 +68,34 @@ final class t3lib_utility_VersionNumber {
 		);
 		return intval($parts[0]) . '.' . intval($parts[1]) . '.' . intval($parts[2]);
 	}
+
+	/**
+	 * Splits a version range into an array.
+	 *
+	 * If a single version number is given, it is considered a minimum value.
+	 * If a dash is found, the numbers left and right are considered as minimum and maximum. Empty values are allowed.
+	 *
+	 * @param	string		$ver A string with a version range.
+	 * @return	array
+	 */
+	public static function splitVersionRange($ver) {
+		$versionRange = array();
+		if (strstr($ver, '-')) {
+			$versionRange = explode('-', $ver, 2);
+		} else {
+			$versionRange[0] = $ver;
+			$versionRange[1] = '';
+		}
+
+		if (!$versionRange[0]) {
+			$versionRange[0] = '0.0.0';
+		}
+		if (!$versionRange[1]) {
+			$versionRange[1] = '0.0.0';
+		}
+
+		return $versionRange;
+	}
 }
 
 ?>

@@ -1766,6 +1766,12 @@ $GLOBALS[\'TYPO3_LOADED_EXT\'] = unserialize(stripslashes(\'' . addslashes(seria
 		return $extensionList;
 	}
 
+	public static function getInstalledAndLoadedExtensions() {
+		$currentExtListExtensions = array_flip(explode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']));
+		$installedExtensions = array_intersect_key($GLOBALS['TYPO3_LOADED_EXT'], $currentExtListExtensions);
+		return $installedExtensions;
+	}
+
 	/**
 	 * Gets the list of required extensions.
 	 *

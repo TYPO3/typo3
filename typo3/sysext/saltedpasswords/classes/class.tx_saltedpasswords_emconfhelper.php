@@ -153,7 +153,7 @@ EOT;
 	 * @param	t3lib_tsStyleConfig	$pObj: The calling parent object.
 	 * @return	string				Messages as HTML if something needs to be reported
 	 */
-	public function checkConfigurationBackend(array $params, t3lib_tsStyleConfig $pObj) {
+	public function checkConfigurationBackend(array $params, $pObj) {
 		$this->init();
 		$extConf = $this->extConf['BE'];
 
@@ -296,7 +296,7 @@ EOT;
 	 * @param	t3lib_tsStyleConfig	$pObj: The calling parent object.
 	 * @return	string				Messages as HTML if something needs to be reported
 	 */
-	public function checkConfigurationFrontend(array $params, t3lib_tsStyleConfig $pObj) {
+	public function checkConfigurationFrontend(array $params, $pObj) {
 		$this->init();
 		$extConf = $this->extConf['FE'];
 
@@ -398,7 +398,7 @@ EOT;
 	 * @param	string				$disposal: The configuration disposal ('FE' or 'BE')
 	 * @return	string				The HTML selector
 	 */
-	protected function buildHashMethodSelector(array $params, t3lib_tsStyleConfig $pObj, $disposal) {
+	protected function buildHashMethodSelector(array $params, $pObj, $disposal) {
 		$this->init();
 		$fieldName = substr($params['fieldName'], 5, -1);
 		$unknownVariablePleaseRenameMe = '\'' . substr(md5($fieldName), 0, 10) . '\'';
@@ -427,7 +427,7 @@ EOT;
 	 * @param	t3lib_tsStyleConfig	$pObj: The calling parent object.
 	 * @return	string				The HTML selector
 	 */
-	public function buildHashMethodSelectorFE(array $params, t3lib_tsStyleConfig $pObj) {
+	public function buildHashMethodSelectorFE(array $params, $pObj) {
 		return $this->buildHashMethodSelector($params, $pObj, 'FE');
 	}
 
@@ -438,7 +438,7 @@ EOT;
 	 * @param	t3lib_tsStyleConfig	$pObj: The calling parent object.
 	 * @return	string				The HTML selector
 	 */
-	public function buildHashMethodSelectorBE(array $params, t3lib_tsStyleConfig $pObj) {
+	public function buildHashMethodSelectorBE(array $params, $pObj) {
 		return $this->buildHashMethodSelector($params, $pObj, 'BE');
 	}
 
