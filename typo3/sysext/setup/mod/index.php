@@ -760,42 +760,7 @@ class SC_mod_user_setup_index {
 			}
 		}
 
-
 		return '<select id="field_startModule" name="data[startModule]" class="select">' . $startModuleSelect . '</select>';
-		}
-
- 	/**
-	 *
-	 * @param array $params                    config of the field
-	 * @param SC_mod_user_setup_index $parent  this class as reference
-	 * @return string	                       html with description and button
-	 * @deprecated since TYPO3 4.6 - will be removed with TYPO3 4.8
-	 */
-	public function renderInstallToolEnableFileButton(array $params, SC_mod_user_setup_index $parent) {
-		t3lib_div::logDeprecatedFunction();
-
-			// Install Tool access file
-		$installToolEnableFile = PATH_typo3conf . 'ENABLE_INSTALL_TOOL';
-		if ($parent->getInstallToolFileExists() && ($GLOBALS['EXEC_TIME'] - filemtime($installToolEnableFile) > 3600)) {
-			if (!$parent->getInstallToolFileKeep()) {
-					// Delete the file if it is older than 3600s (1 hour)
-				unlink($installToolEnableFile);
-				$parent->setInstallToolFileExists();
-			}
-		}
-
-		if ($parent->getInstallToolFileExists()) {
-			return '<input type="button" name="deleteInstallToolEnableFile"' .
-					($parent->getInstallToolFileKeep() ? ' disabled="disabled"' : '') .
-					' value="' . $GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.deleteFile') . '" onclick="document.getElementById(\'deleteInstallToolEnableFile\').value=1;this.form.submit();" />
-					<input type="hidden" name="deleteInstallToolEnableFile" value="0" id="deleteInstallToolEnableFile" />
-					';
-
-		} else {
-			return '<input type="button" name="createInstallToolEnableFile" value="' .
-					$GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.createFile') . '" onclick="document.getElementById(\'createInstallToolEnableFile\').value=1;this.form.submit();" />
-					<input type="hidden" name="createInstallToolEnableFile" value="0" id="createInstallToolEnableFile" />';
-		}
 	}
 
 	/**
