@@ -137,7 +137,7 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 			$searchData['freeIndexUid'] = $searchData['_freeIndexUid'];
 		}
 
-		$searchData['results'] = t3lib_div::intInRange($searchData['results'], 1, 100000, $this->defaultResultNumber);
+		$searchData['results'] = t3lib_utility_Math::forceIntegerInRange($searchData['results'], 1, 100000, $this->defaultResultNumber);
 
 
 			// This gets the search-words into the $searchWordArray
@@ -545,7 +545,7 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 
 				// Close to top of page
 			case 'rank_first':
-				return ceil(t3lib_div::intInRange(255 - $row['order_val'], 1, 255) / 255 * 100) . '%';
+				return ceil(t3lib_utility_Math::forceIntegerInRange(255 - $row['order_val'], 1, 255) / 255 * 100) . '%';
 			break;
 
 				// Based on priority assigned to <title> / <meta-keywords> / <meta-description> / <body>
@@ -555,7 +555,7 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 					$base = $row['order_val1'] * 256;
 						// 15-3 MSB = 12
 					$freqNumber = $row['order_val2'] / $this->firstRow['order_val2'] * pow(2, 12);
-					$total = t3lib_div::intInRange($base + $freqNumber, 0, 32767);
+					$total = t3lib_utility_Math::forceIntegerInRange($base + $freqNumber, 0, 32767);
 					return ceil(log($total) / log(32767) * 100) . '%';
 				}
 			break;
@@ -563,7 +563,7 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 				// Based on frequency
 			case 'rank_freq':
 				$max = 10000;
-				$total = t3lib_div::intInRange($row['order_val'], 0, $max);
+				$total = t3lib_utility_Math::forceIntegerInRange($row['order_val'], 0, $max);
 				return ceil(log($total) / log($max) * 100) . '%';
 			break;
 
@@ -756,7 +756,7 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 
 		$occurencies = (count($parts)-1)/2;
 		if ($occurencies) {
-			$postPreLgd = t3lib_div::intInRange($summaryMax / $occurencies, $postPreLgd, $summaryMax / 2);
+			$postPreLgd = t3lib_utility_Math::forceIntegerInRange($summaryMax / $occurencies, $postPreLgd, $summaryMax / 2);
 		}
 
 			// Variable:

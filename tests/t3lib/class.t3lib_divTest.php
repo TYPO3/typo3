@@ -684,39 +684,6 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	}
 
 	//////////////////////////////////
-	// Tests concerning intInRange
-	//////////////////////////////////
-	/**
-	 * Data provider for intInRangeForcesIntegerIntoBoundaries
-	 *
-	 * @return array expected values, arithmetic expression
-	 */
-	public function intInRangeForcesIntegerIntoDefaultBoundariesDataProvider() {
-		return array(
-			'negativeValue' => array(0, -10),
-			'normalValue' => array(30, 30),
-			'veryHighValue' => array(2000000000, 3000000001),
-			'zeroValue' => array(0, 0),
-			'anotherNormalValue' => array(12309, 12309)
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider intInRangeForcesIntegerIntoDefaultBoundariesDataProvider
-	 */
-	public function intInRangeForcesIntegerIntoDefaultBoundaries($expected, $value) {
-		$this->assertEquals($expected, t3lib_div::intInRange($value, 0));
-	}
-
-	/**
-	 * @test
-	 */
-	public function intInRangeSetsDefaultValueIfZeroValueIsGiven() {
-		$this->assertEquals(42, t3lib_div::intInRange('', 0, 2000000000, 42));
-	}
-
-	//////////////////////////////////
 	// Tests concerning int_from_ver
 	//////////////////////////////////
 	/**
