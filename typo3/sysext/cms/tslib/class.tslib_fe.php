@@ -831,6 +831,14 @@
 		$this->idParts = explode(',', $this->id);
 		$this->id = $this->idParts[0];
 
+			// Hook for further id manipulation
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['modifyPageId'])) {
+			$_params = array();
+			foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['modifyPageId'] as $_funcRef) {
+				t3lib_div::callUserFunction($_funcRef, $_params, $this);
+			}
+		}
+
 			// If $this->id is a string, it's an alias
 		$this->checkAndSetAlias();
 
