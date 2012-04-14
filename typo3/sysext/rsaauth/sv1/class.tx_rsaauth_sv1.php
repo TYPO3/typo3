@@ -117,6 +117,11 @@ class tx_rsaauth_sv1 extends tx_sv_auth  {
 	 * @return	boolean
 	 */
 	public function init()	{
+			// Only make this service available if a login is requested
+		if (empty($this->login['status']) || $this->login['status'] !== 'login') {
+			return FALSE;
+		}
+
 		$available = parent::init();
 		if ($available) {
 			// Get the backend
@@ -140,8 +145,8 @@ class tx_rsaauth_sv1 extends tx_sv_auth  {
 	 * - we cannot use t3lib_TCEmain::checkValue_input_Eval() for running all
 	 *   evaluations because it does not create md5 hashes.
 	 *
-	 * @param	string	$password	Evaluated password
-	 * @return	void
+	 * @param $password Evaluated password
+	 * @return null|string
 	 * @see	t3lib_TCEmain::checkValue_input_Eval()
 	 */
 	protected function runPasswordEvaluations($password) {
