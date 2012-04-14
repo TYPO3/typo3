@@ -253,10 +253,8 @@ class Tx_Workspaces_Service_GridData {
 	 * @param string $filterTxt The given filter text from the grid.
 	 */
 	protected function setDataArrayIntoCache(array $versions, $filterTxt) {
-		if (TYPO3_UseCachingFramework === TRUE) {
-			$hash = $this->calculateHash($versions, $filterTxt);
-			$this->workspacesCache->set($hash, $this->dataArray, array($this->currentWorkspace));
-		}
+		$hash = $this->calculateHash($versions, $filterTxt);
+		$this->workspacesCache->set($hash, $this->dataArray, array($this->currentWorkspace));
 	}
 
 	/**
@@ -269,15 +267,13 @@ class Tx_Workspaces_Service_GridData {
 	protected function getDataArrayFromCache(array $versions, $filterTxt) {
 		$cacheEntry = FALSE;
 
-		if (TYPO3_UseCachingFramework === TRUE) {
-			$hash = $this->calculateHash($versions, $filterTxt);
+		$hash = $this->calculateHash($versions, $filterTxt);
 
-			$content = $this->workspacesCache->get($hash);
+		$content = $this->workspacesCache->get($hash);
 
-			if ($content !== FALSE) {
-				$this->dataArray = $content;
-				$cacheEntry = TRUE;
-			}
+		if ($content !== FALSE) {
+			$this->dataArray = $content;
+			$cacheEntry = TRUE;
 		}
 
 		return $cacheEntry;

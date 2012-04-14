@@ -63,9 +63,7 @@ class Tx_Workspaces_Service_Tcemain {
 	 * @return	void
 	 */
 	public function processCmdmap_afterFinish(t3lib_TCEmain $tcemainObj) {
-		if (TYPO3_UseCachingFramework) {
-			$this->flushWorkspaceCacheEntriesByWorkspaceId($tcemainObj->BE_USER->workspace);
-		}
+		$this->flushWorkspaceCacheEntriesByWorkspaceId($tcemainObj->BE_USER->workspace);
 	}
 
 	/**
