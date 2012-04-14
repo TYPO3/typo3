@@ -1065,7 +1065,6 @@ tt_content.menu {
 			1 = TMENU
 			1 {
 				target = {$PAGE_TARGET}
-				noBlur = 1
 				expAll = 1
 				wrap = <ul>|</ul>
 				NO {
@@ -1094,7 +1093,6 @@ tt_content.menu {
 				trim = 1
 				field = header
 				htmlSpecialChars = 1
-				noBlur = 1
 				wrap = <li class="csc-section">|</li>
 				typolink.parameter.field = pid
 				typolink.section.field = uid

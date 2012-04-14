@@ -719,8 +719,6 @@ class t3lib_stdGraphic {
 	 * @see makeText(), calcTextCordsForMap()
 	 */
 	function addToMap($cords, $conf) {
-		$JS = $conf['noBlur'] ? '' : ' onfocus="blurLink(this);"';
-
 		$this->map .= '<area' .
 					  ' shape="poly"' .
 					  ' coords="' . implode(',', $cords) . '"' .

@@ -3404,12 +3404,6 @@ NOTE: Does not work with JSMENU's]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="noBlur" type="boolean">
-			<description><![CDATA[Normally graphical links are "blurred" if the browser is MSIE. Blurring removes the ugly box around a clicked link.
-If this property is set, the link is NOT blurred (browser-default) with "onFocus".]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="overrideId" type="int">
 			<description><![CDATA[integer (page-id)
 			If set, then all links in the menu will point to this pageid. Instead the real uid of the page is sent by the parameter "&real_uid=[uid]".
@@ -4071,12 +4065,6 @@ NOTE: Does not work with JSMENU's]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="noBlur" type="boolean">
-			<description><![CDATA[Normally graphical links are "blurred" if the browser is MSIE. Blurring removes the ugly box around a clicked link.
-If this property is set, the link is NOT blurred (browser-default) with "onFocus".]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="overrideId" type="int">
 			<description><![CDATA[integer (page-id)
 			If set, then all links in the menu will point to this pageid. Instead the real uid of the page is sent by the parameter "&real_uid=[uid]".
@@ -4543,12 +4531,6 @@ Applies to GMENU, TMENU, IMGMENU]]></description>
 width=200,height=300,status=0,menubar=0
 
 NOTE: Does not work with JSMENU's]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="noBlur" type="boolean">
-			<description><![CDATA[Normally links are "blurred" if the browser is MSIE. Blurring removes the ugly box around a clicked link.
-If this property is set, the link is NOT blurred (browser-default) with "onFocus".]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -5115,11 +5097,6 @@ Additional Note: ONLY active if linkWrap is NOT set and file is NOT GIFBUILDER (
 			<description><![CDATA[This "explodes" or "implodes" the image-map. Useful to let the hot area cover a little more than just the letters of the text.]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>
-		<property name="noBlur" type="boolean">
-			<description><![CDATA[Normally graphical links are "blurred" if the browser is MSIE. This removes the ugly box around a link.
-If this property is set, the link is NOT blurred with "onFocus".]]></description>
-			<default><![CDATA[For IMGMENU menu objects provided automatically]]></default>
 		</property>
 		<property name="target" type="target">
 			<description><![CDATA[target for link]]></description>

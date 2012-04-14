@@ -1832,7 +1832,6 @@ tt_content.menu {
 							override.data = register:accessibility_bypass_text
 							trim = 1
 							htmlSpecialChars = 1
-							noBlur = 1
 							typolink {
 								parameter {
 									field = pid
@@ -1859,7 +1858,6 @@ tt_content.menu {
 					wrapItemAndSub = <li>|</li>
 					ATagTitle.field = description // title
 				}
-				noBlur = 1
 			}
 		}
 
@@ -1884,7 +1882,6 @@ tt_content.menu {
 				target < lib.parseTarget
 				target =
 				target.override = {$PAGE_TARGET}
-				noBlur = 1
 				expAll = 1
 				wrap = <ul>|</ul>
 				NO {
