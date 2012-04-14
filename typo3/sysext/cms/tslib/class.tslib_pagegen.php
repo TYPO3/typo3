@@ -573,30 +573,6 @@ class TSpagegen {
 	BODY {margin: ' . $margins . 'px ' . $margins . 'px ' . $margins . 'px ' . $margins . 'px;}';
 		}
 
-		if ($GLOBALS['TSFE']->pSetup['noLinkUnderline']) {
-			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.noLinkUnderline');
-			$style .= '
-	A:link {text-decoration: none}
-	A:visited {text-decoration: none}
-	A:active {text-decoration: none}';
-		}
-		if (trim($GLOBALS['TSFE']->pSetup['hover'])) {
-			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.hover');
-			$style .= '
-	A:hover {color: ' . trim($GLOBALS['TSFE']->pSetup['hover']) . ';}';
-		}
-		if (trim($GLOBALS['TSFE']->pSetup['hoverStyle'])) {
-			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.hoverStyle');
-			$style .= '
-	A:hover {' . trim($GLOBALS['TSFE']->pSetup['hoverStyle']) . '}';
-		}
-		if ($GLOBALS['TSFE']->pSetup['smallFormFields']) {
-			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.smallFormFields');
-			$style .= '
-	SELECT {  font-family: Verdana, Arial, Helvetica; font-size: 10px }
-	TEXTAREA  {  font-family: Verdana, Arial, Helvetica; font-size: 10px}
-	INPUT   {  font-family: Verdana, Arial, Helvetica; font-size: 10px }';
-		}
 		if ($GLOBALS['TSFE']->pSetup['adminPanelStyles']) {
 			$style .= '
 
@@ -990,20 +966,8 @@ class TSpagegen {
 		}
 
 			// compression and concatenate settings
-		if (isset($GLOBALS['TSFE']->config['config']['minifyCSS'])) {
-			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.minifyCSS = 1', 'It will be removed in TYPO3 4.8. Use config.compressCss instead.');
-			if (!isset($GLOBALS['TSFE']->config['config']['compressCss'])) {
-				$GLOBALS['TSFE']->config['config']['compressCss'] = $GLOBALS['TSFE']->config['config']['minifyCSS'];
-			}
-		}
 		if ($GLOBALS['TSFE']->config['config']['compressCss']) {
 			$pageRenderer->enableCompressCss();
-		}
-		if (isset($GLOBALS['TSFE']->config['config']['minifyJS'])) {
-			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.minifyJS = 1', 'It will be removed in TYPO3 4.8. Use config.compressJs instead.');
-			if (!isset($GLOBALS['TSFE']->config['config']['compressJs'])) {
-				$GLOBALS['TSFE']->config['config']['compressJs'] = $GLOBALS['TSFE']->config['config']['minifyJS'];
-			}
 		}
 		if ($GLOBALS['TSFE']->config['config']['compressJs']) {
 			$pageRenderer->enableCompressJavascript();

@@ -1908,19 +1908,13 @@
 						$this->config['config']['typolinkCheckRootline'] = TRUE;
 					}
 
-						// Set default values for removeDefaultJS, inlineStyle2TempFile and minifyJS so CSS and JS are externalized/minified if compatversion is higher than 4.0
+						// Set default values for removeDefaultJS and inlineStyle2TempFile so CSS and JS are externalized if compatversion is higher than 4.0
 					if (t3lib_div::compat_version('4.0')) {
 						if (!isset($this->config['config']['removeDefaultJS'])) {
 							$this->config['config']['removeDefaultJS'] = 'external';
 						}
 						if (!isset($this->config['config']['inlineStyle2TempFile'])) {
 							$this->config['config']['inlineStyle2TempFile'] = 1;
-						}
-						if (isset($this->config['config']['minifyJS'])) {
-							$this->logDeprecatedTyposcript('config.minifyJS = 1', 'It will be removed in TYPO3 4.8. Use config.compressJs instead.');
-							if (!isset($this->config['config']['compressJs'])) {
-								$this->config['config']['compressJs'] = $this->config['config']['minifyJS'];
-							}
 						}
 					}
 

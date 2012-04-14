@@ -402,7 +402,7 @@ This value is overridden by the value set in the page-record (field="cache_timeo
 		</property>
 		<property name="compensateFieldWidth" type="double">
 			<description><![CDATA[this floating point value will be used by the FORMS cObject to compensate the length of the formfields text and input.
-This feature is useful, if the page-option "smallFormFields" is set. In that case Netscape renders formfields much longer than IE. If you want the two browsers to display the same size formfields, use a value of approx "0.6" for netscape-browsers.
+Netscape renders formfields much longer than IE. If you want the two browsers to display the same size formfields, use a value of approx "0.6" for netscape-browsers.
 
 Example:
 [browser = netscape]
@@ -846,14 +846,6 @@ config.removeDefaultJS = external
 config.removeDefaultJS = 1]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>
-		<property name="minifyJS" type="boolean">
-			<description><![CDATA[This setting is deprecated and will be removed with TYPO3 4.8! Use config.compressJs instead, which has the same effect.]]></description>
-			<default><![CDATA[false]]></default>
-		</property>
-		<property name="minifyCSS" type="boolean">
-			<description><![CDATA[This setting is deprecated and will be removed with TYPO3 4.8! Use config.compressCss instead, which has the same effect.]]></description>
-			<default><![CDATA[false]]></default>
 		</property>
 		<property name="compressJs" type="boolean">
 			<description><![CDATA[Enabling this option together with $TYPO3_CONF_VARS['FE']['compressionLevel'] in the Install Tool delivers Frontend JavaScript files using GZIP compression.
@@ -6224,23 +6216,6 @@ Is inserted after all the style-definitions.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="hover" type="string">
-			<description><![CDATA[The color of a link when the mouse moves over it! (only MSIE). Uses in-document stylesheet.
-
-Deprecated. Use stylesheet instead.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="hoverStyle" type="string">
-			<description><![CDATA[Additional style information to the hover-color.
-
-Example:
-page.hoverStyle = font: bold; text-decoration: none;
-
-Deprecated. Use stylesheet instead.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="includeCSS" type="array">
 			<description><![CDATA[Inserts a stylesheet (just like the .stylesheet property) by allows to setting up more than a single stylesheet, because you can enter files in an array.
 
@@ -6487,30 +6462,12 @@ with config.compressJs = 1, the jsInline will be minified as well.
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="noLinkUnderline" type="boolean">
-			<description><![CDATA[Disables link-underlining. Uses in-document stylesheet.
-
-Deprecated. Use stylesheet instead.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="shortcutIcon" type="string">
 			<description><![CDATA[Favicon of the page. Create a reference to an icon here!
 Browsers that support favicons display them in the browser's address bar, next to the site's name in lists of bookmarks, and next to the page's title in a Tabbed Document Interface.
 
 Note:
 This must be a valid ".ico"-file (iconfile)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="smallFormFields" type="boolean">
-			<description><![CDATA[Renders formfields like textarea, input and select-boxes small with "verdana size 1" font.
-Uses in-document stylesheet.
-
-Tip:
-Use this together with the config-option "compensateFieldWidth" set to "0.6" for netscape-browsers in order to render the small form fields in the same width!
-
-Deprecated. Use stylesheet instead.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
