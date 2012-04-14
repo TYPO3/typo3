@@ -250,7 +250,7 @@ class t3lib_tree_pagetree_Node extends t3lib_tree_extdirect_Node {
 	 * @return bool
 	 */
 	public function canBePastedInto() {
-		return intval($this->record['t3ver_state']) !== 2;
+		return $this->canCreate($this->record) && intval($this->record['t3ver_state']) !== 2;
 	}
 
 	/**
@@ -259,7 +259,7 @@ class t3lib_tree_pagetree_Node extends t3lib_tree_extdirect_Node {
 	 * @return bool
 	 */
 	public function canBePastedAfter() {
-		return intval($this->record['t3ver_state']) !== 2;
+		return $this->canCreate($this->record) && intval($this->record['t3ver_state']) !== 2;
 	}
 
 	/**
