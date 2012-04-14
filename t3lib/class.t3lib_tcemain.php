@@ -233,6 +233,7 @@ class t3lib_TCEmain {
 	var $checkStoredRecords_loose = TRUE; // Boolean: If set, values '' and 0 will equal each other when the stored records are checked.
 	var $deleteTree = FALSE; // Boolean. If this is set, then a page is deleted by deleting the whole branch under it (user must have deletepermissions to it all). If not set, then the page is deleted ONLY if it has no branch
 	var $neverHideAtCopy = FALSE; // Boolean. If set, then the 'hideAtCopy' flag for tables will be ignored.
+	var $isImporting = FALSE; // Boolean: If set, then TCE main has been instantiated during a T3D import action
 	var $dontProcessTransformations = FALSE; // Boolean: If set, then transformations are NOT performed on the input.
 	var $clear_flexFormData_vDEFbase = FALSE; // Boolean: If set, .vDEFbase values are unset in flexforms.
 	var $updateModeL10NdiffData = TRUE; // Boolean/Mixed: TRUE: (traditional) Updates when record is saved. For flexforms, updates if change is made to the localized value. FALSE: Will not update anything. "FORCE_FFUPD" (string): Like TRUE, but will force update to the FlexForm Field
