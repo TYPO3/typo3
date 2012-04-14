@@ -1915,6 +1915,22 @@ final class t3lib_BEfunc {
 				t3lib_div::callUserFunction($GLOBALS['TCA'][$table]['ctrl']['label_userFunc'], $params, $null);
 				$t = $params['title'];
 			} else {
+					// Ensure we have a correct overlay, otherwise label fields with l10n_mode=exclude will be empty
+				if (isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) &&
+					isset($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]) &&
+					$row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]) {
+					$originalRow = self::getRecord($table, $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
+					$fields = array_keys($row);
+					foreach ($fields as $field) {
+						$l10n_mode = isset($GLOBALS['TCA'][$table]['columns'][$field]['l10n_mode'])
+							? $GLOBALS['TCA'][$table]['columns'][$field]['l10n_mode']
+							: '';
+						if ($l10n_mode === 'exclude' ||
+							($l10n_mode === 'mergeIfNotBlank' && strcmp(trim($originalRow[$field]), ''))) {
+							$row[$field] = $originalRow[$field];
+						}
+					}
+				}
 
 					// No userFunc: Build label
 				$t = self::getProcessedValue($table, $GLOBALS['TCA'][$table]['ctrl']['label'], $row[$GLOBALS['TCA'][$table]['ctrl']['label']], 0, 0, FALSE, $row['uid'], $forceResult);
