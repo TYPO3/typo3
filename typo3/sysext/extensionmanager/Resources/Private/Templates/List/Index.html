@@ -1,0 +1,41 @@
+{namespace em=Tx_Extensionmanager_ViewHelpers}
+
+<f:layout name="main"/>
+<f:section name="docHeaderRow2">
+</f:section>
+<f:section name="Content">
+	<table id="typo3-extension-list" class="typo3-extension-list">
+		<thead>
+			<tr>
+				<th>Extension</th>
+				<th>Key</th>
+				<th>State</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<f:for each="{extensions}" as="extension" key="extensionKey">
+				<f:cycle values="{0: 'odd', 1: 'even'}" as="zebraClass">
+					<tr class="{zebraClass}">
+				</f:cycle>
+				<td>
+					{extension.title} ({extension.version})
+				</td>
+				<td>
+					{extensionKey}
+				</td>
+				<td class="{extension.state}">
+					{extension.state}
+				</td>
+				<td>
+					<em:installExtension extension="{extension}" />
+					&nbsp;
+					<em:configureExtension extension="{extension}" />
+				</td>
+				</tr>
+			</f:for>
+		</tbody>
+	</table>
+</f:section>
+
+

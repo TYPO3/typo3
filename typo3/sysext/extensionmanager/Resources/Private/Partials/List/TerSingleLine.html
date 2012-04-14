@@ -1,0 +1,22 @@
+{namespace em=Tx_Extensionmanager_ViewHelpers}
+<td>
+	{extension.title} ({extension.version})
+</td>
+<td>
+	{extension.extensionKey}
+</td>
+<td>
+	{extension.description}
+</td>
+<td>
+	{extension.authorName} {extension.authorEmail}
+</td>
+<td>
+	{extension.categoryString}
+</td>
+<td class="{extension.stateString}">
+	{extension.stateString}
+</td>
+<td>
+	<em:downloadExtension extension="{extension}" />
+</td>

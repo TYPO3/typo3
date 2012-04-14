@@ -1,0 +1,37 @@
+{namespace em=Tx_Extensionmanager_ViewHelpers}
+
+<f:layout name="main"/>
+<f:section name="docHeaderRow2">
+</f:section>
+<f:section name="Content">
+	<f:form action="ter">
+		<f:form.textfield name="search" value="" />
+		<f:form.submit value="Submit"/>
+	</f:form>
+	<f:widget.paginate objects="{extensions}" as="paginatedExtensions" configuration="{itemsPerPage: 15, maximumNumberOfLinks: 2}">
+	<table id="terTable" class="typo3-extension-list">
+		<thead>
+			<tr>
+				<th>Title</th>
+				<th>Key</th>
+				<th>Description</th>
+				<th>Author</th>
+				<th>Category</th>
+				<th>State</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+		<f:for each="{paginatedExtensions}" as="extension">
+			<f:cycle values="{0: 'odd', 1: 'even'}" as="zebraClass">
+				<tr class="{zebraClass}">
+			</f:cycle>
+			<f:render partial="List/TerSingleLine" arguments="{extension:extension}" />
+			</tr>
+		</f:for>
+		</tbody>
+	</table>
+	</f:widget.paginate>
+</f:section>
+
+
