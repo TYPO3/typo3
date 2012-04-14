@@ -2567,17 +2567,6 @@ class t3lib_TCEmain {
 			// Only copy if the table is defined in $GLOBALS['TCA'], a uid is given and the record wasn't copied before:
 		if ($GLOBALS['TCA'][$table] && $uid && !$this->isRecordCopied($table, $uid)) {
 			t3lib_div::loadTCA($table);
-			/*
-				   // In case the record to be moved turns out to be an offline version, we have to find the live version and work on that one (this case happens for pages with "branch" versioning type)
-			   if ($lookForLiveVersion = t3lib_BEfunc::getLiveVersionOfRecord($table,$uid,'uid'))	{
-				   $uid = $lookForLiveVersion['uid'];
-			   }
-				   // Get workspace version of the source record, if any: Then we will copy workspace version instead:
-			   if ($WSversion = t3lib_BEfunc::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid'))	{
-				   $uid = $WSversion['uid'];
-			   }
-				   // Now, the $uid is the actual record we will copy while $origUid is the record we asked to get copied - but that could be a live version.
-   */
 			if ($this->doesRecordExist($table, $uid, 'show')) { // This checks if the record can be selected which is all that a copy action requires.
 				$fullLanguageCheckNeeded = ($table != 'pages');
 				if (($language > 0 && $this->BE_USER->checkLanguageAccess($language)) ||
