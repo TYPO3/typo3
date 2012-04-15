@@ -70,6 +70,8 @@ class t3lib_TCEmain {
 	var $deleteTree = FALSE;
 		// Boolean. If set, then the 'hideAtCopy' flag for tables will be ignored.
 	var $neverHideAtCopy = FALSE;
+		// Boolean: If set, then the TCE class has been instantiated during an import action of a T3D
+	public $isImporting = FALSE;
 		// Boolean: If set, then transformations are NOT performed on the input.
 	var $dontProcessTransformations = FALSE;
 		// Boolean: If set, .vDEFbase values are unset in flexforms.

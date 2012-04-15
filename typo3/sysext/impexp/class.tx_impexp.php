@@ -1092,7 +1092,8 @@ class tx_impexp {
 				'data' => &$this->import_data,
 			));
 			$tce->suggestedInsertUids = $this->suggestedInsertUids;
-			$tce->start($this->import_data, Array());
+			$tce->isImporting = TRUE;
+			$tce->start($this->import_data, array());
 			$tce->process_datamap();
 			$this->callHook('after_writeRecordsPages', array(
 				'tce' => &$tce
