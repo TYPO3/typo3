@@ -166,7 +166,7 @@ class Typo3_Bootstrap {
 	public static function setUpEnvironment() {
 			// Core should be notice free at least until this point ...
 			// @TODO: Move further down / get rid of it until errorHandler is initialized
-		error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+		error_reporting(E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED));
 
 			// Unset variable(s) in global scope (security issue #13959)
 		unset($GLOBALS['error']);
