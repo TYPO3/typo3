@@ -91,7 +91,8 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 			$name = $this->arguments['name'];
 		}
 		if ($this->hasArgument('value') && is_object($this->arguments['value'])) {
-			if (NULL !== $this->persistenceManager->getIdentifierByObject($this->arguments['value']) && !$this->persistenceManager->getBackend()->isNewObject($this->arguments['value'])) {
+			// TODO: Use  $this->persistenceManager->isNewObject() once it is implemented
+			if (NULL !== $this->persistenceManager->getIdentifierByObject($this->arguments['value'])) {
 				$name .= '[__identity]';
 			}
 		}

@@ -199,12 +199,11 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	 * @author Johannes Künsebeck <jk@hdnet.de>
 	 */
 	public function multipleSelectOnDomainObjectsCreatesExpectedOptionsWithoutOptionValueField() {
-		$mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ManagerInterface');
-		$mockBackend = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Backend', array('getIdentifierByObject'), array(), '', FALSE);
-		$mockBackend->expects($this->any())->method('getIdentifierByObject')->will($this->returnCallback(function ($object) {
+		/** @var $mockPersistenceManager \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface */
+		$mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
+		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnCallback(function ($object) {
 			return $object->getId();
 		}));
-		$mockPersistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($mockBackend));
 		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
 		$this->tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder();
 		$this->viewHelper->expects($this->exactly(3))->method('registerFieldNameForFormTokenGeneration')->with('myName[]');

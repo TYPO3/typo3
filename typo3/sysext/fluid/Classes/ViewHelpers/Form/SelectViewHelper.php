@@ -155,8 +155,9 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 							throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Identifying value for object of class "' . get_class($value) . '" was an object.', 1247827428);
 						}
 					}
-				} elseif ($this->persistenceManager->getBackend()->getIdentifierByObject($value) !== NULL) {
-					$key = $this->persistenceManager->getBackend()->getIdentifierByObject($value);
+				// TODO: use $this->persistenceManager->isNewObject() once it is implemented
+				} elseif ($this->persistenceManager->getIdentifierByObject($value) !== NULL) {
+					$key = $this->persistenceManager->getIdentifierByObject($value);
 				} elseif (method_exists($value, '__toString')) {
 					$key = (string) $value;
 				} else {
@@ -172,9 +173,10 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 						}
 					}
 				} elseif (method_exists($value, '__toString')) {
-					$value = (string) $value;
-				} elseif ($this->persistenceManager->getBackend()->getIdentifierByObject($value) !== NULL) {
-					$value = $this->persistenceManager->getBackend()->getIdentifierByObject($value);
+					$value = (string)$value;
+				// TODO: use $this->persistenceManager->isNewObject() once it is implemented
+				} elseif ($this->persistenceManager->getIdentifierByObject($value) !== NULL) {
+					$value = $this->persistenceManager->getIdentifierByObject($value);
 				}
 			}
 			$options[$key] = $value;
@@ -234,8 +236,9 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 			if ($this->hasArgument('optionValueField')) {
 				return \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($valueElement, $this->arguments['optionValueField']);
 			} else {
-				if ($this->persistenceManager->getBackend()->getIdentifierByObject($valueElement) !== NULL) {
-					return $this->persistenceManager->getBackend()->getIdentifierByObject($valueElement);
+				// TODO: use $this->persistenceManager->isNewObject() once it is implemented
+				if ($this->persistenceManager->getIdentifierByObject($valueElement) !== NULL) {
+					return $this->persistenceManager->getIdentifierByObject($valueElement);
 				} else {
 					return (string) $valueElement;
 				}
