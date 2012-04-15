@@ -30,7 +30,7 @@
  * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 
-error_reporting (E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~(E_STRICT | E_NOTICE));
 unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');

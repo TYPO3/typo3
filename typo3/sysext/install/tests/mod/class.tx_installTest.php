@@ -71,7 +71,7 @@ class tx_install_Test extends tx_phpunit_testcase {
 		$GLOBALS['TYPO3_CONF_VARS'] = array();
 		$GLOBALS['TYPO3_CONF_VARS']['key1']['key2'] = 'foo';
 
-		set_error_handler(array($this, 'errorHandlerCallback'), E_ALL ^ E_NOTICE);
+		set_error_handler(array($this, 'errorHandlerCallback'), E_ALL & ~(E_STRICT | E_NOTICE));
 		$this->customErrorHandlerUsed = TRUE;
 
 		require_once(PATH_site . 'typo3/sysext/install/mod/class.tx_install.php');
