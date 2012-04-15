@@ -36,7 +36,7 @@
 // *******************************
 // Set error reporting
 // *******************************
-error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+error_reporting(E_ALL ^ E_STRICT ^ E_NOTICE ^ E_DEPRECATED);
 
 require('typo3/Bootstrap.php');
 Typo3_Bootstrap::defineBaseConstants();
