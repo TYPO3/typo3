@@ -80,7 +80,7 @@ class recordList extends t3lib_recordList {
 	var $searchString='';				// Search string
 	var $searchLevels='';				// Levels to search down.
 	var $showLimit=0;				// Number of records to show
-	var $pidSelect='';				// List of ids from which to select/search etc. (when search-levels are set high). See start()
+	var $pidSelect='';				// query part for either a list of ids "pid IN (1,2,3)" or a single id "pid = 123" from which to select/search etc. (when search-levels are set high). See start()
 	var $perms_clause='';				// Page select permissions
 	var $calcPerms=0;				// Some permissions...
 	var $clickTitleMode = '';			// Mode for what happens when a user clicks the title of a record.
