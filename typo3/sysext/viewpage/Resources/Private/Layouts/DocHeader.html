@@ -1,0 +1,29 @@
+<f:be.container loadExtJs="1">
+	<style type="text/css">
+		.typo3-inner-docbody {
+			height: 100%;
+		}
+	</style>
+
+	<div class="typo3-fullDoc">
+		<div id="typo3-docheader">
+			<div id="typo3-docheader-row1">
+				<div class="docheader-row1-left">
+				</div>
+				<div class="docheader-row2-right">
+					<f:be.buttons.icon uri="" icon="actions-system-refresh" />
+					<f:be.buttons.shortcut />
+				</div>
+			</div>
+			<div id="typo3-docheader-row2">
+				&nbsp;
+			</div>
+		</div>
+
+		<div id="typo3-docbody">
+			<div id="typo3-inner-docbody" style="height: 100%;">
+				<f:render section="Content" />
+			</div>
+		</div>
+	</div>
+</f:be.container>
