@@ -155,11 +155,6 @@ class tx_dbal_autoloader {
 
 }
 
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/dbal/class.tx_dbal_autoloader.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/dbal/class.tx_dbal_autoloader.php']);
-}
-
 // Make instance:
 $SOBE = t3lib_div::makeInstance('tx_dbal_autoloader');
 $SOBE->execute($this);

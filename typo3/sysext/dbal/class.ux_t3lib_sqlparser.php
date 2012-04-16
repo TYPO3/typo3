@@ -760,10 +760,4 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 		return $output;
 	}
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/dbal/class.ux_t3lib_sqlparser.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/dbal/class.ux_t3lib_sqlparser.php']);
-}
-
 ?>
