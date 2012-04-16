@@ -150,10 +150,6 @@ class t3lib_mail_MboxTransport implements Swift_Transport {
 	public function registerPlugin(Swift_Events_EventListener $plugin) {
 		return TRUE;
 	}
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_mail_mboxtransport.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_mail_mboxtransport.php']);
-}
+}s
 
 ?>

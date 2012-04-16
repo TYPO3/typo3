@@ -104,9 +104,4 @@ class t3lib_l10n_parser_Xliff extends t3lib_l10n_parser_AbstractXml {
 	}
 }
 
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/l10n/parser/class.t3lib_l10n_parser_xliff.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/l10n/parser/class.t3lib_l10n_parser_xliff.php']);
-}
-
 ?>

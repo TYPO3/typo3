@@ -564,10 +564,6 @@ class t3lib_spritemanager_SpriteGenerator {
 			'height' => $size[1]
 		);
 	}
-
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/spritemanager/class.t3lib_spritemanager_spritegenerator.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/spritemanager/class.t3lib_spritemanager_spritegenerator.php']);
-}
 ?>

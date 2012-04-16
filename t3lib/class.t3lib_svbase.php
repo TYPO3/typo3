@@ -614,5 +614,4 @@ abstract class t3lib_svbase {
 
 }
 
-// XCLASS handling does not make sense, because this class is always extended by the service classes..
 ?>

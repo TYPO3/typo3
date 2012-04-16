@@ -50,9 +50,4 @@ class t3lib_message_ErrorpageMessage extends t3lib_message_AbstractStandaloneMes
 	}
 }
 
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/message/class.t3lib_message_errorpagemessage.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/message/class.t3lib_message_errorpagemessage.php']);
-}
-
 ?>

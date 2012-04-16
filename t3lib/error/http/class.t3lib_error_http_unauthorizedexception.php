@@ -61,8 +61,4 @@ class t3lib_error_http_UnauthorizedException extends t3lib_error_http_AbstractCl
 	}
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/error/t3lib_error_http_unauthorizedexecption.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/error/t3lib_error_http_unauthorizedexecption.php']);
-}
-
 ?>

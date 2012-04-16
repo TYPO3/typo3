@@ -341,12 +341,6 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 			// Return the result:
 		return $labelStr;
 	}
-
-}
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_tsfebeuserauth.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_tsfebeuserauth.php']);
 }
 
 ?>

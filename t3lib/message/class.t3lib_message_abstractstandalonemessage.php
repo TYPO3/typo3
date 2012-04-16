@@ -161,12 +161,6 @@ abstract class t3lib_message_AbstractStandaloneMessage extends t3lib_message_Abs
 		$content = $this->render();
 		echo $content;
 	}
-
-}
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/message/class.t3lib_message_abstractstandalonemessage.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/message/class.t3lib_message_abstractstandalonemessage.php']);
 }
 
 ?>
