@@ -260,18 +260,20 @@ class tslib_content_Media extends tslib_content_Abstract {
 	protected function retrieveMediaUrl($file) {
 		$returnValue = NULL;
 
+		/** @var $mediaWizard tslib_mediaWizardProvider */
+		$mediaWizard = tslib_mediaWizardManager::getValidMediaWizardProvider($file);
+
+			// Get the path relative to the page currently outputted
 		if (is_file(PATH_site . $file)) {
-				// get the path relative to the page currently outputted
 			$returnValue = $GLOBALS['TSFE']->tmpl->getFileName($file);
-		} else {
-				// Use media wizard to extract file from URL
-			/** @var $mediaWizard tslib_mediaWizardProvider */
-			$mediaWizard = tslib_mediaWizardManager::getValidMediaWizardProvider($file);
-			if ($mediaWizard !== NULL) {
-				$returnValue = $this->cObj->typoLink_URL(array(
-					'parameter' => $mediaWizard->rewriteUrl($file)
-				));
-			}
+			// Use media wizard to extract file from URL
+		} elseif ($mediaWizard !== NULL) {
+			$returnValue = $this->cObj->typoLink_URL(array(
+				'parameter' => $mediaWizard->rewriteUrl($file)
+			));
+			// Use URL if it is valid and has a scheme
+		} elseif (t3lib_div::isValidUrl($file)) {
+			$returnValue = $file;
 		}
 
 		return $returnValue;
