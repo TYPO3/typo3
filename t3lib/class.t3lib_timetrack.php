@@ -45,7 +45,7 @@
  * @subpackage t3lib
  * @see t3lib_tsfeBeUserAuth, tslib_fe, tslib_cObj, TSpagegen
  */
-class t3lib_timeTrack {
+final class t3lib_timeTrack {
 	var $starttime = 0; // Is loaded with the millisecond time when this object is created
 
 	var $LR = 1; // Log Rendering flag. If set, ->push() and ->pull() is called from the cObj->cObjGetSingle(). This determines whether or not the TypoScript parsing activity is logged. But it also slows down the rendering
@@ -494,7 +494,5 @@ class t3lib_timeTrack {
 		}
 	}
 }
-
-// XCLASSing is not possible for this class
 
 ?>

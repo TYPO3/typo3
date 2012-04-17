@@ -70,7 +70,4 @@ class t3lib_spritemanager_SpriteBuildingHandler extends t3lib_spritemanager_Abst
 	}
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/spritemanager/class.t3lib_spritemanager_autogeneratinghandler.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/spritemanager/class.t3lib_spritemanager_autogeneratinghandler.php']);
-}
 ?>

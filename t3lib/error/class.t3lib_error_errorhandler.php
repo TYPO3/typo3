@@ -205,12 +205,6 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_log', $fields_values);
 		}
 	}
-
-}
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/error/class.t3lib_error_errorhandler.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/error/class.t3lib_error_errorhandler.php']);
 }
 
 ?>

@@ -274,12 +274,6 @@ class t3lib_l10n_Locales implements t3lib_Singleton {
 		}
 		return $terLocales;
 	}
-
-}
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/l10n/class.t3lib_l10n_locales.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/l10n/class.t3lib_l10n_locales.php']);
 }
 
 ?>
