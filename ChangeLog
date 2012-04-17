@@ -1,3 +1,11 @@
+2012-04-17  23a1c77                  [RELEASE] Release of TYPO3 4.4.15 (TYPO3 v4 Release Team)
+2012-04-17  bdcd2d5  #34348          [SECURITY] XSS in exception handler (Oliver Klee)
+2012-04-05  4cf56f4  #27052          [BUGFIX] Context menu of page translation doesn't work in languages view (Andreas Wolf)
+2012-04-05  5f92036  #17910          [BUGFIX] Error when editing a record with additionalPreviewLanguage and an deleted l18n_parent (Andreas Wolf)
+2012-03-28  caef753                  [TASK] Set TYPO3 version to 4.4.15-dev (TYPO3 v4 Release Team)
+2012-03-28  6d33e3c                  [RELEASE] Release of TYPO3 4.4.14 (TYPO3 v4 Release Team)
+
+
 2012-03-28  47603e8                  [RELEASE] Release of TYPO3 4.4.14 (TYPO3 v4 Release Team)
 2012-03-28  593ac07  #30188          [SECURITY] XSS possibility in RemoveXSS (Andreas Wolf)
 2012-03-28  1113205  #29397          [SECURITY] XSS in show item (Christian Kuhn)
