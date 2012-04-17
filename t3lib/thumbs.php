@@ -380,13 +380,8 @@ class SC_t3lib_thumbs {
 	}
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/thumbs.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/thumbs.php']);
-}
-
 // Make instance:
 $SOBE = t3lib_div::makeInstance('SC_t3lib_thumbs');
 $SOBE->init();
 $SOBE->main();
-
 ?>

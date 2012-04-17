@@ -60,8 +60,5 @@ class t3lib_error_http_PageNotFoundException extends t3lib_error_http_AbstractCl
 		parent::__construct($this->statusHeaders, $this->message, $this->title, $code);
 	}
 }
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/error/t3lib_error_http_pagenotfoundexecption.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/error/t3lib_error_http_pagenotfoundexecption.php']);
-}
 
 ?>
