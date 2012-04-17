@@ -628,8 +628,4 @@ class t3lib_tree_extdirect_Node extends t3lib_tree_Node {
 	}
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/tree/extdirect/class.t3lib_tree_extdirect_node.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/tree/extdirect/class.t3lib_tree_extdirect_node.php']);
-}
-
 ?>

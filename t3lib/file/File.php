@@ -347,10 +347,4 @@ class t3lib_file_File extends t3lib_file_AbstractFile {
 		return $array;
 	}
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/File.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/File.php']);
-}
-
 ?>

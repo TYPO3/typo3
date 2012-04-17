@@ -32,9 +32,4 @@
 class t3lib_file_exception_InsufficientFolderAccessPermissionsException extends t3lib_file_exception_AbstractFileException {
 
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Exception/InsufficientFolderAccessPermissionsException.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Exception/InsufficientFolderAccessPermissionsException.php']);
-}
-
 ?>

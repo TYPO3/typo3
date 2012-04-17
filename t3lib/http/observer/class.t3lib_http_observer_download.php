@@ -188,8 +188,4 @@ class t3lib_http_observer_Download implements SplObserver {
 	}
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/http/observer/class.t3lib_http_observer_download.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/http/observer/class.t3lib_http_observer_download.php']);
-}
-
 ?>

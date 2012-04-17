@@ -31,7 +31,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_TimeTrackNull {
+final class t3lib_TimeTrackNull {
 	/**
 	 * "Constructor"
 	 * Sets the starting time
@@ -130,7 +130,5 @@ class t3lib_TimeTrackNull {
 	}
 
 }
-
-// XCLASSing is not possible for this class
 
 ?>
