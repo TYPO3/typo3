@@ -2388,22 +2388,19 @@ final class t3lib_BEfunc {
 		$helpTextArray = self::helpTextArray($table, $field);
 
 		$output = '';
+		$arrow = '';
 
-			// put header before the rest of the text
+			// Put header before the rest of the text
 		if ($helpTextArray['title'] !== NULL) {
 			$output .= '<h2 class="t3-row-header">' . $helpTextArray['title'] . '</h2>';
 		}
-			// add the content
-		if ($helpTextArray['description'] !== NULL) {
-			$output .= $helpTextArray['description'];
-		}
-			// add see also arrow if we have more info
+			// Add see also arrow if we have more info
 		if ($helpTextArray['moreInfo']) {
 			$arrow = t3lib_iconWorks::getSpriteIcon('actions-view-go-forward');
 		}
-			// add description text
-		if ($helpTextArray['description'] || $arrow) {
-			$output['description'] = '<p class="t3-help-short">' . nl2br(htmlspecialchars($helpTextArray['description'])) . $arrow . '</p>';
+			// Wrap description and arrow in p tag
+		if ($helpTextArray['description'] !== NULL || $arrow) {
+			$output .= '<p class="t3-help-short">' . nl2br(htmlspecialchars($helpTextArray['description'])) . $arrow . '</p>';
 		}
 
 		return $output;
