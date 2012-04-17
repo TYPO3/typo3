@@ -2,8 +2,8 @@ This document is a part of the TYPO3 project. TYPO3 is an open source web
 content management system released under the GNU GPL. TYPO3 is copyright
 (c) 1999-2012 by Kasper Skaarhoj.
 
-This document contains information about TYPO3 version 4.7 shall be released
-on April, 24th 2012.
+This document contains information about TYPO3 version 4.7 which has been
+released on April, 24th 2012.
 
 An up-to-date version of this document also containing links to further in
 depth information can be found here:
@@ -33,32 +33,39 @@ Deprecated methods that were initially targeted to be removed in TYPO3 4.7 have
 finally been removed. The deprecation log shows which functions were declared
 to be deprecated and will be removed in the next TYPO3 versions.
 
-Removed Functionality
+
+Removed Functionality / Overworked Functionality
 -------------------------------------------------------------------------------
 
-* ...
+* non utf-8 support removed
+
+Before upgrading, check that your database is encoded in utf-8 and your
+database connection is encoded same way. TYPO3 4.7 only will work with utf-8 after
+other charsets have been deprecated in TYPO3 version 4.5 LTS.
+
+* The old HTML-Mailer Class (t3lib_htmlmail) has been removed
+
+After a grace period of two version t3lib_htmlmail finally has been removed from
+TYPO3 Core. All extensions which had not been adapted yet, will break. Most 
+likely this will affect many extensions.
+
+* Highly changed CSS Styled Content Classes
+
+The System Extensions CSS Styled Content and the content rendering within sysext 
+CMS have been heavily overworked as well as the TypoScript changed remarkibly.
+We expect all extensions X-Classing the Content-Rendering as well as adapting 
+TypoScript of CSS Styled Content to break. This might affect Lightbox-Extensions
+as well as for example dam_content (old version).
+
+!!!       PLEASE SEE A LIST OF INCOMPATIBLE EXTENSIONS WITHIN THE WIKI       !!!
 
 ===============================================================================
 Changes and Improvements
 ===============================================================================
 
-This will list all changes and improvements between TYPO3 4.6 and 4.7. For
+This will list important changes and improvements between TYPO3 4.6 and 4.7. For
 technical details see ChangeLog included in the typo3_src package.
 
--------------------------------------------------------------------------------
-General
--------------------------------------------------------------------------------
-
-...
-
-Other General Improvements
--------------------------------------------------------------------------------
-
-...
-
--------------------------------------------------------------------------------
-Security
--------------------------------------------------------------------------------
 
 Authentication Services
 -------------------------------------------------------------------------------
@@ -82,52 +89,3 @@ benefit from the changes.
 
 See new chapter in TYPO3 services documentation (doc_core_services) about the
 topic of authentication services: http://forge.typo3.org/issues/31413
-
--------------------------------------------------------------------------------
-Backend
--------------------------------------------------------------------------------
-
-...
-
-htmlArea RTE
--------------------------------------------------------------------------------
-
-A new toolbar button (insertsofthyphen) allows to insert a soft hyphen into the
-text without opening the «Insert special character» dialogue.
-
-The following HTML5 block elements are enabled in the RTE: article, aside,
-footer, header, nav, section.
-
-A new tab of the «Edit element» dialogue allows to edit microdata items using,
-by default, the voculary defined by schema.org; a new button «Show microdata»
-allows to highlight the microdata items in the RTE editing area.
-
-The click-enlarge feature now uses an HTML5-compliant custom attribute
-(data-htmlarea-clickenlarge).
-
-The order of tabs of the Insert/modify image dialogue may be configured
-in Page TSConfig.
-
--------------------------------------------------------------------------------
-Other Improvements to the Backend
--------------------------------------------------------------------------------
-
-...
-
--------------------------------------------------------------------------------
-Administration / Customization
--------------------------------------------------------------------------------
-
-...
-
--------------------------------------------------------------------------------
-Development
--------------------------------------------------------------------------------
-
-...
-
--------------------------------------------------------------------------------
-Performance
--------------------------------------------------------------------------------
-
-...

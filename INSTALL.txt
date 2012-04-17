@@ -84,7 +84,7 @@ Obtaining TYPO3
 ===============================================================================
 
 To get TYPO3, navigate to the following location:
-	http://typo3.org/download/packages/
+	http://typo3.org/download/
 
 TYPO3 consists of two packages: source and dummy. The source package contains
 files that are the same for every TYPO3 web site. The dummy package contains
@@ -180,6 +180,9 @@ If "sudo" is not available, ask your hosting company to change the permissions.
 ===============================================================================
 Setting up TYPO3
 ===============================================================================
+
+Create an empty file called ENABLE_INSTALL_TOOL in typ3conf/ folder, for example
+on a unix system using "touch /var/www/example.com/typo3conf/ENABLE_INSTALL_TOOL"
 
 To set up TYPO3, navigate to your web site. The TYPO3 installer will run in the
 1-2-3 mode to easily guide you through the installation.
