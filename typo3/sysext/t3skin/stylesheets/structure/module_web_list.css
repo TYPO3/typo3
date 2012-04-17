@@ -4,8 +4,8 @@ Web > List
 - - - - - - - - - - - - - - - - - - - - - */
 
 table.typo3-dblist {
-	margin-top: 10px;
-	width: 98%;
+	margin-bottom: 10px;
+	width: 100%;
 }
 
 table.typo3-dblist img {
