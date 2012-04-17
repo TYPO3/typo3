@@ -121,11 +121,11 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 						">
 						<div style="width: 100%; background-color: #515151; color: white; padding: 2px; margin: 0 0 6px 0;">Uncaught TYPO3 Exception</div>
 						<div style="width: 100%; padding: 2px; margin: 0 0 6px 0;">
-							<strong style="color: #BE0027;">' . $exceptionCodeNumber . $exception->getMessage() . '</strong> ' . /* $moreInformationLink .*/
+							<strong style="color: #BE0027;">' . $exceptionCodeNumber . htmlspecialchars($exception->getMessage()) . '</strong> ' . /* $moreInformationLink .*/
 			 '<br />
 							<br />
 							<span class="ExceptionProperty">' . get_class($exception) . '</span> thrown in file<br />
-							<span class="ExceptionProperty">' . $filePathAndName . '</span> in line
+							<span class="ExceptionProperty">' . htmlspecialchars($filePathAndName) . '</span> in line
 							<span class="ExceptionProperty">' . $exception->getLine() . '</span>.<br />
 							<br />
 							' . $backtraceCode . '
