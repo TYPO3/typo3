@@ -112,6 +112,7 @@ class t3lib_file_Factory implements t3lib_Singleton {
 					'driver' => 'Local',
 					'processingfolder' => 'typo3temp/_processed_/',	// legacy code
 					'configuration' => '',
+					'is_online' => TRUE,
 					'is_browsable' => TRUE,
 					'is_public' => TRUE,
 					'is_writable' => TRUE,
@@ -339,9 +340,17 @@ class t3lib_file_Factory implements t3lib_Singleton {
 			return $this->retrieveFileOrFolderObject($input);
 		} elseif (t3lib_utility_Math::canBeInterpretedAsInteger($input)) {
 			return $this->getFileObject($input);
-		} elseif (strpos($input, ':')) {
-				// path or folder
-			return $this->getObjectFromCombinedIdentifier($input);
+		} elseif (strpos($input, ':') > 0) {
+			list($prefix, $folderIdentifier) = explode(':', $input);
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($prefix)) {
+					// path or folder in a valid storageUID
+				return $this->getObjectFromCombinedIdentifier($input);
+
+			} elseif ($prefix == 'EXT') {
+				$input = t3lib_div::getFileAbsFileName($input);
+				$input = t3lib_Utility_Path::getRelativePath(PATH_site, dirname($input)).basename($input);
+				return $this->getFileObjectFromCombinedIdentifier($input);
+			}
 		} else {
 				// only the path
 			return $this->getFileObjectFromCombinedIdentifier($input);
@@ -366,7 +375,7 @@ class t3lib_file_Factory implements t3lib_Singleton {
 				// We only got a path: Go into backwards compatibility mode and
 				// use virtual Storage (uid=0)
 			$storageUid = 0;
-			$folderIdentifier = $parts[0];
+			$folderIdentifier = substr($parts[0], strlen(PATH_site));
 		}
 
 		return $this->getStorageObject($storageUid)->getFolder($folderIdentifier);
@@ -426,11 +435,25 @@ class t3lib_file_Factory implements t3lib_Singleton {
 			throw new InvalidArgumentException('uid of fileusage (sys_file_reference) has to be numeric.', 1300086584);
 		}
 
+
 		if (!$this->fileReferenceInstances[$uid]) {
 				// Fetches data in case $fileData is empty
 			if (empty($fileReferenceData)) {
-				/** @var $GLOBALS['TYPO3_DB'] t3lib_DB */
-				$fileReferenceData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_reference', 'uid=' . intval($uid) . ' AND deleted=0');
+
+					// fetch the reference record of the current workspace
+				if (TYPO3_MODE === 'BE') {
+					$fileReferenceData = t3lib_BEfunc::getRecordWSOL('sys_file_reference', $uid);
+				} elseif (is_object($GLOBALS['TSFE'])) {
+					$fileReferenceData = $GLOBALS['TSFE']->sys_page->checkRecord('sys_file_reference', $uid);
+				} else {
+					/** @var $GLOBALS['TYPO3_DB'] t3lib_DB */
+					$fileReferenceData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+						'*',
+						'sys_file_reference',
+						'uid=' . intval($uid) . ' AND deleted=0'
+					);
+				}
+
 				if (!is_array($fileReferenceData)) {
 					throw new InvalidArgumentException('No fileusage (sys_file_reference) found for given UID.', 1317178794);
 				}

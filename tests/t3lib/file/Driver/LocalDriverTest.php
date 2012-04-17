@@ -29,6 +29,7 @@
 
 require_once 'vfsStream/vfsStream.php';
 require_once dirname(dirname(__FILE__)) . '/BaseTestCase.php';
+require_once dirname(__FILE__) . '/Fixtures/LocalDriverFilenameFilter.php';
 
 /**
  * Testcase for the local storage driver class of the TYPO3 VFS
@@ -96,10 +97,11 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 		if (count($mockedDriverMethods) == 0) {
 			$driver = new t3lib_file_Driver_LocalDriver($driverConfiguration);
 		} else {
-			$driver = $this->getMock('t3lib_file_Driver_LocalDriver', $mockedDriverMethods, array(), '', FALSE);
+			$driver = $this->getMock('t3lib_file_Driver_LocalDriver', $mockedDriverMethods, array($driverConfiguration));
 		}
 		$storageObject->setDriver($driver);
 		$driver->setStorage($storageObject);
+		$driver->processConfiguration();
 		$driver->initialize();
 		return $driver;
 	}
@@ -149,6 +151,25 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 	/**
 	 * @test
 	 */
+	public function getFolderInFolderReturnsCorrectFolderObject() {
+		$this->addToMount(array(
+			'someDir' => array(
+				'someSubdir' => array()
+			)
+		));
+		$fixture = $this->createDriverFixture(array(
+			'basePath' => $this->getMountRootUrl()
+		));
+
+		$parentFolder = $fixture->getFolder('/someDir');
+		$folder = $fixture->getFolderInFolder('someSubdir', $parentFolder);
+
+		$this->assertEquals('/someDir/someSubdir/', $folder->getIdentifier());
+	}
+
+	/**
+	 * @test
+	 */
 	public function createFolderCreatesFolderOnDisk() {
 		$this->addToMount(array('some' => array('folder' => array())));
 		$fixture = $this->createDriverFixture(array(
@@ -166,17 +187,17 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 	/**
 	 * @test
 	 */
-	public function createFolderCreatesFoldersRecursively() {
-		$this->markTestSkipped('This feature does not belong to the driver anymore -- should be reimplemented in the storage.');
-
+	public function createFolderReturnsFolderObject() {
+		$this->addToMount(array('some' => array('folder' => array())));
 		$fixture = $this->createDriverFixture(array(
 			'basePath' => $this->getMountRootUrl()
 		));
 
-		$fixture->createFolder('/some/folder/path', TRUE);
+		$mockedFolder = $this->getSimpleFolderMock('/some/folder/');
 
-		$this->assertFileExists($this->getUrlInMount('/some/folder/'));
-		$this->assertFileExists($this->getUrlInMount('/some/folder/path'));
+		$createdFolder = $fixture->createFolder('path', $mockedFolder);
+
+		$this->assertEquals('/some/folder/path/', $createdFolder->getIdentifier());
 	}
 
 	public function createFolderSanitizesFolderNameBeforeCreation_dataProvider() {
@@ -213,7 +234,7 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 	 * @test
 	 */
 	public function driverConfigVerificationFailsIfConfiguredBasePathDoesNotExist() {
-		$this->setExpectedException('RuntimeException', '', 1299233097);
+		$this->setExpectedException('t3lib_file_exception_InvalidConfigurationException', '', 1299233097);
 
 		$driverConfiguration = array(
 			'basePath' => vfsStream::url($this->basedir . 'doesntexist/')
@@ -607,6 +628,19 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 	/**
 	 * @test
 	 */
+	public function getFileListReturnsEmptyArrayForEmptyDirectory() {
+		$fixture = $this->createDriverFixture(array(
+			'basePath' => $this->getMountRootUrl()
+		));
+
+		$fileList = $fixture->getFileList('/');
+
+		$this->assertEmpty($fileList);
+	}
+
+	/**
+	 * @test
+	 */
 	public function getFileListReturnsAllFilesInDirectory() {
 		$dirStructure = array(
 			'aDir' => array(),
@@ -655,6 +689,27 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 		$fileList = $fixture->getFileList('/');
 
 		$this->assertEquals(array('file1', 'file2'), array_keys($fileList));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getFileListFiltersItemsWithGivenFilterMethods() {
+		$dirStructure = array(
+			'fileA' => 'asdfg',
+			'fileB' => 'fdsa'
+		);
+		$this->addToMount($dirStructure);
+		$fixture = $this->createDriverFixture(array(
+			'basePath' => $this->getMountRootUrl()
+		));
+		$filterCallbacks = array(
+			array('t3lib_file_Tests_Driver_Fixtures_LocalDriverFilenameFilter', 'filterFilename')
+		);
+
+		$fileList = $fixture->getFileList('/', 0, 0, $filterCallbacks);
+
+		$this->assertNotContains('fileA', array_keys($fileList));
 	}
 
 	/**
@@ -723,6 +778,8 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 	 * @test
 	 */
 	public function getFolderListLeavesOutNavigationalEntries() {
+			// we have to add .. and . manually, as these are not included in vfsStream directory listings (as opposed
+			// to normal file listings)
 		$this->addToMount(array(
 			'..' => array(),
 			'.' => array()
@@ -734,6 +791,27 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 		$fileList = $fixture->getFolderList('/');
 
 		$this->assertEmpty($fileList);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getFolderListFiltersItemsWithGivenFilterMethods() {
+		$dirStructure = array(
+			'folderA' => array(),
+			'folderB' => array()
+		);
+		$this->addToMount($dirStructure);
+		$fixture = $this->createDriverFixture(array(
+			'basePath' => $this->getMountRootUrl()
+		));
+		$filterCallbacks = array(
+			array('t3lib_file_Tests_Driver_Fixtures_LocalDriverFilenameFilter', 'filterFilename')
+		);
+
+		$folderList = $fixture->getFolderList('/', 0, 0, $filterCallbacks);
+
+		$this->assertNotContains('folderA', array_keys($folderList));
 	}
 
 	/**
@@ -1218,11 +1296,11 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 		));
 		$mockedFolder = $this->getSimpleFolderMock($oldFolderIdentifier);
 
-		$newIdentifier = $fixture->renameFolder($mockedFolder, $newFolderName);
+		$mapping = $fixture->renameFolder($mockedFolder, $newFolderName);
 
 		$this->assertFalse($fixture->folderExists($oldFolderIdentifier));
 		$this->assertTrue($fixture->folderExists($expectedNewIdentifier));
-		$this->assertEquals($expectedNewIdentifier, $newIdentifier);
+		$this->assertEquals($expectedNewIdentifier, $mapping[$oldFolderIdentifier]);
 	}
 
 	/**
@@ -1244,9 +1322,34 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 
 		$mappingInformation = $fixture->renameFolder($sourceFolder, 'newFolder');
 
+		$this->assertEquals('/newFolder/', $mappingInformation['/sourceFolder/']);
 		$this->assertEquals('/newFolder/file', $mappingInformation['/sourceFolder/file']);
 		$this->assertEquals('/newFolder/subFolder/file', $mappingInformation['/sourceFolder/subFolder/file']);
 		$this->assertEquals('/newFolder/subFolder/', $mappingInformation['/sourceFolder/subFolder/']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function renameFolderRevertsRenamingIfFilenameMapCannotBeCreated() {
+		$this->setExpectedException('RuntimeException', '', 1334160746);
+
+		$this->addToMount(array(
+			'sourceFolder' => array(
+				'file' => 'asdfg'
+			)
+		));
+		$fixture = $this->createDriverFixture(array(
+			'basePath' => $this->getMountRootUrl()
+		), NULL, array('createIdentifierMap'));
+		$fixture->expects($this->atLeastOnce())->method('createIdentifierMap')
+			->will($this->throwException(new t3lib_file_exception_FileOperationErrorException()));
+
+		$sourceFolder = $this->getSimpleFolderMock('/sourceFolder/');
+
+		$fixture->renameFolder($sourceFolder, 'newFolder');
+
+		$this->assertFileExists($this->getUrlInMount('/sourceFolder/file'));
 	}
 
 	/**

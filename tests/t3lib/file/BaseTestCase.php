@@ -34,11 +34,6 @@
  */
 abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 
-	/**
-	 * @var vfsStreamDirectory
-	 */
-	protected $vfsRootDirectory;
-
 	protected $basedir = 'basedir';
 
 	protected $mountDir;
@@ -48,16 +43,9 @@ abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 	public function setUp() {
 		$this->mountDir = uniqid('mount-');
 		$this->basedir = uniqid('base-');
-		$this->vfsRootDirectory = vfsStream::setup($this->basedir);
+		vfsStream::setup($this->basedir);
 			// Add an entry for the mount directory to the VFS contents
 		$this->vfsContents = array($this->mountDir => array());
-	}
-
-	public function tearDown() {
-		unset($this->mountDir);
-		unset($this->basedir);
-		unset($this->vfsRootDirectory);
-		unset($this->vfsContents);
 	}
 
 	protected function getMountRootUrl() {
@@ -73,7 +61,7 @@ abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 			$this->markTestSkipped('vfsStream::create() does not exist');
 		}
 
-		vfsStream::create($this->vfsContents, $this->vfsRootDirectory);
+		vfsStream::create($this->vfsContents, $this->basedir);
 	}
 
 	/**
