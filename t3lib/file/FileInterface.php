@@ -185,9 +185,4 @@ interface t3lib_file_FileInterface extends t3lib_file_ResourceInterface {
 	public function toArray();
 }
 
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/FileInterface.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/FileInterface.php']);
-}
-
 ?>

@@ -33,8 +33,8 @@ class t3lib_file_exception_InsufficientFileReadPermissionsException extends t3li
 
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/Exception/InsufficientFileReadPermissionsException.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/Exception/InsufficientFileReadPermissionsException.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Exception/InsufficientFileReadPermissionsException.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Exception/InsufficientFileReadPermissionsException.php']);
 }
 
 ?>

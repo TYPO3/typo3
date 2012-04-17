@@ -33,8 +33,8 @@ class t3lib_file_exception_InsufficientFolderAccessPermissionsException extends 
 
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/Exception/InsufficientFolderAccessPermissionsException.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/Exception/InsufficientFolderAccessPermissionsException.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Exception/InsufficientFolderAccessPermissionsException.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Exception/InsufficientFolderAccessPermissionsException.php']);
 }
 
 ?>

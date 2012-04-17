@@ -361,4 +361,9 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 	}
 }
 
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Folder.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Folder.php']);
+}
+
+
 ?>
