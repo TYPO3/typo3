@@ -115,7 +115,7 @@ class t3lib_error_ProductionExceptionHandler extends t3lib_error_AbstractExcepti
 			&& method_exists($exception, 'getTitle')
 			&& strlen($exception->getTitle()) > 0) {
 
-			return $exception->getTitle();
+			return htmlspecialchars($exception->getTitle());
 		} else {
 			return $this->defaultTitle;
 		}
@@ -136,7 +136,7 @@ class t3lib_error_ProductionExceptionHandler extends t3lib_error_AbstractExcepti
 			} else {
 				$moreInformationLink = '';
 			}
-			return $exception->getMessage() . $moreInformationLink;
+			return htmlspecialchars($exception->getMessage()) . $moreInformationLink;
 		} else {
 			return $this->defaultMessage;
 		}
