@@ -45,26 +45,29 @@ class t3lib_file_StorageTest extends t3lib_file_BaseTestCase {
 	 * @param array $configuration
 	 * @param bool $mockPermissionChecks
 	 */
-	protected function prepareFixture($configuration, $mockPermissionChecks = FALSE) {
-		$permissionMethods = array('isFolderActionAllowed', 'checkFileActionPermission', 'checkUserActionPermission');
+	protected function prepareFixture($configuration, $mockPermissionChecks = FALSE, $driverObject = NULL, array $storageRecord = array()) {
+		$permissionMethods = array('isFileActionAllowed', 'isFolderActionAllowed', 'checkFileActionPermission', 'checkUserActionPermission');
+
 		$mockedMethods = NULL;
 
 		$configuration = $this->convertConfigurationArrayToFlexformXml($configuration);
-		$storageRecord = array(
+		$storageRecord = t3lib_div::array_merge_recursive_overrule($storageRecord, array(
 			'configuration' => $configuration
-		);
+		));
 
-		/** @var $mockedDriver t3lib_file_Driver_AbstractDriver */
-		$mockedDriver = $this->getMockForAbstractClass('t3lib_file_Driver_AbstractDriver', array(), '', FALSE);
+		if ($driverObject == NULL) {
+			/** @var $mockedDriver t3lib_file_Driver_AbstractDriver */
+			$driverObject = $this->getMockForAbstractClass('t3lib_file_Driver_AbstractDriver', array(), '', FALSE);
+		}
 
 		if ($mockPermissionChecks) {
 			$mockedMethods = $permissionMethods;
 		}
 
 		if ($mockedMethods === NULL) {
-			$this->fixture = new t3lib_file_Storage($mockedDriver, $storageRecord);
+			$this->fixture = new t3lib_file_Storage($driverObject, $storageRecord);
 		} else {
-			$this->fixture = $this->getMock('t3lib_file_Storage', $mockedMethods, array($mockedDriver, $storageRecord));
+			$this->fixture = $this->getMock('t3lib_file_Storage', $mockedMethods, array($driverObject, $storageRecord));
 			foreach ($permissionMethods as $method) {
 				$this->fixture->expects($this->any())->method($method)->will($this->returnValue(TRUE));
 			}
@@ -110,10 +113,11 @@ class t3lib_file_StorageTest extends t3lib_file_BaseTestCase {
 		} else {
 				// we are using the LocalDriver here because PHPUnit can't mock concrete methods in abstract classes, so
 				// when using the AbstractDriver we would be in trouble when wanting to mock away some concrete method
-			$driver = $this->getMock('t3lib_file_Driver_LocalDriver', $mockedDriverMethods, array(), '', FALSE);
+			$driver = $this->getMock('t3lib_file_Driver_LocalDriver', $mockedDriverMethods, array($driverConfiguration));
 		}
 		$storageObject->setDriver($driver);
 		$driver->setStorage($storageObject);
+		$driver->processConfiguration();
 		$driver->initialize();
 		return $driver;
 	}
@@ -128,6 +132,75 @@ class t3lib_file_StorageTest extends t3lib_file_BaseTestCase {
 		$this->prepareFixture(array('baseUri' => $uri));
 
 		$this->assertEquals($uri . '/', $this->fixture->getBaseUri());
+	}
+
+	public function capabilitiesDataProvider() {
+		return array(
+			'only public' => array(
+				array(
+					'public' => TRUE,
+					'writable' => FALSE,
+					'browsable' => FALSE,
+				)
+			),
+			'only writable' => array(
+				array(
+					'public' => FALSE,
+					'writable' => TRUE,
+					'browsable' => FALSE,
+				)
+			),
+			'only browsable' => array(
+				array(
+					'public' => FALSE,
+					'writable' => FALSE,
+					'browsable' => TRUE,
+				)
+			),
+			'all capabilities' => array(
+				array(
+					'public' => TRUE,
+					'writable' => TRUE,
+					'browsable' => TRUE,
+				)
+			),
+			'none' => array(
+				array(
+					'public' => FALSE,
+					'writable' => FALSE,
+					'browsable' => FALSE,
+				)
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider capabilitiesDataProvider
+	 */
+	public function capabilitiesOfStorageObjectAreCorrectlySet(array $capabilites) {
+		$storageRecord = array(
+			'is_public' => $capabilites['public'],
+			'is_writable' => $capabilites['writable'],
+			'is_browsable' => $capabilites['browsable'],
+			'is_online' => TRUE
+		);
+		$mockedDriver = $this->createDriverMock(array(), $this->fixture, array('hasCapability'));
+		$mockedDriver->expects($this->any())->method('hasCapability')->will($this->returnValue(TRUE));
+		$this->prepareFixture(array(), FALSE, $mockedDriver, $storageRecord);
+
+		$this->assertEquals($capabilites['public'], $this->fixture->isPublic(), 'Capability "public" is not correctly set.');
+		$this->assertEquals($capabilites['writable'], $this->fixture->isWritable(), 'Capability "writable" is not correctly set.');
+		$this->assertEquals($capabilites['browsable'], $this->fixture->isBrowsable(), 'Capability "browsable" is not correctly set.');
+	}
+
+	/**
+	 * @test
+	 */
+	public function fileAndFolderListFiltersAreInitializedWithDefaultFilters() {
+		$this->prepareFixture(array());
+
+		$this->assertEquals($GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['callbackFilterMethods'], $this->fixture->getFileAndFolderNameFilters());
 	}
 
 	/**
@@ -146,7 +219,7 @@ class t3lib_file_StorageTest extends t3lib_file_BaseTestCase {
 	 * @test
 	 */
 	public function addFileCallsDriverWithCorrectArguments() {
-		$mockedFolder = $this->getSimpleFolderMock('/');
+		$mockedFolder = $this->getSimpleFolderMock('/targetFolder/');
 
 		$this->addToMount(array(
 			'targetFolder' => array(
@@ -430,20 +503,16 @@ class t3lib_file_StorageTest extends t3lib_file_BaseTestCase {
 	 * @group integration
 	 */
 	public function storageUsesInjectedFilemountsToCheckForMountBoundaries() {
-		$mockedMountFolder = $this->getSimpleFolderMock('/mountFolder');
 		$mockedFile = $this->getSimpleFileMock('/mountFolder/file');
 		$this->addToMount(array(
 			'mountFolder' => array(
 				'file' => 'asdfg'
 			)
 		));
-		$mockedDriver = $this->createDriverMock(array());
-		$mockedDriver->expects($this->once())->method('getFolder')->will($this->returnValue($mockedMountFolder));
-		$mockedDriver->expects($this->once())->method('isWithin')->with($this->equalTo($mockedMountFolder), '/mountFolder/file');
+		$mockedDriver = $this->createDriverMock(array('basePath' => $this->getMountRootUrl()), NULL, NULL);
 
 		$this->initializeVfs();
-		$this->prepareFixture(array());
-		$this->fixture->setDriver($mockedDriver);
+		$this->prepareFixture(array(), NULL, $mockedDriver);
 
 		$this->fixture->injectFileMount('/mountFolder');
 		$this->assertEquals(1, count($this->fixture->getFileMounts()));
@@ -464,7 +533,7 @@ class t3lib_file_StorageTest extends t3lib_file_BaseTestCase {
 		);
 
 		$this->prepareFixture(array());
-		$driver = $this->createDriverMock(array(), $this->fixture);
+		$driver = $this->createDriverMock(array('basePath' => $this->getMountRootUrl()), $this->fixture, array('getFileList'));
 		$driver->expects($this->once())->method('getFileList')->will($this->returnValue($fileList));
 
 		$fileList = $this->fixture->getFileList('/');
@@ -475,10 +544,32 @@ class t3lib_file_StorageTest extends t3lib_file_BaseTestCase {
 	/**
 	 * @test
 	 */
+	public function getFileListIgnoresCasingWhenSortingFilenames() {
+		$fileList = array(
+			'aFile' => 'dfsdg',
+			'zFile' => 'werw',
+			'BFile' => 'asd',
+			'12345' => 'fdsa',
+			'IMG_1234.jpg' => 'asdf'
+		);
+
+		$this->prepareFixture(array());
+		$driver = $this->createDriverMock(array(), $this->fixture, array('getFileList'));
+		$driver->expects($this->once())->method('getFileList')->will($this->returnValue($fileList));
+
+		$fileList = $this->fixture->getFileList('/');
+
+		$this->assertEquals(array('12345', 'aFile', 'BFile', 'IMG_1234.jpg', 'zFile'), array_keys($fileList));
+	}
+
+	/**
+	 * @test
+	 */
 	public function createFolderChecksIfParentFolderExistsBeforeCreatingFolder() {
 		$mockedParentFolder = $this->getSimpleFolderMock('/someFolder/');
 		$mockedDriver = $this->createDriverMock(array());
 		$mockedDriver->expects($this->once())->method('folderExists')->with($this->equalTo('/someFolder/'))->will($this->returnValue(TRUE));
+		$mockedDriver->expects($this->once())->method('createFolder')->with($this->equalTo('newFolder'))->will($this->returnValue($mockedParentFolder));
 
 		$this->prepareFixture(array(), TRUE);
 		$this->fixture->setDriver($mockedDriver);
@@ -500,6 +591,68 @@ class t3lib_file_StorageTest extends t3lib_file_BaseTestCase {
 		$this->fixture->createFolder('newFolder', $mockedParentFolder);
 	}
 
+	/**
+	 * @test
+	 */
+	public function createFolderCanRecursivelyCreateFolders() {
+		$this->addToMount(array('someFolder' => array()));
+		$mockedDriver = $this->createDriverMock(array('basePath' => $this->getMountRootUrl()), NULL, NULL);
+		$this->prepareFixture(array(), TRUE, $mockedDriver);
+
+		$parentFolder = $this->fixture->getFolder('/someFolder/');
+		$newFolder = $this->fixture->createFolder('subFolder/secondSubfolder', $parentFolder);
+
+		$this->assertEquals('secondSubfolder', $newFolder->getName());
+		$this->assertFileExists($this->getUrlInMount('/someFolder/subFolder/'));
+		$this->assertFileExists($this->getUrlInMount('/someFolder/subFolder/secondSubfolder/'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function createFolderIgnoresLeadingAndTrailingSlashesWithFoldername() {
+		$mockedParentFolder = $this->getSimpleFolderMock('/someFolder/');
+		$this->prepareFixture(array(), TRUE);
+		$mockedDriver = $this->createDriverMock(array(), $this->fixture);
+
+		$mockedDriver->expects($this->once())->method('folderExists')->with($this->equalTo('/someFolder/'))->will($this->returnValue(TRUE));
+		$mockedDriver->expects($this->once())->method('createFolder')->with($this->equalTo('subFolder'));
+
+		$this->fixture->createFolder('/subFolder/', $mockedParentFolder);
+	}
+
+	/**
+	 * @test
+	 */
+	public function createFolderUsesRootFolderAsParentFolderIfNotGiven() {
+		$mockedRootFolder = $this->getSimpleFolderMock('/');
+		$this->prepareFixture(array(), TRUE);
+		$mockedDriver = $this->createDriverMock(array(), $this->fixture);
+
+		$mockedDriver->expects($this->once())->method('getRootLevelFolder')->with()->will($this->returnValue($mockedRootFolder));
+		$mockedDriver->expects($this->once())->method('folderExists')->with($this->equalTo('/'))->will($this->returnValue(TRUE));
+		$mockedDriver->expects($this->once())->method('createFolder')->with($this->equalTo('someFolder'));
+
+		$this->fixture->createFolder('someFolder');
+	}
+
+	/**
+	 * @test
+	 */
+	public function createFolderCreatesNestedStructureEvenIfPartsAlreadyExist() {
+		$this->addToMount(array(
+			'existingFolder' => array()
+		));
+		$this->initializeVfs();
+		$mockedDriver = $this->createDriverMock(array('basePath' => $this->getMountRootUrl()), NULL, NULL);
+		$this->prepareFixture(array(), TRUE, $mockedDriver);
+
+		$rootFolder = $this->fixture->getFolder('/');
+		$newFolder = $this->fixture->createFolder('existingFolder/someFolder', $rootFolder);
+
+		$this->assertEquals('someFolder', $newFolder->getName());
+		$this->assertFileExists($this->getUrlInMount('existingFolder/someFolder'));
+	}
 
 	/**
 	 * @test

@@ -55,9 +55,22 @@ class t3lib_file_Repository_StorageRepository extends t3lib_file_Repository_Abst
 	 * Finds storages by type.
 	 *
 	 * @param string $storageType
+	 * @return t3lib_file_Storage[]
 	 */
 	public function findByStorageType($storageType) {
-		// @todo Needs to be implemented
+		$storageObjects = array();
+
+		$whereClause = 'deleted=0 AND hidden=0';
+		$whereClause .= ' AND ' . $this->typeField . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($storageType, $this->table);
+
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->table, $whereClause);
+
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			$storageObjects[] = $this->createDomainObject($row);
+		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
+		return $storageObjects;
 	}
 
 	/**
@@ -67,7 +80,19 @@ class t3lib_file_Repository_StorageRepository extends t3lib_file_Repository_Abst
 	 * @return t3lib_file_Storage[]
 	 */
 	public function findAll() {
-		$storageObjects = parent::findAll();
+		$storageObjects = array();
+
+		$whereClause = 'deleted=0 AND hidden=0';
+		if ($this->type != '') {
+			$whereClause .= ' AND ' . $this->typeField . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->type, $this->table);
+		}
+
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->table, $whereClause);
+
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			$storageObjects[] = $this->createDomainObject($row);
+		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 		if (count($storageObjects) === 0) {
 			$this->createLocalStorage(
@@ -76,7 +101,7 @@ class t3lib_file_Repository_StorageRepository extends t3lib_file_Repository_Abst
 				'relative',
 				'This is the local fileadmin/ directory. This storage mount has been created automatically by TYPO3.'
 			);
-			$storageObjects = parent::findAll();
+			$storageObjects = self::findAll();
 		}
 
 		return $storageObjects;
@@ -114,6 +139,7 @@ class t3lib_file_Repository_StorageRepository extends t3lib_file_Repository_Abst
 						</sheet>
 					</data>
 				</T3FlexForms>',
+			'is_online' => 1,
 			'is_browsable' => 1,
 			'is_public' => 1,
 			'is_writable' => 1

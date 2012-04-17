@@ -63,7 +63,10 @@ class t3lib_file_Service_UserfilemountService {
 			$folderItems = $this->getSubfoldersForOptionList($rootLevelFolder);
 
 			foreach ($folderItems as $item) {
-				$PA['items'][] = array($item->getIdentifier(), $item->getIdentifier());
+				$PA['items'][] = array(
+					htmlspecialchars($item->getIdentifier()),
+					htmlspecialchars($item->getIdentifier())
+				);
 			}
 		} else {
 			$PA['items'][] = array('', 'Please choose a FAL mount from above first.');

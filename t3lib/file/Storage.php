@@ -177,6 +177,19 @@ class t3lib_file_Storage {
 	protected $processingFolder;
 
 	/**
+	 * whether this storage is online or offline in this request
+	 * @var bool
+	 */
+	protected $isOnline = NULL;
+
+	/**
+	 * The filters used for the files and folder names.
+	 *
+	 * @var array
+	 */
+	protected $fileAndFolderNameFilters = array();
+
+	/**
 	 * Constructor for a storage object.
 	 *
 	 * @param t3lib_file_Driver_AbstractDriver $driver
@@ -184,18 +197,31 @@ class t3lib_file_Storage {
 	 */
 	public function __construct(t3lib_file_Driver_AbstractDriver $driver, array $storageRecord) {
 		$this->storageRecord = $storageRecord;
-		$this->configuration = $this->getFileFactory()->convertFlexFormDataToConfigurationArray(
+		$this->configuration = t3lib_file_Factory::getInstance()->convertFlexFormDataToConfigurationArray(
 			$storageRecord['configuration']
 		);
 
 		$this->driver = $driver;
 		$this->driver->setStorage($this);
+
+		try {
+			$this->driver->processConfiguration();
+		} catch (t3lib_file_exception_InvalidConfigurationException $e) {
+				// configuration error
+				// mark this storage as permanently unusable
+			$this->markAsPermanentlyOffline();
+		}
+
 		$this->driver->initialize();
-		$this->capabilities = ($this->storageRecord['is_browsable'] && $this->driver->hasCapability(self::CAPABILITY_BROWSABLE) ? self::CAPABILITY_BROWSABLE : 0)
-			+ ($this->storageRecord['is_public'] && $this->driver->hasCapability(self::CAPABILITY_PUBLIC) ? self::CAPABILITY_PUBLIC : 0)
-			+ ($this->storageRecord['is_writable'] && $this->driver->hasCapability(self::CAPABILITY_WRITABLE) ? self::CAPABILITY_WRITABLE : 0);
+
+		$this->capabilities = (($this->storageRecord['is_browsable'] && $this->driver->hasCapability(self::CAPABILITY_BROWSABLE)) ? self::CAPABILITY_BROWSABLE : 0)
+			+ (($this->storageRecord['is_public'] && $this->driver->hasCapability(self::CAPABILITY_PUBLIC)) ? self::CAPABILITY_PUBLIC : 0)
+			+ (($this->storageRecord['is_writable'] && $this->driver->hasCapability(self::CAPABILITY_WRITABLE)) ? self::CAPABILITY_WRITABLE : 0);
+		// TODO do not set the "public" capability if no public URIs can be generated
 
 		$this->processConfiguration();
+
+		$this->resetFileAndFolderNameFiltersToDefault();
 	}
 
 	/**
@@ -292,7 +318,7 @@ class t3lib_file_Storage {
 	public function getFileByIdentifier($identifier) {
 		throw new BadMethodCallException(
 			'Function t3lib_file_Storage::getFileByIdentifier() has been renamed to just getFileInfoByIdentifier(). ' .
-				'Please fix the metho call.',
+				'Please fix the method call.',
 			1333754533
 		);
 	}
@@ -346,7 +372,7 @@ class t3lib_file_Storage {
 	 * @return boolean
 	 */
 	protected function hasCapability($capability) {
-		return $this->capabilities && $capability;
+		return ($this->capabilities & $capability) == $capability;
 	}
 
 	/**
@@ -377,7 +403,75 @@ class t3lib_file_Storage {
 	 * @return boolean
 	 */
 	public function isBrowsable() {
-		return $this->hasCapability(self::CAPABILITY_BROWSABLE);
+		return ($this->isOnline() && $this->hasCapability(self::CAPABILITY_BROWSABLE));
+	}
+
+	/**
+	 * Returns TRUE if this storage is browsable by a (backend) user of TYPO3.
+	 *
+	 * @return boolean
+	 */
+	public function isOnline() {
+		if ($this->isOnline === NULL) {
+			if ($this->getUid() === 0) {
+				$this->isOnline = TRUE;
+			}
+				// the storage is not marked as online for a longer time
+			if ($this->storageRecord['is_online'] == 0) {
+				$this->isOnline = FALSE;
+			}
+
+			if ($this->isOnline !== FALSE) {
+					// all files are ALWAYS available in the frontend
+				if (TYPO3_MODE === 'FE') {
+					$this->isOnline = TRUE;
+				} else {
+						// check if the storage is disabled temporary for now
+					$registryObject = t3lib_div::makeInstance('t3lib_Registry');
+					$offlineUntil = $registryObject->get('core', 'sys_file_storage-' . $this->getUid() . '-offline-until');
+					if ($offlineUntil && $offlineUntil > time()) {
+						$this->isOnline = FALSE;
+					} else {
+						$this->isOnline = TRUE;
+					}
+				}
+			}
+		}
+		return $this->isOnline;
+	}
+
+	/**
+	 * blow the "fuse" and mark the storage as offline
+	 * can only be modified by an admin
+	 * typically this is only done if the configuration is wrong
+	 */
+	public function markAsPermanentlyOffline() {
+		if ($this->getUid() > 0) {
+				// @todo: move this to the storage repository
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+				'sys_file_storage',
+				'uid=' . intval($this->getUid()),
+				array('is_online' => 0)
+			);
+		}
+		$this->storageRecord['is_online'] = 0;
+		$this->isOnline = FALSE;
+	}
+
+	/**
+	 * mark this storage as offline
+	 *
+	 * non-permanent: this typically happens for remote storages
+	 * that are "flaky" and not available all the time
+	 * mark this storage as offline for the next 5 minutes
+	 *
+	 * @return void
+	 */
+	public function markAsTemporaryOffline() {
+		$registryObject = t3lib_div::makeInstance('t3lib_Registry');
+		$registryObject->set('core', 'sys_file_storage-' . $this->getUid() . '-offline-until', (time()+60*5));
+		$this->storageRecord['is_online'] = 0;
+		$this->isOnline = FALSE;
 	}
 
 
@@ -394,14 +488,25 @@ class t3lib_file_Storage {
 	 * @return void
 	 */
 	public function injectFileMount($folderIdentifier, $additionalData = array()) {
+
+			// check for the folder before we add it as a filemount
+		if ($this->driver->folderExists($folderIdentifier) === FALSE) {
+				// if there is an error, this is important and should be handled
+				// as otherwise the user would see the whole storage without any restrictions for the filemounts
+			throw new t3lib_file_exception_FolderDoesNotExistException("Folder for file mount $folderIdentifier does not exist.", 1334427099);
+		}
+
+		$folderObject = $this->driver->getFolder($folderIdentifier);
+
 		if (empty($additionalData)) {
 			$additionalData = array(
 				'path' => $folderIdentifier,
 				'title' => $folderIdentifier,
-				'folder' => $this->getFolder($folderIdentifier)
+				'folder' => $folderObject
 			);
 		} else {
-			$additionalData['folder'] = $this->getFolder($folderIdentifier);
+			$additionalData['folder'] = $folderObject;
+
 			if (!isset($additionalData['title'])) {
 				$additionalData['title'] = $folderIdentifier;
 			}
@@ -686,12 +791,12 @@ class t3lib_file_Storage {
 	 * WARNING: Access to the file may be restricted by further means, e.g.
 	 * some web-based authentication. You have to take care of this yourself.
 	 *
-	 * @param t3lib_file_FileInterface $fileObject The file object
+	 * @param t3lib_file_ResourceInterface $resourceObject The file or folder object
 	 * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
 	 * @return string
 	 */
-	public function getPublicUrlForFile(t3lib_file_FileInterface $fileObject, $relativeToCurrentScript = FALSE) {
-		return $this->driver->getPublicUrl($fileObject, $relativeToCurrentScript);
+	public function getPublicUrl(t3lib_file_ResourceInterface $resourceObject, $relativeToCurrentScript = FALSE) {
+		return $this->driver->getPublicUrl($resourceObject, $relativeToCurrentScript);
 	}
 
 	/**
@@ -703,11 +808,13 @@ class t3lib_file_Storage {
 	 * @return t3lib_file_ProcessedFile
 	 */
 	public function processFile(t3lib_file_FileInterface $fileObject, $context, array $configuration) {
-		$processedFile = $this->getFileFactory()->getProcessedFileObject(
+		$processedFile = t3lib_file_Factory::getInstance()->getProcessedFileObject(
 			$fileObject,
 			$context,
 			$configuration
 		);
+			// set the storage of the processed file
+		$processedFile->setStorage($this);
 
 			// Pre-process the file by an accordant slot
 		$this->emitPreFileProcess($processedFile, $fileObject, $context, $configuration);
@@ -739,7 +846,9 @@ class t3lib_file_Storage {
 	 */
 	public function getFileForLocalProcessing(t3lib_file_FileInterface $fileObject, $writable = TRUE) {
 		$filePath = $this->driver->getFileForLocalProcessing($fileObject, $writable);
-		touch($filePath, $fileObject->getModificationTime());
+		// @todo: shouldn't this go in the driver? this function is called from the indexing service
+		// @todo: and recursively calls itself over and over again, this is left out for now with getModificationTime()
+		// touch($filePath, $fileObject->getModificationTime());
 
 		return $filePath;
 	}
@@ -758,11 +867,11 @@ class t3lib_file_Storage {
 	/**
 	 * Get file by identifier
 	 *
-	 * @param string $identifier
-	 * @return t3lib_file_FileInterface
+	 * @param t3lib_file_FileInterface $identifier
+	 * @return array
 	 */
-	public function getFileInfo($file) {
-		return $this->driver->getFileInfo($file);
+	public function getFileInfo($identifier) {
+		return $this->driver->getFileInfo($identifier);
 	}
 
 	/**
@@ -777,21 +886,57 @@ class t3lib_file_Storage {
 		return $this->driver->getFileInfoByIdentifier($identifier);
 	}
 
+	/**
+	 * Unsets the file and folder name filters, thus making this storage return unfiltered file lists.
+	 *
+	 * @return void
+	 */
+	public function unsetFileAndFolderNameFilters() {
+		$this->fileAndFolderNameFilters = array();
+	}
 
 	/**
-	 * Returns a list of files in a given path.
+	 * Resets the file and folder name filters to the default values defined in the TYPO3 configuration.
+	 *
+	 * @return void
+	 */
+	public function resetFileAndFolderNameFiltersToDefault() {
+		$this->fileAndFolderNameFilters = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['callbackFilterMethods'];
+	}
+
+	/**
+	 * Returns the file and folder name filters used by this storage.
+	 *
+	 * @return array
+	 */
+	public function getFileAndFolderNameFilters() {
+		return $this->fileAndFolderNameFilters;
+	}
+
+	public function setFileAndFolderNameFilters(array $filters) {
+		$this->fileAndFolderNameFilters = $filters;
+		return $this;
+	}
+
+	public function addFileAndFolderNameFilter($filter) {
+		$this->fileAndFolderNameFilters[] = $filter;
+	}
+
+	/**
+	 * Returns a list of files in a given path, filtered by some custom filter methods.
+	 *
+	 * @see getUnfilteredFileList(), getFileListWithDefaultFilters()
 	 *
 	 * @param string $path The path to list
-	 * @param string $pattern The pattern the files have to match
 	 * @param integer $start The position to start the listing; if not set or 0, start from the beginning
 	 * @param integer $numberOfItems The number of items to list; if not set, return all items
-	 * @param bool $excludeHiddenFiles Set this to TRUE to exclude hidden files (starting with a dot)
+	 * @param bool $useFilters If FALSE, the list is returned without any filtering; otherwise, the filters defined for this storage are used.
 	 * @param bool $loadIndexRecords If set to TRUE, the index records for all files are loaded from the database. This can greatly improve performance of this method, especially with a lot of files.
 	 * @return array Information about the files found.
 	 */
 	// TODO check if we should use a folder object instead of $path
 	// TODO add unit test for $loadIndexRecords
-	public function getFileList($path, $pattern = '', $start = 0, $numberOfItems = 0, $excludeHiddenFiles = TRUE, $loadIndexRecords = TRUE) {
+	public function getFileList($path, $start = 0, $numberOfItems = 0, $useFilters = TRUE, $loadIndexRecords = TRUE) {
 		$rows = array();
 		if ($loadIndexRecords) {
 			/** @var $repository t3lib_file_Repository_FileRepository */
@@ -799,7 +944,9 @@ class t3lib_file_Storage {
 			$rows = $repository->getFileIndexRecordsForFolder($this->getFolder($path));
 		}
 
-		$items = $this->driver->getFileList($path, $pattern, $start, $numberOfItems, $excludeHiddenFiles, $rows);
+		$filters = ($useFilters == TRUE) ? $this->fileAndFolderNameFilters : array();
+
+		$items = $this->driver->getFileList($path, $start, $numberOfItems, $filters, $rows);
 		uksort($items, 'strnatcasecmp');
 
 		return $items;
@@ -852,7 +999,7 @@ class t3lib_file_Storage {
 	 * @return integer The number of bytes written to the file
 	 */
 	public function setFileContents(t3lib_file_AbstractFile $file, $contents) {
-			// TODO does setting file contents require update permission?
+
 			// Check if user is allowed to update
 		if (!$this->checkUserActionPermission('update', 'File')) {
 			throw new t3lib_file_exception_InsufficientUserPermissionsException('Updating file "'
@@ -1125,7 +1272,8 @@ class t3lib_file_Storage {
 			'crdate' => $fileInfo['ctime'],
 			'mime_type' => $fileInfo['mimetype'],
 			'size' => $fileInfo['size'],
-			'tstamp' => $fileInfo['mtime']
+			'tstamp' => $fileInfo['mtime'],
+			'name'	=> $fileInfo['name']
 		);
 		if ($storage !== NULL) {
 			$newProperties['storage'] = $storage->getUid();
@@ -1476,17 +1624,29 @@ class t3lib_file_Storage {
 	}
 
 	/**
-	 * Returns a list of files in a given path.
+	 * Returns a list of folders in a given path.
 	 *
 	 * @param string $path The path to list
-	 * @param string $pattern The pattern the files have to match
 	 * @param integer $start The position to start the listing; if not set or 0, start from the beginning
 	 * @param integer $numberOfItems The number of items to list; if not set, return all items
-	 * @param bool $excludeHiddenFolders Set to TRUE to exclude hidden folders (starting with a dot)
+	 * @param boolean $useFilters If FALSE, the list is returned without any filtering; otherwise, the filters defined for this storage are used.
 	 * @return array Information about the folders found.
 	 */
-	public function getFolderList($path, $pattern = '', $start = 0, $numberOfItems = 0, $excludeHiddenFolders = TRUE) {
-		$items = $this->driver->getFolderList($path, $pattern, $start, $numberOfItems, $excludeHiddenFolders);
+	public function getFolderList($path, $start = 0, $numberOfItems = 0, $useFilters = TRUE) {
+		$filters = ($useFilters === TRUE) ? $this->fileAndFolderNameFilters : array();
+
+		return $this->fetchFolderListFromDriver($path, $start, $numberOfItems, $filters);
+	}
+
+	/**
+	 * @param $path
+	 * @param int $start
+	 * @param int $numberOfItems
+	 * @param array $folderFilterCallbacks
+	 * @return array
+	 */
+	public function fetchFolderListFromDriver($path, $start = 0, $numberOfItems = 0, array $folderFilterCallbacks = array()) {
+		$items = $this->driver->getFolderList($path, $start, $numberOfItems, $folderFilterCallbacks);
 
 			// Exclude the _processed_ folder, so it won't get indexed etc
 		$processingFolder = $this->getProcessingFolder();
@@ -1528,20 +1688,35 @@ class t3lib_file_Storage {
 	 *
 	 * previously in t3lib_extFileFunc::func_newfolder()
 	 *
-	 * @param string $folderName the new folder name
-	 * @param t3lib_file_Folder $parentFolder The parent folder to create the new folder inside of
+	 * @param string $folderName The new folder name
+	 * @param t3lib_file_Folder $parentFolder (optional) the parent folder to create the new folder inside of. If not given, the root folder is used
 	 * @return t3lib_file_Folder The new folder object
 	 */
-	public function createFolder($folderName, t3lib_file_Folder $parentFolder) {
-		if (!$this->checkFolderActionPermission('createFolder', $parentFolder)) {
-			throw new t3lib_file_exception_InsufficientFolderWritePermissionsException('You are not allowed to create directories on this storage "' . $parentFolder->getIdentifier() . '"', 1323059807);
+	public function createFolder($folderName, t3lib_file_Folder $parentFolder = NULL) {
+		if ($parentFolder === NULL) {
+			$parentFolder = $this->getRootLevelFolder();
 		}
 
 		if (!$this->driver->folderExists($parentFolder->getIdentifier())) {
 			throw new InvalidArgumentException('Parent folder "' . $parentFolder->getIdentifier() . '" does not exist.', 1325689164);
 		}
 
-		return $this->driver->createFolder($folderName, $parentFolder);
+		if (!$this->checkFolderActionPermission('createFolder', $parentFolder)) {
+			throw new t3lib_file_exception_InsufficientFolderWritePermissionsException(
+				'You are not allowed to create directories in the folder "' . $parentFolder->getIdentifier() . '"', 1323059807);
+		}
+
+		$folderParts = t3lib_div::trimExplode('/', $folderName, TRUE);
+		foreach ($folderParts as $folder) {
+			// TODO check if folder creation succeeded
+			if ($this->hasFolderInFolder($folder, $parentFolder)) {
+				$parentFolder = $this->driver->getFolderInFolder($folder, $parentFolder);
+			} else {
+				$parentFolder = $this->driver->createFolder($folder, $parentFolder);
+			}
+		}
+
+		return $parentFolder;
 	}
 
 	/**
@@ -1558,6 +1733,10 @@ class t3lib_file_Storage {
 	 * @return t3lib_file_Folder
 	 */
 	public function getFolder($identifier) {
+		if (!$this->driver->folderExists($identifier)) {
+			throw new t3lib_file_exception_FolderDoesNotExistException("Folder $identifier does not exist.", 1320575630);
+		}
+
 		$folderObject = $this->driver->getFolder($identifier);
 		if ($this->fileMounts && !$this->isWithinFileMountBoundaries($folderObject)) {
 			throw new t3lib_file_exception_NotInMountPointException('Folder "' . $identifier . '" is not within your mount points.', 1330120649);
@@ -2031,15 +2210,23 @@ class t3lib_file_Storage {
 
 			$processingFolder = trim($processingFolder, '/');
 
-				// @todo: does not resolve deeplinked folders like typo3temp/_processed_
+				// this way, we also worry about deeplinked folders like typo3temp/_processed_
 			if ($this->driver->folderExists($processingFolder) === FALSE) {
-				$this->processingFolder = $this->driver->createFolder(
-					$processingFolder,
-					$this->driver->getRootLevelFolder()
-				);
-			} else {
-				$this->processingFolder = $this->driver->getFolder($processingFolder);
+				$processingFolderParts = explode('/', $processingFolder);
+				$parentFolder = $this->driver->getRootLevelFolder();
+
+				foreach ($processingFolderParts as $folderPart) {
+					if (!$this->driver->folderExistsInFolder($folderPart, $parentFolder)) {
+						$parentFolder = $this->driver->createFolder(
+							$folderPart,
+							$parentFolder
+						);
+					} else {
+						$parentFolder = $parentFolder->getSubfolder($folderPart);
+					}
+				}
 			}
+			$this->processingFolder = $this->driver->getFolder($processingFolder);
 		}
 
 		return $this->processingFolder;

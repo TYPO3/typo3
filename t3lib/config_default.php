@@ -175,6 +175,11 @@ $TYPO3_CONF_VARS = array(
 					'flexFormDS' => 'FILE:t3lib/file/Driver/Configuration/LocalDriverFlexForm.xml',
 					'label' => 'Local filesystem'
 				)
+			),
+			'callbackFilterMethods' => array(
+				array(
+					't3lib_file_Utility_FilenameFilters', 'filterHiddenFilesAndFolders'
+				)
 			)
 		)
 	),

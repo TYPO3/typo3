@@ -94,7 +94,6 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	 */
 	public function __construct(array $configuration = array()) {
 		$this->configuration = $configuration;
-		$this->processConfiguration();
 	}
 
 	/**
@@ -146,15 +145,19 @@ abstract class t3lib_file_Driver_AbstractDriver {
 
 	/**
 	 * processes the configuration, should be overridden by subclasses
-	 * but we do this because PHPUnit cannot work if this is an abstract configuration
 	 *
 	 * @return void
 	 */
-	protected function processConfiguration() {
-		throw new RuntimeException(
-			'Method processConfiguration() needs to be implemented for the specific driver',
-			1328899740
-		);
+	abstract public function processConfiguration();
+
+	/**
+	 * Returns the name of a file/folder based on its identifier.
+	 *
+	 * @param string $identifier
+	 * @return string
+	 */
+	protected function getNameFromIdentifier($identifier) {
+		return basename($identifier);
 	}
 
 	/**
@@ -164,12 +167,12 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	 * @param string $path
 	 * @param integer $start
 	 * @param integer $numberOfItems
+	 * @param array $filterMethods The filter methods used to filter the directory items
 	 * @param string $itemHandlerMethod
-	 * @param bool $excludeHiddenItems
 	 * @param array $itemRows
 	 * @return array
 	 */
-	protected function getDirectoryItemList($path, $start, $numberOfItems, $itemHandlerMethod, $excludeHiddenItems, $itemRows = array()) {
+	protected function getDirectoryItemList($path, $start, $numberOfItems, $filterMethods, $itemHandlerMethod, $itemRows = array()) {
 		// This is not abstract because PHPUnit cannot mock abstract protected/private methods
 	}
 
@@ -178,32 +181,18 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	 *******************/
 
 	/**
-	 * The capabilities of this driver. See CAPABILITY_* constants for possible values
+	 * The capabilities of this driver. See Storage::CAPABILITY_* constants for possible values. This value should be set
+	 * in the constructor of derived classes.
 	 *
 	 * @var integer
 	 */
 	protected $capabilities = 0;
 
 	/**
-	 * Capability for being browsable by (backend) users
-	 */
-	const CAPABILITY_BROWSABLE = 1;
-
-	/**
-	 * Capability for publicly accessible drivers (= accessible from the web)
-	 */
-	const CAPABILITY_PUBLIC = 2;
-
-	/**
-	 * Capability for writable drivers
-	 */
-	const CAPABILITY_WRITABLE = 4;
-
-	/**
 	 * Returns the capabilities of this driver.
 	 *
 	 * @return integer
-	 * @see CAPABILITY_* constants
+	 * @see Storage::CAPABILITY_* constants
 	 */
 	public function getCapabilities() {
 		return $this->capabilities;
@@ -216,8 +205,9 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	 * @return boolean
 	 */
 	public function hasCapability($capability) {
-		return $this->capabilities && $capability;
+		return ($this->capabilities & $capability == $capability);
 	}
+
 
 	/*******************
 	 * FILE FUNCTIONS
@@ -238,11 +228,11 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	 * Returns the public URL to a file.
 	 *
 	 * @abstract
-	 * @param t3lib_file_FileInterface $file
+	 * @param t3lib_file_ResourceInterface $resource
 	 * @param bool  $relativeToCurrentScript    Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
 	 * @return string
 	 */
-	abstract public function getPublicUrl(t3lib_file_FileInterface $file, $relativeToCurrentScript = FALSE);
+	abstract public function getPublicUrl(t3lib_file_ResourceInterface $resource, $relativeToCurrentScript = FALSE);
 
 	/**
 	 * Returns a list of all hashing algorithms this Storage supports.
@@ -307,6 +297,14 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	 * @return t3lib_file_FileInterface
 	 */
 	abstract public function addFile($localFilePath, t3lib_file_Folder $targetFolder, $fileName, t3lib_file_AbstractFile $updateFileObject = NULL);
+
+	/**
+	 * Checks if a resource exists - does not care for the type (file or folder).
+	 *
+	 * @param $identifier
+	 * @return boolean
+	 */
+	abstract public function resourceExists($identifier);
 
 	/**
 	 * Checks if a file exists.
@@ -433,16 +431,24 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	 * @return t3lib_file_Folder
 	 */
 	public function getFolder($identifier) {
-		if (!$this->folderExists($identifier)) {
-			throw new t3lib_file_exception_FolderDoesNotExistException('Folder "' . $identifier . '" does not exist.', 1320575630);
-		}
+		$name = $this->getNameFromIdentifier($identifier);
 
 		return t3lib_file_Factory::getInstance()->createFolderObject(
 			$this->storage,
 			$identifier,
-			''
+			$name
 		);
 	}
+
+	/**
+	 * Returns a folder within the given folder. Use this method instead of doing your own string manipulation magic
+	 * on the identifiers because non-hierarchical storages might fail otherwise.
+	 *
+	 * @param $name
+	 * @param t3lib_file_Folder $parentFolder
+	 * @return t3lib_file_Folder
+	 */
+	abstract public function getFolderInFolder($name, t3lib_file_Folder $parentFolder);
 
 	/**
 	 * Returns TRUE if a file should be excluded from a file listing.
@@ -460,20 +466,46 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	}
 
 	/**
+	 * Applies a set of filter methods to a file name to find out if it should be used or not. This is e.g. used by
+	 * directory listings.
+	 *
+	 * @param string $itemName
+	 * @param string $itemIdentifier
+	 * @param string $parentIdentifier
+	 * @param array $filterMethods
+	 * @return bool
+	 */
+	protected function applyFilterMethodsToDirectoryItem($itemName, $itemIdentifier, $parentIdentifier, array $filterMethods) {
+		foreach ($filterMethods as $filter) {
+			if (is_array($filter)) {
+				$result = call_user_func($filter, $itemName, $itemIdentifier, $parentIdentifier, $this);
+
+					// We have to use -1 as the „don't include“ return value, as call_user_func() will return FALSE
+					// If calling the method succeeded and thus we can't use that as a return value.
+				if ($result === -1) {
+					return FALSE;
+				} elseif ($result === FALSE) {
+					throw new RuntimeException('Could not apply file/folder name filter ' . $filter[0] . '::' . $filter[1]);
+				}
+			}
+		}
+
+		return TRUE;
+	}
+
+	/**
 	 * Returns a list of files inside the specified path
 	 *
 	 * @param string $path
-	 * @param string $pattern
 	 * @param integer $start The position to start the listing; if not set, start from the beginning
 	 * @param integer $numberOfItems The number of items to list; if not set, return all items
-	 * @param boolean $excludeHiddenFiles Set this to TRUE if you want to exclude hidden files (starting with a dot) from the listing
+	 * @param array $filenameFilterCallbacks The method callbacks to use for filtering the items
 	 * @param array $fileData Two-dimensional, identifier-indexed array of file index records from the database
 	 * @return array
 	 */
 	// TODO add unit tests
-	// TODO implement pattern matching
-	public function getFileList($path, $pattern = '', $start = 0, $numberOfItems = 0, $excludeHiddenFiles = TRUE, $fileData = array()) {
-		return $this->getDirectoryItemList($path, $start, $numberOfItems, $this->fileListCallbackMethod, $excludeHiddenFiles, $fileData);
+	public function getFileList($path, $start = 0, $numberOfItems = 0, array $filenameFilterCallbacks = array(), $fileData = array()) {
+		return $this->getDirectoryItemList($path, $start, $numberOfItems, $filenameFilterCallbacks, $this->fileListCallbackMethod, $fileData);
 	}
 
 	/**
@@ -608,14 +640,13 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	 * Returns a list of all folders in a given path
 	 *
 	 * @param string $path
-	 * @param string $pattern
 	 * @param integer $start The position to start the listing; if not set, start from the beginning
 	 * @param integer $numberOfItems The number of items to list; if not set, return all items
-	 * @param boolean $excludeHiddenFolders Set to TRUE to exclude hidden folders (starting with a dot)
+	 * @param array $foldernameFilterCallbacks The method callbacks to use for filtering the items
 	 * @return array
 	 */
-	public function getFolderList($path, $pattern = '', $start = 0, $numberOfItems = 0, $excludeHiddenFolders = TRUE) {
-		return $this->getDirectoryItemList($path, $start, $numberOfItems, $this->folderListCallbackMethod, $excludeHiddenFolders);
+	public function getFolderList($path, $start = 0, $numberOfItems = 0, array $foldernameFilterCallbacks = array()) {
+		return $this->getDirectoryItemList($path, $start, $numberOfItems, $foldernameFilterCallbacks, $this->folderListCallbackMethod);
 	}
 
 	/**

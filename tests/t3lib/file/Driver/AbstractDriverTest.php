@@ -88,6 +88,22 @@ class t3lib_file_Driver_AbstractDriverTest extends t3lib_file_BaseTestCase {
 
 		$this->assertEquals($expectedResult, $result);
 	}
+
+	/**
+	 * @test
+	 */
+	public function getFolderCorrectlySetsFolderName() {
+		$identifier = '/someFolder/someSubfolder/';
+
+		$fixture = $this->createDriverFixture(array());
+		$fixture->setStorage($this->getMock('t3lib_file_Storage', array(), array(), '', FALSE));
+
+		$mockedFactory = $this->getMock('t3lib_file_Factory');
+		$mockedFactory->expects($this->once())->method('createFolderObject')->with($this->anything(), $this->anything(), 'someSubfolder');
+		t3lib_div::setSingletonInstance('t3lib_file_Factory', $mockedFactory);
+
+		$fixture->getFolder($identifier);
+	}
 }
 
 ?>
