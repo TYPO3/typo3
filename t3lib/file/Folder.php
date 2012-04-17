@@ -43,7 +43,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_file_Folder implements t3lib_file_ResourceInterface {
+class t3lib_file_Folder implements t3lib_file_FolderInterface {
 
 	/**
 	 * The storage this folder belongs to.
@@ -95,7 +95,7 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 	 * currently this does not trigger the "renaming process"
 	 * as the name is more seen as a label
 	 *
-	 * @param $name the new name
+	 * @param string $name The new name
 	 * @return void
 	 */
 	public function setName($name) {
@@ -130,28 +130,41 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 	public function getCombinedIdentifier() {
 			// @todo $this->properties is never defined nor used here
 		if (is_array($this->properties) && t3lib_utility_Math::canBeInterpretedAsInteger($this->properties['storage'])) {
-			$combinedIdentifier = $this->properties['storage'].':'.$this->getIdentifier();
+			$combinedIdentifier = $this->properties['storage'] . ':' . $this->getIdentifier();
 		} else {
-			$combinedIdentifier = $this->getStorage()->getUid().':'.$this->getIdentifier();
+			$combinedIdentifier = $this->getStorage()->getUid() . ':' . $this->getIdentifier();
 		}
 
 		return $combinedIdentifier;
 	}
 
 	/**
+	 * Returns a publicly accessible URL for this folder
+	 *
+	 * WARNING: Access to the folder may be restricted by further means, e.g. some
+	 * web-based authentication. You have to take care of this yourself.
+	 *
+	 * @param boolean $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
+	 * @return string
+	 */
+	public function getPublicUrl($relativeToCurrentScript = FALSE) {
+		return $this->getStorage()->getPublicUrl($this, $relativeToCurrentScript);
+	}
+
+	/**
 	 * Returns a list of files in this folder, optionally filtered by the given pattern.
 	 * For performance reasons the returned items can be limited to a given range
 	 *
-	 * @param string $pattern
-	 * @param int $start The item to start at
-	 * @param int $numberOfItems The number of items to return
+	 * @param integer $start The item to start at
+	 * @param integer $numberOfItems The number of items to return
+	 * @param boolean $useFilters
 	 * @return t3lib_file_File[]
 	 */
-	public function getFiles($pattern = '', $start = 0, $numberOfItems = 0) {
+	public function getFiles($start = 0, $numberOfItems = 0, $useFilters = TRUE) {
 			// TODO fetch
 		/** @var $factory t3lib_file_Factory */
 		$factory = t3lib_div::makeInstance('t3lib_file_Factory');
-		$fileArray = $this->storage->getFileList($this->identifier, $pattern, $start, $numberOfItems);
+		$fileArray = $this->storage->getFileList($this->identifier, $start, $numberOfItems, $useFilters);
 		$fileObjects = array();
 
 		foreach ($fileArray as $fileInfo) {
@@ -164,17 +177,18 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 	 * Returns amount of all files within this folder, optionally filtered by
 	 * the given pattern
 	 *
-	 * @param string $pattern
+	 * @param array $filterMethods
 	 * @return integer
 	 */
-	public function getFileCount($pattern = '') {
-		return count($this->storage->getFileList($this->identifier, $pattern));
+	public function getFileCount(array $filterMethods = array()) {
+		// TODO replace by call to count()
+		return count($this->storage->getFileList($this->identifier, 0, 0, $filterMethods));
 	}
 
 	/**
 	 * Returns the object for a subfolder of the current folder, if it exists.
 	 *
-	 * @param  $name
+	 * @param string $name Name of the subfolder
 	 * @return t3lib_file_Folder
 	 */
 	public function getSubfolder($name) {
@@ -254,8 +268,8 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 	/**
 	 * Deletes this folder from its storage. This also means that this object becomes useless.
 	 *
+	 * @param boolean $deleteRecursively
 	 * @return boolean TRUE if deletion succeeded
-	 * @param	boolean $deleteRecursively
 	 *
 	 * TODO mark folder internally as deleted, throw exceptions on all method calls afterwards
 	 * TODO undelete mechanism? From Reycler Folder?
@@ -291,7 +305,6 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 	 * @param t3lib_file_Folder $targetFolder Target folder to copy to.
 	 * @param string $targetFolderName an optional destination fileName
 	 * @param string $conflictMode "overrideExistingFile", "renameNewFile" or "cancel"
-	 *
 	 * @return t3lib_file_Folder New (copied) folder object.
 	 */
 	public function copyTo(t3lib_file_Folder $targetFolder, $targetFolderName = NULL, $conflictMode = 'renameNewFile') {
@@ -304,7 +317,6 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 	 * @param t3lib_file_Folder $targetFolder Target folder to move to.
 	 * @param string $targetFolderName an optional destination fileName
 	 * @param string $conflictMode "overrideExistingFile", "renameNewFile" or "cancel"
-	 *
 	 * @return t3lib_file_Folder New (copied) folder object.
 	 */
 	public function moveTo(t3lib_file_Folder $targetFolder, $targetFolderName = NULL, $conflictMode = 'renameNewFile') {
@@ -314,18 +326,18 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 	/**
 	 * Checks if a file exists in this folder
 	 *
-	 * @param $fileName
+	 * @param string $name
 	 * @return boolean
 	 */
-	public function hasFile($fileName) {
-		return $this->storage->hasFileInFolder($fileName, $this);
+	public function hasFile($name) {
+		return $this->storage->hasFileInFolder($name, $this);
 	}
 
 	/**
 	 * Checks if a folder exists in this folder.
 	 *
-	 * @param $name
-	 * @return bool
+	 * @param string $name
+	 * @return boolean
 	 */
 	public function hasFolder($name) {
 		return $this->storage->hasFolderInFolder($name, $this);
@@ -334,7 +346,7 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 	/**
 	 * Check if a file operation (= action) is allowed on this folder
 	 *
-	 * @param	string	$action, can be read, write, delete
+	 * @param string $action Action that can be read, write or delete
 	 * @return boolean
 	 */
 	public function checkActionPermission($action) {
@@ -364,6 +376,5 @@ class t3lib_file_Folder implements t3lib_file_ResourceInterface {
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Folder.php'])) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Folder.php']);
 }
-
 
 ?>

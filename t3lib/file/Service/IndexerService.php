@@ -93,6 +93,13 @@ class t3lib_file_Service_IndexerService implements t3lib_Singleton {
 			// Signal slot BEFORE the file was indexed
 		$this->emitPreFileIndexSignal($fileObject, $fileInfo);
 
+			// @todo: this should be done via services in the future
+			// @todo: this should take remote services into account
+		if ($fileInfo['type'] == $fileObject::FILETYPE_IMAGE && !$fileInfo['width']) {
+			$rawFileLocation = $fileObject->getForLocalProcessing(FALSE);
+			list($fileInfo['width'], $fileInfo['height']) = getimagesize($rawFileLocation);
+		}
+
 			// If the file is already indexed, then the file information will
 			// be updated on the existing record
 		if ($fileObject->isIndexed()) {
@@ -158,9 +165,16 @@ class t3lib_file_Service_IndexerService implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function indexFiles(array $fileObjects) {
+
+			// emit signal
+		$this->emitPreMultipleFilesIndexSignal($fileObjects);
+
 		foreach ($fileObjects as $fileObject) {
 			$this->indexFile($fileObject);
 		}
+
+			// emit signal
+		$this->emitPostMultipleFilesIndexSignal($fileObjects);
 	}
 
 	/**
@@ -175,10 +189,17 @@ class t3lib_file_Service_IndexerService implements t3lib_Singleton {
 
 			// Index all files in this folder
 		$fileObjects = $folder->getFiles();
+
+			// emit signal
+		$this->emitPreMultipleFilesIndexSignal($fileObjects);
+
 		foreach ($fileObjects as $fileObject) {
 			$this->indexFile($fileObject);
 			$numberOfIndexedFiles++;
 		}
+
+			// emit signal
+		$this->emitPostMultipleFilesIndexSignal($fileObjects);
 
 			// Call this function recursively for each subfolder
 		$subFolders = $folder->getSubfolders();
@@ -200,31 +221,110 @@ class t3lib_file_Service_IndexerService implements t3lib_Singleton {
 	 * @return array the file information as an array
 	 */
 	protected function gatherFileInformation(t3lib_file_File $file) {
-		$storage = $file->getStorage();
 
-		// TODO: See if we can't just return info, as it contains most of the
-		// stuff we put together in array form again later here.
-		$info = $storage->getFileInfo($file);
+		$fileInfo = new ArrayObject(array());
+		$gatherDefaultInformation = new stdClass;
+		$gatherDefaultInformation->getDefaultFileInfo = 1;
 
-		$fileInfo = array(
-			'creation_date' => $info['ctime'],
-			'modification_date' => $info['mtime'],
-			'size' => $info['size'],
-			'identifier' => $file->getIdentifier(),
-			'storage' => $storage->getUid(),
-			'name' => $file->getName(),
-			'sha1' => $storage->hashFile($file, 'sha1'),
-			'type' => $file->getType(),
-			'mime_type' => $file->getMimeType(),
-			'extension' => $file->getExtension(),
-		);
+			// signal before the files are modified
+		$this->emitPreGatherFileInformationSignal($file, $fileInfo, $gatherDefaultInformation);
 
-		return $fileInfo;
+
+			// the check helps you to disable the regular file fetching,
+			// so a signal could actually remotely access the service
+		if ($gatherDefaultInformation->getDefaultFileInfo) {
+			$storage = $file->getStorage();
+
+			// TODO: See if we can't just return info, as it contains most of the
+			// stuff we put together in array form again later here.
+			$info = $storage->getFileInfo($file);
+
+			$defaultFileInfo = array(
+				'creation_date' => $info['ctime'],
+				'modification_date' => $info['mtime'],
+				'size' => $info['size'],
+				'identifier' => $file->getIdentifier(),
+				'storage' => $storage->getUid(),
+				'name' => $file->getName(),
+				'sha1' => $storage->hashFile($file, 'sha1'),
+				'type' => $file->getType(),
+				'mime_type' => $file->getMimeType(),
+				'extension' => $file->getExtension(),
+			);
+
+			$fileInfo = array_merge($defaultFileInfo, $fileInfo->getArrayCopy());
+			$fileInfo = new ArrayObject($fileInfo);
+		}
+
+			// signal after the file information is fetched
+		$this->emitPostGatherFileInformationSignal($file, $fileInfo, $gatherDefaultInformation);
+
+		return $fileInfo->getArrayCopy();
 	}
 
+	/**
+	 * Signal that is called before the file information is fetched
+	 * helpful if somebody wants to preprocess the record information
+	 *
+	 * @param t3lib_file_File $fileObject
+	 * @param array $fileInfo
+	 * @param boolean $gatherDefaultInformation
+	 * @signal
+	 */
+	protected function emitPreGatherFileInformationSignal(t3lib_file_File $fileObject, $fileInfo, $gatherDefaultInformation) {
+		$this->getSignalSlotDispatcher()->dispatch(
+			't3lib_file_Service_IndexerService',
+			'preGatherFileInformation',
+			array($fileObject, $fileInfo, $gatherDefaultInformation)
+		);
+	}
 
 	/**
 	 * Signal that is called after a file object was indexed
+	 *
+	 * @param t3lib_file_File $fileObject
+	 * @param array $fileInfo
+	 * @param boolean $hasGatheredDefaultInformation
+	 * @signal
+	 */
+	protected function emitPostGatherFileInformationSignal(t3lib_file_File $fileObject, $fileInfo, $hasGatheredDefaultInformation) {
+		$this->getSignalSlotDispatcher()->dispatch(
+			't3lib_file_Service_IndexerService',
+			'postGatherFileInformation',
+			array($fileObject, $fileInfo, $hasGatheredDefaultInformation)
+		);
+	}
+
+	/**
+	 * Signal that is called before a bunch of file objects are indexed
+	 *
+	 * @param array $fileObject
+	 * @signal
+	 */
+	protected function emitPreMultipleFilesIndexSignal(array $fileObjectsToIndex) {
+		$this->getSignalSlotDispatcher()->dispatch(
+			't3lib_file_Service_IndexerService',
+			'preMultipleFileIndex',
+			array($fileObjectsToIndex)
+		);
+	}
+
+	/**
+	 * Signal that is called after multiple file objects were indexed
+	 *
+	 * @param array $fileObjectsToIndex
+	 * @signal
+	 */
+	protected function emitPostMultipleFilesIndexSignal(array $fileObjectsToIndex) {
+		$this->getSignalSlotDispatcher()->dispatch(
+			't3lib_file_Service_IndexerService',
+			'postMultipleFileIndex',
+			array($fileObjectsToIndex)
+		);
+	}
+
+	/**
+	 * Signal that is called before a file object was indexed
 	 *
 	 * @param t3lib_file_File $fileObject
 	 * @param array $fileInfo
@@ -271,7 +371,6 @@ class t3lib_file_Service_IndexerService implements t3lib_Singleton {
 		return t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 	}
 }
-
 
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Service/IndexerService.php'])) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Service/IndexerService.php']);

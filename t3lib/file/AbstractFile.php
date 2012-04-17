@@ -224,12 +224,12 @@ abstract class t3lib_file_AbstractFile implements t3lib_file_FileInterface {
 	}
 
 	/**
-	 * Get the extension of this file
+	 * Get the extension of this file in a lower-case variant
 	 *
 	 * @return string The file extension
 	 */
 	public function getExtension() {
-		return pathinfo($this->getName(), PATHINFO_EXTENSION);
+		return strtolower(pathinfo($this->getName(), PATHINFO_EXTENSION));
 	}
 
 	/**
@@ -339,6 +339,11 @@ abstract class t3lib_file_AbstractFile implements t3lib_file_FileInterface {
 		return $this->storage;
 	}
 
+	/**
+	 * Loads the storage object of this file object.
+	 *
+	 * @return void
+	 */
 	protected function loadStorage() {
 		$storageUid = $this->getProperty('storage');
 		if (t3lib_utility_Math::canBeInterpretedAsInteger($storageUid)) {
@@ -511,7 +516,7 @@ abstract class t3lib_file_AbstractFile implements t3lib_file_FileInterface {
 			throw new RuntimeException('File has been deleted.', 1329821485);
 		}
 
-		return $this->getStorage()->getPublicUrlForFile($this, $relativeToCurrentScript);
+		return $this->getStorage()->getPublicUrl($this, $relativeToCurrentScript);
 	}
 
 	/**

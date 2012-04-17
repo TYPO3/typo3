@@ -67,7 +67,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	 *
 	 * @param array $configuration The configuration
 	 * @return void
-	 * @throws RuntimeException
+	 * @throws t3lib_file_exception_InvalidConfigurationException
 	 */
 	public static function verifyConfiguration(array $configuration) {
 		self::calculateBasePath($configuration);
@@ -78,7 +78,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	 *
 	 * @return void
 	 */
-	protected function processConfiguration() {
+	public function processConfiguration() {
 		$this->absoluteBasePath = $this->calculateBasePath($this->configuration);
 	}
 
@@ -92,7 +92,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 		$this->determineBaseUrl();
 
 			// The capabilities of this driver. See CAPABILITY_* constants for possible values
-		$this->capabilities = (self::CAPABILITY_BROWSABLE && self::CAPABILITY_PUBLIC && self::CAPABILITY_WRITABLE);
+		$this->capabilities = t3lib_file_Storage::CAPABILITY_BROWSABLE | t3lib_file_Storage::CAPABILITY_PUBLIC | t3lib_file_Storage::CAPABILITY_WRITABLE;
 	}
 
 	/**
@@ -103,14 +103,9 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	 */
 	protected function determineBaseUrl() {
 		if (t3lib_div::isFirstPartOfStr($this->absoluteBasePath, PATH_site)) {
-				// TODO use site URL (where to get it from e.g. on CLI?)
-			if (is_object($GLOBALS['TSFE'])) {
-				$this->baseUri = $GLOBALS['TSFE']->absRefPrefix;
-			} else {
-					// use site-relative URLs
-					// TODO add unit test
-				$this->baseUri = substr($this->absoluteBasePath, strlen(PATH_site));
-			}
+				// use site-relative URLs
+				// TODO add unit test
+			$this->baseUri = substr($this->absoluteBasePath, strlen(PATH_site));
 		} elseif (isset($this->configuration['baseUri']) && t3lib_div::isValidUrl($this->configuration['baseUri'])) {
 			$this->baseUri = rtrim($this->configuration['baseUri'], '/') . '/';
 		} else {
@@ -136,7 +131,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 		$absoluteBasePath = rtrim($absoluteBasePath, '/') . '/';
 
 		if (!is_dir($absoluteBasePath)) {
-			throw new RuntimeException("Base path $absoluteBasePath does not exist or is no directory.", 1299233097);
+			throw new t3lib_file_exception_InvalidConfigurationException('Base path "' . $absoluteBasePath . '" does not exist or is no directory.', 1299233097);
 		}
 
 		return $absoluteBasePath;
@@ -146,16 +141,16 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	 * Returns the public URL to a file. For the local driver, this will always
 	 * return a path relative to PATH_site.
 	 *
-	 * @param t3lib_file_FileInterface $file
+	 * @param t3lib_file_ResourceInterface  $fileOrFolder
 	 * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
 	 * @return string
 	 */
-	public function getPublicUrl(t3lib_file_FileInterface $file, $relativeToCurrentScript = FALSE) {
+	public function getPublicUrl(t3lib_file_ResourceInterface $fileOrFolder, $relativeToCurrentScript = FALSE) {
 
 		if ($this->configuration['pathType'] === 'relative' && rtrim($this->configuration['basePath'], '/') !== '') {
-			$publicUrl = rtrim($this->configuration['basePath'], '/') . '/' . ltrim($file->getIdentifier(), '/');
+			$publicUrl = rtrim($this->configuration['basePath'], '/') . '/' . ltrim($fileOrFolder->getIdentifier(), '/');
 		} elseif (isset($this->baseUri)) {
-			$publicUrl = $this->baseUri . ltrim($file->getIdentifier(), '/');
+			$publicUrl = $this->baseUri . ltrim($fileOrFolder->getIdentifier(), '/');
 		} else {
 			throw new t3lib_file_exception_AbstractFileException(
 				'Public URL of file cannot be determined',
@@ -218,20 +213,15 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	 * @return t3lib_file_Folder The new (created) folder object
 	 */
 	public function createFolder($newFolderName, t3lib_file_Folder $parentFolder) {
-		// TODO we should have some convenience method to create a deeper directory structure. Maybe this would fit into Storage
-		$newFolderName = $this->sanitizeFileName($newFolderName);
+		$newFolderName = trim($this->sanitizeFileName($newFolderName), '/');
 
-		$newFolderPath = $this->getAbsolutePath($parentFolder) . trim($newFolderName, '/');
-
-		if (!$this->folderExists($parentFolder->getIdentifier())) {
-			throw new RuntimeException("Cannot create folder $newFolderName because the parent folder does not exist.", 1315401669);
-		}
+		$newFolderPath = $this->getAbsolutePath($parentFolder) . $newFolderName;
 
 		t3lib_div::mkdir($newFolderPath);
 
 		return t3lib_file_Factory::getInstance()->createFolderObject(
 			$this->storage,
-				rtrim($parentFolder->getIdentifier(), '/') . $newFolderName,
+			$parentFolder->getIdentifier() . $newFolderName,
 			$newFolderName
 		);
 	}
@@ -259,7 +249,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 			throw new InvalidArgumentException("File $fileIdentifier does not exist.", 1314516809);
 		}
 
-		return $this->extractFileInformation(new SplFileInfo($absoluteFilePath), $dirPath);
+		return $this->extractFileInformation($absoluteFilePath, $dirPath);
 	}
 
 	/**
@@ -327,14 +317,15 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	 *
 	 * @param string $path
 	 * @param integer $start The position to start the listing; if not set, start from the beginning
-	 * @param integer $numberOfItems The number of items to list; if not set, return all items
+	 * @param integer $numberOfItems The number of items to list; if set to zero, all items are returned
+	 * @param array $filterMethods The filter methods used to filter the directory items
 	 * @param string $itemHandlerMethod The method (in this class) that handles the single iterator elements.
-	 * @param boolean $excludeHiddenItems
 	 * @param array $itemRows
 	 * @return array
 	 */
-	protected function getDirectoryItemList($path, $start, $numberOfItems, $itemHandlerMethod, $excludeHiddenItems, $itemRows = array()) {
-		$realPath = $this->absoluteBasePath . trim($path, '/') . '/';
+	// TODO add unit tests
+	protected function getDirectoryItemList($path, $start, $numberOfItems, array $filterMethods, $itemHandlerMethod, $itemRows = array()) {
+		$realPath = rtrim($this->absoluteBasePath . trim($path, '/'), '/') . '/';
 
 		if (!is_dir($realPath)) {
 			throw new InvalidArgumentException("Cannot list items in directory $path - does not exist or is no directory", 1314349666);
@@ -350,6 +341,10 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 		$items = $this->getFileAndFoldernamesInPath($realPath);
 		natcasesort($items);
 		$iterator = new ArrayIterator($items);
+		if ($iterator->count() == 0) {
+			return array();
+		}
+
 		$iterator->seek($start);
 
 		if ($path !== '' && $path !== '/') {
@@ -364,10 +359,11 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 				// $iteratorItem is the file or folder name
 			$iteratorItem = $iterator->current();
 
+				// go on to the next iterator item now as we might skip this one early
 			$iterator->next();
 			$identifier = $path . $iteratorItem;
 
-			if ($excludeHiddenItems && $this->isHiddenFile($identifier, $iteratorItem)) {
+			if ($this->applyFilterMethodsToDirectoryItem($iteratorItem, $identifier, $path, $filterMethods) === FALSE) {
 				continue;
 			}
 
@@ -382,7 +378,9 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 			}
 			$items[$key] = $item;
 
-				// Decrement item counter to make sure we only return $numberOfItems if it is set
+				// Decrement item counter to make sure we only return $numberOfItems
+				// we cannot do this earlier in the method (unlike moving the iterator forward) because we only add the
+				// item here
 			--$c;
 		}
 
@@ -408,7 +406,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 		if (!empty($fileRow) && filemtime($filePath) <= $fileRow['modification_date']) {
 			return array($fileName, $fileRow);
 		} else {
-			return array($fileName, $this->extractFileInformation(new SplFileInfo($filePath), $path));
+			return array($fileName, $this->extractFileInformation($filePath, $path));
 		}
 
 	}
@@ -416,31 +414,25 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	/**
 	 * Handler for items in a directory listing.
 	 *
-	 * @param string $fileName
-	 * @param string $path
-	 * @param array $folderRow
+	 * @param string $folderName The folder's name
+	 * @param string $parentPath The path to the folder's parent folder
+	 * @param array $folderRow [optional]
 	 * @return array
 	 */
-	protected function getFolderList_itemCallback($fileName, $path, array $folderRow = array()) {
-		$filePath = $this->getAbsolutePath($path . $fileName);
+	protected function getFolderList_itemCallback($folderName, $parentPath, array $folderRow = array()) {
+		$folderPath = $this->getAbsolutePath($parentPath . $folderName);
 
-		if (!is_dir($filePath)) {
+		if (!is_dir($folderPath)) {
 			return array('', array());
 		}
 			// also don't show hidden files
-		if ($fileName === '..' || $fileName === '.' || $fileName === '' || t3lib_div::isFirstPartOfStr($fileName, '.') === TRUE) {
+		if ($folderName === '..' || $folderName === '.' || $folderName === '' || t3lib_div::isFirstPartOfStr($folderName, '.') === TRUE) {
 			return array('', array());
 		}
-		$fileName = substr($fileName, 0, -1);
+			// remove the trailing slash from the folder name (the trailing slash comes from the DirectoryIterator)
+		$folderName = substr($folderName, 0, -1);
 
-		return array($fileName, array(
-			'name' => $fileName,
-			'identifier' => $path . $fileName . '/',
-			'creationDate' => filectime($filePath),//$fileInfo->getCTime(),
-			'modificationDate' => filemtime($filePath),
-			'storage' => $this->storage->getUid()
-			// TODO add more information
-		));
+		return array($folderName, $this->extractFolderInformation($folderPath, $parentPath));
 	}
 
 	/**
@@ -465,6 +457,13 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 
 				// skip non-files/non-folders, and empty entries
 			if ((!$entry->isFile() && !$entry->isDir()) || $entry->getFilename() == '') {
+				$iterator->next();
+				continue;
+			}
+
+				// skip the pseudo-directories "." and ".."
+			if ($entry->getFilename() == '..' || $entry->getFilename() == '.') {
+				$iterator->next();
 				continue;
 			}
 
@@ -481,28 +480,48 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	}
 
 	/**
-	 * Extracts information about a file from an SplFileInfo object.
+	 * Extracts information about a file from the filesystem.
 	 *
-	 * @param SplFileInfo $splFileObject
-	 * @param string $containerPath
+	 * @param string $filePath The absolute path to the file
+	 * @param string $containerPath The relative path to the file's container
 	 * @return array
 	 */
-	protected function extractFileInformation(SplFileInfo $splFileObject, $containerPath) {
-		$filePath = $splFileObject->getPathname();
-		$fileInfo = new finfo();
+	protected function extractFileInformation($filePath, $containerPath) {
+		$fileName = basename($filePath);
 
 		$fileInformation = array(
-			'size' => $splFileObject->getSize(),
-			'atime' => $splFileObject->getATime(),
-			'mtime' => $splFileObject->getMTime(),
-			'ctime' => $splFileObject->getCTime(),
-			'mimetype' => $fileInfo->file($filePath, FILEINFO_MIME_TYPE),
-			'name' => $splFileObject->getFilename(),
-			'identifier' => $containerPath . $splFileObject->getFilename(),
+			'size' => filesize($filePath),
+			'atime' => fileatime($filePath),
+			'mtime' => filemtime($filePath),
+			'ctime' => filectime($filePath),
+			'mimetype' => mime_content_type($filePath),
+			'name' => $fileName,
+			'identifier' => $containerPath . $fileName,
 			'storage' => $this->storage->getUid()
 		);
 
 		return $fileInformation;
+	}
+
+	/**
+	 * Extracts information about a folder from the filesystem.
+	 *
+	 * @param string $folderPath The absolute path to the folder
+	 * @param string $containerPath The relative path to the folder's container inside the storage (must end with a trailing slash)
+	 * @return array
+	 */
+	protected function extractFolderInformation($folderPath, $containerPath) {
+		$folderName = basename($folderPath);
+
+		$folderInformation = array(
+			'ctime' => filectime($folderPath),
+			'mtime' => filemtime($folderPath),
+			'name' => $folderName,
+			'identifier' => $containerPath . $folderName . '/',
+			'storage' => $this->storage->getUid()
+		);
+
+		return $folderInformation;
 	}
 
 	/**
@@ -639,6 +658,18 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	}
 
 	/**
+	 * Checks if a resource exists - does not care for the type (file or folder).
+	 *
+	 * @param $identifier
+	 * @return boolean
+	 */
+	public function resourceExists($identifier) {
+		$absoluteResourcePath = $this->absoluteBasePath . ltrim($identifier, '/');
+
+		return file_exists($absoluteResourcePath);
+	}
+
+	/**
 	 * Checks if a file exists.
 	 *
 	 * @param string $identifier
@@ -684,10 +715,24 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	 * @return boolean
 	 */
 	public function folderExistsInFolder($folderName, t3lib_file_Folder $folder) {
-		$identifier = ltrim($folder->getIdentifier(), '/') . $folderName;
+		$identifier = $folder->getIdentifier() . $folderName;
 
 		return $this->folderExists($identifier);
 	}
+
+	/**
+	 * Returns a folder within the given folder.
+	 *
+	 * @param string $name The name of the folder to get
+	 * @param t3lib_file_Folder $parentFolder
+	 * @return t3lib_file_Folder
+	 */
+	public function getFolderInFolder($name, t3lib_file_Folder $parentFolder) {
+		$folderIdentifier = $parentFolder->getIdentifier() . $name . '/';
+
+		return $this->getFolder($folderIdentifier);
+	}
+
 
 	/**
 	 * Replaces the contents (and file-specific metadata) of a file object with a local file.
@@ -821,13 +866,16 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	 */
 	protected function createIdentifierMap(array $filesAndFolders, $relativeSourcePath, $relativeTargetPath) {
 		$identifierMap = array();
+		$identifierMap[$relativeSourcePath] = $relativeTargetPath;
 		foreach ($filesAndFolders as $oldSubIdentifier) {
 			$oldIdentifier = $relativeSourcePath . $oldSubIdentifier;
 			$newIdentifier = $relativeTargetPath . $oldSubIdentifier;
 
-			if (!$this->fileExists($newIdentifier)) {
-				throw new t3lib_file_exception_FileOperationErrorException('Copying file "'
-					. $oldIdentifier . '" to "' . $newIdentifier . '" failed.', 1330119453);
+			if (!$this->resourceExists($newIdentifier)) {
+				throw new t3lib_file_exception_FileOperationErrorException(
+					sprintf('File "%1$s" was not found (should have been copied/moved from "%2$s").', $newIdentifier, $oldIdentifier),
+					1330119453
+				);
 			}
 
 			$identifierMap[$oldIdentifier] = $newIdentifier;
@@ -968,11 +1016,24 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 
 		$result = rename($sourcePath, $targetPath);
 		if ($result === FALSE) {
-			//throw new RuntimeException("Renaming folder $sourceIdentifier to $newIdentifier failed.", 1320375116);
+			throw new RuntimeException(
+				sprintf('Renaming folder "%1$s" to "%2$s" failed."', $sourcePath, $targetPath),
+				1320375116
+			);
 		}
 
+		try {
 			// Create a mapping from old to new identifiers
-		$identifierMap = $this->createIdentifierMap($filesAndFolders, $relativeSourcePath, $relativeTargetPath);
+			$identifierMap = $this->createIdentifierMap($filesAndFolders, $relativeSourcePath, $relativeTargetPath);
+		} catch (Exception $e) {
+			rename($targetPath, $sourcePath);
+
+			throw new RuntimeException(
+				sprintf('Creating filename mapping after renaming "%1$s" to "%2$s" failed. Reverted rename operation.\n\nOriginal error: %3$s"',
+					$sourcePath, $targetPath, $e->getMessage()),
+				1334160746
+			);
+		}
 
 		return $identifierMap;
 	}

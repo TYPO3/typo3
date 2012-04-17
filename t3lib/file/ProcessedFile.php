@@ -46,6 +46,13 @@ class t3lib_file_ProcessedFile extends t3lib_file_AbstractFile {
 	const CONTEXT_IMAGEPREVIEW = 'image.preview';
 
 	/**
+	 * Standard processing context for the frontend, that was previously
+	 * in tslib_cObj::getImgResource which only takes croping, masking and scaling
+	 * into account
+	 */
+	const CONTEXT_IMAGECROPSCALEMASK = 'image.cropscalemask';
+
+	/**
 	 * Processing context
 	 *
 	 * @var string
@@ -92,12 +99,20 @@ class t3lib_file_ProcessedFile extends t3lib_file_AbstractFile {
 	 ************************
 
 	/**
-	 * Returns the Sha1 of this file
+	 * Returns the checksum that makes the processed configuration unique
+	 * also takes the mtime and the uid into account, to find out if the
+	 * process needs to be done again
 	 *
 	 * @return string
 	 */
 	public function calculateChecksum() {
-		return t3lib_div::shortMD5($this->originalFile->getUid() . $this->context . serialize($this->processingConfiguration));
+		return t3lib_div::shortMD5(
+			$this->originalFile->getUid()
+			. $this->originalFile->getModificationTime()	// take the modtime into account
+			. $this->context
+			. serialize($GLOBALS['TYPO3_CONF_VARS']['GFX'])	// make sure to take any IM changes into account
+			. serialize($this->processingConfiguration)
+		);
 	}
 
 	/******************
@@ -136,7 +151,7 @@ class t3lib_file_ProcessedFile extends t3lib_file_AbstractFile {
 	 * @return boolean
 	 */
 	public function isProcessed() {
-		return $this->processed;
+		return (bool) $this->processed;
 	}
 
 	/**
@@ -147,11 +162,6 @@ class t3lib_file_ProcessedFile extends t3lib_file_AbstractFile {
 	 */
 	public function setProcessed($isProcessed) {
 		$this->processed = (boolean) $isProcessed;
-
-			// DB-query to insert the info
-		/** @var $processedFileRepository t3lib_file_Repository_ProcessedFileRepository */
-		$processedFileRepository = t3lib_div::makeInstance('t3lib_file_Repository_ProcessedFileRepository');
-		$processedFileRepository->add($this);
 	}
 
 	/**
@@ -159,6 +169,38 @@ class t3lib_file_ProcessedFile extends t3lib_file_AbstractFile {
 	 */
 	public function getOriginalFile() {
 		return $this->originalFile;
+	}
+
+	/**
+	 * get the identifier of the file
+	 * if there is no processed file in the file system  (as the original file did not have to be modified e.g.
+	 * when the original image is in the boundaries of the maxW/maxH stuff)
+	 * then just return the identifier of the original file
+	 *
+	 * @return string
+	 */
+	public function getIdentifier() {
+		if ($this->identifier) {
+			return $this->identifier;
+		} else {
+			return $this->originalFile->getIdentifier();
+		}
+	}
+
+	/**
+	 * get the name of the file
+	 * if there is no processed file in the file system (as the original file did not have to be modified e.g.
+	 * when the original image is in the boundaries of the maxW/maxH stuff)
+	 * then just return the name of the original file
+	 *
+	 * @return string
+	 */
+	public function getName() {
+		if ($this->name) {
+			return $this->name;
+		} else {
+			return $this->originalFile->getName();
+		}
 	}
 
 	/**
@@ -174,6 +216,9 @@ class t3lib_file_ProcessedFile extends t3lib_file_AbstractFile {
 		}
 		if ($properties['identifier']) {
 			$this->identifier = $properties['identifier'];
+		}
+		if (isset($properties['is_processed']) && $properties['is_processed'] > 0) {
+			$this->processed = TRUE;
 		}
 		if (t3lib_utility_Math::canBeInterpretedAsInteger($properties['storage'])) {
 			$this->setStorage($properties['storage']);
@@ -196,6 +241,8 @@ class t3lib_file_ProcessedFile extends t3lib_file_AbstractFile {
 			'context' => $this->context,
 			'configuration' => serialize($this->processingConfiguration),
 			'original' => $this->originalFile->getUid(),
+			'width' => $this->getProperty('width'),
+			'height' => $this->getProperty('height')
 		);
 	}
 }

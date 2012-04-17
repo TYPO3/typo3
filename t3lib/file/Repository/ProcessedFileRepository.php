@@ -89,7 +89,7 @@ class t3lib_file_Repository_ProcessedFileRepository extends t3lib_file_Repositor
 	}
 
 	/**
-	 * Updates an existing file object in the database
+	 * Adds a processedfile object in the database
 	 *
 	 * @param t3lib_file_ProcessedFile $processedFile
 	 * @return void
@@ -98,8 +98,28 @@ class t3lib_file_Repository_ProcessedFileRepository extends t3lib_file_Repositor
 		$insertFields = $processedFile->toArray();
 		$insertFields['crdate'] = $insertFields['tstamp'] = time();
 
-			// @todo: make sure that the toArray method only contains fields that are in the table
+			// @todo: make sure that the toArray method only
+			// contains fields that actually *exist* in the table
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery($this->table, $insertFields);
+	}
+
+	/**
+	 * Updates an existing file object in the database
+	 *
+	 * @param t3lib_file_ProcessedFile $processedFile
+	 * @return void
+	 */
+	public function update($processedFile) {
+		$uid = intval($processedFile->getProperty('uid'));
+		if ($uid > 0) {
+				// @todo: make sure that the toArray method only
+				// contains fields that actually *exist* in the table
+			$updateFields = $processedFile->toArray();
+			$updateFields['tstamp'] = time();
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->table, 'uid=' . $uid, $updateFields);
+
+		}
+
 	}
 }
 
