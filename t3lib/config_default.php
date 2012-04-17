@@ -711,7 +711,7 @@ if (TYPO3_MODE === 'BE') {
 $T3_VAR = array();	// Initialize.
 
 	// TYPO3 version
-$TYPO_VERSION = '4.6.8-dev';	// @deprecated: Will be removed in TYPO3 4.8. Use the constants defined below
+$TYPO_VERSION = '4.6.8';	// @deprecated: Will be removed in TYPO3 4.8. Use the constants defined below
 define('TYPO3_version', $TYPO_VERSION);
 define('TYPO3_branch', '4.6');
 define('TYPO3_copyright_year', '1998-2012');
