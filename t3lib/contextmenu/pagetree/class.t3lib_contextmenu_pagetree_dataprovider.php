@@ -103,8 +103,4 @@ class t3lib_contextmenu_pagetree_DataProvider extends t3lib_contextmenu_Abstract
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/contextmenu/pagetree/class.t3lib_contextmenu_pagetree_dataprovider.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/contextmenu/pagetree/class.t3lib_contextmenu_pagetree_dataprovider.php']);
-}
-
 ?>

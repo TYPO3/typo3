@@ -30,10 +30,7 @@
  * @subpackage t3lib_file
  */
 class t3lib_file_exception_FileDoesNotExistException extends t3lib_file_exception_AbstractFileException {
-}
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Exception/FileDoesNotExistException.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Exception/FileDoesNotExistException.php']);
 }
 
 ?>

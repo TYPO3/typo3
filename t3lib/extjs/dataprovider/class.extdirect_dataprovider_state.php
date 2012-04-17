@@ -75,12 +75,6 @@ class extDirect_DataProvider_State {
 			'params' => $parameter
 		);
 	}
-
-
-}
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/extjs/dataprovider/class.extdirect_dataprovider_state.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/extjs/dataprovider/class.extdirect_dataprovider_state.php']);
 }
 
 ?>

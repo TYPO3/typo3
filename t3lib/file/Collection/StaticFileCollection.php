@@ -75,8 +75,4 @@ class t3lib_file_Collection_StaticFileCollection extends t3lib_file_Collection_A
 	}
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Collection/StaticFileCollection.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Collection/StaticFileCollection.php']);
-}
-
 ?>

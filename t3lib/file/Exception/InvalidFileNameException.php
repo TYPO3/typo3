@@ -33,8 +33,4 @@ class t3lib_file_exception_InvalidFileNameException extends t3lib_file_exception
 
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/Exception/InvalidFileNameException.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/Exception/InvalidFileNameException.php']);
-}
-
 ?>

@@ -287,11 +287,6 @@ class t3lib_file_Repository_FileRepository extends t3lib_file_Repository_Abstrac
 	protected function createFileReferenceObject(array $databaseRow) {
 		return $this->factory->getFileReferenceObject($databaseRow['uid'], $databaseRow);
 	}
-
-}
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Repository/FileRepository.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/file/Repository/FileRepository.php']);
 }
 
 ?>
