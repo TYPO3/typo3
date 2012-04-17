@@ -21,11 +21,15 @@ div#typo3-docheader {
 
 div#typo3-docheader-row1 {
 	height: 22px;
+	padding-left: 12px;
+	padding-right: 12px;
 }
 
 div#typo3-docheader-row2 {
 	height: 21px;
 	padding-top: 6px;
+	padding-left: 12px;
+	padding-right: 12px;
 }
 
 div.docheader-row2-left {
@@ -44,12 +48,12 @@ div.docheader-row2-left div.docheader-csh {
 
 div#typo3-docheader div.buttonsleft {
 	float: left;
-	margin: 0 0 0 3px;
+	margin: 0 5px 0 0;
 }
 
 div#typo3-docheader div.buttonsright {
 	float: right;
-	margin: 0 3px 0 0;
+	margin: 0 0 0 5px;
 }
 
 div#typo3-docheader-row1 img,
@@ -73,12 +77,10 @@ div#typo3-docheader select {
 
 div#typo3-docheader div.docheader-row2-left {
 	float: left;
-	margin-left: 6px;
 }
 
 div#typo3-docheader div.docheader-row2-right {
 	float: right;
-	margin-right: 20px;
 }
 
 div#typo3-docbody {
@@ -91,7 +93,7 @@ div#typo3-docbody {
 }
 
 div#typo3-inner-docbody {
-	padding: 10px;
+	padding: 15px 10px;
 }
 
 /* Fix for IE 7 */
@@ -115,10 +117,6 @@ div#typo3-docheader div.buttonsleft div.buttongroup {
 	height: 20px;
 	margin-right: 5px;
 	padding-right: 20px;
-}
-
-div#typo3-docheader div.buttonsright {
-	margin-right: 18px;
 }
 
 div#typo3-docheader div.buttonsright div.buttongroup {
