@@ -196,7 +196,7 @@ class Tx_Workspaces_Service_GridData {
 				// methodName(Tx_Workspaces_Service_GridData $gridData, array &$dataArray, array $versions)
 			$this->emitSignal(
 				self::SIGNAL_GenerateDataArray_BeforeCaching,
-				&$this->dataArray, $versions
+				$this->dataArray, $versions
 			);
 
 			$this->setDataArrayIntoCache($versions, $filterTxt);
@@ -206,7 +206,7 @@ class Tx_Workspaces_Service_GridData {
 			// methodName(Tx_Workspaces_Service_GridData $gridData, array &$dataArray, array $versions)
 		$this->emitSignal(
 			self::SIGNAL_GenerateDataArray_PostProcesss,
-			&$this->dataArray, $versions
+			$this->dataArray, $versions
 		);
 
 		$this->sortDataArray();
@@ -231,7 +231,7 @@ class Tx_Workspaces_Service_GridData {
 			// methodName(Tx_Workspaces_Service_GridData $gridData, array &$dataArray, $start, $limit)
 		$this->emitSignal(
 			self::SIGNAL_GetDataArray_PostProcesss,
-			&$this->dataArray, $start, $limit
+			$this->dataArray, $start, $limit
 		);
 
 		return $dataArrayPart;
@@ -334,7 +334,7 @@ class Tx_Workspaces_Service_GridData {
 			// methodName(Tx_Workspaces_Service_GridData $gridData, array &$dataArray, $sortColumn, $sortDirection)
 		$this->emitSignal(
 			self::SIGNAL_SortDataArray_PostProcesss,
-			&$this->dataArray, $this->sort, $this->sortDir
+			$this->dataArray, $this->sort, $this->sortDir
 		);
 	}
 
@@ -448,7 +448,7 @@ class Tx_Workspaces_Service_GridData {
 			// methodName(Tx_Workspaces_Service_GridData $gridData, &$changePercentage, array $firstRecord, array $secondRecord, &$processed)
 		$this->emitSignal(
 			self::SIGNAL_CalcChangePercentage_PreProcess,
-			&$changePercentage, $diffRecordOne, $diffRecordTwo, &$processed
+			$changePercentage, $diffRecordOne, $diffRecordTwo, $processed
 		);
 
 			// Check that records are arrays:
@@ -511,7 +511,7 @@ class Tx_Workspaces_Service_GridData {
 				// methodName(Tx_Workspaces_Service_GridData $gridData, &$changePercentage, array $firstRecord, array $secondRecord, array $changePercentageArray)
 			$this->emitSignal(
 				self::SIGNAL_CalcChangePercentage_PostProcess,
-				&$changePercentage, $diffRecordOne, $diffRecordTwo, $changePercentageArray
+				$changePercentage, $diffRecordOne, $diffRecordTwo, $changePercentageArray
 			);
 		}
 
