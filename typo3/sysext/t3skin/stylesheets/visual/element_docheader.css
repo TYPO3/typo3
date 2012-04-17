@@ -26,10 +26,8 @@ div#typo3-docheader-row2 {
 
 div#typo3-docheader div.buttonsleft {
 	line-height: 16px;
-}
-
-div#typo3-docheader div.buttonsright {
-	line-height: 16px;
+	/* Reduce visual indent because of square sprite box icons */
+	margin-left: -2px;
 }
 
 div#typo3-docheader img,

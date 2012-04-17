@@ -40,7 +40,6 @@ Pagetree
 }
 
 #typo3-pagetree ul.x-tree-root-ct {
-	padding-left: 5px;
 	padding-top: 15px;
 }
 
@@ -88,6 +87,11 @@ Pagetree
  */
 #typo3-pagetree-topPanel .x-toolbar-left {
 	height: 20px;
+	padding-left: 12px;
+}
+
+#typo3-pagetree-topPanel .x-toolbar-right {
+	padding-right: 12px;
 }
 
 .typo3-pagetree-topPanel-button {
