@@ -408,7 +408,7 @@ class tx_cms_layout extends recordList {
 			$backendLayoutUid = NULL;
 		} else if ($backendLayoutUid == 0) {
 				// if it not set check the rootline for a layout on next level and use this
-			$rootline = t3lib_BEfunc::BEgetRootLine($id);
+			$rootline = t3lib_BEfunc::BEgetRootLine($id, '', TRUE);
 			for ($i = count($rootline) - 2; $i > 0; $i--) {
 				$backendLayoutUid = intval($rootline[$i]['backend_layout_next_level']);
 				if ($backendLayoutUid > 0) {
