@@ -21,6 +21,12 @@
 			<trans-unit id="cachingFrameworkGarbageCollection.description" xml:space="preserve">
 				<source>This task calls the garbage collection of configured caching framework caches which use one of the selected backends. This will free some space in cache backends which do not have an internal garbage collection. In case of the default database backend it is advisable to run this task once a day when the database is mostly idle.</source>
 			</trans-unit>
+			<trans-unit id="fileIndexing.name" xml:space="preserve">
+				<source>File Abstraction Layer: Indexing job</source>
+			</trans-unit>
+			<trans-unit id="fileIndexing.description" xml:space="preserve">
+				<source>Runs indexing tasks based on an indexing configuration and a storage/folder information.</source>
+			</trans-unit>
 			<trans-unit id="tableGarbageCollection.name" xml:space="preserve">
 				<source>Table garbage collection</source>
 			</trans-unit>

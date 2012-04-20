@@ -37,6 +37,13 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_Ca
 	'additionalFields' => 'tx_scheduler_CachingFrameworkGarbageCollection_AdditionalFieldProvider',
 );
 
+	// Add file indexing task
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_FileIndexing'] = array(
+	'extension'        => $_EXTKEY,
+	'title'            => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:fileIndexing.name',
+	'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:fileIndexing.description',
+);
+
 	// Add recycler directory cleanup task. Windows is not supported
 	// because "filectime" does not change after moving a file
 if (TYPO3_OS != 'WIN') {
