@@ -6842,7 +6842,7 @@ class t3lib_TCEmain {
 				$details = '';
 			}
 			if ($error > 0) {
-				$this->errorLog[] = '[' . $type . '.' . $action . '.' . $details_nr . ']: ' . $details;
+				$this->errorLog[] = '[' . $type . '.' . $action . '.' . $details_nr . ']: ' . vsprintf($details, $data);
 			}
 			return $this->BE_USER->writelog($type, $action, $error, $details_nr, $details, $data, $table, $recuid, $recpid, $event_pid, $NEWid);
 		}
