@@ -31,66 +31,6 @@
  *
  * @author		Kasper Skårhøj	<kasperYYYY@typo3.com>
  */
-
-
-// *******************************
-// Set error reporting
-// *******************************
-error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
-
-
-
-// ******************
-// Constants defined
-// ******************
-define('TYPO3_OS', stristr(PHP_OS,'win')&&!stristr(PHP_OS,'darwin')?'WIN':'');
-define('TYPO3_MODE','BE');
-
-if(!defined('PATH_thisScript')) {
-	define('PATH_thisScript', str_replace('//', '/', str_replace('\\', '/',
-		(PHP_SAPI == 'fpm-fcgi' || PHP_SAPI == 'cgi' || PHP_SAPI == 'isapi' || PHP_SAPI == 'cgi-fcgi') &&
-		($_SERVER['ORIG_PATH_TRANSLATED'] ? $_SERVER['ORIG_PATH_TRANSLATED'] : $_SERVER['PATH_TRANSLATED']) ?
-		($_SERVER['ORIG_PATH_TRANSLATED'] ? $_SERVER['ORIG_PATH_TRANSLATED'] : $_SERVER['PATH_TRANSLATED']) :
-		($_SERVER['ORIG_SCRIPT_FILENAME'] ? $_SERVER['ORIG_SCRIPT_FILENAME'] : $_SERVER['SCRIPT_FILENAME']))));
-}
-
-if(!defined('PATH_site'))  		define('PATH_site', preg_replace('/[^\/]*.[^\/]*$/','',PATH_thisScript));		// the path to the website folder (see init.php)
-if(!defined('PATH_t3lib')) 		define('PATH_t3lib', PATH_site.'t3lib/');
-define('PATH_typo3conf', PATH_site.'typo3conf/');
-define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend administration for the sites of this TYPO3 installation.
-define('PATH_typo3', PATH_site.TYPO3_mainDir);
-
-
-// ******************
-// Including config
-// ******************
-require_once(PATH_t3lib.'class.t3lib_div.php');
-require_once(PATH_t3lib.'class.t3lib_extmgm.php');
-
-require(PATH_t3lib.'config_default.php');
-if (!defined ('TYPO3_db')) {
-	die ('The configuration file was not included.');
-}
-if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['image_processing']) {
-	die ('ImageProcessing was disabled!');
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Class for generating a thumbnail from the input parameters given to the script
  *
@@ -111,62 +51,115 @@ class SC_t3lib_thumbs {
 	var $sizeDefault='64x64';
 
 	var $imageList;		// Coming from $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
-	var $input;		// Contains the absolute path to the file for which to make a thumbnail (after init())
+	/**
+	 * will hold the file Object
+	 * 
+	 * @var t3lib_file_File $input
+	 */
+	var $image;
 
 		// Internal, static: GPvar:
 	var $file;		// Holds the input filename (GET: file)
 	var $size;		// Holds the input size (GET: size)
-	var $mtime = 0;		// Last modification time of the supplied file
+	var $mTime = 0;		// Last modification time of the supplied file
 
 
 	/**
 	 * Initialize; reading parameters with GPvar and checking file path
-	 * Results in internal var, $this->input, being set to the absolute path of the file for which to make the thumbnail.
+	 * Results in internal var, $this->file, being set to the file object which should be used to make a thumbnail.
 	 *
 	 * @return	void
 	 */
 	function init() {
 			// Setting GPvars:
-		$file = t3lib_div::_GP('file');
-		$size = t3lib_div::_GP('size');
+		$size = t3lib_div::_GP('size'); // Only needed for MD5 sum calculation of backwards-compatibility uploads/ files thumbnails.
+		$filePathOrCombinedFileIdentifier = rawurldecode(t3lib_div::_GP('file'));
 		$md5sum = t3lib_div::_GP('md5sum');
 
 			// Image extension list is set:
 		$this->imageList = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];			// valid extensions. OBS: No spaces in the list, all lowercase...
 
-			// If the filereference $this->file is relative, we correct the path
-		if (substr($file,0,3)=='../') {
-			$file = PATH_site.substr($file,3);
-		}
+			// Check if we got a combined file identifier of the form storageUid:fileIdentifer.
+		// We need to distinguish it from absolute Windows paths by cbecking for an integer as first part.
+		$parts = t3lib_div::trimExplode(':', $filePathOrCombinedFileIdentifier);
 
-		$mtime = 0;
-			// Now the path is absolute.
-			// Checking for backpath and double slashes + the thumbnail can be made from files which are in the PATH_site OR the lockRootPath only!
-		if (t3lib_div::isAllowedAbsPath($file)) {
-			$mtime = filemtime($file);
-		}
+			// best case: we get a sys_file UID
+		if (t3lib_utility_Math::canBeInterpretedAsInteger($filePathOrCombinedFileIdentifier)) {
+			/** @var t3lib_file_File $filePathOrCombinedFileIdentifier */
+			$fileObject = t3lib_file_Factory::getInstance()->getFileObject($filePathOrCombinedFileIdentifier);
 
-			// Do an MD5 check to prevent viewing of images without permission
-		$OK = FALSE;
-		if ($mtime) {
-				// Always use the absolute path for this check!
-			$check = basename($file).':'.$mtime.':'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-			$md5pre47 = t3lib_div::shortMD5($check);
-			$md5from47 = md5($check);
-			if (!strcmp($md5pre47, $md5sum) || !strcmp($md5from47, $md5sum)) {
-				$OK = TRUE;
+		} elseif (count($parts) <= 1 || !t3lib_utility_Math::canBeInterpretedAsInteger($parts[0])) {
+				// TODO: Historically, the input parameter could also be an absolute path. This should be supported again to stay compatible.
+			$relativeFilePath = $filePathOrCombinedFileIdentifier; // We assume the FilePath to be a relative file path (as in backwards compatibility mode)
+
+				// The incoming relative path is relative to the typo3/ directory, but we need it relative to PATH_site. This is corrected here:
+			if (substr($relativeFilePath, 0, 3)=='../') {
+				$relativeFilePath = substr($relativeFilePath,3);
+			} else {
+				$relativeFilePath = 'typo3/'.$relativeFilePath;
 			}
+
+			$relativeFilePath = ltrim($relativeFilePath, '/');
+			$mTime = 0;
+
+				// Checking for backpath and double slashes + the thumbnail can be made from files which are in the PATH_site OR the lockRootPath only!
+			if (t3lib_div::isAllowedAbsPath(PATH_site.$relativeFilePath)) {
+				$mTime = filemtime(PATH_site.$relativeFilePath);
+			}
+
+			if(strstr($relativeFilePath, '../') !== FALSE) {
+				$this->errorGif('File path', 'must not contain', '"../"'); // Maybe this could be relaxed to not throw an error as long as the path is still within PATH_site
+			}
+
+			if ($relativeFilePath && file_exists(PATH_site.$relativeFilePath)) {
+					// Check file extension:
+				$reg = array();
+				if (preg_match('/(.*)\.([^\.]*$)/', $relativeFilePath, $reg)) {
+					$ext=strtolower($reg[2]);
+					$ext=($ext=='jpeg') ? 'jpg' : $ext;
+					if (!t3lib_div::inList($this->imageList, $ext)) {
+						$this->errorGif('Not imagefile!', $ext, basename($relativeFilePath));
+					}
+				} else {
+					$this->errorGif('Not imagefile!', 'No ext!', basename($relativeFilePath));
+				}
+			} else{
+				$this->errorGif('Input file not found.', 'not found in thumbs.php', basename($relativeFilePath));
+			}
+
+				// Do an MD5 check to prevent viewing of images without permission
+			$OK = FALSE;
+			if ($mTime) {
+					// Always use the absolute path for this check!
+				$check = basename($relativeFilePath).':'.$mTime.':'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+				$md5_real = t3lib_div::shortMD5($check);
+				if (!strcmp($md5_real,$md5sum)) {
+					$OK = TRUE;
+				}
+			}
+
+			$combinedIdentifier = '0:'.$relativeFilePath;
+		} else {
+			$combinedIdentifier = $filePathOrCombinedFileIdentifier;
+			$OK = FALSE;
+		}
+
+		if (empty($fileObject)) {
+			$fileObject = t3lib_file_Factory::getInstance()->getFileObjectFromCombinedIdentifier($combinedIdentifier);
+		}
+
+		if (empty($OK)) {
+			$OK = $fileObject !== NULL && $fileObject->checkActionPermission('read') && $fileObject->calculateChecksum() == $md5sum;
 		}
 
 		if ($OK) {
-			$this->input = $file;
+			$this->image = $fileObject;
 			$this->size = $size;
-			$this->mtime = $mtime;
+			//$this->mtime = $fileObject->getProperty('mtime');
 		} else {
 				// hide the path to the document root;
-			$publicFilename = substr($file, strlen(PATH_site));
 			throw new RuntimeException(
-				'TYPO3 Fatal Error: Image \'' . $publicFilename . '\' does not exist and/or MD5 checksum did not match. ' .
+				'TYPO3 Fatal Error: The requested image does not exist and/or MD5 checksum did not match. ' .
 					'If the target file exists and its file name contains special characters, the setting of ' .
 					'$TYPO3_CONF_VARS[SYS][systemLocale] might be wrong.'
 				,
@@ -182,25 +175,18 @@ class SC_t3lib_thumbs {
 	 * @return	void
 	 */
 	function main() {
-			// If file exists, we make a thumbsnail of the file.
-		if ($this->input && file_exists($this->input)) {
+			// If file exists, we make a thumbnail of the file.
+		if (is_object($this->image)) {
 
 				// Check file extension:
-			$reg = array();
-			if (preg_match('/(.*)\.([^\.]*$)/', $this->input, $reg)) {
-				$ext=strtolower($reg[2]);
-				$ext=($ext=='jpeg') ? 'jpg' : $ext;
-				if ($ext=='ttf') {
-					$this->fontGif($this->input);	// Make font preview... (will not return)
-				} elseif (!t3lib_div::inList($this->imageList, $ext)) {
-					$this->errorGif('Not imagefile!', $ext, basename($this->input));
-				}
-			} else {
-				$this->errorGif('Not imagefile!', 'No ext!', basename($this->input));
+			if ($this->image->getExtension() == 'ttf') {
+				$this->fontGif($this->image);	// Make font preview... (will not return)
+			} elseif(($this->image->getType() != t3lib_file_File::FILETYPE_IMAGE) && !t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $this->image->getExtension())) {
+				$this->errorGif('Not imagefile!', 'No ext!', $this->image->getName());
 			}
 
 				// ... so we passed the extension test meaning that we are going to make a thumbnail here:
-			if (!$this->size) 	$this->size = $this->sizeDefault;	// default
+			if (!$this->size) $this->size = $this->sizeDefault;	// default
 
 				// I added extra check, so that the size input option could not be fooled to pass other values. That means the value is exploded, evaluated to an integer and the imploded to [value]x[value]. Furthermore you can specify: size=340 and it'll be translated to 340x340.
 			$sizeParts = explode('x', $this->size . 'x' . $this->size);	// explodes the input size (and if no "x" is found this will add size again so it is the same for both dimensions)
@@ -214,19 +200,19 @@ class SC_t3lib_thumbs {
 				// Should be - ? 'png' : 'gif' - , but doesn't work (ImageMagick prob.?)
 				// René: png work for me
 			$thmMode = t3lib_utility_Math::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails_png'], 0);
-			$outext = ($ext!='jpg' || ($thmMode & 2)) ? ($thmMode & 1 ? 'png' : 'gif') : 'jpg';
+			$outext = ($this->image->getExtension() != 'jpg' || ($thmMode & 2)) ? ($thmMode & 1 ? 'png' : 'gif') : 'jpg';
 
-			$outfile = 'tmb_' . substr(md5($this->input . $this->mtime . $this->size), 0, 10) . '.' . $outext;
+			$outfile = 'tmb_' . substr(md5($this->image->getName() . $this->mtime . $this->size), 0, 10) . '.' . $outext;
 			$this->output = $outpath . $outfile;
 
 			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
 					// If thumbnail does not exist, we generate it
 				if (!file_exists($this->output)) {
-					$parameters = '-sample ' . $this->size . ' ' . $this->wrapFileName($this->input) . '[0] ' . $this->wrapFileName($this->output);
+					$parameters = '-sample ' . $this->size . ' ' . $this->wrapFileName($this->image->getForLocalProcessing(FALSE)) . '[0] ' . $this->wrapFileName($this->output);
 					$cmd = t3lib_div::imageMagickCommand('convert', $parameters);
 					t3lib_utility_Command::exec($cmd);
 					if (!file_exists($this->output)) {
-						$this->errorGif('No thumb','generated!', basename($this->input));
+						$this->errorGif('No thumb','generated!', $this->image->getName());
 					} else {
 						t3lib_div::fixPermissions($this->output);
 					}
@@ -246,7 +232,7 @@ class SC_t3lib_thumbs {
 				}
 			} else exit;
 		} else {
-			$this->errorGif('No valid','inputfile!', basename($this->input));
+			$this->errorGif('No valid', 'inputfile!', basename($this->image));
 		}
 	}
 
@@ -397,9 +383,6 @@ class SC_t3lib_thumbs {
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/thumbs.php'])) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/thumbs.php']);
 }
-
-
-
 
 // Make instance:
 $SOBE = t3lib_div::makeInstance('SC_t3lib_thumbs');

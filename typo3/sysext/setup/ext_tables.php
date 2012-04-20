@@ -79,6 +79,11 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 			'label' => 'LLL:EXT:setup/mod/locallang.xml:edit_docModuleUpload',
 			'csh' => 'edit_docModuleUpload',
 		),
+		'showHiddenFilesAndFolders' => array(
+			'type' => 'check',
+			'label' => 'LLL:EXT:setup/mod/locallang.xml:showHiddenFilesAndFolders',
+			'csh' => 'showHiddenFilesAndFolders',
+		),
 		'copyLevels' => array(
 			'type' => 'text',
 			'label' => 'LLL:EXT:setup/mod/locallang.xml:copyLevels',
@@ -124,7 +129,7 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 	),
 	'showitem' => '--div--;LLL:EXT:setup/mod/locallang.xml:personal_data,realName,email,emailMeAtLogin,password,password2,lang,
 			--div--;LLL:EXT:setup/mod/locallang.xml:opening,startModule,thumbnailsByDefault,titleLen,
-			--div--;LLL:EXT:setup/mod/locallang.xml:editFunctionsTab,edit_RTE,edit_wideDocument,edit_docModuleUpload,enableFlashUploader,resizeTextareas,resizeTextareas_Flexible,resizeTextareas_MaxHeight,copyLevels,recursiveDelete,
+			--div--;LLL:EXT:setup/mod/locallang.xml:editFunctionsTab,edit_RTE,edit_wideDocument,edit_docModuleUpload,showHiddenFilesAndFolders,enableFlashUploader,resizeTextareas,resizeTextareas_Flexible,resizeTextareas_MaxHeight,copyLevels,recursiveDelete,
 			--div--;LLL:EXT:setup/mod/locallang.xml:adminFunctions,simulate,debugInWindow'
 
 );

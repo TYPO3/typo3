@@ -56,19 +56,18 @@ class SC_file_rename {
 	 * @var smallDoc
 	 */
 	var $doc;
-
-	/**
-	 * File processing object
-	 *
-	 * @var t3lib_basicFileFunctions
-	 */
-	var $basicff;
-	var $icon;			// Will be set to the proper icon for the $target value.
-	var $shortPath;		// Relative path to current found filemount
 	var $title;			// Name of the filemount
 
 		// Internal, static (GPVar):
 	var $target;		// Set with the target path inputted in &target
+
+	/**
+	 * the file or folder object that should be renamed
+	 *
+	 * @var t3lib_file_ResourceInterface $fileOrFolderObject
+	 */
+	protected $fileOrFolderObject;
+
 	var $returnUrl;		// Return URL of list module.
 
 		// Internal, dynamic:
@@ -85,42 +84,34 @@ class SC_file_rename {
 		$this->target = t3lib_div::_GP('target');
 		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 
-			// Init basic-file-functions object:
-		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-		$this->basicff->init($GLOBALS['FILEMOUNTS'],$GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-
 			// Cleaning and checking target
-		if (file_exists($this->target))	{
-			$this->target=$this->basicff->cleanDirectoryName($this->target);		// Cleaning and checking target (file or dir)
-		} else {
-			$this->target='';
+		if ($this->target) {
+			$this->fileOrFolderObject = t3lib_file_Factory::getInstance()->retrieveFileOrFolderObject($this->target);
 		}
-		$key=$this->basicff->checkPathAgainstMounts($this->target.'/');
-		if (!$this->target || !$key) {
+
+		if (!$this->fileOrFolderObject) {
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:paramError', TRUE);
 			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:targetNoDir', TRUE);
 			throw new RuntimeException($title . ': ' . $message, 1294586844);
 		}
 
-			// Finding the icon
-		switch($GLOBALS['FILEMOUNTS'][$key]['type']) {
-			case 'user':
-				$this->icon = 'gfx/i/_icon_ftp_user.gif';
-				break;
-			case 'group':
-				$this->icon = 'gfx/i/_icon_ftp_group.gif';
-				break;
-			default:
-				$this->icon = 'gfx/i/_icon_ftp.gif';
+			// if a folder should be renamed, AND the returnURL should go to the old directory name, the redirect is forced
+			// so the redirect will NOT end in a error message
+			// this case only happens if you select the folder itself in the foldertree and then use the clickmenu to
+			// rename the folder
+		if ($this->fileOrFolderObject instanceof t3lib_file_Folder) {
+			$parsedUrl = parse_url($this->returnUrl);
+			$queryParts = t3lib_div::explodeUrl2Array(urldecode($parsedUrl['query']));
+			if ($queryParts['id'] === $this->fileOrFolderObject->getCombinedIdentifier()) {
+				$this->returnUrl = str_replace(urlencode($queryParts['id']), urlencode($this->fileOrFolderObject->getStorage()->getRootLevelFolder()->getCombinedIdentifier()), $this->returnUrl);
+			}
 		}
 
-		$this->icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,$this->icon,'width="18" height="16"').' title="" alt="" />';
 
-			// Relative path to filemount, $key:
-		$this->shortPath = substr($this->target,strlen($GLOBALS['FILEMOUNTS'][$key]['path']));
 
-			// Setting title:
-		$this->title = $this->icon . htmlspecialchars($GLOBALS['FILEMOUNTS'][$key]['name']) . ': ' . htmlspecialchars($this->shortPath);
+			// Setting icon and title
+		$icon = t3lib_iconWorks::getSpriteIcon('apps-filetree-root');
+		$this->title = $icon . htmlspecialchars($this->fileOrFolderObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->fileOrFolderObject->getIdentifier());
 
 			// Setting template object
 		$this->doc = t3lib_div::makeInstance('template');
@@ -148,14 +139,19 @@ class SC_file_rename {
 		$pageContent .= $this->doc->spacer(5);
 		$pageContent .= $this->doc->divider(5);
 
+		if ($this->fileOrFolderObject instanceof t3lib_file_Folder) {
+			$fileIdentifier = $this->fileOrFolderObject->getCombinedIdentifier();
+		} else {
+			$fileIdentifier = $this->fileOrFolderObject->getUid();
+		}
 
 		$code = '<form action="tce_file.php" method="post" name="editform">';
 			// Making the formfields for renaming:
 		$code .= '
 
 			<div id="c-rename">
-				<input type="text" name="file[rename][0][data]" value="'.htmlspecialchars(basename($this->shortPath)).'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' />
-				<input type="hidden" name="file[rename][0][target]" value="'.htmlspecialchars($this->target).'" />
+				<input type="text" name="file[rename][0][target]" value="' . htmlspecialchars($this->fileOrFolderObject->getName()) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(40) . ' />
+				<input type="hidden" name="file[rename][0][data]" value="' . htmlspecialchars($fileIdentifier) . '" />
 			</div>
 		';
 

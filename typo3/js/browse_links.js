@@ -40,18 +40,41 @@ var BrowseLinks = {
 	}
 };
 
+	// when selecting one or multiple files, this action is called
 BrowseLinks.File = {
 	insertElement: function(index, close) {
 		var result = false;
 		if (typeof BrowseLinks.elements[index] !== undefined) {
 			var element = BrowseLinks.elements[index];
+
+			// insertElement takes the following parameters
+			// table, uid, type, filename,fp,filetype,imagefile,action, close
 			result = insertElement(
-				'', element.md5, element.type,
-				element.fileName, element.filePath, element.fileExt,
-				element.fileIcon, '', close);
+					element.table,
+					element.uid,
+					element.type,
+					element.fileName,
+					element.filePath,
+					element.fileExt,
+					element.fileIcon,
+					'',
+					close
+			);
 		}
 		return result;
+	},
+	insertElementMultiple: function(list) {
+		var uidList = [];
+		list.each(function(index) {
+			if (typeof BrowseLinks.elements[index] !== undefined) {
+				var element = BrowseLinks.elements[index];
+				uidList.push(element.uid);
+			}
+		});
+		insertMultiple('sys_file', uidList);
+		return true;
 	}
+
 };
 
 BrowseLinks.Selector = {
@@ -66,12 +89,18 @@ BrowseLinks.Selector = {
 	},
 	handle: function(element) {
 		var items = this.getItems(element);
+		var selectedItems = [];
 		if (items.length) {
 			items.each(function(item) {
 				if (item.checked && item.name) {
-					BrowseLinks.File.insertElement(item.name);
+					selectedItems.push(item.name);
 				}
 			});
+			if (selectedItems.length == 1) {
+				BrowseLinks.File.insertElement(selectedItems[0]);
+			} else {
+				BrowseLinks.File.insertElementMultiple(selectedItems);
+			}
 			BrowseLinks.focusOpenerAndClose(true);
 		}
 	},

@@ -48,15 +48,7 @@ require('template.php');
 class SC_file_edit {
 	var $content;		// Module content accumulated.
 
-	/**
-	 * File processing object
-	 *
-	 * @var t3lib_basicFileFunctions
-	 */
-	var $basicff;
-	var $shortPath;
 	var $title;
-	var $icon;
 
 	/**
 	 * Document template object
@@ -70,6 +62,12 @@ class SC_file_edit {
 	var $target;			// The original target, but validated.
 	var $returnUrl;		// Return URL of list module.
 
+	/**
+	 * the file that is being edited on
+	 *
+	 * @var t3lib_file_AbstractFile
+	 */
+	protected $fileObject;
 
 	/**
 	 * Initialize script class
@@ -78,44 +76,24 @@ class SC_file_edit {
 	 */
 	function init()	{
 			// Setting target, which must be a file reference to a file within the mounts.
-		$this->target = $this->origTarget = t3lib_div::_GP('target');
+		$this->target = $this->origTarget = $fileIdentifier = t3lib_div::_GP('target');
 		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 
-			// Creating file management object:
-		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-		$this->basicff->init($GLOBALS['FILEMOUNTS'],$GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-
-
-		if (file_exists($this->target))	{
-			$this->target=$this->basicff->cleanDirectoryName($this->target);		// Cleaning and checking target (file or dir)
-		} else {
-			$this->target='';
+			// create the file object
+		if ($fileIdentifier) {
+			$this->fileObject = t3lib_file_Factory::getInstance()->retrieveFileOrFolderObject($fileIdentifier);
 		}
-		$key=$this->basicff->checkPathAgainstMounts($this->target.'/');
-		if (!$this->target || !$key) {
+
+			// Cleaning and checking target directory
+		if (!$this->fileObject) {
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:paramError', TRUE);
 			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:targetNoDir', TRUE);
 			throw new RuntimeException($title . ': ' . $message, 1294586841);
 		}
-			// Finding the icon
-		switch($GLOBALS['FILEMOUNTS'][$key]['type']) {
-			case 'user':
-				$this->icon = 'gfx/i/_icon_ftp_user.gif';
-				break;
-			case 'group':
-				$this->icon = 'gfx/i/_icon_ftp_group.gif';
-				break;
-			default:
-				$this->icon = 'gfx/i/_icon_ftp.gif';
-		}
 
-		$this->icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,$this->icon,'width="18" height="16"').' title="" alt="" />';
-
-			// Relative path to filemount, $key:
-		$this->shortPath = substr($this->target,strlen($GLOBALS['FILEMOUNTS'][$key]['path']));
-
-			// Setting title:
-		$this->title = $this->icon.$GLOBALS['FILEMOUNTS'][$key]['name'].': '.$this->shortPath;
+			// Setting the title and the icon
+		$icon = t3lib_iconWorks::getSpriteIcon('apps-filetree-root');
+		$this->title = $icon . htmlspecialchars($this->fileObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->fileObject->getIdentifier());
 
 		// ***************************
 		// Setting template object
@@ -156,15 +134,15 @@ class SC_file_edit {
 			}
 		}
 
-		$pageContent = $this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.pagetitle'));
+		$pageContent = $this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.pagetitle') . ' ' . htmlspecialchars($this->fileObject->getName()));
 		$pageContent .= $this->doc->spacer(2);
 
-		$fI = pathinfo($this->target);
-		$extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
+		$code = '';
 
-		if ($extList && t3lib_div::inList($extList,strtolower($fI['extension'])))		{
+		$extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
+		if ($extList && t3lib_div::inList($extList, $this->fileObject->getExtension())) {
 				// Read file content to edit:
-			$fileContent = t3lib_div::getUrl($this->target);
+			$fileContent = $this->fileObject->getContents();
 
 				// making the formfields
 			$hValue = 'file_edit.php?target='.rawurlencode($this->origTarget).'&returnUrl='.rawurlencode($this->returnUrl);
@@ -175,7 +153,7 @@ class SC_file_edit {
 					<textarea rows="30" name="file[editfile][0][data]" wrap="off"'.$this->doc->formWidthText(48,'width:98%;height:80%','off').' class="fixed-font enable-tab">'.
 					t3lib_div::formatForTextarea($fileContent).
 					'</textarea>
-					<input type="hidden" name="file[editfile][0][target]" value="'.$this->target.'" />
+					<input type="hidden" name="file[editfile][0][target]" value="' . $this->fileObject->getUid() . '" />
 					<input type="hidden" name="redirect" value="'.htmlspecialchars($hValue).'" />
 				</div>
 				<br />';

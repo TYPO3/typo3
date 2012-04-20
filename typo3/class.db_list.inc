@@ -147,11 +147,6 @@ class recordList extends t3lib_recordList {
 			$this->localizationRedirect(t3lib_div::_GP('justLocalized'));
 		}
 
-			// If thumbnails are disabled, set the "notfound" icon as default:
-		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'])	{
-			$this->thumbScript='gfx/notfound_thumb.gif';
-		}
-
 			// Init dynamic vars:
 		$this->counter=0;
 		$this->JScode='';
@@ -438,13 +433,13 @@ class recordList extends t3lib_recordList {
 	/**
 	 * Create thumbnail code for record/field
 	 *
-	 * @param	array		Record array
-	 * @param	string		Table (record is from)
-	 * @param	string		Field name for which thumbsnail are to be rendered.
-	 * @return	string		HTML for thumbnails, if any.
+	 * @param array $row Record array
+	 * @param string $table Table (record is from)
+	 * @param string $field Field name for which thumbsnail are to be rendered.
+	 * @return string HTML for thumbnails, if any.
 	 */
-	function thumbCode($row,$table,$field)	{
-		return t3lib_BEfunc::thumbCode($row,$table,$field,$this->backPath,$this->thumbScript);
+	function thumbCode($row, $table, $field)	{
+		return t3lib_BEfunc::thumbCode($row, $table, $field, $this->backPath);
 	}
 
 	/**

@@ -93,6 +93,7 @@ class t3lib_basicFileFunctions {
 	 * @see typo3/init.php, t3lib_userAuthGroup::returnFilemounts()
 	 */
 	function init($mounts, $f_ext) {
+		t3lib_div::logDeprecatedFunction('All methods in this class should not be used anymore since TYPO3 6.0. Please use corresponding t3lib_file_Storage (fetched via BE_USERS->getFileStorages()), as all functions should be found there (in a cleaner manner).');
 		$this->f_ext['webspace']['allow'] = t3lib_div::uniqueList(strtolower($f_ext['webspace']['allow']));
 		$this->f_ext['webspace']['deny'] = t3lib_div::uniqueList(strtolower($f_ext['webspace']['deny']));
 		$this->f_ext['ftpspace']['allow'] = t3lib_div::uniqueList(strtolower($f_ext['ftpspace']['allow']));
@@ -127,6 +128,7 @@ class t3lib_basicFileFunctions {
 	 * @return	array		Information about the file in the filepath
 	 */
 	function getTotalFileInfo($wholePath) {
+			// @todo: deprecate this function, and replace its use in the storage/mounts
 		$theuser = getmyuid();
 		$info = t3lib_div::split_fileref($wholePath);
 		$info['tstamp'] = @filemtime($wholePath);
@@ -226,6 +228,7 @@ class t3lib_basicFileFunctions {
 	 * @return	boolean
 	 */
 	function checkFileNameLen($fileName) {
+			// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
 		return strlen($fileName) <= $this->maxInputNameLen;
 	}
 
@@ -236,6 +239,7 @@ class t3lib_basicFileFunctions {
 	 * @return	string		Returns the cleaned up directory name if OK, otherwise FALSE.
 	 */
 	function is_directory($theDir) {
+			// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
 		if ($this->isPathValid($theDir)) {
 			$theDir = $this->cleanDirectoryName($theDir);
 			if (@is_dir($theDir)) {
@@ -253,6 +257,7 @@ class t3lib_basicFileFunctions {
 	 * @see	t3lib_div::validPathStr()
 	 */
 	function isPathValid($theFile) {
+			// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
 		return t3lib_div::validPathStr($theFile);
 	}
 
@@ -268,6 +273,7 @@ class t3lib_basicFileFunctions {
 	 * @see t3lib_TCEmain::checkValue()
 	 */
 	function getUniqueName($theFile, $theDest, $dontCheckForUnique = 0) {
+			// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
 		$theDest = $this->is_directory($theDest); // $theDest is cleaned up
 		$origFileInfo = t3lib_div::split_fileref($theFile); // Fetches info about path, name, extention of $theFile
 		if ($theDest) {
@@ -311,6 +317,7 @@ class t3lib_basicFileFunctions {
 	 * @see init()
 	 */
 	function checkPathAgainstMounts($thePath) {
+			// @todo: deprecate this function, now done in the Storage object
 		if ($thePath && $this->isPathValid($thePath) && is_array($this->mounts)) {
 			foreach ($this->mounts as $k => $val) {
 				if (t3lib_div::isFirstPartOfStr($thePath, $val['path'])) {
@@ -326,6 +333,7 @@ class t3lib_basicFileFunctions {
 	 * @return	string		The key to the first mount inside PATH_site."fileadmin" found, otherwise nothing is returned.
 	 */
 	function findFirstWebFolder() {
+			// @todo: where and when to use this function?
 		if (is_array($this->mounts)) {
 			foreach ($this->mounts as $k => $val) {
 				if (t3lib_div::isFirstPartOfStr($val['path'], PATH_site . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'])) {
@@ -343,6 +351,7 @@ class t3lib_basicFileFunctions {
 	 * @return	string		The processed input path
 	 */
 	function blindPath($thePath) {
+			// @todo: where and when to use this function?
 		$k = $this->checkPathAgainstMounts($thePath);
 		if ($k) {
 			$name = '';
@@ -359,6 +368,7 @@ class t3lib_basicFileFunctions {
 	 * @return	string		Returns the path if found, otherwise nothing if error.
 	 */
 	function findTempFolder() {
+			// @todo: where and when to use this function?
 		if ($this->tempFN && is_array($this->mounts)) {
 			foreach ($this->mounts as $k => $val) {
 				$tDir = $val['path'] . $this->tempFN;
@@ -383,6 +393,7 @@ class t3lib_basicFileFunctions {
 	 * @return	string		Output string
 	 */
 	function cleanDirectoryName($theDir) {
+			// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
 		return preg_replace('/[\/\. ]*$/', '', $this->rmDoubleSlash($theDir));
 	}
 
@@ -393,6 +404,7 @@ class t3lib_basicFileFunctions {
 	 * @return	string		Returns the converted string
 	 */
 	function rmDoubleSlash($string) {
+			// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
 		return str_replace('//', '/', $string);
 	}
 
@@ -403,6 +415,8 @@ class t3lib_basicFileFunctions {
 	 * @return	string		Output string with a slash in the end (if not already there)
 	 */
 	function slashPath($path) {
+			// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
+			// @todo: should be done with rtrim($path, '/') . '/';
 		if (substr($path, -1) != '/') {
 			return $path . '/';
 		}

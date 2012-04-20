@@ -127,7 +127,7 @@ var Tree = {
 	load: function(params, isExpand, obj) {
 			// fallback if AJAX is not possible (e.g. IE < 6)
 		if (typeof Ajax.getTransport() !== 'object') {
-			window.location.href = this.thisScript + '?ajaxID=' + this.ajaxID + '&PM=' + params;
+			window.location.href = this.thisScript + '?ajaxID=' + this.ajaxID + '&PM=' + encodeURIComponent(params);
 			return;
 		}
 
@@ -150,7 +150,7 @@ var Tree = {
 		
 		var call = new Ajax.Request(this.thisScript, {
 			method: 'get',
-			parameters: 'ajaxID=' + this.ajaxID + '&PM=' + params,
+			parameters: 'ajaxID=' + this.ajaxID + '&PM=' + encodeURIComponent(params),
 			onComplete: function(xhr) {
 				// the parent node needs to be overwritten, not the object
 				$(obj.parentNode.parentNode).replace(xhr.responseText);

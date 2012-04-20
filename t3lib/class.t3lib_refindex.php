@@ -355,13 +355,13 @@ class t3lib_refindex {
 				if ($result = $this->getRelations_procFiles($value, $conf, $uid)) {
 						// Creates an entry for the field with all the files:
 					$outRow[$field] = array(
-						'type' => 'file',
-						'newValueFiles' => $result,
+						'type' => 'db',
+						'itemArray' => $result,
 					);
 				}
 
 					// Add DB:
-				if ($result = $this->getRelations_procDB($value, $conf, $uid, $table)) {
+				if ($result = $this->getRelations_procDB($value, $conf, $uid, $table, $field)) {
 						// Create an entry for the field with all DB relations:
 					$outRow[$field] = array(
 						'type' => 'db',
@@ -450,7 +450,7 @@ class t3lib_refindex {
 		}
 
 			// Add DB:
-		if ($result = $this->getRelations_procDB($dataValue, $dsConf, $uid)) {
+		if ($result = $this->getRelations_procDB($dataValue, $dsConf, $uid, $field)) {
 
 				// Create an entry for the field with all DB relations:
 			$this->temp_flexRelations['db'][$structurePath] = $result;
@@ -487,7 +487,6 @@ class t3lib_refindex {
 	 * @return	array		If field type is OK it will return an array with the files inside. Else FALSE
 	 */
 	function getRelations_procFiles($value, $conf, $uid) {
-			// Take care of files...
 		if ($conf['type'] == 'group' && ($conf['internal_type'] == 'file' || $conf['internal_type'] == 'file_reference')) {
 
 				// Collect file values in array:
@@ -508,41 +507,39 @@ class t3lib_refindex {
 				// Traverse the files and add them:
 			$uploadFolder = $conf['internal_type'] == 'file' ? $conf['uploadfolder'] : '';
 			$dest = $this->destPathFromUploadFolder($uploadFolder);
-			$newValue = array();
 			$newValueFiles = array();
 
 			foreach ($theFileValues as $file) {
 				if (trim($file)) {
 					$realFile = $dest . '/' . trim($file);
-					#					if (@is_file($realFile))	{		// Now, the refernece index should NOT look if files exist - just faithfully include them if they are in the records!
 					$newValueFiles[] = array(
 						'filename' => basename($file),
 						'ID' => md5($realFile),
 						'ID_absFile' => $realFile
-					); // the order should be preserved here because.. (?)
-					#					} else $this->error('Missing file: '.$realFile);
+					);
 				}
 			}
 
 			return $newValueFiles;
 		}
+		return FALSE;
 	}
 
 	/**
 	 * Check field configuration if it is a DB relation field and extract DB relations if any
 	 *
-	 * @param	string		Field value
-	 * @param	array		Field configuration array of type "TCA/columns"
-	 * @param	integer		Field uid
-	 * @param	string		Table name
-	 * @return	array		If field type is OK it will return an array with the database relations. Else FALSE
+	 * @param string $value Field value
+	 * @param array $conf Field configuration array of type "TCA/columns"
+	 * @param integer $uid Field uid
+	 * @param string $table Table name
+	 * @param string $field Field name
+	 * @return array If field type is OK it will return an array with the database relations. Else FALSE
 	 */
-	function getRelations_procDB($value, $conf, $uid, $table = '') {
+	function getRelations_procDB($value, $conf, $uid, $table = '', $field = '') {
 
 			// DB record lists:
 		if ($this->isReferenceField($conf)) {
 			$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
-			$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
 
 			if ($conf['MM_opposite_field']) {
 				return array();
@@ -552,6 +549,31 @@ class t3lib_refindex {
 			$dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
 
 			return $dbAnalysis->itemArray;
+		} elseif ($conf['type'] == 'inline' && $conf['foreign_table'] == 'sys_file_reference') {
+			$files = (array)$GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'uid_local',
+				'sys_file_reference',
+				'tablenames=\'' . $table . '\' AND fieldname=\'' . $field . '\' AND uid_foreign=' . $uid
+			);
+
+			$fileArray = array('0' => array());
+			foreach ($files as $fileUid) {
+				$fileArray[0][] = array('table' => 'sys_file', 'id' => $fileUid);
+			}
+
+			return $fileArray;
+		} elseif ($conf['type'] == 'input' && isset($conf['wizards']['link']) && trim($value)) {
+			try {
+				$file = t3lib_file_Factory::getInstance()->retrieveFileOrFolderObject($value);
+			} catch (Exception $e) {}
+			if ($file instanceof t3lib_file_FileInterface) {
+				return array(
+					0 => array(
+						'table' => 'sys_file',
+						'id' => $file->getUid()
+					)
+				);
+			}
 		}
 	}
 
@@ -613,7 +635,7 @@ class t3lib_refindex {
 								break;
 								case 'file_reference':
 								case 'file':
-									$this->setReferenceValue_fileRels($refRec, $dat['newValueFiles'], $newValue, $dataArray);
+									$error = $this->setReferenceValue_fileRels($refRec, $dat['newValueFiles'], $newValue, $dataArray);
 									if ($error) {
 										return $error;
 									}
@@ -820,7 +842,7 @@ class t3lib_refindex {
 	 * @return	boolean		TRUE if DB reference field (group/db or select with foreign-table)
 	 */
 	function isReferenceField($conf) {
-		return ($conf['type'] == 'group' && $conf['internal_type'] == 'db') || (($conf['type'] == 'select' || $conf['type'] == 'inline') && $conf['foreign_table']);
+		return ($conf['type'] == 'group' && $conf['internal_type'] == 'db') || (($conf['type'] == 'select' || $conf['type'] == 'inline') && $conf['foreign_table'] && $conf['foreign_table'] !== 'sys_file_reference');
 	}
 
 	/**
