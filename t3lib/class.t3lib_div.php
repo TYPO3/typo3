@@ -2658,7 +2658,7 @@ final class t3lib_div {
 				$report['lib'] = 'file';
 			}
 
-			$content = file_get_contents($url);
+			$content = @file_get_contents($url);
 
 			if ($content === FALSE && isset($report)) {
 				$report['error']   = -1;
