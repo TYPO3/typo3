@@ -124,6 +124,16 @@ class t3lib_utility_PathTest extends tx_phpunit_testcase {
 				'../t3lib/'
 			),
 			array(
+				PATH_site,
+				PATH_site . 't3lib/',
+				't3lib/'
+			),
+			array(
+				PATH_site.'t3lib/',
+				PATH_site . 't3lib/stddb/',
+				'stddb/'
+			),
+			array(
 				PATH_site . 'typo3/sysext/cms/',
 				PATH_site . 't3lib/utility/',
 				'../../../t3lib/utility/'
