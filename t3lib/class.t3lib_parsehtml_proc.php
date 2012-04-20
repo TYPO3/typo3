@@ -346,18 +346,43 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						$pI = pathinfo($pU['path']);
 
 						if (t3lib_div::inList('gif,png,jpeg,jpg', strtolower($pI['extension']))) {
-							$filename = t3lib_div::shortMD5($absRef) . '.' . $pI['extension'];
-							$origFilePath = PATH_site . $this->rteImageStorageDir() . 'RTEmagicP_' . $filename;
-							$C_origFilePath = PATH_site . $this->rteImageStorageDir() . 'RTEmagicC_' . $filename . '.' . $pI['extension'];
-							if (!@is_file($origFilePath)) {
-								t3lib_div::writeFile($origFilePath, $externalFile);
-								t3lib_div::writeFile($C_origFilePath, $externalFile);
-							}
-							$absRef = $siteUrl . $this->rteImageStorageDir() . 'RTEmagicC_' . $filename . '.' . $pI['extension'];
+							$fileName = t3lib_div::shortMD5($absRef) . '.' . $pI['extension'];
+							$folder = t3lib_file_Factory::getInstance()->getFolderObjectFromCombinedIdentifier(
+								$this->rteImageStorageDir()
+							);
 
-							$attribArray['src'] = $absRef;
-							$params = t3lib_div::implodeAttributes($attribArray, 1);
-							$imgSplit[$k] = '<img ' . $params . ' />';
+							if ($folder instanceof t3lib_file_Folder) {
+								$fileObject = $folder->createFile($fileName)->setContents($externalFile);
+
+								/** @var $magicImageService t3lib_file_Service_MagicImageService */
+								$magicImageService = t3lib_div::makeInstance('t3lib_file_Service_MagicImageService');
+
+								$imageConfiguration = array(
+									'width' => $attribArray['width'],
+									'height' => $attribArray['height'],
+									'maxW' => 300,
+									'maxH' => 1000,
+								);
+
+								$magicImage = $magicImageService->createMagicImage(
+									$fileObject,
+									$imageConfiguration,
+									$this->rteImageStorageDir()
+								);
+
+								if ($magicImage instanceof t3lib_file_FileInterface) {
+									$filePath = $magicImage->getForLocalProcessing(FALSE);
+									$imageInfo = @getimagesize($filePath);
+									$attribArray['width'] = $imageInfo[0];
+									$attribArray['height'] = $imageInfo[1];
+									$attribArray['data-htmlarea-file-uid'] = $fileObject->getUid();
+									$absRef = $siteUrl . substr($filePath, strlen(PATH_site));
+								}
+
+								$attribArray['src'] = $absRef;
+								$params = t3lib_div::implodeAttributes($attribArray, 1);
+								$imgSplit[$k] = '<img ' . $params . ' />';
+							}
 						}
 					}
 				}
@@ -369,79 +394,105 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 						// Check file existence (in relative dir to this installation!)
 					if ($filepath && @is_file($filepath)) {
-
 							// If "magic image":
-						$pathPre = $this->rteImageStorageDir() . 'RTEmagicC_';
-						if (t3lib_div::isFirstPartOfStr($path, $pathPre)) {
-								// Find original file:
-							$pI = pathinfo(substr($path, strlen($pathPre)));
-							$filename = substr($pI['basename'], 0, -strlen('.' . $pI['extension']));
-							$origFilePath = PATH_site . $this->rteImageStorageDir() . 'RTEmagicP_' . $filename;
-							if (@is_file($origFilePath)) {
-								$imgObj = t3lib_div::makeInstance('t3lib_stdGraphic');
-								$imgObj->init();
-								$imgObj->mayScaleUp = 0;
-								$imgObj->tempPath = PATH_site . $imgObj->tempPath;
+						$folder = t3lib_file_Factory::getInstance()->getFolderObjectFromCombinedIdentifier(
+							$this->rteImageStorageDir()
+						);
 
-								$curInfo = $imgObj->getImageDimensions($filepath); // Image dimensions of the current image
-								$curWH = $this->getWHFromAttribs($attribArray); // Image dimensions as set in the image tag
-									// Compare dimensions:
-								if ($curWH[0] != $curInfo[0] || $curWH[1] != $curInfo[1]) {
-									$origImgInfo = $imgObj->getImageDimensions($origFilePath); // Image dimensions of the current image
-									$cW = $curWH[0];
-									$cH = $curWH[1];
-									$cH = 1000; // Make the image based on the width solely...
-									$imgI = $imgObj->imageMagickConvert($origFilePath, $pI['extension'], $cW . 'm', $cH . 'm');
-									if ($imgI[3]) {
-										$fI = pathinfo($imgI[3]);
-										@copy($imgI[3], $filepath); // Override the child file
-											// Removing width and heigth form style attribute
-										$attribArray['style'] = preg_replace('/((?:^|)\s*(?:width|height)\s*:[^;]*(?:$|;))/si', '', $attribArray['style']);
-										$attribArray['width'] = $imgI[0];
-										$attribArray['height'] = $imgI[1];
-										$params = t3lib_div::implodeAttributes($attribArray, 1);
-										$imgSplit[$k] = '<img ' . $params . ' />';
+						if ($folder instanceof t3lib_file_Folder) {
+							$storageConfiguration = $folder->getStorage()->getConfiguration();
+							$rteImageStorageDir = rtrim($storageConfiguration['basePath'], '/') . '/' . $folder->getName() .'/';
+							$pathPre = $rteImageStorageDir . 'RTEmagicC_';
+
+							if (t3lib_div::isFirstPartOfStr($path, $pathPre)) {
+									// Find original file
+								if ($attribArray['data-htmlarea-file-uid']) {
+									$originalFileObject = t3lib_file_Factory::getInstance()->getFileObject(
+										$attribArray['data-htmlarea-file-uid']
+									);
+								} else {
+										// Backward compatibility mode
+									$pI = pathinfo(substr($path, strlen($pathPre)));
+									$filename = substr($pI['basename'], 0, -strlen('.' . $pI['extension']));
+									$origFilePath = PATH_site . $rteImageStorageDir . 'RTEmagicP_' . $filename;
+									if (@is_file($origFilePath)) {
+										$originalFileObject = $folder->addFile($origFilePath, $filename, 'changeName');
+										$attribArray['data-htmlarea-file-uid'] = $originalFileObject->getUid();
 									}
 								}
-							}
 
-						} elseif ($this->procOptions['plainImageMode']) { // If "plain image" has been configured:
+								if (!empty($originalFileObject) && $originalFileObject instanceof t3lib_file_FileInterface) {
+									/** @var $magicImageService t3lib_file_Service_MagicImageService */
+									$magicImageService = t3lib_div::makeInstance('t3lib_file_Service_MagicImageService');
+										// Image dimensions of the current image
+									$imageDimensions = @getimagesize($filepath);
+										// Image dimensions as set on the img tag
+									$imgTagDimensions = $this->getWHFromAttribs($attribArray);
+										// If the dimensions have changed, we re-create the magic image
+									if ($imgTagDimensions[0] != $imageDimensions[0] || $imgTagDimensions[1] != $imageDimensions[1]) {
+										$imageConfiguration = array(
+											'width' => $imgTagDimensions[0],
+											'height' => $imgTagDimensions[1],
+											'maxW' => 300,
+											'maxH' => 1000,
+										);
+											// TODO: Perhaps the existing magic image should be overridden?
+										$magicImage = $magicImageService->createMagicImage(
+											$originalFileObject,
+											$imageConfiguration,
+											$this->rteImageStorageDir()
+										);
 
-								// Image dimensions as set in the image tag, if any
-							$curWH = $this->getWHFromAttribs($attribArray);
-							if ($curWH[0]) {
-								$attribArray['width'] = $curWH[0];
-							}
-							if ($curWH[1]) {
-								$attribArray['height'] = $curWH[1];
-							}
-
-								// Removing width and heigth form style attribute
-							$attribArray['style'] = preg_replace('/((?:^|)\s*(?:width|height)\s*:[^;]*(?:$|;))/si', '', $attribArray['style']);
-
-								// Finding dimensions of image file:
-							$fI = @getimagesize($filepath);
-
-								// Perform corrections to aspect ratio based on configuration:
-							switch ((string) $this->procOptions['plainImageMode']) {
-								case 'lockDimensions':
-									$attribArray['width'] = $fI[0];
-									$attribArray['height'] = $fI[1];
-								break;
-								case 'lockRatioWhenSmaller': // If the ratio has to be smaller, then first set the width...:
-									if ($attribArray['width'] > $fI[0]) {
+										if ($magicImage instanceof t3lib_file_FileInterface) {
+											$filePath = $magicImage->getForLocalProcessing(FALSE);
+											$imageInfo = @getimagesize($filePath);
+												// Removing width and heigth from any style attribute
+											$attribArray['style'] = preg_replace('/((?:^|)\s*(?:width|height)\s*:[^;]*(?:$|;))/si', '', $attribArray['style']);
+											$attribArray['width'] = $imageInfo[0];
+											$attribArray['height'] = $imageInfo[1];
+											$attribArray['src'] = $this->siteURL() . substr($filePath, strlen(PATH_site));
+											$params = t3lib_div::implodeAttributes($attribArray, 1);
+											$imgSplit[$k] = '<img ' . $params . ' />';
+										}
+									}
+								}
+							} elseif ($this->procOptions['plainImageMode']) { // If "plain image" has been configured:
+									// Image dimensions as set in the image tag, if any
+								$curWH = $this->getWHFromAttribs($attribArray);
+								if ($curWH[0]) {
+									$attribArray['width'] = $curWH[0];
+								}
+								if ($curWH[1]) {
+									$attribArray['height'] = $curWH[1];
+								}
+	
+									// Removing width and heigth form style attribute
+								$attribArray['style'] = preg_replace('/((?:^|)\s*(?:width|height)\s*:[^;]*(?:$|;))/si', '', $attribArray['style']);
+	
+									// Finding dimensions of image file:
+								$fI = @getimagesize($filepath);
+	
+									// Perform corrections to aspect ratio based on configuration:
+								switch ((string) $this->procOptions['plainImageMode']) {
+									case 'lockDimensions':
 										$attribArray['width'] = $fI[0];
-									}
-								case 'lockRatio':
-									if ($fI[0] > 0) {
-										$attribArray['height'] = round($attribArray['width'] * ($fI[1] / $fI[0]));
-									}
-								break;
+										$attribArray['height'] = $fI[1];
+									break;
+									case 'lockRatioWhenSmaller': // If the ratio has to be smaller, then first set the width...:
+										if ($attribArray['width'] > $fI[0]) {
+											$attribArray['width'] = $fI[0];
+										}
+									case 'lockRatio':
+										if ($fI[0] > 0) {
+											$attribArray['height'] = round($attribArray['width'] * ($fI[1] / $fI[0]));
+										}
+									break;
+								}
+	
+									// Compile the image tag again:
+								$params = t3lib_div::implodeAttributes($attribArray, 1);
+								$imgSplit[$k] = '<img ' . $params . ' />';
 							}
-
-								// Compile the image tag again:
-							$params = t3lib_div::implodeAttributes($attribArray, 1);
-							$imgSplit[$k] = '<img ' . $params . ' />';
 						}
 					} else { // Remove image if it was not found in a proper position on the server!
 
@@ -553,6 +604,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 * @see TS_links_rte()
 	 */
 	function TS_links_db($value) {
+		$conf = array();
 
 			// Split content into <a> tag blocks and process:
 		$blockSplit = $this->splitIntoBlock('A', $value);
@@ -584,14 +636,14 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						$attribArray_copy = $processor->removeParams( $parameters, $this);
 					}
 				}
-
-				if (!count($attribArray_copy)) { // Only if href, target and class are the only attributes, we can alter the link!
+					// Only if href, target, class and tile are the only attributes, we can alter the link!
+				if (!count($attribArray_copy)) {
 						// Quoting class and title attributes if they contain spaces
 					$attribArray['class'] = preg_match('/ /', $attribArray['class']) ? '"' . $attribArray['class'] . '"' : $attribArray['class'];
 					$attribArray['title'] = preg_match('/ /', $attribArray['title']) ? '"' . $attribArray['title'] . '"' : $attribArray['title'];
 						// Creating the TYPO3 pseudo-tag "<LINK>" for the link (includes href/url, target and class attributes):
 						// If data-htmlarea-external attribute is set, keep the href unchanged
-					$href = $attribArray['data-htmlarea-external'] ? $attribArray['href'] : $info['url'] . ($info['query'] ? ',0,' . $info['query'] : '');
+					$href = ($attribArray['data-htmlarea-external'] ? $attribArray['href'] : $info['url']) . ($info['query'] ? ',0,' . $info['query'] : '');
 					$bTag = '<link ' . $href . ($attribArray['target'] ? ' ' . $attribArray['target'] : (($attribArray['class'] || $attribArray['title']) ? ' -' : '')) . ($attribArray['class'] ? ' ' . $attribArray['class'] : ($attribArray['title'] ? ' -' : '')) . ($attribArray['title'] ? ' ' . $attribArray['title'] : '') . '>';
 					$eTag = '</link>';
 
@@ -639,6 +691,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 * @see TS_links_rte()
 	 */
 	function TS_links_rte($value) {
+		$conf = array();
 		$value = $this->TS_AtagToAbs($value);
 
 			// Split content by the TYPO3 pseudo tag "<link>":
@@ -646,6 +699,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		$siteUrl = $this->siteUrl();
 		foreach ($blockSplit as $k => $v) {
 			$error = '';
+			$external = FALSE;
 			if ($k % 2) { // block:
 				$tagCode = t3lib_div::unQuoteFilenames(trim(substr($this->getFirstTag($v), 0, -1)), TRUE);
 				$link_param = $tagCode[1];
@@ -656,50 +710,55 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				} elseif (substr($link_param, 0, 1) == '#') { // check if anchor
 					$href = $siteUrl . $link_param;
 				} else {
-					$fileChar = intval(strpos($link_param, '/'));
-					$urlChar = intval(strpos($link_param, '.'));
-					$external = FALSE;
-						// Parse URL:
-					$pU = parse_url($link_param);
-						// Detects if a file is found in site-root.
-					list($rootFileDat) = explode('?', $link_param);
-					$rFD_fI = pathinfo($rootFileDat);
-					if (trim($rootFileDat) && !strstr($link_param, '/') && (@is_file(PATH_site . $rootFileDat) || t3lib_div::inList('php,html,htm', strtolower($rFD_fI['extension'])))) {
-						$href = $siteUrl . $link_param;
-					} elseif ($pU['scheme'] || ($urlChar && (!$fileChar || $urlChar < $fileChar))) {
-							// url (external): if has scheme or if a '.' comes before a '/'.
-						$href = $link_param;
-						if (!$pU['scheme']) {
-							$href = 'http://' . $href;
-						}
-						$external = TRUE;
-					} elseif ($fileChar) { // file (internal)
-						$href = $siteUrl . $link_param;
-					} else { // integer or alias (alias is without slashes or periods or commas, that is 'nospace,alphanum_x,lower,unique' according to tables.php!!)
-							// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/parameters triplet
-						$pairParts = t3lib_div::trimExplode(',', $link_param, TRUE);
-						$idPart = $pairParts[0];
-						$link_params_parts = explode('#', $idPart);
-						$idPart = trim($link_params_parts[0]);
-						$sectionMark = trim($link_params_parts[1]);
-						if (!strcmp($idPart, '')) {
-							$idPart = $this->recPid;
-						} // If no id or alias is given, set it to class record pid
-							// Checking if the id-parameter is an alias.
-						if (!t3lib_utility_Math::canBeInterpretedAsInteger($idPart)) {
-							list($idPartR) = t3lib_BEfunc::getRecordsByField('pages', 'alias', $idPart);
-							$idPart = intval($idPartR['uid']);
-						}
-						$page = t3lib_BEfunc::getRecord('pages', $idPart);
-						if (is_array($page)) { // Page must exist...
-							$href = $siteUrl . '?id=' . $idPart . ($pairParts[2] ? $pairParts[2] : '') . ($sectionMark ? '#' . $sectionMark : '');
-								// linkHandler - allowing links to start with registerd linkHandler e.g.. "record:"
-						} elseif (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][array_shift(explode(':', $link_param))])) {
+						// Check for FAL link-handler keyword:
+					list ($linkHandlerKeyword, $linkHandlerValue) = explode(':', trim($link_param), 2);
+					if ($linkHandlerKeyword === 'file') {
+						$href = $siteUrl . '?' . $linkHandlerKeyword . ':' . rawurlencode($linkHandlerValue);
+					} else {
+						$fileChar = intval(strpos($link_param, '/'));
+						$urlChar = intval(strpos($link_param, '.'));
+							// Parse URL:
+						$pU = parse_url($link_param);
+							// Detects if a file is found in site-root.
+						list($rootFileDat) = explode('?', $link_param);
+						$rFD_fI = pathinfo($rootFileDat);
+						if (trim($rootFileDat) && !strstr($link_param, '/') && (@is_file(PATH_site . $rootFileDat) || t3lib_div::inList('php,html,htm', strtolower($rFD_fI['extension'])))) {
+							$href = $siteUrl . $link_param;
+						} elseif ($pU['scheme'] || ($urlChar && (!$fileChar || $urlChar < $fileChar))) {
+								// url (external): if has scheme or if a '.' comes before a '/'.
 							$href = $link_param;
-						} else {
-							#$href = '';
-							$href = $siteUrl . '?id=' . $link_param;
-							$error = 'No page found: ' . $idPart;
+							if (!$pU['scheme']) {
+								$href = 'http://' . $href;
+							}
+							$external = TRUE;
+						} elseif ($fileChar) { // file (internal)
+							$href = $siteUrl . $link_param;
+						} else { // integer or alias (alias is without slashes or periods or commas, that is 'nospace,alphanum_x,lower,unique' according to tables.php!!)
+								// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/parameters triplet
+							$pairParts = t3lib_div::trimExplode(',', $link_param, TRUE);
+							$idPart = $pairParts[0];
+							$link_params_parts = explode('#', $idPart);
+							$idPart = trim($link_params_parts[0]);
+							$sectionMark = trim($link_params_parts[1]);
+							if (!strcmp($idPart, '')) {
+								$idPart = $this->recPid;
+							} // If no id or alias is given, set it to class record pid
+								// Checking if the id-parameter is an alias.
+							if (!t3lib_utility_Math::canBeInterpretedAsInteger($idPart)) {
+								list($idPartR) = t3lib_BEfunc::getRecordsByField('pages', 'alias', $idPart);
+								$idPart = intval($idPartR['uid']);
+							}
+							$page = t3lib_BEfunc::getRecord('pages', $idPart);
+							if (is_array($page)) { // Page must exist...
+								$href = $siteUrl . '?id=' . $idPart . ($pairParts[2] ? $pairParts[2] : '') . ($sectionMark ? '#' . $sectionMark : '');
+									// linkHandler - allowing links to start with registerd linkHandler e.g.. "record:"
+							} elseif (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][array_shift(explode(':', $link_param))])) {
+								$href = $link_param;
+							} else {
+								#$href = '';
+								$href = $siteUrl . '?id=' . $link_param;
+								$error = 'No page found: ' . $idPart;
+							}
 						}
 					}
 				}
@@ -1563,8 +1622,12 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		if (substr(strtolower($url), 0, 7) == 'mailto:') {
 			$info['url'] = trim(substr($url, 7));
 			$info['type'] = 'email';
+			// Is a FAL resource/identifier
+		} elseif (strpos($url, '?file:') !== FALSE) {
+			$info['type'] = 'file';
+			$info['url'] = rawurldecode(substr($url, strpos($url, '?file:') + 1));
 		} else {
-			$curURL = $this->siteUrl(); // 100502, removed this: 'http://'.t3lib_div::getThisUrl(); Reason: The url returned had typo3/ in the end - should be only the site's url as far as I see...
+			$curURL = $this->siteUrl();
 			for ($a = 0; $a < strlen($url); $a++) {
 				if ($url{$a} != $curURL{$a}) {
 					break;

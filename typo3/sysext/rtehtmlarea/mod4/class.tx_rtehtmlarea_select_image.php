@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 1999-2011 Kasper Skårhøj (kasper@typo3.com)
-*  (c) 2004-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,8 @@
  * @author	Kasper Skårhøj <kasper@typo3.com>
  * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-require_once(PATH_typo3.'class.browse_links.php');
+require_once(PATH_typo3 . 'class.browse_links.php');
+require_once(PATH_t3lib . 'file/Service/MagicImageService.php');
 
 /**
  * Local Folder Tree
@@ -40,41 +41,38 @@ require_once(PATH_typo3.'class.browse_links.php');
  * @package TYPO3
  * @subpackage tx_rte
  */
-class tx_rtehtmlarea_image_folderTree extends t3lib_folderTree {
-	var $ext_IconMode=1;
+class tx_rtehtmlarea_image_folderTree extends TBE_FolderTree {
+	var $ext_IconMode = 1;
 
 	/**
 	 * Wrapping the title in a link, if applicable.
 	 *
-	 * @param	string		Title, ready for output.
-	 * @param	array		The "record"
-	 * @return	string		Wrapping title string.
+	 * @param	string			Title, ready for output.
+	 * @param	t3lib_file_Folder	The "record"
+	 * @return	string			Wrapping title string.
 	 */
-	function wrapTitle($title,$v)	{
-		$title = htmlspecialchars($title);
-
-		if ($this->ext_isLinkable($v))	{
-			$aOnClick = 'return jumpToUrl(\'?editorNo='.$GLOBALS['SOBE']->browser->editorNo.'&expandFolder='.rawurlencode($v['path']).'\');';
-			return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$title.'</a>';
+	function wrapTitle($title, t3lib_file_Folder $folderObject) {
+		if ($this->ext_isLinkable($folderObject)) {
+			$aOnClick = 'return jumpToUrl(\'' . $this->thisScript .
+				'?editorNo=' . $GLOBALS['SOBE']->browser->editorNo .
+				'&act=' . $GLOBALS['SOBE']->browser->act . 
+				'&mode=' . $GLOBALS['SOBE']->browser->mode .
+				'&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier()) . '\');';
+			return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a>';
 		} else {
-			return '<span class="typo3-dimmed">'.$title.'</span>';
+			return '<span class="typo3-dimmed">' . $title . '</span>';
 		}
 	}
 
 	/**
 	 * Returns TRUE if the input "record" contains a folder which can be linked.
 	 *
-	 * @param	array		Array with information about the folder element. Contains keys like title, uid, path, _title
-	 * @return	boolean		TRUE is returned if the path is found in the web-part of the the server and is NOT a recycler or temp folder
+	 * @param	t3lib_file_Folder	Object with information about the folder element. Contains keys like title, uid, path, _title
+	 * @return	boolean			TRUE is returned if the path is found in the web-part of the the server and is NOT a recycler or temp folder
 	 */
-	function ext_isLinkable($v)	{
-		$webpath=t3lib_BEfunc::getPathType_web_nonweb($v['path']);
-		if ($GLOBALS['SOBE']->browser->act=='magic') return 1;	//$webpath='web';	// The web/non-web path does not matter if the mode is 'magic'
-
-		if (strstr($v['path'],'_recycler_') || strstr($v['path'],'_temp_') || $webpath!='web')	{
-			return 0;
-		}
-		return 1;
+	function ext_isLinkable(t3lib_file_Folder $folderObject) {
+			// $folderObject->getStorage()->isPublic() does not matter if the mode is 'magic'
+		return ($GLOBALS['SOBE']->browser->act === 'magic') || parent::ext_isLinkable($folderObject);
 	}
 
 	/**
@@ -82,42 +80,16 @@ class tx_rtehtmlarea_image_folderTree extends t3lib_folderTree {
 	 *
 	 * @param	string		HTML string to wrap, probably an image tag.
 	 * @param	string		Command for 'PM' get var
-	 * @param	boolean		If set, the link will have a anchor point (=$bMark) and a name attribute (=$bMark)
 	 * @return	string		Link-wrapped input string
 	 * @access private
 	 */
-	function PM_ATagWrap($icon,$cmd,$bMark='')	{
-		if ($bMark)	{
-			$anchor = '#'.$bMark;
-			$name=' name="'.$bMark.'"';
+	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
+		if ($this->thisScript) {
+			$js = htmlspecialchars('Tree.thisScript=\'' . $GLOBALS['BACK_PATH'] . 'ajax.php\';Tree.load(\'' . $cmd . '\', ' . intval($isExpand) . ', this);');
+			return '<a class="pm" onclick="' . $js . '">' . $icon . '</a>';
+		} else {
+			return $icon;
 		}
-		$aOnClick = 'return jumpToUrl(\'?PM='.$cmd.'\',\''.$anchor.'\');';
-		return '<a href="#"'.$name.' onclick="'.htmlspecialchars($aOnClick).'">'.$icon.'</a>';
-	}
-
-	/**
-	 * Print tree.
-	 *
-	 * @param	mixed		Input tree array. If not array, then $this->tree is used.
-	 * @return	string		HTML output of the tree.
-	 */
-	function printTree($treeArr='')	{
-		$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
-
-		if (!is_array($treeArr))	$treeArr=$this->tree;
-
-		$out='';
-		$c=0;
-
-			// Traverse rows for the tree and print them into table rows:
-		foreach($treeArr as $k => $v) {
-			$c++;
-			$bgColor=' class="'.(($c+1)%2 ? 'bgColor' : 'bgColor-10').'"';
-			$out.='<tr'.$bgColor.'><td nowrap="nowrap">'.$v['HTML'].$this->wrapTitle(t3lib_div::fixed_lgd_cs($v['row']['title'],$titleLen),$v['row']).'</td></tr>';
-		}
-
-		$out='<table border="0" cellpadding="0" cellspacing="0">'.$out.'</table>';
-		return $out;
 	}
 }
 
@@ -155,8 +127,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 *
 	 * @return	void
 	 */
-	function init()	{
-		global $BACK_PATH;
+	function init() {
 
 		$this->initVariables();
 		$this->initConfiguration();
@@ -173,12 +144,15 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 
 			// Load the Prototype library and browse_links.js
 		$this->doc->getPageRenderer()->loadPrototype();
+		$this->doc->loadJavascriptLib('js/tree.js');
 		$this->doc->loadJavascriptLib('js/browse_links.js');
-
+		$this->doc->JScode .= $this->doc->wrapScriptTags('
+			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
+		');
 		$this->doc->getContextMenuCode();
 	}
 
@@ -233,9 +207,8 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 * @return	void
 	 */
 	protected function initHookObjects() {
-		global $TYPO3_CONF_VARS;
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['ext/rtehtmlarea/mod4/class.tx_rtehtmlarea_select_image.php']['browseLinksHook'])) {
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['ext/rtehtmlarea/mod4/class.tx_rtehtmlarea_select_image.php']['browseLinksHook'] as $classData) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod4/class.tx_rtehtmlarea_select_image.php']['browseLinksHook'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod4/class.tx_rtehtmlarea_select_image.php']['browseLinksHook'] as $classData) {
 				$processObject = t3lib_div::getUserObj($classData);
 				if(!($processObject instanceof t3lib_browseLinksHook)) {
 					throw new UnexpectedValueException('$processObject must implement interface t3lib_browseLinksHook', 1195115652);
@@ -261,7 +234,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 *
 	 * @return	string		the path to the folder where RTE images are stored
 	 */
-	protected function getRTEImageStorageDir()	{
+	protected function getRTEImageStorageDir() {
 		return ($this->imgPath ? $this->imgPath : $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir']);
 	}
 
@@ -270,23 +243,25 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 *
 	 * @return	void
 	 */
-	protected function insertImage()	{
-		if (t3lib_div::_GP('insertImage'))	{
-			$filepath = t3lib_div::_GP('insertImage');
-			$imgInfo = $this->getImageInfo($filepath);
+	protected function insertImage() {
+		if (t3lib_div::_GP('insertImage')) {
+			$table = t3lib_div::_GP('table');
+			$uid = t3lib_div::_GP('uid');
+			$fileObject = t3lib_file_Factory::getInstance()->getFileObject($uid);
+
 			switch ($this->act) {
 				case 'magic':
-					$this->insertMagicImage($filepath, $imgInfo);
+					$this->insertMagicImage($fileObject, '', '', 'data-htmlarea-file-uid="' . $uid . '" data-htmlarea-file-table="' . $table . '"');
 					exit;
 					break;
 				case 'plain':
-					$this->insertPlainImage($imgInfo);
+					$this->insertPlainImage($fileObject, '', '', 'data-htmlarea-file-uid="' . $uid . '" data-htmlarea-file-table="' . $table . '"');
 					exit;
 					break;
 				default:
 						// Call hook
 					foreach ($this->hookObjects as $hookObject) {
-						if (method_exists($hookObject, "insertElement")) {
+						if (method_exists($hookObject, 'insertElement')) {
 							$hookObject->insertElement($this->act);
 						}
 					}
@@ -296,84 +271,56 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	}
 
 	/**
-	 * Get the information on the image file identified its path
-	 *
-	 * @param	string		$filepath: the path to the image file
-	 *
-	 * @return	array		a 4-elements information array about the file
-	 */
-	public function getImageInfo($filepath) {
-		$this->imgObj = t3lib_div::makeInstance('t3lib_stdGraphic');
-		$this->imgObj->init();
-		$this->imgObj->mayScaleUp = 0;
-		$this->imgObj->tempPath = PATH_site.$this->imgObj->tempPath;
-		return $this->imgObj->getImageDimensions($filepath);
-	}
-
-	/**
 	 * Insert a magic image
 	 *
-	 * @param	string		$filepath: the path to the image file
-	 * @param	array		$imgInfo: a 4-elements information array about the file
+	 * @param t3lib_file_FileInterface $fileObject: the image file
 	 * @param	string		$altText: text for the alt attribute of the image
 	 * @param	string		$titleText: text for the title attribute of the image
 	 * @param	string		$additionalParams: text representing more HTML attributes to be added on the img tag
 	 * @return	void
 	 */
-	public function insertMagicImage($filepath, $imgInfo, $altText='', $titleText='', $additionalParams='') {
-		if (is_array($imgInfo) && count($imgInfo) == 4) {
-			if ($this->RTEImageStorageDir) {
-				$fI = pathinfo($imgInfo[3]);
-				$fileFunc = t3lib_div::makeInstance('t3lib_basicFileFunctions');
-				$basename = $fileFunc->cleanFileName('RTEmagicP_'.$fI['basename']);
-				$destPath =PATH_site.$this->RTEImageStorageDir;
-				if (@is_dir($destPath))	{
-					$destName = $fileFunc->getUniqueName($basename,$destPath);
-					@copy($imgInfo[3],$destName);
-					t3lib_div::fixPermissions($destName);
-					$cWidth = t3lib_utility_Math::forceIntegerInRange(t3lib_div::_GP('cWidth'), 0, $this->magicMaxWidth);
-					$cHeight = t3lib_utility_Math::forceIntegerInRange(t3lib_div::_GP('cHeight'), 0, $this->magicMaxHeight);
-					if (!$cWidth)	$cWidth = $this->magicMaxWidth;
-					if (!$cHeight)	$cHeight = $this->magicMaxHeight;
+	public function insertMagicImage(t3lib_file_FileInterface $fileObject, $altText='', $titleText='', $additionalParams='') {
+		if ($this->RTEImageStorageDir) {
+			/** @var $magicImageService t3lib_file_Service_MagicImageService */
+			$magicImageService = t3lib_div::makeInstance('t3lib_file_Service_MagicImageService');
+			$imageConfiguration = array(
+				'width' => t3lib_div::_GP('cWidth'),
+				'height' => t3lib_div::_GP('cHeight'),
+				'maxW' => $this->magicMaxWidth,
+				'maxH' => $this->magicMaxHeight,
+			);
 
-					$imgI = $this->imgObj->imageMagickConvert($filepath,'WEB',$cWidth.'m',$cHeight.'m');	// ($imagefile,$newExt,$w,$h,$params,$frame,$options,$mustCreate=0)
-					if ($imgI[3])	{
-						$fI=pathinfo($imgI[3]);
-						$mainBase='RTEmagicC_'.substr(basename($destName),10).'.'.$fI['extension'];
-						$destName = $fileFunc->getUniqueName($mainBase,$destPath);
-						@copy($imgI[3],$destName);
-						t3lib_div::fixPermissions($destName);
-						$destName = dirname($destName).'/'.rawurlencode(basename($destName));
-						$iurl = $this->siteURL.substr($destName,strlen(PATH_site));
-						$this->imageInsertJS($iurl, $imgI[0], $imgI[1], $altText, $titleText, $additionalParams);
-					} else {
-						t3lib_div::sysLog('Attempt at creating a magic image failed due to error converting image: "' . $filepath . '".', $this->extKey . '/tx_rtehtmlarea_select_image', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					}
-				} else {
-					t3lib_div::sysLog('Attempt at creating a magic image failed due to incorrect destination path: "' . $destPath . '".', $this->extKey . '/tx_rtehtmlarea_select_image', t3lib_div::SYSLOG_SEVERITY_ERROR);
-				}
-			} else {
-				t3lib_div::sysLog('Attempt at creating a magic image failed due to absent RTE_imageStorageDir', $this->extKey . '/tx_rtehtmlarea_select_image', t3lib_div::SYSLOG_SEVERITY_ERROR);
+			$magicImage = $magicImageService->createMagicImage(
+				$fileObject,
+				$imageConfiguration,
+				$this->getRTEImageStorageDir()
+			);
+
+			if ($magicImage instanceof t3lib_file_FileInterface) {
+				$filePath = $magicImage->getForLocalProcessing(FALSE);
+				$imageInfo = @getimagesize($filePath);
+				$imageUrl = $this->siteURL . substr($filePath, strlen(PATH_site));
+				$this->imageInsertJS($imageUrl, $imageInfo[0], $imageInfo[1], $altText, $titleText, $additionalParams);
 			}
 		} else {
-			t3lib_div::sysLog('Attempt at creating a magic image failed due to missing image file info.', $this->extKey . '/tx_rtehtmlarea_select_image', t3lib_div::SYSLOG_SEVERITY_ERROR);
+			t3lib_div::sysLog('Attempt at creating a magic image failed due to absent RTE_imageStorageDir', $this->extKey . '/tx_rtehtmlarea_select_image', t3lib_div::SYSLOG_SEVERITY_ERROR);
 		}
 	}
 
 	/**
 	 * Insert a plain image
 	 *
-	 * @param	array		$imgInfo: a 4-elements information array about the file
+	 * @param t3lib_file_FileInterface $fileObject: the image file
 	 * @param	string		$altText: text for the alt attribute of the image
 	 * @param	string		$titleText: text for the title attribute of the image
 	 * @param	string		$additionalParams: text representing more HTML attributes to be added on the img tag
 	 * @return	void
 	 */
-	public function insertPlainImage($imgInfo, $altText='', $titleText='', $additionalParams='') {
-		if (is_array($imgInfo) && count($imgInfo)==4)	{
-			$iurl = $this->siteURL.substr($imgInfo[3],strlen(PATH_site));
-			$this->imageInsertJS($iurl, $imgInfo[0], $imgInfo[1], $altText, $titleText, $additionalParams);
-		}
+	public function insertPlainImage(t3lib_file_FileInterface $fileObject, $altText='', $titleText='', $additionalParams='') {
+		$filePath = $fileObject->getForLocalProcessing(FALSE);
+		$imageInfo = @getimagesize($filePath);
+		$imageUrl = $this->siteURL . substr($filePath, strlen(PATH_site));
+		$this->imageInsertJS($imageUrl, $imageInfo[0], $imageInfo[1], $altText, $titleText, $additionalParams);
 	}
 
 	/**
@@ -389,7 +336,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 */
 	protected function imageInsertJS($url, $width, $height, $altText='', $titleText='', $additionalParams='') {
 		echo'
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Untitled</title>
@@ -422,8 +369,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 *
 	 * @return	string		the generated JS code
 	 */
-	function getJSCode($act, $editorNo, $sys_language_content)	{
-		global $LANG, $TYPO3_CONF_VARS;
+	function getJSCode($act, $editorNo, $sys_language_content) {
 
 		$removedProperties = array();
 		if (is_array($this->buttonConfig['properties.'])) {
@@ -457,6 +403,13 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$JScode='
 			var plugin = window.parent.RTEarea["' . $editorNo . '"].editor.getPlugin("TYPO3Image");
 			var HTMLArea = window.parent.HTMLArea;
+
+			HTMLArea.TYPO3Image.insertElement = function (table, uid, type, filename, filePath, fileExt, fileIcon) {
+				return jumpToUrl(\'?editorNo=\' + \'' . $editorNo . '\' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + \'' . $this->bparams . '\');
+			}
+			function insertElement(table, uid, type, fileName, filePath, fileExt, fileIcon, action, close) {
+				return jumpToUrl(\'?editorNo=\' + \'' . $editorNo . '\' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + \'' . $this->bparams . '\');
+			}
 			function initEventListeners() {
 				if (Ext.isWebKit) {
 					Ext.EventManager.addListener(window.document.body, "dragend", plugin.onDrop, plugin, { single: true });
@@ -495,7 +448,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			function printCurrentImageOptions() {
 				var classesImage = ' . (($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage']) ? 'true' : 'false') . ';
 				if (classesImage) var styleSelector=\'<select id="iClass" name="iClass" style="width:140px;">' . $classesImageJSOptions  . '</select>\';
-				var floatSelector=\'<select id="iFloat" name="iFloat"><option value="">' . $LANG->getLL('notSet') . '</option><option value="none">' . $LANG->getLL('nonFloating') . '</option><option value="left">' . $LANG->getLL('left') . '</option><option value="right">' . $LANG->getLL('right') . '</option></select>\';
+				var floatSelector=\'<select id="iFloat" name="iFloat"><option value="">' . $GLOBALS['LANG']->getLL('notSet') . '</option><option value="none">' . $GLOBALS['LANG']->getLL('nonFloating') . '</option><option value="left">' . $GLOBALS['LANG']->getLL('left') . '</option><option value="right">' . $GLOBALS['LANG']->getLL('right') . '</option></select>\';
 				if (plugin.getButton("Language")) {
 					var languageSelector = \'<select id="iLang" name="iLang">\';
 					plugin.getButton("Language").getStore().each(function (record) {
@@ -508,39 +461,39 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				sz+=\'<table border="0" cellpadding="1" cellspacing="1"><form action="" name="imageData">\';
 				'.(in_array('class', $removedProperties)?'':'
 				if(classesImage) {
-					sz+=\'<tr><td\'+bgColor+\'><label for="iClass">'.$LANG->getLL('class').': </label></td><td>\'+styleSelector+\'</td></tr>\';
+					sz+=\'<tr><td\'+bgColor+\'><label for="iClass">'.$GLOBALS['LANG']->getLL('class').': </label></td><td>\'+styleSelector+\'</td></tr>\';
 				}')
 				.(in_array('width', $removedProperties)?'':'
 				if (!(selectedImageRef && selectedImageRef.src.indexOf("RTEmagic") == -1 && '. $lockPlainWidth .')) {
-					sz+=\'<tr><td\'+bgColor+\'><label for="iWidth">'.$LANG->getLL('width').': </label></td><td><input type="text" id="iWidth" name="iWidth" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';
+					sz+=\'<tr><td\'+bgColor+\'><label for="iWidth">'.$GLOBALS['LANG']->getLL('width').': </label></td><td><input type="text" id="iWidth" name="iWidth" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';
 				}')
 				.(in_array('height', $removedProperties)?'':'
 				if (!(selectedImageRef && selectedImageRef.src.indexOf("RTEmagic") == -1 && '. $lockPlainHeight .')) {
-					sz+=\'<tr><td\'+bgColor+\'><label for="iHeight">'.$LANG->getLL('height').': </label></td><td><input type="text" id="iHeight" name="iHeight" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';
+					sz+=\'<tr><td\'+bgColor+\'><label for="iHeight">'.$GLOBALS['LANG']->getLL('height').': </label></td><td><input type="text" id="iHeight" name="iHeight" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';
 				}')
 				.(in_array('border', $removedProperties)?'':'
-				sz+=\'<tr><td\'+bgColor+\'><label for="iBorder">'.$LANG->getLL('border').': </label></td><td><input type="checkbox" id="iBorder" name="iBorder" value="1" /></td></tr>\';')
+				sz+=\'<tr><td\'+bgColor+\'><label for="iBorder">'.$GLOBALS['LANG']->getLL('border').': </label></td><td><input type="checkbox" id="iBorder" name="iBorder" value="1" /></td></tr>\';')
 				.(in_array('float', $removedProperties)?'':'
-				sz+=\'<tr><td\'+bgColor+\'><label for="iFloat">'.$LANG->getLL('float').': </label></td><td>\'+floatSelector+\'</td></tr>\';')
+				sz+=\'<tr><td\'+bgColor+\'><label for="iFloat">'.$GLOBALS['LANG']->getLL('float').': </label></td><td>\'+floatSelector+\'</td></tr>\';')
 				.(in_array('paddingTop', $removedProperties)?'':'
-				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingTop">'.$LANG->getLL('padding_top').': </label></td><td><input type="text" id="iPaddingTop" name="iPaddingTop" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).'></td></tr>\';')
+				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingTop">'.$GLOBALS['LANG']->getLL('padding_top').': </label></td><td><input type="text" id="iPaddingTop" name="iPaddingTop" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).'></td></tr>\';')
 				.(in_array('paddingRight', $removedProperties)?'':'
-				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingRight">'.$LANG->getLL('padding_right').': </label></td><td><input type="text" id="iPaddingRight" name="iPaddingRight" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';')
+				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingRight">'.$GLOBALS['LANG']->getLL('padding_right').': </label></td><td><input type="text" id="iPaddingRight" name="iPaddingRight" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';')
 				.(in_array('paddingBottom', $removedProperties)?'':'
-				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingBottom">'.$LANG->getLL('padding_bottom').': </label></td><td><input type="text" id="iPaddingBottom" name="iPaddingBottom" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';')
+				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingBottom">'.$GLOBALS['LANG']->getLL('padding_bottom').': </label></td><td><input type="text" id="iPaddingBottom" name="iPaddingBottom" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';')
 				.(in_array('paddingLeft', $removedProperties)?'':'
-				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingLeft">'.$LANG->getLL('padding_left').': </label></td><td><input type="text" id="iPaddingLeft" name="iPaddingLeft" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';')
+				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingLeft">'.$GLOBALS['LANG']->getLL('padding_left').': </label></td><td><input type="text" id="iPaddingLeft" name="iPaddingLeft" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(4).' /></td></tr>\';')
 				.(in_array('title', $removedProperties)?'':'
-				sz+=\'<tr><td\'+bgColor+\'><label for="iTitle">'.$LANG->getLL('title').': </label></td><td><input type="text" id="iTitle" name="iTitle"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' /></td></tr>\';')
+				sz+=\'<tr><td\'+bgColor+\'><label for="iTitle">'.$GLOBALS['LANG']->getLL('title').': </label></td><td><input type="text" id="iTitle" name="iTitle"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' /></td></tr>\';')
 				.(in_array('alt', $removedProperties)?'':'
-				sz+=\'<tr><td\'+bgColor+\'><label for="iAlt">'.$LANG->getLL('alt').': </label></td><td><input type="text" id="iAlt" name="iAlt"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' /></td></tr>\';')
+				sz+=\'<tr><td\'+bgColor+\'><label for="iAlt">'.$GLOBALS['LANG']->getLL('alt').': </label></td><td><input type="text" id="iAlt" name="iAlt"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' /></td></tr>\';')
 				.(in_array('lang', $removedProperties)?'':'
 				if (plugin.getButton("Language")) {
 					sz+=\'<tr><td\'+bgColor+\'><label for="iLang">\' + plugin.editor.getPlugin("Language").localize(\'Language-Tooltip\') + \': </label></td><td>\' + languageSelector + \'</td></tr>\';
 				}')
 				.((in_array('clickenlarge', $removedProperties) || in_array('data-htmlarea-clickenlarge', $removedProperties)) ?'':'
-				sz+=\'<tr><td\'+bgColor+\'><label for="iClickEnlarge">'.$LANG->sL('LLL:EXT:cms/locallang_ttc.php:image_zoom',1).' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="0" /></td></tr>\';').'
-				sz+=\'<tr><td><input type="submit" value="'.$LANG->getLL('update').'" onClick="return setImageProperties();"></td></tr>\';
+				sz+=\'<tr><td\'+bgColor+\'><label for="iClickEnlarge">'.$GLOBALS['LANG']->sL('LLL:EXT:cms/locallang_ttc.php:image_zoom',1).' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="0" /></td></tr>\';').'
+				sz+=\'<tr><td><input type="submit" value="'.$GLOBALS['LANG']->getLL('update').'" onClick="return setImageProperties();"></td></tr>\';
 				sz+=\'</form></table>\';
 				return sz;
 			}
@@ -782,7 +735,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 *
 	 * @return	[type]		...
 	 */
-	function main_rte()	{
+	function main_rte() {
 			// Starting content:
 		$this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('Insert Image',1));
 
@@ -830,7 +783,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 
 		$this->content .= $this->doc->getTabMenuRaw($menuDef);
 
-		switch($this->act)	{
+		switch ($this->act) {
 			case 'image':
 				$JScode = '
 				document.write(printCurrentImageOptions());
@@ -839,33 +792,57 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				break;
 			case 'plain':
 			case 'magic':
-					// Adding upload form, if allowed
-				$this->content .= $this->insertUploadForm($this->expandFolder);
-					// Getting flag for showing/not showing thumbnails:
-				$noThumbs = $GLOBALS['BE_USER']->getTSConfigVal('options.noThumbsInRTEimageSelect');
-				if (!$noThumbs)	{
-						// MENU-ITEMS, fetching the setting for thumbnails from File>List module:
-					$_MOD_MENU = array('displayThumbs' => '');
-					$_MCONF['name']='file_list';
-					$_MOD_SETTINGS = t3lib_BEfunc::getModuleData($_MOD_MENU, t3lib_div::_GP('SET'), $_MCONF['name']);
-					$addParams = '&act='.$this->act.'&editorNo='.$this->editorNo.'&expandFolder='.rawurlencode($this->expandFolder);
-					$thumbNailCheck = t3lib_BEfunc::getFuncCheck('','SET[displayThumbs]',$_MOD_SETTINGS['displayThumbs'],'select_image.php',$addParams,'id="checkDisplayThumbs"').' <label for="checkDisplayThumbs">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.php:displayThumbs',1).'</label>';
-				} else {
-					$thumbNailCheck='';
-				}
 					// Create folder tree:
 				$foldertree = t3lib_div::makeInstance('tx_rtehtmlarea_image_folderTree');
+				$foldertree->thisScript = $this->thisScript;
 				$tree = $foldertree->getBrowsableTree();
-				list(,,$specUid) = explode('_',t3lib_div::_GP('PM'));
-				$files = $this->expandFolder($foldertree->specUIDmap[$specUid],$this->act=='plain',$noThumbs?$noThumbs:!$_MOD_SETTINGS['displayThumbs']);
-				$this->content.= '<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td style="vertical-align: top;">'.$this->barheader($GLOBALS['LANG']->getLL('folderTree').':').$tree.'</td>
-					<td>&nbsp;</td>
-					<td style="vertical-align: top;">'.$files.'</td>
-				</tr>
-				</table>
-				<br />'.$thumbNailCheck;
+					// Get currently selected folder
+				if (!$this->curUrlInfo['value'] || $this->curUrlInfo['act'] != $this->act) {
+					$cmpPath = '';
+				} else {
+					$cmpPath = $this->curUrlInfo['value'];
+					if (!isset($this->expandFolder)) {
+						$this->expandFolder = $cmpPath;
+					}
+				}
+
+				if ($this->expandFolder) {
+					try {
+						$selectedFolder = t3lib_file_Factory::getInstance()->getFolderObjectFromCombinedIdentifier(
+							$this->expandFolder
+						);
+					} catch (Exception $e) {
+						$selectedFolder = FALSE;
+					}
+				}
+					// Adding upload form, if allowed
+				if ($selectedFolder) {
+					$this->content .= $this->insertUploadForm($selectedFolder);
+				}
+
+					// Render the filelist if there is a folder selected
+				if ($selectedFolder) {
+					$files = $this->TBE_expandFolder(
+						$selectedFolder,
+						$this->act === 'plain' ? 'jpg,jpeg,gif,png' : $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
+						$GLOBALS['BE_USER']->getTSConfigVal('options.noThumbsInRTEimageSelect')
+					);
+				}
+					// Setup filelist indexed elements:
+				$this->doc->JScode .= $this->doc->wrapScriptTags('BrowseLinks.addElements(' . json_encode($this->elements) . ');');
+					// Wrap tree
+				$this->content .= '
+
+			<!--
+				Wrapper table for folder tree / file/folder list:
+			-->
+					<table border="0" cellpadding="0" cellspacing="0" id="typo3-linkFiles">
+						<tr>
+							<td class="c-wCell" valign="top">' . $this->barheader($GLOBALS['LANG']->getLL('folderTree') . ':') . $tree . '</td>
+							<td class="c-wCell" valign="top">' . $files . '</td>
+						</tr>
+					</table>
+					';
 					// Add help message
 				$helpMessage = $this->getHelpMessage($this->act);
 				if ($helpMessage) {
@@ -874,16 +851,38 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				break;
 			case 'dragdrop':
 				$foldertree = t3lib_div::makeInstance('TBE_FolderTree');
-				$foldertree->thisScript=$this->thisScript;
+				$foldertree->thisScript = $this->thisScript;
 				$foldertree->ext_noTempRecyclerDirs = TRUE;
 				$tree = $foldertree->getBrowsableTree();
-				list(,,$specUid) = explode('_',t3lib_div::_GP('PM'));
-				$files = $this->TBE_dragNDrop($foldertree->specUIDmap[$specUid], implode(',', $this->allowedFileTypes));
-				$this->content.= '<table border="0" cellpadding="0" cellspacing="0">
+					// Get currently selected folder
+				if (!$this->curUrlInfo['value'] || $this->curUrlInfo['act'] != $this->act) {
+					$cmpPath = '';
+				} else {
+					$cmpPath = $this->curUrlInfo['value'];
+					if (!isset($this->expandFolder)) {
+						$this->expandFolder = $cmpPath;
+					}
+				}
+
+				if ($this->expandFolder) {
+					try {
+						$selectedFolder = t3lib_file_Factory::getInstance()->getFolderObjectFromCombinedIdentifier(
+							$this->expandFolder
+						);
+					} catch (Exception $e) {
+						$selectedFolder = FALSE;
+					}
+				}
+					// Render the filelist if there is a folder selected
+				if ($selectedFolder) {
+					$files = $this->TBE_dragNDrop($selectedFolder, implode(',', $this->allowedFileTypes));
+				}
+					// Wrap tree
+				$this->content .= '<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td style="vertical-align: top;">'.$this->barheader($GLOBALS['LANG']->getLL('folderTree').':').$tree.'</td>
+					<td style="vertical-align: top;">' . $this->barheader($GLOBALS['LANG']->getLL('folderTree') . ':') . $tree . '</td>
 					<td>&nbsp;</td>
-					<td style="vertical-align: top;">'.$files.'</td>
+					<td style="vertical-align: top;">' .$files. '</td>
 				</tr>
 				</table>';
 				break;
@@ -901,215 +900,34 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	}
 
 	/**
-	 * Create upload/create folder forms, if a path is given
+	 * Create upload/create folder forms, if a folder is given
 	 *
-	 * @param	string		$folderPath: the selected path , if any
-	 *
-	 * @return	string		the html content for the upload form
+	 * @param t3lib_file_Folder $selectedFolder Absolute filepath on server to which to upload.
+	 * @return string HTML for an upload form.
 	 */
-	protected function insertUploadForm($folderPath) {
+	protected function insertUploadForm(t3lib_file_Folder $selectedFolder) {
 		$content = '';
-		if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB') && !$this->readOnly && count($GLOBALS['FILEMOUNTS'])) {
-			$path = $folderPath;
-			if (!$path || !@is_dir($path))	{
-					// The closest TEMP-path is found
-				$path = $this->fileProcessor->findTempFolder().'/';
+		if (!$this->readOnly) {
+				// Add upload form if allowed
+			if (!$selectedFolder) {
+				$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
+				$fileStorage = reset($fileStorages);
+				$selectedFolder = $fileStorage->getRootLevelFolder();
 			}
-			if ($path!='/' && @is_dir($path)) {
-				$uploadForm=$this->uploadForm($path);
-				$createFolder=$this->createFolder($path);
+			if ($selectedFolder) {
+				$uploadForm = $this->uploadForm($selectedFolder);
+				$createFolder = $this->createFolder($selectedFolder);
 			} else {
-				$createFolder='';
-				$uploadForm='';
+				$uploadForm = $createFolder = '';
 			}
-			$content .= $uploadForm;
-			if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
-				$content.=$createFolder;
+			if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
+				$content .= $uploadForm;
+				if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
+					$content .= $createFolder;
+				}
 			}
 		}
 		return $content;
-	}
-
-	/***************************
-	 *
-	 * OTHER FUNCTIONS:
-	 *
-	 ***************************/
-	/**
-	 * @param	[type]		$expandFolder: ...
-	 * @param	[type]		$plainFlag: ...
-	 * @return	[type]		...
-	 */
-	function expandFolder($expandFolder=0,$plainFlag=0,$noThumbs=0)	{
-		global $LANG, $BACK_PATH;
-
-		$expandFolder = $expandFolder ? $expandFolder :t3lib_div::_GP('expandFolder');
-		$out='';
-
-		if ($expandFolder && $this->checkFolder($expandFolder))	{
-			$files = t3lib_div::getFilesInDir($expandFolder,($plainFlag?'jpg,jpeg,gif,png':$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']),1,1);	// $extensionList="",$prependPath=0,$order="")
-			if (is_array($files))	{
-				$out.=$this->barheader(sprintf($LANG->getLL('images').' (%s):',count($files)));
-
-				$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
-				$picon='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/_icon_webfolders.gif','width="18" height="16"').' alt="" />';
-				$picon.=htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($expandFolder),$titleLen));
-				$out.='<span class="nobr">'.$picon.'</span><br />';
-
-				$imgObj = t3lib_div::makeInstance('t3lib_stdGraphic');
-				$imgObj->init();
-				$imgObj->mayScaleUp=0;
-				$imgObj->tempPath=PATH_site.$imgObj->tempPath;
-
-				$lines=array();
-				foreach ($files as $filepath) {
-					$fI=pathinfo($filepath);
-
-					$origFile = t3lib_div::rawUrlEncodeFP(substr($filepath,strlen(PATH_site)));
-					$iurl = $this->siteURL.$origFile;
-					$imgInfo = $imgObj->getImageDimensions($filepath);
-						// File icon:
-					$icon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
-					$pDim = $imgInfo[0].'x'.$imgInfo[1].' '.$LANG->getLL('pixels',1);
-					$size=' ('.t3lib_div::formatSize(filesize($filepath)).$LANG->getLL('bytes',1).', '.$pDim.')';
-					$icon = '<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/fileicons/'.$icon.'','width="18" height="16"').' title="'.htmlspecialchars($fI['basename'].$size).'" alt="" />';
-					$ATag = '<a href="#" onclick="return jumpToUrl(\'?editorNo='.$this->editorNo.'&insertImage='.rawurlencode($filepath).'\');">';
-					$ATag_e='</a>';
-					if ($plainFlag && (($imgInfo[0] > $this->plainMaxWidth) || ($imgInfo[1] > $this->plainMaxHeight)))	{
-						$ATag='';
-						$ATag_e='';
-						$ATag2='';
-						$ATag2_e='';
-					} else {
-						$ATag2='<a href="#" onClick="launchView(\''.rawurlencode($filepath).'\'); return false;">';
-						$ATag2_e='</a>';
-					}
-
-					$filenameAndIcon=$ATag.$icon.htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($filepath),$titleLen)).$ATag_e;
-
-
-					$lines[]='<tr class="bgColor4"><td nowrap="nowrap">'.$filenameAndIcon.'&nbsp;</td><td nowrap="nowrap">'.$pDim.'&nbsp;</td></tr>';
-					$lines[]='<tr><td colspan="2">'.($noThumbs ? '' : $ATag2.t3lib_BEfunc::getThumbNail($this->doc->backPath.'thumbs.php',$filepath,'hspace="5" vspace="5" border="1"').$ATag2_e).
-						'</td></tr>';
-					$lines[]='<tr><td colspan="2"><img src="clear.gif" width="1" height="3"></td></tr>';
-				}
-				$out.='<table border="0" cellpadding="0" cellspacing="1">'.implode('',$lines).'</table>';
-			}
-		}
-		return $out;
-	}
-
-	/**
-	 * For RTE: This displays all IMAGES (gif,png,jpg) (from extensionList) from folder. Thumbnails are shown for images.
-	 * This listing is of images located in the web-accessible paths ONLY - the listing is for drag-n-drop use in the RTE
-	 *
-	 * @param	string		The folder path to expand
-	 * @param	string		List of fileextensions to show
-	 * @return	string		HTML output
-	 */
-	function TBE_dragNDrop($expandFolder=0,$extensionList='')	{
-		global $BACK_PATH;
-
-		$expandFolder = $expandFolder ? $expandFolder : t3lib_div::_GP('expandFolder');
-		$out='';
-		if ($expandFolder && $this->checkFolder($expandFolder))	{
-			if ($this->isWebFolder($expandFolder))	{
-
-					// Read files from directory:
-				$files = t3lib_div::getFilesInDir($expandFolder,$extensionList,1,1);	// $extensionList="",$prependPath=0,$order='')
-				if (is_array($files))	{
-					$out.=$this->barheader(sprintf($GLOBALS['LANG']->getLL('files').' (%s):',count($files)));
-
-					$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
-					$picon='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/_icon_webfolders.gif','width="18" height="16"').' alt="" />';
-					$picon.=htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($expandFolder),$titleLen));
-					$out.=$picon.'<br />';
-
-						// Init row-array:
-					$lines=array();
-
-						// Add "drag-n-drop" message:
-					$lines[]='
-						<tr>
-							<td colspan="2">'.$this->getMsgBox($GLOBALS['LANG']->getLL('findDragDrop')).'</td>
-						</tr>';
-
-						// Traverse files:
-					foreach ($files as $filepath) {
-						$fI = pathinfo($filepath);
-
-							// URL of image:
-						$iurl = $this->siteURL.t3lib_div::rawurlencodeFP(substr($filepath,strlen(PATH_site)));
-
-							// Show only web-images
-						if (t3lib_div::inList('gif,jpeg,jpg,png',strtolower($fI['extension'])))	{
-							$imgInfo = @getimagesize($filepath);
-							$pDim = $imgInfo[0].'x'.$imgInfo[1].' pixels';
-
-							$ficon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
-							$size=' ('.t3lib_div::formatSize(filesize($filepath)).'bytes'.($pDim?', '.$pDim:'').')';
-							$icon = '<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/fileicons/'.$ficon,'width="18" height="16"').' class="absmiddle" title="'.htmlspecialchars($fI['basename'].$size).'" alt="" />';
-							$filenameAndIcon=$icon.htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($filepath),$titleLen));
-
-							if (t3lib_div::_GP('noLimit'))	{
-								$maxW=10000;
-								$maxH=10000;
-							} else {
-								$maxW=380;
-								$maxH=500;
-							}
-							$IW = $imgInfo[0];
-							$IH = $imgInfo[1];
-							if ($IW>$maxW)	{
-								$IH=ceil($IH/$IW*$maxW);
-								$IW=$maxW;
-							}
-							if ($IH>$maxH)	{
-								$IW=ceil($IW/$IH*$maxH);
-								$IH=$maxH;
-							}
-
-								// Make row:
-							$lines[]='
-								<tr class="bgColor4">
-									<td nowrap="nowrap">'.$filenameAndIcon.'&nbsp;</td>
-									<td nowrap="nowrap">'.
-									($imgInfo[0]!=$IW ? '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('noLimit'=>'1'))).'">'.
-														'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/icon_warning2.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->getLL('clickToRedrawFullSize',1).'" alt="" />'.
-														'</a>':'').
-									$pDim.'&nbsp;</td>
-								</tr>';
-								// Remove hardcoded border="1"
-								// Add default class for images
-							$lines[]='
-								<tr>
-									<td colspan="2"><img src="'.$iurl.'" width="'.$IW.'" height="'.$IH.'" alt=""' . ($this->defaultClass?(' class="'.$this->defaultClass.'"'):''). ' style="cursor:move;" /></td>
-								</tr>';
-							$lines[]='
-								<tr>
-									<td colspan="2"><img src="clear.gif" width="1" height="3" alt="" /></td>
-								</tr>';
-						}
-					}
-
-						// Finally, wrap all rows in a table tag:
-					$out.='
-
-
-			<!--
-				File listing / Drag-n-drop
-			-->
-						<table border="0" cellpadding="0" cellspacing="1" id="typo3-dragBox">
-							'.implode('',$lines).'
-						</table>';
-				}
-			} else {
-					// Print this warning if the folder is NOT a web folder:
-				$out.=$this->barheader($GLOBALS['LANG']->getLL('files'));
-				$out.=$this->getMsgBox($GLOBALS['LANG']->getLL('noWebFolder'),'icon_warning2');
-			}
-		}
-		return $out;
 	}
 
 	/**
@@ -1117,7 +935,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 *
 	 * @return	void
 	 */
-	 public function initConfiguration() {
+	 public function initConfiguration(){
 		$this->thisConfig = $this->getRTEConfig();
 		$this->buttonConfig = $this->getButtonConfig();
 		$this->imgPath = $this->getImgPath();
@@ -1131,7 +949,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 *
 	 * @return	array		RTE configuration array
 	 */
-	protected function getRTEConfig()	{
+	protected function getRTEConfig() {
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
 		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		return t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
@@ -1142,7 +960,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 *
 	 * @return	string		path to the image
 	 */
-	protected function getImgPath()	{
+	protected function getImgPath() {
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
 		return $RTEtsConfigParts[6];
 	}
@@ -1152,7 +970,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 *
 	 * @return	array		the configuration array of the image button
 	 */
-	protected function getButtonConfig()	{
+	protected function getButtonConfig() {
 		return ((is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['image.'])) ? $this->thisConfig['buttons.']['image.'] : array());
 	}
 
@@ -1162,7 +980,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 * @param	string		$items: initial list of possible items
 	 * @return	array		the allowed items
 	 */
-	public function getAllowedItems($items)	{
+	public function getAllowedItems($items) {
 		$allowedItems = explode(',', $items);
 		$clientInfo = t3lib_div::clientInfo();
 		if ($clientInfo['BROWSER'] !== 'opera') {
@@ -1249,22 +1067,162 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 * @return	string	the text of the message
 	 */
 	public function getHelpMessage($act) {
-		global $LANG;
 		switch ($act)	{
 			case 'plain':
-				return sprintf($LANG->getLL('plainImage_msg'), $this->plainMaxWidth, $this->plainMaxHeight);
+				return sprintf($GLOBALS['LANG']->getLL('plainImage_msg'), $this->plainMaxWidth, $this->plainMaxHeight);
 				break;
 			case 'magic':
-				return sprintf($LANG->getLL('magicImage_msg'));
+				return sprintf($GLOBALS['LANG']->getLL('magicImage_msg'));
 				break;
 			default:
 				return '';
 		}
 	}
-}
 
+	/**
+	 * Render list of files.
+	 *
+	 * @param	array		List of files. See t3lib_div::getFilesInDir
+	 * @param	string		If set a header with a folder icon and folder name are shown
+	 * @param	boolean		Whether to show thumbnails or not. If set, no thumbnails are shown.
+	 * @return	string		HTML output
+	 */
+	function fileList(array $files, t3lib_file_Folder $folder = NULL, $noThumbs = 0) {
+		$out = '';
+
+			// Listing the files:
+		if (is_array($files)) {
+			$lines = array();
+
+				// Create headline (showing number of files):
+			$filesCount = count($files);
+			$out .= $this->barheader(sprintf($GLOBALS['LANG']->getLL('files').' (%s):', $filesCount));
+			$out .= '<div id="filelist">';
+			$out .= $this->getBulkSelector($filesCount);
+
+			$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
+
+				// Create the header of current folder:
+			if ($folder) {
+				$folderIcon = t3lib_iconWorks::getSpriteIconForFile('folder');
+				$lines[] = '<tr class="t3-row-header">
+					<td colspan="4">' . $folderIcon . htmlspecialchars(t3lib_div::fixed_lgd_cs($folder->getIdentifier(), $titleLen)) . '</td>
+				</tr>';
+			}
+
+			if ($filesCount == 0) {
+				$lines[]='
+					<tr class="file_list_normal">
+						<td colspan="4">No files found.</td>
+					</tr>';
+			}
+
+				// Init graphic object for reading file and image dimensions:
+			/** @var $imgObj t3lib_stdGraphic */
+			$imgObj = t3lib_div::makeInstance('t3lib_stdGraphic');
+			$imgObj->init();
+			$imgObj->mayScaleUp = 0;
+			$imgObj->tempPath = PATH_site . $imgObj->tempPath;
+
+				// Traverse the file list:
+			/** @var $fileObject t3lib_file_File */
+			foreach ($files as $fileObject) {
+				$fileExtension = $fileObject->getExtension();
+					// Thumbnail/size generation:
+				if (t3lib_div::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']), strtolower($fileExtension)) && !$noThumbs) {
+					$imageUrl = $fileObject->process(t3lib_file_ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => 64, 'height' => 64))->getPublicUrl(TRUE);
+
+					$imgInfo = $imgObj->getImageDimensions($fileObject->getForLocalProcessing(FALSE));
+					$pDim = $imgInfo[0].'x'.$imgInfo[1].' pixels';
+					$clickIcon = '<img src="' . $imageUrl . '" hspace="5" vspace="5" border="1"';
+				} else {
+					$clickIcon = '';
+					$pDim = '';
+				}
+
+					// Create file icon:
+				$size = ' ('.t3lib_div::formatSize($fileObject->getSize()) . 'bytes' . ($pDim ? ', ' . $pDim : '') . ')';
+				$icon = t3lib_iconWorks::getSpriteIconForFile($fileExtension, array('title' => $fileObject->getName() . $size));
+
+					// Create links for adding the file:
+				$filesIndex = count($this->elements);
+				$this->elements['file_' . $filesIndex] = array(
+					'type'     => 'file',
+					'table'    => 'sys_file',
+					'uid'      => $fileObject->getUid(),
+					'fileName' => $fileObject->getName(),
+					'filePath' => $fileObject->getUid(),
+					'fileExt'  => $fileExtension,
+					'fileIcon' => $icon,
+				);
+				$element = $this->elements['file_' . $filesIndex];
+				if ($this->act === 'plain' && (($imgInfo[0] > $this->plainMaxWidth) || ($imgInfo[1] > $this->plainMaxHeight)) || !t3lib_div::inList('jpg,jpeg,gif,png', $fileExtension)) {
+					$ATag = '';
+					$ATag_alt = '';
+					$ATag_e = '';
+				} else {
+					$this->elements['file_' . $filesIndex] = array(
+						'type'     => 'file',
+						'table'    => 'sys_file',
+						'uid'      => $fileObject->getUid(),
+						'fileName' => $fileObject->getName(),
+						'filePath' => $fileObject->getUid(),
+						'fileExt'  => $fileExtension,
+						'fileIcon' => $icon,
+					);
+					$ATag = "<a href=\"#\" onclick=\"return BrowseLinks.File.insertElement('file_$filesIndex');\">";
+					$ATag_alt = substr($ATag,0,-4).",1);\">";
+					$ATag_e='</a>';
+				}
+
+					// Create link to showing details about the file in a window:
+				$Ahref = $GLOBALS['BACK_PATH'].'show_item.php?type=file&table='.rawurlencode($fileObject->getCombinedIdentifier()).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+				$ATag2='<a href="'.htmlspecialchars($Ahref).'">';
+				$ATag2_e='</a>';
+
+					// Combine the stuff:
+				$filenameAndIcon = $ATag_alt . $icon . htmlspecialchars(t3lib_div::fixed_lgd_cs($fileObject->getName(), $titleLen)) . $ATag_e;
+
+					// Show element:
+				if ($pDim)	{		// Image...
+					$lines[]='
+						<tr class="file_list_normal">
+							<td nowrap="nowrap">'.$filenameAndIcon.'&nbsp;</td>
+							<td nowrap="nowrap">' . ($ATag2 . '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="12" height="12"') . ' title="' . $GLOBALS['LANG']->getLL('info', 1) . '" alt="" /> ' . $GLOBALS['LANG']->getLL('info', 1) . $ATag2_e) . '</td>
+							<td nowrap="nowrap">&nbsp;'.$pDim.'</td>
+						</tr>';
+					$lines[]='
+						<tr>
+							<td class="filelistThumbnail" colspan="4">' . $ATag_alt . $clickIcon . $ATag_e . '</td>
+						</tr>';
+				} else {
+					$lines[]='
+						<tr class="file_list_normal">
+							<td nowrap="nowrap">'.$filenameAndIcon.'&nbsp;</td>
+							<td nowrap="nowrap">' . ($ATag2 . '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/zoom2.gif','width="12" height="12"') . ' title="' . $GLOBALS['LANG']->getLL('info', 1) . '" alt="" /> ' . $GLOBALS['LANG']->getLL('info', 1) . $ATag2_e) . '</td>
+							<td>&nbsp;</td>
+						</tr>';
+				}
+			}
+
+				// Wrap all the rows in table tags:
+			$out.='
+
+
+
+		<!--
+			File listing
+		-->
+				<table cellpadding="0" cellspacing="0" id="typo3-filelist">
+					'.implode('',$lines).'
+				</table>';
+		}
+			// Return accumulated content for filelisting:
+		$out .= '</div>';
+		return $out;
+	}
+}
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/mod4/class.tx_rtehtmlarea_select_image.php'])) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/mod4/class.tx_rtehtmlarea_select_image.php']);
 }
-
 ?>

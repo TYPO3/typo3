@@ -61,7 +61,7 @@ t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKE
 t3lib_extMgm::addUserTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/' . strtolower($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration']) . '/userTSConfig.txt">');
 
 	// Add Status Report about Conflicting Extensions
-require_once(t3lib_extMgm::extPath('rtehtmlarea') . 'hooks/statusreport/ext_localconf.php');
+require_once(t3lib_extMgm::extPath($_EXTKEY) . 'hooks/statusreport/ext_localconf.php');
 
 	// Configure Lorem Ipsum hook to insert nonsense in wysiwyg mode
 if (t3lib_extMgm::isLoaded('lorem_ipsum') && (TYPO3_MODE == 'BE')) {
@@ -150,6 +150,7 @@ if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableImages']) {
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Image']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/TYPO3Image/class.tx_rtehtmlarea_typo3image.php:&tx_rtehtmlarea_typo3image';
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Image']['addIconsToSkin'] = 0;
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Image']['disableInFE'] = 1;
+	require_once(t3lib_extMgm::extPath($_EXTKEY) . 'extensions/TYPO3Image/ext_localconf.php');
 	if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] == 'Advanced' || $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] == 'Typical') {
 		t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/image/pageTSConfig.txt">');
 	}
