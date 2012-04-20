@@ -329,13 +329,19 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 					// Traverse the files found:
 				$filesData = array();
 				foreach($fileArray as $key => $fileName)	{
-					$absPath = t3lib_div::getFileAbsFileName($path.$fileName);
+					$absPath = t3lib_div::getFileAbsFileName(t3lib_div::resolveBackPath($path . $fileName));
 					if (@is_file($absPath))	{
 						$fI = pathinfo($fileName);
 						$filesData[$key] = array();
 
+						$currentPath = $path;
+						if (t3lib_div::isFirstPartOfStr($fileName, '../../')) {
+							$currentPath = '';
+							$fileName = substr($fileName, 6);
+						}
+
 						$filesData[$key]['filename'] = $fileName;
-						$filesData[$key]['path'] = $path;
+						$filesData[$key]['path'] = $currentPath;
 						$filesData[$key]['filesize'] = filesize($absPath);
 						$filesData[$key]['fileextension'] = strtolower($fI['extension']);
 						$filesData[$key]['description'] = trim($descriptions[$key]);
@@ -349,8 +355,8 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 						}
 						$conf['linkProc.']['altText'] = $conf['linkProc.']['iconCObject.']['altText'] = $altText;
 
-						$this->cObj->setCurrentVal($path);
-						$GLOBALS['TSFE']->register['ICON_REL_PATH'] = $path.$fileName;
+						$this->cObj->setCurrentVal($currentPath);
+						$GLOBALS['TSFE']->register['ICON_REL_PATH'] = $currentPath . $fileName;
 						$GLOBALS['TSFE']->register['filename'] = $filesData[$key]['filename'];
 						$GLOBALS['TSFE']->register['path'] = $filesData[$key]['path'];
 						$GLOBALS['TSFE']->register['fileSize'] = $filesData[$key]['filesize'];

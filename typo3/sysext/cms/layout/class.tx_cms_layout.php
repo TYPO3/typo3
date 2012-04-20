@@ -1403,7 +1403,7 @@ class tx_cms_layout extends recordList {
 					break;
 				case 'uploads':
 					if ($row['media']) {
-						$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
+						$out .= $this->thumbCode($row, 'tt_content', 'media') . '<br />';
 					}
 					break;
 				case 'multimedia':
