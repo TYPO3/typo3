@@ -511,6 +511,51 @@ final class t3lib_extMgm {
 	}
 
 	/**
+	 * Gets the TCA configuration for a field handling (FAL) files.
+	 *
+	 * @param string $fieldName Name of the field to be used
+	 * @param array $customSettingOverride Custom field settings overriding the basics
+	 * @return array
+	 */
+	public static function getFileFieldTCAConfig($fieldName, array $customSettingOverride = array()) {
+		$fileFieldTCAConfig = array(
+			'type' => 'inline',
+			'foreign_table' => 'sys_file_reference',
+			'foreign_field' => 'uid_foreign',
+			'foreign_sortby' => 'sorting_foreign',
+			'foreign_table_field' => 'tablenames',
+			'foreign_match_fields' => array(
+				'fieldname' => $fieldName,
+			),
+			'foreign_label' => 'uid_local',
+			'foreign_selector' => 'uid_local',
+			'foreign_selector_fieldTcaOverride' => array(
+				'config' => array (
+					'filter' => array(
+						'fileType' =>  array(
+							'allowed' => array(),
+						),
+					),
+				),
+			),
+			'appearance' => array(
+				'useSortable' => TRUE,
+				'headerThumbnail' => 'uid_local',
+				'enabledControls' => array(
+					'info' => FALSE,
+					'new' => FALSE,
+					'dragdrop' => TRUE,
+					'sort' => FALSE,
+					'hide' => TRUE,
+					'delete' => TRUE,
+				),
+			),
+		);
+
+		return t3lib_div::array_merge_recursive_overrule($fileFieldTCAConfig, $customSettingOverride);
+	}
+
+	/**
 	 * Adds a list of new fields to the TYPO3 USER SETTINGS configuration "showitem" list, the array with
 	 * the new fields itself needs to be added additionally to show up in the user setup, like
 	 * $GLOBALS['TYPO3_USER_SETTINGS']['columns'] += $tempColumns
