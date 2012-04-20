@@ -46,6 +46,7 @@ abstract class tslib_content_Abstract {
 	 */
 	public function __construct(tslib_cObj $cObj) {
 		$this->cObj = $cObj;
+		$this->fileFactory = t3lib_file_Factory::getInstance();
 	}
 
 	/**
@@ -64,6 +65,11 @@ abstract class tslib_content_Abstract {
 	public function getContentObject() {
 		return $this->cObj;
 	}
+
+	/**
+	 * @var t3lib_file_Factory
+	 */
+	protected $fileFactory = NULL;
 }
 
 ?>

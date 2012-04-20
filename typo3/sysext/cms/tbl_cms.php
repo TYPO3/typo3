@@ -632,17 +632,7 @@ $TCA['pages_language_overlay'] = array(
 		'media' => array(
 			'exclude' => 1,
 			'label' => $TCA['pages']['columns']['media']['label'],
-			'config' => array(
-				'type' => 'group',
-				'internal_type' => 'file',
-				'allowed' => $TCA['pages']['columns']['media']['config']['allowed'],
-				'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
-				'uploadfolder' => 'uploads/media',
-				'show_thumbs' => '1',
-				'size' => '3',
-				'maxitems' => '100',
-				'minitems' => '0'
-			)
+			'config' => t3lib_extMgm::getFileFieldTCAConfig('media'),
 		),
 		'url' => array(
 			'exclude' => 1,
@@ -862,6 +852,28 @@ $TCA['pages_language_overlay'] = array(
 		)
 	)
 );
+
+
+
+
+	// Keep old code (pre-FAL) for installations that haven't upgraded yet.
+	// @deprecated since TYPO3 6.0, please remove in TYPO3 7.0
+	// existing installation - and files are merged, nothing to do
+if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard']) || !t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard'], 'pages_language_overlay:media')) && !t3lib_div::compat_version('6.0')) {
+	t3lib_div::deprecationLog('This installation hasn\'t been migrated to FAL for the field $TCA[pages_language_overlay][columns][media] yet. Please do so before TYPO3 v7.');
+		// existing installation and no upgrade wizard was executed - and files haven't been merged: use the old code
+	$TCA['pages_language_overlay']['columns']['media']['config'] = array(
+		'type' => 'group',
+		'internal_type' => 'file',
+		'allowed' => $TCA['pages']['columns']['media']['config']['allowed'],
+		'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
+		'uploadfolder' => 'uploads/media',
+		'show_thumbs' => '1',
+		'size' => '3',
+		'maxitems' => '100',
+		'minitems' => '0'
+	);
+}
 
 
 
