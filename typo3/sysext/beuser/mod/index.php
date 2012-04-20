@@ -320,11 +320,11 @@ class printAllPageTree_perms extends printAllPageTree {
 	 * @param	array		Filemounts for the backend user.
 	 * @return	void
 	 */
-	function __construct($BE_USER,$FILEMOUNTS='')	{
+	function __construct($BE_USER) {
 		$this->init();
 
 		$this->BE_USER = $BE_USER;
-		$this->MOUNTS = $FILEMOUNTS;
+		$this->storages = $BE_USER->getFileStorages();
 		$this->clause = '';	// Notice, this clause does NOT filter out un-readable pages. This is the POINT since this class is ONLY used for the main overview where ALL is shown! Otherwise "AND '.$this->BE_USER->getPagePermsClause(1).'" should be added.
 	}
 
@@ -354,17 +354,17 @@ class printAllPageTree_perms extends printAllPageTree {
 	/**
 	 * Wrapping the icon of the element/page. Normally a click menu is wrapped around the icon, but in this case only a title parameter is set.
 	 *
-	 * @param	string		Icon image tag.
-	 * @param	array		Row.
-	 * @return	string		Icon with title attribute added.
+	 * @param string $icon The image tag for the icon
+	 * @param t3lib_file_Folder $folderObject The row for the current element
+	 * @return string The processed icon input value.
+	 * @internal
 	 */
-	function wrapIcon($icon,$row)	{
+	public function wrapIcon($icon, t3lib_file_Folder $folderObject) {
 			// Add title attribute to input icon tag
-		$title = $GLOBALS['SOBE']->localPath($row['path']);
-		$theIcon = $this->addTagAttributes($icon,($this->titleAttrib ? $this->titleAttrib.'="'.htmlspecialchars($title).'"' : ''));
-
-		return $theIcon;
+		$theFolderIcon = $this->addTagAttributes($icon, ($this->titleAttrib ? $this->titleAttrib . '="' . $this->getTitleAttrib($folderObject) . '"' : ''));
+		return $theFolderIcon;
 	}
+
 
 	/**
 	 * This will make sure that no position data is acquired from the BE_USER uc variable.
@@ -503,7 +503,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	 * @return	array		Array with accumulated HTML content.
 	 */
 	function ext_printOverview($uInfo,$compareFlags,$printTrees=0)	{
-			// Prepare for filemount and db-mount
+			// Prepare for file storages and db-mount
 		if ($printTrees)	{	// ... this is if we see the detailed view for a user:
 				// Page tree object:
 			$pagetree = t3lib_div::makeInstance(!$this->isAdmin() ? 'printAllPageTree_perms' : 'printAllPageTree', $this, $this->returnWebmounts());	// Here, only readable webmounts are returned (1=1)
@@ -515,13 +515,13 @@ class local_beUserAuth extends t3lib_beUserAuth {
 			$pagetree->addField('editlock',1);
 
 				// Folder tree object:
-			$foldertree = t3lib_div::makeInstance('printAllFolderTree', $this, $this->returnFilemounts());
+			$foldertree = t3lib_div::makeInstance('printAllFolderTree', $this);
 		} else {
 				// Page tree object:
 			$pagetree = t3lib_div::makeInstance('localPageTree', $this, $this->returnWebmounts('1=1'));	// Here, ALL webmounts are returned (1=1)
 
 				// Folder tree object:
-			$foldertree = t3lib_div::makeInstance('localFolderTree', $this, $this->returnFilemounts());
+			$foldertree = t3lib_div::makeInstance('localFolderTree', $this);
 		}
 
 			// Names for modules:
@@ -553,6 +553,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 			if ($compareFlags[$k])	{
 				switch($k)	{
 					case 'filemounts':
+					case 'filestorages':
 						$out[$k] = $foldertree->getBrowsableTree();
 					break;
 					case 'webmounts':

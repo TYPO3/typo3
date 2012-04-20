@@ -166,6 +166,7 @@ class t3lib_TCEmain {
 	 * @var t3lib_basicFileFunctions
 	 */
 	var $fileFunc; // For "singleTon" file-manipulation object
+
 	var $checkValue_currentRecord = array(); // Set to "currentRecord" during checking of values.
 	var $autoVersioningUpdate = FALSE; // A signal flag used to tell file processing that autoversioning has happend and hence certain action should be applied.
 
@@ -1500,12 +1501,20 @@ class t3lib_TCEmain {
 
 					// Traverse the submitted values:
 				foreach ($valueArray as $key => $theFile) {
-						// NEW FILES? If the value contains '/' it indicates, that the file is new and should be added to the uploadsdir (whether its absolute or relative does not matter here)
+						// Init:
+					$maxSize = intval($tcaFieldConf['max_size']);
+					$theDestFile = ''; // Must be cleared. Else a faulty fileref may be inserted if the below code returns an error!
+
+						// a FAL file was added, now resolve the file object and get the absolute path
+						// @todo in future versions this needs to be modified to handle FAL objects natively
+					if (t3lib_utility_Math::canBeInterpretedAsInteger($theFile)) {
+						$fileObject = t3lib_file_Factory::getInstance()->getFileObject($theFile);
+						$theFile = $fileObject->getForLocalProcessing(FALSE);
+					}
+
+						// NEW FILES? If the value contains '/' it indicates, that the file
+						// is new and should be added to the uploadsdir (whether its absolute or relative does not matter here)
 					if (strstr(t3lib_div::fixWindowsFilePath($theFile), '/')) {
-							// Init:
-						$maxSize = intval($tcaFieldConf['max_size']);
-						$cmd = '';
-						$theDestFile = ''; // Must be cleared. Else a faulty fileref may be inserted if the below code returns an error!
 
 							// Check various things before copying file:
 						if (@is_dir($dest) && (@is_file($theFile) || @is_uploaded_file($theFile))) { // File and destination must exist
@@ -1561,7 +1570,8 @@ class t3lib_TCEmain {
 							$this->log($table, $id, 5, 0, 1, 'The destination (%s) or the source file (%s) does not exist. (%s)', 14, array($dest, $theFile, $recFID), $propArr['event_pid']);
 						}
 
-							// If the destination file was created, we will set the new filename in the value array, otherwise unset the entry in the value array!
+							// If the destination file was created, we will set the new filename in
+							// the value array, otherwise unset the entry in the value array!
 						if (@is_file($theDestFile)) {
 							$info = t3lib_div::split_fileref($theDestFile);
 							$valueArray[$key] = $info['file']; // The value is set to the new filename
@@ -1605,9 +1615,14 @@ class t3lib_TCEmain {
 					$propArr = $this->getRecordProperties($table, $id); // For logging..
 					foreach ($valueArray as &$theFile) {
 
-							// if alernative File Path is set for the file, then it was an import
-						if ($this->alternativeFilePath[$theFile]) {
+							// FAL handling: it's a UID, thus it is resolved to the absolute path
+						if (t3lib_utility_Math::canBeInterpretedAsInteger($theFile)) {
+							$fileObject = t3lib_file_Factory::getInstance()->getFileObject($theFile);
+							$theFile = $fileObject->getForLocalProcessing(FALSE);
+						}
 
+						if ($this->alternativeFilePath[$theFile]) {
+								// if alernative File Path is set for the file, then it was an import
 								// don't import the file if it already exists
 							if (@is_file(PATH_site . $this->alternativeFilePath[$theFile])) {
 								$theFile = PATH_site . $this->alternativeFilePath[$theFile];

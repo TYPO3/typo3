@@ -49,7 +49,7 @@ define('PATH_t3lib', PATH_site.'t3lib/');
 // ******************
 // include thumbs script
 // ******************
-
+require ('init.php');
 require (PATH_t3lib.'thumbs.php');
 
 ?>

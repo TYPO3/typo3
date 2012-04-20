@@ -50,7 +50,11 @@ class SC_alt_file_navframe {
 
 		// Internal, dynamic:
 	var $content;		// Content accumulates in this variable.
-	var $foldertree;	// Folder tree object.
+
+	/**
+	 * @var filelistFolderTree $foldertree the folder tree object
+	 */
+	var $foldertree;
 
 	/**
 	 * document template object
@@ -272,7 +276,7 @@ class SC_alt_file_navframe {
 	public function ajaxExpandCollapse($params, $ajaxObj) {
 		$this->init();
 		$tree = $this->foldertree->getBrowsableTree();
-		if (!$this->foldertree->ajaxStatus)	{
+		if ($this->foldertree->getAjaxStatus() === FALSE) {
 			$ajaxObj->setError($tree);
 		} else	{
 			$ajaxObj->addContent('tree', $tree);

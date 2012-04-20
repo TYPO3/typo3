@@ -360,20 +360,28 @@ class t3lib_clipboard {
 					$bgColClass = ($table == '_FILE' && $this->fileMode) || ($table != '_FILE' && !$this->fileMode) ? 'bgColor4-20' : 'bgColor4';
 
 					if ($table == '_FILE') { // Rendering files/directories on the clipboard:
-						if (file_exists($v) && t3lib_div::isAllowedAbsPath($v)) {
-							$fI = pathinfo($v);
-							$icon = is_dir($v) ? 'folder.gif' : t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
-							$size = ' (' . t3lib_div::formatSize(filesize($v)) . 'bytes)';
-							$icon = t3lib_iconWorks::getSpriteIconForFile(is_dir($v) ? 'folder' : strtolower($fI['extension']), array('style' => 'margin: 0 20px;', 'title' => htmlspecialchars($fI['basename'] . $size)));
-							$thumb = $this->clipData['_setThumb'] ? (t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fI['extension']) ? t3lib_BEfunc::getThumbNail($this->backPath . 'thumbs.php', $v, ' vspace="4"') : '') : '';
+						$fileObject = t3lib_file_Factory::getInstance()->retrieveFileOrFolderObject($v);
+						if ($fileObject) {
+							$thumb = '';
+							$folder = $fileObject instanceof t3lib_file_Folder;
+							$size = ($folder ? '' : '(' . t3lib_div::formatSize($fileObject->getSize()) . 'bytes)');
+							$icon = t3lib_iconWorks::getSpriteIconForFile(
+								$folder ? 'folder' : strtolower($fileObject->getExtension()),
+								array('style' => 'margin: 0 20px;', 'title' => $fileObject->getName() . ' ' . $size)
+							);
+
+							if ($this->clipData['_setThumb'] && t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
+								$thumb = '<br />' . t3lib_BEfunc::getThumbNail($this->backPath . 'thumbs.php', $v, ' vspace="4"');
+							}
+
 
 							$lines[] = '
 								<tr>
 									<td class="' . $bgColClass . '">' . $icon . '</td>
-									<td class="' . $bgColClass . '" nowrap="nowrap" width="95%">&nbsp;' . $this->linkItemText(htmlspecialchars(t3lib_div::fixed_lgd_cs(basename($v), $GLOBALS['BE_USER']->uc['titleLen'])), $v) .
-									($pad == 'normal' ? (' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) . ')</strong>') : '') . '&nbsp;' . ($thumb ? '<br />' . $thumb : '') . '</td>
+									<td class="' . $bgColClass . '" nowrap="nowrap" width="95%">&nbsp;' . $this->linkItemText(htmlspecialchars(t3lib_div::fixed_lgd_cs($fileObject->getName(), $GLOBALS['BE_USER']->uc['titleLen'])), $fileObject->getName()) .
+									($pad == 'normal' ? (' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) . ')</strong>') : '') . '&nbsp;' . $thumb . '</td>
 									<td class="' . $bgColClass . '" align="center" nowrap="nowrap">' .
-									'<a href="#" onclick="' . htmlspecialchars('top.launchView(\'' . $v . '\', \'\'); return false;') . '">' . t3lib_iconWorks::getSpriteIcon('actions-document-info', array('title' => $this->clLabel('info', 'cm'))) . '</a>' .
+									'<a href="#" onclick="' . htmlspecialchars('top.launchView(\'' . $table . '\', \'' . $v . '\'); return false;') . '">' . t3lib_iconWorks::getSpriteIcon('actions-document-info', array('title' => $this->clLabel('info', 'cm'))) . '</a>' .
 									'<a href="' . htmlspecialchars($this->removeUrl('_FILE', t3lib_div::shortmd5($v))) . '#clip_head">' . t3lib_iconWorks::getSpriteIcon('actions-selection-delete', array('title' => $this->clLabel('removeItem'))) . '</a>' .
 									'</td>
 								</tr>';
@@ -780,7 +788,7 @@ class t3lib_clipboard {
 						$this->changed = 1;
 					}
 				} else {
-					if (!$v || !file_exists($v)) {
+					if (!$v || t3lib_file_Factory::getInstance()->retrieveFileOrFolderObject($v) === NULL) {
 						unset($this->clipData[$this->current]['el'][$k]);
 						$this->changed = 1;
 					}

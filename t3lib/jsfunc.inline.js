@@ -273,14 +273,22 @@ var inline = {
 
 		// foreign_selector: used by element browser (type='group/db')
 	importElement: function(objectId, table, uid, type) {
-		window.setTimeout(
-			function() {
-				inline.makeAjaxCall('createNewRecord', [inline.getNumberOfRTE(), objectId, uid], true);
-			},
-			10
-		);
+		inline.makeAjaxCall('createNewRecord', [inline.getNumberOfRTE(), objectId, uid], true);
 	},
 
+	importElementMultiple: function(objectId, table, uidArray, type) {
+		inline.collapseAllRecords();
+		uidArray.each(function(uid) {
+			inline.delayedImportElement(objectId, table, uid, type);
+		});
+	},
+	delayedImportElement: function(objectId, table, uid, type) {
+		if (inline.lockedAjaxMethod['createNewRecord'] == true) {
+			window.setTimeout("inline.delayedImportElement('" + objectId + "','" + table + "'," +  uid + ", null );", 300);
+		} else {
+			inline.importElement(objectId, table, uid, type);
+		}
+	},
 		// Check uniqueness for element browser:
 	checkUniqueElement: function(objectId, table, uid, type) {
 		if (this.checkUniqueUsed(objectId, uid, table)) {

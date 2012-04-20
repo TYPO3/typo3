@@ -58,7 +58,6 @@ class t3lib_recordList {
 		// Not used in this class - but maybe extension classes...
 	var $fixedL = 30; // Max length of strings
 	var $script = '';
-	var $thumbScript = 'thumbs.php';
 	var $setLMargin = 1; // Set to zero, if you don't want a left-margin with addElement function
 
 	var $counter = 0; // Counter increased for each element. Used to index elements for the JavaScript-code that transfers to the clipboard

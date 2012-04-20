@@ -152,6 +152,7 @@ class SC_browse_links {
 			case 'filedrag':
 			case 'folder':
 					// Setting additional read-only browsing file mounts
+					// @todo: add this feature for FAL and TYPO3 6.0
 				$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
 				if ($altMountPoints) {
 					$altMountPoints = t3lib_div::trimExplode(',', $altMountPoints);

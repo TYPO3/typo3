@@ -374,6 +374,7 @@ class t3lib_TCEforms_inline {
 				$overruleTypesArray = isset($config['foreign_types']) ? $config['foreign_types'] : array();
 				$fields = $this->renderMainFields($foreign_table, $rec, $overruleTypesArray);
 				$fields = $this->wrapFormsSection($fields);
+
 					// Replace returnUrl in Wizard-Code, if this is an AJAX call
 				$ajaxArguments = t3lib_div::_GP('ajax');
 				if (isset($ajaxArguments[2]) && trim($ajaxArguments[2]) != '') {
@@ -512,12 +513,39 @@ class t3lib_TCEforms_inline {
 			$recTitle = t3lib_BEfunc::getRecordTitle($foreign_table, $rec, TRUE);
 		}
 
+			// Renders a thumbnail for the header
+		if (!empty($config['appearance']['headerThumbnail'])) {
+			$originalRecord = t3lib_BEfunc::getRecord($foreign_table, $rec['uid']);
+
+			if (is_array($originalRecord)) {
+				$fileUid = $originalRecord[$config['appearance']['headerThumbnail']];
+				list($fileUid) = t3lib_div::intExplode(',', $fileUid);
+
+				if ($fileUid) {
+					$fileObject = t3lib_file_Factory::getInstance()->getFileObject($fileUid);
+					if ($fileObject) {
+						$imageUrl = $fileObject->process(
+							t3lib_file_ProcessedFile::CONTEXT_IMAGEPREVIEW,
+							array('width' => 64, 'height' => 64)
+						)->getPublicUrl(TRUE);
+
+						$thumbnail = '<span class="nobr"><img src="' . $imageUrl . '" alt="' . htmlspecialchars($recTitle) . '" /></span>';
+					}
+				}
+			}
+		}
+
 		$altText = t3lib_BEfunc::getRecordIconAltText($rec, $foreign_table);
 		$iconImg = t3lib_iconWorks::getSpriteIconForRecord($foreign_table, $rec, array('title' => htmlspecialchars($altText), 'id' => $objectId . '_icon'));
 		$label = '<span id="' . $objectId . '_label">' . $recTitle . '</span>';
+
 		if (!$isVirtualRecord) {
 			$iconImg = $this->wrapWithAnchor($iconImg, '#', array('onclick' => $onClick));
 			$label = $this->wrapWithAnchor($label, '#', array('onclick' => $onClick, 'style' => 'display: block;'));
+
+			if (!empty($config['appearance']['headerThumbnail'])) {
+				$thumbnail = $this->wrapWithAnchor($thumbnail, '#', array('onclick' => $onClick, 'style' => 'display: block;'));
+			}
 		}
 
 		$ctrl = $this->renderForeignRecordHeaderControl($parentUid, $foreign_table, $rec, $config, $isVirtualRecord);
@@ -527,7 +555,14 @@ class t3lib_TCEforms_inline {
 				'<table cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-right: ' . $this->inlineStyles['margin-right'] . 'px;"' .
 				($this->fObj->borderStyle[2] ? ' background="' . htmlspecialchars($this->backPath . $this->fObj->borderStyle[2]) . '"' : '') .
 				($this->fObj->borderStyle[3] ? ' class="' . htmlspecialchars($this->fObj->borderStyle[3]) . '"' : '') . '>' .
-				'<tr class="class-main12"><td width="18" id="' . $objectId . '_iconcontainer">' . $iconImg . '</td><td align="left"><strong>' . $label . '</strong></td><td align="right">' . $ctrl . '</td></tr></table>';
+				'<tr class="class-main12">' .
+					(!empty($config['appearance']['headerThumbnail']) && !empty($thumbnail)
+						?	'<td width="75" id="' . $objectId . '_thumbnailcontainer">' . $thumbnail . '</td>'
+						:	'<td width="18" id="' . $objectId . '_iconcontainer">' . $iconImg . '</td>') .
+					'<td align="left"><strong>' . $label . '</strong></td>' .
+					'<td align="right">' . $ctrl . '</td>' .
+				'</tr>' .
+				'</table>';
 
 		return $header;
 	}
@@ -840,7 +875,12 @@ class t3lib_TCEforms_inline {
 				// this is neccessary, if the size of the selector is "1" or if
 				// there is only one record item in the select-box, that is selected by default
 				// the selector-box creates a new relation on using a onChange event (see some line above)
-			$createNewRelationText = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.createNewRelation', 1);
+			if (!empty($conf['appearance']['createNewRelationLinkTitle'])) {
+				$createNewRelationText = $GLOBALS['LANG']->sL($conf['appearance']['createNewRelationLinkTitle'], TRUE);
+			} else {
+				$createNewRelationText = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.createNewRelation', 1);
+			}
+
 			$item .=
 					'<a href="#" onclick="' . htmlspecialchars($onChange) . '" align="abstop">' .
 					t3lib_iconWorks::getSpriteIcon('actions-document-new', array('title' => $createNewRelationText)) . $createNewRelationText .
@@ -863,17 +903,22 @@ class t3lib_TCEforms_inline {
 	 */
 	function renderPossibleRecordsSelectorTypeGroupDB($conf, &$PA) {
 		$foreign_table = $conf['foreign_table'];
-
 		$config = $PA['fieldConf']['config'];
 		$allowed = $config['allowed'];
 		$objectPrefix = $this->inlineNames['object'] . self::Structure_Separator . $foreign_table;
 
-		$createNewRelationText = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.createNewRelation', 1);
-		$onClick = "setFormValueOpenBrowser('db','" . ('|||' . $allowed . '|' . $objectPrefix . '|inline.checkUniqueElement||inline.importElement') . "'); return false;";
-		$item =
-				'<a href="#" onclick="' . htmlspecialchars($onClick) . '">' .
-				t3lib_iconWorks::getSpriteIcon('actions-insert-record', array('title' => $createNewRelationText)) . $createNewRelationText .
-				'</a>';
+		if (!empty($conf['appearance']['createNewRelationLinkTitle'])) {
+			$createNewRelationText  = $GLOBALS['LANG']->sL($conf['appearance']['createNewRelationLinkTitle'], TRUE);
+		} else {
+			$createNewRelationText = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.createNewRelation', 1);
+		}
+
+		$browserParams = ('|||' . $allowed . '|' . $objectPrefix . '|inline.checkUniqueElement||inline.importElement');
+
+		$onClick = "setFormValueOpenBrowser('db','" . $browserParams . "'); return false;";
+		$item = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' .
+			t3lib_iconWorks::getSpriteIcon('actions-insert-record', array('title' => $createNewRelationText)) . $createNewRelationText .
+			'</a>';
 
 		return $item;
 	}
@@ -2271,6 +2316,11 @@ class t3lib_TCEforms_inline {
 		if ($field) {
 			$PA = array();
 			$PA['fieldConf'] = $GLOBALS['TCA'][$foreign_table]['columns'][$field];
+
+			if ($PA['fieldConf'] && $conf['foreign_selector_fieldTcaOverride']) {
+				$PA['fieldConf'] = t3lib_div::array_merge_recursive_overrule($PA['fieldConf'], $conf['foreign_selector_fieldTcaOverride']);
+			}
+
 			$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type']; // Using "form_type" locally in this script
 			$PA['fieldTSConfig'] = $this->fObj->setTSconfig($foreign_table, array(), $field);
 			$config = $PA['fieldConf']['config'];

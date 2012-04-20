@@ -207,6 +207,12 @@ The default module is "About Modules".</source>
 			<trans-unit id="option_resizeTextareas_Flexible.description" xml:space="preserve">
 				<source>This option will make textareas flexible. The height will grow automatically while typing. Limit is the maximal height set (default 600).</source>
 			</trans-unit>
+			<trans-unit id="option_showHiddenFilesAndFolders.description" xml:space="preserve">
+				<source>Defines whether you want to list all the hidden files and folders (beginning with a .) in the file list and element browser.</source>
+			</trans-unit>
+			<trans-unit id="option_showHiddenFilesAndFolders.details" xml:space="preserve">
+				<source>By default all hidden files are not displayed in file lists and element browsers and link pickers. This option enables to additionally show the hidden files.</source>
+			</trans-unit>
 			<trans-unit id="option_edit_showFieldHelp.description" xml:space="preserve">
 				<source>Defines the mode of Context Sensitive Help (CSH) in TYPO3. The default is that small help icons are shown everywhere a help item is available. You can click the icon and help will appear in a window for you.</source>
 			</trans-unit>
