@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help">
+		<header/>
+		<body>
+			<trans-unit id=".description" xml:space="preserve">
+				<source>File storage, which acts as an entry root point to a file-based structure. See it like a drive or a hard drive volume in your local machine.</source>
+			</trans-unit>
+			<trans-unit id=".details" xml:space="preserve">
+				<source></source>
+			</trans-unit>
+			<trans-unit id="hidden.description" xml:space="preserve">
+				<source>Disabling the storage will result in removing it from any listings in the backend. Existing file relations will still exist.</source>
+			</trans-unit>
+			<trans-unit id="hidden.details" xml:space="preserve">
+				<source>If you set up a file storage, it will show up on any folder lists, thus allowing to basically browse through the files in this file repository. If you set this checkbox, this storage will be excluded from any listings in the backend. Any existing file references will still exist further.</source>
+			</trans-unit>
+			<trans-unit id="name.description" xml:space="preserve">
+				<source>The visible identifier for this file storage.</source>
+			</trans-unit>
+			<trans-unit id="name.details" xml:space="preserve">
+				<source>The label entered here will be shown as the name for the entry point in the TYPO Backend. Be sure to make it descriptive and logical for your editors.</source>
+			</trans-unit>
+			<trans-unit id="description.description" xml:space="preserve">
+				<source>A description of this storage.</source>
+			</trans-unit>
+			<trans-unit id="description.details" xml:space="preserve">
+				<source>This description field is used to explain e.g. the location of the storage, also what this storage is meant for or what it contains.</source>
+			</trans-unit>
+			<trans-unit id="driver.description" xml:space="preserve">
+				<source>Choose the driver as the technical backbone of the storage. Once you've chosen a driver, and saved it, additional configuration will show up.</source>
+			</trans-unit>
+			<trans-unit id="driver.details" xml:space="preserve">
+				<source>The driver is the technical background of a storage, and thus also defines whether the location of the storage is local (= on the same machine as this TYPO3 installation) or remote like a WebDAV server connection. Search for extensions in the TYPO3 Extension Repository that extend this driver list.</source>
+			</trans-unit>
+			<trans-unit id="is_browsable.description" xml:space="preserve">
+				<source>If set, backend users can browse through this storage. Otherwise it will show up as a unselectable item in the list.</source>
+			</trans-unit>
+			<trans-unit id="is_public.description" xml:space="preserve">
+				<source>If set, then the files in this storage can be linked directly from the outside world. If this is not set, make sure to provide additional possibilities to access the files in this storage.</source>
+			</trans-unit>
+			<trans-unit id="is_writable.description" xml:space="preserve">
+				<source>If set, then users are allowed to modify, add, delete files/folders on this storage.</source>
+			</trans-unit>
+			<trans-unit id="is_online.description" xml:space="preserve">
+				<source>This flag is usually set. If TYPO3 cannot connect to this storage (because it maybe temporary down), then the flag will be checked, and the storage will behave like it is non-browsable in the TYPO3 backend. The admin needs to manually activate it again if it was offline.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -306,8 +306,158 @@
 			<trans-unit id="sys_collection.type.static" xml:space="preserve">
 				<source>static record composition</source>
 			</trans-unit>
-			<trans-unit id="sys_collection.type.filter" xml:space="preserve">
-				<source>dynamic record filter</source>
+			<trans-unit id="sys_file_storage" xml:space="preserve">
+				<source>File Storage</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.type" xml:space="preserve">
+				<source>Entry point</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.name" xml:space="preserve">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.description" xml:space="preserve">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.hidden" xml:space="preserve">
+				<source>Hide from listings</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.is_online" xml:space="preserve">
+				<source>Is online?</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.is_browsable" xml:space="preserve">
+				<source>Is browsable?</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.is_public" xml:space="preserve">
+				<source>Is publically available?</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.is_writable" xml:space="preserve">
+				<source>Is writable?</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.capabilities" xml:space="preserve">
+				<source>Capabilities</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.processingfolder" xml:space="preserve">
+				<source>Folder for manipulated and temporary images etc.</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.driver" xml:space="preserve">
+				<source>Driver</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.driver.local" xml:space="preserve">
+				<source>Local Filesystem</source>
+			</trans-unit>
+			<trans-unit id="sys_file_storage.configuration" xml:space="preserve">
+				<source>Driver Configuration</source>
+			</trans-unit>
+			<trans-unit id="sys_file" xml:space="preserve">
+				<source>File</source>
+			</trans-unit>
+			<trans-unit id="sys_file.storage" xml:space="preserve">
+				<source>Storage</source>
+			</trans-unit>
+			<trans-unit id="sys_file.identifier" xml:space="preserve">
+				<source>Identifier</source>
+			</trans-unit>
+			<trans-unit id="sys_file.name" xml:space="preserve">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="sys_file.type" xml:space="preserve">
+				<source>File Type</source>
+			</trans-unit>
+			<trans-unit id="sys_file.type.unknown" xml:space="preserve">
+				<source>Unknown</source>
+			</trans-unit>
+			<trans-unit id="sys_file.type.text" xml:space="preserve">
+				<source>Text</source>
+			</trans-unit>
+			<trans-unit id="sys_file.type.image" xml:space="preserve">
+				<source>Image</source>
+			</trans-unit>
+			<trans-unit id="sys_file.type.audio" xml:space="preserve">
+				<source>Audio</source>
+			</trans-unit>
+			<trans-unit id="sys_file.type.video" xml:space="preserve">
+				<source>Video</source>
+			</trans-unit>
+			<trans-unit id="sys_file.type.software" xml:space="preserve">
+				<source>Software</source>
+			</trans-unit>
+			<trans-unit id="sys_file.mime_type" xml:space="preserve">
+				<source>Mime Type</source>
+			</trans-unit>
+			<trans-unit id="sys_file.sha1" xml:space="preserve">
+				<source>SHA1</source>
+			</trans-unit>
+			<trans-unit id="sys_file.size" xml:space="preserve">
+				<source>Size</source>
+			</trans-unit>
+			<trans-unit id="sys_file.identifier" xml:space="preserve">
+				<source>Identifier</source>
+			</trans-unit>
+			<trans-unit id="sys_file.usage_count" xml:space="preserve">
+				<source>Usage Count</source>
+			</trans-unit>
+			<trans-unit id="sys_file.description" xml:space="preserve">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="sys_file.alternative" xml:space="preserve">
+				<source>Alternative Text</source>
+			</trans-unit>
+			<trans-unit id="sys_file_reference" xml:space="preserve">
+				<source>File Reference</source>
+			</trans-unit>
+			<trans-unit id="sys_file_reference.uid_local" xml:space="preserve">
+				<source>File</source>
+			</trans-unit>
+			<trans-unit id="sys_file_reference.uid_foreign" xml:space="preserve">
+				<source>Used by content elements</source>
+			</trans-unit>
+			<trans-unit id="sys_file_reference.tablenames" xml:space="preserve">
+				<source>Table name</source>
+			</trans-unit>
+			<trans-unit id="sys_file_reference.fieldname" xml:space="preserve">
+				<source>Foreign Field</source>
+			</trans-unit>
+			<trans-unit id="sys_file_reference.sorting_foreign" xml:space="preserve">
+				<source>Sorting foreign</source>
+			</trans-unit>
+			<trans-unit id="sys_file_reference.basicoverlayPalette" xml:space="preserve">
+				<source>File Metadata</source>
+			</trans-unit>
+			<trans-unit id="sys_file_reference.imageoverlayPalette" xml:space="preserve">
+				<source>Image Metadata</source>
+			</trans-unit>
+			<trans-unit id="sys_file_reference.title" xml:space="preserve">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="sys_file_reference.description" xml:space="preserve">
+				<source>Description (Caption)</source>
+			</trans-unit>
+			<trans-unit id="sys_file_reference.downloadname" xml:space="preserve">
+				<source>Download Name</source>
+			</trans-unit>
+			<trans-unit id="sys_file_reference.alternative" xml:space="preserve">
+				<source>Alternative Text</source>
+			</trans-unit>
+			<trans-unit id="sys_file_reference.link" xml:space="preserve">
+				<source>Link</source>
+			</trans-unit>
+			<trans-unit id="sys_file_collection" xml:space="preserve">
+				<source>File collection</source>
+			</trans-unit>
+			<trans-unit id="sys_file_collection.files" xml:space="preserve">
+				<source>Files</source>
+			</trans-unit>
+			<trans-unit id="sys_file_collection.title" xml:space="preserve">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="sys_file_collection.type" xml:space="preserve">
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="sys_file_collection.storage" xml:space="preserve">
+				<source>File Storage</source>
+			</trans-unit>
+			<trans-unit id="sys_file_collection.folder" xml:space="preserve">
+				<source>Folder</source>
 			</trans-unit>
 			<trans-unit id="sys_language" xml:space="preserve">
 				<source>Website Language</source>

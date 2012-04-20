@@ -85,10 +85,22 @@
 				<source>Path type:</source>
 			</trans-unit>
 			<trans-unit id="localDriverFlexform_pathType_relative" xml:space="preserve">
-				<source>absolute</source>
+				<source>relative</source>
 			</trans-unit>
 			<trans-unit id="localDriverFlexform_pathType_absolute" xml:space="preserve">
 				<source>absolute</source>
+			</trans-unit>
+			<trans-unit id="storageNotBrowsableTitle" xml:space="preserve">
+				<source>Access denied.</source>
+			</trans-unit>
+			<trans-unit id="storageNotBrowsableMessage" xml:space="preserve">
+				<source>You are trying to access a folder in a storage that is not browsable.</source>
+			</trans-unit>
+			<trans-unit id="folderNotFoundTitle" xml:space="preserve">
+				<source>Folder access denied.</source>
+			</trans-unit>
+			<trans-unit id="folderNotFoundMessage" xml:space="preserve">
+				<source>The folder "%s" cannot be accessed.</source>
 			</trans-unit>
 		</body>
 	</file>
