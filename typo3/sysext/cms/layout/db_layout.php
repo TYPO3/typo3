@@ -1203,28 +1203,12 @@ class SC_db_layout {
 
 		if (!$this->modTSconfig['properties']['disableIconToolbar']) {
 
-				// Page history
-			$buttons['history_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $GLOBALS['BACK_PATH'] . 'show_rechis.php?element=' . rawurlencode('pages:' . $this->id) . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . '#latest\');return false;') . '" title="' . $GLOBALS['LANG']->getLL('recordHistory', TRUE) . '">' .
-						t3lib_iconWorks::getSpriteIcon('actions-document-history-open') .
-					'</a>';
-
-				// Move page
-			$buttons['move_page'] = '<a href="' . htmlspecialchars($GLOBALS['BACK_PATH'] . 'move_el.php?table=pages&uid=' . $this->id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '" title="' . $GLOBALS['LANG']->getLL('move_page', TRUE) . '">' .
-						t3lib_iconWorks::getSpriteIcon('actions-page-move') .
-					'</a>';
-
 				// Move record
 			if (t3lib_utility_Math::canBeInterpretedAsInteger($this->eRParts[1])) {
 				$buttons['move_record'] = '<a href="' . htmlspecialchars($GLOBALS['BACK_PATH'] . 'move_el.php?table=' . $this->eRParts[0] . '&uid=' . $this->eRParts[1] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '">' .
 						t3lib_iconWorks::getSpriteIcon('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move',array('class'=>'c-inputButton','title' => $GLOBALS['LANG']->getLL('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page'), 1))) .
 						'</a>';
 			}
-
-				// Create new page (wizard)
-			$buttons['new_page'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(\'' . $GLOBALS['BACK_PATH'] . 'db_new.php?id=' . $this->id . '&pagesOnly=1&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . '\');return false;') . '" title="' . $GLOBALS['LANG']->getLL('newPage', TRUE) . '">' .
-						t3lib_iconWorks::getSpriteIcon('actions-page-new') .
-					'</a>';
-
 				// Edit page properties
 			if ($this->CALC_PERMS&2)	{
 				$params='&edit[pages][' . $this->id . ']=edit';
