@@ -68,6 +68,7 @@ final class t3lib_utility_Path {
 				$commonPrefixLength = strlen($commonPrefix);
 				$resolvedSourcePath = '';
 				$resolvedTargetPath = '';
+				$sourcePathSteps = 0;
 
 				if (strlen($sourcePath) > $commonPrefixLength) {
 					$resolvedSourcePath = (string) substr($sourcePath, $commonPrefixLength);
@@ -76,7 +77,10 @@ final class t3lib_utility_Path {
 					$resolvedTargetPath = (string) substr($targetPath, $commonPrefixLength);
 				}
 
-				$sourcePathSteps = count(explode(DIRECTORY_SEPARATOR, $resolvedSourcePath));
+				if ($resolvedSourcePath !== '') {
+					$sourcePathSteps = count(explode(DIRECTORY_SEPARATOR, $resolvedSourcePath));
+				}
+
 				$relativePath = self::sanitizeTrailingSeparator(
 					str_repeat('../', $sourcePathSteps) .
 					str_replace(DIRECTORY_SEPARATOR, '/', $resolvedTargetPath)
