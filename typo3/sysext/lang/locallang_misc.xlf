@@ -183,6 +183,9 @@
 			<trans-unit id="overwriteExistingFiles" xml:space="preserve">
 				<source>Overwrite existing files</source>
 			</trans-unit>
+			<trans-unit id="uploadMultipleFilesInfo" xml:space="preserve">
+				<source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
+			</trans-unit>
 			<trans-unit id="selectPosition" xml:space="preserve">
 				<source>Select a position for the new page</source>
 			</trans-unit>

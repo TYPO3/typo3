@@ -610,17 +610,7 @@ $TCA['pages'] = array(
 		'media' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.media',
-			'config' => array(
-				'type' => 'group',
-				'internal_type' => 'file',
-				'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . ',html,htm,ttf,txt,css',
-				'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
-				'uploadfolder' => 'uploads/media',
-				'show_thumbs' => '1',
-				'size' => '3',
-				'maxitems' => '100',
-				'minitems' => '0',
-			),
+			'config' => t3lib_extMgm::getFileFieldTCAConfig('media'),
 		),
 		'is_siteroot' => array(
 			'exclude' => 1,
@@ -1081,6 +1071,27 @@ if (!t3lib_div::compat_version('4.2')) {
 				TSconfig;;6;nowrap;6-6-6, storage_pid;;7, l18n_cfg, module, content_from_pid, backend_layout;;8,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 	');
+}
+
+
+	// keep old code (pre-FAL) for installations that haven't upgraded yet. please remove this code in TYPO3 7.0
+	// @deprecated since TYPO3 6.0, please remove in TYPO3 7.0
+	// existing installation - and files are merged, nothing to do
+if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard']) || !t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard'], 'pages:media')) && !t3lib_div::compat_version('6.0')) {
+	t3lib_div::deprecationLog('This installation hasn\'t been migrated to FAL for the field $TCA[pages][columns][media] yet. Please do so before TYPO3 v7.');
+		// existing installation and no upgrade wizard was executed - and files haven't been merged: use the old code
+	$TCA['pages']['columns']['media']['config'] = array(
+		'type' => 'group',
+		'internal_type' => 'file',
+		'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . ',html,htm,ttf,txt,css',
+		'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
+		'uploadfolder' => 'uploads/media',
+		'show_thumbs' => '1',
+		'size' => '3',
+		'maxitems' => '100',
+		'minitems' => '0',
+
+	);
 }
 
 ?>

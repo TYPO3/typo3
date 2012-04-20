@@ -9,6 +9,9 @@
 			<trans-unit id="mlang_tabs_tab" xml:space="preserve">
 				<source>File</source>
 			</trans-unit>
+			<trans-unit id="sys_file_storage.isOffline" xml:space="preserve">
+				<source>offline</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

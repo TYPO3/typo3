@@ -7,6 +7,7 @@ t3lib_extMgm::addLLrefForTCAdescr('pages','EXT:context_help/locallang_csh_pages.
 t3lib_extMgm::addLLrefForTCAdescr('pages_language_overlay','EXT:context_help/locallang_csh_pageslol.xml');
 t3lib_extMgm::addLLrefForTCAdescr('static_template','EXT:context_help/locallang_csh_statictpl.xml');
 t3lib_extMgm::addLLrefForTCAdescr('sys_domain','EXT:context_help/locallang_csh_sysdomain.xml');
+t3lib_extMgm::addLLrefForTCAdescr('sys_file_storage','EXT:context_help/locallang_csh_sysfilestorage.xml');
 t3lib_extMgm::addLLrefForTCAdescr('sys_template','EXT:context_help/locallang_csh_systmpl.xml');
 t3lib_extMgm::addLLrefForTCAdescr('tt_content','EXT:context_help/locallang_csh_ttcontent.xml');
 
