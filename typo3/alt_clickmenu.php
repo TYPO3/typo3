@@ -116,7 +116,7 @@ class clickMenu {
 		if ($GLOBALS['BE_USER']->uc['condensedMode'] || $this->iParts[2]==2) $this->alwaysContentFrame=1;
 		if (strcmp($this->iParts[1],''))	$this->isDBmenu=1;
 
-		$TSkey =($this->isDBmenu?'page':'folder').($this->listFrame?'List':'Tree');
+		$TSkey = ($this->isDBmenu? 'page' : 'folder' ) . ($this->listFrame ? 'List' : 'Tree');
 		$this->disabledItems = t3lib_div::trimExplode(',',$GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.'.$TSkey.'.disableItems'),1);
 		$this->leftIcons = $GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.options.leftIcons');
 
@@ -787,42 +787,77 @@ class clickMenu {
 	/**
 	 * Make 1st level clickmenu:
 	 *
-	 * @param	string		The absolute path
-	 * @return	string		HTML content
+	 * @param string $combinedIdentifier The combined identifier
+	 * @return string HTML content
+	 * @see t3lib_file_Factory::retrieveFileOrFolderObject()
 	 */
-	function printFileClickMenu($path)	{
+	function printFileClickMenu($combinedIdentifier)	{
 		$menuItems=array();
+		$combinedIdentifier = rawurldecode($combinedIdentifier);
 
-		if (file_exists($path) && t3lib_div::isAllowedAbsPath($path))	{
-			$fI = pathinfo($path);
-			$size=' ('.t3lib_div::formatSize(filesize($path)).'bytes)';
-			$icon = t3lib_iconWorks::getSpriteIconForFile(is_dir($path) ? 'folder' : strtolower($fI['extension']),
-				array('class'=>'absmiddle', 'title' => htmlspecialchars($fI['basename'] . $size)));
+		$fileObject = t3lib_file_Factory::getInstance()->retrieveFileOrFolderObject($combinedIdentifier);
 
+		if ($fileObject) {
+			$folder = FALSE;
+			$identifier = $fileObject->getCombinedIdentifier();
+			if ($fileObject instanceof t3lib_file_Folder) {
+				$icon = t3lib_iconWorks::getSpriteIconForFile(
+					'folder',
+					array(
+						 'class'=>'absmiddle',
+						 'title' => htmlspecialchars($fileObject->getName())
+					)
+				);
+				$folder = TRUE;
+			} else {
+				$icon = t3lib_iconWorks::getSpriteIconForFile(
+					$fileObject->getExtension(),
+					array(
+						 'class'=>'absmiddle',
+						 'title' => htmlspecialchars(
+							 $fileObject->getName() .
+						 	' (' . t3lib_div::formatSize($fileObject->getSize()) . ')'
+						 )
+					)
+				);
+			}
 				// edit
-			if (!in_array('edit',$this->disabledItems) && is_file($path) && t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'],$fI['extension'])) $menuItems['edit']=$this->FILE_launch($path,'file_edit.php','edit','edit_file.gif');
+			if (!in_array('edit', $this->disabledItems) && !$folder
+					&& t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $fileObject->getExtension())) {
+				$menuItems['edit'] = $this->FILE_launch($identifier, 'file_edit.php', 'edit', 'edit_file.gif');
+			}
 				// rename
-			if (!in_array('rename',$this->disabledItems))	$menuItems['rename']=$this->FILE_launch($path,'file_rename.php','rename','rename.gif');
+			if (!in_array('rename', $this->disabledItems)) {
+				$menuItems['rename'] = $this->FILE_launch($identifier, 'file_rename.php', 'rename', 'rename.gif');
+			}
 				// upload
-			if (!in_array('upload',$this->disabledItems) && is_dir($path)) {
-				$menuItems['upload'] = $this->FILE_upload($path);
+			if (!in_array('upload', $this->disabledItems) && $folder) {
+				$menuItems['upload'] = $this->FILE_upload($identifier);
 			}
 
 				// new
-			if (!in_array('new',$this->disabledItems) && is_dir($path)) $menuItems['new']=$this->FILE_launch($path,'file_newfolder.php','new','new_file.gif');
+			if (!in_array('new', $this->disabledItems) && $folder) {
+				$menuItems['new'] = $this->FILE_launch($identifier, 'file_newfolder.php', 'new', 'new_file.gif');
+			}
 				// info
-			if (!in_array('info',$this->disabledItems))	$menuItems['info']=$this->DB_info($path,'');
+			if (!in_array('info', $this->disabledItems)) {
+				$menuItems['info'] = $this->DB_info($identifier, '');
+			}
 
-			$menuItems[]='spacer';
+			$menuItems[] = 'spacer';
 
 				// copy:
-			if (!in_array('copy',$this->disabledItems))	$menuItems['copy']=$this->FILE_copycut($path,'copy');
+			if (!in_array('copy', $this->disabledItems)) {
+				$menuItems['copy'] = $this->FILE_copycut($identifier, 'copy');
+			}
 				// cut:
-			if (!in_array('cut',$this->disabledItems))	$menuItems['cut']=$this->FILE_copycut($path,'cut');
+			if (!in_array('cut', $this->disabledItems)) {
+				$menuItems['cut'] = $this->FILE_copycut($identifier, 'cut');
+			}
 
 				// Paste:
 			$elFromAllTables = count($this->clipObj->elFromTable('_FILE'));
-			if (!in_array('paste',$this->disabledItems) && $elFromAllTables && is_dir($path))	{
+			if (!in_array('paste', $this->disabledItems) && $elFromAllTables && $folder)	{
 				$elArr = $this->clipObj->elFromTable('_FILE');
 				$selItem = reset($elArr);
 				$elInfo=array(
@@ -830,23 +865,25 @@ class clickMenu {
 					basename($path),
 					$this->clipObj->currentMode()
 				);
-				$menuItems['pasteinto']=$this->FILE_paste($path,$selItem,$elInfo);
+				$menuItems['pasteinto'] = $this->FILE_paste($identifier, $selItem, $elInfo);
 			}
 
 			$menuItems[]='spacer';
 
 				// delete:
-			if (!in_array('delete',$this->disabledItems))	$menuItems['delete']=$this->FILE_delete($path);
+			if (!in_array('delete', $this->disabledItems)) {
+				$menuItems['delete']=$this->FILE_delete($identifier);
+			}
 		}
 
 			// Adding external elements to the menuItems array
-		$menuItems = $this->processingByExtClassArray($menuItems,$path,0);
+		$menuItems = $this->processingByExtClassArray($menuItems, $identifier, 0);
 
 			// Processing by external functions?
 		$menuItems = $this->externalProcessingOfFileMenuItems($menuItems);
 
 			// Return the printed elements:
-		return $this->printItems($menuItems,$icon.basename($path));
+		return $this->printItems($menuItems, $icon . $fileObject->getName());
 	}
 
 

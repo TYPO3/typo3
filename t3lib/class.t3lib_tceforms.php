@@ -2142,6 +2142,19 @@ class t3lib_TCEforms {
 					// Making the array of file items:
 				$itemArray = t3lib_div::trimExplode(',', $PA['itemFormElValue'], TRUE);
 
+				$fileFactory = t3lib_file_Factory::getInstance();
+
+					// correct the filename for the FAL items
+				foreach ($itemArray as &$fileItem) {
+					list($fileUid, $fileLabel) = explode('|', $fileItem);
+					if (t3lib_utility_Math::canBeInterpretedAsInteger($fileUid)) {
+						$fileObject = $fileFactory->getFileObject($fileUid);
+						$fileLabel = $fileObject->getName();
+					}
+
+					$fileItem = $fileUid . '|' . $fileLabel;
+				}
+
 					// Showing thumbnails:
 				$thumbsnail = '';
 				if ($show_thumbs) {
@@ -2150,12 +2163,39 @@ class t3lib_TCEforms {
 						$imgP = explode('|', $imgRead);
 						$imgPath = rawurldecode($imgP[0]);
 
-						$rowCopy = array();
-						$rowCopy[$field] = $imgPath;
+							// FAL icon production
+						if (t3lib_utility_Math::canBeInterpretedAsInteger($imgP[0])) {
+							$fileObject = $fileFactory->getFileObject($imgP[0]);
 
-						$imgs[] = '<span class="nobr">' . t3lib_BEfunc::thumbCode($rowCopy, $table, $field, $this->backPath, 'thumbs.php', $config['uploadfolder'], 0, ' align="middle"') .
-								  $imgPath .
-								  '</span>';
+							if (t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
+								$imageUrl = $fileObject->process(t3lib_file_ProcessedFile::CONTEXT_IMAGEPREVIEW, array())->getPublicUrl(TRUE);
+								$imgTag = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($fileObject->getName()) . '" />';
+							} else {
+									// Icon
+								$imgTag = t3lib_iconWorks::getSpriteIconForFile(
+									strtolower($fileObject->getExtension()),
+									array('title' => $fileObject->getName())
+								);
+							}
+
+							$imgs[] = '<span class="nobr">' . $imgTag . htmlspecialchars($fileObject->getName()) . '</span>';
+						} else {
+							$rowCopy = array();
+							$rowCopy[$field] = $imgPath;
+
+							$thumbnailCode = t3lib_BEfunc::thumbCode(
+								$rowCopy,
+								$table,
+								$field,
+								$this->backPath,
+								'thumbs.php',
+								$config['uploadfolder'],
+								0,
+								' align="middle"'
+							);
+							$imgs[] = '<span class="nobr">' . $thumbnailCode . $imgPath . '</span>';
+						}
+
 					}
 					$thumbsnail = implode('<br />', $imgs);
 				}
@@ -3672,7 +3712,7 @@ class t3lib_TCEforms {
 					foreach ($itemArray as $item) {
 						$itemParts = explode('|', $item);
 						$uidList[] = $pUid = $pTitle = $itemParts[0];
-						$title = htmlspecialchars(basename(rawurldecode($itemParts[0])));
+						$title = htmlspecialchars(basename(rawurldecode($itemParts[1])));
 						$opt[] = '<option value="' . htmlspecialchars(rawurldecode($itemParts[0]))
 								. '" title="' . $title . '">' . $title . '</option>';
 					}
@@ -3815,7 +3855,8 @@ class t3lib_TCEforms {
 					'onFocus' => $onFocus,
 					'table' => $table,
 					'field' => $field,
-					'uid' => $uid
+					'uid' => $uid,
+					'config' => $GLOBALS['TCA'][$table]['columns'][$field],
 				);
 				$hookObject->dbFileIcons_postProcess($params, $selector, $thumbnails, $icons, $rightbox, $fName, $uidList, $additionalParams, $this);
 			}
@@ -5443,6 +5484,7 @@ class t3lib_TCEforms {
 
 			$this->loadJavascriptLib('../t3lib/jsfunc.evalfield.js');
 			$this->loadJavascriptLib('jsfunc.tbe_editor.js');
+			$this->loadJavascriptLib('jsfunc.placeholder.js');
 
 				// needed for tceform manipulation (date picker)
 			$typo3Settings = array(
@@ -6569,6 +6611,8 @@ class t3lib_TCEforms {
 							$value = $foreignRecord[$keySegments[1]];
 						}
 					}
+				} elseif (!empty($keySegments[1]) && isset($row[$keySegments[0]][$keySegments[1]])) {
+					$value = $row[$keySegments[0]][$keySegments[1]];
 				}
 			}
 		}
