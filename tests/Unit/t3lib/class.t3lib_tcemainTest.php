@@ -323,5 +323,58 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 
 		$fixture->process_datamap();
 	}
+
+	/////////////////////////////////////
+	// Tests concerning log
+	/////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function logCallsWriteLogOfBackendUserIfLoggingIsEnabled() {
+		$backendUser = $this->getMock('t3lib_beUserAuth');
+		$backendUser->expects($this->once())->method('writelog');
+		$this->fixture->enableLogging = TRUE;
+		$this->fixture->BE_USER = $backendUser;
+		$this->fixture->log('', 23, 0, 42, 0, 'details');
+	}
+
+	/**
+	 * @test
+	 */
+	public function logDoesNotCallWriteLogOfBackendUserIfLoggingIsDisabled() {
+		$backendUser = $this->getMock('t3lib_beUserAuth');
+		$backendUser->expects($this->never())->method('writelog');
+		$this->fixture->enableLogging = FALSE;
+		$this->fixture->BE_USER = $backendUser;
+		$this->fixture->log('', 23, 0, 42, 0, 'details');
+	}
+
+	/**
+	 * @test
+	 */
+	public function logAddsEntryToLocalErrorLogArray() {
+		$backendUser = $this->getMock('t3lib_beUserAuth');
+		$this->fixture->BE_USER = $backendUser;
+		$this->fixture->enableLogging = TRUE;
+		$this->fixture->errorLog = array();
+		$logDetailsUnique = uniqid('details');
+		$this->fixture->log('', 23, 0, 42, 1, $logDetailsUnique);
+		$this->assertStringEndsWith($logDetailsUnique, $this->fixture->errorLog[0]);
+	}
+
+	/**
+	 * @test
+	 */
+	public function logFormatsDetailMessageWithAdditionalDataInLocalErrorArray() {
+		$backendUser = $this->getMock('t3lib_beUserAuth');
+		$this->fixture->BE_USER = $backendUser;
+		$this->fixture->enableLogging = TRUE;
+		$this->fixture->errorLog = array();
+		$logDetails = uniqid('details');
+		$this->fixture->log('', 23, 0, 42, 1, '%1s' . $logDetails . '%2s', -1, array('foo', 'bar'));
+		$expected = 'foo' . $logDetails . 'bar';
+		$this->assertStringEndsWith($expected, $this->fixture->errorLog[0]);
+	}
 }
 ?>
