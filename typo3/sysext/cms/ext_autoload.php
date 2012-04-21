@@ -56,7 +56,6 @@ return array(
 	'tslib_content_form' => PATH_tslib . 'content/class.tslib_content_form.php',
 	'tslib_content_hierarchicalmenu' => PATH_tslib . 'content/class.tslib_content_hierarchicalmenu.php',
 	'tslib_content_horizontalruler' => PATH_tslib . 'content/class.tslib_content_horizontalruler.php',
-	'tslib_content_html' => PATH_tslib . 'content/class.tslib_content_html.php',
 	'tslib_content_image' => PATH_tslib . 'content/class.tslib_content_image.php',
 	'tslib_content_imageresource' => PATH_tslib . 'content/class.tslib_content_imageresource.php',
 	'tslib_content_imagetext' => PATH_tslib . 'content/class.tslib_content_imagetext.php',

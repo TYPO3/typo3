@@ -627,7 +627,6 @@ class tslib_cObj {
 	 */
 	public function getContentObject($name) {
 		$classMapping = array(
-			'HTML' => 'Html',
 			'TEXT' => 'Text',
 			'CASE' => 'Case',
 			'CLEARGIF' => 'ClearGif',
@@ -686,9 +685,11 @@ class tslib_cObj {
 	 *
 	 * @param	array		array of TypoScript properties
 	 * @return	string		Output
+	 * @deprecated since 6.0, will be removed in two versions
 	 */
 	function HTML($conf) {
-		return $this->getContentObject('HTML')->render($conf);
+		t3lib_div::logDeprecatedFunction();
+		return '';
 	}
 
 	/**
