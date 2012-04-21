@@ -1242,9 +1242,10 @@ class t3lib_parsehtml {
 	 * @param	string		Value to process
 	 * @param	string		List of tags
 	 * @return	string		Output value
-	 * @ignore
+	 * @deprecated For a long time, deprecationLog added since 6.0, well be removed two versions later
 	 */
 	function stripTagsExcept($value, $tagList) {
+		t3lib_div::logDeprecatedFunction();
 		$tags = t3lib_div::trimExplode(',', $tagList, 1);
 		$forthArr = array();
 		$backArr = array();

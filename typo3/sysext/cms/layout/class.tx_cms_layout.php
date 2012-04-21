@@ -2213,9 +2213,10 @@ class tx_cms_layout extends recordList {
 	 * @param	string		Input string
 	 * @param	boolean		If TRUE, empty tags will be filled with the first attribute of the tag before.
 	 * @return	string		Input string with all HTML and PHP tags stripped
-	 * @deprecated since TYPO3 4.6, will be removed in 4.8 - using php-function strip_tags now
+	 * @deprecated since TYPO3 4.6, deprecationLog since 6.0, will be removed two versions later - use php-function strip_tags instead
 	 */
 	function strip_tags($content, $fillEmptyContent = FALSE) {
+		t3lib_div::logDeprecatedFunction();
 		if ($fillEmptyContent && strstr($content, '><')) {
 			$content = preg_replace('/(<[^ >]* )([^ >]*)([^>]*>)(<\/[^>]*>)/', '$1$2$3$2$4', $content);
 		}
