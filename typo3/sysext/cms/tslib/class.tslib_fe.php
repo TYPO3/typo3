@@ -1929,9 +1929,6 @@
 						// Initialize statistics handling: Check filename and permissions
 					$setStatPageName = $this->statistics_init();
 
-					$this->config['FEData'] = $this->tmpl->setup['FEData'];
-					$this->config['FEData.'] = $this->tmpl->setup['FEData.'];
-
 						// class for render Header and Footer parts
 					$template = '';
 					if ($this->pSetup['pageHeaderFooterTemplateFile']) {
@@ -2294,22 +2291,19 @@
 	}
 
 	/**
-	 * Checks if any email-submissions or submission via the fe_tce
+	 * Checks if any email-submissions
 	 *
-	 * @return	string		"email" if a formmail has been sent, "fe_tce" if front-end data submission (like forums, guestbooks) is sent. "" if none.
+	 * @return	string		"email" if a formmail has been sent, "" if none.
 	 */
 	function checkDataSubmission()	{
 		$ret = '';
-		$formtype_db = isset($_POST['formtype_db']) || isset($_POST['formtype_db_x']);
 		$formtype_mail = isset($_POST['formtype_mail']) || isset($_POST['formtype_mail_x']);
-		if ($formtype_db || $formtype_mail)	{
+		if ($formtype_mail)	{
 			$refInfo = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 			if (t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')==$refInfo['host'] || $this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer'])	{
 				if ($this->locDataCheck($_POST['locationData']))	{
 					if ($formtype_mail)	{
 						$ret = 'email';
-					} elseif ($formtype_db && is_array($_POST['data']))	{
-						$ret = 'fe_tce';
 					}
 					$GLOBALS['TT']->setTSlogMessage('"Check Data Submission": Return value: '.$ret,0);
 					return $ret;
@@ -2332,11 +2326,10 @@
 	 *
 	 * @return	void
 	 * @see tslib_feTCE
+	 * @deprecated since 6.0, will be removed two versions later
 	 */
 	function fe_tce()	{
-		$fe_tce = t3lib_div::makeInstance('tslib_feTCE');
-		$fe_tce->start(t3lib_div::_POST('data'),$this->config['FEData.']);
-		$fe_tce->includeScripts();
+		t3lib_div::logDeprecatedFunction();
 	}
 
 	/**
@@ -4014,7 +4007,7 @@ if (version == "n3") {
 	 *
 	 * @param	string		Relative path to php file
 	 * @return	boolean		Returns TRUE if $GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude'] is not set OR if the file requested for inclusion is found in one of the allowed paths.
-	 * @see tslib_feTCE::includeScripts(), tslib_menu::includeMakeMenu()
+	 * @see tslib_menu::includeMakeMenu()
 	 */
 	function checkFileInclude($incFile)	{
 		return !$this->TYPO3_CONF_VARS['FE']['noPHPscriptInclude']

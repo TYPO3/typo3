@@ -11,7 +11,6 @@ return array(
 	'tslib_eidtools' => PATH_tslib . 'class.tslib_eidtools.php',
 	'tslib_fe' => PATH_tslib . 'class.tslib_fe.php',
 	'tslib_fecompression' => PATH_tslib . 'class.tslib_fecompression.php',
-	'tslib_fetce' => PATH_tslib . 'class.tslib_fetce.php',
 	'tslib_feuserauth' => PATH_tslib . 'class.tslib_feuserauth.php',
 	'tslib_gifbuilder' => PATH_tslib . 'class.tslib_gifbuilder.php',
 	'tslib_menu' => PATH_tslib . 'class.tslib_menu.php',
