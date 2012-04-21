@@ -322,12 +322,6 @@ switch($TSFE->checkDataSubmission())	{
 	case 'email':
 		$TSFE->sendFormmail();
 	break;
-	case 'fe_tce':
-		$TSFE->includeTCA();
-		$TT->push('fe_tce','');
-		$TSFE->fe_tce();
-		$TT->pull();
-	break;
 }
 
 

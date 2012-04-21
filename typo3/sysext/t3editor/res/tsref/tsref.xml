@@ -1456,83 +1456,6 @@ color denotes the color of the border.]]></description>
 ]]></default>
 		</property>
 	</type>
-	<type id="FE_TABLE">
-		<property name="allowEdit" type="string">
-			<description><![CDATA[allowEdit.[field]
-			Same as above ("allowNew") but this controls which fields that may be written in case of an update of a record (and not a new submission)
-Please pay attension to the property below!  ("overrideEdit")]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="allowNew" type="string">
-			<description><![CDATA[allowNew.[field]
-			This property is in charge of which fields that may be written from the frontend.
-
-Example:
-This defines that subject is a field, that may be submitted from the frontend. If a value is not submitted, subject is filled with the default value (see above).
-The field "hidden" on the other hand cannot be changed from the frontend. "hidden" will gain the value from the default definition (see above). If fields are set to "0" (zero) it's the same as if they were not defined in this array.
-
-allowNew {
-  subject = 1
-  hidden = 0
-}]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="autoInsertPID" type="boolean">
-			<description><![CDATA[Works with new records: Insert automatically the PID of the page, where the submitted data is sent to. Any "pid" supplied from the submitted data will override. This is for convenience.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="default" type="string">
-			<description><![CDATA[default.[field] This property is in charge of which default-values is used for the table:
-
-Example:
-This defines the default values used for new records. These values will be overridden with any value submitted instead (as long as the submitted fields are allowed due to "allowNew")
-default {
-  subject = This is the default subject value!
-  hidden = 1
-  parent = 0
-}]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="doublePostCheck" type="string">
-			<description><![CDATA[string (fieldname)
-			Specifies a fieldname (integer) into which an integer-hash compiled of the submitted data is inserted. If the field is set, then submissions are checked whether another record with this value already exists. If so, the record is NOT inserted, because it's expected to be a "double post" (posting the same data more than once)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="overrideEdit" type="string">
-			<description><![CDATA[This works like default-values above but is values inserted after the submitted values has beed processed. This means that opposite to default-values overwritten by the submitted values, these values override the submitted values.
-
-Example:
-In this case overrideEdit secures that if a user updates his record (if he "own" it) the "hidden"-field will be set no matter what.
-
-overrideEdit {
-  hidden = 1
-}]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="processScript" type="string">
-			<description><![CDATA[Include-script to be used for processing of incoming data to the table. The script is included from a function in the class tslib_fetce
-This is the really important option, because whether or not you are going to utilize the "cleaning"/"authorization" features of the properties above depend on how you write your script to process data and put it in the database.
-A very good example is to look at "media/scripts/guest_submit.inc"]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="separator" type="string">
-			<description><![CDATA[Separator character used when the submitted data is an array from eg. a multiple selector box.]]></description>
-			<default><![CDATA[chr(10) (linebreak)]]></default>
-		</property>
-		<property name="userIdColumn" type="string">
-			<description><![CDATA[string (field)
-			This is a string that points to the column of a record where the user-id of the current fe_user should be inserted. This fe_user-uid is inserted/updated both by "new" and "edit"]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
 	<type id="FILE">
 		<property name="altText" type="stdWrap">
 			<description><![CDATA[For <img> output only!
@@ -1909,7 +1832,7 @@ NOTE: If this value is set the target of this overriddes the target of the "type
 			<description><![CDATA[Type (action="" of the form):
 
 Integer: this is regarded to be a page in TYPO3
-String: this is regarded to be a normal URL (eg. "formmail.php" or "fe_tce_db.php")
+String: this is regarded to be a normal URL (eg. "formmail.php")
 Empty: the current page is chosen.
 
 NOTE: If type is integer/empty the form will be submitted to a page in TYPO3 and if this page has a value for target/no_cache, then this will be used instead of the default target/no_cache below.
@@ -5954,12 +5877,6 @@ page.30 {
 		</property>
 	</type>
 	<type id="TLO">
-		<property name="FEData" type="array">
-			<description><![CDATA[Array of tablenames.
-Here you can configure how data submitted from the front-end should be processed, which script and so on.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="config" type="CONFIG">
 			<description><![CDATA[Global configuration.
 These values are stored with cached pages which means they are also accessible when retrieving a cached page.]]></description>
