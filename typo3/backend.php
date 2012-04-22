@@ -833,7 +833,9 @@ if (is_array($GLOBALS['TBE_MODULES']['_configuration'])) {
 	foreach ($GLOBALS['TBE_MODULES']['_configuration'] as $moduleConfig) {
 		if (is_array($moduleConfig['cssFiles'])) {
 			foreach ($moduleConfig['cssFiles'] as $cssFileName => $cssFile) {
-				$TYPO3backend->addCssFile($name, t3lib_div::getFileAbsFileName($cssFile));
+				$files = array(t3lib_div::getFileAbsFileName($cssFile));
+				$files = t3lib_div::removePrefixPathFromList($files, PATH_site);
+				$TYPO3backend->addCssFile($cssFileName, '../' . $files[0]);
 			}
 		}
 		if (is_array($moduleConfig['jsFiles'])) {
@@ -847,5 +849,4 @@ if (is_array($GLOBALS['TBE_MODULES']['_configuration'])) {
 }
 
 $TYPO3backend->render();
-
 ?>
