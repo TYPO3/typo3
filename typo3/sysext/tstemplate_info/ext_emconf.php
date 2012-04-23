@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "tstemplate_info".
 #
-# Auto generated 25-10-2011 13:11
+# Auto generated 23-04-2012 12:57
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -33,8 +33,8 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => 'Curby Soft Multimedia',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '1.1.0',
-	'_md5_values_when_last_written' => 'a:5:{s:9:"ChangeLog";s:4:"4105";s:27:"class.tx_tstemplateinfo.php";s:4:"840e";s:12:"ext_icon.gif";s:4:"a332";s:14:"ext_tables.php";s:4:"d827";s:13:"locallang.xlf";s:4:"294c";}',
+	'version' => '4.7.0',
+	'_md5_values_when_last_written' => 'a:5:{s:9:"ChangeLog";s:4:"4105";s:27:"class.tx_tstemplateinfo.php";s:4:"2682";s:12:"ext_icon.gif";s:4:"a332";s:14:"ext_tables.php";s:4:"d827";s:13:"locallang.xlf";s:4:"194c";}',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.3.0-0.0.0',

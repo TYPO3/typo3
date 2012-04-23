@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "tstemplate".
 #
-# Auto generated 25-10-2011 13:11
+# Auto generated 23-04-2012 12:57
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -33,8 +33,8 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => 'Curby Soft Multimedia',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '1.1.0',
-	'_md5_values_when_last_written' => 'a:10:{s:9:"ChangeLog";s:4:"9bb8";s:12:"ext_icon.gif";s:4:"e0ad";s:14:"ext_tables.php";s:4:"041b";s:12:"ts/clear.gif";s:4:"cc11";s:11:"ts/conf.php";s:4:"9e80";s:12:"ts/index.php";s:4:"b9f7";s:16:"ts/locallang.xlf";s:4:"fa74";s:20:"ts/locallang_mod.xlf";s:4:"b08e";s:9:"ts/ts.gif";s:4:"18cb";s:10:"ts/ts1.gif";s:4:"e0ad";}',
+	'version' => '4.7.0',
+	'_md5_values_when_last_written' => 'a:10:{s:9:"ChangeLog";s:4:"9bb8";s:12:"ext_icon.gif";s:4:"e0ad";s:14:"ext_tables.php";s:4:"041b";s:12:"ts/clear.gif";s:4:"cc11";s:11:"ts/conf.php";s:4:"9e80";s:12:"ts/index.php";s:4:"3715";s:16:"ts/locallang.xlf";s:4:"fa74";s:20:"ts/locallang_mod.xlf";s:4:"b08e";s:9:"ts/ts.gif";s:4:"18cb";s:10:"ts/ts1.gif";s:4:"e0ad";}',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.3.0-0.0.0',
