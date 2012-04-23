@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "lowlevel".
 #
-# Auto generated 25-10-2011 13:11
+# Auto generated 23-04-2012 12:56
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -33,8 +33,8 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => 'Curby Soft Multimedia',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '1.3.0',
-	'_md5_values_when_last_written' => 'a:33:{s:38:"HOWTO_clean_up_TYPO3_installations.txt";s:4:"1cb7";s:13:"admin_cli.php";s:4:"539d";s:32:"class.tx_lowlevel_admin_core.php";s:4:"252a";s:29:"class.tx_lowlevel_cleaner.php";s:4:"a71b";s:34:"class.tx_lowlevel_cleaner_core.php";s:4:"55b3";s:12:"ext_icon.gif";s:4:"4bcb";s:17:"ext_localconf.php";s:4:"d273";s:14:"ext_tables.php";s:4:"ad58";s:30:"clmods/class.cleanflexform.php";s:4:"a10b";s:24:"clmods/class.deleted.php";s:4:"0cb2";s:29:"clmods/class.double_files.php";s:4:"7751";s:27:"clmods/class.lost_files.php";s:4:"6383";s:30:"clmods/class.missing_files.php";s:4:"da79";s:34:"clmods/class.missing_relations.php";s:4:"8e55";s:31:"clmods/class.orphan_records.php";s:4:"9c89";s:27:"clmods/class.rte_images.php";s:4:"b52f";s:23:"clmods/class.syslog.php";s:4:"df93";s:25:"clmods/class.versions.php";s:4:"dc37";s:16:"config/clear.gif";s:4:"cc11";s:15:"config/conf.php";s:4:"709a";s:17:"config/config.gif";s:4:"2d41";s:16:"config/index.php";s:4:"3528";s:20:"config/locallang.xlf";s:4:"c7b6";s:24:"config/locallang_mod.xlf";s:4:"561a";s:15:"dbint/clear.gif";s:4:"cc11";s:14:"dbint/conf.php";s:4:"7fb3";s:12:"dbint/db.gif";s:4:"4bcb";s:15:"dbint/index.php";s:4:"72f6";s:19:"dbint/locallang.xlf";s:4:"3670";s:23:"dbint/locallang_mod.xlf";s:4:"72cf";s:25:"dbint/cli/cleaner_cli.php";s:4:"91f9";s:26:"dbint/cli/refindex_cli.php";s:4:"2d2e";s:12:"doc/TODO.txt";s:4:"4dcc";}',
+	'version' => '4.7.0',
+	'_md5_values_when_last_written' => 'a:33:{s:38:"HOWTO_clean_up_TYPO3_installations.txt";s:4:"1cb7";s:13:"admin_cli.php";s:4:"539d";s:32:"class.tx_lowlevel_admin_core.php";s:4:"252a";s:29:"class.tx_lowlevel_cleaner.php";s:4:"339f";s:34:"class.tx_lowlevel_cleaner_core.php";s:4:"55b3";s:12:"ext_icon.gif";s:4:"4bcb";s:17:"ext_localconf.php";s:4:"d273";s:14:"ext_tables.php";s:4:"ad58";s:30:"clmods/class.cleanflexform.php";s:4:"a10b";s:24:"clmods/class.deleted.php";s:4:"0cb2";s:29:"clmods/class.double_files.php";s:4:"7751";s:27:"clmods/class.lost_files.php";s:4:"6383";s:30:"clmods/class.missing_files.php";s:4:"da79";s:34:"clmods/class.missing_relations.php";s:4:"410a";s:31:"clmods/class.orphan_records.php";s:4:"9c89";s:27:"clmods/class.rte_images.php";s:4:"b52f";s:23:"clmods/class.syslog.php";s:4:"df93";s:25:"clmods/class.versions.php";s:4:"7918";s:16:"config/clear.gif";s:4:"cc11";s:15:"config/conf.php";s:4:"709a";s:17:"config/config.gif";s:4:"2d41";s:16:"config/index.php";s:4:"bc69";s:20:"config/locallang.xlf";s:4:"c7b6";s:24:"config/locallang_mod.xlf";s:4:"561a";s:15:"dbint/clear.gif";s:4:"cc11";s:14:"dbint/conf.php";s:4:"7fb3";s:12:"dbint/db.gif";s:4:"4bcb";s:15:"dbint/index.php";s:4:"30f2";s:19:"dbint/locallang.xlf";s:4:"303a";s:23:"dbint/locallang_mod.xlf";s:4:"72cf";s:25:"dbint/cli/cleaner_cli.php";s:4:"91f9";s:26:"dbint/cli/refindex_cli.php";s:4:"2d2e";s:12:"doc/TODO.txt";s:4:"4dcc";}',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.3.0-0.0.0',
