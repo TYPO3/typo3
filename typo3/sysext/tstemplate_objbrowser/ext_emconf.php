@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "tstemplate_objbrowser".
 #
-# Auto generated 25-10-2011 13:11
+# Auto generated 23-04-2012 12:57
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -33,8 +33,8 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => 'Curby Soft Multimedia',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '1.1.0',
-	'_md5_values_when_last_written' => 'a:6:{s:9:"ChangeLog";s:4:"63a4";s:33:"class.tx_tstemplateobjbrowser.php";s:4:"aabf";s:12:"ext_icon.gif";s:4:"c2e1";s:14:"ext_tables.php";s:4:"a29f";s:13:"locallang.xlf";s:4:"9091";s:12:"doc/TODO.txt";s:4:"6bb0";}',
+	'version' => '4.7.0',
+	'_md5_values_when_last_written' => 'a:6:{s:9:"ChangeLog";s:4:"63a4";s:33:"class.tx_tstemplateobjbrowser.php";s:4:"8098";s:12:"ext_icon.gif";s:4:"c2e1";s:14:"ext_tables.php";s:4:"a29f";s:13:"locallang.xlf";s:4:"0af1";s:12:"doc/TODO.txt";s:4:"6bb0";}',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.3.0-0.0.0',
