@@ -722,7 +722,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 		foreach($grList as $group) {
 			$checkGroup = t3lib_BEfunc::getRecord('be_groups', $group);
 			if (is_array($checkGroup)) {
-				$selected = (is_array($vars['usergroup']) && t3lib_div::inList(implode(',', $vars['usergroup']), $checkGroup['uid'])) ? ' selected="selected" ' : '';
+				$selected = t3lib_div::inList($vars['usergroup'], $checkGroup['uid']) ? ' selected="selected" ' : '';
 				$content .= '<option ' . $selected . 'value="' . $checkGroup['uid'] . '">' . htmlspecialchars($checkGroup['title']) . '</option>';
 			}
 		}
