@@ -841,6 +841,16 @@ class DataHandlerHook {
 											$tcemainObj->newlog2(($swapIntoWS ? 'Swapping' : 'Publishing') . ' successful for table "' . $table . '" uid ' . $id . '=>' . $swapWith, $table, $id, $swapVersion['pid']);
 											// Update reference index of the live record:
 											$tcemainObj->addRemapStackRefIndex($table, $id);
+
+											// Swap existing log entries concerning stage changes
+											$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_log', 'action=6 AND recuid=' . intval($id));
+											while ($result = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+												$uidArray[] = $result['uid'];
+											}
+											$GLOBALS['TYPO3_DB']->sql_free_result($res);
+											$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_log', 'action=6 AND recuid=' . intval($swapWith), array('recuid' => intval($id)));
+											$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_log', 'uid IN (' . implode(',', $uidArray) . ')', array('recuid' => intval($swapWith)));
+
 											// Set log entry for live record:
 											$propArr = $tcemainObj->getRecordPropertiesFromRow($table, $swapVersion);
 											if ($propArr['_ORIG_pid'] == -1) {
