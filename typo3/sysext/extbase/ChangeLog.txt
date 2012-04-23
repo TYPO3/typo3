@@ -1,6 +1,102 @@
 ChangeLog for Extbase
 =====================
 
+Changes for 4.7.0
+=================
+
+This release features 48 changes, most of them are bugfixes and performance improvments.
+Special thanks goes to all the folks who attended the codesprint, you really got stuff
+done! Of course thanks goes to all the community members as well, for submitting patches.
+
+You rock!
+
+!!! Changes in Signal / Slot implementation
+-------------------------------------------
+
+A registered slot now gets the signalInformation (classname::name) by default
+(was not given before) set as last parameter in the arguments array. You can
+avoid this by setting passSignalInformation to FALSE in your connect()-call.
+
+CommandController as SchedulerTasks
+-----------------------------------
+
+It's now possible to let your commandController be run as scheduler tasks. See
+http://forge.typo3.org/projects/typo3v4-mvc/wiki/CommandControllerInSchedulerTask
+for more information.
+
+Object-aware Debugger from FLOW3
+--------------------------------
+
+It always was hard to debug Extbase objects because of their depth and recursion.
+With this release the object-aware debugger from FLOW3 was backported. Just use
+Tx_Extbase_Utility_Debugger::var_dump() instead.
+
+DI works without inject-methods
+-------------------------------
+
+You can now use @inject annotations to your protected properties and the objectManager
+will take care, even without the inject-method. Please notice that this works through
+reflection and might be slow! Please profile your code or use inject-methods for now.
+
+Shorthand syntax for foreign validators
+---------------------------------------
+
+You can now use foreign validators without giving the hole classname. Just use
+@validate YourExtension::Foo
+and Extbase will try to find
+Tx_YourExtension_Validation_Validator_FooValidator.
+
+Full Changes for 4.7.0
+======================
+[RELEASE] Extbase 4.7.0
+[TASK] Update version number to 4.7.0rc2
+[BUGFIX] Respect localized records when auto determining defaultPid
+[TASK] Rename deprecation message version from 1.6 to 6.0
+[TASK] Update version to 4.7.0rc1
+[BUGFIX] Fix the unit tests to work with PHPUnit 3.6
+[BUGFIX] Unit test failures concerning the HMAC
+[TASK] Add unittest for shorthand for custom validators
+[SECURITY] Protect arguments of form __referrer with HMAC
+[TASK] Update version to 4.7.0beta3
+[BUGFIX] Fix the @return of findAll
+[+BUGFIX] Make $query->equals, no case sensitivity, work with UTF8
+[BUGFIX] Add missing "command" variable to Tx_Extbase_MVC_CLI_Request
+[BUGFIX] Fix unit tests
+[BUGFIX] parseDynamicOperand appends to uninitialized variable
+[BUGFIX] Tx_Extbase_Persistence_QueryInterface needs to provide getSource
+[CLEANUP] Replace deprecated interface from unittests
+[BUGFIX] property mapping for models w/o __construct
+[BUGFIX] Extbase produces errors in TYPO3 Log
+[BUGFIX] ObjectContainer does not support namespaces
+[BUGFIX] Removed obsolet file.
+Revert "[+CLEANUP] correct sql statement building"
+[FEATURE] Shorthand syntax for foreign Validators
+[BUGFIX] Set default storagePageUid to current page in BE context
+[+FEATURE] make DI work without inject-methods
+Revert "[BUGFIX] keep PersistentObjectConverterTest from cloning objects"
+[BUGFIX] Reset LazyObjectStorage array pointer at initialization
+[BUGFIX] Enable some support for workspace previews
+[BUGFIX] Repository replace() does not replace unpersisted objects
+[BUGFIX] Child objects are now fetched only by uid (pid and sys_language_uid are ignored).
+[BUGFIX] adjust SignalSlotDispatcher's unit-tests
+[TASK] Backported FLOW3 Debugger
+[+CLEANUP] correct sql statement building
+[CLEANUP] Performance in Reflection Service's cache handling
+[BUGFIX] Fatal error on matching non-existing column, DB Backend
+[FEATURE] Run CommandController commands through Scheduler
+[REVERT] let PersistentObjectConverter clone objects
+[BUGFIX] keep PersistentObjectConverterTest from cloning objects
+[!!!][~BACKPORT] backport FLOW3 changes to SignalSlotDispatcher
+[TASK] Coding guidelines cleanup for ClassInfo class
+[BUGFIX] Invalid LOCAL_LANG overlay for non-existing languages
+[BUGFIX] Make SignalSlot Dispatcher a singleton
+[BUGFIX] DateTime properties are not mapped correctly
+[TASK] Extbase (MVC): Avoid code-duplication in Tx_Extbase_MVC_Web_FrontendRequestHandler::isCacheable()
+[BUGFIX] Make changed action resolving backwards compatible
+[CLEANUP] remove not needed parameter
+[BUGFIX] Fix PHP Warnings in Unit Tests
+
+
 Changes for 1.4.0:
 ==================
 included in TYPO3 4.6.0.
