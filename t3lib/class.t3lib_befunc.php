@@ -2058,7 +2058,7 @@ final class t3lib_BEfunc {
 								$MMres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 									'uid, ' . $MMfield,
 									$theColConf['foreign_table'],
-										'uid IN (' . implode(',', $selectUids) . ')'
+									'uid IN (' . implode(',', $selectUids) . ')' . self::deleteClause($theColConf['foreign_table'])
 								);
 								while ($MMrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($MMres)) {
 									$mmlA[] = ($noRecordLookup ? $MMrow['uid'] : self::getRecordTitle($theColConf['foreign_table'], $MMrow, FALSE, $forceResult));
@@ -2068,7 +2068,7 @@ final class t3lib_BEfunc {
 								if (is_array($mmlA)) {
 									$l = implode('; ', $mmlA);
 								} else {
-									$l = '';
+									$l = 'N/A';
 								}
 							} else {
 								$l = 'N/A';
