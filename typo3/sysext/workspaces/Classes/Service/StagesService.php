@@ -268,11 +268,11 @@ class StagesService {
 				foreach ($stagesForWSUserData as $allowedStage) {
 					$nextStage = $this->getNextStage($allowedStage['uid']);
 					$prevStage = $this->getPrevStage($allowedStage['uid']);
-					if (isset($nextStage['uid'])) {
-						$allowedStages[$nextStage['uid']] = $nextStage;
-					}
 					if (isset($prevStage['uid'])) {
 						$allowedStages[$prevStage['uid']] = $prevStage;
+					}
+					if (isset($nextStage['uid'])) {
+						$allowedStages[$nextStage['uid']] = $nextStage;
 					}
 				}
 				$orderedAllowedStages = array_values($allowedStages);
