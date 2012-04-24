@@ -199,6 +199,8 @@ class Tx_Install_Updates_File_TceformsUpdateWizard extends Tx_Install_Updates_Ba
 			$linkContents = explode(LF, $row[$linkField]);
 		}
 
+		$fileadminDirectory = rtrim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') . '/';
+
 		$queries = array();
 		$i = 0;
 		foreach ($fieldItems as $item) {
@@ -207,7 +209,7 @@ class Tx_Install_Updates_File_TceformsUpdateWizard extends Tx_Install_Updates_Ba
 
 				// copy file
 			$sourcePath = PATH_site . $fieldConfiguration['sourcePath'] . $item;
-			$targetPath = PATH_site.'fileadmin/'.$fieldConfiguration['targetPath']. $item;
+			$targetPath = PATH_site . $fileadminDirectory . $fieldConfiguration['targetPath'] . $item;
 			if(!is_dir(dirname($targetPath))) {
 				t3lib_div::mkdir_deep(dirname($targetPath));
 			}
