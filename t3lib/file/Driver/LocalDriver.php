@@ -363,7 +363,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 			$iterator->next();
 			$identifier = $path . $iteratorItem;
 
-			if ($this->applyFilterMethodsToDirectoryItem($iteratorItem, $identifier, $path, $filterMethods) === FALSE) {
+			if ($this->applyFilterMethodsToDirectoryItem($filterMethods, $iteratorItem, $identifier, $path) === FALSE) {
 				continue;
 			}
 
