@@ -454,16 +454,17 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	 * Applies a set of filter methods to a file name to find out if it should be used or not. This is e.g. used by
 	 * directory listings.
 	 *
+	 * @param array $filterMethods The filter methods to use
 	 * @param string $itemName
 	 * @param string $itemIdentifier
 	 * @param string $parentIdentifier
-	 * @param array $filterMethods
+	 * @param array $additionalInformation Additional information about the inspected item
 	 * @return bool
 	 */
-	protected function applyFilterMethodsToDirectoryItem($itemName, $itemIdentifier, $parentIdentifier, array $filterMethods) {
+	protected function applyFilterMethodsToDirectoryItem(array $filterMethods, $itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation = array()) {
 		foreach ($filterMethods as $filter) {
 			if (is_array($filter)) {
-				$result = call_user_func($filter, $itemName, $itemIdentifier, $parentIdentifier, $this);
+				$result = call_user_func($filter, $itemName, $itemIdentifier, $parentIdentifier, $additionalInformation, $this);
 
 					// We have to use -1 as the „don't include“ return value, as call_user_func() will return FALSE
 					// If calling the method succeeded and thus we can't use that as a return value.
