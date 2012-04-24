@@ -50,10 +50,11 @@ class t3lib_file_Utility_FilenameFilters {
 	 * @param string $itemName
 	 * @param string $itemIdentifier
 	 * @param string $parentIdentifier
+	 * @param array $additionalInformation Additional information (driver dependent) about the inspected item
 	 * @param t3lib_file_Driver_AbstractDriver $driverInstance
 	 * @return boolean|integer -1 if the file should not be included in a listing
 	 */
-	public static function filterHiddenFilesAndFolders($itemName, $itemIdentifier, $parentIdentifier, t3lib_file_Driver_AbstractDriver $driverInstance) {
+	public static function filterHiddenFilesAndFolders($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, t3lib_file_Driver_AbstractDriver $driverInstance) {
 			// Only apply the filter if you want to hide the hidden files
 		if (self::$showHiddenFilesAndFolders === FALSE && substr($itemName, 0, 1) == '.') {
 			return -1;

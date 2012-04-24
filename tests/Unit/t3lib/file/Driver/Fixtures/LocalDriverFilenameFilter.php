@@ -36,7 +36,7 @@ class t3lib_file_Tests_Driver_Fixtures_LocalDriverFilenameFilter {
 	 * @param t3lib_file_Driver_AbstractDriver $driverInstance
 	 * @return boolean|integer
 	 */
-	public static function filterFilename($itemName, $itemIdentifier, $parentIdentifier, t3lib_file_Driver_AbstractDriver $driverInstance) {
+	public static function filterFilename($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, t3lib_file_Driver_AbstractDriver $driverInstance) {
 		if ($itemName == 'fileA' || $itemName == 'folderA/') {
 			return -1;
 		} else {
