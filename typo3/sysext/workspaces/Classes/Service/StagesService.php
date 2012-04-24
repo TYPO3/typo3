@@ -194,12 +194,15 @@ class StagesService {
 		} else {
 			$stages[] = array(
 				'uid' => self::STAGE_EDIT_ID,
-				'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xlf:stage_editing') . '"'
+				'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "'
+					. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xlf:stage_editing') . '"'
 			);
 			$workspaceRec = BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
 			if ($workspaceRec['custom_stages'] > 0) {
 				// Get all stage records for this workspace
-				$workspaceStageRecs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', self::TABLE_STAGE, 'parentid=' . $this->getWorkspaceId() . ' AND parenttable=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('sys_workspace', self::TABLE_STAGE) . ' AND deleted=0', '', 'sorting', '', 'uid');
+				$where = 'parentid=' . $this->getWorkspaceId() . ' AND parenttable='
+					. $GLOBALS['TYPO3_DB']->fullQuoteStr('sys_workspace', self::TABLE_STAGE) . ' AND deleted=0';
+				$workspaceStageRecs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', self::TABLE_STAGE, $where, '', 'sorting', '', 'uid');
 				foreach ($workspaceStageRecs as $stage) {
 					$stage['title'] = $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "' . $stage['title'] . '"';
 					$stages[] = $stage;
@@ -207,7 +210,8 @@ class StagesService {
 			}
 			$stages[] = array(
 				'uid' => self::STAGE_PUBLISH_ID,
-				'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stage_ready_to_publish') . '"'
+				'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "'
+					. $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stage_ready_to_publish') . '"'
 			);
 			$stages[] = array(
 				'uid' => self::STAGE_PUBLISH_EXECUTE_ID,
@@ -246,11 +250,11 @@ class StagesService {
 				foreach ($stagesForWSUserData as $allowedStage) {
 					$nextStage = $this->getNextStage($allowedStage['uid']);
 					$prevStage = $this->getPrevStage($allowedStage['uid']);
-					if (isset($nextStage['uid'])) {
-						$allowedStages[$nextStage['uid']] = $nextStage;
-					}
 					if (isset($prevStage['uid'])) {
 						$allowedStages[$prevStage['uid']] = $prevStage;
+					}
+					if (isset($nextStage['uid'])) {
+						$allowedStages[$nextStage['uid']] = $nextStage;
 					}
 				}
 				$orderedAllowedStages = array_values($allowedStages);
@@ -312,8 +316,9 @@ class StagesService {
 	/**
 	 * Gets next stage in process for given stage id
 	 *
-	 * @param integer $stageid Id of the stage to fetch the next one for
+	 * @param integer $stageId Id of the stage to fetch the next one for
 	 * @return integer The next stage Id
+	 * @throws \InvalidArgumentException
 	 */
 	public function getNextStage($stageId) {
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageId)) {
@@ -337,7 +342,8 @@ class StagesService {
 		if ($nextStage === FALSE) {
 			$nextStage[] = array(
 				'uid' => self::STAGE_EDIT_ID,
-				'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xlf:stage_editing') . '"'
+				'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "'
+					. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xlf:stage_editing') . '"'
 			);
 		}
 		return $nextStage;
@@ -346,9 +352,9 @@ class StagesService {
 	/**
 	 * Recursive function to get all next stages for a record depending on user permissions
 	 *
-	 * @param 	array	next stages
-	 * @param 	int		current stage id of the record
-	 * @return 	array	next stages
+	 * @param array $nextStageArray Next stages
+	 * @param integer $stageId Current stage id of the record
+	 * @return array Next stages
 	 */
 	public function getNextStages(array &$nextStageArray, $stageId) {
 		// Current stage is "Ready to publish" - there is no next stage
@@ -377,11 +383,12 @@ class StagesService {
 	/**
 	 * Get next stage in process for given stage id
 	 *
-	 * @param integer $stageid Id of the stage to fetch the previous one for
+	 * @param integer $stageId Id of the stage to fetch the previous one for
 	 * @return integer The previous stage Id
+	 * @throws \InvalidArgumentException
 	 */
-	public function getPrevStage($stageid) {
-		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageid)) {
+	public function getPrevStage($stageId) {
+		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageId)) {
 			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'));
 		}
 		$prevStage = FALSE;
@@ -390,7 +397,7 @@ class StagesService {
 			end($workspaceStageRecs);
 			while (!is_null(($workspaceStageRecKey = key($workspaceStageRecs)))) {
 				$workspaceStageRec = current($workspaceStageRecs);
-				if ($workspaceStageRec['uid'] == $stageid) {
+				if ($workspaceStageRec['uid'] == $stageId) {
 					$prevStage = prev($workspaceStageRecs);
 					break;
 				}
@@ -405,9 +412,9 @@ class StagesService {
 	/**
 	 * Recursive function to get all prev stages for a record depending on user permissions
 	 *
-	 * @param 	array	prev stages
-	 * @param 	int		current stage id of the record
-	 * @return 	array	prev stages
+	 * @param array	$prevStageArray Prev stages
+	 * @param integer $stageId Current stage id of the record
+	 * @return array prev stages
 	 */
 	public function getPrevStages(array &$prevStageArray, $stageId) {
 		// Current stage is "Editing" - there is no prev stage
@@ -429,9 +436,9 @@ class StagesService {
 	/**
 	 * Get array of all responsilbe be_users for a stage
 	 *
-	 * @param 	int	stage id
-	 * @param 	boolean if field notification_defaults should be selected instead of responsible users
-	 * @return 	array be_users with e-mail and name
+	 * @param integer $stageId Stage id
+	 * @param boolean $selectDefaultUserField If field notification_defaults should be selected instead of responsible users
+	 * @return array be_users with e-mail and name
 	 */
 	public function getResponsibleBeUser($stageId, $selectDefaultUserField = FALSE) {
 		$workspaceRec = BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
@@ -478,8 +485,8 @@ class StagesService {
 	/**
 	 * Get uids of all responsilbe persons for a stage
 	 *
-	 * @param 	string	responsible_persion value from stage record
-	 * @return 	string	uid list of responsible be_users
+	 * @param string $stageRespValue Responsible_person value from stage record
+	 * @return string Uid list of responsible be_users
 	 */
 	public function getResponsibleUser($stageRespValue) {
 		$stageValuesArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $stageRespValue, TRUE);
@@ -594,6 +601,7 @@ class StagesService {
 	 * @param integer $stageId
 	 * @param string $property
 	 * @return string
+	 * @throws \InvalidArgumentException
 	 */
 	public function getPropertyOfCurrentWorkspaceStage($stageId, $property) {
 		$result = NULL;
@@ -608,7 +616,8 @@ class StagesService {
 	}
 
 	/**
-	 * Gets the position of the given workspace in the hole process f.e. 3 means step 3 of 20, by which 1 is edit and 20 is ready to publish
+	 * Gets the position of the given workspace in the hole process
+	 * f.e. 3 means step 3 of 20, by which 1 is edit and 20 is ready to publish
 	 *
 	 * @param integer $stageId
 	 * @return array position => 3, count => 20
@@ -721,8 +730,9 @@ class StagesService {
 	 * 1 = notify all responsible users (some users checked per default and you're not allowed to uncheck them)
 	 * 2 = notify all responsible users (all users are checked and nothing can be changed during stage change)
 	 *
-	 * @param integer stage id to return the notification mode for
+	 * @param integer $stageId Stage id to return the notification mode for
 	 * @return integer
+	 * @throws \InvalidArgumentException
 	 */
 	public function getNotificationMode($stageId) {
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageId)) {
@@ -753,5 +763,4 @@ class StagesService {
 	protected function getBackendUser() {
 		return $GLOBALS['BE_USER'];
 	}
-
 }
