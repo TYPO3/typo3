@@ -391,6 +391,16 @@ final class t3lib_BEfunc {
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
+			// Hook for post-processing the output of getPageForRootline. Adds possibility to add dynamic PageTS
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getPageForRootline'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getPageForRootline'] as $classRef) {
+				$hookObj = t3lib_div::getUserObj($classRef);
+				if (method_exists($hookObj, 'getPageForRootline')) {
+					$hookObj->getPageForRootline($uid, $clause, $workspaceOL, &$row);
+				}
+			}
+		}
+
 		return $row;
 	}
 
