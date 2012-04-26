@@ -299,7 +299,7 @@ h1,
 	overflow: hidden;
 }
 
-.phpinfo h1 {
+body.standalone .phpinfo h1, .phpinfo h1 {
 	font-size: 150%;
 	background-image: none;
 	text-indent: 0;
@@ -308,6 +308,7 @@ h1,
 	margin: 1em 0 1em 0;
 	text-align: center;
 	float: none;
+	display: block;
 }
 
 .phpinfo h2 {
