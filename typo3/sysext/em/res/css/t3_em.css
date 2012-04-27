@@ -283,6 +283,10 @@ a.email {
 	margin-right: 5px;
 }
 
+.x-action-col-cell img {
+	margin-top: 3px;
+}
+
 .paddingNoActionIcon img {
 	margin-right: 20px;
 }
