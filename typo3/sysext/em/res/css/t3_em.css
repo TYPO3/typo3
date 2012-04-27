@@ -177,6 +177,9 @@ img.installExtension, img.removeExtension {
 	background-color: #abd99a;
 }
 
+#em-local-extensions .x-action-col-cell .x-grid3-cell-inner {
+    text-overflow: clip;
+}
 
 .em-extlist-extinfo label,
 .em-info label {
