@@ -30,7 +30,7 @@
 class Tx_Extbase_Tests_Unit_MVC_Controller_CommandControllerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_MVC_Controller_CommandController
+	 * @var Tx_Extbase_MVC_Controller_CommandController|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $commandController;
 

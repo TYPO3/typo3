@@ -28,7 +28,7 @@
 class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_MVC_Controller_ActionController
+	 * @var Tx_Extbase_MVC_Controller_ActionController|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $actionController;
 
@@ -65,6 +65,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 
 		$mockResponse = $this->getMock('Tx_Extbase_MVC_Web_Response', array(), array(), '', FALSE);
 
+		/** @var Tx_Extbase_MVC_Controller_ActionController|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$mockController = $this->getAccessibleMock('Tx_Extbase_MVC_Controller_ActionController', array(
 			'initializeFooAction', 'initializeAction', 'resolveActionMethodName', 'initializeActionMethodArguments',
 			'initializeActionMethodValidators', 'mapRequestArgumentsToControllerArguments', 'buildControllerContext',
@@ -251,6 +252,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request', array(), array(), '', FALSE);
 		$mockRequest->expects($this->once())->method('getControllerActionName')->will($this->returnValue('fooBar'));
 
+		/** @var Tx_Extbase_MVC_Controller_ActionController|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$mockController = $this->getAccessibleMock('Tx_Extbase_MVC_Controller_ActionController', array('fooBarAction'), array(), '', FALSE);
 		$mockController->_set('request', $mockRequest);
 
@@ -266,6 +268,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request', array(), array(), '', FALSE);
 		$mockRequest->expects($this->once())->method('getControllerActionName')->will($this->returnValue('fooBar'));
 
+		/** @var Tx_Extbase_MVC_Controller_ActionController|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$mockController = $this->getAccessibleMock('Tx_Extbase_MVC_Controller_ActionController', array('otherBarAction'), array(), '', FALSE);
 		$mockController->_set('request', $mockRequest);
 

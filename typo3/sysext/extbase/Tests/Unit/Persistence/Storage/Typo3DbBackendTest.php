@@ -185,6 +185,7 @@ class Tx_Extbase_Tests_Unit_Persistence_Storage_Typo3DbBackendTest extends Tx_Ex
 			->with($workspaceUid, 'tx_foo', '42')
 			->will($this->returnValue($workspaceVersion));
 
+		/** @var Tx_Extbase_Persistence_Storage_Typo3DbBackend|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$mockTypo3DbBackend = $this->getAccessibleMock(
 			'Tx_Extbase_Persistence_Storage_Typo3DbBackend',
 			array('dummy'),

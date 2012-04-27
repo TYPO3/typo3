@@ -33,7 +33,7 @@
 class Tx_Extbase_Tests_Unit_Service_CacheServiceTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Service_CacheService
+	 * @var Tx_Extbase_Service_CacheService|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $cacheService;
 

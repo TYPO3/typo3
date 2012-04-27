@@ -25,7 +25,7 @@
 class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Persistence_Repository
+	 * @var Tx_Extbase_Persistence_Repository|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $repository;
 
@@ -337,6 +337,7 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 		$modifiedObject = $this->getMock('Tx_Extbase_DomainObject_DomainObjectInterface');
 		$modifiedObject->expects($this->once())->method('getUid')->will($this->returnValue('123'));
 
+		/** @var Tx_Extbase_Persistence_Repository|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$repository = $this->getAccessibleMock('Tx_Extbase_Persistence_Repository', array('findByUid', 'replace'), array($this->mockObjectManager));
 		$repository->expects($this->once())->method('findByUid')->with('123')->will($this->returnValue($existingObject));
 		$repository->expects($this->once())->method('replace')->with($existingObject, $modifiedObject);

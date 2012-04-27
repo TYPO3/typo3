@@ -31,7 +31,7 @@
 class Tx_Extbase_Tests_Unit_Utility_LocalizationTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Utility_Localization
+	 * @var Tx_Extbase_Utility_Localization|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $localization;
 

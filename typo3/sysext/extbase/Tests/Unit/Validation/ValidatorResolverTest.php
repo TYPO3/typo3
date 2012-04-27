@@ -60,6 +60,7 @@ class Tx_Extbase_Tests_Unit_Validation_ValidatorResolverTest extends Tx_Extbase_
 	public function resolveValidatorObjectNameCanResolveShorthandValidatornames() {
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		eval('class Tx_Mypkg_Validation_Validator_MyValidator {}');
+		/** @var Tx_Extbase_Validation_ValidatorResolver|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$validatorResolver = $this->getAccessibleMock('Tx_Extbase_Validation_ValidatorResolver', array('dummy'));
 		$validatorResolver->_set('objectManager', $mockObjectManager);
 		$this->assertSame('Tx_Mypkg_Validation_Validator_MyValidator', $validatorResolver->_call('resolveValidatorObjectName', 'Mypkg:My'));

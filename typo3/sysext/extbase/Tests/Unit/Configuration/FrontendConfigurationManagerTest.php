@@ -38,7 +38,7 @@ class Tx_Extbase_Tests_Unit_Configuration_FrontendConfigurationManagerTest exten
 	protected $mockContentObject;
 
 	/**
-	 * @var Tx_Extbase_Configuration_FrontendConfigurationManager
+	 * @var Tx_Extbase_Configuration_FrontendConfigurationManager|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $frontendConfigurationManager;
 
@@ -48,7 +48,7 @@ class Tx_Extbase_Tests_Unit_Configuration_FrontendConfigurationManagerTest exten
 	protected $extConfBackup;
 
 	/**
-	 * @var Tx_Extbase_Service_TypoScriptService
+	 * @var Tx_Extbase_Service_TypoScriptService|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $mockTypoScriptService;
 
@@ -338,6 +338,7 @@ class Tx_Extbase_Tests_Unit_Configuration_FrontendConfigurationManagerTest exten
 				'framework' => 'configuration'
 			),
 		);
+		/** @var Tx_Extbase_Configuration_FrontendConfigurationManager|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$frontendConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_FrontendConfigurationManager', array('overrideStoragePidIfStartingPointIsSet', 'overrideConfigurationFromPlugin', 'overrideConfigurationFromFlexForm'));
 		$frontendConfigurationManager->expects($this->at(0))->method('overrideStoragePidIfStartingPointIsSet')->with($frameworkConfiguration)->will($this->returnValue(array('overridden' => 'storagePid')));
 		$frontendConfigurationManager->expects($this->at(1))->method('overrideConfigurationFromPlugin')->with(array('overridden' => 'storagePid'))->will($this->returnValue(array('overridden' => 'pluginConfiguration')));

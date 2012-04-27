@@ -30,7 +30,7 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 	protected $requestBuilder;
 
 	/**
-	 * @var Tx_Extbase_MVC_CLI_Request
+	 * @var Tx_Extbase_MVC_CLI_Request|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $request;
 

@@ -28,7 +28,7 @@
 class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_MVC_Web_RequestBuilder
+	 * @var Tx_Extbase_MVC_Web_RequestBuilder|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $requestBuilder;
 

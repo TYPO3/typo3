@@ -107,6 +107,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_ConjunctionValidatorTest extend
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function removingAValidatorOfTheValidatorConjunctionWorks() {
+		/** @var Tx_Extbase_Validation_Validator_ConjunctionValidator|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$validatorConjunction = $this->getAccessibleMock('Tx_Extbase_Validation_Validator_ConjunctionValidator', array('dummy'), array(array()), '', TRUE);
 
 		$validator1 = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));

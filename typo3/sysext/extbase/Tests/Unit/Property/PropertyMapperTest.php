@@ -61,6 +61,7 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMapperTest extends Tx_Extbase_Tests
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function sourceTypeCanBeCorrectlyDetermined($source, $sourceType) {
+		/** @var Tx_Extbase_Property_PropertyMapper|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$propertyMapper = $this->getAccessibleMock('Tx_Extbase_Property_PropertyMapper', array('dummy'));
 		$this->assertEquals($sourceType, $propertyMapper->_call('determineSourceType', $source));
 	}
@@ -80,6 +81,7 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMapperTest extends Tx_Extbase_Tests
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function sourceWhichIsNoSimpleTypeThrowsException($source) {
+		/** @var Tx_Extbase_Property_PropertyMapper|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$propertyMapper = $this->getAccessibleMock('Tx_Extbase_Property_PropertyMapper', array('dummy'));
 		$propertyMapper->_call('determineSourceType', $source);
 	}
@@ -103,6 +105,7 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMapperTest extends Tx_Extbase_Tests
 		$mockTypeConverter = $this->getMockTypeConverter();
 		$this->mockConfiguration->expects($this->any())->method('getTypeConverter')->will($this->returnValue($mockTypeConverter));
 
+		/** @var Tx_Extbase_Property_PropertyMapper|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$propertyMapper = $this->getAccessibleMock('Tx_Extbase_Property_PropertyMapper', array('dummy'));
 		$this->assertSame($mockTypeConverter, $propertyMapper->_call('findTypeConverter', 'someSource', 'someTargetType', $this->mockConfiguration));
 	}
@@ -137,6 +140,7 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMapperTest extends Tx_Extbase_Tests
 	public function findTypeConverterShouldReturnHighestPriorityTypeConverterForSimpleType($source, $targetType, $typeConverters, $expectedTypeConverter) {
 		$mockTypeHandlingService = $this->getMock('Tx_Extbase_Service_TypeHandlingService');
 		$mockTypeHandlingService->expects($this->any())->method('isSimpleType')->will($this->returnValue(TRUE));
+		/** @var Tx_Extbase_Property_PropertyMapper|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$propertyMapper = $this->getAccessibleMock('Tx_Extbase_Property_PropertyMapper', array('dummy'));
 		$propertyMapper->_set('typeHandlingService', $mockTypeHandlingService);
 		$propertyMapper->_set('typeConverters', $typeConverters);
@@ -279,6 +283,7 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMapperTest extends Tx_Extbase_Tests
 	public function findTypeConverterShouldReturnConverterForTargetObjectIfItExists($targetClass, $expectedTypeConverter, $typeConverters, $shouldFailWithException = FALSE) {
 		$mockTypeHandlingService = $this->getMock('Tx_Extbase_Service_TypeHandlingService');
 		$mockTypeHandlingService->expects($this->any())->method('isSimpleType')->will($this->returnValue(FALSE));
+		/** @var Tx_Extbase_Property_PropertyMapper|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$propertyMapper = $this->getAccessibleMock('Tx_Extbase_Property_PropertyMapper', array('dummy'));
 		$propertyMapper->injectTypeHandlingService($mockTypeHandlingService);
 		$propertyMapper->_set('typeConverters', array('string' => $typeConverters));
@@ -303,6 +308,7 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMapperTest extends Tx_Extbase_Tests
 	public function convertShouldAskConfigurationBuilderForDefaultConfiguration() {
 		$mockTypeHandlingService = $this->getMock('Tx_Extbase_Service_TypeHandlingService');
 		$mockTypeHandlingService->expects($this->any())->method('isSimpleType')->will($this->returnValue(TRUE));
+		/** @var Tx_Extbase_Property_PropertyMapper|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$propertyMapper = $this->getAccessibleMock('Tx_Extbase_Property_PropertyMapper', array('dummy'));
 		$propertyMapper->injectTypeHandlingService($mockTypeHandlingService);
 		$propertyMapper->injectPropertyMappingConfigurationBuilder($this->mockConfigurationBuilder);
@@ -325,6 +331,7 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMapperTest extends Tx_Extbase_Tests
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function findFirstEligibleTypeConverterInObjectHierarchyShouldReturnNullIfSourceTypeIsUnknown() {
+		/** @var Tx_Extbase_Property_PropertyMapper|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$propertyMapper = $this->getAccessibleMock('Tx_Extbase_Property_PropertyMapper', array('dummy'));
 		$this->assertNull($propertyMapper->_call('findFirstEligibleTypeConverterInObjectHierarchy', 'source', 'unknownSourceType', 'Tx_Extbase_Core_Bootstrap'));
 	}

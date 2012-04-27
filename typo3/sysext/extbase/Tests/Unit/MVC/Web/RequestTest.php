@@ -72,6 +72,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestTest extends Tx_Extbase_Tests_Unit_Ba
 	 * @expectedException Tx_Extbase_Security_Exception_InvalidHash
 	 */
 	public function getReferringRequestThrowsAnExceptionIfTheHmacOfTheArgumentsCouldNotBeValidated() {
+		/** @var Tx_Extbase_MVC_Web_Request|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$request = $this->getAccessibleMock('Tx_Extbase_MVC_Web_Request', array('dummy'));
 		$request->setArgument('__referrer', array(
 			'@controller' => 'Foo',

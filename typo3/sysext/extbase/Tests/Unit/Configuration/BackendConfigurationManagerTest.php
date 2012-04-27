@@ -48,12 +48,12 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	protected $extConfBackup;
 
 	/**
-	 * @var Tx_Extbase_Configuration_BackendConfigurationManager
+	 * @var Tx_Extbase_Configuration_BackendConfigurationManager|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $backendConfigurationManager;
 
 	/**
-	 * @var Tx_Extbase_Service_TypoScriptService
+	 * @var Tx_Extbase_Service_TypoScriptService|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $mockTypoScriptService;
 

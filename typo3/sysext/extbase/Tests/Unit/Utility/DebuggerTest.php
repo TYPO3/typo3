@@ -54,7 +54,7 @@ class  Tx_Extbase_Tests_Unit_Utility_DebuggerTest extends tx_phpunit_testcase {
 			$obj->property = $i;
 			$objectStorage->attach($obj);
 		}
-		$this->debugger->var_dump($objectStorage, NULL, 8, TRUE, TRUE);
+		$this->debugger->var_dump($objectStorage, NULL, 8, TRUE, FALSE, TRUE);
 		$this->assertTrue($objectStorage->valid());
 	}
 
@@ -74,7 +74,7 @@ class  Tx_Extbase_Tests_Unit_Utility_DebuggerTest extends tx_phpunit_testcase {
 		$arguments = $this->getMock('Tx_Fluid_Core_ViewHelper_Arguments', array('dummy'), array('arguments' => $parameters));
 
 		$arguments->expects($this->never())->method('rewind');
-		$this->debugger->var_dump($arguments, NULL, 8, TRUE, TRUE);
+		$this->debugger->var_dump($arguments, NULL, 8, TRUE, FALSE, TRUE);
 	}
 }
 

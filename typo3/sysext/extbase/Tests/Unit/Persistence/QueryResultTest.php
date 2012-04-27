@@ -154,6 +154,7 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryResultTest extends Tx_Extbase_Tests
 	 * @test
 	 */
 	public function initializeExecutesQueryWithArrayFetchMode() {
+		/** @var Tx_Extbase_Persistence_QueryResult|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$queryResult = $this->getAccessibleMock('Tx_Extbase_Persistence_QueryResult', array('dummy'), array($this->mockQuery));
 		$queryResult->injectPersistenceManager($this->mockPersistenceManager);
 		$queryResult->injectDataMapper($this->mockDataMapper);

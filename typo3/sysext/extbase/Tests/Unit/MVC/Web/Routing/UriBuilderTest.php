@@ -60,7 +60,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Te
 	protected $mockExtensionService;
 
 	/**
-	 * @var Tx_Extbase_MVC_Web_Routing_UriBuilder
+	 * @var Tx_Extbase_MVC_Web_Routing_UriBuilder|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $uriBuilder;
 
@@ -311,6 +311,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Te
 	 * @test
 	 */
 	public function buildFrontendUriCreatesTypoLink() {
+		/** @var Tx_Extbase_MVC_Web_Routing_UriBuilder|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$uriBuilder = $this->getAccessibleMock('Tx_Extbase_MVC_Web_Routing_UriBuilder', array('buildTypolinkConfiguration'));
 		$uriBuilder->_set('contentObject', $this->mockContentObject);
 		$uriBuilder->expects($this->once())->method('buildTypolinkConfiguration')->will($this->returnValue(array('someTypoLinkConfiguration')));
@@ -348,6 +349,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Te
 	 * @test
 	 */
 	public function buildFrontendUriCreatesAbsoluteUrisIfSpecified() {
+		/** @var Tx_Extbase_MVC_Web_Routing_UriBuilder|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$uriBuilder = $this->getAccessibleMock('Tx_Extbase_MVC_Web_Routing_UriBuilder', array('buildTypolinkConfiguration'));
 		$uriBuilder->_set('contentObject', $this->mockContentObject);
 		$uriBuilder->expects($this->once())->method('buildTypolinkConfiguration')->will($this->returnValue(array('foo' => 'bar')));
@@ -364,6 +366,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Te
 	 * @test
 	 */
 	public function buildFrontendUriSetsAbsoluteUriSchemeIfSpecified() {
+		/** @var Tx_Extbase_MVC_Web_Routing_UriBuilder|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$uriBuilder = $this->getAccessibleMock('Tx_Extbase_MVC_Web_Routing_UriBuilder', array('buildTypolinkConfiguration'));
 		$uriBuilder->_set('contentObject', $this->mockContentObject);
 		$uriBuilder->expects($this->once())->method('buildTypolinkConfiguration')->will($this->returnValue(array('foo' => 'bar')));
@@ -381,6 +384,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_Routing_UriBuilderTest extends Tx_Extbase_Te
 	 * @test
 	 */
 	public function buildFrontendUriDoesNotSetAbsoluteUriSchemeIfCreateAbsoluteUriIsFalse() {
+		/** @var Tx_Extbase_MVC_Web_Routing_UriBuilder|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$uriBuilder = $this->getAccessibleMock('Tx_Extbase_MVC_Web_Routing_UriBuilder', array('buildTypolinkConfiguration'));
 		$uriBuilder->_set('contentObject', $this->mockContentObject);
 		$uriBuilder->expects($this->once())->method('buildTypolinkConfiguration')->will($this->returnValue(array('foo' => 'bar')));

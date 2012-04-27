@@ -25,7 +25,7 @@
 class Tx_Extbase_Tests_Unit_MVC_CLI_CommandTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_MVC_CLI_Command
+	 * @var Tx_Extbase_MVC_CLI_Command|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $command;
 

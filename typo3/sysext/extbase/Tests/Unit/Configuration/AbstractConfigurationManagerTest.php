@@ -27,12 +27,12 @@
 class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Configuration_AbstractConfigurationManager
+	 * @var Tx_Extbase_Configuration_AbstractConfigurationManager|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $abstractConfigurationManager;
 
 	/**
-	 * @var Tx_Extbase_Service_TypoScriptService
+	 * @var Tx_Extbase_Service_TypoScriptService|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $mockTypoScriptService;
 
@@ -320,6 +320,7 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 	 * @test
 	 */
 	public function switchableControllerActionsAreNotOverriddenIfPluginNameIsSpecified() {
+		/** @var Tx_Extbase_Configuration_AbstractConfigurationManager|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$abstractConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
 		$abstractConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
 		$abstractConfigurationManager->setConfiguration(array('switchableControllerActions' => array('overriddenSwitchableControllerActions')));
@@ -333,6 +334,7 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 	 */
 	public function switchableControllerActionsAreOverriddenIfSpecifiedPluginIsTheCurrentPlugin() {
 		$configuration = array('extensionName' => 'CurrentExtensionName', 'pluginName' => 'CurrentPluginName', 'switchableControllerActions' => array('overriddenSwitchableControllerActions'));
+		/** @var Tx_Extbase_Configuration_AbstractConfigurationManager|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$abstractConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
 		$this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->will($this->returnValue($configuration));
 		$abstractConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
@@ -347,6 +349,7 @@ class Tx_Extbase_Tests_Unit_Configuration_AbstractConfigurationManagerTest exten
 	 */
 	public function switchableControllerActionsAreOverriddenIfPluginNameIsNotSpecified() {
 		$configuration = array('switchableControllerActions' => array('overriddenSwitchableControllerActions'));
+		/** @var Tx_Extbase_Configuration_AbstractConfigurationManager|PHPUnit_Framework_MockObject_MockObject|Tx_Phpunit_Interface_AccessibleObject */
 		$abstractConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'));
 		$this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->will($this->returnValue($configuration));
 		$abstractConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
