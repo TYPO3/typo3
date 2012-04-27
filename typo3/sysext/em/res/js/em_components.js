@@ -166,7 +166,8 @@ TYPO3.EM.GridColumns.InstallExtension = {
 					this.items[0].tooltip = String.format(TYPO3.l10n.localize('menu_update_extension'), record.data.version, record.data.maxversion);
 					return 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-update';
 				}
-                meta.css += ' paddingNoActionIcon';
+				this.items[0].tooltip = '';
+				meta.css += ' paddingNoActionIcon';
 				return '';
 			},
 			handler: function(grid, rowIndex, colIndex) {
@@ -201,14 +202,14 @@ TYPO3.EM.GridColumns.InstallExtension = {
 			getClass: function(value, meta, record) {
 				meta.css += ' paddingActionIcon';
 				if (record.get('installed') == 0) {
-					this.items[0].tooltip = TYPO3.l10n.localize('menu_install_extensions');
+					this.items[1].tooltip = TYPO3.l10n.localize('menu_install_extensions');
 					return 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-install';
 				} else {
 					if (record.get('required')) {
-						this.items[0].tooltip = TYPO3.l10n.localize('ext_details_always_loaded');
+						this.items[1].tooltip = TYPO3.l10n.localize('ext_details_always_loaded');
 						return 't3-icon t3-icon-extensions t3-icon-extensions-em t3-icon-em-extension-required';
 					} else {
-						this.items[0].tooltip = TYPO3.l10n.localize('ext_details_remove_ext');
+						this.items[1].tooltip = TYPO3.l10n.localize('ext_details_remove_ext');
 						return 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-uninstall';
 					}
 				}
