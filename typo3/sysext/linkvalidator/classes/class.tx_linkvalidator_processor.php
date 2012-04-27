@@ -105,7 +105,7 @@ class tx_linkvalidator_Processor {
 			// Hook to handle own checks
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $key => $classRef) {
-				$this->hookObjectsArr[$key] = &t3lib_div::getUserObj($classRef);
+				$this->hookObjectsArr[$key] = t3lib_div::getUserObj($classRef);
 			}
 		}
 	}
