@@ -5566,12 +5566,14 @@ class t3lib_TCEforms {
 				inline.setPrependFormFieldNames("' . $this->inline->prependNaming . '");
 				inline.setNoTitleString("' . addslashes(t3lib_BEfunc::getNoRecordTitle(TRUE)) . '");
 				';
-			}
-
-				// if Suggest fields were processed, add the JS functions
-			if ($this->suggest->suggestCount > 0) {
-				$pageRenderer->loadScriptaculous();
+					// Always include JS functions for Suggest fields as we don't know what will come
 				$this->loadJavascriptLib('../t3lib/js/jsfunc.tceforms_suggest.js');
+			} else {
+					// if Suggest fields were processed, add the JS functions
+				if ($this->suggest->suggestCount > 0) {
+					$pageRenderer->loadScriptaculous();
+					$this->loadJavascriptLib('../t3lib/js/jsfunc.tceforms_suggest.js');
+				}
 			}
 
 				// Toggle icons:
