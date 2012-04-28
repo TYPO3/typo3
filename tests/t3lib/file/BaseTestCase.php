@@ -61,7 +61,7 @@ abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 			$this->markTestSkipped('vfsStream::create() does not exist');
 		}
 
-		vfsStream::create($this->vfsContents, $this->basedir);
+		vfsStream::create($this->vfsContents);
 	}
 
 	/**
