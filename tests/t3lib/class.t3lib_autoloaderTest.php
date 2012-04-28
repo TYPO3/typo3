@@ -296,5 +296,100 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 		t3lib_autoloader::registerAutoloader();
 		t3lib_autoloader::autoload($class);
 	}
+
+	/**
+	 * @test
+	 */
+	public function getClassPathByRegistryLookupFindsClassPrefixedWithUxRegisteredInExtAutoloadFile() {
+			// Create a dummy extension with a path to a 'ux_' prefixed php file
+		$extKey = $this->createFakeExtension();
+		$extPath = PATH_site . "typo3temp/$extKey/";
+		$autoloaderFile = $extPath . "ext_autoload.php";
+
+		$class = strtolower("ux_tx_${extKey}_" . uniqid(''));
+		$file = $extPath . uniqid('') . '.php';
+
+		file_put_contents($autoloaderFile, "<?php\n\nreturn array('$class' => '$file');\n\n?>");
+
+			// Inject a dummy for the core_phpcode cache to force the autoloader
+			// to re calculate the registry
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+
+			// Re-initialize autoloader registry to force it to recognize the new extension with the ux_ autoload definition
+		t3lib_autoloader::unregisterAutoloader();
+		t3lib_autoloader::registerAutoloader();
+
+		$this->assertSame($file, t3lib_autoloader::getClassPathByRegistryLookup($class));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getClassPathByRegistryLookupFindsDeprecatedXclassFilePathRegisteredInTypo3ConfVars() {
+			// Create a fake extension
+		$extKey = $this->createFakeExtension();
+		$extPath = PATH_site . "typo3temp/$extKey/";
+		$autoloaderFile = $extPath . "ext_autoload.php";
+
+			// Feed ext_autoload with a base file
+		$class = strtolower("tx_${extKey}_" . uniqid(''));
+		$fileName = uniqid('') . '.php';
+		$file = $extPath . $fileName;
+		file_put_contents($autoloaderFile, "<?php\n\nreturn array('$class' => '$file');\n\n?>");
+
+			// Register a xclass for the base file
+		$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']["typo3temp/$extKey/$fileName"] = "typo3temp/$extKey/xclassFile";
+
+			// Inject a dummy for the core_phpcode cache to force the autoloader
+			// to re calculate the registry
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+
+		t3lib_autoloader::unregisterAutoloader();
+		t3lib_autoloader::registerAutoloader();
+
+			// See if the xclass lookup is successful
+		$this->assertSame("typo3temp/$extKey/xclassFile", t3lib_autoloader::getClassPathByRegistryLookup("ux_$class"));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getClassPathByRegistryLookupAddFoundClassRegisteredInDeprecatedTypo3ConfVarsToCacheFileOnce() {
+			// Create a fake extension
+		$extKey = $this->createFakeExtension();
+		$extPath = PATH_site . "typo3temp/$extKey/";
+		$autoloaderFile = $extPath . "ext_autoload.php";
+
+			// Feed ext_autoload with a base file and the class file
+		$class = strtolower("tx_${extKey}_" . uniqid(''));
+		$fileName = uniqid('') . '.php';
+		$file = $extPath . $fileName;
+		$xClassFile = "typo3temp/$extKey/xclassFile";
+		file_put_contents($autoloaderFile, "<?php\n\nreturn array('$class' => '$file');\n\n?>");
+		file_put_contents(PATH_site . $xClassFile, "<?php\n\ndie();\n\n?>");
+
+			// Register a xclass for the base file
+		$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']["typo3temp/$extKey/$fileName"] = $xClassFile;
+
+			// Inject a dummy for the core_phpcode cache to force the autoloader
+			// to re calculate the registry
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+
+			// Excpect the cache entry to be called exactly once
+		$mockCache->expects($this->exactly(2))->method('set');
+
+		t3lib_autoloader::unregisterAutoloader();
+		t3lib_autoloader::registerAutoloader();
+
+			// Let the autoloader find the xclass to trigger cache access
+		t3lib_autoloader::getClassPathByRegistryLookup("ux_$class");
+		t3lib_autoloader::getClassPathByRegistryLookup("ux_$class");
+	}
 }
 ?>
