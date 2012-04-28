@@ -44,6 +44,12 @@ The system extension to simulate static documents was removed from the core.
 @TODO: Issue #36025 must be solved and this note here adapted, otherwise the
 removal will be reverted.
 
+* Removed TypoScript option noBlur
+
+The ancient noBlur TypoScript setting for old Browsers (Internet Explorer <= 5.5)
+was removed without alternative. The setting has no effect anymore and can be
+removed from custom TypoScript objects, especially MENU.
+
 ===============================================================================
 Changes and Improvements
 ===============================================================================
