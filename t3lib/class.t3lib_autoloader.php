@@ -239,7 +239,7 @@ class t3lib_autoloader {
 
 			if (isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'][$relativeClassPath])) {
 				$classPath = $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'][$relativeClassPath];
-				self::addClassToCache($classPath, $classNameLower);
+				self::addClassToCache(PATH_site . $classPath, $classNameLower);
 			} else {
 
 					// If an XCLASS is requested (this is the normal case, for every class min. one time,
