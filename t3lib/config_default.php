@@ -549,7 +549,7 @@ $TYPO3_CONF_VARS = array(
 			'ExtDirect::getAPI' => 't3lib/extjs/class.t3lib_extjs_extdirectapi.php:t3lib_extjs_ExtDirectApi->getAPI',
 			'ExtDirect::route' => 't3lib/extjs/class.t3lib_extjs_extdirectrouter.php:t3lib_extjs_ExtDirectRouter->route',
 		),
-		'XCLASS' => array(),					// See 'Inside TYPO3' document for more information.
+		'XCLASS' => array(),					// Deprecated XCLASS register. See http://wiki.typo3.org/Autoload for more information
 	),
 	'FE' => array(			// Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
 		'png_to_gif' => FALSE,					// Boolean: Enables conversion back to gif of all png-files generated in the frontend libraries. Notice that this leaves an increased number of temporary files in typo3temp/
@@ -605,7 +605,7 @@ $TYPO3_CONF_VARS = array(
 		'cHashExcludedParametersIfEmpty' => '', // Optional: Configure Parameters that are only relevant for the chash if there's an associated value available. And asterisk "*" can be used to skip all empty parameters.
 		'workspacePreviewLogoutTemplate' => '',	// If set, points to an HTML file relative to the TYPO3_site root which will be read and outputted as template for this message. Example: fileadmin/templates/template_workspace_preview_logout.html. Inside you can put the marker %1$s to insert the URL to go back to. Use this in &lt;a href="%1$s"&gt;Go back...&lt;/a&gt; links
 		'versionNumberInFilename' => 'querystring',	// String: embed,querystring,''. Allows to automatically include a version number (timestamp of the file) to referred CSS and JS filenames on the rendered page. This will make browsers and proxies reload the files if they change (thus avoiding caching issues). Set to 'embed' will have the timestamp embedded in the filename, ie. filename.1269312081.js. IMPORTANT: 'embed' requires extra .htaccess rules to work (please refer to _.htaccess or the _.htaccess file from the dummy package)<p>Set to 'querystring' (default setting) to append the version number as a query parameter (doesn't require mod_rewrite). Set to '' will turn this functionality off (behaves like TYPO3 &lt; v4.4).</p>
-		'XCLASS' => array(),					// See 'Inside TYPO3' document for more information.
+		'XCLASS' => array(),					// Deprecated XCLASS register. See http://wiki.typo3.org/Autoload for more information
 	),
 	'MAIL' => array(		// Mail configurations to tune how t3lib_mail classes will send their mails.
 		'transport' => 'mail',					// <p>String:</p><dl><dt>mail</dt><dd>Sends messages by delegating to PHP's internal mail() function. No further settings required. This is the most unreliable option. If you are serious about sending mails, consider using "smtp" or "sendmail".</dd><dt>smtp</dt><dd>Sends messages over the (standardized) Simple Message Transfer Protocol. It can deal with encryption and authentication. Most flexible option, requires a mail server and configurations in transport_smtp_* settings below. Works the same on Windows, Unix and MacOS.</dd><dt>sendmail</dt><dd>Sends messages by communicating with a locally installed MTA - such as sendmail. See setting transport_sendmail_command bellow.<dd><dt>mbox</dt><dd>This doesn't send any mail out, but instead will write every outgoing mail to a file adhering to the RFC 4155 mbox format, which is a simple text file where the mails are concatenated. Useful for debugging the mail sending process and on development machines which cannot send mails to the outside. Configure the file to write to in the 'transport_mbox_file' setting below</dd><dt>&lt;classname&gt;</dt><dd>Custom class which implements Swift_Transport. The constructor receives all settings from the MAIL section to make it possible to add custom settings.</dd></dl>
@@ -1083,10 +1083,10 @@ if ($TYPO3_LOADED_EXT['_CACHEFILE'])	{
 	}
 }
 
-	// Write deprecation log  the TYPO3 instance uses deprecated XCLASSes registrations
-	// via the deprecated way $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
-if(isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']) === TRUE) {
-	t3lib_div::deprecationLog('This installation runs with extensions that use XCLASSing by setting the XCLASS path in ext_localconf.php. This backwards compatibility will be removed in TYPO3 6.2 and later. It is preferred to define XCLASSes in ext_autoload.php instead.');
+	// Write deprecation log if the TYPO3 instance uses deprecated XCLASS
+	// registrations via $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
+if(count($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']) > 0) {
+	t3lib_div::deprecationLog('This installation runs with extensions that use XCLASSing by setting the XCLASS path in ext_localconf.php. This is deprecated and will be removed in TYPO3 6.2 and later. It is preferred to define XCLASSes in ext_autoload.php instead. See http://wiki.typo3.org/Autoload for more information.');
 }
 
 	// Extensions may register new caches, so we set the
