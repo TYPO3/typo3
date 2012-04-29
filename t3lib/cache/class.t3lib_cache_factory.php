@@ -80,8 +80,12 @@ class t3lib_cache_Factory implements t3lib_Singleton {
 	 * @api
 	 */
 	public function create($cacheIdentifier, $cacheObjectName, $backendObjectName, array $backendOptions = array()) {
+			// This class is required so early during bootstrap that makeInstance()
+			// can not be used, so new operator is used directly and the class
+			// lookup entry is added manually to the makeInstanceCache
 		$backend = new $backendObjectName($this->context, $backendOptions);
 		t3lib_div::addClassNameToMakeInstanceCache($backendObjectName, $backendObjectName);
+
 		if (!$backend instanceof t3lib_cache_backend_Backend) {
 			throw new t3lib_cache_exception_InvalidBackend(
 				'"' . $backendObjectName . '" is not a valid cache backend object.',
@@ -92,8 +96,10 @@ class t3lib_cache_Factory implements t3lib_Singleton {
 			$backend->initializeObject();
 		}
 
+			// new used on purpose, see comment above
 		$cache = new $cacheObjectName($cacheIdentifier, $backend);
 		t3lib_div::addClassNameToMakeInstanceCache($cacheObjectName, $cacheObjectName);
+
 		if (!$cache instanceof t3lib_cache_frontend_Frontend) {
 			throw new t3lib_cache_exception_InvalidCache(
 				'"' . $cacheObjectName . '" is not a valid cache frontend object.',

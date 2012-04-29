@@ -4541,12 +4541,15 @@ final class t3lib_div {
 	 * If this function is called multiple times for the same $className,
 	 * makeInstance will return the last set instance.
 	 *
+	 * Warning: This is _not_ a public API method and must not be used in own extensions!
+	 *
 	 * @see makeInstance
 	 * @param string $className
 	 *        the name of the class to set, must not be empty
 	 * @param t3lib_Singleton $instance
 	 *        the instance to set, must be an instance of $className
 	 * @return void
+	 * @internal
 	 */
 	public static function setSingletonInstance($className, t3lib_Singleton $instance) {
 		self::checkInstanceClassName($className, $instance);
@@ -4557,11 +4560,13 @@ final class t3lib_div {
 	 * Adds a $className / $finalClassName to the cache register.
 	 * This register is used to determine the final class name only once instead of multiple times.
 	 *
-	 * @static
+	 * Warning: This is _not_ a public API method and must not be used in own extensions!
+	 *
 	 * @see makeInstance
 	 * @param string $className the name of the class to set, must not be empty
 	 * @param string $finalClassName the name of the final class which will be loaded in case of $className
 	 * @return void
+	 * @internal
 	 */
 	public static function addClassNameToMakeInstanceCache($className, $finalClassName) {
 		self::$finalClassNameRegister[$className] = $finalClassName;
