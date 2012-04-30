@@ -44,11 +44,8 @@ class Tx_Extbase_Utility_Arrays {
 	 * @api
 	 */
 	static public function integerExplode($delimiter, $string) {
-		$chunksArr = explode($delimiter, $string);
-		foreach ($chunksArr as $key => $value) {
-			$chunks[$key] = intval($value);
-		}
-		return $chunks;
+		$explodedValues = self::trimExplode($delimiter, $string);
+		return array_map('intval', $explodedValues);
 	}
 
 	/**

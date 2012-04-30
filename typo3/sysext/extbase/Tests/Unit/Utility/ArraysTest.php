@@ -405,5 +405,30 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 			)
 		);
 	}
+
+	/**
+	 * @test
+	 */
+	public function integerExplodeReturnsArrayOfIntegers() {
+		$inputString = '1,2,3,4,5,6';
+		$expected = array(1,2,3,4,5,6);
+		$this->assertSame(
+			$expected,
+			Tx_Extbase_Utility_Arrays::integerExplode(',', $inputString)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function integerExplodeReturnsZeroForStringValues() {
+		$inputString = '1,abc,3,,5';
+		$expected = array(1,0,3,0,5);
+		$this->assertSame(
+			$expected,
+			Tx_Extbase_Utility_Arrays::integerExplode(',', $inputString)
+		);
+	}
+
 }
 ?>
