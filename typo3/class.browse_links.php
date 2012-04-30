@@ -578,6 +578,15 @@ class browse_links {
 
 	/**
 	 * Used with the Rich Text Editor.
+	 *
+	 * Values:
+	 * 0: table name part of the TCEforms form element id
+	 * 1: field name part of the TCEforms form element id
+	 * 2: record uid part of the TCEforms form element id
+	 * 3: the page id
+	 * 4: the field type
+	 * 5: the real page id from which to get TSConfig
+	 * 6: imgPath from RTE-transform configuration
 	 * Example value: "tt_content:NEW3fba58c969f5c:bodytext:23:text:23:"
 	 */
 	var $RTEtsConfigParams;
@@ -757,7 +766,7 @@ class browse_links {
 			// Rich Text Editor specific configuration:
 		$addPassOnParams='';
 		if ((string)$this->mode == 'rte')	{
-			$RTEtsConfigParts = explode(':',$this->RTEtsConfigParams);
+			$RTEtsConfigParts = explode(';',$this->RTEtsConfigParams);
 			$addPassOnParams.='&RTEtsConfigParams='.rawurlencode($this->RTEtsConfigParams);
 			$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 			$this->thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);

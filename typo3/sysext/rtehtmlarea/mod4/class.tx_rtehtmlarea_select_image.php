@@ -950,9 +950,17 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 * @return	array		RTE configuration array
 	 */
 	protected function getRTEConfig() {
-		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
-		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
-		return t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
+		$RTEtsConfigParts = explode(';', $this->RTEtsConfigParams);
+			// $RTEtsConfigParts:
+			// 0: table name part of the TCEforms form element id
+			// 1: field name part of the TCEforms form element id
+			// 2: record uid part of the TCEforms form element id
+			// 3: the page id
+			// 4: the field type
+			// 5: the real page id from which to get TSConfig
+			// 6: imgPath from RTE-transform configuration
+		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
+		return t3lib_BEfunc::RTEsetup($RTEsetup['properties'], $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
 	}
 
 	/**
@@ -961,7 +969,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 * @return	string		path to the image
 	 */
 	protected function getImgPath() {
-		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
+		$RTEtsConfigParts = explode(';', $this->RTEtsConfigParams);
 		return $RTEtsConfigParts[6];
 	}
 

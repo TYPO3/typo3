@@ -1398,23 +1398,41 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 		}
 	}
-	/***************************
-	 *
-	 * OTHER FUNCTIONS:	(from Classic RTE)
-	 *
-	 ***************************/
-	/**
-	 * @return	[type]		...
-	 * @desc
-	 */
 
-	function RTEtsConfigParams()	{
-		if($this->is_FE()) {
-			return '';
-		} else {
-			$p = t3lib_BEfunc::getSpecConfParametersFromArray($this->specConf['rte_transform']['parameters']);
-			return $this->elementParts[0].':'.$this->elementParts[1].':'.$this->elementParts[2].':'.$this->thePid.':'.$this->typeVal.':'.$this->tscPID.':'.$p['imgpath'];
+	/**
+	 * Assembles a semicolon-separated string of seven properties of the RTE-enabled field
+	 *
+	 * Values:
+	 * 0: table name part of the TCEforms form element id
+	 * 1: field name part of the TCEforms form element id
+	 * 2: record uid part of the TCEforms form element id
+	 * 3: the page id
+	 * 4: the field type
+	 * 5: the real page id from which to get TSConfig
+	 * 6: imgPath from RTE-transform configuration
+	 *
+	 * @return string the assembled string
+	 */
+	public function RTEtsConfigParams() {
+		$parameters = array();
+		if (!$this->is_FE()) {
+				// The table name part of the TCEforms form element id
+			$parameters[0] = $this->elementParts[0];
+				// The field name part of the TCEforms form element id
+			$parameters[1] = $this->elementParts[1];
+				// The record uid part of the TCEforms form element id
+			$parameters[2] = $this->elementParts[2];
+				// The page id
+			$parameters[3] = $this->thePid;
+				// The field TCA-type
+			$parameters[4] = $this->typeVal;
+				// The real page id from which to get TSConfig
+			$parameters[5] = $this->tscPID;
+				// The imgPath from RTE-transform configuration
+			$rteTransformConfiguration = t3lib_BEfunc::getSpecConfParametersFromArray($this->specConf['rte_transform']['parameters']);
+			$parameters[6] = $rteTransformConfiguration['imgpath'];
 		}
+		return implode(';', $parameters);
 	}
 
 	public function cleanList($str)        {

@@ -167,7 +167,7 @@ class tx_rtehtmlarea_user {
 			// Starting content:
 		$content = $this->doc->startPage($GLOBALS['LANG']->getLL('Insert Custom Element', 1));
 
-		$RTEtsConfigParts = explode(':',t3lib_div::_GP('RTEtsConfigParams'));
+		$RTEtsConfigParts = explode(';',t3lib_div::_GP('RTEtsConfigParams'));
 		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
 

@@ -277,7 +277,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 * @return	array		RTE configuration array
 	 */
 	protected function getRTEConfig()	{
-		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
+		$RTEtsConfigParts = explode(';', $this->RTEtsConfigParams);
 		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$this->RTEProperties = $RTEsetup['properties'];
 		return t3lib_BEfunc::RTEsetup($this->RTEProperties, $RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);

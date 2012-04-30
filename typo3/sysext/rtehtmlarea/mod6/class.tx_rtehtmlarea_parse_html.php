@@ -90,7 +90,7 @@ class tx_rtehtmlarea_parse_html {
 		$editorNo = t3lib_div::_GP('editorNo');
 		$html = t3lib_div::_GP('content');
 
-		$RTEtsConfigParts = explode(':',t3lib_div::_GP('RTEtsConfigParams'));
+		$RTEtsConfigParts = explode(';',t3lib_div::_GP('RTEtsConfigParams'));
 		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
 

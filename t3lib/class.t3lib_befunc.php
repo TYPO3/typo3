@@ -841,7 +841,10 @@ final class t3lib_BEfunc {
 	public static function getSpecConfParts($str, $defaultExtras) {
 
 			// Add defaultExtras:
-		$specConfParts = t3lib_div::trimExplode(':', $defaultExtras . ':' . $str, 1);
+			// Split by ":" if it is not followed by a closing bracket itself not preceded by an opening bracket
+			// In other words, do not split by a ":" that is inside a pair of brackets
+			// Hence, do not split by a ":" that is part of a FAL combined identifier
+		$specConfParts = preg_split('/:(?![^\[]*\])/', $defaultExtras . ':' . $str, NULL, PREG_SPLIT_NO_EMPTY);
 
 		$reg = array();
 		if (count($specConfParts)) {
