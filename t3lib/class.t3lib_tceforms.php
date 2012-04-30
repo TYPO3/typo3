@@ -4651,7 +4651,7 @@ class t3lib_TCEforms {
 		$params['row'] = $row;
 		$params['field'] = $field;
 
-		t3lib_div::callUserFunction($config['itemsProcFunc'], $params, $this);
+		t3lib_div::callUserFunction($config['itemsProcFunc'], $params, $this, '');
 		return $items;
 	}
 
