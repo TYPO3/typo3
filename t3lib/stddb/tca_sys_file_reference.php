@@ -131,7 +131,7 @@ $TCA['sys_file_reference'] = array (
 			'config' => array (
 				'type' => 'input',
 				'size' => '22',
-				'placeholder' => '__row|__foreign|name',
+				'placeholder' => '__row|uid_local|name',
 			)
 		),
 		'link' => array(
@@ -167,7 +167,7 @@ $TCA['sys_file_reference'] = array (
 			'config' => array (
 				'type' => 'input',
 				'size' => '22',
-				'placeholder' => '__row|__foreign|name',
+				'placeholder' => '__row|uid_local|name',
 			)
 		),
 	),
