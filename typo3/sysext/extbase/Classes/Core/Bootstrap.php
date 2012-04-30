@@ -31,7 +31,7 @@
  * @package Extbase
  * @version $ID:$
  */
-class Tx_Extbase_Core_Bootstrap {
+class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 
 	/**
 	 * Back reference to the parent content object
