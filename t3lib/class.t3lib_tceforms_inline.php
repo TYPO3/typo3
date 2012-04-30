@@ -906,6 +906,7 @@ class t3lib_TCEforms_inline {
 		$config = $PA['fieldConf']['config'];
 		$allowed = $config['allowed'];
 		$objectPrefix = $this->inlineNames['object'] . self::Structure_Separator . $foreign_table;
+		$mode = 'db';
 
 		if (!empty($conf['appearance']['createNewRelationLinkTitle'])) {
 			$createNewRelationText  = $GLOBALS['LANG']->sL($conf['appearance']['createNewRelationLinkTitle'], TRUE);
@@ -913,9 +914,15 @@ class t3lib_TCEforms_inline {
 			$createNewRelationText = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.createNewRelation', 1);
 		}
 
+		// Check if a mode=file element browser should be rendered instead
+		if($allowed === 'sys_file') {
+			$mode = 'file';
+			$allowed = $config['allowedFileExtensions'];
+		}
+
 		$browserParams = ('|||' . $allowed . '|' . $objectPrefix . '|inline.checkUniqueElement||inline.importElement');
 
-		$onClick = "setFormValueOpenBrowser('db','" . $browserParams . "'); return false;";
+		$onClick = "setFormValueOpenBrowser('".$mode."','" . $browserParams . "'); return false;";
 		$item = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' .
 			t3lib_iconWorks::getSpriteIcon('actions-insert-record', array('title' => $createNewRelationText)) . $createNewRelationText .
 			'</a>';
