@@ -59,15 +59,31 @@ class tx_rtehtmlarea_pi3 extends tslib_pibase {
 				// Backward compatibility
 			$clickenlarge = isset($this->cObj->parameters['clickenlarge']) ? $this->cObj->parameters['clickenlarge'] : 0;
 		}
-		$path = $this->cObj->parameters['src'];
-		$pathPre = $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'] . 'RTEmagicC_';
-		if (t3lib_div::isFirstPartOfStr($path, $pathPre)) {
-				// Find original file:
-			$pI = pathinfo(substr($path, strlen($pathPre)));
-			$filename = substr($pI['basename'],0,-strlen('.' . $pI['extension']));
-			$file = $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'] . 'RTEmagicP_' . $filename;
+		$fileFactory = t3lib_file_Factory::getInstance();
+		$fileTable = $this->cObj->parameters['data-htmlarea-file-table'];
+		$fileUid = $this->cObj->parameters['data-htmlarea-file-uid'];
+		if ($fileUid) {
+			$fileObject = $fileFactory->getFileObject($fileUid);
+			$filePath = $fileObject->getForLocalProcessing(FALSE);
+			$file = substr($filePath, strlen(PATH_site));
 		} else {
-			$file = $this->cObj->parameters['src'];
+				// Pre-FAL backward compatibility
+			$path = $this->cObj->parameters['src'];
+			$magicFolder = $fileFactory->getFolderObjectFromCombinedIdentifier(
+				$GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir']
+			);
+			if ($magicFolder instanceof t3lib_file_Folder) {
+				$magicFolderPath = $magicFolder->getPublicUrl();
+				$pathPre = $magicFolderPath . 'RTEmagicC_';
+				if (t3lib_div::isFirstPartOfStr($path, $pathPre)) {
+						// Find original file:
+					$pI = pathinfo(substr($path, strlen($pathPre)));
+					$filename = substr($pI['basename'], 0, -strlen('.' . $pI['extension']));
+					$file = $magicFolderPath . 'RTEmagicP_' . $filename;
+				} else {
+					$file = $this->cObj->parameters['src'];
+				}
+			}
 		}
 			// Unset clickenlarge custom attribute
 		unset($this->cObj->parameters['data-htmlarea-clickenlarge']);
