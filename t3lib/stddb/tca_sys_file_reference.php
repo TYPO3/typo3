@@ -28,44 +28,6 @@ $TCA['sys_file_reference'] = array (
 				'maxitems' => 1,
 				'minitems' => 0,
 				'allowed' => 'sys_file',
-				'filter' => array(
-
-					/*
-
-					Documentation:
-						The filter has two main items "fileType" and "fileExtension".
-						Each of them as the keys "allowed" and "disallowed".
-
-						=> fileType can contain types from the t3lib_file_File::FILETYPE_* class constants
-						=> fileExtension can contain file extensions like jpg, bmp, etc.
-
-						The fileType directive is always processed first, then fileExtension.
-						Disallowed takes precedence over allowed.
-						If something is specified to be disallowed, everything else is assumed to be allowed.
-						If something is specified to be allowed, everything else is assumed to be disallowed.
-
-						If no filter is set, everything is assumed to be allowed.
-
-					Example:
-
-					// Enable only Images or Videos, but exclude "*.bmp" files.
-
-					'fileType' => array(
-						'allowed' => array(t3lib_file_File::FILETYPE_IMAGE, t3lib_file_File::FILETYPE_VIDEO),
-						'disallowed' => array(),
-					),
-					'fileExtension' =>  array(
-						'allowed' => array(),
-						'disallowed' => array('bmp'),
-					),
-
-					*/
-
-					'fileType' => array(
-						'allowed' => array(),
-						'disallowed' => array(),
-					),
-				), // TODO: Verify that this filter is respected in both TCEForms/ElementBrowser and TCEMain
 			),
 		),
 		'uid_foreign' => array (
