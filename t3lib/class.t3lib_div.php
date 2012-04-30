@@ -4450,7 +4450,7 @@ final class t3lib_div {
 	 * @return array Array of valid prefixed of class names
 	 */
 	public static function getValidClassPrefixes() {
-		$validPrefixes = array('tx_', 'Tx_', 'user_', 'User_');
+		$validPrefixes = array('tx_', 'Tx_', 'user_', 'User_', 't3lib_');
 		if (
 			isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'])
 			&& is_string($GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'])
