@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -62,11 +62,11 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator extends Tx_Extbase_V
 
 		if ($isValid === FALSE) {
 			if (isset($this->options['minimum']) && isset($this->options['maximum'])) {
-				$this->addError('The length of the given string was not between ' . $this->options['minimum'] . ' and ' . $this->options['maximum'] . ' characters.', 1238108067);
+				$this->addError('The length of the given string was not between %1$d and %2$d characters.', 1238108067, array($this->options['minimum'], $this->options['maximum']));
 			} elseif (isset($this->options['minimum'])) {
-				$this->addError('The length of the given string less than ' . $this->options['minimum'] . ' characters.', 1238108068);
+				$this->addError('The length of the given string less than %1$d characters.', 1238108068, array($this->options['minimum']));
 			} else {
-				$this->addError('The length of the given string exceeded ' . $this->options['maximum'] . ' characters.', 1238108069);
+				$this->addError('The length of the given string exceeded %1$d characters.', 1238108069, array($this->options['maximum']));
 			}
 		}
 

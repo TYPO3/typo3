@@ -68,7 +68,7 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 		}
 
 		if (!is_object($object)) {
-			$messages->addError(new Tx_Extbase_Validation_Error('Object expected, ' . gettype($object) . ' given.', 1241099149));
+			$messages->addError(new Tx_Extbase_Validation_Error('Object expected, "%1$d" given.', 1241099149, array(gettype($object))));
 			return $messages;
 		}
 

@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -57,7 +57,7 @@ class Tx_Extbase_Validation_Validator_RegularExpressionValidator extends Tx_Extb
 			return FALSE;
 		}
 		if ($result === FALSE) {
-			$this->addError('The regular expression "' . $this->options['regularExpression'] . '" contained an error.', 1221565131);
+			$this->addError('The regular expression "%1$d" contained an error.', 1221565131, array($this->options['regularExpression']));
 			return FALSE;
 		}
 		return TRUE;

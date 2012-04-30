@@ -461,7 +461,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 			$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '().' . PHP_EOL;
 			foreach ($this->arguments->getValidationResults()->getFlattenedErrors() as $propertyPath => $errors) {
 				foreach ($errors as $error) {
-					$message .= 'Error for ' . $propertyPath . ':  ' . $error->getMessage() . PHP_EOL;
+					$message .= 'Error for ' . $propertyPath . ':  ' . $error->render() . PHP_EOL;
 				}
 			}
 
