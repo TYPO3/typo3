@@ -903,19 +903,17 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	}
 
 	/**
-	 * Create upload/create folder forms, if a folder is given
+	 * Create upload/create folder forms
 	 *
-	 * @param t3lib_file_Folder $selectedFolder Absolute filepath on server to which to upload.
+	 * @param t3lib_file_Folder $selectedFolder Folder to which to upload
 	 * @return string HTML for an upload form.
 	 */
 	protected function insertUploadForm(t3lib_file_Folder $selectedFolder) {
 		$content = '';
 		if (!$this->readOnly) {
-				// Add upload form if allowed
+				// Get the user's default upload folder
 			if (!$selectedFolder) {
-				$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
-				$fileStorage = reset($fileStorages);
-				$selectedFolder = $fileStorage->getRootLevelFolder();
+				$this->selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
 			}
 			if ($selectedFolder) {
 				$uploadForm = $this->uploadForm($selectedFolder);

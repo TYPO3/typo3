@@ -1631,16 +1631,13 @@ class browse_links {
 
 			// Init variable:
 		$pArr = explode('|',$this->bparams);
-			// Create upload/create folder forms, if a path is given:
+			// Create upload/create folder forms, if a path is given
 		if ($this->expandFolder) {
 			$this->selectedFolder = t3lib_file_Factory::getInstance()->getFolderObjectFromCombinedIdentifier($this->expandFolder);
 		}
-
-			// @todo implement upload stuff (default upload folder of a storaget etc)
+			// Or get the user's default upload folder
 		if (!$this->selectedFolder) {
-			$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
-			$fileStorage = reset($fileStorages);
-			$this->selectedFolder = $fileStorage->getRootLevelFolder();
+			$this->selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
 		}
 
 		if ($this->selectedFolder) {

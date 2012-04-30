@@ -712,11 +712,9 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 						$selectedFolder = $fileOrFolderObject->getStorage()->getFolder($folderIdentifier);
 					}
 				}
-					// Add upload form if allowed
+					// Get the user's default upload folder
 				if (!$selectedFolder) {
-					$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
-					$fileStorage = reset($fileStorages);
-					$selectedFolder = $fileStorage->getRootLevelFolder();
+					$this->selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
 				}
 				if ($selectedFolder) {
 					$uploadForm = ($this->act === 'file') ? $this->uploadForm($selectedFolder) : '';
