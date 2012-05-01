@@ -4992,6 +4992,8 @@ class t3lib_TCEforms {
 				);
 			}
 		}
+
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $items;
 	}
 
@@ -6327,6 +6329,8 @@ class t3lib_TCEforms {
 				unset($output[$row['uid']]);
 			}
 		}
+
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $output;
 	}
 

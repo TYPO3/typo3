@@ -255,6 +255,8 @@ class t3lib_search_livesearch {
 			$isFirst = FALSE;
 		}
 
+		$GLOBALS['TYPO3_DB']->sql_free_result($result);
+
 		return $collect;
 	}
 

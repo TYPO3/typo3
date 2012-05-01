@@ -268,6 +268,8 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 			$entryRemoved = TRUE;
 		}
 
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
 		return $entryRemoved;
 	}
 
