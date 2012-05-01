@@ -494,13 +494,35 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 			'atime' => fileatime($filePath),
 			'mtime' => filemtime($filePath),
 			'ctime' => filectime($filePath),
-			'mimetype' => mime_content_type($filePath),
+			'mimetype' => $this->getFileMimeType($filePath),
 			'name' => $fileName,
 			'identifier' => $containerPath . $fileName,
 			'storage' => $this->storage->getUid()
 		);
 
 		return $fileInformation;
+	}
+
+	/**
+	 * Determines the Internet Media Type, or MIME type.
+	 *
+	 * @param string $filePath The absolute path to the file
+	 * @return string The file's MIME type.
+	 */
+	protected function getFileMimeType($filePath) {
+		$mimeType = '';
+
+		if (function_exists('finfo_file')) {
+				// prefferably use the Fileinfo PHP extension
+			$fileInfo = new finfo(FILEINFO_MIME_TYPE);
+			if ($fileInfo) {
+				$mimeType = $fileInfo->file($filePath);
+			}
+		} else {
+			$mimeType = mime_content_type($filePath);
+		}
+
+		return $mimeType;
 	}
 
 	/**
@@ -1208,13 +1230,39 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	 * external location. So this might be an expensive operation (both in terms of
 	 * processing resources and money) for large files.
 	 *
-	 * @param t3lib_file_FileInterface $file
+	 * @param t3lib_file_FileInterface $file File to extract text from.
 	 * @return string The file contents
 	 */
 	public function getFileContents(t3lib_file_FileInterface $file) {
-		$filePath = $this->getAbsolutePath($file);
+		$fileContents = '';
 
-		return file_get_contents($filePath);
+		$filePath = $this->getAbsolutePath($file);
+		$mimeType = $this->getFileMimeType($filePath);
+
+		if ($mimeType == 'text/plain') {
+				// read text files directly
+			$fileContents = file_get_contents($filePath);
+		} else if ($this->canExtractText()) {
+				// other subtypes should be handled by the text service
+			$service = t3lib_div::makeInstanceService('textExtract', $file->getExtension());
+			if (!is_object($service) || is_array($service)) {
+				throw new RuntimeException(
+					'Failed to initialize a text extraction service.',
+					'1335869665'
+				);
+			}
+
+			$service->setInputFile($filePath, $file->getExtension());
+			$serviceConfiguration = array('wantedCharset' => 'utf-8');
+			$service->process('', '', $serviceConfiguration);
+
+			$fileContents = $service->getOutput();
+		} else {
+				// return an empty string
+			$fileContents = '';
+		}
+
+		return $fileContents;
 	}
 
 	/**
