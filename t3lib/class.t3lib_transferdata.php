@@ -801,6 +801,7 @@ class t3lib_transferData {
 		while ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($subres)) {
 			$recordList[$subrow['uid']] = t3lib_BEfunc::getRecordTitle($fieldConfig['config']['foreign_table'], $subrow);
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($subres);
 
 			// neg_foreign_table
 		if (is_array($GLOBALS['TCA'][$fieldConfig['config']['neg_foreign_table']])) {
@@ -808,6 +809,7 @@ class t3lib_transferData {
 			while ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($subres)) {
 				$recordList[-$subrow['uid']] = t3lib_BEfunc::getRecordTitle($fieldConfig['config']['neg_foreign_table'], $subrow);
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($subres);
 		}
 
 			// At this point all records that CAN be selected is found in $recordList

@@ -284,6 +284,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 					$theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $perms_clause);
 				}
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 		return $theList;
 	}

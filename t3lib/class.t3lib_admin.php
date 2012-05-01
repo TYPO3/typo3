@@ -195,6 +195,8 @@ class t3lib_admin {
 				$this->genTree($newID, $this->genTree_HTML ? $genHTML : '', TRUE);
 			}
 		}
+
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 	}
 
 	/**
@@ -269,6 +271,8 @@ class t3lib_admin {
 				$this->genTree_records($newID, $genHTML, $table, TRUE);
 			}
 		}
+
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 	}
 
 	/**
@@ -323,6 +327,9 @@ class t3lib_admin {
 					);
 					$lostIdList[] = $row['uid'];
 				}
+
+				$GLOBALS['TYPO3_DB']->sql_free_result($garbage);
+
 				if ($table == 'pages') {
 					$this->lostPagesList = implode(',', $lostIdList);
 				}
@@ -657,6 +664,9 @@ class t3lib_admin {
 							$result .= 'Strange Error. ...<br />';
 						}
 					}
+
+					$GLOBALS['TYPO3_DB']->sql_free_result($mres);
+
 					foreach ($dbArr as $theId => $theC) {
 						$result .= 'There are ' . $theC . ' records pointing to this missing or deleted record; [' . $table . '][' . $theId . ']<br />';
 					}
@@ -736,6 +746,8 @@ class t3lib_admin {
 					}
 				}
 			}
+
+			$GLOBALS['TYPO3_DB']->sql_free_result($mres);
 		}
 		return $theRecordList;
 	}

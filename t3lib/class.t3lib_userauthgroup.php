@@ -1262,6 +1262,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$this->userGroups[$row['uid']] = $row;
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 			// Traversing records in the correct order
 		$include_staticArr = t3lib_div::intExplode(',', $grList);
@@ -2118,6 +2119,8 @@ This is a dump of the failures:
 					$email_body .= date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $testRows['tstamp']) . ':  ' . @sprintf($testRows['details'], '' . $theData[0], '' . $theData[1], '' . $theData[2]);
 					$email_body .= LF;
 				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
 				$from = t3lib_utility_Mail::getSystemFrom();
 				/** @var $mail t3lib_mail_Message */
 				$mail = t3lib_div::makeInstance('t3lib_mail_Message');
