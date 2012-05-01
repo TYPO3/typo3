@@ -1532,6 +1532,7 @@ class t3lib_TStemplate {
 					$nextLevelAcc[] = array($next_id, $next_MP_array);
 				}
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 				// Call recursively, if any:
 			foreach ($nextLevelAcc as $pSet) {

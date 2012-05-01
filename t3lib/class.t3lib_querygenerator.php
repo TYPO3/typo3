@@ -799,6 +799,8 @@ class t3lib_queryGenerator {
 								}
 							}
 						}
+
+						$GLOBALS['TYPO3_DB']->sql_free_result($checkres);
 					}
 				}
 			} else {
@@ -877,6 +879,8 @@ class t3lib_queryGenerator {
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 							$this->tableArray[$from_table][] = $row;
 						}
+
+						$GLOBALS['TYPO3_DB']->sql_free_result($res);
 					}
 					foreach ($this->tableArray[$from_table] as $key => $val) {
 						if ($useSelectLabels) {
@@ -1418,6 +1422,8 @@ class t3lib_queryGenerator {
 					$theList .= $this->getTreeList($row['uid'], $depth - 1, $begin - 1, $perms_clause);
 				}
 			}
+
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 		return $theList;
 	}

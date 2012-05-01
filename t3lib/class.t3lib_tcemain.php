@@ -2043,6 +2043,8 @@ class t3lib_TCEmain {
 					break;
 				} // At "100" it will give up and accept a duplicate - should probably be fixed to a small hash string instead...!
 			}
+
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				// If the new value is there:
 			$value = strlen($newValue) ? $newValue : $value;
 		}
@@ -4227,6 +4229,7 @@ class t3lib_TCEmain {
 							} else {
 								$this->log($table, $uid, 3, 0, 100, 'Delete: Zero rows in result when trying to read filenames from record which should be deleted');
 							}
+							$GLOBALS['TYPO3_DB']->sql_free_result($mres);
 						}
 
 							// Delete the hard way...:
@@ -5553,6 +5556,7 @@ class t3lib_TCEmain {
 			} else {
 				return FALSE;
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 		return TRUE;
 	}
@@ -6096,6 +6100,8 @@ class t3lib_TCEmain {
 						$previousLocalizedRecordUid = $previousLocalizedRecord[0]['uid'];
 					}
 				}
+
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 		}
 		return $previousLocalizedRecordUid;
@@ -6666,6 +6672,7 @@ class t3lib_TCEmain {
 		if ($pid < 0) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', $table, 'uid=' . abs($pid));
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 				// Look, if the record UID happens to be an offline record. If so, find its live version.
 				// Offline uids will be used when a page is versionized as "branch" so this is when we
@@ -6844,6 +6851,7 @@ class t3lib_TCEmain {
 							if ($row_tmp = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_tmp)) {
 								$list_cache[] = $row_tmp['pid'];
 							}
+							$GLOBALS['TYPO3_DB']->sql_free_result($res_tmp);
 						}
 					} else { // For other tables than "pages", delete cache for the records "parent page".
 						$list_cache[] = $pageUid = intval($this->getPID($table, $uid));

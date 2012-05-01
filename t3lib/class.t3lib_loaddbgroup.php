@@ -399,6 +399,8 @@ class t3lib_loadDBGroup {
 				$oldMMs_inclUid[] = array($row['tablenames'], $row[$uidForeign_field], $row['uid']);
 			}
 
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
 				// For each item, insert it:
 			foreach ($this->itemArray as $val) {
 				$c++;
@@ -813,6 +815,8 @@ class t3lib_loadDBGroup {
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 						$this->results[$key][$row['uid']] = $row;
 					}
+
+					$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				}
 			}
 		}
