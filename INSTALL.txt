@@ -22,6 +22,7 @@ cover using TYPO3 with other databases or web servers.
 The following configuration is the minimum required:
 - a web server capable of running PHP
 - PHP 5.3.0 or newer with the following extensions:
+	- fileinfo
 	- filter
 	- GD2
 	- JSON

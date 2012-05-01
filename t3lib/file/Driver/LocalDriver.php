@@ -487,13 +487,14 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	 */
 	protected function extractFileInformation($filePath, $containerPath) {
 		$fileName = basename($filePath);
+		$fileMimeInformation = new finfo(FILEINFO_MIME_TYPE);
 
 		$fileInformation = array(
 			'size' => filesize($filePath),
 			'atime' => fileatime($filePath),
 			'mtime' => filemtime($filePath),
 			'ctime' => filectime($filePath),
-			'mimetype' => mime_content_type($filePath),
+			'mimetype' => $fileMimeInformation->file($filePath),
 			'name' => $fileName,
 			'identifier' => $containerPath . $fileName,
 			'storage' => $this->storage->getUid()
