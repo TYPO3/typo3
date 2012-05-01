@@ -356,6 +356,7 @@ class t3lib_frontendedit {
 					}
 					$sortCheck = ' AND ' . $sortField . $operator . intval($row[$sortField]);
 				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'uid,pid',
 					$table,
@@ -383,6 +384,8 @@ class t3lib_frontendedit {
 				} elseif ($direction == 'up') {
 					$cmdData[$table][$uid]['move'] = $row['pid'];
 				}
+
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 			if (!empty($cmdData)) {
 				$this->initializeTceMain();
