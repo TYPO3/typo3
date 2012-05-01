@@ -138,6 +138,7 @@ class tx_install extends t3lib_install {
 
 		// PHP modules which are required. Can be changed by hook in getMissingPhpModules()
 	protected $requiredPhpModules = array(
+		'fileinfo',
 		'filter',
 		'gd',
 		'json',
