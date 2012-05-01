@@ -35,7 +35,7 @@ abstract class Tx_Extbase_DomainObject_AbstractValueObject extends Tx_Extbase_Do
 	/**
 	 * Returns the value of the Value Object. Must be overwritten by a concrete value object.
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function getValue() {
 		return $this->__toString();

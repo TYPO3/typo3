@@ -232,7 +232,7 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 		// @see Tx_Extbase_MVC_Web_FrontendRequestHandler::handleRequest()
 		if ($response === NULL) {
 			$this->reflectionService->shutdown();
-			return;
+			return '';
 		}
 		if (count($response->getAdditionalHeaderData()) > 0) {
 			$GLOBALS['TSFE']->additionalHeaderData[] = implode(chr(10), $response->getAdditionalHeaderData());

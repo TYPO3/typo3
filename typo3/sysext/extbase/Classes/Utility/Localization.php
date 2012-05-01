@@ -71,7 +71,7 @@ class Tx_Extbase_Utility_Localization {
 	 * @param string $key The key from the LOCAL_LANG array for which to return the value.
 	 * @param string $extensionName The name of the extension
 	 * @param array $arguments the arguments of the extension, being passed over to vsprintf
-	 * @return string The value from LOCAL_LANG or NULL if no translation was found.
+	 * @return string|NULL The value from LOCAL_LANG or NULL if no translation was found.
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @author Sebastian Kurfuerst <sebastian@typo3.org>
@@ -79,6 +79,8 @@ class Tx_Extbase_Utility_Localization {
 	 * @todo: If vsprintf gets a malformed string, it returns FALSE! Should we throw an exception there?
 	 */
 	static public function translate($key, $extensionName, $arguments = NULL) {
+		$value = NULL;
+
 		if (t3lib_div::isFirstPartOfStr($key, 'LLL:')) {
 			$value = self::translateFileReference($key);
 		} else {
@@ -149,6 +151,7 @@ class Tx_Extbase_Utility_Localization {
 	 * Loads local-language values by looking for a "locallang.php" (or "locallang.xml") file in the plugin resources directory and if found includes it.
 	 * Also locallang values set in the TypoScript property "_LOCAL_LANG" are merged onto the values found in the "locallang.php" file.
 	 *
+	 * @param string $extensionName
 	 * @return void
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @author Bastian Waidelich <bastian@typo3.org>
@@ -198,6 +201,7 @@ class Tx_Extbase_Utility_Localization {
 	 * TS locallang labels have to be configured like:
 	 * plugin.tx_myextension._LOCAL_LANG.languageKey.key = value
 	 *
+	 * @param string $extensionName
 	 * @return void
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @author Bastian Waidelich <bastian@typo3.org>

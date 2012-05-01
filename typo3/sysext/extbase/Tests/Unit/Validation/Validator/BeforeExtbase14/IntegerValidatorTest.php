@@ -70,6 +70,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_IntegerValidato
 	/**
 	 * @test
 	 * @dataProvider validIntegerNumbers
+	 * @param mixed $number
 	 */
 	public function integerValidatorReturnsTrueForAValidInteger($number) {
 		$integerValidator = new Tx_Extbase_Validation_Validator_IntegerValidator();
@@ -79,6 +80,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_IntegerValidato
 	/**
 	 * @test
 	 * @dataProvider invalidIntegerNumbers
+	 * @param mixed $number
 	 */
 	public function integerValidatorReturnsFalseForAnInvalidInteger($number) {
 		$integerValidator = $this->getMock('Tx_Extbase_Validation_Validator_IntegerValidator', array('addError'), array(), '', FALSE);

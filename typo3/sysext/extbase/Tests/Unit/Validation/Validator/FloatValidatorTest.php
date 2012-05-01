@@ -52,6 +52,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_FloatValidatorTest extends Tx_E
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @test
 	 * @dataProvider validFloats
+	 * @param mixed $float
 	 */
 	public function floatValidatorReturnsNoErrorsForAValidFloat($float) {
 		$this->assertFalse($this->validator->validate($float)->hasErrors());
@@ -75,6 +76,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_FloatValidatorTest extends Tx_E
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @test
 	 * @dataProvider invalidFloats
+	 * @param mixed $float
 	 */
 	public function floatValidatorReturnsErrorForAnInvalidFloat($float) {
 		$this->assertTrue($this->validator->validate($float)->hasErrors());

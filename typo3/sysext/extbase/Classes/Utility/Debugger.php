@@ -121,7 +121,6 @@ class Tx_Extbase_Utility_Debugger {
 	 *
 	 * @param array $array
 	 * @param integer $level
-	 * @param boolean $renderItems
 	 * @param boolean $plainText
 	 * @param boolean $ansiColors
 	 * @return string
@@ -160,7 +159,6 @@ class Tx_Extbase_Utility_Debugger {
 	 *
 	 * @param object $object
 	 * @param integer $level
-	 * @param boolean $renderProperties
 	 * @param boolean $plainText
 	 * @param boolean $ansiColors
 	 * @return string
@@ -222,6 +220,7 @@ class Tx_Extbase_Utility_Debugger {
 	 */
 	protected static function renderHeader($object, $level, $plainText, $ansiColors) {
 		$dump = '';
+		$persistenceType = '';
 
 		$className = get_class($object);
 		if ($plainText) {
@@ -333,6 +332,13 @@ class Tx_Extbase_Utility_Debugger {
 		return $dump;
 	}
 
+	/**
+	 * @param mixed $collection
+	 * @param integer $level
+	 * @param boolean $plainText
+	 * @param boolean $ansiColors
+	 * @return string
+	 */
 	protected static function renderCollection($collection, $level, $plainText, $ansiColors) {
 		$dump = '';
 		foreach ($collection as $key => $value) {
@@ -369,7 +375,7 @@ class Tx_Extbase_Utility_Debugger {
 	 * @param boolean $return if TRUE, the dump is returned for custom post-processing (e.g. embed in custom HTML). If FALSE (default), the dump is directly displayed.
 	 * @param array $blacklistedClassNames An array of class names (RegEx) to be filtered. Default is an array of some common class names.
 	 * @param array $blacklistedPropertyNames An array of property names and/or array keys (RegEx) to be filtered. Default is an array of some common property names.
-	 * @return void/string if $return is TRUE, the dump is returned. By default, the dump is directly displayed, and nothing is returned.
+	 * @return string if $return is TRUE, the dump is returned. By default, the dump is directly displayed, and nothing is returned.
 	 * @api
 	 */
 	public static function var_dump($variable, $title = NULL, $maxDepth = 8, $plainText = FALSE, $ansiColors = TRUE, $return = FALSE, $blacklistedClassNames = NULL, $blacklistedPropertyNames = NULL) {
@@ -437,6 +443,8 @@ class Tx_Extbase_Utility_Debugger {
 		} else {
 			echo $output;
 		}
+
+		return '';
 	}
 }
 ?>

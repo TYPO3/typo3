@@ -104,6 +104,7 @@ abstract class Tx_Extbase_Property_TypeConverter_AbstractTypeConverter implement
 	/**
 	 * Returns an empty list of sub property names
 	 *
+	 * @param mixed $source (unused)
 	 * @return array<string>
 	 * @api
 	 */

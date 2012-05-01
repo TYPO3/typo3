@@ -52,7 +52,7 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 *
 	 * If at least one error occurred, the result is FALSE.
 	 *
-	 * @param mixed $value The value that should be validated
+	 * @param mixed $object
 	 * @return Tx_Extbase_Error_Result
 	 * @api
 	 */

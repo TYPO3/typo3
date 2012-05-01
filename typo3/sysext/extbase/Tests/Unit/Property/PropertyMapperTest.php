@@ -45,6 +45,9 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMapperTest extends Tx_Extbase_Tests
 		$this->mockConfiguration = $this->getMock('Tx_Extbase_Property_PropertyMappingConfigurationInterface');
 	}
 
+	/**
+	 * @return array
+	 */
 	public function validSourceTypes() {
 		return array(
 			array('someString', 'string'),
@@ -59,13 +62,17 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMapperTest extends Tx_Extbase_Tests
 	 * @test
 	 * @dataProvider validSourceTypes
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @param mixed $source
+	 * @param mixed $sourceType
 	 */
 	public function sourceTypeCanBeCorrectlyDetermined($source, $sourceType) {
 		$propertyMapper = $this->getAccessibleMock('Tx_Extbase_Property_PropertyMapper', array('dummy'));
 		$this->assertEquals($sourceType, $propertyMapper->_call('determineSourceType', $source));
 	}
 
-
+	/**
+	 * @return array
+	 */
 	public function invalidSourceTypes() {
 		return array(
 			array(NULL),
@@ -73,17 +80,26 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMapperTest extends Tx_Extbase_Tests
 			array(new ArrayObject())
 		);
 	}
+
 	/**
 	 * @test
 	 * @dataProvider invalidSourceTypes
 	 * @expectedException Tx_Extbase_Property_Exception_InvalidSourceException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @param mixed $source
 	 */
 	public function sourceWhichIsNoSimpleTypeThrowsException($source) {
 		$propertyMapper = $this->getAccessibleMock('Tx_Extbase_Property_PropertyMapper', array('dummy'));
 		$propertyMapper->_call('determineSourceType', $source);
 	}
 
+	/**
+	 * @param string $name
+	 * @param boolean $canConvertFrom
+	 * @param array $properties
+	 * @param string $typeOfSubObject
+	 * @return PHPUnit_Framework_MockObject_MockObject
+	 */
 	protected function getMockTypeConverter($name = '', $canConvertFrom = TRUE, $properties = array(), $typeOfSubObject = '') {
 		$mockTypeConverter = $this->getMock('Tx_Extbase_Property_TypeConverterInterface');
 		$mockTypeConverter->_name = $name;
@@ -107,7 +123,11 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMapperTest extends Tx_Extbase_Tests
 		$this->assertSame($mockTypeConverter, $propertyMapper->_call('findTypeConverter', 'someSource', 'someTargetType', $this->mockConfiguration));
 	}
 
-	// Simple type conversion
+	/**
+	 * Simple type conversion
+	 *
+	 * @return array
+	 */
 	public function dataProviderForFindTypeConverter() {
 		return array(
 			array('someStringSource', 'string', array(
@@ -133,6 +153,10 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMapperTest extends Tx_Extbase_Tests
 	 * @test
 	 * @dataProvider dataProviderForFindTypeConverter
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @param mixed $source
+	 * @param mixed $targetType
+	 * @param mixed $typeConverters
+	 * @param mixed $expectedTypeConverter
 	 */
 	public function findTypeConverterShouldReturnHighestPriorityTypeConverterForSimpleType($source, $targetType, $typeConverters, $expectedTypeConverter) {
 		$mockTypeHandlingService = $this->getMock('Tx_Extbase_Service_TypeHandlingService');
@@ -144,6 +168,9 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMapperTest extends Tx_Extbase_Tests
 		$this->assertSame($expectedTypeConverter, $actualTypeConverter->_name);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function dataProviderForObjectTypeConverters() {
 		$data = array();
 
@@ -275,6 +302,10 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMapperTest extends Tx_Extbase_Tests
 	 * @test
 	 * @dataProvider dataProviderForObjectTypeConverters
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @param mixed $targetClass
+	 * @param mixed $expectedTypeConverter
+	 * @param mixed $typeConverters
+	 * @param boolean $shouldFailWithException
 	 */
 	public function findTypeConverterShouldReturnConverterForTargetObjectIfItExists($targetClass, $expectedTypeConverter, $typeConverters, $shouldFailWithException = FALSE) {
 		$mockTypeHandlingService = $this->getMock('Tx_Extbase_Service_TypeHandlingService');

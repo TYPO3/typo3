@@ -45,6 +45,11 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryResultTest extends Tx_Extbase_Tests
 	protected $mockDataMapper;
 
 	/**
+	 * @var array
+	 */
+	protected $sampleResult = array();
+
+	/**
 	 * Sets up this test case
 	 *
 	 * @return void

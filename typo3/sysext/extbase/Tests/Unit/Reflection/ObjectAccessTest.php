@@ -27,6 +27,9 @@
 require_once('Fixture/DummyClassWithGettersAndSetters.php');
 require_once('Fixture/ArrayAccessClass.php');
 
+/**
+ * Test Unit Test Base Class
+ */
 class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	protected $dummyObject;

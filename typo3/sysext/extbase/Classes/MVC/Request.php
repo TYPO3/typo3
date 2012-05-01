@@ -191,7 +191,7 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	/**
 	 * Sets the plugin name.
 	 *
-	 * @param string $extensionName The plugin name.
+	 * @param string|NULL $pluginName
 	 * @return void
 	 */
 	public function setPluginName($pluginName = NULL) {

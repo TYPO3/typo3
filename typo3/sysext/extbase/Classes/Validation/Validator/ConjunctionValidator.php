@@ -58,6 +58,7 @@ class Tx_Extbase_Validation_Validator_ConjunctionValidator extends Tx_Extbase_Va
 	 * If at least one error occurred, the result is FALSE.
 	 *
 	 * @param mixed $value The value that should be validated
+	 * @return boolean
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function isValid($value) {

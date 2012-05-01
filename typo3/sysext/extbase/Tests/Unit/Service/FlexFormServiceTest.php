@@ -113,6 +113,8 @@ class Tx_Extbase_Tests_Unit_Service_FlexFormServiceTest extends Tx_Extbase_Tests
 	/**
 	 * @test
 	 * @dataProvider convertFlexFormContentToArrayTestData
+	 * @param string $flexFormXML
+	 * @param array $expectedFlexFormArray
 	 */
 	public function convertFlexFormContentToArrayResolvesComplexArrayStructure($flexFormXML, $expectedFlexFormArray) {
 		$convertedFlexFormArray = $this->flexFormService->convertFlexFormContentToArray($flexFormXML);

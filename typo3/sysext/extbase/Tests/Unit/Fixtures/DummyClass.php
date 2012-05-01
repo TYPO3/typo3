@@ -19,6 +19,10 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
+/**
+ * Dummy Class
+ */
 class Tx_Extbase_Fixture_DummyClass {
 
 	public function someMethod() {

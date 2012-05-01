@@ -206,6 +206,8 @@ class Tx_Extbase_Scheduler_FieldProvider implements Tx_Scheduler_AdditionalField
 				return $argumentType;
 			}
 		}
+
+		return '';
 	}
 
 	/**

@@ -39,7 +39,7 @@ class Tx_Extbase_Utility_TypeHandling {
 	protected static $typeHandlingService = NULL;
 
 	/**
-	 * @return void
+	 * @return string
 	 */
 	static protected function getTypeHandlingService() {
 		if (self::$typeHandlingService === NULL) {

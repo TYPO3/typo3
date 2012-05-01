@@ -37,7 +37,7 @@ class Tx_Extbase_Utility_TypoScript {
 	protected static $typoScriptService = NULL;
 
 	/**
-	 * @return void
+	 * @return Tx_Extbase_Service_TypoScriptService|NULL
 	 */
 	static protected function getTypoScriptService() {
 		if (self::$typoScriptService === NULL) {
@@ -55,7 +55,7 @@ class Tx_Extbase_Utility_TypoScript {
 	 * to be more future-proof and not to have any conflicts with Fluid object accessor syntax.
 	 *
 	 * @param array $settings The settings array
-	 * @return void
+	 * @return array
 	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0 - Use Tx_Extbase_Service_TypoScriptService instead
 	 */
 	static public function convertTypoScriptArrayToPlainArray(array $settings) {

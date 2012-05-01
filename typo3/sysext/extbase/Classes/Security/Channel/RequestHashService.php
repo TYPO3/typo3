@@ -63,6 +63,7 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 	 * Generate a request hash for a list of form fields
 	 *
 	 * @param array $formFieldNames Array of form fields
+	 * @param string $fieldNamePrefix
 	 * @return string request hash
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @todo might need to become public API lateron, as we need to call it from Fluid
@@ -159,7 +160,7 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 	 * Check if every element in $requestArguments is in $allowedFields as well.
 	 *
 	 * @param array $requestArguments
-	 * @param array $allowedFiels
+	 * @param array $allowedFields
 	 * @return boolean TRUE if ALL fields inside requestArguments are in $allowedFields, FALSE otherwise.
 	 */
 	protected function checkFieldNameInclusion(array $requestArguments, array $allowedFields) {

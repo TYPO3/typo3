@@ -72,6 +72,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_FloatValidatorT
 	/**
 	 * @test
 	 * @dataProvider validFloatingPointNumbers
+	 * @param mixed $number
 	 */
 	public function floatValidatorReturnsTrueForAValidFloat($number) {
 		$floatValidator = new Tx_Extbase_Validation_Validator_FloatValidator();
@@ -81,6 +82,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_FloatValidatorT
 	/**
 	 * @test
 	 * @dataProvider invalidFloatingPointNumbers
+	 * @param mixed $number
 	 */
 	public function floatValidatorReturnsFalseForAnInvalidFloat($number) {
 		$floatValidator = $this->getMock('Tx_Extbase_Validation_Validator_FloatValidator', array('addError'), array(), '', FALSE);

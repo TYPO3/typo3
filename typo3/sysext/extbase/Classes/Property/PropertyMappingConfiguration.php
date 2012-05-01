@@ -76,6 +76,7 @@ class Tx_Extbase_Property_PropertyMappingConfiguration implements Tx_Extbase_Pro
 	}
 
 	/**
+	 * @param string $propertyName
 	 * @return TRUE if the given propertyName should be mapped, FALSE otherwise.
 	 * @todo: extend to enable whitelisting / blacklisting of properties.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>

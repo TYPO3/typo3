@@ -158,6 +158,11 @@ class Tx_Extbase_MVC_Controller_Argument {
 	protected $origin = 0;
 
 	/**
+	 * @var Tx_Extbase_Persistence_ManagerInterface
+	 */
+	protected $persistenceManager;
+
+	/**
 	 * Constructs this controller argument
 	 *
 	 * @param string $name Name of this argument

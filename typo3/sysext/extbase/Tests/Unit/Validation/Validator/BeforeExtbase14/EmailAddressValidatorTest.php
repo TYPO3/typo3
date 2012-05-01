@@ -57,6 +57,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_EmailAddressVal
 	/**
 	 * @test
 	 * @dataProvider validAddresses
+	 * @param mixed $address
 	 */
 	public function emailAddressValidatorReturnsTrueForAValidEmailAddress($address) {
 		$emailAddressValidator = new Tx_Extbase_Validation_Validator_EmailAddressValidator();
@@ -83,6 +84,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_EmailAddressVal
 	/**
 	 * @test
 	 * @dataProvider invalidAddresses
+	 * @param mixed $address
 	 */
 	public function emailAddressValidatorReturnsFalseForAnInvalidEmailAddress($address) {
 		$emailAddressValidator = $this->getMock('Tx_Extbase_Validation_Validator_EmailAddressValidator', array('addError'), array(), '', FALSE);

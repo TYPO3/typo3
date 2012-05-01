@@ -27,6 +27,9 @@ class Tx_Extbase_MVC_Fixture_CLI_Command_MockACommandController extends Tx_Extba
 	public function fooCommand() {
 	}
 
+	/**
+	 * @param mixed $someArgument
+	 */
 	public function barCommand($someArgument) {
 	}
 }

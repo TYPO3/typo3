@@ -197,7 +197,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * replace / modify the supporteRequestTypes property or override this
 	 * method.
 	 *
-	 * @param Tx_Extbase_MVC_Request $request The current request
+	 * @param Tx_Extbase_MVC_RequestInterface $request The current request
 	 * @return boolean TRUE if this request type is supported, otherwise FALSE
 	 * @api
 	 */
@@ -211,8 +211,8 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	/**
 	 * Processes a general request. The result can be returned by altering the given response.
 	 *
-	 * @param Tx_Extbase_MVC_Request $request The request object
-	 * @param Tx_Extbase_MVC_Response $response The response, modified by this handler
+	 * @param Tx_Extbase_MVC_RequestInterface $request The request object
+	 * @param Tx_Extbase_MVC_ResponseInterface $response The response, modified by this handler
 	 * @return void
 	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestType if the controller doesn't support the current request type
 	 * @api
@@ -340,7 +340,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * Adds the base uri if not already in place.
 	 *
 	 * @param string $uri The URI
-	 * @return void
+	 * @return string
 	 */
 	protected function addBaseUriIfNecessary($uri) {
 		$baseUri = $this->request->getBaseUri();

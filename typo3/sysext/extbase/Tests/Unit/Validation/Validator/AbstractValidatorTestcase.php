@@ -39,12 +39,19 @@ abstract class Tx_Extbase_Tests_Unit_Validation_Validator_AbstractValidatorTestc
 		$this->validator = $this->getValidator();
 	}
 
+	/**
+	 * @param array $options
+	 * @return mixed
+	 */
 	protected function getValidator($options = array()) {
 		$validator = new $this->validatorClassName($options);
 
 		return $validator;
 	}
 
+	/**
+	 * @param array $options
+	 */
 	protected function validatorOptions($options) {
 		$this->validator = $this->getValidator($options);
 	}

@@ -145,6 +145,7 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 	 * could not be loaded; to make sure Extbase also works in Backend modules
 	 * in all contexts.
 	 *
+	 * @param array $frameworkConfiguration
 	 * @return array
 	 */
 	protected function getContextSpecificFrameworkConfiguration(array $frameworkConfiguration) {

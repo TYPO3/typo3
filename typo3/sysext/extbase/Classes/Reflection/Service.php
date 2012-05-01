@@ -145,6 +145,11 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	protected $cacheIdentifier;
 
 	/**
+	 * @var array
+	 */
+	protected $methodReflections;
+
+	/**
 	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
 	 */
@@ -401,6 +406,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	/**
 	 * Builds class schemata from classes annotated as entities or value objects
 	 *
+	 * @param string $className
 	 * @return Tx_Extbase_Reflection_ClassSchema The class schema
 	 */
 	protected function buildClassSchema($className) {
@@ -442,6 +448,8 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * Converts the given parameter reflection into an information array
 	 *
 	 * @param ReflectionParameter $parameter The parameter to reflect
+	 * @param integer $parameterPosition
+	 * @param ReflectionMethod|NULL $method
 	 * @return array Parameter information array
 	 */
 	protected function convertParameterReflectionToArray(ReflectionParameter $parameter, $parameterPosition, ReflectionMethod $method = NULL) {

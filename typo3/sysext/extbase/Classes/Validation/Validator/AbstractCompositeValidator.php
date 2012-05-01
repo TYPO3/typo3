@@ -92,7 +92,7 @@ abstract class Tx_Extbase_Validation_Validator_AbstractCompositeValidator implem
 	/**
 	 * Removes the specified validator.
 	 *
-	 * @param Tx_Extbase_Validation_ValidatorInterface $validator The validator to remove
+	 * @param Tx_Extbase_Validation_Validator_ValidatorInterface $validator The validator to remove
 	 */
 	public function removeValidator(Tx_Extbase_Validation_Validator_ValidatorInterface $validator) {
 		if (!$this->validators->contains($validator)) throw new Tx_Extbase_Validation_Exception_NoSuchValidator('Cannot remove validator because its not in the conjunction.', 1207020177);

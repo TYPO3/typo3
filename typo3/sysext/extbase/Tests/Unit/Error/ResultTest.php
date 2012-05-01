@@ -37,6 +37,9 @@ class Tx_Extbase_Tests_Unit_Error_ResultTest extends Tx_Extbase_Tests_Unit_BaseT
 		$this->result = new Tx_Extbase_Error_Result();
 	}
 
+	/**
+	 * @return array
+	 */
 	public function dataTypes() {
 		return array(
 			array('Error', 'Errors'),
@@ -45,6 +48,10 @@ class Tx_Extbase_Tests_Unit_Error_ResultTest extends Tx_Extbase_Tests_Unit_BaseT
 		);
 	}
 
+	/**
+	 * @param string $type
+	 * @return PHPUnit_Framework_MockObject_MockObject
+	 */
 	protected function getMockMessage($type) {
 		return $this->getMock('Tx_Extbase_Error_' . $type, array(), array(), '', FALSE);
 	}
@@ -53,6 +60,8 @@ class Tx_Extbase_Tests_Unit_Error_ResultTest extends Tx_Extbase_Tests_Unit_BaseT
 	 * @test
 	 * @dataProvider dataTypes
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @param string $dataTypeInSingular
+	 * @param string $dataTypeInPlural
 	 */
 	public function addedMessagesShouldBeRetrievableAgain($dataTypeInSingular, $dataTypeInPlural) {
 		$message = $this->getMockMessage($dataTypeInSingular);
@@ -67,6 +76,8 @@ class Tx_Extbase_Tests_Unit_Error_ResultTest extends Tx_Extbase_Tests_Unit_BaseT
 	 * @test
 	 * @dataProvider dataTypes
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @param string $dataTypeInSingular
+	 * @param string $dataTypeInPlural
 	 */
 	public function getMessageShouldNotBeRecursive($dataTypeInSingular, $dataTypeInPlural) {
 		$message = $this->getMockMessage($dataTypeInSingular);
@@ -81,6 +92,8 @@ class Tx_Extbase_Tests_Unit_Error_ResultTest extends Tx_Extbase_Tests_Unit_BaseT
 	 * @test
 	 * @dataProvider dataTypes
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @param string $dataTypeInSingular
+	 * @param string $dataTypeInPlural
 	 */
 	public function getFirstMessageShouldReturnFirstMessage($dataTypeInSingular, $dataTypeInPlural) {
 		$message1 = $this->getMockMessage($dataTypeInSingular);
@@ -125,6 +138,8 @@ class Tx_Extbase_Tests_Unit_Error_ResultTest extends Tx_Extbase_Tests_Unit_BaseT
 	 * @test
 	 * @dataProvider dataTypes
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @param string $dataTypeInSingular
+	 * @param string $dataTypeInPlural
 	 */
 	public function hasMessagesShouldReturnTrueIfTopLevelObjectHasMessages($dataTypeInSingular, $dataTypeInPlural) {
 		$message = $this->getMockMessage($dataTypeInSingular);
@@ -139,6 +154,8 @@ class Tx_Extbase_Tests_Unit_Error_ResultTest extends Tx_Extbase_Tests_Unit_BaseT
 	 * @test
 	 * @dataProvider dataTypes
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @param string $dataTypeInSingular
+	 * @param string $dataTypeInPlural
 	 */
 	public function hasMessageshouldReturnTrueIfSubObjectHasErrors($dataTypeInSingular, $dataTypeInPlural) {
 		$addMethodName = 'add' . $dataTypeInSingular;
@@ -153,6 +170,8 @@ class Tx_Extbase_Tests_Unit_Error_ResultTest extends Tx_Extbase_Tests_Unit_BaseT
 	 * @test
 	 * @dataProvider dataTypes
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @param string $dataTypeInSingular
+	 * @param string $dataTypeInPlural
 	 */
 	public function hasMessagesShouldReturnFalseIfSubObjectHasNoErrors($dataTypeInSingular, $dataTypeInPlural) {
 		$methodName = 'has' . $dataTypeInPlural;
@@ -166,6 +185,8 @@ class Tx_Extbase_Tests_Unit_Error_ResultTest extends Tx_Extbase_Tests_Unit_BaseT
 	 * @test
 	 * @dataProvider dataTypes
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @param string $dataTypeInSingular
+	 * @param string $dataTypeInPlural
 	 */
 	public function getFlattenedMessagesShouldReturnAllSubMessages($dataTypeInSingular, $dataTypeInPlural) {
 		$message1 = $this->getMockMessage($dataTypeInSingular);
@@ -196,6 +217,8 @@ class Tx_Extbase_Tests_Unit_Error_ResultTest extends Tx_Extbase_Tests_Unit_BaseT
 	 * @test
 	 * @dataProvider dataTypes
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @param string $dataTypeInSingular
+	 * @param string $dataTypeInPlural
 	 */
 	public function getFlattenedMessagesShouldNotContainEmptyResults($dataTypeInSingular, $dataTypeInPlural) {
 		$message1 = $this->getMockMessage($dataTypeInSingular);

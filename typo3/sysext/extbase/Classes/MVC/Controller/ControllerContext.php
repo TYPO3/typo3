@@ -91,7 +91,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	/**
 	 * Set the response of the controller
 	 *
-	 * @param Tx_Extbase_MVC_Response $request
+	 * @param Tx_Extbase_MVC_Response $response
 	 * @return void
 	 */
 	public function setResponse(Tx_Extbase_MVC_Response $response) {
@@ -152,6 +152,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 
 	/**
 	 * Tx_Extbase_MVC_Web_Routing_UriBuilder $uriBuilder
+	 * @param Tx_Extbase_MVC_Web_Routing_UriBuilder $uriBuilder
 	 * @return void
 	 */
 	public function setUriBuilder(Tx_Extbase_MVC_Web_Routing_UriBuilder $uriBuilder) {

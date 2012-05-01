@@ -98,6 +98,7 @@ class Tx_Extbase_MVC_CLI_RequestHandler implements Tx_Extbase_MVC_RequestHandler
 	 */
 	public function handleRequest() {
 		$request = $this->requestBuilder->build();
+		/** @var $response Tx_Extbase_MVC_CLI_Response */
 		$response = $this->objectManager->create('Tx_Extbase_MVC_CLI_Response');
 		$this->dispatcher->dispatch($request, $response);
 		$response->send();

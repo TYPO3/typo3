@@ -38,7 +38,7 @@ class Tx_Extbase_Service_TypoScriptService implements t3lib_Singleton {
 	 * to be more future-proof and not to have any conflicts with Fluid object accessor syntax.
 	 *
 	 * @param array $typoScriptArray The TypoScript array (e.g. array('foo' => 'TEXT', 'foo.' => array('bar' => 'baz')))
-	 * @return void
+	 * @return array
 	 * @api
 	 */
 	public function convertTypoScriptArrayToPlainArray(array $typoScriptArray) {

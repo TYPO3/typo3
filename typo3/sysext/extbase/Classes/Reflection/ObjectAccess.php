@@ -89,7 +89,7 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 */
 	static public function getPropertyInternal($subject, $propertyName, $forceDirectAccess, &$propertyExists) {
 		if ($subject === NULL) {
-			return;
+			return NULL;
 		}
 		$propertyExists = TRUE;
 		if (is_array($subject)) {
@@ -97,7 +97,7 @@ class Tx_Extbase_Reflection_ObjectAccess {
 				return $subject[$propertyName];
 			}
 			$propertyExists = FALSE;
-			return;
+			return NULL;
 		}
 		if ($forceDirectAccess === TRUE) {
 			if (property_exists(get_class($subject), $propertyName)) {
@@ -124,6 +124,8 @@ class Tx_Extbase_Reflection_ObjectAccess {
 			return $subject->$propertyName;
 		}
 		$propertyExists = FALSE;
+
+		return NULL;
 	}
 
 	/**
@@ -328,7 +330,7 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 * Build the setter method name for a given property by capitalizing the
 	 * first letter of the property, and prepending it with "set".
 	 *
-	 * @param string $property Name of the property
+	 * @param string $propertyName Name of the property
 	 * @return string Name of the setter method name
 	 */
 	static public function buildSetterMethodName($propertyName) {

@@ -559,6 +559,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 
 	/**
 	 * Data Provider for checkRequestHashDoesNotThrowExceptionInNormalOperations
+	 * @return array
 	 */
 	public function checkRequestHashInNormalOperation() {
 		return array(
@@ -575,8 +576,16 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @dataProvider checkRequestHashInNormalOperation
+	 * @param boolean $hmacVerified
+	 * @param boolean $reflectionServiceNeedsInitialization
+	 * @param integer $argument1Origin
+	 * @param integer $argument2Origin
+	 * @param array $methodTagsValues
 	 */
-	public function checkRequestHashDoesNotThrowExceptionInNormalOperations($hmacVerified, $reflectionServiceNeedsInitialization = FALSE, $argument1Origin = 3, $argument2Origin = 3, $methodTagsValues = array()) {
+	public function checkRequestHashDoesNotThrowExceptionInNormalOperations(
+		$hmacVerified, $reflectionServiceNeedsInitialization = FALSE, $argument1Origin = 3, $argument2Origin = 3,
+		array $methodTagsValues = array()
+	) {
 		$mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request', array('isHmacVerified'), array(), '', FALSE);
 		$mockRequest->expects($this->once())->method('isHmacVerified')->will($this->returnValue($hmacVerified));
 

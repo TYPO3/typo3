@@ -59,6 +59,7 @@ class Tx_Extbase_Property_TypeConverter_ObjectStorageConverter extends Tx_Extbas
 	/**
 	 * Returns the source, if it is an array, otherwise an empty array.
 	 *
+	 * @param mixed $source
 	 * @return array
 	 * @api
 	 */

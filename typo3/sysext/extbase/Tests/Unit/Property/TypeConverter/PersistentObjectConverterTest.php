@@ -62,6 +62,9 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 		$this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
 	}
 
+	/**
+	 * @return array
+	 */
 	public function dataProviderForCanConvert() {
 		return array(
 			array(TRUE, FALSE, TRUE), // is entity => can convert
@@ -74,6 +77,9 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 	 * @test
 	 * @dataProvider dataProviderForCanConvert
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @param boolean $isEntity
+	 * @param boolean $isValueObject
+	 * @param mixed $expected
 	 */
 	public function canConvertFromReturnsTrueIfClassIsTaggedWithEntityOrValueObject($isEntity, $isValueObject, $expected) {
 		$className = uniqid('Test_Class');
@@ -225,6 +231,7 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 	/**
 	 * @param integer $numberOfResults
 	 * @param Matcher $howOftenIsGetFirstCalled
+	 * @return stdClass
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */

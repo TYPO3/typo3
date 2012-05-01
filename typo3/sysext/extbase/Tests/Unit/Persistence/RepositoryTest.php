@@ -59,6 +59,11 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	 */
 	protected $querySettings;
 
+	/**
+	 * @var Tx_Extbase_Persistence_QuerySettingsInterface
+	 */
+	protected $mockQuerySettings;
+
 	public function setUp() {
 		$this->mockIdentityMap = $this->getMock('Tx_Extbase_Persistence_IdentityMap');
 		$this->mockQueryFactory = $this->getMock('Tx_Extbase_Persistence_QueryFactory');
@@ -155,6 +160,7 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 
 	/**
 	 * dataProvider for createQueryCallsQueryFactoryWithExpectedType
+	 * @return array
 	 */
 	public function modelAndRepositoryClassNames() {
 		return array(
@@ -169,6 +175,8 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	/**
 	 * @test
 	 * @dataProvider modelAndRepositoryClassNames
+	 * @param string $repositoryClassName
+	 * @param string $modelClassName
 	 */
 	public function constructSetsObjectTypeFromClassName($repositoryClassName, $modelClassName) {
 		$mockClassName = 'MockRepository' . uniqid();

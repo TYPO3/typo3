@@ -39,6 +39,7 @@ class Tx_Extbase_Utility_ExtbaseRequirementsCheck implements tx_reports_StatusPr
 	 * Compiles a collection of system status checks as a status report.
 	 *
 	 * @see typo3/sysext/reports/interfaces/tx_reports_StatusProvider::getStatus()
+	 * @return array
 	 */
 	public function getStatus() {
 		$reports = array(

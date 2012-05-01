@@ -48,7 +48,7 @@ class Tx_Extbase_Service_CacheService implements t3lib_Singleton {
 	/**
 	 * Flushes cache_pages or cachingframework_cache_pages.
 	 *
-	 * @param array $pageIdsToClear pageIds to clear the cache for
+	 * @param array|NULL $pageIds pageIds to clear the cache for
 	 * @return void
 	 */
 	protected function flushPageCache($pageIds = NULL) {
@@ -66,7 +66,7 @@ class Tx_Extbase_Service_CacheService implements t3lib_Singleton {
 	/**
 	 * Flushes cache_pagesection or cachingframework_cache_pagesection.
 	 *
-	 * @param array $pageIdsToClear pageIds to clear the cache for
+	 * @param array|NULL $pageIds pageIds to clear the cache for
 	 * @return void
 	 */
 	protected function flushPageSectionCache($pageIds = NULL) {

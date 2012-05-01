@@ -101,12 +101,14 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 	}
 
 	/**
-	 * @return tslib_cObj
+	 * @return tslib_cObj|NULL
 	 */
 	public function getContentObject() {
 		if ($this->contentObject !== NULL) {
 			return $this->contentObject;
 		}
+
+		return NULL;
 	}
 
 	/**
@@ -212,8 +214,9 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 	}
 
 	/**
-	 * @param array $frameworkConfiguration
-	 * @param array $overriddenSwitchableControllerActions in the format array('Controller1' => array('action1', 'action2'), 'Controller2' => ...)
+	 * @param array &$frameworkConfiguration
+	 * @param array $switchableControllerActions
+	 *        in the format array('Controller1' => array('action1', 'action2'), 'Controller2' => ...)
 	 * @return void
 	 */
 	protected function overrideSwitchableControllerActions(array &$frameworkConfiguration, array $switchableControllerActions) {

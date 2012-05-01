@@ -143,6 +143,8 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	 * Constructs a new Front-End User
 	 *
 	 * @api
+	 * @param string $username
+	 * @param string $password
 	 */
 	public function __construct($username = '', $password = '') {
 		$this->username = $username;

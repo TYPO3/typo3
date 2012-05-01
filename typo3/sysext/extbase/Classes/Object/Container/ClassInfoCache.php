@@ -54,6 +54,7 @@ class Tx_Extbase_Object_Container_ClassInfoCache {
 	/**
 	 * checks if cacheentry exists for id
 	 * @param string $id
+	 * @return boolean
 	 */
 	public function has($id) {
 		return isset($this->level1Cache[$id]) || $this->level2Cache->has($id);

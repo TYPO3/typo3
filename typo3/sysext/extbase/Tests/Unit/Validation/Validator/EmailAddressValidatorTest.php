@@ -54,6 +54,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_EmailAddressValidatorTest exten
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @test
 	 * @dataProvider validAddresses
+	 * @param mixed $address
 	 */
 	public function emailAddressValidatorReturnsNoErrorsForAValidEmailAddress($address) {
 		$this->assertFalse($this->validator->validate($address)->hasErrors());
@@ -83,6 +84,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_EmailAddressValidatorTest exten
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @test
 	 * @dataProvider invalidAddresses
+	 * @param mixed $address
 	 */
 	public function emailAddressValidatorReturnsFalseForAnInvalidEmailAddress($address) {
 		$this->assertTrue($this->validator->validate($address)->hasErrors());

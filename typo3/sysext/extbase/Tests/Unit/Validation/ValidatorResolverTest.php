@@ -345,6 +345,7 @@ class Tx_Extbase_Tests_Unit_Validation_ValidatorResolverTest extends Tx_Extbase_
 	 * dataProvider for parseValidatorAnnotationCanParseAnnotations
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 * @return array
 	 */
 	public function validatorAnnotations() {
 		return array(
@@ -386,6 +387,8 @@ class Tx_Extbase_Tests_Unit_Validation_ValidatorResolverTest extends Tx_Extbase_
 	 * @test
 	 * @dataProvider validatorAnnotations
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @param mixed $annotation
+	 * @param mixed $expectedResult
 	 */
 	public function parseValidatorAnnotationCanParseAnnotations($annotation, $expectedResult) {
 		$mockValidatorResolver = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('dummy'));

@@ -41,7 +41,6 @@ class Tx_Extbase_Reflection_PropertyReflection extends ReflectionProperty {
 	 *
 	 * @param string $className Name of the property's class
 	 * @param string $propertyName Name of the property to reflect
-	 * @return void
 	 */
 	public function __construct($className, $propertyName) {
 		parent::__construct($className, $propertyName);
@@ -71,6 +70,7 @@ class Tx_Extbase_Reflection_PropertyReflection extends ReflectionProperty {
 	/**
 	 * Returns the values of the specified tag
 	 *
+	 * @param string $tag
 	 * @return array Values of the given tag
 	 */
 	public function getTagValues($tag) {

@@ -51,7 +51,7 @@ abstract class Tx_Extbase_Tests_Unit_BaseTestCase extends tx_phpunit_testcase {
 	 * Returns a mock object which allows for calling protected methods and access
 	 * of protected properties.
 	 *
-	 * @param string $className Full qualified name of the original class
+	 * @param string $originalClassName
 	 * @param array $methods
 	 * @param array $arguments
 	 * @param string $mockClassName

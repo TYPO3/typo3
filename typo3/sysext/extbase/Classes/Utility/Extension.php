@@ -40,7 +40,7 @@ class Tx_Extbase_Utility_Extension {
 	protected static $extensionService = NULL;
 
 	/**
-	 * @return void
+	 * @return string
 	 */
 	static protected function getExtensionService() {
 		if (self::$extensionService === NULL) {
@@ -65,9 +65,8 @@ class Tx_Extbase_Utility_Extension {
 	 *
 	 * @param string $extensionName The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
 	 * @param string $pluginName must be a unique id for your plugin in UpperCamelCase (the string length of the extension key added to the length of the plugin name should be less than 32!)
-	 * @param string $controllerActions is an array of allowed combinations of controller and action stored in an array (controller name as key and a comma separated list of action names as value, the first controller and its first action is chosen as default)
-	 * @param string $nonCacheableControllerActions is an optional array of controller name and  action names which should not be cached (array as defined in $controllerActions)
-	 * @param string $defaultControllerAction is an optional array controller name (as array key) and action name (as array value) that should be called as default
+	 * @param array $controllerActions is an array of allowed combinations of controller and action stored in an array (controller name as key and a comma separated list of action names as value, the first controller and its first action is chosen as default)
+	 * @param array $nonCacheableControllerActions is an optional array of controller name and  action names which should not be cached (array as defined in $controllerActions)
 	 * @param string $pluginType either Tx_Extbase_Utility_Extension::TYPE_PLUGIN (default) or Tx_Extbase_Utility_Extension::TYPE_CONTENT_ELEMENT
 	 * @return void
 	 */
@@ -282,10 +281,10 @@ tt_content.' . $pluginSignature . ' {
 	/**
 	 * Build the autoload registry for a given extension and place it ext_autoload.php.
 	 *
-	 * @param	string	$extensionKey	Key of the extension
-	 * @param	string	$extensionPath	full path of the extension
-	 * @param   array   $additionalAutoloadClasses additional classes to be added to the autoloader. The key must be the classname all-lowercase, the value must be the entry to be inserted
-	 * @return	string	HTML string which should be outputted
+	 * @param string $extensionKey Key of the extension
+	 * @param string $extensionPath full path of the extension
+	 * @param array $additionalAutoloadClasses additional classes to be added to the autoloader. The key must be the classname all-lowercase, the value must be the entry to be inserted
+	 * @return string HTML string which should be outputted
 	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0
 	 */
 	static public function createAutoloadRegistryForExtension($extensionKey, $extensionPath, $additionalAutoloadClasses = array()) {
@@ -318,9 +317,9 @@ tt_content.' . $pluginSignature . ' {
 	 * Generate autoload PHP file data. Takes an associative array with class name to file mapping, and outputs it as PHP.
 	 * Does NOT escape the values in the associative array. Includes the <?php ... ?> syntax and an optional global prefix.
 	 *
-	 * @param	array	$classNameToFileMapping class name to file mapping
-	 * @param	string	$globalPrefix	Global prefix which is prepended to all code.
-	 * @return	string	The full PHP string
+	 * @param array $classNameToFileMapping class name to file mapping
+	 * @param string $globalPrefix Global prefix which is prepended to all code.
+	 * @return string The full PHP string
 	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0
 	 */
 	protected function generateAutoloadPhpFileData($classNameToFileMapping, $globalPrefix = '') {
@@ -341,17 +340,14 @@ tt_content.' . $pluginSignature . ' {
 	/**
 	 * Generate the $classNameToFileMapping for a given filePath.
 	 *
-	 * @param	array	$classNameToFileMapping	(Reference to array) All values are appended to this array.
-	 * @param	string	$path	Path which should be crawled
-	 * @param	string	$excludeRegularExpression	Exclude regular expression, to exclude certain files from being processed
-	 * @param	string	$valueWrap	Wrap for the file name
+	 * @param array $classNameToFileMapping (Reference to array) All values are appended to this array.
+	 * @param string $path Path which should be crawled
+	 * @param string $excludeRegularExpression Exclude regular expression, to exclude certain files from being processed
+	 * @param string $valueWrap Wrap for the file name
 	 * @return void
 	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0
 	 */
 	static protected function buildAutoloadRegistryForSinglePath(&$classNameToFileMapping, $path, $excludeRegularExpression = '', $valueWrap = '\'|\'') {
-//		if (file_exists($path . 'Classes/')) {
-//			return "<b>This appears to be a new-style extension which has its PHP classes inside the Classes/ subdirectory. It is not needed to generate the autoload registry for these extensions.</b>";
-//		}
 		$extensionFileNames = t3lib_div::removePrefixPathFromList(t3lib_div::getAllFilesAndFoldersInPath(array(), $path, 'php', FALSE, 99, $excludeRegularExpression), $path);
 
 		foreach ($extensionFileNames as $extensionFileName) {
@@ -366,8 +362,8 @@ tt_content.' . $pluginSignature . ' {
 	/**
 	 * Extracts class names from the given file.
 	 *
-	 * @param	string	$filePath	File path (absolute)
-	 * @return	array	Class names
+	 * @param string $filePath file path (absolute)
+	 * @return array class names
 	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0
 	 */
 	static protected function extractClassNames($filePath) {
@@ -412,10 +408,10 @@ tt_content.' . $pluginSignature . ' {
 	/**
 	 * Find tokens in the tokenList
 	 *
-	 * @param	array	$tokenList	list of tokens as returned by token_get_all()
-	 * @param	array	$wantedToken	the tokens to be found
-	 * @param	array	$intermediateTokens	optional: list of tokens that are allowed to skip when looking for the wanted token
-	 * @return	mixed
+	 * @param array &$tokenList list of tokens as returned by token_get_all()
+	 * @param array $wantedTokens
+	 * @param array $intermediateTokens optional: list of tokens that are allowed to skip when looking for the wanted token
+	 * @return mixed
 	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0
 	 */
 	static protected function findToken(array &$tokenList, array $wantedTokens, array $intermediateTokens = array()) {

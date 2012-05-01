@@ -343,7 +343,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	/**
 	 * Uid of the target page
 	 *
-	 * @param integer $pageUid
+	 * @param integer $targetPageUid
 	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */
@@ -365,7 +365,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	/**
 	 * Sets the page type of the target URI. Defaults to 0
 	 *
-	 * @param integer $pageType
+	 * @param integer $targetPageType
 	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */
@@ -687,7 +687,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * Converts a given object recursively into an array.
 	 *
 	 * @param Tx_Extbase_DomainObject_AbstractDomainObject $object
-	 * @return void
+	 * @return array
 	 */
 	// TODO Refactore this into convertDomainObjectsToIdentityArrays()
 	public function convertTransientObjectToArray(Tx_Extbase_DomainObject_AbstractDomainObject $object) {

@@ -46,6 +46,7 @@ interface Tx_Extbase_DomainObject_DomainObjectInterface {
 	/**
 	 * Setter for the pid.
 	 *
+	 * @param integer $pid
 	 * @return void
 	 */
 	public function setPid($pid);
@@ -76,6 +77,7 @@ interface Tx_Extbase_DomainObject_DomainObjectInterface {
 	/**
 	 * Returns the property value of the given property name. Only for internal use.
 	 *
+	 * @param string $propertyName
 	 * @return mixed The propertyValue
 	 */
 	public function _getProperty($propertyName);

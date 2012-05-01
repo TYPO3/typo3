@@ -69,7 +69,6 @@ class Tx_Extbase_MVC_CLI_Request implements Tx_Extbase_MVC_RequestInterface {
 	protected $dispatched = FALSE;
 
 	/**
-	 *
 	 * @var array
 	 */
 	protected $commandLineArguments;

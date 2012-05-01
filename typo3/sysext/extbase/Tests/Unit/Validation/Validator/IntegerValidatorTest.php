@@ -50,6 +50,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_IntegerValidatorTest extends Tx
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @test
 	 * @dataProvider validIntegers
+	 * @param mixed $integer
 	 */
 	public function integerValidatorReturnsNoErrorsForAValidInteger($integer) {
 		$this->assertFalse($this->validator->validate($integer)->hasErrors());
@@ -73,6 +74,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_IntegerValidatorTest extends Tx
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @test
 	 * @dataProvider invalidIntegers
+	 * @param mixed $invalidInteger
 	 */
 	public function integerValidatorReturnsErrorForAnInvalidInteger($invalidInteger) {
 		$this->assertTrue($this->validator->validate($invalidInteger)->hasErrors());

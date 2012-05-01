@@ -126,6 +126,9 @@ class Tx_Extbase_Tests_Unit_Service_ExtensionServiceTest extends Tx_Extbase_Test
 	/**
 	 * @test
 	 * @dataProvider getPluginNamespaceDataProvider
+	 * @param string $extensionName
+	 * @param string $pluginName
+	 * @param mixed $expectedResult
 	 */
 	public function getPluginNamespaceTests($extensionName, $pluginName, $expectedResult) {
 		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue(array()));
@@ -164,6 +167,10 @@ class Tx_Extbase_Tests_Unit_Service_ExtensionServiceTest extends Tx_Extbase_Test
 	/**
 	 * @test
 	 * @dataProvider getPluginNameByActionDataProvider
+	 * @param string $extensionName
+	 * @param string $controllerName
+	 * @param string $actionName
+	 * @param mixed $expectedResult
 	 */
 	public function getPluginNameByActionTests($extensionName, $controllerName, $actionName, $expectedResult) {
 		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->with(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->will($this->returnValue(array('view' => array('pluginNamespace' => 'overridden_plugin_namespace'))));

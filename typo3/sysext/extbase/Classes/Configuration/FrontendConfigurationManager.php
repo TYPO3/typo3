@@ -205,6 +205,7 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	 *
 	 * @param array $nodeArray The flexForm node to parse
 	 * @param string $valuePointer The valuePointer to use for value retrieval
+	 * @return array
 	 * @deprecated since Extbase 1.4; will be removed in Extbase 6.0
 	 */
 	protected function walkFlexformNode($nodeArray, $valuePointer = 'vDEF') {

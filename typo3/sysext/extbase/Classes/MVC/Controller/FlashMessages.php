@@ -56,6 +56,7 @@ class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 		if (!is_string($message)) {
 			throw new InvalidArgumentException('The flash message must be string, ' . gettype($message) . ' given.', 1243258395);
 		}
+		/** @var $flashMessage t3lib_FlashMessage */
 		$flashMessage = t3lib_div::makeInstance(
 			't3lib_FlashMessage',
 			$message,

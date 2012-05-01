@@ -100,6 +100,9 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentTest extends Tx_Extbase_Tests
 		$this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
 	}
 
+	/**
+	 * @return array
+	 */
 	public function invalidShortNames() {
 		return array(
 			array(''),
@@ -107,11 +110,13 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentTest extends Tx_Extbase_Tests
 			array(5)
 		);
 	}
+
 	/**
 	 * @test
 	 * @dataProvider invalidShortNames
 	 * @expectedException InvalidArgumentException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @param string $invalidShortName
 	 */
 	public function shortNameShouldThrowExceptionIfInvalid($invalidShortName) {
 		$this->simpleValueArgument->setShortName($invalidShortName);
@@ -189,6 +194,9 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentTest extends Tx_Extbase_Tests
 		$this->objectArgument->setValue(new DateTime());
 	}
 
+	/**
+	 * @return Tx_Extbase_MVC_Controller_Argument $this
+	 */
 	protected function setupPropertyMapperAndSetValue() {
 		$this->mockPropertyMapper->expects($this->once())->method('convert')->with('someRawValue', 'string', $this->mockConfiguration)->will($this->returnValue('convertedValue'));
 		$this->mockPropertyMapper->expects($this->once())->method('getMessages')->will($this->returnValue(new Tx_Extbase_Error_Result()));

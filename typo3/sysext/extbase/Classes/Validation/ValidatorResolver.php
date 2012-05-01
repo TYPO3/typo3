@@ -142,9 +142,10 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 
 	/**
 	 * Detects and registers any validators for arguments:
-	 * - by the data type specified in the @param annotations
-	 * - additional validators specified in the @validate annotations of a method
+	 * - by the data type specified in the
 	 *
+	 * @param string $className
+	 * @param string $methodName
 	 * @return array An Array of ValidatorConjunctions for each method parameters.
 	 */
 	public function buildMethodArgumentsValidatorConjunctions($className, $methodName) {
@@ -237,6 +238,7 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 	/**
 	 * Parses the validator options given in @validate annotations.
 	 *
+	 * @param string $validateValue
 	 * @return array
 	 */
 	protected function parseValidatorAnnotation($validateValue) {

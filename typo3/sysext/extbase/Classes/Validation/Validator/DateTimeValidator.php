@@ -40,7 +40,6 @@ class Tx_Extbase_Validation_Validator_DateTimeValidator extends Tx_Extbase_Valid
 	 * If at least one error occurred, the result is FALSE.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @param array $validationOptions Not used
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
 	public function isValid($value) {

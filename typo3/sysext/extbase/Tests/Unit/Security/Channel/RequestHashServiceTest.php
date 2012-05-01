@@ -33,6 +33,9 @@
  */
 class Tx_Extbase_Tests_Unit_Security_Channel_RequestHashServiceTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
+	/**
+	 * @return array
+	 */
 	public function dataProviderForGenerateRequestHash() {
 		return array(
 			// Simple cases
@@ -90,7 +93,11 @@ class Tx_Extbase_Tests_Unit_Security_Channel_RequestHashServiceTest extends Tx_E
 		);
 	}
 
-	// Data provider for error cases which should throw an exception
+	/**
+	 * Data provider for error cases which should throw an exception
+	 *
+	 * @return array
+	 */
 	public function dataProviderForGenerateRequestHashWithUnallowedValues() {
 		return array(
 			// Overriding form fields (string overridden by array)
@@ -119,6 +126,8 @@ class Tx_Extbase_Tests_Unit_Security_Channel_RequestHashServiceTest extends Tx_E
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @dataProvider dataProviderForGenerateRequestHash
+	 * @param mixed $input
+	 * @param mixed $expected
 	 */
 	public function generateRequestHashGeneratesTheCorrectHashesInNormalOperation($input, $expected) {
 		$requestHashService = $this->getMock('Tx_Extbase_Security_Channel_RequestHashService', array('serializeAndHashFormFieldArray'));
@@ -131,6 +140,7 @@ class Tx_Extbase_Tests_Unit_Security_Channel_RequestHashServiceTest extends Tx_E
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @dataProvider dataProviderForGenerateRequestHashWithUnallowedValues
 	 * @expectedException Tx_Extbase_Security_Exception_InvalidArgumentForRequestHashGeneration
+	 * @param mixed $input
 	 */
 	public function generateRequestHashThrowsExceptionInWrongCases($input) {
 		$requestHashService = $this->getMock('Tx_Extbase_Security_Channel_RequestHashService', array('serializeAndHashFormFieldArray'));
@@ -253,6 +263,7 @@ class Tx_Extbase_Tests_Unit_Security_Channel_RequestHashServiceTest extends Tx_E
 
 	/**
 	 * Data Provider for checkFieldNameInclusionWorks
+	 * @return array
 	 */
 	public function dataProviderForCheckFieldNameInclusion() {
 		return array(
@@ -414,6 +425,9 @@ class Tx_Extbase_Tests_Unit_Security_Channel_RequestHashServiceTest extends Tx_E
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @dataProvider dataProviderForCheckFieldNameInclusion
+	 * @param mixed $requestArguments
+	 * @param mixed $allowedFields
+	 * @param mixed $expectedResult
 	 */
 	public function checkFieldNameInclusionWorks($requestArguments, $allowedFields, $expectedResult) {
 		$requestHashService = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Security_Channel_RequestHashService'), array('dummy'));

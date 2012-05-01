@@ -29,6 +29,7 @@
 interface Tx_Extbase_Property_PropertyMappingConfigurationInterface {
 
 	/**
+	 * @param string $propertyName
 	 * @return TRUE if the given propertyName should be mapped, FALSE otherwise.
 	 * @api
 	 */

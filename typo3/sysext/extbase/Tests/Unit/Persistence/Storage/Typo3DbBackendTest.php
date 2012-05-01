@@ -177,8 +177,9 @@ class Tx_Extbase_Tests_Unit_Persistence_Storage_Typo3DbBackendTest extends Tx_Ex
 
 		$sourceMock = new Tx_Extbase_Persistence_QOM_Selector('tx_foo', 'Tx_Foo');
 
+		/** @var $pageSelectMock t3lib_pageSelect|PHPUnit_Framework_MockObject_MockObject */
 		$pageSelectMock = $this->getMock('t3lib_pageSelect', array('movePlhOL', 'getWorkspaceVersionOfRecord'));
-		$pageSelectMock->versioningPreview = 1;
+		$pageSelectMock->versioningPreview = TRUE;
 
 		$pageSelectMock->expects($this->once())
 			->method('getWorkspaceVersionOfRecord')

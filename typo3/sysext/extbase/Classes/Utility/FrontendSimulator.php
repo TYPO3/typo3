@@ -43,7 +43,7 @@ class Tx_Extbase_Utility_FrontendSimulator {
 	 * Sets the $TSFE->cObjectDepthCounter in Backend mode
 	 * This somewhat hacky work around is currently needed because the cObjGetSingle() function of tslib_cObj relies on this setting
 	 *
-	 * @param tslib_cObj $addCObj
+	 * @param tslib_cObj|NULL $cObj
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */

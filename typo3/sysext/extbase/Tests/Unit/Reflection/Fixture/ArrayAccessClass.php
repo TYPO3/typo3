@@ -33,22 +33,40 @@ class Tx_Extbase_Tests_Unit_Reflection_Fixture_ArrayAccessClass implements Array
 
 	protected $array = array();
 
+	/**
+	 * @param array $array
+	 */
 	public function __construct(array $array) {
 		$this->array = $array;
 	}
 
+	/**
+	 * @param mixed $offset
+	 * @return boolean
+	 */
 	public function offsetExists($offset) {
 		return array_key_exists($offset, $this->array);
 	}
 
+	/**
+	 * @param mixed $offset
+	 * @return mixed
+	 */
 	public function offsetGet($offset) {
 		return $this->array[$offset];
 	}
 
+	/**
+	 * @param mixed $offset
+	 * @param mixed $value
+	 */
 	public function offsetSet($offset, $value) {
 		$this->array[$offset] = $value;
 	}
 
+	/**
+	 * @param mixed $offset
+	 */
 	public function offsetUnset($offset) {
 		unset($this->array[$offset]);
 	}

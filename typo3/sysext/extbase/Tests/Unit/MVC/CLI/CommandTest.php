@@ -65,6 +65,9 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_CommandTest extends Tx_Extbase_Tests_Unit_Ba
 	 * @test
 	 * @dataProvider commandIdentifiers
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @param string $controllerClassName
+	 * @param string $commandName
+	 * @param string $expectedCommandIdentifier
 	 */
 	public function constructRendersACommandIdentifierByTheGivenControllerAndCommandName($controllerClassName, $commandName, $expectedCommandIdentifier) {
 		$command = new Tx_Extbase_MVC_CLI_Command($controllerClassName, $commandName);
@@ -86,6 +89,7 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_CommandTest extends Tx_Extbase_Tests_Unit_Ba
 	 * @test
 	 * @dataProvider invalidCommandClassNames
 	 * @expectedException InvalidArgumentException
+	 * @param string $controllerClassName
 	 */
 	public function constructThrowsExceptionIfCommandClassNameIsInvalid($controllerClassName) {
 		new Tx_Extbase_MVC_CLI_Command($controllerClassName, 'foo');

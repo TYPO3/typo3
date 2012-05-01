@@ -38,7 +38,7 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 */
 	const MODELTYPE_ENTITY = 1;
 	const MODELTYPE_VALUEOBJECT = 2;
-	
+
 	/**
 	 * Name of the class this schema is referring to
 	 *
@@ -136,6 +136,7 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 * Returns the given property defined in this schema. Check with
 	 * hasProperty($propertyName) before!
 	 *
+	 * @param string $propertyName
 	 * @return array
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */

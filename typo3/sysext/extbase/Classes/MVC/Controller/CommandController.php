@@ -245,7 +245,7 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 	 *
 	 * @param string $text Text to output
 	 * @param array $arguments Optional arguments to use for sprintf
-	 * @return void
+	 * @return string
 	 * @see output()
 	 */
 	protected function outputLine($text = '', array $arguments = array()) {

@@ -84,12 +84,12 @@ class Tx_Extbase_Object_Container_ClassInfo {
 	private $isInitializeable = FALSE;
 
 	/**
-	 *
 	 * @param string $className
 	 * @param array $constructorArguments
 	 * @param array $injectMethods
 	 * @param boolean $isSingleton
 	 * @param boolean $isInitializeable
+	 * @param array $injectProperties
 	 */
 	public function __construct($className, array $constructorArguments, array $injectMethods, $isSingleton = FALSE, $isInitializeable = FALSE, array $injectProperties = array()) {
 		$this->className = $className;

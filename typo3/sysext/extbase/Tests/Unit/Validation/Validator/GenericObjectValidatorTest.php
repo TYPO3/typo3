@@ -47,6 +47,9 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_GenericObjectValidatorTest exte
 		$this->assertFalse($this->validator->validate(NULL)->hasErrors());
 	}
 
+	/**
+	 * @return array
+	 */
 	public function dataProviderForValidator() {
 		$error1 = new Tx_Extbase_Error_Error('error1', 1);
 		$error2 = new Tx_Extbase_Error_Error('error2', 2);
@@ -77,6 +80,10 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_GenericObjectValidatorTest exte
 	 * @test
 	 * @dataProvider dataProviderForValidator
 	 * @author Robert Lemke <robert@typo3.org>
+	 * @param mixed $mockObject
+	 * @param mixed $validationResultForFoo
+	 * @param mixed $validationResultForBar
+	 * @param mixed $errors
 	 */
 	public function validateChecksAllPropertiesForWhichAPropertyValidatorExists($mockObject, $validationResultForFoo, $validationResultForBar, $errors) {
 

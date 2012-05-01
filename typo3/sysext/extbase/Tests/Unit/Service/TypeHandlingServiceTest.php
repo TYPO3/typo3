@@ -61,6 +61,7 @@ class Tx_Extbase_Tests_Unit_Service_TypeHandlingServiceTest extends Tx_Extbase_T
 	/**
 	 * data provider for parseTypeReturnsArrayWithInformation
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @return array
 	 */
 	public function types() {
 		return array(
@@ -80,6 +81,8 @@ class Tx_Extbase_Tests_Unit_Service_TypeHandlingServiceTest extends Tx_Extbase_T
 	 * @test
 	 * @dataProvider types
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @param mixed $type
+	 * @param mixed $expectedResult
 	 */
 	public function parseTypeReturnsArrayWithInformation($type, $expectedResult) {
 		$this->assertEquals(
@@ -91,6 +94,7 @@ class Tx_Extbase_Tests_Unit_Service_TypeHandlingServiceTest extends Tx_Extbase_T
 	/**
 	 * data provider for normalizeTypesReturnsNormalizedType
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @return array
 	 */
 	public function normalizeTypes() {
 		return array(
@@ -105,6 +109,8 @@ class Tx_Extbase_Tests_Unit_Service_TypeHandlingServiceTest extends Tx_Extbase_T
 	 * @test
 	 * @dataProvider normalizeTypes
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @param mixed $type
+	 * @param mixed $normalized
 	 */
 	public function normalizeTypesReturnsNormalizedType($type, $normalized) {
 		$this->assertEquals($this->typeHandlingService->normalizeType($type), $normalized);
@@ -113,6 +119,7 @@ class Tx_Extbase_Tests_Unit_Service_TypeHandlingServiceTest extends Tx_Extbase_T
 	/**
 	 * data provider for isLiteralReturnsFalseForNonLiteralTypes
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @return array
 	 */
 	public function nonLiteralTypes() {
 		return array(
@@ -128,6 +135,7 @@ class Tx_Extbase_Tests_Unit_Service_TypeHandlingServiceTest extends Tx_Extbase_T
 	 * @test
 	 * @dataProvider nonliteralTypes
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @param mixed $type
 	 */
 	public function isLiteralReturnsFalseForNonLiteralTypes($type) {
 		$this->assertFalse($this->typeHandlingService->isLiteral($type));
@@ -136,6 +144,7 @@ class Tx_Extbase_Tests_Unit_Service_TypeHandlingServiceTest extends Tx_Extbase_T
 	/**
 	 * data provider for isLiteralReturnsTrueForLiteralType
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @return array
 	 */
 	public function literalTypes() {
 		return array(
@@ -153,6 +162,7 @@ class Tx_Extbase_Tests_Unit_Service_TypeHandlingServiceTest extends Tx_Extbase_T
 	 * @test
 	 * @dataProvider literalTypes
 	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @param mixed $type
 	 */
 	public function isLiteralReturnsTrueForLiteralType($type) {
 		$this->assertTrue($this->typeHandlingService->isLiteral($type));

@@ -75,8 +75,6 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 	 * be a singleton.
 	 *
 	 * @see getContainer()
-	 * @param void
-	 * @return void
 	 */
 	public function __construct() { }
 
@@ -347,3 +345,5 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 		return $this->getClassInfoCache()->get($classNameHash);
 	}
 }
+
+?>

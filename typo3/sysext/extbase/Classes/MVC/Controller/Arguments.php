@@ -45,6 +45,11 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	protected $argumentNames = array();
 
 	/**
+	 * @var array
+	 */
+	protected $argumentShortNames = array();
+
+	/**
 	 * Constructor. If this one is removed, reflection breaks.
 	 */
 	public function __construct() {
@@ -142,6 +147,7 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 * @return Tx_Extbase_MVC_Controller_Argument The new argument
 	 */
 	public function addNewArgument($name, $dataType = 'Text', $isRequired = FALSE, $defaultValue = NULL) {
+		/** @var $argument Tx_Extbase_MVC_Controller_Argument */
 		$argument = $this->objectManager->create('Tx_Extbase_MVC_Controller_Argument', $name, $dataType);
 		$argument->setRequired($isRequired);
 		$argument->setDefaultValue($defaultValue);

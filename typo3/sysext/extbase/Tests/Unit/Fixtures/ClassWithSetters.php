@@ -47,14 +47,23 @@ class Tx_Extbase_Fixtures_ClassWithSetters {
 	 */
 	public $property4;
 
+	/**
+	 * @param mixed $value
+	 */
 	public function setProperty3($value) {
 		$this->property3 = $value;
 	}
 
+	/**
+	 * @param mixed $value
+	 */
 	protected function setProperty4($value) {
 		$this->property4 = $value;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getProperty2() {
 		return $this->property2;
 	}

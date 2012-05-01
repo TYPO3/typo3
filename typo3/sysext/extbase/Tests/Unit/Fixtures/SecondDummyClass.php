@@ -19,6 +19,10 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
+/**
+ * Second Dummy Class
+ */
 class Tx_Extbase_Fixture_SecondDummyClass {
 
 }

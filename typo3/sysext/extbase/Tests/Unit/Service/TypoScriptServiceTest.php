@@ -142,6 +142,8 @@ class Tx_Extbase_Tests_Unit_Service_TypoScriptServiceTest extends Tx_Extbase_Tes
 	/**
 	 * @test
 	 * @dataProvider convertTypoScriptArrayToPlainArrayTestdata
+	 * @param mixed $typoScriptSettings
+	 * @param mixed $expectedSettings
 	 */
 	public function convertTypoScriptArrayToPlainArrayRemovesTrailingDotsWithChangedOrderInTheTypoScriptArray($typoScriptSettings,$expectedSettings) {
 		$typoScriptService = new Tx_Extbase_Service_TypoScriptService();
@@ -234,6 +236,8 @@ class Tx_Extbase_Tests_Unit_Service_TypoScriptServiceTest extends Tx_Extbase_Tes
 	/**
 	 * @test
 	 * @dataProvider convertPlainArrayToTypoScriptArrayTestdata
+	 * @param mixed $extbaseTS
+	 * @param mixed $classic
 	 */
 	public function convertPlainArrayToTypoScriptArray($extbaseTS, $classic) {
 		$typoScriptService = new Tx_Extbase_Service_TypoScriptService();

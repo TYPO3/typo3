@@ -53,7 +53,6 @@ abstract class Tx_Extbase_Validation_Validator_AbstractValidator implements Tx_E
 	 * Sets options for the validator
 	 *
 	 * @param array $validationOptions Options for the validator
-	 * @return void
 	 * @api
 	 */
 	public function __construct($validationOptions = array()) {
@@ -78,6 +77,7 @@ abstract class Tx_Extbase_Validation_Validator_AbstractValidator implements Tx_E
 	 * Check if $value is valid. If it is not valid, needs to add an error
 	 * to Result.
 	 *
+	 * @param mixed $value
 	 * @return void
 	 */
 	abstract protected function isValid($value);

@@ -43,33 +43,58 @@ class Tx_Extbase_Tests_Unit_Reflection_Fixture_DummyClassWithGettersAndSetters {
 	public $publicProperty;
 	public $publicProperty2 = 42;
 
+	/**
+	 * @param mixed $property
+	 */
 	public function setProperty($property) {
 		$this->property = $property;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getProperty() {
 		return $this->property;
 	}
 
+	/**
+	 * @param mixed $anotherProperty
+	 */
 	public function setAnotherProperty($anotherProperty) {
 		$this->anotherProperty = $anotherProperty;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getAnotherProperty() {
 		return $this->anotherProperty;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getProperty2() {
 		return $this->property2;
 	}
+
+	/**
+	 * @param mixed $property2
+	 */
 	public function setProperty2($property2) {
 		$this->property2 = $property2;
 	}
 
+	/**
+	 * @return string
+	 */
 	protected function getProtectedProperty() {
 		return '42';
 	}
 
+	/**
+	 * @param mixed $value
+	 */
 	protected function setProtectedProperty($value) {
 		$this->protectedProperty = $value;
 	}
@@ -81,10 +106,16 @@ class Tx_Extbase_Tests_Unit_Reflection_Fixture_DummyClassWithGettersAndSetters {
 		return $this->booleanProperty;
 	}
 
+	/**
+	 * @return string
+	 */
 	protected function getPrivateProperty() {
 		return '21';
 	}
 
+	/**
+	 * @param mixed $value
+	 */
 	public function setWriteOnlyMagicProperty($value) {
 	}
 }

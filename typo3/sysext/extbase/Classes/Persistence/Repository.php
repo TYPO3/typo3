@@ -350,7 +350,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @param string $methodName The name of the magic method
 	 * @param string $arguments The arguments of the magic method
 	 * @throws Tx_Extbase_Persistence_Exception_UnsupportedMethod
-	 * @return void
+	 * @return mixed
 	 * @api
 	 */
 	public function __call($methodName, $arguments) {

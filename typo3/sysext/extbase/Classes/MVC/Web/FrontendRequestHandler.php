@@ -60,13 +60,13 @@ class Tx_Extbase_MVC_Web_FrontendRequestHandler extends Tx_Extbase_MVC_Web_Abstr
 	/**
 	 * Handles the web request. The response will automatically be sent to the client.
 	 *
-	 * @return Tx_Extbase_MVC_Web_Response
+	 * @return Tx_Extbase_MVC_Web_Response|NULL
 	 */
 	public function handleRequest() {
 		$request = $this->requestBuilder->build();
 
-		// Request hash service
-		$requestHashService = $this->objectManager->get('Tx_Extbase_Security_Channel_RequestHashService'); // singleton
+		/** @var $requestHashService Tx_Extbase_Security_Channel_RequestHashService */
+		$requestHashService = $this->objectManager->get('Tx_Extbase_Security_Channel_RequestHashService');
 		$requestHashService->verifyRequest($request);
 
 		if ($this->extensionService->isActionCacheable(NULL, NULL, $request->getControllerName(), $request->getControllerActionName())) {
@@ -76,7 +76,7 @@ class Tx_Extbase_MVC_Web_FrontendRequestHandler extends Tx_Extbase_MVC_Web_Abstr
 			if ($contentObject->getUserObjectType() === tslib_cObj::OBJECTTYPE_USER) {
 				$contentObject->convertToUserIntObject();
 				// tslib_cObj::convertToUserIntObject() will recreate the object, so we have to stop the request here
-				return;
+				return NULL;
 			}
 			$request->setIsCached(FALSE);
 		}
