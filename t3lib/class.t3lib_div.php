@@ -4250,7 +4250,7 @@ final class t3lib_div {
 	 * Calls a user-defined function/method in class
 	 * Such a function/method should look like this: "function proc(&$params, &$ref)	{...}"
 	 *
-	 * @param string $funcName Function/Method reference, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call ("singleton").
+	 * @param string $funcName Function/Method reference or Closure, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call ("singleton").
 	 * @param mixed $params Parameters to be pass along (typically an array) (REFERENCE!)
 	 * @param mixed $ref Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
 	 * @param string $checkPrefix Alternative allowed prefix of class or function name
@@ -4268,6 +4268,10 @@ final class t3lib_div {
 					$GLOBALS['T3_VAR']['callUserFunction'][$funcName]['method']),
 				array(&$params, &$ref)
 			);
+		}
+			// Check if we're using a closure and invoke it directly.
+		if (is_object($funcName) && is_a($funcName, 'Closure')) {
+			return call_user_func_array($funcName, array(&$params, &$ref));
 		}
 
 			// Check file-reference prefix; if found, require_once() the file (should be library of code)

@@ -3813,6 +3813,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$inputData = array('foo' => 'bar');
 		t3lib_div::callUserFunction($functionName, $inputData, $this, 'user_', 2);
 	}
+
 	/**
 	 * Data provider for callUserFunctionInvalidParameterDataprovider and
 	 * callUserFunctionWillThrowExceptionForInvalidParameters.
@@ -3887,6 +3888,19 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	public function user_calledUserFunctionCountCallers(&$params) {
 		$params['called'][spl_object_hash($this)]++;
+	}
+
+	/**
+	 * @test
+	 */
+	public function callUserFunctionAcceptsClosures() {
+		$inputData = array('foo' => 'bar');
+		$closure = function($parameters, $reference) use($inputData) {
+			$reference->assertEquals($inputData, $parameters, 'Passed data doesn\'t match expected output');
+			return 'Worked fine';
+		};
+		;
+		$this->assertEquals('Worked fine', t3lib_div::callUserFunction($closure, $inputData, $this));
 	}
 
 
