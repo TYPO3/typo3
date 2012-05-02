@@ -220,7 +220,7 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 	protected function setBody($body) {
 		if ($this->boundary) {
 			// handle multi-part
-			$bodyParts = preg_split('/--' . preg_quote($this->boundary) . '(--)?/m', $body, NULL, PREG_SPLIT_NO_EMPTY);
+			$bodyParts = preg_split('/--' . preg_quote($this->boundary, '/') . '(--)?/m', $body, NULL, PREG_SPLIT_NO_EMPTY);
 			foreach ($bodyParts as $bodyPart) {
 				// skip empty parts
 				if (trim($bodyPart) == '') {
