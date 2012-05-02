@@ -955,7 +955,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 						if (!isset($this->procOptions['typolist']) || $this->procOptions['typolist']) {
 							$parts = $this->getAllParts($this->splitIntoBlock('LI', $this->removeFirstAndLastTag($blockSplit[$k])), 1, 0);
 							foreach ($parts as $k2 => $value) {
-								$parts[$k2] = preg_replace('/[' . preg_quote((LF . CR)) . ']+/', '', $parts[$k2]);
+								$parts[$k2] = preg_replace('/[' . LF . CR . ']+/', '', $parts[$k2]);
 								// remove all linesbreaks!
 								$parts[$k2] = $this->defaultTStagMapping($parts[$k2], 'db');
 								$parts[$k2] = $this->cleanFontTags($parts[$k2], 0, 0, 0);
@@ -969,7 +969,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 							$blockSplit[$k] = '<typolist' . $params . '>' . LF . implode(LF, $parts) . LF . '</typolist>' . $lastBR;
 						}
 					} else {
-						$blockSplit[$k] = preg_replace(('/[' . preg_quote((LF . CR)) . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
+						$blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
 					}
 					break;
 				case 'table':
@@ -977,7 +977,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 					if (!$this->procOptions['preserveTables'] && !$css) {
 						$blockSplit[$k] = $this->TS_transform_db($this->removeTables($blockSplit[$k]));
 					} else {
-						$blockSplit[$k] = preg_replace(('/[' . preg_quote((LF . CR)) . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
+						$blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
 					}
 					break;
 				case 'h1':
@@ -1003,12 +1003,12 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 						}
 					} else {
 						// Eliminate true linebreaks inside Hx tags
-						$blockSplit[$k] = preg_replace(('/[' . preg_quote((LF . CR)) . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
+						$blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
 					}
 					break;
 				default:
 					// Eliminate true linebreaks inside other headlist tags
-					$blockSplit[$k] = preg_replace(('/[' . preg_quote((LF . CR)) . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
+					$blockSplit[$k] = preg_replace(('/[' . LF . CR . ']+/'), ' ', $this->transformStyledATags($blockSplit[$k])) . $lastBR;
 					break;
 				}
 			} else {
@@ -1016,11 +1016,11 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				if (strcmp(trim($blockSplit[$k]), '')) {
 					$blockSplit[$k] = preg_replace('/<hr\\/>/', '<hr />', $blockSplit[$k]);
 					// Remove linebreaks preceding hr tags
-					$blockSplit[$k] = preg_replace('/[' . preg_quote((LF . CR)) . ']+<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/', '<$1$2/>', $blockSplit[$k]);
+					$blockSplit[$k] = preg_replace('/[' . LF . CR . ']+<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/', '<$1$2/>', $blockSplit[$k]);
 					// Remove linebreaks following hr tags
-					$blockSplit[$k] = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>[' . preg_quote((LF . CR)) . ']+/', '<$1$2/>', $blockSplit[$k]);
+					$blockSplit[$k] = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>[' . LF . CR . ']+/', '<$1$2/>', $blockSplit[$k]);
 					// Replace other linebreaks with space
-					$blockSplit[$k] = preg_replace('/[' . preg_quote((LF . CR)) . ']+/', ' ', $blockSplit[$k]);
+					$blockSplit[$k] = preg_replace('/[' . LF . CR . ']+/', ' ', $blockSplit[$k]);
 					$blockSplit[$k] = $this->divideIntoLines($blockSplit[$k]) . $lastBR;
 					$blockSplit[$k] = $this->transformStyledATags($blockSplit[$k]);
 				} else {
@@ -1358,8 +1358,8 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 		if (count($divSplit) <= 1 || $count <= 0) {
 			// Wrap hr tags with LF's
 			$newValue = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/i', LF . '<$1$2/>' . LF, $value);
-			$newValue = preg_replace('/' . preg_quote((LF . LF)) . '/i', LF, $newValue);
-			$newValue = preg_replace('/(^' . preg_quote(LF) . ')|(' . preg_quote(LF) . '$)/i', '', $newValue);
+			$newValue = preg_replace('/' . LF . LF . '/i', LF, $newValue);
+			$newValue = preg_replace('/(^' . LF . ')|(' . LF . '$)/i', '', $newValue);
 			return $newValue;
 		}
 		// Traverse the splitted sections:
@@ -1447,8 +1447,8 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				$divSplit[$k] = trim(strip_tags($divSplit[$k], '<' . implode('><', $allowTagsOutside) . '>'));
 				// Wrap hr tags with LF's
 				$divSplit[$k] = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/i', LF . '<$1$2/>' . LF, $divSplit[$k]);
-				$divSplit[$k] = preg_replace('/' . preg_quote((LF . LF)) . '/i', LF, $divSplit[$k]);
-				$divSplit[$k] = preg_replace('/(^' . preg_quote(LF) . ')|(' . preg_quote(LF) . '$)/i', '', $divSplit[$k]);
+				$divSplit[$k] = preg_replace('/' . LF . LF . '/i', LF, $divSplit[$k]);
+				$divSplit[$k] = preg_replace('/(^' . LF . ')|(' . LF . '$)/i', '', $divSplit[$k]);
 				if (!strcmp($divSplit[$k], '')) {
 					unset($divSplit[$k]);
 				}
