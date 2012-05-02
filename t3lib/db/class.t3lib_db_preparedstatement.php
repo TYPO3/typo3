@@ -500,7 +500,7 @@ class t3lib_db_PreparedStatement {
 				}
 				// Replace the marker (not preceeded by a word character or a ':' but
 				// followed by a word boundary)
-				$query = preg_replace('/(?<![\w:])' . $key . '\b/', $this->parameterWrapToken . $key . $this->parameterWrapToken, $query);
+				$query = preg_replace('/(?<![\w:])' . preg_quote($key, '/') . '\b/', $this->parameterWrapToken . $key . $this->parameterWrapToken, $query);
 			} else {
 				$unnamedParameterCount++;
 			}
