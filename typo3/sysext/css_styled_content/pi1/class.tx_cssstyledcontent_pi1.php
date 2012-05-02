@@ -655,7 +655,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 					$accumWidth = 0; // reset accumulated net width
 					$accumDesiredWidth = 0; // reset accumulated desired width
 					$rowTotalMaxW = $relations_cols[$rowIdx];
-					if ($rowTotalMaxW > $netW)	{
+					if ($rowTotalMaxW > $netW && $netW > 0) {
 						$scale = $rowTotalMaxW / $netW;
 					} else {
 						$scale = 1;
