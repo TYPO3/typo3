@@ -259,7 +259,7 @@ class ExtensionManager {
 						$positionArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $position);
 						if ($positionArray[0] == 'replace') {
 							foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
-								if (preg_match('/\\b' . $palette . '\\b/', $typeDetails['showitem']) > 0 && preg_match('/\\b' . $positionArray[1] . '\\b/', $paletteDetails['showitem']) > 0) {
+								if (preg_match('/\\b' . preg_quote($palette, '/') . '\\b/', $typeDetails['showitem']) > 0 && preg_match('/\\b' . preg_quote($positionArray[1], '/') . '\\b/', $paletteDetails['showitem']) > 0) {
 									self::addFieldsToPalette($table, $palette, $str, $position);
 									// Save that palette in case other types use it
 									$palettesChanged[] = $palette;
@@ -273,7 +273,7 @@ class ExtensionManager {
 								$fieldExists = TRUE;
 							} else {
 								foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
-									if (preg_match('/\\b' . $palette . '\\b/', $typeDetails['showitem']) > 0 && preg_match('/\\b' . $positionArray[1] . '\\b/', $paletteDetails['showitem']) > 0) {
+									if (preg_match('/\\b' . preg_quote($palette, '/') . '\\b/', $typeDetails['showitem']) > 0 && preg_match('/\\b' . preg_quote($positionArray[1], '/') . '\\b/', $paletteDetails['showitem']) > 0) {
 										$position = $positionArray[0] . ':--palette--;;' . $palette;
 									}
 								}
@@ -284,7 +284,7 @@ class ExtensionManager {
 							$fieldExists = TRUE;
 						} elseif (is_array($GLOBALS['TCA'][$table]['palettes'])) {
 							foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
-								if (preg_match('/\\b' . $palette . '\\b/', $typeDetails['showitem']) > 0 && strpos($paletteDetails['showitem'], $str) !== FALSE) {
+								if (preg_match('/\\b' . preg_quote($palette, '/') . '\\b/', $typeDetails['showitem']) > 0 && strpos($paletteDetails['showitem'], $str) !== FALSE) {
 									$fieldExists = TRUE;
 								}
 							}
