@@ -161,6 +161,10 @@ class t3lib_TCEforms {
 
 	public $templateFile = ''; // Form templates, relative to typo3 directory
 
+	/**
+	 * @var t3lib_TCEforms_suggest
+	 */
+	protected $suggest;
 
 	/**
 	 * Constructor function, setting internal variables, loading the styles used.
@@ -1786,7 +1790,7 @@ class t3lib_TCEforms {
 		}
 
 			// Add an empty hidden field which will send a blank value if all items are unselected.
-		$item .= '<input type="hidden" name="' . htmlspecialchars($PA['itemFormElName']) . '" value="" />';
+		$item .= '<input type="hidden" class="select-checkbox" name="' . htmlspecialchars($PA['itemFormElName']) . '" value="" />';
 
 			// Remaining checkboxes will get their set-all link:
 		if (count($setAll)) {
@@ -5671,7 +5675,7 @@ class t3lib_TCEforms {
 				browserWin.focus();
 			}
 			function setFormValueFromBrowseWin(fName,value,label,title,exclusiveValues) {
-				var formObj = setFormValue_getFObj(fName), fObj, isMultiple = false, isList = false, len;
+				var formObj = setFormValue_getFObj(fName), fObj, isMultiple = false, isList = false, isCheckboxList = false, len;
 				if (formObj && value !== "--div--") {
 						// Check if the form object has a "_list" element or not
 						// The "_list" element exists for multiple selection select types
@@ -5680,6 +5684,7 @@ class t3lib_TCEforms {
 						isMultiple =  fObj.multiple && fObj.getAttribute("size") != "1";
 						isList = true;
 					} else {
+						isCheckboxList = formObj[fName].className == "select-checkbox";
 						fObj = formObj[fName];
 					}
 
@@ -5742,6 +5747,20 @@ class t3lib_TCEforms {
 								// Traversing list and set the hidden-field
 							setHiddenFromList(fObj,formObj[fName]);
 							' . $this->TBE_EDITOR_fieldChanged_func . '
+						}
+					} else if (isCheckboxList) {
+						var i=0;
+						while (formObj[fName + "[" + i + "]"]) {
+							if (formObj[fName + "[" + i + "]"].value == value) {
+								fObj = formObj[fName + "[" + i + "]"];
+								break;
+							}
+							i++;
+						};
+
+						if (fObj && !fObj.checked) {
+							fObj.click();
+							' . str_replace('_list', '', $this->TBE_EDITOR_fieldChanged_func) . '
 						}
 					} else {
 							// The incoming value consists of the table name, an underscore and the uid
@@ -5932,6 +5951,7 @@ class t3lib_TCEforms {
 					if (formObj[fName] &&
 						(
 							(formObj[fName].type == "select-one") ||
+							(formObj[fName].className == "select-checkbox") ||
 							(formObj[fName + "_list"] && formObj[fName + "_list"].type.match(/select-(one|multiple)/))
 						)
 					) {

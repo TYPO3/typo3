@@ -92,11 +92,17 @@ class t3lib_TCEforms_Suggest {
 		}
 		$minChars = ($minChars > 0 ? $minChars : 2);
 
+			// fetch the TCA field type to hand it over to the JS class
+		$type = '';
+		if (isset($config['fieldConf']['config']['type'])) {
+			$type = $config['fieldConf']['config']['type'];
+		}
+
 			// replace "-" with ucwords for the JS object name
 		$jsObj = str_replace(' ', '', ucwords(str_replace('-', ' ', t3lib_div::strtolower($suggestId))));
 		$this->TCEformsObj->additionalJS_post[] = '
 			var ' . $jsObj . ' = new TCEForms.Suggest("' . $fieldname . '", "' . $table . '", "' . $field .
-												  '", "' . $row['uid'] . '", ' . $row['pid'] . ', ' . $minChars . ');
+					  '", "' . $row['uid'] . '", ' . $row['pid'] . ', ' . $minChars . ', "' . $type . '");
 			' . $jsObj . '.defaultValue = "' . t3lib_div::slashJS($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.findRecord')) . '";
 		';
 
