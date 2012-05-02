@@ -271,7 +271,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 					if ($isNumericSearchFilter && intval($rootlineElement['uid']) === intval($searchFilter)) {
 						$text = str_replace('$1', $refNode->getText(), $replacement);
 					} else {
-						$text = preg_replace('/(' . $searchFilter . ')/i', $replacement, $refNode->getText());
+						$text = preg_replace('/(' . preg_quote($searchFilter, '/') . ')/i', $replacement, $refNode->getText());
 					}
 
 					$refNode->setText(

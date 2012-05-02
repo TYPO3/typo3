@@ -259,7 +259,7 @@ class t3lib_parsehtml {
 					$wrapArr = array('###', '###');
 				}
 
-				$content = preg_replace('/' . preg_quote($wrapArr[0]) . '([A-Z0-9_|\-]*)' . preg_quote($wrapArr[1]) . '/is', '', $content);
+				$content = preg_replace('/' . preg_quote($wrapArr[0], '/') . '([A-Z0-9_|\-]*)' . preg_quote($wrapArr[1], '/') . '/is', '', $content);
 			}
 		}
 
@@ -681,8 +681,8 @@ class t3lib_parsehtml {
 			// Block tags, must have endings...
 		$blockTags = explode(',', $blockTags);
 		foreach ($blockTags as $tagName) {
-			$countBegin = count(preg_split('/\<' . $tagName . '(\s|\>)/s', $content)) - 1;
-			$countEnd = count(preg_split('/\<\/' . $tagName . '(\s|\>)/s', $content)) - 1;
+			$countBegin = count(preg_split('/\<' . preg_quote($tagName, '/') . '(\s|\>)/s', $content)) - 1;
+			$countEnd = count(preg_split('/\<\/' . preg_quote($tagName, '/') . '(\s|\>)/s', $content)) - 1;
 			$analyzedOutput['blocks'][$tagName] = array($countBegin, $countEnd, $countBegin - $countEnd);
 			if ($countBegin) {
 				$analyzedOutput['counts'][$tagName] = $countBegin;
@@ -699,8 +699,8 @@ class t3lib_parsehtml {
 			// Solo tags, must NOT have endings...
 		$soloTags = explode(',', $soloTags);
 		foreach ($soloTags as $tagName) {
-			$countBegin = count(preg_split('/\<' . $tagName . '(\s|\>)/s', $content)) - 1;
-			$countEnd = count(preg_split('/\<\/' . $tagName . '(\s|\>)/s', $content)) - 1;
+			$countBegin = count(preg_split('/\<' . preg_quote($tagName, '/') . '(\s|\>)/s', $content)) - 1;
+			$countEnd = count(preg_split('/\<\/' . preg_quote($tagName, '/') . '(\s|\>)/s', $content)) - 1;
 			$analyzedOutput['solo'][$tagName] = array($countBegin, $countEnd);
 			if ($countBegin) {
 				$analyzedOutput['counts'][$tagName] = $countBegin;
@@ -1213,7 +1213,7 @@ class t3lib_parsehtml {
 	function mapTags($value, $tags = array(), $ltChar = '<', $ltChar2 = '<') {
 
 		foreach ($tags as $from => $to) {
-			$value = preg_replace('/' . preg_quote($ltChar) . '(\/)?' . $from . '\s([^\>])*(\/)?\>/', $ltChar2 . '$1' . $to . ' $2$3>', $value);
+			$value = preg_replace('/' . preg_quote($ltChar, '/') . '(\/)?' . $from . '\s([^\>])*(\/)?\>/', $ltChar2 . '$1' . $to . ' $2$3>', $value);
 		}
 		return $value;
 	}

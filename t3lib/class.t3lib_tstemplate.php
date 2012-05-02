@@ -1176,7 +1176,7 @@ class t3lib_TStemplate {
 			$c = count($fileparts);
 			$files = t3lib_div::trimExplode(',', $res);
 			foreach ($files as $file) {
-				if (preg_match('/^' . quotemeta($fileparts[0]) . '.*' . quotemeta($fileparts[$c - 1]) . '$/', $file)) {
+				if (preg_match('/^' . preg_quote($fileparts[0], '/') . '.*' . preg_quote($fileparts[$c - 1], '/') . '$/', $file)) {
 					$outFile = $file;
 					break;
 				}
