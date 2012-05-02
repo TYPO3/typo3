@@ -214,6 +214,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 			$mountPoints = array($mountPoints);
 		}
 		$isNumericSearchFilter = is_numeric($searchFilter) && $searchFilter > 0;
+		$searchFilterQuoted = preg_quote($searchFilter, '/');
 		$nodeId = intval($node->getId());
 		foreach ($records as $record) {
 			$record = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNodeRecord($record['uid']);
@@ -266,7 +267,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 					if ($isNumericSearchFilter && intval($rootlineElement['uid']) === intval($searchFilter)) {
 						$text = str_replace('$1', $refNode->getText(), $replacement);
 					} else {
-						$text = preg_replace('/(' . $searchFilter . ')/i', $replacement, $refNode->getText());
+						$text = preg_replace('/(' . $searchFilterQuoted . ')/i', $replacement, $refNode->getText());
 					}
 					$refNode->setText($text, $refNode->getTextSourceField(), $refNode->getPrefix(), $refNode->getSuffix());
 					/** @var $childCollection \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection */

@@ -209,6 +209,7 @@ class ModuleSettings {
 	 */
 	public function addToStoreListFromPrefix($prefix = '') {
 		$prefix = $prefix ? $prefix : $this->prefix;
+		$prefix = preg_quote($prefix, '/');
 		foreach ($GLOBALS['SOBE']->MOD_SETTINGS as $key => $value) {
 			if (preg_match('/^' . $prefix . '/', $key)) {
 				$this->storeList[$key] = $key;
