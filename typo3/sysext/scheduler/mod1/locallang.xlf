@@ -300,6 +300,9 @@
 			<trans-unit id="status" xml:space="preserve">
 				<source>Status</source>
 			</trans-unit>
+			<trans-unit id="status.progress" xml:space="preserve">
+				<source>Progress</source>
+			</trans-unit>
 			<trans-unit id="status.legend" xml:space="preserve">
 				<source>Status Legend</source>
 			</trans-unit>
