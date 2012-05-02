@@ -94,6 +94,11 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 	 */
 	protected $maxItems = 10;
 
+	/**
+	 * @var array
+	 */
+	protected $params = array();
+
 
 	/**
 	 * The constructor of this class
@@ -241,8 +246,9 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 							$GLOBALS['TYPO3_DB']->escapeStrForLike($searchString, $this->table) . '%\'';
 
 				// Search in all fields given by label or label_alt
-			$selectFieldsList = $GLOBALS['TCA'][$this->table]['ctrl']['label'] . ',' . $GLOBALS['TCA'][$this->table]['ctrl']['label_alt'];
+			$selectFieldsList = $GLOBALS['TCA'][$this->table]['ctrl']['label'] . ',' . $GLOBALS['TCA'][$this->table]['ctrl']['label_alt'] . ',' . $this->config['additionalSearchFields'];
 			$selectFields = t3lib_div::trimExplode(',', $selectFieldsList, TRUE);
+			$selectFields = array_unique($selectFields);
 
 			$selectParts = array();
 			foreach ($selectFields as $field) {
