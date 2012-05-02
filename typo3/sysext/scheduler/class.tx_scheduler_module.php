@@ -520,6 +520,25 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	}
 
 	/**
+	 * Renders the task progress bar.
+	 *
+	 * @param float $progress Task progress
+	 * @return string Progress bar markup
+	 */
+	protected function renderTaskProgressBar($progress) {
+		$progressText .= $GLOBALS['LANG']->getLL('status.progress')
+			. ': ' . $progress . '%';
+
+		$progressBar = '<div class="progress"> <div class="bar" style="width: '
+			. round($progress)
+			. '%;">'
+			. $progressText
+			. '</div> </div>';
+
+		return $progressBar;
+	}
+
+	/**
 	 * Delete a task from the execution queue
 	 *
 	 * @return void
@@ -1078,6 +1097,12 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 					$name = htmlspecialchars($registeredClasses[$schedulerRecord['classname']]['title']. ' (' . $registeredClasses[$schedulerRecord['classname']]['extension'] . ')');
 					$additionalInformation = $task->getAdditionalInformation();
+
+					if ($task instanceof tx_scheduler_ProgressProvider) {
+						$progress = round(floatval($task->getProgress()), 2);
+						$name .= $this->renderTaskProgressBar($progress);
+					}
+
 					if (!empty($additionalInformation)) {
 						$name .= '<br />[' . htmlspecialchars($additionalInformation) . ']';
 					}
