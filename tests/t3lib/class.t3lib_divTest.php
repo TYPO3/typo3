@@ -3323,6 +3323,57 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	}
 
 	///////////////////////////////////////////////////
+	// Tests concerning callUserFunction
+	///////////////////////////////////////////////////
+
+	/**
+	 * @test
+	 * @dataProvider callUserFunctionInvalidParameterDataprovider
+	 * @expectedException InvalidArgumentException
+	 */
+	public function callUserFunctionWillThrowExceptionForInvalidParameters($functionName) {
+		$inputData = array('foo' => 'bar');
+		t3lib_div::callUserFunction($functionName, $inputData, $this, 'user_', 2);
+	}
+
+	public function callUserFunctionInvalidParameterDataprovider () {
+		return array(
+			'Function is not prefixed' => array('t3lib_divTest->calledUserFunction'),
+			'Class doesn\'t exists' => array('t3lib_divTest21345->user_calledUserFunction'),
+			'No method name' => array('t3lib_divTest'),
+			'No class name' => array('->user_calledUserFunction'),
+			'No function name' => array(''),
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function callUserFunctionCanCallMethod() {
+		$inputData = array('foo' => 'bar');
+		$result = t3lib_div::callUserFunction('t3lib_divTest->user_calledUserFunction', $inputData, $this);
+		$this->assertEquals('Worked fine', $result);
+	}
+
+	public function user_calledUserFunction() {
+		return "Worked fine";
+	}
+
+	/**
+	 * @test
+	 */
+	public function callUserFunctionAcceptsClosures() {
+		$inputData = array('foo' => 'bar');
+		$closure = function($parameters, $reference) use($inputData) {
+			$reference->assertEquals($inputData, $parameters, 'Passed data doesn\'t match expected output');
+			return 'Worked fine';
+		};
+		;
+		$this->assertEquals('Worked fine', t3lib_div::callUserFunction($closure, $inputData, $this));
+	}
+
+
+	///////////////////////////////////////////////////
 	// Tests concerning hasValidClassPrefix
 	///////////////////////////////////////////////////
 
