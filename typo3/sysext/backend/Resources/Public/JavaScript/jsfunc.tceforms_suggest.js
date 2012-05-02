@@ -39,6 +39,7 @@ TCEForms.Suggest = Class.create({
 	suggestResultList: '',
 	minimumCharacters: 2,
 	defaultValue: '',
+	fieldType: '',
 
 	/**
 	 * Wrapper for script.aculo.us' Autocompleter functionality: Assigns a new autocompletion object to
@@ -50,12 +51,14 @@ TCEForms.Suggest = Class.create({
 	 * @param  integer uid       The uid of the record which is currently edited
 	 * @param  integer pid       The pid of the record which is currently edited
 	 * @param  integer minimumCharacters the minimum characaters that is need to trigger the initial search
+	 * @param  string  fieldType The TCA type of the field (e.g. group, select, ...)
 	 */
-	initialize: function(objectId, table, field, uid, pid, minimumCharacters) {
+	initialize: function(objectId, table, field, uid, pid, minimumCharacters, fieldType) {
 		var PATH_typo3 = top.TS.PATH_typo3 || window.opener.top.TS.PATH_typo3;
 		this.objectId = objectId;
 		this.suggestField = objectId + 'Suggest';
 		this.suggestResultList = objectId + 'SuggestChoices';
+		this.fieldType = fieldType;
 
 		new Ajax.Autocompleter(this.suggestField, this.suggestResultList, PATH_typo3 + 'ajax.php', {
 				paramName: 'value',
@@ -97,7 +100,9 @@ TCEForms.Suggest = Class.create({
 			var formEl = this.objectId;
 			var suggestLabelNode = Element.select(this.escapeObjectId(item.id), '.suggest-label')[0];
 			var label = (suggestLabelNode.textContent ? suggestLabelNode.textContent : suggestLabelNode.innerText)
-			setFormValueFromBrowseWin(formEl, ins_table + '_' + ins_uid, label);
+			var ins_uid_string = (this.fieldType == 'select') ? ins_uid : (ins_table + '_' + ins_uid);
+
+			setFormValueFromBrowseWin(formEl, ins_uid_string, label);
 			TBE_EDITOR.fieldChanged(rec_table, rec_uid, rec_field, formEl);
 
 			$(this.suggestField).value = this.defaultValue;
