@@ -6,6 +6,7 @@ $rtehtmlareaExtensionPath = t3lib_extMgm::extPath('rtehtmlarea');
 return array(
 	'tx_rtehtmlarea_api' => $rtehtmlareaExtensionPath . 'class.tx_rtehtmlareaapi.php',
 	'tx_rtehtmlarea_base' => $rtehtmlareaExtensionPath . 'class.tx_rtehtmlarea_base.php',
+	'tx_rtehtmlarea_softrefproc' => $rtehtmlareaExtensionPath . 'hooks/softref/class.tx_rtehtmlarea_softrefproc.php',
 	'tx_rtehtmlarea_statusreport_conflictscheck' => $rtehtmlareaExtensionPath . 'hooks/statusreport/class.tx_rtehtmlarea_statusreport_conflictscheck.php',
 	'tx_rtehtmlarea_pi1' => $rtehtmlareaExtensionPath . 'pi1/class.tx_rtehtmlarea_pi1.php',
 	'tx_rtehtmlarea_pi2' => $rtehtmlareaExtensionPath . 'pi2/class.tx_rtehtmlarea_pi2.php',

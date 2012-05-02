@@ -60,6 +60,9 @@ t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKE
 	// Add default User TS Config RTE configuration
 t3lib_extMgm::addUserTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/' . strtolower($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration']) . '/userTSConfig.txt">');
 
+	// Add processing of soft references on image tags in RTE content
+require_once(t3lib_extMgm::extPath($_EXTKEY) . 'hooks/softref/ext_localconf.php');
+
 	// Add Status Report about Conflicting Extensions
 require_once(t3lib_extMgm::extPath($_EXTKEY) . 'hooks/statusreport/ext_localconf.php');
 
