@@ -68,9 +68,4 @@ class tx_rsaauth_session_storage extends tx_rsaauth_abstract_storage {
 		$_SESSION['tx_rsaauth_key'] = $key;
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rsaauth/sv1/storage/class.tx_rsaauth_session_storage.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rsaauth/sv1/storage/class.tx_rsaauth_session_storage.php']);
-}
-
 ?>

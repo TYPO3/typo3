@@ -136,12 +136,5 @@ class tx_reports_tasks_SystemStatusUpdateTaskNotificationEmailField implements t
 	protected function getFullFieldName($fieldName) {
 		return $this->fieldPrefix . ucfirst($fieldName);
 	}
-
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/reports/tasks/class.tx_reports_tasks_systemstatusupdatetasknotificationemailfield.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/reports/tasks/class.tx_reports_tasks_systemstatusupdatetasknotificationemailfield.php']);
-}
-
 ?>

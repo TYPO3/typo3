@@ -59,12 +59,5 @@ class tx_reports_reports_status_Typo3Status implements tx_reports_StatusProvider
 			tx_reports_reports_status_Status::NOTICE
 		);
 	}
-
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/reports/reports/status/class.tx_reports_reports_status_typo3status.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/reports/reports/status/class.tx_reports_reports_status_typo3status.php']);
-}
-
 ?>

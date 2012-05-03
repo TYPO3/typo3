@@ -432,9 +432,4 @@ class tx_recycler_model_deletedRecords {
 		return $this->table;
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/recycler/classes/model/class.tx_recycler_model_deletedRecords.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/recycler/classes/model/class.tx_recycler_model_deletedRecords.php']);
-}
-
 ?>

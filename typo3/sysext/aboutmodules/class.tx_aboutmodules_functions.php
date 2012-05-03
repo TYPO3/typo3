@@ -644,8 +644,4 @@ class tx_aboutmodules_Functions {
 		return $jsCode;
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/aboutmodules/mod/class.tx_aboutmodules_functions.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/aboutmodules/mod/class.tx_aboutmodules_functions.php']);
-}
 ?>

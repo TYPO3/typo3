@@ -576,12 +576,5 @@ class tslib_content_ImageText extends tslib_content_Abstract {
 
 		return $output;
 	}
-
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_imagetext.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_imagetext.php']);
-}
-
 ?>

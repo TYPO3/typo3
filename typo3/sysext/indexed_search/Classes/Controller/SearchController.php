@@ -1575,13 +1575,5 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 	protected function multiplePagesType($item_type) {
 		return is_object($this->externalParsers[$item_type]) && $this->externalParsers[$item_type]->isMultiplePageExtension($item_type);
 	}
-
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/indexed_search/Classes/Controller/SearchController.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/indexed_search/Classes/Controller/SearchController.php']);
-}
-
-
 ?>

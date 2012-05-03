@@ -70,9 +70,4 @@ class tx_rtehtmlarea_defaultlink extends tx_rtehtmlarea_api {
 	}
 
 } // end of class
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/DefaultLink/class.tx_rtehtmlarea_defaultlink.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/DefaultLink/class.tx_rtehtmlarea_defaultlink.php']);
-}
-
 ?>

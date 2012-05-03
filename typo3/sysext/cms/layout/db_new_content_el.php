@@ -587,13 +587,6 @@ class SC_db_new_content_el {
 	}
 }
 
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cms/layout/db_new_content_el.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cms/layout/db_new_content_el.php']);
-}
-
-
-
 // Make instance:
 $SOBE = t3lib_div::makeInstance('SC_db_new_content_el');
 $SOBE->init();

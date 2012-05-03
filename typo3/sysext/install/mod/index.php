@@ -125,11 +125,6 @@ class tx_install_mod1 extends t3lib_SCbase {
 	}
 }
 
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/install/mod/index.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/install/mod/index.php']);
-}
-
 /** @var $SOBE tx_install_mod1 */
 $SOBE = t3lib_div::makeInstance('tx_install_mod1');
 $SOBE->init();

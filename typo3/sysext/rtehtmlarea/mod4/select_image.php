@@ -103,10 +103,6 @@ class tx_rtehtmlarea_SC_select_image {
 	}
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/mod4/select_image.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/mod4/select_image.php']);
-}
-
 	// Make instance:
 $SOBE = t3lib_div::makeInstance('tx_rtehtmlarea_SC_select_image');
 $SOBE->main();

@@ -119,13 +119,6 @@ class SC_browser {
 	}
 }
 
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/browser.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/browser.php']);
-}
-
-
-
 // Make instance:
 $SOBE = t3lib_div::makeInstance('SC_browser');
 $SOBE->main();

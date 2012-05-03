@@ -107,7 +107,4 @@ class tx_rtehtmlarea_softrefproc extends t3lib_softrefproc {
 		return $retVal;
 	}
 }
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/hooks/softref/class.tx_rtehtmlarea_softrefproc.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/hooks/softref/class.tx_rtehtmlarea_softrefproc.php']);
-}
 ?>

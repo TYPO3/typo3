@@ -403,12 +403,5 @@ class tx_em_Translations {
 			$this->parentObject->content .= $this->parentObject->doc->section($GLOBALS['LANG']->getLL('translation_status'), $content, 0, 1);
 		}
 	}
-
-
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/translations/class.tx_em_translations.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/translations/class.tx_em_translations.php']);
-}
-
 ?>

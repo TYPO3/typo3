@@ -58,8 +58,4 @@ class tx_openid_mod_setup {
 			' value="' . htmlspecialchars($openid) . '" />';
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/openid/class.tx_openid_mod_setup.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/openid/class.tx_openid_mod_setup.php']);
-}
 ?>

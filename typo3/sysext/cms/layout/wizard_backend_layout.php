@@ -271,14 +271,7 @@ class SC_wizard_backend_layout {
 			$this->content
 		);
 	}
-
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/wizard_backend_layout.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/wizard_backend_layout.php']);
-}
-
 
 // Make instance:
 $SOBE = t3lib_div::makeInstance('SC_wizard_backend_layout');

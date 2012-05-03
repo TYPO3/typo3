@@ -72,9 +72,4 @@ class tslib_fecompression implements t3lib_Singleton {
 		return $outputBuffer;
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cms/tslib/class.tslib_fecompression.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cms/tslib/class.tslib_fecompression.php']);
-}
-
 ?>

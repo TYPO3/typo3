@@ -46,9 +46,4 @@ abstract class tx_rsaauth_abstract_storage {
 	 */
 	abstract public function put($key);
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rsaauth/storage/class.tx_rsaauth_abstract_storage.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rsaauth/storage/class.tx_rsaauth_abstract_storage.php']);
-}
-
 ?>

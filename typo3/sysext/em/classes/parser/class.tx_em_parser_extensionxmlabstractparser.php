@@ -442,9 +442,4 @@ abstract class tx_em_Parser_ExtensionXmlAbstractParser extends tx_em_Parser_XmlA
 		return serialize($newDependencies);
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/parser/class.tx_em_parser_extensionxmlabstractparser.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/parser/class.tx_em_parser_extensionxmlabstractparser.php']);
-}
-
 ?>

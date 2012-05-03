@@ -428,13 +428,6 @@ class SC_move_el {
 	}
 }
 
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/move_el.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/move_el.php']);
-}
-
-
-
 // Make instance:
 $SOBE = t3lib_div::makeInstance('SC_move_el');
 $SOBE->init();

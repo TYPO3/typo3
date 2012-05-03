@@ -253,18 +253,7 @@ class tx_reports_Module extends t3lib_SCbase {
 
 		return $buttons;
 	}
-
-
 }
-
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/reports/mod/index.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/reports/mod/index.php']);
-}
-
-
-
 
 // Make instance:
 $SOBE = t3lib_div::makeInstance('tx_reports_Module');

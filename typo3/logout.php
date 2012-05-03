@@ -63,13 +63,6 @@ class SC_logout {
 	}
 }
 
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/logout.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/logout.php']);
-}
-
-
-
 // Make instance:
 $SOBE = t3lib_div::makeInstance('SC_logout');
 $SOBE->logout();

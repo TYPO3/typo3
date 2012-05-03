@@ -251,9 +251,4 @@ class tx_openid_store extends Auth_OpenID_OpenIDStore {
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery(self::ASSOCIATION_TABLE_NAME, $where, $values);
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/openid/class.tx_openid_store.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/openid/class.tx_openid_store.php']);
-}
-
 ?>

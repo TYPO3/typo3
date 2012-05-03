@@ -2572,16 +2572,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	}
 }
 
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['em/index.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['em/index.php']);
-}
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/index.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/index.php']);
-}
-
-
 // Make instance:
 /** @var $SOBE SC_mod_tools_em_index */
 $SOBE = t3lib_div::makeInstance('SC_mod_tools_em_index');

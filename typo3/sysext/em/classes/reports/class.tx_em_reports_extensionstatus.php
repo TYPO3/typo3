@@ -195,11 +195,5 @@ class tx_em_reports_ExtensionStatus  implements tx_reports_StatusProvider {
 
 		return $status;
 	}
-
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/em/classes/reports/class.tx_em_reports_extensionstatus.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/em/classes/reports/class.tx_em_reports_extensionstatus.php']);
-}
-
 ?>

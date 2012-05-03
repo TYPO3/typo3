@@ -958,10 +958,4 @@ class tx_indexedsearch_files {
 		require_once(t3lib_extMgm::extPath('indexed_search').'class.indexer.php');
 	}
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/indexed_search/class.crawler.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/indexed_search/class.crawler.php']);
-}
-
 ?>

@@ -110,7 +110,4 @@ class tx_rtehtmlarea_pi3 extends tslib_pibase {
 		return $content;
 	}
 }
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/pi3/class.tx_rtehtmlarea_pi3.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/pi3/class.tx_rtehtmlarea_pi3.php']);
-}
 ?>

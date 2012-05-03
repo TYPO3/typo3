@@ -59,12 +59,5 @@ class tslib_content_ContentObjectArrayInternal extends tslib_content_Abstract {
 			$GLOBALS['TT']->setTSlogMessage('No elements in this content object array (COA_INT).', 2);
 		}
 	}
-
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_contentobjectarrayinternal.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_contentobjectarrayinternal.php']);
-}
-
 ?>

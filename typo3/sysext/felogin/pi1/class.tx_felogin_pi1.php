@@ -1009,11 +1009,4 @@ class tx_felogin_pi1 extends tslib_pibase {
 		return FALSE;
 	}
 }
-
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/felogin/pi1/class.tx_felogin_pi1.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/felogin/pi1/class.tx_felogin_pi1.php']);
-}
-
 ?>

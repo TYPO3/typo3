@@ -100,8 +100,4 @@ class tx_funcwizards_webfunc extends t3lib_extobjbase {
 		return $content;
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/func_wizards/class.tx_funcwizards_webfunc.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/func_wizards/class.tx_funcwizards_webfunc.php']);
-}
 ?>

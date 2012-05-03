@@ -48,9 +48,4 @@ class tx_rtehtmlarea_textstyle extends tx_rtehtmlarea_api {
 	protected $requiresClassesConfiguration = TRUE;			// TRUE if the extension requires the PageTSConfig Classes configuration
 
 } // end of class
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/TextStyle/class.tx_rtehtmlarea_textstyle.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/TextStyle/class.tx_rtehtmlarea_textstyle.php']);
-}
-
 ?>

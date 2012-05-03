@@ -377,11 +377,5 @@ class SC_mod_web_perm_ajax {
 		}
 		return '<span id="' . $pageId . '_' . $who . '">' . $str . '</span>';
 	}
-
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/mod/web/perm/class.sc_mod_web_perm_ajax.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/mod/web/perm/class.sc_mod_web_perm_ajax.php']);
-}
-
 ?>

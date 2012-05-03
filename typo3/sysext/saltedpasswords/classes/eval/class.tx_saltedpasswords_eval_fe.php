@@ -46,9 +46,4 @@ class tx_saltedpasswords_eval_fe extends tx_saltedpasswords_eval {
 		$this->mode = 'FE';
 	}
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/saltedpasswords/classes/eval/class.tx_saltedpasswords_eval_fe.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/saltedpasswords/classes/eval/class.tx_saltedpasswords_eval_fe.php']);
-}
 ?>

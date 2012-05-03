@@ -3082,10 +3082,4 @@ class tslib_jsmenu extends tslib_menu {
 		return $codeLines;
 	}
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/class.tslib_menu.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/class.tslib_menu.php']);
-}
-
 ?>

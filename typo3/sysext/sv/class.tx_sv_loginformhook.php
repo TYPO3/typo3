@@ -106,11 +106,5 @@ class tx_sv_loginformhook {
 		$challenge = md5(uniqid('') . getmypid());
 		return $challenge;
 	}
-
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/sv/class.tx_sv_loginformhook.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/sv/class.tx_sv_loginformhook.php']);
-}
-
 ?>

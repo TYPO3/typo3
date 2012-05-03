@@ -519,12 +519,6 @@ class SC_mod_tools_isearch_index {
 	}
 }
 
-
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/indexed_search/mod/index.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/indexed_search/mod/index.php"]);
-}
-
-
 // Make instance:
 $SOBE = t3lib_div::makeInstance("SC_mod_tools_isearch_index");
 $SOBE->init();

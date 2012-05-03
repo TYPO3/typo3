@@ -217,13 +217,11 @@ class t3lib_autoloader {
 				// @TODO: This layer should be adapted / finished for further special core cases
 			$relativeClassPath = str_replace(
 				array(
-					'sysext/about/mod',
 					'typo3/sysext/cms/tslib',
 					'typo3conf/ext',
 					'typo3/sysext',
 				),
 				array(
-					'typo3/mod/help/about',
 					'tslib',
 					'ext',
 					'ext',

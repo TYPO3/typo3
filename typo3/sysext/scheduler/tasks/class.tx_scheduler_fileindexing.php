@@ -106,9 +106,4 @@ class tx_scheduler_FileIndexing extends tx_scheduler_Task {
 		return $successfullyExecuted;
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/scheduler/tasks/class.tx_scheduler_fileindexing.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/scheduler/tasks/class.tx_scheduler_fileindexing.php']);
-}
-
 ?>

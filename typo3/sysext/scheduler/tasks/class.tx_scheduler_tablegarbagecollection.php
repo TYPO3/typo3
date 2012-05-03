@@ -148,9 +148,4 @@ class tx_scheduler_TableGarbageCollection extends tx_scheduler_Task {
 		return $message;
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/scheduler/tasks/class.tx_scheduler_tablegarbagecollection.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/scheduler/tasks/class.tx_scheduler_tablegarbagecollection.php']);
-}
-
 ?>
