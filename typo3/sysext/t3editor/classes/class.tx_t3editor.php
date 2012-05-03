@@ -498,13 +498,5 @@ class tx_t3editor implements t3lib_Singleton {
  		$ajaxObj->setContent($result);
 		$ajaxObj->setContentFormat('jsonbody');
 	}
-
 }
-
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/t3editor/classes/class.tx_t3editor.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/t3editor/classes/class.tx_t3editor.php']);
-}
-
 ?>

@@ -211,9 +211,4 @@ class tx_indexedsearch_mysql {
 		return $resource;
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/indexed_search_mysql/class.tx_indexedsearch_mysql.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/indexed_search/indexed_search_mysql/class.tx_indexedsearch_mysql.php']);
-}
-
 ?>

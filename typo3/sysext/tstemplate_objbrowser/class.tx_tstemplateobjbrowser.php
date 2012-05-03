@@ -545,9 +545,4 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 		return $theOutput;
 	}
 }
-
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/tstemplate_objbrowser/class.tx_tstemplateobjbrowser.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/tstemplate_objbrowser/class.tx_tstemplateobjbrowser.php"]);
-}
-
 ?>

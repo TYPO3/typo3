@@ -52,8 +52,4 @@ class tx_rtehtmlarea_editormode extends tx_rtehtmlarea_api {
 		return TRUE;
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/EditorMode/class.tx_rtehtmlarea_editormode.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/EditorMode/class.tx_rtehtmlarea_editormode.php']);
-}
 ?>

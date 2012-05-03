@@ -117,12 +117,5 @@ class tx_rsaauth_usersetuphook {
 	protected function isRsaAvailable() {
 		return (trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) === 'rsa') && (tx_rsaauth_backendfactory::getBackend() !== NULL);
 	}
-
-
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rsaauth/hooks/class.tx_rsaauth_loginformhook.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rsaauth/hooks/class.tx_rsaauth_loginformhook.php']);
-}
-
 ?>

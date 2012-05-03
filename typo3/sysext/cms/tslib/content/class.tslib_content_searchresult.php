@@ -234,12 +234,5 @@ class tslib_content_SearchResult extends tslib_content_Abstract {
 			return $content;
 		}
 	}
-
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_searchresult.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_searchresult.php']);
-}
-
 ?>

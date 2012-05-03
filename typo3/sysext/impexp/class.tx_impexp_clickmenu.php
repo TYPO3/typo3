@@ -110,8 +110,4 @@ class tx_impexp_clickmenu {
 		return $LANG->includeLLFile('EXT:impexp/app/locallang.php',FALSE);
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/impexp/class.tx_impexp_clickmenu.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/impexp/class.tx_impexp_clickmenu.php']);
-}
 ?>

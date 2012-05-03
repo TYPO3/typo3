@@ -749,13 +749,6 @@ class SC_index {
 	}
 }
 
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/index.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/index.php']);
-}
-
-
-
 // Make instance:
 $SOBE = t3lib_div::makeInstance('SC_index');
 $SOBE->init();

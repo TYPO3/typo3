@@ -1674,11 +1674,5 @@ class tx_em_Install {
 			}
 		}
 	}
-
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/install/class.tx_em_install.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/install/class.tx_em_install.php']);
-}
-
 ?>

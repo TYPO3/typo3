@@ -236,9 +236,4 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 		$this->setDisabled(TRUE);
 	}
 } // End of class
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/saltedpasswords/classes/tasks/class.tx_saltedpasswords_tasks_bulkupdate.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/saltedpasswords/classes/tasks/class.tx_saltedpasswords_tasks_bulkupdate.php']);
-}
-
 ?>

@@ -134,11 +134,6 @@ class tx_saltedpasswords_autoloader {
 
 }
 
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/saltedpasswords/classes/class.tx_saltedpasswords_autoloader.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/saltedpasswords/classes/class.tx_saltedpasswords_autoloader.php']);
-}
-
 // Make instance:
 $SOBE = t3lib_div::makeInstance('tx_saltedpasswords_autoloader');
 $SOBE->execute($this);

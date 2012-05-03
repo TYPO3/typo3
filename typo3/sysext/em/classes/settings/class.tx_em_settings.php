@@ -306,11 +306,5 @@ class tx_em_Settings implements t3lib_Singleton {
 		// REPOSITORY_TITLE = example: main
 		// INT = 0 means randomly selected mirror, >0 selects specific mirror
 	}
-
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/settings/class.tx_em_settings.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/repository/class.tx_em_settings.php']);
-}
-
 ?>

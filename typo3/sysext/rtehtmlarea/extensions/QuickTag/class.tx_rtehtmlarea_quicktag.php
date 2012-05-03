@@ -52,7 +52,4 @@ class tx_rtehtmlarea_quicktag extends tx_rtehtmlarea_api {
 		return $available;
 	}
 }
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/QuickTag/class.tx_rtehtmlarea_quicktag.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/QuickTag/class.tx_rtehtmlarea_quicktag.php']);
-}
 ?>

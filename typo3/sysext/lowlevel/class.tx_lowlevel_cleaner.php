@@ -35,7 +35,7 @@ require_once(t3lib_extMgm::extPath('lowlevel').'class.tx_lowlevel_cleaner_core.p
 
 die('Not developed...');
 
-
+// @deprecated TODO: remove
 
 
 
@@ -216,9 +216,5 @@ debug($contentTreeData);
 		$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');
 		$result = $refIndexObj->updateRefIndexTable($table,$id);
 	}
-}
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/lowlevel/class.tx_lowlevel_cleaner.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/lowlevel/class.tx_lowlevel_cleaner.php']);
 }
 ?>

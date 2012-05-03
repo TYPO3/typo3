@@ -65,12 +65,5 @@ class tslib_content_User extends tslib_content_Abstract {
 		$this->cObj->setUserObjectType(FALSE);
 		return $content;
 	}
-
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_user.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_user.php']);
-}
-
 ?>

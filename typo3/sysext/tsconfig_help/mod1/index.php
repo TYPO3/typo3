@@ -773,14 +773,6 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	}
 }
 
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/tsconfig_help/mod1/index.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/tsconfig_help/mod1/index.php']);
-}
-
-
-
-
 // Make instance:
 $SOBE = t3lib_div::makeInstance('tx_tsconfighelp_module1');
 $SOBE->init();

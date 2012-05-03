@@ -197,12 +197,6 @@ class SC_file_upload {
 	}
 }
 
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/file_upload.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/file_upload.php']);
-}
-
-
 // Make instance:
 $SOBE = t3lib_div::makeInstance('SC_file_upload');
 $SOBE->init();

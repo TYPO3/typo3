@@ -50,10 +50,6 @@ class tx_openid_return {
 	}
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/openid/class.tx_openid_return.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/openid/class.tx_openid_return.php']);
-}
-
 $module = t3lib_div::makeInstance('tx_openid_return');
 /* @var tx_openid_return $module */
 $module->main();

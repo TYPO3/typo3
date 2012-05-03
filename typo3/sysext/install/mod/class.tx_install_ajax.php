@@ -154,8 +154,4 @@ $SOBE = t3lib_div::makeInstance('tx_install_ajax');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/install/mod/class.tx_install_ajax.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/install/mod/class.tx_install_ajax.php']);
-}
 ?>

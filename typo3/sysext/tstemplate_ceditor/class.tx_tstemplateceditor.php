@@ -196,9 +196,4 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 		return $theOutput;
 	}
 }
-
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/tstemplate_ceditor/class.tx_tstemplateceditor.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/tstemplate_ceditor/class.tx_tstemplateceditor.php"]);
-}
-
 ?>

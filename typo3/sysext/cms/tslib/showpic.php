@@ -97,6 +97,7 @@ if ($TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] !== '') {
 
 # NOTICE: ALL LINES above can be commented out since this script is now used via the ?eID=tx_cms_showpic parameter passed to index.php!
 # For backwards compatibility in extensions using showpic.php directly this is kept for the version 4.0 until 4.5 where it is planned removed!
+# @deprecated TODO remove
 
 if (!defined ('PATH_typo3conf')) 	die ('The configuration path was not properly defined!');
 require_once(PATH_t3lib.'class.t3lib_stdgraphic.php');
@@ -250,13 +251,6 @@ class SC_tslib_showpic {
 		echo $this->content;
 	}
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/showpic.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/showpic.php']);
-}
-
-
 
 // Make instance:
 $SOBE = t3lib_div::makeInstance('SC_tslib_showpic');

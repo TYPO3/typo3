@@ -117,9 +117,4 @@ abstract class tx_saltedpasswords_abstract_salts {
 		return intval(ceil(($byteLength * 8) / 6));
 	}
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/saltedpasswords/classes/salts/class.tx_saltedpasswords_abstract_salts.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/saltedpasswords/classes/salts/class.tx_saltedpasswords_abstract_salts.php']);
-}
 ?>

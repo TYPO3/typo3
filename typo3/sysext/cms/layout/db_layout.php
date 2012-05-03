@@ -1344,12 +1344,6 @@ class SC_db_layout {
 	}
 }
 
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cms/layout/db_layout.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cms/layout/db_layout.php']);
-}
-
-
 // Make instance:
 $SOBE = t3lib_div::makeInstance('SC_db_layout');
 $SOBE->init();

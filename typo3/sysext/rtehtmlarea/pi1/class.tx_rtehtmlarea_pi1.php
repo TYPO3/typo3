@@ -414,11 +414,6 @@ var selectedDictionary = "' . $this->dictionary . '";
 		$this->text .= $string;
 		return;
 	}
-
-}
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/pi1/class.tx_rtehtmlarea_pi1.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/pi1/class.tx_rtehtmlarea_pi1.php']);
 }
 
 if (TYPO3_MODE=='FE') {

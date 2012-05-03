@@ -104,9 +104,4 @@ class tx_em_Parser_XmlParserFactory {
 		return self::$instance[$parserType];
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/parser/class.tx_em_parser_xmlparserfactory.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/sysext/em/classes/parser/class.tx_em_parser_xmlparserfactory.php']);
-}
-
 ?>

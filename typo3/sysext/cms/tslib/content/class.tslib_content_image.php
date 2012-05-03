@@ -49,12 +49,5 @@ class tslib_content_Image extends tslib_content_Abstract {
 			return $theValue;
 		}
 	}
-
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_image.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_image.php']);
-}
-
 ?>

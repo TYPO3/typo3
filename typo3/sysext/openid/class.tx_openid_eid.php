@@ -51,10 +51,6 @@ class tx_openid_eID {
 	}
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/openid/class.tx_openid_eid.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/openid/class.tx_openid_eid.php']);
-}
-
 $module = t3lib_div::makeInstance('tx_openid_eID');
 /* @var tx_openid_eID $module */
 $module->main();

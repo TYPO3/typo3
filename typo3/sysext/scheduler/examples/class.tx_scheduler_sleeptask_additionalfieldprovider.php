@@ -108,9 +108,4 @@ class tx_scheduler_SleepTask_AdditionalFieldProvider implements tx_scheduler_Add
 		$task->sleepTime = $submittedData['sleepTime'];
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/scheduler/examples/class.tx_scheduler_sleeptask_additionalfieldprovider.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/scheduler/examples/class.tx_scheduler_sleeptask_additionalfieldprovider.php']);
-}
-
 ?>

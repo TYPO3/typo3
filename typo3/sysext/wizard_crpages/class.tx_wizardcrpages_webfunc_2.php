@@ -332,8 +332,4 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 		return '<div id="form-line-' . $index . '" class="' . $backgroundClass . '">' . $content . '</div>';
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/wizard_crpages/class.tx_wizardcrpages_webfunc_2.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/wizard_crpages/class.tx_wizardcrpages_webfunc_2.php']);
-}
 ?>

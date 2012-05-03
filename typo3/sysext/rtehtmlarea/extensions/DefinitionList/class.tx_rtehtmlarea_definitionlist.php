@@ -93,9 +93,4 @@ class tx_rtehtmlarea_definitionlist extends tx_rtehtmlarea_api {
 	}
 
 } // end of class
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/DefinitionList/class.tx_rtehtmlarea_definitionlist.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/DefinitionList/class.tx_rtehtmlarea_definitionlist.php']);
-}
-
 ?>

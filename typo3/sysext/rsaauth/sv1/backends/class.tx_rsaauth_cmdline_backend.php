@@ -163,9 +163,4 @@ class tx_rsaauth_cmdline_backend extends tx_rsaauth_abstract_backend {
 		return $result;
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rsaauth/sv1/backends/class.tx_rsaauth_cmdline_backend.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rsaauth/sv1/backends/class.tx_rsaauth_cmdline_backend.php']);
-}
-
 ?>

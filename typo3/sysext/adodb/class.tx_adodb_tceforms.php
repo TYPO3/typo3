@@ -37,9 +37,4 @@ class tx_adodb_tceforms {
 		if (is_callable('ocilogon')) $params['items'][] = array ('Oracle', 'oci8');
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/adodb/class.tx_adodb_tceforms.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/adodb/class.tx_adodb_tceforms.php']);
-}
-
 ?>

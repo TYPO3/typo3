@@ -3214,10 +3214,4 @@ class tx_impexp {
 		return count($this->errorLog) ? t3lib_utility_Debug::viewArray($this->errorLog) : '';
 	}
 }
-
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/impexp/class.tx_impexp.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/impexp/class.tx_impexp.php']);
-}
 ?>

@@ -67,9 +67,4 @@ class tx_scheduler_CachingFrameworkGarbageCollection extends tx_scheduler_Task {
 		return TRUE;
 	}
 } // End of class
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/scheduler/tasks/class.tx_scheduler_cachingframeworkgarbagecollection.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/scheduler/tasks/class.tx_scheduler_cachingframeworkgarbagecollection.php']);
-}
-
 ?>

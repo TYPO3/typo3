@@ -106,11 +106,5 @@ class tx_scheduler_RecyclerGarbageCollection_AdditionalFieldProvider implements 
 	public function saveAdditionalFields(array $submittedData, tx_scheduler_Task $task) {
 		$task->numberOfDays = intval($submittedData['scheduler_recyclerGarbageCollection_numberOfDays']);
 	}
-
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/scheduler/tasks/class.tx_scheduler_recyclergarbagecollection_additionalfieldprovider.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/scheduler/tasks/class.tx_scheduler_recyclergarbagecollection_additionalfieldprovider.php']);
-}
-
 ?>

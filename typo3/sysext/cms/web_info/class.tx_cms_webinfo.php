@@ -180,9 +180,4 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
  */
 class tx_cms_webinfo_hits extends tx_cms_webinfo_page {
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cms/web_info/class.tx_cms_webinfo.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cms/web_info/class.tx_cms_webinfo.php']);
-}
 ?>

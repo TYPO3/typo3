@@ -512,9 +512,4 @@ class webPageTree extends t3lib_browseTree {
 		return $c;
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/class.webpagetree.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/class.webpagetree.php']);
-}
-
 ?>

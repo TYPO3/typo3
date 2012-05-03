@@ -89,9 +89,4 @@ class tx_sysaction_list extends localRecordList {
 		return t3lib_BEfunc::getModuleUrl('user_task', $urlParameters);
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/sys_action/task/class.tx_sysaction_list.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/sys_action/task/class.tx_sysaction_list.php']);
-}
-
 ?>

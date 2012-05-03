@@ -153,9 +153,4 @@ class tx_scheduler_CachingFrameworkGarbageCollection_AdditionalFieldProvider imp
 		return $backends;
 	}
 } // End of class
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/scheduler/tasks/class.tx_scheduler_cachingframeworkgarbagecollection_additionalfieldprovider.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/scheduler/tasks/class.tx_scheduler_cachingframeworkgarbagecollection_additionalfieldprovider.php']);
-}
-
 ?>
