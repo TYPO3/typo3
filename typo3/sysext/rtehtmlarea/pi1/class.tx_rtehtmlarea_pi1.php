@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2003-2011 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2003-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -51,8 +51,8 @@ class tx_rtehtmlarea_pi1 {
 	var $pspell_is_available;
 	var $forceCommandMode = 0;
 	var $filePrefix = 'rtehtmlarea_';
-	var $uploadFolder = 'uploads/tx_rtehtmlarea/';
-	var $userUid;
+		// Pre-FAL backward compatibility
+	protected $uploadFolder = 'uploads/tx_rtehtmlarea/';
 	var $personalDictsArg = '';
 	var $xmlCharacterData = '';
 
@@ -138,14 +138,30 @@ class tx_rtehtmlarea_pi1 {
 
 			// Setting the path to user personal dicts, if any
 		if (t3lib_div::_POST('enablePersonalDicts') == 'true' && TYPO3_MODE == 'BE' && is_object($GLOBALS['BE_USER'])) {
-			$this->userUid = 'BE_' . $GLOBALS['BE_USER']->user['uid'];
-			if ($this->userUid) {
-				$this->personalDictPath = t3lib_div::getFileAbsFileName($this->uploadFolder . $this->userUid);
-				if (!is_dir($this->personalDictPath)) {
-					t3lib_div::mkdir($this->personalDictPath);
+			if ($GLOBALS['BE_USER']->user['uid']) {
+				$personalDictionaryFolderName = 'BE_' . $GLOBALS['BE_USER']->user['uid'];
+					// Check for pre-FAL personal dictionary folder
+				try {
+					$personalDictionaryFolder = t3lib_file_Factory::getInstance()->getFolderObjectFromCombinedIdentifier(
+						PATH_site . $this->uploadFolder . $personalDictionaryFolderName
+					);
+				} catch (Exception $e) {
+					$personalDictionaryFolder = FALSE;
 				}
-					// escape here for later use
-				$this->personalDictsArg = ' --home-dir=' . escapeshellarg($this->personalDictPath);
+					// The personal dictionary folder is created in the user's default upload folder
+					// and named BE_(uid)_personaldictionary
+				if (!$personalDictionaryFolder) {
+					$personalDictionaryFolderName .= '_personaldictionary';
+					$backendUserDefaultFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+					if ($backendUserDefaultFolder->hasFolder($personalDictionaryFolderName)) {
+						$personalDictionaryFolder = $backendUserDefaultFolder->getSubfolder($personalDictionaryFolderName);
+					} else {
+						$personalDictionaryFolder = $backendUserDefaultFolder->createFolder($personalDictionaryFolderName);
+					}
+				}
+				$personalDictionaryPath = PATH_site . rtrim($personalDictionaryFolder->getPublicUrl(), '/');
+					// Escape here for later use
+				$this->personalDictsArg = ' --home-dir=' . escapeshellarg($personalDictionaryPath);
 			}
 		}
 
