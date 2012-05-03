@@ -495,6 +495,10 @@ class localRecordList extends recordList {
 				$accRows = array();	// Accumulate rows here
 				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))	{
 
+					if (!$this->isRowListingConditionFulfilled($table, $row)) {
+						continue;
+					}
+
 						// In offline workspace, look for alternative record:
 					t3lib_BEfunc::workspaceOL($table, $row, $GLOBALS['BE_USER']->workspace, TRUE);
 
@@ -602,6 +606,20 @@ class localRecordList extends recordList {
 
 			// Return content:
 		return $out;
+	}
+
+
+	/**
+	 * Check if all row listing conditions are fulfilled.
+	 *
+	 * This function serves as a dummy method to be overriden in extending classes.
+	 *
+	 * @param   string  $table Table name
+	 * @param   array   $row Record
+	 * @return  bool    True, if all conditions are fulfilled.
+	 */
+	protected function isRowListingConditionFulfilled($table, $row) {
+		return TRUE;
 	}
 
 	/**
