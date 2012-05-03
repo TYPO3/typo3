@@ -248,14 +248,16 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			$table = t3lib_div::_GP('table');
 			$uid = t3lib_div::_GP('uid');
 			$fileObject = t3lib_file_Factory::getInstance()->getFileObject($uid);
-
+				// Get default values for alt and title attributes from file properties
+			$altText = $fileObject->getProperty('alternative');
+			$titleText = $fileObject->getProperty('name');
 			switch ($this->act) {
 				case 'magic':
-					$this->insertMagicImage($fileObject, '', '', 'data-htmlarea-file-uid="' . $uid . '" data-htmlarea-file-table="' . $table . '"');
+					$this->insertMagicImage($fileObject, $altText, $titleText, 'data-htmlarea-file-uid="' . $uid . '" data-htmlarea-file-table="' . $table . '"');
 					exit;
 					break;
 				case 'plain':
-					$this->insertPlainImage($fileObject, '', '', 'data-htmlarea-file-uid="' . $uid . '" data-htmlarea-file-table="' . $table . '"');
+					$this->insertPlainImage($fileObject, $altText, $titleText, 'data-htmlarea-file-uid="' . $uid . '" data-htmlarea-file-table="' . $table . '"');
 					exit;
 					break;
 				default:
@@ -281,6 +283,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 */
 	public function insertMagicImage(t3lib_file_FileInterface $fileObject, $altText='', $titleText='', $additionalParams='') {
 		if ($this->RTEImageStorageDir) {
+				// Create the magic image
 			/** @var $magicImageService t3lib_file_Service_MagicImageService */
 			$magicImageService = t3lib_div::makeInstance('t3lib_file_Service_MagicImageService');
 			$imageConfiguration = array(
