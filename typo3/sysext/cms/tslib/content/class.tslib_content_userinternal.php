@@ -52,7 +52,7 @@ class tslib_content_UserInternal extends tslib_content_Abstract {
 		$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array (
 			'file' => $includeLibs,
 			'conf' => $conf,
-			'cObj' => serialize($this->cObj),
+			'cObj' => serialize(clone $this->cObj),
 			'type' => 'FUNC'
 		);
 		$this->cObj->setUserObjectType(FALSE);
