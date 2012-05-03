@@ -1284,21 +1284,37 @@ class browse_links {
 						$this->expandFolder = $cmpPath;
 					}
 				}
-
+					// Create upload/create folder forms, if a path is given
 				if ($this->expandFolder) {
 					$selectedFolder = FALSE;
-
 					$fileOrFolderObject = t3lib_file_Factory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
-						// it's a file
 					if ($fileOrFolderObject instanceof t3lib_file_Folder) {
+						// it's a folder
 						$selectedFolder = $fileOrFolderObject;
-
 					} elseif ($fileOrFolderObject instanceof t3lib_file_FileInterface) {
+						// it's a file
 						// @todo: find the parent folder, right now done a bit ugly, because the file does not
 						// support finding the parent folder of a file on purpose
 						$folderIdentifier = dirname($fileOrFolderObject->getIdentifier());
 						$selectedFolder = $fileOrFolderObject->getStorage()->getFolder($folderIdentifier);
 					}
+				}
+					// Or get the user's default upload folder
+				if (!$selectedFolder) {
+					$selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+				}
+					// Build the file upload and folder creation form
+				$uploadForm = '';
+				$createFolder = '';
+				if ($selectedFolder && !$this->isReadOnlyFolder($selectedFolder)) {
+					$uploadForm = ($this->act === 'file') ? $this->uploadForm($selectedFolder) : '';
+					if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
+						$createFolder = $this->createFolder($selectedFolder);
+					}
+				}
+					// Insert the upload form on top, if so configured
+				if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
+					$content .= $uploadForm;
 				}
 					// render the filelist if there is a folder selected
 				if ($selectedFolder) {
@@ -1323,6 +1339,13 @@ class browse_links {
 						</tr>
 					</table>
 					';
+				$content .= '<br />';
+					// Adding create folder + upload forms if applicable
+				if (!$GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
+					$content .= $uploadForm;
+				}
+				$content .= $createFolder;
+				$content .= '<br />';
 			break;
 			case 'spec':
 				if (is_array($this->thisConfig['userLinks.']))	{
@@ -1631,29 +1654,38 @@ class browse_links {
 
 			// Init variable:
 		$pArr = explode('|',$this->bparams);
-			// Create upload/create folder forms, if a path is given:
+			// Create upload/create folder forms, if a path is given
 		if ($this->expandFolder) {
-			$this->selectedFolder = t3lib_file_Factory::getInstance()->getFolderObjectFromCombinedIdentifier($this->expandFolder);
+			$this->selectedFolder = FALSE;
+			$fileOrFolderObject = t3lib_file_Factory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
+			if ($fileOrFolderObject instanceof t3lib_file_Folder) {
+				// it's a folder
+				$this->selectedFolder = $fileOrFolderObject;
+			} elseif ($fileOrFolderObject instanceof t3lib_file_FileInterface) {
+				// it's a file
+				// @todo: find the parent folder, right now done a bit ugly, because the file does not
+				// support finding the parent folder of a file on purpose
+				$folderIdentifier = dirname($fileOrFolderObject->getIdentifier());
+				$this->selectedFolder = $fileOrFolderObject->getStorage()->getFolder($folderIdentifier);
+			}
 		}
-
-			// @todo implement upload stuff (default upload folder of a storaget etc)
+			// Or get the user's default upload folder
 		if (!$this->selectedFolder) {
-			$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
-			$fileStorage = reset($fileStorages);
-			$this->selectedFolder = $fileStorage->getRootLevelFolder();
+			$this->selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
 		}
-
-		if ($this->selectedFolder) {
-			$uploadForm = $this->uploadForm($this->selectedFolder);
-			$createFolder = $this->createFolder($this->selectedFolder);
-		} else {
-			$uploadForm = $createFolder = '';
+			// Build the file upload and folder creation form
+		$uploadForm = '';
+		$createFolder = '';
+		if ($this->selectedFolder && !$this->isReadOnlyFolder($this->selectedFolder)) {
+			$uploadForm = ($this->act === 'file') ? $this->uploadForm($this->selectedFolder) : '';
+			if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
+				$createFolder =  $this->createFolder($this->selectedFolder);
+			}
 		}
-
+			// Insert the upload form on top, if so configured
 		if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
 			$content .= $uploadForm;
 		}
-
 			// Getting flag for showing/not showing thumbnails:
 		$noThumbs = $GLOBALS['BE_USER']->getTSConfigVal('options.noThumbsInEB');
 
@@ -1693,16 +1725,13 @@ class browse_links {
 			</table>
 			';
 
-			// Adding create folder + upload forms if applicable:
+			// Adding create folder + upload forms if applicable
 		if (!$GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
 			$content .= $uploadForm;
 		}
-		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
-			$content .= $createFolder;
-		}
-
+		$content .= $createFolder;
 			// Add some space
-		$content.='<br /><br />';
+		$content .= '<br /><br />';
 
 			// Setup indexed elements:
 		$this->doc->JScode.= $this->doc->wrapScriptTags('BrowseLinks.addElements(' . json_encode($this->elements) . ');');
@@ -1738,7 +1767,7 @@ class browse_links {
 			$this->selectedFolder = t3lib_file_Factory::getInstance()->getFolderObjectFromCombinedIdentifier($this->expandFolder);
 		}
 
-		if ($this->selectedFolder) {
+		if ($this->selectedFolder && !$this->isReadOnlyFolder($this->selectedFolder)) {
 			$createFolder = $this->createFolder($this->selectedFolder);
 		} else {
 			$createFolder='';
