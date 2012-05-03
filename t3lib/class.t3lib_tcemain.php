@@ -1321,6 +1321,23 @@ class t3lib_TCEmain {
 			// This could be a good spot for parsing the array through a validation-function which checks if the values are alright (except that database references are not in their final form - but that is the point, isn't it?)
 			// NOTE!!! Must check max-items of files before the later check because that check would just leave out filenames if there are too many!!
 
+		if (is_array($tcaFieldConf['filter'])) {
+			foreach ($tcaFieldConf['filter'] as $filter) {
+				if (!$filter['userFunc']) {
+					continue;
+				}
+
+				$parameters = $filter['parameters']?$filter['parameters']:array();
+				$parameters['values'] = $valueArray;
+				$parameters['tcaFieldConfig'] = $tcaFieldConf;
+				$valueArray = t3lib_div::callUserFunction($filter['userFunc'], $parameters, $this);
+
+				if (!is_array($valueArray)) {
+					throw new RuntimeException('Failed calling filter userFunc.', 1336051942);
+				}
+			}
+		}
+
 			// Checking for select / authMode, removing elements from $valueArray if any of them is not allowed!
 		if ($tcaFieldConf['type'] == 'select' && $tcaFieldConf['authMode']) {
 			$preCount = count($valueArray);
@@ -2372,6 +2389,23 @@ class t3lib_TCEmain {
 	protected function checkValue_inline_processDBdata($valueArray, $tcaFieldConf, $id, $status, $table, $field) {
 		$newValue = '';
 		$foreignTable = $tcaFieldConf['foreign_table'];
+
+		if (is_array($tcaFieldConf['filter'])) {
+			foreach ($tcaFieldConf['filter'] as $filter) {
+				if (!$filter['userFunc']) {
+					continue;
+				}
+
+				$parameters = $filter['parameters']?$filter['parameters']:array();
+				$parameters['values'] = $valueArray;
+				$parameters['tcaFieldConfig'] = $tcaFieldConf;
+				$valueArray = t3lib_div::callUserFunction($filter['userFunc'], $parameters, $this);
+
+				if (!is_array($valueArray)) {
+					throw new RuntimeException('Failed calling filter userFunc.', 1336051950);
+				}
+			}
+		}
 
 		/*
 		 * Fetch the related child records by using t3lib_loadDBGroup:
