@@ -245,6 +245,7 @@ $t3libClasses = array(
 	't3lib_tcemain' => PATH_t3lib . 'class.t3lib_tcemain.php',
 	't3lib_tcemain_checkmodifyaccesslisthook' => PATH_t3lib . 'interfaces/interface.t3lib_tcemain_checkmodifyaccesslisthook.php',
 	't3lib_tcemain_processuploadhook' => PATH_t3lib . 'interfaces/interface.t3lib_tcemain_processuploadhook.php',
+	't3lib_tcemain_tcagroupfieldfilter' => PATH_t3lib . 'tcemain/class.t3lib_tcemain_tcagroupfieldfilter.php',
 	't3lib_timetrack' => PATH_t3lib . 'class.t3lib_timetrack.php',
 	't3lib_timetracknull' => PATH_t3lib . 'class.t3lib_timetracknull.php',
 	't3lib_transferdata' => PATH_t3lib . 'class.t3lib_transferdata.php',
