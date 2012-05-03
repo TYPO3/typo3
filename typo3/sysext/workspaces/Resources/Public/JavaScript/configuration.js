@@ -68,6 +68,7 @@ TYPO3.Workspaces.Configuration.WsPath = {
 	},
 	filter : {type: 'string'}
 };
+
 TYPO3.Workspaces.Configuration.LivePath = {
 	id: 'path_Live',
 	dataIndex : 'path_Live',
@@ -82,6 +83,7 @@ TYPO3.Workspaces.Configuration.LivePath = {
 	},
 	filter : {type: 'string'}
 };
+
 TYPO3.Workspaces.Configuration.WsTitleWithIcon = {
 	id: 'label_Workspace',
 	dataIndex : 'label_Workspace',
@@ -101,6 +103,7 @@ TYPO3.Workspaces.Configuration.WsTitleWithIcon = {
 	},
 	filter : {type: 'string'}
 };
+
 TYPO3.Workspaces.Configuration.TitleWithIcon = {
 	id: 'label_Live',
 	dataIndex : 'label_Live',
@@ -120,18 +123,7 @@ TYPO3.Workspaces.Configuration.TitleWithIcon = {
 	},
 	filter : {type: 'string'}
 };
-TYPO3.Workspaces.Configuration.ChangeState = {
-	id: 'state-change',
-	dataIndex : 'change',
-	width: 80,
-	sortable: true,
-	hidden: true,
-	header : TYPO3.l10n.localize('column.difference'),
-	renderer: function(value, metaData) {
-		return value + "%";
-	},
-	filter : {type: 'numeric'}
-};
+
 TYPO3.Workspaces.Configuration.ChangeDate = {
 	id: 'workspace_Tstamp',
 	dataIndex : 'workspace_Tstamp',
