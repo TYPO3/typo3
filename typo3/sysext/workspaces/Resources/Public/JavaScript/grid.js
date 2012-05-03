@@ -129,7 +129,6 @@ TYPO3.Workspaces.WorkspaceGrid = new Ext.grid.GridPanel({
 					TYPO3.Workspaces.Configuration.SwapButton,
 					TYPO3.Workspaces.Configuration.TitleWithIcon,
 					TYPO3.Workspaces.Configuration.ChangeDate,
-					TYPO3.Workspaces.Configuration.ChangeState,
 					TYPO3.Workspaces.Configuration.Stage,
 					TYPO3.Workspaces.Configuration.RowButtons
 				],
