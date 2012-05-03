@@ -143,6 +143,8 @@ class tx_rtehtmlarea_select_image extends browse_links {
 
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
+			// Apply the same styles as those of the base script
+		$this->doc->bodyTagId = 'typo3-browse-links-php';
 		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 
@@ -808,21 +810,38 @@ class tx_rtehtmlarea_select_image extends browse_links {
 						$this->expandFolder = $cmpPath;
 					}
 				}
-
+					// Get the selected folder
 				if ($this->expandFolder) {
-					try {
-						$selectedFolder = t3lib_file_Factory::getInstance()->getFolderObjectFromCombinedIdentifier(
-							$this->expandFolder
-						);
-					} catch (Exception $e) {
-						$selectedFolder = FALSE;
+					$selectedFolder = FALSE;
+					$fileOrFolderObject = t3lib_file_Factory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
+					if ($fileOrFolderObject instanceof t3lib_file_Folder) {
+						// it's a folder
+						$selectedFolder = $fileOrFolderObject;
+					} elseif ($fileOrFolderObject instanceof t3lib_file_FileInterface) {
+						// it's a file
+						// @todo: find the parent folder, right now done a bit ugly, because the file does not
+						// support finding the parent folder of a file on purpose
+						$folderIdentifier = dirname($fileOrFolderObject->getIdentifier());
+						$selectedFolder = $fileOrFolderObject->getStorage()->getFolder($folderIdentifier);
 					}
 				}
-					// Adding upload form, if allowed
-				if ($selectedFolder) {
-					$this->content .= $this->insertUploadForm($selectedFolder);
+					// If no folder is selected, get the user's default upload folder
+				if (!$selectedFolder) {
+					$selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
 				}
-
+					// Build the file upload and folder creation form
+				$uploadForm = '';
+				$createFolder = '';
+				if ($selectedFolder && !$this->isReadOnlyFolder($selectedFolder)) {
+					$uploadForm = $this->uploadForm($selectedFolder);
+					if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
+						$createFolder = $this->createFolder($selectedFolder);
+					}
+				}
+					// Insert the upload form on top, if so configured
+				if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
+					$this->content .= $uploadForm;
+				}
 					// Render the filelist if there is a folder selected
 				if ($selectedFolder) {
 					$files = $this->TBE_expandFolder(
@@ -851,6 +870,12 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				if ($helpMessage) {
 					$this->content .= $this->getMsgBox($helpMessage);
 				}
+					// Adding create folder + upload form if applicable
+				if (!$GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
+					$this->content .= $uploadForm;
+				}
+				$this->content .= $createFolder;
+				$this->content .= '<br />';
 				break;
 			case 'dragdrop':
 				$foldertree = t3lib_div::makeInstance('TBE_FolderTree');
@@ -900,37 +925,6 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$this->doc->JScodeArray['rtehtmlarea'] = $this->getJSCode($this->act, $this->editorNo, $this->sys_language_content);
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		return $this->content;
-	}
-
-	/**
-	 * Create upload/create folder forms, if a folder is given
-	 *
-	 * @param t3lib_file_Folder $selectedFolder Absolute filepath on server to which to upload.
-	 * @return string HTML for an upload form.
-	 */
-	protected function insertUploadForm(t3lib_file_Folder $selectedFolder) {
-		$content = '';
-		if (!$this->readOnly) {
-				// Add upload form if allowed
-			if (!$selectedFolder) {
-				$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
-				$fileStorage = reset($fileStorages);
-				$selectedFolder = $fileStorage->getRootLevelFolder();
-			}
-			if ($selectedFolder) {
-				$uploadForm = $this->uploadForm($selectedFolder);
-				$createFolder = $this->createFolder($selectedFolder);
-			} else {
-				$uploadForm = $createFolder = '';
-			}
-			if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
-				$content .= $uploadForm;
-				if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
-					$content .= $createFolder;
-				}
-			}
-		}
-		return $content;
 	}
 
 	/**

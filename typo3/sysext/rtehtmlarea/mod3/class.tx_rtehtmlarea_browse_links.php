@@ -183,6 +183,9 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	function init()	{
 		$this->initVariables();
 		$this->initConfiguration();
+			// init fileProcessor
+		$this->fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
+		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
@@ -213,6 +216,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		}
 			// Setting intial values for link attributes
 		$this->initLinkAttributes();
+			// Apply the same styles as those of the base script
+		$this->doc->bodyTagId = 'typo3-browse-links-php';
 			// Add attributes to body tag. Note: getBodyTagAdditions will invoke the hooks
 		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
 			// Adding RTE JS code
@@ -697,38 +702,37 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 						$this->expandFolder = $cmpPath;
 					}
 				}
+					// Get the selected folder
 				if ($this->expandFolder) {
 					$selectedFolder = FALSE;
-
 					$fileOrFolderObject = t3lib_file_Factory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
-						// it's a file
 					if ($fileOrFolderObject instanceof t3lib_file_Folder) {
+						// it's a folder
 						$selectedFolder = $fileOrFolderObject;
-
 					} elseif ($fileOrFolderObject instanceof t3lib_file_FileInterface) {
+						// it's a file
 						// @todo: find the parent folder, right now done a bit ugly, because the file does not
 						// support finding the parent folder of a file on purpose
 						$folderIdentifier = dirname($fileOrFolderObject->getIdentifier());
 						$selectedFolder = $fileOrFolderObject->getStorage()->getFolder($folderIdentifier);
 					}
 				}
-					// Add upload form if allowed
+					// If no folder is selected, get the user's default upload folder
 				if (!$selectedFolder) {
-					$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
-					$fileStorage = reset($fileStorages);
-					$selectedFolder = $fileStorage->getRootLevelFolder();
+					$selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
 				}
-				if ($selectedFolder) {
+					// Build the file upload and folder creation forms
+				$uploadForm = '';
+				$createFolder = '';
+				if ($selectedFolder && !$this->isReadOnlyFolder($selectedFolder)) {
 					$uploadForm = ($this->act === 'file') ? $this->uploadForm($selectedFolder) : '';
-					$createFolder = $this->createFolder($selectedFolder);
-				} else {
-					$uploadForm = $createFolder = '';
+					if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
+						$createFolder = $this->createFolder($selectedFolder);
+					}
 				}
+					// Insert the upload form on top, if so configured
 				if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
 					$content .= $uploadForm;
-					if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
-						$content .= $createFolder;
-					}
 				}
 					// Render the filelist if there is a folder selected
 				if ($selectedFolder) {
@@ -737,7 +741,6 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 						$this->P['params']['allowedExtensions']
 					);
 				}
-
 				$content .= '
 
 			<!--
@@ -751,13 +754,13 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 					</table>
 					';
 
-					// Adding create folder + upload forms if applicable:
+					// Adding create folder + upload form if applicable
 				if (!$GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
 					$content .= $uploadForm;
-					if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
-						$content .= $createFolder;
-					}
 				}
+				$content .= '<br />';
+				$content .= $createFolder;
+				$content .= '<br />';
 			break;
 			case 'spec':
 				if (is_array($this->thisConfig['userLinks.']))	{
@@ -867,7 +870,12 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		return $content;
 	}
 
-	function addAttributesForm() {
+	/**
+	 * Creates a form for link attributes
+	 *
+	 * @return string The HTML code of the form
+	 */
+	public function addAttributesForm() {
 		$ltargetForm = '';
 		$additionalAttributeFields = '';
 			// Add page id, target, class selector box, title and parameters fields:
@@ -878,7 +886,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		$ltitle = $this->addTitleSelector();
 		$rel = $this->addRelField();
 
-			// additional fields for page links
+			// additional fields for links
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['addAttributeFields']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['addAttributeFields'])) {
 			$_params = array(
 				'conf' => &$conf

@@ -87,7 +87,7 @@ HTMLArea.TYPO3Image = Ext.extend(HTMLArea.Plugin, {
 			this.getButton(buttonId).tooltip.title,
 			this.getWindowDimensions(
 				{
-					width:	610,
+					width:	650,
 					height:	500
 				},
 				buttonId
