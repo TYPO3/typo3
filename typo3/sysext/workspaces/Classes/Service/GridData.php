@@ -26,6 +26,8 @@
  ***************************************************************/
 
 /**
+ * Grid data service
+ *
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  * @package Workspaces
  * @subpackage Service
@@ -46,7 +48,6 @@ class Tx_Workspaces_Service_GridData {
 	 * @throws InvalidArgumentException
 	 */
 	public function generateGridListFromVersions($versions, $parameter, $currentWorkspace) {
-
 			// Read the given parameters from grid. If the parameter is not set use default values.
 		$filterTxt = isset($parameter->filterTxt) ? $parameter->filterTxt : '';
 		$start = isset($parameter->start) ? intval($parameter->start) : 0;
@@ -115,14 +116,12 @@ class Tx_Workspaces_Service_GridData {
 					$isDeletedPage = ($table == 'pages' && $recordState == 'deleted');
 					$viewUrl =  Tx_Workspaces_Service_Workspaces::viewSingleRecord($table, $record['uid'], $origRecord, $versionRecord);
 
-					$pctChange = $this->calculateChangePercentage($table, $origRecord, $versionRecord);
 					$versionArray['id'] = $table . ':' . $record['uid'];
 					$versionArray['uid'] = $record['uid'];
 					$versionArray['workspace'] = $versionRecord['t3ver_id'];
 					$versionArray['label_Workspace'] = htmlspecialchars(t3lib_befunc::getRecordTitle($table, $versionRecord));
 					$versionArray['label_Live'] = htmlspecialchars(t3lib_befunc::getRecordTitle($table, $origRecord));
 					$versionArray['label_Stage'] = htmlspecialchars($stagesObj->getStageTitle($versionRecord['t3ver_stage']));
-					$versionArray['change'] = $pctChange;
 					$versionArray['path_Live'] = htmlspecialchars(t3lib_BEfunc::getRecordPath($record['livepid'], '', 999));
 					$versionArray['path_Workspace'] = htmlspecialchars(t3lib_BEfunc::getRecordPath($record['wspid'], '', 999));
 					$versionArray['workspace_Title'] = htmlspecialchars(Tx_Workspaces_Service_Workspaces::getWorkspaceTitle($versionRecord['t3ver_wsid']));
@@ -145,6 +144,7 @@ class Tx_Workspaces_Service_GridData {
 					} else {
 						$versionArray['allowedAction_swap'] = FALSE;
 					}
+
 					$versionArray['allowedAction_delete'] = $isRecordTypeAllowedToModify;
 						// preview and editing of a deleted page won't work ;)
 					$versionArray['allowedAction_view'] = !$isDeletedPage && $viewUrl;
@@ -251,7 +251,6 @@ class Tx_Workspaces_Service_GridData {
 
 		return $hash;
 	}
-
 
 	/**
 	 * Performs sorting on the data array accordant to the
@@ -373,80 +372,6 @@ class Tx_Workspaces_Service_GridData {
 			}
 		}
 		return FALSE;
-	}
-
-	/**
-	 * Calculates the percentage of changes between two records.
-	 *
-	 * @param string $table
-	 * @param array $diffRecordOne
-	 * @param array $diffRecordTwo
-	 * @return integer
-	 */
-	public function calculateChangePercentage($table, array $diffRecordOne, array $diffRecordTwo) {
-
-			// Initialize:
-		$changePercentage = 0;
-		$changePercentageArray = array();
-
-			// Check that records are arrays:
-		if (is_array($diffRecordOne) && is_array($diffRecordTwo)) {
-
-				// Load full table description
-			t3lib_div::loadTCA($table);
-
-			$similarityPercentage = 0;
-
-				// Traversing the first record and process all fields which are editable:
-			foreach ($diffRecordOne as $fieldName => $fieldValue) {
-				if ($GLOBALS['TCA'][$table]['columns'][$fieldName] && $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['type'] != 'passthrough' && !t3lib_div::inList('t3ver_label', $fieldName)) {
-
-					if (strcmp(trim($diffRecordOne[$fieldName]), trim($diffRecordTwo[$fieldName]))
-							&& $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['type'] == 'group'
-							&& $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['internal_type'] == 'file'
-					) {
-
-							// Initialize:
-						$uploadFolder = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['uploadfolder'];
-						$files1 = array_flip(t3lib_div::trimExplode(',', $diffRecordOne[$fieldName], 1));
-						$files2 = array_flip(t3lib_div::trimExplode(',', $diffRecordTwo[$fieldName], 1));
-
-							// Traverse filenames and read their md5 sum:
-						foreach ($files1 as $filename => $tmp) {
-							$files1[$filename] = @is_file(PATH_site . $uploadFolder . '/' . $filename) ? md5(t3lib_div::getUrl(PATH_site . $uploadFolder . '/' . $filename)) : $filename;
-						}
-						foreach ($files2 as $filename => $tmp) {
-							$files2[$filename] = @is_file(PATH_site . $uploadFolder . '/' . $filename) ? md5(t3lib_div::getUrl(PATH_site . $uploadFolder . '/' . $filename)) : $filename;
-						}
-
-							// Implode MD5 sums and set flag:
-						$diffRecordOne[$fieldName] = implode(' ', $files1);
-						$diffRecordTwo[$fieldName] = implode(' ', $files2);
-					}
-
-						// If there is a change of value:
-					if (strcmp(trim($diffRecordOne[$fieldName]), trim($diffRecordTwo[$fieldName]))) {
-							// Get the best visual presentation of the value to calculate differences:
-						$val1 = t3lib_BEfunc::getProcessedValue($table, $fieldName, $diffRecordOne[$fieldName], 0, 1);
-						$val2 = t3lib_BEfunc::getProcessedValue($table, $fieldName, $diffRecordTwo[$fieldName], 0, 1);
-
-						similar_text($val1, $val2, $similarityPercentage);
-						$changePercentageArray[] = $similarityPercentage > 0 ? abs($similarityPercentage - 100) : 0;
-					}
-				}
-			}
-
-				// Calculate final change percentage:
-			if (is_array($changePercentageArray)) {
-				$sumPctChange = 0;
-				foreach ($changePercentageArray as $singlePctChange) {
-					$sumPctChange += $singlePctChange;
-				}
-				count($changePercentageArray) > 0 ? $changePercentage = round($sumPctChange / count($changePercentageArray)) : $changePercentage = 0;
-			}
-
-		}
-		return $changePercentage;
 	}
 
 	/**
