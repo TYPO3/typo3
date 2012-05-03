@@ -1321,6 +1321,8 @@ class t3lib_TCEmain {
 			// This could be a good spot for parsing the array through a validation-function which checks if the values are alright (except that database references are not in their final form - but that is the point, isn't it?)
 			// NOTE!!! Must check max-items of files before the later check because that check would just leave out filenames if there are too many!!
 
+		$valueArray = $this->applyFiltersToValues($tcaFieldConf, $valueArray);
+
 			// Checking for select / authMode, removing elements from $valueArray if any of them is not allowed!
 		if ($tcaFieldConf['type'] == 'select' && $tcaFieldConf['authMode']) {
 			$preCount = count($valueArray);
@@ -1383,6 +1385,36 @@ class t3lib_TCEmain {
 		}
 
 		return $res;
+	}
+
+	/**
+	 * Applies the filter methods from a column's TCA configuration to a value array.
+	 *
+	 * @param array $tcaFieldConfiguration
+	 * @param array $values
+	 * @return array|mixed
+	 * @throws RuntimeException
+	 */
+	protected function applyFiltersToValues(array $tcaFieldConfiguration, array $values) {
+		if (!is_array($tcaFieldConfiguration['filter'])) {
+			return $values;
+		}
+
+		foreach ($tcaFieldConfiguration['filter'] as $filter) {
+			if (!$filter['userFunc']) {
+				continue;
+			}
+
+			$parameters = $filter['parameters'] ? $filter['parameters'] : array();
+			$parameters['values'] = $values;
+			$parameters['tcaFieldConfig'] = $tcaFieldConfiguration;
+			$values = t3lib_div::callUserFunction($filter['userFunc'], $parameters, $this);
+
+			if (!is_array($values)) {
+				throw new RuntimeException('Failed calling filter userFunc.', 1336051942);
+			}
+		}
+		return $values;
 	}
 
 	/**
@@ -2372,6 +2404,8 @@ class t3lib_TCEmain {
 	protected function checkValue_inline_processDBdata($valueArray, $tcaFieldConf, $id, $status, $table, $field) {
 		$newValue = '';
 		$foreignTable = $tcaFieldConf['foreign_table'];
+
+		$valueArray = $this->applyFiltersToValues($tcaFieldConf, $valueArray);
 
 		/*
 		 * Fetch the related child records by using t3lib_loadDBGroup:

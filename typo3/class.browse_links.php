@@ -53,6 +53,20 @@ require_once (PATH_typo3.'/class.db_list_extra.inc');
 class TBE_browser_recordList extends localRecordList {
 	var $thisScript = 'browse_links.php';
 
+	/*
+	 * Table name of the field pointing to this element browser
+	 *
+	 * @var string
+	 */
+	protected $relatingTable;
+
+	/*
+	 * Field name of the field pointing to this element browser
+	 *
+	 * @var string
+	 */
+	protected $relatingField;
+
 	/**
 	 * Initializes the script path
 	 *
@@ -129,6 +143,64 @@ class TBE_browser_recordList extends localRecordList {
 				$code.
 				$ATag_e;
 	}
+
+
+	/**
+	 * Check if all row listing conditions are fulfilled.
+	 *
+	 * This function serves as a dummy method to be overriden in extending classes.
+	 *
+	 * @param   string  $table string Table name
+	 * @param   array   $row array Record
+	 * @return  bool    True, if all conditions are fulfilled.
+	 */
+	protected function isRowListingConditionFulfilled($table, $row) {
+
+		$returnValue = TRUE;
+
+		if ($this->relatingField && $this->relatingTable) {
+			$tcaFieldConfig = $GLOBALS['TCA'][$this->relatingTable]['columns'][$this->relatingField]['config'];
+
+			if (is_array($tcaFieldConfig['filter'])) {
+				foreach ($tcaFieldConfig['filter'] as $filter) {
+					if (!$filter['userFunc']) {
+						continue;
+					}
+
+					$parameters = $filter['parameters']?$filter['parameters']:array();
+					$parameters['values'] = array($table.'_'.$row['uid']);
+					$parameters['tcaFieldConfig'] = $tcaFieldConfig;
+					$valueArray = t3lib_div::callUserFunction($filter['userFunc'], $parameters, $this);
+
+					if (count($valueArray) === 0) {
+						$returnValue = FALSE;
+					}
+				}
+			}
+		}
+		return $returnValue;
+	}
+
+
+	/**
+	 * Set which pointint field (in the TCEForm) we are currently rending the element browser for
+	 *
+	 * @param   string  $tableName Table name
+	 * @param   string   $fieldName Field name
+	 */
+	public function setRelatingTableAndField($tableName, $fieldName) {
+		global $TCA;
+
+		// Check validity of the input data and load TCA
+		if (isset($TCA[$tableName])) {
+			$this->relatingTable = $tableName;
+			t3lib_div::loadTCA($tableName);
+			if ($fieldName && isset($TCA[$tableName]['columns'][$fieldName])) {
+				$this->relatingField = $fieldName;
+			}
+		}
+	}
+
 
 	/**
 	 * Local version that sets allFields to TRUE to support userFieldSelect
@@ -1946,6 +2018,18 @@ class browse_links {
 			$dblist->noControlPanels=1;
 			$dblist->clickMenuEnabled=0;
 			$dblist->tableList=implode(',',$tablesArr);
+
+
+			$pArr = explode('|', $this->bparams);
+			$fieldPointerString = $pArr[0]; // a string like "data[pages][79][storage_pid]"
+			$fieldPointerParts = explode('[', $fieldPointerString); // parts like: data, pages], 79], storage_pid]
+			$relatingTableName = substr($fieldPointerParts[1], 0, -1);
+			$relatingFieldName = substr($fieldPointerParts[3], 0, -1);
+
+			if($relatingTableName && $relatingFieldName) {
+				$dblist->setRelatingTableAndField($relatingTableName, $relatingFieldName);
+			}
+
 
 			$dblist->start($id,t3lib_div::_GP('table'),$pointer,
 				t3lib_div::_GP('search_field'),
