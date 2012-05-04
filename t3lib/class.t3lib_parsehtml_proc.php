@@ -395,14 +395,13 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						// Check file existence (in relative dir to this installation!)
 					if ($filepath && @is_file($filepath)) {
 							// If "magic image":
-						$folder = t3lib_file_Factory::getInstance()->getFolderObjectFromCombinedIdentifier(
+						$magicFolder = t3lib_file_Factory::getInstance()->getFolderObjectFromCombinedIdentifier(
 							$this->rteImageStorageDir()
 						);
 
-						if ($folder instanceof t3lib_file_Folder) {
-							$storageConfiguration = $folder->getStorage()->getConfiguration();
-							$rteImageStorageDir = rtrim($storageConfiguration['basePath'], '/') . '/' . $folder->getName() .'/';
-							$pathPre = $rteImageStorageDir . 'RTEmagicC_';
+						if ($magicFolder instanceof t3lib_file_Folder) {
+							$magicFolderPath = $magicFolder->getPublicUrl();
+							$pathPre = $magicFolderPath . 'RTEmagicC_';
 
 							if (t3lib_div::isFirstPartOfStr($path, $pathPre)) {
 									// Find original file
@@ -414,9 +413,9 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 										// Backward compatibility mode
 									$pI = pathinfo(substr($path, strlen($pathPre)));
 									$filename = substr($pI['basename'], 0, -strlen('.' . $pI['extension']));
-									$origFilePath = PATH_site . $rteImageStorageDir . 'RTEmagicP_' . $filename;
+									$origFilePath = PATH_site . $magicFolderPath . 'RTEmagicP_' . $filename;
 									if (@is_file($origFilePath)) {
-										$originalFileObject = $folder->addFile($origFilePath, $filename, 'changeName');
+										$originalFileObject = $magicFolder->addFile($origFilePath, $filename, 'changeName');
 										$attribArray['data-htmlarea-file-uid'] = $originalFileObject->getUid();
 									}
 								}
@@ -542,10 +541,38 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 					// Unless the src attribute is already pointing to an external URL:
 				if (strtolower(substr($absRef, 0, 4)) != 'http') {
-					$attribArray['src'] = substr($attribArray['src'], strlen($this->relBackPath));
-						// if site is in a subpath (eg. /~user_jim/) this path needs to be removed because it will be added with $siteUrl
-					$attribArray['src'] = preg_replace('#^' . preg_quote($sitePath, '#') . '#', '', $attribArray['src']);
-					$attribArray['src'] = $siteUrl . $attribArray['src'];
+					$isMagicImage = FALSE;
+					$fileFactory = t3lib_file_Factory::getInstance();
+					$magicFolder = $fileFactory->getFolderObjectFromCombinedIdentifier(
+						$this->rteImageStorageDir()
+					);
+					if ($magicFolder instanceof t3lib_file_Folder) {
+						$magicFolderPath = $magicFolder->getPublicUrl();
+						$pathPre = $magicFolderPath . 'RTEmagicC_';
+						if (t3lib_div::isFirstPartOfStr($attribArray['src'], $pathPre)) {
+							$isMagicImage = TRUE;
+						}
+					}
+					if ($attribArray['data-htmlarea-file-uid'] && !$isMagicImage) {
+						$fileObject = $fileFactory->getFileObject($attribArray['data-htmlarea-file-uid']);
+						$filePath = $fileObject->getForLocalProcessing(FALSE);
+						$attribArray['src'] = $siteUrl . substr($filePath, strlen(PATH_site));
+					} else {
+						$attribArray['src'] = substr($attribArray['src'], strlen($this->relBackPath));
+							// if site is in a subpath (eg. /~user_jim/) this path needs to be removed because it will be added with $siteUrl
+						$attribArray['src'] = preg_replace('#^' . preg_quote($sitePath, '#') . '#', '', $attribArray['src']);
+							// If the image is not magic and does not have a file uid, try to add the uid
+						if (!$attribArray['data-htmlarea-file-uid'] && !$isMagicImage) {
+							$fileOrFolderObject = $fileFactory->retrieveFileOrFolderObject($attribArray['src']);
+							if ($fileOrFolderObject instanceof t3lib_file_FileInterface) {
+								$fileIdentifier = $fileOrFolderObject->getIdentifier();
+								$fileObject = $fileOrFolderObject->getStorage()->getFile($fileIdentifier);
+								$attribArray['data-htmlarea-file-uid'] = $fileObject->getUid();
+								$attribArray['data-htmlarea-file-table'] = 'sys_file';
+							}
+						}
+						$attribArray['src'] = $siteUrl . $attribArray['src'];
+					}
 					if (!isset($attribArray['alt'])) {
 						$attribArray['alt'] = '';
 					}
@@ -731,8 +758,22 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 								$href = 'http://' . $href;
 							}
 							$external = TRUE;
-						} elseif ($fileChar) { // file (internal)
-							$href = $siteUrl . $link_param;
+						} elseif ($fileChar) {
+								// It is an internal file or folder
+								// Try to transform the href into a FAL reference
+							$fileOrFolderObject = t3lib_file_Factory::getInstance()->retrieveFileOrFolderObject($link_param);
+							if ($fileOrFolderObject instanceof t3lib_file_Folder) {
+									// It's a folder
+								$folderIdentifier = $fileOrFolderObject->getIdentifier();
+								$href = $siteUrl . '?file:' . rawurlencode($folderIdentifier);
+							} elseif ($fileOrFolderObject instanceof t3lib_file_FileInterface) {
+									// It's a file
+								$fileIdentifier = $fileOrFolderObject->getIdentifier();
+								$fileObject = $fileOrFolderObject->getStorage()->getFile($fileIdentifier);
+								$href = $siteUrl . '?file:' . $fileObject->getUid();
+							} else {
+								$href = $siteUrl . $link_param;
+							}
 						} else { // integer or alias (alias is without slashes or periods or commas, that is 'nospace,alphanum_x,lower,unique' according to tables.php!!)
 								// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/parameters triplet
 							$pairParts = t3lib_div::trimExplode(',', $link_param, TRUE);
