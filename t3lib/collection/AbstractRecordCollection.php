@@ -211,6 +211,15 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	}
 
 	/**
+	 * Getter for the UID
+	 *
+	 * @return int
+	 */
+	public function getUid() {
+		return $this->uid;
+	}
+
+	/**
 	 * Getter for the description
 	 *
 	 * @return string
