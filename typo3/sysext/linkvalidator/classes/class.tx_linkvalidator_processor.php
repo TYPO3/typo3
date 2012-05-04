@@ -22,6 +22,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modfuncreport/locallang.xml');
+
 /**
  * This class provides Processing plugin implementation
  *
@@ -30,9 +32,6 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-
-$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modfuncreport/locallang.xml');
-
 class tx_linkvalidator_Processor {
 
 	/**
@@ -477,7 +476,4 @@ class tx_linkvalidator_Processor {
 
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/class.tx_linkvalidator_processor.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/classes/class.tx_linkvalidator_processor.php']);
-}
 ?>

@@ -765,8 +765,4 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	}
 }
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/modfuncreport/class.tx_linkvalidator_modfuncreport.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/linkvalidator/modfuncreport/class.tx_linkvalidator_modfuncreport.php']);
-}
-
 ?>
