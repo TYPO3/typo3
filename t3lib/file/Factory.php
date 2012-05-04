@@ -101,6 +101,7 @@ class t3lib_file_Factory implements t3lib_Singleton {
 
 		if (!$this->storageInstances[$uid]) {
 			$storageConfiguration = NULL;
+			$storageObject = NULL;
 
 				// If the built-in storage with UID=0 is requested:
 			if (intval($uid) === 0) {
@@ -126,14 +127,14 @@ class t3lib_file_Factory implements t3lib_Singleton {
 				// If any other (real) storage is requested:
 				// Get storage data if not already supplied as argument to this function
 			} elseif (count($recordData) === 0 || $recordData['uid'] !== $uid) {
-				/** @var $GLOBALS['TYPO3_DB'] t3lib_DB */
-				$recordData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_storage', 'uid=' . intval($uid) . ' AND deleted=0');
-				if (!is_array($recordData)) {
-					throw new InvalidArgumentException('No storage found for given UID.', 1314085992);
-				}
+				/**  @var $storageRepository t3lib_file_Repository_StorageRepository */
+				$storageRepository = t3lib_div::makeInstance('t3lib_file_Repository_StorageRepository');
+				/**  @var $storage t3lib_file_Storage */
+				$storageObject = $storageRepository->findByUid($uid);
 			}
-
-			$storageObject = $this->createStorageObject($recordData, $storageConfiguration);
+			if(!($storageObject instanceof t3lib_file_Storage)) {
+				$storageObject = $this->createStorageObject($recordData, $storageConfiguration);
+			}
 			$this->storageInstances[$uid] = $storageObject;
 		}
 

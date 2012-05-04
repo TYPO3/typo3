@@ -451,21 +451,6 @@ abstract class t3lib_file_Driver_AbstractDriver {
 	abstract public function getFolderInFolder($name, t3lib_file_Folder $parentFolder);
 
 	/**
-	 * Returns TRUE if a file should be excluded from a file listing.
-	 *
-	 * @param string $identifier
-	 * @param string $filename
-	 * @return boolean
-	 */
-	protected function isHiddenFile($identifier, $filename) {
-		if (substr($filename, 0, 1) == '.') {
-			return TRUE;
-		}
-
-		return FALSE;
-	}
-
-	/**
 	 * Applies a set of filter methods to a file name to find out if it should be used or not. This is e.g. used by
 	 * directory listings.
 	 *

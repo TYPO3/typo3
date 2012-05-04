@@ -1036,7 +1036,7 @@ class t3lib_file_Storage {
 	 * @return t3lib_file_FileInterface The file object
 	 */
 	public function createFile($fileName, t3lib_file_Folder $targetFolderObject) {
-		if (!$this->checkFolderActionPermission('createFile', $targetFolderObject)) {
+		if (!$this->checkFolderActionPermission('add', $targetFolderObject)) {
 			throw new t3lib_file_exception_InsufficientFolderWritePermissionsException('You are not allowed to create directories on this storage "' . $targetFolderObject->getIdentifier() . '"', 1323059807);
 		}
 		return $this->driver->createFile($fileName, $targetFolderObject);
@@ -1050,7 +1050,7 @@ class t3lib_file_Storage {
 	 * TODO throw FileInUseException when the file is still used anywhere
 	 */
 	public function deleteFile($fileObject) {
-		if (!$this->checkFileActionPermission('delete', $fileObject)) {
+		if (!$this->checkFileActionPermission('remove', $fileObject)) {
 			throw new t3lib_file_exception_InsufficientFileAccessPermissionsException('You are not allowed to delete the file "' . $fileObject->getIdentifier() . "'", 1319550425);
 		}
 
@@ -1457,12 +1457,14 @@ class t3lib_file_Storage {
 	 * @param t3lib_file_Folder $targetParentFolder The target parent folder
 	 * @param string $newFolderName
 	 * @param string $conflictMode  How to handle conflicts; one of "overrideExistingFile", "renameNewFolder", "cancel"
+	 * @throws t3lib_exception
+	 * @throws InvalidArgumentException
 	 * @return t3lib_file_Folder
 	 */
 	// TODO add tests
 	public function moveFolder(t3lib_file_Folder $folderToMove, t3lib_file_Folder $targetParentFolder, $newFolderName = NULL, $conflictMode = 'renameNewFolder') {
 		$sourceStorage = $folderToMove->getStorage();
-
+		$returnObject = NULL;
 		if (!$targetParentFolder->getStorage() == $this) {
 			throw new InvalidArgumentException('Cannot move a folder into a folder that does not belong to this storage.', 1325777289);
 		}
@@ -1482,18 +1484,19 @@ class t3lib_file_Storage {
 			} else {
 				$fileMappings = $this->moveFolderBetweenStorages($folderToMove, $targetParentFolder, $newFolderName);
 			}
-
 				// Update the identifier and storage of all file objects
 			foreach ($fileObjects as $oldIdentifier => $fileObject) {
 				$newIdentifier = $fileMappings[$oldIdentifier];
 				$fileObject->updateProperties(array('storage' => $this, 'identifier' => $newIdentifier));
 			}
+			$returnObject = $this->getFolder($fileMappings[$folderToMove->getIdentifier()]);
 		} catch (t3lib_exception $e) {
 			throw $e;
 			// TODO rollback things that have happened
 		}
 
 		$this->emitPostFolderMoveSignal($folderToMove, $targetParentFolder, $newFolderName);
+		return $returnObject;
 	}
 
 	/**
@@ -1523,7 +1526,7 @@ class t3lib_file_Storage {
 	public function copyFolder(t3lib_file_Folder $folderToCopy, t3lib_file_Folder $targetParentFolder, $newFolderName = NULL, $conflictMode = 'renameNewFolder') {
 		// TODO implement the $conflictMode handling
 		// TODO permission checks
-
+		$returnObject = NULL;
 		$newFolderName = $newFolderName ? $newFolderName : $folderToCopy->getName();
 
 		$this->emitPreFolderCopySignal($folderToCopy, $targetParentFolder, $newFolderName);
@@ -1534,6 +1537,7 @@ class t3lib_file_Storage {
 		try {
 			if ($sourceStorage == $this) {
 				$this->driver->copyFolderWithinStorage($folderToCopy, $targetParentFolder, $newFolderName);
+				$returnObject = $this->getFolder($targetParentFolder->getSubfolder($newFolderName)->getIdentifier());
 			} else {
 				$this->copyFolderBetweenStorages($folderToCopy, $targetParentFolder, $newFolderName);
 			}
@@ -1543,6 +1547,7 @@ class t3lib_file_Storage {
 		}
 
 		$this->emitPostFolderCopySignal($folderToCopy, $targetParentFolder, $newFolderName);
+		return $returnObject;
 	}
 
 	/**
@@ -1568,15 +1573,17 @@ class t3lib_file_Storage {
 	/**
 	 * Previously in t3lib_extFileFunc::folder_move()
 	 *
-	 * @throws RuntimeException if an error occurs during renaming
+	 *
 	 * @param t3lib_file_Folder $folderObject
 	 * @param string $newName
-	 * @return bool TRUE if the operation succeeded
+	 * @throws Exception
+	 * @throws InvalidArgumentException
+	 * @return t3lib_file_Folder
 	 */
 	public function renameFolder($folderObject, $newName) {
 		// TODO unit tests
 		// TODO access checks
-
+		$returnObject = NULL;
 		if ($this->driver->folderExistsInFolder($newName, $folderObject)) {
 			throw new InvalidArgumentException("The folder $newName already exists in folder " . $folderObject->getIdentifier(), 1325418870);
 		}
@@ -1586,29 +1593,31 @@ class t3lib_file_Storage {
 		$fileObjects = $this->getAllFileObjectsInFolder($folderObject);
 		try {
 			$fileMappings = $this->driver->renameFolder($folderObject, $newName);
-
 				// Update the identifier of all file objects
 			foreach ($fileObjects as $oldIdentifier => $fileObject) {
 				$newIdentifier = $fileMappings[$oldIdentifier];
 				$fileObject->updateProperties(array('identifier' => $newIdentifier));
 			}
+			$returnObject = $this->getFolder($fileMappings[$folderObject->getIdentifier()]);
 		} catch (Exception $e) {
 			throw $e;
 		}
-
 		$this->emitPostFolderRenameSignal($folderObject, $newName);
+		return $returnObject;
 	}
 
 	/**
 	 * Previously in t3lib_extFileFunc::folder_delete()
 	 *
-	 * @param t3lib_file_Folder	$folderObject
+	 * @param t3lib_file_Folder    $folderObject
 	 * @param bool $deleteRecursively
+	 * @throws RuntimeException
+	 * @throws t3lib_file_exception_InsufficientFileAccessPermissionsException
 	 * @return bool
 	 */
 	public function deleteFolder($folderObject, $deleteRecursively = FALSE) {
 
-		if (!$this->checkFolderActionPermission('delete', $folderObject)) {
+		if (!$this->checkFolderActionPermission('remove', $folderObject)) {
 			throw new t3lib_file_exception_InsufficientFileAccessPermissionsException('You are not allowed to access the folder "' . $folderObject->getIdentifier() . "'", 1323423953);
 		}
 
@@ -1618,9 +1627,11 @@ class t3lib_file_Storage {
 
 		$this->emitPreFolderDeleteSignal($folderObject);
 
-		$this->driver->deleteFolder($folderObject, $deleteRecursively);
+		$result = $this->driver->deleteFolder($folderObject, $deleteRecursively);
 
 		$this->emitPostFolderDeleteSignal($folderObject);
+
+		return $result;
 	}
 
 	/**
@@ -1701,7 +1712,7 @@ class t3lib_file_Storage {
 			throw new InvalidArgumentException('Parent folder "' . $parentFolder->getIdentifier() . '" does not exist.', 1325689164);
 		}
 
-		if (!$this->checkFolderActionPermission('createFolder', $parentFolder)) {
+		if (!$this->checkFolderActionPermission('add', $parentFolder)) {
 			throw new t3lib_file_exception_InsufficientFolderWritePermissionsException(
 				'You are not allowed to create directories in the folder "' . $parentFolder->getIdentifier() . '"', 1323059807);
 		}

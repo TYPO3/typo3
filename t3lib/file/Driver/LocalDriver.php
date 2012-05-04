@@ -401,7 +401,6 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 		if (!is_file($filePath)) {
 			return array('', array());
 		}
-
 			// TODO add unit test for existing file row case
 		if (!empty($fileRow) && filemtime($filePath) <= $fileRow['modification_date']) {
 			return array($fileName, $fileRow);
@@ -935,7 +934,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 			$current = $iterator->current();
 			$itemSubPath = $iterator->getSubPathname();
 
-			if ($current->isDir()) {
+			if ($current->isDir() && !($itemSubPath === '..' || $itemSubPath === '.')) {
 				mkdir($targetFolderPath . $itemSubPath);
 			} elseif ($current->isFile()) {
 				$result = copy($sourceFolderPath . $itemSubPath, $targetFolderPath . $itemSubPath);
