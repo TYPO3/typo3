@@ -75,6 +75,15 @@ class t3lib_collection_RecordCollectionRepository {
 	}
 
 	/**
+	 * Finds all record collections.
+	 *
+	 * @return t3lib_collection_AbstractRecordCollection[]
+	 */
+	public function findAll() {
+		return $this->queryMultipleRecords();
+	}
+
+	/**
 	 * Finds record collections by table name.
 	 *
 	 * @param string $tableName Name of the table to be looked up
@@ -139,10 +148,16 @@ class t3lib_collection_RecordCollectionRepository {
 	protected function queryMultipleRecords(array $conditions = array()) {
 		$result = NULL;
 
+		if (count($conditions) > 0) {
+			$conditionsWhereClause = implode(' AND ', $conditions);
+		} else {
+			$conditionsWhereClause = '1=1 ';
+		}
+
 		$data = $this->getDatabase()->exec_SELECTgetRows(
 			'*',
 			$this->table,
-			implode(' AND ', $conditions) . t3lib_BEfunc::deleteClause($this->table)
+			$conditionsWhereClause . t3lib_BEfunc::deleteClause($this->table)
 		);
 
 		if ($data !== NULL) {
