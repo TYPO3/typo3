@@ -628,22 +628,6 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			}
 		}
 
-			// Set the margin for image + text, no wrap always to avoid multiple stylesheets
-		if ($accessibilityMode) {
-			$noWrapMargin = (integer) (($maxWInText ? $maxWInText : $fiftyPercentWidthInText) +
-				intval($this->cObj->stdWrap($conf['textMargin'], $conf['textMargin.'])));
-
-			$this->addPageStyle(
-				'.csc-textpic-intext-right-nowrap .csc-textpic-text',
-				'margin-right: ' . $noWrapMargin . 'px;'
-			);
-
-			$this->addPageStyle(
-				'.csc-textpic-intext-left-nowrap .csc-textpic-text',
-				'margin-left: ' . $noWrapMargin . 'px;'
-			);
-		}
-
 			// max usuable width for images (without spacers and borders)
 		$netW = $maxW - $colspacing * ($colCount - 1) - $colCount * $border * ($borderThickness + $borderSpace) * 2;
 
@@ -1005,6 +989,45 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				$allMarkers['caption'] = $globalCaption;
 				if ($captionAlign) {
 					$classes[] = $classCaptionAlign[$captionAlign];
+				}
+			}
+
+				// Set the margin for image + text, no wrap always to avoid multiple stylesheets
+			$noWrapMargin = (integer) (($maxWInText ? $maxWInText : $fiftyPercentWidthInText) +
+				intval($this->cObj->stdWrap($conf['textMargin'], $conf['textMargin.']
+			)));
+
+			$this->addPageStyle(
+				'.csc-textpic-intext-right-nowrap .csc-textpic-text',
+				'margin-right: ' . $noWrapMargin . 'px;'
+			);
+
+			$this->addPageStyle(
+				'.csc-textpic-intext-left-nowrap .csc-textpic-text',
+				'margin-left: ' . $noWrapMargin . 'px;'
+			);
+
+				// Beside Text where the image block width is not equal to maxW
+			if ($contentPosition == 24 && $maxW != $imageBlockWidth) {
+				$noWrapMargin = $imageBlockWidth + $textMargin;
+
+					// Beside Text, Right
+				if ($imagePosition == 1) {
+					$this->addPageStyle(
+						'.csc-textpic-intext-right-nowrap-' . $noWrapMargin. ' .csc-textpic-text',
+						'margin-right: ' . $noWrapMargin . 'px;'
+					);
+
+					$classes[] = 'csc-textpic-intext-right-nowrap-' . $noWrapMargin;
+
+					// Beside Text, Left
+				} elseif ($imagePosition == 2) {
+					$this->addPageStyle(
+						'.csc-textpic-intext-left-nowrap-' . $noWrapMargin . ' .csc-textpic-text',
+						'margin-left: ' . $noWrapMargin . 'px;'
+					);
+
+					$classes[] = 'csc-textpic-intext-left-nowrap-' . $noWrapMargin;
 				}
 			}
 
