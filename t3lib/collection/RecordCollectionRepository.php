@@ -139,10 +139,16 @@ class t3lib_collection_RecordCollectionRepository {
 	protected function queryMultipleRecords(array $conditions = array()) {
 		$result = NULL;
 
+		if (count($conditions) > 0) {
+			$conditionsWhereClause = implode(' AND ', $conditions);
+		} else {
+			$conditionsWhereClause = '1=1';
+		}
+
 		$data = $this->getDatabase()->exec_SELECTgetRows(
 			'*',
 			$this->table,
-			implode(' AND ', $conditions) . t3lib_BEfunc::deleteClause($this->table)
+			$conditionsWhereClause . t3lib_BEfunc::deleteClause($this->table)
 		);
 
 		if ($data !== NULL) {
