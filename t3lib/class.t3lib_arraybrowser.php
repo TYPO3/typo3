@@ -30,15 +30,14 @@
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * Class for displaying an array as a tree
  * See the extension 'lowlevel' /config (Backend module 'Tools > Configuration')
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see SC_mod_tools_config_index::main()
@@ -55,12 +54,13 @@ class t3lib_arrayBrowser {
 
 	/**
 	 * Make browsable tree
-	 * Before calling this function you may want to set some of the internal vars like depthKeys, regexMode and fixedLgd. For examples see SC_mod_tools_config_index::main()
+	 * Before calling this function you may want to set some of the internal vars like depthKeys, regexMode and fixedLgd.
+	 * For examples see SC_mod_tools_config_index::main()
 	 *
-	 * @param	array		The array to display
-	 * @param	string		Key-position id. Build up during recursive calls - [key1].[key2].[key3] - an so on.
-	 * @param	string		Depth-data - basically a prefix for the icons. For calling this function from outside, let it stay blank.
-	 * @return	string		HTML for the tree
+	 * @param array $arr The array to display
+	 * @param string $depth_in Key-position id. Build up during recursive calls - [key1].[key2].[key3] - an so on.
+	 * @param string $depthData Depth-data - basically a prefix for the icons. For calling this function from outside, let it stay blank.
+	 * @return string HTML for the tree
 	 * @see SC_mod_tools_config_index::main()
 	 */
 	function tree($arr, $depth_in, $depthData) {
@@ -127,9 +127,9 @@ class t3lib_arrayBrowser {
 	/**
 	 * Wrapping the value in bold tags etc.
 	 *
-	 * @param	string		The title string
-	 * @param	string		Depth path
-	 * @return	string		Title string, htmlspecialchars()'ed
+	 * @param string $theValue The title string
+	 * @param string $depth Depth path
+	 * @return string Title string, htmlspecialchars()'ed
 	 */
 	function wrapValue($theValue, $depth) {
 		$wrappedValue = '';
@@ -142,10 +142,10 @@ class t3lib_arrayBrowser {
 	/**
 	 * Wrapping the value in bold tags etc.
 	 *
-	 * @param	string		The title string
-	 * @param	string		Depth path
-	 * @param	string		The value for the array entry.
-	 * @return	string		Title string, htmlspecialchars()'ed
+	 * @param string $label The title string
+	 * @param string $depth Depth path
+	 * @param string $theValue The value for the array entry.
+	 * @return string Title string, htmlspecialchars()'ed
 	 */
 	function wrapArrayKey($label, $depth, $theValue) {
 
@@ -166,11 +166,11 @@ class t3lib_arrayBrowser {
 	/**
 	 * Creates an array with "depthKeys" which will expand the array to show the search results
 	 *
-	 * @param	array		The array to search for the value
-	 * @param	string		Depth string - blank for first call (will build up during recursive calling creating an id of the position: [key1].[key2].[key3]
-	 * @param	string		The string to search for
-	 * @param	array		Key array, for first call pass empty array
-	 * @return	array
+	 * @param array $keyArr The array to search for the value
+	 * @param string $depth_in Depth string - blank for first call (will build up during recursive calling creating an id of the position: [key1].[key2].[key3]
+	 * @param string $searchString The string to search for
+	 * @param array $keyArray Key array, for first call pass empty array
+	 * @return array
 	 */
 	function getSearchKeys($keyArr, $depth_in, $searchString, $keyArray) {
 		$c = count($keyArr);
@@ -205,9 +205,9 @@ class t3lib_arrayBrowser {
 	/**
 	 * Fixed length function
 	 *
-	 * @param	string		String to process
-	 * @param	integer		Max number of chars
-	 * @return	string		Processed string
+	 * @param string $string String to process
+	 * @param integer $chars Max number of chars
+	 * @return string Processed string
 	 */
 	function fixed_lgd($string, $chars) {
 		if ($chars >= 4) {
@@ -221,9 +221,9 @@ class t3lib_arrayBrowser {
 	/**
 	 * Function modifying the depthKey array
 	 *
-	 * @param	array		Array with instructions to open/close nodes.
-	 * @param	array		Input depth_key array
-	 * @return	array		Output depth_key array with entries added/removed based on $arr
+	 * @param array $arr Array with instructions to open/close nodes.
+	 * @param array $settings Input depth_key array
+	 * @return array Output depth_key array with entries added/removed based on $arr
 	 * @see SC_mod_tools_config_index::main()
 	 */
 	function depthKeys($arr, $settings) {
