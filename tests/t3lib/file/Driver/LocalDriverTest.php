@@ -362,9 +362,12 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 				'file' => 'asdf'
 			)
 		));
+		$storageObject = $this->getMock('t3lib_file_Storage', array(), array(), '', FALSE);
+		$storageObject->expects($this->any())->method('getUid')->will($this->returnValue('1'));
+
 		$fixture = $this->createDriverFixture(array(
 			'basePath' => $this->getMountRootUrl()
-		));
+		), $storageObject);
 
 		$fixture->addFile($this->getUrlInMount('/targetFolder/file'), $mockedFolder, 'file');
 	}
@@ -674,21 +677,39 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 	/**
 	 * @test
 	 */
-	public function getFileListDoesNotReturnHiddenFilesByDefault() {
+	public function getFileListCallsConfiguredCallbackFunctionWithGivenItemName() {
 		$dirStructure = array(
-			'aDir' => array(),
-			'.someHiddenFile' => 'asdf',
-			'file1' => 'asdfg',
 			'file2' => 'fdsa'
+		);
+			// register static callback to self
+		$callback = array(
+			array (
+				get_class($this),
+				'callbackStaticTestFunction'
+			)
 		);
 		$this->addToMount($dirStructure);
 		$fixture = $this->createDriverFixture(array(
 			'basePath' => $this->getMountRootUrl()
 		));
+			// the callback function will throw an exception used to check if it was called with correct $itemName
+		$this->setExpectedException('InvalidArgumentException', '$itemName', 1336159604);
+		$fixture->getFileList('/', 0, 0, $callback);
+	}
 
-		$fileList = $fixture->getFileList('/');
-
-		$this->assertEquals(array('file1', 'file2'), array_keys($fileList));
+	/**
+	 * Static callback function used to test if the filter callbacks work
+	 * As it is static we are using an exception to test if it is really called and works
+	 *
+	 * @static
+	 * @throws InvalidArgumentException
+	 * @see getFileListCallsConfiguredCallbackFunction
+	 */
+	public static function callbackStaticTestFunction() {
+		list($itemName) = func_get_args();
+		if($itemName === 'file2') {
+			throw new InvalidArgumentException('$itemName', 1336159604);
+		}
 	}
 
 	/**

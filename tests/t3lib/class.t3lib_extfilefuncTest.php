@@ -256,7 +256,7 @@ class t3lib_extFileFunctionsTest extends tx_phpunit_testcase {
 		$this->fileProcessor->start($fileValues);
 		$results = $this->fileProcessor->processData();
 
-		$this->assertEquals(TRUE, empty ($results['delete'][1]));
+		$this->assertEquals(TRUE, $results['delete'][0]);
 	}
 
 	/*********************************
@@ -430,7 +430,7 @@ class t3lib_extFileFunctionsTest extends tx_phpunit_testcase {
 			$this->objectsToTearDown[] = $results['newfolder'][0];
 		}
 
-		$this->assertEquals(TRUE, $folderObject instanceof t3lib_file_File);
+		$this->assertEquals(TRUE, $folderObject instanceof t3lib_file_Folder);
 	}
 
 	/*********************************
@@ -492,12 +492,12 @@ class t3lib_extFileFunctionsTest extends tx_phpunit_testcase {
 	 */
 	public function copyFolderInLocalStorage() {
 
-		// Computes a $folderIdentifier which looks like 8:/folderName.txt where 8 is the storage Uid
+			// Computes a $folderIdentifier which looks like 8:/folderName.txt where 8 is the storage Uid
 		$storage = $this->getDefaultStorage();
 		$folderIdentifier = $storage->getUid() . ':/' . $this->copyFolderNameInput;
 		$targetFolder = $this->getRootFolderIdentifier() . $this->newFolderNameInput;
 
-		// Defines values
+			// Defines values
 		$fileValues = array(
 			'newfolder' => array(
 				array(
@@ -525,7 +525,7 @@ class t3lib_extFileFunctionsTest extends tx_phpunit_testcase {
 			$folderObject = $results['copy'][0];
 		}
 
-		// remove parent folder
+			// remove parent folder
 		if (!empty ($results['newfolder'][0])) {
 			$this->objectsToTearDown[] = $results['newfolder'][0];
 		}
@@ -533,58 +533,7 @@ class t3lib_extFileFunctionsTest extends tx_phpunit_testcase {
 			$this->objectsToTearDown[] = $results['newfolder'][1];
 		}
 
-		$this->assertEquals(TRUE, $folderObject instanceof t3lib_file_File);
-	}
-
-	/*********************************
-	 * UPLOAD
-	 ********************************/
-	/**
-	 * @test
-	 */
-	public function uploadFileInLocalStorage() {
-
-		// Computes a $fileIdentifier which looks like 8:/fileName.txt where 8 is the storage Uid
-		$storage = $this->getDefaultStorage();
-		$fileIdentifier = $storage->getUid() . ':/' . $this->newFileNameInput;
-		$targetFolder = $this->getRootFolderIdentifier() . $this->newFolderNameInput;
-
-		// creates fake file
-		$tmpFile = '/tmp/php5Wx0aJ';
-		touch ($tmpFile);
-
-		$_FILES['upload_phpunit'] = array(
-			'name' => $this->newFileNameInput,
-			'type' => 'text/plain',
-			'tmp_name' => $tmpFile,
-			'error' => 0,
-			'size' => 10,
-		);
-
-		// Defines values
-		$fileValues = array(
-			'upload' => array(
-				array(
-					'data' => 'phpunit',
-					'target' => $this->getRootFolderIdentifier(),
-				)
-			),
-		);
-
-		$this->fileProcessor->start($fileValues);
-		$results = $this->fileProcessor->processData();
-
-		$fileObject = NULL;
-		if (!empty ($results['upload'][0])) {
-			$fileObject = $results['upload'][0];
-		}
-
-		print '<b>Test does not work because of function is_uploaded_file() which is not faked yet @t3lib_file_Storage:820@ </b><br/>';
-
-		$this->objectsToTearDown[] = $fileObject;
-		unlink($tmpFile); // delete
-
-		$this->assertEquals(TRUE, $fileObject instanceof t3lib_file_File);
+		$this->assertEquals(TRUE, $folderObject instanceof t3lib_file_Folder);
 	}
 }
 
