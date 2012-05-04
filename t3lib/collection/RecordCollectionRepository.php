@@ -75,6 +75,15 @@ class t3lib_collection_RecordCollectionRepository {
 	}
 
 	/**
+	 * Finds all record collections.
+	 *
+	 * @return NULL|t3lib_collection_AbstractRecordCollection[]
+	 */
+	public function findAll() {
+		return $this->queryMultipleRecords();
+	}
+
+	/**
 	 * Finds record collections by table name.
 	 *
 	 * @param string $tableName Name of the table to be looked up
