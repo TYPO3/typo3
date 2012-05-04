@@ -66,6 +66,14 @@ interface tx_linkvalidator_linktype_Interface {
 	 */
 	public function getBrokenUrl($row);
 
+	/**
+	 * Generate the localized error message from the error params saved from the parsing
+	 *
+	 * @param array $errorParams All parameters needed for the rendering of the error message
+	 * @return string Validation error message
+	 */
+	public function getErrorMessage($errorParams);
+
 }
 
 ?>
