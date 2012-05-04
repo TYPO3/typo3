@@ -134,6 +134,15 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	/** @var t3lib_pageRenderer $pageRenderer */
 	protected $pageRenderer;
 
+	/** @var string $resPath Path to "linkvalidator/res/" to be used in pageRenderer */
+	protected $resPath = '';
+
+	/** @var tx_linkvalidator_linktype_Interface[] $hookObjectsArr */
+	protected $hookObjectsArr = array();
+
+	/** @var string $checkAllHtml */
+	protected $checkAllHtml = '';
+
 	/**
 	 * Main method of modfuncreport
 	 *
@@ -301,7 +310,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		$this->doc->setModuleTemplate(t3lib_extMgm::extPath('linkvalidator') . 'modfuncreport/mod_template.html');
 
 		$this->relativePath = t3lib_extMgm::extRelPath('linkvalidator');
-		$this->pageRecord = t3lib_BEfunc::readPageAccess($this->pObj->id, $this->perms_clause);
+		$this->pageRecord = t3lib_BEfunc::readPageAccess($this->pObj->id, $GLOBALS['BE_USER']->getPagePermsClause(1));
 
 		$this->isAccessibleForCurrentUser = FALSE;
 		if ($this->pObj->id && is_array($this->pageRecord) || !$this->pObj->id && $this->isCurrentUserAdmin()) {
@@ -372,6 +381,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			$this->content = $this->renderBrokenLinksTable();
 		} else {
 				// If no access or if ID == zero
+				/** @var t3lib_FlashMessage $message */
 			$message = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
 				$GLOBALS['LANG']->getLL('no.access'),
@@ -430,7 +440,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	/**
 	 * Displays the table of broken links or a note if there were no broken links
 	 *
-	 * @return html Content of the table or of the note
+	 * @return string Content of the table or of the note
 	 */
 	protected function renderBrokenLinksTable() {
 		$items = $brokenLinksMarker = array();
@@ -491,8 +501,15 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		return $content;
 	}
 
-	protected function getNoBrokenLinkMessage($brokenLinksMarker) {
+	/**
+	 * Replace $brokenLinksMarker['NO_BROKEN_LINKS] with localized flashmessage
+	 *
+	 * @param array $brokenLinksMarker
+	 * @return array $brokenLinksMarker['NO_BROKEN_LINKS] replaced with flashmessage
+	 */
+	protected function getNoBrokenLinkMessage(array $brokenLinksMarker) {
 		$brokenLinksMarker['LIST_HEADER'] = $this->doc->sectionHeader($GLOBALS['LANG']->getLL('list.header'));
+			/** @var t3lib_FlashMessage $message */
 		$message = t3lib_div::makeInstance(
 			't3lib_FlashMessage',
 			$GLOBALS['LANG']->getLL('list.no.broken.links'),
@@ -544,11 +561,10 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	 */
 	protected function renderTableRow($table, array $row, $brokenLinksItemTemplate) {
 		$markerArray = array();
-		if (is_array($row) && !empty($row['link_type'])) {
-			if (($hookObj = $this->hookObjectsArr[$row['link_type']])) {
-				$brokenUrl = $hookObj->getBrokenUrl($row);
-			}
-		}
+		$fieldName = '';
+			// Restore the linktype object
+		$hookObj = $this->hookObjectsArr[$row['link_type']];
+		$brokenUrl = $hookObj->getBrokenUrl($row);
 
 		$params = '&edit[' . $table . '][' . $row['record_uid'] . ']=edit';
 		$actionLinks = '<a href="#" onclick="' .
@@ -575,7 +591,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			}
 		}
 			// Fallback, if there is no label
-		$fieldName = $fieldName ? $fieldName : $row['field'];
+		$fieldName = !empty($fieldName) ? $fieldName : $row['field'];
 
 			// column "Element"
 		$element = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => $table . ':' . $row['record_uid']));
