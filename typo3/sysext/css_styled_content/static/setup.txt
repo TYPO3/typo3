@@ -893,10 +893,12 @@ tt_content.image.20 {
 		18.value = <div class="csc-textpic csc-textpic-intext-left###CLASSES###">###IMAGES######TEXT###</div>
 		# intext-right-nowrap
 		25 = TEXT
-		25.value = <div class="csc-textpic csc-textpic-intext-right-nowrap###CLASSES###">###IMAGES######TEXT###</div>
+		25.value = <div class="csc-textpic csc-textpic-intext-right-nowrap csc-textpic-intext-right-nowrap-{field:uid}###CLASSES###">###IMAGES######TEXT###</div>
+		25.insertData = 1
 		# intext-left-nowrap
 		26 = TEXT
-		26.value = <div class="csc-textpic csc-textpic-intext-left-nowrap###CLASSES###">###IMAGES######TEXT###</div>
+		26.value = <div class="csc-textpic csc-textpic-intext-left-nowrap csc-textpic-intext-left-nowrap-{field:uid}###CLASSES###">###IMAGES######TEXT###</div>
+		26.insertData = 1
 	}
 
 	rendering {

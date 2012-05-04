@@ -619,22 +619,6 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			}
 		}
 
-			// Set the margin for image + text, no wrap always to avoid multiple stylesheets
-		if ($accessibilityMode) {
-			$noWrapMargin = (integer) (($maxWInText ? $maxWInText : $fiftyPercentWidthInText) +
-				intval($this->cObj->stdWrap($conf['textMargin'],$conf['textMargin.'])));
-
-			$this->addPageStyle(
-				'.csc-textpic-intext-right-nowrap .csc-textpic-text',
-				'margin-right: ' . $noWrapMargin . 'px;'
-			);
-
-			$this->addPageStyle(
-				'.csc-textpic-intext-left-nowrap .csc-textpic-text',
-				'margin-left: ' . $noWrapMargin . 'px;'
-			);
-		}
-
 			// max usuable width for images (without spacers and borders)
 		$netW = $maxW - $colspacing * ($colCount - 1) - $colCount * $border * ($borderThickness + $borderSpace) * 2;
 
@@ -790,6 +774,22 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$imageBlockWidth = max($imageRowsFinalWidths)+ $colspacing*($colCount-1) + $colCount*$border*($borderSpace+$borderThickness)*2;
 		$GLOBALS['TSFE']->register['rowwidth'] = $imageBlockWidth;
 		$GLOBALS['TSFE']->register['rowWidthPlusTextMargin'] = $imageBlockWidth + $textMargin;
+
+			// Set the margin for image + text, no wrap always to avoid multiple stylesheets
+		if ($accessibilityMode) {
+			$noWrapMargin = $imageBlockWidth + $textMargin;
+
+			$this->addPageStyle(
+				'.csc-textpic-intext-right-nowrap-' . $this->cObj->data['uid'] . ' .csc-textpic-text',
+				'margin-right: ' . $noWrapMargin . 'px;'
+			);
+
+			$this->addPageStyle(
+				'.csc-textpic-intext-left-nowrap-' . $this->cObj->data['uid'] . ' .csc-textpic-text',
+				'margin-left: ' . $noWrapMargin . 'px;'
+			);
+		}
+
 
 			// noRows is in fact just one ROW, with the amount of columns specified, where the images are placed in.
 			// noCols is just one COLUMN, each images placed side by side on each row
