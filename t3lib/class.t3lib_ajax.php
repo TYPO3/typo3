@@ -40,21 +40,22 @@
  * (1) generation of JavaScript code which creates an XMLHTTP object in a cross-browser manner
  * (2) generation of XML data as a reply
  *
- * @author	Sebastian Kurfürst <sebastian@garbage-group.de>
+ * @author Sebastian Kurfürst <sebastian@garbage-group.de>
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_ajax {
+
 	/**
 	 * Gets the JavaScript code needed to handle an XMLHTTP request in the frontend.
 	 * All JS functions have to call ajax_doRequest(url) to make a request to the server.
 	 * USE:
 	 * See examples of using this function in template.php -> getContextMenuCode and alt_clickmenu.php -> printContent
 	 *
-	 * @param	string		JS function handling the XML data from the server. That function gets the returned XML data as parameter.
-	 * @param	string		JS fallback function which is called with the URL of the request in case ajax is not available.
-	 * @param	boolean		If set to 1, the returned XML data is outputted as text in an alert window - useful for debugging, PHP errors are shown there, ...
-	 * @return	string		JavaScript code needed to make and handle an XMLHTTP request
+	 * @param string $handler Function JS function handling the XML data from the server. That function gets the returned XML data as parameter.
+	 * @param string $fallback JS fallback function which is called with the URL of the request in case ajax is not available.
+	 * @param boolean $debug If set to 1, the returned XML data is outputted as text in an alert window - useful for debugging, PHP errors are shown there, ...
+	 * @return string JavaScript code needed to make and handle an XMLHTTP request
 	 */
 	function getJScode($handlerFunction, $fallback = '', $debug = 0) {
 			// Init the XMLHTTP request object
@@ -75,7 +76,7 @@ class t3lib_ajax {
 			}
 			return A;
 		}';
-			// in case AJAX is not available, fallback function
+			// In case AJAX is not available, fallback function
 		if ($fallback) {
 			$fallback .= '(url)';
 		} else {
@@ -111,8 +112,8 @@ class t3lib_ajax {
 	/**
 	 * Function outputting XML data for TYPO3 ajax. The function directly outputs headers and content to the browser.
 	 *
-	 * @param	string		$innerXML	XML data which will be sent to the browser
-	 * @return	void
+	 * @param string $innerXML XML data which will be sent to the browser
+	 * @return void
 	 */
 	function outputXMLreply($innerXML) {
 			// AJAX needs some XML data
@@ -121,7 +122,6 @@ class t3lib_ajax {
 <t3ajax>' . $innerXML . '</t3ajax>';
 		echo $xml;
 	}
-
 }
 
 ?>
