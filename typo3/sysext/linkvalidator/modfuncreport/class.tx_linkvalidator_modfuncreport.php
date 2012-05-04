@@ -292,7 +292,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	protected function initialize() {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $linkType => $classRef) {
-				$this->hookObjectsArr[$linkType] = &t3lib_div::getUserObj($classRef);
+				$this->hookObjectsArr[$linkType] = t3lib_div::getUserObj($classRef);
 			}
 		}
 
