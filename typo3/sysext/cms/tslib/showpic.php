@@ -33,78 +33,8 @@
  * @author		Kasper Skårhøj	<kasperYYYY@typo3.com>
  */
 
-
-
-
-// *******************************
-// Set error reporting
-// *******************************
-error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
-
-
-// ***********************
-// Paths are setup
-// ***********************
-define('TYPO3_OS', stristr(PHP_OS,'win')&&!stristr(PHP_OS,'darwin')?'WIN':'');
-define('TYPO3_MODE','FE');
-
-if(!defined('PATH_thisScript')) {
-	define('PATH_thisScript', str_replace('//', '/', str_replace('\\', '/',
-		(PHP_SAPI == 'fpm-fcgi' || PHP_SAPI == 'cgi' || PHP_SAPI == 'isapi' || PHP_SAPI == 'cgi-fcgi') &&
-		($_SERVER['ORIG_PATH_TRANSLATED'] ? $_SERVER['ORIG_PATH_TRANSLATED'] : $_SERVER['PATH_TRANSLATED']) ?
-		($_SERVER['ORIG_PATH_TRANSLATED'] ? $_SERVER['ORIG_PATH_TRANSLATED'] : $_SERVER['PATH_TRANSLATED']) :
-		($_SERVER['ORIG_SCRIPT_FILENAME'] ? $_SERVER['ORIG_SCRIPT_FILENAME'] : $_SERVER['SCRIPT_FILENAME']))));
-}
-
-if (!defined('PATH_site')) 			define('PATH_site', dirname(PATH_thisScript).'/');
-if (!defined('PATH_t3lib')) 		define('PATH_t3lib', PATH_site.'t3lib/');
-define('PATH_tslib', PATH_site.'tslib/');
-define('PATH_typo3conf', PATH_site.'typo3conf/');
-define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend administration for the sites of this TYPO3 installation.
-
-if (!@is_dir(PATH_typo3conf))	die('Cannot find configuration. This file is probably executed from the wrong location.');
-
-require_once(PATH_t3lib.'class.t3lib_div.php');
-require_once(PATH_t3lib.'class.t3lib_extmgm.php');
-
-// ******************
-// Including config
-// ******************
-require_once(PATH_t3lib.'config_default.php');
-if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');
-
-require_once(PATH_t3lib.'class.t3lib_db.php');
-$TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
-
-
-// *********************
-// Error & Exception handling
-// *********************
-if ($TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] !== '') {
-	if ($TYPO3_CONF_VARS['SYS']['errorHandler'] !== '') {
-			// register an error handler for the given errorHandlerErrors
-		$errorHandler = t3lib_div::makeInstance($TYPO3_CONF_VARS['SYS']['errorHandler'], $TYPO3_CONF_VARS['SYS']['errorHandlerErrors']);
-			// set errors which will be converted in an exception
-		$errorHandler->setExceptionalErrors($TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionalErrors']);
-	}
-	$exceptionHandler = t3lib_div::makeInstance($TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler']);
-}
-
-
-
-
-
-
-# NOTICE: ALL LINES above can be commented out since this script is now used via the ?eID=tx_cms_showpic parameter passed to index.php!
-# For backwards compatibility in extensions using showpic.php directly this is kept for the version 4.0 until 4.5 where it is planned removed!
-# @deprecated TODO remove
-
 if (!defined ('PATH_typo3conf')) 	die ('The configuration path was not properly defined!');
 require_once(PATH_t3lib.'class.t3lib_stdgraphic.php');
-
-
-
-
 
 /**
  * Script Class, generating the page output.
