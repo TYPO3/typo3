@@ -26,7 +26,7 @@
  ***************************************************************/
 
 require_once 'vfsStream/vfsStream.php';
-require_once realpath(dirname(__FILE__) . '/../../../t3lib/file/BaseTestCase.php');
+require_once realpath(dirname(__FILE__) . '/../../../Unit/t3lib/file/BaseTestCase.php');
 
 /**
  * Functional test case for the FAL Storage.
