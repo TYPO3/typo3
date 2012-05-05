@@ -47,7 +47,7 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 		return array(
 			'negativeValue' => array(0, -10),
 			'normalValue' => array(30, 30),
-			'veryHighValue' => array(2000000000, 3000000001),
+			'veryHighValue' => array(2000000000, PHP_INT_MAX),
 			'zeroValue' => array(0, 0),
 			'anotherNormalValue' => array(12309, 12309)
 		);
