@@ -1,7 +1,4 @@
 <?php
-define('TYPO3_MOD_PATH', 'typo3/sysext/em/classes/');
-$BACK_PATH='';
-
 $MLANG['default']['tabs_images']['tab'] = 'em.gif';
 $MLANG['default']['ll_ref'] = 'LLL:EXT:em/language/locallang.xml';
 
