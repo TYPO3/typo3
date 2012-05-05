@@ -25,15 +25,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-	// a tabulator
-define('TAB', chr(9));
-	// a linefeed
-define('LF', chr(10));
-	// a carriage return
-define('CR', chr(13));
-	// a CR-LF combination
-define('CRLF', CR . LF);
-
 /**
  * The legendary "t3lib_div" class - Miscellaneous functions for general purpose.
  * Most of the functions do not relate specifically to TYPO3
@@ -3398,12 +3389,7 @@ final class t3lib_div {
 				}
 				break;
 			case 'SCRIPT_FILENAME':
-				$retVal = str_replace('//', '/', str_replace('\\', '/',
-					(PHP_SAPI == 'fpm-fcgi' || PHP_SAPI == 'cgi' || PHP_SAPI == 'isapi' || PHP_SAPI == 'cgi-fcgi') &&
-							($_SERVER['ORIG_PATH_TRANSLATED'] ? $_SERVER['ORIG_PATH_TRANSLATED'] : $_SERVER['PATH_TRANSLATED']) ?
-							($_SERVER['ORIG_PATH_TRANSLATED'] ? $_SERVER['ORIG_PATH_TRANSLATED'] : $_SERVER['PATH_TRANSLATED']) :
-							($_SERVER['ORIG_SCRIPT_FILENAME'] ? $_SERVER['ORIG_SCRIPT_FILENAME'] : $_SERVER['SCRIPT_FILENAME'])));
-
+				$retVal = PATH_thisScript;
 				break;
 			case 'REQUEST_URI':
 					// Typical application of REQUEST_URI is return urls, forms submitting to itself etc. Example: returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))
