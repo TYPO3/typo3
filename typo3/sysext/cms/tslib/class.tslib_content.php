@@ -389,6 +389,7 @@ class tslib_cObj {
 	 */
 	function start($data, $table = '') {
 		global $TYPO3_CONF_VARS;
+		t3lib_file_Service_BackwardsCompatibility_TslibContentAdapterService::modifyDBRow($data, $table);
 		$this->data = $data;
 		$this->table = $table;
 		$this->currentRecord = $table ? $table . ':' . $this->data['uid'] : '';
