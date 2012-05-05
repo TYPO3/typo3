@@ -161,7 +161,7 @@ class t3lib_file_Service_ImageProcessingService {
 		} else {
 				// Filename:
 			$fileDestination = $gifCreator->tempPath . $hash . '.' . $imgExt;
-				 // Generate!
+				// Generate!
 			if (!file_exists($fileDestination)) {
 				$this->processMask($maskImages, $gifCreator, $theImage, $fileConfiguration, $options, $fileDestination);
 			}
@@ -208,7 +208,7 @@ class t3lib_file_Service_ImageProcessingService {
 			$negate = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask'] ? ' -negate' : '';
 
 			$temp_ext = 'png';
-				 // If ImageMagick version 5+
+				// If ImageMagick version 5+
 			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_gif']) {
 				$temp_ext = $gifCreator->gifExtension;
 			}

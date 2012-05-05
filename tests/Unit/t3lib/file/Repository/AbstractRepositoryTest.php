@@ -75,8 +75,8 @@ class t3lib_file_Repository_AbstractRepositoryTest extends Tx_Phpunit_TestCase {
 	public function findByUidAcceptsNumericUidInString() {
 		$this->createDatabaseMock();
 		$this->mockedDb->expects($this->once())->method('exec_SELECTgetSingleRow')
-		  ->with($this->anything(), $this->anything(), $this->stringContains('uid=' . 123))
-		  ->will($this->returnValue(array('uid' => 123)));
+			->with($this->anything(), $this->anything(), $this->stringContains('uid=' . 123))
+			->will($this->returnValue(array('uid' => 123)));
 
 		$this->fixture->findByUid("123");
 	}

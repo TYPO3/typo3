@@ -37,7 +37,7 @@ class tx_scheduler implements t3lib_Singleton {
 	/**
 	 * @var	array		$extConf: settings from the extension manager
 	 */
-	 var $extConf = array();
+	var $extConf = array();
 
 	/**
 	 * Constructor, makes sure all derived client classes are included
@@ -57,7 +57,7 @@ class tx_scheduler implements t3lib_Singleton {
 
 	/**
 	 * Adds a task to the pool
- 	 *
+	 *
 	 * @param tx_scheduler_Task $task The object representing the task to add
 	 * @return boolean TRUE if the task was successfully added, FALSE otherwise
 	 */
@@ -134,7 +134,7 @@ class tx_scheduler implements t3lib_Singleton {
 	}
 
 	/**
-     * This method executes the given task and properly marks and records that execution
+	 * This method executes the given task and properly marks and records that execution
 	 * It is expected to return FALSE if the task was barred from running or if it was not saved properly
 	 *
 	 * @param tx_scheduler_Task $task The task to execute
@@ -236,7 +236,7 @@ class tx_scheduler implements t3lib_Singleton {
 
 	/**
 	 * Updates a task in the pool
- 	 *
+	 *
 	 * @param tx_scheduler_Task $task Scheduler task object
 	 * @return boolean False if submitted task was not of proper class
 	 */
@@ -317,15 +317,15 @@ class tx_scheduler implements t3lib_Singleton {
 		return $task;
 	}
 
-	 /**
-	  * This method is used to get the database record for a given task
-	  * It returns the database record and not the task object
-	  *
-	  * @param integer $uid Primary key of the task to get
-	  * @return array Database record for the task
-	  * @see tx_scheduler::fetchTask()
-	  */
-	 public function fetchTaskRecord($uid) {
+	/**
+	 * This method is used to get the database record for a given task
+	 * It returns the database record and not the task object
+	 *
+	 * @param integer $uid Primary key of the task to get
+	 * @return array Database record for the task
+	 * @see tx_scheduler::fetchTask()
+	 */
+	public function fetchTaskRecord($uid) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_scheduler_task', 'uid = ' . intval($uid));
 
 			// If the task is not found, throw an exception
@@ -338,7 +338,7 @@ class tx_scheduler implements t3lib_Singleton {
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 		return $row;
-	 }
+	}
 
 	/**
 	 * Fetches and unserializes task objects selected with some (SQL) condition

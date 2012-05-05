@@ -692,7 +692,7 @@ class Tx_IndexedSearch_Domain_Repository_IndexSearchRepository {
 
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 						'ISEC.*, IP.*, '
-						 . $grsel,
+						. $grsel,
 						'index_words IW,
 							index_rel IR,
 							index_section ISEC,

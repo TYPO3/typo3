@@ -298,7 +298,7 @@ class SC_alt_db_navframe {
 
 			$workspaceInfo = '
 				<div class="bgColor4 workspace-info">' .
-					 t3lib_iconWorks::getSpriteIcon(
+					t3lib_iconWorks::getSpriteIcon(
 						'apps-toolbar-menu-workspace',
 						array(
 							'title' => $wsTitle,

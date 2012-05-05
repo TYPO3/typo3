@@ -151,7 +151,7 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 			$width = $conf[$type . '.']['defaultWidth'];
 		}
 
-        $height = isset($conf['height.'])
+		$height = isset($conf['height.'])
 			? $this->cObj->stdWrap($conf['height'], $conf['height.'])
 			: $conf['height'];
 		if(!$height) {

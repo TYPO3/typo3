@@ -61,7 +61,7 @@ class tx_taskcenter_status {
 		$sort = array();
 		$items = explode('&', t3lib_div::_POST('data'));
 		foreach($items as $item) {
-		 $sort[] = substr($item, 12);
+			$sort[] = substr($item, 12);
 		}
 
 		$GLOBALS['BE_USER']->uc['taskcenter']['sorting'] = serialize($sort);

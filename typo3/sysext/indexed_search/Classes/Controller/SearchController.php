@@ -207,7 +207,7 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 				// Get result rows
 			$tstamp1 = t3lib_div::milliseconds();
 			if ($hookObj = $this->hookRequest('getResultRows')) {
-			 	$resultData = $hookObj->getResultRows($this->searchWords, $freeIndexUid);
+				$resultData = $hookObj->getResultRows($this->searchWords, $freeIndexUid);
 			} else {
 				$resultData = $this->searchRepository->doSearch($this->searchWords, $freeIndexUid);
 			}
@@ -280,7 +280,7 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 
 					// could we get this in the view?
 				if ($this->searchData['group'] == 'sections' && $freeIndexUid <= 0) {
-				 	$result['sectionText'] = sprintf(Tx_Extbase_Utility_Localization::translate('result.' . (count($this->resultSections) > 1 ? 'inNsections' : 'inNsection'), 'indexed_search'), count($this->resultSections));
+					$result['sectionText'] = sprintf(Tx_Extbase_Utility_Localization::translate('result.' . (count($this->resultSections) > 1 ? 'inNsections' : 'inNsection'), 'indexed_search'), count($this->resultSections));
 				}
 			}
 		}
@@ -288,7 +288,7 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 			// Print a message telling which words in which sections we searched for
 		if (substr($this->searchData['sections'], 0, 2) == 'rl') {
 			$result['searchedInSectionInfo'] = Tx_Extbase_Utility_Localization::translate('result.inSection', 'indexed_search')
-			 . ' "' . substr($this->getPathFromPageId(substr($this->searchData['sections'], 4)), 1) . '"';
+			. ' "' . substr($this->getPathFromPageId(substr($this->searchData['sections'], 4)), 1) . '"';
 		}
 		return $result;
 	}
@@ -551,7 +551,7 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 				// Based on priority assigned to <title> / <meta-keywords> / <meta-description> / <body>
 			case 'rank_flag':
 				if ($this->firstRow['order_val2']) {
-					 // (3 MSB bit, 224 is highest value of order_val1 currently)
+						// (3 MSB bit, 224 is highest value of order_val1 currently)
 					$base = $row['order_val1'] * 256;
 						// 15-3 MSB = 12
 					$freqNumber = $row['order_val2'] / $this->firstRow['order_val2'] * pow(2, 12);
@@ -609,7 +609,7 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 					'flag, title',
 					'sys_language',
 					'uid=' . intval($row['sys_language_uid'])
-					 . $GLOBALS['TSFE']->cObj->enableFields('sys_language')
+					. $GLOBALS['TSFE']->cObj->enableFields('sys_language')
 				);
 
 					// Flag code:
@@ -1241,7 +1241,7 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 					'uid,title',
 					'index_config',
 					'uid IN (' . implode(',', $uidList).  ')'
-					 . $GLOBALS['TSFE']->cObj->enableFields('index_config'),
+					. $GLOBALS['TSFE']->cObj->enableFields('index_config'),
 					'',
 					'',
 					'',
@@ -1517,7 +1517,7 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 			'domainName',
 			'sys_domain',
 			'pid=' . intval($id)
-			 . $GLOBALS['TSFE']->cObj->enableFields('sys_domain'),
+			. $GLOBALS['TSFE']->cObj->enableFields('sys_domain'),
 			'',
 			'sorting'
 		);

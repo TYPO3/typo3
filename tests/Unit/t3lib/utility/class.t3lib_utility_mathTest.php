@@ -32,7 +32,6 @@ require_once('fixture/t3lib_utility_math_fixture_classWithStringRepresentation.p
  * @package TYPO3
  * @subpackage t3lib
  */
-
 class t3lib_utility_MathTest extends tx_phpunit_testcase {
 
 	//////////////////////////////////
@@ -58,14 +57,14 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 	 * @dataProvider forceIntegerInRangeForcesIntegerIntoDefaultBoundariesDataProvider
 	 */
 	public function forceIntegerInRangeForcesIntegerIntoDefaultBoundaries($expected, $value) {
-		 $this->assertEquals($expected, t3lib_utility_Math::forceIntegerInRange($value, 0));
+		$this->assertEquals($expected, t3lib_utility_Math::forceIntegerInRange($value, 0));
 	}
 
 	/**
 	 * @test
 	 */
 	public function forceIntegerInRangeSetsDefaultValueIfZeroValueIsGiven() {
-		 $this->assertEquals(42, t3lib_utility_Math::forceIntegerInRange('', 0, 2000000000, 42));
+		$this->assertEquals(42, t3lib_utility_Math::forceIntegerInRange('', 0, 2000000000, 42));
 	}
 
 	//////////////////////////////////

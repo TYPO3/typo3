@@ -172,12 +172,12 @@ class SC_view_help {
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->getLL('title'));
 
 		if ($this->field == '*') {
-				 // If ALL fields is supposed to be shown:
+				// If ALL fields is supposed to be shown:
 			$this->createGlossaryIndex();
 			$this->content .= $this->render_Table($this->mainKey);
 
 		} elseif ($this->tfID) {
-				 // ... otherwise show only single field:
+				// ... otherwise show only single field:
 			$this->createGlossaryIndex();
 			$this->content .= $this->render_Single($this->mainKey, $this->field);
 
@@ -730,7 +730,7 @@ class SC_view_help {
 	function createGlossaryIndex()	{
 			// Create hash string and try to retrieve glossary array:
 		$hash = md5('typo3/view_help.php:glossary');
- 		list($this->glossaryWords,$this->substWords) = unserialize(t3lib_BEfunc::getHash($hash));
+		list($this->glossaryWords,$this->substWords) = unserialize(t3lib_BEfunc::getHash($hash));
 
 			// Generate glossary words if not found:
 		if (!is_array($this->glossaryWords)) {

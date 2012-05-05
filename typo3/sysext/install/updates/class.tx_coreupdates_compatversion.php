@@ -183,7 +183,7 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 
 			// if we just set it to an older version
 		if ($this->userInput['version'])	{
-			 $customMessages .= 'If you want to see what you need to do to use the new features, run the update wizard again!';
+			$customMessages .= 'If you want to see what you need to do to use the new features, run the update wizard again!';
 		}
 
 		$linesArr = $this->pObj->writeToLocalconf_control();

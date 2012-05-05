@@ -817,8 +817,8 @@ class recordHistory {
 	 * @return	string		HTML output
 	 */
 	function createRollbackLink($key, $alt = '', $type = 0)	{
-		 return $this->linkPage('<img ' . t3lib_iconWorks::skinImg('', 'gfx/revert_' . $type . '.gif', 'width="33" height="33"') . ' alt="' . $alt . '" title="' . $alt . '" align="middle" />', array('rollbackFields' => $key));
-	 }
+		return $this->linkPage('<img ' . t3lib_iconWorks::skinImg('', 'gfx/revert_' . $type . '.gif', 'width="33" height="33"') . ' alt="' . $alt . '" title="' . $alt . '" align="middle" />', array('rollbackFields' => $key));
+	}
 
 	/**
 	 * Creates a link to the same page.

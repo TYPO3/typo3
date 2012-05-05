@@ -339,9 +339,9 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 					$HTML .= $theIcon;
 				} else {
 					$aHref = 'index.php?id=' . $GLOBALS['SOBE']->id .
-							 '&tsbr[' . $depth . ']=' . ($deeper ? 0 : 1) .
-							 (t3lib_div::_GP("breakPointLN") ? '&breakPointLN=' . t3lib_div::_GP("breakPointLN") : '') .
-							 '#' . $goto;
+							'&tsbr[' . $depth . ']=' . ($deeper ? 0 : 1) .
+							(t3lib_div::_GP("breakPointLN") ? '&breakPointLN=' . t3lib_div::_GP("breakPointLN") : '') .
+							'#' . $goto;
 					$HTML .= '<a name="' . $goto . '" href="' . htmlspecialchars($aHref) . '">' . $theIcon . '</a>';
 				}
 
@@ -351,8 +351,8 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 				} else {
 					if ($this->linkObjects) {
 						$aHref = 'index.php?id=' . $GLOBALS['SOBE']->id .
-								 '&sObj=' . $depth .
-								 (t3lib_div::_GP("breakPointLN") ? '&breakPointLN=' . t3lib_div::_GP("breakPointLN") : '');
+								'&sObj=' . $depth .
+								(t3lib_div::_GP("breakPointLN") ? '&breakPointLN=' . t3lib_div::_GP("breakPointLN") : '');
 						if ($this->bType != 'const') {
 							$ln = is_array($arr[$key . '.ln..']) ? 'Defined in: ' . $this->lineNumberToScript($arr[$key . '.ln..']) : 'N/A';
 						} else {
@@ -575,8 +575,8 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 				$A_E = '';
 			}
 			$HTML .= ($first ? '' : '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $PM . $BTM . '.gif" width="18" height="16" align="top" border="0" alt="" />') .
-					 $icon .
-					 $A_B . htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . $A_E . '&nbsp;&nbsp;';
+					$icon .
+					$A_B . htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . $A_E . '&nbsp;&nbsp;';
 			$RL = $this->ext_getRootlineNumber($row['pid']);
 			$keyArray[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 							<td nowrap="nowrap">' . $HTML . '</td>
@@ -807,7 +807,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 										if ($catSplit[1] && isset($this->subCategories[$catSplit[1]])) {
 											$editableComments[$const]['subcat_name'] = $catSplit[1];
 											$editableComments[$const]['subcat'] = $this->subCategories[$catSplit[1]][1] . '/' .
-																				  $catSplit[1] . '/' . trim($catSplit[2]) . 'z';
+																				$catSplit[1] . '/' . trim($catSplit[2]) . 'z';
 										} else {
 											$editableComments[$const]['subcat'] = 'x' . '/' . trim($catSplit[2]) . 'z';
 										}
@@ -1134,7 +1134,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 						case 'int':
 						case 'int+':
 							$p_field = '<input id="' . $fN . '" type="text" name="' . $fN . '" value="' . $fV . '"' .
-									   $GLOBALS['TBE_TEMPLATE']->formWidth(5) . ' onChange="uFormUrl(' . $aname . ')" />';
+									$GLOBALS['TBE_TEMPLATE']->formWidth(5) . ' onChange="uFormUrl(' . $aname . ')" />';
 							if ($typeDat['paramstr']) {
 								$p_field .= ' Range: ' . $typeDat['paramstr'];
 							} elseif ($typeDat['type'] == 'int+') {
@@ -1154,8 +1154,8 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 								$p_field .= '<option value="' . htmlspecialchars($val) . '"' . $sel . '>' . $val . '</option>';
 							}
 							$p_field = '<select id="select-' . $fN . '" rel="' . $fN . '" name="C' . $fN .
-									   '" class="typo3-tstemplate-ceditor-color-select" onChange="uFormUrl(' .
-									   $aname . ');">' . $p_field . '</select>';
+									'" class="typo3-tstemplate-ceditor-color-select" onChange="uFormUrl(' .
+									$aname . ');">' . $p_field . '</select>';
 
 							$p_field .= '<input type="text" id="input-' . $fN . '" rel="' . $fN . '" name="' . $fN .
 										'" class="typo3-tstemplate-ceditor-color-input" value="' . $fV . '"' .
@@ -1164,7 +1164,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 						case 'wrap':
 							$wArr = explode('|', $fV);
 							$p_field = '<input type="text" id="' . $fN . '" name="' . $fN . '" value="' . $wArr[0] . '"' .
-									   $GLOBALS['TBE_TEMPLATE']->formWidth(29) . ' onChange="uFormUrl(' . $aname . ')" />';
+									$GLOBALS['TBE_TEMPLATE']->formWidth(29) . ' onChange="uFormUrl(' . $aname . ')" />';
 							$p_field .= ' | ';
 							$p_field .= '<input type="text" name="W' . $fN . '" value="' . $wArr[1] . '"' .
 										$GLOBALS['TBE_TEMPLATE']->formWidth(15) . ' onChange="uFormUrl(' . $aname . ')" />';
@@ -1173,7 +1173,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 							$wArr = explode(',', $fV);
 							$labels = t3lib_div::trimExplode(',', $typeDat['paramstr']);
 							$p_field = ($labels[0] ? $labels[0] : 'x') . ':<input type="text" name="' . $fN . '" value="' . $wArr[0] . '"' .
-									   $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
+									$GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
 							$p_field .= ' , ';
 							$p_field .= ($labels[1] ? $labels[1] : 'y') . ':<input type="text" name="W' . $fN . '" value="' . $wArr[1] . '"' .
 										$GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
@@ -1258,7 +1258,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 										if ($onlineResourceFlag <= 0) {
 											$theImage = t3lib_BEfunc::thumbCode(
 												array(
-													 'resources' => $selectThisFile
+													'resources' => $selectThisFile
 												),
 												'sys_template',
 												'resources',
@@ -1268,7 +1268,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 										} else {
 											$theImage = t3lib_BEfunc::thumbCode(
 												array(
-													 'resources' => $fI['file']
+													'resources' => $fI['file']
 												),
 												'sys_template',
 												'resources',
@@ -1334,7 +1334,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 						default:
 							$fwidth = $typeDat['type'] == 'small' ? 10 : 46;
 							$p_field = '<input id="' . $fN . '" type="text" name="' . $fN . '" value="' . $fV . '"' .
-									   $GLOBALS['TBE_TEMPLATE']->formWidth($fwidth) . ' onChange="uFormUrl(' . $aname . ')" />';
+									$GLOBALS['TBE_TEMPLATE']->formWidth($fwidth) . ' onChange="uFormUrl(' . $aname . ')" />';
 						break;
 					}
 
@@ -1347,7 +1347,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 						// Handle type=color specially
 					if ($typeDat['type'] == 'color' && substr($params['value'], 0, 2) != '{$') {
 						$color = '<div id="colorbox-' . $fN . '" class="typo3-tstemplate-ceditor-colorblock" style="background-color:' .
-								 $params['value'] . ';">&nbsp;</div>';
+								$params['value'] . ';">&nbsp;</div>';
 					} else {
 						$color = '';
 					}
@@ -1369,19 +1369,19 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 						$deleteIconHTML = t3lib_iconWorks::getSpriteIcon(
 							'actions-edit-undo',
 							array(
-								 'class' => "typo3-tstemplate-ceditor-control undoIcon",
-								 'alt' => "Revert to default Constant",
-								 'title' => "Revert to default Constant",
-								 'rel' => $params['name']
+								'class' => "typo3-tstemplate-ceditor-control undoIcon",
+								'alt' => "Revert to default Constant",
+								'title' => "Revert to default Constant",
+								'rel' => $params['name']
 							)
 						);
 						$editIconHTML = t3lib_iconWorks::getSpriteIcon(
 							'actions-document-open',
 							array(
-								 'class' => "typo3-tstemplate-ceditor-control editIcon",
-								 'alt' => "Edit this Constant",
-								 'title' => "Edit this Constant",
-								 'rel' => $params['name']
+								'class' => "typo3-tstemplate-ceditor-control editIcon",
+								'alt' => "Edit this Constant",
+								'title' => "Edit this Constant",
+								'rel' => $params['name']
 							)
 						);
 						$constantCheckbox = '<input type="hidden" name="' . $checkboxName . '" id="' . $checkboxID . '" value="' . $checkboxValue . '"/>';
@@ -1392,12 +1392,12 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 						}
 
 						$constantDefaultRow = '<div class="typo3-tstemplate-ceditor-row" id="' . $defaultTyposcriptID . '" ' .
-											  $defaultTyposcriptStyle . '>' . $editIconHTML .
-											  htmlspecialchars($params['default_value']) . $color . '</div>';
+											$defaultTyposcriptStyle . '>' . $editIconHTML .
+											htmlspecialchars($params['default_value']) . $color . '</div>';
 					}
 
 					$constantEditRow = '<div class="typo3-tstemplate-ceditor-row" id="' . $userTyposcriptID . '" ' .
-									   $userTyposcriptStyle . '>' . $deleteIconHTML . $p_field . $color . '</div>';
+									$userTyposcriptStyle . '>' . $deleteIconHTML . $p_field . $color . '</div>';
 
 					$constantLabel = '<dt class="typo3-tstemplate-ceditor-label">' . htmlspecialchars($head) . '</dt>';
 					$constantName = '<dt class="typo3-dimmed">[' . $params['name'] . ']</dt>';
@@ -1406,7 +1406,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 
 					$output .= '<a name="' . $raname . '"></a>' . $help['constants'][$params['name']];
 					$output .= '<dl class="typo3-tstemplate-ceditor-constant">' . $constantLabel . $constantName .
-							   $constantDescription . $constantData . '</dl>';
+							$constantDescription . $constantData . '</dl>';
 				} else {
 					debug('Error. Constant did not exist. Should not happen.');
 				}

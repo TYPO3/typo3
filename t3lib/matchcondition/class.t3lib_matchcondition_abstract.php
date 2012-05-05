@@ -134,12 +134,12 @@ abstract class t3lib_matchCondition_abstract {
 	protected function normalizeExpression($expression) {
 		$normalizedExpression = preg_replace(
 			array(
-				 '/\]\s*(OR|\|\|)?\s*\[/i',
-				 '/\]\s*(AND|&&)\s*\[/i',
+				'/\]\s*(OR|\|\|)?\s*\[/i',
+				'/\]\s*(AND|&&)\s*\[/i',
 			),
 			array(
-				 ']||[',
-				 ']&&[',
+				']||[',
+				']&&[',
 			),
 			trim($expression)
 		);

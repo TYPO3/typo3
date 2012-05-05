@@ -937,7 +937,7 @@ class t3lib_refindex {
 			// Searching lost indexes for non-existing tables:
 		$where = 'tablename NOT IN (' .
 				implode(',', $GLOBALS['TYPO3_DB']->fullQuoteArray($tableNames, 'sys_refindex')) .
-				 ')';
+				')';
 		$lostTables = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('hash', 'sys_refindex', $where);
 		if (count($lostTables)) {
 			$Err = 'Index table hosted ' . count($lostTables) . ' indexes for non-existing tables, now removed';

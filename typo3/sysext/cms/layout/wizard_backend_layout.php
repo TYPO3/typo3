@@ -215,7 +215,7 @@ class SC_wizard_backend_layout {
 
 		$content .= '<a href="#" title="' .
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', TRUE) . '" onclick="storeData(t3Grid.export2LayoutRecord());return true;">' .
-			 t3lib_iconWorks::getSpriteIcon('actions-document-save') . '</a>';
+			t3lib_iconWorks::getSpriteIcon('actions-document-save') . '</a>';
 
 		$content .= '<a href="#" title="' .
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', TRUE) . '" onclick="storeData(t3Grid.export2LayoutRecord());window.close();return true;">' .
@@ -223,7 +223,7 @@ class SC_wizard_backend_layout {
 
 		$content .= '<a href="#" title="'.
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', TRUE) . '" onclick="window.close();return true;">' .
-			 t3lib_iconWorks::getSpriteIcon('actions-document-close') . '</a>';
+			t3lib_iconWorks::getSpriteIcon('actions-document-close') . '</a>';
 
 
 		$content .= $this->doc->spacer(10);

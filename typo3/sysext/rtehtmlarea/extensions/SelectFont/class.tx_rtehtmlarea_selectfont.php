@@ -110,7 +110,7 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlarea_api {
 	 * @param	string		$buttonId: button id
 	 *
 	 * @return	string		Javascript configuration of font faces
- 	 */
+	 */
 	protected function buildJSFontItemsConfig($RTEcounter, $buttonId) {
 		$configureRTEInJavascriptString = '';
 		$hideItems = '';

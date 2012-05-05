@@ -922,7 +922,7 @@ abstract class t3lib_userAuth {
 				$statement->bindValues(array(
 											':ses_id' => $this->id,
 											':ses_name' => $this->name,
-									   ));
+									));
 				$statement->bindValues($ipLockClause['parameters']);
 			}
 		} else {
@@ -939,7 +939,7 @@ abstract class t3lib_userAuth {
 			$statement->bindValues(array(
 										':ses_id' => $this->id,
 										':ses_name' => $this->name,
-								   ));
+								));
 			$statement->bindValues($ipLockClause['parameters']);
 		}
 		return $statement;
@@ -954,10 +954,10 @@ abstract class t3lib_userAuth {
 	 */
 	protected function user_where_clause() {
 		return (($this->enablecolumns['rootLevel']) ? 'AND ' . $this->user_table . '.pid=0 ' : '') .
-			   (($this->enablecolumns['disabled']) ? ' AND ' . $this->user_table . '.' . $this->enablecolumns['disabled'] . '=0' : '') .
-			   (($this->enablecolumns['deleted']) ? ' AND ' . $this->user_table . '.' . $this->enablecolumns['deleted'] . '=0' : '') .
-			   (($this->enablecolumns['starttime']) ? ' AND (' . $this->user_table . '.' . $this->enablecolumns['starttime'] . '<=' . $GLOBALS['EXEC_TIME'] . ')' : '') .
-			   (($this->enablecolumns['endtime']) ? ' AND (' . $this->user_table . '.' . $this->enablecolumns['endtime'] . '=0 OR ' . $this->user_table . '.' . $this->enablecolumns['endtime'] . '>' . $GLOBALS['EXEC_TIME'] . ')' : '');
+			(($this->enablecolumns['disabled']) ? ' AND ' . $this->user_table . '.' . $this->enablecolumns['disabled'] . '=0' : '') .
+			(($this->enablecolumns['deleted']) ? ' AND ' . $this->user_table . '.' . $this->enablecolumns['deleted'] . '=0' : '') .
+			(($this->enablecolumns['starttime']) ? ' AND (' . $this->user_table . '.' . $this->enablecolumns['starttime'] . '<=' . $GLOBALS['EXEC_TIME'] . ')' : '') .
+			(($this->enablecolumns['endtime']) ? ' AND (' . $this->user_table . '.' . $this->enablecolumns['endtime'] . '=0 OR ' . $this->user_table . '.' . $this->enablecolumns['endtime'] . '>' . $GLOBALS['EXEC_TIME'] . ')' : '');
 	}
 
 	/**

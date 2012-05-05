@@ -124,7 +124,7 @@ class t3lib_loadModules {
 			   User defined modules were found in ../typo3conf/
 
 			   Today almost all modules reside in extensions and they are found by the _PATHS array of the incoming $TBE_MODULES array
-		   */
+		*/
 			// Setting paths for 1) core modules (old concept from mod/) and 2) user-defined modules (from ../typo3conf)
 		$paths = array();
 		$paths['defMods'] = PATH_typo3 . 'mod/'; // Path of static modules

@@ -310,7 +310,7 @@ class t3lib_file_StorageTest extends t3lib_file_BaseTestCase {
 			// let all other checks pass
 		/** @var $fixture t3lib_file_Storage */
 		$fixture = $this->getMock('t3lib_file_Storage', array('isWritable', 'isBrowsable', 'checkUserActionPermission'),
-		                          array($mockedDriver, array()), '', FALSE);
+			array($mockedDriver, array()), '', FALSE);
 		$fixture->expects($this->any())->method('isWritable')->will($this->returnValue(TRUE));
 		$fixture->expects($this->any())->method('isBrowsable')->will($this->returnValue(TRUE));
 		$fixture->expects($this->any())->method('checkUserActionPermission')->will($this->returnValue(TRUE));

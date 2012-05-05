@@ -279,7 +279,7 @@ class ModuleMenu {
 			$icon['size']     = $iconSizes[3];
 			$icon['title']    = htmlspecialchars($iconTitle);
 			$icon['html']     = '<img src="' . $iconFileRelative . '" ' . $iconSizes[3] .
-                    ' title="' . htmlspecialchars($iconTitle) . '" alt="' . htmlspecialchars($iconTitle) . '" />';
+				' title="' . htmlspecialchars($iconTitle) . '" alt="' . htmlspecialchars($iconTitle) . '" />';
 		}
 
 		return $icon;

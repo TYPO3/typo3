@@ -1,7 +1,7 @@
 <?php
 // Make sure that we are executed only from the inside of TYPO3
 if (!defined ('TYPO3_MODE')) {
- 	die ('Access denied.');
+	die ('Access denied.');
 }
 
 // Register OpenID authentication service with TYPO3

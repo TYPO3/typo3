@@ -220,7 +220,7 @@ final class tx_em_Tools {
 	 */
 	public static function noImportMsg() {
 		return t3lib_iconWorks::getSpriteIcon('status-dialog-warning') .
-			   '<strong>' . $GLOBALS['LANG']->getLL('helperFunction_import_not_possible') . '</strong>';
+			'<strong>' . $GLOBALS['LANG']->getLL('helperFunction_import_not_possible') . '</strong>';
 	}
 
 
@@ -907,7 +907,7 @@ final class tx_em_Tools {
 										);
 									} else {
 										$out['errors'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_class_not_ok'),
-																   $fileName, $testName
+																$fileName, $testName
 										);
 									}
 								}
@@ -935,7 +935,7 @@ final class tx_em_Tools {
 										}
 									} else {
 										$out['errors'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_xclass_incorrect'),
-																   $reg[1], $cmpF
+																$reg[1], $cmpF
 										);
 									}
 								} else {
@@ -999,7 +999,7 @@ final class tx_em_Tools {
 		if ($flag_B && $flag_M) {
 			t3lib_div::writeFile($confFilePath, implode(LF, $lines));
 			return sprintf($GLOBALS['LANG']->getLL('writeModPath_ok'),
-						   substr($confFilePath, strlen(PATH_site)));
+						substr($confFilePath, strlen(PATH_site)));
 		} elseif ($flag_Dispatch) {
 			return sprintf(
 				$GLOBALS['LANG']->getLL('writeModPath_notRequired'),

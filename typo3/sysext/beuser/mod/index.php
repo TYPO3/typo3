@@ -46,7 +46,7 @@ $BE_USER->modAccess($MCONF,1);
  * @package TYPO3
  * @subpackage tx_beuser
  */
- class localPageTree extends t3lib_browseTree {
+class localPageTree extends t3lib_browseTree {
 	var $expandFirst=0;
 	var $expandAll=0;
 
@@ -302,7 +302,7 @@ class printAllPageTree_perms extends printAllPageTree {
  * @package TYPO3
  * @subpackage tx_beuser
  */
- class localFolderTree extends t3lib_folderTree {
+class localFolderTree extends t3lib_folderTree {
 	var $expandFirst=0;
 	var $expandAll=0;
 

@@ -54,7 +54,7 @@ class tx_lang_clearcachemenu implements backend_cacheActionsHook {
 			);
 			$optionValues[] = 'clearLangCache';
 		}
-	 }
+	}
 }
 
 ?>

@@ -156,12 +156,12 @@ class t3lib_tree_RepresentationNode extends t3lib_tree_Node {
 	public function toArray($addChildNodes = TRUE) {
 		$arrayRepresentation = parent::toArray();
 		$arrayRepresentation = array_merge($arrayRepresentation, array(
-																	  'label' => $this->label,
-																	  'type' => $this->type,
-																	  'class' => $this->class,
-																	  'icon' => $this->icon,
-																	  'callbackAction' => $this->callbackAction
-																 ));
+																	'label' => $this->label,
+																	'type' => $this->type,
+																	'class' => $this->class,
+																	'icon' => $this->icon,
+																	'callbackAction' => $this->callbackAction
+																));
 		return $arrayRepresentation;
 	}
 

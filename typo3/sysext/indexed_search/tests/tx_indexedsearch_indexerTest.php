@@ -26,13 +26,13 @@
 require_once(t3lib_extMgm::extPath('indexed_search', 'class.indexer.php'));
 
 /**
-  * This class contains unit tests for the indexer
-  *
-  * @author Dmitry Dulepov <dmitry.dulepov@gmail.com>
-  * @author Christian Kuhn <lolli@schwarzbu.ch>
-  * @package TYPO3
-  * @subpackage tx_indexedsearch
-  */
+ * This class contains unit tests for the indexer
+ *
+ * @author Dmitry Dulepov <dmitry.dulepov@gmail.com>
+ * @author Christian Kuhn <lolli@schwarzbu.ch>
+ * @package TYPO3
+ * @subpackage tx_indexedsearch
+ */
 class tx_indexedsearch_indexerTest extends tx_phpunit_testcase {
 
 	/**

@@ -142,7 +142,7 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlarea_api {
 			RTEarea['.$RTEcounter.'].buttons.formattext = new Object();';
 			}
 
-		 		// Default inline elements
+				// Default inline elements
 			$hideItems = array();
 			$restrictTo = array('*');
 			$inlineElementsOrder = $this->defaultInlineElementsOrder;
@@ -203,6 +203,6 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlarea_api {
 			RTEarea['.$RTEcounter.'].buttons.formattext.options = ' . json_encode($JSInlineElements) . ';';
 		}
 		return $registerRTEinJavascriptString;
-	 }
+	}
 }
 ?>

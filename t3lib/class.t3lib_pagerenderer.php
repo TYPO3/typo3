@@ -1517,22 +1517,22 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		}
 			// postTransform for possible manuipulation of concatenated and compressed files
 		if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postTransform'])) {
-			  $params = array(
-				  'jsLibs' => &$this->jsLibs,
-				  'jsFooterLibs'   => &$this->jsFooterLibs,
-				  'jsFiles' => &$this->jsFiles,
-				  'jsFooterFiles' => &$this->jsFooterFiles,
-				  'cssFiles' => &$this->cssFiles,
-				  'headerData' => &$this->headerData,
-				  'footerData' => &$this->footerData,
-				  'jsInline' => &$this->jsInline,
-				  'jsFooterInline' => &$this->jsFooterInline,
-				  'cssInline' => &$this->cssInline,
-			  );
+			$params = array(
+				'jsLibs' => &$this->jsLibs,
+				'jsFooterLibs'   => &$this->jsFooterLibs,
+				'jsFiles' => &$this->jsFiles,
+				'jsFooterFiles' => &$this->jsFooterFiles,
+				'cssFiles' => &$this->cssFiles,
+				'headerData' => &$this->headerData,
+				'footerData' => &$this->footerData,
+				'jsInline' => &$this->jsInline,
+				'jsFooterInline' => &$this->jsFooterInline,
+				'cssInline' => &$this->cssInline,
+			);
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postTransform'] as $hook) {
 				t3lib_div::callUserFunction($hook, $params, $this);
 			}
-		 }
+		}
 		$metaTags = implode(LF, $this->metaTags);
 
 			// remove ending slashes from static header block
@@ -1552,9 +1552,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				$properties['file'] = t3lib_div::resolveBackPath($properties['file']);
 				$properties['file'] = t3lib_div::createVersionNumberedFilename($properties['file']);
 				$tag = '<link rel="' . htmlspecialchars($properties['rel']) . '" type="text/css" href="' .
-					   htmlspecialchars($properties['file']) . '" media="' . htmlspecialchars($properties['media']) . '"' .
-					   ($properties['title'] ? ' title="' . htmlspecialchars($properties['title']) . '"' : '') .
-					   $endingSlash . '>';
+					htmlspecialchars($properties['file']) . '" media="' . htmlspecialchars($properties['media']) . '"' .
+					($properties['title'] ? ' title="' . htmlspecialchars($properties['title']) . '"' : '') .
+					$endingSlash . '>';
 				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
 					$tag = str_replace('|', $tag, $properties['allWrap']);
 				}
@@ -1772,19 +1772,19 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			if (count($mods)) {
 				foreach ($mods as $module) {
 					$out .= '<script src="' . $this->processJsFile($this->backPath .
-																   $this->scriptaculousPath . $module . '.js') . '" type="text/javascript"></script>' . LF;
+																$this->scriptaculousPath . $module . '.js') . '" type="text/javascript"></script>' . LF;
 					unset($this->jsFiles[$this->backPath . $this->scriptaculousPath . $module . '.js']);
 				}
 			}
 			$out .= '<script src="' . $this->processJsFile($this->backPath . $this->scriptaculousPath .
-														   'scriptaculous.js') . '" type="text/javascript"></script>' . LF;
+														'scriptaculous.js') . '" type="text/javascript"></script>' . LF;
 			unset($this->jsFiles[$this->backPath . $this->scriptaculousPath . 'scriptaculous.js']);
 		}
 
 			// include extCore, but only if ExtJS is not included
 		if ($this->addExtCore && !$this->addExtJS) {
 			$out .= '<script src="' . $this->processJsFile($this->backPath .
-														   $this->extCorePath . 'ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js') .
+														$this->extCorePath . 'ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js') .
 					'" type="text/javascript"></script>' . LF;
 			unset($this->jsFiles[$this->backPath . $this->extCorePath . 'ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js']);
 		}
@@ -1793,11 +1793,11 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		if ($this->addExtJS) {
 				// use the base adapter all the time
 			$out .= '<script src="' . $this->processJsFile($this->backPath . $this->extJsPath .
-														   'adapter/' . ($this->enableExtJsDebug ?
+														'adapter/' . ($this->enableExtJsDebug ?
 					str_replace('.js', '-debug.js', $this->extJSadapter) : $this->extJSadapter)) .
 					'" type="text/javascript"></script>' . LF;
 			$out .= '<script src="' . $this->processJsFile($this->backPath . $this->extJsPath .
-														   'ext-all' . ($this->enableExtJsDebug ? '-debug' : '') . '.js') .
+														'ext-all' . ($this->enableExtJsDebug ? '-debug' : '') . '.js') .
 					'" type="text/javascript"></script>' . LF;
 
 				// add extJS localization
@@ -1814,7 +1814,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			$extJsLocaleFile = $this->extJsPath . 'locale/ext-lang-' . $extJsLang . '.js';
 			if (file_exists(PATH_typo3 . $extJsLocaleFile)) {
 				$out .= '<script src="' . $this->processJsFile($this->backPath .
-															   $extJsLocaleFile) . '" type="text/javascript" charset="utf-8"></script>' . LF;
+															$extJsLocaleFile) . '" type="text/javascript" charset="utf-8"></script>' . LF;
 			}
 
 

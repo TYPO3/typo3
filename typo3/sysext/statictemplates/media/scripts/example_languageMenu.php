@@ -42,7 +42,7 @@ if (!is_object($this)) die ('Error: No parent object present.');
 
 
 
- // First, select all pages_language_overlay records on the current page. Each represents a possibility for a language.
+	// First, select all pages_language_overlay records on the current page. Each represents a possibility for a language.
 $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages_language_overlay', 'pid='.intval($GLOBALS['TSFE']->id).$GLOBALS['TSFE']->sys_page->enableFields('pages_language_overlay'), 'sys_language_uid');
 
 $langArr = array();

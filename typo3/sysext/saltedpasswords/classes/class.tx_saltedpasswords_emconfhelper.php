@@ -175,8 +175,8 @@ EOT;
 							// this means that login would fail because rsaauth is not working properly
 						$this->setErrorLevel('error');
 						$problems[] = '<strong>Using the extension "rsaauth" is not possible, as no encryption backend ' .
-									  'is available. Please install and configure the PHP extension "openssl". '.
-									  'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
+									'is available. Please install and configure the PHP extension "openssl". '.
+									'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
 					}
 				} else {
 						// this means that we are not using saltedpasswords
@@ -329,8 +329,8 @@ EOT;
 						// this means that login would fail because rsaauth is not working properly
 					$this->setErrorLevel('error');
 					$problems[] = '<strong>Using the extension "rsaauth" is not possible, as no encryption backend ' .
-								  'is available. Please install and configure the PHP extension "openssl". '.
-								  'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
+								'is available. Please install and configure the PHP extension "openssl". '.
+								'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
 				}
 			}
 				// only saltedpasswords as authsservice

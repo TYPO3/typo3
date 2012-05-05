@@ -939,21 +939,21 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							if (!isset($this->procOptions['typohead']) || $this->procOptions['typohead']) {
 								$type = intval(substr($tagName, 1));
 								$blockSplit[$k] = '<typohead' .
-												  ($type != 6 ? ' type="' . $type . '"' : '') .
-												  ($attribArray['align'] ? ' align="' . $attribArray['align'] . '"' : '') .
-												  ($attribArray['class'] ? ' class="' . $attribArray['class'] . '"' : '') .
-												  '>' .
-												  $innerContent .
-												  '</typohead>' .
-												  $lastBR;
+												($type != 6 ? ' type="' . $type . '"' : '') .
+												($attribArray['align'] ? ' align="' . $attribArray['align'] . '"' : '') .
+												($attribArray['class'] ? ' class="' . $attribArray['class'] . '"' : '') .
+												'>' .
+												$innerContent .
+												'</typohead>' .
+												$lastBR;
 							} else {
 								$blockSplit[$k] = '<' . $tagName .
-												  ($attribArray['align'] ? ' align="' . htmlspecialchars($attribArray['align']) . '"' : '') .
-												  ($attribArray['class'] ? ' class="' . htmlspecialchars($attribArray['class']) . '"' : '') .
-												  '>' .
-												  $innerContent .
-												  '</' . $tagName . '>' .
-												  $lastBR;
+												($attribArray['align'] ? ' align="' . htmlspecialchars($attribArray['align']) . '"' : '') .
+												($attribArray['class'] ? ' class="' . htmlspecialchars($attribArray['class']) . '"' : '') .
+												'>' .
+												$innerContent .
+												'</' . $tagName . '>' .
+												$lastBR;
 							}
 						} else {
 								// Eliminate true linebreaks inside Hx tags
@@ -1045,8 +1045,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					case 'article':
 					case 'aside':
 						$blockSplit[$k] = $tag .
-										  $this->TS_transform_rte($this->removeFirstAndLastTag($blockSplit[$k]), $css) .
-										  '</' . $tagName . '>';
+										$this->TS_transform_rte($this->removeFirstAndLastTag($blockSplit[$k]), $css) .
+										'</' . $tagName . '>';
 					break;
 					case 'typolist': // Transform typolist blocks into OL/UL lists. Type 1 is expected to be numerical block
 						if (!isset($this->procOptions['typolist']) || $this->procOptions['typolist']) {
@@ -1056,8 +1056,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							$lines = explode(LF, $tListContent);
 							$typ = $attribArray['type'] == 1 ? 'ol' : 'ul';
 							$blockSplit[$k] = '<' . $typ . '>' . LF .
-											  '<li>' . implode('</li>' . LF . '<li>', $lines) . '</li>' .
-											  '</' . $typ . '>';
+											'<li>' . implode('</li>' . LF . '<li>', $lines) . '</li>' .
+											'</' . $typ . '>';
 						}
 					break;
 					case 'typohead': // Transform typohead into Hx tags.
@@ -1070,8 +1070,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							$align = $attribArray['align'] ? ' align="' . $attribArray['align'] . '"' : '';
 							$class = $attribArray['class'] ? ' class="' . $attribArray['class'] . '"' : '';
 							$blockSplit[$k] = '<h' . $typ . $align . $class . '>' .
-											  $tC .
-											  '</h' . $typ . '>';
+											$tC .
+											'</h' . $typ . '>';
 						}
 					break;
 				}
@@ -1569,15 +1569,15 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	function defaultTStagMapping($code, $direction = 'rte') {
 		if ($direction == 'db') {
 			$code = $this->mapTags($code, array( // Map tags
-											   'strong' => 'b',
-											   'em' => 'i'
-										  ));
+											'strong' => 'b',
+											'em' => 'i'
+										));
 		}
 		if ($direction == 'rte') {
 			$code = $this->mapTags($code, array( // Map tags
-											   'b' => 'strong',
-											   'i' => 'em'
-										  ));
+											'b' => 'strong',
+											'i' => 'em'
+										));
 		}
 		return $code;
 	}

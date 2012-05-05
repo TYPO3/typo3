@@ -83,7 +83,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		   Reserved keys for other storage of session data:
 		   moduleData
 		   moduleSessionID
-	   */
+	*/
 	var $uc_default = Array(
 		'interfaceSetup' => '', // serialized content that is used to store interface pane and menu positions. Set by the logout.php-script
 		'moduleData' => Array(), // user-data for the modules

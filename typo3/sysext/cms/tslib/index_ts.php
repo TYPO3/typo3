@@ -254,10 +254,10 @@ if ($TSFE->isBackendUserLoggedIn()) {
 	$spriteManager->loadCacheFile();
 
 	$BE_USER->initializeFrontendEdit();
- 	if ($BE_USER->adminPanel instanceof tslib_AdminPanel) {
+	if ($BE_USER->adminPanel instanceof tslib_AdminPanel) {
 		$LANG = t3lib_div::makeInstance('language');
 		$LANG->init($BE_USER->uc['lang']);
- 	}
+	}
 	if ($BE_USER->frontendEdit instanceof t3lib_frontendedit) {
 		$BE_USER->frontendEdit->initConfigOptions();
 	}

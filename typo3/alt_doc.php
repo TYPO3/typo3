@@ -944,7 +944,7 @@ class SC_alt_doc {
 						'',
 						array_merge($this->R_URL_getvars, array('SET'=>''))
 					) . t3lib_BEfunc::getUrlToken('editRecord'),'id="checkShowPalettes"') . '<label for="checkShowPalettes">' .
-				   		$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPalettes', 1) . '</label>';
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPalettes', 1) . '</label>';
 		}
 		else {
 			return '';

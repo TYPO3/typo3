@@ -60,7 +60,7 @@ class localRecordList extends recordList {
 
 	var $dontShowClipControlPanels=FALSE;	// If TRUE, will disable the rendering of clipboard + control panels.
 	var $showClipboard=FALSE;				// If TRUE, will show the clipboard in the field list.
- 	var $noControlPanels = FALSE;			// If TRUE, will DISABLE all control panels in lists. (Takes precedence)
+	var $noControlPanels = FALSE;			// If TRUE, will DISABLE all control panels in lists. (Takes precedence)
 	var $clickMenuEnabled = TRUE;			// If TRUE, clickmenus will be rendered
 
 	var $totalRowCount;						// count of record rows in view

@@ -47,7 +47,7 @@ class tx_rtehtmlarea_copypaste extends tx_rtehtmlarea_api {
 	protected $hideButtonsFromClient = array (
 		'webkit'	=>	array('paste'),
 		'opera'		=>	array('copy', 'cut', 'paste'),
- 		);
+		);
 
 	public function main($parentObject) {
 		$enabled = parent::main($parentObject);

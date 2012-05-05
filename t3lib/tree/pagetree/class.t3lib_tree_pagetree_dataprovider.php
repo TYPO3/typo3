@@ -111,7 +111,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	 * @param int $level internally used variable as a recursion limiter
 	 * @return t3lib_tree_NodeCollection
 	 */
-	 public function getNodes(t3lib_tree_Node $node, $mountPoint = 0, $level = 0) {
+	public function getNodes(t3lib_tree_Node $node, $mountPoint = 0, $level = 0) {
 		/** @var $nodeCollection t3lib_tree_pagetree_NodeCollection */
 		$nodeCollection = t3lib_div::makeInstance('t3lib_tree_pagetree_NodeCollection');
 
