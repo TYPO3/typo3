@@ -69,41 +69,7 @@ if (substr(php_sapi_name(), 0, 3) == 'cgi') {
 	// Defining circumstances for CLI mode:
 define('TYPO3_cliMode', TRUE);
 
-	// Get path to this script
-$temp_PATH_thisScript = isset($_SERVER['argv'][0]) ? $_SERVER['argv'][0] : (isset($_ENV['_']) ? $_ENV['_'] : $_SERVER['_']);
 
-	// Figure out if the path is relative
-$relativePath = FALSE;
-if (stristr(PHP_OS,'win') && !stristr(PHP_OS,'darwin')) {
-		// Windows
-	if (!preg_match('/^([A-Z]:)?\\\/', $temp_PATH_thisScript)) {
-		$relativePath = TRUE;
-	}
-} else {
-		// *nix, et al
-	if ($temp_PATH_thisScript{0} != '/') {
-		$relativePath = TRUE;
-	}
-}
-
-	// Resolve path
-if ($relativePath) {
-	$workingDirectory = $_SERVER['PWD'] ? $_SERVER['PWD'] : getcwd();
-	if ($workingDirectory) {
-		$temp_PATH_thisScript =
-			$workingDirectory.'/'.preg_replace('/\.\//','',$temp_PATH_thisScript);
-		if (!@is_file($temp_PATH_thisScript)) {
-			fwrite(STDERR, 'Relative path found, but an error occurred while resolving the absolute path: ' . $temp_PATH_thisScript . chr(10));
-			exit(1);
-		}
-	} else {
-		fwrite(STDERR, 'Relative path found, but resolving absolute path is not supported on this platform.' . chr(10));
-		exit(1);
-	}
-}
-
-	// Define absolute path to this script
-define('PATH_thisScript',$temp_PATH_thisScript);
 
 if (!isset($_SERVER['argv'][1]))	{
 	fwrite(STDERR, 'The first argument must be a valid key.' . chr(10));
@@ -114,7 +80,7 @@ if (!isset($_SERVER['argv'][1]))	{
 define('TYPO3_cliKey', $_SERVER['argv'][1]);
 
 	// Include init file:
-require(dirname(PATH_thisScript).'/init.php');
+require(dirname(__FILE__) . '/init.php');
 
 	// Make sure output is not buffered,
 	// so that command-line output and interaction can take place
