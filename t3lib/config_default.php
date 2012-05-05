@@ -14,15 +14,6 @@
 
 if (!defined ('PATH_typo3conf')) 	die ('The configuration path was not properly defined!');
 
-//Security related constant: Default value of fileDenyPattern
-define('FILE_DENY_PATTERN_DEFAULT', '\.(php[3-6]?|phpsh|phtml)(\..*)?$|^\.htaccess$');
-
-//Security related constant: Comma separated list of file extensions that should be registered as php script file extensions
-define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6,phpsh,inc,phtml');
-
-// Defines a list that are basically required by a TYPO3 system.
-define('REQUIRED_EXTENSIONS', 'cms,lang,sv,em,recordlist,extbase,fluid');
-
 $TYPO3_CONF_VARS = array(
 	'GFX' => array(		// Configuration of the image processing features in TYPO3. 'IM' and 'GD' are short for ImageMagick and GD library respectively.
 		'image_processing' => TRUE,				// Boolean: Enables image processing features. Disabling this means NO image processing with either GD or IM!
@@ -736,11 +727,6 @@ if (TYPO3_MODE === 'BE') {
 
 $T3_VAR = array();	// Initialize.
 
-	// TYPO3 version
-define('TYPO3_version', '6.0-dev');
-define('TYPO3_branch', '6.0');
-define('TYPO3_copyright_year', '1998-2012');
-
 	// Handle $GLOBALS['TYPO3_CONF_VARS']['HTTP']['userAgent']. We can not set the default above
 	// because TYPO3_version is not yet defined.
 if (empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['userAgent'])) {
@@ -755,22 +741,6 @@ $typo_db_password = '';			// The database password
 $typo_db_host = '';				// The database host
 $typo_db_tables_script = '';	// The filename of the tables.php script in typo3conf/ folder IF the default t3lib/stddb/tables.php should NOT be used for some reason. It's recommended to use the default and modify it through the extTableDef-script, see below.
 $typo_db_extTableDef_script = '';	// The filename of an additional script in typo3conf/-folder which is included after tables.php. Code in this script should modify the tables.php-configuration only, and this provides a good way to extend the standard-distributed tables.php file.
-
-// TYPO3 links
-define('TYPO3_URL_GENERAL', 'http://typo3.org/');
-define('TYPO3_URL_ORG', 'http://typo3.org/');
-define('TYPO3_URL_LICENSE', 'http://typo3.org/license');
-define('TYPO3_URL_EXCEPTION', 'http://typo3.org/go/exception/v4/');
-define('TYPO3_URL_MAILINGLISTS', 'http://lists.typo3.org/cgi-bin/mailman/listinfo');
-define('TYPO3_URL_DOCUMENTATION', 'http://typo3.org/documentation/');
-define('TYPO3_URL_DOCUMENTATION_TSREF', 'http://typo3.org/documentation/document-library/references/doc_core_tsref/current/view/');
-define('TYPO3_URL_DOCUMENTATION_TSCONFIG', 'http://typo3.org/documentation/document-library/references/doc_core_tsconfig/current/view/');
-define('TYPO3_URL_CONSULTANCY', 'http://typo3.com/Consultancies.1248.0.html');
-define('TYPO3_URL_CONTRIBUTE', 'http://typo3.org/community/participate/');
-define('TYPO3_URL_SECURITY', 'http://typo3.org/teams/security/');
-define('TYPO3_URL_DOWNLOAD', 'http://typo3.org/download/packages/');
-define('TYPO3_URL_SYSTEMREQUIREMENTS', 'http://typo3.org/1275.0.html');
-define('TYPO3_URL_DONATE', 'http://typo3.org/donate/');
 
 	// Include localconf.php. Use this file to configure TYPO3 for your needs and database
 if (!@is_file(PATH_typo3conf . 'localconf.php')) {
