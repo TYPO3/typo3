@@ -289,7 +289,7 @@ class tslib_search {
 				foreach($tables as $key => $val)	{
 					$fkey = $tables[$key]['fkey'];
 					if ($fkey)	{
-						 $primKeys[] = $key.'.'.$fkey.'='.$primary_table_and_key;
+						$primKeys[] = $key.'.'.$fkey.'='.$primary_table_and_key;
 					}
 				}
 				if (count($primKeys))	{
@@ -396,7 +396,7 @@ class tslib_search {
 	function count_query() {
 		if (is_array($this->queryParts))	{
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($this->queryParts['SELECT'], $this->queryParts['FROM'], $this->queryParts['WHERE'], $this->queryParts['GROUPBY']);
-		    $this->res_count = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+			$this->res_count = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 			return TRUE;
 		}
 	}
@@ -408,7 +408,7 @@ class tslib_search {
 	 */
 	function execute_query() {
 		if (is_array($this->queryParts))	{
-	        $this->result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($this->queryParts);
+			$this->result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($this->queryParts);
 			return TRUE;
 		}
 	}

@@ -127,7 +127,7 @@ class SC_db_new {
 	 */
 	var $doc;
 	var $content;		// Accumulated HTML output
-    var $tRows;
+	var $tRows;
 
 	/**
 	 * Constructor function for the class
@@ -521,8 +521,8 @@ class SC_db_new {
 										$temp = explode(':', substr($v['ctrl']['title'], 9 + strlen($_EXTKEY)));
 										$langFile = $temp[0];
 										$thisTitle = $GLOBALS['LANG']->sL('LLL:EXT:' . $_EXTKEY . '/' . $langFile . ':extension.title');
-									 	// if no localisation available, read title from ext_emconf.php
-									 	if (!$thisTitle && is_file(t3lib_extMgm::extPath($_EXTKEY) . 'ext_emconf.php')) {
+										// if no localisation available, read title from ext_emconf.php
+										if (!$thisTitle && is_file(t3lib_extMgm::extPath($_EXTKEY) . 'ext_emconf.php')) {
 											include(t3lib_extMgm::extPath($_EXTKEY) . 'ext_emconf.php');
 											$thisTitle = $EM_CONF[$_EXTKEY]['title'];
 										}

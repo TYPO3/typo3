@@ -76,7 +76,7 @@ class tx_indexedsearch_crawlerhook {
 
 
 		switch((int)$session_data['step'])	{
-			 case 1:	// Indexing Example: Content accessed with GET parameters added to URL:
+			case 1:	// Indexing Example: Content accessed with GET parameters added to URL:
 
 					// Load indexer if not yet [DON'T CHANGE]:
 				$pObj->loadIndexerClass();
@@ -125,8 +125,8 @@ class tx_indexedsearch_crawlerhook {
 						$item['ID']
 					);
 				}
-			 break;
-			 case 2: // Indexing Example: Content accessed directly in file system:
+			break;
+			case 2: // Indexing Example: Content accessed directly in file system:
 
 					// Load indexer if not yet [DON'T CHANGE]:
 				$pObj->loadIndexerClass();
@@ -145,8 +145,8 @@ class tx_indexedsearch_crawlerhook {
 
 					// Index document:
 				$indexerObj->indexRegularDocument('fileadmin/templates/index.html', TRUE);
-			 break;
-			 case 3: // Indexing Example: Content accessed on External URLs:
+			break;
+			case 3: // Indexing Example: Content accessed on External URLs:
 
 					// Load indexer if not yet.
 				$pObj->loadIndexerClass();
@@ -159,7 +159,7 @@ class tx_indexedsearch_crawlerhook {
 
 					// Index external URL (HTML only):
 				$indexerObj->indexExternalUrl('http://www.google.com/');
-			 break;
+			break;
 		}
 
 			// Finally, set entry for next indexing instance (if all steps are not completed)

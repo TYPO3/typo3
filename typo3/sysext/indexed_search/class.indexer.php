@@ -1456,10 +1456,10 @@ class tx_indexedsearch_indexer {
 			'crdate' => $GLOBALS['EXEC_TIME'],
 			'item_crdate' => $this->conf['crdate'],	// Creation date of page
 			'sys_language_uid' => $this->conf['sys_language_uid'],	// Sys language uid of the page. Should reflect which language it DOES actually display!
- 			'externalUrl' => 0,
- 			'recordUid' => intval($this->conf['recordUid']),
- 			'freeIndexUid' => intval($this->conf['freeIndexUid']),
- 			'freeIndexSetId' => intval($this->conf['freeIndexSetId']),
+			'externalUrl' => 0,
+			'recordUid' => intval($this->conf['recordUid']),
+			'freeIndexUid' => intval($this->conf['freeIndexUid']),
+			'freeIndexSetId' => intval($this->conf['freeIndexSetId']),
 		);
 
 		if (tx_indexedsearch_util::isTableUsed('index_phash')) {

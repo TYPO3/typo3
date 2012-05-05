@@ -601,10 +601,10 @@ class t3lib_folderTree extends t3lib_treeView {
 		if ($treeName && $treeName == $this->treeName) {
 			if (in_array($storageHashNumber, $this->storageHashNumbers)) {
 				if ($doExpand == 1) {
-				 		// set
+						// set
 					$this->stored[$storageHashNumber][$numericFolderHash] = 1;
 				} else {
-					 	// clear
+						// clear
 					unset($this->stored[$storageHashNumber][$numericFolderHash]);
 				}
 				$this->savePosition();

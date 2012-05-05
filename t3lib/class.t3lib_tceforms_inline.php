@@ -625,8 +625,8 @@ class t3lib_TCEforms_inline {
 			// "Info": (All records)
 		if ($enabledControls['info'] && !$isNewItem) {
 			$cells['info'] = '<a href="#" onclick="' . htmlspecialchars('top.launchView(\'' . $foreign_table . '\', \'' . $rec['uid'] . '\'); return false;') . '">' .
-							 t3lib_iconWorks::getSpriteIcon('status-dialog-information', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:showInfo', TRUE))) .
-							 '</a>';
+							t3lib_iconWorks::getSpriteIcon('status-dialog-information', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:showInfo', TRUE))) .
+							'</a>';
 		}
 			// If the table is NOT a read-only table, then show these links:
 		if (!$tcaTableCtrl['readOnly'] && !$isVirtualRecord) {
@@ -644,9 +644,9 @@ class t3lib_TCEforms_inline {
 					}
 					$cells['new'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '"' . $class . $style . '>' .
 									t3lib_iconWorks::getSpriteIcon('actions-' . ($isPagesTable ? 'page' : 'document') . '-new',
-																   array(
+																array(
 																		'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:new' . ($isPagesTable ? 'Page' : 'Record'), 1)
-																   )
+																)
 									) .
 									'</a>';
 				}
@@ -668,8 +668,8 @@ class t3lib_TCEforms_inline {
 				$onClick = "return inline.changeSorting('" . $nameObjectFtId . "', '-1')"; // Down
 				$style = $config['inline']['last'] == $rec['uid'] ? 'style="visibility: hidden;"' : '';
 				$cells['sort.down'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" class="sortingDown" ' . $style . '>' .
-									  t3lib_iconWorks::getSpriteIcon('actions-move-down', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:moveDown', TRUE))) .
-									  '</a>';
+									t3lib_iconWorks::getSpriteIcon('actions-move-down', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:moveDown', TRUE))) .
+									'</a>';
 			}
 
 				// "Hide/Unhide" links:
@@ -681,21 +681,21 @@ class t3lib_TCEforms_inline {
 											t3lib_iconWorks::getSpriteIcon(
 												'actions-edit-unhide',
 												array(
-													 'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:unHide' . ($isPagesTable ? 'Page' : ''), 1),
-													 'id' => $nameObjectFtId . '_disabled'
+													'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:unHide' . ($isPagesTable ? 'Page' : ''), 1),
+													'id' => $nameObjectFtId . '_disabled'
 												)
 											) .
 											'</a>';
 				} else {
 					$cells['hide.hide'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' .
-										  t3lib_iconWorks::getSpriteIcon(
-											  'actions-edit-hide',
-											  array(
-												   'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:hide' . ($isPagesTable ? 'Page' : ''), 1),
-												   'id' => $nameObjectFtId . '_disabled'
-											  )
-										  ) .
-										  '</a>';
+										t3lib_iconWorks::getSpriteIcon(
+											'actions-edit-hide',
+											array(
+												'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:hide' . ($isPagesTable ? 'Page' : ''), 1),
+												'id' => $nameObjectFtId . '_disabled'
+											)
+										) .
+										'</a>';
 				}
 			}
 
@@ -703,24 +703,24 @@ class t3lib_TCEforms_inline {
 			if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms & 4 || !$isPagesTable && $calcPerms & 16)) {
 				$onClick = "inline.deleteRecord('" . $nameObjectFtId . "');";
 				$cells['delete'] = '<a href="#" onclick="' . htmlspecialchars('if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteWarning')) . ')) {	' . $onClick . ' } return false;') . '">' .
-								   t3lib_iconWorks::getSpriteIcon('actions-edit-delete', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:delete', TRUE))) .
-								   '</a>';
+								t3lib_iconWorks::getSpriteIcon('actions-edit-delete', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:delete', TRUE))) .
+								'</a>';
 			}
 				// If this is a virtual record offer a minimized set of icons for user interaction:
 		} elseif ($isVirtualRecord) {
 			if ($enabledControls['localize'] && isset($rec['__create'])) {
 				$onClick = "inline.synchronizeLocalizeRecords('" . $nameObjectFt . "', " . $rec['uid'] . ");";
 				$cells['localize'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' .
-									 t3lib_iconWorks::getSpriteIcon('actions-document-localize', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:localize', TRUE))) .
-									 '</a>';
+									t3lib_iconWorks::getSpriteIcon('actions-document-localize', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:localize', TRUE))) .
+									'</a>';
 			}
 		}
 
 			// If the record is edit-locked	by another user, we will show a little warning sign:
 		if ($lockInfo = t3lib_BEfunc::isRecordLocked($foreign_table, $rec['uid'])) {
 			$cells['locked'] = '<a href="#" onclick="' . htmlspecialchars('alert(' . $GLOBALS['LANG']->JScharCode($lockInfo['msg']) . ');return false;') . '">' .
-							   t3lib_iconWorks::getSpriteIcon('status-warning-in-use', array('title' => htmlspecialchars($lockInfo['msg']))) .
-							   '</a>';
+							t3lib_iconWorks::getSpriteIcon('status-warning-in-use', array('title' => htmlspecialchars($lockInfo['msg']))) .
+							'</a>';
 		}
 
 			// Hook: Post-processing of single controls for specific child records:
@@ -848,9 +848,9 @@ class t3lib_TCEforms_inline {
 				}
 				if (!in_array($p[1], $uniqueIds)) {
 					$opt[] = '<option value="' . htmlspecialchars($p[1]) . '"' .
-							 ' style="' . (in_array($p[1], $uniqueIds) ? '' : '') .
-							 ($styleAttrValue ? ' style="' . htmlspecialchars($styleAttrValue) : '') . '">' .
-							 htmlspecialchars($p[0]) . '</option>';
+							' style="' . (in_array($p[1], $uniqueIds) ? '' : '') .
+							($styleAttrValue ? ' style="' . htmlspecialchars($styleAttrValue) : '') . '">' .
+							htmlspecialchars($p[0]) . '</option>';
 				}
 			}
 

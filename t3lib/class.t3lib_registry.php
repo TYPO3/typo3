@@ -92,9 +92,9 @@ class t3lib_Registry implements t3lib_Singleton {
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery(
 				'sys_registry',
 				array(
-					 'entry_namespace' => $namespace,
-					 'entry_key' => $key,
-					 'entry_value' => $serializedValue
+					'entry_namespace' => $namespace,
+					'entry_key' => $key,
+					'entry_value' => $serializedValue
 				)
 			);
 		} else {
@@ -103,7 +103,7 @@ class t3lib_Registry implements t3lib_Singleton {
 				'entry_namespace = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($namespace, 'sys_registry')
 				. ' AND entry_key = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($key, 'sys_registry'),
 				array(
-					 'entry_value' => $serializedValue
+					'entry_value' => $serializedValue
 				)
 			);
 		}

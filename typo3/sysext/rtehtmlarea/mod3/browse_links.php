@@ -74,7 +74,7 @@ class tx_rtehtmlarea_SC_browse_links {
 		// Set temporary DB mounts
 		$tempDBmount = intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint'));
 		if ($tempDBmount) {
-	 		$altMountPoints = $tempDBmount;
+			$altMountPoints = $tempDBmount;
 		}
 
 		if ($altMountPoints) {

@@ -330,7 +330,7 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 		$mockDriver = $this->getMockForAbstractClass('t3lib_file_driver_Abstract');
 		$mockDriver->expects($this->any())->method('getFileHandle')->will($this->returnValue($mockFileHandle));
 		$mockDriver->expects($this->once())->method('readFromFile')->with($this->anything(), $this->equalTo($bytesToRead))
-		    ->will($this->returnValue(substr($fileContents, 0, $bytesToRead)));
+			->will($this->returnValue(substr($fileContents, 0, $bytesToRead)));
 
 		$fixture->setStorageDriver($mockDriver);
 
@@ -370,7 +370,7 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 		$mockDriver = $this->getMockForAbstractClass('t3lib_file_driver_Abstract');
 		$mockDriver->expects($this->any())->method('getFileHandle')->will($this->returnValue($mockFileHandle));
 		$mockDriver->expects($this->once())->method('writeToFile')->with($this->anything(), $this->equalTo($fileContents))
-		    ->will($this->returnValue(TRUE));
+			->will($this->returnValue(TRUE));
 
 		$fixture->setStorageDriver($mockDriver);
 

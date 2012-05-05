@@ -74,7 +74,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 	}
 
 	/**
- 	 * @test
+	 * @test
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */

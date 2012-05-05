@@ -1451,8 +1451,8 @@ class t3lib_queryGenerator {
 			}
 		}
 		$fieldlist = $this->extFieldLists['queryFields'] .
-					 ',pid' .
-					 ($GLOBALS['TCA'][$this->table]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$this->table]['ctrl']['delete'] : '');
+					',pid' .
+					($GLOBALS['TCA'][$this->table]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$this->table]['ctrl']['delete'] : '');
 		if (!$GLOBALS['SOBE']->MOD_SETTINGS['show_deleted']) {
 			$qString .= t3lib_BEfunc::deleteClause($this->table);
 		}

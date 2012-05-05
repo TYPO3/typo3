@@ -85,7 +85,7 @@ class tx_sv_authbase extends t3lib_svbase {
 		$this->writeDevLog	 = $this->pObj->writeDevLog;
 	}
 
- 	/**
+	/**
 	 * Check the login data with the user record data for builtin login methods
 	 *
 	 * @param array $user user data array

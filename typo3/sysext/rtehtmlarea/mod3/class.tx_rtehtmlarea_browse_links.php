@@ -271,10 +271,10 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 *
 	 * @return	void
 	 */
-	 public function initConfiguration() {
+	public function initConfiguration() {
 		$this->thisConfig = $this->getRTEConfig();
 		$this->buttonConfig = $this->getButtonConfig('link');
-	 }
+	}
 
 	/**
 	 * Get the RTE configuration from Page TSConfig
@@ -1053,8 +1053,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 *
 	 * @return	string	class selector onChange JS code
 	 */
-	 public function getClassOnChangeJS() {
-		 return '
+	public function getClassOnChangeJS() {
+		return '
 					if (document.ltargetform.anchor_class) {
 						document.ltargetform.anchor_class.value = document.ltargetform.anchor_class.options[document.ltargetform.anchor_class.selectedIndex].value;
 						if (document.ltargetform.anchor_class.value && HTMLArea.classesAnchorSetup) {
@@ -1083,7 +1083,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 						browse_links_setClass(document.ltargetform.anchor_class.value);
 					}
 								';
-	 }
+	}
 
 	function addTitleSelector() {
 		$title = ($this->setTitle ? $this->setTitle : (($this->setClass || !$this->classesAnchorDefault[$this->act]) ? '' : $this->classesAnchorDefaultTitle[$this->act]));

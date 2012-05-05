@@ -184,7 +184,7 @@ class tx_t3editor implements t3lib_Singleton {
 				'T3editor.template = '. $this->getPreparedTemplate() .';' . LF .
 				'T3editor.ajaxSavetype = "' . $this->ajaxSaveType . '";' . LF
 			);
-            $content .= $this->getModeSpecificJavascriptCode();
+			$content .= $this->getModeSpecificJavascriptCode();
 		}
 
 		return $content;
@@ -209,8 +209,8 @@ class tx_t3editor implements t3lib_Singleton {
 			'T3editor.parserfile = ' . $this->getParserfileByMode($this->mode) . ';' . LF .
 			'T3editor.stylesheet = ' . $this->getStylesheetByMode($this->mode) . ';'
 		);
-        return $content;
-    }
+		return $content;
+	}
 
 	/**
 	 * get the template code, prepared for javascript (no line breaks, quoted in single quotes)
@@ -495,7 +495,7 @@ class tx_t3editor implements t3lib_Singleton {
 			$result = array_values($plugins);
 		}
 
- 		$ajaxObj->setContent($result);
+		$ajaxObj->setContent($result);
 		$ajaxObj->setContentFormat('jsonbody');
 	}
 }

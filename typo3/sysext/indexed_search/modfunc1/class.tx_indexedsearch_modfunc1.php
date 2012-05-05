@@ -171,8 +171,8 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			$theOutput .= $this->drawTableOfIndexedPages();
 		}
 
-        return $theOutput;
-    }
+		return $theOutput;
+	}
 
 
 

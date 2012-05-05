@@ -1421,13 +1421,13 @@ class template {
 	 * Includes the necessary Javascript function for the clickmenu (context sensitive menus) in the document
 	 * @return void
 	 */
-	function getContextMenuCode() {
-	       $this->pageRenderer->loadPrototype();
-	       $this->loadJavascriptLib('js/clickmenu.js');
+	function getContextMenuCode()   {
+		$this->pageRenderer->loadPrototype();
+		$this->loadJavascriptLib('js/clickmenu.js');
 
-	       $this->JScodeArray['clickmenu'] = '
-			       Clickmenu.clickURL = "'.$this->backPath.'alt_clickmenu.php";
-			       Clickmenu.ajax     = '.($this->isCMLayers() ? 'true' : 'false' ).';';
+		$this->JScodeArray['clickmenu'] = '
+			Clickmenu.clickURL = "'.$this->backPath.'alt_clickmenu.php";
+			Clickmenu.ajax     = '.($this->isCMLayers() ? 'true' : 'false' ).';';
 	}
 
 	/**
@@ -1450,7 +1450,7 @@ class template {
 		';
 	}
 
-	 /**
+	/**
 	 * This loads everything needed for the Context Sensitive Help (CSH)
 	 *
 	 * @return void

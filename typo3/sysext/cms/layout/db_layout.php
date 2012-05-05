@@ -229,7 +229,7 @@ class SC_db_layout {
 		$this->menuConfig();
 
 			// Setting sys language from session var:
- 		$this->current_sys_language=intval($this->MOD_SETTINGS['language']);
+		$this->current_sys_language=intval($this->MOD_SETTINGS['language']);
 
 			// Include scripts: QuickEdit
 		if ($this->MOD_SETTINGS['function']==0)	{
@@ -290,7 +290,7 @@ class SC_db_layout {
 			}
 		}
 
-			 // First, select all pages_language_overlay records on the current page. Each represents a possibility for a language on the page. Add these to language selector.
+			// First, select all pages_language_overlay records on the current page. Each represents a possibility for a language on the page. Add these to language selector.
 		$res = $this->exec_languageQuery($this->id);
 		while($lrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			if ($GLOBALS['BE_USER']->checkLanguageAccess($lrow['uid']))	{
@@ -896,7 +896,7 @@ class SC_db_layout {
 		$q_count = $this->getNumberOfHiddenElements();
 		$h_func_b= t3lib_BEfunc::getFuncCheck($this->id,'SET[tt_content_showHidden]',$this->MOD_SETTINGS['tt_content_showHidden'],'db_layout.php','','id="checkTt_content_showHidden"').
 					'<label for="checkTt_content_showHidden">' .
-				   (!$q_count ? $GLOBALS['TBE_TEMPLATE']->dfw($GLOBALS['LANG']->getLL('hiddenCE', 1)) : $GLOBALS['LANG']->getLL('hiddenCE', 1) .
+					(!$q_count ? $GLOBALS['TBE_TEMPLATE']->dfw($GLOBALS['LANG']->getLL('hiddenCE', 1)) : $GLOBALS['LANG']->getLL('hiddenCE', 1) .
 					' (' . $q_count . ')') . '</label>';
 
 		$h_func_b.= '<br />'.
@@ -1052,7 +1052,7 @@ class SC_db_layout {
 				} else {
 				$h_func = '';
 			}
- 			}
+			}
 
 				// Start the dblist object:
 			$dblist->itemsLimitSingleTable = 1000;

@@ -763,7 +763,7 @@ class TYPO3backend {
 		if(empty($this->cssFiles[$cssFileName])) {
 			$this->cssFiles[$cssFileName] = $cssFile;
 			$cssFileAdded = TRUE;
- 		}
+		}
 
 		return $cssFileAdded;
 	}

@@ -835,11 +835,11 @@ class t3lib_transferData {
 		$loadDB = t3lib_div::makeInstance('t3lib_loadDBGroup');
 		$loadDB->registerNonTableValues = $fieldConfig['config']['allowNonIdValues'] ? 1 : 0;
 		$loadDB->start(implode(',', $elements),
-					   $fieldConfig['config']['foreign_table'] . ',' . $fieldConfig['config']['neg_foreign_table'],
-					   $fieldConfig['config']['MM'],
-					   $row['uid'],
-					   $table,
-					   $fieldConfig['config']
+					$fieldConfig['config']['foreign_table'] . ',' . $fieldConfig['config']['neg_foreign_table'],
+					$fieldConfig['config']['MM'],
+					$row['uid'],
+					$table,
+					$fieldConfig['config']
 		);
 
 		$idList = $loadDB->convertPosNeg($loadDB->getValueArray(), $fieldConfig['config']['foreign_table'], $fieldConfig['config']['neg_foreign_table']);

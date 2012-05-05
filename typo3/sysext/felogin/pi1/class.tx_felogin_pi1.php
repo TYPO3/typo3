@@ -163,12 +163,12 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 	}
 
-	 /**
-	  * Shows the forgot password form
-	  *
-	  * @return	string		content
-	  */
-	 protected function showForgot() {
+	/**
+	 * Shows the forgot password form
+	 *
+	 * @return	string		content
+	 */
+	protected function showForgot() {
 		$subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_FORGOT###');
 		$subpartArray = $linkpartArray = array();
 		$postData =  t3lib_div::_POST($this->prefixId);
@@ -459,7 +459,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 *
 	 * @return	string		content
 	 */
-	 protected function showLogin() {
+	protected function showLogin() {
 		$subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_LOGIN###');
 		$subpartArray = $linkpartArray = $markerArray = array();
 
@@ -516,7 +516,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$onSubmitAr = array();
 		$extraHiddenAr = array();
 
-	 		// check for referer redirect method. if present, save referer in form field
+			// check for referer redirect method. if present, save referer in form field
 		if (t3lib_div::inList($this->conf['redirectMode'], 'referer') || t3lib_div::inList($this->conf['redirectMode'], 'refererDomains')) {
 			$referer = $this->referer ? $this->referer : t3lib_div::getIndpEnv('HTTP_REFERER');
 			if ($referer) {
@@ -589,8 +589,8 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 *
 	 * @return	string		redirect url
 	 */
-	 protected function processRedirect() {
-	 	$redirect_url = array();
+	protected function processRedirect() {
+		$redirect_url = array();
 		if ($this->conf['redirectMode']) {
 			$redirectMethods = t3lib_div::trimExplode(',', $this->conf['redirectMode'], TRUE);
 			foreach ($redirectMethods as $redirMethod) {
@@ -728,7 +728,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 *
 	 * @return	void
 	 */
-	 protected function mergeflexFormValuesIntoConf() {
+	protected function mergeflexFormValuesIntoConf() {
 		$flex = array();
 		if ($this->flexFormValue('showForgotPassword', 'sDEF')) {
 			$flex['showForgotPassword'] = $this->flexFormValue('showForgotPassword','sDEF');
@@ -806,7 +806,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 *
 	 * @return	string		link or url
 	 */
-	 protected function getPageLink($label, $piVars,$returnUrl = FALSE) {
+	protected function getPageLink($label, $piVars,$returnUrl = FALSE) {
 		$additionalParams = '';
 
 		if (count($piVars)) {
@@ -838,7 +838,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 *
 	 * @return	string		additionalParams-string
 	 */
-	 protected function getPreserveGetVars() {
+	protected function getPreserveGetVars() {
 
 		$params = '';
 		$preserveVars =! ($this->conf['preserveGETvars'] || $this->conf['preserveGETvars']=='all' ? array() : implode(',', (array)$this->conf['preserveGETvars']));
@@ -870,7 +870,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 * @param	int			length of new password
 	 * @return	string		new password
 	 */
-	 protected function generatePassword($len) {
+	protected function generatePassword($len) {
 		$pass = '';
 		while ($len--) {
 			$char = rand(0,35);

@@ -546,7 +546,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->content = $this->doc->render(
 			'Extension Manager',
 			$this->content
-	    );
+		);
 
 	}
 
@@ -1018,9 +1018,9 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$content = '<form action="' . $this->script . '" method="post" name="pageform">';
 		$addUrl = '';
 		if ($this->noDocHeader) {
-		   $content .= '<input type="hidden" name="nodoc" value="1" />';
-		   $addUrl = '&nodoc=1';
-	   }
+			$content .= '<input type="hidden" name="nodoc" value="1" />';
+			$addUrl = '&nodoc=1';
+		}
 		// Fetch remote data:
 		$this->xmlHandler->searchExtensionsXMLExact($extKey, '', '', TRUE, TRUE);
 		list($fetchData,) = $this->extensionList->prepareImportExtList(TRUE);

@@ -68,8 +68,8 @@ final class t3lib_utility_Client {
 			// Declare known browsers to look for
 
 		$known = array('msie', 'firefox', 'webkit', 'opera', 'netscape', 'konqueror',
-					   'gecko', 'chrome', 'safari', 'seamonkey', 'navigator', 'mosaic',
-					   'lynx', 'amaya', 'omniweb', 'avant', 'camino', 'flock', 'aol');
+					'gecko', 'chrome', 'safari', 'seamonkey', 'navigator', 'mosaic',
+					'lynx', 'amaya', 'omniweb', 'avant', 'camino', 'flock', 'aol');
 		$matches = array();
 
 		$pattern = '#(?P<browser>' . join('|', $known) . ')[/ ]+(?P<version>[0-9]+(?:\.[0-9]+)?)#';

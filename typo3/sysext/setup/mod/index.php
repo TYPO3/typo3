@@ -504,7 +504,7 @@ class SC_mod_user_setup_index {
 	 ******************************/
 
 
-	 /**
+	/**
 	 * renders the data for all tabs in the user setup and returns
 	 * everything that is needed with tabs and dyntab menu
 	 *
@@ -851,7 +851,7 @@ class SC_mod_user_setup_index {
 			$out = $GLOBALS['LANG']->sL($str);
 		} else {
 			$out = htmlspecialchars($str);
- 		}
+		}
 
 
 		if (isset($this->overrideConf[($key?$key:$str)]))	{
@@ -881,7 +881,7 @@ class SC_mod_user_setup_index {
 			$field = $strParts[1];
 		} elseif (!t3lib_div::inList('language,simuser', $str)) {
 			$field = 'option_' . $str;
- 		}
+		}
 		return t3lib_BEfunc::wrapInHelp($context, $field, $label);
 	}
 	/**

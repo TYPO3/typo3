@@ -68,7 +68,7 @@ require_once(t3lib_extMgm::extPath($_EXTKEY) . 'hooks/statusreport/ext_localconf
 
 	// Configure Lorem Ipsum hook to insert nonsense in wysiwyg mode
 if (t3lib_extMgm::isLoaded('lorem_ipsum') && (TYPO3_MODE == 'BE')) {
-    $TYPO3_CONF_VARS['EXTCONF']['lorem_ipsum']['RTE_insert'][] = 'tx_rtehtmlarea_base->loremIpsumInsert';
+	$TYPO3_CONF_VARS['EXTCONF']['lorem_ipsum']['RTE_insert'][] = 'tx_rtehtmlarea_base->loremIpsumInsert';
 }
 	// Set warning in the Update Wizard of the Install Tool for deprecated Page TS Config properties
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['checkForDeprecatedRtePageTSConfigProperties'] = 'EXT:'.$_EXTKEY.'/hooks/install/class.tx_rtehtmlarea_deprecatedrteproperties.php:&tx_rtehtmlarea_deprecatedRteProperties';

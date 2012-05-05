@@ -120,11 +120,11 @@ class t3lib_positionMap {
 				if ($prev_dat['row']['uid'] == $id) {
 					if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id) && !($prev_dat['invertedDepth'] > $t3lib_pageTree->tree[$cc]['invertedDepth'])) { // 1) It must be allowed to create a new page and 2) If there are subpages there is no need to render a subpage icon here - it'll be done over the subpages...
 						$code .= '<span class="nobr">' .
-								 $this->insertQuadLines($dat['blankLineCode']) .
-								 '<img src="clear.gif" width="18" height="8" align="top" alt="" />' .
-								 '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($id, $id, 1)) . '" onmouseover="' . htmlspecialchars('changeImg(\'mImgSubpage' . $cc . '\',0);') . '" onmouseout="' . htmlspecialchars('changeImg(\'mImgSubpage' . $cc . '\',1);') . '">' .
-								 '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImgSubpage' . $cc . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' .
-								 '</a></span><br />';
+								$this->insertQuadLines($dat['blankLineCode']) .
+								'<img src="clear.gif" width="18" height="8" align="top" alt="" />' .
+								'<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($id, $id, 1)) . '" onmouseover="' . htmlspecialchars('changeImg(\'mImgSubpage' . $cc . '\',0);') . '" onmouseout="' . htmlspecialchars('changeImg(\'mImgSubpage' . $cc . '\',1);') . '">' .
+								'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImgSubpage' . $cc . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' .
+								'</a></span><br />';
 					}
 				}
 
@@ -135,11 +135,11 @@ class t3lib_positionMap {
 					if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($prev_dat['row']['pid'])) {
 						$prevPid = (-$prev_dat['row']['uid']);
 						$code .= '<span class="nobr">' .
-								 $this->insertQuadLines($dat['blankLineCode']) .
-								 '<img src="clear.gif" width="18" height="1" align="top" alt="" />' .
-								 '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $prev_dat['row']['pid'], 2)) . '" onmouseover="' . htmlspecialchars('changeImg(\'mImgAfter' . $cc . '\',0);') . '" onmouseout="' . htmlspecialchars('changeImg(\'mImgAfter' . $cc . '\',1);') . '">' .
-								 '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImgAfter' . $cc . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' .
-								 '</a></span><br />';
+								$this->insertQuadLines($dat['blankLineCode']) .
+								'<img src="clear.gif" width="18" height="1" align="top" alt="" />' .
+								'<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $prev_dat['row']['pid'], 2)) . '" onmouseover="' . htmlspecialchars('changeImg(\'mImgAfter' . $cc . '\',0);') . '" onmouseout="' . htmlspecialchars('changeImg(\'mImgAfter' . $cc . '\',1);') . '">' .
+								'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImgAfter' . $cc . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' .
+								'</a></span><br />';
 					}
 
 						// Then set the current prevPid
@@ -152,10 +152,10 @@ class t3lib_positionMap {
 			}
 			if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($dat['row']['pid'])) {
 				$code .= '<span class="nobr">' .
-						 $this->insertQuadLines($dat['blankLineCode']) .
-						 '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $dat['row']['pid'], 3)) . '" onmouseover="' . htmlspecialchars('changeImg(\'mImg' . $cc . '\',0);') . '" onmouseout="' . htmlspecialchars('changeImg(\'mImg' . $cc . '\',1);') . '">' .
-						 '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImg' . $cc . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' .
-						 '</a></span><br />';
+						$this->insertQuadLines($dat['blankLineCode']) .
+						'<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $dat['row']['pid'], 3)) . '" onmouseover="' . htmlspecialchars('changeImg(\'mImg' . $cc . '\',0);') . '" onmouseout="' . htmlspecialchars('changeImg(\'mImg' . $cc . '\',1);') . '">' .
+						'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImg' . $cc . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' .
+						'</a></span><br />';
 			}
 
 				// The line with the icon and title:
@@ -176,11 +176,11 @@ class t3lib_positionMap {
 		if ($prev_dat['row']['uid'] == $id) {
 			if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id)) {
 				$code .= '<span class="nobr">' .
-						 $this->insertQuadLines($saveLatestUid[$latestInvDepth]['blankLineCode'], 1) .
-						 '<img src="clear.gif" width="18" height="8" align="top" alt="" />' .
-						 '<a href="#" onclick="' . $this->onClickEvent($id, $id, 4) . '" onmouseover="' . htmlspecialchars('changeImg(\'mImgSubpage' . $cc . '\',0);') . '" onmouseout="' . htmlspecialchars('changeImg(\'mImgSubpage' . $cc . '\',1);') . '">' .
-						 '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImgSubpage' . $cc . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' .
-						 '</a></span><br />';
+						$this->insertQuadLines($saveLatestUid[$latestInvDepth]['blankLineCode'], 1) .
+						'<img src="clear.gif" width="18" height="8" align="top" alt="" />' .
+						'<a href="#" onclick="' . $this->onClickEvent($id, $id, 4) . '" onmouseover="' . htmlspecialchars('changeImg(\'mImgSubpage' . $cc . '\',0);') . '" onmouseout="' . htmlspecialchars('changeImg(\'mImgSubpage' . $cc . '\',1);') . '">' .
+						'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImgSubpage' . $cc . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' .
+						'</a></span><br />';
 			}
 		}
 
@@ -189,10 +189,10 @@ class t3lib_positionMap {
 			$prevPid = (-$dat['row']['uid']);
 			if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($dat['row']['pid'])) {
 				$code .= '<span class="nobr">' .
-						 $this->insertQuadLines($dat['blankLineCode'], 1) .
-						 '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $dat['row']['pid'], 5)) . '" onmouseover="' . htmlspecialchars('changeImg(\'mImgEnd' . $a . '\',0);') . '" onmouseout="' . htmlspecialchars('changeImg(\'mImgEnd' . $a . '\',1);') . '">' .
-						 '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImgEnd' . $a . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' .
-						 '</a></span><br />';
+						$this->insertQuadLines($dat['blankLineCode'], 1) .
+						'<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $dat['row']['pid'], 5)) . '" onmouseover="' . htmlspecialchars('changeImg(\'mImgEnd' . $a . '\',0);') . '" onmouseout="' . htmlspecialchars('changeImg(\'mImgEnd' . $a . '\',1);') . '">' .
+						'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImgEnd' . $a . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' .
+						'</a></span><br />';
 			}
 		}
 
@@ -473,7 +473,7 @@ class t3lib_positionMap {
 			}
 			$table .= '</table></div>';
 		} else {
-		    // Traverse the columns here:
+			// Traverse the columns here:
 			foreach ($colPosArray as $kk => $vv) {
 				$row1 .= '<td align="center" width="' . round(100 / $count) . '%"><div class="t3-page-colHeader t3-row-header">' .
 						$this->wrapColumnHeader($GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content', 'colPos', $vv, $pid), 1), $vv) .
@@ -523,8 +523,8 @@ class t3lib_positionMap {
 	function insertPositionIcon($row, $vv, $kk, $moveUid, $pid) {
 		$cc = hexdec(substr(md5($row['uid'] . '-' . $vv . '-' . $kk), 0, 4));
 		return '<a href="#" onclick="' . htmlspecialchars($this->onClickInsertRecord($row, $vv, $moveUid, $pid, $this->cur_sys_language)) . '" onmouseover="' . htmlspecialchars('changeImg(\'mImg' . $cc . '\',0);') . '" onmouseout="' . htmlspecialchars('changeImg(\'mImg' . $cc . '\',1);') . '">' .
-			   '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/newrecord2_marker_d.gif', 'width="100" height="8"') . ' name="mImg' . $cc . '" border="0" align="top" title="' . $GLOBALS['LANG']->getLL($this->l_insertNewRecordHere, 1) . '" alt="" />' .
-			   '</a>';
+			'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/newrecord2_marker_d.gif', 'width="100" height="8"') . ' name="mImg' . $cc . '" border="0" align="top" title="' . $GLOBALS['LANG']->getLL($this->l_insertNewRecordHere, 1) . '" alt="" />' .
+			'</a>';
 	}
 
 	/**

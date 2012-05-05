@@ -178,10 +178,10 @@ final class tx_em_Database {
 	 * @return void
 	 */
 	public static function deleteRepository(tx_em_Repository $repository) {
-	 	$GLOBALS['TYPO3_DB']->exec_DELETEquery(
-			 self::TABLE_REPOSITORY,
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+			self::TABLE_REPOSITORY,
 			'uid=' . $repository->getId()
-		 );
+		);
 	}
 
 	/**
@@ -191,13 +191,13 @@ final class tx_em_Database {
 	 * @return void
 	 */
 	public static function updateRepositoryCount($extCount, $uid = 1) {
-	 	$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-			 self::TABLE_REPOSITORY,
-			 'uid=' . intval($uid),
-			 array (
-			  	'lastUpdated' => time(),
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+			self::TABLE_REPOSITORY,
+			'uid=' . intval($uid),
+			array (
+				'lastUpdated' => time(),
 				'extCount' => intval($extCount)
-			 ));
+			));
 	}
 
 	/**

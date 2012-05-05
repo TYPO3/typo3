@@ -369,13 +369,13 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 					if (substr(trim($row['title']), 0, 8) == 'template') {
 						$opt .= '<option value="' . $row['uid'] . '">' . htmlspecialchars($row['title']) . '</option>';
 					}
- 				}
+				}
 				$selector = '<select name="createStandard"><option></option>' . $opt . '</select><br />';
 				$staticsText = ', optionally based on one of the standard templates';
 			} else {
 				$selector = '<input type="hidden" name="createStandard" value="" />';
 				$staticsText = '';
- 			}
+			}
 
 				// Extension?
 			$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('newWebsite') . $staticsText, $GLOBALS['LANG']->getLL('newWebsiteDescription') . '<br /><br />' .

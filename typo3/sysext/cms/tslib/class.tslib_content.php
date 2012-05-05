@@ -863,7 +863,7 @@ class tslib_cObj {
 	 * @return	string		Output
 	 */
 	function CONTENT($conf) {
- 		return $this->getContentObject('CONTENT')->render($conf);
+		return $this->getContentObject('CONTENT')->render($conf);
 	}
 
 	/**
@@ -1788,7 +1788,7 @@ class tslib_cObj {
 	 * @see t3lib_parsehtml::substituteMarkerAndSubpartArrayRecursive()
 	 */
 	public function substituteMarkerAndSubpartArrayRecursive($content, array $markersAndSubparts, $wrap = '', $uppercase = FALSE,
-															 $deleteUnused = FALSE) {
+															$deleteUnused = FALSE) {
 		return t3lib_parsehtml::substituteMarkerAndSubpartArrayRecursive(
 			$content, $markersAndSubparts, $wrap, $uppercase, $deleteUnused
 		);
@@ -6235,7 +6235,7 @@ class tslib_cObj {
 					'scheme' => $matches[1],
 					'delimiter' => '://',
 					'host' => $matches[3],
-				 	'path' => $matches[4]
+					'path' => $matches[4]
 				);
 
 					// Set scheme and host if not yet part of the URL:

@@ -379,7 +379,7 @@ class tslib_pibase {
 	 * @param	string		varname for the pointer.
 	 * @param	boolean		enable htmlspecialchars() for the pi_getLL function (set this to FALSE if you want f.e use images instead of text for links like 'previous' and 'next').
 	 * @param   boolean     forces the output of the page browser if you set this option to "TRUE" (otherwise it's only drawn if enough entries are available)
- 	 * @return	string		Output HTML-Table, wrapped in <div>-tags with a class attribute (if $wrapArr is not passed,
+	 * @return	string		Output HTML-Table, wrapped in <div>-tags with a class attribute (if $wrapArr is not passed,
 	 */
 	function pi_list_browseresults($showResultCount=1, $tableParams='', $wrapArr=array(), $pointerName='pointer', $hscText=TRUE, $forceOutput=FALSE) {
 
@@ -392,7 +392,7 @@ class tslib_pibase {
 			'disabledLinkWrap' => '<span class="disabledLinkWrap">|</span>',
 			'inactiveLinkWrap' => '<span class="inactiveLinkWrap">|</span>',
 			'activeLinkWrap' => '<span class="activeLinkWrap">|</span>'
-		); */
+		);*/
 
 			// Initializing variables:
 		$pointer = intval($this->piVars[$pointerName]);
@@ -994,7 +994,7 @@ class tslib_pibase {
 	 * @return	pointer		SQL result pointer
 	 */
 	function pi_exec_query($table, $count=0 ,$addWhere='' ,$mm_cat='' ,$groupBy='' ,$orderBy='', $query='') {
-        		// Begin Query:
+			// Begin Query:
 		if (!$query) {
 				// Fetches the list of PIDs to select from.
 				// TypoScript property .pidList is a comma list of pids. If blank, current page id is used.
@@ -1204,12 +1204,12 @@ class tslib_pibase {
 					unset($inArray[$fN]);
 				} elseif (is_array($this->pi_autoCacheFields[$fN]))	{
 					if (is_array($this->pi_autoCacheFields[$fN]['range'])
-							 && intval($inArray[$fN])>=intval($this->pi_autoCacheFields[$fN]['range'][0])
-							 && intval($inArray[$fN])<=intval($this->pi_autoCacheFields[$fN]['range'][1]))	{
+							&& intval($inArray[$fN])>=intval($this->pi_autoCacheFields[$fN]['range'][0])
+							&& intval($inArray[$fN])<=intval($this->pi_autoCacheFields[$fN]['range'][1]))	{
 								unset($inArray[$fN]);
 					}
 					if (is_array($this->pi_autoCacheFields[$fN]['list'])
-							 && in_array($inArray[$fN],$this->pi_autoCacheFields[$fN]['list']))	{
+							&& in_array($inArray[$fN],$this->pi_autoCacheFields[$fN]['list']))	{
 								unset($inArray[$fN]);
 					}
 				}

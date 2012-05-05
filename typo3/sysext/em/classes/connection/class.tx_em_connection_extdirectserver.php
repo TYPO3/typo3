@@ -904,7 +904,7 @@ class tx_em_Connection_ExtDirectServer {
 			$where = ' AND (cache_extensions.extkey LIKE \'%' . $quotedSearch . '%\' OR cache_extensions.title LIKE \'%' . $quotedSearch . '%\')';
 
 		}
-	    	// check for filter
+			// check for filter
 		$where .= $this->makeFilterQuery(get_object_vars($parameters));
 
 		if ($installedOnly) {
@@ -1561,11 +1561,11 @@ class tx_em_Connection_ExtDirectServer {
 	 * @return string
 	 */
 	protected function replaceLinks($string) {
-		 return str_replace(
+		return str_replace(
 			'ajax.php?ajaxID=ExtDirect%3A%3Aroute&amp;namespace=TYPO3.EM',
 			'mod.php?M=tools_em',
 			$string
-		 );
+		);
 	}
 
 	/**

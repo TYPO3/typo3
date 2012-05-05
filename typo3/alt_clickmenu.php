@@ -804,8 +804,8 @@ class clickMenu {
 				$icon = t3lib_iconWorks::getSpriteIconForFile(
 					'folder',
 					array(
-						 'class'=>'absmiddle',
-						 'title' => htmlspecialchars($fileObject->getName())
+						'class'=>'absmiddle',
+						'title' => htmlspecialchars($fileObject->getName())
 					)
 				);
 				$folder = TRUE;
@@ -813,11 +813,11 @@ class clickMenu {
 				$icon = t3lib_iconWorks::getSpriteIconForFile(
 					$fileObject->getExtension(),
 					array(
-						 'class'=>'absmiddle',
-						 'title' => htmlspecialchars(
-							 $fileObject->getName() .
-						 	' (' . t3lib_div::formatSize($fileObject->getSize()) . ')'
-						 )
+						'class'=>'absmiddle',
+						'title' => htmlspecialchars(
+							$fileObject->getName() .
+							' (' . t3lib_div::formatSize($fileObject->getSize()) . ')'
+						)
 					)
 				);
 			}

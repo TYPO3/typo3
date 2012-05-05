@@ -1145,12 +1145,12 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 
 		$fileContents = uniqid();
 		$this->addToMount(array(
-		                       'targetFolder' => array(),
-		                       'someFolder' => array('file' => $fileContents)
-		                  ));
+			'targetFolder' => array(),
+			'someFolder' => array('file' => $fileContents)
+		));
 		$fixture = $this->createDriverFixture(array(
-		                                           'basePath' => $this->getMountRootUrl()
-		                                      ));
+			'basePath' => $this->getMountRootUrl()
+		));
 		return array($mockedFolder, $sourceFolder, $fileContents, $fixture);
 	}
 

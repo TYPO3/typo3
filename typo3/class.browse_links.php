@@ -352,7 +352,7 @@ class localPageTree extends t3lib_browseTree {
 	function wrapIcon($icon, $row) {
 		$content = $this->addTagAttributes($icon, ' title="id=' . $row['uid'] . '"');
 		if ($this->ext_showPageId) {
-		 	$content .= '[' . $row['uid'] . ']&nbsp;';
+			$content .= '[' . $row['uid'] . ']&nbsp;';
 		}
 		return $content;
 	}

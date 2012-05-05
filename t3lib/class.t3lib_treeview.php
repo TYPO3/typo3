@@ -572,8 +572,8 @@ class t3lib_treeView {
 		} else {
 
 			$icon = t3lib_iconWorks::getSpriteIconForRecord($this->table, $row, array(
-																					 'title' => ($this->showDefaultTitleAttribute ? 'UID: ' . $row['uid'] : $this->getTitleAttrib($row)),
-																					 'class' => 'c-recIcon'
+																					'title' => ($this->showDefaultTitleAttribute ? 'UID: ' . $row['uid'] : $this->getTitleAttrib($row)),
+																					'class' => 'c-recIcon'
 																				));
 
 		}

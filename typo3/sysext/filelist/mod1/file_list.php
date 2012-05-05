@@ -359,7 +359,7 @@ class SC_file_list {
 					<div id="typo3-listOptions">
 				';
 
-			   		// Add "display bigControlPanel" checkbox:
+					// Add "display bigControlPanel" checkbox:
 				if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'selectable') {
 					$pageContent .= t3lib_BEfunc::getFuncCheck(
 						$this->id,

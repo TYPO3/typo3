@@ -259,8 +259,8 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 
 			$perms = intval($perms); // Make sure it's integer.
 			$str = ' (' .
-				   '(pages.perms_everybody & ' . $perms . ' = ' . $perms . ')' . // Everybody
-				   ' OR (pages.perms_userid = ' . $this->user['uid'] . ' AND pages.perms_user & ' . $perms . ' = ' . $perms . ')'; // User
+				'(pages.perms_everybody & ' . $perms . ' = ' . $perms . ')' . // Everybody
+				' OR (pages.perms_userid = ' . $this->user['uid'] . ' AND pages.perms_user & ' . $perms . ' = ' . $perms . ')'; // User
 			if ($this->groupList) {
 				$str .= ' OR (pages.perms_groupid in (' . $this->groupList . ') AND pages.perms_group & ' . $perms . ' = ' . $perms . ')'; // Group (if any is set)
 			}
@@ -827,7 +827,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				$workspaceStageRec = t3lib_BEfunc::getRecord('sys_workspace_stage', $stage);
 					// Check if the user is responsible for the current stage
 				if ((t3lib_div::inList($workspaceStageRec['responsible_persons'], 'be_users_' . $this->user['uid'])
-					 && $stat['_ACCESS'] === 'member')
+					&& $stat['_ACCESS'] === 'member')
 					|| $stat['_ACCESS'] === 'owner') {
 					return TRUE;
 				}
@@ -835,7 +835,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 					// Check if the user is in a group which is responsible for the current stage
 				foreach ($this->userGroupsUID as $groupUid) {
 					if ((t3lib_div::inList($workspaceStageRec['responsible_persons'], 'be_groups_' . $groupUid)
-						 && $stat['_ACCESS'] === 'member')
+						&& $stat['_ACCESS'] === 'member')
 						|| $stat['_ACCESS'] === 'owner') {
 						return TRUE;
 					}
@@ -1098,7 +1098,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 
 				// Setting default User TSconfig:
 			$this->TSdataArray[] = $this->addTScomment('From $GLOBALS["TYPO3_CONF_VARS"]["BE"]["defaultUserTSconfig"]:') .
-								   $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'];
+								$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'];
 
 				// Default TSconfig for admin-users
 			if ($this->isAdmin()) {
@@ -1653,7 +1653,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 
 					// We now have a path with slash after and slash before (if unix)
 				if (@is_dir($path) &&
-					 (($GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] && t3lib_div::isFirstPartOfStr($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'])) || t3lib_div::isFirstPartOfStr($path, $fdir))) {
+					(($GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] && t3lib_div::isFirstPartOfStr($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'])) || t3lib_div::isFirstPartOfStr($path, $fdir))) {
 						// Alternative title?
 					$name = $title ? $title : $altTitle;
 						// Adds the filemount. The same filemount with same name, type and path cannot be set up twice because of the hash string used as key.

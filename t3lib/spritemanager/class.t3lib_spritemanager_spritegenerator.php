@@ -373,7 +373,7 @@ class t3lib_spritemanager_SpriteGenerator {
 
 		$i = 0;
 		while (isset($cssPathSegments[$i]) && isset($graphicPathSegments[$i]) &&
-			   $cssPathSegments[$i] == $graphicPathSegments[$i]) {
+			$cssPathSegments[$i] == $graphicPathSegments[$i]) {
 			unset($cssPathSegments[$i]);
 			unset($graphicPathSegments[$i]);
 			++$i;

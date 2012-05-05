@@ -50,9 +50,9 @@ class t3lib_tree_pagetree_extdirect_Commands {
 			$returnValue = $newNode->toArray();
 		} catch (Exception $exception) {
 			$returnValue = array(
-				 'success' => FALSE,
-				 'error' => $exception->getMessage(),
-			 );
+				'success' => FALSE,
+				'error' => $exception->getMessage(),
+			);
 		}
 
 		return $returnValue;
@@ -75,9 +75,9 @@ class t3lib_tree_pagetree_extdirect_Commands {
 			$returnValue = $newNode->toArray();
 		} catch (Exception $exception) {
 			$returnValue = array(
-				 'success' => FALSE,
-				 'message' => $exception->getMessage(),
-			 );
+				'success' => FALSE,
+				'message' => $exception->getMessage(),
+			);
 		}
 
 		return $returnValue;
@@ -106,9 +106,9 @@ class t3lib_tree_pagetree_extdirect_Commands {
 			}
 		} catch (Exception $exception) {
 			$returnValue = array(
-				 'success' => FALSE,
-				 'message' => $exception->getMessage(),
-			 );
+				'success' => FALSE,
+				'message' => $exception->getMessage(),
+			);
 		}
 
 		return $returnValue;
@@ -131,9 +131,9 @@ class t3lib_tree_pagetree_extdirect_Commands {
 			$returnValue = $newNode->toArray();
 		} catch (Exception $exception) {
 			$returnValue = array(
-				 'success' => FALSE,
-				 'message' => $exception->getMessage(),
-			 );
+				'success' => FALSE,
+				'message' => $exception->getMessage(),
+			);
 		}
 
 		return $returnValue;
@@ -165,9 +165,9 @@ class t3lib_tree_pagetree_extdirect_Commands {
 			);
 		} catch (Exception $exception) {
 			$returnValue = array(
-				 'success' => FALSE,
-				 'message' => $exception->getMessage(),
-			 );
+				'success' => FALSE,
+				'message' => $exception->getMessage(),
+			);
 		}
 
 		return $returnValue;
@@ -206,9 +206,9 @@ class t3lib_tree_pagetree_extdirect_Commands {
 			$returnValue = $newNode->toArray();
 		} catch (Exception $exception) {
 			$returnValue = array(
-				 'success' => FALSE,
-				 'message' => $exception->getMessage(),
-			 );
+				'success' => FALSE,
+				'message' => $exception->getMessage(),
+			);
 		}
 
 		return $returnValue;
@@ -232,9 +232,9 @@ class t3lib_tree_pagetree_extdirect_Commands {
 			$returnValue = $newNode->toArray();
 		} catch (Exception $exception) {
 			$returnValue = array(
-				 'success' => FALSE,
-				 'message' => $exception->getMessage(),
-			 );
+				'success' => FALSE,
+				'message' => $exception->getMessage(),
+			);
 		}
 
 		return $returnValue;
@@ -262,9 +262,9 @@ class t3lib_tree_pagetree_extdirect_Commands {
 			$returnValue = $newNode->toArray();
 		} catch (Exception $exception) {
 			$returnValue = array(
-				 'success' => FALSE,
-				 'message' => $exception->getMessage(),
-			 );
+				'success' => FALSE,
+				'message' => $exception->getMessage(),
+			);
 		}
 
 		return $returnValue;
@@ -292,9 +292,9 @@ class t3lib_tree_pagetree_extdirect_Commands {
 			$returnValue = $newNode->toArray();
 		} catch (Exception $exception) {
 			$returnValue = array(
-				 'success' => FALSE,
-				 'message' => $exception->getMessage(),
-			 );
+				'success' => FALSE,
+				'message' => $exception->getMessage(),
+			);
 		}
 
 		return $returnValue;
@@ -316,9 +316,9 @@ class t3lib_tree_pagetree_extdirect_Commands {
 			$returnValue = t3lib_tree_pagetree_Commands::getNode($newPageId)->toArray();
 		} catch (Exception $exception) {
 			$returnValue = array(
-				 'success' => FALSE,
-				 'message' => $exception->getMessage(),
-			 );
+				'success' => FALSE,
+				'message' => $exception->getMessage(),
+			);
 		}
 
 		return $returnValue;
@@ -341,9 +341,9 @@ class t3lib_tree_pagetree_extdirect_Commands {
 			$returnValue = t3lib_tree_pagetree_Commands::getNode($newPageId)->toArray();
 		} catch (Exception $exception) {
 			$returnValue = array(
-				 'success' => FALSE,
-				 'message' => $exception->getMessage(),
-			 );
+				'success' => FALSE,
+				'message' => $exception->getMessage(),
+			);
 		}
 
 		return $returnValue;

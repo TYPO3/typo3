@@ -111,7 +111,7 @@ class Tx_Install_Updates_File_TtContentUploadsUpdateWizard extends Tx_Install_Up
 		);
 		if ($notMigratedRowsCount > 0) {
 			$description = 'There are Content Elements of type "upload" which are referencing files,' .
-			   ' not using FAL. The Wizard will move the files to fileadmin/content_uploads/ and index them.';
+				' not using FAL. The Wizard will move the files to fileadmin/content_uploads/ and index them.';
 			$updateNeeded = TRUE;
 		}
 

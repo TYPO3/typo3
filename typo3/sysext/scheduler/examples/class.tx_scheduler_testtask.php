@@ -36,7 +36,7 @@ class tx_scheduler_TestTask extends tx_scheduler_Task {
 	 *
 	 * @var string $email
 	 */
-	 var $email;
+	var $email;
 
 	/**
 	 * Function executed from the Scheduler.

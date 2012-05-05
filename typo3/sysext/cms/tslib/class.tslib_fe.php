@@ -44,7 +44,7 @@
  * @package TYPO3
  * @subpackage tslib
  */
- class tslib_fe {
+class tslib_fe {
 
 		// CURRENT PAGE:
 	var $id='';							// The page id (int)
@@ -794,7 +794,7 @@
 		return $result;
 	}
 
-	 /**
+	/**
 	 * Get The Page ID
 	 * This gets the id of the page, checks if the page is in the domain and if the page is accessible
 	 * Sets variables such as $this->sys_page, $this->loginUser, $this->gr_list, $this->id, $this->type, $this->domainStartPage, $this->idParts
@@ -1349,7 +1349,7 @@
 	 */
 	function checkPageUnavailableHandler()	{
 		if($this->TYPO3_CONF_VARS['FE']['pageUnavailable_handling'] &&
-		   !t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $this->TYPO3_CONF_VARS['SYS']['devIPmask'])) {
+			!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $this->TYPO3_CONF_VARS['SYS']['devIPmask'])) {
 			$checkPageUnavailableHandler = TRUE;
 		} else {
 			$checkPageUnavailableHandler = FALSE;
@@ -1888,7 +1888,7 @@
 						$this->pageUnavailableAndExit($message);
 					} else {
 						$explanation = 'This means that there is no TypoScript object of type PAGE with typeNum=' .
-						               $this->type . ' configured.';
+							$this->type . ' configured.';
 						t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
 						throw new t3lib_error_http_ServiceUnavailableException($message . ' ' . $explanation, 1294587217);
 					}
@@ -2437,7 +2437,7 @@
 			$referer = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 			if (isset($referer['host']) && !($referer['host'] == t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'))) {
 				unset($this->jumpurl);
- 			}
+			}
 		}
 	}
 
@@ -3068,7 +3068,7 @@
 		}
 	}
 
- 	/**
+	/**
 	 * Processes the INTinclude-scripts and substitue in content.
 	 *
 	 * @param	array		$INTiS_config: $GLOBALS['TSFE']->config['INTincScript'] or part of it
@@ -3472,15 +3472,15 @@ if (version == "n3") {
 	 * @access private
 	 */
 	function setParseTime()	{
-        // Compensates for the time consumed with Back end user initialization.
-        $microtime_start            = (isset($GLOBALS['TYPO3_MISC']['microtime_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_start'] : NULL;
-        $microtime_end              = (isset($GLOBALS['TYPO3_MISC']['microtime_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_end'] : NULL;
-        $microtime_BE_USER_start    = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] : NULL;
-        $microtime_BE_USER_end      = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] : NULL;
+		// Compensates for the time consumed with Back end user initialization.
+		$microtime_start            = (isset($GLOBALS['TYPO3_MISC']['microtime_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_start'] : NULL;
+		$microtime_end              = (isset($GLOBALS['TYPO3_MISC']['microtime_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_end'] : NULL;
+		$microtime_BE_USER_start    = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] : NULL;
+		$microtime_BE_USER_end      = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] : NULL;
 
-        $this->scriptParseTime = $GLOBALS['TT']->getMilliseconds($microtime_end) - $GLOBALS['TT']->getMilliseconds($microtime_start)
-                                - ($GLOBALS['TT']->getMilliseconds($microtime_BE_USER_end) - $GLOBALS['TT']->getMilliseconds($microtime_BE_USER_start));
-    }
+		$this->scriptParseTime = $GLOBALS['TT']->getMilliseconds($microtime_end) - $GLOBALS['TT']->getMilliseconds($microtime_start)
+				- ($GLOBALS['TT']->getMilliseconds($microtime_BE_USER_end) - $GLOBALS['TT']->getMilliseconds($microtime_BE_USER_start));
+	}
 
 	/**
 	 * Initialize file-based statistics handling: Check filename and permissions, and create the logfile if it does not exist yet.
