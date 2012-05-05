@@ -14,6 +14,14 @@ http://wiki.typo3.org/TYPO3_6.0
 Compatibility
 ===============================================================================
 
+* Refactored bootstrap
+
+With a bootstrap refactoring the index.php file located in the document root of
+the installation was changed. If you are running a typo3 core source with a
+symlink, make sure that this file is also a symlink to the cores index.php,
+otherwise the frontend will be broken. If index.php is a copy of the source
+file, make sure to install a fresh version from 6.0 sources.
+
 * Deprecated methods
 
 Deprecated methods that were initially targeted to be removed in TYPO3 4.8/6.0
