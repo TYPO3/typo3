@@ -166,7 +166,7 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 	 */
 	private function determineFixturesPath() {
 		return t3lib_div::makeInstance('Tx_Phpunit_Service_TestFinder')
-			->getRelativeCoreTestsPath() . 't3lib/fixtures/';
+			->getRelativeCoreTestsPath() . 'Unit/t3lib/fixtures/';
 	}
 
 

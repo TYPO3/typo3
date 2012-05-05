@@ -93,7 +93,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 		}
 
 		$testFinder = t3lib_div::makeInstance('Tx_Phpunit_Service_TestFinder');
-		$fixtureGifFile = $testFinder->getAbsoluteCoreTestsPath() . 't3lib/fixtures/clear.gif';
+		$fixtureGifFile = $testFinder->getAbsoluteCoreTestsPath() . 'Unit/t3lib/fixtures/clear.gif';
 
 			// Create image ressource, determine target filename, fake target permission, run method and clean up
 		$fixtureGifRessource = imagecreatefromgif($fixtureGifFile);

@@ -41,7 +41,7 @@ class t3lib_tree_NodeTest extends tx_phpunit_testcase {
 	 */
 	private function determineFixturesPath() {
 		return t3lib_div::makeInstance('Tx_Phpunit_Service_TestFinder')
-			->getAbsoluteCoreTestsPath() . 't3lib/tree/fixtures/';
+			->getAbsoluteCoreTestsPath() . 'Unit/t3lib/tree/fixtures/';
 	}
 
 	protected function setUpNodeTestData() {

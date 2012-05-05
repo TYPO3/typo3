@@ -23,15 +23,15 @@
  ***************************************************************/
 
 /**
- * Testcase for class t3lib_l10n_parser_llxml.
+ * Testcase for class t3lib_l10n_parser_xliff.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
  * @package TYPO3
  */
-class t3lib_l10n_parser_llxmlTest extends tx_phpunit_testcase {
+class t3lib_l10n_parser_xliffTest extends tx_phpunit_testcase {
 
 	/**
-	 * @var t3lib_l10n_parser_llxml
+	 * @var t3lib_l10n_parser_xliff
 	 */
 	protected $parser;
 
@@ -48,7 +48,7 @@ class t3lib_l10n_parser_llxmlTest extends tx_phpunit_testcase {
 	/**
 	 * @var array
 	 */
-	protected $llxmlFileNames;
+	protected $xliffFileNames;
 
 	/**
 	 * Prepares the environment before running a test.
@@ -58,13 +58,13 @@ class t3lib_l10n_parser_llxmlTest extends tx_phpunit_testcase {
 		$this->locallangXMLOverride = $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'];
 		$this->l10nPriority = $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'];
 
-		$this->parser = t3lib_div::makeInstance('t3lib_l10n_parser_llxml');
-		$this->llxmlFileNames = array(
-			'locallang' => PATH_site . 'typo3_src/tests/t3lib/l10n/parser/fixtures/locallang.xml',
-			'locallang_override' => PATH_site . 'typo3_src/tests/t3lib/l10n/parser/fixtures/locallang_override.xml',
-			'locallangOnlyDefaultLanguage' =>  PATH_site . 'typo3_src/tests/t3lib/l10n/parser/fixtures/locallangOnlyDefaultLanguage.xml',
+		$this->parser = t3lib_div::makeInstance('t3lib_l10n_parser_xliff');
+		$this->xliffFileNames = array(
+			'locallang' => PATH_site . 'typo3_src/tests/Unit/t3lib/l10n/parser/fixtures/locallang.xlf',
+			'locallang_override' => PATH_site . 'typo3_src/tests/Unit/t3lib/l10n/parser/fixtures/locallang_override.xlf',
+			'locallang_override_fr' => PATH_site . 'typo3_src/tests/Unit/t3lib/l10n/parser/fixtures/fr.locallang_override.xlf',
 		);
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xml';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xlf';
 		t3lib_div::makeInstance('t3lib_l10n_Store')->initialize();
 
 			// Clear localization cache
@@ -86,8 +86,8 @@ class t3lib_l10n_parser_llxmlTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function canParseLlxmlInEnglish() {
-		$LOCAL_LANG = $this->parser->getParsedData($this->llxmlFileNames['locallang'], 'default');
+	public function canParseXliffInEnglish() {
+		$LOCAL_LANG = $this->parser->getParsedData($this->xliffFileNames['locallang'], 'default');
 
 		$this->assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
 
@@ -105,8 +105,8 @@ class t3lib_l10n_parser_llxmlTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function canParseLlxmlInFrench() {
-		$LOCAL_LANG = $this->parser->getParsedData($this->llxmlFileNames['locallang'], 'fr');
+	public function canParseXliffInFrench() {
+		$LOCAL_LANG = $this->parser->getParsedData($this->xliffFileNames['locallang'], 'fr');
 
 		$this->assertArrayHasKey('fr', $LOCAL_LANG, 'fr key not found in $LOCAL_LANG');
 
@@ -124,29 +124,13 @@ class t3lib_l10n_parser_llxmlTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function canParseLlxmlInFrenchAndReturnsDefaultLabelsIfNoTranslationIsFound() {
-		$LOCAL_LANG = $this->parser->getParsedData($this->llxmlFileNames['locallangOnlyDefaultLanguage'], 'fr');
-
-		$expectedLabels = array(
-			'label1' => 'This is label #1',
-			'label2' => 'This is label #2',
-			'label3' => 'This is label #3',
-		);
-
-		foreach ($expectedLabels as $key => $expectedLabel) {
-			$this->assertEquals($expectedLabel, $LOCAL_LANG['fr'][$key][0]['target']);
-		}
-	}
-
-	/**
-	 * @test
-	 */
-	public function canOverrideLlxml() {
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$this->llxmlFileNames['locallang']][] = $this->llxmlFileNames['locallang_override'];
+	public function canOverrideXliff() {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$this->xliffFileNames['locallang']][] = $this->xliffFileNames['locallang_override'];
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['fr'][$this->xliffFileNames['locallang']][] = $this->xliffFileNames['locallang_override_fr'];
 
 		$LOCAL_LANG = array_merge(
-			t3lib_div::readLLfile($this->llxmlFileNames['locallang'], 'default'),
-			t3lib_div::readLLfile($this->llxmlFileNames['locallang'], 'fr')
+			t3lib_div::readLLfile($this->xliffFileNames['locallang'], 'default'),
+			t3lib_div::readLLfile($this->xliffFileNames['locallang'], 'fr')
 		);
 
 		$this->assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
@@ -169,6 +153,30 @@ class t3lib_l10n_parser_llxmlTest extends tx_phpunit_testcase {
 			foreach ($expectedLanguageLabels as $key => $expectedLabel) {
 				$this->assertEquals($expectedLabel, $LOCAL_LANG[$languageKey][$key][0]['target']);
 			}
+		}
+	}
+
+	/**
+	 * This test will make sure method t3lib_div::llXmlAutoFileName() will not prefix twice the
+	 * language key to the localization file.
+	 *
+	 * @test
+	 */
+	public function canOverrideXliffWithFrenchOnly() {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['fr'][$this->xliffFileNames['locallang']][] = $this->xliffFileNames['locallang_override_fr'];
+
+		$LOCAL_LANG = t3lib_div::readLLfile($this->xliffFileNames['locallang'], 'fr');
+
+		$this->assertArrayHasKey('fr', $LOCAL_LANG, 'fr key not found in $LOCAL_LANG');
+
+		$expectedLabels = array(
+			'label1' => 'Ceci est mon 1er libellé',
+			'label2' => 'Ceci est le libellé no. 2',
+			'label3' => 'Ceci est mon 3e libellé',
+		);
+
+		foreach ($expectedLabels as $key => $expectedLabel) {
+			$this->assertEquals($expectedLabel, $LOCAL_LANG['fr'][$key][0]['target']);
 		}
 	}
 

@@ -70,7 +70,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		}
 
 		$testFinder = t3lib_div::makeInstance('Tx_Phpunit_Service_TestFinder');
-		$fixtureGifFile = $testFinder->getAbsoluteCoreTestsPath() . 't3lib/fixtures/clear.gif';
+		$fixtureGifFile = $testFinder->getAbsoluteCoreTestsPath() . 'Unit/t3lib/fixtures/clear.gif';
 
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress'] = TRUE;
 
@@ -97,7 +97,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		}
 
 		$testFinder = t3lib_div::makeInstance('Tx_Phpunit_Service_TestFinder');
-		$fixtureGifFile = $testFinder->getAbsoluteCoreTestsPath() . 't3lib/fixtures/clear.gif';
+		$fixtureGifFile = $testFinder->getAbsoluteCoreTestsPath() . 'Unit/t3lib/fixtures/clear.gif';
 
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'] = TRUE;
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] = FALSE;
@@ -133,7 +133,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		}
 
 		$testFinder = t3lib_div::makeInstance('Tx_Phpunit_Service_TestFinder');
-		$fixturePngFile = $testFinder->getAbsoluteCoreTestsPath() . 't3lib/fixtures/clear.png';
+		$fixturePngFile = $testFinder->getAbsoluteCoreTestsPath() . 'Unit/t3lib/fixtures/clear.png';
 
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif'] = TRUE;
 
@@ -168,7 +168,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		}
 
 		$testFinder = t3lib_div::makeInstance('Tx_Phpunit_Service_TestFinder');
-		$testGifFile = $testFinder->getAbsoluteCoreTestsPath() . 't3lib/fixtures/clear.gif';
+		$testGifFile = $testFinder->getAbsoluteCoreTestsPath() . 'Unit/t3lib/fixtures/clear.gif';
 
 			// Set target permissions and run method
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
