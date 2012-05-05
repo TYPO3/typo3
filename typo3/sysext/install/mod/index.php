@@ -66,7 +66,7 @@ class tx_install_mod1 extends t3lib_SCbase {
 	 */
 	protected function isValidEnableRequest() {
 		return t3lib_div::_POST('enableInstallTool') &&
-			  t3lib_formprotection_Factory::get()
+			t3lib_formprotection_Factory::get()
 				->validateToken(t3lib_div::_POST('formToken'), 'installToolEnableToken');
 	}
 
@@ -95,7 +95,7 @@ class tx_install_mod1 extends t3lib_SCbase {
 		$markers['CONTENT'] = $this->renderMessage();
 		$content = $this->doc->moduleBody('', $buttons, $markers);
 		$this->doc->postCode = '<input type="hidden" name="enableInstallTool" value="1" />' .
-							   t3lib_TCEforms::getHiddenTokenField('installToolEnableToken');
+							t3lib_TCEforms::getHiddenTokenField('installToolEnableToken');
 		echo $this->doc->render('', $content);
 	}
 

@@ -119,7 +119,7 @@ class tx_em_Connection_ExtDirectSoap {
 	public function registerExtensionkey($parameter) {
 		$this->initSoap();
 		$params = array(
-		 	'registerExtensionKeyData' => array(
+			'registerExtensionKeyData' => array(
 				'extensionKey' => $parameter['extkey'],
 				'title' => $parameter['title'],
 				'description' => $parameter['description']

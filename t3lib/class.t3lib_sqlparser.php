@@ -1632,13 +1632,13 @@ class t3lib_sqlparser {
 		$query = 'SELECT ' . ($components['STRAIGHT_JOIN'] ? $components['STRAIGHT_JOIN'] . '' : '') . '
 				' . $this->compileFieldList($components['SELECT']) . '
 				FROM ' . $this->compileFromTables($components['FROM']) .
-				 (strlen($where) ? '
+				(strlen($where) ? '
 				WHERE ' . $where : '') .
-				 (strlen($groupBy) ? '
+				(strlen($groupBy) ? '
 				GROUP BY ' . $groupBy : '') .
-				 (strlen($orderBy) ? '
+				(strlen($orderBy) ? '
 				ORDER BY ' . $orderBy : '') .
-				 (strlen($limit) ? '
+				(strlen($limit) ? '
 				LIMIT ' . $limit : '');
 
 		return $query;
@@ -1728,7 +1728,7 @@ class t3lib_sqlparser {
 
 			// Make query:
 		$query = 'DELETE FROM ' . $components['TABLE'] .
-				 (strlen($where) ? '
+				(strlen($where) ? '
 				WHERE ' . $where : '');
 
 		return $query;

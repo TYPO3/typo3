@@ -42,8 +42,8 @@ class tslib_content_ScalableVectorGraphics extends tslib_content_Abstract {
 	 */
 	public function render($conf = array()) {
 		$width = isset($conf['width.'])
-			 ? $this->cObj->stdWrap($conf['width'], $conf['width.'])
-			 : $conf['width'];
+			? $this->cObj->stdWrap($conf['width'], $conf['width.'])
+			: $conf['width'];
 		if(!$width) {
 			$width = 600;
 		}

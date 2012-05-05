@@ -282,7 +282,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				$path = 'uploads/media/';
 				if (is_array($GLOBALS['TCA']['tt_content']['columns'][$field]) && !empty($GLOBALS['TCA']['tt_content']['columns'][$field]['config']['uploadfolder'])) {
 					// in TCA-Array folders are saved without trailing slash, so $path.$fileName won't work
-				    $path = $GLOBALS['TCA']['tt_content']['columns'][$field]['config']['uploadfolder'] .'/';
+					$path = $GLOBALS['TCA']['tt_content']['columns'][$field]['config']['uploadfolder'] .'/';
 				}
 			}
 			$path = trim($path);
@@ -499,7 +499,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * @coauthor	Ernesto Baschny <ernst@cron-it.de>
 	 * @coauthor Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	 function render_textpic($content, $conf)	{
+	function render_textpic($content, $conf)	{
 			// Look for hook before running default code for function
 		if (method_exists($this, 'hookRequest') && $hookObj = $this->hookRequest('render_textpic')) {
 			return $hookObj->render_textpic($content,$conf);
@@ -783,7 +783,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				$imageRowsFinalWidths[floor($a/$colCount)] += $this->cObj->data['imagewidth'];
 			} else {
 				$imageRowsFinalWidths[floor($a/$colCount)] += $GLOBALS['TSFE']->lastImageInfo[0];
- 			}
+			}
 
 		}
 			// How much space will the image-block occupy?

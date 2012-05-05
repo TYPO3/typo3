@@ -137,7 +137,7 @@ class tslib_mediaWizardCoreProvider implements tslib_mediaWizardProvider {
 	 * @return string processed url
 	 */
 	protected function process_youtu($url) {
-	    return $this->process_youtube($url);
+		return $this->process_youtube($url);
 	}
 
 	/**

@@ -73,9 +73,9 @@ class t3lib_SpriteManager {
 
 			// Create cache filename, the hash includes all icons, registered CSS styles registered and the extension list
 		$this->tempFileName = PATH_site . self::$tempPath .
-							  md5(serialize($GLOBALS['TBE_STYLES']['spritemanager']) .
-								  md5(serialize($GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'])) .
-								  $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']) . '.inc';
+							md5(serialize($GLOBALS['TBE_STYLES']['spritemanager']) .
+								md5(serialize($GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'])) .
+								$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']) . '.inc';
 
 			// Regenerate cache file if not already existing
 		if (!@file_exists($this->tempFileName)) {

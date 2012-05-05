@@ -189,7 +189,7 @@ class tx_aboutmodules_Functions {
 				$collapseJS = 'onclick="window.location.href=\'alt_menu.php?collapsedOverride[' . $moduleName . ']=' . ($config[$moduleName]
 						? '0' : '1') . '\'"';
 				$collapseIcon = t3lib_iconWorks::getSpriteIcon('actions-view-table-' . ($config[$moduleName] ? 'expand'
-					 : 'collapse'), array('class' => 'c-iconCollapse'));
+					: 'collapse'), array('class' => 'c-iconCollapse'));
 			} else {
 				$collapseJS = $collapseIcon = '';
 			}
@@ -496,9 +496,9 @@ class tx_aboutmodules_Functions {
 				$prefix = $navFrameScript . $navFrameScriptParam . '&currentSubScript=';
 			} else {
 				$prefix = 'alt_mod_frameset.php?' .
-						  'fW="+top.TS.navFrameWidth+"' .
-						  '&nav="+top.TS.PATH_typo3+"' . rawurlencode($navFrameScript . $navFrameScriptParam) .
-						  '&script=';
+						'fW="+top.TS.navFrameWidth+"' .
+						'&nav="+top.TS.PATH_typo3+"' . rawurlencode($navFrameScript . $navFrameScriptParam) .
+						'&script=';
 			}
 		}
 		return $prefix;
@@ -579,10 +579,10 @@ class tx_aboutmodules_Functions {
 				'id' => 'temp_CACHED',
 				'title' => $title,
 				'href' => $backPath .
-						  'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() .
-						  '&redirect=' . rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')) .
-						  '&cacheCmd=temp_CACHED' .
-						  t3lib_BEfunc::getUrlToken('tceAction'),
+						'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() .
+						'&redirect=' . rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')) .
+						'&cacheCmd=temp_CACHED' .
+						t3lib_BEfunc::getUrlToken('tceAction'),
 				'icon' => '<img' . t3lib_iconWorks::skinImg($backPath, 'gfx/clear_cache_files_in_typo3c.gif', 'width="21" height="18"') . ' title="' . htmlspecialchars($title) . '" alt="" />'
 			);
 		}
@@ -593,9 +593,9 @@ class tx_aboutmodules_Functions {
 			'id' => 'all',
 			'title' => $title,
 			'href' => $backPath . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() .
-					  '&redirect=' . rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')) .
-					  '&cacheCmd=all' .
-					  t3lib_BEfunc::getUrlToken('tceAction'),
+					'&redirect=' . rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')) .
+					'&cacheCmd=all' .
+					t3lib_BEfunc::getUrlToken('tceAction'),
 			'icon' => '<img' . t3lib_iconWorks::skinImg($backPath, 'gfx/clear_all_cache.gif', 'width="21" height="18"') . ' title="' . htmlspecialchars($title) . '" alt="" />'
 		);
 

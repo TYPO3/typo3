@@ -207,7 +207,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 								<td class="bgColor2"><strong>' . htmlspecialchars($GLOBALS['tmpl']->templateTitles[current($GLOBALS['tmpl']->clearList_setup)]) . '</strong></td></tr>
 							<tr>
 								<td class="bgColor2"><table border="0" cellpadding="0" cellspacing="0" class="bgColor0" width="100%"><tr><td nowrap="nowrap">' .
-									  $GLOBALS['tmpl']->ext_outputTS(
+									$GLOBALS['tmpl']->ext_outputTS(
 										array($val),
 										$this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'],
 										$this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'],

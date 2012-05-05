@@ -192,11 +192,11 @@ class tx_em_Connection_Soap {
 				$this->password = FALSE;
 			}
 		}
-		 /*return array(
+		/*return array(
 						'username' => $this->username,
 						'password' => $this->password,
 			 		'func' => $func
-					); */
+					);*/
 
 		$result = $this->client->__soapCall($func, $param, NULL, $header);
 

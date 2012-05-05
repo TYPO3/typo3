@@ -429,10 +429,10 @@ class TSpagegen {
 
 		$htmlTag = '<html' . ($_attr ? ' ' . $_attr : '') . '>';
 		if (isset($GLOBALS['TSFE']->config['config']['htmlTag_stdWrap.'])) {
-			   $htmlTag = $GLOBALS['TSFE']->cObj->stdWrap(
-					   $htmlTag,
-					   $GLOBALS['TSFE']->config['config']['htmlTag_stdWrap.']
-			   );
+			$htmlTag = $GLOBALS['TSFE']->cObj->stdWrap(
+					$htmlTag,
+					$GLOBALS['TSFE']->config['config']['htmlTag_stdWrap.']
+			);
 		}
 		$pageRenderer->setHtmlTag($htmlTag);
 
@@ -919,14 +919,14 @@ class TSpagegen {
 			}
 		} elseif ($GLOBALS['TSFE']->config['config']['removeDefaultJS'] === 'external') {
 			/*
-			 This keeps inlineJS from *_INT Objects from being moved to external files.
-			 At this point in frontend rendering *_INT Objects only have placeholders instead
-			 of actual content so moving these placeholders to external files would
-			 	a) break the JS file (syntax errors due to the placeholders)
-			 	b) the needed JS would never get included to the page
-			 Therefore inlineJS from *_INT Objects must not be moved to external files but
-			 kept internal.
-			*/
+			 * This keeps inlineJS from *_INT Objects from being moved to external files.
+			 * At this point in frontend rendering *_INT Objects only have placeholders instead
+			 * of actual content so moving these placeholders to external files would
+			 *     a) break the JS file (syntax errors due to the placeholders)
+			 *     b) the needed JS would never get included to the page
+			 * Therefore inlineJS from *_INT Objects must not be moved to external files but
+			 * kept internal.
+			 */
 			$inlineJSint = '';
 			self::stripIntObjectPlaceholder($inlineJS, $inlineJSint);
 			if ($inlineJSint) {

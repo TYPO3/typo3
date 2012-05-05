@@ -419,9 +419,9 @@ class tslib_contentTest extends tx_phpunit_testcase {
 	public function cropHtmlDataProvider() {
 		$plainText = 'Kasper Sk' . chr(229) . 'rh' . chr(248) .
 			'j implemented the original version of the crop function.';
-	 	$textWithMarkup = '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' .
-	 		chr(229) . 'rh' . chr(248) . 'j</a>' .
-	 		' implemented</strong> the original version of the crop function.';
+		$textWithMarkup = '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' .
+			chr(229) . 'rh' . chr(248) . 'j</a>' .
+			' implemented</strong> the original version of the crop function.';
 		$textWithEntities = 'Kasper Sk&aring;rh&oslash;j implemented the; original ' .
 			'version of the crop function.';
 

@@ -26,7 +26,7 @@ if (TYPO3_MODE === 'BE') {
 
 	$icons = array(
 		'extension-required' => t3lib_extMgm::extRelPath('em') . 'res/icons/extension-required.png'
- 	);
- 	t3lib_SpriteManager::addSingleIcons($icons, 'em');
+	);
+	t3lib_SpriteManager::addSingleIcons($icons, 'em');
 }
 ?>

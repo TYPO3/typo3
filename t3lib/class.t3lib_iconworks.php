@@ -126,8 +126,8 @@ final class t3lib_iconWorks {
 	 */
 	public static function getIconImage($table, $row = array(), $backPath, $params = '', $shaded = FALSE) {
 		$str = '<img' .
-			   self::skinImg($backPath, self::getIcon($table, $row, $shaded), 'width="18" height="16"') .
-			   (trim($params) ? ' ' . trim($params) : '');
+			self::skinImg($backPath, self::getIcon($table, $row, $shaded), 'width="18" height="16"') .
+			(trim($params) ? ' ' . trim($params) : '');
 		if (!stristr($str, 'alt="')) {
 			$str .= ' alt=""';
 		}

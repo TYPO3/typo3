@@ -253,14 +253,14 @@ class t3lib_recordList {
 			case 'fwd':
 				$href = $this->listURL() . '&pointer=' . ($pointer - $this->iLimit) . $tParam;
 				$content = '<a href="' . htmlspecialchars($href) . '">' .
-						   t3lib_iconWorks::getSpriteIcon('actions-move-up') .
-						   '</a> <i>[1 - ' . $pointer . ']</i>';
+						t3lib_iconWorks::getSpriteIcon('actions-move-up') .
+						'</a> <i>[1 - ' . $pointer . ']</i>';
 			break;
 			case 'rwd':
 				$href = $this->listURL() . '&pointer=' . $pointer . $tParam;
 				$content = '<a href="' . htmlspecialchars($href) . '">' .
-						   t3lib_iconWorks::getSpriteIcon('actions-move-down') .
-						   '</a> <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i>';
+						t3lib_iconWorks::getSpriteIcon('actions-move-down') .
+						'</a> <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i>';
 			break;
 		}
 		return $content;
@@ -274,7 +274,7 @@ class t3lib_recordList {
 	 */
 	function listURL($altId = '') {
 		return $this->script .
-			   '?id=' . (strcmp($altId, '') ? $altId : $this->id);
+			'?id=' . (strcmp($altId, '') ? $altId : $this->id);
 	}
 
 	/**

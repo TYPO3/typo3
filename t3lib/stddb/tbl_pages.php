@@ -1034,16 +1034,16 @@ if (!t3lib_div::compat_version('4.2')) {
 		2,
 		0,
 		array(
-			 array(
-				 'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.0',
-				 '2',
-				 'i/pages.gif',
-			 ),
-			 array(
-				 'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.3',
-				 '5',
-				 'i/pages_notinmenu.gif',
-			 ),
+			array(
+				'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.0',
+				'2',
+				'i/pages.gif',
+			),
+			array(
+				'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.3',
+				'5',
+				'i/pages_notinmenu.gif',
+			),
 		)
 	);
 		// setting the doktype 1 ("Standard") to show less fields

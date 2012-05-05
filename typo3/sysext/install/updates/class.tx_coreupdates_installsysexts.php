@@ -45,7 +45,7 @@ class tx_coreupdates_installsysexts extends Tx_Install_Updates_Base {
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
 
-        $description = '
+		$description = '
 			<ul>
 		';
 
@@ -85,7 +85,7 @@ class tx_coreupdates_installsysexts extends Tx_Install_Updates_Base {
 	 * @return string HTML output
 	 */
 	public function getUserInput($inputPrefix) {
-        $content = '
+		$content = '
 			<p>
 				<strong>
 					Install the following SystemExtensions:

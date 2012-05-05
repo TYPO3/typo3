@@ -127,13 +127,13 @@ class SC_browse_links {
 		// Set temporary DB mounts
 		$tempDBmount = intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint'));
 		if ($tempDBmount) {
-	 		$altMountPoints = $tempDBmount;
+			$altMountPoints = $tempDBmount;
 		}
 
- 		if ($altMountPoints) {
- 			$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(t3lib_div::intExplode(',', $altMountPoints)));
- 			$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
- 		}
+		if ($altMountPoints) {
+			$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(t3lib_div::intExplode(',', $altMountPoints)));
+			$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
+		}
 
 		$this->content = '';
 

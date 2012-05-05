@@ -78,8 +78,8 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 			);
 		}
 		$this->assertEquals(
-		 	$expected,
-		 	$compare
+			$expected,
+			$compare
 		);
 	}
 
@@ -197,8 +197,8 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
 
 		$this->assertEquals(
-		 	'1.9.2.3',
-		 	$infoArray['all']['gecko']
+			'1.9.2.3',
+			$infoArray['all']['gecko']
 		);
 	}
 

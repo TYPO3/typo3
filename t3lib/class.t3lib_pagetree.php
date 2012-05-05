@@ -71,13 +71,13 @@ class t3lib_pageTree extends t3lib_treeView {
 			$this->fieldArray = array_merge(
 				$this->fieldArray,
 				array(
-					 'hidden',
-					 'starttime',
-					 'endtime',
-					 'fe_group',
-					 'module',
-					 'extendToSubpages',
-					 'nav_hide')
+					'hidden',
+					'starttime',
+					'endtime',
+					'fe_group',
+					'module',
+					'extendToSubpages',
+					'nav_hide')
 			);
 		}
 		$this->table = 'pages';

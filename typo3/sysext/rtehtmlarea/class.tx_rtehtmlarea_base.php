@@ -113,11 +113,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		// For the editor
 	var $client;
 
-       /**
-        * Reference to parent object, which is an instance of the TCEforms
-        *
-        * @var t3lib_TCEforms
-        */
+	/**
+	 * Reference to parent object, which is an instance of the TCEforms
+	 *
+	 * @var t3lib_TCEforms
+	 */
 	var $TCEform;
 	var $elementId;
 	var $elementParts;
@@ -249,7 +249,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			 * INIT THE EDITOR-SETTINGS
 			 * =======================================
 			 */
-			 	// Set backPath
+				// Set backPath
 			$this->backPath = $this->TCEform->backPath;
 				// Get the path to this extension:
 			$this->extHttpPath = $this->backPath . t3lib_extMgm::extRelPath($this->ID);
@@ -726,7 +726,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	string	buttonname (htmlarea-name)
 	 */
 	function convertToolbarForHTMLArea($button) {
- 		return $this->convertToolbarForHtmlAreaArray[$button];
+		return $this->convertToolbarForHtmlAreaArray[$button];
 	}
 	/**
 	 * Add RTE main scripts and plugin scripts
@@ -746,7 +746,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * Return RTE initialization inline JavaScript code
 	 *
 	 * @return string RTE initialization inline JavaScript code
- 	 */
+	 */
 	protected function getRteInitJsCode() {
 		return '
 			if (typeof(RTEarea) == "undefined") {

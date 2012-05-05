@@ -390,8 +390,8 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 		}
 
 		if (is_array($Styles[$child])  // the child is a documented style
-		 && array_key_exists('parents',$Styles[$child])  // it has some parents
-		 && (array_search($parent, $Styles[$child]['parents']) !== FALSE))	{ // and the parent appears amongst its ancestors
+			&& array_key_exists('parents',$Styles[$child])  // it has some parents
+			&& (array_search($parent, $Styles[$child]['parents']) !== FALSE))	{ // and the parent appears amongst its ancestors
 			return TRUE;
 		}
 		return FALSE;

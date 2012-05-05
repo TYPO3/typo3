@@ -1592,7 +1592,7 @@ class t3lib_cs {
 					   return $crop.substr($string,$i);
 				   }
 			   }
-   */
+			*/
 		}
 		return $string;
 	}

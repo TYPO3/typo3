@@ -220,7 +220,7 @@ class fileList extends t3lib_recordList {
 							break;
 						case 'rw':
 							$sortingKey = $fileObject->checkActionPermission('read') ? 'R' : ''
-							              . $fileObject->checkActionPermission('write') ? 'W' : '';
+								. $fileObject->checkActionPermission('write') ? 'W' : '';
 							break;
 						case 'fileext':
 							$sortingKey = $fileObject->getExtension();
@@ -645,7 +645,7 @@ class fileList extends t3lib_recordList {
 		$elFromTable = $this->clipObj->elFromTable('_FILE');
 		if (is_a($fileOrFolderObject, 't3lib_file_Folder') && count($elFromTable)) {
 			$cells[] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $fullIdentifier)) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $fullIdentifier, 'into', $elFromTable)) . '" title="' . $GLOBALS['LANG']->getLL('clip_pasteInto', TRUE) . '">' .
-			  t3lib_iconWorks::getSpriteIcon('actions-document-paste-into') .
+			t3lib_iconWorks::getSpriteIcon('actions-document-paste-into') .
 			'</a>';
 		}
 

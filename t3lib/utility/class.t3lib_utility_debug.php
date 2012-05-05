@@ -130,7 +130,7 @@ final class t3lib_utility_Debug {
 		} else {
 			$string = str_replace(array(
 				'"', '/', '<', "\n", "\r"
-		  ), array(
+				), array(
 				'\"', '\/', '\<', '', ''
 			), $string);
 		}
@@ -253,8 +253,8 @@ final class t3lib_utility_Debug {
 
 					// Header:
 				$tRows[] = '<tr><td colspan="' . count($headerColumns) .
-						   '" style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;"><strong>' .
-						   htmlspecialchars($header) . '</strong></td></tr>';
+						'" style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;"><strong>' .
+						htmlspecialchars($header) . '</strong></td></tr>';
 				$tCells = array();
 				foreach ($headerColumns as $key) {
 					$tCells[] = '
@@ -343,8 +343,8 @@ final class t3lib_utility_Debug {
 							$string .= print_r($val, TRUE);
 						}
 						$result .= '<font face="Verdana,Arial" size="1" color="red">' .
-								   nl2br(htmlspecialchars($string)) .
-								   '<br /></font>';
+								nl2br(htmlspecialchars($string)) .
+								'<br /></font>';
 					} else {
 						if (gettype($val) == 'object') {
 							$string = 'Unknown object';
@@ -352,8 +352,8 @@ final class t3lib_utility_Debug {
 							$string = (string) $val;
 						}
 						$result .= '<font face="Verdana,Arial" size="1" color="red">' .
-								   nl2br(htmlspecialchars($string)) .
-								   '<br /></font>';
+								nl2br(htmlspecialchars($string)) .
+								'<br /></font>';
 					}
 					$result .= '</td>
 					</tr>';
@@ -364,8 +364,8 @@ final class t3lib_utility_Debug {
 			$result = '<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">
 				<tr>
 					<td><font face="Verdana,Arial" size="1" color="red">' .
-					  nl2br(htmlspecialchars((string) $array_in)) .
-					  '<br /></font></td>
+					nl2br(htmlspecialchars((string) $array_in)) .
+					'<br /></font></td>
 				</tr>
 			</table>'; // Output it as a string.
 		}

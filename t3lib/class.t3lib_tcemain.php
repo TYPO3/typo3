@@ -449,7 +449,7 @@ class t3lib_TCEmain {
 				   - table is NOT readOnly
 				   - the table is set with content in the data-array (if not, there's nothing to process...)
 				   - permissions for tableaccess OK
-			   */
+			*/
 			$modifyAccessList = $this->checkModifyAccessList($table);
 			if (!$modifyAccessList) {
 				$id = 0;
@@ -873,7 +873,7 @@ class t3lib_TCEmain {
 			   - If the field is nothing of the above and the field is configured in TCA, the fieldvalues are evaluated by ->checkValue
 
 			   If everything is OK, the field is entered into $fieldArray[]
-		   */
+		*/
 		foreach ($incomingFieldArray as $field => $fieldValue) {
 			if (!in_array($table . '-' . $field, $this->exclude_array) && !$this->data_disableFields[$table][$id][$field]) { // The field must be editable.
 
@@ -1023,7 +1023,7 @@ class t3lib_TCEmain {
 							$table,
 							'uid=' . intval($id),
 							array(
-								 $eFile['statusField'] => $eFile['relEditFile'] . ' updated ' . date('d-m-Y H:i:s') . ', bytes ' . strlen($mixedRec[$eFile['contentField']])
+								$eFile['statusField'] => $eFile['relEditFile'] . ' updated ' . date('d-m-Y H:i:s') . ', bytes ' . strlen($mixedRec[$eFile['contentField']])
 							)
 						);
 					}
@@ -3262,7 +3262,7 @@ class t3lib_TCEmain {
 							$pI = pathinfo($rec['ref_string']);
 							$copyDestName = dirname($origDestName) . '/RTEmagicC_' . substr(basename($origDestName), 10) . '.' . $pI['extension'];
 							if (!@is_file($copyDestName) && !@is_file($origDestName)
-															  && $origDestName === t3lib_div::getFileAbsFileName($origDestName) && $copyDestName === t3lib_div::getFileAbsFileName($copyDestName)) {
+															&& $origDestName === t3lib_div::getFileAbsFileName($origDestName) && $copyDestName === t3lib_div::getFileAbsFileName($copyDestName)) {
 
 									// Making copies:
 								t3lib_div::upload_copy_move(PATH_site . $fileInfo['original'], $origDestName);
@@ -4114,14 +4114,14 @@ class t3lib_TCEmain {
 									"Record '%s' (%s) was deleted from page '%s' (%s)";
 						}
 						$this->log($table, $uid, $state, 0, 0,
-								   $message, 0,
-								   array(
+								$message, 0,
+								array(
 										$propArr['header'],
 										$table . ':' . $uid,
 										$pagePropArr['header'],
 										$propArr['pid']
-								   ),
-								   $propArr['event_pid']);
+								),
+								$propArr['event_pid']);
 
 					} else {
 						$this->log($table, $uid, $state, 0, 100, $GLOBALS['TYPO3_DB']->sql_error());
@@ -6077,7 +6077,7 @@ class t3lib_TCEmain {
 				if (
 					!$GLOBALS['TCA'][$table]['columns'][$col]['config']['MM'] && // Do not unset MM relation fields, since equality of the MM count doesn't always mean that relations haven't changed.
 					(!strcmp($val, $currentRecord[$col]) || // Unset fields which matched exactly.
-					 ($cRecTypes[$col] == 'int' && $currentRecord[$col] == 0 && !strcmp($val, '')) // Now, a situation where TYPO3 tries to put an empty string into an integer field, we should not strcmp the integer-zero and '', but rather accept them to be similar.
+					($cRecTypes[$col] == 'int' && $currentRecord[$col] == 0 && !strcmp($val, '')) // Now, a situation where TYPO3 tries to put an empty string into an integer field, we should not strcmp the integer-zero and '', but rather accept them to be similar.
 					)
 				) {
 					unset($fieldArray[$col]);
@@ -6374,7 +6374,7 @@ class t3lib_TCEmain {
 			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $configArr) {
 				if ($configArr['config']['type'] == 'group' &&
 					($configArr['config']['internal_type'] == 'file' ||
-					 $configArr['config']['internal_type'] == 'file_reference')) {
+					$configArr['config']['internal_type'] == 'file_reference')) {
 					$listArr[] = $field;
 				}
 			}

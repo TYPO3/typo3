@@ -825,7 +825,7 @@ class tx_indexedsearch extends tslib_pibase {
 					 */
 						// Initialize the indexer-class
 					$indexerObj = t3lib_div::makeInstance('tx_indexedsearch_indexer');
-					  // Perform metaphone search
+						// Perform metaphone search
 					$res = $this->searchMetaphone($indexerObj->metaphone($sWord, $this->storeMetaphoneInfoAsWords));
 					unset($indexerObj);
 				break;

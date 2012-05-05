@@ -88,12 +88,12 @@ class tx_em_reports_ExtensionStatus  implements tx_reports_StatusProvider {
 				$message = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_MainRepositoryNotFound');
 			} else {
 				if ($row['extCount'] == 0) {
-				 	$value = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_NoExtensionsFound');
+					$value = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_NoExtensionsFound');
 					$severity = tx_reports_reports_status_Status::WARNING;
 					$message = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_MainRepositoryNoExtensions');
 				} else {
 					if ($row['lastUpdated'] < $GLOBALS['EXEC_TIME'] - (3600*24*7)) {
-					 	$value = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_ExtensionsNotUpToDate');
+						$value = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_ExtensionsNotUpToDate');
 						$severity = tx_reports_reports_status_Status::NOTICE;
 						$message = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_MainRepositoryOldList');
 					} else {
@@ -124,10 +124,10 @@ class tx_em_reports_ExtensionStatus  implements tx_reports_StatusProvider {
 		);
 		$message  = array('', '');
 		$severity = array(tx_reports_reports_status_Status::OK, tx_reports_reports_status_Status::OK);
-	   $initialMessage = array(
-		   $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_insecureInstalledExtensions') . '<br><br>',
-		   $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_insecureExistingExtensions') . '<br><br>',
-	   );
+		$initialMessage = array(
+			$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_insecureInstalledExtensions') . '<br><br>',
+			$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_insecureExistingExtensions') . '<br><br>',
+		);
 		$extensionList = array();
 		$installedExtensionList = array();
 		$extensionCompareList = array();

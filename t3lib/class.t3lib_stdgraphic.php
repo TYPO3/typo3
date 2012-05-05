@@ -720,13 +720,13 @@ class t3lib_stdGraphic {
 	 */
 	function addToMap($cords, $conf) {
 		$this->map .= '<area' .
-					  ' shape="poly"' .
-					  ' coords="' . implode(',', $cords) . '"' .
-					  ' href="' . htmlspecialchars($conf['url']) . '"' .
-					  ($conf['target'] ? ' target="' . htmlspecialchars($conf['target']) . '"' : '') .
-					  $JS .
-					  (strlen($conf['titleText']) ? ' title="' . htmlspecialchars($conf['titleText']) . '"' : '') .
-					  ' alt="' . htmlspecialchars($conf['altText']) . '" />';
+					' shape="poly"' .
+					' coords="' . implode(',', $cords) . '"' .
+					' href="' . htmlspecialchars($conf['url']) . '"' .
+					($conf['target'] ? ' target="' . htmlspecialchars($conf['target']) . '"' : '') .
+					$JS .
+					(strlen($conf['titleText']) ? ' title="' . htmlspecialchars($conf['titleText']) . '"' : '') .
+					' alt="' . htmlspecialchars($conf['altText']) . '" />';
 	}
 
 	/**

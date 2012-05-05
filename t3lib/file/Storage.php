@@ -1664,7 +1664,7 @@ class t3lib_file_Storage {
 		if ($processingFolder && $path == '/') {
 			$processedFolderIdentifier = $this->processingFolder->getIdentifier();
 			$processedFolderIdentifier = trim($processedFolderIdentifier, '/');
-			 if (isset($items[$processedFolderIdentifier])) {
+			if (isset($items[$processedFolderIdentifier])) {
 				unset($items[$processedFolderIdentifier]);
 			}
 		}

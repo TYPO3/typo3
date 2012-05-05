@@ -123,56 +123,56 @@ class t3lib_utility_MailTest extends tx_phpunit_testcase {
 		$GLOBALS['TYPO3_CONF_VARS']['MAIL'] = $mailConfigurationBackup;
 	}
 
-    /**
-     * @test
-     */
-    public function breakLinesForEmailReturnsEmptyStringIfEmptryStringIsGiven() {
-        $this->assertEmpty(
-            t3lib_utility_Mail::breakLinesForEmail('')
-        );
-    }
+	/**
+	 * @test
+	 */
+	public function breakLinesForEmailReturnsEmptyStringIfEmptryStringIsGiven() {
+		$this->assertEmpty(
+			t3lib_utility_Mail::breakLinesForEmail('')
+		);
+	}
 
-    /**
-     * @test
-     */
-    public function breakLinesForEmailReturnsOneLineIfCharWithIsNotExceeded() {
-        $newlineChar = LF;
-        $lineWidth = 76;
-        $str = 'This text is not longer than 76 chars and therefore will not be broken.';
-        $returnString = t3lib_utility_Mail::breakLinesForEmail($str, $newlineChar, $lineWidth);
-        $this->assertEquals(
-            1,
-            count(explode($newlineChar, $returnString))
-        );
-    }
+	/**
+	 * @test
+	 */
+	public function breakLinesForEmailReturnsOneLineIfCharWithIsNotExceeded() {
+		$newlineChar = LF;
+		$lineWidth = 76;
+		$str = 'This text is not longer than 76 chars and therefore will not be broken.';
+		$returnString = t3lib_utility_Mail::breakLinesForEmail($str, $newlineChar, $lineWidth);
+		$this->assertEquals(
+			1,
+			count(explode($newlineChar, $returnString))
+		);
+	}
 
-    /**
-     * @test
-     */
-    public function breakLinesForEmailBreaksTextIfCharWithIsExceeded() {
-        $newlineChar = LF;
-        $lineWidth = 50;
-        $str = 'This text is longer than 50 chars and therefore will be broken.';
-        $returnString = t3lib_utility_Mail::breakLinesForEmail($str, $newlineChar, $lineWidth);
-        $this->assertEquals(
-            2,
-            count(explode($newlineChar, $returnString))
-        );
-    }
+	/**
+	 * @test
+	 */
+	public function breakLinesForEmailBreaksTextIfCharWithIsExceeded() {
+		$newlineChar = LF;
+		$lineWidth = 50;
+		$str = 'This text is longer than 50 chars and therefore will be broken.';
+		$returnString = t3lib_utility_Mail::breakLinesForEmail($str, $newlineChar, $lineWidth);
+		$this->assertEquals(
+			2,
+			count(explode($newlineChar, $returnString))
+		);
+	}
 
-    /**
-     * @test
-     */
-    public function breakLinesForEmailBreaksTextWithNoSpaceFoundBeforeLimit() {
-        $newlineChar = LF;
-        $lineWidth = 10;
+	/**
+	 * @test
+	 */
+	public function breakLinesForEmailBreaksTextWithNoSpaceFoundBeforeLimit() {
+		$newlineChar = LF;
+		$lineWidth = 10;
 		// first space after 20 chars (more than $lineWidth)
-        $str = 'abcdefghijklmnopqrst uvwxyz 123456';
-        $returnString = t3lib_utility_Mail::breakLinesForEmail($str, $newlineChar, $lineWidth);
-        $this->assertEquals(
-            $returnString,
-            'abcdefghijklmnopqrst' . LF . 'uvwxyz' . LF . '123456'
-        );
-    }
+		$str = 'abcdefghijklmnopqrst uvwxyz 123456';
+		$returnString = t3lib_utility_Mail::breakLinesForEmail($str, $newlineChar, $lineWidth);
+		$this->assertEquals(
+			$returnString,
+				'abcdefghijklmnopqrst' . LF . 'uvwxyz' . LF . '123456'
+		);
+	}
 }
 ?>

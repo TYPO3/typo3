@@ -96,7 +96,7 @@ class t3lib_TCEforms_Suggest {
 		$jsObj = str_replace(' ', '', ucwords(str_replace('-', ' ', t3lib_div::strtolower($suggestId))));
 		$this->TCEformsObj->additionalJS_post[] = '
 			var ' . $jsObj . ' = new TCEForms.Suggest("' . $fieldname . '", "' . $table . '", "' . $field .
-												  '", "' . $row['uid'] . '", ' . $row['pid'] . ', ' . $minChars . ');
+												'", "' . $row['uid'] . '", ' . $row['pid'] . ', ' . $minChars . ');
 			' . $jsObj . '.defaultValue = "' . t3lib_div::slashJS($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.findRecord')) . '";
 		';
 
@@ -190,7 +190,6 @@ class t3lib_TCEforms_Suggest {
 				$config = t3lib_div::array_merge_recursive_overrule($config, $wizardConfig[$queryTable]);
 			}
 
-
 				// merge the configurations of different "levels" to get the working configuration for this table and
 				// field (i.e., go from the most general to the most special configuration)
 			if (is_array($TSconfig['TCEFORM.']['suggest.']['default.'])) {
@@ -218,7 +217,7 @@ class t3lib_TCEforms_Suggest {
 				$config['addWhere'] = strtr(' ' . $config['addWhere'], array(
 																			'###THIS_UID###' => intval($uid),
 																			'###CURRENT_PID###' => intval($pageId),
-																	   ));
+																		));
 			}
 				// instantiate the class that should fetch the records for this $queryTable
 			$receiverClassName = $config['receiverClass'];
@@ -256,7 +255,7 @@ class t3lib_TCEforms_Suggest {
 				$row = $resultRows[$rowsSort[$i]];
 				$rowId = $row['table'] . '-' . $row['uid'] . '-' . $table . '-' . $uid . '-' . $field;
 				$listItems[] = '<li' . ($row['class'] != '' ? ' class="' . $row['class'] . '"' : '') .
-							   ' id="' . $rowId . '" style="' . $row['style'] . '">' . $row['text'] . '</li>';
+							' id="' . $rowId . '" style="' . $row['style'] . '">' . $row['text'] . '</li>';
 			}
 		}
 

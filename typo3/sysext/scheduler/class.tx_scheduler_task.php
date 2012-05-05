@@ -427,7 +427,7 @@ abstract class tx_scheduler_Task {
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 	}
 
- 	/**
+	/**
 	 * Clears all marked executions
 	 *
 	 * @return boolean TRUE if the clearing succeeded, FALSE otherwise

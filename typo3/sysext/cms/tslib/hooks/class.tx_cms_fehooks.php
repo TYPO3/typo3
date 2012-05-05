@@ -28,10 +28,9 @@
 /**
  * Uses frontend hooks to show preview informations
  *
-  * @package TYPO3
+ * @package TYPO3
  * @subpackage cms
  */
-
 class tx_cms_fehooks {
 
 	/**

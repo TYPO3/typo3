@@ -115,7 +115,7 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 						<div style="width: 100%; padding: 2px; margin: 0 0 6px 0;">
 							<strong style="color: #BE0027;">' . $exceptionCodeNumber . htmlspecialchars($exception->getMessage()) .
 							'</strong> ' . $moreInformationLink .
-			 '<br />
+			'<br />
 							<br />
 							<span class="ExceptionProperty">' . get_class($exception) . '</span> thrown in file<br />
 							<span class="ExceptionProperty">' . htmlspecialchars($filePathAndName) . '</span> in line

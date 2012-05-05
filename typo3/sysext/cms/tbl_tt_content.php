@@ -720,12 +720,12 @@ $TCA['tt_content'] = array(
 					),
 				),
 				'foreign_selector_fieldTcaOverride' => array(
-					 'config' => array(
-						 'filter' => array(
-							 'fileType' =>  array(
-								 'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
-							 )
-						 )
+					'config' => array(
+						'filter' => array(
+							'fileType' =>  array(
+								'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
+							)
+						)
 					)
 				),
 				'maxitems' => '200',
@@ -1454,13 +1454,13 @@ $TCA['tt_content'] = array(
 				'appearance' => array(
 					'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:media.addFileReference',
 				),
-				 'foreign_selector_fieldTcaOverride' => array(
-					 'config' => array(
-						 'filter' => array(
-							 'fileType' =>  array(
-								 'disallowed' => PHP_EXTENSIONS_DEFAULT
-							 )
-						 )
+				'foreign_selector_fieldTcaOverride' => array(
+					'config' => array(
+						'filter' => array(
+							'fileType' =>  array(
+								'disallowed' => PHP_EXTENSIONS_DEFAULT
+							)
+						)
 					)
 				),
 			)),

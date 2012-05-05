@@ -37,7 +37,7 @@ class tx_scheduler_SleepTask extends tx_scheduler_Task {
 	 *
 	 * @var integer $sleepTime
 	 */
-	 public $sleepTime = 10;
+	public $sleepTime = 10;
 
 	/**
 	 * Function executed from the Scheduler.
