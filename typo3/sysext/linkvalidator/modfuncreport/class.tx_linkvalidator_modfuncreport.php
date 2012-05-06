@@ -217,7 +217,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		}
 
 		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" id="refreshLinkList"  value="'
-								 . $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
+								. $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
 
 		$this->processor = t3lib_div::makeInstance('tx_linkvalidator_Processor');
 		$this->updateBrokenLinks();
@@ -552,13 +552,13 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 
 		$params = '&edit[' . $table . '][' . $row['record_uid'] . ']=edit';
 		$actionLinks = '<a href="#" onclick="' .
-					   t3lib_BEfunc::editOnClick(
-						   $params,
-						   $GLOBALS['BACK_PATH'],
-						   t3lib_div::getIndpEnv('REQUEST_URI') . '?id=' . $this->pObj->id . '&search_levels=' . $this->searchLevel
-					   ) . '"' .
-					   ' title="' . $GLOBALS['LANG']->getLL('list.edit') . '">' .
-					   t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a>';
+					t3lib_BEfunc::editOnClick(
+						$params,
+						$GLOBALS['BACK_PATH'],
+						t3lib_div::getIndpEnv('REQUEST_URI') . '?id=' . $this->pObj->id . '&search_levels=' . $this->searchLevel
+					) . '"' .
+					' title="' . $GLOBALS['LANG']->getLL('list.edit') . '">' .
+					t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a>';
 
 		$elementHeadline = $row['headline'];
 		if (empty($elementHeadline)) {
@@ -656,9 +656,9 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 						$translation = $GLOBALS['LANG']->getLL('hooks.' . $type);
 						$translation = $translation ? $translation : $type;
 						$option = '<input type="checkbox" ' . $additionalAttr . '  id="' . $prefix . 'SET_' . $type
-								  . '" name="' . $prefix . 'SET[' . $type . ']" value="1"' . ($this->pObj->MOD_SETTINGS[$type]
-								  ? ' checked="checked"' : '') . '/>' . '<label for="' . $prefix . 'SET[' . $type . ']">'
-								  . htmlspecialchars($translation) . '</label>';
+								. '" name="' . $prefix . 'SET[' . $type . ']" value="1"' . ($this->pObj->MOD_SETTINGS[$type]
+								? ' checked="checked"' : '') . '/>' . '<label for="' . $prefix . 'SET[' . $type . ']">'
+								. htmlspecialchars($translation) . '</label>';
 						$hookSectionMarker['option'] = $option;
 						$hookSectionContent .= t3lib_parsehtml::substituteMarkerArray($hookSectionTemplate, $hookSectionMarker, '###|###', TRUE, TRUE);
 					}
