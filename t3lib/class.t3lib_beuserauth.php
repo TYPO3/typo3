@@ -29,10 +29,9 @@
  *
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @internal
  */
-
 
 /**
  * TYPO3 user authentication, backend
@@ -40,20 +39,25 @@
  * t3lib_userauthgroup contains most of the functions used for checking permissions, authenticating users, setting up the user etc. This class is most interesting in terms of an API for user from outside.
  * This class contains the configuration of the database fields used plus some functions for the authentication process of backend users.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_beUserAuth extends t3lib_userAuthGroup {
-	var $session_table = 'be_sessions'; // Table to use for session data.
+		// Table to use for session data
+	var $session_table = 'be_sessions';
 
-	var $user_table = 'be_users'; // Table in database with userdata
-	var $username_column = 'username'; // Column for login-name
-	var $userident_column = 'password'; // Column for password
-	var $userid_column = 'uid'; // Column for user-id
+		// Table in database with userdata
+	var $user_table = 'be_users';
+		// Column for login-name
+	var $username_column = 'username';
+		// Column for password
+	var $userident_column = 'password';
+		// Column for user-id
+	var $userid_column = 'uid';
 	var $lastLogin_column = 'lastlogin';
 
-	var $enablecolumns = Array(
+	var $enablecolumns = array(
 		'rootLevel' => 1,
 		'deleted' => 'deleted',
 		'disabled' => 'disable',
@@ -61,16 +65,24 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		'endtime' => 'endtime'
 	);
 
-	var $formfield_uname = 'username'; // formfield with login-name
-	var $formfield_uident = 'userident'; // formfield with password
-	var $formfield_chalvalue = 'challenge'; // formfield with a unique value which is used to encrypt the password and username
-	var $formfield_status = 'login_status'; // formfield with status: *'login', 'logout'
+		// Formfield with login-name
+	var $formfield_uname = 'username';
+		// Formfield with password
+	var $formfield_uident = 'userident';
+		// Formfield with a unique value which is used to encrypt the password and username
+	var $formfield_chalvalue = 'challenge';
+		// Formfield with status: *'login', 'logout'
+	var $formfield_status = 'login_status';
 
-	var $writeStdLog = 1; // Decides if the writelog() function is called at login and logout
-	var $writeAttemptLog = 1; // If the writelog() functions is called if a login-attempt has be tried without success
+		// Decides if the writelog() function is called at login and logout
+	var $writeStdLog = 1;
+		// If the writelog() functions is called if a login-attempt has be tried without success
+	var $writeAttemptLog = 1;
 
-	var $auth_timeout_field = 6000; // if > 0 : session-timeout in seconds. if FALSE/<0 : no timeout. if string: The string is fieldname from the usertable where the timeout can be found.
-	var $lifetime = 0; // 0 = Session-cookies. If session-cookies, the browser will stop session when the browser is closed. Else it keeps the session for $lifetime seconds.
+		// if > 0 : session-timeout in seconds. if FALSE/<0 : no timeout. If string: The string is fieldname from the usertable where the timeout can be found.
+	var $auth_timeout_field = 6000;
+		// 0 = Session-cookies. If session-cookies, the browser will stop session when the browser is closed. Else it keeps the session for $lifetime seconds.
+	var $lifetime = 0;
 	var $challengeStoredInCookie = TRUE;
 
 
@@ -79,14 +91,12 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 
 		// User Config Default values:
 		// The array may contain other fields for configuration. For this, see "setup" extension and "TSConfig" document (User TSconfig, "setup.[xxx]....")
-	/*
-		   Reserved keys for other storage of session data:
-		   moduleData
-		   moduleSessionID
-	*/
-	var $uc_default = Array(
+		// Reserved keys for other storage of session data:
+		// moduleData
+		// moduleSessionID
+	var $uc_default = array(
 		'interfaceSetup' => '', // serialized content that is used to store interface pane and menu positions. Set by the logout.php-script
-		'moduleData' => Array(), // user-data for the modules
+		'moduleData' => array(), // user-data for the modules
 		'thumbnailsByDefault' => 1,
 		'emailMeAtLogin' => 0,
 		'condensedMode' => 0,
@@ -116,10 +126,10 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	}
 
 	/**
-	 * @static
-	 * @return string
+	 * Getter for the cookie name
 	 *
-	 * returns the configured cookie name
+	 * @static
+	 * @return string returns the configured cookie name
 	 */
 	public static function getCookieName() {
 		$configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']);
@@ -128,7 +138,6 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		}
 		return $configuredCookieName;
 	}
-
 
 	/**
 	 * Sets the security level for the Backend login
@@ -154,10 +163,11 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	}
 
 	/**
-	 * If TYPO3_CONF_VARS['BE']['enabledBeUserIPLock'] is enabled and an IP-list is found in the User TSconfig objString "options.lockToIP", then make an IP comparison with REMOTE_ADDR and return the outcome (TRUE/FALSE)
+	 * If TYPO3_CONF_VARS['BE']['enabledBeUserIPLock'] is enabled and
+	 * an IP-list is found in the User TSconfig objString "options.lockToIP",
+	 * then make an IP comparison with REMOTE_ADDR and return the outcome (TRUE/FALSE)
 	 *
-	 * @return	boolean		TRUE, if IP address validates OK (or no check is done at all)
-	 * @access private
+	 * @return boolean TRUE, if IP address validates OK (or no check is done at all)
 	 */
 	function checkLockToIP() {
 		$out = 1;
@@ -176,7 +186,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 * If no user is logged in the default behaviour is to exit with an error message, but this will happen ONLY if the constant TYPO3_PROCEED_IF_NO_USER is set TRUE.
 	 * This function is called right after ->start() in fx. init.php
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function backendCheckLogin() {
 		if (!$this->user['uid']) {
@@ -184,11 +194,16 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 				t3lib_utility_Http::redirect($GLOBALS['BACK_PATH']);
 			}
 		} else { // ...and if that's the case, call these functions
-			$this->fetchGroupData(); //	The groups are fetched and ready for permission checking in this initialization.	Tables.php must be read before this because stuff like the modules has impact in this
+			$this->fetchGroupData();
+
+				// The groups are fetched and ready for permission checking in this initialization.
+				// Tables.php must be read before this because stuff like the modules has impact in this
 			if ($this->checkLockToIP()) {
 				if ($this->isUserAllowedToLogin()) {
-					$this->backendSetUC(); // Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
-					$this->emailAtLogin(); // email at login - if option set.
+						// Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
+					$this->backendSetUC();
+						// Email at login - if option set.
+					$this->emailAtLogin();
 				} else {
 					throw new RuntimeException('Login Error: TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.', 1294585860);
 				}
@@ -201,7 +216,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	/**
 	 * If the backend script is in CLI mode, it will try to load a backend user named by the CLI module name (in lowercase)
 	 *
-	 * @return	boolean		Returns TRUE if a CLI user was loaded, otherwise FALSE!
+	 * @return boolean Returns TRUE if a CLI user was loaded, otherwise FALSE!
 	 */
 	function checkCLIuser() {
 			// First, check if cliMode is enabled:
@@ -236,12 +251,13 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 * Initialize the internal ->uc array for the backend user
 	 * Will make the overrides if necessary, and write the UC back to the be_users record if changes has happend
 	 *
-	 * @return	void
+	 * @return void
 	 * @internal
 	 */
 	function backendSetUC() {
 			// UC - user configuration is a serialized array inside the userobject
-		$temp_theSavedUC = unserialize($this->user['uc']); // if there is a saved uc we implement that instead of the default one.
+			// If there is a saved uc we implement that instead of the default one.
+		$temp_theSavedUC = unserialize($this->user['uc']);
 		if (is_array($temp_theSavedUC)) {
 			$this->unpack_uc($temp_theSavedUC);
 		}
@@ -273,7 +289,8 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 
 			// Saving if updated.
 		if ($U) {
-			$this->writeUC(); // Method from the t3lib_userauth class.
+				// Method from the t3lib_userauth class.
+			$this->writeUC();
 		}
 	}
 
@@ -281,7 +298,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 * Override: Call this function every time the uc is updated.
 	 * That is 1) by reverting to default values, 2) in the setup-module, 3) userTS changes (userauthgroup)
 	 *
-	 * @return	void
+	 * @return void
 	 * @internal
 	 */
 	function overrideUC() {
@@ -291,7 +308,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	/**
 	 * Clears the user[uc] and ->uc to blank strings. Then calls ->backendSetUC() to fill it again with reset contents
 	 *
-	 * @return	void
+	 * @return void
 	 * @internal
 	 */
 	function resetUC() {
@@ -304,10 +321,10 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 * Will send an email notification to warning_email_address/the login users email address when a login session is just started.
 	 * Depends on various parameters whether mails are send and to whom.
 	 *
-	 * @return	void
+	 * @return void
 	 * @access private
 	 */
-	function emailAtLogin() {
+	private function emailAtLogin() {
 		if ($this->loginSessionStarted) {
 				// Send notify-mail
 			$subject = 'At "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '"' .
@@ -368,7 +385,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 *	+ backend user is used in CLI context and adminOnly is explicitely set to "2"
 	 *	+ backend user is being controlled by an admin user
 	 *
-	 * @return	boolean		Whether a backend user is allowed to access the backend
+	 * @return boolean Whether a backend user is allowed to access the backend
 	 */
 	protected function isUserAllowedToLogin() {
 		$isUserAllowedToLogin = FALSE;
