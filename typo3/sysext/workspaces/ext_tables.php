@@ -35,7 +35,7 @@ if (TYPO3_MODE == 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 
 	t3lib_extMgm::registerExtDirectComponent(
 		'TYPO3.Workspaces.ExtDirectActions',
-		 t3lib_extMgm::extPath($_EXTKEY) . 'Classes/ExtDirect/ActionHandler.php:Tx_Workspaces_ExtDirect_ActionHandler',
+		t3lib_extMgm::extPath($_EXTKEY) . 'Classes/ExtDirect/ActionHandler.php:Tx_Workspaces_ExtDirect_ActionHandler',
 		'web_WorkspacesWorkspaces',
 		'user,group'
 	);

@@ -526,7 +526,7 @@ class Tx_Workspaces_Service_GridData {
 	 * @param boolean $hiddenOffline hidden status of offline record
 	 * @return string
 	 */
-	 protected function workspaceState($stateId, $hiddenOnline = FALSE, $hiddenOffline = FALSE) {
+	protected function workspaceState($stateId, $hiddenOnline = FALSE, $hiddenOffline = FALSE) {
 		switch ($stateId) {
 			case -1:
 				$state = 'new';

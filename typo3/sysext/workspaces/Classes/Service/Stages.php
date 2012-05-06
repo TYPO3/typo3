@@ -764,12 +764,12 @@ class Tx_Workspaces_Service_Stages {
 	protected function isStageAllowedForUser($stageId) {
 		$cacheKey = $this->getWorkspaceId() . '_' . $stageId;
 		$isAllowed = FALSE;
- 		if (isset($this->workspaceStageAllowedCache[$cacheKey])) {
+		if (isset($this->workspaceStageAllowedCache[$cacheKey])) {
 			$isAllowed = $this->workspaceStageAllowedCache[$cacheKey];
-		 } else {
+		} else {
 			$isAllowed = $GLOBALS['BE_USER']->workspaceCheckStageForCurrent($stageId);
 			$this->workspaceStageAllowedCache[$cacheKey] = $isAllowed;
-		 }
+		}
 		return $isAllowed;
 	}
 
