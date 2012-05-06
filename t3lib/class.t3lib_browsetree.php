@@ -29,16 +29,15 @@
  *
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @coauthor	René Fritz <r.fritz@colorcube.de>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @coauthor René Fritz <r.fritz@colorcube.de>
  */
-
 
 /**
  * Extension class for the t3lib_treeView class, specially made for browsing pages
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @coauthor	René Fritz <r.fritz@colorcube.de>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @coauthor René Fritz <r.fritz@colorcube.de>
  * @see t3lib_treeView, t3lib_pageTree
  * @package TYPO3
  * @subpackage t3lib
@@ -55,7 +54,7 @@ class t3lib_browseTree extends t3lib_treeView {
 	 */
 	function init($clause = '', $orderByFields = '') {
 
-			// this will hide records from display - it has nothing todo with user rights!!
+			// This will hide records from display - it has nothing todo with user rights!!
 		$clauseExludePidList = '';
 		if ($pidList = $GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages')) {
 			if ($pidList = $GLOBALS['TYPO3_DB']->cleanIntList($pidList)) {
@@ -95,8 +94,8 @@ class t3lib_browseTree extends t3lib_treeView {
 	 * Creates title attribute content for pages.
 	 * Uses API function in t3lib_BEfunc which will retrieve lots of useful information for pages.
 	 *
-	 * @param	array		The table row.
-	 * @return	string
+	 * @param array $row The table row.
+	 * @return string
 	 */
 	function getTitleAttrib($row) {
 		return t3lib_BEfunc::titleAttribForPages($row, '1=1 ' . $this->clause, 0);
@@ -105,9 +104,9 @@ class t3lib_browseTree extends t3lib_treeView {
 	/**
 	 * Wrapping the image tag, $icon, for the row, $row (except for mount points)
 	 *
-	 * @param	string		The image tag for the icon
-	 * @param	array		The row for the current element
-	 * @return	string		The processed icon input value.
+	 * @param string $icon The image tag for the icon
+	 * @param array $row The row for the current element
+	 * @return string The processed icon input value.
 	 * @access private
 	 */
 	function wrapIcon($icon, $row) {
@@ -128,12 +127,12 @@ class t3lib_browseTree extends t3lib_treeView {
 	 * Returns the title for the input record. If blank, a "no title" label (localized) will be returned.
 	 * Do NOT htmlspecialchar the string from this function - has already been done.
 	 *
-	 * @param	array		The input row array (where the key "title" is used for the title)
-	 * @param	integer		Title length (30)
-	 * @return	string		The title.
+	 * @param array $row The input row array (where the key "title" is used for the title)
+	 * @param integer $titleLen Title length (30)
+	 * @return string The title.
 	 */
 	function getTitleStr($row, $titleLen = 30) {
-			// get the basic title from the parent implementation in t3lib_treeview
+			// Get the basic title from the parent implementation in t3lib_treeview
 		$title = parent::getTitleStr($row, $titleLen);
 		if (isset($row['is_siteroot']) && $row['is_siteroot'] != 0 && $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showDomainNameWithTitle')) {
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('domainName,sorting', 'sys_domain',
@@ -148,9 +147,9 @@ class t3lib_browseTree extends t3lib_treeView {
 	/**
 	 * Adds a red "+" to the input string, $str, if the field "php_tree_stop" in the $row (pages) is set
 	 *
-	 * @param	string		Input string, like a page title for the tree
-	 * @param	array		record row with "php_tree_stop" field
-	 * @return	string		Modified string
+	 * @param string $str Input string, like a page title for the tree
+	 * @param array $row Record row with "php_tree_stop" field
+	 * @return string Modified string
 	 * @access private
 	 */
 	function wrapStop($str, $row) {
