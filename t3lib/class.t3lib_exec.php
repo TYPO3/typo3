@@ -24,9 +24,8 @@
 /**
  * t3lib_exec finds executables (programs) on Unix and Windows without knowing where they are
  *
- * @author	René Fritz <r.fritz@colorcube.de>
+ * @author René Fritz <r.fritz@colorcube.de>
  */
-
 
 /**
  * returns exec command for a program
@@ -53,9 +52,9 @@
  * binaries can be preconfigured with
  * $TYPO3_CONF_VARS['SYS']['binSetup']
  *
- * @author		René Fritz <r.fritz@colorcube.de>
- * @package		TYPO3
- * @subpackage	t3lib
+ * @author René Fritz <r.fritz@colorcube.de>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_exec {
 
@@ -83,9 +82,9 @@ class t3lib_exec {
 	/**
 	 * Checks if a command is valid or not, updates global variables
 	 *
-	 * @param	string		the command that should be executed. eg: "convert"
-	 * @param	string		executer for the command. eg: "perl"
-	 * @return	boolean		FALSE if cmd is not found, or -1 if the handler is not found
+	 * @param string $cmd The command that should be executed. eg: "convert"
+	 * @param string $handler Executer for the command. eg: "perl"
+	 * @return boolean FALSE if cmd is not found, or -1 if the handler is not found
 	 */
 	public static function checkCommand($cmd, $handler = '') {
 		if (!self::init()) {
@@ -150,21 +149,20 @@ class t3lib_exec {
 		return FALSE;
 	}
 
-
 	/**
 	 * Returns a command string for exec(), system()
 	 *
-	 * @param	string		the command that should be executed. eg: "convert"
-	 * @param	string		handler (executor) for the command. eg: "perl"
-	 * @param	string		options for the handler, like '-w' for "perl"
-	 * @return	mixed		returns command string, or FALSE if cmd is not found, or -1 if the handler is not found
+	 * @param string $cmd The command that should be executed. eg: "convert"
+	 * @param string $handler Handler (executor) for the command. eg: "perl"
+	 * @param string $handlerOpt Options for the handler, like '-w' for "perl"
+	 * @return mixed Returns command string, or FALSE if cmd is not found, or -1 if the handler is not found
 	 */
 	public static function getCommand($cmd, $handler = '', $handlerOpt = '') {
 		if (!self::init()) {
 			return FALSE;
 		}
 
-			// handler
+			// Handler
 		if ($handler) {
 			$handler = self::getCommand($handler);
 
@@ -174,7 +172,7 @@ class t3lib_exec {
 			$handler .= ' ' . $handlerOpt . ' ';
 		}
 
-			// command
+			// Command
 		if (!self::checkCommand($cmd)) {
 			return FALSE;
 		}
@@ -183,23 +181,21 @@ class t3lib_exec {
 		return trim($handler . $cmd);
 	}
 
-
 	/**
 	 * Extend the preset paths. This way an extension can install an executable and provide the path to t3lib_exec.
 	 *
-	 * @param	string		comma separated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
-	 * @return	void
+	 * @param string $paths Comma separated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
+	 * @return void
 	 */
 	public static function addPaths($paths) {
 		self::initPaths($paths);
 	}
 
-
 	/**
 	 * Returns an array of search paths
 	 *
-	 * @param	boolean		If set the array contains invalid path too. Then the key is the path and the value is empty
-	 * @return	array		Array of search paths (empty if exec is disabled)
+	 * @param boolean $addInvalid If set the array contains invalid path too. Then the key is the path and the value is empty
+	 * @return array Array of search paths (empty if exec is disabled)
 	 */
 	public static function getPaths($addInvalid = FALSE) {
 		if (!self::init()) {
@@ -218,11 +214,10 @@ class t3lib_exec {
 		return $paths;
 	}
 
-
 	/**
 	 * Initializes this class
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected static function init() {
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['disable_exec_function']) {
@@ -236,27 +231,26 @@ class t3lib_exec {
 		return TRUE;
 	}
 
-
 	/**
 	 * Initializes and extends the preset paths with own
 	 *
-	 * @param	string		Comma seperated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
-	 * @return	void
+	 * @param string $paths Comma seperated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
+	 * @return void
 	 */
 	protected static function initPaths($paths = '') {
 		$doCheck = FALSE;
 
-			// init global paths array if not already done
+			// Init global paths array if not already done
 		if (!is_array(self::$paths)) {
 			self::$paths = self::getPathsInternal();
 			$doCheck = TRUE;
 		}
-			// merge the submitted paths array to the global
+			// Merge the submitted paths array to the global
 		if ($paths) {
 			$paths = t3lib_div::trimExplode(',', $paths, 1);
 			if (is_array($paths)) {
 				foreach ($paths as $path) {
-						// make absolute path of relative
+						// Make absolute path of relative
 					if (!preg_match('#^/#', $path)) {
 						$path = PATH_site . $path;
 					}
@@ -270,10 +264,10 @@ class t3lib_exec {
 				}
 			}
 		}
-			// check if new paths are invalid
+			// Check if new paths are invalid
 		if ($doCheck) {
 			foreach (self::$paths as $path => $valid) {
-					// ignore invalid (FALSE) paths
+					// Ignore invalid (FALSE) paths
 				if ($valid AND !@is_dir($path)) {
 					self::$paths[$path] = FALSE;
 				}
@@ -281,11 +275,10 @@ class t3lib_exec {
 		}
 	}
 
-
 	/**
 	 * Processes and returns the paths from $GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup']
 	 *
-	 * @return	array	Array of commands and path
+	 * @return array Array of commands and path
 	 */
 	protected static function getConfiguredApps() {
 		$cmdArr = array();
@@ -303,25 +296,24 @@ class t3lib_exec {
 		return $cmdArr;
 	}
 
-
 	/**
 	 * Sets the search paths from different sources, internal
 	 *
-	 * @return	array		Array of absolute paths (keys and values are equal)
+	 * @return array Array of absolute paths (keys and values are equal)
 	 */
 	protected static function getPathsInternal() {
 
 		$pathsArr = array();
 		$sysPathArr = array();
 
-			// image magick paths first
+			// Image magick paths first
 			// im_path_lzw take precedence over im_path
 		if (($imPath = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'] ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'] : $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path']))) {
 			$imPath = self::fixPath($imPath);
 			$pathsArr[$imPath] = $imPath;
 		}
 
-			// add configured paths
+			// Add configured paths
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['binPath']) {
 			$sysPath = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['binPath'], 1);
 			foreach ($sysPath as $val) {
@@ -330,8 +322,7 @@ class t3lib_exec {
 			}
 		}
 
-
-			// add path from environment
+			// Add path from environment
 			// TODO: how does this work for WIN
 		if ($GLOBALS['_SERVER']['PATH']) {
 			$sep = (TYPO3_OS == 'WIN' ? ';' : ':');
@@ -359,8 +350,8 @@ class t3lib_exec {
 	/**
 	 * Set a path to the right format
 	 *
-	 * @param	string		Input path
-	 * @return	string		Output path
+	 * @param string $path Input path
+	 * @return string Output path
 	 */
 	protected static function fixPath($path) {
 		return str_replace('//', '/', $path . '/');
