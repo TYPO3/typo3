@@ -40,16 +40,16 @@ class t3lib_cache {
 	 * Initializes the caching framework by loading the cache manager and factory
 	 * into the global context.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public static function initializeCachingFramework() {
 		if (!self::isCachingFrameworkInitialized()) {
-				// new operator used on purpose, makeInstance() is not ready to be used so early in bootstrap
+				// New operator used on purpose, makeInstance() is not ready to be used so early in bootstrap
 			$GLOBALS['typo3CacheManager'] = new t3lib_cache_Manager();
 			t3lib_div::setSingletonInstance('t3lib_cache_Manager', $GLOBALS['typo3CacheManager']);
 			t3lib_div::addClassNameToMakeInstanceCache('t3lib_cache_Manager', 't3lib_cache_Manager');
 			$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-				// new operator used on purpose, makeInstance() is not ready to be used so early in bootstrap
+				// New operator used on purpose, makeInstance() is not ready to be used so early in bootstrap
 			$GLOBALS['typo3CacheFactory'] = new t3lib_cache_Factory('production', $GLOBALS['typo3CacheManager']);
 			t3lib_div::setSingletonInstance('t3lib_cache_Factory', $GLOBALS['typo3CacheFactory']);
 			t3lib_div::addClassNameToMakeInstanceCache('t3lib_cache_Factory', 't3lib_cache_Factory');
