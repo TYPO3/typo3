@@ -27,20 +27,20 @@
 /**
  * Contains base class for TYPO3 cli scripts
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * TYPO3 cli script basis
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_cli {
 
-	var $cli_args = array(); // Command line arguments, exploded into key => value-array pairs
+		// Command line arguments, exploded into key => value-array pairs
+	var $cli_args = array();
 	var $cli_options = array(
 		array('-s', 'Silent operation, will only output errors and important messages.'),
 		array('--silent', 'Same as -s'),
@@ -57,12 +57,11 @@ class t3lib_cli {
 	);
 	var $stdin = NULL;
 
-
 	/**
 	 * Constructor
 	 * Make sure child classes also call this!
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function __construct() {
 			// Loads the cli_args array with command line arguments
@@ -73,9 +72,9 @@ class t3lib_cli {
 	 * Finds the arg token (like "-s") in argv and returns the rest of argv from that point on.
 	 * This should only be used in special cases since this->cli_args should already be prepared with an index of values!
 	 *
-	 * @param	string		Option string, eg. "-s"
-	 * @param	array		Input argv array
-	 * @return	array		Output argv array with all options AFTER the found option.
+	 * @param string $option Option string, eg. "-s"
+	 * @param array $argv Input argv array
+	 * @return array Output argv array with all options AFTER the found option.
 	 */
 	function cli_getArgArray($option, $argv) {
 		while (count($argv) && strcmp($argv[0], $option)) {
@@ -91,8 +90,8 @@ class t3lib_cli {
 	/**
 	 * Return TRUE if option is found
 	 *
-	 * @param	string		Option string, eg. "-s"
-	 * @return	boolean		TRUE if option found
+	 * @param string $option Option string, eg. "-s"
+	 * @return boolean TRUE if option found
 	 */
 	function cli_isArg($option) {
 		return isset($this->cli_args[$option]);
@@ -101,9 +100,9 @@ class t3lib_cli {
 	/**
 	 * Return argument value
 	 *
-	 * @param	string		Option string, eg. "-s"
-	 * @param	integer		Value index, default is 0 (zero) = the first one...
-	 * @return	boolean		TRUE if option found
+	 * @param string $option Option string, eg. "-s"
+	 * @param integer $idx Value index, default is 0 (zero) = the first one...
+	 * @return boolean TRUE if option found
 	 */
 	function cli_argValue($option, $idx = 0) {
 		return is_array($this->cli_args[$option]) ? $this->cli_args[$option][$idx] : '';
@@ -114,13 +113,14 @@ class t3lib_cli {
 	 * Argument names (eg. "-s") will be keys and values after (eg. "-s value1 value2 ..." or "-s=value1") will be in the array.
 	 * Array is empty if no values
 	 *
-	 * @return	array
+	 * @return array
 	 */
 	function cli_getArgIndex() {
 		$cli_options = array();
 		$index = '_DEFAULT';
 		foreach ($_SERVER['argv'] as $token) {
-			if ($token{0} === '-' && !t3lib_utility_Math::canBeInterpretedAsInteger($token{1})) { // Options starting with a number is invalid - they could be negative values... !
+				// Options starting with a number is invalid - they could be negative values!
+			if ($token{0} === '-' && !t3lib_utility_Math::canBeInterpretedAsInteger($token{1})) {
 				list($index, $opt) = explode('=', $token, 2);
 				if (isset($cli_options[$index])) {
 					echo 'ERROR: Option ' . $index . ' was used twice!' . LF;
@@ -139,7 +139,8 @@ class t3lib_cli {
 	}
 
 	/**
-	 * Validates if the input arguments in this->cli_args are all listed in this->cli_options and if not, will exit with an error.
+	 * Validates if the input arguments in this->cli_args are all listed in this->cli_options and if not,
+	 * will exit with an error.
 	 */
 	function cli_validateArgs() {
 		$cli_args_copy = $this->cli_args;
@@ -180,7 +181,7 @@ class t3lib_cli {
 	/**
 	 * Asks stdin for keyboard input and returns the line (after enter is pressed)
 	 *
-	 * @return	string
+	 * @return string
 	 */
 	function cli_keyboardInput() {
 
@@ -198,11 +199,12 @@ class t3lib_cli {
 	/**
 	 * Asks for Yes/No from shell and returns TRUE if "y" or "yes" is found as input.
 	 *
-	 * @param	string		String to ask before...
-	 * @return	boolean		TRUE if "y" or "yes" is the input (case insensitive)
+	 * @param string $msg String to ask before...
+	 * @return boolean TRUE if "y" or "yes" is the input (case insensitive)
 	 */
 	function cli_keyboardInput_yes($msg = '') {
-		echo $msg . ' (Yes/No + return): '; // ONLY makes sense to echo it out since we are awaiting keyboard input - that cannot be silenced...
+			// ONLY makes sense to echo it out since we are awaiting keyboard input - that cannot be silenced
+		echo $msg . ' (Yes/No + return): ';
 
 		return t3lib_div::inList('y,yes', strtolower($this->cli_keyboardInput()));
 	}
@@ -210,9 +212,9 @@ class t3lib_cli {
 	/**
 	 * Echos strings to shell, but respective silent-modes
 	 *
-	 * @param	string		The string
-	 * @param	boolean		If string should be written even if -s is set (-ss will subdue it!)
-	 * @return	boolean		Returns TRUE if string was outputted.
+	 * @param string $string The string
+	 * @param boolean $force If string should be written even if -s is set (-ss will subdue it!)
+	 * @return boolean Returns TRUE if string was outputted.
 	 */
 	function cli_echo($string = '', $force = FALSE) {
 		if (isset($this->cli_args['-ss'])) {
@@ -233,7 +235,7 @@ class t3lib_cli {
 	/**
 	 * Prints help-output from ->cli_help array
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function cli_help() {
 		foreach ($this->cli_help as $key => $value) {
@@ -271,9 +273,9 @@ class t3lib_cli {
 	/**
 	 * Indentation function for 75 char wide lines.
 	 *
-	 * @param	string		String to break and indent.
-	 * @param	integer		Number of space chars to indent.
-	 * @return	string		Result
+	 * @param string $str String to break and indent.
+	 * @param integer $indent Number of space chars to indent.
+	 * @return string Result
 	 */
 	function cli_indent($str, $indent) {
 		$lines = explode(LF, wordwrap($str, 75 - $indent));
