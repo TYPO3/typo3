@@ -70,7 +70,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 		if (isset($this->urlReports[$url])) {
 			if (!$this->urlReports[$url]) {
 				if(is_array($this->urlErrorParams[$url])) {
-				    $this->setErrorParams($this->urlErrorParams[$url]);
+					$this->setErrorParams($this->urlErrorParams[$url]);
 				}
 			}
 			return $this->urlReports[$url];
