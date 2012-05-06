@@ -148,8 +148,6 @@ class TBE_browser_recordList extends localRecordList {
 	/**
 	 * Check if all row listing conditions are fulfilled.
 	 *
-	 * This function serves as a dummy method to be overriden in extending classes.
-	 *
 	 * @param   string  $table string Table name
 	 * @param   array   $row array Record
 	 * @return  bool    True, if all conditions are fulfilled.
@@ -183,7 +181,7 @@ class TBE_browser_recordList extends localRecordList {
 
 
 	/**
-	 * Set which pointint field (in the TCEForm) we are currently rending the element browser for
+	 * Set which pointing field (in the TCEForm) we are currently rendering the element browser for
 	 *
 	 * @param   string  $tableName Table name
 	 * @param   string   $fieldName Field name
