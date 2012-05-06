@@ -359,7 +359,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 				),
 				'',
 				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList')
- 			);
+			);
 		}
 		return $buttons;
 	}
@@ -479,7 +479,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 						'</a>'.
 							'<a href="'.$this->doc->issueCommand('&cmd['.$this->table.']['.$this->uid.'][version][action]=swap&cmd['.$this->table.']['.$this->uid.'][version][swapWith]='.$row['uid'].'&cmd['.$this->table.']['.$this->uid.'][version][swapContent]=ALL').'">'.
 						'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/insert4.gif','width="14" height="14"').' alt="" title="Publish page AND content! - AND ALL SUBPAGES!" />'.
-						'</a>' : '') */ : t3lib_iconWorks::getSpriteIcon('status-status-current', array('title' =>  $GLOBALS['LANG']->getLL('currentOnlineVersion', TRUE)))) . '</td>
+						'</a>' : '')*/: t3lib_iconWorks::getSpriteIcon('status-status-current', array('title' =>  $GLOBALS['LANG']->getLL('currentOnlineVersion', TRUE)))) . '</td>
 					<td nowrap="nowrap">'.$adminLinks.'</td>
 					<td nowrap="nowrap">'.t3lib_BEfunc::getRecordTitle($this->table,$row,TRUE).'</td>
 					<td>'.$row['uid'].'</td>
@@ -1594,7 +1594,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 				$sId = 1;
 				$sLabel = $GLOBALS['LANG']->getLL('editing');
 				$color = '#666666';
- 				$label = $GLOBALS['LANG']->getLL('commentForReviewer');
+				$label = $GLOBALS['LANG']->getLL('commentForReviewer');
 				$titleAttrib = $GLOBALS['LANG']->getLL('sendToReview');
 			break;
 			case 1:

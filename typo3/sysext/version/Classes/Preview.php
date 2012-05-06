@@ -223,7 +223,7 @@ class Tx_Version_Preview implements t3lib_Singleton {
 					throw new Exception('POST requests are incompatible with keyword preview.', 1294585191);
 				}
 			} else {
-			 	throw new Exception('ADMCMD command could not be executed! (No keyword configuration found)', 1294585192);
+				throw new Exception('ADMCMD command could not be executed! (No keyword configuration found)', 1294585192);
 			}
 		}
 		return FALSE;

@@ -381,7 +381,7 @@ class tx_version_tcemain {
 
 		if (is_array($workspaceRec)) {
 
-				 // Get the new stage title from workspaces library, if workspaces extension is installed
+				// Get the new stage title from workspaces library, if workspaces extension is installed
 			if (t3lib_extMgm::isLoaded('workspaces')) {
 				$stageService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
 				$newStage = $stageService->getStageTitle((int)$stageId);
@@ -919,7 +919,7 @@ class tx_version_tcemain {
 											if ($movePlhID) {
 													// Remove, if normal publishing:
 												if (!$swapIntoWS) {
-													 	// For delete + completely delete!
+														// For delete + completely delete!
 													$tcemainObj->deleteEl($table, $movePlhID, TRUE, TRUE);
 												} else {
 													// Otherwise update the movePlaceholder:
@@ -998,7 +998,7 @@ class tx_version_tcemain {
 
 												// Checking for "new-placeholder" and if found, delete it (BUT FIRST after swapping!):
 											if (!$swapIntoWS && $t3ver_state['curVersion']>0) {
-												 	// For delete + completely delete!
+													// For delete + completely delete!
 												$tcemainObj->deleteEl($table, $swapWith, TRUE, TRUE);
 											}
 										} else $tcemainObj->newlog('During Swapping: SQL errors happened: ' . implode('; ', $sqlErrors), 2);
@@ -1098,7 +1098,7 @@ class tx_version_tcemain {
 	 *
 	 * @param string $table Table name
 	 * @param integer $id Record UID
- 	 * @param boolean $flush If set, will completely delete element
+	 * @param boolean $flush If set, will completely delete element
 	 * @param t3lib_TCEmain $tcemainObj TCEmain object
 	 * @return	void
 	 */
