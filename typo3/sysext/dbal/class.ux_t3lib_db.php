@@ -194,7 +194,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				$this->cacheIdentifier,
 				$this->getCacheableString($completeFieldInformation),
 				array('t3lib_db')
-            );
+			);
 		}
 	}
 
