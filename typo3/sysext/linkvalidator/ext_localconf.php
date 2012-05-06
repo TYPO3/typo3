@@ -6,10 +6,10 @@ if (!defined ('TYPO3_MODE')) {
 t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:linkvalidator/res/pagetsconfig.txt">');
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_linkvalidator_tasks_Validator'] = array(
-    'extension'        => $_EXTKEY,
-    'title'            => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:tasks.validate.name',
-    'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:tasks.validate.description',
-    'additionalFields' => 'tx_linkvalidator_tasks_ValidatorAdditionalFieldProvider'
+	'extension'        => $_EXTKEY,
+	'title'            => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:tasks.validate.name',
+	'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:tasks.validate.description',
+	'additionalFields' => 'tx_linkvalidator_tasks_ValidatorAdditionalFieldProvider'
 );
 
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
