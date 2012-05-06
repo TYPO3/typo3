@@ -70,7 +70,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 		if (isset($this->urlReports[$url])) {
 			if(!$this->urlReports[$url]) {
 				if(is_array($this->urlErrorParams[$url])) {
-				    $this->setErrorParams($this->urlErrorParams[$url]);
+					$this->setErrorParams($this->urlErrorParams[$url]);
 				}
 			}
 			return $this->urlReports[$url];
@@ -88,7 +88,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 		$lastUrl = $url;
 		while (($report['http_code'] == 301 || $report['http_code'] == 302
 				|| $report['http_code'] == 303 || $report['http_code'] == 307)
-			   && ($tries < 5)) {
+				&& ($tries < 5)) {
 
 				// split header into lines and find Location:
 			$responseHeaders = t3lib_div::trimExplode(chr(10), $content, TRUE);
