@@ -27,26 +27,30 @@
 /**
  * Contains functions for manipulating flex form data
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * Contains functions for manipulating flex form data
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_flexformtools {
 
-	var $convertCharset = FALSE; // If set, the charset of data XML is converted to system charset.
-	var $reNumberIndexesOfSectionData = FALSE; // If set, section indexes are re-numbered before processing
+		// If set, the charset of data XML is converted to system charset.
+	var $convertCharset = FALSE;
+		// If set, section indexes are re-numbered before processing
+	var $reNumberIndexesOfSectionData = FALSE;
 
-	var $traverseFlexFormXMLData_DS = array(); // Contains data structure when traversing flexform
-	var $traverseFlexFormXMLData_Data = array(); // Contains data array when traversing flexform
+		// Contains data structure when traversing flexform
+	var $traverseFlexFormXMLData_DS = array();
+		// Contains data array when traversing flexform
+	var $traverseFlexFormXMLData_Data = array();
 
-		// Options for array2xml() for flexform. This will map the weird keys from the internal array to tags that could potentially be checked with a DTD/schema
+		// Options for array2xml() for flexform.
+		// This will map the weird keys from the internal array to tags that could potentially be checked with a DTD/schema
 	var $flexArray2Xml_options = array(
 		'parentTagMap' => array(
 			'data' => 'sheet',
@@ -61,22 +65,22 @@ class t3lib_flexformtools {
 		'disableTypeAttrib' => 2
 	);
 
-		// Internal:
 	/**
 	 * Reference to object called
 	 */
 	var $callBackObj = NULL;
-	var $cleanFlexFormXML = array(); // Used for accumulation of clean XML
+		// Used for accumulation of clean XML
+	var $cleanFlexFormXML = array();
 
 	/**
 	 * Handler for Flex Forms
 	 *
-	 * @param	string		The table name of the record
-	 * @param	string		The field name of the flexform field to work on
-	 * @param	array		The record data array
-	 * @param	object		Object (passed by reference) in which the call back function is located
-	 * @param	string		Method name of call back function in object for values
-	 * @return	boolean		If TRUE, error happened (error string returned)
+	 * @param string $table The table name of the record
+	 * @param string $field The field name of the flexform field to work on
+	 * @param array $row The record data array
+	 * @param object $callBackObj Object (passed by reference) in which the call back function is located
+	 * @param string $callBackMethod_value Method name of call back function in object for values
+	 * @return boolean If TRUE, error happened (error string returned)
 	 */
 	function traverseFlexFormXMLData($table, $field, $row, $callBackObj, $callBackMethod_value) {
 
@@ -114,7 +118,7 @@ class t3lib_flexformtools {
 			$langChildren = $dataStructArray['meta']['langChildren'] ? 1 : 0;
 			$langDisabled = $dataStructArray['meta']['langDisable'] ? 1 : 0;
 
-				// empty or invalid <meta>
+				// Empty or invalid <meta>
 			if (!is_array($editData['meta'])) {
 				$editData['meta'] = array();
 			}
@@ -150,7 +154,8 @@ class t3lib_flexformtools {
 
 						// Render sheet:
 					if (is_array($dataStruct['ROOT']) && is_array($dataStruct['ROOT']['el'])) {
-						$lang = 'l' . $lKey; // Separate language key
+							// Separate language key
+						$lang = 'l' . $lKey;
 						$PA['vKeys'] = $langChildren && !$langDisabled ? $editData['meta']['currentLangId'] : array('DEF');
 						$PA['lKey'] = $lang;
 						$PA['callBackMethod_value'] = $callBackMethod_value;
@@ -181,20 +186,22 @@ class t3lib_flexformtools {
 	/**
 	 * Recursively traversing flexform data according to data structure and element data
 	 *
-	 * @param	array		(Part of) data structure array that applies to the sub section of the flexform data we are processing
-	 * @param	array		(Part of) edit data array, reflecting current part of data structure
-	 * @param	array		Additional parameters passed.
-	 * @param	string		Telling the "path" to the element in the flexform XML
-	 * @return	array
+	 * @param array $dataStruct (Part of) data structure array that applies to the sub section of the flexform data we are processing
+	 * @param array $editData (Part of) edit data array, reflecting current part of data structure
+	 * @param array $PA Additional parameters passed.
+	 * @param string $path Telling the "path" to the element in the flexform XML
+	 * @return array
 	 */
 	function traverseFlexFormXMLData_recurse($dataStruct, $editData, &$PA, $path = '') {
 
 		if (is_array($dataStruct)) {
 			foreach ($dataStruct as $key => $value) {
-				if (is_array($value)) { // The value of each entry must be an array.
+					// The value of each entry must be an array.
+				if (is_array($value)) {
 
 					if ($value['type'] == 'array') {
-						if ($value['section']) { // Array (Section) traversal:
+							// Array (Section) traversal
+						if ($value['section']) {
 
 							$cc = 0;
 							if (is_array($editData[$key]['el'])) {
@@ -258,15 +265,15 @@ class t3lib_flexformtools {
 	/**
 	 * Returns an array of available languages to use for FlexForm operations
 	 *
-	 * @return	array
+	 * @return array
 	 */
 	function getAvailableLanguages() {
 		$isL = t3lib_extMgm::isLoaded('static_info_tables');
 
-			// Find all language records in the system:
+			// Find all language records in the system
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('static_lang_isocode,title,uid', 'sys_language', 'pid=0' . t3lib_BEfunc::deleteClause('sys_language'), '', 'title');
 
-			// Traverse them:
+			// Traverse them
 		$output = array();
 		$output[0] = array(
 			'uid' => 0,
@@ -291,7 +298,6 @@ class t3lib_flexformtools {
 		return $output;
 	}
 
-
 	/***********************************
 	 *
 	 * Processing functions
@@ -302,10 +308,10 @@ class t3lib_flexformtools {
 	 * Cleaning up FlexForm XML to hold only the values it may according to its Data Structure. Also the order of tags will follow that of the data structure.
 	 * BE CAREFUL: DO not clean records in workspaces unless IN the workspace! The Data Structure might resolve falsely on a workspace record when cleaned from Live workspace.
 	 *
-	 * @param	string		Table name
-	 * @param	string		Field name of the flex form field in which the XML is found that should be cleaned.
-	 * @param	array		The record
-	 * @return	string		Clean XML from FlexForm field
+	 * @param string $table Table name
+	 * @param string $field Field name of the flex form field in which the XML is found that should be cleaned.
+	 * @param array $row The record
+	 * @return string Clean XML from FlexForm field
 	 */
 	function cleanFlexFormXML($table, $field, $row) {
 
@@ -324,12 +330,12 @@ class t3lib_flexformtools {
 	 * Call back function for t3lib_flexformtools class
 	 * Basically just setting the value in a new array (thus cleaning because only values that are valid are visited!)
 	 *
-	 * @param	array		Data structure for the current value
-	 * @param	mixed		Current value
-	 * @param	array		Additional configuration used in calling function
-	 * @param	string		Path of value in DS structure
-	 * @param	object		Object reference to caller
-	 * @return	void
+	 * @param array $dsArr Data structure for the current value
+	 * @param mixed $data Current value
+	 * @param array $PA Additional configuration used in calling function
+	 * @param string $path Path of value in DS structure
+	 * @param object $pObj Object reference to caller
+	 * @return void
 	 */
 	function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, $pObj) {
 			// Just setting value in our own result array, basically replicating the structure:
@@ -344,7 +350,6 @@ class t3lib_flexformtools {
 		}
 	}
 
-
 	/***********************************
 	 *
 	 * Multi purpose functions
@@ -354,9 +359,9 @@ class t3lib_flexformtools {
 	/**
 	 * Get a value from a multi-dimensional array by giving a path "../../.." pointing to the element
 	 *
-	 * @param	string		The path pointing to the value field, eg. test/2/title to access $array['test'][2]['title']
-	 * @param	array		Array to get value from. Passed by reference so the value returned can be used to change the value in the array!
-	 * @return	mixed		Value returned
+	 * @param string $pathArray The path pointing to the value field, eg. test/2/title to access $array['test'][2]['title']
+	 * @param array $array Array to get value from. Passed by reference so the value returned can be used to change the value in the array!
+	 * @return mixed Value returned
 	 */
 	function &getArrayValueByPath($pathArray, &$array) {
 		if (!is_array($pathArray)) {
@@ -382,10 +387,10 @@ class t3lib_flexformtools {
 	/**
 	 * Set a value in a multi-dimensional array by giving a path "../../.." pointing to the element
 	 *
-	 * @param	string		The path pointing to the value field, eg. test/2/title to access $array['test'][2]['title']
-	 * @param	array		Array to set value in. Passed by reference so the value returned can be used to change the value in the array!
-	 * @param	mixed		Value to set
-	 * @return	mixed		Value returned
+	 * @param string $pathArray The path pointing to the value field, eg. test/2/title to access $array['test'][2]['title']
+	 * @param array $array Array to set value in. Passed by reference so the value returned can be used to change the value in the array!
+	 * @param mixed $value Value to set
+	 * @return mixed Value returned
 	 */
 	function setArrayValueByPath($pathArray, &$array, $value) {
 		if (isset($value)) {
@@ -413,9 +418,9 @@ class t3lib_flexformtools {
 	/**
 	 * Convert FlexForm data array to XML
 	 *
-	 * @param	array		Array to output in <T3FlexForms> XML
-	 * @param	boolean		If set, the XML prologue is returned as well.
-	 * @return	string		XML content.
+	 * @param array $array Array to output in <T3FlexForms> XML
+	 * @param boolean $addPrologue If set, the XML prologue is returned as well.
+	 * @return string XML content.
 	 */
 	function flexArray2Xml($array, $addPrologue = FALSE) {
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexformForceCDATA']) {
