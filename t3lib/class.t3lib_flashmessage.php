@@ -29,7 +29,7 @@
 /**
  * A class representing flash messages.
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -38,7 +38,7 @@ class t3lib_FlashMessage extends t3lib_message_AbstractMessage {
 	/**
 	 * defines whether the message should be stored in the session (to survive redirects) or only for one request (default)
 	 *
-	 * @var bool
+	 * @var boolean
 	 */
 	protected $storeInSession = FALSE;
 
@@ -56,12 +56,12 @@ class t3lib_FlashMessage extends t3lib_message_AbstractMessage {
 	/**
 	 * Constructor for a flash message
 	 *
-	 * @param	string	The message.
-	 * @param	string	Optional message title.
-	 * @param	integer	Optional severity, must be either of t3lib_FlashMessage::INFO, t3lib_FlashMessage::OK,
-	 *				  t3lib_FlashMessage::WARNING or t3lib_FlashMessage::ERROR. Default is t3lib_FlashMessage::OK.
-	 * @param	bool	Optional, defines whether the message should be stored in the session or only for one request (default)
-	 * @return	void
+	 * @param string $message The message.
+	 * @param string $title Optional message title.
+	 * @param integer $severity Optional severity, must be either of t3lib_FlashMessage::INFO, t3lib_FlashMessage::OK,
+	 *				  			t3lib_FlashMessage::WARNING or t3lib_FlashMessage::ERROR. Default is t3lib_FlashMessage::OK.
+	 * @param boolean $storeInSession Optional, defines whether the message should be stored in the session or only for one request (default)
+	 * @return void
 	 */
 	public function __construct($message, $title = '', $severity = self::OK, $storeInSession = FALSE) {
 		$this->setMessage($message);
@@ -70,11 +70,10 @@ class t3lib_FlashMessage extends t3lib_message_AbstractMessage {
 		$this->setStoreInSession($storeInSession);
 	}
 
-
 	/**
 	 * Gets the message's storeInSession flag.
 	 *
-	 * @return	bool	TRUE if message should be stored in the session, otherwise FALSE.
+	 * @return boolean TRUE if message should be stored in the session, otherwise FALSE.
 	 */
 	public function isSessionMessage() {
 		return $this->storeInSession;
@@ -83,8 +82,8 @@ class t3lib_FlashMessage extends t3lib_message_AbstractMessage {
 	/**
 	 * Sets the message's storeInSession flag
 	 *
-	 * @param	bool	The persistence flag
-	 * @return	void
+	 * @param boolean The persistence flag
+	 * @return void
 	 */
 	public function setStoreInSession($storeInSession) {
 		$this->storeInSession = (bool) $storeInSession;
@@ -93,7 +92,7 @@ class t3lib_FlashMessage extends t3lib_message_AbstractMessage {
 	/**
 	 * Gets the message severity class name
 	 *
-	 * @return	string	The message severity class name
+	 * @return string The message severity class name
 	 */
 	public function getClass() {
 		return 'message-' . $this->classes[$this->severity];
@@ -102,7 +101,7 @@ class t3lib_FlashMessage extends t3lib_message_AbstractMessage {
 	/**
 	 * Renders the flash message.
 	 *
-	 * @return	string	The flash message as HTML.
+	 * @return string The flash message as HTML.
 	 */
 	public function render() {
 		$title = '';
@@ -117,7 +116,6 @@ class t3lib_FlashMessage extends t3lib_message_AbstractMessage {
 
 		return $message;
 	}
-
 }
 
 ?>
