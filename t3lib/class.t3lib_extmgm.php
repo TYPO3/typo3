@@ -29,7 +29,7 @@
  * Extension Management functions
  *
  * This class is never instantiated, rather the methods inside is called as functions like
- *		 t3lib_extMgm::isLoaded('my_extension');
+ * t3lib_extMgm::isLoaded('my_extension');
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
@@ -38,7 +38,6 @@
 final class t3lib_extMgm {
 
 	protected static $extensionKeyMap;
-
 
 	/**************************************
 	 *
@@ -49,9 +48,9 @@ final class t3lib_extMgm {
 	/**
 	 * Returns TRUE if the extension with extension key $key is loaded.
 	 *
-	 * @param	string		Extension key to test
-	 * @param	boolean		If $exitOnError is TRUE and the extension is not loaded the function will die with an error message
-	 * @return	boolean
+	 * @param string $key Extension key to test
+	 * @param boolean $exitOnError If $exitOnError is TRUE and the extension is not loaded the function will die with an error message
+	 * @return boolean
 	 */
 	public static function isLoaded($key, $exitOnError = 0) {
 		if ($exitOnError && !isset($GLOBALS['TYPO3_LOADED_EXT'][$key])) {
@@ -116,8 +115,8 @@ final class t3lib_extMgm {
 	 * If the extension is not loaded the function will die with an error message
 	 * Useful for images and links from backend
 	 *
-	 * @param	string		Extension key
-	 * @return	string
+	 * @param string $key Extension key
+	 * @return string
 	 */
 	public static function extRelPath($key) {
 		if (!isset($GLOBALS['TYPO3_LOADED_EXT'][$key])) {
@@ -134,8 +133,8 @@ final class t3lib_extMgm {
 	 * If the extension is not loaded the function will die with an error message
 	 * Useful for images and links from the frontend
 	 *
-	 * @param	string		Extension key
-	 * @return	string
+	 * @param string $key Extension key
+	 * @return string
 	 */
 	public static function siteRelPath($key) {
 		return substr(self::extPath($key), strlen(PATH_site));
@@ -144,8 +143,8 @@ final class t3lib_extMgm {
 	/**
 	 * Returns the correct class name prefix for the extension key $key
 	 *
-	 * @param	string		Extension key
-	 * @return	string
+	 * @param string $key Extension key
+	 * @return string
 	 * @internal
 	 */
 	public static function getCN($key) {
@@ -155,8 +154,8 @@ final class t3lib_extMgm {
 	/**
 	 * Returns the real extension key like 'tt_news' from an extension prefix like 'tx_ttnews'.
 	 *
-	 * @param	string		$prefix: The extension prefix (e.g. 'tx_ttnews')
-	 * @return	mixed		Real extension key (string) or FALSE (boolean) if something went wrong
+	 * @param string $prefix The extension prefix (e.g. 'tx_ttnews')
+	 * @return mixed Real extension key (string) or FALSE (boolean) if something went wrong
 	 */
 	public static function getExtensionKeyByPrefix($prefix) {
 		$result = FALSE;
@@ -179,7 +178,7 @@ final class t3lib_extMgm {
 	/**
 	 * Clears the extension key map.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public static function clearExtensionKeyMap() {
 		self::$extensionKeyMap = NULL;
@@ -189,8 +188,8 @@ final class t3lib_extMgm {
 	 * Retrieves the version of an installed extension.
 	 * If the extension is not installed, this function returns an empty string.
 	 *
-	 * @param string $key the key of the extension to look up, must not be empty
-	 * @return string the extension version as a string in the format "x.y.z",
+	 * @param string $key The key of the extension to look up, must not be empty
+	 * @return string The extension version as a string in the format "x.y.z",
 	 *				will be an empty string if the extension is not loaded
 	 */
 	public static function getExtensionVersion($key) {
@@ -214,7 +213,6 @@ final class t3lib_extMgm {
 		return $extensionVersion;
 	}
 
-
 	/**************************************
 	 *
 	 *	 Adding BACKEND features
@@ -229,10 +227,10 @@ final class t3lib_extMgm {
 	 * So to have the fields displayed you must also call fx. addToAllTCAtypes or manually add the fields to the types list.
 	 * FOR USE IN ext_tables.php FILES
 	 *
-	 * @param	string		$table is the table name of a table already present in $GLOBALS['TCA'] with a columns section
-	 * @param	array		$columnArray is the array with the additional columns (typical some fields an extension wants to add)
-	 * @param	boolean		If $addTofeInterface is TRUE the list of fields are also added to the fe_admin_fieldList.
-	 * @return	void
+	 * @param string $table The table name of a table already present in $GLOBALS['TCA'] with a columns section
+	 * @param array $columnArray The array with the additional columns (typical some fields an extension wants to add)
+	 * @param boolean $addTofeInterface If $addTofeInterface is TRUE the list of fields are also added to the fe_admin_fieldList.
+	 * @return void
 	 */
 	public static function addTCAcolumns($table, $columnArray, $addTofeInterface = 0) {
 		t3lib_div::loadTCA($table);
@@ -253,16 +251,16 @@ final class t3lib_extMgm {
 	 * Typically this function is called after having added new columns (database fields) with the addTCAcolumns function
 	 * FOR USE IN ext_tables.php FILES
 	 *
-	 * @param	string		Table name
-	 * @param	string		Field list to add.
-	 * @param	string		List of specific types to add the field list to. (If empty, all type entries are affected)
-	 * @param	string		Insert fields before (default) or after one
-	 *						of this fields (commalist with "before:", "after:" or "replace:" commands).
-	 *						Example: "before:keywords,--palette--;;4,after:description".
-	 *						Palettes must be passed like in the example no matter how the palette definition looks like in TCA.
-	 *						It will add the list of new fields before or after a palette or replace the field inside the palette,
-	 *						when the field given in $position is found inside a palette used by the type.
-	 * @return	void
+	 * @param string $table Table name
+	 * @param string $str Field list to add.
+	 * @param string $specificTypesList List of specific types to add the field list to. (If empty, all type entries are affected)
+	 * @param string $position Insert fields before (default) or after one
+	 *				of this fields (commalist with "before:", "after:" or "replace:" commands).
+	 *				Example: "before:keywords,--palette--;;4,after:description".
+	 *				Palettes must be passed like in the example no matter how the palette definition looks like in TCA.
+	 *				It will add the list of new fields before or after a palette or replace the field inside the palette,
+	 *				when the field given in $position is found inside a palette used by the type.
+	 * @return void
 	 */
 	public static function addToAllTCAtypes($table, $str, $specificTypesList = '', $position = '') {
 		t3lib_div::loadTCA($table);
@@ -279,7 +277,7 @@ final class t3lib_extMgm {
 								if (preg_match('/\b' . $palette . '\b/', $typeDetails['showitem']) > 0
 										&& preg_match('/\b' . $positionArray[1] . '\b/', $paletteDetails['showitem']) > 0) {
 									self::addFieldsToPalette($table, $palette, $str, $position);
-										// save that palette in case other types use it
+										// Save that palette in case other types use it
 									$palettesChanged[] = $palette;
 									$fieldExists = TRUE;
 								} elseif (in_array($palette, $palettesChanged)) {
@@ -328,15 +326,15 @@ final class t3lib_extMgm {
 	 * If the field does not have a palette yet, it's created automatically and
 	 * gets called "generatedFor-$field".
 	 *
-	 * @param	string		$table: Name of the table
-	 * @param	string		$field: Name of the field that has the palette to be extended
-	 * @param	string		$addFields: List of fields to be added to the palette
-	 * @param	string		$insertionPosition: Insert fields before (default) or after one
-	 *						 of this fields (commalist with "before:", "after:" or "replace:" commands).
-	 *						 Example: "before:keywords,--palette--;;4,after:description".
-	 *						 Palettes must be passed like in the example no matter how the
-	 *						 palette definition looks like in TCA.
-	 * @return	void
+	 * @param string $table Name of the table
+	 * @param string $field Name of the field that has the palette to be extended
+	 * @param string $addFields List of fields to be added to the palette
+	 * @param string $insertionPosition Insert fields before (default) or after one
+	 *				of this fields (commalist with "before:", "after:" or "replace:" commands).
+	 *				Example: "before:keywords,--palette--;;4,after:description".
+	 *				Palettes must be passed like in the example no matter how the
+	 *				palette definition looks like in TCA.
+	 * @return void
 	 */
 	public static function addFieldsToAllPalettesOfField($table, $field, $addFields, $insertionPosition = '') {
 		$generatedPalette = '';
@@ -378,15 +376,15 @@ final class t3lib_extMgm {
 	 * Adds new fields to a palette.
 	 * If the palette does not exist yet, it's created automatically.
 	 *
-	 * @param	string		$table: Name of the table
-	 * @param	string		$palette: Name of the palette to be extended
-	 * @param	string		$addFields: List of fields to be added to the palette
-	 * @param	string		$insertionPosition: Insert fields before (default) or after one
-	 *						 of this fields (commalist with "before:", "after:" or "replace:" commands).
-	 *						 Example: "before:keywords,--palette--;;4,after:description".
-	 *						 Palettes must be passed like in the example no matter how the
-	 *						 palette definition looks like in TCA.
-	 * @return	void
+	 * @param string $table Name of the table
+	 * @param string $palette Name of the palette to be extended
+	 * @param string $addFields List of fields to be added to the palette
+	 * @param string $insertionPosition Insert fields before (default) or after one
+	 *				of this fields (commalist with "before:", "after:" or "replace:" commands).
+	 *				Example: "before:keywords,--palette--;;4,after:description".
+	 *				Palettes must be passed like in the example no matter how the
+	 *				palette definition looks like in TCA.
+	 * @return void
 	 */
 	public static function addFieldsToPalette($table, $palette, $addFields, $insertionPosition = '') {
 		t3lib_div::loadTCA($table);
@@ -437,6 +435,8 @@ final class t3lib_extMgm {
 	 * @param string $relativeToField Add item relative to existing field
 	 * @param string $relativePosition Valid keywords: 'before', 'after'
 	 * 		or 'replace' to relativeToField field
+	 *
+	 * @return void
 	 */
 	public static function addTcaSelectItem($table, $field, array $item, $relativeToField = '', $relativePosition = '') {
 		if (!is_string($table)) {
@@ -560,10 +560,10 @@ final class t3lib_extMgm {
 	 * the new fields itself needs to be added additionally to show up in the user setup, like
 	 * $GLOBALS['TYPO3_USER_SETTINGS']['columns'] += $tempColumns
 	 *
-	 * @param	string	$addFields: List of fields to be added to the user settings
-	 * @param	string	$insertionPosition: Insert fields before (default) or after one
-	 *					 of this fields (commalist with "before:", "after:" or "replace:" commands).
-	 *					 Example: "before:password,after:email".
+	 * @param string $addFields List of fields to be added to the user settings
+	 * @param string $insertionPosition Insert fields before (default) or after one
+	 *				of this fields (commalist with "before:", "after:" or "replace:" commands).
+	 *				Example: "before:password,after:email".
 	 * @return void
 	 */
 	public static function addFieldsToUserSettings($addFields, $insertionPosition = '') {
@@ -578,14 +578,14 @@ final class t3lib_extMgm {
 	 * Inserts as list of data into an existing list.
 	 * The insertion position can be defined accordant before of after existing list items.
 	 *
-	 * @param	string		$list: The list of items to be extended
-	 * @param	string		$insertionList: The list of items to inserted
-	 * @param	string		$insertionPosition: Insert fields before (default) or after one
-	 *						 of this fields (commalist with "before:" or "after:" commands).
-	 *						 Example: "before:keywords,--palette--;;4,after:description".
-	 *						 Palettes must be passed like in the example no matter how the
-	 *						 palette definition looks like in TCA.
-	 * @return	string		The extended list
+	 * @param string $list The list of items to be extended
+	 * @param string $insertionList The list of items to inserted
+	 * @param string $insertionPosition Insert fields before (default) or after one
+	 *				of this fields (commalist with "before:" or "after:" commands).
+	 *				Example: "before:keywords,--palette--;;4,after:description".
+	 *				Palettes must be passed like in the example no matter how the
+	 *				palette definition looks like in TCA.
+	 * @return string The extended list
 	 */
 	protected static function executePositionedStringInsertion($list, $insertionList, $insertionPosition = '') {
 		$list = trim($list);
@@ -654,9 +654,9 @@ final class t3lib_extMgm {
 	 *  + insertion: 'field_b, field_d, field_c;;;4-4-4'
 	 * -> new insertion: 'field_d'
 	 *
-	 * @param	string		$insertionList: The list of items to inserted
-	 * @param	string		$list: The list of items to be extended (default: '')
-	 * @return	string		Duplicate-free list of items to be inserted
+	 * @param string $insertionList The list of items to inserted
+	 * @param string $list The list of items to be extended (default: '')
+	 * @return string Duplicate-free list of items to be inserted
 	 */
 	protected static function removeDuplicatesForInsertion($insertionList, $list = '') {
 		$pattern = '/(^|,)\s*\b([^;,]+)\b[^,]*/';
@@ -690,11 +690,11 @@ final class t3lib_extMgm {
 	/**
 	 * Generates search needles that are used for inserting fields/items into an existing list.
 	 *
-	 * @see		executePositionedStringInsertion
-	 * @param	string		$item: The name of the field/item
-	 * @param	array		$itemDetails: Additional details of the field/item like e.g. palette information
-	 *						 (this array gets created by the function explodeItemList())
-	 * @return	array		The needled to be used for inserting content before or after existing fields/items
+	 * @see executePositionedStringInsertion
+	 * @param string $item The name of the field/item
+	 * @param array $itemDetails Additional details of the field/item like e.g. palette information
+	 *							(this array gets created by the function explodeItemList())
+	 * @return array The needled to be used for inserting content before or after existing fields/items
 	 */
 	protected static function getInsertionNeedles($item, array $itemDetails) {
 		if (strstr($item, '--')) {
@@ -722,9 +722,9 @@ final class t3lib_extMgm {
 	/**
 	 * Generates an array of fields/items with additional information such as e.g. the name of the palette.
 	 *
-	 * @param	string		$itemList: List of fields/items to be splitted up
-	 *						 (this mostly reflects the data in $GLOBALS['TCA'][<table>]['types'][<type>]['showitem'])
-	 * @return	array		An array with the names of the fields/items as keys and additional information
+	 * @param string $itemList List of fields/items to be splitted up
+	 * 						(this mostly reflects the data in $GLOBALS['TCA'][<table>]['types'][<type>]['showitem'])
+	 * @return array An array with the names of the fields/items as keys and additional information
 	 */
 	protected static function explodeItemList($itemList) {
 		$items = array();
@@ -758,11 +758,11 @@ final class t3lib_extMgm {
 	/**
 	 * Generates a list of fields/items out of an array provided by the function getFieldsOfFieldList().
 	 *
-	 * @see		explodeItemList
-	 * @param	array		$items: The array of fields/items with optional additional information
-	 * @param	boolean		$useRawData: Use raw data instead of building by using the details (default: FALSE)
-	 * @return	string		The list of fields/items which gets used for $GLOBALS['TCA'][<table>]['types'][<type>]['showitem']
-	 *						 or $GLOBALS['TCA'][<table>]['palettes'][<palette>]['showitem'] in most cases
+	 * @see explodeItemList
+	 * @param array $items The array of fields/items with optional additional information
+	 * @param boolean $useRawData Use raw data instead of building by using the details (default: FALSE)
+	 * @return string The list of fields/items which gets used for $GLOBALS['TCA'][<table>]['types'][<type>]['showitem']
+	 *				or $GLOBALS['TCA'][<table>]['palettes'][<palette>]['showitem'] in most cases
 	 */
 	protected static function generateItemList(array $items, $useRawData = FALSE) {
 		$itemParts = array();
@@ -788,8 +788,8 @@ final class t3lib_extMgm {
 	 * Will add the $table to the list of tables allowed by default on pages as setup by $PAGES_TYPES['default']['allowedTables']
 	 * FOR USE IN ext_tables.php FILES
 	 *
-	 * @param	string		Table name
-	 * @return	void
+	 * @param string $table Table name
+	 * @return void
 	 */
 	public static function allowTableOnStandardPages($table) {
 		$GLOBALS['PAGES_TYPES']['default']['allowedTables'] .= ',' . $table;
@@ -800,10 +800,10 @@ final class t3lib_extMgm {
 	 *
 	 * @static
 	 * @param string $extensionName
-	 * @param string $mainModuleName is the main module key
-	 * @param string $subModuleName is the submodule key, if blank a plain main module is generated
-	 * @param string $position passed to t3lib_extMgm::addModule, see reference there
-	 * @param array $moduleConfiguration icon with array keys: access, icon, labels to configure the module
+	 * @param string $mainModuleName Is the main module key
+	 * @param string $subModuleName Is the submodule key, if blank a plain main module is generated
+	 * @param string $position Passed to t3lib_extMgm::addModule, see reference there
+	 * @param array $moduleConfiguration Icon with array keys: access, icon, labels to configure the module
 	 * @throws InvalidArgumentException
 	 */
 	public static function addExtJSModule($extensionName, $mainModuleName, $subModuleName = '', $position = '', array $moduleConfiguration = array()) {
@@ -821,7 +821,7 @@ final class t3lib_extMgm {
 			'extRelPath' => t3lib_extMgm::extRelPath($extensionKey) . 'Classes/'
 		);
 
-			// add mandatory parameter to use new pagetree
+			// Add mandatory parameter to use new pagetree
 		if ($mainModuleName === 'web') {
 			$defaultModuleConfiguration['navigationComponentId'] = 'typo3-pagetree';
 		}
@@ -885,15 +885,15 @@ final class t3lib_extMgm {
 	 * Adds a module (main or sub) to the backend interface
 	 * FOR USE IN ext_tables.php FILES
 	 *
-	 * @param	string		$main is the main module key, $sub is the submodule key. So $main would be an index in the $TBE_MODULES array and $sub could be an element in the lists there.
-	 * @param	string		$sub is the submodule key. If $sub is not set a blank $main module is created.
-	 * @param	string		$position can be used to set the position of the $sub module within the list of existing submodules for the main module. $position has this syntax: [cmd]:[submodule-key]. cmd can be "after", "before" or "top" (or blank which is default). If "after"/"before" then submodule will be inserted after/before the existing submodule with [submodule-key] if found. If not found, the bottom of list. If "top" the module is inserted in the top of the submodule list.
-	 * @param	string		$path is the absolute path to the module. If this value is defined the path is added as an entry in $TBE_MODULES['_PATHS'][  main_sub  ] = $path; and thereby tells the backend where the newly added modules is found in the system.
-	 * @return	void
+	 * @param string $main The main module key, $sub is the submodule key. So $main would be an index in the $TBE_MODULES array and $sub could be an element in the lists there.
+	 * @param string $sub The submodule key. If $sub is not set a blank $main module is created.
+	 * @param string $position Can be used to set the position of the $sub module within the list of existing submodules for the main module. $position has this syntax: [cmd]:[submodule-key]. cmd can be "after", "before" or "top" (or blank which is default). If "after"/"before" then submodule will be inserted after/before the existing submodule with [submodule-key] if found. If not found, the bottom of list. If "top" the module is inserted in the top of the submodule list.
+	 * @param string $path The absolute path to the module. If this value is defined the path is added as an entry in $TBE_MODULES['_PATHS'][  main_sub  ] = $path; and thereby tells the backend where the newly added modules is found in the system.
+	 * @return void
 	 */
 	public static function addModule($main, $sub = '', $position = '', $path = '') {
 		if (isset($GLOBALS['TBE_MODULES'][$main]) && $sub) {
-			// if there is already a main module by this name:
+			// If there is already a main module by this name:
 
 				// Adding the submodule to the correct position:
 			list($place, $modRef) = t3lib_div::trimExplode(':', $position, 1);
@@ -948,8 +948,8 @@ final class t3lib_extMgm {
 	 *
 	 * @param string $endpointName
 	 * @param string $callbackClass
-	 * @param string $moduleName optional: must be <mainmodule> or <mainmodule>_<submodule>
-	 * @param string $accessLevel optional: can be 'admin' or 'user,group'
+	 * @param string $moduleName Optional: must be <mainmodule> or <mainmodule>_<submodule>
+	 * @param string $accessLevel Optional: can be 'admin' or 'user,group'
 	 * @return void
 	 */
 	public static function registerExtDirectComponent($endpointName, $callbackClass, $moduleName = NULL, $accessLevel = NULL) {
@@ -967,9 +967,9 @@ final class t3lib_extMgm {
 	 * FOR USE IN ext_tables.php FILES
 	 * Example:  t3lib_extMgm::addModulePath('xMOD_tximpexp', t3lib_extMgm::extPath($_EXTKEY).'app/');
 	 *
-	 * @param	string		$name is the name of the module, refer to conf.php of the module.
-	 * @param	string		$path is the absolute path to the module directory inside of which "index.php" and "conf.php" is found.
-	 * @return	void
+	 * @param string $name The name of the module, refer to conf.php of the module.
+	 * @param string $path The absolute path to the module directory inside of which "index.php" and "conf.php" is found.
+	 * @return void
 	 */
 	public static function addModulePath($name, $path) {
 		$GLOBALS['TBE_MODULES']['_PATHS'][$name] = $path;
@@ -981,13 +981,13 @@ final class t3lib_extMgm {
 	 * See Inside TYPO3 for information on how to use this function.
 	 * FOR USE IN ext_tables.php FILES
 	 *
-	 * @param	string		Module name
-	 * @param	string		Class name
-	 * @param	string		Class path
-	 * @param	string		Title of module
-	 * @param	string		Menu array key - default is "function"
-	 * @param	string		Workspace conditions. Blank means all workspaces, any other string can be a comma list of "online", "offline" and "custom"
-	 * @return	void
+	 * @param string $modname Module name
+	 * @param string $className Class name
+	 * @param string $classPath Class path
+	 * @param string $title Title of module
+	 * @param string $MM_key Menu array key - default is "function"
+	 * @param string $WS Workspace conditions. Blank means all workspaces, any other string can be a comma list of "online", "offline" and "custom"
+	 * @return void
 	 * @see t3lib_SCbase::mergeExternalItems()
 	 */
 	public static function insertModuleFunction($modname, $className, $classPath, $title, $MM_key = 'function', $WS = '') {
@@ -1006,10 +1006,10 @@ final class t3lib_extMgm {
 	 * so that they cannot be editted again through the Install Tool.
 	 *
 	 * @static
-	 * @param	string	The group ('FE', 'BE', 'SYS' ...)
-	 * @param	string	The key of this setting within the group
-	 * @param	string	The text to add (include leading "\n" in case of multi-line entries)
-	 * @return	void
+	 * @param string $group The group ('FE', 'BE', 'SYS' ...)
+	 * @param string $key The key of this setting within the group
+	 * @param string $content The text to add (include leading "\n" in case of multi-line entries)
+	 * @return void
 	 */
 	public static function appendToTypoConfVars($group, $key, $content) {
 		$GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$group][$key] .= $content;
@@ -1021,8 +1021,8 @@ final class t3lib_extMgm {
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_tables.php/ext_localconf.php FILES
 	 *
-	 * @param	string		Page TSconfig content
-	 * @return	void
+	 * @param string $content Page TSconfig content
+	 * @return void
 	 */
 	public static function addPageTSConfig($content) {
 		self::appendToTypoConfVars('BE', 'defaultPageTSconfig', "\n[GLOBAL]\n" . $content);
@@ -1033,8 +1033,8 @@ final class t3lib_extMgm {
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_tables.php/ext_localconf.php FILES
 	 *
-	 * @param	string		User TSconfig content
-	 * @return	void
+	 * @param string $content User TSconfig content
+	 * @return void
 	 */
 	public static function addUserTSConfig($content) {
 		self::appendToTypoConfVars('BE', 'defaultUserTSconfig', "\n[GLOBAL]\n" . $content);
@@ -1045,9 +1045,9 @@ final class t3lib_extMgm {
 	 * FOR USE IN ext_tables.php FILES
 	 * eg. t3lib_extMgm::addLLrefForTCAdescr('pages', 'EXT:lang/locallang_csh_pages.xml'); for the pages table or t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_layout', 'EXT:cms/locallang_csh_weblayout.php'); for the Web > Page module.
 	 *
-	 * @param	string		Description key. Typically a database table (like "pages") but for applications can be other strings, but prefixed with "_MOD_")
-	 * @param	string		File reference to locallang file, eg. "EXT:lang/locallang_csh_pages.php" (or ".xml")
-	 * @return	void
+	 * @param string $tca_descr_key Description key. Typically a database table (like "pages") but for applications can be other strings, but prefixed with "_MOD_")
+	 * @param string $file_ref File reference to locallang file, eg. "EXT:lang/locallang_csh_pages.php" (or ".xml")
+	 * @return void
 	 */
 	public static function addLLrefForTCAdescr($tca_descr_key, $file_ref) {
 		if ($tca_descr_key) {
@@ -1088,24 +1088,20 @@ final class t3lib_extMgm {
 		$GLOBALS['TBE_MODULES']['_navigationComponents'][$module]['isCoreComponent'] = TRUE;
 	}
 
-
 	/**************************************
 	 *
 	 *	 Adding SERVICES features
-	 *
-	 * @author	René Fritz <r.fritz@colorcube.de>
 	 *
 	 ***************************************/
 
 	/**
 	 * Adds a service to the global services array
 	 *
-	 * @param	string		Extension key
-	 * @param	string		Service type, must not be prefixed "tx_" or "Tx_"
-	 * @param	string		Service key, must be prefixed "tx_", "Tx_" or "user_"
-	 * @param	array		Service description array
-	 * @return	void
-	 * @author	René Fritz <r.fritz@colorcube.de>
+	 * @param string $extKey Extension key
+	 * @param string $serviceType Service type, must not be prefixed "tx_" or "Tx_"
+	 * @param string $serviceKey Service key, must be prefixed "tx_", "Tx_" or "user_"
+	 * @param array $info Service description array
+	 * @return void
 	 */
 	public static function addService($extKey, $serviceType, $serviceKey, $info) {
 		if ($serviceType && t3lib_div::hasValidClassPrefix($serviceKey) && is_array($info)) {
@@ -1117,12 +1113,12 @@ final class t3lib_extMgm {
 			$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['serviceKey'] = $serviceKey;
 			$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['serviceType'] = $serviceType;
 
-				// change the priority (and other values) from $GLOBALS['TYPO3_CONF_VARS']
+				// Change the priority (and other values) from $GLOBALS['TYPO3_CONF_VARS']
 				// $GLOBALS['TYPO3_CONF_VARS']['T3_SERVICES'][$serviceType][$serviceKey]['priority']
 				// even the activation is possible (a unix service might be possible on windows for some reasons)
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['T3_SERVICES'][$serviceType][$serviceKey])) {
 
-					// no check is done here - there might be configuration values only the service type knows about, so
+					// No check is done here - there might be configuration values only the service type knows about, so
 					// we pass everything
 				$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey] = array_merge(
 					$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey],
@@ -1132,7 +1128,7 @@ final class t3lib_extMgm {
 
 
 				// OS check
-				// empty $os means 'not limited to one OS', therefore a check is not needed
+				// Empty $os means 'not limited to one OS', therefore a check is not needed
 			if ($GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['available']
 				&& $GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['os'] != '') {
 
@@ -1146,7 +1142,7 @@ final class t3lib_extMgm {
 				}
 			}
 
-				// convert subtype list to array for quicker access
+				// Convert subtype list to array for quicker access
 			$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['serviceSubTypes'] = array();
 			$serviceSubTypes = t3lib_div::trimExplode(',', $info['subtype']);
 			foreach ($serviceSubTypes as $subtype) {
@@ -1158,11 +1154,10 @@ final class t3lib_extMgm {
 	/**
 	 * Find the available service with highest priority
 	 *
-	 * @param	string		Service type
-	 * @param	string		Service sub type
-	 * @param	mixed		Service keys that should be excluded in the search for a service. Array or comma list.
-	 * @return	mixed		Service info array if a service was found, FALSE otherwise
-	 * @author	René Fritz <r.fritz@colorcube.de>
+	 * @param string $serviceType Service type
+	 * @param string $serviceSubType Service sub type
+	 * @param mixed $excludeServiceKeys Service keys that should be excluded in the search for a service. Array or comma list.
+	 * @return mixed Service info array if a service was found, FALSE otherwise
 	 */
 	public static function findService($serviceType, $serviceSubType = '', $excludeServiceKeys = array()) {
 		$serviceKey = FALSE;
@@ -1182,16 +1177,16 @@ final class t3lib_extMgm {
 					continue;
 				}
 
-					// select a subtype randomly
-					// useful to start a service by service key without knowing his subtypes - for testing purposes
+					// Select a subtype randomly
+					// Useful to start a service by service key without knowing his subtypes - for testing purposes
 				if ($serviceSubType == '*') {
 					$serviceSubType = key($info['serviceSubTypes']);
 				}
 
-					// this matches empty subtype too
+					// This matches empty subtype too
 				if ($info['available'] && ($info['subtype'] == $serviceSubType || $info['serviceSubTypes'][$serviceSubType]) && $info['priority'] >= $priority) {
 
-						// has a lower quality than the already found, therefore we skip this service
+						// Has a lower quality than the already found, therefore we skip this service
 					if ($info['priority'] == $priority && $info['quality'] < $quality) {
 						continue;
 					}
@@ -1199,7 +1194,7 @@ final class t3lib_extMgm {
 						// Check if the service is available
 					$info['available'] = self::isServiceAvailable($serviceType, $key, $info);
 
-						// still available after exec check?
+						// Still available after exec check?
 					if ($info['available']) {
 						$serviceKey = $key;
 						$priority = $info['priority'];
@@ -1269,16 +1264,14 @@ final class t3lib_extMgm {
 	/**
 	 * Deactivate a service
 	 *
-	 * @param	string		Service type
-	 * @param	string		Service key
-	 * @return	void
-	 * @author	René Fritz <r.fritz@colorcube.de>
+	 * @param string $serviceType Service type
+	 * @param string $serviceKey Service key
+	 * @return void
 	 */
 	public static function deactivateService($serviceType, $serviceKey) {
 			// ... maybe it's better to move non-available services to a different array??
 		$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['available'] = FALSE;
 	}
-
 
 	/**************************************
 	 *
@@ -1294,9 +1287,9 @@ final class t3lib_extMgm {
 	 * Use this function to add a frontend plugin to this list of plugin-types - or more generally use this function to add an entry to any selectorbox/radio-button set in the TCEFORMS
 	 * FOR USE IN ext_tables.php FILES
 	 *
-	 * @param	array		Item Array
-	 * @param	string		Type (eg. "list_type") - basically a field from "tt_content" table
-	 * @return	void
+	 * @param array $itemArray Item Array
+	 * @param string $type Type (eg. "list_type") - basically a field from "tt_content" table
+	 * @return void
 	 */
 	public static function addPlugin($itemArray, $type = 'list_type') {
 		$_EXTKEY = $GLOBALS['_EXTKEY'];
@@ -1320,10 +1313,10 @@ final class t3lib_extMgm {
 	 * Adds an entry to the "ds" array of the tt_content field "pi_flexform".
 	 * This is used by plugins to add a flexform XML reference / content for use when they are selected as plugin or content element.
 	 *
-	 * @param	string		Plugin key as used in the list_type field. Use the asterisk * to match all list_type values.
-	 * @param	string		Either a reference to a flex-form XML file (eg. "FILE:EXT:newloginbox/flexform_ds.xml") or the XML directly.
-	 * @param	string		Value of tt_content.CType (Content Type) to match. The default is "list" which corresponds to the "Insert Plugin" content element.  Use the asterisk * to match all CType values.
-	 * @return	void
+	 * @param string $piKeyToMatch Plugin key as used in the list_type field. Use the asterisk * to match all list_type values.
+	 * @param string $value Either a reference to a flex-form XML file (eg. "FILE:EXT:newloginbox/flexform_ds.xml") or the XML directly.
+	 * @param string $CTypeToMatch Value of tt_content.CType (Content Type) to match. The default is "list" which corresponds to the "Insert Plugin" content element.  Use the asterisk * to match all CType values.
+	 * @return void
 	 * @see addPlugin()
 	 */
 	public static function addPiFlexFormValue($piKeyToMatch, $value, $CTypeToMatch = 'list') {
@@ -1339,10 +1332,10 @@ final class t3lib_extMgm {
 	 * By using $content_table and $content_field you can also use the function for other tables.
 	 * FOR USE IN ext_tables.php FILES
 	 *
-	 * @param	string		Table name to allow for "insert record"
-	 * @param	string		Table name TO WHICH the $table name is applied. See $content_field as well.
-	 * @param	string		Field name in the database $content_table in which $table is allowed to be added as a reference ("Insert Record")
-	 * @return	void
+	 * @param string $table Table name to allow for "insert record"
+	 * @param string $content_table Table name TO WHICH the $table name is applied. See $content_field as well.
+	 * @param string $content_field Field name in the database $content_table in which $table is allowed to be added as a reference ("Insert Record")
+	 * @return void
 	 */
 	public static function addToInsertRecords($table, $content_table = 'tt_content', $content_field = 'records') {
 		t3lib_div::loadTCA($content_table);
@@ -1366,18 +1359,18 @@ final class t3lib_extMgm {
 	 *	 (Remember that your $type definition should correspond to the column/items array in $GLOBALS['TCA'][tt_content] where you added the selector item for the element! See addPlugin() function)
 	 * FOR USE IN ext_localconf.php FILES
 	 *
-	 * @param	string		$key is the extension key
-	 * @param	string		$classFile is the PHP-class filename relative to the extension root directory. If set to blank a default value is chosen according to convensions.
-	 * @param	string		$prefix is used as a - yes, suffix - of the class name (fx. "_pi1")
-	 * @param	string		$type, see description above
-	 * @param	boolean		If $cached is set as USER content object (cObject) is created - otherwise a USER_INT object is created.
-	 * @return	void
+	 * @param string $key The extension key
+	 * @param string $classFile The PHP-class filename relative to the extension root directory. If set to blank a default value is chosen according to convensions.
+	 * @param string $prefix Is used as a - yes, suffix - of the class name (fx. "_pi1")
+	 * @param string $type See description above
+	 * @param boolean $cached If $cached is set as USER content object (cObject) is created - otherwise a USER_INT object is created.
+	 * @return void
 	 */
 	public static function addPItoST43($key, $classFile = '', $prefix = '', $type = 'list_type', $cached = 0) {
 		$classFile = $classFile ? $classFile : 'pi/class.tx_' . str_replace('_', '', $key) . $prefix . '.php';
 		$cN = self::getCN($key);
 
-			// General plugin:
+			// General plugin
 		$pluginContent = trim('
 plugin.' . $cN . $prefix . ' = USER' . ($cached ? '' : '_INT') . '
 plugin.' . $cN . $prefix . ' {
@@ -1388,7 +1381,7 @@ plugin.' . $cN . $prefix . ' {
 # Setting ' . $key . ' plugin TypoScript
 ' . $pluginContent);
 
-			// After ST43:
+			// After ST43
 		switch ($type) {
 			case 'list_type':
 				$addLine = 'tt_content.list.20.' . $key . $prefix . ' = < plugin.' . $cN . $prefix;
@@ -1431,10 +1424,10 @@ tt_content.' . $key . $prefix . ' {
 	 * "static template files" are the modern equivalent (provided from extensions) to the traditional records in "static_templates"
 	 * FOR USE IN ext_localconf.php FILES
 	 *
-	 * @param	string		$extKey is of course the extension key
-	 * @param	string		$path is the path where the template files (fixed names) include_static.txt (integer list of uids from the table "static_templates"), constants.txt, setup.txt, and include_static_file.txt is found (relative to extPath, eg. 'static/'). The file include_static_file.txt, allows you to include other static templates defined in files, from your static template, and thus corresponds to the field 'include_static_file' in the sys_template table. The syntax for this is a commaseperated list of static templates to include, like:  EXT:css_styled_content/static/,EXT:da_newsletter_subscription/static/,EXT:cc_random_image/pi2/static/
-	 * @param	string		$title is the title in the selector box.
-	 * @return	void
+	 * @param string $extKey Is of course the extension key
+	 * @param string $path Is the path where the template files (fixed names) include_static.txt (integer list of uids from the table "static_templates"), constants.txt, setup.txt, and include_static_file.txt is found (relative to extPath, eg. 'static/'). The file include_static_file.txt, allows you to include other static templates defined in files, from your static template, and thus corresponds to the field 'include_static_file' in the sys_template table. The syntax for this is a commaseperated list of static templates to include, like:  EXT:css_styled_content/static/,EXT:da_newsletter_subscription/static/,EXT:cc_random_image/pi2/static/
+	 * @param string $title Is the title in the selector box.
+	 * @return void
 	 * @see addTypoScript()
 	 */
 	public static function addStaticFile($extKey, $path, $title) {
@@ -1451,8 +1444,8 @@ tt_content.' . $key . $prefix . ' {
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_localconf.php FILES
 	 *
-	 * @param	string		TypoScript Setup string
-	 * @return	void
+	 * @param string $content TypoScript Setup string
+	 * @return void
 	 */
 	public static function addTypoScriptSetup($content) {
 		self::appendToTypoConfVars('FE', 'defaultTypoScript_setup', "\n[GLOBAL]\n" . $content);
@@ -1463,8 +1456,8 @@ tt_content.' . $key . $prefix . ' {
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_localconf.php FILES
 	 *
-	 * @param	string		TypoScript Constants string
-	 * @return	void
+	 * @param string $content TypoScript Constants string
+	 * @return void
 	 */
 	public static function addTypoScriptConstants($content) {
 		self::appendToTypoConfVars('FE', 'defaultTypoScript_constants', "\n[GLOBAL]\n" . $content);
@@ -1475,11 +1468,11 @@ tt_content.' . $key . $prefix . ' {
 	 * (Basically this function can do the same as addTypoScriptSetup and addTypoScriptConstants - just with a little more hazzle, but also with some more options!)
 	 * FOR USE IN ext_localconf.php FILES
 	 *
-	 * @param	string		$key is the extension key (informative only).
-	 * @param	string		$type is either "setup" or "constants" and obviously determines which kind of TypoScript code we are adding.
-	 * @param	string		$content is the TS content, prefixed with a [GLOBAL] line and a comment-header.
-	 * @param	string		$afterStaticUid is either an integer pointing to a uid of a static_template or a string pointing to the "key" of a static_file template ([reduced extension_key]/[local path]). The points is that the TypoScript you add is included only IF that static template is included (and in that case, right after). So effectively the TypoScript you set can specifically overrule settings from those static templates.
-	 * @return	void
+	 * @param string $key Is the extension key (informative only).
+	 * @param string $type Is either "setup" or "constants" and obviously determines which kind of TypoScript code we are adding.
+	 * @param string $content Is the TS content, prefixed with a [GLOBAL] line and a comment-header.
+	 * @param string $afterStaticUid Is either an integer pointing to a uid of a static_template or a string pointing to the "key" of a static_file template ([reduced extension_key]/[local path]). The points is that the TypoScript you add is included only IF that static template is included (and in that case, right after). So effectively the TypoScript you set can specifically overrule settings from those static templates.
+	 * @return void
 	 */
 	public static function addTypoScript($key, $type, $content, $afterStaticUid = 0) {
 		if ($type == 'setup' || $type == 'constants') {
@@ -1505,7 +1498,6 @@ tt_content.' . $key . $prefix . ' {
 		}
 	}
 
-
 	/**************************************
 	 *
 	 *	 INTERNAL EXTENSION MANAGEMENT:
@@ -1525,7 +1517,7 @@ tt_content.' . $key . $prefix . ' {
 	 * Usages of this function can be seen in config_default.php
 	 * Extensions are always detected in the order local - global - system.
 	 *
-	 * @return	array		Extension Array
+	 * @return array Extension Array
 	 * @internal
 	 */
 	public static function typo3_loadExtensions() {
@@ -1576,7 +1568,7 @@ tt_content.' . $key . $prefix . ' {
 				}
 				unset($extensions['_CACHEFILE']);
 
-					// write cache?
+					// Write cache?
 				if ($extensionCacheBehaviour &&
 						@is_dir(PATH_typo3 . 'sysext/') &&
 								@is_dir(PATH_typo3 . 'ext/')) { // Must also find global and system extension directories to exist, otherwise caching cannot be allowed (since it is most likely a temporary server problem). This might fix a rare, unrepeatable bug where global/system extensions are not loaded resulting in fatal errors if that is cached!
@@ -1597,9 +1589,9 @@ tt_content.' . $key . $prefix . ' {
 	/**
 	 * Returns the section headers for the compiled cache-files.
 	 *
-	 * @param	string		$key is the extension key
-	 * @param	string		$file is the filename (only informative for comment)
-	 * @return	string
+	 * @param string $key Is the extension key
+	 * @param string $file Is the filename (only informative for comment)
+	 * @return string
 	 * @internal
 	 */
 	public static function _makeIncludeHeader($key, $file) {
@@ -1632,7 +1624,7 @@ $_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];
 	/**
 	 * Returns TRUE if the "localconf.php" file in "typo3conf/" is writable
 	 *
-	 * @return	boolean
+	 * @return boolean
 	 * @internal
 	 */
 	public static function isLocalconfWritable() {
@@ -1643,8 +1635,8 @@ $_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];
 	 * Returns an error string if typo3conf/ or cache-files with $cacheFilePrefix are NOT writable
 	 * Returns FALSE if no problem.
 	 *
-	 * @param	string		Prefix of the cache file to check
-	 * @return	string
+	 * @param string $cacheFilePrefix Prefix of the cache file to check
+	 * @return string
 	 * @internal
 	 */
 	public static function cannotCacheFilesWritable($cacheFilePrefix) {
@@ -1668,7 +1660,7 @@ $_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];
 	 * Evaluation relies on $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE']
 	 *
 	 * @param string $cacheFilePrefix Cache file prefix to be used (optional)
-	 * @return	array
+	 * @return array
 	 * @internal
 	 */
 	public static function currentCacheFiles($cacheFilePrefix = NULL) {
@@ -1697,9 +1689,9 @@ $_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];
 	 * Compiles/Creates the two cache-files in typo3conf/ based on $cacheFilePrefix
 	 * Returns a array with the key "_CACHEFILE" set to the $cacheFilePrefix value
 	 *
-	 * @param	array		Extension information array
-	 * @param	string		Prefix for the cache files
-	 * @return	array
+	 * @param array $extensions Extension information array
+	 * @param string $cacheFilePrefix Prefix for the cache files
+	 * @return array
 	 * @internal
 	 */
 	public static function writeCacheFiles($extensions, $cacheFilePrefix) {
@@ -1741,7 +1733,7 @@ $GLOBALS[\'TYPO3_LOADED_EXT\'] = unserialize(stripslashes(\'' . addslashes(seria
 	 * Unlink (delete) cache files
 	 *
 	 * @param string $cacheFilePrefix Cache file prefix to be used (optional)
-	 * @return	integer		Number of deleted files.
+	 * @return integer Number of deleted files.
 	 */
 	public static function removeCacheFiles($cacheFilePrefix = NULL) {
 		$cacheFiles = self::currentCacheFiles($cacheFilePrefix);
