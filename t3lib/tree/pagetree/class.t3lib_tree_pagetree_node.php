@@ -299,6 +299,16 @@ class t3lib_tree_pagetree_Node extends t3lib_tree_extdirect_Node {
 	}
 
 	/**
+	 * Returns the calculated id representation of this node
+	 *
+	 * @param string $prefix defaults to 'p'
+	 * @return string
+	 */
+	public function calculateNodeId($prefix = 'p') {
+		return $prefix . dechex($this->getId()) . ($this->getMountPoint() ? '-' . dechex($this->getMountPoint()) : '');
+	}
+
+	/**
 	 * Returns the node in an array representation that can be used for serialization
 	 *
 	 * @param bool $addChildNodes
@@ -307,7 +317,7 @@ class t3lib_tree_pagetree_Node extends t3lib_tree_extdirect_Node {
 	public function toArray($addChildNodes = TRUE) {
 		$arrayRepresentation = parent::toArray();
 
-		$arrayRepresentation['id'] = 'p' . dechex($this->getId()) . ($this->getMountPoint() ? '-' . dechex($this->getMountPoint()) : '');
+		$arrayRepresentation['id'] = $this->calculateNodeId();
 		$arrayRepresentation['realId'] = $this->getId();
 		$arrayRepresentation['nodeData']['id'] = $this->getId();
 
