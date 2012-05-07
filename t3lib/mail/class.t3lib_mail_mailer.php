@@ -141,7 +141,7 @@ class t3lib_mail_Mailer extends Swift_Mailer {
 			default:
 					// Custom mail transport
 				$customTransport = t3lib_div::makeInstance($mailSettings['transport'], $mailSettings);
-				if ($this->transport instanceof Swift_Transport) {
+				if ($customTransport instanceof Swift_Transport) {
 					$this->transport = $customTransport;
 				} else {
 					throw new RuntimeException(
