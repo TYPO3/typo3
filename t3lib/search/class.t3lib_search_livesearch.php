@@ -246,6 +246,7 @@ class t3lib_search_livesearch {
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			$collect[] = array(
 				'id' => $tableName . ':' . $row['uid'],
+				'pageId' => ($tableName === 'pages' ? $row['uid'] : $row['pid']),
 				'recordTitle' => ($isFirst) ? $this->getRecordTitlePrep($this->getTitleOfCurrentRecordType($tableName), self::GROUP_TITLE_MAX_LENGTH) : '',
 				'iconHTML' => t3lib_iconWorks::getSpriteIconForRecord($tableName, $row),
 				'title' => $this->getRecordTitlePrep($this->getTitleFromCurrentRow($tableName, $row), self::RECORD_TITLE_MAX_LENGTH),

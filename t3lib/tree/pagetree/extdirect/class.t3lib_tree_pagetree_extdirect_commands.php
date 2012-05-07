@@ -43,9 +43,6 @@ class t3lib_tree_pagetree_extdirect_Commands {
 		/** @var $node t3lib_tree_pagetree_Node */
 		$node = t3lib_div::makeInstance('t3lib_tree_pagetree_Node', (array) $nodeData);
 
-		/** @var $dataProvider t3lib_tree_pagetree_DataProvider */
-		$dataProvider = t3lib_div::makeInstance('t3lib_tree_pagetree_DataProvider');
-
 		try {
 			t3lib_tree_pagetree_Commands::visiblyNode($node);
 			$newNode = t3lib_tree_pagetree_Commands::getNode($node->getId());
@@ -70,9 +67,6 @@ class t3lib_tree_pagetree_extdirect_Commands {
 	public function disableNode($nodeData) {
 		/** @var $node t3lib_tree_pagetree_Node */
 		$node = t3lib_div::makeInstance('t3lib_tree_pagetree_Node', (array) $nodeData);
-
-		/** @var $dataProvider t3lib_tree_pagetree_DataProvider */
-		$dataProvider = t3lib_div::makeInstance('t3lib_tree_pagetree_DataProvider');
 
 		try {
 			t3lib_tree_pagetree_Commands::disableNode($node);
@@ -369,6 +363,58 @@ class t3lib_tree_pagetree_extdirect_Commands {
 		preg_match('/window\.open\(\'([^\']+)\'/i', $javascriptLink, $match);
 
 		return $match[1];
+	}
+
+	/**
+	 * Adds the rootline of a given node to the tree expansion state and adds the node
+	 * itself as the current selected page. This leads to the expansion and selection of
+	 * the node in the tree after a refresh.
+	 *
+	 * @static
+	 * @param string $stateId
+	 * @param int $nodeId
+	 * @return array
+	 */
+	public static function addRootlineOfNodeToStateHash($stateId, $nodeId) {
+		$mountPoints = array_map('intval', $GLOBALS['BE_USER']->returnWebmounts());
+		if (count($mountPoints) == 0) {
+			$mountPoints = array(0);
+		}
+		$mountPoints[] = intval($GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint']);
+		$mountPoints = array_unique($mountPoints);
+
+		/** @var $userSettings extDirect_DataProvider_BackenduserSettings */
+		$userSettings = t3lib_div::makeInstance('extDirect_DataProvider_BackenduserSettings');
+		$state = $userSettings->get('BackendComponents.States.' . $stateId);
+		$state->stateHash = (object) $state->stateHash;
+
+		$rootline = t3lib_BEfunc::BEgetRootLine($nodeId, '', ($GLOBALS['BE_USER']->workspace != 0));
+		$rootlineIds = array();
+		foreach ($rootline as $pageData) {
+			$rootlineIds[] = intval($pageData['uid']);
+		}
+
+		foreach ($mountPoints as $mountPoint) {
+			if (!in_array($mountPoint, $rootlineIds, TRUE)) {
+				continue;
+			}
+
+			$isFirstNode = TRUE;
+			foreach ($rootline as $pageData) {
+				$node = t3lib_tree_pagetree_Commands::getNewNode($pageData, $mountPoint);
+
+				if ($isFirstNode) {
+					$isFirstNode = FALSE;
+					$state->stateHash->lastSelectedNode = $node->calculateNodeId();
+				} else {
+					$state->stateHash->{$node->calculateNodeId('')} = 1;
+				}
+			}
+		}
+
+		$userSettings->set('BackendComponents.States.' . $stateId, $state);
+
+		return (array)$state->stateHash;
 	}
 }
 

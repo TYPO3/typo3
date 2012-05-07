@@ -74,6 +74,7 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 		root : 'searchItems',
 		fields : [
 			{name: 'recordTitle'},
+			{name: 'pageId'},
 			{name: 'id'},
 			{name: 'iconHTML'},
 			{name: 'title'},
@@ -84,7 +85,7 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 		select : {
 			scope: this,
 			fn: function (combo, record, index) {
-				jump(record.data.editLink, 'web_list', 'web');
+				jump(record.data.editLink, 'web_list', 'web', record.data.pageId);
 			}
 		},
 		focus : {
