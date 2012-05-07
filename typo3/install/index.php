@@ -83,7 +83,7 @@ if (1==2 || !is_file($enableInstallToolFile) || $removeInstallToolFileFailed) {
 	$stylesheet = '<link rel="stylesheet" type="text/css" href="' .
 		'../stylesheets/install/install.css" />';
 	$javascript = '<script type="text/javascript" src="' .
-		'../contrib/prototype/prototype.js"></script>' . LF;
+		'../contrib/prototype/prototype.js"></script>';
 	$javascript .= '<script type="text/javascript" src="' .
 		'../sysext/install/Resources/Public/Javascript/install.js"></script>';
 
