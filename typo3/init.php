@@ -330,22 +330,6 @@ $FILEMOUNTS = $BE_USER->returnFilemounts();
 $GLOBALS['LANG'] = t3lib_div::makeInstance('language');
 $GLOBALS['LANG']->init($BE_USER->uc['lang']);
 
-
-// ****************
-// CLI processing
-// ****************
-if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
-		// Status output:
-	if (!strcmp($_SERVER['argv'][1],'status'))	{
-		$message = "Status of TYPO3 CLI script:\n\n";
-		$message .= "Username [uid]: " . $BE_USER->user['username'] . " [" . $BE_USER->user['uid'] . "]\n";
-		$message .= "Database: " . TYPO3_db . LF;
-		$message .= "PATH_site: " . PATH_site . LF;
-		fwrite(STDOUT, $message . LF);
-		exit(0);
-	}
-}
-
 // ****************
 // compression
 // ****************
