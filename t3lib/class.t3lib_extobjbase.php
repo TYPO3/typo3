@@ -29,9 +29,8 @@
  *
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * EXAMPLE: One level.
@@ -44,8 +43,6 @@
  *		 t3lib_extMgm::extPath($_EXTKEY).'web_info/class.tx_cms_webinfo.php',
  *		 'LLL:EXT:cms/locallang_tca.php:mod_tx_cms_webinfo_page'
  *	 );
- *
- *
  *
  * EXAMPLE: Two levels.
  * This is the advanced example. You can see it with the extension 'func_wizards' which is the first layer but then providing another layer for extensions to connect by.
@@ -94,7 +91,7 @@
  *				 // Making sure that any further external classes are added to the include_once array. Notice that inclusion happens twice in the main script because of this!!!
  *			 $this->handleExternalFunctionValue();
  *		 }
- *	 ....
+ *	 }
  *
  * Notice that the handleExternalFunctionValue of this class (t3lib_extobjbase) is called and that the ->function_key internal var is set!
  *
@@ -109,7 +106,7 @@
  * For more information about this, please see the large example comment for the class t3lib_SCbase. This will show the principle of a 'level-1' connection.
  * The more advanced example - having two layers as it is done by the 'func_wizards' extension with the 'web_info' module - can be seen in the comment above.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see t3lib_SCbase,tx_funcwizards_webfunc::init(), tx_funcwizards_webfunc, tx_wizardsortpages_webfunc_2
@@ -122,7 +119,7 @@ class t3lib_extobjbase {
 	 * @var t3lib_SCbase
 	 * @see init()
 	 */
-	var $pObj; // parent SC object
+	var $pObj;
 
 	/**
 	 * Set to the directory name of this class file.
@@ -152,13 +149,12 @@ class t3lib_extobjbase {
 	 */
 	var $function_key = '';
 
-
 	/**
 	 * Initialize the object
 	 *
-	 * @param	object		A reference to the parent (calling) object (which is probably an instance of an extension class to t3lib_SCbase)
-	 * @param	array		The configuration set for this module - from global array TBE_MODULES_EXT
-	 * @return	void
+	 * @param object $pObj A reference to the parent (calling) object (which is probably an instance of an extension class to t3lib_SCbase)
+	 * @param array $conf The configuration set for this module - from global array TBE_MODULES_EXT
+	 * @return void
 	 * @see t3lib_SCbase::checkExtObj()
 	 */
 	function init(&$pObj, $conf) {
@@ -183,7 +179,7 @@ class t3lib_extobjbase {
 	/**
 	 * If $this->function_key is set (which means there are two levels of object connectivity) then $this->extClassConf is loaded with the TBE_MODULES_EXT configuration for that sub-sub-module
 	 *
-	 * @return	void
+	 * @return void
 	 * @see $function_key, tx_funcwizards_webfunc::init()
 	 */
 	function handleExternalFunctionValue() {
@@ -200,7 +196,7 @@ class t3lib_extobjbase {
 	/**
 	 * Including any locallang file configured and merging its content over the current global LOCAL_LANG array (which is EXPECTED to exist!!!)
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function incLocalLang() {
 		if ($this->localLangFile && (
@@ -219,7 +215,7 @@ class t3lib_extobjbase {
 	/**
 	 * Same as t3lib_SCbase::checkExtObj()
 	 *
-	 * @return	void
+	 * @return void
 	 * @see t3lib_SCbase::checkExtObj()
 	 */
 	function checkExtObj() {
@@ -235,7 +231,7 @@ class t3lib_extobjbase {
 	/**
 	 * Calls the main function inside ANOTHER sub-submodule which might exist.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function extObjContent() {
 		if (is_object($this->extObj)) {
@@ -247,7 +243,7 @@ class t3lib_extobjbase {
 	 * Dummy function - but is used to set up additional menu items for this submodule.
 	 * For an example see the extension 'cms' where the 'web_info' submodule is defined in cms/web_info/class.tx_cms_webinfo.php, tx_cms_webinfo_page::modMenu()
 	 *
-	 * @return	array		A MOD_MENU array which will be merged together with the one from the parent object
+	 * @return array A MOD_MENU array which will be merged together with the one from the parent object
 	 * @see init(), tx_cms_webinfo_page::modMenu()
 	 */
 	function modMenu() {
