@@ -48,6 +48,14 @@
  * // with "%1" and "%2" are replaced by "dog" and "fox" (printf)
  * // if the key is not found, the output is "default value"
  * </output>
+ *
+ * <code title="Inline notation with extension name">
+ * {f:translate(key: 'someKey', extensionName: 'SomeExtensionName')}
+ * </code>
+ * <output>
+ * // value of key "someKey" in the current website language
+ * // the locallang file of extension "some_extension_name" will be used
+ * </output>
  */
 class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
@@ -58,11 +66,12 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 * @param string $default if the given locallang key could not be found, this value is used. . If this argument is not set, child nodes will be used to render the default
 	 * @param boolean $htmlEscape TRUE if the result should be htmlescaped. This won't have an effect for the default value
 	 * @param array $arguments Arguments to be replaced in the resulting string
+	 * @param string $extensionName UpperCamelCased extension key (for example BlogExample)
 	 * @return string The translated key or tag body if key doesn't exist
 	 */
-	public function render($key, $default = NULL, $htmlEscape = TRUE, array $arguments = NULL) {
+	public function render($key, $default = NULL, $htmlEscape = TRUE, array $arguments = NULL, $extensionName = NULL) {
 		$request = $this->controllerContext->getRequest();
-		$extensionName = $request->getControllerExtensionName();
+		$extensionName = $extensionName === NULL ? $request->getControllerExtensionName() : $extensionName;
 		$value = Tx_Extbase_Utility_Localization::translate($key, $extensionName, $arguments);
 		if ($value === NULL) {
 			$value = $default !== NULL ? $default : $this->renderChildren();
