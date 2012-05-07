@@ -29,16 +29,15 @@
  *
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @coauthor	René Fritz <r.fritz@colorcube.de>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @coauthor René Fritz <r.fritz@colorcube.de>
  */
-
 
 /**
  * Extension class for the t3lib_treeView class, specially made for browsing folders in the File module
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @coauthor	René Fritz <r.fritz@colorcube.de>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @coauthor René Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage t3lib
  * @see class t3lib_treeView
@@ -46,8 +45,8 @@
 class t3lib_folderTree extends t3lib_treeView {
 
 	/**
+	 * The users' file Storages
 	 * @var t3lib_file_storage[]
-	 * the users' file Storages
 	 */
 	protected $storages = NULL;
 
@@ -73,7 +72,8 @@ class t3lib_folderTree extends t3lib_treeView {
 		$this->storages = $GLOBALS['BE_USER']->getFileStorages();
 
 		$this->treeName = 'folder';
-		$this->titleAttrib = ''; //don't apply any title
+			// Don't apply any title
+		$this->titleAttrib = '';
 		$this->domIdPrefix = 'folder';
 	}
 
@@ -241,7 +241,7 @@ class t3lib_folderTree extends t3lib_treeView {
 	 * @return void
 	 */
 	public function getBrowseableTreeForStorage(t3lib_file_Storage $storageObject) {
-			// if there are filemounts, show each, otherwise just the rootlevel folder
+			// If there are filemounts, show each, otherwise just the rootlevel folder
 		$fileMounts = $storageObject->getFileMounts();
 		$rootLevelFolders = array();
 		if (count($fileMounts)) {
@@ -258,10 +258,10 @@ class t3lib_folderTree extends t3lib_treeView {
 			);
 		}
 
-			// clean the tree
+			// Clean the tree
 		$this->reset();
-		
-			// go through all "root level folders" of this tree (can be the rootlevel folder or any file mount points)
+
+			// Go through all "root level folders" of this tree (can be the rootlevel folder or any file mount points)
 		foreach ($rootLevelFolders as $rootLevelFolderInfo) {
 			/** @var $rootLevelFolder t3lib_file_Folder */
 			$rootLevelFolder = $rootLevelFolderInfo['folder'];
@@ -269,7 +269,7 @@ class t3lib_folderTree extends t3lib_treeView {
 			$folderHashSpecUID = t3lib_div::md5int($rootLevelFolder->getCombinedIdentifier());
 			$this->specUIDmap[$folderHashSpecUID] = $rootLevelFolder->getCombinedIdentifier();
 
-				// hash key
+				// Hash key
 			$storageHashNumber = $this->getShortHashNumberForStorage($storageObject, $rootLevelFolder);
 
 				// Set first:
@@ -295,7 +295,7 @@ class t3lib_folderTree extends t3lib_treeView {
 				$icon = 'apps-filetree-root';
 			}
 
-				// mark a storage which is not online, as offline
+				// Mark a storage which is not online, as offline
 				// maybe someday there will be a special icon for this
 			if ($storageObject->isOnline() === FALSE) {
 				$rootLevelFolderName .= ' (' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file.xlf:sys_file_storage.isOffline') . ')';
@@ -455,7 +455,7 @@ class t3lib_folderTree extends t3lib_treeView {
 			<ul class="tree" id="treeRoot">
 		';
 
-			// -- evaluate AJAX request
+			// Evaluate AJAX request
 		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 			list(, $expandCollapseCommand, $expandedFolderHash,) = $this->evaluateExpandCollapseParameter();
 			if ($expandCollapseCommand == 1) {
@@ -467,7 +467,7 @@ class t3lib_folderTree extends t3lib_treeView {
 			}
 		}
 
-		// we need to count the opened <ul>'s every time we dig into another level,
+		// We need to count the opened <ul>'s every time we dig into another level,
 		// so we know how many we have to close when all children are done rendering
 		$closeDepth = array();
 
@@ -481,13 +481,13 @@ class t3lib_folderTree extends t3lib_treeView {
 			$idAttr	= htmlspecialchars($this->domIdPrefix . $this->getId($folderObject) . '_' . $treeItem['bank']);
 			$itemHTML  = '';
 
-			// if this item is the start of a new level,
+			// If this item is the start of a new level,
 			// then a new level <ul> is needed, but not in ajax mode
 			if($treeItem['isFirst'] && !($doCollapse) && !($doExpand && $isExpandedFolderIdentifier)) {
 				$itemHTML = "<ul>\n";
 			}
 
-			// add CSS classes to the list item
+			// Add CSS classes to the list item
 			if ($treeItem['hasSub']) {
 				$classAttr .= ' expanded';
 			}
@@ -504,13 +504,13 @@ class t3lib_folderTree extends t3lib_treeView {
 				$itemHTML .= "</li>\n";
 			}
 
-			// we have to remember if this is the last one
+			// We have to remember if this is the last one
 			// on level X so the last child on level X+1 closes the <ul>-tag
 			if ($treeItem['isLast'] && !($doExpand && $isExpandedFolderIdentifier)) {
 				$closeDepth[$treeItem['invertedDepth']] = 1;
 			}
 
-			// if this is the last one and does not have subitems, we need to close
+			// If this is the last one and does not have subitems, we need to close
 			// the tree as long as the upper levels have last items too
 			if ($treeItem['isLast'] && !$treeItem['hasSub'] && !$doCollapse && !($doExpand && $isExpandedFolderIdentifier)) {
 				for ($i = $treeItem['invertedDepth']; $closeDepth[$i] == 1; $i++) {
@@ -519,13 +519,13 @@ class t3lib_folderTree extends t3lib_treeView {
 				}
 			}
 
-				// ajax request: collapse
+				// Ajax request: collapse
 			if ($doCollapse && $isExpandedFolderIdentifier) {
 				$this->ajaxStatus = TRUE;
 				return $itemHTML;
 			}
 
-				// ajax request: expand
+				// Ajax request: expand
 			if ($doExpand && $isExpandedFolderIdentifier) {
 				$ajaxOutput .= $itemHTML;
 				$invertedDepthOfAjaxRequestedItem = $treeItem['invertedDepth'];
@@ -541,13 +541,13 @@ class t3lib_folderTree extends t3lib_treeView {
 			$out .= $itemHTML;
 		}
 
-			// if this is a AJAX request, output directly
+			// If this is a AJAX request, output directly
 		if ($ajaxOutput) {
 			$this->ajaxStatus = TRUE;
 			return $ajaxOutput;
 		}
 
-			// finally close the first ul
+			// Finally close the first ul
 		$out .= "</ul>\n";
 		return $out;
 	}
@@ -594,17 +594,17 @@ class t3lib_folderTree extends t3lib_treeView {
 		$this->getShortHashNumberForStorage();
 
 			// PM action:
-			// (If an plus/minus icon has been clicked, 
+			// (If an plus/minus icon has been clicked,
 			// the PM GET var is sent and we must update the stored positions in the tree):
 			// 0: mount key, 1: set/clear boolean, 2: item ID (cannot contain "_"), 3: treeName
 		list($storageHashNumber, $doExpand, $numericFolderHash, $treeName) = $this->evaluateExpandCollapseParameter();
 		if ($treeName && $treeName == $this->treeName) {
 			if (in_array($storageHashNumber, $this->storageHashNumbers)) {
 				if ($doExpand == 1) {
-						// set
+						// Set
 					$this->stored[$storageHashNumber][$numericFolderHash] = 1;
 				} else {
-						// clear
+						// Clear
 					unset($this->stored[$storageHashNumber][$numericFolderHash]);
 				}
 				$this->savePosition();
@@ -669,10 +669,10 @@ class t3lib_folderTree extends t3lib_treeView {
 			}
 		}
 
-			// take the first three parameters
+			// Take the first three parameters
 		list($mountKey, $doExpand, $folderIdentifier) = explode('_', $PM, 3);
 
-			// in case the folder identifier contains "_", we just need to get the fourth/last parameter
+			// In case the folder identifier contains "_", we just need to get the fourth/last parameter
 		list($folderIdentifier, $treeName) = t3lib_div::revExplode('_', $folderIdentifier, 2);
 
 		return array(
