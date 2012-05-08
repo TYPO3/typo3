@@ -255,12 +255,12 @@ class t3lib_TCEforms {
 
 			// Define whitelist that allows TCA field configuration to be overridden by TSconfig, @see overrideFieldConf():
 		$this->allowOverrideMatrix = array(
-			'input' => array('size', 'max'),
-			'text' => array('cols', 'rows', 'wrap'),
-			'check' => array('cols', 'showIfRTE'),
-			'select' => array('size', 'autoSizeMax', 'maxitems', 'minitems'),
-			'group' => array('size', 'autoSizeMax', 'max_size', 'show_thumbs', 'maxitems', 'minitems', 'disable_controls'),
-			'inline' => array('appearance', 'behaviour', 'foreign_label', 'foreign_selector', 'foreign_unique', 'maxitems', 'minitems', 'size', 'autoSizeMax', 'symmetric_label'),
+			'input' => array('size', 'max', 'readOnly'),
+			'text' => array('cols', 'rows', 'wrap', 'readOnly'),
+			'check' => array('cols', 'showIfRTE', 'readOnly'),
+			'select' => array('size', 'autoSizeMax', 'maxitems', 'minitems', 'readOnly'),
+			'group' => array('size', 'autoSizeMax', 'max_size', 'show_thumbs', 'maxitems', 'minitems', 'disable_controls', 'readOnly'),
+			'inline' => array('appearance', 'behaviour', 'foreign_label', 'foreign_selector', 'foreign_unique', 'maxitems', 'minitems', 'size', 'autoSizeMax', 'symmetric_label', 'readOnly'),
 		);
 
 			// Create instance of t3lib_TCEforms_inline only if this a non-IRRE-AJAX call:
