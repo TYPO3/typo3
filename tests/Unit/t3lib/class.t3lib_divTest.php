@@ -32,7 +32,6 @@
  * @subpackage t3lib
  */
 class t3lib_divTest extends tx_phpunit_testcase {
-
 	/**
 	 * Enable backup of global and system variables
 	 *
@@ -487,6 +486,182 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	public function cmpFqdnReturnsFalse($baseHost, $list) {
 		$this->assertFalse(t3lib_div::cmpFQDN($baseHost, $list));
+	}
+
+	///////////////////////////////
+	// Tests concerning inList
+	///////////////////////////////
+
+	/**
+	 * @test
+	 *
+	 * @param string $haystack
+	 *
+	 * @dataProvider inListForItemContainedReturnsTrueDataProvider
+	 */
+	public function inListForItemContainedReturnsTrue($haystack) {
+		$this->assertTrue(
+			t3lib_div::inList($haystack, 'findme')
+		);
+	}
+
+	/**
+	 * Data provider for inListForItemContainedReturnsTrue.
+	 *
+	 * @return array
+	 */
+	public function inListForItemContainedReturnsTrueDataProvider() {
+		return array(
+			'Element as second element of four items' => array('one,findme,three,four'),
+			'Element at beginning of list' => array('findme,one,two'),
+			'Element at end of list' => array('one,two,findme'),
+			'One item list' => array('findme'),
+		);
+	}
+
+	/**
+	 * @test
+	 *
+	 * @param string $haystack
+	 *
+	 * @dataProvider inListForItemNotContainedReturnsFalseDataProvider
+	 */
+	public function inListForItemNotContainedReturnsFalse($haystack) {
+		$this->assertFalse(
+			t3lib_div::inList($haystack, 'findme')
+		);
+	}
+
+	/**
+	 * Data provider for inListForItemNotContainedReturnsFalse.
+	 *
+	 * @return array
+	 */
+	public function inListForItemNotContainedReturnsFalseDataProvider() {
+		return array(
+			'Four item list' => array('one,two,three,four'),
+			'One item list' => array('one'),
+			'Empty list' => array(''),
+		);
+	}
+
+	///////////////////////////////
+	// Tests concerning rmFromList
+	///////////////////////////////
+
+	/**
+	 * @test
+	 *
+	 * @param string $initialList
+	 * @param string $listWithElementRemoved
+	 *
+	 * @dataProvider rmFromListRemovesElementsFromCommaSeparatedListDataProvider
+	 */
+	public function rmFromListRemovesElementsFromCommaSeparatedList($initialList, $listWithElementRemoved) {
+		$this->assertSame(
+			$listWithElementRemoved,
+			t3lib_div::rmFromList('removeme', $initialList)
+		);
+	}
+
+	/**
+	 * Data provider for rmFromListRemovesElementsFromCommaSeparatedList
+	 *
+	 * @return array
+	 */
+	public function rmFromListRemovesElementsFromCommaSeparatedListDataProvider() {
+		return array(
+			'Element as second element of three' => array('one,removeme,two', 'one,two'),
+			'Element at beginning of list' => array('removeme,one,two', 'one,two'),
+			'Element at end of list' => array('one,two,removeme', 'one,two'),
+			'One item list' => array('removeme', ''),
+			'Element not contained in list' => array('one,two,three', 'one,two,three'),
+			'Empty list' => array('', ''),
+		);
+	}
+
+	///////////////////////////////
+	// Tests concerning expandList
+	///////////////////////////////
+
+	/**
+	 * @test
+	 *
+	 * @param string $list
+	 * @param string $expectation
+	 *
+	 * @dataProvider expandListExpandsIntegerRangesDataProvider
+	 */
+	public function expandListExpandsIntegerRanges($list, $expectation) {
+		$this->assertSame(
+			$expectation,
+			t3lib_div::expandList($list)
+		);
+	}
+
+	/**
+	 * Data provider for expandListExpandsIntegerRangesDataProvider
+	 *
+	 * @return array
+	 */
+	public function expandListExpandsIntegerRangesDataProvider() {
+		return array(
+			'Expand for the same number' => array('1,2-2,7', '1,2,7'),
+			'Small range expand with parameters reversed ignores reversed items' => array('1,5-3,7', '1,7'),
+			'Small range expand' => array('1,3-5,7', '1,3,4,5,7'),
+			'Expand at beginning' => array('3-5,1,7', '3,4,5,1,7'),
+			'Expand at end' => array('1,7,3-5', '1,7,3,4,5'),
+			'Multiple small range expands' => array('1,3-5,7-10,12', '1,3,4,5,7,8,9,10,12'),
+			'One item list' => array('1-5', '1,2,3,4,5'),
+			'Nothing to expand' => array('1,2,3,4', '1,2,3,4'),
+			'Empty list' => array('', ''),
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function expandListExpandsForTwoThousandElementsExpandsOnlyToThousandElementsMaximum() {
+		$list = t3lib_div::expandList('1-2000');
+
+		$this->assertSame(
+			1000,
+			count(explode(',', $list))
+		);
+	}
+
+	///////////////////////////////
+	// Tests concerning uniqueList
+	///////////////////////////////
+
+	/**
+	 * @test
+	 *
+	 * @param string $initialList
+	 * @param string $unifiedList
+	 *
+	 * @dataProvider uniqueListUnifiesCommaSeparatedListDataProvider
+	 */
+	public function uniqueListUnifiesCommaSeparatedList($initialList, $unifiedList) {
+		$this->assertSame(
+			$unifiedList,
+			t3lib_div::uniqueList($initialList)
+		);
+	}
+
+	/**
+	 * Data provider for uniqueListUnifiesCommaSeparatedList
+	 *
+	 * @return array
+	 */
+	public function uniqueListUnifiesCommaSeparatedListDataProvider() {
+		return array(
+			'List without duplicates' => array('one,two,three','one,two,three'),
+			'List with two consecutive duplicates' => array('one,two,two,three,three','one,two,three'),
+			'List with non-consecutive duplicates' => array('one,two,three,two,three','one,two,three'),
+			'One item list' => array('one', 'one'),
+			'Empty list' => array('', ''),
+		);
 	}
 
 
