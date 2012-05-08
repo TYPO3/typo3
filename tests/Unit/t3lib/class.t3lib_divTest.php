@@ -489,6 +489,142 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertFalse(t3lib_div::cmpFQDN($baseHost, $list));
 	}
 
+	///////////////////////////////
+	// Tests concerning inList
+	///////////////////////////////
+
+	/**
+	 * @test
+	 * @dataProvider inListReturnsTrueIfItemIsContainedDataProvider
+	 */
+	public function inListReturnsTrueIfItemIsContained($haystack) {
+		$this->assertTrue(t3lib_div::inList($haystack, 'findme'));
+	}
+
+	/**
+	 * Dataprovider for inListReturnsTrueIfItemIsContained
+	 * @return array
+	 */
+	public function inListReturnsTrueIfItemIsContainedDataProvider() {
+		return array(
+			'Normal list' => array('one,findme,three,four'),
+			'Element at beginning of list' => array('findme,one,two'),
+			'Element at end of list' => array('one,two,findme'),
+			'One item list' => array('findme')
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider inListReturnsFalseIfItemIsNotContainedDataProvider
+	 */
+	public function inListReturnsFalseIfItemIsNotContained($haystack) {
+		$this->assertFalse(t3lib_div::inList($haystack, 'findme'));
+	}
+
+	/**
+	 * Data provider for inListReturnsTrueIfItemIsContained
+	 *
+	 * @return array
+	 */
+	public function inListReturnsFalseIfItemIsNotContainedDataProvider() {
+		return array(
+			'Normal list' => array('one,two,three,four'),
+			'One item list' => array('one'),
+			'Empty list' => array('one')
+		);
+	}
+
+	///////////////////////////////
+	// Tests concerning rmFromList
+	///////////////////////////////
+
+	/**
+	 * @test
+	 * @dataProvider rmFromListRemovesElementsFromCommaSeparatedListDataProvider
+	 */
+	public function rmFromListRemovesElementsFromCommaSeparatedList($list, $expectation) {
+		$this->assertEquals($expectation, t3lib_div::rmFromList('removeme', $list));
+	}
+
+	/**
+	 * Data provider for rmFromListRemovesElementsFromCommaSeparatedList
+	 *
+	 * @return array
+	 */
+	public function rmFromListRemovesElementsFromCommaSeparatedListDataProvider() {
+		return array(
+			'Normal list' => array('one,removeme,two', 'one,two'),
+			'Element at beginning of list' => array('removeme,one,two', 'one,two'),
+			'Element at end of list' => array('one,two,removeme', 'one,two'),
+			'One item list' => array('removeme', ''),
+			'Element not contained in list' => array('one,two,three', 'one,two,three'),
+			'Empty list' => array('', '')
+		);
+	}
+
+	///////////////////////////////
+	// Tests concerning expandList
+	///////////////////////////////
+
+	/**
+	 * @test
+	 * @dataProvider expandListExpandsIntegerRangesDataProvider
+	 */
+	public function expandListExpandsIntegerRanges($list, $expectation) {
+		$this->assertEquals($expectation, t3lib_div::expandList($list));
+	}
+
+	/**
+	 * Data provider for expandListExpandsIntegerRangesDataProvider
+	 *
+	 * @return array
+	 */
+	public function expandListExpandsIntegerRangesDataProvider() {
+		return array(
+			'Small range expand' => array('1,3-5,7', '1,3,4,5,7'),
+			'Expand at beginning' => array('3-5,1,7', '3,4,5,1,7'),
+			'Expand at end' => array('1,7,3-5', '1,7,3,4,5'),
+			'Multiple small range expands' => array('1,3-5,7-10,12', '1,3,4,5,7,8,9,10,12'),
+			'One item list' => array('1-5', '1,2,3,4,5'),
+			'Nothing to expand' => array('1,2,3,4', '1,2,3,4'),
+			'Empty list' => array('', '')
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function expandListExpandsOneThousandElementsMax() {
+		$list = t3lib_div::expandList('1-2000');
+		$this->assertEquals(1000, count(explode(',', $list)));
+	}
+
+	///////////////////////////////
+	// Tests concerning uniqueList
+	///////////////////////////////
+
+	/**
+	 * @test
+	 * @dataProvider uniqueListUnifiesCommaSeparatedListDataProvider
+	 */
+	public function uniqueListUnifiesCommaSeparatedList($list, $expectation) {
+		$this->assertEquals($expectation, t3lib_div::uniqueList($list));
+	}
+
+	/**
+	 * Data provider for uniqueListUnifiesCommaSeparatedList
+	 *
+	 * @return array
+	 */
+	public function uniqueListUnifiesCommaSeparatedListDataProvider() {
+		return array(
+			'Normal list' => array('one,two,two,three,three','one,two,three'),
+			'Empty list' => array('', ''),
+			'One item list' => array('one', 'one')
+		);
+	}
+
 
 	///////////////////////////////
 	// Tests concerning isFirstPartOfStr
