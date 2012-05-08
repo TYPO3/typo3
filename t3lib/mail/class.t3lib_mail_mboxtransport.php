@@ -44,7 +44,7 @@ class t3lib_mail_MboxTransport implements Swift_Transport {
 
 	/**
 	 * Create a new MailTransport
-	 * @param Swift_Transport_Log $log
+	 * @param string $debugFile
 	 */
 	public function __construct($debugFile) {
 		$this->debugFile = $debugFile;
