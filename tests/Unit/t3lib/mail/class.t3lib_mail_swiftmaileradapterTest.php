@@ -32,6 +32,11 @@
  */
 class t3lib_mail_SwiftMailerAdapterTest extends tx_phpunit_testcase {
 
+	/**
+	 * @var t3lib_mail_SwiftMailerAdapter
+	 */
+	protected $fixture;
+
 	public function setUp() {
 		if (!class_exists('t3lib_mail_SwiftMailerAdapterExposed')) {
 			// Make protected methods accessible so that they can be tested:

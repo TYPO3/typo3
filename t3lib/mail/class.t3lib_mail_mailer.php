@@ -47,15 +47,23 @@ class t3lib_mail_Mailer extends Swift_Mailer {
 	protected $transport;
 
 	/**
+	 * @var array
+	 */
+	protected $mailSettings = array();
+
+	/**
 	 * When constructing, also initializes the Swift_Transport like configured
 	 *
-	 * @param Swift_Transport optionally pass a transport to the constructor. By default the configured transport from $TYPO3_CONF_VARS is used
+	 * @param null|Swift_Transport $transport optionally pass a transport to the constructor. By default the configured transport from $TYPO3_CONF_VARS is used
 	 * @throws t3lib_exception
 	 */
 	public function __construct(Swift_Transport $transport = NULL) {
 		if ($transport !== NULL) {
 			$this->transport = $transport;
 		} else {
+			if (empty($this->mailSettings)) {
+				$this->injectMailSettings();
+			}
 			try {
 				$this->initializeTransport();
 			} catch (Exception $e) {
@@ -80,14 +88,13 @@ class t3lib_mail_Mailer extends Swift_Mailer {
 	 * $TYPO3_CONF_VARS['MAIL']['transport_sendmail_command'] = '/usr/sbin/sendmail -bs'
 	 *
 	 * @throws t3lib_exception
+	 * @throws RuntimeException
 	 */
 	private function initializeTransport() {
-		$mailSettings = $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
-		switch ($mailSettings['transport']) {
-
+		switch ($this->mailSettings['transport']) {
 			case 'smtp':
 					// Get settings to be used when constructing the transport object
-				list($host, $port) = preg_split('/:/', $mailSettings['transport_smtp_server']);
+				list($host, $port) = preg_split('/:/', $this->mailSettings['transport_smtp_server']);
 				if ($host === '') {
 					throw new t3lib_exception(
 						'$TYPO3_CONF_VARS[\'MAIL\'][\'transport_smtp_server\'] needs to be set when transport is set to "smtp"',
@@ -97,25 +104,25 @@ class t3lib_mail_Mailer extends Swift_Mailer {
 				if ($port === '') {
 					$port = '25';
 				}
-				$useEncryption = ($mailSettings['transport_smtp_encrypt'] ? $mailSettings['transport_smtp_encrypt'] : NULL);
+				$useEncryption = ($this->mailSettings['transport_smtp_encrypt'] ? $this->mailSettings['transport_smtp_encrypt'] : NULL);
 
 					// Create our transport
 				$this->transport = Swift_SmtpTransport::newInstance($host, $port, $useEncryption);
 
 					// Need authentication?
-				$username = $mailSettings['transport_smtp_username'];
+				$username = $this->mailSettings['transport_smtp_username'];
 				if ($username !== '') {
 					$this->transport->setUsername($username);
 				}
-				$password = $mailSettings['transport_smtp_password'];
+				$password = $this->mailSettings['transport_smtp_password'];
 				if ($password !== '') {
 					$this->transport->setPassword($password);
 				}
 				break;
 
 			case 'sendmail':
-				$sendmailCommand = $mailSettings['transport_sendmail_command'];
-				if ($sendmailCommand === '') {
+				$sendmailCommand = $this->mailSettings['transport_sendmail_command'];
+				if (empty($sendmailCommand)) {
 					throw new t3lib_exception(
 						'$TYPO3_CONF_VARS[\'MAIL\'][\'transport_sendmail_command\'] needs to be set when transport is set to "sendmail"',
 						1291068620
@@ -126,7 +133,7 @@ class t3lib_mail_Mailer extends Swift_Mailer {
 				break;
 
 			case 'mbox':
-				$mboxFile = $mailSettings['transport_mbox_file'];
+				$mboxFile = $this->mailSettings['transport_mbox_file'];
 				if ($mboxFile == '') {
 					throw new t3lib_exception('$TYPO3_CONF_VARS[\'MAIL\'][\'transport_mbox_file\'] needs to be set when transport is set to "mbox"', 1294586645);
 				}
@@ -140,18 +147,32 @@ class t3lib_mail_Mailer extends Swift_Mailer {
 				break;
 			default:
 					// Custom mail transport
-				$customTransport = t3lib_div::makeInstance($mailSettings['transport'], $mailSettings);
+				$customTransport = t3lib_div::makeInstance($this->mailSettings['transport'], $this->mailSettings);
 				if ($customTransport instanceof Swift_Transport) {
 					$this->transport = $customTransport;
 				} else {
 					throw new RuntimeException(
-						$mailSettings['transport'] . ' is not an implementation of Swift_Transport,
+						$this->mailSettings['transport'] . ' is not an implementation of Swift_Transport,
 						but must implement that interface to be used as a mail transport.',
 						1323006478
 					);
 				}
 		}
 		return;
+	}
+
+	/**
+	 * This method is only used in unit tests
+	 *
+	 * @param array $mailSettings
+	 * @access private
+	 */
+	public function injectMailSettings(array $mailSettings = NULL) {
+		if (is_array($mailSettings)) {
+			$this->mailSettings = $mailSettings;
+		} else {
+			$this->mailSettings = (array)$GLOBALS['TYPO3_CONF_VARS']['MAIL'];
+		}
 	}
 }
 
