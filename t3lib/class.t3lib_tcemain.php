@@ -2722,6 +2722,10 @@ class t3lib_TCEmain {
 						// So it copies (and localized) content from workspace...
 					$row = t3lib_BEfunc::getRecordWSOL($table, $uid);
 					if (is_array($row)) {
+							// Ignore placeholders
+						if ($row['t3ver_state'] > 0) {
+							return;
+						}
 
 							// Initializing:
 						$theNewID = uniqid('NEW');
