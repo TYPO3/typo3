@@ -2742,10 +2742,10 @@ final class t3lib_div {
 			)
 			);
 
-			$content = file_get_contents($url, FALSE, $ctx);
+			$content = @file_get_contents($url, FALSE, $ctx);
 
 			if ($content === FALSE && isset($report)) {
-				$report['error']   = -1;
+				$report['error'] = -1;
 				$report['message'] = 'Couldn\'t get URL: ' . implode(LF, $http_response_header);
 			}
 		} else {
@@ -2756,7 +2756,7 @@ final class t3lib_div {
 			$content = @file_get_contents($url);
 
 			if ($content === FALSE && isset($report)) {
-				$report['error']   = -1;
+				$report['error'] = -1;
 				$report['message'] = 'Couldn\'t get URL: ' . implode(LF, $http_response_header);
 			}
 		}
