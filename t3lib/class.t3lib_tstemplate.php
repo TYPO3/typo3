@@ -678,9 +678,16 @@ class t3lib_TStemplate {
 	 * @return	void		Row is passed by reference.
 	 */
 	function versionOL(&$row) {
-		if (TYPO3_MODE === 'FE') { // Frontend:
-			$GLOBALS['TSFE']->sys_page->versionOL('sys_template', $row);
-		} else { // Backend:
+			// Frontend call
+			// This check is quite okay. To check if TYPO3_MODE === 'FE' is not enough, because if you use this class
+			// in eID mode, the TYPO3_MODE is FE, but there is no full blown frontend with sys_page.
+			// So, we have to check if the object and method is available.
+		if (is_object($GLOBALS['TSFE']) === TRUE && property_exists($GLOBALS['TSFE'], 'sys_page') === TRUE
+			&& method_exists($GLOBALS['TSFE']->sys_page, 'versionOL') === TRUE) {
+			$GLOBALS['TSFE']->sys_page->versionOL('sys_template', $row);	758	»       »       »       $GLOBALS['TSFE']->sys_page->versionOL('sys_template', $row);
+
+			// Backend call
+		} else {
 			t3lib_BEfunc::workspaceOL('sys_template', $row);
 		}
 	}
