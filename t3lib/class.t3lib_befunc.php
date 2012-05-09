@@ -271,6 +271,12 @@ final class t3lib_BEfunc {
 	 */
 	public static function getRecordLocalization($table, $uid, $language, $andWhereClause = '') {
 		$recordLocalization = FALSE;
+
+			// check if translations are stored in other table
+		if(isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])) {
+			$table = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'];
+		}
+
 		if (self::isTableLocalizable($table)) {
 			$tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
 			$recordLocalization = self::getRecordsByField(
