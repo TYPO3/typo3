@@ -290,6 +290,12 @@ class BackendUtility {
 	 */
 	static public function getRecordLocalization($table, $uid, $language, $andWhereClause = '') {
 		$recordLocalization = FALSE;
+
+		// Check if translations are stored in other table
+		if (isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])) {
+			$table = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'];
+		}
+
 		if (self::isTableLocalizable($table)) {
 			$tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
 			$recordLocalization = self::getRecordsByField($table, $tcaCtrl['transOrigPointerField'], $uid, 'AND ' . $tcaCtrl['languageField'] . '=' . (int)$language . ($andWhereClause ? ' ' . $andWhereClause : ''), '', '', '1');
