@@ -3087,7 +3087,7 @@ final class t3lib_BEfunc {
 	 *
 	 *******************************************/
 
-	 	/**
+	/**
 	 * Set preview keyword, eg:
 	 *	 $previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword('id='.$pageId.'&L='.$language.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$this->workspace, $GLOBALS['BE_USER']->user['uid'], 120);
 	 *
