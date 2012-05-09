@@ -688,16 +688,26 @@ class t3lib_TStemplate {
 	}
 
 	/**
-	 * Creating versioning overlay of a sys_template record. This will use either frontend or backend overlay functionality depending on environment.
+	 * Creating versioning overlay of a sys_template record.
+	 * This will use either frontend or backend overlay functionality depending on environment.
 	 *
 	 * @param array $row Row to overlay (passed by reference)
 	 * @return void
 	 */
 	function versionOL(&$row) {
-			// Frontend:
-		if (TYPO3_MODE === 'FE') {
+			// Distinguish frontend and backend call:
+			// To do the fronted call a full frontend is required, just checking for
+			// TYPO3_MODE === 'FE' is not enough. This could otherwise lead to fatals in
+			// eId scripts that run in frontend scope, but do not have a full blown frontend.
+		if (
+			is_object($GLOBALS['TSFE']) === TRUE
+			&& property_exists($GLOBALS['TSFE'], 'sys_page') === TRUE
+			&& method_exists($GLOBALS['TSFE']->sys_page, 'versionOL') === TRUE
+		) {
+				// Frontend
 			$GLOBALS['TSFE']->sys_page->versionOL('sys_template', $row);
-		} else { // Backend:
+		} else {
+				// Backend
 			t3lib_BEfunc::workspaceOL('sys_template', $row);
 		}
 	}
