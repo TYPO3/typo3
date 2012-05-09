@@ -33,17 +33,15 @@
  * @subpackage tslib
  */
 
-// *******************************
-// Set error reporting
-// *******************************
-error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
-
 require('typo3/Bootstrap.php');
+Typo3_Bootstrap::checkEnvironmentOrDie();
 Typo3_Bootstrap::defineBaseConstants();
 Typo3_Bootstrap::defineAndCheckPaths('');
+Typo3_Bootstrap::requireBaseClasses();
+Typo3_Bootstrap::setUpEnvironment();
 
 // ******************
 // include TSFE
 // ******************
-require (PATH_tslib.'index_ts.php');
+require (PATH_tslib . 'index_ts.php');
 ?>

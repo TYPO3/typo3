@@ -30,11 +30,28 @@
  * It is required directly as the very first thing in entry scripts and
  * used to define all base things like constants and pathes and so on.
  *
+ * Most methods in this class have dependencies to each other. They can
+ * not be called in arbitrary order. The methods are ordered top down, so
+ * a method at the beginning has lower dependencies than a method further
+ * down. Do not fiddle with the load order in own scripts except you know
+ * exactly what you are doing!
+ *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @package TYPO3
  * @subpackage core
  */
 class Typo3_Bootstrap {
+
+	/**
+	 * Check several a priori conditions like the current
+	 * php version or exit the script with an error.
+	 *
+	 * @return void
+	 */
+	public static function checkEnvironmentOrDie() {
+		self::checkPhpVersionOrDie();
+		self::checkGlobalsAreNotSetViaPostOrGet();
+	}
 
 	/**
 	 * Define all simple base constants
@@ -132,6 +149,247 @@ class Typo3_Bootstrap {
 	}
 
 	/**
+	 * Load several base classes during bootstrap
+	 *
+	 * @return void
+	 */
+	public static function requireBaseClasses() {
+		require_once(PATH_t3lib . 'class.t3lib_div.php');
+		require_once(PATH_t3lib . 'class.t3lib_extmgm.php');
+	}
+
+	/**
+	 * Set up php error reporting and various things like time tracking
+	 *
+	 * @return void
+	 */
+	public static function setUpEnvironment() {
+			// Core should be notice free at least until this point ...
+			// @TODO: Move further down / get rid of it until errorHandler is initialized
+		error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+
+			// Unset variable(s) in global scope (security issue #13959)
+		unset($GLOBALS['error']);
+
+			// Include information about the browser/user-agent
+		$GLOBALS['CLIENT'] = t3lib_div::clientInfo();
+
+			// Is set to the system time in milliseconds.
+			// This could be used to output script parsetime in the end of the script
+		$GLOBALS['PARSETIME_START'] = t3lib_div::milliseconds();
+		$GLOBALS['TYPO3_MISC'] = array();
+		$GLOBALS['TYPO3_MISC']['microtime_start'] = microtime(TRUE);
+
+			// Compatibility layer for magic quotes
+		if (!get_magic_quotes_gpc()) {
+			t3lib_div::addSlashesOnArray($_GET);
+			t3lib_div::addSlashesOnArray($_POST);
+			$GLOBALS['HTTP_GET_VARS'] = $_GET;
+			$GLOBALS['HTTP_POST_VARS'] = $_POST;
+		}
+	}
+
+	/**
+	 * Initialize t3lib_db in $GLOBALS and connect if requested
+	 *
+	 * @param bool $connect Whether or not the db should be connected already
+	 * @return void
+	 */
+	public static function initializeTypo3DbGlobal($connect = TRUE) {
+			/** @var TYPO3_DB t3lib_db */
+		$GLOBALS['TYPO3_DB'] = t3lib_div::makeInstance('t3lib_DB');
+		$GLOBALS['TYPO3_DB']->debugOutput = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sqlDebug'];
+		if ($connect) {
+			$GLOBALS['TYPO3_DB']->connectDB();
+		}
+	}
+
+	/**
+	 * Check adminOnly configuration variable and redirects
+	 * to an URL in file typo3conf/LOCK_BACKEND or exit the script
+	 *
+	 * @throws RuntimeException
+	 * @return void
+	 */
+	public static function checkLockedBackendAndRedirectOrDie() {
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] < 0) {
+			throw new RuntimeException(
+				'TYPO3 Backend locked: Backend and Install Tool are locked for maintenance. [BE][adminOnly] is set to "' . intval($GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly']) . '".',
+				1294586847
+			);
+		}
+		if (@is_file(PATH_typo3conf . 'LOCK_BACKEND')) {
+			if (TYPO3_PROCEED_IF_NO_USER === 2) {
+				// Ajax poll for login, let it pass
+			} else {
+				$fileContent = t3lib_div::getUrl(PATH_typo3conf.'LOCK_BACKEND');
+				if ($fileContent)	{
+					header('Location: ' . $fileContent);
+				} else {
+					throw new RuntimeException(
+						'TYPO3 Backend locked: Browser backend is locked for maintenance. Remove lock by removing the file "typo3conf/LOCK_BACKEND" or use CLI-scripts.',
+						1294586848
+					);
+				}
+				exit;
+			}
+		}
+	}
+
+	/**
+	 * Compare client IP with IPmaskList and exit the script run
+	 * if the client is not allowed to access the backend
+	 *
+	 * @return void
+	 */
+	public static function checkBackendIpOrDie() {
+		if (trim($GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
+			if (!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
+					// Send Not Found header - if the webserver can make use of it
+				header('Status: 404 Not Found');
+					// Just point us away from here...
+				header('Location: http://');
+					// ... and exit good!
+				exit;
+			}
+		}
+	}
+
+	/**
+	 * Check lockSSL configuration variable and redirect
+	 * to https version of the backend if needed
+	 *
+	 * @return void
+	 */
+	public static function checkSslBackendAndRedirectIfNeeded() {
+		if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'])) {
+			if(intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'])) {
+				$sslPortSuffix = ':' . intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort']);
+			} else {
+				$sslPortSuffix = '';
+			}
+			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] == 3) {
+				$requestStr = substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT'), strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir));
+				if($requestStr == 'index.php' && !t3lib_div::getIndpEnv('TYPO3_SSL')) {
+					list(,$url) = explode('://', t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'), 2);
+					list($server, $address) = explode('/', $url, 2);
+					header('Location: https://' . $server . $sslPortSuffix . '/' . $address);
+					exit;
+				}
+			} elseif (!t3lib_div::getIndpEnv('TYPO3_SSL') ) {
+				if ($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] == 2) {
+					list(,$url) = explode('://', t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir, 2);
+					list($server, $address) = explode('/', $url, 2);
+					header('Location: https://'.$server . $sslPortSuffix . '/' . $address);
+				} else {
+						// Send Not Found header - if the webserver can make use of it...
+					header('Status: 404 Not Found');
+						// Just point us away from here...
+					header('Location: http://');
+				}
+					// ... and exit good!
+				exit;
+			}
+		}
+	}
+
+	/**
+	 * Check for registered ext tables hooks and run them
+	 *
+	 * @throws UnexpectedValueException
+	 * @return void
+	 */
+	public static function runExtTablesPostProcessingHooks() {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'] as $classReference) {
+					/** @var $hookObject t3lib_extTables_PostProcessingHook */
+				$hookObject = t3lib_div::getUserObj($classReference);
+				if (!$hookObject instanceof t3lib_extTables_PostProcessingHook) {
+					throw new UnexpectedValueException('$hookObject must implement interface t3lib_extTables_PostProcessingHook', 1320585902);
+				}
+				$hookObject->processData();
+			}
+		}
+	}
+
+	/**
+	 * Initialize sprite manager global
+	 *
+	 * @param bool $allowRegeneration
+	 * @return void
+	 */
+	public static function initializeSpriteManager($allowRegeneration = TRUE) {
+			/** @var $spriteManager t3lib_SpriteManager */
+		$GLOBALS['spriteManager'] = t3lib_div::makeInstance('t3lib_SpriteManager', $allowRegeneration);
+		$GLOBALS['spriteManager']->loadCacheFile();
+	}
+
+	/**
+	 * Initialize backend user object in globals
+	 *
+	 * @return void
+	 */
+	public static function initializeBackendUser() {
+			/** @var $backendUser t3lib_beUserAuth */
+		$backendUser = t3lib_div::makeInstance('t3lib_beUserAuth');
+		$backendUser->warningEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
+		$backendUser->lockIP = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'];
+		$backendUser->auth_timeout_field = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']);
+		$backendUser->OS = TYPO3_OS;
+		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
+			$backendUser->dontSetCookie = TRUE;
+		}
+		$backendUser->start();
+		$backendUser->checkCLIuser();
+		$backendUser->backendCheckLogin();
+		$GLOBALS['BE_USER'] = $backendUser;
+	}
+
+	/**
+	 * Initialize backend user mount points
+	 *
+	 * @return void
+	 */
+	public static function initializeBackendUserMounts() {
+			// ! WILL INCLUDE deleted mount pages as well!
+		$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
+		$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->returnFilemounts();
+	}
+
+	/**
+	 * Initialize language object
+	 *
+	 * @return void
+	 */
+	public static function initializeLanguageObject() {
+			/** @var $GLOBALS['LANG'] language */
+		$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
+		$GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
+	}
+
+	/**
+	 * Check php version requirement or exit script
+	 *
+	 * @return void
+	 */
+	protected static function checkPhpVersionOrDie() {
+		if (version_compare(phpversion(), '5.3', '<')) {
+			die ('TYPO3 requires PHP 5.3.0 or higher.');
+		}
+	}
+
+	/**
+	 * Exit script if globals are set via post or get
+	 *
+	 * @return void
+	 */
+	protected static function checkGlobalsAreNotSetViaPostOrGet() {
+		if (isset($_POST['GLOBALS']) || isset($_GET['GLOBALS'])) {
+			die('You cannot set the GLOBALS array from outside the script.');
+		}
+	}
+
+	/**
 	 * Determine the operating system TYPO3 is running on.
 	 *
 	 * @return string Either 'WIN' if running on Windows, else empty string
@@ -174,15 +432,16 @@ class Typo3_Bootstrap {
 	 * @return string Absolute path to entry script
 	 */
 	protected static function getPathThisScriptNonCli() {
-		if ($_SERVER['ORIG_PATH_TRANSLATED']) {
+		$cgiPath = '';
+		if (isset($_SERVER['ORIG_PATH_TRANSLATED'])) {
 			$cgiPath = $_SERVER['ORIG_PATH_TRANSLATED'];
-		} else {
+		} elseif (isset($_SERVER['PATH_TRANSLATED'])) {
 			$cgiPath = $_SERVER['PATH_TRANSLATED'];
 		}
 		if ($cgiPath && (PHP_SAPI === 'fpm-fcgi' || PHP_SAPI === 'cgi' || PHP_SAPI === 'isapi' || PHP_SAPI === 'cgi-fcgi')) {
 			$scriptPath = $cgiPath;
 		} else {
-			if ($_SERVER['ORIG_SCRIPT_FILENAME']) {
+			if (isset($_SERVER['ORIG_SCRIPT_FILENAME'])) {
 				$scriptPath = $_SERVER['ORIG_SCRIPT_FILENAME'];
 			} else {
 				$scriptPath = $_SERVER['SCRIPT_FILENAME'];
