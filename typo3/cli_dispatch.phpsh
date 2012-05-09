@@ -3,7 +3,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2005-2012 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,73 +29,67 @@
 /**
  * Command Line Interface module dispatcher
  *
- * @author      Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * This script takes a "cliKey" as first argument and uses that to dispatch
+ * the call to a registered script with that key.
+ * Valid cliKeys must be registered in
+ * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'].
  *
- * This script takes a "cliKey" as first argument and uses that to look up the path of the script to include in the end.
- * See configuration of this feature in $TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'].
- * The point is to have only ONE script dealing with the environment initialization while the actual processing is all a developer should care for.
- *
+ * @author Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 
-if (substr(php_sapi_name(), 0, 3) == 'cgi') {
-        // sanity check: ensure that we're running in a shell or cronjob (and NOT via HTTP)
-        $checkEnvVars = array('HTTP_USER_AGENT', 'HTTP_HOST', 'SERVER_NAME', 'REMOTE_ADDR', 'REMOTE_PORT', 'SERVER_PROTOCOL');
-        foreach ($checkEnvVars as $var) {
-                if (array_key_exists($var, $_SERVER)) {
-                        echo 'SECURITY CHECK FAILED! This script cannot be used within your browser!' . chr(10);
-                        echo 'If you are sure that we run in a shell or cronjob, please unset' . chr(10);
-                        echo 'environment variable ' . $var . ' (usually using \'unset ' . $var . '\')' . chr(10);
-                        echo 'before starting this script.' . chr(10);
-                        exit;
-                }
-        }
-        unset($checkEnvVars);
-
-	// mimic CLI API in CGI API (you must use the -C/-no-chdir and the -q/--no-header switches!)
-	ini_set('html_errors', 0);
-	ini_set('implicit_flush', 1);
-	ini_set('max_execution_time', 0);
-	if (!ini_get('register_argc_argv')) {
-		$argv = $_SERVER['argv'];
-		$argc = $_SERVER['argc'];
-	}
-	define(STDIN, fopen('php://stdin', 'r'));
-	define(STDOUT, fopen('php://stdout', 'w'));
-	define(STDERR, fopen('php://stderr', 'w'));
-} elseif (php_sapi_name() != 'cli') {
-	die('Not called from a command line interface (e.g. a shell or scheduler).' . chr(10));
-}
-
-	// Defining circumstances for CLI mode:
+define('TYPO3_MODE','BE');
 define('TYPO3_cliMode', TRUE);
 
+require('Bootstrap_Cli.php');
+Typo3_Bootstrap_Cli::checkEnvironmentOrDie();
 
+require('Bootstrap.php');
+Typo3_Bootstrap::checkEnvironmentOrDie();
+Typo3_Bootstrap::defineBaseConstants();
+Typo3_Bootstrap::defineAndCheckPaths('typo3/');
+Typo3_Bootstrap::requireBaseClasses();
+Typo3_Bootstrap::setUpEnvironment();
 
-if (!isset($_SERVER['argv'][1]))	{
-	fwrite(STDERR, 'The first argument must be a valid key.' . chr(10));
-	exit(1);
+	/** @define "PATH_t3lib" "../t3lib/" */
+require(PATH_t3lib . 'config_default.php');
+
+Typo3_Bootstrap::initializeTypo3DbGlobal(TRUE);
+
+Typo3_Bootstrap_Cli::initializeCliKeyOrDie();
+
+	// Include standard tables.php or own file
+if (TYPO3_tables_script) {
+	include(PATH_typo3conf . TYPO3_tables_script);
+} else {
+	include(PATH_t3lib . 'stddb/tables.php');
 }
+	// Load temp_CACHED file of ext_tables or each ext_tables.php of loaded extensions
+if ($TYPO3_LOADED_EXT['_CACHEFILE']) {
+	include(PATH_typo3conf . $TYPO3_LOADED_EXT['_CACHEFILE'] . '_ext_tables.php');
+} else {
+	include(PATH_t3lib . 'stddb/load_ext_tables.php');
+}
+	// Load additional ext tables script
+if (TYPO3_extTableDef_script) {
+	include(PATH_typo3conf . TYPO3_extTableDef_script);
+}
+Typo3_Bootstrap::runExtTablesPostProcessingHooks();
 
-	// First argument is a key that points to the script configuration
-define('TYPO3_cliKey', $_SERVER['argv'][1]);
+// TODO: Check if we really need the sprite manager on the command line
+Typo3_Bootstrap::initializeSpriteManager(TRUE);
 
-	// Include init file:
-require(dirname(__FILE__) . '/init.php');
+Typo3_Bootstrap::initializeBackendUser();
+Typo3_Bootstrap::initializeBackendUserMounts();
 
-	// Make sure output is not buffered,
-	// so that command-line output and interaction can take place
+Typo3_Bootstrap::initializeLanguageObject();
+
+	// Make sure output is not buffered, so command-line output and interaction can take place
 t3lib_div::flushOutputBuffers();
 
-if (defined('TYPO3_cliInclude')) {
-	try {
-		include(TYPO3_cliInclude);
-	} catch (Exception $e) {
-		fwrite(STDERR, $e->getMessage() . LF);
-		exit(99);
-	}
-} else {
-	fwrite(STDERR,  'No include file configured for key "'.TYPO3_cliKey.'".' . LF);
-	exit(1);
+try {
+	include(TYPO3_cliInclude);
+} catch (Exception $e) {
+	fwrite(STDERR, $e->getMessage() . LF);
+	exit(99);
 }
-
 ?>

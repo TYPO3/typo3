@@ -37,22 +37,10 @@
  * @subpackage tslib
  */
 
-// *******************************
-// Checking PHP version
-// *******************************
-if (version_compare(phpversion(), '5.3', '<'))	die ('TYPO3 requires PHP 5.3.0 or higher.');
-
-
 // ******************
 // Constants defined
 // ******************
-$TYPO3_MISC['microtime_start'] = microtime(TRUE);
 define('TYPO3_MODE','FE');
-
-// *********************
-// Unset variable(s) in global scope (fixes #13959)
-// *********************
-unset($error);
 
 // *********************
 // Prevent any output until AJAX/compression is initialized to stop
@@ -61,19 +49,14 @@ unset($error);
 ob_start();
 
 
-// *********************
-// Mandatory libraries included
-// *********************
-require_once(PATH_t3lib . 'class.t3lib_div.php');
-require_once(PATH_t3lib . 'class.t3lib_extmgm.php');
-
 
 // **********************
 // Include configuration
 // **********************
 require(PATH_t3lib.'config_default.php');
-if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');	// the name of the TYPO3 database is stored in this constant. Here the inclusion of the config-file is verified by checking if this var is set.
-if (!t3lib_extMgm::isLoaded('cms'))	die('<strong>Error:</strong> The main frontend extension "cms" was not loaded. Enable it in the extension manager in the backend.');
+if (!t3lib_extMgm::isLoaded('cms')) {
+	die('<strong>Error:</strong> The main frontend extension "cms" was not loaded. Enable it in the extension manager in the backend.');
+}
 
 
 // *********************
@@ -87,43 +70,9 @@ if ($_COOKIE[t3lib_beUserAuth::getCookieName()]) {
 	$TT = new t3lib_timeTrackNull();
 }
 $TT->start();
-$TT->push('', 'Script start');
 
-// *********************
-// Error & Exception handling
-// *********************
-if ($TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] !== '') {
-	$TT->push('Register Exceptionhandler', '');
-	if ($TYPO3_CONF_VARS['SYS']['errorHandler'] !== '') {
-			// register an error handler for the given errorHandlerErrors
-		$errorHandler = t3lib_div::makeInstance($TYPO3_CONF_VARS['SYS']['errorHandler'], $TYPO3_CONF_VARS['SYS']['errorHandlerErrors']);
-			// set errors which will be converted in an exception
-		$errorHandler->setExceptionalErrors($TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionalErrors']);
-	}
-	$exceptionHandler = t3lib_div::makeInstance($TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler']);
-	$TT->pull();
-}
+Typo3_Bootstrap::initializeTypo3DbGlobal(FALSE);
 
-$TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
-$TYPO3_DB->debugOutput = $TYPO3_CONF_VARS['SYS']['sqlDebug'];
-
-$CLIENT = t3lib_div::clientInfo();				// Set to the browser: net / msie if 4+ browsers
-$TT->pull();
-
-// *******************************
-// Checking environment
-// *******************************
-if (isset($_POST['GLOBALS']) || isset($_GET['GLOBALS'])) {
-	throw new Exception('You cannot set the GLOBALS-array from outside the script.', 1294585200);
-}
-if (!get_magic_quotes_gpc())	{
-	$TT->push('Add slashes to GET/POST arrays','');
-	t3lib_div::addSlashesOnArray($_GET);
-	t3lib_div::addSlashesOnArray($_POST);
-	$HTTP_GET_VARS = $_GET;
-	$HTTP_POST_VARS = $_POST;
-	$TT->pull();
-}
 
 
 // Hook to preprocess the current request:
@@ -240,14 +189,11 @@ $TT->pull();
 // Admin Panel & Frontend editing
 // *****************************************
 if ($TSFE->isBackendUserLoggedIn()) {
-		// if a BE User is present load, the sprite manager for frontend-editing
-	$spriteManager = t3lib_div::makeInstance('t3lib_SpriteManager', FALSE);
-	$spriteManager->loadCacheFile();
+	Typo3_Bootstrap::initializeSpriteManager(FALSE);
 
 	$BE_USER->initializeFrontendEdit();
 	if ($BE_USER->adminPanel instanceof tslib_AdminPanel) {
-		$LANG = t3lib_div::makeInstance('language');
-		$LANG->init($BE_USER->uc['lang']);
+		Typo3_Bootstrap::initializeLanguageObject();
 	}
 	if ($BE_USER->frontendEdit instanceof t3lib_frontendedit) {
 		$BE_USER->frontendEdit->initConfigOptions();

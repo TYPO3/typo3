@@ -32,118 +32,38 @@
  * @subpackage core
  */
 
+ob_start();
 
-
-// **************************************************************************
-// Insert some security here, if you don't trust the Install Tool Password:
-// **************************************************************************
-
-error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
-
-$PATH_thisScript = str_replace('//', '/', str_replace('\\', '/',
-	(PHP_SAPI == 'fpm-fcgi' || PHP_SAPI == 'cgi' || PHP_SAPI == 'isapi' || PHP_SAPI == 'cgi-fcgi') &&
-	($_SERVER['ORIG_PATH_TRANSLATED'] ? $_SERVER['ORIG_PATH_TRANSLATED'] : $_SERVER['PATH_TRANSLATED']) ?
-	($_SERVER['ORIG_PATH_TRANSLATED'] ? $_SERVER['ORIG_PATH_TRANSLATED'] : $_SERVER['PATH_TRANSLATED']) :
-	($_SERVER['ORIG_SCRIPT_FILENAME'] ? $_SERVER['ORIG_SCRIPT_FILENAME'] : $_SERVER['SCRIPT_FILENAME'])));
-
-$PATH_site = dirname(dirname(dirname($PATH_thisScript)));
-
-$quickstartFile = $PATH_site . '/typo3conf/FIRST_INSTALL';
-$enableInstallToolFile = $PATH_site . '/typo3conf/ENABLE_INSTALL_TOOL';
-
-	// If typo3conf/FIRST_INSTALL is present and can be deleted, automatically create typo3conf/ENABLE_INSTALL_TOOL
-if (is_file($quickstartFile) && is_writeable($quickstartFile) && unlink($quickstartFile)) {
-	touch($enableInstallToolFile);
-}
-
-	// Additional security measure if ENABLE_INSTALL_TOOL file cannot, but
-	// should be deleted (in case it is write-protected, for example).
-$removeInstallToolFileFailed = FALSE;
-
-	// Only allow Install Tool access if the file "typo3conf/ENABLE_INSTALL_TOOL" is found
-if (is_file($enableInstallToolFile) && (time() - filemtime($enableInstallToolFile) > 3600)) {
-	$content = file_get_contents($enableInstallToolFile);
-	$verifyString = 'KEEP_FILE';
-
-	if (trim($content) !== $verifyString) {
-			// Delete the file if it is older than 3600s (1 hour)
-		if (!@unlink($enableInstallToolFile)) {
-			$removeInstallToolFileFailed = TRUE;
-		}
-	}
-}
-
-	// Change 1==2 to 1==1 if you want to lock the Install Tool regardless of the file ENABLE_INSTALL_TOOL
-if (1==2 || !is_file($enableInstallToolFile) || $removeInstallToolFileFailed) {
-		// Include t3lib_div and t3lib_parsehtml for templating
-	require_once($PATH_site . '/t3lib/class.t3lib_div.php');
-	require_once($PATH_site . '/t3lib/class.t3lib_parsehtml.php');
-
-		// Define the stylesheet
-	$stylesheet = '<link rel="stylesheet" type="text/css" href="' .
-		'../stylesheets/install/install.css" />';
-	$javascript = '<script type="text/javascript" src="' .
-		'../contrib/prototype/prototype.js"></script>';
-	$javascript .= '<script type="text/javascript" src="' .
-		'../sysext/install/Resources/Public/Javascript/install.js"></script>';
-
-		// Get the template file
-	$template = @file_get_contents($PATH_site . '/typo3/templates/install.html');
-		// Define the markers content
-	$markers = array(
-		'styleSheet' => $stylesheet,
-		'javascript' => $javascript,
-		'title' => 'The Install Tool is locked',
-		'content' => '
-			<p>
-				To enable the Install Tool, the file ENABLE_INSTALL_TOOL must be created.
-			</p>
-			<ul>
-				<li>
-					In the typo3conf/ folder, create a file named ENABLE_INSTALL_TOOL. The file name is
-					case sensitive, but the file itself can simply be an empty file.
-				</li>
-				<li class="t3-install-locked-user-settings">
-					Alternatively, in the Backend, go to <a href="javascript:top.goToModule(\'tools_install\',1);">Admin tools &gt; Install</a>
-					and let TYPO3 create this file for you.<br />
-					You are recommended to log out from the Install Tool after finishing your work.
-					The file will then automatically be deleted.
-				</li>
-			</ul>
-			<p>
-				For security reasons, it is highly recommended that you either rename or delete the file after the operation is finished.
-			</p>
-			<p>
-				As an additional security measure, if the file is older than one hour, TYPO3 will automatically delete it. The file must be writable by the web server user.
-			</p>
-		'
-	);
-		// Fill the markers
-	$content = t3lib_parsehtml::substituteMarkerArray(
-		$template,
-		$markers,
-		'###|###',
-		1,
-		1
-	);
-		// Output the warning message and exit
-	header('Content-Type: text/html; charset=utf-8');
-	header('Cache-Control: no-cache, must-revalidate');
-	header('Pragma: no-cache');
-	echo $content;
-	exit();
-}
-
-
-
-// *****************************************************************************
-// Defining constants necessary for the install-script to invoke the installer
-// *****************************************************************************
-define('TYPO3_MOD_PATH', 'install/');
-$BACK_PATH='../';
-
-	// Defining this variable and setting it non-false will invoke the install-screen called from init.php
+define('TYPO3_MODE','BE');
 define('TYPO3_enterInstallScript', '1');
-require ('../init.php');
 
+require('../Bootstrap.php');
+Typo3_Bootstrap::checkEnvironmentOrDie();
+Typo3_Bootstrap::defineBaseConstants();
+Typo3_Bootstrap::defineAndCheckPaths('typo3/install/');
+Typo3_Bootstrap::requireBaseClasses();
+Typo3_Bootstrap::setUpEnvironment();
+
+require('../Bootstrap_Install.php');
+Typo3_Bootstrap_Install::checkEnabledInstallToolOrDie();
+
+require(PATH_t3lib . 'config_default.php');
+
+Typo3_Bootstrap::initializeTypo3DbGlobal(FALSE);
+
+Typo3_Bootstrap::checkLockedBackendAndRedirectOrDie();
+
+Typo3_Bootstrap::checkBackendIpOrDie();
+
+Typo3_Bootstrap::checkSslBackendAndRedirectIfNeeded();
+
+	// Run install script
+if(!t3lib_extMgm::isLoaded('install')) {
+	die('Install Tool is not loaded as an extension.<br />You must add the key "install" to the list of installed extensions in typo3conf/localconf.php, $TYPO3_CONF_VARS[\'EXT\'][\'extList\'].');
+}
+
+require_once(t3lib_extMgm::extPath('install') . 'mod/class.tx_install.php');
+$install_check = t3lib_div::makeInstance('tx_install');
+$install_check->allowUpdateLocalConf = 1;
+$install_check->init();
 ?>
