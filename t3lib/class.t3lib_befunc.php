@@ -1241,8 +1241,10 @@ final class t3lib_BEfunc {
 	 * @return	void
 	 * @internal
 	 * @see implodeTSParams(), getPagesTSconfig()
+	 * @deprecated and unused since 6.0, will be removed two versions later
 	 */
 	public static function updatePagesTSconfig($id, $pageTS, $TSconfPrefix, $impParams = '') {
+		t3lib_div::logDeprecatedFunction();
 		$id = intval($id);
 		if (is_array($pageTS) && $id > 0) {
 			if (!is_array($impParams)) {
@@ -1292,8 +1294,10 @@ final class t3lib_BEfunc {
 	 * @param array $p TypoScript structure
 	 * @param string $k Prefix string
 	 * @return array Imploded TypoScript objectstring/values
+	 * @deprecated and unused since 6.0, will be removed two versions later
 	 */
 	public static function implodeTSParams($p, $k = '') {
+		t3lib_div::logDeprecatedFunction();
 		$implodeParams = array();
 		if (is_array($p)) {
 			foreach ($p as $kb => $val) {
@@ -3087,39 +3091,6 @@ final class t3lib_BEfunc {
 	 *
 	 *******************************************/
 
-	 	/**
-	 * Set preview keyword, eg:
-	 *	 $previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword('id='.$pageId.'&L='.$language.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$this->workspace, $GLOBALS['BE_USER']->user['uid'], 120);
-	 *
-	 * todo for sys_preview:
-	 * - Add a comment which can be shown to previewer in frontend in some way (plus maybe ability to write back, take other action?)
-	 * - Add possibility for the preview keyword to work in the backend as well: So it becomes a quick way to a certain action of sorts?
-	 *
-	 * @param	string		Get variables to preview, eg. 'id=1150&L=0&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=8'
-	 * @param	string		32 byte MD5 hash keyword for the URL: "?ADMCMD_prev=[keyword]"
-	 * @param	integer		Time-To-Live for keyword
-	 * @param	integer		Which workspace to preview. Workspace UID, -1 or >0. If set, the getVars is ignored in the frontend, so that string can be empty
-	 * @return	string		Returns keyword to use in URL for ADMCMD_prev=
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8, functionality is now in Tx_Version_Preview
-	 */
-	public static function compilePreviewKeyword($getVarsStr, $beUserUid, $ttl = 172800, $fullWorkspace = NULL) {
-		t3lib_div::logDeprecatedFunction();
-		$field_array = array(
-			'keyword' => md5(uniqid(microtime())),
-			'tstamp' => $GLOBALS['EXEC_TIME'],
-			'endtime' => $GLOBALS['EXEC_TIME'] + $ttl,
-			'config' => serialize(array(
-				'fullWorkspace' => $fullWorkspace,
-				'getVars' => $getVarsStr,
-				'BEUSER_uid' => $beUserUid
-			))
-		);
-
-		$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_preview', $field_array);
-
-		return $field_array['keyword'];
-	}
-
 	/**
 	 * Unlock or Lock a record from $table with $uid
 	 * If $table and $uid is not set, then all locking for the current BE_USER is removed!
@@ -3994,34 +3965,6 @@ final class t3lib_BEfunc {
 		}
 
 		return $liveVersionId;
-	}
-
-	/**
-	 * Will fetch the rootline for the pid, then check if anywhere in the rootline there is a branch point and if so everything is allowed of course.
-	 * Alternatively; if the page of the PID itself is a version and swapmode is zero (page+content) then tables from versioning_followPages are allowed as well.
-	 *
-	 * @param	integer		Page id inside of which you want to edit/create/delete something.
-	 * @param	string		Table name you are checking for. If you don't give the table name ONLY "branch" types are found and returned TRUE. Specifying table you might also get a positive response if the pid is a "page" versioning type AND the table has "versioning_followPages" set.
-	 * @param	boolean		If set, the keyword "branchpoint" or "first" is not returned by rather the "t3ver_stage" value of the branch-point.
-	 * @return	mixed		Returns either "branchpoint" (if branch) or "first" (if page) or FALSE if nothing. Alternatively, it returns the value of "t3ver_stage" for the branchpoint (if any)
-	 * @deprecated since TYPO3 4.4, will be removed in TYPO3 4.7, as branch versioning is not supported anymore
-	 */
-	public static function isPidInVersionizedBranch($pid, $table = '', $returnStage = FALSE) {
-		t3lib_div::logDeprecatedFunction();
-		$rl = self::BEgetRootLine($pid);
-		$c = 0;
-
-		foreach ($rl as $rec) {
-			if ($rec['_ORIG_pid'] == -1) {
-					// In any case: is it a branchpoint, then OK...
-				if ($rec['t3ver_swapmode'] > 0) {
-					return $returnStage ? (int) $rec['t3ver_stage'] : 'branchpoint'; // OK, we are in a versionized branch
-				} elseif ($c == 0 && $rec['t3ver_swapmode'] == 0 && $table && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages']) { // First level: So $table must be versioning_followPages
-					return $returnStage ? (int) $rec['t3ver_stage'] : 'first'; // OK, we are in a versionized branch
-				}
-			}
-			$c++;
-		}
 	}
 
 	/**
