@@ -1865,7 +1865,7 @@ class t3lib_cs {
 		$byte_start = $this->utf8_char2byte_pos($str, $start);
 		if ($byte_start === FALSE) {
 			if ($start > 0) {
-					 // $start outside string length
+					// $start outside string length
 				return FALSE;
 			} else {
 				$start = 0;
