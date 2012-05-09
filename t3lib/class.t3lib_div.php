@@ -2638,7 +2638,7 @@ final class t3lib_div {
 			)
 			);
 
-			$content = file_get_contents($url, FALSE, $ctx);
+			$content = @file_get_contents($url, FALSE, $ctx);
 
 			if ($content === FALSE && isset($report)) {
 				$report['error']   = -1;
