@@ -362,7 +362,7 @@ class DB
 	{
 		if (!extension_loaded($name)) {
 			$dlext = (strncmp(PHP_OS,'WIN',3) === 0) ? '.dll' : '.so';
-			@dl($name . $dlext);
+			extension_loaded($name . $dlext);
 		}
 		if (!extension_loaded($name)) {
 			return false;

@@ -349,7 +349,7 @@ function &Auth_Yadis_getXMLParser()
     foreach ($extensions as $name => $params) {
         if (!extension_loaded($name)) {
             foreach ($params['libname'] as $libname) {
-                if (@dl($libname)) {
+                if (extension_loaded($libname)) {
                     $classname = $params['classname'];
                 }
             }

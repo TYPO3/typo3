@@ -72,7 +72,7 @@ abstract class tx_em_Parser_XmlAbstractParser {
 		$isAvailable = TRUE;
 		if (!extension_loaded($this->requiredPHPExt)) {
 			$prefix = (PHP_SHLIB_SUFFIX === 'dll') ? 'php_' : '';
-			if (!((bool) ini_get('enable_dl') && !(bool) ini_get('safe_mode') && function_exists('dl') && dl($prefix . $this->requiredPHPExt . PHP_SHLIB_SUFFIX))) {
+			if (!((bool) ini_get('enable_dl') && !(bool) ini_get('safe_mode') && function_exists('dl') && extension_loaded($prefix . $this->requiredPHPExt . PHP_SHLIB_SUFFIX))) {
 				$isAvailable = FALSE;
 			}
 		}
