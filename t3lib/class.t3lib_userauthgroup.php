@@ -905,57 +905,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		}
 	}
 
-	/**
-	 * Workspace Versioning type access. Check wether the requsted type of versioning (element/page/branch) is allowd in current workspace
-	 *   (element/pages/branches type of versioning can/could be set on custom workspaces on filed "vtype")
-	 *
-	 * @todo workspacecleanup: this seems mostly obsolete and should be removed
-	 * @param	integer		Versioning type to evaluation: -1, 0, >1
-	 *						0 = page (deprecated)
-	 *						-1 = element
-	 *						>1 = branch (deprecated), indicating the "nesting" level
-	 * @return	boolean		TRUE if OK
-	 * @deprecated since TYPO3 4.4, will be removed in TYPO3 4.8 as only element versioning is supported now
-	 */
-	function workspaceVersioningTypeAccess($type) {
-		t3lib_div::logDeprecatedFunction();
-
-		$type = t3lib_utility_Math::forceIntegerInRange($type, -1);
-
-			// only element versioning is allowed now
-		return $type == -1;
-	}
-
-	/**
-	 * Finding "closest" versioning type, used for creation of new records.
-	 *
-	 * @see workspaceVersioningTypeAccess() for hints on $type
-	 * @param	integer		Versioning type to evaluation: -1, 0, >1
-	 * @return	integer		Returning versioning type
-	 * @deprecated since TYPO3 4.4, will be removed in TYPO3 4.8 as only element versioning is supported now
-	 */
-	function workspaceVersioningTypeGetClosest($type) {
-		t3lib_div::logDeprecatedFunction();
-
-		$type = t3lib_utility_Math::forceIntegerInRange($type, -1);
-
-		if ($this->workspace > 0) {
-			switch ((int) $type) {
-				case -1:
-					$type = -1;
-				break;
-				case 0:
-					$type = $this->workspaceVersioningTypeAccess($type) ? $type : -1;
-				break;
-				default:
-					$type = $this->workspaceVersioningTypeAccess($type) ? $type : ($this->workspaceVersioningTypeAccess(0) ? 0 : -1);
-				break;
-			}
-		}
-		return $type;
-	}
-
-
 	/*************************************
 	 *
 	 * Miscellaneous functions
@@ -1434,7 +1383,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * Returns the information about file permissions
 	 * previously, this was stored in the DB fields (fileoper_perms)
 	 * but is now handled via userTSconfig
-	 * 
+	 *
 	 * permissions.file.default {
 	 * 		addFile = 1
 	 * 		readFile = 1
