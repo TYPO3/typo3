@@ -1243,9 +1243,9 @@ class t3lib_pageSelect {
 					$fields,
 					$table,
 					'pid<>-1 AND
-					 t3ver_state=3 AND
-					 t3ver_move_id=' . intval($uid) . ' AND
-					 t3ver_wsid=' . intval($workspace) .
+						t3ver_state=3 AND
+						t3ver_move_id=' . intval($uid) . ' AND
+						t3ver_wsid=' . intval($workspace) .
 					$this->deleteClause($table)
 				);
 
