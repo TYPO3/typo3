@@ -1243,10 +1243,10 @@ class t3lib_pageSelect {
 					$fields,
 					$table,
 					'pid<>-1 AND
-					 t3ver_state=3 AND
-					 t3ver_move_id=' . intval($uid) . ' AND
-					 t3ver_wsid=' . intval($workspace) .
-					$this->deleteClause($table)
+						t3ver_state=3 AND
+						t3ver_move_id=' . intval($uid) . ' AND
+						t3ver_wsid=' . intval($workspace) .
+						$this->deleteClause($table)
 				);
 
 				if (is_array($row)) {
@@ -1284,9 +1284,9 @@ class t3lib_pageSelect {
 				$fields,
 				$table,
 				'pid=-1 AND
-				 t3ver_oid=' . intval($uid) . ' AND
-				 t3ver_wsid=' . intval($workspace) .
-				$this->deleteClause($table)
+					t3ver_oid=' . intval($uid) . ' AND
+					t3ver_wsid=' . intval($workspace) .
+					$this->deleteClause($table)
 			);
 
 				// If version found, check if it could have been selected with enableFields on as well:
@@ -1297,7 +1297,7 @@ class t3lib_pageSelect {
 					'pid=-1 AND
 						t3ver_oid=' . intval($uid) . ' AND
 						t3ver_wsid=' . intval($workspace) .
-					$enFields
+						$enFields
 				)) {
 					return $newrow; // Return offline version, tested for its enableFields.
 				} else {
