@@ -198,7 +198,8 @@ class SC_file_list {
 										"file[upload][1][target]": "' . ($this->folderObject ? $this->folderObject->getCombinedIdentifier() : ''). '",
 										"file[upload][1][data]": 1,
 										"file[upload][1][charset]": "utf-8",
-										"ajaxID": "TYPO3_tcefile::process"
+										"ajaxID": "TYPO3_tcefile::process",
+										"'. $GLOBALS['BE_USER']->name .'": "'. $GLOBALS['BE_USER']->id .'"
 									}
 								};
 

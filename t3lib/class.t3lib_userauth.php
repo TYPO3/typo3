@@ -170,9 +170,9 @@ abstract class t3lib_userAuth {
 		$id = $this->getCookie($this->name);
 		$this->svConfig = $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth'];
 
-			// if we have a flash client, take the ID from the GP
+			// if we have a flash client, take the ID from the POST
 		if (!$id && $GLOBALS['CLIENT']['BROWSER'] == 'flash') {
-			$id = t3lib_div::_GP($this->name);
+			$id = t3lib_div::_POST($this->name);
 		}
 
 			// If fallback to get mode....
