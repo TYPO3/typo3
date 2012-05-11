@@ -98,54 +98,8 @@ class VersionView {
 					</table>
 				';
 			}
-		} elseif ($GLOBALS['BE_USER']->workspace !== 0) {
-			// Write out HTML code:
-			switch ($GLOBALS['BE_USER']->workspace) {
-			case 0:
-				$wsTitle = $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:live', TRUE);
-				break;
-			case -1:
-				$wsTitle = $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:draft', TRUE);
-				break;
-			default:
-				$wsTitle = $GLOBALS['BE_USER']->workspaceRec['title'];
-				break;
-			}
-			// Get Current page record:
-			$curPage = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $id);
-			// If the selected page is not online, find the right ID
-			$onlineId = $curPage['pid'] == -1 ? $curPage['t3ver_oid'] : $id;
-			// The version of page:
-			$verPage = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, 'pages', $onlineId);
-			if (!$verPage) {
-				if (!count(\TYPO3\CMS\Backend\Utility\BackendUtility::countVersionsOfRecordsOnPage($GLOBALS['BE_USER']->workspace, $onlineId))) {
-					if ($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(0)) {
-						$onClick = $GLOBALS['TBE_TEMPLATE']->issueCommand('&cmd[pages][' . $onlineId . '][version][action]=new&cmd[pages][' . $onlineId . '][version][treeLevels]=0', \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array(
-							'id' => $onlineId
-						)));
-						$onClick = 'window.location.href=\'' . $onClick . '\'; return false;';
-						// Write out HTML code:
-						return '
-
-							<!--
-								No version yet, create one?
-							-->
-							<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
-								<tr>
-									<td>' . $selectorLabel . '</td>
-									<td>' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:workspace', TRUE) . ': "' . htmlspecialchars($wsTitle) . '"</td>
-									<td>
-										<input type="button" value="New version of page" name="_" onclick="' . htmlspecialchars($onClick) . '" /></td>
-								</tr>
-							</table>
-						';
-					}
-				}
-			}
 		}
 	}
-
 }
-
 
 ?>

@@ -635,7 +635,7 @@ class DataHandlerHook {
 			// Remove the possible inline child tables from the tables to be versioniozed automatically:
 			$verTablesArray = array_diff($verTablesArray, $this->getPossibleInlineChildTablesOfParentTable('pages'));
 			// Begin to copy pages if we're allowed to:
-			if ($tcemainObj->BE_USER->workspaceVersioningTypeAccess($versionizeTree)) {
+			if ($versionizeTree === -1) {
 				// Versionize this page:
 				$theNewRootID = $tcemainObj->versionizeRecord('pages', $uid, $label, FALSE, $versionizeTree);
 				if ($theNewRootID) {
