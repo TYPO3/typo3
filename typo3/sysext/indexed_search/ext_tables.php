@@ -37,28 +37,26 @@ if (TYPO3_MODE=='BE')    {
 t3lib_extMgm::allowTableOnStandardPages('index_config');
 t3lib_extMgm::addLLrefForTCAdescr('index_config','EXT:indexed_search/locallang_csh_indexcfg.xml');
 
-if (t3lib_extMgm::isLoaded('crawler'))	{
-	$TCA['index_config'] = Array (
-		'ctrl' => Array (
-			'title' => 'LLL:EXT:indexed_search/locallang_db.php:index_config',
-			'label' => 'title',
-			'tstamp' => 'tstamp',
-			'crdate' => 'crdate',
-			'cruser_id' => 'cruser_id',
-			'type' => 'type',
-			'default_sortby' => 'ORDER BY crdate',
-			'enablecolumns' => Array (
-				'disabled' => 'hidden',
-				'starttime' => 'starttime',
-			),
-			'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
-			'iconfile' => 'default.gif',
+$TCA['index_config'] = array(
+	'ctrl' => array(
+		'title' => 'LLL:EXT:indexed_search/locallang_db.php:index_config',
+		'label' => 'title',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'type' => 'type',
+		'default_sortby' => 'ORDER BY crdate',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
 		),
-		'feInterface' => Array (
-			'fe_admin_fieldList' => 'hidden, starttime, title, description, type, depth, table2index, alternative_source_pid, get_params, chashcalc, filepath, extensions',
-		)
-	);
-}
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
+		'iconfile' => 'default.gif',
+	),
+	'feInterface' => array(
+		'fe_admin_fieldList' => 'hidden, starttime, title, description, type, depth, table2index, alternative_source_pid, get_params, chashcalc, filepath, extensions',
+	)
+);
 
 
 	// Example of crawlerhook (see also ext_localconf.php!)
