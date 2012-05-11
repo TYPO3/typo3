@@ -324,7 +324,7 @@ class t3lib_autoloader {
 	protected static function updateRegistryCacheEntry(array $registry) {
 		$cachedFileContent = 'return array(';
 		foreach ($registry as $className => $classLocation) {
-			$cachedFileContent .= LF . '\'' . $className . '\' => \'' . $classLocation . '\',';
+			$cachedFileContent .= LF . '\'' . strtolower($className) . '\' => \'' . $classLocation . '\',';
 		}
 		$cachedFileContent .= LF . ');';
 		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->set(

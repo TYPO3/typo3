@@ -164,6 +164,64 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 	/**
 	 * @test
 	 */
+	public function autoloadWritesLowerCasedClassFileToCache() {
+		$extKey = $this->createFakeExtension();
+		$extPath = PATH_site . "typo3temp/$extKey/";
+		$autoloaderFile = $extPath . "ext_autoload.php";
+
+			// A case sensitive key (FooBar) in ext_autoload file
+		$class = "tx_${extKey}_" . uniqid('FooBar');
+		$file = $extPath . uniqid('') . '.php';
+
+		file_put_contents($autoloaderFile, "<?php\n\nreturn array('$class' => '$file');\n\n?>");
+
+			// Inject a dummy for the core_phpcode cache to force the autoloader
+			// to re calculate the registry
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+
+			// Expect that the lower case version of the class name is written to cache
+		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains(strtolower($class), FALSE));
+
+			// Re-initialize autoloader registry to force it to recognize the new extension
+		t3lib_autoloader::unregisterAutoloader();
+		t3lib_autoloader::registerAutoloader();
+	}
+
+	/**
+	 * @test
+	 * @expectedException RuntimeException
+	 */
+	public function autoloadFindsCamelCasedClassFileIfExtAutoloadEntryIsLowerCased() {
+		$extKey = $this->createFakeExtension();
+		$extPath = PATH_site . "typo3temp/$extKey/";
+
+			// A case sensitive key (FooBar) in ext_autoload file
+		$class = "tx_${extKey}_" . uniqid('FooBar');
+		$file = $extPath . uniqid('') . '.php';
+
+		file_put_contents($file, "<?php\n\nthrow new RuntimeException('', 1336756850);\n\n?>");
+
+			// Inject a dummy for the core_phpcode cache to force the autoloader
+			// to re calculate the registry
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+
+			// Let cache access give back lowercased class name
+		$mockCache->expects($this->any())->method('has')->will($this->returnValue(TRUE));
+		$mockCache->expects($this->once())->method('requireOnce')->will($this->returnValue(array(strtolower($class) => $file)));
+
+			// Re-initialize autoloader registry to force it to recognize the new extension
+		t3lib_autoloader::unregisterAutoloader();
+		t3lib_autoloader::registerAutoloader();
+		t3lib_autoloader::autoload($class);
+	}
+
+	/**
+	 * @test
+	 */
 	public function autoloadFindsClassFileThatRespectsExtbaseNamingSchemeWithoutExtAutoloadFile() {
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . "typo3temp/$extKey/";
