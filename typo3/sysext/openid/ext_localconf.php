@@ -14,9 +14,9 @@ if (!defined('TYPO3_MODE')) {
 	'quality' => 50,
 	'os' => '',
 	'exec' => '',
-	'classFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'sv1/class.tx_openid_sv1.php',
 	'className' => 'TYPO3\\CMS\\Openid\\OpenidService'
 ));
+
 // Register eID script that performs final FE user authentication. It will be called by the OpenID provider
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['tx_openid'] = 'EXT:openid/class.tx_openid_eid.php';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['setup']['accessLevelCheck']['TYPO3\\CMS\\Openid\\OpenidModuleSetup'] = 'EXT:openid/class.tx_openid_mod_setup.php';
