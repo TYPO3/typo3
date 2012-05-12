@@ -4362,27 +4362,37 @@ Connection: close
 				$GLOBALS['T3_VAR']['makeInstanceService'][$info['className']]->reset();
 				return $GLOBALS['T3_VAR']['makeInstanceService'][$info['className']];
 			} else {
-				$requireFile = self::getFileAbsFileName($info['classFile']);
-				if (@is_file($requireFile)) {
-					self::requireOnce($requireFile);
-					$obj = self::makeInstance($info['className']);
-					if (is_object($obj)) {
-						if (!@is_callable(array($obj, 'init'))) {
-							// use silent logging??? I don't think so.
-							die('Broken service:' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($info));
-						}
-						$obj->info = $info;
-						// service available?
-						if ($obj->init()) {
-							// create persistent object
-							$GLOBALS['T3_VAR']['makeInstanceService'][$info['className']] = $obj;
-							// needed to delete temp files
-							register_shutdown_function(array(&$obj, '__destruct'));
-							return $obj;
-						}
-						$error = $obj->getLastErrorArray();
-						unset($obj);
+				if (isset($info['classFile'])) {
+					// @deprecated since 6.1, will be removed in TYPO3 CMS 6.3
+					// Option is deprecated, since we now have the autoloader function
+					self::deprecationLog(
+						'The option "classFile" of "' . $info['className'] .
+						'" in T3_SERVICES has been deprecated, as this should now be done by the respective ' .
+						'ext_autoload.php of each extension. This option will be removed in TYPO3 CMS v6.3.'
+					);
+					$requireFile = self::getFileAbsFileName($info['classFile']);
+					if (@is_file($requireFile)) {
+						self::requireOnce($requireFile);
 					}
+				}
+
+				$obj = self::makeInstance($info['className']);
+				if (is_object($obj)) {
+					if (!@is_callable(array($obj, 'init'))) {
+						// use silent logging??? I don't think so.
+						die('Broken service:' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($info));
+					}
+					$obj->info = $info;
+					// service available?
+					if ($obj->init()) {
+						// create persistent object
+						$GLOBALS['T3_VAR']['makeInstanceService'][$info['className']] = $obj;
+						// needed to delete temp files
+						register_shutdown_function(array(&$obj, '__destruct'));
+						return $obj;
+					}
+					$error = $obj->getLastErrorArray();
+					unset($obj);
 				}
 			}
 			// deactivate the service
