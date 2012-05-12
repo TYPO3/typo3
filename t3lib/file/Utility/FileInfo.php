@@ -33,6 +33,7 @@
  * @subpackage t3lib
  */
 class t3lib_file_Utility_FileInfo {
+
 	/**
 	 * User function for sys_file (element)
 	 *
@@ -51,15 +52,15 @@ class t3lib_file_Utility_FileInfo {
 			$content = '';
 
 			if ($previewImage) {
-				$content .= '<img src="' . htmlspecialchars($previewImage) . '" style="float: left; margin-right: 10px; margin-bottom: 10px;" />';
+				$content .= '<img src="' . htmlspecialchars($previewImage) . '" alt="" class="t3-tceforms-sysfile-imagepreview" />';
 			}
 
 			$content .= '<strong>' . htmlspecialchars($fileObject->getName()) . '</strong> (' . htmlspecialchars(t3lib_div::formatSize($fileObject->getSize())) . ')<br />';
 			$content .= t3lib_BEfunc::getProcessedValue($PA['table'], 'type', $fileObject->getType()) . ' (' . $fileObject->getMimeType() . ')<br />';
-			$content .= 'Location: ' . htmlspecialchars($fileObject->getStorage()->getName()) . ' - ' . htmlspecialchars($fileObject->getIdentifier()) . '<br />';
+			$content .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:fileMetaDataLocation', TRUE) . ': ' . htmlspecialchars($fileObject->getStorage()->getName()) . ' - ' . htmlspecialchars($fileObject->getIdentifier()) . '<br />';
 			$content .= '<br />';
 		} else {
-			$content = '<h2>The File Info ... is great! But only with valid records.</h2>';
+			$content = '<h2>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:fileMetaErrorInvalidRecord', TRUE) . '</h2>';
 		}
 
 		return $content;
