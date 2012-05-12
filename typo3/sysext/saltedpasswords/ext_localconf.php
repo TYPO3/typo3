@@ -32,7 +32,6 @@ t3lib_extMgm::addService(
 		'quality' => 70,
 		'os' => '',
 		'exec' => '',
-		'classFile' => t3lib_extMgm::extPath('saltedpasswords').'sv1/class.tx_saltedpasswords_sv1.php',
 		'className' => 'tx_saltedpasswords_sv1',
 	)
 );
