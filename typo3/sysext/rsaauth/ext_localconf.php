@@ -15,9 +15,9 @@ if (!defined('TYPO3_MODE')) {
 	'os' => '',
 	'exec' => '',
 	// Do not put a dependency on openssh here or service loading will fail!
-	'classFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'sv1/class.tx_rsaauth_sv1.php',
 	'className' => 'TYPO3\\CMS\\Rsaauth\\RsaAuthService'
 ));
+
 // Add a hook to the BE login form
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'][$_EXTKEY] = 'EXT:' . $_EXTKEY . '/hooks/class.tx_rsaauth_loginformhook.php:TYPO3\\CMS\\Rsaauth\\Hook\\LoginFormHook->getLoginFormTag';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook'][$_EXTKEY] = 'EXT:' . $_EXTKEY . '/hooks/class.tx_rsaauth_loginformhook.php:TYPO3\\CMS\\Rsaauth\\Hook\\LoginFormHook->getLoginScripts';

@@ -12,7 +12,6 @@ if (!defined('TYPO3_MODE')) {
 	'quality' => 50,
 	'os' => '',
 	'exec' => '',
-	'classFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'class.tx_sv_auth.php',
 	'className' => 'TYPO3\\CMS\\Sv\\AuthenticationService'
 ));
 // Add hooks to the backend login form
