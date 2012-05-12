@@ -517,3 +517,10 @@ TCEforms Sections
 .t3-form-field-record-flexsection > div {
 	margin:0 10px;
 }
+
+/* preview image in sys_file records */
+img.t3-tceforms-sysfile-imagepreview {
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}

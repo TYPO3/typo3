@@ -186,6 +186,12 @@
 			<trans-unit id="uploadMultipleFilesInfo" xml:space="preserve">
 				<source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
 			</trans-unit>
+			<trans-unit id="fileMetaDataLocation" xml:space="preserve">
+				<source>Location</source>
+			</trans-unit>
+			<trans-unit id="fileMetaErrorInvalidRecord" xml:space="preserve">
+				<source>File meta data not found</source>
+			</trans-unit>
 			<trans-unit id="selectPosition" xml:space="preserve">
 				<source>Select a position for the new page</source>
 			</trans-unit>
