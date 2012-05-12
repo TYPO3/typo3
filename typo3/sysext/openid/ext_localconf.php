@@ -15,7 +15,6 @@ t3lib_extMgm::addService($_EXTKEY, 'auth' /* sv type */,  'tx_openid_sv1' /* sv 
 		'quality' => 50,
 		'os' => '',
 		'exec' => '',
-		'classFile' => t3lib_extMgm::extPath($_EXTKEY).'sv1/class.tx_openid_sv1.php',
 		'className' => 'tx_openid_sv1',
 	)
 );

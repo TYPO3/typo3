@@ -18,7 +18,6 @@ t3lib_extMgm::addService($_EXTKEY,  'auth' /* sv type */,  'tx_rsaauth_sv1' /* s
 		'os' => '',
 		'exec' => '',		// Do not put a dependency on openssh here or service loading will fail!
 
-		'classFile' => t3lib_extMgm::extPath($_EXTKEY) . 'sv1/class.tx_rsaauth_sv1.php',
 		'className' => 'tx_rsaauth_sv1',
 	)
 );

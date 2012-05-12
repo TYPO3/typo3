@@ -17,7 +17,6 @@ t3lib_extMgm::addService($_EXTKEY,  'auth' /* sv type */,  'tx_sv_auth' /* sv ke
 			'os' => '',
 			'exec' => '',
 
-			'classFile' => t3lib_extMgm::extPath($_EXTKEY).'class.tx_sv_auth.php',
 			'className' => 'tx_sv_auth',
 		)
 	);
