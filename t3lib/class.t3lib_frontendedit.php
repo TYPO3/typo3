@@ -28,8 +28,8 @@
 /**
  * Controller class for frontend editing.
  *
- * @author	Jeff Segars <jeff@webempoweredchurch.org>
- * @author	David Slayback <dave@webempoweredchurch.org>
+ * @author Jeff Segars <jeff@webempoweredchurch.org>
+ * @author David Slayback <dave@webempoweredchurch.org>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -52,7 +52,7 @@ class t3lib_frontendedit {
 	/**
 	 * Initializes configuration options.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function initConfigOptions() {
 		$this->TSFE_EDIT = t3lib_div::_GP('TSFE_EDIT');
@@ -71,11 +71,11 @@ class t3lib_frontendedit {
 	 * With the "edit panel" the user will see buttons with links to editing, moving, hiding, deleting the element
 	 * This function is used for the cObject EDITPANEL and the stdWrap property ".editPanel"
 	 *
-	 * @param	string		A content string containing the content related to the edit panel. For cObject "EDITPANEL" this is empty but not so for the stdWrap property. The edit panel is appended to this string and returned.
-	 * @param	array		TypoScript configuration properties for the editPanel
-	 * @param	string		The "table:uid" of the record being shown. If empty string then $this->currentRecord is used. For new records (set by $conf['newRecordFromTable']) it's auto-generated to "[tablename]:NEW"
-	 * @param	array		Alternative data array to use. Default is $this->data
-	 * @return	string		The input content string with the editPanel appended. This function returns only an edit panel appended to the content string if a backend user is logged in (and has the correct permissions). Otherwise the content string is directly returned.
+	 * @param string $content A content string containing the content related to the edit panel. For cObject "EDITPANEL" this is empty but not so for the stdWrap property. The edit panel is appended to this string and returned.
+	 * @param array $conf TypoScript configuration properties for the editPanel
+	 * @param string $currentRecord The "table:uid" of the record being shown. If empty string then $this->currentRecord is used. For new records (set by $conf['newRecordFromTable']) it's auto-generated to "[tablename]:NEW"
+	 * @param array $dataArray Alternative data array to use. Default is $this->data
+	 * @return string The input content string with the editPanel appended. This function returns only an edit panel appended to the content string if a backend user is logged in (and has the correct permissions). Otherwise the content string is directly returned.
 	 */
 	public function displayEditPanel($content, array $conf, $currentRecord, array $dataArray) {
 		if ($conf['newRecordFromTable']) {
@@ -123,15 +123,14 @@ class t3lib_frontendedit {
 	 * Adds an edit icon to the content string. The edit icon links to alt_doc.php with proper parameters for editing the table/fields of the context.
 	 * This implements TYPO3 context sensitive editing facilities. Only backend users will have access (if properly configured as well).
 	 *
-	 * @param	string		The content to which the edit icons should be appended
-	 * @param	string		The parameters defining which table and fields to edit. Syntax is [tablename]:[fieldname],[fieldname],[fieldname],... OR [fieldname],[fieldname],[fieldname],... (basically "[tablename]:" is optional, default table is the one of the "current record" used in the function). The fieldlist is sent as "&columnsOnly=" parameter to alt_doc.php
-	 * @param	array		TypoScript properties for configuring the edit icons.
-	 * @param	string		The "table:uid" of the record being shown. If empty string then $this->currentRecord is used. For new records (set by $conf['newRecordFromTable']) it's auto-generated to "[tablename]:NEW"
-	 * @param	array		Alternative data array to use. Default is $this->data
-	 * @param	string		Additional URL parameters for the link pointing to alt_doc.php
-	 * @return	string		The input content string, possibly with edit icons added (not necessarily in the end but just after the last string of normal content.
+	 * @param string $content The content to which the edit icons should be appended
+	 * @param string $params The parameters defining which table and fields to edit. Syntax is [tablename]:[fieldname],[fieldname],[fieldname],... OR [fieldname],[fieldname],[fieldname],... (basically "[tablename]:" is optional, default table is the one of the "current record" used in the function). The fieldlist is sent as "&columnsOnly=" parameter to alt_doc.php
+	 * @param array $conf TypoScript properties for configuring the edit icons.
+	 * @param string $currentRecord The "table:uid" of the record being shown. If empty string then $this->currentRecord is used. For new records (set by $conf['newRecordFromTable']) it's auto-generated to "[tablename]:NEW"
+	 * @param array $dataArray Alternative data array to use. Default is $this->data
+	 * @param string $addUrlParamStr Additional URL parameters for the link pointing to alt_doc.php
+	 * @return string The input content string, possibly with edit icons added (not necessarily in the end but just after the last string of normal content.
 	 */
-
 	public function displayEditIcons($content, $params, array $conf = array(), $currentRecord = '', array $dataArray = array(), $addUrlParamStr = '') {
 			// Check incoming params:
 		list($currentRecordTable, $currentRecordUID) = explode(':', $currentRecord);
@@ -139,7 +138,8 @@ class t3lib_frontendedit {
 		if (!$table) {
 			$table = $currentRecordTable;
 		} elseif ($table != $currentRecordTable) {
-			return $content; // If the table is set as the first parameter, and does not match the table of the current record, then just return.
+				// If the table is set as the first parameter, and does not match the table of the current record, then just return.
+			return $content;
 		}
 
 		$editUid = $dataArray['_LOCALIZED_UID'] ? $dataArray['_LOCALIZED_UID'] : $currentRecordUID;
@@ -171,8 +171,8 @@ class t3lib_frontendedit {
 	/**
 	 * Returns TRUE if an edit-action is sent from the Admin Panel
 	 *
-	 * @return	boolean
-	 * @see	index_ts.php
+	 * @return boolean
+	 * @see index_ts.php
 	 */
 	public function isEditAction() {
 		if (is_array($this->TSFE_EDIT)) {
@@ -193,8 +193,8 @@ class t3lib_frontendedit {
 	 * Returns TRUE if an edit form is shown on the page.
 	 * Used from index_ts.php where a TRUE return-value will result in classes etc. being included.
 	 *
-	 * @return	boolean
-	 * @see	index_ts.php
+	 * @return boolean
+	 * @see index_ts.php
 	 */
 	public function isEditFormShown() {
 		if (is_array($this->TSFE_EDIT)) {
@@ -209,12 +209,12 @@ class t3lib_frontendedit {
 	 * Management of the on-page frontend editing forms and edit panels.
 	 * Basically taking in the data and commands and passes them on to the proper classes as they should be.
 	 *
-	 * @return	void
+	 * @return void
 	 * @throws UnexpectedValueException if TSFE_EDIT[cmd] is not a valid command
-	 * @see	index_ts.php
+	 * @see index_ts.php
 	 */
 	public function editAction() {
-			// Commands:
+			// Commands
 		list($table, $uid) = explode(':', $this->TSFE_EDIT['record']);
 		$uid = intval($uid);
 		$cmd = $this->TSFE_EDIT['cmd'];
@@ -249,9 +249,9 @@ class t3lib_frontendedit {
 	/**
 	 * Hides a specific record.
 	 *
-	 * @param	string		The table name for the record to hide.
-	 * @param	integer		The UID for the record to hide.
-	 * @return	void
+	 * @param string $table The table name for the record to hide.
+	 * @param integer $uid The UID for the record to hide.
+	 * @return void
 	 */
 	public function doHide($table, $uid) {
 		$hideField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
@@ -268,9 +268,9 @@ class t3lib_frontendedit {
 	/**
 	 * Unhides (shows) a specific record.
 	 *
-	 * @param	string		The table name for the record to unhide.
-	 * @param	integer		The UID for the record to unhide.
-	 * @return	void
+	 * @param string $table The table name for the record to unhide.
+	 * @param integer $uid The UID for the record to unhide.
+	 * @return void
 	 */
 	public function doUnhide($table, $uid) {
 		$hideField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
@@ -287,9 +287,9 @@ class t3lib_frontendedit {
 	/**
 	 * Moves a record up.
 	 *
-	 * @param	string		The table name for the record to move.
-	 * @param	integer		The UID for the record to hide.
-	 * @return	void
+	 * @param string $table The table name for the record to move.
+	 * @param integer $uid The UID for the record to hide.
+	 * @return void
 	 */
 	public function doUp($table, $uid) {
 		$this->move($table, $uid, 'up');
@@ -298,9 +298,9 @@ class t3lib_frontendedit {
 	/**
 	 * Moves a record down.
 	 *
-	 * @param	string		The table name for the record to move.
-	 * @param	integer		The UID for the record to move.
-	 * @return	void
+	 * @param string $table The table name for the record to move.
+	 * @param integer $uid The UID for the record to move.
+	 * @return void
 	 */
 	public function doDown($table, $uid) {
 		$this->move($table, $uid, 'down');
@@ -309,9 +309,9 @@ class t3lib_frontendedit {
 	/**
 	 * Moves a record after a given element. Used for drag.
 	 *
-	 * @param	string		The table name for the record to move.
-	 * @param	integer		The UID for the record to move.
-	 * @return	void
+	 * @param string $table The table name for the record to move.
+	 * @param integer $uid The UID for the record to move.
+	 * @return void
 	 */
 	public function doMoveAfter($table, $uid) {
 		$afterUID = $GLOBALS['BE_USER']->frontendEdit->TSFE_EDIT['moveAfter'];
@@ -321,21 +321,21 @@ class t3lib_frontendedit {
 	/**
 	 * Moves a record
 	 *
-	 * @param	string		The table name for the record to move.
-	 * @param	integer		The UID for the record to move.
-	 * @param	string		The direction to move, either 'up' or 'down'.
-	 * @param	integer		The UID of record to move after. This is specified for dragging only.
-	 * @return	void
+	 * @param string $table The table name for the record to move.
+	 * @param integer $uid The UID for the record to move.
+	 * @param string $direction The direction to move, either 'up' or 'down'.
+	 * @param integer $afterUID The UID of record to move after. This is specified for dragging only.
+	 * @return void
 	 */
 	protected function move($table, $uid, $direction = '', $afterUID = 0) {
 		$cmdData = array();
 		$sortField = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
 		if ($sortField) {
-				// Get self:
+				// Get self
 			$fields = array_unique(t3lib_div::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'] . ',uid,pid,' . $sortField, TRUE));
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $fields), $table, 'uid=' . $uid);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					// record before or after
+					// Record before or after
 				if (($GLOBALS['BE_USER']->adminPanel instanceOf tslib_AdminPanel) && ($GLOBALS['BE_USER']->adminPanel->extGetFeAdminValue('preview'))) {
 					$ignore = array('starttime' => 1, 'endtime' => 1, 'disabled' => 1, 'fe_group' => 1);
 				}
@@ -395,9 +395,9 @@ class t3lib_frontendedit {
 	/**
 	 * Deletes a specific record.
 	 *
-	 * @param	string		The table name for the record to delete.
-	 * @param	integer		The UID for the record to delete.
-	 * @return	void
+	 * @param string $table The table name for the record to delete.
+	 * @param integer $uid The UID for the record to delete.
+	 * @return void
 	 */
 	public function doDelete($table, $uid) {
 		$cmdData[$table][$uid]['delete'] = 1;
@@ -411,9 +411,9 @@ class t3lib_frontendedit {
 	/**
 	 * Saves a record based on its data array.
 	 *
-	 * @param	string		The table name for the record to save.
-	 * @param	integer		The UID for the record to save.
-	 * @return	void
+	 * @param string $table The table name for the record to save.
+	 * @param integer $uid The UID for the record to save.
+	 * @return void
 	 */
 	public function doSave($table, $uid) {
 		$data = $this->TSFE_EDIT['data'];
@@ -435,9 +435,9 @@ class t3lib_frontendedit {
 	/**
 	 * Saves a record based on its data array and closes it.
 	 *
-	 * @param	string		The table name for the record to save.
-	 * @param	integer		The UID for the record to save.
-	 * @return	void
+	 * @param string $table The table name for the record to save.
+	 * @param integer $uid The UID for the record to save.
+	 * @return void
 	 * @note	This method is only a wrapper for doSave() but is needed so
 	 *			that frontend editing views can handle "save" differently from
 	 *			"save and close".
@@ -449,14 +449,13 @@ class t3lib_frontendedit {
 		$this->doSave($table, $uid);
 	}
 
-
 	/**
 	 * Stub for closing a record. No real functionality needed since content
 	 * element rendering will take care of everything.
 	 *
-	 * @param	string		The table name for the record to close.
-	 * @param	integer		The UID for the record to close.
-	 * @return	void
+	 * @param string $table The table name for the record to close.
+	 * @param integer $uid The UID for the record to close.
+	 * @return void
 	 */
 	public function doClose($table, $uid) {
 		// Do nothing.
@@ -466,9 +465,9 @@ class t3lib_frontendedit {
 	 * Checks whether the user has access to edit the language for the
 	 * requested record.
 	 *
-	 * @param	string		The name of the table.
-	 * @param	array		The record.
-	 * @return	boolean
+	 * @param string $table The name of the table.
+	 * @param array $currentRecord The record.
+	 * @return boolean
 	 */
 	protected function allowedToEditLanguage($table, array $currentRecord) {
 			// If no access right to record languages, return immediately
@@ -494,12 +493,12 @@ class t3lib_frontendedit {
 	/**
 	 * Checks whether the user is allowed to edit the requested table.
 	 *
-	 * @param	string	The name of the table.
-	 * @param	array	The data array.
-	 * @param	array	The configuration array for the edit panel.
-	 * @param	boolean	Boolean indicating whether recordEditAccessInternals should not be checked. Defaults
+	 * @param string $table The name of the table.
+	 * @param array $dataArray The data array.
+	 * @param array $conf The configuration array for the edit panel.
+	 * @param boolean $checkEditAccessInternals Boolean indicating whether recordEditAccessInternals should not be checked. Defaults
 	 *					 to TRUE but doesn't makes sense when creating new records on a page.
-	 * @return	boolean
+	 * @return boolean
 	 */
 	protected function allowedToEdit($table, array $dataArray, array $conf, $checkEditAccessInternals = TRUE) {
 
@@ -550,11 +549,11 @@ class t3lib_frontendedit {
 	/**
 	 * Takes an array of generally allowed actions and filters that list based on page and content permissions.
 	 *
-	 * @param	string	The name of the table.
-	 * @param	array	The configuration array.
-	 * @param	integer	The PID where editing will occur.
-	 * @param	string	Comma-separated list of actions that are allowed in general.
-	 * @return	array
+	 * @param string $table The name of the table.
+	 * @param array $conf The configuration array.
+	 * @param integer $pid The PID where editing will occur.
+	 * @param string $allow Comma-separated list of actions that are allowed in general.
+	 * @return array
 	 */
 	protected function getAllowedEditActions($table, array $conf, $pid, $allow = '') {
 
@@ -564,13 +563,13 @@ class t3lib_frontendedit {
 		}
 
 		if (!$conf['onlyCurrentPid'] || $pid == $GLOBALS['TSFE']->id) {
-				// Permissions:
+				// Permissions
 			$types = t3lib_div::trimExplode(',', t3lib_div::strtolower($conf['allow']), TRUE);
 			$allow = array_flip($types);
 
 			$perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
 			if ($table == 'pages') {
-					// rootpage!
+					// Rootpage
 				if (count($GLOBALS['TSFE']->config['rootLine']) == 1) {
 					unset($allow['move']);
 					unset($allow['hide']);
@@ -596,8 +595,7 @@ class t3lib_frontendedit {
 	/**
 	 * Adds any extra Javascript includes needed for Front-end editing
 	 *
-	 * @param	none
-	 * @return	string
+	 * @return string
 	 */
 	public function getJavascriptIncludes() {
 			// No extra JS includes needed
@@ -608,8 +606,8 @@ class t3lib_frontendedit {
 	 * Gets the hidden fields (array key=field name, value=field value) to be used in the edit panel for a particular content element.
 	 * In the normal case, no hidden fields are needed but special controllers such as TemplaVoila need to track flexform pointers, etc.
 	 *
-	 * @param	array	The data array for a specific content element.
-	 * @return	array
+	 * @param array $dataArray The data array for a specific content element.
+	 * @return array
 	 */
 	public function getHiddenFields(array $dataArray) {
 			// No special hidden fields needed.
@@ -619,7 +617,7 @@ class t3lib_frontendedit {
 	/**
 	 * Initializes t3lib_TCEmain since it is used on modification actions.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function initializeTceMain() {
 		if (!isset($this->tce)) {

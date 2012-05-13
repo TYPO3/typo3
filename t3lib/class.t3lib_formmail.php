@@ -29,21 +29,21 @@
  *
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * Formmail class, used by the TYPO3 "cms" extension (default frontend) to send email forms.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see tslib_fe::sendFormmail(), t3lib/formmail.php
  */
 class t3lib_formmail {
 	protected $reserved_names = 'recipient,recipient_copy,auto_respond_msg,auto_respond_checksum,redirect,subject,attachment,from_email,from_name,replyto_email,replyto_name,organisation,priority,html_enabled,quoted_printable,submit_x,submit_y';
-	protected $dirtyHeaders = array(); // collection of suspicious header data, used for logging
+		// Collection of suspicious header data, used for logging
+	protected $dirtyHeaders = array();
 
 	protected $characterSet;
 	protected $subject;
@@ -82,9 +82,9 @@ class t3lib_formmail {
 	 * [html_enabled]:		If mail is sent as html
 	 * [use_base64]:		If set, base64 encoding will be used instead of quoted-printable
 	 *
-	 * @param	array		Contains values for the field names listed above (with slashes removed if from POST input)
-	 * @param	boolean		Whether to base64 encode the mail content
-	 * @return	void
+	 * @param array $valueList Contains values for the field names listed above (with slashes removed if from POST input)
+	 * @param boolean $base64 Whether to base64 encode the mail content
+	 * @return void
 	 */
 	function start($valueList, $base64 = FALSE) {
 
@@ -106,7 +106,7 @@ class t3lib_formmail {
 		}
 
 		if (isset($valueList['recipient'])) {
-				// convert form data from renderCharset to mail charset
+				// Convert form data from renderCharset to mail charset
 			$this->subject = ($valueList['subject'])
 					? $valueList['subject']
 					: 'Formmail on ' . t3lib_div::getIndpEnv('HTTP_HOST');
@@ -135,7 +135,7 @@ class t3lib_formmail {
 
 			$this->priority = ($valueList['priority']) ? t3lib_utility_Math::forceIntegerInRange($valueList['priority'], 1, 5) : 3;
 
-				// auto responder
+				// Auto responder
 			$this->autoRespondMessage = (trim($valueList['auto_respond_msg']) && $this->fromAddress)
 					? trim($valueList['auto_respond_msg'])
 					: '';
@@ -164,7 +164,7 @@ class t3lib_formmail {
 						$space = (strlen($val) > 60) ? LF : '';
 						$val = (is_array($val) ? implode($val, LF) : $val);
 
-							// convert form data from renderCharset to mail charset (HTML may use entities)
+							// Convert form data from renderCharset to mail charset (HTML may use entities)
 						$plainTextValue = $val;
 						$HtmlValue = htmlspecialchars($val);
 
@@ -228,7 +228,7 @@ class t3lib_formmail {
 				// Ignore target encoding. This is handled automatically by Swift Mailer and overriding the defaults
 				// is not worth the trouble
 
-				// log dirty header lines
+				// Log dirty header lines
 			if ($this->dirtyHeaders) {
 				t3lib_div::sysLog('Possible misuse of t3lib_formmail: see TYPO3 devLog', 'Core', 3);
 				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']) {
@@ -241,8 +241,8 @@ class t3lib_formmail {
 	/**
 	 * Checks string for suspicious characters
 	 *
-	 * @param	string	String to check
-	 * @return	string	Valid or empty string
+	 * @param string $string String to check
+	 * @return string Valid or empty string
 	 */
 	protected function sanitizeHeaderString($string) {
 		$pattern = '/[\r\n\f\e]/';
@@ -271,10 +271,10 @@ class t3lib_formmail {
 		$addressList = array();
 		foreach ($addresses as $address) {
 			if ($address->personal) {
-				// item with name found ( name <email@example.org> )
+				// Item with name found ( name <email@example.org> )
 				$addressList[$address->mailbox . '@' . $address->host] = $address->personal;
 			} else {
-				// item without name found ( email@example.org )
+				// Item without name found ( email@example.org )
 				$addressList[] = $address->mailbox . '@' . $address->host;
 			}
 		}
