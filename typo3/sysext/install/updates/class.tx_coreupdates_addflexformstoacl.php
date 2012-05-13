@@ -114,7 +114,7 @@ class tx_coreupdates_addflexformstoacl extends Tx_Install_Updates_Base {
 			// Get all excludeable FlexForm fields from content-table
 		$flexExcludeFields = array();
 		$flexFormArray = t3lib_BEfunc::getRegisteredFlexForms($contentTable);
-		if (!empty($flexFormArray)  && is_array($flexFormArray)) {
+		if (!empty($flexFormArray) && is_array($flexFormArray)) {
 			foreach ($flexFormArray as $tableField => $flexForms) {
 					// Get all sheets
 				foreach ($flexForms as $flexFormIdentifier => $flexFormConfig) {

@@ -327,15 +327,15 @@ class tx_indexedsearch_lexer {
 
 			// LOOKING for Alpha chars (Latin, Cyrillic, Greek, Hebrew and Arabic):
 		if (
-				($cp >= 0x41 && $cp <= 0x5A) ||		// Basic Latin: capital letters
-				($cp >= 0x61 && $cp <= 0x7A) ||		// Basic Latin: small letters
-				($cp >= 0xC0 && $cp <= 0xFF && $cp != 0xD7 && $cp != 0xF7) || 			// Latin-1 Supplement (0x80-0xFF) excluding multiplication and division sign
-				($cp >= 0x100 && $cp < 0x280) ||	// Latin Extended-A and -B
+				($cp >= 0x41 && $cp <= 0x5A) ||	// Basic Latin: capital letters
+				($cp >= 0x61 && $cp <= 0x7A) ||	// Basic Latin: small letters
+				($cp >= 0xC0 && $cp <= 0xFF && $cp != 0xD7 && $cp != 0xF7) || // Latin-1 Supplement (0x80-0xFF) excluding multiplication and division sign
+				($cp >= 0x100 && $cp < 0x280) || // Latin Extended-A and -B
 				($cp == 0x386 || ($cp >= 0x388 && $cp < 0x400)) || // Greek and Coptic excluding non-letters
-				(($cp >= 0x400 && $cp < 0x482) || ($cp >= 0x48A && $cp < 0x530)) ||		// Cyrillic and Cyrillic Supplement excluding historic miscellaneous
-				(($cp >= 0x590 && $cp < 0x5B0) || ($cp >= 0x5D0 && $cp < 0x5F3)) || 	// Hebrew: only accents and letters
-				(($cp >= 0x621 && $cp <= 0x658) || ($cp >= 0x66E &&  $cp <= 0x6D3)) || 	// Arabic: only letters (there are more letters in the range, we can add them if there is a demand)
-				($cp >= 0x1E00 && $cp < 0x2000)		// Latin Extended Additional and Greek Extended
+				(($cp >= 0x400 && $cp < 0x482) || ($cp >= 0x48A && $cp < 0x530)) ||	// Cyrillic and Cyrillic Supplement excluding historic miscellaneous
+				(($cp >= 0x590 && $cp < 0x5B0) || ($cp >= 0x5D0 && $cp < 0x5F3)) ||	// Hebrew: only accents and letters
+				(($cp >= 0x621 && $cp <= 0x658) || ($cp >= 0x66E &&  $cp <= 0x6D3)) || // Arabic: only letters (there are more letters in the range, we can add them if there is a demand)
+				($cp >= 0x1E00 && $cp < 0x2000)	// Latin Extended Additional and Greek Extended
 			)	{
 			return array('alpha');
 		}
@@ -344,13 +344,13 @@ class tx_indexedsearch_lexer {
 			// Ranges are not certain - deducted from the translation tables in t3lib/csconvtbl/
 			// Verified with http://www.unicode.org/charts/ (16/2) - may still not be complete.
 		if (
-				($cp >= 0x3040 && $cp <= 0x30FF) ||		// HIRAGANA and KATAKANA letters
-				($cp >= 0x3130 && $cp <= 0x318F) ||		// Hangul Compatibility Jamo
-				($cp >= 0x3400 && $cp <= 0x4DBF) ||		// CJK Unified Ideographs Extension A
-				($cp >= 0x4E00 && $cp <= 0x9FAF) ||		// CJK Unified Ideographs
-				($cp >= 0xAC00 && $cp <= 0xD7AF) ||		// Hangul Syllables
-				($cp >= 0x20000 && $cp <= 0x2FA1F)		// CJK Unified Ideographs Extension B and CJK Compatibility Ideographs Supplement
-														// also include CJK and Kangxi radicals or Bopomofo letter?
+				($cp >= 0x3040 && $cp <= 0x30FF) ||	// HIRAGANA and KATAKANA letters
+				($cp >= 0x3130 && $cp <= 0x318F) ||	// Hangul Compatibility Jamo
+				($cp >= 0x3400 && $cp <= 0x4DBF) ||	// CJK Unified Ideographs Extension A
+				($cp >= 0x4E00 && $cp <= 0x9FAF) ||	// CJK Unified Ideographs
+				($cp >= 0xAC00 && $cp <= 0xD7AF) ||	// Hangul Syllables
+				($cp >= 0x20000 && $cp <= 0x2FA1F)	// CJK Unified Ideographs Extension B and CJK Compatibility Ideographs Supplement
+									// also include CJK and Kangxi radicals or Bopomofo letter?
 			)	{
 			return array('cjk');
 		}

@@ -496,7 +496,7 @@ class webPageTree extends t3lib_browseTree {
 			$this->tree[$treeKey] = array(
 				'row'    => $row,
 				'HTML'   => $HTML,
-				'hasSub' => $nextCount&&$this->expandNext($newID),
+				'hasSub' => $nextCount && $this->expandNext($newID),
 				'isFirst'=> $a==1,
 				'isLast' => FALSE,
 				'invertedDepth'=> $depth,

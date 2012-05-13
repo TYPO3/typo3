@@ -1303,7 +1303,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if (substr($filename,0,4)=='EXT:')      {       // extension
 			list($extKey,$local) = explode('/',substr($filename,4),2);
 			$newFilename = '';
-			if (strcmp($extKey,'') &&  t3lib_extMgm::isLoaded($extKey) && strcmp($local,'')) {
+			if (strcmp($extKey,'') && t3lib_extMgm::isLoaded($extKey) && strcmp($local,'')) {
 				$newFilename = (($this->is_FE() || $this->isFrontendEditActive()) ? t3lib_extMgm::siteRelPath($extKey) : $this->backPath . t3lib_extMgm::extRelPath($extKey)) . $local;
 			}
 		} elseif (substr($filename,0,1) != '/') {
@@ -1440,7 +1440,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$nStyle=array();
 		foreach ($styleParts as $k => $p) {
 			$pp = t3lib_div::trimExplode(':',$p);
-			if ($pp[0]&&$pp[1])     {
+			if ($pp[0] && $pp[1])     {
 				foreach ($matchParts as $el) {
 					$star=substr($el,-1)=='*';
 					if (!strcmp($pp[0],$el) || ($star && t3lib_div::isFirstPartOfStr($pp[0],substr($el,0,-1)) ))    {
