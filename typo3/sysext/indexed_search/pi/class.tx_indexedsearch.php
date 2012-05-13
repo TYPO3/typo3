@@ -653,7 +653,7 @@ class tx_indexedsearch extends tslib_pibase {
 				$this->internal['res_count'] = $resData['count'];
 				$this->internal['results_at_a_time'] = $this->piVars['results'];
 				$this->internal['maxPages'] = t3lib_utility_Math::forceIntegerInRange($this->conf['search.']['page_links'],1,100,10);
-				$addString = ($resData['count']&&$this->piVars['group']=='sections'&&$freeIndexUid<=0 ? ' '.sprintf($this->pi_getLL(count($this->resultSections)>1?'inNsections':'inNsection'),count($this->resultSections)):'');
+				$addString = ($resData['count'] && $this->piVars['group']=='sections' && $freeIndexUid<=0 ? ' '.sprintf($this->pi_getLL(count($this->resultSections)>1?'inNsections':'inNsection'),count($this->resultSections)):'');
 				$browseBox1 = $this->pi_list_browseresults(1,$addString,$this->printResultSectionLinks(),$freeIndexUid);
 				$browseBox2 = $this->pi_list_browseresults(0,'','',$freeIndexUid);
 			}

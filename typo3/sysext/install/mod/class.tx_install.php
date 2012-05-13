@@ -2908,7 +2908,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		foreach ($paths as $k => $v) {
 			if (!preg_match('/[\\/]$/',$v)) $v.='/';
 			foreach ($programs as $filename) {
-				if (ini_get('open_basedir') || (file_exists($v)&&@is_file($v.$filename.$isExt))) {
+				if (ini_get('open_basedir') || (file_exists($v) && @is_file($v.$filename.$isExt))) {
 					$version = $this->_checkImageMagick_getVersion($filename,$v);
 					if($version > 0) {
 							// Assume GraphicsMagick

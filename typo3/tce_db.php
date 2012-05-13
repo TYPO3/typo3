@@ -191,7 +191,7 @@ class SC_tce_db {
 			$this->tce->clear_cacheCmd($this->cacheCmd);
 
 				// Update page tree?
-			if ($this->uPT && (isset($this->data['pages'])||isset($this->cmd['pages'])))	{
+			if ($this->uPT && (isset($this->data['pages']) || isset($this->cmd['pages'])))	{
 				t3lib_BEfunc::setUpdateSignal('updatePageTree');
 			}
 		}

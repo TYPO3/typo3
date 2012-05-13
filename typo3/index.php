@@ -505,7 +505,7 @@ class SC_index {
 					// Get size of random file:
 				$imgSize = @getimagesize($dir.$files[$randImg]);
 
-				$imgAuthor = is_array($GLOBALS['TBE_STYLES']['loginBoxImage_author'])&&$GLOBALS['TBE_STYLES']['loginBoxImage_author'][$files[$randImg]] ? htmlspecialchars($GLOBALS['TBE_STYLES']['loginBoxImage_author'][$files[$randImg]]) : '';
+				$imgAuthor = is_array($GLOBALS['TBE_STYLES']['loginBoxImage_author']) && $GLOBALS['TBE_STYLES']['loginBoxImage_author'][$files[$randImg]] ? htmlspecialchars($GLOBALS['TBE_STYLES']['loginBoxImage_author'][$files[$randImg]]) : '';
 
 					// Create image tag:
 				if (is_array($imgSize))	{

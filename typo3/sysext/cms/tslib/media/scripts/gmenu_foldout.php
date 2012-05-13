@@ -81,7 +81,7 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 		$this->WMarrowACT='';
 		$this->WMimagesFlag=0;
 		$this->WMimageHTML ='';
-		if (($this->mconf['arrowNO']||$this->mconf['arrowNO.']) && ($this->mconf['arrowACT']||$this->mconf['arrowACT.']))	{
+		if (($this->mconf['arrowNO'] || $this->mconf['arrowNO.']) && ($this->mconf['arrowACT'] || $this->mconf['arrowACT.']))	{
 			$this->WMarrowNO = $GLOBALS['TSFE']->cObj->getImgResource($this->mconf['arrowNO'],$this->mconf['arrowNO.']);
 			$this->WMarrowACT = $GLOBALS['TSFE']->cObj->getImgResource($this->mconf['arrowACT'],$this->mconf['arrowACT.']);
 			if (is_array($this->WMarrowACT) && is_array($this->WMarrowNO))	{
