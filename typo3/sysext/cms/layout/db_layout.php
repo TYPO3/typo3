@@ -755,7 +755,7 @@ class SC_db_layout {
 
 
 			// Delete-button flag?
-		$this->deleteButton = (t3lib_utility_Math::canBeInterpretedAsInteger($this->eRParts[1]) && $edit_record && (($this->eRParts[0]!='pages'&&$this->EDIT_CONTENT) || ($this->eRParts[0]=='pages'&&($this->CALC_PERMS&4))));
+		$this->deleteButton = (t3lib_utility_Math::canBeInterpretedAsInteger($this->eRParts[1]) && $edit_record && (($this->eRParts[0]!='pages' && $this->EDIT_CONTENT) || ($this->eRParts[0]=='pages' && ($this->CALC_PERMS&4))));
 
 			// If undo-button should be rendered (depends on available items in sys_history)
 		$this->undoButton=0;
@@ -790,7 +790,7 @@ class SC_db_layout {
 
 			// Creating editing form:
 		if ($GLOBALS['BE_USER']->check('tables_modify',$this->eRParts[0]) && $edit_record
-			&& (($this->eRParts[0] !== 'pages'&& $this->EDIT_CONTENT) || ($this->eRParts[0] === 'pages' && ($this->CALC_PERMS&1)))) {
+			&& (($this->eRParts[0] !== 'pages' && $this->EDIT_CONTENT) || ($this->eRParts[0] === 'pages' && ($this->CALC_PERMS&1)))) {
 
 				// Splitting uid parts for special features, if new:
 			list($uidVal,$ex_pid,$ex_colPos) = explode('/',$this->eRParts[1]);

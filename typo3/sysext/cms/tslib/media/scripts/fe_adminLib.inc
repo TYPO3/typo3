@@ -100,7 +100,7 @@ class user_feAdmin	{
 		$this->preview = (string)t3lib_div::_GP('preview');
 			// backURL is a given URL to return to when login is performed
 		$this->backURL = t3lib_div::_GP('backURL');
-		if (strstr($this->backURL, '"') || strstr($this->backURL, "'") || preg_match('/(javascript|vbscript):/i', $this->backURL)  || stristr($this->backURL, "fromcharcode") || strstr($this->backURL, "<") || strstr($this->backURL, ">"))	{
+		if (strstr($this->backURL, '"') || strstr($this->backURL, "'") || preg_match('/(javascript|vbscript):/i', $this->backURL) || stristr($this->backURL, "fromcharcode") || strstr($this->backURL, "<") || strstr($this->backURL, ">"))	{
 			$this->backURL = '';	// Clear backURL if it seems to contain XSS code - only URLs are allowed
 		}
 			// Remove host from URL: Make sure that $this->backURL maps to the current site
@@ -917,7 +917,7 @@ class user_feAdmin	{
 	 */
 	function displayCreateScreen()	{
 		if ($this->conf['create'])	{
-			$templateCode = $this->cObj->getSubpart($this->templateCode, ((!$GLOBALS['TSFE']->loginUser||$this->conf['create.']['noSpecialLoginForm'])?'###TEMPLATE_CREATE'.$this->previewLabel.'###':'###TEMPLATE_CREATE_LOGIN'.$this->previewLabel.'###'));
+			$templateCode = $this->cObj->getSubpart($this->templateCode, ((!$GLOBALS['TSFE']->loginUser || $this->conf['create.']['noSpecialLoginForm'])?'###TEMPLATE_CREATE'.$this->previewLabel.'###':'###TEMPLATE_CREATE_LOGIN'.$this->previewLabel.'###'));
 			$failure = t3lib_div::_GP('noWarnings')?'':$this->failure;
 			if (!$failure)	$templateCode = $this->cObj->substituteSubpart($templateCode, '###SUB_REQUIRED_FIELDS_WARNING###', '');
 

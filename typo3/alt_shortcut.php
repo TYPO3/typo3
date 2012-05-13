@@ -346,7 +346,7 @@ class SC_alt_shortcut {
 
 			$bgColorClass = $row['uid']==$this->editSC ? 'bgColor5' : ($row['sc_group']<0 ? 'bgColor6' : 'bgColor4');
 
-			if ($row['description']&&($row['uid']!=$this->editSC))	{
+			if ($row['description'] && ($row['uid']!=$this->editSC))	{
 				$label = $row['description'];
 			} else {
 				$label = t3lib_div::fixed_lgd_cs(rawurldecode($qParts['query']),150);
