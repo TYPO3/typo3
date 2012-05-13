@@ -1210,7 +1210,7 @@ class localRecordList extends recordList {
 					// "New record after" link (ONLY if the records in the table are sorted by a "sortby"-row or if default values can depend on previous record):
 				if ($GLOBALS['TCA'][$table]['ctrl']['sortby'] || $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues']) {
 					if (
-						($table!='pages' && ($this->calcPerms&16)) || 	// For NON-pages, must have permission to edit content on this parent page
+						($table!='pages' && ($this->calcPerms&16)) ||	// For NON-pages, must have permission to edit content on this parent page
 						($table=='pages' && ($this->calcPerms&8))		// For pages, must have permission to create new pages here.
 						)	{
 						if ($this->showNewRecLink($table))	{
@@ -1227,7 +1227,7 @@ class localRecordList extends recordList {
 				}
 
 					// "Up/Down" links
-				if ($permsEdit && $GLOBALS['TCA'][$table]['ctrl']['sortby']  && !$this->sortField && !$this->searchLevels) {
+				if ($permsEdit && $GLOBALS['TCA'][$table]['ctrl']['sortby'] && !$this->sortField && !$this->searchLevels) {
 					if (isset($this->currentTable['prev'][$row['uid']]))	{	// Up
 						$params='&cmd['.$table.']['.$row['uid'].'][move]='.$this->currentTable['prev'][$row['uid']];
 						$cells['moveUp'] = '<a href="#" onclick="' . htmlspecialchars(

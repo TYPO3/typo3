@@ -2342,7 +2342,7 @@ class tslib_fe {
 	 */
 	function locDataCheck($locationData)	{
 		$locData = explode(':',$locationData);
-		if (!$locData[1] ||  $this->sys_page->checkRecord($locData[1],$locData[2],1))	{
+		if (!$locData[1] || $this->sys_page->checkRecord($locData[1],$locData[2],1))	{
 			if (count($this->sys_page->getPage($locData[0])))	{	// $locData[1] -check means that a record is checked only if the locationData has a value for a record else than the page.
 				return 1;
 			} else $GLOBALS['TT']->setTSlogMessage('LocationData Error: The page pointed to by location data ('.$locationData.') was not accessible.',2);
@@ -2665,7 +2665,7 @@ class tslib_fe {
 
 			$temp_content = '<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>'.$title.'</title>
@@ -3304,7 +3304,7 @@ if (version == "n3") {
 			// Send content-lenght header.
 			// Notice that all HTML content outside the length of the content-length header will be cut off! Therefore content of unknown length from included PHP-scripts and if admin users are logged in (admin panel might show...) or if debug mode is turned on, we disable it!
 		if (!empty($this->config['config']['enableContentLengthHeader']) &&
-			!$this->beUserLogin  &&
+			!$this->beUserLogin &&
 			!$this->TYPO3_CONF_VARS['FE']['debug'] &&
 			!$this->config['config']['debug'] &&
 			!$this->doWorkspacePreview()

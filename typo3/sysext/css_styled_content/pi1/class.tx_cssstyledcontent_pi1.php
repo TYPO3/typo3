@@ -589,7 +589,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 		$borderColor = $borderColor?$borderColor:'black';
 		$borderThickness = $borderThickness?$borderThickness:1;
-		$borderSpace = (($conf['borderSpace']&&$border) ? intval($conf['borderSpace']) : 0);
+		$borderSpace = (($conf['borderSpace'] && $border) ? intval($conf['borderSpace']) : 0);
 
 			// Generate cols
 		$cols = intval($this->cObj->stdWrap($conf['cols'],$conf['cols.']));
@@ -812,7 +812,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		if (!is_array($conf['editIcons.'])) {
 			$conf['editIcons.'] = array();
 		}
-		$editIconsHTML = $conf['editIcons']&&$GLOBALS['TSFE']->beUserLogin ? $this->cObj->editIcons('',$conf['editIcons'],$conf['editIcons.']) : '';
+		$editIconsHTML = $conf['editIcons'] && $GLOBALS['TSFE']->beUserLogin ? $this->cObj->editIcons('',$conf['editIcons'],$conf['editIcons.']) : '';
 
 			// If noRows, we need multiple imagecolumn wraps
 		$imageWrapCols = 1;
