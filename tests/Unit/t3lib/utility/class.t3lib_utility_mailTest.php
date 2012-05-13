@@ -110,9 +110,7 @@ class t3lib_utility_MailTest extends tx_phpunit_testcase {
 				$fakeThis
 			);
 
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']
-			['t3lib/utility/class.t3lib_utility_mail.php']
-			['substituteMailDelivery'] = array($mockClassName);
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'] = array($mockClassName);
 
 		t3lib_utility_Mail::mail(
 			$to, $subject, $messageBody, $additionalHeaders,
