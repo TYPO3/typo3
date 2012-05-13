@@ -315,7 +315,9 @@ class SC_alt_shortcut {
 
 						// Check for record access
 					$pageRow = t3lib_BEfunc::getRecord('pages',$page_id);
-					if (!$GLOBALS['BE_USER']->doesUserHaveAccess($pageRow,$perms=1)) continue;
+					if (!$GLOBALS['BE_USER']->doesUserHaveAccess($pageRow, $perms = 1)) {
+						continue;
+					}
 				}
 			}
 
