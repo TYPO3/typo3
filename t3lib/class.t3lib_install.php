@@ -27,34 +27,41 @@
 /**
  * Class to setup values in localconf.php and verify the TYPO3 DB tables/fields
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * Class to setup values in localconf.php and verify the TYPO3 DB tables/fields
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_install {
 
-
 		// External, Static
-	var $updateIdentity = ''; // Set to string which identifies the script using this class.
+		// Set to string which identifies the script using this class.
+	var $updateIdentity = '';
 
-	var $dbUpdateCheckboxPrefix = 'TYPO3_INSTALL[database_update]'; // Prefix for checkbox fields when updating database.
-	var $localconf_addLinesOnly = 0; // If this is set, modifications to localconf.php is done by adding new lines to the array only. If unset, existing values are recognized and changed.
-	protected $localconf_startEditPointToken = '## INSTALL SCRIPT EDIT POINT TOKEN - all lines after this points may be changed by the install script!'; // If set and addLinesOnly is disabled, lines will be change only if they are after this token (on a single line!) in the file
+		// Prefix for checkbox fields when updating database.
+	var $dbUpdateCheckboxPrefix = 'TYPO3_INSTALL[database_update]';
+		// If this is set, modifications to localconf.php is done by adding new lines to the array only. If unset, existing values are recognized and changed.
+	var $localconf_addLinesOnly = 0;
+		// If set and addLinesOnly is disabled, lines will be change only if they are after this token (on a single line!) in the file
+	protected $localconf_startEditPointToken = '## INSTALL SCRIPT EDIT POINT TOKEN - all lines after this points may be changed by the install script!';
 	protected $localconf_endEditPointToken = '## INSTALL SCRIPT EDIT END POINT TOKEN - all lines before this points may be changed by the install script!';
-	var $allowUpdateLocalConf = 0; // If TRUE, this class will allow the user to update the localconf.php file. Is set TRUE in the init.php file.
-	var $backPath = '../'; // Backpath (used for icons etc.)
+		// If TRUE, this class will allow the user to update the localconf.php file. Is set TRUE in the init.php file.
+	var $allowUpdateLocalConf = 0;
+		// Backpath (used for icons etc.)
+	var $backPath = '../';
 
 		// Internal, dynamic:
-	var $setLocalconf = 0; // Used to indicate that a value is change in the line-array of localconf and that it should be written.
-	var $messages = array(); // Used to set (error)messages from the executing functions like mail-sending, writing Localconf and such
-	var $touchedLine = 0; // updated with line in localconf.php file that was changed.
+		// Used to indicate that a value is change in the line-array of localconf and that it should be written.
+	var $setLocalconf = 0;
+		// Used to set (error)messages from the executing functions like mail-sending, writing Localconf and such
+	var $messages = array();
+		// Updated with line in localconf.php file that was changed.
+	var $touchedLine = 0;
 
 	/**
 	 * @var t3lib_install_Sql Instance of SQL handler
@@ -78,11 +85,11 @@ class t3lib_install {
 	/**
 	 * This functions takes an array with lines from localconf.php, finds a variable and inserts the new value.
 	 *
-	 * @param	array		$line_array	the localconf.php file exploded into an array by linebreaks. (see writeToLocalconf_control())
-	 * @param	string		$variable	The variable name to find and substitute. This string must match the first part of a trimmed line in the line-array. Matching is done backwards so the last appearing line will be substituted.
-	 * @param	string		$value		Is the value to be insert for the variable
-	 * @param	boolean		$quoteValue	Whether the given value should be quoted before being written
-	 * @return	void
+	 * @param array $line_array The localconf.php file exploded into an array by linebreaks. (see writeToLocalconf_control())
+	 * @param string $variable The variable name to find and substitute. This string must match the first part of a trimmed line in the line-array. Matching is done backwards so the last appearing line will be substituted.
+	 * @param string $value Is the value to be insert for the variable
+	 * @param boolean $quoteValue Whether the given value should be quoted before being written
+	 * @return void
 	 * @see writeToLocalconf_control()
 	 */
 	public function setValueInLocalconfFile(&$line_array, $variable, $value, $quoteValue = TRUE) {
@@ -90,11 +97,12 @@ class t3lib_install {
 			return 0;
 		}
 
-			// Initialize:
+			// Initialize
 		$found = 0;
 		$this->touchedLine = '';
 		$inArray = in_array($this->localconf_startEditPointToken, $line_array);
-		$tokenSet = ($this->localconf_startEditPointToken && !$inArray); // Flag is set if the token should be set but is not yet...
+			// Flag is set if the token should be set but is not yet.
+		$tokenSet = ($this->localconf_startEditPointToken && !$inArray);
 		$stopAtToken = ($this->localconf_startEditPointToken && $inArray);
 		$hasEndToken = in_array($this->localconf_endEditPointToken, $line_array);
 		$respectEndToken = $hasEndToken;
@@ -103,7 +111,7 @@ class t3lib_install {
 		$search = array('[\'', '\']');
 		$varDoubleQuotes = str_replace($search, $replace, $variable);
 
-			// Search for variable name:
+			// Search for variable name
 		if (!$this->localconf_addLinesOnly && !$tokenSet) {
 			$line_array = array_reverse($line_array);
 			foreach ($line_array as $k => $v) {
@@ -120,7 +128,8 @@ class t3lib_install {
 				} // If stopAtToken and token found, break out of the loop..
 				if (!strcmp(substr($v2, 0, strlen($variable . ' ')), $variable . ' ')) {
 					$mainparts = explode($variable, $v, 2);
-					if (count($mainparts) == 2) { // should ALWAYS be....
+						// Should ALWAYS be.
+					if (count($mainparts) == 2) {
 						$subparts = explode('//', $mainparts[1], 2);
 						if ($quoteValue) {
 							$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
@@ -137,7 +146,8 @@ class t3lib_install {
 						// localconf.php. The following code was added to make sure that values with
 						// double quotes are updated, too.
 					$mainparts = explode($varDoubleQuotes, $v, 2);
-					if (count($mainparts) == 2) { // should ALWAYS be....
+						// Should ALWAYS be.
+					if (count($mainparts) == 2) {
 						$subparts = explode('//', $mainparts[1], 2);
 						if ($quoteValue) {
 							$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
@@ -279,7 +289,7 @@ class t3lib_install {
 		$writeToLocalconf_dat['file'] = $absFullPath ? $absFullPath : PATH_typo3conf . 'localconf.php';
 		$writeToLocalconf_dat['tmpfile'] = $writeToLocalconf_dat['file'] . $tmpExt;
 
-			// Checking write state of localconf.php:
+			// Checking write state of localconf.php
 		if (!$this->allowUpdateLocalConf) {
 			throw new RuntimeException(
 				'TYPO3 Fatal Error: ->allowUpdateLocalConf flag in the install object is not set and therefore "localconf.php" cannot be altered.',
@@ -293,7 +303,7 @@ class t3lib_install {
 			);
 		}
 
-			// Splitting localconf.php file into lines:
+			// Splitting localconf.php file into lines
 		$lines = explode(LF, str_replace(CR, '', trim(t3lib_div::getUrl($writeToLocalconf_dat['file']))));
 		$writeToLocalconf_dat['endLine'] = array_pop($lines); // Getting "? >" ending.
 
@@ -305,7 +315,8 @@ class t3lib_install {
 			array_push($lines, $updatedLine);
 		}
 
-		if (is_array($inlines)) { // Setting a line and write:
+			// Setting a line and write
+		if (is_array($inlines)) {
 				// Setting configuration
 			$updatedLine = $writeToLocalconf_dat['updatedText'] . date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' H:i:s');
 			array_push($inlines, $updatedLine);
@@ -374,15 +385,12 @@ class t3lib_install {
 		$success = FALSE;
 		if (!t3lib_div::writeFile($writeToLocalconf_dat['tmpfile'], implode(LF, $lines))) {
 			$msg = 'typo3conf/localconf.php' . $tmpExt . ' could not be written - maybe a write access problem?';
-		}
-		elseif (strcmp(t3lib_div::getUrl($writeToLocalconf_dat['tmpfile']), implode(LF, $lines))) {
+		} elseif (strcmp(t3lib_div::getUrl($writeToLocalconf_dat['tmpfile']), implode(LF, $lines))) {
 			@unlink($writeToLocalconf_dat['tmpfile']);
 			$msg = 'typo3conf/localconf.php' . $tmpExt . ' was NOT written properly (written content didn\'t match file content) - maybe a disk space problem?';
-		}
-		elseif (!@copy($writeToLocalconf_dat['tmpfile'], $writeToLocalconf_dat['file'])) {
+		} elseif (!@copy($writeToLocalconf_dat['tmpfile'], $writeToLocalconf_dat['file'])) {
 			$msg = 'typo3conf/localconf.php could not be replaced by typo3conf/localconf.php' . $tmpExt . ' - maybe a write access problem?';
-		}
-		else {
+		} else {
 			@unlink($writeToLocalconf_dat['tmpfile']);
 			$success = TRUE;
 			$msg = 'Configuration written to typo3conf/localconf.php';
@@ -399,8 +407,8 @@ class t3lib_install {
 	/**
 	 * Checking for linebreaks in the string
 	 *
-	 * @param	string		String to test
-	 * @return	boolean		Returns TRUE if string is OK
+	 * @param string $string String to test
+	 * @return boolean Returns TRUE if string is OK
 	 * @see setValueInLocalconfFile()
 	 */
 	function checkForBadString($string) {
@@ -422,7 +430,6 @@ class t3lib_install {
 		return $value;
 	}
 
-
 	/**
 	 * Creates a table which checkboxes for updating database.
 	 *
@@ -443,7 +450,7 @@ class t3lib_install {
 					<tr class="update-db-fields-batch">
 						<td valign="top">
 							<input type="checkbox" id="' . $tableId . '-checkbox"' . ($checked ? ' checked="checked"' : '') . '
-							 onclick="$(\'' . $tableId . '\').select(\'input[type=checkbox]\').invoke(\'setValue\', $(this).checked);" />
+							onclick="$(\'' . $tableId . '\').select(\'input[type=checkbox]\').invoke(\'setValue\', $(this).checked);" />
 						</td>
 						<td nowrap="nowrap"><label for="' . $tableId . '-checkbox" style="cursor:pointer"><strong>select/deselect all</strong></label></td>
 					</tr>';
