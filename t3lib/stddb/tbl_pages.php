@@ -727,7 +727,7 @@ $TCA['pages'] = array(
 		),
 		'backend_layout' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.backend_layout',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.backend_layout_formlabel',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'backend_layout',
@@ -744,7 +744,7 @@ $TCA['pages'] = array(
 		),
 		'backend_layout_next_level' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.backend_layout_next_level',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.backend_layout_next_level_formlabel',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'backend_layout',
