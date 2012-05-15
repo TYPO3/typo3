@@ -334,7 +334,7 @@ class tx_indexedsearch_lexer {
 				($cp == 0x386 || ($cp >= 0x388 && $cp < 0x400)) || // Greek and Coptic excluding non-letters
 				(($cp >= 0x400 && $cp < 0x482) || ($cp >= 0x48A && $cp < 0x530)) ||	// Cyrillic and Cyrillic Supplement excluding historic miscellaneous
 				(($cp >= 0x590 && $cp < 0x5B0) || ($cp >= 0x5D0 && $cp < 0x5F3)) ||	// Hebrew: only accents and letters
-				(($cp >= 0x621 && $cp <= 0x658) || ($cp >= 0x66E &&  $cp <= 0x6D3)) || // Arabic: only letters (there are more letters in the range, we can add them if there is a demand)
+				(($cp >= 0x621 && $cp <= 0x658) || ($cp >= 0x66E && $cp <= 0x6D3)) || // Arabic: only letters (there are more letters in the range, we can add them if there is a demand)
 				($cp >= 0x1E00 && $cp < 0x2000)	// Latin Extended Additional and Greek Extended
 			)	{
 			return array('alpha');
