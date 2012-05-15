@@ -157,7 +157,7 @@ prefix = tx_form
 							showPostProcessors = mail
 							postProcessors {
 								mail {
-									showProperties = recipientEmail, senderEmail
+									showProperties = recipientEmail, senderEmail, subject
 								}
 							}
 						}
