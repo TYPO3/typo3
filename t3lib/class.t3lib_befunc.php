@@ -2720,6 +2720,12 @@ final class t3lib_BEfunc {
 			}
 		}
 
+			// Append port number if lockSSLPort is not the standard port 443
+		$portNumber = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort']);
+		if ($portNumber > 0 && $portNumber !== 443 && $portNumber < 65536 && $protocol === 'https') {
+			$domain .= ':' . strval($portNumber);
+		}
+
 		return $domain;
 	}
 
