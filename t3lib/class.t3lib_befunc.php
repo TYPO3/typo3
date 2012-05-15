@@ -2718,6 +2718,12 @@ final class t3lib_BEfunc {
 			} else {
 				$domain = rtrim(t3lib_div::getIndpEnv('TYPO3_SITE_URL'), '/');
 			}
+
+				// Append port number if lockSSLPort is not the standard port 443
+			$portNumber = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort']);
+			if ($portNumber > 0 && $portNumber !== 443 && $portNumber < 65536 && $protocol === 'https') {
+				$domain .= ':' . strval($portNumber);
+			}
 		}
 
 		return $domain;
