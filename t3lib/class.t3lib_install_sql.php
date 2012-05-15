@@ -26,7 +26,7 @@
  ***************************************************************/
 
 /**
- * Verify TYPO3 DB table structure. ainly used in install tool
+ * Verify TYPO3 DB table structure. Mainly used in install tool
  * compare wizard and extension manager.
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
@@ -90,14 +90,16 @@ class t3lib_install_Sql {
 
 		foreach ($lines as $value) {
 			if (substr($value, 0, 1) == '#') {
-				continue; // Ignore comments
+					// Ignore comments
+				continue;
 			}
 
 			if (!strlen($table)) {
 				$parts = t3lib_div::trimExplode(' ', $value, TRUE);
 				if (strtoupper($parts[0]) === 'CREATE' && strtoupper($parts[1]) === 'TABLE') {
 					$table = str_replace('`', '', $parts[2]);
-					if (TYPO3_OS == 'WIN') { // tablenames are always lowercase on windows!
+						// tablenames are always lowercase on windows!
+					if (TYPO3_OS == 'WIN') {
 						$table = strtolower($table);
 					}
 				}
@@ -121,14 +123,18 @@ class t3lib_install_Sql {
 						$total[$table]['extra']['COLLATE'] = $this->getCollationForCharset($charset);
 					}
 
-					$table = ''; // Remove table marker and start looking for the next "CREATE TABLE" statement
+						// Remove table marker and start looking for the next "CREATE TABLE" statement
+					$table = '';
 				} else {
-					$lineV = preg_replace('/,$/', '', $value); // Strip trailing commas
+						// Strip trailing commas
+					$lineV = preg_replace('/,$/', '', $value);
 					$lineV = str_replace('`', '', $lineV);
-					$lineV = str_replace('  ', ' ', $lineV); // Remove double blanks
+						// Remove double blanks
+					$lineV = str_replace('  ', ' ', $lineV);
 
 					$parts = explode(' ', $lineV, 2);
-					if (!preg_match('/(PRIMARY|UNIQUE|FULLTEXT|INDEX|KEY)/', $parts[0])) { // Field definition
+						// Field definition
+					if (!preg_match('/(PRIMARY|UNIQUE|FULLTEXT|INDEX|KEY)/', $parts[0])) {
 
 							// Make sure there is no default value when auto_increment is set
 						if (stristr($parts[1], 'auto_increment')) {
@@ -179,7 +185,7 @@ class t3lib_install_Sql {
 	 * Useful if you want to use UTF-8 in the database and needs to extend the field sizes in the database so UTF-8 chars are not discarded. For most charsets available as single byte sets, multiplication with 2 should be enough. For chinese, use 3.
 	 *
 	 * @param array	$total Total array (from getFieldDefinitions_fileContent())
-	 * @return	void
+	 * @return void
 	 * @access private
 	 * @see getFieldDefinitions_fileContent()
 	 */
@@ -259,7 +265,8 @@ class t3lib_install_Sql {
 			if (method_exists($GLOBALS['TYPO3_DB'], 'admin_get_charsets')) {
 				$this->character_sets = $GLOBALS['TYPO3_DB']->admin_get_charsets();
 			} else {
-				$this->character_sets[$charset] = array(); // Add empty element to avoid that the check will be repeated
+					// Add empty element to avoid that the check will be repeated
+				$this->character_sets[$charset] = array();
 			}
 		}
 
@@ -287,13 +294,13 @@ class t3lib_install_Sql {
 		$tables = $GLOBALS['TYPO3_DB']->admin_get_tables(TYPO3_db);
 		foreach ($tables as $tableName => $tableStatus) {
 
-				// Fields:
+				// Fields
 			$fieldInformation = $GLOBALS['TYPO3_DB']->admin_get_fields($tableName);
 			foreach ($fieldInformation as $fN => $fieldRow) {
 				$total[$tableName]['fields'][$fN] = $this->assembleFieldDefinition($fieldRow);
 			}
 
-				// Keys:
+				// Keys
 			$keyInformation = $GLOBALS['TYPO3_DB']->admin_get_keys($tableName);
 
 			foreach ($keyInformation as $keyRow) {
@@ -364,7 +371,8 @@ class t3lib_install_Sql {
 			foreach ($FDsrc as $table => $info) {
 				if (!strlen($onlyTableList) || t3lib_div::inList($onlyTableList, $table)) {
 					if (!isset($FDcomp[$table])) {
-						$extraArr[$table] = $info; // If the table was not in the FDcomp-array, the result array is loaded with that table.
+							// If the table was not in the FDcomp-array, the result array is loaded with that table.
+						$extraArr[$table] = $info;
 						$extraArr[$table]['whole_table'] = 1;
 					} else {
 						$keyTypes = explode(',', 'extra,fields,keys');
@@ -373,7 +381,8 @@ class t3lib_install_Sql {
 								foreach ($info[$theKey] as $fieldN => $fieldC) {
 									$fieldN = str_replace('`', '', $fieldN);
 									if ($fieldN == 'COLLATE') {
-										continue; // TODO: collation support is currently disabled (needs more testing)
+											// TODO: collation support is currently disabled (needs more testing)
+										continue;
 									}
 
 									if (!isset($FDcomp[$table][$theKey][$fieldN])) {
@@ -529,7 +538,7 @@ class t3lib_install_Sql {
 								$statement = 'DROP TABLE ' . $table . ';';
 								$statements['drop_table'][md5($statement)] = $statement;
 							}
-								// count:
+								// Count
 							$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $table);
 							$statements['tables_count'][md5($statement)] = $count ? 'Records in table: ' . $count : '';
 						} else {
@@ -537,9 +546,11 @@ class t3lib_install_Sql {
 							if ($info['extra']) {
 								foreach ($info['extra'] as $k => $v) {
 									if ($k == 'COLLATE' || $k == 'CLEAR') {
-										continue; // Skip these special statements. TODO: collation support is currently disabled (needs more testing)
+											// Skip these special statements. TODO: collation support is currently disabled (needs more testing)
+										continue;
 									}
-									$statement .= ' ' . $k . '=' . $v; // Add extra attributes like ENGINE, CHARSET, etc.
+										// Add extra attributes like ENGINE, CHARSET, etc.
+									$statement .= ' ' . $k . '=' . $v;
 								}
 							}
 							$statement .= ';';
@@ -600,7 +611,7 @@ class t3lib_install_Sql {
 		foreach ($sqlcodeArr as $line => $lineContent) {
 			$is_set = 0;
 
-				// auto_increment fields cannot have a default value!
+				// Auto_increment fields cannot have a default value!
 			if (stristr($lineContent, 'auto_increment')) {
 				$lineContent = preg_replace('/ default \'0\'/i', '', $lineContent);
 			}
@@ -640,7 +651,7 @@ class t3lib_install_Sql {
 			if (preg_match('/^create[[:space:]]*table[[:space:]]*[`]?([[:alnum:]_]*)[`]?/i', substr($lineContent, 0, 100), $reg)) {
 				$table = trim($reg[1]);
 				if ($table) {
-						// table names are always lowercase on Windows!
+						// Table names are always lowercase on Windows!
 					if (TYPO3_OS == 'WIN') {
 						$table = strtolower($table);
 					}
