@@ -549,6 +549,9 @@
 			<trans-unit id="postprocessor_properties_senderemail" xml:space="preserve">
 				<source>Email address of the sender</source>
 			</trans-unit>
+			<trans-unit id="postprocessor_properties_subject" xml:space="preserve">
+				<source>Subject</source>
+			</trans-unit>
 			<trans-unit id="postprocessor_mail" xml:space="preserve">
 				<source>Send email</source>
 			</trans-unit>
