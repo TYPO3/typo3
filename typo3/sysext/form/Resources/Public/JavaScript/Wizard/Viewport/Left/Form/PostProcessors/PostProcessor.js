@@ -91,6 +91,19 @@ TYPO3.Form.Wizard.Viewport.Left.Form.PostProcessors.PostProcessor = Ext.extend(E
 						}
 					});
 					break;
+				case 'subject':
+					formItems.push({
+						fieldLabel: TYPO3.l10n.localize('postprocessor_properties_subject'),
+						name: 'subject',
+						allowBlank: false,
+						listeners: {
+							'triggerclick': {
+								scope: this,
+								fn: this.storeValue
+							}
+						}
+					});
+					break;
 			}
 		}, this);
 
