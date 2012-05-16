@@ -118,6 +118,8 @@ class t3lib_pageSelect {
 			$this->versioningPreview_where_hid_del = $this->where_hid_del;
 				// Clear where_hid_del
 			$this->where_hid_del = ' AND pages.deleted=0 ';
+				// Restrict to live and current workspaces
+			$this->where_hid_del .= ' AND (pages.t3ver_wsid=0 OR pages.t3ver_wsid=' . intval($this->versioningWorkspaceId) . ')';
 		}
 	}
 
