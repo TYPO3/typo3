@@ -48,26 +48,29 @@ class Typo3_Bootstrap_Cli {
 	}
 
 	/**
-	 * Check and define cli parameters
+	 * Check and define cli parameters.
+	 * First argument is a key that points to the script configuration.
+	 * If it is not set or not valid, the script exits with an error message.
 	 *
 	 * @return void
 	 */
 	public static function initializeCliKeyOrDie() {
-		if (!isset($_SERVER['argv'][1])) {
-			fwrite(STDERR, 'The first argument must be a valid key.' . chr(10));
-			exit(1);
-		}
-
-			// First argument is a key that points to the script configuration
-		define('TYPO3_cliKey', $_SERVER['argv'][1]);
-
-		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][TYPO3_cliKey])) {
-			$message = "The supplied 'cliKey' was not valid. Please use one of the available from this list:\n\n";
+		if (
+			!isset($_SERVER['argv'][1])
+			|| !is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$_SERVER['argv'][1]])
+		) {
+			if (!isset($_SERVER['argv'][1])) {
+				$message = "This script must have a 'cliKey' as first argument.";
+			} else {
+				$message = "The supplied 'cliKey' is not valid.";
+			}
+			$message .= " Valid keys are:\n\n";
 			$message .= var_export(array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']), TRUE);
 			fwrite(STDERR, $message . LF);
 			exit(1);
 		}
 
+		define('TYPO3_cliKey', $_SERVER['argv'][1]);
 		define('TYPO3_cliInclude', t3lib_div::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][TYPO3_cliKey][0]));
 		$GLOBALS['MCONF']['name'] = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][TYPO3_cliKey][1];
 
