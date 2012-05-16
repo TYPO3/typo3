@@ -3946,10 +3946,10 @@ final class t3lib_BEfunc {
 				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 					$fields,
 					$table,
-						'pid=-1 AND
-					 t3ver_oid=' . intval($uid) . ' AND
-					 t3ver_wsid=' . intval($workspace) .
-								self::deleteClause($table)
+					'pid=-1 AND ' .
+						't3ver_oid=' . intval($uid) . ' AND ' .
+						't3ver_wsid=' . intval($workspace) .
+						self::deleteClause($table)
 				);
 
 				if (is_array($row)) {
@@ -4127,11 +4127,11 @@ final class t3lib_BEfunc {
 			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 				$fields,
 				$table,
-					'pid<>-1 AND
-				 t3ver_state=3 AND
-				 t3ver_move_id=' . intval($uid) . ' AND
-				 t3ver_wsid=' . intval($workspace) .
-							self::deleteClause($table)
+				'pid<>-1 AND ' .
+					't3ver_state=3 AND ' .
+					't3ver_move_id=' . intval($uid) . ' AND ' .
+					't3ver_wsid=' . intval($workspace) .
+					self::deleteClause($table)
 			);
 
 			if (is_array($row)) {
