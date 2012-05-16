@@ -222,8 +222,8 @@ class Typo3_Bootstrap {
 			if (TYPO3_PROCEED_IF_NO_USER === 2) {
 				// Ajax poll for login, let it pass
 			} else {
-				$fileContent = t3lib_div::getUrl(PATH_typo3conf.'LOCK_BACKEND');
-				if ($fileContent)	{
+				$fileContent = t3lib_div::getUrl(PATH_typo3conf . 'LOCK_BACKEND');
+				if ($fileContent) {
 					header('Location: ' . $fileContent);
 				} else {
 					throw new RuntimeException(
@@ -270,17 +270,17 @@ class Typo3_Bootstrap {
 			}
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] == 3) {
 				$requestStr = substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT'), strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir));
-				if($requestStr == 'index.php' && !t3lib_div::getIndpEnv('TYPO3_SSL')) {
+				if ($requestStr === 'index.php' && !t3lib_div::getIndpEnv('TYPO3_SSL')) {
 					list(,$url) = explode('://', t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'), 2);
 					list($server, $address) = explode('/', $url, 2);
 					header('Location: https://' . $server . $sslPortSuffix . '/' . $address);
 					exit;
 				}
-			} elseif (!t3lib_div::getIndpEnv('TYPO3_SSL') ) {
-				if ($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] == 2) {
+			} elseif (!t3lib_div::getIndpEnv('TYPO3_SSL')) {
+				if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']) === 2) {
 					list(,$url) = explode('://', t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir, 2);
 					list($server, $address) = explode('/', $url, 2);
-					header('Location: https://'.$server . $sslPortSuffix . '/' . $address);
+					header('Location: https://' . $server . $sslPortSuffix . '/' . $address);
 				} else {
 						// Send Not Found header - if the webserver can make use of it...
 					header('Status: 404 Not Found');
@@ -351,7 +351,7 @@ class Typo3_Bootstrap {
 	 * @return void
 	 */
 	public static function initializeBackendUserMounts() {
-			// ! WILL INCLUDE deleted mount pages as well!
+			// Includes deleted mount pages as well! @TODO: Figure out why ...
 		$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
 		$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->returnFilemounts();
 	}
@@ -374,7 +374,7 @@ class Typo3_Bootstrap {
 	 */
 	protected static function checkPhpVersionOrDie() {
 		if (version_compare(phpversion(), '5.3', '<')) {
-			die ('TYPO3 requires PHP 5.3.0 or higher.');
+			die('TYPO3 requires PHP 5.3.0 or higher.');
 		}
 	}
 
