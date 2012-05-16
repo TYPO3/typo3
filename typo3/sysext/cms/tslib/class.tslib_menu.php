@@ -1639,6 +1639,10 @@ class tslib_menu {
 	 */
 	protected function sectionIndex($altSortField, $pid = NULL) {
 		$where = 'colPos=0';
+		$configuration = $this->mconf['sectionIndex.'];
+		if (trim($configuration['where']) !== '' || is_array($configuration['where.'])) {
+			$where = $GLOBALS['TSFE']->cObj->stdWrap($configuration['where'], $configuration['where.']);
+		}
 
 		if (!$pid) {
 			$pid = $this->id;
@@ -1655,7 +1659,7 @@ class tslib_menu {
 			'where' => $where,
 			'andWhere' => 'sectionIndex<>0'
 		);
-		switch ($this->mconf['sectionIndex.']['type']) {
+		switch ($configuration['type']) {
 			case 'all':
 				unset($selectSetup['andWhere']);
 			break;
