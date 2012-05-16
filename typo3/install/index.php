@@ -27,14 +27,14 @@
 /**
  * Starter-script for install screen
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 
 ob_start();
 
-define('TYPO3_MODE','BE');
+define('TYPO3_MODE', 'BE');
 define('TYPO3_enterInstallScript', '1');
 
 require('../Bootstrap.php');
@@ -58,7 +58,7 @@ Typo3_Bootstrap::checkBackendIpOrDie();
 Typo3_Bootstrap::checkSslBackendAndRedirectIfNeeded();
 
 	// Run install script
-if(!t3lib_extMgm::isLoaded('install')) {
+if (!t3lib_extMgm::isLoaded('install')) {
 	die('Install Tool is not loaded as an extension.<br />You must add the key "install" to the list of installed extensions in typo3conf/localconf.php, $TYPO3_CONF_VARS[\'EXT\'][\'extList\'].');
 }
 

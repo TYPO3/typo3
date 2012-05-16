@@ -1063,7 +1063,7 @@ if(count($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']) > 0) {
 	// Error & Exception handling
 if ($TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] !== '') {
 	if ($TYPO3_CONF_VARS['SYS']['errorHandler'] !== '') {
-			// 	Register an error handler for the given errorHandlerErrors
+			// Register an error handler for the given errorHandlerErrors
 		$errorHandler = t3lib_div::makeInstance($TYPO3_CONF_VARS['SYS']['errorHandler'], $TYPO3_CONF_VARS['SYS']['errorHandlerErrors']);
 			// Set errors which will be converted in an exception
 		$errorHandler->setExceptionalErrors($TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionalErrors']);
