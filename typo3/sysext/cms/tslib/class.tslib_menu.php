@@ -1642,34 +1642,42 @@ class tslib_menu {
 
 		if (!$pid) {
 			$pid = $this->id;
-			if ($GLOBALS['TSFE']->sys_language_uid && count($this->sys_page->getPageOverlay($pid))) {
-				$where .= ' AND sys_language_uid=' . intval($GLOBALS['TSFE']->sys_language_uid);
-			} else {
-				$where .= ' AND sys_language_uid=0';
-			}
 		}
 
+		$where .= ' AND sys_language_uid IN (-1, 0)';
 		$selectSetup = array(
 			'pidInList' => $pid,
 			'orderBy' => $altSortField,
 			'where' => $where,
-			'andWhere' => 'sectionIndex<>0'
 		);
-		switch ($this->mconf['sectionIndex.']['type']) {
-			case 'all':
-				unset($selectSetup['andWhere']);
-			break;
-			case 'header':
-				$selectSetup['andWhere'] .= ' AND header_layout<>100 AND header!=""';
-			break;
-		}
+
 		$basePageRow = $this->sys_page->getPage($pid);
 		$result = array();
 		if (is_array($basePageRow)) {
 			$res = $this->parent_cObj->exec_getQuery('tt_content', $selectSetup);
 
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$GLOBALS['TSFE']->sys_page->versionOL('tt_content', $row);
+				$this->sys_page->versionOL('tt_content', $row);
+				if ($GLOBALS['TSFE']->sys_language_content) {
+					$row = $this->sys_page->getRecordOverlay(
+						'tt_content',
+						$row,
+						$GLOBALS['TSFE']->sys_language_content,
+						$GLOBALS['TSFE']->sys_language_contentOL
+					);
+				}
+
+				if ($this->mconf['sectionIndex.']['type'] !== 'all') {
+					if ($row['sectionIndex'] != 1) {
+						continue;
+					}
+
+					if ($this->mconf['sectionIndex.']['type'] === 'header') {
+						if ($row['header_layout'] == 100 || trim($row['header']) === '') {
+							continue;
+						}
+					}
+				}
 
 				if (is_array($row)) {
 					$result[$row['uid']] = $basePageRow;
