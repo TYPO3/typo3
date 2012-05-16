@@ -1642,11 +1642,12 @@ class tslib_menu {
 
 		if (!$pid) {
 			$pid = $this->id;
-			if ($GLOBALS['TSFE']->sys_language_uid && count($this->sys_page->getPageOverlay($pid))) {
-				$where .= ' AND sys_language_uid=' . intval($GLOBALS['TSFE']->sys_language_uid);
-			} else {
-				$where .= ' AND sys_language_uid=0';
-			}
+		}
+
+		if ($GLOBALS['TSFE']->sys_language_uid && count($this->sys_page->getPageOverlay($pid))) {
+			$where .= ' AND sys_language_uid=' . intval($GLOBALS['TSFE']->sys_language_uid);
+		} else {
+			$where .= ' AND sys_language_uid=0';
 		}
 
 		$selectSetup = array(
