@@ -1631,72 +1631,78 @@ class tslib_menu {
 	 * Generates a list of content objects with sectionIndex enabled
 	 * available on a specific page
 	 *
-	 * Used for menu's with sectionIndex enabled
+	 * Used for menus with sectionIndex enabled
 	 *
 	 * @param string $altSortField Alternative sorting field
 	 * @param integer $pid The page id to search for sections
+	 * @throws UnexpectedValueException if the query to fetch the content elements unexpectedly fails
 	 * @return array
 	 */
 	protected function sectionIndex($altSortField, $pid = NULL) {
-		$where = 'colPos=0';
-
-		if (!$pid) {
-			$pid = $this->id;
-			if ($GLOBALS['TSFE']->sys_language_uid && count($this->sys_page->getPageOverlay($pid))) {
-				$where .= ' AND sys_language_uid=' . intval($GLOBALS['TSFE']->sys_language_uid);
-			} else {
-				$where .= ' AND sys_language_uid=0';
-			}
+		$pid = intval($pid ? $pid : $this->id);
+		$basePageRow = $this->sys_page->getPage($pid);
+		if (!is_array($basePageRow)) {
+			return array();
 		}
 
 		$selectSetup = array(
 			'pidInList' => $pid,
 			'orderBy' => $altSortField,
-			'where' => $where,
-			'andWhere' => 'sectionIndex<>0'
+			'languageField' => 'sys_language_uid',
+			'where' => 'colPos=0'
 		);
-		switch ($this->mconf['sectionIndex.']['type']) {
-			case 'all':
-				unset($selectSetup['andWhere']);
-			break;
-			case 'header':
-				$selectSetup['andWhere'] .= ' AND header_layout<>100 AND header!=""';
-			break;
+
+		$resource = $this->parent_cObj->exec_getQuery('tt_content', $selectSetup);
+		if (!$resource) {
+			$message = 'SectionIndex: Query to fetch the content elements failed!';
+			throw new UnexpectedValueException($message, 1337334849);
 		}
-		$basePageRow = $this->sys_page->getPage($pid);
+
 		$result = array();
-		if (is_array($basePageRow)) {
-			$res = $this->parent_cObj->exec_getQuery('tt_content', $selectSetup);
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resource)) {
+			$this->sys_page->versionOL('tt_content', $row);
 
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$GLOBALS['TSFE']->sys_page->versionOL('tt_content', $row);
+			if ($GLOBALS['TSFE']->sys_language_contentOL && $basePageRow['_PAGES_OVERLAY_LANGUAGE']) {
+				$row = $this->sys_page->getRecordOverlay(
+					'tt_content',
+					$row,
+					$basePageRow['_PAGES_OVERLAY_LANGUAGE'],
+					$GLOBALS['TSFE']->sys_language_contentOL
+				);
+			}
 
-				if (is_array($row)) {
-					$result[$row['uid']] = $basePageRow;
-					$result[$row['uid']]['title'] = $row['header'];
-					$result[$row['uid']]['nav_title'] = $row['header'];
-					$result[$row['uid']]['subtitle'] = $row['subheader'];
-					$result[$row['uid']]['starttime'] = $row['starttime'];
-					$result[$row['uid']]['endtime'] = $row['endtime'];
-					$result[$row['uid']]['fe_group'] = $row['fe_group'];
-					$result[$row['uid']]['media'] = $row['media'];
-
-					$result[$row['uid']]['header_layout'] = $row['header_layout'];
-					$result[$row['uid']]['bodytext'] = $row['bodytext'];
-					$result[$row['uid']]['image'] = $row['image'];
-
-					$result[$row['uid']]['sectionIndex_uid'] = $row['uid'];
+			if ($this->mconf['sectionIndex.']['type'] !== 'all') {
+				$doIncludeInSectionIndex = ($row['sectionIndex'] >= 1);
+				$doHeaderCheck = ($this->mconf['sectionIndex.']['type'] === 'header');
+				$isValidHeader = (intval($row['header_layout']) !== 100 && trim($row['header']) !== '');
+				if (!$doIncludeInSectionIndex || ($doHeaderCheck && !$isValidHeader)) {
+					continue;
 				}
 			}
 
-			if (is_resource($res)) {
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			if (is_array($row)) {
+				$uid = $row['uid'];
+				$result[$uid] = $basePageRow;
+				$result[$uid]['title'] = $row['header'];
+				$result[$uid]['nav_title'] = $row['header'];
+				$result[$uid]['subtitle'] = $row['subheader'];
+				$result[$uid]['starttime'] = $row['starttime'];
+				$result[$uid]['endtime'] = $row['endtime'];
+				$result[$uid]['fe_group'] = $row['fe_group'];
+				$result[$uid]['media'] = $row['media'];
+
+				$result[$uid]['header_layout'] = $row['header_layout'];
+				$result[$uid]['bodytext'] = $row['bodytext'];
+				$result[$uid]['image'] = $row['image'];
+
+				$result[$uid]['sectionIndex_uid'] = $uid;
 			}
 		}
 
+		$GLOBALS['TYPO3_DB']->sql_free_result($resource);
+
 		return $result;
 	}
-
 }
 
 
