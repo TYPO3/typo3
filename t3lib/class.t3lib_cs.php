@@ -1923,7 +1923,6 @@ class t3lib_cs {
 		if (ord($str{$i}) & 0x80) {
 			for (; $i > 0 && !(ord($str{$i}) & 0x40); $i--) {
 				// find the first byte
-				;
 			}
 			if ($i <= 0) {
 				return '';

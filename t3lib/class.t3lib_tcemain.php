@@ -1071,7 +1071,6 @@ class t3lib_TCEmain {
 				$this->log($table, $id, 5, 0, 1, "You cannot change the 'doktype' of page '%s' to the desired value.", 1, array($propArr['header']), $propArr['event_pid']);
 				return $res;
 			}
-			;
 			if ($status == 'update') {
 					// This checks 1) if we should check for disallowed tables and 2) if there are records from disallowed tables on the current page
 				$onlyAllowedTables = (isset($GLOBALS['PAGES_TYPES'][$value]['onlyAllowedTables'])
@@ -6210,7 +6209,6 @@ class t3lib_TCEmain {
 	 */
 	function getTableEntries($table, $TSconfig) {
 		$tA = is_array($TSconfig['table.'][$table . '.']) ? $TSconfig['table.'][$table . '.'] : array();
-		;
 		$dA = is_array($TSconfig['default.']) ? $TSconfig['default.'] : array();
 		return t3lib_div::array_merge_recursive_overrule($dA, $tA);
 	}

@@ -393,7 +393,7 @@ class user_plaintext {
 	function breakTable($str)	{
 		$cParts = explode(chr(10),$str);
 		$lines=array();
-		$cols = intval($this->conf['cols']) ? intval($this->conf['cols']) : 0 ;
+		$cols = intval($this->conf['cols']) ? intval($this->conf['cols']) : 0;
 		$c=0;
 		foreach ($cParts as $substrs) {
 			$c++;

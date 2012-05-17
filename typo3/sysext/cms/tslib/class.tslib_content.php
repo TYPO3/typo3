@@ -1872,19 +1872,15 @@ class tslib_cObj {
 				if (is_callable(array($hookObject, 'stdWrapPreProcess'))) {
 					$conf['stdWrapPreProcess'] = 1;
 				}
-				;
 				if (is_callable(array($hookObject, 'stdWrapOverride'))) {
 					$conf['stdWrapOverride'] = 1;
 				}
-				;
 				if (is_callable(array($hookObject, 'stdWrapProcess'))) {
 					$conf['stdWrapProcess'] = 1;
 				}
-				;
 				if (is_callable(array($hookObject, 'stdWrapPostProcess'))) {
 					$conf['stdWrapPostProcess'] = 1;
 				}
-				;
 			}
 		}
 

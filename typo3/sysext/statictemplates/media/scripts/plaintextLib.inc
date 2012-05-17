@@ -398,7 +398,7 @@ class user_plaintext {
 		$cParts = explode(chr(10),$str);
 		reset($cParts);
 		$lines=array();
-		$cols = intval($this->conf['cols']) ? intval($this->conf['cols']) : 0 ;
+		$cols = intval($this->conf['cols']) ? intval($this->conf['cols']) : 0;
 		$c=0;
 		while(list(,$substrs)=each($cParts))	{
 			$c++;
