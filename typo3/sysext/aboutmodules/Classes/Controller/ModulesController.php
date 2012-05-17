@@ -47,8 +47,7 @@ class Tx_Aboutmodules_Controller_ModulesController  extends Tx_Extbase_MVC_Contr
 			->assign('TYPO3Version', TYPO3_version)
 			->assign('copyRightNotice', t3lib_BEfunc::TYPO3_copyRightNotice())
 			->assign('warningMessages', t3lib_BEfunc::displayWarningMessages())
-			->assign('modules', $this->getModulesData())
-		;
+			->assign('modules', $this->getModulesData());
 	}
 
 	/**

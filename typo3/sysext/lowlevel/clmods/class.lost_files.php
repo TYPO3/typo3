@@ -129,7 +129,7 @@ Will report lost files.';
 			if ($include)	{
 					// First, allow "index.html", ".htaccess" files since they are often used for good reasons
 				if (substr($value,-11) == '/index.html' || substr($value,-10) == '/.htaccess')	{
-					unset($fileArr[$key])	;
+					unset($fileArr[$key]);
 					$resultArray['ignoredFiles'][$shortKey] = $value;
 				} else {
 						// Looking for a reference from a field which is NOT a soft reference (thus, only fields with a proper TCA/Flexform configuration)
@@ -145,7 +145,7 @@ Will report lost files.';
 
 						// If found, unset entry:
 					if (count($recs))		{
-						unset($fileArr[$key])	;
+						unset($fileArr[$key]);
 						$resultArray['managedFiles'][$shortKey] = $value;
 						if (count($recs)>1)	{
 							$resultArray['warnings'][$shortKey] = 'Warning: File "'.$value.'" had '.count($recs).' references from group-fields, should have only one!';
@@ -153,11 +153,11 @@ Will report lost files.';
 					} else {
 							// When here it means the file was not found. So we test if it has a RTEmagic-image name and if so, we allow it:
 						if (preg_match('/^RTEmagic[P|C]_/',basename($value)))	{
-							unset($fileArr[$key])	;
+							unset($fileArr[$key]);
 							$resultArray['RTEmagicFiles'][$shortKey] = $value;
 						} else {
 								// We conclude that the file is lost...:
-							unset($fileArr[$key])	;
+							unset($fileArr[$key]);
 							$resultArray['lostFiles'][$shortKey] = $value;
 						}
 					}

@@ -82,8 +82,7 @@ class Tx_Viewpage_Controller_ViewController extends Tx_Extbase_MVC_Controller_Ac
 			. '/index.php?id=' . $finalPageIdToShow
 			. $this->getTypeParameterIfSet($finalPageIdToShow)
 			. $mountPointMpParameter
-			. $adminCommand
-		;
+			. $adminCommand;
 
 		return $url;
 	}

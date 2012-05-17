@@ -5360,7 +5360,6 @@ final class t3lib_div {
 	 */
 	public static function cleanOutputBuffers() {
 		while (ob_end_clean()) {
-			;
 		}
 		header('Content-Encoding: None', TRUE);
 	}
@@ -5375,7 +5374,6 @@ final class t3lib_div {
 		$obContent = '';
 
 		while ($obContent .= ob_get_clean()) {
-			;
 		}
 
 			// if previously a "Content-Encoding: whatever" has been set, we have to unset it

@@ -329,7 +329,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 					$GLOBALS['LANG']->getLL('success'),
 					t3lib_FlashMessage::OK
 				);
-				$content .= $flashMessage->render() . '<br />' ;
+				$content .= $flashMessage->render() . '<br />';
 			}
 
 		}

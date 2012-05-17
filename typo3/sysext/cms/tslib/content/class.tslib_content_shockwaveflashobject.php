@@ -48,7 +48,6 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 		if ($GLOBALS['TSFE']->absRefPrefix) {
 			$prefix = $GLOBALS['TSFE']->absRefPrefix;
 		}
-		;
 
 		$type = isset($conf['type.'])
 			? $this->cObj->stdWrap($conf['type'], $conf['type.'])
