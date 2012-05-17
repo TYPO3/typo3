@@ -27,17 +27,16 @@
 /**
  * Class for generating front end for building queries
  *
- * @author	Christian Jul Jensen <christian@typo3.com>
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @coauthor	Jo Hasenau <info@cybercraft.de>
+ * @author Christian Jul Jensen <christian@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @coauthor Jo Hasenau <info@cybercraft.de>
  */
-
 
 /**
  * Class for generating front end for building queries
  *
- * @author	Christian Jul Jensen <christian@typo3.com>
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Christian Jul Jensen <christian@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -169,21 +168,26 @@ class t3lib_queryGenerator {
 	);
 	var $noWrap = ' nowrap';
 
-	var $name; // Form data name prefix
-	var $table; // table for the query
-	var $fieldList; // field list
-	var $fields = array(); // Array of the fields possible
+		// Form data name prefix
+	var $name;
+		// Table for the query
+	var $table;
+		// Field list
+	var $fieldList;
+		// Array of the fields possible
+	var $fields = array();
 	var $extFieldLists = array();
-	var $queryConfig = array(); // The query config
+		// The query config
+	var $queryConfig = array();
 	var $enablePrefix = 0;
 	var $enableQueryParts = 0;
 	var $extJSCODE = '';
 
 	protected $formName = '';
 
-
 	/**
-	 * @return	[type]		...
+	 * Make a list of fields for current table
+	 * @return string Separated list of fields
 	 */
 	function makeFieldList() {
 		$fieldListArr = array();
@@ -376,15 +380,15 @@ class t3lib_queryGenerator {
 
 		$POST = t3lib_div::_POST();
 
-			// if delete...
+			// If delete...
 		if ($POST['qG_del']) {
-				//initialize array to work on, save special parameters
+				// Initialize array to work on, save special parameters
 			$ssArr = $this->getSubscript($POST['qG_del']);
 			$workArr =& $this->queryConfig;
 			for ($i = 0; $i < sizeof($ssArr) - 1; $i++) {
 				$workArr =& $workArr[$ssArr[$i]];
 			}
-				// delete the entry and move the other entries
+				// Delete the entry and move the other entries
 			unset($workArr[$ssArr[$i]]);
 			for ($j = $ssArr[$i]; $j < sizeof($workArr); $j++) {
 				$workArr[$j] = $workArr[$j + 1];
@@ -392,40 +396,40 @@ class t3lib_queryGenerator {
 			}
 		}
 
-			// if insert...
+			// If insert...
 		if ($POST['qG_ins']) {
-				//initialize array to work on, save special parameters
+				// Initialize array to work on, save special parameters
 			$ssArr = $this->getSubscript($POST['qG_ins']);
 			$workArr =& $this->queryConfig;
 			for ($i = 0; $i < sizeof($ssArr) - 1; $i++) {
 				$workArr =& $workArr[$ssArr[$i]];
 			}
-				// move all entries above position where new entry is to be inserted
+				// Move all entries above position where new entry is to be inserted
 			for ($j = sizeof($workArr); $j > $ssArr[$i]; $j--) {
 				$workArr[$j] = $workArr[$j - 1];
 			}
-				//clear new entry position
+				// Clear new entry position
 			unset($workArr[$ssArr[$i] + 1]);
 			$workArr[$ssArr[$i] + 1]['type'] = 'FIELD_';
 		}
 
-			// if move up...
+			// If move up...
 		if ($POST['qG_up']) {
-				//initialize array to work on
+				// Initialize array to work on
 			$ssArr = $this->getSubscript($POST['qG_up']);
 			$workArr =& $this->queryConfig;
 			for ($i = 0; $i < sizeof($ssArr) - 1; $i++) {
 				$workArr =& $workArr[$ssArr[$i]];
 			}
-				//swap entries
+				// Swap entries
 			$qG_tmp = $workArr[$ssArr[$i]];
 			$workArr[$ssArr[$i]] = $workArr[$ssArr[$i] - 1];
 			$workArr[$ssArr[$i] - 1] = $qG_tmp;
 		}
 
-			// if new level...
+			// If new level...
 		if ($POST['qG_nl']) {
-				//initialize array to work on
+				// Initialize array to work on
 			$ssArr = $this->getSubscript($POST['qG_nl']);
 			$workArr =& $this->queryConfig;
 			for ($i = 0; $i < sizeof($ssArr) - 1; $i++) {
@@ -444,9 +448,9 @@ class t3lib_queryGenerator {
 			}
 		}
 
-			// if collapse level...
+			// If collapse level...
 		if ($POST['qG_remnl']) {
-				//initialize array to work on
+				// Initialize array to work on
 			$ssArr = $this->getSubscript($POST['qG_remnl']);
 			$workArr =& $this->queryConfig;
 			for ($i = 0; $i < sizeof($ssArr) - 1; $i++) {
@@ -475,11 +479,11 @@ class t3lib_queryGenerator {
 	 * @return	[type]		...
 	 */
 	function cleanUpQueryConfig($queryConfig) {
-			//since we dont traverse the array using numeric keys in the upcoming whileloop make sure it's fresh and clean before displaying
+			// Since we dont traverse the array using numeric keys in the upcoming whileloop make sure it's fresh and clean before displaying
 		if (is_array($queryConfig)) {
 			ksort($queryConfig);
 		} else {
-				//queryConfig should never be empty!
+				// queryConfig should never be empty!
 			if (!$queryConfig[0] || !$queryConfig[0]['type']) {
 				$queryConfig[0] = array('type' => 'FIELD_');
 			}
@@ -496,7 +500,7 @@ class t3lib_queryGenerator {
 			} else {
 				$fType = 'ignore';
 			}
-				//			debug($fType);
+
 			switch ($fType) {
 				case 'newlevel':
 					if (!$queryConfig[$key]['nl']) {
@@ -509,7 +513,6 @@ class t3lib_queryGenerator {
 					break;
 				case 'ignore':
 				default:
-						//					debug($queryConfig[$key]);
 					$verifiedName = $this->verifyType($fName);
 					$queryConfig[$key]['type'] = 'FIELD_' . $this->verifyType($verifiedName);
 
@@ -521,7 +524,6 @@ class t3lib_queryGenerator {
 					$queryConfig[$key]['inputValue'] = $this->cleanInputVal($queryConfig[$key]);
 					$queryConfig[$key]['inputValue1'] = $this->cleanInputVal($queryConfig[$key], 1);
 
-						//					debug($queryConfig[$key]);
 					break;
 			}
 		}
@@ -902,7 +904,6 @@ class t3lib_queryGenerator {
 		}
 		return $out;
 	}
-
 
 	/**
 	 * [Describe function...]
@@ -1306,9 +1307,9 @@ class t3lib_queryGenerator {
 
 				// Query Generator:
 			$this->procesData($modSettings['queryConfig'] ? unserialize($modSettings['queryConfig']) : '');
-				//		debug($this->queryConfig);
+
 			$this->queryConfig = $this->cleanUpQueryConfig($this->queryConfig);
-				//		debug($this->queryConfig);
+
 			$this->enableQueryParts = $modSettings['search_query_smallparts'];
 
 			$codeArr = $this->getFormElements();
@@ -1470,8 +1471,8 @@ class t3lib_queryGenerator {
 	/**
 	 * [Describe function...]
 	 *
-	 * @param	[type]		$formname: ...
-	 * @return	[type]		...
+	 * @param string $formname
+	 * @return string
 	 */
 	function JSbottom($formname) {
 		$out = '';
@@ -1492,8 +1493,8 @@ class t3lib_queryGenerator {
 	/**
 	 * Sets the current name of the input form.
 	 *
-	 * @param	string		$formName: The name of the form.
-	 * @return	void
+	 * @param string $formName The name of the form.
+	 * @return void
 	 */
 	public function setFormName($formName) {
 		$this->formName = trim($formName);

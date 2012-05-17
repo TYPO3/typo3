@@ -30,15 +30,14 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  * XHTML compliant (should be)
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * Position map class - generating a page tree / content element list which links for inserting (copy/move) of records.
  * Used for pages / tt_content element wizards of various kinds.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -48,14 +47,19 @@ class t3lib_positionMap {
 	var $moveOrCopy = 'move';
 	var $dontPrintPageInsertIcons = 0;
 	var $backPath = '';
-	var $depth = 2; // How deep the position page tree will go.
-	var $cur_sys_language; // Can be set to the sys_language uid to select content elements for.
+		// How deep the position page tree will go.
+	var $depth = 2;
+		// Can be set to the sys_language uid to select content elements for.
+	var $cur_sys_language;
 
 
 		// INTERNAL, dynamic:
-	var $R_URI = ''; // Request uri
-	var $elUid = ''; // Element id.
-	var $moveUid = ''; // tt_content element uid to move.
+		// Request uri
+	var $R_URI = '';
+		// Element id.
+	var $elUid = '';
+		// tt_content element uid to move.
+	var $moveUid = '';
 
 		// Caching arrays:
 	var $getModConfigCache = array();
@@ -67,7 +71,6 @@ class t3lib_positionMap {
 
 	var $modConfigStr = 'mod.web_list.newPageWiz';
 
-
 	/*************************************
 	 *
 	 * Page position map:
@@ -78,11 +81,11 @@ class t3lib_positionMap {
 	 * Creates a "position tree" based on the page tree.
 	 * Notice: A class, "localPageTree" must exist and probably it is an extension class of the t3lib_pageTree class. See "db_new.php" in the core for an example.
 	 *
-	 * @param	integer		Current page id
-	 * @param	array		Current page record.
-	 * @param	string		Page selection permission clause.
-	 * @param	string		Current REQUEST_URI
-	 * @return	string		HTML code for the tree.
+	 * @param integer $id Current page id
+	 * @param array $pageinfo Current page record.
+	 * @param string $perms_clause Page selection permission clause.
+	 * @param string $R_URI Current REQUEST_URI
+	 * @return string HTML code for the tree.
 	 */
 	function positionTree($id, $pageinfo, $perms_clause, $R_URI) {
 		$code = '';
@@ -118,7 +121,8 @@ class t3lib_positionMap {
 
 					// If current page, subpage?
 				if ($prev_dat['row']['uid'] == $id) {
-					if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id) && !($prev_dat['invertedDepth'] > $t3lib_pageTree->tree[$cc]['invertedDepth'])) { // 1) It must be allowed to create a new page and 2) If there are subpages there is no need to render a subpage icon here - it'll be done over the subpages...
+						// 1) It must be allowed to create a new page and 2) If there are subpages there is no need to render a subpage icon here - it'll be done over the subpages...
+					if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id) && !($prev_dat['invertedDepth'] > $t3lib_pageTree->tree[$cc]['invertedDepth'])) {
 						$code .= '<span class="nobr">' .
 								$this->insertQuadLines($dat['blankLineCode']) .
 								'<img src="clear.gif" width="18" height="8" align="top" alt="" />' .
@@ -128,7 +132,8 @@ class t3lib_positionMap {
 					}
 				}
 
-				if ($prev_dat['invertedDepth'] > $t3lib_pageTree->tree[$cc]['invertedDepth']) { // If going down
+					// If going down
+				if ($prev_dat['invertedDepth'] > $t3lib_pageTree->tree[$cc]['invertedDepth']) {
 					$prevPid = $t3lib_pageTree->tree[$cc]['row']['pid'];
 				} elseif ($prev_dat['invertedDepth'] < $t3lib_pageTree->tree[$cc]['invertedDepth']) { // If going up
 					// First of all the previous level should have an icon:
@@ -145,10 +150,12 @@ class t3lib_positionMap {
 						// Then set the current prevPid
 					$prevPid = -$prev_dat['row']['pid'];
 				} else {
-					$prevPid = -$prev_dat['row']['uid']; // In on the same level
+						// In on the same level
+					$prevPid = -$prev_dat['row']['uid'];
 				}
 			} else {
-				$prevPid = $dat['row']['pid']; // First in the tree
+					// First in the tree
+				$prevPid = $dat['row']['pid'];
 			}
 			if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($dat['row']['pid'])) {
 				$code .= '<span class="nobr">' .
@@ -202,8 +209,8 @@ class t3lib_positionMap {
 	/**
 	 * Creates the JavaScritp for insert new-record rollover image
 	 *
-	 * @param	string		Insert record image prefix.
-	 * @return	string		<script> section
+	 * @param string $prefix Insert record image prefix.
+	 * @return string <script> section
 	 */
 	function JSimgFunc($prefix = '') {
 		$code = $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
@@ -230,10 +237,10 @@ class t3lib_positionMap {
 	/**
 	 * Wrap $t_code in bold IF the $dat uid matches $id
 	 *
-	 * @param	string		Title string
-	 * @param	array		Infomation array with record array inside.
-	 * @param	integer		The current id.
-	 * @return	string		The title string.
+	 * @param string $t_code Title string
+	 * @param array $dat Infomation array with record array inside.
+	 * @param integer $id The current id.
+	 * @return string The title string.
 	 */
 	function boldTitle($t_code, $dat, $id) {
 		if ($dat['row']['uid'] == $id) {
@@ -248,9 +255,9 @@ class t3lib_positionMap {
 	 * TSconfig mod.web_list.newPageWiz.overrideWithExtension may contain an extension which provides a module
 	 * to be used instead of the normal create new page wizard.
 	 *
-	 * @param	integer		The pid.
-	 * @param	integer		New page id.
-	 * @return	string		Onclick attribute content
+	 * @param integer $pid The pid.
+	 * @param integer $newPagePID New page id.
+	 * @return string Onclick attribute content
 	 */
 	function onClickEvent($pid, $newPagePID) {
 		$TSconfigProp = $this->getModConfig($newPagePID);
@@ -269,7 +276,7 @@ class t3lib_positionMap {
 	/**
 	 * Get label, htmlspecialchars()'ed
 	 *
-	 * @return	string		The localized label for "insert new page here"
+	 * @return string The localized label for "insert new page here"
 	 */
 	function insertlabel() {
 		return $GLOBALS['LANG']->getLL($this->l_insertNewPageHere, 1);
@@ -278,9 +285,9 @@ class t3lib_positionMap {
 	/**
 	 * Wrapping page title.
 	 *
-	 * @param	string		Page title.
-	 * @param	array		Page record (?)
-	 * @return	string		Wrapped title.
+	 * @param string $str Page title.
+	 * @param array $rec Page record (?)
+	 * @return string Wrapped title.
 	 */
 	function linkPageTitle($str, $rec) {
 		return $str;
@@ -290,8 +297,8 @@ class t3lib_positionMap {
 	 * Checks if the user has permission to created pages inside of the $pid page.
 	 * Uses caching so only one regular lookup is made - hence you can call the function multiple times without worrying about performance.
 	 *
-	 * @param	integer		Page id for which to test.
-	 * @return	boolean
+	 * @param integer $pid Page id for which to test.
+	 * @return boolean
 	 */
 	function checkNewPageInPid($pid) {
 		if (!isset($this->checkNewPageCache[$pid])) {
@@ -304,8 +311,8 @@ class t3lib_positionMap {
 	/**
 	 * Returns module configuration for a pid.
 	 *
-	 * @param	integer		Page id for which to get the module configuration.
-	 * @return	array		The properties of teh module configuration for the page id.
+	 * @param integer $pid Page id for which to get the module configuration.
+	 * @return array The properties of teh module configuration for the page id.
 	 * @see onClickEvent()
 	 */
 	function getModConfig($pid) {
@@ -319,11 +326,11 @@ class t3lib_positionMap {
 	/**
 	 * Insert half/quad lines.
 	 *
-	 * @param	string		keywords for which lines to insert.
-	 * @param	boolean		If TRUE all lines are just blank clear.gifs
-	 * @return	string		HTML content.
+	 * @param string $codes Keywords for which lines to insert.
+	 * @param boolean $allBlank If TRUE all lines are just blank clear.gifs
+	 * @return string HTML content.
 	 */
-	function insertQuadLines($codes, $allBlank = 0) {
+	function insertQuadLines($codes, $allBlank = FALSE) {
 		$codeA = t3lib_div::trimExplode(',', $codes . ",line", 1);
 
 		$lines = array();
@@ -337,7 +344,6 @@ class t3lib_positionMap {
 		return implode('', $lines);
 	}
 
-
 	/*************************************
 	 *
 	 * Content element positioning:
@@ -347,12 +353,12 @@ class t3lib_positionMap {
 	/**
 	 * Creates HTML for inserting/moving content elements.
 	 *
-	 * @param	integer		page id onto which to insert content element.
-	 * @param	integer		Move-uid (tt_content element uid?)
-	 * @param	string		List of columns to show
-	 * @param	boolean		If not set, then hidden/starttime/endtime records are filtered out.
-	 * @param	string		Request URI
-	 * @return	string		HTML
+	 * @param integer $pid page id onto which to insert content element.
+	 * @param integer $moveUid Move-uid (tt_content element uid?)
+	 * @param string $colPosList List of columns to show
+	 * @param boolean $showHidden If not set, then hidden/starttime/endtime records are filtered out.
+	 * @param string $R_URI Request URI
+	 * @return string HTML
 	 */
 	function printContentElementColumns($pid, $moveUid, $colPosList, $showHidden, $R_URI) {
 		$this->R_URI = $R_URI;
@@ -390,10 +396,10 @@ class t3lib_positionMap {
 	/**
 	 * Creates the table with the content columns
 	 *
-	 * @param	array		Array with arrays of lines for each column
-	 * @param	array		Column position array
-	 * @param	integer		The id of the page
-	 * @return	string		HTML
+	 * @param array $lines Array with arrays of lines for each column
+	 * @param array $colPosArray Column position array
+	 * @param integer $pid The id of the page
+	 * @return string HTML
 	 */
 	function printRecordMap($lines, $colPosArray, $pid = 0) {
 
@@ -418,7 +424,7 @@ class t3lib_positionMap {
 
 			$tcaItems = t3lib_div::callUserFunction('EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getColPosListItemsParsed', $pid, $this);
 
-			// cycle through rows
+				// Cycle through rows
 			for ($row = 1; $row <= $rowCount; $row++) {
 				$rowConfig = $backendLayout['__config']['backend_layout.']['rows.'][$row . '.'];
 				if (!isset($rowConfig)) {
@@ -433,7 +439,7 @@ class t3lib_positionMap {
 						continue;
 					}
 
-					// which tt_content colPos should be displayed inside this cell
+						// Which tt_content colPos should be displayed inside this cell
 					$columnKey = intval($columnConfig['colPos']);
 					$head = '';
 
@@ -446,7 +452,7 @@ class t3lib_positionMap {
 						}
 					}
 
-					// render the grid cell
+						// Render the grid cell
 					$table .= '<td valign="top"' .
 							(isset($columnConfig['colspan']) ? ' colspan="' . $columnConfig['colspan'] . '"' : '') .
 							(isset($columnConfig['rowspan']) ? ' rowspan="' . $columnConfig['rowspan'] . '"' : '') .
@@ -473,7 +479,7 @@ class t3lib_positionMap {
 			}
 			$table .= '</table></div>';
 		} else {
-			// Traverse the columns here:
+				// Traverse the columns here:
 			foreach ($colPosArray as $kk => $vv) {
 				$row1 .= '<td align="center" width="' . round(100 / $count) . '%"><div class="t3-page-colHeader t3-row-header">' .
 						$this->wrapColumnHeader($GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content', 'colPos', $vv, $pid), 1), $vv) .
@@ -501,9 +507,9 @@ class t3lib_positionMap {
 	/**
 	 * Wrapping the column header
 	 *
-	 * @param	string		Header value
-	 * @param	string		Column info.
-	 * @return	string
+	 * @param string $str Header value
+	 * @param string $vv Column info.
+	 * @return string
 	 * @see printRecordMap()
 	 */
 	function wrapColumnHeader($str, $vv) {
@@ -513,12 +519,12 @@ class t3lib_positionMap {
 	/**
 	 * Creates a linked position icon.
 	 *
-	 * @param	array		Element row.
-	 * @param	string		Column position value.
-	 * @param	integer		Column key.
-	 * @param	integer		Move uid
-	 * @param	integer		PID value.
-	 * @return	string
+	 * @param array $row Element row.
+	 * @param string $vv Column position value.
+	 * @param integer $kk Column key.
+	 * @param integer $moveUid Move uid
+	 * @param integer $pid PID value.
+	 * @return string
 	 */
 	function insertPositionIcon($row, $vv, $kk, $moveUid, $pid) {
 		$cc = hexdec(substr(md5($row['uid'] . '-' . $vv . '-' . $kk), 0, 4));
@@ -530,12 +536,12 @@ class t3lib_positionMap {
 	/**
 	 * Create on-click event value.
 	 *
-	 * @param	array		The record.
-	 * @param	string		Column position value.
-	 * @param	integer		Move uid
-	 * @param	integer		PID value.
-	 * @param	integer		System language (not used currently)
-	 * @return	string
+	 * @param array $row The record.
+	 * @param string $vv Column position value.
+	 * @param integer $moveUid Move uid
+	 * @param integer $pid PID value.
+	 * @param integer $sys_lang System language (not used currently)
+	 * @return string
 	 */
 	function onClickInsertRecord($row, $vv, $moveUid, $pid, $sys_lang = 0) {
 		$table = 'tt_content';
@@ -553,9 +559,9 @@ class t3lib_positionMap {
 	/**
 	 * Wrapping the record header  (from getRecordHeader())
 	 *
-	 * @param	string		HTML content
-	 * @param	array		Record array.
-	 * @return	string		HTML content
+	 * @param string $str HTML content
+	 * @param array $row Record array.
+	 * @return string HTML content
 	 */
 	function wrapRecordHeader($str, $row) {
 		return $str;
@@ -564,8 +570,8 @@ class t3lib_positionMap {
 	/**
 	 * Create record header (includes teh record icon, record title etc.)
 	 *
-	 * @param	array		Record row.
-	 * @return	string		HTML
+	 * @param array $row Record row.
+	 * @return string HTML
 	 */
 	function getRecordHeader($row) {
 		$line = t3lib_iconWorks::getSpriteIconForRecord('tt_content', $row, array('title' => htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($row, 'tt_content'))));
@@ -576,9 +582,9 @@ class t3lib_positionMap {
 	/**
 	 * Wrapping the title of the record.
 	 *
-	 * @param	string		The title value.
-	 * @param	array		The record row.
-	 * @return	string		Wrapped title string.
+	 * @param string $str The title value.
+	 * @param array $row The record row.
+	 * @return string Wrapped title string.
 	 */
 	function wrapRecordTitle($str, $row) {
 		return '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('uid' => intval($row['uid']), 'moveUid' => ''))) . '">' . $str . '</a>';

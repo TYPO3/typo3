@@ -30,14 +30,13 @@
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * This class is the base for listing of database records and files in the modules Web>List and File>Filelist
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see typo3/db_list.php, typo3/file_list.php
@@ -45,37 +44,49 @@
 class t3lib_recordList {
 
 		// Used in this class:
-	var $iLimit = 10; // default Max items shown
-	var $leftMargin = 0; // OBSOLETE - NOT USED ANYMORE. leftMargin
+		// default Max items shown
+	var $iLimit = 10;
+		// OBSOLETE - NOT USED ANYMORE. leftMargin
+	var $leftMargin = 0;
 	var $showIcon = 1;
 	var $no_noWrap = 0;
-	var $oddColumnsCssClass = ''; // If set this is <td> CSS-classname for odd columns in addElement. Used with db_layout / pages section
+		// If set this is <td> CSS-classname for odd columns in addElement. Used with db_layout / pages section
+	var $oddColumnsCssClass = '';
 	var $backPath = '';
-	var $fieldArray = Array(); // Decides the columns shown. Filled with values that refers to the keys of the data-array. $this->fieldArray[0] is the title column.
-	var $addElement_tdParams = array(); // Keys are fieldnames and values are td-parameters to add in addElement(), please use $addElement_tdCSSClass for CSS-classes;
-	var $addElement_tdCssClass = array(); // Keys are fieldnames and values are td-css-classes to add in addElement();
+		// Decides the columns shown. Filled with values that refers to the keys of the data-array. $this->fieldArray[0] is the title column.
+	var $fieldArray = array();
+		// Keys are fieldnames and values are td-parameters to add in addElement(), please use $addElement_tdCSSClass for CSS-classes;
+	var $addElement_tdParams = array();
+		// Keys are fieldnames and values are td-css-classes to add in addElement();
+	var $addElement_tdCssClass = array();
 
 		// Not used in this class - but maybe extension classes...
-	var $fixedL = 30; // Max length of strings
+		// Max length of strings
+	var $fixedL = 30;
 	var $script = '';
-	var $setLMargin = 1; // Set to zero, if you don't want a left-margin with addElement function
+		// Set to zero, if you don't want a left-margin with addElement function
+	var $setLMargin = 1;
 
-	var $counter = 0; // Counter increased for each element. Used to index elements for the JavaScript-code that transfers to the clipboard
-	var $totalItems = ''; // This could be set to the total number of items. Used by the fwd_rew_navigation...
+		// Counter increased for each element. Used to index elements for the JavaScript-code that transfers to the clipboard
+	var $counter = 0;
+		// This could be set to the total number of items. Used by the fwd_rew_navigation...
+	var $totalItems = '';
 
 		// Internal (used in this class.)
 	var $firstElementNumber = 0;
 	var $eCounter = 0;
-	var $HTMLcode = ''; // String with accumulated HTML content
+		// String with accumulated HTML content
+	var $HTMLcode = '';
 
-	var $pageOverlays = array(); // Contains page translation languages
-	var $languageIconTitles = array(); // Contains sys language icons and titles
-	var $translateTools; // translateTools object
+		// Contains page translation languages
+	var $pageOverlays = array();
+		// Contains sys language icons and titles
+	var $languageIconTitles = array();
+		// TranslateTools object
+	var $translateTools;
 
 	/**
-	 * constructor for t3lib_recordList
-	 *
-	 * @author	Ingo Renner <ingo@typo3.org>
+	 * Constructor for t3lib_recordList
 	 */
 	public function __construct() {
 		if (isset($GLOBALS['BE_USER']->uc['titleLen']) && $GLOBALS['BE_USER']->uc['titleLen'] > 0) {
@@ -89,13 +100,13 @@ class t3lib_recordList {
 	 * Returns a table-row with the content from the fields in the input data array.
 	 * OBS: $this->fieldArray MUST be set! (represents the list of fields to display)
 	 *
-	 * @param	integer		$h is an integer >=0 and denotes how tall a element is. Set to '0' makes a halv line, -1 = full line, set to 1 makes a 'join' and above makes 'line'
-	 * @param	string		$icon is the <img>+<a> of the record. If not supplied the first 'join'-icon will be a 'line' instead
-	 * @param	array		$data is the dataarray, record with the fields. Notice: These fields are (currently) NOT htmlspecialchar'ed before being wrapped in <td>-tags
-	 * @param	string		$tdParams is insert in the <td>-tags. Must carry a ' ' as first character
-	 * @param	integer		OBSOLETE - NOT USED ANYMORE. $lMargin is the leftMargin (integer)
-	 * @param	string		$altLine is the HTML <img>-tag for an alternative 'gfx/ol/line.gif'-icon (used in the top)
-	 * @return	string		HTML content for the table row
+	 * @param integer $h Is an integer >=0 and denotes how tall a element is. Set to '0' makes a halv line, -1 = full line, set to 1 makes a 'join' and above makes 'line'
+	 * @param string $icon Is the <img>+<a> of the record. If not supplied the first 'join'-icon will be a 'line' instead
+	 * @param array $data Is the dataarray, record with the fields. Notice: These fields are (currently) NOT htmlspecialchar'ed before being wrapped in <td>-tags
+	 * @param string $tdParams Is insert in the <td>-tags. Must carry a ' ' as first character
+	 * @param integer OBSOLETE - NOT USED ANYMORE. $lMargin is the leftMargin (integer)
+	 * @param string $altLine Is the HTML <img>-tag for an alternative 'gfx/ol/line.gif'-icon (used in the top)
+	 * @return string HTML content for the table row
 	 */
 	function addElement($h, $icon, $data, $trParams = '', $lMargin = '', $altLine = '') {
 		$noWrap = ($this->no_noWrap) ? '' : ' nowrap="nowrap"';
@@ -184,7 +195,7 @@ class t3lib_recordList {
 	/**
 	 * Dummy function, used to write the top of a table listing.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function writeTop() {
 	}
@@ -192,7 +203,7 @@ class t3lib_recordList {
 	/**
 	 * Finishes the list with the "stopper"-gif, adding the HTML code for that item to the internal ->HTMLcode string
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function writeBottom() {
 		$this->HTMLcode .= '
@@ -210,14 +221,14 @@ class t3lib_recordList {
 	/**
 	 * Creates a forward/reverse button based on the status of ->eCounter, ->firstElementNumber, ->iLimit
 	 *
-	 * @param	string		Table name
-	 * @return	array		array([boolean], [HTML]) where [boolean] is 1 for reverse element, [HTML] is the table-row code for the element
+	 * @param string $table Table name
+	 * @return array array([boolean], [HTML]) where [boolean] is 1 for reverse element, [HTML] is the table-row code for the element
 	 */
 	function fwd_rwd_nav($table = '') {
 		$code = '';
 		if ($this->eCounter >= $this->firstElementNumber && $this->eCounter < $this->firstElementNumber + $this->iLimit) {
 			if ($this->firstElementNumber && $this->eCounter == $this->firstElementNumber) {
-					// 	reverse
+					// 	Reverse
 				$theData = Array();
 				$titleCol = $this->fieldArray[0];
 				$theData[$titleCol] = $this->fwd_rwd_HTML('fwd', $this->eCounter, $table);
@@ -226,7 +237,7 @@ class t3lib_recordList {
 			return array(1, $code);
 		} else {
 			if ($this->eCounter == $this->firstElementNumber + $this->iLimit) {
-					// 	forward
+					// 	Forward
 				$theData = Array();
 				$titleCol = $this->fieldArray[0];
 				$theData[$titleCol] = $this->fwd_rwd_HTML('rwd', $this->eCounter, $table);
@@ -240,10 +251,10 @@ class t3lib_recordList {
 	/**
 	 * Creates the button with link to either forward or reverse
 	 *
-	 * @param	string		Type: "fwd" or "rwd"
-	 * @param	integer		Pointer
-	 * @param	string		Table name
-	 * @return	string
+	 * @param string $type Type: "fwd" or "rwd"
+	 * @param integer $pointer Pointer
+	 * @param string $table Table name
+	 * @return string
 	 * @access private
 	 */
 	function fwd_rwd_HTML($type, $pointer, $table = '') {
@@ -269,8 +280,8 @@ class t3lib_recordList {
 	/**
 	 * Creates the URL to this script, including all relevant GPvars
 	 *
-	 * @param	string		Alternative id value. Enter blank string for the current id ($this->id)
-	 * @return	string		URL
+	 * @param string $altId Alternative id value. Enter blank string for the current id ($this->id)
+	 * @return string URL
 	 */
 	function listURL($altId = '') {
 		return $this->script .
@@ -280,7 +291,7 @@ class t3lib_recordList {
 	/**
 	 * Returning JavaScript for ClipBoard functionality.
 	 *
-	 * @return	string
+	 * @return string
 	 */
 	function CBfunctions() {
 		return '
@@ -318,7 +329,7 @@ class t3lib_recordList {
 	/**
 	 * Initializes page languages and icons
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function initializeLanguages() {
 
@@ -341,8 +352,8 @@ class t3lib_recordList {
 	/**
 	 * Return the icon for the language
 	 *
-	 * @param integer Sys language uid
-	 * @param boolean If set to true, only the flag is returned
+	 * @param integer $sys_language_uid Sys language uid
+	 * @param boolean $addAsAdditionalText If set to true, only the flag is returned
 	 *
 	 * @return string Language icon
 	 */
@@ -364,7 +375,7 @@ class t3lib_recordList {
 	/**
 	 * Gets an instance of t3lib_transl8tools.
 	 *
-	 * @return	t3lib_transl8tools
+	 * @return t3lib_transl8tools
 	 */
 	protected function getTranslateTools() {
 		if (!isset($this->translateTools)) {
