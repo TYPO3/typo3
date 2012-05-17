@@ -412,8 +412,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 		if ($echoLevel>0)
 			echo LF.$accumulatedPath.' ['.$rootID.']'.
 				($pageRecord['deleted'] ? ' (DELETED)':'').
-				($this->recStats['versions_published']['pages'][$rootID] ? ' (PUBLISHED)':'')
-				;
+				($this->recStats['versions_published']['pages'][$rootID] ? ' (PUBLISHED)':'');
 		if ($echoLevel>1 && $this->recStats['versions_lost_workspace']['pages'][$rootID])
 			echo LF.'	ERROR! This version belongs to non-existing workspace ('.$pageRecord['t3ver_wsid'].')!';
 		if ($echoLevel>1 && $this->recStats['versions_inside_versioned_page']['pages'][$rootID])

@@ -131,7 +131,7 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlarea_api {
 			}
 			$webMounts = $GLOBALS['BE_USER']->returnWebmounts();
 			$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-			$recursive = isset($this->thisConfig['buttons.'][$button.'.']['recursive']) ? intval($this->thisConfig['buttons.'][$button.'.']['recursive']) : 0 ;
+			$recursive = isset($this->thisConfig['buttons.'][$button.'.']['recursive']) ? intval($this->thisConfig['buttons.'][$button.'.']['recursive']) : 0;
 			if (trim($this->thisConfig['buttons.'][$button.'.']['pages'])) {
 				$pids = t3lib_div::trimExplode(',', $this->thisConfig['buttons.'][$button.'.']['pages'], 1);
 				foreach ($pids as $key => $val) {

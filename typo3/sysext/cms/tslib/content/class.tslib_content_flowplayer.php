@@ -211,7 +211,6 @@ class tslib_content_FlowPlayer extends tslib_content_Abstract {
 		if ($GLOBALS['TSFE']->absRefPrefix) {
 			$prefix = $GLOBALS['TSFE']->absRefPrefix;
 		}
-		;
 			// Initialize content
 		$replaceElementIdString = uniqid('mmswf');
 		$GLOBALS['TSFE']->register['MMSWFID'] = $replaceElementIdString;

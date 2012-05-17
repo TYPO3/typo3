@@ -313,7 +313,6 @@ class t3lib_search_livesearch {
 		}
 
 		return htmlspecialchars(t3lib_div::fixed_lgd_cs($title, $titleLength));
-		;
 	}
 
 	/**

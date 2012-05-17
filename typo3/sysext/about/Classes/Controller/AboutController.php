@@ -60,8 +60,7 @@ class Tx_About_Controller_AboutController extends Tx_Extbase_MVC_Controller_Acti
 			->assign('TYPO3CopyrightYear', TYPO3_copyright_year)
 			->assign('TYPO3UrlDonate', TYPO3_URL_DONATE)
 			->assign('loadedExtensions', $extensions)
-			->assign('customContents', $this->getCustomContent())
-		;
+			->assign('customContents', $this->getCustomContent());
 	}
 
 	/**

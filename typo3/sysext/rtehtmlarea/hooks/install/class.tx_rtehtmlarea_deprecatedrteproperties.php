@@ -168,7 +168,7 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 					$success = TRUE;
 				}
 			} else {
-				$customMessages = '<p>No deprecated Page TSconfig properties were found on page records.</p>' . LF ;
+				$customMessages = '<p>No deprecated Page TSconfig properties were found on page records.</p>' . LF;
 				$success = TRUE;
 			}
 			$customMessages .= '<p>Only page records were searched for deprecated properties. However, such properties can also be used in BE group and BE user records (prepended with page.). These are not searched nor updated by this wizard.</p>' . LF .
