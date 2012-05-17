@@ -719,17 +719,6 @@ $TCA['tt_content'] = array(
 							--palette--;;filePalette',
 					),
 				),
-				'foreign_selector_fieldTcaOverride' => array(
-					'config' => array(
-						'filter' => array(
-							'fileType' =>  array(
-								'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
-							)
-						)
-					)
-				),
-				'maxitems' => '200',
-				'minitems' => '0',
 			)),
 		),
 		'imagewidth' => array(
@@ -1458,16 +1447,7 @@ $TCA['tt_content'] = array(
 				'appearance' => array(
 					'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:media.addFileReference',
 				),
-				'foreign_selector_fieldTcaOverride' => array(
-					'config' => array(
-						'filter' => array(
-							'fileType' =>  array(
-								'disallowed' => PHP_EXTENSIONS_DEFAULT
-							)
-						)
-					)
-				),
-			)),
+			))
 		),
 		'file_collections' => array(
 			'label' => 'LLL:EXT:cms/locallang_ttc.xlf:file_collections',
