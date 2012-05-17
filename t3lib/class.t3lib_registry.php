@@ -26,7 +26,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * A class to store and retrieve entries in a registry database table.
  *
@@ -37,8 +36,8 @@
  *
  * Credits: Heavily inspired by Drupal's variable_*() functions.
  *
- * @author	Ingo Renner <ingo@typo3.org>
- * @author	Bastian Waidelich <bastian@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
+ * @author Bastian Waidelich <bastian@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -49,15 +48,14 @@ class t3lib_Registry implements t3lib_Singleton {
 	 */
 	protected $entries = array();
 
-
 	/**
 	 * Returns a persistent entry.
 	 *
-	 * @param	string	Extension key for extensions starting with 'tx_' / 'Tx_' / 'user_' or 'core' for core registry entries
-	 * @param	string	The key of the entry to return.
-	 * @param	mixed	Optional default value to use if this entry has never been set. Defaults to NULL.
-	 * @return	mixed	The value of the entry.
-	 * @throws	InvalidArgumentException	Throws an exception if the given namespace is not valid
+	 * @param string $namespace Extension key for extensions starting with 'tx_' / 'Tx_' / 'user_' or 'core' for core registry entries
+	 * @param string $key The key of the entry to return.
+	 * @param mixed $defaultValue Optional default value to use if this entry has never been set. Defaults to NULL.
+	 * @return mixed The value of the entry.
+	 * @throws InvalidArgumentException Throws an exception if the given namespace is not valid
 	 */
 	public function get($namespace, $key, $defaultValue = NULL) {
 		if (!isset($this->entries[$namespace])) {
@@ -72,11 +70,11 @@ class t3lib_Registry implements t3lib_Singleton {
 	 * Do not store binary data into the registry, it's not build to do that,
 	 * instead use the proper way to store binary data: The filesystem.
 	 *
-	 * @param	string	Extension key for extensions starting with 'tx_' / 'Tx_' / 'user_' or 'core' for core registry entries.
-	 * @param	string	The key of the entry to set.
-	 * @param	mixed	The value to set. This can be any PHP data type; this class takes care of serialization if necessary.
-	 * @return	void
-	 * @throws	InvalidArgumentException	Throws an exception if the given namespace is not valid
+	 * @param string $namespace Extension key for extensions starting with 'tx_' / 'Tx_' / 'user_' or 'core' for core registry entries.
+	 * @param string $key The key of the entry to set.
+	 * @param mixed $value The value to set. This can be any PHP data type; this class takes care of serialization if necessary.
+	 * @return void
+	 * @throws InvalidArgumentException Throws an exception if the given namespace is not valid
 	 */
 	public function set($namespace, $key, $value) {
 		$this->validateNamespace($namespace);
@@ -114,10 +112,10 @@ class t3lib_Registry implements t3lib_Singleton {
 	/**
 	 * Unsets a persistent entry.
 	 *
-	 * @param	string	Namespace. extension key for extensions or 'core' for core registry entries
-	 * @param	string	The key of the entry to unset.
-	 * @return	void
-	 * @throws	InvalidArgumentException	Throws an exception if the given namespace is not valid
+	 * @param string $namespace Namespace. extension key for extensions or 'core' for core registry entries
+	 * @param string $key The key of the entry to unset.
+	 * @return void
+	 * @throws InvalidArgumentException Throws an exception if the given namespace is not valid
 	 */
 	public function remove($namespace, $key) {
 		$this->validateNamespace($namespace);
@@ -134,9 +132,9 @@ class t3lib_Registry implements t3lib_Singleton {
 	/**
 	 * Unsets all persistent entries of the given namespace.
 	 *
-	 * @param	string	Namespace. extension key for extensions or 'core' for core registry entries
-	 * @return	void
-	 * @throws	InvalidArgumentException	Throws an exception if the given namespace is not valid
+	 * @param string $namespace Namespace. extension key for extensions or 'core' for core registry entries
+	 * @return void
+	 * @throws InvalidArgumentException Throws an exception if the given namespace is not valid
 	 */
 	public function removeAllByNamespace($namespace) {
 		$this->validateNamespace($namespace);
@@ -152,9 +150,9 @@ class t3lib_Registry implements t3lib_Singleton {
 	/**
 	 * Loads all entries of the given namespace into the internal $entries cache.
 	 *
-	 * @param	string	Namespace. extension key for extensions or 'core' for core registry entries
-	 * @return	void
-	 * @throws	InvalidArgumentException	Throws an exception if the given namespace is not valid
+	 * @param string $namespace Namespace. extension key for extensions or 'core' for core registry entries
+	 * @return void
+	 * @throws InvalidArgumentException Throws an exception if the given namespace is not valid
 	 */
 	protected function loadEntriesByNamespace($namespace) {
 		$this->validateNamespace($namespace);
@@ -176,9 +174,9 @@ class t3lib_Registry implements t3lib_Singleton {
 	 * exception is thrown.
 	 * Allowed namespaces are 'core', 'tx_*', 'Tx_*' and 'user_*'
 	 *
-	 * @param	string	Namespace. extension key for extensions or 'core' for core registry entries
-	 * @return	void
-	 * @throws	InvalidArgumentException	Throws an exception if the given namespace is not valid
+	 * @param string $namespace Namespace. extension key for extensions or 'core' for core registry entries
+	 * @return void
+	 * @throws InvalidArgumentException Throws an exception if the given namespace is not valid
 	 */
 	protected function validateNamespace($namespace) {
 		if (t3lib_div::hasValidClassPrefix($namespace)) {

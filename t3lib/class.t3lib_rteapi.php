@@ -30,23 +30,23 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-
 /**
  * RTE base class: Delivers browser-detection, TCEforms binding and transformation routines for the "rte" extension, registering it with the RTE API in TYPO3 3.6.0
  * See "rte" extension for usage.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_rteapi {
 
 		// Internal, dynamic:
-	var $errorLog = array(); // Error messages regarding non-availability is collected here.
+		// Error messages regarding non-availability is collected here.
+	var $errorLog = array();
 
 		// Internal, static:
-	var $ID = ''; // Set this to the extension key of the RTE so it can identify itself.
-
+		// Set this to the extension key of the RTE so it can identify itself.
+	var $ID = '';
 
 	/***********************************
 	 *
@@ -60,7 +60,7 @@ class t3lib_rteapi {
 	 * Returns TRUE if the RTE is available. Here you check if the browser requirements are met.
 	 * If there are reasons why the RTE cannot be displayed you simply enter them as text in ->errorLog
 	 *
-	 * @return	boolean		TRUE if this RTE object offers an RTE in the current browser environment
+	 * @return boolean TRUE if this RTE object offers an RTE in the current browser environment
 	 */
 	function isAvailable() {
 		$this->errorLog = array();
@@ -77,17 +77,17 @@ class t3lib_rteapi {
 	 * Draws the RTE as a form field or whatever is needed (inserts JavaApplet, creates iframe, renders ....)
 	 * Default is to output the transformed content in a plain textarea field. This mode is great for debugging transformations!
 	 *
-	 * @param	object		Reference to parent object, which is an instance of the TCEforms.
-	 * @param	string		The table name
-	 * @param	string		The field name
-	 * @param	array		The current row from which field is being rendered
-	 * @param	array		Array of standard content for rendering form fields from TCEforms. See TCEforms for details on this. Includes for instance the value and the form field name, java script actions and more.
-	 * @param	array		"special" configuration - what is found at position 4 in the types configuration of a field from record, parsed into an array.
-	 * @param	array		Configuration for RTEs; A mix between TSconfig and otherwise. Contains configuration for display, which buttons are enabled, additional transformation information etc.
-	 * @param	string		Record "type" field value.
-	 * @param	string		Relative path for images/links in RTE; this is used when the RTE edits content from static files where the path of such media has to be transformed forth and back!
-	 * @param	integer		PID value of record (true parent page id)
-	 * @return	string		HTML code for RTE!
+	 * @param object $pObj Reference to parent object, which is an instance of the TCEforms.
+	 * @param string $table The table name
+	 * @param string $field The field name
+	 * @param array $row The current row from which field is being rendered
+	 * @param array $PA Array of standard content for rendering form fields from TCEforms. See TCEforms for details on this. Includes for instance the value and the form field name, java script actions and more.
+	 * @param array $specConf "special" configuration - what is found at position 4 in the types configuration of a field from record, parsed into an array.
+	 * @param array $thisConfig Configuration for RTEs; A mix between TSconfig and otherwise. Contains configuration for display, which buttons are enabled, additional transformation information etc.
+	 * @param string $RTEtypeVal Record "type" field value.
+	 * @param string $RTErelPath Relative path for images/links in RTE; this is used when the RTE edits content from static files where the path of such media has to be transformed forth and back!
+	 * @param integer $thePidValue PID value of record (true parent page id)
+	 * @return string HTML code for RTE!
 	 */
 	function drawRTE(&$pObj, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {
 
@@ -112,25 +112,22 @@ class t3lib_rteapi {
 	 * a) Right before content from database is sent to the RTE (see ->drawRTE()) it might need transformation
 	 * b) When content is sent from the RTE and into the database it might need transformation back again (going on in TCEmain class; You can't affect that.)
 	 *
-	 * @param	string		Keyword: "rte" means direction from db to rte, "db" means direction from Rte to DB
-	 * @param	string		Value to transform.
-	 * @param	string		The table name
-	 * @param	string		The field name
-	 * @param	array		The current row from which field is being rendered
-	 * @param	array		"special" configuration - what is found at position 4 in the types configuration of a field from record, parsed into an array.
-	 * @param	array		Configuration for RTEs; A mix between TSconfig and otherwise. Contains configuration for display, which buttons are enabled, additional transformation information etc.
-	 * @param	string		Relative path for images/links in RTE; this is used when the RTE edits content from static files where the path of such media has to be transformed forth and back!
-	 * @param	integer		PID value of record (true parent page id)
-	 * @return	string		Transformed content
+	 * @param string $dirRTE Keyword: "rte" means direction from db to rte, "db" means direction from Rte to DB
+	 * @param string $value Value to transform.
+	 * @param string $table The table name
+	 * @param string $field The field name
+	 * @param array $row The current row from which field is being rendered
+	 * @param array $specConf "special" configuration - what is found at position 4 in the types configuration of a field from record, parsed into an array.
+	 * @param array $thisConfig Configuration for RTEs; A mix between TSconfig and otherwise. Contains configuration for display, which buttons are enabled, additional transformation information etc.
+	 * @param string $RTErelPath Relative path for images/links in RTE; this is used when the RTE edits content from static files where the path of such media has to be transformed forth and back!
+	 * @param integer $pid PID value of record (true parent page id)
+	 * @return string Transformed content
 	 */
 	function transformContent($dirRTE, $value, $table, $field, $row, $specConf, $thisConfig, $RTErelPath, $pid) {
-
-		#debug(array($dirRTE,$value,$table,$field,array(),$specConf,$thisConfig,$RTErelPath,$pid));
-
 		if ($specConf['rte_transform']) {
 			$p = t3lib_BEfunc::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
-			if ($p['mode']) { // There must be a mode set for transformation
-				#debug($p['mode'],'MODE');
+				// There must be a mode set for transformation
+			if ($p['mode']) {
 
 					// Initialize transformation:
 				$parseHTML = t3lib_div::makeInstance('t3lib_parsehtml_proc');
@@ -142,10 +139,8 @@ class t3lib_rteapi {
 			}
 		}
 
-		#debug(array($dirRTE,$value),'OUT: '.$dirRTE);
 		return $value;
 	}
-
 
 	/***********************************
 	 *
@@ -156,8 +151,8 @@ class t3lib_rteapi {
 	/**
 	 * Trigger field - this field tells the TCEmain that processing should be done on this value!
 	 *
-	 * @param	string		Field name of the RTE field.
-	 * @return	string		<input> field of type "hidden" with a flag telling the TCEmain that this fields content should be traansformed back to database state.
+	 * @param string $fieldName Field name of the RTE field.
+	 * @return string <input> field of type "hidden" with a flag telling the TCEmain that this fields content should be traansformed back to database state.
 	 */
 	function triggerField($fieldName) {
 
