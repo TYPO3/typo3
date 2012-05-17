@@ -719,7 +719,7 @@ $TCA['tt_content'] = array(
 							--palette--;;filePalette',
 					),
 				),
-			)),
+			), $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']),
 		),
 		'imagewidth' => array(
 			'exclude' => 1,
