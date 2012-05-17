@@ -368,6 +368,17 @@ class Typo3_Bootstrap {
 	}
 
 	/**
+	 * Things that should be performed to shut down the framework.
+	 * This method is called in all important scripts for a clean
+	 * shut down of the system.
+	 *
+	 * @return void
+	 */
+	public static function shutdown() {
+		t3lib_autoloader::unregisterAutoloader();
+	}
+
+	/**
 	 * Check php version requirement or exit script
 	 *
 	 * @return void

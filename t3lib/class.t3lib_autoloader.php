@@ -56,6 +56,17 @@ class t3lib_autoloader {
 	protected static $autoloadCacheIdentifier = NULL;
 
 	/**
+	 * Track if the cache file written to disk should be updated.
+	 * This is set to TRUE if during script run new classes are
+	 * found (for example due to new requested extbase classes)
+	 * and is used in unregisterAutoloader() to decide whether or not
+	 * the cache file should be re-written.
+	 *
+	 * @var bool True if mapping changed
+	 */
+	protected static $cacheUpdateRequired = FALSE;
+
+	/**
 	 * The autoloader is static, thus we do not allow instances of this class.
 	 */
 	private function __construct() {
@@ -72,12 +83,20 @@ class t3lib_autoloader {
 	}
 
 	/**
-	 * Uninstalls TYPO3 autoloader. This function is for the sake of completeness.
-	 * It is never called by the TYPO3 core.
+	 * Uninstalls TYPO3 autoloader and writes any additional classes
+	 * found during the script run to the cache file.
+	 *
+	 * This method is called during shutdown of the framework.
 	 *
 	 * @return boolean TRUE in case of success
 	 */
 	public static function unregisterAutoloader() {
+		if (self::$cacheUpdateRequired) {
+			self::updateRegistryCacheEntry(self::$classNameToFileMapping);
+			self::$cacheUpdateRequired = FALSE;
+		}
+		self::$classNameToFileMapping = array();
+
 		return spl_autoload_unregister('t3lib_autoloader::autoload');
 	}
 
@@ -119,13 +138,12 @@ class t3lib_autoloader {
 		$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
 
 			// Create autoload cache file if it does not exist yet
-		if (!$phpCodeCache->has(self::getAutoloadCacheIdentifier())) {
+		if ($phpCodeCache->has(self::getAutoloadCacheIdentifier())) {
+			$classRegistry = $phpCodeCache->requireOnce(self::getAutoloadCacheIdentifier());
+		} else {
+			self::$cacheUpdateRequired = TRUE;
 			$classRegistry = self::createCoreAndExtensionRegistry();
-			self::updateRegistryCacheEntry($classRegistry);
 		}
-
-			// Require calculated cache file
-		$mappingArray = $phpCodeCache->requireOnce(self::getAutoloadCacheIdentifier());
 
 			// This can only happen if the autoloader was already registered
 			// in the same call once, the requireOnce of the cache file then
@@ -133,11 +151,12 @@ class t3lib_autoloader {
 			// all cache entries manually again.
 			// This can happen in unit tests and if the cache backend was
 			// switched to NullBackend for example to simplify development
-		if (!is_array($mappingArray)) {
-			$mappingArray = self::createCoreAndExtensionRegistry();
+		if (!is_array($classRegistry)) {
+			self::$cacheUpdateRequired = TRUE;
+			$classRegistry = self::createCoreAndExtensionRegistry();
 		}
 
-		self::$classNameToFileMapping = $mappingArray;
+		self::$classNameToFileMapping = $classRegistry;
 	}
 
 	/**
@@ -310,8 +329,8 @@ class t3lib_autoloader {
 	 */
 	protected static function addClassToCache($classFilePathAndName, $className) {
 		if (file_exists($classFilePathAndName)) {
+			self::$cacheUpdateRequired = TRUE;
 			self::$classNameToFileMapping[strtolower($className)] = $classFilePathAndName;
-			self::updateRegistryCacheEntry(self::$classNameToFileMapping);
 		}
 	}
 

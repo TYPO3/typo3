@@ -92,4 +92,6 @@ try {
 	fwrite(STDERR, $e->getMessage() . LF);
 	exit(99);
 }
+
+Typo3_Bootstrap::shutdown();
 ?>
