@@ -529,15 +529,6 @@ final class t3lib_extMgm {
 			),
 			'foreign_label' => 'uid_local',
 			'foreign_selector' => 'uid_local',
-			'foreign_selector_fieldTcaOverride' => array(
-				'config' => array (
-					'filter' => array(
-						'fileType' =>  array(
-							'allowed' => array(),
-						),
-					),
-				),
-			),
 			'appearance' => array(
 				'useSortable' => TRUE,
 				'headerThumbnail' => 'uid_local',
