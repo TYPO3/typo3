@@ -515,9 +515,10 @@ final class t3lib_extMgm {
 	 *
 	 * @param string $fieldName Name of the field to be used
 	 * @param array $customSettingOverride Custom field settings overriding the basics
+	 * @param string $allowedFileExtensions Comma list of allowed file extensions (e.g. "jpg,gif,pdf")
 	 * @return array
 	 */
-	public static function getFileFieldTCAConfig($fieldName, array $customSettingOverride = array()) {
+	public static function getFileFieldTCAConfig($fieldName, array $customSettingOverride = array(), $allowedFileExtensions = '', $disallowedFileExtensions = '') {
 		$fileFieldTCAConfig = array(
 			'type' => 'inline',
 			'foreign_table' => 'sys_file_reference',
@@ -529,6 +530,23 @@ final class t3lib_extMgm {
 			),
 			'foreign_label' => 'uid_local',
 			'foreign_selector' => 'uid_local',
+			'foreign_selector_fieldTcaOverride' => array(
+				'config' => array(
+					'appearance' => array(
+						'elementBrowserType' => 'file',
+						'elementBrowserAllowed' => $allowedFileExtensions,
+					),
+				),
+			),
+			'filter' => array(
+				array(
+					'userFunc' => 't3lib_file_Utility_FileExtensionFilter->filterInlineChildren',
+					'parameters' => array(
+						'allowedFileExtensions' => $allowedFileExtensions,
+						'disallowedFileExtensions' => $disallowedFileExtensions,
+					),
+				),
+			),
 			'appearance' => array(
 				'useSortable' => TRUE,
 				'headerThumbnail' => 'uid_local',
