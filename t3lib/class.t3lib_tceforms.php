@@ -2214,7 +2214,7 @@ class t3lib_TCEforms {
 					'noList' => $noList,
 					'noDelete' => $noDelete,
 				);
-				$item .= $this->dbFileIcons($PA['itemFormElName'], 'file', implode(',', $tempFT), $itemArray, '', $params, $PA['onFocus']);
+				$item .= $this->dbFileIcons($PA['itemFormElName'], 'file', implode(',', $tempFT), $itemArray, '', $params, $PA['onFocus'], '', '', '', $config);
 
 				if (!$disabled && !(isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'upload'))) {
 						// Adding the upload field:
@@ -2334,7 +2334,7 @@ class t3lib_TCEforms {
 					'noBrowser' => $noList || (isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'browser')),
 					'noList' => $noList,
 				);
-				$item .= $this->dbFileIcons($PA['itemFormElName'], 'db', implode(',', $tempFT), $itemArray, '', $params, $PA['onFocus'], $table, $field, $row['uid']);
+				$item .= $this->dbFileIcons($PA['itemFormElName'], 'db', implode(',', $tempFT), $itemArray, '', $params, $PA['onFocus'], $table, $field, $row['uid'], $config);
 
 			break;
 		}
@@ -3672,9 +3672,10 @@ class t3lib_TCEforms {
 	 * @param	string		$table: (optional) Table name processing for
 	 * @param	string		$field: (optional) Field of table name processing for
 	 * @param	string		$uid:	(optional) uid of table record processing for
+	 * @param	array		$config: (optional) The TCA field config
 	 * @return	string		The form fields for the selection.
 	 */
-	function dbFileIcons($fName, $mode, $allowed, $itemArray, $selector = '', $params = array(), $onFocus = '', $table = '', $field = '', $uid = '') {
+	function dbFileIcons($fName, $mode, $allowed, $itemArray, $selector = '', $params = array(), $onFocus = '', $table = '', $field = '', $uid = '', $config = array()) {
 
 		$title = '';
 		$disabled = '';
@@ -3762,7 +3763,21 @@ class t3lib_TCEforms {
 						$rOnClickInline = 'inline.revertUnique(\'' . $objectPrefix . '\',null,\'' . $uid . '\');';
 					}
 				}
-				$aOnClick = 'setFormValueOpenBrowser(\'' . $mode . '\',\'' . ($fName . '|||' . $allowed . '|' . $aOnClickInline) . '\'); return false;';
+
+				if(is_array($config['appearance']) && isset($config['appearance']['elementBrowserType'])) {
+					$elementBrowserType = $config['appearance']['elementBrowserType'];
+				} else {
+					$elementBrowserType = $mode;
+				}
+
+				if(is_array($config['appearance']) && isset($config['appearance']['elementBrowserAllowed'])) {
+					$elementBrowserAllowed = $config['appearance']['elementBrowserAllowed'];
+				} else {
+					$elementBrowserAllowed = $allowed;
+				}
+
+
+				$aOnClick = 'setFormValueOpenBrowser(\'' . $elementBrowserType . '\',\'' . ($fName . '|||' . $elementBrowserAllowed . '|' . $aOnClickInline) . '\'); return false;';
 				$icons['R'][] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' .
 								t3lib_iconWorks::getSpriteIcon('actions-insert-record', array('title' => htmlspecialchars($this->getLL('l_browse_' . ($mode == 'db' ? 'db' : 'file'))))) .
 								'</a>';
