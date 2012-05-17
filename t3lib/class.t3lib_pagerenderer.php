@@ -56,7 +56,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/** @var t3lib_Compressor $compressor */
 	protected $compressor;
 
-		// arrays containing associative array for the included files
+		// Arrays containing associative array for the included files
 	protected $jsFiles = array();
 	protected $jsFooterFiles = array();
 	protected $jsLibs = array();
@@ -70,7 +70,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	protected $renderXhtml = TRUE;
 
-		// static header blocks
+		// Static header blocks
 	protected $xmlPrologAndDocType = '';
 	protected $metaTags = array();
 	protected $inlineComments = array();
@@ -85,7 +85,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	protected $shortcutTag = '<link rel="shortcut icon" href="%1$s"%2$s />
 <link rel="icon" href="%1$s"%2$s />';
 
-		// static inline code blocks
+		// Static inline code blocks
 	protected $jsInline = array();
 	protected $jsFooterInline = array();
 	protected $extOnReadyCode = array();
@@ -101,7 +101,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	const PART_HEADER = 1;
 	const PART_FOOTER = 2;
 
-		// paths to contibuted libraries
+		// Paths to contibuted libraries
 	protected $prototypePath = 'contrib/prototype/';
 	protected $scriptaculousPath = 'contrib/scriptaculous/';
 	protected $extCorePath = 'contrib/extjs/';
@@ -109,7 +109,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	protected $svgPath = 'contrib/websvg/';
 
 
-		// internal flags for JS-libraries
+		// Internal flags for JS-libraries
 	protected $addPrototype = FALSE;
 	protected $addScriptaculous = FALSE;
 	protected $addScriptaculousModules = array('builder' => FALSE, 'effects' => FALSE, 'dragdrop' => FALSE, 'controls' => FALSE, 'slider' => FALSE);
@@ -121,7 +121,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	protected $enableExtJsDebug = FALSE;
 	protected $enableExtCoreDebug = FALSE;
 
-		// available adapters for extJs
+		// Available adapters for extJs
 	const EXTJS_ADAPTER_JQUERY = 'jquery';
 	const EXTJS_ADAPTER_PROTOTYPE = 'prototype';
 	const EXTJS_ADAPTER_YUI = 'yui';
@@ -137,21 +137,21 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	protected $inlineJavascriptWrap = array();
 
-		// saves error messages generated during compression
+		// Saves error messages generated during compression
 	protected $compressError = '';
 
 		// SVG library
 	protected $addSvg = FALSE;
 	protected $enableSvgDebug = FALSE;
 
-		// used by BE modules
+		// Used by BE modules
 	public $backPath;
 
 	/**
 	 * Constructor
 	 *
-	 * @param string $templateFile	declare the used template file. Omit this parameter will use default template
-	 * @param string $backPath	relative path to typo3-folder. It varies for BE modules, in FE it will be typo3/
+	 * @param string $templateFile Declare the used template file. Omit this parameter will use default template
+	 * @param string $backPath Relative path to typo3-folder. It varies for BE modules, in FE it will be typo3/
 	 */
 	public function __construct($templateFile = '', $backPath = NULL) {
 
@@ -172,7 +172,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			'<style type="text/css">' . LF . '/*<![CDATA[*/' . LF . '<!-- ' . LF,
 			'-->' . LF . '/*]]>*/' . LF . '</style>' . LF
 		);
-
 	}
 
 	/**
@@ -213,11 +212,10 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$this->title = $title;
 	}
 
-
 	/**
 	 * Enables/disables rendering of XHTML code
 	 *
-	 * @param boolean $enable	Enable XHTML
+	 * @param boolean $enable Enable XHTML
 	 * @return void
 	 */
 	public function setRenderXhtml($enable) {
@@ -227,7 +225,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Sets xml prolog and docType
 	 *
-	 * @param string $xmlPrologAndDocType	complete tags for xml prolog and docType
+	 * @param string $xmlPrologAndDocType Complete tags for xml prolog and docType
 	 * @return void
 	 */
 	public function setXmlPrologAndDocType($xmlPrologAndDocType) {
@@ -237,7 +235,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Sets meta charset
 	 *
-	 * @param string $charSet	used charset
+	 * @param string $charSet Used charset
 	 * @return void
 	 */
 	public function setCharSet($charSet) {
@@ -247,7 +245,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Sets language
 	 *
-	 * @param string $lang	used language
+	 * @param string $lang Used language
 	 * @return void
 	 */
 	public function setLanguage($lang) {
@@ -267,7 +265,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Sets html tag
 	 *
-	 * @param string $htmlTag	html tag
+	 * @param string $htmlTag Html tag
 	 * @return void
 	 */
 	public function setHtmlTag($htmlTag) {
@@ -403,8 +401,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/**
 	 * Enables MoveJsFromHeaderToFooter
-	 *
-	 * @param void
 	 * @return void
 	 */
 	public function enableMoveJsFromHeaderToFooter() {
@@ -413,8 +409,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/**
 	 * Disables MoveJsFromHeaderToFooter
-	 *
-	 * @param void
 	 * @return void
 	 */
 	public function disableMoveJsFromHeaderToFooter() {
@@ -423,8 +417,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/**
 	 * Enables compression of javascript
-	 *
-	 * @param void
 	 * @return void
 	 */
 	public function enableCompressJavascript() {
@@ -433,8 +425,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/**
 	 * Disables compression of javascript
-	 *
-	 * @param void
 	 * @return void
 	 */
 	public function disableCompressJavascript() {
@@ -443,8 +433,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/**
 	 * Enables compression of css
-	 *
-	 * @param void
 	 * @return void
 	 */
 	public function enableCompressCss() {
@@ -453,8 +441,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/**
 	 * Disables compression of css
-	 *
-	 * @param void
 	 * @return void
 	 */
 	public function disableCompressCss() {
@@ -463,8 +449,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/**
 	 * Enables concatenation of js and css files
-	 *
-	 * @param void
 	 * @return void
 	 */
 	public function enableConcatenateFiles() {
@@ -473,8 +457,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/**
 	 * Disables concatenation of js and css files
-	 *
-	 * @param void
 	 * @return void
 	 */
 	public function disableConcatenateFiles() {
@@ -483,8 +465,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/**
 	 * Enables concatenation of js files
-	 *
-	 * @param void
 	 * @return void
 	 */
 	public function enableConcatenateJavascript() {
@@ -493,8 +473,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/**
 	 * Disables concatenation of js files
-	 *
-	 * @param void
 	 * @return void
 	 */
 	public function disableConcatenateJavascript() {
@@ -503,8 +481,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/**
 	 * Enables concatenation of css files
-	 *
-	 * @param void
 	 * @return void
 	 */
 	public function enableConcatenateCss() {
@@ -513,8 +489,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/**
 	 * Disables concatenation of css files
-	 *
-	 * @param void
 	 * @return void
 	 */
 	public function disableConcatenateCss() {
@@ -523,8 +497,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/**
 	 * Sets removal of all line breaks in template
-	 *
-	 * @param void
 	 * @return void
 	 */
 	public function enableRemoveLineBreaksFromTemplate() {
@@ -533,8 +505,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/**
 	 * Unsets removal of all line breaks in template
-	 *
-	 * @param void
 	 * @return void
 	 */
 	public function disableRemoveLineBreaksFromTemplate() {
@@ -544,8 +514,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Enables Debug Mode
 	 * This is a shortcut to switch off all compress/concatenate features to enable easier debug
-	 *
-	 * @param void
 	 * @return void
 	 */
 	public function enableDebugMode() {
@@ -568,7 +536,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Gets the title
 	 *
-	 * @return string $title		title of webpage
+	 * @return string $title Title of webpage
 	 */
 	public function getTitle() {
 		return $this->title;
@@ -595,7 +563,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Returns rendering mode XHTML or HTML
 	 *
-	 * @return boolean		TRUE if XHTML, FALSE if HTML
+	 * @return boolean TRUE if XHTML, FALSE if HTML
 	 */
 	public function getRenderXhtml() {
 		return $this->renderXhtml;
@@ -604,7 +572,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Gets html tag
 	 *
-	 * @return string $htmlTag	html tag
+	 * @return string $htmlTag Html tag
 	 */
 	public function getHtmlTag() {
 		return $this->htmlTag;
@@ -622,7 +590,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Gets head tag
 	 *
-	 * @return string $tag	head tag
+	 * @return string $tag Head tag
 	 */
 	public function getHeadTag() {
 		return $this->headTag;
@@ -809,7 +777,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Adds meta data
 	 *
-	 * @param string $meta	meta data (complete metatag)
+	 * @param string $meta Meta data (complete metatag)
 	 * @return void
 	 */
 	public function addMetaTag($meta) {
@@ -833,7 +801,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Adds header data
 	 *
-	 * @param string $data	 free header data for HTML header
+	 * @param string $data Free header data for HTML header
 	 * @return void
 	 */
 	public function addHeaderData($data) {
@@ -845,7 +813,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Adds footer data
 	 *
-	 * @param string $data	 free header data for HTML header
+	 * @param string $data Free header data for HTML header
 	 * @return void
 	 */
 	public function addFooterData($data) {
@@ -854,16 +822,14 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		}
 	}
 
-	/* Javascript Files */
-
 	/**
 	 * Adds JS Library. JS Library block is rendered on top of the JS files.
 	 *
 	 * @param string $name Arbitrary identifier
 	 * @param string $file File name
 	 * @param string $type Content Type
-	 * @param boolean $compress		flag if library should be compressed
-	 * @param boolean $forceOnTop	flag if added library should be inserted at begin of this block
+	 * @param boolean $compress Flag if library should be compressed
+	 * @param boolean $forceOnTop Flag if added library should be inserted at begin of this block
 	 * @param string $allWrap
 	 * @param boolean $excludeFromConcatenation
 	 * @return void
@@ -883,7 +849,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				'excludeFromConcatenation' => $excludeFromConcatenation,
 			);
 		}
-
 	}
 
 	/**
@@ -892,8 +857,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @param string $name Arbitrary identifier
 	 * @param string $file File name
 	 * @param string $type Content Type
-	 * @param boolean $compress	flag if library should be compressed
-	 * @param boolean $forceOnTop	flag if added library should be inserted at begin of this block
+	 * @param boolean $compress Flag if library should be compressed
+	 * @param boolean $forceOnTop Flag if added library should be inserted at begin of this block
 	 * @param string $allWrap
 	 * @param boolean $excludeFromConcatenation
 	 * @return void
@@ -913,7 +878,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				'excludeFromConcatenation' => $excludeFromConcatenation,
 			);
 		}
-
 	}
 
 	/**
@@ -978,8 +942,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		}
 	}
 
-	/*Javascript Inline Blocks */
-
 	/**
 	 * Adds JS inline code
 	 *
@@ -1023,8 +985,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Adds Ext.onready code, which will be wrapped in Ext.onReady(function() {...});
 	 *
-	 * @param string $block javascript code
-	 * @param boolean $forceOnTop position of the javascript code (TRUE for putting it on top, default is FALSE = bottom)
+	 * @param string $block Javascript code
+	 * @param boolean $forceOnTop Position of the javascript code (TRUE for putting it on top, default is FALSE = bottom)
 	 * @return void
 	 */
 	public function addExtOnReadyCode($block, $forceOnTop = FALSE) {
@@ -1040,7 +1002,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * Adds the ExtDirect code
 	 *
-	 * @param array $filterNamespaces  limit the output to defined namespaces. If empty, all namespaces are generated
+	 * @param array $filterNamespaces Limit the output to defined namespaces. If empty, all namespaces are generated
 	 * @return void
 	 */
 	public function addExtDirectCode(array $filterNamespaces = array()) {
@@ -1053,10 +1015,10 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			$filterNamespaces = array('TYPO3');
 		}
 
-			// for ExtDirect we need flash message support
+			// For ExtDirect we need flash message support
 		$this->addJsFile(t3lib_div::resolveBackPath($this->backPath . '../t3lib/js/extjs/ux/flashmessages.js'));
 
-			// add language labels for ExtDirect
+			// Add language labels for ExtDirect
 		if (TYPO3_MODE === 'FE') {
 			$this->addInlineLanguageLabelArray(array(
 				'extDirect_timeoutHeader' => $GLOBALS['TSFE']->sL('LLL:EXT:lang/locallang_misc.xml:extDirect_timeoutHeader'),
@@ -1171,8 +1133,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		);
 	}
 
-	/* CSS Files */
-
 	/**
 	 * Adds CSS file
 	 *
@@ -1201,8 +1161,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		}
 	}
 
-	/*CSS Inline Blocks */
-
 	/**
 	 * Adds CSS inline code
 	 *
@@ -1222,10 +1180,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		}
 	}
 
-	/* JS Libraries */
-
 	/**
-	 *  call function if you need the prototype library
+	 *  Call function if you need the prototype library
 	 *
 	 * @return void
 	 */
@@ -1234,9 +1190,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
-	 * call function if you need the Scriptaculous library
+	 * Call function if you need the Scriptaculous library
 	 *
-	 * @param string $modules   add modules you need. use "all" if you need complete modules
+	 * @param string $modules Add modules you need. use "all" if you need complete modules
 	 * @return void
 	 */
 	public function loadScriptaculous($modules = 'all') {
@@ -1262,14 +1218,14 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * call this function if you need the extJS library
 	 *
-	 * @param boolean $css flag, if set the ext-css will be loaded
-	 * @param boolean $theme flag, if set the ext-theme "grey" will be loaded
-	 * @param string $adapter choose alternative adapter, possible values: yui, prototype, jquery
+	 * @param boolean $css Flag, if set the ext-css will be loaded
+	 * @param boolean $theme Flag, if set the ext-theme "grey" will be loaded
+	 * @param string $adapter Choose alternative adapter, possible values: yui, prototype, jquery
 	 * @return void
 	 */
 	public function loadExtJS($css = TRUE, $theme = TRUE, $adapter = '') {
 		if ($adapter) {
-				// empty $adapter will always load the ext adapter
+				// Empty $adapter will always load the ext adapter
 			switch (t3lib_div::strtolower(trim($adapter))) {
 				case self::EXTJS_ADAPTER_YUI :
 					$this->extJSadapter = 'yui/ext-yui-adapter.js';
@@ -1285,7 +1241,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$this->addExtJS = TRUE;
 		$this->extJStheme = $theme;
 		$this->extJScss = $css;
-
 	}
 
 	/**
@@ -1293,15 +1248,13 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * Need extJs loaded
 	 *
 	 * @return void
-	 *
 	 */
 	public function enableExtJSQuickTips() {
 		$this->enableExtJSQuickTips = TRUE;
 	}
 
-
 	/**
-	 * call function if you need the ExtCore library
+	 * Call function if you need the ExtCore library
 	 *
 	 * @return void
 	 */
@@ -1310,7 +1263,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
-	 * call function if you need the SVG library
+	 * Call function if you need the SVG library
 	 *
 	 * @return void
 	 */
@@ -1319,32 +1272,31 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
-	 * call this function to load debug version of ExtJS. Use this for development only
-	 *
+	 * Call this function to load debug version of ExtJS. Use this for development only
+	 * @return void
 	 */
 	public function enableSvgDebug() {
 		$this->enableSvgDebug = TRUE;
 	}
 
 	/**
-	 * call this function to force flash usage with SVG library
-	 *
+	 * Call this function to force flash usage with SVG library
+	 * @return void
 	 */
 	public function svgForceFlash() {
 		$this->addMetaTag('<meta name="svg.render.forceflash" content="true" />');
 	}
 
 	/**
-	 * call this function to load debug version of ExtJS. Use this for development only
-	 *
+	 * Call this function to load debug version of ExtJS. Use this for development only
+	 * @return void
 	 */
 	public function enableExtJsDebug() {
 		$this->enableExtJsDebug = TRUE;
 	}
 
 	/**
-	 * call this function to load debug version of ExtCore. Use this for development only
-	 *
+	 * Call this function to load debug version of ExtCore. Use this for development only
 	 * @return void
 	 */
 	public function enableExtCoreDebug() {
@@ -1381,8 +1333,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * Gets labels to be used in JavaScript fetched from a locallang file.
 	 *
 	 * @param string $fileRef Input is a file-reference (see t3lib_div::getFileAbsFileName). That file is expected to be a 'locallang.xml' file containing a valid XML TYPO3 language structure.
-	 * @param string $selectionPrefix: Prefix to select the correct labels (default: '')
-	 * @param string $stripFromSelectionName: Sub-prefix to be removed from label names in the result (default: '')
+	 * @param string $selectionPrefix Prefix to select the correct labels (default: '')
+	 * @param string $stripFromSelectionName Sub-prefix to be removed from label names in the result (default: '')
 	 * @param integer $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
 	 * @return void
 	 */
@@ -1473,8 +1425,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * render the section (Header or Footer)
 	 *
-	 * @param int $part	section which should be rendered: self::PART_COMPLETE, self::PART_HEADER or self::PART_FOOTER
-	 * @return string	content of rendered section
+	 * @param integer $part Section which should be rendered: self::PART_COMPLETE, self::PART_HEADER or self::PART_FOOTER
+	 * @return string Content of rendered section
 	 */
 	public function render($part = self::PART_COMPLETE) {
 
@@ -1486,7 +1438,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$jsFooterLibs = '';
 		$jsFooterFiles = '';
 
-			// preRenderHook for possible manuipulation
+			// PreRenderHook for possible manuipulation
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'])) {
 			$params = array(
 				'jsLibs' => &$this->jsLibs,
@@ -1508,14 +1460,14 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$jsLibs = $this->renderJsLibraries();
 
 		if ($this->concatenateFiles || $this->concatenateJavascript || $this->concatenateCss) {
-				// do the file concatenation
+				// Do the file concatenation
 			$this->doConcatenate();
 		}
 		if ($this->compressCss || $this->compressJavascript) {
-				// do the file compression
+				// Do the file compression
 			$this->doCompress();
 		}
-			// postTransform for possible manuipulation of concatenated and compressed files
+			// PostTransform for possible manuipulation of concatenated and compressed files
 		if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postTransform'])) {
 			$params = array(
 				'jsLibs' => &$this->jsLibs,
@@ -1535,7 +1487,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		}
 		$metaTags = implode(LF, $this->metaTags);
 
-			// remove ending slashes from static header block
+			// Remove ending slashes from static header block
 			// if the page is beeing rendered as html (not xhtml)
 			// and define variable $endingSlash for further use
 		if ($this->getRenderXhtml()) {
@@ -1653,7 +1605,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		}
 
 
-			// get template
+			// Get template
 		$templateFile = t3lib_div::getFileAbsFileName($this->templateFile, TRUE);
 		$template = t3lib_div::getUrl($templateFile);
 
@@ -1674,7 +1626,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			$jsInline = '';
 		}
 
-			// postRenderHook for possible manipulation
+			// PostRenderHook for possible manipulation
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postProcess'])) {
 			$params = array (
 				'jsLibs'               => &$jsLibs,
@@ -1740,7 +1692,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * helper function for render the javascript libraries
 	 *
-	 * @return string	content with javascript libraries
+	 * @return string Content with javascript libraries
 	 */
 	protected function renderJsLibraries() {
 		$out = '';
@@ -1764,7 +1716,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 					$mods[] = $key;
 				}
 			}
-				// resolve dependencies
+				// Resolve dependencies
 			if (in_array('dragdrop', $mods) || in_array('controls', $mods)) {
 				$mods = array_merge(array('effects'), $mods);
 			}
@@ -1781,7 +1733,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			unset($this->jsFiles[$this->backPath . $this->scriptaculousPath . 'scriptaculous.js']);
 		}
 
-			// include extCore, but only if ExtJS is not included
+			// Include extCore, but only if ExtJS is not included
 		if ($this->addExtCore && !$this->addExtJS) {
 			$out .= '<script src="' . $this->processJsFile($this->backPath .
 														$this->extCorePath . 'ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js') .
@@ -1789,9 +1741,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			unset($this->jsFiles[$this->backPath . $this->extCorePath . 'ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js']);
 		}
 
-			// include extJS
+			// Include extJS
 		if ($this->addExtJS) {
-				// use the base adapter all the time
+				// Use the base adapter all the time
 			$out .= '<script src="' . $this->processJsFile($this->backPath . $this->extJsPath .
 														'adapter/' . ($this->enableExtJsDebug ?
 					str_replace('.js', '-debug.js', $this->extJSadapter) : $this->extJSadapter)) .
@@ -1800,13 +1752,17 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 														'ext-all' . ($this->enableExtJsDebug ? '-debug' : '') . '.js') .
 					'" type="text/javascript"></script>' . LF;
 
-				// add extJS localization
-			$localeMap = $this->locales->getIsoMapping(); // load standard ISO mapping and modify for use with ExtJS
+				// Add extJS localization
+				// Load standard ISO mapping and modify for use with ExtJS
+			$localeMap = $this->locales->getIsoMapping();
 			$localeMap[''] = 'en';
 			$localeMap['default'] = 'en';
-			$localeMap['gr'] = 'el_GR'; // Greek
-			$localeMap['no'] = 'no_BO'; // Norwegian Bokmaal
-			$localeMap['se'] = 'se_SV'; // Swedish
+				// Greek
+			$localeMap['gr'] = 'el_GR';
+				// Norwegian Bokmaal
+			$localeMap['no'] = 'no_BO';
+				// Swedish
+			$localeMap['se'] = 'se_SV';
 
 
 			$extJsLang = isset($localeMap[$this->lang]) ? $localeMap[$this->lang] : $this->lang;
@@ -1817,8 +1773,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 															$extJsLocaleFile) . '" type="text/javascript" charset="utf-8"></script>' . LF;
 			}
 
-
-				// remove extjs from JScodeLibArray
+				// Remove extjs from JScodeLibArray
 			unset(
 			$this->jsFiles[$this->backPath . $this->extJsPath . 'ext-all.js'],
 			$this->jsFiles[$this->backPath . $this->extJsPath . 'ext-all-debug.js']
@@ -1851,7 +1806,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$inlineSettings .= $this->inlineSettings ? 'TYPO3.settings = ' . json_encode($this->inlineSettings) . ';' : '';
 
 		if ($this->addExtCore || $this->addExtJS) {
-				// set clear.gif, move it on top, add handler code
+				// Set clear.gif, move it on top, add handler code
 			$code = '';
 			if (count($this->extOnReadyCode)) {
 				foreach ($this->extOnReadyCode as $block) {
@@ -1896,6 +1851,15 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		return $out;
 	}
 
+	/**
+	 * Include language file for inline usage
+	 *
+	 * @param string $fileRef
+	 * @param string $selectionPrefix
+	 * @param string $stripFromSelectionName
+	 * @param integer $errorMode
+	 * @return void
+	 */
 	protected function includeLanguageFileForInline($fileRef, $selectionPrefix = '', $stripFromSelectionName = '', $errorMode = 0) {
 		if (!isset($this->lang) || !isset($this->charSet)) {
 			throw new RuntimeException('Language and character encoding are not set.', 1284906026);
@@ -2014,7 +1978,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 */
 	protected function doCompressCss() {
 		if ($this->compressCss) {
-				// use external compression routine
+				// Use external compression routine
 			$params = array(
 				'cssInline' => &$this->cssInline,
 				'cssFiles' => &$this->cssFiles,
@@ -2039,7 +2003,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	protected function doCompressJavaScript() {
 		if ($this->compressJavascript) {
 			if (!empty($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsCompressHandler'])) {
-					// use external compression routine
+					// Use external compression routine
 				$params = array(
 					'jsInline' => &$this->jsInline,
 					'jsFooterInline' => &$this->jsFooterInline,
@@ -2051,7 +2015,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				);
 				t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsCompressHandler'], $params, $this);
 			} else {
-					// traverse the arrays, compress files
+					// Traverse the arrays, compress files
 				if (count($this->jsInline)) {
 					foreach ($this->jsInline as $name => $properties) {
 						if ($properties['compress']) {
