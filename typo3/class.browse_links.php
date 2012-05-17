@@ -1700,6 +1700,29 @@ class browse_links {
 
 			// Init variable:
 		$pArr = explode('|', $this->bparams);
+
+			// The key number 3 of the pArr contains the "allowed" string. Disallowed is not passed to the element browser at all but only filtered out in TCEMain afterwards
+		$allowed = $pArr[3];
+
+		if ($allowed !== 'sys_file') {
+			$allowedFileExtensions = $allowed;
+		}
+
+
+		$this->storages = $GLOBALS['BE_USER']->getFileStorages();
+
+		if (isset($allowedFileExtensions)) {
+				// Create new filter object
+			$filterObject = t3lib_div::makeInstance('t3lib_file_Utility_FileExtensionFilter');
+			$filterObject->setAllowedFileExtensions($allowedFileExtensions);
+
+				// Set file extension filters on all storages
+			/** @var $storage t3lib_file_Storage */
+			foreach ($this->storages as $storage) {
+				$storage->addFileAndFolderNameFilter(array($filterObject, 'filterFileList'));
+			}
+		}
+
 			// Create upload/create folder forms, if a path is given:
 		if ($this->expandFolder) {
 			$this->selectedFolder = t3lib_file_Factory::getInstance()->getFolderObjectFromCombinedIdentifier($this->expandFolder);
