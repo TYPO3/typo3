@@ -384,4 +384,6 @@ if (TYPO3_DLOG) {
 	t3lib_div::devLog('END of FRONTEND session', 'cms', 0, array('_FLUSH' => TRUE));
 }
 
+Typo3_Bootstrap::shutdown();
+
 ?>
