@@ -2738,7 +2738,6 @@ class t3lib_stdGraphic {
 						$quality = t3lib_utility_Math::forceIntegerInRange($this->setup['quality'], 10, 100);
 					}
 					if ($this->ImageWrite($this->im, $file, $quality)) {
-						;
 					}
 				break;
 			}

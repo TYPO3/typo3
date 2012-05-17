@@ -1700,7 +1700,7 @@ class t3lib_TCEforms {
 				if (!strcmp($p[1], '--div--')) {
 					$selIcon = '';
 					if (isset($p[2]) && $p[2] != 'empty-emtpy') {
-						$selIcon = $this->getIconHtml($p[2]) ;
+						$selIcon = $this->getIconHtml($p[2]);
 					}
 					$tRows[] = '
 						<tr class="c-header">

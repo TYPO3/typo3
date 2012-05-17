@@ -335,7 +335,6 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 			$storage = t3lib_div::makeInstance('t3lib_tree_NodeCollection');
 			foreach ($children as $child) {
 				$node = t3lib_div::makeInstance('t3lib_tree_Node');
-				;
 				$node->setId($child);
 				if ($level <= $this->levelMaximum) {
 					$children = $this->getChildrenOf($node, $level + 1);

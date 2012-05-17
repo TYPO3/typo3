@@ -811,7 +811,7 @@ class template {
 			$str .= ($this->divClass?'
 
 <!-- Wrapping DIV-section for whole page END -->
-</div>':'') . $this->endOfPageJsBlock ;
+</div>':'') . $this->endOfPageJsBlock;
 		}
 
 

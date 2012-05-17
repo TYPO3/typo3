@@ -288,7 +288,6 @@ class t3lib_DB {
 				}
 			} else {
 				while ($output[] = $this->sql_fetch_assoc($res)) {
-					;
 				}
 				array_pop($output);
 			}
