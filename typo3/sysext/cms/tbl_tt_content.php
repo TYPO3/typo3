@@ -719,17 +719,6 @@ $TCA['tt_content'] = array(
 							--palette--;;filePalette',
 					),
 				),
-				'foreign_selector_fieldTcaOverride' => array(
-					'config' => array(
-						'filter' => array(
-							'fileType' =>  array(
-								'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
-							)
-						)
-					)
-				),
-				'maxitems' => '200',
-				'minitems' => '0',
 			)),
 		),
 		'imagewidth' => array(
@@ -1458,15 +1447,6 @@ $TCA['tt_content'] = array(
 				'appearance' => array(
 					'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:media.addFileReference',
 				),
-				'foreign_selector_fieldTcaOverride' => array(
-					'config' => array(
-						'filter' => array(
-							'fileType' =>  array(
-								'disallowed' => PHP_EXTENSIONS_DEFAULT
-							)
-						)
-					)
-				),
 			)),
 		),
 		'file_collections' => array(
@@ -1704,21 +1684,21 @@ $TCA['tt_content'] = array(
 				'ds' => array(
 					'default' => '
 						<T3DataStructure>
-						  <ROOT>
-						    <type>array</type>
-						    <el>
-								<!-- Repeat an element like "xmlTitle" beneath for as many elements you like. Remember to name them uniquely  -->
-						      <xmlTitle>
-								<TCEforms>
-									<label>The Title:</label>
-									<config>
-										<type>input</type>
-										<size>48</size>
-									</config>
-								</TCEforms>
-						      </xmlTitle>
-						    </el>
-						  </ROOT>
+							<ROOT>
+								<type>array</type>
+									<el>
+										<!-- Repeat an element like "xmlTitle" beneath for as many elements you like. Remember to name them uniquely  -->
+										<xmlTitle>
+										<TCEforms>
+											<label>The Title:</label>
+											<config>
+												<type>input</type>
+												<size>48</size>
+											</config>
+										</TCEforms>
+									</xmlTitle>
+								</el>
+							</ROOT>
 						</T3DataStructure>
 					',
 					',media' => file_get_contents(t3lib_extMgm::extPath('cms') . 'flexform_media.xml'),
