@@ -30,9 +30,8 @@
  * which are default for most TYPO3 installations. Soft References can also be userdefined.
  * The Soft Reference parsers are used by the system to find these references and process them accordingly in import/export actions and copy operations.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * Example of usage
@@ -78,15 +77,14 @@
  * - 'email' : Email highlight
  * - 'url' : URL highlights (with a scheme)
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_softrefproc {
 
-		// external configuration
+		// External configuration
 	var $fileAdminDir = 'fileadmin';
-
 
 		// Internal:
 	var $tokenID_basePrefix = '';
@@ -94,14 +92,14 @@ class t3lib_softrefproc {
 	/**
 	 * Main function through which all processing happens
 	 *
-	 * @param	string		Database table name
-	 * @param	string		Field name for which processing occurs
-	 * @param	integer		UID of the record
-	 * @param	string		The content/value of the field
-	 * @param	string		The softlink parser key. This is only interesting if more than one parser is grouped in the same class. That is the case with this parser.
-	 * @param	array		Parameters of the softlink parser. Basically this is the content inside optional []-brackets after the softref keys. Parameters are exploded by ";"
-	 * @param	string		If running from inside a FlexForm structure, this is the path of the tag.
-	 * @return	array		Result array on positive matches, see description above. Otherwise FALSE
+	 * @param string $table Database table name
+	 * @param string $field Field name for which processing occurs
+	 * @param integer $uid UID of the record
+	 * @param string $content The content/value of the field
+	 * @param string $spKey The softlink parser key. This is only interesting if more than one parser is grouped in the same class. That is the case with this parser.
+	 * @param array $spParams Parameters of the softlink parser. Basically this is the content inside optional []-brackets after the softref keys. Parameters are exploded by ";"
+	 * @param string $structurePath If running from inside a FlexForm structure, this is the path of the tag.
+	 * @return array Result array on positive matches, see description above. Otherwise FALSE
 	 */
 	function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath = '') {
 
@@ -175,9 +173,9 @@ class t3lib_softrefproc {
 	 * Will only return files in fileadmin/ and files in uploads/ folders which are prefixed with "RTEmagic[C|P]_" for substitution
 	 * Any "clear.gif" images are ignored.
 	 *
-	 * @param	string		The input content to analyse
-	 * @param	array		Parameters set for the softref parser key in TCA/columns
-	 * @return	array		Result array on positive matches, see description above. Otherwise FALSE
+	 * @param string $content The input content to analyse
+	 * @param array $spParams Parameters set for the softref parser key in TCA/columns
+	 * @return array Result array on positive matches, see description above. Otherwise FALSE
 	 */
 	function findRef_images($content, $spParams) {
 
@@ -207,15 +205,18 @@ class t3lib_softrefproc {
 						// If the image seems to be from fileadmin/ folder or an RTE image, then proceed to set up substitution token:
 					if (t3lib_div::isFirstPartOfStr($srcRef, $this->fileAdminDir . '/') || (t3lib_div::isFirstPartOfStr($srcRef, 'uploads/') && preg_match('/^RTEmagicC_/', basename($srcRef)))) {
 							// Token and substitute value:
-						if (strstr($splitContent[$k], $attribs[0]['src'])) { // Make sure the value we work on is found and will get substituted in the content (Very important that the src-value is not DeHSC'ed)
-							$splitContent[$k] = str_replace($attribs[0]['src'], '{softref:' . $tokenID . '}', $splitContent[$k]); // Substitute value with token (this is not be an exact method if the value is in there twice, but we assume it will not)
+							// Make sure the value we work on is found and will get substituted in the content (Very important that the src-value is not DeHSC'ed)
+						if (strstr($splitContent[$k], $attribs[0]['src'])) {
+								// Substitute value with token (this is not be an exact method if the value is in there twice, but we assume it will not)
+							$splitContent[$k] = str_replace($attribs[0]['src'], '{softref:' . $tokenID . '}', $splitContent[$k]);
 							$elements[$k]['subst'] = array(
 								'type' => 'file',
 								'relFileName' => $srcRef,
 								'tokenID' => $tokenID,
 								'tokenValue' => $attribs[0]['src'],
 							);
-							if (!@is_file($absPath)) { // Finally, notice if the file does not exist.
+								// Finally, notice if the file does not exist.
+							if (!@is_file($absPath)) {
 								$elements[$k]['error'] = 'File does not exist!';
 							}
 						} else {
@@ -241,9 +242,9 @@ class t3lib_softrefproc {
 	 * TypoLink value processing.
 	 * Will process input value as a TypoLink value.
 	 *
-	 * @param	string		The input content to analyse
-	 * @param	array		Parameters set for the softref parser key in TCA/columns. value "linkList" will split the string by comma before processing.
-	 * @return	array		Result array on positive matches, see description above. Otherwise FALSE
+	 * @param string $content The input content to analyse
+	 * @param array $spParams Parameters set for the softref parser key in TCA/columns. value "linkList" will split the string by comma before processing.
+	 * @return array Result array on positive matches, see description above. Otherwise FALSE
 	 * @see tslib_content::typolink(), getTypoLinkParts()
 	 */
 	function findRef_typolink($content, $spParams) {
@@ -251,9 +252,11 @@ class t3lib_softrefproc {
 			// First, split the input string by a comma if the "linkList" parameter is set.
 			// An example: the link field for images in content elements of type "textpic" or "image". This field CAN be configured to define a link per image, separated by comma.
 		if (is_array($spParams) && in_array('linkList', $spParams)) {
-			$linkElement = explode(',', $content); // Preserving whitespace on purpose.
+				// Preserving whitespace on purpose.
+			$linkElement = explode(',', $content);
 		} else {
-			$linkElement = array($content); // If only one element, just set in this array to make it easy below.
+				// If only one element, just set in this array to make it easy below.
+			$linkElement = array($content);
 		}
 
 			// Traverse the links now:
@@ -278,9 +281,9 @@ class t3lib_softrefproc {
 	 * TypoLink tag processing.
 	 * Will search for <link ...> tags in the content string and process any found.
 	 *
-	 * @param	string		The input content to analyse
-	 * @param	array		Parameters set for the softref parser key in TCA/columns
-	 * @return	array		Result array on positive matches, see description above. Otherwise FALSE
+	 * @param string $content The input content to analyse
+	 * @param array $spParams Parameters set for the softref parser key in TCA/columns
+	 * @return array Result array on positive matches, see description above. Otherwise FALSE
 	 * @see tslib_content::typolink(), getTypoLinkParts()
 	 */
 	function findRef_typolink_tag($content, $spParams) {
@@ -314,9 +317,9 @@ class t3lib_softrefproc {
 	 * Processing the content expected from a TypoScript template
 	 * This content includes references to files in fileadmin/ folders and file references in HTML tags like <img src="">, <a href=""> and <form action="">
 	 *
-	 * @param	string		The input content to analyse
-	 * @param	array		Parameters set for the softref parser key in TCA/columns
-	 * @return	array		Result array on positive matches, see description above. Otherwise FALSE
+	 * @param string $content The input content to analyse
+	 * @param array $spParams Parameters set for the softref parser key in TCA/columns
+	 * @return array Result array on positive matches, see description above. Otherwise FALSE
 	 */
 	function findRef_TStemplate($content, $spParams) {
 		$elements = array();
@@ -359,7 +362,8 @@ class t3lib_softrefproc {
 					if (t3lib_div::isFirstPartOfStr($srcRef, $this->fileAdminDir . '/') && !$pI['query'] && $absPath) {
 
 							// Token and substitute value:
-						if (strstr($splitContent[$k], $attribs[0][$attributeName])) { // Very important that the src-value is not DeHSC'ed
+							// Very important that the src-value is not DeHSC'ed
+						if (strstr($splitContent[$k], $attribs[0][$attributeName])) {
 							$splitContent[$k] = str_replace($attribs[0][$attributeName], '{softref:' . $tokenID . '}', $splitContent[$k]);
 							$elements[$k]['subst'] = array(
 								'type' => 'file',
@@ -396,9 +400,9 @@ class t3lib_softrefproc {
 	 * Processes possible references inside of Page and User TSconfig fields.
 	 * Currently this only includes file references to fileadmin/ but in fact there are currently no properties that supports such references.
 	 *
-	 * @param	string		The input content to analyse
-	 * @param	array		Parameters set for the softref parser key in TCA/columns
-	 * @return	array		Result array on positive matches, see description above. Otherwise FALSE
+	 * @param string $content The input content to analyse
+	 * @param array $spParams Parameters set for the softref parser key in TCA/columns
+	 * @return array Result array on positive matches, see description above. Otherwise FALSE
 	 */
 	function findRef_TSconfig($content, $spParams) {
 		$elements = array();
@@ -419,14 +423,14 @@ class t3lib_softrefproc {
 	/**
 	 * Finding email addresses in content and making them substitutable.
 	 *
-	 * @param	string		The input content to analyse
-	 * @param	array		Parameters set for the softref parser key in TCA/columns
-	 * @return	array		Result array on positive matches, see description above. Otherwise FALSE
+	 * @param string $content The input content to analyse
+	 * @param array $spParams Parameters set for the softref parser key in TCA/columns
+	 * @return array Result array on positive matches, see description above. Otherwise FALSE
 	 */
 	function findRef_email($content, $spParams) {
 		$resultArray = array();
 
-			// email:
+			// Email:
 		$parts = preg_split("/([^[:alnum:]]+)([A-Za-z0-9\._-]+[@][A-Za-z0-9\._-]+[\.].[A-Za-z0-9]+)/", ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
 		foreach ($parts as $idx => $value) {
 			if ($idx % 3 == 2) {
@@ -459,9 +463,9 @@ class t3lib_softrefproc {
 	/**
 	 * Finding URLs in content
 	 *
-	 * @param	string		The input content to analyse
-	 * @param	array		Parameters set for the softref parser key in TCA/columns
-	 * @return	array		Result array on positive matches, see description above. Otherwise FALSE
+	 * @param string $content The input content to analyse
+	 * @param array $spParams Parameters set for the softref parser key in TCA/columns
+	 * @return array Result array on positive matches, see description above. Otherwise FALSE
 	 */
 	function findRef_url($content, $spParams) {
 		$resultArray = array();
@@ -503,9 +507,9 @@ class t3lib_softrefproc {
 	/**
 	 * Finding reference to files from extensions in content, but only to notify about their existence. No substitution
 	 *
-	 * @param	string		The input content to analyse
-	 * @param	array		Parameters set for the softref parser key in TCA/columns
-	 * @return	array		Result array on positive matches, see description above. Otherwise FALSE
+	 * @param string $content The input content to analyse
+	 * @param array $spParams Parameters set for the softref parser key in TCA/columns
+	 * @return array Result array on positive matches, see description above. Otherwise FALSE
 	 */
 	function findRef_extension_fileref($content, $spParams) {
 		$resultArray = array();
@@ -532,7 +536,6 @@ class t3lib_softrefproc {
 		}
 	}
 
-
 	/*************************
 	 *
 	 * Helper functions
@@ -543,9 +546,9 @@ class t3lib_softrefproc {
 	 * Searches the content for a reference to a file in "fileadmin/".
 	 * When a match is found it will get substituted with a token.
 	 *
-	 * @param	string		Input content to analyse
-	 * @param	array		Element array to be modified with new entries. Passed by reference.
-	 * @return	string		Output content, possibly with tokens inserted.
+	 * @param string $content Input content to analyse
+	 * @param array $elements Element array to be modified with new entries. Passed by reference.
+	 * @return string Output content, possibly with tokens inserted.
 	 */
 	function fileadminReferences($content, &$elements) {
 
@@ -586,8 +589,8 @@ class t3lib_softrefproc {
 	 * The syntax of the [typolink] part is: [typolink] = [page id or alias][,[type value]][#[anchor, if integer = tt_content uid]]
 	 * The extraction is based on how tslib_content::typolink() behaves.
 	 *
-	 * @param	string		TypoLink value.
-	 * @return	array		Array with the properties of the input link specified. The key "LINK_TYPE" will reveal the type. If that is blank it could not be determined.
+	 * @param string $typolinkValue TypoLink value.
+	 * @return array Array with the properties of the input link specified. The key "LINK_TYPE" will reveal the type. If that is blank it could not be determined.
 	 * @see tslib_content::typolink(), setTypoLinkPartsElement()
 	 */
 	function getTypoLinkParts($typolinkValue) {
@@ -623,10 +626,12 @@ class t3lib_softrefproc {
 			if (trim($rootFileDat) && !$containsSlash && (@is_file(PATH_site . $rootFileDat) || t3lib_div::inList('php,html,htm', strtolower($rFD_fI['extension'])))) {
 				$isLocalFile = 1;
 			} elseif ($containsSlash) {
-				$isLocalFile = 2; // Adding this so realurl directories are linked right (non-existing).
+					// Adding this so realurl directories are linked right (non-existing).
+				$isLocalFile = 2;
 			}
 
-			if ($pU['scheme'] || ($isLocalFile != 1 && $urlChar && (!$containsSlash || $urlChar < $fileChar))) { // url (external): If doubleSlash or if a '.' comes before a '/'.
+				// Url (external): If doubleSlash or if a '.' comes before a '/'.
+			if ($pU['scheme'] || ($isLocalFile != 1 && $urlChar && (!$containsSlash || $urlChar < $fileChar))) {
 				$finalTagParts['LINK_TYPE'] = 'url';
 				$finalTagParts['url'] = $link_param;
 			} elseif ($containsSlash || $isLocalFile) { // file (internal)
@@ -674,11 +679,11 @@ class t3lib_softrefproc {
 	/**
 	 * Recompile a TypoLink value from the array of properties made with getTypoLinkParts() into an elements array
 	 *
-	 * @param	array		TypoLink properties
-	 * @param	array		Array of elements to be modified with substitution / information entries.
-	 * @param	string		The content to process.
-	 * @param	integer		Index value of the found element - user to make unique but stable tokenID
-	 * @return	string		The input content, possibly containing tokens now according to the added substitution entries in $elements
+	 * @param array $tLP TypoLink properties
+	 * @param array $elements Array of elements to be modified with substitution / information entries.
+	 * @param string $content The content to process.
+	 * @param integer $idx Index value of the found element - user to make unique but stable tokenID
+	 * @return string The input content, possibly containing tokens now according to the added substitution entries in $elements
 	 * @see getTypoLinkParts()
 	 */
 	function setTypoLinkPartsElement($tLP, &$elements, $content, $idx) {
@@ -704,7 +709,8 @@ class t3lib_softrefproc {
 			case 'file':
 					// Process files found in fileadmin directory:
 				if (!$tLP['query']) { // We will not process files which has a query added to it. That will look like a script we don't want to move.
-					if (t3lib_div::isFirstPartOfStr($tLP['filepath'], $this->fileAdminDir . '/')) { // File must be inside fileadmin/
+						// File must be inside fileadmin/
+					if (t3lib_div::isFirstPartOfStr($tLP['filepath'], $this->fileAdminDir . '/')) {
 
 							// Set up the basic token and token value for the relative file:
 						$elements[$tokenID . ':' . $idx]['subst'] = array(
@@ -751,7 +757,8 @@ class t3lib_softrefproc {
 
 					// Add anchor if applicable
 				if (strlen($tLP['anchor'])) {
-					if (t3lib_utility_Math::canBeInterpretedAsInteger($tLP['anchor'])) { // Anchor is assumed to point to a content elements:
+						// Anchor is assumed to point to a content elements:
+					if (t3lib_utility_Math::canBeInterpretedAsInteger($tLP['anchor'])) {
 							// Initialize a new entry because we have a new relation:
 						$newTokenID = $this->makeTokenID('setTypoLinkPartsElement:anchor:' . $idx);
 						$elements[$newTokenID . ':' . $idx] = array();
@@ -792,8 +799,8 @@ class t3lib_softrefproc {
 	/**
 	 * Look up and return page uid for alias
 	 *
-	 * @param	integer		Page alias string value
-	 * @return	integer		Page uid corresponding to alias value.
+	 * @param integer $link_param Page alias string value
+	 * @return integer Page uid corresponding to alias value.
 	 */
 	function getPageIdFromAlias($link_param) {
 		$pRec = t3lib_BEfunc::getRecordsByField('pages', 'alias', $link_param);
@@ -804,8 +811,8 @@ class t3lib_softrefproc {
 	/**
 	 * Make Token ID for input index.
 	 *
-	 * @param	string		suffix value.
-	 * @return	string		Token ID
+	 * @param string $index Suffix value.
+	 * @return string Token ID
 	 */
 	function makeTokenID($index = '') {
 		return md5($this->tokenID_basePrefix . ':' . $index);
