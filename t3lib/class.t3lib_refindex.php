@@ -36,7 +36,7 @@
  * Somehow this scenario is rarely going to happen. Yet, it is an inconsistency and I see now practical way to handle it - other than simply ignoring maintaining the index for workspace records. Or we can say that the index is precise for all Live elements while glitches might happen in an offline workspace?
  * Anyway, I just wanted to document this finding - I don't think we can find a solution for it. And its very TemplaVoila specific.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -50,17 +50,17 @@ class t3lib_refindex {
 	var $words_strings = array();
 	var $words = array();
 
-	var $hashVersion = 1; // Number which we can increase if a change in the code means we will have to force a re-generation of the index.
-
+		// Number which we can increase if a change in the code means we will have to force a re-generation of the index.
+	var $hashVersion = 1;
 
 	/**
 	 * Call this function to update the sys_refindex table for a record (even one just deleted)
 	 * NOTICE: Currently, references updated for a deleted-flagged record will not include those from within flexform fields in some cases where the data structure is defined by another record since the resolving process ignores deleted records! This will also result in bad cleaning up in tcemain I think... Anyway, thats the story of flexforms; as long as the DS can change, lots of references can get lost in no time.
 	 *
-	 * @param	string		Table name
-	 * @param	integer		UID of record
-	 * @param	boolean		If set, nothing will be written to the index but the result value will still report statistics on what is added, deleted and kept. Can be used for mere analysis.
-	 * @return	array		Array with statistics about how many index records were added, deleted and not altered plus the complete reference set for the record.
+	 * @param string $table Table name
+	 * @param integer $uid UID of record
+	 * @param boolean $testOnly If set, nothing will be written to the index but the result value will still report statistics on what is added, deleted and kept. Can be used for mere analysis.
+	 * @return array Array with statistics about how many index records were added, deleted and not altered plus the complete reference set for the record.
 	 */
 	function updateRefIndexTable($table, $uid, $testOnly = FALSE) {
 
@@ -135,9 +135,9 @@ class t3lib_refindex {
 	 * Returns array of arrays with an index of all references found in record from table/uid
 	 * If the result is used to update the sys_refindex table then ->WSOL must NOT be TRUE (no workspace overlay anywhere!)
 	 *
-	 * @param	string		Table name from $GLOBALS['TCA']
-	 * @param	integer		Record UID
-	 * @return	array		Index Rows
+	 * @param string $table Table name from $GLOBALS['TCA']
+	 * @param integer $uid Record UID
+	 * @return array Index Rows
 	 */
 	function generateRefIndexData($table, $uid) {
 		if (isset($GLOBALS['TCA'][$table])) {
@@ -214,18 +214,18 @@ class t3lib_refindex {
 	 * Create array with field/value pairs ready to insert in database.
 	 * The "hash" field is a fingerprint value across this table.
 	 *
-	 * @param	string		Tablename of source record (where reference is located)
-	 * @param	integer		UID of source record (where reference is located)
-	 * @param	string		Fieldname of source record (where reference is located)
-	 * @param	string		Pointer to location inside flexform structure where reference is located in [field]
-	 * @param	integer		Whether record is deleted-flagged or not
-	 * @param	string		For database references; the tablename the reference points to. Special keyword "_FILE" indicates that "ref_string" is a file reference either absolute or relative to PATH_site. Special keyword "_STRING" indicates some special usage (typ. softreference) where "ref_string" is used for the value.
-	 * @param	integer		For database references; The UID of the record (zero "ref_table" is "_FILE" or "_STRING")
-	 * @param	string		For "_FILE" or "_STRING" references: The filepath (relative to PATH_site or absolute) or other string.
-	 * @param	integer		The sorting order of references if many (the "group" or "select" TCA types). -1 if no sorting order is specified.
-	 * @param	string		If the reference is a soft reference, this is the soft reference parser key. Otherwise empty.
-	 * @param	string		Soft reference ID for key. Might be useful for replace operations.
-	 * @return	array		Array record to insert into table.
+	 * @param string $table Tablename of source record (where reference is located)
+	 * @param integer $uid UID of source record (where reference is located)
+	 * @param string $field Fieldname of source record (where reference is located)
+	 * @param string $flexpointer Pointer to location inside flexform structure where reference is located in [field]
+	 * @param integer $deleted Whether record is deleted-flagged or not
+	 * @param string $ref_table For database references; the tablename the reference points to. Special keyword "_FILE" indicates that "ref_string" is a file reference either absolute or relative to PATH_site. Special keyword "_STRING" indicates some special usage (typ. softreference) where "ref_string" is used for the value.
+	 * @param integer $ref_uid For database references; The UID of the record (zero "ref_table" is "_FILE" or "_STRING")
+	 * @param string $ref_string For "_FILE" or "_STRING" references: The filepath (relative to PATH_site or absolute) or other string.
+	 * @param integer $sort The sorting order of references if many (the "group" or "select" TCA types). -1 if no sorting order is specified.
+	 * @param string $softref_key If the reference is a soft reference, this is the soft reference parser key. Otherwise empty.
+	 * @param string $softref_id Soft reference ID for key. Might be useful for replace operations.
+	 * @return array Array record to insert into table.
 	 */
 	function createEntryData($table, $uid, $field, $flexpointer, $deleted, $ref_table, $ref_uid, $ref_string = '', $sort = -1, $softref_key = '', $softref_id = '') {
 		return array(
@@ -246,13 +246,13 @@ class t3lib_refindex {
 	/**
 	 * Enter database references to ->relations array
 	 *
-	 * @param	string		[See createEntryData, arg 1]
-	 * @param	integer		[See createEntryData, arg 2]
-	 * @param	string		[See createEntryData, arg 3]
-	 * @param	string		[See createEntryData, arg 4]
-	 * @param	string		[See createEntryData, arg 5]
-	 * @param	array		Data array with databaes relations (table/id)
-	 * @return	void
+	 * @param string $table Tablename of source record (where reference is located)
+	 * @param integer $uid UID of source record (where reference is located)
+	 * @param string $fieldname Fieldname of source record (where reference is located)
+	 * @param string $flexpointer Pointer to location inside flexform structure where reference is located in [field]
+	 * @param integer $deleted Whether record is deleted-flagged or not
+	 * @param array $items Data array with databaes relations (table/id)
+	 * @return void
 	 */
 	function createEntryData_dbRels($table, $uid, $fieldname, $flexpointer, $deleted, $items) {
 		foreach ($items as $sort => $i) {
@@ -263,12 +263,12 @@ class t3lib_refindex {
 	/**
 	 * Enter file references to ->relations array
 	 *
-	 * @param	string		[See createEntryData, arg 1]
-	 * @param	integer		[See createEntryData, arg 2]
-	 * @param	string		[See createEntryData, arg 3]
-	 * @param	string		[See createEntryData, arg 4]
-	 * @param	string		[See createEntryData, arg 5]
-	 * @param	array		Data array with file relations
+	 * @param string $table Tablename of source record (where reference is located)
+	 * @param integer $uid UID of source record (where reference is located)
+	 * @param string $fieldname Fieldname of source record (where reference is located)
+	 * @param string $flexpointer Pointer to location inside flexform structure where reference is located in [field]
+	 * @param integer $deleted Whether record is deleted-flagged or not
+	 * @param array $items Data array with file relations
 	 * @return	void
 	 */
 	function createEntryData_fileRels($table, $uid, $fieldname, $flexpointer, $deleted, $items) {
@@ -284,13 +284,12 @@ class t3lib_refindex {
 	/**
 	 * Enter softref references to ->relations array
 	 *
-	 * @param	string		[See createEntryData, arg 1]
-	 * @param	integer		[See createEntryData, arg 2]
-	 * @param	string		[See createEntryData, arg 3]
-	 * @param	string		[See createEntryData, arg 4]
-	 * @param	string		[See createEntryData, arg 5]
-	 * @param	array		Data array with soft reference keys
-	 * @return	void
+	 * @param string $table Tablename of source record (where reference is located)
+	 * @param integer $uid UID of source record (where reference is located)
+	 * @param string $fieldname Fieldname of source record (where reference is located)
+	 * @param string $flexpointer Pointer to location inside flexform struc
+	 * @param array $keys Data array with soft reference keys
+	 * @return void
 	 */
 	function createEntryData_softreferences($table, $uid, $fieldname, $flexpointer, $deleted, $keys) {
 		if (is_array($keys)) {
@@ -318,7 +317,6 @@ class t3lib_refindex {
 		}
 	}
 
-
 	/*******************************
 	 *
 	 * Get relations from table row
@@ -330,10 +328,10 @@ class t3lib_refindex {
 	 * Traverses all fields in input row which are configured in TCA/columns
 	 * It looks for hard relations to files and records in the TCA types "select" and "group"
 	 *
-	 * @param	string		Table name
-	 * @param	array		Row from table
-	 * @param	string		Specific field to fetch for.
-	 * @return	array		Array with information about relations
+	 * @param string $table Table name
+	 * @param array $row Row from table
+	 * @param string $onlyField Specific field to fetch for.
+	 * @return array Array with information about relations
 	 * @see export_addRecord()
 	 */
 	function getRelations($table, $row, $onlyField = '') {
@@ -426,16 +424,17 @@ class t3lib_refindex {
 	/**
 	 * Callback function for traversing the FlexForm structure in relation to finding file and DB references!
 	 *
-	 * @param	array		Data structure for the current value
-	 * @param	mixed		Current value
-	 * @param	array		Additional configuration used in calling function
-	 * @param	string		Path of value in DS structure
-	 * @param	object		Object reference to caller
-	 * @return	void
+	 * @param array $dsArr Data structure for the current value
+	 * @param mixed $dataValue Current value
+	 * @param array $PA Additional configuration used in calling function
+	 * @param string $structurePath Path of value in DS structure
+	 * @param object $pObj Object reference to caller
+	 * @return void
 	 * @see t3lib_TCEmain::checkValue_flex_procInData_travDS()
 	 */
 	function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, $pObj) {
-		$structurePath = substr($structurePath, 5) . '/'; // removing "data/" in the beginning of path (which points to location in data array)
+			// Removing "data/" in the beginning of path (which points to location in data array)
+		$structurePath = substr($structurePath, 5) . '/';
 
 		$dsConf = $dsArr['TCEforms']['config'];
 
@@ -481,10 +480,10 @@ class t3lib_refindex {
 	/**
 	 * Check field configuration if it is a file relation field and extract file relations if any
 	 *
-	 * @param	string		Field value
-	 * @param	array		Field configuration array of type "TCA/columns"
-	 * @param	integer		Field uid
-	 * @return	array		If field type is OK it will return an array with the files inside. Else FALSE
+	 * @param string $value Field value
+	 * @param array $conf Field configuration array of type "TCA/columns"
+	 * @param integer $uid Field uid
+	 * @retur array If field type is OK it will return an array with the files inside. Else FALSE
 	 */
 	function getRelations_procFiles($value, $conf, $uid) {
 		if ($conf['type'] == 'group' && ($conf['internal_type'] == 'file' || $conf['internal_type'] == 'file_reference')) {
@@ -577,7 +576,6 @@ class t3lib_refindex {
 		}
 	}
 
-
 	/*******************************
 	 *
 	 * Setting values
@@ -592,11 +590,11 @@ class t3lib_refindex {
 	 * Notice; If you want to remove multiple references from the same field, you MUST start with the one having the highest sorting number. If you don't the removal of a reference with a lower number will recreate an index in which the remaining references in that field has new hash-keys due to new sorting numbers - and you will get errors for the remaining operations which cannot find the hash you feed it!
 	 * To ensure proper working only admin-BE_USERS in live workspace should use this function
 	 *
-	 * @param	string		32-byte hash string identifying the record from sys_refindex which you wish to change the value for
-	 * @param	mixed		Value you wish to set for reference. If NULL, the reference is removed (unless a soft-reference in which case it can only be set to a blank string). If you wish to set a database reference, use the format "[table]:[uid]". Any other case, the input value is set as-is
-	 * @param	boolean		Return $dataArray only, do not submit it to database.
-	 * @param	boolean		If set, it will bypass check for workspace-zero and admin user
-	 * @return	string		If a return string, that carries an error message, otherwise FALSE (=OK) (except if $returnDataArray is set!)
+	 * @param string $hash 32-byte hash string identifying the record from sys_refindex which you wish to change the value for
+	 * @param mixed $newValue Value you wish to set for reference. If NULL, the reference is removed (unless a soft-reference in which case it can only be set to a blank string). If you wish to set a database reference, use the format "[table]:[uid]". Any other case, the input value is set as-is
+	 * @param boolean $returnDataArray Return $dataArray only, do not submit it to database.
+	 * @param boolean $bypassWorkspaceAdminCheck If set, it will bypass check for workspace-zero and admin user
+	 * @return string If a return string, that carries an error message, otherwise FALSE (=OK) (except if $returnDataArray is set!)
 	 */
 	function setReferenceValue($hash, $newValue, $returnDataArray = FALSE, $bypassWorkspaceAdminCheck = FALSE) {
 
@@ -685,9 +683,11 @@ class t3lib_refindex {
 								$tce->dontProcessTransformations = TRUE;
 								$tce->bypassWorkspaceRestrictions = TRUE;
 								$tce->bypassFileHandling = TRUE;
-								$tce->bypassAccessCheckForRecords = TRUE; // Otherwise this cannot update things in deleted records...
+									// Otherwise this cannot update things in deleted records...
+								$tce->bypassAccessCheckForRecords = TRUE;
 
-								$tce->start($dataArray, array()); // check has been done previously that there is a backend user which is Admin and also in live workspace
+									// Check has been done previously that there is a backend user which is Admin and also in live workspace
+								$tce->start($dataArray, array());
 								$tce->process_datamap();
 
 									// Return errors if any:
@@ -711,18 +711,19 @@ class t3lib_refindex {
 	/**
 	 * Setting a value for a reference for a DB field:
 	 *
-	 * @param	array		sys_refindex record
-	 * @param	array		Array of references from that field
-	 * @param	string		Value to substitute current value with (or NULL to unset it)
-	 * @param	array		data array in which the new value is set (passed by reference)
-	 * @param	string		Flexform pointer, if in a flex form field.
-	 * @return	string		Error message if any, otherwise FALSE = OK
+	 * @param array $refRec sys_refindex record
+	 * @param array $itemArray Array of references from that field
+	 * @param string $newValue Value to substitute current value with (or NULL to unset it)
+	 * @param array $dataArray Data array in which the new value is set (passed by reference)
+	 * @param string $flexpointer Flexform pointer, if in a flex form field.
+	 * @return string Error message if any, otherwise FALSE = OK
 	 */
 	function setReferenceValue_dbRels($refRec, $itemArray, $newValue, &$dataArray, $flexpointer = '') {
 		if (!strcmp($itemArray[$refRec['sorting']]['id'], $refRec['ref_uid']) && !strcmp($itemArray[$refRec['sorting']]['table'], $refRec['ref_table'])) {
 
 				// Setting or removing value:
-			if ($newValue === NULL) { // Remove value:
+				// Remove value:
+			if ($newValue === NULL) {
 				unset($itemArray[$refRec['sorting']]);
 			} else {
 				list($itemArray[$refRec['sorting']]['table'], $itemArray[$refRec['sorting']]['id']) = explode(':', $newValue);
@@ -751,18 +752,19 @@ class t3lib_refindex {
 	/**
 	 * Setting a value for a reference for a FILE field:
 	 *
-	 * @param	array		sys_refindex record
-	 * @param	array		Array of references from that field
-	 * @param	string		Value to substitute current value with (or NULL to unset it)
-	 * @param	array		data array in which the new value is set (passed by reference)
-	 * @param	string		Flexform pointer, if in a flex form field.
-	 * @return	string		Error message if any, otherwise FALSE = OK
+	 * @param array $refRec sys_refindex record
+	 * @param array $itemArray Array of references from that field
+	 * @param string $newValue Value to substitute current value with (or NULL to unset it)
+	 * @param array $dataArray Data array in which the new value is set (passed by reference)
+	 * @param string $flexpointer Flexform pointer, if in a flex form field.
+	 * @return string Error message if any, otherwise FALSE = OK
 	 */
 	function setReferenceValue_fileRels($refRec, $itemArray, $newValue, &$dataArray, $flexpointer = '') {
 		if (!strcmp(substr($itemArray[$refRec['sorting']]['ID_absFile'], strlen(PATH_site)), $refRec['ref_string']) && !strcmp('_FILE', $refRec['ref_table'])) {
 
 				// Setting or removing value:
-			if ($newValue === NULL) { // Remove value:
+				// Remove value:
+			if ($newValue === NULL) {
 				unset($itemArray[$refRec['sorting']]);
 			} else {
 				$itemArray[$refRec['sorting']]['filename'] = $newValue;
@@ -791,12 +793,12 @@ class t3lib_refindex {
 	/**
 	 * Setting a value for a soft reference token
 	 *
-	 * @param	array		sys_refindex record
-	 * @param	array		Array of soft reference occurencies
-	 * @param	string		Value to substitute current value with
-	 * @param	array		data array in which the new value is set (passed by reference)
-	 * @param	string		Flexform pointer, if in a flex form field.
-	 * @return	string		Error message if any, otherwise FALSE = OK
+	 * @param array $refRec sys_refindex record
+	 * @param array $softref Array of soft reference occurencies
+	 * @param string $newValue Value to substitute current value with
+	 * @param array $dataArray Data array in which the new value is set (passed by reference)
+	 * @param string $flexpointer Flexform pointer, if in a flex form field.
+	 * @return string Error message if any, otherwise FALSE = OK
 	 */
 	function setReferenceValue_softreferences($refRec, $softref, $newValue, &$dataArray, $flexpointer = '') {
 		if (is_array($softref['keys'][$refRec['softref_key']][$refRec['softref_id']])) {
@@ -828,7 +830,6 @@ class t3lib_refindex {
 		}
 	}
 
-
 	/*******************************
 	 *
 	 * Helper functions
@@ -838,8 +839,8 @@ class t3lib_refindex {
 	/**
 	 * Returns TRUE if the TCA/columns field type is a DB reference field
 	 *
-	 * @param	array		config array for TCA/columns field
-	 * @return	boolean		TRUE if DB reference field (group/db or select with foreign-table)
+	 * @param array $conf Config array for TCA/columns field
+	 * @return boolean TRUE if DB reference field (group/db or select with foreign-table)
 	 */
 	function isReferenceField($conf) {
 		return ($conf['type'] == 'group' && $conf['internal_type'] == 'db') || (($conf['type'] == 'select' || $conf['type'] == 'inline') && $conf['foreign_table'] && $conf['foreign_table'] !== 'sys_file_reference');
@@ -848,8 +849,8 @@ class t3lib_refindex {
 	/**
 	 * Returns destination path to an upload folder given by $folder
 	 *
-	 * @param	string		Folder relative to PATH_site
-	 * @return	string		Input folder prefixed with PATH_site. No checking for existence is done. Output must be a folder without trailing slash.
+	 * @param string $folder Folder relative to PATH_site
+	 * @return string Input folder prefixed with PATH_site. No checking for existence is done. Output must be a folder without trailing slash.
 	 */
 	function destPathFromUploadFolder($folder) {
 		if (!$folder) {
@@ -861,8 +862,8 @@ class t3lib_refindex {
 	/**
 	 * Sets error message in the internal error log
 	 *
-	 * @param	string		Error message
-	 * @return	void
+	 * @param string $msg Error message
+	 * @return void
 	 */
 	function error($msg) {
 		$this->errorLog[] = $msg;
@@ -871,9 +872,9 @@ class t3lib_refindex {
 	/**
 	 * Updating Index (External API)
 	 *
-	 * @param	boolean		If set, only a test
-	 * @param	boolean		If set, output CLI status
-	 * @return	array		Header and body status content
+	 * @param boolean $testOnly If set, only a test
+	 * @param boolean $cli_echo If set, output CLI status
+	 * @return array Header and body status content
 	 */
 	function updateIndex($testOnly, $cli_echo = FALSE) {
 		$errors = array();

@@ -27,23 +27,23 @@
 /**
  * TYPO3 SQL parser
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * TYPO3 SQL parser class.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_sqlparser {
 
 		// Parser:
-	var $parse_error = ''; // Parsing error string
-	var $lastStopKeyWord = ''; // Last stop keyword used.
-
+		// Parsing error string
+	var $parse_error = '';
+		// Last stop keyword used.
+	var $lastStopKeyWord = '';
 
 	/*************************************
 	 *
@@ -54,8 +54,8 @@ class t3lib_sqlparser {
 	/**
 	 * Parses any single SQL query
 	 *
-	 * @param	string		SQL query
-	 * @return	array		Result array with all the parts in - or error message string
+	 * @param string $parseString SQL query
+	 * @return array Result array with all the parts in - or error message string
 	 * @see compileSQL(), debug_testSQL()
 	 */
 	public function parseSQL($parseString) {
@@ -121,9 +121,9 @@ class t3lib_sqlparser {
 	/**
 	 * Parsing SELECT query
 	 *
-	 * @param	string		SQL string with SELECT query to parse
-	 * @param	array		Array holding references to either named (:name) or question mark (?) parameters found
-	 * @return	mixed		Returns array with components of SELECT query on success, otherwise an error message string.
+	 * @param string $parseString SQL string with SELECT query to parse
+	 * @param array $parameterReferences Array holding references to either named (:name) or question mark (?) parameters found
+	 * @return mixed Returns array with components of SELECT query on success, otherwise an error message string.
 	 * @see compileSELECT()
 	 */
 	protected function parseSELECT($parseString, &$parameterReferences = NULL) {
@@ -210,8 +210,8 @@ class t3lib_sqlparser {
 	/**
 	 * Parsing UPDATE query
 	 *
-	 * @param	string		SQL string with UPDATE query to parse
-	 * @return	mixed		Returns array with components of UPDATE query on success, otherwise an error message string.
+	 * @param string $parseString SQL string with UPDATE query to parse
+	 * @return mixed Returns array with components of UPDATE query on success, otherwise an error message string.
 	 * @see compileUPDATE()
 	 */
 	protected function parseUPDATE($parseString) {
@@ -236,7 +236,8 @@ class t3lib_sqlparser {
 					// Get field/value pairs:
 				while ($comma) {
 					if ($fieldName = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]*=')) {
-						$this->nextPart($parseString, '^(=)'); // Strip of "=" sign.
+							// Strip of "=" sign.
+						$this->nextPart($parseString, '^(=)');
 						$value = $this->getValue($parseString);
 						$result['FIELDS'][$fieldName] = $value;
 					} else {
@@ -272,8 +273,8 @@ class t3lib_sqlparser {
 	/**
 	 * Parsing INSERT query
 	 *
-	 * @param	string		SQL string with INSERT query to parse
-	 * @return	mixed		Returns array with components of INSERT query on success, otherwise an error message string.
+	 * @param string $parseString SQL string with INSERT query to parse
+	 * @return mixed Returns array with components of INSERT query on success, otherwise an error message string.
 	 * @see compileINSERT()
 	 */
 	protected function parseINSERT($parseString) {
@@ -291,7 +292,8 @@ class t3lib_sqlparser {
 
 		if ($result['TABLE']) {
 
-			if ($this->nextPart($parseString, '^(VALUES)([[:space:]]+|\()')) { // In this case there are no field names mentioned in the SQL!
+				// In this case there are no field names mentioned in the SQL!
+			if ($this->nextPart($parseString, '^(VALUES)([[:space:]]+|\()')) {
 					// Get values/fieldnames (depending...)
 				$result['VALUES_ONLY'] = $this->getValue($parseString, 'IN');
 				if ($this->parse_error) {
@@ -313,10 +315,12 @@ class t3lib_sqlparser {
 					return $this->parse_error;
 				}
 
-				if ($this->nextPart($parseString, '^(VALUES)([[:space:]]+|\()')) { // "VALUES" keyword binds the fieldnames to values:
+					// "VALUES" keyword binds the fieldnames to values:
+				if ($this->nextPart($parseString, '^(VALUES)([[:space:]]+|\()')) {
 					$result['FIELDS'] = array();
 					do {
-						$values = $this->getValue($parseString, 'IN'); // Using the "getValue" function to get the field list...
+							// Using the "getValue" function to get the field list...
+						$values = $this->getValue($parseString, 'IN');
 						if ($this->parse_error) {
 							return $this->parse_error;
 						}
@@ -368,8 +372,8 @@ class t3lib_sqlparser {
 	/**
 	 * Parsing DELETE query
 	 *
-	 * @param	string		SQL string with DELETE query to parse
-	 * @return	mixed		Returns array with components of DELETE query on success, otherwise an error message string.
+	 * @param string $parseString SQL string with DELETE query to parse
+	 * @return mixed Returns array with components of DELETE query on success, otherwise an error message string.
 	 * @see compileDELETE()
 	 */
 	protected function parseDELETE($parseString) {
@@ -410,8 +414,8 @@ class t3lib_sqlparser {
 	/**
 	 * Parsing EXPLAIN query
 	 *
-	 * @param	string		SQL string with EXPLAIN query to parse
-	 * @return	mixed		Returns array with components of EXPLAIN query on success, otherwise an error message string.
+	 * @param string $parseString SQL string with EXPLAIN query to parse
+	 * @return mixed Returns array with components of EXPLAIN query on success, otherwise an error message string.
 	 * @see parseSELECT()
 	 */
 	protected function parseEXPLAIN($parseString) {
@@ -432,8 +436,8 @@ class t3lib_sqlparser {
 	/**
 	 * Parsing CREATE TABLE query
 	 *
-	 * @param	string		SQL string starting with CREATE TABLE
-	 * @return	mixed		Returns array with components of CREATE TABLE query on success, otherwise an error message string.
+	 * @param string $parseString SQL string starting with CREATE TABLE
+	 * @return mixed Returns array with components of CREATE TABLE query on success, otherwise an error message string.
 	 * @see compileCREATETABLE()
 	 */
 	protected function parseCREATETABLE($parseString) {
@@ -453,7 +457,8 @@ class t3lib_sqlparser {
 
 				// While the parseString is not yet empty:
 			while (strlen($parseString) > 0) {
-				if ($key = $this->nextPart($parseString, '^(KEY|PRIMARY KEY|UNIQUE KEY|UNIQUE)([[:space:]]+|\()')) { // Getting key
+					// Getting key
+				if ($key = $this->nextPart($parseString, '^(KEY|PRIMARY KEY|UNIQUE KEY|UNIQUE)([[:space:]]+|\()')) {
 					$key = strtoupper(str_replace(array(' ', TAB, CR, LF), '', $key));
 
 					switch ($key) {
@@ -527,8 +532,8 @@ class t3lib_sqlparser {
 	/**
 	 * Parsing ALTER TABLE query
 	 *
-	 * @param	string		SQL string starting with ALTER TABLE
-	 * @return	mixed		Returns array with components of ALTER TABLE query on success, otherwise an error message string.
+	 * @param string $parseString SQL string starting with ALTER TABLE
+	 * @return mixed Returns array with components of ALTER TABLE query on success, otherwise an error message string.
 	 * @see compileALTERTABLE()
 	 */
 	protected function parseALTERTABLE($parseString) {
@@ -622,8 +627,8 @@ class t3lib_sqlparser {
 	/**
 	 * Parsing DROP TABLE query
 	 *
-	 * @param	string		SQL string starting with DROP TABLE
-	 * @return	mixed		Returns array with components of DROP TABLE query on success, otherwise an error message string.
+	 * @param string $parseString SQL string starting with DROP TABLE
+	 * @return mixed Returns array with components of DROP TABLE query on success, otherwise an error message string.
 	 */
 	protected function parseDROPTABLE($parseString) {
 
@@ -657,8 +662,8 @@ class t3lib_sqlparser {
 	/**
 	 * Parsing CREATE DATABASE query
 	 *
-	 * @param	string		SQL string starting with CREATE DATABASE
-	 * @return	mixed		Returns array with components of CREATE DATABASE query on success, otherwise an error message string.
+	 * @param string $parseString SQL string starting with CREATE DATABASE
+	 * @return mixed Returns array with components of CREATE DATABASE query on success, otherwise an error message string.
 	 */
 	protected function parseCREATEDATABASE($parseString) {
 
@@ -689,8 +694,8 @@ class t3lib_sqlparser {
 	/**
 	 * Parsing TRUNCATE TABLE query
 	 *
-	 * @param	string		SQL string starting with TRUNCATE TABLE
-	 * @return	mixed		Returns array with components of TRUNCATE TABLE query on success, otherwise an error message string.
+	 * @param string $parseString SQL string starting with TRUNCATE TABLE
+	 * @return mixed Returns array with components of TRUNCATE TABLE query on success, otherwise an error message string.
 	 */
 	protected function parseTRUNCATETABLE($parseString) {
 
@@ -718,7 +723,6 @@ class t3lib_sqlparser {
 		}
 	}
 
-
 	/**************************************
 	 *
 	 * SQL Parsing, helper functions for parts of queries
@@ -730,9 +734,9 @@ class t3lib_sqlparser {
 	 * The output from this function can be compiled back into a field list with ->compileFieldList()
 	 * Will detect the keywords "DESC" and "ASC" after the table name; thus is can be used for parsing the more simply ORDER BY and GROUP BY field lists as well!
 	 *
-	 * @param	string		The string with fieldnames, eg. "title, uid AS myUid, max(tstamp), count(*)" etc. NOTICE: passed by reference!
-	 * @param	string		Regular expressing to STOP parsing, eg. '^(FROM)([[:space:]]*)'
-	 * @return	array		If successful parsing, returns an array, otherwise an error string.
+	 * @param string $parseString The string with fieldnames, eg. "title, uid AS myUid, max(tstamp), count(*)" etc. NOTICE: passed by reference!
+	 * @param string $stopRegex Regular expressing to STOP parsing, eg. '^(FROM)([[:space:]]*)'
+	 * @return array If successful parsing, returns an array, otherwise an error string.
 	 * @see compileFieldList()
 	 */
 	public function parseFieldList(&$parseString, $stopRegex = '') {
@@ -743,9 +747,12 @@ class t3lib_sqlparser {
 			return $stack;
 		} // FIXME - should never happen, why does it?
 
-		$pnt = 0; // Pointer to positions in $stack
-		$level = 0; // Indicates the parenthesis level we are at.
-		$loopExit = 0; // Recursivity brake.
+			// Pointer to positions in $stack
+		$pnt = 0;
+			// Indicates the parenthesis level we are at.
+		$level = 0;
+			// Recursivity brake.
+		$loopExit = 0;
 
 			// Prepare variables:
 		$parseString = $this->trimSQL($parseString);
@@ -759,7 +766,8 @@ class t3lib_sqlparser {
 		while (strlen($parseString)) {
 
 				// Checking if we are inside / outside parenthesis (in case of a function like count(), max(), min() etc...):
-			if ($level > 0) { // Inside parenthesis here (does NOT detect if values in quotes are used, the only token is ")" or "("):
+				// Inside parenthesis here (does NOT detect if values in quotes are used, the only token is ")" or "("):
+			if ($level > 0) {
 
 					// Accumulate function content until next () parenthesis:
 				$funcContent = $this->nextPart($parseString, '^([^()]*.)');
@@ -776,9 +784,11 @@ class t3lib_sqlparser {
 					break;
 					case ')':
 						$level--;
-						if (!$level) { // If this was the last parenthesis:
+							// If this was the last parenthesis:
+						if (!$level) {
 							$stack[$pnt]['func_content'] = substr($stack[$pnt]['func_content'], 0, -1);
-							$parseString = ltrim($parseString); // Remove any whitespace after the parenthesis.
+								// Remove any whitespace after the parenthesis.
+							$parseString = ltrim($parseString);
 						}
 					break;
 				}
@@ -797,10 +807,12 @@ class t3lib_sqlparser {
 						// Looking for a known function (only known functions supported)
 					$func = $this->nextPart($parseString, '^(count|max|min|floor|sum|avg)[[:space:]]*\(');
 					if ($func) {
-						$parseString = trim(substr($parseString, 1)); // Strip of "("
+							// Strip of "("
+						$parseString = trim(substr($parseString, 1));
 						$stack[$pnt]['type'] = 'function';
 						$stack[$pnt]['function'] = $func;
-						$level++; // increse parenthesis level counter.
+							// increse parenthesis level counter.
+						$level++;
 					} else {
 						$stack[$pnt]['distinct'] = $this->nextPart($parseString, '^(distinct[[:space:]]+)');
 							// Otherwise, look for regular fieldname:
@@ -867,8 +879,8 @@ class t3lib_sqlparser {
 	 * Parsing a CASE ... WHEN flow-control construct.
 	 * The output from this function can be compiled back with ->compileCaseStatement()
 	 *
-	 * @param	string		The string with the CASE ... WHEN construct, eg. "CASE field WHEN 1 THEN 0 ELSE ..." etc. NOTICE: passed by reference!
-	 * @return	array		If successful parsing, returns an array, otherwise an error string.
+	 * @param string $parseString The string with the CASE ... WHEN construct, eg. "CASE field WHEN 1 THEN 0 ELSE ..." etc. NOTICE: passed by reference!
+	 * @return array If successful parsing, returns an array, otherwise an error string.
 	 * @see compileCaseConstruct()
 	 */
 	protected function parseCaseStatement(&$parseString) {
@@ -902,9 +914,9 @@ class t3lib_sqlparser {
 	 * Parsing the tablenames in the "FROM [$parseString] WHERE" part of a query into an array.
 	 * The success of this parsing determines if that part of the query is supported by TYPO3.
 	 *
-	 * @param	string		list of tables, eg. "pages, tt_content" or "pages A, pages B". NOTICE: passed by reference!
-	 * @param	string		Regular expressing to STOP parsing, eg. '^(WHERE)([[:space:]]*)'
-	 * @return	array		If successful parsing, returns an array, otherwise an error string.
+	 * @param string $parseString List of tables, eg. "pages, tt_content" or "pages A, pages B". NOTICE: passed by reference!
+	 * @param string $stopRegex Regular expressing to STOP parsing, eg. '^(WHERE)([[:space:]]*)'
+	 * @return array If successful parsing, returns an array, otherwise an error string.
 	 * @see compileFromTables()
 	 */
 	public function parseFromTables(&$parseString, $stopRegex = '') {
@@ -914,9 +926,12 @@ class t3lib_sqlparser {
 		$this->lastStopKeyWord = '';
 		$this->parse_error = '';
 
-		$stack = array(); // Contains the parsed content
-		$pnt = 0; // Pointer to positions in $stack
-		$loopExit = 0; // Recursivity brake.
+			// Contains the parsed content
+		$stack = array();
+			// Pointer to positions in $stack
+		$pnt = 0;
+			// Recursivity brake.
+		$loopExit = 0;
 
 			// $parseString is continously shortend by the process and we keep parsing it till it is zero:
 		while (strlen($parseString)) {
@@ -1023,10 +1038,10 @@ class t3lib_sqlparser {
 	 * Parsing the WHERE clause fields in the "WHERE [$parseString] ..." part of a query into a multidimensional array.
 	 * The success of this parsing determines if that part of the query is supported by TYPO3.
 	 *
-	 * @param	string		WHERE clause to parse. NOTICE: passed by reference!
-	 * @param	string		Regular expressing to STOP parsing, eg. '^(GROUP BY|ORDER BY|LIMIT)([[:space:]]*)'
-	 * @param	array		Array holding references to either named (:name) or question mark (?) parameters found
-	 * @return	mixed		If successful parsing, returns an array, otherwise an error string.
+	 * @param string $parseString WHERE clause to parse. NOTICE: passed by reference!
+	 * @param string $stopRegex Regular expressing to STOP parsing, eg. '^(GROUP BY|ORDER BY|LIMIT)([[:space:]]*)'
+	 * @param array $parameterReferences Array holding references to either named (:name) or question mark (?) parameters found
+	 * @return mixed If successful parsing, returns an array, otherwise an error string.
 	 */
 	public function parseWhereClause(&$parseString, $stopRegex = '', array &$parameterReferences = array()) {
 
@@ -1035,20 +1050,28 @@ class t3lib_sqlparser {
 		$this->lastStopKeyWord = '';
 		$this->parse_error = '';
 
-		$stack = array(0 => array()); // Contains the parsed content
-		$pnt = array(0 => 0); // Pointer to positions in $stack
-		$level = 0; // Determines parenthesis level
-		$loopExit = 0; // Recursivity brake.
+			// Contains the parsed content
+		$stack = array(0 => array());
+			// Pointer to positions in $stack
+		$pnt = array(0 => 0);
+			// Determines parenthesis level
+		$level = 0;
+			// Recursivity brake.
+		$loopExit = 0;
 
 			// $parseString is continously shortend by the process and we keep parsing it till it is zero:
 		while (strlen($parseString)) {
 
 				// Look for next parenthesis level:
 			$newLevel = $this->nextPart($parseString, '^([(])');
-			if ($newLevel == '(') { // If new level is started, manage stack/pointers:
-				$level++; // Increase level
-				$pnt[$level] = 0; // Reset pointer for this level
-				$stack[$level] = array(); // Reset stack for this level
+				// If new level is started, manage stack/pointers:
+			if ($newLevel == '(') {
+					// Increase level
+				$level++;
+					// Reset pointer for this level
+				$pnt[$level] = 0;
+					// Reset stack for this level
+				$stack[$level] = array();
 			} else { // If no new level is started, just parse the current level:
 
 					// Find "modifier", eg. "NOT or !"
@@ -1057,7 +1080,8 @@ class t3lib_sqlparser {
 					// See if condition is EXISTS with a subquery
 				if (preg_match('/^EXISTS[[:space:]]*[(]/i', $parseString)) {
 					$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(EXISTS)[[:space:]]*');
-					$parseString = trim(substr($parseString, 1)); // Strip of "("
+						// Strip of "("
+					$parseString = trim(substr($parseString, 1));
 					$stack[$level][$pnt[$level]]['func']['subquery'] = $this->parseSELECT($parseString, $parameterReferences);
 						// Seek to new position in parseString after parsing of the subquery
 					$parseString = $stack[$level][$pnt[$level]]['func']['subquery']['parseString'];
@@ -1070,7 +1094,8 @@ class t3lib_sqlparser {
 						// See if LOCATE function is found
 					if (preg_match('/^LOCATE[[:space:]]*[(]/i', $parseString)) {
 						$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(LOCATE)[[:space:]]*');
-						$parseString = trim(substr($parseString, 1)); // Strip of "("
+							// Strip of "("
+						$parseString = trim(substr($parseString, 1));
 						$stack[$level][$pnt[$level]]['func']['substr'] = $this->getValue($parseString);
 						if (!$this->nextPart($parseString, '^(,)')) {
 							return $this->parseError('No comma found as expected in parseWhereClause()', $parseString);
@@ -1120,7 +1145,8 @@ class t3lib_sqlparser {
 						}
 					} elseif (preg_match('/^FIND_IN_SET[[:space:]]*[(]/i', $parseString)) {
 						$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(FIND_IN_SET)[[:space:]]*');
-						$parseString = trim(substr($parseString, 1)); // Strip of "("
+							// Strip of "("
+						$parseString = trim(substr($parseString, 1));
 						if ($str = $this->getValue($parseString)) {
 							$stack[$level][$pnt[$level]]['func']['str'] = $str;
 							if ($fieldName = $this->nextPart($parseString, '^,[[:space:]]*([[:alnum:]._]+)[[:space:]]*', TRUE)) {
@@ -1274,8 +1300,10 @@ class t3lib_sqlparser {
 					// Checking if the current level is ended, in that case do stack management:
 				while ($this->nextPart($parseString, '^([)])')) {
 					$level--; // Decrease level:
-					$stack[$level][$pnt[$level]]['sub'] = $stack[$level + 1]; // Copy stack
-					$pnt[$level]++; // Increase pointer of the new level
+						// Copy stack
+					$stack[$level][$pnt[$level]]['sub'] = $stack[$level + 1];
+						// Increase pointer of the new level
+					$pnt[$level]++;
 
 						// Make recursivity check:
 					$loopExit++;
@@ -1317,9 +1345,9 @@ class t3lib_sqlparser {
 	 * Parsing the WHERE clause fields in the "WHERE [$parseString] ..." part of a query into a multidimensional array.
 	 * The success of this parsing determines if that part of the query is supported by TYPO3.
 	 *
-	 * @param	string		WHERE clause to parse. NOTICE: passed by reference!
-	 * @param	string		Regular expressing to STOP parsing, eg. '^(GROUP BY|ORDER BY|LIMIT)([[:space:]]*)'
-	 * @return	mixed		If successful parsing, returns an array, otherwise an error string.
+	 * @param string $parseString WHERE clause to parse. NOTICE: passed by reference!
+	 * @param string $stopRegex Regular expressing to STOP parsing, eg. '^(GROUP BY|ORDER BY|LIMIT)([[:space:]]*)'
+	 * @return mixed If successful parsing, returns an array, otherwise an error string.
 	 */
 	public function parseFieldDef(&$parseString, $stopRegex = '') {
 			// Prepare variables:
@@ -1361,7 +1389,6 @@ class t3lib_sqlparser {
 		return $result;
 	}
 
-
 	/************************************
 	 *
 	 * Parsing: Helper functions
@@ -1372,14 +1399,15 @@ class t3lib_sqlparser {
 	 * Strips off a part of the parseString and returns the matching part.
 	 * Helper function for the parsing methods.
 	 *
-	 * @param	string		Parse string; if $regex finds anything the value of the first () level will be stripped of the string in the beginning. Further $parseString is left-trimmed (on success). Notice; parsestring is passed by reference.
-	 * @param	string		Regex to find a matching part in the beginning of the string. Rules: You MUST start the regex with "^" (finding stuff in the beginning of string) and the result of the first parenthesis is what will be returned to you (and stripped of the string). Eg. '^(AND|OR|&&)[[:space:]]+' will return AND, OR or && if found and having one of more whitespaces after it, plus shorten $parseString with that match and any space after (by ltrim())
-	 * @param	boolean		If set the full match of the regex is stripped of the beginning of the string!
-	 * @return	string		The value of the first parenthesis level of the REGEX.
+	 * @param string $parseString Parse string; if $regex finds anything the value of the first () level will be stripped of the string in the beginning. Further $parseString is left-trimmed (on success). Notice; parsestring is passed by reference.
+	 * @param string $regex Regex to find a matching part in the beginning of the string. Rules: You MUST start the regex with "^" (finding stuff in the beginning of string) and the result of the first parenthesis is what will be returned to you (and stripped of the string). Eg. '^(AND|OR|&&)[[:space:]]+' will return AND, OR or && if found and having one of more whitespaces after it, plus shorten $parseString with that match and any space after (by ltrim())
+	 * @param boolean $trimAll If set the full match of the regex is stripped of the beginning of the string!
+	 * @return string The value of the first parenthesis level of the REGEX.
 	 */
 	protected function nextPart(&$parseString, $regex, $trimAll = FALSE) {
 		$reg = array();
-		if (preg_match('/' . $regex . '/i', $parseString . ' ', $reg)) { // Adding space char because [[:space:]]+ is often a requirement in regex's
+			// Adding space char because [[:space:]]+ is often a requirement in regex's
+		if (preg_match('/' . $regex . '/i', $parseString . ' ', $reg)) {
 			$parseString = ltrim(substr($parseString, strlen($reg[$trimAll ? 0 : 1])));
 			return $reg[1];
 		}
@@ -1423,10 +1451,10 @@ class t3lib_sqlparser {
 	/**
 	 * Finds value in beginning of $parseString, returns result and strips it of parseString
 	 *
-	 * @param	string		The parseString, eg. "(0,1,2,3) ..." or "('asdf','qwer') ..." or "1234 ..." or "'My string value here' ..."
-	 * @param	string		The comparator used before. If "NOT IN" or "IN" then the value is expected to be a list of values. Otherwise just an integer (un-quoted) or string (quoted)
-	 * @param	string		The mode, eg. "INDEX"
-	 * @return	mixed		The value (string/integer). Otherwise an array with error message in first key (0)
+	 * @param string $parseString The parseString, eg. "(0,1,2,3) ..." or "('asdf','qwer') ..." or "1234 ..." or "'My string value here' ..."
+	 * @param string $comparator The comparator used before. If "NOT IN" or "IN" then the value is expected to be a list of values. Otherwise just an integer (un-quoted) or string (quoted)
+	 * @param string $mode The mode, eg. "INDEX"
+	 * @return mixed The value (string/integer). Otherwise an array with error message in first key (0)
 	 */
 	protected function getValue(&$parseString, $comparator = '', $mode = '') {
 		$value = '';
@@ -1490,9 +1518,9 @@ class t3lib_sqlparser {
 	 * Get value in quotes from $parseString.
 	 * NOTICE: If a query being parsed was prepared for another database than MySQL this function should probably be changed
 	 *
-	 * @param	string		String from which to find value in quotes. Notice that $parseString is passed by reference and is shortend by the output of this function.
-	 * @param	string		The quote used; input either " or '
-	 * @return	string		The value, passed through stripslashes() !
+	 * @param string $parseString String from which to find value in quotes. Notice that $parseString is passed by reference and is shortend by the output of this function.
+	 * @param string $quote The quote used; input either " or '
+	 * @return string The value, passed through stripslashes() !
 	 */
 	protected function getValueInQuotes(&$parseString, $quote) {
 
@@ -1516,8 +1544,8 @@ class t3lib_sqlparser {
 	 * Strip slashes function used for parsing
 	 * NOTICE: If a query being parsed was prepared for another database than MySQL this function should probably be changed
 	 *
-	 * @param	string		Input string
-	 * @return	string		Output string
+	 * @param string $str Input string
+	 * @return string Output string
 	 */
 	protected function parseStripslashes($str) {
 		$search = array('\\\\', '\\\'', '\\"', '\0', '\n', '\r', '\Z');
@@ -1530,8 +1558,8 @@ class t3lib_sqlparser {
 	 * Add slashes function used for compiling queries
 	 * NOTICE: If a query being parsed was prepared for another database than MySQL this function should probably be changed
 	 *
-	 * @param	string		Input string
-	 * @return	string		Output string
+	 * @param string $str Input string
+	 * @return string Output string
 	 */
 	protected function compileAddslashes($str) {
 		$search = array('\\', '\'', '"', "\x00", "\x0a", "\x0d", "\x1a");
@@ -1543,9 +1571,9 @@ class t3lib_sqlparser {
 	/**
 	 * Setting the internal error message value, $this->parse_error and returns that value.
 	 *
-	 * @param	string		Input error message
-	 * @param	string		Remaining query to parse.
-	 * @return	string		Error message.
+	 * @param string $msg Input error message
+	 * @param string $restQuery Remaining query to parse.
+	 * @return string Error message.
 	 */
 	protected function parseError($msg, $restQuery) {
 		$this->parse_error = 'SQL engine parse ERROR: ' . $msg . ': near "' . substr($restQuery, 0, 50) . '"';
@@ -1558,13 +1586,12 @@ class t3lib_sqlparser {
 	 * White space is trimmed away around the value
 	 * A single space-char is added in the end
 	 *
-	 * @param	string		Input string
-	 * @return	string		Output string
+	 * @param string $str Input string
+	 * @return string Output string
 	 */
 	protected function trimSQL($str) {
 		return trim(rtrim($str, "; \r\n\t")) . ' ';
 	}
-
 
 	/*************************
 	 *
@@ -1575,8 +1602,8 @@ class t3lib_sqlparser {
 	/**
 	 * Compiles an SQL query from components
 	 *
-	 * @param	array		Array of SQL query components
-	 * @return	string		SQL query
+	 * @param array $components Array of SQL query components
+	 * @return string SQL query
 	 * @see parseSQL()
 	 */
 	public function compileSQL($components) {
@@ -1616,8 +1643,8 @@ class t3lib_sqlparser {
 	/**
 	 * Compiles a SELECT statement from components array
 	 *
-	 * @param	array		Array of SQL query components
-	 * @return	string		SQL SELECT query
+	 * @param array $components Array of SQL query components
+	 * @return string SQL SELECT query
 	 * @see parseSELECT()
 	 */
 	protected function compileSELECT($components) {
@@ -1647,8 +1674,8 @@ class t3lib_sqlparser {
 	/**
 	 * Compiles an UPDATE statement from components array
 	 *
-	 * @param	array		Array of SQL query components
-	 * @return	string		SQL UPDATE query
+	 * @param array $components Array of SQL query components
+	 * @return string SQL UPDATE query
 	 * @see parseUPDATE()
 	 */
 	protected function compileUPDATE($components) {
@@ -1675,8 +1702,8 @@ class t3lib_sqlparser {
 	/**
 	 * Compiles an INSERT statement from components array
 	 *
-	 * @param	array		Array of SQL query components
-	 * @return	string		SQL INSERT query
+	 * @param array $components Array of SQL query components
+	 * @return string SQL INSERT query
 	 * @see parseINSERT()
 	 */
 	protected function compileINSERT($components) {
@@ -1717,8 +1744,8 @@ class t3lib_sqlparser {
 	/**
 	 * Compiles an DELETE statement from components array
 	 *
-	 * @param	array		Array of SQL query components
-	 * @return	string		SQL DELETE query
+	 * @param array $components Array of SQL query components
+	 * @return string SQL DELETE query
 	 * @see parseDELETE()
 	 */
 	protected function compileDELETE($components) {
@@ -1737,8 +1764,8 @@ class t3lib_sqlparser {
 	/**
 	 * Compiles a CREATE TABLE statement from components array
 	 *
-	 * @param	array		Array of SQL query components
-	 * @return	string		SQL CREATE TABLE query
+	 * @param array $components Array of SQL query components
+	 * @return string SQL CREATE TABLE query
 	 * @see parseCREATETABLE()
 	 */
 	protected function compileCREATETABLE($components) {
@@ -1772,8 +1799,8 @@ class t3lib_sqlparser {
 	/**
 	 * Compiles an ALTER TABLE statement from components array
 	 *
-	 * @param	array		Array of SQL query components
-	 * @return	string		SQL ALTER TABLE query
+	 * @param array $components Array of SQL query components
+	 * @return string SQL ALTER TABLE query
 	 * @see parseALTERTABLE()
 	 */
 	protected function compileALTERTABLE($components) {
@@ -1812,8 +1839,8 @@ class t3lib_sqlparser {
 	/**
 	 * Compiles a TRUNCATE TABLE statement from components array
 	 *
-	 * @param	array		Array of SQL query components
-	 * @return	string		SQL TRUNCATE TABLE query
+	 * @param array $components Array of SQL query components
+	 * @return string SQL TRUNCATE TABLE query
 	 * @see parseTRUNCATETABLE()
 	 */
 	protected function compileTRUNCATETABLE(array $components) {
@@ -1825,7 +1852,6 @@ class t3lib_sqlparser {
 		return $query;
 	}
 
-
 	/**************************************
 	 *
 	 * Compiling queries, helper functions for parts of queries
@@ -1836,9 +1862,9 @@ class t3lib_sqlparser {
 	 * Compiles a "SELECT [output] FROM..:" field list based on input array (made with ->parseFieldList())
 	 * Can also compile field lists for ORDER BY and GROUP BY.
 	 *
-	 * @param	array		Array of select fields, (made with ->parseFieldList())
-	 * @param	boolean		Whether comments should be compiled
-	 * @return	string		Select field string
+	 * @param array $selectFields Array of select fields, (made with ->parseFieldList())
+	 * @param boolean $compileComments Whether comments should be compiled
+	 * @return string Select field string
 	 * @see parseFieldList()
 	 */
 	public function compileFieldList($selectFields, $compileComments = TRUE) {
@@ -1888,8 +1914,8 @@ class t3lib_sqlparser {
 	/**
 	 * Compiles a CASE ... WHEN flow-control construct based on input array (made with ->parseCaseStatement())
 	 *
-	 * @param	array		Array of case components, (made with ->parseCaseStatement())
-	 * @return	string		case when string
+	 * @param array $components Array of case components, (made with ->parseCaseStatement())
+	 * @return string Case when string
 	 * @see parseCaseStatement()
 	 */
 	protected function compileCaseStatement(array $components) {
@@ -1916,8 +1942,8 @@ class t3lib_sqlparser {
 	/**
 	 * Compiles a "FROM [output] WHERE..:" table list based on input array (made with ->parseFromTables())
 	 *
-	 * @param	array		Array of table names, (made with ->parseFromTables())
-	 * @return	string		Table name string
+	 * @param array $tablesArray Array of table names, (made with ->parseFromTables())
+	 * @return string Table name string
 	 * @see parseFromTables()
 	 */
 	public function compileFromTables($tablesArray) {
@@ -1967,8 +1993,8 @@ class t3lib_sqlparser {
 	/**
 	 * Implodes an array of WHERE clause configuration into a WHERE clause.
 	 *
-	 * @param	array		WHERE clause configuration
-	 * @return	string		WHERE clause as string.
+	 * @param array $clauseArray WHERE clause configuration
+	 * @return string WHERE clause as string.
 	 * @see	explodeWhereClause()
 	 */
 	public function compileWhereClause($clauseArray) {
@@ -2063,8 +2089,8 @@ class t3lib_sqlparser {
 	/**
 	 * Compile field definition
 	 *
-	 * @param	array		Field definition parts
-	 * @return	string		Field definition string
+	 * @param array $fieldCfg Field definition parts
+	 * @return string Field definition string
 	 */
 	public function compileFieldCfg($fieldCfg) {
 
@@ -2092,7 +2118,6 @@ class t3lib_sqlparser {
 		return $cfg;
 	}
 
-
 	/*************************
 	 *
 	 * Debugging
@@ -2102,9 +2127,9 @@ class t3lib_sqlparser {
 	/**
 	 * Check parsability of input SQL part string; Will parse and re-compile after which it is compared
 	 *
-	 * @param	string		Part definition of string; "SELECT" = fieldlist (also ORDER BY and GROUP BY), "FROM" = table list, "WHERE" = Where clause.
-	 * @param	string		SQL string to verify parsability of
-	 * @return	mixed		Returns array with string 1 and 2 if error, otherwise FALSE
+	 * @param string $part Part definition of string; "SELECT" = fieldlist (also ORDER BY and GROUP BY), "FROM" = table list, "WHERE" = Where clause.
+	 * @param string $str SQL string to verify parsability of
+	 * @return mixed Returns array with string 1 and 2 if error, otherwise FALSE
 	 */
 	public function debug_parseSQLpart($part, $str) {
 		$retVal = FALSE;
@@ -2126,10 +2151,10 @@ class t3lib_sqlparser {
 	/**
 	 * Compare two query strins by stripping away whitespace.
 	 *
-	 * @param	string		SQL String 1
-	 * @param	string		SQL string 2
-	 * @param	boolean		If TRUE, the strings are compared insensitive to case
-	 * @return	mixed		Returns array with string 1 and 2 if error, otherwise FALSE
+	 * @param string $str SQL String 1
+	 * @param string $newStr SQL string 2
+	 * @param boolean $caseInsensitive If TRUE, the strings are compared insensitive to case
+	 * @return mixed Returns array with string 1 and 2 if error, otherwise FALSE
 	 */
 	public function debug_parseSQLpartCompare($str, $newStr, $caseInsensitive = FALSE) {
 		if ($caseInsensitive) {
@@ -2146,10 +2171,6 @@ class t3lib_sqlparser {
 		$str1 = str_replace($search, $replace, $str1);
 		$str2 = str_replace($search, $replace, $str2);
 
-		# Normally, commented out since they are needed only in tricky cases...
-		#		$str1 = stripslashes($str1);
-		#		$str2 = stripslashes($str2);
-
 		if (strcmp(str_replace(array(' ', TAB, CR, LF), '', $this->trimSQL($str1)), str_replace(array(' ', TAB, CR, LF), '', $this->trimSQL($str2)))) {
 			return array(
 				str_replace(array(' ', TAB, CR, LF), ' ', $str),
@@ -2161,8 +2182,8 @@ class t3lib_sqlparser {
 	/**
 	 * Performs the ultimate test of the parser: Direct a SQL query in; You will get it back (through the parsed and re-compiled) if no problems, otherwise the script will print the error and exit
 	 *
-	 * @param	string		SQL query
-	 * @return	string		Query if all is well, otherwise exit.
+	 * @param string $SQLquery SQL query
+	 * @return string Query if all is well, otherwise exit.
 	 */
 	public function debug_testSQL($SQLquery) {
 
