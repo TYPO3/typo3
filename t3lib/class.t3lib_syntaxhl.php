@@ -27,21 +27,21 @@
 /**
  * Contains a class for various syntax highlighting.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * Syntax Highlighting class.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_syntaxhl {
 
 		// Internal, dynamic:
-	var $htmlParse; // Parse object.
+		// Parse object.
+	var $htmlParse;
 
 		// External, static:
 	var $DS_wrapTags = array(
@@ -91,7 +91,6 @@ class t3lib_syntaxhl {
 		'currentLangId' => array('<span style="color: #000080;">', '</span>'),
 	);
 
-
 	/*************************************
 	 *
 	 * Markup of Data Structure, <T3DataStructure>
@@ -101,20 +100,24 @@ class t3lib_syntaxhl {
 	/**
 	 * Makes syntax highlighting of a Data Structure, <T3DataStructure>
 	 *
-	 * @param	string		Data Structure XML, must be valid since it's parsed.
-	 * @return	string		HTML code with highlighted content. Must be wrapped in <PRE> tags
+	 * @param string $str Data Structure XML, must be valid since it's parsed.
+	 * @return string HTML code with highlighted content. Must be wrapped in <PRE> tags
 	 */
 	function highLight_DS($str) {
 
 			// Parse DS to verify that it is valid:
 		$DS = t3lib_div::xml2array($str);
 		if (is_array($DS)) {
-			$completeTagList = array_unique($this->getAllTags($str)); // Complete list of tags in DS
+				// Complete list of tags in DS
+			$completeTagList = array_unique($this->getAllTags($str));
 
 				// Highlighting source:
-			$this->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml'); // Init parser object
-			$struct = $this->splitXMLbyTags(implode(',', $completeTagList), $str); // Split the XML by the found tags, recursively into LARGE array.
-			$markUp = $this->highLight_DS_markUpRecursively($struct); // Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML.
+				// Init parser object
+			$this->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
+				// Split the XML by the found tags, recursively into LARGE array.
+			$struct = $this->splitXMLbyTags(implode(',', $completeTagList), $str);
+				// Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML.
+			$markUp = $this->highLight_DS_markUpRecursively($struct);
 
 				// Return content:
 			return $markUp;
@@ -128,10 +131,10 @@ class t3lib_syntaxhl {
 	 * Making syntax highlighting of the parsed Data Structure XML.
 	 * Called recursively.
 	 *
-	 * @param	array		The structure, see splitXMLbyTags()
-	 * @param	string		Parent tag.
-	 * @param	string		"Application" - used to denote if we are 'inside' a section
-	 * @return	string		HTML
+	 * @param array $struct The structure, see splitXMLbyTags()
+	 * @param string $parent Parent tag.
+	 * @param string $app "Application" - used to denote if we are 'inside' a section
+	 * @return string HTML
 	 */
 	function highLight_DS_markUpRecursively($struct, $parent = '', $app = '') {
 		$output = '';
@@ -186,7 +189,6 @@ class t3lib_syntaxhl {
 		return $output;
 	}
 
-
 	/*************************************
 	 *
 	 * Markup of Data Structure, <T3FlexForms>
@@ -196,20 +198,24 @@ class t3lib_syntaxhl {
 	/**
 	 * Makes syntax highlighting of a FlexForm Data, <T3FlexForms>
 	 *
-	 * @param	string		Data Structure XML, must be valid since it's parsed.
-	 * @return	string		HTML code with highlighted content. Must be wrapped in <PRE> tags
+	 * @param string $str Data Structure XML, must be valid since it's parsed.
+	 * @return string HTML code with highlighted content. Must be wrapped in <PRE> tags
 	 */
 	function highLight_FF($str) {
 
 			// Parse DS to verify that it is valid:
 		$DS = t3lib_div::xml2array($str);
 		if (is_array($DS)) {
-			$completeTagList = array_unique($this->getAllTags($str)); // Complete list of tags in DS
+				// Complete list of tags in DS
+			$completeTagList = array_unique($this->getAllTags($str));
 
 				// Highlighting source:
-			$this->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml'); // Init parser object
-			$struct = $this->splitXMLbyTags(implode(',', $completeTagList), $str); // Split the XML by the found tags, recursively into LARGE array.
-			$markUp = $this->highLight_FF_markUpRecursively($struct); // Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML.
+				// Init parser object
+			$this->htmlParse = t3lib_div::makeInstance('t3lib_parsehtml');
+				// Split the XML by the found tags, recursively into LARGE array.
+			$struct = $this->splitXMLbyTags(implode(',', $completeTagList), $str);
+				// Perform color-markup on the parsed content. Markup preserves the LINE formatting of the XML.
+			$markUp = $this->highLight_FF_markUpRecursively($struct);
 
 				// Return content:
 			return $markUp;
@@ -223,10 +229,10 @@ class t3lib_syntaxhl {
 	 * Making syntax highlighting of the parsed FlexForm XML.
 	 * Called recursively.
 	 *
-	 * @param	array		The structure, see splitXMLbyTags()
-	 * @param	string		Parent tag.
-	 * @param	string		"Application" - used to denote if we are 'inside' a section
-	 * @return	string		HTML
+	 * @param array $struct The structure, see splitXMLbyTags()
+	 * @param string $parent Parent tag.
+	 * @param string $app "Application" - used to denote if we are 'inside' a section
+	 * @return string HTML
 	 */
 	function highLight_FF_markUpRecursively($struct, $parent = '', $app = '') {
 		$output = '';
@@ -286,7 +292,6 @@ class t3lib_syntaxhl {
 		return $output;
 	}
 
-
 	/*************************************
 	 *
 	 * Various
@@ -296,8 +301,8 @@ class t3lib_syntaxhl {
 	/**
 	 * Returning all tag names found in XML/HTML input string
 	 *
-	 * @param	string		HTML/XML input
-	 * @return	array		Array with all found tags (starttags only)
+	 * @param string $str HTML/XML input
+	 * @return array Array with all found tags (starttags only)
 	 */
 	function getAllTags($str) {
 
@@ -326,9 +331,9 @@ class t3lib_syntaxhl {
 	 * Splitting the input source by the tags listing in $tagList.
 	 * Called recursively.
 	 *
-	 * @param	string		Commalist of tags to split source by (into blocks, ALL being block-tags!)
-	 * @param	string		Input string.
-	 * @return	array		Array with the content arranged hierarchically.
+	 * @param string $tagList Commalist of tags to split source by (into blocks, ALL being block-tags!)
+	 * @param string $str Input string.
+	 * @return array Array with the content arranged hierarchically.
 	 */
 	function splitXMLbyTags($tagList, $str) {
 		$struct = $this->htmlParse->splitIntoBlock($tagList, $str);

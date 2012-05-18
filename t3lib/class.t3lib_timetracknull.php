@@ -27,7 +27,7 @@
  * A fake time tracker that does nothing but providing the methods of the real time tracker.
  * This is done to save some performance over the real time tracker.
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -38,7 +38,7 @@ final class t3lib_TimeTrackNull {
 	 *
 	 * does nothing
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function start() {
 	}
@@ -48,9 +48,9 @@ final class t3lib_TimeTrackNull {
 	 *
 	 * does nothing
 	 *
-	 * @param	string		Label string for the entry, eg. TypoScript property name
-	 * @param	string		Additional value(?)
-	 * @return	void
+	 * @param string $tslabel Label string for the entry, eg. TypoScript property name
+	 * @param string $value Additional value(?)
+	 * @return void
 	 */
 	public function push($tslabel, $value = '') {
 	}
@@ -60,8 +60,8 @@ final class t3lib_TimeTrackNull {
 	 *
 	 * does nothing
 	 *
-	 * @param	string		The content string generated within the push/pull part.
-	 * @return	void
+	 * @param string $content The content string generated within the push/pull part.
+	 * @return void
 	 */
 	public function pull($content = '') {
 	}
@@ -71,9 +71,9 @@ final class t3lib_TimeTrackNull {
 	 *
 	 * does nothing
 	 *
-	 * @param	array		Query array
-	 * @param	string		Message/Label to attach
-	 * @return	void
+	 * @param array $data Query array
+	 * @param string $msg Message/Label to attach
+	 * @return void
 	 */
 	public function setTSselectQuery(array $data, $msg = '') {
 	}
@@ -83,9 +83,9 @@ final class t3lib_TimeTrackNull {
 	 *
 	 * does nothing
 	 *
-	 * @param	string		The message string
-	 * @param	integer		Message type: 0: information, 1: message, 2: warning, 3: error
-	 * @return	void
+	 * @param string $content The message string
+	 * @param integer $num Message type: 0: information, 1: message, 2: warning, 3: error
+	 * @return void
 	 */
 	public function setTSlogMessage($content, $num = 0) {
 	}
@@ -95,7 +95,7 @@ final class t3lib_TimeTrackNull {
 	 *
 	 * does nothing
 	 *
-	 * @return	string		HTML table with the information about parsing times.
+	 * @return string HTML table with the information about parsing times.
 	 */
 	public function printTSlog() {
 	}
@@ -105,7 +105,7 @@ final class t3lib_TimeTrackNull {
 	 *
 	 * does nothing
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function incStackPointer() {
 	}
@@ -115,7 +115,7 @@ final class t3lib_TimeTrackNull {
 	 *
 	 * does nothing
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function decStackPointer() {
 	}
@@ -123,12 +123,11 @@ final class t3lib_TimeTrackNull {
 	/**
 	 * Gets a microtime value as milliseconds value.
 	 *
-	 * @param	float		$microtime: The microtime value - if not set the current time is used
-	 * @return	integer		The microtime value as milliseconds value
+	 * @param float $microtime The microtime value - if not set the current time is used
+	 * @return integer The microtime value as milliseconds value
 	 */
 	public function getMilliseconds($microtime = NULL) {
 	}
-
 }
 
 ?>

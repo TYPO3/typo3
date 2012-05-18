@@ -28,14 +28,13 @@
 /**
  * Contains a frontend version of the TYPO3 Core Form generator - AKA "TCEforms"
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * Extension class for the rendering of TCEforms in the frontend
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class t3lib_TCEforms_FE extends t3lib_TCEforms {
 
@@ -50,8 +49,8 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 	/**
 	 * Function for wrapping labels.
 	 *
-	 * @param	string		The string to wrap
-	 * @return	string
+	 * @param string $str The string to wrap
+	 * @return string
 	 */
 	public function wrapLabels($str) {
 		return '<font face="verdana" size="1" color="black">' . $str . '</font>';
@@ -60,8 +59,8 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 	/**
 	 * Prints the palette in the frontend editing (forms-on-page?)
 	 *
-	 * @param	array		The palette array to print
-	 * @return	string		HTML output
+	 * @param array $paletteArray The palette array to print
+	 * @return string HTML output
 	 */
 	public function printPalette(array $paletteArray) {
 		$out = '';
@@ -85,7 +84,7 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 	 * Sets the fancy front-end design of the editor.
 	 * Frontend
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function setFancyDesign() {
 		$this->fieldTemplate = '
@@ -113,24 +112,23 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 	 * backpath is automatically applied.
 	 * This method adds the library to $GLOBALS['TSFE']->additionalHeaderData[$lib].
 	 *
-	 * @param	string		$lib: Library name. Call it with the full path like "contrib/prototype/prototype.js" to load it
-	 * @return	void
+	 * @param string $lib Library name. Call it with the full path like "contrib/prototype/prototype.js" to load it
+	 * @return void
 	 */
 	public function loadJavascriptLib($lib) {
 		/** @var $pageRenderer t3lib_PageRenderer */
 		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 		$pageRenderer->addJsLibrary($lib, $this->prependBackPath($lib));
-
 	}
 
 	/**
 	 * Insert additional style sheet link
 	 *
-	 * @param	string		$key: some key identifying the style sheet
-	 * @param	string		$href: uri to the style sheet file
-	 * @param	string		$title: value for the title attribute of the link element
-	 * @return	string		$relation: value for the rel attribute of the link element
-	 * @return	void
+	 * @param string $key Some key identifying the style sheet
+	 * @param string $href Uri to the style sheet file
+	 * @param string $title Value for the title attribute of the link element
+	 * @param string $relation Value for the rel attribute of the link element
+	 * @return void
 	 */
 	public function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet') {
 		/** @var $pageRenderer t3lib_PageRenderer */
@@ -142,7 +140,7 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 	 * Initializes an anonymous template container.
 	 * The created container can be compared to alt_doc.php in backend-only disposal.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function initializeTemplateContainer() {
 		t3lib_div::requireOnce(PATH_typo3 . 'template.php');
