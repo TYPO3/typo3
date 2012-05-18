@@ -30,15 +30,14 @@
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * TYPO3 backend user authentication in the TSFE frontend.
  * This includes mainly functions related to the Admin Panel
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -138,7 +137,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	/**
 	 * Initializes frontend editing.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function initializeFrontendEdit() {
 		if (isset($this->extAdminConfig['enable.']) && $this->isFrontendEditingActive()) {
@@ -166,7 +165,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	/**
 	 * Determines whether frontend editing is currently active.
 	 *
-	 * @return	boolean		Wheter frontend editing is active
+	 * @return boolean Wheter frontend editing is active
 	 */
 	public function isFrontendEditingActive() {
 		return ($this->extAdmEnabled
@@ -178,7 +177,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	/**
 	 * Delegates to the appropriate view and renders the admin panel content.
 	 *
-	 * @return	string.
+	 * @return string.
 	 */
 	public function displayAdminPanel() {
 		$content = $this->adminPanel->display();
@@ -189,7 +188,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	/**
 	 * Determines whether the admin panel is enabled and visible.
 	 *
-	 * @return	boolean		Whether the admin panel is enabled and visible
+	 * @return boolean Whether the admin panel is enabled and visible
 	 */
 	public function isAdminPanelVisible() {
 		return ($this->extAdmEnabled && !$this->extAdminConfig['hide'] && $GLOBALS['TSFE']->config['config']['admPanel']);
@@ -205,31 +204,22 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * Implementing the access checks that the typo3/init.php script does before a user is ever logged in.
 	 * Used in the frontend.
 	 *
-	 * @return	boolean		Returns TRUE if access is OK
+	 * @return boolean Returns TRUE if access is OK
 	 * @see	typo3/init.php, t3lib_beuserauth::backendCheckLogin()
 	 */
 	public function checkBackendAccessSettingsFromInitPhp() {
-
-			// **********************
-			// Check Hardcoded lock on BE:
-			// **********************
+			// Check Hardcoded lock on BE
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] < 0) {
 			return FALSE;
 		}
-
-			// **********************
 			// Check IP
-			// **********************
 		if (trim($GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
 			if (!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
 				return FALSE;
 			}
 		}
 
-
-			// **********************
 			// Check SSL (https)
-			// **********************
 		if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']) && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] != 3) {
 			if (!t3lib_div::getIndpEnv('TYPO3_SSL')) {
 				return FALSE;
@@ -244,15 +234,14 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		}
 	}
 
-
 	/**
 	 * Evaluates if the Backend User has read access to the input page record.
 	 * The evaluation is based on both read-permission and whether the page is found in one of the users webmounts. Only if both conditions are TRUE will the function return TRUE.
 	 * Read access means that previewing is allowed etc.
 	 * Used in index_ts.php
 	 *
-	 * @param	array		The page record to evaluate for
-	 * @return	boolean		TRUE if read access
+	 * @param array $pageRec The page record to evaluate for
+	 * @return boolean TRUE if read access
 	 */
 	public function extPageReadAccess($pageRec) {
 		return $this->isInWebMount($pageRec['uid']) && $this->doesUserHaveAccess($pageRec, 1);
@@ -268,11 +257,11 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * Generates a list of Page-uid's from $id. List does not include $id itself
 	 * The only pages excluded from the list are deleted pages.
 	 *
-	 * @param	integer		Start page id
-	 * @param	integer		Depth to traverse down the page tree.
-	 * @param	integer		$begin is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
-	 * @param	string		Perms clause
-	 * @return	string		Returns the list with a comma in the end (if any pages selected!)
+	 * @param integer $id Start page id
+	 * @param integer $depth Depth to traverse down the page tree.
+	 * @param integer $begin Is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
+	 * @param string $perms_clause Perms clause
+	 * @return string Returns the list with a comma in the end (if any pages selected!)
 	 */
 	public function extGetTreeList($id, $depth, $begin = 0, $perms_clause) {
 		$depth = intval($depth);
@@ -302,15 +291,14 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	/**
 	 * Returns the number of cached pages for a page id.
 	 *
-	 * @param	integer		The page id.
-	 * @return	integer		The number of pages for this page in the table "cache_pages"
+	 * @param integer $pageId The page id.
+	 * @return integer The number of pages for this page in the table "cache_pages"
 	 */
 	public function extGetNumberOfCachedPages($pageId) {
 		$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
 		$pageCacheEntries = $pageCache->getByTag('pageId_' . (int)$pageId);
 		return count($pageCacheEntries);
 	}
-
 
 	/*****************************************************
 	 *
@@ -322,19 +310,20 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * Returns the label for key, $key. If a translation for the language set in $this->uc['lang'] is found that is returned, otherwise the default value.
 	 * IF the global variable $LOCAL_LANG is NOT an array (yet) then this function loads the global $LOCAL_LANG array with the content of "sysext/lang/locallang_tsfe.php" so that the values therein can be used for labels in the Admin Panel
 	 *
-	 * @param	string		Key for a label in the $GLOBALS['LOCAL_LANG'] array of "sysext/lang/locallang_tsfe.php"
-	 * @return	string		The value for the $key
+	 * @param string $key Key for a label in the $GLOBALS['LOCAL_LANG'] array of "sysext/lang/locallang_tsfe.php"
+	 * @return string The value for the $key
 	 */
 	public function extGetLL($key) {
 		if (!is_array($GLOBALS['LOCAL_LANG'])) {
 			$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_tsfe.php');
-			#include('./'.TYPO3_mainDir.'sysext/lang/locallang_tsfe.php');
+
 			if (!is_array($GLOBALS['LOCAL_LANG'])) {
 				$GLOBALS['LOCAL_LANG'] = array();
 			}
 		}
 
-		$labelStr = htmlspecialchars($GLOBALS['LANG']->getLL($key)); // Label string in the default backend output charset.
+			// Label string in the default backend output charset.
+		$labelStr = htmlspecialchars($GLOBALS['LANG']->getLL($key));
 
 		$labelStr = $GLOBALS['LANG']->csConvObj->utf8_to_entities($labelStr);
 
