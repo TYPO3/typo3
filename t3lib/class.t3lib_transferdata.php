@@ -29,30 +29,36 @@
  *
  * Revised for TYPO3 3.6 September/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * Class for getting and transforming data for display in backend forms (TCEforms)
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_transferData {
 		// External, static:
-	var $lockRecords = 0; // If set, the records requested are locked.
-	var $disableRTE = 0; // Is set externally if RTE is disabled.
-	var $prevPageID = ''; // If the pid in the command is 'prev' then $prevPageID is used as pid for the record. This is used to attach new records to other previous records eg. new pages.
-	var $defVals = array(); // Can be set with an array of default values for tables. First key is table name, second level keys are field names. Originally this was a GLOBAL array used internally.
-	var $addRawData = FALSE; // If set, the processed data is overlaid the raw record.
+		// If set, the records requested are locked.
+	var $lockRecords = 0;
+		// Is set externally if RTE is disabled.
+	var $disableRTE = 0;
+		// If the pid in the command is 'prev' then $prevPageID is used as pid for the record. This is used to attach new records to other previous records eg. new pages.
+	var $prevPageID = '';
+		// Can be set with an array of default values for tables. First key is table name, second level keys are field names. Originally this was a GLOBAL array used internally.
+	var $defVals = array();
+		// If set, the processed data is overlaid the raw record.
+	var $addRawData = FALSE;
 
 		// Internal, dynamic
-	var $regTableItems = array(); // Used to register, which items are already loaded!!
-	var $regTableItems_data = array(); // This stores the record data of the loaded records
-	var $loadModules = ''; // Contains loadModules object, if used. (for reuse internally)
-
+		// Used to register, which items are already loaded!!
+	var $regTableItems = array();
+		// This stores the record data of the loaded records
+	var $regTableItems_data = array();
+		// Contains loadModules object, if used. (for reuse internally)
+	var $loadModules = '';
 
 	/***********************************************
 	 *
@@ -65,10 +71,10 @@ class t3lib_transferData {
 	 * The function is also used to produce proper default data for new records
 	 * Ultimately the function will call renderRecord()
 	 *
-	 * @param	string		Table name, must be found in $GLOBALS['TCA']
-	 * @param	string		Comma list of id values. If $idList is "prev" then the value from $this->prevPageID is used. NOTICE: If $operation is "new", then negative ids are meant to point to a "previous" record and positive ids are PID values for new records. Otherwise (for existing records that is) it is straight forward table/id pairs.
-	 * @param	string		If "new", then a record with default data is returned. Further, the $id values are meant to be PID values (or if negative, pointing to a previous record). If NOT new, then the table/ids are just pointing to an existing record!
-	 * @return	void
+	 * @param string $table Table name, must be found in $GLOBALS['TCA']
+	 * @param string $idList Comma list of id values. If $idList is "prev" then the value from $this->prevPageID is used. NOTICE: If $operation is "new", then negative ids are meant to point to a "previous" record and positive ids are PID values for new records. Otherwise (for existing records that is) it is straight forward table/id pairs.
+	 * @param string $operation If "new", then a record with default data is returned. Further, the $id values are meant to be PID values (or if negative, pointing to a previous record). If NOT new, then the table/ids are just pointing to an existing record!
+	 * @return void
 	 * @see renderRecord()
 	 */
 	function fetchRecord($table, $idList, $operation) {
@@ -82,13 +88,15 @@ class t3lib_transferData {
 				// For each ID value (integer) we
 			$ids = t3lib_div::trimExplode(',', $idList, 1);
 			foreach ($ids as $id) {
-				if (strcmp($id, '')) { // If ID is not blank:
+					// If ID is not blank:
+				if (strcmp($id, '')) {
 
 						// For new records to be created, find default values:
 					if ($operation == 'new') {
 
 							// Default values:
-						$newRow = array(); // Used to store default values as found here:
+							// Used to store default values as found here:
+						$newRow = array();
 
 							// Default values as set in userTS:
 						$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
@@ -172,11 +180,11 @@ class t3lib_transferData {
 	 * Default values from outside/TSconfig is added by fetchRecord(). In this function default values from TCA is used if a field is NOT defined in $row.
 	 * The resulting, processed row is stored in $this->regTableItems_data[$uniqueItemRef], where $uniqueItemRef is "[tablename]_[id-value]"
 	 *
-	 * @param	string		The table name
-	 * @param	string		The uid value of the record (integer). Can also be a string (NEW-something) if the record is a NEW record.
-	 * @param	integer		The pid integer. For existing records this is of course the row's "pid" field. For new records it can be either a page id (positive) or a pointer to another record from the SAME table (negative) after which the record should be inserted (or on same page)
-	 * @param	array		The row of the current record. If NEW record, then it may be loaded with default values (by eg. fetchRecord()).
-	 * @return	void
+	 * @param string $table The table name
+	 * @param string $id The uid value of the record (integer). Can also be a string (NEW-something) if the record is a NEW record.
+	 * @param integer $pid The pid integer. For existing records this is of course the row's "pid" field. For new records it can be either a page id (positive) or a pointer to another record from the SAME table (negative) after which the record should be inserted (or on same page)
+	 * @param array $row The row of the current record. If NEW record, then it may be loaded with default values (by eg. fetchRecord()).
+	 * @return void
 	 * @see fetchRecord()
 	 */
 	function renderRecord($table, $id, $pid, $row) {
@@ -214,13 +222,13 @@ class t3lib_transferData {
 	 * In opposite to renderRecord() this function do not prepare things like fetching TSconfig and others.
 	 * The resulting, processed row will be returned.
 	 *
-	 * @param	string		The table name
-	 * @param	string		The uid value of the record (integer). Can also be a string (NEW-something) if the record is a NEW record.
-	 * @param	integer		The pid integer. For existing records this is of course the row's "pid" field. For new records it can be either a page id (positive) or a pointer to another record from the SAME table (negative) after which the record should be inserted (or on same page)
-	 * @param	array		The row of the current record. If NEW record, then it may be loaded with default values (by eg. fetchRecord()).
-	 * @param	array		Tsconfig array
-	 * @param	integer		PAGE TSconfig pid
-	 * @return	array		Processed record data
+	 * @param string $table The table name
+	 * @param string $id The uid value of the record (integer). Can also be a string (NEW-something) if the record is a NEW record.
+	 * @param integer $pid The pid integer. For existing records this is of course the row's "pid" field. For new records it can be either a page id (positive) or a pointer to another record from the SAME table (negative) after which the record should be inserted (or on same page)
+	 * @param array $row The row of the current record. If NEW record, then it may be loaded with default values (by eg. fetchRecord()).
+	 * @param array $TSconfig Tsconfig array
+	 * @param integer $tscPID PAGE TSconfig pid
+	 * @return array Processed record data
 	 * @see renderRecord()
 	 */
 	function renderRecordRaw($table, $id, $pid, $row, $TSconfig = '', $tscPID = 0) {
@@ -271,13 +279,13 @@ class t3lib_transferData {
 	/**
 	 * Function with the switch() construct which triggers functions for processing of the data value depending on the TCA-config field type.
 	 *
-	 * @param	string		Value to process
-	 * @param	array		TCA/columns array for field	(independant of TCA for flexforms - coming from XML then)
-	 * @param	array		TSconfig	(blank for flexforms for now)
-	 * @param	string		Table name
-	 * @param	array		The row array, always of the real record (also for flexforms)
-	 * @param	string		The field (empty for flexforms!)
-	 * @return	string		Modified $value
+	 * @param string $data Value to process
+	 * @param array $fieldConfig TCA/columns array for field	(independant of TCA for flexforms - coming from XML then)
+	 * @param array $TSconfig TSconfig	(blank for flexforms for now)
+	 * @param string $table Table name
+	 * @param array $row The row array, always of the real record (also for flexforms)
+	 * @param string $field The field (empty for flexforms!)
+	 * @return string Modified $value
 	 */
 	function renderRecord_SW($data, $fieldConfig, $TSconfig, $table, $row, $field) {
 		switch ((string) $fieldConfig['config']['type']) {
@@ -301,13 +309,13 @@ class t3lib_transferData {
 	/**
 	 * Processing of the data value in case the field type is "group"
 	 *
-	 * @param	string		The field value
-	 * @param	array		TCA field config
-	 * @param	array		TCEform TSconfig for the record
-	 * @param	string		Table name
-	 * @param	array		The row
-	 * @param	string		Field name
-	 * @return	string		The processed input field value ($data)
+	 * @param string $data The field value
+	 * @param array $fieldConfig TCA field config
+	 * @param array $TSconfig TCEform TSconfig for the record
+	 * @param string $table Table name
+	 * @param array $row The row
+	 * @param string $field Field name
+	 * @return string The processed input field value ($data)
 	 * @access private
 	 * @see renderRecord()
 	 */
@@ -340,7 +348,7 @@ class t3lib_transferData {
 			break;
 			case 'db':
 				$loadDB = t3lib_div::makeInstance('t3lib_loadDBGroup');
-				/* @var $loadDB t3lib_loadDBGroup */
+				/** @var $loadDB t3lib_loadDBGroup */
 				$loadDB->start($data, $fieldConfig['config']['allowed'], $fieldConfig['config']['MM'], $row['uid'], $table, $fieldConfig['config']);
 				$loadDB->getFromDB();
 				$data = $loadDB->readyForInterface();
@@ -353,21 +361,23 @@ class t3lib_transferData {
 	/**
 	 * Processing of the data value in case the field type is "select"
 	 *
-	 * @param	string		The field value
-	 * @param	array		TCA field config
-	 * @param	array		TCEform TSconfig for the record
-	 * @param	string		Table name
-	 * @param	array		The row
-	 * @param	string		Field name
-	 * @return	string		The processed input field value ($data)
+	 * @param string $data The field value
+	 * @param array $fieldConfig TCA field config
+	 * @param array $TSconfig TCEform TSconfig for the record
+	 * @param string $table Table name
+	 * @param array $row The row
+	 * @param string $field Field name
+	 * @return string The processed input field value ($data)
 	 * @access private
 	 * @see renderRecord()
 	 */
 	function renderRecord_selectProc($data, $fieldConfig, $TSconfig, $table, $row, $field) {
 
 			// Initialize:
-		$elements = t3lib_div::trimExplode(',', $data, 1); // Current data set.
-		$dataAcc = array(); // New data set, ready for interface (list of values, rawurlencoded)
+			// Current data set.
+		$elements = t3lib_div::trimExplode(',', $data, 1);
+			// New data set, ready for interface (list of values, rawurlencoded)
+		$dataAcc = array();
 
 			// For list selectors (multi-value):
 		if (intval($fieldConfig['config']['maxitems']) > 1) {
@@ -418,13 +428,13 @@ class t3lib_transferData {
 	 * Processing of the data value in case the field type is "flex"
 	 * MUST NOT be called in case of already INSIDE a flexform!
 	 *
-	 * @param	string		The field value
-	 * @param	array		TCA field config
-	 * @param	array		TCEform TSconfig for the record
-	 * @param	string		Table name
-	 * @param	array		The row
-	 * @param	string		Field name
-	 * @return	string		The processed input field value ($data)
+	 * @param string $data The field value
+	 * @param array $fieldConfig CA field config
+	 * @param array $TSconfig TCEform TSconfig for the record
+	 * @param string $table Table name
+	 * @param array $row The row
+	 * @param string $field Field name
+	 * @return string The processed input field value ($data)
 	 * @access private
 	 * @see renderRecord()
 	 */
@@ -458,12 +468,12 @@ class t3lib_transferData {
 	/**
 	 * Processing of the content in $totalRecordcontent based on settings in the types-configuration
 	 *
-	 * @param	array		The array of values which has been processed according to their type (eg. "group" or "select")
-	 * @param	array		The "types" configuration for the current display of fields.
-	 * @param	integer		PAGE TSconfig PID
-	 * @param	string		Table name
-	 * @param	integer		PID value
-	 * @return	array		The processed version of $totalRecordContent
+	 * @param array $totalRecordContent The array of values which has been processed according to their type (eg. "group" or "select")
+	 * @param array $types_fieldConfig The "types" configuration for the current display of fields.
+	 * @param integer $tscPID PAGE TSconfig PID
+	 * @param string $table Table name
+	 * @param integer $pid PID value
+	 * @return array The processed version of $totalRecordContent
 	 * @access private
 	 */
 	function renderRecord_typesProc($totalRecordContent, $types_fieldConfig, $tscPID, $table, $pid) {
@@ -497,21 +507,23 @@ class t3lib_transferData {
 	 * Processing of the data value in case the field type is "inline"
 	 * In some parts nearly the same as type "select"
 	 *
-	 * @param	string		The field value
-	 * @param	array		TCA field config
-	 * @param	array		TCEform TSconfig for the record
-	 * @param	string		Table name
-	 * @param	array		The row
-	 * @param	string		Field name
-	 * @return	string		The processed input field value ($data)
+	 * @param string $data The field value
+	 * @param array $fieldConfig TCA field config
+	 * @param array $TSconfig TCEform TSconfig for the record
+	 * @param string $table Table name
+	 * @param array $row The row
+	 * @param string $field Field name
+	 * @return string The processed input field value ($data)
 	 * @access private
 	 * @see renderRecord()
 	 */
 	function renderRecord_inlineProc($data, $fieldConfig, $TSconfig, $table, $row, $field) {
 
 			// Initialize:
-		$elements = t3lib_div::trimExplode(',', $data); // Current data set.
-		$dataAcc = array(); // New data set, ready for interface (list of values, rawurlencoded)
+			// Current data set.
+		$elements = t3lib_div::trimExplode(',', $data);
+			// New data set, ready for interface (list of values, rawurlencoded)
+		$dataAcc = array();
 
 			// At this point all records that CAN be selected is found in $recordList
 			// Now, get the data from loadDBgroup based on the input list of values.
@@ -533,7 +545,6 @@ class t3lib_transferData {
 		return implode(',', $dataAcc);
 	}
 
-
 	/***********************************************
 	 *
 	 * FlexForm processing functions
@@ -543,10 +554,10 @@ class t3lib_transferData {
 	/**
 	 * Function traversing sheets/languages for flex form data structures
 	 *
-	 * @param	array		Data array
-	 * @param	array		Data Structure array
-	 * @param	array		Various parameters to pass-through
-	 * @return	array		Modified $dataPart array.
+	 * @param array $dataPart Data array
+	 * @param array $dataStructArray Data Structure array
+	 * @param array $pParams Various parameters to pass-through
+	 * @return array Modified $dataPart array.
 	 * @access private
 	 * @see t3lib_TCEmain::checkValue_flex_procInData(), renderRecord_flexProc_procInData_travDS()
 	 */
@@ -573,10 +584,10 @@ class t3lib_transferData {
 	/**
 	 * Traverse data array / structure
 	 *
-	 * @param	array		Data array passed by reference.
-	 * @param	array		Data structure
-	 * @param	array		Various parameters pass-through.
-	 * @return	void
+	 * @param array $dataValues Data array passed by reference.
+	 * @param array $DSelements Data structure
+	 * @param array $pParams Various parameters pass-through.
+	 * @return void
 	 * @see renderRecord_flexProc_procInData(), t3lib_TCEmain::checkValue_flex_procInData_travDS()
 	 */
 	function renderRecord_flexProc_procInData_travDS(&$dataValues, $DSelements, $pParams) {
@@ -633,7 +644,6 @@ class t3lib_transferData {
 		}
 	}
 
-
 	/***********************************************
 	 *
 	 * Selector box processing functions
@@ -643,10 +653,10 @@ class t3lib_transferData {
 	/**
 	 * Adding "special" types to the $dataAcc array of selector items
 	 *
-	 * @param	array		Array with numeric keys, containing values for the selector box, prepared for interface. We are going to add elements to this array as needed.
-	 * @param	array		The array of original elements - basically the field value exploded by ","
-	 * @param	string		The "special" key from the TCA config of the field. Determines the type of processing in here.
-	 * @return	array		Modified $dataAcc array
+	 * @param array $dataAcc Array with numeric keys, containing values for the selector box, prepared for interface. We are going to add elements to this array as needed.
+	 * @param array $elements The array of original elements - basically the field value exploded by ","
+	 * @param string $specialKey The "special" key from the TCA config of the field. Determines the type of processing in here.
+	 * @return array Modified $dataAcc array
 	 * @access private
 	 * @see renderRecord_selectProc()
 	 */
@@ -654,7 +664,8 @@ class t3lib_transferData {
 
 			// Special select types:
 		switch ((string) $specialKey) {
-			case 'tables': // Listing all tables from $GLOBALS['TCA']:
+				// Listing all tables from $GLOBALS['TCA']:
+			case 'tables':
 				$tNames = array_keys($GLOBALS['TCA']);
 				foreach ($tNames as $tableName) {
 					foreach ($elements as $eKey => $value) {
@@ -664,7 +675,8 @@ class t3lib_transferData {
 					}
 				}
 			break;
-			case 'pagetypes': // Listing all page types (doktype)
+				// Listing all page types (doktype)
+			case 'pagetypes':
 				$theTypes = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
 				if (is_array($theTypes)) {
 					foreach ($theTypes as $theTypesArrays) {
@@ -676,7 +688,8 @@ class t3lib_transferData {
 					}
 				}
 			break;
-			case 'exclude': // Listing exclude fields.
+				// Listing exclude fields.
+			case 'exclude':
 				$theExcludeFields = t3lib_BEfunc::getExcludeFields();
 
 				if (is_array($theExcludeFields)) {
@@ -732,8 +745,10 @@ class t3lib_transferData {
 					}
 				}
 			break;
-			case 'modListGroup': // Listing modules for GROUPS
-			case 'modListUser': // Listing modules for USERS:
+				// Listing modules for GROUPS
+			case 'modListGroup':
+				// Listing modules for USERS:
+			case 'modListUser':
 				if (!$this->loadModules) {
 					$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
 					$this->loadModules->load($GLOBALS['TBE_MODULES']);
@@ -765,14 +780,14 @@ class t3lib_transferData {
 	/**
 	 * Adds the foreign record elements to $dataAcc, if any
 	 *
-	 * @param	array		Array with numeric keys, containing values for the selector box, prepared for interface. We are going to add elements to this array as needed.
-	 * @param	array		The array of original elements - basically the field value exploded by ","
-	 * @param	array		Field configuration from TCA
-	 * @param	string		The field name
-	 * @param	array		TSconfig for the record
-	 * @param	array		The record
-	 * @param	array		The current table
-	 * @return	array		Modified $dataAcc array
+	 * @param array $dataAcc Array with numeric keys, containing values for the selector box, prepared for interface. We are going to add elements to this array as needed.
+	 * @param array $elements The array of original elements - basically the field value exploded by ","
+	 * @param array $fieldConfig Field configuration from TCA
+	 * @param string $field The field name
+	 * @param array $TSconfig TSconfig for the record
+	 * @param array $row The record
+	 * @param array $table The current table
+	 * @return array Modified $dataAcc array
 	 * @access private
 	 * @see renderRecord_selectProc()
 	 */
@@ -781,7 +796,7 @@ class t3lib_transferData {
 			// Init:
 		$recordList = array();
 
-			// foreign_table
+			// Foreign_table
 		$subres = t3lib_BEfunc::exec_foreign_table_where_query($fieldConfig, $field, $TSconfig);
 		while ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($subres)) {
 			$recordList[$subrow['uid']] = t3lib_BEfunc::getRecordTitle($fieldConfig['config']['foreign_table'], $subrow);
@@ -824,11 +839,11 @@ class t3lib_transferData {
 	/**
 	 * Returning the id-list processed by loadDBgroup for the foreign tables.
 	 *
-	 * @param	array		The array of original elements - basically the field value exploded by ","
-	 * @param	array		Field configuration from TCA
-	 * @param	array		The data array, currently. Used to set the "local_uid" for selecting MM relation records.
-	 * @param	string		Current table name. passed on to t3lib_loadDBGroup
-	 * @return	array		An array with ids of the records from the input elements array.
+	 * @param array $elements The array of original elements - basically the field value exploded by ","
+	 * @param array $fieldConfig Field configuration from TCA
+	 * @param array $row The data array, currently. Used to set the "local_uid" for selecting MM relation records.
+	 * @param string $table Current table name. passed on to t3lib_loadDBGroup
+	 * @return array An array with ids of the records from the input elements array.
 	 * @access private
 	 */
 	function getDataIdList($elements, $fieldConfig, $row, $table) {
@@ -850,13 +865,13 @@ class t3lib_transferData {
 	/**
 	 * Processing of selector box items. This includes the automated adding of elements plus user-function processing.
 	 *
-	 * @param	array		The elements to process
-	 * @param	array		TCA/columns configuration
-	 * @param	array		TSconfig for the field
-	 * @param	string		The table name
-	 * @param	array		The current row
-	 * @param	string		The field name
-	 * @return	array		The modified input $selItems array
+	 * @param array The elements to process
+	 * @param array TCA/columns configuration
+	 * @param array TSconfig for the field
+	 * @param string The table name
+	 * @param array The current row
+	 * @param string The field name
+	 * @return array The modified input $selItems array
 	 * @access private
 	 * @see renderRecord_selectProc()
 	 */
@@ -871,9 +886,9 @@ class t3lib_transferData {
 	/**
 	 * Adding items from $iArray to $items array
 	 *
-	 * @param	array		The array of selector box items to which key(value) / value(label) pairs from $iArray will be added.
-	 * @param	array		The array of elements to add. The keys will become values. The value will become the label.
-	 * @return	array		The modified input $items array
+	 * @param array $items The array of selector box items to which key(value) / value(label) pairs from $iArray will be added.
+	 * @param array $iArray The array of elements to add. The keys will become values. The value will become the label.
+	 * @return array The modified input $items array
 	 * @access private
 	 * @see procesItemArray()
 	 */
@@ -889,13 +904,13 @@ class t3lib_transferData {
 	/**
 	 * User processing of a selector box array of values.
 	 *
-	 * @param	array		The array of selector box items
-	 * @param	array		TSconfig for the fields itemProcFunc
-	 * @param	array		TCA/columns configuration
-	 * @param	string		The table name
-	 * @param	array		The current row
-	 * @param	string		The field name
-	 * @return	array		The modified input $items array
+	 * @param array $items The array of selector box items
+	 * @param array $itemsProcFuncTSconfig TSconfig for the fields itemProcFunc
+	 * @param array $config TCA/columns configuration
+	 * @param string $table The table name
+	 * @param array $row The current row
+	 * @param string $field The field name
+	 * @return array The modified input $items array
 	 * @access private
 	 * @see procesItemArray()
 	 */
@@ -912,7 +927,6 @@ class t3lib_transferData {
 		return $items;
 	}
 
-
 	/***********************************************
 	 *
 	 * Helper functions
@@ -922,10 +936,10 @@ class t3lib_transferData {
 	/**
 	 * Sets the lock for a record from table/id, IF $this->lockRecords is set!
 	 *
-	 * @param	string		The table name
-	 * @param	integer		The id of the record
-	 * @param	integer		The pid of the record
-	 * @return	void
+	 * @param string $table The table name
+	 * @param integer $id The id of the record
+	 * @param integer $pid The pid of the record
+	 * @return void
 	 */
 	function lockRecord($table, $id, $pid = 0) {
 		if ($this->lockRecords) {
@@ -936,11 +950,11 @@ class t3lib_transferData {
 	/**
 	 * Dummy function, can be used to "register" records. Used by eg. the "show_item" script.
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record id
-	 * @param	string		Field name
-	 * @param	string		Field content.
-	 * @return	void
+	 * @param string $table Table name
+	 * @param integer $id Record id
+	 * @param string $field Field name
+	 * @param string $content Field content.
+	 * @return void
 	 * @access private
 	 * @see renderRecord()
 	 */
@@ -950,8 +964,8 @@ class t3lib_transferData {
 	/**
 	 * Local wrapper function for LANG->sL (returning language labels)
 	 *
-	 * @param	string		Language label key
-	 * @return	string		Localized label value.
+	 * @param string Language label key
+	 * @return string Localized label value.
 	 * @access private
 	 */
 	function sL($in) {
