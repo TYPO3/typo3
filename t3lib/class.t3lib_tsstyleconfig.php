@@ -27,19 +27,18 @@
 /**
  * Provides a simplified layer for making Constant Editor style configuration forms
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * Provides a simplified layer for making Constant Editor style configuration forms
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_tsStyleConfig extends t3lib_tsparser_ext {
-		// internal
+		// Internal
 	var $categories = array();
 	var $ext_dontCheckIssetValues = 1;
 	var $ext_CEformName = "tsStyleConfigForm";
@@ -51,17 +50,19 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext {
 
 
 	/**
-	 * @param	string		pathRel is the path relative to the typo3/ directory
-	 * @param	string		pathAbs is the absolute path from root
-	 * @param	string		backPath is the backReference from current position to typo3/ dir
-	 * @param	[type]		$backPath: ...
+	 * @param string $configTemplate
+	 * @param string $pathRel PathRel is the path relative to the typo3/ directory
+	 * @param string $pathAbs PathAbs is the absolute path from root
+	 * @param string $backPath BackPath is the backReference from current position to typo3/ dir
 	 * @return	[type]		...
 	 */
 	function ext_initTSstyleConfig($configTemplate, $pathRel, $pathAbs, $backPath) {
-		$this->tt_track = 0; // Do not log time-performance information
-		$this->constants = array($configTemplate, "");
+			// Do not log time-performance information
+		$this->tt_track = 0;
+		$this->constants = array($configTemplate, '');
 
-		$theConstants = $this->generateConfig_constants(); // The editable constants are returned in an array.
+			// The editable constants are returned in an array.
+		$theConstants = $this->generateConfig_constants();
 
 		$this->ext_localGfxPrefix = $pathAbs;
 		$this->ext_localWebGfxPrefix = $backPath . $pathRel;
@@ -81,7 +82,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext {
 
 		$temp = $this->flatSetup;
 		$this->flatSetup = array();
-		$this->flattenSetup($valueArray, "", "");
+		$this->flattenSetup($valueArray, '', '');
 		$this->objReg = $this->ext_realValues = $this->flatSetup;
 		$this->flatSetup = $temp;
 
@@ -92,8 +93,10 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext {
 			}
 		}
 
-		$this->categories = array(); // Reset the default pool of categories.
-		$this->ext_categorizeEditableConstants($theConstants); // The returned constants are sorted in categories, that goes into the $this->categories array
+			// Reset the default pool of categories.
+		$this->categories = array();
+			// The returned constants are sorted in categories, that goes into the $this->categories array
+		$this->ext_categorizeEditableConstants($theConstants);
 
 		return $theConstants;
 	}
@@ -120,13 +123,13 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext {
 	/**
 	 * Get the form for extension configuration
 	 *
-	 * @param  string  $cat
-	 * @param  array $theConstants
-	 * @param  string  $script
-	 * @param  string $addFields
-	 * @param  string $extKey
-	 * @param  bool  Adds opening <form> tag to the ouput, if TRUE
-	 * @return  string the form
+	 * @param string $cat
+	 * @param array $theConstants
+	 * @param string $script
+	 * @param string $addFields
+	 * @param string $extKey
+	 * @param boolean Adds opening <form> tag to the ouput, if TRUE
+	 * @return string The form
 	 */
 	function ext_getForm($cat, $theConstants, $script = "", $addFields = "", $extKey = "", $addFormTag = TRUE) {
 		$this->ext_makeHelpInformationForCategory($cat);
@@ -180,7 +183,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext {
 		return t3lib_div::array_merge_recursive_overrule($arr, $arr2);
 	}
 
-		// extends:
+		// Extends:
 	function ext_getKeyImage($key) {
 		return '<img' . t3lib_iconWorks::skinImg($this->ext_backPath, 'gfx/rednumbers/' . $key . '.gif', '') . ' hspace="2" align="top" alt="" />';
 	}
@@ -208,7 +211,8 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext {
 		$fN = 'data[' . $params["name"] . ']';
 		$fV = $params["value"] = isset($this->ext_realValues[$params["name"]]) ? $this->ext_realValues[$params["name"]] : $params["default_value"];
 		$reg = array();
-		if (preg_match('/^\{[\$][a-zA-Z0-9\.]*\}$/', trim($fV), $reg)) { // Values entered from the constantsedit cannot be constants!
+			// Values entered from the constantsedit cannot be constants!
+		if (preg_match('/^\{[\$][a-zA-Z0-9\.]*\}$/', trim($fV), $reg)) {
 			$fV = "";
 		}
 		$fV = htmlspecialchars($fV);
