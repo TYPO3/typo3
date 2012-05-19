@@ -136,7 +136,7 @@ class tslib_menu {
 	 * @return	boolean		Returns TRUE on success
 	 * @see tslib_cObj::HMENU()
 	 */
-	function start(&$tmpl,&$sys_page,$id,$conf,$menuNumber,$objSuffix='')	{
+	function start(&$tmpl,&$sys_page,$id,$conf,$menuNumber,$objSuffix='') {
 
 			// Init:
 		$this->conf = $conf;
@@ -145,7 +145,7 @@ class tslib_menu {
 		$this->debug=$GLOBALS['TSFE']->debug;
 
 			// In XHTML there is no "name" attribute anymore
-		switch ($GLOBALS['TSFE']->xhtmlDoctype)	{
+		switch ($GLOBALS['TSFE']->xhtmlDoctype) {
 			case 'xhtml_strict':
 			case 'xhtml_11':
 			case 'xhtml_2':
@@ -158,7 +158,7 @@ class tslib_menu {
 		}
 
 			// Sets the internal vars. $tmpl MUST be the template-object. $sys_page MUST be the sys_page object
-		if ($this->conf[$this->menuNumber.$objSuffix] && is_object($tmpl) && is_object($sys_page))	{
+		if ($this->conf[$this->menuNumber.$objSuffix] && is_object($tmpl) && is_object($sys_page)) {
 			$this->tmpl = $tmpl;
 			$this->sys_page = $sys_page;
 
@@ -189,41 +189,41 @@ class tslib_menu {
 
 					// Traverse rootline to build MP_array of pages BEFORE the entryLevel
 					// (MP var for ->id is picked up in the next part of the code...)
-				foreach($this->tmpl->rootLine as $entryLevel => $levelRec)	{
+				foreach($this->tmpl->rootLine as $entryLevel => $levelRec) {
 						// For overlaid mount points, set the variable right now:
-					if ($levelRec['_MP_PARAM'] && $levelRec['_MOUNT_OL'])	{
+					if ($levelRec['_MP_PARAM'] && $levelRec['_MOUNT_OL']) {
 						$this->MP_array[] = $levelRec['_MP_PARAM'];
 			}
 						// Break when entry level is reached:
 					if ($entryLevel>=$this->entryLevel)	break;
 
 						// For normal mount points, set the variable for next level.
-					if ($levelRec['_MP_PARAM'] && !$levelRec['_MOUNT_OL'])	{
+					if ($levelRec['_MP_PARAM'] && !$levelRec['_MOUNT_OL']) {
 						$this->MP_array[] = $levelRec['_MP_PARAM'];
 					}
 				}
 			}
 
 				// Return FALSE if no page ID was set (thus no menu of subpages can be made).
-			if ($this->id<=0)	{
+			if ($this->id<=0) {
 				return FALSE;
 			}
 
 				// Check if page is a mount point, and if so set id and MP_array
 				// (basically this is ONLY for non-overlay mode, but in overlay mode an ID with a mount point should never reach this point anyways, so no harm done...)
 			$mount_info = $this->sys_page->getMountPointInfo($this->id);
-			if (is_array($mount_info))	{
+			if (is_array($mount_info)) {
 				$this->MP_array[] = $mount_info['MPvar'];
 				$this->id = $mount_info['mount_pid'];
 			}
 
 				// Gather list of page uids in root line (for "isActive" evaluation). Also adds the MP params in the path so Mount Points are respected.
 				// (List is specific for this rootline, so it may be supplied from parent menus for speed...)
-			if (!is_array($this->rL_uidRegister))	{
+			if (!is_array($this->rL_uidRegister)) {
 				$rl_MParray = array();
-				foreach($this->tmpl->rootLine as $v_rl)	{
+				foreach($this->tmpl->rootLine as $v_rl) {
 						// For overlaid mount points, set the variable right now:
-					if ($v_rl['_MP_PARAM'] && $v_rl['_MOUNT_OL'])	{
+					if ($v_rl['_MP_PARAM'] && $v_rl['_MOUNT_OL']) {
 						$rl_MParray[] = $v_rl['_MP_PARAM'];
 					}
 
@@ -231,7 +231,7 @@ class tslib_menu {
 					$this->rL_uidRegister[] = 'ITEM:'.$v_rl['uid'].(count($rl_MParray) ? ':'.implode(',',$rl_MParray) : '');
 
 						// For normal mount points, set the variable for next level.
-					if ($v_rl['_MP_PARAM'] && !$v_rl['_MOUNT_OL'])	{
+					if ($v_rl['_MP_PARAM'] && !$v_rl['_MOUNT_OL']) {
 						$rl_MParray[] = $v_rl['_MP_PARAM'];
 					}
 				}
@@ -240,7 +240,7 @@ class tslib_menu {
 			// Set $directoryLevel so the following evalution of the nextActive will not return
 			// an invalid value if .special=directory was set
 			$directoryLevel = 0;
-			if ($this->conf['special'] == 'directory')	{
+			if ($this->conf['special'] == 'directory') {
 				$value = isset($this->conf['special.']['value.'])
 					? $this->parent_cObj->stdWrap($this->conf['special.']['value'], $this->conf['special.']['value.'])
 					: $this->conf['special.']['value'];
@@ -295,10 +295,10 @@ class tslib_menu {
 	 * @return	void
 	 */
 	function makeMenu() {
-		if ($this->id)	{
+		if ($this->id) {
 
 				// Initializing showAccessRestrictedPages
-			if ($this->mconf['showAccessRestrictedPages'])	{
+			if ($this->mconf['showAccessRestrictedPages']) {
 					// SAVING where_groupAccess
 				$SAVED_where_groupAccess = $this->sys_page->where_groupAccess;
 				$this->sys_page->where_groupAccess = '';	// Temporarily removing fe_group checking!
@@ -313,7 +313,7 @@ class tslib_menu {
 					? $this->parent_cObj->stdWrap($this->conf['special.']['value'], $this->conf['special.']['value.'])
 					: $this->conf['special.']['value'];
 
-				switch($this->conf['special'])	{
+				switch($this->conf['special']) {
 					case 'userfunction':
 						$temp = $this->parent_cObj->callUserFunction(
 							$this->conf['special.']['userFunc'],
@@ -330,9 +330,9 @@ class tslib_menu {
 
 							// Traverse languages set up:
 						$languageItems = t3lib_div::intExplode(',',$value);
-						foreach($languageItems as $sUid)	{
+						foreach($languageItems as $sUid) {
 								// Find overlay record:
-							if ($sUid)	{
+							if ($sUid) {
 								$lRecs = $this->sys_page->getPageOverlay($GLOBALS['TSFE']->page['uid'],$sUid);
 							} else $lRecs=array();
 								// Checking if the "disabled" state should be set.
@@ -346,7 +346,7 @@ class tslib_menu {
 								$iState = $GLOBALS['TSFE']->sys_language_uid==$sUid ? 'ACT' : 'NO';
 							}
 
-							if ($this->conf['addQueryString'])	{
+							if ($this->conf['addQueryString']) {
 								$getVars = $this->parent_cObj->getQueryArguments($this->conf['addQueryString.'],array('L'=>$sUid),TRUE);
 							} else {
 								$getVars = '&L='.$sUid;
@@ -369,12 +369,12 @@ class tslib_menu {
 						}
 						$items=t3lib_div::intExplode(',',$value);
 
-						foreach($items as $id)	{
+						foreach($items as $id) {
 							$MP = $this->tmpl->getFromMPmap($id);
 
 								// Checking if a page is a mount page and if so, change the ID and set the MP var properly.
 							$mount_info = $this->sys_page->getMountPointInfo($id);
-							if (is_array($mount_info))	{
+							if (is_array($mount_info)) {
 								if ($mount_info['overlay'])	{	// Overlays should already have their full MPvars calculated:
 									$MP = $this->tmpl->getFromMPmap($mount_info['mount_pid']);
 									$MP = $MP ? $MP : $mount_info['MPvar'];
@@ -386,22 +386,22 @@ class tslib_menu {
 
 								// Get sub-pages:
 							$res = $this->parent_cObj->exec_getQuery('pages',Array('pidInList'=>$id,'orderBy'=>$altSortField));
-							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 								$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
 
-								if (is_array($row))	{
+								if (is_array($row)) {
 										// Keep mount point?
 									$mount_info = $this->sys_page->getMountPointInfo($row['uid'], $row);
 									if (is_array($mount_info) && $mount_info['overlay'])	{	// There is a valid mount point.
 										$mp_row = $this->sys_page->getPage($mount_info['mount_pid']);		// Using "getPage" is OK since we need the check for enableFields AND for type 2 of mount pids we DO require a doktype < 200!
-										if (count($mp_row))	{
+										if (count($mp_row)) {
 											$row = $mp_row;
 											$row['_MP_PARAM'] = $mount_info['MPvar'];
 										} else unset($row);	// If the mount point could not be fetched with respect to enableFields, unset the row so it does not become a part of the menu!
 									}
 
 										// Add external MP params, then the row:
-									if (is_array($row))	{
+									if (is_array($row)) {
 										if ($MP)	$row['_MP_PARAM'] = $MP.($row['_MP_PARAM'] ? ','.$row['_MP_PARAM'] : '');
 										$temp[$row['uid']] = $this->sys_page->getPageOverlay($row);
 									}
@@ -418,14 +418,14 @@ class tslib_menu {
 						$loadDB->additionalWhere['pages']=tslib_cObj::enableFields('pages');
 						$loadDB->getFromDB();
 
-						foreach($loadDB->itemArray as $val)	{
+						foreach($loadDB->itemArray as $val) {
 							$MP = $this->tmpl->getFromMPmap($val['id']);
 
 								// Keep mount point?
 							$mount_info = $this->sys_page->getMountPointInfo($val['id']);
 							if (is_array($mount_info) && $mount_info['overlay'])	{	// There is a valid mount point.
 								$mp_row = $this->sys_page->getPage($mount_info['mount_pid']);		// Using "getPage" is OK since we need the check for enableFields AND for type 2 of mount pids we DO require a doktype < 200!
-								if (count($mp_row))	{
+								if (count($mp_row)) {
 									$row = $mp_row;
 									$row['_MP_PARAM'] = $mount_info['MPvar'];
 
@@ -444,7 +444,7 @@ class tslib_menu {
 							}
 
 								// Add external MP params, then the row:
-							if (is_array($row))	{
+							if (is_array($row)) {
 								if ($MP)	$row['_MP_PARAM'] = $MP.($row['_MP_PARAM'] ? ','.$row['_MP_PARAM'] : '');
 								$temp[] = $this->sys_page->getPageOverlay($row);
 							}
@@ -455,7 +455,7 @@ class tslib_menu {
 							$value=$GLOBALS['TSFE']->page['uid'];
 						}
 						$items=t3lib_div::intExplode(',',$value);
-						if (t3lib_utility_Math::canBeInterpretedAsInteger($this->conf['special.']['depth']))	{
+						if (t3lib_utility_Math::canBeInterpretedAsInteger($this->conf['special.']['depth'])) {
 							$depth = t3lib_utility_Math::forceIntegerInRange($this->conf['special.']['depth'],1,20);		// Tree depth
 						} else {
 							$depth=20;
@@ -467,13 +467,13 @@ class tslib_menu {
 							// Get id's
 						$id_list_arr = Array();
 
-						foreach($items as $id)	{
+						foreach($items as $id) {
 							$bA = t3lib_utility_Math::forceIntegerInRange($this->conf['special.']['beginAtLevel'],0,100);
 							$id_list_arr[] = tslib_cObj::getTreeList(-1*$id,$depth-1+$bA,$bA-1);
 						}
 						$id_list = implode(',',$id_list_arr);
 							// Get sortField (mode)
-						switch($mode)	{
+						switch($mode) {
 							case 'starttime':
 								$sortField = 'starttime';
 							break;
@@ -497,14 +497,14 @@ class tslib_menu {
 						if ($this->conf['special.']['excludeNoSearchPages']) {
 							$extraWhere.= ' AND pages.no_search=0';
 						}
-						if ($maxAge>0)	{
+						if ($maxAge>0) {
 							$extraWhere.=' AND '.$sortField.'>'.($GLOBALS['SIM_ACCESS_TIME']-$maxAge);
 						}
 
 						$res = $this->parent_cObj->exec_getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>$sortField.'>=0'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));
-						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 							$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
-							if (is_array($row))	{
+							if (is_array($row)) {
 								$temp[$row['uid']]=$this->sys_page->getPageOverlay($row);
 							}
 						}
@@ -526,7 +526,7 @@ class tslib_menu {
 						}
 
 						$mode = $this->conf['special.']['mode'];	// *'auto', 'manual', 'tstamp'
-						switch($mode)	{
+						switch($mode) {
 							case 'starttime':
 								$sortField = 'starttime';
 							break;
@@ -546,7 +546,7 @@ class tslib_menu {
 						}
 
 							// depth, limit, extra where
-						if (t3lib_utility_Math::canBeInterpretedAsInteger($this->conf['special.']['depth']))	{
+						if (t3lib_utility_Math::canBeInterpretedAsInteger($this->conf['special.']['depth'])) {
 							$depth = t3lib_utility_Math::forceIntegerInRange($this->conf['special.']['depth'],0,20);		// Tree depth
 						} else {
 							$depth=20;
@@ -572,21 +572,21 @@ class tslib_menu {
 						}
 
 							// If there are keywords and the startuid is present.
-						if ($kw && $startUid)	{
+						if ($kw && $startUid) {
 							$bA = t3lib_utility_Math::forceIntegerInRange($this->conf['special.']['beginAtLevel'],0,100);
 							$id_list=tslib_cObj::getTreeList(-1*$startUid,$depth-1+$bA,$bA-1);
 
 							$kwArr = explode(',',$kw);
-							foreach($kwArr as $word)	{
+							foreach($kwArr as $word) {
 								$word = trim($word);
-								if ($word)	{
+								if ($word) {
 									$keyWordsWhereArr[] = $kfield.' LIKE \'%'.$GLOBALS['TYPO3_DB']->quoteStr($word, 'pages').'%\'';
 								}
 							}
 							$res = $this->parent_cObj->exec_getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>'('.implode(' OR ',$keyWordsWhereArr).')'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));
-							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 								$GLOBALS['TSFE']->sys_page->versionOL('pages',$row);
-								if (is_array($row))	{
+								if (is_array($row)) {
 									$temp[$row['uid']]=$this->sys_page->getPageOverlay($row);
 								}
 							}
@@ -607,16 +607,16 @@ class tslib_menu {
 						if ($endKey<$beginKey)	{$endKey=$beginKey;}
 
 						$rl_MParray = array();
-						foreach($this->tmpl->rootLine as $k_rl => $v_rl)	{
+						foreach($this->tmpl->rootLine as $k_rl => $v_rl) {
 								// For overlaid mount points, set the variable right now:
-							if ($v_rl['_MP_PARAM'] && $v_rl['_MOUNT_OL'])	{
+							if ($v_rl['_MP_PARAM'] && $v_rl['_MOUNT_OL']) {
 								$rl_MParray[] = $v_rl['_MP_PARAM'];
 							}
 								// Traverse rootline:
-							if ($k_rl>=$beginKey && $k_rl<=$endKey)	{
+							if ($k_rl>=$beginKey && $k_rl<=$endKey) {
 								$temp_key=$k_rl;
 								$temp[$temp_key]=$this->sys_page->getPage($v_rl['uid']);
-								if (count($temp[$temp_key]))	{
+								if (count($temp[$temp_key])) {
 									if (!$temp[$temp_key]['target'])	{	// If there are no specific target for the page, put the level specific target on.
 										$temp[$temp_key]['target'] = $this->conf['special.']['targets.'][$k_rl];
 										$temp[$temp_key]['_MP_PARAM'] = implode(',',$rl_MParray);
@@ -624,7 +624,7 @@ class tslib_menu {
 								} else unset($temp[$temp_key]);
 							}
 								// For normal mount points, set the variable for next level.
-							if ($v_rl['_MP_PARAM'] && !$v_rl['_MOUNT_OL'])	{
+							if ($v_rl['_MP_PARAM'] && !$v_rl['_MOUNT_OL']) {
 								$rl_MParray[] = $v_rl['_MP_PARAM'];
 							}
 						}
@@ -654,12 +654,12 @@ class tslib_menu {
 							$lastKey=0;
 							$nextActive=0;
 							foreach ($prevnext_menu as $k_b => $v_b) {
-								if ($nextActive)	{
+								if ($nextActive) {
 									$recArr['next']=$v_b;
 									$nextActive=0;
 								}
-								if ($v_b['uid']==$value)	{
-									if ($lastKey)	{
+								if ($v_b['uid']==$value) {
+									if ($lastKey) {
 										$recArr['prev']=$prevnext_menu[$lastKey];
 									}
 									$nextActive=1;
@@ -677,9 +677,9 @@ class tslib_menu {
 								$lastKey=0;
 								$nextActive=0;
 								foreach ($prevnextsection_menu as $k_b => $v_b) {
-									if ($nextActive)	{
+									if ($nextActive) {
 										$sectionRec_temp = $this->sys_page->getMenu($v_b['uid'],'*',$altSortField);
-										if (count($sectionRec_temp))	{
+										if (count($sectionRec_temp)) {
 											reset($sectionRec_temp);
 											$recArr['nextsection']=pos($sectionRec_temp);
 											end ($sectionRec_temp);
@@ -687,10 +687,10 @@ class tslib_menu {
 											$nextActive=0;
 										}
 									}
-									if ($v_b['uid']==$value_rec['pid'])	{
-										if ($lastKey)	{
+									if ($v_b['uid']==$value_rec['pid']) {
+										if ($lastKey) {
 											$sectionRec_temp = $this->sys_page->getMenu($prevnextsection_menu[$lastKey]['uid'],'*',$altSortField);
-											if (count($sectionRec_temp))	{
+											if (count($sectionRec_temp)) {
 												reset($sectionRec_temp);
 												$recArr['prevsection']=pos($sectionRec_temp);
 												end ($sectionRec_temp);
@@ -702,11 +702,11 @@ class tslib_menu {
 									$lastKey=$k_b;
 								}
 							}
-							if ($this->conf['special.']['items.']['prevnextToSection'])	{
-								if (!is_array($recArr['prev']) && is_array($recArr['prevsection_last']))	{
+							if ($this->conf['special.']['items.']['prevnextToSection']) {
+								if (!is_array($recArr['prev']) && is_array($recArr['prevsection_last'])) {
 									$recArr['prev']=$recArr['prevsection_last'];
 								}
-								if (!is_array($recArr['next']) && is_array($recArr['nextsection']))	{
+								if (!is_array($recArr['next']) && is_array($recArr['nextsection'])) {
 									$recArr['next']=$recArr['nextsection'];
 								}
 							}
@@ -715,12 +715,12 @@ class tslib_menu {
 							$c=0;
 							foreach ($items as $k_b => $v_b) {
 								$v_b=strtolower(trim($v_b));
-								if (intval($this->conf['special.'][$v_b.'.']['uid']))	{
+								if (intval($this->conf['special.'][$v_b.'.']['uid'])) {
 									$recArr[$v_b] = $this->sys_page->getPage(intval($this->conf['special.'][$v_b.'.']['uid']));	// fetches the page in case of a hardcoded pid in template
 								}
-								if (is_array($recArr[$v_b]))	{
+								if (is_array($recArr[$v_b])) {
 									$temp[$c]=$recArr[$v_b];
-									if ($this->conf['special.'][$v_b.'.']['target'])	{
+									if ($this->conf['special.'][$v_b.'.']['target']) {
 										$temp[$c]['target']=$this->conf['special.'][$v_b.'.']['target'];
 									}
 									$tmpSpecialFields = $this->conf['special.'][$v_b.'.']['fields.'];
@@ -784,15 +784,15 @@ class tslib_menu {
 
 				// Fill in the menuArr with elements that should go into the menu:
 			$this->menuArr = Array();
-			foreach($temp as $data)	{
+			foreach($temp as $data) {
 				$spacer = (t3lib_div::inList($this->spacerIDList,$data['doktype']) || !strcmp($data['ITEM_STATE'],'SPC')) ? 1 : 0;		// if item is a spacer, $spacer is set
-				if ($this->filterMenuPages($data, $banUidArray, $spacer))	{
+				if ($this->filterMenuPages($data, $banUidArray, $spacer)) {
 					$c_b++;
 					if ($begin<=$c_b)	{		// If the beginning item has been reached.
 						$this->menuArr[$c] = $data;
 						$this->menuArr[$c]['isSpacer'] = $spacer;
 						$c++;
-						if ($maxItems && $c>=$maxItems)	{
+						if ($maxItems && $c>=$maxItems) {
 							break;
 						}
 					}
@@ -800,8 +800,8 @@ class tslib_menu {
 			}
 
 				// Fill in fake items, if min-items is set.
-			if ($minItems)	{
-				while($c<$minItems)	{
+			if ($minItems) {
+				while($c<$minItems) {
 					$this->menuArr[$c] = Array(
 						'title' => '...',
 						'uid' => $GLOBALS['TSFE']->id
@@ -810,7 +810,7 @@ class tslib_menu {
 				}
 			}
 				//	Passing the menuArr through a user defined function:
-			if ($this->mconf['itemArrayProcFunc'])	{
+			if ($this->mconf['itemArrayProcFunc']) {
 				if (!is_array($this->parentMenuArr)) {$this->parentMenuArr=array();}
 				$this->menuArr = $this->userProcess('itemArrayProcFunc',$this->menuArr);
 			}
@@ -827,7 +827,7 @@ class tslib_menu {
 			}
 
 			$serData = $this->sys_page->getHash($this->hash);
-			if (!$serData)	{
+			if (!$serData) {
 				$this->generate();
 				$this->sys_page->storeHash($this->hash, serialize($this->result), 'MENUDATA', $cacheTimeout);
 			} else {
@@ -835,7 +835,7 @@ class tslib_menu {
 			}
 
 				// End showAccessRestrictedPages
-			if ($this->mconf['showAccessRestrictedPages'])	{
+			if ($this->mconf['showAccessRestrictedPages']) {
 					// RESTORING where_groupAccess
 				$this->sys_page->where_groupAccess = $SAVED_where_groupAccess;
 			}
@@ -850,7 +850,7 @@ class tslib_menu {
 	 * @param	boolean		If set, then the page is a spacer.
 	 * @return	boolean		Returns TRUE if the page can be safely included.
 	 */
-	function filterMenuPages(&$data,$banUidArray,$spacer)	{
+	function filterMenuPages(&$data,$banUidArray,$spacer) {
 
 		$includePage = TRUE;
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/tslib/class.tslib_menu.php']['filterMenuPages'])) {
@@ -879,25 +879,25 @@ class tslib_menu {
 							// Checks if the default language version can be shown:
 							// Block page is set, if l18n_cfg allows plus: 1) Either default language or 2) another language but NO overlay record set for page!
 						$blockPage = $data['l18n_cfg']&1 && (!$GLOBALS['TSFE']->sys_language_uid || ($GLOBALS['TSFE']->sys_language_uid && !$data['_PAGES_OVERLAY']));
-						if (!$blockPage)	{
+						if (!$blockPage) {
 
 								// Checking if a page should be shown in the menu depending on whether a translation exists:
 							$tok = TRUE;
 							if ($GLOBALS['TSFE']->sys_language_uid && t3lib_div::hideIfNotTranslated($data['l18n_cfg']))	{	// There is an alternative language active AND the current page requires a translation:
-								if (!$data['_PAGES_OVERLAY'])	{
+								if (!$data['_PAGES_OVERLAY']) {
 									$tok = FALSE;
 								}
 							}
 
 								// Continue if token is TRUE:
-							if ($tok)	{
+							if ($tok) {
 
 									// Checking if "&L" should be modified so links to non-accessible pages will not happen.
-								if ($this->conf['protectLvar'])	{
+								if ($this->conf['protectLvar']) {
 									$languageUid = intval($GLOBALS['TSFE']->config['config']['sys_language_uid']);
-									if ($languageUid && ($this->conf['protectLvar']=='all' || t3lib_div::hideIfNotTranslated($data['l18n_cfg'])))	{
+									if ($languageUid && ($this->conf['protectLvar']=='all' || t3lib_div::hideIfNotTranslated($data['l18n_cfg']))) {
 										$olRec = $GLOBALS['TSFE']->sys_page->getPageOverlay($data['uid'], $languageUid);
-										if (!count($olRec))	{
+										if (!count($olRec)) {
 												// If no pages_language_overlay record then page can NOT be accessed in the language pointed to by "&L" and therefore we protect the link by setting "&L=0"
 											$data['_ADD_GETVARS'].= '&L=0';
 										}
@@ -922,7 +922,7 @@ class tslib_menu {
 	 * @return	array		An array with two keys: array($NOconf,$ROconf) - where $NOconf contains the resolved configuration for each item when NOT rolled-over and $ROconf contains the ditto for the mouseover state (if any)
 	 * @access private
 	 */
-	function procesItemStates($splitCount)	{
+	function procesItemStates($splitCount) {
 
 			// Prepare normal settings
 		if (!is_array($this->mconf['NO.']) && $this->mconf['NO'])	$this->mconf['NO.']=array();	// Setting a blank array if NO=1 and there are no properties.
@@ -930,19 +930,19 @@ class tslib_menu {
 
 			// Prepare rollOver settings, overriding normal settings
 		$ROconf=array();
-		if ($this->mconf['RO'])	{
+		if ($this->mconf['RO']) {
 			$ROconf = $this->tmpl->splitConfArray($this->mconf['RO.'],$splitCount);
 		}
 
 			// Prepare IFSUB settings, overriding normal settings
 			// IFSUB is TRUE if there exist submenu items to the current item
-		if ($this->mconf['IFSUB'])	{
+		if ($this->mconf['IFSUB']) {
 			$IFSUBinit = 0;	// Flag: If $IFSUB is generated
 			foreach ($NOconf as $key => $val) {
-				if ($this->isItemState('IFSUB',$key))	{
+				if ($this->isItemState('IFSUB',$key)) {
 					if (!$IFSUBinit)	{	// if this is the first IFSUB element, we must generate IFSUB.
 						$IFSUBconf = $this->tmpl->splitConfArray($this->mconf['IFSUB.'],$splitCount);
-						if ($this->mconf['IFSUBRO'])	{
+						if ($this->mconf['IFSUBRO']) {
 							$IFSUBROconf = $this->tmpl->splitConfArray($this->mconf['IFSUBRO.'],$splitCount);
 						}
 						$IFSUBinit = 1;
@@ -955,14 +955,14 @@ class tslib_menu {
 			}
 		}
 			// Prepare active settings, overriding normal settings
-		if ($this->mconf['ACT'])	{
+		if ($this->mconf['ACT']) {
 			$ACTinit = 0;	// Flag: If $ACT is generated
 			foreach ($NOconf as $key => $val) {	// Find active
-				if ($this->isItemState('ACT',$key))	{
+				if ($this->isItemState('ACT',$key)) {
 					if (!$ACTinit)	{	// if this is the first 'active', we must generate ACT.
 						$ACTconf = $this->tmpl->splitConfArray($this->mconf['ACT.'],$splitCount);
 							// Prepare active rollOver settings, overriding normal active settings
-						if ($this->mconf['ACTRO'])	{
+						if ($this->mconf['ACTRO']) {
 							$ACTROconf = $this->tmpl->splitConfArray($this->mconf['ACTRO.'],$splitCount);
 						}
 						$ACTinit = 1;
@@ -976,14 +976,14 @@ class tslib_menu {
 		}
 			// Prepare ACT (active)/IFSUB settings, overriding normal settings
 			// ACTIFSUB is TRUE if there exist submenu items to the current item and the current item is active
-		if ($this->mconf['ACTIFSUB'])	{
+		if ($this->mconf['ACTIFSUB']) {
 			$ACTIFSUBinit = 0;	// Flag: If $ACTIFSUB is generated
 			foreach ($NOconf as $key => $val) {	// Find active
-				if ($this->isItemState('ACTIFSUB',$key))	{
+				if ($this->isItemState('ACTIFSUB',$key)) {
 					if (!$ACTIFSUBinit)	{	// if this is the first 'active', we must generate ACTIFSUB.
 						$ACTIFSUBconf = $this->tmpl->splitConfArray($this->mconf['ACTIFSUB.'],$splitCount);
 							// Prepare active rollOver settings, overriding normal active settings
-						if ($this->mconf['ACTIFSUBRO'])	{
+						if ($this->mconf['ACTIFSUBRO']) {
 							$ACTIFSUBROconf = $this->tmpl->splitConfArray($this->mconf['ACTIFSUBRO.'],$splitCount);
 						}
 						$ACTIFSUBinit = 1;
@@ -997,13 +997,13 @@ class tslib_menu {
 		}
 			// Prepare CUR (current) settings, overriding normal settings
 			// CUR is TRUE if the current page equals the item here!
-		if ($this->mconf['CUR'])	{
+		if ($this->mconf['CUR']) {
 			$CURinit = 0;	// Flag: If $CUR is generated
 			foreach ($NOconf as $key => $val) {
-				if ($this->isItemState('CUR',$key))	{
+				if ($this->isItemState('CUR',$key)) {
 					if (!$CURinit)	{	// if this is the first 'current', we must generate CUR. Basically this control is just inherited from the other implementations as current would only exist one time and thats it (unless you use special-features of HMENU)
 						$CURconf = $this->tmpl->splitConfArray($this->mconf['CUR.'],$splitCount);
-						if ($this->mconf['CURRO'])	{
+						if ($this->mconf['CURRO']) {
 							$CURROconf = $this->tmpl->splitConfArray($this->mconf['CURRO.'],$splitCount);
 						}
 						$CURinit = 1;
@@ -1017,14 +1017,14 @@ class tslib_menu {
 		}
 			// Prepare CUR (current)/IFSUB settings, overriding normal settings
 			// CURIFSUB is TRUE if there exist submenu items to the current item and the current page equals the item here!
-		if ($this->mconf['CURIFSUB'])	{
+		if ($this->mconf['CURIFSUB']) {
 			$CURIFSUBinit = 0;	// Flag: If $CURIFSUB is generated
 			foreach ($NOconf as $key => $val) {
-				if ($this->isItemState('CURIFSUB',$key))	{
+				if ($this->isItemState('CURIFSUB',$key)) {
 					if (!$CURIFSUBinit)	{	// if this is the first 'current', we must generate CURIFSUB.
 						$CURIFSUBconf = $this->tmpl->splitConfArray($this->mconf['CURIFSUB.'],$splitCount);
 							// Prepare current rollOver settings, overriding normal current settings
-						if ($this->mconf['CURIFSUBRO'])	{
+						if ($this->mconf['CURIFSUBRO']) {
 							$CURIFSUBROconf = $this->tmpl->splitConfArray($this->mconf['CURIFSUBRO.'],$splitCount);
 						}
 						$CURIFSUBinit = 1;
@@ -1037,14 +1037,14 @@ class tslib_menu {
 			}
 		}
 			// Prepare active settings, overriding normal settings
-		if ($this->mconf['USR'])	{
+		if ($this->mconf['USR']) {
 			$USRinit = 0;	// Flag: If $USR is generated
 			foreach ($NOconf as $key => $val) {	// Find active
-				if ($this->isItemState('USR',$key))	{
+				if ($this->isItemState('USR',$key)) {
 					if (!$USRinit)	{	// if this is the first active, we must generate USR.
 						$USRconf = $this->tmpl->splitConfArray($this->mconf['USR.'],$splitCount);
 							// Prepare active rollOver settings, overriding normal active settings
-						if ($this->mconf['USRRO'])	{
+						if ($this->mconf['USRRO']) {
 							$USRROconf = $this->tmpl->splitConfArray($this->mconf['USRRO.'],$splitCount);
 						}
 						$USRinit = 1;
@@ -1057,10 +1057,10 @@ class tslib_menu {
 			}
 		}
 			// Prepare spacer settings, overriding normal settings
-		if ($this->mconf['SPC'])	{
+		if ($this->mconf['SPC']) {
 			$SPCinit = 0;	// Flag: If $SPC is generated
 			foreach ($NOconf as $key => $val) {	// Find spacers
-				if ($this->isItemState('SPC',$key))	{
+				if ($this->isItemState('SPC',$key)) {
 					if (!$SPCinit)	{	// if this is the first spacer, we must generate SPC.
 						$SPCconf = $this->tmpl->splitConfArray($this->mconf['SPC.'],$splitCount);
 						$SPCinit = 1;
@@ -1070,14 +1070,14 @@ class tslib_menu {
 			}
 		}
 			// Prepare Userdefined settings
-		if ($this->mconf['USERDEF1'])	{
+		if ($this->mconf['USERDEF1']) {
 			$USERDEF1init = 0;	// Flag: If $USERDEF1 is generated
 			foreach ($NOconf as $key => $val) {	// Find active
-				if ($this->isItemState('USERDEF1',$key))	{
+				if ($this->isItemState('USERDEF1',$key)) {
 					if (!$USERDEF1init)	{	// if this is the first active, we must generate USERDEF1.
 						$USERDEF1conf = $this->tmpl->splitConfArray($this->mconf['USERDEF1.'],$splitCount);
 							// Prepare active rollOver settings, overriding normal active settings
-						if ($this->mconf['USERDEF1RO'])	{
+						if ($this->mconf['USERDEF1RO']) {
 							$USERDEF1ROconf = $this->tmpl->splitConfArray($this->mconf['USERDEF1RO.'],$splitCount);
 						}
 						$USERDEF1init = 1;
@@ -1090,14 +1090,14 @@ class tslib_menu {
 			}
 		}
 			// Prepare Userdefined settings
-		if ($this->mconf['USERDEF2'])	{
+		if ($this->mconf['USERDEF2']) {
 			$USERDEF2init = 0;	// Flag: If $USERDEF2 is generated
 			foreach ($NOconf as $key => $val) {	// Find active
-				if ($this->isItemState('USERDEF2',$key))	{
+				if ($this->isItemState('USERDEF2',$key)) {
 					if (!$USERDEF2init)	{	// if this is the first active, we must generate USERDEF2.
 						$USERDEF2conf = $this->tmpl->splitConfArray($this->mconf['USERDEF2.'],$splitCount);
 							// Prepare active rollOver settings, overriding normal active settings
-						if ($this->mconf['USERDEF2RO'])	{
+						if ($this->mconf['USERDEF2RO']) {
 							$USERDEF2ROconf = $this->tmpl->splitConfArray($this->mconf['USERDEF2RO.'],$splitCount);
 						}
 						$USERDEF2init = 1;
@@ -1130,7 +1130,7 @@ class tslib_menu {
 		$MP_params = $MP_var ? '&MP='.rawurlencode($MP_var) : '';
 
 			// Setting override ID
-		if ($this->mconf['overrideId'] || $this->menuArr[$key]['overrideId'])	{
+		if ($this->mconf['overrideId'] || $this->menuArr[$key]['overrideId']) {
 			$overrideArray = array();
 				// If a user script returned the value overrideId in the menu array we use that as page id
 			$overrideArray['uid'] = $this->mconf['overrideId']?$this->mconf['overrideId']:$this->menuArr[$key]['overrideId'];
@@ -1150,7 +1150,7 @@ class tslib_menu {
 		}
 
 			// Creating link:
-		if ($this->mconf['collapse'] && $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key)))	{
+		if ($this->mconf['collapse'] && $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key))) {
 			$thePage = $this->sys_page->getPage($this->menuArr[$key]['pid']);
 			$LD = $this->menuTypoLink($thePage,$mainTarget,'','',$overrideArray, $this->mconf['addParams'].$MP_params.$this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
 		} else {
@@ -1195,14 +1195,14 @@ class tslib_menu {
 		$this->changeLinksForAccessRestrictedPages($LD,$this->menuArr[$key],$mainTarget,$typeOverride);
 
 			// Overriding URL / Target if set to do so:
-		if ($this->menuArr[$key]['_OVERRIDE_HREF'])	{
+		if ($this->menuArr[$key]['_OVERRIDE_HREF']) {
 			$LD['totalURL'] = $this->menuArr[$key]['_OVERRIDE_HREF'];
 			if ($this->menuArr[$key]['_OVERRIDE_TARGET'])	$LD['target'] = $this->menuArr[$key]['_OVERRIDE_TARGET'];
 		}
 
 			// OnClick open in windows.
 		$onClick='';
-		if ($this->mconf['JSWindow'])	{
+		if ($this->mconf['JSWindow']) {
 			$conf=$this->mconf['JSWindow.'];
 			$url=$LD['totalURL'];
 			$LD['totalURL'] = '#';
@@ -1253,10 +1253,10 @@ class tslib_menu {
 	 * @param	string		Type number override if any
 	 * @return	void		($LD passed by reference might be changed.)
 	 */
-	function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride)	{
+	function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride) {
 
 			// If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
-		if ($this->mconf['showAccessRestrictedPages'] && $this->mconf['showAccessRestrictedPages']!=='NONE' && !$GLOBALS['TSFE']->checkPageGroupAccess($page))	{
+		if ($this->mconf['showAccessRestrictedPages'] && $this->mconf['showAccessRestrictedPages']!=='NONE' && !$GLOBALS['TSFE']->checkPageGroupAccess($page)) {
 			$thePage = $this->sys_page->getPage($this->mconf['showAccessRestrictedPages']);
 
 			$addParams = $this->mconf['showAccessRestrictedPages.']['addParams'];
@@ -1274,11 +1274,11 @@ class tslib_menu {
 	 * @return	string		HTML content of the submenu
 	 * @access private
 	 */
-	function subMenu($uid, $objSuffix='')	{
+	function subMenu($uid, $objSuffix='') {
 
 			// Setting alternative menu item array if _SUB_MENU has been defined in the current ->menuArr
 		$altArray = '';
-		if (is_array($this->menuArr[$this->I['key']]['_SUB_MENU']) && count($this->menuArr[$this->I['key']]['_SUB_MENU']))	{
+		if (is_array($this->menuArr[$this->I['key']]['_SUB_MENU']) && count($this->menuArr[$this->I['key']]['_SUB_MENU'])) {
 			$altArray = $this->menuArr[$this->I['key']]['_SUB_MENU'];
 		}
 
@@ -1291,12 +1291,12 @@ class tslib_menu {
 			$this->mconf['expAll'] = $this->parent_cObj->stdWrap($this->mconf['expAll'], $this->mconf['expAll.']);
 		}
 
-		if ($subLevelClass && ($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($this->I['key'])) || is_array($altArray)) && !$this->mconf['sectionIndex'])	{
+		if ($subLevelClass && ($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($this->I['key'])) || is_array($altArray)) && !$this->mconf['sectionIndex']) {
 			$submenu = t3lib_div::makeInstance('tslib_'.$subLevelClass);
 			$submenu->entryLevel = $this->entryLevel+1;
 			$submenu->rL_uidRegister = $this->rL_uidRegister;
 			$submenu->MP_array = $this->MP_array;
-			if ($this->menuArr[$this->I['key']]['_MP_PARAM'])	{
+			if ($this->menuArr[$this->I['key']]['_MP_PARAM']) {
 				$submenu->MP_array[] = $this->menuArr[$this->I['key']]['_MP_PARAM'];
 			}
 
@@ -1305,11 +1305,11 @@ class tslib_menu {
 			$submenu->parentMenuArr = $this->menuArr;
 
 				// Setting alternativeMenuTempArray (will be effective only if an array)
-			if (is_array($altArray))	{
+			if (is_array($altArray)) {
 				$submenu->alternativeMenuTempArray = $altArray;
 			}
 
-			if ($submenu->start($this->tmpl, $this->sys_page, $uid, $this->conf, $this->menuNumber+1, $objSuffix))	{
+			if ($submenu->start($this->tmpl, $this->sys_page, $uid, $this->conf, $this->menuNumber+1, $objSuffix)) {
 				$submenu->makeMenu();
 					// Memorize the current menu item count
 				$tempCountMenuObj = $GLOBALS['TSFE']->register['count_MENUOBJ'];
@@ -1333,15 +1333,15 @@ class tslib_menu {
 	 * @access private
 	 * @see subMenu()
 	 */
-	function isNext($uid, $MPvar='')	{
+	function isNext($uid, $MPvar='') {
 
 			// Check for always active PIDs:
-		if (count($this->alwaysActivePIDlist) && in_array($uid,$this->alwaysActivePIDlist))	{
+		if (count($this->alwaysActivePIDlist) && in_array($uid,$this->alwaysActivePIDlist)) {
 			return TRUE;
 		}
 
 		$testUid = $uid.($MPvar?':'.$MPvar:'');
-		if ($uid && $testUid==$this->nextActive)	{
+		if ($uid && $testUid==$this->nextActive) {
 			return TRUE;
 		}
 	}
@@ -1354,15 +1354,15 @@ class tslib_menu {
 	 * @return	boolean		TRUE if page with $uid is active
 	 * @access private
 	 */
-	function isActive($uid, $MPvar='')	{
+	function isActive($uid, $MPvar='') {
 
 			// Check for always active PIDs:
-		if (count($this->alwaysActivePIDlist) && in_array($uid,$this->alwaysActivePIDlist))	{
+		if (count($this->alwaysActivePIDlist) && in_array($uid,$this->alwaysActivePIDlist)) {
 			return TRUE;
 		}
 
 		$testUid = $uid.($MPvar?':'.$MPvar:'');
-		if ($uid && in_array('ITEM:'.$testUid, $this->rL_uidRegister))	{
+		if ($uid && in_array('ITEM:'.$testUid, $this->rL_uidRegister)) {
 			return TRUE;
 		}
 	}
@@ -1375,9 +1375,9 @@ class tslib_menu {
 	 * @return	boolean		TRUE if page $uid = $GLOBALS['TSFE']->id
 	 * @access private
 	 */
-	function isCurrent($uid, $MPvar='')	{
+	function isCurrent($uid, $MPvar='') {
 		$testUid = $uid.($MPvar?':'.$MPvar:'');
-		if ($uid && !strcmp(end($this->rL_uidRegister),'ITEM:'.$testUid))	{
+		if ($uid && !strcmp(end($this->rL_uidRegister),'ITEM:'.$testUid)) {
 			return TRUE;
 		}
 	}
@@ -1445,12 +1445,12 @@ class tslib_menu {
 	 * @access private
 	 * @see procesItemStates()
 	 */
-	function isItemState($kind,$key)	{
+	function isItemState($kind,$key) {
 		$natVal=0;
 		if ($this->menuArr[$key]['ITEM_STATE'])	{		// If any value is set for ITEM_STATE the normal evaluation is discarded
 			if (!strcmp($this->menuArr[$key]['ITEM_STATE'],$kind))	{$natVal=1;}
 		} else {
-			switch($kind)	{
+			switch($kind) {
 				case 'SPC':
 					$natVal = $this->menuArr[$key]['isSpacer'];
 				break;
@@ -1485,15 +1485,15 @@ class tslib_menu {
 	 * @return	array		Returns an array with keys "code" ("accesskey" attribute for the img-tag) and "alt" (text-addition to the "alt" attribute) if an access key was defined. Otherwise array was empty
 	 * @access private
 	 */
-	function accessKey($title)	{
+	function accessKey($title) {
 			// The global array ACCESSKEY is used to globally control if letters are already used!!
 		$result = Array();
 
 		$title = trim(strip_tags($title));
 		$titleLen = strlen($title);
-		for ($a=0;$a<$titleLen;$a++)	{
+		for ($a=0;$a<$titleLen;$a++) {
 			$key = strtoupper(substr($title,$a,1));
-			if (preg_match('/[A-Z]/', $key) && !isset($GLOBALS['TSFE']->accessKey[$key]))	{
+			if (preg_match('/[A-Z]/', $key) && !isset($GLOBALS['TSFE']->accessKey[$key])) {
 				$GLOBALS['TSFE']->accessKey[$key] = 1;
 				$result['code'] = ' accesskey="'.$key.'"';
 				$result['alt'] = ' (ALT+'.$key.')';
@@ -1513,8 +1513,8 @@ class tslib_menu {
 	 * @return	mixed		The processed $passVar
 	 * @access private
 	 */
-	function userProcess($mConfKey,$passVar)	{
-		if ($this->mconf[$mConfKey])	{
+	function userProcess($mConfKey,$passVar) {
+		if ($this->mconf[$mConfKey]) {
 			$funcConf = $this->mconf[$mConfKey.'.'];
 			$funcConf['parentObj'] = $this;
 			$passVar = $this->parent_cObj->callUserFunction($this->mconf[$mConfKey], $funcConf, $passVar);
@@ -1541,7 +1541,7 @@ class tslib_menu {
 	 * @return	string		Returns the navigation title if it is NOT blank, otherwise the page title.
 	 * @access private
 	 */
-	function getPageTitle($title,$nav_title)	{
+	function getPageTitle($title,$nav_title) {
 		return strcmp(trim($nav_title),'') ? $nav_title : $title;
 	}
 
@@ -1553,8 +1553,8 @@ class tslib_menu {
 	 * @return	string		MP vars for element.
 	 * @see link()
 	 */
-	function getMPvar($key)	{
-		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'])	{
+	function getMPvar($key) {
+		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
 			$localMP_array = $this->MP_array;
 			if ($this->menuArr[$key]['_MP_PARAM'])	$localMP_array[] = $this->menuArr[$key]['_MP_PARAM'];	// NOTICE: "_MP_PARAM" is allowed to be a commalist of PID pairs!
 			$MP_params = count($localMP_array) ? implode(',',$localMP_array) : '';
@@ -1735,7 +1735,7 @@ class tslib_tmenu extends tslib_menu {
 	 */
 	function generate() {
 		$splitCount = count($this->menuArr);
-		if ($splitCount)	{
+		if ($splitCount) {
 			list($NOconf) = $this->procesItemStates($splitCount);
 		}
 		if ($this->mconf['debugItemConf']) {
@@ -1753,7 +1753,7 @@ class tslib_tmenu extends tslib_menu {
 	 * @return	string		The HTML for the menu (returns result through $this->extProc_finish(); )
 	 */
 	function writeMenu() {
-		if (is_array($this->result) && count($this->result))	{
+		if (is_array($this->result) && count($this->result)) {
 			$this->WMcObj = t3lib_div::makeInstance('tslib_cObj');	// Create new tslib_cObj for our use
 			$this->WMresult = '';
 			$this->INPfixMD5 = substr(md5(microtime().'tmenu'),0,4);
@@ -1781,7 +1781,7 @@ class tslib_tmenu extends tslib_menu {
 				$this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
 
 					// Set access key
-				if ($this->mconf['accessKey'])	{
+				if ($this->mconf['accessKey']) {
 					$this->I['accessKey'] = $this->accessKey($this->I['title']);
 				} else {
 					$this->I['accessKey'] = Array();
@@ -1798,20 +1798,20 @@ class tslib_tmenu extends tslib_menu {
 				$titleAttrValue = isset($this->I['val']['ATagTitle.'])
 					? $this->WMcObj->stdWrap($this->I['val']['ATagTitle'], $this->I['val']['ATagTitle.']) . $this->I['accessKey']['alt']
 					: $this->I['val']['ATagTitle'].$this->I['accessKey']['alt'];
-				if (strlen($titleAttrValue))	{
+				if (strlen($titleAttrValue)) {
 					$this->I['linkHREF']['title'] = $titleAttrValue;
 				}
 
 					// Make link:
-				if ($this->I['val']['RO'])	{
+				if ($this->I['val']['RO']) {
 					$this->I['theName'] = $this->imgNamePrefix.$this->I['uid'].$this->I['INPfix'];
 					$over='';
 					$out ='';
-					if ($this->I['val']['beforeROImg'])	{
+					if ($this->I['val']['beforeROImg']) {
 						$over.= $this->WMfreezePrefix."over('".$this->I['theName']."before');";
 						$out.= $this->WMfreezePrefix."out('".$this->I['theName']."before');";
 					}
-					if ($this->I['val']['afterROImg'])	{
+					if ($this->I['val']['afterROImg']) {
 						$over.= $this->WMfreezePrefix."over('".$this->I['theName']."after');";
 						$out.= $this->WMfreezePrefix."out('".$this->I['theName']."after');";
 					}
@@ -1820,7 +1820,7 @@ class tslib_tmenu extends tslib_menu {
 					if ($over || $out)	$GLOBALS['TSFE']->setJS('mouseOver');
 
 						// Change background color:
-					if ($this->I['val']['RO_chBgColor'])	{
+					if ($this->I['val']['RO_chBgColor']) {
 						$this->addJScolorShiftFunction();
 						$chBgP = t3lib_div::trimExplode('|',$this->I['val']['RO_chBgColor']);
 						$this->I['linkHREF']['onMouseover'].="changeBGcolor('".$chBgP[2].$this->I['uid']."','".$chBgP[0]."');";
@@ -1841,7 +1841,7 @@ class tslib_tmenu extends tslib_menu {
 
 					// Compile link tag
 				if (!$this->I['val']['doNotLinkIt']) {$this->I['val']['doNotLinkIt']=0;}
-				if (!$this->I['spacer'] && $this->I['val']['doNotLinkIt']!=1)	{
+				if (!$this->I['spacer'] && $this->I['val']['doNotLinkIt']!=1) {
 					$this->setATagParts();
 				} else {
 					$this->I['A1'] = '';
@@ -1849,14 +1849,14 @@ class tslib_tmenu extends tslib_menu {
 				}
 
 					// ATagBeforeWrap processing:
-				if ($this->I['val']['ATagBeforeWrap'])	{
+				if ($this->I['val']['ATagBeforeWrap']) {
 					$wrapPartsBefore = explode('|',$this->I['val']['linkWrap']);
 					$wrapPartsAfter = array('','');
 				} else {
 					$wrapPartsBefore = array('','');
 					$wrapPartsAfter = explode('|',$this->I['val']['linkWrap']);
 				}
-				if ($this->I['val']['stdWrap2'] || isset($this->I['val']['stdWrap2.']))	{
+				if ($this->I['val']['stdWrap2'] || isset($this->I['val']['stdWrap2.'])) {
 					$stdWrap2 = isset($this->I['val']['stdWrap2.'])
 						? $this->WMcObj->stdWrap('|', $this->I['val']['stdWrap2.'])
 						: '|';
@@ -1886,7 +1886,7 @@ class tslib_tmenu extends tslib_menu {
 				$this->I['parts']['after']=$this->getBeforeAfter('after');
 
 					// Passing I to a user function
-				if ($this->mconf['IProcFunc'])	{
+				if ($this->mconf['IProcFunc']) {
 					$this->I = $this->userProcess('IProcFunc',$this->I);
 				}
 
@@ -1903,7 +1903,7 @@ class tslib_tmenu extends tslib_menu {
 				if ($this->I['val']['subst_elementUid'])	$this->I['theItem'] = str_replace('{elementUid}',$this->I['uid'],$this->I['theItem']);
 
 					// allStdWrap:
-				if (is_array($this->I['val']['allStdWrap.']))	{
+				if (is_array($this->I['val']['allStdWrap.'])) {
 					$this->I['theItem'] = $this->WMcObj->stdWrap($this->I['theItem'], $this->I['val']['allStdWrap.']);
 				}
 
@@ -1920,14 +1920,14 @@ class tslib_tmenu extends tslib_menu {
 	 * @param	string		Can be "before" or "after" and determines which kind of image to create (basically this is the prefix of the TypoScript properties that are read from the ->I['val'] array
 	 * @return	string		The resulting HTML of the image, if any.
 	 */
-	function getBeforeAfter($pref)	{
+	function getBeforeAfter($pref) {
 		$res = '';
-		if ($imgInfo = $this->WMcObj->getImgResource($this->I['val'][$pref.'Img'],$this->I['val'][$pref.'Img.']))	{
+		if ($imgInfo = $this->WMcObj->getImgResource($this->I['val'][$pref.'Img'],$this->I['val'][$pref.'Img.'])) {
 			$imgInfo[3] = t3lib_div::png_to_gif_by_imagemagick($imgInfo[3]);
-			if ($this->I['val']['RO'] && $this->I['val'][$pref.'ROImg'] && !$this->I['spacer'])	{
+			if ($this->I['val']['RO'] && $this->I['val'][$pref.'ROImg'] && !$this->I['spacer']) {
 				$imgROInfo = $this->WMcObj->getImgResource($this->I['val'][$pref.'ROImg'],$this->I['val'][$pref.'ROImg.']);
 				$imgROInfo[3] = t3lib_div::png_to_gif_by_imagemagick($imgROInfo[3]);
-				if ($imgROInfo)	{
+				if ($imgROInfo) {
 					$theName = $this->imgNamePrefix.$this->I['uid'].$this->I['INPfix'].$pref;
 					$name = ' '.$this->nameAttribute.'="'.$theName.'"';
 					$GLOBALS['TSFE']->JSImgCode.= LF.$theName.'_n=new Image(); '.$theName.'_n.src = "'.$GLOBALS['TSFE']->absRefPrefix.$imgInfo[3].'"; ';
@@ -1970,7 +1970,7 @@ class tslib_tmenu extends tslib_menu {
 	function addJScolorShiftFunction() {
 		$GLOBALS['TSFE']->additionalJavaScript['TMENU:changeBGcolor()']='
 			function changeBGcolor(id,color) {	//
-				if (document.getElementById && document.getElementById(id))	{
+				if (document.getElementById && document.getElementById(id)) {
 					document.getElementById(id).style.background = color;
 					return true;
 				} else if (document.layers && document.layers[id]) {
@@ -2000,7 +2000,7 @@ class tslib_tmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_tmenu_layers::extProc_RO()
 	 */
-	function extProc_RO($key)	{
+	function extProc_RO($key) {
 	}
 
 	/**
@@ -2011,7 +2011,7 @@ class tslib_tmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_tmenu_layers::extProc_beforeLinking()
 	 */
-	function extProc_beforeLinking($key)	{
+	function extProc_beforeLinking($key) {
 	}
 
 	/**
@@ -2023,9 +2023,9 @@ class tslib_tmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_tmenu_layers::extProc_afterLinking()
 	 */
-	function extProc_afterLinking($key)	{
+	function extProc_afterLinking($key) {
 			// Add part to the accumulated result + fetch submenus
-		if (!$this->I['spacer'])	{
+		if (!$this->I['spacer']) {
 			$this->I['theItem'].= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
 		}
 		$part = isset($this->I['val']['wrapItemAndSub.'])
@@ -2043,7 +2043,7 @@ class tslib_tmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_tmenu_layers::extProc_beforeAllWrap()
 	 */
-	function extProc_beforeAllWrap($item,$key)	{
+	function extProc_beforeAllWrap($item,$key) {
 		return $item;
 	}
 
@@ -2104,7 +2104,7 @@ class tslib_gmenu extends tslib_menu {
 	 */
 	function generate() {
 		$splitCount = count($this->menuArr);
-		if ($splitCount)	{
+		if ($splitCount) {
 			list($NOconf,$ROconf) = $this->procesItemStates($splitCount);
 
 				//store initial count value
@@ -2146,7 +2146,7 @@ class tslib_gmenu extends tslib_menu {
 	 * @access private
 	 * @see generate()
 	 */
-	function makeGifs($conf, $resKey)	{
+	function makeGifs($conf, $resKey) {
 		$isGD = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'];
 
 		if (!is_array($conf)) {
@@ -2155,7 +2155,7 @@ class tslib_gmenu extends tslib_menu {
 
 		$totalWH=array();
 		$items = count($conf);
-		if ($isGD)	{
+		if ($isGD) {
 				// generate the gif-files. the $menuArr is filled with some values like output_w, output_h, output_file
 			$Hcounter = 0;
 			$Wcounter = 0;
@@ -2168,14 +2168,14 @@ class tslib_gmenu extends tslib_menu {
 			$maxDim = $this->mconf['max'];
 			if ($maxDim) {$maxDim = tslib_cObj::calcIntExplode(',',$maxDim.',');}
 
-			if ($minDim)	{
+			if ($minDim) {
 				$conf[$items]=$conf[$items-1];
 				$this->menuArr[$items]=Array();
 				$items = count($conf);
 			}
 
 			// TOTAL width
-			if ($this->mconf['useLargestItemX'] || $this->mconf['useLargestItemY'] || $this->mconf['distributeX'] || $this->mconf['distributeY'])	{
+			if ($this->mconf['useLargestItemX'] || $this->mconf['useLargestItemY'] || $this->mconf['distributeX'] || $this->mconf['distributeY']) {
 				$totalWH = $this->findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim);
 			}
 		}
@@ -2187,9 +2187,9 @@ class tslib_gmenu extends tslib_menu {
 			$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ']++;
 			$GLOBALS['TSFE']->register['count_MENUOBJ']++;
 
-			if ($items==($c+1) && $minDim)	{
+			if ($items==($c+1) && $minDim) {
 				$Lobjs = $this->mconf['removeObjectsOfDummy'];
-				if ($Lobjs)	{
+				if ($Lobjs) {
 					$Lobjs = t3lib_div::intExplode(',',$Lobjs);
 					foreach ($Lobjs as $remItem) {
 						unset($val[$remItem]);
@@ -2213,14 +2213,14 @@ class tslib_gmenu extends tslib_menu {
 			$c++;
 
 
-			if ($isGD)	{
+			if ($isGD) {
 					// Pre-working the item
 				$gifCreator = t3lib_div::makeInstance('tslib_gifBuilder');
 				$gifCreator->init();
 				$gifCreator->start($val,$this->menuArr[$key]);
 
 					// If useLargestItemH/W is specified
-				if (count($totalWH) && ($this->mconf['useLargestItemX'] || $this->mconf['useLargestItemY']))	{
+				if (count($totalWH) && ($this->mconf['useLargestItemX'] || $this->mconf['useLargestItemY'])) {
 					$tempXY = explode(',',$gifCreator->setup['XY']);
 					if ($this->mconf['useLargestItemX'])	{$tempXY[0] = max($totalWH['W']);}
 					if ($this->mconf['useLargestItemY'])	{$tempXY[1] = max($totalWH['H']);}
@@ -2232,16 +2232,16 @@ class tslib_gmenu extends tslib_menu {
 				}
 
 					// If distributeH/W is specified
-				if (count($totalWH) && ($this->mconf['distributeX'] || $this->mconf['distributeY']))	{
+				if (count($totalWH) && ($this->mconf['distributeX'] || $this->mconf['distributeY'])) {
 					$tempXY = explode(',',$gifCreator->setup['XY']);
 
-					if ($this->mconf['distributeX'])	{
+					if ($this->mconf['distributeX']) {
 						$diff = $this->mconf['distributeX']-$totalWH['W_total']-$distributeAccu['W'];
 						$compensate = round($diff /($items-$c+1));
 						$distributeAccu['W']+=$compensate;
 						$tempXY[0] = $totalWH['W'][$key]+$compensate;
 					}
-					if ($this->mconf['distributeY'])	{
+					if ($this->mconf['distributeY']) {
 						$diff = $this->mconf['distributeY']-$totalWH['H_total']-$distributeAccu['H'];
 						$compensate = round($diff /($items-$c+1));
 						$distributeAccu['H']+=$compensate;
@@ -2255,7 +2255,7 @@ class tslib_gmenu extends tslib_menu {
 				}
 
 					// If max dimensions are specified
-				if ($maxDim)	{
+				if ($maxDim) {
 					$tempXY = explode(',',$val['XY']);
 					if ($maxDim[0] && $Wcounter + $gifCreator->XY[0] >= $maxDim[0]) {
 						$tempXY[0] == $maxDim[0] - $Wcounter;
@@ -2265,7 +2265,7 @@ class tslib_gmenu extends tslib_menu {
 						$tempXY[1] = $maxDim[1] - $Hcounter;
 						$maxFlag = 1;
 					}
-					if ($maxFlag)	{
+					if ($maxFlag) {
 						$val['XY'] = implode(',',$tempXY);
 						$gifCreator = t3lib_div::makeInstance('tslib_gifBuilder');
 						$gifCreator->init();
@@ -2277,18 +2277,18 @@ class tslib_gmenu extends tslib_menu {
 
 
 				// displace
-				if ($Hobjs)	{
+				if ($Hobjs) {
 					foreach ($Hobjs as $index) {
-						if ($gifCreator->setup[$index] && $gifCreator->setup[$index.'.'])	{
+						if ($gifCreator->setup[$index] && $gifCreator->setup[$index.'.']) {
 							$oldOffset = explode(',',$gifCreator->setup[$index.'.']['offset']);
 							$gifCreator->setup[$index.'.']['offset'] = implode(',',$gifCreator->applyOffset($oldOffset,Array(0,-$Hcounter)));
 						}
 					}
 				}
 
-				if ($Wobjs)	{
+				if ($Wobjs) {
 					foreach ($Wobjs as $index) {
-						if ($gifCreator->setup[$index] && $gifCreator->setup[$index.'.'])	{
+						if ($gifCreator->setup[$index] && $gifCreator->setup[$index.'.']) {
 							$oldOffset = explode(',',$gifCreator->setup[$index.'.']['offset']);
 							$gifCreator->setup[$index.'.']['offset'] = implode(',',$gifCreator->applyOffset($oldOffset,Array(-$Wcounter,0)));
 						}
@@ -2298,7 +2298,7 @@ class tslib_gmenu extends tslib_menu {
 
 				// Finding alternative GIF names if any (by altImgResource)
 			$gifFileName='';
-			if ($conf[$key]['altImgResource'] || is_array($conf[$key]['altImgResource.']))	{
+			if ($conf[$key]['altImgResource'] || is_array($conf[$key]['altImgResource.'])) {
 				if (!is_object($cObj)) {$cObj=t3lib_div::makeInstance('tslib_cObj');}
 				$cObj->start($this->menuArr[$key],'pages');
 				$altImgInfo = $cObj->getImgResource($conf[$key]['altImgResource'],$conf[$key]['altImgResource.']);
@@ -2306,7 +2306,7 @@ class tslib_gmenu extends tslib_menu {
 			}
 
 				// If an alternative name was NOT given, find the GIFBUILDER name.
-			if (!$gifFileName && $isGD)	{
+			if (!$gifFileName && $isGD) {
 				$gifCreator->createTempSubDir('menu/');
 				$gifFileName = $gifCreator->fileName('menu/');
 			}
@@ -2352,7 +2352,7 @@ class tslib_gmenu extends tslib_menu {
 	 * @access private
 	 * @see makeGifs()
 	 */
-	function findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim)	{
+	function findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim) {
 		$totalWH = array(
 			'W' => array(),
 			'H' => array(),
@@ -2366,9 +2366,9 @@ class tslib_gmenu extends tslib_menu {
 		$maxFlag=0;
 		foreach ($conf as $key => $val) {
 			// SAME CODE AS makeGifs()! BEGIN
-			if ($items==($c+1) && $minDim)	{
+			if ($items==($c+1) && $minDim) {
 				$Lobjs = $this->mconf['removeObjectsOfDummy'];
-				if ($Lobjs)	{
+				if ($Lobjs) {
 					$Lobjs = t3lib_div::intExplode(',',$Lobjs);
 					foreach ($Lobjs as $remItem) {
 						unset($val[$remItem]);
@@ -2394,7 +2394,7 @@ class tslib_gmenu extends tslib_menu {
 			$gifCreator = t3lib_div::makeInstance('tslib_gifBuilder');
 			$gifCreator->init();
 			$gifCreator->start($val,$this->menuArr[$key]);
-			if ($maxDim)	{
+			if ($maxDim) {
 				$tempXY = explode(',',$val['XY']);
 				if ($maxDim[0] && $Wcounter + $gifCreator->XY[0] >= $maxDim[0]) {
 					$tempXY[0] == $maxDim[0] - $Wcounter;
@@ -2404,7 +2404,7 @@ class tslib_gmenu extends tslib_menu {
 					$tempXY[1] = $maxDim[1] - $Hcounter;
 					$maxFlag = 1;
 				}
-				if ($maxFlag)	{
+				if ($maxFlag) {
 					$val['XY'] = implode(',',$tempXY);
 					$gifCreator = t3lib_div::makeInstance('tslib_gifBuilder');
 					$gifCreator->init();
@@ -2435,7 +2435,7 @@ class tslib_gmenu extends tslib_menu {
 	 * @return	string		The HTML for the menu (returns result through $this->extProc_finish(); )
 	 */
 	function writeMenu() {
-		if (is_array($this->menuArr) && is_array($this->result) && count($this->result) && is_array($this->result['NO']))	{
+		if (is_array($this->menuArr) && is_array($this->result) && count($this->result) && is_array($this->result['NO'])) {
 			$this->WMcObj = t3lib_div::makeInstance('tslib_cObj');	// Create new tslib_cObj for our use
 			$this->WMresult = '';
 			$this->INPfixMD5 = substr(md5(microtime().$this->GMENU_fixKey),0,4);
@@ -2444,8 +2444,8 @@ class tslib_gmenu extends tslib_menu {
 			$this->WMsubmenuObjSuffixes = $this->tmpl->splitConfArray(array('sOSuffix'=>$this->mconf['submenuObjSuffixes']),$this->WMmenuItems);
 
 			$this->extProc_init();
-			for ($key=0;$key<$this->WMmenuItems;$key++)	{
-				if ($this->result['NO'][$key]['output_file'])	{
+			for ($key=0;$key<$this->WMmenuItems;$key++) {
+				if ($this->result['NO'][$key]['output_file']) {
 					$this->WMcObj->start($this->menuArr[$key],'pages');		// Initialize the cObj with the page record of the menu item
 
 					$this->I = array();
@@ -2462,7 +2462,7 @@ class tslib_gmenu extends tslib_menu {
 					$this->I['name'] = '';
 
 						// Set access key
-					if ($this->mconf['accessKey'])	{
+					if ($this->mconf['accessKey']) {
 						$this->I['accessKey'] = $this->accessKey($this->I['title']);
 					} else {
 						$this->I['accessKey'] = array();
@@ -2479,12 +2479,12 @@ class tslib_gmenu extends tslib_menu {
 					$titleAttrValue = isset($this->I['val']['ATagTitle.'])
 						? $this->WMcObj->stdWrap($this->I['val']['ATagTitle'], $this->I['val']['ATagTitle.']) . $this->I['accessKey']['alt']
 						: $this->I['val']['ATagTitle'].$this->I['accessKey']['alt'];
-					if (strlen($titleAttrValue))	{
+					if (strlen($titleAttrValue)) {
 						$this->I['linkHREF']['title'] = $titleAttrValue;
 					}
 
 						// Set rollover
-					if ($this->result['RO'][$key] && !$this->I['noLink'])	{
+					if ($this->result['RO'][$key] && !$this->I['noLink']) {
 						$this->I['theName'] = $this->imgNamePrefix.$this->I['uid'].$this->I['INPfix'];
 						$this->I['name'] = ' '.$this->nameAttribute.'="'.$this->I["theName"].'"';
 						$this->I['linkHREF']['onMouseover']=$this->WMfreezePrefix.'over(\''.$this->I['theName'].'\');';
@@ -2503,7 +2503,7 @@ class tslib_gmenu extends tslib_menu {
 					$this->extProc_beforeLinking($key);
 
 						// Set linking
-					if (!$this->I['noLink'])	{
+					if (!$this->I['noLink']) {
 						$this->setATagParts();
 					} else {
 						$this->I['A1'] = '';
@@ -2518,7 +2518,7 @@ class tslib_gmenu extends tslib_menu {
 					$this->I['parts']['ATag_end'] = $this->I['A2'];
 
 						// Passing I to a user function
-					if ($this->mconf['IProcFunc'])	{
+					if ($this->mconf['IProcFunc']) {
 						$this->I = $this->userProcess('IProcFunc',$this->I);
 					}
 
@@ -2539,7 +2539,7 @@ class tslib_gmenu extends tslib_menu {
 					if ($this->I['val']['subst_elementUid'])	$this->I['theItem'] = str_replace('{elementUid}',$this->I['uid'],$this->I['theItem']);
 
 						// allStdWrap:
-					if (is_array($this->I['val']['allStdWrap.']))	{
+					if (is_array($this->I['val']['allStdWrap.'])) {
 						$this->I['theItem'] = $this->WMcObj->stdWrap($this->I['theItem'], $this->I['val']['allStdWrap.']);
 					}
 
@@ -2571,7 +2571,7 @@ class tslib_gmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_gmenu_layers::extProc_RO()
 	 */
-	function extProc_RO($key)	{
+	function extProc_RO($key) {
 	}
 
 	/**
@@ -2582,7 +2582,7 @@ class tslib_gmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_gmenu_layers::extProc_beforeLinking()
 	 */
-	function extProc_beforeLinking($key)	{
+	function extProc_beforeLinking($key) {
 	}
 
 	/**
@@ -2595,9 +2595,9 @@ class tslib_gmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_gmenu_layers::extProc_afterLinking(), tslib_menu::subMenu()
 	 */
-	function extProc_afterLinking($key)	{
+	function extProc_afterLinking($key) {
 			// Add part to the accumulated result + fetch submenus
-		if (!$this->I['spacer'])	{
+		if (!$this->I['spacer']) {
 			$this->I['theItem'].= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
 		}
 		$part = isset($this->I['val']['wrapItemAndSub.'])
@@ -2616,7 +2616,7 @@ class tslib_gmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_gmenu_layers::extProc_beforeAllWrap()
 	 */
-	function extProc_beforeAllWrap($item,$key)	{
+	function extProc_beforeAllWrap($item,$key) {
 		return $item;
 	}
 
@@ -2675,7 +2675,7 @@ class tslib_imgmenu extends tslib_menu {
 	 */
 	function generate() {
 		$splitCount = count($this->menuArr);
-		if ($splitCount)	{
+		if ($splitCount) {
 			list($NOconf) = $this->procesItemStates($splitCount);
 		}
 		if ($this->mconf['debugItemConf']) {
@@ -2694,17 +2694,17 @@ class tslib_imgmenu extends tslib_menu {
 	 * @access private
 	 * @see generate()
 	 */
-	function makeImageMap($conf)	{
+	function makeImageMap($conf) {
 		if (!is_array($conf)) {
 			$conf = Array();
 		}
-		if (is_array($this->mconf['main.']))	{
+		if (is_array($this->mconf['main.'])) {
 			$gifCreator = t3lib_div::makeInstance('tslib_gifBuilder');
 			$gifCreator->init();
 
 			$itemsConf = $conf;
 			$conf = $this->mconf['main.'];
-			if (is_array($conf))	{
+			if (is_array($conf)) {
 				$gifObjCount = 0;
 
 				$sKeyArray=t3lib_TStemplate::sortedKeyList($conf);
@@ -2715,17 +2715,17 @@ class tslib_imgmenu extends tslib_menu {
 					// Now we add graphical objects to the gifbuilder-setup
 				$waArr = Array();
 				foreach ($itemsConf as $key => $val) {
-					if (is_array($val))	{
+					if (is_array($val)) {
 						$gifObjCount++;
 						$waArr[$key]['free']=$gifObjCount;
 
 						$sKeyArray=t3lib_TStemplate::sortedKeyList($val);
 
-						foreach($sKeyArray as $theKey)	{
+						foreach($sKeyArray as $theKey) {
 							$theValue=$val[$theKey];
 
 
-							if (intval($theKey) && $theValArr=$val[$theKey.'.'])	{
+							if (intval($theKey) && $theValArr=$val[$theKey.'.']) {
 								$cObjData = $this->menuArr[$key] ? $this->menuArr[$key] : Array();
 
 								$gifObjCount++;
@@ -2743,19 +2743,19 @@ class tslib_imgmenu extends tslib_menu {
 									$this->changeLinksForAccessRestrictedPages($LD, $this->menuArr[$key], $this->mconf['target'], $this->mconf['forceTypeValue']);
 
 										// Overriding URL / Target if set to do so:
-									if ($this->menuArr[$key]['_OVERRIDE_HREF'])	{
+									if ($this->menuArr[$key]['_OVERRIDE_HREF']) {
 										$LD['totalURL'] = $this->menuArr[$key]['_OVERRIDE_HREF'];
 										if ($this->menuArr[$key]['_OVERRIDE_TARGET'])	$LD['target'] = $this->menuArr[$key]['_OVERRIDE_TARGET'];
 									}
 
 										// Setting target/url for Image Map:
-									if ($theValArr['imgMap.']['url']=='')	{
+									if ($theValArr['imgMap.']['url']=='') {
 										$theValArr['imgMap.']['url'] = $LD['totalURL'];
 									}
-									if ($theValArr['imgMap.']['target']=='')	{
+									if ($theValArr['imgMap.']['target']=='') {
 										$theValArr['imgMap.']['target'] = $LD['target'];
 									}
-									if (is_array($theValArr['imgMap.']['altText.']))	{
+									if (is_array($theValArr['imgMap.']['altText.'])) {
 										$cObj =t3lib_div::makeInstance('tslib_cObj');
 										$cObj->start($cObjData,'pages');
 										if(isset($theValArr['imgMap.']['altText.'])) {
@@ -2763,7 +2763,7 @@ class tslib_imgmenu extends tslib_menu {
 										}
 										unset($theValArr['imgMap.']['altText.']);
 								}
-									if (is_array($theValArr['imgMap.']['titleText.']))	{
+									if (is_array($theValArr['imgMap.']['titleText.'])) {
 										$cObj =t3lib_div::makeInstance('tslib_cObj');
 										$cObj->start($cObjData,'pages');
 										if(isset($theValArr['imgMap.']['titleText.'])) {
@@ -2773,21 +2773,21 @@ class tslib_imgmenu extends tslib_menu {
 									}
 								}
 									// This code goes one level in if the object is an image. If 'file' and/or 'mask' appears to be GIFBUILDER-objects, they are both searched for TEXT objects, and if a textobj is found, it's checked with the currently loaded record!!
-								if ($theValue=='IMAGE')	{
-									if ($theValArr['file']=='GIFBUILDER')	{
+								if ($theValue=='IMAGE') {
+									if ($theValArr['file']=='GIFBUILDER') {
 										$temp_sKeyArray=t3lib_TStemplate::sortedKeyList($theValArr['file.']);
 										foreach ($temp_sKeyArray as $temp_theKey) {
-											if ($theValArr['mask.'][$temp_theKey]=='TEXT')	{
+											if ($theValArr['mask.'][$temp_theKey]=='TEXT') {
 												$gifCreator->data = $this->menuArr[$key] ? $this->menuArr[$key] : Array();
 												$theValArr['mask.'][$temp_theKey.'.'] = $gifCreator->checkTextObj($theValArr['mask.'][$temp_theKey.'.']);
 												unset($theValArr['mask.'][$temp_theKey.'.']['text.']);	// if this is not done it seems that imageMaps will be rendered wrong!!
 											}
 										}
 									}
-									if ($theValArr['mask']=='GIFBUILDER')	{
+									if ($theValArr['mask']=='GIFBUILDER') {
 										$temp_sKeyArray=t3lib_TStemplate::sortedKeyList($theValArr['mask.']);
 										foreach ($temp_sKeyArray as $temp_theKey) {
-											if ($theValArr['mask.'][$temp_theKey]=='TEXT')	{
+											if ($theValArr['mask.'][$temp_theKey]=='TEXT') {
 												$gifCreator->data = $this->menuArr[$key] ? $this->menuArr[$key] : Array();
 												$theValArr['mask.'][$temp_theKey.'.'] = $gifCreator->checkTextObj($theValArr['mask.'][$temp_theKey.'.']);
 												unset($theValArr['mask.'][$temp_theKey.'.']['text.']);	// if this is not done it seems that imageMaps will be rendered wrong!!
@@ -2798,16 +2798,16 @@ class tslib_imgmenu extends tslib_menu {
 
 									// Checks if disabled is set...
 								$setObjFlag=1;
-								if ($theValArr['if.'])	{
+								if ($theValArr['if.']) {
 									$cObj =t3lib_div::makeInstance('tslib_cObj');
 									$cObj->start($cObjData,'pages');
-									if (!$cObj->checkIf($theValArr['if.']))	{
+									if (!$cObj->checkIf($theValArr['if.'])) {
 										$setObjFlag=0;
 									}
 									unset($theValArr['if.']);
 								}
 									// Set the object!
-								if ($setObjFlag)	{
+								if ($setObjFlag) {
 									$conf[$gifObjCount] = $theValue;
 									$conf[$gifObjCount.'.'] = $theValArr;
 								}
@@ -2880,7 +2880,7 @@ class tslib_imgmenu extends tslib_menu {
 	 * @return	string		The HTML for the menu
 	 */
 	function writeMenu() {
-		if ($this->result)	{
+		if ($this->result) {
 			$res = &$this->result;
 			$menuName = 'menu_'.t3lib_div::shortMD5($res['imgMap']);	// shortMD5 260900
 			$result = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$res['output_file'].'" width="'.$res['output_w'].'" height="'.$res['output_h'].'" usemap="#'.$menuName.'" border="0" '.$this->mconf['params'];
@@ -2937,7 +2937,7 @@ class tslib_jsmenu extends tslib_menu {
 	 * @return	string		The HTML code for the menu
 	 */
 	function writeMenu() {
-		if ($this->id)	{
+		if ($this->id) {
 				// Making levels:
 			$levels = t3lib_utility_Math::forceIntegerInRange($this->mconf['levels'],1,5);
 			$this->levels = $levels;
@@ -2947,7 +2947,7 @@ class tslib_jsmenu extends tslib_menu {
 
 			$JScode="\n var ".$this->JSMenuName." = new JSmenu(".$levels.",'".$this->JSMenuName."Form');";
 
-			for ($a=1;$a<=$levels;$a++)	{
+			for ($a=1;$a<=$levels;$a++) {
 				$JScode.="\n var ".$this->JSVarName.$a."=0;";
 			}
 			$JScode.= $this->generate_level($levels,1,$this->id,$this->menuArr,$this->MP_array).LF;
@@ -2957,20 +2957,20 @@ class tslib_jsmenu extends tslib_menu {
 
 				// Printing:
 			$allFormCode="";
-			for ($a=1;$a<=$this->levels;$a++)	{
+			for ($a=1;$a<=$this->levels;$a++) {
 				$formCode='';
 				$levelConf = $this->mconf[$a.'.'];
 				$length = $levelConf['width'] ? $levelConf['width'] : 14;
 				$lenghtStr='';
-				for ($b=0;$b<$length;$b++)	{
+				for ($b=0;$b<$length;$b++) {
 					$lenghtStr.='_';
 				}
 				$height = $levelConf['elements'] ? $levelConf['elements'] : 5;
 
 				$formCode.= '<select name="selector'.$a.'" onchange="'.$this->JSMenuName.'.act('.$a.');"'.($levelConf['additionalParams']?' '.$levelConf['additionalParams']:'').'>';
-				for ($b=0;$b<$height;$b++)	{
+				for ($b=0;$b<$height;$b++) {
 					$formCode.= '<option value="0">';
-					if ($b==0)	{
+					if ($b==0) {
 						$formCode.= $lenghtStr;
 					}
 					$formCode.='</option>';
@@ -2998,12 +2998,12 @@ class tslib_jsmenu extends tslib_menu {
 	 * @return	string		JavaScript code lines.
 	 * @access private
 	 */
-	function generate_level($levels,$count,$pid,$menuItemArray='',$MP_array=array())	{
+	function generate_level($levels,$count,$pid,$menuItemArray='',$MP_array=array()) {
 		$levelConf = $this->mconf[$count.'.'];
 
 			// Translate PID to a mount page, if any:
 		$mount_info = $this->sys_page->getMountPointInfo($pid);
-		if (is_array($mount_info))	{
+		if (is_array($mount_info)) {
 			$MP_array[] = $mount_info['MPvar'];
 			$pid = $mount_info['mount_pid'];
 		}
@@ -3020,7 +3020,7 @@ class tslib_jsmenu extends tslib_menu {
 		$codeLines = '';
 
 		$menuItems = is_array($menuItemArray) ? $menuItemArray : $this->sys_page->getMenu($pid);
-		foreach($menuItems as $uid => $data)	{
+		foreach($menuItems as $uid => $data) {
 
 				// $data['_MP_PARAM'] contains MP param for overlay mount points (MPs with "substitute this page" set)
 				// if present: add param to copy of MP array (copy used for that submenu branch only)
@@ -3035,7 +3035,7 @@ class tslib_jsmenu extends tslib_menu {
 			$spacer = (t3lib_div::inList($this->spacerIDList,$data['doktype'])?1:0);		// if item is a spacer, $spacer is set
 			if ($this->mconf['SPC'] || !$spacer)	{	// If the spacer-function is not enabled, spacers will not enter the $menuArr
 				if (!t3lib_div::inList($this->doktypeExcludeList,$data['doktype']) && (!$data['nav_hide'] || $this->conf['includeNotInMenu']) && !t3lib_div::inArray($banUidArray,$uid))	{		// Page may not be 'not_in_menu' or 'Backend User Section' + not in banned uid's
-					if ($count<$levels)	{
+					if ($count<$levels) {
 						$addLines = $this->generate_level($levels, $count+1, $data['uid'], '', $MP_array_sub);
 					} else {
 						$addLines = '';
@@ -3058,8 +3058,8 @@ class tslib_jsmenu extends tslib_menu {
 						// If the first item should be shown
 					$first = (!$c && $levelConf['showFirst']);
 						// do it...
-					if ($active || $first)	{
-						if ($count==1)	{
+					if ($active || $first) {
+						if ($count==1) {
 							$codeLines.=LF.$menuName.".openID = ".$var.$count.";";
 						} else {
 							$codeLines.=LF.$menuName.".entry[".$parent."].openID = ".$var.$count.";";
@@ -3073,10 +3073,10 @@ class tslib_jsmenu extends tslib_menu {
 				}
 			}
 		}
-		if ($this->mconf['firstLabelGeneral'] && !$levelConf['firstLabel'])	{
+		if ($this->mconf['firstLabelGeneral'] && !$levelConf['firstLabel']) {
 			$levelConf['firstLabel'] = $this->mconf['firstLabelGeneral'];
 		}
-		if ($levelConf['firstLabel'] && $codeLines)	{
+		if ($levelConf['firstLabel'] && $codeLines) {
 			$codeLines.= LF.$menuName.'.defTopTitle['.$count.'] = '.t3lib_div::quoteJSvalue($levelConf['firstLabel'], TRUE).';';
 		}
 		return $codeLines;
