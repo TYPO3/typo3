@@ -726,6 +726,39 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertFalse(t3lib_div::isFirstPartOfStr($string, $part));
 	}
 
+	///////////////////////////////
+	// Tests concerning formatSize
+	///////////////////////////////
+
+	/**
+	 * @test
+	 * @dataProvider formatSizeDataProvider
+	 */
+	public function formatSizeTranslatesBytesToHigherOrderRepresentation($size, $label, $expected) {
+		$this->assertEquals($expected, t3lib_div::formatSize($size, $label));
+	}
+
+	/**
+	 * Data provider for formatSizeTranslatesBytesToHigherOrderRepresentation
+	 *
+	 * @return array
+	 */
+	public function formatSizeDataProvider() {
+		return array(
+			'Bytes keep beeing bytes (min)' => array(1, '', '1 '),
+			'Bytes keep beeing bytes (max)' => array(899, '', '899 '),
+			'Kilobytes are detected' => array(1024, '', '1.0 K'),
+			'Megabytes are detected' => array(1048576, '', '1.0 M'),
+			'Gigabytes are detected' => array(1073741824, '', '1.0 G'),
+			'Decimal is omitted for large kilobytes' => array(31080, '', '30 K'),
+			'Decimal is omitted for large megabytes' => array(31458000, '', '30 M'),
+			'Decimal is omitted for large gigabytes' => array(32212254720, '', '30 G'),
+			'Label for bytes can be exchanged' => array(1, ' Foo|||', '1 Foo'),
+			'Label for kilobytes can be exchanged' => array(1024, '| Foo||', '1.0 Foo'),
+			'Label for megabyes can be exchanged' => array(1048576, '|| Foo|', '1.0 Foo'),
+			'Label for gigabytes can be exchanged' => array(1073741824, '||| Foo', '1.0 Foo')
+		);
+	}
 
 	///////////////////////////////
 	// Tests concerning splitCalc
