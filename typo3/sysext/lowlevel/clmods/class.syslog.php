@@ -81,7 +81,7 @@ Showing last 25 hour entries from the syslog. More features pending. This is the
 				'sys_log',
 				'tstamp>' . ($GLOBALS['EXEC_TIME'] - 25 * 3600)
 			);
-		foreach($rows as $r)	{
+		foreach($rows as $r) {
 			$l = unserialize($r['log_data']);
 			$explained = '#'.$r['uid'].' '.t3lib_BEfunc::datetime($r['tstamp']).' USER['.$r['userid'].']: '.sprintf($r['details'],$l[0],$l[1],$l[2],$l[3],$l[4],$l[5]);
 			$resultArray['listing'][$r['uid']] = $explained;
@@ -98,7 +98,7 @@ Showing last 25 hour entries from the syslog. More features pending. This is the
 	 * @param	array		Result array from main() function
 	 * @return	void
 	 */
-	function main_autoFix($resultArray)	{
+	function main_autoFix($resultArray) {
 	}
 }
 

@@ -80,8 +80,8 @@ class tx_sv_loginformhook {
 				' . $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
 					function doChallengeResponse(superchallenged) {	//
 						password = document.loginform.p_field.value;
-						if (password)	{
-							if (superchallenged)	{
+						if (password) {
+							if (superchallenged) {
 								password = MD5(password);	// this makes it superchallenged!!
 							}
 							str = document.loginform.username.value+":"+password+":"+document.loginform.challenge.value;

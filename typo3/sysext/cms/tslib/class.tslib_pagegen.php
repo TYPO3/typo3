@@ -70,7 +70,7 @@ class TSpagegen {
 	 * @return	void
 	 */
 	public static function pagegenInit() {
-		if ($GLOBALS['TSFE']->page['content_from_pid']>0)	{
+		if ($GLOBALS['TSFE']->page['content_from_pid']>0) {
 			$temp_copy_TSFE = clone($GLOBALS['TSFE']);	// make REAL copy of TSFE object - not reference!
 			$temp_copy_TSFE->id = $GLOBALS['TSFE']->page['content_from_pid'];	// Set ->id to the content_from_pid value - we are going to evaluate this pid as was it a given id for a page-display!
 			$temp_copy_TSFE->MP = '';
@@ -78,7 +78,7 @@ class TSpagegen {
 			$GLOBALS['TSFE']->contentPid = intval($temp_copy_TSFE->id);
 			unset($temp_copy_TSFE);
 		}
-		if ($GLOBALS['TSFE']->config['config']['MP_defaults'])	{
+		if ($GLOBALS['TSFE']->config['config']['MP_defaults']) {
 			$temp_parts = t3lib_div::trimExplode('|',$GLOBALS['TSFE']->config['config']['MP_defaults'],1);
 			foreach ($temp_parts as $temp_p) {
 				list($temp_idP,$temp_MPp) = explode(':',$temp_p,2);
@@ -111,7 +111,7 @@ class TSpagegen {
 
 		$GLOBALS['TSFE']->absRefPrefix = ($GLOBALS['TSFE']->config['config']['absRefPrefix'] ? trim($GLOBALS['TSFE']->config['config']['absRefPrefix']) : '');
 
-		if ($GLOBALS['TSFE']->type && $GLOBALS['TSFE']->config['config']['frameReloadIfNotInFrameset'])	{
+		if ($GLOBALS['TSFE']->type && $GLOBALS['TSFE']->config['config']['frameReloadIfNotInFrameset']) {
 			$tdlLD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page,'_top',$GLOBALS['TSFE']->no_cache,'');
 			$GLOBALS['TSFE']->JSCode = 'if(!parent.'.trim($GLOBALS['TSFE']->sPre).' && !parent.view_frame) top.location.href="'.$GLOBALS['TSFE']->baseUrlWrap($tdlLD['totalURL']).'"';
 		}
@@ -127,7 +127,7 @@ class TSpagegen {
 
 		$GLOBALS['TSFE']->sWordRegEx='';
 		$GLOBALS['TSFE']->sWordList = t3lib_div::_GP('sword_list');
-		if (is_array($GLOBALS['TSFE']->sWordList))	{
+		if (is_array($GLOBALS['TSFE']->sWordList)) {
 			$space = (!empty($GLOBALS['TSFE']->config['config']['sword_standAlone'])) ? '[[:space:]]' : '';
 
 			foreach ($GLOBALS['TSFE']->sWordList as $val) {
@@ -155,15 +155,15 @@ class TSpagegen {
 		}
 
 			// Setting XHTML-doctype from doctype
-		if (!$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
+		if (!$GLOBALS['TSFE']->config['config']['xhtmlDoctype']) {
 			$GLOBALS['TSFE']->config['config']['xhtmlDoctype'] = $GLOBALS['TSFE']->config['config']['doctype'];
 		}
 
-		if ($GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
+		if ($GLOBALS['TSFE']->config['config']['xhtmlDoctype']) {
 			$GLOBALS['TSFE']->xhtmlDoctype = $GLOBALS['TSFE']->config['config']['xhtmlDoctype'];
 
 				// Checking XHTML-docytpe
-			switch((string)$GLOBALS['TSFE']->config['config']['xhtmlDoctype'])	{
+			switch((string)$GLOBALS['TSFE']->config['config']['xhtmlDoctype']) {
 				case 'xhtml_trans':
 				case 'xhtml_strict':
 				case 'xhtml_frames':
@@ -198,9 +198,9 @@ class TSpagegen {
 		$incFilesArray = array();
 			// Get files from config.includeLibrary
 		$includeLibrary = trim(''.$GLOBALS['TSFE']->config['config']['includeLibrary']);
-		if ($includeLibrary)	{
+		if ($includeLibrary) {
 			$incFile=$GLOBALS['TSFE']->tmpl->getFileName($includeLibrary);
-			if ($incFile)	{
+			if ($incFile) {
 				$incFilesArray[] = $incFile;
 			}
 		}
@@ -214,9 +214,9 @@ class TSpagegen {
 				// toplevel 'includeLibs' is added to the PAGE.includeLibs. In that way, PAGE-libs get first priority, because if the key already exist, it's not altered. (Due to investigation by me)
 			$incLibs += $GLOBALS['TSFE']->tmpl->setup['includeLibs.'];
 		}
-		if (count($incLibs))	{
+		if (count($incLibs)) {
 			foreach ($incLibs as $theLib) {
-				if (!is_array($theLib) && $incFile=$GLOBALS['TSFE']->tmpl->getFileName($theLib))	{
+				if (!is_array($theLib) && $incFile=$GLOBALS['TSFE']->tmpl->getFileName($theLib)) {
 					$incFilesArray[] = $incFile;
 				}
 			}
@@ -234,11 +234,11 @@ class TSpagegen {
 		$setEvents = array();
 		$setBody = array();
 
-		foreach ($GLOBALS['TSFE']->JSeventFuncCalls as $event => $handlers)	{
-			if (count($handlers))	{
+		foreach ($GLOBALS['TSFE']->JSeventFuncCalls as $event => $handlers) {
+			if (count($handlers)) {
 				$functions[] = '	function T3_'.$event.'Wrapper(e)	{	'.implode('   ',$handlers).'	}';
 				$setEvents[] = '	document.'.$event.'=T3_'.$event.'Wrapper;';
-				if ($event == 'onload')	{
+				if ($event == 'onload') {
 					$setBody[]='onload="T3_onloadWrapper();"';	// dubiuos double setting breaks on some browser - do we need it?
 				}
 			}
@@ -264,7 +264,7 @@ class TSpagegen {
 			// PAGE HEADER (after content - maybe JS is inserted!
 
 			// if 'disableAllHeaderCode' is set, all the header-code is discarded!
-		if ($GLOBALS['TSFE']->config['config']['disableAllHeaderCode'])	{
+		if ($GLOBALS['TSFE']->config['config']['disableAllHeaderCode']) {
 			$GLOBALS['TSFE']->content = $pageContent;
 		} else {
 			TSpagegen::renderContentWithHeader($pageContent);
@@ -827,26 +827,26 @@ class TSpagegen {
 		if ($GLOBALS['TSFE']->spamProtectEmailAddresses && $GLOBALS['TSFE']->spamProtectEmailAddresses !== 'ascii') {
 			$scriptJsCode .= '
 			// decrypt helper function
-		function decryptCharcode(n,start,end,offset)	{
+		function decryptCharcode(n,start,end,offset) {
 			n = n + offset;
-			if (offset > 0 && n > end)	{
+			if (offset > 0 && n > end) {
 				n = start + (n - end - 1);
-			} else if (offset < 0 && n < start)	{
+			} else if (offset < 0 && n < start) {
 				n = end - (start - n - 1);
 			}
 			return String.fromCharCode(n);
 		}
 			// decrypt string
-		function decryptString(enc,offset)	{
+		function decryptString(enc,offset) {
 			var dec = "";
 			var len = enc.length;
-			for(var i=0; i < len; i++)	{
+			for(var i=0; i < len; i++) {
 				var n = enc.charCodeAt(i);
-				if (n >= 0x2B && n <= 0x3A)	{
+				if (n >= 0x2B && n <= 0x3A) {
 					dec += decryptCharcode(n,0x2B,0x3A,offset);	// 0-9 . , - + / :
-				} else if (n >= 0x40 && n <= 0x5A)	{
+				} else if (n >= 0x40 && n <= 0x5A) {
 					dec += decryptCharcode(n,0x40,0x5A,offset);	// A-Z @
-				} else if (n >= 0x61 && n <= 0x7A)	{
+				} else if (n >= 0x61 && n <= 0x7A) {
 					dec += decryptCharcode(n,0x61,0x7A,offset);	// a-z
 				} else {
 					dec += enc.charAt(i);
@@ -855,7 +855,7 @@ class TSpagegen {
 			return dec;
 		}
 			// decrypt spam-protected emails
-		function linkTo_UnCryptMailto(s)	{
+		function linkTo_UnCryptMailto(s) {
 			location.href = decryptString(s,' . ($GLOBALS['TSFE']->spamProtectEmailAddresses * - 1) . ');
 		}
 		';
@@ -1122,21 +1122,21 @@ class TSpagegen {
 
 		if ($needle=='int' || $needle=='integer')	{	// Integer
 
-			if (t3lib_utility_Math::canBeInterpretedAsInteger($haystack))	{
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($haystack)) {
 				$OK = TRUE;
 			}
 
 		} elseif (preg_match('/^\/.+\/[imsxeADSUXu]*$/', $needle))	{	// Regular expression, only "//" is allowed as delimiter
 
-			if (@preg_match($needle, $haystack))	{
+			if (@preg_match($needle, $haystack)) {
 				$OK = TRUE;
 			}
 
 		} elseif (strstr($needle,'-'))	{	// Range
 
-			if (t3lib_utility_Math::canBeInterpretedAsInteger($haystack))	{
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($haystack)) {
 				$range = explode('-',$needle);
-				if ($range[0] <= $haystack && $range[1] >= $haystack)	{
+				if ($range[0] <= $haystack && $range[1] >= $haystack) {
 					$OK = TRUE;
 				}
 			}
@@ -1144,7 +1144,7 @@ class TSpagegen {
 		} elseif (strstr($needle,'|'))	{	// List
 
 			$haystack = str_replace(' ','',$haystack);	// Trim the input
-			if (strstr('|'.$needle.'|', '|'.$haystack.'|'))	{
+			if (strstr('|'.$needle.'|', '|'.$haystack.'|')) {
 				$OK = TRUE;
 			}
 

@@ -128,7 +128,7 @@ STEP2: Build your cleaner class:
 		/**
 		 * Constructor
 		 */
-		function YOUREXTKEYNOUS_CLEANERTOOL()	{
+		function YOUREXTKEYNOUS_CLEANERTOOL() {
 			parent::tx_lowlevel_cleaner_core();
 
 				// Setting up help:
@@ -172,7 +172,7 @@ STEP2: Build your cleaner class:
 		/**
 		 * Mandatory autofix function
 		 */
-		function main_autoFix($resultArray)	{
+		function main_autoFix($resultArray) {
 			// HERE you traverse the result array and AUTOFIX what can be fixed
 			// Make sure to use $this->cli_noExecutionCheck() - see examples from bundled tools
 		}

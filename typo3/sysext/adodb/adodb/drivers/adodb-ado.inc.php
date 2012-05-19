@@ -605,7 +605,7 @@ class ADORecordSet_ado extends ADORecordSet {
 				break;
 			case 11: //BIT;
 				$val = "";
-				if(is_bool($f->value))	{
+				if(is_bool($f->value)) {
 					if($f->value==true) $val = 1;
 					else $val = 0;
 				}

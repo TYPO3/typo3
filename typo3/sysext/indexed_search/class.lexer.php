@@ -98,13 +98,13 @@ class tx_indexedsearch_lexer {
 	 * @param	string		String with UTF-8 content to process.
 	 * @return	array		Array of words in utf-8
 	 */
-	function split2Words($wordString)	{
+	function split2Words($wordString) {
 
 			// Reset debug string:
 		$this->debugString = '';
 
 			// Then convert the string to lowercase:
-		if (!$this->lexerConf['casesensitive'])	{
+		if (!$this->lexerConf['casesensitive']) {
 			$wordString = $this->csObj->conv_case('utf-8', $wordString, 'toLower');
 		}
 
@@ -115,13 +115,13 @@ class tx_indexedsearch_lexer {
 		$words = array();
 		$this->debugString = '';
 
-		while(1)	{
+		while(1) {
 			list($start,$len) = $this->get_word($wordString, $pos);
-			if ($len)	{
+			if ($len) {
 
 				$this->addWords($words, $wordString,$start,$len);
 
-				if ($this->debug)	{
+				if ($this->debug) {
 					$this->debugString.= '<span style="color:red">'.htmlspecialchars(substr($wordString,$pos,$start-$pos)).'</span>'.
 										htmlspecialchars(substr($wordString,$start,$len));
 				}
@@ -160,7 +160,7 @@ class tx_indexedsearch_lexer {
 	 * @param	integer		The Length of the word string from start position
 	 * @return	void
 	 */
-	function addWords(&$words, &$wordString, $start, $len)	{
+	function addWords(&$words, &$wordString, $start, $len) {
 
 			// Get word out of string:
 		$theWord = substr($wordString,$start,$len);
@@ -194,19 +194,19 @@ class tx_indexedsearch_lexer {
 
 				[Kasper: As far as I can see this will only work well with or-searches!]
 			*/
-		if ($cType == 'cjk')	{
+		if ($cType == 'cjk') {
 				// Find total string length:
 			$strlen = $this->csObj->utf8_strlen($theWord);
 
 				// Traverse string length and add words as pairs of two chars:
-			for ($a=0; $a<$strlen; $a++)	{
-				if ($strlen==1 || $a<$strlen-1)	{
+			for ($a=0; $a<$strlen; $a++) {
+				if ($strlen==1 || $a<$strlen-1) {
 					$words[] = $this->csObj->utf8_substr($theWord, $a, 2);
 				}
 			}
 		} else {	// Normal "single-byte" chars:
 				// Remove chars:
-			foreach($this->lexerConf['removeChars'] as $skipJoin)	{
+			foreach($this->lexerConf['removeChars'] as $skipJoin) {
 				$theWord = str_replace($this->csObj->UnumberToChar($skipJoin),'',$theWord);
 			}
 				// Add word:
@@ -221,12 +221,12 @@ class tx_indexedsearch_lexer {
 	 * @param	integer		Starting position in input string
 	 * @return	array		0: start, 1: len or FALSE if no word has been found
 	 */
-	function get_word(&$str, $pos=0)	{
+	function get_word(&$str, $pos=0) {
 
 		$len=0;
 
 			// If return is TRUE, a word was found starting at this position, so returning position and length:
-		if ($this->utf8_is_letter($str, $len, $pos))	{
+		if ($this->utf8_is_letter($str, $len, $pos)) {
 			return array($pos,$len);
 		}
 
@@ -246,7 +246,7 @@ class tx_indexedsearch_lexer {
 	 * @param	integer		Starting position in input string
 	 * @return	boolean		letter (or word) found
 	 */
-	function utf8_is_letter(&$str, &$len, $pos=0)	{
+	function utf8_is_letter(&$str, &$len, $pos=0) {
 		global $cs;
 
 		$len = 0;
@@ -259,15 +259,15 @@ class tx_indexedsearch_lexer {
 		while(1) {
 
 				// If characters has been obtained we will know whether the string starts as a sequence of letters or not:
-			if ($len)	{
+			if ($len) {
 				if ($letter)	{	// We are in a sequence of words
 					if (!$cType 	// The char was NOT a letter
 							|| ($cType_prev=='cjk' && t3lib_div::inList('num,alpha',$cType)) || ($cType=='cjk' && t3lib_div::inList('num,alpha',$cType_prev))	// ... or the previous and current char are from single-byte sets vs. asian CJK sets
 							)	{
 							// Check if the non-letter char is NOT a print-join char because then it signifies the end of the word.
-						if (!in_array($cp,$this->lexerConf['printjoins']))	{
+						if (!in_array($cp,$this->lexerConf['printjoins'])) {
 								// If a printjoin start length has been record, set that back now so the length is right (filtering out multiple end chars)
-							if ($printJoinLgd)	{
+							if ($printJoinLgd) {
 								$len = $printJoinLgd;
 							}
 							#debug($cp);
@@ -294,7 +294,7 @@ class tx_indexedsearch_lexer {
 				// Determine the type:
 			$cType_prev = $cType;
 			list($cType) = $this->charType($cp);
-			if ($cType)	{
+			if ($cType) {
 				continue;
 			}
 
@@ -311,7 +311,7 @@ class tx_indexedsearch_lexer {
 	 * @param	integer		Unicode number to evaluate
 	 * @return	array		Type of char; index-0: the main type: num, alpha or CJK (Chinese / Japanese / Korean)
 	 */
-	function charType($cp)	{
+	function charType($cp) {
 
 			// Numeric?
 		if (
@@ -365,11 +365,11 @@ class tx_indexedsearch_lexer {
 	 * @param	boolean		If set, then a hex. number is returned
 	 * @return	integer		UNICODE codepoint
 	 */
-	function utf8_ord(&$str, &$len, $pos=0, $hex=FALSE)	{
+	function utf8_ord(&$str, &$len, $pos=0, $hex=FALSE) {
 		$ord = ord($str{$pos});
 		$len = 1;
 
-		if ($ord > 0x80)	{
+		if ($ord > 0x80) {
 			for ($bc = -1, $mbs = $ord; $mbs & 0x80; $mbs = $mbs << 1) {
 					// calculate number of extra bytes
 				$bc++;

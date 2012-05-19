@@ -89,7 +89,7 @@ class user_plaintext {
 		switch($CType) {
 			case 'header':
 				$lines[]=$this->getHeader();
-				if ($this->cObj->data['subheader'])	{
+				if ($this->cObj->data['subheader']) {
 					$lines[]=$this->breakContent(strip_tags($this->cObj->data['subheader']));
 				}
 				break;
@@ -350,7 +350,7 @@ class user_plaintext {
 	 * @return	string		Processed value.
 	 * @see main_plaintext(), breakLines()
 	 */
-	function breakContent($str)	{
+	function breakContent($str) {
 		$cParts = explode(chr(10), $str);
 		reset($cParts);
 		$lines = array();
@@ -407,7 +407,7 @@ class user_plaintext {
 		$c = 0;
 		while(list(,$substrs) = each($cParts)) {
 			$c++;
-			if (trim($substrs))	{
+			if (trim($substrs)) {
 				$lineParts = explode('|', $substrs);
 				if (!$cols)
 					$cols=count($lineParts);
@@ -429,11 +429,11 @@ class user_plaintext {
 		$outLines[] = $this->addDiv($messure, '', $divChar, $joinChar, $cols);
 
 		reset($lines);
-		while(list($k,$v)=each($lines))	{
+		while(list($k,$v)=each($lines)) {
 			$top = intval($messure[1][$k]);
 			for ($aa=0; $aa < $top; $aa++) {
 				$tempArr = array();
-				for ($bb=0; $bb < $cols; $bb++)	{
+				for ($bb=0; $bb < $cols; $bb++) {
 					$tempArr[$bb] = str_pad($v[$bb][$aa], $messure[0][$bb], ' ');
 				}
 				$outLines[] = $colChar . implode($colChar,$tempArr) . $colChar;
@@ -455,7 +455,7 @@ class user_plaintext {
 	 * @access private
 	 * @see breakTable()
 	 */
-	function addDiv($messure,$content,$divChar,$joinChar,$cols)	{
+	function addDiv($messure,$content,$divChar,$joinChar,$cols) {
 		$tempArr = array();
 		for ($a = 0; $a< $cols; $a++) {
 			$tempArr[$a] = str_pad($content, $messure[0][$a], $divChar);
@@ -471,7 +471,7 @@ class user_plaintext {
 	 * @access private
 	 * @see breakTable()
 	 */
-	function traverseTable($tableLines)	{
+	function traverseTable($tableLines) {
 		$maxLen = array();
 		$maxLines = array();
 		reset($tableLines);
@@ -588,7 +588,7 @@ class user_plaintext {
 	 * @return	mixed		The processed $passVar as returned by the function call
 	 */
 	function userProcess($mConfKey,$passVar) {
-		if ($this->conf[$mConfKey])	{
+		if ($this->conf[$mConfKey]) {
 			$funcConf = $this->conf[$mConfKey . '.'];
 			$funcConf['parentObj'] = $this;
 			$passVar = $GLOBALS['TSFE']->cObj->callUserFunction($this->conf[$mConfKey], $funcConf, $passVar);

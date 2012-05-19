@@ -110,10 +110,10 @@ class SC_tslib_showpic {
 		// ***********************
 
 		$test_file=PATH_site.$this->file;
-		if (!t3lib_div::validPathStr($test_file))	{
+		if (!t3lib_div::validPathStr($test_file)) {
 			throw new UnexpectedValueException('Parameter Error: No valid filepath', 1299514083);
 		}
-		if (!@is_file($test_file))	{
+		if (!@is_file($test_file)) {
 			throw new UnexpectedValueException('The given file was not found', 1299514084);
 		}
 	}
@@ -131,7 +131,7 @@ class SC_tslib_showpic {
 		$img->mayScaleUp = 0;
 		$img->init();
 		if ($this->sample)	{$img->scalecmd = '-sample';}
-		if ($this->alternativeTempPath && t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['FE']['allowedTempPaths'],$this->alternativeTempPath))	{
+		if ($this->alternativeTempPath && t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['FE']['allowedTempPaths'],$this->alternativeTempPath)) {
 			$img->tempPath = $this->alternativeTempPath;
 		}
 
@@ -163,7 +163,7 @@ class SC_tslib_showpic {
 </head>
 		'.($this->bodyTag ? $this->bodyTag : '<body>');
 
-		if (is_array($imgInfo))	{
+		if (is_array($imgInfo)) {
 			$wrapParts = explode('|',$this->wrap);
 			$this->content.=trim($wrapParts[0]).$img->imgTag($imgInfo).trim($wrapParts[1]);
 		}

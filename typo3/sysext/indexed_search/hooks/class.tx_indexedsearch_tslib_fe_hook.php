@@ -41,7 +41,7 @@ class tx_indexedsearch_tslib_fe_hook {
 			// Requirements are that the crawler is loaded, a crawler session is running and re-indexing requested as processing instruction:
 		if (t3lib_extMgm::isLoaded('crawler')
 				&& $params['pObj']->applicationData['tx_crawler']['running']
-				&& in_array('tx_indexedsearch_reindex', $params['pObj']->applicationData['tx_crawler']['parameters']['procInstructions']))	{
+				&& in_array('tx_indexedsearch_reindex', $params['pObj']->applicationData['tx_crawler']['parameters']['procInstructions'])) {
 
 				// Setting simple log entry:
 			$params['pObj']->applicationData['tx_crawler']['log'][] = 'RE_CACHE (indexed), old status: '.$params['disableAcquireCacheData'];

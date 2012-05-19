@@ -108,15 +108,15 @@ This will show you missing files in the TYPO3 system and only report back if err
 
 			// Traverse the files and put into a large table:
 		if (is_array($recs)) {
-			foreach($recs as $rec)	{
+			foreach($recs as $rec) {
 
 					// Compile info string for location of reference:
 				$infoString = $this->infoStr($rec);
 
 					// Handle missing file:
-				if (!@is_file(PATH_site.$rec['ref_string']))	{
+				if (!@is_file(PATH_site.$rec['ref_string'])) {
 
-					if ((string)$rec['softref_key']=='')	{
+					if ((string)$rec['softref_key']=='') {
 						$resultArrayIndex = 'managedFilesMissing';
 					} else {
 						$resultArrayIndex = 'softrefFilesMissing';
@@ -141,18 +141,18 @@ This will show you missing files in the TYPO3 system and only report back if err
 	 * @param	array		Result array from main() function
 	 * @return	void
 	 */
-	function main_autoFix($resultArray)	{
-		foreach($resultArray['managedFilesMissing'] as $key => $value)	{
+	function main_autoFix($resultArray) {
+		foreach($resultArray['managedFilesMissing'] as $key => $value) {
 			echo 'Processing file: '.$key.LF;
 			$c=0;
-			foreach($value as $hash => $recReference)	{
+			foreach($value as $hash => $recReference) {
 				echo '	Removing reference in record "'.$recReference.'": ';
-				if ($bypass = $this->cli_noExecutionCheck($recReference))	{
+				if ($bypass = $this->cli_noExecutionCheck($recReference)) {
 					echo $bypass;
 				} else {
 					$sysRefObj = t3lib_div::makeInstance('t3lib_refindex');
 					$error = $sysRefObj->setReferenceValue($hash,NULL);
-					if ($error)	{
+					if ($error) {
 						echo '		t3lib_refindex::setReferenceValue(): '.$error.LF;
 						echo 'missing_files: exit on error'.LF;
 						exit;

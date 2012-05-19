@@ -78,8 +78,8 @@ class SC_wizard_backend_layout {
 		$pageRenderer = $this->doc->getPageRenderer();
 		$pageRenderer->addJsFile($GLOBALS['BACK_PATH'] . TYPO3_MOD_PATH . 'res/grideditor.js');
 		$pageRenderer->addJsInlineCode('storeData', '
-			function storeData(data)	{
-				if (parent.opener && parent.opener.document && parent.opener.document.' . $this->formName . ' && parent.opener.document.' . $this->formName . '["' . $this->fieldName . '"])	{
+			function storeData(data) {
+				if (parent.opener && parent.opener.document && parent.opener.document.' . $this->formName . ' && parent.opener.document.' . $this->formName . '["' . $this->fieldName . '"]) {
 					parent.opener.document.' . $this->formName . '["' . $this->fieldName . '"].value = data;
 					parent.opener.TBE_EDITOR.fieldChanged("backend_layout","' . $uid . '","config","data[backend_layout][' . $uid . '][config]");
 				}

@@ -95,7 +95,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 		// **************************
 		// Main
 		// **************************
-		if ($this->id && $access)	{
+		if ($this->id && $access) {
 				// JavaScript
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 				script_ended = 0;
@@ -115,7 +115,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 			$this->doc->form='<form action="index.php" method="post"><input type="hidden" name="id" value="'.$this->id.'" />';
 
 			$vContent = $this->doc->getVersionSelector($this->id,1);
-			if ($vContent)	{
+			if ($vContent) {
 				$this->content.=$this->doc->section('',$vContent);
 			}
 
@@ -186,7 +186,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 				">' .	t3lib_iconWorks::getSpriteIcon('actions-document-view') . '</a>';
 
 				// Shortcut
-			if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
+			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 			}
 

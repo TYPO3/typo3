@@ -82,7 +82,7 @@ class SC_mod_tools_isearch_index {
 				// JavaScript
 		$this->doc->JScodeArray['indexed_search'] = '
 			script_ended = 0;
-			function jumpToUrl(URL)	{
+			function jumpToUrl(URL) {
 				window.location.href = URL;
 			}';
 
@@ -127,7 +127,7 @@ class SC_mod_tools_isearch_index {
 		$this->content  = $this->doc->header('Indexing Engine Statistics');
 		$this->content .= $this->doc->spacer(5);
 
-		switch($this->MOD_SETTINGS['function'])	{
+		switch($this->MOD_SETTINGS['function']) {
 			case 'stat':
 				$this->content .= $this->doc->section('Records', $this->doc->table($this->getRecordsNumbers()), 0, 1);
 				$this->content .= $this->doc->spacer(15);
@@ -218,7 +218,7 @@ class SC_mod_tools_isearch_index {
 	 * @param	[type]		$str: ...
 	 * @return	[type]		...
 	 */
-	function tableHead($str)	{
+	function tableHead($str) {
 		return "<strong>".$str.":&nbsp;&nbsp;&nbsp;</strong>";
 	}
 
@@ -233,7 +233,7 @@ class SC_mod_tools_isearch_index {
 			// TYPO3 pages, unique
 		$items = array();
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*),phash', 'index_phash', 'data_page_id<>0', 'phash_grouping,pcount,phash');
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))	{
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
 			$items[] = $row;
 		}
 		$recList[] = array($this->tableHead("TYPO3 pages"), count($items));
@@ -283,7 +283,7 @@ class SC_mod_tools_isearch_index {
 
 			// TYPO3 pages, unique
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*) AS pcount,index_phash.*', 'index_phash', 'data_page_id<>0', 'phash_grouping,phash,cHashParams,data_filename,data_page_id,data_page_reg1,data_page_type,data_page_mp,gr_list,item_type,item_title,item_description,item_mtime,tstamp,item_size,contentHash,crdate,parsetime,sys_language_uid,item_crdate,externalUrl,recordUid,freeIndexUid,freeIndexSetId', 'data_page_id');
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 
 			$cHash = count(unserialize($row["cHashParams"])) ? $this->formatCHash(unserialize($row["cHashParams"])) : "";
 			$grListRec = $this->getGrlistRecord($row["phash"]);
@@ -303,9 +303,9 @@ class SC_mod_tools_isearch_index {
 				$row["phash"]
 			);
 
-			if ($row["pcount"]>1)	{
+			if ($row["pcount"]>1) {
 				$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_phash.*', 'index_phash', 'phash_grouping='.intval($row['phash_grouping']).' AND phash<>'.intval($row['phash']));
-				while($row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2))	{
+				while($row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2)) {
 					$grListRec = $this->getGrlistRecord($row2["phash"]);
 					$recList[] = array(
 						"",
@@ -351,7 +351,7 @@ class SC_mod_tools_isearch_index {
 
 			// TYPO3 pages, unique
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*) AS pcount,index_phash.*', 'index_phash', 'item_type<>\'0\'', 'phash_grouping,phash,cHashParams,data_filename,data_page_id,data_page_reg1,data_page_type,data_page_mp,gr_list,item_type,item_title,item_description,item_mtime,tstamp,item_size,contentHash,crdate,parsetime,sys_language_uid,item_crdate,externalUrl,recordUid,freeIndexUid,freeIndexSetId', 'item_type');
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 
 			$cHash = count(unserialize($row["cHashParams"])) ? $this->formatCHash(unserialize($row["cHashParams"])) : "";
 			$grListRec = $this->getGrlistRecord($row["phash"]);
@@ -370,9 +370,9 @@ class SC_mod_tools_isearch_index {
 				htmlentities(t3lib_div::fixed_lgd_cs($row["data_filename"],100))
 			);
 
-			if ($row["pcount"]>1)	{
+			if ($row["pcount"]>1) {
 				$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_phash.*', 'index_phash', 'phash_grouping='.intval($row['phash_grouping']).' AND phash<>'.intval($row['phash']));
-				while($row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2))	{
+				while($row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2)) {
 					$cHash = count(unserialize($row2["cHashParams"])) ? $this->formatCHash(unserialize($row2["cHashParams"])) : "";
 					$grListRec = $this->getGrlistRecord($row2["phash"]);
 					$recList[]=array(
@@ -402,7 +402,7 @@ class SC_mod_tools_isearch_index {
 	 * @param	[type]		$fegroup_recs: ...
 	 * @return	[type]		...
 	 */
-	function formatFeGroup($fegroup_recs)	{
+	function formatFeGroup($fegroup_recs) {
 		$str = array();
 		foreach ($fegroup_recs as $row) {
 			$str[] = $row["gr_list"]=="0,-1" ? "NL" : $row["gr_list"];
@@ -417,7 +417,7 @@ class SC_mod_tools_isearch_index {
 	 * @param	[type]		$arr: ...
 	 * @return	[type]		...
 	 */
-	function formatCHash($arr)	{
+	function formatCHash($arr) {
 		$list = array();
 		foreach ($arr as $k => $v) {
 			$list[] = htmlspecialchars($k) . '=' . htmlspecialchars($v);
@@ -431,7 +431,7 @@ class SC_mod_tools_isearch_index {
 	 * @param	[type]		$phash: ...
 	 * @return	[type]		...
 	 */
-	function getNumberOfSections($phash)	{
+	function getNumberOfSections($phash) {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_section', 'phash=' . intval($phash));
 	}
 
@@ -441,7 +441,7 @@ class SC_mod_tools_isearch_index {
 	 * @param	[type]		$phash: ...
 	 * @return	[type]		...
 	 */
-	function getNumberOfWords($phash)	{
+	function getNumberOfWords($phash) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_rel', 'phash='.intval($phash));
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 		return $row[0];
@@ -453,10 +453,10 @@ class SC_mod_tools_isearch_index {
 	 * @param	[type]		$phash: ...
 	 * @return	[type]		...
 	 */
-	function getGrlistRecord($phash)	{
+	function getGrlistRecord($phash) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_grlist.*', 'index_grlist', 'phash='.intval($phash));
 		$allRows = array();
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$row["pcount"] = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 			$allRows[] = $row;
 		}
@@ -469,7 +469,7 @@ class SC_mod_tools_isearch_index {
 	 * @param	[type]		$phash: ...
 	 * @return	[type]		...
 	 */
-	function getNumberOfFulltext($phash)	{
+	function getNumberOfFulltext($phash) {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_fulltext', 'phash=' . intval($phash));
 	}
 
@@ -494,7 +494,7 @@ class SC_mod_tools_isearch_index {
 		$revTypes[0]="TYPO3 page";
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*),item_type', 'index_phash', '', 'item_type', 'item_type');
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))	{
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
 			$iT = $row[1];
 			$recList[] = array($this->tableHead($revTypes[$iT]." ($iT)"), $this->countUniqueTypes($iT)."/".$row[0]);
 		}
@@ -508,11 +508,11 @@ class SC_mod_tools_isearch_index {
 	 * @param	[type]		$item_type: ...
 	 * @return	[type]		...
 	 */
-	function countUniqueTypes($item_type)	{
+	function countUniqueTypes($item_type) {
 			// TYPO3 pages, unique
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_phash', 'item_type='.$GLOBALS['TYPO3_DB']->fullQuoteStr($item_type, 'index_phash'), 'phash_grouping');
 		$items = array();
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))	{
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
 			$items[] = $row;
 		}
 		return count($items);

@@ -85,7 +85,7 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 	public function getChildElementsByIntegerKey(tx_form_Domain_Model_Element_Abstract $parentElement, array $typoscript) {
 		if (is_array($typoscript)) {
 			$keys = t3lib_TStemplate::sortedKeyList($typoscript);
-			foreach ($keys as $key)	{
+			foreach ($keys as $key) {
 				$class = $typoscript[$key];
 				if (intval($key) && !strstr($key, '.')) {
 					if (isset($typoscript[$key . '.'])) {
@@ -311,7 +311,7 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 	 */
 	protected function setFilters(tx_form_Domain_Model_Element_Abstract $element, array $arguments) {
 		$keys = t3lib_TStemplate::sortedKeyList($arguments);
-		foreach ($keys as $key)	{
+		foreach ($keys as $key) {
 			$class = $arguments[$key];
 			if (intval($key) && !strstr($key, '.')) {
 				$filterArguments = $arguments[$key . '.'];
@@ -372,7 +372,7 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 
 		if (is_array($rulesTyposcript)) {
 			$keys = t3lib_TStemplate::sortedKeyList($rulesTyposcript);
-			foreach ($keys as $key)	{
+			foreach ($keys as $key) {
 				$class = $rulesTyposcript[$key];
 				if (intval($key) && !strstr($key, '.')) {
 					$elementArguments = $rulesTyposcript[$key . '.'];

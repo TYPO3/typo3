@@ -52,7 +52,7 @@ class tx_rtehtmlarea_parse_html {
 		$this->doc->JScode='';
 
 		$this->modData = $GLOBALS['BE_USER']->getModuleData($GLOBALS['MCONF']['name'], 'ses');
-		if (t3lib_div::_GP('OC_key'))	{
+		if (t3lib_div::_GP('OC_key')) {
 			$parts = explode('|',t3lib_div::_GP('OC_key'));
 			$this->modData['openKeys'][$parts[1]] = $parts[0]=='O' ? 1 : 0;
 			$GLOBALS['BE_USER']->pushModuleData($GLOBALS['MCONF']['name'], $this->modData);
@@ -84,7 +84,7 @@ class tx_rtehtmlarea_parse_html {
 	 * @param	[type]		$openKeys: ...
 	 * @return	[type]		...
 	 */
-	function main_parse_html($openKeys)	{
+	function main_parse_html($openKeys) {
 		global $TYPO3_CONF_VARS;
 
 		$editorNo = t3lib_div::_GP('editorNo');
