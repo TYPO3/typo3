@@ -97,27 +97,27 @@ class user_plaintext {
 	 * @param	array		TypoScript properties for this content object/function call
 	 * @return	string		Plain text content
 	 */
-	function main_plaintext($content,$conf)	{
+	function main_plaintext($content,$conf) {
 		$this->conf = $conf;
 		$this->siteUrl=$conf['siteUrl'];
 		$lines = array();
 		$CType= (string)$this->cObj->data['CType'];
-		switch($CType)	{
+		switch($CType) {
 			case 'header':
 				$lines[]=$this->getHeader();
-				if ($this->cObj->data['subheader'])	{
+				if ($this->cObj->data['subheader']) {
 					$lines[]=$this->breakContent(strip_tags($this->cObj->data['subheader']));
 				}
 			break;
 			case 'text':
 			case 'textpic':
 				$lines[]=$this->getHeader();
-				if ($CType=='textpic' && !($this->cObj->data['imageorient']&24))	{
+				if ($CType=='textpic' && !($this->cObj->data['imageorient']&24)) {
 					$lines[]=$this->getImages();
 					$lines[]='';
 				}
 				$lines[]=$this->breakContent(strip_tags($this->parseBody($this->cObj->data['bodytext'])));
-				if ($CType=='textpic' && ($this->cObj->data['imageorient']&24))	{
+				if ($CType=='textpic' && ($this->cObj->data['imageorient']&24)) {
 					$lines[]='';
 					$lines[]=$this->getImages();
 				}
@@ -154,7 +154,7 @@ class user_plaintext {
 			break;
 			default:
 				$defaultOutput = $this->getString($this->conf['defaultOutput']);
-				if ($defaultOutput)	{
+				if ($defaultOutput) {
 					$lines[]=str_replace('###CType###',$CType,$defaultOutput);
 				}
 			break;
@@ -173,7 +173,7 @@ class user_plaintext {
 	 *
 	 * @return	string		Content
 	 */
-	function getMenuSitemap()	{
+	function getMenuSitemap() {
 		$str = $this->cObj->cObjGetSingle($this->conf['menu'],$this->conf['menu.']);
 		$str = $this->breakBulletlist(trim(strip_tags(preg_replace('/<br[ \/]*>/i',chr(10),$this->parseBody($str)))));
 		return $str;
@@ -184,7 +184,7 @@ class user_plaintext {
 	 *
 	 * @return	string		Content
 	 */
-	function getShortcut()	{
+	function getShortcut() {
 		$str = $this->cObj->cObjGetSingle($this->conf['shortcut'],$this->conf['shortcut.']);
 		return $str;
 	}
@@ -195,7 +195,7 @@ class user_plaintext {
 	 * @param	string		HTML content to process. If not passed along, the bodytext field is used.
 	 * @return	string		Content
 	 */
-	function getHTML($str=array())	{
+	function getHTML($str=array()) {
 		return $this->breakContent(strip_tags(preg_replace('/<br[ \/]*>/i',chr(10),$this->parseBody(is_string($str)?$str:$this->cObj->data['bodytext']))));
 	}
 
@@ -205,7 +205,7 @@ class user_plaintext {
 	 * @return	string		Content
 	 * @see renderHeader()
 	 */
-	function getHeader()	{
+	function getHeader() {
 		// links...
 		return $this->renderHeader($this->cObj->data['header'],$this->cObj->data['header_layout']);
 	}
@@ -215,7 +215,7 @@ class user_plaintext {
 	 *
 	 * @return	string		Content
 	 */
-	function getImages()	{
+	function getImages() {
 		$images = $this->renderImages($this->cObj->data['image'],!$this->cObj->data['image_zoom']?$this->cObj->data['image_link']:'',$this->cObj->data['imagecaption']);
 		return $images;
 	}
@@ -226,7 +226,7 @@ class user_plaintext {
 	 * @param	string		Field content from "bodytext"
 	 * @return	string		Processed content
 	 */
-	function parseBody($str)	{
+	function parseBody($str) {
 			// First, regular parsing:
 		$str = preg_replace('/<br[ \/]*>/i',' ',$str);
 		$str = $this->cObj->stdWrap($str,$this->conf['bodytext.']['stdWrap.']);
@@ -248,7 +248,7 @@ class user_plaintext {
 	 * @param	string		Alternative path value
 	 * @return	string		Content
 	 */
-	function renderUploads($str,$upload_path='uploads/media/')	{
+	function renderUploads($str,$upload_path='uploads/media/') {
 		$files = explode(',',$str);
 		$lines=array();
 		if ($this->conf['uploads.']['header'])	{$lines[]=$this->getString($this->conf['uploads.']['header']);}
@@ -276,8 +276,8 @@ class user_plaintext {
 	 * @param	integer		The layout type of the header (in the content element)
 	 * @return	string		Content
 	 */
-	function renderHeader($str,$type=0)	{
-		if ($str)	{
+	function renderHeader($str,$type=0) {
+		if ($str) {
 			$hConf = $this->conf['header.'];
 			$defaultType = t3lib_utility_Math::forceIntegerInRange($hConf['defaultType'],1,5);
 			$type=t3lib_utility_Math::forceIntegerInRange($type,0,6);
@@ -288,7 +288,7 @@ class user_plaintext {
 				$lines=array();
 
 				$blanks = t3lib_utility_Math::forceIntegerInRange($tConf['preBlanks'],0,1000);
-				if ($blanks)	{
+				if ($blanks) {
 					$lines[]=str_pad('', $blanks-1, chr(10));
 				}
 
@@ -297,7 +297,7 @@ class user_plaintext {
 				$blanks = t3lib_utility_Math::forceIntegerInRange($tConf['preLineBlanks'],0,1000);
 				if ($blanks)	{$lines[]=str_pad('', $blanks-1, chr(10));}
 
-				if ($this->cObj->data['date'])	{
+				if ($this->cObj->data['date']) {
 					$lines[] = $this->getString($hConf['datePrefix']).date($hConf['date']?$hConf['date']:$GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],$this->cObj->data['date']);
 				}
 				$prefix='';
@@ -329,10 +329,10 @@ class user_plaintext {
 	 * @return	array		The input array with a new line added.
 	 * @see renderHeader()
 	 */
-	function pad($lines,$preLineChar,$len)	{
+	function pad($lines,$preLineChar,$len) {
 		$strPad = t3lib_utility_Math::forceIntegerInRange($len,0,1000);
 		$strPadChar = $preLineChar?$preLineChar:'-';
-		if ($strPad)	{
+		if ($strPad) {
 			$lines[]=str_pad('', $strPad, $strPadChar);
 		}
 		return $lines;
@@ -345,7 +345,7 @@ class user_plaintext {
 	 * @return	string		Processed value.
 	 * @see main_plaintext(), breakLines()
 	 */
-	function breakContent($str)	{
+	function breakContent($str) {
 		$cParts = explode(chr(10),$str);
 		$lines=array();
 		foreach ($cParts as $substrs) {
@@ -360,7 +360,7 @@ class user_plaintext {
 	 * @param	string		Content string to make into a bullet list
 	 * @return	string		Processed value
 	 */
-	function breakBulletlist($str)	{
+	function breakBulletlist($str) {
 		$type = $this->cObj->data['layout'];
 		$type=t3lib_utility_Math::forceIntegerInRange($type,0,3);
 
@@ -390,18 +390,18 @@ class user_plaintext {
 	 * @param	string		Content string
 	 * @return	string		Processed value
 	 */
-	function breakTable($str)	{
+	function breakTable($str) {
 		$cParts = explode(chr(10),$str);
 		$lines=array();
 		$cols = intval($this->conf['cols']) ? intval($this->conf['cols']) : 0;
 		$c=0;
 		foreach ($cParts as $substrs) {
 			$c++;
-			if (trim($substrs))	{
+			if (trim($substrs)) {
 				$lineParts=explode('|',$substrs);
 				if (!$cols)	$cols=count($lineParts);
 
-				for ($a=0;$a<$cols;$a++)	{
+				for ($a=0;$a<$cols;$a++) {
 					$jdu = explode(chr(10),$this->breakLines($lineParts[$a],chr(10),ceil($this->charWidth/$cols)));
 					$lines[$c][$a]=$jdu;
 				}
@@ -420,9 +420,9 @@ class user_plaintext {
 
 		foreach ($lines as $k => $v) {
 			$top = intval($messure[1][$k]);
-			for ($aa=0;$aa<$top;$aa++)	{
+			for ($aa=0;$aa<$top;$aa++) {
 				$tempArr=array();
-				for ($bb=0;$bb<$cols;$bb++)	{
+				for ($bb=0;$bb<$cols;$bb++) {
 					$tempArr[$bb]=str_pad($v[$bb][$aa],$messure[0][$bb],' ');
 				}
 				$outLines[]=$colChar.implode($colChar,$tempArr).$colChar;
@@ -444,9 +444,9 @@ class user_plaintext {
 	 * @access private
 	 * @see breakTable()
 	 */
-	function addDiv($messure,$content,$divChar,$joinChar,$cols)	{
+	function addDiv($messure,$content,$divChar,$joinChar,$cols) {
 		$tempArr=array();
-		for ($a=0;$a<$cols;$a++)	{
+		for ($a=0;$a<$cols;$a++) {
 			$tempArr[$a]=str_pad($content,$messure[0][$a],$divChar);
 		}
 		return $joinChar.implode($joinChar,$tempArr).$joinChar;
@@ -460,7 +460,7 @@ class user_plaintext {
 	 * @access private
 	 * @see breakTable()
 	 */
-	function traverseTable($tableLines)	{
+	function traverseTable($tableLines) {
 		$maxLen=array();
 		$maxLines=array();
 		foreach ($tableLines as $k => $v) {
@@ -484,15 +484,15 @@ class user_plaintext {
 	 * @return	string		Content
 	 * @see getImages()
 	 */
-	function renderImages($str,$links,$caption,$upload_path='uploads/pics/')	{
+	function renderImages($str,$links,$caption,$upload_path='uploads/pics/') {
 		$images = explode(',',$str);
 		$linksArr = explode(LF, $links);
 		$lines=array();
 		if ($this->conf['images.']['header'])	{$lines[]=$this->getString($this->conf['images.']['header']);}
 		foreach ($images as $k => $file) {
 			$lines[]=$this->siteUrl.$upload_path.$file;
-			if ($links && count($linksArr)>1)	{
-				if (isset($linksArr[$k]))	{
+			if ($links && count($linksArr)>1) {
+				if (isset($linksArr[$k])) {
 					$ll=$linksArr[$k];
 				} else {
 					$ll=$linksArr[0];
@@ -502,11 +502,11 @@ class user_plaintext {
 				if ($theLink)	{$lines[]=$this->getString($this->conf['images.']['linkPrefix']).$theLink;}
 			}
 		}
-		if ($links && count($linksArr)==1)	{
+		if ($links && count($linksArr)==1) {
 			$theLink = $this->getLink($links);
 			if ($theLink)	{$lines[]=$this->getString($this->conf['images.']['linkPrefix']).$theLink;}
 		}
-		if ($caption)	{
+		if ($caption) {
 			$lines[]='';
 			$cHeader = trim($this->getString($this->conf['images.']['captionHeader']));
 			if ($cHeader)		$lines[]=$cHeader;
@@ -522,9 +522,9 @@ class user_plaintext {
 	 * @param	string		Parameter to typolink
 	 * @return	string		The URL returned from $this->cObj->getTypoLink_URL(); - possibly it prefixed with the URL of the site if not present already
 	 */
-	function getLink($ll)	{
+	function getLink($ll) {
 		$theLink=$this->cObj->getTypoLink_URL($ll);
-		if (substr($theLink,0,4)!='http')	{
+		if (substr($theLink,0,4)!='http') {
 			$theLink=$this->siteUrl.$theLink;
 		}
 		return $theLink;
@@ -539,7 +539,7 @@ class user_plaintext {
 	 * @return	string		Processed string
 	 * @see t3lib_div::breakLinesForEmail()
 	 */
-	function breakLines($str,$implChar="\n",$charWidth=0)	{
+	function breakLines($str,$implChar="\n",$charWidth=0) {
 		return t3lib_div::breakLinesForEmail($str,$implChar,$charWidth?$charWidth:$this->charWidth);
 	}
 
@@ -551,7 +551,7 @@ class user_plaintext {
 	 * @return	string		Output string
 	 * @access private
 	 */
-	function getString($str)	{
+	function getString($str) {
 		$parts = explode('|',$str);
 		return strcmp($parts[1],'')?$parts[1]:$parts[0];
 	}
@@ -563,8 +563,8 @@ class user_plaintext {
 	 * @param	mixed		Variable to process
 	 * @return	mixed		The processed $passVar as returned by the function call
 	 */
-	function userProcess($mConfKey,$passVar)	{
-		if ($this->conf[$mConfKey])	{
+	function userProcess($mConfKey,$passVar) {
+		if ($this->conf[$mConfKey]) {
 			$funcConf = $this->conf[$mConfKey.'.'];
 			$funcConf['parentObj'] = $this;
 			$passVar = $GLOBALS['TSFE']->cObj->callUserFunction($this->conf[$mConfKey], $funcConf, $passVar);
@@ -581,13 +581,13 @@ class user_plaintext {
 	 * @return	string		Processed output.
 	 * @see parseBody()
 	 */
-	function atag_to_http($content,$conf)	{
+	function atag_to_http($content,$conf) {
 		$this->conf = $conf;
 		$this->siteUrl=$conf['siteUrl'];
 		$theLink  = trim($this->cObj->parameters['href']);
-		if (strtolower(substr($theLink,0,7))=='mailto:')	{
+		if (strtolower(substr($theLink,0,7))=='mailto:') {
 			$theLink=substr($theLink,7);
-		} elseif (substr($theLink,0,4)!='http')	{
+		} elseif (substr($theLink,0,4)!='http') {
 			$theLink=$this->siteUrl.$theLink;
 		}
 		return $this->cObj->getCurrentVal().' (Link: '.$theLink.' )';
@@ -600,7 +600,7 @@ class user_plaintext {
 	 * @param	array		TypoScript parameters
 	 * @return	string		Processed output.
 	 */
-	function typolist($content,$conf)	{
+	function typolist($content,$conf) {
 		$this->conf = $this->cObj->mergeTSRef($conf,'bulletlist');
 		$this->siteUrl=$conf['siteUrl'];
 		$str = trim($this->cObj->getCurrentVal());
@@ -615,7 +615,7 @@ class user_plaintext {
 	 * @param	array		TypoScript parameters
 	 * @return	string		Processed output.
 	 */
-	function typohead($content,$conf)	{
+	function typohead($content,$conf) {
 		$this->conf = $this->cObj->mergeTSRef($conf,'header');
 
 		$this->siteUrl=$conf['siteUrl'];
@@ -634,7 +634,7 @@ class user_plaintext {
 	 * @param	array		TypoScript parameters
 	 * @return	string		Processed output.
 	 */
-	function typocode($content,$conf)	{
+	function typocode($content,$conf) {
 			// Nothing is really done here...
 		$this->conf = $conf;
 		$this->siteUrl=$conf['siteUrl'];

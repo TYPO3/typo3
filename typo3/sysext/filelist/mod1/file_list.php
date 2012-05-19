@@ -281,9 +281,9 @@ class SC_file_list {
 			$this->filelist->clipObj->endClipboard();	// Saves
 
 				// If the "cmd" was to delete files from the list (clipboard thing), do that:
-			if ($this->cmd=='delete')	{
+			if ($this->cmd=='delete') {
 				$items = $this->filelist->clipObj->cleanUpCBC(t3lib_div::_POST('CBC'),'_FILE',1);
-				if (count($items))	{
+				if (count($items)) {
 						// Make command array:
 					$FILE=array();
 					foreach ($items as $v) {
@@ -302,7 +302,7 @@ class SC_file_list {
 				}
 			}
 
-			if (!isset($this->MOD_SETTINGS['sort']))	{
+			if (!isset($this->MOD_SETTINGS['sort'])) {
 					// Set default sorting
 				$this->MOD_SETTINGS['sort'] = 'file';
 				$this->MOD_SETTINGS['reverse'] = 0;
@@ -401,7 +401,7 @@ class SC_file_list {
 
 
 					// Set clipboard:
-				if ($this->MOD_SETTINGS['clipBoard'])	{
+				if ($this->MOD_SETTINGS['clipBoard']) {
 					$pageContent.=$this->filelist->clipObj->printClipboard();
 					$pageContent.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_clipboard', $GLOBALS['BACK_PATH']);
 				}

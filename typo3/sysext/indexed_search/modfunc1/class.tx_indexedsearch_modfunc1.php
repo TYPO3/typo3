@@ -101,28 +101,28 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 		$this->maxListPerPage = t3lib_div::_GP('listALL') ? 100000 : 100;
 
 			// Processing deletion of phash rows:
-		if (t3lib_div::_GP('deletePhash'))	{
+		if (t3lib_div::_GP('deletePhash')) {
 			$this->removeIndexedPhashRow(t3lib_div::_GP('deletePhash'));
 		}
 
 			// Processing stop-words:
-		if (t3lib_div::_POST('_stopwords'))	{
+		if (t3lib_div::_POST('_stopwords')) {
 			$this->processStopWords(t3lib_div::_POST('stopWord'));
 		}
 
 			// Processing stop-words:
-		if (t3lib_div::_POST('_pageKeywords'))	{
+		if (t3lib_div::_POST('_pageKeywords')) {
 			$this->processPageKeywords(t3lib_div::_POST('pageKeyword'), t3lib_div::_POST('pageKeyword_pageUid'));
 		}
 
 			// Initialize external document parsers:
 			// Example configuration, see ext_localconf.php of this file!
-		if (is_array($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers']))	{
-			foreach($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'] as $extension => $_objRef)	{
+		if (is_array($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'])) {
+			foreach($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'] as $extension => $_objRef) {
 				$this->external_parsers[$extension] = t3lib_div::getUserObj($_objRef);
 
 					// Init parser and if it returns FALSE, unset its entry again:
-				if (!$this->external_parsers[$extension]->softInit($extension))	{
+				if (!$this->external_parsers[$extension]->softInit($extension)) {
 					unset($this->external_parsers[$extension]);
 				}
 			}
@@ -138,13 +138,13 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 
 
 			// Check if details for a phash record should be shown:
-		if (t3lib_div::_GET('phash'))	{
+		if (t3lib_div::_GET('phash')) {
 
 				// Show title / function menu:
 			$theOutput.=$this->pObj->doc->spacer(5);
 			$theOutput.=$this->pObj->doc->section('Details for a single result row:',$this->showDetailsForPhash(t3lib_div::_GET('phash')),0,1);
 
-		} elseif (t3lib_div::_GET('wid'))	{
+		} elseif (t3lib_div::_GET('wid')) {
 				// Show title / function menu:
 			$theOutput.=$this->pObj->doc->spacer(5);
 			$theOutput.=$this->pObj->doc->section('Details for a word:',$this->showDetailsForWord(t3lib_div::_GET('wid')),0,1);
@@ -154,7 +154,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			$theOutput.=$this->pObj->doc->spacer(5);
 			$theOutput.=$this->pObj->doc->section('Details for metaphone value:',$this->showDetailsForMetaphone(t3lib_div::_GET('metaphone')),0,1);
 
-		} elseif (t3lib_div::_GET('reindex'))	{
+		} elseif (t3lib_div::_GET('reindex')) {
 				// Show title / function menu:
 			$theOutput.=$this->pObj->doc->spacer(5);
 			$theOutput.=$this->pObj->doc->section('Reindexing...',$this->reindexPhash(t3lib_div::_GET('reindex'),t3lib_div::_GET('reindex_id')),0,1);
@@ -209,13 +209,13 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			'HTML' => $HTML
 		);
 
-		if ($this->pObj->MOD_SETTINGS['depth'])	{
+		if ($this->pObj->MOD_SETTINGS['depth']) {
 			$tree->getTree($this->pObj->id, $this->pObj->MOD_SETTINGS['depth'], '');
 		}
 
 			// Traverse page tree:
 		$code = '';
-		foreach($tree->tree as $data)	{
+		foreach($tree->tree as $data) {
 			$code.= $this->indexed_info(
 						$data['row'],
 						$data['HTML'].
@@ -223,7 +223,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 					);
 		}
 
-		if ($code)	{
+		if ($code) {
 			$code = '<br /><br />
 					<table border="0" cellspacing="1" cellpadding="2" class="c-list">'.
 						$this->printPhashRowHeader().
@@ -246,7 +246,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	string		HTML content for first column (page tree icon etc.)
 	 * @return	string		HTML code. (table row)
 	 */
-	function indexed_info($data, $firstColContent)	{
+	function indexed_info($data, $firstColContent) {
 
 			// Query:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -270,8 +270,8 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 		$phashAcc[] = 0;
 
 			// Traverse the result set of phash rows selected:
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			if ($rowCount == $this->maxListPerPage)	{
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			if ($rowCount == $this->maxListPerPage) {
 				$rowCount++;	// Increase to the extra warning row will appear as well.
 				break;
 			}
@@ -290,10 +290,10 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			// Compile rows into the table:
 		$out = '';
 		$cellAttrib = ($data['_CSSCLASS'] ? ' class="'.$data['_CSSCLASS'].'"' : '');
-		if (count($lines))	{
+		if (count($lines)) {
 			$firstColContent = '<td rowspan="'.$rowCount.'"'.$cellAttrib.'>'.$firstColContent.'</td>';
-			foreach($lines as $rowSet)	{
-				foreach($rowSet as $rows)	{
+			foreach($lines as $rowSet) {
+				foreach($rowSet as $rows) {
 					$out.='
 						<tr class="bgColor-20">'.$firstColContent.implode('',$rows).'</tr>';
 
@@ -318,7 +318,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 
 			// Checking for phash-rows which are NOT joined with the section table:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('IP.*', 'index_phash IP', 'IP.data_page_id = '.intval($data['uid']).' AND IP.phash NOT IN ('.implode(',',$phashAcc).')');
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$out.='
 				<tr class="typo3-red">
 					<td colspan="'.$this->returnNumberOfColumns().'"><strong>Warning:</strong> phash-row "'.$row['phash'].'" didn\'t have a representation in the index_section table!</td>
@@ -338,23 +338,23 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @return	array		Array of table rows.
 	 * @see indexed_info()
 	 */
-	function printPhashRow($row,$grouping=0,$extraGrListRows)	{
+	function printPhashRow($row,$grouping=0,$extraGrListRows) {
 		$lines = array();
 
 			// Title cell attributes will highlight TYPO3 pages with a slightly darker color (bgColor4) than attached medias. Also IF there are more than one section record for a phash row it will be red as a warning that something is wrong!
 		$titleCellAttribs = $row['count_val']!=1?' bgcolor="red"':($row['item_type']==='0' ? ' class="bgColor4"' : '');
 
-		if ($row['item_type'])	{
+		if ($row['item_type']) {
 			$arr = unserialize($row['cHashParams']);
 			$page = $arr['key'] ? ' ['.$arr['key'].']' : '';
 		} else $page = '';
 		$elTitle = $this->linkDetails($row['item_title'] ? htmlspecialchars(t3lib_div::fixed_lgd_cs($this->utf8_to_currentCharset($row['item_title']), 20).$page) : '<em>[No Title]</em>',$row['phash']);
 		$cmdLinks = $this->printRemoveIndexed($row['phash'],'Clear phash-row').$this->printReindex($row,'Re-index element');
 
-		switch($this->pObj->MOD_SETTINGS['type'])	{
+		switch($this->pObj->MOD_SETTINGS['type']) {
 			case 1:		// Technical details:
 					// Display icon:
-				if (!$grouping)	{
+				if (!$grouping) {
 					$lines[] = '<td>'.$this->makeItemTypeIcon($row['item_type'], $row['data_filename'] ? $row['data_filename'] : $row['item_title']).'</td>';
 				} else {
 					$lines[] = '<td>&nbsp;</td>';
@@ -370,7 +370,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				$lines[] = '<td>'.$row['phash'].'</td>';
 				$lines[] = '<td>'.$row['contentHash'].'</td>';
 
-				if ($row['item_type']==='0')	{
+				if ($row['item_type']==='0') {
 					$lines[] = '<td>'.($row['data_page_id'] ? $row['data_page_id'] : '&nbsp;').'</td>';
 					$lines[] = '<td>'.($row['data_page_type'] ? $row['data_page_type'] : '&nbsp;').'</td>';
 					$lines[] = '<td>'.($row['sys_language_uid'] ? $row['sys_language_uid'] : '&nbsp;').'</td>';
@@ -409,7 +409,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			break;
 			case 2:		// Words and content:
 					// Display icon:
-				if (!$grouping)	{
+				if (!$grouping) {
 					$lines[] = '<td>'.$this->makeItemTypeIcon($row['item_type'], $row['data_filename'] ? $row['data_filename'] : $row['item_title']).'</td>';
 				} else {
 					$lines[] = '<td>&nbsp;</td>';
@@ -445,7 +445,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 						);
 
 				$wordList = '';
-				if (is_array($ftrows))	{
+				if (is_array($ftrows)) {
 					$indexed_words = array_keys($ftrows);
 					sort($indexed_words);
 					$wordList = htmlspecialchars($this->utf8_to_currentCharset(implode(' ',$indexed_words)));
@@ -456,7 +456,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			break;
 			default:	// Overview
 					// Display icon:
-				if (!$grouping)	{
+				if (!$grouping) {
 					$lines[] = '<td>'.$this->makeItemTypeIcon($row['item_type'], $row['data_filename'] ? $row['data_filename'] : $row['item_title']).'</td>';
 				} else {
 					$lines[] = '<td>&nbsp;</td>';
@@ -485,7 +485,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	function printPhashRowHeader() {
 		$lines = array();
 
-		switch($this->pObj->MOD_SETTINGS['type'])	{
+		switch($this->pObj->MOD_SETTINGS['type']) {
 			case 1:
 				$lines[] = '<td>&nbsp;</td>';
 				$lines[] = '<td>&nbsp;</td>';
@@ -538,7 +538,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @return	integer		Number of columns in list:
 	 */
 	function returnNumberOfColumns() {
-		switch($this->pObj->MOD_SETTINGS['type'])	{
+		switch($this->pObj->MOD_SETTINGS['type']) {
 			case 1:
 				return 18;
 			break;
@@ -573,7 +573,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	integer		phash value to display details for.
 	 * @return	string		HTML content
 	 */
-	function showDetailsForPhash($phash)	{
+	function showDetailsForPhash($phash) {
 
 		$content = '';
 
@@ -585,7 +585,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				);
 
 			// If found, display:
-		if (is_array($phashRecord))	{
+		if (is_array($phashRecord)) {
 			$content.= '<h4>phash row content:</h4>'.
 						$this->utf8_to_currentCharset(t3lib_utility_Debug::viewArray($phashRecord));
 
@@ -595,7 +595,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 						'index_debug',
 						'phash = '.intval($phash)
 					);
-			if (is_array($ftrows))	{
+			if (is_array($ftrows)) {
 				$debugInfo = unserialize($ftrows[0]['debuginfo']);
 				$lexer = $debugInfo['lexer'];
 				unset($debugInfo['lexer']);
@@ -693,7 +693,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	array		The page record from which to load the keywords, if any.
 	 * @return	string		HTML table
 	 */
-	function listWords($ftrows,$header, $stopWordBoxes=FALSE, $page='')	{
+	function listWords($ftrows,$header, $stopWordBoxes=FALSE, $page='') {
 
 			// Prepare keywords:
 		$keywords = is_array($page) ? array_flip(t3lib_div::trimExplode(',',$page['keywords'], 1)) : '';
@@ -711,7 +711,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				'.(is_array($keywords) ? '<td>'.htmlspecialchars('Page keyword:').'</td>' : '').'
 			</tr>
 		';
-		foreach($ftrows as $row)	{
+		foreach($ftrows as $row) {
 			$hiddenField = $stopWordBoxes!=2 ? '<input type="hidden" name="stopWord['.$row['wid'].']" value="0" />' : '';
 			$trows.= '
 				<tr class="'.($row['is_stopword'] ? 'bgColor' : 'bgColor4').'">
@@ -743,7 +743,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	string		Header string
 	 * @return	string		HTML table
 	 */
-	function listMetaphoneStat($ftrows,$header)	{
+	function listMetaphoneStat($ftrows,$header) {
 
 		$trows = '';
 		$trows.= '
@@ -754,8 +754,8 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				<td>'.htmlspecialchars('Words:').'</td>
 			</tr>
 		';
-		foreach($ftrows as $metaphone => $words)	{
-			if (count($words)>1)	{
+		foreach($ftrows as $metaphone => $words) {
+			if (count($words)>1) {
 				$trows.= '
 					<tr class="bgColor4">
 						<td>'.$this->linkMetaPhoneDetails($this->indexerObj->metaphone($words[0],1),$metaphone).'</td>
@@ -780,7 +780,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	integer		wid value to show details for
 	 * @return	string		Wrapped string
 	 */
-	function linkWordDetails($string,$wid)	{
+	function linkWordDetails($string,$wid) {
 		return '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('wid'=>$wid,'phash'=>''))).'">'.$string.'</a>';
 	}
 
@@ -792,7 +792,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	integer		Metaphone value
 	 * @return	string		Wrapped string
 	 */
-	function linkMetaPhoneDetails($string,$metaphone)	{
+	function linkMetaPhoneDetails($string,$metaphone) {
 		return '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('metaphone'=>$metaphone,'wid'=>'','phash'=>''))).'">'.$string.'</a>';
 	}
 
@@ -802,8 +802,8 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	integer		Flags integer
 	 * @return	string		Message string
 	 */
-	function flagsMsg($flags)	{
-		if ($flags > 0)	{
+	function flagsMsg($flags) {
+		if ($flags > 0) {
 			return
 				($flags & 128 ? '<title>' : '').	// pow(2,7)
 				($flags & 64 ? '<meta/keywords>' : '').	// pow(2,6)
@@ -833,7 +833,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	integer		Word ID (wid)
 	 * @return	string		HTML content
 	 */
-	function showDetailsForWord($wid)	{
+	function showDetailsForWord($wid) {
 
 			// Select references to this word
 		$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -859,8 +859,8 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				<td>flags</td>
 			</tr>';
 
-		if (is_array($ftrows))	{
-			foreach($ftrows as $wDat)	{
+		if (is_array($ftrows)) {
+			foreach($ftrows as $wDat) {
 				$content.='
 					<tr class="bgColor4">
 						<td>'.$this->linkDetails(htmlspecialchars($wDat['phash']),$wDat['phash']).'</td>
@@ -892,7 +892,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	integer		Metaphone integer hash
 	 * @return	string		HTML content
 	 */
-	function showDetailsForMetaphone($metaphone)	{
+	function showDetailsForMetaphone($metaphone) {
 
 			// Finding top-20 on frequency for this phash:
 		$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -904,7 +904,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 					''
 				);
 
-		if (count($ftrows))	{
+		if (count($ftrows)) {
 			$content.='<h4>Metaphone: '.$this->indexerObj->metaphone($ftrows[0]['baseword'],1).'</h4>';
 
 			$content.='
@@ -913,8 +913,8 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 					<td>Is stopword?</td>
 				</tr>';
 
-			if (is_array($ftrows))	{
-				foreach($ftrows as $wDat)	{
+			if (is_array($ftrows)) {
+				foreach($ftrows as $wDat) {
 					$content.='
 						<tr class="bgColor4">
 							<td>'.$this->linkWordDetails(htmlspecialchars($wDat['baseword']),$wDat['wid']).'</td>
@@ -928,7 +928,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 					$content.'
 				</table>';
 
-			if ($this->indexerObj->metaphone($ftrows[0]['baseword'])!=$metaphone)	{
+			if ($this->indexerObj->metaphone($ftrows[0]['baseword'])!=$metaphone) {
 				$content.='ERROR: Metaphone string and hash did not match for some reason!?';
 			}
 
@@ -963,7 +963,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	string		Alt-text for the garbage bin icon.
 	 * @return	string		HTML img-tag with link around.
 	 */
-	function printRemoveIndexed($phash,$alt)	{
+	function printRemoveIndexed($phash,$alt) {
 		return '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('deletePhash'=>$phash))).'" title="' . htmlspecialchars($alt) . '">' .
 				t3lib_iconWorks::getSpriteIcon('actions-edit-delete') .
 			'</a>';
@@ -976,8 +976,8 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	string		Title attribute text for icon
 	 * @return	string		HTML content; Icon wrapped in link.
 	 */
-	function printReindex($resultRow,$alt)	{
-		if ($resultRow['item_type'] && $resultRow['item_type']!=='0')	{
+	function printReindex($resultRow,$alt) {
+		if ($resultRow['item_type'] && $resultRow['item_type']!=='0') {
 			return '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('reindex'=>$resultRow['phash'],'reindex_id'=>$resultRow['page_id']))).'">'.
 					'<img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/refresh_n.gif', 'width="14" height="14"') . ' hspace="1" vspace="2" border="0" title="'.htmlspecialchars($alt).'" alt="" />'.
 					'</a>';
@@ -991,7 +991,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	integer		phash value to show details for
 	 * @return	string		Wrapped string
 	 */
-	function linkDetails($string,$phash)	{
+	function linkDetails($string,$phash) {
 		return '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('phash'=>$phash))).'">'.$string.'</a>';
 	}
 
@@ -1011,7 +1011,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	integer		phash value to show details for
 	 * @return	string		Wrapped string
 	 */
-	function showPageDetails($string,$id)	{
+	function showPageDetails($string,$id) {
 		return '<a href="'.htmlspecialchars('index.php?id='.$id.'&SET[depth]=0&SET[type]=1').'">'.$string.'</a>';
 	}
 
@@ -1021,8 +1021,8 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	array		Array of index_grlist records
 	 * @return	string		HTML code.
 	 */
-	function printExtraGrListRows($extraGrListRows)	{
-		if (count($extraGrListRows))	{
+	function printExtraGrListRows($extraGrListRows) {
+		if (count($extraGrListRows)) {
 			$lines=array();
 			foreach ($extraGrListRows as $r) {
 				$lines[] = $r['gr_list'];
@@ -1037,20 +1037,20 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	array		Result row with content from index_section
 	 * @return	string		Rootline information
 	 */
-	function printRootlineInfo($row)	{
+	function printRootlineInfo($row) {
 		$uidCollection = array();
 
-		if ($row['rl0'])	{
+		if ($row['rl0']) {
 			$uidCollection[0] = $row['rl0'];
-			if ($row['rl1'])	{
+			if ($row['rl1']) {
 				$uidCollection[1] = $row['rl1'];
-				if ($row['rl2'])	{
+				if ($row['rl2']) {
 					$uidCollection[2] = $row['rl2'];
 
 						// Additional levels:
-					if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields']))	{
-						foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'] as $fieldName => $rootLineLevel)	{
-							if ($row[$fieldName])	{
+					if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'])) {
+						foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'] as $fieldName => $rootLineLevel) {
+							if ($row[$fieldName]) {
 								$uidCollection[$rootLineLevel] = $row[$fieldName];
 							}
 						}
@@ -1071,9 +1071,9 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	string		Title attribute value in icon.
 	 * @return	string		<img> tag for icon
 	 */
-	function makeItemTypeIcon($it,$alt='')	{
-		if (!isset($this->iconFileNameCache[$it]))	{
-			if ($it==='0')	{
+	function makeItemTypeIcon($it,$alt='') {
+		if (!isset($this->iconFileNameCache[$it])) {
+			if ($it==='0') {
 				$icon = 'EXT:indexed_search/pi/res/pages.gif';
 			} elseif ($this->external_parsers[$it]) {
 				$icon = $this->external_parsers[$it]->getIcon($it);
@@ -1081,7 +1081,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 
 			$fullPath = t3lib_div::getFileAbsFileName($icon);
 
-			if ($fullPath)	{
+			if ($fullPath) {
 				$info = @getimagesize($fullPath);
 				$iconPath = $GLOBALS['BACK_PATH'].'../'.substr($fullPath,strlen(PATH_site));
 				$this->iconFileNameCache[$it] = is_array($info) ? '<img src="'.$iconPath.'" '.$info[3].' title="###TITLE_ATTRIBUTE###" alt="" />' : '';
@@ -1127,7 +1127,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	integer		The page uid for the section record (file/url could appear more than one place you know...)
 	 * @return	string		HTML content
 	 */
-	function reindexPhash($phash, $pageId)	{
+	function reindexPhash($phash, $pageId) {
 
 			// Query:
 		$resultRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
@@ -1139,21 +1139,21 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				);
 
 		$content = '';
-		if (is_array($resultRow))	{
-			if ($resultRow['item_type'] && $resultRow['item_type']!=='0')	{
+		if (is_array($resultRow)) {
+			if ($resultRow['item_type'] && $resultRow['item_type']!=='0') {
 
 					// (Re)-Indexing file on page.
 				$indexerObj = t3lib_div::makeInstance('tx_indexedsearch_indexer');
 				$indexerObj->backend_initIndexer($pageId, 0, 0, '', $this->getUidRootLineForClosestTemplate($pageId));
 
 					// URL or local file:
-				if ($resultRow['externalUrl'])	{
+				if ($resultRow['externalUrl']) {
 					$indexerObj->indexExternalUrl($resultRow['data_filename']);
 				} else {
 					$indexerObj->indexRegularDocument($resultRow['data_filename'], TRUE);
 				}
 
-				if ($indexerObj->file_phash_arr['phash'] != $resultRow['phash'])	{
+				if ($indexerObj->file_phash_arr['phash'] != $resultRow['phash']) {
 					$content.= 'ERROR: phash ('.$indexerObj->file_phash_arr['phash'].') did NOT match '.$resultRow['phash'].' for strange reasons!';
 				}
 
@@ -1181,7 +1181,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	integer		The page id to traverse rootline back from
 	 * @return	array		Array where the root lines uid values are found.
 	 */
-	function getUidRootLineForClosestTemplate($id)	{
+	function getUidRootLineForClosestTemplate($id) {
 		$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');	// Defined global here!
 		$tmpl->tt_track = 0;	// Do not log time-performance information
 		$tmpl->init();
@@ -1193,7 +1193,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 
 			// Root line uids
 		$rootline_uids = array();
-		foreach($tmpl->rootLine as $rlkey => $rldat)	{
+		foreach($tmpl->rootLine as $rlkey => $rldat) {
 			$rootline_uids[$rlkey] = $rldat['uid'];
 		}
 
@@ -1224,9 +1224,9 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	boolean		If set, page cache is cleared as well.
 	 * @return	void
 	 */
-	function removeIndexedPhashRow($phashList,$clearPageCache=1)	{
+	function removeIndexedPhashRow($phashList,$clearPageCache=1) {
 			// FIXME: This is only a workaround
-		if ($phashList=='ALL')	{
+		if ($phashList=='ALL') {
 			$this->drawTableOfIndexedPages();
 			$phashRows = $this->allPhashListed;
 			$this->allPhashListed = array();	// Reset it because it will be filled again later...
@@ -1234,16 +1234,16 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			$phashRows = t3lib_div::trimExplode(',',$phashList,1);
 		}
 
-		foreach($phashRows as $phash)	{
+		foreach($phashRows as $phash) {
 			$phash = intval($phash);
-			if ($phash>0)	{
+			if ($phash>0) {
 
-				if ($clearPageCache)	{
+				if ($clearPageCache) {
 						// Clearing page cache:
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('page_id', 'index_section', 'phash='.intval($phash));
-					if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
+					if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 						$idList = array();
-						while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+						while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 							$idList[] = (int)$row['page_id'];
 						}
 
@@ -1256,7 +1256,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 
 					// Removing old registrations for all tables.
 				$tableArr = explode(',','index_phash,index_rel,index_section,index_grlist,index_fulltext,index_debug');
-				foreach($tableArr as $table)	{
+				foreach($tableArr as $table) {
 					$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'phash='.intval($phash));
 				}
 
@@ -1272,12 +1272,12 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	string		gr_list string to filter OUT of the result (first occurence)
 	 * @return	array		Array of records from index_grlist table
 	 */
-	function getGrListEntriesForPhash($phash,$gr_list)	{
+	function getGrListEntriesForPhash($phash,$gr_list) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'index_grlist', 'phash='.intval($phash));
 		$lines = array();
 		$isRemoved = 0;
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			if (!$isRemoved && !strcmp($row['gr_list'],$gr_list))	{
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			if (!$isRemoved && !strcmp($row['gr_list'],$gr_list)) {
 				$isRemoved = 1;
 			} else {
 				$lines[] = $row;
@@ -1292,11 +1292,11 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	array		Array of stop-words WIDs with 0/1 to set / unset
 	 * @return	void
 	 */
-	function processStopWords($stopWords)	{
+	function processStopWords($stopWords) {
 
-		if ($GLOBALS['BE_USER']->isAdmin())	{
+		if ($GLOBALS['BE_USER']->isAdmin()) {
 				// Traverse words
-			foreach($stopWords as $wid => $state)	{
+			foreach($stopWords as $wid => $state) {
 				$fieldArray = array(
 					'is_stopword' => $state
 				);
@@ -1312,15 +1312,15 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @param	integer		The page uid of the header where the keywords are to be set.
 	 * @return	void
 	 */
-	function processPageKeywords($pageKeywords, $pageUid)	{
+	function processPageKeywords($pageKeywords, $pageUid) {
 
 			// Get pages current keywords
 		$pageRec = t3lib_BEfunc::getRecord('pages', $pageUid);
 		$keywords = array_flip(t3lib_div::trimExplode(',', $pageRec['keywords'], 1));
 
 			// Merge keywords:
-		foreach($pageKeywords as $key => $v)	{
-			if ($v)	{
+		foreach($pageKeywords as $key => $v) {
+			if ($v) {
 				$keywords[$key]=1;
 			} else {
 				unset($keywords[$key]);

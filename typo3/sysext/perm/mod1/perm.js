@@ -38,7 +38,7 @@
 // TYPO3 code extracted from index.php
 function checkChange(checknames, varname) {
 	var res = 0;
-	for (var a=1; a<=5; a++)	{
+	for (var a=1; a<=5; a++) {
 		if (document.editform[checknames+'['+a+']'].checked) {
 			res|=Math.pow(2,a-1);
 		}
@@ -48,7 +48,7 @@ function checkChange(checknames, varname) {
 }
 
 function setCheck(checknames, varname) {
-	if (document.editform[varname])	{
+	if (document.editform[varname]) {
 		var res = document.editform[varname].value;
 		for (var a=1; a<=5; a++) {
 			document.editform[checknames+'['+a+']'].checked = (res & Math.pow(2,a-1));

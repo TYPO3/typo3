@@ -169,7 +169,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 	public function authUser(array $user) {
 		$OK = 100;
 
-		if ($this->login['uident'] && $this->login['uname'])	{
+		if ($this->login['uident'] && $this->login['uname']) {
 
 				// Checking password match for user:
 			$OK = $this->compareUident($user, $this->login);
@@ -190,7 +190,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 			}
 
 				// Checking the domain (lockToDomain)
-			if ($OK && $user['lockToDomain'] && $user['lockToDomain']!=$this->authInfo['HTTP_HOST'])	{
+			if ($OK && $user['lockToDomain'] && $user['lockToDomain']!=$this->authInfo['HTTP_HOST']) {
 					// Lock domain didn't match, so error:
 				if ($this->writeAttemptLog) {
 					$this->writelog(255,3,3,1,
@@ -216,30 +216,30 @@ class tx_sv_auth extends tx_sv_authbase 	{
 	 * @param	array		Group data array of already known groups. This is handy if you want select other related groups. Keys in this array are unique IDs of those groups.
 	 * @return	mixed		Groups array, keys = uid which must be unique
 	 */
-	function getGroups($user, $knownGroups)	{
+	function getGroups($user, $knownGroups) {
 		global $TYPO3_CONF_VARS;
 
 		$groupDataArr = array();
 
-		if($this->mode=='getGroupsFE')	{
+		if($this->mode=='getGroupsFE') {
 
 			$groups = array();
-			if (is_array($user) && $user[$this->db_user['usergroup_column']])	{
+			if (is_array($user) && $user[$this->db_user['usergroup_column']]) {
 				$groupList = $user[$this->db_user['usergroup_column']];
 				$groups = array();
 				$this->getSubGroups($groupList,'',$groups);
 			}
 
 				// ADD group-numbers if the IPmask matches.
-			if (is_array($TYPO3_CONF_VARS['FE']['IPmaskMountGroups']))	{
-				foreach($TYPO3_CONF_VARS['FE']['IPmaskMountGroups'] as $IPel)	{
+			if (is_array($TYPO3_CONF_VARS['FE']['IPmaskMountGroups'])) {
+				foreach($TYPO3_CONF_VARS['FE']['IPmaskMountGroups'] as $IPel) {
 					if ($this->authInfo['REMOTE_ADDR'] && $IPel[0] && t3lib_div::cmpIP($this->authInfo['REMOTE_ADDR'],$IPel[0]))	{$groups[]=intval($IPel[1]);}
 				}
 			}
 
 			$groups = array_unique($groups);
 
-			if (count($groups))	{
+			if (count($groups)) {
 				$list = implode(',',$groups);
 
 				if ($this->writeDevLog) 	t3lib_div::devLog('Get usergroups with id: '.$list, 'tx_sv_auth');
@@ -247,7 +247,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 				$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\''.$this->authInfo['HTTP_HOST'].'\')';
 				if (!$this->authInfo['showHiddenRecords'])	$hiddenP = 'AND hidden=0 ';
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->db_groups['table'], 'deleted=0 '.$hiddenP.' AND uid IN ('.$list.')'.$lockToDomain_SQL);
-				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$groupDataArr[$row['uid']] = $row;
 				}
 				if ($res)	$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -273,7 +273,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 	 * @return	array
 	 * @access private
 	 */
-	function getSubGroups($grList, $idList='', &$groups)	{
+	function getSubGroups($grList, $idList='', &$groups) {
 
 			// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
 		$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\''.$this->authInfo['HTTP_HOST'].'\')';
@@ -283,7 +283,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 		$groupRows = array();	// Internal group record storage
 
 			// The groups array is filled
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			if(!in_array($row['uid'], $groups))	{ $groups[] = $row['uid']; }
 			$groupRows[$row['uid']] = $row;
 		}
@@ -297,7 +297,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 			if (is_array($row) && !t3lib_div::inList($idList,$uid))	{	// Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
 
 					// Include sub groups
-				if (trim($row['subgroup']))	{
+				if (trim($row['subgroup'])) {
 					$theList = implode(',',t3lib_div::intExplode(',',$row['subgroup']));	// Make integer list
 					$this->getSubGroups($theList, $idList.','.$uid, $groups);		// Call recursively, pass along list of already processed groups so they are not recursed again.
 				}

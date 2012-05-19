@@ -119,17 +119,17 @@ $lines = explode(chr(10),$data);
 $imageArr = array();
 foreach ($lines as $key => $content) {
 	$content = trim($content);
-	if ($content)	{
+	if ($content) {
 		$parts = explode('|',$content);
 		$text = trim($parts[0]);
 		$type = t3lib_utility_Math::forceIntegerInRange($parts[1],1,3);
 		$link = trim($parts[2]);
-		if ($text)	{
+		if ($text) {
 			$imgConf = $conf['images.'][$type.'.'];
 			$imgConf['file.'] = $this->gifBuilderTextBox ($imgConf['file.'], $conf['textBox.'], $text);
 
 			$image = $this->IMAGE($imgConf);
-			if ($image)	{
+			if ($image) {
 				$this->setCurrentVal($link);
 				$imageArr[] = $this->typolink($image,$conf['typolink.']);
 			}
@@ -138,15 +138,15 @@ foreach ($lines as $key => $content) {
 }
 
 
-if (is_array($imageArr))	{
+if (is_array($imageArr)) {
 	reset($imageArr);
-	if ($cols)	{
+	if ($cols) {
 		$res = '';
 		$rows = ceil(count($imageArr)/$cols);
 
-		for ($a=0;$a<$rows;$a++)	{
+		for ($a=0;$a<$rows;$a++) {
 			$res.='<tr>';
-			for ($b=0;$b<$cols;$b++)	{
+			for ($b=0;$b<$cols;$b++) {
 				$res.='<td>'.$imageArr[(($a*$cols)+$b)].'</td>';
 			}
 			$res.='</tr>';

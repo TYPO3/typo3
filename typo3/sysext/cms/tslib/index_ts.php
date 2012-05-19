@@ -89,8 +89,8 @@ if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preprocessReq
 // *********************
 // Look for extension ID which will launch alternative output engine
 // *********************
-if ($temp_extId = t3lib_div::_GP('eID'))	{
-	if ($classPath = t3lib_div::getFileAbsFileName($TYPO3_CONF_VARS['FE']['eID_include'][$temp_extId]))	{
+if ($temp_extId = t3lib_div::_GP('eID')) {
+	if ($classPath = t3lib_div::getFileAbsFileName($TYPO3_CONF_VARS['FE']['eID_include'][$temp_extId])) {
 		// Remove any output produced until now
 		ob_clean();
 
@@ -132,7 +132,7 @@ $TSFE->sendRedirect();
 // *******************
 // Remove any output produced until now
 ob_clean();
-if ($TYPO3_CONF_VARS['FE']['compressionLevel'] && extension_loaded('zlib'))	{
+if ($TYPO3_CONF_VARS['FE']['compressionLevel'] && extension_loaded('zlib')) {
 	if (t3lib_utility_Math::canBeInterpretedAsInteger($TYPO3_CONF_VARS['FE']['compressionLevel'])) {
 		// Prevent errors if ini_set() is unavailable (safe mode)
 		@ini_set('zlib.output_compression_level', $TYPO3_CONF_VARS['FE']['compressionLevel']);
@@ -255,7 +255,7 @@ $TSFE->checkJumpUrlReferer();
 // Check Submission of data.
 // This is done at this point, because we need the config values
 // *******************************
-switch($TSFE->checkDataSubmission())	{
+switch($TSFE->checkDataSubmission()) {
 	case 'email':
 		$TSFE->sendFormmail();
 	break;
@@ -303,7 +303,7 @@ if ($TSFE->isINTincScript())		{
 // Output content
 // ***************
 $sendTSFEContent = FALSE;
-if ($TSFE->isOutputting())	{
+if ($TSFE->isOutputting()) {
 	$TT->push('Print Content','');
 	$TSFE->processOutput();
 	$sendTSFEContent = TRUE;

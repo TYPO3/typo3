@@ -65,7 +65,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * @return	string		HTML output.
 	 * @access private
 	 */
-	function render_bullets($content,$conf)	{
+	function render_bullets($content,$conf) {
 
 			// Look for hook before running default code for function
 		if ($hookObj = $this->hookRequest('render_bullets')) {
@@ -79,7 +79,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 				// Split into single lines:
 			$lines = t3lib_div::trimExplode(LF,$content);
-			foreach($lines as &$val)	{
+			foreach($lines as &$val) {
 				$val = '<li>'.$this->cObj->stdWrap($val,$conf['innerStdWrap.']).'</li>';
 			}
 			unset($val);
@@ -111,7 +111,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * @return	string		HTML output.
 	 * @access private
 	 */
-	function render_table($content,$conf)	{
+	function render_table($content,$conf) {
 
 			// Look for hook before running default code for function
 		if ($hookObj = $this->hookRequest('render_table')) {
@@ -133,13 +133,13 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			$tableClass = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'acctables_tableclass');
 
 			$delimiter = trim($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'tableparsing_delimiter','s_parsing'));
-			if ($delimiter)	{
+			if ($delimiter) {
 				$delimiter = chr(intval($delimiter));
 			} else {
 				$delimiter = '|';
 			}
 			$quotedInput = trim($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'tableparsing_quote','s_parsing'));
-			if ($quotedInput)	{
+			if ($quotedInput) {
 				$quotedInput = chr(intval($quotedInput));
 			} else {
 				$quotedInput = '';
@@ -158,25 +158,25 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 				// Traverse rows (rendering the table here)
 			$rCount = count($rows);
-			foreach($rows as $k => $v)	{
+			foreach($rows as $k => $v) {
 				$cells = explode($delimiter,$v);
 				$newCells=array();
-				for($a=0;$a<$cols;$a++)	{
+				for($a=0;$a<$cols;$a++) {
 						// remove quotes if needed
-					if ($quotedInput && substr($cells[$a],0,1) == $quotedInput && substr($cells[$a],-1,1) == $quotedInput)	{
+					if ($quotedInput && substr($cells[$a],0,1) == $quotedInput && substr($cells[$a],-1,1) == $quotedInput) {
 						$cells[$a] = substr($cells[$a],1,-1);
 					}
 
 					if (!strcmp(trim($cells[$a]),''))	$cells[$a]='&nbsp;';
 					$cellAttribs = ($noStyles?'':($a>0 && ($cols-1)==$a) ? ' class="td-last td-'.$a.'"' : ' class="td-'.$a.'"');
-					if (($headerPos == 'top' && !$k) || ($headerPos == 'left' && !$a))	{
+					if (($headerPos == 'top' && !$k) || ($headerPos == 'left' && !$a)) {
 						$scope = ' scope="'.$headerScope.'"';
 						$scope .= ' id="'.$headerIdPrefix.(($headerScope=='col')?$a:$k).'"';
 
 						$newCells[$a] = '
 							<th'.$cellAttribs.$scope.'>'.$this->cObj->stdWrap($cells[$a],$conf['innerStdWrap.']).'</th>';
 					} else {
-						if (empty($headerPos))	{
+						if (empty($headerPos)) {
 							$accessibleHeader = '';
 						} else {
 							$accessibleHeader = ' headers="'.$headerIdPrefix.(($headerScope=='col')?$a:$k).'"';
@@ -185,7 +185,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 							<td'.$cellAttribs.$accessibleHeader.'>'.$this->cObj->stdWrap($cells[$a],$conf['innerStdWrap.']).'</td>';
 					}
 				}
-				if (!$noStyles)	{
+				if (!$noStyles) {
 					$oddEven = $k%2 ? 'tr-odd' : 'tr-even';
 					$rowAttribs =  ($k>0 && ($rCount-1)==$k) ? ' class="'.$oddEven.' tr-last"' : ' class="'.$oddEven.' tr-'.$k.'"';
 				}
@@ -196,24 +196,24 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 			$addTbody = 0;
 			$tableContents = '';
-			if ($caption)	{
+			if ($caption) {
 				$tableContents .= '
 					<caption>'.$caption.'</caption>';
 			}
-			if ($headerPos == 'top' && $rows[0])	{
+			if ($headerPos == 'top' && $rows[0]) {
 				$tableContents .= '<thead>'. $rows[0] .'
 					</thead>';
 				unset($rows[0]);
 				$addTbody = 1;
 			}
-			if ($useTfoot)	{
+			if ($useTfoot) {
 				$tableContents .= '
 					<tfoot>'.$rows[$rCount-1].'</tfoot>';
 				unset($rows[$rCount-1]);
 				$addTbody = 1;
 			}
 			$tmpTable = implode('',$rows);
-			if ($addTbody)	{
+			if ($addTbody) {
 				$tmpTable = '<tbody>'.$tmpTable.'</tbody>';
 			}
 			$tableContents .= $tmpTable;
@@ -223,7 +223,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 				// Table tag params.
 			$tableTagParams = $this->getTableAttributes($conf,$type);
-			if (!$noStyles)	{
+			if (!$noStyles) {
 				$tableTagParams['class'] = 'contenttable contenttable-' . $type .
 					($tableClass ? ' ' . $tableClass : '') . $tableTagParams['class'];
 			} elseif ($tableClass) {
@@ -255,7 +255,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * @return	string		HTML output.
 	 * @access private
 	 */
-	function render_uploads($content,$conf)	{
+	function render_uploads($content,$conf) {
 
 			// Look for hook before running default code for function
 		if ($hookObj = $this->hookRequest('render_uploads')) {
@@ -291,7 +291,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			$fileArray = t3lib_div::trimExplode(',',$fileList,1);
 
 				// If there were files to list...:
-			if (count($fileArray))	{
+			if (count($fileArray)) {
 
 					// Get the descriptions for the files (if any):
 				$descriptions = t3lib_div::trimExplode(LF,$this->cObj->data['imagecaption']);
@@ -328,9 +328,9 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 					// Traverse the files found:
 				$filesData = array();
-				foreach($fileArray as $key => $fileName)	{
+				foreach($fileArray as $key => $fileName) {
 					$absPath = t3lib_div::getFileAbsFileName(t3lib_div::resolveBackPath($path . $fileName));
-					if (@is_file($absPath))	{
+					if (@is_file($absPath)) {
 						$fI = pathinfo($fileName);
 						$filesData[$key] = array();
 
@@ -394,7 +394,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 					$outputEntries[] = $this->cObj->cObjGetSingle($splitConf[$key]['itemRendering'], $splitConf[$key]['itemRendering.']);
 				}
 
-				if (isset($conf['outerWrap']))	{
+				if (isset($conf['outerWrap'])) {
 						// Wrap around the whole content
 					$outerWrap = $this->cObj->stdWrap($conf['outerWrap'], $conf['outerWrap.']);
 				} else	{
@@ -475,7 +475,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$accumDesiredWidth = 0;
 		$relUnitCount = array_sum($colRelations);
 
-		for ($a = 0; $a < $colCount; $a++)	{
+		for ($a = 0; $a < $colCount; $a++) {
 			$availableWidth = $netW - $accumWidth; // this much width is available for the remaining images in this row (int)
 			$desiredWidth = $netW / $relUnitCount * $colRelations[$a]; // theoretical width of resized image. (float)
 			$accumDesiredWidth += $desiredWidth; // add this width. $accumDesiredWidth becomes the desired horizontal position
@@ -499,7 +499,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * @coauthor	Ernesto Baschny <ernst@cron-it.de>
 	 * @coauthor Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	function render_textpic($content, $conf)	{
+	function render_textpic($content, $conf) {
 			// Look for hook before running default code for function
 		if (method_exists($this, 'hookRequest') && $hookObj = $this->hookRequest('render_textpic')) {
 			return $hookObj->render_textpic($content,$conf);
@@ -508,25 +508,25 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$renderMethod = $this->cObj->stdWrap($conf['renderMethod'], $conf['renderMethod.']);
 
 			// Render using the default IMGTEXT code (table-based)
-		if (!$renderMethod || $renderMethod == 'table')	{
+		if (!$renderMethod || $renderMethod == 'table') {
 			return $this->cObj->IMGTEXT($conf);
 		}
 
 			// Specific configuration for the chosen rendering method
-		if (is_array($conf['rendering.'][$renderMethod . '.']))	{
+		if (is_array($conf['rendering.'][$renderMethod . '.'])) {
 			$conf = $this->cObj->joinTSarrays($conf, $conf['rendering.'][$renderMethod . '.']);
 		}
 
 			// Image or Text with Image?
-		if (is_array($conf['text.']))	{
+		if (is_array($conf['text.'])) {
 			$content = $this->cObj->stdWrap($this->cObj->cObjGet($conf['text.'], 'text.'), $conf['text.']);
 		}
 
 		$imgList = trim($this->cObj->stdWrap($conf['imgList'], $conf['imgList.']));
 
-		if (!$imgList)	{
+		if (!$imgList) {
 				// No images, that's easy
-			if (is_array($conf['stdWrap.']))	{
+			if (is_array($conf['stdWrap.'])) {
 				return $this->cObj->stdWrap($content, $conf['stdWrap.']);
 			}
 			return $content;
@@ -536,7 +536,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$imgStart = intval($this->cObj->stdWrap($conf['imgStart'], $conf['imgStart.']));
 		$imgCount = count($imgs) - $imgStart;
 		$imgMax = intval($this->cObj->stdWrap($conf['imgMax'], $conf['imgMax.']));
-		if ($imgMax)	{
+		if ($imgMax) {
 			$imgCount = t3lib_utility_Math::forceIntegerInRange($imgCount, 0, $imgMax);	// reduce the number of images.
 		}
 
@@ -553,7 +553,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$GLOBALS['TSFE']->register['imageCount'] = $imgCount;
 		$GLOBALS['TSFE']->register['renderGlobalCaption'] = $renderGlobalCaption;
 		$fallbackRenderMethod = $this->cObj->cObjGetSingle($conf['fallbackRendering'], $conf['fallbackRendering.']);
-		if ($fallbackRenderMethod && is_array($conf['rendering.'][$fallbackRenderMethod . '.']))	{
+		if ($fallbackRenderMethod && is_array($conf['rendering.'][$fallbackRenderMethod . '.'])) {
 			$conf = $this->cObj->joinTSarrays($conf, $conf['rendering.'][$fallbackRenderMethod . '.']);
 		}
 
@@ -565,7 +565,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 			// Global caption
 		$globalCaption = '';
-		if ($renderGlobalCaption)	{
+		if ($renderGlobalCaption) {
 			$globalCaption = $this->cObj->stdWrap($this->cObj->cObjGet($conf['caption.'], 'caption.'), $conf['caption.']);
 		}
 
@@ -576,7 +576,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$contentPosition = $position&24;	// 0,8,16,24 (above,below,intext,intext-wrap)
 		$align = $this->cObj->align[$imagePosition];
 		$textMargin = intval($this->cObj->stdWrap($conf['textMargin'],$conf['textMargin.']));
-		if (!$conf['textMargin_outOfText'] && $contentPosition < 16)	{
+		if (!$conf['textMargin_outOfText'] && $contentPosition < 16) {
 			$textMargin = 0;
 		}
 
@@ -599,7 +599,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 			// Generate rows
 		$rows = intval($this->cObj->stdWrap($conf['rows'],$conf['rows.']));
-		if ($rows>1)	{
+		if ($rows>1) {
 			$rowCount = $rows;
 			if ($rowCount > $imgCount)	{$rowCount = $imgCount;}
 			$colCount = ($rowCount>1) ? ceil($imgCount / $rowCount) : $imgCount;
@@ -611,7 +611,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$fiftyPercentWidthInText = round($maxW / 100 * 50);
 
 		if ($contentPosition>=16)	{	// in Text
-			if (!$maxWInText)	{
+			if (!$maxWInText) {
 					// If maxWInText is not set, it's calculated to the 50% of the max
 				$maxW = $fiftyPercentWidthInText;
 			} else {
@@ -647,13 +647,13 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 			// EqualHeight
 		$equalHeight = intval($this->cObj->stdWrap($conf['equalH'],$conf['equalH.']));
-		if ($equalHeight)	{
+		if ($equalHeight) {
 				// Initiate gifbuilder object in order to get dimensions AND calculate the imageWidth's
 			$gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
 			$gifCreator->init();
 			$relations_cols = Array();
 			$imgWidths = array(); // contains the individual width of all images after scaling to $equalHeight
-			for ($a=0; $a<$imgCount; $a++)	{
+			for ($a=0; $a<$imgCount; $a++) {
 				$imgKey = $a+$imgStart;
 				$imgInfo = $gifCreator->getImageDimensions($imgPath.$imgs[$imgKey]);
 				$rel = $imgInfo[1] / $equalHeight;	// relationship between the original height and the wished height
@@ -673,7 +673,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$imgsTag = array();		// array index of $imgsTag will be the same as in $imgs, but $imgsTag only contains the images that are actually shown
 		$origImages = array();
 		$rowIdx = 0;
-		for ($a=0; $a<$imgCount; $a++)	{
+		for ($a=0; $a<$imgCount; $a++) {
 			$imgKey = $a+$imgStart;
 			$totalImagePath = $imgPath.$imgs[$imgKey];
 
@@ -685,7 +685,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			$imgObjNum = intval($splitArr[$a]['imgObjNum']);
 			$imgConf = $conf[$imgObjNum.'.'];
 
-			if ($equalHeight)	{
+			if ($equalHeight) {
 
 				if ($a % $colCount == 0) {
 						// a new row startsS
@@ -729,26 +729,26 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			$titleInLink = $this->cObj->stdWrap($imgConf['titleInLink'], $imgConf['titleInLink.']);
 			$titleInLinkAndImg = $this->cObj->stdWrap($imgConf['titleInLinkAndImg'], $imgConf['titleInLinkAndImg.']);
 			$oldATagParms = $GLOBALS['TSFE']->ATagParams;
-			if ($titleInLink)	{
+			if ($titleInLink) {
 					// Title in A-tag instead of IMG-tag
 				$titleText = trim($this->cObj->stdWrap($imgConf['titleText'], $imgConf['titleText.']));
-				if ($titleText)	{
+				if ($titleText) {
 						// This will be used by the IMAGE call later:
 					$GLOBALS['TSFE']->ATagParams .= ' title="'. $titleText .'"';
 				}
 			}
 
-			if ($imgConf || $imgConf['file'])	{
-				if ($this->cObj->image_effects[$image_effects])	{
+			if ($imgConf || $imgConf['file']) {
+				if ($this->cObj->image_effects[$image_effects]) {
 					$imgConf['file.']['params'] .= ' '.$this->cObj->image_effects[$image_effects];
 				}
-				if ($image_frames)	{
-					if (is_array($conf['image_frames.'][$image_frames.'.']))	{
+				if ($image_frames) {
+					if (is_array($conf['image_frames.'][$image_frames.'.'])) {
 						$imgConf['file.']['m.'] = $conf['image_frames.'][$image_frames.'.'];
 					}
 				}
-				if ($image_compression && $imgConf['file'] != 'GIFBUILDER')	{
-					if ($image_compression == 1)	{
+				if ($image_compression && $imgConf['file'] != 'GIFBUILDER') {
+					if ($image_compression == 1) {
 						$tempImport = $imgConf['file.']['import'];
 						$tempImport_dot = $imgConf['file.']['import.'];
 						unset($imgConf['file.']);
@@ -760,10 +760,10 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 						unset($imgConf['file.']['ext.']);
 					}
 				}
-				if ($titleInLink && ! $titleInLinkAndImg)	{
+				if ($titleInLink && ! $titleInLinkAndImg) {
 						// Check if the image will be linked
 					$link = $this->cObj->imageLinkWrap('', $totalImagePath, $imgConf['imageLinkWrap.']);
-					if ($link)	{
+					if ($link) {
 							// Title in A-tag only (set above: ATagParams), not in IMG-tag
 						unset($imgConf['titleText']);
 						unset($imgConf['titleText.']);
@@ -799,11 +799,11 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 		$rowCount_temp = 1;
 		$colCount_temp = $colCount;
-		if ($noRows)	{
+		if ($noRows) {
 			$rowCount_temp = $rowCount;
 			$rowCount = 1;
 		}
-		if ($noCols)	{
+		if ($noCols) {
 			$colCount = 1;
 			$columnWidths = array();
 		}
@@ -1152,7 +1152,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$output = str_replace('###IMAGES###', $images, $output);
 		$output = str_replace('###CLASSES###', $class, $output);
 
-		if ($conf['stdWrap.'])	{
+		if ($conf['stdWrap.']) {
 			$output = $this->cObj->stdWrap($output, $conf['stdWrap.']);
 		}
 

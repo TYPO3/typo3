@@ -248,7 +248,7 @@ class SC_mod_web_perm_index {
 			$this->edit = $this->edit && $this->editingAllowed;
 
 				// If $this->edit then these functions are called in the end of the page...
-			if ($this->edit)	{
+			if ($this->edit) {
 				$this->doc->postCode.= $this->doc->wrapScriptTags('
 					setCheck("check[perms_user]","data[pages]['.$this->id.'][perms_user]");
 					setCheck("check[perms_group]","data[pages]['.$this->id.'][perms_group]");
@@ -323,7 +323,7 @@ class SC_mod_web_perm_index {
 				'</a>';
 
 			// Shortcut
-		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
+		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 		}
 
@@ -387,8 +387,8 @@ class SC_mod_web_perm_index {
 			// Owner selector:
 		$options='';
 		$userset=0;	// flag: is set if the page-userid equals one from the user-list
-		foreach($beUserArray as $uid => $row)	{
-			if ($uid==$this->pageinfo['perms_userid'])	{
+		foreach($beUserArray as $uid => $row) {
+			if ($uid==$this->pageinfo['perms_userid']) {
 				$userset = 1;
 				$selected=' selected="selected"';
 			} else {
@@ -410,8 +410,8 @@ class SC_mod_web_perm_index {
 			// Group selector:
 		$options='';
 		$userset=0;
-		foreach($beGroupArray as $uid => $row)	{
-			if ($uid==$this->pageinfo['perms_groupid'])	{
+		foreach($beGroupArray as $uid => $row) {
+			if ($uid==$this->pageinfo['perms_groupid']) {
 				$userset = 1;
 				$selected=' selected="selected"';
 			} else {
@@ -732,9 +732,9 @@ class SC_mod_web_perm_index {
 	 * @return	integer		Integer: Combined permissions.
 	 */
 	public function groupPerms($row, $firstGroup) {
-		if (is_array($row))	{
+		if (is_array($row)) {
 			$out = intval($row['perms_everybody']);
-			if ($row['perms_groupid'] && $firstGroup['uid']==$row['perms_groupid'])	{
+			if ($row['perms_groupid'] && $firstGroup['uid']==$row['perms_groupid']) {
 				$out |= intval($row['perms_group']);
 			}
 			return $out;
@@ -772,10 +772,10 @@ class SC_mod_web_perm_index {
 						<option value=""></option>';
 
 				// Traverse the number of levels we want to allow recursive setting of permissions for:
-			for ($a=$this->getLevels;$a>0;$a--)	{
-				if (is_array($tree->orig_ids_hierarchy[$a]))	{
-					foreach($tree->orig_ids_hierarchy[$a] as $theId)	{
-						if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->user['uid']==$tree->recs[$theId]['perms_userid'])	{
+			for ($a=$this->getLevels;$a>0;$a--) {
+				if (is_array($tree->orig_ids_hierarchy[$a])) {
+					foreach($tree->orig_ids_hierarchy[$a] as $theId) {
+						if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->user['uid']==$tree->recs[$theId]['perms_userid']) {
 							$theIdListArr[]=$theId;
 						}
 					}

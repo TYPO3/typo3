@@ -99,28 +99,28 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 	 * @param	array		Result array from main() function
 	 * @return	void
 	 */
-	function main_autoFix($resultArray)	{
+	function main_autoFix($resultArray) {
 
 			// Putting "tx_templavoila_datastructure" table in the bottom:
-		if (isset($resultArray['deleted']['tx_templavoila_datastructure']))	{
+		if (isset($resultArray['deleted']['tx_templavoila_datastructure'])) {
 			$_tx_templavoila_datastructure = $resultArray['deleted']['tx_templavoila_datastructure'];
 			unset($resultArray['deleted']['tx_templavoila_datastructure']);
 			$resultArray['deleted']['tx_templavoila_datastructure'] = $_tx_templavoila_datastructure;
 		}
 
 			// Putting "pages" table in the bottom:
-		if (isset($resultArray['deleted']['pages']))	{
+		if (isset($resultArray['deleted']['pages'])) {
 			$_pages = $resultArray['deleted']['pages'];
 			unset($resultArray['deleted']['pages']);
 			$resultArray['deleted']['pages'] = array_reverse($_pages);	// To delete sub pages first assuming they are accumulated from top of page tree.
 		}
 
 			// Traversing records:
-		foreach($resultArray['deleted'] as $table => $list)	{
+		foreach($resultArray['deleted'] as $table => $list) {
 			echo 'Flushing deleted records from table "'.$table.'":'.LF;
-			foreach($list as $uid)	{
+			foreach($list as $uid) {
 				echo '	Flushing record "'.$table.':'.$uid.'": ';
-				if ($bypass = $this->cli_noExecutionCheck($table.':'.$uid))	{
+				if ($bypass = $this->cli_noExecutionCheck($table.':'.$uid)) {
 					echo $bypass;
 				} else {
 
@@ -131,7 +131,7 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 					$tce->deleteRecord($table,$uid, TRUE, TRUE);	// Notice, we are deleting pages with no regard to subpages/subrecords - we do this since they should also be included in the set of deleted pages of course (no un-deleted record can exist under a deleted page...)
 
 						// Return errors if any:
-					if (count($tce->errorLog))	{
+					if (count($tce->errorLog)) {
 						echo '	ERROR from "TCEmain":'.LF.'TCEmain:'.implode(LF.'TCEmain:',$tce->errorLog);
 					} else echo "DONE";
 				}

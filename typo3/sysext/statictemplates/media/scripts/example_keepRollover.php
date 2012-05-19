@@ -48,11 +48,11 @@
  * @return	array		The processed $I array returned (and stored in $this->I of the parent object again)
  * @see tslib_menu::userProcess(), tslib_tmenu::writeMenu(), tslib_gmenu::writeMenu()
  */
-function user_keepRolloverAtOnClick($I,$conf)	{
+function user_keepRolloverAtOnClick($I,$conf) {
 	$itemRow = $conf['parentObj']->menuArr[$I['key']];
 
 		// Setting the document status content to the value of the page title on mouse over
-	if (!$I['linkHREF']['TARGET'])	{
+	if (!$I['linkHREF']['TARGET']) {
 		$I['linkHREF']['HREF']='#';
 		$I['linkHREF']['onClick'].='ARO_setLocation'.($conf['setLocation']).'('.$itemRow['uid'].',\''.$I['theName'].'\'); return false;';
 	} else {
@@ -61,7 +61,7 @@ function user_keepRolloverAtOnClick($I,$conf)	{
 	if ($I['linkHREF']['onMouseover'])	$I['linkHREF']['onMouseover']='ARO_'.$I['linkHREF']['onMouseover'];
 	if ($I['linkHREF']['onMouseout'])	$I['linkHREF']['onMouseout']='ARO_'.$I['linkHREF']['onMouseout'];
 
-	if ($conf['parentObj']->isActive($itemRow['uid']))	{
+	if ($conf['parentObj']->isActive($itemRow['uid'])) {
 		$conf['parentObj']->WMextraScript.='
 <script type="text/javascript">
 	/*<![CDATA[*/
@@ -79,7 +79,7 @@ function user_keepRolloverAtOnClick($I,$conf)	{
 	$I['parts']['ATag_begin']=$I['A1'];	// Setting the ATag_begin to the value of this $I
 
 		// Debug:
-	if ($conf['debug'])	{
+	if ($conf['debug']) {
 			// Outputting for debug example:
 		echo 'ITEM: <h2>'.htmlspecialchars($itemRow['uid'].': '.$itemRow['title']).'</h2>';
 		t3lib_utility_Debug::debug($itemRow);

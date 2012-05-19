@@ -82,10 +82,10 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 		$this->WMarrowACT='';
 		$this->WMimagesFlag=0;
 		$this->WMimageHTML ='';
-		if (($this->mconf['arrowNO'] || $this->mconf['arrowNO.']) && ($this->mconf['arrowACT'] || $this->mconf['arrowACT.']))	{
+		if (($this->mconf['arrowNO'] || $this->mconf['arrowNO.']) && ($this->mconf['arrowACT'] || $this->mconf['arrowACT.'])) {
 			$this->WMarrowNO = $GLOBALS['TSFE']->cObj->getImgResource($this->mconf['arrowNO'],$this->mconf['arrowNO.']);
 			$this->WMarrowACT = $GLOBALS['TSFE']->cObj->getImgResource($this->mconf['arrowACT'],$this->mconf['arrowACT.']);
-			if (is_array($this->WMarrowACT) && is_array($this->WMarrowNO))	{
+			if (is_array($this->WMarrowACT) && is_array($this->WMarrowNO)) {
 				$this->WMimagesFlag=1;
 			}
 		}
@@ -98,10 +98,10 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return	void
 	 */
-	function extProc_beforeLinking($key)	{
+	function extProc_beforeLinking($key) {
 		$this->I['addATagParams']='';
 		$this->WMsubmenu = $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
-		if (trim($this->WMsubmenu))	{
+		if (trim($this->WMsubmenu)) {
 			$this->I['addATagParams']=' onclick="GF_menu('.$key.');'.($this->mconf['dontLinkIfSubmenu'] ? ' return false;' : '').'"';
 			if ($this->isActive($this->I['uid'], $this->getMPvar($key)) && $this->mconf['displayActiveOnLoad'])	{	// orig: && $this->WMisSub, changed 210901
 				$this->WM_activeOnLoad='GF_menu('.$key.');';
@@ -115,14 +115,14 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return	void
 	 */
-	function extProc_afterLinking($key)	{
+	function extProc_afterLinking($key) {
 		$this->WMtableWrap = $this->mconf['dontWrapInTable'] ? '' : '<table cellspacing="0" cellpadding="0" width="100%" border="0"><tr><td>|</td></tr></table>';
 
-		if ($this->WMimagesFlag)	{
+		if ($this->WMimagesFlag) {
 			$this->WMimageHTML='<img src="'.$GLOBALS['TSFE']->absRefPrefix.$this->WMarrowNO[3].'" width="'.$this->WMarrowNO[0].'" height="'.$this->WMarrowNO[1].'" border="0" name="imgA'.$key.'"'.($this->mconf['arrowImgParams']?' '.$this->mconf['arrowImgParams']:'').' alt="" />';
 		} else {$this->WMimageHTML="";}
 
-		if (strstr($this->I['theItem'], '###ARROW_IMAGE###'))	{
+		if (strstr($this->I['theItem'], '###ARROW_IMAGE###')) {
 			$this->I['theItem'] = str_replace('###ARROW_IMAGE###', $this->WMimageHTML, $this->I['theItem']);
 		} else {
 			$this->I['theItem'] = $this->WMimageHTML.$this->I['theItem'];
@@ -189,7 +189,7 @@ GFV_step=0;
 GFV_active=false;	 //Don\'t change this one.
 GFV_adjustTopHeights = '.$adjustTopHeights.';
 GFV_adjustSubHeights = '.$adjustSubHeights.';
-if (bw.opera)	{
+if (bw.opera) {
 	GFV_scrX= innerWidth;
 	GFV_scrY= innerHeight;
 }

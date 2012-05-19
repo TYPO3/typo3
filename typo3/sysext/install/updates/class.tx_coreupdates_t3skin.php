@@ -117,7 +117,7 @@ class tx_coreupdates_t3skin extends Tx_Install_Updates_Base {
 	 * @param	string		List of extensions
 	 * @return	string		Result of writeToLocalconf_control()
 	 */
-	protected function writeNewExtensionList($newExtList)	{
+	protected function writeNewExtensionList($newExtList) {
 			// Instance of install tool
 		$instObj = t3lib_div::makeInstance('t3lib_install');
 		$instObj->allowUpdateLocalConf = 1;

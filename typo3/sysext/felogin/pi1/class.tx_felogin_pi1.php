@@ -54,7 +54,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 *
 	 * @return	string		The	content that is displayed on the website
 	 */
-	public function main($content,$conf)	{
+	public function main($content,$conf) {
 
 			// Loading TypoScript array into object variable:
 		$this->conf = $conf;
@@ -604,7 +604,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 								$GLOBALS['TSFE']->fe_user->usergroup_table,
 								'felogin_redirectPid<>\'\' AND uid IN (' . implode(',', $groupData['uid']) . ')'
 							);
-							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))	{
+							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
 								$redirect_url[] = $this->pi_getPageLink($row[0]); // take the first group with a redirect page
 							}
 						break;
@@ -614,7 +614,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 								$GLOBALS['TSFE']->fe_user->user_table,
 								$GLOBALS['TSFE']->fe_user->userid_column . '=' . $GLOBALS['TSFE']->fe_user->user['uid'] . ' AND felogin_redirectPid<>\'\''
 							);
-							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))	{
+							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
 								$redirect_url[] = $this->pi_getPageLink($row[0]);
 							}
 						break;
@@ -815,12 +815,12 @@ class tx_felogin_pi1 extends tslib_pibase {
 			}
 		}
 			// should GETvars be preserved?
-		if ($this->conf['preserveGETvars'])	{
+		if ($this->conf['preserveGETvars']) {
 			$additionalParams .= $this->getPreserveGetVars();
 		}
 
 		$this->conf['linkConfig.']['parameter'] = $GLOBALS['TSFE']->id;
-		if ($additionalParams)	{
+		if ($additionalParams) {
 			$this->conf['linkConfig.']['additionalParams'] =  $additionalParams;
 		}
 

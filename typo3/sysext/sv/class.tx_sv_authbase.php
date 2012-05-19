@@ -123,7 +123,7 @@ class tx_sv_authbase extends t3lib_svbase {
 	 * @return	void
 	 * @see t3lib_userauthgroup::writelog()
 	 */
-	function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='')	{
+	function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='') {
 		if($this->writeAttemptLog) {
 			$this->pObj->writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid);
 		}
@@ -152,7 +152,7 @@ class tx_sv_authbase extends t3lib_svbase {
 	 * @param	array		User db table definition: $this->db_user
 	 * @return	mixed		user array or FALSE
 	 */
-	function fetchUserRecord($username, $extraWhere='', $dbUserSetup='')	{
+	function fetchUserRecord($username, $extraWhere='', $dbUserSetup='') {
 
 		$dbUser = is_array($dbUserSetup) ? $dbUserSetup : $this->db_user;
 		$user = $this->pObj->fetchUserRecord($dbUser, $username, $extraWhere);
