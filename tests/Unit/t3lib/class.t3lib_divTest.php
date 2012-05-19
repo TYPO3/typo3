@@ -875,6 +875,35 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertFalse(t3lib_div::validEmail($address));
 	}
 
+	//////////////////////////////////
+	// Tests concerning inArray
+	//////////////////////////////////
+
+	/**
+	 * @test
+	 * @dataProvider inArrayDataProvider
+	 */
+	public function inArrayChecksStringExistenceWithinArray($array, $item, $expected) {
+		$this->assertEquals($expected, t3lib_div::inArray($array, $item));
+	}
+
+	/**
+	 * Data provider for inArrayChecksStringExistenceWithinArray
+	 *
+	 * @return array
+	 */
+	public function inArrayDataProvider() {
+		return array(
+			'Empty array' => array(array(), 'search', FALSE),
+			'One item array no match' => array(array('one'), 'two', FALSE),
+			'One item array match' => array(array('one'), 'one', TRUE),
+			'Multiple items array no match' => array(array('one', 2, 'three', 4), 'four', FALSE),
+			'Multiple items array match' => array(array('one', 2, 'three', 4), 'three', TRUE),
+			'Integer search items can match string values' => array(array('0', '1', '2'), 1, TRUE),
+			'Search item is not casted to integer for a match' => array(array(4), '4a', FALSE),
+			'Empty item won\'t match - in contrast to the php-builtin ' => array(array(0, 1, 2), '', FALSE),
+		);
+	}
 
 	//////////////////////////////////
 	// Tests concerning intExplode
@@ -890,6 +919,105 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 		$this->assertEquals($expectedArray, $actualArray);
 	}
+
+	//////////////////////////////////
+	// Tests concerning keepItemsInArray
+	//////////////////////////////////
+
+	/**
+	 * @test
+	 * @dataProvider keepItemsInArrayWorksWithOneArgumentDataProvider
+	 */
+	public function keepItemsInArrayWorksWithOneArgument($search, $array, $expected) {
+		$this->assertEquals($expected, t3lib_div::keepItemsInArray($array, $search));
+	}
+
+	/**
+	 * Data provider for keepItemsInArrayWorksWithOneArgument
+	 *
+	 * @return array
+	 */
+	public function keepItemsInArrayWorksWithOneArgumentDataProvider() {
+		$array = array(
+			'one' => 'one',
+			'two' => 'two',
+			'three' => 'three'
+		);
+		return array(
+			'Empty argument will match "all" elements' => array(NULL, $array, $array),
+			'No match' => array('four', $array, array()),
+			'One match' => array('two', $array, array('two' => 'two')),
+			'Multiple matches' => array('two,one', $array, array('one' => 'one', 'two' => 'two')),
+			'Argument can be an array' => array(array('three'), $array, array('three' => 'three'))
+		);
+	}
+
+	/**
+	 * Shows the exmaple from the doc comment where
+	 * a function is used to reduce the sub arrays to one item which
+	 * is then used for the matching.
+	 *
+	 * @test
+	 */
+	public function keepItemsInArrayCanUseCallbackOnSearchArray() {
+		$array = array(
+			'aa' => array('first', 'second'),
+			'bb' => array('third', 'fourth'),
+			'cc' => array('fifth', 'sixth')
+		);
+		$expected = array('bb' => array('third', 'fourth'));
+		$keepItems = 'third';
+		$getValueFunc = create_function('$value', 'return $value[0];');
+
+		$match = t3lib_div::keepItemsInArray($array, $keepItems, $getValueFunc);
+		$this->assertEquals($expected, $match);
+	}
+
+	//////////////////////////////////
+	// Tests concerning remapArrayKeys
+	//////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function remapArrayKeysExchangesKeysWithGivenMapping() {
+		$array = array(
+			'one' => 'one',
+			'two' => 'two',
+			'three' => 'three'
+		);
+		$keyMapping = array(
+			'one' => '1',
+			'two' => '2'
+		);
+		$expected = array(
+			'1' => 'one',
+			'2' => 'two',
+			'three' => 'three'
+		);
+
+		t3lib_div::remapArrayKeys($array, $keyMapping);
+		$this->assertEquals($expected, $array);
+	}
+
+	//////////////////////////////////
+	// Tests concerning array_merge
+	//////////////////////////////////
+
+	/**
+	 * Test demonstrating array_merge. This is actually
+	 * a native PHP operator, therefore this test is mainly used to
+	 * show how this function can be used.
+	 *
+	 * @test
+	 */
+	public function arrayMergeKeepsIndexesAfterMerge() {
+		$array1 = array(10 => 'FOO', '20' => 'BAR');
+		$array2 = array('5' => 'PLONK');
+		$expected = array('5' => 'PLONK', 10 => 'FOO', '20' => 'BAR');
+		$this->assertEquals($expected, t3lib_div::array_merge($array1, $array2));
+	}
+
 
 	//////////////////////////////////
 	// Tests concerning int_from_ver
