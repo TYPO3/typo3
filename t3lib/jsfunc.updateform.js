@@ -22,14 +22,14 @@
 ***************************************************************/
 
 
-function updateForm(formname,fieldname,value)	{
-	if (document[formname] && document[formname][fieldname])	{
+function updateForm(formname,fieldname,value) {
+	if (document[formname] && document[formname][fieldname]) {
 		var fObj = document[formname][fieldname];
 		var type=fObj.type;
-		if (!fObj.type)	{
+		if (!fObj.type) {
 			type="radio";
 		}
-		switch(type)	{
+		switch(type) {
 			case "text":
 			case "textarea":
 			case "hidden":
@@ -41,24 +41,24 @@ function updateForm(formname,fieldname,value)	{
 			break;
 			case "select-one":
 				var l=fObj.length;
-				for (a=0;a<l;a++)	{
-					if (fObj.options[a].value == value)	{
+				for (a=0;a<l;a++) {
+					if (fObj.options[a].value == value) {
 						fObj.selectedIndex = a;
 					}
 				}
 			break;
 			case "select-multiple":
 				var l=fObj.length;
-				for (a=0;a<l;a++)	{
-					if (fObj.options[a].value == value)	{
+				for (a=0;a<l;a++) {
+					if (fObj.options[a].value == value) {
 						fObj.options[a].selected = 1;
 					}
 				}
 			break;
 			case "radio":
 				var l=fObj.length;
-				for (a=0; a<l;a++)	{
-					if (fObj[a].value==value)	{
+				for (a=0; a<l;a++) {
+					if (fObj[a].value==value) {
 						fObj[a].checked = 1;
 					}
 				}

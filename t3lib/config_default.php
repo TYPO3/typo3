@@ -918,48 +918,48 @@ unset($typo_db_tables_script);
 unset($typo_db_extTableDef_script);
 
 	// Based on the configuration of the image processing some options may be forced:
-if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['image_processing'])	{
+if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['image_processing']) {
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im']=0;
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']=0;
 }
-if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['im'])	{
+if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path']='';
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']='';
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']='gif,jpg,jpeg,png';
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] = 0;
 }
-if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'])	{
+if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']) {
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask'] = 1;
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_no_effects'] = 1;
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_gif'] = 1;
 
-	if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']==='gm')	{
+	if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']==='gm') {
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask'] = 0;
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'] = 0;
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_no_effects'] = 1;
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'] = -1;
 	}
 }
-if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'])	{
+if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState']) {
 	$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask']=$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask']?0:1;
 }
 
 
 	// Convert type of "pageNotFound_handling" setting in case it was written as a string (e.g. if edited in Install Tool)
 	// TODO: Once the Install Tool handles such data types correctly, this workaround should be removed again...
-if (!strcasecmp($TYPO3_CONF_VARS['FE']['pageNotFound_handling'],'TRUE'))	{
+if (!strcasecmp($TYPO3_CONF_VARS['FE']['pageNotFound_handling'],'TRUE')) {
 	$TYPO3_CONF_VARS['FE']['pageNotFound_handling'] = TRUE;
 }
 
 
 	// simple debug function which prints output immediately
-function xdebug($var = '', $debugTitle = 'xdebug')	{
+function xdebug($var = '', $debugTitle = 'xdebug') {
 		// If you wish to use the debug()-function, and it does not output something, please edit the IP mask in TYPO3_CONF_VARS
 	if (!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	return;
 	t3lib_utility_Debug::debug($var, $debugTitle);
 }
 	// Debug function which calls $GLOBALS['error'] error handler if available
-function debug($variable='', $name='*variable*', $line='*line*', $file='*file*', $recursiveDepth=3, $debugLevel=E_DEBUG)	{
+function debug($variable='', $name='*variable*', $line='*line*', $file='*file*', $recursiveDepth=3, $debugLevel=E_DEBUG) {
 		// If you wish to use the debug()-function, and it does not output something, please edit the IP mask in TYPO3_CONF_VARS
 	if (!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	return;
 
@@ -994,15 +994,15 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionalErrors'] = $TYPO3_CONF_VARS
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'][] = 't3lib_mail_SwiftMailerAdapter';
 
 	// Turn error logging on/off.
-if (($displayErrors = intval($TYPO3_CONF_VARS['SYS']['displayErrors'])) != '-1')	{
+if (($displayErrors = intval($TYPO3_CONF_VARS['SYS']['displayErrors'])) != '-1') {
 	if ($displayErrors == 2)	{	// Special value "2" enables this feature only if $TYPO3_CONF_VARS[SYS][devIPmask] matches
-		if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	{
+		if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])) {
 			$displayErrors = 1;
 		} else {
 			$displayErrors = 0;
 		}
 	}
-	if ($displayErrors == 0)	{
+	if ($displayErrors == 0) {
 		$TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionalErrors'] = 0;
 	}
 	if ($displayErrors == 1) {
@@ -1011,7 +1011,7 @@ if (($displayErrors = intval($TYPO3_CONF_VARS['SYS']['displayErrors'])) != '-1')
 	}
 
 	@ini_set('display_errors', $displayErrors);
-} elseif (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	{
+} elseif (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])) {
 		// with displayErrors = -1 (default), turn on debugging if devIPmask matches:
 	$TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] = $TYPO3_CONF_VARS['SYS']['debugExceptionHandler'];
 }
@@ -1041,12 +1041,12 @@ define('TYPO3_REQUESTTYPE',
 
 // Load extensions:
 $TYPO3_LOADED_EXT = t3lib_extMgm::typo3_loadExtensions();
-if ($TYPO3_LOADED_EXT['_CACHEFILE'])	{
+if ($TYPO3_LOADED_EXT['_CACHEFILE']) {
 	require(PATH_typo3conf.$TYPO3_LOADED_EXT['_CACHEFILE'].'_ext_localconf.php');
 } else {
 	$temp_TYPO3_LOADED_EXT = $TYPO3_LOADED_EXT;
 	foreach ($temp_TYPO3_LOADED_EXT as $_EXTKEY => $temp_lEDat) {
-		if (is_array($temp_lEDat) && $temp_lEDat['ext_localconf.php'])	{
+		if (is_array($temp_lEDat) && $temp_lEDat['ext_localconf.php']) {
 			$_EXTCONF = $TYPO3_CONF_VARS['EXT']['extConf'][$_EXTKEY];
 			require($temp_lEDat['ext_localconf.php']);
 		}

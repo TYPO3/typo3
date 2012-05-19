@@ -223,7 +223,7 @@ class t3lib_positionMap {
 
 			function changeImg(name,d)	{	//
 				if (document[name]) {
-					if (d)	{
+					if (d) {
 						document[name].src = img_newrecord_marker_d.src;
 					} else {
 						document[name].src = img_newrecord_marker.src;

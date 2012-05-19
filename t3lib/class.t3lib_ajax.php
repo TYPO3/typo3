@@ -64,14 +64,14 @@ class t3lib_ajax {
 			var A;
 			try	{
 				A=new ActiveXObject("Msxml2.XMLHTTP");
-			} catch (e)	{
+			} catch (e) {
 				try	{
 					A=new ActiveXObject("Microsoft.XMLHTTP");
-				} catch (oc)	{
+				} catch (oc) {
 					A=null;
 				}
 			}
-			if(!A && typeof XMLHttpRequest != "undefined")	{
+			if(!A && typeof XMLHttpRequest != "undefined") {
 				A = new XMLHttpRequest();
 			}
 			return A;
@@ -83,17 +83,17 @@ class t3lib_ajax {
 			$fallback = 'return';
 		}
 		$code .= '
-		function ajax_doRequest(url)	{
+		function ajax_doRequest(url) {
 			var x;
 
 			x = ajax_initObject();
-			if(!x)	{
+			if(!x) {
 				' . $fallback . ';
 			}
 			x.open("GET", url, true);
 
-			x.onreadystatechange = function()	{
-				if (x.readyState != 4)	{
+			x.onreadystatechange = function() {
+				if (x.readyState != 4) {
 					return;
 				}
 				' . ($debug ? 'alert(x.responseText)' : '') . '

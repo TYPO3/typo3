@@ -750,8 +750,8 @@ class t3lib_TCEmain {
 															 *		 but you can easily translate it to the real uid of the inserted record using the $this->substNEWwithIDs array.
 															 */
 							$this->hook_processDatamap_afterDatabaseOperations($hookObjectsArr, $status, $table, $id, $fieldArray);
-						} // if ($recordAccess)	{
-					} // if (is_array($incomingFieldArray))	{
+						} // if ($recordAccess) {
+					} // if (is_array($incomingFieldArray)) {
 				}
 			}
 		}
