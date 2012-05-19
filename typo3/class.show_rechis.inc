@@ -61,7 +61,7 @@ class recordHistory {
 	 *
 	 * @return	void
 	 */
-	function __construct()	{
+	function __construct() {
 			// GPvars:
 		$this->element = t3lib_div::_GP('element');
 		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
@@ -77,7 +77,7 @@ class recordHistory {
 	 *
 	 * @return	HTML		content for the module
 	 */
-	function main()	{
+	function main() {
 		$content = '';
 
 			// single-click rollback
@@ -105,7 +105,7 @@ class recordHistory {
 		}
 
 			// save snapshot
-		if (t3lib_div::_GP('highlight') && !t3lib_div::_GP('settings'))	{
+		if (t3lib_div::_GP('highlight') && !t3lib_div::_GP('settings')) {
 			$this->toggleHighlight(t3lib_div::_GP('highlight'));
 		}
 
@@ -121,7 +121,7 @@ class recordHistory {
 				$content .= $this->displayMultipleDiff($completeDiff);
 			}
 
-			if ($this->element)	{
+			if ($this->element) {
 				$content .= $this->displayHistory();
 			}
 		}
@@ -153,8 +153,8 @@ class recordHistory {
 	 * @return	void
 	 * @access private
 	 */
-	function performRollback($diff)	{
-		if (!$this->rollbackFields)	{
+	function performRollback($diff) {
+		if (!$this->rollbackFields) {
 			return 0;
 		}
 
@@ -181,7 +181,7 @@ class recordHistory {
 					break;
 			}
 			if ($data) {
-				foreach ($data as $key => $action)	{
+				foreach ($data as $key => $action) {
 					$elParts = explode(':', $key);
 					if ($action == 1) {	// inserted records should be deleted
 						$cmdmapArray[$elParts[0]][$elParts[1]]['delete'] = 1;
@@ -212,7 +212,7 @@ class recordHistory {
 			// PROCESS CHANGES
 			// create an array for process_datamap
 		$diff_modified = array();
-		foreach ($diff['oldData'] as $key => $value)	{
+		foreach ($diff['oldData'] as $key => $value) {
 			$splitKey = explode(':', $key);
 			$diff_modified[$splitKey[0]][$splitKey[1]] = $value;
 		}
@@ -252,7 +252,7 @@ class recordHistory {
 		if ($reloadPageFrame) {
 			return '<script type="text/javascript">
 			/*<![CDATA[*/
-			if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
+			if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav) {
 				top.content.nav_frame.refresh_nav();
 			}
 			/*]]>*/
@@ -271,7 +271,7 @@ class recordHistory {
 	 *
 	 * @return	string		HTML code to modify settings
 	 */
-	function displaySettings()	{
+	function displaySettings() {
 			// get current selection from UC, merge data, write it back to UC
 		$currentSelection = is_array($GLOBALS['BE_USER']->uc['moduleData']['history']) ? $GLOBALS['BE_USER']->uc['moduleData']['history'] : array('maxSteps' => '', 'showDiff' => 1, 'showSubElements' => 1, 'showInsertDelete' => 1);
 
@@ -306,7 +306,7 @@ class recordHistory {
 
 			// render selectors
 		$displayCode = '';
-		foreach ($selector as $key => $values)	{
+		foreach ($selector as $key => $values) {
 			$displayCode .= '<tr><td>' . $GLOBALS['LANG']->getLL($key, 1) . '</td>';
 			$displayCode .= '<td><select name="settings[' . $key . ']" onChange="document.settings.submit()" style="width:100px">';
 			foreach ($values as $singleKey => $singleVal) {
@@ -317,7 +317,7 @@ class recordHistory {
 		}
 
 			// set values correctly
-		if ($currentSelection['maxSteps'] != 'marked')	{
+		if ($currentSelection['maxSteps'] != 'marked') {
 			$this->maxSteps = $currentSelection['maxSteps'] ? intval($currentSelection['maxSteps']) : '';
 		} else {
 			$this->showMarked = TRUE;
@@ -330,7 +330,7 @@ class recordHistory {
 		$content = '';
 			// get link to page history if the element history is shown
 		$elParts = explode(':', $this->element);
-		if ($elParts[0] != 'pages')	{
+		if ($elParts[0] != 'pages') {
 			$content .= '<strong>' . $GLOBALS['LANG']->getLL('elementHistory', 1) . '</strong><br />';
 			$pid = t3lib_BEfunc::getRecordRaw($elParts[0],'uid='.intval($elParts[1]));
 			$content .= $this->linkPage($GLOBALS['LANG']->getLL('elementHistory_link', 1), array('element' => 'pages:' . $pid['pid']));
@@ -345,7 +345,7 @@ class recordHistory {
 	 *
 	 * @return	string		HTML for list, wrapped in a table.
 	 */
-	function displayHistory()	{
+	function displayHistory() {
 		$lines = array();
 
 			// Initialize:
@@ -361,7 +361,7 @@ class recordHistory {
 
 			// get default page TSconfig expiration time
 		$elParts = explode(':', $this->element);
-		if ($elParts[0] != 'pages')	{
+		if ($elParts[0] != 'pages') {
 			$tmp = t3lib_BEfunc::getRecordRaw($elParts[0], 'uid=' . intval($elParts[1]));
 			$pid = $tmp['pid'];
 		} else {
@@ -388,7 +388,7 @@ class recordHistory {
 			}
 
 				// display inconsistency warning
-			if ($entry['tstamp'] < $expirationTimestamp && !$expirationWarning)	{
+			if ($entry['tstamp'] < $expirationTimestamp && !$expirationWarning) {
 				$expirationWarning = 1;
 
 				$lines[] = '
@@ -442,7 +442,7 @@ class recordHistory {
 
 				// show link to mark/unmark state
 			if (!$entry['action']) {
-				if ($entry['snapshot'])	{
+				if ($entry['snapshot']) {
 					$image = '<img' . t3lib_iconWorks::skinImg('', 'gfx/unmarkstate.gif') . ' align="top" alt="' . $GLOBALS['LANG']->getLL('unmarkState', 1) . '" title="' . $GLOBALS['LANG']->getLL('unmarkState', 1) . '" />';
 				} else {
 					$image = '<img' . t3lib_iconWorks::skinImg('', 'gfx/markstate.gif') . ' align="top" alt="' . $GLOBALS['LANG']->getLL('markState', 1) . '" title="' . $GLOBALS['LANG']->getLL('markState', 1) . '" />';
@@ -492,14 +492,14 @@ class recordHistory {
 	 * @param	array		difference array
 	 * @return	string		HTML output
 	 */
-	function displayMultipleDiff($diff)	{
+	function displayMultipleDiff($diff) {
 		$content = '';
 
 			// get all array keys needed
 		$arrayKeys = array_merge(array_keys($diff['newData']),array_keys($diff['insertsDeletes']), array_keys($diff['oldData']));
 		$arrayKeys = array_unique($arrayKeys);
 
-		if ($arrayKeys)	{
+		if ($arrayKeys) {
 			foreach ($arrayKeys as $key) {
 				$record = '';
 				$elParts = explode(':', $key);
@@ -513,7 +513,7 @@ class recordHistory {
 				}
 					// build up temporary diff array
 					// turn around diff because it should be a "rollback preview"
-				if ($diff['newData'][$key])	{
+				if ($diff['newData'][$key]) {
 					$tmpArr['newRecord'] = $diff['oldData'][$key];
 					$tmpArr['oldRecord'] = $diff['newData'][$key];
 					$record .= $this->renderDiff($tmpArr, $elParts[0], $elParts[1]);
@@ -566,7 +566,7 @@ class recordHistory {
 				}
 			}
 		}
-		if ($lines)	{
+		if ($lines) {
 			$content = '<table border="0" cellpadding="2" cellspacing="2" id="typo3-history-item">
 					' . implode('', $lines) . '
 				</table>';
@@ -599,7 +599,7 @@ class recordHistory {
 			$field = $value['tablename'] . ':' . $value['recuid'];
 
 				// inserts / deletes
-			if ($value['action'])	{
+			if ($value['action']) {
 				if (!$insertsDeletes[$field]) {
 					$insertsDeletes[$field] = 0;
 				}
@@ -648,7 +648,7 @@ class recordHistory {
 	 *
 	 * @return	[type]		...
 	 */
-	function createChangeLog()	{
+	function createChangeLog() {
 		$elParts = explode(':', $this->element);
 		$changeLog = $this->getHistoryData($elParts[0], $elParts[1]);
 
@@ -753,7 +753,7 @@ class recordHistory {
 					}
 					$hisDat = array();
 
-					switch ($row['action'])	{
+					switch ($row['action']) {
 						case 1:	// Insert
 							$hisDat['action'] = 'insert';
 							break;
@@ -789,7 +789,7 @@ class recordHistory {
 	 */
 	function generateTitle($table, $uid) {
 		$out = $table . ':' . $uid;
-		if ($labelField = $GLOBALS['TCA'][$table]['ctrl']['label'])	{
+		if ($labelField = $GLOBALS['TCA'][$table]['ctrl']['label']) {
 			$record = t3lib_BEfunc::getRecordRaw($table, 'uid=' . intval($uid));
 			$out .= ' (' . t3lib_BEfunc::getRecordTitle($table, $record, TRUE) . ')';
 		}
@@ -803,7 +803,7 @@ class recordHistory {
 	 * @param	integer		optional, type of rollback: 0 - ALL; 1 - element; 2 - field
 	 * @return	string		HTML output
 	 */
-	function createRollbackLink($key, $alt = '', $type = 0)	{
+	function createRollbackLink($key, $alt = '', $type = 0) {
 		return $this->linkPage('<img ' . t3lib_iconWorks::skinImg('', 'gfx/revert_' . $type . '.gif', 'width="33" height="33"') . ' alt="' . $alt . '" title="' . $alt . '" align="middle" />', array('rollbackFields' => $key));
 	}
 
@@ -860,8 +860,8 @@ class recordHistory {
 	 * @return	integer		converted UID of record
 	 */
 	function resolveElement($table, $uid) {
-		if (isset($GLOBALS['TCA'][$table]))	{
-			if ($workspaceVersion = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $table, $uid, 'uid'))	{
+		if (isset($GLOBALS['TCA'][$table])) {
+			if ($workspaceVersion = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $table, $uid, 'uid')) {
 				$uid = $workspaceVersion['uid'];
 			}
 		}

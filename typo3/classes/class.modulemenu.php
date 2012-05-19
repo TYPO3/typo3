@@ -185,7 +185,7 @@ class ModuleMenu {
 		$modules = array();
 
 			// Remove the 'doc' module?
-		if($GLOBALS['BE_USER']->getTSConfigVal('options.disableDocModuleInAB'))	{
+		if($GLOBALS['BE_USER']->getTSConfigVal('options.disableDocModuleInAB')) {
 			unset($this->loadedModules['doc']);
 		}
 
@@ -296,7 +296,7 @@ class ModuleMenu {
 	 */
 	protected function getModuleIconAbsolute($iconFilename) {
 
-		if(!t3lib_div::isAbsPath($iconFilename))	{
+		if(!t3lib_div::isAbsPath($iconFilename)) {
 			$iconFilename = $this->backPath . $iconFilename;
 		}
 
@@ -325,7 +325,7 @@ class ModuleMenu {
 	 * @param	string		Link URL
 	 * @return	string		link URl appended with ? if there wasn't one
 	 */
-	protected function appendQuestionmarkToLink($link)	{
+	protected function appendQuestionmarkToLink($link) {
 		if(!strstr($link, '?')) {
 			$link .= '?';
 		}

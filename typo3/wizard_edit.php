@@ -73,7 +73,7 @@ class SC_wizard_edit {
 	 * @return	void
 	 */
 	function main() {
-		if ($this->doClose)	{
+		if ($this->doClose) {
 			$this->closeWindow();
 		} else {
 
@@ -101,7 +101,7 @@ class SC_wizard_edit {
 				$value = $dbAnalysis->getValueArray($prependName);
 
 					// Traverse that array and make parameters for alt_doc.php:
-				foreach($value as $rec)	{
+				foreach($value as $rec) {
 					$recTableUidParts = t3lib_div::revExplode('_',$rec,2);
 					$params.='&edit['.$recTableUidParts[0].']['.$recTableUidParts[1].']=edit';
 				}

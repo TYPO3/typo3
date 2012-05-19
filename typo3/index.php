@@ -336,7 +336,7 @@ class SC_index {
 	function checkRedirect() {
 			// Do redirect:
 			// If a user is logged in AND a) if either the login is just done (isLoginInProgress) or b) a loginRefresh is done or c) the interface-selector is NOT enabled (If it is on the other hand, it should not just load an interface, because people has to choose then...)
-		if ($GLOBALS['BE_USER']->user['uid'] && ($this->isLoginInProgress() || $this->loginRefresh || !$this->interfaceSelector))	{
+		if ($GLOBALS['BE_USER']->user['uid'] && ($this->isLoginInProgress() || $this->loginRefresh || !$this->interfaceSelector)) {
 
 				// If no cookie has been set previously we tell people that this is a problem. This assumes that a cookie-setting script (like this one) has been hit at least once prior to this instance.
 			if (!$_COOKIE[t3lib_beUserAuth::getCookieName()]) {
@@ -360,7 +360,7 @@ class SC_index {
 			$GLOBALS['BE_USER']->writeUC();
 
 				// Based on specific setting of interface we set the redirect script:
-			switch ($this->GPinterface)	{
+			switch ($this->GPinterface) {
 				case 'backend':
 				case 'backend_old':
 					$this->redirectToURL = 'backend.php';
@@ -372,7 +372,7 @@ class SC_index {
 
 			$formProtection = t3lib_formprotection_Factory::get();
 				// If there is a redirect URL AND if loginRefresh is not set...
-			if (!$this->loginRefresh)	{
+			if (!$this->loginRefresh) {
 				$formProtection->storeSessionTokenInRegistry();
 				t3lib_utility_Http::redirect($this->redirectToURL);
 			} else {
@@ -406,7 +406,7 @@ class SC_index {
 		$this->interfaceSelector_jump = '';
 
 			// If interfaces are defined AND no input redirect URL in GET vars:
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] && ($this->isLoginInProgress() || !$this->redirect_url))	{
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] && ($this->isLoginInProgress() || !$this->redirect_url)) {
 			$parts = t3lib_div::trimExplode(',',$GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']);
 			if (count($parts)>1)	{	// Only if more than one interface is defined will we show the selector:
 
@@ -423,7 +423,7 @@ class SC_index {
 				$jumpScript['frontend']    = '../';
 
 					// Traverse the interface keys:
-				foreach($parts as $valueStr)	{
+				foreach($parts as $valueStr) {
 					$this->interfaceSelector.='
 							<option value="'.htmlspecialchars($valueStr).'"'.(t3lib_div::_GP('interface')==htmlspecialchars($valueStr) ? ' selected="selected"' : '').'>'.htmlspecialchars($labels[$valueStr]).'</option>';
 					$this->interfaceSelector_jump.='
@@ -461,7 +461,7 @@ class SC_index {
 		$loginImageSmall = (trim($GLOBALS['TBE_STYLES']['loginBoxImageSmall'])) ? trim($GLOBALS['TBE_STYLES']['loginBoxImageSmall']) : 'gfx/loginlogo_transp.gif';
 
 			// Make warranty note:
-		if (strlen($loginCopyrightWarrantyProvider)>=2 && strlen($loginCopyrightWarrantyURL)>=10)	{
+		if (strlen($loginCopyrightWarrantyProvider)>=2 && strlen($loginCopyrightWarrantyURL)>=10) {
 			$warrantyNote = sprintf($GLOBALS['LANG']->getLL('warranty.by'), htmlspecialchars($loginCopyrightWarrantyProvider), '<a href="' . htmlspecialchars($loginCopyrightWarrantyURL) . '" target="_blank">', '</a>');
 		} else {
 			$warrantyNote = sprintf($GLOBALS['LANG']->getLL('no.warranty'), '<a href="' . TYPO3_URL_LICENSE . '" target="_blank">', '</a>');
@@ -494,7 +494,7 @@ class SC_index {
 
 				// Get rotation folder:
 			$dir = t3lib_div::getFileAbsFileName($absPath);
-			if ($dir && @is_dir($dir))	{
+			if ($dir && @is_dir($dir)) {
 
 					// Get files for rotation into array:
 				$files = t3lib_div::getFilesInDir($dir,'png,jpg,gif');
@@ -508,7 +508,7 @@ class SC_index {
 				$imgAuthor = is_array($GLOBALS['TBE_STYLES']['loginBoxImage_author']) && $GLOBALS['TBE_STYLES']['loginBoxImage_author'][$files[$randImg]] ? htmlspecialchars($GLOBALS['TBE_STYLES']['loginBoxImage_author'][$files[$randImg]]) : '';
 
 					// Create image tag:
-				if (is_array($imgSize))	{
+				if (is_array($imgSize)) {
 					$loginboxImage = '<img src="'.htmlspecialchars($GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder'].$files[$randImg]).'" '.$imgSize[3].' id="loginbox-image" alt="'.$imgAuthor.'" title="'.$imgAuthor.'" />';
 				}
 			}
@@ -669,7 +669,7 @@ class SC_index {
 			function startUp() {
 					// If the login screen is shown in the login_frameset window for re-login, then try to get the username of the current/former login from opening windows main frame:
 				try {
-					if (parent.opener && parent.opener.TS && parent.opener.TS.username && document.loginform && document.loginform.username)	{
+					if (parent.opener && parent.opener.TS && parent.opener.TS.username && document.loginform && document.loginform.username) {
 						document.loginform.username.value = parent.opener.TS.username;
 					}
 				}

@@ -135,7 +135,7 @@ class SC_alt_doc_nodoc {
 
 
 			// If either the Web>List OR Web>Page module are active, show the little message with links to those modules:
-		if ($a_wl || $a_wp)	{
+		if ($a_wl || $a_wp) {
 			$msg_2 = array();
 			if ($a_wp)	{	// Web>Page:
 				$msg_2[] = '<strong><a href="#" onclick="top.goToModule(\'' . $pageModule . '\'); return false;">' . $GLOBALS['LANG']->getLL('noDocuments_pagemodule', 1) . $img_web_layout . '</a></strong>';

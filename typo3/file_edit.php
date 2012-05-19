@@ -128,7 +128,7 @@ class SC_file_edit {
 					'content' => &$this->content,
 					'target' => &$this->target,
 				);
-				foreach ($preOutputProcessingHook as $hookFunction)	{
+				foreach ($preOutputProcessingHook as $hookFunction) {
 					t3lib_div::callUserFunction($hookFunction, $hookParameters, $this);
 				}
 			}
@@ -181,7 +181,7 @@ class SC_file_edit {
 					'pageContent' => &$pageContent,
 					'target' => &$this->target,
 				);
-				foreach ($postOutputProcessingHook as $hookFunction)	{
+				foreach ($postOutputProcessingHook as $hookFunction) {
 					t3lib_div::callUserFunction($hookFunction, $hookParameters, $this);
 				}
 			}

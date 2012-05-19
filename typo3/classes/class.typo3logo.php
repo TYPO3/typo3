@@ -66,7 +66,7 @@ class TYPO3Logo {
 				'</a>';
 
 			// overwrite with custom logo
-		if($GLOBALS['TBE_STYLES']['logo'])	{
+		if($GLOBALS['TBE_STYLES']['logo']) {
 			$imgInfo = @getimagesize(t3lib_div::resolveBackPath(PATH_typo3 . $GLOBALS['TBE_STYLES']['logo'], 3));
 			$logo = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' .
 				'<img src="' . $GLOBALS['TBE_STYLES']['logo'] . '" ' . $imgInfo[3] . ' title="TYPO3 Content Management System" alt="" />' .

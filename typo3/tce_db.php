@@ -126,19 +126,19 @@ class SC_tce_db {
 		}
 
 		$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
-		if (is_array($TCAdefaultOverride))	{
+		if (is_array($TCAdefaultOverride)) {
 			$this->tce->setDefaultsFromUserTS($TCAdefaultOverride);
 		}
 
 			// Reverse order.
-		if ($this->flags['reverseOrder'])	{
+		if ($this->flags['reverseOrder']) {
 			$this->tce->reverseOrder=1;
 		}
 
 #		$this->tce->disableRTE = $this->_disableRTE;
 
 			// Clipboard?
-		if (is_array($this->CB))	{
+		if (is_array($this->CB)) {
 			$this->include_once[]=PATH_t3lib.'class.t3lib_clipboard.php';
 		}
 	}
@@ -149,14 +149,14 @@ class SC_tce_db {
 	 * @return	void
 	 */
 	function initClipboard() {
-		if (is_array($this->CB))	{
+		if (is_array($this->CB)) {
 			$clipObj = t3lib_div::makeInstance('t3lib_clipboard');
 			$clipObj->initializeClipboard();
-			if ($this->CB['paste'])	{
+			if ($this->CB['paste']) {
 				$clipObj->setCurrentPad($this->CB['pad']);
 				$this->cmd = $clipObj->makePasteCmdArray($this->CB['paste'],$this->cmd);
 			}
-			if ($this->CB['delete'])	{
+			if ($this->CB['delete']) {
 				$clipObj->setCurrentPad($this->CB['pad']);
 				$this->cmd = $clipObj->makeDeleteCmdArray($this->cmd);
 			}
@@ -191,7 +191,7 @@ class SC_tce_db {
 			$this->tce->clear_cacheCmd($this->cacheCmd);
 
 				// Update page tree?
-			if ($this->uPT && (isset($this->data['pages']) || isset($this->cmd['pages'])))	{
+			if ($this->uPT && (isset($this->data['pages']) || isset($this->cmd['pages']))) {
 				t3lib_BEfunc::setUpdateSignal('updatePageTree');
 			}
 		}

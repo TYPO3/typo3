@@ -178,14 +178,14 @@ class template {
 		} else {
 			$this->scriptID = preg_replace('/^.*\/(sysext|ext)\//', 'ext/', substr(PATH_thisScript, strlen(PATH_site)));
 		}
-		if (TYPO3_mainDir!='typo3/' && substr($this->scriptID,0,strlen(TYPO3_mainDir)) == TYPO3_mainDir)	{
+		if (TYPO3_mainDir!='typo3/' && substr($this->scriptID,0,strlen(TYPO3_mainDir)) == TYPO3_mainDir) {
 			$this->scriptID = 'typo3/'.substr($this->scriptID,strlen(TYPO3_mainDir));	// This fixes if TYPO3_mainDir has been changed so the script ids are STILL "typo3/..."
 		}
 
 		$this->bodyTagId = preg_replace('/[^A-Za-z0-9-]/','-',$this->scriptID);
 
 			// Individual configuration per script? If so, make a recursive merge of the arrays:
-		if (is_array($GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID]))	{
+		if (is_array($GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID])) {
 			$ovr = $GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID];		// Make copy
 			$GLOBALS['TBE_STYLES'] = t3lib_div::array_merge_recursive_overrule($GLOBALS['TBE_STYLES'],$ovr);		// merge styles.
 			unset($GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID]);	// Have to unset - otherwise the second instantiation will do it again!
@@ -418,9 +418,9 @@ class template {
 			$storeUrl = '&M='.$modName.$storeUrl;
 		}
 
-		if (!strcmp($motherModName,'1'))	{
+		if (!strcmp($motherModName,'1')) {
 			$mMN="&motherModName='+top.currentModuleLoaded+'";
-		} elseif ($motherModName)	{
+		} elseif ($motherModName) {
 			$mMN='&motherModName='.rawurlencode($motherModName);
 		} else $mMN='';
 
@@ -494,7 +494,7 @@ class template {
 	function formWidthText($size = 48, $styleOverride = '', $wrap = '') {
 		$wTags = $this->formWidth($size,1,$styleOverride);
 			// Netscape 6+/Mozilla seems to have this ODD problem where there WILL ALWAYS be wrapping with the cols-attribute set and NEVER without the col-attribute...
-		if (strtolower(trim($wrap))!='off' && $GLOBALS['CLIENT']['BROWSER']=='net' && $GLOBALS['CLIENT']['VERSION']>=5)	{
+		if (strtolower(trim($wrap))!='off' && $GLOBALS['CLIENT']['BROWSER']=='net' && $GLOBALS['CLIENT']['VERSION']>=5) {
 			$wTags.=' cols="'.$size.'"';
 		}
 		return $wTags;
@@ -534,7 +534,7 @@ class template {
 	 */
 	function formatTime($tstamp, $type) {
 		$dateStr = '';
-		switch($type)	{
+		switch($type) {
 			case 1: $dateStr = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],$tstamp);
 			break;
 			case 10: $dateStr = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],$tstamp);
@@ -595,13 +595,13 @@ class template {
 	 */
 	function startPage($title, $includeCsh = TRUE) {
 			// hook pre start page
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook']))	{
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook'])) {
 			$preStartPageHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook'];
 			if (is_array($preStartPageHook)) {
 				$hookParameters = array(
 					'title' => &$title,
 				);
-				foreach ($preStartPageHook as $hookFunction)	{
+				foreach ($preStartPageHook as $hookFunction) {
 					t3lib_div::callUserFunction($hookFunction, $hookParameters, $this);
 				}
 			}
@@ -626,7 +626,7 @@ class template {
 			// Standard HTML tag
 		$htmlTag = '<html xmlns="http://www.w3.org/1999/xhtml">';
 
-		switch($this->docType)	{
+		switch($this->docType) {
 			case 'html_3':
 				$headerStart = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';
 				$htmlTag = '<html>';
@@ -773,7 +773,7 @@ class template {
 
 		$this->endOfPageJsBlock = $this->pageRenderer->render(t3lib_PageRenderer::PART_FOOTER);
 
-		if ($this->docType=='xhtml_frames')	{
+		if ($this->docType=='xhtml_frames') {
 			return $str;
 		} else
 			$str.=$this->docBodyTagBegin().
@@ -872,7 +872,7 @@ class template {
 		$str='';
 
 			// Setting header
-		if ($label)	{
+		if ($label) {
 			if (!$allowHTMLinHeader)	$label = htmlspecialchars($label);
 			$str.=$this->sectionHeader($this->icons($type).$label, $sH, $nostrtoupper ? '' : ' class="uppercase"');
 		}
@@ -909,7 +909,7 @@ class template {
 	 * @return string HTML content
 	 */
 	function spacer($dist) {
-		if ($dist>0)	{
+		if ($dist>0) {
 			return '
 
 	<!-- Spacer element -->
@@ -948,7 +948,7 @@ class template {
 	 * @return string HTML content
 	 */
 	function sectionBegin() {
-		if (!$this->sectionFlag)	{
+		if (!$this->sectionFlag) {
 			$this->sectionFlag=1;
 			$str='
 
@@ -969,7 +969,7 @@ class template {
 	 * @return string HTML content
 	 */
 	function sectionEnd() {
-		if ($this->sectionFlag)	{
+		if ($this->sectionFlag) {
 			$this->sectionFlag=0;
 			return '
 	</div>
@@ -1016,7 +1016,7 @@ class template {
 	function docStyle() {
 
 			// Request background image:
-		if ($this->backGroundImage)	{
+		if ($this->backGroundImage) {
 			$this->inDocStylesArray[]=' BODY { background-image: url('.$this->backPath.$this->backGroundImage.'); }';
 		}
 
@@ -1204,7 +1204,7 @@ class template {
 	 * @return string HTML image tag (if applicable)
 	 */
 	function icons($type, $styleAttribValue = '') {
-		switch($type)	{
+		switch($type) {
 			case self::STATUS_ICON_ERROR:
 				$icon = 'status-dialog-error';
 			break;
@@ -1220,7 +1220,7 @@ class template {
 			default:
 			break;
 		}
-		if ($icon)	{
+		if ($icon) {
 			return t3lib_iconWorks::getSpriteIcon($icon);
 		}
 	}
@@ -1368,14 +1368,14 @@ class template {
 
 		$menu='
 		<table border="0" cellpadding="0" cellspacing="0" id="typo3-tablemenu">';
-		for($a=0;$a<$rows;$a++)	{
+		for($a=0;$a<$rows;$a++) {
 			$menu.='<tr>';
 			$cls=array();
 			$valign='middle';
 			$cls[]='<td valign="'.$valign.'">'.$arr1[$a][0].'</td><td>'.$arr1[$a][1].'</td>';
-			if (count($arr2))	{
+			if (count($arr2)) {
 				$cls[]='<td valign="'.$valign.'">'.$arr2[$a][0].'</td><td>'.$arr2[$a][1].'</td>';
-				if (count($arr3))	{
+				if (count($arr3)) {
 					$cls[]='<td valign="'.$valign.'">'.$arr3[$a][0].'</td><td>'.$arr3[$a][1].'</td>';
 				}
 			}
@@ -1481,7 +1481,7 @@ class template {
 	function getTabMenu($mainParams, $elementName, $currentValue, $menuItems, $script = '', $addparams = '') {
 		$content='';
 
-		if (is_array($menuItems))	{
+		if (is_array($menuItems)) {
 			if (!is_array($mainParams)) {
 				$mainParams = array('id' => $mainParams);
 			}
@@ -1511,7 +1511,7 @@ class template {
 	function getTabMenuRaw($menuItems) {
 		$content='';
 
-		if (is_array($menuItems))	{
+		if (is_array($menuItems)) {
 			$options='';
 
 			$count = count($menuItems);
@@ -1538,7 +1538,7 @@ class template {
 				$options .= '<td width="' . $width . '%" class="' . $class . '"><a href="' . $url . '" ' . $params . '>' . $label . '</a></td>';
 			}
 
-			if ($options)	{
+			if ($options) {
 				$content .= '
 				<!-- Tab menu -->
 				<table cellpadding="0" cellspacing="0" border="0" width="100%" id="typo3-tabmenu">
@@ -1575,7 +1575,7 @@ class template {
 
 		$content = '';
 
-		if (is_array($menuItems))	{
+		if (is_array($menuItems)) {
 
 				// Init:
 			$options = array(array());
@@ -1600,7 +1600,7 @@ class template {
 					$options[$tabRows] = array();
 				}
 
-				if ($toggle==1)	{
+				if ($toggle==1) {
 					$onclick = 'this.blur(); DTM_toggle("'.$id.'","'.$index.'"); return false;';
 				} else {
 					$onclick = 'this.blur(); DTM_activate("'.$id.'","'.$index.'", '.($toggle<0?1:0).'); return false;';
@@ -1616,7 +1616,7 @@ class template {
 				$mouseOverOut = ' onmouseover="DTM_mouseOver(this);" onmouseout="DTM_mouseOut(this);"';
 				$requiredIcon = '<img name="' . $id . '-' . $index . '-REQ" src="' . $GLOBALS['BACK_PATH'] . 'gfx/clear.gif" class="t3-TCEforms-reqTabImg" alt="" />';
 
-				if (!$foldout)	{
+				if (!$foldout) {
 						// Create TAB cell:
 					$options[$tabRows][] = '
 							<td class="'.($isEmpty ? 'disabled' : 'tab').'" id="'.$id.'-'.$index.'-MENU"'.$noWrap.$mouseOverOut.'>'.
@@ -1661,12 +1661,12 @@ class template {
 			}
 
 				// Render menu:
-			if (count($options))	{
+			if (count($options)) {
 
 					// Tab menu is compiled:
-				if (!$foldout)	{
+				if (!$foldout) {
 					$tabContent = '';
-					for($a=0;$a<=$tabRows;$a++)	{
+					for($a=0;$a<=$tabRows;$a++) {
 						$tabContent.= '
 
 					<!-- Tab menu -->
@@ -1873,7 +1873,7 @@ class template {
 				'markers' 	=> &$markers,
 				'pObj' 		=> &$this
 			);
-			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['docHeaderButtonsHook'] as $funcRef)	{
+			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['docHeaderButtonsHook'] as $funcRef) {
 				t3lib_div::callUserFunction($funcRef, $params, $this);
 			}
 		}
@@ -1889,7 +1889,7 @@ class template {
 	 */
 	protected function getPagePath($pageRecord) {
 			// Is this a real page
-		if ($pageRecord['uid'])	{
+		if ($pageRecord['uid']) {
 			$title = substr($pageRecord['_thePathFull'], 0, -1);
 				// remove current page title
 			$pos = strrpos($title, '/');

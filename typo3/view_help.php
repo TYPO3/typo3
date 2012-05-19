@@ -57,7 +57,7 @@ class local_t3lib_parsehtml extends t3lib_parsehtml {
 	 * @return	string		The processed value.
 	 * @access private
 	 */
-	function processContent($value,$dir,$conf)	{
+	function processContent($value,$dir,$conf) {
 		$value = $this->pObj->substituteGlossaryWords_htmlcleaner_callback($value);
 
 		return $value;
@@ -241,17 +241,17 @@ class SC_view_help {
 			// Backend Modules:
 		$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
 		$loadModules->load($GLOBALS['TBE_MODULES']);
-		foreach($loadModules->modules as $mainMod => $info)	{
+		foreach($loadModules->modules as $mainMod => $info) {
 			$cshKey = '_MOD_'.$mainMod;
-			if ($CSHkeys[$cshKey])	{
+			if ($CSHkeys[$cshKey]) {
 				$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
 				$this->render_TOC_el($cshKey, 'modules', $outputSections, $tocArray, $CSHkeys);
 			}
 
-			if (is_array($info['sub']))	{
-				foreach($info['sub'] as $subMod => $subInfo)	{
+			if (is_array($info['sub'])) {
+				foreach($info['sub'] as $subMod => $subInfo) {
 					$cshKey = '_MOD_'.$mainMod.'_'.$subMod;
-					if ($CSHkeys[$cshKey])	{
+					if ($CSHkeys[$cshKey]) {
 						$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
 						$this->render_TOC_el($cshKey, 'modules', $outputSections, $tocArray, $CSHkeys);
 					}
@@ -260,7 +260,7 @@ class SC_view_help {
 		}
 
 			// Database Tables:
-		foreach($TCAkeys as $table)	{
+		foreach($TCAkeys as $table) {
 				// Load descriptions for table $table
 			$GLOBALS['LANG']->loadSingleTableDescription($table);
 			if (is_array($GLOBALS['TCA_DESCR'][$table]['columns']) && $GLOBALS['BE_USER']->check('tables_select',$table)) {
@@ -269,7 +269,7 @@ class SC_view_help {
 		}
 
 			// Extensions
-		foreach($CSHkeys as $cshKey => $value)	{
+		foreach($CSHkeys as $cshKey => $value) {
 			if (t3lib_div::isFirstPartOfStr($cshKey, 'xEXT_') && !isset($GLOBALS['TCA'][$cshKey])) {
 				$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
 				$this->render_TOC_el($cshKey, 'extensions', $outputSections, $tocArray, $CSHkeys);
@@ -277,7 +277,7 @@ class SC_view_help {
 		}
 
 			// Glossary
-		foreach($CSHkeys as $cshKey => $value)	{
+		foreach($CSHkeys as $cshKey => $value) {
 			if (t3lib_div::isFirstPartOfStr($cshKey, 'xGLOSSARY_') && !isset($GLOBALS['TCA'][$cshKey])) {
 				$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
 				$this->render_TOC_el($cshKey, 'glossary', $outputSections, $tocArray, $CSHkeys);
@@ -285,7 +285,7 @@ class SC_view_help {
 		}
 
 			// Other:
-		foreach($CSHkeys as $cshKey => $value)	{
+		foreach($CSHkeys as $cshKey => $value) {
 			if (!t3lib_div::isFirstPartOfStr($cshKey, '_MOD_') && !isset($GLOBALS['TCA'][$cshKey])) {
 				$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
 				$this->render_TOC_el($cshKey, 'other', $outputSections, $tocArray, $CSHkeys);
@@ -309,13 +309,13 @@ class SC_view_help {
 			<h2>'.$GLOBALS['LANG']->getLL('TOC',1).'</h2>'.
 			$this->render_TOC_makeTocList($tocArray);
 
-		if (!$this->renderALL)	{
+		if (!$this->renderALL) {
 			$output.= '
 				<br/>
 				<p class="c-nav"><a href="view_help.php?renderALL=1">'.$GLOBALS['LANG']->getLL('full_manual',1).'</a></p>';
 		}
 
-		if ($this->renderALL)	{
+		if ($this->renderALL) {
 			$output.= '
 
 				<h2>'.$GLOBALS['LANG']->getLL('full_manual_chapters',1).'</h2>'.
@@ -341,11 +341,11 @@ class SC_view_help {
 	 * @param	array		CSH keys array. Every item rendered will be unset in this array so finally we can see what CSH keys are not processed yet. Passed by reference!
 	 * @return	void
 	 */
-	function render_TOC_el($table, $tocCat, &$outputSections, &$tocArray, &$CSHkeys)	{
+	function render_TOC_el($table, $tocCat, &$outputSections, &$tocArray, &$CSHkeys) {
 		if ($this->renderALL)	{	// Render full manual right here!
 			$outputSections[$table] = $this->render_Table($table);
 
-			if ($outputSections[$table])	{
+			if ($outputSections[$table]) {
 				$outputSections[$table] = '
 
 		<!-- New CSHkey/Table: '.$table.' -->
@@ -371,14 +371,14 @@ class SC_view_help {
 	 * @param	array		ToC Array.
 	 * @return	string		HTML bullet list for index.
 	 */
-	function render_TOC_makeTocList($tocArray)	{
+	function render_TOC_makeTocList($tocArray) {
 			// The Various manual sections:
 		$keys = explode(',', 'core,modules,tables,extensions,glossary,other');
 
 			// Create TOC bullet list:
 		$output = '';
-		foreach($keys as $tocKey)	{
-			if (is_array($tocArray[$tocKey]))	{
+		foreach($keys as $tocKey) {
+			if (is_array($tocArray[$tocKey])) {
 				$output.='
 					<li>'.$GLOBALS['LANG']->getLL('TOC_'.$tocKey,1).'
 						<ul>
@@ -434,7 +434,7 @@ class SC_view_help {
 				$fieldValue = isset($GLOBALS['TCA'][$key]) && strcmp($field, '') ? $GLOBALS['TCA'][$key]['columns'][$field] : array();
 
 				if (is_array($fieldValue) && (!$this->limitAccess || !$fieldValue['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $table . ':' . $field))) {
-					if (!$field)	{
+					if (!$field) {
 						$parts[0] = $this->printItem($key, '', 1);	// Header
 					} else {
 						$parts[] = $this->printItem($key, $field, 1);	// Field
@@ -442,7 +442,7 @@ class SC_view_help {
 				}
 			}
 
-			if (!$parts[0])	{
+			if (!$parts[0]) {
 				unset($parts[0]);
 			}
 			$output .= implode('<br />', $parts);
@@ -507,22 +507,22 @@ class SC_view_help {
 	 * @param	string		If $anchorTable is set to a tablename, then references to this table will be made as anchors, not URLs.
 	 * @return	string		See-also links HTML
 	 */
-	function make_seeAlso($value,$anchorTable='')	{
+	function make_seeAlso($value,$anchorTable='') {
 			// Split references by comma or linebreak
 		$items = preg_split('/[,' . LF . ']/', $value);
 		$lines = array();
 
-		foreach($items as $val)	{
+		foreach($items as $val) {
 			$val = trim($val);
-			if ($val)	{
+			if ($val) {
 				$iP = explode(':',$val);
 				$iPUrl = t3lib_div::trimExplode('|',$val);
 					// URL reference:
-				if (substr($iPUrl[1],0,4)=='http')	{
+				if (substr($iPUrl[1],0,4)=='http') {
 					$lines[] = '<a href="'.htmlspecialchars($iPUrl[1]).'" target="_blank"><em>'.htmlspecialchars($iPUrl[0]).'</em></a>';
-				} elseif (substr($iPUrl[1],0,5)=='FILE:')	{
+				} elseif (substr($iPUrl[1],0,5)=='FILE:') {
 					$fileName = t3lib_div::getFileAbsFileName(substr($iPUrl[1],5),1,1);
-					if ($fileName && @is_file($fileName))	{
+					if ($fileName && @is_file($fileName)) {
 						$fileName = '../'.substr($fileName,strlen(PATH_site));
 						$lines[] = '<a href="'.htmlspecialchars($fileName).'" target="_blank"><em>'.htmlspecialchars($iPUrl[0]).'</em></a>';
 					}
@@ -534,7 +534,7 @@ class SC_view_help {
 
 							// Load table descriptions:
 						#$GLOBALS['LANG']->loadSingleTableDescription($iP[0]);
-						if (isset($GLOBALS['TCA_DESCR'][$iP[0]]))	{
+						if (isset($GLOBALS['TCA_DESCR'][$iP[0]])) {
 								// Make see-also link:
 							$href = ($this->renderALL || ($anchorTable && $iP[0]==$anchorTable) ? '#'.implode('.',$iP) : 'view_help.php?tfID='.rawurlencode(implode('.',$iP)).'&back='.$this->tfID);
 							$label = $this->getTableFieldLabel($iP[0],$iP[1],' / ');
@@ -554,21 +554,21 @@ class SC_view_help {
 	 * @param	string		Description string (divided for each image by line break)
 	 * @return	string		Image HTML codes
 	 */
-	function printImage($images,$descr)	{
+	function printImage($images,$descr) {
 		$code = '';
 			// Splitting:
 		$imgArray = t3lib_div::trimExplode(',', $images, 1);
-		if (count($imgArray))	{
+		if (count($imgArray)) {
 			$descrArray = explode(LF,$descr,count($imgArray));
 
-			foreach($imgArray as $k => $image)	{
+			foreach($imgArray as $k => $image) {
 				$descr = $descrArray[$k];
 
 				$absImagePath = t3lib_div::getFileAbsFileName($image,1,1);
-				if ($absImagePath && @is_file($absImagePath))	{
+				if ($absImagePath && @is_file($absImagePath)) {
 					$imgFile = substr($absImagePath,strlen(PATH_site));
 					$imgInfo = @getimagesize($absImagePath);
-					if (is_array($imgInfo))	{
+					if (is_array($imgInfo)) {
 						$imgFile = '../'.$imgFile;
 						$code.= '<br /><img src="'.$imgFile.'" '.$imgInfo[3].' class="c-inlineimg" alt="" /><br />
 						';
@@ -589,8 +589,8 @@ class SC_view_help {
 	 * @param	string		Header type (1, 0)
 	 * @return	string		The HTML for the header.
 	 */
-	function headerLine($str,$type=0)	{
-		switch($type)	{
+	function headerLine($str,$type=0) {
+		switch($type) {
 			case 1:
 				$str = '<h2 class="t3-row-header">' . htmlspecialchars($str) . '</h2>
 				';
@@ -610,7 +610,7 @@ class SC_view_help {
 	 * @param	string		Content to format.
 	 * @return	string		Formatted content.
 	 */
-	function prepareContent($str)	{
+	function prepareContent($str) {
 		return '<p>'.nl2br(trim(strip_tags($str,$this->allowedHTML))).'</p>
 		';
 	}
@@ -630,7 +630,7 @@ class SC_view_help {
 			// Load full table definition in $GLOBALS['TCA']
 		t3lib_div::loadTCA($key);
 
-		if ($key && (!$field || is_array($GLOBALS['TCA_DESCR'][$key]['columns'][$field])))	{
+		if ($key && (!$field || is_array($GLOBALS['TCA_DESCR'][$key]['columns'][$field]))) {
 				// Make seeAlso references.
 			$seeAlsoRes = $this->make_seeAlso($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['seeAlso'], $anchors ? $key : '');
 
@@ -741,15 +741,15 @@ class SC_view_help {
 			$CSHkeys = array_flip(array_keys($GLOBALS['TCA_DESCR']));
 
 				// Glossary
-			foreach($CSHkeys as $cshKey => $value)	{
+			foreach($CSHkeys as $cshKey => $value) {
 				if (t3lib_div::isFirstPartOfStr($cshKey, 'xGLOSSARY_') && !isset($GLOBALS['TCA'][$cshKey])) {
 					$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
 
-					if (is_array($GLOBALS['TCA_DESCR'][$cshKey]['columns']))	{
+					if (is_array($GLOBALS['TCA_DESCR'][$cshKey]['columns'])) {
 
 							// Traverse table columns as listed in TCA_DESCR
 						foreach ($GLOBALS['TCA_DESCR'][$cshKey]['columns'] as $field => $data) {
-							if ($field)	{
+							if ($field) {
 								$this->glossaryWords[$cshKey.'.'.$field] = array(
 									'title' => trim($data['alttitle'] ? $data['alttitle'] : $cshKey),
 									'description' =>  str_replace('%22','%23%23%23', rawurlencode($data['description'])),
@@ -761,10 +761,10 @@ class SC_view_help {
 			}
 
 				// First, create unique list of words:
-			foreach($this->glossaryWords as $key => $value)	{
+			foreach($this->glossaryWords as $key => $value) {
 				$word = strtolower($value['title']);	// Making word lowercase in order to filter out same words in different cases.
 
-				if ($word!=='')	{
+				if ($word!=='') {
 					$this->substWords[$word] = $value;
 					$this->substWords[$word]['key'] = $key;
 				}
@@ -799,14 +799,14 @@ class SC_view_help {
 	 * @return	string		HTML with substituted words in.
 	 * @coauthor	alex widschwendter, media.res kommunikationsloesungen
 	 */
-	function substituteGlossaryWords_htmlcleaner_callback($code)	{
-		if (is_array($this->substWords) && count($this->substWords) && strlen(trim($code)))	{
+	function substituteGlossaryWords_htmlcleaner_callback($code) {
+		if (is_array($this->substWords) && count($this->substWords) && strlen(trim($code))) {
 
 				// Substitute words:
-			foreach($this->substWords as $wordKey => $wordSet)	{
+			foreach($this->substWords as $wordKey => $wordSet) {
 					// quoteMeta used so special chars (which should not occur though) in words will not break the regex. Seemed to work (- kasper)
 				$parts = preg_split('/( |[\(])('.quoteMeta($wordSet['title']).')([\.\!\)\?\:\,]+| )/i', ' '.$code.' ', 2, PREG_SPLIT_DELIM_CAPTURE);
-				if (count($parts) == 5)	{
+				if (count($parts) == 5) {
 					$parts[2] = '<a class="glossary-term" href="'.htmlspecialchars('view_help.php?tfID='.rawurlencode($wordSet['key']).'&back='.$this->tfID).'" title="'.rawurlencode(htmlspecialchars(t3lib_div::fixed_lgd_cs(rawurldecode($wordSet['description']),80))).'">'.
 								htmlspecialchars($parts[2]).
 								'</a>';
