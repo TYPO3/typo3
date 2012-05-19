@@ -72,7 +72,7 @@ class SC_alt_doc_nodoc {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 			// Start the template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->bodyTagMargins['x']=5;
@@ -108,7 +108,7 @@ class SC_alt_doc_nodoc {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 		$msg=array();
 
 			// Add a message, telling that no documents were open...
@@ -162,7 +162,7 @@ class SC_alt_doc_nodoc {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;

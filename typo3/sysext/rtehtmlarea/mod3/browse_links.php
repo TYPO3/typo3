@@ -61,7 +61,7 @@ class tx_rtehtmlarea_SC_browse_links {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 			// Setting alternative web browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
 		$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
 
@@ -120,7 +120,7 @@ class tx_rtehtmlarea_SC_browse_links {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 }

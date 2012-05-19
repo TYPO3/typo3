@@ -502,7 +502,7 @@ class tx_indexedsearch_crawler {
 	 *
 	 * @return	void
 	 */
-	function cleanUpOldRunningConfigurations()	{
+	function cleanUpOldRunningConfigurations() {
 
 			// Lookup running index configurations:
 		$runningIndexingConfigurations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -694,7 +694,7 @@ class tx_indexedsearch_crawler {
 	 *
 	 * @return	void
 	 */
-	function loadIndexerClass()	{
+	function loadIndexerClass() {
 		global $TYPO3_CONF_VARS;
 		require_once(t3lib_extMgm::extPath('indexed_search').'class.indexer.php');
 	}
@@ -953,7 +953,7 @@ class tx_indexedsearch_files {
 	 *
 	 * @return	void
 	 */
-	function loadIndexerClass()	{
+	function loadIndexerClass() {
 		global $TYPO3_CONF_VARS;
 		require_once(t3lib_extMgm::extPath('indexed_search').'class.indexer.php');
 	}

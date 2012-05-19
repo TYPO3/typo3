@@ -187,7 +187,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 	 *
 	 * @return	[type]		...
 	 */
-	function main()	{
+	function main() {
 		global $BACK_PATH;
 		global $tmpl,$tplRow,$theConstants;
 

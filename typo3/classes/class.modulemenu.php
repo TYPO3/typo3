@@ -338,7 +338,7 @@ class ModuleMenu {
 	 *
 	 * @return	string		html code snippet displaying the logout button
 	 */
-	public function renderLogoutButton()	{
+	public function renderLogoutButton() {
 		$buttonLabel      = $GLOBALS['BE_USER']->user['ses_backuserid'] ? 'LLL:EXT:lang/locallang_core.php:buttons.exit' : 'LLL:EXT:lang/locallang_core.php:buttons.logout';
 
 		$buttonForm = '

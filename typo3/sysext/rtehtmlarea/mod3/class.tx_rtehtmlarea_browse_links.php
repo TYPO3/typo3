@@ -180,7 +180,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 		$this->initVariables();
 		$this->initConfiguration();
 			// init fileProcessor
@@ -281,7 +281,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 *
 	 * @return	array		RTE configuration array
 	 */
-	protected function getRTEConfig()	{
+	protected function getRTEConfig() {
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
 		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$this->RTEProperties = $RTEsetup['properties'];
@@ -427,7 +427,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 *
 	 * @return	string		the generated JS code
 	 */
-	function getJSCode()	{
+	function getJSCode() {
 			// BEGIN accumulation of header JavaScript:
 		$JScode = '';
 		$JScode.= '

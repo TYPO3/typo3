@@ -269,7 +269,7 @@ class SC_mod_user_setup_index {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 		$this->MCONF = $GLOBALS['MCONF'];
 
 			// Returns the script user - that is the REAL logged in user! ($GLOBALS[BE_USER] might be another user due to simulation!)
@@ -325,7 +325,7 @@ class SC_mod_user_setup_index {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 		global $LANG;
 
 		if ($this->languageUpdate) {
@@ -464,7 +464,7 @@ class SC_mod_user_setup_index {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -473,7 +473,7 @@ class SC_mod_user_setup_index {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	protected function getButtons()	{
+	protected function getButtons() {
 		$buttons = array(
 			'csh' => '',
 			'save' => '',
@@ -670,7 +670,7 @@ class SC_mod_user_setup_index {
 	 *
 	 * @return	object		The REAL user is returned - the one logged in.
 	 */
-	protected function getRealScriptUserObj()	{
+	protected function getRealScriptUserObj() {
 		return is_object($this->OLD_BE_USER) ? $this->OLD_BE_USER : $GLOBALS['BE_USER'];
 	}
 
@@ -769,7 +769,7 @@ class SC_mod_user_setup_index {
 	 *
 	 * @return	void
 	 */
-	public function simulateUser()	{
+	public function simulateUser() {
 
 		// *******************************************************************************
 		// If admin, allow simulation of another user

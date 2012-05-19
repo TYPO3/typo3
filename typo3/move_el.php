@@ -221,7 +221,7 @@ class SC_move_el {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 
 			// Setting internal vars:
 		$this->sys_language = intval(t3lib_div::_GP('sys_language'));
@@ -251,7 +251,7 @@ class SC_move_el {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 		if ($this->page_id)	{
 
 				// Get record for element:
@@ -392,7 +392,7 @@ class SC_move_el {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -401,7 +401,7 @@ class SC_move_el {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	protected function getButtons()	{
+	protected function getButtons() {
 		$buttons = array(
 			'csh' => '',
 			'back' => ''

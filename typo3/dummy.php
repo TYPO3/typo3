@@ -59,7 +59,7 @@ class SC_dummy {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 			// Start page
 		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage('Dummy document');
 
@@ -72,7 +72,7 @@ class SC_dummy {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 }

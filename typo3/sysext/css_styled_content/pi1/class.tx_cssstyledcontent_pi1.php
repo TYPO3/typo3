@@ -824,7 +824,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		if ($rowCount == 1)	{ $separateRows = 0; }
 
 		if ($accessibilityMode) {
-			$imagesInColumns = round(($imgCount / ($rowCount * $colCount)), 0 , PHP_ROUND_HALF_UP);
+			$imagesInColumns = round(($imgCount / ($rowCount * $colCount)), 0, PHP_ROUND_HALF_UP);
 
 				// Apply optionSplit to the list of classes that we want to add to each column
 			$addClassesCol = $conf['addClassesCol'];

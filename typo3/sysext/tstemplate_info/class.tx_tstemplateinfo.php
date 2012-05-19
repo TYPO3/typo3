@@ -178,7 +178,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 *
 	 * @return	string		Information of the template status or the taken actions as HTML string
 	 */
-	function main()	{
+	function main() {
 		global $BACK_PATH;
 		global $tmpl,$tplRow,$theConstants;
 

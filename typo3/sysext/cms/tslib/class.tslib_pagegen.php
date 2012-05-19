@@ -229,7 +229,7 @@ class TSpagegen {
 	 *
 	 * @return	array		Array with a) a JavaScript section with event handlers and variables set and b) an array with attributes for the body tag.
 	 */
-	public static function JSeventFunctions()	{
+	public static function JSeventFunctions() {
 		$functions = array();
 		$setEvents = array();
 		$setBody = array();

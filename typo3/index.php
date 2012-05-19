@@ -92,7 +92,7 @@ class SC_index {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 			// We need a PHP session session for most login levels
 		session_start();
 
@@ -148,7 +148,7 @@ class SC_index {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 			// Initialize template object:
 		$GLOBALS['TBE_TEMPLATE']->bodyTagAdditions = ' onload="startUp();"';
 		$GLOBALS['TBE_TEMPLATE']->moduleTemplate = $GLOBALS['TBE_TEMPLATE']->getHtmlTemplate('templates/login.html');
@@ -193,7 +193,7 @@ class SC_index {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -209,7 +209,7 @@ class SC_index {
 	 *
 	 * @return	string		HTML output
 	 */
-	function makeLoginForm()	{
+	function makeLoginForm() {
 		$content = t3lib_parsehtml::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGIN_FORM###');
 		$markers = array(
 			'VALUE_USERNAME' => htmlspecialchars($this->u),
@@ -333,7 +333,7 @@ class SC_index {
 	 *
 	 * @return	void
 	 */
-	function checkRedirect()	{
+	function checkRedirect() {
 			// Do redirect:
 			// If a user is logged in AND a) if either the login is just done (isLoginInProgress) or b) a loginRefresh is done or c) the interface-selector is NOT enabled (If it is on the other hand, it should not just load an interface, because people has to choose then...)
 		if ($GLOBALS['BE_USER']->user['uid'] && ($this->isLoginInProgress() || $this->loginRefresh || !$this->interfaceSelector))	{
@@ -399,7 +399,7 @@ class SC_index {
 	 *
 	 * @return	void
 	 */
-	function makeInterfaceSelectorBox()	{
+	function makeInterfaceSelectorBox() {
 			// Reset variables:
 		$this->interfaceSelector = '';
 		$this->interfaceSelector_hidden='';
@@ -453,7 +453,7 @@ class SC_index {
 	 *
 	 * @return	string		Text/Image (HTML) for copyright notice.
 	 */
-	function makeCopyrightNotice()	{
+	function makeCopyrightNotice() {
 
 			// Get values from TYPO3_CONF_VARS:
 		$loginCopyrightWarrantyProvider = strip_tags(trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightWarrantyProvider']));
@@ -487,7 +487,7 @@ class SC_index {
 	 *
 	 * @return	string		HTML image tag.
 	 */
-	function makeLoginBoxImage()	{
+	function makeLoginBoxImage() {
 		$loginboxImage = '';
 		if ($GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder'])	{		// Look for rotation image folder:
 			$absPath = t3lib_div::resolveBackPath(PATH_typo3.$GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder']);
@@ -617,7 +617,7 @@ class SC_index {
 	 *
 	 * @return	string		Opening form tag string
 	 */
-	function startForm()	{
+	function startForm() {
 		$output = '';
 
 		// The form defaults to 'no login'. This prevents plain
@@ -654,7 +654,7 @@ class SC_index {
 	 *
 	 * @return	string		JavaScript code
 	 */
-	function getJScode()	{
+	function getJScode() {
 		$JSCode = '';
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook'] as $function) {

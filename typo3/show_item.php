@@ -148,7 +148,7 @@ class SC_show_item {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 			// Setting input variables.
 		$this->table = t3lib_div::_GET('table');
 		$this->uid = t3lib_div::_GET('uid');
@@ -220,9 +220,9 @@ class SC_show_item {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 
-		if ($this->access)	{
+		if ($this->access) {
 			$returnLink =  t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 			$returnLinkTag = $returnLink ? '<a href="' . $returnLink . '" class="typo3-goBack">' : '<a href="#" onclick="window.close();">';
 				// render type by user func
@@ -270,7 +270,7 @@ class SC_show_item {
 	 *
 	 * @return	void
 	 */
-	function renderDBInfo()	{
+	function renderDBInfo() {
 
 			// Print header, path etc:
 		$code = $this->doc->getHeader($this->table,$this->row,$this->pageinfo['_thePath'],1).'<br />';
@@ -401,7 +401,7 @@ class SC_show_item {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;

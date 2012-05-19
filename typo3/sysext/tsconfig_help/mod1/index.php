@@ -50,7 +50,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 * Initializes the Module
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 		parent::init();
 	}
 
@@ -59,7 +59,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function menuConfig()	{
+	function menuConfig() {
 		$this->MOD_MENU = array(
 			'function' => array(
 				'1' => $GLOBALS['LANG']->getLL('display')
@@ -78,7 +78,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 		// Access check!
 		$access = $GLOBALS['BE_USER']->check('modules', 'help_txtsconfighelpM1');
 
@@ -138,7 +138,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -147,7 +147,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	protected function getButtons()	{
+	protected function getButtons() {
 		$buttons = array(
 			'csh' => '',
 			'shortcut' => '',
@@ -169,7 +169,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function moduleContent()	{
+	function moduleContent() {
 		switch ((string)$this->MOD_SETTINGS['function'])	{
 			case 1:
 				$content = '<div align="left"><strong>' . $GLOBALS['LANG']->getLL('referenceExplanation') . '</strong></div>';

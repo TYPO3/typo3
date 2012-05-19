@@ -335,7 +335,7 @@ class tx_indexedsearch_indexer {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 		global $TYPO3_CONF_VARS;
 
 			// Initializing:
@@ -393,7 +393,7 @@ class tx_indexedsearch_indexer {
 	 * @access private
 	 * @see init()
 	 */
-	function initializeExternalParsers()	{
+	function initializeExternalParsers() {
 		global $TYPO3_CONF_VARS;
 
 		if (is_array($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers']))	{
@@ -434,7 +434,7 @@ class tx_indexedsearch_indexer {
 	 *
 	 * @return	void
 	 */
-	function indexTypo3PageContent()	{
+	function indexTypo3PageContent() {
 
 		$check = $this->checkMtimeTstamp($this->conf['mtime'], $this->hash['phash']);
 		$is_grlist = $this->is_grlist_set($this->hash['phash']);
@@ -1431,7 +1431,7 @@ class tx_indexedsearch_indexer {
 	 *
 	 * @return	void
 	 */
-	function submitPage()	{
+	function submitPage() {
 
 			// Remove any current data for this phash:
 		$this->removeOldIndexedPages($this->hash['phash']);
@@ -1798,7 +1798,7 @@ class tx_indexedsearch_indexer {
 	 *
 	 * @return	mixed		Returns TRUE if the page needs to be indexed (that is, there was no result), otherwise the phash value (in an array) of the phash record to which the grlist_record should be related!
 	 */
-	function checkContentHash()	{
+	function checkContentHash() {
 			// With this query the page will only be indexed if it's content is different from the same "phash_grouping" -page.
 		$result = TRUE;
 		if (tx_indexedsearch_util::isTableUsed('index_phash')) {
@@ -1950,7 +1950,7 @@ class tx_indexedsearch_indexer {
 	 *
 	 * @return	void
 	 */
-	function removeLoginpagesWithContentHash()	{
+	function removeLoginpagesWithContentHash() {
 		if (tx_indexedsearch_util::isTableUsed('index_phash') && tx_indexedsearch_util::isTableUsed('index_grlist')) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('A.phash', 'index_phash A,index_grlist B', '
 					A.phash=B.phash
@@ -1970,7 +1970,7 @@ class tx_indexedsearch_indexer {
 	 *
 	 * @return	void
 	 */
-	function includeCrawlerClass()	{
+	function includeCrawlerClass() {
 		t3lib_div::requireOnce(t3lib_extMgm::extPath('crawler') . 'class.tx_crawler_lib.php');
 	}
 
@@ -2092,7 +2092,7 @@ class tx_indexedsearch_indexer {
 	 *
 	 * @return	void
 	 */
-	function setT3Hashes()	{
+	function setT3Hashes() {
 
 			//  Set main array:
 		$hArray = array(
@@ -2157,7 +2157,7 @@ class tx_indexedsearch_indexer {
 	 *
 	 * @return	void
 	 */
-	function log_pull()	{
+	function log_pull() {
 		if (is_object($GLOBALS['TT']))		$GLOBALS['TT']->pull();
 	}
 

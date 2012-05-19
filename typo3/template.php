@@ -366,19 +366,22 @@ class template {
 	 */
 	function getHeader($table, $row, $path, $noViewPageIcon = FALSE, $tWrap = array('', '')) {
 		$viewPage = '';
-		if (is_array($row) && $row['uid'])	{
-			$iconImgTag=t3lib_iconWorks::getSpriteIconForRecord($table, $row , array('title' => htmlspecialchars($path)));
+		if (is_array($row) && $row['uid']) {
+			$iconImgTag = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => htmlspecialchars($path)));
 			$title = strip_tags(t3lib_BEfunc::getRecordTitle($table, $row));
 			$viewPage = $noViewPageIcon ? '' : $this->viewPageIcon($row['uid'],$this->backPath,'');
-			if ($table=='pages')	$path.=' - '.t3lib_BEfunc::titleAttribForPages($row,'',0);
+			if ($table == 'pages')
+				$path .= ' - ' . t3lib_BEfunc::titleAttribForPages($row, '', 0);
 		} else {
 			$iconImgTag = t3lib_iconWorks::getSpriteIcon('apps-pagetree-page-domain', array('title' => htmlspecialchars($path)));
-			$title=$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+			$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 		}
 
-		return '<span class="typo3-moduleHeader">'.$this->wrapClickMenuOnIcon($iconImgTag,$table,$row['uid']).
-				$viewPage.
-				$tWrap[0].htmlspecialchars(t3lib_div::fixed_lgd_cs($title,45)).$tWrap[1].'</span>';
+		return '<span class="typo3-moduleHeader">' .
+				$this->wrapClickMenuOnIcon($iconImgTag, $table, $row['uid']) .
+				$viewPage .
+				$tWrap[0] . htmlspecialchars(t3lib_div::fixed_lgd_cs($title, 45)) . $tWrap[1] .
+				'</span>';
 	}
 
 	/**

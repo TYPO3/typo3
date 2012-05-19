@@ -75,7 +75,7 @@ class SC_alt_db_navframe {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 
 			// Setting backPath
 		$this->backPath = $GLOBALS['BACK_PATH'];
@@ -180,7 +180,7 @@ class SC_alt_db_navframe {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 
 			// Produce browse-tree:
 		$tree = $this->pagetree->getBrowsableTree();
@@ -247,7 +247,7 @@ class SC_alt_db_navframe {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -256,7 +256,7 @@ class SC_alt_db_navframe {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	protected function getButtons()	{
+	protected function getButtons() {
 		$buttons = array(
 			'csh' => '',
 			'new_page' => '',

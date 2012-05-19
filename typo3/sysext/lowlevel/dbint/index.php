@@ -78,7 +78,7 @@ class SC_mod_tools_dbint_index {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 		global $LANG,$BACK_PATH;
 		$this->MCONF = $GLOBALS['MCONF'];
 
@@ -118,7 +118,7 @@ class SC_mod_tools_dbint_index {
 	 *
 	 * @return	void
 	 */
-	function menuConfig()	{
+	function menuConfig() {
 		global $LANG;
 
 		// MENU-ITEMS:
@@ -204,7 +204,7 @@ class SC_mod_tools_dbint_index {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 
 			// Content creation
 		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu'])	{
@@ -254,7 +254,7 @@ class SC_mod_tools_dbint_index {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -263,7 +263,7 @@ class SC_mod_tools_dbint_index {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	protected function getButtons()	{
+	protected function getButtons() {
 
 		$buttons = array(
 			'csh' => '',
@@ -340,7 +340,7 @@ class SC_mod_tools_dbint_index {
 	 *
 	 * @return	void
 	 */
-	function func_refindex()	{
+	function func_refindex() {
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('manageRefIndex', TRUE));
 
 		if (t3lib_div::_GP('_update') || t3lib_div::_GP('_check'))	{
@@ -377,7 +377,7 @@ class SC_mod_tools_dbint_index {
 	 *
 	 * @return	void
 	 */
-	function func_search()	{
+	function func_search() {
 		global $LANG;
 
 		$fullsearch = t3lib_div::makeInstance('t3lib_fullsearch');
@@ -420,7 +420,7 @@ class SC_mod_tools_dbint_index {
 	 *
 	 * @return	void
 	 */
-	function func_records()	{
+	function func_records() {
 		/** @var $admin t3lib_admin */
 		$admin = t3lib_div::makeInstance('t3lib_admin');
 		$admin->genTree_makeHTML = 0;
@@ -533,7 +533,7 @@ class SC_mod_tools_dbint_index {
 	 *
 	 * @return	void
 	 */
-	function func_relations()	{
+	function func_relations() {
 		global $LANG,$BACK_PATH;
 
 		$this->content.= $this->doc->header($GLOBALS['LANG']->getLL('relations'));
@@ -586,7 +586,7 @@ class SC_mod_tools_dbint_index {
 	 *
 	 * @return	void
 	 */
-	function func_filesearch()	{
+	function func_filesearch() {
 		$pattern = t3lib_div::_GP('pattern');
 		$pcontent = $GLOBALS['LANG']->getLL('enterRegexPattern') . ' <input type="text" name="pattern" value="' . htmlspecialchars($pattern ? $pattern : $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern']) . '"> <input type="submit" name="' . $GLOBALS['LANG']->getLL('SearchButton') . '">';
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('findFilename'));

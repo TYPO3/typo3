@@ -51,7 +51,7 @@
  *			 // SC_mod_prototype EXTENDS THE CLASS t3lib_SCbase with a main() and printContent() function:
  *		 class SC_mod_prototype extends t3lib_SCbase {
  *				 // MAIN FUNCTION - HERE YOU CREATE THE MODULE CONTENT IN $this->content
- *			 function main()	{
+ *			 function main() {
  *					 // TYPICALLY THE INTERNAL VAR, $this->doc is instantiated like this:
  *				 $this->doc = t3lib_div::makeInstance('mediumDoc');
  *					 // TYPICALLY THE INTERNAL VAR, $this->backPath is set like this:

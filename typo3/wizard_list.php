@@ -76,7 +76,7 @@ class SC_wizard_list {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 		$this->P = t3lib_div::_GP('P');
 		$this->table = t3lib_div::_GP('table');
 		$this->id = t3lib_div::_GP('id');
@@ -88,7 +88,7 @@ class SC_wizard_list {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 
 			// Get this record
 		$origRow = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);

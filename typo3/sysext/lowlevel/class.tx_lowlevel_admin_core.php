@@ -49,7 +49,7 @@ class tx_lowlevel_admin_core extends t3lib_cli {
 	 *
 	 * @return	void
 	 */
-	function __construct()	{
+	function __construct() {
 
 			// Running parent class constructor
 		parent::__construct();

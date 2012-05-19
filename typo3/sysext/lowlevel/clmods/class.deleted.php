@@ -46,7 +46,7 @@ class tx_lowlevel_deleted extends tx_lowlevel_cleaner_core {
 	 *
 	 * @return	[type]		...
 	 */
-	function __construct()	{
+	function __construct() {
 		parent::__construct();
 
 			// Setting up help:

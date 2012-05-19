@@ -64,7 +64,7 @@ class SC_show_rechis {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 
 			// Create internal template object:
 		$this->doc = t3lib_div::makeInstance('template');
@@ -80,7 +80,7 @@ class SC_show_rechis {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 
 			// Start history object
 		$historyObj = t3lib_div::makeInstance('recordHistory');
@@ -103,7 +103,7 @@ class SC_show_rechis {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		$this->content .= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;

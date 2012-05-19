@@ -206,7 +206,7 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 	 *
 	 * @return	boolean		TRUE if compat version is equal the current version
 	 */
-	function compatVersionIsCurrent()	{
+	function compatVersionIsCurrent() {
 		global $TYPO3_CONF_VARS;
 		if (TYPO3_branch != $TYPO3_CONF_VARS['SYS']['compat_version'])	{
 			return 0;

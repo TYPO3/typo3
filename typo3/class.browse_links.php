@@ -95,8 +95,7 @@ class TBE_browser_recordList extends localRecordList {
 			((!$exclList || !t3lib_div::inList($exclList,'sortField')) && $this->sortField?'&sortField='.rawurlencode($this->sortField):'').
 			((!$exclList || !t3lib_div::inList($exclList,'sortRev')) && $this->sortRev?'&sortRev='.rawurlencode($this->sortRev):'').
 				// extra:
-			$this->ext_addP()
-			;
+			$this->ext_addP();
 	}
 
 	/**
@@ -104,7 +103,7 @@ class TBE_browser_recordList extends localRecordList {
 	 *
 	 * @return	string
 	 */
-	function ext_addP()	{
+	function ext_addP() {
 		$str = '&act='.$GLOBALS['SOBE']->browser->act.
 				'&mode='.$GLOBALS['SOBE']->browser->mode.
 				'&expandPage='.$GLOBALS['SOBE']->browser->expandPage.
@@ -695,7 +694,7 @@ class browse_links {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 			// Main GPvars:
 		$this->pointer           = t3lib_div::_GP('pointer');
 		$this->bparams           = t3lib_div::_GP('bparams');
@@ -1640,7 +1639,7 @@ class browse_links {
 	 *
 	 * @return	string		HTML content for the module
 	 */
-	function main_db()	{
+	function main_db() {
 
 			// Starting content:
 		$content=$this->doc->startPage('TBE record selector');
@@ -1688,7 +1687,7 @@ class browse_links {
 	 *
 	 * @return	string		HTML content for the module
 	 */
-	function main_file()	{
+	function main_file() {
 			// include JS files and set prefs for foldertree
 		$this->doc->getDragDropCode('folders');
 		$this->doc->JScode .= $this->doc->wrapScriptTags('
@@ -1883,12 +1882,12 @@ class browse_links {
 	 *
 	 * @return	string		HTML output. Returns content only if the ->expandPage value is set (pointing to a page uid to show tt_content records from ...)
 	 */
-	function expandPage()	{
-		$out='';
+	function expandPage() {
+		$out = '';
 		$expPageId = $this->expandPage;		// Set page id (if any) to expand
 
 			// If there is an anchor value (content element reference) in the element reference, then force an ID to expand:
-		if (!$this->expandPage && $this->curUrlInfo['cElement'])	{
+		if (!$this->expandPage && $this->curUrlInfo['cElement']) {
 			$expPageId = $this->curUrlInfo['pageid'];	// Set to the current link page id.
 		}
 

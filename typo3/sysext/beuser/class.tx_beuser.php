@@ -86,7 +86,7 @@ class tx_beuser {
 	 *
 	 * @return	array		Local lang array.
 	 */
-	function includeLL()	{
+	function includeLL() {
 		global $LANG;
 
 		$LOCAL_LANG = $GLOBALS['LANG']->includeLLFile('EXT:extra_page_cm_options/locallang.php', FALSE);

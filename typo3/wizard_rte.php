@@ -83,7 +83,7 @@ class SC_wizard_rte {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 			// Setting GPvars:
 		$this->P = t3lib_div::_GP('P');
 		$this->popView = t3lib_div::_GP('popView');
@@ -105,7 +105,7 @@ class SC_wizard_rte {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 			// translate id to the workspace version:
 		if ($versionRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $this->P['table'], $this->P['uid'], 'uid'))	{
 			$this->P['uid'] = $versionRec['uid'];
@@ -210,7 +210,7 @@ class SC_wizard_rte {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;

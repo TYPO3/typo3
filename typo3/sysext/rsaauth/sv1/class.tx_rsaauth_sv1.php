@@ -115,7 +115,7 @@ class tx_rsaauth_sv1 extends tx_sv_auth  {
 	 *
 	 * @return	boolean
 	 */
-	public function init()	{
+	public function init() {
 		$available = parent::init();
 		if ($available) {
 			// Get the backend

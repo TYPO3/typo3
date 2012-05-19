@@ -64,7 +64,7 @@ class SC_login_frameset {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 			// Set doktype:
 		$GLOBALS['TBE_TEMPLATE']->docType='xhtml_frames';
 
@@ -88,7 +88,7 @@ class SC_login_frameset {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 }

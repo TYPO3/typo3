@@ -95,7 +95,7 @@ class SC_wizard_table {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 			// GPvars:
 		$this->P = t3lib_div::_GP('P');
 		$this->TABLECFG = t3lib_div::_GP('TABLE');
@@ -135,7 +135,7 @@ class SC_wizard_table {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 		if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
 			$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('table_title'), $this->tableWizard(), 0, 1);
 		} else {
@@ -159,7 +159,7 @@ class SC_wizard_table {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -208,7 +208,7 @@ class SC_wizard_table {
 	 *
 	 * @return	string		HTML content for the form.
 	 */
-	function tableWizard()	{
+	function tableWizard() {
 
 			// First, check the references by selecting the record:
 		$row = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
@@ -451,7 +451,7 @@ class SC_wizard_table {
 	 * @return	void
 	 * @access private
 	 */
-	function changeFunc()	{
+	function changeFunc() {
 		if ($this->TABLECFG['col_remove'])	{
 			$kk = key($this->TABLECFG['col_remove']);
 			$cmd='col_remove';

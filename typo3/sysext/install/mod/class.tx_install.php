@@ -3713,26 +3713,29 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						switch((string)$key) {
 							case 'typo_db_username':
 								if (strlen($value)<50) {
-									if (strcmp(TYPO3_db_username, $value))		$this->setValueInLocalconfFile($lines, '$typo_db_username', trim($value));
+									if (strcmp(TYPO3_db_username, $value))
+										$this->setValueInLocalconfFile($lines, '$typo_db_username', trim($value));
 								} else {
 									$this->errorMessages[] = '
 										Username \'' . $value . '\' was longer
 										than 50 chars (...not saved)
 									';
 								}
-							break;
+								break;
 							case 'typo_db_password':
 								if (strlen($value)<50) {
-									if (strcmp(TYPO3_db_password, $value))		$this->setValueInLocalconfFile($lines, '$typo_db_password',  trim($value));
+									if (strcmp(TYPO3_db_password, $value))
+										$this->setValueInLocalconfFile($lines, '$typo_db_password', trim($value));
 								} else {
 									$this->errorMessages[] = '
 										Password was longer than 50 chars (...not saved)
 									';
 								}
-							break;
+								break;
 							case 'typo_db_host':
 								if (preg_match('/^[a-zA-Z0-9_\.-]+(:.+)?$/', $value) && strlen($value)<50) {
-									if (strcmp(TYPO3_db_host, $value))		$this->setValueInLocalconfFile($lines, '$typo_db_host', $value);
+									if (strcmp(TYPO3_db_host, $value))
+										$this->setValueInLocalconfFile($lines, '$typo_db_host', $value);
 								} else {
 									$this->errorMessages[] = '
 										Host \'' . $value . '\' was not
@@ -3740,39 +3743,45 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 										longer than 50 chars (...not saved)
 									';
 								}
-							break;
+								break;
 							case 'typo_db':
 								if (strlen($value)<50) {
-									if (strcmp(TYPO3_db, $value))		$this->setValueInLocalconfFile($lines, '$typo_db',  trim($value));
+									if (strcmp(TYPO3_db, $value))
+										$this->setValueInLocalconfFile($lines, '$typo_db', trim($value));
 								} else {
 									$this->errorMessages[] = '
 										Database name \'' . $value . '\' was
 										longer than 50 chars (...not saved)
 									';
 								}
-							break;
+								break;
 							case 'disable_exec_function':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['BE']['disable_exec_function'], $value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'BE\'][\'disable_exec_function\']', $value?1:0);
-							break;
+								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['BE']['disable_exec_function'], $value))
+									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'BE\'][\'disable_exec_function\']', $value ? 1 : 0);
+								break;
 							case 'sitename':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], $value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'SYS\'][\'sitename\']', $value);
-							break;
+								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], $value))
+									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'SYS\'][\'sitename\']', $value);
+								break;
 							case 'encryptionKey':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'], $value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'SYS\'][\'encryptionKey\']', $value);
-							break;
+								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'], $value))
+									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'SYS\'][\'encryptionKey\']', $value);
+								break;
 							case 'compat_version':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'], $value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'SYS\'][\'compat_version\']', $value);
-							break;
+								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'], $value))
+									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'SYS\'][\'compat_version\']', $value);
+								break;
 							case 'im_combine_filename':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename'], $value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'im_combine_filename\']', $value);
-							break;
+								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename'], $value))
+									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'im_combine_filename\']', $value);
+								break;
 							case 'gdlib':
 							case 'gdlib_png':
 							case 'im':
 								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key], $value)) {
 									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'' . $key . '\']', ($value ? 1 : 0));
 								}
-							break;
+								break;
 							case 'im_path':
 								list($value, $version) = explode('|', $value);
 								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key], $value)) {
@@ -3788,16 +3797,17 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								if (strcmp(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']), $value_ext)) {
 									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'im_version_5\']', $value_ext);
 								}
-							break;
+								break;
 							case 'im_path_lzw':
 								list($value) = explode('|', $value);
 								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key], $value)) {
 									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'' . $key . '\']', $value);
 								}
-							break;
+								break;
 							case 'TTFdpi':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi'], $value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'TTFdpi\']', $value);
-							break;
+								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi'], $value))
+									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'TTFdpi\']', $value);
+								break;
 						}
 					}
 
@@ -5592,10 +5602,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						$tblFileContent = t3lib_div::getUrl($actionParts[1]);
 					}
 
-
 					foreach ($hookObjects as $hookObject) {
 						/** @var $hookObject Tx_Install_Interfaces_CheckTheDatabaseHook **/
-						$appendableTableDefinitions = $hookObject->appendGlobalTableDefinitions($tblFileContent, $this->sqlHandler,  $this);
+						$appendableTableDefinitions = $hookObject->appendGlobalTableDefinitions($tblFileContent, $this->sqlHandler, $this);
 						if ($appendableTableDefinitions) {
 							$tblFileContent .= $appendableTableDefinitions;
 							break;

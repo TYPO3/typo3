@@ -203,7 +203,7 @@ class t3lib_tree_pagetree_Node extends t3lib_tree_extdirect_Node {
 	 *
 	 * @return bool
 	 */
-	protected function canRemove()	{
+	protected function canRemove() {
 		if (!isset($this->cachedAccessRights['remove'])) {
 			$this->cachedAccessRights['remove'] =
 				$GLOBALS['BE_USER']->doesUserHaveAccess($this->record, 4);

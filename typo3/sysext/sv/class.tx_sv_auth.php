@@ -105,7 +105,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 	 *
 	 * @return	mixed		user array or FALSE
 	 */
-	function getUser()	{
+	function getUser() {
 		$user = FALSE;
 
 		if ($this->login['status'] == 'login') {

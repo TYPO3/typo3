@@ -70,7 +70,7 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 	 * @return	array
 	 * @ignore
 	 */
-	function modMenu()	{
+	function modMenu() {
 		global $LANG;
 
 		$modMenuAdd = array(
@@ -87,8 +87,8 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 	 *
 	 * @return	string		HTML content for the module, actually a "section" made through the parent object in $this->pObj
 	 */
-	function main()	{
-		global $SOBE,$LANG;
+	function main() {
+		global $SOBE, $LANG;
 
 		$theCode='';
 
@@ -102,9 +102,9 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 		}
 
 		$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(8);	// create new pages here?
-		$pRec = t3lib_BEfunc::getRecord('pages',$this->pObj->id,'uid',' AND '.$m_perms_clause);
+		$pRec = t3lib_BEfunc::getRecord('pages', $this->pObj->id, 'uid', ' AND ' . $m_perms_clause);
 		$sys_pages = t3lib_div::makeInstance('t3lib_pageSelect');
-		$menuItems = $sys_pages->getMenu($this->pObj->id,'*','sorting','',0);
+		$menuItems = $sys_pages->getMenu($this->pObj->id, '*', 'sorting', '', 0);
 		if (is_array($pRec)) {
 			$data = t3lib_div::_GP('data');
 			if (is_array($data['pages'])) {
@@ -145,7 +145,7 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 						$tce->setDefaultsFromUserTS($TCAdefaultOverride);
 					}
 
-					$tce->start($data,array());
+					$tce->start($data, array());
 					$tce->process_datamap();
 					t3lib_BEfunc::setUpdateSignal('updatePageTree');
 
@@ -166,13 +166,13 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 				$theCode.= $flashMessage->render();
 
 					// Display result:
-				$menuItems = $sys_pages->getMenu($this->pObj->id,'*','sorting','',0);
+				$menuItems = $sys_pages->getMenu($this->pObj->id, '*', 'sorting', '', 0);
 				$lines=array();
 				foreach ($menuItems as $rec) {
-					t3lib_BEfunc::workspaceOL('pages',$rec);
+					t3lib_BEfunc::workspaceOL('pages', $rec);
 					if (is_array($rec))	{
-						$lines[] = '<nobr>' . t3lib_iconWorks::getSpriteIconForRecord('pages', $rec, array('title' => t3lib_BEfunc::titleAttribForPages($rec , '', FALSE))) .
-							htmlspecialchars(t3lib_div::fixed_lgd_cs($rec['title'],$GLOBALS['BE_USER']->uc['titleLen'])).'</nobr>';
+						$lines[] = '<nobr>' . t3lib_iconWorks::getSpriteIconForRecord('pages', $rec, array('title' => t3lib_BEfunc::titleAttribForPages($rec, '', FALSE))) .
+							htmlspecialchars(t3lib_div::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '</nobr>';
 					}
 				}
 				$theCode.= '<h4>' . $LANG->getLL('wiz_newPages_currentMenu') . '</h4>' . implode('<br />', $lines);
@@ -244,8 +244,8 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 	 *
 	 * @return	string		HTML code for a help-bubble image.
 	 */
-	function helpBubble()	{
-		return '<img src="'.$GLOBALS['BACK_PATH'].'gfx/helpbubble.gif" width="14" height="14" hspace="2" align="top" alt="" />';
+	function helpBubble() {
+		return '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/helpbubble.gif" width="14" height="14" hspace="2" align="top" alt="" />';
 	}
 
 	/**

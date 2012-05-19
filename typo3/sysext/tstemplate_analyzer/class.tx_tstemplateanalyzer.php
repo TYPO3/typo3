@@ -37,7 +37,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		$this->pObj->modMenu_setDefaultList.= ',ts_analyzer_checkLinenum,ts_analyzer_checkSyntax';
 	}
 
-	function modMenu()	{
+	function modMenu() {
 		return array (
 			'ts_analyzer_checkSetup' => '1',
 			'ts_analyzer_checkConst' => '1',
@@ -70,7 +70,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		}
 	}
 
-	function main()	{
+	function main() {
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 
 		// **************************
@@ -89,7 +89,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		// BUGBUG: Should we check if the uset may at all read and write template-records???
 		$existTemplate = $this->initialize_editor($this->pObj->id,$template_uid);		// initialize
 		if ($existTemplate)	{
-			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('currentTemplate', TRUE) ,
+			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('currentTemplate', TRUE),
 				t3lib_iconWorks::getSpriteIconForRecord('sys_template', $GLOBALS['tplRow']) . '<strong>' .
 				$this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']["title"]) . '</strong>' .
 				htmlspecialchars(trim($GLOBALS['tplRow']["sitetitle"]) ? ' (' . $GLOBALS['tplRow']["sitetitle"] . ')' : ''));

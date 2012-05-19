@@ -52,7 +52,7 @@ final class tslib_eidtools {
 	 *
 	 * @return	object		Frontend User object (usually known as TSFE->fe_user)
 	 */
-	public static function initFeUser()	{
+	public static function initFeUser() {
 		// Initialize the database. Do not use TSFE method as it may redirect to
 		// Install tool and call hooks, which do not expect to be called from eID
 		self::connectDB();
@@ -75,7 +75,7 @@ final class tslib_eidtools {
 	 *
 	 * @return	boolean		TRUE if connection was successful
 	 */
-	public static function connectDB()	{
+	public static function connectDB() {
 		if (!$GLOBALS['TYPO3_DB']->isConnected()) {
 				// Attempt to connect to the database
 			$GLOBALS['TYPO3_DB']->connectDB();

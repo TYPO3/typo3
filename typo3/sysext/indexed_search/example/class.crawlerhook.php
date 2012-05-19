@@ -46,7 +46,7 @@ class tx_indexedsearch_crawlerhook {
 	 *
 	 * @return	string		Return a text string for the first, initiating queue entry for the crawler.
 	 */
-	function initMessage()	{
+	function initMessage() {
 		return 'Start of Custom Example Indexing session!';
 	}
 

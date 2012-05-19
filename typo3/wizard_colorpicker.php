@@ -84,7 +84,7 @@ class SC_wizard_colorpicker {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 			// Setting GET vars (used in frameset script):
 		$this->P = t3lib_div::_GP('P',1);
 
@@ -161,7 +161,7 @@ class SC_wizard_colorpicker {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 		if(!t3lib_div::_GP('showPicker')) {	// Show frameset by default:
 			$this->frameSet();
 		} else {
@@ -211,7 +211,7 @@ class SC_wizard_colorpicker {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
@@ -282,7 +282,7 @@ class SC_wizard_colorpicker {
 	 *
 	 * @return	void
 	 */
-	function colorMatrix()	{
+	function colorMatrix() {
 		$steps = 51;
 
 			// Get colors:
@@ -329,7 +329,7 @@ class SC_wizard_colorpicker {
 	 *
 	 * @return	void
 	 */
-	function colorList()	{
+	function colorList() {
 			// Initialize variables:
 		$colors = explode(',',$this->HTMLcolorList);
 		$currentValue = strtolower($this->colorValue);
@@ -357,7 +357,7 @@ class SC_wizard_colorpicker {
 	 *
 	 * @return	void
 	 */
-	function colorImage()	{
+	function colorImage() {
 			// Handling color-picker image if any:
 		if (!$this->imageError)	{
 			if ($this->pickerImage)	{

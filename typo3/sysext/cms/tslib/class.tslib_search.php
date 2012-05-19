@@ -329,7 +329,7 @@ class tslib_search {
 	 * @return	string		Part of where class limiting result to the those having the search word.
 	 * @access private
 	 */
-	function build_search_query_for_searchwords()	{
+	function build_search_query_for_searchwords() {
 
 		if (is_array($this->sword_array))	{
 			$main_query_part = array();
@@ -419,7 +419,7 @@ class tslib_search {
 	 *
 	 * @return	string		URL-parameters with the searchwords
 	 */
-	function get_searchwords()	{
+	function get_searchwords() {
 		$SWORD_PARAMS = '';
 		if (is_array($this->sword_array))	{
 			foreach($this->sword_array as $key => $val)	{
@@ -434,7 +434,7 @@ class tslib_search {
 	 *
 	 * @return	array		IF the internal sword_array contained search words it will return these, otherwise "void"
 	 */
-	function get_searchwordsArray()	{
+	function get_searchwordsArray() {
 		if (is_array($this->sword_array))	{
 			foreach($this->sword_array as $key => $val)	{
 				$swords[] = $val['sword'];

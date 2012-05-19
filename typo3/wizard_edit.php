@@ -61,7 +61,7 @@ class SC_wizard_edit {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 		$this->P = t3lib_div::_GP('P');
 		$this->doClose = t3lib_div::_GP('doClose');		// Used for the return URL to alt_doc.php so that we can close the window.
 	}
@@ -72,7 +72,7 @@ class SC_wizard_edit {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 		if ($this->doClose)	{
 			$this->closeWindow();
 		} else {
@@ -119,7 +119,7 @@ class SC_wizard_edit {
 	 *
 	 * @return	void
 	 */
-	function closeWindow()	{
+	function closeWindow() {
 		echo '<script language="javascript" type="text/javascript">close();</script>';
 		exit;
 	}

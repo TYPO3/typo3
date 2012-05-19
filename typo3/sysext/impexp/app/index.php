@@ -132,7 +132,7 @@ class localPageTree extends t3lib_browseTree {
 	 *
 	 * @return	string		SQL where clause
 	 */
-	function permsC()	{
+	function permsC() {
 		return $this->BE_USER->getPagePermsClause(1);
 	}
 
@@ -233,7 +233,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 			// Start document template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
@@ -310,7 +310,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -1522,7 +1522,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 *
 	 * @return	string		Absolute path to first "_temp_" folder of the current user, otherwise blank.
 	 */
-	function userTempFolder()	{
+	function userTempFolder() {
 		global $FILEMOUNTS;
 
 		foreach($FILEMOUNTS as $filePathInfo)	{
@@ -1538,7 +1538,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 *
 	 * @return	string		Absolute path to folder where export files can be saved.
 	 */
-	function userSaveFolder()	{
+	function userSaveFolder() {
 		global $FILEMOUNTS;
 
 		reset($FILEMOUNTS);
@@ -1561,7 +1561,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function checkUpload()	{
+	function checkUpload() {
 		$file = t3lib_div::_GP('file');
 
 			// Initializing:

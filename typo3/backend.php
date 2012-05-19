@@ -191,7 +191,7 @@ class TYPO3backend {
 	 *
 	 * @return	void
 	 */
-	public function render()	{
+	public function render() {
 		$this->executeHook('renderPreProcess');
 
 			// prepare the scaffolding, at this point extension may still add javascript and css
@@ -624,7 +624,7 @@ class TYPO3backend {
 	 *
 	 * @return	void
 	 */
-	protected function handlePageEditing()	{
+	protected function handlePageEditing() {
 
 		if(!t3lib_extMgm::isLoaded('cms'))	{
 			return;

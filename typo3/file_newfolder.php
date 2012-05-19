@@ -83,7 +83,7 @@ class SC_file_newfolder {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 			// Initialize GPvars:
 		$this->number = t3lib_div::_GP('number');
 		$this->target = $combinedIdentifier = t3lib_div::_GP('target');
@@ -131,7 +131,7 @@ class SC_file_newfolder {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 
 			// start content compilation
 		$this->content .= $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle'));
@@ -253,7 +253,7 @@ class SC_file_newfolder {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 }
