@@ -1212,7 +1212,7 @@ abstract class t3lib_userAuth {
 				$isLoginDataProcessed = TRUE;
 
 					// if the service returns >=200 then no more processing is needed
-				if (intval($serviceResult) >= 200)	{
+				if (intval($serviceResult) >= 200) {
 					unset($serviceObject);
 					break;
 				}

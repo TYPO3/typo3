@@ -2478,7 +2478,7 @@ class t3lib_TCEforms {
 
 				// Create sheet menu:
 				//TODO; Why is this commented out?
-			//			if (is_array($dataStructArray['sheets']))	{
+			//			if (is_array($dataStructArray['sheets'])) {
 			//				#$item.=$this->getSingleField_typeFlex_sheetMenu($dataStructArray['sheets'], $PA['itemFormElName'].'[meta][currentSheetId]', $sheet).'<br />';
 			//			}
 
@@ -2517,7 +2517,7 @@ class t3lib_TCEforms {
 			$editData['meta']['currentLangId'] = array_unique($editData['meta']['currentLangId']);
 
 				//TODO: Why is this commented out?
-			//			if (!$langDisabled && count($languages) > 1)	{
+			//			if (!$langDisabled && count($languages) > 1) {
 			//				$item.=$this->getSingleField_typeFlex_langMenu($languages, $PA['itemFormElName'].'[meta][currentLangId]', $editData['meta']['currentLangId']).'<br />';
 			//			}
 
@@ -5538,7 +5538,7 @@ class t3lib_TCEforms {
 				for (var i = 0, length = children.length; i < length; i++) {
 					if (children[i].type=="text" && children[i].value)	previewContent+= (previewContent?" / ":"")+children[i].value;
 				}
-				if (previewContent.length>80)	{
+				if (previewContent.length>80) {
 					previewContent = previewContent.substring(0,67)+"...";
 				}
 				$(id+"-preview").update(previewContent);
@@ -5549,15 +5549,15 @@ class t3lib_TCEforms {
 				var isClosed=0;
 					// Traverse and find how many are open or closed:
 				for (var i = 0, length = descendants.length; i < length; i++) {
-					if (descendants[i].id)	{
+					if (descendants[i].id) {
 						if (Element.visible(descendants[i].id+"-content"))	{isOpen++;} else {isClosed++;}
 					}
 				}
 
 					// Traverse and toggle
 				for (var i = 0, length = descendants.length; i < length; i++) {
-					if (descendants[i].id)	{
-						if (isOpen!=0 && isClosed!=0)	{
+					if (descendants[i].id) {
+						if (isOpen!=0 && isClosed!=0) {
 							if (Element.visible(descendants[i].id+"-content"))	{flexFormToggle(descendants[i].id);}
 						} else {
 							flexFormToggle(descendants[i].id);
@@ -5576,7 +5576,7 @@ class t3lib_TCEforms {
 
 					// Traverse and find how many are open or closed:
 				for (var i = 0, length = descendants.length; i < length; i++) {
-					if (descendants[i].id)	{
+					if (descendants[i].id) {
 						$(descendants[i].id+"-action").value = descendants[i].visible() ? i : "DELETE";
 					}
 				}
@@ -5709,13 +5709,13 @@ class t3lib_TCEforms {
 							// Clear elements if exclusive values are found
 						if (exclusiveValues) {
 							var m = new RegExp("(^|,)" + value + "($|,)");
-							if (exclusiveValues.match(m))	{
+							if (exclusiveValues.match(m)) {
 									// the new value is exclusive
 								for (a = len - 1; a >= 0; a--) {
 									fObj[a] = null; // This is dangerous because it works on the object\'s numeric properties directly instead of using a custom attribute!
 								}
 								len = 0;
-							} else if (len == 1)	{
+							} else if (len == 1) {
 								m = new RegExp("(^|,)" + fObj.options[0].value + "($|,)");
 								if (exclusiveValues.match(m)) {
 										// the old value is exclusive
@@ -5760,13 +5760,13 @@ class t3lib_TCEforms {
 			function setHiddenFromList(fObjSel,fObjHid)	{	//
 				l=fObjSel.length;
 				fObjHid.value="";
-				for (a=0;a<l;a++)	{
+				for (a=0;a<l;a++) {
 					fObjHid.value+=fObjSel.options[a].value+",";
 				}
 			}
 			function setFormValueManipulate(fName, type, maxLength) {
 				var formObj = setFormValue_getFObj(fName);
-				if (formObj)	{
+				if (formObj) {
 					var localArray_V = new Array();
 					var localArray_L = new Array();
 					var localArray_S = new Array();
@@ -5791,10 +5791,10 @@ class t3lib_TCEforms {
 						}
 					}
 
-					if ((type=="Remove" && fObjSel.size > 1) || type=="Top" || type=="Bottom")	{
-						if (type=="Top")	{
-							for (a=0;a<l;a++)	{
-								if (fObjSel.options[a].selected==1)	{
+					if ((type=="Remove" && fObjSel.size > 1) || type=="Top" || type=="Bottom") {
+						if (type=="Top") {
+							for (a=0;a<l;a++) {
+								if (fObjSel.options[a].selected==1) {
 									localArray_V[c]=fObjSel.options[a].value;
 									localArray_L[c]=fObjSel.options[a].text;
 									localArray_S[c]=1;
@@ -5803,8 +5803,8 @@ class t3lib_TCEforms {
 								}
 							}
 						}
-						for (a=0;a<l;a++)	{
-							if (fObjSel.options[a].selected!=1)	{
+						for (a=0;a<l;a++) {
+							if (fObjSel.options[a].selected!=1) {
 								localArray_V[c]=fObjSel.options[a].value;
 								localArray_L[c]=fObjSel.options[a].text;
 								localArray_S[c]=0;
@@ -5812,9 +5812,9 @@ class t3lib_TCEforms {
 								c++;
 							}
 						}
-						if (type=="Bottom")	{
-							for (a=0;a<l;a++)	{
-								if (fObjSel.options[a].selected==1)	{
+						if (type=="Bottom") {
+							for (a=0;a<l;a++) {
+								if (fObjSel.options[a].selected==1) {
 									localArray_V[c]=fObjSel.options[a].value;
 									localArray_L[c]=fObjSel.options[a].text;
 									localArray_S[c]=1;
@@ -5824,12 +5824,12 @@ class t3lib_TCEforms {
 							}
 						}
 					}
-					if (type=="Down")	{
+					if (type=="Down") {
 						var tC = 0;
 						var tA = new Array();
 
-						for (a=0;a<l;a++)	{
-							if (fObjSel.options[a].selected!=1)	{
+						for (a=0;a<l;a++) {
+							if (fObjSel.options[a].selected!=1) {
 									// Add non-selected element:
 								localArray_V[c]=fObjSel.options[a].value;
 								localArray_L[c]=fObjSel.options[a].text;
@@ -5838,8 +5838,8 @@ class t3lib_TCEforms {
 								c++;
 
 									// Transfer any accumulated and reset:
-								if (tA.length > 0)	{
-									for (aa=0;aa<tA.length;aa++)	{
+								if (tA.length > 0) {
+									for (aa=0;aa<tA.length;aa++) {
 										localArray_V[c]=fObjSel.options[tA[aa]].value;
 										localArray_L[c]=fObjSel.options[tA[aa]].text;
 										localArray_S[c]=1;
@@ -5856,8 +5856,8 @@ class t3lib_TCEforms {
 							}
 						}
 							// Transfer any remaining:
-						if (tA.length > 0)	{
-							for (aa=0;aa<tA.length;aa++)	{
+						if (tA.length > 0) {
+							for (aa=0;aa<tA.length;aa++) {
 								localArray_V[c]=fObjSel.options[tA[aa]].value;
 								localArray_L[c]=fObjSel.options[tA[aa]].text;
 								localArray_S[c]=1;
@@ -5866,13 +5866,13 @@ class t3lib_TCEforms {
 							}
 						}
 					}
-					if (type=="Up")	{
+					if (type=="Up") {
 						var tC = 0;
 						var tA = new Array();
 						var c = l-1;
 
-						for (a=l-1;a>=0;a--)	{
-							if (fObjSel.options[a].selected!=1)	{
+						for (a=l-1;a>=0;a--) {
+							if (fObjSel.options[a].selected!=1) {
 
 									// Add non-selected element:
 								localArray_V[c]=fObjSel.options[a].value;
@@ -5882,8 +5882,8 @@ class t3lib_TCEforms {
 								c--;
 
 									// Transfer any accumulated and reset:
-								if (tA.length > 0)	{
-									for (aa=0;aa<tA.length;aa++)	{
+								if (tA.length > 0) {
+									for (aa=0;aa<tA.length;aa++) {
 										localArray_V[c]=fObjSel.options[tA[aa]].value;
 										localArray_L[c]=fObjSel.options[tA[aa]].text;
 										localArray_S[c]=1;
@@ -5900,8 +5900,8 @@ class t3lib_TCEforms {
 							}
 						}
 							// Transfer any remaining:
-						if (tA.length > 0)	{
-							for (aa=0;aa<tA.length;aa++)	{
+						if (tA.length > 0) {
+							for (aa=0;aa<tA.length;aa++) {
 								localArray_V[c]=fObjSel.options[tA[aa]].value;
 								localArray_L[c]=fObjSel.options[tA[aa]].text;
 								localArray_S[c]=1;
@@ -5914,7 +5914,7 @@ class t3lib_TCEforms {
 
 						// Transfer items in temporary storage to list object:
 					fObjSel.length = c;
-					for (a=0;a<c;a++)	{
+					for (a=0;a<c;a++) {
 						fObjSel.options[a].value = localArray_V[a];
 						fObjSel.options[a].text = localArray_L[a];
 						fObjSel.options[a].selected = localArray_S[a];

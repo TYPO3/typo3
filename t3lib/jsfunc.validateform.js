@@ -20,12 +20,12 @@
 ***************************************************************/
 
 
-function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess)	{
+function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess) {
 	var formObject = document[theFormname];
-	if (!formObject)	{
+	if (!formObject) {
 		formObject = document.getElementById(theFormname);
 	}
-	if (formObject && theFieldlist)	{
+	if (formObject && theFieldlist) {
 		var index=1;
 		var theField = split(theFieldlist, ",", index);
 		var msg="";
@@ -46,12 +46,12 @@ function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess)	{
 				theEregMsg = split(theFieldlist, ",", index);
 				index++;
 				theEreg = split(theFieldlist, ",", index);
-			} else if (theField == '_EMAIL')	{
+			} else if (theField == '_EMAIL') {
 				specialMode = theField;
 			}
 
 				// Get real field name if special mode has been set:
-			if (specialMode)	{
+			if (specialMode) {
 				index++;
 				theField = split(theFieldlist, ",", index);
 			}
@@ -59,14 +59,14 @@ function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess)	{
 			index++;
 			theLabel = split(theFieldlist, ",", index);
 			theField = theField;
-			if (formObject[theField])	{
+			if (formObject[theField]) {
 				var fObj = formObject[theField];
 				var type=fObj.type;
-				if (!fObj.type)	{
+				if (!fObj.type) {
 					type="radio";
 				}
 				var value="";
-				switch(type)	{
+				switch(type) {
 					case "text":
 					case "textarea":
 					case "password":
@@ -74,14 +74,14 @@ function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess)	{
 						value = fObj.value;
 					break;
 					case "select-one":
-						if (fObj.selectedIndex>=0)	{
+						if (fObj.selectedIndex>=0) {
 							value = fObj.options[fObj.selectedIndex].value;
 						}
 					break;
 					case "select-multiple":
 						var l=fObj.length;
-						for (a=0;a<l;a++)	{
-							if (fObj.options[a].selected)	{
+						for (a=0;a<l;a++) {
+							if (fObj.options[a].selected) {
 								 value+= fObj.options[a].value;
 							}
 						}
@@ -89,14 +89,14 @@ function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess)	{
 					case "radio":
 					case "checkbox":
 						var len=fObj.length;
-						if (len)	{
-							for (a=0;a<len;a++)	{
-								if (fObj[a].checked)	{
+						if (len) {
+							for (a=0;a<len;a++) {
+								if (fObj[a].checked) {
 									value = fObj[a].value;
 								}
 							}
 						} else {
-							if (fObj.checked)	{
+							if (fObj.checked) {
 								value = fObj.value;
 							}
 						}
@@ -105,7 +105,7 @@ function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess)	{
 						value = 1;
 				}
 
-				switch(specialMode)	{
+				switch(specialMode) {
 					case "_EMAIL":
 						var theRegEx_notValid = new RegExp("(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)", "gi");
 						var theRegEx_isValid = new RegExp("^.+\@[a-zA-Z0-9\-\.]+\.([a-zA-Z]{2,4}|[0-9]{1,3})$","");
@@ -115,12 +115,12 @@ function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess)	{
 					break;
 					case "_EREG":
 						var theRegEx_isValid = new RegExp(theEreg,"");
-						if (!theRegEx_isValid.test(value))	{
+						if (!theRegEx_isValid.test(value)) {
 							msg+="\n"+theLabel+' ('+theEregMsg+')';
 						}
 					break;
 					default:
-						if (!value)	{
+						if (!value) {
 							msg+="\n"+theLabel;
 						}
 				}
@@ -128,9 +128,9 @@ function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess)	{
 			index++;
 			theField = split(theFieldlist, ",", index);
 		}
-		if (msg)	{
+		if (msg) {
 			var theBadMess = badMess;
-			if (!theBadMess)	{
+			if (!theBadMess) {
 				theBadMess = "You must fill in these fields:";
 			}
 			theBadMess+="\n";
@@ -138,7 +138,7 @@ function validateForm(theFormname,theFieldlist,goodMess,badMess,emailMess)	{
 			return false;
 		} else {
 			var theGoodMess = goodMess;
-			if (theGoodMess)	{
+			if (theGoodMess) {
 				alert(theGoodMess);
 			}
 			return true;
@@ -151,7 +151,7 @@ function split(theStr1, delim, index) {
 	var sPos = -lengthOfDelim;
 	var a, ePos;
 	if (index<1) {index=1;}
-	for (a=1; a<index; a++)	{
+	for (a=1; a<index; a++) {
 		sPos = theStr.indexOf(delim, sPos+lengthOfDelim);
 		if (sPos==-1)	{return null;}
 	}

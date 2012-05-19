@@ -22,7 +22,7 @@
 ***************************************************************/
 
 
-function evalFunc()	{
+function evalFunc() {
 	this.input = evalFunc_input;
 	this.output = evalFunc_output;
 	this.parseInt = evalFunc_parseInt;
@@ -52,10 +52,10 @@ function evalFunc()	{
 	this.isInString = '';
 	this.USmode = 0;
 }
-function evalFunc_pol(fortegn, value)	{
+function evalFunc_pol(fortegn, value) {
 	return eval (((fortegn=="-")?'-':'')+value);
 }
-function evalFunc_evalObjValue(FObj,value)	{
+function evalFunc_evalObjValue(FObj,value) {
 	var evallist = FObj.evallist;
 	this.isInString = (FObj.is_in) ? ''+FObj.is_in : '';
 	var index=1;
@@ -74,7 +74,7 @@ function evalFunc_evalObjValue(FObj,value)	{
 	}
 	return newValue;
 }
-function evalFunc_outputObjValue(FObj,value)	{
+function evalFunc_outputObjValue(FObj,value) {
 	var evallist = FObj.evallist;
 	var index=1;
 	var theEvalType = this.split(evallist, ",", index);
@@ -88,34 +88,34 @@ function evalFunc_outputObjValue(FObj,value)	{
 	}
 	return newValue;
 }
-function evalFunc_caseSwitch(type,inVal)	{
+function evalFunc_caseSwitch(type,inVal) {
 	var theVal = ''+inVal;
 	var newString = '';
-	switch (type)	{
+	switch (type) {
 		case "alpha":
 		case "num":
 		case "alphanum":
 		case "alphanum_x":
-			for (var a=0;a<theVal.length;a++)	{
+			for (var a=0;a<theVal.length;a++) {
 				var theChar = theVal.substr(a,1);
 				var special = (theChar=='_'||theChar=='-');
 				var alpha = (theChar>='a'&&theChar<='z') || (theChar>='A'&&theChar<='Z');
 				var num = (theChar>='0' && theChar<='9');
-				switch(type)	{
+				switch(type) {
 					case "alphanum":	special=0;		break;
 					case "alpha":	num=0; special=0;		break;
 					case "num":	alpha=0; special=0;		break;
 				}
-				if (alpha || num || theChar==' ' || special)	{
+				if (alpha || num || theChar==' ' || special) {
 					newString+=theChar;
 				}
 			}
 		break;
 		case "is_in":
-			if (this.isInString)	{
-				for (var a=0;a<theVal.length;a++)	{
+			if (this.isInString) {
+				for (var a=0;a<theVal.length;a++) {
 					var theChar = theVal.substr(a,1);
-					if (this.isInString.indexOf(theChar)!=-1)	{
+					if (this.isInString.indexOf(theChar)!=-1) {
 						newString+=theChar;
 					}
 				}
@@ -135,28 +135,28 @@ function evalFunc_caseSwitch(type,inVal)	{
 	}
 	return newString;
 }
-function evalFunc_parseInt(value)	{
+function evalFunc_parseInt(value) {
 	var theVal = ''+value;
 	if (!value)	return 0;
-	for (var a=0;a<theVal.length;a++)	{
-		if (theVal.substr(a,1)!='0')	{
+	for (var a=0;a<theVal.length;a++) {
+		if (theVal.substr(a,1)!='0') {
 			return parseInt(theVal.substr(a,theVal.length)) || 0;
 		}
 	}
 	return 0;
 }
-function evalFunc_getNumChars(value)	{
+function evalFunc_getNumChars(value) {
 	var theVal = ''+value;
 	if (!value)	return 0;
 	var outVal="";
-	for (var a=0;a<theVal.length;a++)	{
-		if (theVal.substr(a,1)==parseInt(theVal.substr(a,1)))	{
+	for (var a=0;a<theVal.length;a++) {
+		if (theVal.substr(a,1)==parseInt(theVal.substr(a,1))) {
 			outVal+=theVal.substr(a,1);
 		}
 	}
 	return outVal;
 }
-function evalFunc_parseDouble(value)	{
+function evalFunc_parseDouble(value) {
 	var theVal = "" + value;
 	theVal = theVal.replace(/[^0-9,\.-]/g, "");
 	var negative = theVal.substring(0, 1) === '-';
@@ -175,38 +175,38 @@ function evalFunc_parseDouble(value)	{
 
 	return theVal;
 }
-function evalFunc_noSpace(value)	{
+function evalFunc_noSpace(value) {
 	var theVal = ''+value;
 	var newString="";
-	for (var a=0;a<theVal.length;a++)	{
+	for (var a=0;a<theVal.length;a++) {
 		var theChar = theVal.substr(a,1);
-		if (theChar!=' ')	{
+		if (theChar!=' ') {
 			newString+=theChar;
 		}
 	}
 	return newString;
 }
-function evalFunc_ltrim(value)	{
+function evalFunc_ltrim(value) {
 	var theVal = ''+value;
 	if (!value)	return '';
-	for (var a=0;a<theVal.length;a++)	{
-		if (theVal.substr(a,1)!=' ')	{
+	for (var a=0;a<theVal.length;a++) {
+		if (theVal.substr(a,1)!=' ') {
 			return theVal.substr(a,theVal.length);
 		}
 	}
 	return '';
 }
-function evalFunc_btrim(value)	{
+function evalFunc_btrim(value) {
 	var theVal = ''+value;
 	if (!value)	return '';
-	for (var a=theVal.length;a>0;a--)	{
-		if (theVal.substr(a-1,1)!=' ')	{
+	for (var a=theVal.length;a>0;a--) {
+		if (theVal.substr(a-1,1)!=' ') {
 			return theVal.substr(0,a);
 		}
 	}
 	return '';
 }
-function evalFunc_splitSingle(value)	{
+function evalFunc_splitSingle(value) {
 	var theVal = ''+value;
 	this.values = new Array();
 	this.pointer = 3;
@@ -214,23 +214,23 @@ function evalFunc_splitSingle(value)	{
 	this.values[2]=theVal.substr(2,2);
 	this.values[3]=theVal.substr(4,10);
 }
-function evalFunc_split(value)	{
+function evalFunc_split(value) {
 	this.values = new Array();
 	this.valPol = new Array();
 	this.pointer = 0;
 	var numberMode = 0;
 	var theVal = "";
 	value+=" ";
-	for (var a=0;a<value.length;a++)	{
+	for (var a=0;a<value.length;a++) {
 		var theChar = value.substr(a,1);
-		if (theChar<"0" || theChar>"9")	{
-			if (numberMode)	{
+		if (theChar<"0" || theChar>"9") {
+			if (numberMode) {
 				this.pointer++;
 				this.values[this.pointer]=theVal;
 				theVal = "";
 				numberMode=0;
 			}
-			if (theChar=="+" || theChar=="-")	{
+			if (theChar=="+" || theChar=="-") {
 				this.valPol[this.pointer+1] = theChar;
 			}
 		} else {
@@ -239,7 +239,7 @@ function evalFunc_split(value)	{
 		}
 	}
 }
-function evalFunc_input(type,inVal)	{
+function evalFunc_input(type,inVal) {
 	if (type=="md5") {
 		return MD5(inVal);
 	}
@@ -263,29 +263,29 @@ function evalFunc_input(type,inVal)	{
 		return "";
 		return 0;	// Why would I ever return a zero??? (20/12/01)
 	}
-	switch (type)	{
+	switch (type) {
 		case "datetime":
-			switch (theCmd)	{
+			switch (theCmd) {
 				case "d":
 				case "t":
 				case "n":
 					this.lastTime = this.convertClientTimestampToUTC(this.getTimestamp(today), 0);
-					if (values.valPol[1])	{
+					if (values.valPol[1]) {
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
 				break;
 				case "+":
 				case "-":
-					if (this.lastTime == 0)	{
+					if (this.lastTime == 0) {
 						this.lastTime = this.convertClientTimestampToUTC(this.getTimestamp(today), 0);
 					}
-					if (values.valPol[1])	{
+					if (values.valPol[1]) {
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
 				break;
 				default:
 					var index = value.indexOf(' ');
-					if (index!=-1)	{
+					if (index!=-1) {
 						var dateVal = this.input("date",value.substr(index,value.length));
 							// set refDate so that evalFunc_input on time will work with correct DST information
 						this.refDate = new Date(dateVal*1000);
@@ -299,28 +299,28 @@ function evalFunc_input(type,inVal)	{
 			return this.lastTime;
 		break;
 		case "year":
-			switch (theCmd)	{
+			switch (theCmd) {
 				case "d":
 				case "t":
 				case "n":
 					this.lastYear = this.getYear(today);
-					if (values.valPol[1])	{
+					if (values.valPol[1]) {
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
 				break;
 				case "+":
 				case "-":
-					if (values.valPol[1])	{
+					if (values.valPol[1]) {
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
 				break;
 				default:
-					if (values.valPol[2])	{
+					if (values.valPol[2]) {
 						add = this.pol(values.valPol[2],this.parseInt(values.values[2]));
 					}
 					var year = (values.values[1])?this.parseInt(values.values[1]):this.getYear(today);
-					if (  (year>=0&&year<38) || (year>=70&&year<100) || (year>=1902&&year<2038)	)	{
-						if (year<100)	{
+					if (  (year>=0&&year<38) || (year>=70&&year<100) || (year>=1902&&year<2038)	) {
+						if (year<100) {
 							year = (year<38) ? year+=2000 : year+=1900;
 						}
 					} else {
@@ -332,28 +332,28 @@ function evalFunc_input(type,inVal)	{
 			return this.lastYear;
 		break;
 		case "date":
-			switch (theCmd)	{
+			switch (theCmd) {
 				case "d":
 				case "t":
 				case "n":
 					this.lastDate = this.getTimestamp(today);
-					if (values.valPol[1])	{
+					if (values.valPol[1]) {
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
 				break;
 				case "+":
 				case "-":
-					if (values.valPol[1])	{
+					if (values.valPol[1]) {
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
 				break;
 				default:
 					var index = 4;
-					if (values.valPol[index])	{
+					if (values.valPol[index]) {
 						add = this.pol(values.valPol[index],this.parseInt(values.values[index]));
 					}
-					if (values.values[1] && values.values[1].length>2)	{
-						if (values.valPol[2])	{
+					if (values.values[1] && values.values[1].length>2) {
+						if (values.valPol[2]) {
 							add = this.pol(values.valPol[2],this.parseInt(values.values[2]));
 						}
 						var temp = values.values[1];
@@ -361,8 +361,8 @@ function evalFunc_input(type,inVal)	{
 					}
 
 					var year = (values.values[3])?this.parseInt(values.values[3]):this.getYear(today);
-					if ( (year>=0&&year<38) || (year>=70&&year<100) || (year>=1902&&year<2038) )	{
-						if (year<100)	{
+					if ( (year>=0&&year<38) || (year>=70&&year<100) || (year>=1902&&year<2038) ) {
+						if (year<100) {
 							year = (year<38) ? year+=2000 : year+=1900;
 						}
 					} else {
@@ -381,31 +381,31 @@ function evalFunc_input(type,inVal)	{
 		break;
 		case "time":
 		case "timesec":
-			switch (theCmd)	{
+			switch (theCmd) {
 				case "d":
 				case "t":
 				case "n":
 					this.lastTime = this.getTimeSecs(today);
-					if (values.valPol[1])	{
+					if (values.valPol[1]) {
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
 				break;
 				case "+":
 				case "-":
-					if (this.lastTime == 0)	{
+					if (this.lastTime == 0) {
 						this.lastTime = this.getTimeSecs(today);
 					}
-					if (values.valPol[1])	{
+					if (values.valPol[1]) {
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
 				break;
 				default:
 					var index = (type=="timesec")?4:3;
-					if (values.valPol[index])	{
+					if (values.valPol[index]) {
 						add = this.pol(values.valPol[index],this.parseInt(values.values[index]));
 					}
-					if (values.values[1] && values.values[1].length>2)	{
-						if (values.valPol[2])	{
+					if (values.values[1] && values.values[1].length>2) {
+						if (values.valPol[2]) {
 							add = this.pol(values.valPol[2],this.parseInt(values.values[2]));
 						}
 						var temp = values.values[1];
@@ -431,13 +431,13 @@ function evalFunc_input(type,inVal)	{
 			return value;
 	}
 }
-function evalFunc_output(type,value,FObj)	{
+function evalFunc_output(type,value,FObj) {
 	var theString = "";
-	switch (type)	{
+	switch (type) {
 		case "date":
 			if (!parseInt(value))	{return '';}
 			var theTime = new Date(parseInt(value) * 1000);
-			if (this.USmode)	{
+			if (this.USmode) {
 				theString = (theTime.getUTCMonth()+1)+'-'+theTime.getUTCDate()+'-'+this.getYear(theTime);
 			} else {
 				theString = theTime.getUTCDate()+'-'+(theTime.getUTCMonth()+1)+'-'+this.getYear(theTime);
@@ -467,21 +467,21 @@ function evalFunc_output(type,value,FObj)	{
 	}
 	return theString;
 }
-function evalFunc_getSecs(timeObj)	{
+function evalFunc_getSecs(timeObj) {
 	return timeObj.getUTCSeconds();
 }
 // Seconds since midnight:
-function evalFunc_getTime(timeObj)	{
+function evalFunc_getTime(timeObj) {
 	return timeObj.getUTCHours() * 60 * 60 + timeObj.getUTCMinutes() * 60 + this.getSecs(timeObj);
 }
-function evalFunc_getYear(timeObj)	{
+function evalFunc_getYear(timeObj) {
 	return timeObj.getUTCFullYear();
 }
 // Seconds since midnight with client timezone offset:
-function evalFunc_getTimeSecs(timeObj)	{
+function evalFunc_getTimeSecs(timeObj) {
 	return timeObj.getHours()*60*60+timeObj.getMinutes()*60+timeObj.getSeconds();
 }
-function evalFunc_getDate(timeObj)	{
+function evalFunc_getDate(timeObj) {
 	var theTime = new Date(this.getYear(timeObj), timeObj.getUTCMonth(), timeObj.getUTCDate());
 	return this.getTimestamp(theTime);
 }
@@ -496,7 +496,7 @@ function evalFunc_splitStr(theStr1, delim, index) {
 	var lengthOfDelim = delim.length;
 	sPos = -lengthOfDelim;
 	if (index<1) {index=1;}
-	for (a=1; a<index; a++)	{
+	for (a=1; a<index; a++) {
 		sPos = theStr.indexOf(delim, sPos+lengthOfDelim);
 		if (sPos==-1)	{return null;}
 	}
@@ -504,15 +504,15 @@ function evalFunc_splitStr(theStr1, delim, index) {
 	if(ePos == -1)	{ePos = theStr.length;}
 	return (theStr.substring(sPos+lengthOfDelim,ePos));
 }
-function evalFunc_getTimestamp(timeObj)	{
+function evalFunc_getTimestamp(timeObj) {
 	return Date.parse(timeObj)/1000;
 }
 
 // Substract timezone offset from client to a timestamp to get UTC-timestamp to be send to server
-function evalFunc_convertClientTimestampToUTC(timestamp, timeonly)	{
+function evalFunc_convertClientTimestampToUTC(timestamp, timeonly) {
 	var timeObj = new Date(timestamp*1000);
 	timeObj.setTime((timestamp - timeObj.getTimezoneOffset()*60)*1000);
-	if (timeonly)	{
+	if (timeonly) {
 			// only seconds since midnight
 		return this.getTime(timeObj);
 	} else	{
