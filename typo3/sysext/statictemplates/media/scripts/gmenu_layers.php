@@ -93,7 +93,7 @@ class tslib_gmenu_layers extends tslib_gmenu {
 	 *
 	 * @return	void
 	 */
-	function extProc_init()	{
+	function extProc_init() {
 		$this->WMid = trim($this->mconf['layer_menu_id'])?trim($this->mconf['layer_menu_id']).'x':substr(md5(microtime()),0,6);	// NO '_' (underscore) in the ID!!! NN4 breaks!
 
 		$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid'][]=$this->WMid;
@@ -239,7 +239,7 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 	 *
 	 * @return	mixed		Returns the value of a call to the parent function, parent::extProc_finish();
 	 */
-	function extProc_finish ()	{
+	function extProc_finish () {
 		$dirL = $this->mconf['directionLeft'] ? '-GL_getObj(id).width' : '';
 		$dirU = $this->mconf['directionUp'] ? '-GL_getObj(id).height' : '';
 

@@ -60,7 +60,7 @@ class SC_browser {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 
 			// Setting GPvars:
 		$mode =t3lib_div::_GP('mode');
@@ -114,7 +114,7 @@ class SC_browser {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 }

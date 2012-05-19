@@ -94,7 +94,7 @@ class tx_rtehtmlarea_typo3color extends tx_rtehtmlarea_api {
 		}
 			// Setting the list of colors if specified in the RTE config
 		if ($this->thisConfig['colors']) {
-			$HTMLAreaColors = t3lib_div::trimExplode(',' , $this->htmlAreaRTE->cleanList($this->thisConfig['colors']));
+			$HTMLAreaColors = t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($this->thisConfig['colors']));
 			$HTMLAreaJSColors = array();
 			foreach ($HTMLAreaColors as $colorName) {
 				if ($HTMLAreaColorname[$colorName]) {

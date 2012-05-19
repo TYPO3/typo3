@@ -47,7 +47,7 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 	 *
 	 * @return	array		Menu array
 	 */
-	function modMenu()	{
+	function modMenu() {
 		global $LANG;
 
 		$modMenuAdd = array(
@@ -80,7 +80,7 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 	 *
 	 * @return	string		HTML output
 	 */
-	function main()	{
+	function main() {
 		global $LANG;
 
 		$menu = t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[tsconf_parts]',$this->pObj->MOD_SETTINGS['tsconf_parts'],$this->pObj->MOD_MENU['tsconf_parts']);

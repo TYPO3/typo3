@@ -104,7 +104,7 @@ class tx_impexp_clickmenu {
 	 *
 	 * @return	array		Local lang array
 	 */
-	function includeLL()	{
+	function includeLL() {
 		global $LANG;
 
 		return $LANG->includeLLFile('EXT:impexp/app/locallang.php',FALSE);

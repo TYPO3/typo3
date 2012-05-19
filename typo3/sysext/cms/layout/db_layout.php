@@ -200,7 +200,7 @@ class SC_db_layout {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 
 			// Setting module configuration / page select clause
 		$this->MCONF = $GLOBALS['MCONF'];
@@ -253,7 +253,7 @@ class SC_db_layout {
 	 *
 	 * @return	void
 	 */
-	function menuConfig()	{
+	function menuConfig() {
 			// MENU-ITEMS:
 		$this->MOD_MENU = array(
 			'tt_content_showHidden' => '',
@@ -342,7 +342,7 @@ class SC_db_layout {
 	 *
 	 * @return	void
 	 */
-	function clearCache()	{
+	function clearCache() {
 		if ($this->clear_cache)	{
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values=0;
@@ -357,7 +357,7 @@ class SC_db_layout {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 		// Access check...
 		// The page will show only if there is a valid page and if this page may be viewed by the user
 		$access = is_array($this->pageinfo) ? 1 : 0;
@@ -622,7 +622,7 @@ class SC_db_layout {
 	 *
 	 * @return	void
 	 */
-	function renderQuickEdit()	{
+	function renderQuickEdit() {
 			// Alternative template
 		$this->doc->setModuleTemplate('templates/db_layout_quickedit.html');
 
@@ -1138,7 +1138,7 @@ class SC_db_layout {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -1275,7 +1275,7 @@ class SC_db_layout {
 	 *
 	 * @return	void
 	 */
-	function getNumberOfHiddenElements()	{
+	function getNumberOfHiddenElements() {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 			'uid',
 			'tt_content',

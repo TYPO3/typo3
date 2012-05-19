@@ -60,7 +60,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @return	void
 	 */
-	function modMenu()	{
+	function modMenu() {
 		global $LANG;
 
 		return array (
@@ -84,7 +84,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @return	string		HTML output
 	 */
-	function main()	{
+	function main() {
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		global $LANG,$TYPO3_CONF_VARS;
 
@@ -195,7 +195,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @return	string		HTML output
 	 */
-	function drawTableOfIndexedPages()	{
+	function drawTableOfIndexedPages() {
 		global $BACK_PATH;
 
 			// Drawing tree:
@@ -482,7 +482,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @return	string		HTML string (table row)
 	 */
-	function printPhashRowHeader()	{
+	function printPhashRowHeader() {
 		$lines = array();
 
 		switch($this->pObj->MOD_SETTINGS['type'])	{
@@ -537,7 +537,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @return	integer		Number of columns in list:
 	 */
-	function returnNumberOfColumns()	{
+	function returnNumberOfColumns() {
 		switch($this->pObj->MOD_SETTINGS['type'])	{
 			case 1:
 				return 18;
@@ -1000,7 +1000,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @return	string		Link back to list
 	 */
-	function linkList()	{
+	function linkList() {
 		return '<br /><a href="index.php?id=' . $this->pObj->id . '">Back to list.</a><br />';
 	}
 

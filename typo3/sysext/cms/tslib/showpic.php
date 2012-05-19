@@ -70,7 +70,7 @@ class SC_tslib_showpic {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 			// Loading internal vars with the GET/POST parameters from outside:
 		$this->file = t3lib_div::_GP('file');
 		$parametersArray = t3lib_div::_GP('parameters');
@@ -124,7 +124,7 @@ class SC_tslib_showpic {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 
 			// Creating stdGraphic object, initialize it and make image:
 		$img = t3lib_div::makeInstance('t3lib_stdGraphic');
@@ -177,7 +177,7 @@ class SC_tslib_showpic {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 }

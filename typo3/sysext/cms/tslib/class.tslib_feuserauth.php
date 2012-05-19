@@ -225,7 +225,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 *
 	 * @return	integer		Returns the number of usergroups for the frontend users (if the internal user record exists and the usergroup field contains a value)
 	 */
-	function fetchGroupData()	{
+	function fetchGroupData() {
 		$this->TSdataArray = array();
 		$this->userTS = array();
 		$this->userTSUpdated = 0;
@@ -321,7 +321,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 *
 	 * @return	array		TSconfig array for the fe_user
 	 */
-	function getUserTSconf()	{
+	function getUserTSconf() {
 		if (!$this->userTSUpdated) {
 				// Parsing the user TS (or getting from cache)
 			$this->TSdataArray = t3lib_TSparser::checkIncludeLines_array($this->TSdataArray);
@@ -366,7 +366,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * @access private
 	 * @see storeSessionData()
 	 */
-	function fetchSessionData()	{
+	function fetchSessionData() {
 			// Gets SesData if any AND if not already selected by session fixation check in ->isExistingSessionRecord()
 		if ($this->id && !count($this->sesData)) {
 			$statement = $GLOBALS['TYPO3_DB']->prepare_SELECTquery(
@@ -392,7 +392,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * @return	void
 	 * @see fetchSessionData(), getKey(), setKey()
 	 */
-	function storeSessionData()	{
+	function storeSessionData() {
 			// Saves UC and SesData if changed.
 		if ($this->userData_change)	{
 			$this->writeUC('');

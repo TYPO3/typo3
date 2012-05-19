@@ -79,7 +79,7 @@ class SC_file_rename {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 			// Initialize GPvars:
 		$this->target = t3lib_div::_GP('target');
 		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
@@ -129,7 +129,7 @@ class SC_file_rename {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 		//TODO: change locallang*.php to locallang*.xml
 
 			// Make page header:
@@ -190,7 +190,7 @@ class SC_file_rename {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 }

@@ -144,7 +144,7 @@ class SC_file_list {
 	 *
 	 * @return	void
 	 */
-	function menuConfig()	{
+	function menuConfig() {
 			// MENU-ITEMS:
 			// If array, then it's a selector box menu
 			// If empty string it's just a variable, that'll be saved.
@@ -166,7 +166,7 @@ class SC_file_list {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 			// Initialize the template object
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
@@ -442,7 +442,7 @@ class SC_file_list {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 

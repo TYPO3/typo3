@@ -50,7 +50,7 @@ class tx_impexp_modfunc1 extends mod_user_task {
 	 * @param	object		Parent object
 	 * @return	string		HTML for the task center overview listing.
 	 */
-	function overview_main()	{
+	function overview_main() {
 		global $LANG;
 			// Create preset links:
 		$presets = $this->getPresets();
@@ -170,7 +170,7 @@ class tx_impexp_modfunc1 extends mod_user_task {
 	 *
 	 * @return	array		Array of preset records
 	 */
-	function getPresets()	{
+	function getPresets() {
 		$presets = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'*',
 				'tx_impexp_presets',
@@ -187,7 +187,7 @@ class tx_impexp_modfunc1 extends mod_user_task {
 	 *
 	 * @return	string		Absolute path to first "_temp_" folder of the current user, otherwise blank.
 	 */
-	function userTempFolder()	{
+	function userTempFolder() {
 		global $FILEMOUNTS;
 
 		foreach($FILEMOUNTS as $filePathInfo)	{

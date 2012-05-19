@@ -43,7 +43,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 	 *
 	 * @return	array
 	 */
-	function modMenu()	{
+	function modMenu() {
 		global $LANG;
 
 		$menuArray = array (
@@ -73,7 +73,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 	 *
 	 * @return	string		Output HTML for the module.
 	 */
-	function main()	{
+	function main() {
 		global $BACK_PATH,$LANG,$SOBE;
 
 		$theOutput = $this->pObj->doc->header($GLOBALS['LANG']->getLL('lang_title'));
@@ -298,7 +298,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 	 *
 	 * @return	array		System language records in an array.
 	 */
-	function getSystemLanguages()	{
+	function getSystemLanguages() {
 		if (!$GLOBALS['BE_USER']->user['admin'] &&
 			strlen($GLOBALS['BE_USER']->groupData['allowed_languages'])) {
 

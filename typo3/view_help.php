@@ -109,7 +109,7 @@ class SC_view_help {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 
 			// Setting GPvars:
 		$this->tfID = t3lib_div::_GP('tfID');
@@ -165,7 +165,7 @@ class SC_view_help {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 
 			// Start HTML output accumulation:
 		$GLOBALS['TBE_TEMPLATE']->divClass = 'typo3-view-help';
@@ -202,7 +202,7 @@ class SC_view_help {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -225,7 +225,7 @@ class SC_view_help {
 	 *
 	 * @return	string		HTML content
 	 */
-	function render_TOC()	{
+	function render_TOC() {
 			// Initialize:
 		$CSHkeys = array_flip(array_keys($GLOBALS['TCA_DESCR']));
 		$TCAkeys = array_keys($GLOBALS['TCA']);
@@ -727,7 +727,7 @@ class SC_view_help {
 	 *
 	 * @return	void
 	 */
-	function createGlossaryIndex()	{
+	function createGlossaryIndex() {
 			// Create hash string and try to retrieve glossary array:
 		$hash = md5('typo3/view_help.php:glossary');
 		list($this->glossaryWords,$this->substWords) = unserialize(t3lib_BEfunc::getHash($hash));

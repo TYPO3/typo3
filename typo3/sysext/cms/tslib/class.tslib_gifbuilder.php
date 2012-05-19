@@ -331,7 +331,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @return	string		The filename for the created GIF/PNG file. The filename will be prefixed "GB_"
 	 * @see make(), fileName()
 	 */
-	function gifBuild()	{
+	function gifBuild() {
 		if ($this->setup)	{
 			$gifFileName = $this->fileName('GB/');	// Relative to PATH_site
 			if (!file_exists($gifFileName))	{		// File exists
@@ -358,7 +358,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @access private
 	 * @see gifBuild()
 	 */
-	function make()	{
+	function make() {
 			// Get trivial data
 		$XY = $this->XY;
 
@@ -602,7 +602,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			if ($this->nativeCharset) {
 				$conf['text'] = $this->csConvObj->substr($this->nativeCharset, $conf['text'], 0, $tlen);
 			} else {
-				$conf['text'] = substr($conf['text'], 0 , $tlen);
+				$conf['text'] = substr($conf['text'], 0, $tlen);
 			}
 		}
 		if ((string)$conf['text']!='')	{

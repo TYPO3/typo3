@@ -73,7 +73,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 		global $LANG,$BACK_PATH;
 
 		// Access check...
@@ -156,7 +156,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -165,7 +165,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	protected function getButtons()	{
+	protected function getButtons() {
 		global $BACK_PATH;
 
 		$buttons = array(

@@ -109,7 +109,7 @@ class SC_wizard_tsconfig {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 			// Check if the tsconfig_help extension is loaded - which is mandatory for this wizard to work.
 		t3lib_extMgm::isLoaded('tsconfig_help',1);
 
@@ -258,7 +258,7 @@ class SC_wizard_tsconfig {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 			// Adding module content:
 		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('tsprop'),$this->browseTSprop($this->mode,$this->show),0,1);
 
@@ -281,7 +281,7 @@ class SC_wizard_tsconfig {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
@@ -379,7 +379,7 @@ class SC_wizard_tsconfig {
 	 * @return	array		Object tree.
 	 * @access private
 	 */
-	function getObjTree()	{
+	function getObjTree() {
 		$objTree=array();
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,obj_string,title', 'static_tsconfig_help', '');

@@ -50,7 +50,7 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 	 *
 	 * @return	array
 	 */
-	function modMenu()	{
+	function modMenu() {
 		global $LANG;
 		return array (
 			'pages' => array (
@@ -78,7 +78,7 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 	 *
 	 * @return	string		Output HTML for the module.
 	 */
-	function main()	{
+	function main() {
 		global $BACK_PATH,$LANG,$SOBE;
 
 		$dblist = t3lib_div::makeInstance('tx_cms_layout');

@@ -256,7 +256,7 @@ class tx_em_Connection_ExtDirectServer {
 			}
 			return $update ? $update : $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:ext_details_dbUpToDate');
 		} else {
-			return sprintf($GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_extNotInstalled') ,htmlspecialchars($extKey));
+			return sprintf($GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_extNotInstalled'), htmlspecialchars($extKey));
 		}
 	}
 

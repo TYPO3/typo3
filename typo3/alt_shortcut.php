@@ -104,7 +104,7 @@ class SC_alt_shortcut {
 	 *
 	 * @return	void
 	 */
-	function preinit()	{
+	function preinit() {
 			// Setting GPvars:
 		$this->isAjaxCall             = (boolean) t3lib_div::_GP('ajax');
 		$this->modName                = t3lib_div::_GP('modName');
@@ -130,7 +130,7 @@ class SC_alt_shortcut {
 	 *
 	 * @return	void
 	 */
-	function preprocess()	{
+	function preprocess() {
 		$description = '';	// Default description
 		$url = urldecode($this->URL);
 		$queryParts = parse_url($url);
@@ -213,7 +213,7 @@ class SC_alt_shortcut {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->form='<form action="alt_shortcut.php" name="shForm" method="post">';
@@ -254,7 +254,7 @@ class SC_alt_shortcut {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 
 			// By default, 5 groups are set
 		$this->groupLabels=array(
@@ -446,7 +446,7 @@ class SC_alt_shortcut {
 	 *
 	 * @return	void
 	 */
-	function editLoadedFunc()	{
+	function editLoadedFunc() {
 		$this->editLoaded=0;
 		if (is_array($this->editSC_rec) && ($this->editSC_rec['sc_group']>=0 || $GLOBALS['BE_USER']->isAdmin()))	{	// sc_group numbers below 0 requires admin to edit those. sc_group numbers above zero must always be owned by the user himself.
 			$this->editLoaded=1;
@@ -527,7 +527,7 @@ class SC_alt_shortcut {
 	 *
 	 * @return	void
 	 */
-	function editPageIdFunc()	{
+	function editPageIdFunc() {
 		if (!t3lib_extMgm::isLoaded('cms'))	return;
 
 			// EDIT page:
@@ -579,7 +579,7 @@ class SC_alt_shortcut {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		$content = '';
 
 		$this->content.= $this->doc->endPage();
@@ -640,7 +640,7 @@ class SC_alt_shortcut {
 	 *
 	 * @return	string		HTML
 	 */
-	function workspaceSelector()	{
+	function workspaceSelector() {
 
 			// Changing workspace and if so, reloading entire backend:
 		if (strlen($this->changeWorkspace))	{

@@ -92,7 +92,7 @@ class tslib_tmenu_layers extends tslib_tmenu {
 	 *
 	 * @return	void
 	 */
-	function extProc_init()	{
+	function extProc_init() {
 		$this->WMid = trim($this->mconf['layer_menu_id']) ? trim($this->mconf['layer_menu_id']) . 'x' : substr(md5('gl' . serialize($this->mconf)), 0, 6);
 
 		$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid'][]=$this->WMid;
@@ -238,7 +238,7 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 	 *
 	 * @return	mixed		Returns the value of a call to the parent function, parent::extProc_finish();
 	 */
-	function extProc_finish ()	{
+	function extProc_finish () {
 		$dirL = $this->mconf['directionLeft'] ? '-GL_getObj(id).width' : '';
 		$dirU = $this->mconf['directionUp'] ? '-GL_getObj(id).height' : '';
 

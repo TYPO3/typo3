@@ -76,7 +76,7 @@ class SC_mod_tools_config_index {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 		global $BACK_PATH;
 
 		$this->MCONF = $GLOBALS['MCONF'];
@@ -105,7 +105,7 @@ class SC_mod_tools_config_index {
 	 *
 	 * @return	void
 	 */
-	function menuConfig()	{
+	function menuConfig() {
 		global $TYPO3_CONF_VARS;
 
 			// MENU-ITEMS:
@@ -138,7 +138,7 @@ class SC_mod_tools_config_index {
 	 *
 	 * @return	[type]		...
 	 */
-	function main()	{
+	function main() {
 
 		$arrayBrowser = t3lib_div::makeInstance('t3lib_arrayBrowser');
 
@@ -337,7 +337,7 @@ class SC_mod_tools_config_index {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -346,7 +346,7 @@ class SC_mod_tools_config_index {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	protected function getButtons()	{
+	protected function getButtons() {
 
 		$buttons = array(
 			'csh' => '',

@@ -96,7 +96,7 @@ class SC_browse_links {
 	 *
 	 * @return	void
 	 */
-	function init ()	{
+	function init() {
 
 			// Find "mode"
 		$this->mode = t3lib_div::_GP('mode');
@@ -116,7 +116,7 @@ class SC_browse_links {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 
 		// Clear temporary DB mounts
 		$tmpMount = t3lib_div::_GET('setTempDBmount');
@@ -215,7 +215,7 @@ class SC_browse_links {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 }

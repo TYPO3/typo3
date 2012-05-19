@@ -250,7 +250,7 @@ class tx_recycler_model_deletedRecords {
 					$table,
 					$deletedField,
 					'1',
-					' AND pid = ' . $id . $filterWhere ,
+					' AND pid = ' . $id . $filterWhere,
 					'',
 					'',
 					$limit,

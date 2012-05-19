@@ -60,7 +60,7 @@ class t3lib_ajax {
 	function getJScode($handlerFunction, $fallback = '', $debug = 0) {
 			// Init the XMLHTTP request object
 		$code = '
-		function ajax_initObject()	{
+		function ajax_initObject() {
 			var A;
 			try	{
 				A=new ActiveXObject("Msxml2.XMLHTTP");

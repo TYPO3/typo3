@@ -102,7 +102,7 @@ class tx_sv_loginformhook {
 	 *
 	 * @return	string		Challenge value
 	 */
-	protected function getChallenge()	{
+	protected function getChallenge() {
 		$challenge = md5(uniqid('') . getmypid());
 		return $challenge;
 	}

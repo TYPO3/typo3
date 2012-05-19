@@ -74,7 +74,7 @@ class SC_file_edit {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 			// Setting target, which must be a file reference to a file within the mounts.
 		$this->target = $this->origTarget = $fileIdentifier = t3lib_div::_GP('target');
 		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
@@ -114,7 +114,7 @@ class SC_file_edit {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 		//TODO: change locallang*.php to locallang*.xml
 		$docHeaderButtons = $this->getButtons();
 
@@ -208,7 +208,7 @@ class SC_file_edit {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 

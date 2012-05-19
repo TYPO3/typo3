@@ -103,7 +103,7 @@ class SC_db_list {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 
 			// Setting module configuration / page select clause
 		$this->MCONF = $GLOBALS['MCONF'];
@@ -137,7 +137,7 @@ class SC_db_list {
 	 *
 	 * @return	void
 	 */
-	function menuConfig()	{
+	function menuConfig() {
 
 			// MENU-ITEMS:
 		$this->MOD_MENU = array(
@@ -158,7 +158,7 @@ class SC_db_list {
 	 *
 	 * @return	void
 	 */
-	function clearCache()	{
+	function clearCache() {
 		if ($this->clear_cache)	{
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values=0;
@@ -172,7 +172,7 @@ class SC_db_list {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 			// Start document template object:
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
@@ -476,7 +476,7 @@ class SC_db_list {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 }

@@ -294,7 +294,7 @@ class tslib_menu {
 	 *
 	 * @return	void
 	 */
-	function makeMenu()	{
+	function makeMenu() {
 		if ($this->id)	{
 
 				// Initializing showAccessRestrictedPages
@@ -1528,7 +1528,7 @@ class tslib_menu {
 	 * @return	void
 	 * @access private
 	 */
-	function setATagParts()	{
+	function setATagParts() {
 		$this->I['A1'] = '<a '.t3lib_div::implodeAttributes($this->I['linkHREF'],1).' '.$this->I['val']['ATagParams'].$this->I['accessKey']['code'].'>';
 		$this->I['A2'] = '</a>';
 	}
@@ -1733,7 +1733,7 @@ class tslib_tmenu extends tslib_menu {
 	 * @return	void
 	 * @see tslib_menu::procesItemStates()
 	 */
-	function generate()	{
+	function generate() {
 		$splitCount = count($this->menuArr);
 		if ($splitCount)	{
 			list($NOconf) = $this->procesItemStates($splitCount);
@@ -1752,7 +1752,7 @@ class tslib_tmenu extends tslib_menu {
 	 *
 	 * @return	string		The HTML for the menu (returns result through $this->extProc_finish(); )
 	 */
-	function writeMenu()	{
+	function writeMenu() {
 		if (is_array($this->result) && count($this->result))	{
 			$this->WMcObj = t3lib_div::makeInstance('tslib_cObj');	// Create new tslib_cObj for our use
 			$this->WMresult = '';
@@ -1967,7 +1967,7 @@ class tslib_tmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu()
 	 */
-	function addJScolorShiftFunction()	{
+	function addJScolorShiftFunction() {
 		$GLOBALS['TSFE']->additionalJavaScript['TMENU:changeBGcolor()']='
 			function changeBGcolor(id,color) {	//
 				if (document.getElementById && document.getElementById(id))	{
@@ -1989,7 +1989,7 @@ class tslib_tmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_tmenu_layers::extProc_init()
 	 */
-	function extProc_init()	{
+	function extProc_init() {
 	}
 
 	/**
@@ -2054,7 +2054,7 @@ class tslib_tmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_tmenu_layers::extProc_finish()
 	 */
-	function extProc_finish()	{
+	function extProc_finish() {
 			// stdWrap:
 		if (is_array($this->mconf['stdWrap.'])) {
 			$this->WMresult = $this->WMcObj->stdWrap($this->WMresult, $this->mconf['stdWrap.']);
@@ -2102,7 +2102,7 @@ class tslib_gmenu extends tslib_menu {
 	 * @return	void
 	 * @see tslib_menu::procesItemStates(), makeGifs()
 	 */
-	function generate()	{
+	function generate() {
 		$splitCount = count($this->menuArr);
 		if ($splitCount)	{
 			list($NOconf,$ROconf) = $this->procesItemStates($splitCount);
@@ -2434,7 +2434,7 @@ class tslib_gmenu extends tslib_menu {
 	 *
 	 * @return	string		The HTML for the menu (returns result through $this->extProc_finish(); )
 	 */
-	function writeMenu()	{
+	function writeMenu() {
 		if (is_array($this->menuArr) && is_array($this->result) && count($this->result) && is_array($this->result['NO']))	{
 			$this->WMcObj = t3lib_div::makeInstance('tslib_cObj');	// Create new tslib_cObj for our use
 			$this->WMresult = '';
@@ -2560,7 +2560,7 @@ class tslib_gmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_gmenu_layers::extProc_init()
 	 */
-	function extProc_init()	{
+	function extProc_init() {
 	}
 
 	/**
@@ -2627,7 +2627,7 @@ class tslib_gmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_gmenu_layers::extProc_finish()
 	 */
-	function extProc_finish()	{
+	function extProc_finish() {
 			// stdWrap:
 		if (is_array($this->mconf['stdWrap.'])) {
 			$this->WMresult = $this->WMcObj->stdWrap($this->WMresult, $this->mconf['stdWrap.']);
@@ -2673,7 +2673,7 @@ class tslib_imgmenu extends tslib_menu {
 	 * @return	void
 	 * @see tslib_menu::procesItemStates(), makeImageMap()
 	 */
-	function generate()	{
+	function generate() {
 		$splitCount = count($this->menuArr);
 		if ($splitCount)	{
 			list($NOconf) = $this->procesItemStates($splitCount);
@@ -2879,7 +2879,7 @@ class tslib_imgmenu extends tslib_menu {
 	 *
 	 * @return	string		The HTML for the menu
 	 */
-	function writeMenu()	{
+	function writeMenu() {
 		if ($this->result)	{
 			$res = &$this->result;
 			$menuName = 'menu_'.t3lib_div::shortMD5($res['imgMap']);	// shortMD5 260900
@@ -2928,7 +2928,7 @@ class tslib_jsmenu extends tslib_menu {
 	 *
 	 * @return	void
 	 */
-	function generate()	{
+	function generate() {
 	}
 
 	/**
@@ -2936,7 +2936,7 @@ class tslib_jsmenu extends tslib_menu {
 	 *
 	 * @return	string		The HTML code for the menu
 	 */
-	function writeMenu()	{
+	function writeMenu() {
 		if ($this->id)	{
 				// Making levels:
 			$levels = t3lib_utility_Math::forceIntegerInRange($this->mconf['levels'],1,5);

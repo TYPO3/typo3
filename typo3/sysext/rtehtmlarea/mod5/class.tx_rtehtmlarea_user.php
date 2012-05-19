@@ -48,7 +48,7 @@ class tx_rtehtmlarea_user {
 	/**
 	 * @return	[type]		...
 	 */
-	function init()	{
+	function init() {
 		$this->editorNo = t3lib_div::_GP('editorNo');
 
 		$this->siteUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
@@ -112,7 +112,7 @@ class tx_rtehtmlarea_user {
 	 *
 	 * @return	[type]		...
 	 */
-	function main()	{
+	function main() {
 
 		$this->content='';
 		$this->content.=$this->main_user($this->modData['openKeys']);
@@ -123,7 +123,7 @@ class tx_rtehtmlarea_user {
 	 *
 	 * @return	[type]		...
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 

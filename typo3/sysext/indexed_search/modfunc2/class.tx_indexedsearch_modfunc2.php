@@ -42,7 +42,7 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 *
 	 * @return	string		html table with results from showStats()
 	 */
-	function main()	{
+	function main() {
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		$theOutput = $this->pObj->doc->header($GLOBALS['LANG']->getLL('title'));
 		$theOutput .= $this->pObj->doc->section('', $this->showStats(), 0, 1);

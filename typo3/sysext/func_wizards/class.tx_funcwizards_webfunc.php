@@ -67,7 +67,7 @@ class tx_funcwizards_webfunc extends t3lib_extobjbase {
 	 * @return	array		Items merged with the parent objects.
 	 * @see t3lib_extobjbase::init()
 	 */
-	function modMenu()	{
+	function modMenu() {
 		global $LANG;
 
 		$modMenuAdd = array(
@@ -86,7 +86,7 @@ class tx_funcwizards_webfunc extends t3lib_extobjbase {
 	 * @return	string		The content
 	 * @see t3lib_extobjbase::extObjContent()
 	 */
-	function main()	{
+	function main() {
 		global $SOBE,$LANG;
 
 		$menu= $LANG->getLL('wiz_lWizards',1).': '.t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[wiz]',$this->pObj->MOD_SETTINGS['wiz'],$this->pObj->MOD_MENU['wiz']);

@@ -86,7 +86,7 @@ class SC_wizard_add {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 
 			// Init GPvars:
 		$this->P = t3lib_div::_GP('P');
@@ -142,7 +142,7 @@ class SC_wizard_add {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 
 		if ($this->returnEditConf)	{
 			if ($this->processDataFlag)	{

@@ -92,7 +92,7 @@ class SC_tce_db {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 
 			// GPvars:
 		$this->flags = t3lib_div::_GP('flags');
@@ -148,7 +148,7 @@ class SC_tce_db {
 	 *
 	 * @return	void
 	 */
-	function initClipboard()	{
+	function initClipboard() {
 		if (is_array($this->CB))	{
 			$clipObj = t3lib_div::makeInstance('t3lib_clipboard');
 			$clipObj->initializeClipboard();
@@ -168,7 +168,7 @@ class SC_tce_db {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 
 			// LOAD TCEmain with data and cmd arrays:
 		$this->tce->start($this->data,$this->cmd);
@@ -203,9 +203,9 @@ class SC_tce_db {
 	 *
 	 * @return	void
 	 */
-	function finish()	{
+	function finish() {
 			// Prints errors, if...
-		if ($this->prErr)	{
+		if ($this->prErr) {
 			$this->tce->printLogErrorMessages($this->redirect);
 		}
 

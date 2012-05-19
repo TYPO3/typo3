@@ -70,7 +70,7 @@ class SC_mod_tools_isearch_index {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 		$this->MCONF = $GLOBALS['MCONF'];
 
 		$this->menuConfig();
@@ -105,7 +105,7 @@ class SC_mod_tools_isearch_index {
 	 *
 	 * @return	void
 	 */
-	function menuConfig()	{
+	function menuConfig() {
 		$this->MOD_MENU = array(
 			'function' => array(
 				'stat'         => 'General statistics',
@@ -123,7 +123,7 @@ class SC_mod_tools_isearch_index {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 		$this->content  = $this->doc->header('Indexing Engine Statistics');
 		$this->content .= $this->doc->spacer(5);
 
@@ -162,7 +162,7 @@ class SC_mod_tools_isearch_index {
 	 *
 	 * @return void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -200,7 +200,7 @@ class SC_mod_tools_isearch_index {
 	/**
 	 * @return	[type]		...
 	 */
-	function getRecordsNumbers()	{
+	function getRecordsNumbers() {
 		$tables=explode(",","index_phash,index_words,index_rel,index_grlist,index_section,index_fulltext");
 		$recList=array();
 		foreach ($tables as $t) {
@@ -227,7 +227,7 @@ class SC_mod_tools_isearch_index {
 	 *
 	 * @return	[type]		...
 	 */
-	function getPhashStat()	{
+	function getPhashStat() {
 		$recList = array();
 
 			// TYPO3 pages, unique
@@ -264,7 +264,7 @@ class SC_mod_tools_isearch_index {
 	 *
 	 * @return	[type]		...
 	 */
-	function getPhashT3pages()	{
+	function getPhashT3pages() {
 		$recList[]=array(
 			$this->tableHead("id/type"),
 			$this->tableHead("Title"),
@@ -333,7 +333,7 @@ class SC_mod_tools_isearch_index {
 	 *
 	 * @return	[type]		...
 	 */
-	function getPhashExternalDocs()	{
+	function getPhashExternalDocs() {
 		$recList[]=array(
 			$this->tableHead("Filename"),
 			$this->tableHead("Size"),
@@ -478,7 +478,7 @@ class SC_mod_tools_isearch_index {
 	 *
 	 * @return	[type]		...
 	 */
-	function getPhashTypes()	{
+	function getPhashTypes() {
 		$recList=array();
 
 		// Types:

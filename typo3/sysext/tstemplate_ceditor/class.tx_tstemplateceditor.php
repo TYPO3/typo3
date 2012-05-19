@@ -75,7 +75,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 		return $theOutput;
 	}
 
-	function main()	{
+	function main() {
 		global $TYPO3_CONF_VARS;
 		global $tmpl, $tplRow, $theConstants;
 

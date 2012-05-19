@@ -53,7 +53,7 @@ class tx_install_ajax {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 		$this->cmd = t3lib_div::_GP('cmd');
 	}
 
@@ -63,7 +63,7 @@ class tx_install_ajax {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 			// Create output:
 		switch ($this->cmd) {
 			case 'encryptionKey':
@@ -79,7 +79,7 @@ class tx_install_ajax {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		if (!headers_sent()) {
 			header('Content-Length: ' . strlen($this->content));
 		}

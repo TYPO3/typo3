@@ -59,7 +59,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 *
 	 * @return	void
 	 */
-	function __construct()	{
+	function __construct() {
 
 			// Running parent class constructor
 		parent::__construct();
@@ -162,7 +162,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 *
 	 * @return	boolean		TRUE if reference index was OK (either OK, updated or ignored)
 	 */
-	function cli_referenceIndexCheck()	{
+	function cli_referenceIndexCheck() {
 
 			// Reference index option:
 		$refIndexMode = isset($this->cli_args['--refindex']) ? $this->cli_args['--refindex'][0] : 'check';

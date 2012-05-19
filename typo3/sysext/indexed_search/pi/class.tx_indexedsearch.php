@@ -133,7 +133,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 *
 	 * @return	void
 	 */
-	function initialize()	{
+	function initialize() {
 		global $TYPO3_CONF_VARS;
 
 			// Indexer configuration from Extension Manager interface:
@@ -958,7 +958,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 *
 	 * @return	string		AND clause for selection of section in database.
 	 */
-	function sectionTableWhere()	{
+	function sectionTableWhere() {
 		$out = ($this->wholeSiteIdList < 0) ? '' : ' AND ISEC.rl0 IN (' . $this->wholeSiteIdList . ')';
 
 		$match = '';
@@ -1005,7 +1005,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 *
 	 * @return	string		AND statement for selection of media type
 	 */
-	function mediaTypeWhere()	{
+	function mediaTypeWhere() {
 
 		switch((string)$this->piVars['media'])	{
 			case '0':		// '0' => 'Kun TYPO3 sider',
@@ -1029,7 +1029,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 *
 	 * @return	string		AND statement for selection of langauge
 	 */
-	function languageWhere()	{
+	function languageWhere() {
 		if ($this->piVars['lang']>=0)	{	// -1 is the same as ALL language.
 			return 'AND IP.sys_language_uid='.intval($this->piVars['lang']);
 		}
@@ -1495,7 +1495,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 *
 	 * @return	string		Rules for the search
 	 */
-	function printRules()	{
+	function printRules() {
 		if ($this->conf['show.']['rules'])	{
 
 			$html = $this->cObj->getSubpart($this->templateCode, '###RULES###');
@@ -1514,7 +1514,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 *
 	 * @return	string
 	 */
-	function printResultSectionLinks()	{
+	function printResultSectionLinks() {
 		if (count($this->resultSections))	{
 			$lines = array();
 

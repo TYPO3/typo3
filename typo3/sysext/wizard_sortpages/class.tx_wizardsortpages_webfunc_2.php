@@ -47,7 +47,7 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 	 * @return	array
 	 * @ignore
 	 */
-	function modMenu()	{
+	function modMenu() {
 		global $LANG;
 
 		$modMenuAdd = array(
@@ -60,7 +60,7 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 	 *
 	 * @return	string		HTML content for the module, actually a "section" made through the parent object in $this->pObj
 	 */
-	function main()	{
+	function main() {
 		global $SOBE,$LANG;
 
 		$out = $this->pObj->doc->header($LANG->getLL('wiz_sort'));

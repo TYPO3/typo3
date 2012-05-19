@@ -54,7 +54,7 @@ class tx_indexedsearch_pihook {
 	 *
 	 * @return	void
 	 */
-	function initialize_postProc()	{
+	function initialize_postProc() {
 		$this->pObj->optValues['order'] = array_reverse($this->pObj->optValues['order']);
 	}
 

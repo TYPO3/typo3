@@ -77,7 +77,7 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 	 *
 	 * @return	void
 	 */
-	function extProc_init()	{
+	function extProc_init() {
 		$this->WMarrowNO='';
 		$this->WMarrowACT='';
 		$this->WMimagesFlag=0;
@@ -141,7 +141,7 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 	 *
 	 * @return	string		Empty string! (Since $GLOBALS['TSFE']->divSection is set with the <div>-sections used in the menu)
 	 */
-	function extProc_finish()	{
+	function extProc_finish() {
 		$bHeight = t3lib_utility_Math::forceIntegerInRange(($this->mconf['bottomHeight']?$this->mconf['bottomHeight']:100) ,0,3000);
 		$bottomContent = $this->mconf['bottomContent'] ? $GLOBALS['TSFE']->cObj->cObjGetSingle($this->mconf['bottomContent'],$this->mconf['bottomContent.'], '/GMENU_FOLDOUT/.bottomContent') : '';
 		$adjustTopHeights = intval($this->mconf['adjustItemsH']);

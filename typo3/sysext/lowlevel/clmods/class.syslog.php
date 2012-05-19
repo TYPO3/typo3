@@ -46,7 +46,7 @@ class tx_lowlevel_syslog extends tx_lowlevel_cleaner_core {
 	 *
 	 * @return	void
 	 */
-	function __construct()	{
+	function __construct() {
 		parent::__construct();
 
 		$this->cli_help['name'] = 'syslog -- Show entries from syslog';

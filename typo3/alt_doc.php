@@ -139,7 +139,7 @@ class SC_alt_doc {
 	 *
 	 * @return	void
 	 */
-	function preInit()	{
+	function preInit() {
 		if (t3lib_div::_GP('justLocalized'))	{
 			$this->localizationRedirect(t3lib_div::_GP('justLocalized'));
 		}
@@ -201,7 +201,7 @@ class SC_alt_doc {
 	 *
 	 * @return	boolean		TRUE, then save the document (data submitted)
 	 */
-	function doProcessData()	{
+	function doProcessData() {
 		$out = $this->doSave || isset($_POST['_savedok_x']) || isset($_POST['_saveandclosedok_x']) || isset($_POST['_savedokview_x']) || isset($_POST['_savedoknew_x']) || isset($_POST['_translation_savedok_x']) || isset($_POST['_translation_savedokclear_x']);
 		return $out;
 	}
@@ -212,7 +212,7 @@ class SC_alt_doc {
 	 *
 	 * @return	void
 	 */
-	function processData()	{
+	function processData() {
 			// GPvars specifically for processing:
 		$this->data = t3lib_div::_GP('data');
 		$this->cmd = t3lib_div::_GP('cmd');
@@ -368,7 +368,7 @@ class SC_alt_doc {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 
 			// Setting more GPvars:
 		$this->popViewId = t3lib_div::_GP('popViewId');
@@ -461,7 +461,7 @@ class SC_alt_doc {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 
 			// Begin edit:
 		if (is_array($this->editconf))	{
@@ -540,7 +540,7 @@ class SC_alt_doc {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -574,7 +574,7 @@ class SC_alt_doc {
 	 *
 	 * @return	string		HTML form elements wrapped in tables
 	 */
-	function makeEditForm()	{
+	function makeEditForm() {
 
 			// Initialize variables:
 		$this->elementsData=array();
@@ -771,7 +771,7 @@ class SC_alt_doc {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	protected function getButtons()	{
+	protected function getButtons() {
 		$buttons = array(
 			'save' => '',
 			'save_view' => '',
@@ -930,7 +930,7 @@ class SC_alt_doc {
 	 *
 	 * @return	string		HTML for function menus.
 	 */
-	function functionMenus()	{
+	function functionMenus() {
 		if ($GLOBALS['BE_USER']->getTSConfigVal('options.enableShowPalettes')) {
 			// Show palettes:
 			return '
@@ -957,7 +957,7 @@ class SC_alt_doc {
 	 *
 	 * @return	string
 	 */
-	function shortCutLink()	{
+	function shortCutLink() {
 		if ($this->returnUrl == 'close.html' || !$GLOBALS['BE_USER']->mayMakeShortcut()) {
 			return '';
 		}
@@ -970,7 +970,7 @@ class SC_alt_doc {
 	 *
 	 * @return	string
 	 */
-	function openInNewWindowLink()	{
+	function openInNewWindowLink() {
 		if ($this->returnUrl == 'close.html') {
 			return '';
 		}
@@ -986,7 +986,7 @@ class SC_alt_doc {
 	 *
 	 * @return	void
 	 */
-	function tceformMessages()	{
+	function tceformMessages() {
 		if (count($this->tceforms->commentMessages))	{
 			$tceformMessages = '
 				<!-- TCEFORM messages
@@ -1304,7 +1304,7 @@ class SC_alt_doc {
 	 *
 	 * @return	void
 	 */
-	function editRegularContentFromId()	{
+	function editRegularContentFromId() {
 		if (t3lib_extMgm::isLoaded('cms'))	{
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 						'uid',
@@ -1334,7 +1334,7 @@ class SC_alt_doc {
 	 * @return	void
 	 * @see makeDocSel()
 	 */
-	function compileStoreDat()	{
+	function compileStoreDat() {
 		$this->storeArray = t3lib_div::compileSelectedGetVarsFromArray('edit,defVals,overrideVals,columnsOnly,disHelp,noView,editRegularContentFromId',$this->R_URL_getvars);
 		$this->storeUrl = t3lib_div::implodeArrayForUrl('',$this->storeArray);
 		$this->storeUrlMd5 = md5($this->storeUrl);

@@ -149,7 +149,7 @@ class SC_db_new_content_el {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 			// Setting class files to include:
 		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'])) {
 			$this->include_once = array_merge($this->include_once, $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses']);
@@ -189,7 +189,7 @@ class SC_db_new_content_el {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 		if ($this->id && $this->access)	{
 
 				// Init position map object:
@@ -374,7 +374,7 @@ class SC_db_new_content_el {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -383,7 +383,7 @@ class SC_db_new_content_el {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	protected function getButtons()	{
+	protected function getButtons() {
 		$buttons = array(
 			'csh' => '',
 			'back' => ''
@@ -426,7 +426,7 @@ class SC_db_new_content_el {
 	 *
 	 * @return	array		Returns the content of wizardArray() function...
 	 */
-	function getWizardItems()	{
+	function getWizardItems() {
 		return $this->wizardArray();
 	}
 
@@ -436,7 +436,7 @@ class SC_db_new_content_el {
 	 *
 	 * @return	array
 	 */
-	function wizardArray()	{
+	function wizardArray() {
 
 		if (is_array($this->config)) {
 			$wizards = $this->config['wizardItems.'];

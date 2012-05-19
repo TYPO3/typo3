@@ -48,7 +48,7 @@ class SC_t3lib_thumbs {
 
 	var $outdir = 'typo3temp/';		// The output directory of temporary files in PATH_site
 	var $output = '';
-	var $sizeDefault='64x64';
+	var $sizeDefault = '64x64';
 
 	var $imageList;		// Coming from $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
 	/**
@@ -93,30 +93,30 @@ class SC_t3lib_thumbs {
 			$relativeFilePath = $filePathOrCombinedFileIdentifier; // We assume the FilePath to be a relative file path (as in backwards compatibility mode)
 
 				// The incoming relative path is relative to the typo3/ directory, but we need it relative to PATH_site. This is corrected here:
-			if (substr($relativeFilePath, 0, 3)=='../') {
-				$relativeFilePath = substr($relativeFilePath,3);
+			if (substr($relativeFilePath, 0, 3) == '../') {
+				$relativeFilePath = substr($relativeFilePath, 3);
 			} else {
-				$relativeFilePath = 'typo3/'.$relativeFilePath;
+				$relativeFilePath = 'typo3/' . $relativeFilePath;
 			}
 
 			$relativeFilePath = ltrim($relativeFilePath, '/');
 			$mTime = 0;
 
 				// Checking for backpath and double slashes + the thumbnail can be made from files which are in the PATH_site OR the lockRootPath only!
-			if (t3lib_div::isAllowedAbsPath(PATH_site.$relativeFilePath)) {
-				$mTime = filemtime(PATH_site.$relativeFilePath);
+			if (t3lib_div::isAllowedAbsPath(PATH_site . $relativeFilePath)) {
+				$mTime = filemtime(PATH_site . $relativeFilePath);
 			}
 
 			if(strstr($relativeFilePath, '../') !== FALSE) {
 				$this->errorGif('File path', 'must not contain', '"../"'); // Maybe this could be relaxed to not throw an error as long as the path is still within PATH_site
 			}
 
-			if ($relativeFilePath && file_exists(PATH_site.$relativeFilePath)) {
+			if ($relativeFilePath && file_exists(PATH_site . $relativeFilePath)) {
 					// Check file extension:
 				$reg = array();
 				if (preg_match('/(.*)\.([^\.]*$)/', $relativeFilePath, $reg)) {
-					$ext=strtolower($reg[2]);
-					$ext=($ext=='jpeg') ? 'jpg' : $ext;
+					$ext = strtolower($reg[2]);
+					$ext = ($ext=='jpeg') ? 'jpg' : $ext;
 					if (!t3lib_div::inList($this->imageList, $ext)) {
 						$this->errorGif('Not imagefile!', $ext, basename($relativeFilePath));
 					}
@@ -131,14 +131,14 @@ class SC_t3lib_thumbs {
 			$OK = FALSE;
 			if ($mTime) {
 					// Always use the absolute path for this check!
-				$check = basename($relativeFilePath).':'.$mTime.':'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+				$check = basename($relativeFilePath) . ':' . $mTime . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 				$md5_real = t3lib_div::shortMD5($check);
-				if (!strcmp($md5_real,$md5sum)) {
+				if (!strcmp($md5_real, $md5sum)) {
 					$OK = TRUE;
 				}
 			}
 
-			$combinedIdentifier = '0:'.$relativeFilePath;
+			$combinedIdentifier = '0:' . $relativeFilePath;
 		} else {
 			$combinedIdentifier = $filePathOrCombinedFileIdentifier;
 			$OK = FALSE;
@@ -262,7 +262,7 @@ class SC_t3lib_thumbs {
 	 * @param	string		Text line 3
 	 * @return	void
 	 */
-	function errorGif($l1,$l2,$l3) {
+	function errorGif($l1, $l2, $l3) {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
 			throw new RuntimeException(
 				'TYPO3 Fatal Error: No gdlib. ' . $l1 . ' ' . $l2 . ' ' . $l3,
@@ -283,8 +283,8 @@ class SC_t3lib_thumbs {
 		$black = imageColorAllocate($im, 0, 0, 0);
 
 			// Prints the text strings with the build-in font functions of GD
-		$x=0;
-		$font=0;
+		$x = 0;
+		$font = 0;
 		if ($l1) {
 			imagefilledrectangle($im, $x, 9, 56, 16, $white);
 			imageString($im, $font, $x, 9, $l1, $black);

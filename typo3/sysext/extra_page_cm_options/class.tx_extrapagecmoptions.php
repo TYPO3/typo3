@@ -138,7 +138,7 @@ class tx_extrapagecmoptions {
 	 *
 	 * @return	array		Local lang array.
 	 */
-	function includeLL()	{
+	function includeLL() {
 		$LOCAL_LANG = $GLOBALS['LANG']->includeLLFile('EXT:extra_page_cm_options/locallang.php',FALSE);
 		return $LOCAL_LANG;
 	}

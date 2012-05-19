@@ -134,7 +134,7 @@ class SC_db_new {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 
 			// page-selection permission clause (reading)
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
@@ -202,7 +202,7 @@ class SC_db_new {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 
 			// If there was a page - or if the user is admin (admins has access to the root) we proceed:
 		if ($this->pageinfo['uid'] || $GLOBALS['BE_USER']->isAdmin()) {
@@ -267,7 +267,7 @@ class SC_db_new {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	protected function getButtons()	{
+	protected function getButtons() {
 		$buttons = array(
 			'csh' => '',
 			'back' => '',
@@ -350,7 +350,7 @@ class SC_db_new {
 	 *
 	 * @return	void
 	 */
-	function regularNew()	{
+	function regularNew() {
 
 		$doNotShowFullDescr = FALSE;
 			// Initialize array for accumulating table rows:
@@ -646,7 +646,7 @@ class SC_db_new {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 

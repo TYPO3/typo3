@@ -59,7 +59,7 @@ class SC_listframe_loader {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 		$GLOBALS['TBE_TEMPLATE']->divClass='';
 		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage('List Frame Loader');
 		$this->content.=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags('

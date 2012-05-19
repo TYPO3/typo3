@@ -46,7 +46,7 @@ class tx_rtehtmlarea_parse_html {
 	/**
 	 * @return	[type]		...
 	 */
-	function init()	{
+	function init() {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->JScode='';
@@ -64,7 +64,7 @@ class tx_rtehtmlarea_parse_html {
 	 *
 	 * @return	[type]		...
 	 */
-	function main()	{
+	function main() {
 		$this->content .= $this->main_parse_html($this->modData['openKeys']);
 		header('Content-Type: text/plain; charset=utf-8');
 	}
@@ -74,7 +74,7 @@ class tx_rtehtmlarea_parse_html {
 	 *
 	 * @return	[type]		...
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 

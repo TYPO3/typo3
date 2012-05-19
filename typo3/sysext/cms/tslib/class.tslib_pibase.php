@@ -140,7 +140,7 @@ class tslib_pibase {
 	 *
 	 * @return	void
 	 */
-	function __construct()	{
+	function __construct() {
 
 			// Setting piVars:
 		if ($this->prefixId)	{
@@ -166,7 +166,7 @@ class tslib_pibase {
 	 *
 	 * @return	void
 	 */
-	function pi_setPiVarDefaults()	{
+	function pi_setPiVarDefaults() {
 		if (is_array($this->conf['_DEFAULT_PI_VARS.']))	{
 			$this->piVars = t3lib_div::array_merge_recursive_overrule($this->conf['_DEFAULT_PI_VARS.'],is_array($this->piVars)?$this->piVars:array());
 		}
@@ -662,7 +662,7 @@ class tslib_pibase {
 	 *
 	 * @return	string		HTML output, a table row with a class attribute set
 	 */
-	function pi_list_header()	{
+	function pi_list_header() {
 		return '<tr'.$this->pi_classParam('listrow-header').'><td><p>[dummy header row]</p></td></tr>';
 	}
 

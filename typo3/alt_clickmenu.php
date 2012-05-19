@@ -89,7 +89,7 @@ class clickMenu {
 	 *
 	 * @return	string		The clickmenu HTML content
 	 */
-	function init()	{
+	function init() {
 			// Setting GPvars:
 		$this->cmLevel = intval(t3lib_div::_GP('cmLevel'));
 		$this->CB = t3lib_div::_GP('CB');
@@ -144,8 +144,8 @@ class clickMenu {
 	 *
 	 * @return	boolean
 	 */
-	function doDisplayTopFrameCM()	{
-		if($this->ajax)	{
+	function doDisplayTopFrameCM() {
+		if ($this->ajax)	{
 			return FALSE;
 		} else {
 			return !$GLOBALS['SOBE']->doc->isCMlayers() || !$this->dontDisplayTopFrameCM;
@@ -1526,7 +1526,7 @@ class clickMenu {
 	 *
 	 * @return	boolean
 	 */
-	function isCMlayers()	{
+	function isCMlayers() {
 		if($this->ajax)	{
 			return !$this->CB;
 		} else {
@@ -1584,7 +1584,7 @@ class SC_alt_clickmenu {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 
 			// Setting GPvars:
 		$this->backPath = t3lib_div::_GP('backPath');
@@ -1680,7 +1680,7 @@ class SC_alt_clickmenu {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 		$this->ajax = t3lib_div::_GP('ajax') ? TRUE : FALSE;
 
 			// Initialize Clipboard object:
@@ -1716,7 +1716,7 @@ class SC_alt_clickmenu {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		if (!$this->ajax)	{
 			$this->content.= $this->doc->endPage();
 			$this->content = $this->doc->insertStylesAndJS($this->content);

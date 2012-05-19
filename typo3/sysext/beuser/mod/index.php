@@ -78,7 +78,7 @@ class localPageTree extends t3lib_browseTree {
 	 *
 	 * @return	string		WHERE query part.
 	 */
-	function ext_permsC()	{
+	function ext_permsC() {
 		return '';
 	}
 
@@ -125,7 +125,7 @@ class localPageTree extends t3lib_browseTree {
 	 *
 	 * @return	void
 	 */
-	function initializePositionSaving()	{
+	function initializePositionSaving() {
 		$this->stored=array();
 	}
 }
@@ -155,7 +155,7 @@ class printAllPageTree extends localPageTree {
 	 *
 	 * @return	string		WHERE query part.
 	 */
-	function ext_permsC()	{
+	function ext_permsC() {
 		return ' AND '.$this->BE_USER->getPagePermsClause(1);
 	}
 
@@ -371,7 +371,7 @@ class localFolderTree extends t3lib_folderTree {
 	 *
 	 * @return	void
 	 */
-	function initializePositionSaving()	{
+	function initializePositionSaving() {
 		$this->stored=array();
 	}
 }
@@ -465,7 +465,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	 *
 	 * @return	string		HTML content showing which DB-mounts were not accessible for the user
 	 */
-	function ext_non_readAccessPages()	{
+	function ext_non_readAccessPages() {
 		$lines=array();
 
 		foreach ($this->ext_non_readAccessPageArray as $pA) {
@@ -490,7 +490,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	 *
 	 * @return	string
 	 */
-	function user_where_clause()	{
+	function user_where_clause() {
 		return  'AND pid=0 ';
 	}
 
@@ -775,7 +775,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	 *
 	 * @return	string		HTML code.
 	 */
-	function ext_getReadableButNonmounted()	{
+	function ext_getReadableButNonmounted() {
 
 			// List of page id mounts which ARE mounted (and should therefore not be selected)
 		if (!$this->ext_pageIdsFromMounts)	{
@@ -972,7 +972,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	 *
 	 * @return	array	with key / value pairs of available workspaces (filtered by BE_USER check)
 	 */
-	function ext_workspaceMembership()	{
+	function ext_workspaceMembership() {
 			// Create accessible workspace arrays:
 		$options = array();
 		if ($this->checkWorkspace(array('uid' => 0)))	{
@@ -1044,7 +1044,7 @@ class SC_mod_tools_be_user_index {
 	 *
 	 * @return	void
 	 */
-	function init()	{
+	function init() {
 		$this->MCONF = $GLOBALS['MCONF'];
 
 		$this->menuConfig();
@@ -1073,7 +1073,7 @@ class SC_mod_tools_be_user_index {
 	 *
 	 * @return	void
 	 */
-	function menuConfig()	{
+	function menuConfig() {
 		// MENU-ITEMS:
 			// If array, then it's a selector box menu
 			// If empty string it's just a variable, that'll be saved.
@@ -1093,7 +1093,7 @@ class SC_mod_tools_be_user_index {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 		$this->content = $this->doc->header($GLOBALS['LANG']->getLL('backendUserAdministration', TRUE));
 
 		switch($this->MOD_SETTINGS['function'])	{
@@ -1130,7 +1130,7 @@ class SC_mod_tools_be_user_index {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -1139,26 +1139,26 @@ class SC_mod_tools_be_user_index {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	protected function getButtons()	{
-
+	protected function getButtons() {
 		$buttons = array(
 			'add' => '',
 			'csh' => '',
 			'shortcut' => '',
 			'save' => ''
 		);
+
 			// CSH
 		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
 
 			// Add user
 		if ($this->MOD_SETTINGS['function'] === 'compare') {
-			$buttons['add'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[be_users][0]=new' , $this->doc->backPath, -1)) .
+			$buttons['add'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[be_users][0]=new', $this->doc->backPath, -1)) .
 				'" title="' . $GLOBALS['LANG']->getLL('newUser', TRUE) . '">' . t3lib_iconWorks::getSpriteIcon('actions-document-new') . '</a>';
 		}
 
 			// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('be_user_uid,compareFlags','function', $this->MCONF['name']);
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('be_user_uid,compareFlags', 'function', $this->MCONF['name']);
 		}
 
 		return $buttons;
@@ -1442,7 +1442,7 @@ class SC_mod_tools_be_user_index {
 	 *
 	 * @return	void
 	 */
-	function initUsers()	{
+	function initUsers() {
 			// Initializing all users in order to generate the usergroup_cached_list
 		$users = t3lib_BEfunc::getUserNames();
 
@@ -1500,7 +1500,7 @@ class SC_mod_tools_be_user_index {
 	/**
 	 * @author Martin Kutschker
 	 */
-	function whoIsOnline()	{
+	function whoIsOnline() {
 		$select_fields = 'ses_id, ses_tstamp, ses_iplock, u.uid,u.username, u.admin, u.realName, u.disable, u.starttime, u.endtime, u.deleted, bu.uid AS bu_uid,bu.username AS bu_username, bu.realName AS bu_realName';
 		$from_table = 'be_sessions INNER JOIN be_users u ON ses_userid=u.uid LEFT OUTER JOIN be_users bu ON ses_backuserid=bu.uid';
 		$where_clause = '';

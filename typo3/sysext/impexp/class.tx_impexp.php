@@ -172,7 +172,7 @@ class tx_impexp {
 	 *
 	 * @return	void
 	 */
-	function setHeaderBasics()	{
+	function setHeaderBasics() {
 
 			// Initializing:
 		if (is_array($this->softrefCfg))	{
@@ -543,7 +543,7 @@ class tx_impexp {
 	 * @return	void
 	 * @see export_addDBRelations()
 	 */
-	function export_addFilesFromRelations()	{
+	function export_addFilesFromRelations() {
 
 			// Traverse all "rels" registered for "records"
 		if (is_array($this->dat['records']))	{
@@ -885,7 +885,7 @@ class tx_impexp {
 	 *
 	 * @return	string		XML content
 	 */
-	function createXML()	{
+	function createXML() {
 
 			// Options:
 		$options = array(
@@ -977,7 +977,7 @@ class tx_impexp {
 	 *
 	 * @return	boolean		TRUE if compression is possible AND requested.
 	 */
-	function doOutputCompress()	{
+	function doOutputCompress() {
 		return $this->compress && !$this->dontCompress;
 	}
 
@@ -1364,7 +1364,7 @@ class tx_impexp {
 	 *
 	 * @return	object		$TCE object
 	 */
-	function getNewTCE()	{
+	function getNewTCE() {
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values = 0;
 		$tce->dontProcessTransformations = 1;
@@ -1379,7 +1379,7 @@ class tx_impexp {
 	 *
 	 * @return	void
 	 */
-	function unlinkTempFiles()	{
+	function unlinkTempFiles() {
 		foreach($this->unlinkFiles as $fileName)	{
 			if (t3lib_div::isFirstPartOfStr($fileName, PATH_site.'typo3temp/'))	{
 				t3lib_div::unlink_tempfile($fileName);
@@ -1417,7 +1417,7 @@ class tx_impexp {
 	 * @return	void
 	 * @see setFlexFormRelations()
 	 */
-	function setRelations()	{
+	function setRelations() {
 		$updateData = array();
 
 			// import_newId contains a register of all records that was in the import memorys "records" key
@@ -1525,7 +1525,7 @@ class tx_impexp {
 	 * @return	void
 	 * @see setRelations()
 	 */
-	function setFlexFormRelations()	{
+	function setFlexFormRelations() {
 		$updateData = array();
 			// import_newId contains a register of all records that was in the import memorys "records" key
 		foreach ($this->import_newId as $nId => $dat) {
@@ -1647,7 +1647,7 @@ class tx_impexp {
 	 *
 	 * @return	void
 	 */
-	function processSoftReferences()	{
+	function processSoftReferences() {
 
 			// Initialize:
 		$inData = array();
@@ -2223,7 +2223,7 @@ class tx_impexp {
 	 *
 	 * @return	void
 	 */
-	function loadInit()	{
+	function loadInit() {
 		$this->relStaticTables = (array)$this->dat['header']['relStaticTables'];
 		$this->excludeMap = (array)$this->dat['header']['excludeMap'];
 
@@ -2239,7 +2239,7 @@ class tx_impexp {
 	 * @return	void
 	 * @see loadInit()
 	 */
-	function fixCharsets()	{
+	function fixCharsets() {
 		global $LANG;
 
 		$importCharset = $this->dat['header']['charset'];
@@ -2294,7 +2294,7 @@ class tx_impexp {
 	 *
 	 * @return	string		HTML content
 	 */
-	function displayContentOverview()	{
+	function displayContentOverview() {
 		global $LANG;
 
 			// Check extension dependencies:
@@ -3210,7 +3210,7 @@ class tx_impexp {
 	 *
 	 * @return	string		HTML print of error log
 	 */
-	function printErrorLog()	{
+	function printErrorLog() {
 		return count($this->errorLog) ? t3lib_utility_Debug::viewArray($this->errorLog) : '';
 	}
 }
