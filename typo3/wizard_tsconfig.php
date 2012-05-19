@@ -61,7 +61,7 @@ class ext_TSparser extends t3lib_tsparser_ext {
 	 * @param	array		P array
 	 * @return	string		The "_LINK" key value, straight away.
 	 */
-	function makeHtmlspecialchars($P)	{
+	function makeHtmlspecialchars($P) {
 		return $P['_LINK'];
 	}
 }
@@ -125,7 +125,7 @@ class SC_wizard_tsconfig {
 		}
 		unset($this->P['fieldChangeFunc']['alert']);
 		$update='';
-		foreach($this->P['fieldChangeFunc'] as $k=>$v)	{
+		foreach($this->P['fieldChangeFunc'] as $k=>$v) {
 			$update.= '
 			window.opener.'.$v;
 		}
@@ -145,12 +145,12 @@ class SC_wizard_tsconfig {
 
 		$this->doc->JScode.=$this->doc->wrapScriptTags('
 			function checkReference_name()	{	// Checks if the input field containing the name exists in the document
-				if (window.opener && window.opener.document && window.opener.document.'.$this->P['formName'].' && window.opener.document.'.$this->P['formName'].'["'.$this->P['itemName'].'"] )	{
+				if (window.opener && window.opener.document && window.opener.document.'.$this->P['formName'].' && window.opener.document.'.$this->P['formName'].'["'.$this->P['itemName'].'"] ) {
 					return window.opener.document.'.$this->P['formName'].'["'.$this->P['itemName'].'"];
 				}
 			}
 			function checkReference_value()	{	// Checks if the input field containing the value exists in the document
-				if (window.opener && window.opener.document && window.opener.document.'.$this->P['formName'].' && window.opener.document.'.$this->P['formName'].'["'.$this->P['itemValue'].'"] )	{
+				if (window.opener && window.opener.document && window.opener.document.'.$this->P['formName'].' && window.opener.document.'.$this->P['formName'].'["'.$this->P['itemValue'].'"] ) {
 					return window.opener.document.'.$this->P['formName'].'["'.$this->P['itemValue'].'"];
 				}
 			}
@@ -161,10 +161,10 @@ class SC_wizard_tsconfig {
 	 * @param	[type]		$field,value: ...
 	 * @return	[type]		...
 	 */
-			function setValue(field,value)	{
+			function setValue(field,value) {
 				var nameField = checkReference_name();
 				var valueField = checkReference_value();
-				if (nameField)	{
+				if (nameField) {
 					if (valueField)	{	// This applies to the TS Object Browser module
 						nameField.value=field;
 						valueField.value=value;
@@ -182,7 +182,7 @@ class SC_wizard_tsconfig {
 			}
 			function getValue()	{	// This is never used. Remove it?
 				var field = checkReference_name();
-				if (field)	{
+				if (field) {
 					return field.value;
 				} else {
 					close();
@@ -195,9 +195,9 @@ class SC_wizard_tsconfig {
 	 * @param	[type]		$cmd,objString: ...
 	 * @return	[type]		...
 	 */
-			function mixerField(cmd,objString)	{
+			function mixerField(cmd,objString) {
 				var temp;
-				switch(cmd)	{
+				switch(cmd) {
 					case "Indent":
 						temp = str_replace("\n","\n  ","\n"+document.editform.mixer.value);
 						document.editform.mixer.value = temp.substr(1);
@@ -221,14 +221,14 @@ class SC_wizard_tsconfig {
 	 * @param	[type]		$match,replace,string: ...
 	 * @return	[type]		...
 	 */
-			function str_replace(match,replace,string)	{
+			function str_replace(match,replace,string) {
 				var input = ""+string;
 				var matchStr = ""+match;
 				if (!matchStr)	{return string;}
 				var output = "";
 				var pointer=0;
 				var pos = input.indexOf(matchStr);
-				while (pos!=-1)	{
+				while (pos!=-1) {
 					output+=""+input.substr(pointer, pos-pointer)+replace;
 					pointer=pos+matchStr.length;
 					pos = input.indexOf(match,pos+1);
@@ -243,7 +243,7 @@ class SC_wizard_tsconfig {
 	 * @param	[type]		$show,objString: ...
 	 * @return	[type]		...
 	 */
-			function jump(show,objString)	{
+			function jump(show,objString) {
 				window.location.href = "'.t3lib_div::linkThisScript(array('show'=>'','objString'=>'')).'&show="+show+"&objString="+objString;
 			}
 		');
@@ -263,13 +263,13 @@ class SC_wizard_tsconfig {
 		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('tsprop'),$this->browseTSprop($this->mode,$this->show),0,1);
 
 			// Adding link to TSref:
-		if ($this->mode=='tsref')	{
+		if ($this->mode=='tsref') {
 			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('tsprop_TSref'),'
 			<a href="'. TYPO3_URL_DOCUMENTATION_TSREF.'" target="_blank">'.$GLOBALS['LANG']->getLL('tsprop_TSref',1).'</a>
 			',0,1);
 		}
 			// Adding link to admin guides etc:
-		if ($this->mode=='page' || $this->mode=='beuser')	{
+		if ($this->mode=='page' || $this->mode=='beuser') {
 			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('tsprop_tsconfig'),'
 			<a href="' . TYPO3_URL_DOCUMENTATION_TSCONFIG . '" target="_blank">' . $GLOBALS['LANG']->getLL('tsprop_tsconfig',1) . '</a>
 			',0,1);
@@ -294,13 +294,13 @@ class SC_wizard_tsconfig {
 	 * @param	integer		Pointing to an entry in static_tsconfig_help to show.
 	 * @return	string		HTML
 	 */
-	function browseTSprop($mode,$show)	{
+	function browseTSprop($mode,$show) {
 			// Get object tree:
 		$objTree = $this->getObjTree();
 
 			// Show single element, if show is set.
 		$out='';
-		if ($show)	{
+		if ($show) {
 				// Get the entry data:
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'static_tsconfig_help', 'uid='.intval($show));
 			$rec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
@@ -320,7 +320,7 @@ class SC_wizard_tsconfig {
 			$out.='<hr />';
 
 				// Printing the "mixer-field":
-			if (!$this->onlyProperty)	{
+			if (!$this->onlyProperty) {
 				$links=array();
 				$links[]='<a href="#" onclick="mixerField(\'Indent\');return false;">'.$GLOBALS['LANG']->getLL('tsprop_mixer_indent',1).'</a>';
 				$links[]='<a href="#" onclick="mixerField(\'Outdent\');return false;">'.$GLOBALS['LANG']->getLL('tsprop_mixer_outdent',1).'</a>';
@@ -343,7 +343,7 @@ class SC_wizard_tsconfig {
 		$tmpl->ext_noPMicons=1;
 		$tmpl->ext_noSpecialCharsOnLabels=1;
 
-		if (is_array($objTree[$mode.'.']))	{
+		if (is_array($objTree[$mode.'.'])) {
 			$out.='
 
 
@@ -383,7 +383,7 @@ class SC_wizard_tsconfig {
 		$objTree=array();
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,obj_string,title', 'static_tsconfig_help', '');
-		while($rec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		while($rec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$rec['obj_string'] = $this->revertFromSpecialChars($rec['obj_string']);
 			$p = explode(';',$rec['obj_string']);
 			foreach ($p as $v) {
@@ -408,10 +408,10 @@ class SC_wizard_tsconfig {
 	 * @access private
 	 * @see getObjTree()
 	 */
-	function setObj(&$objTree,$strArr,$params)	{
+	function setObj(&$objTree,$strArr,$params) {
 		$key = current($strArr);
 		reset($strArr);
-		if (count($strArr)>1)	{
+		if (count($strArr)>1) {
 			array_shift($strArr);
 			if (!isset($objTree[$key.'.']))	$objTree[$key.'.']=array();
 			$this->setObj($objTree[$key.'.'],$strArr,$params);
@@ -428,7 +428,7 @@ class SC_wizard_tsconfig {
 	 * @return	string		Output string
 	 * @access private
 	 */
-	function revertFromSpecialChars($str)	{
+	function revertFromSpecialChars($str) {
 		$str = str_replace('&gt;','>',$str);
 		$str = str_replace('&lt;','<',$str);
 		return $str;
@@ -441,7 +441,7 @@ class SC_wizard_tsconfig {
 	 * @return	string		The link.
 	 * @access private
 	 */
-	function doLink($params)	{
+	function doLink($params) {
 		$title = trim($params[0]['title'])?trim($params[0]['title']):'[GO]';
 		$str = $this->linkToObj($title,$params[0]['uid'],$params[1]);
 		return $str;
@@ -454,9 +454,9 @@ class SC_wizard_tsconfig {
 	 * @return	array		Modified input array
 	 * @access private
 	 */
-	function removePointerObjects($objArray)	{
+	function removePointerObjects($objArray) {
 		foreach ($objArray as $k => $value) {
-			if (substr(trim($k),0,2)=="->" && trim($k)!='->.')	{
+			if (substr(trim($k),0,2)=="->" && trim($k)!='->.') {
 				$objArray['->.'][substr(trim($k),2)]=$objArray[$k];
 				unset($objArray[$k]);
 			}
@@ -472,7 +472,7 @@ class SC_wizard_tsconfig {
 	 * @param	string		Title string for that record!
 	 * @return	string		Linked string
 	 */
-	function linkToObj($str,$uid,$objString='')	{
+	function linkToObj($str,$uid,$objString='') {
 		$aOnClick='jump(\''.rawurlencode($uid).'\',\''.rawurlencode($objString).'\');return false;';
 		return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.htmlspecialchars($str).'</a>';
 	}
@@ -485,8 +485,8 @@ class SC_wizard_tsconfig {
 	 * @param	array		Object tree
 	 * @return	string		HTML content.
 	 */
-	function printTable($table,$objString,$objTree)	{
-		if (is_array($table['rows']))	{
+	function printTable($table,$objString,$objTree) {
+		if (is_array($table['rows'])) {
 
 				// Initialize:
 			$lines=array();
@@ -501,7 +501,7 @@ class SC_wizard_tsconfig {
 				</tr>';
 
 				// Traverse the content of "rows":
-			foreach($table['rows'] as $i => $row)	{
+			foreach($table['rows'] as $i => $row) {
 
 					// Linking:
 				$lP=t3lib_div::trimExplode(LF,$row['property'],1);
@@ -517,12 +517,12 @@ class SC_wizard_tsconfig {
 					// Generally "->[something]"
 				$reg=array();
 				preg_match('/->[[:alnum:]_]*/',$dataType,$reg);
-				if ($reg[0] && is_array($objTree[$reg[0]]))	{
+				if ($reg[0] && is_array($objTree[$reg[0]])) {
 					$dataType = str_replace($reg[0],'<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('show'=>$objTree[$reg[0]][0]['uid'],'objString'=>$objString.'.'.$lP[0]))).'">'.htmlspecialchars($reg[0]).'</a>',$dataType);
 				}
 
 					// stdWrap
-				if (!strstr($dataType,'->stdWrap') && strstr(strip_tags($dataType),'stdWrap'))	{
+				if (!strstr($dataType,'->stdWrap') && strstr(strip_tags($dataType),'stdWrap')) {
 						// Potential problem can be that "stdWrap" is substituted inside another A-tag. So maybe we should even check if there is already a <A>-tag present and if so, not make a substitution?
 					$dataType = str_replace('stdWrap','<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('show'=>$objTree['->stdWrap'][0]['uid'],'objString'=>$objString.'.'.$lP[0]))).'">stdWrap</a>',$dataType);
 				}
@@ -559,16 +559,16 @@ class SC_wizard_tsconfig {
 	 * @param	string		Data type
 	 * @return	string		Linked $str
 	 */
-	function linkProperty($str,$propertyName,$prefix,$datatype)	{
+	function linkProperty($str,$propertyName,$prefix,$datatype) {
 		$out='';
 
 			// Setting preset value:
-		if (strstr($datatype,'boolean'))	{
+		if (strstr($datatype,'boolean')) {
 			$propertyVal='1';	// preset "1" to boolean values.
 		}
 
 			// Adding mixer features; The plus icon:
-		if(!$this->onlyProperty)	{
+		if(!$this->onlyProperty) {
 			$aOnClick = 'document.editform.mixer.value=unescape(\'  '.rawurlencode($propertyName.'='.$propertyVal).'\')+\'\n\'+document.editform.mixer.value; return false;';
 			$out.= '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
 					t3lib_iconWorks::getSpriteIcon('actions-edit-add', array('title' => $GLOBALS['LANG']->getLL('tsprop_addToList', TRUE))) .

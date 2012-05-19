@@ -107,12 +107,12 @@ class SC_wizard_rte {
 	 */
 	function main() {
 			// translate id to the workspace version:
-		if ($versionRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $this->P['table'], $this->P['uid'], 'uid'))	{
+		if ($versionRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $this->P['table'], $this->P['uid'], 'uid')) {
 			$this->P['uid'] = $versionRec['uid'];
 		}
 
 			// If all parameters are available:
-		if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'],$this->P['uid']))	{
+		if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'],$this->P['uid'])) {
 
 				// Getting the raw record (we need only the pid-value from here...)
 			$rawRec = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
@@ -121,8 +121,8 @@ class SC_wizard_rte {
 				// Setting JavaScript, including the pid value for viewing:
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 					function jumpToUrl(URL,formEl)	{	//
-						if (document.editform)	{
-							if (!TBE_EDITOR.isFormChanged())	{
+						if (document.editform) {
+							if (!TBE_EDITOR.isFormChanged()) {
 								window.location.href = URL;
 							} else if (formEl) {
 								if (formEl.type=="checkbox") formEl.checked = formEl.checked ? 0 : 1;
@@ -140,7 +140,7 @@ class SC_wizard_rte {
 
 				// Initialize style for RTE object:
 			$RTEobj = t3lib_BEfunc::RTEgetObj();	// Getting reference to the RTE object used to render the field!
-			if ($RTEobj->ID == 'rte')	{
+			if ($RTEobj->ID == 'rte') {
 				$RTEobj->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border:solid 0px;';	// SPECIAL: Setting style for the RTE <DIV> layer containing the IFRAME
 			}
 
@@ -156,7 +156,7 @@ class SC_wizard_rte {
 
 				// TSconfig, setting width:
 			$fieldTSConfig = $tceforms->setTSconfig($this->P['table'],$rec,$this->P['field']);
-			if (strcmp($fieldTSConfig['RTEfullScreenWidth'],''))	{
+			if (strcmp($fieldTSConfig['RTEfullScreenWidth'],'')) {
 				$width=$fieldTSConfig['RTEfullScreenWidth'];
 			} else {
 				$width='100%';
@@ -237,7 +237,7 @@ class SC_wizard_rte {
 			// Getting settings for the undo button:
 			$undoButton = 0;
 			$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->P['table'], 'sys_history') . ' AND recuid=' . intval($this->P['uid']), '', 'tstamp DESC', '1');
-			if ($undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes))	{
+			if ($undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes)) {
 				$undoButton = 1;
 			}
 
@@ -262,7 +262,7 @@ class SC_wizard_rte {
 			$buttons['save_close'] = '<input type="image" class="c-inputButton" onclick="' . htmlspecialchars('document.editform.redirect.value=\'' . $closeUrl . '\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '" name="_saveandclosedok"' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', 1) . '" />';
 
 			// Undo/Revert:
-			if ($undoButton)	{
+			if ($undoButton) {
 				$buttons['undo'] = '<a href="#" onclick="' . htmlspecialchars('window.location.href=\'show_rechis.php?element=' . rawurlencode($this->P['table'] . ':' . $this->P['uid']) . '&revert=' . rawurlencode('field:' . $this->P['field']) . '&sumUp=-1&returnUrl=' . rawurlencode($this->R_URI) . '\'; return false;') . '">' .
 					'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/undo.gif') . ' class="c-inputButton" title="' . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('rte_undoLastChange'), t3lib_BEfunc::calcAge($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp'], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')))) . '" alt="" />' .
 					'</a>';
@@ -284,10 +284,10 @@ class SC_wizard_rte {
 	 * @param	integer		Record uid
 	 * @return	void
 	 */
-	function checkEditAccess($table,$uid)	{
+	function checkEditAccess($table,$uid) {
 		$calcPRec = t3lib_BEfunc::getRecord($table,$uid);
 		t3lib_BEfunc::fixVersioningPid($table,$calcPRec);
-		if (is_array($calcPRec))	{
+		if (is_array($calcPRec)) {
 			if ($table=='pages')	{	// If pages:
 				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($calcPRec);
 				$hasAccess = $CALC_PERMS&2 ? TRUE : FALSE;
@@ -298,7 +298,7 @@ class SC_wizard_rte {
 			}
 
 				// Check internals regarding access:
-			if ($hasAccess)	{
+			if ($hasAccess) {
 				$hasAccess = $GLOBALS['BE_USER']->recordEditAccessInternals($table, $calcPRec);
 			}
 		} else $hasAccess = FALSE;

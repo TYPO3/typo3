@@ -126,7 +126,7 @@ class SC_show_rechis {
 			// Start history object
 		$historyObj = t3lib_div::makeInstance('recordHistory');
 
-		if ($historyObj->returnUrl)	{
+		if ($historyObj->returnUrl) {
 			$buttons['back'] = '<a href="' . htmlspecialchars($historyObj->returnUrl) . '" class="typo3-goBack">' . t3lib_iconWorks::getSpriteIcon('actions-view-go-back') . '</a>';
 		}
 

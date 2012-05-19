@@ -100,7 +100,7 @@ class SC_browse_links {
 
 			// Find "mode"
 		$this->mode = t3lib_div::_GP('mode');
-		if (!$this->mode)	{
+		if (!$this->mode) {
 			$this->mode = 'rte';
 		}
 
@@ -138,7 +138,7 @@ class SC_browse_links {
 		$this->content = '';
 
 			// look for alternativ mountpoints
-		switch((string)$this->mode)	{
+		switch((string)$this->mode) {
 			case 'rte':
 			case 'db':
 			case 'wizard':
@@ -156,7 +156,7 @@ class SC_browse_links {
 				$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
 				if ($altMountPoints) {
 					$altMountPoints = t3lib_div::trimExplode(',', $altMountPoints);
-					foreach($altMountPoints as $filePathRelativeToFileadmindir)	{
+					foreach($altMountPoints as $filePathRelativeToFileadmindir) {
 						$GLOBALS['BE_USER']->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1, 'readonly');
 					}
 					$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->returnFilemounts();
@@ -189,7 +189,7 @@ class SC_browse_links {
 			$GLOBALS['BE_USER']->pushModuleData('browse_links.php', $modData);
 
 				// Output the correct content according to $this->mode
-			switch((string)$this->mode)	{
+			switch((string)$this->mode) {
 				case 'rte':
 					$this->content = $this->browser->main_rte();
 				break;

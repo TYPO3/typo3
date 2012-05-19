@@ -90,9 +90,9 @@ class webPageTree extends t3lib_browseTree {
 	 * @param	array		Data row for element.
 	 * @return	string		Page icon
 	 */
-	function wrapIcon($thePageIcon, &$row)	{
+	function wrapIcon($thePageIcon, &$row) {
 			// If the record is locked, present a warning sign.
-		if ($lockInfo=t3lib_BEfunc::isRecordLocked('pages',$row['uid']))	{
+		if ($lockInfo=t3lib_BEfunc::isRecordLocked('pages',$row['uid'])) {
 			$aOnClick = 'alert('.$GLOBALS['LANG']->JScharCode($lockInfo['msg']).');return false;';
 			$lockIcon='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
 				t3lib_iconWorks::getSpriteIcon('status-warning-in-use',array('title'=>htmlspecialchars($lockInfo['msg']))).
@@ -100,9 +100,9 @@ class webPageTree extends t3lib_browseTree {
 		} else $lockIcon = '';
 
 			// Wrap icon in click-menu link.
-		if (!$this->ext_IconMode)	{
+		if (!$this->ext_IconMode) {
 			$thePageIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($thePageIcon,'pages',$row['uid'],0,'&bank='.$this->bank);
-		} elseif (!strcmp($this->ext_IconMode,'titlelink'))	{
+		} elseif (!strcmp($this->ext_IconMode,'titlelink')) {
 			$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->treeName.'\');';
 			$thePageIcon='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$thePageIcon.'</a>';
 		}
@@ -118,9 +118,9 @@ class webPageTree extends t3lib_browseTree {
 
 			// Call stats information hook
 		$stat = '';
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks']))	{
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
 			$_params = array('pages',$row['uid']);
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef)	{
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
 				$stat.=t3lib_div::callUserFunction($_funcRef,$_params,$this);
 			}
 		}
@@ -136,8 +136,8 @@ class webPageTree extends t3lib_browseTree {
 	 * @return	string		Modified string
 	 * @access private
 	 */
-	function wrapStop($str,$row)	{
-		if ($row['php_tree_stop'])	{
+	function wrapStop($str,$row) {
+		if ($row['php_tree_stop']) {
 			$str.='<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('setTempDBmount' => $row['uid']))).'" class="typo3-red">+</a> ';
 		}
 		return $str;
@@ -152,7 +152,7 @@ class webPageTree extends t3lib_browseTree {
 	 * @return	string
 	 * @access	private
 	 */
-	function wrapTitle($title,$row,$bank=0)	{
+	function wrapTitle($title,$row,$bank=0) {
 			// Hook for overriding the page title
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.webpagetree.php']['pageTitleOverlay'])) {
 			$_params = array('title' => &$title, 'row' => &$row);
@@ -194,7 +194,7 @@ class webPageTree extends t3lib_browseTree {
 		if(($PMpos = strpos($PM, '#')) !== FALSE) { $PM = substr($PM, 0, $PMpos); }
 		$PM = explode('_', $PM);
 		if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) && is_array($PM) && count($PM) == 4 && $PM[2] != 0) {
-			if($PM[1])	{
+			if($PM[1]) {
 				$expandedPageUid = $PM[2];
 				$ajaxOutput = '';
 				$invertedDepthOfAjaxRequestedItem = 0; // We don't know yet. Will be set later.
@@ -209,7 +209,7 @@ class webPageTree extends t3lib_browseTree {
 		// so we know how many we have to close when all children are done rendering
 		$closeDepth = array();
 
-		foreach($treeArr as $k => $v)	{
+		foreach($treeArr as $k => $v) {
 			$classAttr = $v['row']['_CSSCLASS'];
 			$uid	   = $v['row']['uid'];
 			$idAttr	= htmlspecialchars($this->domIdPrefix.$this->getId($v['row']).'_'.$v['bank']);
@@ -217,7 +217,7 @@ class webPageTree extends t3lib_browseTree {
 
 			// if this item is the start of a new level,
 			// then a new level <ul> is needed, but not in ajax mode
-			if($v['isFirst'] && !($doCollapse) && !($doExpand && $expandedPageUid == $uid))	{
+			if($v['isFirst'] && !($doCollapse) && !($doExpand && $expandedPageUid == $uid)) {
 				$itemHTML = '<ul>';
 			}
 
@@ -292,7 +292,7 @@ class webPageTree extends t3lib_browseTree {
 	 * @access private
 	 * @see t3lib_pageTree::PMicon()
 	 */
-	function PMicon($row,$a,$c,$nextCount,$exp)	{
+	function PMicon($row,$a,$c,$nextCount,$exp) {
 		$PM   = $nextCount ? ($exp ? 'minus' : 'plus') : 'join';
 		$BTM  = ($a == $c) ? 'bottom' : '';
 		$icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$PM.$BTM.'.gif','width="18" height="16"').' alt="" />';
@@ -313,7 +313,7 @@ class webPageTree extends t3lib_browseTree {
 	 * @return	string		Link-wrapped input string
 	 * @access private
 	 */
-	function PMiconATagWrap($icon, $cmd, $isExpand = TRUE)	{
+	function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
 		if ($this->thisScript) {
 				// activate dynamic ajax-based tree
 			$js = htmlspecialchars('Tree.load(\''.$cmd.'\', '.intval($isExpand).', this);');
@@ -377,7 +377,7 @@ class webPageTree extends t3lib_browseTree {
 				$this->tree[] = array('HTML'=>$firstHtml, 'row'=>$rootRec, 'bank'=>$this->bank, 'hasSub'=>TRUE, 'invertedDepth'=>1000);
 
 					// If the mount is expanded, go down:
-				if ($isOpen)	{
+				if ($isOpen) {
 						// Set depth:
 					if ($this->addSelfId) { $this->ids[] = $uid; }
 					$this->getTree($uid, 999, '', $rootRec['_SUBCSSCLASS']);
@@ -415,7 +415,7 @@ class webPageTree extends t3lib_browseTree {
 		$inMenuPages = array();
 		$outOfMenuPages = array();
 		$outOfMenuPagesTextIndex = array();
-		while ($crazyRecursionLimiter > 0 && $row = $this->getDataNext($res,$subCSSclass))	{
+		while ($crazyRecursionLimiter > 0 && $row = $this->getDataNext($res,$subCSSclass)) {
 			$crazyRecursionLimiter--;
 
 				// Not in menu:
@@ -430,14 +430,14 @@ class webPageTree extends t3lib_browseTree {
 		}
 
 		$label_shownAlphabetically = "";
-		if (count($outOfMenuPages))	{
+		if (count($outOfMenuPages)) {
 				// Sort out-of-menu pages:
 			$outOfMenuPages_alphabetic = array();
-			if ($this->ext_alphasortNotinmenuPages)	{
+			if ($this->ext_alphasortNotinmenuPages) {
 				asort($outOfMenuPagesTextIndex);
 				$label_shownAlphabetically = " (alphabetic)";
 			}
-			foreach($outOfMenuPagesTextIndex as $idx => $txt)	{
+			foreach($outOfMenuPagesTextIndex as $idx => $txt) {
 				$outOfMenuPages_alphabetic[] = $outOfMenuPages[$idx];
 			}
 
@@ -449,7 +449,7 @@ class webPageTree extends t3lib_browseTree {
 		}
 
 			// Traverse the records:
-		foreach ($allRows as $row)	{
+		foreach ($allRows as $row) {
 			$a++;
 
 			$newID = $row['uid'];
@@ -466,7 +466,7 @@ class webPageTree extends t3lib_browseTree {
 			$this->ids_hierarchy[$depth][] = $row['uid'];
 
 				// Make a recursive call to the next level
-			if ($depth > 1 && $this->expandNext($newID) && !$row['php_tree_stop'])	{
+			if ($depth > 1 && $this->expandNext($newID) && !$row['php_tree_stop']) {
 				$nextCount=$this->getTree(
 					$newID,
 					$depth-1,
@@ -481,8 +481,8 @@ class webPageTree extends t3lib_browseTree {
 			}
 
 				// Set HTML-icons, if any:
-			if ($this->makeHTML)	{
-				if ($row['_FIRST_NOT_IN_MENU'])	{
+			if ($this->makeHTML) {
+				if ($row['_FIRST_NOT_IN_MENU']) {
 					$HTML = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/line.gif').' alt="" /><br/><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/line.gif').' alt="" /><i>Not shown in menu'.$label_shownAlphabetically.':</i><br>';
 				} else {
 					$HTML = '';

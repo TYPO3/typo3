@@ -85,7 +85,7 @@ class TBE_browser_recordList extends localRecordList {
 	 * @param	string		Commalist of fields NOT to pass as parameters (currently "sortField" and "sortRev")
 	 * @return	string		Query-string for URL
 	 */
-	function listURL($altId='',$table=-1,$exclList='')	{
+	function listURL($altId='',$table=-1,$exclList='') {
 		return $this->thisScript.
 			'?id='.(strcmp($altId,'')?$altId:$this->id).
 			'&table='.rawurlencode($table==-1?$this->table:$table).
@@ -120,7 +120,7 @@ class TBE_browser_recordList extends localRecordList {
 	 * @param	array		Records array (from table name)
 	 * @return	string
 	 */
-	function linkWrapItems($table,$uid,$code,$row)	{
+	function linkWrapItems($table,$uid,$code,$row) {
 		if (!$code) {
 			$code = '<i>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</i>';
 		} else {
@@ -252,8 +252,8 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	boolean		(Ignore)
 	 * @return	string		Wrapping title string.
 	 */
-	function wrapTitle($title,$v,$ext_pArrPages='')	{
-		if ($this->ext_isLinkable($v['doktype'],$v['uid']))	{
+	function wrapTitle($title,$v,$ext_pArrPages='') {
+		if ($this->ext_isLinkable($v['doktype'],$v['uid'])) {
 			$aOnClick = "return link_typo3Page('".$v['uid']."');";
 			return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$title.'</a>';
 		} else {
@@ -267,17 +267,17 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	array		Tree array
 	 * @return	string		HTML output.
 	 */
-	function printTree($treeArr='')	{
+	function printTree($treeArr='') {
 		$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
 		if (!is_array($treeArr))	$treeArr=$this->tree;
 
 		$out='';
 		$c=0;
 
-		foreach($treeArr as $k => $v)	{
+		foreach($treeArr as $k => $v) {
 			$c++;
 			$bgColorClass = ($c+1)%2 ? 'bgColor' : 'bgColor-10';
-			if ($GLOBALS['SOBE']->browser->curUrlInfo['act']=='page' && $GLOBALS['SOBE']->browser->curUrlInfo['pageid']==$v['row']['uid'] && $GLOBALS['SOBE']->browser->curUrlInfo['pageid'])	{
+			if ($GLOBALS['SOBE']->browser->curUrlInfo['act']=='page' && $GLOBALS['SOBE']->browser->curUrlInfo['pageid']==$v['row']['uid'] && $GLOBALS['SOBE']->browser->curUrlInfo['pageid']) {
 				$arrCol='<td><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/blinkarrow_right.gif','width="5" height="9"').' class="c-blinkArrowR" alt="" /></td>';
 				$bgColorClass='bgColor4';
 			} else {
@@ -317,8 +317,8 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	integer		uid to test.
 	 * @return	boolean
 	 */
-	function ext_isLinkable($doktype,$uid)	{
-		if ($uid && $doktype<199)	{
+	function ext_isLinkable($doktype,$uid) {
+		if ($uid && $doktype<199) {
 			return TRUE;
 		}
 	}
@@ -331,8 +331,8 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	boolean		If set, the link will have a anchor point (=$bMark) and a name attribute (=$bMark)
 	 * @return	string		Link-wrapped input string
 	 */
-	function PM_ATagWrap($icon,$cmd,$bMark='')	{
-		if ($bMark)	{
+	function PM_ATagWrap($icon,$cmd,$bMark='') {
+		if ($bMark) {
 			$anchor = '#'.$bMark;
 			$name=' name="'.$bMark.'"';
 		}
@@ -397,7 +397,7 @@ class TBE_PageTree extends localPageTree {
 	 * @param	integer		uid to test.
 	 * @return	boolean
 	 */
-	function ext_isLinkable($doktype,$uid)	{
+	function ext_isLinkable($doktype,$uid) {
 		return TRUE;
 	}
 
@@ -409,8 +409,8 @@ class TBE_PageTree extends localPageTree {
 	 * @param	boolean		If set, pages clicked will return immediately, otherwise reload page.
 	 * @return	string		Wrapping title string.
 	 */
-	function wrapTitle($title,$v,$ext_pArrPages)	{
-		if ($ext_pArrPages)	{
+	function wrapTitle($title,$v,$ext_pArrPages) {
+		if ($ext_pArrPages) {
 			$ficon=t3lib_iconWorks::getIcon('pages',$v);
 			$onClick = "return insertElement('pages', '".$v['uid']."', 'db', ".t3lib_div::quoteJSvalue($v['title']).", '', '', '".$ficon."','',1);";
 		} else {
@@ -489,8 +489,8 @@ class localFolderTree extends t3lib_folderTree {
 	 * @return	string		Link-wrapped input string
 	 * @access private
 	 */
-	function PM_ATagWrap($icon,$cmd,$bMark='')	{
-		if ($bMark)	{
+	function PM_ATagWrap($icon,$cmd,$bMark='') {
+		if ($bMark) {
 			$anchor = '#'.$bMark;
 			$name=' name="'.$bMark.'"';
 		}
@@ -537,7 +537,7 @@ class TBE_FolderTree extends localFolderTree {
 	 * @return boolean TRUE is returned if the path is NOT a recycler or temp folder AND if ->ext_noTempRecyclerDirs is not set.
 	 */
 	function ext_isLinkable($folderObject) {
-		if ($this->ext_noTempRecyclerDirs && (substr($folderObject->getIdentifier(), -7)=='_temp_/' || substr($folderObject->getIdentifier(),-11)=='_recycler_/'))	{
+		if ($this->ext_noTempRecyclerDirs && (substr($folderObject->getIdentifier(), -7)=='_temp_/' || substr($folderObject->getIdentifier(),-11)=='_recycler_/')) {
 			return FALSE;
 		} else {
 			return TRUE;
@@ -706,7 +706,7 @@ class browse_links {
 
 			// Find "mode"
 		$this->mode = t3lib_div::_GP('mode');
-		if (!$this->mode)	{
+		if (!$this->mode) {
 			$this->mode = 'rte';
 		}
 			// Creating backend template object:
@@ -745,7 +745,7 @@ class browse_links {
 
 
 			// CurrentUrl - the current link url must be passed around if it exists
-		if ($this->mode == 'wizard')	{
+		if ($this->mode == 'wizard') {
 			$currentValues = t3lib_div::trimExplode(LF, trim($this->P['currentValue']));
 			if (count($currentValues) > 0) {
 				$currentValue = array_pop($currentValues);
@@ -787,7 +787,7 @@ class browse_links {
 					$currentLinkParts[0] = rawurldecode(substr($this->curUrlArray['href'], 5));	// remove the "file:" prefix
 
 					// check if this is a link to a file
-				} elseif (file_exists(PATH_site.rawurldecode($this->curUrlArray['href'])))	{
+				} elseif (file_exists(PATH_site.rawurldecode($this->curUrlArray['href']))) {
 					if (t3lib_div::isFirstPartOfStr($this->curUrlArray['href'], PATH_site)) {
 						$currentLinkParts[0] = substr($this->curUrlArray['href'], strlen(PATH_site));
 					}
@@ -811,7 +811,7 @@ class browse_links {
 			}
 		} else {
 			$this->curUrlArray = t3lib_div::_GP('curUrl');
-			if ($this->curUrlArray['all'])	{
+			if ($this->curUrlArray['all']) {
 				$this->curUrlArray=t3lib_div::get_tag_attributes($this->curUrlArray['all']);
 			}
 			$this->curUrlInfo=$this->parseCurUrl($this->curUrlArray['href'],$this->siteURL);
@@ -819,13 +819,13 @@ class browse_links {
 
 			// Determine nature of current url:
 		$this->act=t3lib_div::_GP('act');
-		if (!$this->act)	{
+		if (!$this->act) {
 			$this->act=$this->curUrlInfo['act'];
 		}
 
 			// Rich Text Editor specific configuration:
 		$addPassOnParams='';
-		if ((string)$this->mode == 'rte')	{
+		if ((string)$this->mode == 'rte') {
 			$RTEtsConfigParts = explode(':',$this->RTEtsConfigParams);
 			$addPassOnParams.='&RTEtsConfigParams='.rawurlencode($this->RTEtsConfigParams);
 			$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
@@ -834,7 +834,7 @@ class browse_links {
 
 			// Initializing the target value (RTE)
 		$this->setTarget = ($this->curUrlArray['target'] != '-') ? rawurlencode($this->curUrlArray['target']) : '';
-		if ($this->thisConfig['defaultLinkTarget'] && !isset($this->curUrlArray['target']))	{
+		if ($this->thisConfig['defaultLinkTarget'] && !isset($this->curUrlArray['target'])) {
 			$this->setTarget=$this->thisConfig['defaultLinkTarget'];
 		}
 
@@ -917,7 +917,7 @@ class browse_links {
 					return false;
 				}
 				function link_current()	{	//
-					if (cur_href!="http://" && cur_href!="mailto:")	{
+					if (cur_href!="http://" && cur_href!="mailto:") {
 						returnBeforeCleaned = cur_href;
 						if (returnBeforeCleaned.substr(0, 7) == "http://") {
 							returnToMainFormValue = returnBeforeCleaned.substr(7);
@@ -936,7 +936,7 @@ class browse_links {
 					return false;
 				}
 				function checkReference()	{	//
-					if (window.opener && window.opener.document && window.opener.document.'.$this->P['formName'].' && window.opener.document.'.$this->P['formName'].'["'.$this->P['itemName'].'"] )	{
+					if (window.opener && window.opener.document && window.opener.document.'.$this->P['formName'].' && window.opener.document.'.$this->P['formName'].'["'.$this->P['itemName'].'"] ) {
 						return window.opener.document.'.$this->P['formName'].'["'.$this->P['itemName'].'"];
 					} else {
 						close();
@@ -944,7 +944,7 @@ class browse_links {
 				}
 				function updateValueInMainForm(input)	{	//
 					var field = checkReference();
-					if (field)	{
+					if (field) {
 						if (cur_target == "" && (cur_class != "" || cur_title != "" || cur_params != "")) {
 							cur_target = "-";
 						}
@@ -992,7 +992,7 @@ class browse_links {
 					return false;
 				}
 				function link_current()	{	//
-					if (cur_href!="http://" && cur_href!="mailto:")	{
+					if (cur_href!="http://" && cur_href!="mailto:") {
 						self.parent.parent.renderPopup_addLink(cur_href, cur_target, cur_class, cur_title);
 					}
 					return false;
@@ -1092,7 +1092,7 @@ class browse_links {
 			function launchView(url)	{	//
 				var thePreviewWindow="";
 				thePreviewWindow = window.open("'.$GLOBALS['BACK_PATH'].'show_item.php?table="+url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
-				if (thePreviewWindow && thePreviewWindow.focus)	{
+				if (thePreviewWindow && thePreviewWindow.focus) {
 					thePreviewWindow.focus();
 				}
 			}
@@ -1120,7 +1120,7 @@ class browse_links {
 				return false;
 			}
 			function addElement(elName,elValue,altElValue,close)	{	//
-				if (parent.window.opener && parent.window.opener.setFormValueFromBrowseWin)	{
+				if (parent.window.opener && parent.window.opener.setFormValueFromBrowseWin) {
 					parent.window.opener.setFormValueFromBrowseWin("'.$pArr[0].'",altElValue?altElValue:elValue,elName);
 					focusOpenerAndClose(close);
 				} else {
@@ -1176,9 +1176,9 @@ class browse_links {
 	function processSessionData($data) {
 		$store = FALSE;
 
-		switch((string)$this->mode)	{
+		switch((string)$this->mode) {
 			case 'db':
-				if (isset($this->expandPage))	{
+				if (isset($this->expandPage)) {
 					$data['expandPage']=$this->expandPage;
 					$store = TRUE;
 				} else {
@@ -1188,7 +1188,7 @@ class browse_links {
 			case 'file':
 			case 'filedrag':
 			case 'folder':
-				if (isset($this->expandFolder))	{
+				if (isset($this->expandFolder)) {
 					$data['expandFolder']=$this->expandFolder;
 					$store = TRUE;
 				} else {
@@ -1217,7 +1217,7 @@ class browse_links {
 	 * @param	boolean		If set, the "remove link" is not shown in the menu: Used for the "Select link" wizard which is used by the TCEforms
 	 * @return	string		Modified content variable.
 	 */
-	function main_rte($wiz=0)	{
+	function main_rte($wiz=0) {
 			// Starting content:
 		$content=$this->doc->startPage('RTE link');
 
@@ -1250,7 +1250,7 @@ class browse_links {
 
 			// Making menu in top:
 		$menuDef = array();
-		if (!$wiz)	{
+		if (!$wiz) {
 			$menuDef['removeLink']['isActive'] = $this->act=='removeLink';
 			$menuDef['removeLink']['label'] = $GLOBALS['LANG']->getLL('removeLink', 1);
 			$menuDef['removeLink']['url'] = '#';
@@ -1304,7 +1304,7 @@ class browse_links {
 		$content.=$this->printCurrentUrl($this->curUrlInfo['info']).'<br />';
 
 			// Depending on the current action we will create the actual module content for selecting a link:
-		switch($this->act)	{
+		switch($this->act) {
 			case 'mail':
 				$extUrl='
 
@@ -1394,16 +1394,16 @@ class browse_links {
 					';
 			break;
 			case 'spec':
-				if (is_array($this->thisConfig['userLinks.']))	{
+				if (is_array($this->thisConfig['userLinks.'])) {
 					$subcats=array();
 					$v=$this->thisConfig['userLinks.'];
 					foreach ($v as $k2 => $value) {
 						$k2i = intval($k2);
-						if (substr($k2,-1)=='.' && is_array($v[$k2i.'.']))	{
+						if (substr($k2,-1)=='.' && is_array($v[$k2i.'.'])) {
 
 								// Title:
 							$title = trim($v[$k2i]);
-							if (!$title)	{
+							if (!$title) {
 								$title=$v[$k2i.'.']['url'];
 							} else {
 								$title = $GLOBALS['LANG']->sL($title);
@@ -1415,7 +1415,7 @@ class browse_links {
 							$onClickEvent='';
 							if (isset($v[$k2i.'.']['target']))	$onClickEvent.="browse_links_setTarget('".$v[$k2i.'.']['target']."');";
 							$v[$k2i.'.']['url'] = str_replace('###_URL###',$this->siteURL,$v[$k2i.'.']['url']);
-							if (substr($v[$k2i.'.']['url'],0,7)=='http://' || substr($v[$k2i.'.']['url'],0,7)=='mailto:')	{
+							if (substr($v[$k2i.'.']['url'],0,7)=='http://' || substr($v[$k2i.'.']['url'],0,7)=='mailto:') {
 								$onClickEvent.="cur_href=unescape('".rawurlencode($v[$k2i.'.']['url'])."');link_current();";
 							} else {
 								$onClickEvent.="link_spec(unescape('".$this->siteURL.rawurlencode($v[$k2i.'.']['url'])."'));";
@@ -1460,7 +1460,7 @@ class browse_links {
 				$cElements = $this->expandPage();
 
 				// Outputting Temporary DB mount notice:
-				if (intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint')))	{
+				if (intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint'))) {
 					$link = '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('setTempDBmount' => 0))) . '">' .
 										$GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xml:labels.temporaryDBmount', 1) .
 									'</a>';
@@ -1582,7 +1582,7 @@ class browse_links {
 			}
 
 			$selectJS = '
-				if (document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value>0 && document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value>0)	{
+				if (document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value>0 && document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value>0) {
 					document.ltargetform.ltarget.value = document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value+"x"+document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value;
 					browse_links_setTarget(document.ltargetform.ltarget.value);
 					browse_links_setClass(document.lclassform.lclass.value);
@@ -1726,7 +1726,7 @@ class browse_links {
 			// Getting flag for showing/not showing thumbnails:
 		$noThumbs = $GLOBALS['BE_USER']->getTSConfigVal('options.noThumbsInEB');
 
-		if (!$noThumbs)	{
+		if (!$noThumbs) {
 				// MENU-ITEMS, fetching the setting for thumbnails from File>List module:
 			$_MOD_MENU = array('displayThumbs' => '');
 			$_MCONF['name']='file_list';
@@ -1742,7 +1742,7 @@ class browse_links {
 
 		list(,,$specUid) = explode('_',$this->PM);
 
-		if ($this->mode=='filedrag')	{
+		if ($this->mode=='filedrag') {
 			$files = $this->TBE_dragNDrop($this->selectedFolder, $pArr[3]);
 		} else {
 			$files = $this->TBE_expandFolder($this->selectedFolder, $pArr[3], $noThumbs);
@@ -1918,10 +1918,10 @@ class browse_links {
 
 				// Traverse list of records:
 			$c=0;
-			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$c++;
 				$icon = t3lib_iconWorks::getSpriteIconForRecord('tt_content', $row);
-				if ($this->curUrlInfo['act']=='page' && $this->curUrlInfo['cElement']==$row['uid'])	{
+				if ($this->curUrlInfo['act']=='page' && $this->curUrlInfo['cElement']==$row['uid']) {
 					$arrCol='<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/blinkarrow_left.gif','width="5" height="9"').' class="c-blinkArrowL" alt="" />';
 				} else {
 					$arrCol='';
@@ -1935,11 +1935,11 @@ class browse_links {
 						'</a><br />';
 
 					// Finding internal anchor points:
-				if (t3lib_div::inList('text,textpic', $row['CType']))	{
+				if (t3lib_div::inList('text,textpic', $row['CType'])) {
 					$split = preg_split('/(<a[^>]+name=[\'"]?([^"\'>[:space:]]+)[\'"]?[^>]*>)/i', $row['bodytext'], -1, PREG_SPLIT_DELIM_CAPTURE);
 
-					foreach($split as $skey => $sval)	{
-						if (($skey%3)==2)	{
+					foreach($split as $skey => $sval) {
+						if (($skey%3)==2) {
 								// Putting list element HTML together:
 							$sval = substr($sval,0,100);
 							$out.='<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/ol/line.gif','width="18" height="16"').' alt="" />'.
@@ -1961,12 +1961,12 @@ class browse_links {
 	 * @param	string		Commalist of tables. Set to "*" if you want all tables.
 	 * @return	string		HTML output.
 	 */
-	function TBE_expandPage($tables)	{
+	function TBE_expandPage($tables) {
 		$out='';
 		if ($this->expandPage >= 0 && t3lib_utility_Math::canBeInterpretedAsInteger($this->expandPage) && $GLOBALS['BE_USER']->isInWebMount($this->expandPage)) {
 
 				// Set array with table names to list:
-			if (!strcmp(trim($tables),'*'))	{
+			if (!strcmp(trim($tables),'*')) {
 				$tablesArr = array_keys($GLOBALS['TCA']);
 			} else {
 				$tablesArr = t3lib_div::trimExplode(',',$tables,1);
@@ -2114,7 +2114,7 @@ class browse_links {
 			$folderIcon .= htmlspecialchars(t3lib_div::fixed_lgd_cs($folder->getIdentifier(), $titleLen));
 
 			$picon='<a href="#" onclick="return link_folder(\'file:'.$folder->getCombinedIdentifier().'\');">' . $folderIcon . '</a>';
-			if ($this->curUrlInfo['act'] == 'folder' && $currentIdentifier == $folder->getCombinedIdentifier())	{
+			if ($this->curUrlInfo['act'] == 'folder' && $currentIdentifier == $folder->getCombinedIdentifier()) {
 				$out.= '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"') . ' class="c-blinkArrowL" alt="" />';
 			}
 			$out.=$picon.'<br />';
@@ -2335,7 +2335,7 @@ class browse_links {
 
 			// Create the header of current folder:
 		if($baseFolder) {
-			if (strstr($baseFolder, ',') || strstr($baseFolder, '|'))	{
+			if (strstr($baseFolder, ',') || strstr($baseFolder, '|')) {
 					// In case an invalid character is in the filepath, display error message:
 				$errorMessage     = $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->getLL('invalidChar'), ', |'));
 				$aTag = $aTag_alt = "<a href=\"#\" onclick=\"alert(".$errorMessage.");return false;\">";
@@ -2365,7 +2365,7 @@ class browse_links {
 			if(count($folders) > 0) {
 					// Traverse the folder list:
 				$lines = array();
-				foreach($folders as $folderPath)	{
+				foreach($folders as $folderPath) {
 					$pathInfo = pathinfo($folderPath);
 
 						// Create folder icon:
@@ -2378,7 +2378,7 @@ class browse_links {
 						$aTag = "<a href=\"#\" onclick=\"return insertElement('','".rawurlencode($folderPath)."', 'folder', '".rawurlencode($folderPath)."', unescape('".rawurlencode($folderPath)."'), '".$pathInfo['extension']."', '".$ficon."');\">";
 					}
 
-					if (strstr($folderPath,',') || strstr($folderPath,'|'))	{
+					if (strstr($folderPath,',') || strstr($folderPath,'|')) {
 							// In case an invalid character is in the filepath, display error message:
 						$errorMessage     = $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->getLL('invalidChar'), ', |'));
 						$aTag = $aTag_alt = "<a href=\"#\" onclick=\"alert(".$errorMessage.");return false;\">";
@@ -2472,14 +2472,14 @@ class browse_links {
 
 							// Show only web-images
 						$fileExtension = strtolower($fileObject->getExtension());
-						if (t3lib_div::inList('gif,jpeg,jpg,png', $fileExtension))	{
+						if (t3lib_div::inList('gif,jpeg,jpg,png', $fileExtension)) {
 							$imgInfo = @getimagesize($fileObject->getForLocalProcessing(FALSE));
 							$pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
 
 							$size = ' ('.t3lib_div::formatSize($fileObject->getSize()) . 'bytes' . ($pDim ? ', ' . $pDim : '') . ')';
 							$filenameAndIcon = t3lib_iconWorks::getSpriteIconForFile($fileExtension, array('title' => $fileObject->getName() . $size));
 
-							if (t3lib_div::_GP('noLimit'))	{
+							if (t3lib_div::_GP('noLimit')) {
 								$maxW=10000;
 								$maxH=10000;
 							} else {
@@ -2488,11 +2488,11 @@ class browse_links {
 							}
 							$IW = $imgInfo[0];
 							$IH = $imgInfo[1];
-							if ($IW>$maxW)	{
+							if ($IW>$maxW) {
 								$IH=ceil($IH/$IW*$maxW);
 								$IW=$maxW;
 							}
-							if ($IH>$maxH)	{
+							if ($IH>$maxH) {
 								$IW=ceil($IW/$IH*$maxH);
 								$IH=$maxH;
 							}
@@ -2563,7 +2563,7 @@ class browse_links {
 	 * @param	string		Absolute filepath
 	 * @return	boolean		If the input path is found in PATH_site then it returns TRUE.
 	 */
-	function isWebFolder($folder)	{
+	function isWebFolder($folder) {
 		$folder = rtrim($folder, '/').'/';
 		return t3lib_div::isFirstPartOfStr($folder,PATH_site) ? TRUE : FALSE;
 	}
@@ -2574,7 +2574,7 @@ class browse_links {
 	 * @param	string		Absolute filepath
 	 * @return	boolean		If the input path is found in the backend users filemounts, then return TRUE.
 	 */
-	function checkFolder($folder)	{
+	function checkFolder($folder) {
 		return $this->fileProcessor->checkPathAgainstMounts(rtrim($folder, '/') . '/') ? TRUE : FALSE;
 	}
 
@@ -2594,7 +2594,7 @@ class browse_links {
 	 * @param	string		The string to print in the header. The value is htmlspecialchars()'ed before output.
 	 * @return	string		The header HTML (wrapped in a table)
 	 */
-	function barheader($str)	{
+	function barheader($str) {
 		return '
 			<!-- Bar header: -->
 			<h3>' . htmlspecialchars($str) . '</h3>
@@ -2608,7 +2608,7 @@ class browse_links {
 	 * @param	string		Icon filename body from gfx/ (default is "icon_note") - meant to allow change to warning type icons...
 	 * @return	string		HTML for the message (wrapped in a table).
 	 */
-	function getMsgBox($in_msg,$icon='icon_note')	{
+	function getMsgBox($in_msg,$icon='icon_note') {
 		$msg = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$icon.'.gif','width="18" height="16"').' alt="" />'.htmlspecialchars($in_msg);
 		$msg = '
 
@@ -2704,14 +2704,14 @@ class browse_links {
 					}
 				} else {	// URL is a page (id parameter)
 					$uP=parse_url($rel);
-					if (!trim($uP['path']))	{
+					if (!trim($uP['path'])) {
 						$pp = preg_split('/^id=/', $uP['query']);
 						$pp[1] = preg_replace( '/&id=[^&]*/', '', $pp[1]);
 						$parameters = explode('&', $pp[1]);
 						$id = array_shift($parameters);
-						if ($id)	{
+						if ($id) {
 							// Checking if the id-parameter is an alias.
-							if (!t3lib_utility_Math::canBeInterpretedAsInteger($id))	{
+							if (!t3lib_utility_Math::canBeInterpretedAsInteger($id)) {
 								list($idPartR) = t3lib_BEfunc::getRecordsByField('pages','alias',$id);
 								$id=intval($idPartR['uid']);
 							}
@@ -2727,7 +2727,7 @@ class browse_links {
 					}
 				}
 			} else {	// Email link:
-				if (strtolower(substr($href,0,7))=='mailto:')	{
+				if (strtolower(substr($href,0,7))=='mailto:') {
 					$info['value']=trim(substr($href,7));
 					$info['act']='mail';
 				}
@@ -2787,7 +2787,7 @@ class browse_links {
 						<td class="c-wCell c-hCell">';
 
 			// Traverse the number of upload fields (default is 3):
-		for ($a=1;$a<=$count;$a++)	{
+		for ($a=1;$a<=$count;$a++) {
 			$code.='<input type="file" multiple="multiple" name="upload_'.$a.'"'.$this->doc->formWidth(35).' size="50" />
 				<input type="hidden" name="file[upload]['.$a.'][target]" value="'.htmlspecialchars($folderObject->getCombinedIdentifier()).'" />
 				<input type="hidden" name="file[upload]['.$a.'][data]" value="'.$a.'" /><br />';

@@ -169,7 +169,7 @@ class SC_alt_file_navframe {
 		Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
 
 		// Function, loading the list frame from navigation tree:
-		function jumpTo(id, linkObj, highlightID, bank)	{
+		function jumpTo(id, linkObj, highlightID, bank) {
 			var theUrl = top.TS.PATH_typo3 + top.currentSubScript ;
 			if (theUrl.indexOf("?") != -1) {
 				theUrl += "&id=" + id

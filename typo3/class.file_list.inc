@@ -181,7 +181,7 @@ class fileList extends t3lib_recordList {
 	 * @param	string		Warning for JS confirm message
 	 * @return	string		Linked string
 	 */
-	function linkClipboardHeaderIcon($string,$table,$cmd,$warning='')	{
+	function linkClipboardHeaderIcon($string,$table,$cmd,$warning='') {
 		$onClickEvent = 'document.dblistForm.cmd.value=\''.$cmd.'\';document.dblistForm.submit();';
 		if ($warning)	$onClickEvent = 'if (confirm('.$GLOBALS['LANG']->JScharCode($warning).')){'.$onClickEvent.'}';
 		return '<a href="#" onclick="'.htmlspecialchars($onClickEvent).'return false;">'.$string.'</a>';
@@ -214,7 +214,7 @@ class fileList extends t3lib_recordList {
 				foreach($files as $file) {
 					$fileObject = $storage->getFile($file['identifier']);
 
-					switch ($this->sort)	{
+					switch ($this->sort) {
 						case 'size':
 							$sortingKey = $fileObject->getSize();
 							break;
@@ -287,17 +287,17 @@ class fileList extends t3lib_recordList {
 			// Header line is drawn
 		$theData = array();
 
-		foreach ($this->fieldArray as $v)	{
+		foreach ($this->fieldArray as $v) {
 			if ($v == '_CLIPBOARD_' && $this->clipBoard) {
 				$cells=array();
 				$table='_FILE';
 				$elFromTable = $this->clipObj->elFromTable($table);
-				if (count($elFromTable))	{
+				if (count($elFromTable)) {
 					$cells[] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE',$this->folderObject->getCombinedIdentifier())) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $this->path, 'into', $elFromTable)) . '" title="' . $GLOBALS['LANG']->getLL('clip_paste', 1) . '">' .
 						t3lib_iconWorks::getSpriteIcon('actions-document-paste-after') .
 					'</a>';
 				}
-				if ($this->clipObj->current!='normal' && $iOut)	{
+				if ($this->clipObj->current!='normal' && $iOut) {
 					$cells[]=$this->linkClipboardHeaderIcon(t3lib_iconWorks::getSpriteIcon('actions-edit-copy', array('title' => $GLOBALS['LANG']->getLL('clip_selectMarked', 1))), $table,'setCB');
 					$cells[]=$this->linkClipboardHeaderIcon(t3lib_iconWorks::getSpriteIcon('actions-edit-delete', array('title' => $GLOBALS['LANG']->getLL('clip_deleteMarked'))), $table,'delete',$GLOBALS['LANG']->getLL('clip_deleteMarkedWarning'));
 					$onClick = 'checkOffCB(\'' . implode(',', $this->CBnames) . '\', this); return false;';
@@ -467,7 +467,7 @@ class fileList extends t3lib_recordList {
 	 *
 	 * @return	string		URL
 	 */
-	function listURL()	{
+	function listURL() {
 		return t3lib_div::linkThisScript(array(
 			'target'    => rawurlencode($this->folderObject->getCombinedIdentifier()),
 			'imagemode' => $this->thumbs
@@ -484,12 +484,12 @@ class fileList extends t3lib_recordList {
 		$title = htmlspecialchars($folderObject->getName());
 		$icon = 'apps-filetree-folder-default';
 
-		if ($title == '_temp_')	{
+		if ($title == '_temp_') {
 			$icon = 'apps-filetree-folder-temp';
 			$title = '<strong>' . $GLOBALS['LANG']->getLL('temp', TRUE) . '</strong>';
 		}
 
-		if ($title == '_recycler_')	{
+		if ($title == '_recycler_') {
 			$icon = 'apps-filetree-folder-recycler';
 			$title = '<strong>' . $GLOBALS['LANG']->getLL('recycler', TRUE) . '</strong>';
 		}
@@ -532,7 +532,7 @@ class fileList extends t3lib_recordList {
 					// 	Preparing and getting the data-array
 				$theData = array();
 				foreach ($this->fieldArray as $field) {
-					switch ($field)	{
+					switch ($field) {
 						case 'size':
 							$theData[$field] = t3lib_div::formatSize($fileObject->getSize(), $GLOBALS['LANG']->getLL('byteSizeUnits', TRUE));
 						break;
@@ -590,7 +590,7 @@ class fileList extends t3lib_recordList {
 	 * @param	string		file extension
 	 * @return	boolean
 	 */
-	function isImage($ext)	{
+	function isImage($ext) {
 		return t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],strtolower($ext));
 	}
 
@@ -602,7 +602,7 @@ class fileList extends t3lib_recordList {
 	 * @param	string		Sorting column
 	 * @return	string		HTML
 	 */
-	function linkWrapSort($code, $folderIdentifier, $col)	{
+	function linkWrapSort($code, $folderIdentifier, $col) {
 		if ($this->sort==$col && !$this->sortRev)	{		// reverse sorting
 			$params='&SET[sort]=' . $col . '&SET[reverse]=1';
 		} else {
@@ -753,7 +753,7 @@ class fileList extends t3lib_recordList {
 			// Compile information for title tag:
 		$infoData=array();
 		if (is_array($rows)) {
-			foreach($rows as $row)	{
+			foreach($rows as $row) {
 				$infoData[]= $row['tablename'] . ':' . $row['recuid'] . ':' . $row['field'];
 			}
 		}

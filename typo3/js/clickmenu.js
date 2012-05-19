@@ -226,7 +226,7 @@ Event.observe(document, 'mousemove', Clickmenu.calcMousePosEvent.bindAsEventList
 // ## BEGIN ##
 
 // Still used in Core: typo3/template.php::wrapClickMenuOnIcon()
-function showClickmenu(table, uid, listFr, enDisItems, backPath, addParams)	{
+function showClickmenu(table, uid, listFr, enDisItems, backPath, addParams) {
 	Clickmenu.show(table, uid, listFr, enDisItems, backPath, addParams);
 }
 
@@ -251,7 +251,7 @@ function hideEmpty() {
 	return false;
 }
 function hideSpecific(level) {
-	if (level === 0 || level === 1)	{
+	if (level === 0 || level === 1) {
 		Clickmenu.hide('contentMenu'+level);
 	}
 } 

@@ -153,7 +153,7 @@ class SC_file_newfolder {
 				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.number_of_folders') .
 				'</label>
 				<select name="number" id="number-of-new-folders" onchange="reload(this.options[this.selectedIndex].value);">';
-		for ($a=1;$a<=$this->folderNumber;$a++)	{
+		for ($a=1;$a<=$this->folderNumber;$a++) {
 			$code .= '<option value="' . $a . '"' .
 					($this->number == $a ? ' selected="selected"' : '') .
 					'>' . $a . '</option>';
@@ -167,7 +167,7 @@ class SC_file_newfolder {
 		$code.='
 			<div id="c-createFolders">
 		';
-		for ($a=0;$a<$this->number;$a++)	{
+		for ($a=0;$a<$this->number;$a++) {
 			$code.='
 					<input'.$this->doc->formWidth(20).' type="text" name="file[newfolder]['.$a.'][data]" onchange="changed=true;" />
 					<input type="hidden" name="file[newfolder][' . $a . '][target]" value="' . htmlspecialchars($this->target) . '" /><br />

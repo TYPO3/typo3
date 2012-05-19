@@ -204,7 +204,7 @@ class SC_wizard_forms {
 		$this->doc->form ='<form action="'.htmlspecialchars($rUri).'" method="post" name="wizardForm">';
 
 			// If save command found, include tcemain:
-		if ($_POST['savedok_x'] || $_POST['saveandclosedok_x'])	{
+		if ($_POST['savedok_x'] || $_POST['saveandclosedok_x']) {
 			$this->include_once[]=PATH_t3lib.'class.t3lib_tcemain.php';
 		}
 	}
@@ -215,7 +215,7 @@ class SC_wizard_forms {
 	 * @return	void
 	 */
 	function main() {
-		if ($this->P['table'] && $this->P['field'] && $this->P['uid'])	{
+		if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
 			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('forms_title'), $this->formsWizard(), 0, 1);
 		} else {
 			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('forms_title'), '<span class="typo3-red">' . $GLOBALS['LANG']->getLL('table_noData',1) . '</span>', 0, 1);
@@ -329,16 +329,16 @@ class SC_wizard_forms {
 	 * @return	array		Configuration Array
 	 * @access private
 	 */
-	function getConfigCode(&$row)	{
+	function getConfigCode(&$row) {
 
 			// If some data has been submitted, then construct
-		if (isset($this->FORMCFG['c']))	{
+		if (isset($this->FORMCFG['c'])) {
 
 				// Process incoming:
 			$this->changeFunc();
 
 				// Convert to string (either line based or XML):
-			if ($this->xmlStorage)	{
+			if ($this->xmlStorage) {
 					// Convert the input array to XML:
 				$bodyText = t3lib_div::array2xml_cs($this->FORMCFG['c'],'T3FormWizard');
 
@@ -353,7 +353,7 @@ class SC_wizard_forms {
 			}
 
 				// If a save button has been pressed, then save the new field content:
-			if ($_POST['savedok_x'] || $_POST['saveandclosedok_x'])	{
+			if ($_POST['savedok_x'] || $_POST['saveandclosedok_x']) {
 
 					// Make TCEmain object:
 				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
@@ -362,7 +362,7 @@ class SC_wizard_forms {
 					// Put content into the data array:
 				$data=array();
 				$data[$this->P['table']][$this->P['uid']][$this->P['field']]=$bodyText;
-				if ($this->special=='formtype_mail')	{
+				if ($this->special=='formtype_mail') {
 					$data[$this->P['table']][$this->P['uid']]['subheader']=$this->FORMCFG['recipient'];
 				}
 
@@ -379,7 +379,7 @@ class SC_wizard_forms {
 				}
 			}
 		} else {	// If nothing has been submitted, load the $bodyText variable from the selected database row:
-			if ($this->xmlStorage)	{
+			if ($this->xmlStorage) {
 				$cfgArr = t3lib_div::xml2array($row[$this->P['field']]);
 			} else {	// Regular linebased form configuration:
 				$cfgArr = $this->cfgString2CfgArray($row[$this->P['field']]);
@@ -399,7 +399,7 @@ class SC_wizard_forms {
 	 * @return	string		HTML for the form wizard
 	 * @access private
 	 */
-	function getFormHTML($formCfgArray,$row)	{
+	function getFormHTML($formCfgArray,$row) {
 			// Initialize variables:
 		$specParts=array();
 		$hiddenFields=array();
@@ -419,7 +419,7 @@ class SC_wizard_forms {
 
 			// Traverse the number of form elements:
 		$k=0;
-		foreach($formCfgArray as $confData)	{
+		foreach($formCfgArray as $confData) {
 
 				// Initialize:
 			$cells=array();
@@ -428,7 +428,7 @@ class SC_wizard_forms {
 			if (!isset($confData['comment'])) {
 
 					// Special parts:
-				if ($this->special=='formtype_mail' && t3lib_div::inList('formtype_mail,subject,html_enabled',$confData['fieldname']))	{
+				if ($this->special=='formtype_mail' && t3lib_div::inList('formtype_mail,subject,html_enabled',$confData['fieldname'])) {
 					$specParts[$confData['fieldname']] = $confData['default'];
 				} else {
 
@@ -443,7 +443,7 @@ class SC_wizard_forms {
 					$opt=array();
 					$opt[]='<option value=""></option>';
 					$types = explode(',','input,textarea,select,check,radio,password,file,hidden,submit,property,label');
-					foreach($types as $t)	{
+					foreach($types as $t) {
 						$opt[]='
 								<option value="'.$t.'"'.($confData['type']==$t?' selected="selected"':'').'>'.$GLOBALS['LANG']->getLL('forms_type_'.$t,1).'</option>';
 					}
@@ -454,7 +454,7 @@ class SC_wizard_forms {
 							</select>';
 
 						// Title field:
-					if (!t3lib_div::inList('hidden,submit',$confData['type']))	{
+					if (!t3lib_div::inList('hidden,submit',$confData['type'])) {
 						$temp_cells[$GLOBALS['LANG']->getLL('forms_label')]='<input type="text"'.$this->doc->formWidth(15).' name="FORMCFG[c]['.(($k+1)*2).'][label]" value="'.htmlspecialchars($confData['label']).'" />';
 					}
 
@@ -471,15 +471,15 @@ class SC_wizard_forms {
 					$temp_cells=array();
 
 						// Fieldname
-					if ($this->special=='formtype_mail' && $confData['type']=='file')	{
+					if ($this->special=='formtype_mail' && $confData['type']=='file') {
 						$confData['fieldname'] = 'attachment'.(++$this->attachmentCounter);
 					}
-					if (!t3lib_div::inList('label',$confData['type']))	{
+					if (!t3lib_div::inList('label',$confData['type'])) {
 						$temp_cells[$GLOBALS['LANG']->getLL('forms_fieldName')]='<input type="text"'.$this->doc->formWidth(10).' name="FORMCFG[c]['.(($k+1)*2).'][fieldname]" value="'.htmlspecialchars($confData['fieldname']).'" title="'.$GLOBALS['LANG']->getLL('forms_fieldName',1).'" />';
 					}
 
 						// Field configuration depending on the fields type:
-					switch((string)$confData['type'])	{
+					switch((string)$confData['type']) {
 						case 'textarea':
 							$temp_cells[$GLOBALS['LANG']->getLL('forms_cols')]='<input type="text"'.$this->doc->formWidth(5).' name="FORMCFG[c]['.(($k+1)*2).'][cols]" value="'.htmlspecialchars($confData['cols']).'" title="'.$GLOBALS['LANG']->getLL('forms_cols',1).'" />';
 							$temp_cells[$GLOBALS['LANG']->getLL('forms_rows')]='<input type="text"'.$this->doc->formWidth(5).' name="FORMCFG[c]['.(($k+1)*2).'][rows]" value="'.htmlspecialchars($confData['rows']).'" title="'.$GLOBALS['LANG']->getLL('forms_rows',1).'" />';
@@ -501,20 +501,20 @@ class SC_wizard_forms {
 					}
 
 						// Field configuration depending on the fields type:
-					switch((string)$confData['type'])	{
+					switch((string)$confData['type']) {
 						case 'textarea':
 						case 'input':
 						case 'password':
-							if (strlen(trim($confData['specialEval'])))	{
+							if (strlen(trim($confData['specialEval']))) {
 								$hiddenFields[] = '<input type="hidden" name="FORMCFG[c]['.(($k+1)*2).'][specialEval]" value="'.htmlspecialchars($confData['specialEval']).'" />';
 							}
 						break;
 					}
 
 						// Default data
-					if ($confData['type']=='select' || $confData['type']=='radio')	{
+					if ($confData['type']=='select' || $confData['type']=='radio') {
 						$temp_cells[$GLOBALS['LANG']->getLL('forms_options')]='<textarea '.$this->doc->formWidthText(15).' rows="4" name="FORMCFG[c]['.(($k+1)*2).'][options]" title="'.$GLOBALS['LANG']->getLL('forms_options',1).'">'.t3lib_div::formatForTextarea($confData['default']).'</textarea>';
-					} elseif ($confData['type']=='check')	{
+					} elseif ($confData['type']=='check') {
 						$temp_cells[$GLOBALS['LANG']->getLL('forms_checked')]='<input type="checkbox" name="FORMCFG[c]['.(($k+1)*2).'][default]" value="1"'.(trim($confData['default'])?' checked="checked"':'').' title="'.$GLOBALS['LANG']->getLL('forms_checked',1).'" />';
 					} elseif ($confData['type'] && $confData['type']!='file') {
 						$temp_cells[$GLOBALS['LANG']->getLL('forms_default')]='<input type="text"'.$this->doc->formWidth(15).' name="FORMCFG[c]['.(($k+1)*2).'][default]" value="'.htmlspecialchars($confData['default']).'" title="'.$GLOBALS['LANG']->getLL('forms_default',1).'" />';
@@ -528,14 +528,14 @@ class SC_wizard_forms {
 					$onClick=' onclick="'.htmlspecialchars($onClick).'"';
 // FIXME $inputStyle undefined
 					$brTag=$inputStyle?'':'<br />';
-					if ($k!=0)	{
+					if ($k!=0) {
 						$ctrl.='<input type="image" name="FORMCFG[row_up]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2up.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_up',1).'" />'.$brTag;
 					} else {
 						$ctrl.='<input type="image" name="FORMCFG[row_bottom]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_up.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_bottom',1).'" />'.$brTag;
 					}
 					$ctrl.='<input type="image" name="FORMCFG[row_remove]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_removeRow',1).'" />'.$brTag;
 // FIXME $tLines undefined
-					if (($k+1)!=count($tLines))	{
+					if (($k+1)!=count($tLines)) {
 						$ctrl.='<input type="image" name="FORMCFG[row_down]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2down.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_down',1).'" />'.$brTag;
 					} else {
 						$ctrl.='<input type="image" name="FORMCFG[row_top]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_down.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_top',1).'" />'.$brTag;
@@ -562,7 +562,7 @@ class SC_wizard_forms {
 		}
 
 			// If the form is of the special type "formtype_mail" (used for tt_content elements):
-		if ($this->special=='formtype_mail')	{
+		if ($this->special=='formtype_mail') {
 
 				// Blank spacer:
 			$tRows[]='
@@ -656,29 +656,29 @@ class SC_wizard_forms {
 	 * @access private
 	 */
 	function changeFunc() {
-		if ($this->FORMCFG['row_remove'])	{
+		if ($this->FORMCFG['row_remove']) {
 			$kk = key($this->FORMCFG['row_remove']);
 			$cmd='row_remove';
-		} elseif ($this->FORMCFG['row_add'])	{
+		} elseif ($this->FORMCFG['row_add']) {
 			$kk = key($this->FORMCFG['row_add']);
 			$cmd='row_add';
-		} elseif ($this->FORMCFG['row_top'])	{
+		} elseif ($this->FORMCFG['row_top']) {
 			$kk = key($this->FORMCFG['row_top']);
 			$cmd='row_top';
-		} elseif ($this->FORMCFG['row_bottom'])	{
+		} elseif ($this->FORMCFG['row_bottom']) {
 			$kk = key($this->FORMCFG['row_bottom']);
 			$cmd='row_bottom';
-		} elseif ($this->FORMCFG['row_up'])	{
+		} elseif ($this->FORMCFG['row_up']) {
 			$kk = key($this->FORMCFG['row_up']);
 			$cmd='row_up';
-		} elseif ($this->FORMCFG['row_down'])	{
+		} elseif ($this->FORMCFG['row_down']) {
 			$kk = key($this->FORMCFG['row_down']);
 			$cmd='row_down';
 		}
 
 		if ($cmd && t3lib_utility_Math::canBeInterpretedAsInteger($kk)) {
-			if (substr($cmd,0,4)=='row_')	{
-				switch($cmd)	{
+			if (substr($cmd,0,4)=='row_') {
+				switch($cmd) {
 					case 'row_remove':
 						unset($this->FORMCFG['c'][$kk]);
 					break;
@@ -714,13 +714,13 @@ class SC_wizard_forms {
 	 * @return	string		The array converted into a string with line-based configuration.
 	 * @see cfgString2CfgArray()
 	 */
-	function cfgArray2CfgString($cfgArr)	{
+	function cfgArray2CfgString($cfgArr) {
 
 			// Initialize:
 		$inLines=array();
 
 			// Traverse the elements of the form wizard and transform the settings into configuration code.
-		foreach($cfgArr as $vv)	{
+		foreach($cfgArr as $vv) {
 			if ($vv['comment'])	{	// If "content" is found, then just pass it over.
 				$inLines[]=trim($vv['comment']);
 			} else {	// Begin to put together the single-line configuration code of this field:
@@ -732,17 +732,17 @@ class SC_wizard_forms {
 				$thisLine[0]=str_replace('|','',$vv['label']);
 
 					// Set Type:
-				if ($vv['type'])	{
+				if ($vv['type']) {
 					$thisLine[1]=($vv['required']?'*':'').str_replace(',','',($vv['fieldname']?$vv['fieldname'].'=':'').$vv['type']);
 
 						// Default:
 					$tArr=array('','','','','','');
-					switch((string)$vv['type'])	{
+					switch((string)$vv['type']) {
 						case 'textarea':
 							if (intval($vv['cols']))	$tArr[0]=intval($vv['cols']);
 							if (intval($vv['rows']))	$tArr[1]=intval($vv['rows']);
 							if (trim($vv['extra']))		$tArr[2]=trim($vv['extra']);
-							if (strlen($vv['specialEval']))	{
+							if (strlen($vv['specialEval'])) {
 								$thisLine[2] = '';	// Preset blank default value so position 3 can get a value...
 								$thisLine[3] = $vv['specialEval'];
 							}
@@ -751,7 +751,7 @@ class SC_wizard_forms {
 						case 'password':
 							if (intval($vv['size']))	$tArr[0]=intval($vv['size']);
 							if (intval($vv['max']))		$tArr[1]=intval($vv['max']);
-							if (strlen($vv['specialEval']))	{
+							if (strlen($vv['specialEval'])) {
 								$thisLine[2] = '';	// Preset blank default value so position 3 can get a value...
 								$thisLine[3] = $vv['specialEval'];
 							}
@@ -771,9 +771,9 @@ class SC_wizard_forms {
 					$thisLine[1]=str_replace('|','',$thisLine[1]);
 
 						// Default:
-					if ($vv['type']=='select' || $vv['type']=='radio')	{
+					if ($vv['type']=='select' || $vv['type']=='radio') {
 						$thisLine[2]=str_replace(LF,', ',str_replace(',','',$vv['options']));
-					} elseif ($vv['type']=='check')	{
+					} elseif ($vv['type']=='check') {
 						if ($vv['default'])	$thisLine[2]=1;
 					} elseif (strcmp(trim($vv['default']),'')) {
 						$thisLine[2]=$vv['default'];
@@ -796,11 +796,11 @@ class SC_wizard_forms {
 	 * @return	array		Configuration array
 	 * @see cfgArray2CfgString()
 	 */
-	function cfgString2CfgArray($cfgStr)	{
+	function cfgString2CfgArray($cfgStr) {
 
 			// Traverse the number of form elements:
 		$tLines=explode(LF,$cfgStr);
-		foreach($tLines as $k => $v)	{
+		foreach($tLines as $k => $v) {
 
 				// Initialize:
 			$confData=array();
@@ -818,7 +818,7 @@ class SC_wizard_forms {
 					// Field:
 				$fParts = t3lib_div::trimExplode(',',$parts[1]);
 				$fParts[0]=trim($fParts[0]);
-				if (substr($fParts[0],0,1)=='*')	{
+				if (substr($fParts[0],0,1)=='*') {
 					$confData['required'] = 1;
 					$fParts[0] = substr($fParts[0],1);
 				}
@@ -826,12 +826,12 @@ class SC_wizard_forms {
 				$typeParts = t3lib_div::trimExplode('=',$fParts[0]);
 				$confData['type'] = trim(strtolower(end($typeParts)));
 
-				if ($confData['type'])	{
-					if (count($typeParts)==1)	{
+				if ($confData['type']) {
+					if (count($typeParts)==1) {
 						$confData['fieldname'] = substr(preg_replace('/[^a-zA-Z0-9_]/','',str_replace(' ','_',trim($parts[0]))),0,30);
 
 							// Attachment names...
-						if ($confData['type']=='file')	{
+						if ($confData['type']=='file') {
 							$confData['fieldname']='attachment'.$attachmentCounter;
 							$attachmentCounter=intval($attachmentCounter)+1;
 						}
@@ -839,7 +839,7 @@ class SC_wizard_forms {
 						$confData['fieldname'] = str_replace(' ','_',trim($typeParts[0]));
 					}
 
-					switch((string)$confData['type'])	{
+					switch((string)$confData['type']) {
 						case 'select':
 						case 'radio':
 							$confData['default'] = implode(LF,t3lib_div::trimExplode(',',$parts[2]));
@@ -850,7 +850,7 @@ class SC_wizard_forms {
 					}
 
 						// Field configuration depending on the fields type:
-					switch((string)$confData['type'])	{
+					switch((string)$confData['type']) {
 						case 'textarea':
 							$confData['cols'] = $fParts[1];
 							$confData['rows'] = $fParts[2];
@@ -895,9 +895,9 @@ class SC_wizard_forms {
 	 * @return	array		Processed array
 	 * @access private
 	 */
-	function cleanT($tArr)	{
-		for($a=count($tArr);$a>0;$a--)	{
-			if (strcmp($tArr[$a-1],''))	{
+	function cleanT($tArr) {
+		for($a=count($tArr);$a>0;$a--) {
+			if (strcmp($tArr[$a-1],'')) {
 				break;
 			} else {
 				unset($tArr[$a-1]);
@@ -913,11 +913,11 @@ class SC_wizard_forms {
 	 * @return	string		HTML table
 	 * @access private
 	 */
-	function formatCells($fArr)	{
+	function formatCells($fArr) {
 
 			// Traverse the elements in $fArr and wrap them in table cells:
 		$lines=array();
-		foreach($fArr as $l => $c)	{
+		foreach($fArr as $l => $c) {
 			$lines[]='
 				<tr>
 					<td nowrap="nowrap">'.htmlspecialchars($l.':').'&nbsp;</td>

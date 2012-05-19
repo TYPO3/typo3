@@ -102,19 +102,19 @@ class SC_wizard_add {
 		$TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig($this->P['table'],is_array($origRow)?$origRow:array('pid'=>$this->P['pid']));
 
 			// Set [params][pid]
-		if (substr($this->P['params']['pid'],0,3)=='###' && substr($this->P['params']['pid'],-3)=='###')	{
+		if (substr($this->P['params']['pid'],0,3)=='###' && substr($this->P['params']['pid'],-3)=='###') {
 			$this->pid = intval($TSconfig['_'.substr($this->P['params']['pid'],3,-3)]);
 		} else $this->pid = intval($this->P['params']['pid']);
 
 			// Return if new record as parent (not possibly/allowed)
-		if (!strcmp($this->pid,''))	{
+		if (!strcmp($this->pid,'')) {
 			t3lib_utility_Http::redirect(t3lib_div::sanitizeLocalUrl($this->P['returnUrl']));
 		}
 
 			// Else proceed:
 		if ($this->returnEditConf)	{	// If a new id has returned from a newly created record...
 			$eC = unserialize($this->returnEditConf);
-			if (is_array($eC[$this->table]) && t3lib_utility_Math::canBeInterpretedAsInteger($this->P['uid']))	{
+			if (is_array($eC[$this->table]) && t3lib_utility_Math::canBeInterpretedAsInteger($this->P['uid'])) {
 
 					// Getting id and cmd from returning editConf array.
 				reset($eC[$this->table]);
@@ -122,7 +122,7 @@ class SC_wizard_add {
 				$cmd = current($eC[$this->table]);
 
 					// ... and if everything seems OK we will register some classes for inclusion and instruct the object to perform processing later.
-				if ($this->P['params']['setValue'] && $cmd=='edit' && $this->id && $this->P['table'] && $this->P['field'] && $this->P['uid'])	{
+				if ($this->P['params']['setValue'] && $cmd=='edit' && $this->id && $this->P['table'] && $this->P['field'] && $this->P['uid']) {
 
 					if ($LiveRec=t3lib_BEfunc::getLiveVersionOfRecord($this->table, $this->id, 'uid'))	{ $this->id=$LiveRec['uid'];}
 
@@ -144,8 +144,8 @@ class SC_wizard_add {
 	 */
 	function main() {
 
-		if ($this->returnEditConf)	{
-			if ($this->processDataFlag)	{
+		if ($this->returnEditConf) {
+			if ($this->processDataFlag) {
 
 					// Preparing the data of the parent record...:
 				$trData = t3lib_div::makeInstance('t3lib_transferData');
@@ -153,7 +153,7 @@ class SC_wizard_add {
 				$current = reset($trData->regTableItems_data);
 
 					// If that record was found (should absolutely be...), then init TCEmain and set, prepend or append the record
-				if (is_array($current))	{
+				if (is_array($current)) {
 					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 					$tce->stripslashes_values=0;
 					$data = array();
@@ -167,7 +167,7 @@ class SC_wizard_add {
 						$curValueOfFlexform = $flexToolObj->getArrayValueByPath($this->P['flexFormPath'], $currentFlexFormData);
 						$insertValue = '';
 
-						switch((string)$this->P['params']['setValue'])	{
+						switch((string)$this->P['params']['setValue']) {
 							case 'set':
 								$insertValue = $addEl;
 							break;
@@ -183,7 +183,7 @@ class SC_wizard_add {
 						$data[$this->P['table']][$this->P['uid']][$this->P['field']] = array();
 						$flexToolObj->setArrayValueByPath($this->P['flexFormPath'],$data[$this->P['table']][$this->P['uid']][$this->P['field']],$insertValue);
 					} else {
-						switch((string)$this->P['params']['setValue'])	{
+						switch((string)$this->P['params']['setValue']) {
 							case 'set':
 								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl;
 							break;

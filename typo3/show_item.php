@@ -72,10 +72,10 @@ class transferData extends t3lib_transferData	{
 	 * @param	string		Content string.
 	 * @return	void
 	 */
-	function regItem($table, $id, $field, $content)	{
+	function regItem($table, $id, $field, $content) {
 		t3lib_div::loadTCA($table);
 		$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-		switch($config['type'])	{
+		switch($config['type']) {
 			case 'input':
 				if (isset($config['checkbox']) && $content == $config['checkbox']) {
 					$content = '';
@@ -172,7 +172,7 @@ class SC_show_item {
 					$this->row = $this->pageinfo;
 				} else {
 					$this->row = t3lib_BEfunc::getRecordWSOL($this->table, $this->uid);
-					if ($this->row)	{
+					if ($this->row) {
 						$this->pageinfo = t3lib_BEfunc::readPageAccess($this->row['pid'],$this->perms_clause);
 						$this->access = is_array($this->pageinfo) ? 1 : 0;
 					}
@@ -257,7 +257,7 @@ class SC_show_item {
 			}
 
 				// If return Url is set, output link to go back:
-			if (t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl')))	{
+			if (t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'))) {
 				$this->content = $this->doc->section('',$returnLinkTag.'<strong>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack',1).'</strong></a><br /><br />').$this->content;
 
 				$this->content .= $this->doc->section('','<br />'.$returnLinkTag.'<strong>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack',1).'</strong></a>');

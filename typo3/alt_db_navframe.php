@@ -187,7 +187,7 @@ class SC_alt_db_navframe {
 
 
 			// Outputting Temporary DB mount notice:
-		if ($this->active_tempMountPoint)	{
+		if ($this->active_tempMountPoint) {
 			$flashText = '
 				<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('setTempDBmount' => 0))) . '">' .
 				$GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xml:labels.temporaryDBmount', 1) .
@@ -329,7 +329,7 @@ class SC_alt_db_navframe {
 	function initializeTemporaryDBmount(){
 
 			// Set/Cancel Temporary DB Mount:
-		if (strlen($this->setTempDBmount))	{
+		if (strlen($this->setTempDBmount)) {
 			$set = t3lib_utility_Math::forceIntegerInRange($this->setTempDBmount,0);
 			if ($set > 0 && $GLOBALS['BE_USER']->isInWebMount($set)){
 					// Setting...:
@@ -361,7 +361,7 @@ class SC_alt_db_navframe {
 	 * @param	integer		The page id to set as DB mount
 	 * @return	void
 	 */
-	function settingTemporaryMountPoint($pageId)	{
+	function settingTemporaryMountPoint($pageId) {
 		$GLOBALS['BE_USER']->setAndSaveSessionData('pageTree_temporaryMountPoint',intval($pageId));
 	}
 

@@ -122,7 +122,7 @@ class SC_wizard_table {
 		$this->doc->form ='<form action="'.htmlspecialchars($rUri).'" method="post" name="wizardForm">';
 
 			// If save command found, include tcemain:
-		if ($_POST['savedok_x'] || $_POST['saveandclosedok_x'])	{
+		if ($_POST['savedok_x'] || $_POST['saveandclosedok_x']) {
 			$this->include_once[]=PATH_t3lib.'class.t3lib_tcemain.php';
 		}
 
@@ -246,7 +246,7 @@ class SC_wizard_table {
 	 * @return	array		Table config code in an array
 	 * @access private
 	 */
-	function getConfigCode($row)	{
+	function getConfigCode($row) {
 
 			// get delimiter settings
 		$flexForm = t3lib_div::xml2array($row['pi_flexform']);
@@ -257,14 +257,14 @@ class SC_wizard_table {
 		}
 
 			// If some data has been submitted, then construct
-		if (isset($this->TABLECFG['c']))	{
+		if (isset($this->TABLECFG['c'])) {
 
 				// Process incoming:
 			$this->changeFunc();
 
 
 				// Convert to string (either line based or XML):
-			if ($this->xmlStorage)	{
+			if ($this->xmlStorage) {
 					// Convert the input array to XML:
 				$bodyText = t3lib_div::array2xml_cs($this->TABLECFG['c'],'T3TableWizard');
 
@@ -279,7 +279,7 @@ class SC_wizard_table {
 			}
 
 				// If a save button has been pressed, then save the new field content:
-			if ($_POST['savedok_x'] || $_POST['saveandclosedok_x'])	{
+			if ($_POST['savedok_x'] || $_POST['saveandclosedok_x']) {
 
 					// Make TCEmain object:
 				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
@@ -299,7 +299,7 @@ class SC_wizard_table {
 				}
 			}
 		} else {	// If nothing has been submitted, load the $bodyText variable from the selected database row:
-			if ($this->xmlStorage)	{
+			if ($this->xmlStorage) {
 				$cfgArr = t3lib_div::xml2array($row[$this->P['field']]);
 			} else {	// Regular linebased table configuration:
 				$cfgArr = $this->cfgString2CfgArray($row[$this->P['field']],$row[$this->colsFieldName]);
@@ -318,19 +318,19 @@ class SC_wizard_table {
 	 * @return	string		HTML for the table wizard
 	 * @access private
 	 */
-	function getTableHTML($cfgArr,$row)	{
+	function getTableHTML($cfgArr,$row) {
 			// Traverse the rows:
 		$tRows=array();
 		$k=0;
-		foreach($cfgArr as $cellArr)	{
-			if (is_array($cellArr))	{
+		foreach($cfgArr as $cellArr) {
+			if (is_array($cellArr)) {
 					// Initialize:
 				$cells=array();
 				$a=0;
 
 					// Traverse the columns:
-				foreach($cellArr as $cellContent)	{
-					if ($this->inputStyle)	{
+				foreach($cellArr as $cellContent) {
+					if ($this->inputStyle) {
 						$cells[]='<input type="text"'.$this->doc->formWidth(20).' name="TABLE[c]['.(($k+1)*2).']['.(($a+1)*2).']" value="'.htmlspecialchars($cellContent).'" />';
 					} else {
 						$cellContent=preg_replace('/<br[ ]?[\/]?>/i',LF,$cellContent);
@@ -347,7 +347,7 @@ class SC_wizard_table {
 				$ctrl='';
 
 				$brTag=$this->inputStyle?'':'<br />';
-				if ($k!=0)	{
+				if ($k!=0) {
 					$ctrl.='<input type="image" name="TABLE[row_up]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2up.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_up',1).'" />'.$brTag;
 				} else {
 					$ctrl.='<input type="image" name="TABLE[row_bottom]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_up.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_bottom',1).'" />'.$brTag;
@@ -355,7 +355,7 @@ class SC_wizard_table {
 				$ctrl.='<input type="image" name="TABLE[row_remove]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_removeRow',1).'" />'.$brTag;
 
 // FIXME what is $tLines? See wizard_forms.php for the same.
-				if (($k+1)!=count($tLines))	{
+				if (($k+1)!=count($tLines)) {
 					$ctrl.='<input type="image" name="TABLE[row_down]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2down.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_down',1).'" />'.$brTag;
 				} else {
 					$ctrl.='<input type="image" name="TABLE[row_top]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_down.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_top',1).'" />'.$brTag;
@@ -379,22 +379,22 @@ class SC_wizard_table {
 		$cells[]='';
 			// Finding first row:
 		$firstRow = reset($cfgArr);
-		if (is_array($firstRow))	{
+		if (is_array($firstRow)) {
 
 				// Init:
 			$a=0;
 			$cols=count($firstRow);
 
 				// Traverse first row:
-			foreach($firstRow as $temp)	{
+			foreach($firstRow as $temp) {
 				$ctrl='';
-				if ($a!=0)	{
+				if ($a!=0) {
 					$ctrl.='<input type="image" name="TABLE[col_left]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2left.gif','').' title="'.$GLOBALS['LANG']->getLL('table_left',1).'" />';
 				} else {
 					$ctrl.='<input type="image" name="TABLE[col_end]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_left.gif','').' title="'.$GLOBALS['LANG']->getLL('table_end',1).'" />';
 				}
 				$ctrl.='<input type="image" name="TABLE[col_remove]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$GLOBALS['LANG']->getLL('table_removeColumn',1).'" />';
-				if (($a+1)!=$cols)	{
+				if (($a+1)!=$cols) {
 					$ctrl.='<input type="image" name="TABLE[col_right]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2right.gif','').' title="'.$GLOBALS['LANG']->getLL('table_right',1).'" />';
 				} else {
 					$ctrl.='<input type="image" name="TABLE[col_start]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_right.gif','').' title="'.$GLOBALS['LANG']->getLL('table_start',1).'" />';
@@ -452,52 +452,52 @@ class SC_wizard_table {
 	 * @access private
 	 */
 	function changeFunc() {
-		if ($this->TABLECFG['col_remove'])	{
+		if ($this->TABLECFG['col_remove']) {
 			$kk = key($this->TABLECFG['col_remove']);
 			$cmd='col_remove';
-		} elseif ($this->TABLECFG['col_add'])	{
+		} elseif ($this->TABLECFG['col_add']) {
 			$kk = key($this->TABLECFG['col_add']);
 			$cmd='col_add';
-		} elseif ($this->TABLECFG['col_start'])	{
+		} elseif ($this->TABLECFG['col_start']) {
 			$kk = key($this->TABLECFG['col_start']);
 			$cmd='col_start';
-		} elseif ($this->TABLECFG['col_end'])	{
+		} elseif ($this->TABLECFG['col_end']) {
 			$kk = key($this->TABLECFG['col_end']);
 			$cmd='col_end';
-		} elseif ($this->TABLECFG['col_left'])	{
+		} elseif ($this->TABLECFG['col_left']) {
 			$kk = key($this->TABLECFG['col_left']);
 			$cmd='col_left';
-		} elseif ($this->TABLECFG['col_right'])	{
+		} elseif ($this->TABLECFG['col_right']) {
 			$kk = key($this->TABLECFG['col_right']);
 			$cmd='col_right';
-		} elseif ($this->TABLECFG['row_remove'])	{
+		} elseif ($this->TABLECFG['row_remove']) {
 			$kk = key($this->TABLECFG['row_remove']);
 			$cmd='row_remove';
-		} elseif ($this->TABLECFG['row_add'])	{
+		} elseif ($this->TABLECFG['row_add']) {
 			$kk = key($this->TABLECFG['row_add']);
 			$cmd='row_add';
-		} elseif ($this->TABLECFG['row_top'])	{
+		} elseif ($this->TABLECFG['row_top']) {
 			$kk = key($this->TABLECFG['row_top']);
 			$cmd='row_top';
-		} elseif ($this->TABLECFG['row_bottom'])	{
+		} elseif ($this->TABLECFG['row_bottom']) {
 			$kk = key($this->TABLECFG['row_bottom']);
 			$cmd='row_bottom';
-		} elseif ($this->TABLECFG['row_up'])	{
+		} elseif ($this->TABLECFG['row_up']) {
 			$kk = key($this->TABLECFG['row_up']);
 			$cmd='row_up';
-		} elseif ($this->TABLECFG['row_down'])	{
+		} elseif ($this->TABLECFG['row_down']) {
 			$kk = key($this->TABLECFG['row_down']);
 			$cmd='row_down';
 		}
 
 		if ($cmd && t3lib_utility_Math::canBeInterpretedAsInteger($kk)) {
-			if (substr($cmd,0,4)=='row_')	{
-				switch($cmd)	{
+			if (substr($cmd,0,4)=='row_') {
+				switch($cmd) {
 					case 'row_remove':
 						unset($this->TABLECFG['c'][$kk]);
 					break;
 					case 'row_add':
-						for($a=1;$a<=$this->numNewRows;$a++)	{
+						for($a=1;$a<=$this->numNewRows;$a++) {
 							if (!isset($this->TABLECFG['c'][$kk+$a]))	{	// Checking if set: The point is that any new row inbetween existing rows will be TRUE after one row is added while if rows are added in the bottom of the table there will be no existing rows to stop the addition of new rows which means it will add up to $this->numNewRows rows then.
 								$this->TABLECFG['c'][$kk+$a] = array();
 							} else {
@@ -524,9 +524,9 @@ class SC_wizard_table {
 				}
 				ksort($this->TABLECFG['c']);
 			}
-			if (substr($cmd,0,4)=='col_')	{
+			if (substr($cmd,0,4)=='col_') {
 				foreach ($this->TABLECFG['c'] as $cAK => $value) {
-					switch($cmd)	{
+					switch($cmd) {
 						case 'col_remove':
 							unset($this->TABLECFG['c'][$cAK][$kk]);
 						break;
@@ -570,7 +570,7 @@ class SC_wizard_table {
 	 * @return	string		The array converted into a string with line-based configuration.
 	 * @see cfgString2CfgArray()
 	 */
-	function cfgArray2CfgString($cfgArr)	{
+	function cfgArray2CfgString($cfgArr) {
 
 			// Initialize:
 		$inLines=array();
@@ -599,7 +599,7 @@ class SC_wizard_table {
 	 * @return	array		Configuration array
 	 * @see cfgArray2CfgString()
 	 */
-	function cfgString2CfgArray($cfgStr,$cols)	{
+	function cfgString2CfgArray($cfgStr,$cols) {
 
 			// Explode lines in the configuration code - each line is a table row.
 		$tLines=explode(LF,$cfgStr);
@@ -612,14 +612,14 @@ class SC_wizard_table {
 
 			// Traverse the number of table elements:
 		$cfgArr=array();
-		foreach($tLines as $k => $v)	{
+		foreach($tLines as $k => $v) {
 
 				// Initialize:
 			$vParts = explode($this->tableParsing_delimiter,$v);
 
 				// Traverse columns:
-			for ($a=0;$a<$cols;$a++)	{
-				if ($this->tableParsing_quote && substr($vParts[$a],0,1) == $this->tableParsing_quote && substr($vParts[$a],-1,1) == $this->tableParsing_quote)	{
+			for ($a=0;$a<$cols;$a++) {
+				if ($this->tableParsing_quote && substr($vParts[$a],0,1) == $this->tableParsing_quote && substr($vParts[$a],-1,1) == $this->tableParsing_quote) {
 					$vParts[$a] = substr(trim($vParts[$a]),1,-1);
 				}
 				$cfgArr[$k][$a]=$vParts[$a];
