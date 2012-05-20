@@ -97,6 +97,8 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 		$message = 'PHP ' . $errorLevels[$errorLevel] . ': ' . $errorMessage . ' in ' . $errorFile . ' line ' . $errorLine;
 
 		if ($errorLevel & $this->exceptionalErrors) {
+				// We need to manually require the exception classes in case the autoloader is not available at this point yet.
+				// @see http://forge.typo3.org/issues/23444
 			if (!class_exists('t3lib_error_Exception', FALSE)) {
 				require_once(PATH_t3lib . 'class.t3lib_exception.php');
 				require_once(PATH_t3lib . 'error/class.t3lib_error_exception.php');
