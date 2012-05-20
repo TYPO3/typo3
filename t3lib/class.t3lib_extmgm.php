@@ -810,7 +810,24 @@ final class t3lib_extMgm {
 	}
 
 	/**
-	 * Adds $content to the default Page TSconfig as set in $TYPO3_CONF_VARS[BE]['defaultPageTSconfig']
+	 * Adds some more content to a key of TYPO3_CONF_VARS array.
+	 *
+	 * This also tracks which content was added by extensions (in TYPO3_CONF_VARS_extensionAdded)
+	 * so that they cannot be editted again through the Install Tool.
+	 *
+	 * @static
+	 * @param	string	The group ('FE', 'BE', 'SYS' ...)
+	 * @param	string	The key of this setting within the group
+	 * @param	string	The text to add (include leading "\n" in case of multi-line entries)
+	 * @return	void
+	 */
+	public static function appendToTypoConfVars($group, $key, $content) {
+		$GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$group][$key] .= $content;
+		$GLOBALS['TYPO3_CONF_VARS'][$group][$key] .= $content;
+	}
+
+	/**
+	 * Adds $content to the default Page TSconfig as set in $GLOBALS['TYPO3_CONF_VARS'][BE]['defaultPageTSconfig']
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_tables.php/ext_localconf.php FILES
 	 * Usage: 5
@@ -819,8 +836,7 @@ final class t3lib_extMgm {
 	 * @return	void
 	 */
 	public static function addPageTSConfig($content) {
-		global $TYPO3_CONF_VARS;
-		$TYPO3_CONF_VARS['BE']['defaultPageTSconfig'] .= "\n[GLOBAL]\n" . $content;
+		self::appendToTypoConfVars('BE', 'defaultPageTSconfig', "\n[GLOBAL]\n" . $content);
 	}
 
 	/**
@@ -833,8 +849,7 @@ final class t3lib_extMgm {
 	 * @return	void
 	 */
 	public static function addUserTSConfig($content) {
-		global $TYPO3_CONF_VARS;
-		$TYPO3_CONF_VARS['BE']['defaultUserTSconfig'] .= "\n[GLOBAL]\n" . $content;
+		self::appendToTypoConfVars('BE', 'defaultUserTSconfig', "\n[GLOBAL]\n" . $content);
 	}
 
 	/**
@@ -1237,8 +1252,7 @@ tt_content.' . $key . $prefix . ' {
 	 * @return	void
 	 */
 	public static function addTypoScriptSetup($content) {
-		global $TYPO3_CONF_VARS;
-		$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup'] .= "\n[GLOBAL]\n" . $content;
+		self::appendToTypoConfVars('FE', 'defaultTypoScript_setup', "\n[GLOBAL]\n" . $content);
 	}
 
 	/**
@@ -1251,8 +1265,7 @@ tt_content.' . $key . $prefix . ' {
 	 * @return	void
 	 */
 	public static function addTypoScriptConstants($content) {
-		global $TYPO3_CONF_VARS;
-		$TYPO3_CONF_VARS['FE']['defaultTypoScript_constants'] .= "\n[GLOBAL]\n" . $content;
+		self::appendToTypoConfVars('FE', 'defaultTypoScript_constants', "\n[GLOBAL]\n" . $content);
 	}
 
 	/**
