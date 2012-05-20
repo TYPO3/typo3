@@ -48,7 +48,6 @@ class t3lib_error_ProductionExceptionHandler extends t3lib_error_AbstractExcepti
 	/**
 	 * Constructs this exception handler - registers itself as the default exception handler.
 	 *
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct() {
 		set_exception_handler(array($this, 'handleException'));

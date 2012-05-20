@@ -71,7 +71,6 @@ class t3lib_mail_Message extends Swift_Message {
 	 * Sends the message.
 	 *
 	 * @return integer the number of recipients who were accepted for delivery
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function send() {
 		$this->initializeMailer();
@@ -84,7 +83,6 @@ class t3lib_mail_Message extends Swift_Message {
 	 * Checks whether the message has been sent.
 	 *
 	 * @return boolean
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function isSent() {
 		return $this->sent;
@@ -94,7 +92,6 @@ class t3lib_mail_Message extends Swift_Message {
 	 * Returns the recipients for which the mail was not accepted for delivery.
 	 *
 	 * @return array the recipients who were not accepted for delivery
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function getFailedRecipients() {
 		return $this->failedRecipients;
