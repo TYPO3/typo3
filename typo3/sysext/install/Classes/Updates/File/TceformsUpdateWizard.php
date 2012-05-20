@@ -170,7 +170,7 @@ class Tx_Install_Updates_File_TceformsUpdateWizard extends Tx_Install_Updates_Ba
 	protected function getRecordsFromTable($table, $relationFields) {
 		$fields = implode(',', array_merge($relationFields, array('uid', 'pid')));
 
-		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fields, $table);
+		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fields, $table, '');
 
 		return $records;
 	}
