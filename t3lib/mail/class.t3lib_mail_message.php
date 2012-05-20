@@ -31,7 +31,9 @@ require_once(PATH_typo3 . 'contrib/swiftmailer/swift_required.php');
 /**
  * Adapter for Swift_Mailer to be used by TYPO3 extensions
  *
- * @author	Ernesto Baschny <ernst@cron-it.de>
+ * @author Ernesto Baschny <ernst@cron-it.de>
+ * @author Karsten Dambekalns <karsten@typo3.org>
+ *
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -71,7 +73,6 @@ class t3lib_mail_Message extends Swift_Message {
 	 * Sends the message.
 	 *
 	 * @return integer the number of recipients who were accepted for delivery
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function send() {
 		$this->initializeMailer();
@@ -84,7 +85,6 @@ class t3lib_mail_Message extends Swift_Message {
 	 * Checks whether the message has been sent.
 	 *
 	 * @return boolean
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function isSent() {
 		return $this->sent;
@@ -94,7 +94,6 @@ class t3lib_mail_Message extends Swift_Message {
 	 * Returns the recipients for which the mail was not accepted for delivery.
 	 *
 	 * @return array the recipients who were not accepted for delivery
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function getFailedRecipients() {
 		return $this->failedRecipients;

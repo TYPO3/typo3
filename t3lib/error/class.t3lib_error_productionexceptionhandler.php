@@ -28,6 +28,9 @@
  *
  * This file is a backport from FLOW3
  *
+ * @author Robert Lemke <robert@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
+ *
  * @package TYPO3
  * @subpackage t3lib_error
  */
@@ -48,7 +51,6 @@ class t3lib_error_ProductionExceptionHandler extends t3lib_error_AbstractExcepti
 	/**
 	 * Constructs this exception handler - registers itself as the default exception handler.
 	 *
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct() {
 		set_exception_handler(array($this, 'handleException'));

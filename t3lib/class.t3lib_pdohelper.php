@@ -29,7 +29,9 @@
  * A helper class for handling PDO databases
  * Backport of FLOW3 class PdoHelper, last synced version: 3528
  *
+ * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @author Karsten Dambekalns <karsten@typo3.org>
+ *
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -46,7 +48,6 @@ class t3lib_PdoHelper {
 	 * @param string $pdoDriver
 	 * @param string $pathAndFilename
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	static public function importSql(PDO $databaseHandle, $pdoDriver, $pathAndFilename) {
 		$sql = file($pathAndFilename, FILE_IGNORE_NEW_LINES & FILE_SKIP_EMPTY_LINES);

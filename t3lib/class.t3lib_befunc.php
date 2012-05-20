@@ -34,6 +34,8 @@
  * Eg. to get a page-record 51 do this: 't3lib_BEfunc::getRecord('pages',51)'
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Michael Klapper <michael.klapper@aoemedia.de>
+ *
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -2681,8 +2683,6 @@ final class t3lib_BEfunc {
 	 * @param array $rootLine The root line structure to use
 	 *
 	 * @return string The full domain including the protocol http:// or https://, but without the trailing '/'
-	 *
-	 * @author Michael Klapper <michael.klapper@aoemedia.de>
 	 */
 	public static function getViewDomain($pageId, $rootLine = NULL) {
 		$domain = rtrim(t3lib_div::getIndpEnv('TYPO3_SITE_URL'), '/');

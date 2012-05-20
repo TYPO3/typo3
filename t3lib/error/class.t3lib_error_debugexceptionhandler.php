@@ -30,6 +30,9 @@
  *
  * This file is a backport from FLOW3
  *
+ * @author Robert Lemke <robert@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
+ *
  * @package TYPO3
  * @subpackage t3lib_error
  */
@@ -37,8 +40,6 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 
 	/**
 	 * Constructs this exception handler - registers itself as the default exception handler.
-	 *
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct() {
 		set_exception_handler(array($this, 'handleException'));
@@ -49,7 +50,6 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 	 *
 	 * @param  Exception $exception The exception object
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function echoExceptionWeb(Exception $exception) {
 		$this->sendStatusHeaders($exception);
@@ -134,7 +134,6 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 	 *
 	 * @param Exception $exception The exception object
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function echoExceptionCLI(Exception $exception) {
 		$filePathAndName = $exception->getFile();
@@ -151,7 +150,6 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 	 *
 	 * @param array $trace The trace
 	 * @return string Backtrace information
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function getBacktraceCode(array $trace) {
 		$backtraceCode = '';
@@ -198,7 +196,6 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 	 * @param string $filePathAndName Absolute path and file name of the PHP file
 	 * @param integer $lineNumber Line number defining the center of the code snippet
 	 * @return string The code snippet
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function getCodeSnippet($filePathAndName, $lineNumber) {
 		$codeSnippet = '<br />';
