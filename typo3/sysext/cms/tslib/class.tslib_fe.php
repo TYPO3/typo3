@@ -26,7 +26,7 @@
 ***************************************************************/
 
 /**
- * Class for the built TypoScript based Front End
+ * Main frontend class, instantiated in the index_ts.php script as the global object TSFE
  *
  * This class has a lot of functions and internal variable which are use from index_ts.php.
  * The class is instantiated as $GLOBALS['TSFE'] in index_ts.php.
@@ -35,12 +35,9 @@
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
- * Main frontend class, instantiated in the index_ts.php script as the global object TSFE
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Ingo Renner <ingo@typo3.org>
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  */
@@ -2263,7 +2260,6 @@ class tslib_fe {
 	 * shortcut
 	 *
 	 * @return	void
-	 * @author	Ingo Renner <ingo@typo3.org>
 	 */
 	protected function checkTranslatedShortcut() {
 

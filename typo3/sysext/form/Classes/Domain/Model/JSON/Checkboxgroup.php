@@ -72,7 +72,6 @@ class tx_form_Domain_Model_JSON_Checkboxgroup extends tx_form_Domain_Model_JSON_
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see tx_form_Domain_Model_Json_Fieldset::setParameters()
 	 */
 	public function setParameters(array $parameters) {

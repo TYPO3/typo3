@@ -28,9 +28,10 @@
 $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_info/locallang.xml');
 
 /**
- * This class displays the Info/Modify screen of the Web > Template module
+ * This class displays the Info/Modify screen of the Web > Template module.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Fabrizio Branca <typo3@fabrizio-branca.de>
  */
 class tx_tstemplateinfo extends t3lib_extobjbase {
 
@@ -147,7 +148,6 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 *
 	 * @param 	array 	$tplRow: template row
 	 * @return 	array	preprocessed template row
-	 * @author	Fabrizio Branca <typo3@fabrizio-branca.de>
 	 */
 	function processTemplateRowAfterLoading(array $tplRow) {
 		if ($this->pObj->MOD_SETTINGS['includeTypoScriptFileContent']) {
@@ -164,7 +164,6 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 *
 	 * @param 	array 	$tplRow: template row
 	 * @return 	array	preprocessed template row
-	 * @author	Fabrizio Branca <typo3@fabrizio-branca.de>
 	 */
 	function processTemplateRowBeforeSaving(array $tplRow) {
 		if ($this->pObj->MOD_SETTINGS['includeTypoScriptFileContent']) {

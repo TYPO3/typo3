@@ -21,17 +21,13 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Module extension (addition to function menu) 'Indexed search statistics' for the 'indexed_search' extension.
- *
- * @author	Dimitri Ebert <dimitri.ebert@dkd.de>
- */
-
 
 /**
  * Module extension (addition to function menu) 'Indexed search statistics' for the 'indexed_search' extension.
  *
- * @author	Dimitri Ebert <dimitri.ebert@dkd.de>
+ * @author Dimitri Ebert <dimitri.ebert@dkd.de>
+ * @author Kasper Skårhøj
+ *
  * @package TYPO3
  * @subpackage tx_indexedsearch
  */
@@ -189,7 +185,6 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 *
 	 * @param	string		Name of the function you want to call / hook key
 	 * @return	object		Hook object, if any. Otherwise NULL.
-	 * @author Kasper Skårhøj
 	 */
 	function hookRequest($functionName) {
 			// Hook: menuConfig_preProcessModMenu

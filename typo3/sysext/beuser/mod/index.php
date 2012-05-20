@@ -27,7 +27,8 @@
 /**
  * Backend User Administration Module
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Martin Kutschker
  */
 
 $GLOBALS['LANG']->includeLLFile('EXT:beuser/mod/locallang.xml');
@@ -42,7 +43,8 @@ $BE_USER->modAccess($MCONF,1);
 /**
  * Base Extension class for printing a page tree (non-browsable though)
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ *
  * @package TYPO3
  * @subpackage tx_beuser
  */
@@ -1498,7 +1500,7 @@ class SC_mod_tools_be_user_index {
 	 ***************************/
 
 	/**
-	 * @author Martin Kutschker
+	 * @return string
 	 */
 	function whoIsOnline() {
 		$select_fields = 'ses_id, ses_tstamp, ses_iplock, u.uid,u.username, u.admin, u.realName, u.disable, u.starttime, u.endtime, u.deleted, bu.uid AS bu_uid,bu.username AS bu_username, bu.realName AS bu_realName';
