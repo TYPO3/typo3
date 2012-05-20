@@ -94,7 +94,7 @@ class tx_form_Domain_Model_JSON_Select extends tx_form_Domain_Model_JSON_Element
 	protected function setOptions(array $parameters) {
 		if (is_array($parameters)) {
 			$keys = t3lib_TStemplate::sortedKeyList($parameters);
-			foreach ($keys as $key)	{
+			foreach ($keys as $key) {
 				$class = $parameters[$key];
 				if (intval($key) && !strstr($key, '.')) {
 					if (isset($parameters[$key . '.']) && $class === 'OPTION') {

@@ -198,7 +198,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		}
 
 			// Handle chosen action
-		switch((string)$this->MOD_SETTINGS['function'])	{
+		switch((string)$this->MOD_SETTINGS['function']) {
 			case 'scheduler':
 					// Scheduler's main screen
 				$content .= $this->executeTasks();

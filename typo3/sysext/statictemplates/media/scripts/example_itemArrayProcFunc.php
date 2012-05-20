@@ -70,7 +70,7 @@
  * @param	array		TypoScript configuration for the function. Notice that the property "parentObj" is a reference to the parent (calling) object (the tslib_Xmenu class instantiated)
  * @return	array		The modified $menuArr array
  */
-function user_itemArrayProcFuncTest($menuArr,$conf)	{
+function user_itemArrayProcFuncTest($menuArr,$conf) {
 	if ($conf['demoItemStates'])	{		// Used in the example of item states
 		$c=0;
 		$teststates=explode(',','NO,ACT,IFSUB,CUR,USR,SPC,USERDEF1,USERDEF2');
@@ -99,7 +99,7 @@ function user_itemArrayProcFuncTest($menuArr,$conf)	{
  * @return	array		The processed $I array returned (and stored in $this->I of the parent object again)
  * @see tslib_menu::userProcess(), tslib_tmenu::writeMenu(), tslib_gmenu::writeMenu()
  */
-function user_IProcFuncTest($I,$conf)	{
+function user_IProcFuncTest($I,$conf) {
 	$itemRow = $conf['parentObj']->menuArr[$I['key']];
 
 		// Setting the document status content to the value of the page title on mouse over
@@ -109,7 +109,7 @@ function user_IProcFuncTest($I,$conf)	{
 	$I = $conf['parentObj']->I;
 	if ($I['parts']['ATag_begin'])	$I['parts']['ATag_begin']=$I['A1'];
 
-	if ($conf['debug'])	{
+	if ($conf['debug']) {
 			// Outputting for debug example:
 		echo 'ITEM: <h2>'.htmlspecialchars($itemRow['uid'].': '.$itemRow['title']).'</h2>';
 		t3lib_utility_Debug::debug($itemRow);

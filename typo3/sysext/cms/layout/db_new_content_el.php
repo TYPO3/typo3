@@ -76,7 +76,7 @@ class ext_posMap extends t3lib_positionMap {
 	 * @param	array		The record row.
 	 * @return	string		Wrapped title string.
 	 */
-	function wrapRecordTitle($str,$row)	{
+	function wrapRecordTitle($str,$row) {
 		return $str;
 	}
 
@@ -190,7 +190,7 @@ class SC_db_new_content_el {
 	 * @return	void
 	 */
 	function main() {
-		if ($this->id && $this->access)	{
+		if ($this->id && $this->access) {
 
 				// Init position map object:
 			$posMap = t3lib_div::makeInstance('ext_posMap');
@@ -198,7 +198,7 @@ class SC_db_new_content_el {
 			$posMap->backPath = $GLOBALS['BACK_PATH'];
 
 			if ((string)$this->colPos!='')	{	// If a column is pre-set:
-				if ($this->uid_pid<0)	{
+				if ($this->uid_pid<0) {
 					$row=array();
 					$row['uid']=abs($this->uid_pid);
 				} else {
@@ -266,8 +266,8 @@ class SC_db_new_content_el {
 				// An item is either a header or an item rendered with a radio button and title/description and icon:
 			$cc = $key = 0;
 			$menuItems = array();
-			foreach ($wizardItems as $k => $wInfo)	{
-				if ($wInfo['header'])	{
+			foreach ($wizardItems as $k => $wInfo) {
+				if ($wInfo['header']) {
 					$menuItems[] = array(
 							'label'   => htmlspecialchars($wInfo['header']),
 							'content' => $this->elementWrapper['section'][0]
@@ -390,12 +390,12 @@ class SC_db_new_content_el {
 		);
 
 
-		if ($this->id && $this->access)	{
+		if ($this->id && $this->access) {
 				// CSH
 			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_ce', $GLOBALS['BACK_PATH'], '', TRUE);
 
 				// Back
-			if ($this->R_URI)	{
+			if ($this->R_URI) {
 				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->getLL('goBack', TRUE) . '">' .
 						t3lib_iconWorks::getSpriteIcon('actions-view-go-back') .
 					'</a>';
@@ -525,7 +525,7 @@ class SC_db_new_content_el {
 	 * @param	array		Wizard items, passed by reference
 	 * @return	void
 	 */
-	function removeInvalidElements(&$wizardItems)	{
+	function removeInvalidElements(&$wizardItems) {
 
 			// Load full table definition:
 		t3lib_div::loadTCA('tt_content');
@@ -538,14 +538,14 @@ class SC_db_new_content_el {
 
 		$headersUsed = Array();
 			// Traverse wizard items:
-		foreach($wizardItems as $key => $cfg)	{
+		foreach($wizardItems as $key => $cfg) {
 
 				// Exploding parameter string, if any (old style)
-			if ($wizardItems[$key]['params'])	{
+			if ($wizardItems[$key]['params']) {
 					// Explode GET vars recursively
 				$tempGetVars = t3lib_div::explodeUrl2Array($wizardItems[$key]['params'],TRUE);
 					// If tt_content values are set, merge them into the tt_content_defValues array, unset them from $tempGetVars and re-implode $tempGetVars into the param string (in case remaining parameters are around).
-				if (is_array($tempGetVars['defVals']['tt_content']))	{
+				if (is_array($tempGetVars['defVals']['tt_content'])) {
 					$wizardItems[$key]['tt_content_defValues'] = array_merge(is_array($wizardItems[$key]['tt_content_defValues']) ? $wizardItems[$key]['tt_content_defValues'] : array(), $tempGetVars['defVals']['tt_content']);
 					unset($tempGetVars['defVals']['tt_content']);
 					$wizardItems[$key]['params'] = t3lib_div::implodeArrayForUrl('',$tempGetVars);
@@ -553,10 +553,10 @@ class SC_db_new_content_el {
 			}
 
 				// If tt_content_defValues are defined...:
-			if (is_array($wizardItems[$key]['tt_content_defValues']))	{
+			if (is_array($wizardItems[$key]['tt_content_defValues'])) {
 
 					// Traverse field values:
-				foreach($wizardItems[$key]['tt_content_defValues'] as $fN => $fV)	{
+				foreach($wizardItems[$key]['tt_content_defValues'] as $fN => $fV) {
 					if (is_array($GLOBALS['TCA']['tt_content']['columns'][$fN])) {
 							// Get information about if the field value is OK:
 						$config = &$GLOBALS['TCA']['tt_content']['columns'][$fN]['config'];
@@ -578,9 +578,9 @@ class SC_db_new_content_el {
 			}
 		}
 			// remove headers without elements
-		foreach ($wizardItems as $key => $cfg)	{
+		foreach ($wizardItems as $key => $cfg) {
 			$tmp = explode('_',$key);
-			if ($tmp[0] && !$tmp[1] && !in_array($tmp[0], $headersUsed))	{
+			if ($tmp[0] && !$tmp[1] && !in_array($tmp[0], $headersUsed)) {
 				unset($wizardItems[$key]);
 			}
 		}

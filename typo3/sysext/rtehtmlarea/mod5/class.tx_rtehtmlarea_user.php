@@ -89,7 +89,7 @@ class tx_rtehtmlarea_user {
 				document.process.processContent.value = editor.getSelection().getHtml();
 				document.process.submit();
 			};
-			function jumpToUrl(URL)	{
+			function jumpToUrl(URL) {
 				var RTEtsConfigParams = "&RTEtsConfigParams='.rawurlencode(t3lib_div::_GP('RTEtsConfigParams')).'";
 				var editorNo = "&editorNo=' . rawurlencode($this->editorNo) . '";
 				theLocation = "'.t3lib_div::getIndpEnv('SCRIPT_NAME').'"+URL+RTEtsConfigParams+editorNo;
@@ -100,7 +100,7 @@ class tx_rtehtmlarea_user {
 		$this->doc->JScode = $this->doc->wrapScriptTags($JScode);
 
 		$this->modData = $GLOBALS['BE_USER']->getModuleData('user.php', 'ses');
-		if (t3lib_div::_GP('OC_key'))	{
+		if (t3lib_div::_GP('OC_key')) {
 			$parts = explode('|',t3lib_div::_GP('OC_key'));
 			$this->modData['openKeys'][$parts[1]] = $parts[0]=='O' ? 1 : 0;
 			$GLOBALS['BE_USER']->pushModuleData('user.php', $this->modData);
@@ -141,14 +141,14 @@ class tx_rtehtmlarea_user {
 	 * @param	[type]		$maxH: ...
 	 * @return	[type]		...
 	 */
-	function calcWH($imgInfo,$maxW=380,$maxH=500)	{
+	function calcWH($imgInfo,$maxW=380,$maxH=500) {
 		$IW = $imgInfo[0];
 		$IH = $imgInfo[1];
-		if ($IW>$maxW)	{
+		if ($IW>$maxW) {
 			$IH=ceil($IH/$IW*$maxW);
 			$IW=$maxW;
 		}
-		if ($IH>$maxH)	{
+		if ($IH>$maxH) {
 			$IW=ceil($IW/$IH*$maxH);
 			$IH=$maxH;
 		}
@@ -163,7 +163,7 @@ class tx_rtehtmlarea_user {
 	 * @param	[type]		$openKeys: ...
 	 * @return	[type]		...
 	 */
-	function main_user($openKeys)	{
+	function main_user($openKeys) {
 			// Starting content:
 		$content = $this->doc->startPage($GLOBALS['LANG']->getLL('Insert Custom Element', 1));
 
@@ -171,24 +171,24 @@ class tx_rtehtmlarea_user {
 		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
 
-		if (is_array($thisConfig['userElements.']))	{
+		if (is_array($thisConfig['userElements.'])) {
 
 			$categories=array();
 			foreach ($thisConfig['userElements.'] as $k => $value) {
 				$ki=intval($k);
 				$v = $thisConfig['userElements.'][$ki.'.'];
-				if (substr($k,-1)=="." && is_array($v))	{
+				if (substr($k,-1)=="." && is_array($v)) {
 					$subcats=array();
 					$openK = $ki;
-					if ($openKeys[$openK])	{
+					if ($openKeys[$openK]) {
 
 						$mArray = '';
-						switch ((string)$v['load'])	{
+						switch ((string)$v['load']) {
 							case 'images_from_folder':
 								$mArray=array();
-								if ($v['path'] && @is_dir(PATH_site.$v['path']))	{
+								if ($v['path'] && @is_dir(PATH_site.$v['path'])) {
 									$files = t3lib_div::getFilesInDir(PATH_site.$v['path'],'gif,jpg,jpeg,png',0,'');
-									if (is_array($files))	{
+									if (is_array($files)) {
 										$c=0;
 										foreach ($files as $filename) {
 											$iInfo = @getimagesize(PATH_site.$v['path'].$filename);
@@ -207,8 +207,8 @@ class tx_rtehtmlarea_user {
 								}
 							break;
 						}
-						if (is_array($mArray))	{
-							if ($v['merge'])	{
+						if (is_array($mArray)) {
+							if ($v['merge']) {
 								$v=t3lib_div::array_merge_recursive_overrule($mArray,$v);
 							} else {
 								$v=$mArray;
@@ -216,9 +216,9 @@ class tx_rtehtmlarea_user {
 						}
 						foreach ($v as $k2 => $dummyValue) {
 							$k2i = intval($k2);
-							if (substr($k2,-1)=='.' && is_array($v[$k2i.'.']))	{
+							if (substr($k2,-1)=='.' && is_array($v[$k2i.'.'])) {
 								$title = trim($v[$k2i]);
-								if (!$title)	{
+								if (!$title) {
 									$title = '[' . $GLOBALS['LANG']->getLL('noTitle', 1) . ']';
 								} else {
 									$title = $GLOBALS['LANG']->sL($title, 1);
@@ -229,7 +229,7 @@ class tx_rtehtmlarea_user {
 								$logo = $v[$k2i.'.']['_icon'] ? $v[$k2i.'.']['_icon'] : '';
 
 								$onClickEvent='';
-								switch((string)$v[$k2i.'.']['mode'])	{
+								switch((string)$v[$k2i.'.']['mode']) {
 									case 'wrap':
 										$wrap = explode('|',$v[$k2i.'.']['content']);
 										$onClickEvent = 'wrapHTML(' . $GLOBALS['LANG']->JScharCode($wrap[0]) . ',' . $GLOBALS['LANG']->JScharCode($wrap[1]) . ',false);';
@@ -237,7 +237,7 @@ class tx_rtehtmlarea_user {
 									case 'processor':
 										$script = trim($v[$k2i.'.']['submitToScript']);
 										if (substr($script,0,4)!='http') $script = $this->siteUrl.$script;
-										if ($script)	{
+										if ($script) {
 											$onClickEvent='processSelection(' . $GLOBALS['LANG']->JScharCode($script) . ');';
 										}
 									break;
@@ -266,7 +266,7 @@ class tx_rtehtmlarea_user {
 			foreach ($categories as $k => $v) {
 				$title = trim($thisConfig['userElements.'][$k]);
 				$openK = $k;
-				if (!$title)	{
+				if (!$title) {
 					$title = '[' . $GLOBALS['LANG']->getLL('noTitle', 1) . ']';
 				} else {
 					$title = $GLOBALS['LANG']->sL($title, 1);

@@ -609,7 +609,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$pList = is_array($this->specConf['richtext']['parameters']) ? implode(',', $this->specConf['richtext']['parameters']) : '';
 		if ($pList != '*') {	// If not all
 			$show = is_array($this->specConf['richtext']['parameters']) ? $this->specConf['richtext']['parameters'] : array();
-			if ($this->thisConfig['showButtons'])	{
+			if ($this->thisConfig['showButtons']) {
 				if (!t3lib_div::inList($this->thisConfig['showButtons'], '*')) {
 					$show = array_unique(array_merge($show,t3lib_div::trimExplode(',', $this->thisConfig['showButtons'], 1)));
 				} else {

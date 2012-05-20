@@ -101,7 +101,7 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 * @param	array		configuration: words = max words for results, bid = pageid
 	 * @return	string		html table with results
 	 */
-	function listSeveralStats($title,$addwhere,$conf)	{
+	function listSeveralStats($title,$addwhere,$conf) {
 		global $LANG;
 
 		$queryParts['SELECT'] = 'word, COUNT(*) AS c';
@@ -120,14 +120,14 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 				$queryParts['LIMIT']
 			);
 
-		if ($res)	{
+		if ($res) {
 			$count = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 		} else {
 			$count = 0;
 		}
 
 			// exist several statistics for this page?
-		if ($count > 0)	{
+		if ($count > 0) {
 			$this->note = 	$LANG->getLL('justthispage');
 		} else {
 				// Limit access to pages of the current site
@@ -149,14 +149,14 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 
 		$table1='';
 		$i=0;
-		if ($res)	{
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		if ($res) {
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$i++;
 				$table1.='<tr class="bgColor4"><td>'.$i.'.</td><td>'.$row['word'].'</td><td>&nbsp;&nbsp;'.$row['c'].'</td></tr>';
 			}
 		}
 
-		if ($i==0)	{
+		if ($i==0) {
 			$table1='<tr class="bgColor4"><td callspan="3">'.$LANG->getLL("noresults").'</td></tr>';
 		}
 
@@ -179,7 +179,7 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 * @param	string		Perms clause
 	 * @return	string		Returns the list with a comma in the end (if any pages selected!)
 	 */
-	function extGetTreeList($id,$depth,$begin = 0,$perms_clause)	{
+	function extGetTreeList($id,$depth,$begin = 0,$perms_clause) {
 		// TODO: Fix this as this calls a non-static method
 		return t3lib_tsfeBeUserAuth::extGetTreeList($id,$depth,$begin,$perms_clause);
 	}
@@ -193,9 +193,9 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 */
 	function hookRequest($functionName) {
 			// Hook: menuConfig_preProcessModMenu
-		if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['be_hooks'][$functionName])	{
+		if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['be_hooks'][$functionName]) {
 			$hookObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['be_hooks'][$functionName]);
-			if (method_exists ($hookObj, $functionName))	{
+			if (method_exists ($hookObj, $functionName)) {
 				$hookObj->pObj = $this;
 				return $hookObj;
 			}

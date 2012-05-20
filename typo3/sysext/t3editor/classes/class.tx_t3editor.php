@@ -469,7 +469,7 @@ class tx_t3editor implements t3lib_Singleton {
 					'type' => $codeType,
 					'ajaxObj' => &$ajaxObj,
 				);
-				foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/t3editor/classes/class.tx_t3editor.php']['ajaxSaveCode'] as $key => $_funcRef)	{
+				foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/t3editor/classes/class.tx_t3editor.php']['ajaxSaveCode'] as $key => $_funcRef) {
 					$savingsuccess = t3lib_div::callUserFunction($_funcRef,$_params,$this) || $savingsuccess;
 				}
 			}

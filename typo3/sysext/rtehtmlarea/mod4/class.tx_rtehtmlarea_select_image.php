@@ -193,7 +193,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 
 			// Find "mode"
 		$this->mode = t3lib_div::_GP('mode');
-		if (!$this->mode)	{
+		if (!$this->mode) {
 			$this->mode = 'rte';
 		}
 			// Site URL
@@ -348,7 +348,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	<script type="text/javascript">
 	/*<![CDATA[*/
 		var plugin = window.parent.RTEarea["' . $this->editorNo . '"].editor.getPlugin("TYPO3Image");
-		function insertImage(file,width,height,alt,title,additionalParams)	{
+		function insertImage(file,width,height,alt,title,additionalParams) {
 			plugin.insertImage(\'<img src="\'+file+\'" width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'"\''  . ($this->defaultClass?('+\' class="'.$this->defaultClass.'"\''):'') .
 				'+(alt?\' alt="\'+alt+\'"\':\'\')+(title?\' title="\'+title+\'"\':\'\')+(additionalParams?\' \'+additionalParams:\'\')+\' />\');
 		}
@@ -420,7 +420,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 					Ext.EventManager.addListener(window.document.body, "dragend", plugin.onDrop, plugin, { single: true });
 				}
 			}
-			function jumpToUrl(URL,anchor)	{
+			function jumpToUrl(URL,anchor) {
 				var add_act = URL.indexOf("act=")==-1 ? "&act='.$act.'" : "";
 				var add_editorNo = URL.indexOf("editorNo=")==-1 ? "&editorNo='.$editorNo.'" : "";
 				var add_sys_language_content = URL.indexOf("sys_language_content=")==-1 ? "&sys_language_content='.$sys_language_content.'" : "";
@@ -433,13 +433,13 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				window.location.href = theLocation;
 				return false;
 			}
-			function insertImage(file,width,height)	{
+			function insertImage(file,width,height) {
 				plugin.insertImage(\'<img src="\'+file+\'"' . ($this->defaultClass?(' class="'.$this->defaultClass.'"'):'') . ' width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'" />\');
 			}
 			function launchView(url) {
 				var thePreviewWindow="";
 				thePreviewWindow = window.open("'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir.'show_item.php?table="+url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
-				if (thePreviewWindow && thePreviewWindow.focus)	{
+				if (thePreviewWindow && thePreviewWindow.focus) {
 					thePreviewWindow.focus();
 				}
 			}
@@ -504,7 +504,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			}
 			function setImageProperties() {
 				var classesImage = ' . (($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage']) ? 'true' : 'false') . ';
-				if (selectedImageRef)	{
+				if (selectedImageRef) {
 					if (document.imageData.iWidth) {
 						if (document.imageData.iWidth.value && parseInt(document.imageData.iWidth.value)) {
 							selectedImageRef.style.width = "";
@@ -606,9 +606,9 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				}
 				return false;
 			}
-			function insertImagePropertiesInForm()	{
+			function insertImagePropertiesInForm() {
 				var classesImage = ' . (($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage']) ? 'true' : 'false') . ';
-				if (selectedImageRef)	{
+				if (selectedImageRef) {
 					var styleWidth, styleHeight, padding;
 					if (document.imageData.iWidth) {
 						styleWidth = selectedImageRef.style.width ? selectedImageRef.style.width : selectedImageRef.width;
@@ -663,7 +663,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 						var fObj=document.imageData.iFloat;
 						var value = (selectedImageRef.style.cssFloat ? selectedImageRef.style.cssFloat : selectedImageRef.style.styleFloat);
 						var l=fObj.length;
-						for (var a=0;a<l;a++)	{
+						for (var a=0;a<l;a++) {
 							if (fObj.options[a].value == value) {
 								fObj.selectedIndex = a;
 							}
@@ -717,7 +717,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$store = FALSE;
 
 		if ($this->act != 'image') {
-			if (isset($this->act))	{
+			if (isset($this->act)) {
 				$data['act'] = $this->act;
 				$store = TRUE;
 			} else {
@@ -725,7 +725,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			}
 		}
 
-		if (isset($this->expandFolder))	{
+		if (isset($this->expandFolder)) {
 			$data['expandFolder'] = $this->expandFolder;
 			$store = TRUE;
 		} else {
@@ -1064,7 +1064,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 * @return	string	the text of the message
 	 */
 	public function getHelpMessage($act) {
-		switch ($act)	{
+		switch ($act) {
 			case 'plain':
 				return sprintf($GLOBALS['LANG']->getLL('plainImage_msg'), $this->plainMaxWidth, $this->plainMaxHeight);
 				break;

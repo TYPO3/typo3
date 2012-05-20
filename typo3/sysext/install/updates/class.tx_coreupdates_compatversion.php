@@ -39,7 +39,7 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 	 * @param	string		pointer to description for the update
 	 * @return	boolean		TRUE if update is needs to be performed, FALSE otherwise.
 	 */
-	function checkForUpdate(&$description)	{
+	function checkForUpdate(&$description) {
 		global $TYPO3_CONF_VARS;
 
 		if (!$this->compatVersionIsCurrent()) {
@@ -70,9 +70,9 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 	 * @param	string		input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
 	 * @return	string		HTML output
 	 */
-	function getUserInput($inputPrefix)	{
+	function getUserInput($inputPrefix) {
 		global $TYPO3_CONF_VARS;
-		if ($this->compatVersionIsCurrent())	{
+		if ($this->compatVersionIsCurrent()) {
 			$content = '
 				<fieldset>
 					<ol>
@@ -91,7 +91,7 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 				'4.4' => '<= 4.4',
 				'4.5' => '<= 4.5',
 			);
-			foreach ($versions as $singleVersion => $caption)	{
+			foreach ($versions as $singleVersion => $caption) {
 				$content .= '
 								<option value="'.$singleVersion.'">'.$caption.'</option>
 				';
@@ -144,22 +144,22 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 	 * @param	string		pointer to output custom messages
 	 * @return	boolean		TRUE if user input is correct, then the update is performed. When FALSE, return to getUserInput
 	 */
-	function checkUserInput(&$customMessages)	{
+	function checkUserInput(&$customMessages) {
 		global $TYPO3_CONF_VARS;
 
-		if ($this->compatVersionIsCurrent())	{
+		if ($this->compatVersionIsCurrent()) {
 			return 1;
 		} else {
-			if ($this->userInput['compatVersion']['all'])	{
+			if ($this->userInput['compatVersion']['all']) {
 				return 1;
 			} else {
 				$performUpdate = 1;
 				$oldVersion = t3lib_utility_VersionNumber::convertVersionNumberToInteger($TYPO3_CONF_VARS['SYS']['compat_version']);
 				$currentVersion = t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_branch);
 
-				foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details)	{
-					if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion)	{
-						if (!$this->userInput['compatVersion'][$internalName])	{
+				foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details) {
+					if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion) {
+						if (!$this->userInput['compatVersion'][$internalName]) {
 							$performUpdate = 0;
 							$customMessages = 'If you want to update the compatibility version, you need to confirm all checkboxes on the previous page.';
 							break;
@@ -178,11 +178,11 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 	 * @param	string		pointer to output custom messages
 	 * @return	boolean		TRUE if update succeeded, FALSE otherwise
 	 */
-	function performUpdate(&$dbQueries, &$customMessages)	{
+	function performUpdate(&$dbQueries, &$customMessages) {
 		$customMessages = '';
 
 			// if we just set it to an older version
-		if ($this->userInput['version'])	{
+		if ($this->userInput['version']) {
 			$customMessages .= 'If you want to see what you need to do to use the new features, run the update wizard again!';
 		}
 
@@ -208,7 +208,7 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 	 */
 	function compatVersionIsCurrent() {
 		global $TYPO3_CONF_VARS;
-		if (TYPO3_branch != $TYPO3_CONF_VARS['SYS']['compat_version'])	{
+		if (TYPO3_branch != $TYPO3_CONF_VARS['SYS']['compat_version']) {
 			return 0;
 		} else {
 			return 1;
@@ -221,7 +221,7 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 	 * @param	string		input prefix to prepend all form fields with.
 	 * @return	string		HTML output
 	 */
-	function showChangesNeeded($inputPrefix = '')	{
+	function showChangesNeeded($inputPrefix = '') {
 		global $TYPO3_CONF_VARS;
 		$oldVersion = t3lib_utility_VersionNumber::convertVersionNumberToInteger($TYPO3_CONF_VARS['SYS']['compat_version']);
 		$currentVersion = t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_branch);
@@ -230,8 +230,8 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version'])) {
 			$updateWizardBoxes = '';
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details)	{
-				if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion)	{
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details) {
+				if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion) {
 					$description = str_replace(chr(10),'<br />',$details['description']);
 					$description_acknowledge = (isset($details['description_acknowledge']) ? str_replace(chr(10),'<br />',$details['description_acknowledge']) : '');
 
@@ -254,7 +254,7 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 				}
 			}
 		}
-		if (strlen($updateWizardBoxes))	{
+		if (strlen($updateWizardBoxes)) {
 			return $updateWizardBoxes;
 		}
 		return '';

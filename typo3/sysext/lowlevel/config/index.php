@@ -91,7 +91,7 @@ class SC_mod_tools_config_index {
 		$this->doc->JScode = '
 		<script language="javascript" type="text/javascript">
 			script_ended = 0;
-			function jumpToUrl(URL)	{
+			function jumpToUrl(URL) {
 				window.location.href = URL;
 			}
 		</script>
@@ -157,7 +157,7 @@ class SC_mod_tools_config_index {
 
 		$this->content.= $this->doc->spacer(5);
 
-		switch($this->MOD_SETTINGS['function'])	{
+		switch($this->MOD_SETTINGS['function']) {
 			case 0:
 				$theVar = $GLOBALS['TYPO3_CONF_VARS'];
 				t3lib_div::naturalKeySortRecursive($theVar);
@@ -245,7 +245,7 @@ class SC_mod_tools_config_index {
 		$this->content.= $this->doc->sectionEnd();
 
 			// Variable name:
-		if (t3lib_div::_GP('varname'))	{
+		if (t3lib_div::_GP('varname')) {
 			$line = t3lib_div::_GP('_') ? t3lib_div::_GP('_') : t3lib_div::_GP('varname');
 			if (t3lib_div::_GP('writetoexttables')) { // Write the line to extTables.php
 					// change value to $GLOBALS
@@ -356,7 +356,7 @@ class SC_mod_tools_config_index {
 		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
 
 			// Shortcut
-		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
+		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('','function',$this->MCONF['name']);
 		}
 		return $buttons;

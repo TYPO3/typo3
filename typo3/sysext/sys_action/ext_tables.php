@@ -3,7 +3,7 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-if (TYPO3_MODE == 'BE')	{
+if (TYPO3_MODE == 'BE') {
 	$TCA['sys_action'] = array(
 		'ctrl' => array(
 			'label' => 'title',

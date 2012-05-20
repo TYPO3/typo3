@@ -69,7 +69,7 @@ class user_xmlversion {
 	 * @param	array		TypoScript properties for this content object/function call
 	 * @return	string		XML content
 	 */
-	function main_xmlversion($content,$conf)	{
+	function main_xmlversion($content,$conf) {
 		$xmlObj = t3lib_div::makeInstance('t3lib_xml', 'typo3_page');
 		$xmlObj->XMLdebug=0;
 		$xmlObj->setRecFields('pages','doktype,title,alias,hidden,starttime,endtime,fe_group,url,target,no_cache,shortcut,keywords,description,abstract,author,author_email,newUntil,lastUpdated,cache_timeout');

@@ -91,7 +91,7 @@ class tx_lowlevel_admin_core extends t3lib_cli {
 
 			// Print help
 		$analysisType = (string)$this->cli_args['_DEFAULT'][1];
-		if (!$analysisType)	{
+		if (!$analysisType) {
 			$this->cli_validateArgs();
 			$this->cli_help();
 			exit;
@@ -100,7 +100,7 @@ class tx_lowlevel_admin_core extends t3lib_cli {
 			// Analysis type:
 		switch((string)$analysisType)    {
 			case 'setBElock':
-				if (@is_file(PATH_typo3conf.'LOCK_BACKEND'))	{
+				if (@is_file(PATH_typo3conf.'LOCK_BACKEND')) {
 					$this->cli_echo("A lockfile already exists. Overwriting it... \n");
 				}
 				$lockFileContent = $this->cli_argValue('--redirect');
@@ -108,9 +108,9 @@ class tx_lowlevel_admin_core extends t3lib_cli {
 				$this->cli_echo("Wrote lock-file to '".PATH_typo3conf."LOCK_BACKEND' with content '".$lockFileContent."'");
 			break;
 			case 'clearBElock':
-				if (@is_file(PATH_typo3conf.'LOCK_BACKEND'))	{
+				if (@is_file(PATH_typo3conf.'LOCK_BACKEND')) {
 					unlink(PATH_typo3conf.'LOCK_BACKEND');
-					if (@is_file(PATH_typo3conf.'LOCK_BACKEND')	)	{
+					if (@is_file(PATH_typo3conf.'LOCK_BACKEND')	) {
 						$this->cli_echo("ERROR: Could not remove lock file '".PATH_typo3conf."LOCK_BACKEND'!!\n",1);
 					} else {
 						$this->cli_echo("Removed lock file '".PATH_typo3conf."LOCK_BACKEND'\n");

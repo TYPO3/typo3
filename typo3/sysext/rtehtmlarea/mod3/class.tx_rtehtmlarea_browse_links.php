@@ -54,14 +54,14 @@ class tx_rtehtmlarea_pageTree extends rtePageTree {
 	 * @param	array		Tree array
 	 * @return	string		HTML output.
 	 */
-	function printTree($treeArr='')	{
+	function printTree($treeArr='') {
 		$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
 		if (!is_array($treeArr))	$treeArr=$this->tree;
 
 		$out='';
 		$c=0;
 
-		foreach($treeArr as $k => $v)	{
+		foreach($treeArr as $k => $v) {
 			$c++;
 			$bgColorClass = ($c+1)%2 ? 'bgColor' : 'bgColor-10';
 			if ($GLOBALS['SOBE']->browser->curUrlInfo['act']=='page' && $GLOBALS['SOBE']->browser->curUrlInfo['pageid']==$v['row']['uid'] && $GLOBALS['SOBE']->browser->curUrlInfo['pageid']) {
@@ -199,7 +199,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		$this->initHookObjects('ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php');
 			// CurrentUrl - the current link url must be passed around if it exists
 		$this->curUrlArray = t3lib_div::_GP('curUrl');
-		if ($this->curUrlArray['all'])	{
+		if ($this->curUrlArray['all']) {
 			$this->curUrlArray = t3lib_div::get_tag_attributes($this->curUrlArray['all']);
 			$this->curUrlArray['href'] = htmlspecialchars_decode($this->curUrlArray['href']);
 		}
@@ -256,7 +256,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 			// Find "mode"
 		$this->mode = t3lib_div::_GP('mode');
-		if (!$this->mode)	{
+		if (!$this->mode) {
 			$this->mode = 'rte';
 		}
 			// Current site url
@@ -294,7 +294,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 * @param	string		$buttonName: the name of the button
 	 * @return	array		the configuration array of the image button
 	 */
-	protected function getButtonConfig($buttonName)	{
+	protected function getButtonConfig($buttonName) {
 		return ((is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.'][$buttonName.'.'])) ? $this->thisConfig['buttons.'][$buttonName.'.'] : array());
 	}
 
@@ -447,19 +447,19 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			var cur_class="'.($this->setClass?$this->setClass:'').'";
 			var cur_title="'.($this->setTitle?$this->setTitle:'').'";
 
-			function browse_links_setTarget(value)	{
+			function browse_links_setTarget(value) {
 				cur_target=value;
 				add_target="&curUrl[target]="+encodeURIComponent(value);
 			}
-			function browse_links_setClass(value)	{
+			function browse_links_setClass(value) {
 				cur_class=value;
 				add_class="&curUrl[class]="+encodeURIComponent(value);
 			}
-			function browse_links_setTitle(value)	{
+			function browse_links_setTitle(value) {
 				cur_title=value;
 				add_title="&curUrl[title]="+encodeURIComponent(value);
 			}
-			function browse_links_setHref(value)	{
+			function browse_links_setHref(value) {
 				cur_href=value;
 				add_href="&curUrl[href]="+value;
 			}
@@ -502,13 +502,13 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				plugin.createLink(theLink,cur_target,cur_class,cur_title,additionalValues);
 				return false;
 			}
-			function link_current()	{
+			function link_current() {
 				var parameters = (document.ltargetform.query_parameters && document.ltargetform.query_parameters.value) ? (document.ltargetform.query_parameters.value.charAt(0) == "&" ? "" : "&") + document.ltargetform.query_parameters.value : "";
 				if (document.ltargetform.anchor_title) browse_links_setTitle(document.ltargetform.anchor_title.value);
 				if (document.ltargetform.anchor_class) browse_links_setClass(document.ltargetform.anchor_class.value);
 				if (document.ltargetform.ltarget) browse_links_setTarget(document.ltargetform.ltarget.value);
 				if (document.ltargetform.lrel) browse_links_setAdditionalValue("rel", document.ltargetform.lrel.value);
-				if (cur_href!="http://" && cur_href!="mailto:")	{
+				if (cur_href!="http://" && cur_href!="mailto:") {
 					plugin.createLink(cur_href + parameters,cur_target,cur_class,cur_title,additionalValues);
 				}
 				return false;
@@ -537,7 +537,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			function launchView(url) {
 				var thePreviewWindow="";
 				thePreviewWindow = window.open("' . $GLOBALS['BACK_PATH'] . 'show_item.php?table="+url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
-				if (thePreviewWindow && thePreviewWindow.focus)	{
+				if (thePreviewWindow && thePreviewWindow.focus) {
 					thePreviewWindow.focus();
 				}
 			}
@@ -593,7 +593,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 			// Making menu in top:
 		$menuDef = array();
-		if (!$wiz && $this->curUrlArray['href'])	{
+		if (!$wiz && $this->curUrlArray['href']) {
 			$menuDef['removeLink']['isActive'] = $this->act=='removeLink';
 			$menuDef['removeLink']['label'] = $GLOBALS['LANG']->getLL('removeLink',1);
 			$menuDef['removeLink']['url'] = '#';
@@ -763,16 +763,16 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				$content .= '<br />';
 			break;
 			case 'spec':
-				if (is_array($this->thisConfig['userLinks.']))	{
+				if (is_array($this->thisConfig['userLinks.'])) {
 					$subcats=array();
 					$v=$this->thisConfig['userLinks.'];
 					foreach ($v as $k2 => $dummyValue) {
 						$k2i = intval($k2);
-						if (substr($k2,-1)=='.' && is_array($v[$k2i.'.']))	{
+						if (substr($k2,-1)=='.' && is_array($v[$k2i.'.'])) {
 
 								// Title:
 							$title = trim($v[$k2i]);
-							if (!$title)	{
+							if (!$title) {
 								$title=$v[$k2i.'.']['url'];
 							} else {
 								$title=$GLOBALS['LANG']->sL($title);
@@ -784,7 +784,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							$onClickEvent='';
 							if (isset($v[$k2i.'.']['target']))	$onClickEvent.="browse_links_setTarget('".$v[$k2i.'.']['target']."');";
 							$v[$k2i.'.']['url'] = str_replace('###_URL###',$this->siteURL,$v[$k2i.'.']['url']);
-							if (substr($v[$k2i.'.']['url'],0,7)=="http://" || substr($v[$k2i.'.']['url'],0,7)=='mailto:')	{
+							if (substr($v[$k2i.'.']['url'],0,7)=="http://" || substr($v[$k2i.'.']['url'],0,7)=='mailto:') {
 								$onClickEvent.="cur_href=unescape('".rawurlencode($v[$k2i.'.']['url'])."');link_current();";
 							} else {
 								$onClickEvent.="link_spec(unescape('".$this->siteURL.rawurlencode($v[$k2i.'.']['url'])."'));";
@@ -830,7 +830,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 
 				// Outputting Temporary DB mount notice:
-				if (intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint')))	{
+				if (intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint'))) {
 					$link = '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('setTempDBmount' => 0))) . '">' .
 										$GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xml:labels.temporaryDBmount', 1) .
 									'</a>';
@@ -971,7 +971,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		}
 
 		$ltarget = '';
-		if ($this->act != 'mail')	{
+		if ($this->act != 'mail') {
 			$ltarget .= '
 					<tr id="ltargetrow"'. (($targetSelectorConfig['disabled'] && $popupSelectorConfig['disabled']) ? ' style="display: none;"' : '') . '>
 						<td>' . $GLOBALS['LANG']->getLL('target', 1) . ':</td>
@@ -991,7 +991,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 					</tr>';
 			if (!$popupSelectorConfig['disabled']) {
 
-				$selectJS = 'if (document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value>0 && document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value>0)	{
+				$selectJS = 'if (document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value>0 && document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value>0) {
 					document.ltargetform.ltarget.value = document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value+\'x\'+document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value;
 					browse_links_setTarget(document.ltargetform.ltarget.value);
 					document.ltargetform.popup_width.selectedIndex=0;

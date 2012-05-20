@@ -75,7 +75,7 @@ class tx_indexed_search_extparse {
 	 * @param	string		File extension
 	 * @return	boolean		Returns TRUE if extension is supported/enabled, otherwise FALSE.
 	 */
-	function initParser($extension)	{
+	function initParser($extension) {
 
 			// Then read indexer-config and set if appropriate:
 		$indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
@@ -87,16 +87,16 @@ class tx_indexed_search_extparse {
 
 			// Ignore extensions
 		$ignoreExtensions = t3lib_div::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']),1);
-		if (in_array($extension, $ignoreExtensions))	{
+		if (in_array($extension, $ignoreExtensions)) {
 			$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:ignoreExtensions'), $extension), 1);
 			return FALSE;
 		}
 
 			// Switch on file extension:
-		switch($extension)	{
+		switch($extension) {
 			case 'pdf':
 					// PDF
-				if ($indexerConfig['pdftools'])	{
+				if ($indexerConfig['pdftools']) {
 					$pdfPath = rtrim($indexerConfig['pdftools'], '/').'/';
 					if (@is_file($pdfPath . 'pdftotext' . $exe) && @is_file($pdfPath . 'pdfinfo' . $exe)) {
 						$this->app['pdfinfo'] = $pdfPath.'pdfinfo'.$exe;
@@ -109,7 +109,7 @@ class tx_indexed_search_extparse {
 			break;
 			case 'doc':
 					// Catdoc
-				if ($indexerConfig['catdoc'])	{
+				if ($indexerConfig['catdoc']) {
 					$catdocPath = rtrim($indexerConfig['catdoc'], '/').'/';
 					if (@is_file($catdocPath . 'catdoc' . $exe)) {
 						$this->app['catdoc'] = $catdocPath.'catdoc'.$exe;
@@ -120,7 +120,7 @@ class tx_indexed_search_extparse {
 			case 'pps':		// MS PowerPoint(?)
 			case 'ppt':		// MS PowerPoint
 					// ppthtml
-				if ($indexerConfig['ppthtml'])	{
+				if ($indexerConfig['ppthtml']) {
 					$ppthtmlPath = rtrim($indexerConfig['ppthtml'], '/').'/';
 					if (@is_file($ppthtmlPath . 'ppthtml' . $exe)) {
 						$this->app['ppthtml'] = $ppthtmlPath.'ppthtml'.$exe;
@@ -130,7 +130,7 @@ class tx_indexed_search_extparse {
 			break;
 			case 'xls':		// MS Excel
 					// Xlhtml
-				if ($indexerConfig['xlhtml'])	{
+				if ($indexerConfig['xlhtml']) {
 					$xlhtmlPath = rtrim($indexerConfig['xlhtml'], '/').'/';
 					if (@is_file($xlhtmlPath . 'xlhtml' . $exe)) {
 						$this->app['xlhtml'] = $xlhtmlPath.'xlhtml'.$exe;
@@ -144,7 +144,7 @@ class tx_indexed_search_extparse {
 			case 'ods':		// Oasis OpenDocument Spreadsheet
 			case 'odp':		// Oasis OpenDocument Presentation
 			case 'odt':		// Oasis OpenDocument Text
-				if ($indexerConfig['unzip'])	{
+				if ($indexerConfig['unzip']) {
 					$unzipPath = rtrim($indexerConfig['unzip'], '/').'/';
 					if (@is_file($unzipPath . 'unzip' . $exe)) {
 						$this->app['unzip'] = $unzipPath.'unzip'.$exe;
@@ -154,7 +154,7 @@ class tx_indexed_search_extparse {
 			break;
 			case 'rtf':
 					// Catdoc
-				if ($indexerConfig['unrtf'])	{
+				if ($indexerConfig['unrtf']) {
 					$unrtfPath = rtrim($indexerConfig['unrtf'], '/').'/';
 					if (@is_file($unrtfPath . 'unrtf' . $exe)) {
 						$this->app['unrtf'] = $unrtfPath.'unrtf'.$exe;
@@ -181,7 +181,7 @@ class tx_indexed_search_extparse {
 		}
 
 			// If extension was OK:
-		if ($extOK)	{
+		if ($extOK) {
 			$this->supportedExtensions[$extension] = TRUE;
 			$this->ext2itemtype_map[$extension] = $mainExtension ? $mainExtension : $extension;
 			return TRUE;
@@ -195,8 +195,8 @@ class tx_indexed_search_extparse {
 	 * @param	string		File extension to initialize for.
 	 * @return	boolean		Returns TRUE if the extension is supported and enabled, otherwise FALSE.
 	 */
-	function softInit($extension)	{
-		switch($extension)	{
+	function softInit($extension) {
+		switch($extension) {
 			case 'pdf':		// PDF
 			case 'doc':		// MS Word files
 			case 'pps':		// MS PowerPoint
@@ -228,77 +228,77 @@ class tx_indexed_search_extparse {
 	 * @param	string		File extension
 	 * @return	string		String with label value of entry in media type search selector box (frontend plugin).
 	 */
-	function searchTypeMediaTitle($extension)	{
+	function searchTypeMediaTitle($extension) {
 
 			// Read indexer-config
 		$indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
 
 			// Ignore extensions
 		$ignoreExtensions = t3lib_div::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']),1);
-		if (in_array($extension, $ignoreExtensions))	{
+		if (in_array($extension, $ignoreExtensions)) {
 			return FALSE;
 		}
 
 			// Switch on file extension:
-		switch($extension)	{
+		switch($extension) {
 			case 'pdf':
 					// PDF
-				if ($indexerConfig['pdftools'])	{
+				if ($indexerConfig['pdftools']) {
 					return sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:extension.PDF'), $extension);
 				}
 			break;
 			case 'doc':
 					// Catdoc
-				if ($indexerConfig['catdoc'])	{
+				if ($indexerConfig['catdoc']) {
 					return sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:extension.DOC'), $extension);
 				}
 			break;
 			case 'pps':		// MS PowerPoint(?)
 			case 'ppt':		// MS PowerPoint
 					// ppthtml
-				if ($indexerConfig['ppthtml'])	{
+				if ($indexerConfig['ppthtml']) {
 					return sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:extension.PP'), $extension);
 				}
 			break;
 			case 'xls':		// MS Excel
 					// Xlhtml
-				if ($indexerConfig['xlhtml'])	{
+				if ($indexerConfig['xlhtml']) {
 					return sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:extension.XLS'), $extension);
 				}
 			break;
 			case 'sxc':		// Open Office Calc.
-			if ($indexerConfig['unzip'])	{
+			if ($indexerConfig['unzip']) {
 					return sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:extension.SXC'), $extension);
 				}
 			break;
 			case 'sxi':		// Open Office Impress
-			if ($indexerConfig['unzip'])	{
+			if ($indexerConfig['unzip']) {
 					return sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:extension.SXI'), $extension);
 				}
 			break;
 			case 'sxw':		// Open Office Writer
-			if ($indexerConfig['unzip'])	{
+			if ($indexerConfig['unzip']) {
 					return sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:extension.SXW'), $extension);
 				}
 			break;
 			case 'ods':		// Oasis OpenDocument Spreadsheet
-			if ($indexerConfig['unzip'])	{
+			if ($indexerConfig['unzip']) {
 					return sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:extension.ODS'), $extension);
 				}
 			break;
 			case 'odp':		// Oasis OpenDocument Presentation
-				if ($indexerConfig['unzip'])	{
+				if ($indexerConfig['unzip']) {
 					return sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:extension.ODP'), $extension);
 				}
 			break;
 			case 'odt':		// Oasis OpenDocument Text
-				if ($indexerConfig['unzip'])	{
+				if ($indexerConfig['unzip']) {
 					return sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:extension.ODT'), $extension);
 				}
 			break;
 			case 'rtf':
 					// Catdoc
-				if ($indexerConfig['unrtf'])	{
+				if ($indexerConfig['unrtf']) {
 					return sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:extension.RTF'), $extension);
 				}
 			break;
@@ -332,9 +332,9 @@ class tx_indexed_search_extparse {
 	 * @param	string		Extension / item_type string
 	 * @return	boolean		Return TRUE if multi-page
 	 */
-	function isMultiplePageExtension($extension)	{
+	function isMultiplePageExtension($extension) {
 			// Switch on file extension:
-		switch((string)$extension)	{
+		switch((string)$extension) {
 			case 'pdf':
 				return TRUE;
 			break;
@@ -374,22 +374,22 @@ class tx_indexed_search_extparse {
 	 * @param	string		Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be splitted.)
 	 * @return	array		Standard content array (title, description, keywords, body keys)
 	 */
-	function readFileContent($ext,$absFile,$cPKey)	{
+	function readFileContent($ext,$absFile,$cPKey) {
 		unset($contentArr);
 
 			// Return immediately if initialization didn't set support up:
 		if (!$this->supportedExtensions[$ext])	return FALSE;
 
 			// Switch by file extension
-		switch ($ext)	{
+		switch ($ext) {
 			case 'pdf':
-				if ($this->app['pdfinfo'])	{
+				if ($this->app['pdfinfo']) {
 						// Getting pdf-info:
 					$cmd = $this->app['pdfinfo'] . ' ' . escapeshellarg($absFile);
 					t3lib_utility_Command::exec($cmd, $res);
 					$pdfInfo = $this->splitPdfInfo($res);
 					unset($res);
-					if (intval($pdfInfo['pages']))	{
+					if (intval($pdfInfo['pages'])) {
 						list($low,$high) = explode('-',$cPKey);
 
 							// Get pdf content:
@@ -397,20 +397,20 @@ class tx_indexed_search_extparse {
 						@unlink ($tempFileName);	// Delete if exists, just to be safe.
 						$cmd = $this->app['pdftotext'] . ' -f ' . $low . ' -l ' . $high . ' -enc UTF-8 -q ' . escapeshellarg($absFile) . ' ' . $tempFileName;
 						t3lib_utility_Command::exec($cmd);
-						if (@is_file($tempFileName))	{
+						if (@is_file($tempFileName)) {
 							$content = t3lib_div::getUrl($tempFileName);
 							unlink($tempFileName);
 						} else {
 							$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:pdfToolsFailed'), $absFile), 2);
 						}
-						if (strlen($content))	{
+						if (strlen($content)) {
 							$contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));
 						}
 					}
 				}
 			break;
 			case 'doc':
-				if ($this->app['catdoc'])	{
+				if ($this->app['catdoc']) {
 					$cmd = $this->app['catdoc'] . ' -d utf-8 ' . escapeshellarg($absFile);
 					t3lib_utility_Command::exec($cmd, $res);
 					$content = implode(LF,$res);
@@ -420,7 +420,7 @@ class tx_indexed_search_extparse {
 			break;
 			case 'pps':
 			case 'ppt':
-				if ($this->app['ppthtml'])	{
+				if ($this->app['ppthtml']) {
 					$cmd = $this->app['ppthtml'] . ' ' . escapeshellarg($absFile);
 					t3lib_utility_Command::exec($cmd, $res);
 					$content = implode(LF,$res);
@@ -431,7 +431,7 @@ class tx_indexed_search_extparse {
 				}
 			break;
 			case 'xls':
-				if ($this->app['xlhtml'])	{
+				if ($this->app['xlhtml']) {
 					$cmd = $this->app['xlhtml'] . ' -nc -te ' . escapeshellarg($absFile);
 					t3lib_utility_Command::exec($cmd, $res);
 					$content = implode(LF,$res);
@@ -447,7 +447,7 @@ class tx_indexed_search_extparse {
 			case 'ods':
 			case 'odp':
 			case 'odt':
-				if ($this->app['unzip'])	{
+				if ($this->app['unzip']) {
 						// Read content.xml:
 					$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' content.xml';
 					t3lib_utility_Command::exec($cmd, $res);
@@ -467,13 +467,13 @@ class tx_indexed_search_extparse {
 						// Meta information
 					$metaContent = t3lib_div::xml2tree($meta_xml);
 					$metaContent = $metaContent['office:document-meta'][0]['ch']['office:meta'][0]['ch'];
-					if (is_array($metaContent))	{
+					if (is_array($metaContent)) {
 						$contentArr['title'] = $metaContent['dc:title'][0]['values'][0] ? $metaContent['dc:title'][0]['values'][0] : $contentArr['title'];
 						$contentArr['description'] = $metaContent['dc:subject'][0]['values'][0].' '.$metaContent['dc:description'][0]['values'][0];
 
 							// Keywords collected:
-						if (is_array($metaContent['meta:keywords'][0]['ch']['meta:keyword']))	{
-							foreach ($metaContent['meta:keywords'][0]['ch']['meta:keyword'] as $kwDat)	{
+						if (is_array($metaContent['meta:keywords'][0]['ch']['meta:keyword'])) {
+							foreach ($metaContent['meta:keywords'][0]['ch']['meta:keyword'] as $kwDat) {
 								$contentArr['keywords'].= $kwDat['values'][0].' ';
 							}
 						}
@@ -481,7 +481,7 @@ class tx_indexed_search_extparse {
 				}
 			break;
 			case 'rtf':
-				if ($this->app['unrtf'])	{
+				if ($this->app['unrtf']) {
 					$cmd = $this->app['unrtf'] . ' ' . escapeshellarg($absFile);
 					t3lib_utility_Command::exec($cmd, $res);
 					$fileContent = implode(LF,$res);
@@ -520,13 +520,13 @@ class tx_indexed_search_extparse {
 			case 'jpg':		// PHP EXIF
 			case 'jpeg':	// PHP EXIF
 			case 'tif':		// PHP EXIF
-				if (function_exists('exif_read_data'))	{
+				if (function_exists('exif_read_data')) {
 					$exif = exif_read_data($absFile, 'IFD0');
 				} else {
 					$exif = FALSE;
 				}
 
-				if ($exif)	{
+				if ($exif) {
 					$comment = trim($exif['COMMENT'][0].' '.$exif['ImageDescription']);	// The comments in JPEG files are utf-8, while in Tif files they are 7-bit ascii.
 				} else {
 					$comment = '';
@@ -539,7 +539,7 @@ class tx_indexed_search_extparse {
 			break;
 		}
 			// If no title (and why should there be...) then the file-name is set as title. This will raise the hits considerably if the search matches the document name.
-		if (is_array($contentArr) && !$contentArr['title'])	{
+		if (is_array($contentArr) && !$contentArr['title']) {
 			$contentArr['title'] = str_replace('_',' ',basename($absFile));	// Substituting "_" for " " because many filenames may have this instead of a space char.
 		}
 
@@ -554,9 +554,9 @@ class tx_indexed_search_extparse {
 	 * @param	string		Absolute filename (must exist and be validated OK before calling function)
 	 * @return	array		Array of pointers to sections that the document should be divided into
 	 */
-	function fileContentParts($ext,$absFile)	{
+	function fileContentParts($ext,$absFile) {
 		$cParts = array(0);
-		switch ($ext)	{
+		switch ($ext) {
 			case 'pdf':
 					// Getting pdf-info:
 				$cmd = $this->app['pdfinfo'] . ' ' . escapeshellarg($absFile);
@@ -564,18 +564,18 @@ class tx_indexed_search_extparse {
 				$pdfInfo = $this->splitPdfInfo($res);
 				unset($res);
 
-				if (intval($pdfInfo['pages']))	{
+				if (intval($pdfInfo['pages'])) {
 					$cParts = array();
 
 						// Calculate mode
-					if ($this->pdf_mode>0)	{
+					if ($this->pdf_mode>0) {
 						$iter = ceil($pdfInfo['pages']/$this->pdf_mode);
 					} else {
 						$iter = t3lib_utility_Math::forceIntegerInRange(abs($this->pdf_mode),1,$pdfInfo['pages']);
 					}
 
 						// Traverse and create intervals.
-					for ($a=0;$a<$iter;$a++)	{
+					for ($a=0;$a<$iter;$a++) {
 						$low = floor($a*($pdfInfo['pages']/$iter))+1;
 						$high = floor(($a+1)*($pdfInfo['pages']/$iter));
 						$cParts[] = $low.'-'.$high;
@@ -594,12 +594,12 @@ class tx_indexed_search_extparse {
 	 * @access private
 	 * @see fileContentParts()
 	 */
-	function splitPdfInfo($pdfInfoArray)	{
+	function splitPdfInfo($pdfInfoArray) {
 		$res = array();
-		if (is_array($pdfInfoArray))	{
-			foreach($pdfInfoArray as $line)	{
+		if (is_array($pdfInfoArray)) {
+			foreach($pdfInfoArray as $line) {
 				$parts = explode(':',$line,2);
-				if (count($parts)>1 && trim($parts[0]))	{
+				if (count($parts)>1 && trim($parts[0])) {
 					$res[strtolower(trim($parts[0]))] = trim($parts[1]);
 				}
 			}
@@ -613,7 +613,7 @@ class tx_indexed_search_extparse {
 	 * @param	string		String to clean up
 	 * @return	string		String
 	 */
-	function removeEndJunk($string)	{
+	function removeEndJunk($string) {
 		return trim(preg_replace('/['.LF.chr(12).']*$/','',$string));
 	}
 
@@ -640,7 +640,7 @@ class tx_indexed_search_extparse {
 	 * @param	string		File extension, lowercase.
 	 * @return	string		Relative file reference, resolvable by t3lib_div::getFileAbsFileName()
 	 */
-	function getIcon($extension)	{
+	function getIcon($extension) {
 		if ($extension=='htm')	$extension = 'html';
 		if ($extension=='jpeg')	$extension = 'jpg';
 		return 'EXT:indexed_search/pi/res/'.$extension.'.gif';

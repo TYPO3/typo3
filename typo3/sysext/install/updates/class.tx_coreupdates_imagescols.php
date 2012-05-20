@@ -65,7 +65,7 @@ class tx_coreupdates_imagecols extends Tx_Install_Updates_Base {
 	 */
 	public function performUpdate(&$dbQueries, &$customMessages) {
 		$result = FALSE;
-		if($this->versionNumber >= 4003000)	{
+		if($this->versionNumber >= 4003000) {
 			$updateArray = array(
 				'imagecols' => 1,
 			);

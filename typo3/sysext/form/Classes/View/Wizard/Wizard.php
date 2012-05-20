@@ -67,7 +67,7 @@ class tx_form_View_Wizard_Wizard extends tx_form_View_Wizard_Abstract {
 			'EXT:form/Resources/Private/Templates/Wizard.html'
 		);
 		$this->doc->JScode = $this->doc->wrapScriptTags('
-			function jumpToUrl(URL,formEl)	{
+			function jumpToUrl(URL,formEl) {
 				window.location.href = URL;
 			}
 		');

@@ -27,7 +27,7 @@
  * @author	Sebastian Kurfürst <sebastian@garbage-group.de>
  */
 class tx_beuser_switchbackuser {
-	function switchBack($params, $that)	{
+	function switchBack($params, $that) {
 		if($that->session_table == 'be_sessions' && $that->user['uid'] && $that->user['ses_backuserid']) {
 			$updateData = array(
 				'ses_userid' => $that->user['ses_backuserid'],

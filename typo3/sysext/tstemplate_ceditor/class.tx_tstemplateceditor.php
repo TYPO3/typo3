@@ -38,7 +38,7 @@
 $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_ceditor/locallang.xml');
 
 class tx_tstemplateceditor extends t3lib_extobjbase {
-	function initialize_editor($pageId,$template_uid=0)	{
+	function initialize_editor($pageId,$template_uid=0) {
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		global $tmpl,$tplRow,$theConstants;
 
@@ -61,9 +61,9 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 			return 1;
 		}
 	}
-	function displayExample($theOutput)	{
+	function displayExample($theOutput) {
 		global $tmpl;
-		if ($tmpl->helpConfig["imagetag"] || $tmpl->helpConfig["description"] || $tmpl->helpConfig["header"])	{
+		if ($tmpl->helpConfig["imagetag"] || $tmpl->helpConfig["description"] || $tmpl->helpConfig["header"]) {
 	//		$theOutput.=$this->pObj->doc->divider(20);
 			$theOutput.=$this->pObj->doc->spacer(30);
 			$theOutput.=$this->pObj->doc->section($tmpl->helpConfig["header"],
@@ -94,7 +94,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 		// **************************
 		$manyTemplatesMenu = $this->pObj->templateMenu();
 		$template_uid = 0;
-		if ($manyTemplatesMenu)	{
+		if ($manyTemplatesMenu) {
 			$template_uid = $this->pObj->MOD_SETTINGS["templatesOnPage"];
 		}
 
@@ -107,7 +107,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 		// BUGBUG: Should we check if the uset may at all read and write template-records???
 		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid); // initialize
 
-		if ($existTemplate)	{
+		if ($existTemplate) {
 			$saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
 
 				// Update template ?
@@ -117,7 +117,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 		//		debug($tmpl->changed);
 		//		debug($tmpl->raw);
 		//		$tmpl->changed=0;
-				if ($tmpl->changed)	{
+				if ($tmpl->changed) {
 						// Set the data to be saved
 					$recData=array();
 					$recData["sys_template"][$saveId]["constants"] = implode($tmpl->raw,LF);
@@ -150,7 +150,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 					htmlspecialchars(trim($tplRow["sitetitle"]) ? ' (' . $tplRow["sitetitle"] . ')' : '');
 			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('editConstants', TRUE), $content, FALSE, TRUE);
 
-			if ($manyTemplatesMenu)	{
+			if ($manyTemplatesMenu) {
 				$theOutput .= $this->pObj->doc->section("", $manyTemplatesMenu);
 			}
 
@@ -178,7 +178,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 			$tmpl->ext_getTSCE_config($category);
 
 # NOT WORKING:
-			if ($BE_USER_modOptions["properties"]["constantEditor."]["example"]=="top")	{
+			if ($BE_USER_modOptions["properties"]["constantEditor."]["example"]=="top") {
 				$theOutput=$this->displayExample($theOutput);
 			}
 
@@ -187,7 +187,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 				$theOutput.=$this->pObj->doc->section("",$printFields);
 			}
 
-			if ($BE_USER_modOptions["properties"]["constantEditor."]["example"]!="top")	{
+			if ($BE_USER_modOptions["properties"]["constantEditor."]["example"]!="top") {
 				$theOutput=$this->displayExample($theOutput);
 			}
 		} else {
