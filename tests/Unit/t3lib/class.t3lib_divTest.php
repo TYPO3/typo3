@@ -3788,6 +3788,109 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	}
 
 	///////////////////////////////////////////////////
+	// Tests concerning callUserFunction
+	///////////////////////////////////////////////////
+
+	/**
+	 * @test
+	 * @dataProvider callUserFunctionInvalidParameterDataprovider
+	 */
+	public function callUserFunctionWillReturnFalseForInvalidParameters($functionName) {
+		$inputData = array('foo' => 'bar');
+			// omit the debug() output
+		ob_start();
+		$result = t3lib_div::callUserFunction($functionName, $inputData, $this, 'user_');
+		ob_end_clean();
+		$this->assertFalse($result);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider callUserFunctionInvalidParameterDataprovider
+	 * @expectedException InvalidArgumentException
+	 */
+	public function callUserFunctionWillThrowExceptionForInvalidParameters($functionName) {
+		$inputData = array('foo' => 'bar');
+		t3lib_div::callUserFunction($functionName, $inputData, $this, 'user_', 2);
+	}
+	/**
+	 * Data provider for callUserFunctionInvalidParameterDataprovider and
+	 * callUserFunctionWillThrowExceptionForInvalidParameters.
+	 *
+	 * @return array
+	 */
+	public function callUserFunctionInvalidParameterDataprovider() {
+		return array(
+			'Function is not prefixed' => array('t3lib_divTest->calledUserFunction'),
+			'Class doesn\'t exists' => array('t3lib_divTest21345->user_calledUserFunction'),
+			'No method name' => array('t3lib_divTest'),
+			'No class name' => array('->user_calledUserFunction'),
+			'No function name' => array(''),
+		);
+	}
+
+	/**
+	 * Above tests already showed that the prefix is checked properly,
+	 * therefore this test skips the prefix and enables to inline the instantly
+	 * created function (who's name doesn't have a prefix).
+	 *
+	 * @test
+	 */
+	public function callUserFunctionCanCallFunction() {
+		$functionName = create_function('', 'return "Worked fine";');
+		$inputData = array('foo' => 'bar');
+		$result = t3lib_div::callUserFunction($functionName, $inputData, $this, '');
+		$this->assertEquals('Worked fine', $result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function callUserFunctionCanCallMethod() {
+		$inputData = array('foo' => 'bar');
+		$result = t3lib_div::callUserFunction('t3lib_divTest->user_calledUserFunction', $inputData, $this);
+		$this->assertEquals('Worked fine', $result);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function user_calledUserFunction() {
+		return "Worked fine";
+	}
+
+	/**
+	 * @test
+	 */
+	public function callUserFunctionCanPrefixFuncNameWithFilePath() {
+		$inputData = array('foo' => 'bar');
+		$result = t3lib_div::callUserFunction('t3lib/class.t3lib_div.php:t3lib_divTest->user_calledUserFunction', $inputData, $this);
+		$this->assertEquals('Worked fine', $result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function callUserFunctionCanPersistObjectsBetweenCalls() {
+		$inputData = array('called' => array());
+		t3lib_div::callUserFunction('&t3lib_divTest->user_calledUserFunctionCountCallers', $inputData, $this);
+		t3lib_div::callUserFunction('&t3lib_divTest->user_calledUserFunctionCountCallers', $inputData, $this);
+		$this->assertEquals(1, sizeof($inputData['called']));
+	}
+
+	/**
+	 * Takes the object hash and adds it to the passed array. In case
+	 * persisting the objects would not work we'd see two different
+	 * parent objects.
+	 *
+	 * @param $params
+	 */
+	public function user_calledUserFunctionCountCallers(&$params) {
+		$params['called'][spl_object_hash($this)]++;
+	}
+
+
+	///////////////////////////////////////////////////
 	// Tests concerning hasValidClassPrefix
 	///////////////////////////////////////////////////
 
