@@ -794,6 +794,135 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertEquals($expected, t3lib_div::splitCalc($expression, '+-*/'));
 	}
 
+	///////////////////////////////
+	// Tests concerning htmlspecialchars_decode
+	///////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function htmlspecialcharsDecodeReturnsDecodedString() {
+		$string ='<typo3 version="6.0">&nbsp;</typo3>';
+		$encoded = htmlspecialchars($string);
+		$decoded = t3lib_div::htmlspecialchars_decode($encoded);
+		$this->assertEquals($string, $decoded);
+	}
+
+	///////////////////////////////
+	// Tests concerning deHSCentities
+	///////////////////////////////
+
+	/**
+	 * @test
+	 * @dataProvider deHSCentitiesReturnsDecodedStringDataProvider
+	 */
+	public function deHSCentitiesReturnsDecodedString($input, $expected) {
+		$this->assertEquals($expected, t3lib_div::deHSCentities($input));
+	}
+
+	/**
+	 * Data provider for deHSCentitiesReturnsDecodedString
+	 *
+	 * @return array
+	 */
+	public function deHSCentitiesReturnsDecodedStringDataProvider() {
+		return array(
+			'Empty string' => array('', ''),
+			'Double encoded &' => array('&amp;amp;', '&amp;'),
+			'Double encoded numeric entity' => array('&amp;#1234;', '&#1234;'),
+			'Double encoded hexadecimal entity' => array('&amp;#x1b;', '&#x1b;'),
+			'Single encoded entities are not touched' => array('&amp; &#1234; &#x1b;', '&amp; &#1234; &#x1b;')
+		);
+	}
+
+	//////////////////////////////////
+	// Tests concerning slashJS
+	//////////////////////////////////
+
+	/**
+	 * @test
+	 * @dataProvider slashJsDataProvider
+	 */
+	public function slashJsEscapesSingleQuotesAndSlashes($input, $extended, $expected) {
+		$this->assertEquals($expected, t3lib_div::slashJS($input, $extended));
+	}
+
+	/**
+	 * Data provider for slashJsEscapesSingleQuotesAndSlashes
+	 *
+	 * @return array
+	 */
+	public function slashJsDataProvider() {
+		return array(
+			'Empty string is not changed' => array('', FALSE, ''),
+			'Normal string is not changed' => array('The cake is a lie √', FALSE, 'The cake is a lie √'),
+			'String with single quotes' => array("The 'cake' is a lie", FALSE, "The \\'cake\\' is a lie"),
+			'String with single quotes and backslashes - just escape single quotes'
+				=> array("The \\'cake\\' is a lie", FALSE, "The \\\\'cake\\\\' is a lie"),
+			'String with single quotes and backslashes - escape both'
+				=> array("The \\'cake\\' is a lie", TRUE, "The \\\\\\'cake\\\\\\' is a lie")
+		);
+	}
+
+	//////////////////////////////////
+	// Tests concerning rawUrlEncodeJS
+	//////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function rawUrlEncodeJsPreservesWhitespaces() {
+		$input = "Encode 'me', but leave my spaces √";
+		$expected = "Encode %27me%27%2C but leave my spaces %E2%88%9A";
+		$this->assertEquals($expected, t3lib_div::rawUrlEncodeJS($input));
+	}
+
+	//////////////////////////////////
+	// Tests concerning rawUrlEncodeJS
+	//////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function rawUrlEncodeFpPreservesSlashes() {
+		$input = "Encode 'me', but leave my / √";
+		$expected = "Encode%20%27me%27%2C%20but%20leave%20my%20/%20%E2%88%9A";
+		$this->assertEquals($expected, t3lib_div::rawUrlEncodeFP($input));
+	}
+
+	//////////////////////////////////
+	// Tests concerning strtoupper / strtolower
+	//////////////////////////////////
+
+	/**
+	 * Data provider for strtoupper and strtolower
+	 *
+	 * @return array
+	 */
+	public function strtouppperDataProvider() {
+		return array(
+			'Empty string' => array('', ''),
+			'String containing only latin characters' => array('the cake is a lie.', 'THE CAKE IS A LIE.'),
+			'String with umlauts and accent characters' => array('the càkê is ä lie.', 'THE CàKê IS ä LIE.')
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider strtouppperDataProvider
+	 */
+	public function strtoupperConvertsOnlyLatinCharacters($input, $expected) {
+		$this->assertEquals($expected, t3lib_div::strtoupper($input));
+	}
+
+	/**
+	 * @test
+	 * @dataProvider strtouppperDataProvider
+	 */
+	public function strtolowerConvertsOnlyLatinCharacters($expected, $input) {
+		$this->assertEquals($expected, t3lib_div::strtolower($input));
+	}
+
 
 	//////////////////////////////////
 	// Tests concerning validEmail
