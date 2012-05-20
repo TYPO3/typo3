@@ -1103,6 +1103,116 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	}
 
 	//////////////////////////////////
+	// Tests concerning implodeArrayForUrl / explodeUrl2Array
+	//////////////////////////////////
+
+	/**
+	 * Data provider for implodeArrayForUrlBuildsValidParameterString and
+	 * explodeUrl2ArrayTransformsParameterStringToArray
+	 *
+	 * @return array
+	 */
+	public function implodeArrayForUrlDataProvider() {
+		$valueArray = array('one' => '√', 'two' => 2);
+		return array(
+			'Empty input'
+				=> array('foo', array(), ''),
+			'String parameters'
+				=> array('foo', $valueArray, '&foo[one]=%E2%88%9A&foo[two]=2'),
+			'Nested array parameters'
+				=> array('foo', array($valueArray), '&foo[0][one]=%E2%88%9A&foo[0][two]=2'),
+			'Keep blank parameters'
+				=> array('foo', array('one'=> '√', ''), '&foo[one]=%E2%88%9A&foo[0]=')
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider implodeArrayForUrlDataProvider
+	 */
+	public function implodeArrayForUrlBuildsValidParameterString($name, $input, $expected) {
+		$this->assertSame($expected, t3lib_div::implodeArrayForUrl($name, $input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function implodeArrayForUrlCanSkipEmptyParameters() {
+		$input = array('one'=> '√', '');
+		$expected = '&foo[one]=%E2%88%9A';
+		$this->assertSame($expected, t3lib_div::implodeArrayForUrl('foo', $input, '', TRUE));
+	}
+
+	/**
+	 * @test
+	 */
+	public function implodeArrayForUrlCanUrlEncodeKeyNames() {
+		$input = array('one'=> '√', '');
+		$expected = '&foo%5Bone%5D=%E2%88%9A&foo%5B0%5D=';
+		$this->assertSame($expected, t3lib_div::implodeArrayForUrl('foo', $input, '', FALSE, TRUE));
+	}
+
+	/**
+	 * @test
+	 * @dataProvider implodeArrayForUrlDataProvider
+	 */
+	public function explodeUrl2ArrayTransformsParameterStringToNestedArray($name, $array, $input) {
+		$expected = $array ? array($name => $array) : array();
+		$this->assertEquals($expected, t3lib_div::explodeUrl2Array($input, TRUE));
+	}
+
+	/**
+	 * @test
+	 * @dataProvider explodeUrl2ArrayDataProvider
+	 */
+	public function explodeUrl2ArrayTransformsParameterStringToFlatArray($input, $expected) {
+		$this->assertEquals($expected, t3lib_div::explodeUrl2Array($input, FALSE));
+	}
+
+	/**
+	 * Data provider for explodeUrl2ArrayTransformsParameterStringToFlatArray
+	 *
+	 * @return array
+	 */
+	public function explodeUrl2ArrayDataProvider() {
+		return array(
+			'Empty string'
+				=> array('', array()),
+			'Simple parameter string'
+				=> array('&one=%E2%88%9A&two=2', array('one' => '√', 'two' => 2)),
+			'Nested parameter string'
+				=> array('&foo[one]=%E2%88%9A&two=2', array('foo[one]' => '√', 'two' => 2))
+		);
+	}
+
+	//////////////////////////////////
+	// Tests concerning compileSelectedGetVarsFromArray
+	//////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function compileSelectedGetVarsFromArrayFiltersIncomingData() {
+		$filter = 'foo,bar';
+		$getArray = array('foo' => 1, 'cake' => 'lie');
+		$expected = array('foo' => 1);
+		$result = t3lib_div::compileSelectedGetVarsFromArray($filter, $getArray, FALSE);
+		$this->assertSame($expected, $result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function compileSelectedGetVarsFromArrayUsesGetPostDataFallback() {
+		$_GET['bar'] = '2';
+		$filter = 'foo,bar';
+		$getArray = array('foo' => 1, 'cake' => 'lie');
+		$expected = array('foo' => 1, 'bar' => '2');
+		$result = t3lib_div::compileSelectedGetVarsFromArray($filter, $getArray, TRUE);
+		$this->assertSame($expected, $result);
+	}
+
+	//////////////////////////////////
 	// Tests concerning remapArrayKeys
 	//////////////////////////////////
 
