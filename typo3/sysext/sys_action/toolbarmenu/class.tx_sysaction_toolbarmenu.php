@@ -68,7 +68,6 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 	 * renders the toolbar menu
 	 *
 	 * @return	string	the rendered backend menu
-	 * @author	Ingo Renner <ingo@typo3.org>
 	 */
 	public function render() {
 		$actionMenu    = array();
@@ -103,8 +102,6 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 	 * gets the entries for the action menu
 	 *
 	 * @return	array	array of action menu entries
-	 * @author	Steffen Kamper <info@sk-typo3.de>
-	 * @author	Ingo Renner <ingo@typo3.org>
 	 */
 	protected function getActionEntries() {
 		$actions = array();

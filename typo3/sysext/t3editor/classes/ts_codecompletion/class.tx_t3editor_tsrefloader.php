@@ -50,7 +50,6 @@ class tx_t3editor_TSrefLoader {
 	 * @param	array		$params: additional parameters (not used here)
 	 * @param	TYPO3AJAX	&$ajaxObj: the TYPO3AJAX object of this request
 	 * @return	void
-	 * @author	Oliver Hader <oliver@typo3.org>
 	 */
 	public function processAjaxRequest($params, TYPO3AJAX &$ajaxObj) {
 		$this->ajaxObj = $ajaxObj;

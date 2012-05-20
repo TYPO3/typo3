@@ -1584,7 +1584,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * Provides a tool cleaning up various tables in the database
 	 *
 	 * @return void
-	 * @author Robert Lemke <rl@robertlemke.de>
 	 * @todo Add more functionality ...
 	 */
 	function cleanupManager() {

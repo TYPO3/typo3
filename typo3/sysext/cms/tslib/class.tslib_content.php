@@ -1002,8 +1002,6 @@ class tslib_cObj {
 	 *
 	 * @param	array		array of TypoScript properties
 	 * @return	string		the HTML output
-	 * @author	Steffen Ritter	<info@steffen-ritter.net>
-	 * @author	Benjamin Mack	<benni@typo3.org>
 	 */
 	protected function FLUIDTEMPLATE(array $conf) {
 		return $this->getContentObject('FLUIDTEMPLATE')->render($conf);
@@ -3828,8 +3826,6 @@ class tslib_cObj {
 	 * @param	string		Input string to be cleaned.
 	 * @param	array		TypoScript configuration.
 	 * @return	string		Return string
-	 * @author	Thomas Bley (all from moregroupware cvs code / readmessage.inc.php, published under gpl by Thomas)
-	 * @author	Kasper Sk�rh�j
 	 */
 	function removeBadHTML($text, $conf) {
 

@@ -39,7 +39,6 @@ class tx_t3editor_codecompletion {
 	 * @param	array		$params: additional parameters (not used here)
 	 * @param	TYPO3AJAX	&$ajaxObj: the TYPO3AJAX object of this request
 	 * @return	void
-	 * @author	Oliver Hader <oliver@typo3.org>
 	 */
 	public function processAjaxRequest($params, TYPO3AJAX &$ajaxObj) {
 		$this->ajaxObj = $ajaxObj;
@@ -64,7 +63,6 @@ class tx_t3editor_codecompletion {
 	 * @param	integer		$pageId: id of the page
 	 * @param	integer		$templateId: currently unused (default: 0)
 	 * @return	array		Cleaned array of TypoScript information
-	 * @author	Oliver Hader <oliver@typo3.org>
 	 */
 	protected function loadTemplates($pageId, $templateId = 0) {
 		$templates = array();

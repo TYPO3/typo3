@@ -2263,7 +2263,6 @@ class tslib_fe {
 	 * shortcut
 	 *
 	 * @return	void
-	 * @author	Ingo Renner <ingo@typo3.org>
 	 */
 	protected function checkTranslatedShortcut() {
 

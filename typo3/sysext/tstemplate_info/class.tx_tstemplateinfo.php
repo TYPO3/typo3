@@ -147,7 +147,6 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 *
 	 * @param 	array 	$tplRow: template row
 	 * @return 	array	preprocessed template row
-	 * @author	Fabrizio Branca <typo3@fabrizio-branca.de>
 	 */
 	function processTemplateRowAfterLoading(array $tplRow) {
 		if ($this->pObj->MOD_SETTINGS['includeTypoScriptFileContent']) {
@@ -164,7 +163,6 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 *
 	 * @param 	array 	$tplRow: template row
 	 * @return 	array	preprocessed template row
-	 * @author	Fabrizio Branca <typo3@fabrizio-branca.de>
 	 */
 	function processTemplateRowBeforeSaving(array $tplRow) {
 		if ($this->pObj->MOD_SETTINGS['includeTypoScriptFileContent']) {

@@ -189,7 +189,6 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 *
 	 * @param	string		Name of the function you want to call / hook key
 	 * @return	object		Hook object, if any. Otherwise NULL.
-	 * @author Kasper Skårhøj
 	 */
 	function hookRequest($functionName) {
 			// Hook: menuConfig_preProcessModMenu

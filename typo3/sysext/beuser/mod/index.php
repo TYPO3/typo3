@@ -1498,7 +1498,7 @@ class SC_mod_tools_be_user_index {
 	 ***************************/
 
 	/**
-	 * @author Martin Kutschker
+	 * @return string
 	 */
 	function whoIsOnline() {
 		$select_fields = 'ses_id, ses_tstamp, ses_iplock, u.uid,u.username, u.admin, u.realName, u.disable, u.starttime, u.endtime, u.deleted, bu.uid AS bu_uid,bu.username AS bu_username, bu.realName AS bu_realName';

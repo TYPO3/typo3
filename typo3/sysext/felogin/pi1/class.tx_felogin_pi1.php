@@ -865,7 +865,6 @@ class tx_felogin_pi1 extends tslib_pibase {
 	/**
 	 * Is used by forgot password - function with md5 option.
 	 *
-	 * @author	Bernhard Kraft
 	 *
 	 * @param	int			length of new password
 	 * @return	string		new password
