@@ -46,7 +46,7 @@ class tx_rtehtmlarea_softrefproc extends t3lib_softrefproc {
 		$retVal = FALSE;
 		$this->tokenID_basePrefix = $table . ':' . $uid . ':' . $field . ':' . $structurePath . ':' . $spKey;
 
-		switch ($spKey)	{
+		switch ($spKey) {
 			case 'rtehtmlarea_images':
 				$retVal = $this->findRef_rtehtmlarea_images($content, $spParams);
 			break;

@@ -65,7 +65,7 @@
  * $gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
  * $gifCreator->init();
  * $theImage='';
- * if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'])	{
+ * if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
  * $gifCreator->start($fileArray,$this->data);
  * $theImage = $gifCreator->gifBuild();
  * }
@@ -102,9 +102,9 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @return	void
 	 * @see tslib_cObj::getImgResource(), tslib_gmenu::makeGifs(), tslib_gmenu::findLargestDims()
 	 */
-	function start($conf,$data)	{
+	function start($conf,$data) {
 
-		if (is_array($conf))	{
+		if (is_array($conf)) {
 			$this->setup = $conf;
 			$this->data = $data;
 			$this->cObj =t3lib_div::makeInstance('tslib_cObj');
@@ -128,9 +128,9 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 				// Initializing global Char Range Map
 			$this->charRangeMap = array();
-			if (is_array($GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.']))	{
-				foreach($GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'] as $cRMcfgkey => $cRMcfg)	{
-					if (is_array($cRMcfg))	{
+			if (is_array($GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'])) {
+				foreach($GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'] as $cRMcfgkey => $cRMcfg) {
+					if (is_array($cRMcfg)) {
 
 							// Initializing:
 						$cRMkey = $GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'][substr($cRMcfgkey,0,-1)];
@@ -147,14 +147,14 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			$sKeyArray=t3lib_TStemplate::sortedKeyList($this->setup);
 
 				// Setting the background color, passing it through stdWrap
-			if ($conf['backColor.'] || $conf['backColor'])	{
+			if ($conf['backColor.'] || $conf['backColor']) {
 				$this->setup['backColor'] = isset($this->setup['backColor.'])
 					? trim($this->cObj->stdWrap($this->setup['backColor'], $this->setup['backColor.']))
 					: $this->setup['backColor'];
 			}
 			if (!$this->setup['backColor'])	{ $this->setup['backColor']='white'; }
 
-			if ($conf['transparentColor.'] || $conf['transparentColor'])	{
+			if ($conf['transparentColor.'] || $conf['transparentColor']) {
 				$this->setup['transparentColor_array'] = isset($this->setup['transparentColor.'])
 					? explode('|', trim($this->cObj->stdWrap($this->setup['transparentColor'], $this->setup['transparentColor.'])))
 					: explode('|', trim($this->setup['transparentColor']));
@@ -179,17 +179,17 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			foreach($sKeyArray as $theKey) {
 				$theValue = $this->setup[$theKey];
 
-				if (intval($theKey) && $conf=$this->setup[$theKey.'.'])	{
+				if (intval($theKey) && $conf=$this->setup[$theKey.'.']) {
 						// Swipes through TEXT and IMAGE-objects
-					switch($theValue)	{
+					switch($theValue) {
 						case 'TEXT':
-							if ($this->setup[$theKey.'.'] = $this->checkTextObj($conf))	{
+							if ($this->setup[$theKey.'.'] = $this->checkTextObj($conf)) {
 
 									// Adjust font width if max size is set:
 								$maxWidth = isset($this->setup[$theKey.'.']['maxWidth.'])
 									? $this->cObj->stdWrap($this->setup[$theKey.'.']['maxWidth'], $this->setup[$theKey.'.']['maxWidth.'])
 									: $this->setup[$theKey.'.']['maxWidth'];
-								if ($maxWidth)	{
+								if ($maxWidth) {
 									$this->setup[$theKey.'.']['fontSize'] = $this->fontResize($this->setup[$theKey.'.']); //RTF - this has to be done before calcBBox
 								}
 
@@ -202,14 +202,14 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 						break;
 						case 'IMAGE':
 							$fileInfo = $this->getResource($conf['file'],$conf['file.']);
-							if ($fileInfo)	{
+							if ($fileInfo) {
 								$this->combinedFileNames[] = preg_replace('/\.[[:alnum:]]+$/','',basename($fileInfo[3]));
 								$this->setup[$theKey.'.']['file'] = $fileInfo[3];
 								$this->setup[$theKey.'.']['BBOX'] = $fileInfo;
 								$this->objBB[$theKey] = $fileInfo;
-								if ($conf['mask'])	{
+								if ($conf['mask']) {
 									$maskInfo = $this->getResource($conf['mask'],$conf['mask.']);
-									if ($maskInfo)	{
+									if ($maskInfo) {
 										$this->setup[$theKey.'.']['mask'] = $maskInfo[3];
 									} else {
 										$this->setup[$theKey.'.']['mask'] = '';
@@ -221,11 +221,11 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 						break;
 					}
 						// Checks if disabled is set... (this is also done in menu.php / imgmenu!!)
-					if ($conf['if.'])	{
+					if ($conf['if.']) {
 						$cObj =t3lib_div::makeInstance('tslib_cObj');
 						$cObj->start($this->data);
 
-						if (!$cObj->checkIf($conf['if.']))	{
+						if (!$cObj->checkIf($conf['if.'])) {
 							unset($this->setup[$theKey]);
 							unset($this->setup[$theKey.'.']);
 						}
@@ -249,14 +249,14 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			foreach ($sKeyArray as $theKey) {
 				$theValue=$this->setup[$theKey];
 
-				if (intval($theKey) && $conf=$this->setup[$theKey.'.'])	{
-					switch($theValue)	{
+				if (intval($theKey) && $conf=$this->setup[$theKey.'.']) {
+					switch($theValue) {
 						case 'TEXT':
 						case 'IMAGE':
 							if(isset($this->setup[$theKey.'.']['offset.'])) {
 								$this->setup[$theKey.'.']['offset'] = $this->cObj->stdWrap($this->setup[$theKey.'.']['offset'], $this->setup[$theKey.'.']['offset.']);
 							}
-							if ($this->setup[$theKey.'.']['offset'])	{
+							if ($this->setup[$theKey.'.']['offset']) {
 								$this->setup[$theKey.'.']['offset'] = $this->calcOffset($this->setup[$theKey.'.']['offset']);
 							}
 						break;
@@ -265,7 +265,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 							if(isset($this->setup[$theKey.'.']['dimensions.'])) {
 								$this->setup[$theKey.'.']['dimensions'] = $this->cObj->stdWrap($this->setup[$theKey.'.']['dimensions'], $this->setup[$theKey.'.']['dimensions.']);
 							}
-							if ($this->setup[$theKey.'.']['dimensions'])	{
+							if ($this->setup[$theKey.'.']['dimensions']) {
 								$this->setup[$theKey.'.']['dimensions'] = $this->calcOffset($this->setup[$theKey.'.']['dimensions']);
 							}
 						break;
@@ -273,7 +273,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 							if(isset($this->setup[$theKey.'.']['set.'])) {
 								$this->setup[$theKey.'.']['set'] = $this->cObj->stdWrap($this->setup[$theKey.'.']['set'], $this->setup[$theKey.'.']['set.']);
 							}
-							if ($this->setup[$theKey.'.']['set'])	{
+							if ($this->setup[$theKey.'.']['set']) {
 								$this->setup[$theKey.'.']['set'] = $this->calcOffset($this->setup[$theKey.'.']['set']);
 							}
 						break;
@@ -281,7 +281,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 							if(isset($this->setup[$theKey.'.']['crop.'])) {
 								$this->setup[$theKey.'.']['crop'] = $this->cObj->stdWrap($this->setup[$theKey.'.']['crop'], $this->setup[$theKey.'.']['crop.']);
 							}
-							if ($this->setup[$theKey.'.']['crop'])	{
+							if ($this->setup[$theKey.'.']['crop']) {
 								$this->setup[$theKey.'.']['crop'] = $this->calcOffset($this->setup[$theKey.'.']['crop']);
 							}
 						break;
@@ -289,13 +289,13 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 							if(isset($this->setup[$theKey.'.']['width.'])) {
 								$this->setup[$theKey.'.']['width'] = $this->cObj->stdWrap($this->setup[$theKey.'.']['width'], $this->setup[$theKey.'.']['width.']);
 							}
-							if ($this->setup[$theKey.'.']['width'])	{
+							if ($this->setup[$theKey.'.']['width']) {
 								$this->setup[$theKey.'.']['width'] = $this->calcOffset($this->setup[$theKey.'.']['width']);
 							}
 							if(isset($this->setup[$theKey.'.']['height.'])) {
 								$this->setup[$theKey.'.']['height'] = $this->cObj->stdWrap($this->setup[$theKey.'.']['height'], $this->setup[$theKey.'.']['height.']);
 							}
-							if ($this->setup[$theKey.'.']['height'])	{
+							if ($this->setup[$theKey.'.']['height']) {
 								$this->setup[$theKey.'.']['height'] = $this->calcOffset($this->setup[$theKey.'.']['height']);
 							}
 						break;
@@ -332,7 +332,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @see make(), fileName()
 	 */
 	function gifBuild() {
-		if ($this->setup)	{
+		if ($this->setup) {
 			$gifFileName = $this->fileName('GB/');	// Relative to PATH_site
 			if (!file_exists($gifFileName))	{		// File exists
 
@@ -398,11 +398,11 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 		}
 
 			// Traverse the GIFBUILDER objects an render each one:
-		if (is_array($this->setup))	{
+		if (is_array($this->setup)) {
 			$sKeyArray=t3lib_TStemplate::sortedKeyList($this->setup);
-			foreach($sKeyArray as $theKey)	{
+			foreach($sKeyArray as $theKey) {
 				$theValue=$this->setup[$theKey];
-				if (intval($theKey) && $conf=$this->setup[$theKey.'.'])	{
+				if (intval($theKey) && $conf=$this->setup[$theKey.'.']) {
 					$isStdWrapped = array();
 					foreach($conf as $key => $value) {
 						$parameter = rtrim($key,'.');
@@ -411,10 +411,10 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 							$isStdWrapped[$parameter] = 1;
 						}
 					}
-					switch($theValue)	{
+					switch($theValue) {
 							// Images
 						case 'IMAGE':
-							if ($conf['mask'])	{
+							if ($conf['mask']) {
 								$this->maskImageOntoImage($this->im,$conf,$this->workArea);
 							} else {
 								$this->copyImageOntoImage($this->im,$conf,$this->workArea);
@@ -423,8 +423,8 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 							// Text
 						case 'TEXT':
-							if (!$conf['hide'])	{
-								if (is_array($conf['shadow.']))	{
+							if (!$conf['hide']) {
+								if (is_array($conf['shadow.'])) {
 									$isStdWrapped = array();
 									foreach($conf['shadow.'] as $key => $value) {
 										$parameter = rtrim($key,'.');
@@ -435,7 +435,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 									}
 									$this->makeShadow($this->im,$conf['shadow.'],$this->workArea,$conf);
 								}
-								if (is_array($conf['emboss.']))	{
+								if (is_array($conf['emboss.'])) {
 									$isStdWrapped = array();
 									foreach($conf['emboss.'] as $key => $value) {
 										$parameter = rtrim($key,'.');
@@ -446,7 +446,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 									}
 									$this->makeEmboss($this->im,$conf['emboss.'],$this->workArea,$conf);
 								}
-								if (is_array($conf['outline.']))	{
+								if (is_array($conf['outline.'])) {
 									$isStdWrapped = array();
 									foreach($conf['outline.'] as $key => $value) {
 										$parameter = rtrim($key,'.');
@@ -464,17 +464,17 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 							// Text effects:
 						case 'OUTLINE':
-							if ($this->setup[$conf['textObjNum']]=='TEXT' && $txtConf=$this->checkTextObj($this->setup[$conf['textObjNum'].'.']))	{
+							if ($this->setup[$conf['textObjNum']]=='TEXT' && $txtConf=$this->checkTextObj($this->setup[$conf['textObjNum'].'.'])) {
 								$this->makeOutline($this->im,$conf,$this->workArea,$txtConf);
 							}
 						break;
 						case 'EMBOSS':
-							if ($this->setup[$conf['textObjNum']]=='TEXT' && $txtConf=$this->checkTextObj($this->setup[$conf['textObjNum'].'.']))	{
+							if ($this->setup[$conf['textObjNum']]=='TEXT' && $txtConf=$this->checkTextObj($this->setup[$conf['textObjNum'].'.'])) {
 								$this->makeEmboss($this->im,$conf,$this->workArea,$txtConf);
 							}
 						break;
 						case 'SHADOW':
-							if ($this->setup[$conf['textObjNum']]=='TEXT' && $txtConf=$this->checkTextObj($this->setup[$conf['textObjNum'].'.']))	{
+							if ($this->setup[$conf['textObjNum']]=='TEXT' && $txtConf=$this->checkTextObj($this->setup[$conf['textObjNum'].'.'])) {
 								$this->makeShadow($this->im,$conf,$this->workArea,$txtConf);
 							}
 						break;
@@ -496,10 +496,10 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 							$this->scale($this->im,$conf);
 						break;
 						case 'WORKAREA':
-							if ($conf['set'])	{
+							if ($conf['set']) {
 								$this->setWorkArea($conf['set']);	// this sets the workArea
 							}
-							if (isset($conf['clear']))	{
+							if (isset($conf['clear'])) {
 								$this->workArea = $this->defaultWorkArea;	// this sets the current to the default;
 							}
 						break;
@@ -568,7 +568,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @return	array		Modified $conf array IF the "text" property is not blank
 	 * @access private
 	 */
-	function checkTextObj($conf)	{
+	function checkTextObj($conf) {
 		$cObj = t3lib_div::makeInstance('tslib_cObj');
 		$cObj->start($this->data);
 
@@ -591,7 +591,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 		$conf['fontColor'] = trim($conf['fontColor']);
 			// Strip HTML
-		if (!$conf['doNotStripHTML'])	{
+		if (!$conf['doNotStripHTML']) {
 			$conf['text'] = strip_tags($conf['text']);
 		}
 		$this->combinedTextStrings[] = strip_tags($conf['text']);
@@ -605,14 +605,14 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				$conf['text'] = substr($conf['text'], 0, $tlen);
 			}
 		}
-		if ((string)$conf['text']!='')	{
+		if ((string)$conf['text']!='') {
 
 				// Char range map thingie:
 			$fontBaseName = basename($conf['fontFile']);
-			if (is_array($this->charRangeMap[$fontBaseName]))	{
+			if (is_array($this->charRangeMap[$fontBaseName])) {
 
 					// Initialize splitRendering array:
-				if (!is_array($conf['splitRendering.']))	{
+				if (!is_array($conf['splitRendering.'])) {
 					$conf['splitRendering.'] = array();
 				}
 
@@ -623,24 +623,24 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 					$conf['splitRendering.'][$cfgK.'.'] = $this->charRangeMap[$fontBaseName]['charMapConfig'];
 
 						// multiplicator of fontsize:
-					if ($this->charRangeMap[$fontBaseName]['multiplicator'])	{
+					if ($this->charRangeMap[$fontBaseName]['multiplicator']) {
 						$conf['splitRendering.'][$cfgK.'.']['fontSize'] = round($conf['fontSize'] * $this->charRangeMap[$fontBaseName]['multiplicator']);
 					}
 						// multiplicator of pixelSpace:
-					if ($this->charRangeMap[$fontBaseName]['pixelSpace'])	{
+					if ($this->charRangeMap[$fontBaseName]['pixelSpace']) {
 						$travKeys = array('xSpaceBefore','xSpaceAfter','ySpaceBefore','ySpaceAfter');
-						foreach($travKeys as $pxKey)	{
-							if (isset($conf['splitRendering.'][$cfgK.'.'][$pxKey]))	{
+						foreach($travKeys as $pxKey) {
+							if (isset($conf['splitRendering.'][$cfgK.'.'][$pxKey])) {
 								$conf['splitRendering.'][$cfgK.'.'][$pxKey] = round($conf['splitRendering.'][$cfgK.'.'][$pxKey] * ($conf['fontSize'] / $this->charRangeMap[$fontBaseName]['pixelSpace']));
 							}
 						}
 					}
 				}
 			}
-			if (is_array($conf['splitRendering.']))	{
-				foreach($conf['splitRendering.'] as $key => $value)	{
-					if (is_array($conf['splitRendering.'][$key]))	{
-						if (isset($conf['splitRendering.'][$key]['fontFile']))	{
+			if (is_array($conf['splitRendering.'])) {
+				foreach($conf['splitRendering.'] as $key => $value) {
+					if (is_array($conf['splitRendering.'][$key])) {
+						if (isset($conf['splitRendering.'][$key]['fontFile'])) {
 							$conf['splitRendering.'][$key]['fontFile'] = $this->checkFile($conf['splitRendering.'][$key]['fontFile']);
 						}
 					}
@@ -662,7 +662,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @return	string		The resolved string with each part (separated by comma) returned separated by comma
 	 * @access private
 	 */
-	function calcOffset($string)	{
+	function calcOffset($string) {
 		$value = array();
 		$numbers = t3lib_div::trimExplode(',', $this->calculateFunctions($string));
 
@@ -687,8 +687,8 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @access private
 	 * @see tslib_cObj::getImgResource()
 	 */
-	function getResource($file,$fileArray)	{
-		if (!t3lib_div::inList($this->imageFileExt, $fileArray['ext']))	{
+	function getResource($file,$fileArray) {
+		if (!t3lib_div::inList($this->imageFileExt, $fileArray['ext'])) {
 			$fileArray['ext'] = $this->gifExtension;
 		}
 		$cObj =t3lib_div::makeInstance('tslib_cObj');
@@ -704,7 +704,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @access private
 	 * @see t3lib_TStemplate::getFileName()
 	 */
-	function checkFile($file)	{
+	function checkFile($file) {
 		return $GLOBALS['TSFE']->tmpl->getFileName($file);
 	}
 
@@ -715,7 +715,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @return string The relative filepath (relative to PATH_site)
 	 * @access private
 	 */
-	function fileName($pre)	{
+	function fileName($pre) {
 
 		$meaningfulPrefix = '';
 
@@ -751,7 +751,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @access private
 	 */
 	function extension() {
-		switch(strtolower($this->setup['format']))	{
+		switch(strtolower($this->setup['format'])) {
 			case 'jpg':
 			case 'jpeg':
 				return 'jpg';

@@ -62,7 +62,7 @@ class tx_extrapagecmoptions {
 	 * @param	integer		UID of clicked item.
 	 * @return	array		Modified $menuItems array
 	 */
-	function main(&$backRef,$menuItems,$table,$uid)	{
+	function main(&$backRef,$menuItems,$table,$uid) {
 		$localItems = array();	// Accumulation of local items.
 		$subname = t3lib_div::_GP('subname');
 
@@ -70,7 +70,7 @@ class tx_extrapagecmoptions {
 		// LEVEL: Primary menu.
 		if (!in_array('moreoptions', $backRef->disabledItems) && !$backRef->cmLevel) {
 				// Creating menu items here:
-			if ($backRef->editOK)	{
+			if ($backRef->editOK) {
 				$LL = $this->includeLL();
 
 				$localItems[]='spacer';
@@ -95,13 +95,13 @@ class tx_extrapagecmoptions {
 			$deleteFound = FALSE;
 			foreach ($menuItems as $k => $value) {
 				$c++;
-				if (!strcmp($k,'delete'))	{
+				if (!strcmp($k,'delete')) {
 					$deleteFound = TRUE;
 					break;
 				}
 			}
 
-			if ($deleteFound)	{
+			if ($deleteFound) {
 					// .. subtract two... (delete item + its spacer element...)
 				$c-=2;
 					// and insert the items just before the delete element.
@@ -123,7 +123,7 @@ class tx_extrapagecmoptions {
 			}
 
 				// Temporary mount point item:
-			if ($table=='pages')	{
+			if ($table=='pages') {
 				$localItems['temp_mount_point'] = $backRef->DB_tempMountPoint($uid);
 			}
 

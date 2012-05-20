@@ -118,17 +118,17 @@ Will report lost files.';
 		foreach($fileArr as $key => $value) {
 
 			$include = TRUE;
-			foreach($excludePaths as $exclPath)	{
-				if (t3lib_div::isFirstPartOfStr($value,$exclPath))	{
+			foreach($excludePaths as $exclPath) {
+				if (t3lib_div::isFirstPartOfStr($value,$exclPath)) {
 					$include = FALSE;
 				}
 			}
 
 			$shortKey = t3lib_div::shortmd5($value);
 
-			if ($include)	{
+			if ($include) {
 					// First, allow "index.html", ".htaccess" files since they are often used for good reasons
-				if (substr($value,-11) == '/index.html' || substr($value,-10) == '/.htaccess')	{
+				if (substr($value,-11) == '/index.html' || substr($value,-10) == '/.htaccess') {
 					unset($fileArr[$key]);
 					$resultArray['ignoredFiles'][$shortKey] = $value;
 				} else {
@@ -147,12 +147,12 @@ Will report lost files.';
 					if (count($recs))		{
 						unset($fileArr[$key]);
 						$resultArray['managedFiles'][$shortKey] = $value;
-						if (count($recs)>1)	{
+						if (count($recs)>1) {
 							$resultArray['warnings'][$shortKey] = 'Warning: File "'.$value.'" had '.count($recs).' references from group-fields, should have only one!';
 						}
 					} else {
 							// When here it means the file was not found. So we test if it has a RTEmagic-image name and if so, we allow it:
-						if (preg_match('/^RTEmagic[P|C]_/',basename($value)))	{
+						if (preg_match('/^RTEmagic[P|C]_/',basename($value))) {
 							unset($fileArr[$key]);
 							$resultArray['RTEmagicFiles'][$shortKey] = $value;
 						} else {
@@ -184,14 +184,14 @@ Will report lost files.';
 	 * @param	array		Result array from main() function
 	 * @return	void
 	 */
-	function main_autoFix($resultArray)	{
-		foreach($resultArray['lostFiles'] as $key => $value)	{
+	function main_autoFix($resultArray) {
+		foreach($resultArray['lostFiles'] as $key => $value) {
 			$absFileName = t3lib_div::getFileAbsFileName($value);
 			echo 'Deleting file: "'.$absFileName.'": ';
-			if ($bypass = $this->cli_noExecutionCheck($absFileName))	{
+			if ($bypass = $this->cli_noExecutionCheck($absFileName)) {
 				echo $bypass;
 			} else {
-				if ($absFileName && @is_file($absFileName))	{
+				if ($absFileName && @is_file($absFileName)) {
 					unlink($absFileName);
 					echo 'DONE';
 				} else {

@@ -89,14 +89,14 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 
 		$theOutput = $this->pObj->doc->header($LANG->getLL('tsconf_title'));
 
-		if ($this->pObj->MOD_SETTINGS['tsconf_parts']==99)	{
+		if ($this->pObj->MOD_SETTINGS['tsconf_parts']==99) {
 			$TSparts = t3lib_BEfunc::getPagesTSconfig($this->pObj->id,'',1);
 			$lines = array();
 			$pUids = array();
 
-			foreach($TSparts as $k => $v)	{
-				if ($k!='uid_0')	{
-					if ($k=='defaultPageTSconfig')	{
+			foreach($TSparts as $k => $v) {
+				if ($k!='uid_0') {
+					if ($k=='defaultPageTSconfig') {
 						$pTitle = '<strong>'.$GLOBALS['LANG']->getLL('editTSconfig_default',1).'</strong>';
 						$editIcon = '';
 					} else {
@@ -126,7 +126,7 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 				}
 			}
 
-			if (count($pUids))	{
+			if (count($pUids)) {
 				$params = '&edit[pages]['.implode(',',$pUids).']=edit&columnsOnly=TSconfig';
 				$onclickUrl = t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'],'');
 				$editIcon = '<a href="#" onclick="'.htmlspecialchars($onclickUrl).'" title="'.$GLOBALS['LANG']->getLL('editTSconfig_all',1).'">'.
@@ -156,7 +156,7 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 			$tmpl->ext_expandAllNotes = 1;
 			$tmpl->ext_noPMicons = 1;
 
-			switch($this->pObj->MOD_SETTINGS['tsconf_parts'])	{
+			switch($this->pObj->MOD_SETTINGS['tsconf_parts']) {
 				case '1':
 					$modTSconfig = t3lib_BEfunc::getModTSconfig($this->pObj->id,'mod');
 				break;

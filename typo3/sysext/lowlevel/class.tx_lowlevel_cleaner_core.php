@@ -110,7 +110,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 		$GLOBALS['BE_USER']->setWorkspace(0);
 
 			// Print Howto:
-		if ($this->cli_isArg('--showhowto'))	{
+		if ($this->cli_isArg('--showhowto')) {
 			$howto = t3lib_div::getUrl(t3lib_extMgm::extPath('lowlevel').'HOWTO_clean_up_TYPO3_installations.txt');
 			echo wordwrap($howto,120).LF;
 			exit;
@@ -118,7 +118,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 
 			// Print help
 		$analysisType = (string)$this->cli_args['_DEFAULT'][1];
-		if (!$analysisType)	{
+		if (!$analysisType) {
 			$this->cli_validateArgs();
 			$this->cli_help();
 			exit;
@@ -127,18 +127,18 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 			// Analysis type:
 		switch((string)$analysisType)    {
 			default:
-				if (is_array($this->cleanerModules[$analysisType]))	{
+				if (is_array($this->cleanerModules[$analysisType])) {
 					$cleanerMode = t3lib_div::getUserObj($this->cleanerModules[$analysisType][0]);
 					$cleanerMode->cli_validateArgs();
 
 					if ($this->cli_isArg('-r'))	{	// Run it...
-						if (!$cleanerMode->checkRefIndex || $this->cli_referenceIndexCheck())	{
+						if (!$cleanerMode->checkRefIndex || $this->cli_referenceIndexCheck()) {
 							$res = $cleanerMode->main();
 							$this->cli_printInfo($analysisType, $res);
 
 								// Autofix...
-							if ($this->cli_isArg('--AUTOFIX'))	{
-								if ($this->cli_isArg('--YES') || $this->cli_keyboardInput_yes("\n\nNOW Running --AUTOFIX on result. OK?".($this->cli_isArg('--dryrun')?' (--dryrun simulation)':'')))	{
+							if ($this->cli_isArg('--AUTOFIX')) {
+								if ($this->cli_isArg('--YES') || $this->cli_keyboardInput_yes("\n\nNOW Running --AUTOFIX on result. OK?".($this->cli_isArg('--dryrun')?' (--dryrun simulation)':''))) {
 									$cleanerMode->main_autofix($res);
 								} else {
 									$this->cli_echo("ABORTING AutoFix...\n",1);
@@ -166,18 +166,18 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 
 			// Reference index option:
 		$refIndexMode = isset($this->cli_args['--refindex']) ? $this->cli_args['--refindex'][0] : 'check';
-		if (!t3lib_div::inList('update,ignore,check', $refIndexMode))	{
+		if (!t3lib_div::inList('update,ignore,check', $refIndexMode)) {
 			$this->cli_echo("ERROR: Wrong value for --refindex argument.\n",1);
 			exit;
 		}
 
-		switch($refIndexMode)	{
+		switch($refIndexMode) {
 			case 'check':
 			case 'update':
 				$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');
 				list($headerContent,$bodyContent,$errorCount) = $refIndexObj->updateIndex($refIndexMode=='check',$this->cli_echo());
 
-				if ($errorCount && $refIndexMode=='check')	{
+				if ($errorCount && $refIndexMode=='check') {
 					$ok = FALSE;
 					$this->cli_echo("ERROR: Reference Index Check failed! (run with '--refindex update' to fix)\n",1);
 				} else {
@@ -197,15 +197,15 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 * @param	[type]		$matchString: ...
 	 * @return	string		If string, it's the reason for not executing. Returning FALSE means it should execute.
 	 */
-	function cli_noExecutionCheck($matchString)	{
+	function cli_noExecutionCheck($matchString) {
 
 			// Check for filter:
-		if ($this->cli_isArg('--filterRegex') && $regex = $this->cli_argValue('--filterRegex',0))	{
+		if ($this->cli_isArg('--filterRegex') && $regex = $this->cli_argValue('--filterRegex',0)) {
 			if (!preg_match($regex,$matchString))	return 'BYPASS: Filter Regex "'.$regex.'" did not match string "'.$matchString.'"';
 		}
 			// Check for interactive mode
-		if ($this->cli_isArg('-i'))	{
-			if (!$this->cli_keyboardInput_yes(' EXECUTE?'))	{
+		if ($this->cli_isArg('-i')) {
+			if (!$this->cli_keyboardInput_yes(' EXECUTE?')) {
 				return 'BYPASS...';
 			}
 		}
@@ -220,7 +220,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 * @param	array		Result array from an analyze function
 	 * @return	void		Outputs with echo - capture content with output buffer if needed.
 	 */
-	function cli_printInfo($header,$res)	{
+	function cli_printInfo($header,$res) {
 
 		$detailLevel = t3lib_utility_Math::forceIntegerInRange($this->cli_isArg('-v') ? $this->cli_argValue('-v') : 1,0,3);
 		$silent = !$this->cli_echo();
@@ -233,7 +233,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 		);
 
 			// Header output:
-		if ($detailLevel <= 1)	{
+		if ($detailLevel <= 1) {
 			$this->cli_echo(
 				"*********************************************\n".
 				$header.LF.
@@ -243,9 +243,9 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 
 			// Traverse headers for output:
 		if (is_array($res['headers'])) {
-			foreach($res['headers'] as $key => $value)	{
+			foreach($res['headers'] as $key => $value) {
 
-				if ($detailLevel <= intval($value[2]))	{
+				if ($detailLevel <= intval($value[2])) {
 					if (is_array($res[$key]) && (count($res[$key]) || !$silent)) {
 
 							// Header and explanaion:
@@ -253,14 +253,14 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 						$this->cli_echo('['.$header.']'.LF,1);
 						$this->cli_echo($value[0].' ['.$severity[$value[2]].']'.LF,1);
 						$this->cli_echo('---------------------------------------------'.LF,1);
-						if (trim($value[1]))	{
+						if (trim($value[1])) {
 							$this->cli_echo('Explanation: '.wordwrap(trim($value[1])).LF.LF,1);
 						}
 					}
 
 						// Content:
-					if (is_array($res[$key]))	{
-						if (count($res[$key]))	{
+					if (is_array($res[$key])) {
+						if (count($res[$key])) {
 							if ($this->cli_echo('',1)) { print_r($res[$key]); }
 						} else {
 							$this->cli_echo('(None)'.LF.LF);
@@ -300,7 +300,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 * @param	string		Call back function (from this class or subclass)
 	 * @return	void
 	 */
-	function genTree($rootID,$depth=1000,$echoLevel=0,$callBack='')	{
+	function genTree($rootID,$depth=1000,$echoLevel=0,$callBack='') {
 
 		$pt = t3lib_div::milliseconds();
 		$this->performanceStatistics['genTree()'] = '';
@@ -333,8 +333,8 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 		$this->performanceStatistics['genTree_traverse()'] = t3lib_div::milliseconds()-$pt2;
 
 			// Sort recStats (for diff'able displays)
-		foreach($this->recStats as $kk => $vv)	{
-			foreach($this->recStats[$kk] as $tables => $recArrays)	{
+		foreach($this->recStats as $kk => $vv) {
+			foreach($this->recStats[$kk] as $tables => $recArrays) {
 				ksort($this->recStats[$kk][$tables]);
 			}
 			ksort($this->recStats[$kk]);
@@ -347,7 +347,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 		$this->performanceStatistics['genTree()'] = t3lib_div::milliseconds()-$pt;
 
 			// Count records:
-		foreach($GLOBALS['TCA'] as $tableName => $cfg)	{
+		foreach($GLOBALS['TCA'] as $tableName => $cfg) {
 				// Select all records belonging to page:
 			$resSub = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'count(*)',
@@ -363,7 +363,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 		}
 
 		$this->performanceStatistics['recStats_size']['(ALL)']=strlen(serialize($this->recStats));
-		foreach($this->recStats as $key => $arrcontent)	{
+		foreach($this->recStats as $key => $arrcontent) {
 			$this->performanceStatistics['recStats_size'][$key]=strlen(serialize($arrcontent));
 		}
 	}
@@ -381,7 +381,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 * @return	void
 	 * @access private
 	 */
-	function genTree_traverse($rootID,$depth,$echoLevel=0,$callBack='',$versionSwapmode='',$rootIsVersion=0,$accumulatedPath='')	{
+	function genTree_traverse($rootID,$depth,$echoLevel=0,$callBack='',$versionSwapmode='',$rootIsVersion=0,$accumulatedPath='') {
 
 			// Register page:
 		$this->recStats['all']['pages'][$rootID] = $rootID;
@@ -389,11 +389,11 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 		$accumulatedPath.='/'.$pageRecord['title'];
 
 			// Register if page is deleted:
-		if ($pageRecord['deleted'])	{
+		if ($pageRecord['deleted']) {
 			$this->recStats['deleted']['pages'][$rootID] = $rootID;
 		}
 			// If rootIsVersion is set it means that the input rootID is that of a version of a page. See below where the recursive call is made.
-		if ($rootIsVersion)	{
+		if ($rootIsVersion) {
 			$this->recStats['versions']['pages'][$rootID] = $rootID;
 			if ($pageRecord['t3ver_count']>=1 && $pageRecord['t3ver_wsid']==0)	{	// If it has been published and is in archive now...
 				$this->recStats['versions_published']['pages'][$rootID] = $rootID;
@@ -419,14 +419,14 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 			echo LF.'	WARNING! This version is inside an already versioned page or branch!';
 
 			// Call back:
-		if ($callBack)	{
+		if ($callBack) {
 			$this->$callBack('pages',$rootID,$echoLevel,$versionSwapmode,$rootIsVersion);
 		}
 
 		$pt3 = t3lib_div::milliseconds();
 
 			// Traverse tables of records that belongs to page:
-		foreach($GLOBALS['TCA'] as $tableName => $cfg)	{
+		foreach($GLOBALS['TCA'] as $tableName => $cfg) {
 			if ($tableName!='pages') {
 
 					// Select all records belonging to page:
@@ -442,15 +442,15 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 
 				$pt5=t3lib_div::milliseconds();
 				$count = $GLOBALS['TYPO3_DB']->sql_num_rows($resSub);
-				if ($count)	{
+				if ($count) {
 					if ($echoLevel==2)	echo LF.'	\-'.$tableName.' ('.$count.')';
 				}
 
-				while ($rowSub = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resSub))	{
+				while ($rowSub = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resSub)) {
 					if ($echoLevel==3)	echo LF.'	\-'.$tableName.':'.$rowSub['uid'];
 
 						// If the rootID represents an "element" or "page" version type, we must check if the record from this table is allowed to belong to this:
-					if ($versionSwapmode=='SWAPMODE:-1' || ($versionSwapmode=='SWAPMODE:0' && !$GLOBALS['TCA'][$tableName]['ctrl']['versioning_followPages']))	{
+					if ($versionSwapmode=='SWAPMODE:-1' || ($versionSwapmode=='SWAPMODE:0' && !$GLOBALS['TCA'][$tableName]['ctrl']['versioning_followPages'])) {
 							// This is illegal records under a versioned page - therefore not registered in $this->recStats['all'] so they should be orphaned:
 						$this->recStats['illegal_record_under_versioned_page'][$tableName][$rowSub['uid']] = $rowSub['uid'];
 						if ($echoLevel>1)	echo LF.'		ERROR! Illegal record ('.$tableName.':'.$rowSub['uid'].') under versioned page!';
@@ -458,7 +458,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 						$this->recStats['all'][$tableName][$rowSub['uid']] = $rowSub['uid'];
 
 							// Register deleted:
-						if ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] && $rowSub[$GLOBALS['TCA'][$tableName]['ctrl']['delete']])	{
+						if ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] && $rowSub[$GLOBALS['TCA'][$tableName]['ctrl']['delete']]) {
 							$this->recStats['deleted'][$tableName][$rowSub['uid']] = $rowSub['uid'];
 							if ($echoLevel==3)	echo ' (DELETED)';
 						}
@@ -474,21 +474,21 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 						}
 
 							// Traverse plugins:
-						if ($callBack)	{
+						if ($callBack) {
 							$this->$callBack($tableName,$rowSub['uid'],$echoLevel,$versionSwapmode,$rootIsVersion);
 						}
 
 							// Add any versions of those records:
-						if ($this->genTree_traverseVersions)	{
+						if ($this->genTree_traverseVersions) {
 							$versions = t3lib_BEfunc::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid,t3ver_count'.($GLOBALS['TCA'][$tableName]['ctrl']['delete']?','.$GLOBALS['TCA'][$tableName]['ctrl']['delete']:''), 0, TRUE);
-							if (is_array($versions))	{
-								foreach($versions as $verRec)	{
-									if (!$verRec['_CURRENT_VERSION'])	{
+							if (is_array($versions)) {
+								foreach($versions as $verRec) {
+									if (!$verRec['_CURRENT_VERSION']) {
 										if ($echoLevel==3)	echo LF.'		\-[#OFFLINE VERSION: WS#'.$verRec['t3ver_wsid'].'/Cnt:'.$verRec['t3ver_count'].'] '.$tableName.':'.$verRec['uid'].')';
 										$this->recStats['all'][$tableName][$verRec['uid']] = $verRec['uid'];
 
 											// Register deleted:
-										if ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] && $verRec[$GLOBALS['TCA'][$tableName]['ctrl']['delete']])	{
+										if ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] && $verRec[$GLOBALS['TCA'][$tableName]['ctrl']['delete']]) {
 											$this->recStats['deleted'][$tableName][$verRec['uid']] = $verRec['uid'];
 											if ($echoLevel==3)	echo ' (DELETED)';
 										}
@@ -499,10 +499,10 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 											$this->recStats['versions_published'][$tableName][$verRec['uid']] = $verRec['uid'];
 											if ($echoLevel==3)	echo ' (PUBLISHED)';
 										}
-										if ($verRec['t3ver_wsid']==0)	{
+										if ($verRec['t3ver_wsid']==0) {
 											$this->recStats['versions_liveWS'][$tableName][$verRec['uid']] = $verRec['uid'];
 										}
-										if (!isset($this->workspaceIndex[$verRec['t3ver_wsid']]))	{
+										if (!isset($this->workspaceIndex[$verRec['t3ver_wsid']])) {
 											$this->recStats['versions_lost_workspace'][$tableName][$verRec['uid']] = $verRec['uid'];
 											if ($echoLevel>1)	echo LF.'		ERROR! Version ('.$tableName.':'.$verRec['uid'].') belongs to non-existing workspace ('.$verRec['t3ver_wsid'].')!';
 										}
@@ -512,7 +512,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 										}
 
 											// Traverse plugins:
-										if ($callBack)	{
+										if ($callBack) {
 											$this->$callBack($tableName,$verRec['uid'],$echoLevel,$versionSwapmode,$rootIsVersion);
 										}
 									}
@@ -533,8 +533,8 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 		$this->performanceStatistics['genTree_traverse():TraverseTables']+= t3lib_div::milliseconds()-$pt3;
 
 			// Find subpages to root ID and traverse (only when rootID is not a version or is a branch-version):
-		if (!$versionSwapmode || $versionSwapmode=='SWAPMODE:1')	{
-			if ($depth>0)	{
+		if (!$versionSwapmode || $versionSwapmode=='SWAPMODE:1') {
+			if ($depth>0) {
 				$depth--;
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'uid',
@@ -544,17 +544,17 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 					'',
 					'sorting'
 				);
-				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$this->genTree_traverse($row['uid'],$depth,$echoLevel,$callBack,$versionSwapmode,0,$accumulatedPath);
 				}
 			}
 
 				// Add any versions of pages
-			if ($rootID>0 && $this->genTree_traverseVersions)	{
+			if ($rootID>0 && $this->genTree_traverseVersions) {
 				$versions = t3lib_BEfunc::selectVersionsOfRecord('pages', $rootID, 'uid,t3ver_oid,t3ver_wsid,t3ver_count,t3ver_swapmode', 0, TRUE);
-				if (is_array($versions))	{
-					foreach($versions as $verRec)	{
-						if (!$verRec['_CURRENT_VERSION'])	{
+				if (is_array($versions)) {
+					foreach($versions as $verRec) {
+						if (!$verRec['_CURRENT_VERSION']) {
 							$this->genTree_traverse($verRec['uid'],$depth,$echoLevel,$callBack,'SWAPMODE:'.t3lib_utility_Math::forceIntegerInRange($verRec['t3ver_swapmode'],-1,1),$versionSwapmode?2:1,$accumulatedPath.' [#OFFLINE VERSION: WS#'.$verRec['t3ver_wsid'].'/Cnt:'.$verRec['t3ver_count'].']');
 						}
 					}
@@ -582,7 +582,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 * @param	array		Input record from sys_refindex
 	 * @return	string		String identifying the main record of the reference
 	 */
-	function infoStr($rec)	{
+	function infoStr($rec) {
 		return $rec['tablename'].':'.$rec['recuid'].':'.$rec['field'].':'.$rec['flexpointer'].':'.$rec['softref_key'].($rec['deleted'] ? ' (DELETED)':'');
 	}
 }

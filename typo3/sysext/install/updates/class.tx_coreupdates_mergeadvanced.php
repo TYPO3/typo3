@@ -63,7 +63,7 @@ class tx_coreupdates_mergeadvanced extends Tx_Install_Updates_Base {
 	 */
 	public function performUpdate(&$dbQueries, &$customMessages) {
 		$result = FALSE;
-		if($this->versionNumber >= 4002000)	{
+		if($this->versionNumber >= 4002000) {
 			$updateArray = array(
 				'doktype' => 1,
 			);

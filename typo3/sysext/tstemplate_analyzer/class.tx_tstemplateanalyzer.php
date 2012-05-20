@@ -31,7 +31,7 @@
 $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_analyzer/locallang.xml');
 
 class tx_tstemplateanalyzer extends t3lib_extobjbase {
-	function init(&$pObj,$conf)	{
+	function init(&$pObj,$conf) {
 		parent::init($pObj,$conf);
 
 		$this->pObj->modMenu_setDefaultList.= ',ts_analyzer_checkLinenum,ts_analyzer_checkSyntax';
@@ -48,7 +48,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		);
 	}
 
-	function initialize_editor($pageId,$template_uid=0)	{
+	function initialize_editor($pageId,$template_uid=0) {
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 
 		$GLOBALS['tmpl'] = t3lib_div::makeInstance("t3lib_tsparser_ext");
@@ -78,7 +78,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		// **************************
 		$manyTemplatesMenu = $this->pObj->templateMenu();
 		$template_uid = 0;
-		if ($manyTemplatesMenu)	{
+		if ($manyTemplatesMenu) {
 			$template_uid = $this->pObj->MOD_SETTINGS["templatesOnPage"];
 		}
 
@@ -88,13 +88,13 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 
 		// BUGBUG: Should we check if the uset may at all read and write template-records???
 		$existTemplate = $this->initialize_editor($this->pObj->id,$template_uid);		// initialize
-		if ($existTemplate)	{
+		if ($existTemplate) {
 			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('currentTemplate', TRUE),
 				t3lib_iconWorks::getSpriteIconForRecord('sys_template', $GLOBALS['tplRow']) . '<strong>' .
 				$this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']["title"]) . '</strong>' .
 				htmlspecialchars(trim($GLOBALS['tplRow']["sitetitle"]) ? ' (' . $GLOBALS['tplRow']["sitetitle"] . ')' : ''));
 		}
-		if ($manyTemplatesMenu)	{
+		if ($manyTemplatesMenu) {
 			$theOutput .= $this->pObj->doc->section("",$manyTemplatesMenu);
 		}
 
@@ -200,7 +200,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 				$GLOBALS['tmpl']->ext_lineNumberOffset += count(explode(LF, t3lib_TSparser::checkIncludeLines("" . $GLOBALS["TYPO3_CONF_VARS"]["FE"]["defaultTypoScript_setup"]))) + 1;
 
 				reset($GLOBALS['tmpl']->clearList_setup);
-				foreach ($GLOBALS['tmpl']->config as $key => $val)	{
+				foreach ($GLOBALS['tmpl']->config as $key => $val) {
 					if (current($GLOBALS['tmpl']->clearList_setup) == t3lib_div::_GET('template') || t3lib_div::_GET('template') == 'all') {
 						$theOutput .= '
 							<tr>

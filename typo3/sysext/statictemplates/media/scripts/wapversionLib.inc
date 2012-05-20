@@ -87,7 +87,7 @@ class user_wapversion {
 	 * @param	array		TypoScript properties for this content object/function call
 	 * @return	string		WML content
 	 */
-	function main_wapversion($content,$conf)	{
+	function main_wapversion($content,$conf) {
 		$GLOBALS['TSFE']->set_no_cache();
 
 		$xmlObj = t3lib_div::makeInstance('t3lib_xml', 'wml');
@@ -100,7 +100,7 @@ class user_wapversion {
 		$xmlObj->WAPback();
 
 		$pageRec = $GLOBALS['TSFE']->page;
-		if ($GLOBALS['TSFE']->idParts[1])	{
+		if ($GLOBALS['TSFE']->idParts[1]) {
 				// Creating content card:
 			$xmlObj->newLevel('card',1,array(
 				'id' => 'content',
@@ -144,7 +144,7 @@ class user_wapversion {
 	 *
 	 * @return	string		WML string
 	 */
-	function contentAbstract()	{
+	function contentAbstract() {
 		$res = $this->getContentResult('tt_content');
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		$out = $this->bold(t3lib_div::fixed_lgd_cs(htmlspecialchars($row['header']),20)).'<br/>';
@@ -161,20 +161,20 @@ class user_wapversion {
 	 * @return	array		Array with the page content divided into chucks WML code (default length equals $chunkLgd; 850)
 	 * @see main_wapversion()
 	 */
-	function contentAll($chunkLgd=850)	{
+	function contentAll($chunkLgd=850) {
 		$res = $this->getContentResult('tt_content');
 		$overlap=5;
 		$idx=0;
 		$out=array();
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				// Header:
 			$get = '<br/>'.$this->cHeader($row['header']).'<br/>';
-			if (strlen($out[$idx].$get)>$chunkLgd)	{
+			if (strlen($out[$idx].$get)>$chunkLgd) {
 				$idx++;
 			}
 			$out[$idx].=$get;
 
-			switch($row['CType'])	{
+			switch($row['CType']) {
 				case 'text':
 				case 'bullets':
 				case 'table':
@@ -197,7 +197,7 @@ class user_wapversion {
 			$get = $this->cBodytext($bodyText).'<br/>';
 			$diff = $chunkLgd - strlen($out[$idx]);
 
-			if ($diff>strlen($get))	{
+			if ($diff>strlen($get)) {
 				$out[$idx].=$get;
 			} else {
 				$out[$idx].=$this->cBodytext($bodyText,0,$diff+$overlap).'<br/>';
@@ -221,7 +221,7 @@ class user_wapversion {
 	 * @return	string		Returns the formatted version, stripped from tags and htmlspecialchar()'ed
 	 * @see contentAll()
 	 */
-	function cHeader($str)	{
+	function cHeader($str) {
 		$out = $this->bold(htmlspecialchars(strip_tags($str)));
 		return $out;
 	}
@@ -235,7 +235,7 @@ class user_wapversion {
 	 * @return	string		Prepared content
 	 * @see contentAll()
 	 */
-	function cBodytext($str,$start=0,$max=0)	{
+	function cBodytext($str,$start=0,$max=0) {
 		$out = t3lib_div::fixed_lgd_cs(($start?'...':'').substr($this->nl2br(htmlspecialchars(strip_tags($str))),$start),($max?$max:100000));
 		$out = str_replace('&','',$out);	// No & in WAP docs??? --> or maybe just htmlspecialchar() things as the LAST thing instead!)
 		return $out;
@@ -247,7 +247,7 @@ class user_wapversion {
 	 * @param	string		The input string to process
 	 * @return	string		The processed value returned.
 	 */
-	function nl2br($str)	{
+	function nl2br($str) {
 		return str_replace(chr(10),'<br/>',$str);
 	}
 
@@ -274,7 +274,7 @@ class user_wapversion {
 	 * @param	string		The string for format in "bold" (uppercase)
 	 * @return	string		Processed output.
 	 */
-	function bold($str)	{
+	function bold($str) {
 		return strtoupper($str);
 	}
 
@@ -284,7 +284,7 @@ class user_wapversion {
 	 * @param	string		The input string
 	 * @return	string		The wrapped string
 	 */
-	function paragraph($str)	{
+	function paragraph($str) {
 		return '<p>'.$str.'</p>';
 	}
 
@@ -294,7 +294,7 @@ class user_wapversion {
 	 * @param	string		The string/line
 	 * @return	string		The input string with '<br/>' prepended
 	 */
-	function line($str)	{
+	function line($str) {
 		return $str.'<br/>';
 	}
 
@@ -305,7 +305,7 @@ class user_wapversion {
 	 * @param	integer		The pointer value
 	 * @return	string		The input string, linked with the pointer value to the current page.
 	 */
-	function navLink($str,$pointer)	{
+	function navLink($str,$pointer) {
 		return '<a href="'.htmlspecialchars('?id='.$GLOBALS['TSFE']->id.','.$pointer.'.'.$GLOBALS['TSFE']->type).'">'.$str.'</a>';
 	}
 
@@ -315,7 +315,7 @@ class user_wapversion {
 	 * @param	string		Indentation prefix string per menu item.
 	 * @return	string		A paragraph with the menu items inside.
 	 */
-	function menuCurrentLevel($indent)	{
+	function menuCurrentLevel($indent) {
 		$rL = $GLOBALS['TSFE']->config['rootLine'];
 		$preSpace='';
 		$out=array();
@@ -348,8 +348,8 @@ class user_wapversion {
 	 * @return	string		String wrapped in <a> tags
 	 * @see menuCurrentLevel()
 	 */
-	function link($str,$id,$deck='')	{
-		if ($GLOBALS['TSFE']->id==$id && $deck)	{
+	function link($str,$id,$deck='') {
+		if ($GLOBALS['TSFE']->id==$id && $deck) {
 			$out = '<a href="#'.$deck.'">'.$str.'</a>';
 		} else {
 			$type = $GLOBALS['TSFE']->type;
@@ -364,7 +364,7 @@ class user_wapversion {
 	 * @param	array		Menu item array
 	 * @return	array		New menu item array with doktype-5 elements removed.
 	 */
-	function cleanMenuArray($menu)	{
+	function cleanMenuArray($menu) {
 		$newMenu=array();
 		foreach ($menu as $data) {
 			if (!$data['nav_hide']) {
@@ -379,7 +379,7 @@ class user_wapversion {
 // AND HERE just some debugging content: Basically a valid WML deck.
 
 		/*
-switch($id)	{
+switch($id) {
 	case 1:
 		<wml>
 			<card id="Hallo" ontimer="#Login" title="wapportal.dk">

@@ -134,14 +134,14 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 					}
 				}
 
-				if (count($data['pages']))	{
+				if (count($data['pages'])) {
 					reset($data);
 					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 					$tce->stripslashes_values=0;
 
 						// set default TCA values specific for the user
 					$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
-					if (is_array($TCAdefaultOverride))	{
+					if (is_array($TCAdefaultOverride)) {
 						$tce->setDefaultsFromUserTS($TCAdefaultOverride);
 					}
 
@@ -170,7 +170,7 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 				$lines=array();
 				foreach ($menuItems as $rec) {
 					t3lib_BEfunc::workspaceOL('pages', $rec);
-					if (is_array($rec))	{
+					if (is_array($rec)) {
 						$lines[] = '<nobr>' . t3lib_iconWorks::getSpriteIconForRecord('pages', $rec, array('title' => t3lib_BEfunc::titleAttribForPages($rec, '', FALSE))) .
 							htmlspecialchars(t3lib_div::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '</nobr>';
 					}

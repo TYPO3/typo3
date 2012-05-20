@@ -63,7 +63,7 @@ class tx_impexp_clickmenu {
 	 * @return	array		Menu item array, returned after modification
 	 * @todo	Skinning for icons...
 	 */
-	function main(&$backRef,$menuItems,$table,$uid)	{
+	function main(&$backRef,$menuItems,$table,$uid) {
 		$localItems=array();
 		if (($backRef->cmLevel && t3lib_div::_GP('subname')=='moreoptions') || ($table==='pages' && $uid==0))	{	// Show import/export on second level menu OR root level.
 
@@ -71,7 +71,7 @@ class tx_impexp_clickmenu {
 
 			$modUrl = $backRef->backPath.t3lib_extMgm::extRelPath('impexp').'app/index.php';
 			$url = $modUrl . '?tx_impexp[action]=export&id=' . ($table == 'pages' ? $uid : $backRef->rec['pid']);
-			if ($table=='pages')	{
+			if ($table=='pages') {
 				$url.='&tx_impexp[pagetree][id]='.$uid;
 				$url.='&tx_impexp[pagetree][levels]=0';
 				$url.='&tx_impexp[pagetree][tables][]=_ALL';
@@ -86,7 +86,7 @@ class tx_impexp_clickmenu {
 				1	// Disables the item in the top-bar
 			);
 
-			if ($table=='pages')	{
+			if ($table=='pages') {
 				$url = $modUrl . '?id='. $uid . '&table=' . $table . '&tx_impexp[action]=import';
 				$localItems[] = $backRef->linkItem(
 					$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('import',$LL)),

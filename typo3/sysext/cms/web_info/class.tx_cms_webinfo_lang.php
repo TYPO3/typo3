@@ -61,7 +61,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 		$menuArray['lang']=array(
 			0 => '[All]'
 		);
-		foreach($lang as $langRec)	{
+		foreach($lang as $langRec) {
 			$menuArray['lang'][$langRec['uid']] = $langRec['title'];
 		}
 
@@ -121,7 +121,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 	 * @param	array		The Page tree data
 	 * @return	string		HTML for the localization information table.
 	 */
-	function renderL10nTable(&$tree)	{
+	function renderL10nTable(&$tree) {
 		global $LANG;
 
 			// System languages retrieved:
@@ -134,7 +134,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 		$output = '';
 		$newOL_js = array();
 		$langRecUids = array();
-		foreach($tree->tree as $data)	{
+		foreach($tree->tree as $data) {
 			$tCells = array();
 			$langRecUids[0][] = $data['row']['uid'];
 
@@ -177,12 +177,12 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 			$disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages']) ? t3lib_div::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], 1) : array();
 
 				// Traverse system languages:
-			foreach($languages as $langRow)	{
-				if ($this->pObj->MOD_SETTINGS['lang']==0 || (int)$this->pObj->MOD_SETTINGS['lang']===(int)$langRow['uid'])	{
+			foreach($languages as $langRow) {
+				if ($this->pObj->MOD_SETTINGS['lang']==0 || (int)$this->pObj->MOD_SETTINGS['lang']===(int)$langRow['uid']) {
 					$row = $this->getLangStatus($data['row']['uid'], $langRow['uid']);
 					$info = '';
 
-					if (is_array($row))	{
+					if (is_array($row)) {
 						$langRecUids[$langRow['uid']][] = $row['uid'];
 						$status = $row['_HIDDEN'] ? (t3lib_div::hideIfNotTranslated($data['row']['l18n_cfg']) || $data['row']['l18n_cfg']&1 ? 'c-blocked' : 'c-fallback') : 'c-ok';
 						$icon = t3lib_iconWorks::getSpriteIconForRecord(
@@ -245,7 +245,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 		$tCells = array();
 		$tCells[] = '<td>'.$LANG->getLL('lang_renderl10n_page','1').':</td>';
 
-		if (is_array($langRecUids[0]))	{
+		if (is_array($langRecUids[0])) {
 			$params = '&edit[pages]['.implode(',',$langRecUids[0]).']=edit&columnsOnly=title,nav_title,l18n_cfg,hidden';
 			$editIco = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'" title="' . $LANG->getLL('lang_renderl10n_editPageProperties', TRUE) . '">' .
 					t3lib_iconWorks::getSpriteIcon('actions-document-new') .
@@ -256,13 +256,13 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 					$editIco.
 					'</td>';
 
-		foreach($languages as $langRow)	{
-			if ($this->pObj->MOD_SETTINGS['lang']==0 || (int)$this->pObj->MOD_SETTINGS['lang']===(int)$langRow['uid'])	{
+		foreach($languages as $langRow) {
+			if ($this->pObj->MOD_SETTINGS['lang']==0 || (int)$this->pObj->MOD_SETTINGS['lang']===(int)$langRow['uid']) {
 					// Title:
 				$tCells[] = '<td class="c-leftLine">'.htmlspecialchars($langRow['title']).'</td>';
 
 					// Edit language overlay records:
-				if (is_array($langRecUids[$langRow['uid']]))	{
+				if (is_array($langRecUids[$langRow['uid']])) {
 					$params = '&edit[pages_language_overlay]['.implode(',',$langRecUids[$langRow['uid']]).']=edit&columnsOnly=title,nav_title,hidden';
 					$tCells[] = '<td><a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'" title="' . $LANG->getLL('lang_renderl10n_editLangOverlays', TRUE) . '">' .
 							t3lib_iconWorks::getSpriteIcon('actions-document-open') .
@@ -312,7 +312,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 		);
 
 		$outputArray = array();
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			if (is_array($allowed_languages) && count($allowed_languages)) {
 				if (isset($allowed_languages[$row['uid']])) {
 					$outputArray[] = $row;
@@ -333,7 +333,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 	 * @param	integer		Language UID to select for.
 	 * @return	array		pages_languages_overlay record
 	 */
-	function getLangStatus($pageId, $langId)	{
+	function getLangStatus($pageId, $langId) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'pages_language_overlay',
@@ -345,7 +345,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		t3lib_BEfunc::workspaceOL('pages_language_overlay',$row);
-		if (is_array($row))	{
+		if (is_array($row)) {
 			$row['_COUNT'] = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 			$row['_HIDDEN'] = $row['hidden'] ||
 							(intval($row['endtime']) > 0 && intval($row['endtime']) < $GLOBALS['EXEC_TIME']) ||
@@ -362,7 +362,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 	 * @param	integer		Sys language uid
 	 * @return	integer		Number of content elements from the PID where the language is set to a certain value.
 	 */
-	function getContentElementCount($pageId,$sysLang)	{
+	function getContentElementCount($pageId,$sysLang) {
 		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 			'uid',
 			'tt_content',

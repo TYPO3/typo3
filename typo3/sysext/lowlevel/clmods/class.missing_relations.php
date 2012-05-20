@@ -120,12 +120,12 @@ Reports missing relations';
 			// Traverse the records
 		$tempExists = array();
 		if (is_array($recs)) {
-			foreach($recs as $rec)	{
+			foreach($recs as $rec) {
 				$suffix = $rec['softref_key']!='' ? '_s' : '_m';
 				$idx = $rec['ref_table'].':'.$rec['ref_uid'];
 
 					// Get referenced record:
-				if (!isset($tempExists[$idx]))	{
+				if (!isset($tempExists[$idx])) {
 					$tempExists[$idx] = t3lib_BEfunc::getRecordRaw($rec['ref_table'],'uid='.intval($rec['ref_uid']),'uid,pid'.($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] ? ','.$GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] : ''));
 				}
 
@@ -133,11 +133,11 @@ Reports missing relations';
 				$infoString = $this->infoStr($rec);
 
 					// Handle missing file:
-				if ($tempExists[$idx]['uid'])	{
-					if ($tempExists[$idx]['pid']==-1)	{
+				if ($tempExists[$idx]['uid']) {
+					if ($tempExists[$idx]['pid']==-1) {
 						$resultArray['offlineVersionRecords'.$suffix][$idx][$rec['hash']] = $infoString;
 						ksort($resultArray['offlineVersionRecords'.$suffix][$idx]);
-					} elseif ($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] && $tempExists[$idx][$GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete']])	{
+					} elseif ($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] && $tempExists[$idx][$GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete']]) {
 						$resultArray['deletedRecords'.$suffix][$idx][$rec['hash']] = $infoString;
 						ksort($resultArray['deletedRecords'.$suffix][$idx]);
 					}
@@ -165,20 +165,20 @@ Reports missing relations';
 	 * @param	array		Result array from main() function
 	 * @return	void
 	 */
-	function main_autoFix($resultArray)	{
+	function main_autoFix($resultArray) {
 
 		$trav = array('offlineVersionRecords_m', 'nonExistingRecords_m');
-		foreach($trav as $tk)	{
+		foreach($trav as $tk) {
 			echo 'Processing managed "'.$tk.'"...'.LF;
-			foreach($resultArray[$tk] as $key => $value)	{
-				foreach($value as $hash => $recReference)	{
+			foreach($resultArray[$tk] as $key => $value) {
+				foreach($value as $hash => $recReference) {
 					echo '	Removing reference to '.$key.' in record "'.$recReference.'": ';
-					if ($bypass = $this->cli_noExecutionCheck($recReference))	{
+					if ($bypass = $this->cli_noExecutionCheck($recReference)) {
 						echo $bypass;
 					} else {
 						$sysRefObj = t3lib_div::makeInstance('t3lib_refindex');
 						$error = $sysRefObj->setReferenceValue($hash,NULL);
-						if ($error)	{
+						if ($error) {
 							echo '		t3lib_refindex::setReferenceValue(): '.$error.LF;
 						} else echo 'DONE';
 					}

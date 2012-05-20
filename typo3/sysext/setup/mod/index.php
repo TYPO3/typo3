@@ -745,7 +745,7 @@ class SC_mod_user_setup_index {
 	*/
 	public function renderStartModuleSelect($params, $pObj) {
 			// start module select
-		if (empty($GLOBALS['BE_USER']->uc['startModule']))	{
+		if (empty($GLOBALS['BE_USER']->uc['startModule'])) {
 			$GLOBALS['BE_USER']->uc['startModule'] = $GLOBALS['BE_USER']->uc_default['startModule'];
 		}
 		$startModuleSelect = '<option value=""></option>';
@@ -827,7 +827,7 @@ class SC_mod_user_setup_index {
 			// check for hook
 		if (t3lib_div::hasValidClassPrefix($access)) {
 			$accessObject = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['setup']['accessLevelCheck'][$access] . ':&' . $access);
-			if (is_object($accessObject) && method_exists($accessObject, 'accessLevelCheck'))	{
+			if (is_object($accessObject) && method_exists($accessObject, 'accessLevelCheck')) {
 					// initialize vars. If method fails, $set will be set to FALSE
 				return $accessObject->accessLevelCheck($config);
 			}
@@ -846,7 +846,7 @@ class SC_mod_user_setup_index {
 	 * @param	string		Alternative id for use in "for" attribute of <label> tag. By default the $str key is used prepended with "field_".
 	 * @return	string		HTML output.
 	 */
-	protected function getLabel($str, $key='', $addLabelTag=TRUE, $altLabelTagId='')	{
+	protected function getLabel($str, $key='', $addLabelTag=TRUE, $altLabelTagId='') {
 		if (substr($str, 0, 4) == 'LLL:') {
 			$out = $GLOBALS['LANG']->sL($str);
 		} else {
@@ -854,7 +854,7 @@ class SC_mod_user_setup_index {
 		}
 
 
-		if (isset($this->overrideConf[($key?$key:$str)]))	{
+		if (isset($this->overrideConf[($key?$key:$str)])) {
 			$out = '<span style="color:#999999">'.$out.'</span>';
 		}
 

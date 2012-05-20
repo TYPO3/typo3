@@ -142,7 +142,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * @see t3lib_userAuth::start()
 	 */
 	function start() {
-		if (intval($this->auth_timeout_field)>0 && intval($this->auth_timeout_field) < $this->lifetime)	{
+		if (intval($this->auth_timeout_field)>0 && intval($this->auth_timeout_field) < $this->lifetime) {
 				// If server session timeout is non-zero but less than client session timeout: Copy this value instead.
 			$this->auth_timeout_field = $this->lifetime;
 		}
@@ -197,7 +197,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	function getLoginFormData() {
 		$loginData = parent::getLoginFormData();
 		if($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 0 || $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 1) {
-			if ($this->getMethodEnabled)	{
+			if ($this->getMethodEnabled) {
 				$isPermanent = t3lib_div::_GP($this->formfield_permanent);
 			} else {
 				$isPermanent = t3lib_div::_POST($this->formfield_permanent);
@@ -242,7 +242,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		$authInfo = $this->getAuthInfoArray();
 
 		if ($this->writeDevLog) 	{
-			if (is_array($this->user))	{
+			if (is_array($this->user)) {
 				t3lib_div::devLog('Get usergroups for user: '.t3lib_div::arrayToLogString($this->user, array($this->userid_column,$this->username_column)), 'tslib_feUserAuth');
 			} else {
 				t3lib_div::devLog('Get usergroups for "anonymous" user', 'tslib_feUserAuth');
@@ -254,12 +254,12 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			// use 'auth' service to find the groups for the user
 		$serviceChain='';
 		$subType = 'getGroups'.$this->loginType;
-		while (is_object($serviceObj = t3lib_div::makeInstanceService('auth', $subType, $serviceChain)))	{
+		while (is_object($serviceObj = t3lib_div::makeInstanceService('auth', $subType, $serviceChain))) {
 			$serviceChain.=','.$serviceObj->getServiceKey();
 			$serviceObj->initAuth($subType, array(), $authInfo, $this);
 
 			$groupData = $serviceObj->getGroups($this->user, $groupDataArr);
-			if (is_array($groupData) && count($groupData))	{
+			if (is_array($groupData) && count($groupData)) {
 				$groupDataArr = t3lib_div::array_merge($groupDataArr, $groupData);	// Keys in $groupData should be unique ids of the groups (like "uid") so this function will override groups.
 			}
 			unset($serviceObj);
@@ -270,7 +270,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 
 
 			// use 'auth' service to check the usergroups if they are really valid
-		foreach ($groupDataArr as $groupData)	{
+		foreach ($groupDataArr as $groupData) {
 				// by default a group is valid
 			$validGroup = TRUE;
 
@@ -298,9 +298,9 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			}
 		}
 
-		if (count($this->groupData) && count($this->groupData['TSconfig']))	{
+		if (count($this->groupData) && count($this->groupData['TSconfig'])) {
 				// TSconfig: collect it in the order it was collected
-			foreach($this->groupData['TSconfig'] as $TSdata)	{
+			foreach($this->groupData['TSconfig'] as $TSdata) {
 				$this->TSdataArray[]=$TSdata;
 			}
 
@@ -394,11 +394,11 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 */
 	function storeSessionData() {
 			// Saves UC and SesData if changed.
-		if ($this->userData_change)	{
+		if ($this->userData_change) {
 			$this->writeUC('');
 		}
 
-		if ($this->sesData_change && $this->id)	{
+		if ($this->sesData_change && $this->id) {
 			if ($this->sessionDataTimestamp === NULL) {
 					// Write new session-data
 				$insertFields = array(
@@ -454,8 +454,8 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * @see setKey()
 	 */
 	function getKey($type,$key) {
-		if ($key)	{
-			switch($type)	{
+		if ($key) {
+			switch($type) {
 				case 'user':
 					return $this->uc[$key];
 				break;
@@ -478,11 +478,11 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * @return	void
 	 * @see setKey(), storeSessionData(), record_registration()
 	 */
-	function setKey($type,$key,$data)	{
-		if ($key)	{
-			switch($type)	{
+	function setKey($type,$key,$data) {
+		if ($key) {
+			switch($type) {
 				case 'user':
-					if ($this->user['uid'])	{
+					if ($this->user['uid']) {
 						$this->uc[$key]=$data;
 						$this->userData_change=1;
 					}
@@ -529,28 +529,28 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * @param	integer		The maximum size of stored session data. If zero, no limit is applied and even confirmation of cookie session is discarded.
 	 * @return	void
 	 */
-	function record_registration($recs,$maxSizeOfSessionData=0)	{
+	function record_registration($recs,$maxSizeOfSessionData=0) {
 
 			// Storing value ONLY if there is a confirmed cookie set (->cookieID),
 			// otherwise a shellscript could easily be spamming the fe_sessions table
 			// with bogus content and thus bloat the database
 		if (!$maxSizeOfSessionData || $this->cookieId) {
-			if ($recs['clear_all'])	{
+			if ($recs['clear_all']) {
 				$this->setKey('ses', 'recs', array());
 			}
 			$change=0;
 			$recs_array=$this->getKey('ses','recs');
 			foreach ($recs as $table => $data) {
-				if (is_array($data))	{
+				if (is_array($data)) {
 					foreach ($data as $rec_id => $value) {
-						if ($value != $recs_array[$table][$rec_id])	{
+						if ($value != $recs_array[$table][$rec_id]) {
 							$recs_array[$table][$rec_id] = $value;
 							$change=1;
 						}
 					}
 				}
 			}
-			if ($change && (!$maxSizeOfSessionData || strlen(serialize($recs_array))<$maxSizeOfSessionData))	{
+			if ($change && (!$maxSizeOfSessionData || strlen(serialize($recs_array))<$maxSizeOfSessionData)) {
 				$this->setKey('ses','recs',$recs_array);
 			}
 		}

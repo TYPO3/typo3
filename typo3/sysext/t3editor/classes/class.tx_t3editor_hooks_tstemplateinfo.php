@@ -142,7 +142,7 @@ class tx_t3editor_hooks_tstemplateinfo {
 			$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);
 			$existTemplate = (is_array($tplRow) ? TRUE : FALSE);
 
-			if ($existTemplate)	{
+			if ($existTemplate) {
 				$saveId = ($tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid']);
 
 				// Update template ?

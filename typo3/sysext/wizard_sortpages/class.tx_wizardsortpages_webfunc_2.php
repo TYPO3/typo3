@@ -65,22 +65,22 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 
 		$out = $this->pObj->doc->header($LANG->getLL('wiz_sort'));
 
-		if ($GLOBALS['BE_USER']->workspace===0)	{
+		if ($GLOBALS['BE_USER']->workspace===0) {
 
 			$theCode='';
 
 				// check if user has modify permissions to
 			$sys_pages = t3lib_div::makeInstance('t3lib_pageSelect');
 			$sortByField = t3lib_div::_GP('sortByField');
-			if ($sortByField)	{
+			if ($sortByField) {
 				$menuItems=array();
-				if (t3lib_div::inList('title,subtitle,crdate,tstamp',$sortByField))	{
+				if (t3lib_div::inList('title,subtitle,crdate,tstamp',$sortByField)) {
 					$menuItems = $sys_pages->getMenu($this->pObj->id,'uid,pid,title',$sortByField,'',0);
 				} elseif ($sortByField=='REV') {
 					$menuItems = $sys_pages->getMenu($this->pObj->id,'uid,pid,title','sorting','',0);
 					$menuItems = array_reverse($menuItems);
 				}
-				if (count($menuItems))	{
+				if (count($menuItems)) {
 					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 					$tce->stripslashes_values=0;
 					$menuItems = array_reverse($menuItems);
@@ -118,7 +118,7 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 			$theCode .= '<h4>' . $LANG->getLL('wiz_currentPageOrder', TRUE) . '</h4>
 			<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' . implode('', $lines) . '</table><br />';
 
-			if (count($menuItems))	{
+			if (count($menuItems)) {
 					// Menu:
 				$lines=array();
 				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'),'title');
@@ -147,7 +147,7 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 	 * @param	string		Field to sort by
 	 * @return	string		HTML string
 	 */
-	function wiz_linkOrder($title,$order)	{
+	function wiz_linkOrder($title,$order) {
 		return '&nbsp; &nbsp;<a class="t3-link" href="' . htmlspecialchars('index.php?id=' . $GLOBALS['SOBE']->id . '&sortByField=' . $order) . '" onclick="return confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('wiz_changeOrder_msg1')) . ')">' . htmlspecialchars($title) . '</a>';
 	}
 }

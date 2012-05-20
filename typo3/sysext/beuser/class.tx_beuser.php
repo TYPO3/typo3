@@ -60,7 +60,7 @@ class tx_beuser {
 	 * @param	integer		UID of clicked item.
 	 * @return	array		Modified $menuItems array
 	 */
-	function main(&$backRef,$menuItems,$table,$uid)	{
+	function main(&$backRef,$menuItems,$table,$uid) {
 		$localItems = array();	// Accumulation of local items.
 
 			// Detecting menu level

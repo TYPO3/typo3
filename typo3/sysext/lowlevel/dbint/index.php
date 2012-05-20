@@ -93,7 +93,7 @@ class SC_mod_tools_dbint_index {
 		$this->doc->JScode = '
 		<script language="javascript" type="text/javascript">
 			script_ended = 0;
-			function jumpToUrl(URL)	{
+			function jumpToUrl(URL) {
 				window.location.href = URL;
 			}
 		</script>
@@ -172,25 +172,25 @@ class SC_mod_tools_dbint_index {
 		$OLD_MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU,'', $this->MCONF['name'], 'ses');
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name'], 'ses');
 
-		if (t3lib_div::_GP('queryConfig'))	{
+		if (t3lib_div::_GP('queryConfig')) {
 			$qA = t3lib_div::_GP('queryConfig');
 			$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, array('queryConfig'=>serialize($qA)), $this->MCONF['name'], 'ses');
 		}
 		$addConditionCheck = t3lib_div::_GP('qG_ins');
-		foreach ($OLD_MOD_SETTINGS as $key=>$val)	{
-			if (substr($key, 0, 5)=='query' && $this->MOD_SETTINGS[$key]!=$val && $key!='queryLimit' && $key!='use_listview')	{
+		foreach ($OLD_MOD_SETTINGS as $key=>$val) {
+			if (substr($key, 0, 5)=='query' && $this->MOD_SETTINGS[$key]!=$val && $key!='queryLimit' && $key!='use_listview') {
 				$setLimitToStart = 1;
 				if ($key == 'queryTable' && !$addConditionCheck) {
 					$this->MOD_SETTINGS['queryConfig'] = '';
 				}
 			}
-			if ($key=='queryTable' && $this->MOD_SETTINGS[$key]!=$val)	{
+			if ($key=='queryTable' && $this->MOD_SETTINGS[$key]!=$val) {
 				$this->MOD_SETTINGS['queryFields'] = '';
 			}
 		}
-		if ($setLimitToStart)	{
+		if ($setLimitToStart) {
 			$currentLimit = explode(',',$this->MOD_SETTINGS['queryLimit']);
-			if ($currentLimit[1])	{
+			if ($currentLimit[1]) {
 				$this->MOD_SETTINGS['queryLimit']='0,'.$currentLimit[1];
 			} else {
 				$this->MOD_SETTINGS['queryLimit']='0';
@@ -207,11 +207,11 @@ class SC_mod_tools_dbint_index {
 	function main() {
 
 			// Content creation
-		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu'])	{
+		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu']) {
 			$this->menu = t3lib_BEfunc::getFuncMenu(0,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
 		}
 
-		switch($this->MOD_SETTINGS['function'])	{
+		switch($this->MOD_SETTINGS['function']) {
 			case 'search':
 				$this->func_search();
 			break;
@@ -273,7 +273,7 @@ class SC_mod_tools_dbint_index {
 		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
 
 			// Shortcut
-		if ($GLOBALS['BE_USER']->mayMakeShortcut())	{
+		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('','function,search,search_query_makeQuery',$this->MCONF['name']);
 		}
 		return $buttons;
@@ -343,7 +343,7 @@ class SC_mod_tools_dbint_index {
 	function func_refindex() {
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('manageRefIndex', TRUE));
 
-		if (t3lib_div::_GP('_update') || t3lib_div::_GP('_check'))	{
+		if (t3lib_div::_GP('_update') || t3lib_div::_GP('_check')) {
 			$testOnly = t3lib_div::_GP('_check')?TRUE:FALSE;
 
 				// Call the functionality
@@ -386,13 +386,13 @@ class SC_mod_tools_dbint_index {
 		$this->content.= $this->doc->spacer(5);
 
 		$menu2='';
-		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu'])	{
+		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu']) {
 			$menu2 = t3lib_BEfunc::getFuncMenu(0, 'SET[search]', $this->MOD_SETTINGS['search'], $this->MOD_MENU['search']);
 		}
-		if ($this->MOD_SETTINGS['search']=='query' && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu'])	{
+		if ($this->MOD_SETTINGS['search']=='query' && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu']) {
 			$menu2 .= t3lib_BEfunc::getFuncMenu(0, 'SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery']) . '<br />';
 		}
-		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopCheckboxes'] && $this->MOD_SETTINGS['search']=='query')	{
+		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopCheckboxes'] && $this->MOD_SETTINGS['search']=='query') {
 			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'], '', '', 'id="checkSearch_query_smallparts"') . '&nbsp;<label for="checkSearch_query_smallparts">' . $GLOBALS['LANG']->getLL('showSQL') . '</label><br />';
 			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'], '', '', 'id="checkSearch_result_labels"') . '&nbsp;<label for="checkSearch_result_labels">' . $GLOBALS['LANG']->getLL('useFormattedStrings') . '</label><br />';
 			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'], '', '', 'id="checkLabels_noprefix"') . '&nbsp;<label for="checkLabels_noprefix">' . $GLOBALS['LANG']->getLL('dontUseOrigValues') . '</label><br />';
@@ -437,7 +437,7 @@ class SC_mod_tools_dbint_index {
 		$codeArr[$i][]=$GLOBALS['LANG']->getLL('total_pages');
 		$codeArr[$i][]=count($admin->page_idArray);
 		$i++;
-		if (t3lib_extMgm::isLoaded('cms'))	{
+		if (t3lib_extMgm::isLoaded('cms')) {
 			$codeArr[$i][] = t3lib_iconWorks::getSpriteIconForRecord('pages', array('hidden' => 1));
 			$codeArr[$i][]=$GLOBALS['LANG']->getLL('hidden_pages');
 			$codeArr[$i][] = $admin->recStats['hidden'];
@@ -453,9 +453,9 @@ class SC_mod_tools_dbint_index {
 		$codeArr=array();
 		$codeArr['tableheader'] = array($GLOBALS['LANG']->getLL('doktype_value'), $GLOBALS['LANG']->getLL('count'));
 		$doktype = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
-		if (is_array($doktype))	{
+		if (is_array($doktype)) {
 			foreach ($doktype as $n => $setup) {
-				if ($setup[1]!='--div--')	{
+				if ($setup[1]!='--div--') {
 					$codeArr[$n][] = t3lib_iconWorks::getSpriteIconForRecord('pages', array('doktype' => $setup[1]));
 					$codeArr[$n][] = $GLOBALS['LANG']->sL($setup[0]) . ' (' . $setup[1] . ')';
 					$codeArr[$n][] = intval($admin->recStats['doktype'][$setup[1]]);
@@ -505,7 +505,7 @@ class SC_mod_tools_dbint_index {
 					$lostRecordCount = count($admin->lRecords[$t]);
 				}
 
-				if ($countArr['all'][$t])	{
+				if ($countArr['all'][$t]) {
 					$theNumberOfRe = intval($countArr['non_deleted'][$t]) . '/' . $lostRecordCount;
 				} else {
 					$theNumberOfRe ='';
@@ -513,9 +513,9 @@ class SC_mod_tools_dbint_index {
 				$codeArr[$t][]=$theNumberOfRe;
 
 				$lr='';
-				if (is_array($admin->lRecords[$t]))	{
+				if (is_array($admin->lRecords[$t])) {
 					foreach ($admin->lRecords[$t] as $data) {
-						if (!t3lib_div::inList($admin->lostPagesList,$data[pid]))	{
+						if (!t3lib_div::inList($admin->lostPagesList,$data[pid])) {
 							$lr.= '<nobr><strong><a href="index.php?SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data[uid] . '"><img src="' . $BACK_PATH . 'gfx/required_h.gif" width="10" hspace="3" height="10" border="0" align="top" title="' . $GLOBALS['LANG']->getLL('fixLostRecord') . '"></a>uid:' . $data[uid] . ', pid:' . $data[pid] . ', ' . t3lib_div::fixed_lgd_cs(strip_tags($data[title]), 20) . '</strong></nobr><br>';
 						} else {
 							$lr.= '<nobr><img src="' . $BACK_PATH . 'clear.gif" width="16" height="1" border="0"><font color="Gray">uid:' . $data[uid] . ', pid:' . $data[pid] . ', ' . t3lib_div::fixed_lgd_cs(strip_tags($data[title]), 20) . '</font></nobr><br>';
@@ -548,7 +548,7 @@ class SC_mod_tools_dbint_index {
 		$fileTest = $admin->testFileRefs();
 
 		$code = '';
-		if (is_array($fileTest['noReferences']))	{
+		if (is_array($fileTest['noReferences'])) {
 			foreach ($fileTest['noReferences'] as $val) {
 				$code.='<nobr>' . $val[0] . '/<strong>' . $val[1] . '</strong></nobr><br>';
 			}
@@ -558,7 +558,7 @@ class SC_mod_tools_dbint_index {
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('files_no_ref'), $code, FALSE, TRUE);
 
 		$code='';
-		if (is_array($fileTest['moreReferences']))	{
+		if (is_array($fileTest['moreReferences'])) {
 			foreach ($fileTest['moreReferences'] as $val) {
 				$code.='<nobr>' . $val[0] . '/<strong>' . $val[1] . '</strong>: ' . $val[2] . ' ' . $GLOBALS['LANG']->getLL('references') . '</nobr><br>' . $val[3] . '<br><br>';
 			}
@@ -568,7 +568,7 @@ class SC_mod_tools_dbint_index {
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('files_many_ref'),$code, FALSE, TRUE);
 
 		$code='';
-		if (is_array($fileTest['noFile']))	{
+		if (is_array($fileTest['noFile'])) {
 			ksort($fileTest['noFile']);
 			foreach ($fileTest['noFile'] as $val) {
 				$code.='<nobr>' . $val[0] . '/<strong>' . $val[1] . '</strong> ' . $GLOBALS['LANG']->getLL('isMissing') . ' </nobr><br>' . $GLOBALS['LANG']->getLL('referencedFrom') . $val[2] . '<br><br>';
@@ -592,7 +592,7 @@ class SC_mod_tools_dbint_index {
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('findFilename'));
 		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('pattern'), $pcontent, FALSE, TRUE);
 
-		if (strcmp($pattern,''))	{
+		if (strcmp($pattern,'')) {
 			$dirs = t3lib_div::get_dirs(PATH_site);
 			$lines=array();
 			$depth=10;
@@ -600,10 +600,10 @@ class SC_mod_tools_dbint_index {
 			foreach ($dirs as $key => $value) {
 				$matching_files=array();
 				$info='';
-				if (!t3lib_div::inList('typo3,typo3conf,tslib,media,t3lib',$value))	{
+				if (!t3lib_div::inList('typo3,typo3conf,tslib,media,t3lib',$value)) {
 					$info = $this->findFile(PATH_site.$value.'/',$pattern,$matching_files,$depth);
 				}
-				if (is_array($info))	{
+				if (is_array($info)) {
 					$lines[]='<hr><strong>' . $value . '/</strong> ' . $GLOBALS['LANG']->getLL('beingChecked');
 					$lines[]=$GLOBALS['LANG']->getLL('directories') . ' ' . $info[0];
 					if ($info[2])	$lines[]='<span class="typo3-red">' . $GLOBALS['LANG']->getLL('directoriesTooDeep') . ' ' . $depth . '</span>';

@@ -79,7 +79,7 @@ class tx_feedit_editpanel {
 			$theCmd =$TSFE_EDIT['cmd'];
 		}
 
-		switch($theCmd)	{
+		switch($theCmd) {
 			case 'edit':
 			case 'new':
 				$finalOut = $this->editContent($formTag, $formName, $theCmd, $newUID, $dataArr, $table, $currentRecord, $blackLine);
@@ -225,7 +225,7 @@ class tx_feedit_editpanel {
 	 * @return	string		A <a> tag wrapped string.
 	 * @see	editPanel(), editIcons(), t3lib_tsfeBeUserAuth::extEditAction()
 	 */
-	protected function editPanelLinkWrap($string, $formName, $cmd, $currentRecord='', $confirm='', $nPid='')	{
+	protected function editPanelLinkWrap($string, $formName, $cmd, $currentRecord='', $confirm='', $nPid='') {
 			// Editing forms on page only supported in Live workspace (because of incomplete implementation)
 		$editFormsOnPage = $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editFormsOnPage'] && $GLOBALS['BE_USER']->workspace === 0;
 		$nV=t3lib_div::_GP('ADMCMD_view') ? 1 : 0;
@@ -245,7 +245,7 @@ class tx_feedit_editpanel {
 				$out = $this->editPanelLinkWrap_doWrap($string, $adminURL . 'alt_doc.php?edit[' . $rParts[0] . '][' . $nPid . ']=new&noView=' . $nV, $currentRecord);
 			}
 		} else {
-			if ($confirm && $GLOBALS['BE_USER']->jsConfirmation(8))	{
+			if ($confirm && $GLOBALS['BE_USER']->jsConfirmation(8)) {
 					// Gets htmlspecialchared later
 				$cf1 = 'if (confirm(' . t3lib_div::quoteJSvalue($confirm, TRUE) . ')) {';
 				$cf2 = '}';
@@ -269,7 +269,7 @@ class tx_feedit_editpanel {
 	 * @return	string		A <a> tag wrapped string.
 	 * @see	editPanelLinkWrap()
 	 */
-	protected function editPanelLinkWrap_doWrap($string, $url, $currentRecord)	{
+	protected function editPanelLinkWrap_doWrap($string, $url, $currentRecord) {
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editNoPopup'] || $GLOBALS['BE_USER']->extAdminConfig['module.']['edit.']['forceNoPopup']) {
 			$retUrl = t3lib_div::getIndpEnv('REQUEST_URI');
 			$rParts = explode(':', $currentRecord);

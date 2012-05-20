@@ -53,7 +53,7 @@ class tx_funcwizards_webfunc extends t3lib_extobjbase {
 	 * @return	void
 	 * @see t3lib_extobjbase::handleExternalFunctionValue(), t3lib_extobjbase::init()
 	 */
-	function init(&$pObj,$conf)	{
+	function init(&$pObj,$conf) {
 			// OK, handles ordinary init. This includes setting up the menu array with ->modMenu
 		parent::init($pObj,$conf);
 

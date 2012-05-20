@@ -86,7 +86,7 @@ class tx_form_Domain_Factory_TyposcriptToJson {
 	protected function getChildElementsByIntegerKey(tx_form_Domain_Model_JSON_Element $parentElement, array $typoscript) {
 		if (is_array($typoscript)) {
 			$keys = t3lib_TStemplate::sortedKeyList($typoscript);
-			foreach ($keys as $key)	{
+			foreach ($keys as $key) {
 				$class = $typoscript[$key];
 				if (intval($key) && !strstr($key, '.')) {
 					if (isset($typoscript[$key . '.'])) {
