@@ -25,17 +25,18 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+$GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xml');
+
 /**
  * Loads TSref information from a XML file an responds to an AJAX call.
  *
  * @TODO Refactor and correct phpDoc comments
  * @package TYPO3
+ *
  * @author Stephan Petzl <spetzl@gmx.at>
  * @author Christian Kartnig <office@hahnepeter.de>
+ * @author Oliver Hader <oliver@typo3.org>
  */
-
-$GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xml');
-
 class tx_t3editor_TSrefLoader {
 	/** @var DOMDocument */
 	protected $xmlDoc;
@@ -50,7 +51,6 @@ class tx_t3editor_TSrefLoader {
 	 * @param	array		$params: additional parameters (not used here)
 	 * @param	TYPO3AJAX	&$ajaxObj: the TYPO3AJAX object of this request
 	 * @return	void
-	 * @author	Oliver Hader <oliver@typo3.org>
 	 */
 	public function processAjaxRequest($params, TYPO3AJAX &$ajaxObj) {
 		$this->ajaxObj = $ajaxObj;

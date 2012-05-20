@@ -32,6 +32,8 @@
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
  * @author Bastian Waidelich <bastian@typo3.org>
+ * @author Steffen Ritter <info@steffen-ritter.net>
+ * @author Benjamin Mack <benni@typo3.org>
  */
 class tslib_content_FluidTemplate extends tslib_content_Abstract {
 
@@ -56,9 +58,6 @@ class tslib_content_FluidTemplate extends tslib_content_Abstract {
 	 *
 	 * @param	array		array of TypoScript properties
 	 * @return	string		the HTML output
-	 * @author	Steffen Ritter		<info@steffen-ritter.net>
-	 * @author	Benjamin Mack		<benni@typo3.org>
-	 * @author	Bastian Waidelich	<bastian@typo3.org>
 	 */
 	public function render($conf = array()) {
 			// check if the needed extensions are installed

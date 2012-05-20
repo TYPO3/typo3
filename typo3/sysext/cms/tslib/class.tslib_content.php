@@ -34,7 +34,11 @@
  * The class "tslib_cObj" is normally instantiated and referred to as "cObj".
  * When you call your own PHP-code typically through a USER or USER_INT cObject then it is this class that instantiates the object and calls the main method. Before it does so it will set (if you are using classes) a reference to itself in the internal variable "cObj" of the object. Thus you can access all functions and data from this class by $this->cObj->... from within you classes written to be USER or USER_INT content objects.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Steffen Ritter» <info@steffen-ritter.net>
+ * @author Benjamin Mack» <benni@typo3.org>
+ * @author Thomas Bley
+ *
  * @package TYPO3
  * @subpackage tslib
  */
@@ -1002,8 +1006,6 @@ class tslib_cObj {
 	 *
 	 * @param	array		array of TypoScript properties
 	 * @return	string		the HTML output
-	 * @author	Steffen Ritter	<info@steffen-ritter.net>
-	 * @author	Benjamin Mack	<benni@typo3.org>
 	 */
 	protected function FLUIDTEMPLATE(array $conf) {
 		return $this->getContentObject('FLUIDTEMPLATE')->render($conf);
@@ -3828,8 +3830,6 @@ class tslib_cObj {
 	 * @param	string		Input string to be cleaned.
 	 * @param	array		TypoScript configuration.
 	 * @return	string		Return string
-	 * @author	Thomas Bley (all from moregroupware cvs code / readmessage.inc.php, published under gpl by Thomas)
-	 * @author	Kasper Sk�rh�j
 	 */
 	function removeBadHTML($text, $conf) {
 

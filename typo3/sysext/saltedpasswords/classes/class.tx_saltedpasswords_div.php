@@ -25,16 +25,13 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * Contains class "tx_saltedpasswords_div"
- * that provides various helper functions.
- */
 
 /**
- * General library class.
+ * General library class that provides various helper functions..
  *
- * @author      Marcus Krause <marcus#exp2009@t3sec.info>
- * @author		Steffen Ritter <info@rs-websystems.de>
+ * @author Marcus Krause <marcus#exp2009@t3sec.info>
+ * @author Steffen Ritter <info@rs-websystems.de>
+ * @author Rainer Kuhn <kuhn@punkt.de>
  *
  * @since       2009-06-14
  * @package     TYPO3
@@ -65,9 +62,6 @@ class tx_saltedpasswords_div {
 
 		/**
 		 * Returns extension configuration data from $TYPO3_CONF_VARS (configurable in Extension Manager)
-		 *
-		 * @author  Rainer Kuhn <kuhn@punkt.de>
-		 * @author  Marcus Krause <marcus#exp2009@t3sec.info>
 		 *
 		 * @param	string		TYPO3_MODE, wether Configuration for Frontend or Backend should be delivered
 		 * @return	array		extension configuration data

@@ -25,10 +25,13 @@
 *
 *  The code was adapted from newloginbox, see manual for detailed description
 ***************************************************************/
+
 /**
  * Plugin 'Website User Login' for the 'felogin' extension.
  *
- * @author	Steffen Kamper <info@sk-typo3.de>
+ * @author Steffen Kamper <info@sk-typo3.de>
+ * @author Bernhard Kraft
+ *
  * @package	TYPO3
  * @subpackage	tx_felogin
  */
@@ -865,7 +868,6 @@ class tx_felogin_pi1 extends tslib_pibase {
 	/**
 	 * Is used by forgot password - function with md5 option.
 	 *
-	 * @author	Bernhard Kraft
 	 *
 	 * @param	int			length of new password
 	 * @return	string		new password

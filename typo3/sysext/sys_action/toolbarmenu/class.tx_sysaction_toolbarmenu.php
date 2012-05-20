@@ -25,13 +25,14 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-	// load the language file
 $GLOBALS['LANG']->includeLLFile('EXT:sys_action/locallang.xml');
 
 /**
  * Adds action links to the backend's toolbar
  *
- * @author	Steffen Kamper <info@sk-typo3.de>
+ * @author Steffen Kamper <info@sk-typo3.de>
+ * @author Ingo Renner <ingo@typo3.org>
+ *
  * @package TYPO3
  * @subpackage tx_sysaction
  */
@@ -68,7 +69,6 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 	 * renders the toolbar menu
 	 *
 	 * @return	string	the rendered backend menu
-	 * @author	Ingo Renner <ingo@typo3.org>
 	 */
 	public function render() {
 		$actionMenu    = array();
@@ -103,8 +103,6 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 	 * gets the entries for the action menu
 	 *
 	 * @return	array	array of action menu entries
-	 * @author	Steffen Kamper <info@sk-typo3.de>
-	 * @author	Ingo Renner <ingo@typo3.org>
 	 */
 	protected function getActionEntries() {
 		$actions = array();

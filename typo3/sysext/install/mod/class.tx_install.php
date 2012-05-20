@@ -24,12 +24,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * Contains the class for the Install Tool
- *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author	Ingmar Schlecht <ingmar@typo3.org>
- */
 
 	// include requirements definition:
 require_once(t3lib_extMgm::extPath('install') . 'requirements.php');
@@ -57,8 +51,10 @@ require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_im
 /**
  * Install Tool module
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author	Ingmar Schlecht <ingmar@typo3.org>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Ingmar Schlecht <ingmar@typo3.org>
+ * @author Robert Lemke <rl@robertlemke.de>
+ *
  * @package TYPO3
  * @subpackage tx_install
  */
@@ -1584,7 +1580,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * Provides a tool cleaning up various tables in the database
 	 *
 	 * @return void
-	 * @author Robert Lemke <rl@robertlemke.de>
 	 * @todo Add more functionality ...
 	 */
 	function cleanupManager() {
