@@ -87,6 +87,9 @@ class t3lib_install {
 	var $multiplySize = 1; // Multiplier of SQL field size (for char, varchar and text fields)
 	var $character_sets = array(); // Caching output of $GLOBALS['TYPO3_DB']->admin_get_charsets()
 
+		// Maximum field width of MYSQL
+	const MYSQL_MAXIMUM_FIELD_WIDTH = 64;
+
 		// Internal, dynamic:
 	var $setLocalconf = 0; // Used to indicate that a value is change in the line-array of localconf and that it should be written.
 	var $messages = array(); // Used to set (error)messages from the executing functions like mail-sending, writing Localconf and such
@@ -793,6 +796,7 @@ class t3lib_install {
 	function getUpdateSuggestions($diffArr, $keyList = 'extra,diff') {
 		$statements = array();
 		$deletedPrefixKey = $this->deletedPrefixKey;
+		$deletedPrefixLength = strlen($deletedPrefixKey);
 		$remove = 0;
 		if ($keyList == 'remove') {
 			$remove = 1;
@@ -822,8 +826,10 @@ class t3lib_install {
 								}
 								if ($theKey == 'extra') {
 									if ($remove) {
-										if (substr($fN, 0, strlen($deletedPrefixKey)) != $deletedPrefixKey) {
-											$statement = 'ALTER TABLE ' . $table . ' CHANGE ' . $fN . ' ' . $deletedPrefixKey . $fN . ' ' . $fV . ';';
+										if (substr($fN, 0, $deletedPrefixLength) !== $deletedPrefixKey) {
+												// we've to make sure we don't exceed the maximal length
+											$prefixedFieldName = $deletedPrefixKey . substr($fN, $deletedPrefixLength - self::MYSQL_MAXIMUM_FIELD_WIDTH);
+											$statement = 'ALTER TABLE ' . $table . ' CHANGE ' . $fN . ' ' . $prefixedFieldName . ' ' . $fV . ';';
 											$statements['change'][md5($statement)] = $statement;
 										} else {
 											$statement = 'ALTER TABLE ' . $table . ' DROP ' . $fN . ';';
@@ -900,7 +906,9 @@ class t3lib_install {
 					if ($info['whole_table']) {
 						if ($remove) {
 							if (substr($table, 0, strlen($deletedPrefixKey)) != $deletedPrefixKey) {
-								$statement = 'ALTER TABLE ' . $table . ' RENAME ' . $deletedPrefixKey . $table . ';';
+									// we've to make sure we don't exceed the maximal length
+								$prefixedTableName = $deletedPrefixKey . substr($table, $deletedPrefixLength - self::MYSQL_MAXIMUM_FIELD_WIDTH);
+								$statement = 'ALTER TABLE ' . $table . ' RENAME ' . $prefixedTableName . ';';
 								$statements['change_table'][md5($statement)] = $statement;
 							} else {
 								$statement = 'DROP TABLE ' . $table . ';';
