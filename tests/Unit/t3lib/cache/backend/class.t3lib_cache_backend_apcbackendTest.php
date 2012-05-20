@@ -160,7 +160,7 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 		$identifier = 'NonExistingIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$inCache = $backend->has($identifier);
-		$this->assertFalse($inCache,'"has" did not return FALSE when checking on non existing identifier');
+		$this->assertFalse($inCache, '"has" did not return FALSE when checking on non existing identifier');
 	}
 
 	/**
@@ -171,7 +171,7 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 		$identifier = 'NonExistingIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$inCache = $backend->remove($identifier);
-		$this->assertFalse($inCache,'"remove" did not return FALSE when checking on non existing identifier');
+		$this->assertFalse($inCache, '"remove" did not return FALSE when checking on non existing identifier');
 	}
 
 	/**

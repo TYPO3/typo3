@@ -656,9 +656,9 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	public function uniqueListUnifiesCommaSeparatedListDataProvider() {
 		return array(
-			'List without duplicates' => array('one,two,three','one,two,three'),
-			'List with two consecutive duplicates' => array('one,two,two,three,three','one,two,three'),
-			'List with non-consecutive duplicates' => array('one,two,three,two,three','one,two,three'),
+			'List without duplicates' => array('one,two,three', 'one,two,three'),
+			'List with two consecutive duplicates' => array('one,two,two,three,three', 'one,two,three'),
+			'List with non-consecutive duplicates' => array('one,two,three,two,three', 'one,two,three'),
 			'One item list' => array('one', 'one'),
 			'Empty list' => array('', ''),
 		);
