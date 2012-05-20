@@ -120,9 +120,9 @@ class SC_wizard_rte {
 
 				// Setting JavaScript, including the pid value for viewing:
 			$this->doc->JScode = $this->doc->wrapScriptTags('
-					function jumpToUrl(URL,formEl)	{	//
+					function jumpToUrl(URL,formEl) {
 						if (document.editform)	{
-							if (!TBE_EDITOR.isFormChanged())	{
+							if (!TBE_EDITOR.isFormChanged()) {
 								window.location.href = URL;
 							} else if (formEl) {
 								if (formEl.type=="checkbox") formEl.checked = formEl.checked ? 0 : 1;
@@ -284,7 +284,7 @@ class SC_wizard_rte {
 	 * @param	integer		Record uid
 	 * @return	void
 	 */
-	function checkEditAccess($table,$uid)	{
+	function checkEditAccess($table, $uid) {
 		$calcPRec = t3lib_BEfunc::getRecord($table,$uid);
 		t3lib_BEfunc::fixVersioningPid($table,$calcPRec);
 		if (is_array($calcPRec))	{

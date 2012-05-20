@@ -571,7 +571,7 @@ class SC_index {
 
 			$title = ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle'] : $GLOBALS['LANG']->getLL('newsheadline'));
 
-			$newsContent = t3lib_parsehtml::substituteMarker($newsContent,  '###NEWS_HEADLINE###', htmlspecialchars($title));
+			$newsContent = t3lib_parsehtml::substituteMarker($newsContent, '###NEWS_HEADLINE###', htmlspecialchars($title));
 			$newsContent = t3lib_parsehtml::substituteSubpart($newsContent, '###NEWS_ITEM###', $newsItem);
 		}
 

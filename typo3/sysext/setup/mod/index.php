@@ -846,7 +846,7 @@ class SC_mod_user_setup_index {
 	 * @param	string		Alternative id for use in "for" attribute of <label> tag. By default the $str key is used prepended with "field_".
 	 * @return	string		HTML output.
 	 */
-	protected function getLabel($str, $key='', $addLabelTag=TRUE, $altLabelTagId='')	{
+	protected function getLabel($str, $key = '', $addLabelTag = TRUE, $altLabelTagId = '') {
 		if (substr($str, 0, 4) == 'LLL:') {
 			$out = $GLOBALS['LANG']->sL($str);
 		} else {

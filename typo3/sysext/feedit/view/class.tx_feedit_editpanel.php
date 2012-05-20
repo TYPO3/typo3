@@ -63,7 +63,7 @@ class tx_feedit_editpanel {
 	 * @param	array		Alternative data array to use. Default is $this->data
 	 * @return	string		The input content string with the editPanel appended. This function returns only an edit panel appended to the content string if a backend user is logged in (and has the correct permissions). Otherwise the content string is directly returned.
 	 */
-	public function editPanel($content, array $conf, $currentRecord='', array $dataArr=array(), $table='', $allow='', $newUID=0, array $hiddenFields=array()) {
+	public function editPanel($content, array $conf, $currentRecord = '', array $dataArr = array(), $table = '', $allow = '', $newUID = 0, array $hiddenFields = array()) {
 			// Special content is about to be shown, so the cache must be disabled.
 		$GLOBALS['TSFE']->set_no_cache();
 		$formName = 'TSFE_EDIT_FORM_' . substr($GLOBALS['TSFE']->uniqueHash(), 0, 4);
@@ -185,7 +185,7 @@ class tx_feedit_editpanel {
 	 * @param	string		Additional URL parameters for the link pointing to alt_doc.php
 	 * @return	string		The input content string, possibly with edit icons added (not necessarily in the end but just after the last string of normal content.
 	 */
-	public function editIcons($content, $params, array $conf=array(), $currentRecord='', array $dataArr=array(), $addUrlParamStr='', $table, $editUid, $fieldList) {
+	public function editIcons($content, $params, array $conf = array(), $currentRecord = '', array $dataArr = array(), $addUrlParamStr = '', $table, $editUid, $fieldList) {
 			// Special content is about to be shown, so the cache must be disabled.
 		$GLOBALS['TSFE']->set_no_cache();
 		$style = $conf['styleAttribute'] ? ' style="' . htmlspecialchars($conf['styleAttribute']) . '"' : '';
@@ -225,7 +225,7 @@ class tx_feedit_editpanel {
 	 * @return	string		A <a> tag wrapped string.
 	 * @see	editPanel(), editIcons(), t3lib_tsfeBeUserAuth::extEditAction()
 	 */
-	protected function editPanelLinkWrap($string, $formName, $cmd, $currentRecord='', $confirm='', $nPid='')	{
+	protected function editPanelLinkWrap($string, $formName, $cmd, $currentRecord = '', $confirm = '', $nPid = '') {
 			// Editing forms on page only supported in Live workspace (because of incomplete implementation)
 		$editFormsOnPage = $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editFormsOnPage'] && $GLOBALS['BE_USER']->workspace === 0;
 		$nV=t3lib_div::_GP('ADMCMD_view') ? 1 : 0;
@@ -269,7 +269,7 @@ class tx_feedit_editpanel {
 	 * @return	string		A <a> tag wrapped string.
 	 * @see	editPanelLinkWrap()
 	 */
-	protected function editPanelLinkWrap_doWrap($string, $url, $currentRecord)	{
+	protected function editPanelLinkWrap_doWrap($string, $url, $currentRecord) {
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editNoPopup'] || $GLOBALS['BE_USER']->extAdminConfig['module.']['edit.']['forceNoPopup']) {
 			$retUrl = t3lib_div::getIndpEnv('REQUEST_URI');
 			$rParts = explode(':', $currentRecord);

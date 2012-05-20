@@ -102,7 +102,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @return	void
 	 * @see tslib_cObj::getImgResource(), tslib_gmenu::makeGifs(), tslib_gmenu::findLargestDims()
 	 */
-	function start($conf,$data)	{
+	function start($conf, $data) {
 
 		if (is_array($conf))	{
 			$this->setup = $conf;
@@ -568,7 +568,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @return	array		Modified $conf array IF the "text" property is not blank
 	 * @access private
 	 */
-	function checkTextObj($conf)	{
+	function checkTextObj($conf) {
 		$cObj = t3lib_div::makeInstance('tslib_cObj');
 		$cObj->start($this->data);
 
@@ -662,7 +662,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @return	string		The resolved string with each part (separated by comma) returned separated by comma
 	 * @access private
 	 */
-	function calcOffset($string)	{
+	function calcOffset($string) {
 		$value = array();
 		$numbers = t3lib_div::trimExplode(',', $this->calculateFunctions($string));
 
@@ -687,7 +687,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @access private
 	 * @see tslib_cObj::getImgResource()
 	 */
-	function getResource($file,$fileArray)	{
+	function getResource($file, $fileArray) {
 		if (!t3lib_div::inList($this->imageFileExt, $fileArray['ext']))	{
 			$fileArray['ext'] = $this->gifExtension;
 		}
@@ -704,7 +704,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @access private
 	 * @see t3lib_TStemplate::getFileName()
 	 */
-	function checkFile($file)	{
+	function checkFile($file) {
 		return $GLOBALS['TSFE']->tmpl->getFileName($file);
 	}
 
@@ -715,7 +715,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * @return string The relative filepath (relative to PATH_site)
 	 * @access private
 	 */
-	function fileName($pre)	{
+	function fileName($pre) {
 
 		$meaningfulPrefix = '';
 

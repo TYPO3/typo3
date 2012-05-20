@@ -5518,11 +5518,13 @@ class t3lib_TCEforms {
 			$toggleIcon_close = t3lib_iconWorks::getSpriteIcon('actions-move-right', array('title' => 'Close'));
 
 			$out .= '
-			function getOuterHTML(idTagPrefix)	{	// Function getting the outerHTML of an element with id
+				// Function getting the outerHTML of an element with id
+			function getOuterHTML(idTagPrefix) {
 				var str=($(idTagPrefix).inspect()+$(idTagPrefix).innerHTML+"</"+$(idTagPrefix).tagName.toLowerCase()+">");
 				return str;
 			}
-			function flexFormToggle(id)	{	// Toggling flexform elements on/off:
+				// Toggling flexform elements on/off:
+			function flexFormToggle(id) {
 				Element.toggle(""+id+"-content");
 
 				if (Element.visible(id+"-content")) {
@@ -5543,7 +5545,8 @@ class t3lib_TCEforms {
 				}
 				$(id+"-preview").update(previewContent);
 			}
-			function flexFormToggleSubs(id)	{	// Toggling sub flexform elements on/off:
+				// Toggling sub flexform elements on/off:
+			function flexFormToggleSubs(id) {
 				var descendants = $(id).immediateDescendants();
 				var isOpen=0;
 				var isClosed=0;
@@ -5565,13 +5568,15 @@ class t3lib_TCEforms {
 					}
 				}
 			}
-			function flexFormSortable(id)	{	// Create sortables for flexform sections
+				// Create sortables for flexform sections
+			function flexFormSortable(id) {
 				Position.includeScrollOffsets = true;
  				Sortable.create(id, {tag:\'div\',constraint: false, onChange:function(){
 					setActionStatus(id);
 				} });
 			}
-			function setActionStatus(id)	{	// Updates the "action"-status for a section. This is used to move and delete elements.
+				// Updates the "action"-status for a section. This is used to move and delete elements.
+			function setActionStatus(id) {
 				var descendants = $(id).immediateDescendants();
 
 					// Traverse and find how many are open or closed:
@@ -5664,7 +5669,7 @@ class t3lib_TCEforms {
 
 			var browserWin="";
 
-			function setFormValueOpenBrowser(mode,params) {	//
+			function setFormValueOpenBrowser(mode,params) {
 				var url = "' . $this->backPath . 'browser.php?mode="+mode+"&bparams="+params;
 
 				browserWin = window.open(url,"Typo3WinBrowser","height=650,width="+(mode=="db"?650:600)+",status=0,menubar=0,resizable=1,scrollbars=1");
@@ -5757,7 +5762,7 @@ class t3lib_TCEforms {
 					}
 				}
 			}
-			function setHiddenFromList(fObjSel,fObjHid)	{	//
+			function setHiddenFromList(fObjSel, fObjHid) {
 				l=fObjSel.length;
 				fObjHid.value="";
 				for (a=0;a<l;a++)	{
@@ -5925,7 +5930,7 @@ class t3lib_TCEforms {
 					' . $this->TBE_EDITOR_fieldChanged_func . '
 				}
 			}
-			function setFormValue_getFObj(fName)	{	//
+			function setFormValue_getFObj(fName) {
 				var formObj = ' . $formObj . ';
 				if (formObj) {
 						// Take the form object if it is either of type select-one or of type-multiple and it has a "_list" element

@@ -197,7 +197,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 * @param	[type]		$matchString: ...
 	 * @return	string		If string, it's the reason for not executing. Returning FALSE means it should execute.
 	 */
-	function cli_noExecutionCheck($matchString)	{
+	function cli_noExecutionCheck($matchString) {
 
 			// Check for filter:
 		if ($this->cli_isArg('--filterRegex') && $regex = $this->cli_argValue('--filterRegex',0))	{
@@ -220,7 +220,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 * @param	array		Result array from an analyze function
 	 * @return	void		Outputs with echo - capture content with output buffer if needed.
 	 */
-	function cli_printInfo($header,$res)	{
+	function cli_printInfo($header, $res) {
 
 		$detailLevel = t3lib_utility_Math::forceIntegerInRange($this->cli_isArg('-v') ? $this->cli_argValue('-v') : 1,0,3);
 		$silent = !$this->cli_echo();
@@ -300,7 +300,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 * @param	string		Call back function (from this class or subclass)
 	 * @return	void
 	 */
-	function genTree($rootID,$depth=1000,$echoLevel=0,$callBack='')	{
+	function genTree($rootID, $depth = 1000, $echoLevel = 0, $callBack = '') {
 
 		$pt = t3lib_div::milliseconds();
 		$this->performanceStatistics['genTree()'] = '';
@@ -381,7 +381,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 * @return	void
 	 * @access private
 	 */
-	function genTree_traverse($rootID,$depth,$echoLevel=0,$callBack='',$versionSwapmode='',$rootIsVersion=0,$accumulatedPath='')	{
+	function genTree_traverse($rootID, $depth, $echoLevel = 0, $callBack = '', $versionSwapmode = '', $rootIsVersion = 0, $accumulatedPath = '') {
 
 			// Register page:
 		$this->recStats['all']['pages'][$rootID] = $rootID;
@@ -582,7 +582,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 * @param	array		Input record from sys_refindex
 	 * @return	string		String identifying the main record of the reference
 	 */
-	function infoStr($rec)	{
+	function infoStr($rec) {
 		return $rec['tablename'].':'.$rec['recuid'].':'.$rec['field'].':'.$rec['flexpointer'].':'.$rec['softref_key'].($rec['deleted'] ? ' (DELETED)':'');
 	}
 }

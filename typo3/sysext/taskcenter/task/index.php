@@ -235,7 +235,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	 * @param	string		$description: Description
 	 * @return	string formatted title and description
 	 */
-	public function description($title, $description='') {
+	public function description($title, $description = '') {
 		if (!empty($description)) {
 			$description = '<p class="description">' .	nl2br(htmlspecialchars($description)) . '</p><br />';
 		}
@@ -469,7 +469,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	 * @param	int		$max:
 	 * @return	string		code that inserts the iframe (HTML)
 	 */
-	public function urlInIframe($url, $max=0) {
+	public function urlInIframe($url, $max = 0) {
 		$this->doc->JScodeArray[] =
 		'function resizeIframe(frame,max) {
 			var parent = $("typo3-docbody");

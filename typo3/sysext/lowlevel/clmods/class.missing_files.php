@@ -141,7 +141,7 @@ This will show you missing files in the TYPO3 system and only report back if err
 	 * @param	array		Result array from main() function
 	 * @return	void
 	 */
-	function main_autoFix($resultArray)	{
+	function main_autoFix($resultArray) {
 		foreach($resultArray['managedFilesMissing'] as $key => $value)	{
 			echo 'Processing file: '.$key.LF;
 			$c=0;

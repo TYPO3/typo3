@@ -494,7 +494,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	string		$relation: value for the rel attribute of the link element
 	 * @return	void
 	 */
-	protected function addStyleSheet($key, $href, $title='', $relation='stylesheet') {
+	protected function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet') {
 			// If it was not known that an RTE-enabled would be created when the page was first created, the css would not be added to head
 		if (is_object($this->TCEform->inline) && $this->TCEform->inline->isAjaxCall) {
 			$this->TCEform->additionalCode_pre[$key] = '<link rel="' . $relation . '" type="text/css" href="' . $href . '" title="' . $title. '" />';
@@ -1128,7 +1128,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 *
 	 * @return	string		The name of the file writtten to typo3temp/rtehtmlarea
 	 */
-	public function writeTemporaryFile($sourceFileName='', $label, $fileExtension='js', $contents='', $concatenate = FALSE) {
+	public function writeTemporaryFile($sourceFileName = '', $label, $fileExtension = 'js', $contents = '', $concatenate = FALSE) {
 		if ($sourceFileName) {
 			$output = '';
 			$source = t3lib_div::getFileAbsFileName($sourceFileName);
@@ -1270,7 +1270,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		return $LLString;
 	}
 
-	public function getPageConfigLabel($string, $JScharCode=1) {
+	public function getPageConfigLabel($string, $JScharCode = 1) {
 		global $LANG, $TSFE, $TYPO3_CONF_VARS;
 
 		if ($this->is_FE()) {
@@ -1403,7 +1403,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 *
 	 * @return void
 	 */
-	public function logDeprecatedProperty ($deprecatedProperty, $useProperty, $version) {
+	public function logDeprecatedProperty($deprecatedProperty, $useProperty, $version) {
 		if (!$this->thisConfig['logDeprecatedProperties.']['disabled']) {
 			$message = sprintf('RTE Page TSConfig property "%1$s" used on page id #%4$s is DEPRECATED and will be removed in TYPO3 %3$s. Use "%2$s" instead.', $deprecatedProperty, $useProperty, $version, $this->thePid);
 			t3lib_div::deprecationLog($message);
@@ -1442,7 +1442,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		return $str;
 	}
 
-	function filterStyleEl($elValue,$matchList) {
+	function filterStyleEl($elValue, $matchList) {
 		$matchParts = t3lib_div::trimExplode(',', $matchList, 1);
 		$styleParts = explode(';', $elValue);
 		$nStyle = array();

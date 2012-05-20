@@ -76,7 +76,7 @@ class ext_posMap extends t3lib_positionMap {
 	 * @param	array		The record row.
 	 * @return	string		Wrapped title string.
 	 */
-	function wrapRecordTitle($str,$row)	{
+	function wrapRecordTitle($str, $row) {
 		return $str;
 	}
 
@@ -90,7 +90,7 @@ class ext_posMap extends t3lib_positionMap {
 	 * @param	integer		System language
 	 * @return	string
 	 */
-	function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0) {
+	function onClickInsertRecord($row, $vv, $moveUid, $pid, $sys_lang = 0) {
 		$table='tt_content';
 
 		$location=$this->backPath.'alt_doc.php?edit[tt_content]['.(is_array($row)?-$row['uid']:$pid).']=new&defVals[tt_content][colPos]='.$vv.'&defVals[tt_content][sys_language_uid]='.$sys_lang.'&returnUrl='.rawurlencode($GLOBALS['SOBE']->R_URI);
@@ -251,7 +251,7 @@ class SC_db_new_content_el {
 
 				// add document inline javascript
 			$this->doc->JScode = $this->doc->wrapScriptTags('
-				function goToalt_doc()	{	//
+				function goToalt_doc() {	//
 					' . $this->onClickEvent . '
 				}
 
@@ -525,7 +525,7 @@ class SC_db_new_content_el {
 	 * @param	array		Wizard items, passed by reference
 	 * @return	void
 	 */
-	function removeInvalidElements(&$wizardItems)	{
+	function removeInvalidElements(&$wizardItems) {
 
 			// Load full table definition:
 		t3lib_div::loadTCA('tt_content');

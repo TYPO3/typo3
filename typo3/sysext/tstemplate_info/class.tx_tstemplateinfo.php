@@ -44,7 +44,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 * @param	string		$field: The field/variable to be sent on clicking the edit icon (e.g. 'title', 'sitetitle')
 	 * @return	string		A row for a HTML table
 	 */
-	function tableRow($label, $data, $field)	{
+	function tableRow($label, $data, $field) {
 		$ret = '<tr><td>';
 		$ret.= '<a href="index.php?id=' . $this->pObj->id . '&e[' . $field . ']=1">' .
 			t3lib_iconWorks::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editField', TRUE))) . '<strong>' . $label . '&nbsp;&nbsp;</strong></a>';
@@ -59,7 +59,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 * @param	boolean		$func: Whether to render functions like 'to top' or 'delete' for each resource (default: FALSE)
 	 * @return	string		HTML table with available template resources/files
 	 */
-	function procesResources($resources, $func=FALSE)	{
+	function procesResources($resources, $func = FALSE) {
 		$arr = t3lib_div::trimExplode(',', $resources.',,', 1);
 		$out = '';
 		$bgcol = ($func ? ' class="bgColor4"' : '');
@@ -99,7 +99,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 * @param	integer		$template_uid: The uid of the template record to be rendered (only if more than one template on the current page)
 	 * @return	string		HTML table with all available template resources/files in the current rootline that could be copied
 	 */
-	function resourceListForCopy($id, $template_uid)	{
+	function resourceListForCopy($id, $template_uid) {
 		global $tmpl;
 		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 		$rootLine = $sys_page->getRootLine($id);
@@ -125,7 +125,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 * @param	integer		$template_uid: The uid of the template record to be rendered (only if more than one template on the current page)
 	 * @return	boolean		Returns TRUE if a template record was found, otherwise FALSE
 	 */
-	function initialize_editor($pageId, $template_uid=0)	{
+	function initialize_editor($pageId, $template_uid = 0) {
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		global $tmpl,$tplRow,$theConstants;
 

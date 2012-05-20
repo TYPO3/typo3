@@ -83,7 +83,7 @@ class t3lib_ajax {
 			$fallback = 'return';
 		}
 		$code .= '
-		function ajax_doRequest(url)	{
+		function ajax_doRequest(url) {
 			var x;
 
 			x = ajax_initObject();

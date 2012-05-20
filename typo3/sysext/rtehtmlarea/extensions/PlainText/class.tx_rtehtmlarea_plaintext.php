@@ -41,7 +41,7 @@ class tx_rtehtmlarea_plaintext extends tx_rtehtmlarea_api {
 		'pastetoggle'		=> 'PasteToggle',
 		'pastebehaviour'	=> 'PasteBehaviour',
 		);
-	public function main ($parentObject) {
+	public function main($parentObject) {
 			// Opera has no onPaste event to handle
 		return parent::main($parentObject) && $this->htmlAreaRTE->client['browser'] != 'opera';
 	}
@@ -77,7 +77,7 @@ class tx_rtehtmlarea_plaintext extends tx_rtehtmlarea_api {
 	 *
 	 * @return 	array		toolbar button array, possibly updated
 	 */
-	public function applyToolbarConstraints ($show) {
+	public function applyToolbarConstraints($show) {
 		$removeButtons = array();
 			// Remove pastebehaviour button if pastetoggle is not configured
 		if (!in_array('pastetoggle', $show)) {

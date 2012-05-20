@@ -1,11 +1,12 @@
 <?php
-// Make sure that we are executed only from the inside of TYPO3
+
+	// Make sure that we are executed only from the inside of TYPO3
 if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-// Register OpenID authentication service with TYPO3
-t3lib_extMgm::addService($_EXTKEY, 'auth' /* sv type */,  'tx_openid_sv1' /* sv key */,
+	// Register OpenID authentication service with TYPO3
+t3lib_extMgm::addService($_EXTKEY, 'auth', 'tx_openid_sv1',
 	array(
 		'title' => 'OpenID Authentication',
 		'description' => 'OpenID authentication service for Frontend and Backend',
@@ -20,11 +21,12 @@ t3lib_extMgm::addService($_EXTKEY, 'auth' /* sv type */,  'tx_openid_sv1' /* sv 
 	)
 );
 
-// Register eID script that performs final FE user authentication. It will be called by the OpenID provider
+	// Register eID script that performs final FE user authentication. It will be called by the OpenID provider
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['tx_openid'] = 'EXT:openid/class.tx_openid_eid.php';
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['setup']['accessLevelCheck']['tx_openid_mod_setup'] = 'EXT:openid/class.tx_openid_mod_setup.php';
 
-// Use popup window to refresh login instead of the AJAX relogin:
+	// Use popup window to refresh login instead of the AJAX relogin:
 $TYPO3_CONF_VARS['BE']['showRefreshLoginPopup'] = 1;
+
 ?>

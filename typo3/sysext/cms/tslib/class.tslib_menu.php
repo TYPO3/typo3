@@ -136,7 +136,7 @@ class tslib_menu {
 	 * @return	boolean		Returns TRUE on success
 	 * @see tslib_cObj::HMENU()
 	 */
-	function start(&$tmpl,&$sys_page,$id,$conf,$menuNumber,$objSuffix='')	{
+	function start(&$tmpl, &$sys_page, $id, $conf, $menuNumber, $objSuffix = '') {
 
 			// Init:
 		$this->conf = $conf;
@@ -850,7 +850,7 @@ class tslib_menu {
 	 * @param	boolean		If set, then the page is a spacer.
 	 * @return	boolean		Returns TRUE if the page can be safely included.
 	 */
-	function filterMenuPages(&$data,$banUidArray,$spacer)	{
+	function filterMenuPages(&$data, $banUidArray, $spacer) {
 
 		$includePage = TRUE;
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/tslib/class.tslib_menu.php']['filterMenuPages'])) {
@@ -922,7 +922,7 @@ class tslib_menu {
 	 * @return	array		An array with two keys: array($NOconf,$ROconf) - where $NOconf contains the resolved configuration for each item when NOT rolled-over and $ROconf contains the ditto for the mouseover state (if any)
 	 * @access private
 	 */
-	function procesItemStates($splitCount)	{
+	function procesItemStates($splitCount) {
 
 			// Prepare normal settings
 		if (!is_array($this->mconf['NO.']) && $this->mconf['NO'])	$this->mconf['NO.']=array();	// Setting a blank array if NO=1 and there are no properties.
@@ -1123,7 +1123,7 @@ class tslib_menu {
 	 * @return	array		Returns an array with A-tag attributes as key/value pairs (HREF, TARGET and onClick)
 	 * @access private
 	 */
-	function link($key,$altTarget='',$typeOverride='') {
+	function link($key, $altTarget = '', $typeOverride = '') {
 
 			// Mount points:
 		$MP_var = $this->getMPvar($key);
@@ -1253,7 +1253,7 @@ class tslib_menu {
 	 * @param	string		Type number override if any
 	 * @return	void		($LD passed by reference might be changed.)
 	 */
-	function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride)	{
+	function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride) {
 
 			// If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
 		if ($this->mconf['showAccessRestrictedPages'] && $this->mconf['showAccessRestrictedPages']!=='NONE' && !$GLOBALS['TSFE']->checkPageGroupAccess($page))	{
@@ -1274,7 +1274,7 @@ class tslib_menu {
 	 * @return	string		HTML content of the submenu
 	 * @access private
 	 */
-	function subMenu($uid, $objSuffix='')	{
+	function subMenu($uid, $objSuffix = '') {
 
 			// Setting alternative menu item array if _SUB_MENU has been defined in the current ->menuArr
 		$altArray = '';
@@ -1333,7 +1333,7 @@ class tslib_menu {
 	 * @access private
 	 * @see subMenu()
 	 */
-	function isNext($uid, $MPvar='')	{
+	function isNext($uid, $MPvar = '') {
 
 			// Check for always active PIDs:
 		if (count($this->alwaysActivePIDlist) && in_array($uid,$this->alwaysActivePIDlist))	{
@@ -1354,7 +1354,7 @@ class tslib_menu {
 	 * @return	boolean		TRUE if page with $uid is active
 	 * @access private
 	 */
-	function isActive($uid, $MPvar='')	{
+	function isActive($uid, $MPvar = '') {
 
 			// Check for always active PIDs:
 		if (count($this->alwaysActivePIDlist) && in_array($uid,$this->alwaysActivePIDlist))	{
@@ -1375,7 +1375,7 @@ class tslib_menu {
 	 * @return	boolean		TRUE if page $uid = $GLOBALS['TSFE']->id
 	 * @access private
 	 */
-	function isCurrent($uid, $MPvar='')	{
+	function isCurrent($uid, $MPvar = '') {
 		$testUid = $uid.($MPvar?':'.$MPvar:'');
 		if ($uid && !strcmp(end($this->rL_uidRegister),'ITEM:'.$testUid))	{
 			return TRUE;
@@ -1445,7 +1445,7 @@ class tslib_menu {
 	 * @access private
 	 * @see procesItemStates()
 	 */
-	function isItemState($kind,$key)	{
+	function isItemState($kind, $key) {
 		$natVal=0;
 		if ($this->menuArr[$key]['ITEM_STATE'])	{		// If any value is set for ITEM_STATE the normal evaluation is discarded
 			if (!strcmp($this->menuArr[$key]['ITEM_STATE'],$kind))	{$natVal=1;}
@@ -1485,7 +1485,7 @@ class tslib_menu {
 	 * @return	array		Returns an array with keys "code" ("accesskey" attribute for the img-tag) and "alt" (text-addition to the "alt" attribute) if an access key was defined. Otherwise array was empty
 	 * @access private
 	 */
-	function accessKey($title)	{
+	function accessKey($title) {
 			// The global array ACCESSKEY is used to globally control if letters are already used!!
 		$result = Array();
 
@@ -1513,7 +1513,7 @@ class tslib_menu {
 	 * @return	mixed		The processed $passVar
 	 * @access private
 	 */
-	function userProcess($mConfKey,$passVar)	{
+	function userProcess($mConfKey, $passVar) {
 		if ($this->mconf[$mConfKey])	{
 			$funcConf = $this->mconf[$mConfKey.'.'];
 			$funcConf['parentObj'] = $this;
@@ -1541,7 +1541,7 @@ class tslib_menu {
 	 * @return	string		Returns the navigation title if it is NOT blank, otherwise the page title.
 	 * @access private
 	 */
-	function getPageTitle($title,$nav_title)	{
+	function getPageTitle($title, $nav_title) {
 		return strcmp(trim($nav_title),'') ? $nav_title : $title;
 	}
 
@@ -1553,7 +1553,7 @@ class tslib_menu {
 	 * @return	string		MP vars for element.
 	 * @see link()
 	 */
-	function getMPvar($key)	{
+	function getMPvar($key) {
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'])	{
 			$localMP_array = $this->MP_array;
 			if ($this->menuArr[$key]['_MP_PARAM'])	$localMP_array[] = $this->menuArr[$key]['_MP_PARAM'];	// NOTICE: "_MP_PARAM" is allowed to be a commalist of PID pairs!
@@ -1920,7 +1920,7 @@ class tslib_tmenu extends tslib_menu {
 	 * @param	string		Can be "before" or "after" and determines which kind of image to create (basically this is the prefix of the TypoScript properties that are read from the ->I['val'] array
 	 * @return	string		The resulting HTML of the image, if any.
 	 */
-	function getBeforeAfter($pref)	{
+	function getBeforeAfter($pref) {
 		$res = '';
 		if ($imgInfo = $this->WMcObj->getImgResource($this->I['val'][$pref.'Img'],$this->I['val'][$pref.'Img.']))	{
 			$imgInfo[3] = t3lib_div::png_to_gif_by_imagemagick($imgInfo[3]);
@@ -1969,7 +1969,7 @@ class tslib_tmenu extends tslib_menu {
 	 */
 	function addJScolorShiftFunction() {
 		$GLOBALS['TSFE']->additionalJavaScript['TMENU:changeBGcolor()']='
-			function changeBGcolor(id,color) {	//
+			function changeBGcolor(id,color) {
 				if (document.getElementById && document.getElementById(id))	{
 					document.getElementById(id).style.background = color;
 					return true;
@@ -2000,7 +2000,7 @@ class tslib_tmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_tmenu_layers::extProc_RO()
 	 */
-	function extProc_RO($key)	{
+	function extProc_RO($key) {
 	}
 
 	/**
@@ -2011,7 +2011,7 @@ class tslib_tmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_tmenu_layers::extProc_beforeLinking()
 	 */
-	function extProc_beforeLinking($key)	{
+	function extProc_beforeLinking($key) {
 	}
 
 	/**
@@ -2023,7 +2023,7 @@ class tslib_tmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_tmenu_layers::extProc_afterLinking()
 	 */
-	function extProc_afterLinking($key)	{
+	function extProc_afterLinking($key) {
 			// Add part to the accumulated result + fetch submenus
 		if (!$this->I['spacer'])	{
 			$this->I['theItem'].= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
@@ -2043,7 +2043,7 @@ class tslib_tmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_tmenu_layers::extProc_beforeAllWrap()
 	 */
-	function extProc_beforeAllWrap($item,$key)	{
+	function extProc_beforeAllWrap($item, $key) {
 		return $item;
 	}
 
@@ -2146,7 +2146,7 @@ class tslib_gmenu extends tslib_menu {
 	 * @access private
 	 * @see generate()
 	 */
-	function makeGifs($conf, $resKey)	{
+	function makeGifs($conf, $resKey) {
 		$isGD = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'];
 
 		if (!is_array($conf)) {
@@ -2352,7 +2352,7 @@ class tslib_gmenu extends tslib_menu {
 	 * @access private
 	 * @see makeGifs()
 	 */
-	function findLargestDims($conf,$items,$Hobjs,$Wobjs,$minDim,$maxDim)	{
+	function findLargestDims($conf, $items, $Hobjs, $Wobjs, $minDim, $maxDim) {
 		$totalWH = array(
 			'W' => array(),
 			'H' => array(),
@@ -2571,7 +2571,7 @@ class tslib_gmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_gmenu_layers::extProc_RO()
 	 */
-	function extProc_RO($key)	{
+	function extProc_RO($key) {
 	}
 
 	/**
@@ -2582,7 +2582,7 @@ class tslib_gmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_gmenu_layers::extProc_beforeLinking()
 	 */
-	function extProc_beforeLinking($key)	{
+	function extProc_beforeLinking($key) {
 	}
 
 	/**
@@ -2595,7 +2595,7 @@ class tslib_gmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_gmenu_layers::extProc_afterLinking(), tslib_menu::subMenu()
 	 */
-	function extProc_afterLinking($key)	{
+	function extProc_afterLinking($key) {
 			// Add part to the accumulated result + fetch submenus
 		if (!$this->I['spacer'])	{
 			$this->I['theItem'].= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
@@ -2616,7 +2616,7 @@ class tslib_gmenu extends tslib_menu {
 	 * @access private
 	 * @see writeMenu(), tslib_gmenu_layers::extProc_beforeAllWrap()
 	 */
-	function extProc_beforeAllWrap($item,$key)	{
+	function extProc_beforeAllWrap($item, $key) {
 		return $item;
 	}
 
@@ -2694,7 +2694,7 @@ class tslib_imgmenu extends tslib_menu {
 	 * @access private
 	 * @see generate()
 	 */
-	function makeImageMap($conf)	{
+	function makeImageMap($conf) {
 		if (!is_array($conf)) {
 			$conf = Array();
 		}
@@ -2998,7 +2998,7 @@ class tslib_jsmenu extends tslib_menu {
 	 * @return	string		JavaScript code lines.
 	 * @access private
 	 */
-	function generate_level($levels,$count,$pid,$menuItemArray='',$MP_array=array())	{
+	function generate_level($levels, $count, $pid, $menuItemArray = '', $MP_array = array()) {
 		$levelConf = $this->mconf[$count.'.'];
 
 			// Translate PID to a mount page, if any:

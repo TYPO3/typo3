@@ -98,7 +98,7 @@ class tx_indexedsearch_lexer {
 	 * @param	string		String with UTF-8 content to process.
 	 * @return	array		Array of words in utf-8
 	 */
-	function split2Words($wordString)	{
+	function split2Words($wordString) {
 
 			// Reset debug string:
 		$this->debugString = '';
@@ -160,7 +160,7 @@ class tx_indexedsearch_lexer {
 	 * @param	integer		The Length of the word string from start position
 	 * @return	void
 	 */
-	function addWords(&$words, &$wordString, $start, $len)	{
+	function addWords(&$words, &$wordString, $start, $len) {
 
 			// Get word out of string:
 		$theWord = substr($wordString,$start,$len);
@@ -221,7 +221,7 @@ class tx_indexedsearch_lexer {
 	 * @param	integer		Starting position in input string
 	 * @return	array		0: start, 1: len or FALSE if no word has been found
 	 */
-	function get_word(&$str, $pos=0)	{
+	function get_word(&$str, $pos = 0) {
 
 		$len=0;
 
@@ -246,7 +246,7 @@ class tx_indexedsearch_lexer {
 	 * @param	integer		Starting position in input string
 	 * @return	boolean		letter (or word) found
 	 */
-	function utf8_is_letter(&$str, &$len, $pos=0)	{
+	function utf8_is_letter(&$str, &$len, $pos = 0) {
 		global $cs;
 
 		$len = 0;
@@ -311,7 +311,7 @@ class tx_indexedsearch_lexer {
 	 * @param	integer		Unicode number to evaluate
 	 * @return	array		Type of char; index-0: the main type: num, alpha or CJK (Chinese / Japanese / Korean)
 	 */
-	function charType($cp)	{
+	function charType($cp) {
 
 			// Numeric?
 		if (
@@ -365,7 +365,7 @@ class tx_indexedsearch_lexer {
 	 * @param	boolean		If set, then a hex. number is returned
 	 * @return	integer		UNICODE codepoint
 	 */
-	function utf8_ord(&$str, &$len, $pos=0, $hex=FALSE)	{
+	function utf8_ord(&$str, &$len, $pos = 0, $hex = FALSE) {
 		$ord = ord($str{$pos});
 		$len = 1;
 

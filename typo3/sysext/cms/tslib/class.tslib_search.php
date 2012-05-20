@@ -100,7 +100,7 @@ class tslib_search {
 	 * @param	string		$allowedCols: is the list of columns, that MAY be searched. All allowed cols are set as result-fields. All requested cols MUST be in the allowed-fields list.
 	 * @return	void
 	 */
-	function register_tables_and_columns($requestedCols,$allowedCols)	{
+	function register_tables_and_columns($requestedCols, $allowedCols) {
 		$rCols=$this->explodeCols($requestedCols);
 		$aCols=$this->explodeCols($allowedCols);
 
@@ -141,7 +141,7 @@ class tslib_search {
 	 * @return	array		An array where the values is "[table].[field]" strings to search
 	 * @see	register_tables_and_columns()
 	 */
-	function explodeCols($in)	{
+	function explodeCols($in) {
 		$theArray = explode(':',$in);
 		$out = Array();
 		foreach ($theArray as $val) {
@@ -166,7 +166,7 @@ class tslib_search {
 	 * @param	string		The input search-word string.
 	 * @return	void
 	 */
-	function register_and_explode_search_string($sword)	{
+	function register_and_explode_search_string($sword) {
 		$sword = trim($sword);
 		if ($sword)	{
 			$components = $this->split($sword);
@@ -198,7 +198,7 @@ class tslib_search {
 	 * @param	string		Special chars which are deleted if the append the searchword (+-., is default)
 	 * @return	mixed		Returns an ARRAY if there were search words, othervise the return value may be unset.
 	 */
-	function split($origSword, $specchars='+-', $delchars='+.,-')	{
+	function split($origSword, $specchars = '+-', $delchars = '+.,-') {
 		$sword = $origSword;
 		$specs = '[' . preg_quote($specchars, '/') . ']';
 
@@ -371,7 +371,7 @@ class tslib_search {
 	 * @return	string		If found, the SQL operator for the localized input operator.
 	 * @access private
 	 */
-	function get_operator($operator)	{
+	function get_operator($operator) {
 		$operator = trim($operator);
 		$op_array = $this->operator_translate_table;
 		if ($this->operator_translate_table_caseinsensitive)	{

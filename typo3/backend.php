@@ -580,7 +580,7 @@ class TYPO3backend {
 	/**
 	 * TypoSetup object.
 	 */
-	function typoSetup()	{	//
+	function typoSetup() {	//
 		this.PATH_typo3 = TYPO3.configuration.PATH_typo3;
 		this.PATH_typo3_enc = TYPO3.configuration.PATH_typo3_enc;
 		this.username = TYPO3.configuration.username;
@@ -600,7 +600,7 @@ class TYPO3backend {
 	 *		if (top.fsMod) top.fsMod.recentIds["web"] = "\'.intval($this->id).\'";
 	 * 		if (top.fsMod) top.fsMod.recentIds["file"] = "...(file reference/string)...";
 	 */
-	function fsModules()	{	//
+	function fsModules() {	//
 		this.recentIds=new Array();					// used by frameset modules to track the most recent used id for list frame.
 		this.navFrameHighlightedID=new Array();		// used by navigation frames to track which row id was highlighted last time
 		this.currentMainLoaded="";

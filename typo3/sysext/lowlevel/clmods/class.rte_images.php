@@ -176,7 +176,7 @@ Reports problems with RTE images';
 	 * @param	array		Result array from main() function
 	 * @return	void
 	 */
-	function main_autoFix($resultArray)	{
+	function main_autoFix($resultArray) {
 
 		$limitTo = $this->cli_args['--AUTOFIX'][0];
 

@@ -273,7 +273,7 @@ class tslib_fe {
 	 * @return	void
 	 * @see index_ts.php
 	 */
-	function __construct($TYPO3_CONF_VARS, $id, $type, $no_cache='', $cHash='', $jumpurl='', $MP='', $RDCT='')	{
+	function __construct($TYPO3_CONF_VARS, $id, $type, $no_cache = '', $cHash = '', $jumpurl = '', $MP = '', $RDCT = '') {
 
 			// Setting some variables:
 		$this->TYPO3_CONF_VARS = $TYPO3_CONF_VARS;
@@ -1031,7 +1031,7 @@ class tslib_fe {
 	 * @access private
 	 * @see getPageAndRootline()
 	 */
-	function getPageShortcut($SC, $mode, $thisUid, $itera=20, $pageLog=array())	{
+	function getPageShortcut($SC, $mode, $thisUid, $itera = 20, $pageLog = array()) {
 		$idArray = t3lib_div::intExplode(',', $SC);
 
 			// Find $page record depending on shortcut mode:
@@ -1135,7 +1135,7 @@ class tslib_fe {
 	 * @return	boolean		TRUE, if record is viewable.
 	 * @see tslib_cObj::getTreeList(), checkPagerecordForIncludeSection()
 	 */
-	function checkEnableFields($row, $bypassGroupCheck=FALSE)	{
+	function checkEnableFields($row, $bypassGroupCheck = FALSE) {
 		if ((!$row['hidden'] || $this->showHiddenPage)
 			&& $row['starttime']<=$GLOBALS['SIM_ACCESS_TIME']
 			&& ($row['endtime']==0 || $row['endtime']>$GLOBALS['SIM_ACCESS_TIME'])
@@ -1151,7 +1151,7 @@ class tslib_fe {
 	 * @return	boolean		TRUE, if group access is granted.
 	 * @access private
 	 */
-	function checkPageGroupAccess($row, $groupList=NULL) {
+	function checkPageGroupAccess($row, $groupList = NULL) {
 		if(is_null($groupList)) {
 			$groupList = $this->gr_list;
 		}
@@ -1170,7 +1170,7 @@ class tslib_fe {
 	 * @access private
 	 * @see checkEnableFields(), tslib_cObj::getTreeList(), checkRootlineForIncludeSection()
 	 */
-	function checkPagerecordForIncludeSection($row)	{
+	function checkPagerecordForIncludeSection($row) {
 		return (!$row['extendToSubpages'] || $this->checkEnableFields($row)) ? 1 : 0;
 	}
 
@@ -1260,7 +1260,7 @@ class tslib_fe {
 	 * @return	void
 	 * @access private
 	 */
-	function getPageAndRootlineWithDomain($domainStartPage)	{
+	function getPageAndRootlineWithDomain($domainStartPage) {
 		$this->getPageAndRootline();
 
 		// Checks if the $domain-startpage is in the rootLine. This is necessary so that references to page-id's from other domains are not possible.
@@ -1298,7 +1298,7 @@ class tslib_fe {
 	 * @return	integer		Returns the page id of the page where the domain record was found.
 	 * @access private
 	 */
-	function findDomainRecord($recursive=0)	{
+	function findDomainRecord($recursive = 0) {
 		if ($recursive)	{
 			$host = explode('.', t3lib_div::getIndpEnv('HTTP_HOST'));
 			while(count($host))	{
@@ -1322,7 +1322,7 @@ class tslib_fe {
 	 * @param	string		HTTP header to send
 	 * @return	void		Function exits.
 	 */
-	function pageUnavailableAndExit($reason='', $header='')	{
+	function pageUnavailableAndExit($reason = '', $header = '') {
 		$header = $header ? $header : $this->TYPO3_CONF_VARS['FE']['pageUnavailable_handling_statheader'];
 		$this->pageUnavailableHandler($this->TYPO3_CONF_VARS['FE']['pageUnavailable_handling'], $header, $reason);
 		exit;
@@ -1335,7 +1335,7 @@ class tslib_fe {
 	 * @param	string		HTTP header to send
 	 * @return	void		Function exits.
 	 */
-	function pageNotFoundAndExit($reason='', $header='')	{
+	function pageNotFoundAndExit($reason = '', $header = '') {
 		$header = $header ? $header : $this->TYPO3_CONF_VARS['FE']['pageNotFound_handling_statheader'];
 		$this->pageNotFoundHandler($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'], $header, $reason);
 		exit;
@@ -1366,7 +1366,7 @@ class tslib_fe {
 	 * @param	string		If set, error messages will also mention this as the reason for the page-not-found.
 	 * @return	void		(The function exits!)
 	 */
-	function pageUnavailableHandler($code, $header, $reason)	{
+	function pageUnavailableHandler($code, $header, $reason) {
 		$this->pageErrorHandler($code, $header, $reason);
 	}
 
@@ -1378,7 +1378,7 @@ class tslib_fe {
 	 * @param	string		If set, error messages will also mention this as the reason for the page-not-found.
 	 * @return	void		(The function exits!)
 	 */
-	function pageNotFoundHandler($code, $header='', $reason='')	{
+	function pageNotFoundHandler($code, $header = '', $reason = '') {
 		$this->pageErrorHandler($code, $header, $reason);
 	}
 
@@ -1391,7 +1391,7 @@ class tslib_fe {
 	 * @param	string		If set, error messages will also mention this as the reason for the page-not-found.
 	 * @return	void		(The function exits!)
 	 */
-	function pageErrorHandler($code, $header='', $reason='')	{
+	function pageErrorHandler($code, $header = '', $reason = '') {
 
 			// Issue header in any case:
 		if ($header)	{
@@ -1543,7 +1543,7 @@ class tslib_fe {
 	 * @param	array		Array of key/value pairs that will be merged into the current GET-vars. (Non-escaped values)
 	 * @return	void
 	 */
-	function mergingWithGetVars($GET_VARS)	{
+	function mergingWithGetVars($GET_VARS) {
 		if (is_array($GET_VARS))	{
 			$realGet = t3lib_div::_GET();		// Getting $_GET var, unescaped.
 			if (!is_array($realGet))	$realGet = array();
@@ -2340,7 +2340,7 @@ class tslib_fe {
 	 * @access private
 	 * @see checkDataSubmission()
 	 */
-	function locDataCheck($locationData)	{
+	function locDataCheck($locationData) {
 		$locData = explode(':', $locationData);
 		if (!$locData[1] || $this->sys_page->checkRecord($locData[1], $locData[2], 1))	{
 			if (count($this->sys_page->getPage($locData[0])))	{	// $locData[1] -check means that a record is checked only if the locationData has a value for a record else than the page.
@@ -2805,7 +2805,7 @@ class tslib_fe {
 	 * @return	boolean		Returns TRUE if the lock could be obtained, FALSE otherwise (= process had to wait for existing lock to be released)
 	 * @see releasePageGenerationLock()
 	 */
-	function acquirePageGenerationLock(&$lockObj, $key)	{
+	function acquirePageGenerationLock(&$lockObj, $key) {
 		if ($this->no_cache || $this->headerNoCache()) {
 			t3lib_div::sysLog('Locking: Page is not cached, no locking required', 'cms', t3lib_div::SYSLOG_SEVERITY_INFO);
 			return TRUE;	// No locking is needed if caching is disabled
@@ -3812,7 +3812,7 @@ if (version == "n3") {
 					$previewInfo .= t3lib_div::callUserFunction($_funcRef, $_params, $this);
 				}
 			}
-			$this->content = str_ireplace('</body>',  $previewInfo . '</body>', $this->content);
+			$this->content = str_ireplace('</body>', $previewInfo . '</body>', $this->content);
 		}
 	}
 
@@ -3903,7 +3903,7 @@ if (version == "n3") {
 	 * @param	int		Offset
 	 * @return	string		encoded/decoded version of character
 	 */
-	function encryptCharcode($n, $start, $end, $offset)	{
+	function encryptCharcode($n, $start, $end, $offset) {
 		$n = $n + $offset;
 		if ($offset > 0 && $n > $end)	{
 			$n = $start + ($n - $end - 1);
@@ -3920,7 +3920,7 @@ if (version == "n3") {
 	 * @param	boolean		If set, the process is reversed, effectively decoding, not encoding.
 	 * @return	string		encoded/decoded version of $string
 	 */
-	function encryptEmail($string, $back=0)	{
+	function encryptEmail($string, $back = 0) {
 		$out = '';
 
 		if ($this->spamProtectEmailAddresses === 'ascii') {
@@ -3956,7 +3956,7 @@ if (version == "n3") {
 	 * @param	boolean		If set, string is decoded, not encoded.
 	 * @return	string		encoded/decoded version of $string
 	 */
-	function codeString($string, $decode=FALSE)	{
+	function codeString($string, $decode = FALSE) {
 
 		if ($decode)	{
 			list($md5Hash, $str) = explode(':', $string, 2);
@@ -4009,7 +4009,7 @@ if (version == "n3") {
 	 * @return	boolean		Returns TRUE if $GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude'] is not set OR if the file requested for inclusion is found in one of the allowed paths.
 	 * @see tslib_menu::includeMakeMenu()
 	 */
-	function checkFileInclude($incFile)	{
+	function checkFileInclude($incFile) {
 		return !$this->TYPO3_CONF_VARS['FE']['noPHPscriptInclude']
 			|| substr($incFile, 0, 4+strlen(TYPO3_mainDir))==TYPO3_mainDir.'ext/'
 			|| substr($incFile, 0, 7+strlen(TYPO3_mainDir))==TYPO3_mainDir.'sysext/'
@@ -4060,7 +4060,7 @@ if (version == "n3") {
 	 * @param	string		Input URL, relative or absolute
 	 * @return	string		Processed input value.
 	 */
-	function baseUrlWrap($url)	{
+	function baseUrlWrap($url) {
 		if ($this->baseUrl)	{
 			$urlParts = parse_url($url);
 			if (!strlen($urlParts['scheme']) && $url{0}!=='/')	{
@@ -4094,7 +4094,7 @@ if (version == "n3") {
 	 * @return	void
 	 * @access private
 	 */
-	function updateMD5paramsRecord($hash)	{
+	function updateMD5paramsRecord($hash) {
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 			'cache_md5params',
 			'md5hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_md5params'), array('tstamp' => $GLOBALS['EXEC_TIME'])
@@ -4108,7 +4108,7 @@ if (version == "n3") {
 	 * @param	string		The page content to clean up. Will be written to a temporary file which "tidy" is then asked to clean up. File content is read back and returned.
 	 * @return	string		Returns the
 	 */
-	function tidyHTML($content)		{
+	function tidyHTML($content) {
 		if ($this->TYPO3_CONF_VARS['FE']['tidy'] && $this->TYPO3_CONF_VARS['FE']['tidy_path'])	{
 			$oldContent = $content;
 			$fname = t3lib_div::tempnam('typo3_tidydoc_');		// Create temporary name
@@ -4183,7 +4183,7 @@ if (version == "n3") {
 	 * @param	boolean		If set, returns title of current workspace being previewed
 	 * @return	mixed		If $returnTitle is set, returns string (title), otherwise workspace integer for which workspace is being preview. False if none.
 	 */
-	function whichWorkspace($returnTitle = FALSE)	{
+	function whichWorkspace($returnTitle = FALSE) {
 		if ($this->doWorkspacePreview())	{
 			$ws = intval($this->workspacePreview);
 		} elseif ($this->beUserLogin) {
@@ -4315,19 +4315,19 @@ if (version == "n3") {
 	 * @return	void
 	 * @see tslib_gmenu::writeMenu(), tslib_cObj::imageLinkWrap()
 	 */
-	function setJS($key, $content='')	{
+	function setJS($key, $content = '') {
 		if ($key)	{
 			switch($key)	{
 				case 'mouseOver':
 					$this->additionalJavaScript[$key]=
 '		// JS function for mouse-over
-	function over(name, imgObj)	{	//
+	function over(name, imgObj) {
 		if (version == "n3" && document[name]) {document[name].src = eval(name+"_h.src");}
 		else if (document.getElementById && document.getElementById(name)) {document.getElementById(name).src = eval(name+"_h.src");}
 		else if (imgObj)	{imgObj.src = eval(name+"_h.src");}
 	}
 		// JS function for mouse-out
-	function out(name, imgObj)	{	//
+	function out(name, imgObj) {
 		if (version == "n3" && document[name]) {document[name].src = eval(name+"_n.src");}
 		else if (document.getElementById && document.getElementById(name)) {document.getElementById(name).src = eval(name+"_n.src");}
 		else if (imgObj)	{imgObj.src = eval(name+"_n.src");}
@@ -4335,7 +4335,7 @@ if (version == "n3") {
 				break;
 				case 'openPic':
 					$this->additionalJavaScript[$key]=
-'	function openPic(url, winName, winParams)	{	//
+'	function openPic(url, winName, winParams) {
 		var theWindow = window.open(url, winName, winParams);
 		if (theWindow)	{theWindow.focus();}
 	}';
@@ -4355,7 +4355,7 @@ if (version == "n3") {
 	 * @return	void
 	 * @see setJS()
 	 */
-	function setCSS($key, $content)	{
+	function setCSS($key, $content) {
 		if ($key)	{
 			switch($key)	{
 				default:
@@ -4372,7 +4372,7 @@ if (version == "n3") {
 	 * @param	string		Some string to include in what is hashed. Not significant at all.
 	 * @return	string		MD5 hash of ->uniqueString, input string and uniqueCounter
 	 */
-	function uniqueHash($str='')	{
+	function uniqueHash($str = '') {
 		return md5($this->uniqueString.'_'.$str.$this->uniqueCounter++);
 	}
 
@@ -4429,7 +4429,7 @@ if (version == "n3") {
 	 * @param	integer		cache-timeout in seconds
 	 * @return	void
 	 */
-	function set_cache_timeout_default($seconds)	{
+	function set_cache_timeout_default($seconds) {
 		$this->cacheTimeOutDefault = intval($seconds);
 	}
 
@@ -4496,7 +4496,7 @@ if (version == "n3") {
 	 * @return	void
 	 * @see t3lib_div::plainMailEncoded()
 	 */
-	function plainMailEncoded($email, $subject, $message, $headers='')	{
+	function plainMailEncoded($email, $subject, $message, $headers = '') {
 		$urlmode = $this->config['config']['notification_email_urlmode'];	// '76', 'all', ''
 
 		if ($urlmode)	{
@@ -4559,7 +4559,7 @@ if (version == "n3") {
 	 * @param	string		Key string. Accepts the "LLL:" prefix.
 	 * @return	string		Label value, if any.
 	 */
-	function sL($input)	{
+	function sL($input) {
 		if (substr($input, 0, 4) !== 'LLL:') {
 				// Not a label, return the key as this
 			return $input;
@@ -4590,7 +4590,7 @@ if (version == "n3") {
 	 * @param	string		Reference to a relative filename to include.
 	 * @return	array		Returns the $LOCAL_LANG array found in the file. If no array found, returns empty array.
 	 */
-	function readLLfile($fileRef)	{
+	function readLLfile($fileRef) {
 		return t3lib_div::readLLfile($fileRef, $this->lang, $this->renderCharset);
 	}
 
@@ -4638,7 +4638,7 @@ if (version == "n3") {
 	 * @return	string		Output string, converted if needed.
 	 * @see t3lib_cs
 	 */
-	function csConv($str, $from='')	{
+	function csConv($str, $from = '') {
 		if ($from)	{
 			$output = $this->csConvObj->conv($str, $this->csConvObj->parse_charset($from), $this->renderCharset, 1);
 			return $output ? $output : $str;
@@ -4654,7 +4654,7 @@ if (version == "n3") {
 	 * @param	string		Label (just for fun, no function)
 	 * @return	string		Converted content string.
 	 */
-	function convOutputCharset($content, $label='')	{
+	function convOutputCharset($content, $label = '') {
 		if ($this->renderCharset != $this->metaCharset)	{
 			$content = $this->csConvObj->conv($content, $this->renderCharset, $this->metaCharset, TRUE);
 		}

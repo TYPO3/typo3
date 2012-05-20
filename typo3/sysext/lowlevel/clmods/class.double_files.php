@@ -167,7 +167,7 @@ This will check the system for double files relations.';
 	 * @param	array		Result array from main() function
 	 * @return	void
 	 */
-	function main_autoFix($resultArray)	{
+	function main_autoFix($resultArray) {
 		foreach($resultArray['multipleReferencesList'] as $key => $value)	{
 			$absFileName = t3lib_div::getFileAbsFileName($key);
 			if ($absFileName && @is_file($absFileName))	{

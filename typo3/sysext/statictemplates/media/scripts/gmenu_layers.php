@@ -111,7 +111,7 @@ class tslib_gmenu_layers extends tslib_gmenu {
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found OR $this->result['RO'][$key] where the configuration for that elements RO version is found! Here it is used with the ->WMid to make unique names
 	 * @return	void
 	 */
-	function extProc_RO($key)	{
+	function extProc_RO($key) {
 		if ($this->mconf['freezeMouseover'])	{
 			$this->VMmouseoverActions[$this->WMid.$key]='case "Menu'.$this->WMid.$key.'":'.$this->I['linkHREF']['onMouseover'].'; break;';
 			$this->VMmouseoutActions[$this->WMid.$key]='case "Menu'.$this->WMid.$key.'":'.$this->I['linkHREF']['onMouseout'].'; break;';
@@ -127,7 +127,7 @@ class tslib_gmenu_layers extends tslib_gmenu {
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return	void
 	 */
-	function extProc_beforeLinking($key)	{
+	function extProc_beforeLinking($key) {
 		if ($this->I['uid'])	{
 
 			array_push($GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMparentId'],$this->WMid);
@@ -182,7 +182,7 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return	void
 	 */
-	function extProc_afterLinking($key)	{
+	function extProc_afterLinking($key) {
 		if ($this->I['uid'])	{
 			if (!$this->I['spacer'] && $this->WMisSub)	{
 				$exStyle=$this->mconf['layerStyle'] ? $this->mconf['layerStyle'] : 'position:absolute;visibility:hidden';
@@ -217,7 +217,7 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return	string		The modified version of $item, going back into $this->I['theItem']
 	 */
-	function extProc_beforeAllWrap($item,$key)	{
+	function extProc_beforeAllWrap($item, $key) {
 		if ($this->mconf['relativeToTriggerItem'])	{
 			$item = '<div id="anchorID'.t3lib_div::shortmd5($this->I['uid'].'-'.$this->WMid).'" style="position:absolute;visibility:hidden;"></div><div id="itemID'.t3lib_div::shortmd5($this->I['uid'].'-'.$this->WMid).'" style="width:100%; height:100%;">'.$item.'</div>';
 		}
@@ -230,7 +230,7 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 	 * @param	string		Value to evaluate
 	 * @return	boolean		TRUE if $in is different from ''  OR if intval()!=0
 	 */
-	function isSetIntval($in)	{
+	function isSetIntval($in) {
 		return $this->mconf['blankStrEqFalse'] ? strcmp($in,'') : intval($in);
 	}
 
@@ -357,20 +357,21 @@ GLV_menuXY["'.$this->WMid.'"] = new Array();
 '.implode(LF,$this->WMxyArray).'
 '.$this->WMrestoreVars;
 
-		if ($this->mconf['freezeMouseover'])	{
-			$GLOBALS['TSFE']->JSCode.= '
+		if ($this->mconf['freezeMouseover']) {
+			$GLOBALS['TSFE']->JSCode .= '
 // Alternative rollover/out functions for use with GMENU_LAYER
-function GL'.$this->WMid.'_over(mitm_id)	{
-	GL'.$this->WMid.'_out("");	// removes any old roll over state of an item. Needed for alwaysKeep and Opera browsers.
+function GL' . $this->WMid . '_over(mitm_id) {
+	GL' . $this->WMid . '_out("");	// removes any old roll over state of an item. Needed for alwaysKeep and Opera browsers.
 	switch(mitm_id)	{
-'.implode(LF,$this->VMmouseoverActions).'
+' . implode(LF, $this->VMmouseoverActions) . '
 	}
-	GLV_currentROitem["'.$this->WMid.'"]=mitm_id;
+	GLV_currentROitem["' . $this->WMid . '"]=mitm_id;
 }
-function GL'.$this->WMid.'_out(mitm_id)	{
-	if (!mitm_id)	mitm_id=GLV_currentROitem["'.$this->WMid.'"];
+function GL' . $this->WMid . '_out(mitm_id) {
+	if (!mitm_id)
+		mitm_id=GLV_currentROitem["' . $this->WMid . '"];
 	switch(mitm_id)	{
-'.implode(LF,$this->VMmouseoutActions).'
+' . implode(LF, $this->VMmouseoutActions) . '
 	}
 }
 ';
@@ -420,7 +421,7 @@ GLV_timeout_count++;
 	 * @return	string		JavaScript string for correction of the layer position (if $integer is true)
 	 * @see extProc_finish(), extProc_init()
 	 */
-	function extCalcBorderWithin($kind,$integer)	{
+	function extCalcBorderWithin($kind, $integer) {
 		if ($integer)	{
 			switch($kind)	{
 				case 'right':

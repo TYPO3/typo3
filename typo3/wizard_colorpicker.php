@@ -122,14 +122,15 @@ class SC_wizard_colorpicker {
 		$this->doc = t3lib_div::makeInstance('smallDoc');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->JScode = $this->doc->wrapScriptTags('
-			function checkReference()	{	//
+			function checkReference() {
 				if (parent.opener && parent.opener.document && parent.opener.document.'.$this->formName.' && parent.opener.document.'.$this->formName.'["'.$this->fieldName.'"])	{
 					return parent.opener.document.'.$this->formName.'["'.$this->fieldName.'"];
 				} else {
 					close();
 				}
 			}
-			function changeBGcolor(color) {	// Changes the color in the table sample back in the TCEform.
+				// Changes the color in the table sample back in the TCEform.
+			function changeBGcolor(color) {
 			    if (parent.opener.document.layers)	{
 			        parent.opener.document.layers["'.$this->md5ID.'"].bgColor = color;
 			    } else if (parent.opener.document.all)	{
@@ -138,7 +139,7 @@ class SC_wizard_colorpicker {
 					parent.opener.document.getElementById("'.$this->md5ID.'").bgColor = color;
 				}
 			}
-			function setValue(input)	{	//
+			function setValue(input) {
 				var field = checkReference();
 				if (field)	{
 					field.value = input;
@@ -146,7 +147,7 @@ class SC_wizard_colorpicker {
 					changeBGcolor(input);
 				}
 			}
-			function getValue()	{	//
+			function getValue() {	//
 				var field = checkReference();
 				return field.value;
 			}
@@ -388,7 +389,7 @@ class SC_wizard_colorpicker {
 	 * @return	string		HEX RGB value for color
 	 * @see colorImage()
 	 */
-	function getIndex($im,$x,$y) {
+	function getIndex($im, $x, $y) {
 		$rgb = ImageColorAt($im, $x, $y);
 		$colorrgb = imagecolorsforindex($im,$rgb);
 		$index['r'] = dechex($colorrgb['red']);

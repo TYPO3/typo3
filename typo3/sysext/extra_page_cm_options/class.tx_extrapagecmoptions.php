@@ -62,7 +62,7 @@ class tx_extrapagecmoptions {
 	 * @param	integer		UID of clicked item.
 	 * @return	array		Modified $menuItems array
 	 */
-	function main(&$backRef,$menuItems,$table,$uid)	{
+	function main(&$backRef, $menuItems, $table, $uid) {
 		$localItems = array();	// Accumulation of local items.
 		$subname = t3lib_div::_GP('subname');
 

@@ -57,7 +57,7 @@ class local_t3lib_parsehtml extends t3lib_parsehtml {
 	 * @return	string		The processed value.
 	 * @access private
 	 */
-	function processContent($value,$dir,$conf)	{
+	function processContent($value, $dir, $conf) {
 		$value = $this->pObj->substituteGlossaryWords_htmlcleaner_callback($value);
 
 		return $value;
@@ -341,7 +341,7 @@ class SC_view_help {
 	 * @param	array		CSH keys array. Every item rendered will be unset in this array so finally we can see what CSH keys are not processed yet. Passed by reference!
 	 * @return	void
 	 */
-	function render_TOC_el($table, $tocCat, &$outputSections, &$tocArray, &$CSHkeys)	{
+	function render_TOC_el($table, $tocCat, &$outputSections, &$tocArray, &$CSHkeys) {
 		if ($this->renderALL)	{	// Render full manual right here!
 			$outputSections[$table] = $this->render_Table($table);
 
@@ -371,7 +371,7 @@ class SC_view_help {
 	 * @param	array		ToC Array.
 	 * @return	string		HTML bullet list for index.
 	 */
-	function render_TOC_makeTocList($tocArray)	{
+	function render_TOC_makeTocList($tocArray) {
 			// The Various manual sections:
 		$keys = explode(',', 'core,modules,tables,extensions,glossary,other');
 
@@ -507,7 +507,7 @@ class SC_view_help {
 	 * @param	string		If $anchorTable is set to a tablename, then references to this table will be made as anchors, not URLs.
 	 * @return	string		See-also links HTML
 	 */
-	function make_seeAlso($value,$anchorTable='')	{
+	function make_seeAlso($value, $anchorTable = '') {
 			// Split references by comma or linebreak
 		$items = preg_split('/[,' . LF . ']/', $value);
 		$lines = array();
@@ -554,7 +554,7 @@ class SC_view_help {
 	 * @param	string		Description string (divided for each image by line break)
 	 * @return	string		Image HTML codes
 	 */
-	function printImage($images,$descr)	{
+	function printImage($images, $descr) {
 		$code = '';
 			// Splitting:
 		$imgArray = t3lib_div::trimExplode(',', $images, 1);
@@ -589,7 +589,7 @@ class SC_view_help {
 	 * @param	string		Header type (1, 0)
 	 * @return	string		The HTML for the header.
 	 */
-	function headerLine($str,$type=0)	{
+	function headerLine($str, $type = 0) {
 		switch($type)	{
 			case 1:
 				$str = '<h2 class="t3-row-header">' . htmlspecialchars($str) . '</h2>
@@ -610,7 +610,7 @@ class SC_view_help {
 	 * @param	string		Content to format.
 	 * @return	string		Formatted content.
 	 */
-	function prepareContent($str)	{
+	function prepareContent($str) {
 		return '<p>'.nl2br(trim(strip_tags($str,$this->allowedHTML))).'</p>
 		';
 	}
@@ -799,7 +799,7 @@ class SC_view_help {
 	 * @return	string		HTML with substituted words in.
 	 * @coauthor	alex widschwendter, media.res kommunikationsloesungen
 	 */
-	function substituteGlossaryWords_htmlcleaner_callback($code)	{
+	function substituteGlossaryWords_htmlcleaner_callback($code) {
 		if (is_array($this->substWords) && count($this->substWords) && strlen(trim($code)))	{
 
 				// Substitute words:

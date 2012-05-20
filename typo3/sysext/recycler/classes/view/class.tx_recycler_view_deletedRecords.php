@@ -41,7 +41,7 @@ class tx_recycler_view_deletedRecords {
 	 * @param integer	$totalDeleted: Number of deleted records in total, for PagingToolbar
 	 * @return string   JSON Array
 	 **/
-	public function transform ($deletedRowsArray, $totalDeleted) {
+	public function transform($deletedRowsArray, $totalDeleted) {
 		$total = 0;
 
 		$jsonArray = array(

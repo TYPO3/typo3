@@ -115,7 +115,7 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 		$usersToUpdate = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'uid, password',
 			strtolower($mode) . '_users',
-			'1 = 1',  // retrieve and update all records (also disabled/deleted) for security reasons
+			'1 = 1', // retrieve and update all records (also disabled/deleted) for security reasons
 			'',
 			'uid ASC',
 			$this->userRecordPointer[$mode] . ', ' . $this->numberOfRecords

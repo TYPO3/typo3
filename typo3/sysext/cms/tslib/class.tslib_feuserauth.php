@@ -453,7 +453,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * @return	mixed		Returns whatever value there was in the array for the key, $key
 	 * @see setKey()
 	 */
-	function getKey($type,$key) {
+	function getKey($type, $key) {
 		if ($key)	{
 			switch($type)	{
 				case 'user':
@@ -478,7 +478,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * @return	void
 	 * @see setKey(), storeSessionData(), record_registration()
 	 */
-	function setKey($type,$key,$data)	{
+	function setKey($type, $key, $data) {
 		if ($key)	{
 			switch($type)	{
 				case 'user':
@@ -529,7 +529,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * @param	integer		The maximum size of stored session data. If zero, no limit is applied and even confirmation of cookie session is discarded.
 	 * @return	void
 	 */
-	function record_registration($recs,$maxSizeOfSessionData=0)	{
+	function record_registration($recs, $maxSizeOfSessionData = 0) {
 
 			// Storing value ONLY if there is a confirmed cookie set (->cookieID),
 			// otherwise a shellscript could easily be spamming the fe_sessions table

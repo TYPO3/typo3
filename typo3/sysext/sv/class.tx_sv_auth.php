@@ -216,7 +216,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 	 * @param	array		Group data array of already known groups. This is handy if you want select other related groups. Keys in this array are unique IDs of those groups.
 	 * @return	mixed		Groups array, keys = uid which must be unique
 	 */
-	function getGroups($user, $knownGroups)	{
+	function getGroups($user, $knownGroups) {
 		global $TYPO3_CONF_VARS;
 
 		$groupDataArr = array();
@@ -273,7 +273,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 	 * @return	array
 	 * @access private
 	 */
-	function getSubGroups($grList, $idList='', &$groups)	{
+	function getSubGroups($grList, $idList = '', &$groups) {
 
 			// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
 		$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\''.$this->authInfo['HTTP_HOST'].'\')';

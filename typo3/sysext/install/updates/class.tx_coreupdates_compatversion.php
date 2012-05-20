@@ -39,7 +39,7 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 	 * @param	string		pointer to description for the update
 	 * @return	boolean		TRUE if update is needs to be performed, FALSE otherwise.
 	 */
-	function checkForUpdate(&$description)	{
+	function checkForUpdate(&$description) {
 		global $TYPO3_CONF_VARS;
 
 		if (!$this->compatVersionIsCurrent()) {
@@ -70,7 +70,7 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 	 * @param	string		input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
 	 * @return	string		HTML output
 	 */
-	function getUserInput($inputPrefix)	{
+	function getUserInput($inputPrefix) {
 		global $TYPO3_CONF_VARS;
 		if ($this->compatVersionIsCurrent())	{
 			$content = '
@@ -144,7 +144,7 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 	 * @param	string		pointer to output custom messages
 	 * @return	boolean		TRUE if user input is correct, then the update is performed. When FALSE, return to getUserInput
 	 */
-	function checkUserInput(&$customMessages)	{
+	function checkUserInput(&$customMessages) {
 		global $TYPO3_CONF_VARS;
 
 		if ($this->compatVersionIsCurrent())	{
@@ -178,7 +178,7 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 	 * @param	string		pointer to output custom messages
 	 * @return	boolean		TRUE if update succeeded, FALSE otherwise
 	 */
-	function performUpdate(&$dbQueries, &$customMessages)	{
+	function performUpdate(&$dbQueries, &$customMessages) {
 		$customMessages = '';
 
 			// if we just set it to an older version
@@ -221,7 +221,7 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 	 * @param	string		input prefix to prepend all form fields with.
 	 * @return	string		HTML output
 	 */
-	function showChangesNeeded($inputPrefix = '')	{
+	function showChangesNeeded($inputPrefix = '') {
 		global $TYPO3_CONF_VARS;
 		$oldVersion = t3lib_utility_VersionNumber::convertVersionNumberToInteger($TYPO3_CONF_VARS['SYS']['compat_version']);
 		$currentVersion = t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_branch);

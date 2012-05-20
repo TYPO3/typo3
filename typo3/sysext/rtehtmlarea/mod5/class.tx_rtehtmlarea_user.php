@@ -89,7 +89,7 @@ class tx_rtehtmlarea_user {
 				document.process.processContent.value = editor.getSelection().getHtml();
 				document.process.submit();
 			};
-			function jumpToUrl(URL)	{
+			function jumpToUrl(URL) {
 				var RTEtsConfigParams = "&RTEtsConfigParams='.rawurlencode(t3lib_div::_GP('RTEtsConfigParams')).'";
 				var editorNo = "&editorNo=' . rawurlencode($this->editorNo) . '";
 				theLocation = "'.t3lib_div::getIndpEnv('SCRIPT_NAME').'"+URL+RTEtsConfigParams+editorNo;
@@ -141,7 +141,7 @@ class tx_rtehtmlarea_user {
 	 * @param	[type]		$maxH: ...
 	 * @return	[type]		...
 	 */
-	function calcWH($imgInfo,$maxW=380,$maxH=500)	{
+	function calcWH($imgInfo, $maxW = 380, $maxH = 500) {
 		$IW = $imgInfo[0];
 		$IH = $imgInfo[1];
 		if ($IW>$maxW)	{
@@ -163,7 +163,7 @@ class tx_rtehtmlarea_user {
 	 * @param	[type]		$openKeys: ...
 	 * @return	[type]		...
 	 */
-	function main_user($openKeys)	{
+	function main_user($openKeys) {
 			// Starting content:
 		$content = $this->doc->startPage($GLOBALS['LANG']->getLL('Insert Custom Element', 1));
 

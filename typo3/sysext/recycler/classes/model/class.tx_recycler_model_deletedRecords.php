@@ -86,7 +86,7 @@ class tx_recycler_model_deletedRecords {
 	 * @param	string		$filter: Filter text
 	 * @return	recycler_model_delRecords
 	 */
-	public function loadData($id, $table, $depth, $limit='', $filter = '') {
+	public function loadData($id, $table, $depth, $limit = '', $filter = '') {
 		// set the limit
 		$this->limit = trim($limit);
 

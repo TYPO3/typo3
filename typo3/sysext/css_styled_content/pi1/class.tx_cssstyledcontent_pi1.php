@@ -65,7 +65,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * @return	string		HTML output.
 	 * @access private
 	 */
-	function render_bullets($content,$conf)	{
+	function render_bullets($content, $conf) {
 
 			// Look for hook before running default code for function
 		if ($hookObj = $this->hookRequest('render_bullets')) {
@@ -111,7 +111,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * @return	string		HTML output.
 	 * @access private
 	 */
-	function render_table($content,$conf)	{
+	function render_table($content, $conf) {
 
 			// Look for hook before running default code for function
 		if ($hookObj = $this->hookRequest('render_table')) {
@@ -255,7 +255,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * @return	string		HTML output.
 	 * @access private
 	 */
-	function render_uploads($content,$conf)	{
+	function render_uploads($content, $conf) {
 
 			// Look for hook before running default code for function
 		if ($hookObj = $this->hookRequest('render_uploads')) {
@@ -499,7 +499,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * @coauthor	Ernesto Baschny <ernst@cron-it.de>
 	 * @coauthor Patrick Broens <patrick@patrickbroens.nl>
 	 */
-	function render_textpic($content, $conf)	{
+	function render_textpic($content, $conf) {
 			// Look for hook before running default code for function
 		if (method_exists($this, 'hookRequest') && $hookObj = $this->hookRequest('render_textpic')) {
 			return $hookObj->render_textpic($content,$conf);

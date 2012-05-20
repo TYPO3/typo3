@@ -1927,7 +1927,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @param string $type If get_form, display form, otherwise checks and store in localconf.php
 	 * @return void
 	 */
-	function generateConfigForm($type='') {
+	function generateConfigForm($type = '') {
 		$default_config_content = t3lib_div::getUrl(PATH_t3lib.'config_default.php');
 		$commentArr = $this->getDefaultConfigArrayComments($default_config_content);
 
@@ -2125,7 +2125,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @param array $commentArray
 	 * @return array
 	 */
-	function getDefaultConfigArrayComments($string, $mainArray=array(), $commentArray=array()) {
+	function getDefaultConfigArrayComments($string, $mainArray = array(), $commentArray = array()) {
 		$lines = explode(LF, $string);
 		$in=0;
 		$mainKey='';
@@ -2593,7 +2593,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @param string $cmd If "get_form" then a formfield for the mail-address is shown. If not, it's checked if "check_mail" was in the INSTALL array and if so a test mail is sent to the recipient given.
 	 * @return string The mail form if it is requested with get_form
 	 */
-	function check_mail($cmd='') {
+	function check_mail($cmd = '') {
 		switch($cmd) {
 			case 'get_form':
 				$out = '
@@ -3199,7 +3199,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @param string $cmd If "get_form" it outputs the form. Default is to write "localconf.php" based on input in ->INSTALL[localconf.php] array and flag ->setLocalconf
 	 * @return string Form HTML
 	 */
-	function setupGeneral($cmd='') {
+	function setupGeneral($cmd = '') {
 		switch($cmd) {
 			case 'get_form':
 					// Get the template file
@@ -3833,7 +3833,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @return mixed If $lines is not an array it will return an array with the lines from localconf.php. Otherwise it will return a status string, either "continue" (updated) or "nochange" (not updated)
 	 * @see parent::writeToLocalconf_control()
 	 */
-	function writeToLocalconf_control($lines='', $showOutput=TRUE) {
+	function writeToLocalconf_control($lines = '', $showOutput = TRUE) {
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'WriteToLocalConfControl.html');
 
@@ -5090,7 +5090,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @param string $note Additional note for image operation
 	 * @return array Contains content and highest error level
 	 */
-	function displayTwinImage ($imageFile, $IMcommands=array(), $note='') {
+	function displayTwinImage($imageFile, $IMcommands = array(), $note = '') {
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'DisplayTwinImage.html');
 			// Get the template part from the file
@@ -6897,7 +6897,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @param string $label The submit button label
 	 * @return string HTML of the form
 	 */
-	function getUpdateDbFormWrap($action_type, $content, $label='Write to database') {
+	function getUpdateDbFormWrap($action_type, $content, $label = 'Write to database') {
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'GetUpdateDbFormWrap.html');
 			// Get the template part from the file
@@ -6930,7 +6930,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @param string $label The header label
 	 * @return string HTML of the table
 	 */
-	function displayFields($arr, $pre=0, $label='') {
+	function displayFields($arr, $pre = 0, $label = '') {
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'DisplayFields.html');
 			// Get the template part from the file
@@ -7059,7 +7059,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @param string $excludeList Comma separated list of fields which should be excluded from this table
 	 * @return string HTML of the table
 	 */
-	function displaySuggestions($arr, $excludeList='') {
+	function displaySuggestions($arr, $excludeList = '') {
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'DisplaySuggestions.html');
 			// Get the template part from the file
@@ -7140,7 +7140,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @param boolean $onlyFields
 	 * @return array
 	 */
-	function compareDatabaseAndTCA($FDsrc, $TCA, $onlyFields=0) {
+	function compareDatabaseAndTCA($FDsrc, $TCA, $onlyFields = 0) {
 		$extraArr=array();
 		if (is_array($FDsrc)) {
 			foreach ($FDsrc as $table => $info) {
@@ -7550,7 +7550,7 @@ $out="
 	 * @param boolean $force Print message also in "Advanced" mode (not only in 1-2-3 mode)
 	 * @return void
 	 */
-	function message($head, $short_string='', $long_string='', $type=0, $force=0) {
+	function message($head, $short_string = '', $long_string = '', $type = 0, $force = 0) {
 			// Return directly if mode-123 is enabled.
 		if (!$force && $this->mode=='123' && $type<2) {
 			return;
@@ -8152,7 +8152,7 @@ $out="
 	 * @param boolean $cVfullMsg If set, will show the prefix "Current value" if $currentValue is given.
 	 * @return string HTML table with checkboxes for update. Must be wrapped in a form.
 	 */
-	function generateUpdateDatabaseForm_checkboxes($arr, $label, $checked=1, $iconDis=0, $currentValue=array(), $cVfullMsg=0) {
+	function generateUpdateDatabaseForm_checkboxes($arr, $label, $checked = 1, $iconDis = 0, $currentValue = array(), $cVfullMsg = 0) {
 		$out = array();
 		$tableId = uniqid('table');
 		$templateMarkers = array();
