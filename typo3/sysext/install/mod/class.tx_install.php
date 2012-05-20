@@ -2015,6 +2015,15 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$this->message($ext, '$TYPO3_CONF_VARS[\''.$k.'\']',$commentArr[0][$k],1);
 
 					foreach ($va as $vk => $value) {
+						if (isset($GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$k][$vk])) {
+								// Don't allow editing stuff which is added by extensions
+								// Make sure we fix potentially duplicated entries from older setups
+							$potentialValue = str_replace(array("'.chr(10).'", "' . LF . '"), array(LF, LF), $value);
+							while (preg_match('/' . $GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$k][$vk] . '$/', '', $potentialValue)) {
+								$potentialValue = preg_replace('/' . $GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$k][$vk] . '$/', '', $potentialValue);
+							}
+							$value = $potentialValue;
+						}
 						$textAreaSubpart = '';
 						$booleanSubpart = '';
 						$textLineSubpart = '';
