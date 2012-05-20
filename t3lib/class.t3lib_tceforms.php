@@ -30,15 +30,14 @@
  * Revised for TYPO3 3.6 August/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * 'TCEforms' - Class for creating the backend editing forms.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @coauthor	René Fritz <r.fritz@colorcube.de>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @coauthor René Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -49,7 +48,8 @@ class t3lib_TCEforms {
 	var $disableWizards = 0;
 	var $isPalettedoc = 0;
 	var $paletteMargin = 1;
-	var $defStyle = ''; // 'font-family:Verdana;font-size:10px;';
+		// 'font-family:Verdana;font-size:10px;';
+	var $defStyle = '';
 	var $cachedTSconfig = array();
 	var $cachedTSconfig_fieldLevel = array();
 	var $cachedLanguageFlag = array();
@@ -60,23 +60,35 @@ class t3lib_TCEforms {
 	var $hiddenFieldAccum = array();
 	var $TBE_EDITOR_fieldChanged_func = '';
 	var $loadMD5_JS = 1;
-	var $prevBorderStyle = '[nothing here...]'; // Something unique...
-	var $allowUpload = 0; // If set direct upload fields will be shown
-	var $defaultLanguageData = array(); // Array where records in the default language is stored. (processed by transferdata)
-	var $defaultLanguageData_diff = array(); // Array where records in the default language is stored (raw without any processing. used for making diff)
+		// Something unique...
+	var $prevBorderStyle = '[nothing here...]';
+		// If set direct upload fields will be shown
+	var $allowUpload = 0;
+		// Array where records in the default language is stored. (processed by transferdata)
+	var $defaultLanguageData = array();
+		// Array where records in the default language is stored (raw without any processing. used for making diff)
+	var $defaultLanguageData_diff = array();
 	var $additionalPreviewLanguageData = array();
 
-
 		// EXTERNAL, static
-	var $backPath = ''; // Set this to the 'backPath' pointing back to the typo3 admin directory from the script where this form is displayed.
-	var $returnUrl = ''; // Alternative return URL path (default is t3lib_div::linkThisScript())
-	var $doSaveFieldName = ''; // Can be set to point to a field name in the form which will be set to '1' when the form is submitted with a *save* button. This way the recipient script can determine that the form was submitted for save and not "close" for example.
-	var $palettesCollapsed = 0; // Can be set TRUE/FALSE to whether palettes (secondary options) are in the topframe or in form. TRUE means they are NOT IN-form. So a collapsed palette is one, which is shown in the top frame, not in the page.
-	var $disableRTE = 0; // If set, the RTE is disabled (from form display, eg. by checkbox in the bottom of the page!)
-	var $globalShowHelp = 1; // If FALSE, then all CSH will be disabled, regardless of settings in $this->edit_showFieldHelp
-	var $localizationMode = ''; // If TRUE, the forms are rendering only localization relevant fields of the records.
-	var $fieldOrder = ''; // Overrule the field order set in TCA[types][showitem], eg for tt_content this value, 'bodytext,image', would make first the 'bodytext' field, then the 'image' field (if set for display)... and then the rest in the old order.
-	var $doPrintPalette = 1; // If set to FALSE, palettes will NEVER be rendered.
+		// Set this to the 'backPath' pointing back to the typo3 admin directory from the script where this form is displayed.
+	var $backPath = '';
+		// Alternative return URL path (default is t3lib_div::linkThisScript())
+	var $returnUrl = '';
+		// Can be set to point to a field name in the form which will be set to '1' when the form is submitted with a *save* button. This way the recipient script can determine that the form was submitted for save and not "close" for example.
+	var $doSaveFieldName = '';
+		// Can be set TRUE/FALSE to whether palettes (secondary options) are in the topframe or in form. TRUE means they are NOT IN-form. So a collapsed palette is one, which is shown in the top frame, not in the page.
+	var $palettesCollapsed = 0;
+		// If set, the RTE is disabled (from form display, eg. by checkbox in the bottom of the page!)
+	var $disableRTE = 0;
+		// If FALSE, then all CSH will be disabled, regardless of settings in $this->edit_showFieldHelp
+	var $globalShowHelp = 1;
+		// If TRUE, the forms are rendering only localization relevant fields of the records.
+	var $localizationMode = '';
+		// Overrule the field order set in TCA[types][showitem], eg for tt_content this value, 'bodytext,image', would make first the 'bodytext' field, then the 'image' field (if set for display)... and then the rest in the old order.
+	var $fieldOrder = '';
+		// If set to FALSE, palettes will NEVER be rendered.
+	var $doPrintPalette = 1;
 
 	/**
 	 * Set to initialized clipboard object; Then the element browser will offer a link to paste in records from clipboard.
@@ -84,70 +96,116 @@ class t3lib_TCEforms {
 	 * @var t3lib_clipboard
 	 */
 	var $clipObj = FALSE;
-	var $enableClickMenu = FALSE; // Enable click menu on reference icons.
-	var $enableTabMenu = FALSE; // Enable Tab Menus.
-	var $renderReadonly = FALSE; // When enabled all fields are rendered non-editable.
-
-	var $form_rowsToStylewidth = 9.58; // Form field width compensation: Factor from NN4 form field widths to style-aware browsers (like NN6+ and MSIE, with the $GLOBALS['CLIENT']['FORMSTYLE'] value set)
-	var $form_largeComp = 1.33; // Form field width compensation: Compensation for large documents, doc-tab (editing)
-	var $charsPerRow = 40; // The number of chars expected per row when the height of a text area field is automatically calculated based on the number of characters found in the field content.
-	var $maxTextareaWidth = 48; // The maximum abstract value for textareas
-	var $maxInputWidth = 48; // The maximum abstract value for input fields
-	var $defaultMultipleSelectorStyle = 'width:310px;'; // Default style for the selector boxes used for multiple items in "select" and "group" types.
+		// Enable click menu on reference icons.
+	var $enableClickMenu = FALSE;
+		// Enable Tab Menus.
+	var $enableTabMenu = FALSE;
+		// When enabled all fields are rendered non-editable.
+	var $renderReadonly = FALSE;
+		// Form field width compensation: Factor from NN4 form field widths to style-aware browsers (like NN6+ and MSIE, with the $GLOBALS['CLIENT']['FORMSTYLE'] value set)
+	var $form_rowsToStylewidth = 9.58;
+		// Form field width compensation: Compensation for large documents, doc-tab (editing)
+	var $form_largeComp = 1.33;
+		// The number of chars expected per row when the height of a text area field is automatically calculated based on the number of characters found in the field content.
+	var $charsPerRow = 40;
+		// The maximum abstract value for textareas
+	var $maxTextareaWidth = 48;
+		// The maximum abstract value for input fields
+	var $maxInputWidth = 48;
+		// Default style for the selector boxes used for multiple items in "select" and "group" types.
+	var $defaultMultipleSelectorStyle = 'width:310px;';
 
 
 		// INTERNAL, static
-	var $prependFormFieldNames = 'data'; // The string to prepend formfield names with.
-	var $prependCmdFieldNames = 'cmd'; // The string to prepend commands for tcemain::process_cmdmap with.
-	var $prependFormFieldNames_file = 'data_files'; // The string to prepend FILE form field names with.
-	var $formName = 'editform'; // The name attribute of the form.
-	var $allowOverrideMatrix = array(); // Whitelist that allows TCA field configuration to be overridden by TSconfig, @see overrideFieldConf()
+		// The string to prepend formfield names with.
+	var $prependFormFieldNames = 'data';
+		// The string to prepend commands for tcemain::process_cmdmap with.
+	var $prependCmdFieldNames = 'cmd';
+		// The string to prepend FILE form field names with.
+	var $prependFormFieldNames_file = 'data_files';
+		// The name attribute of the form.
+	var $formName = 'editform';
+		// Whitelist that allows TCA field configuration to be overridden by TSconfig, @see overrideFieldConf()
+	var $allowOverrideMatrix = array();
 
 
 		// INTERNAL, dynamic
-	var $perms_clause = ''; // Set by readPerms()  (caching)
-	var $perms_clause_set = 0; // Set by readPerms()  (caching-flag)
-	var $edit_showFieldHelp = ''; // Used to indicate the mode of CSH (Context Sensitive Help), whether it should be icons-only ('icon'), full description ('text') or not at all (blank).
-	var $docLarge = 0; // If set, the forms will be rendered a little wider, more precisely with a factor of $this->form_largeComp.
-	var $clientInfo = array(); // Loaded with info about the browser when class is instantiated.
-	var $RTEenabled = 0; // TRUE, if RTE is possible for the current user (based on result from BE_USER->isRTE())
-	var $RTEenabled_notReasons = ''; // If $this->RTEenabled was FALSE, you can find the reasons listed in this array which is filled with reasons why the RTE could not be loaded)
-	var $RTEcounter = 0; // Counter that is incremented before an RTE is created. Can be used for unique ids etc.
-
-	var $colorScheme; // Contains current color scheme
-	var $classScheme; // Contains current class scheme
-	var $defColorScheme; // Contains the default color scheme
-	var $defClassScheme; // Contains the default class scheme
-	var $fieldStyle; // Contains field style values
-	var $borderStyle; // Contains border style values.
-
-	var $commentMessages = array(); // An accumulation of messages from the class.
+		// Set by readPerms()  (caching)
+	var $perms_clause = '';
+		// Set by readPerms()  (caching-flag)
+	var $perms_clause_set = 0;
+		// Used to indicate the mode of CSH (Context Sensitive Help), whether it should be icons-only ('icon'), full description ('text') or not at all (blank).
+	var $edit_showFieldHelp = '';
+		// If set, the forms will be rendered a little wider, more precisely with a factor of $this->form_largeComp.
+	var $docLarge = 0;
+		// Loaded with info about the browser when class is instantiated.
+	var $clientInfo = array();
+		// TRUE, if RTE is possible for the current user (based on result from BE_USER->isRTE())
+	var $RTEenabled = 0;
+		// If $this->RTEenabled was FALSE, you can find the reasons listed in this array which is filled with reasons why the RTE could not be loaded)
+	var $RTEenabled_notReasons = '';
+		// Counter that is incremented before an RTE is created. Can be used for unique ids etc.
+	var $RTEcounter = 0;
+		// Contains current color scheme
+	var $colorScheme;
+		// Contains current class scheme
+	var $classScheme;
+		// Contains the default color scheme
+	var $defColorScheme;
+		// Contains the default class scheme
+	var $defClassScheme;
+		// Contains field style values
+	var $fieldStyle;
+		// Contains border style values.
+	var $borderStyle;
+		// An accumulation of messages from the class.
+	var $commentMessages = array();
 
 		// INTERNAL, templates
-	var $totalWrap = '<hr />|<hr />'; // Total wrapping for the table rows.
-	var $fieldTemplate = '<strong>###FIELD_NAME###</strong><br />###FIELD_ITEM###<hr />'; // Field template
-	var $sectionWrap = ''; // Wrapping template code for a section
-	var $palFieldTemplateHeader = ''; // Template for palette headers
-	var $palFieldTemplate = ''; // Template for palettes
+		// Total wrapping for the table rows.
+	var $totalWrap = '<hr />|<hr />';
+		// Field template
+	var $fieldTemplate = '<strong>###FIELD_NAME###</strong><br />###FIELD_ITEM###<hr />';
+		// Wrapping template code for a section
+	var $sectionWrap = '';
+		// Template for palette headers
+	var $palFieldTemplateHeader = '';
+		// Template for palettes
+	var $palFieldTemplate = '';
 
 		// INTERNAL, working memory
-	var $excludeElements = ''; // Set to the fields NOT to display, if any.
-	var $palettesRendered = array(); // During rendering of forms this will keep track of which palettes has already been rendered (so they are not rendered twice by mistake)
-	var $hiddenFieldListArr = array(); // This array of fields will be set as hidden-fields instead of rendered normally! For instance palette fields edited in the top frame are set as hidden fields since the main form has to submit the values. The top frame actually just sets the value in the main form!
-	var $requiredFields = array(); // Used to register input-field names, which are required. (Done during rendering of the fields). This information is then used later when the JavaScript is made.
-	var $requiredAdditional = array(); // Used to register input-field names, which are required an have additional requirements (e.g. like a date/time must be positive integer). The information of this array is merged with $this->requiredFields later.
-	var $requiredElements = array(); // Used to register the min and max number of elements for selectorboxes where that apply (in the "group" type for instance)
-	var $requiredNested = array(); // Used to determine where $requiredFields or $requiredElements are nested (in Tabs or IRRE)
-	var $renderDepth = 0; // Keeps track of the rendering depth of nested records.
-	var $savedSchemes = array(); // Color scheme buffer.
-	var $dynNestedStack = array(); // holds the path an element is nested in (e.g. required for RTEhtmlarea)
+		// Set to the fields NOT to display, if any.
+	var $excludeElements = '';
+		// During rendering of forms this will keep track of which palettes has already been rendered (so they are not rendered twice by mistake)
+	var $palettesRendered = array();
+		// This array of fields will be set as hidden-fields instead of rendered normally! For instance palette fields edited in the top frame are set as hidden fields since the main form has to submit the values. The top frame actually just sets the value in the main form!
+	var $hiddenFieldListArr = array();
+		// Used to register input-field names, which are required. (Done during rendering of the fields). This information is then used later when the JavaScript is made.
+	var $requiredFields = array();
+		// Used to register input-field names, which are required an have additional requirements (e.g. like a date/time must be positive integer). The information of this array is merged with $this->requiredFields later.
+	var $requiredAdditional = array();
+		// Used to register the min and max number of elements for selectorboxes where that apply (in the "group" type for instance)
+	var $requiredElements = array();
+		// Used to determine where $requiredFields or $requiredElements are nested (in Tabs or IRRE)
+	var $requiredNested = array();
+		// Keeps track of the rendering depth of nested records.
+	var $renderDepth = 0;
+		// Color scheme buffer.
+	var $savedSchemes = array();
+		// holds the path an element is nested in (e.g. required for RTEhtmlarea)
+	var $dynNestedStack = array();
 
 		// Internal, registers for user defined functions etc.
-	var $additionalCode_pre = array(); // Additional HTML code, printed before the form.
-	var $additionalJS_pre = array(); // Additional JavaScript, printed before the form
-	var $additionalJS_post = array(); // Additional JavaScript printed after the form
-	var $additionalJS_submit = array(); // Additional JavaScript executed on submit; If you set "OK" variable it will raise an error about RTEs not being loaded and offer to block further submission.
-	var $additionalJS_delete = array(); // Additional JavaScript executed when section element is deleted. This is neceessary, for example, to correctly clean up HTMLArea RTE (bug #8232)
+		// Additional HTML code, printed before the form.
+	var $additionalCode_pre = array();
+		// Additional JavaScript, printed before the form
+	var $additionalJS_pre = array();
+		// Additional JavaScript printed after the form
+	var $additionalJS_post = array();
+		// Additional JavaScript executed on submit; If you set "OK" variable it will raise an error about RTEs not being loaded and offer to block further submission.
+	var $additionalJS_submit = array();
+		// Additional JavaScript executed when section element is deleted. This is neceessary, for example, to correctly clean up HTMLArea RTE (bug #8232)
+	var $additionalJS_delete = array();
 
 	/**
 	 * Instance of t3lib_tceforms_inline
@@ -155,12 +213,14 @@ class t3lib_TCEforms {
 	 * @var t3lib_TCEforms_inline
 	 */
 	var $inline;
-	var $hookObjectsMainFields = array(); // Array containing hook class instances called once for a form
-	var $hookObjectsSingleField = array(); // Array containing hook class instances called for each field
-	var $extraFormHeaders = array(); // Rows gettings inserted into the alt_doc headers (when called from alt_doc.php)
+		// Array containing hook class instances called once for a form
+	var $hookObjectsMainFields = array();
+		// Array containing hook class instances called for each field
+	var $hookObjectsSingleField = array();
+		// Rows gettings inserted into the alt_doc headers (when called from alt_doc.php)
+	var $extraFormHeaders = array();
 
 	public $templateFile = ''; // Form templates, relative to typo3 directory
-
 
 	/**
 	 * Constructor function, setting internal variables, loading the styles used.
@@ -227,13 +287,12 @@ class t3lib_TCEforms {
 		}
 
 		$this->templateFile = 'templates/tceforms.html';
-
 	}
 
 	/**
 	 * Initialize various internal variables.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function initDefaultBEmode() {
 		$this->prependFormFieldNames = 'data';
@@ -248,7 +307,6 @@ class t3lib_TCEforms {
 		$this->suggest->init($this);
 	}
 
-
 	/*******************************************************
 	 *
 	 * Rendering the forms, fields etc
@@ -260,10 +318,10 @@ class t3lib_TCEforms {
 	 * The field must be listed in the currently displayed fields (as found in [types][showitem]) for the record.
 	 * This also means that the $table/$row supplied must be complete so the list of fields to show can be found correctly
 	 *
-	 * @param	string		The table name
-	 * @param	array		The record from the table for which to render a field.
-	 * @param	string		The field name to return the TCEform element for.
-	 * @return	string		HTML output
+	 * @param string $table The table name
+	 * @param array $row The record from the table for which to render a field.
+	 * @param string $theFieldToReturn The field name to return the TCEform element for.
+	 * @return string HTML output
 	 * @see getMainFields()
 	 */
 	function getSoloField($table, $row, $theFieldToReturn) {
@@ -345,7 +403,8 @@ class t3lib_TCEforms {
 				if (is_array($overruleTypesArray) && isset($overruleTypesArray[$typeNum]['showitem'])) {
 					$itemList = $overruleTypesArray[$typeNum]['showitem'];
 				}
-				if ($itemList) { // If such a list existed...
+					// If such a list existed...
+				if ($itemList) {
 						// Explode the field list and possibly rearrange the order of the fields, if configured for
 					$fields = t3lib_div::trimExplode(',', $itemList, 1);
 					if ($this->fieldOrder) {
@@ -435,7 +494,7 @@ class t3lib_TCEforms {
 								}
 							} elseif ($theField == '--palette--') {
 								if ($parts[2] && !isset($this->palettesRendered[$this->renderDepth][$table][$parts[2]])) {
-										// render a 'header' if not collapsed
+										// Render a 'header' if not collapsed
 									if ($GLOBALS['TCA'][$table]['palettes'][$parts[2]]['canNotCollapse'] && $parts[1]) {
 										$out_array[$out_sheet][$out_pointer] .= $this->getPaletteFields($table, $row, $parts[2], $this->sL($parts[1]));
 									} else {
@@ -487,7 +546,8 @@ class t3lib_TCEforms {
 		}
 
 			// Return the imploded $out_array:
-		if ($out_sheet > 0) { // There were --div-- dividers around...
+			// There were --div-- dividers around...
+		if ($out_sheet > 0) {
 
 				// Create parts array for the tab menu:
 			$parts = array();
@@ -537,10 +597,10 @@ class t3lib_TCEforms {
 	 * Notice that this will STILL use the configuration found in the list [types][showitem] for those fields which are found there. So ideally the list of fields given as argument to this function should also be in the current [types][showitem] list of the record.
 	 * Used for displaying forms for the frontend edit icons for instance.
 	 *
-	 * @param	string		The table name
-	 * @param	array		The record array.
-	 * @param	string		Commalist of fields from the table. These will be shown in the specified order in a form.
-	 * @return	string		TCEform elements in a string.
+	 * @param string $table The table name
+	 * @param array $row The record array.
+	 * @param string $list Commalist of fields from the table. These will be shown in the specified order in a form.
+	 * @return string TCEform elements in a string.
 	 */
 	function getListedFields($table, $row, $list) {
 		t3lib_div::loadTCA($table);
@@ -558,7 +618,8 @@ class t3lib_TCEforms {
 			$palFields = trim($palFields);
 			if ($GLOBALS['TCA'][$table]['columns'][$theField]) {
 				$parts = t3lib_div::trimExplode(';', $types_fieldConfig[$theField]['origString']);
-				$sField = $this->getSingleField($table, $theField, $row, $parts[1], 0, $parts[3], 0); // Don't sent palette pointer - there are no options anyways for a field-list.
+					// Don't sent palette pointer - there are no options anyways for a field-list.
+				$sField = $this->getSingleField($table, $theField, $row, $parts[1], 0, $parts[3], 0);
 				$out .= $sField;
 			} elseif ($theField == '--div--') {
 				$out .= $this->getDivider();
@@ -574,13 +635,13 @@ class t3lib_TCEforms {
 	/**
 	 * Creates a palette (collection of secondary options).
 	 *
-	 * @param	string		The table name
-	 * @param	array		The row array
-	 * @param	string		The palette number/pointer
-	 * @param	string		Header string for the palette (used when in-form). If not set, no header item is made.
-	 * @param	string		Optional alternative list of fields for the palette
-	 * @param	string		Optional Link text for activating a palette (when palettes does not have another form element to belong to).
-	 * @return	string		HTML code.
+	 * @param string $table The table name
+	 * @param array $row The row array
+	 * @param string $palette The palette number/pointer
+	 * @param string $header Header string for the palette (used when in-form). If not set, no header item is made.
+	 * @param string $itemList Optional alternative list of fields for the palette
+	 * @param string $collapsedHeader Optional Link text for activating a palette (when palettes does not have another form element to belong to).
+	 * @return string HTML code.
 	 */
 	function getPaletteFields($table, $row, $palette, $header = '', $itemList = '', $collapsedHeader = NULL) {
 		if (!$this->doPrintPalette) {
@@ -612,7 +673,7 @@ class t3lib_TCEforms {
 
 				$collapsed = $this->isPalettesCollapsed($table, $palette);
 
-					// check if the palette is a hidden palette
+					// Check if the palette is a hidden palette
 				$isHiddenPalette = !empty($GLOBALS['TCA'][$table]['palettes'][$palette]['isHiddenPalette']);
 
 				$thePalIcon = '';
@@ -639,14 +700,14 @@ class t3lib_TCEforms {
 	/**
 	 * Returns the form HTML code for a database table field.
 	 *
-	 * @param	string		The table name
-	 * @param	string		The field name
-	 * @param	array		The record to edit from the database table.
-	 * @param	string		Alternative field name label to show.
-	 * @param	boolean		Set this if the field is on a palette (in top frame), otherwise not. (if set, field will render as a hidden field).
-	 * @param	string		The "extra" options from "Part 4" of the field configurations found in the "types" "showitem" list. Typically parsed by $this->getSpecConfFromString() in order to get the options as an associative array.
-	 * @param	integer		The palette pointer.
-	 * @return	mixed		String (normal) or array (palettes)
+	 * @param string $table The table name
+	 * @param string $field The field name
+	 * @param array $row The record to edit from the database table.
+	 * @param string $altName Alternative field name label to show.
+	 * @param boolean $palette Set this if the field is on a palette (in top frame), otherwise not. (if set, field will render as a hidden field).
+	 * @param string $extra The "extra" options from "Part 4" of the field configurations found in the "types" "showitem" list. Typically parsed by $this->getSpecConfFromString() in order to get the options as an associative array.
+	 * @param integer $pal The palette pointer.
+	 * @return mixed String (normal) or array (palettes)
 	 */
 	function getSingleField($table, $field, $row, $altName = '', $palette = 0, $extra = '', $pal = 0) {
 
@@ -694,12 +755,14 @@ class t3lib_TCEforms {
 				$PA['fieldConf']['config'] = $this->overrideFieldConf($PA['fieldConf']['config'], $PA['fieldTSConfig']);
 
 					// Init variables:
-				$PA['itemFormElName'] = $this->prependFormFieldNames . '[' . $table . '][' . $row['uid'] . '][' . $field . ']'; // Form field name
-				$PA['itemFormElName_file'] = $this->prependFormFieldNames_file . '[' . $table . '][' . $row['uid'] . '][' . $field . ']'; // Form field name, in case of file uploads
-				$PA['itemFormElValue'] = $row[$field]; // The value to show in the form field.
+				$PA['itemFormElName'] = $this->prependFormFieldNames . '[' . $table . '][' . $row['uid'] . '][' . $field . ']';
+					// Form field name, in case of file uploads
+				$PA['itemFormElName_file'] = $this->prependFormFieldNames_file . '[' . $table . '][' . $row['uid'] . '][' . $field . ']';
+					// The value to show in the form field.
+				$PA['itemFormElValue'] = $row[$field];
 				$PA['itemFormElID'] = $this->prependFormFieldNames . '_' . $table . '_' . $row['uid'] . '_' . $field;
 
-					// set field to read-only if configured for translated records to show default language content as readonly
+					// Set field to read-only if configured for translated records to show default language content as readonly
 				if ($PA['fieldConf']['l10n_display']
 					&& t3lib_div::inList($PA['fieldConf']['l10n_display'], 'defaultAsReadonly')
 					&& $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0) {
@@ -757,7 +820,7 @@ class t3lib_TCEforms {
 					$PA['fieldChangeFunc'] = array();
 					$PA['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = "TBE_EDITOR.fieldChanged('" . $table . "','" . $row['uid'] . "','" . $field . "','" . $PA['itemFormElName'] . "');";
 					$PA['fieldChangeFunc']['alert'] = $alertMsgOnChange;
-						// if this is the child of an inline type and it is the field creating the label
+						// If this is the child of an inline type and it is the field creating the label
 					if ($this->inline->isInlineChildAndLabelField($table, $field)) {
 						$inlineObjectId = implode(
 							t3lib_TCEforms_inline::Structure_Separator,
@@ -792,7 +855,7 @@ class t3lib_TCEforms {
 						$label = '<a href="' . htmlspecialchars($lTTS_url) . '">' . $label . '</a>';
 					}
 
-						// wrap the label with help text
+						// Wrap the label with help text
 					$PA['label'] = $label = t3lib_BEfunc::wrapInHelp($table, $field, $label);
 
 						// Create output value:
@@ -840,11 +903,11 @@ class t3lib_TCEforms {
 	/**
 	 * Rendering a single item for the form
 	 *
-	 * @param	string		Table name of record
-	 * @param	string		Fieldname to render
-	 * @param	array		The record
-	 * @param	array		parameters array containing a lot of stuff. Value by Reference!
-	 * @return	string		Returns the item as HTML code to insert
+	 * @param string $table Table name of record
+	 * @param string $field Fieldname to render
+	 * @param array $row The record
+	 * @param array $PA Parameters array containing a lot of stuff. Value by Reference!
+	 * @return string Returns the item as HTML code to insert
 	 * @access private
 	 * @see getSingleField(), getSingleField_typeFlex_draw()
 	 */
@@ -897,7 +960,6 @@ class t3lib_TCEforms {
 		return $item;
 	}
 
-
 	/**********************************************************
 	 *
 	 * Rendering of each TCEform field type
@@ -908,11 +970,11 @@ class t3lib_TCEforms {
 	 * Generation of TCEform elements of the type "input"
 	 * This will render a single-line input form field, possibly with various control/validation features
 	 *
-	 * @param	string		The table name of the record
-	 * @param	string		The field name which this element is supposed to edit
-	 * @param	array		The record data array where the value(s) for the field can be found
-	 * @param	array		An array with additional configuration options.
-	 * @return	string		The HTML code for the TCEform field
+	 * @param string $table The table name of the record
+	 * @param string $field The field name which this element is supposed to edit
+	 * @param array $row The record data array where the value(s) for the field can be found
+	 * @param array $PA An array with additional configuration options.
+	 * @return string The HTML code for the TCEform field
 	 */
 	function getSingleField_typeInput($table, $field, $row, &$PA) {
 		$config = $PA['fieldConf']['config'];
@@ -1044,7 +1106,7 @@ class t3lib_TCEforms {
 			array('typo3form.fieldGet' => 'typo3form.fieldGet(' . $paramsList . ');'),
 			$PA['fieldChangeFunc']
 		);
-			// old function "checkbox" now the option to set the date / remove the date
+			// Old function "checkbox" now the option to set the date / remove the date
 		if (isset($config['checkbox'])) {
 			$item .= t3lib_iconWorks::getSpriteIcon('actions-input-clear', array('tag' => 'a', 'class' => 't3-tceforms-input-clearer', 'onclick' => 'document.getElementById(\'' . $inputId . '\').value=\'\';document.getElementById(\'' . $inputId . '\').focus();' . implode('', $PA['fieldChangeFunc'])));
 		}
@@ -1068,7 +1130,7 @@ class t3lib_TCEforms {
 		$item .= $fieldAppendix . '</span><div style="clear:both;"></div>';
 		$this->extJSCODE .= 'typo3form.fieldSet(' . $paramsList . ');';
 
-			// going through all custom evaluations configured for this field
+			// Going through all custom evaluations configured for this field
 		foreach ($evalList as $evalData) {
 			if (t3lib_div::hasValidClassPrefix($evalData)) {
 				$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$evalData] . ':&' . $evalData);
@@ -1092,11 +1154,11 @@ class t3lib_TCEforms {
 	 * Generation of TCEform elements of the type "text"
 	 * This will render a <textarea> OR RTE area form field, possibly with various control/validation features
 	 *
-	 * @param	string		The table name of the record
-	 * @param	string		The field name which this element is supposed to edit
-	 * @param	array		The record data array where the value(s) for the field can be found
-	 * @param	array		An array with additional configuration options.
-	 * @return	string		The HTML code for the TCEform field
+	 * @param string $table The table name of the record
+	 * @param string $field The field name which this element is supposed to edit
+	 * @param array $row The record data array where the value(s) for the field can be found
+	 * @param array $PA An array with additional configuration options.
+	 * @return string The HTML code for the TCEform field
 	 */
 	function getSingleField_typeText($table, $field, $row, &$PA) {
 
@@ -1126,8 +1188,10 @@ class t3lib_TCEforms {
 		}
 
 			// Init RTE vars:
-		$RTEwasLoaded = 0; // Set TRUE, if the RTE is loaded; If not a normal textarea is shown.
-		$RTEwouldHaveBeenLoaded = 0; // Set TRUE, if the RTE would have been loaded if it wasn't for the disable-RTE flag in the bottom of the page...
+			// Set TRUE, if the RTE is loaded; If not a normal textarea is shown.
+		$RTEwasLoaded = 0;
+			// Set TRUE, if the RTE would have been loaded if it wasn't for the disable-RTE flag in the bottom of the page...
+		$RTEwouldHaveBeenLoaded = 0;
 
 			// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist. Traditionally, this is where RTE configuration has been found.
 		$specConf = $this->getSpecConfFromString($PA['extra'], $PA['fieldConf']['defaultExtras']);
@@ -1138,7 +1202,8 @@ class t3lib_TCEforms {
 			// If RTE is generally enabled (TYPO3_CONF_VARS and user settings)
 		if ($this->RTEenabled) {
 			$p = t3lib_BEfunc::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
-			if (isset($specConf['richtext']) && (!$p['flag'] || !$row[$p['flag']])) { // If the field is configured for RTE and if any flag-field is not set to disable it.
+				// If the field is configured for RTE and if any flag-field is not set to disable it.
+			if (isset($specConf['richtext']) && (!$p['flag'] || !$row[$p['flag']])) {
 				t3lib_BEfunc::fixVersioningPid($table, $row);
 				list($tscPID, $thePidValue) = $this->getTSCpid($table, $row['uid'], $row['pid']);
 
@@ -1186,7 +1251,8 @@ class t3lib_TCEforms {
 
 			// Display ordinary field if RTE was not loaded.
 		if (!$RTEwasLoaded) {
-			if ($specConf['rte_only']) { // Show message, if no RTE (field can only be edited with RTE!)
+				// Show message, if no RTE (field can only be edited with RTE!)
+			if ($specConf['rte_only']) {
 				$item = '<p><em>' . htmlspecialchars($this->getLL('l_noRTEfound')) . '</em></p>';
 			} else {
 				if ($specConf['nowrap']) {
@@ -1265,11 +1331,11 @@ class t3lib_TCEforms {
 	 * Generation of TCEform elements of the type "check"
 	 * This will render a check-box OR an array of checkboxes
 	 *
-	 * @param	string		The table name of the record
-	 * @param	string		The field name which this element is supposed to edit
-	 * @param	array		The record data array where the value(s) for the field can be found
-	 * @param	array		An array with additional configuration options.
-	 * @return	string		The HTML code for the TCEform field
+	 * @param string $table The table name of the record
+	 * @param string $field The field name which this element is supposed to edit
+	 * @param array $row The record data array where the value(s) for the field can be found
+	 * @param array $PA An array with additional configuration options.
+	 * @return string The HTML code for the TCEform field
 	 */
 	function getSingleField_typeCheck($table, $field, $row, &$PA) {
 		$config = $PA['fieldConf']['config'];
@@ -1342,11 +1408,11 @@ class t3lib_TCEforms {
 	 * Generation of TCEform elements of the type "radio"
 	 * This will render a series of radio buttons.
 	 *
-	 * @param	string		The table name of the record
-	 * @param	string		The field name which this element is supposed to edit
-	 * @param	array		The record data array where the value(s) for the field can be found
-	 * @param	array		An array with additional configuration options.
-	 * @return	string		The HTML code for the TCEform field
+	 * @param string $table The table name of the record
+	 * @param string $field The field name which this element is supposed to edit
+	 * @param array $row The record data array where the value(s) for the field can be found
+	 * @param array $PA An array with additional configuration options.
+	 * @return string The HTML code for the TCEform field
 	 */
 	function getSingleField_typeRadio($table, $field, $row, &$PA) {
 		$config = $PA['fieldConf']['config'];
@@ -1381,11 +1447,11 @@ class t3lib_TCEforms {
 	 * Generation of TCEform elements of the type "select"
 	 * This will render a selector box element, or possibly a special construction with two selector boxes. That depends on configuration.
 	 *
-	 * @param	string		The table name of the record
-	 * @param	string		The field name which this element is supposed to edit
-	 * @param	array		The record data array where the value(s) for the field can be found
-	 * @param	array		An array with additional configuration options.
-	 * @return	string		The HTML code for the TCEform field
+	 * @param string $table The table name of the record
+	 * @param string $field The field name which this element is supposed to edit
+	 * @param array $row The record data array where the value(s) for the field can be found
+	 * @param array $PA An array with additional configuration options.
+	 * @return string The HTML code for the TCEform field
 	 */
 	function getSingleField_typeSelect($table, $field, $row, &$PA) {
 
@@ -1477,14 +1543,14 @@ class t3lib_TCEforms {
 	 * Creates a single-selector box
 	 * (Render function for getSingleField_typeSelect())
 	 *
-	 * @param	string		See getSingleField_typeSelect()
-	 * @param	string		See getSingleField_typeSelect()
-	 * @param	array		See getSingleField_typeSelect()
-	 * @param	array		See getSingleField_typeSelect()
-	 * @param	array		(Redundant) content of $PA['fieldConf']['config'] (for convenience)
-	 * @param	array		Items available for selection
-	 * @param	string		Label for no-matching-value
-	 * @return	string		The HTML code for the item
+	 * @param string $table See getSingleField_typeSelect()
+	 * @param string $field See getSingleField_typeSelect()
+	 * @param array $row See getSingleField_typeSelect()
+	 * @param array $PA See getSingleField_typeSelect()
+	 * @param array $config (Redundant) content of $PA['fieldConf']['config'] (for convenience)
+	 * @param array $selItems Items available for selection
+	 * @param string $nMV_label Label for no-matching-value
+	 * @return string The HTML code for the item
 	 * @see getSingleField_typeSelect()
 	 */
 	function getSingleField_typeSelect_single($table, $field, $row, &$PA, $config, $selItems, $nMV_label) {
@@ -1509,11 +1575,13 @@ class t3lib_TCEforms {
 		$selicons = array();
 		$onlySelectedIconShown = 0;
 		$size = intval($config['size']);
-		$selectedStyle = ''; // Style set on <select/>
+			// Style set on <select/>
+		$selectedStyle = '';
 
 		$item = '';
 		$disabled = '';
-		$onChangeIcon = ''; // TODO: icon is used but never assigned
+			// TODO: icon is used but never assigned
+		$onChangeIcon = '';
 
 		if ($this->renderReadonly || $config['readOnly']) {
 			$disabled = ' disabled="disabled"';
@@ -1567,7 +1635,8 @@ class t3lib_TCEforms {
 
 				} else {
 					if (count($optGroupStart)) {
-						if ($optGroupOpen) { // Closing last optgroup before next one starts
+							// Closing last optgroup before next one starts
+						if ($optGroupOpen) {
 							$opt[] = '</optgroup>' . LF;
 						}
 						$opt[] = '<optgroup label="' . t3lib_div::deHSCentities(htmlspecialchars($optGroupStart[0])) . '"' .
@@ -1606,7 +1675,8 @@ class t3lib_TCEforms {
 			$c++;
 		}
 
-		if ($optGroupOpen) { // Closing optgroup if open
+			// Closing optgroup if open
+		if ($optGroupOpen) {
 			$opt[] = '</optgroup>';
 			$optGroupOpen = FALSE;
 		}
@@ -1620,7 +1690,8 @@ class t3lib_TCEforms {
 			// Create item form fields:
 		$sOnChange = 'if (this.options[this.selectedIndex].value==\'--div--\') {this.selectedIndex=' . $sI . ';} ' . implode('', $PA['fieldChangeFunc']);
 		if (!$disabled) {
-			$item .= '<input type="hidden" name="' . $PA['itemFormElName'] . '_selIconVal" value="' . htmlspecialchars($sI) . '" />'; // MUST be inserted before the selector - else is the value of the hiddenfield here mysteriously submitted...
+				// MUST be inserted before the selector - else is the value of the hiddenfield here mysteriously submitted...
+			$item .= '<input type="hidden" name="' . $PA['itemFormElName'] . '_selIconVal" value="' . htmlspecialchars($sI) . '" />';
 		}
 		if ($config['iconsInOptionTags']) {
 			$classesForSelectTag[] = 'icon-select';
@@ -1663,14 +1734,14 @@ class t3lib_TCEforms {
 	 * Creates a checkbox list (renderMode = "checkbox")
 	 * (Render function for getSingleField_typeSelect())
 	 *
-	 * @param	string		See getSingleField_typeSelect()
-	 * @param	string		See getSingleField_typeSelect()
-	 * @param	array		See getSingleField_typeSelect()
-	 * @param	array		See getSingleField_typeSelect()
-	 * @param	array		(Redundant) content of $PA['fieldConf']['config'] (for convenience)
-	 * @param	array		Items available for selection
-	 * @param	string		Label for no-matching-value
-	 * @return	string		The HTML code for the item
+	 * @param string $table See getSingleField_typeSelect()
+	 * @param string $field See getSingleField_typeSelect()
+	 * @param array $row See getSingleField_typeSelect()
+	 * @param array $PA See getSingleField_typeSelect()
+	 * @param array $config (Redundant) content of $PA['fieldConf']['config'] (for convenience)
+	 * @param array $selItems Items available for selection
+	 * @param string $nMV_label Label for no-matching-value
+	 * @return string The HTML code for the item
 	 * @see getSingleField_typeSelect()
 	 */
 	function getSingleField_typeSelect_checkbox($table, $field, $row, &$PA, $config, $selItems, $nMV_label) {
@@ -1693,7 +1764,8 @@ class t3lib_TCEforms {
 		$c = 0;
 		if (!$disabled) {
 			$sOnChange = implode('', $PA['fieldChangeFunc']);
-			$setAll = array(); // Used to accumulate the JS needed to restore the original selection.
+				// Used to accumulate the JS needed to restore the original selection.
+			$setAll = array();
 			$unSetAll = array();
 			foreach ($selItems as $p) {
 					// Non-selectable element:
@@ -1820,14 +1892,14 @@ class t3lib_TCEforms {
 	 * Creates a selectorbox list (renderMode = "singlebox")
 	 * (Render function for getSingleField_typeSelect())
 	 *
-	 * @param	string		See getSingleField_typeSelect()
-	 * @param	string		See getSingleField_typeSelect()
-	 * @param	array		See getSingleField_typeSelect()
-	 * @param	array		See getSingleField_typeSelect()
-	 * @param	array		(Redundant) content of $PA['fieldConf']['config'] (for convenience)
-	 * @param	array		Items available for selection
-	 * @param	string		Label for no-matching-value
-	 * @return	string		The HTML code for the item
+	 * @param string $table See getSingleField_typeSelect()
+	 * @param string $field See getSingleField_typeSelect()
+	 * @param array $row See getSingleField_typeSelect()
+	 * @param array $PA See getSingleField_typeSelect()
+	 * @param array $config (Redundant) content of $PA['fieldConf']['config'] (for convenience)
+	 * @param array $selItems Items available for selection
+	 * @param string $nMV_label Label for no-matching-value
+	 * @return string The HTML code for the item
 	 * @see getSingleField_typeSelect()
 	 */
 	function getSingleField_typeSelect_singlebox($table, $field, $row, &$PA, $config, $selItems, $nMV_label) {
@@ -1843,7 +1915,8 @@ class t3lib_TCEforms {
 
 			// Traverse the Array of selector box items:
 		$opt = array();
-		$restoreCmd = array(); // Used to accumulate the JS needed to restore the original selection.
+			// Used to accumulate the JS needed to restore the original selection.
+		$restoreCmd = array();
 		$c = 0;
 		foreach ($selItems as $p) {
 				// Selected or not by default:
@@ -1932,14 +2005,14 @@ class t3lib_TCEforms {
 	 * Creates a multiple-selector box (two boxes, side-by-side)
 	 * (Render function for getSingleField_typeSelect())
 	 *
-	 * @param	string		See getSingleField_typeSelect()
-	 * @param	string		See getSingleField_typeSelect()
-	 * @param	array		See getSingleField_typeSelect()
-	 * @param	array		See getSingleField_typeSelect()
-	 * @param	array		(Redundant) content of $PA['fieldConf']['config'] (for convenience)
-	 * @param	array		Items available for selection
-	 * @param	string		Label for no-matching-value
-	 * @return	string		The HTML code for the item
+	 * @param string $table See getSingleField_typeSelect()
+	 * @param string $field See getSingleField_typeSelect()
+	 * @param array $row See getSingleField_typeSelect()
+	 * @param array $PA See getSingleField_typeSelect()
+	 * @param array $config (Redundant) content of $PA['fieldConf']['config'] (for convenience)
+	 * @param array $selItems Items available for selection
+	 * @param string $nMV_label Label for no-matching-value
+	 * @return string The HTML code for the item
 	 * @see getSingleField_typeSelect()
 	 */
 	function getSingleField_typeSelect_multiple($table, $field, $row, &$PA, $config, $selItems, $nMV_label) {
@@ -2061,11 +2134,11 @@ class t3lib_TCEforms {
 	 * Generation of TCEform elements of the type "group"
 	 * This will render a selectorbox into which elements from either the file system or database can be inserted. Relations.
 	 *
-	 * @param	string		The table name of the record
-	 * @param	string		The field name which this element is supposed to edit
-	 * @param	array		The record data array where the value(s) for the field can be found
-	 * @param	array		An array with additional configuration options.
-	 * @return	string		The HTML code for the TCEform field
+	 * @param string $table The table name of the record
+	 * @param string $field The field name which this element is supposed to edit
+	 * @param array $row The record data array where the value(s) for the field can be found
+	 * @param array $PA An array with additional configuration options.
+	 * @return string The HTML code for the TCEform field
 	 */
 	function getSingleField_typeGroup($table, $field, $row, &$PA) {
 			// Init:
@@ -2107,7 +2180,7 @@ class t3lib_TCEforms {
 				}";
 			$PA['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = "setFormValueManipulate('" . $PA['itemFormElName'] . "', 'Remove'); " . $PA['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
 		} elseif ($noList) {
-				// if the list controls have been removed and the maximum number is reached, remove the first entry to avoid "write once" field
+				// If the list controls have been removed and the maximum number is reached, remove the first entry to avoid "write once" field
 			$PA['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = "setFormValueManipulate('" . $PA['itemFormElName'] . "', 'RemoveFirstIfFull', '" . $maxitems . "'); " . $PA['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
 		}
 
@@ -2116,8 +2189,8 @@ class t3lib_TCEforms {
 			case 'file_reference':
 				$config['uploadfolder'] = '';
 				// Fall through
-			case 'file': // If the element is of the internal type "file":
-
+				// If the element is of the internal type "file":
+			case 'file':
 					// Creating string showing allowed types:
 				$tempFT = t3lib_div::trimExplode(',', $allowed, TRUE);
 				if (!count($tempFT)) {
@@ -2144,7 +2217,7 @@ class t3lib_TCEforms {
 
 				$fileFactory = t3lib_file_Factory::getInstance();
 
-					// correct the filename for the FAL items
+					// Correct the filename for the FAL items
 				foreach ($itemArray as &$fileItem) {
 					list($fileUid, $fileLabel) = explode('|', $fileItem);
 					if (t3lib_utility_Math::canBeInterpretedAsInteger($fileUid)) {
@@ -2235,7 +2308,7 @@ class t3lib_TCEforms {
 			break;
 			case 'folder': // If the element is of the internal type "folder":
 
-					// array of folder items:
+					// Array of folder items:
 				$itemArray = t3lib_div::trimExplode(',', $PA['itemFormElValue'], 1);
 
 					// Creating the element:
@@ -2352,11 +2425,11 @@ class t3lib_TCEforms {
 	 * Generation of TCEform elements of the type "none"
 	 * This will render a non-editable display of the content of the field.
 	 *
-	 * @param	string		The table name of the record
-	 * @param	string		The field name which this element is supposed to edit
-	 * @param	array		The record data array where the value(s) for the field can be found
-	 * @param	array		An array with additional configuration options.
-	 * @return	string		The HTML code for the TCEform field
+	 * @param string $table The table name of the record
+	 * @param string $field The field name which this element is supposed to edit
+	 * @param array $row The record data array where the value(s) for the field can be found
+	 * @param array $PA An array with additional configuration options.
+	 * @return string The HTML code for the TCEform field
 	 */
 	function getSingleField_typeNone($table, $field, $row, &$PA) {
 			// Init:
@@ -2369,14 +2442,14 @@ class t3lib_TCEforms {
 	/**
 	 * HTML rendering of a value which is not editable.
 	 *
-	 * @param	array		Configuration for the display
-	 * @param	string		The value to display
-	 * @return	string		The HTML code for the display
+	 * @param array $config Configuration for the display
+	 * @param string $itemValue The value to display
+	 * @return string The HTML code for the display
 	 * @see getSingleField_typeNone();
 	 */
 	function getSingleField_typeNone_render($config, $itemValue) {
 
-			// is colorScheme[0] the right value?
+			// Is colorScheme[0] the right value?
 		$divStyle = 'border:solid 1px ' . t3lib_div::modifyHTMLColorAll($this->colorScheme[0], -30) . ';' . $this->defStyle . $this->formElStyle('none') . ' background-color: ' . $this->colorScheme[0] . '; padding-left:1px;color:#555;';
 
 		if ($config['format']) {
@@ -2388,7 +2461,7 @@ class t3lib_TCEforms {
 			if (!$config['pass_content']) {
 				$itemValue = nl2br(htmlspecialchars($itemValue));
 			}
-				// like textarea
+				// Like textarea
 			$cols = t3lib_utility_Math::forceIntegerInRange($config['cols'] ? $config['cols'] : 30, 5, $this->maxTextareaWidth);
 			if (!$config['fixedRows']) {
 				$origRows = $rows = t3lib_utility_Math::forceIntegerInRange($rows, 1, 20);
@@ -2405,7 +2478,7 @@ class t3lib_TCEforms {
 				$cols = round($cols * $this->form_largeComp);
 			}
 			$width = ceil($cols * $this->form_rowsToStylewidth);
-				// hardcoded: 12 is the height of the font
+				// Hardcoded: 12 is the height of the font
 			$height = $rows * 12;
 
 			$item = '
@@ -2423,7 +2496,7 @@ class t3lib_TCEforms {
 			}
 			$width = ceil($cols * $this->form_rowsToStylewidth);
 
-				// overflow:auto crashes mozilla here. Title tag is usefull when text is longer than the div box (overflow:hidden).
+				// Overflow:auto crashes mozilla here. Title tag is usefull when text is longer than the div box (overflow:hidden).
 			$item = '
 				<div style="' . htmlspecialchars($divStyle . ' overflow:hidden; width:' . $width . 'px;') . '" class="' . htmlspecialchars($this->formElClass('none')) . '" title="' . $itemValue . '">' .
 					'<span class="nobr">' . (strcmp($itemValue, '') ? $itemValue : '&nbsp;') . '</span>' .
@@ -2436,11 +2509,11 @@ class t3lib_TCEforms {
 	/**
 	 * Handler for Flex Forms
 	 *
-	 * @param	string		The table name of the record
-	 * @param	string		The field name which this element is supposed to edit
-	 * @param	array		The record data array where the value(s) for the field can be found
-	 * @param	array		An array with additional configuration options.
-	 * @return	string		The HTML code for the TCEform field
+	 * @param string $table The table name of the record
+	 * @param string $field The field name which this element is supposed to edit
+	 * @param array $row The record data array where the value(s) for the field can be found
+	 * @param array $PA An array with additional configuration options.
+	 * @return string The HTML code for the TCEform field
 	 */
 	function getSingleField_typeFlex($table, $field, $row, &$PA) {
 
@@ -2467,7 +2540,8 @@ class t3lib_TCEforms {
 				$xmlData = $GLOBALS['LANG']->csConvObj->conv($xmlData, $storeInCharset, $currentCharset, 1);
 			}
 			$editData = t3lib_div::xml2array($xmlData);
-			if (!is_array($editData)) { // Must be XML parsing error...
+				// Must be XML parsing error...
+			if (!is_array($editData)) {
 				$editData = array();
 			} elseif (!isset($editData['meta']) || !is_array($editData['meta'])) {
 				$editData['meta'] = array();
@@ -2532,7 +2606,8 @@ class t3lib_TCEforms {
 				if (!$langChildren && !$langDisabled) {
 					$item .= '<strong>' . $this->getLanguageIcon($table, $row, 'v' . $lKey) . $lKey . ':</strong>';
 				}
-				$lang = 'l' . $lKey; // Default language, other options are "lUK" or whatever country code (independant of system!!!)
+					// Default language, other options are "lUK" or whatever country code (independant of system!!!)
+				$lang = 'l' . $lKey;
 
 				$tabParts = array();
 				foreach ($tabsToTraverse as $sheet) {
@@ -2566,14 +2641,15 @@ class t3lib_TCEforms {
 
 							// If sheets displayCond leads to false
 						if (!$skipCondition && !$this->isDisplayCondition($dataStruct['ROOT']['TCEforms']['displayCond'], $fakeRow, 'vDEF')) {
-								// don't create this sheet
+								// Don't create this sheet
 							continue;
 						}
 					}
 
 						// Render sheet:
 					if (is_array($dataStruct['ROOT']) && is_array($dataStruct['ROOT']['el'])) {
-						$PA['_valLang'] = $langChildren && !$langDisabled ? $editData['meta']['currentLangId'] : 'DEF'; // Default language, other options are "lUK" or whatever country code (independant of system!!!)
+							// Default language, other options are "lUK" or whatever country code (independant of system!!!)
+						$PA['_valLang'] = $langChildren && !$langDisabled ? $editData['meta']['currentLangId'] : 'DEF';
 						$PA['_lang'] = $lang;
 							// Assemble key for loading the correct CSH file
 						$dsPointerFields = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$table]['columns'][$field]['config']['ds_pointerField'], TRUE);
@@ -2598,7 +2674,6 @@ class t3lib_TCEforms {
 							'[data][' . $sheet . '][' . $lang . ']'
 						);
 						$sheetContent = '<div class="typo3-TCEforms-flexForm">' . $tRows . '</div>';
-
 
 							// Pop the sheet level tab from DynNestedStack
 						if (is_array($dataStructArray['sheets'])) {
@@ -2634,11 +2709,11 @@ class t3lib_TCEforms {
 	/**
 	 * Creates the language menu for FlexForms:
 	 *
-	 * @param	[type]		$languages: ...
-	 * @param	[type]		$elName: ...
-	 * @param	[type]		$selectedLanguage: ...
-	 * @param	[type]		$multi: ...
-	 * @return	string		HTML for menu
+	 * @param array $languages
+	 * @param string $elName
+	 * @param array $selectedLanguage
+	 * @param boolean $multi
+	 * @return string HTML for menu
 	 */
 	function getSingleField_typeFlex_langMenu($languages, $elName, $selectedLanguage, $multi = 1) {
 		$opt = array();
@@ -2654,10 +2729,10 @@ class t3lib_TCEforms {
 	/**
 	 * Creates the menu for selection of the sheets:
 	 *
-	 * @param	array		Sheet array for which to render the menu
-	 * @param	string		Form element name of the field containing the sheet pointer
-	 * @param	string		Current sheet key
-	 * @return	string		HTML for menu
+	 * @param array $sArr Sheet array for which to render the menu
+	 * @param string $elName Form element name of the field containing the sheet pointer
+	 * @param string $sheetKey Current sheet key
+	 * @return string HTML for menu
 	 */
 	function getSingleField_typeFlex_sheetMenu($sArr, $elName, $sheetKey) {
 
@@ -2682,17 +2757,17 @@ class t3lib_TCEforms {
 	/**
 	 * Recursive rendering of flexforms
 	 *
-	 * @param	array		(part of) Data Structure for which to render. Keys on first level is flex-form fields
-	 * @param	array		(part of) Data array of flexform corresponding to the input DS. Keys on first level is flex-form field names
-	 * @param	string		Table name, eg. tt_content
-	 * @param	string		Field name, eg. tx_templavoila_flex
-	 * @param	array		The particular record from $table in which the field $field is found
-	 * @param	array		Array of standard information for rendering of a form field in TCEforms, see other rendering functions too
-	 * @param	string		Form field prefix, eg. "[data][sDEF][lDEF][...][...]"
-	 * @param	integer		Indicates nesting level for the function call
-	 * @param	string		Prefix for ID-values
-	 * @param	boolean		Defines whether the next flexform level is open or closed. Comes from _TOGGLE pseudo field in FlexForm xml.
-	 * @return	string		HTMl code for form.
+	 * @param array $dataStruct (part of) Data Structure for which to render. Keys on first level is flex-form fields
+	 * @param array $editData (part of) Data array of flexform corresponding to the input DS. Keys on first level is flex-form field names
+	 * @param string $table Table name, eg. tt_content
+	 * @param string $field Field name, eg. tx_templavoila_flex
+	 * @param array $row The particular record from $table in which the field $field is found
+	 * @param array $PA Array of standard information for rendering of a form field in TCEforms, see other rendering functions too
+	 * @param string $formPrefix Form field prefix, eg. "[data][sDEF][lDEF][...][...]"
+	 * @param integer $level Indicates nesting level for the function call
+	 * @param string $level Prefix for ID-values
+	 * @param boolean $toggleClosed Defines whether the next flexform level is open or closed. Comes from _TOGGLE pseudo field in FlexForm xml.
+	 * @return string HTMl code for form.
 	 */
 	function getSingleField_typeFlex_draw($dataStruct, $editData, $table, $field, $row, &$PA, $formPrefix = '', $level = 0, $idPrefix = 'ID', $toggleClosed = FALSE) {
 
@@ -2716,13 +2791,13 @@ class t3lib_TCEforms {
 						// for whatever reason,
 						// now, only using <title> in an unnested way is fine.
 					$theTitle = $value['title'];
-						// old syntax is deprecated and will be removed in TYPO3 4.9
+						// Old syntax is deprecated and will be removed in TYPO3 4.9
 					if (!$theTitle && isset($value['tx_templavoila']['title'])) {
 						t3lib_div::deprecationLog('The flexform XML, used in ' . htmlspecialchars($table) . ':' . htmlspecialchars($field) . ' is using legacy syntax, the <title> is wrapped in <tx_templavoila>, however should be moved outside of that XML tag container. This functionality will be removed in TYPO3 4.9.');
 						$theTitle = $value['tx_templavoila']['title'];
 					}
 
-						// if there is a title, check for LLL label
+						// If there is a title, check for LLL label
 					if (strlen($theTitle) > 0) {
 						$theTitle = htmlspecialchars(t3lib_div::fixed_lgd_cs($this->sL($theTitle), 30));
 					}
@@ -2732,8 +2807,10 @@ class t3lib_TCEforms {
 
 							// Creating IDs for form fields:
 							// It's important that the IDs "cascade" - otherwise we can't dynamically expand the flex form because this relies on simple string substitution of the first parts of the id values.
-						$thisId = t3lib_div::shortMd5(uniqid('id', TRUE)); // This is a suffix used for forms on this level
-						$idTagPrefix = $idPrefix . '-' . $thisId; // $idPrefix is the prefix for elements on lower levels in the hierarchy and we combine this with the thisId value to form a new ID on this level.
+							// This is a suffix used for forms on this level
+						$thisId = t3lib_div::shortMd5(uniqid('id', TRUE));
+							// $idPrefix is the prefix for elements on lower levels in the hierarchy and we combine this with the thisId value to form a new ID on this level.
+						$idTagPrefix = $idPrefix . '-' . $thisId;
 
 							// If it's a "section" containing other elements:
 						if ($value['section']) {
@@ -2843,7 +2920,6 @@ class t3lib_TCEforms {
 							$onMove = 'flexFormSortable("' . $idPrefix . '")';
 								// Notice: Creating "new" elements after others seemed to be too difficult to do and since moving new elements created in the bottom is now so easy with drag'n'drop I didn't see the need.
 
-
 								// Putting together header of a section. Sections can be removed, copied, opened/closed, moved up and down:
 								// I didn't know how to make something right-aligned without a table, so I put it in a table. can be made into <div>'s if someone like to.
 								// Notice: The fact that I make a "Sortable.create" right onmousedown is that if we initialize this when rendering the form in PHP new and copied elements will not be possible to move as a sortable. But this way a new sortable is initialized everytime someone tries to move and it will always work.
@@ -2908,7 +2984,7 @@ class t3lib_TCEforms {
 						}
 
 						$conditionData = is_array($editData) ? $editData : array();
-							// add current $row to data processed by isDisplayCondition()
+							// Add current $row to data processed by isDisplayCondition()
 						$conditionData['parentRec'] = $row;
 
 						$tRows = array();
@@ -3008,11 +3084,11 @@ class t3lib_TCEforms {
 	/**
 	 * Handler for unknown types.
 	 *
-	 * @param	string		The table name of the record
-	 * @param	string		The field name which this element is supposed to edit
-	 * @param	array		The record data array where the value(s) for the field can be found
-	 * @param	array		An array with additional configuration options.
-	 * @return	string		The HTML code for the TCEform field
+	 * @param string $table The table name of the record
+	 * @param string $field The field name which this element is supposed to edit
+	 * @param array $row The record data array where the value(s) for the field can be found
+	 * @param array $PA An array with additional configuration options.
+	 * @return string The HTML code for the TCEform field
 	 */
 	function getSingleField_typeUnknown($table, $field, $row, &$PA) {
 		$item = 'Unknown type: ' . $PA['fieldConf']['config']['form_type'] . '<br />';
@@ -3023,11 +3099,11 @@ class t3lib_TCEforms {
 	/**
 	 * User defined field type
 	 *
-	 * @param	string		The table name of the record
-	 * @param	string		The field name which this element is supposed to edit
-	 * @param	array		The record data array where the value(s) for the field can be found
-	 * @param	array		An array with additional configuration options.
-	 * @return	string		The HTML code for the TCEform field
+	 * @param string $table The table name of the record
+	 * @param string $field The field name which this element is supposed to edit
+	 * @param array $row The record data array where the value(s) for the field can be found
+	 * @param array $PA An array with additional configuration options.
+	 * @return string The HTML code for the TCEform field
 	 */
 	function getSingleField_typeUser($table, $field, $row, &$PA) {
 		$PA['table'] = $table;
@@ -3040,7 +3116,6 @@ class t3lib_TCEforms {
 		return t3lib_div::callUserFunction($PA['fieldConf']['config']['userFunc'], $PA, $this);
 	}
 
-
 	/************************************************************
 	 *
 	 * Field content processing
@@ -3051,9 +3126,9 @@ class t3lib_TCEforms {
 	 * Format field content of various types if $config['format'] is set to date, filesize, ..., user
 	 * This is primarily for the field type none but can be used for user field types for example
 	 *
-	 * @param	array		Configuration for the display
-	 * @param	string		The value to display
-	 * @return	string		Formatted Field content
+	 * @param array $config Configuration for the display
+	 * @param string $itemValue The value to display
+	 * @return string Formatted Field content
 	 */
 	function formatValue($config, $itemValue) {
 		$format = trim($config['format']);
@@ -3135,7 +3210,6 @@ class t3lib_TCEforms {
 		return $itemValue;
 	}
 
-
 	/************************************************************
 	 *
 	 * "Configuration" fetching/processing functions
@@ -3145,9 +3219,9 @@ class t3lib_TCEforms {
 	/**
 	 * Calculate and return the current "types" pointer value for a record
 	 *
-	 * @param	string		The table name. MUST be in $GLOBALS['TCA']
-	 * @param	array		The row from the table, should contain at least the "type" field, if applicable.
-	 * @return	string		Return the "type" value for this record, ready to pick a "types" configuration from the $GLOBALS['TCA'] array.
+	 * @param string $table The table name. MUST be in $GLOBALS['TCA']
+	 * @param array $row The row from the table, should contain at least the "type" field, if applicable.
+	 * @return string Return the "type" value for this record, ready to pick a "types" configuration from the $GLOBALS['TCA'] array.
 	 */
 	function getRTypeNum($table, $row) {
 
@@ -3167,12 +3241,13 @@ class t3lib_TCEforms {
 					$values = $this->extractValuesOnlyFromValueLabelList($row[$pointerField]);
 					list(,$foreignUid) = t3lib_div::revExplode('_', $values[0], 2);
 					$allowedTables = explode(',', $fieldConfig['allowed']);
-					$foreignTable = $allowedTables[0]; // Always take the first configured table.
+						// Always take the first configured table.
+					$foreignTable = $allowedTables[0];
 				} else {
 					throw new RuntimeException('TCA Foreign field pointer fields are only allowed to be used with group or select field types.', 1325861239);
 				}
 
-				if($foreignUid) {
+				if ($foreignUid) {
 					$foreignRow = t3lib_BEfunc::getRecord($foreignTable, $foreignUid, $foreignTypeField);
 
 					t3lib_div::loadTCA($foreignTable);
@@ -3193,12 +3268,12 @@ class t3lib_TCEforms {
 			$typeNum = 0;
 		}
 
-		// If current typeNum doesn't exist, set it to 0 (or to 1 for historical reasons, if 0 doesn't exist)
+			// If current typeNum doesn't exist, set it to 0 (or to 1 for historical reasons, if 0 doesn't exist)
 		if (!$GLOBALS['TCA'][$table]['types'][$typeNum]) {
 			$typeNum = $GLOBALS['TCA'][$table]['types']["0"] ? 0 : 1;
 		}
-
-		$typeNum = (string)$typeNum; // Force to string. Necessary for eg '-1' to be recognized as a type value.
+			// Force to string. Necessary for eg '-1' to be recognized as a type value.
+		$typeNum = (string)$typeNum;
 
 		return $typeNum;
 	}
@@ -3206,8 +3281,8 @@ class t3lib_TCEforms {
 	/**
 	 * Used to adhoc-rearrange the field order normally set in the [types][showitem] list
 	 *
-	 * @param	array		A [types][showitem] list of fields, exploded by ","
-	 * @return	array		Returns rearranged version (keys are changed around as well.)
+	 * @param array $fields A [types][showitem] list of fields, exploded by ","
+	 * @return array Returns rearranged version (keys are changed around as well.)
 	 * @see getMainFields()
 	 */
 	function rearrange($fields) {
@@ -3221,7 +3296,8 @@ class t3lib_TCEforms {
 			}
 		}
 		ksort($newFields);
-		$fields = array_merge($newFields, $fields); // Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
+			// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
+		$fields = array_merge($newFields, $fields);
 		return $fields;
 	}
 
@@ -3229,10 +3305,10 @@ class t3lib_TCEforms {
 	 * Producing an array of field names NOT to display in the form, based on settings from subtype_value_field, bitmask_excludelist_bits etc.
 	 * Notice, this list is in NO way related to the "excludeField" flag
 	 *
-	 * @param	string		Table name, MUST be in $GLOBALS['TCA']
-	 * @param	array		A record from table.
-	 * @param	string		A "type" pointer value, probably the one calculated based on the record array.
-	 * @return	array		Array with fieldnames as values. The fieldnames are those which should NOT be displayed "anyways"
+	 * @param string $table Table name, MUST be in $GLOBALS['TCA']
+	 * @param array $row A record from table.
+	 * @param string $typeNum A "type" pointer value, probably the one calculated based on the record array.
+	 * @return array Array with fieldnames as values. The fieldnames are those which should NOT be displayed "anyways"
 	 * @see getMainFields()
 	 */
 	function getExcludeElements($table, $row, $typeNum) {
@@ -3275,10 +3351,10 @@ class t3lib_TCEforms {
 	/**
 	 * Finds possible field to add to the form, based on subtype fields.
 	 *
-	 * @param	string		Table name, MUST be in $GLOBALS['TCA']
-	 * @param	array		A record from table.
-	 * @param	string		A "type" pointer value, probably the one calculated based on the record array.
-	 * @return	array		An array containing two values: 1) Another array containing fieldnames to add and 2) the subtype value field.
+	 * @param string $table Table name, MUST be in $GLOBALS['TCA']
+	 * @param array $row A record from table.
+	 * @param string $typeNum A "type" pointer value, probably the one calculated based on the record array.
+	 * @return array An array containing two values: 1) Another array containing fieldnames to add and 2) the subtype value field.
 	 * @see getMainFields()
 	 */
 	function getFieldsToAdd($table, $row, $typeNum) {
@@ -3300,9 +3376,9 @@ class t3lib_TCEforms {
 	/**
 	 * Merges the current [types][showitem] array with the array of fields to add for the current subtype field of the "type" value.
 	 *
-	 * @param	array		A [types][showitem] list of fields, exploded by ","
-	 * @param	array		The output from getFieldsToAdd()
-	 * @return	array		Return the modified $fields array.
+	 * @param array A [types][showitem] list of fields, exploded by ","
+	 * @param array The output from getFieldsToAdd()
+	 * @return array Return the modified $fields array.
 	 * @see getMainFields(),getFieldsToAdd()
 	 */
 	function mergeFieldsWithAddedFields($fields, $fieldsToAdd) {
@@ -3325,15 +3401,14 @@ class t3lib_TCEforms {
 		return $fields;
 	}
 
-
 	/**
 	 * Returns TSconfig for table/row
 	 * Multiple requests to this function will return cached content so there is no performance loss in calling this many times since the information is looked up only once.
 	 *
-	 * @param	string		The table name
-	 * @param	array		The table row (Should at least contain the "uid" value, even if "NEW..." string. The "pid" field is important as well, and negative values will be intepreted as pointing to a record from the same table.)
-	 * @param	string		Optionally you can specify the field name as well. In that case the TSconfig for the field is returned.
-	 * @return	mixed		The TSconfig values (probably in an array)
+	 * @param string $table The table name
+	 * @param array $row The table row (Should at least contain the "uid" value, even if "NEW..." string. The "pid" field is important as well, and negative values will be intepreted as pointing to a record from the same table.)
+	 * @param string $field Optionally you can specify the field name as well. In that case the TSconfig for the field is returned.
+	 * @return mixed The TSconfig values (probably in an array)
 	 * @see t3lib_BEfunc::getTCEFORM_TSconfig()
 	 */
 	function setTSconfig($table, $row, $field = '') {
@@ -3354,9 +3429,9 @@ class t3lib_TCEforms {
 	 * Example TSconfig: TCEform.<table>.<field>.config.appearance.useSortable = 1
 	 * This overrides the setting in $GLOBALS['TCA'][<table>]['columns'][<field>]['config']['appearance']['useSortable'].
 	 *
-	 * @param	array		$fieldConfig: $GLOBALS['TCA'] field configuration
-	 * @param	array		$TSconfig: TSconfig
-	 * @return	array		Changed TCA field configuration
+	 * @param array $fieldConfig $GLOBALS['TCA'] field configuration
+	 * @param array $TSconfig TSconfig
+	 * @return array Changed TCA field configuration
 	 */
 	function overrideFieldConf($fieldConfig, $TSconfig) {
 		if (is_array($TSconfig)) {
@@ -3383,10 +3458,10 @@ class t3lib_TCEforms {
 	 * Returns the "special" configuration (from the "types" "showitem" list) for a fieldname based on input table/record
 	 * (Not used anywhere...?)
 	 *
-	 * @param	string		The table name
-	 * @param	array		The table row (Should at least contain the "uid" value, even if "NEW..." string. The "pid" field is important as well, and negative values will be intepreted as pointing to a record from the same table.)
-	 * @param	string		Specify the field name.
-	 * @return	array
+	 * @param string $table The table name
+	 * @param array $row The table row (Should at least contain the "uid" value, even if "NEW..." string. The "pid" field is important as well, and negative values will be intepreted as pointing to a record from the same table.)
+	 * @param string $field Specify the field name.
+	 * @return array
 	 * @see getSpecConfFromString(), t3lib_BEfunc::getTCAtypes()
 	 */
 	function getSpecConfForField($table, $row, $field) {
@@ -3407,24 +3482,23 @@ class t3lib_TCEforms {
 	/**
 	 * Returns the "special" configuration of an "extra" string (non-parsed)
 	 *
-	 * @param	string		The "Part 4" of the fields configuration in "types" "showitem" lists.
-	 * @param	string		The ['defaultExtras'] value from field configuration
-	 * @return	array		An array with the special options in.
+	 * @param string $extraString The "Part 4" of the fields configuration in "types" "showitem" lists.
+	 * @param string $defaultExtras The ['defaultExtras'] value from field configuration
+	 * @return array An array with the special options in.
 	 * @see getSpecConfForField(), t3lib_BEfunc::getSpecConfParts()
 	 */
 	function getSpecConfFromString($extraString, $defaultExtras) {
 		return t3lib_BEfunc::getSpecConfParts($extraString, $defaultExtras);
 	}
 
-
 	/**
 	 * Loads the elements of a palette (collection of secondary options) in an array.
 	 *
-	 * @param	string		The table name
-	 * @param	array		The row array
-	 * @param	string		The palette number/pointer
-	 * @param	string		Optional alternative list of fields for the palette
-	 * @return	array		The palette elements
+	 * @param string $table The table name
+	 * @param array $row The row array
+	 * @param string $palette The palette number/pointer
+	 * @param string $itemList Optional alternative list of fields for the palette
+	 * @return array The palette elements
 	 */
 	public function loadPaletteElements($table, $row, $palette, $itemList = '') {
 		t3lib_div::loadTCA($table);
@@ -3458,7 +3532,6 @@ class t3lib_TCEforms {
 		return $parts;
 	}
 
-
 	/************************************************************
 	 *
 	 * Display of localized content etc.
@@ -3470,9 +3543,9 @@ class t3lib_TCEforms {
 	 * The original data is shown with the edited record in the form. The information also includes possibly diff-views of what changed in the original record.
 	 * Function called from outside (see alt_doc.php + quick edit) before rendering a form for a record
 	 *
-	 * @param	string		Table name of the record being edited
-	 * @param	array		Record array of the record being edited
-	 * @return	void
+	 * @param string $table Table name of the record being edited
+	 * @param array $rec Record array of the record being edited
+	 * @return void
 	 */
 	function registerDefaultLanguageData($table, $rec) {
 
@@ -3510,11 +3583,11 @@ class t3lib_TCEforms {
 	 * This means the requested field value will be overridden with the data from the default language.
 	 * Can be used to render read only fields for example.
 	 *
-	 * @param	string		Table name of the record being edited
-	 * @param	string		Field name represented by $item
-	 * @param	array		Record array of the record being edited in current language
-	 * @param	array		Content of $PA['fieldConf']
-	 * @return	string		Unprocessed field value merged with default language data if needed
+	 * @param string $table Table name of the record being edited
+	 * @param string $row Field name represented by $item
+	 * @param array $field Record array of the record being edited in current language
+	 * @param array $fieldConf Content of $PA['fieldConf']
+	 * @return string Unprocessed field value merged with default language data if needed
 	 */
 	function getLanguageOverlayRawValue($table, $row, $field, $fieldConf) {
 		$value = $row[$field];
@@ -3535,11 +3608,11 @@ class t3lib_TCEforms {
 	 * Renders the display of default language record content around current field.
 	 * Will render content if any is found in the internal array, $this->defaultLanguageData, depending on registerDefaultLanguageData() being called prior to this.
 	 *
-	 * @param	string		Table name of the record being edited
-	 * @param	string		Field name represented by $item
-	 * @param	array		Record array of the record being edited
-	 * @param	string		HTML of the form field. This is what we add the content to.
-	 * @return	string		Item string returned again, possibly with the original value added to.
+	 * @param string $table Table name of the record being edited
+	 * @param string $field Field name represented by $item
+	 * @param array $row Record array of the record being edited
+	 * @param string $item HTML of the form field. This is what we add the content to.
+	 * @return string Item string returned again, possibly with the original value added to.
 	 * @see getSingleField(), registerDefaultLanguageData()
 	 */
 	function renderDefaultLanguageContent($table, $field, $row, $item) {
@@ -3575,11 +3648,11 @@ class t3lib_TCEforms {
 	 * Renders the diff-view of default language record content compared with what the record was originally translated from.
 	 * Will render content if any is found in the internal array, $this->defaultLanguageData, depending on registerDefaultLanguageData() being called prior to this.
 	 *
-	 * @param	string		Table name of the record being edited
-	 * @param	string		Field name represented by $item
-	 * @param	array		Record array of the record being edited
-	 * @param	string		HTML of the form field. This is what we add the content to.
-	 * @return	string		Item string returned again, possibly with the original value added to.
+	 * @param string $table Table name of the record being edited
+	 * @param string $field Field name represented by $item
+	 * @param array $row Record array of the record being edited
+	 * @param string  $item HTML of the form field. This is what we add the content to.
+	 * @return string Item string returned again, possibly with the original value added to.
 	 * @see getSingleField(), registerDefaultLanguageData()
 	 */
 	function renderDefaultLanguageDiff($table, $field, $row, $item) {
@@ -3591,7 +3664,8 @@ class t3lib_TCEforms {
 				'new' => $this->defaultLanguageData[$table . ':' . $row['uid']],
 			);
 
-			if (isset($dLVal['old'][$field])) { // There must be diff-data:
+				// There must be diff-data:
+			if (isset($dLVal['old'][$field])) {
 				if (strcmp($dLVal['old'][$field], $dLVal['new'][$field])) {
 
 						// Create diff-result:
@@ -3615,11 +3689,9 @@ class t3lib_TCEforms {
 	/**
 	 * Renders the diff-view of vDEF fields in flexforms
 	 *
-	 * @param	string		Table name of the record being edited
-	 * @param	string		Field name represented by $item
-	 * @param	array		Record array of the record being edited
-	 * @param	string		HTML of the form field. This is what we add the content to.
-	 * @return	string		Item string returned again, possibly with the original value added to.
+	 * @param array $vArray Record array of the record being edited
+	 * @param string $vDEFkey HTML of the form field. This is what we add the content to.
+	 * @return string Item string returned again, possibly with the original value added to.
 	 * @see getSingleField(), registerDefaultLanguageData()
 	 */
 	function renderVDEFDiff($vArray, $vDEFkey) {
@@ -3640,7 +3712,6 @@ class t3lib_TCEforms {
 		return $item;
 	}
 
-
 	/************************************************************
 	 *
 	 * Form element helper functions
@@ -3650,21 +3721,20 @@ class t3lib_TCEforms {
 	/**
 	 * Prints the selector box form-field for the db/file/select elements (multiple)
 	 *
-	 * @param	string		Form element name
-	 * @param	string		Mode "db", "file" (internal_type for the "group" type) OR blank (then for the "select" type)
-	 * @param	string		Commalist of "allowed"
-	 * @param	array		The array of items. For "select" and "group"/"file" this is just a set of value. For "db" its an array of arrays with table/uid pairs.
-	 * @param	string		Alternative selector box.
-	 * @param	array		An array of additional parameters, eg: "size", "info", "headers" (array with "selector" and "items"), "noBrowser", "thumbnails"
-	 * @param	string		On focus attribute string
-	 * @param	string		$table: (optional) Table name processing for
-	 * @param	string		$field: (optional) Field of table name processing for
-	 * @param	string		$uid:	(optional) uid of table record processing for
-	 * @param	array		$config: (optional) The TCA field config
-	 * @return	string		The form fields for the selection.
+	 * @param string $fName Form element name
+	 * @param string $mode Mode "db", "file" (internal_type for the "group" type) OR blank (then for the "select" type)
+	 * @param string $allowed Commalist of "allowed"
+	 * @param array $itemArray The array of items. For "select" and "group"/"file" this is just a set of value. For "db" its an array of arrays with table/uid pairs.
+	 * @param string $selector Alternative selector box.
+	 * @param array $params An array of additional parameters, eg: "size", "info", "headers" (array with "selector" and "items"), "noBrowser", "thumbnails"
+	 * @param string $onFocus On focus attribute string
+	 * @param string $table (optional) Table name processing for
+	 * @param string $field (optional) Field of table name processing for
+	 * @param string $uid (optional) uid of table record processing for
+	 * @param array $config (optional) The TCA field config
+	 * @return string The form fields for the selection.
 	 */
 	function dbFileIcons($fName, $mode, $allowed, $itemArray, $selector = '', $params = array(), $onFocus = '', $table = '', $field = '', $uid = '', $config = array()) {
-
 		$title = '';
 		$disabled = '';
 		if ($this->renderReadonly || $params['readOnly']) {
@@ -3742,7 +3812,7 @@ class t3lib_TCEforms {
 		);
 		if (!$params['readOnly'] && !$params['noList']) {
 			if (!$params['noBrowser']) {
-					// check against inline uniqueness
+					// Check against inline uniqueness
 				$inlineParent = $this->inline->getStructureLevel(-1);
 				if (is_array($inlineParent) && $inlineParent['uid']) {
 					if ($inlineParent['config']['foreign_table'] == $table && $inlineParent['config']['foreign_unique'] == $field) {
@@ -3899,9 +3969,9 @@ class t3lib_TCEforms {
 	/**
 	 * Returns array of elements from clipboard to insert into GROUP element box.
 	 *
-	 * @param	string		Allowed elements, Eg "pages,tt_content", "gif,jpg,jpeg,png"
-	 * @param	string		Mode of relations: "db" or "file"
-	 * @return	array		Array of elements in values (keys are insignificant), if none found, empty array.
+	 * @param string $allowed Allowed elements, Eg "pages,tt_content", "gif,jpg,jpeg,png"
+	 * @param string $mode Mode of relations: "db" or "file"
+	 * @return array Array of elements in values (keys are insignificant), if none found, empty array.
 	 */
 	function getClipboardElements($allowed, $mode) {
 
@@ -3914,7 +3984,8 @@ class t3lib_TCEforms {
 					$elFromTable = $this->clipObj->elFromTable('_FILE');
 					$allowedExts = t3lib_div::trimExplode(',', $allowed, 1);
 
-					if ($allowedExts) { // If there are a set of allowed extensions, filter the content:
+						// If there are a set of allowed extensions, filter the content:
+					if ($allowedExts) {
 						foreach ($elFromTable as $elValue) {
 							$pI = pathinfo($elValue);
 							$ext = strtolower($pI['extension']);
@@ -3928,7 +3999,8 @@ class t3lib_TCEforms {
 				break;
 				case 'db':
 					$allowedTables = t3lib_div::trimExplode(',', $allowed, 1);
-					if (!strcmp(trim($allowedTables[0]), '*')) { // All tables allowed for relation:
+						// All tables allowed for relation:
+					if (!strcmp(trim($allowedTables[0]), '*')) {
 						$output = $this->clipObj->elFromTable('');
 					} else { // Only some tables, filter them:
 						foreach ($allowedTables as $tablename) {
@@ -3948,10 +4020,10 @@ class t3lib_TCEforms {
 	 * Wraps the icon of a relation item (database record or file) in a link opening the context menu for the item.
 	 * Icons will be wrapped only if $this->enableClickMenu is set. This must be done only if a global SOBE object exists and if the necessary JavaScript for displaying the context menus has been added to the page properties.
 	 *
-	 * @param	string		The icon HTML to wrap
-	 * @param	string		Table name (eg. "pages" or "tt_content") OR the absolute path to the file
-	 * @param	integer		The uid of the record OR if file, just blank value.
-	 * @return	string		HTML
+	 * @param string $str The icon HTML to wrap
+	 * @param string $table Table name (eg. "pages" or "tt_content") OR the absolute path to the file
+	 * @param integer $uid The uid of the record OR if file, just blank value.
+	 * @return string HTML
 	 */
 	function getClickMenu($str, $table, $uid = '') {
 		if ($this->enableClickMenu) {
@@ -3963,16 +4035,16 @@ class t3lib_TCEforms {
 	/**
 	 * Rendering wizards for form fields.
 	 *
-	 * @param	array		Array with the real item in the first value, and an alternative item in the second value.
-	 * @param	array		The "wizard" key from the config array for the field (from TCA)
-	 * @param	string		Table name
-	 * @param	array		The record array
-	 * @param	string		The field name
-	 * @param	array		Additional configuration array. (passed by reference!)
-	 * @param	string		The field name
-	 * @param	array		Special configuration if available.
-	 * @param	boolean		Whether the RTE could have been loaded.
-	 * @return	string		The new item value.
+	 * @param array $itemKinds Array with the real item in the first value, and an alternative item in the second value.
+	 * @param array $wizConf The "wizard" key from the config array for the field (from TCA)
+	 * @param string $table Table name
+	 * @param array $row The record array
+	 * @param string $field The field name
+	 * @param array $PA Additional configuration array. (passed by reference!)
+	 * @param string $itemName The field name
+	 * @param array $specConf Special configuration if available.
+	 * @param boolean $RTE Whether the RTE could have been loaded.
+	 * @return string The new item value.
 	 */
 	function renderWizards($itemKinds, $wizConf, $table, $row, $field, &$PA, $itemName, $specConf, $RTE = 0) {
 
@@ -3993,7 +4065,8 @@ class t3lib_TCEforms {
 
 			// Manipulate the field name (to be the TRUE form field name) and remove a suffix-value if the item is a selector box with renderMode "singlebox":
 		if ($PA['fieldConf']['config']['form_type'] == 'select') {
-			if ($PA['fieldConf']['config']['maxitems'] <= 1) { // Single select situation:
+				// Single select situation:
+			if ($PA['fieldConf']['config']['maxitems'] <= 1) {
 				$listFlag = '';
 			} elseif ($PA['fieldConf']['config']['renderMode'] == 'singlebox') {
 				$itemName .= '[]';
@@ -4001,7 +4074,7 @@ class t3lib_TCEforms {
 			}
 		}
 
-			// traverse wizards:
+			// Traverse wizards:
 		if (is_array($wizConf) && !$this->disableWizards) {
 			$parametersOfWizards =& $specConf['wizards']['parameters'];
 
@@ -4019,7 +4092,6 @@ class t3lib_TCEforms {
 						$icon = $iTitle;
 					}
 
-						//
 					switch ((string) $wConf['type']) {
 						case 'userFunc':
 						case 'script':
@@ -4090,7 +4162,8 @@ class t3lib_TCEforms {
 											}
 										break;
 										case 'userFunc':
-											$params['item'] = &$item; // Reference set!
+												// Reference set!
+											$params['item'] = &$item;
 											$params['icon'] = $icon;
 											$params['iTitle'] = $iTitle;
 											$params['wConf'] = $wConf;
@@ -4098,7 +4171,8 @@ class t3lib_TCEforms {
 											$outArr[] = t3lib_div::callUserFunction($wConf['userFunc'], $params, $this);
 										break;
 										case 'slider':
-											$params['item'] = &$item; // Reference set!
+												// Reference set!
+											$params['item'] = &$item;
 											$params['icon'] = $icon;
 											$params['iTitle'] = $iTitle;
 											$params['wConf'] = $wConf;
@@ -4113,7 +4187,8 @@ class t3lib_TCEforms {
 
 									// Hide the real form element?
 								if (is_array($wConf['hideParent']) || $wConf['hideParent']) {
-									$item = $itemKinds[1]; // Setting the item to a hidden-field.
+										// Setting the item to a hidden-field.
+									$item = $itemKinds[1];
 									if (is_array($wConf['hideParent'])) {
 										$item .= $this->getSingleField_typeNone_render($wConf['hideParent'], $PA['itemFormElValue']);
 									}
@@ -4218,8 +4293,8 @@ class t3lib_TCEforms {
 	/**
 	 * Get icon (for example for selector boxes)
 	 *
-	 * @param	string		Icon reference
-	 * @return	array		Array with two values; the icon file reference (relative to PATH_typo3 minus backPath), the icon file information array (getimagesize())
+	 * @param string $icon Icon reference
+	 * @return array Array with two values; the icon file reference (relative to PATH_typo3 minus backPath), the icon file information array (getimagesize())
 	 */
 	function getIcon($icon) {
 		if (substr($icon, 0, 4) == 'EXT:') {
@@ -4241,17 +4316,18 @@ class t3lib_TCEforms {
 			$selIconInfo = @getimagesize(PATH_typo3 . $iconPath);
 		}
 		if ($selIconInfo === FALSE) {
-			$selIconFile = ''; // unset to empty string if icon is not available
+				// Unset to empty string if icon is not available
+			$selIconFile = '';
 		}
 		return array($selIconFile, $selIconInfo);
 	}
 
 	/**
 	 * Renders the $icon, supports a filename for skinImg or sprite-icon-name
-	 * @param $icon the icon passed, could be a file-reference or a sprite Icon name
-	 * @param string $alt alt attribute of the icon returned
-	 * @param string $title title attribute of the icon return
-	 * @return an tag representing to show the asked icon
+	 * @param string $icon The icon passed, could be a file-reference or a sprite Icon name
+	 * @param string $alt Alt attribute of the icon returned
+	 * @param string $title Title attribute of the icon return
+	 * @return A tag representing to show the asked icon
 	 */
 	protected function getIconHtml($icon, $alt = '', $title = '') {
 		$iconArray = $this->getIcon($icon);
@@ -4265,19 +4341,21 @@ class t3lib_TCEforms {
 	/**
 	 * Creates style attribute content for option tags in a selector box, primarily setting it up to show the icon of an element as background image (works in mozilla)
 	 *
-	 * @param	string		Icon string for option item
-	 * @return	string		Style attribute content, if any
+	 * @param string $iconString Icon string for option item
+	 * @return string Style attribute content, if any
 	 */
 	function optionTagStyle($iconString) {
 		if ($iconString) {
 			list($selIconFile, $selIconInfo) = $this->getIcon($iconString);
-			if (empty($selIconFile))  {
-				return ''; // skip background style if image is unavailable
+			if (empty($selIconFile)) {
+					// Skip background style if image is unavailable
+				return '';
 			}
 			$padLeft = $selIconInfo[0] + 4;
 
 			if ($padLeft >= 18 && $padLeft <= 24) {
-				$padLeft = 22; // In order to get the same padding for all option tags even if icon sizes differ a little, set it to 22 if it was between 18 and 24 pixels
+					// In order to get the same padding for all option tags even if icon sizes differ a little, set it to 22 if it was between 18 and 24 pixels
+				$padLeft = 22;
 			}
 
 			$padTop = t3lib_utility_Math::forceIntegerInRange(($selIconInfo[1] - 12) / 2, 0);
@@ -4289,14 +4367,15 @@ class t3lib_TCEforms {
 	/**
 	 * Creates style attribute content for optgroup tags in a selector box, primarily setting it up to show the icon of an element as background image (works in mozilla).
 	 *
-	 * @param	string		Icon string for option item
-	 * @return	string		Style attribute content, if any
+	 * @param string $iconString Icon string for option item
+	 * @return string Style attribute content, if any
 	 */
 	function optgroupTagStyle($iconString) {
 		if ($iconString) {
 			list($selIconFile, $selIconInfo) = $this->getIcon($iconString);
 			if (empty($selIconFile)) {
-				return ''; // skip background style if image is unavailable
+					// Skip background style if image is unavailable
+				return '';
 			}
 			$padLeft = $selIconInfo[0] + 4;
 
@@ -4314,9 +4393,8 @@ class t3lib_TCEforms {
 	/**
 	 * Extracting values from a value/label list (as made by transferData class)
 	 *
-	 * @param	string		Value string where values are comma separated, intermixed with labels and rawurlencoded (this is what is delivered to TCEforms normally!)
-	 * @param	array		Values in an array
-	 * @return	array		Input string exploded with comma and for each value only the label part is set in the array. Keys are numeric
+	 * @param array $itemFormElValue Values in an array
+	 * @return array Input string exploded with comma and for each value only the label part is set in the array. Keys are numeric
 	 */
 	function extractValuesOnlyFromValueLabelList($itemFormElValue) {
 			// Get values of selected items:
@@ -4333,10 +4411,12 @@ class t3lib_TCEforms {
 	/**
 	 * Wraps a string with a link to the palette.
 	 *
-	 * @param	string		The string to wrap in an A-tag
-	 * @param	string		The table name for which to open the palette.
-	 * @param	array		The palette pointer.
-	 * @param	integer		The record array
+	 * @param string $header The string to wrap in an A-tag
+	 * @param string $table The table name for which to open the palette.
+	 * @param array $row The palette pointer.
+	 * @param integer $palette The record array
+	 * @param mixed $retFunc Not used
+	 * @return array
 	 */
 	function wrapOpenPalette($header, $table, $row, $palette, $retFunc) {
 		$id = 'TCEFORMS_' . $table . '_' . $palette . '_' . $row['uid'];
@@ -4347,11 +4427,12 @@ class t3lib_TCEforms {
 	/**
 	 * Add the id and the style property to the field palette
 	 *
-	 * @param	string		Palette Code
-	 * @param	string		The table name for which to open the palette.
-	 * @param	string		Palette ID
-	 * @param	string		The record array
-	 * @return	boolean		is collapsed
+	 * @param string $code Palette Code
+	 * @param string $table The table name for which to open the palette.
+	 * @param string $row Palette ID
+	 * @param string $palette The record array
+	 * @param boolean $collapsed TRUE if collapsed
+	 * @return boolean Is collapsed
 	 */
 	function wrapPaletteField($code, $table, $row, $palette, $collapsed) {
 		$display = $collapsed ? 'none' : 'block';
@@ -4363,12 +4444,12 @@ class t3lib_TCEforms {
 	/**
 	 * Creates checkbox parameters
 	 *
-	 * @param	string		Form element name
-	 * @param	integer		The value of the checkbox (representing checkboxes with the bits)
-	 * @param	integer		Checkbox # (0-9?)
-	 * @param	integer		Total number of checkboxes in the array.
-	 * @param	string		Additional JavaScript for the onclick handler.
-	 * @return	string		The onclick attribute + possibly the checked-option set.
+	 * @param string $itemName Form element name
+	 * @param integer $thisValue The value of the checkbox (representing checkboxes with the bits)
+	 * @param integer $c Checkbox # (0-9?)
+	 * @param integer $iCount Total number of checkboxes in the array.
+	 * @param string $addFunc Additional JavaScript for the onclick handler.
+	 * @return string The onclick attribute + possibly the checked-option set.
 	 */
 	function checkBoxParams($itemName, $thisValue, $c, $iCount, $addFunc = '') {
 		$onClick = $this->elName($itemName) . '.value=this.checked?(' . $this->elName($itemName) . '.value|' . pow(2, $c) . '):(' . $this->elName($itemName) . '.value&' . (pow(2, $iCount) - 1 - pow(2, $c)) . ');' .
@@ -4381,8 +4462,8 @@ class t3lib_TCEforms {
 	/**
 	 * Returns element reference for form element name
 	 *
-	 * @param	string		Form element name
-	 * @return	string		Form element reference (JS)
+	 * @param string $itemName Form element name
+	 * @return string Form element reference (JS)
 	 */
 	function elName($itemName) {
 		return 'document.' . $this->formName . "['" . $itemName . "']";
@@ -4391,7 +4472,7 @@ class t3lib_TCEforms {
 	/**
 	 * Returns 'this.blur();' string, if supported.
 	 *
-	 * @return	string		If the current browser supports styles, the string 'this.blur();' is returned.
+	 * @return string If the current browser supports styles, the string 'this.blur();' is returned.
 	 */
 	function blur() {
 		return $GLOBALS['CLIENT']['FORMSTYLE'] ? 'this.blur();' : '';
@@ -4400,7 +4481,7 @@ class t3lib_TCEforms {
 	/**
 	 * Returns the "returnUrl" of the form. Can be set externally or will be taken from "t3lib_div::linkThisScript()"
 	 *
-	 * @return	string		Return URL of current script
+	 * @return string Return URL of current script
 	 */
 	function thisReturnUrl() {
 		return $this->returnUrl ? $this->returnUrl : t3lib_div::linkThisScript();
@@ -4410,10 +4491,10 @@ class t3lib_TCEforms {
 	 * Returns the form field for a single HIDDEN field.
 	 * (Not used anywhere...?)
 	 *
-	 * @param	string		Table name
-	 * @param	string		Field name
-	 * @param	array		The row
-	 * @return	string		The hidden-field <input> tag.
+	 * @param string $table Table name
+	 * @param string $field Field name
+	 * @param array $row The row
+	 * @return string The hidden-field <input> tag.
 	 */
 	function getSingleHiddenField($table, $field, $row) {
 		$item = '';
@@ -4431,9 +4512,9 @@ class t3lib_TCEforms {
 	/**
 	 * Returns parameters to set the width for a <input>/<textarea>-element
 	 *
-	 * @param	integer		The abstract size value (1-48)
-	 * @param	boolean		If this is for a text area.
-	 * @return	string		Either a "style" attribute string or "cols"/"size" attribute string.
+	 * @param integer $size The abstract size value (1-48)
+	 * @param boolean $textarea If this is for a text area.
+	 * @return string Either a "style" attribute string or "cols"/"size" attribute string.
 	 */
 	function formWidth($size = 48, $textarea = 0) {
 		$widthAndStyleAttributes = '';
@@ -4457,9 +4538,9 @@ class t3lib_TCEforms {
 	/**
 	 * Returns parameters to set the width for a <input>/<textarea>-element
 	 *
-	 * @param	integer		The abstract size value (1-48)
-	 * @param	boolean		If set, calculates sizes for a text area.
-	 * @return	array		An array containing style, class, and width attributes.
+	 * @param integer $size The abstract size value (1-48)
+	 * @param boolean $textarea If set, calculates sizes for a text area.
+	 * @return array An array containing style, class, and width attributes.
 	 */
 	protected function formWidthAsArray($size = 48, $textarea = FALSE) {
 		$fieldWidthAndStyle = array('style' => '', 'class' => '', 'width' => '');
@@ -4488,9 +4569,9 @@ class t3lib_TCEforms {
 	/**
 	 * Returns parameters to set with for a textarea field
 	 *
-	 * @param	integer		The abstract width (1-48)
-	 * @param	string		Empty or "off" (text wrapping in the field or not)
-	 * @return	string		The "cols" attribute string (or style from formWidth())
+	 * @param integer $size The abstract width (1-48)
+	 * @param string $wrap Empty or "off" (text wrapping in the field or not)
+	 * @return string The "cols" attribute string (or style from formWidth())
 	 * @see formWidth()
 	 */
 	function formWidthText($size = 48, $wrap = '') {
@@ -4505,8 +4586,8 @@ class t3lib_TCEforms {
 	/**
 	 * Get style CSS values for the current field type.
 	 *
-	 * @param	string		Field type (eg. "check", "radio", "select")
-	 * @return	string		CSS attributes
+	 * @param string $type Field type (eg. "check", "radio", "select")
+	 * @return string CSS attributes
 	 * @see formElStyleClassValue()
 	 */
 	function formElStyle($type) {
@@ -4516,8 +4597,8 @@ class t3lib_TCEforms {
 	/**
 	 * Get class attribute value for the current field type.
 	 *
-	 * @param	string		Field type (eg. "check", "radio", "select")
-	 * @return	string		CSS attributes
+	 * @param string $type Field type (eg. "check", "radio", "select")
+	 * @return string CSS attributes
 	 * @see formElStyleClassValue()
 	 */
 	function formElClass($type) {
@@ -4527,9 +4608,9 @@ class t3lib_TCEforms {
 	/**
 	 * Get style CSS values for the current field type.
 	 *
-	 * @param	string		Field type (eg. "check", "radio", "select")
-	 * @param	boolean		If set, will return value only if prefixed with CLASS, otherwise must not be prefixed "CLASS"
-	 * @return	string		CSS attributes
+	 * @param string $type Field type (eg. "check", "radio", "select")
+	 * @param boolean $class If set, will return value only if prefixed with CLASS, otherwise must not be prefixed "CLASS"
+	 * @return string CSS attributes
 	 */
 	function formElStyleClassValue($type, $class = FALSE) {
 			// Get value according to field:
@@ -4552,9 +4633,9 @@ class t3lib_TCEforms {
 	/**
 	 * Return default "style" / "class" attribute line.
 	 *
-	 * @param	string		Field type (eg. "check", "radio", "select")
-	 * @param	string		Additional class(es) to be added
-	 * @return	string		CSS attributes
+	 * @param string $type Field type (eg. "check", "radio", "select")
+	 * @param string $additionalClass Additional class(es) to be added
+	 * @return string CSS attributes
 	 */
 	function insertDefStyle($type, $additionalClass = '') {
 		$out = '';
@@ -4572,10 +4653,10 @@ class t3lib_TCEforms {
 	/**
 	 * Create dynamic tab menu
 	 *
-	 * @param	array		Parts for the tab menu, fed to template::getDynTabMenu()
-	 * @param	string		ID string for the tab menu
-	 * @param	integer		If set to '1' empty tabs will be removed, If set to '2' empty tabs will be disabled
-	 * @return	string		HTML for the menu
+	 * @param array $parts Parts for the tab menu, fed to template::getDynTabMenu()
+	 * @param string $idString ID string for the tab menu
+	 * @param integer $dividersToTabsBehaviour If set to '1' empty tabs will be removed, If set to '2' empty tabs will be disabled
+	 * @return string HTML for the menu
 	 */
 	function getDynTabMenu($parts, $idString, $dividersToTabsBehaviour = 1) {
 		if (is_object($GLOBALS['TBE_TEMPLATE'])) {
@@ -4594,7 +4675,6 @@ class t3lib_TCEforms {
 		}
 	}
 
-
 	/************************************************************
 	 *
 	 * Item-array manipulation functions (check/select/radio)
@@ -4605,8 +4685,8 @@ class t3lib_TCEforms {
 	 * Initialize item array (for checkbox, selectorbox, radio buttons)
 	 * Will resolve the label value.
 	 *
-	 * @param	array		The "columns" array for the field (from TCA)
-	 * @return	array		An array of arrays with three elements; label, value, icon
+	 * @param array $fieldValue The "columns" array for the field (from TCA)
+	 * @return array An array of arrays with three elements; label, value, icon
 	 */
 	function initItemArray($fieldValue) {
 		$items = array();
@@ -4621,9 +4701,9 @@ class t3lib_TCEforms {
 	/**
 	 * Merges items into an item-array
 	 *
-	 * @param	array		The existing item array
-	 * @param	array		An array of items to add. NOTICE: The keys are mapped to values, and the values and mapped to be labels. No possibility of adding an icon.
-	 * @return	array		The updated $item array
+	 * @param array $items The existing item array
+	 * @param array $iArray An array of items to add. NOTICE: The keys are mapped to values, and the values and mapped to be labels. No possibility of adding an icon.
+	 * @return array The updated $item array
 	 */
 	function addItems($items, $iArray) {
 		if (is_array($iArray)) {
@@ -4637,13 +4717,13 @@ class t3lib_TCEforms {
 	/**
 	 * Perform user processing of the items arrays of checkboxes, selectorboxes and radio buttons.
 	 *
-	 * @param	array		The array of items (label,value,icon)
-	 * @param	array		The "itemsProcFunc." from fieldTSconfig of the field.
-	 * @param	array		The config array for the field.
-	 * @param	string		Table name
-	 * @param	array		Record row
-	 * @param	string		Field name
-	 * @return	array		The modified $items array
+	 * @param array $items The array of items (label,value,icon)
+	 * @param array $iArray The "itemsProcFunc." from fieldTSconfig of the field.
+	 * @param array $config The config array for the field.
+	 * @param string $table Table name
+	 * @param array $row Record row
+	 * @param string $field Field name
+	 * @return array The modified $items array
 	 */
 	function procItems($items, $iArray, $config, $table, $row, $field) {
 		$params = array();
@@ -4661,11 +4741,11 @@ class t3lib_TCEforms {
 	/**
 	 * Add selector box items of more exotic kinds.
 	 *
-	 * @param	array		The array of items (label,value,icon)
-	 * @param	array		The "columns" array for the field (from TCA)
-	 * @param	array		TSconfig for the table/row
-	 * @param	string		The fieldname
-	 * @return	array		The $items array modified.
+	 * @param array $items The array of items (label,value,icon)
+	 * @param array $fieldValue The "columns" array for the field (from TCA)
+	 * @param array $TSconfig TSconfig for the table/row
+	 * @param string $field The fieldname
+	 * @return array The $items array modified.
 	 */
 	function addSelectOptionsToItemArray($items, $fieldValue, $TSconfig, $field) {
 
@@ -4907,8 +4987,8 @@ class t3lib_TCEforms {
 	/**
 	 * Creates value/label pair for a backend module (main and sub)
 	 *
-	 * @param	string		The module key
-	 * @return	string		The rawurlencoded 2-part string to transfer to interface
+	 * @param string $value The module key
+	 * @return string The rawurlencoded 2-part string to transfer to interface
 	 * @access private
 	 * @see addSelectOptionsToItemArray()
 	 */
@@ -4928,12 +5008,12 @@ class t3lib_TCEforms {
 	/**
 	 * Adds records from a foreign table (for selector boxes)
 	 *
-	 * @param	array		The array of items (label,value,icon)
-	 * @param	array		The 'columns' array for the field (from TCA)
-	 * @param	array		TSconfig for the table/row
-	 * @param	string		The fieldname
-	 * @param	boolean		If set, then we are fetching the 'neg_' foreign tables.
-	 * @return	array		The $items array modified.
+	 * @param array $items The array of items (label,value,icon)
+	 * @param array $fieldValue The 'columns' array for the field (from TCA)
+	 * @param array $TSconfig TSconfig for the table/row
+	 * @param string $field The fieldname
+	 * @param boolean $pFFlag If set, then we are fetching the 'neg_' foreign tables.
+	 * @return array The $items array modified.
 	 * @see addSelectOptionsToItemArray(), t3lib_BEfunc::exec_foreign_table_where_query()
 	 */
 	function foreignTable($items, $fieldValue, $TSconfig, $field, $pFFlag = 0) {
@@ -4998,7 +5078,6 @@ class t3lib_TCEforms {
 		return $items;
 	}
 
-
 	/********************************************
 	 *
 	 * Template functions
@@ -5029,9 +5108,9 @@ class t3lib_TCEforms {
 	/**
 	 * This inserts the content of $inArr into the field-template
 	 *
-	 * @param	array		Array with key/value pairs to insert in the template.
-	 * @param	string		Alternative template to use instead of the default.
-	 * @return	string
+	 * @param array $inArr Array with key/value pairs to insert in the template.
+	 * @param string $altTemplate Alternative template to use instead of the default.
+	 * @return string
 	 */
 	function intoTemplate($inArr, $altTemplate = '') {
 			// Put into template_
@@ -5048,12 +5127,12 @@ class t3lib_TCEforms {
 	/**
 	 * Overwrite this function in own extended class to add own markers for output
 	 *
-	 * @param	array		Array with key/value pairs to insert in the template.
-	 * @param	string		The table name of the record
-	 * @param	string		The field name which this element is supposed to edit
-	 * @param	array		The record data array where the value(s) for the field can be found
-	 * @param	array		An array with additional configuration options.
-	 * @return	array		marker array for template output
+	 * @param array $marker Array with key/value pairs to insert in the template.
+	 * @param string $table The table name of the record
+	 * @param string $field The field name which this element is supposed to edit
+	 * @param array $row The record data array where the value(s) for the field can be found
+	 * @param array $PA An array with additional configuration options.
+	 * @return array Marker array for template output
 	 * @see function intoTemplate()
 	 */
 	function addUserTemplateMarkers($marker, $table, $field, $row, &$PA) {
@@ -5064,8 +5143,8 @@ class t3lib_TCEforms {
 	 * Wrapping labels
 	 * Currently not implemented - just returns input value.
 	 *
-	 * @param	string		Input string.
-	 * @return	string		Output string.
+	 * @param string $str Input string.
+	 * @return string Output string.
 	 */
 	function wrapLabels($str) {
 		return $str;
@@ -5075,10 +5154,10 @@ class t3lib_TCEforms {
 	 * Wraps all the table rows into a single table.
 	 * Used externally from scripts like alt_doc.php and db_layout.php (which uses TCEforms...)
 	 *
-	 * @param	string		Code to output between table-parts; table rows
-	 * @param	array		The record
-	 * @param	string		The table name
-	 * @return	string
+	 * @param string $c Code to output between table-parts; table rows
+	 * @param array $rec The record
+	 * @param string $table The table name
+	 * @return string
 	 */
 	function wrapTotal($c, $rec, $table) {
 		$parts = $this->replaceTableWrap(explode('|', $this->totalWrap, 2), $rec, $table);
@@ -5090,7 +5169,7 @@ class t3lib_TCEforms {
 	 *
 	 * @param string $formName Context of the token
 	 * @param string $tokenName The name of the token GET/POST variable
-	 * @return string a complete input field
+	 * @return string A complete input field
 	 */
 	public static function getHiddenTokenField($formName = 'securityToken', $tokenName = 'formToken') {
 		$formprotection = t3lib_formprotection_Factory::get();
@@ -5100,10 +5179,10 @@ class t3lib_TCEforms {
 	/**
 	 * This replaces markers in the total wrap
 	 *
-	 * @param	array		An array of template parts containing some markers.
-	 * @param	array		The record
-	 * @param	string		The table name
-	 * @return	string
+	 * @param array $arr An array of template parts containing some markers.
+	 * @param array $rec The record
+	 * @param string $table The table name
+	 * @return string
 	 */
 	function replaceTableWrap($arr, $rec, $table) {
 
@@ -5183,9 +5262,9 @@ class t3lib_TCEforms {
 	/**
 	 * Wraps an element in the $out_array with the template row for a "section" ($this->sectionWrap)
 	 *
-	 * @param	array		The array with form elements stored in (passed by reference and changed!)
-	 * @param	integer		The pointer to the entry in the $out_array  (passed by reference and incremented!)
-	 * @return	void
+	 * @param array $out_array The array with form elements stored in (passed by reference and changed!)
+	 * @param integer $out_pointer The pointer to the entry in the $out_array  (passed by reference and incremented!)
+	 * @return void
 	 */
 	function wrapBorder(&$out_array, &$out_pointer) {
 		if ($this->sectionWrap && $out_array[$out_pointer]) {
@@ -5205,8 +5284,8 @@ class t3lib_TCEforms {
 	/**
 	 * Replaces colorscheme markers in the template string
 	 *
-	 * @param	string		Template string with markers to be substituted.
-	 * @return	string
+	 * @param string $inTemplate Template string with markers to be substituted.
+	 * @return string
 	 */
 	function rplColorScheme($inTemplate) {
 			// Colors:
@@ -5226,7 +5305,7 @@ class t3lib_TCEforms {
 	 * Returns divider.
 	 * Currently not implemented and returns only blank value.
 	 *
-	 * @return	string		Empty string
+	 * @return string Empty string
 	 */
 	function getDivider() {
 		return '';
@@ -5235,8 +5314,8 @@ class t3lib_TCEforms {
 	/**
 	 * Creates HTML output for a palette
 	 *
-	 * @param	array		The palette array to print
-	 * @return	string		HTML output
+	 * @param array $palArr The palette array to print
+	 * @return string HTML output
 	 */
 	function printPalette($palArr) {
 		$fieldAttributes = $labelAttributes = '';
@@ -5303,8 +5382,8 @@ class t3lib_TCEforms {
 	/**
 	 * Setting the current color scheme ($this->colorScheme) based on $this->defColorScheme plus input string.
 	 *
-	 * @param	string		A color scheme string.
-	 * @return	void
+	 * @param string $scheme A color scheme string.
+	 * @return void
 	 */
 	function setColorScheme($scheme) {
 		$this->colorScheme = $this->defColorScheme;
@@ -5336,7 +5415,7 @@ class t3lib_TCEforms {
 	/**
 	 * Reset color schemes.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function resetSchemes() {
 		$this->setColorScheme($GLOBALS['TBE_STYLES']['colorschemes'][0]);
@@ -5347,7 +5426,7 @@ class t3lib_TCEforms {
 	/**
 	 * Store current color scheme
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function storeSchemes() {
 		$this->savedSchemes['classScheme'] = $this->classScheme;
@@ -5359,7 +5438,7 @@ class t3lib_TCEforms {
 	/**
 	 * Restore the saved color scheme
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function restoreSchemes() {
 		$this->classScheme = $this->savedSchemes['classScheme'];
@@ -5367,7 +5446,6 @@ class t3lib_TCEforms {
 		$this->fieldStyle = $this->savedSchemes['fieldStyle'];
 		$this->borderStyle = $this->savedSchemes['borderStyle'];
 	}
-
 
 	/********************************************
 	 *
@@ -5378,7 +5456,7 @@ class t3lib_TCEforms {
 	/**
 	 * JavaScript code added BEFORE the form is drawn:
 	 *
-	 * @return	string		A <script></script> section with JavaScript.
+	 * @return string A <script></script> section with JavaScript.
 	 */
 	function JStop() {
 
@@ -5428,16 +5506,16 @@ class t3lib_TCEforms {
 	 *
 	 *		 ... and then include the result of this function after the form
 	 *
-	 * @param	string		$formname: The identification of the form on the page.
-	 * @param	boolean		$update: Just extend/update existing settings, e.g. for AJAX call
-	 * @return	string		A section with JavaScript - if $update is FALSE, embedded in <script></script>
+	 * @param string $formname The identification of the form on the page.
+	 * @param boolean $update Just extend/update existing settings, e.g. for AJAX call
+	 * @return string A section with JavaScript - if $update is FALSE, embedded in <script></script>
 	 */
 	function JSbottom($formname = 'forms[0]', $update = FALSE) {
 		$jsFile = array();
 		$elements = array();
 		$out = '';
 
-			// required:
+			// Required:
 		foreach ($this->requiredFields as $itemImgName => $itemName) {
 			$match = array();
 			if (preg_match('/^(.+)\[((\w|\d|_)+)\]$/', $itemName, $match)) {
@@ -5450,7 +5528,7 @@ class t3lib_TCEforms {
 				}
 			}
 		}
-			// range:
+			// Range:
 		foreach ($this->requiredElements as $itemName => $range) {
 			if (preg_match('/^(.+)\[((\w|\d|_)+)\]$/', $itemName, $match)) {
 				$record = $match[1];
@@ -5472,7 +5550,7 @@ class t3lib_TCEforms {
 			$pageRenderer->loadPrototype();
 			$pageRenderer->loadExtJS();
 
-				// make textareas resizable and flexible
+				// Make textareas resizable and flexible
 			if (!($GLOBALS['BE_USER']->uc['resizeTextareas'] == '0' && $GLOBALS['BE_USER']->uc['resizeTextareas_Flexible'] == '0')) {
 				$pageRenderer->addCssFile($this->backPath . '../t3lib/js/extjs/ux/resize.css');
 				$this->loadJavascriptLib('../t3lib/js/extjs/ux/ext.resizable.js');
@@ -5488,7 +5566,7 @@ class t3lib_TCEforms {
 			$this->loadJavascriptLib('jsfunc.tbe_editor.js');
 			$this->loadJavascriptLib('jsfunc.placeholder.js');
 
-				// needed for tceform manipulation (date picker)
+				// Needed for tceform manipulation (date picker)
 			$typo3Settings = array(
 				'datePickerUSmode' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 1 : 0,
 				'dateFormat' => array('j-n-Y', 'G:i j-n-Y'),
@@ -5499,7 +5577,7 @@ class t3lib_TCEforms {
 			$this->loadJavascriptLib('../t3lib/js/extjs/ux/Ext.ux.DateTimePicker.js');
 			$this->loadJavascriptLib('../t3lib/js/extjs/tceforms.js');
 
-				// if IRRE fields were processed, add the JavaScript functions:
+				// If IRRE fields were processed, add the JavaScript functions:
 			if ($this->inline->inlineCount) {
 				$GLOBALS['SOBE']->doc->getPageRenderer()->loadScriptaculous();
 				$this->loadJavascriptLib('../t3lib/jsfunc.inline.js');
@@ -5509,7 +5587,7 @@ class t3lib_TCEforms {
 				';
 			}
 
-				// if Suggest fields were processed, add the JS functions
+				// If Suggest fields were processed, add the JS functions
 			if ($this->suggest->suggestCount > 0) {
 				$pageRenderer->loadScriptaculous();
 				$this->loadJavascriptLib('../t3lib/js/jsfunc.tceforms_suggest.js');
@@ -5607,7 +5685,7 @@ class t3lib_TCEforms {
 			';
 		}
 
-			// add JS required for inline fields
+			// Add JS required for inline fields
 		if (count($this->inline->inlineData)) {
 			$out .= '
 			inline.addToDataArray(' . json_encode($this->inline->inlineData) . ');
@@ -5619,7 +5697,7 @@ class t3lib_TCEforms {
 			TBE_EDITOR.addNested(' . json_encode($this->requiredNested) . ');
 			';
 		}
-			// elements which are required or have a range definition:
+			// Elements which are required or have a range definition:
 		if (count($elements)) {
 			$out .= '
 			TBE_EDITOR.addElements(' . json_encode($elements) . ');
@@ -5953,7 +6031,7 @@ class t3lib_TCEforms {
 	/**
 	 * Prints necessary JavaScript for TCEforms (after the form HTML).
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printNeededJSFunctions() {
 			// JS evaluation:
@@ -5982,7 +6060,7 @@ class t3lib_TCEforms {
 	/**
 	 * Returns necessary JavaScript for the top
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printNeededJSFunctions_top() {
 			// JS evaluation:
@@ -5995,13 +6073,12 @@ class t3lib_TCEforms {
 	 * backpath is automatically applied.
 	 * This method acts as wrapper for $GLOBALS['SOBE']->doc->loadJavascriptLib($lib).
 	 *
-	 * @param	string		$lib: Library name. Call it with the full path like "contrib/prototype/prototype.js" to load it
-	 * @return	void
+	 * @param string $lib Library name. Call it with the full path like "contrib/prototype/prototype.js" to load it
+	 * @return void
 	 */
 	public function loadJavascriptLib($lib) {
 		$GLOBALS['SOBE']->doc->loadJavascriptLib($lib);
 	}
-
 
 	/********************************************
 	 *
@@ -6009,13 +6086,12 @@ class t3lib_TCEforms {
 	 *
 	 ********************************************/
 
-
 	/**
 	 * Gets default record. Maybe not used anymore. FE-editor?
 	 *
-	 * @param	string		Database Tablename
-	 * @param	integer		PID value (positive / negative)
-	 * @return	array		"default" row.
+	 * @param string $table Database Tablename
+	 * @param integer $pid PID value (positive / negative)
+	 * @return array "default" row.
 	 */
 	function getDefaultRecord($table, $pid = 0) {
 		if ($GLOBALS['TCA'][$table]) {
@@ -6050,9 +6126,9 @@ class t3lib_TCEforms {
 	/**
 	 * Return record path (visually formatted, using t3lib_BEfunc::getRecordPath() )
 	 *
-	 * @param	string		Table name
-	 * @param	array		Record array
-	 * @return	string		The record path.
+	 * @param string $table Table name
+	 * @param array $rec Record array
+	 * @return string The record path.
 	 * @see t3lib_BEfunc::getRecordPath()
 	 */
 	function getRecordPath($table, $rec) {
@@ -6067,7 +6143,7 @@ class t3lib_TCEforms {
 	 * Returns the select-page read-access SQL clause.
 	 * Returns cached string, so you can call this function as much as you like without performance loss.
 	 *
-	 * @return	string
+	 * @return string
 	 */
 	function readPerms() {
 		if (!$this->perms_clause_set) {
@@ -6080,8 +6156,8 @@ class t3lib_TCEforms {
 	/**
 	 * Fetches language label for key
 	 *
-	 * @param	string		Language label reference, eg. 'LLL:EXT:lang/locallang_core.php:labels.blablabla'
-	 * @return	string		The value of the label, fetched for the current backend language.
+	 * @param string $str Language label reference, eg. 'LLL:EXT:lang/locallang_core.php:labels.blablabla'
+	 * @return string The value of the label, fetched for the current backend language.
 	 */
 	function sL($str) {
 		return $GLOBALS['LANG']->sL($str);
@@ -6093,8 +6169,8 @@ class t3lib_TCEforms {
 	 * The prefix "l_" maps to the prefix "labels." inside locallang_core.php
 	 * The prefix "m_" maps to the prefix "mess." inside locallang_core.php
 	 *
-	 * @param	string		The label key
-	 * @return	string		The value of the label, fetched for the current backend language.
+	 * @param string $str The label key
+	 * @return string The value of the label, fetched for the current backend language.
 	 */
 	function getLL($str) {
 		$content = '';
@@ -6113,8 +6189,8 @@ class t3lib_TCEforms {
 	/**
 	 * Returns TRUE, if the palette, $palette, is collapsed (not shown, but found in top-frame) for the table.
 	 *
-	 * @param string The table name
-	 * @param integer The palette pointer/number
+	 * @param string $table The table name
+	 * @param integer $palette The palette pointer/number
 	 * @return boolean
 	 */
 	function isPalettesCollapsed($table, $palette) {
@@ -6133,16 +6209,17 @@ class t3lib_TCEforms {
 	/**
 	 * Returns TRUE, if the evaluation of the required-field code is OK.
 	 *
-	 * @param	string		The required-field code
-	 * @param	array		The record to evaluate
-	 * @param	string		FlexForm value key, eg. vDEF
-	 * @return	boolean
+	 * @param string $displayCond The required-field code
+	 * @param array $row The record to evaluate
+	 * @param string $ffValueKey FlexForm value key, eg. vDEF
+	 * @return boolean
 	 */
 	function isDisplayCondition($displayCond, $row, $ffValueKey = '') {
 		$output = FALSE;
 
 		$parts = explode(':', $displayCond);
-		switch ((string) $parts[0]) { // Type of condition:
+			// Type of condition:
+		switch ((string) $parts[0]) {
 			case 'FIELD':
 				if ($ffValueKey) {
 					if (strpos($parts[1], 'parentRec.') !== FALSE) {
@@ -6236,7 +6313,7 @@ class t3lib_TCEforms {
 					case 'IS':
 						$isNewRecord = (intval($row['uid']) > 0 ? FALSE : TRUE);
 
-							// detection of version can be done be detecting the workspace of the user
+							// Detection of version can be done be detecting the workspace of the user
 						$isUserInWorkspace = ($GLOBALS['BE_USER']->workspace > 0 ? TRUE : FALSE);
 						if (intval($row['pid']) == -1 || intval($row['_ORIG_pid']) == -1) {
 							$isRecordDetectedAsVersion = TRUE;
@@ -6269,10 +6346,10 @@ class t3lib_TCEforms {
 	 * Return TSCpid (cached)
 	 * Using t3lib_BEfunc::getTSCpid()
 	 *
-	 * @param	string		Tablename
-	 * @param	string		UID value
-	 * @param	string		PID value
-	 * @return	integer		Returns the REAL pid of the record, if possible. If both $uid and $pid is strings, then pid=-1 is returned as an error indication.
+	 * @param string $table Tablename
+	 * @param string $uid UID value
+	 * @param string $pid PID value
+	 * @return integer Returns the REAL pid of the record, if possible. If both $uid and $pid is strings, then pid=-1 is returned as an error indication.
 	 * @see t3lib_BEfunc::getTSCpid()
 	 */
 	function getTSCpid($table, $uid, $pid) {
@@ -6286,8 +6363,8 @@ class t3lib_TCEforms {
 	/**
 	 * Returns TRUE if descriptions should be loaded always
 	 *
-	 * @param	string		Table for which to check
-	 * @return	boolean
+	 * @param string $table Table for which to check
+	 * @return boolean
 	 */
 	function doLoadTableDescr($table) {
 		return $GLOBALS['TCA'][$table]['interface']['always_description'];
@@ -6296,9 +6373,9 @@ class t3lib_TCEforms {
 	/**
 	 * Returns an array of available languages (to use for FlexForms)
 	 *
-	 * @param	boolean		If set, only languages which are paired with a static_info_table / static_language record will be returned.
-	 * @param	boolean		If set, an array entry for a default language is set.
-	 * @return	array
+	 * @param boolean $onlyIsoCoded If set, only languages which are paired with a static_info_table / static_language record will be returned.
+	 * @param boolean $setDefault If set, an array entry for a default language is set.
+	 * @return array
 	 */
 	function getAvailableLanguages($onlyIsoCoded = 1, $setDefault = 1) {
 		$isL = t3lib_extMgm::isLoaded('static_info_tables');
@@ -6335,10 +6412,10 @@ class t3lib_TCEforms {
 	/**
 	 * Initializes language icons etc.
 	 *
-	 * param	string	Table name
-	 * param	array	Record
-	 * param	string	Sys language uid OR ISO language code prefixed with "v", eg. "vDA"
-	 * @return	void
+	 * @param string $table Table name
+	 * @param array $row Record
+	 * @param string $sys_language_uid Sys language uid OR ISO language code prefixed with "v", eg. "vDA"
+	 * @return void
 	 */
 	function getLanguageIcon($table, $row, $sys_language_uid) {
 		$mainKey = $table . ':' . $row['uid'];
@@ -6395,10 +6472,10 @@ class t3lib_TCEforms {
 	/**
 	 * Rendering preview output of a field value which is not shown as a form field but just outputted.
 	 *
-	 * @param	string		The value to output
-	 * @param	array		Configuration for field.
-	 * @param	string		Name of field.
-	 * @return	 string		HTML formatted output
+	 * @param string $value The value to output
+	 * @param array $config Configuration for field.
+	 * @param string $field Name of field.
+	 * @return string HTML formatted output
 	 */
 	function previewFieldValue($value, $config, $field = '') {
 		if ($config['config']['type'] === 'group' &&
@@ -6457,7 +6534,7 @@ class t3lib_TCEforms {
 	/**
 	 * Generates and return information about which languages the current user should see in preview, configured by options.additionalPreviewLanguages
 	 *
-	 * return array	Array of additional languages to preview
+	 * @return array Array of additional languages to preview
 	 */
 	function getAdditionalPreviewLanguages() {
 		if (!isset($this->cachedAdditionalPreviewLanguages)) {
@@ -6488,9 +6565,9 @@ class t3lib_TCEforms {
 	 * Push a new element to the dynNestedStack. Thus, every object know, if it's
 	 * nested in a tab or IRRE level and in which order this was processed.
 	 *
-	 * @param	string		$type: Type of the level, e.g. "tab" or "inline"
-	 * @param	string		$ident: Identifier of the level
-	 * @return	void
+	 * @param string $type Type of the level, e.g. "tab" or "inline"
+	 * @param string $ident Identifier of the level
+	 * @return void
 	 */
 	function pushToDynNestedStack($type, $ident) {
 		$this->dynNestedStack[] = array($type, $ident);
@@ -6501,9 +6578,9 @@ class t3lib_TCEforms {
 	 * are set, the last element will only be removed, if it matches
 	 * what is expected to be removed.
 	 *
-	 * @param	string		$type: Type of the level, e.g. "tab" or "inline"
-	 * @param	string		$ident: Identifier of the level
-	 * @return	void
+	 * @param string $type Type of the level, e.g. "tab" or "inline"
+	 * @param string $ident Identifier of the level
+	 * @return void
 	 */
 	function popFromDynNestedStack($type = NULL, $ident = NULL) {
 		if ($type != NULL && $ident != NULL) {
@@ -6520,9 +6597,9 @@ class t3lib_TCEforms {
 	 * Get the dynNestedStack as associative array.
 	 * The result is e.g. ['tab','DTM-ABCD-1'], ['inline','data[13][table][uid][field]'], ['tab','DTM-DEFG-2'], ...
 	 *
-	 * @param	boolean		$json: Return a JSON string instead of an array - default: FALSE
-	 * @param	boolean		$skipFirst: Skip the first element in the dynNestedStack - default: FALSE
-	 * @return	mixed		Returns an associative array by default. If $json is TRUE, it will be returned as JSON string.
+	 * @param boolean $json Return a JSON string instead of an array - default: FALSE
+	 * @param boolean $skipFirst Skip the first element in the dynNestedStack - default: FALSE
+	 * @return mixed Returns an associative array by default. If $json is TRUE, it will be returned as JSON string.
 	 */
 	function getDynNestedStack($json = FALSE, $skipFirst = FALSE) {
 		$result = $this->dynNestedStack;
@@ -6538,10 +6615,10 @@ class t3lib_TCEforms {
 	 * which required field/element was filled incorrectly and show it, even if the Tab or IRRE
 	 * level is hidden.
 	 *
-	 * @param	string		$type: Type of requirement ('field' or 'range')
-	 * @param	string		$name: The name of the form field
-	 * @param	mixed		$value: For type 'field' string, for type 'range' array
-	 * @return	void
+	 * @param string $type Type of requirement ('field' or 'range')
+	 * @param string $name The name of the form field
+	 * @param mixed $value For type 'field' string, for type 'range' array
+	 * @return void
 	 */
 	protected function registerRequiredProperty($type, $name, $value) {
 		if ($type == 'field' && is_string($value)) {
@@ -6559,9 +6636,9 @@ class t3lib_TCEforms {
 	/**
 	 * Sets the current situation of nested tabs and inline levels for a given element.
 	 *
-	 * @param	string		$itemName: The element the nesting should be stored for
-	 * @param	boolean		$setLevel: Set the reverse level lookup - default: TRUE
-	 * @return	void
+	 * @param string $itemName The element the nesting should be stored for
+	 * @param boolean $setLevel Set the reverse level lookup - default: TRUE
+	 * @return void
 	 */
 	protected function registerNestedElement($itemName, $setLevel = TRUE) {
 		$dynNestedStack = $this->getDynNestedStack();
@@ -6627,11 +6704,11 @@ class t3lib_TCEforms {
 	/**
 	 * Insert additional style sheet link
 	 *
-	 * @param	string		$key: some key identifying the style sheet
-	 * @param	string		$href: uri to the style sheet file
-	 * @param	string		$title: value for the title attribute of the link element
-	 * @return	string		$relation: value for the rel attribute of the link element
-	 * @return	void
+	 * @param string $key Some key identifying the style sheet
+	 * @param string $href Uri to the style sheet file
+	 * @param string $title Value for the title attribute of the link element
+	 * @param string $relation Value for the rel attribute of the link element
+	 * @return void
 	 */
 	public function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet') {
 		$GLOBALS['SOBE']->doc->addStyleSheet($key, $href, $title, $relation);
