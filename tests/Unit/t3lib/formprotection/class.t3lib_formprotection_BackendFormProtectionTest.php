@@ -115,7 +115,7 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 				'  public function getSessionData($key) {' .
 				'    return $this->session[$key];' .
 				'  }' .
-				'  public function setAndSaveSessionData($key,$data) {' .
+				'  public function setAndSaveSessionData($key, $data) {' .
 				'    $this->session[$key] = $data;' .
 				'  }' .
 				'}'
