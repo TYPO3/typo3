@@ -327,7 +327,7 @@ $query . '<table class="typo3-adminPanel">' .
 			$out .= '<script type="text/javascript">/*<![CDATA[*/' . t3lib_div::minifyJavaScript('
 				var evalFunc = new evalFunc();
 					// TSFEtypo3FormFieldSet()
-				function TSFEtypo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue) {	//
+				function TSFEtypo3FormFieldSet(theField, evallist, is_in, checkbox, checkboxValue) {
 					var theFObj = new evalFunc_dummy (evallist,is_in, checkbox, checkboxValue);
 					var theValue = document.TSFE_ADMIN_PANEL_FORM[theField].value;
 					if (checkbox && theValue==checkboxValue) {
@@ -342,7 +342,7 @@ $query . '<table class="typo3-adminPanel">' .
 					}
 				}
 					// TSFEtypo3FormFieldGet()
-				function TSFEtypo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off) {	//
+				function TSFEtypo3FormFieldGet(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off) {
 					var theFObj = new evalFunc_dummy (evallist,is_in, checkbox, checkboxValue);
 					if (checkbox_off) {
 						document.TSFE_ADMIN_PANEL_FORM[theField].value=checkboxValue;

@@ -227,7 +227,7 @@ class t3lib_file_Factory implements t3lib_Singleton {
 	 * @param array $storageConfiguration Storage configuration (if given, this won't be extracted from the FlexForm value but the supplied array used instead)
 	 * @return t3lib_file_Storage
 	 */
-	public function createStorageObject(array $storageRecord, array $storageConfiguration=NULL) {
+	public function createStorageObject(array $storageRecord, array $storageConfiguration = NULL) {
 		$className = 't3lib_file_Storage';
 
 		if (!$storageConfiguration) {

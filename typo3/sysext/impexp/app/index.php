@@ -99,7 +99,7 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	mixed		(See parent class)
 	 * @return	string		Wrapped title
 	 */
-	function wrapTitle($title,$v)	{
+	function wrapTitle($title, $v) {
 		$title = (!strcmp(trim($title),'')) ? '<em>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</em>' : htmlspecialchars($title);
 		return $title;
 	}
@@ -112,7 +112,7 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	mixed		(See parent class)
 	 * @return	string		Icon HTML
 	 */
-	function PM_ATagWrap($icon,$cmd,$bMark='')	{
+	function PM_ATagWrap($icon, $cmd, $bMark = '') {
 		return $icon;
 	}
 
@@ -123,7 +123,7 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	array		Record row (page)
 	 * @return	string		Icon HTML
 	 */
-	function wrapIcon($icon,$row)	{
+	function wrapIcon($icon, $row) {
 		return $icon;
 	}
 
@@ -143,7 +143,7 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	string		Additional where clause
 	 * @return	array		Array of tree elements
 	 */
-	function ext_tree($pid, $clause='')	{
+	function ext_tree($pid, $clause = '') {
 
 			// Initialize:
 		$this->init(' AND '.$this->permsC().$clause);
@@ -246,7 +246,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				// JavaScript
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			script_ended = 0;
-			function jumpToUrl(URL)	{	//
+			function jumpToUrl(URL) {
 				window.location.href = URL;
 			}
 		');
@@ -372,7 +372,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @param	array		Content of POST VAR tx_impexp[]..
 	 * @return	void		Setting content in $this->content
 	 */
-	function exportData($inData)	{
+	function exportData($inData) {
 			// BUILDING EXPORT DATA:
 
 			// Processing of InData array values:
@@ -657,7 +657,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @param	integer		Max amount of records to select
 	 * @return	void
 	 */
-	function addRecordsForPid($k, $tables, $maxNumber)	{
+	function addRecordsForPid($k, $tables, $maxNumber) {
 		if (is_array($tables))	{
 			foreach ($GLOBALS['TCA'] as $table => $value) {
 				if ($table!='pages' && (in_array($table,$tables) || in_array('_ALL',$tables)))	{
@@ -680,7 +680,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @param	integer		Max number of records to select
 	 * @return	pointer		SQL resource pointer
 	 */
-	function exec_listQueryPid($table,$pid,$limit)	{
+	function exec_listQueryPid($table, $pid, $limit) {
 		$orderBy = ($GLOBALS['TCA'][$table]['ctrl']['sortby']
 			? 'ORDER BY ' . $GLOBALS['TCA'][$table]['ctrl']['sortby']
 			: $GLOBALS['TCA'][$table]['ctrl']['default_sortby']);
@@ -716,7 +716,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @param	array		Table row accumulation variable. This is filled with table rows.
 	 * @return	void		Sets content in $this->content
 	 */
-	function makeConfigurationForm($inData, &$row)	{
+	function makeConfigurationForm($inData, &$row) {
 		global $LANG;
 
 		$nameSuggestion = '';
@@ -891,7 +891,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @param	array		Table row accumulation variable. This is filled with table rows.
 	 * @return	void		Sets content in $this->content
 	 */
-	function makeAdvancedOptionsForm($inData, &$row)	{
+	function makeAdvancedOptionsForm($inData, &$row) {
 		global $LANG;
 
 			// Soft references
@@ -939,7 +939,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @param	array		Table row accumulation variable. This is filled with table rows.
 	 * @return	void		Sets content in $this->content
 	 */
-	function makeSaveForm($inData, &$row)	{
+	function makeSaveForm($inData, &$row) {
 		global $LANG;
 
 			// Presets:
@@ -1070,7 +1070,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @param	array		Content of POST VAR tx_impexp[]..
 	 * @return	void		Setting content in $this->content
 	 */
-	function importData($inData)	{
+	function importData($inData) {
 		global $LANG;
 
 		$access = is_array($this->pageinfo) ? 1 : 0;
@@ -1401,7 +1401,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @param	array		In data array, passed by reference!
 	 * @return	void
 	 */
-	function processPresets(&$inData)	{
+	function processPresets(&$inData) {
 
 		$presetData = t3lib_div::_GP('preset');
 		$err = FALSE;
@@ -1496,7 +1496,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @param	integer		Preset record
 	 * @return	array		Preset record, if any (otherwise FALSE)
 	 */
-	function getPreset($uid)	{
+	function getPreset($uid) {
 		$preset = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'tx_impexp_presets', 'uid=' . intval($uid));
 		return $preset;
 	}
@@ -1590,7 +1590,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @param	array		Options to display (key/value pairs)
 	 * @return	string		HTML select element
 	 */
-	function renderSelectBox($prefix,$value,$optValues)	{
+	function renderSelectBox($prefix, $value, $optValues) {
 		$opt = array();
 		$isSelFlag = 0;
 		foreach ($optValues as $k => $v) {
@@ -1612,7 +1612,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @param	string		Table names (and the string "_ALL") to exclude. Comma list
 	 * @return	string		HTML select element
 	 */
-	function tableSelector($prefix,$value,$excludeList='')	{
+	function tableSelector($prefix, $value, $excludeList = '') {
 		$optValues = array();
 
 		if (!t3lib_div::inList($excludeList,'_ALL'))	{
@@ -1644,7 +1644,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @param	array		The current values selected
 	 * @return	string		HTML select element
 	 */
-	function extensionSelector($prefix,$value)	{
+	function extensionSelector($prefix, $value) {
 		global $TYPO3_LOADED_EXT;
 
 		$extTrav = array_keys($TYPO3_LOADED_EXT);
@@ -1669,7 +1669,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @param	array		Exclude array from import/export object.
 	 * @return	string		AND where clause part to filter out page uids.
 	 */
-	function filterPageIds($exclude)	{
+	function filterPageIds($exclude) {
 
 			// Get keys:
 		$exclude = array_keys($exclude);

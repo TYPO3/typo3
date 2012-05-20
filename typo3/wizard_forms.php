@@ -194,7 +194,7 @@ class SC_wizard_forms {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/wizard_forms.html');
 		$this->doc->JScode=$this->doc->wrapScriptTags('
-			function jumpToUrl(URL,formEl)	{	//
+			function jumpToUrl(URL,formEl) {
 				window.location.href = URL;
 			}
 		');
@@ -329,7 +329,7 @@ class SC_wizard_forms {
 	 * @return	array		Configuration Array
 	 * @access private
 	 */
-	function getConfigCode(&$row)	{
+	function getConfigCode(&$row) {
 
 			// If some data has been submitted, then construct
 		if (isset($this->FORMCFG['c']))	{
@@ -399,7 +399,7 @@ class SC_wizard_forms {
 	 * @return	string		HTML for the form wizard
 	 * @access private
 	 */
-	function getFormHTML($formCfgArray,$row)	{
+	function getFormHTML($formCfgArray, $row) {
 			// Initialize variables:
 		$specParts=array();
 		$hiddenFields=array();
@@ -714,7 +714,7 @@ class SC_wizard_forms {
 	 * @return	string		The array converted into a string with line-based configuration.
 	 * @see cfgString2CfgArray()
 	 */
-	function cfgArray2CfgString($cfgArr)	{
+	function cfgArray2CfgString($cfgArr) {
 
 			// Initialize:
 		$inLines=array();
@@ -796,7 +796,7 @@ class SC_wizard_forms {
 	 * @return	array		Configuration array
 	 * @see cfgArray2CfgString()
 	 */
-	function cfgString2CfgArray($cfgStr)	{
+	function cfgString2CfgArray($cfgStr) {
 
 			// Traverse the number of form elements:
 		$tLines=explode(LF,$cfgStr);
@@ -895,7 +895,7 @@ class SC_wizard_forms {
 	 * @return	array		Processed array
 	 * @access private
 	 */
-	function cleanT($tArr)	{
+	function cleanT($tArr) {
 		for($a=count($tArr);$a>0;$a--)	{
 			if (strcmp($tArr[$a-1],''))	{
 				break;
@@ -913,7 +913,7 @@ class SC_wizard_forms {
 	 * @return	string		HTML table
 	 * @access private
 	 */
-	function formatCells($fArr)	{
+	function formatCells($fArr) {
 
 			// Traverse the elements in $fArr and wrap them in table cells:
 		$lines=array();

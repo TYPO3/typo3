@@ -235,9 +235,9 @@ class TSpagegen {
 		$setBody = array();
 
 		foreach ($GLOBALS['TSFE']->JSeventFuncCalls as $event => $handlers)	{
-			if (count($handlers))	{
-				$functions[] = '	function T3_'.$event.'Wrapper(e)	{	'.implode('   ',$handlers).'	}';
-				$setEvents[] = '	document.'.$event.'=T3_'.$event.'Wrapper;';
+			if (count($handlers)) {
+				$functions[] = '	function T3_' . $event . 'Wrapper(e) { ' . implode('   ', $handlers) . ' }';
+				$setEvents[] = '	document.' . $event . '=T3_' . $event . 'Wrapper;';
 				if ($event == 'onload')	{
 					$setBody[]='onload="T3_onloadWrapper();"';	// dubiuos double setting breaks on some browser - do we need it?
 				}
@@ -819,15 +819,17 @@ class TSpagegen {
 		var msie4 = (browserName == "Microsoft Internet Explorer" && browserVer >= 4);
 		if ((browserName == "Netscape" && browserVer >= 3) || msie4 || browserName=="Konqueror" || browserName=="Opera") {version = "n3";} else {version = "n2";}
 			// Blurring links:
-		function blurLink(theObject)	{	//
-			if (msie4)	{theObject.blur();}
+		function blurLink(theObject) {
+			if (msie4) {
+				theObject.blur();
+			}
 		}
 		' . $JSef[0];
 
 		if ($GLOBALS['TSFE']->spamProtectEmailAddresses && $GLOBALS['TSFE']->spamProtectEmailAddresses !== 'ascii') {
 			$scriptJsCode .= '
 			// decrypt helper function
-		function decryptCharcode(n,start,end,offset)	{
+		function decryptCharcode(n, start, end, offset) {
 			n = n + offset;
 			if (offset > 0 && n > end)	{
 				n = start + (n - end - 1);
@@ -837,7 +839,7 @@ class TSpagegen {
 			return String.fromCharCode(n);
 		}
 			// decrypt string
-		function decryptString(enc,offset)	{
+		function decryptString(enc, offset) {
 			var dec = "";
 			var len = enc.length;
 			for(var i=0; i < len; i++)	{
@@ -855,7 +857,7 @@ class TSpagegen {
 			return dec;
 		}
 			// decrypt spam-protected emails
-		function linkTo_UnCryptMailto(s)	{
+		function linkTo_UnCryptMailto(s) {
 			location.href = decryptString(s,' . ($GLOBALS['TSFE']->spamProtectEmailAddresses * - 1) . ');
 		}
 		';
@@ -1117,7 +1119,7 @@ class TSpagegen {
 	 * @param	string		The string to find in $haystack
 	 * @return	boolean		Returns TRUE if $needle matches or is found in $haystack
 	 */
-	public static function isAllowedLinkVarValue($haystack,$needle) {
+	public static function isAllowedLinkVarValue($haystack, $needle) {
 		$OK = FALSE;
 
 		if ($needle=='int' || $needle=='integer')	{	// Integer

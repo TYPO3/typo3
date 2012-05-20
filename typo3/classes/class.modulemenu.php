@@ -325,7 +325,7 @@ class ModuleMenu {
 	 * @param	string		Link URL
 	 * @return	string		link URl appended with ? if there wasn't one
 	 */
-	protected function appendQuestionmarkToLink($link)	{
+	protected function appendQuestionmarkToLink($link) {
 		if(!strstr($link, '?')) {
 			$link .= '?';
 		}

@@ -60,7 +60,7 @@
  *				 $this->content='';
  *			 }
  *				 // PRINT CONTENT - DONE AS THE LAST THING
- *			 function printContent()	{
+ *			 function printContent() {
  *				 echo $this->content;
  *			 }
  *		 }

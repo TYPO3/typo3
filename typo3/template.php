@@ -300,7 +300,7 @@ class template {
 	 * @param string $addParams Additional parameters for the image tag(s)
 	 * @return string HTML string with linked icon(s)
 	 */
-	function viewPageIcon($id, $backPath, $addParams = 'hspace="3"') {
+	function viewPageIcon($id, $backPath, $addParams = 'hspace = "3"') {
 
 			// If access to Web>List for user, then link to that module.
 		$str = t3lib_BEfunc::getListViewLink(
@@ -868,7 +868,7 @@ class template {
 	 * @return string HTML content
 	 * @see icons(), sectionHeader()
 	 */
-	function section($label, $text, $nostrtoupper = FALSE, $sH = FALSE, $type=0, $allowHTMLinHeader = FALSE) {
+	function section($label, $text, $nostrtoupper = FALSE, $sH = FALSE, $type = 0, $allowHTMLinHeader = FALSE) {
 		$str='';
 
 			// Setting header
@@ -1172,7 +1172,7 @@ class template {
 	 * @param string $content Content of the compatible tag (default: IE-8)
 	 * @return string <meta http-equiv="X-UA-Compatible" content="???" />
 	 */
-	public function xUaCompatible($content = 'IE=8') {
+	public function xUaCompatible($content = 'IE = 8') {
 		return '<meta http-equiv="X-UA-Compatible" content="' . $content . '" />';
 	}
 
@@ -1363,7 +1363,7 @@ class template {
 	 * @param array $arr3 Third-level items
 	 * @return string HTML content, <table>...</table>
 	 */
-	function menuTable($arr1,$arr2 = array(), $arr3 = array()) {
+	function menuTable($arr1, $arr2 = array(), $arr3 = array()) {
 		$rows = max(array(count($arr1),count($arr2),count($arr3)));
 
 		$menu='

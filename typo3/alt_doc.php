@@ -407,8 +407,8 @@ class SC_alt_doc {
 
 		$this->doc->getPageRenderer()->loadPrototype();
 		$this->doc->JScode = $this->doc->wrapScriptTags('
-			function jumpToUrl(URL,formEl)	{	//
-				if (!TBE_EDITOR.isFormChanged())	{
+			function jumpToUrl(URL, formEl) {
+				if (!TBE_EDITOR.isFormChanged()) {
 					window.location.href = URL;
 				} else if (formEl && formEl.type=="checkbox") {
 					formEl.checked = formEl.checked ? 0 : 1;
@@ -417,7 +417,7 @@ class SC_alt_doc {
 				// Object: TS:
 				// passwordDummy and decimalSign are used by tbe_editor.js and have to be declared here as
 				// TS object overwrites the object declared in tbe_editor.js
-			function typoSetup	()	{	//
+			function typoSetup	() {	//
 				this.uniqueID = "";
 				this.passwordDummy = "********";
 				this.PATH_typo3 = " ";
@@ -426,7 +426,7 @@ class SC_alt_doc {
 			var TS = new typoSetup();
 
 				// Info view:
-			function launchView(table,uid,bP)	{	//
+			function launchView(table, uid, bP) {
 				var backPath= bP ? bP : "";
 				var thePreviewWindow="";
 				thePreviewWindow = window.open(backPath+"show_item.php?table="+encodeURIComponent(table)+"&uid="+encodeURIComponent(uid),"ShowItem"+TS.uniqueID,"height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
@@ -434,7 +434,7 @@ class SC_alt_doc {
 					thePreviewWindow.focus();
 				}
 			}
-			function deleteRecord(table,id,url)	{	//
+			function deleteRecord(table, id, url) {
 				if (
 					' . ($GLOBALS['BE_USER']->jsConfirmation(4) ? 'confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteWarning')) . ')' : '1==1') . '
 				)	{
@@ -901,7 +901,7 @@ class SC_alt_doc {
 	 * @param	string		HTML form.
 	 * @return	string		Composite HTML
 	 */
-	function compileForm($editForm)	{
+	function compileForm($editForm) {
 		$formContent = '
 			<!-- EDITING FORM -->
 			'.$editForm.'
@@ -1024,7 +1024,7 @@ class SC_alt_doc {
 	 * @param integer $pid pid of the record
 	 * @return string <select> HTML element (if there were items for the box anyways...)
 	 */
-	function languageSwitch($table, $uid, $pid=NULL) {
+	function languageSwitch($table, $uid, $pid = NULL) {
 		$content = '';
 
 		$languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
@@ -1127,7 +1127,7 @@ class SC_alt_doc {
 	 * @param	string		String passed by GET &justLocalized=
 	 * @return	void
 	 */
-	function localizationRedirect($justLocalized)	{
+	function localizationRedirect($justLocalized) {
 		list($table,$orig_uid,$language) = explode(':',$justLocalized);
 
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])	{
@@ -1158,7 +1158,7 @@ class SC_alt_doc {
 	 * @param	integer		Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
 	 * @return	array		Language records including faked record for default language
 	 */
-	function getLanguages($id)	{
+	function getLanguages($id) {
 		$modSharedTSconfig = t3lib_BEfunc::getModTSconfig($id, 'mod.SHARED');
 
 			// fallback non sprite-configuration
@@ -1223,7 +1223,7 @@ class SC_alt_doc {
 	 * @param	array		Mapping between old and new ids if auto-versioning has been performed.
 	 * @return	void
 	 */
-	function fixWSversioningInEditConf($mapArray=FALSE)	{
+	function fixWSversioningInEditConf($mapArray = FALSE) {
 
 			// Traverse the editConf array
 		if (is_array($this->editconf))	{
@@ -1271,7 +1271,7 @@ class SC_alt_doc {
 	 * @param	integer		Record UID
 	 * @return	array		Returns record to edit, FALSE if none
 	 */
-	function getRecordForEdit($table,$theUid)	{
+	function getRecordForEdit($table, $theUid) {
 
 			// Fetch requested record:
 		$reqRecord = t3lib_BEfunc::getRecord($table,$theUid,'uid,pid');
@@ -1359,7 +1359,7 @@ class SC_alt_doc {
 	 * @param	integer		Close code: 0/1 will redirect to $this->retUrl, 3 will clear the docHandler (thus closing all documents) and otehr values will call setDocument with ->retUrl
 	 * @return	void
 	 */
-	function closeDocument($code=0)	{
+	function closeDocument($code = 0) {
 
 			// If current document is found in docHandler,
 			// then unset it, possibly unset it ALL and finally, write it to the session data
@@ -1409,7 +1409,7 @@ class SC_alt_doc {
 	 * @param	string		Alternative/Default retUrl
 	 * @return	void
 	 */
-	function setDocument($currentDocFromHandlerMD5='',$retUrl='alt_doc_nodoc.php')	{
+	function setDocument($currentDocFromHandlerMD5 = '', $retUrl = 'alt_doc_nodoc.php') {
 		if (!t3lib_extMgm::isLoaded('cms') && !strcmp($retUrl,'alt_doc_nodoc.php'))	return;
 
 		if (!$this->modTSconfig['properties']['disableDocSelector'] && is_array($this->docHandler) && count($this->docHandler))	{

@@ -137,7 +137,7 @@ Will report orphan uids from TCA tables.';
 	 * @param	array		Result array from main() function
 	 * @return	void
 	 */
-	function main_autoFix($resultArray)	{
+	function main_autoFix($resultArray) {
 
 			// Putting "pages" table in the bottom:
 		if (isset($resultArray['orphans']['pages']))	{

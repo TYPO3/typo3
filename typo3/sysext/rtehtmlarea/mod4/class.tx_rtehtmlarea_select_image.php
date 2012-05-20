@@ -283,7 +283,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 * @param	string		$additionalParams: text representing more HTML attributes to be added on the img tag
 	 * @return	void
 	 */
-	public function insertMagicImage(t3lib_file_FileInterface $fileObject, $altText='', $titleText='', $additionalParams='') {
+	public function insertMagicImage(t3lib_file_FileInterface $fileObject, $altText = '', $titleText = '', $additionalParams = '') {
 		if ($this->RTEImageStorageDir) {
 				// Create the magic image
 			/** @var $magicImageService t3lib_file_Service_MagicImageService */
@@ -321,7 +321,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 * @param	string		$additionalParams: text representing more HTML attributes to be added on the img tag
 	 * @return	void
 	 */
-	public function insertPlainImage(t3lib_file_FileInterface $fileObject, $altText='', $titleText='', $additionalParams='') {
+	public function insertPlainImage(t3lib_file_FileInterface $fileObject, $altText = '', $titleText = '', $additionalParams = '') {
 		$filePath = $fileObject->getForLocalProcessing(FALSE);
 		$imageInfo = @getimagesize($filePath);
 		$imageUrl = $this->siteURL . substr($filePath, strlen(PATH_site));
@@ -339,7 +339,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 * @param	string		$additionalParams: text representing more html attributes to be added on the img tag
 	 * @return	void
 	 */
-	protected function imageInsertJS($url, $width, $height, $altText='', $titleText='', $additionalParams='') {
+	protected function imageInsertJS($url, $width, $height, $altText = '', $titleText = '', $additionalParams = '') {
 		echo'
 <!DOCTYPE html>
 <html>
@@ -348,7 +348,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	<script type="text/javascript">
 	/*<![CDATA[*/
 		var plugin = window.parent.RTEarea["' . $this->editorNo . '"].editor.getPlugin("TYPO3Image");
-		function insertImage(file,width,height,alt,title,additionalParams)	{
+		function insertImage(file, width, height, alt, title, additionalParams) {
 			plugin.insertImage(\'<img src="\'+file+\'" width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'"\''  . ($this->defaultClass?('+\' class="'.$this->defaultClass.'"\''):'') .
 				'+(alt?\' alt="\'+alt+\'"\':\'\')+(title?\' title="\'+title+\'"\':\'\')+(additionalParams?\' \'+additionalParams:\'\')+\' />\');
 		}
@@ -420,9 +420,9 @@ class tx_rtehtmlarea_select_image extends browse_links {
 					Ext.EventManager.addListener(window.document.body, "dragend", plugin.onDrop, plugin, { single: true });
 				}
 			}
-			function jumpToUrl(URL,anchor)	{
-				var add_act = URL.indexOf("act=")==-1 ? "&act='.$act.'" : "";
-				var add_editorNo = URL.indexOf("editorNo=")==-1 ? "&editorNo='.$editorNo.'" : "";
+			function jumpToUrl(URL, anchor) {
+				var add_act = URL.indexOf("act=") == -1 ? "&act=' . $act . '" : "";
+				var add_editorNo = URL.indexOf("editorNo=") == -1 ? "&editorNo=' . $editorNo . '" : "";
 				var add_sys_language_content = URL.indexOf("sys_language_content=")==-1 ? "&sys_language_content='.$sys_language_content.'" : "";
 				var RTEtsConfigParams = "&RTEtsConfigParams='.rawurlencode($this->RTEtsConfigParams).'";
 
@@ -433,7 +433,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				window.location.href = theLocation;
 				return false;
 			}
-			function insertImage(file,width,height)	{
+			function insertImage(file,width,height) {
 				plugin.insertImage(\'<img src="\'+file+\'"' . ($this->defaultClass?(' class="'.$this->defaultClass.'"'):'') . ' width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'" />\');
 			}
 			function launchView(url) {
@@ -606,7 +606,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				}
 				return false;
 			}
-			function insertImagePropertiesInForm()	{
+			function insertImagePropertiesInForm() {
 				var classesImage = ' . (($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage']) ? 'true' : 'false') . ';
 				if (selectedImageRef)	{
 					var styleWidth, styleHeight, padding;

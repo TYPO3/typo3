@@ -93,7 +93,7 @@ class tx_recycler_helper {
 	 * @param	integer		Title limit of Full title (typ. set to 1000 or so)
 	 * @return	mixed		Path of record (string) OR array with short/long title if $fullTitleLimit is set.
 	 */
-	public static function getRecordPath($uid, $clause='', $titleLimit=1000, $fullTitleLimit = 0) {
+	public static function getRecordPath($uid, $clause = '', $titleLimit = 1000, $fullTitleLimit = 0) {
 		$loopCheck = 100;
 		$output = $fullOutput = '/';
 

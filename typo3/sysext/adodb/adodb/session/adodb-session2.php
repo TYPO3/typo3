@@ -443,7 +443,7 @@ class ADODB_Session {
 
 	/*!
 	*/
-	static function _conn($conn=null) {
+	static function _conn($conn = null) {
 		return isset($GLOBALS['ADODB_SESS_CONN']) ? $GLOBALS['ADODB_SESS_CONN'] : false;
 	}
 

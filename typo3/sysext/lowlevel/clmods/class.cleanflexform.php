@@ -105,7 +105,7 @@ Cleaning XML for FlexForm fields.
 	 * @param	integer		Is root version (see calling function
 	 * @return	void
 	 */
-	function main_parseTreeCallBack($tableName,$uid,$echoLevel,$versionSwapmode,$rootIsVersion)	{
+	function main_parseTreeCallBack($tableName, $uid, $echoLevel, $versionSwapmode, $rootIsVersion) {
 
 		t3lib_div::loadTCA($tableName);
 		foreach($GLOBALS['TCA'][$tableName]['columns'] as $colName => $config)	{
@@ -137,7 +137,7 @@ Cleaning XML for FlexForm fields.
 	 * @param	array		Result array from main() function
 	 * @return	void
 	 */
-	function main_autoFix($resultArray)	{
+	function main_autoFix($resultArray) {
 		foreach($resultArray['dirty'] as $fieldID)	{
 			list($table, $uid, $field) = explode(':',$fieldID);
 			echo 'Cleaning XML in "'.$fieldID.'": ';

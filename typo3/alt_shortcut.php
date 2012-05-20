@@ -219,7 +219,7 @@ class SC_alt_shortcut {
 		$this->doc->form='<form action="alt_shortcut.php" name="shForm" method="post">';
 		$this->doc->divClass='typo3-shortcut';
 		$this->doc->JScode.=$this->doc->wrapScriptTags('
-			function jump(url,modName,mainModName)	{	//
+			function jump(url, modName, mainModName) {
 					// Clear information about which entry in nav. tree that might have been highlighted.
 				top.fsMod.navFrameHighlightedID = new Array();
 				if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
@@ -229,16 +229,16 @@ class SC_alt_shortcut {
 				top.nextLoadModuleUrl = url;
 				top.goToModule(modName);
 			}
-			function editSh(uid)	{	//
+			function editSh(uid) {
 				window.location.href="alt_shortcut.php?editShortcut="+uid;
 			}
-			function submitEditPage(id)	{	//
+			function submitEditPage(id) {
 				window.location.href="alt_shortcut.php?editPage="+top.rawurlencodeAndRemoveSiteUrl(id);
 			}
-			function changeWorkspace(workspaceId)	{	//
+			function changeWorkspace(workspaceId) {
 				window.location.href="alt_shortcut.php?changeWorkspace="+top.rawurlencodeAndRemoveSiteUrl(workspaceId);
 			}
-			function changeWorkspacePreview(newstate)	{	//
+			function changeWorkspacePreview(newstate) {
 				window.location.href="alt_shortcut.php?changeWorkspacePreview="+newstate;
 			}
 			function refreshShortcuts() {
@@ -718,7 +718,7 @@ class SC_alt_shortcut {
 	 * @param	string		Backpath string to prepend the icon after made relative
 	 * @return	void
 	 */
-	function mIconFilename($Ifilename,$backPath)	{
+	function mIconFilename($Ifilename, $backPath) {
 			// Change icon of fileadmin references - otherwise it doesn't differ with Web->List
 		$Ifilename = str_replace ('mod/file/list/list.gif', 'mod/file/file.gif', $Ifilename);
 
@@ -734,7 +734,7 @@ class SC_alt_shortcut {
 	 * @param	string		Backend module name
 	 * @return	string		Icon file name
 	 */
-	function getIcon($modName)	{
+	function getIcon($modName) {
 		if ($GLOBALS['LANG']->moduleLabels['tabs_images'][$modName.'_tab'])	{
 			$icon = $this->mIconFilename($GLOBALS['LANG']->moduleLabels['tabs_images'][$modName.'_tab'],'');
 		} elseif ($modName=='xMOD_alt_doc.php') {
@@ -757,7 +757,7 @@ class SC_alt_shortcut {
 	 * @param	string		Backend module label (user defined?)
 	 * @return	string		Label for the shortcut item
 	 */
-	function itemLabel($inlabel,$modName,$M_modName='')	{
+	function itemLabel($inlabel, $modName, $M_modName = '') {
 		if (substr($modName,0,5)=='xMOD_')	{
 			$label=substr($modName,5);
 		} else {
@@ -778,7 +778,7 @@ class SC_alt_shortcut {
 	 * @param	string		The URL of the current shortcut link
 	 * @return	string		If a page ID was found, it is returned. Otherwise: 0
 	 */
-	function getLinkedPageId($url)	{
+	function getLinkedPageId($url) {
 		return preg_replace('/.*[\?&]id=([^&]+).*/', '$1', $url);
 	}
 

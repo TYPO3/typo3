@@ -119,7 +119,7 @@
     /**
     * Returns an xmlrpc struct value as string out of an AdoDB recordset
     */
-    function rs2xmlrpcstring (&$adodbrs) {
+    function rs2xmlrpcstring(&$adodbrs) {
         $xmlrpc = rs2xmlrpcval ($adodbrs);
         if ($xmlrpc)
           return $xmlrpc->serialize();
@@ -132,7 +132,7 @@
     *
     * @todo add some error checking on the input value
     */
-    function xmlrpcval2rs (&$xmlrpcval) {
+    function xmlrpcval2rs(&$xmlrpcval) {
 
         $fields_array = array();
         $data_array = array();

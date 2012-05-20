@@ -64,7 +64,7 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	array		Webmounts for the backend user.
 	 * @return	void
 	 */
-	function __construct($BE_USER,$WEBMOUNTS='')	{
+	function __construct($BE_USER, $WEBMOUNTS = '') {
 		$this->init();
 
 		$this->BE_USER = $BE_USER;
@@ -89,7 +89,7 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	array		[See parent]
 	 * @return	string
 	 */
-	function wrapTitle($str,$row)	{
+	function wrapTitle($str, $row) {
 		return $str;
 	}
 
@@ -101,7 +101,7 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	string		[See parent]
 	 * @return	string
 	 */
-	function PM_ATagWrap($icon,$cmd,$bMark='')	{
+	function PM_ATagWrap($icon, $cmd, $bMark = '') {
 		return '';
 	}
 
@@ -112,7 +112,7 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	array		Row.
 	 * @return	string		Icon with title attribute added.
 	 */
-	function wrapIcon($icon,$row)	{
+	function wrapIcon($icon, $row) {
 			// Add title attribute to input icon tag
 		$title = '['.$row['uid'].'] '.t3lib_BEfunc::getRecordPath($row['uid'],'',15);
 		$theIcon = $this->addTagAttributes($icon,($this->titleAttrib ? $this->titleAttrib.'="'.htmlspecialchars($title).'"' : '').' border="0"');
@@ -167,7 +167,7 @@ class printAllPageTree extends localPageTree {
 	 * @param	string		[See parent]
 	 * @return	string
 	 */
-	function PM_ATagWrap($icon,$cmd,$bMark='')	{
+	function PM_ATagWrap($icon, $cmd, $bMark = '') {
 		return $icon;
 	}
 
@@ -178,7 +178,7 @@ class printAllPageTree extends localPageTree {
 	 * @param	array		Row.
 	 * @return	string		Icon with title attribute added.
 	 */
-	function wrapIcon($icon,$row)	{
+	function wrapIcon($icon, $row) {
 			// Add title attribute to input icon tag
 		$title = '['.$row['uid'].']';
 		$theIcon = $this->addTagAttributes($icon,($this->titleAttrib ? $this->titleAttrib.'="'.htmlspecialchars($title).'"' : '').' border="0"');
@@ -212,7 +212,7 @@ class printAllPageTree_perms extends printAllPageTree {
 	 * @param	boolean		If set, the path of the pages in the tree is printed (only done for pages outside of mounts).
 	 * @return	string		HTML content.
 	 */
-	function printTree($treeArr='',$printPath=0)	{
+	function printTree($treeArr = '', $printPath = 0) {
 		$titleLen=intval($this->BE_USER->uc['titleLen']);
 
 		$be_user_Array = t3lib_BEfunc::getUserNames();
@@ -256,7 +256,7 @@ class printAllPageTree_perms extends printAllPageTree {
 	 * @param	integer		The permissions integer.
 	 * @return	string		HTML formatted.
 	 */
-	function ext_printPerms($int)	{
+	function ext_printPerms($int) {
 		$str='';
 		$str.= (($int&1)?'*':'<font color="red">x</font>');
 		$str.= (($int&16)?'*':'<font color="red">x</font>');
@@ -274,7 +274,7 @@ class printAllPageTree_perms extends printAllPageTree {
 	 * @param	array		First-group record.
 	 * @return	integer		Permissions.
 	 */
-	function ext_groupPerms($row,$firstGroup)	{
+	function ext_groupPerms($row, $firstGroup) {
 		if (is_array($row))	{
 			$out=intval($row['perms_everybody']);
 			if ($row['perms_groupid'] && $firstGroup['uid']==$row['perms_groupid'])	{
@@ -335,7 +335,7 @@ class localFolderTree extends t3lib_folderTree {
 	 * @param	array		[See parent]
 	 * @return	string
 	 */
-	function wrapTitle($str,$row)	{
+	function wrapTitle($str, $row) {
 		return $str;
 	}
 
@@ -347,7 +347,7 @@ class localFolderTree extends t3lib_folderTree {
 	 * @param	string		[See parent]
 	 * @return	string
 	 */
-	function PM_ATagWrap($icon,$cmd,$bMark='')	{
+	function PM_ATagWrap($icon, $cmd, $bMark = '') {
 		return '';
 	}
 
@@ -407,7 +407,7 @@ class printAllFolderTree extends localFolderTree {
 	 * @param	string		[See parent]
 	 * @return	string
 	 */
-	function PM_ATagWrap($icon,$cmd,$bMark='')	{
+	function PM_ATagWrap($icon, $cmd, $bMark = '') {
 		return $icon;
 	}
 }
@@ -441,7 +441,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	 * @param	string		alternative select clause (default is getPagePermsClause(1)). For instance to make sure that ALL webmounts are selected regardless of whether the user has read access or not, you can set this to "1=1".
 	 * @return	array		Webmounts id's
 	 */
-	function returnWebmounts($pClause='')	{
+	function returnWebmounts($pClause = '') {
 
 			// Get array of webmounts:
 		$webmounts = (string)($this->groupData['webmounts'])!='' ? explode(',',$this->groupData['webmounts']) : Array();
@@ -502,7 +502,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	 * @param	boolean		If set, the full trees of pages/folders are printed.
 	 * @return	array		Array with accumulated HTML content.
 	 */
-	function ext_printOverview($uInfo,$compareFlags,$printTrees=0)	{
+	function ext_printOverview($uInfo, $compareFlags, $printTrees = 0) {
 			// Prepare for file storages and db-mount
 		if ($printTrees)	{	// ... this is if we see the detailed view for a user:
 				// Page tree object:
@@ -809,7 +809,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	 * @param	integer		The permissions integer.
 	 * @return	string		HTML formatted.
 	 */
-	function ext_printPerms($int)	{
+	function ext_printPerms($int) {
 		$str='';
 		$str.= (($int&1)?'*':'<font color="red">x</font>');
 		$str.= (($int&16)?'*':'<font color="red">x</font>');
@@ -827,7 +827,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	 * @param	array		First-group record.
 	 * @return	integer		Permissions.
 	 */
-	function ext_groupPerms($row,$firstGroup)	{
+	function ext_groupPerms($row, $firstGroup) {
 		if (is_array($row))	{
 			$out=intval($row['perms_everybody']);
 			if ($row['perms_groupid'] && $firstGroup['uid']==$row['perms_groupid'])	{
@@ -843,7 +843,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	 * @param	array		Might contain array where keys/values indicate whether to render a certain value
 	 * @return	array		Array with the information of the user for each analysis topic.
 	 */
-	function ext_compileUserInfoForHash($filter=NULL)	{
+	function ext_compileUserInfoForHash($filter = NULL) {
 		$uInfo=array();
 		$renderAll = !is_array($filter);
 
@@ -943,7 +943,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	 * @param	string		Commalist.
 	 * @return	string		Sorted, unique commalist.
 	 */
-	function ext_uniqueAndSortList($list)	{
+	function ext_uniqueAndSortList($list) {
 		$uList=t3lib_div::trimExplode(',',$list,1);
 		sort($uList);
 		$uList=array_unique($uList);
@@ -957,7 +957,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	 * @param	array		Multidimensional array (value by reference!)
 	 * @return	void
 	 */
-	function ext_ksortArrayRecursive(&$arr)	{
+	function ext_ksortArrayRecursive(&$arr) {
 		krsort($arr);
 		foreach ($arr as &$v) {
 			if (is_array($v)) {
@@ -1062,7 +1062,7 @@ class SC_mod_tools_be_user_index {
 				// JavaScript
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			script_ended = 0;
-			function jumpToUrl(URL)	{	//
+			function jumpToUrl(URL) {
 				window.location.href = URL;
 			}
 		' . $this->doc->redirectUrls());
@@ -1180,7 +1180,7 @@ class SC_mod_tools_be_user_index {
 	 * @param	array		options that should be taking into account to compare the users
 	 * @return	string		the content
 	 */
-	function compareUsers($compareFlags)	{
+	function compareUsers($compareFlags) {
 			// Menu:
 		$options = array(
 			'filemounts' => $GLOBALS['LANG']->getLL('filemounts', TRUE),
@@ -1389,7 +1389,7 @@ class SC_mod_tools_be_user_index {
 	 * @param	array		the BE user record to link
 	 * @return	string		the HTML anchor
 	 */
-	function linkUser($str,$rec)	{
+	function linkUser($str, $rec) {
 		return '<a href="'.htmlspecialchars($this->MCONF['_']).'&be_user_uid='.$rec['uid'].'">' . htmlspecialchars($str) . '</a>';
 	}
 
@@ -1401,7 +1401,7 @@ class SC_mod_tools_be_user_index {
 	 * @param	array		the BE user record to use
 	 * @return	string		a HTML formatted list of the link
 	 */
-	function elementLinks($table,$row)	{
+	function elementLinks($table, $row) {
 			// Info:
 		$cells[]='<a href="#" onclick="top.launchView(\'' . $table . '\', \'' . $row['uid'] . '\',\'' . $GLOBALS['BACK_PATH'] . '\'); return false;" title="' . $GLOBALS['LANG']->getLL('showInformation', TRUE) . '">' .
 				t3lib_iconWorks::getSpriteIcon('actions-document-info') .
@@ -1462,7 +1462,7 @@ class SC_mod_tools_be_user_index {
 	 * @param	string		the path that will be checked
 	 * @return	string		the local path
 	 */
-	function localPath($str)	{
+	function localPath($str) {
 		if (substr($str,0,strlen(PATH_site))==PATH_site)	{
 			return substr($str,strlen(PATH_site));
 		} else {
@@ -1476,7 +1476,7 @@ class SC_mod_tools_be_user_index {
 	 * @param	array		BE-user record that will be switched to
 	 * @return	void
 	 */
-	function switchUser($switchUser)	{
+	function switchUser($switchUser) {
 		$uRec=t3lib_BEfunc::getRecord('be_users',$switchUser);
 		if (is_array($uRec) && $GLOBALS['BE_USER']->isAdmin())	{
 			$updateData['ses_userid'] = $uRec['uid'];

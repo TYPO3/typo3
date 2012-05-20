@@ -187,7 +187,7 @@ Automatic Repair:
 	 * @param	array		Result array from main() function
 	 * @return	void
 	 */
-	function main_autoFix($resultArray)	{
+	function main_autoFix($resultArray) {
 
 		$kk = $this->cli_isArg('--flush-live') ? 'versions_liveWS' : 'versions_published';
 

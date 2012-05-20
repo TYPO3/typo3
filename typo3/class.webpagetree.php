@@ -90,7 +90,7 @@ class webPageTree extends t3lib_browseTree {
 	 * @param	array		Data row for element.
 	 * @return	string		Page icon
 	 */
-	function wrapIcon($thePageIcon, &$row)	{
+	function wrapIcon($thePageIcon, &$row) {
 			// If the record is locked, present a warning sign.
 		if ($lockInfo=t3lib_BEfunc::isRecordLocked('pages',$row['uid']))	{
 			$aOnClick = 'alert('.$GLOBALS['LANG']->JScharCode($lockInfo['msg']).');return false;';
@@ -136,7 +136,7 @@ class webPageTree extends t3lib_browseTree {
 	 * @return	string		Modified string
 	 * @access private
 	 */
-	function wrapStop($str,$row)	{
+	function wrapStop($str, $row) {
 		if ($row['php_tree_stop'])	{
 			$str.='<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('setTempDBmount' => $row['uid']))).'" class="typo3-red">+</a> ';
 		}
@@ -152,7 +152,7 @@ class webPageTree extends t3lib_browseTree {
 	 * @return	string
 	 * @access	private
 	 */
-	function wrapTitle($title,$row,$bank=0)	{
+	function wrapTitle($title, $row, $bank = 0) {
 			// Hook for overriding the page title
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.webpagetree.php']['pageTitleOverlay'])) {
 			$_params = array('title' => &$title, 'row' => &$row);
@@ -292,7 +292,7 @@ class webPageTree extends t3lib_browseTree {
 	 * @access private
 	 * @see t3lib_pageTree::PMicon()
 	 */
-	function PMicon($row,$a,$c,$nextCount,$exp)	{
+	function PMicon($row,$a,$c, $nextCount, $exp) {
 		$PM   = $nextCount ? ($exp ? 'minus' : 'plus') : 'join';
 		$BTM  = ($a == $c) ? 'bottom' : '';
 		$icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$PM.$BTM.'.gif','width="18" height="16"').' alt="" />';
@@ -313,7 +313,7 @@ class webPageTree extends t3lib_browseTree {
 	 * @return	string		Link-wrapped input string
 	 * @access private
 	 */
-	function PMiconATagWrap($icon, $cmd, $isExpand = TRUE)	{
+	function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
 		if ($this->thisScript) {
 				// activate dynamic ajax-based tree
 			$js = htmlspecialchars('Tree.load(\''.$cmd.'\', '.intval($isExpand).', this);');
@@ -398,7 +398,7 @@ class webPageTree extends t3lib_browseTree {
 	 * @param	string		? (internal)
 	 * @return	integer		The count of items on the level
 	 */
-	function getTree($uid, $depth=999, $blankLineCode='', $subCSSclass='') {
+	function getTree($uid, $depth = 999, $blankLineCode = '', $subCSSclass = '') {
 
 			// Buffer for id hierarchy is reset:
 		$this->buffer_idH = array();

@@ -54,7 +54,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 *
 	 * @return	string		The	content that is displayed on the website
 	 */
-	public function main($content,$conf)	{
+	public function main($content, $conf) {
 
 			// Loading TypoScript array into object variable:
 		$this->conf = $conf;
@@ -806,7 +806,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 *
 	 * @return	string		link or url
 	 */
-	protected function getPageLink($label, $piVars,$returnUrl = FALSE) {
+	protected function getPageLink($label, $piVars, $returnUrl = FALSE) {
 		$additionalParams = '';
 
 		if (count($piVars)) {
@@ -890,7 +890,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 * @param	string		TS stdWrap array
 	 * @return	string		label text
 	 */
-	protected function getDisplayText($label, $stdWrapArray=array()) {
+	protected function getDisplayText($label, $stdWrapArray = array()) {
 		$text = $this->flexFormValue($label, 's_messages') ? $this->cObj->stdWrap($this->flexFormValue($label, 's_messages'), $stdWrapArray) : $this->cObj->stdWrap($this->pi_getLL('ll_'.$label, '', 1), $stdWrapArray);
 		$replace = $this->getUserFieldMarkers();
 		return strtr($text, $replace);

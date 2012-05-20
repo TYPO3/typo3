@@ -72,7 +72,7 @@ class transferData extends t3lib_transferData	{
 	 * @param	string		Content string.
 	 * @return	void
 	 */
-	function regItem($table, $id, $field, $content)	{
+	function regItem($table, $id, $field, $content) {
 		t3lib_div::loadTCA($table);
 		$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 		switch($config['type'])	{

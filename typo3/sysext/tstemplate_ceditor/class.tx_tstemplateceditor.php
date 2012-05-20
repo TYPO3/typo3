@@ -38,9 +38,9 @@
 $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_ceditor/locallang.xml');
 
 class tx_tstemplateceditor extends t3lib_extobjbase {
-	function initialize_editor($pageId,$template_uid=0)	{
+	function initialize_editor($pageId, $template_uid = 0) {
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
-		global $tmpl,$tplRow,$theConstants;
+		global $tmpl, $tplRow, $theConstants;
 
 		$tmpl = t3lib_div::makeInstance("t3lib_tsparser_ext");	// Defined global here!
 		$tmpl->tt_track = 0;	// Do not log time-performance information
@@ -61,7 +61,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 			return 1;
 		}
 	}
-	function displayExample($theOutput)	{
+	function displayExample($theOutput) {
 		global $tmpl;
 		if ($tmpl->helpConfig["imagetag"] || $tmpl->helpConfig["description"] || $tmpl->helpConfig["header"])	{
 	//		$theOutput.=$this->pObj->doc->divider(20);

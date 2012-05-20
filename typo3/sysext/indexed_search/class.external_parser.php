@@ -75,7 +75,7 @@ class tx_indexed_search_extparse {
 	 * @param	string		File extension
 	 * @return	boolean		Returns TRUE if extension is supported/enabled, otherwise FALSE.
 	 */
-	function initParser($extension)	{
+	function initParser($extension) {
 
 			// Then read indexer-config and set if appropriate:
 		$indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
@@ -195,7 +195,7 @@ class tx_indexed_search_extparse {
 	 * @param	string		File extension to initialize for.
 	 * @return	boolean		Returns TRUE if the extension is supported and enabled, otherwise FALSE.
 	 */
-	function softInit($extension)	{
+	function softInit($extension) {
 		switch($extension)	{
 			case 'pdf':		// PDF
 			case 'doc':		// MS Word files
@@ -228,7 +228,7 @@ class tx_indexed_search_extparse {
 	 * @param	string		File extension
 	 * @return	string		String with label value of entry in media type search selector box (frontend plugin).
 	 */
-	function searchTypeMediaTitle($extension)	{
+	function searchTypeMediaTitle($extension) {
 
 			// Read indexer-config
 		$indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
@@ -332,7 +332,7 @@ class tx_indexed_search_extparse {
 	 * @param	string		Extension / item_type string
 	 * @return	boolean		Return TRUE if multi-page
 	 */
-	function isMultiplePageExtension($extension)	{
+	function isMultiplePageExtension($extension) {
 			// Switch on file extension:
 		switch((string)$extension)	{
 			case 'pdf':
@@ -374,7 +374,7 @@ class tx_indexed_search_extparse {
 	 * @param	string		Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be splitted.)
 	 * @return	array		Standard content array (title, description, keywords, body keys)
 	 */
-	function readFileContent($ext,$absFile,$cPKey)	{
+	function readFileContent($ext, $absFile, $cPKey) {
 		unset($contentArr);
 
 			// Return immediately if initialization didn't set support up:
@@ -554,7 +554,7 @@ class tx_indexed_search_extparse {
 	 * @param	string		Absolute filename (must exist and be validated OK before calling function)
 	 * @return	array		Array of pointers to sections that the document should be divided into
 	 */
-	function fileContentParts($ext,$absFile)	{
+	function fileContentParts($ext, $absFile) {
 		$cParts = array(0);
 		switch ($ext)	{
 			case 'pdf':
@@ -594,7 +594,7 @@ class tx_indexed_search_extparse {
 	 * @access private
 	 * @see fileContentParts()
 	 */
-	function splitPdfInfo($pdfInfoArray)	{
+	function splitPdfInfo($pdfInfoArray) {
 		$res = array();
 		if (is_array($pdfInfoArray))	{
 			foreach($pdfInfoArray as $line)	{
@@ -613,7 +613,7 @@ class tx_indexed_search_extparse {
 	 * @param	string		String to clean up
 	 * @return	string		String
 	 */
-	function removeEndJunk($string)	{
+	function removeEndJunk($string) {
 		return trim(preg_replace('/['.LF.chr(12).']*$/','',$string));
 	}
 
@@ -640,7 +640,7 @@ class tx_indexed_search_extparse {
 	 * @param	string		File extension, lowercase.
 	 * @return	string		Relative file reference, resolvable by t3lib_div::getFileAbsFileName()
 	 */
-	function getIcon($extension)	{
+	function getIcon($extension) {
 		if ($extension=='htm')	$extension = 'html';
 		if ($extension=='jpeg')	$extension = 'jpg';
 		return 'EXT:indexed_search/pi/res/'.$extension.'.gif';

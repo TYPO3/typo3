@@ -112,7 +112,7 @@ class SC_wizard_table {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/wizard_table.html');
 		$this->doc->JScode=$this->doc->wrapScriptTags('
-			function jumpToUrl(URL,formEl)	{	//
+			function jumpToUrl(URL, formEl) {
 				window.location.href = URL;
 			}
 		');
@@ -246,7 +246,7 @@ class SC_wizard_table {
 	 * @return	array		Table config code in an array
 	 * @access private
 	 */
-	function getConfigCode($row)	{
+	function getConfigCode($row) {
 
 			// get delimiter settings
 		$flexForm = t3lib_div::xml2array($row['pi_flexform']);
@@ -318,7 +318,7 @@ class SC_wizard_table {
 	 * @return	string		HTML for the table wizard
 	 * @access private
 	 */
-	function getTableHTML($cfgArr,$row)	{
+	function getTableHTML($cfgArr, $row) {
 			// Traverse the rows:
 		$tRows=array();
 		$k=0;
@@ -570,7 +570,7 @@ class SC_wizard_table {
 	 * @return	string		The array converted into a string with line-based configuration.
 	 * @see cfgString2CfgArray()
 	 */
-	function cfgArray2CfgString($cfgArr)	{
+	function cfgArray2CfgString($cfgArr) {
 
 			// Initialize:
 		$inLines=array();
@@ -599,7 +599,7 @@ class SC_wizard_table {
 	 * @return	array		Configuration array
 	 * @see cfgArray2CfgString()
 	 */
-	function cfgString2CfgArray($cfgStr,$cols)	{
+	function cfgString2CfgArray($cfgStr, $cols) {
 
 			// Explode lines in the configuration code - each line is a table row.
 		$tLines=explode(LF,$cfgStr);

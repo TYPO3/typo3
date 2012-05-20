@@ -176,7 +176,7 @@ class clickMenu {
 	 * @param	integer		UID for the current record.
 	 * @return	string		HTML content
 	 */
-	function printDBClickMenu($table,$uid)	{
+	function printDBClickMenu($table, $uid) {
 
 			// Get record:
 		$this->rec = t3lib_BEfunc::getRecordWSOL($table,$uid);
@@ -292,7 +292,7 @@ class clickMenu {
 	 * @param	integer		UID for the current record.
 	 * @return	string		HTML content
 	 */
-	function printNewDBLevel($table,$uid)	{
+	function printNewDBLevel($table, $uid) {
 
 			// Setting internal record to the table/uid :
 		$this->rec = t3lib_BEfunc::getRecordWSOL($table,$uid);
@@ -333,7 +333,7 @@ class clickMenu {
 	 * @param	array		$menuItems array for manipulation.
 	 * @return	array		Processed $menuItems array
 	 */
-	function externalProcessingOfDBMenuItems($menuItems)	{
+	function externalProcessingOfDBMenuItems($menuItems) {
 		return $menuItems;
 	}
 
@@ -345,7 +345,7 @@ class clickMenu {
 	 * @param	integer		UID for the current record.
 	 * @return	array		Processed $menuItems array
 	 */
-	function processingByExtClassArray($menuItems,$table,$uid)	{
+	function processingByExtClassArray($menuItems, $table, $uid) {
 		if (is_array($this->extClassArray))	{
 			foreach ($this->extClassArray as $conf) {
 				$obj=t3lib_div::makeInstance($conf['name']);
@@ -364,7 +364,7 @@ class clickMenu {
 	 * @param	string		If set, gives alternative location to load in (for example top frame or somewhere else)
 	 * @return	string		JavaScript for an onClick event.
 	 */
-	function urlRefForCM($url,$retUrl='',$hideCM=1,$overrideLoc='')	{
+	function urlRefForCM($url, $retUrl = '', $hideCM = 1, $overrideLoc = '') {
 		$loc = 'top.content.list_frame';
 		$editOnClick= ($overrideLoc ? 'var docRef='.$overrideLoc : 'var docRef=(top.content.list_frame)?top.content.list_frame:'.$loc).'; docRef.location.href=top.TS.PATH_typo3+\''.$url.'\''.
 			($retUrl ? "+'&" . $retUrl . "='+top.rawurlencode(" . $this->frameLocation('docRef.document') . '.pathname+' . $this->frameLocation('docRef.document') . '.search)' : '') . ';' .
@@ -381,7 +381,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function DB_copycut($table,$uid,$type)	{
+	function DB_copycut($table, $uid, $type) {
 		if ($this->clipObj->current=='normal')	{
 			$isSel = $this->clipObj->isSelected($table,$uid);
 		}
@@ -410,7 +410,7 @@ class clickMenu {
 	 * @see t3lib_clipboard::pasteUrl()
 	 * @internal
 	 */
-	function DB_paste($table,$uid,$type,$elInfo)	{
+	function DB_paste($table, $uid, $type, $elInfo) {
 		$editOnClick = '';
 		$loc = 'top.content.list_frame';
 		if($GLOBALS['BE_USER']->jsConfirmation(2))	{
@@ -435,7 +435,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function DB_info($table,$uid)	{
+	function DB_info($table, $uid) {
 		return $this->linkItem(
 			$this->label('info'),
 			$this->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-document-info')),
@@ -451,7 +451,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function DB_history($table,$uid)	{
+	function DB_history($table, $uid) {
 		$url = 'show_rechis.php?element='.rawurlencode($table.':'.$uid);
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_history')),
@@ -470,7 +470,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function DB_perms($table,$uid,$rec)	{
+	function DB_perms($table, $uid, $rec) {
 		if (!t3lib_extMgm::isLoaded('perm')) {
 			return '';
 		}
@@ -492,7 +492,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function DB_db_list($table,$uid,$rec)	{
+	function DB_db_list($table, $uid, $rec) {
 		$urlParams = array();
 		$urlParams['id'] = ($table == 'pages') ? $uid : $rec['pid'];
 		$urlParams['table'] = $table == 'pages' ? '' : $table;
@@ -514,7 +514,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function DB_moveWizard($table,$uid,$rec)	{
+	function DB_moveWizard($table, $uid, $rec) {
 		$url = 'move_el.php?table=' . $table . '&uid=' . $uid .
 				($table=='tt_content' ? '&sys_language_uid=' . intval($rec['sys_language_uid']) : '');	// Hardcoded field for tt_content elements.
 
@@ -535,7 +535,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function DB_newWizard($table,$uid,$rec)	{
+	function DB_newWizard($table, $uid, $rec) {
 			//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
 		$tmpTSc = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'],'mod.web_list');
 		$tmpTSc = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
@@ -558,7 +558,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function DB_editAccess($table,$uid)	{
+	function DB_editAccess($table, $uid) {
 		$addParam='&columnsOnly='.rawurlencode(implode(',',$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']).($table=='pages' ? ',extendToSubpages' :''));
 		$url = 'alt_doc.php?edit['.$table.']['.$uid.']=edit'.$addParam;
 		return $this->linkItem(
@@ -576,7 +576,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function DB_editPageProperties($uid)	{
+	function DB_editPageProperties($uid) {
 		$url = 'alt_doc.php?edit[pages]['.$uid.']=edit';
 		return $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_editPageProperties')),
@@ -594,7 +594,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function DB_edit($table,$uid)	{
+	function DB_edit($table, $uid) {
 
 			// If another module was specified, replace the default Page module with the new one
 		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
@@ -636,7 +636,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function DB_new($table,$uid)	{
+	function DB_new($table, $uid) {
 		$editOnClick='';
 		$loc = 'top.content.list_frame';
 		$editOnClick='if('.$loc.'){'.$loc.".location.href=top.TS.PATH_typo3+'".
@@ -661,7 +661,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function DB_delete($table,$uid,$elInfo)	{
+	function DB_delete($table, $uid, $elInfo) {
 		$editOnClick='';
 		$loc = 'top.content.list_frame';
 		if($GLOBALS['BE_USER']->jsConfirmation(4))	{
@@ -690,7 +690,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function DB_view($id,$anchor='')	{
+	function DB_view($id, $anchor = '') {
 		return $this->linkItem(
 			$this->label('view'),
 			$this->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-document-view')),
@@ -705,7 +705,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function DB_tempMountPoint($page_id)	{
+	function DB_tempMountPoint($page_id) {
 		return $this->linkItem(
 			$this->label('tempMountPoint'),
 			$this->excludeIcon(t3lib_iconWorks::getSpriteIcon('apps-pagetree-page-mountpoint')),
@@ -739,7 +739,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function DB_hideUnhide($table,$rec,$hideField)	{
+	function DB_hideUnhide($table, $rec, $hideField) {
 		return $this->DB_changeFlag($table, $rec, $hideField, $this->label(($rec[$hideField]?'un':'').'hide'), 'hide');
 	}
 
@@ -791,7 +791,7 @@ class clickMenu {
 	 * @return string HTML content
 	 * @see t3lib_file_Factory::retrieveFileOrFolderObject()
 	 */
-	function printFileClickMenu($combinedIdentifier)	{
+	function printFileClickMenu($combinedIdentifier) {
 		$menuItems=array();
 		$combinedIdentifier = rawurldecode($combinedIdentifier);
 
@@ -893,7 +893,7 @@ class clickMenu {
 	 * @param	array		$menuItems array for manipulation.
 	 * @return	array		Processed $menuItems array
 	 */
-	function externalProcessingOfFileMenuItems($menuItems)	{
+	function externalProcessingOfFileMenuItems($menuItems) {
 		return $menuItems;
 	}
 
@@ -908,7 +908,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function FILE_launch($path,$script,$type,$image,$noReturnUrl=FALSE)	{
+	function FILE_launch($path, $script, $type, $image, $noReturnUrl = FALSE) {
 		$loc = 'top.content.list_frame';
 
 		$editOnClick = 'if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'".$script.'?target=' . rawurlencode($path) . ($noReturnUrl ? "'" : "&returnUrl='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . ".search)") . ";}";
@@ -953,7 +953,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function FILE_copycut($path,$type)	{
+	function FILE_copycut($path, $type) {
 		$table = '_FILE';		// Pseudo table name for use in the clipboard.
 		$uid = t3lib_div::shortmd5($path);
 		if ($this->clipObj->current=='normal')	{
@@ -979,7 +979,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function FILE_delete($path)	{
+	function FILE_delete($path) {
 		$editOnClick='';
 		$loc = 'top.content.list_frame';
 		if($GLOBALS['BE_USER']->jsConfirmation(4))	{
@@ -1006,7 +1006,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function FILE_paste($path,$target,$elInfo)	{
+	function FILE_paste($path, $target, $elInfo) {
 		$editOnClick='';
 		$loc = 'top.content.list_frame';
 		if($GLOBALS['BE_USER']->jsConfirmation(2))	{
@@ -1043,7 +1043,7 @@ class clickMenu {
 	 * @param	integer		Destination ID
 	 * @return	string		HTML content
 	 */
-	function printDragDropClickMenu($table,$srcId,$dstId)	{
+	function printDragDropClickMenu($table, $srcId, $dstId) {
 		$menuItems=array();
 
 			// If the drag and drop menu should apply to PAGES use this set of menu items
@@ -1085,7 +1085,7 @@ class clickMenu {
 	 * @param	array		$menuItems array for manipulation.
 	 * @return	array		Processed $menuItems array
 	 */
-	function externalProcessingOfDragDropMenuItems($menuItems)	{
+	function externalProcessingOfDragDropMenuItems($menuItems) {
 		return $menuItems;
 	}
 
@@ -1100,7 +1100,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function dragDrop_copymovepage($srcUid,$dstUid,$action,$into)	{
+	function dragDrop_copymovepage($srcUid, $dstUid, $action, $into) {
 		$negativeSign = ($into == 'into') ? '' : '-';
 		$editOnClick='';
 		$loc = 'top.content.list_frame';
@@ -1125,7 +1125,7 @@ class clickMenu {
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
 	 */
-	function dragDrop_copymovefolder($srcPath,$dstPath,$action)	{
+	function dragDrop_copymovefolder($srcPath, $dstPath, $action) {
 		$editOnClick='';
 		$loc = 'top.content.list_frame';
 		$editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=top.TS.PATH_typo3+"tce_file.php?redirect="+top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . '.search)+"' .
@@ -1161,7 +1161,7 @@ class clickMenu {
 	 * @param	string		HTML code for the element which was clicked - shown in the end of the horizontal menu in topframe after the close-button.
 	 * @return	string		HTML code
 	 */
-	function printItems($menuItems,$item)	{
+	function printItems($menuItems, $item) {
 
 		$out='';
 
@@ -1216,7 +1216,7 @@ class clickMenu {
 	 * @param	array		The $menuItems array to print
 	 * @return	string		The JavaScript section which will print the content of the CM to the div-layer in the target frame.
 	 */
-	function printLayerJScode($menuItems)	{
+	function printLayerJScode($menuItems) {
 		$script='';
 		if ($this->isCMlayers())	{	// Clipboard must not be submitted - then it's probably a copy/cut situation.
 			$frameName = '.'.($this->listFrame ? 'list_frame' : 'nav_frame');
@@ -1257,7 +1257,7 @@ class clickMenu {
 	 * @param	string		HTML content to wrap in table.
 	 * @return	string
 	 */
-	function wrapColorTableCM($str)	{
+	function wrapColorTableCM($str) {
 
 		return '<div class="typo3-CSM-wrapperCM">
 			' . $str . '
@@ -1271,7 +1271,7 @@ class clickMenu {
 	 * @param	array		Array with HTML content to be imploded between <td>-tags
 	 * @return	array		Array of menu items for top frame.
 	 */
-	function menuItemsForTopFrame($menuItems)	{
+	function menuItemsForTopFrame($menuItems) {
 		$out=array();
 		foreach ($menuItems as $i) {
 			if ($i[4]==1 && !$GLOBALS['SOBE']->doc->isCMlayers())	$i[4]=0;	// IF the topbar is the ONLY means of the click menu, then items normally disabled from the top menu will appear anyways IF they are disabled with a "1" (2+ will still disallow them in the topbar)
@@ -1287,7 +1287,7 @@ class clickMenu {
 	 * @param	array		Array with HTML content to be imploded between <td>-tags
 	 * @return	array		array for implosion in the CM div-layers table.
 	 */
-	function menuItemsForClickMenu($menuItems)	{
+	function menuItemsForClickMenu($menuItems) {
 		$out=array();
 		foreach ($menuItems as $cc => $i) {
 			if (is_string($i) && $i=='spacer')	{	// MAKE horizontal spacer
@@ -1322,7 +1322,7 @@ class clickMenu {
 	 * @param	string		Position command string. Has this syntax: [cmd]:[menu entry key],[cmd].... cmd can be "after", "before" or "top" (or blank/"bottom" which is default). If "after"/"before" then menu items will be inserted after/before the existing entry with [menu entry key] if found. "after-spacer" and "before-spacer" do the same, but inserts before or after an item and a spacer. If not found, the bottom of list. If "top" the items are inserted in the top of the list.
 	 * @return	array		Menu items array, processed.
 	 */
-	function addMenuItems($menuItems,$newMenuItems,$position='')	{
+	function addMenuItems($menuItems, $newMenuItems, $position = '') {
 		if (is_array($newMenuItems))	{
 
 			if($position) {
@@ -1398,7 +1398,7 @@ class clickMenu {
 	 * @param	boolean		If set, the clickmenu layer will not hide itself onclick - used for secondary menus to appear...
 	 * @return	array		$menuItem entry with 6 numerical entries: [0] is the HTML for display of the element with link and icon an mouseover etc., [1]-[5] is simply the input params passed through!
 	 */
-	function linkItem($str,$icon,$onClick,$onlyCM=0,$dontHide=0)	{
+	function linkItem($str, $icon, $onClick, $onlyCM = 0, $dontHide = 0) {
 		$this->elCount++;
 		if($this->ajax)	{
 			$onClick = str_replace('top.loadTopMenu', 'showClickmenu_raw', $onClick);
@@ -1427,7 +1427,7 @@ class clickMenu {
 	 * @param	string		The icon-image tag
 	 * @return	string		The icon-image tag prefixed with space char IF the icon should be printed at all due to user settings
 	 */
-	function excludeIcon($iconCode)	{
+	function excludeIcon($iconCode) {
 		return ($GLOBALS['BE_USER']->uc['noMenuMode'] && strcmp($GLOBALS['BE_USER']->uc['noMenuMode'],'icons')) ? '' : ' '.$iconCode;
 	}
 
@@ -1437,7 +1437,7 @@ class clickMenu {
 	 * @param	array		Menu items array
 	 * @return	array		Menu items array, processed.
 	 */
-	function enableDisableItems($menuItems)	{
+	function enableDisableItems($menuItems) {
 		if ($this->iParts[3])	{
 
 				// Detect "only" mode: (only showing listed items)
@@ -1475,7 +1475,7 @@ class clickMenu {
 	 * @param	array		Menu items array
 	 * @return	array		Menu items array, processed.
 	 */
-	function cleanUpSpacers($menuItems)	{
+	function cleanUpSpacers($menuItems) {
 
 			// Remove doubles:
 		$prevItemWasSpacer = FALSE;
@@ -1517,7 +1517,7 @@ class clickMenu {
 	 * @param	string		The "cm."-suffix to get.
 	 * @return	string
 	 */
-	function label($label)	{
+	function label($label) {
 		return $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.'.$label,1));
 	}
 
@@ -1540,7 +1540,7 @@ class clickMenu {
 	 * @param	string		Input string, probably a JavaScript document reference
 	 * @return	string
 	 */
-	function frameLocation($str)	{
+	function frameLocation($str) {
 		return $str.'.location';
 	}
 }
@@ -1637,21 +1637,21 @@ class SC_alt_clickmenu {
 
 	routImg = "t3-icon-empty";
 
-	function mo(c)	{	//
+	function mo(c) {
 		var name="roimg_"+c;
 		document.getElementById(name).className = roImg;
 		updateTime();
 	}
-	function mout(c)	{	//
+	function mout(c) {
 		var name="roimg_"+c;
 		document[name].src = routImg;
 		updateTime();
 	}
-	function updateTime()	{	//
+	function updateTime() {
 		date = new Date();
 		mo_timeout = Math.floor(date.getTime()/1000);
 	}
-	function timeout_func()	{	//
+	function timeout_func() {	//
 		date = new Date();
 		if (Math.floor(date.getTime()/1000)-mo_timeout > '.$secs.')	{
 			hideCM();
@@ -1660,7 +1660,7 @@ class SC_alt_clickmenu {
 			window.setTimeout("timeout_func();",1*1000);
 		}
 	}
-	function hideCM()	{	//
+	function hideCM() {	//
 		window.location.href="alt_topmenu_dummy.php";
 		return false;
 	}

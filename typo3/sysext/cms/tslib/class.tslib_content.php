@@ -1370,7 +1370,7 @@ class tslib_cObj {
 	 * @return	string		If jpg,gif,jpeg,png: returns image_tag with picture in. If html,txt: returns content string
 	 * @see FILE()
 	 */
-	function fileResource($fName, $addParams = 'alt="" title=""') {
+	function fileResource($fName, $addParams = 'alt = "" title = ""') {
 		$incFile = $GLOBALS['TSFE']->tmpl->getFileName($fName);
 		if ($incFile) {
 			$fileinfo = t3lib_div::split_fileref($incFile);

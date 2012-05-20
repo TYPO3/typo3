@@ -781,7 +781,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @param	string		The URL of the current shortcut link
 	 * @return	string		If a page ID was found, it is returned. Otherwise: 0
 	 */
-	protected function getLinkedPageId($url)	{
+	protected function getLinkedPageId($url) {
 		return preg_replace('/.*[\?&]id=([^&]+).*/', '$1', $url);
 	}
 

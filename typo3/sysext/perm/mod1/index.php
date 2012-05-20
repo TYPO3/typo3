@@ -748,7 +748,7 @@ class SC_mod_web_perm_index {
 	 * @param	string		Select clause
 	 * @return	string		Select form element for recursive levels (if any levels are found)
 	 */
-	public function getRecursiveSelect($id,$perms_clause) {
+	public function getRecursiveSelect($id, $perms_clause) {
 
 			// Initialize tree object:
 		$tree = t3lib_div::makeInstance('t3lib_pageTree');

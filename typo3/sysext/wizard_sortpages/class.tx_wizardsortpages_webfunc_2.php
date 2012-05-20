@@ -147,7 +147,7 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 	 * @param	string		Field to sort by
 	 * @return	string		HTML string
 	 */
-	function wiz_linkOrder($title,$order)	{
+	function wiz_linkOrder($title, $order) {
 		return '&nbsp; &nbsp;<a class="t3-link" href="' . htmlspecialchars('index.php?id=' . $GLOBALS['SOBE']->id . '&sortByField=' . $order) . '" onclick="return confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('wiz_changeOrder_msg1')) . ')">' . htmlspecialchars($title) . '</a>';
 	}
 }

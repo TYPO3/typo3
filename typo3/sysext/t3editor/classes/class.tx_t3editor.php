@@ -382,7 +382,7 @@ class tx_t3editor implements t3lib_Singleton {
 	 * @param	string		$alt	Alt attribute
 	 * @return	string		Generated HTML code for editor
 	 */
-	public function getCodeEditor($name, $class='', $content='', $additionalParams='', $alt='', array $hiddenfields = array()) {
+	public function getCodeEditor($name, $class = '', $content = '', $additionalParams = '', $alt = '', array $hiddenfields = array()) {
 		$code = '';
 
 		if ($this->isEnabled()) {

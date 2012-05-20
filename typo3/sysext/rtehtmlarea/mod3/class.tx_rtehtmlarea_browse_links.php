@@ -54,7 +54,7 @@ class tx_rtehtmlarea_pageTree extends rtePageTree {
 	 * @param	array		Tree array
 	 * @return	string		HTML output.
 	 */
-	function printTree($treeArr='')	{
+	function printTree($treeArr = '') {
 		$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
 		if (!is_array($treeArr))	$treeArr=$this->tree;
 
@@ -115,7 +115,7 @@ class tx_rtehtmlarea_folderTree extends rteFolderTree {
 	 * @param	t3lib_file_Folder	The "record"
 	 * @return	string			Wrapping title string.
 	 */
-	function wrapTitle ($title, t3lib_file_Folder $folderObject) {
+	function wrapTitle($title, t3lib_file_Folder $folderObject) {
 		if ($this->ext_isLinkable($folderObject)) {
 			$aOnClick = 'return jumpToUrl(\'' . $this->thisScript .
 				'?act=' . $GLOBALS['SOBE']->browser->act .
@@ -138,7 +138,7 @@ class tx_rtehtmlarea_folderTree extends rteFolderTree {
 	 * @return	string		Link-wrapped input string
 	 * @access private
 	 */
-	public function PMiconATagWrap ($icon, $cmd, $isExpand = TRUE) {
+	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
 		if ($this->thisScript) {
 			$js = htmlspecialchars('Tree.thisScript=\'' . $GLOBALS['BACK_PATH'] . 'ajax.php\',Tree.load(\'' . $cmd . '\', ' . intval($isExpand) . ', this);');
 			return '<a class="pm" onclick="' . $js . '">' . $icon . '</a>';
@@ -294,7 +294,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 * @param	string		$buttonName: the name of the button
 	 * @return	array		the configuration array of the image button
 	 */
-	protected function getButtonConfig($buttonName)	{
+	protected function getButtonConfig($buttonName) {
 		return ((is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.'][$buttonName.'.'])) ? $this->thisConfig['buttons.'][$buttonName.'.'] : array());
 	}
 
@@ -447,19 +447,19 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			var cur_class="'.($this->setClass?$this->setClass:'').'";
 			var cur_title="'.($this->setTitle?$this->setTitle:'').'";
 
-			function browse_links_setTarget(value)	{
+			function browse_links_setTarget(value) {
 				cur_target=value;
 				add_target="&curUrl[target]="+encodeURIComponent(value);
 			}
-			function browse_links_setClass(value)	{
+			function browse_links_setClass(value) {
 				cur_class=value;
 				add_class="&curUrl[class]="+encodeURIComponent(value);
 			}
-			function browse_links_setTitle(value)	{
+			function browse_links_setTitle(value) {
 				cur_title=value;
 				add_title="&curUrl[title]="+encodeURIComponent(value);
 			}
-			function browse_links_setHref(value)	{
+			function browse_links_setHref(value) {
 				cur_href=value;
 				add_href="&curUrl[href]="+value;
 			}
@@ -502,7 +502,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				plugin.createLink(theLink,cur_target,cur_class,cur_title,additionalValues);
 				return false;
 			}
-			function link_current()	{
+			function link_current() {
 				var parameters = (document.ltargetform.query_parameters && document.ltargetform.query_parameters.value) ? (document.ltargetform.query_parameters.value.charAt(0) == "&" ? "" : "&") + document.ltargetform.query_parameters.value : "";
 				if (document.ltargetform.anchor_title) browse_links_setTitle(document.ltargetform.anchor_title.value);
 				if (document.ltargetform.anchor_class) browse_links_setClass(document.ltargetform.anchor_class.value);
@@ -570,7 +570,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 * @param	boolean		If set, the "remove link" is not shown in the menu: Used for the "Select link" wizard which is used by the TCEforms
 	 * @return	string		Modified content variable.
 	 */
-	function main_rte ($wiz=0) {
+	function main_rte($wiz = 0) {
 
 			// Starting content:
 		$content=$this->doc->startPage($GLOBALS['LANG']->getLL('Insert/Modify Link',1));
@@ -1125,7 +1125,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 * @param	string		string: the label to be localized
 	 * @return	string		Localized string.
 	 */
-	public function getPageConfigLabel($string,$JScharCode=1) {
+	public function getPageConfigLabel($string, $JScharCode = 1) {
 		if (strcmp(substr($string,0,4),'LLL:')) {
 			$label = $string;
 		} else {

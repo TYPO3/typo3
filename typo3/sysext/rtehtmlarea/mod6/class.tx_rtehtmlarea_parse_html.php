@@ -84,7 +84,7 @@ class tx_rtehtmlarea_parse_html {
 	 * @param	[type]		$openKeys: ...
 	 * @return	[type]		...
 	 */
-	function main_parse_html($openKeys)	{
+	function main_parse_html($openKeys) {
 		global $TYPO3_CONF_VARS;
 
 		$editorNo = t3lib_div::_GP('editorNo');

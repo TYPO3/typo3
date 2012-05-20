@@ -2099,7 +2099,7 @@ class adoSchema {
 	* @stripprefix strip prefix string when storing in XML schema
 	* @return string Generated XML schema
 	*/
-	function ExtractSchema( $data = FALSE, $indent = '  ', $prefix = '' , $stripprefix=false) {
+	function ExtractSchema($data = FALSE, $indent = '  ', $prefix = '', $stripprefix = false) {
 		$old_mode = $this->db->SetFetchMode( ADODB_FETCH_NUM );
 
 		$schema = '<?xml version="1.0"?>' . "\n"

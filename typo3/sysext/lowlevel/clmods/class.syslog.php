@@ -98,7 +98,7 @@ Showing last 25 hour entries from the syslog. More features pending. This is the
 	 * @param	array		Result array from main() function
 	 * @return	void
 	 */
-	function main_autoFix($resultArray)	{
+	function main_autoFix($resultArray) {
 	}
 }
 

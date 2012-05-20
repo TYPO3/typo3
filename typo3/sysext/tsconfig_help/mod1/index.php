@@ -95,7 +95,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 			$this->doc->JScode = '
 				<script language="javascript" type="text/javascript">
 					script_ended = 0;
-					function jumpToUrl(URL)	{
+					function jumpToUrl(URL) {
 						document.location = URL;
 					}
 				</script>
@@ -267,7 +267,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 *
 	 * @return	string	contents
 	 */
-	function getZIPFileContents($ZIPfile, $filename)	{
+	function getZIPFileContents($ZIPfile, $filename) {
 		if (file_exists($ZIPfile))	{
 				// Unzipping SXW file, getting filelist:
 			$tempPath = PATH_site.'typo3temp/tx_tsconfighelp_ziptemp/';
@@ -292,7 +292,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 * @param string $path		Path to change to before extracting
 	 * @return boolean	TRUE on success, FALSE in failure
 	 */
-	function unzip($file, $path)	{
+	function unzip($file, $path) {
 			// we use the unzip class of the Extension Manager here
 			// TODO: move unzip class to core
 		if (!t3lib_extMgm::isLoaded('em')) {
@@ -317,7 +317,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 * @param	array		The XML values array. The XML index is not necessary in this function.
 	 * @return	array		Array that contains the different styles with their parent (required to recognise "Table Contents"-type styles), and their style (bold/italic)
 	 */
-	function parseStyles($vals)	{
+	function parseStyles($vals) {
 		$currentStyleName = '';
 		$style = array ();
 
@@ -414,7 +414,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 * @param	integer		This is a reference to the index in the array where we should be starting the search
 	 * @return	array		Array of the table start index and table end index where TS is defined. table start is FALSE if there are no more TS entries in the document (consider it similar to an EOF reached status).
 	 */
-	function nextTSDefinitionTable($vals, $index, &$id)	{
+	function nextTSDefinitionTable($vals, $index, &$id) {
 			// browse the table where we left off last time
 		while ($id < count ($vals))	{
 			$node = $vals[$id];
@@ -441,7 +441,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 * @param	array		an array containing the [attributes][style] items in the OO format
 	 * @return	array		an array where the items are all the HTML styles to apply to closely match the input OO-like styles
 	 */
-	function styleTags($node)	{
+	function styleTags($node) {
 		global $Styles;
 
 		$styleName = $node['attributes']['TEXT:STYLE-NAME'];
@@ -468,7 +468,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 * @param	string		either '' or '/' depending on whether the style definition is to open or close the style
 	 * @return	string		the sequence of tags to open or close the style, for example <strong><i>
 	 */
-	function styleHTML($style, $char)	{
+	function styleHTML($style, $char) {
 		$string = '';
 		if (count ($style) > 0)	{
 			foreach ($style as $tag)	{
@@ -658,7 +658,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 * @param	string		Name of the table from the source document (name at the bottom of the table in OpenOffice)
 	 * @return	boolean		TRUE on success and FALSE on failure from the INSERT database query
 	 */
-	function dumpIntoSQL($extension, $table, $tableName)	{
+	function dumpIntoSQL($extension, $table, $tableName) {
 		global $uid;
 
 		foreach ($table as $row)	{
@@ -719,7 +719,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 * @param	string		Name of the extension for which to delete all the data in the database. If empty, all database will be cleaned
 	 * @return	void
 	 */
-	function purgeSQLContents($extension='')	{
+	function purgeSQLContents($extension = '') {
 		$guide = hexdec(substr(md5($extension), 6, 6));
 		if ($extension != '')	{
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('static_tsconfig_help', 'guide='.$guide);
@@ -737,7 +737,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 * @param	string		Input data from the manual.sxw in a string form. One large string with the whole OO manual document.
 	 * @return	integer		Number of individual tables found in the document and loaded into the SQL database
 	 */
-	function loadExtensionManual($extension, $contents)	{
+	function loadExtensionManual($extension, $contents) {
 		global $Styles;
 
 			// read the contents into an XML array

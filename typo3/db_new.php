@@ -61,7 +61,7 @@ class localPageTree extends t3lib_pageTree {
 	 * @param	array		Item row
 	 * @return	string		Wrapping icon image.
 	 */
-	function wrapIcon($icon,$row)	{
+	function wrapIcon($icon, $row) {
 		return $this->addTagAttributes($icon,' title="id='.htmlspecialchars($row['uid']).'"');
 	}
 
@@ -72,7 +72,7 @@ class localPageTree extends t3lib_pageTree {
 	 * @param	integer		The ID (page id) of the element
 	 * @return	boolean		Returns TRUE if the IDs matches
 	 */
-	function expandNext($id)	{
+	function expandNext($id) {
 		return $id==$GLOBALS['SOBE']->id ? 1 : 0;
 	}
 }
@@ -618,7 +618,7 @@ class SC_db_new {
 	 * @param	string		first array element for compare
 	 * @return	int			-1 for lower, 0 for equal, 1 for greater
 	 */
-	function sortNewRecordsByConfig($a, $b)	{
+	function sortNewRecordsByConfig($a, $b) {
 		if (count($this->newRecordSortList)) {
 			if (in_array($a, $this->newRecordSortList) && in_array($b, $this->newRecordSortList)) {
 					// both are in the list, return relative to position in array
@@ -684,7 +684,7 @@ class SC_db_new {
 	 * @param	string		Table name to check
 	 * @return	boolean		Returns TRUE if the tablename $checkTable is allowed to be created on the page with record $pid_row
 	 */
-	function isTableAllowedForThisPage($pid_row, $checkTable)	{
+	function isTableAllowedForThisPage($pid_row, $checkTable) {
 		if (!is_array($pid_row))	{
 			if ($GLOBALS['BE_USER']->user['admin'])	{
 				return TRUE;
@@ -719,7 +719,7 @@ class SC_db_new {
 	 * @param	array		Array of new tables that are not allowed.
 	 * @return	boolean		Returns TRUE if a link for creating new records should be displayed for $table
 	 */
-	function showNewRecLink($table, array $allowedNewTables=array(), array $deniedNewTables=array()) {
+	function showNewRecLink($table, array $allowedNewTables = array(), array $deniedNewTables = array()) {
 		$allowedNewTables = ($allowedNewTables ? $allowedNewTables : $this->allowedNewTables);
 		$deniedNewTables = ($deniedNewTables ? $deniedNewTables : $this->deniedNewTables);
 			// No deny/allow tables are set:

@@ -36,7 +36,7 @@ $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_objbrowser/locallang.xml');
  */
 class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
-	function init(&$pObj,$conf)	{
+	function init(&$pObj, $conf) {
 		parent::init($pObj,$conf);
 
 		$this->pObj->modMenu_dontValidateList.= ',ts_browser_toplevel_setup,ts_browser_toplevel_const,ts_browser_TLKeys_setup,ts_browser_TLKeys_const';
@@ -99,7 +99,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 	 * @param	[type]		$parentValue: ...
 	 * @return	[type]		...
 	 */
-	function verify_TSobjects($propertyArray,$parentType,$parentValue)	{
+	function verify_TSobjects($propertyArray, $parentType, $parentValue) {
 		$TSobjTable = array(
 			"PAGE" => array(
 				"prop" => array (
@@ -163,7 +163,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 	 * @param	[type]		$template_uid: ...
 	 * @return	[type]		...
 	 */
-	function initialize_editor($pageId,$template_uid=0)	{
+	function initialize_editor($pageId, $template_uid = 0) {
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		global $tmpl,$tplRow,$theConstants;
 

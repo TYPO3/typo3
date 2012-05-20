@@ -97,7 +97,7 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return	void
 	 */
-	function extProc_beforeLinking($key)	{
+	function extProc_beforeLinking($key) {
 		$this->I['addATagParams']='';
 		$this->WMsubmenu = $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
 		if (trim($this->WMsubmenu))	{
@@ -114,7 +114,7 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return	void
 	 */
-	function extProc_afterLinking($key)	{
+	function extProc_afterLinking($key) {
 		$this->WMtableWrap = $this->mconf['dontWrapInTable'] ? '' : '<table cellspacing="0" cellpadding="0" width="100%" border="0"><tr><td>|</td></tr></table>';
 
 		if ($this->WMimagesFlag)	{

@@ -79,7 +79,7 @@ class ext_posMap extends t3lib_positionMap {
 	 * @param	array		The record row.
 	 * @return	string		Wrapped title string.
 	 */
-	function wrapRecordTitle($str,$row)	{
+	function wrapRecordTitle($str, $row) {
 		$aOnClick = 'jumpToUrl(\''.$GLOBALS['SOBE']->local_linkThisScript(array('edit_record'=>'tt_content:'.$row['uid'])).'\');return false;';
 		return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$str.'</a>';
 	}
@@ -92,7 +92,7 @@ class ext_posMap extends t3lib_positionMap {
 	 * @return	string
 	 * @see printRecordMap()
 	 */
-	function wrapColumnHeader($str,$vv)	{
+	function wrapColumnHeader($str, $vv) {
 		$aOnClick = 'jumpToUrl(\''.$GLOBALS['SOBE']->local_linkThisScript(array('edit_record'=>'_EDIT_COL:'.$vv)).'\');return false;';
 		return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$str.'</a>';
 	}
@@ -123,7 +123,7 @@ class ext_posMap extends t3lib_positionMap {
 	 * @param	array		Record array.
 	 * @return	string		HTML content
 	 */
-	function wrapRecordHeader($str,$row)	{
+	function wrapRecordHeader($str, $row) {
 		if ($row['uid']==$this->moveUid)	{
 			return '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/content_client.gif','width="7" height="10"').' alt="" />'.$str;
 		} else return $str;
@@ -379,9 +379,9 @@ class SC_db_layout {
 			$this->doc->JScode.= $this->doc->wrapScriptTags('
 				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 				if (top.fsMod) top.fsMod.navFrameHighlightedID["web"] = "pages'.intval($this->id).'_"+top.fsMod.currentBank; '.intval($this->id).';
-				function jumpToUrl(URL,formEl)	{	//
+				function jumpToUrl(URL, formEl) {
 					if (document.editform && TBE_EDITOR.isFormChanged)	{	// Check if the function exists... (works in all browsers?)
-						if (!TBE_EDITOR.isFormChanged())	{	//
+						if (!TBE_EDITOR.isFormChanged()) {
 							window.location.href = URL;
 						} else if (formEl) {
 							if (formEl.type=="checkbox") formEl.checked = formEl.checked ? 0 : 1;
@@ -390,7 +390,7 @@ class SC_db_layout {
 				}
 			' . ($this->popView ? t3lib_BEfunc::viewOnClick($this->id, $GLOBALS['BACK_PATH'], t3lib_BEfunc::BEgetRootLine($this->id)) : '') . '
 
-				function deleteRecord(table,id,url)	{	//
+				function deleteRecord(table, id, url) {
 					if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteWarning')) . ')) {
 						window.location.href = "' . $GLOBALS['BACK_PATH'] .
 						'tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC=' . $GLOBALS['BE_USER']->veriCode() .
@@ -408,31 +408,31 @@ class SC_db_layout {
 					top.DTM_currentTabs = new Array();
 				}
 
-				function DTM_activate(idBase,index,doToogle)	{	//
+				function DTM_activate(idBase, index, doToogle) {
 						// Hiding all:
-					if (DTM_array[idBase])	{
-						for(cnt = 0; cnt < DTM_array[idBase].length ; cnt++)	{
-							if (DTM_array[idBase][cnt] != idBase+"-"+index)	{
-								document.getElementById(DTM_array[idBase][cnt]+"-DIV").style.display = "none";
-								document.getElementById(DTM_array[idBase][cnt]+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
+					if (DTM_array[idBase]) {
+						for(cnt = 0; cnt < DTM_array[idBase].length ; cnt++) {
+							if (DTM_array[idBase][cnt] != idBase + "-" + index) {
+								document.getElementById(DTM_array[idBase][cnt] + "-DIV").style.display = "none";
+								document.getElementById(DTM_array[idBase][cnt] + "-MENU").attributes.getNamedItem("class").nodeValue = "tab";
 							}
 						}
 					}
 
 						// Showing one:
-					if (document.getElementById(idBase+"-"+index+"-DIV"))	{
-						if (doToogle && document.getElementById(idBase+"-"+index+"-DIV").style.display == "block")	{
-							document.getElementById(idBase+"-"+index+"-DIV").style.display = "none";
-							if(DTM_origClass=="") {
-								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
+					if (document.getElementById(idBase + "-" + index + "-DIV")) {
+						if (doToogle && document.getElementById(idBase + "-" + index + "-DIV").style.display == "block") {
+							document.getElementById(idBase + "-" + index + "-DIV").style.display = "none";
+							if (DTM_origClass=="") {
+								document.getElementById(idBase + "-" + index + "-MENU").attributes.getNamedItem("class").nodeValue = "tab";
 							} else {
 								DTM_origClass = "tab";
 							}
 							top.DTM_currentTabs[idBase] = -1;
 						} else {
-							document.getElementById(idBase+"-"+index+"-DIV").style.display = "block";
-							if(DTM_origClass=="") {
-								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tabact";
+							document.getElementById(idBase + "-" + index + "-DIV").style.display = "block";
+							if (DTM_origClass == "") {
+								document.getElementById(idBase + "-" + index + "-MENU").attributes.getNamedItem("class").nodeValue = "tabact";
 							} else {
 								DTM_origClass = "tabact";
 							}
@@ -440,35 +440,35 @@ class SC_db_layout {
 						}
 					}
 				}
-				function DTM_toggle(idBase,index,isInit)	{	//
+				function DTM_toggle(idBase, index, isInit) {
 						// Showing one:
-					if (document.getElementById(idBase+"-"+index+"-DIV"))	{
-						if (document.getElementById(idBase+"-"+index+"-DIV").style.display == "block")	{
-							document.getElementById(idBase+"-"+index+"-DIV").style.display = "none";
-							if(isInit) {
-								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
+					if (document.getElementById(idBase + "-" + index + "-DIV"))	{
+						if (document.getElementById(idBase + "-" + index + "-DIV").style.display == "block") {
+							document.getElementById(idBase + "-" + index + "-DIV").style.display = "none";
+							if (isInit) {
+								document.getElementById(idBase + "-" + index + "-MENU").attributes.getNamedItem("class").nodeValue = "tab";
 							} else {
 								DTM_origClass = "tab";
 							}
-							top.DTM_currentTabs[idBase+"-"+index] = 0;
+							top.DTM_currentTabs[idBase + "-" + index] = 0;
 						} else {
-							document.getElementById(idBase+"-"+index+"-DIV").style.display = "block";
-							if(isInit) {
-								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tabact";
+							document.getElementById(idBase + "-" + index + "-DIV").style.display = "block";
+							if (isInit) {
+								document.getElementById(idBase + "-" + index + "-MENU").attributes.getNamedItem("class").nodeValue = "tabact";
 							} else {
 								DTM_origClass = "tabact";
 							}
-							top.DTM_currentTabs[idBase+"-"+index] = 1;
+							top.DTM_currentTabs[idBase + "-" + index] = 1;
 						}
 					}
 				}
 
-				function DTM_mouseOver(obj) {	//
+				function DTM_mouseOver(obj) {
 						DTM_origClass = obj.attributes.getNamedItem(\'class\').nodeValue;
 						obj.attributes.getNamedItem(\'class\').nodeValue += "_over";
 				}
 
-				function DTM_mouseOut(obj) {	//
+				function DTM_mouseOut(obj) {
 						obj.attributes.getNamedItem(\'class\').nodeValue = DTM_origClass;
 						DTM_origClass = "";
 				}
@@ -1294,7 +1294,7 @@ class SC_db_layout {
 	 * @param	array		Parameters array, merged with global GET vars.
 	 * @return	string		URL
 	 */
-	function local_linkThisScript($params)	{
+	function local_linkThisScript($params) {
 		$params['popView']='';
 		$params['new_unique_uid']='';
 		return t3lib_div::linkThisScript($params);
@@ -1306,7 +1306,7 @@ class SC_db_layout {
 	 * @param	integer		Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
 	 * @return	string		Return query string.
 	 */
-	function exec_languageQuery($id)	{
+	function exec_languageQuery($id) {
 		if ($id)	{
 			$exQ = t3lib_BEfunc::deleteClause('pages_language_overlay') . ($GLOBALS['BE_USER']->isAdmin()?'':' AND sys_language.hidden=0');
 			return $GLOBALS['TYPO3_DB']->exec_SELECTquery(

@@ -99,7 +99,7 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 	 * @param	array		Result array from main() function
 	 * @return	void
 	 */
-	function main_autoFix($resultArray)	{
+	function main_autoFix($resultArray) {
 
 			// Putting "tx_templavoila_datastructure" table in the bottom:
 		if (isset($resultArray['deleted']['tx_templavoila_datastructure']))	{

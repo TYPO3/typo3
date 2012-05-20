@@ -3506,7 +3506,7 @@ http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_1
 	 * But aware possible problems in multiuser environments. For better speed the table
 	 * must be indexed by the condition. Heavy test this before deploying.
 	 */
-	function PO_RecordCount($table="", $condition="") {
+	function PO_RecordCount($table = "", $condition = "") {
 
 		$lnumrows = $this->_numOfRows;
 		// the database doesn't support native recordcount, so we do a workaround

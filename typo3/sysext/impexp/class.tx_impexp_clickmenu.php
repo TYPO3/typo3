@@ -63,7 +63,7 @@ class tx_impexp_clickmenu {
 	 * @return	array		Menu item array, returned after modification
 	 * @todo	Skinning for icons...
 	 */
-	function main(&$backRef,$menuItems,$table,$uid)	{
+	function main(&$backRef, $menuItems, $table, $uid) {
 		$localItems=array();
 		if (($backRef->cmLevel && t3lib_div::_GP('subname')=='moreoptions') || ($table==='pages' && $uid==0))	{	// Show import/export on second level menu OR root level.
 

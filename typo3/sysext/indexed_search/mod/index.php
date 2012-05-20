@@ -82,7 +82,7 @@ class SC_mod_tools_isearch_index {
 				// JavaScript
 		$this->doc->JScodeArray['indexed_search'] = '
 			script_ended = 0;
-			function jumpToUrl(URL)	{
+			function jumpToUrl(URL) {
 				window.location.href = URL;
 			}';
 
@@ -218,7 +218,7 @@ class SC_mod_tools_isearch_index {
 	 * @param	[type]		$str: ...
 	 * @return	[type]		...
 	 */
-	function tableHead($str)	{
+	function tableHead($str) {
 		return "<strong>".$str.":&nbsp;&nbsp;&nbsp;</strong>";
 	}
 
@@ -402,7 +402,7 @@ class SC_mod_tools_isearch_index {
 	 * @param	[type]		$fegroup_recs: ...
 	 * @return	[type]		...
 	 */
-	function formatFeGroup($fegroup_recs)	{
+	function formatFeGroup($fegroup_recs) {
 		$str = array();
 		foreach ($fegroup_recs as $row) {
 			$str[] = $row["gr_list"]=="0,-1" ? "NL" : $row["gr_list"];
@@ -417,7 +417,7 @@ class SC_mod_tools_isearch_index {
 	 * @param	[type]		$arr: ...
 	 * @return	[type]		...
 	 */
-	function formatCHash($arr)	{
+	function formatCHash($arr) {
 		$list = array();
 		foreach ($arr as $k => $v) {
 			$list[] = htmlspecialchars($k) . '=' . htmlspecialchars($v);
@@ -431,7 +431,7 @@ class SC_mod_tools_isearch_index {
 	 * @param	[type]		$phash: ...
 	 * @return	[type]		...
 	 */
-	function getNumberOfSections($phash)	{
+	function getNumberOfSections($phash) {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_section', 'phash=' . intval($phash));
 	}
 
@@ -441,7 +441,7 @@ class SC_mod_tools_isearch_index {
 	 * @param	[type]		$phash: ...
 	 * @return	[type]		...
 	 */
-	function getNumberOfWords($phash)	{
+	function getNumberOfWords($phash) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_rel', 'phash='.intval($phash));
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 		return $row[0];
@@ -453,7 +453,7 @@ class SC_mod_tools_isearch_index {
 	 * @param	[type]		$phash: ...
 	 * @return	[type]		...
 	 */
-	function getGrlistRecord($phash)	{
+	function getGrlistRecord($phash) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_grlist.*', 'index_grlist', 'phash='.intval($phash));
 		$allRows = array();
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
@@ -469,7 +469,7 @@ class SC_mod_tools_isearch_index {
 	 * @param	[type]		$phash: ...
 	 * @return	[type]		...
 	 */
-	function getNumberOfFulltext($phash)	{
+	function getNumberOfFulltext($phash) {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_fulltext', 'phash=' . intval($phash));
 	}
 
@@ -508,7 +508,7 @@ class SC_mod_tools_isearch_index {
 	 * @param	[type]		$item_type: ...
 	 * @return	[type]		...
 	 */
-	function countUniqueTypes($item_type)	{
+	function countUniqueTypes($item_type) {
 			// TYPO3 pages, unique
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_phash', 'item_type='.$GLOBALS['TYPO3_DB']->fullQuoteStr($item_type, 'index_phash'), 'phash_grouping');
 		$items = array();

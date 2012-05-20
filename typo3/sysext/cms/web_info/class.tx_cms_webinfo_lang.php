@@ -121,7 +121,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 	 * @param	array		The Page tree data
 	 * @return	string		HTML for the localization information table.
 	 */
-	function renderL10nTable(&$tree)	{
+	function renderL10nTable(&$tree) {
 		global $LANG;
 
 			// System languages retrieved:
@@ -333,7 +333,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 	 * @param	integer		Language UID to select for.
 	 * @return	array		pages_languages_overlay record
 	 */
-	function getLangStatus($pageId, $langId)	{
+	function getLangStatus($pageId, $langId) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'pages_language_overlay',
@@ -362,7 +362,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 	 * @param	integer		Sys language uid
 	 * @return	integer		Number of content elements from the PID where the language is set to a certain value.
 	 */
-	function getContentElementCount($pageId,$sysLang)	{
+	function getContentElementCount($pageId, $sysLang) {
 		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 			'uid',
 			'tt_content',

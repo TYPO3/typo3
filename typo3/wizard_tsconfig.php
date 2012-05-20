@@ -61,7 +61,7 @@ class ext_TSparser extends t3lib_tsparser_ext {
 	 * @param	array		P array
 	 * @return	string		The "_LINK" key value, straight away.
 	 */
-	function makeHtmlspecialchars($P)	{
+	function makeHtmlspecialchars($P) {
 		return $P['_LINK'];
 	}
 }
@@ -144,24 +144,24 @@ class SC_wizard_tsconfig {
 		';
 
 		$this->doc->JScode.=$this->doc->wrapScriptTags('
-			function checkReference_name()	{	// Checks if the input field containing the name exists in the document
+			function checkReference_name() {	// Checks if the input field containing the name exists in the document
 				if (window.opener && window.opener.document && window.opener.document.'.$this->P['formName'].' && window.opener.document.'.$this->P['formName'].'["'.$this->P['itemName'].'"] )	{
 					return window.opener.document.'.$this->P['formName'].'["'.$this->P['itemName'].'"];
 				}
 			}
-			function checkReference_value()	{	// Checks if the input field containing the value exists in the document
+			function checkReference_value() {	// Checks if the input field containing the value exists in the document
 				if (window.opener && window.opener.document && window.opener.document.'.$this->P['formName'].' && window.opener.document.'.$this->P['formName'].'["'.$this->P['itemValue'].'"] )	{
 					return window.opener.document.'.$this->P['formName'].'["'.$this->P['itemValue'].'"];
 				}
 			}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$field,value: ...
-	 * @return	[type]		...
-	 */
-			function setValue(field,value)	{
+			/**
+			 * [Describe function...]
+			 *
+			 * @param	[type]		$field,value: ...
+			 * @return	[type]		...
+			 */
+			function setValue(field,value) {
 				var nameField = checkReference_name();
 				var valueField = checkReference_value();
 				if (nameField)	{
@@ -175,12 +175,13 @@ class SC_wizard_tsconfig {
 							nameField.value=field+"\n"+nameField.value;
 						}
 					}
-					'.$update.'
+					' . $update . '
 					window.opener.focus();
 				}
 				close();
 			}
-			function getValue()	{	// This is never used. Remove it?
+				// This is never used. Remove it?
+			function getValue() {
 				var field = checkReference_name();
 				if (field)	{
 					return field.value;
@@ -189,61 +190,63 @@ class SC_wizard_tsconfig {
 				}
 			}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$cmd,objString: ...
-	 * @return	[type]		...
-	 */
-			function mixerField(cmd,objString)	{
+			/**
+			 * [Describe function...]
+			 *
+			 * @param	[type]		$cmd,objString: ...
+			 * @return	[type]		...
+			 */
+			function mixerField(cmd,objString) {
 				var temp;
 				switch(cmd)	{
 					case "Indent":
-						temp = str_replace("\n","\n  ","\n"+document.editform.mixer.value);
+						temp = str_replace("\n", "\n  ","\n" + document.editform.mixer.value);
 						document.editform.mixer.value = temp.substr(1);
-					break;
+						break;
 					case "Outdent":
-						temp = str_replace("\n  ","\n","\n"+document.editform.mixer.value);
+						temp = str_replace("\n  ", "\n", "\n" + document.editform.mixer.value);
 						document.editform.mixer.value = temp.substr(1);
-					break;
+						break;
 					case "Transfer":
 						setValue(document.editform.mixer.value);
-					break;
+						break;
 					case "Wrap":
 						document.editform.mixer.value=objString+" {\n"+document.editform.mixer.value+"\n}";
-					break;
+						break;
 				}
 			}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$match,replace,string: ...
-	 * @return	[type]		...
-	 */
-			function str_replace(match,replace,string)	{
-				var input = ""+string;
-				var matchStr = ""+match;
-				if (!matchStr)	{return string;}
-				var output = "";
-				var pointer=0;
-				var pos = input.indexOf(matchStr);
-				while (pos!=-1)	{
-					output+=""+input.substr(pointer, pos-pointer)+replace;
-					pointer=pos+matchStr.length;
-					pos = input.indexOf(match,pos+1);
+			/**
+			 * [Describe function...]
+			 *
+			 * @param	[type]		$match,replace,string: ...
+			 * @return	[type]		...
+			 */
+			function str_replace(match, replace, string) {
+				var input = "" + string;
+				var matchStr = "" + match;
+				if (!matchStr) {
+					return string;
 				}
-				output+=""+input.substr(pointer);
+				var output = "";
+				var pointer = 0;
+				var pos = input.indexOf(matchStr);
+				while (pos != -1) {
+					output += "" + input.substr(pointer, pos-pointer) + replace;
+					pointer = pos + matchStr.length;
+					pos = input.indexOf(match, pos+1);
+				}
+				output += "" + input.substr(pointer);
 				return output;
 			}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$show,objString: ...
-	 * @return	[type]		...
-	 */
-			function jump(show,objString)	{
+			/**
+			 * [Describe function...]
+			 *
+			 * @param	[type]		$show,objString: ...
+			 * @return	[type]		...
+			 */
+			function jump(show,objString) {
 				window.location.href = "'.t3lib_div::linkThisScript(array('show'=>'','objString'=>'')).'&show="+show+"&objString="+objString;
 			}
 		');
@@ -294,7 +297,7 @@ class SC_wizard_tsconfig {
 	 * @param	integer		Pointing to an entry in static_tsconfig_help to show.
 	 * @return	string		HTML
 	 */
-	function browseTSprop($mode,$show)	{
+	function browseTSprop($mode, $show) {
 			// Get object tree:
 		$objTree = $this->getObjTree();
 
@@ -408,7 +411,7 @@ class SC_wizard_tsconfig {
 	 * @access private
 	 * @see getObjTree()
 	 */
-	function setObj(&$objTree,$strArr,$params)	{
+	function setObj(&$objTree, $strArr, $params) {
 		$key = current($strArr);
 		reset($strArr);
 		if (count($strArr)>1)	{
@@ -428,7 +431,7 @@ class SC_wizard_tsconfig {
 	 * @return	string		Output string
 	 * @access private
 	 */
-	function revertFromSpecialChars($str)	{
+	function revertFromSpecialChars($str) {
 		$str = str_replace('&gt;','>',$str);
 		$str = str_replace('&lt;','<',$str);
 		return $str;
@@ -441,7 +444,7 @@ class SC_wizard_tsconfig {
 	 * @return	string		The link.
 	 * @access private
 	 */
-	function doLink($params)	{
+	function doLink($params) {
 		$title = trim($params[0]['title'])?trim($params[0]['title']):'[GO]';
 		$str = $this->linkToObj($title,$params[0]['uid'],$params[1]);
 		return $str;
@@ -454,7 +457,7 @@ class SC_wizard_tsconfig {
 	 * @return	array		Modified input array
 	 * @access private
 	 */
-	function removePointerObjects($objArray)	{
+	function removePointerObjects($objArray) {
 		foreach ($objArray as $k => $value) {
 			if (substr(trim($k),0,2)=="->" && trim($k)!='->.')	{
 				$objArray['->.'][substr(trim($k),2)]=$objArray[$k];
@@ -472,7 +475,7 @@ class SC_wizard_tsconfig {
 	 * @param	string		Title string for that record!
 	 * @return	string		Linked string
 	 */
-	function linkToObj($str,$uid,$objString='')	{
+	function linkToObj($str, $uid, $objString = '') {
 		$aOnClick='jump(\''.rawurlencode($uid).'\',\''.rawurlencode($objString).'\');return false;';
 		return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.htmlspecialchars($str).'</a>';
 	}
@@ -485,7 +488,7 @@ class SC_wizard_tsconfig {
 	 * @param	array		Object tree
 	 * @return	string		HTML content.
 	 */
-	function printTable($table,$objString,$objTree)	{
+	function printTable($table, $objString, $objTree) {
 		if (is_array($table['rows']))	{
 
 				// Initialize:
@@ -559,21 +562,21 @@ class SC_wizard_tsconfig {
 	 * @param	string		Data type
 	 * @return	string		Linked $str
 	 */
-	function linkProperty($str,$propertyName,$prefix,$datatype)	{
-		$out='';
+	function linkProperty($str, $propertyName, $prefix, $datatype) {
+		$out = '';
 
 			// Setting preset value:
-		if (strstr($datatype,'boolean'))	{
-			$propertyVal='1';	// preset "1" to boolean values.
+		if (strstr($datatype,'boolean')) {
+			$propertyVal = '1';	// preset "1" to boolean values.
 		}
 
 			// Adding mixer features; The plus icon:
-		if(!$this->onlyProperty)	{
-			$aOnClick = 'document.editform.mixer.value=unescape(\'  '.rawurlencode($propertyName.'='.$propertyVal).'\')+\'\n\'+document.editform.mixer.value; return false;';
-			$out.= '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
+		if (!$this->onlyProperty) {
+			$aOnClick = 'document.editform.mixer.value=unescape(\'  ' . rawurlencode($propertyName . '=' . $propertyVal) . '\')+\'\n\'+document.editform.mixer.value; return false;';
+			$out .= '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' .
 					t3lib_iconWorks::getSpriteIcon('actions-edit-add', array('title' => $GLOBALS['LANG']->getLL('tsprop_addToList', TRUE))) .
 			'</a>';
-			$propertyName = $prefix.'.'.$propertyName;
+			$propertyName = $prefix . '.' . $propertyName;
 		}
 
 			// Wrap string:

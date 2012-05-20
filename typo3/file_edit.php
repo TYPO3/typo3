@@ -102,7 +102,7 @@ class SC_file_edit {
 		$this->doc->setModuleTemplate('templates/file_edit.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->JScode=$this->doc->wrapScriptTags('
-			function backToList()	{	//
+			function backToList() {	//
 				top.goToModule("file_list");
 			}
 		');

@@ -165,7 +165,7 @@ Reports missing relations';
 	 * @param	array		Result array from main() function
 	 * @return	void
 	 */
-	function main_autoFix($resultArray)	{
+	function main_autoFix($resultArray) {
 
 		$trav = array('offlineVersionRecords_m', 'nonExistingRecords_m');
 		foreach($trav as $tk)	{

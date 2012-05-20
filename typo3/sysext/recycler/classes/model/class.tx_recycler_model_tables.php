@@ -41,7 +41,7 @@ class tx_recycler_model_tables {
 	 * @param	integer		$depth: How many levels recursive
 	 * @return	string		The tables to be displayed
 	 */
-	public function getTables($format, $withAllOption=0, $startUid, $depth=0) {
+	public function getTables($format, $withAllOption = 0, $startUid, $depth = 0) {
 		$deletedRecordsTotal = 0;
 		$tables = array();
 

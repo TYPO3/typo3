@@ -91,7 +91,7 @@ class SC_mod_tools_config_index {
 		$this->doc->JScode = '
 		<script language="javascript" type="text/javascript">
 			script_ended = 0;
-			function jumpToUrl(URL)	{
+			function jumpToUrl(URL) {
 				window.location.href = URL;
 			}
 		</script>
@@ -276,7 +276,7 @@ class SC_mod_tools_config_index {
 					$flashMessage = t3lib_div::makeInstance(
 						't3lib_FlashMessage',
 						'',
-						sprintf($GLOBALS['LANG']->getLL('writeMessage', TRUE), TYPO3_extTableDef_script,  '<br />', '<strong>' . nl2br($changedLine) . '</strong>'),
+						sprintf($GLOBALS['LANG']->getLL('writeMessage', TRUE), TYPO3_extTableDef_script, '<br />', '<strong>' . nl2br($changedLine) . '</strong>'),
 						t3lib_FlashMessage::OK
 					);
 				} else {

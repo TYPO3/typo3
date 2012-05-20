@@ -179,7 +179,7 @@ class tx_indexedsearch_crawler {
 	 * @param	object		Parent object (tx_crawler lib)
 	 * @return	array		Result array
 	 */
-	function crawler_execute($params,&$pObj)	{
+	function crawler_execute($params, &$pObj) {
 
 			// Indexer configuration ID must exist:
 		if ($params['indexConfigUid'])	{
@@ -245,7 +245,7 @@ class tx_indexedsearch_crawler {
 	 * @param	object		Parent object (from "crawler" extension!)
 	 * @return	void
 	 */
-	function crawler_execute_type1($cfgRec,&$session_data,$params,&$pObj)	{
+	function crawler_execute_type1($cfgRec, &$session_data, $params, &$pObj) {
 		if ($cfgRec['table2index'] && isset($GLOBALS['TCA'][$cfgRec['table2index']]))	{
 
 				// Init session data array if not already:
@@ -306,7 +306,7 @@ class tx_indexedsearch_crawler {
 	 * @param	object		Parent object (from "crawler" extension!)
 	 * @return	void
 	 */
-	function crawler_execute_type2($cfgRec,&$session_data,$params,&$pObj)	{
+	function crawler_execute_type2($cfgRec, &$session_data, $params, &$pObj) {
 
 			// Prepare path, making it absolute and checking:
 		$readpath = $params['url'];
@@ -381,7 +381,7 @@ class tx_indexedsearch_crawler {
 	 * @param	object		Parent object (from "crawler" extension!)
 	 * @return	void
 	 */
-	function crawler_execute_type3($cfgRec,&$session_data,$params,&$pObj)	{
+	function crawler_execute_type3($cfgRec, &$session_data, $params, &$pObj) {
 
 			// Init session data array if not already:
 		if (!is_array($session_data))	{
@@ -431,7 +431,7 @@ class tx_indexedsearch_crawler {
 	 * @param	object		Parent object (from "crawler" extension!)
 	 * @return	void
 	 */
-	function crawler_execute_type4($cfgRec,&$session_data,$params,&$pObj)	{
+	function crawler_execute_type4($cfgRec, &$session_data, $params, &$pObj) {
 
 			// Base page uid:
 		$pageUid = intval($params['url']);
@@ -568,7 +568,7 @@ class tx_indexedsearch_crawler {
 	 * @param	string		Base URL of the indexing process (input URL must be "inside" the base URL!)
 	 * @return	string		Returls the URL if OK, otherwise FALSE
 	 */
-	function checkUrl($url,$urlLog,$baseUrl)	{
+	function checkUrl($url, $urlLog, $baseUrl) {
 		$url = preg_replace('/\/\/$/','/',$url);
 		list($url) = explode('#',$url);
 
@@ -591,7 +591,7 @@ class tx_indexedsearch_crawler {
 	 * @param	integer		Set ID value
 	 * @return	array		URLs found on this page
 	 */
-	function indexExtUrl($url, $pageId, $rl, $cfgUid, $setId)	{
+	function indexExtUrl($url, $pageId, $rl, $cfgUid, $setId) {
 
 			// Load indexer if not yet.
 		$this->loadIndexerClass();
@@ -648,7 +648,7 @@ class tx_indexedsearch_crawler {
 	 * @param	array		Rootline array to relate indexing to
 	 * @return	void
 	 */
-	function indexSingleRecord($r,$cfgRec,$rl=NULL)	{
+	function indexSingleRecord($r, $cfgRec, $rl = NULL) {
 
 			// Load indexer if not yet.
 		$this->loadIndexerClass();
@@ -706,7 +706,7 @@ class tx_indexedsearch_crawler {
 	 * @param	integer		The page id to traverse rootline back from
 	 * @return	array		Array where the root lines uid values are found.
 	 */
-	function getUidRootLineForClosestTemplate($id)	{
+	function getUidRootLineForClosestTemplate($id) {
 		global $TYPO3_CONF_VARS;
 
 		$tmpl = t3lib_div::makeInstance("t3lib_tsparser_ext");
@@ -733,7 +733,7 @@ class tx_indexedsearch_crawler {
 	 * @param	array		Index configuration record
 	 * @return	integer		The next time stamp
 	 */
-	function generateNextIndexingTime($cfgRec)	{
+	function generateNextIndexingTime($cfgRec) {
 		$currentTime = $GLOBALS['EXEC_TIME'];
 
 			// Now, find a midnight time to use for offset calculation. This has to differ depending on whether we have frequencies within a day or more than a day; Less than a day, we don't care which day to use for offset, more than a day we want to respect the currently entered day as offset regardless of when the script is run - thus the day-of-week used in case "Weekly" is selected will be respected
@@ -764,7 +764,7 @@ class tx_indexedsearch_crawler {
 	 * @param	string		String where URLs are separated by line-breaks; If any of these strings is the first part of $url, the function returns TRUE (to indicate denial of decend)
 	 * @return	boolean		TRUE if there is a matching URL (hence, do not index!)
 	 */
-	function checkDeniedSuburls($url, $url_deny)	{
+	function checkDeniedSuburls($url, $url_deny) {
 		if (trim($url_deny))	{
 			$url_denyArray = t3lib_div::trimExplode(LF,$url_deny,1);
 			foreach($url_denyArray as $testurl)	{
@@ -784,7 +784,7 @@ class tx_indexedsearch_crawler {
 	 * @param	string		Title/URL
 	 * @return	void
 	 */
-	function addQueueEntryForHook($cfgRec, $title)	{
+	function addQueueEntryForHook($cfgRec, $title) {
 
 		$nparams = array(
 			'indexConfigUid' => $cfgRec['uid'],		// This must ALWAYS be the cfgRec uid!
@@ -800,7 +800,7 @@ class tx_indexedsearch_crawler {
 	 * @param	integer		Uid of the page to delete all pHash
 	 * @return	void
 	 */
-	function deleteFromIndex($id)	{
+	function deleteFromIndex($id) {
 
 			// Lookup old phash rows:
 		$oldPhashRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('phash','index_section', 'page_id='.intval($id));
@@ -922,7 +922,7 @@ class tx_indexedsearch_files {
 	 * @param	object		Parent object (tx_crawler lib)
 	 * @return	array		Result array
 	 */
-	function crawler_execute($params,&$pObj)	{
+	function crawler_execute($params, &$pObj) {
 
 			// Load indexer if not yet.
 		$this->loadIndexerClass();

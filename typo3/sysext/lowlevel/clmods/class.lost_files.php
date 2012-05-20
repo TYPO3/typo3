@@ -184,7 +184,7 @@ Will report lost files.';
 	 * @param	array		Result array from main() function
 	 * @return	void
 	 */
-	function main_autoFix($resultArray)	{
+	function main_autoFix($resultArray) {
 		foreach($resultArray['lostFiles'] as $key => $value)	{
 			$absFileName = t3lib_div::getFileAbsFileName($value);
 			echo 'Deleting file: "'.$absFileName.'": ';

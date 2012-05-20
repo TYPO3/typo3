@@ -78,7 +78,7 @@ class tx_sv_loginformhook {
 			$content = '
 				<script type="text/javascript" src="md5.js"></script>
 				' . $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
-					function doChallengeResponse(superchallenged) {	//
+					function doChallengeResponse(superchallenged) {
 						password = document.loginform.p_field.value;
 						if (password)	{
 							if (superchallenged)	{

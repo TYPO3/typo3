@@ -42,7 +42,7 @@ class tx_rtehtmlarea_softrefproc extends t3lib_softrefproc {
 	 * @param string If running from inside a FlexForm structure, this is the path of the tag.
 	 * @return array Result array on positive matches. Otherwise FALSE
 	 */
-	function findRef ($table, $field, $uid, $content, $spKey, $spParams, $structurePath = '') {
+	function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath = '') {
 		$retVal = FALSE;
 		$this->tokenID_basePrefix = $table . ':' . $uid . ':' . $field . ':' . $structurePath . ':' . $spKey;
 
@@ -66,7 +66,7 @@ class tx_rtehtmlarea_softrefproc extends t3lib_softrefproc {
 	 * @param	array		Parameters set for the softref parser key in TCA/columns
 	 * @return	array		Result array on positive matches, see description above. Otherwise FALSE
 	 */
-	function findRef_rtehtmlarea_images ($content, $spParams) {
+	function findRef_rtehtmlarea_images($content, $spParams) {
 		$retVal = FALSE;
 			// Start HTML parser and split content by image tag
 		$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml');
