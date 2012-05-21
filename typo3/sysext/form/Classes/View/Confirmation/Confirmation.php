@@ -96,17 +96,17 @@ class tx_form_View_Confirmation extends tx_form_View_Confirmation_Element_Contai
 		$message = $this->getMessage();
 
 		$node = $this->render('element', FALSE);
-		$formInput = chr(10) .
-			html_entity_decode(
-				$node->saveXML($node->firstChild),
-				ENT_QUOTES,
-				'UTF-8'
-			) .
-			chr(10);
+        $formInput = (is_object($node) && $node instanceof DOMDocument) ? LF .
+            html_entity_decode(
+                $node->saveXML($node->firstChild),
+                ENT_QUOTES,
+                'UTF-8'
+            ) .
+            LF : '';
 
 		$confirmationButtons = $this->getConfirmationButtons();
 
-		$content = $message . chr(10) . $formInput . chr(10) . $confirmationButtons;
+		$content = $message . LF . $formInput . LF . $confirmationButtons;
 
 		return $content;
 	}
