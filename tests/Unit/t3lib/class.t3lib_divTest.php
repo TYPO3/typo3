@@ -51,6 +51,166 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		t3lib_div::purgeInstances();
 	}
 
+	///////////////////////////
+	// Tests concerning _GP
+	///////////////////////////
+
+	/**
+	 * @test
+	 * @dataProvider gpDataProvider
+	 */
+	public function canRetrieveValueWithGP($key, $get, $post, $expected) {
+		$_GET = $get;
+		$_POST = $post;
+		$this->assertSame($expected, t3lib_div::_GP($key));
+	}
+
+	/**
+	 * Data provider for canRetrieveValueWithGP.
+	 * All test values also check whether slashes are stripped properly.
+	 *
+	 * @return array
+	 */
+	public function gpDataProvider() {
+		return array(
+			'No key parameter'
+				=> array(NULL, array(), array(), NULL),
+			'Key not found'
+				=> array('cake', array(), array(), NULL),
+			'Value only in GET'
+				=> array('cake', array('cake' => 'li\\e'), array(), 'lie'),
+			'Value only in POST'
+				=> array('cake', array(), array('cake' => 'l\\ie'), 'lie'),
+			'Value from POST preferred over GET'
+				=> array('cake', array('cake' => 'is a'), array('cake' => '\\lie'), 'lie'),
+			'Value can be an array'
+				=> array(
+					'cake',
+					array('cake' => array('is a' => 'l\\ie')),
+					array(),
+					array('is a' => 'lie')
+				),
+		);
+	}
+
+	///////////////////////////
+	// Tests concerning _GPmerged
+	///////////////////////////
+
+	/**
+	 * @test
+	 * @dataProvider gpMergedDataProvider
+	 */
+	public function gpMergedWillMergeArraysFromGetAndPost($get, $post, $expected) {
+		$_POST = $post;
+		$_GET = $get;
+		$this->assertEquals($expected, t3lib_div::_GPmerged('cake'));
+	}
+
+	/**
+	 * Data provider for gpMergedWillMergeArraysFromGetAndPost
+	 *
+	 * @return array
+	 */
+	public function gpMergedDataProvider() {
+		$fullDataArray = array('cake' => array('a' => 'is a','b' => 'lie'));
+		$postPartData = array('cake' => array('b' => 'lie'));
+		$getPartData = array('cake' => array('a' => 'is a'));
+		$getPartDataModified = array('cake' => array('a' => 'is not a'));
+		return array(
+			'Key doesn\' exist'
+				=> array(array('foo'), array('bar'), array()),
+			'No POST data'
+				=> array($fullDataArray, array(), $fullDataArray['cake']),
+			'No GET data'
+				=> array(array(), $fullDataArray, $fullDataArray['cake']),
+			'POST and GET are merged'
+				=> array($getPartData, $postPartData, $fullDataArray['cake']),
+			'POST is preferred over GET'
+				=> array($getPartDataModified, $fullDataArray, $fullDataArray['cake'])
+		);
+	}
+
+	///////////////////////////////
+	// Tests concerning _GET / _POST
+	///////////////////////////////
+
+	/**
+	 * Data provider for canRetrieveGlobalInputsThroughGet
+	 * and canRetrieveGlobalInputsThroughPost
+	 *
+	 * @return array
+	 */
+	public function getAndPostDataProvider() {
+		return array(
+			'Requested input data doesn\'t exist'
+				=> array('cake', array(), NULL),
+			'No key will return entire input data'
+				=> array(NULL, array('cake' => 'l\\ie'), array('cake' => 'lie')),
+			'Can retrieve specific input'
+				=> array('cake', array('cake' => 'li\\e', 'foo'), 'lie'),
+			'Can retrieve nested input data'
+				=> array('cake', array('cake' => array('is a' => 'l\\ie')), array('is a' => 'lie'))
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getAndPostDataProvider
+	 */
+	public function canRetrieveGlobalInputsThroughGet($key, $get, $expected) {
+		$_GET = $get;
+		$this->assertSame($expected, t3lib_div::_GET($key));
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getAndPostDataProvider
+	 */
+	public function canRetrieveGlobalInputsThroughPost($key, $post, $expected) {
+		$_POST = $post;
+		$this->assertSame($expected, t3lib_div::_POST($key));
+	}
+
+	///////////////////////////////
+	// Tests concerning _GETset
+	///////////////////////////////
+
+	/**
+	 * @test
+	 * @dataProvider getSetDataProvider
+	 */
+	public function canSetNewGetInputValues($input, $key, $expected, $getPreset=array()) {
+		$_GET = $getPreset;
+		t3lib_div::_GETset($input, $key);
+		$this->assertSame($expected, $_GET);
+	}
+
+	/**
+	 * Data provider for canSetNewGetInputValues
+	 *
+	 * @return array
+	 */
+	public function getSetDataProvider() {
+		return array(
+			'No input data used without target key'
+				=> array(NULL, NULL, array()),
+			'No input data used with target key'
+				=> array(NULL, 'cake', array('cake' => '')),
+			'No target key used with string input data'
+				=> array('data', NULL, array()),
+			'No target key used with array input data'
+				=> array(array('cake' => 'lie'), NULL, array('cake' => 'lie')),
+			'Target key and string input data'
+				=> array('lie', 'cake', array('cake' => 'lie')),
+			'Replace existing GET data'
+				=> array('lie', 'cake', array('cake' => 'lie'), array('cake' => 'is a lie')),
+			'Target key pointing to sublevels and string input data'
+				=> array('lie', 'cake|is', array('cake' => array('is' => 'lie'))),
+			'Target key pointing to sublevels and array input data'
+				=> array(array('a' => 'lie'), 'cake|is', array('cake' => array('is' => array('a' => 'lie'))))
+		);
+	}
 
 	///////////////////////////////
 	// Tests concerning gif_compress
