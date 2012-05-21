@@ -29,9 +29,8 @@
  *
  * Revised for TYPO3 3.9 October 2005 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * This is the TYPO3 Core Engine class for manipulation of the database
@@ -43,61 +42,88 @@
  *
  * tce_db.php for further comments and SYNTAX! Also see document 'TYPO3 Core API' for details.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_TCEmain {
 
 
-	// *********************
-	// Public variables you can configure before using the class:
-	// *********************
-
-	var $storeLogMessages = TRUE; // Boolean: If TRUE, the default log-messages will be stored. This should not be necessary if the locallang-file for the log-display is properly configured. So disabling this will just save some database-space as the default messages are not saved.
-	var $enableLogging = TRUE; // Boolean: If TRUE, actions are logged to sys_log.
-	var $reverseOrder = FALSE; // Boolean: If TRUE, the datamap array is reversed in the order, which is a nice thing if you're creating a whole new bunch of records.
-	var $checkSimilar = TRUE; // Boolean: If TRUE, only fields which are different from the database values are saved! In fact, if a whole input array is similar, it's not saved then.
-	var $stripslashes_values = TRUE; // Boolean: If TRUE, incoming values in the data-array have their slashes stripped. ALWAYS SET THIS TO ZERO and supply an unescaped data array instead. This switch may totally disappear in future versions of this class!
-	var $checkStoredRecords = TRUE; // Boolean: This will read the record after having updated or inserted it. If anything is not properly submitted an error is written to the log. This feature consumes extra time by selecting records
-	var $checkStoredRecords_loose = TRUE; // Boolean: If set, values '' and 0 will equal each other when the stored records are checked.
-	var $deleteTree = FALSE; // Boolean. If this is set, then a page is deleted by deleting the whole branch under it (user must have deletepermissions to it all). If not set, then the page is deleted ONLY if it has no branch
-	var $neverHideAtCopy = FALSE; // Boolean. If set, then the 'hideAtCopy' flag for tables will be ignored.
-	var $dontProcessTransformations = FALSE; // Boolean: If set, then transformations are NOT performed on the input.
-	var $clear_flexFormData_vDEFbase = FALSE; // Boolean: If set, .vDEFbase values are unset in flexforms.
-	var $updateModeL10NdiffData = TRUE; // Boolean/Mixed: TRUE: (traditional) Updates when record is saved. For flexforms, updates if change is made to the localized value. FALSE: Will not update anything. "FORCE_FFUPD" (string): Like TRUE, but will force update to the FlexForm Field
-	var $updateModeL10NdiffDataClear = FALSE; // Boolean: If TRUE, the translation diff. fields will in fact be reset so that they indicate that all needs to change again! It's meant as the opposite of declaring the record translated.
-	var $bypassWorkspaceRestrictions = FALSE; // Boolean: If TRUE, workspace restrictions are bypassed on edit an create actions (process_datamap()). YOU MUST KNOW what you do if you use this feature!
-	var $bypassFileHandling = FALSE; // Boolean: If TRUE, file handling of attached files (addition, deletion etc) is bypassed - the value is saved straight away. YOU MUST KNOW what you are doing with this feature!
-	var $bypassAccessCheckForRecords = FALSE; // Boolean: If TRUE, access check, check for deleted etc. for records is bypassed. YOU MUST KNOW what you are doing if you use this feature!
-
-	var $copyWhichTables = '*'; // String. Comma-list. This list of tables decides which tables will be copied. If empty then none will. If '*' then all will (that the user has permission to of course)
-
-	var $copyTree = 0; // Integer. If 0 then branch is NOT copied. If 1 then pages on the 1st level is copied. If 2 then pages on the second level is copied ... and so on
-
-	var $defaultValues = array(); // Array [table][fields]=value: New records are created with default values and you can set this array on the form $defaultValues[$table][$field] = $value to override the default values fetched from TCA. If ->setDefaultsFromUserTS is called UserTSconfig default values will overrule existing values in this array (thus UserTSconfig overrules externally set defaults which overrules TCA defaults)
-	var $overrideValues = array(); // Array [table][fields]=value: You can set this array on the form $overrideValues[$table][$field] = $value to override the incoming data. You must set this externally. You must make sure the fields in this array are also found in the table, because it's not checked. All columns can be set by this array!
-	var $alternativeFileName = array(); // Array [filename]=alternative_filename: Use this array to force another name onto a file. Eg. if you set ['/tmp/blablabal'] = 'my_file.txt' and '/tmp/blablabal' is set for a certain file-field, then 'my_file.txt' will be used as the name instead.
-	var $alternativeFilePath = array(); // Array [filename]=alternative_filepath: Same as alternativeFileName but with relative path to the file
-	var $data_disableFields = array(); // If entries are set in this array corresponding to fields for update, they are ignored and thus NOT updated. You could set this array from a series of checkboxes with value=0 and hidden fields before the checkbox with 1. Then an empty checkbox will disable the field.
-	var $suggestedInsertUids = array(); // Use this array to validate suggested uids for tables by setting [table]:[uid]. This is a dangerous option since it will force the inserted record to have a certain UID. The value just have to be TRUE, but if you set it to "DELETE" it will make sure any record with that UID will be deleted first (raw delete). The option is used for import of T3D files when synchronizing between two mirrored servers. As a security measure this feature is available only for Admin Users (for now)
-
-	var $callBackObj; // Object. Call back object for flex form traversation. Useful when external classes wants to use the iteration functions inside tcemain for traversing a FlexForm structure.
+		// *********************
+		// Public variables you can configure before using the class:
+		// *********************
+		// Boolean: If TRUE, the default log-messages will be stored. This should not be necessary if the locallang-file for the log-display is properly configured. So disabling this will just save some database-space as the default messages are not saved.
+	var $storeLogMessages = TRUE;
+		// Boolean: If TRUE, actions are logged to sys_log.
+	var $enableLogging = TRUE;
+		// Boolean: If TRUE, the datamap array is reversed in the order, which is a nice thing if you're creating a whole new bunch of records.
+	var $reverseOrder = FALSE;
+		// Boolean: If TRUE, only fields which are different from the database values are saved! In fact, if a whole input array is similar, it's not saved then.
+	var $checkSimilar = TRUE;
+		// Boolean: If TRUE, incoming values in the data-array have their slashes stripped. ALWAYS SET THIS TO ZERO and supply an unescaped data array instead. This switch may totally disappear in future versions of this class!
+	var $stripslashes_values = TRUE;
+		// Boolean: This will read the record after having updated or inserted it. If anything is not properly submitted an error is written to the log. This feature consumes extra time by selecting records
+	var $checkStoredRecords = TRUE;
+		// Boolean: If set, values '' and 0 will equal each other when the stored records are checked.
+	var $checkStoredRecords_loose = TRUE;
+		// Boolean. If this is set, then a page is deleted by deleting the whole branch under it (user must have deletepermissions to it all). If not set, then the page is deleted ONLY if it has no branch
+	var $deleteTree = FALSE;
+		// Boolean. If set, then the 'hideAtCopy' flag for tables will be ignored.
+	var $neverHideAtCopy = FALSE;
+		// Boolean: If set, then transformations are NOT performed on the input.
+	var $dontProcessTransformations = FALSE;
+		// Boolean: If set, .vDEFbase values are unset in flexforms.
+	var $clear_flexFormData_vDEFbase = FALSE;
+		// Boolean/Mixed: TRUE: (traditional) Updates when record is saved. For flexforms, updates if change is made to the localized value. FALSE: Will not update anything. "FORCE_FFUPD" (string): Like TRUE, but will force update to the FlexForm Field
+	var $updateModeL10NdiffData = TRUE;
+		// Boolean: If TRUE, the translation diff. fields will in fact be reset so that they indicate that all needs to change again! It's meant as the opposite of declaring the record translated.
+	var $updateModeL10NdiffDataClear = FALSE;
+		// Boolean: If TRUE, workspace restrictions are bypassed on edit an create actions (process_datamap()). YOU MUST KNOW what you do if you use this feature!
+	var $bypassWorkspaceRestrictions = FALSE;
+		// Boolean: If TRUE, file handling of attached files (addition, deletion etc) is bypassed - the value is saved straight away. YOU MUST KNOW what you are doing with this feature!
+	var $bypassFileHandling = FALSE;
+		// Boolean: If TRUE, access check, check for deleted etc. for records is bypassed. YOU MUST KNOW what you are doing if you use this feature!
+	var $bypassAccessCheckForRecords = FALSE;
+		// String. Comma-list. This list of tables decides which tables will be copied. If empty then none will. If '*' then all will (that the user has permission to of course)
+	var $copyWhichTables = '*';
+		// Integer. If 0 then branch is NOT copied. If 1 then pages on the 1st level is copied. If 2 then pages on the second level is copied ... and so on
+	var $copyTree = 0;
+		// Array [table][fields]=value: New records are created with default values and you can set this array on the form $defaultValues[$table][$field] = $value to override the default values fetched from TCA. If ->setDefaultsFromUserTS is called UserTSconfig default values will overrule existing values in this array (thus UserTSconfig overrules externally set defaults which overrules TCA defaults)
+	var $defaultValues = array();
+		// Array [table][fields]=value: You can set this array on the form $overrideValues[$table][$field] = $value to override the incoming data. You must set this externally. You must make sure the fields in this array are also found in the table, because it's not checked. All columns can be set by this array!
+	var $overrideValues = array();
+		// Array [filename]=alternative_filename: Use this array to force another name onto a file. Eg. if you set ['/tmp/blablabal'] = 'my_file.txt' and '/tmp/blablabal' is set for a certain file-field, then 'my_file.txt' will be used as the name instead.
+	var $alternativeFileName = array();
+		// Array [filename]=alternative_filepath: Same as alternativeFileName but with relative path to the file
+	var $alternativeFilePath = array();
+		// If entries are set in this array corresponding to fields for update, they are ignored and thus NOT updated. You could set this array from a series of checkboxes with value=0 and hidden fields before the checkbox with 1. Then an empty checkbox will disable the field.
+	var $data_disableFields = array();
+		// Use this array to validate suggested uids for tables by setting [table]:[uid]. This is a dangerous option since it will force the inserted record to have a certain UID. The value just have to be TRUE, but if you set it to "DELETE" it will make sure any record with that UID will be deleted first (raw delete). The option is used for import of T3D files when synchronizing between two mirrored servers. As a security measure this feature is available only for Admin Users (for now)
+	var $suggestedInsertUids = array();
+		// Object. Call back object for flex form traversation. Useful when external classes wants to use the iteration functions inside tcemain for traversing a FlexForm structure.
+	var $callBackObj;
 
 
 	// *********************
 	// Internal variables (mapping arrays) which can be used (read-only) from outside
 	// *********************
 
-	var $autoVersionIdMap = array(); // Contains mapping of auto-versionized records.
-	var $substNEWwithIDs = array(); // When new elements are created, this array contains a map between their "NEW..." string IDs and the eventual UID they got when stored in database
-	var $substNEWwithIDs_table = array(); // Like $substNEWwithIDs, but where each old "NEW..." id is mapped to the table it was from.
-	var $newRelatedIDs = array(); // Holds the tables and there the ids of newly created child records from IRRE
-	var $copyMappingArray_merged = array(); // This array is the sum of all copying operations in this class. May be READ from outside, thus partly public.
-	var $copiedFileMap = array(); // A map between input file name and final destination for files being attached to records.
-	var $RTEmagic_copyIndex = array(); // Contains [table][id][field] of fiels where RTEmagic images was copied. Holds old filename as key and new filename as value.
-	var $errorLog = array(); // Errors are collected in this variable.
-
+		// Contains mapping of auto-versionized records.
+	var $autoVersionIdMap = array();
+		// When new elements are created, this array contains a map between their "NEW..." string IDs and the eventual UID they got when stored in database
+	var $substNEWwithIDs = array();
+		// Like $substNEWwithIDs, but where each old "NEW..." id is mapped to the table it was from.
+	var $substNEWwithIDs_table = array();
+		// Holds the tables and there the ids of newly created child records from IRRE
+	var $newRelatedIDs = array();
+		// This array is the sum of all copying operations in this class. May be READ from outside, thus partly public.
+	var $copyMappingArray_merged = array();
+		// A map between input file name and final destination for files being attached to records.
+	var $copiedFileMap = array();
+		// Contains [table][id][field] of fiels where RTEmagic images was copied. Holds old filename as key and new filename as value.
+	var $RTEmagic_copyIndex = array();
+		// Errors are collected in this variable.
+	var $errorLog = array();
 
 	// *********************
 	// Internal Variables, do not touch.
@@ -110,67 +136,97 @@ class t3lib_TCEmain {
 	 * @var t3lib_beUserAuth
 	 */
 	var $BE_USER;
-	var $userid; // will be set to uid of be_user executing this script
-	var $username; // will be set to username of be_user executing this script
-	var $admin; // will be set if user is admin
-
-	var $defaultPermissions = array( // Can be overridden from $GLOBALS['TYPO3_CONF_VARS']
+		// Will be set to uid of be_user executing this script
+	var $userid;
+		// Will be set to username of be_user executing this script
+	var $username;
+		// Will be set if user is admin
+	var $admin;
+		// Can be overridden from $GLOBALS['TYPO3_CONF_VARS']
+	var $defaultPermissions = array(
 		'user' => 'show,edit,delete,new,editcontent',
 		'group' => 'show,edit,new,editcontent',
 		'everybody' => ''
 	);
-
-	var $exclude_array; // The list of <table>-<fields> that cannot be edited by user. This is compiled from TCA/exclude-flag combined with non_exclude_fields for the user.
-	var $datamap = array(); // Set with incoming data array
-	var $cmdmap = array(); // Set with incoming cmd array
+		// The list of <table>-<fields> that cannot be edited by user. This is compiled from TCA/exclude-flag combined with non_exclude_fields for the user.
+	var $exclude_array;
+		// Set with incoming data array
+	var $datamap = array();
+		// Set with incoming cmd array
+	var $cmdmap = array();
 
 		// Internal static:
-	var $pMap = array( // Permission mapping
+		// Permission mapping
+	var $pMap = array(
 		'show' => 1, // 1st bit
 		'edit' => 2, // 2nd bit
 		'delete' => 4, // 3rd bit
 		'new' => 8, // 4th bit
 		'editcontent' => 16 // 5th bit
 	);
-	var $sortIntervals = 256; // Integer: The interval between sorting numbers used with tables with a 'sorting' field defined. Min 1
+		// Integer: The interval between sorting numbers used with tables with a 'sorting' field defined. Min 1
+	var $sortIntervals = 256;
 
 		// Internal caching arrays
-	var $recUpdateAccessCache = array(); // Used by function checkRecordUpdateAccess() to store whether a record is updateable or not.
-	var $recInsertAccessCache = array(); // User by function checkRecordInsertAccess() to store whether a record can be inserted on a page id
-	var $isRecordInWebMount_Cache = array(); // Caching array for check of whether records are in a webmount
-	var $isInWebMount_Cache = array(); // Caching array for page ids in webmounts
-	var $cachedTSconfig = array(); // Caching for collecting TSconfig for page ids
-	var $pageCache = array(); // Used for caching page records in pageInfo()
-	var $checkWorkspaceCache = array(); // Array caching workspace access for BE_USER
+		// Used by function checkRecordUpdateAccess() to store whether a record is updateable or not.
+	var $recUpdateAccessCache = array();
+		// User by function checkRecordInsertAccess() to store whether a record can be inserted on a page id
+	var $recInsertAccessCache = array();
+		// Caching array for check of whether records are in a webmount
+	var $isRecordInWebMount_Cache = array();
+		// Caching array for page ids in webmounts
+	var $isInWebMount_Cache = array();
+		// Caching for collecting TSconfig for page ids
+	var $cachedTSconfig = array();
+		// Used for caching page records in pageInfo()
+	var $pageCache = array();
+		// Array caching workspace access for BE_USER
+	var $checkWorkspaceCache = array();
 
 		// Other arrays:
-	var $dbAnalysisStore = array(); // For accumulation of MM relations that must be written after new records are created.
-	var $removeFilesStore = array(); // For accumulation of files which must be deleted after processing of all input content
-	var $uploadedFileArray = array(); // Uploaded files, set by process_uploads()
-	var $registerDBList = array(); // Used for tracking references that might need correction after operations
-	var $registerDBPids = array(); // Used for tracking references that might need correction in pid field after operations (e.g. IRRE)
-	var $copyMappingArray = array(); // Used by the copy action to track the ids of new pages so subpages are correctly inserted! THIS is internally cleared for each executed copy operation! DO NOT USE THIS FROM OUTSIDE! Read from copyMappingArray_merged instead which is accumulating this information.
-	var $remapStack = array(); // array used for remapping uids and values at the end of process_datamap
-	var $remapStackRecords = array(); // array used for remapping uids and values at the end of process_datamap (e.g. $remapStackRecords[<table>][<uid>] = <index in $remapStack>)
-	protected $remapStackChildIds = array(); // array used for checking whether new children need to be remapped
-	protected $remapStackActions = array(); // array used for executing addition actions after remapping happened (sett processRemapStack())
-	protected $remapStackRefIndex = array(); // array used for executing post-processing on the reference index
-	var $updateRefIndexStack = array(); // array used for additional calls to $this->updateRefIndex
-	var $callFromImpExp = FALSE; // tells, that this TCEmain was called from tx_impext - this variable is set by tx_impexp
-	var $newIndexMap = array(); // Array for new flexform index mapping
+		// For accumulation of MM relations that must be written after new records are created.
+	var $dbAnalysisStore = array();
+		// For accumulation of files which must be deleted after processing of all input content
+	var $removeFilesStore = array();
+		// Uploaded files, set by process_uploads()
+	var $uploadedFileArray = array();
+		// Used for tracking references that might need correction after operations
+	var $registerDBList = array();
+		// Used for tracking references that might need correction in pid field after operations (e.g. IRRE)
+	var $registerDBPids = array();
+		// Used by the copy action to track the ids of new pages so subpages are correctly inserted! THIS is internally cleared for each executed copy operation! DO NOT USE THIS FROM OUTSIDE! Read from copyMappingArray_merged instead which is accumulating this information.
+	var $copyMappingArray = array();
+		// array used for remapping uids and values at the end of process_datamap
+	var $remapStack = array();
+		// array used for remapping uids and values at the end of process_datamap (e.g. $remapStackRecords[<table>][<uid>] = <index in $remapStack>)
+	var $remapStackRecords = array();
+		// array used for checking whether new children need to be remapped
+	protected $remapStackChildIds = array();
+		// array used for executing addition actions after remapping happened (sett processRemapStack())
+	protected $remapStackActions = array();
+		// array used for executing post-processing on the reference index
+	protected $remapStackRefIndex = array();
+		// array used for additional calls to $this->updateRefIndex
+	var $updateRefIndexStack = array();
+		// tells, that this TCEmain was called from tx_impext - this variable is set by tx_impexp
+	var $callFromImpExp = FALSE;
+		// Array for new flexform index mapping
+	var $newIndexMap = array();
 
 	// Various
 	/**
 	 * basicFileFunctions object
+	 * For "singleTon" file-manipulation object
 	 *
 	 * @var t3lib_basicFileFunctions
 	 */
-	var $fileFunc; // For "singleTon" file-manipulation object
-
-	var $checkValue_currentRecord = array(); // Set to "currentRecord" during checking of values.
-	var $autoVersioningUpdate = FALSE; // A signal flag used to tell file processing that autoversioning has happend and hence certain action should be applied.
-
-	protected $disableDeleteClause = FALSE; // Disable delete clause
+	var $fileFunc;
+		// Set to "currentRecord" during checking of values.
+	var $checkValue_currentRecord = array();
+		// A signal flag used to tell file processing that autoversioning has happend and hence certain action should be applied.
+	var $autoVersioningUpdate = FALSE;
+		// Disable delete clause
+	protected $disableDeleteClause = FALSE;
 	protected $checkModifyAccessListHookObjects;
 	protected $version_remapMMForVersionSwap_reg;
 
@@ -186,10 +242,10 @@ class t3lib_TCEmain {
 	 * For details, see 'TYPO3 Core API' document.
 	 * This function does not start the processing of data, but merely initializes the object
 	 *
-	 * @param	array		Data to be modified or inserted in the database
-	 * @param	array		Commands to copy, move, delete, localize, versionize records.
-	 * @param	object		An alternative userobject you can set instead of the default, which is $GLOBALS['BE_USER']
-	 * @return	void
+	 * @param array $data Data to be modified or inserted in the database
+	 * @param array $cmd Commands to copy, move, delete, localize, versionize records.
+	 * @param object $altUserObject An alternative userobject you can set instead of the default, which is $GLOBALS['BE_USER']
+	 * @return void
 	 */
 	public function start($data, $cmd, $altUserObject = '') {
 
@@ -237,8 +293,8 @@ class t3lib_TCEmain {
 	 * Function that can mirror input values in datamap-array to other uid numbers.
 	 * Example: $mirror[table][11] = '22,33' will look for content in $this->datamap[table][11] and copy it to $this->datamap[table][22] and $this->datamap[table][33]
 	 *
-	 * @param	array		This array has the syntax $mirror[table_name][uid] = [list of uids to copy data-value TO!]
-	 * @return	void
+	 * @param array $mirror This array has the syntax $mirror[table_name][uid] = [list of uids to copy data-value TO!]
+	 * @return void
 	 */
 	function setMirror($mirror) {
 		if (is_array($mirror)) {
@@ -260,8 +316,8 @@ class t3lib_TCEmain {
 	/**
 	 * Initializes default values coming from User TSconfig
 	 *
-	 * @param	array		User TSconfig array
-	 * @return	void
+	 * @param array $userTS User TSconfig array
+	 * @return void
 	 */
 	function setDefaultsFromUserTS($userTS) {
 		if (is_array($userTS)) {
@@ -282,8 +338,8 @@ class t3lib_TCEmain {
 	 * Processing of uploaded files.
 	 * It turns out that some versions of PHP arranges submitted data for files different if sent in an array. This function will unify this so the internal array $this->uploadedFileArray will always contain files arranged in the same structure.
 	 *
-	 * @param	array		$_FILES array
-	 * @return	void
+	 * @param array $postFiles $_FILES array
+	 * @return void
 	 */
 	function process_uploads($postFiles) {
 
@@ -315,10 +371,10 @@ class t3lib_TCEmain {
 	/**
 	 * Traverse the upload array if needed to rearrange values.
 	 *
-	 * @param	array		$this->uploadedFileArray passed by reference
-	 * @param	array		Input array  ($_FILES parts)
-	 * @param	string		The current $_FILES array key to set on the outermost level.
-	 * @return	void
+	 * @param array $outputArr $this->uploadedFileArray passed by reference
+	 * @param array $inputArr Input array  ($_FILES parts)
+	 * @param string $keyToSet The current $_FILES array key to set on the outermost level.
+	 * @return void
 	 * @access private
 	 * @see process_uploads()
 	 */
@@ -331,7 +387,6 @@ class t3lib_TCEmain {
 			$outputArr[$keyToSet] = $inputArr;
 		}
 	}
-
 
 	/*********************************************
 	 *
@@ -346,12 +401,12 @@ class t3lib_TCEmain {
 	 * Note: When using the hook after INSERT operations, you will only get the temporary NEW... id passed to your hook as $id,
 	 *		 but you can easily translate it to the real uid of the inserted record using the $this->substNEWwithIDs array.
 	 *
-	 * @param	object		$hookObjectsArr: (reference) Array with hook objects
-	 * @param	string		$status: (reference) Status of the current operation, 'new' or 'update
-	 * @param	string		$table: (refrence) The table currently processing data for
-	 * @param	string		$id: (reference) The record uid currently processing data for, [integer] or [string] (like 'NEW...')
-	 * @param	array		$fieldArray: (reference) The field array of a record
-	 * @return	void
+	 * @param object $hookObjectsArr (reference) Array with hook objects
+	 * @param string $status (reference) Status of the current operation, 'new' or 'update
+	 * @param string $table (refrence) The table currently processing data for
+	 * @param string $id (reference) The record uid currently processing data for, [integer] or [string] (like 'NEW...')
+	 * @param array $fieldArray (reference) The field array of a record
+	 * @return void
 	 */
 	function hook_processDatamap_afterDatabaseOperations(&$hookObjectsArr, &$status, &$table, &$id, &$fieldArray) {
 			// Process hook directly:
@@ -361,7 +416,7 @@ class t3lib_TCEmain {
 					$hookObj->processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $this);
 				}
 			}
-				// If this record is in remapStack (e.g. when using IRRE), values will be updated/remapped later on. So the hook will also be called later:
+			// If this record is in remapStack (e.g. when using IRRE), values will be updated/remapped later on. So the hook will also be called later:
 		} else {
 			$this->remapStackRecords[$table][$id]['processDatamap_afterDatabaseOperations'] = array(
 				'status' => $status,
@@ -375,7 +430,7 @@ class t3lib_TCEmain {
 	 * Gets the 'checkModifyAccessList' hook objects.
 	 * The first call initializes the accordant objects.
 	 *
-	 * @return	array		The 'checkModifyAccessList' hook objects (if any)
+	 * @return array The 'checkModifyAccessList' hook objects (if any)
 	 */
 	protected function getCheckModifyAccessListHookObjects() {
 		if (!isset($this->checkModifyAccessListHookObjects)) {
@@ -397,7 +452,6 @@ class t3lib_TCEmain {
 		return $this->checkModifyAccessListHookObjects;
 	}
 
-
 	/*********************************************
 	 *
 	 * PROCESSING DATA
@@ -408,7 +462,7 @@ class t3lib_TCEmain {
 	 * Processing the data-array
 	 * Call this function to process the data-array set by start()
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function process_datamap() {
 			// Keep versionized(!) relations here locally:
@@ -437,19 +491,19 @@ class t3lib_TCEmain {
 
 			// Organize tables so that the pages-table is always processed first. This is required if you want to make sure that content pointing to a new page will be created.
 		$orderOfTables = array();
-		if (isset($this->datamap['pages'])) { // Set pages first.
+			// Set pages first.
+		if (isset($this->datamap['pages'])) {
 			$orderOfTables[] = 'pages';
 		}
 		$orderOfTables = array_unique(array_merge($orderOfTables, array_keys($this->datamap)));
 
 			// Process the tables...
 		foreach ($orderOfTables as $table) {
-			/* Check if
-				   - table is set in $GLOBALS['TCA'],
-				   - table is NOT readOnly
-				   - the table is set with content in the data-array (if not, there's nothing to process...)
-				   - permissions for tableaccess OK
-			*/
+			// Check if
+			//	   - table is set in $GLOBALS['TCA'],
+			//	   - table is NOT readOnly
+			//	   - the table is set with content in the data-array (if not, there's nothing to process...)
+			//	   - permissions for tableaccess OK
 			$modifyAccessList = $this->checkModifyAccessList($table);
 			if (!$modifyAccessList) {
 				$id = 0;
@@ -481,22 +535,27 @@ class t3lib_TCEmain {
 						$old_pid_value = '';
 						$this->autoVersioningUpdate = FALSE;
 
-						if (!t3lib_utility_Math::canBeInterpretedAsInteger($id)) { // Is it a new record? (Then Id is a string)
-							$fieldArray = $this->newFieldArray($table); // Get a fieldArray with default values
-							if (isset($incomingFieldArray['pid'])) { // A pid must be set for new records.
+							// Is it a new record? (Then Id is a string)
+						if (!t3lib_utility_Math::canBeInterpretedAsInteger($id)) {
+								// Get a fieldArray with default values
+							$fieldArray = $this->newFieldArray($table);
+								// A pid must be set for new records.
+							if (isset($incomingFieldArray['pid'])) {
 									// $value = the pid
 								$pid_value = $incomingFieldArray['pid'];
 
 									// Checking and finding numerical pid, it may be a string-reference to another value
 								$OK = 1;
-								if (strstr($pid_value, 'NEW')) { // If a NEW... id
+									// If a NEW... id
+								if (strstr($pid_value, 'NEW')) {
 									if (substr($pid_value, 0, 1) == '-') {
 										$negFlag = -1;
 										$pid_value = substr($pid_value, 1);
 									} else {
 										$negFlag = 1;
 									}
-									if (isset($this->substNEWwithIDs[$pid_value])) { // Trying to find the correct numerical value as it should be mapped by earlier processing of another new record.
+										// Trying to find the correct numerical value as it should be mapped by earlier processing of another new record.
+									if (isset($this->substNEWwithIDs[$pid_value])) {
 										if ($negFlag === 1) {
 											$old_pid_value = $this->substNEWwithIDs[$pid_value];
 										}
@@ -510,14 +569,19 @@ class t3lib_TCEmain {
 									// The $pid_value is now the numerical pid at this point
 								if ($OK) {
 									$sortRow = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
-									if ($pid_value >= 0) { // Points to a page on which to insert the element, possibly in the top of the page
-										if ($sortRow) { // If this table is sorted we better find the top sorting number
+										// Points to a page on which to insert the element, possibly in the top of the page
+									if ($pid_value >= 0) {
+											// If this table is sorted we better find the top sorting number
+										if ($sortRow) {
 											$fieldArray[$sortRow] = $this->getSortNumber($table, 0, $pid_value);
 										}
-										$fieldArray['pid'] = $pid_value; // The numerical pid is inserted in the data array
+											// The numerical pid is inserted in the data array
+										$fieldArray['pid'] = $pid_value;
 									} else { // points to another record before ifself
-										if ($sortRow) { // If this table is sorted we better find the top sorting number
-											$tempArray = $this->getSortNumber($table, 0, $pid_value); // Because $pid_value is < 0, getSortNumber returns an array
+											// If this table is sorted we better find the top sorting number
+										if ($sortRow) {
+												// Because $pid_value is < 0, getSortNumber returns an array
+											$tempArray = $this->getSortNumber($table, 0, $pid_value);
 											$fieldArray['pid'] = $tempArray['pid'];
 											$fieldArray[$sortRow] = $tempArray['sortNumber'];
 										} else { // Here we fetch the PID of the record that we point to...
@@ -531,7 +595,8 @@ class t3lib_TCEmain {
 
 								// Now, check if we may insert records on this pid.
 							if ($theRealPid >= 0) {
-								$recordAccess = $this->checkRecordInsertAccess($table, $theRealPid); // Checks if records can be inserted on this $pid.
+									// Checks if records can be inserted on this $pid.
+								$recordAccess = $this->checkRecordInsertAccess($table, $theRealPid);
 								if ($recordAccess) {
 									$this->addDefaultPermittedLanguageIfNotSet($table, $incomingFieldArray);
 									$recordAccess = $this->BE_USER->recordEditAccessInternals($table, $incomingFieldArray, TRUE);
@@ -539,7 +604,8 @@ class t3lib_TCEmain {
 										$this->newlog("recordEditAccessInternals() check failed. [" . $this->BE_USER->errorMsg . "]", 1);
 									} elseif (!$this->bypassWorkspaceRestrictions) {
 											// Workspace related processing:
-										if ($res = $this->BE_USER->workspaceAllowLiveRecordsInPID($theRealPid, $table)) { // If LIVE records cannot be created in the current PID due to workspace restrictions, prepare creation of placeholder-record
+											// If LIVE records cannot be created in the current PID due to workspace restrictions, prepare creation of placeholder-record
+										if ($res = $this->BE_USER->workspaceAllowLiveRecordsInPID($theRealPid, $table)) {
 											if ($res < 0) {
 												$recordAccess = FALSE;
 												$this->newlog('Stage for versioning root point and users access level did not allow for editing', 1);
@@ -557,7 +623,8 @@ class t3lib_TCEmain {
 							} else {
 								debug('Internal ERROR: pid should not be less than zero!');
 							}
-							$status = 'new'; // Yes new record, change $record_status to 'insert'
+								// Yes new record, change $record_status to 'insert'
+							$status = 'new';
 						} else { // Nope... $id is a number
 							$fieldArray = array();
 							$recordAccess = $this->checkRecordUpdateAccess($table, $id, $incomingFieldArray, $hookObjectsArr);
@@ -600,7 +667,7 @@ class t3lib_TCEmain {
 											// Auto-creation of version: In offline workspace, test if versioning is enabled and look for workspace version of input record. If there is no versionized record found we will create one and save to that.
 										} elseif ($this->BE_USER->workspaceAllowAutoCreation($table, $id, $theRealPid)) {
 											$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-											/* @var $tce t3lib_TCEmain  */
+											/** @var $tce t3lib_TCEmain  */
 											$tce->stripslashes_values = 0;
 
 												// Setting up command for creating a new version of the record:
@@ -643,13 +710,14 @@ class t3lib_TCEmain {
 									}
 								}
 							}
-							$status = 'update'; // the default is 'update'
+								// The default is 'update'
+							$status = 'update';
 						}
 
 							// If access was granted above, proceed to create or update record:
 						if ($recordAccess) {
-
-							list($tscPID) = t3lib_BEfunc::getTSCpid($table, $id, $old_pid_value ? $old_pid_value : $fieldArray['pid']); // Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
+								// Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
+							list($tscPID) = t3lib_BEfunc::getTSCpid($table, $id, $old_pid_value ? $old_pid_value : $fieldArray['pid']);
 							$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 							if ($status == 'new' && $table == 'pages' && is_array($TSConfig['permissions.'])) {
 								$fieldArray = $this->setTSconfigPermissions($fieldArray, $TSConfig['permissions.']);
@@ -664,7 +732,8 @@ class t3lib_TCEmain {
 								// NOTICE! All manipulation beyond this point bypasses both "excludeFields" AND possible "MM" relations / file uploads to field!
 
 								// Forcing some values unto field array:
-							$fieldArray = $this->overrideFieldArray($table, $fieldArray); // NOTICE: This overriding is potentially dangerous; permissions per field is not checked!!!
+								// NOTICE: This overriding is potentially dangerous; permissions per field is not checked!!!
+							$fieldArray = $this->overrideFieldArray($table, $fieldArray);
 							if ($createNewVersion) {
 								$newVersion_placeholderFieldArray = $this->overrideFieldArray($table, $newVersion_placeholderFieldArray);
 							}
@@ -708,21 +777,27 @@ class t3lib_TCEmain {
 								// Kasper: Unsetting the fieldArray is dangerous; MM relations might be saved already and files could have been uploaded that are now "lost"
 							if (is_array($fieldArray)) {
 								if ($status == 'new') {
-									if ($createNewVersion) { // This creates a new version of the record with online placeholder and offline version
+										// This creates a new version of the record with online placeholder and offline version
+									if ($createNewVersion) {
 										$newVersion_placeholderFieldArray['t3ver_label'] = 'INITIAL PLACEHOLDER';
-										$newVersion_placeholderFieldArray['t3ver_state'] = 1; // Setting placeholder state value for temporary record
-										$newVersion_placeholderFieldArray['t3ver_wsid'] = $this->BE_USER->workspace; // Setting workspace - only so display of place holders can filter out those from other workspaces.
+											// Setting placeholder state value for temporary record
+										$newVersion_placeholderFieldArray['t3ver_state'] = 1;
+											// Setting workspace - only so display of place holders can filter out those from other workspaces.
+										$newVersion_placeholderFieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
 										$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['label']] = '[PLACEHOLDER, WS#' . $this->BE_USER->workspace . ']';
-										$this->insertDB($table, $id, $newVersion_placeholderFieldArray, FALSE); // Saving placeholder as 'original'
+											// Saving placeholder as 'original'
+										$this->insertDB($table, $id, $newVersion_placeholderFieldArray, FALSE);
 
 											// For the actual new offline version, set versioning values to point to placeholder:
 										$fieldArray['pid'] = -1;
 										$fieldArray['t3ver_oid'] = $this->substNEWwithIDs[$id];
 										$fieldArray['t3ver_id'] = 1;
-										$fieldArray['t3ver_state'] = -1; // Setting placeholder state value for version (so it can know it is currently a new version...)
+											// Setting placeholder state value for version (so it can know it is currently a new version...)
+										$fieldArray['t3ver_state'] = -1;
 										$fieldArray['t3ver_label'] = 'First draft version';
 										$fieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
-										$phShadowId = $this->insertDB($table, $id, $fieldArray, TRUE, 0, TRUE); // When inserted, $this->substNEWwithIDs[$id] will be changed to the uid of THIS version and so the interface will pick it up just nice!
+											// When inserted, $this->substNEWwithIDs[$id] will be changed to the uid of THIS version and so the interface will pick it up just nice!
+										$phShadowId = $this->insertDB($table, $id, $fieldArray, TRUE, 0, TRUE);
 										if ($phShadowId) {
 												// Processes fields of the placeholder record:
 											$this->triggerRemapAction(
@@ -743,12 +818,9 @@ class t3lib_TCEmain {
 								}
 							}
 
-							/*
-															 * Hook: processDatamap_afterDatabaseOperations
-															 *
-															 * Note: When using the hook after INSERT operations, you will only get the temporary NEW... id passed to your hook as $id,
-															 *		 but you can easily translate it to the real uid of the inserted record using the $this->substNEWwithIDs array.
-															 */
+								// Hook: processDatamap_afterDatabaseOperations
+								// Note: When using the hook after INSERT operations, you will only get the temporary NEW... id passed to your hook as $id,
+								// but you can easily translate it to the real uid of the inserted record using the $this->substNEWwithIDs array.
 							$this->hook_processDatamap_afterDatabaseOperations($hookObjectsArr, $status, $table, $id, $fieldArray);
 						} // if ($recordAccess) {
 					} // if (is_array($incomingFieldArray)) {
@@ -761,11 +833,8 @@ class t3lib_TCEmain {
 		$this->dbAnalysisStoreExec();
 		$this->removeRegisteredFiles();
 
-		/*
-		 * Hook: processDatamap_afterAllOperations
-		 *
-		 * Note: When this hook gets called, all operations on the submitted data have been finished.
-		 */
+			// Hook: processDatamap_afterAllOperations
+			// Note: When this hook gets called, all operations on the submitted data have been finished.
 		foreach ($hookObjectsArr as $hookObj) {
 			if (method_exists($hookObj, 'processDatamap_afterAllOperations')) {
 				$hookObj->processDatamap_afterAllOperations($this);
@@ -780,9 +849,9 @@ class t3lib_TCEmain {
 	/**
 	 * Fix shadowing of data in case we are editing a offline version of a live "New" placeholder record:
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record uid
-	 * @return	void
+	 * @param string $table Table name
+	 * @param integer $id Record uid
+	 * @return void
 	 */
 	function placeholderShadowing($table, $id) {
 		t3lib_div::loadTCA($table);
@@ -818,14 +887,14 @@ class t3lib_TCEmain {
 	 * Filling in the field array
 	 * $this->exclude_array is used to filter fields if needed.
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record ID
-	 * @param	array		Default values, Preset $fieldArray with 'pid' maybe (pid and uid will be not be overridden anyway)
-	 * @param	array		$incomingFieldArray is which fields/values you want to set. There are processed and put into $fieldArray if OK
-	 * @param	integer		The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted.
-	 * @param	string		$status = 'new' or 'update'
-	 * @param	integer		$tscPID: TSconfig PID
-	 * @return	array		Field Array
+	 * @param string $table Table name
+	 * @param integer $id Record ID
+	 * @param array $fieldArray Default values, Preset $fieldArray with 'pid' maybe (pid and uid will be not be overridden anyway)
+	 * @param array $incomingFieldArray Is which fields/values you want to set. There are processed and put into $fieldArray if OK
+	 * @param integer $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted.
+	 * @param string $status Is 'new' or 'update'
+	 * @param integer $tscPID TSconfig PID
+	 * @return array Field Array
 	 */
 	function fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $realPid, $status, $tscPID) {
 
@@ -837,7 +906,8 @@ class t3lib_TCEmain {
 
 			// Setting 'currentRecord' and 'checkValueRecord':
 		if (strstr($id, 'NEW')) {
-			$currentRecord = $checkValueRecord = $fieldArray; // must have the 'current' array - not the values after processing below...
+				// Must have the 'current' array - not the values after processing below...
+			$currentRecord = $checkValueRecord = $fieldArray;
 
 				// IF $incomingFieldArray is an array, overlay it.
 				// The point is that when new records are created as copies with flex type fields there might be a field containing information about which DataStructure to use and without that information the flexforms cannot be correctly processed.... This should be OK since the $checkValueRecord is used by the flexform evaluation only anyways...
@@ -845,9 +915,10 @@ class t3lib_TCEmain {
 				$checkValueRecord = t3lib_div::array_merge_recursive_overrule($checkValueRecord, $incomingFieldArray);
 			}
 		} else {
-			$currentRecord = $checkValueRecord = $this->recordInfo($table, $id, '*'); // We must use the current values as basis for this!
-
-			t3lib_BEfunc::fixVersioningPid($table, $currentRecord); // This is done to make the pid positive for offline versions; Necessary to have diff-view for pages_language_overlay in workspaces.
+				// We must use the current values as basis for this!
+			$currentRecord = $checkValueRecord = $this->recordInfo($table, $id, '*');
+				// This is done to make the pid positive for offline versions; Necessary to have diff-view for pages_language_overlay in workspaces.
+			t3lib_BEfunc::fixVersioningPid($table, $currentRecord);
 
 				// Get original language record if available:
 			if (is_array($currentRecord)
@@ -865,15 +936,12 @@ class t3lib_TCEmain {
 		}
 		$this->checkValue_currentRecord = $checkValueRecord;
 
-		/*
-			   In the following all incoming value-fields are tested:
-			   - Are the user allowed to change the field?
-			   - Is the field uid/pid (which are already set)
-			   - perms-fields for pages-table, then do special things...
-			   - If the field is nothing of the above and the field is configured in TCA, the fieldvalues are evaluated by ->checkValue
-
-			   If everything is OK, the field is entered into $fieldArray[]
-		*/
+			// In the following all incoming value-fields are tested:
+			// - Are the user allowed to change the field?
+			// - Is the field uid/pid (which are already set)
+			// - perms-fields for pages-table, then do special things...
+			// - If the field is nothing of the above and the field is configured in TCA, the fieldvalues are evaluated by ->checkValue
+			// If everything is OK, the field is entered into $fieldArray[]
 		foreach ($incomingFieldArray as $field => $fieldValue) {
 			if (!in_array($table . '-' . $field, $this->exclude_array) && !$this->data_disableFields[$table][$id][$field]) { // The field must be editable.
 
@@ -945,7 +1013,8 @@ class t3lib_TCEmain {
 								}
 
 									// If autoversioning is happening we need to perform a nasty hack. The case is parallel to a similar hack inside checkValue_group_select_file().
-									// When a copy or version is made of a record, a search is made for any RTEmagic* images in fields having the "images" soft reference parser applied. That should be TRUE for RTE fields. If any are found they are duplicated to new names and the file reference in the bodytext is updated accordingly.
+									// When a copy or version is made of a record, a search is made for any RTEmagic* images in fields having the "images" soft reference parser applied.
+									// That should be TRUE for RTE fields. If any are found they are duplicated to new names and the file reference in the bodytext is updated accordingly.
 									// However, with auto-versioning the submitted content of the field will just overwrite the corrected values. This leaves a) lost RTEmagic files and b) creates a double reference to the old files.
 									// The only solution I can come up with is detecting when auto versioning happens, then see if any RTEmagic images was copied and if so make a stupid string-replace of the content !
 								if ($this->autoVersioningUpdate === TRUE) {
@@ -977,7 +1046,8 @@ class t3lib_TCEmain {
 		if (is_array($types_fieldConfig)) {
 			foreach ($types_fieldConfig as $vconf) {
 					// Write file configuration:
-				$eFile = t3lib_parsehtml_proc::evalWriteFile($vconf['spec']['static_write'], array_merge($currentRecord, $fieldArray)); // inserted array_merge($currentRecord,$fieldArray) 170502
+					// inserted array_merge($currentRecord,$fieldArray) 170502
+				$eFile = t3lib_parsehtml_proc::evalWriteFile($vconf['spec']['static_write'], array_merge($currentRecord, $fieldArray));
 
 					// RTE transformations:
 				if (!$this->dontProcessTransformations) {
@@ -1008,11 +1078,12 @@ class t3lib_TCEmain {
 					$mixedRec = array_merge($currentRecord, $fieldArray);
 					$SW_fileContent = t3lib_div::getUrl($eFile['editFile']);
 					$parseHTML = t3lib_div::makeInstance('t3lib_parsehtml_proc');
-					/* @var $parseHTML t3lib_parsehtml_proc */
+					/** @var $parseHTML t3lib_parsehtml_proc */
 					$parseHTML->init('', '');
 
 					$eFileMarker = $eFile['markerField'] && trim($mixedRec[$eFile['markerField']]) ? trim($mixedRec[$eFile['markerField']]) : '###TYPO3_STATICFILE_EDIT###';
-					$insertContent = str_replace($eFileMarker, '', $mixedRec[$eFile['contentField']]); // must replace the marker if present in content!
+						// Must replace the marker if present in content!
+					$insertContent = str_replace($eFileMarker, '', $mixedRec[$eFile['contentField']]);
 
 					$SW_fileNewContent = $parseHTML->substituteSubpart($SW_fileContent, $eFileMarker, LF . $insertContent . LF, 1, 1);
 					t3lib_div::writeFile($eFile['editFile'], $SW_fileNewContent);
@@ -1036,7 +1107,6 @@ class t3lib_TCEmain {
 		return $fieldArray;
 	}
 
-
 	/*********************************************
 	 *
 	 * Evaluation of input values
@@ -1048,19 +1118,19 @@ class t3lib_TCEmain {
 	 * This function is for real database fields - NOT FlexForm "pseudo" fields.
 	 * NOTICE: Calling this function expects this: 1) That the data is saved! (files are copied and so on) 2) That files registered for deletion IS deleted at the end (with ->removeRegisteredFiles() )
 	 *
-	 * @param	string		Table name
-	 * @param	string		Field name
-	 * @param	string		Value to be evaluated. Notice, this is the INPUT value from the form. The original value (from any existing record) must be manually looked up inside the function if needed - or taken from $currentRecord array.
-	 * @param	string		The record-uid, mainly - but not exclusively - used for logging
-	 * @param	string		'update' or 'new' flag
-	 * @param	integer		The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
-	 * @param	integer		$tscPID
-	 * @return	array		Returns the evaluated $value as key "value" in this array. Can be checked with isset($res['value']) ...
+	 * @param string $table Table name
+	 * @param string $field Field name
+	 * @param string $value Value to be evaluated. Notice, this is the INPUT value from the form. The original value (from any existing record) must be manually looked up inside the function if needed - or taken from $currentRecord array.
+	 * @param string $id The record-uid, mainly - but not exclusively - used for logging
+	 * @param string $status 'update' or 'new' flag
+	 * @param integer $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
+	 * @param integer $tscPID tscPID
+	 * @return array Returns the evaluated $value as key "value" in this array. Can be checked with isset($res['value']) ...
 	 */
 	function checkValue($table, $field, $value, $id, $status, $realPid, $tscPID) {
 		t3lib_div::loadTCA($table);
-
-		$res = array(); // result array
+			// Result array
+		$res = array();
 		$recFID = $table . ':' . $id . ':' . $field;
 
 			// Processing special case of field pages.doktype
@@ -1104,19 +1174,19 @@ class t3lib_TCEmain {
 	 * Branches out evaluation of a field value based on its type as configured in $GLOBALS['TCA']
 	 * Can be called for FlexForm pseudo fields as well, BUT must not have $field set if so.
 	 *
-	 * @param	array		The result array. The processed value (if any!) is set in the "value" key.
-	 * @param	string		The value to set.
-	 * @param	array		Field configuration from $GLOBALS['TCA']
-	 * @param	string		Table name
-	 * @param	integer		Return UID
-	 * @param	[type]		$curValue: ...
-	 * @param	[type]		$status: ...
-	 * @param	integer		The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
-	 * @param	[type]		$recFID: ...
-	 * @param	string		Field name. Must NOT be set if the call is for a flexform field (since flexforms are not allowed within flexforms).
-	 * @param	[type]		$uploadedFiles: ...
-	 * @param	[type]		$tscPID: ...
-	 * @return	array		Returns the evaluated $value as key "value" in this array.
+	 * @param array $res The result array. The processed value (if any!) is set in the "value" key.
+	 * @param string $value The value to set.
+	 * @param array $tcaFieldConf Field configuration from $GLOBALS['TCA']
+	 * @param string $table Table name
+	 * @param integer $id Return UID
+	 * @param [type] $curValue
+	 * @param [type] $status
+	 * @param integer $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
+	 * @param [type] $recFID
+	 * @param string $field Field name. Must NOT be set if the call is for a flexform field (since flexforms are not allowed within flexforms).
+	 * @param [type] $uploadedFiles
+	 * @param [type] $tscPID
+	 * @return array Returns the evaluated $value as key "value" in this array.
 	 */
 	function checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $uploadedFiles, $tscPID) {
 
@@ -1125,50 +1195,49 @@ class t3lib_TCEmain {
 		switch ($tcaFieldConf['type']) {
 			case 'text':
 				$res = $this->checkValue_text($res, $value, $tcaFieldConf, $PP, $field);
-			break;
+				break;
 			case 'passthrough':
 			case 'user':
 				$res['value'] = $value;
-			break;
+				break;
 			case 'input':
 				$res = $this->checkValue_input($res, $value, $tcaFieldConf, $PP, $field);
-			break;
+				break;
 			case 'check':
 				$res = $this->checkValue_check($res, $value, $tcaFieldConf, $PP);
-			break;
+				break;
 			case 'radio':
 				$res = $this->checkValue_radio($res, $value, $tcaFieldConf, $PP);
-			break;
+				break;
 			case 'group':
 			case 'select':
 				$res = $this->checkValue_group_select($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field);
-			break;
+				break;
 			case 'inline':
 				$res = $this->checkValue_inline($res, $value, $tcaFieldConf, $PP, $field);
-			break;
+				break;
 			case 'flex':
-				if ($field) { // FlexForms are only allowed for real fields.
+					// FlexForms are only allowed for real fields.
+				if ($field) {
 					$res = $this->checkValue_flex($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field);
 				}
-			break;
+				break;
 			default:
-				#debug(array($tcaFieldConf,$res,$value),'NON existing field type:');
-			break;
+				break;
 		}
 
 		return $res;
 	}
 
-
 	/**
 	 * Evaluate "text" type values.
 	 *
-	 * @param	array		The result array. The processed value (if any!) is set in the "value" key.
-	 * @param	string		The value to set.
-	 * @param	array		Field configuration from TCA
-	 * @param	array		Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
-	 * @param	string		Field name
-	 * @return	array		Modified $res array
+	 * @param array $res The result array. The processed value (if any!) is set in the "value" key.
+	 * @param string $value The value to set.
+	 * @param array $tcaFieldConf Field configuration from TCA
+	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
+	 * @param string $field Field name
+	 * @return array Modified $res array
 	 */
 	function checkValue_text($res, $value, $tcaFieldConf, $PP, $field = '') {
 		$evalCodesArray = t3lib_div::trimExplode(',', $tcaFieldConf['eval'], 1);
@@ -1179,12 +1248,12 @@ class t3lib_TCEmain {
 	/**
 	 * Evaluate "input" type values.
 	 *
-	 * @param	array		The result array. The processed value (if any!) is set in the "value" key.
-	 * @param	string		The value to set.
-	 * @param	array		Field configuration from TCA
-	 * @param	array		Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
-	 * @param	string		Field name
-	 * @return	array		Modified $res array
+	 * @param array $res The result array. The processed value (if any!) is set in the "value" key.
+	 * @param string $value The value to set.
+	 * @param array $tcaFieldConf Field configuration from TCA
+	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
+	 * @param string $field Field name
+	 * @return array Modified $res array
 	 */
 	function checkValue_input($res, $value, $tcaFieldConf, $PP, $field = '') {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
@@ -1209,7 +1278,8 @@ class t3lib_TCEmain {
 		$res = $this->checkValue_input_Eval($value, $evalCodesArray, $tcaFieldConf['is_in']);
 
 			// Process UNIQUE settings:
-		if ($field && $realPid >= 0) { // Field is NOT set for flexForms - which also means that uniqueInPid and unique is NOT available for flexForm fields! Also getUnique should not be done for versioning and if PID is -1 ($realPid<0) then versioning is happening...
+			// Field is NOT set for flexForms - which also means that uniqueInPid and unique is NOT available for flexForm fields! Also getUnique should not be done for versioning and if PID is -1 ($realPid<0) then versioning is happening...
+		if ($field && $realPid >= 0) {
 			if ($res['value'] && in_array('uniqueInPid', $evalCodesArray)) {
 				$res['value'] = $this->getUnique($table, $field, $res['value'], $id, $realPid);
 			}
@@ -1224,11 +1294,11 @@ class t3lib_TCEmain {
 	/**
 	 * Evaluates 'check' type values.
 	 *
-	 * @param	array		The result array. The processed value (if any!) is set in the 'value' key.
-	 * @param	string		The value to set.
-	 * @param	array		Field configuration from TCA
-	 * @param	array		Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
-	 * @return	array		Modified $res array
+	 * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
+	 * @param string $value The value to set.
+	 * @param array $tcaFieldConf Field configuration from TCA
+	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
+	 * @return array Modified $res array
 	 */
 	function checkValue_check($res, $value, $tcaFieldConf, $PP) {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
@@ -1253,11 +1323,11 @@ class t3lib_TCEmain {
 	/**
 	 * Evaluates 'radio' type values.
 	 *
-	 * @param	array		The result array. The processed value (if any!) is set in the 'value' key.
-	 * @param	string		The value to set.
-	 * @param	array		Field configuration from TCA
-	 * @param	array		Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
-	 * @return	array		Modified $res array
+	 * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
+	 * @param string $value The value to set.
+	 * @param array $tcaFieldConf Field configuration from TCA
+	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
+	 * @return array Modified $res array
 	 */
 	function checkValue_radio($res, $value, $tcaFieldConf, $PP) {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
@@ -1277,13 +1347,13 @@ class t3lib_TCEmain {
 	/**
 	 * Evaluates 'group' or 'select' type values.
 	 *
-	 * @param	array		The result array. The processed value (if any!) is set in the 'value' key.
-	 * @param	string		The value to set.
-	 * @param	array		Field configuration from TCA
-	 * @param	array		Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
-	 * @param	[type]		$uploadedFiles: ...
-	 * @param	string		Field name
-	 * @return	array		Modified $res array
+	 * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
+	 * @param string $value The value to set.
+	 * @param array $tcaFieldConf Field configuration from TCA
+	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
+	 * @param array $uploadedFiles
+	 * @param string $field Field name
+	 * @return array Modified $res array
 	 */
 	function checkValue_group_select($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field) {
 
@@ -1310,7 +1380,8 @@ class t3lib_TCEmain {
 		if ($tcaFieldConf['type'] == 'select' && $tcaFieldConf['exclusiveKeys']) {
 			$exclusiveKeys = t3lib_div::trimExplode(',', $tcaFieldConf['exclusiveKeys']);
 			foreach ($valueArray as $kk => $vv) {
-				if (in_array($vv, $exclusiveKeys)) { // $vv is the item key!
+					// $vv is the item key!
+				if (in_array($vv, $exclusiveKeys)) {
 					$valueArray = array($kk => $vv);
 					break;
 				}
@@ -1419,14 +1490,14 @@ class t3lib_TCEmain {
 	/**
 	 * Handling files for group/select function
 	 *
-	 * @param $valueArray array Array of incoming file references. Keys are numeric, values are files (basically, this is the exploded list of incoming files)
-	 * @param $tcaFieldConf array Configuration array from TCA of the field
-	 * @param $curValue string Current value of the field
-	 * @param $uploadedFileArray array Array of uploaded files, if any
-	 * @param $status string Status ("update" or ?)
-	 * @param $table string tablename of record
-	 * @param $id integer UID of record
-	 * @param $recFID string Field identifier ([table:uid:field:....more for flexforms?]
+	 * @param array $valueArray Array of incoming file references. Keys are numeric, values are files (basically, this is the exploded list of incoming files)
+	 * @param array $tcaFieldConf Configuration array from TCA of the field
+	 * @param string $curValue Current value of the field
+	 * @param array $uploadedFileArray Array of uploaded files, if any
+	 * @param string $status Status ("update" or ?)
+	 * @param string $table tablename of record
+	 * @param integer $id UID of record
+	 * @param string $recFID Field identifier ([table:uid:field:....more for flexforms?]
 	 * @return array Modified value array
 	 * @see checkValue_group_select()
 	 */
@@ -1466,7 +1537,8 @@ class t3lib_TCEmain {
 
 			// If there is an upload folder defined:
 		if ($tcaFieldConf['uploadfolder'] && $tcaFieldConf['internal_type'] == 'file') {
-			if (!$this->bypassFileHandling) { // If filehandling should NOT be bypassed, do processing:
+				// If filehandling should NOT be bypassed, do processing:
+			if (!$this->bypassFileHandling) {
 					// For logging..
 				$propArr = $this->getRecordProperties($table, $id);
 
@@ -1487,7 +1559,8 @@ class t3lib_TCEmain {
 						// If we prefix the incoming file "logo.gif" with its absolute path it will be seen as a new file added. Thus it will be copied to "logo_02.gif". "logo_01.gif" will still be deleted but since the files are the same the difference is zero - only more processing and file copying for no reason. But it will work.
 					if ($this->autoVersioningUpdate === TRUE) {
 						foreach ($valueArray as $key => $theFile) {
-							if ($theFile === basename($theFile)) { // If it is an already attached file...
+								// If it is an already attached file...
+							if ($theFile === basename($theFile)) {
 								$valueArray[$key] = PATH_site . $tcaFieldConf['uploadfolder'] . '/' . $theFile;
 							}
 						}
@@ -1495,9 +1568,10 @@ class t3lib_TCEmain {
 
 						// Finding the CURRENT files listed, either from MM or from the current record.
 					$theFileValues = array();
-					if ($tcaFieldConf['MM']) { // If MM relations for the files also!
+						// If MM relations for the files also!
+					if ($tcaFieldConf['MM']) {
 						$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-						/* @var $dbAnalysis t3lib_loadDBGroup */
+						/** @var $dbAnalysis t3lib_loadDBGroup */
 						$dbAnalysis->start('', 'files', $tcaFieldConf['MM'], $id);
 						foreach ($dbAnalysis->itemArray as $item) {
 							if ($item['id']) {
@@ -1534,7 +1608,8 @@ class t3lib_TCEmain {
 				foreach ($valueArray as $key => $theFile) {
 						// Init:
 					$maxSize = intval($tcaFieldConf['max_size']);
-					$theDestFile = ''; // Must be cleared. Else a faulty fileref may be inserted if the below code returns an error!
+						// Must be cleared. Else a faulty fileref may be inserted if the below code returns an error!
+					$theDestFile = '';
 
 						// a FAL file was added, now resolve the file object and get the absolute path
 						// @todo in future versions this needs to be modified to handle FAL objects natively
@@ -1548,7 +1623,8 @@ class t3lib_TCEmain {
 					if (strstr(t3lib_div::fixWindowsFilePath($theFile), '/')) {
 
 							// Check various things before copying file:
-						if (@is_dir($dest) && (@is_file($theFile) || @is_uploaded_file($theFile))) { // File and destination must exist
+							// File and destination must exist
+						if (@is_dir($dest) && (@is_file($theFile) || @is_uploaded_file($theFile))) {
 
 								// Finding size.
 							if (is_uploaded_file($theFile) && $theFile == $uploadedFileArray['tmp_name']) {
@@ -1557,7 +1633,8 @@ class t3lib_TCEmain {
 								$fileSize = filesize($theFile);
 							}
 
-							if (!$maxSize || $fileSize <= ($maxSize * 1024)) { // Check file size:
+								// Check file size:
+							if (!$maxSize || $fileSize <= ($maxSize * 1024)) {
 									// Prepare filename:
 								$theEndFileName = isset($this->alternativeFileName[$theFile]) ? $this->alternativeFileName[$theFile] : $theFile;
 								$fI = t3lib_div::split_fileref($theEndFileName);
@@ -1605,9 +1682,11 @@ class t3lib_TCEmain {
 							// the value array, otherwise unset the entry in the value array!
 						if (@is_file($theDestFile)) {
 							$info = t3lib_div::split_fileref($theDestFile);
-							$valueArray[$key] = $info['file']; // The value is set to the new filename
+								// The value is set to the new filename
+							$valueArray[$key] = $info['file'];
 						} else {
-							unset($valueArray[$key]); // The value is set to the new filename
+								// The value is set to the new filename
+							unset($valueArray[$key]);
 						}
 					}
 				}
@@ -1615,12 +1694,13 @@ class t3lib_TCEmain {
 
 				// If MM relations for the files, we will set the relations as MM records and change the valuearray to contain a single entry with a count of the number of files!
 			if ($tcaFieldConf['MM']) {
+					/** @var $dbAnalysis t3lib_loadDBGroup */
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-				/* @var $dbAnalysis t3lib_loadDBGroup */
-				$dbAnalysis->tableArray['files'] = array(); // dummy
+					// Dummy
+				$dbAnalysis->tableArray['files'] = array();
 
 				foreach ($valueArray as $key => $theFile) {
-						// explode files
+						// Explode files
 					$dbAnalysis->itemArray[]['id'] = $theFile;
 				}
 				if ($status == 'update') {
@@ -1639,11 +1719,13 @@ class t3lib_TCEmain {
 				}
 				$valueArray = $dbAnalysis->countItems();
 			}
-			//store path relative to site root (if uploadfolder is not set or internal_type is file_reference)
+			// Store path relative to site root (if uploadfolder is not set or internal_type is file_reference)
 		} else {
 			if (count($valueArray)) {
-				if (!$this->bypassFileHandling) { // If filehandling should NOT be bypassed, do processing:
-					$propArr = $this->getRecordProperties($table, $id); // For logging..
+					// If filehandling should NOT be bypassed, do processing:
+				if (!$this->bypassFileHandling) {
+						// For logging..
+					$propArr = $this->getRecordProperties($table, $id);
 					foreach ($valueArray as &$theFile) {
 
 							// FAL handling: it's a UID, thus it is resolved to the absolute path
@@ -1653,12 +1735,12 @@ class t3lib_TCEmain {
 						}
 
 						if ($this->alternativeFilePath[$theFile]) {
-								// if alernative File Path is set for the file, then it was an import
+								// If alernative File Path is set for the file, then it was an import
 								// don't import the file if it already exists
 							if (@is_file(PATH_site . $this->alternativeFilePath[$theFile])) {
 								$theFile = PATH_site . $this->alternativeFilePath[$theFile];
 
-								// import the file
+								// Import the file
 							} elseif (@is_file($theFile)) {
 								$dest = dirname(PATH_site . $this->alternativeFilePath[$theFile]);
 								if (!@is_dir($dest)) {
@@ -1668,10 +1750,11 @@ class t3lib_TCEmain {
 									// Init:
 								$maxSize = intval($tcaFieldConf['max_size']);
 								$cmd = '';
-								$theDestFile = ''; // Must be cleared. Else a faulty fileref may be inserted if the below code returns an error!
+									// Must be cleared. Else a faulty fileref may be inserted if the below code returns an error!
+								$theDestFile = '';
 								$fileSize = filesize($theFile);
-
-								if (!$maxSize || $fileSize <= ($maxSize * 1024)) { // Check file size:
+									// Check file size:
+								if (!$maxSize || $fileSize <= ($maxSize * 1024)) {
 										// Prepare filename:
 									$theEndFileName = isset($this->alternativeFileName[$theFile]) ? $this->alternativeFileName[$theFile] : $theFile;
 									$fI = t3lib_div::split_fileref($theEndFileName);
@@ -1700,9 +1783,11 @@ class t3lib_TCEmain {
 
 									// If the destination file was created, we will set the new filename in the value array, otherwise unset the entry in the value array!
 								if (@is_file($theDestFile)) {
-									$theFile = $theDestFile; // The value is set to the new filename
+										// The value is set to the new filename
+									$theFile = $theDestFile;
 								} else {
-									unset($theFile); // The value is set to the new filename
+										// The value is set to the new filename
+									unset($theFile);
 								}
 							}
 						}
@@ -1722,14 +1807,13 @@ class t3lib_TCEmain {
 	/**
 	 * Evaluates 'flex' type values.
 	 *
-	 * @param	array		The result array. The processed value (if any!) is set in the 'value' key.
-	 * @param	string		The value to set.
-	 * @param	array		Field configuration from TCA
-	 * @param	array		Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
-	 * @param	array		Uploaded files for the field
-	 * @param	array		Current record array.
-	 * @param	string		Field name
-	 * @return	array		Modified $res array
+	 * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
+	 * @param string $value The value to set.
+	 * @param array $tcaFieldConf Field configuration from TCA
+	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
+	 * @param array $uploadedFiles Uploaded files for the field
+	 * @param string $field Field name
+	 * @return array Modified $res array
 	 */
 	function checkValue_flex($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field) {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
@@ -1792,22 +1876,23 @@ class t3lib_TCEmain {
 	/**
 	 * Converts an array to FlexForm XML
 	 *
-	 * @param	array		Array with FlexForm data
-	 * @param	boolean		If set, the XML prologue is returned as well.
-	 * @return	string		Input array converted to XML
+	 * @param array $array Array with FlexForm data
+	 * @param boolean $addPrologue If set, the XML prologue is returned as well.
+	 * @return string Input array converted to XML
 	 */
 	function checkValue_flexArray2Xml($array, $addPrologue = FALSE) {
+			/** @var $flexObj t3lib_flexformtools */
 		$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
-		/* @var $flexObj t3lib_flexformtools */
+
 		return $flexObj->flexArray2Xml($array, $addPrologue);
 	}
 
 	/**
 	 * Actions for flex form element (move, delete)
 	 *
-	 * @param	array		&$valueArrayToRemoveFrom: by reference
-	 * @param	array		$deleteCMDS: ...	 *
-	 * @return	void
+	 * @param array &$valueArrayToRemoveFrom by reference
+	 * @param array $deleteCMDS
+	 * @return void
 	 */
 	function _ACTION_FLEX_FORMdata(&$valueArray, $actionCMDs) {
 		if (is_array($valueArray) && is_array($actionCMDs)) {
@@ -1821,7 +1906,8 @@ class t3lib_TCEmain {
 							if (substr($idx, 0, 3) == "ID-") {
 								$idx = $this->newIndexMap[$idx];
 							}
-							if ($order != "DELETE") { // Just one reflection here: It is clear that when removing elements from a flexform, then we will get lost files unless we act on this delete operation by traversing and deleting files that were referred to.
+								// Just one reflection here: It is clear that when removing elements from a flexform, then we will get lost files unless we act on this delete operation by traversing and deleting files that were referred to.
+							if ($order != "DELETE") {
 								$newValueArray[$idx] = $valueArray[$idx];
 							}
 							unset($valueArray[$idx]);
@@ -1839,18 +1925,19 @@ class t3lib_TCEmain {
 	 * Evaluates 'inline' type values.
 	 * (partly copied from the select_group function on this issue)
 	 *
-	 * @param	array		The result array. The processed value (if any!) is set in the 'value' key.
-	 * @param	string		The value to set.
-	 * @param	array		Field configuration from TCA
-	 * @param	array		Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
-	 * @param	string		Field name
-	 * @return	array		Modified $res array
+	 * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
+	 * @param string $value The value to set.
+	 * @param array $tcaFieldConf Field configuration from TCA
+	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
+	 * @param string $field Field name
+	 * @return array Modified $res array
 	 */
 	function checkValue_inline($res, $value, $tcaFieldConf, $PP, $field) {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
 
 		if (!$tcaFieldConf['foreign_table']) {
-			return FALSE; // Fatal error, inline fields should always have a foreign_table defined
+				// Fatal error, inline fields should always have a foreign_table defined
+			return FALSE;
 		}
 
 			// When values are sent they come as comma-separated values which are exploded by this function:
@@ -1883,9 +1970,9 @@ class t3lib_TCEmain {
 	 * Checks if a fields has more items than defined via TCA in maxitems.
 	 * If there are more items than allowd, the item list is truncated to the defined number.
 	 *
-	 * @param	array		$tcaFieldConf: Field configuration from TCA
-	 * @param	array		$valueArray: Current value array of items
-	 * @return	array		The truncated value array of items
+	 * @param array $tcaFieldConf Field configuration from TCA
+	 * @param array $valueArray Current value array of items
+	 * @return array The truncated value array of items
 	 */
 	function checkValue_checkMax($tcaFieldConf, $valueArray) {
 			// BTW, checking for min and max items here does NOT make any sense when MM is used because the above function calls will just return an array with a single item (the count) if MM is used... Why didn't I perform the check before? Probably because we could not evaluate the validity of record uids etc... Hmm...
@@ -1911,7 +1998,6 @@ class t3lib_TCEmain {
 		return $newVal;
 	}
 
-
 	/*********************************************
 	 *
 	 * Helper functions for evaluation functions.
@@ -1921,12 +2007,12 @@ class t3lib_TCEmain {
 	/**
 	 * Gets a unique value for $table/$id/$field based on $value
 	 *
-	 * @param	string		Table name
-	 * @param	string		Field name for which $value must be unique
-	 * @param	string		Value string.
-	 * @param	integer		UID to filter out in the lookup (the record itself...)
-	 * @param	integer		If set, the value will be unique for this PID
-	 * @return	string		Modified value (if not-unique). Will be the value appended with a number (until 100, then the function just breaks).
+	 * @param string $table Table name
+	 * @param string $field Field name for which $value must be unique
+	 * @param string $value Value string.
+	 * @param integer $id UID to filter out in the lookup (the record itself...)
+	 * @param integer $newPid If set, the value will be unique for this PID
+	 * @return string Modified value (if not-unique). Will be the value appended with a number (until 100, then the function just breaks).
 	 */
 	function getUnique($table, $field, $value, $id, $newPid = 0) {
 
@@ -1963,6 +2049,14 @@ class t3lib_TCEmain {
 		return $value;
 	}
 
+	/**
+	 *
+	 *
+	 * @param string $value The field value to be evaluated
+	 * @param array $evalArray Array of evaluations to traverse.
+	 * @param string $is_in The "is_in" value of the field configuration from TCA
+	 * @return array
+	 */
 	function checkValue_text_Eval($value, $evalArray, $is_in) {
 		$res = array();
 		$newValue = $value;
@@ -1997,10 +2091,10 @@ class t3lib_TCEmain {
 	/**
 	 * Evaluation of 'input'-type values based on 'eval' list
 	 *
-	 * @param	string		Value to evaluate
-	 * @param	array		Array of evaluations to traverse.
-	 * @param	string		Is-in string for 'is_in' evaluation
-	 * @return	array		Modified $value in key 'value' or empty array
+	 * @param string $value Value to evaluate
+	 * @param array $evalArray Array of evaluations to traverse.
+	 * @param string $is_in Is-in string for 'is_in' evaluation
+	 * @return array Modified $value in key 'value' or empty array
 	 */
 	function checkValue_input_Eval($value, $evalArray, $is_in) {
 		$res = array();
@@ -2112,31 +2206,32 @@ class t3lib_TCEmain {
 	/**
 	 * Returns data for group/db and select fields
 	 *
-	 * @param	array		Current value array
-	 * @param	array		TCA field config
-	 * @param	integer		Record id, used for look-up of MM relations (local_uid)
-	 * @param	string		Status string ('update' or 'new')
-	 * @param	string		The type, either 'select', 'group' or 'inline'
-	 * @param	string		Table name, needs to be passed to t3lib_loadDBGroup
-	 * @param	string		field name, needs to be set for writing to sys_history
-	 * @return	array		Modified value array
+	 * @param array $valueArray Current value array
+	 * @param array $tcaFieldConf TCA field config
+	 * @param integer $id Record id, used for look-up of MM relations (local_uid)
+	 * @param string $status Status string ('update' or 'new')
+	 * @param string $type The type, either 'select', 'group' or 'inline'
+	 * @param string $currentTable Table name, needs to be passed to t3lib_loadDBGroup
+	 * @param string $currentField field name, needs to be set for writing to sys_history
+	 * @return array Modified value array
 	 */
 	function checkValue_group_select_processDBdata($valueArray, $tcaFieldConf, $id, $status, $type, $currentTable, $currentField) {
 		$tables = $type == 'group' ? $tcaFieldConf['allowed'] : $tcaFieldConf['foreign_table'] . ',' . $tcaFieldConf['neg_foreign_table'];
 		$prep = $type == 'group' ? $tcaFieldConf['prepend_tname'] : $tcaFieldConf['neg_foreign_table'];
 		$newRelations = implode(',', $valueArray);
-
+			/** @var $dbAnalysis t3lib_loadDBGroup */
 		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-		/* @var $dbAnalysis t3lib_loadDBGroup */
+
 		$dbAnalysis->registerNonTableValues = $tcaFieldConf['allowNonIdValues'] ? 1 : 0;
 		$dbAnalysis->start($newRelations, $tables, '', 0, $currentTable, $tcaFieldConf);
 
 		if ($tcaFieldConf['MM']) {
 			if ($status == 'update') {
+					/** @var $oldRelations_dbAnalysis t3lib_loadDBGroup */
 				$oldRelations_dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-				/* @var $oldRelations_dbAnalysis t3lib_loadDBGroup */
+
 				$oldRelations_dbAnalysis->registerNonTableValues = $tcaFieldConf['allowNonIdValues'] ? 1 : 0;
-					// db analysis with $id will initialize with the existing relations
+					// Db analysis with $id will initialize with the existing relations
 				$oldRelations_dbAnalysis->start('', $tables, $tcaFieldConf['MM'], $id, $currentTable, $tcaFieldConf);
 				$oldRelations = implode(',', $oldRelations_dbAnalysis->getValueArray());
 				$dbAnalysis->writeMM($tcaFieldConf['MM'], $id, $prep);
@@ -2165,8 +2260,8 @@ class t3lib_TCEmain {
 	/**
 	 * Explodes the $value, which is a list of files/uids (group select)
 	 *
-	 * @param	string		Input string, comma separated values. For each part it will also be detected if a '|' is found and the first part will then be used if that is the case. Further the value will be rawurldecoded.
-	 * @return	array		The value array.
+	 * @param string $value Input string, comma separated values. For each part it will also be detected if a '|' is found and the first part will then be used if that is the case. Further the value will be rawurldecoded.
+	 * @return array The value array.
 	 */
 	function checkValue_group_select_explodeSelectGroupValue($value) {
 		$valueArray = t3lib_div::trimExplode(',', $value, 1);
@@ -2187,13 +2282,13 @@ class t3lib_TCEmain {
 	 * See checkValue_flex_procInData_travDS() for more details.
 	 * WARNING: Currently, it traverses based on the actual _data_ array and NOT the _structure_. This means that values for non-valid fields, lKey/vKey/sKeys will be accepted! For traversal of data with a call back function you should rather use class.t3lib_flexformtools.php
 	 *
-	 * @param	array		The 'data' part of the INPUT flexform data
-	 * @param	array		The 'data' part of the CURRENT flexform data
-	 * @param	array		The uploaded files for the 'data' part of the INPUT flexform data
-	 * @param	array		Data structure for the form (might be sheets or not). Only values in the data array which has a configuration in the data structure will be processed.
-	 * @param	array		A set of parameters to pass through for the calling of the evaluation functions
-	 * @param	string		Optional call back function, see checkValue_flex_procInData_travDS()  DEPRICATED, use class.t3lib_flexformtools.php instead for traversal!
-	 * @return	array		The modified 'data' part.
+	 * @param array $dataPart The 'data' part of the INPUT flexform data
+	 * @param array $dataPart_current The 'data' part of the CURRENT flexform data
+	 * @param array $uploadedFiles The uploaded files for the 'data' part of the INPUT flexform data
+	 * @param array $dataStructArray Data structure for the form (might be sheets or not). Only values in the data array which has a configuration in the data structure will be processed.
+	 * @param array $pParams A set of parameters to pass through for the calling of the evaluation functions
+	 * @param string $callBackFunc Optional call back function, see checkValue_flex_procInData_travDS()  DEPRICATED, use class.t3lib_flexformtools.php instead for traversal!
+	 * @return array The modified 'data' part.
 	 * @see checkValue_flex_procInData_travDS()
 	 */
 	function checkValue_flex_procInData($dataPart, $dataPart_current, $uploadedFiles, $dataStructArray, $pParams, $callBackFunc = '') {
@@ -2223,14 +2318,14 @@ class t3lib_TCEmain {
 	 * Processing of the sheet/language data array
 	 * When it finds a field with a value the processing is done by ->checkValue_SW() by default but if a call back function name is given that method in this class will be called for the processing instead.
 	 *
-	 * @param	array		New values (those being processed): Multidimensional Data array for sheet/language, passed by reference!
-	 * @param	array		Current values: Multidimensional Data array. May be empty array() if not needed (for callBackFunctions)
-	 * @param	array		Uploaded files array for sheet/language. May be empty array() if not needed (for callBackFunctions)
-	 * @param	array		Data structure which fits the data array
-	 * @param	array		A set of parameters to pass through for the calling of the evaluation functions / call back function
-	 * @param	string		Call back function, default is checkValue_SW(). If $this->callBackObj is set to an object, the callback function in that object is called instead.
-	 * @param	[type]		$structurePath: ...
-	 * @return	void
+	 * @param array $dataValues New values (those being processed): Multidimensional Data array for sheet/language, passed by reference!
+	 * @param array $dataValues_current Current values: Multidimensional Data array. May be empty array() if not needed (for callBackFunctions)
+	 * @param array $uploadedFiles Uploaded files array for sheet/language. May be empty array() if not needed (for callBackFunctions)
+	 * @param array $DSelements Data structure which fits the data array
+	 * @param array $pParams A set of parameters to pass through for the calling of the evaluation functions / call back function
+	 * @param string $callBackFunc Call back function, default is checkValue_SW(). If $this->callBackObj is set to an object, the callback function in that object is called instead.
+	 * @param string $structurePath
+	 * @return void
 	 * @see checkValue_flex_procInData()
 	 */
 	function checkValue_flex_procInData_travDS(&$dataValues, $dataValues_current, $uploadedFiles, $DSelements, $pParams, $callBackFunc, $structurePath) {
@@ -2268,9 +2363,12 @@ class t3lib_TCEmain {
 
 										if (substr($ik, 0, 3) == "ID-") {
 											$newIndexCounter++;
-											$this->newIndexMap[$ik] = (is_array($dataValues_current[$key]['el']) && count($dataValues_current[$key]['el']) ? max(array_keys($dataValues_current[$key]['el'])) : 0) + $newIndexCounter; // Set mapping index
-											$dataValues[$key]['el'][$this->newIndexMap[$ik]] = $dataValues[$key]['el'][$ik]; // Transfer values
-											unset($dataValues[$key]['el'][$ik]); // Unset original
+												// Set mapping index
+											$this->newIndexMap[$ik] = (is_array($dataValues_current[$key]['el']) && count($dataValues_current[$key]['el']) ? max(array_keys($dataValues_current[$key]['el'])) : 0) + $newIndexCounter;
+												// Transfer values
+											$dataValues[$key]['el'][$this->newIndexMap[$ik]] = $dataValues[$key]['el'][$ik];
+												// Unset original
+											unset($dataValues[$key]['el'][$ik]);
 										}
 									}
 								}
@@ -2392,13 +2490,13 @@ class t3lib_TCEmain {
 	/**
 	 * Returns data for inline fields.
 	 *
-	 * @param	array		Current value array
-	 * @param	array		TCA field config
-	 * @param	integer		Record id
-	 * @param	string		Status string ('update' or 'new')
-	 * @param	string		Table name, needs to be passed to t3lib_loadDBGroup
-	 * @param	string		The current field the values are modified for
-	 * @return	string		Modified values
+	 * @param array $valueArray Current value array
+	 * @param array $tcaFieldConf TCA field config
+	 * @param integer $id Record id
+	 * @param string $status Status string ('update' or 'new')
+	 * @param string $table Table name, needs to be passed to t3lib_loadDBGroup
+	 * @param string $field The current field the values are modified for
+	 * @return string Modified values
 	 */
 	protected function checkValue_inline_processDBdata($valueArray, $tcaFieldConf, $id, $status, $table, $field) {
 		$newValue = '';
@@ -2406,10 +2504,8 @@ class t3lib_TCEmain {
 
 		$valueArray = $this->applyFiltersToValues($tcaFieldConf, $valueArray);
 
-		/*
-		 * Fetch the related child records by using t3lib_loadDBGroup:
-		 * @var $dbAnalysis t3lib_loadDBGroup
-		 */
+			// Fetch the related child records by using t3lib_loadDBGroup:
+			/** @var $dbAnalysis t3lib_loadDBGroup */
 		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 		$dbAnalysis->start(implode(',', $valueArray), $foreignTable, '', 0, $table, $tcaFieldConf);
 			// If the localizationMode is set to 'keep', the children for the localized parent are kept as in the original untranslated record:
@@ -2439,7 +2535,7 @@ class t3lib_TCEmain {
 				// IRRE with MM relation:
 		} else {
 			if ($this->getInlineFieldType($tcaFieldConf) == 'mm') {
-					// in order to fully support all the MM stuff, directly call checkValue_group_select_processDBdata instead of repeating the needed code here
+					// In order to fully support all the MM stuff, directly call checkValue_group_select_processDBdata instead of repeating the needed code here
 				$valueArray = $this->checkValue_group_select_processDBdata($valueArray, $tcaFieldConf, $id, $status, 'select', $table, $field);
 				$newValue = ($keepTranslation ? 0 : $valueArray[0]);
 					// IRRE with comma separated values:
@@ -2459,7 +2555,6 @@ class t3lib_TCEmain {
 		return $newValue;
 	}
 
-
 	/*********************************************
 	 *
 	 * PROCESSING COMMANDS
@@ -2470,7 +2565,7 @@ class t3lib_TCEmain {
 	 * Processing the cmd-array
 	 * See "TYPO3 Core API" for a description of the options.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function process_cmdmap() {
 
@@ -2533,7 +2628,7 @@ class t3lib_TCEmain {
 							}
 						}
 
-							// only execute default commands if a hook hasn't been processed the command already
+							// Only execute default commands if a hook hasn't been processed the command already
 						if (!$commandIsProcessed) {
 								// Branch, based on command
 							switch ($command) {
@@ -2591,7 +2686,6 @@ class t3lib_TCEmain {
 		}
 	}
 
-
 	/*********************************************
 	 *
 	 * Cmd: Copying
@@ -2601,33 +2695,35 @@ class t3lib_TCEmain {
 	/**
 	 * Copying a single record
 	 *
-	 * @param	string		Element table
-	 * @param	integer		Element UID
-	 * @param	integer		$destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
-	 * @param	boolean		$first is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
-	 * @param	array		Associative array with field/value pairs to override directly. Notice; Fields must exist in the table record and NOT be among excluded fields!
-	 * @param	string		Commalist of fields to exclude from the copy process (might get default values)
-	 * @param	integer		Language ID (from sys_language table)
-	 * @return	integer		ID of new record, if any
+	 * @param string $table Element table
+	 * @param integer $uid Element UID
+	 * @param integer $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+	 * @param boolean $first Is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
+	 * @param array $overrideValues Associative array with field/value pairs to override directly. Notice; Fields must exist in the table record and NOT be among excluded fields!
+	 * @param string $excludeFields Commalist of fields to exclude from the copy process (might get default values)
+	 * @param integer $language Language ID (from sys_language table)
+	 * @return integer ID of new record, if any
 	 */
 	function copyRecord($table, $uid, $destPid, $first = 0, $overrideValues = array(), $excludeFields = '', $language = 0) {
 		$uid = $origUid = intval($uid);
 			// Only copy if the table is defined in $GLOBALS['TCA'], a uid is given and the record wasn't copied before:
 		if ($GLOBALS['TCA'][$table] && $uid && !$this->isRecordCopied($table, $uid)) {
 			t3lib_div::loadTCA($table);
-			if ($this->doesRecordExist($table, $uid, 'show')) { // This checks if the record can be selected which is all that a copy action requires.
+				// This checks if the record can be selected which is all that a copy action requires.
+			if ($this->doesRecordExist($table, $uid, 'show')) {
 				$fullLanguageCheckNeeded = ($table != 'pages');
+					//Used to check language and general editing rights
 				if (($language > 0 && $this->BE_USER->checkLanguageAccess($language)) ||
 					$this->BE_USER->recordEditAccessInternals(
 						$table, $uid, FALSE, FALSE, $fullLanguageCheckNeeded
 					)
-				) { //Used to check language and general editing rights
+				) {
 					$data = array();
 
 					$nonFields = array_unique(t3lib_div::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_label,t3ver_state,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, 1));
 
-						// $row = $this->recordInfo($table,$uid,'*');
-					$row = t3lib_BEfunc::getRecordWSOL($table, $uid); // So it copies (and localized) content from workspace...
+						// So it copies (and localized) content from workspace...
+					$row = t3lib_BEfunc::getRecordWSOL($table, $uid);
 					if (is_array($row)) {
 
 							// Initializing:
@@ -2642,7 +2738,8 @@ class t3lib_TCEmain {
 						$copyAfterFields = $destPid < 0 ? $this->fixCopyAfterDuplFields($table, $uid, abs($destPid), 0) : array();
 
 							// Page TSconfig related:
-						$tscPID = t3lib_BEfunc::getTSconfig_pidValue($table, $uid, $destPid); // NOT using t3lib_BEfunc::getTSCpid() because we need the real pid - not the ID of a page, if the input is a page...
+							// NOT using t3lib_BEfunc::getTSCpid() because we need the real pid - not the ID of a page, if the input is a page...
+						$tscPID = t3lib_BEfunc::getTSconfig_pidValue($table, $uid, $destPid);
 						$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 						$tE = $this->getTableEntries($table, $TSConfig);
 
@@ -2654,13 +2751,15 @@ class t3lib_TCEmain {
 								$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 
 									// Preparation/Processing of the value:
-								if ($field == 'pid') { // "pid" is hardcoded of course:
+									// "pid" is hardcoded of course:
+								if ($field == 'pid') {
 									$value = $destPid;
 								} elseif (isset($overrideValues[$field])) { // Override value...
 									$value = $overrideValues[$field];
 								} elseif (isset($copyAfterFields[$field])) { // Copy-after value if available:
 									$value = $copyAfterFields[$field];
-								} elseif ($GLOBALS['TCA'][$table]['ctrl']['setToDefaultOnCopy'] && t3lib_div::inList($GLOBALS['TCA'][$table]['ctrl']['setToDefaultOnCopy'], $field)) { // Revert to default for some fields:
+										// Revert to default for some fields:
+								} elseif ($GLOBALS['TCA'][$table]['ctrl']['setToDefaultOnCopy'] && t3lib_div::inList($GLOBALS['TCA'][$table]['ctrl']['setToDefaultOnCopy'], $field)) {
 									$value = $defaultData[$field];
 								} else {
 										// Hide at copy may override:
@@ -2690,12 +2789,15 @@ class t3lib_TCEmain {
 						}
 
 							// Do the copy by simply submitting the array through TCEmain:
+							/** @var $copyTCE t3lib_TCEmain  */
 						$copyTCE = t3lib_div::makeInstance('t3lib_TCEmain');
-						/** @var $copyTCE t3lib_TCEmain  */
+
 						$copyTCE->stripslashes_values = 0;
 						$copyTCE->copyTree = $this->copyTree;
-						$copyTCE->cachedTSconfig = $this->cachedTSconfig; // Copy forth the cached TSconfig
-						$copyTCE->dontProcessTransformations = 1; // Transformations should NOT be carried out during copy
+							// Copy forth the cached TSconfig
+						$copyTCE->cachedTSconfig = $this->cachedTSconfig;
+							// Transformations should NOT be carried out during copy
+						$copyTCE->dontProcessTransformations = 1;
 
 						$copyTCE->start($data, '', $this->BE_USER);
 						$copyTCE->process_datamap();
@@ -2739,9 +2841,9 @@ class t3lib_TCEmain {
 	 * Copying pages
 	 * Main function for copying pages.
 	 *
-	 * @param	integer		Page UID to copy
-	 * @param	integer		Destination PID: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
-	 * @return	void
+	 * @param integer $uid Page UID to copy
+	 * @param integer $destPid Destination PID: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+	 * @return void
 	 */
 	function copyPages($uid, $destPid) {
 
@@ -2750,10 +2852,13 @@ class t3lib_TCEmain {
 		$destPid = intval($destPid);
 
 			// Finding list of tables to copy.
-		$copyTablesArray = $this->admin ? $this->compileAdminTables() : explode(',', $this->BE_USER->groupData['tables_modify']); // These are the tables, the user may modify
-		if (!strstr($this->copyWhichTables, '*')) { // If not all tables are allowed then make a list of allowed tables: That is the tables that figure in both allowed tables AND the copyTable-list
+			// These are the tables, the user may modify
+		$copyTablesArray = $this->admin ? $this->compileAdminTables() : explode(',', $this->BE_USER->groupData['tables_modify']);
+			// If not all tables are allowed then make a list of allowed tables: That is the tables that figure in both allowed tables AND the copyTable-list
+		if (!strstr($this->copyWhichTables, '*')) {
 			foreach ($copyTablesArray as $k => $table) {
-				if (!$table || !t3lib_div::inList($this->copyWhichTables . ',pages', $table)) { // pages are always going...
+					// Pages are always going...
+				if (!$table || !t3lib_div::inList($this->copyWhichTables . ',pages', $table)) {
 					unset($copyTablesArray[$k]);
 				}
 			}
@@ -2791,11 +2896,11 @@ class t3lib_TCEmain {
 	/**
 	 * Copying a single page ($uid) to $destPid and all tables in the array copyTablesArray.
 	 *
-	 * @param	integer		Page uid
-	 * @param	integer		Destination PID: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
-	 * @param	array		Table on pages to copy along with the page.
-	 * @param	boolean		$first is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
-	 * @return	integer		The id of the new page, if applicable.
+	 * @param integer $uid Page uid
+	 * @param integer $destPid Destination PID: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+	 * @param array $copyTablesArray Table on pages to copy along with the page.
+	 * @param boolean $first Is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
+	 * @return integer The id of the new page, if applicable.
 	 */
 	function copySpecificPage($uid, $destPid, $copyTablesArray, $first = 0) {
 
@@ -2805,7 +2910,8 @@ class t3lib_TCEmain {
 			// If a new page was created upon the copy operation we will proceed with all the tables ON that page:
 		if ($theNewRootID) {
 			foreach ($copyTablesArray as $table) {
-				if ($table && is_array($GLOBALS['TCA'][$table]) && $table != 'pages') { // all records under the page is copied.
+					// All records under the page is copied.
+				if ($table && is_array($GLOBALS['TCA'][$table]) && $table != 'pages') {
 					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 						'uid',
 						$table,
@@ -2814,7 +2920,8 @@ class t3lib_TCEmain {
 						($GLOBALS['TCA'][$table]['ctrl']['sortby'] ? $GLOBALS['TCA'][$table]['ctrl']['sortby'] . ' DESC' : '')
 					);
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
-						$this->copyRecord($table, $row['uid'], $theNewRootID); // Copying each of the underlying records...
+							// Copying each of the underlying records...
+						$this->copyRecord($table, $row['uid'], $theNewRootID);
 					}
 					$GLOBALS['TYPO3_DB']->sql_free_result($mres);
 				}
@@ -2831,18 +2938,18 @@ class t3lib_TCEmain {
 	 * This function is used to create new versions of a record.
 	 * NOTICE: DOES NOT CHECK PERMISSIONS to create! And since page permissions are just passed through and not changed to the user who executes the copy we cannot enforce permissions without getting an incomplete copy - unless we change permissions of course.
 	 *
-	 * @param	string		$table Element table
-	 * @param	integer		$uid Element UID
-	 * @param	integer		$pid Element PID (real PID, not checked)
-	 * @param	array		$overrideArray Override array - must NOT contain any fields not in the table!
-	 * @return	array		$workspaceOptions Options to be forwarded if actions happen on a workspace currently
-	 * @return	integer		Returns the new ID of the record (if applicable)
+	 * @param string $table Element table
+	 * @param integer $uid Element UID
+	 * @param integer $pid Element PID (real PID, not checked)
+	 * @param array $overrideArray Override array - must NOT contain any fields not in the table!
+	 * @return array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
+	 * @return integer Returns the new ID of the record (if applicable)
 	 */
 	function copyRecord_raw($table, $uid, $pid, $overrideArray = array(), array $workspaceOptions = array()) {
 		$uid = intval($uid);
 
-		// Stop any actions if the record is marked to be deleted:
-		// (this can occur if IRRE elements are versionized and child elements are removed)
+			// Stop any actions if the record is marked to be deleted:
+			// (this can occur if IRRE elements are versionized and child elements are removed)
 		if ($this->isElementToBeDeleted($table, $uid)) {
 			return NULL;
 		}
@@ -2907,10 +3014,10 @@ class t3lib_TCEmain {
 	 * Inserts a record in the database, passing TCA configuration values through checkValue() but otherwise does NOTHING and checks nothing regarding permissions.
 	 * Passes the "version" parameter to insertDB() so the copy will look like a new version in the log - should probably be changed or modified a bit for more broad usage...
 	 *
-	 * @param	string		Table name
-	 * @param	array		Field array to insert as a record
-	 * @param	integer		The value of PID field.  -1 is indication that we are creating a new version!
-	 * @return	integer		Returns the new ID of the record (if applicable)
+	 * @param string $table Table name
+	 * @param array $fieldArray Field array to insert as a record
+	 * @param integer $realPid The value of PID field.  -1 is indication that we are creating a new version!
+	 * @return integer Returns the new ID of the record (if applicable)
 	 */
 	function insertNewCopyVersion($table, $fieldArray, $realPid) {
 		$id = uniqid('NEW');
@@ -2960,15 +3067,15 @@ class t3lib_TCEmain {
 	/**
 	 * Processing/Preparing content for copyRecord() function
 	 *
-	 * @param	string		$table Table name
-	 * @param	integer		$uid Record uid
-	 * @param	string		$field Field name being processed
-	 * @param	string		$value Input value to be processed.
-	 * @param	array		$row Record array
-	 * @param	array		$conf TCA field configuration
-	 * @param	integer		$realDestPid Real page id (pid) the record is copied to
-	 * @param	integer		$language Language ID (from sys_language table) used in the duplicated record
-	 * @return	array		$workspaceOptions Options to be forwarded if actions happen on a workspace currently
+	 * @param string $table Table name
+	 * @param integer $uid Record uid
+	 * @param string $field Field name being processed
+	 * @param string $value Input value to be processed.
+	 * @param array $row Record array
+	 * @param array $conf TCA field configuration
+	 * @param integer $realDestPid Real page id (pid) the record is copied to
+	 * @param integer $language Language ID (from sys_language table) used in the duplicated record
+	 * @return array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
 	 * @access private
 	 * @see copyRecord()
 	 */
@@ -3026,7 +3133,8 @@ class t3lib_TCEmain {
 				$value = implode(',', $dbAnalysis->getValueArray($prependName));
 			}
 
-			if ($value) { // Setting the value in this array will notify the remapListedDBRecords() function that this field MAY need references to be corrected
+				// Setting the value in this array will notify the remapListedDBRecords() function that this field MAY need references to be corrected
+			if ($value) {
 				$this->registerDBList[$table][$uid][$field] = $value;
 			}
 
@@ -3037,10 +3145,8 @@ class t3lib_TCEmain {
 				$value = ($inlineSubType == 'field' ? 0 : '');
 				// Execute copy or localization actions:
 			} else {
-				/*
-				 * Fetch the related child records by using t3lib_loadDBGroup:
-				 * @var $dbAnalysis t3lib_loadDBGroup
-				 */
+					// Fetch the related child records by using t3lib_loadDBGroup:
+					/** @var $dbAnalysis t3lib_loadDBGroup */
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 				$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
 
@@ -3111,7 +3217,8 @@ class t3lib_TCEmain {
 					array($table, $uid, $field, $realDestPid), // Parameters.
 					'copyRecord_flexFormCallBack'
 				);
-				$value = $currentValueArray; // Setting value as an array! -> which means the input will be processed according to the 'flex' type when the new copy is created.
+					// Setting value as an array! -> which means the input will be processed according to the 'flex' type when the new copy is created.
+				$value = $currentValueArray;
 			}
 		}
 
@@ -3121,12 +3228,12 @@ class t3lib_TCEmain {
 	/**
 	 * Callback function for traversing the FlexForm structure in relation to creating copied files of file relations inside of flex form structures.
 	 *
-	 * @param	array		Array of parameters in num-indexes: table, uid, field
-	 * @param	array		TCA field configuration (from Data Structure XML)
-	 * @param	string		The value of the flexForm field
-	 * @param	string		Not used.
-	 * @param	string		Not used.
-	 * @return	array		Result array with key "value" containing the value of the processing.
+	 * @param array $pParams Array of parameters in num-indexes: table, uid, field
+	 * @param array $dsConf TCA field configuration (from Data Structure XML)
+	 * @param string $dataValue The value of the flexForm field
+	 * @param string $dataValue_ext1 Not used.
+	 * @param string $dataValue_ext2 Not used.
+	 * @return array Result array with key "value" containing the value of the processing.
 	 * @see copyRecord(), checkValue_flex_procInData_travDS()
 	 */
 	function copyRecord_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2) {
@@ -3152,10 +3259,10 @@ class t3lib_TCEmain {
 	 * For attached files: take current filenames and prepend absolute paths so they get copied.
 	 * For DB references: Nothing done.
 	 *
-	 * @param	array		TCE field config
-	 * @param	integer		Record UID
-	 * @param	string		Field value (eg. list of files)
-	 * @return	string		The (possibly modified) value
+	 * @param array $conf TCE field config
+	 * @param integer $uid Record UID
+	 * @param string $value Field value (eg. list of files)
+	 * @return string The (possibly modified) value
 	 * @see copyRecord(), copyRecord_flexFormCallBack()
 	 */
 	function copyRecord_procFilesRefs($conf, $uid, $value) {
@@ -3166,9 +3273,8 @@ class t3lib_TCEmain {
 				// Get an array with files as values:
 			if ($conf['MM']) {
 				$theFileValues = array();
-
+					/** @var $dbAnalysis t3lib_loadDBGroup */
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-				/* @var $dbAnalysis t3lib_loadDBGroup */
 				$dbAnalysis->start('', 'files', $conf['MM'], $uid);
 
 				foreach ($dbAnalysis->itemArray as $somekey => $someval) {
@@ -3207,9 +3313,9 @@ class t3lib_TCEmain {
 	 * Usage: After copying a record this function should be called to search for "RTEmagic"-images inside the record. If such are found they should be duplicated to new names so all records have a 1-1 relation to them.
 	 * Reason for copying RTEmagic files: a) if you remove an RTEmagic image from a record it will remove the file - any other record using it will have a lost reference! b) RTEmagic images keeps an original and a copy. The copy always is re-calculated to have the correct physical measures as the HTML tag inserting it defines. This is calculated from the original. Two records using the same image could have difference HTML-width/heights for the image and the copy could only comply with one of them. If you don't want a 1-1 relation you should NOT use RTEmagic files but just insert it as a normal file reference to a file inside fileadmin/ folder
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record UID
-	 * @return	void
+	 * @param string $table Table name
+	 * @param integer $theNewSQLID Record UID
+	 * @return void
 	 */
 	function copyRecord_fixRTEmagicImages($table, $theNewSQLID) {
 			// Creating fileFunc object.
@@ -3299,10 +3405,13 @@ class t3lib_TCEmain {
 	/**
 	 * Find l10n-overlay records and perform the requested copy action for these records.
 	 *
-	 * @param	string		$table: Record Table
-	 * @param	string		$uid: Record UID
-	 * @param	string		$destPid: Position to copy to
-	 * @return	void
+	 * @param string $table Record Table
+	 * @param string $uid Record UID
+	 * @param string $destPid Position to copy to
+	 * @param boolean $first
+	 * @param array $overrideValues
+	 * @param string $excludeFields
+	 * @return void
 	 */
 	function copyL10nOverlayRecords($table, $uid, $destPid, $first = 0, $overrideValues = array(), $excludeFields = '') {
 			// There's no need to perform this for page-records or for tables that are not localizeable
@@ -3345,7 +3454,6 @@ class t3lib_TCEmain {
 		}
 	}
 
-
 	/*********************************************
 	 *
 	 * Cmd: Moving, Localizing
@@ -3355,10 +3463,10 @@ class t3lib_TCEmain {
 	/**
 	 * Moving single records
 	 *
-	 * @param	string		Table name to move
-	 * @param	integer		Record uid to move
-	 * @param	integer		Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
-	 * @return	void
+	 * @param string $table Table name to move
+	 * @param integer $uid Record uid to move
+	 * @param integer $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+	 * @return void
 	 */
 	function moveRecord($table, $uid, $destPid) {
 		if ($GLOBALS['TCA'][$table]) {
@@ -3374,22 +3482,25 @@ class t3lib_TCEmain {
 
 				// Initialize:
 			$destPid = intval($destPid);
-
-			$propArr = $this->getRecordProperties($table, $uid); // Get this before we change the pid (for logging)
+				// Get this before we change the pid (for logging)
+			$propArr = $this->getRecordProperties($table, $uid);
 			$moveRec = $this->getRecordProperties($table, $uid, TRUE);
-			$resolvedPid = $this->resolvePid($table, $destPid); // This is the actual pid of the moving to destination
+				// This is the actual pid of the moving to destination
+			$resolvedPid = $this->resolvePid($table, $destPid);
 
 				// Finding out, if the record may be moved from where it is. If the record is a non-page, then it depends on edit-permissions.
 				// If the record is a page, then there are two options: If the page is moved within itself, (same pid) it's edit-perms of the pid. If moved to another place then its both delete-perms of the pid and new-page perms on the destination.
 			if ($table != 'pages' || $resolvedPid == $moveRec['pid']) {
-				$mayMoveAccess = $this->checkRecordUpdateAccess($table, $uid); // Edit rights for the record...
+					// Edit rights for the record...
+				$mayMoveAccess = $this->checkRecordUpdateAccess($table, $uid);
 			} else {
 				$mayMoveAccess = $this->doesRecordExist($table, $uid, 'delete');
 			}
 
 				// Finding out, if the record may be moved TO another place. Here we check insert-rights (non-pages = edit, pages = new), unless the pages are moved on the same pid, then edit-rights are checked
 			if ($table != 'pages' || $resolvedPid != $moveRec['pid']) {
-				$mayInsertAccess = $this->checkRecordInsertAccess($table, $resolvedPid, 4); // Insert rights for the record...
+					// Insert rights for the record...
+				$mayInsertAccess = $this->checkRecordInsertAccess($table, $resolvedPid, 4);
 			} else {
 				$mayInsertAccess = $this->checkRecordUpdateAccess($table, $uid);
 			}
@@ -3405,7 +3516,7 @@ class t3lib_TCEmain {
 
 						$recordWasMoved = FALSE;
 
-							// move the record via a hook, used e.g. for versioning
+							// Move the record via a hook, used e.g. for versioning
 						if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'])) {
 							foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] as $classRef) {
 								$hookObj = t3lib_div::getUserObj($classRef);
@@ -3415,7 +3526,7 @@ class t3lib_TCEmain {
 							}
 						}
 
-							// move the record if a hook hasn't moved it yet
+							// Move the record if a hook hasn't moved it yet
 						if (!$recordWasMoved) {
 							$this->moveRecord_raw($table, $uid, $destPid);
 						}
@@ -3437,23 +3548,26 @@ class t3lib_TCEmain {
 	 * Moves a record without checking security of any sort.
 	 * USE ONLY INTERNALLY
 	 *
-	 * @param	string		Table name to move
-	 * @param	integer		Record uid to move
-	 * @param	integer		Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
-	 * @return	void
+	 * @param string $table Table name to move
+	 * @param integer $uid Record uid to move
+	 * @param integer $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+	 * @return void
 	 * @see moveRecord()
 	 */
 	function moveRecord_raw($table, $uid, $destPid) {
 		$sortRow = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
 		$origDestPid = $destPid;
-		$resolvedPid = $this->resolvePid($table, $destPid); // This is the actual pid of the moving to destination
+			// This is the actual pid of the moving to destination
+		$resolvedPid = $this->resolvePid($table, $destPid);
 
 			// Checking if the pid is negative, but no sorting row is defined. In that case, find the correct pid. Basically this check make the error message 4-13 meaning less... But you can always remove this check if you prefer the error instead of a no-good action (which is to move the record to its own page...)
-		if (($destPid < 0 && !$sortRow) || $destPid >= 0) { // $destPid>=0 because we must correct pid in case of versioning "page" types.
+			// $destPid>=0 because we must correct pid in case of versioning "page" types.
+		if (($destPid < 0 && !$sortRow) || $destPid >= 0) {
 			$destPid = $resolvedPid;
 		}
 
-		$propArr = $this->getRecordProperties($table, $uid); // Get this before we change the pid (for logging)
+			// Get this before we change the pid (for logging)
+		$propArr = $this->getRecordProperties($table, $uid);
 		$moveRec = $this->getRecordProperties($table, $uid, TRUE);
 
 			// Prepare user defined objects (if any) for hooks which extend this function:
@@ -3470,23 +3584,25 @@ class t3lib_TCEmain {
 			$updateFields[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
 		}
 
-		if ($destPid >= 0) { // insert as first element on page (where uid = $destPid)
+			// Insert as first element on page (where uid = $destPid)
+		if ($destPid >= 0) {
 			if ($table != 'pages' || $this->destNotInsideSelf($destPid, $uid)) {
-				$this->clear_cache($table, $uid); // clear cache before moving
+					// Clear cache before moving
+				$this->clear_cache($table, $uid);
+					// Setting PID
+				$updateFields['pid'] = $destPid;
 
-				$updateFields['pid'] = $destPid; // Setting PID
-
-					// table is sorted by 'sortby'
+					// Table is sorted by 'sortby'
 				if ($sortRow) {
 					$sortNumber = $this->getSortNumber($table, $uid, $destPid);
 					$updateFields[$sortRow] = $sortNumber;
 				}
 
-					// check for child records that have also to be moved
+					// Check for child records that have also to be moved
 				$this->moveRecord_procFields($table, $uid, $destPid);
 					// Create query for update:
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($uid), $updateFields);
-					// check for the localizations of that element
+					// Check for the localizations of that element
 				$this->moveL10nOverlayRecords($table, $uid, $destPid, $destPid);
 
 					// Call post processing hooks:
@@ -3502,12 +3618,16 @@ class t3lib_TCEmain {
 				$newpagePropArr = $this->getRecordProperties('pages', $destPid);
 
 				if ($destPid != $propArr['pid']) {
-					$this->log($table, $uid, 4, $destPid, 0, "Moved record '%s' (%s) to page '%s' (%s)", 2, array($propArr['header'], $table . ':' . $uid, $newpagePropArr['header'], $newPropArr['pid']), $propArr['pid']); // Logged to old page
-					$this->log($table, $uid, 4, $destPid, 0, "Moved record '%s' (%s) from page '%s' (%s)", 3, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid); // Logged to new page
+						// Logged to old page
+					$this->log($table, $uid, 4, $destPid, 0, "Moved record '%s' (%s) to page '%s' (%s)", 2, array($propArr['header'], $table . ':' . $uid, $newpagePropArr['header'], $newPropArr['pid']), $propArr['pid']);
+						// Logged to new page
+					$this->log($table, $uid, 4, $destPid, 0, "Moved record '%s' (%s) from page '%s' (%s)", 3, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid);
 				} else {
-					$this->log($table, $uid, 4, $destPid, 0, "Moved record '%s' (%s) on page '%s' (%s)", 4, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid); // Logged to new page
+						// Logged to new page
+					$this->log($table, $uid, 4, $destPid, 0, "Moved record '%s' (%s) on page '%s' (%s)", 4, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid);
 				}
-				$this->clear_cache($table, $uid); // clear cache after moving
+					// Clear cache after moving
+				$this->clear_cache($table, $uid);
 				$this->fixUniqueInPid($table, $uid);
 					// fixCopyAfterDuplFields
 				if ($origDestPid < 0) {
@@ -3518,24 +3638,28 @@ class t3lib_TCEmain {
 				$this->log($table, $uid, 4, 0, 1, "Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))", 10, array($propArr['header'], $uid, $destPropArr['header'], $destPid), $propArr['pid']);
 			}
 		} else { // Put after another record
-			if ($sortRow) { // table is being sorted
+				// Table is being sorted
+			if ($sortRow) {
 					// Save the position to which the original record is requested to be moved
 				$originalRecordDestinationPid = $destPid;
 				$sortInfo = $this->getSortNumber($table, $uid, $destPid);
-				$destPid = $sortInfo['pid']; // Setting the destPid to the new pid of the record.
-				if (is_array($sortInfo)) { // If not an array, there was an error (which is already logged)
+					// Setting the destPid to the new pid of the record.
+				$destPid = $sortInfo['pid'];
+					// If not an array, there was an error (which is already logged)
+				if (is_array($sortInfo)) {
 					if ($table != 'pages' || $this->destNotInsideSelf($destPid, $uid)) {
-						$this->clear_cache($table, $uid); // clear cache before moving
+							// clear cache before moving
+						$this->clear_cache($table, $uid);
 
 							// We now update the pid and sortnumber
 						$updateFields['pid'] = $destPid;
 						$updateFields[$sortRow] = $sortInfo['sortNumber'];
 
-							// check for child records that have also to be moved
+							// Check for child records that have also to be moved
 						$this->moveRecord_procFields($table, $uid, $destPid);
 							// Create query for update:
 						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($uid), $updateFields);
-							// check for the localizations of that element
+							// Check for the localizations of that element
 						$this->moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid);
 
 							// Call post processing hooks:
@@ -3550,13 +3674,16 @@ class t3lib_TCEmain {
 						$oldpagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
 						if ($destPid != $propArr['pid']) {
 							$newpagePropArr = $this->getRecordProperties('pages', $destPid);
-							$this->log($table, $uid, 4, 0, 0, "Moved record '%s' (%s) to page '%s' (%s)", 2, array($propArr['header'], $table . ':' . $uid, $newpagePropArr['header'], $newPropArr['pid']), $propArr['pid']); // Logged to old page
-							$this->log($table, $uid, 4, 0, 0, "Moved record '%s' (%s) from page '%s' (%s)", 3, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid); // Logged to new page
+								// Logged to old page
+							$this->log($table, $uid, 4, 0, 0, "Moved record '%s' (%s) to page '%s' (%s)", 2, array($propArr['header'], $table . ':' . $uid, $newpagePropArr['header'], $newPropArr['pid']), $propArr['pid']);
+								// Logged to old page
+							$this->log($table, $uid, 4, 0, 0, "Moved record '%s' (%s) from page '%s' (%s)", 3, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid);
 						} else {
-							$this->log($table, $uid, 4, 0, 0, "Moved record '%s' (%s) on page '%s' (%s)", 4, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid); // Logged to new page
+								// Logged to old page
+							$this->log($table, $uid, 4, 0, 0, "Moved record '%s' (%s) on page '%s' (%s)", 4, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid);
 						}
 
-							// clear cache after moving
+							// Clear cache after moving
 						$this->clear_cache($table, $uid);
 
 							// fixUniqueInPid
@@ -3581,10 +3708,10 @@ class t3lib_TCEmain {
 	 * Walk through all fields of the moved record and look for children of e.g. the inline type.
 	 * If child records are found, they are also move to the new $destPid.
 	 *
-	 * @param	string		$table: Record Table
-	 * @param	string		$uid: Record UID
-	 * @param	string		$destPid: Position to move to
-	 * @return	void
+	 * @param string $table Record Table
+	 * @param string $uid Record UID
+	 * @param string $destPid Position to move to
+	 * @return void
 	 */
 	function moveRecord_procFields($table, $uid, $destPid) {
 		t3lib_div::loadTCA($table);
@@ -3600,13 +3727,13 @@ class t3lib_TCEmain {
 	/**
 	 * Move child records depending on the field type of the parent record.
 	 *
-	 * @param	string		$table: Record Table
-	 * @param	string		$uid: Record UID
-	 * @param	string		$destPid: Position to move to
-	 * @param	string		$field: Record field
-	 * @param	string		$value: Record field value
-	 * @param	array		$conf: TCA configuration of current field
-	 * @return	void
+	 * @param string $table Record Table
+	 * @param string $uid Record UID
+	 * @param string $destPid Position to move to
+	 * @param string $field Record field
+	 * @param string $value Record field value
+	 * @param array $conf TCA configuration of current field
+	 * @return void
 	 */
 	function moveRecord_procBasedOnFieldType($table, $uid, $destPid, $field, $value, $conf) {
 		$moveTable = '';
@@ -3644,11 +3771,11 @@ class t3lib_TCEmain {
 	/**
 	 * Find l10n-overlay records and perform the requested move action for these records.
 	 *
-	 * @param	string		$table: Record Table
-	 * @param	string		$uid: Record UID
-	 * @param	string		$destPid: Position to move to
-	 * @param	string		$originalRecordDestinationPid: Position to move the original record to
-	 * @return	void
+	 * @param string $table Record Table
+	 * @param string $uid Record UID
+	 * @param string $destPid Position to move to
+	 * @param string $originalRecordDestinationPid Position to move the original record to
+	 * @return void
 	 */
 	function moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid) {
 			// There's no need to perform this for page-records or not localizeable tables
@@ -3690,10 +3817,10 @@ class t3lib_TCEmain {
 	 * Localizes a record to another system language
 	 * In reality it only works if transOrigPointerTable is not set. For "pages" the implementation is hardcoded
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record uid (to be localized)
-	 * @param	integer		Language ID (from sys_language table)
-	 * @return	mixed		The uid (integer) of the new translated record or FALSE (boolean) if something went wrong
+	 * @param string $table Table name
+	 * @param integer $uid Record uid (to be localized)
+	 * @param integer $language Language ID (from sys_language table)
+	 * @return mixed The uid (integer) of the new translated record or FALSE (boolean) if something went wrong
 	 */
 	function localize($table, $uid, $language) {
 		$newId = FALSE;
@@ -3708,7 +3835,8 @@ class t3lib_TCEmain {
 				if ($langRec = t3lib_BEfunc::getRecord('sys_language', intval($language), 'uid,title')) {
 					if ($this->doesRecordExist($table, $uid, 'show')) {
 
-						$row = t3lib_BEfunc::getRecordWSOL($table, $uid); // Getting workspace overlay if possible - this will localize versions in workspace if any
+							// Getting workspace overlay if possible - this will localize versions in workspace if any
+						$row = t3lib_BEfunc::getRecordWSOL($table, $uid);
 						if (is_array($row)) {
 							if ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] <= 0 || $table === 'pages') {
 								if ($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] == 0 || $table === 'pages') {
@@ -3738,7 +3866,8 @@ class t3lib_TCEmain {
 
 											// Set exclude Fields:
 										foreach ($GLOBALS['TCA'][$Ttable]['columns'] as $fN => $fCfg) {
-											if ($fCfg['l10n_mode'] == 'prefixLangTitle') { // Check if we are just prefixing:
+												// Check if we are just prefixing:
+											if ($fCfg['l10n_mode'] == 'prefixLangTitle') {
 												if (($fCfg['config']['type'] == 'text' || $fCfg['config']['type'] == 'input') && strlen($row[$fN])) {
 													list($tscPID) = t3lib_BEfunc::getTSCpid($table, $uid, '');
 													$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
@@ -3779,11 +3908,13 @@ class t3lib_TCEmain {
 										} else {
 
 												// Create new record:
+												/** @var $copyTCE t3lib_TCEmain  */
 											$copyTCE = t3lib_div::makeInstance('t3lib_TCEmain');
-											/* @var $copyTCE t3lib_TCEmain  */
+												// Copy forth the cached TSconfig
 											$copyTCE->stripslashes_values = 0;
-											$copyTCE->cachedTSconfig = $this->cachedTSconfig; // Copy forth the cached TSconfig
-											$copyTCE->dontProcessTransformations = 1; // Transformations should NOT be carried out during copy
+											$copyTCE->cachedTSconfig = $this->cachedTSconfig;
+												// Transformations should NOT be carried out during copy
+											$copyTCE->dontProcessTransformations = 1;
 
 											$copyTCE->start(array($Ttable => array('NEW' => $overrideValues)), '', $this->BE_USER);
 											$copyTCE->process_datamap();
@@ -3825,10 +3956,10 @@ class t3lib_TCEmain {
 	/**
 	 * Performs localization or synchronization of child records.
 	 *
-	 * @param	string		$table: The table of the localized parent record
-	 * @param	integer		$id: The uid of the localized parent record
-	 * @param	mixed		$command: Defines the type 'localize' or 'synchronize' (string) or a single uid to be localized (integer)
-	 * @return	void
+	 * @param string $table The table of the localized parent record
+	 * @param integer $id The uid of the localized parent record
+	 * @param string $command Defines the type 'localize' or 'synchronize' (string) or a single uid to be localized (integer)
+	 * @return void
 	 */
 	protected function inlineLocalizeSynchronize($table, $id, $command) {
 			// <field>, (localize | synchronize | <uid>):
@@ -3855,7 +3986,7 @@ class t3lib_TCEmain {
 						$removeArray = array();
 						$mmTable = ($inlineSubType == 'mm' && isset($config['MM']) && $config['MM'] ? $config['MM'] : '');
 							// Fetch children from original language parent:
-						/** @var $dbAnalysisOriginal t3lib_loadDBGroup */
+							/** @var $dbAnalysisOriginal t3lib_loadDBGroup */
 						$dbAnalysisOriginal = t3lib_div::makeInstance('t3lib_loadDBGroup');
 						$dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, $mmTable, $transOrigRecord['uid'], $table, $config);
 						$elementsOriginal = array();
@@ -3864,7 +3995,7 @@ class t3lib_TCEmain {
 						}
 						unset($dbAnalysisOriginal);
 							// Fetch children from current localized parent:
-						/** @var $dbAnalysisCurrent t3lib_loadDBGroup */
+							/** @var $dbAnalysisCurrent t3lib_loadDBGroup */
 						$dbAnalysisCurrent = t3lib_div::makeInstance('t3lib_loadDBGroup');
 						$dbAnalysisCurrent->start($parentRecord[$field], $foreignTable, $mmTable, $id, $table, $config);
 							// Perform synchronization: Possibly removal of already localized records:
@@ -3925,7 +4056,6 @@ class t3lib_TCEmain {
 		}
 	}
 
-
 	/*********************************************
 	 *
 	 * Cmd: Deleting
@@ -3935,9 +4065,9 @@ class t3lib_TCEmain {
 	/**
 	 * Delete a single record
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record UID
-	 * @return	void
+	 * @param string $table Table name
+	 * @param integer $id Record UID
+	 * @return void
 	 */
 	function deleteAction($table, $id) {
 		$recordToDelete = t3lib_BEfunc::getRecord($table, $id);
@@ -3955,7 +4085,7 @@ class t3lib_TCEmain {
 				}
 			}
 
-				// delete the record if a hook hasn't deleted it yet
+				// Delete the record if a hook hasn't deleted it yet
 			if (!$recordWasDeleted) {
 				$this->deleteEl($table, $id);
 			}
@@ -3965,11 +4095,11 @@ class t3lib_TCEmain {
 	/**
 	 * Delete element from any table
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record UID
-	 * @param	boolean		Flag: If $noRecordCheck is set, then the function does not check permission to delete record
-	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-	 * @return	void
+	 * @param string $table Table name
+	 * @param integer $uid Record UID
+	 * @param boolean $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
+	 * @param boolean $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+	 * @return void
 	 */
 	function deleteEl($table, $uid, $noRecordCheck = FALSE, $forceHardDelete = FALSE) {
 		if ($table == 'pages') {
@@ -3983,10 +4113,10 @@ class t3lib_TCEmain {
 	/**
 	 * Delete versions for element from any table
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record UID
-	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-	 * @return	void
+	 * @param string $table Table name
+	 * @param integer $uid Record UID
+	 * @param boolean $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+	 * @return void
 	 */
 	function deleteVersionsForRecord($table, $uid, $forceHardDelete) {
 		$versions = t3lib_BEfunc::selectVersionsOfRecord($table, $uid, 'uid,pid');
@@ -4006,9 +4136,9 @@ class t3lib_TCEmain {
 	/**
 	 * Undelete a single record
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record UID
-	 * @return	void
+	 * @param string $table Table name
+	 * @param integer $uid Record UID
+	 * @return void
 	 */
 	function undeleteRecord($table, $uid) {
 		if ($this->isRecordUndeletable($table, $uid)) {
@@ -4022,12 +4152,12 @@ class t3lib_TCEmain {
 	 * Deletes a record regardless of versioning state (live or offline, doesn't matter, the uid decides)
 	 * If both $noRecordCheck and $forceHardDelete are set it could even delete a "deleted"-flagged record!
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record UID
-	 * @param	boolean		Flag: If $noRecordCheck is set, then the function does not check permission to delete record
-	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-	 * @param	boolean		If TRUE, the "deleted" flag is set to 0 again and thus, the item is undeleted.
-	 * @return	void
+	 * @param string $table Table name
+	 * @param integer $uid Record UID
+	 * @param boolean $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
+	 * @param boolean $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+	 * @param boolean $undeleteRecord If TRUE, the "deleted" flag is set to 0 again and thus, the item is undeleted.
+	 * @return void
 	 */
 	function deleteRecord($table, $uid, $noRecordCheck = FALSE, $forceHardDelete = FALSE, $undeleteRecord = FALSE) {
 
@@ -4038,7 +4168,8 @@ class t3lib_TCEmain {
 		if ($GLOBALS['TCA'][$table] && $uid) {
 			if ($mayEditAccess) {
 				if ($noRecordCheck || $this->doesRecordExist($table, $uid, 'delete')) {
-					$this->clear_cache($table, $uid); // clear cache before deleting the record, else the correct page cannot be identified by clear_cache
+						// Clear cache before deleting the record, else the correct page cannot be identified by clear_cache
+					$this->clear_cache($table, $uid);
 
 					$propArr = $this->getRecordProperties($table, $uid);
 					$pagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
@@ -4063,7 +4194,7 @@ class t3lib_TCEmain {
 						$this->deleteRecord_procFields($table, $uid, $undeleteRecord);
 						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($uid), $updateFields);
 
-							// delete all l10n records aswell, impossible during undelete because it might bring too many records back to life
+							// Delete all l10n records aswell, impossible during undelete because it might bring too many records back to life
 						if (!$undeleteRecord) {
 							$this->deleteL10nOverlayRecords($table, $uid);
 						}
@@ -4088,8 +4219,10 @@ class t3lib_TCEmain {
 							$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $fileFieldArr), $table, 'uid=' . intval($uid));
 							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
 								$fArray = $fileFieldArr;
-								foreach ($fArray as $theField) { // MISSING: Support for MM file relations!
-									$this->extFileFunctions($table, $theField, $row[$theField], 'deleteAll'); // This deletes files that belonged to this record.
+									// MISSING: Support for MM file relations!
+								foreach ($fArray as $theField) {
+										// This deletes files that belonged to this record.
+									$this->extFileFunctions($table, $theField, $row[$theField], 'deleteAll');
 								}
 							} else {
 								$this->log($table, $uid, 3, 0, 100, 'Delete: Zero rows in result when trying to read filenames from record which should be deleted');
@@ -4102,12 +4235,12 @@ class t3lib_TCEmain {
 						$this->deleteL10nOverlayRecords($table, $uid);
 					}
 
-					$state = $undeleteRecord ? 1 : 3; // 1 means insert, 3 means delete
+						// 1 means insert, 3 means delete
+					$state = $undeleteRecord ? 1 : 3;
 					if (!$GLOBALS['TYPO3_DB']->sql_error()) {
 						if ($forceHardDelete) {
 							$message = "Record '%s' (%s) was deleted unrecoverable from page '%s' (%s)";
-						}
-						else {
+						} else {
 							$message = $state == 1 ?
 									"Record '%s' (%s) was restored on page '%s' (%s)" :
 									"Record '%s' (%s) was deleted from page '%s' (%s)";
@@ -4129,7 +4262,7 @@ class t3lib_TCEmain {
 						// Update reference index:
 					$this->updateRefIndex($table, $uid);
 
-						// if there are entries in the updateRefIndexStack
+						// If there are entries in the updateRefIndexStack
 					if (is_array($this->updateRefIndexStack[$table]) && is_array($this->updateRefIndexStack[$table][$uid])) {
 						while ($args = array_pop($this->updateRefIndexStack[$table][$uid])) {
 								// $args[0]: table, $args[1]: uid
@@ -4150,12 +4283,12 @@ class t3lib_TCEmain {
 	/**
 	 * Call back function for deleting file relations for flexform fields in records which are being completely deleted.
 	 *
-	 * @param	[type]		$dsArr: ...
-	 * @param	[type]		$dataValue: ...
-	 * @param	[type]		$PA: ...
-	 * @param	[type]		$structurePath: ...
-	 * @param	[type]		$pObj: ...
-	 * @return	[type]		...
+	 * @param array $dsArr
+	 * @param string $dataValue
+	 * @param array $PA
+	 * @param $structurePath Not used
+	 * @param $pObj Not used
+	 * @return void
 	 */
 	function deleteRecord_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, $pObj) {
 
@@ -4168,7 +4301,6 @@ class t3lib_TCEmain {
 			foreach ($files as $dat) {
 				if (@is_file($dat['ID_absFile'])) {
 					unlink($dat['ID_absFile']);
-					#echo 'DELETE FlexFormFile:'.$dat['ID_absFile'].LF;
 				} else {
 					$this->log('', 0, 3, 0, 100, "Delete: Referenced file '" . $dat['ID_absFile'] . "' that was supposed to be deleted together with its record which didn't exist");
 				}
@@ -4179,15 +4311,16 @@ class t3lib_TCEmain {
 	/**
 	 * Used to delete page because it will check for branch below pages and unallowed tables on the page as well.
 	 *
-	 * @param	integer		Page id
-	 * @param	boolean		If TRUE, pages are not checked for permission.
-	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-	 * @return	void
+	 * @param integer $uid Page id
+	 * @param boolean $force If TRUE, pages are not checked for permission.
+	 * @param boolean $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+	 * @return void
 	 */
 	function deletePages($uid, $force = FALSE, $forceHardDelete = FALSE) {
 			// Getting list of pages to delete:
 		if ($force) {
-			$brExist = $this->doesBranchExist('', $uid, 0, 1); // returns the branch WITHOUT permission checks (0 secures that)
+				// Returns the branch WITHOUT permission checks (0 secures that)
+			$brExist = $this->doesBranchExist('', $uid, 0, 1);
 			$res = t3lib_div::trimExplode(',', $brExist . $uid, 1);
 		} else {
 			$res = $this->canDeletePage($uid);
@@ -4206,9 +4339,9 @@ class t3lib_TCEmain {
 	/**
 	 * Delete a page and all records on it.
 	 *
-	 * @param	integer		Page id
-	 * @param	boolean		If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-	 * @return	void
+	 * @param integer $uid Page id
+	 * @param boolean $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+	 * @return void
 	 * @access private
 	 * @see deletePages()
 	 */
@@ -4233,14 +4366,17 @@ class t3lib_TCEmain {
 	/**
 	 * Used to evaluate if a page can be deleted
 	 *
-	 * @param	integer		Page id
-	 * @return	mixed		If array: List of page uids to traverse and delete (means OK), if string: error code.
+	 * @param integer $uid Page id
+	 * @return mixed If array: List of page uids to traverse and delete (means OK), if string: error code.
 	 */
 	function canDeletePage($uid) {
-		if ($this->doesRecordExist('pages', $uid, 'delete')) { // If we may at all delete this page
+			// If we may at all delete this page
+		if ($this->doesRecordExist('pages', $uid, 'delete')) {
 			if ($this->deleteTree) {
-				$brExist = $this->doesBranchExist('', $uid, $this->pMap['delete'], 1); // returns the branch
-				if ($brExist != -1) { // Checks if we had permissions
+					// Returns the branch
+				$brExist = $this->doesBranchExist('', $uid, $this->pMap['delete'], 1);
+					// Checks if we had permissions
+				if ($brExist != -1) {
 					if ($this->noRecordsFromUnallowedTables($brExist . $uid)) {
 						$pagesInBranch = t3lib_div::trimExplode(',', $brExist . $uid, 1);
 						foreach ($pagesInBranch as $pageInBranch) {
@@ -4256,8 +4392,10 @@ class t3lib_TCEmain {
 					return 'Attempt to delete pages in branch without permissions';
 				}
 			} else {
-				$brExist = $this->doesBranchExist('', $uid, $this->pMap['delete'], 1); // returns the branch
-				if ($brExist == '') { // Checks if branch exists
+					// returns the branch
+				$brExist = $this->doesBranchExist('', $uid, $this->pMap['delete'], 1);
+					// Checks if branch exists
+				if ($brExist == '') {
 					if ($this->noRecordsFromUnallowedTables($uid)) {
 						if ($this->BE_USER->recordEditAccessInternals('pages', $uid, FALSE, FALSE, TRUE)) {
 							return array($uid);
@@ -4279,9 +4417,9 @@ class t3lib_TCEmain {
 	/**
 	 * Returns TRUE if record CANNOT be deleted, otherwise FALSE. Used to check before the versioning API allows a record to be marked for deletion.
 	 *
-	 * @param	string		Record Table
-	 * @param	integer		Record UID
-	 * @return	string		Returns a string IF there is an error (error string explaining). FALSE means record can be deleted
+	 * @param string $table Record Table
+	 * @param integer $id Record UID
+	 * @return string Returns a string IF there is an error (error string explaining). FALSE means record can be deleted
 	 */
 	function cannotDeleteRecord($table, $id) {
 		if ($table === 'pages') {
@@ -4295,9 +4433,9 @@ class t3lib_TCEmain {
 	/**
 	 * Determines whether a record can be undeleted.
 	 *
-	 * @param	string		$table: Table name of the record
-	 * @param	integer		$uid: uid of the record
-	 * @return	boolean		Whether the record can be undeleted
+	 * @param string $table Table name of the record
+	 * @param integer $uid uid of the record
+	 * @return boolean Whether the record can be undeleted
 	 */
 	public function isRecordUndeletable($table, $uid) {
 		$result = FALSE;
@@ -4326,10 +4464,10 @@ class t3lib_TCEmain {
 	 * Before a record is deleted, check if it has references such as inline type or MM references.
 	 * If so, set these child records also to be deleted.
 	 *
-	 * @param	string		$table: Record Table
-	 * @param	string		$uid: Record UID
-	 * @param	boolean		$undeleteRecord: If a record should be undeleted (e.g. from history/undo)
-	 * @return	void
+	 * @param string $table Record Table
+	 * @param string $uid Record UID
+	 * @param boolean $undeleteRecord If a record should be undeleted (e.g. from history/undo)
+	 * @return void
 	 * @see	 deleteRecord()
 	 */
 	function deleteRecord_procFields($table, $uid, $undeleteRecord = FALSE) {
@@ -4346,13 +4484,13 @@ class t3lib_TCEmain {
 	 * Process fields of a record to be deleted and search for special handling, like
 	 * inline type, MM records, etc.
 	 *
-	 * @param	string		$table: Record Table
-	 * @param	string		$uid: Record UID
-	 * @param	string		$field: Record field
-	 * @param	string		$value: Record field value
-	 * @param	array		$conf: TCA configuration of current field
-	 * @param	boolean		$undeleteRecord: If a record should be undeleted (e.g. from history/undo)
-	 * @return	void
+	 * @param string $table Record Table
+	 * @param string $uid Record UID
+	 * @param string $field Record field
+	 * @param string $value Record field value
+	 * @param array $conf TCA configuration of current field
+	 * @param boolean $undeleteRecord If a record should be undeleted (e.g. from history/undo)
+	 * @return void
 	 * @see	 deleteRecord()
 	 */
 	function deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf, $undeleteRecord = FALSE) {
@@ -4366,7 +4504,7 @@ class t3lib_TCEmain {
 					$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
 					$dbAnalysis->undeleteRecord = TRUE;
 
-						// walk through the items and remove them
+						// Walk through the items and remove them
 					foreach ($dbAnalysis->itemArray as $v) {
 						if (!$undeleteRecord) {
 							$this->deleteAction($v['table'], $v['id']);
@@ -4377,7 +4515,7 @@ class t3lib_TCEmain {
 				}
 			}
 
-			// no delete action but calls to updateRefIndex *AFTER* this record was deleted
+			// No delete action but calls to updateRefIndex *AFTER* this record was deleted
 		} elseif ($this->isReferenceField($conf)) {
 			$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
 			$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
@@ -4394,9 +4532,9 @@ class t3lib_TCEmain {
 	/**
 	 * Find l10n-overlay records and perform the requested delete action for these records.
 	 *
-	 * @param	string		$table: Record Table
-	 * @param	string		$uid: Record UID
-	 * @return	void
+	 * @param string $table Record Table
+	 * @param string $uid Record UID
+	 * @return void
 	 */
 	function deleteL10nOverlayRecords($table, $uid) {
 			// Check whether table can be localized or has a different table defined to store localizations:
@@ -4417,7 +4555,6 @@ class t3lib_TCEmain {
 		}
 	}
 
-
 	/*********************************************
 	 *
 	 * Cmd: Versioning
@@ -4428,18 +4565,18 @@ class t3lib_TCEmain {
 	 * Creates a new version of a record
 	 * (Requires support in the table)
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record uid to versionize
-	 * @param	string		Version label
-	 * @param	boolean		If TRUE, the version is created to delete the record.
-	 * @return	integer		Returns the id of the new version (if any)
+	 * @param string $table Table name
+	 * @param integer $id Record uid to versionize
+	 * @param string $label Version label
+	 * @param boolean $delete If TRUE, the version is created to delete the record.
+	 * @return integer Returns the id of the new version (if any)
 	 * @see copyRecord()
 	 */
 	function versionizeRecord($table, $id, $label, $delete = FALSE) {
 		$id = intval($id);
 
-		// Stop any actions if the record is marked to be deleted:
-		// (this can occur if IRRE elements are versionized and child elements are removed)
+			// Stop any actions if the record is marked to be deleted:
+			// (this can occur if IRRE elements are versionized and child elements are removed)
 		if ($this->isElementToBeDeleted($table, $id)) {
 			return NULL;
 		}
@@ -4450,8 +4587,10 @@ class t3lib_TCEmain {
 					// Select main record:
 				$row = $this->recordInfo($table, $id, 'pid,t3ver_id,t3ver_state');
 				if (is_array($row)) {
-					if ($row['pid'] >= 0) { // record must be online record
-						if ($row['t3ver_state'] != 3) { // record must not be placeholder for moving.
+						// Record must be online record
+					if ($row['pid'] >= 0) {
+							// Record must not be placeholder for moving.
+						if ($row['t3ver_state'] != 3) {
 							if (!$delete || !$this->cannotDeleteRecord($table, $id)) {
 
 									// Look for next version number:
@@ -4531,9 +4670,9 @@ class t3lib_TCEmain {
 	/**
 	 * Swaps MM-relations for current/swap record, see version_swap()
 	 *
-	 * @param	string	Table for the two input records
-	 * @param	integer	Current record (about to go offline)
-	 * @param	integer	Swap record (about to go online)
+	 * @param string $table Table for the two input records
+	 * @param integer $id Current record (about to go offline)
+	 * @param integer $swapWith Swap record (about to go online)
 	 * @return void
 	 * @see version_swap()
 	 */
@@ -4552,16 +4691,16 @@ class t3lib_TCEmain {
 				$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
 				$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
 				if ($conf['MM']) {
-
+						/** @var $dbAnalysis t3lib_loadDBGroup */
 					$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-					/* @var $dbAnalysis t3lib_loadDBGroup */
+
 					$dbAnalysis->start('', $allowedTables, $conf['MM'], $id, $table, $conf);
 					if (count($dbAnalysis->getValueArray($prependName))) {
 						$this->version_remapMMForVersionSwap_reg[$id][$field] = array($dbAnalysis, $conf['MM'], $prependName);
 					}
-
+						/** @var $dbAnalysis t3lib_loadDBGroup */
 					$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-					/* @var $dbAnalysis t3lib_loadDBGroup */
+
 					$dbAnalysis->start('', $allowedTables, $conf['MM'], $swapWith, $table, $conf);
 					if (count($dbAnalysis->getValueArray($prependName))) {
 						$this->version_remapMMForVersionSwap_reg[$swapWith][$field] = array($dbAnalysis, $conf['MM'], $prependName);
@@ -4608,13 +4747,13 @@ class t3lib_TCEmain {
 	/**
 	 * Callback function for traversing the FlexForm structure in relation to ...
 	 *
-	 * @param	array		Array of parameters in num-indexes: table, uid, field
-	 * @param	array		TCA field configuration (from Data Structure XML)
-	 * @param	string		The value of the flexForm field
-	 * @param	string		Not used.
-	 * @param	string		Not used.
-	 * @param	string		Path in flexforms
-	 * @return	array		Result array with key "value" containing the value of the processing.
+	 * @param array $pParams Array of parameters in num-indexes: table, uid, field
+	 * @param array $dsConf TCA field configuration (from Data Structure XML)
+	 * @param string $dataValue The value of the flexForm field
+	 * @param string $dataValue_ext1 Not used.
+	 * @param string $dataValue_ext2 Not used.
+	 * @param string $path Path in flexforms
+	 * @return array Result array with key "value" containing the value of the processing.
 	 * @see version_remapMMForVersionSwap(), checkValue_flex_procInData_travDS()
 	 */
 	function version_remapMMForVersionSwap_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $path) {
@@ -4626,8 +4765,8 @@ class t3lib_TCEmain {
 			$allowedTables = $dsConf['type'] == 'group' ? $dsConf['allowed'] : $dsConf['foreign_table'] . ',' . $dsConf['neg_foreign_table'];
 			$prependName = $dsConf['type'] == 'group' ? $dsConf['prepend_tname'] : $dsConf['neg_foreign_table'];
 			if ($dsConf['MM']) {
+					/** @var $dbAnalysis t3lib_loadDBGroup */
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-				/* @var $dbAnalysis t3lib_loadDBGroup */
 				$dbAnalysis->start('', $allowedTables, $dsConf['MM'], $uid, $table, $dsConf);
 				$this->version_remapMMForVersionSwap_reg[$uid][$field . '/' . $path] = array($dbAnalysis, $dsConf['MM'], $prependName);
 			}
@@ -4638,9 +4777,9 @@ class t3lib_TCEmain {
 	 * Performing the remapping operations found necessary in version_remapMMForVersionSwap()
 	 * It must be done in three steps with an intermediate "fake" uid. The UID can be something else than -$id (fx. 9999999+$id if you dare... :-)- as long as it is unique.
 	 *
-	 * @param	string	Table for the two input records
-	 * @param	integer	Current record (about to go offline)
-	 * @param	integer	Swap record (about to go online)
+	 * @param string $table Table for the two input records
+	 * @param integer $id Current record (about to go offline)
+	 * @param integer $swapWith Swap record (about to go online)
 	 * @return void
 	 * @see version_remapMMForVersionSwap()
 	 */
@@ -4665,7 +4804,6 @@ class t3lib_TCEmain {
 		}
 	}
 
-
 	/*********************************************
 	 *
 	 * Cmd: Helper functions
@@ -4675,7 +4813,7 @@ class t3lib_TCEmain {
 	/**
 	 * Processes the fields with references as registered during the copy process. This includes all FlexForm fields which had references.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function remapListedDBRecords() {
 		if (count($this->registerDBList)) {
@@ -4699,7 +4837,8 @@ class t3lib_TCEmain {
 							break;
 							case 'flex':
 								if ($value == 'FlexForm_reference') {
-									$origRecordRow = $this->recordInfo($table, $theUidToUpdate, '*'); // This will fetch the new row for the element
+										// This will fetch the new row for the element
+									$origRecordRow = $this->recordInfo($table, $theUidToUpdate, '*');
 
 									if (is_array($origRecordRow)) {
 										t3lib_BEfunc::workspaceOL($table, $origRecordRow);
@@ -4735,7 +4874,8 @@ class t3lib_TCEmain {
 						}
 					}
 
-					if (count($newData)) { // If any fields were changed, those fields are updated!
+						// If any fields were changed, those fields are updated!
+					if (count($newData)) {
 						$this->updateDB($table, $theUidToUpdate_saveTo, $newData);
 					}
 				}
@@ -4746,12 +4886,12 @@ class t3lib_TCEmain {
 	/**
 	 * Callback function for traversing the FlexForm structure in relation to creating copied files of file relations inside of flex form structures.
 	 *
-	 * @param	array		Set of parameters in numeric array: table, uid, field
-	 * @param	array		TCA config for field (from Data Structure of course)
-	 * @param	string		Field value (from FlexForm XML)
-	 * @param	string		Not used
-	 * @param	string		Not used
-	 * @return	array		Array where the "value" key carries the value.
+	 * @param array $pParams Set of parameters in numeric array: table, uid, field
+	 * @param array $dsConf TCA config for field (from Data Structure of course)
+	 * @param string $dataValue Field value (from FlexForm XML)
+	 * @param string $dataValue_ext1 Not used
+	 * @param string $dataValue_ext2 Not used
+	 * @return array Array where the "value" key carries the value.
 	 * @see checkValue_flex_procInData_travDS(), remapListedDBRecords()
 	 */
 	function remapListedDBRecords_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2) {
@@ -4774,20 +4914,24 @@ class t3lib_TCEmain {
 	/**
 	 * Performs remapping of old UID values to NEW uid values for a DB reference field.
 	 *
-	 * @param	array		TCA field config
-	 * @param	string		Field value
-	 * @param	integer		UID of local record (for MM relations - might need to change if support for FlexForms should be done!)
-	 * @param	string		Table name
-	 * @return	array		Returns array of items ready to implode for field content.
+	 * @param array $conf TCA field config
+	 * @param string $value Field value
+	 * @param integer $MM_localUid UID of local record (for MM relations - might need to change if support for FlexForms should be done!)
+	 * @param string $table Table name
+	 * @return array Returns array of items ready to implode for field content.
 	 * @see remapListedDBRecords()
 	 */
 	function remapListedDBRecords_procDBRefs($conf, $value, $MM_localUid, $table) {
 
 			// Initialize variables
-		$set = FALSE; // Will be set TRUE if an upgrade should be done...
-		$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table']; // Allowed tables for references.
-		$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : ''; // Table name to prepend the UID
-		$dontRemapTables = t3lib_div::trimExplode(',', $conf['dontRemapTablesOnCopy'], 1); // Which tables that should possibly not be remapped
+			// Will be set TRUE if an upgrade should be done...
+		$set = FALSE;
+			// Allowed tables for references.
+		$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
+			// Table name to prepend the UID
+		$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : '';
+			// Which tables that should possibly not be remapped
+		$dontRemapTables = t3lib_div::trimExplode(',', $conf['dontRemapTablesOnCopy'], 1);
 
 			// Convert value to list of references:
 		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
@@ -4820,11 +4964,11 @@ class t3lib_TCEmain {
 	/**
 	 * Performs remapping of old UID values to NEW uid values for a inline field.
 	 *
-	 * @param	array		$conf: TCA field config
-	 * @param	string		$value: Field value
-	 * @param	integer		$uid: The uid of the ORIGINAL record
-	 * @param	string		$table: Table name
-	 * @return	void
+	 * @param array $conf TCA field config
+	 * @param string $value Field value
+	 * @param integer $uid The uid of the ORIGINAL record
+	 * @param string $table Table name
+	 * @return void
 	 */
 	function remapListedDBRecords_procInline($conf, $value, $uid, $table) {
 		$theUidToUpdate = $this->copyMappingArray_merged[$table][$uid];
@@ -4871,7 +5015,7 @@ class t3lib_TCEmain {
 	 * Processes the $this->remapStack at the end of copying, inserting, etc. actions.
 	 * The remapStack takes care about the correct mapping of new and old uids in case of relational data.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function processRemapStack() {
 			// Processes the remap stack:
@@ -5033,11 +5177,11 @@ class t3lib_TCEmain {
 	 * This function finds these relations and updates their uids in the $incomingFieldArray.
 	 * The $incomingFieldArray is updated by reference!
 	 *
-	 * @param	string		$table: Table name of the parent record
-	 * @param	integer		$id: Uid of the parent record
-	 * @param	array		$incomingFieldArray: Reference to the incominfFieldArray of process_datamap
-	 * @param	array		$registerDBList: Reference to the $registerDBList array that was created/updated by versionizing calls to TCEmain in process_datamap.
-	 * @return	 void
+	 * @param string $table Table name of the parent record
+	 * @param integer $id Uid of the parent record
+	 * @param array $incomingFieldArray Reference to the incominfFieldArray of process_datamap
+	 * @param array $registerDBList Reference to the $registerDBList array that was created/updated by versionizing calls to TCEmain in process_datamap.
+	 * @return  void
 	 */
 	function getVersionizedIncomingFieldArray($table, $id, &$incomingFieldArray, &$registerDBList) {
 		if (is_array($registerDBList[$table][$id])) {
@@ -5064,7 +5208,6 @@ class t3lib_TCEmain {
 		}
 	}
 
-
 	/*****************************
 	 *
 	 * Access control / Checking functions
@@ -5074,15 +5217,15 @@ class t3lib_TCEmain {
 	/**
 	 * Checking group modify_table access list
 	 *
-	 * @param	string		Table name
-	 * @return	boolean		Returns TRUE if the user has general access to modify the $table
+	 * @param string $table Table name
+	 * @return boolean Returns TRUE if the user has general access to modify the $table
 	 */
 	function checkModifyAccessList($table) {
 		$res = ($this->admin || (!$this->tableAdminOnly($table) && t3lib_div::inList($this->BE_USER->groupData['tables_modify'], $table)));
 
 			// Hook 'checkModifyAccessList': Post-processing of the state of access
 		foreach ($this->getCheckModifyAccessListHookObjects() as $hookObject) {
-			/* @var $hookObject t3lib_TCEmain_checkModifyAccessListHook */
+			/** @var $hookObject t3lib_TCEmain_checkModifyAccessListHook */
 			$hookObject->checkModifyAccessList($res, $table, $this);
 		}
 
@@ -5092,9 +5235,9 @@ class t3lib_TCEmain {
 	/**
 	 * Checking if a record with uid $id from $table is in the BE_USERS webmounts which is required for editing etc.
 	 *
-	 * @param	string		Table name
-	 * @param	integer		UID of record
-	 * @return	boolean		Returns TRUE if OK. Cached results.
+	 * @param string $table Table name
+	 * @param integer $id UID of record
+	 * @return boolean Returns TRUE if OK. Cached results.
 	 */
 	function isRecordInWebMount($table, $id) {
 		if (!isset($this->isRecordInWebMount_Cache[$table . ':' . $id])) {
@@ -5107,8 +5250,8 @@ class t3lib_TCEmain {
 	/**
 	 * Checks if the input page ID is in the BE_USER webmounts
 	 *
-	 * @param	integer		Page ID to check
-	 * @return	boolean		TRUE if OK. Cached results.
+	 * @param integer $pid Page ID to check
+	 * @return boolean TRUE if OK. Cached results.
 	 */
 	function isInWebMount($pid) {
 		if (!isset($this->isInWebMount_Cache[$pid])) {
@@ -5120,11 +5263,11 @@ class t3lib_TCEmain {
 	/**
 	 * Checks if user may update a record with uid=$id from $table
 	 *
-	 * @param	string		Record table
-	 * @param	integer		Record UID
-	 * @param	array		Record data
-	 * @param	array		Hook objects
-	 * @return	boolean		Returns TRUE if the user may update the record given by $table and $id
+	 * @param string $table Record table
+	 * @param integer $id Record UID
+	 * @param array $data Record data
+	 * @param array $hookObjectsArr Hook objects
+	 * @return boolean Returns TRUE if the user may update the record given by $table and $id
 	 */
 	function checkRecordUpdateAccess($table, $id, $data = FALSE, &$hookObjectsArr = FALSE) {
 		$res = NULL;
@@ -5142,13 +5285,15 @@ class t3lib_TCEmain {
 		}
 
 		if ($GLOBALS['TCA'][$table] && intval($id) > 0) {
-			if (isset($this->recUpdateAccessCache[$table][$id])) { // If information is cached, return it
+				// If information is cached, return it
+			if (isset($this->recUpdateAccessCache[$table][$id])) {
 				return $this->recUpdateAccessCache[$table][$id];
 				// Check if record exists and 1) if 'pages' the page may be edited, 2) if page-content the page allows for editing
 			} elseif ($this->doesRecordExist($table, $id, 'edit')) {
 				$res = 1;
 			}
-			$this->recUpdateAccessCache[$table][$id] = $res; // Cache the result
+				// Cache the result
+			$this->recUpdateAccessCache[$table][$id] = $res;
 		}
 		return $res;
 	}
@@ -5157,23 +5302,25 @@ class t3lib_TCEmain {
 	 * Checks if user may insert a record from $insertTable on $pid
 	 * Does not check for workspace, use BE_USER->workspaceAllowLiveRecordsInPID for this in addition to this function call.
 	 *
-	 * @param	string		Tablename to check
-	 * @param	integer		Integer PID
-	 * @param	integer		For logging: Action number.
-	 * @return	boolean		Returns TRUE if the user may insert a record from table $insertTable on page $pid
+	 * @param string $insertTable Tablename to check
+	 * @param integer $pid Integer PID
+	 * @param integer $action For logging: Action number.
+	 * @return boolean Returns TRUE if the user may insert a record from table $insertTable on page $pid
 	 */
 	function checkRecordInsertAccess($insertTable, $pid, $action = 1) {
 		$res = 0;
 		$pid = intval($pid);
 		if ($pid >= 0) {
-			if (isset($this->recInsertAccessCache[$insertTable][$pid])) { // If information is cached, return it
+				// If information is cached, return it
+			if (isset($this->recInsertAccessCache[$insertTable][$pid])) {
 				return $this->recInsertAccessCache[$insertTable][$pid];
 			} else {
 					// If either admin and root-level or if page record exists and 1) if 'pages' you may create new ones 2) if page-content, new content items may be inserted on the $pid page
 				if ((!$pid && $this->admin) || $this->doesRecordExist('pages', $pid, ($insertTable == 'pages' ? $this->pMap['new'] : $this->pMap['editcontent']))) { // Check permissions
 					if ($this->isTableAllowedForThisPage($pid, $insertTable)) {
 						$res = 1;
-						$this->recInsertAccessCache[$insertTable][$pid] = $res; // Cache the result
+							// Cache the result
+						$this->recInsertAccessCache[$insertTable][$pid] = $res;
 					} else {
 						$propArr = $this->getRecordProperties('pages', $pid);
 						$this->log($insertTable, $pid, $action, 0, 1, "Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed", 11, array($propArr['header'], $pid, $insertTable), $propArr['event_pid']);
@@ -5190,9 +5337,9 @@ class t3lib_TCEmain {
 	/**
 	 * Checks if a table is allowed on a certain page id according to allowed tables set for the page "doktype" and its [ctrl][rootLevel]-settings if any.
 	 *
-	 * @param	integer		Page id for which to check, including 0 (zero) if checking for page tree root.
-	 * @param	string		Table name to check
-	 * @return	boolean		TRUE if OK
+	 * @param integer $page_uid Page id for which to check, including 0 (zero) if checking for page tree root.
+	 * @param string $checkTable Table name to check
+	 * @return boolean TRUE if OK
 	 */
 	function isTableAllowedForThisPage($page_uid, $checkTable) {
 		$page_uid = intval($page_uid);
@@ -5214,7 +5361,8 @@ class t3lib_TCEmain {
 				? $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']
 				: $GLOBALS['PAGES_TYPES']['default']['allowedTables']);
 			$allowedArray = t3lib_div::trimExplode(',', $allowedTableList, 1);
-			if (strstr($allowedTableList, '*') || in_array($checkTable, $allowedArray)) { // If all tables or the table is listed as a allowed type, return TRUE
+				// If all tables or the table is listed as a allowed type, return TRUE
+			if (strstr($allowedTableList, '*') || in_array($checkTable, $allowedArray)) {
 				return TRUE;
 			}
 		}
@@ -5223,10 +5371,10 @@ class t3lib_TCEmain {
 	/**
 	 * Checks if record can be selected based on given permission criteria
 	 *
-	 * @param	string		Record table name
-	 * @param	integer		Record UID
-	 * @param	mixed		Permission restrictions to observe: Either an integer that will be bitwise AND'ed or a string, which points to a key in the ->pMap array
-	 * @return	boolean		Returns TRUE if the record given by $table, $id and $perms can be selected
+	 * @param string $table Record table name
+	 * @param integer $id Record UID
+	 * @param mixed $perms Permission restrictions to observe: Either an integer that will be bitwise AND'ed or a string, which points to a key in the ->pMap array
+	 * @return boolean Returns TRUE if the record given by $table, $id and $perms can be selected
 	 */
 	function doesRecordExist($table, $id, $perms) {
 		if ($this->bypassAccessCheckForRecords) {
@@ -5243,7 +5391,8 @@ class t3lib_TCEmain {
 					case 'edit':
 					case 'delete':
 					case 'new':
-						$perms = 'editcontent'; // This holds it all in case the record is not page!!
+							// This holds it all in case the record is not page!!
+						$perms = 'editcontent';
 					break;
 				}
 			}
@@ -5290,9 +5439,9 @@ class t3lib_TCEmain {
 	/**
 	 * Looks up a page based on permissions.
 	 *
-	 * @param	integer		Page id
-	 * @param	integer		Permission integer
-	 * @return	pointer		MySQL result pointer (from exec_SELECTquery())
+	 * @param integer $id Page id
+	 * @param integer $perms Permission integer
+	 * @return pointer MySQL result pointer (from exec_SELECTquery())
 	 * @access private
 	 * @see doesRecordExist()
 	 */
@@ -5314,11 +5463,11 @@ class t3lib_TCEmain {
 	 * Returns an ID-list or "" if OK. Else -1 which means that somewhere there was no permission (eg. to delete).
 	 * if $recurse is set, then the function will follow subpages. This MUST be set, if we need the idlist for deleting pages or else we get an incomplete list
 	 *
-	 * @param	string		List of page uids, this is added to and outputted in the end
-	 * @param	integer		Page ID to select subpages from.
-	 * @param	integer		Perms integer to check each page record for.
-	 * @param	boolean		Recursion flag: If set, it will go out through the branch.
-	 * @return	string		List of integers in branch
+	 * @param string $inList List of page uids, this is added to and outputted in the end
+	 * @param integer $pid Page ID to select subpages from.
+	 * @param integer $perms Perms integer to check each page record for.
+	 * @param boolean $recurse Recursion flag: If set, it will go out through the branch.
+	 * @return string List of integers in branch
 	 */
 	function doesBranchExist($inList, $pid, $perms, $recurse) {
 		$pid = intval($pid);
@@ -5333,7 +5482,8 @@ class t3lib_TCEmain {
 				'sorting'
 			);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
-				if ($this->admin || $this->BE_USER->doesUserHaveAccess($row, $perms)) { // IF admin, then it's OK
+					// IF admin, then it's OK
+				if ($this->admin || $this->BE_USER->doesUserHaveAccess($row, $perms)) {
 					$inList .= $row['uid'] . ',';
 					if ($recurse) { // Follow the subpages recursively...
 						$inList = $this->doesBranchExist($inList, $row['uid'], $perms, $recurse);
@@ -5342,7 +5492,8 @@ class t3lib_TCEmain {
 						} // No permissions somewhere in the branch
 					}
 				} else {
-					return -1; // No permissions
+						// No permissions
+					return -1;
 				}
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($mres);
@@ -5353,22 +5504,22 @@ class t3lib_TCEmain {
 	/**
 	 * Checks if the $table is readOnly
 	 *
-	 * @param	string		Table name
-	 * @return	boolean		TRUE, if readonly
+	 * @param string $table Table name
+	 * @return boolean TRUE, if readonly
 	 */
 	function tableReadOnly($table) {
-			// returns TRUE if table is readonly
+			// Returns TRUE if table is readonly
 		return ($GLOBALS['TCA'][$table]['ctrl']['readOnly'] ? TRUE : FALSE);
 	}
 
 	/**
 	 * Checks if the $table is only editable by admin-users
 	 *
-	 * @param	string		Table name
-	 * @return	boolean		TRUE, if readonly
+	 * @param string $table Table name
+	 * @return boolean TRUE, if readonly
 	 */
 	function tableAdminOnly($table) {
-			// returns TRUE if table is admin-only
+			// Returns TRUE if table is admin-only
 		return ($GLOBALS['TCA'][$table]['ctrl']['adminOnly'] ? TRUE : FALSE);
 	}
 
@@ -5376,9 +5527,9 @@ class t3lib_TCEmain {
 	 * Checks if piage $id is a uid in the rootline from page id, $dest
 	 * Used when moving a page
 	 *
-	 * @param	integer		Destination Page ID to test
-	 * @param	integer		Page ID to test for presence inside Destination
-	 * @return	boolean		Returns FALSE if ID is inside destination (including equal to)
+	 * @param integer $dest Destination Page ID to test
+	 * @param integer $id Page ID to test for presence inside Destination
+	 * @return boolean Returns FALSE if ID is inside destination (including equal to)
 	 */
 	function destNotInsideSelf($dest, $id) {
 		$loopCheck = 100;
@@ -5410,7 +5561,7 @@ class t3lib_TCEmain {
 	 * Generate an array of fields to be excluded from editing for the user. Based on "exclude"-field in TCA and a look up in non_exclude_fields
 	 * Will also generate this list for admin-users so they must be check for before calling the function
 	 *
-	 * @return	array		Array of [table]-[field] pairs to exclude from editing.
+	 * @return array Array of [table]-[field] pairs to exclude from editing.
 	 */
 	function getExcludeListArray() {
 		$list = array();
@@ -5435,25 +5586,29 @@ class t3lib_TCEmain {
 	/**
 	 * Checks if there are records on a page from tables that are not allowed
 	 *
-	 * @param	integer		Page ID
-	 * @param	integer		Page doktype
-	 * @return	array		Returns a list of the tables that are 'present' on the page but not allowed with the page_uid/doktype
+	 * @param integer $page_uid Page ID
+	 * @param integer $doktype Page doktype
+	 * @return array Returns a list of the tables that are 'present' on the page but not allowed with the page_uid/doktype
 	 */
 	function doesPageHaveUnallowedTables($page_uid, $doktype) {
 		$page_uid = intval($page_uid);
 		if (!$page_uid) {
-			return FALSE; // Not a number. Probably a new page
+				// Not a number. Probably a new page
+			return FALSE;
 		}
 
 		$allowedTableList = isset($GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']) ? $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] : $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
 		$allowedArray = t3lib_div::trimExplode(',', $allowedTableList, 1);
-		if (strstr($allowedTableList, '*')) { // If all tables is OK the return TRUE
-			return FALSE; // OK...
+			// If all tables is OK the return TRUE
+		if (strstr($allowedTableList, '*')) {
+				// OK...
+			return FALSE;
 		}
 
 		$tableList = array();
 		foreach (array_keys($GLOBALS['TCA']) as $table) {
-			if (!in_array($table, $allowedArray)) { // If the table is not in the allowed list, check if there are records...
+				// If the table is not in the allowed list, check if there are records...
+			if (!in_array($table, $allowedArray)) {
 				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 'pid=' . intval($page_uid));
 				if ($count) {
 					$tableList[] = $table;
@@ -5462,7 +5617,6 @@ class t3lib_TCEmain {
 		}
 		return implode(',', $tableList);
 	}
-
 
 	/*****************************
 	 *
@@ -5474,9 +5628,9 @@ class t3lib_TCEmain {
 	 * Returns the value of the $field from page $id
 	 * NOTICE; the function caches the result for faster delivery next time. You can use this function repeatedly without performanceloss since it doesn't look up the same record twice!
 	 *
-	 * @param	integer		Page uid
-	 * @param	string		Field name for which to return value
-	 * @return	string		Value of the field. Result is cached in $this->pageCache[$id][$field] and returned from there next time!
+	 * @param integer $id Page uid
+	 * @param string $field Field name for which to return value
+	 * @return string Value of the field. Result is cached in $this->pageCache[$id][$field] and returned from there next time!
 	 */
 	function pageInfo($id, $field) {
 		if (!isset($this->pageCache[$id])) {
@@ -5493,10 +5647,10 @@ class t3lib_TCEmain {
 	 * Returns the row of a record given by $table and $id and $fieldList (list of fields, may be '*')
 	 * NOTICE: No check for deleted or access!
 	 *
-	 * @param	string		Table name
-	 * @param	integer		UID of the record from $table
-	 * @param	string		Field list for the SELECT query, eg. "*" or "uid,pid,..."
-	 * @return	mixed		Returns the selected record on success, otherwise FALSE.
+	 * @param string $table Table name
+	 * @param integer $id UID of the record from $table
+	 * @param string $fieldList Field list for the SELECT query, eg. "*" or "uid,pid,..."
+	 * @return mixed Returns the selected record on success, otherwise FALSE.
 	 */
 	function recordInfo($table, $id, $fieldList) {
 		if (is_array($GLOBALS['TCA'][$table])) {
@@ -5515,10 +5669,10 @@ class t3lib_TCEmain {
 	 * For versionized records, pid is resolved to its live versions pid.
 	 * Used for loggin
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Uid of record
-	 * @param	boolean		If set, no workspace overlay is performed
-	 * @return	array		Properties of record
+	 * @param string $table Table name
+	 * @param integer $id Uid of record
+	 * @param boolean $noWSOL If set, no workspace overlay is performed
+	 * @return array Properties of record
 	 */
 	function getRecordProperties($table, $id, $noWSOL = FALSE) {
 		$row = ($table == 'pages' && !$id) ? array('title' => '[root-level]', 'uid' => 0, 'pid' => 0) : $this->recordInfo($table, $id, '*');
@@ -5532,9 +5686,9 @@ class t3lib_TCEmain {
 	/**
 	 * Returns an array with record properties, like header and pid, based on the row
 	 *
-	 * @param	string		Table name
-	 * @param	array		Input row
-	 * @return	array		Output array
+	 * @param string $table Table name
+	 * @param array $row Input row
+	 * @return array Output array
 	 */
 	function getRecordPropertiesFromRow($table, $row) {
 		if ($GLOBALS['TCA'][$table]) {
@@ -5551,10 +5705,16 @@ class t3lib_TCEmain {
 		}
 	}
 
+	/**
+	 *
+	 * @param string $table
+	 * @param integer $uid
+	 * @param integer $pid
+	 * @return integer
+	 */
 	function eventPid($table, $uid, $pid) {
 		return $table == 'pages' ? $uid : $pid;
 	}
-
 
 	/*********************************************
 	 *
@@ -5566,14 +5726,15 @@ class t3lib_TCEmain {
 	 * Update database record
 	 * Does not check permissions but expects them to be verified on beforehand
 	 *
-	 * @param	string		Record table name
-	 * @param	integer		Record uid
-	 * @param	array		Array of field=>value pairs to insert. FIELDS MUST MATCH the database FIELDS. No check is done.
-	 * @return	void
+	 * @param string $table Record table name
+	 * @param integer $id Record uid
+	 * @param array $fieldArray Array of field=>value pairs to insert. FIELDS MUST MATCH the database FIELDS. No check is done.
+	 * @return void
 	 */
 	function updateDB($table, $id, $fieldArray) {
 		if (is_array($fieldArray) && is_array($GLOBALS['TCA'][$table]) && intval($id)) {
-			unset($fieldArray['uid']); // Do NOT update the UID field, ever!
+				// Do NOT update the UID field, ever!
+			unset($fieldArray['uid']);
 
 			if (count($fieldArray)) {
 
@@ -5617,17 +5778,18 @@ class t3lib_TCEmain {
 	 * Insert into database
 	 * Does not check permissions but expects them to be verified on beforehand
 	 *
-	 * @param	string		Record table name
-	 * @param	string		"NEW...." uid string
-	 * @param	array		Array of field=>value pairs to insert. FIELDS MUST MATCH the database FIELDS. No check is done. "pid" must point to the destination of the record!
-	 * @param	boolean		Set to TRUE if new version is created.
-	 * @param	integer		Suggested UID value for the inserted record. See the array $this->suggestedInsertUids; Admin-only feature
-	 * @param	boolean		If TRUE, the ->substNEWwithIDs array is not updated. Only useful in very rare circumstances!
-	 * @return	integer		Returns ID on success.
+	 * @param string $table Record table name
+	 * @param string $id "NEW...." uid string
+	 * @param array $fieldArray Array of field=>value pairs to insert. FIELDS MUST MATCH the database FIELDS. No check is done. "pid" must point to the destination of the record!
+	 * @param boolean $newVersion Set to TRUE if new version is created.
+	 * @param integer $suggestedUid Suggested UID value for the inserted record. See the array $this->suggestedInsertUids; Admin-only feature
+	 * @param boolean $dontSetNewIdIndex If TRUE, the ->substNEWwithIDs array is not updated. Only useful in very rare circumstances!
+	 * @return integer Returns ID on success.
 	 */
 	function insertDB($table, $id, $fieldArray, $newVersion = FALSE, $suggestedUid = 0, $dontSetNewIdIndex = FALSE) {
 		if (is_array($fieldArray) && is_array($GLOBALS['TCA'][$table]) && isset($fieldArray['pid'])) {
-			unset($fieldArray['uid']); // Do NOT insert the UID field, ever!
+				// Do NOT insert the UID field, ever!
+			unset($fieldArray['uid']);
 
 			if (count($fieldArray)) {
 
@@ -5654,7 +5816,8 @@ class t3lib_TCEmain {
 				if (!$GLOBALS['TYPO3_DB']->sql_error()) {
 
 						// Set mapping for NEW... -> real uid:
-					$NEW_id = $id; // the NEW_id now holds the 'NEW....' -id
+						// the NEW_id now holds the 'NEW....' -id
+					$NEW_id = $id;
 					$id = $GLOBALS['TYPO3_DB']->sql_insert_id();
 					if (!$dontSetNewIdIndex) {
 						$this->substNEWwithIDs[$NEW_id] = $id;
@@ -5692,11 +5855,11 @@ class t3lib_TCEmain {
 	/**
 	 * Checking stored record to see if the written values are properly updated.
 	 *
-	 * @param	string		Record table name
-	 * @param	integer		Record uid
-	 * @param	array		Array of field=>value pairs to insert/update
-	 * @param	string		Action, for logging only.
-	 * @return	array		Selected row
+	 * @param string $table Record table name
+	 * @param integer $id Record uid
+	 * @param array $fieldArray Array of field=>value pairs to insert/update
+	 * @param string $action Action, for logging only.
+	 * @return array Selected row
 	 * @see insertDB(), updateDB()
 	 */
 	function checkStoredRecord($table, $id, $fieldArray, $action) {
@@ -5729,10 +5892,10 @@ class t3lib_TCEmain {
 	/**
 	 * Setting sys_history record, based on content previously set in $this->historyRecords[$table.':'.$id] (by compareFieldArrayWithCurrentAndUnset())
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record ID
-	 * @param	integer		Log entry ID, important for linking between log and history views
-	 * @return	void
+	 * @param string $table Table name
+	 * @param integer $id Record ID
+	 * @param integer $logId Log entry ID, important for linking between log and history views
+	 * @return void
 	 */
 	function setHistory($table, $id, $logId) {
 		if (isset($this->historyRecords[$table . ':' . $id])) {
@@ -5763,9 +5926,9 @@ class t3lib_TCEmain {
 	/**
 	 * Clearing sys_history table from older entries that are expired.
 	 *
-	 * @param	integer		$maxAgeSeconds (int+) however will set a max age in seconds so that any entry older than current time minus the age removed no matter what. If zero, this is not effective.
-	 * @param	string		table where the history should be cleared
-	 * @return	void
+	 * @param integer $maxAgeSeconds (int+) however will set a max age in seconds so that any entry older than current time minus the age removed no matter what. If zero, this is not effective.
+	 * @param string $table Table where the history should be cleared
+	 * @return void
 	 */
 	function clearHistory($maxAgeSeconds = 604800, $table) {
 		$tstampLimit = $maxAgeSeconds ? $GLOBALS['EXEC_TIME'] - $maxAgeSeconds : 0;
@@ -5777,16 +5940,16 @@ class t3lib_TCEmain {
 	 * Update Reference Index (sys_refindex) for a record
 	 * Should be called any almost any update to a record which could affect references inside the record.
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record UID
-	 * @return	void
+	 * @param string $table Table name
+	 * @param integer $id Record UID
+	 * @return void
 	 */
 	function updateRefIndex($table, $id) {
+			/** @var $refIndexObj t3lib_refindex */
 		$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');
-		/* @var $refIndexObj t3lib_refindex */
+
 		$result = $refIndexObj->updateRefIndexTable($table, $id);
 	}
-
 
 	/*********************************************
 	 *
@@ -5798,32 +5961,42 @@ class t3lib_TCEmain {
 	 * Returning sorting number for tables with a "sortby" column
 	 * Using when new records are created and existing records are moved around.
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Uid of record to find sorting number for. May be zero in case of new.
-	 * @param	integer		Positioning PID, either >=0 (pointing to page in which case we find sorting number for first record in page) or <0 (pointing to record in which case to find next sorting number after this record)
-	 * @return	mixed		Returns integer if PID is >=0, otherwise an array with PID and sorting number. Possibly FALSE in case of error.
+	 * @param string $table Table name
+	 * @param integer $uid Uid of record to find sorting number for. May be zero in case of new.
+	 * @param integer $pid Positioning PID, either >=0 (pointing to page in which case we find sorting number for first record in page) or <0 (pointing to record in which case to find next sorting number after this record)
+	 * @return mixed Returns integer if PID is >=0, otherwise an array with PID and sorting number. Possibly FALSE in case of error.
 	 */
 	function getSortNumber($table, $uid, $pid) {
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
 			$sortRow = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
-			if ($pid >= 0) { // Sorting number is in the top
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($sortRow . ',pid,uid', $table, 'pid=' . intval($pid) . $this->deleteClause($table), '', $sortRow . ' ASC', '1'); // Fetches the first record under this pid
-				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) { // There was an element
-					if ($row['uid'] == $uid) { // The top record was the record it self, so we return its current sortnumber
+				// Sorting number is in the top
+			if ($pid >= 0) {
+					// Fetches the first record under this pid
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($sortRow . ',pid,uid', $table, 'pid=' . intval($pid) . $this->deleteClause($table), '', $sortRow . ' ASC', '1');
+					// There was an element
+				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+						// The top record was the record it self, so we return its current sortnumber
+					if ($row['uid'] == $uid) {
 						return $row[$sortRow];
 					}
-					if ($row[$sortRow] < 1) { // If the pages sortingnumber < 1 we must resort the records under this pid
+						// If the pages sortingnumber < 1 we must resort the records under this pid
+					if ($row[$sortRow] < 1) {
 						$this->resorting($table, $pid, $sortRow, 0);
-						return $this->sortIntervals; // First sorting number after resorting
+							// First sorting number after resorting
+						return $this->sortIntervals;
 					} else {
-						return floor($row[$sortRow] / 2); // Sorting number between current top element and zero
+							// Sorting number between current top element and zero
+						return floor($row[$sortRow] / 2);
 					}
 				} else { // No pages, so we choose the default value as sorting-number
-					return $this->sortIntervals; // First sorting number if no elements.
+						// First sorting number if no elements.
+					return $this->sortIntervals;
 				}
 			} else { // Sorting number is inside the list
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($sortRow . ',pid,uid', $table, 'uid=' . abs($pid) . $this->deleteClause($table)); // Fetches the record which is supposed to be the prev record
-				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) { // There was a record
+					// Fetches the record which is supposed to be the prev record
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($sortRow . ',pid,uid', $table, 'uid=' . abs($pid) . $this->deleteClause($table));
+					// There was a record
+				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 
 						// Look, if the record UID happens to be an offline record. If so, find its live version. Offline uids will be used when a page is versionized as "branch" so this is when we must correct - otherwise a pid of "-1" and a wrong sort-row number is returned which we don't want.
 					if ($lookForLiveVersion = t3lib_BEfunc::getLiveVersionOfRecord($table, $row['uid'], $sortRow . ',pid,uid')) {
@@ -5842,12 +6015,18 @@ class t3lib_TCEmain {
 							$sortRow . ' ASC',
 							'2'
 						); // Fetches the next record in order to calculate the in-between sortNumber
-						if ($GLOBALS['TYPO3_DB']->sql_num_rows($subres) == 2) { // There was a record afterwards
-							$GLOBALS['TYPO3_DB']->sql_fetch_assoc($subres); // Forward to the second result...
-							$subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($subres); // There was a record afterwards
-							$sortNumber = $row[$sortRow] + floor(($subrow[$sortRow] - $row[$sortRow]) / 2); // The sortNumber is found in between these values
-							if ($sortNumber <= $row[$sortRow] || $sortNumber >= $subrow[$sortRow]) { // The sortNumber happend NOT to be between the two surrounding numbers, so we'll have to resort the list
-								$sortNumber = $this->resorting($table, $row['pid'], $sortRow, $row['uid']); // By this special param, resorting reserves and returns the sortnumber after the uid
+							// There was a record afterwards
+						if ($GLOBALS['TYPO3_DB']->sql_num_rows($subres) == 2) {
+								// Forward to the second result...
+							$GLOBALS['TYPO3_DB']->sql_fetch_assoc($subres);
+								// There was a record afterwards
+							$subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($subres);
+								// The sortNumber is found in between these values
+							$sortNumber = $row[$sortRow] + floor(($subrow[$sortRow] - $row[$sortRow]) / 2);
+								// The sortNumber happend NOT to be between the two surrounding numbers, so we'll have to resort the list
+							if ($sortNumber <= $row[$sortRow] || $sortNumber >= $subrow[$sortRow]) {
+									// By this special param, resorting reserves and returns the sortnumber after the uid
+								$sortNumber = $this->resorting($table, $row['pid'], $sortRow, $row['uid']);
 							}
 						} else { // If after the last record in the list, we just add the sortInterval to the last sortvalue
 							$sortNumber = $row[$sortRow] + $this->sortIntervals;
@@ -5857,8 +6036,10 @@ class t3lib_TCEmain {
 					return array('pid' => $row['pid'], 'sortNumber' => $sortNumber);
 				} else {
 					$propArr = $this->getRecordProperties($table, $uid);
-					$this->log($table, $uid, 4, 0, 1, "Attempt to move record '%s' (%s) to after a non-existing record (uid=%s)", 1, array($propArr['header'], $table . ':' . $uid, abs($pid)), $propArr['pid']); // OK, dont insert $propArr['event_pid'] here...
-					return FALSE; // There MUST be a page or else this cannot work
+						// OK, dont insert $propArr['event_pid'] here...
+					$this->log($table, $uid, 4, 0, 1, "Attempt to move record '%s' (%s) to after a non-existing record (uid=%s)", 1, array($propArr['header'], $table . ':' . $uid, abs($pid)), $propArr['pid']);
+						// There MUST be a page or else this cannot work
+					return FALSE;
 				}
 			}
 		}
@@ -5868,11 +6049,11 @@ class t3lib_TCEmain {
 	 * Resorts a table.
 	 * Used internally by getSortNumber()
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Pid in which to resort records.
-	 * @param	string		Sorting row
-	 * @param	integer		Uid of record from $table in this $pid and for which the return value will be set to a free sorting number after that record. This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
-	 * @return	integer		If $return_SortNumber_After_This_Uid is set, will contain usable sorting number after that record if found (otherwise 0)
+	 * @param string $table Table name
+	 * @param integer $pid Pid in which to resort records.
+	 * @param string $sortRow Sorting row
+	 * @param integer $return_SortNumber_After_This_Uid Uid of record from $table in this $pid and for which the return value will be set to a free sorting number after that record. This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
+	 * @return integer If $return_SortNumber_After_This_Uid is set, will contain usable sorting number after that record if found (otherwise 0)
 	 * @access private
 	 * @see getSortNumber()
 	 */
@@ -5887,7 +6068,8 @@ class t3lib_TCEmain {
 				$uid = intval($row['uid']);
 				if ($uid) {
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($uid), array($sortRow => $i));
-					if ($uid == $return_SortNumber_After_This_Uid) { // This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
+						// This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
+					if ($uid == $return_SortNumber_After_This_Uid) {
 						$i = $i + $intervals;
 						$returnVal = $i;
 					}
@@ -5905,12 +6087,12 @@ class t3lib_TCEmain {
 	 * Returning uid of previous localized record, if any, for tables with a "sortby" column
 	 * Used when new localized records are created so that localized records are sorted in the same order as the default language records
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Uid of default language record
-	 * @param	integer		Pid of default language record
-	 * @param	integer		Language of localization
+	 * @param string $table Table name
+	 * @param integer $uid Uid of default language record
+	 * @param integer $pid Pid of default language record
+	 * @param integer $language Language of localization
 	 *
-	 * @return	integer		uid of record after which the localized record should be inserted
+	 * @return integer uid of record after which the localized record should be inserted
 	 */
 	protected function getPreviousLocalizedRecordUid($table, $uid, $pid, $language) {
 		$previousLocalizedRecordUid = $uid;
@@ -5948,9 +6130,9 @@ class t3lib_TCEmain {
 	 * Setting up perms_* fields in $fieldArray based on TSconfig input
 	 * Used for new pages
 	 *
-	 * @param	array		Field Array, returned with modifications
-	 * @param	array		TSconfig properties
-	 * @return	array		Modified Field Array
+	 * @param array $fieldArray Field Array, returned with modifications
+	 * @param array $TSConfig_p TSconfig properties
+	 * @return array Modified Field Array
 	 */
 	function setTSconfigPermissions($fieldArray, $TSConfig_p) {
 		if (strcmp($TSConfig_p['userid'], '')) {
@@ -5976,8 +6158,8 @@ class t3lib_TCEmain {
 	 * Returns a fieldArray with default values. Values will be picked up from the TCA array looking at the config key "default" for each column. If values are set in ->defaultValues they will overrule though.
 	 * Used for new records and during copy operations for defaults
 	 *
-	 * @param	string		Table name for which to set default values.
-	 * @return	array		Array with default values.
+	 * @param string $table Table name for which to set default values.
+	 * @return array Array with default values.
 	 */
 	function newFieldArray($table) {
 		t3lib_div::loadTCA($table);
@@ -5991,7 +6173,8 @@ class t3lib_TCEmain {
 				}
 			}
 		}
-		if ($table === 'pages') { // Set default permissions for a page.
+			// Set default permissions for a page.
+		if ($table === 'pages') {
 			$fieldArray['perms_userid'] = $this->userid;
 			$fieldArray['perms_groupid'] = intval($this->BE_USER->firstMainGroup);
 			$fieldArray['perms_user'] = $this->assemblePermissions($this->defaultPermissions['user']);
@@ -6004,9 +6187,9 @@ class t3lib_TCEmain {
 	/**
 	 * If a "languageField" is specified for $table this function will add a possible value to the incoming array if none is found in there already.
 	 *
-	 * @param	string		Table name
-	 * @param	array		Incoming array (passed by reference)
-	 * @return	void
+	 * @param string $table Table name
+	 * @param array $incomingFieldArray Incoming array (passed by reference)
+	 * @return void
 	 */
 	function addDefaultPermittedLanguageIfNotSet($table, &$incomingFieldArray) {
 
@@ -6032,9 +6215,9 @@ class t3lib_TCEmain {
 	/**
 	 * Returns the $data array from $table overridden in the fields defined in ->overrideValues.
 	 *
-	 * @param	string		Table name
-	 * @param	array		Data array with fields from table. These will be overlaid with values in $this->overrideValues[$table]
-	 * @return	array		Data array, processed.
+	 * @param string $table Table name
+	 * @param array $data Data array with fields from table. These will be overlaid with values in $this->overrideValues[$table]
+	 * @return array Data array, processed.
 	 */
 	function overrideFieldArray($table, $data) {
 		if (is_array($this->overrideValues[$table])) {
@@ -6047,10 +6230,10 @@ class t3lib_TCEmain {
 	 * Compares the incoming field array with the current record and unsets all fields which are the same.
 	 * Used for existing records being updated
 	 *
-	 * @param	string		Record table name
-	 * @param	integer		Record uid
-	 * @param	array		Array of field=>value pairs intended to be inserted into the database. All keys with values matching exactly the current value will be unset!
-	 * @return	array		Returns $fieldArray. If the returned array is empty, then the record should not be updated!
+	 * @param string $table Record table name
+	 * @param integer $id Record uid
+	 * @param array $fieldArray Array of field=>value pairs intended to be inserted into the database. All keys with values matching exactly the current value will be unset!
+	 * @return array Returns $fieldArray. If the returned array is empty, then the record should not be updated!
 	 */
 	function compareFieldArrayWithCurrentAndUnset($table, $id, $fieldArray) {
 
@@ -6104,8 +6287,8 @@ class t3lib_TCEmain {
 	/**
 	 * Calculates the bitvalue of the permissions given in a string, comma-sep
 	 *
-	 * @param	string		List of pMap strings
-	 * @return	integer		Integer mask
+	 * @param string $string List of pMap strings
+	 * @return integer Integer mask
 	 * @see setTSconfigPermissions(), newFieldArray()
 	 */
 	function assemblePermissions($string) {
@@ -6122,8 +6305,8 @@ class t3lib_TCEmain {
 	/**
 	 * Returns the $input string without a comma in the end
 	 *
-	 * @param	string		Input string
-	 * @return	string		Output string with any comma in the end removed, if any.
+	 * @param string $input Input string
+	 * @return string Output string with any comma in the end removed, if any.
 	 */
 	function rmComma($input) {
 		return rtrim($input, ',');
@@ -6132,8 +6315,8 @@ class t3lib_TCEmain {
 	/**
 	 * Converts a HTML entity (like &#123;) to the character '123'
 	 *
-	 * @param	string		Input string
-	 * @return	string		Output string
+	 * @param string $input Input string
+	 * @return string Output string
 	 */
 	function convNumEntityToByteValue($input) {
 		$token = md5(microtime());
@@ -6142,7 +6325,8 @@ class t3lib_TCEmain {
 		foreach ($parts as $k => $v) {
 			if ($k % 2) {
 				$v = intval($v);
-				if ($v > 32) { // Just to make sure that control bytes are not converted.
+					// Just to make sure that control bytes are not converted.
+				if ($v > 32) {
 					$parts[$k] = chr(intval($v));
 				}
 			}
@@ -6154,8 +6338,8 @@ class t3lib_TCEmain {
 	/**
 	 * Returns absolute destination path for the uploadfolder, $folder
 	 *
-	 * @param	string		Upload folder name, relative to PATH_site
-	 * @return	string		Input string prefixed with PATH_site
+	 * @param string $folder Upload folder name, relative to PATH_site
+	 * @return string Input string prefixed with PATH_site
 	 */
 	function destPathFromUploadFolder($folder) {
 		return PATH_site . $folder;
@@ -6166,7 +6350,7 @@ class t3lib_TCEmain {
 	 * In general only undeleted records will be used. If the delete
 	 * clause is disabled, also deleted records are taken into account.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function disableDeleteClause() {
 		$this->disableDeleteClause = TRUE;
@@ -6175,8 +6359,8 @@ class t3lib_TCEmain {
 	/**
 	 * Returns delete-clause for the $table
 	 *
-	 * @param	string		Table name
-	 * @return	string		Delete clause
+	 * @param string $table Table name
+	 * @return string Delete clause
 	 */
 	function deleteClause($table) {
 			// Returns the proper delete-clause if any for a table from TCA
@@ -6190,8 +6374,8 @@ class t3lib_TCEmain {
 	/**
 	 * Return TSconfig for a page id
 	 *
-	 * @param	integer		Page id (PID) from which to get configuration.
-	 * @return	array		TSconfig array, if any
+	 * @param integer $tscPID Page id (PID) from which to get configuration.
+	 * @return array TSconfig array, if any
 	 */
 	function getTCEMAIN_TSconfig($tscPID) {
 		if (!isset($this->cachedTSconfig[$tscPID])) {
@@ -6203,9 +6387,9 @@ class t3lib_TCEmain {
 	/**
 	 * Extract entries from TSconfig for a specific table. This will merge specific and default configuration together.
 	 *
-	 * @param	string		Table name
-	 * @param	array		TSconfig for page
-	 * @return	array		TSconfig merged
+	 * @param string $table Table name
+	 * @param array $TSconfig TSconfig for page
+	 * @return array TSconfig merged
 	 * @see getTCEMAIN_TSconfig()
 	 */
 	function getTableEntries($table, $TSconfig) {
@@ -6217,9 +6401,9 @@ class t3lib_TCEmain {
 	/**
 	 * Returns the pid of a record from $table with $uid
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record uid
-	 * @return	integer		PID value (unless the record did not exist in which case FALSE)
+	 * @param string $table Table name
+	 * @param integer $uid Record uid
+	 * @return integer PID value (unless the record did not exist in which case FALSE)
 	 */
 	function getPID($table, $uid) {
 		$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', $table, 'uid=' . intval($uid));
@@ -6232,7 +6416,7 @@ class t3lib_TCEmain {
 	 * Executing dbAnalysisStore
 	 * This will save MM relations for new records but is executed after records are created because we need to know the ID of them
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function dbAnalysisStoreExec() {
 		foreach ($this->dbAnalysisStore as $action) {
@@ -6249,7 +6433,7 @@ class t3lib_TCEmain {
 	/**
 	 * Removing files registered for removal before exit
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function removeRegisteredFiles() {
 		foreach ($this->removeFilesStore as $file) {
@@ -6260,7 +6444,7 @@ class t3lib_TCEmain {
 	/**
 	 * Unlink (delete) typo3conf/temp_CACHED_*.php cache files
 	 *
-	 * @return	integer		The number of files deleted
+	 * @return integer The number of files deleted
 	 */
 	function removeCacheFiles() {
 		return t3lib_extMgm::removeCacheFiles();
@@ -6270,11 +6454,11 @@ class t3lib_TCEmain {
 	 * Returns array, $CPtable, of pages under the $pid going down to $counter levels.
 	 * Selecting ONLY pages which the user has read-access to!
 	 *
-	 * @param	array		Accumulation of page uid=>pid pairs in branch of $pid
-	 * @param	integer		Page ID for which to find subpages
-	 * @param	integer		Number of levels to go down.
-	 * @param	integer		ID of root point for new copied branch: The idea seems to be that a copy is not made of the already new page!
-	 * @return	array		Return array.
+	 * @param array $CPtable Accumulation of page uid=>pid pairs in branch of $pid
+	 * @param integer $pid Page ID for which to find subpages
+	 * @param integer $counter Number of levels to go down.
+	 * @param integer $rootID ID of root point for new copied branch: The idea seems to be that a copy is not made of the already new page!
+	 * @return array Return array.
 	 */
 	function int_pageTreeInfo($CPtable, $pid, $counter, $rootID) {
 		if ($counter) {
@@ -6283,7 +6467,8 @@ class t3lib_TCEmain {
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
 				if ($row['uid'] != $rootID) {
 					$CPtable[$row['uid']] = $pid;
-					if ($counter - 1) { // If the uid is NOT the rootID of the copyaction and if we are supposed to walk further down
+						// If the uid is NOT the rootID of the copyaction and if we are supposed to walk further down
+					if ($counter - 1) {
 						$CPtable = $this->int_pageTreeInfo($CPtable, $row['uid'], $counter - 1, $rootID);
 					}
 				}
@@ -6296,7 +6481,7 @@ class t3lib_TCEmain {
 	/**
 	 * List of all tables (those administrators has access to = array_keys of $GLOBALS['TCA'])
 	 *
-	 * @return	array		Array of all TCA table names
+	 * @return array Array of all TCA table names
 	 */
 	function compileAdminTables() {
 		return array_keys($GLOBALS['TCA']);
@@ -6305,9 +6490,9 @@ class t3lib_TCEmain {
 	/**
 	 * Checks if any uniqueInPid eval input fields are in the record and if so, they are re-written to be correct.
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record UID
-	 * @return	void
+	 * @param string $table Table name
+	 * @param integer $uid Record UID
+	 * @return void
 	 */
 	function fixUniqueInPid($table, $uid) {
 		if ($GLOBALS['TCA'][$table]) {
@@ -6336,12 +6521,12 @@ class t3lib_TCEmain {
 	 * When er record is copied you can specify fields from the previous record which should be copied into the new one
 	 * This function is also called with new elements. But then $update must be set to zero and $newData containing the data array. In that case data in the incoming array is NOT overridden. (250202)
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record UID
-	 * @param	integer		UID of previous record
-	 * @param	boolean		If set, updates the record
-	 * @param	array		Input array. If fields are already specified AND $update is not set, values are not set in output array.
-	 * @return	array		Output array (For when the copying operation needs to get the information instead of updating the info)
+	 * @param string $table Table name
+	 * @param integer $uid Record UID
+	 * @param integer $prevUid UID of previous record
+	 * @param boolean $update If set, updates the record
+	 * @param array $newData Input array. If fields are already specified AND $update is not set, values are not set in output array.
+	 * @return array Output array (For when the copying operation needs to get the information instead of updating the info)
 	 */
 	function fixCopyAfterDuplFields($table, $uid, $prevUid, $update, $newData = array()) {
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields']) {
@@ -6363,8 +6548,8 @@ class t3lib_TCEmain {
 	/**
 	 * Returns all fieldnames from a table which are a list of files
 	 *
-	 * @param	string		Table name
-	 * @return	array		Array of fieldnames that are either "group" or "file" types.
+	 * @param string $table Table name
+	 * @return array Array of fieldnames that are either "group" or "file" types.
 	 */
 	function extFileFields($table) {
 		$listArr = array();
@@ -6384,8 +6569,8 @@ class t3lib_TCEmain {
 	/**
 	 * Returns all fieldnames from a table which have the unique evaluation type set.
 	 *
-	 * @param	string		Table name
-	 * @return	array		Array of fieldnames
+	 * @param string $table Table name
+	 * @return array Array of fieldnames
 	 */
 	function getUniqueFields($table) {
 		$listArr = array();
@@ -6406,8 +6591,8 @@ class t3lib_TCEmain {
 	/**
 	 * Returns TRUE if the TCA/columns field type is a DB reference field
 	 *
-	 * @param	array		config array for TCA/columns field
-	 * @return	boolean		TRUE if DB reference field (group/db or select with foreign-table)
+	 * @param array $conf Config array for TCA/columns field
+	 * @return boolean TRUE if DB reference field (group/db or select with foreign-table)
 	 */
 	function isReferenceField($conf) {
 		return ($conf['type'] == 'group' && $conf['internal_type'] == 'db' || $conf['type'] == 'select' && $conf['foreign_table']);
@@ -6417,8 +6602,8 @@ class t3lib_TCEmain {
 	 * Returns the subtype as a string of an inline field.
 	 * If it's not a inline field at all, it returns FALSE.
 	 *
-	 * @param	array		config array for TCA/columns field
-	 * @return	mixed		string: inline subtype (field|mm|list), boolean: FALSE
+	 * @param array $conf Config array for TCA/columns field
+	 * @return mixed string Inline subtype (field|mm|list), boolean: FALSE
 	 */
 	function getInlineFieldType($conf) {
 		if ($conf['type'] !== 'inline' || !$conf['foreign_table']) {
@@ -6426,13 +6611,13 @@ class t3lib_TCEmain {
 		}
 
 		if ($conf['foreign_field']) {
-				// the reference to the parent is stored in a pointer field in the child record
+				// The reference to the parent is stored in a pointer field in the child record
 			return 'field';
 		} elseif ($conf['MM']) {
-				// regular MM intermediate table is used to store data
+				// Regular MM intermediate table is used to store data
 			return 'mm';
 		} else {
-				// an item list (separated by comma) is stored (like select type is doing)
+				// An item list (separated by comma) is stored (like select type is doing)
 			return 'list';
 		}
 	}
@@ -6441,13 +6626,13 @@ class t3lib_TCEmain {
 	/**
 	 * Get modified header for a copied record
 	 *
-	 * @param	string		Table name
-	 * @param	integer		PID value in which other records to test might be
-	 * @param	string		Field name to get header value for.
-	 * @param	string		Current field value
-	 * @param	integer		Counter (number of recursions)
-	 * @param	string		Previous title we checked for (in previous recursion)
-	 * @return	string		The field value, possibly appended with a "copy label"
+	 * @param string $table Table name
+	 * @param integer $pid PID value in which other records to test might be
+	 * @param string $field Field name to get header value for.
+	 * @param string $value Current field value
+	 * @param integer $count Counter (number of recursions)
+	 * @param string $prevTitle Previous title we checked for (in previous recursion)
+	 * @return string The field value, possibly appended with a "copy label"
 	 */
 	function getCopyHeader($table, $pid, $field, $value, $count, $prevTitle = '') {
 
@@ -6479,8 +6664,8 @@ class t3lib_TCEmain {
 	/**
 	 * Return "copy" label for a table. Although the name is "prepend" it actually APPENDs the label (after ...)
 	 *
-	 * @param	string		Table name
-	 * @return	string		Label to append, containing "%s" for the number
+	 * @param string $table Table name
+	 * @return string Label to append, containing "%s" for the number
 	 * @see getCopyHeader()
 	 */
 	function prependLabel($table) {
@@ -6495,9 +6680,9 @@ class t3lib_TCEmain {
 	/**
 	 * Get the final pid based on $table and $pid ($destPid type... pos/neg)
 	 *
-	 * @param	string		Table name
-	 * @param	integer		"Destination pid" : If the value is >= 0 it's just returned directly (through intval() though) but if the value is <0 then the method looks up the record with the uid equal to abs($pid) (positive number) and returns the PID of that record! The idea is that negative numbers point to the record AFTER WHICH the position is supposed to be!
-	 * @return	integer
+	 * @param string $table Table name
+	 * @param integer $pid "Destination pid" : If the value is >= 0 it's just returned directly (through intval() though) but if the value is <0 then the method looks up the record with the uid equal to abs($pid) (positive number) and returns the PID of that record! The idea is that negative numbers point to the record AFTER WHICH the position is supposed to be!
+	 * @return integer
 	 */
 	function resolvePid($table, $pid) {
 		$pid = intval($pid);
@@ -6521,9 +6706,9 @@ class t3lib_TCEmain {
 	/**
 	 * Removes the prependAtCopy prefix on values
 	 *
-	 * @param	string		Table name
-	 * @param	string		The value to fix
-	 * @return	string		Clean name
+	 * @param string $table Table name
+	 * @param string $value The value to fix
+	 * @return string Clean name
 	 */
 	function clearPrefixFromValue($table, $value) {
 		$regex = '/' . sprintf(quotemeta($this->prependLabel($table)), '[0-9]*') . '$/';
@@ -6533,11 +6718,11 @@ class t3lib_TCEmain {
 	/**
 	 * File functions on external file references. eg. deleting files when deleting record
 	 *
-	 * @param	string		Table name
-	 * @param	string		Field name
-	 * @param	string		List of files to work on from field
-	 * @param	string		Function, eg. "deleteAll" which will delete all files listed.
-	 * @return	void
+	 * @param string $table Table name
+	 * @param string $field Field name
+	 * @param string $filelist List of files to work on from field
+	 * @param string $func Function, eg. "deleteAll" which will delete all files listed.
+	 * @return void
 	 */
 	function extFileFunctions($table, $field, $filelist, $func) {
 		t3lib_div::loadTCA($table);
@@ -6565,8 +6750,8 @@ class t3lib_TCEmain {
 	/**
 	 * Used by the deleteFunctions to check if there are records from disallowed tables under the pages to be deleted.
 	 *
-	 * @param	string		List of page integers
-	 * @return	boolean		Return TRUE, if permission granted
+	 * @param string $inList List of page integers
+	 * @return boolean Return TRUE, if permission granted
 	 */
 	function noRecordsFromUnallowedTables($inList) {
 		$inList = trim($this->rmComma(trim($inList)));
@@ -6589,9 +6774,9 @@ class t3lib_TCEmain {
 	/**
 	 * Determine if a record was copied or if a record is the result of a copy action.
 	 *
-	 * @param	string		$table: The tablename of the record
-	 * @param	integer		$uid: The uid of the record
-	 * @return	boolean		Returns TRUE if the record is copied or is the result of a copy action
+	 * @param string $table The tablename of the record
+	 * @param integer $uid The uid of the record
+	 * @return boolean Returns TRUE if the record is copied or is the result of a copy action
 	 */
 	function isRecordCopied($table, $uid) {
 			// If the record was copied:
@@ -6604,7 +6789,6 @@ class t3lib_TCEmain {
 		return FALSE;
 	}
 
-
 	/******************************
 	 *
 	 * Clearing cache
@@ -6616,9 +6800,9 @@ class t3lib_TCEmain {
 	 * If the $table is 'pages' then cache is cleared for all pages on the same level (and subsequent?)
 	 * Else just clear the cache for the parent page of the record.
 	 *
-	 * @param	string		Table name of record that was just updated.
-	 * @param	integer		UID of updated / inserted record
-	 * @return	void
+	 * @param string $table Table name of record that was just updated.
+	 * @param integer $uid UID of updated / inserted record
+	 * @return void
 	 */
 	function clear_cache($table, $uid) {
 		$uid = intval($uid);
@@ -6762,7 +6946,7 @@ class t3lib_TCEmain {
 	 *						 the TER.
 	 *
 	 * @param string $cacheCmd The cache command, see above description
-	 * @return	void
+	 * @return void
 	 */
 	public function clear_cacheCmd($cacheCmd) {
 		if (is_object($this->BE_USER)) {
@@ -6844,9 +7028,9 @@ class t3lib_TCEmain {
 
 			// process caching framwork operations
 		if (count($tagsToFlush) > 0) {
-				/* @var $pageCache t3lib_cache_frontend_AbstractFrontend */
+				/** @var $pageCache t3lib_cache_frontend_AbstractFrontend */
 			$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
-				/* @var $pageSectionCache t3lib_cache_frontend_AbstractFrontend */
+				/** @var $pageSectionCache t3lib_cache_frontend_AbstractFrontend */
 			$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
 
 			foreach ($tagsToFlush as $tag) {
@@ -6864,7 +7048,6 @@ class t3lib_TCEmain {
 		}
 	}
 
-
 	/*****************************
 	 *
 	 * Logging
@@ -6874,22 +7057,23 @@ class t3lib_TCEmain {
 	/**
 	 * Logging actions from TCEmain
 	 *
-	 * @param	string		Table name the log entry is concerned with. Blank if NA
-	 * @param	integer		Record UID. Zero if NA
-	 * @param	integer		Action number: 0=No category, 1=new record, 2=update record, 3= delete record, 4= move record, 5= Check/evaluate
-	 * @param	integer		Normally 0 (zero). If set, it indicates that this log-entry is used to notify the backend of a record which is moved to another location
-	 * @param	integer		The severity: 0 = message, 1 = error, 2 = System Error, 3 = security notice (admin)
-	 * @param	string		Default error message in english
-	 * @param	integer		This number is unique for every combination of $type and $action. This is the error-message number, which can later be used to translate error messages. 0 if not categorized, -1 if temporary
-	 * @param	array		Array with special information that may go into $details by '%s' marks / sprintf() when the log is shown
-	 * @param	integer		The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
-	 * @param	string		NEW id for new records
-	 * @return	integer		Log entry UID
+	 * @param string $table Table name the log entry is concerned with. Blank if NA
+	 * @param integer $recuid Record UID. Zero if NA
+	 * @param integer $action Action number: 0=No category, 1=new record, 2=update record, 3= delete record, 4= move record, 5= Check/evaluate
+	 * @param integer $recpid Normally 0 (zero). If set, it indicates that this log-entry is used to notify the backend of a record which is moved to another location
+	 * @param integer $error The severity: 0 = message, 1 = error, 2 = System Error, 3 = security notice (admin)
+	 * @param string $details Default error message in english
+	 * @param integer $details_nr This number is unique for every combination of $type and $action. This is the error-message number, which can later be used to translate error messages. 0 if not categorized, -1 if temporary
+	 * @param array $data Array with special information that may go into $details by '%s' marks / sprintf() when the log is shown
+	 * @param integer $event_pid The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
+	 * @param string $NEWid NEW id for new records
+	 * @return integer Log entry UID
 	 * @see	class.t3lib_userauthgroup.php
 	 */
 	function log($table, $recuid, $action, $recpid, $error, $details, $details_nr = -1, $data = array(), $event_pid = -1, $NEWid = '') {
 		if ($this->enableLogging) {
-			$type = 1; // Type value for tce_db.php
+				// Type value for tce_db.php
+			$type = 1;
 			if (!$this->storeLogMessages) {
 				$details = '';
 			}
@@ -6903,9 +7087,9 @@ class t3lib_TCEmain {
 	/**
 	 * Simple logging function meant to be used when logging messages is not yet fixed.
 	 *
-	 * @param	string		Message string
-	 * @param	integer		Error code, see log()
-	 * @return	integer		Log entry UID
+	 * @param string $message Message string
+	 * @param integer $error Error code, see log()
+	 * @return integer Log entry UID
 	 * @see log()
 	 */
 	function newlog($message, $error = 0) {
@@ -6915,12 +7099,12 @@ class t3lib_TCEmain {
 	/**
 	 * Simple logging function meant to bridge the gap between newlog() and log() with a littme more info, in particular the record table/uid and event_pid so we can filter messages pr page.
 	 *
-	 * @param	string		Message string
-	 * @param	string		Table name
-	 * @param	integer		Record uid
-	 * @param	integer		Record PID (from page tree). Will be turned into an event_pid internally in function: Meaning that the PID for a page will be its own UID, not its page tree PID.
-	 * @param	integer		Error code, see log()
-	 * @return	integer		Log entry UID
+	 * @param string $message Message string
+	 * @param string $table Table name
+	 * @param integer $uid Record uid
+	 * @param integer $pid Record PID (from page tree). Will be turned into an event_pid internally in function: Meaning that the PID for a page will be its own UID, not its page tree PID.
+	 * @param integer $error Error code, see log()
+	 * @return integer Log entry UID
 	 * @see log()
 	 */
 	function newlog2($message, $table, $uid, $pid = FALSE, $error = 0) {
@@ -6935,8 +7119,8 @@ class t3lib_TCEmain {
 	/**
 	 * Print log error messages from the operations of this script instance
 	 *
-	 * @param	string		Redirect URL (for creating link in message)
-	 * @return	void		(Will exit on error)
+	 * @param string $redirect Redirect URL (for creating link in message)
+	 * @return void (Will exit on error)
 	 */
 	function printLogErrorMessages($redirect) {
 
@@ -6968,7 +7152,7 @@ class t3lib_TCEmain {
 	/**
 	 * Clears page cache. Takes into account file cache.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function internal_clearPageCache() {
 		if (t3lib_extMgm::isLoaded('cms')) {
@@ -6976,15 +7160,14 @@ class t3lib_TCEmain {
 		}
 	}
 
-
 	/**
 	 * Proprocesses field array based on field type. Some fields must be adjusted
 	 * before going to database. This is done on the copy of the field array because
 	 * original values are used in remap action later.
 	 *
-	 * @param	string	$table	Table name
-	 * @param	array	$fieldArray	Field array to check
-	 * @return	array	Updated field array
+	 * @param stringb$table	Table name
+	 * @param array $fieldArray	Field array to check
+	 * @return array Updated field array
 	 */
 	function insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray) {
 		$result = $fieldArray;
