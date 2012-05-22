@@ -26,20 +26,21 @@
 ***************************************************************/
 
 /**
- * This is the MAIN DOCUMENT of the TypoScript driven standard front-end (from the "cms" extension)
- * Basically this is the "index.php" script which all requests for TYPO3 delivered pages goes to in the frontend (the website)
+ * This is the MAIN DOCUMENT of the TypoScript driven standard front-end (from
+ * the "cms" extension) Basically this is the "index.php" script which all
+ * requests for TYPO3 delivered pages goes to in the frontend (the website)
  *
  * @author René Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage tslib
  */
 
-require('typo3/Bootstrap.php');
+require_once('typo3/Bootstrap.php');
 Typo3_Bootstrap::checkEnvironmentOrDie();
 Typo3_Bootstrap::defineBaseConstants();
 Typo3_Bootstrap::defineAndCheckPaths('');
 Typo3_Bootstrap::requireBaseClasses();
 Typo3_Bootstrap::setUpEnvironment();
 
-require(PATH_tslib . 'index_ts.php');
+require_once(PATH_tslib . 'index_ts.php');
 ?>
