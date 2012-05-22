@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "indexed_search_mysql".
 #
-# Auto generated 23-04-2012 12:56
+# Auto generated 22-05-2012 11:28
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => 'MySQL specific driver for Indexed Search Engine. Allows usage of MySQL-only features like FULLTEXT indexes.',
 	'category' => 'misc',
 	'shy' => 0,
-	'dependencies' => 'indexed_search',
+	'dependencies' => 'indexed_search,cms',
 	'conflicts' => '',
 	'priority' => '',
 	'loadOrder' => '',
@@ -32,14 +32,14 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => '',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '4.7.0',
+	'version' => '4.7.1',
 	'_md5_values_when_last_written' => 'a:5:{s:9:"ChangeLog";s:4:"1bb1";s:32:"class.tx_indexedsearch_mysql.php";s:4:"10bb";s:12:"ext_icon.gif";s:4:"4cbf";s:17:"ext_localconf.php";s:4:"6998";s:14:"ext_tables.sql";s:4:"7f93";}',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.2.6-0.0.0',
 			'typo3' => '4.7.0-0.0.0',
 			'indexed_search' => '4.7.0-',
-			'cms' => '4.7.0-'
+			'cms' => '4.7.0-',
 		),
 		'conflicts' => array(
 		),
