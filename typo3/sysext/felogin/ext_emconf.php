@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "felogin".
 #
-# Auto generated 23-04-2012 12:55
+# Auto generated 22-05-2012 11:27
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 1,
 	'lockType' => '',
 	'author_company' => '',
-	'version' => '4.7.0',
+	'version' => '4.7.1',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.3.0-0.0.0',

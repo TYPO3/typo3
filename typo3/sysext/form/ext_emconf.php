@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "form".
 #
-# Auto generated 23-04-2012 12:55
+# Auto generated 22-05-2012 11:28
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -32,12 +32,12 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'docPath' => 'Documentation/Manual/en',
-	'version' => '4.7.0',
+	'version' => '4.7.1',
 	'constraints' => array(
 		'depends' => array(
 			'cms' => '',
 			'php' => '5.3.0-0.0.0',
-			'typo3' => '4.6.0-0.0.0',
+			'typo3' => '4.7.0-0.0.0',
 		),
 		'conflicts' => array(
 		),
