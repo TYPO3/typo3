@@ -60,7 +60,7 @@ class Typo3_Bootstrap {
 	 */
 	public static function defineBaseConstants() {
 			// This version, branch and copyright
-		define('TYPO3_version', '6.0-dev');
+		define('TYPO3_version', '6.0.0alpha1');
 		define('TYPO3_branch', '6.0');
 		define('TYPO3_copyright_year', '1998-2012');
 
