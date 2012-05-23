@@ -127,7 +127,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 							$this->login['uname']
 						),
 						'Core',
-						0
+						t3lib_div::SYSLOG_SEVERITY_WARNING
 					);
 				} else {
 					if ($this->writeDevLog) {
@@ -153,7 +153,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 						$this->login['uname']
 					),
 					'Core',
-					0
+					t3lib_div::SYSLOG_SEVERITY_WARNING
 				);
 			}
 		}
@@ -183,7 +183,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 					t3lib_div::sysLog(
 						sprintf( "Login-attempt from %s (%s), username '%s', password not accepted!", $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname'] ),
 						'Core',
-						0
+						t3lib_div::SYSLOG_SEVERITY_WARNING
 					);
 				}
 				if ($this->writeDevLog) 	t3lib_div::devLog('Password not accepted: '.$this->login['uident'], 'tx_sv_auth', 2);
@@ -199,7 +199,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 					t3lib_div::sysLog(
 						sprintf( "Login-attempt from %s (%s), username '%s', locked domain '%s' did not match '%s'!", $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST'] ),
 						'Core',
-						0
+						t3lib_div::SYSLOG_SEVERITY_WARNING
 					);
 				}
 				$OK = FALSE;
