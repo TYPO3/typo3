@@ -37,6 +37,8 @@ ob_start();
 define('TYPO3_MODE', 'BE');
 define('TYPO3_enterInstallScript', '1');
 
+	// We use require instead of require_once here so we get a fatal error if Bootstrap.php is accidentally included twice
+	// (which would indicate a clear bug).
 require('../Bootstrap.php');
 Typo3_Bootstrap::checkEnvironmentOrDie();
 Typo3_Bootstrap::defineBaseConstants();
