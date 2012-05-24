@@ -1,8 +1,6 @@
 /***************************************************************
  * extJS for TCEforms
  *
- * $Id$
- *
  * Copyright notice
  *
  * (c) 2009-2011 Steffen Kamper <info@sk-typo3.de>
@@ -42,9 +40,7 @@ TYPO3.TCEFORMS = {
 		dateFields.each(function(element) {
 			var index = element.dom.id.match(/tceforms-datefield-/) ? 0 : 1;
 			var format = TYPO3.settings.datePickerUSmode ? TYPO3.settings.dateFormatUS : TYPO3.settings.dateFormat;
-
-			var datepicker = element.next('span');
-			var oldValue = Date.parseDate(element.dom.value, format[index]);
+			var datepicker = element.next('span'), menu;
 
 			// check for daterange
 			var lowerMatch = element.dom.className.match(/lower-(\d+)\b/);
