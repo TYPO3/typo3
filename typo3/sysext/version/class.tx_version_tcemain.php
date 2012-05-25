@@ -801,7 +801,7 @@ class tx_version_tcemain {
 										)));
 
 											// Find fields to keep
-										$keepFields = $tcemainObj->getUniqueFields($table);
+										$keepFields = $this->getUniqueFields($table);
 										if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
 											$keepFields[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
 										}
@@ -1437,6 +1437,28 @@ class tx_version_tcemain {
 	 */
 	public function getCommandMap(t3lib_TCEmain $tceMain, array $commandMap) {
 		return t3lib_div::makeInstance('tx_version_tcemain_CommandMap', $this, $tceMain, $commandMap);
+	}
+
+	/**
+	 * Returns all fieldnames from a table which have the unique evaluation type set.
+	 *
+	 * @param string $table Table name
+	 * @return array Array of fieldnames
+	 */
+	protected function getUniqueFields($table) {
+		$listArr = array();
+		t3lib_div::loadTCA($table);
+		if ($GLOBALS['TCA'][$table]['columns']) {
+			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $configArr) {
+				if ($configArr['config']['type'] === 'input') {
+					$evalCodesArray = t3lib_div::trimExplode(',', $configArr['config']['eval'], 1);
+					if (in_array('uniqueInPid', $evalCodesArray) || in_array('unique', $evalCodesArray)) {
+						$listArr[] = $field;
+					}
+				}
+			}
+		}
+		return $listArr;
 	}
 }
 ?>
