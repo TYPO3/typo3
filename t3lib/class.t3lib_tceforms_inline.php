@@ -470,7 +470,7 @@ class t3lib_TCEforms_inline {
 		$objectId = $this->inlineNames['object'] . self::Structure_Separator . $foreign_table . self::Structure_Separator . $rec['uid'];
 		$expandSingle = $config['appearance']['expandSingle'] ? 1 : 0;
 			// We need the returnUrl of the main script when loading the fields via AJAX-call (to correct wizard code, so include it as 3rd parameter)
-		$onClick = "return inline.expandCollapseRecord('" . htmlspecialchars($objectId) . "', $expandSingle, '" . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . "')";
+		$onClick = "return inline.expandCollapseRecord('" . htmlspecialchars($objectId) . "', " . $expandSingle . ", '" . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . "')";
 
 			// Pre-Processing:
 		$isOnSymmetricSide = t3lib_loadDBGroup::isOnSymmetricSide($parentUid, $config, $rec);
@@ -951,7 +951,7 @@ class t3lib_TCEforms_inline {
 				$icon = 'actions-document-new';
 				$className = 'typo3-newRecordLink';
 				$attributes['class'] = 'inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
-				$attributes['onclick'] = "return inline.createNewRecord('$objectPrefix')";
+				$attributes['onclick'] = "return inline.createNewRecord('" . $objectPrefix . "')";
 				if (isset($conf['inline']['inlineNewButtonStyle']) && $conf['inline']['inlineNewButtonStyle']) {
 					$attributes['style'] = $conf['inline']['inlineNewButtonStyle'];
 				}
@@ -963,14 +963,14 @@ class t3lib_TCEforms_inline {
 				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:localizeAllRecords', 1);
 				$icon = 'actions-document-localize';
 				$className = 'typo3-localizationLink';
-				$attributes['onclick'] = "return inline.synchronizeLocalizeRecords('$objectPrefix', 'localize')";
+				$attributes['onclick'] = "return inline.synchronizeLocalizeRecords('" . $objectPrefix . "', 'localize')";
 			break;
 			case 'synchronize':
 				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:synchronizeWithOriginalLanguage', 1);
 				$icon = 'actions-document-synchronize';
 				$className = 'typo3-synchronizationLink';
 				$attributes['class'] = 'inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
-				$attributes['onclick'] = "return inline.synchronizeLocalizeRecords('$objectPrefix', 'synchronize')";
+				$attributes['onclick'] = "return inline.synchronizeLocalizeRecords('" . $objectPrefix . "', 'synchronize')";
 			break;
 		}
 			// Create the link:
@@ -1196,8 +1196,8 @@ class t3lib_TCEforms_inline {
 			$jsonArray = array(
 				'data' => $item,
 				'scriptCall' => array(
-					"inline.domAddNewRecord('bottom','" . $this->inlineNames['object'] . "_records','$objectPrefix',json.data);",
-					"inline.memorizeAddRecord('$objectPrefix','" . $record['uid'] . "',null,'$foreignUid');"
+					"inline.domAddNewRecord('bottom','" . $this->inlineNames['object'] . "_records','" . $objectPrefix . "',json.data);",
+					"inline.memorizeAddRecord('" . $objectPrefix . "','" . $record['uid'] . "',null,'" . $foreignUid . "');"
 				)
 			);
 
@@ -1206,15 +1206,15 @@ class t3lib_TCEforms_inline {
 			$jsonArray = array(
 				'data' => $item,
 				'scriptCall' => array(
-					"inline.domAddNewRecord('after','" . $domObjectId . '_div' . "','$objectPrefix',json.data);",
-					"inline.memorizeAddRecord('$objectPrefix','" . $record['uid'] . "','" . $current['uid'] . "','$foreignUid');"
+					"inline.domAddNewRecord('after','" . $domObjectId . '_div' . "','" . $objectPrefix. "',json.data);",
+					"inline.memorizeAddRecord('" . $objectPrefix . "','" . $record['uid'] . "','" . $current['uid'] . "','" . $foreignUid . "');"
 				)
 			);
 		}
 		$this->getCommonScriptCalls($jsonArray, $config);
 			// Collapse all other records if requested:
 		if (!$collapseAll && $expandSingle) {
-			$jsonArray['scriptCall'][] = "inline.collapseAllRecords('$objectId', '$objectPrefix', '" . $record['uid'] . "');";
+			$jsonArray['scriptCall'][] = "inline.collapseAllRecords('" . $objectId . "', '" . $objectPrefix . "', '" . $record['uid'] . "');";
 		}
 			// Tell the browser to scroll to the newly created record
 		$jsonArray['scriptCall'][] = "Element.scrollTo('" . $objectId . "_div');";
@@ -1357,7 +1357,7 @@ class t3lib_TCEforms_inline {
 			$row = $this->getRecord($this->inlineFirstPid, $current['table'], $item);
 			$selectedValue = ($foreignSelector ? "'" . $row[$foreignSelector] . "'" : 'null');
 			$data .= $this->renderForeignRecord($parent['uid'], $row, $parent['config']);
-			$jsonArrayScriptCall[] = "inline.memorizeAddRecord('$nameObjectForeignTable', '" . $item . "', null, $selectedValue);";
+			$jsonArrayScriptCall[] = "inline.memorizeAddRecord('" . $nameObjectForeignTable . "', '" . $item . "', null, " . $selectedValue . ");";
 				// Remove possible virtual records in the form which showed that a child records could be localized:
 			if (isset($row[$transOrigPointerField]) && $row[$transOrigPointerField]) {
 				$jsonArrayScriptCall[] = "inline.fadeAndRemove('" . $nameObjectForeignTable . self::Structure_Separator . $row[$transOrigPointerField] . '_div' . "');";
@@ -1367,7 +1367,7 @@ class t3lib_TCEforms_inline {
 			$jsonArray['data'] = $data;
 			array_unshift(
 				$jsonArrayScriptCall,
-				"inline.domAddNewRecord('bottom', '" . $nameObject . "_records', '$nameObjectForeignTable', json.data);"
+				"inline.domAddNewRecord('bottom', '" . $nameObject . "_records', '" . $nameObjectForeignTable . "', json.data);"
 			);
 		}
 
