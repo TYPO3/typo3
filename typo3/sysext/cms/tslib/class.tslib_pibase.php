@@ -993,7 +993,7 @@ class tslib_pibase {
 	 * @param	string		If set, this is taken as the first part of the query instead of what is created internally. Basically this should be a query starting with "FROM [table] WHERE ... AND ...". The $addWhere clauses and all the other stuff is still added. Only the tables and PID selecting clauses are bypassed. May be deprecated in the future!
 	 * @return	pointer		SQL result pointer
 	 */
-	function pi_exec_query($table, $count=0 ,$addWhere='' ,$mm_cat='' ,$groupBy='' ,$orderBy='', $query='') {
+	function pi_exec_query($table, $count=0, $addWhere='', $mm_cat='', $groupBy='', $orderBy='', $query='') {
 			// Begin Query:
 		if (!$query) {
 				// Fetches the list of PIDs to select from.

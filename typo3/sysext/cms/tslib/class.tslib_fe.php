@@ -3544,7 +3544,7 @@ if (version == "n3") {
 		}
 
 		$pageName = $this->config['config']['stat_apache_pagenames'] ? $this->config['config']['stat_apache_pagenames'] : '[path][title]--[uid].html';
-		$pageName = str_replace('[title]', $shortTitle , $pageName);
+		$pageName = str_replace('[title]', $shortTitle, $pageName);
 		$pageName = str_replace('[uid]', $this->page['uid'], $pageName);
 		$pageName = str_replace('[alias]', $this->page['alias'], $pageName);
 		$pageName = str_replace('[type]', $this->type, $pageName);
@@ -4042,7 +4042,7 @@ if (version == "n3") {
 			$this->content = str_replace('"typo3conf/ext/', '"'.$this->absRefPrefix.'typo3conf/ext/', $this->content);
 			$this->content = str_replace('"' . TYPO3_mainDir . 'contrib/', '"' . $this->absRefPrefix . TYPO3_mainDir . 'contrib/', $this->content);
 			$this->content = str_replace('"' . TYPO3_mainDir . 'ext/', '"' . $this->absRefPrefix . TYPO3_mainDir . 'ext/', $this->content);
-			$this->content = str_replace('"' . TYPO3_mainDir . 'sysext/' , '"' . $this->absRefPrefix . TYPO3_mainDir . 'sysext/', $this->content);
+			$this->content = str_replace('"' . TYPO3_mainDir . 'sysext/', '"' . $this->absRefPrefix . TYPO3_mainDir . 'sysext/', $this->content);
 			$this->content = str_replace('"'.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '"'.$this->absRefPrefix.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], $this->content);
 			$this->content = str_replace('"' . $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'], '"' . $this->absRefPrefix . $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'], $this->content);
 			// Process additional directories
@@ -4140,7 +4140,7 @@ if (version == "n3") {
 		$this->content = preg_replace('/(<(?:a|area).*?href=")(#[^"]*")/i', '${1}' . htmlspecialchars($scriptPath) . '${2}', $originalContent);
 			// There was an error in the call to preg_replace, so keep the original content (behavior prior to PHP 5.2)
 		if (preg_last_error() > 0) {
-			t3lib_div::sysLog('preg_replace returned error-code: ' . preg_last_error().' in function prefixLocalAnchorsWithScript. Replacement not done!' , 'cms', 4);
+			t3lib_div::sysLog('preg_replace returned error-code: ' . preg_last_error().' in function prefixLocalAnchorsWithScript. Replacement not done!', 'cms', 4);
 			$this->content = $originalContent;
 		}
 	}

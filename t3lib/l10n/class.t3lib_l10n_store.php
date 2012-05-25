@@ -204,7 +204,7 @@ class t3lib_l10n_Store implements t3lib_Singleton {
 	 */
 	public function getFileReferenceWithoutExtension($fileReference) {
 		if (!isset($this->configuration[$fileReference]['fileReferenceWithoutExtension'])) {
-			$this->configuration[$fileReference]['fileReferenceWithoutExtension'] = preg_replace('/\.[a-z0-9]+$/i' , '' , $fileReference);
+			$this->configuration[$fileReference]['fileReferenceWithoutExtension'] = preg_replace('/\.[a-z0-9]+$/i', '', $fileReference);
 		}
 		return $this->configuration[$fileReference]['fileReferenceWithoutExtension'];
 	}

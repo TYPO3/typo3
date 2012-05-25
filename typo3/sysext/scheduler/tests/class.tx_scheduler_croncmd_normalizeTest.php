@@ -53,7 +53,7 @@ class tx_scheduler_CronCmd_NormalizeTest extends tx_phpunit_testcase {
 				'    return parent::normalizeMonthAndWeekdayField($expression, $isMonthField);' .
 				'  }' .
 				'  public static function normalizeIntegerField($expression, $lowerBound = 0, $upperBound = 59) {' .
-				'    return parent::normalizeIntegerField($expression, $lowerBound , $upperBound);' .
+				'    return parent::normalizeIntegerField($expression, $lowerBound, $upperBound);' .
 				'  }' .
 				'  public static function splitFields($cronCommand) {' .
 				'    return parent::splitFields($cronCommand);' .

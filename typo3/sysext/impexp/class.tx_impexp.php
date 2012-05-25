@@ -3092,8 +3092,8 @@ class tx_impexp {
 
 								// Create diff-result:
 							$output[$fN] = $t3lib_diff_Obj->makeDiffDisplay(
-								t3lib_BEfunc::getProcessedValue($table,$fN,!$inverseDiff ? $importRecord[$fN] : $databaseRecord[$fN] ,0,1,1),
-								t3lib_BEfunc::getProcessedValue($table,$fN,!$inverseDiff ? $databaseRecord[$fN] : $importRecord[$fN] ,0,1,1)
+								t3lib_BEfunc::getProcessedValue($table, $fN, !$inverseDiff ? $importRecord[$fN] : $databaseRecord[$fN], 0, 1, 1),
+								t3lib_BEfunc::getProcessedValue($table, $fN, !$inverseDiff ? $databaseRecord[$fN] : $importRecord[$fN], 0, 1, 1)
 							);
 						}
 						unset($importRecord[$fN]);
