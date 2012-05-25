@@ -138,12 +138,12 @@ class SC_alt_shortcut {
 			// Lookup the title of this page and use it as default description
 		$page_id = $this->getLinkedPageId($url);
 		if (t3lib_utility_Math::canBeInterpretedAsInteger($page_id)) {
-			if (preg_match('/\&edit\[(.*)\]\[(.*)\]=edit/',$url,$matches)) {
+			if (preg_match('/\&edit\[(.*)\]\[(.*)\]=edit/', $url, $matches)) {
 					// Edit record
 				$description = '';	// TODO: Set something useful
 			} else {
 					// Page listing
-				$pageRow = t3lib_BEfunc::getRecord('pages',$page_id);
+				$pageRow = t3lib_BEfunc::getRecord('pages', $page_id);
 				if (count($pageRow)) {
 						// If $page_id is an integer, set the description to the title of that page
 					$description = $pageRow['title'];
@@ -174,7 +174,7 @@ class SC_alt_shortcut {
 		$addUSERWhere = (!$GLOBALS['BE_USER']->isAdmin() ? ' AND userid=' . intval($GLOBALS['BE_USER']->user['uid']) : '');
 
 			// Deleting shortcuts:
-		if (strcmp($this->deleteCategory,'')) {
+		if (strcmp($this->deleteCategory, '')) {
 			if (t3lib_utility_Math::canBeInterpretedAsInteger($this->deleteCategory)) {
 				$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_be_shortcuts', 'sc_group='.intval($this->deleteCategory).$addUSERWhere);
 			}
@@ -269,7 +269,7 @@ class SC_alt_shortcut {
 		$bookmarkGroups = $GLOBALS['BE_USER']->getTSConfigProp('options.bookmarkGroups');
 		if (is_array($bookmarkGroups) && count($bookmarkGroups)) {
 			foreach ($bookmarkGroups as $k=>$v) {
-				if (strcmp('',$v) && strcmp('0',$v)) {
+				if (strcmp('', $v) && strcmp('0', $v)) {
 					$this->groupLabels[$k] = (string)$v;
 				} elseif ($GLOBALS['BE_USER']->isAdmin()) {
 					unset($this->groupLabels[$k]);
@@ -280,8 +280,8 @@ class SC_alt_shortcut {
 			// List of global groups that will be loaded. All global groups have negative IDs.
 		$globalGroups = -100;	// Group -100 is kind of superglobal and can't be changed.
 		if (count($this->groupLabels)) {
-			$globalGroups .= ','.implode(',',array_keys($this->groupLabels));
-			$globalGroups = str_replace(',',',-',$globalGroups);	// Ugly hack to make the UIDs negative - is there any better solution?
+			$globalGroups .= ','.implode(',', array_keys($this->groupLabels));
+			$globalGroups = str_replace(',', ',-', $globalGroups);	// Ugly hack to make the UIDs negative - is there any better solution?
 		}
 
 			// Fetching shortcuts to display for this user:
@@ -296,15 +296,15 @@ class SC_alt_shortcut {
 
 			// Traverse shortcuts
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$mParts = explode('|',$row['module_name']);
+			$mParts = explode('|', $row['module_name']);
 			$row['module_name']=$mParts[0];
 			$row['M_module_name']=$mParts[1];
-			$mParts = explode('_',$row['M_module_name']?$row['M_module_name']:$row['module_name']);
+			$mParts = explode('_', $row['M_module_name']?$row['M_module_name']:$row['module_name']);
 			$qParts = parse_url($row['url']);
 
 			if (!$GLOBALS['BE_USER']->isAdmin()) {
 					// Check for module access
-				if (!isset($GLOBALS['LANG']->moduleLabels['tabs_images'][implode('_',$mParts).'_tab']))	{	// Nice hack to check if the user has access to this module - otherwise the translation label would not have been loaded :-)
+				if (!isset($GLOBALS['LANG']->moduleLabels['tabs_images'][implode('_', $mParts).'_tab']))	{	// Nice hack to check if the user has access to this module - otherwise the translation label would not have been loaded :-)
 					continue;
 				}
 
@@ -314,7 +314,7 @@ class SC_alt_shortcut {
 					if (!$GLOBALS['BE_USER']->isInWebMount($page_id)) continue;
 
 						// Check for record access
-					$pageRow = t3lib_BEfunc::getRecord('pages',$page_id);
+					$pageRow = t3lib_BEfunc::getRecord('pages', $page_id);
 					if (!$GLOBALS['BE_USER']->doesUserHaveAccess($pageRow, $perms = 1)) {
 						continue;
 					}
@@ -326,20 +326,20 @@ class SC_alt_shortcut {
 			}
 
 			$sc_group = $row['sc_group'];
-			if ($sc_group && strcmp($formerGr,$sc_group)) {
+			if ($sc_group && strcmp($formerGr, $sc_group)) {
 				if ($sc_group!=-100) {
-					if ($this->groupLabels[abs($sc_group)] && strcmp('1',$this->groupLabels[abs($sc_group)])) {
+					if ($this->groupLabels[abs($sc_group)] && strcmp('1', $this->groupLabels[abs($sc_group)])) {
 						$label = $this->groupLabels[abs($sc_group)];
 					} else {
-						$label = $GLOBALS['LANG']->getLL('shortcut_group_'.abs($sc_group),1);
-						if (!$label)	$label = $GLOBALS['LANG']->getLL('shortcut_group',1).' '.abs($sc_group);	// Fallback label
+						$label = $GLOBALS['LANG']->getLL('shortcut_group_'.abs($sc_group), 1);
+						if (!$label)	$label = $GLOBALS['LANG']->getLL('shortcut_group', 1).' '.abs($sc_group);	// Fallback label
 					}
 
 					if ($sc_group>=0) {
 						$onC = 'if (confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('bookmark_delAllInCat')).')){window.location.href=\'alt_shortcut.php?deleteCategory='.$sc_group.'\';}return false;';
-						$this->linesPre[]='<td>&nbsp;</td><td class="bgColor5"><a href="#" onclick="'.htmlspecialchars($onC).'" title="'.$GLOBALS['LANG']->getLL('bookmark_delAllInCat',1).'">'.$label.'</a></td>';
+						$this->linesPre[]='<td>&nbsp;</td><td class="bgColor5"><a href="#" onclick="'.htmlspecialchars($onC).'" title="'.$GLOBALS['LANG']->getLL('bookmark_delAllInCat', 1).'">'.$label.'</a></td>';
 					} else {
-						$label = $GLOBALS['LANG']->getLL('bookmark_global',1).': '.($label ? $label : abs($sc_group));	// Fallback label
+						$label = $GLOBALS['LANG']->getLL('bookmark_global', 1).': '.($label ? $label : abs($sc_group));	// Fallback label
 						$this->lines[]='<td>&nbsp;</td><td class="bgColor5">'.$label.'</td>';
 					}
 					unset($label);
@@ -351,12 +351,12 @@ class SC_alt_shortcut {
 			if ($row['description'] && ($row['uid']!=$this->editSC)) {
 				$label = $row['description'];
 			} else {
-				$label = t3lib_div::fixed_lgd_cs(rawurldecode($qParts['query']),150);
+				$label = t3lib_div::fixed_lgd_cs(rawurldecode($qParts['query']), 150);
 			}
-			$titleA = $this->itemLabel($label,$row['module_name'],$row['M_module_name']);
+			$titleA = $this->itemLabel($label, $row['module_name'], $row['M_module_name']);
 
 			$editSH = ($row['sc_group']>=0 || $GLOBALS['BE_USER']->isAdmin()) ? 'editSh('.intval($row['uid']).');' : "alert('".$GLOBALS['LANG']->getLL('bookmark_onlyAdmin')."')";
-			$jumpSC = 'jump(unescape(\''.rawurlencode($row['url']).'\'),\''.implode('_',$mParts).'\',\''.$mParts[0].'\');';
+			$jumpSC = 'jump(unescape(\''.rawurlencode($row['url']).'\'),\''.implode('_', $mParts).'\',\''.$mParts[0].'\');';
 			$onC = 'if (document.shForm.editShortcut_check && document.shForm.editShortcut_check.checked){'.$editSH.'}else{'.$jumpSC.'}return false;';
 			if ($sc_group>=0)	{	// user defined groups show up first
 				$this->linesPre[]='<td class="'.$bgColorClass.'"><a href="#" onclick="'.htmlspecialchars($onC).'"><img src="'.$this->getIcon($row['module_name']).'" title="'.htmlspecialchars($titleA).'" alt="" /></a></td>';
@@ -364,27 +364,27 @@ class SC_alt_shortcut {
 				$this->lines[]='<td class="'.$bgColorClass.'"><a href="#" onclick="'.htmlspecialchars($onC).'"><img src="'.$this->getIcon($row['module_name']).'" title="'.htmlspecialchars($titleA).'" alt="" /></a></td>';
 			}
 			if (trim($row['description'])) {
-				$kkey = strtolower(substr($row['description'],0,20)).'_'.$row['uid'];
-				$this->selOpt[$kkey]='<option value="'.htmlspecialchars($jumpSC).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($row['description'],50)).'</option>';
+				$kkey = strtolower(substr($row['description'], 0, 20)).'_'.$row['uid'];
+				$this->selOpt[$kkey]='<option value="'.htmlspecialchars($jumpSC).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($row['description'], 50)).'</option>';
 			}
 			$formerGr=$row['sc_group'];
 		}
 		ksort($this->selOpt);
-		array_unshift($this->selOpt,'<option>['.$GLOBALS['LANG']->getLL('bookmark_selSC',1).']</option>');
+		array_unshift($this->selOpt, '<option>['.$GLOBALS['LANG']->getLL('bookmark_selSC', 1).']</option>');
 
 		$this->editLoadedFunc();
 		$this->editPageIdFunc();
 
 		if (!$this->editLoaded && t3lib_extMgm::isLoaded('cms')) {
-				$editIdCode = '<td nowrap="nowrap">'.$GLOBALS['LANG']->getLL('bookmark_editID',1).': <input type="text" value="'.($this->editError?htmlspecialchars($this->editPage):'').'" name="editPage"'.$this->doc->formWidth(15).' onchange="submitEditPage(this.value);" />'.
+				$editIdCode = '<td nowrap="nowrap">'.$GLOBALS['LANG']->getLL('bookmark_editID', 1).': <input type="text" value="'.($this->editError?htmlspecialchars($this->editPage):'').'" name="editPage"'.$this->doc->formWidth(15).' onchange="submitEditPage(this.value);" />'.
 					($this->editError?'&nbsp;<strong><span class="typo3-red">'.htmlspecialchars($this->editError).'</span></strong>':'').
-					(is_array($this->theEditRec)?'&nbsp;<strong>'.$GLOBALS['LANG']->getLL('bookmark_loadEdit',1).' \''.t3lib_BEfunc::getRecordTitle('pages',$this->theEditRec,TRUE).'\'</strong> ('.htmlspecialchars($this->editPath).')':'').
-					($this->searchFor?'&nbsp;'.$GLOBALS['LANG']->getLL('bookmark_searchFor',1).' <strong>\''.htmlspecialchars($this->searchFor).'\'</strong>':'').
+					(is_array($this->theEditRec)?'&nbsp;<strong>'.$GLOBALS['LANG']->getLL('bookmark_loadEdit', 1).' \''.t3lib_BEfunc::getRecordTitle('pages', $this->theEditRec,TRUE).'\'</strong> ('.htmlspecialchars($this->editPath).')':'').
+					($this->searchFor?'&nbsp;'.$GLOBALS['LANG']->getLL('bookmark_searchFor', 1).' <strong>\''.htmlspecialchars($this->searchFor).'\'</strong>':'').
 					'</td>';
 		} else $editIdCode = '';
 
 			// Adding CSH:
-		$editIdCode.= '<td>&nbsp;'.t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'bookmarks', $GLOBALS['BACK_PATH'],'',TRUE).'</td>';
+		$editIdCode.= '<td>&nbsp;'.t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'bookmarks', $GLOBALS['BACK_PATH'], '', TRUE).'</td>';
 
 			// Compile it all:
 		$this->content.='
@@ -409,7 +409,7 @@ class SC_alt_shortcut {
 					<td align="right">';
 		if ($this->hasWorkspaceAccess()) {
 			$this->content .= $this->workspaceSelector() .
-								t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'workspaceSelector', $GLOBALS['BACK_PATH'],'',TRUE);
+								t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'workspaceSelector', $GLOBALS['BACK_PATH'], '', TRUE);
 		}
 		$this->content .= '
 					</td>
@@ -425,7 +425,7 @@ class SC_alt_shortcut {
 
 			// Load alternative table/uid into editing form.
 		if (count($this->alternativeTableUid)==2 && isset($GLOBALS['TCA'][$this->alternativeTableUid[0]]) && t3lib_utility_Math::canBeInterpretedAsInteger($this->alternativeTableUid[1])) {
-			$JSaction = t3lib_BEfunc::editOnClick('&edit['.$this->alternativeTableUid[0].']['.$this->alternativeTableUid[1].']=edit','','dummy.php');
+			$JSaction = t3lib_BEfunc::editOnClick('&edit['.$this->alternativeTableUid[0].']['.$this->alternativeTableUid[1].']=edit', '', 'dummy.php');
 			$this->content.=$this->doc->wrapScriptTags('function editArbitraryElement() { top.content.'.$JSaction.'; } editArbitraryElement();');
 		}
 
@@ -455,28 +455,28 @@ class SC_alt_shortcut {
 			$opt[]='<option value="0"></option>';
 
 			foreach($this->groupLabels as $k=>$v) {
-				if ($v && strcmp('1',$v)) {
+				if ($v && strcmp('1', $v)) {
 					$label = $v;
 				} else {
-					$label = $GLOBALS['LANG']->getLL('bookmark_group_'.$k,1);
-					if (!$label)	$label = $GLOBALS['LANG']->getLL('bookmark_group',1).' '.$k;	// Fallback label
+					$label = $GLOBALS['LANG']->getLL('bookmark_group_'.$k, 1);
+					if (!$label)	$label = $GLOBALS['LANG']->getLL('bookmark_group', 1).' '.$k;	// Fallback label
 				}
-				$opt[]='<option value="'.$k.'"'.(!strcmp($this->editSC_rec['sc_group'],$k)?' selected="selected"':'').'>'.$label.'</option>';
+				$opt[]='<option value="'.$k.'"'.(!strcmp($this->editSC_rec['sc_group'], $k)?' selected="selected"':'').'>'.$label.'</option>';
 			}
 
 			if ($GLOBALS['BE_USER']->isAdmin()) {
 				foreach($this->groupLabels as $k=>$v) {
-					if ($v && strcmp('1',$v)) {
+					if ($v && strcmp('1', $v)) {
 						$label = $v;
 					} else {
-						$label = $GLOBALS['LANG']->getLL('bookmark_group_'.$k,1);
-						if (!$label)	$label = $GLOBALS['LANG']->getLL('bookmark_group',1).' '.$k;	// Fallback label
+						$label = $GLOBALS['LANG']->getLL('bookmark_group_'.$k, 1);
+						if (!$label)	$label = $GLOBALS['LANG']->getLL('bookmark_group', 1).' '.$k;	// Fallback label
 					}
-					$label = $GLOBALS['LANG']->getLL('bookmark_global',1).': '.$label;	// Add a prefix for global groups
+					$label = $GLOBALS['LANG']->getLL('bookmark_global', 1).': '.$label;	// Add a prefix for global groups
 
-					$opt[]='<option value="-'.$k.'"'.(!strcmp($this->editSC_rec['sc_group'],'-'.$k)?' selected="selected"':'').'>'.$label.'</option>';
+					$opt[]='<option value="-'.$k.'"'.(!strcmp($this->editSC_rec['sc_group'], '-'.$k)?' selected="selected"':'').'>'.$label.'</option>';
 				}
-				$opt[]='<option value="-100"'.(!strcmp($this->editSC_rec['sc_group'],'-100')?' selected="selected"':'').'>'.$GLOBALS['LANG']->getLL('bookmark_global',1).': '.$GLOBALS['LANG']->getLL('bookmark_all',1).'</option>';
+				$opt[]='<option value="-100"'.(!strcmp($this->editSC_rec['sc_group'], '-100')?' selected="selected"':'').'>'.$GLOBALS['LANG']->getLL('bookmark_global', 1).': '.$GLOBALS['LANG']->getLL('bookmark_all', 1).'</option>';
 			}
 
 				// border="0" hspace="2" width="21" height="16" - not XHTML compliant in <input type="image" ...>
@@ -488,12 +488,12 @@ class SC_alt_shortcut {
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-shortcuts-editing">
 					<tr>
 						<td>&nbsp;&nbsp;</td>
-						<td><input type="image" class="c-inputButton" name="_savedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedok.gif','').' title="'.$GLOBALS['LANG']->getLL('shortcut_save',1).'" /></td>
-						<td><input type="image" class="c-inputButton" name="_saveclosedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/saveandclosedok.gif','').' title="'.$GLOBALS['LANG']->getLL('bookmark_saveClose',1).'" /></td>
-						<td><input type="image" class="c-inputButton" name="_closedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/closedok.gif','').' title="'.$GLOBALS['LANG']->getLL('bookmark_close',1).'" /></td>
-						<td><input type="image" class="c-inputButton" name="_deletedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/deletedok.gif','').' title="'.$GLOBALS['LANG']->getLL('bookmark_delete',1).'" /></td>
+						<td><input type="image" class="c-inputButton" name="_savedok"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/savedok.gif', '').' title="'.$GLOBALS['LANG']->getLL('shortcut_save', 1).'" /></td>
+						<td><input type="image" class="c-inputButton" name="_saveclosedok"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif', '').' title="'.$GLOBALS['LANG']->getLL('bookmark_saveClose', 1).'" /></td>
+						<td><input type="image" class="c-inputButton" name="_closedok"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/closedok.gif', '').' title="'.$GLOBALS['LANG']->getLL('bookmark_close', 1).'" /></td>
+						<td><input type="image" class="c-inputButton" name="_deletedok"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/deletedok.gif', '').' title="'.$GLOBALS['LANG']->getLL('bookmark_delete', 1).'" /></td>
 						<td><input name="editName" type="text" value="'.htmlspecialchars($this->editSC_rec['description']).'"'.$this->doc->formWidth(15).' /></td>
-						<td><select name="editGroup">'.implode('',$opt).'</select></td>
+						<td><select name="editGroup">'.implode('', $opt).'</select></td>
 					</tr>
 				</table>
 				<input type="hidden" name="whichItem" value="'.$this->editSC_rec['uid'].'" />
@@ -503,11 +503,11 @@ class SC_alt_shortcut {
 
 		if (!$this->editLoaded && count($this->selOpt)>1) {
 			$this->lines[]='<td>&nbsp;</td>';
-			$this->lines[]='<td><select name="_selSC" onchange="eval(this.options[this.selectedIndex].value);this.selectedIndex=0;">'.implode('',$this->selOpt).'</select></td>';
+			$this->lines[]='<td><select name="_selSC" onchange="eval(this.options[this.selectedIndex].value);this.selectedIndex=0;">'.implode('', $this->selOpt).'</select></td>';
 		}
 
 			// $this->linesPre contains elements with sc_group>=0
-		$this->lines = array_merge($this->linesPre,$this->lines);
+		$this->lines = array_merge($this->linesPre, $this->lines);
 
 		if (count($this->lines)) {
 			if (!$GLOBALS['BE_USER']->getTSConfigVal('options.mayNotCreateEditBookmarks')) {
@@ -531,24 +531,24 @@ class SC_alt_shortcut {
 		if (!t3lib_extMgm::isLoaded('cms'))	return;
 
 			// EDIT page:
-		$this->editPage = trim($GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet,$this->editPage,'toLower'));
+		$this->editPage = trim($GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $this->editPage, 'toLower'));
 		$this->editError = '';
 		$this->theEditRec = '';
 		$this->searchFor = '';
 		if ($this->editPage) {
 
 				// First, test alternative value consisting of [table]:[uid] and if not found, proceed with traditional page ID resolve:
-			$this->alternativeTableUid = explode(':',$this->editPage);
+			$this->alternativeTableUid = explode(':', $this->editPage);
 			if (!(count($this->alternativeTableUid)==2 && $GLOBALS['BE_USER']->isAdmin()))	{	// We restrict it to admins only just because I'm not really sure if alt_doc.php properly checks permissions of passed records for editing. If alt_doc.php does that, then we can remove this.
 
 				$where = ' AND ('.$GLOBALS['BE_USER']->getPagePermsClause(2).' OR '.$GLOBALS['BE_USER']->getPagePermsClause(16).')';
 				if (t3lib_utility_Math::canBeInterpretedAsInteger($this->editPage)) {
-					$this->theEditRec = t3lib_BEfunc::getRecordWSOL('pages',$this->editPage,'*',$where);
+					$this->theEditRec = t3lib_BEfunc::getRecordWSOL('pages', $this->editPage, '*', $where);
 				} else {
-					$records = t3lib_BEfunc::getRecordsByField('pages','alias',$this->editPage,$where);
+					$records = t3lib_BEfunc::getRecordsByField('pages', 'alias', $this->editPage, $where);
 					if (is_array($records)) {
 						$this->theEditRec = reset($records);
-						t3lib_BEfunc::workspaceOL('pages',$this->theEditRec);
+						t3lib_BEfunc::workspaceOL('pages', $this->theEditRec);
 					}
 				}
 				if (!is_array($this->theEditRec)) {
@@ -663,7 +663,7 @@ class SC_alt_shortcut {
 
 			// Add custom workspaces (selecting all, filtering by BE_USER check):
 		if (t3lib_extMgm::isLoaded('workspaces')) {
-			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
+			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers', 'sys_workspace', 'pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'), '', 'title');
 			if (count($workspaces)) {
 				foreach ($workspaces as $rec) {
 					if ($GLOBALS['BE_USER']->checkWorkspace($rec)) {
@@ -680,7 +680,7 @@ class SC_alt_shortcut {
 				$options[$value] = '<option value="'.htmlspecialchars($value).'"'.$selected.'>'.htmlspecialchars($label).'</option>';
 			}
 		} else {
-			$options[] = '<option value="-99">'.$GLOBALS['LANG']->getLL('bookmark_noWSfound',1).'</option>';
+			$options[] = '<option value="-99">'.$GLOBALS['LANG']->getLL('bookmark_noWSfound', 1).'</option>';
 		}
 
 		$selector = '';
@@ -693,7 +693,7 @@ class SC_alt_shortcut {
 					t3lib_iconWorks::getSpriteIconForRecord('sys_workspace', array()).
 					'</a>';
 		if (count($options) > 1) {
-			$selector .= '<select name="_workspaceSelector" onchange="changeWorkspace(this.options[this.selectedIndex].value);">'.implode('',$options).'</select>';
+			$selector .= '<select name="_workspaceSelector" onchange="changeWorkspace(this.options[this.selectedIndex].value);">'.implode('', $options).'</select>';
 		}
 
 		return $selector;
@@ -718,12 +718,12 @@ class SC_alt_shortcut {
 	 * @param	string		Backpath string to prepend the icon after made relative
 	 * @return	void
 	 */
-	function mIconFilename($Ifilename,$backPath) {
+	function mIconFilename($Ifilename, $backPath) {
 			// Change icon of fileadmin references - otherwise it doesn't differ with Web->List
 		$Ifilename = str_replace ('mod/file/list/list.gif', 'mod/file/file.gif', $Ifilename);
 
 		if (t3lib_div::isAbsPath($Ifilename)) {
-			$Ifilename = '../'.substr($Ifilename,strlen(PATH_site));
+			$Ifilename = '../'.substr($Ifilename, strlen(PATH_site));
 		}
 		return $backPath.$Ifilename;
 	}
@@ -736,7 +736,7 @@ class SC_alt_shortcut {
 	 */
 	function getIcon($modName) {
 		if ($GLOBALS['LANG']->moduleLabels['tabs_images'][$modName.'_tab']) {
-			$icon = $this->mIconFilename($GLOBALS['LANG']->moduleLabels['tabs_images'][$modName.'_tab'],'');
+			$icon = $this->mIconFilename($GLOBALS['LANG']->moduleLabels['tabs_images'][$modName.'_tab'], '');
 		} elseif ($modName=='xMOD_alt_doc.php') {
 			$icon = 'gfx/edit2.gif';
 		} elseif ($modName=='xMOD_file_edit.php') {
@@ -757,11 +757,11 @@ class SC_alt_shortcut {
 	 * @param	string		Backend module label (user defined?)
 	 * @return	string		Label for the shortcut item
 	 */
-	function itemLabel($inlabel,$modName,$M_modName='') {
-		if (substr($modName,0,5)=='xMOD_') {
-			$label=substr($modName,5);
+	function itemLabel($inlabel, $modName, $M_modName='') {
+		if (substr($modName, 0, 5)=='xMOD_') {
+			$label=substr($modName, 5);
 		} else {
-			$split = explode('_',$modName);
+			$split = explode('_', $modName);
 			$label = $GLOBALS['LANG']->moduleLabels['tabs'][$split[0].'_tab'];
 			if (count($split)>1) {
 				$label.='>'.$GLOBALS['LANG']->moduleLabels['tabs'][$modName.'_tab'];

@@ -165,15 +165,15 @@ class SC_show_item {
 			$this->uid = intval($this->uid);
 
 				// Check permissions and uid value:
-			if ($this->uid && $GLOBALS['BE_USER']->check('tables_select',$this->table)) {
+			if ($this->uid && $GLOBALS['BE_USER']->check('tables_select', $this->table)) {
 				if ((string)$this->table == 'pages') {
-					$this->pageinfo = t3lib_BEfunc::readPageAccess($this->uid,$this->perms_clause);
+					$this->pageinfo = t3lib_BEfunc::readPageAccess($this->uid, $this->perms_clause);
 					$this->access = is_array($this->pageinfo) ? 1 : 0;
 					$this->row = $this->pageinfo;
 				} else {
 					$this->row = t3lib_BEfunc::getRecordWSOL($this->table, $this->uid);
 					if ($this->row) {
-						$this->pageinfo = t3lib_BEfunc::readPageAccess($this->row['pid'],$this->perms_clause);
+						$this->pageinfo = t3lib_BEfunc::readPageAccess($this->row['pid'], $this->perms_clause);
 						$this->access = is_array($this->pageinfo) ? 1 : 0;
 					}
 				}
@@ -258,9 +258,9 @@ class SC_show_item {
 
 				// If return Url is set, output link to go back:
 			if (t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'))) {
-				$this->content = $this->doc->section('',$returnLinkTag.'<strong>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack',1).'</strong></a><br /><br />').$this->content;
+				$this->content = $this->doc->section('', $returnLinkTag.'<strong>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack', 1).'</strong></a><br /><br />').$this->content;
 
-				$this->content .= $this->doc->section('','<br />'.$returnLinkTag.'<strong>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack',1).'</strong></a>');
+				$this->content .= $this->doc->section('', '<br />'.$returnLinkTag.'<strong>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack', 1).'</strong></a>');
 			}
 		}
 	}
@@ -273,8 +273,8 @@ class SC_show_item {
 	function renderDBInfo() {
 
 			// Print header, path etc:
-		$code = $this->doc->getHeader($this->table,$this->row,$this->pageinfo['_thePath'],1).'<br />';
-		$this->content.= $this->doc->section('',$code);
+		$code = $this->doc->getHeader($this->table, $this->row, $this->pageinfo['_thePath'], 1).'<br />';
+		$this->content.= $this->doc->section('', $code);
 
 			// Initialize variables:
 		$tableRows = Array();
@@ -299,9 +299,9 @@ class SC_show_item {
 			// Create table from the information:
 		$tableCode = '
 					<table border="0" cellpadding="0" cellspacing="0" id="typo3-showitem" class="t3-table-info">
-						'.implode('',$tableRows).'
+						'.implode('', $tableRows).'
 					</table>';
-		$this->content.=$this->doc->section('',$tableCode);
+		$this->content.=$this->doc->section('', $tableCode);
 
 			// Add path and table information in the bottom:
 		$code = '';
@@ -310,10 +310,10 @@ class SC_show_item {
 		$this->content.= $this->doc->section('', $code);
 
 			// References:
-		$this->content.= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesToThisItem'),$this->makeRef($this->table,$this->row['uid']));
+		$this->content.= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesToThisItem'), $this->makeRef($this->table, $this->row['uid']));
 
 			// References:
-		$this->content.= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesFromThisItem'),$this->makeRefFrom($this->table,$this->row['uid']));
+		$this->content.= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesFromThisItem'), $this->makeRefFrom($this->table, $this->row['uid']));
 	}
 
 	/**
@@ -448,7 +448,7 @@ class SC_show_item {
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'*',
 				'sys_refindex',
-				'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_refindex') . ' AND ref_uid=' . intval($ref) .
+				'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') . ' AND ref_uid=' . intval($ref) .
 					' AND deleted=0'
 			);
 		}

@@ -683,7 +683,7 @@ class ShortcutMenu implements backend_toolbarItem {
 					}
 
 					if(is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {
-						$selectFields = array_merge($selectFields,$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']);
+						$selectFields = array_merge($selectFields, $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']);
 					}
 
 					if($GLOBALS['TCA'][$table]['ctrl']['type']) {

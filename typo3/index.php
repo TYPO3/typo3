@@ -277,7 +277,7 @@ class SC_index {
 		if ($GLOBALS['TBE_STYLES']['logo_login']) {
 			$logo = '<img src="'.htmlspecialchars($GLOBALS['BACK_PATH'] . $GLOBALS['TBE_STYLES']['logo_login']) . '" alt="" />';
 		} else {
-			$logo = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/typo3logo.gif','width="123" height="34"').' alt="" />';
+			$logo = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/typo3logo.gif', 'width="123" height="34"').' alt="" />';
 		}
 
 		$browserWarning = t3lib_div::makeInstance(
@@ -407,7 +407,7 @@ class SC_index {
 
 			// If interfaces are defined AND no input redirect URL in GET vars:
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] && ($this->isLoginInProgress() || !$this->redirect_url)) {
-			$parts = t3lib_div::trimExplode(',',$GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']);
+			$parts = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']);
 			if (count($parts)>1)	{	// Only if more than one interface is defined will we show the selector:
 
 					// Initialize:
@@ -497,7 +497,7 @@ class SC_index {
 			if ($dir && @is_dir($dir)) {
 
 					// Get files for rotation into array:
-				$files = t3lib_div::getFilesInDir($dir,'png,jpg,gif');
+				$files = t3lib_div::getFilesInDir($dir, 'png,jpg,gif');
 
 					// Pick random file:
 				$randImg = array_rand($files, 1);
@@ -514,14 +514,14 @@ class SC_index {
 			}
 		} else {	// If no rotation folder configured, print default image:
 
-			if (strstr(TYPO3_version,'-dev'))	{	// development version
+			if (strstr(TYPO3_version, '-dev'))	{	// development version
 				$loginImage = 'loginbox_image_dev.png';
 				$imagecopy = 'You are running a development version of TYPO3 '.TYPO3_branch;
 			} else {
 				$loginImage = 'loginbox_image.jpg';
 				$imagecopy = 'Photo by J.C. Franca (www.digitalphoto.com.br)';
 			}
-			$loginboxImage = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$loginImage,'width="200" height="133"').' id="loginbox-image" alt="'.$imagecopy.'" title="'.$imagecopy.'" />';
+			$loginboxImage = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$loginImage, 'width="200" height="133"').' id="loginbox-image" alt="'.$imagecopy.'" title="'.$imagecopy.'" />';
 		}
 
 			// Return image tag:

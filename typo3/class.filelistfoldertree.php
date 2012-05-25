@@ -36,14 +36,14 @@
  *
  *   71: class fileListTree extends t3lib_browseTree
  *   81:     function webPageTree()
- *   92:     function wrapIcon($icon,&$row)
- *  130:     function wrapStop($str,$row)
- *  146:     function wrapTitle($title,$row,$bank=0)
+ *   92:     function wrapIcon($icon, &$row)
+ *  130:     function wrapStop($str, $row)
+ *  146:     function wrapTitle($title, $row, $bank=0)
  *  165:     function printTree($treeItems = '')
- *  271:     function PMicon($row,$a,$c,$nextCount,$exp)
+ *  271:     function PMicon($row, $a, $c, $nextCount, $exp)
  *  292:     function PMiconATagWrap($icon, $cmd, $isExpand = TRUE)
  *  309:     function getBrowsableTree()
- *  377:     function getTree($uid, $depth=999, $depthData='',$blankLineCode='',$subCSSclass='')
+ *  377:     function getTree($uid, $depth=999, $depthData='', $blankLineCode='', $subCSSclass='')
  *
  *
  * TOTAL FUNCTIONS: 9
