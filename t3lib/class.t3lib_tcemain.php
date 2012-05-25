@@ -53,55 +53,55 @@ class t3lib_TCEmain {
 		// Public variables you can configure before using the class:
 		// *********************
 		// Boolean: If TRUE, the default log-messages will be stored. This should not be necessary if the locallang-file for the log-display is properly configured. So disabling this will just save some database-space as the default messages are not saved.
-	var $storeLogMessages = TRUE;
+	public $storeLogMessages = TRUE;
 		// Boolean: If TRUE, actions are logged to sys_log.
-	var $enableLogging = TRUE;
+	public $enableLogging = TRUE;
 		// Boolean: If TRUE, the datamap array is reversed in the order, which is a nice thing if you're creating a whole new bunch of records.
-	var $reverseOrder = FALSE;
+	public $reverseOrder = FALSE;
 		// Boolean: If TRUE, only fields which are different from the database values are saved! In fact, if a whole input array is similar, it's not saved then.
-	var $checkSimilar = TRUE;
+	public $checkSimilar = TRUE;
 		// Boolean: If TRUE, incoming values in the data-array have their slashes stripped. ALWAYS SET THIS TO ZERO and supply an unescaped data array instead. This switch may totally disappear in future versions of this class!
-	var $stripslashes_values = TRUE;
+	public $stripslashes_values = TRUE;
 		// Boolean: This will read the record after having updated or inserted it. If anything is not properly submitted an error is written to the log. This feature consumes extra time by selecting records
-	var $checkStoredRecords = TRUE;
+	public $checkStoredRecords = TRUE;
 		// Boolean: If set, values '' and 0 will equal each other when the stored records are checked.
-	var $checkStoredRecords_loose = TRUE;
+	public $checkStoredRecords_loose = TRUE;
 		// Boolean. If this is set, then a page is deleted by deleting the whole branch under it (user must have deletepermissions to it all). If not set, then the page is deleted ONLY if it has no branch
-	var $deleteTree = FALSE;
+	public $deleteTree = FALSE;
 		// Boolean. If set, then the 'hideAtCopy' flag for tables will be ignored.
-	var $neverHideAtCopy = FALSE;
+	public $neverHideAtCopy = FALSE;
 		// Boolean: If set, then transformations are NOT performed on the input.
-	var $dontProcessTransformations = FALSE;
+	public $dontProcessTransformations = FALSE;
 		// Boolean: If set, .vDEFbase values are unset in flexforms.
-	var $clear_flexFormData_vDEFbase = FALSE;
+	public $clear_flexFormData_vDEFbase = FALSE;
 		// Boolean/Mixed: TRUE: (traditional) Updates when record is saved. For flexforms, updates if change is made to the localized value. FALSE: Will not update anything. "FORCE_FFUPD" (string): Like TRUE, but will force update to the FlexForm Field
-	var $updateModeL10NdiffData = TRUE;
+	public $updateModeL10NdiffData = TRUE;
 		// Boolean: If TRUE, the translation diff. fields will in fact be reset so that they indicate that all needs to change again! It's meant as the opposite of declaring the record translated.
-	var $updateModeL10NdiffDataClear = FALSE;
+	public $updateModeL10NdiffDataClear = FALSE;
 		// Boolean: If TRUE, workspace restrictions are bypassed on edit an create actions (process_datamap()). YOU MUST KNOW what you do if you use this feature!
-	var $bypassWorkspaceRestrictions = FALSE;
+	public $bypassWorkspaceRestrictions = FALSE;
 		// Boolean: If TRUE, file handling of attached files (addition, deletion etc) is bypassed - the value is saved straight away. YOU MUST KNOW what you are doing with this feature!
-	var $bypassFileHandling = FALSE;
+	public $bypassFileHandling = FALSE;
 		// Boolean: If TRUE, access check, check for deleted etc. for records is bypassed. YOU MUST KNOW what you are doing if you use this feature!
-	var $bypassAccessCheckForRecords = FALSE;
+	public $bypassAccessCheckForRecords = FALSE;
 		// String. Comma-list. This list of tables decides which tables will be copied. If empty then none will. If '*' then all will (that the user has permission to of course)
-	var $copyWhichTables = '*';
+	public $copyWhichTables = '*';
 		// Integer. If 0 then branch is NOT copied. If 1 then pages on the 1st level is copied. If 2 then pages on the second level is copied ... and so on
-	var $copyTree = 0;
+	public $copyTree = 0;
 		// Array [table][fields]=value: New records are created with default values and you can set this array on the form $defaultValues[$table][$field] = $value to override the default values fetched from TCA. If ->setDefaultsFromUserTS is called UserTSconfig default values will overrule existing values in this array (thus UserTSconfig overrules externally set defaults which overrules TCA defaults)
-	var $defaultValues = array();
+	public $defaultValues = array();
 		// Array [table][fields]=value: You can set this array on the form $overrideValues[$table][$field] = $value to override the incoming data. You must set this externally. You must make sure the fields in this array are also found in the table, because it's not checked. All columns can be set by this array!
-	var $overrideValues = array();
+	public $overrideValues = array();
 		// Array [filename]=alternative_filename: Use this array to force another name onto a file. Eg. if you set ['/tmp/blablabal'] = 'my_file.txt' and '/tmp/blablabal' is set for a certain file-field, then 'my_file.txt' will be used as the name instead.
-	var $alternativeFileName = array();
+	public $alternativeFileName = array();
 		// Array [filename]=alternative_filepath: Same as alternativeFileName but with relative path to the file
-	var $alternativeFilePath = array();
+	public $alternativeFilePath = array();
 		// If entries are set in this array corresponding to fields for update, they are ignored and thus NOT updated. You could set this array from a series of checkboxes with value=0 and hidden fields before the checkbox with 1. Then an empty checkbox will disable the field.
-	var $data_disableFields = array();
+	public $data_disableFields = array();
 		// Use this array to validate suggested uids for tables by setting [table]:[uid]. This is a dangerous option since it will force the inserted record to have a certain UID. The value just have to be TRUE, but if you set it to "DELETE" it will make sure any record with that UID will be deleted first (raw delete). The option is used for import of T3D files when synchronizing between two mirrored servers. As a security measure this feature is available only for Admin Users (for now)
-	var $suggestedInsertUids = array();
+	public $suggestedInsertUids = array();
 		// Object. Call back object for flex form traversation. Useful when external classes wants to use the iteration functions inside tcemain for traversing a FlexForm structure.
-	var $callBackObj;
+	public $callBackObj;
 
 
 	// *********************
@@ -109,21 +109,21 @@ class t3lib_TCEmain {
 	// *********************
 
 		// Contains mapping of auto-versionized records.
-	var $autoVersionIdMap = array();
+	public $autoVersionIdMap = array();
 		// When new elements are created, this array contains a map between their "NEW..." string IDs and the eventual UID they got when stored in database
-	var $substNEWwithIDs = array();
+	public $substNEWwithIDs = array();
 		// Like $substNEWwithIDs, but where each old "NEW..." id is mapped to the table it was from.
-	var $substNEWwithIDs_table = array();
+	public $substNEWwithIDs_table = array();
 		// Holds the tables and there the ids of newly created child records from IRRE
-	var $newRelatedIDs = array();
+	public $newRelatedIDs = array();
 		// This array is the sum of all copying operations in this class. May be READ from outside, thus partly public.
-	var $copyMappingArray_merged = array();
+	public $copyMappingArray_merged = array();
 		// A map between input file name and final destination for files being attached to records.
-	var $copiedFileMap = array();
+	protected $copiedFileMap = array();
 		// Contains [table][id][field] of fiels where RTEmagic images was copied. Holds old filename as key and new filename as value.
-	var $RTEmagic_copyIndex = array();
+	protected  $RTEmagic_copyIndex = array();
 		// Errors are collected in this variable.
-	var $errorLog = array();
+	public $errorLog = array();
 
 	// *********************
 	// Internal Variables, do not touch.
@@ -135,29 +135,29 @@ class t3lib_TCEmain {
 	 *
 	 * @var t3lib_beUserAuth
 	 */
-	var $BE_USER;
+	public $BE_USER;
 		// Will be set to uid of be_user executing this script
-	var $userid;
+	public $userid;
 		// Will be set to username of be_user executing this script
-	var $username;
+	protected $username;
 		// Will be set if user is admin
-	var $admin;
+	public $admin;
 		// Can be overridden from $GLOBALS['TYPO3_CONF_VARS']
-	var $defaultPermissions = array(
+	protected $defaultPermissions = array(
 		'user' => 'show,edit,delete,new,editcontent',
 		'group' => 'show,edit,new,editcontent',
 		'everybody' => ''
 	);
 		// The list of <table>-<fields> that cannot be edited by user. This is compiled from TCA/exclude-flag combined with non_exclude_fields for the user.
-	var $exclude_array;
+	protected $exclude_array;
 		// Set with incoming data array
-	var $datamap = array();
+	public $datamap = array();
 		// Set with incoming cmd array
-	var $cmdmap = array();
+	public $cmdmap = array();
 
 		// Internal static:
 		// Permission mapping
-	var $pMap = array(
+	public $pMap = array(
 		'show' => 1, // 1st bit
 		'edit' => 2, // 2nd bit
 		'delete' => 4, // 3rd bit
@@ -165,41 +165,41 @@ class t3lib_TCEmain {
 		'editcontent' => 16 // 5th bit
 	);
 		// Integer: The interval between sorting numbers used with tables with a 'sorting' field defined. Min 1
-	var $sortIntervals = 256;
+	protected $sortIntervals = 256;
 
 		// Internal caching arrays
 		// Used by function checkRecordUpdateAccess() to store whether a record is updateable or not.
-	var $recUpdateAccessCache = array();
+	protected $recUpdateAccessCache = array();
 		// User by function checkRecordInsertAccess() to store whether a record can be inserted on a page id
-	var $recInsertAccessCache = array();
+	protected $recInsertAccessCache = array();
 		// Caching array for check of whether records are in a webmount
-	var $isRecordInWebMount_Cache = array();
+	protected $isRecordInWebMount_Cache = array();
 		// Caching array for page ids in webmounts
-	var $isInWebMount_Cache = array();
+	protected $isInWebMount_Cache = array();
 		// Caching for collecting TSconfig for page ids
-	var $cachedTSconfig = array();
+	protected $cachedTSconfig = array();
 		// Used for caching page records in pageInfo()
-	var $pageCache = array();
+	protected $pageCache = array();
 		// Array caching workspace access for BE_USER
-	var $checkWorkspaceCache = array();
+	protected $checkWorkspaceCache = array();
 
 		// Other arrays:
 		// For accumulation of MM relations that must be written after new records are created.
-	var $dbAnalysisStore = array();
+	protected $dbAnalysisStore = array();
 		// For accumulation of files which must be deleted after processing of all input content
-	var $removeFilesStore = array();
+	protected $removeFilesStore = array();
 		// Uploaded files, set by process_uploads()
-	var $uploadedFileArray = array();
+	protected $uploadedFileArray = array();
 		// Used for tracking references that might need correction after operations
-	var $registerDBList = array();
+	public $registerDBList = array();
 		// Used for tracking references that might need correction in pid field after operations (e.g. IRRE)
-	var $registerDBPids = array();
+	protected $registerDBPids = array();
 		// Used by the copy action to track the ids of new pages so subpages are correctly inserted! THIS is internally cleared for each executed copy operation! DO NOT USE THIS FROM OUTSIDE! Read from copyMappingArray_merged instead which is accumulating this information.
-	var $copyMappingArray = array();
+	public $copyMappingArray = array();
 		// array used for remapping uids and values at the end of process_datamap
-	var $remapStack = array();
+	protected $remapStack = array();
 		// array used for remapping uids and values at the end of process_datamap (e.g. $remapStackRecords[<table>][<uid>] = <index in $remapStack>)
-	var $remapStackRecords = array();
+	protected  $remapStackRecords = array();
 		// array used for checking whether new children need to be remapped
 	protected $remapStackChildIds = array();
 		// array used for executing addition actions after remapping happened (sett processRemapStack())
@@ -207,11 +207,11 @@ class t3lib_TCEmain {
 		// array used for executing post-processing on the reference index
 	protected $remapStackRefIndex = array();
 		// array used for additional calls to $this->updateRefIndex
-	var $updateRefIndexStack = array();
+	protected $updateRefIndexStack = array();
 		// tells, that this TCEmain was called from tx_impext - this variable is set by tx_impexp
-	var $callFromImpExp = FALSE;
+	protected $callFromImpExp = FALSE;
 		// Array for new flexform index mapping
-	var $newIndexMap = array();
+	protected $newIndexMap = array();
 
 	// Various
 	/**
@@ -220,11 +220,11 @@ class t3lib_TCEmain {
 	 *
 	 * @var t3lib_basicFileFunctions
 	 */
-	var $fileFunc;
+	protected $fileFunc;
 		// Set to "currentRecord" during checking of values.
-	var $checkValue_currentRecord = array();
+	protected $checkValue_currentRecord = array();
 		// A signal flag used to tell file processing that autoversioning has happend and hence certain action should be applied.
-	var $autoVersioningUpdate = FALSE;
+	protected $autoVersioningUpdate = FALSE;
 		// Disable delete clause
 	protected $disableDeleteClause = FALSE;
 	protected $checkModifyAccessListHookObjects;
