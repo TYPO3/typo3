@@ -712,7 +712,7 @@ class t3lib_TCEforms_inline {
 				// If this is a virtual record offer a minimized set of icons for user interaction:
 		} elseif ($isVirtualRecord) {
 			if ($enabledControls['localize'] && isset($rec['__create'])) {
-				$onClick = "inline.synchronizeLocalizeRecords('" . $nameObjectFt . "', " . $rec['uid'] . ");";
+				$onClick = "inline.synchronizeLocalizeRecords('" . $nameObjectFt . "', " . $rec['uid'] . ');';
 				$cells['localize'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' .
 									t3lib_iconWorks::getSpriteIcon('actions-document-localize', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:localize', TRUE))) .
 									'</a>';
@@ -1357,7 +1357,7 @@ class t3lib_TCEforms_inline {
 			$row = $this->getRecord($this->inlineFirstPid, $current['table'], $item);
 			$selectedValue = ($foreignSelector ? "'" . $row[$foreignSelector] . "'" : 'null');
 			$data .= $this->renderForeignRecord($parent['uid'], $row, $parent['config']);
-			$jsonArrayScriptCall[] = "inline.memorizeAddRecord('" . $nameObjectForeignTable . "', '" . $item . "', null, " . $selectedValue . ");";
+			$jsonArrayScriptCall[] = "inline.memorizeAddRecord('" . $nameObjectForeignTable . "', '" . $item . "', null, " . $selectedValue . ');';
 				// Remove possible virtual records in the form which showed that a child records could be localized:
 			if (isset($row[$transOrigPointerField]) && $row[$transOrigPointerField]) {
 				$jsonArrayScriptCall[] = "inline.fadeAndRemove('" . $nameObjectForeignTable . self::Structure_Separator . $row[$transOrigPointerField] . '_div' . "');";

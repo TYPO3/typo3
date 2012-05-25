@@ -237,7 +237,7 @@ class t3lib_file_Repository_FileRepository extends t3lib_file_Repository_Abstrac
 		$fileReferenceObject = FALSE;
 
 		if (!is_numeric($uid)) {
-			throw new InvalidArgumentException("uid of record has to be numeric.", 1316889798);
+			throw new InvalidArgumentException('uid of record has to be numeric.', 1316889798);
 		}
 
 		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(

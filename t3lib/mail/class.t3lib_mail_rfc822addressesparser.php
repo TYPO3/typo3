@@ -592,7 +592,7 @@ class t3lib_mail_Rfc822AddressesParser {
 		}
 
 		foreach ($comments as $comment) {
-			$mailbox = str_replace("($comment)", '', $mailbox);
+			$mailbox = str_replace('(' . $comment . ')', '', $mailbox);
 		}
 
 		$mailbox = trim($mailbox);

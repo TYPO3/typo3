@@ -273,8 +273,8 @@ class t3lib_clipboard {
 			// Delete:
 		if ($elCount) {
 			if ($GLOBALS['BE_USER']->jsConfirmation(4)) {
-				$js = "
-			if(confirm(" . $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.deleteClip'), $elCount)) . ")){
+				$js = '
+			if(confirm('. $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.deleteClip'), $elCount)) . ")){
 				window.location.href='" . $this->deleteUrl(0, $this->fileMode ? 1 : 0) . "&redirect='+top.rawurlencode(window.location.href);
 			}
 					";
@@ -472,7 +472,7 @@ class t3lib_clipboard {
 					$lines[] = '
 					<tr>
 						<td class="' . $bgColClass . '">' .
-							t3lib_iconWorks::getSpriteIconForRecord($table, $rec, array('style' => "margin-left: 38px;")) . '</td>
+							t3lib_iconWorks::getSpriteIconForRecord($table, $rec, array('style' => 'margin-left: 38px;')) . '</td>
 						<td class="' . $bgColClass . '" nowrap="nowrap" width="95%">&nbsp;' . htmlspecialchars(
 						t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table, $rec), $GLOBALS['BE_USER']->uc['titleLen'])) .
 							$modeData . '&nbsp;</td>

@@ -483,7 +483,7 @@ class t3lib_TCEforms {
 										$out_array[$out_sheet] = array();
 										$out_array_meta[$out_sheet]['title'] = $this->sL($parts[1]);
 											// Register newline for Tab
-										$out_array_meta[$out_sheet]['newline'] = ($parts[2] == "newline");
+										$out_array_meta[$out_sheet]['newline'] = ($parts[2] == 'newline');
 									}
 								} else { // Setting alternative title for "General" tab if "--div--" is the very first element.
 									$out_array_meta[$out_sheet]['title'] = $this->sL($parts[1]);
@@ -3270,7 +3270,7 @@ class t3lib_TCEforms {
 
 			// If current typeNum doesn't exist, set it to 0 (or to 1 for historical reasons, if 0 doesn't exist)
 		if (!$GLOBALS['TCA'][$table]['types'][$typeNum]) {
-			$typeNum = $GLOBALS['TCA'][$table]['types']["0"] ? 0 : 1;
+			$typeNum = $GLOBALS['TCA'][$table]['types']['0'] ? 0 : 1;
 		}
 			// Force to string. Necessary for eg '-1' to be recognized as a type value.
 		$typeNum = (string)$typeNum;

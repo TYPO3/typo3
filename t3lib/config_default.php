@@ -1019,8 +1019,8 @@ if (($displayErrors = intval($TYPO3_CONF_VARS['SYS']['displayErrors'])) != '-1')
 
 
 	// Set PHP memory limit depending on value of $TYPO3_CONF_VARS["SYS"]["setMemoryLimit"]
-if(intval($TYPO3_CONF_VARS["SYS"]["setMemoryLimit"])>16) {
-	@ini_set('memory_limit',intval($TYPO3_CONF_VARS["SYS"]["setMemoryLimit"]).'m');
+if(intval($TYPO3_CONF_VARS['SYS']['setMemoryLimit']) > 16) {
+	@ini_set('memory_limit', intval($TYPO3_CONF_VARS['SYS']['setMemoryLimit']) . 'm');
 }
 
 

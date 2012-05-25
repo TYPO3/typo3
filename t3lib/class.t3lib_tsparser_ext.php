@@ -346,7 +346,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 				} else {
 					$aHref = 'index.php?id=' . $GLOBALS['SOBE']->id .
 							'&tsbr[' . $depth . ']=' . ($deeper ? 0 : 1) .
-							(t3lib_div::_GP("breakPointLN") ? '&breakPointLN=' . t3lib_div::_GP("breakPointLN") : '') .
+							(t3lib_div::_GP('breakPointLN') ? '&breakPointLN=' . t3lib_div::_GP('breakPointLN') : '') .
 							'#' . $goto;
 					$HTML .= '<a name="' . $goto . '" href="' . htmlspecialchars($aHref) . '">' . $theIcon . '</a>';
 				}
@@ -359,7 +359,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 					if ($this->linkObjects) {
 						$aHref = 'index.php?id=' . $GLOBALS['SOBE']->id .
 								'&sObj=' . $depth .
-								(t3lib_div::_GP("breakPointLN") ? '&breakPointLN=' . t3lib_div::_GP("breakPointLN") : '');
+								(t3lib_div::_GP('breakPointLN') ? '&breakPointLN=' . t3lib_div::_GP('breakPointLN') : '');
 						if ($this->bType != 'const') {
 							$ln = is_array($arr[$key . '.ln..']) ? 'Defined in: ' . $this->lineNumberToScript($arr[$key . '.ln..']) : 'N/A';
 						} else {
@@ -703,7 +703,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 	 * @return string
 	 */
 	function ext_lnBreakPointWrap($lineNumber, $str) {
-		return '<a href="#" id="line-' . $lineNumber . '" onClick="return brPoint(' . $lineNumber . ',' . ($this->ext_lineNumberOffset_mode == "setup" ? 1 : 0) . ');">' . $str . '</a>';
+		return '<a href="#" id="line-' . $lineNumber . '" onClick="return brPoint(' . $lineNumber . ',' . ($this->ext_lineNumberOffset_mode == 'setup' ? 1 : 0) . ');">' . $str . '</a>';
 	}
 
 	/**
@@ -1394,18 +1394,18 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 						$deleteIconHTML = t3lib_iconWorks::getSpriteIcon(
 							'actions-edit-undo',
 							array(
-								'class' => "typo3-tstemplate-ceditor-control undoIcon",
-								'alt' => "Revert to default Constant",
-								'title' => "Revert to default Constant",
+								'class' => 'typo3-tstemplate-ceditor-control undoIcon',
+								'alt' => 'Revert to default Constant',
+								'title' => 'Revert to default Constant',
 								'rel' => $params['name']
 							)
 						);
 						$editIconHTML = t3lib_iconWorks::getSpriteIcon(
 							'actions-document-open',
 							array(
-								'class' => "typo3-tstemplate-ceditor-control editIcon",
-								'alt' => "Edit this Constant",
-								'title' => "Edit this Constant",
+								'class' => 'typo3-tstemplate-ceditor-control editIcon',
+								'alt' => 'Edit this Constant',
+								'title' => 'Edit this Constant',
 								'rel' => $params['name']
 							)
 						);
