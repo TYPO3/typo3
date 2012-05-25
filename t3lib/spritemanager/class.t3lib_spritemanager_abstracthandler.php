@@ -51,7 +51,7 @@ abstract class t3lib_spritemanager_AbstractHandler implements t3lib_spritemanage
 	 * path to CSS file for generated styles
 	 * @var String
 	 */
-	protected $cssTcaFile = "";
+	protected $cssTcaFile = '';
 
 	/**
 	 * constructor just init's the temp-file-name
