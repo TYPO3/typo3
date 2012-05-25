@@ -299,8 +299,8 @@ class t3lib_formmail {
 		if ($this->autoRespondMessage) {
 			$theParts = explode('/', $this->autoRespondMessage, 2);
 			$theParts[0] = str_replace('###SUBJECT###', $this->subject, $theParts[0]);
-			$theParts[1] = str_replace("/", LF, $theParts[1]);
-			$theParts[1] = str_replace("###MESSAGE###", $this->plainContent, $theParts[1]);
+			$theParts[1] = str_replace('/', LF, $theParts[1]);
+			$theParts[1] = str_replace('###MESSAGE###', $this->plainContent, $theParts[1]);
 
 				/** @var $autoRespondMail t3lib_mail_Message */
 			$autoRespondMail = t3lib_div::makeInstance('t3lib_mail_Message');

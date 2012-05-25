@@ -820,7 +820,7 @@ final class t3lib_BEfunc {
 
 			// If current typeNum doesn't exist, set it to 0 (or to 1 for historical reasons, if 0 doesn't exist)
 		if (!$GLOBALS['TCA'][$table]['types'][$typeNum]) {
-			$typeNum = $GLOBALS['TCA'][$table]['types']["0"] ? 0 : 1;
+			$typeNum = $GLOBALS['TCA'][$table]['types']['0'] ? 0 : 1;
 		}
 			// Force to string. Necessary for eg '-1' to be recognized as a type value.
 		$typeNum = (string)$typeNum;
@@ -1694,7 +1694,7 @@ final class t3lib_BEfunc {
 		$params .= '&md5sum=' . md5($check);
 
 		$url = $thumbScript . '?' . $params;
-		$th = '<img src="' . htmlspecialchars($url) . '" title="' . trim(basename($theFile)) . '"' . ($tparams ? " " . $tparams : "") . ' alt="" />';
+		$th = '<img src="' . htmlspecialchars($url) . '" title="' . trim(basename($theFile)) . '"' . ($tparams ? ' ' . $tparams : '') . ' alt="" />';
 		return $th;
 	}
 
@@ -2595,7 +2595,7 @@ final class t3lib_BEfunc {
 	 */
 	public static function editOnClick($params, $backPath = '', $requestUri = '') {
 		$retUrl = 'returnUrl=' . ($requestUri == -1 ? "'+T3_THIS_LOCATION+'" : rawurlencode($requestUri ? $requestUri : t3lib_div::getIndpEnv('REQUEST_URI')));
-		return "window.location.href='" . $backPath . "alt_doc.php?" . $retUrl . $params . "'; return false;";
+		return "window.location.href='" . $backPath . 'alt_doc.php?' . $retUrl . $params . "'; return false;";
 	}
 
 	/**
@@ -2830,7 +2830,7 @@ final class t3lib_BEfunc {
 	 * @return string HTML code for input text field.
 	 * @see getFuncMenu()
 	 */
-	public static function getFuncInput($mainParams, $elementName, $currentValue, $size = 10, $script = "", $addparams = "") {
+	public static function getFuncInput($mainParams, $elementName, $currentValue, $size = 10, $script = '', $addparams = '') {
 		if (!is_array($mainParams)) {
 			$mainParams = array('id' => $mainParams);
 		}
@@ -4222,7 +4222,7 @@ final class t3lib_BEfunc {
 				// Check if the Install Tool Password is still default: joh316
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] == md5('joh316')) {
 				$url = 'install/index.php?redirect_url=index.php' . urlencode('?TYPO3_INSTALL[type]=about');
-				$warnings["install_password"] = sprintf(
+				$warnings['install_password'] = sprintf(
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_password'),
 						'<a href="' . $url . '">',
 					'</a>');
@@ -4234,7 +4234,7 @@ final class t3lib_BEfunc {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, username, password', 'be_users', $where_clause);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$url = 'alt_doc.php?returnUrl=alt_intro.php&edit[be_users][' . $row['uid'] . ']=edit';
-				$warnings["backend_admin"] = sprintf(
+				$warnings['backend_admin'] = sprintf(
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_admin'),
 						'<a href="' . htmlspecialchars($url) . '">',
 					'</a>');
@@ -4254,7 +4254,7 @@ final class t3lib_BEfunc {
 				// Check if the encryption key is empty
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] == '') {
 				$url = 'install/index.php?redirect_url=index.php' . urlencode('?TYPO3_INSTALL[type]=config#set_encryptionKey');
-				$warnings["install_encryption"] = sprintf(
+				$warnings['install_encryption'] = sprintf(
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_encryption'),
 						'<a href="' . $url . '">',
 					'</a>');
@@ -4271,14 +4271,14 @@ final class t3lib_BEfunc {
 			}
 
 				// Check if fileDenyPattern allows to upload .htaccess files which is dangerous on Apache
-			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] != FILE_DENY_PATTERN_DEFAULT && t3lib_div::verifyFilenameAgainstDenyPattern(".htaccess")) {
+			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] != FILE_DENY_PATTERN_DEFAULT && t3lib_div::verifyFilenameAgainstDenyPattern('.htaccess')) {
 				$warnings['file_deny_htaccess'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.file_deny_htaccess');
 			}
 
 				// Check if there are still updates to perform
 			if (!t3lib_div::compat_version(TYPO3_branch)) {
 				$url = 'install/index.php?redirect_url=index.php' . urlencode('?TYPO3_INSTALL[type]=update');
-				$warnings["install_update"] = sprintf(
+				$warnings['install_update'] = sprintf(
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_update'),
 						'<a href="' . $url . '">',
 					'</a>');
@@ -4290,7 +4290,7 @@ final class t3lib_BEfunc {
 			$lastRefIndexUpdate = $registry->get('core', 'sys_refindex_lastUpdate');
 			if (!$count && $lastRefIndexUpdate) {
 				$url = 'sysext/lowlevel/dbint/index.php?&id=0&SET[function]=refindex';
-				$warnings["backend_reference"] = sprintf(
+				$warnings['backend_reference'] = sprintf(
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_reference_index'),
 						'<a href="' . $url . '">',
 					'</a>',

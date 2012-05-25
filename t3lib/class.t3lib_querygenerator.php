@@ -954,7 +954,7 @@ class t3lib_queryGenerator {
 	function mkOperatorSelect($name, $op, $draw, $submit) {
 		if ($draw) {
 			$out = '<select name="' . $name . '[operator]"' . ($submit ? ' onChange="submit();"' : '') . '>'; //
-			$out .= '<option value="AND"' . (!$op || $op == "AND" ? ' selected' : '') . '>' . $this->lang["AND"] . '</option>';
+			$out .= '<option value="AND"' . (!$op || $op == 'AND' ? ' selected' : '') . '>' . $this->lang['AND'] . '</option>';
 			$out .= '<option value="OR"' . ($op == 'OR' ? ' selected' : '') . '>' . $this->lang['OR'] . '</option>';
 			$out .= '</select>';
 		} else {
