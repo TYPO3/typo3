@@ -56,13 +56,13 @@ class tx_indexedsearch extends tslib_pibase {
 	var $defaultResultNumber = 10;
 
 	var $operator_translate_table = Array (		// case-sensitive. Defines the words, which will be operators between words
-		Array ('+' , 'AND'),
-		Array ('|' , 'OR'),
-		Array ('-' , 'AND NOT'),
+		Array ('+', 'AND'),
+		Array ('|', 'OR'),
+		Array ('-', 'AND NOT'),
 			// english
-#		Array ('AND' , 'AND'),
-#		Array ('OR' , 'OR'),
-#		Array ('NOT' , 'AND NOT'),
+#		Array ('AND', 'AND'),
+#		Array ('OR', 'OR'),
+#		Array ('NOT', 'AND NOT'),
 	);
 
 		// Internal variable
@@ -269,9 +269,9 @@ class tx_indexedsearch extends tslib_pibase {
 
 			// Add operators for various languages
 			// Converts the operators to UTF-8 and lowercase
-		$this->operator_translate_table[] = Array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8',$GLOBALS['TSFE']->csConvObj->utf8_encode($this->pi_getLL('local_operator_AND'), $GLOBALS['TSFE']->renderCharset),'toLower') , 'AND');
-		$this->operator_translate_table[] = Array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8',$GLOBALS['TSFE']->csConvObj->utf8_encode($this->pi_getLL('local_operator_OR'), $GLOBALS['TSFE']->renderCharset),'toLower') , 'OR');
-		$this->operator_translate_table[] = Array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8',$GLOBALS['TSFE']->csConvObj->utf8_encode($this->pi_getLL('local_operator_NOT'), $GLOBALS['TSFE']->renderCharset),'toLower') , 'AND NOT');
+		$this->operator_translate_table[] = Array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode($this->pi_getLL('local_operator_AND'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'AND');
+		$this->operator_translate_table[] = Array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode($this->pi_getLL('local_operator_OR'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'OR');
+		$this->operator_translate_table[] = Array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode($this->pi_getLL('local_operator_NOT'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'AND NOT');
 
 			// This is the id of the site root. This value may be a commalist of integer (prepared for this)
 		$this->wholeSiteIdList = intval($GLOBALS['TSFE']->config['rootLine'][0]['uid']);

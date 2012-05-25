@@ -86,8 +86,8 @@ class tx_saltedpasswords_salts_factoryTest extends tx_phpunit_testcase {
 	public function objectInstanceImplementsInterface() {
 		$this->assertTrue(method_exists($this->objectInstance, 'checkPassword'), 'Missing method checkPassword() from interface tx_saltedpasswords_salts.');
 		$this->assertTrue(method_exists($this->objectInstance, 'isHashUpdateNeeded'), 'Missing method isHashUpdateNeeded() from interface tx_saltedpasswords_salts.');
-		$this->assertTrue(method_exists($this->objectInstance, 'isValidSalt') , 'Missing method isValidSalt() from interface tx_saltedpasswords_salts.');
-		$this->assertTrue(method_exists($this->objectInstance, 'isValidSaltedPW') , 'Missing method isValidSaltedPW() from interface tx_saltedpasswords_salts.');
+		$this->assertTrue(method_exists($this->objectInstance, 'isValidSalt'), 'Missing method isValidSalt() from interface tx_saltedpasswords_salts.');
+		$this->assertTrue(method_exists($this->objectInstance, 'isValidSaltedPW'), 'Missing method isValidSaltedPW() from interface tx_saltedpasswords_salts.');
 		$this->assertTrue(method_exists($this->objectInstance, 'getHashedPassword'), 'Missing method getHashedPassword() from interface tx_saltedpasswords_salts.');
 		$this->assertTrue(method_exists($this->objectInstance, 'getSaltLength'), 'Missing method getSaltLength() from interface tx_saltedpasswords_salts.');
 	}

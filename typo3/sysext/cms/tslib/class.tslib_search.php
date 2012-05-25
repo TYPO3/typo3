@@ -68,13 +68,13 @@ class tslib_search {
 	var $default_operator = 'AND';							// Standard SQL-operator between words
 	var $operator_translate_table_caseinsensitive = TRUE;
 	var $operator_translate_table = Array (					// case-sensitiv. Defineres the words, which will be operators between words
-		Array ('+' , 'AND'),
-		Array ('|' , 'AND'),
-		Array ('-' , 'AND NOT'),
+		Array ('+', 'AND'),
+		Array ('|', 'AND'),
+		Array ('-', 'AND NOT'),
 			// english
-		Array ('and' , 'AND'),
-		Array ('or' , 'OR'),
-		Array ('not' , 'AND NOT'),
+		Array ('and', 'AND'),
+		Array ('or', 'OR'),
+		Array ('not', 'AND NOT'),
 	);
 
 	// Internal
