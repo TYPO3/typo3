@@ -110,7 +110,7 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 		$this->fixture->admin = TRUE;
 
 		$this->assertTrue(
-			$this->fixture->checkModifyAccessList('tt_content')
+			$this->triggerProtectedMethod('checkModifyAccessList', 'tt_content')
 		);
 	}
 
@@ -121,7 +121,7 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 		$this->fixture->admin = FALSE;
 
 		$this->assertFalse(
-			$this->fixture->checkModifyAccessList('tt_content')
+			$this->triggerProtectedMethod('checkModifyAccessList', 'tt_content')
 		);
 	}
 
@@ -133,7 +133,7 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 		$this->backEndUser->groupData['tables_modify'] = 'tt_content';
 
 		$this->assertTrue(
-			$this->fixture->checkModifyAccessList('tt_content')
+			$this->triggerProtectedMethod('checkModifyAccessList', 'tt_content')
 		);
 	}
 
@@ -144,7 +144,7 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 		$this->fixture->admin = TRUE;
 
 		$this->assertTrue(
-			$this->fixture->checkModifyAccessList('be_users')
+			$this->triggerProtectedMethod('checkModifyAccessList', 'be_users')
 		);
 	}
 
@@ -155,7 +155,7 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 		$this->fixture->admin = FALSE;
 
 		$this->assertFalse(
-			$this->fixture->checkModifyAccessList('be_users')
+			$this->triggerProtectedMethod('checkModifyAccessList', 'be_users')
 		);
 	}
 
@@ -167,7 +167,7 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 		$this->backEndUser->groupData['tables_modify'] = 'be_users';
 
 		$this->assertFalse(
-			$this->fixture->checkModifyAccessList('be_users')
+			$this->triggerProtectedMethod('checkModifyAccessList', 'be_users')
 		);
 	}
 
@@ -184,7 +184,7 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 						'60aaa00' => '6000.00',
 						);
 		foreach ($testData as $value => $expectedReturnValue){
-			$returnValue = $this->fixture->checkValue_input_Eval($value, array('double2'), '');
+			$returnValue = $this->triggerProtectedMethod('checkValue_input_Eval', $value, array('double2'), '');
 			$this->assertSame(
 			$returnValue['value'],
 			$expectedReturnValue
@@ -209,7 +209,7 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
 
-		$this->fixture->checkModifyAccessList('tt_content');
+		$this->triggerProtectedMethod('checkModifyAccessList', 'tt_content');
 	}
 
 	/**
@@ -229,8 +229,7 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
 		$GLOBALS['T3_VAR']['getUserObj'][$hookClass] = $hookMock;
-
-		$this->fixture->checkModifyAccessList('tt_content');
+		$this->triggerProtectedMethod('checkModifyAccessList', 'tt_content');
 	}
 
 	/**
@@ -248,7 +247,7 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
 
-		$this->assertTrue($this->fixture->checkModifyAccessList('tt_content'));
+		$this->assertTrue($this->triggerProtectedMethod('checkModifyAccessList', 'tt_content'));
 	}
 
 
@@ -322,6 +321,18 @@ class t3lib_tcemainTest extends tx_phpunit_testcase {
 		t3lib_div::addInstance('t3lib_TCEmain', $createdTceMain);
 
 		$fixture->process_datamap();
+	}
+
+
+	/**
+	 * @param string $methodName
+	 * @return mixed
+	 */
+	protected function triggerProtectedMethod($methodName) {
+		$arguments = array_slice(func_get_args(), 1);
+		$method = new ReflectionMethod('t3lib_TCEmain', $methodName);
+		$method->setAccessible(TRUE);
+		return $method->invokeArgs($this->fixture, $arguments);
 	}
 }
 ?>
