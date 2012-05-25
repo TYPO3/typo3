@@ -328,7 +328,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 		$realPath = rtrim($this->absoluteBasePath . trim($path, '/'), '/') . '/';
 
 		if (!is_dir($realPath)) {
-			throw new InvalidArgumentException('Cannot list items in directory ' . $path. ' - does not exist or is no directory', 1314349666);
+			throw new InvalidArgumentException('Cannot list items in directory ' . $path . ' - does not exist or is no directory', 1314349666);
 		}
 
 		if ($start > 0) {
@@ -625,7 +625,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 			// as for the "virtual storage" for backwards-compatibility, this check always fails, as the file probably lies under PATH_site
 			// thus, it is not checked here
 		if (t3lib_div::isFirstPartOfStr($localFilePath, $this->absoluteBasePath) && $this->storage->getUid() > 0) {
-			throw new InvalidArgumentException("Cannot add a file that is already part of this storage.", 1314778269);
+			throw new InvalidArgumentException('Cannot add a file that is already part of this storage.', 1314778269);
 		}
 
 		$relativeTargetPath = ltrim($targetFolder->getIdentifier(), '/');
@@ -967,7 +967,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 
 		// The target should not exist already
 		if ($this->fileExists($newIdentifier)) {
-			throw new t3lib_file_exception_ExistingTargetFileNameException("The target file already exists.", 1320291063);
+			throw new t3lib_file_exception_ExistingTargetFileNameException('The target file already exists.', 1320291063);
 		}
 
 		$sourcePath = $this->getAbsolutePath($file);
@@ -1049,7 +1049,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 
 		$result = unlink($filePath);
 		if ($result === FALSE) {
-			throw new RuntimeException("Deletion of file " . $file->getIdentifier() . " failed.", 1320855304);
+			throw new RuntimeException('Deletion of file ' . $file->getIdentifier() . ' failed.', 1320855304);
 		}
 
 		return $result;

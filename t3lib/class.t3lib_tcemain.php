@@ -601,7 +601,7 @@ class t3lib_TCEmain {
 									$this->addDefaultPermittedLanguageIfNotSet($table, $incomingFieldArray);
 									$recordAccess = $this->BE_USER->recordEditAccessInternals($table, $incomingFieldArray, TRUE);
 									if (!$recordAccess) {
-										$this->newlog("recordEditAccessInternals() check failed. [" . $this->BE_USER->errorMsg . "]", 1);
+										$this->newlog('recordEditAccessInternals() check failed. [' . $this->BE_USER->errorMsg . ']', 1);
 									} elseif (!$this->bypassWorkspaceRestrictions) {
 											// Workspace related processing:
 											// If LIVE records cannot be created in the current PID due to workspace restrictions, prepare creation of placeholder-record
@@ -635,7 +635,7 @@ class t3lib_TCEmain {
 								$recordAccess = $this->BE_USER->recordEditAccessInternals($table, $id);
 								if (!$recordAccess) {
 									$propArr = $this->getRecordProperties($table, $id);
-									$this->newlog("recordEditAccessInternals() check failed. [" . $this->BE_USER->errorMsg . "]", 1);
+									$this->newlog('recordEditAccessInternals() check failed. [' . $this->BE_USER->errorMsg . ']', 1);
 								} else { // Here we fetch the PID of the record that we point to...
 									$tempdata = $this->recordInfo($table, $id, 'pid' .
 										($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] ? ',t3ver_wsid,t3ver_stage' : '')
@@ -1899,15 +1899,15 @@ class t3lib_TCEmain {
 			foreach ($actionCMDs as $key => $value) {
 				if ($key == '_ACTION') {
 						// First, check if there are "commands":
-					if (current($actionCMDs[$key]) !== "") {
+					if (current($actionCMDs[$key]) !== '') {
 						asort($actionCMDs[$key]);
 						$newValueArray = array();
 						foreach ($actionCMDs[$key] as $idx => $order) {
-							if (substr($idx, 0, 3) == "ID-") {
+							if (substr($idx, 0, 3) == 'ID-') {
 								$idx = $this->newIndexMap[$idx];
 							}
 								// Just one reflection here: It is clear that when removing elements from a flexform, then we will get lost files unless we act on this delete operation by traversing and deleting files that were referred to.
-							if ($order != "DELETE") {
+							if ($order != 'DELETE') {
 								$newValueArray[$idx] = $valueArray[$idx];
 							}
 							unset($valueArray[$idx]);
@@ -2361,7 +2361,7 @@ class t3lib_TCEmain {
 											// If element is added dynamically in the flexform of TCEforms, we map the ID-string to the next numerical index we can have in that particular section of elements:
 											// The fact that the order changes is not important since order is controlled by a separately submitted index.
 
-										if (substr($ik, 0, 3) == "ID-") {
+										if (substr($ik, 0, 3) == 'ID-') {
 											$newIndexCounter++;
 												// Set mapping index
 											$this->newIndexMap[$ik] = (is_array($dataValues_current[$key]['el']) && count($dataValues_current[$key]['el']) ? max(array_keys($dataValues_current[$key]['el'])) : 0) + $newIndexCounter;
@@ -3538,7 +3538,7 @@ class t3lib_TCEmain {
 					$this->log($table, $uid, 4, 0, 1, "Attempt to move record '%s' (%s) without having permissions to do so.", 14, array($propArr['header'], $table . ':' . $uid), $propArr['event_pid']);
 				}
 			} else {
-				$this->log($table, $uid, 4, 0, 1, "Attempt to move record '%s' (%s) without having permissions to do so. [" . $this->BE_USER->errorMsg . "]", 14, array($propArr['header'], $table . ':' . $uid), $propArr['event_pid']);
+				$this->log($table, $uid, 4, 0, 1, 'Attempt to move record "%s" (%s) without having permissions to do so. [' . $this->BE_USER->errorMsg . ']', 14, array($propArr['header'], $table . ':' . $uid), $propArr['event_pid']);
 			}
 		}
 	}

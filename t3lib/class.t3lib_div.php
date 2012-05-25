@@ -513,7 +513,7 @@ final class t3lib_div {
 			$hex = self::normalizeIPv6($hex);
 				// Replace colon to nothing
 			$hex = str_replace(':', '', $hex);
-			$bin = pack("H*", $hex);
+			$bin = pack('H*', $hex);
 		}
 		return $bin;
 	}
@@ -530,7 +530,7 @@ final class t3lib_div {
 		if (defined('AF_INET6')) {
 			$hex = inet_ntop($bin);
 		} else {
-			$hex = unpack("H*", $bin);
+			$hex = unpack('H*', $bin);
 			$hex = chunk_split($hex[1], 4, ':');
 				// Strip last colon (from chunk_split)
 			$hex = substr($hex, 0, -1);
@@ -1134,9 +1134,9 @@ final class t3lib_div {
 	 */
 	public static function slashJS($string, $extended = FALSE, $char = "'") {
 		if ($extended) {
-			$string = str_replace("\\", "\\\\", $string);
+			$string = str_replace('\\', '\\\\', $string);
 		}
-		return str_replace($char, "\\" . $char, $string);
+		return str_replace($char, '\\' . $char, $string);
 	}
 
 	/**
@@ -4415,7 +4415,7 @@ final class t3lib_div {
 				return $classObj;
 			} else {
 				if (!$silent) {
-					debug("<strong>ERROR:</strong> No class named: " . $class, 't3lib_div::getUserObj');
+					debug('<strong>ERROR:</strong> No class named: ' . $class, 't3lib_div::getUserObj');
 				}
 			}
 		}
