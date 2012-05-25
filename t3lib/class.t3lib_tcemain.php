@@ -6382,28 +6382,6 @@ class t3lib_TCEmain {
 	}
 
 	/**
-	 * Returns all fieldnames from a table which have the unique evaluation type set.
-	 *
-	 * @param	string		Table name
-	 * @return	array		Array of fieldnames
-	 */
-	function getUniqueFields($table) {
-		$listArr = array();
-		t3lib_div::loadTCA($table);
-		if ($GLOBALS['TCA'][$table]['columns']) {
-			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $configArr) {
-				if ($configArr['config']['type'] === 'input') {
-					$evalCodesArray = t3lib_div::trimExplode(',', $configArr['config']['eval'], 1);
-					if (in_array('uniqueInPid', $evalCodesArray) || in_array('unique', $evalCodesArray)) {
-						$listArr[] = $field;
-					}
-				}
-			}
-		}
-		return $listArr;
-	}
-
-	/**
 	 * Returns TRUE if the TCA/columns field type is a DB reference field
 	 *
 	 * @param	array		config array for TCA/columns field
