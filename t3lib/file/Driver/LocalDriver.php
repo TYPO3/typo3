@@ -246,7 +246,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 			// don't use $this->fileExists() because we need the absolute path to the file anyways, so we can directly
 			// use PHP's filesystem method.
 		if (!file_exists($absoluteFilePath)) {
-			throw new InvalidArgumentException("File $fileIdentifier does not exist.", 1314516809);
+			throw new InvalidArgumentException('File ' . $fileIdentifier . ' does not exist.', 1314516809);
 		}
 
 		return $this->extractFileInformation($absoluteFilePath, $dirPath);
@@ -305,7 +305,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 			// Strip trailing dots and return
 		$cleanFileName = preg_replace('/\.*$/', '', $cleanFileName);
 		if (!$cleanFileName) {
-			throw new t3lib_file_exception_InvalidFileNameException("File name $cleanFileName is invalid.", 1320288991);
+			throw new t3lib_file_exception_InvalidFileNameException('File name ' . $cleanFileName . ' is invalid.', 1320288991);
 		}
 
 		return $cleanFileName;
@@ -328,7 +328,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 		$realPath = rtrim($this->absoluteBasePath . trim($path, '/'), '/') . '/';
 
 		if (!is_dir($realPath)) {
-			throw new InvalidArgumentException("Cannot list items in directory $path - does not exist or is no directory", 1314349666);
+			throw new InvalidArgumentException('Cannot list items in directory ' . $path. ' - does not exist or is no directory', 1314349666);
 		}
 
 		if ($start > 0) {
@@ -601,7 +601,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 				break;
 			default:
 				throw new RuntimeException(
-					"Hash algorithm $hashAlgorithm is not implemented.",
+					'Hash algorithm ' . $hashAlgorithm . ' is not implemented.',
 					1329644451
 				);
 		}
@@ -639,7 +639,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 		}
 
 		if ($moveResult !== TRUE) {
-			throw new RuntimeException("Moving file $localFilePath to $targetPath failed.", 1314803096);
+			throw new RuntimeException('Moving file ' . $localFilePath . ' to ' . $targetPath . ' failed.', 1314803096);
 		}
 
 		clearstatcache();
@@ -746,7 +746,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 
 		$result = rename($localFilePath, $filePath);
 		if ($result === FALSE) {
-			throw new RuntimeException("Replacing file $filePath with $localFilePath failed.", 1315314711);
+			throw new RuntimeException('Replacing file ' . $filePath . ' with ' . $localFilePath . ' failed.', 1315314711);
 		}
 
 		$fileInfo = $this->getFileInfoByIdentifier($file->getIdentifier());
@@ -770,7 +770,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 		$result = copy($localFilePath, $absoluteFilePath);
 
 		if ($result === FALSE || !file_exists($absoluteFilePath)) {
-			throw new RuntimeException("Adding file $localFilePath at $fileIdentifier failed.");
+			throw new RuntimeException('Adding file ' . $localFilePath . ' at ' . $fileIdentifier . ' failed.');
 		}
 
 		return $fileIdentifier;
@@ -790,7 +790,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 		$result = unlink($targetPath);
 
 		if ($result === FALSE || file_exists($targetPath)) {
-			throw new RuntimeException("Deleting file $identifier failed.", 1320381534);
+			throw new RuntimeException('Deleting file ' . $identifier . ' failed.', 1320381534);
 		}
 
 		return TRUE;
@@ -832,7 +832,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 
 		$result = rename($sourcePath, $this->absoluteBasePath . $targetIdentifier);
 		if ($result === FALSE) {
-			throw new RuntimeException("Moving file $sourcePath to $targetIdentifier failed.", 1315314712);
+			throw new RuntimeException('Moving file ' . $sourcePath . ' to ' . $targetIdentifier . ' failed.', 1315314712);
 		}
 
 		return $targetIdentifier;
@@ -902,7 +902,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 
 		$result = rename($sourcePath, $targetPath);
 		if ($result === FALSE) {
-			throw new RuntimeException("Moving folder $sourcePath to $targetPath failed.", 1320711817);
+			throw new RuntimeException('Moving folder ' . $sourcePath . ' to ' . $targetPath . ' failed.', 1320711817);
 		}
 
 			// Create a mapping from old to new identifiers
@@ -975,7 +975,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 
 		$result = rename($sourcePath, $targetPath);
 		if ($result === FALSE) {
-			throw new RuntimeException("Renaming file $sourcePath to $targetPath failed.", 1320375115);
+			throw new RuntimeException('Renaming file ' . $sourcePath . ' to ' . $targetPath . ' failed.', 1320375115);
 		}
 
 		return $newIdentifier;
@@ -990,7 +990,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 	protected function checkFilePath($filePath) {
 			// filePath must be valid
 		if (!$this->isPathValid($filePath)) {
-			throw new t3lib_file_exception_InvalidPathException("File $filePath is not valid (\"..\" and \"//\" is not allowed in path).", 1320286857);
+			throw new t3lib_file_exception_InvalidPathException('File ' . $filePath . ' is not valid (".." and "//" is not allowed in path).', 1320286857);
 		}
 	}
 
@@ -1195,7 +1195,7 @@ class t3lib_file_Driver_LocalDriver extends t3lib_file_Driver_AbstractDriver {
 		$result = touch($this->absoluteBasePath . $filePath);
 		clearstatcache();
 		if ($result !== TRUE) {
-			throw new RuntimeException("Creating file $filePath failed.", 1320569854);
+			throw new RuntimeException('Creating file ' . $filePath . ' failed.', 1320569854);
 		}
 		$fileInfo = $this->getFileInfoByIdentifier($filePath);
 

@@ -493,7 +493,7 @@ class t3lib_file_Storage {
 		if ($this->driver->folderExists($folderIdentifier) === FALSE) {
 				// if there is an error, this is important and should be handled
 				// as otherwise the user would see the whole storage without any restrictions for the filemounts
-			throw new t3lib_file_exception_FolderDoesNotExistException("Folder for file mount $folderIdentifier does not exist.", 1334427099);
+			throw new t3lib_file_exception_FolderDoesNotExistException('Folder for file mount ' . $folderIdentifier . ' does not exist.', 1334427099);
 		}
 
 		$folderObject = $this->driver->getFolder($folderIdentifier);
@@ -1140,7 +1140,7 @@ class t3lib_file_Storage {
 			// Max upload size (kb) for files.
 		$maxUploadFileSize = t3lib_div::getMaxUploadFileSize() * 1024;
 		if ($uploadedFileSize >= $maxUploadFileSize) {
-			throw new t3lib_file_exception_UploadSizeException("The uploaded file exceeds the size-limit of $maxUploadFileSize bytes", 1322110041);
+			throw new t3lib_file_exception_UploadSizeException('The uploaded file exceeds the size-limit of ' . $maxUploadFileSize . ' bytes', 1322110041);
 		}
 
 			// Check if targetFolder is writable
@@ -1150,7 +1150,7 @@ class t3lib_file_Storage {
 
 			// Check for a valid file extension
 		if (!$this->checkFileExtensionPermission($targetFileName)) {
-			throw new t3lib_file_exception_IllegalFileExtensionException("Extension of file name is not allowed in \"$targetFileName\"!", 1322120271);
+			throw new t3lib_file_exception_IllegalFileExtensionException('Extension of file name is not allowed in "' . $targetFileName . '"!', 1322120271);
 		}
 	}
 
@@ -1585,7 +1585,7 @@ class t3lib_file_Storage {
 		// TODO access checks
 		$returnObject = NULL;
 		if ($this->driver->folderExistsInFolder($newName, $folderObject)) {
-			throw new InvalidArgumentException("The folder $newName already exists in folder " . $folderObject->getIdentifier(), 1325418870);
+			throw new InvalidArgumentException('The folder ' . $newName . ' already exists in folder ' . $folderObject->getIdentifier(), 1325418870);
 		}
 
 		$this->emitPreFolderRenameSignal($folderObject, $newName);
@@ -1745,7 +1745,7 @@ class t3lib_file_Storage {
 	 */
 	public function getFolder($identifier) {
 		if (!$this->driver->folderExists($identifier)) {
-			throw new t3lib_file_exception_FolderDoesNotExistException("Folder $identifier does not exist.", 1320575630);
+			throw new t3lib_file_exception_FolderDoesNotExistException('Folder ' . $identifier . ' does not exist.', 1320575630);
 		}
 
 		$folderObject = $this->driver->getFolder($identifier);

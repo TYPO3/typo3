@@ -2261,7 +2261,7 @@ class browse_links {
 					'fileExt'  => $fileExtension,
 					'fileIcon' => $icon,
 				);
-				$ATag = "<a href=\"#\" onclick=\"return BrowseLinks.File.insertElement('file_$filesIndex');\">";
+				$ATag = "<a href=\"#\" onclick=\"return BrowseLinks.File.insertElement('file_" . $filesIndex . "');\">";
 				$ATag_alt = substr($ATag, 0, -4).",1);\">";
 				$bulkCheckBox = '<input type="checkbox" class="typo3-bulk-item" name="file_'.$filesIndex.'" value="0" /> ';
 

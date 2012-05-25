@@ -78,7 +78,7 @@ class t3lib_file_Driver_DriverRegistry implements t3lib_Singleton {
 	public function registerDriverClass($className, $shortName = NULL, $label = NULL, $flexFormDataStructurePathAndFilename = NULL) {
 			// check if the class is available for TYPO3 before registering the driver
 		if (!class_exists($className)) {
-			throw new InvalidArgumentException("Class $className does not exist.", 1314979197);
+			throw new InvalidArgumentException('Class ' . $className . ' does not exist.', 1314979197);
 		}
 
 		if ($shortName === '') {
@@ -86,7 +86,7 @@ class t3lib_file_Driver_DriverRegistry implements t3lib_Singleton {
 		}
 
 		if (array_key_exists($shortName, $this->drivers)) {
-			throw new InvalidArgumentException("Driver $shortName is already registered.", 1314979451);
+			throw new InvalidArgumentException('Driver ' . $shortName . ' is already registered.', 1314979451);
 		}
 
 		$this->drivers[$shortName] = $className;
@@ -97,7 +97,7 @@ class t3lib_file_Driver_DriverRegistry implements t3lib_Singleton {
 			'flexFormDS' => $flexFormDataStructurePathAndFilename
 		);
 
-		t3lib_div::sysLog("Registered driver $shortName ($className) " . t3lib_utility_Debug::debugTrail(), 't3lib_file_Driver_DriverRegistry');
+		t3lib_div::sysLog('Registered driver ' . $shortName . ' (' . $className . ') ' . t3lib_utility_Debug::debugTrail(), 't3lib_file_Driver_DriverRegistry');
 
 		return TRUE;
 	}
